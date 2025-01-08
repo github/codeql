@@ -14,191 +14,191 @@ use ra_ap_syntax::ast::{
 use ra_ap_syntax::{ast, AstNode};
 
 impl Translator<'_> {
-    fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {
+    fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Option<Label<generated::Expr>> {
         match node {
-            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).into(),
-            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).into(),
+            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).map(Into::into),
+            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_asm_operand(&mut self, node: ast::AsmOperand) -> Label<generated::AsmOperand> {
+    pub(crate) fn emit_asm_operand(&mut self, node: ast::AsmOperand) -> Option<Label<generated::AsmOperand>> {
         match node {
-            ast::AsmOperand::AsmConst(inner) => self.emit_asm_const(inner).into(),
-            ast::AsmOperand::AsmLabel(inner) => self.emit_asm_label(inner).into(),
-            ast::AsmOperand::AsmRegOperand(inner) => self.emit_asm_reg_operand(inner).into(),
-            ast::AsmOperand::AsmSym(inner) => self.emit_asm_sym(inner).into(),
+            ast::AsmOperand::AsmConst(inner) => self.emit_asm_const(inner).map(Into::into),
+            ast::AsmOperand::AsmLabel(inner) => self.emit_asm_label(inner).map(Into::into),
+            ast::AsmOperand::AsmRegOperand(inner) => self.emit_asm_reg_operand(inner).map(Into::into),
+            ast::AsmOperand::AsmSym(inner) => self.emit_asm_sym(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_asm_piece(&mut self, node: ast::AsmPiece) -> Label<generated::AsmPiece> {
+    pub(crate) fn emit_asm_piece(&mut self, node: ast::AsmPiece) -> Option<Label<generated::AsmPiece>> {
         match node {
-            ast::AsmPiece::AsmClobberAbi(inner) => self.emit_asm_clobber_abi(inner).into(),
-            ast::AsmPiece::AsmOperandNamed(inner) => self.emit_asm_operand_named(inner).into(),
-            ast::AsmPiece::AsmOptions(inner) => self.emit_asm_options(inner).into(),
+            ast::AsmPiece::AsmClobberAbi(inner) => self.emit_asm_clobber_abi(inner).map(Into::into),
+            ast::AsmPiece::AsmOperandNamed(inner) => self.emit_asm_operand_named(inner).map(Into::into),
+            ast::AsmPiece::AsmOptions(inner) => self.emit_asm_options(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_assoc_item(&mut self, node: ast::AssocItem) -> Label<generated::AssocItem> {
+    pub(crate) fn emit_assoc_item(&mut self, node: ast::AssocItem) -> Option<Label<generated::AssocItem>> {
         match node {
-            ast::AssocItem::Const(inner) => self.emit_const(inner).into(),
-            ast::AssocItem::Fn(inner) => self.emit_fn(inner).into(),
-            ast::AssocItem::MacroCall(inner) => self.emit_macro_call(inner).into(),
-            ast::AssocItem::TypeAlias(inner) => self.emit_type_alias(inner).into(),
+            ast::AssocItem::Const(inner) => self.emit_const(inner).map(Into::into),
+            ast::AssocItem::Fn(inner) => self.emit_fn(inner).map(Into::into),
+            ast::AssocItem::MacroCall(inner) => self.emit_macro_call(inner).map(Into::into),
+            ast::AssocItem::TypeAlias(inner) => self.emit_type_alias(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_expr(&mut self, node: ast::Expr) -> Label<generated::Expr> {
+    pub(crate) fn emit_expr(&mut self, node: ast::Expr) -> Option<Label<generated::Expr>> {
         match node {
-            ast::Expr::ArrayExpr(inner) => self.emit_array_expr(inner).into(),
-            ast::Expr::AsmExpr(inner) => self.emit_asm_expr(inner).into(),
-            ast::Expr::AwaitExpr(inner) => self.emit_await_expr(inner).into(),
-            ast::Expr::BecomeExpr(inner) => self.emit_become_expr(inner).into(),
-            ast::Expr::BinExpr(inner) => self.emit_bin_expr(inner).into(),
-            ast::Expr::BlockExpr(inner) => self.emit_block_expr(inner).into(),
-            ast::Expr::BreakExpr(inner) => self.emit_break_expr(inner).into(),
-            ast::Expr::CallExpr(inner) => self.emit_call_expr(inner).into(),
-            ast::Expr::CastExpr(inner) => self.emit_cast_expr(inner).into(),
-            ast::Expr::ClosureExpr(inner) => self.emit_closure_expr(inner).into(),
-            ast::Expr::ContinueExpr(inner) => self.emit_continue_expr(inner).into(),
-            ast::Expr::FieldExpr(inner) => self.emit_field_expr(inner).into(),
-            ast::Expr::ForExpr(inner) => self.emit_for_expr(inner).into(),
-            ast::Expr::FormatArgsExpr(inner) => self.emit_format_args_expr(inner).into(),
-            ast::Expr::IfExpr(inner) => self.emit_if_expr(inner).into(),
-            ast::Expr::IndexExpr(inner) => self.emit_index_expr(inner).into(),
-            ast::Expr::LetExpr(inner) => self.emit_let_expr(inner).into(),
-            ast::Expr::Literal(inner) => self.emit_literal(inner).into(),
-            ast::Expr::LoopExpr(inner) => self.emit_loop_expr(inner).into(),
-            ast::Expr::MacroExpr(inner) => self.emit_macro_expr(inner).into(),
-            ast::Expr::MatchExpr(inner) => self.emit_match_expr(inner).into(),
-            ast::Expr::MethodCallExpr(inner) => self.emit_method_call_expr(inner).into(),
-            ast::Expr::OffsetOfExpr(inner) => self.emit_offset_of_expr(inner).into(),
-            ast::Expr::ParenExpr(inner) => self.emit_paren_expr(inner).into(),
-            ast::Expr::PathExpr(inner) => self.emit_path_expr(inner).into(),
-            ast::Expr::PrefixExpr(inner) => self.emit_prefix_expr(inner).into(),
-            ast::Expr::RangeExpr(inner) => self.emit_range_expr(inner).into(),
-            ast::Expr::RecordExpr(inner) => self.emit_record_expr(inner).into(),
-            ast::Expr::RefExpr(inner) => self.emit_ref_expr(inner).into(),
-            ast::Expr::ReturnExpr(inner) => self.emit_return_expr(inner).into(),
-            ast::Expr::TryExpr(inner) => self.emit_try_expr(inner).into(),
-            ast::Expr::TupleExpr(inner) => self.emit_tuple_expr(inner).into(),
-            ast::Expr::UnderscoreExpr(inner) => self.emit_underscore_expr(inner).into(),
-            ast::Expr::WhileExpr(inner) => self.emit_while_expr(inner).into(),
-            ast::Expr::YeetExpr(inner) => self.emit_yeet_expr(inner).into(),
-            ast::Expr::YieldExpr(inner) => self.emit_yield_expr(inner).into(),
+            ast::Expr::ArrayExpr(inner) => self.emit_array_expr(inner).map(Into::into),
+            ast::Expr::AsmExpr(inner) => self.emit_asm_expr(inner).map(Into::into),
+            ast::Expr::AwaitExpr(inner) => self.emit_await_expr(inner).map(Into::into),
+            ast::Expr::BecomeExpr(inner) => self.emit_become_expr(inner).map(Into::into),
+            ast::Expr::BinExpr(inner) => self.emit_bin_expr(inner).map(Into::into),
+            ast::Expr::BlockExpr(inner) => self.emit_block_expr(inner).map(Into::into),
+            ast::Expr::BreakExpr(inner) => self.emit_break_expr(inner).map(Into::into),
+            ast::Expr::CallExpr(inner) => self.emit_call_expr(inner).map(Into::into),
+            ast::Expr::CastExpr(inner) => self.emit_cast_expr(inner).map(Into::into),
+            ast::Expr::ClosureExpr(inner) => self.emit_closure_expr(inner).map(Into::into),
+            ast::Expr::ContinueExpr(inner) => self.emit_continue_expr(inner).map(Into::into),
+            ast::Expr::FieldExpr(inner) => self.emit_field_expr(inner).map(Into::into),
+            ast::Expr::ForExpr(inner) => self.emit_for_expr(inner).map(Into::into),
+            ast::Expr::FormatArgsExpr(inner) => self.emit_format_args_expr(inner).map(Into::into),
+            ast::Expr::IfExpr(inner) => self.emit_if_expr(inner).map(Into::into),
+            ast::Expr::IndexExpr(inner) => self.emit_index_expr(inner).map(Into::into),
+            ast::Expr::LetExpr(inner) => self.emit_let_expr(inner).map(Into::into),
+            ast::Expr::Literal(inner) => self.emit_literal(inner).map(Into::into),
+            ast::Expr::LoopExpr(inner) => self.emit_loop_expr(inner).map(Into::into),
+            ast::Expr::MacroExpr(inner) => self.emit_macro_expr(inner).map(Into::into),
+            ast::Expr::MatchExpr(inner) => self.emit_match_expr(inner).map(Into::into),
+            ast::Expr::MethodCallExpr(inner) => self.emit_method_call_expr(inner).map(Into::into),
+            ast::Expr::OffsetOfExpr(inner) => self.emit_offset_of_expr(inner).map(Into::into),
+            ast::Expr::ParenExpr(inner) => self.emit_paren_expr(inner).map(Into::into),
+            ast::Expr::PathExpr(inner) => self.emit_path_expr(inner).map(Into::into),
+            ast::Expr::PrefixExpr(inner) => self.emit_prefix_expr(inner).map(Into::into),
+            ast::Expr::RangeExpr(inner) => self.emit_range_expr(inner).map(Into::into),
+            ast::Expr::RecordExpr(inner) => self.emit_record_expr(inner).map(Into::into),
+            ast::Expr::RefExpr(inner) => self.emit_ref_expr(inner).map(Into::into),
+            ast::Expr::ReturnExpr(inner) => self.emit_return_expr(inner).map(Into::into),
+            ast::Expr::TryExpr(inner) => self.emit_try_expr(inner).map(Into::into),
+            ast::Expr::TupleExpr(inner) => self.emit_tuple_expr(inner).map(Into::into),
+            ast::Expr::UnderscoreExpr(inner) => self.emit_underscore_expr(inner).map(Into::into),
+            ast::Expr::WhileExpr(inner) => self.emit_while_expr(inner).map(Into::into),
+            ast::Expr::YeetExpr(inner) => self.emit_yeet_expr(inner).map(Into::into),
+            ast::Expr::YieldExpr(inner) => self.emit_yield_expr(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_extern_item(&mut self, node: ast::ExternItem) -> Label<generated::ExternItem> {
+    pub(crate) fn emit_extern_item(&mut self, node: ast::ExternItem) -> Option<Label<generated::ExternItem>> {
         match node {
-            ast::ExternItem::Fn(inner) => self.emit_fn(inner).into(),
-            ast::ExternItem::MacroCall(inner) => self.emit_macro_call(inner).into(),
-            ast::ExternItem::Static(inner) => self.emit_static(inner).into(),
-            ast::ExternItem::TypeAlias(inner) => self.emit_type_alias(inner).into(),
+            ast::ExternItem::Fn(inner) => self.emit_fn(inner).map(Into::into),
+            ast::ExternItem::MacroCall(inner) => self.emit_macro_call(inner).map(Into::into),
+            ast::ExternItem::Static(inner) => self.emit_static(inner).map(Into::into),
+            ast::ExternItem::TypeAlias(inner) => self.emit_type_alias(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_field_list(&mut self, node: ast::FieldList) -> Label<generated::FieldList> {
+    pub(crate) fn emit_field_list(&mut self, node: ast::FieldList) -> Option<Label<generated::FieldList>> {
         match node {
-            ast::FieldList::RecordFieldList(inner) => self.emit_record_field_list(inner).into(),
-            ast::FieldList::TupleFieldList(inner) => self.emit_tuple_field_list(inner).into(),
+            ast::FieldList::RecordFieldList(inner) => self.emit_record_field_list(inner).map(Into::into),
+            ast::FieldList::TupleFieldList(inner) => self.emit_tuple_field_list(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_generic_arg(&mut self, node: ast::GenericArg) -> Label<generated::GenericArg> {
+    pub(crate) fn emit_generic_arg(&mut self, node: ast::GenericArg) -> Option<Label<generated::GenericArg>> {
         match node {
-            ast::GenericArg::AssocTypeArg(inner) => self.emit_assoc_type_arg(inner).into(),
-            ast::GenericArg::ConstArg(inner) => self.emit_const_arg(inner).into(),
-            ast::GenericArg::LifetimeArg(inner) => self.emit_lifetime_arg(inner).into(),
-            ast::GenericArg::TypeArg(inner) => self.emit_type_arg(inner).into(),
+            ast::GenericArg::AssocTypeArg(inner) => self.emit_assoc_type_arg(inner).map(Into::into),
+            ast::GenericArg::ConstArg(inner) => self.emit_const_arg(inner).map(Into::into),
+            ast::GenericArg::LifetimeArg(inner) => self.emit_lifetime_arg(inner).map(Into::into),
+            ast::GenericArg::TypeArg(inner) => self.emit_type_arg(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_generic_param(&mut self, node: ast::GenericParam) -> Label<generated::GenericParam> {
+    pub(crate) fn emit_generic_param(&mut self, node: ast::GenericParam) -> Option<Label<generated::GenericParam>> {
         match node {
-            ast::GenericParam::ConstParam(inner) => self.emit_const_param(inner).into(),
-            ast::GenericParam::LifetimeParam(inner) => self.emit_lifetime_param(inner).into(),
-            ast::GenericParam::TypeParam(inner) => self.emit_type_param(inner).into(),
+            ast::GenericParam::ConstParam(inner) => self.emit_const_param(inner).map(Into::into),
+            ast::GenericParam::LifetimeParam(inner) => self.emit_lifetime_param(inner).map(Into::into),
+            ast::GenericParam::TypeParam(inner) => self.emit_type_param(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_pat(&mut self, node: ast::Pat) -> Label<generated::Pat> {
+    pub(crate) fn emit_pat(&mut self, node: ast::Pat) -> Option<Label<generated::Pat>> {
         match node {
-            ast::Pat::BoxPat(inner) => self.emit_box_pat(inner).into(),
-            ast::Pat::ConstBlockPat(inner) => self.emit_const_block_pat(inner).into(),
-            ast::Pat::IdentPat(inner) => self.emit_ident_pat(inner).into(),
-            ast::Pat::LiteralPat(inner) => self.emit_literal_pat(inner).into(),
-            ast::Pat::MacroPat(inner) => self.emit_macro_pat(inner).into(),
-            ast::Pat::OrPat(inner) => self.emit_or_pat(inner).into(),
-            ast::Pat::ParenPat(inner) => self.emit_paren_pat(inner).into(),
-            ast::Pat::PathPat(inner) => self.emit_path_pat(inner).into(),
-            ast::Pat::RangePat(inner) => self.emit_range_pat(inner).into(),
-            ast::Pat::RecordPat(inner) => self.emit_record_pat(inner).into(),
-            ast::Pat::RefPat(inner) => self.emit_ref_pat(inner).into(),
-            ast::Pat::RestPat(inner) => self.emit_rest_pat(inner).into(),
-            ast::Pat::SlicePat(inner) => self.emit_slice_pat(inner).into(),
-            ast::Pat::TuplePat(inner) => self.emit_tuple_pat(inner).into(),
-            ast::Pat::TupleStructPat(inner) => self.emit_tuple_struct_pat(inner).into(),
-            ast::Pat::WildcardPat(inner) => self.emit_wildcard_pat(inner).into(),
+            ast::Pat::BoxPat(inner) => self.emit_box_pat(inner).map(Into::into),
+            ast::Pat::ConstBlockPat(inner) => self.emit_const_block_pat(inner).map(Into::into),
+            ast::Pat::IdentPat(inner) => self.emit_ident_pat(inner).map(Into::into),
+            ast::Pat::LiteralPat(inner) => self.emit_literal_pat(inner).map(Into::into),
+            ast::Pat::MacroPat(inner) => self.emit_macro_pat(inner).map(Into::into),
+            ast::Pat::OrPat(inner) => self.emit_or_pat(inner).map(Into::into),
+            ast::Pat::ParenPat(inner) => self.emit_paren_pat(inner).map(Into::into),
+            ast::Pat::PathPat(inner) => self.emit_path_pat(inner).map(Into::into),
+            ast::Pat::RangePat(inner) => self.emit_range_pat(inner).map(Into::into),
+            ast::Pat::RecordPat(inner) => self.emit_record_pat(inner).map(Into::into),
+            ast::Pat::RefPat(inner) => self.emit_ref_pat(inner).map(Into::into),
+            ast::Pat::RestPat(inner) => self.emit_rest_pat(inner).map(Into::into),
+            ast::Pat::SlicePat(inner) => self.emit_slice_pat(inner).map(Into::into),
+            ast::Pat::TuplePat(inner) => self.emit_tuple_pat(inner).map(Into::into),
+            ast::Pat::TupleStructPat(inner) => self.emit_tuple_struct_pat(inner).map(Into::into),
+            ast::Pat::WildcardPat(inner) => self.emit_wildcard_pat(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_stmt(&mut self, node: ast::Stmt) -> Label<generated::Stmt> {
+    pub(crate) fn emit_stmt(&mut self, node: ast::Stmt) -> Option<Label<generated::Stmt>> {
         match node {
-            ast::Stmt::ExprStmt(inner) => self.emit_expr_stmt(inner).into(),
-            ast::Stmt::Item(inner) => self.emit_item(inner).into(),
-            ast::Stmt::LetStmt(inner) => self.emit_let_stmt(inner).into(),
+            ast::Stmt::ExprStmt(inner) => self.emit_expr_stmt(inner).map(Into::into),
+            ast::Stmt::Item(inner) => self.emit_item(inner).map(Into::into),
+            ast::Stmt::LetStmt(inner) => self.emit_let_stmt(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_type(&mut self, node: ast::Type) -> Label<generated::TypeRepr> {
+    pub(crate) fn emit_type(&mut self, node: ast::Type) -> Option<Label<generated::TypeRepr>> {
         match node {
-            ast::Type::ArrayType(inner) => self.emit_array_type(inner).into(),
-            ast::Type::DynTraitType(inner) => self.emit_dyn_trait_type(inner).into(),
-            ast::Type::FnPtrType(inner) => self.emit_fn_ptr_type(inner).into(),
-            ast::Type::ForType(inner) => self.emit_for_type(inner).into(),
-            ast::Type::ImplTraitType(inner) => self.emit_impl_trait_type(inner).into(),
-            ast::Type::InferType(inner) => self.emit_infer_type(inner).into(),
-            ast::Type::MacroType(inner) => self.emit_macro_type(inner).into(),
-            ast::Type::NeverType(inner) => self.emit_never_type(inner).into(),
-            ast::Type::ParenType(inner) => self.emit_paren_type(inner).into(),
-            ast::Type::PathType(inner) => self.emit_path_type(inner).into(),
-            ast::Type::PtrType(inner) => self.emit_ptr_type(inner).into(),
-            ast::Type::RefType(inner) => self.emit_ref_type(inner).into(),
-            ast::Type::SliceType(inner) => self.emit_slice_type(inner).into(),
-            ast::Type::TupleType(inner) => self.emit_tuple_type(inner).into(),
+            ast::Type::ArrayType(inner) => self.emit_array_type(inner).map(Into::into),
+            ast::Type::DynTraitType(inner) => self.emit_dyn_trait_type(inner).map(Into::into),
+            ast::Type::FnPtrType(inner) => self.emit_fn_ptr_type(inner).map(Into::into),
+            ast::Type::ForType(inner) => self.emit_for_type(inner).map(Into::into),
+            ast::Type::ImplTraitType(inner) => self.emit_impl_trait_type(inner).map(Into::into),
+            ast::Type::InferType(inner) => self.emit_infer_type(inner).map(Into::into),
+            ast::Type::MacroType(inner) => self.emit_macro_type(inner).map(Into::into),
+            ast::Type::NeverType(inner) => self.emit_never_type(inner).map(Into::into),
+            ast::Type::ParenType(inner) => self.emit_paren_type(inner).map(Into::into),
+            ast::Type::PathType(inner) => self.emit_path_type(inner).map(Into::into),
+            ast::Type::PtrType(inner) => self.emit_ptr_type(inner).map(Into::into),
+            ast::Type::RefType(inner) => self.emit_ref_type(inner).map(Into::into),
+            ast::Type::SliceType(inner) => self.emit_slice_type(inner).map(Into::into),
+            ast::Type::TupleType(inner) => self.emit_tuple_type(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_use_bound_generic_arg(&mut self, node: ast::UseBoundGenericArg) -> Label<generated::UseBoundGenericArg> {
+    pub(crate) fn emit_use_bound_generic_arg(&mut self, node: ast::UseBoundGenericArg) -> Option<Label<generated::UseBoundGenericArg>> {
         match node {
-            ast::UseBoundGenericArg::Lifetime(inner) => self.emit_lifetime(inner).into(),
-            ast::UseBoundGenericArg::NameRef(inner) => self.emit_name_ref(inner).into(),
+            ast::UseBoundGenericArg::Lifetime(inner) => self.emit_lifetime(inner).map(Into::into),
+            ast::UseBoundGenericArg::NameRef(inner) => self.emit_name_ref(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_item(&mut self, node: ast::Item) -> Label<generated::Item> {
+    pub(crate) fn emit_item(&mut self, node: ast::Item) -> Option<Label<generated::Item>> {
         match node {
-            ast::Item::Const(inner) => self.emit_const(inner).into(),
-            ast::Item::Enum(inner) => self.emit_enum(inner).into(),
-            ast::Item::ExternBlock(inner) => self.emit_extern_block(inner).into(),
-            ast::Item::ExternCrate(inner) => self.emit_extern_crate(inner).into(),
-            ast::Item::Fn(inner) => self.emit_fn(inner).into(),
-            ast::Item::Impl(inner) => self.emit_impl(inner).into(),
-            ast::Item::MacroCall(inner) => self.emit_macro_call(inner).into(),
-            ast::Item::MacroDef(inner) => self.emit_macro_def(inner).into(),
-            ast::Item::MacroRules(inner) => self.emit_macro_rules(inner).into(),
-            ast::Item::Module(inner) => self.emit_module(inner).into(),
-            ast::Item::Static(inner) => self.emit_static(inner).into(),
-            ast::Item::Struct(inner) => self.emit_struct(inner).into(),
-            ast::Item::Trait(inner) => self.emit_trait(inner).into(),
-            ast::Item::TraitAlias(inner) => self.emit_trait_alias(inner).into(),
-            ast::Item::TypeAlias(inner) => self.emit_type_alias(inner).into(),
-            ast::Item::Union(inner) => self.emit_union(inner).into(),
-            ast::Item::Use(inner) => self.emit_use(inner).into(),
+            ast::Item::Const(inner) => self.emit_const(inner).map(Into::into),
+            ast::Item::Enum(inner) => self.emit_enum(inner).map(Into::into),
+            ast::Item::ExternBlock(inner) => self.emit_extern_block(inner).map(Into::into),
+            ast::Item::ExternCrate(inner) => self.emit_extern_crate(inner).map(Into::into),
+            ast::Item::Fn(inner) => self.emit_fn(inner).map(Into::into),
+            ast::Item::Impl(inner) => self.emit_impl(inner).map(Into::into),
+            ast::Item::MacroCall(inner) => self.emit_macro_call(inner).map(Into::into),
+            ast::Item::MacroDef(inner) => self.emit_macro_def(inner).map(Into::into),
+            ast::Item::MacroRules(inner) => self.emit_macro_rules(inner).map(Into::into),
+            ast::Item::Module(inner) => self.emit_module(inner).map(Into::into),
+            ast::Item::Static(inner) => self.emit_static(inner).map(Into::into),
+            ast::Item::Struct(inner) => self.emit_struct(inner).map(Into::into),
+            ast::Item::Trait(inner) => self.emit_trait(inner).map(Into::into),
+            ast::Item::TraitAlias(inner) => self.emit_trait_alias(inner).map(Into::into),
+            ast::Item::TypeAlias(inner) => self.emit_type_alias(inner).map(Into::into),
+            ast::Item::Union(inner) => self.emit_union(inner).map(Into::into),
+            ast::Item::Use(inner) => self.emit_use(inner).map(Into::into),
         }
     }
 
-    pub(crate) fn emit_abi(&mut self, node: ast::Abi) -> Label<generated::Abi> {
+    pub(crate) fn emit_abi(&mut self, node: ast::Abi) -> Option<Label<generated::Abi>> {
         let abi_string = node.try_get_text();
         let label = self.trap.emit(generated::Abi {
             id: TrapId::Star,
@@ -207,11 +207,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Abi, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_arg_list(&mut self, node: ast::ArgList) -> Label<generated::ArgList> {
-        let args = node.args().map(|x| self.emit_expr(x)).collect();
+    pub(crate) fn emit_arg_list(&mut self, node: ast::ArgList) -> Option<Label<generated::ArgList>> {
+        let args = node.args().filter_map(|x| self.emit_expr(x)).collect();
         let label = self.trap.emit(generated::ArgList {
             id: TrapId::Star,
             args,
@@ -219,12 +219,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ArgList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_array_expr(&mut self, node: ast::ArrayExpr) -> Label<generated::ArrayExprInternal> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let exprs = node.exprs().map(|x| self.emit_expr(x)).collect();
+    pub(crate) fn emit_array_expr(&mut self, node: ast::ArrayExpr) -> Option<Label<generated::ArrayExprInternal>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let exprs = node.exprs().filter_map(|x| self.emit_expr(x)).collect();
         let is_semicolon = node.semicolon_token().is_some();
         let label = self.trap.emit(generated::ArrayExprInternal {
             id: TrapId::Star,
@@ -235,12 +236,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ArrayExprInternal, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_array_type(&mut self, node: ast::ArrayType) -> Label<generated::ArrayTypeRepr> {
-        let const_arg = node.const_arg().map(|x| self.emit_const_arg(x));
-        let element_type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_array_type(&mut self, node: ast::ArrayType) -> Option<Label<generated::ArrayTypeRepr>> {
+        let const_arg = node.const_arg().and_then(|x| self.emit_const_arg(x));
+        let element_type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ArrayTypeRepr {
             id: TrapId::Star,
             const_arg,
@@ -249,21 +250,21 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ArrayTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_clobber_abi(&mut self, node: ast::AsmClobberAbi) -> Label<generated::AsmClobberAbi> {
+    pub(crate) fn emit_asm_clobber_abi(&mut self, node: ast::AsmClobberAbi) -> Option<Label<generated::AsmClobberAbi>> {
         let label = self.trap.emit(generated::AsmClobberAbi {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(AsmClobberAbi, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_const(&mut self, node: ast::AsmConst) -> Label<generated::AsmConst> {
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_asm_const(&mut self, node: ast::AsmConst) -> Option<Label<generated::AsmConst>> {
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let is_const = node.const_token().is_some();
         let label = self.trap.emit(generated::AsmConst {
             id: TrapId::Star,
@@ -273,23 +274,24 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmConst, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_dir_spec(&mut self, node: ast::AsmDirSpec) -> Label<generated::AsmDirSpec> {
+    pub(crate) fn emit_asm_dir_spec(&mut self, node: ast::AsmDirSpec) -> Option<Label<generated::AsmDirSpec>> {
         let label = self.trap.emit(generated::AsmDirSpec {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(AsmDirSpec, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_expr(&mut self, node: ast::AsmExpr) -> Label<generated::AsmExpr> {
-        let asm_pieces = node.asm_pieces().map(|x| self.emit_asm_piece(x)).collect();
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let template = node.template().map(|x| self.emit_expr(x)).collect();
+    pub(crate) fn emit_asm_expr(&mut self, node: ast::AsmExpr) -> Option<Label<generated::AsmExpr>> {
+        let asm_pieces = node.asm_pieces().filter_map(|x| self.emit_asm_piece(x)).collect();
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let template = node.template().filter_map(|x| self.emit_expr(x)).collect();
         let label = self.trap.emit(generated::AsmExpr {
             id: TrapId::Star,
             asm_pieces,
@@ -299,11 +301,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_label(&mut self, node: ast::AsmLabel) -> Label<generated::AsmLabel> {
-        let block_expr = node.block_expr().map(|x| self.emit_block_expr(x));
+    pub(crate) fn emit_asm_label(&mut self, node: ast::AsmLabel) -> Option<Label<generated::AsmLabel>> {
+        let block_expr = node.block_expr().and_then(|x| self.emit_block_expr(x));
         let label = self.trap.emit(generated::AsmLabel {
             id: TrapId::Star,
             block_expr,
@@ -311,12 +313,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmLabel, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_operand_expr(&mut self, node: ast::AsmOperandExpr) -> Label<generated::AsmOperandExpr> {
-        let in_expr = node.in_expr().map(|x| self.emit_expr(x));
-        let out_expr = node.out_expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_asm_operand_expr(&mut self, node: ast::AsmOperandExpr) -> Option<Label<generated::AsmOperandExpr>> {
+        let in_expr = node.in_expr().and_then(|x| self.emit_expr(x));
+        let out_expr = node.out_expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::AsmOperandExpr {
             id: TrapId::Star,
             in_expr,
@@ -325,12 +327,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmOperandExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_operand_named(&mut self, node: ast::AsmOperandNamed) -> Label<generated::AsmOperandNamed> {
-        let asm_operand = node.asm_operand().map(|x| self.emit_asm_operand(x));
-        let name = node.name().map(|x| self.emit_name(x));
+    pub(crate) fn emit_asm_operand_named(&mut self, node: ast::AsmOperandNamed) -> Option<Label<generated::AsmOperandNamed>> {
+        let asm_operand = node.asm_operand().and_then(|x| self.emit_asm_operand(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
         let label = self.trap.emit(generated::AsmOperandNamed {
             id: TrapId::Star,
             asm_operand,
@@ -339,10 +341,10 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmOperandNamed, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_option(&mut self, node: ast::AsmOption) -> Label<generated::AsmOption> {
+    pub(crate) fn emit_asm_option(&mut self, node: ast::AsmOption) -> Option<Label<generated::AsmOption>> {
         let is_raw = node.raw_token().is_some();
         let label = self.trap.emit(generated::AsmOption {
             id: TrapId::Star,
@@ -351,11 +353,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmOption, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_options(&mut self, node: ast::AsmOptions) -> Label<generated::AsmOptionsList> {
-        let asm_options = node.asm_options().map(|x| self.emit_asm_option(x)).collect();
+    pub(crate) fn emit_asm_options(&mut self, node: ast::AsmOptions) -> Option<Label<generated::AsmOptionsList>> {
+        let asm_options = node.asm_options().filter_map(|x| self.emit_asm_option(x)).collect();
         let label = self.trap.emit(generated::AsmOptionsList {
             id: TrapId::Star,
             asm_options,
@@ -363,13 +365,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmOptionsList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_reg_operand(&mut self, node: ast::AsmRegOperand) -> Label<generated::AsmRegOperand> {
-        let asm_dir_spec = node.asm_dir_spec().map(|x| self.emit_asm_dir_spec(x));
-        let asm_operand_expr = node.asm_operand_expr().map(|x| self.emit_asm_operand_expr(x));
-        let asm_reg_spec = node.asm_reg_spec().map(|x| self.emit_asm_reg_spec(x));
+    pub(crate) fn emit_asm_reg_operand(&mut self, node: ast::AsmRegOperand) -> Option<Label<generated::AsmRegOperand>> {
+        let asm_dir_spec = node.asm_dir_spec().and_then(|x| self.emit_asm_dir_spec(x));
+        let asm_operand_expr = node.asm_operand_expr().and_then(|x| self.emit_asm_operand_expr(x));
+        let asm_reg_spec = node.asm_reg_spec().and_then(|x| self.emit_asm_reg_spec(x));
         let label = self.trap.emit(generated::AsmRegOperand {
             id: TrapId::Star,
             asm_dir_spec,
@@ -379,11 +381,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmRegOperand, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_reg_spec(&mut self, node: ast::AsmRegSpec) -> Label<generated::AsmRegSpec> {
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
+    pub(crate) fn emit_asm_reg_spec(&mut self, node: ast::AsmRegSpec) -> Option<Label<generated::AsmRegSpec>> {
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let label = self.trap.emit(generated::AsmRegSpec {
             id: TrapId::Star,
             name_ref,
@@ -391,11 +393,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmRegSpec, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_asm_sym(&mut self, node: ast::AsmSym) -> Label<generated::AsmSym> {
-        let path = node.path().map(|x| self.emit_path(x));
+    pub(crate) fn emit_asm_sym(&mut self, node: ast::AsmSym) -> Option<Label<generated::AsmSym>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
         let label = self.trap.emit(generated::AsmSym {
             id: TrapId::Star,
             path,
@@ -403,12 +405,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AsmSym, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_assoc_item_list(&mut self, node: ast::AssocItemList) -> Label<generated::AssocItemList> {
-        let assoc_items = node.assoc_items().map(|x| self.emit_assoc_item(x)).collect();
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_assoc_item_list(&mut self, node: ast::AssocItemList) -> Option<Label<generated::AssocItemList>> {
+        let assoc_items = node.assoc_items().filter_map(|x| self.emit_assoc_item(x)).collect();
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let label = self.trap.emit(generated::AssocItemList {
             id: TrapId::Star,
             assoc_items,
@@ -417,18 +420,18 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AssocItemList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_assoc_type_arg(&mut self, node: ast::AssocTypeArg) -> Label<generated::AssocTypeArg> {
-        let const_arg = node.const_arg().map(|x| self.emit_const_arg(x));
-        let generic_arg_list = node.generic_arg_list().map(|x| self.emit_generic_arg_list(x));
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
-        let param_list = node.param_list().map(|x| self.emit_param_list(x));
-        let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
-        let return_type_syntax = node.return_type_syntax().map(|x| self.emit_return_type_syntax(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
+    pub(crate) fn emit_assoc_type_arg(&mut self, node: ast::AssocTypeArg) -> Option<Label<generated::AssocTypeArg>> {
+        let const_arg = node.const_arg().and_then(|x| self.emit_const_arg(x));
+        let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let param_list = node.param_list().and_then(|x| self.emit_param_list(x));
+        let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
+        let return_type_syntax = node.return_type_syntax().and_then(|x| self.emit_return_type_syntax(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::AssocTypeArg {
             id: TrapId::Star,
             const_arg,
@@ -443,11 +446,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AssocTypeArg, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_attr(&mut self, node: ast::Attr) -> Label<generated::Attr> {
-        let meta = node.meta().map(|x| self.emit_meta(x));
+    pub(crate) fn emit_attr(&mut self, node: ast::Attr) -> Option<Label<generated::Attr>> {
+        let meta = node.meta().and_then(|x| self.emit_meta(x));
         let label = self.trap.emit(generated::Attr {
             id: TrapId::Star,
             meta,
@@ -455,12 +458,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Attr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_await_expr(&mut self, node: ast::AwaitExpr) -> Label<generated::AwaitExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_await_expr(&mut self, node: ast::AwaitExpr) -> Option<Label<generated::AwaitExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::AwaitExpr {
             id: TrapId::Star,
             attrs,
@@ -469,12 +473,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(AwaitExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_become_expr(&mut self, node: ast::BecomeExpr) -> Label<generated::BecomeExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_become_expr(&mut self, node: ast::BecomeExpr) -> Option<Label<generated::BecomeExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::BecomeExpr {
             id: TrapId::Star,
             attrs,
@@ -483,14 +488,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(BecomeExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_bin_expr(&mut self, node: ast::BinExpr) -> Label<generated::BinaryExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let lhs = node.lhs().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_bin_expr(&mut self, node: ast::BinExpr) -> Option<Label<generated::BinaryExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let lhs = node.lhs().and_then(|x| self.emit_expr(x));
         let operator_name = node.try_get_text();
-        let rhs = node.rhs().map(|x| self.emit_expr(x));
+        let rhs = node.rhs().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::BinaryExpr {
             id: TrapId::Star,
             attrs,
@@ -501,19 +507,20 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(BinaryExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_block_expr(&mut self, node: ast::BlockExpr) -> Label<generated::BlockExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_block_expr(&mut self, node: ast::BlockExpr) -> Option<Label<generated::BlockExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_gen = node.gen_token().is_some();
         let is_move = node.move_token().is_some();
         let is_try = node.try_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
-        let label = node.label().map(|x| self.emit_label(x));
-        let stmt_list = node.stmt_list().map(|x| self.emit_stmt_list(x));
+        let label = node.label().and_then(|x| self.emit_label(x));
+        let stmt_list = node.stmt_list().and_then(|x| self.emit_stmt_list(x));
         let label = self.trap.emit(generated::BlockExpr {
             id: TrapId::Star,
             attrs,
@@ -529,11 +536,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(BlockExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_box_pat(&mut self, node: ast::BoxPat) -> Label<generated::BoxPat> {
-        let pat = node.pat().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_box_pat(&mut self, node: ast::BoxPat) -> Option<Label<generated::BoxPat>> {
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::BoxPat {
             id: TrapId::Star,
             pat,
@@ -541,13 +548,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(BoxPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_break_expr(&mut self, node: ast::BreakExpr) -> Label<generated::BreakExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
+    pub(crate) fn emit_break_expr(&mut self, node: ast::BreakExpr) -> Option<Label<generated::BreakExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
         let label = self.trap.emit(generated::BreakExpr {
             id: TrapId::Star,
             attrs,
@@ -557,13 +565,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(BreakExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_call_expr(&mut self, node: ast::CallExpr) -> Label<generated::CallExpr> {
-        let arg_list = node.arg_list().map(|x| self.emit_arg_list(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let function = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_call_expr(&mut self, node: ast::CallExpr) -> Option<Label<generated::CallExpr>> {
+        let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let function = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::CallExpr {
             id: TrapId::Star,
             arg_list,
@@ -573,13 +582,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(CallExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_cast_expr(&mut self, node: ast::CastExpr) -> Label<generated::CastExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_cast_expr(&mut self, node: ast::CastExpr) -> Option<Label<generated::CastExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::CastExpr {
             id: TrapId::Star,
             attrs,
@@ -589,11 +599,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(CastExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_closure_binder(&mut self, node: ast::ClosureBinder) -> Label<generated::ClosureBinder> {
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
+    pub(crate) fn emit_closure_binder(&mut self, node: ast::ClosureBinder) -> Option<Label<generated::ClosureBinder>> {
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let label = self.trap.emit(generated::ClosureBinder {
             id: TrapId::Star,
             generic_param_list,
@@ -601,20 +611,21 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ClosureBinder, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_closure_expr(&mut self, node: ast::ClosureExpr) -> Label<generated::ClosureExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let body = node.body().map(|x| self.emit_expr(x));
-        let closure_binder = node.closure_binder().map(|x| self.emit_closure_binder(x));
+    pub(crate) fn emit_closure_expr(&mut self, node: ast::ClosureExpr) -> Option<Label<generated::ClosureExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let body = node.body().and_then(|x| self.emit_expr(x));
+        let closure_binder = node.closure_binder().and_then(|x| self.emit_closure_binder(x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_gen = node.gen_token().is_some();
         let is_move = node.move_token().is_some();
         let is_static = node.static_token().is_some();
-        let param_list = node.param_list().map(|x| self.emit_param_list(x));
-        let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
+        let param_list = node.param_list().and_then(|x| self.emit_param_list(x));
+        let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
         let label = self.trap.emit(generated::ClosureExpr {
             id: TrapId::Star,
             attrs,
@@ -631,17 +642,18 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ClosureExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_const(&mut self, node: ast::Const) -> Label<generated::Const> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let body = node.body().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_const(&mut self, node: ast::Const) -> Option<Label<generated::Const>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let body = node.body().and_then(|x| self.emit_expr(x));
         let is_const = node.const_token().is_some();
         let is_default = node.default_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Const {
             id: TrapId::Star,
             attrs,
@@ -655,11 +667,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Const, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_const_arg(&mut self, node: ast::ConstArg) -> Label<generated::ConstArg> {
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_const_arg(&mut self, node: ast::ConstArg) -> Option<Label<generated::ConstArg>> {
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::ConstArg {
             id: TrapId::Star,
             expr,
@@ -667,11 +679,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ConstArg, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_const_block_pat(&mut self, node: ast::ConstBlockPat) -> Label<generated::ConstBlockPat> {
-        let block_expr = node.block_expr().map(|x| self.emit_block_expr(x));
+    pub(crate) fn emit_const_block_pat(&mut self, node: ast::ConstBlockPat) -> Option<Label<generated::ConstBlockPat>> {
+        let block_expr = node.block_expr().and_then(|x| self.emit_block_expr(x));
         let is_const = node.const_token().is_some();
         let label = self.trap.emit(generated::ConstBlockPat {
             id: TrapId::Star,
@@ -681,15 +693,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ConstBlockPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_const_param(&mut self, node: ast::ConstParam) -> Label<generated::ConstParam> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let default_val = node.default_val().map(|x| self.emit_const_arg(x));
+    pub(crate) fn emit_const_param(&mut self, node: ast::ConstParam) -> Option<Label<generated::ConstParam>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let default_val = node.default_val().and_then(|x| self.emit_const_arg(x));
         let is_const = node.const_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ConstParam {
             id: TrapId::Star,
             attrs,
@@ -701,12 +714,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ConstParam, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_continue_expr(&mut self, node: ast::ContinueExpr) -> Label<generated::ContinueExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
+    pub(crate) fn emit_continue_expr(&mut self, node: ast::ContinueExpr) -> Option<Label<generated::ContinueExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
         let label = self.trap.emit(generated::ContinueExpr {
             id: TrapId::Star,
             attrs,
@@ -715,11 +729,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ContinueExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_dyn_trait_type(&mut self, node: ast::DynTraitType) -> Label<generated::DynTraitTypeRepr> {
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
+    pub(crate) fn emit_dyn_trait_type(&mut self, node: ast::DynTraitType) -> Option<Label<generated::DynTraitTypeRepr>> {
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::DynTraitTypeRepr {
             id: TrapId::Star,
             type_bound_list,
@@ -727,16 +741,17 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(DynTraitTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_enum(&mut self, node: ast::Enum) -> Label<generated::Enum> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let variant_list = node.variant_list().map(|x| self.emit_variant_list(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+    pub(crate) fn emit_enum(&mut self, node: ast::Enum) -> Option<Label<generated::Enum>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let variant_list = node.variant_list().and_then(|x| self.emit_variant_list(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Enum {
             id: TrapId::Star,
             attrs,
@@ -749,11 +764,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Enum, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_expr_stmt(&mut self, node: ast::ExprStmt) -> Label<generated::ExprStmt> {
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_expr_stmt(&mut self, node: ast::ExprStmt) -> Option<Label<generated::ExprStmt>> {
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::ExprStmt {
             id: TrapId::Star,
             expr,
@@ -761,13 +776,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ExprStmt, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_extern_block(&mut self, node: ast::ExternBlock) -> Label<generated::ExternBlock> {
-        let abi = node.abi().map(|x| self.emit_abi(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let extern_item_list = node.extern_item_list().map(|x| self.emit_extern_item_list(x));
+    pub(crate) fn emit_extern_block(&mut self, node: ast::ExternBlock) -> Option<Label<generated::ExternBlock>> {
+        let abi = node.abi().and_then(|x| self.emit_abi(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let extern_item_list = node.extern_item_list().and_then(|x| self.emit_extern_item_list(x));
         let is_unsafe = node.unsafe_token().is_some();
         let label = self.trap.emit(generated::ExternBlock {
             id: TrapId::Star,
@@ -779,14 +795,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ExternBlock, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_extern_crate(&mut self, node: ast::ExternCrate) -> Label<generated::ExternCrate> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
-        let rename = node.rename().map(|x| self.emit_rename(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_extern_crate(&mut self, node: ast::ExternCrate) -> Option<Label<generated::ExternCrate>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let rename = node.rename().and_then(|x| self.emit_rename(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::ExternCrate {
             id: TrapId::Star,
             attrs,
@@ -797,12 +814,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ExternCrate, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_extern_item_list(&mut self, node: ast::ExternItemList) -> Label<generated::ExternItemList> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let extern_items = node.extern_items().map(|x| self.emit_extern_item(x)).collect();
+    pub(crate) fn emit_extern_item_list(&mut self, node: ast::ExternItemList) -> Option<Label<generated::ExternItemList>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let extern_items = node.extern_items().filter_map(|x| self.emit_extern_item(x)).collect();
         let label = self.trap.emit(generated::ExternItemList {
             id: TrapId::Star,
             attrs,
@@ -811,13 +829,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ExternItemList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_field_expr(&mut self, node: ast::FieldExpr) -> Label<generated::FieldExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
+    pub(crate) fn emit_field_expr(&mut self, node: ast::FieldExpr) -> Option<Label<generated::FieldExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let label = self.trap.emit(generated::FieldExpr {
             id: TrapId::Star,
             attrs,
@@ -827,24 +846,25 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(FieldExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_fn(&mut self, node: ast::Fn) -> Label<generated::Function> {
-        let abi = node.abi().map(|x| self.emit_abi(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let body = node.body().map(|x| self.emit_block_expr(x));
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
+    pub(crate) fn emit_fn(&mut self, node: ast::Fn) -> Option<Label<generated::Function>> {
+        let abi = node.abi().and_then(|x| self.emit_abi(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let body = node.body().and_then(|x| self.emit_block_expr(x));
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_default = node.default_token().is_some();
         let is_gen = node.gen_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let param_list = node.param_list().map(|x| self.emit_param_list(x));
-        let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let param_list = node.param_list().and_then(|x| self.emit_param_list(x));
+        let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Function {
             id: TrapId::Star,
             abi,
@@ -865,16 +885,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Function, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_fn_ptr_type(&mut self, node: ast::FnPtrType) -> Label<generated::FnPtrTypeRepr> {
-        let abi = node.abi().map(|x| self.emit_abi(x));
+    pub(crate) fn emit_fn_ptr_type(&mut self, node: ast::FnPtrType) -> Option<Label<generated::FnPtrTypeRepr>> {
+        let abi = node.abi().and_then(|x| self.emit_abi(x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
-        let param_list = node.param_list().map(|x| self.emit_param_list(x));
-        let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
+        let param_list = node.param_list().and_then(|x| self.emit_param_list(x));
+        let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
         let label = self.trap.emit(generated::FnPtrTypeRepr {
             id: TrapId::Star,
             abi,
@@ -887,15 +907,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(FnPtrTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_for_expr(&mut self, node: ast::ForExpr) -> Label<generated::ForExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let iterable = node.iterable().map(|x| self.emit_expr(x));
-        let label = node.label().map(|x| self.emit_label(x));
-        let loop_body = node.loop_body().map(|x| self.emit_block_expr(x));
-        let pat = node.pat().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_for_expr(&mut self, node: ast::ForExpr) -> Option<Label<generated::ForExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let iterable = node.iterable().and_then(|x| self.emit_expr(x));
+        let label = node.label().and_then(|x| self.emit_label(x));
+        let loop_body = node.loop_body().and_then(|x| self.emit_block_expr(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::ForExpr {
             id: TrapId::Star,
             attrs,
@@ -907,12 +928,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ForExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_for_type(&mut self, node: ast::ForType) -> Label<generated::ForTypeRepr> {
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_for_type(&mut self, node: ast::ForType) -> Option<Label<generated::ForTypeRepr>> {
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ForTypeRepr {
             id: TrapId::Star,
             generic_param_list,
@@ -921,12 +942,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ForTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_format_args_arg(&mut self, node: ast::FormatArgsArg) -> Label<generated::FormatArgsArg> {
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let name = node.name().map(|x| self.emit_name(x));
+    pub(crate) fn emit_format_args_arg(&mut self, node: ast::FormatArgsArg) -> Option<Label<generated::FormatArgsArg>> {
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
         let label = self.trap.emit(generated::FormatArgsArg {
             id: TrapId::Star,
             expr,
@@ -935,13 +956,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(FormatArgsArg, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_format_args_expr(&mut self, node: ast::FormatArgsExpr) -> Label<generated::FormatArgsExpr> {
-        let args = node.args().map(|x| self.emit_format_args_arg(x)).collect();
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let template = node.template().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_format_args_expr(&mut self, node: ast::FormatArgsExpr) -> Option<Label<generated::FormatArgsExpr>> {
+        let args = node.args().filter_map(|x| self.emit_format_args_arg(x)).collect();
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let template = node.template().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::FormatArgsExpr {
             id: TrapId::Star,
             args,
@@ -951,11 +973,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(FormatArgsExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_generic_arg_list(&mut self, node: ast::GenericArgList) -> Label<generated::GenericArgList> {
-        let generic_args = node.generic_args().map(|x| self.emit_generic_arg(x)).collect();
+    pub(crate) fn emit_generic_arg_list(&mut self, node: ast::GenericArgList) -> Option<Label<generated::GenericArgList>> {
+        let generic_args = node.generic_args().filter_map(|x| self.emit_generic_arg(x)).collect();
         let label = self.trap.emit(generated::GenericArgList {
             id: TrapId::Star,
             generic_args,
@@ -963,11 +985,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(GenericArgList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_generic_param_list(&mut self, node: ast::GenericParamList) -> Label<generated::GenericParamList> {
-        let generic_params = node.generic_params().map(|x| self.emit_generic_param(x)).collect();
+    pub(crate) fn emit_generic_param_list(&mut self, node: ast::GenericParamList) -> Option<Label<generated::GenericParamList>> {
+        let generic_params = node.generic_params().filter_map(|x| self.emit_generic_param(x)).collect();
         let label = self.trap.emit(generated::GenericParamList {
             id: TrapId::Star,
             generic_params,
@@ -975,15 +997,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(GenericParamList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_ident_pat(&mut self, node: ast::IdentPat) -> Label<generated::IdentPat> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_ident_pat(&mut self, node: ast::IdentPat) -> Option<Label<generated::IdentPat>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let is_mut = node.mut_token().is_some();
         let is_ref = node.ref_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let pat = node.pat().map(|x| self.emit_pat(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::IdentPat {
             id: TrapId::Star,
             attrs,
@@ -995,14 +1018,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(IdentPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_if_expr(&mut self, node: ast::IfExpr) -> Label<generated::IfExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let condition = node.condition().map(|x| self.emit_expr(x));
-        let else_ = node.else_branch().map(|x| self.emit_else_branch(x));
-        let then = node.then_branch().map(|x| self.emit_block_expr(x));
+    pub(crate) fn emit_if_expr(&mut self, node: ast::IfExpr) -> Option<Label<generated::IfExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let condition = node.condition().and_then(|x| self.emit_expr(x));
+        let else_ = node.else_branch().and_then(|x| self.emit_else_branch(x));
+        let then = node.then_branch().and_then(|x| self.emit_block_expr(x));
         let label = self.trap.emit(generated::IfExpr {
             id: TrapId::Star,
             attrs,
@@ -1013,20 +1037,21 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(IfExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_impl(&mut self, node: ast::Impl) -> Label<generated::Impl> {
-        let assoc_item_list = node.assoc_item_list().map(|x| self.emit_assoc_item_list(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
+    pub(crate) fn emit_impl(&mut self, node: ast::Impl) -> Option<Label<generated::Impl>> {
+        let assoc_item_list = node.assoc_item_list().and_then(|x| self.emit_assoc_item_list(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let is_const = node.const_token().is_some();
         let is_default = node.default_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
-        let self_ty = node.self_ty().map(|x| self.emit_type(x));
-        let trait_ = node.trait_().map(|x| self.emit_type(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+        let self_ty = node.self_ty().and_then(|x| self.emit_type(x));
+        let trait_ = node.trait_().and_then(|x| self.emit_type(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Impl {
             id: TrapId::Star,
             assoc_item_list,
@@ -1043,11 +1068,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Impl, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_impl_trait_type(&mut self, node: ast::ImplTraitType) -> Label<generated::ImplTraitTypeRepr> {
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
+    pub(crate) fn emit_impl_trait_type(&mut self, node: ast::ImplTraitType) -> Option<Label<generated::ImplTraitTypeRepr>> {
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::ImplTraitTypeRepr {
             id: TrapId::Star,
             type_bound_list,
@@ -1055,13 +1080,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ImplTraitTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_index_expr(&mut self, node: ast::IndexExpr) -> Label<generated::IndexExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let base = node.base().map(|x| self.emit_expr(x));
-        let index = node.index().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_index_expr(&mut self, node: ast::IndexExpr) -> Option<Label<generated::IndexExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let base = node.base().and_then(|x| self.emit_expr(x));
+        let index = node.index().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::IndexExpr {
             id: TrapId::Star,
             attrs,
@@ -1071,22 +1097,23 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(IndexExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_infer_type(&mut self, node: ast::InferType) -> Label<generated::InferTypeRepr> {
+    pub(crate) fn emit_infer_type(&mut self, node: ast::InferType) -> Option<Label<generated::InferTypeRepr>> {
         let label = self.trap.emit(generated::InferTypeRepr {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(InferTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_item_list(&mut self, node: ast::ItemList) -> Label<generated::ItemList> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let items = node.items().map(|x| self.emit_item(x)).collect();
+    pub(crate) fn emit_item_list(&mut self, node: ast::ItemList) -> Option<Label<generated::ItemList>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let items = node.items().filter_map(|x| self.emit_item(x)).collect();
         let label = self.trap.emit(generated::ItemList {
             id: TrapId::Star,
             attrs,
@@ -1095,11 +1122,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ItemList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_label(&mut self, node: ast::Label) -> Label<generated::Label> {
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
+    pub(crate) fn emit_label(&mut self, node: ast::Label) -> Option<Label<generated::Label>> {
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
         let label = self.trap.emit(generated::Label {
             id: TrapId::Star,
             lifetime,
@@ -1107,11 +1134,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Label, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_let_else(&mut self, node: ast::LetElse) -> Label<generated::LetElse> {
-        let block_expr = node.block_expr().map(|x| self.emit_block_expr(x));
+    pub(crate) fn emit_let_else(&mut self, node: ast::LetElse) -> Option<Label<generated::LetElse>> {
+        let block_expr = node.block_expr().and_then(|x| self.emit_block_expr(x));
         let label = self.trap.emit(generated::LetElse {
             id: TrapId::Star,
             block_expr,
@@ -1119,13 +1146,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LetElse, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_let_expr(&mut self, node: ast::LetExpr) -> Label<generated::LetExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let scrutinee = node.expr().map(|x| self.emit_expr(x));
-        let pat = node.pat().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_let_expr(&mut self, node: ast::LetExpr) -> Option<Label<generated::LetExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let scrutinee = node.expr().and_then(|x| self.emit_expr(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::LetExpr {
             id: TrapId::Star,
             attrs,
@@ -1135,15 +1163,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LetExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_let_stmt(&mut self, node: ast::LetStmt) -> Label<generated::LetStmt> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let initializer = node.initializer().map(|x| self.emit_expr(x));
-        let let_else = node.let_else().map(|x| self.emit_let_else(x));
-        let pat = node.pat().map(|x| self.emit_pat(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_let_stmt(&mut self, node: ast::LetStmt) -> Option<Label<generated::LetStmt>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let initializer = node.initializer().and_then(|x| self.emit_expr(x));
+        let let_else = node.let_else().and_then(|x| self.emit_let_else(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::LetStmt {
             id: TrapId::Star,
             attrs,
@@ -1155,10 +1184,10 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LetStmt, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_lifetime(&mut self, node: ast::Lifetime) -> Label<generated::Lifetime> {
+    pub(crate) fn emit_lifetime(&mut self, node: ast::Lifetime) -> Option<Label<generated::Lifetime>> {
         let text = node.try_get_text();
         let label = self.trap.emit(generated::Lifetime {
             id: TrapId::Star,
@@ -1167,11 +1196,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Lifetime, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_lifetime_arg(&mut self, node: ast::LifetimeArg) -> Label<generated::LifetimeArg> {
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
+    pub(crate) fn emit_lifetime_arg(&mut self, node: ast::LifetimeArg) -> Option<Label<generated::LifetimeArg>> {
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
         let label = self.trap.emit(generated::LifetimeArg {
             id: TrapId::Star,
             lifetime,
@@ -1179,13 +1208,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LifetimeArg, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_lifetime_param(&mut self, node: ast::LifetimeParam) -> Label<generated::LifetimeParam> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
+    pub(crate) fn emit_lifetime_param(&mut self, node: ast::LifetimeParam) -> Option<Label<generated::LifetimeParam>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::LifetimeParam {
             id: TrapId::Star,
             attrs,
@@ -1195,11 +1225,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LifetimeParam, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_literal(&mut self, node: ast::Literal) -> Label<generated::LiteralExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_literal(&mut self, node: ast::Literal) -> Option<Label<generated::LiteralExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let text_value = node.try_get_text();
         let label = self.trap.emit(generated::LiteralExpr {
             id: TrapId::Star,
@@ -1209,11 +1240,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LiteralExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_literal_pat(&mut self, node: ast::LiteralPat) -> Label<generated::LiteralPat> {
-        let literal = node.literal().map(|x| self.emit_literal(x));
+    pub(crate) fn emit_literal_pat(&mut self, node: ast::LiteralPat) -> Option<Label<generated::LiteralPat>> {
+        let literal = node.literal().and_then(|x| self.emit_literal(x));
         let label = self.trap.emit(generated::LiteralPat {
             id: TrapId::Star,
             literal,
@@ -1221,13 +1252,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LiteralPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_loop_expr(&mut self, node: ast::LoopExpr) -> Label<generated::LoopExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let label = node.label().map(|x| self.emit_label(x));
-        let loop_body = node.loop_body().map(|x| self.emit_block_expr(x));
+    pub(crate) fn emit_loop_expr(&mut self, node: ast::LoopExpr) -> Option<Label<generated::LoopExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let label = node.label().and_then(|x| self.emit_label(x));
+        let loop_body = node.loop_body().and_then(|x| self.emit_block_expr(x));
         let label = self.trap.emit(generated::LoopExpr {
             id: TrapId::Star,
             attrs,
@@ -1237,13 +1269,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(LoopExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_call(&mut self, node: ast::MacroCall) -> Label<generated::MacroCall> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let path = node.path().map(|x| self.emit_path(x));
-        let token_tree = node.token_tree().map(|x| self.emit_token_tree(x));
+    pub(crate) fn emit_macro_call(&mut self, node: ast::MacroCall) -> Option<Label<generated::MacroCall>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let path = node.path().and_then(|x| self.emit_path(x));
+        let token_tree = node.token_tree().and_then(|x| self.emit_token_tree(x));
         let label = self.trap.emit(generated::MacroCall {
             id: TrapId::Star,
             attrs,
@@ -1253,15 +1286,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroCall, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_def(&mut self, node: ast::MacroDef) -> Label<generated::MacroDef> {
-        let args = node.args().map(|x| self.emit_token_tree(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let body = node.body().map(|x| self.emit_token_tree(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_macro_def(&mut self, node: ast::MacroDef) -> Option<Label<generated::MacroDef>> {
+        let args = node.args().and_then(|x| self.emit_token_tree(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let body = node.body().and_then(|x| self.emit_token_tree(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::MacroDef {
             id: TrapId::Star,
             args,
@@ -1273,11 +1307,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroDef, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_expr(&mut self, node: ast::MacroExpr) -> Label<generated::MacroExpr> {
-        let macro_call = node.macro_call().map(|x| self.emit_macro_call(x));
+    pub(crate) fn emit_macro_expr(&mut self, node: ast::MacroExpr) -> Option<Label<generated::MacroExpr>> {
+        let macro_call = node.macro_call().and_then(|x| self.emit_macro_call(x));
         let label = self.trap.emit(generated::MacroExpr {
             id: TrapId::Star,
             macro_call,
@@ -1285,11 +1319,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_items(&mut self, node: ast::MacroItems) -> Label<generated::MacroItems> {
-        let items = node.items().map(|x| self.emit_item(x)).collect();
+    pub(crate) fn emit_macro_items(&mut self, node: ast::MacroItems) -> Option<Label<generated::MacroItems>> {
+        let items = node.items().filter_map(|x| self.emit_item(x)).collect();
         let label = self.trap.emit(generated::MacroItems {
             id: TrapId::Star,
             items,
@@ -1297,11 +1331,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroItems, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_pat(&mut self, node: ast::MacroPat) -> Label<generated::MacroPat> {
-        let macro_call = node.macro_call().map(|x| self.emit_macro_call(x));
+    pub(crate) fn emit_macro_pat(&mut self, node: ast::MacroPat) -> Option<Label<generated::MacroPat>> {
+        let macro_call = node.macro_call().and_then(|x| self.emit_macro_call(x));
         let label = self.trap.emit(generated::MacroPat {
             id: TrapId::Star,
             macro_call,
@@ -1309,14 +1343,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_rules(&mut self, node: ast::MacroRules) -> Label<generated::MacroRules> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let name = node.name().map(|x| self.emit_name(x));
-        let token_tree = node.token_tree().map(|x| self.emit_token_tree(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_macro_rules(&mut self, node: ast::MacroRules) -> Option<Label<generated::MacroRules>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let token_tree = node.token_tree().and_then(|x| self.emit_token_tree(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::MacroRules {
             id: TrapId::Star,
             attrs,
@@ -1327,12 +1362,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroRules, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Label<generated::MacroStmts> {
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let statements = node.statements().map(|x| self.emit_stmt(x)).collect();
+    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Option<Label<generated::MacroStmts>> {
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let statements = node.statements().filter_map(|x| self.emit_stmt(x)).collect();
         let label = self.trap.emit(generated::MacroStmts {
             id: TrapId::Star,
             expr,
@@ -1341,11 +1376,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroStmts, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_macro_type(&mut self, node: ast::MacroType) -> Label<generated::MacroTypeRepr> {
-        let macro_call = node.macro_call().map(|x| self.emit_macro_call(x));
+    pub(crate) fn emit_macro_type(&mut self, node: ast::MacroType) -> Option<Label<generated::MacroTypeRepr>> {
+        let macro_call = node.macro_call().and_then(|x| self.emit_macro_call(x));
         let label = self.trap.emit(generated::MacroTypeRepr {
             id: TrapId::Star,
             macro_call,
@@ -1353,14 +1388,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MacroTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_match_arm(&mut self, node: ast::MatchArm) -> Label<generated::MatchArm> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let guard = node.guard().map(|x| self.emit_match_guard(x));
-        let pat = node.pat().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_match_arm(&mut self, node: ast::MatchArm) -> Option<Label<generated::MatchArm>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let guard = node.guard().and_then(|x| self.emit_match_guard(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::MatchArm {
             id: TrapId::Star,
             attrs,
@@ -1371,12 +1407,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MatchArm, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_match_arm_list(&mut self, node: ast::MatchArmList) -> Label<generated::MatchArmList> {
-        let arms = node.arms().map(|x| self.emit_match_arm(x)).collect();
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_match_arm_list(&mut self, node: ast::MatchArmList) -> Option<Label<generated::MatchArmList>> {
+        let arms = node.arms().filter_map(|x| self.emit_match_arm(x)).collect();
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let label = self.trap.emit(generated::MatchArmList {
             id: TrapId::Star,
             arms,
@@ -1385,13 +1422,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MatchArmList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_match_expr(&mut self, node: ast::MatchExpr) -> Label<generated::MatchExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let scrutinee = node.expr().map(|x| self.emit_expr(x));
-        let match_arm_list = node.match_arm_list().map(|x| self.emit_match_arm_list(x));
+    pub(crate) fn emit_match_expr(&mut self, node: ast::MatchExpr) -> Option<Label<generated::MatchExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let scrutinee = node.expr().and_then(|x| self.emit_expr(x));
+        let match_arm_list = node.match_arm_list().and_then(|x| self.emit_match_arm_list(x));
         let label = self.trap.emit(generated::MatchExpr {
             id: TrapId::Star,
             attrs,
@@ -1401,11 +1439,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MatchExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_match_guard(&mut self, node: ast::MatchGuard) -> Label<generated::MatchGuard> {
-        let condition = node.condition().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_match_guard(&mut self, node: ast::MatchGuard) -> Option<Label<generated::MatchGuard>> {
+        let condition = node.condition().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::MatchGuard {
             id: TrapId::Star,
             condition,
@@ -1413,14 +1451,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MatchGuard, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_meta(&mut self, node: ast::Meta) -> Label<generated::Meta> {
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_meta(&mut self, node: ast::Meta) -> Option<Label<generated::Meta>> {
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let is_unsafe = node.unsafe_token().is_some();
-        let path = node.path().map(|x| self.emit_path(x));
-        let token_tree = node.token_tree().map(|x| self.emit_token_tree(x));
+        let path = node.path().and_then(|x| self.emit_path(x));
+        let token_tree = node.token_tree().and_then(|x| self.emit_token_tree(x));
         let label = self.trap.emit(generated::Meta {
             id: TrapId::Star,
             expr,
@@ -1431,15 +1469,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Meta, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_method_call_expr(&mut self, node: ast::MethodCallExpr) -> Label<generated::MethodCallExpr> {
-        let arg_list = node.arg_list().map(|x| self.emit_arg_list(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_arg_list = node.generic_arg_list().map(|x| self.emit_generic_arg_list(x));
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
-        let receiver = node.receiver().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_method_call_expr(&mut self, node: ast::MethodCallExpr) -> Option<Label<generated::MethodCallExpr>> {
+        let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let receiver = node.receiver().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::MethodCallExpr {
             id: TrapId::Star,
             arg_list,
@@ -1451,14 +1490,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(MethodCallExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_module(&mut self, node: ast::Module) -> Label<generated::Module> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let item_list = node.item_list().map(|x| self.emit_item_list(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_module(&mut self, node: ast::Module) -> Option<Label<generated::Module>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let item_list = node.item_list().and_then(|x| self.emit_item_list(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Module {
             id: TrapId::Star,
             attrs,
@@ -1469,10 +1509,10 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Module, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_name(&mut self, node: ast::Name) -> Label<generated::Name> {
+    pub(crate) fn emit_name(&mut self, node: ast::Name) -> Option<Label<generated::Name>> {
         let text = node.try_get_text();
         let label = self.trap.emit(generated::Name {
             id: TrapId::Star,
@@ -1481,10 +1521,10 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Name, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_name_ref(&mut self, node: ast::NameRef) -> Label<generated::NameRef> {
+    pub(crate) fn emit_name_ref(&mut self, node: ast::NameRef) -> Option<Label<generated::NameRef>> {
         let text = node.try_get_text();
         let label = self.trap.emit(generated::NameRef {
             id: TrapId::Star,
@@ -1493,23 +1533,24 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(NameRef, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_never_type(&mut self, node: ast::NeverType) -> Label<generated::NeverTypeRepr> {
+    pub(crate) fn emit_never_type(&mut self, node: ast::NeverType) -> Option<Label<generated::NeverTypeRepr>> {
         let label = self.trap.emit(generated::NeverTypeRepr {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(NeverTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_offset_of_expr(&mut self, node: ast::OffsetOfExpr) -> Label<generated::OffsetOfExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let fields = node.fields().map(|x| self.emit_name_ref(x)).collect();
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_offset_of_expr(&mut self, node: ast::OffsetOfExpr) -> Option<Label<generated::OffsetOfExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let fields = node.fields().filter_map(|x| self.emit_name_ref(x)).collect();
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::OffsetOfExpr {
             id: TrapId::Star,
             attrs,
@@ -1519,11 +1560,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(OffsetOfExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_or_pat(&mut self, node: ast::OrPat) -> Label<generated::OrPat> {
-        let pats = node.pats().map(|x| self.emit_pat(x)).collect();
+    pub(crate) fn emit_or_pat(&mut self, node: ast::OrPat) -> Option<Label<generated::OrPat>> {
+        let pats = node.pats().filter_map(|x| self.emit_pat(x)).collect();
         let label = self.trap.emit(generated::OrPat {
             id: TrapId::Star,
             pats,
@@ -1531,13 +1572,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(OrPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_param(&mut self, node: ast::Param) -> Label<generated::Param> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let pat = node.pat().map(|x| self.emit_pat(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_param(&mut self, node: ast::Param) -> Option<Label<generated::Param>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::Param {
             id: TrapId::Star,
             attrs,
@@ -1547,12 +1589,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Param, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_param_list(&mut self, node: ast::ParamList) -> Label<generated::ParamList> {
-        let params = node.params().map(|x| self.emit_param(x)).collect();
-        let self_param = node.self_param().map(|x| self.emit_self_param(x));
+    pub(crate) fn emit_param_list(&mut self, node: ast::ParamList) -> Option<Label<generated::ParamList>> {
+        let params = node.params().filter_map(|x| self.emit_param(x)).collect();
+        let self_param = node.self_param().and_then(|x| self.emit_self_param(x));
         let label = self.trap.emit(generated::ParamList {
             id: TrapId::Star,
             params,
@@ -1561,12 +1603,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ParamList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_paren_expr(&mut self, node: ast::ParenExpr) -> Label<generated::ParenExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_paren_expr(&mut self, node: ast::ParenExpr) -> Option<Label<generated::ParenExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::ParenExpr {
             id: TrapId::Star,
             attrs,
@@ -1575,11 +1618,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ParenExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_paren_pat(&mut self, node: ast::ParenPat) -> Label<generated::ParenPat> {
-        let pat = node.pat().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_paren_pat(&mut self, node: ast::ParenPat) -> Option<Label<generated::ParenPat>> {
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::ParenPat {
             id: TrapId::Star,
             pat,
@@ -1587,11 +1630,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ParenPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_paren_type(&mut self, node: ast::ParenType) -> Label<generated::ParenTypeRepr> {
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_paren_type(&mut self, node: ast::ParenType) -> Option<Label<generated::ParenTypeRepr>> {
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ParenTypeRepr {
             id: TrapId::Star,
             type_repr,
@@ -1599,11 +1642,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ParenTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_parenthesized_arg_list(&mut self, node: ast::ParenthesizedArgList) -> Label<generated::ParenthesizedArgList> {
-        let type_args = node.type_args().map(|x| self.emit_type_arg(x)).collect();
+    pub(crate) fn emit_parenthesized_arg_list(&mut self, node: ast::ParenthesizedArgList) -> Option<Label<generated::ParenthesizedArgList>> {
+        let type_args = node.type_args().filter_map(|x| self.emit_type_arg(x)).collect();
         let label = self.trap.emit(generated::ParenthesizedArgList {
             id: TrapId::Star,
             type_args,
@@ -1611,12 +1654,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ParenthesizedArgList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_path(&mut self, node: ast::Path) -> Label<generated::Path> {
-        let qualifier = node.qualifier().map(|x| self.emit_path(x));
-        let part = node.segment().map(|x| self.emit_path_segment(x));
+    pub(crate) fn emit_path(&mut self, node: ast::Path) -> Option<Label<generated::Path>> {
+        let qualifier = node.qualifier().and_then(|x| self.emit_path(x));
+        let part = node.segment().and_then(|x| self.emit_path_segment(x));
         let label = self.trap.emit(generated::Path {
             id: TrapId::Star,
             qualifier,
@@ -1625,12 +1668,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Path, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_path_expr(&mut self, node: ast::PathExpr) -> Label<generated::PathExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let path = node.path().map(|x| self.emit_path(x));
+    pub(crate) fn emit_path_expr(&mut self, node: ast::PathExpr) -> Option<Label<generated::PathExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let path = node.path().and_then(|x| self.emit_path(x));
         let label = self.trap.emit(generated::PathExpr {
             id: TrapId::Star,
             attrs,
@@ -1639,11 +1683,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(PathExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_path_pat(&mut self, node: ast::PathPat) -> Label<generated::PathPat> {
-        let path = node.path().map(|x| self.emit_path(x));
+    pub(crate) fn emit_path_pat(&mut self, node: ast::PathPat) -> Option<Label<generated::PathPat>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
         let label = self.trap.emit(generated::PathPat {
             id: TrapId::Star,
             path,
@@ -1651,17 +1695,17 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(PathPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_path_segment(&mut self, node: ast::PathSegment) -> Label<generated::PathSegment> {
-        let generic_arg_list = node.generic_arg_list().map(|x| self.emit_generic_arg_list(x));
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
-        let parenthesized_arg_list = node.parenthesized_arg_list().map(|x| self.emit_parenthesized_arg_list(x));
-        let path_type = node.path_type().map(|x| self.emit_path_type(x));
-        let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
-        let return_type_syntax = node.return_type_syntax().map(|x| self.emit_return_type_syntax(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_path_segment(&mut self, node: ast::PathSegment) -> Option<Label<generated::PathSegment>> {
+        let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let parenthesized_arg_list = node.parenthesized_arg_list().and_then(|x| self.emit_parenthesized_arg_list(x));
+        let path_type = node.path_type().and_then(|x| self.emit_path_type(x));
+        let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
+        let return_type_syntax = node.return_type_syntax().and_then(|x| self.emit_return_type_syntax(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::PathSegment {
             id: TrapId::Star,
             generic_arg_list,
@@ -1675,11 +1719,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(PathSegment, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_path_type(&mut self, node: ast::PathType) -> Label<generated::PathTypeRepr> {
-        let path = node.path().map(|x| self.emit_path(x));
+    pub(crate) fn emit_path_type(&mut self, node: ast::PathType) -> Option<Label<generated::PathTypeRepr>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
         let label = self.trap.emit(generated::PathTypeRepr {
             id: TrapId::Star,
             path,
@@ -1687,12 +1731,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(PathTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_prefix_expr(&mut self, node: ast::PrefixExpr) -> Label<generated::PrefixExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_prefix_expr(&mut self, node: ast::PrefixExpr) -> Option<Label<generated::PrefixExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let operator_name = node.try_get_text();
         let label = self.trap.emit(generated::PrefixExpr {
             id: TrapId::Star,
@@ -1703,13 +1748,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(PrefixExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_ptr_type(&mut self, node: ast::PtrType) -> Label<generated::PtrTypeRepr> {
+    pub(crate) fn emit_ptr_type(&mut self, node: ast::PtrType) -> Option<Label<generated::PtrTypeRepr>> {
         let is_const = node.const_token().is_some();
         let is_mut = node.mut_token().is_some();
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::PtrTypeRepr {
             id: TrapId::Star,
             is_const,
@@ -1719,14 +1764,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(PtrTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_range_expr(&mut self, node: ast::RangeExpr) -> Label<generated::RangeExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let end = node.end().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_range_expr(&mut self, node: ast::RangeExpr) -> Option<Label<generated::RangeExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let end = node.end().and_then(|x| self.emit_expr(x));
         let operator_name = node.try_get_text();
-        let start = node.start().map(|x| self.emit_expr(x));
+        let start = node.start().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::RangeExpr {
             id: TrapId::Star,
             attrs,
@@ -1737,13 +1783,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RangeExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_range_pat(&mut self, node: ast::RangePat) -> Label<generated::RangePat> {
-        let end = node.end().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_range_pat(&mut self, node: ast::RangePat) -> Option<Label<generated::RangePat>> {
+        let end = node.end().and_then(|x| self.emit_pat(x));
         let operator_name = node.try_get_text();
-        let start = node.start().map(|x| self.emit_pat(x));
+        let start = node.start().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::RangePat {
             id: TrapId::Star,
             end,
@@ -1753,12 +1799,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RangePat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_expr(&mut self, node: ast::RecordExpr) -> Label<generated::RecordExpr> {
-        let path = node.path().map(|x| self.emit_path(x));
-        let record_expr_field_list = node.record_expr_field_list().map(|x| self.emit_record_expr_field_list(x));
+    pub(crate) fn emit_record_expr(&mut self, node: ast::RecordExpr) -> Option<Label<generated::RecordExpr>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
+        let record_expr_field_list = node.record_expr_field_list().and_then(|x| self.emit_record_expr_field_list(x));
         let label = self.trap.emit(generated::RecordExpr {
             id: TrapId::Star,
             path,
@@ -1767,13 +1813,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_expr_field(&mut self, node: ast::RecordExprField) -> Label<generated::RecordExprField> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
+    pub(crate) fn emit_record_expr_field(&mut self, node: ast::RecordExprField) -> Option<Label<generated::RecordExprField>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let label = self.trap.emit(generated::RecordExprField {
             id: TrapId::Star,
             attrs,
@@ -1783,13 +1830,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordExprField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_expr_field_list(&mut self, node: ast::RecordExprFieldList) -> Label<generated::RecordExprFieldList> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let fields = node.fields().map(|x| self.emit_record_expr_field(x)).collect();
-        let spread = node.spread().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_record_expr_field_list(&mut self, node: ast::RecordExprFieldList) -> Option<Label<generated::RecordExprFieldList>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let fields = node.fields().filter_map(|x| self.emit_record_expr_field(x)).collect();
+        let spread = node.spread().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::RecordExprFieldList {
             id: TrapId::Star,
             attrs,
@@ -1799,14 +1847,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordExprFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_field(&mut self, node: ast::RecordField) -> Label<generated::RecordField> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_record_field(&mut self, node: ast::RecordField) -> Option<Label<generated::RecordField>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::RecordField {
             id: TrapId::Star,
             attrs,
@@ -1817,11 +1866,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_field_list(&mut self, node: ast::RecordFieldList) -> Label<generated::RecordFieldList> {
-        let fields = node.fields().map(|x| self.emit_record_field(x)).collect();
+    pub(crate) fn emit_record_field_list(&mut self, node: ast::RecordFieldList) -> Option<Label<generated::RecordFieldList>> {
+        let fields = node.fields().filter_map(|x| self.emit_record_field(x)).collect();
         let label = self.trap.emit(generated::RecordFieldList {
             id: TrapId::Star,
             fields,
@@ -1829,12 +1878,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_pat(&mut self, node: ast::RecordPat) -> Label<generated::RecordPat> {
-        let path = node.path().map(|x| self.emit_path(x));
-        let record_pat_field_list = node.record_pat_field_list().map(|x| self.emit_record_pat_field_list(x));
+    pub(crate) fn emit_record_pat(&mut self, node: ast::RecordPat) -> Option<Label<generated::RecordPat>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
+        let record_pat_field_list = node.record_pat_field_list().and_then(|x| self.emit_record_pat_field_list(x));
         let label = self.trap.emit(generated::RecordPat {
             id: TrapId::Star,
             path,
@@ -1843,13 +1892,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_pat_field(&mut self, node: ast::RecordPatField) -> Label<generated::RecordPatField> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
-        let pat = node.pat().map(|x| self.emit_pat(x));
+    pub(crate) fn emit_record_pat_field(&mut self, node: ast::RecordPatField) -> Option<Label<generated::RecordPatField>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::RecordPatField {
             id: TrapId::Star,
             attrs,
@@ -1859,12 +1909,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordPatField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_record_pat_field_list(&mut self, node: ast::RecordPatFieldList) -> Label<generated::RecordPatFieldList> {
-        let fields = node.fields().map(|x| self.emit_record_pat_field(x)).collect();
-        let rest_pat = node.rest_pat().map(|x| self.emit_rest_pat(x));
+    pub(crate) fn emit_record_pat_field_list(&mut self, node: ast::RecordPatFieldList) -> Option<Label<generated::RecordPatFieldList>> {
+        let fields = node.fields().filter_map(|x| self.emit_record_pat_field(x)).collect();
+        let rest_pat = node.rest_pat().and_then(|x| self.emit_rest_pat(x));
         let label = self.trap.emit(generated::RecordPatFieldList {
             id: TrapId::Star,
             fields,
@@ -1873,12 +1923,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RecordPatFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_ref_expr(&mut self, node: ast::RefExpr) -> Label<generated::RefExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_ref_expr(&mut self, node: ast::RefExpr) -> Option<Label<generated::RefExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let is_const = node.const_token().is_some();
         let is_mut = node.mut_token().is_some();
         let is_raw = node.raw_token().is_some();
@@ -1893,12 +1944,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RefExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_ref_pat(&mut self, node: ast::RefPat) -> Label<generated::RefPat> {
+    pub(crate) fn emit_ref_pat(&mut self, node: ast::RefPat) -> Option<Label<generated::RefPat>> {
         let is_mut = node.mut_token().is_some();
-        let pat = node.pat().map(|x| self.emit_pat(x));
+        let pat = node.pat().and_then(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::RefPat {
             id: TrapId::Star,
             is_mut,
@@ -1907,13 +1958,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RefPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_ref_type(&mut self, node: ast::RefType) -> Label<generated::RefTypeRepr> {
+    pub(crate) fn emit_ref_type(&mut self, node: ast::RefType) -> Option<Label<generated::RefTypeRepr>> {
         let is_mut = node.mut_token().is_some();
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::RefTypeRepr {
             id: TrapId::Star,
             is_mut,
@@ -1923,11 +1974,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RefTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_rename(&mut self, node: ast::Rename) -> Label<generated::Rename> {
-        let name = node.name().map(|x| self.emit_name(x));
+    pub(crate) fn emit_rename(&mut self, node: ast::Rename) -> Option<Label<generated::Rename>> {
+        let name = node.name().and_then(|x| self.emit_name(x));
         let label = self.trap.emit(generated::Rename {
             id: TrapId::Star,
             name,
@@ -1935,11 +1986,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Rename, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_rest_pat(&mut self, node: ast::RestPat) -> Label<generated::RestPat> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_rest_pat(&mut self, node: ast::RestPat) -> Option<Label<generated::RestPat>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let label = self.trap.emit(generated::RestPat {
             id: TrapId::Star,
             attrs,
@@ -1947,11 +1999,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RestPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_ret_type(&mut self, node: ast::RetType) -> Label<generated::RetTypeRepr> {
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_ret_type(&mut self, node: ast::RetType) -> Option<Label<generated::RetTypeRepr>> {
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::RetTypeRepr {
             id: TrapId::Star,
             type_repr,
@@ -1959,12 +2011,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(RetTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_return_expr(&mut self, node: ast::ReturnExpr) -> Label<generated::ReturnExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_return_expr(&mut self, node: ast::ReturnExpr) -> Option<Label<generated::ReturnExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::ReturnExpr {
             id: TrapId::Star,
             attrs,
@@ -1973,26 +2026,27 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(ReturnExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_return_type_syntax(&mut self, node: ast::ReturnTypeSyntax) -> Label<generated::ReturnTypeSyntax> {
+    pub(crate) fn emit_return_type_syntax(&mut self, node: ast::ReturnTypeSyntax) -> Option<Label<generated::ReturnTypeSyntax>> {
         let label = self.trap.emit(generated::ReturnTypeSyntax {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(ReturnTypeSyntax, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_self_param(&mut self, node: ast::SelfParam) -> Label<generated::SelfParam> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_self_param(&mut self, node: ast::SelfParam) -> Option<Label<generated::SelfParam>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let is_ref = node.amp_token().is_some();
         let is_mut = node.mut_token().is_some();
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::SelfParam {
             id: TrapId::Star,
             attrs,
@@ -2005,11 +2059,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(SelfParam, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_slice_pat(&mut self, node: ast::SlicePat) -> Label<generated::SlicePat> {
-        let pats = node.pats().map(|x| self.emit_pat(x)).collect();
+    pub(crate) fn emit_slice_pat(&mut self, node: ast::SlicePat) -> Option<Label<generated::SlicePat>> {
+        let pats = node.pats().filter_map(|x| self.emit_pat(x)).collect();
         let label = self.trap.emit(generated::SlicePat {
             id: TrapId::Star,
             pats,
@@ -2017,11 +2071,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(SlicePat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_slice_type(&mut self, node: ast::SliceType) -> Label<generated::SliceTypeRepr> {
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_slice_type(&mut self, node: ast::SliceType) -> Option<Label<generated::SliceTypeRepr>> {
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::SliceTypeRepr {
             id: TrapId::Star,
             type_repr,
@@ -2029,12 +2083,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(SliceTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_source_file(&mut self, node: ast::SourceFile) -> Label<generated::SourceFile> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let items = node.items().map(|x| self.emit_item(x)).collect();
+    pub(crate) fn emit_source_file(&mut self, node: ast::SourceFile) -> Option<Label<generated::SourceFile>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let items = node.items().filter_map(|x| self.emit_item(x)).collect();
         let label = self.trap.emit(generated::SourceFile {
             id: TrapId::Star,
             attrs,
@@ -2043,18 +2098,19 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(SourceFile, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_static(&mut self, node: ast::Static) -> Label<generated::Static> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let body = node.body().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_static(&mut self, node: ast::Static) -> Option<Label<generated::Static>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let body = node.body().and_then(|x| self.emit_expr(x));
         let is_mut = node.mut_token().is_some();
         let is_static = node.static_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Static {
             id: TrapId::Star,
             attrs,
@@ -2069,13 +2125,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Static, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_stmt_list(&mut self, node: ast::StmtList) -> Label<generated::StmtList> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let statements = node.statements().map(|x| self.emit_stmt(x)).collect();
-        let tail_expr = node.tail_expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_stmt_list(&mut self, node: ast::StmtList) -> Option<Label<generated::StmtList>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let statements = node.statements().filter_map(|x| self.emit_stmt(x)).collect();
+        let tail_expr = node.tail_expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::StmtList {
             id: TrapId::Star,
             attrs,
@@ -2085,16 +2142,17 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(StmtList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_struct(&mut self, node: ast::Struct) -> Label<generated::Struct> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let field_list = node.field_list().map(|x| self.emit_field_list(x));
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+    pub(crate) fn emit_struct(&mut self, node: ast::Struct) -> Option<Label<generated::Struct>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let field_list = node.field_list().and_then(|x| self.emit_field_list(x));
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Struct {
             id: TrapId::Star,
             attrs,
@@ -2107,29 +2165,30 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Struct, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_token_tree(&mut self, node: ast::TokenTree) -> Label<generated::TokenTree> {
+    pub(crate) fn emit_token_tree(&mut self, node: ast::TokenTree) -> Option<Label<generated::TokenTree>> {
         let label = self.trap.emit(generated::TokenTree {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(TokenTree, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_trait(&mut self, node: ast::Trait) -> Label<generated::Trait> {
-        let assoc_item_list = node.assoc_item_list().map(|x| self.emit_assoc_item_list(x));
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
+    pub(crate) fn emit_trait(&mut self, node: ast::Trait) -> Option<Label<generated::Trait>> {
+        let assoc_item_list = node.assoc_item_list().and_then(|x| self.emit_assoc_item_list(x));
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let is_auto = node.auto_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Trait {
             id: TrapId::Star,
             assoc_item_list,
@@ -2145,16 +2204,17 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Trait, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_trait_alias(&mut self, node: ast::TraitAlias) -> Label<generated::TraitAlias> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+    pub(crate) fn emit_trait_alias(&mut self, node: ast::TraitAlias) -> Option<Label<generated::TraitAlias>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::TraitAlias {
             id: TrapId::Star,
             attrs,
@@ -2167,12 +2227,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TraitAlias, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_try_expr(&mut self, node: ast::TryExpr) -> Label<generated::TryExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_try_expr(&mut self, node: ast::TryExpr) -> Option<Label<generated::TryExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::TryExpr {
             id: TrapId::Star,
             attrs,
@@ -2181,12 +2242,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TryExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_tuple_expr(&mut self, node: ast::TupleExpr) -> Label<generated::TupleExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let fields = node.fields().map(|x| self.emit_expr(x)).collect();
+    pub(crate) fn emit_tuple_expr(&mut self, node: ast::TupleExpr) -> Option<Label<generated::TupleExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let fields = node.fields().filter_map(|x| self.emit_expr(x)).collect();
         let label = self.trap.emit(generated::TupleExpr {
             id: TrapId::Star,
             attrs,
@@ -2195,13 +2257,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TupleExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_tuple_field(&mut self, node: ast::TupleField) -> Label<generated::TupleField> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_tuple_field(&mut self, node: ast::TupleField) -> Option<Label<generated::TupleField>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::TupleField {
             id: TrapId::Star,
             attrs,
@@ -2211,11 +2274,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TupleField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_tuple_field_list(&mut self, node: ast::TupleFieldList) -> Label<generated::TupleFieldList> {
-        let fields = node.fields().map(|x| self.emit_tuple_field(x)).collect();
+    pub(crate) fn emit_tuple_field_list(&mut self, node: ast::TupleFieldList) -> Option<Label<generated::TupleFieldList>> {
+        let fields = node.fields().filter_map(|x| self.emit_tuple_field(x)).collect();
         let label = self.trap.emit(generated::TupleFieldList {
             id: TrapId::Star,
             fields,
@@ -2223,11 +2286,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TupleFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_tuple_pat(&mut self, node: ast::TuplePat) -> Label<generated::TuplePat> {
-        let fields = node.fields().map(|x| self.emit_pat(x)).collect();
+    pub(crate) fn emit_tuple_pat(&mut self, node: ast::TuplePat) -> Option<Label<generated::TuplePat>> {
+        let fields = node.fields().filter_map(|x| self.emit_pat(x)).collect();
         let label = self.trap.emit(generated::TuplePat {
             id: TrapId::Star,
             fields,
@@ -2235,12 +2298,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TuplePat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_tuple_struct_pat(&mut self, node: ast::TupleStructPat) -> Label<generated::TupleStructPat> {
-        let fields = node.fields().map(|x| self.emit_pat(x)).collect();
-        let path = node.path().map(|x| self.emit_path(x));
+    pub(crate) fn emit_tuple_struct_pat(&mut self, node: ast::TupleStructPat) -> Option<Label<generated::TupleStructPat>> {
+        let fields = node.fields().filter_map(|x| self.emit_pat(x)).collect();
+        let path = node.path().and_then(|x| self.emit_path(x));
         let label = self.trap.emit(generated::TupleStructPat {
             id: TrapId::Star,
             fields,
@@ -2249,11 +2312,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TupleStructPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_tuple_type(&mut self, node: ast::TupleType) -> Label<generated::TupleTypeRepr> {
-        let fields = node.fields().map(|x| self.emit_type(x)).collect();
+    pub(crate) fn emit_tuple_type(&mut self, node: ast::TupleType) -> Option<Label<generated::TupleTypeRepr>> {
+        let fields = node.fields().filter_map(|x| self.emit_type(x)).collect();
         let label = self.trap.emit(generated::TupleTypeRepr {
             id: TrapId::Star,
             fields,
@@ -2261,18 +2324,19 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TupleTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_type_alias(&mut self, node: ast::TypeAlias) -> Label<generated::TypeAlias> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
+    pub(crate) fn emit_type_alias(&mut self, node: ast::TypeAlias) -> Option<Label<generated::TypeAlias>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let is_default = node.default_token().is_some();
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::TypeAlias {
             id: TrapId::Star,
             attrs,
@@ -2287,11 +2351,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TypeAlias, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_type_arg(&mut self, node: ast::TypeArg) -> Label<generated::TypeArg> {
-        let type_repr = node.ty().map(|x| self.emit_type(x));
+    pub(crate) fn emit_type_arg(&mut self, node: ast::TypeArg) -> Option<Label<generated::TypeArg>> {
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::TypeArg {
             id: TrapId::Star,
             type_repr,
@@ -2299,15 +2363,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TypeArg, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_type_bound(&mut self, node: ast::TypeBound) -> Label<generated::TypeBound> {
+    pub(crate) fn emit_type_bound(&mut self, node: ast::TypeBound) -> Option<Label<generated::TypeBound>> {
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let use_bound_generic_args = node.use_bound_generic_args().map(|x| self.emit_use_bound_generic_args(x));
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let use_bound_generic_args = node.use_bound_generic_args().and_then(|x| self.emit_use_bound_generic_args(x));
         let label = self.trap.emit(generated::TypeBound {
             id: TrapId::Star,
             is_async,
@@ -2319,11 +2383,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TypeBound, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_type_bound_list(&mut self, node: ast::TypeBoundList) -> Label<generated::TypeBoundList> {
-        let bounds = node.bounds().map(|x| self.emit_type_bound(x)).collect();
+    pub(crate) fn emit_type_bound_list(&mut self, node: ast::TypeBoundList) -> Option<Label<generated::TypeBoundList>> {
+        let bounds = node.bounds().filter_map(|x| self.emit_type_bound(x)).collect();
         let label = self.trap.emit(generated::TypeBoundList {
             id: TrapId::Star,
             bounds,
@@ -2331,14 +2395,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TypeBoundList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_type_param(&mut self, node: ast::TypeParam) -> Label<generated::TypeParam> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let default_type = node.default_type().map(|x| self.emit_type(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
+    pub(crate) fn emit_type_param(&mut self, node: ast::TypeParam) -> Option<Label<generated::TypeParam>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let default_type = node.default_type().and_then(|x| self.emit_type(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::TypeParam {
             id: TrapId::Star,
             attrs,
@@ -2349,11 +2414,12 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(TypeParam, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_underscore_expr(&mut self, node: ast::UnderscoreExpr) -> Label<generated::UnderscoreExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_underscore_expr(&mut self, node: ast::UnderscoreExpr) -> Option<Label<generated::UnderscoreExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let label = self.trap.emit(generated::UnderscoreExpr {
             id: TrapId::Star,
             attrs,
@@ -2361,16 +2427,17 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(UnderscoreExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_union(&mut self, node: ast::Union) -> Label<generated::Union> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let record_field_list = node.record_field_list().map(|x| self.emit_record_field_list(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
-        let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
+    pub(crate) fn emit_union(&mut self, node: ast::Union) -> Option<Label<generated::Union>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let record_field_list = node.record_field_list().and_then(|x| self.emit_record_field_list(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Union {
             id: TrapId::Star,
             attrs,
@@ -2383,13 +2450,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Union, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_use(&mut self, node: ast::Use) -> Label<generated::Use> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let use_tree = node.use_tree().map(|x| self.emit_use_tree(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_use(&mut self, node: ast::Use) -> Option<Label<generated::Use>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let use_tree = node.use_tree().and_then(|x| self.emit_use_tree(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Use {
             id: TrapId::Star,
             attrs,
@@ -2399,11 +2467,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Use, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_use_bound_generic_args(&mut self, node: ast::UseBoundGenericArgs) -> Label<generated::UseBoundGenericArgs> {
-        let use_bound_generic_args = node.use_bound_generic_args().map(|x| self.emit_use_bound_generic_arg(x)).collect();
+    pub(crate) fn emit_use_bound_generic_args(&mut self, node: ast::UseBoundGenericArgs) -> Option<Label<generated::UseBoundGenericArgs>> {
+        let use_bound_generic_args = node.use_bound_generic_args().filter_map(|x| self.emit_use_bound_generic_arg(x)).collect();
         let label = self.trap.emit(generated::UseBoundGenericArgs {
             id: TrapId::Star,
             use_bound_generic_args,
@@ -2411,13 +2479,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(UseBoundGenericArgs, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_use_tree(&mut self, node: ast::UseTree) -> Label<generated::UseTree> {
-        let path = node.path().map(|x| self.emit_path(x));
-        let rename = node.rename().map(|x| self.emit_rename(x));
-        let use_tree_list = node.use_tree_list().map(|x| self.emit_use_tree_list(x));
+    pub(crate) fn emit_use_tree(&mut self, node: ast::UseTree) -> Option<Label<generated::UseTree>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
+        let rename = node.rename().and_then(|x| self.emit_rename(x));
+        let use_tree_list = node.use_tree_list().and_then(|x| self.emit_use_tree_list(x));
         let label = self.trap.emit(generated::UseTree {
             id: TrapId::Star,
             path,
@@ -2427,11 +2495,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(UseTree, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_use_tree_list(&mut self, node: ast::UseTreeList) -> Label<generated::UseTreeList> {
-        let use_trees = node.use_trees().map(|x| self.emit_use_tree(x)).collect();
+    pub(crate) fn emit_use_tree_list(&mut self, node: ast::UseTreeList) -> Option<Label<generated::UseTreeList>> {
+        let use_trees = node.use_trees().filter_map(|x| self.emit_use_tree(x)).collect();
         let label = self.trap.emit(generated::UseTreeList {
             id: TrapId::Star,
             use_trees,
@@ -2439,15 +2507,16 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(UseTreeList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_variant(&mut self, node: ast::Variant) -> Label<generated::Variant> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
-        let field_list = node.field_list().map(|x| self.emit_field_list(x));
-        let name = node.name().map(|x| self.emit_name(x));
-        let visibility = node.visibility().map(|x| self.emit_visibility(x));
+    pub(crate) fn emit_variant(&mut self, node: ast::Variant) -> Option<Label<generated::Variant>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let field_list = node.field_list().and_then(|x| self.emit_field_list(x));
+        let name = node.name().and_then(|x| self.emit_name(x));
+        let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Variant {
             id: TrapId::Star,
             attrs,
@@ -2459,11 +2528,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Variant, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_variant_list(&mut self, node: ast::VariantList) -> Label<generated::VariantList> {
-        let variants = node.variants().map(|x| self.emit_variant(x)).collect();
+    pub(crate) fn emit_variant_list(&mut self, node: ast::VariantList) -> Option<Label<generated::VariantList>> {
+        let variants = node.variants().filter_map(|x| self.emit_variant(x)).collect();
         let label = self.trap.emit(generated::VariantList {
             id: TrapId::Star,
             variants,
@@ -2471,11 +2540,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(VariantList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_visibility(&mut self, node: ast::Visibility) -> Label<generated::Visibility> {
-        let path = node.path().map(|x| self.emit_path(x));
+    pub(crate) fn emit_visibility(&mut self, node: ast::Visibility) -> Option<Label<generated::Visibility>> {
+        let path = node.path().and_then(|x| self.emit_path(x));
         let label = self.trap.emit(generated::Visibility {
             id: TrapId::Star,
             path,
@@ -2483,11 +2552,11 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(Visibility, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_where_clause(&mut self, node: ast::WhereClause) -> Label<generated::WhereClause> {
-        let predicates = node.predicates().map(|x| self.emit_where_pred(x)).collect();
+    pub(crate) fn emit_where_clause(&mut self, node: ast::WhereClause) -> Option<Label<generated::WhereClause>> {
+        let predicates = node.predicates().filter_map(|x| self.emit_where_pred(x)).collect();
         let label = self.trap.emit(generated::WhereClause {
             id: TrapId::Star,
             predicates,
@@ -2495,14 +2564,14 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(WhereClause, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_where_pred(&mut self, node: ast::WherePred) -> Label<generated::WherePred> {
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let type_repr = node.ty().map(|x| self.emit_type(x));
-        let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
+    pub(crate) fn emit_where_pred(&mut self, node: ast::WherePred) -> Option<Label<generated::WherePred>> {
+        let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
+        let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(x));
+        let type_bound_list = node.type_bound_list().and_then(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::WherePred {
             id: TrapId::Star,
             generic_param_list,
@@ -2513,14 +2582,15 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(WherePred, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_while_expr(&mut self, node: ast::WhileExpr) -> Label<generated::WhileExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let condition = node.condition().map(|x| self.emit_expr(x));
-        let label = node.label().map(|x| self.emit_label(x));
-        let loop_body = node.loop_body().map(|x| self.emit_block_expr(x));
+    pub(crate) fn emit_while_expr(&mut self, node: ast::WhileExpr) -> Option<Label<generated::WhileExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let condition = node.condition().and_then(|x| self.emit_expr(x));
+        let label = node.label().and_then(|x| self.emit_label(x));
+        let loop_body = node.loop_body().and_then(|x| self.emit_block_expr(x));
         let label = self.trap.emit(generated::WhileExpr {
             id: TrapId::Star,
             attrs,
@@ -2531,22 +2601,23 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(WhileExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_wildcard_pat(&mut self, node: ast::WildcardPat) -> Label<generated::WildcardPat> {
+    pub(crate) fn emit_wildcard_pat(&mut self, node: ast::WildcardPat) -> Option<Label<generated::WildcardPat>> {
         let label = self.trap.emit(generated::WildcardPat {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
         emit_detached!(WildcardPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_yeet_expr(&mut self, node: ast::YeetExpr) -> Label<generated::YeetExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_yeet_expr(&mut self, node: ast::YeetExpr) -> Option<Label<generated::YeetExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::YeetExpr {
             id: TrapId::Star,
             attrs,
@@ -2555,12 +2626,13 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(YeetExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
-    pub(crate) fn emit_yield_expr(&mut self, node: ast::YieldExpr) -> Label<generated::YieldExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+    pub(crate) fn emit_yield_expr(&mut self, node: ast::YieldExpr) -> Option<Label<generated::YieldExpr>> {
+        if self.should_be_excluded(&node) { return None; }
+        let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::YieldExpr {
             id: TrapId::Star,
             attrs,
@@ -2569,7 +2641,7 @@ impl Translator<'_> {
         self.emit_location(label, &node);
         emit_detached!(YieldExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
-        label
+        Some(label)
     }
 
 }
