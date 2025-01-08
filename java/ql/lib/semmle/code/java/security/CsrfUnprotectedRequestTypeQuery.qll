@@ -42,10 +42,8 @@ private class SpringCsrfUnprotectedMethod extends CsrfUnprotectedMethod instance
 private class StaplerCsrfUnprotectedMethod extends CsrfUnprotectedMethod instanceof StaplerWebMethod
 {
   StaplerCsrfUnprotectedMethod() {
-    not (
-      this.hasAnnotation("org.kohsuke.stapler.interceptor", "RequirePOST") or
-      this.hasAnnotation("org.kohsuke.stapler.verb", "POST")
-    )
+    not this.hasAnnotation("org.kohsuke.stapler.interceptor", "RequirePOST") and
+    not this.hasAnnotation("org.kohsuke.stapler.verb", "POST")
   }
 }
 
