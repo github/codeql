@@ -604,7 +604,30 @@ DataFlowType getNodeType(Node node) {
 }
 
 predicate nodeIsHidden(Node node) {
-  DataFlow::PathNode::shouldNodeBeHidden(node)
+  // Skip phi, refinement, and capture nodes
+  node.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
+    SsaImplicitDefinition
+  or
+  // Skip SSA definition of parameter as its location coincides with the parameter node
+  node = DataFlow::ssaDefinitionNode(Ssa::definition(any(SimpleParameter p)))
+  or
+  // Skip to the top of big left-leaning string concatenation trees.
+  node = any(AddExpr add).flow() and
+  node = any(AddExpr add).getAnOperand().flow()
+  or
+  // Skip the exceptional return on functions, as this highlights the entire function.
+  node = any(DataFlow::FunctionNode f).getExceptionalReturn()
+  or
+  // Skip the special return node for functions, as this highlights the entire function (and the returned expr is the previous node).
+  node = any(DataFlow::FunctionNode f).getReturnNode()
+  or
+  // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
+  node = DataFlow::thisNode(_)
+  or
+  // Skip captured variable nodes as the successor will be a use of that variable anyway.
+  node = DataFlow::capturedVariableNode(_)
+  or
+  node instanceof DataFlow::FunctionSelfReferenceNode
   or
   node instanceof FlowSummaryNode
   or

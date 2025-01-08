@@ -5,7 +5,7 @@
  */
 
 import javascript
-import semmle.javascript.dataflow.Configuration
+deprecated import semmle.javascript.dataflow.Configuration
 import semmle.javascript.dataflow.internal.CallGraphs
 private import semmle.javascript.internal.CachedStages
 
