@@ -34,8 +34,8 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["go.mongodb.org/mongo-driver/mongo", "Cursor", True, "All", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "ChangeStream", True, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Cursor", True, "All", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "Cursor", True, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "SingleResult", True, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "SingleResult", True, "Raw", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
