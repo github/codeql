@@ -2002,21 +2002,6 @@ deprecated private class CallAgainstEqualityCheck extends DerivedBarrierGuardNod
 }
 
 /**
- * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
- * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
- */
-class VarAccessBarrier extends DataFlow::Node {
-  VarAccessBarrier() {
-    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
-      this = DataFlow::ssaDefinitionNode(refinement) and
-      refinement.getGuard() = guard and
-      guard.getTest() instanceof VarAccess and
-      guard.getOutcome() = false
-    )
-  }
-}
-
-/**
  *  Holds if there is a path without unmatched return steps from `source` to `sink`.
  */
 deprecated predicate hasPathWithoutUnmatchedReturn(SourcePathNode source, SinkPathNode sink) {
