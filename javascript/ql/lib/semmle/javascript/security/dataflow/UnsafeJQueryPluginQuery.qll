@@ -11,7 +11,9 @@ import UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin
  * A taint-tracking configuration for reasoning about XSS in unsafe jQuery plugins.
  */
 module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
-  // TODO: PropertyPresenceSanitizer should not block values in a content.
+  // Note: This query currently misses some results due to two issues:
+  // - PropertyPresenceSanitizer blocks values in a content
+  // - localFieldStep has been omitted for performance reaons
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
