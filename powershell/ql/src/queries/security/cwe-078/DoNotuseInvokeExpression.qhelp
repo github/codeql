@@ -4,12 +4,12 @@
 <qhelp>
 <overview>
 <p>
-<code>Invoke-Expression</code> cmdlet should only be used as a last resort. In most scenarios, safer and more robust alternatives are available. Using Invoke-Expression can lead to arbitrary commands being executed</p>
+<code>Invoke-Expression</code> cmdlet should only be used as a last resort. In most scenarios, safer and more robust alternatives are available. Using <code>Invoke-Expression</code> can lead to arbitrary commands being executed</p>
 
 </overview>
 <recommendation>
 
-<p>Avoid using Invoke-Expression in your powershell code.</p>
+<p>Avoid using <code>Invoke-Expression</code> in your powershell code.</p>
 
 <p>If you’re running some command and the command path has spaces in it, then you need the command invocation operator <code>&</code></p>
 </recommendation>
