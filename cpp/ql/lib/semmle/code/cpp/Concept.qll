@@ -165,10 +165,7 @@ class NestedRequirementExpr extends Expr, @nested_requirement {
  */
 class ConceptIdExpr extends RequirementExpr, @concept_id {
   override string toString() {
-    exists(string name |
-      concept_templates(this.getConcept(), name, _) and
-      result = name + "<...>"
-    )
+    result = this.getConcept().getName() + "<...>"
     or
     // The following is for backward compatibility with databases created with
     // CodeQL 2.19.3, 2.19.4, and 2.20.0. Those databases include concept id
