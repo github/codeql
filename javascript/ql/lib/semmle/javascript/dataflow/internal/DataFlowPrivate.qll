@@ -523,7 +523,7 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   // receiver of accessor call
   pos.isThis() and n = call.asAccessorCall().getBase()
   or
-  // argument to setter (TODO: this has no post-update node)
+  // argument to setter
   pos.asPositional() = 0 and n = call.asAccessorCall().(DataFlow::PropWrite).getRhs()
   or
   FlowSummaryImpl::Private::summaryArgumentNode(call.(SummaryCall).getReceiver(),
