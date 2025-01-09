@@ -6,10 +6,6 @@
  * Additional data flow edges can be specified, and conversely certain nodes or
  * edges can be designated as _barriers_ that block flow.
  *
- * NOTE: The API of this library is not stable yet and may change in
- *       the future.
- *
- *
  * # Technical overview
  *
  * This module implements a summarization-based inter-procedural data flow
@@ -78,6 +74,11 @@ private import AdditionalFlowSteps
 private import internal.DataFlowPrivate as DataFlowPrivate
 
 /**
+ * DEPRECATED.
+ * Subclasses of this class should be replaced by a module implementing the new `ConfigSig` or `StateConfigSig` interface.
+ * See the [migration guide](https://codeql.github.com/docs/codeql-language-guides/migrating-javascript-dataflow-queries) for more details.
+ *
+ * #### Legacy documentation
  * A data flow tracking configuration for finding inter-procedural paths from
  * sources to sinks.
  *
