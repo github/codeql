@@ -253,7 +253,7 @@ js::DataFlow::Node getNodeFromClosureNode(VariableCaptureOutput::ClosureNode nod
     TValueNode(node.(VariableCaptureOutput::ParameterNode)
           .getParameter()
           .asLocalVariable()
-          .getADeclaration()) // TODO: is this subsumed by the ExprNode case?
+          .getADeclaration())
   or
   result = TThisNode(node.(VariableCaptureOutput::ParameterNode).getParameter().asThisContainer())
   or
