@@ -1014,19 +1014,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate sourceModel(NodeEx node, string model) {
       sourceNode(node, _) and
-      exists(Node n | n = node.asNode() |
-        knownSourceModel(n, model)
+      (
+        model = getSourceModel(node)
         or
-        not knownSourceModel(n, _) and model = ""
+        not exists(getSourceModel(node)) and model = ""
       )
     }
 
     private predicate sinkModel(NodeEx node, string model) {
       sinkNode(node, _) and
-      exists(Node n | n = node.asNodeOrImplicitRead() |
-        knownSinkModel(n, model)
+      (
+        model = getSinkModel(node)
         or
-        not knownSinkModel(n, _) and model = ""
+        not exists(getSinkModel(node)) and model = ""
       )
     }
 
