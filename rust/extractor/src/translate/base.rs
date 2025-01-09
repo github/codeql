@@ -1,5 +1,4 @@
 use super::mappings::{AddressableAst, AddressableHir, PathAst};
-use crate::generated::MacroCall;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
@@ -267,22 +266,22 @@ impl<'a> Translator<'a> {
         expanded: SyntaxNode,
     ) -> Option<Label<generated::AstNode>> {
         match expand_to {
-            ra_ap_hir_expand::ExpandTo::Statements => {
-                ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(x).into())
-            }
-            ra_ap_hir_expand::ExpandTo::Items => {
-                ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(x).into())
-            }
+            ra_ap_hir_expand::ExpandTo::Statements => ast::MacroStmts::cast(expanded)
+                .and_then(|x| self.emit_macro_stmts(x))
+                .map(Into::into),
+            ra_ap_hir_expand::ExpandTo::Items => ast::MacroItems::cast(expanded)
+                .and_then(|x| self.emit_macro_items(x))
+                .map(Into::into),
 
-            ra_ap_hir_expand::ExpandTo::Pattern => {
-                ast::Pat::cast(expanded).map(|x| self.emit_pat(x).into())
-            }
-            ra_ap_hir_expand::ExpandTo::Type => {
-                ast::Type::cast(expanded).map(|x| self.emit_type(x).into())
-            }
-            ra_ap_hir_expand::ExpandTo::Expr => {
-                ast::Expr::cast(expanded).map(|x| self.emit_expr(x).into())
-            }
+            ra_ap_hir_expand::ExpandTo::Pattern => ast::Pat::cast(expanded)
+                .and_then(|x| self.emit_pat(x))
+                .map(Into::into),
+            ra_ap_hir_expand::ExpandTo::Type => ast::Type::cast(expanded)
+                .and_then(|x| self.emit_type(x))
+                .map(Into::into),
+            ra_ap_hir_expand::ExpandTo::Expr => ast::Expr::cast(expanded)
+                .and_then(|x| self.emit_expr(x))
+                .map(Into::into),
         }
     }
     pub(crate) fn extract_macro_call_expanded(
@@ -290,12 +289,16 @@ impl<'a> Translator<'a> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
-        if let Some(expanded) = self.semantics.as_ref().and_then(|s| s.expand(mcall)) {
+        if let Some(expanded) = self
+            .semantics
+            .as_ref()
+            .and_then(|s| s.expand_macro_call(mcall))
+        {
             self.emit_macro_expansion_parse_errors(mcall, &expanded);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
             if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
-                MacroCall::emit_expanded(label, value, &mut self.trap.writer);
+                generated::MacroCall::emit_expanded(label, value, &mut self.trap.writer);
             } else {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
@@ -545,7 +548,7 @@ impl<'a> Translator<'a> {
         (|| {
             let sema = self.semantics.as_ref()?;
             let resolved = sema.resolve_method_call_fallback(item)?;
-            let Either::Left(function) = resolved else {
+            let (Either::Left(function), _) = resolved else {
                 return None;
             };
             let origin = self.origin_from_hir(function);
@@ -558,5 +561,15 @@ impl<'a> Translator<'a> {
             generated::Resolvable::emit_resolved_path(label.into(), path, &mut self.trap.writer);
             Some(())
         })();
+    }
+
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+        self.semantics.is_some_and(|sema| {
+            item.attrs().any(|attr| {
+                attr.as_simple_call().is_some_and(|(name, tokens)| {
+                    name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false)
+                })
+            })
+        })
     }
 }

@@ -529,8 +529,21 @@ private string getTypeName(Type t, boolean needsSpace) {
       needsSpace = false and
       (if needsSpace0 = true then result = s + " *" else result = s + "*")
       or
+      // We don't need to check for `needsSpace0` here because the type of
+      // `x` in `int x[1024]` is formatted without a space between the bracket
+      // and the `int` by `Type.getName`. That is, calling `Type.getName` on
+      // the type of `x` gives `int[1024]` and not `int [1024]`.
+      needsSpace = false and
+      exists(ArrayType array | array = dt |
+        result = s + "[" + array.getArraySize() + "]"
+        or
+        not array.hasArraySize() and
+        result = s + "[]"
+      )
+      or
       not dt instanceof ReferenceType and
       not dt instanceof PointerType and
+      not dt instanceof ArrayType and
       result = s and
       needsSpace = needsSpace0
     )

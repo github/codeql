@@ -1,6 +1,24 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["database/sql", "Conn", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Conn", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "DB", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "DB", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "DB", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "DB", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Stmt", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Stmt", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Stmt", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Stmt", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Tx", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Tx", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Tx", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Tx", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["database/sql", "Conn", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
