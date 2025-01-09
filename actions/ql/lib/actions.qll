@@ -1,1 +1,1 @@
-predicate placeholder(int x) { x = 0 }
+import codeql.actions.Ast

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kanidm/kanidm/.github/workflows/kanidm_individual_book.yml", "*", "input.tag", "code-injection", "generated"]

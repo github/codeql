@@ -1,0 +1,18 @@
+
+name: Issue Workflow
+on: 
+  pull_request_target:
+jobs: 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone branch
+        id: clone
+        uses: TestOrg/TestRepo/.github/actions/clone-repo@main
+        with:
+          title: ${{ github.event.pull_request.title }}
+          forked-pr: true
+          fetch-depth: 2
+      - run: echo "${{ steps.clone.outputs.result }}"
+

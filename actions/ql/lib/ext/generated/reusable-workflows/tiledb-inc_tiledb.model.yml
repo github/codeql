@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tiledb-inc/tiledb/.github/workflows/ci-linux_mac.yml", "*", "input.asan", "code-injection", "generated"]
+     - ["tiledb-inc/tiledb/.github/workflows/append-release-cmake.yml", "*", "input.ref", "code-injection", "generated"]

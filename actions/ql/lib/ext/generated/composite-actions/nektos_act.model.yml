@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nektos/act", "*", "input.test_input_optional", "code-injection", "generated"]
+     - ["nektos/act", "*", "input.composite-input", "code-injection", "generated"]
+     - ["nektos/act", "*", "input.some", "code-injection", "generated"]
+     - ["nektos/act", "*", "input.test_input_required_with_default_overriden", "code-injection", "generated"]
+     - ["nektos/act", "*", "input.test_input_required_with_default", "code-injection", "generated"]
+     - ["nektos/act", "*", "input.test_input_optional_with_default_overriden", "code-injection", "generated"]
+     - ["nektos/act", "*", "input.test_input_required", "code-injection", "generated"]

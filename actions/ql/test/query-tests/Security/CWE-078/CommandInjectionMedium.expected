@@ -1,0 +1,5 @@
+edges
+nodes
+| .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | semmle.label | github.event.comment.body |
+subpaths
+#select

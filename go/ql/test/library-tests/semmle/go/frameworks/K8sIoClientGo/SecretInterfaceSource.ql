@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module K8sIoApimachineryPkgRuntimeTest implements TestSig {
   string getARelevantTag() { result = "KsIoClientGo" }

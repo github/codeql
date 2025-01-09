@@ -1,0 +1,11 @@
+on:
+  pull_request
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: foo/bar
+    - uses: foo/bar@v1
+    - uses: foo/bar@25b062c917b0c75f8b47d8469aff6c94ffd89abb

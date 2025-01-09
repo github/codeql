@@ -56,7 +56,7 @@ union MyUnion0 {
 // Typedef
 typedef MyClass0 *MyClassPtr;
 
-// TemplateClass, TemplateParameter (UserType)
+// TemplateClass, TypeTemplateParameter (UserType)
 
 template <typename T>
 class myTemplateClass
@@ -113,7 +113,7 @@ public:
 // Typedef
 typedef MyClass1 *MyClassPtr;
 
-// TemplateClass, TemplateParameter (UserType)
+// TemplateClass, TypeTemplateParameter (UserType)
 
 template <typename T>
 class myTemplateClass

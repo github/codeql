@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["rancher/dashboard/.github/workflows/build-extension-charts.yml", "*", "input.tagged_release", "code-injection", "generated"]
+     - ["rancher/dashboard/.github/workflows/build-extension-charts.yml", "*", "input.target_branch", "code-injection", "generated"]
+     - ["rancher/dashboard/.github/workflows/build-extension-catalog.yml", "*", "input.tagged_release", "code-injection", "generated"]
+     - ["rancher/dashboard/.github/workflows/build-extension-catalog.yml", "*", "input.registry_target", "code-injection", "generated"]

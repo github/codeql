@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class TestSourcesConfiguration extends TaintTracking::Configuration {
   TestSourcesConfiguration() { this = "TestSources" }

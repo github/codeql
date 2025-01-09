@@ -9,9 +9,9 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.Name
 
 /**
- * A FormatArgsArg. For example:
+ * A FormatArgsArg. For example the `"world"` in:
  * ```rust
- * todo!()
+ * format_args!("Hello, {}!", "world")
  * ```
  */
 final class FormatArgsArg = Impl::FormatArgsArg;

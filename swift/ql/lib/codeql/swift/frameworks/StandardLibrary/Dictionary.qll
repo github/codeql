@@ -21,7 +21,8 @@ private class DictionarySummaries extends SummaryModelCsv {
       [
         ";Dictionary;true;updateValue(_:forKey:);;;Argument[0];Argument[-1].CollectionElement.TupleElement[1];value",
         ";Dictionary;true;updateValue(_:forKey:);;;Argument[1];Argument[-1].CollectionElement.TupleElement[0];value",
-        ";Dictionary;true;updateValue(_:forKey:);;;Argument[-1].CollectionElement.TupleElement[1];ReturnValue.OptionalSome;value"
+        ";Dictionary;true;updateValue(_:forKey:);;;Argument[-1].CollectionElement.TupleElement[1];ReturnValue.OptionalSome;value",
+        ";Dictionary;true;makeIterator();;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
       ]
   }
 }

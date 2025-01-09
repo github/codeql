@@ -1,4 +1,5 @@
 | gen_format.rs:5:26:5:32 | FormatArgsArg | gen_format.rs:5:26:5:32 | "world" |
+| gen_format_args_arg.rs:5:32:5:38 | FormatArgsArg | gen_format_args_arg.rs:5:32:5:38 | "world" |
 | gen_format_args_expr.rs:6:33:6:33 | FormatArgsArg | gen_format_args_expr.rs:6:33:6:33 | 1 |
 | gen_format_args_expr.rs:6:36:6:36 | FormatArgsArg | gen_format_args_expr.rs:6:36:6:36 | 2 |
 | gen_format_args_expr.rs:7:35:7:37 | FormatArgsArg | gen_format_args_expr.rs:7:37:7:37 | 1 |

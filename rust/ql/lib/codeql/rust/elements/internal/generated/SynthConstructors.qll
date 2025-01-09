@@ -9,7 +9,18 @@ import codeql.rust.elements.internal.ArrayExprInternalConstructor
 import codeql.rust.elements.internal.ArrayListExprConstructor
 import codeql.rust.elements.internal.ArrayRepeatExprConstructor
 import codeql.rust.elements.internal.ArrayTypeReprConstructor
+import codeql.rust.elements.internal.AsmClobberAbiConstructor
+import codeql.rust.elements.internal.AsmConstConstructor
+import codeql.rust.elements.internal.AsmDirSpecConstructor
 import codeql.rust.elements.internal.AsmExprConstructor
+import codeql.rust.elements.internal.AsmLabelConstructor
+import codeql.rust.elements.internal.AsmOperandExprConstructor
+import codeql.rust.elements.internal.AsmOperandNamedConstructor
+import codeql.rust.elements.internal.AsmOptionConstructor
+import codeql.rust.elements.internal.AsmOptionsListConstructor
+import codeql.rust.elements.internal.AsmRegOperandConstructor
+import codeql.rust.elements.internal.AsmRegSpecConstructor
+import codeql.rust.elements.internal.AsmSymConstructor
 import codeql.rust.elements.internal.AssocItemListConstructor
 import codeql.rust.elements.internal.AssocTypeArgConstructor
 import codeql.rust.elements.internal.AttrConstructor
@@ -91,6 +102,7 @@ import codeql.rust.elements.internal.ParamListConstructor
 import codeql.rust.elements.internal.ParenExprConstructor
 import codeql.rust.elements.internal.ParenPatConstructor
 import codeql.rust.elements.internal.ParenTypeReprConstructor
+import codeql.rust.elements.internal.ParenthesizedArgListConstructor
 import codeql.rust.elements.internal.PathConstructor
 import codeql.rust.elements.internal.PathExprConstructor
 import codeql.rust.elements.internal.PathPatConstructor
@@ -142,6 +154,7 @@ import codeql.rust.elements.internal.UnderscoreExprConstructor
 import codeql.rust.elements.internal.UnimplementedConstructor
 import codeql.rust.elements.internal.UnionConstructor
 import codeql.rust.elements.internal.UseConstructor
+import codeql.rust.elements.internal.UseBoundGenericArgsConstructor
 import codeql.rust.elements.internal.UseTreeConstructor
 import codeql.rust.elements.internal.UseTreeListConstructor
 import codeql.rust.elements.internal.VariantConstructor

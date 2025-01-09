@@ -1,0 +1,41 @@
+name: Sonar
+on:
+    workflow_run:
+        workflows: [PR Build]
+        types: [completed]
+jobs:
+    sonar:
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        if: github.event.workflow_run.conclusion == 'success'
+        steps:
+            - name: Download artifacts
+              uses: actions/github-script@v6
+              with:
+                  script: |
+                      let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                         owner: context.repo.owner,
+                         repo: context.repo.repo,
+                         run_id: context.payload.workflow_run.id,
+                      });
+                      let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+                        return artifact.name == "rsc-pr-build-artifacts"
+                      })[0];
+                      let download = await github.rest.actions.downloadArtifact({
+                         owner: context.repo.owner,
+                         repo: context.repo.repo,
+                         artifact_id: matchArtifact.id,
+                         archive_format: 'zip',
+                      });
+                      let fs = require('fs');
+                      fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/rsc-pr-build-artifacts.zip`, Buffer.from(download.data));
+
+            - name: Unzip artifacts
+              run: unzip rsc-pr-build-artifacts.zip
+
+            - name: SonarCloud Scan
+              uses: sonarsource/sonarcloud-github-action@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+

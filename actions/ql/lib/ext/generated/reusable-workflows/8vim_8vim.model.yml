@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["8vim/8vim/.github/workflows/publish.yaml", "*", "input.version_code", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/publish.yaml", "*", "input.version_name", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/bump-version.yaml", "*", "input.message", "code-injection", "generated"]
+     - ["8vim/8vim/.github/workflows/build.yaml", "*", "input.target", "code-injection", "generated"]

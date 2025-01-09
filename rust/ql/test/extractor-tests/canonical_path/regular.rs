@@ -53,3 +53,11 @@ fn enum_unqualified_usage() {
     _ = Variant2(0);
     _ = Variant3 { x: 1 };
 }
+
+fn enum_match(e: MyEnum) {
+    match e {
+        MyEnum::Variant1 => {}
+        MyEnum::Variant2(_) => {}
+        MyEnum::Variant3 { .. } => {}
+    }
+}

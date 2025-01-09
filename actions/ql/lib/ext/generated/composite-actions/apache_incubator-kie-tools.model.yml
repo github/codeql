@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+     - ["apache/incubator-kie-tools", "*", "input.pnpm_filter_string", "output.pnpm_filter_string", "taint", "manual"]

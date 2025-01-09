@@ -3,18 +3,22 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  PathSegment x, string hasGenericArgList, string hasNameRef, string hasParamList,
+  PathSegment x, string hasGenericArgList, string hasNameRef, string hasParenthesizedArgList,
   string hasPathType, string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
   (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
+  (
+    if x.hasParenthesizedArgList()
+    then hasParenthesizedArgList = "yes"
+    else hasParenthesizedArgList = "no"
+  ) and
   (if x.hasPathType() then hasPathType = "yes" else hasPathType = "no") and
   (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
   (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
   if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "hasGenericArgList:", hasGenericArgList, "hasNameRef:", hasNameRef, "hasParamList:",
-  hasParamList, "hasPathType:", hasPathType, "hasRetType:", hasRetType, "hasReturnTypeSyntax:",
-  hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr
+select x, "hasGenericArgList:", hasGenericArgList, "hasNameRef:", hasNameRef,
+  "hasParenthesizedArgList:", hasParenthesizedArgList, "hasPathType:", hasPathType, "hasRetType:",
+  hasRetType, "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr

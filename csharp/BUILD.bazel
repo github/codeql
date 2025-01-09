@@ -74,8 +74,9 @@ test_suite(
     name = "unit-tests",
     tags = ["csharp"],
     tests = [
-        "//csharp/autobuilder/Semmle.Autobuild.CSharp.Tests",
-        "//csharp/autobuilder/Semmle.Autobuild.Cpp.Tests",
-        "//csharp/extractor/Semmle.Extraction.Tests",
+        "//csharp/autobuilder/Semmle.Autobuild.CSharp.Tests:acst",
+        "//csharp/autobuilder/Semmle.Autobuild.Cpp.Tests:acpt",
+        "//csharp/extractor/Semmle.Extraction.Tests:et",
+        "//csharp/extractor/Semmle.Util.Tests:ut",
     ],
 )

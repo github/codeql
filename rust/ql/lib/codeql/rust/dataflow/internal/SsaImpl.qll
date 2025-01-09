@@ -88,21 +88,15 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
     |
       va instanceof VariableReadAccess
       or
+      // For immutable variables, we model a read when they are borrowed
+      // (although the actual read happens later, if at all).
+      va = any(RefExpr re).getExpr()
+      or
       // Although compound assignments, like `x += y`, may in fact not read `x`,
       // it makes sense to treat them as such
       va = any(CompoundAssignmentExpr cae).getLhs()
     ) and
     certain = true
-    or
-    // For immutable variables, we model a read when they are borrowed (although the
-    // actual read happens later, if at all). This only affects the SSA liveness
-    // analysis.
-    exists(VariableAccess va |
-      va = any(RefExpr re).getExpr() and
-      va = bb.getNode(i).getAstNode() and
-      v = va.getVariable() and
-      certain = false
-    )
     or
     capturedCallRead(_, bb, i, v) and certain = false
     or
@@ -146,7 +140,9 @@ private predicate adjacentDefReadExt(
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
-  exists(VariableReadAccess read |
+  exists(VariableAccess read |
+    read instanceof VariableReadAccess or read = any(RefExpr re).getExpr()
+  |
     read.getVariable() = v and
     read = bb.getNode(i).getAstNode()
   )
@@ -335,7 +331,7 @@ private module Cached {
 
   /**
    * Holds if `v` is written at index `i` in basic block `bb`, and the corresponding
-   * AST write access is `write`.
+   * write access node in the CFG is `write`.
    */
   cached
   predicate variableWriteActual(BasicBlock bb, int i, Variable v, CfgNode write) {

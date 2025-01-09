@@ -3,4 +3,6 @@
 fn test_format() -> () {
     // A format element in a formatting template. For example the `{}` in:
     println!("Hello {}", "world");
+    // or the `{value:#width$.precision$}` in:
+    println!("Value {value:#width$.precision$}");
 }

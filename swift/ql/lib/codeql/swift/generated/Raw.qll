@@ -3004,6 +3004,11 @@ module Raw {
     override string toString() { result = "ForEachStmt" }
 
     /**
+     * Gets the `index`th variable of this for each statement (0-based).
+     */
+    VarDecl getVariable(int index) { for_each_stmt_variables(this, index, result) }
+
+    /**
      * Gets the pattern of this for each statement.
      */
     Pattern getPattern() { for_each_stmts(this, result, _) }

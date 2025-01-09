@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang --edg --c++20
+// semmle-extractor-options: --clang -std=c++20
 
 namespace cpp20 {
 

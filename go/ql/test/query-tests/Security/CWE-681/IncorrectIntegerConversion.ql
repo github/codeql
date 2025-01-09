@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.go.security.IncorrectIntegerConversionLib
 
 module TestIncorrectIntegerConversion implements TestSig {

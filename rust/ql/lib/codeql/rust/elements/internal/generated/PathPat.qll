@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
-import codeql.rust.elements.Path
+import codeql.rust.elements.internal.PathAstNodeImpl::Impl as PathAstNodeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathPat` and should not
@@ -25,19 +25,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::PathPat` class directly.
    * Use the subclass `PathPat`, where the following predicates are available.
    */
-  class PathPat extends Synth::TPathPat, PatImpl::Pat {
+  class PathPat extends Synth::TPathPat, PatImpl::Pat, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "PathPat" }
-
-    /**
-     * Gets the path of this path pattern, if it exists.
-     */
-    Path getPath() {
-      result = Synth::convertPathFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
-    }
-
-    /**
-     * Holds if `getPath()` exists.
-     */
-    final predicate hasPath() { exists(this.getPath()) }
   }
 }

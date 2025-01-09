@@ -1,0 +1,36 @@
+on:
+  workflow_call:
+    inputs:
+      comment:
+        type: string
+        required: true
+    outputs:
+      SHOULD_RUN:
+        value: ${{ jobs.resolve.outputs.SHOULD_RUN }}
+      GIT_REF:
+        value: ${{ jobs.resolve.outputs.GIT_REF }}
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      SHOULD_RUN: ${{ steps.resolve-step.outputs.SHOULD_RUN }}
+      GIT_REF: ${{ steps.resolve-step.outputs.GIT_REF }}
+    steps:
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      - if: github.event_name == 'workflow_run'
+        uses: ./.github/actions/download-artifact
+      - id: resolve-step
+        env:
+          ALLOWED_COMMENT: ${{ inputs.comment }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            if [[ "$(head -n 1 /tmp/artifacts/metadata.txt)" == *"$ALLOWED_COMMENT"* ]]; then
+               echo SHOULD_RUN=true >> "$GITHUB_OUTPUT"
+            else
+               echo SHOULD_RUN=false >> "$GITHUB_OUTPUT"
+            fi
+            echo GIT_REF="$(tail -n 1 /tmp/artifacts/metadata.txt)" >> "$GITHUB_OUTPUT"
+          else
+            echo SHOULD_RUN=true >> "$GITHUB_OUTPUT"
+            echo GIT_REF="" >> "$GITHUB_OUTPUT"
+          fi

@@ -6,6 +6,8 @@ edition = "2021"
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 ungrammar = "1.16.1"
-proc-macro2 = "1.0.33"
-quote = "1.0.12"
-itertools = "0.10.1"
+proc-macro2 = "1.0.47"
+quote = "1.0.20"
+either = "1.9.0"
+stdx = {package = "ra_ap_stdx", version = "0.0.248"}
+itertools = "0.12.0"

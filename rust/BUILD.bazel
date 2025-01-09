@@ -24,7 +24,10 @@ filegroup(
 
 codeql_pkg_files(
     name = "tools-arch",
-    exes = ["//rust/extractor"],
+    exes = [
+        "//rust/autobuild",
+        "//rust/extractor",
+    ],
     prefix = "{CODEQL_PLATFORM}",
 )
 

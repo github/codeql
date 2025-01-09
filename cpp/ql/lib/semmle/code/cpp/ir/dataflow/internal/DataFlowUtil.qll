@@ -2275,6 +2275,12 @@ private predicate guardControlsPhiInput(
  */
 signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
 
+bindingset[g]
+pragma[inline_late]
+private predicate controls(IRGuardCondition g, Node n, boolean edge) {
+  g.controls(n.getBasicBlock(), edge)
+}
+
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
  *
@@ -2282,6 +2288,15 @@ signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate convertedExprHasValueNumber(ValueNumber value, Node n) {
+    exists(Expr e |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      n.asConvertedExpr() = e
+    )
+  }
+
   /**
    * Gets an expression node that is safely guarded by the given guard check.
    *
@@ -2315,18 +2330,19 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
    */
   Node getABarrierNode() {
-    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      e = value.getAnInstruction().getConvertedResultExpression() and
-      result.asConvertedExpr() = e and
-      guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
-      g.controls(result.getBasicBlock(), edge)
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      convertedExprHasValueNumber(value, result) and
+      guardChecks(g,
+        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
+      controls(g, result, edge)
     )
     or
     exists(
       IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
     |
       guardChecks(g, def.getARead().asOperand().getDef().getConvertedResultExpression(), branch) and
-      guardControlsPhiInput(g, branch, def, input, phi) and
+      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
+        pragma[only_bind_into](phi)) and
       result = TSsaPhiInputNode(phi, input)
     )
   }
@@ -2366,6 +2382,17 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    */
   Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
 
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate indirectConvertedExprHasValueNumber(
+    int indirectionIndex, ValueNumber value, Node n
+  ) {
+    exists(Expr e |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      n.asIndirectConvertedExpr(indirectionIndex) = e
+    )
+  }
+
   /**
    * Gets an indirect expression node with indirection index `indirectionIndex` that is
    * safely guarded by the given guard check.
@@ -2401,11 +2428,11 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
   Node getAnIndirectBarrierNode(int indirectionIndex) {
-    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      e = value.getAnInstruction().getConvertedResultExpression() and
-      result.asIndirectConvertedExpr(indirectionIndex) = e and
-      guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
-      g.controls(result.getBasicBlock(), edge)
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      indirectConvertedExprHasValueNumber(indirectionIndex, value, result) and
+      guardChecks(g,
+        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
+      controls(g, result, edge)
     )
     or
     exists(
@@ -2414,7 +2441,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       guardChecks(g,
         def.getARead().asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
         branch) and
-      guardControlsPhiInput(g, branch, def, input, phi) and
+      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
+        pragma[only_bind_into](phi)) and
       result = TSsaPhiInputNode(phi, input)
     )
   }
@@ -2440,20 +2468,29 @@ private EdgeKind getConditionalEdge(boolean branch) {
  * in data flow and taint tracking.
  */
 module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate operandHasValueNumber(ValueNumber value, Node n) {
+    exists(Operand use |
+      use = value.getAnInstruction().getAUse() and
+      n.asOperand() = use
+    )
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(IRGuardCondition g, ValueNumber value, boolean edge, Operand use |
-      instructionGuardChecks(g, value.getAnInstruction(), edge) and
-      use = value.getAnInstruction().getAUse() and
-      result.asOperand() = use and
-      g.controls(result.getBasicBlock(), edge)
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
+      operandHasValueNumber(value, result) and
+      controls(g, result, edge)
     )
     or
     exists(
       IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
     |
       instructionGuardChecks(g, def.getARead().asOperand().getDef(), branch) and
-      guardControlsPhiInput(g, branch, def, input, phi) and
+      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
+        pragma[only_bind_into](phi)) and
       result = TSsaPhiInputNode(phi, input)
     )
   }

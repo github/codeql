@@ -31,7 +31,7 @@ public class Test
         Span<byte> guidBytes = stackalloc byte[16];
         guidBytes[08] = 1;          // TODO: this indexer call has no target, because the target is a `ref` returning getter.
 
-        new MyList([new(), new Test()]);        // TODO: the `new()` call has no target, which is unexpected, as we know at compile time, that this is a `new Test()` call.
+        new MyList([new(), new Test()]);
     }
 
     public int MyProperty1 { get; }

@@ -11,8 +11,13 @@ import codeql.rust.elements.ParamBase
 /**
  * A `self` parameter. For example `self` in:
  * ```rust
- * fn push(&mut self, value: T) {
- *   // ...
+ * struct X;
+ * impl X {
+ *   fn one(&self) {}
+ *   fn two(&mut self) {}
+ *   fn three(self) {}
+ *   fn four(mut self) {}
+ *   fn five<'a>(&'a self) {}
  * }
  * ```
  */

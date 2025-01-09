@@ -1264,12 +1264,14 @@ module IsUnreachableInCall {
     int getValue() { result = value }
   }
 
-  pragma[nomagic]
+  bindingset[right]
+  pragma[inline_late]
   private predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     any(G::IRGuardCondition guard).ensuresEq(left, right, k, block, areEqual)
   }
 
-  pragma[nomagic]
+  bindingset[right]
+  pragma[inline_late]
   private predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     any(G::IRGuardCondition guard).ensuresLt(left, right, k, block, areEqual)
   }

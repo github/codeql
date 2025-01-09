@@ -131,24 +131,8 @@ class LetStmtTree extends PreOrderTree, LetStmt {
   }
 }
 
-class MacroCallTree extends ControlFlowTree, MacroCall {
-  override predicate first(AstNode first) {
-    first(this.getExpanded(), first)
-    or
-    not exists(this.getExpanded()) and first = this
-  }
-
-  override predicate last(AstNode last, Completion c) {
-    last(this.getExpanded(), last, c)
-    or
-    not exists(this.getExpanded()) and
-    last = this and
-    completionIsValidFor(c, last)
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-
-  override predicate propagatesAbnormal(AstNode child) { child = this.getExpanded() }
+class MacroCallTree extends StandardPostOrderTree, MacroCall {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getExpanded() }
 }
 
 class MacroStmtsTree extends StandardPreOrderTree, MacroStmts {

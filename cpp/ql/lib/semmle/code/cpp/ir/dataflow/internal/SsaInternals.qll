@@ -1276,6 +1276,7 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
   }
 
   /** Gets a node that represents a read of this SSA definition. */
+  pragma[nomagic]
   Node getARead() {
     exists(SourceVariable sv, IRBlock bb, int i | SsaCached::ssaDefReachesReadExt(sv, this, bb, i) |
       useToNode(bb, i, sv, result)

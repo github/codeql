@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["eficode/resolve-pr-refs", "*", "output.head_ref", "branch", "manual"]
+
+
