@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 @Component({
     template: `
@@ -13,5 +14,9 @@ export class Foo {
 
     setInput2(target) {
         document.write(target.value); // NOT OK
+    }
+
+    blah(form: NgForm) {
+        document.write(form.value.foo); // NOT OK [INCONSISTENCY]
     }
 }
