@@ -270,4 +270,16 @@ module XssThroughDom {
       this = getSelectionCall(DataFlow::TypeTracker::end()).getAMethodCall("toString")
     }
   }
+
+  /**
+   * A source of DOM input originating from an Angular two-way data binding.
+   */
+  private class AngularNgModelSource extends Source {
+    AngularNgModelSource() {
+      exists(Angular2::ComponentClass component, string fieldName |
+        fieldName = component.getATemplateElement().getAttributeByName("[(ngModel)]").getValue() and
+        this = component.getFieldInputNode(fieldName)
+      )
+    }
+  }
 }

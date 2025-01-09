@@ -24,6 +24,6 @@ export class Foo {
     }
 
     useField() {
-        document.write(this.field); // NOT OK [INCONSISTENCY]
+        document.write(this.field); // NOT OK
     }
 }
