@@ -202,13 +202,13 @@ module Node {
     }
 
     /** Holds is this node is a source node of kind `kind`. */
-    predicate isSource(string kind) {
-      this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind)
+    predicate isSource(string kind, string model) {
+      this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
     }
 
     /** Holds is this node is a sink node of kind `kind`. */
-    predicate isSink(string kind) {
-      this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind)
+    predicate isSink(string kind, string model) {
+      this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
     }
 
     override CfgScope getCfgScope() {
@@ -1305,9 +1305,13 @@ module RustDataFlow implements InputSig<Location> {
   /** Extra data flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
-  predicate knownSourceModel(Node source, string model) { none() }
+  predicate knownSourceModel(Node source, string model) {
+    source.(Node::FlowSummaryNode).isSource(_, model)
+  }
 
-  predicate knownSinkModel(Node sink, string model) { none() }
+  predicate knownSinkModel(Node sink, string model) {
+    sink.(Node::FlowSummaryNode).isSink(_, model)
+  }
 
   class DataFlowSecondLevelScope = Void;
 }
@@ -1575,11 +1579,11 @@ private module Cached {
 
   /** Holds if `n` is a flow source of kind `kind`. */
   cached
-  predicate sourceNode(Node n, string kind) { n.(Node::FlowSummaryNode).isSource(kind) }
+  predicate sourceNode(Node n, string kind) { n.(Node::FlowSummaryNode).isSource(kind, _) }
 
   /** Holds if `n` is a flow sink of kind `kind`. */
   cached
-  predicate sinkNode(Node n, string kind) { n.(Node::FlowSummaryNode).isSink(kind) }
+  predicate sinkNode(Node n, string kind) { n.(Node::FlowSummaryNode).isSink(kind, _) }
 }
 
 import Cached

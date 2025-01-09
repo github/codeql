@@ -1086,7 +1086,8 @@ module Make<
        *
        * This node should be used as the actual source node in data flow configurations.
        */
-      predicate isEntry(string kind) {
+      predicate isEntry(string kind, string model) {
+        model = model_ and
         exists(SummaryComponentStack out |
           sourceOutputStateEntry(source_, out, kind, model_) and
           state_.isSourceOutputState(source_, out, kind, model_)
@@ -1105,10 +1106,10 @@ module Make<
         state_.isSourceOutputState(source, TSingletonSummaryComponentStack(sc), _, model)
       }
 
-      override predicate isHidden() { not this.isEntry(_) }
+      override predicate isHidden() { not this.isEntry(_, _) }
 
       override string toString() {
-        if this.isEntry(_)
+        if this.isEntry(_, _)
         then result = source_.toString()
         else result = "[source] " + state_ + " at " + source_
       }
@@ -1145,18 +1146,19 @@ module Make<
        *
        * This node should be used as the actual sink node in data flow configurations.
        */
-      predicate isExit(string kind) {
+      predicate isExit(string kind, string model) {
         kind = kind_ and
+        model = model_ and
         exists(SummaryComponentStack inp |
           sinkInputStateExit(sink_, inp, kind, model_) and
           state_.isSinkInputState(sink_, inp, kind, model_)
         )
       }
 
-      override predicate isHidden() { not this.isExit(_) }
+      override predicate isHidden() { not this.isExit(_, _) }
 
       override string toString() {
-        if this.isExit(_)
+        if this.isExit(_, _)
         then result = sink_.toString()
         else result = "[sink] " + state_ + " at " + sink_
       }

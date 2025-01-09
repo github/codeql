@@ -3,12 +3,14 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
+      - ["repo::test", "crate::simple_source", "ReturnValue", "test-source", "manual"]
       - ["repo::test", "crate::enum_source", "ReturnValue.Variant[crate::MyFieldEnum::D::field_d]", "test-source", "manual"]
       - ["repo::test", "<crate::MyFieldEnum>::source", "ReturnValue.Variant[crate::MyFieldEnum::C::field_c]", "test-source", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
+      - ["repo::test", "crate::simple_sink", "Argument[0]", "test-sink", "manual"]
       - ["repo::test", "crate::enum_sink", "Argument[0].Variant[crate::MyFieldEnum::C::field_c]", "test-sink", "manual"]
       - ["repo::test", "<crate::MyFieldEnum>::sink", "Argument[self].Variant[crate::MyFieldEnum::D::field_d]", "test-sink", "manual"]
   - addsTo:

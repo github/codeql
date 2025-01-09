@@ -222,6 +222,24 @@ fn test_enum_method_sink() {
     e.sink(); // $ hasValueFlow=15
 }
 
+// has a source model
+fn simple_source(i: i64) -> i64 {
+    0
+}
+
+fn test_simple_source() {
+    let s = simple_source(16);
+    sink(s) // $ hasValueFlow=16
+}
+
+// has a sink model
+fn simple_sink(i: i64) {}
+
+fn test_simple_sink() {
+    let s = source(17);
+    simple_sink(s); // $ hasValueFlow=17
+}
+
 fn main() {
     test_identify();
     test_get_var_pos();
@@ -238,5 +256,7 @@ fn main() {
     test_enum_method_source();
     test_enum_sink();
     test_enum_method_sink();
+    test_simple_source();
+    test_simple_sink();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }
