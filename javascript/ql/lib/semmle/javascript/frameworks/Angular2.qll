@@ -580,10 +580,12 @@ module Angular2 {
 
     override string getName() { result = propertyNode.getStringValue() }
 
-    // override DOM::ElementDefinition getElement() { /* TODO */ }
+    /** Get the `DataFlow::Node` that is affected by this Attribute Definition.
+     * 
+     *  Defined instead of defining `getElement()`, which requires returning a DOM element defintion, `ElementDefinition`.
+     */
     DataFlow::Node getElementNode() { result = elementNode }
 
     override DataFlow::Node getValueNode() { result = valueNode }
-    //override predicate mayHaveTemplateValue() { /* TODO */ }
   }
 }
