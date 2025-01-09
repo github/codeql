@@ -19,41 +19,17 @@ edges
 | main.go:46:21:46:31 | call to Referer | main.go:52:46:52:59 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:46:21:46:31 | call to Referer | main.go:53:52:53:65 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:58:21:58:31 | call to Referer | main.go:60:47:60:60 | untrustedInput | provenance | Src:MaD:2  |
-| main.go:60:3:60:9 | definition of content | main.go:63:16:63:22 | content | provenance |  |
-| main.go:60:3:60:9 | definition of content | main.go:63:16:63:22 | content | provenance |  |
-| main.go:60:14:60:61 | call to NewContent | main.go:63:16:63:22 | content | provenance |  |
 | main.go:60:14:60:61 | call to NewContent | main.go:63:16:63:22 | content | provenance |  |
 | main.go:60:47:60:60 | untrustedInput | main.go:60:14:60:61 | call to NewContent | provenance | MaD:3 |
-| main.go:63:3:63:23 | []type{args} [array] | main.go:60:3:60:9 | definition of content | provenance |  |
-| main.go:63:16:63:22 | content | main.go:63:3:63:23 | []type{args} [array] | provenance |  |
 | main.go:68:21:68:31 | call to Referer | main.go:74:47:74:60 | untrustedInput | provenance | Src:MaD:2  |
-| main.go:74:3:74:9 | definition of content | main.go:76:50:76:56 | content | provenance |  |
-| main.go:74:3:74:9 | definition of content | main.go:76:50:76:56 | content | provenance |  |
-| main.go:74:3:74:9 | definition of content | main.go:76:59:76:65 | content | provenance |  |
-| main.go:74:3:74:9 | definition of content | main.go:76:59:76:65 | content | provenance |  |
-| main.go:74:3:74:9 | definition of content | main.go:77:16:77:22 | content | provenance |  |
-| main.go:74:3:74:9 | definition of content | main.go:77:16:77:22 | content | provenance |  |
-| main.go:74:14:74:61 | call to NewContent | main.go:76:50:76:56 | content | provenance |  |
 | main.go:74:14:74:61 | call to NewContent | main.go:76:50:76:56 | content | provenance |  |
 | main.go:74:14:74:61 | call to NewContent | main.go:76:59:76:65 | content | provenance |  |
-| main.go:74:14:74:61 | call to NewContent | main.go:76:59:76:65 | content | provenance |  |
-| main.go:74:14:74:61 | call to NewContent | main.go:77:16:77:22 | content | provenance |  |
 | main.go:74:14:74:61 | call to NewContent | main.go:77:16:77:22 | content | provenance |  |
 | main.go:74:47:74:60 | untrustedInput | main.go:74:14:74:61 | call to NewContent | provenance | MaD:3 |
-| main.go:76:8:76:66 | []type{args} [array] | main.go:74:3:74:9 | definition of content | provenance |  |
-| main.go:76:50:76:56 | content | main.go:76:8:76:66 | []type{args} [array] | provenance |  |
-| main.go:76:59:76:65 | content | main.go:76:8:76:66 | []type{args} [array] | provenance |  |
-| main.go:77:3:77:23 | []type{args} [array] | main.go:74:3:74:9 | definition of content | provenance |  |
-| main.go:77:16:77:22 | content | main.go:77:3:77:23 | []type{args} [array] | provenance |  |
 | main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:82:21:82:31 | call to Referer | main.go:91:48:91:61 | untrustedInput | provenance | Src:MaD:2  |
-| main.go:91:3:91:10 | definition of content2 | main.go:93:16:93:23 | content2 | provenance |  |
-| main.go:91:3:91:10 | definition of content2 | main.go:93:16:93:23 | content2 | provenance |  |
-| main.go:91:15:91:62 | call to NewContent | main.go:93:16:93:23 | content2 | provenance |  |
 | main.go:91:15:91:62 | call to NewContent | main.go:93:16:93:23 | content2 | provenance |  |
 | main.go:91:48:91:61 | untrustedInput | main.go:91:15:91:62 | call to NewContent | provenance | MaD:3 |
-| main.go:93:3:93:24 | []type{args} [array] | main.go:91:3:91:10 | definition of content2 | provenance |  |
-| main.go:93:16:93:23 | content2 | main.go:93:3:93:24 | []type{args} [array] | provenance |  |
 models
 | 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 | 2 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
@@ -73,30 +49,18 @@ nodes
 | main.go:52:46:52:59 | untrustedInput | semmle.label | untrustedInput |
 | main.go:53:52:53:65 | untrustedInput | semmle.label | untrustedInput |
 | main.go:58:21:58:31 | call to Referer | semmle.label | call to Referer |
-| main.go:60:3:60:9 | definition of content | semmle.label | definition of content |
 | main.go:60:14:60:61 | call to NewContent | semmle.label | call to NewContent |
 | main.go:60:47:60:60 | untrustedInput | semmle.label | untrustedInput |
-| main.go:63:3:63:23 | []type{args} [array] | semmle.label | []type{args} [array] |
-| main.go:63:16:63:22 | content | semmle.label | content |
 | main.go:63:16:63:22 | content | semmle.label | content |
 | main.go:68:21:68:31 | call to Referer | semmle.label | call to Referer |
-| main.go:74:3:74:9 | definition of content | semmle.label | definition of content |
 | main.go:74:14:74:61 | call to NewContent | semmle.label | call to NewContent |
 | main.go:74:47:74:60 | untrustedInput | semmle.label | untrustedInput |
-| main.go:76:8:76:66 | []type{args} [array] | semmle.label | []type{args} [array] |
-| main.go:76:50:76:56 | content | semmle.label | content |
 | main.go:76:50:76:56 | content | semmle.label | content |
 | main.go:76:59:76:65 | content | semmle.label | content |
-| main.go:76:59:76:65 | content | semmle.label | content |
-| main.go:77:3:77:23 | []type{args} [array] | semmle.label | []type{args} [array] |
-| main.go:77:16:77:22 | content | semmle.label | content |
 | main.go:77:16:77:22 | content | semmle.label | content |
 | main.go:82:21:82:31 | call to Referer | semmle.label | call to Referer |
 | main.go:89:37:89:50 | untrustedInput | semmle.label | untrustedInput |
-| main.go:91:3:91:10 | definition of content2 | semmle.label | definition of content2 |
 | main.go:91:15:91:62 | call to NewContent | semmle.label | call to NewContent |
 | main.go:91:48:91:61 | untrustedInput | semmle.label | untrustedInput |
-| main.go:93:3:93:24 | []type{args} [array] | semmle.label | []type{args} [array] |
-| main.go:93:16:93:23 | content2 | semmle.label | content2 |
 | main.go:93:16:93:23 | content2 | semmle.label | content2 |
 subpaths

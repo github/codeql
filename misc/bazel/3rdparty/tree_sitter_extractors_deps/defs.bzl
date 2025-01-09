@@ -303,17 +303,20 @@ _NORMAL_DEPENDENCIES = {
             "regex": Label("@vendor__regex-1.11.1//:regex"),
             "tracing": Label("@vendor__tracing-0.1.41//:tracing"),
             "tracing-subscriber": Label("@vendor__tracing-subscriber-0.3.19//:tracing_subscriber"),
-            "tree-sitter": Label("@vendor__tree-sitter-0.24.5//:tree_sitter"),
+            "tree-sitter": Label("@vendor__tree-sitter-0.24.6//:tree_sitter"),
             "tree-sitter-embedded-template": Label("@vendor__tree-sitter-embedded-template-0.23.2//:tree_sitter_embedded_template"),
             "tree-sitter-ruby": Label("@vendor__tree-sitter-ruby-0.23.1//:tree_sitter_ruby"),
         },
     },
     "rust/ast-generator": {
         _COMMON_CONDITION: {
+            "anyhow": Label("@vendor__anyhow-1.0.95//:anyhow"),
             "either": Label("@vendor__either-1.13.0//:either"),
             "itertools": Label("@vendor__itertools-0.14.0//:itertools"),
+            "mustache": Label("@vendor__mustache-0.9.0//:mustache"),
             "proc-macro2": Label("@vendor__proc-macro2-1.0.92//:proc_macro2"),
             "quote": Label("@vendor__quote-1.0.38//:quote"),
+            "serde": Label("@vendor__serde-1.0.217//:serde"),
             "stdx": Label("@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx"),
             "ungrammar": Label("@vendor__ungrammar-1.16.1//:ungrammar"),
         },
@@ -373,7 +376,7 @@ _NORMAL_DEPENDENCIES = {
             "serde_json": Label("@vendor__serde_json-1.0.135//:serde_json"),
             "tracing": Label("@vendor__tracing-0.1.41//:tracing"),
             "tracing-subscriber": Label("@vendor__tracing-subscriber-0.3.19//:tracing_subscriber"),
-            "tree-sitter": Label("@vendor__tree-sitter-0.24.5//:tree_sitter"),
+            "tree-sitter": Label("@vendor__tree-sitter-0.24.6//:tree_sitter"),
         },
     },
 }
@@ -829,12 +832,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor__bstr-1.11.1",
-        sha256 = "786a307d683a5bf92e6fd5fd69a7eb613751668d1d8d67d802846dfe367c62c8",
+        name = "vendor__bstr-1.11.3",
+        sha256 = "531a9155a481e2ee699d4f98f43c0ca4ff8ee1bfd55c31e9e98fb29d2b176fe0",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/bstr/1.11.1/download"],
-        strip_prefix = "bstr-1.11.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bstr-1.11.1.bazel"),
+        urls = ["https://static.crates.io/crates/bstr/1.11.3/download"],
+        strip_prefix = "bstr-1.11.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bstr-1.11.3.bazel"),
     )
 
     maybe(
@@ -849,12 +852,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor__bytemuck-1.20.0",
-        sha256 = "8b37c88a63ffd85d15b406896cc343916d7cf57838a847b3a6f2ca5d39a5695a",
+        name = "vendor__bytemuck-1.21.0",
+        sha256 = "ef657dfab802224e671f5818e9a4935f9b1957ed18e58292690cc39e7a4092a3",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/bytemuck/1.20.0/download"],
-        strip_prefix = "bytemuck-1.20.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bytemuck-1.20.0.bazel"),
+        urls = ["https://static.crates.io/crates/bytemuck/1.21.0/download"],
+        strip_prefix = "bytemuck-1.21.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bytemuck-1.21.0.bazel"),
     )
 
     maybe(
@@ -1709,6 +1712,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor__log-0.3.9",
+        sha256 = "e19e8d5c34a3e0e2223db8e060f9e8264aeeb5c5fc64a4ee9965c062211c024b",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/log/0.3.9/download"],
+        strip_prefix = "log-0.3.9",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.log-0.3.9.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor__log-0.4.22",
         sha256 = "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24",
         type = "tar.gz",
@@ -1785,6 +1798,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/miow/0.6.0/download"],
         strip_prefix = "miow-0.6.0",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.miow-0.6.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor__mustache-0.9.0",
+        sha256 = "51956ef1c5d20a1384524d91e616fb44dfc7d8f249bf696d49c97dd3289ecab5",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/mustache/0.9.0/download"],
+        strip_prefix = "mustache-0.9.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.mustache-0.9.0.bazel"),
     )
 
     maybe(
@@ -2848,12 +2871,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor__tree-sitter-0.24.5",
-        sha256 = "8ac95b18f0f727aaaa012bd5179a1916706ee3ed071920fdbda738750b0c0bf5",
+        name = "vendor__tree-sitter-0.24.6",
+        sha256 = "5f2434c86ba59ed15af56039cc5bf1acf8ba76ce301e32ef08827388ef285ec5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter/0.24.5/download"],
-        strip_prefix = "tree-sitter-0.24.5",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-0.24.5.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter/0.24.6/download"],
+        strip_prefix = "tree-sitter-0.24.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-0.24.6.bazel"),
     )
 
     maybe(
@@ -3381,6 +3404,7 @@ def crate_repositories():
         struct(repo = "vendor__itertools-0.14.0", is_dev_dep = False),
         struct(repo = "vendor__lazy_static-1.5.0", is_dev_dep = False),
         struct(repo = "vendor__log-0.4.22", is_dev_dep = False),
+        struct(repo = "vendor__mustache-0.9.0", is_dev_dep = False),
         struct(repo = "vendor__num-traits-0.2.19", is_dev_dep = False),
         struct(repo = "vendor__num_cpus-1.16.0", is_dev_dep = False),
         struct(repo = "vendor__proc-macro2-1.0.92", is_dev_dep = False),
@@ -3409,7 +3433,7 @@ def crate_repositories():
         struct(repo = "vendor__syn-2.0.95", is_dev_dep = False),
         struct(repo = "vendor__tracing-0.1.41", is_dev_dep = False),
         struct(repo = "vendor__tracing-subscriber-0.3.19", is_dev_dep = False),
-        struct(repo = "vendor__tree-sitter-0.24.5", is_dev_dep = False),
+        struct(repo = "vendor__tree-sitter-0.24.6", is_dev_dep = False),
         struct(repo = "vendor__tree-sitter-embedded-template-0.23.2", is_dev_dep = False),
         struct(repo = "vendor__tree-sitter-ruby-0.23.1", is_dev_dep = False),
         struct(repo = "vendor__triomphe-0.1.14", is_dev_dep = False),
