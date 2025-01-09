@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 import semmle.code.Location
+private import semmle.code.java.Overlay
 
 /** A Javadoc parent is an element whose child can be some Javadoc documentation. */
 class JavadocParent extends @javadocParent, Top {
@@ -195,4 +196,16 @@ class KtCommentSection extends @ktcommentsection {
 
   /** Gets the string representation of this section. */
   string toString() { result = this.getContent() }
+}
+
+overlay[local]
+private predicate discardableJavadoc(string file, @javadoc d) {
+  not isOverlay() and
+  exists(@member m | file = getRawFile(m) and hasJavadoc(m, d))
+}
+
+/** Discard javadoc entities in files fully extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardJavadoc(@javadoc d) {
+  exists(string file | discardableJavadoc(file, d) and extractedInOverlay(file))
 }

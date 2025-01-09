@@ -6,6 +6,7 @@ module;
 
 import Expr
 import metrics.MetricStmt
+private import semmle.code.java.Overlay
 
 /** A common super-class of all statements. */
 class Stmt extends StmtParent, ExprParent, @stmt {
@@ -986,4 +987,16 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
   override string getHalsteadID() { result = "SuperConstructorInvocationStmt" }
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
+}
+
+overlay[local]
+private predicate discardableStmt(string file, @stmt s) {
+  not isOverlay() and
+  file = getRawFile(s)
+}
+
+/** Discard base statements in files fully extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardStmt(@stmt s) {
+  exists(string file | discardableStmt(file, s) and extractedInOverlay(file))
 }
