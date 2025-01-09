@@ -583,7 +583,7 @@ module Angular2 {
     /**
      * Get the `DataFlow::Node` that is affected by this Attribute Definition.
      *
-     *  Defined instead of defining `getElement()`, which requires returning a DOM element defintion, `ElementDefinition`.
+     *  Defined instead of defining `getElement()`, which requires returning a DOM element definition, `ElementDefinition`.
      */
     DataFlow::Node getElementNode() { result = elementNode }
 
