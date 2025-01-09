@@ -17,6 +17,6 @@ export class Foo {
     }
 
     blah(form: NgForm) {
-        document.write(form.value.foo); // NOT OK [INCONSISTENCY]
+        document.write(form.value.foo); // NOT OK
     }
 }

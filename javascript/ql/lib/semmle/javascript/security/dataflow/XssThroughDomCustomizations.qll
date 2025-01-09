@@ -232,6 +232,15 @@ module XssThroughDom {
         )
       }
     }
+
+    /**
+     * An object containing input values from an Angular form, accessed through an `NgForm` object.
+     */
+    class AngularFormSource extends Source {
+      AngularFormSource() {
+        this = API::Node::ofType("@angular/forms", "NgForm").getMember("value").asSource()
+      }
+    }
   }
 
   /**
