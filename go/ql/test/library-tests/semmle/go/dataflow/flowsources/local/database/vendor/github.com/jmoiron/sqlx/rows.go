@@ -20,7 +20,3 @@ func (r *Rows) StructScan(dest interface{}) error {
 func (r *Rows) SliceScan(dest []interface{}) error {
 	return nil
 }
-
-func (r *Rows) Scan(dest ...interface{}) error {
-	return nil
-}
