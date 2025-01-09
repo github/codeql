@@ -140,7 +140,7 @@ class CopyWithin extends SummarizedCallable {
     input = "Argument[this].WithArrayElement" and
     output = "ReturnValue"
     or
-    // TODO: workaround for WithArrayElement not being converted to a taint step
+    // Explicitly add a taint step since WithArrayElement is not implicitly converted to a taint step
     preservesValue = false and
     input = "Argument[this]" and
     output = "ReturnValue"
@@ -186,7 +186,7 @@ class Filter extends SummarizedCallable {
       output = "ReturnValue"
     )
     or
-    // TODO: workaround for WithArrayElement not being converted to a taint step
+    // Explicitly add a taint step since WithArrayElement is not implicitly converted to a taint step
     preservesValue = false and
     input = "Argument[this]" and
     output = "ReturnValue"
@@ -328,10 +328,7 @@ class From1Arg extends SummarizedCallable {
       output = "ReturnValue[exception]"
     )
     or
-    // TODO: we currently convert ArrayElement read/store steps to taint steps, but this does not
-    // work for WithArrayElement because it's just an expectsContent node, and there's no way easy
-    // to omit the expectsContent restriction in taint tracking.
-    // Work around this for now.
+    // Explicitly add a taint step since WithArrayElement is not implicitly converted to a taint step
     preservesValue = false and
     input = "Argument[0]" and
     output = "ReturnValue"
@@ -561,7 +558,7 @@ class ArrayCoercionPackage extends FunctionalPackageSummary {
       output = "ReturnValue.ArrayElement"
     )
     or
-    // TODO: workaround for WithArrayElement not being converted to a taint step
+    // Explicitly add a taint step since WithArrayElement is not implicitly converted to a taint step
     preservesValue = false and
     input = "Argument[0]" and
     output = "ReturnValue"
