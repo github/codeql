@@ -987,3 +987,16 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
+
+overlay[local]
+pragma[nomagic]
+predicate discardableStmt(string file, @stmt s) {
+  not hasOverlay() and
+  file = getRawFile(s)
+}
+
+overlay[discard_entity]
+pragma[nomagic]
+predicate discardStmt(@stmt s) {
+  exists(string file | discardableStmt(file, s) and discardFile(file))
+}
