@@ -803,11 +803,11 @@ BSTR SysAllocStringLen(const OLECHAR *,unsigned);
 
 void test_sysalloc() {
 	auto p1 = SysAllocString((LPOLESTR)indirect_source());
-	sink(*p1); // $ MISSING: ir,ast
+	sink(*p1); // $ ir MISSING: ast
 
 	auto p2 = SysAllocStringByteLen(indirect_source(), 10);
-	sink(*p2); // $ MISSING: ir,ast
+	sink(*p2); // $ ir MISSING: ast
 
 	auto p3 = SysAllocStringLen((LPOLESTR)indirect_source(), 10);
-	sink(*p3); // $ MISSING: ir,ast
+	sink(*p3); // $ ir MISSING: ast
 }
