@@ -100,3 +100,10 @@ DataFlow::Node relevantSanitizerInput() {
   result = any(HtmlSanitizerCall call).getInput() and
   not result.getFile() instanceof IgnoredFile
 }
+
+string getTaintSourceName(DataFlow::Node node) {
+  result = node.(RemoteFlowSource).getSourceType()
+  or
+  not node instanceof RemoteFlowSource and
+  result = "Taint source"
+}
