@@ -44,6 +44,8 @@ class UsingWhileAfterWhile extends WhileStmt {
   }
 }
 
+
+
 /**
  * Using arithmetic in a condition.
  */
@@ -55,15 +57,15 @@ class UsingArithmeticInComparison extends BinaryArithmeticOperation {
    */
   UsingArithmeticInComparison() {
     this.getParent*() instanceof IfStmt and
-    not this.getAChild*().isConstant() and
-    not this.getParent*() instanceof Call and
-    not this.getParent*() instanceof AssignExpr and
-    not this.getParent*() instanceof ArrayExpr and
-    not this.getParent*() instanceof RemExpr and
-    not this.getParent*() instanceof AssignBitwiseOperation and
-    not this.getParent*() instanceof AssignArithmeticOperation and
-    not this.getParent*() instanceof EqualityOperation and
-    not this.getParent*() instanceof RelationalOperation
+     not (this.getAChild*().isConstant() or
+     this.getParent*() instanceof Call or
+     this.getParent*() instanceof AssignExpr or
+     this.getParent*() instanceof ArrayExpr or
+     this.getParent*() instanceof RemExpr or
+     this.getParent*() instanceof AssignBitwiseOperation or
+     this.getParent*() instanceof AssignArithmeticOperation or
+     this.getParent*() instanceof EqualityOperation or
+     this.getParent*() instanceof RelationalOperation)
   }
 
   /** Holds when the expression is inside the loop body. */
