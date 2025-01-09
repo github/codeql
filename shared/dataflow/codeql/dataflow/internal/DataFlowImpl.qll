@@ -561,13 +561,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         cc = true
         or
         // flow out of a callable
-        fwdFlowOut(_, node, false) and
+        fwdFlowOut(_, _, node, false) and
         cc = false
         or
         // flow through a callable
-        exists(DataFlowCall call |
-          fwdFlowOutFromArg(call, node) and
-          fwdFlowIsEntered(call, cc)
+        exists(DataFlowCall call, ReturnKindExtOption kind, ReturnKindExtOption disallowReturnKind |
+          fwdFlowOutFromArg(call, kind, node) and
+          fwdFlowIsEntered(call, disallowReturnKind, cc) and
+          kind != disallowReturnKind
         )
       }
 
@@ -593,11 +594,25 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
+      pragma[nomagic]
+      private ReturnKindExtOption getDisallowedReturnKind(ParamNodeEx p) {
+        if allowParameterReturnInSelfEx(p)
+        then result.isNone()
+        else p.isParameterOf(_, result.asSome().(ParamUpdateReturnKind).getPosition())
+      }
+
       /**
        * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
        */
       pragma[nomagic]
-      private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc) { fwdFlowIn(call, _, cc, _) }
+      private predicate fwdFlowIsEntered(
+        DataFlowCall call, ReturnKindExtOption disallowReturnKind, Cc cc
+      ) {
+        exists(ParamNodeEx p |
+          fwdFlowIn(call, _, cc, p) and
+          disallowReturnKind = getDisallowedReturnKind(p)
+        )
+      }
 
       pragma[nomagic]
       private predicate fwdFlowInReducedViableImplInSomeCallContext(
@@ -618,7 +633,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       private DataFlowCallable viableImplInSomeFwdFlowCallContextExt(DataFlowCall call) {
         exists(DataFlowCall ctx |
-          fwdFlowIsEntered(ctx, _) and
+          fwdFlowIsEntered(ctx, _, _) and
           result = viableImplInCallContextExt(call, ctx)
         )
       }
@@ -666,17 +681,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       // inline to reduce the number of iterations
       pragma[inline]
-      private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc) {
+      private predicate fwdFlowOut(DataFlowCall call, ReturnKindExt kind, NodeEx out, Cc cc) {
         exists(ReturnPosition pos |
           fwdFlowReturnPosition(pos, cc) and
           viableReturnPosOutEx(call, pos, out) and
-          not fullBarrier(out)
+          not fullBarrier(out) and
+          kind = pos.getKind()
         )
       }
 
       pragma[nomagic]
-      private predicate fwdFlowOutFromArg(DataFlowCall call, NodeEx out) {
-        fwdFlowOut(call, out, true)
+      private predicate fwdFlowOutFromArg(DataFlowCall call, ReturnKindExtOption kind, NodeEx out) {
+        fwdFlowOut(call, kind.asSome(), out, true)
       }
 
       private predicate stateStepFwd(FlowState state1, FlowState state2) {
@@ -750,7 +766,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         // flow into a callable
-        revFlowIn(_, node, false) and
+        revFlowIn(_, _, node, false) and
         toReturn = false
         or
         // flow out of a callable
@@ -761,9 +777,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         // flow through a callable
-        exists(DataFlowCall call |
-          revFlowInToReturn(call, node) and
-          revFlowIsReturned(call, toReturn)
+        exists(DataFlowCall call, ReturnKindExtOption kind, ReturnKindExtOption disallowReturnKind |
+          revFlowIsReturned(call, kind, toReturn) and
+          revFlowInToReturn(call, disallowReturnKind, node) and
+          kind != disallowReturnKind
         )
       }
 
@@ -824,16 +841,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       // inline to reduce the number of iterations
       pragma[inline]
-      private predicate revFlowIn(DataFlowCall call, ArgNodeEx arg, boolean toReturn) {
-        exists(ParamNodeEx p |
-          revFlow(p, toReturn) and
-          viableParamArgNodeCandFwd1(call, p, arg)
-        )
+      private predicate revFlowIn(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, boolean toReturn) {
+        revFlow(p, toReturn) and
+        viableParamArgNodeCandFwd1(call, p, arg)
       }
 
       pragma[nomagic]
-      private predicate revFlowInToReturn(DataFlowCall call, ArgNodeEx arg) {
-        revFlowIn(call, arg, true)
+      private predicate revFlowInToReturn(
+        DataFlowCall call, ReturnKindExtOption disallowReturnKind, ArgNodeEx arg
+      ) {
+        exists(ParamNodeEx p |
+          revFlowIn(call, p, arg, true) and
+          disallowReturnKind = getDisallowedReturnKind(p)
+        )
       }
 
       /**
@@ -842,10 +862,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
        * reaching an argument of `call`.
        */
       pragma[nomagic]
-      private predicate revFlowIsReturned(DataFlowCall call, boolean toReturn) {
+      private predicate revFlowIsReturned(
+        DataFlowCall call, ReturnKindExtOption kind, boolean toReturn
+      ) {
         exists(NodeEx out |
           revFlow(out, toReturn) and
-          fwdFlowOutFromArg(call, out)
+          fwdFlowOutFromArg(call, kind, out)
         )
       }
 
@@ -894,12 +916,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       predicate revFlow(NodeEx node) { revFlow(node, _) }
 
-      pragma[nomagic]
-      predicate revFlowAp(NodeEx node, Ap ap) {
-        revFlow(node) and
-        exists(ap)
-      }
-
       bindingset[node, state]
       predicate revFlow(NodeEx node, FlowState state, Ap ap) {
         revFlow(node, _) and
@@ -947,10 +963,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       predicate callMayFlowThroughRev(DataFlowCall call) {
-        exists(ArgNodeEx arg, boolean toReturn |
-          revFlow(arg, toReturn) and
-          revFlowInToReturn(call, arg) and
-          revFlowIsReturned(call, toReturn)
+        exists(
+          ArgNodeEx arg, ReturnKindExtOption kind, ReturnKindExtOption disallowReturnKind,
+          boolean toReturn
+        |
+          revFlow(arg, pragma[only_bind_into](toReturn)) and
+          revFlowIsReturned(call, kind, pragma[only_bind_into](toReturn)) and
+          revFlowInToReturn(call, disallowReturnKind, arg) and
+          kind != disallowReturnKind
         )
       }
 
@@ -1277,8 +1297,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class ApNil extends Ap;
 
       predicate revFlow(NodeEx node);
-
-      predicate revFlowAp(NodeEx node, Ap ap);
 
       bindingset[node, state]
       predicate revFlow(NodeEx node, FlowState state, Ap ap);
@@ -2456,15 +2474,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
-        additional predicate revFlow(NodeEx node, FlowState state) { revFlow(node, state, _, _, _) }
-
         predicate revFlow(NodeEx node, FlowState state, Ap ap) { revFlow(node, state, _, _, ap) }
 
         pragma[nomagic]
         predicate revFlow(NodeEx node) { revFlow(node, _, _, _, _) }
-
-        pragma[nomagic]
-        predicate revFlowAp(NodeEx node, Ap ap) { revFlow(node, _, _, _, ap) }
 
         private predicate fwdConsCand(Content c, Ap ap) { storeStepFwd(_, ap, c, _, _) }
 
@@ -2620,7 +2633,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
            */
           private class FlowCheckNode extends NodeEx {
             FlowCheckNode() {
-              revFlow(this, _, _) and
+              revFlow(this) and
               (
                 flowCheckNode(this) or
                 Config::neverSkip(this.asNode())

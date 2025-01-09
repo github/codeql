@@ -1217,7 +1217,8 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertExportSpecifier(JsonObject node, SourceLocation loc) throws ParseError {
-    Identifier local = convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name");
+    JsonObject localToken = node.get(hasChild(node, "propertyName") ? "propertyName" : "name").getAsJsonObject();
+    Identifier local = convertNodeAsIdentifier(localToken);
     JsonObject exportedToken = node.get("name").getAsJsonObject();
     Identifier exported = convertNodeAsIdentifier(exportedToken);
 

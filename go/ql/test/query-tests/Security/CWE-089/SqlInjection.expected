@@ -26,7 +26,6 @@
 | mongoDB.go:81:18:81:25 | pipeline | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:81:18:81:25 | pipeline | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
 edges
 | SqlInjection.go:10:7:11:30 | []type{args} [array] | SqlInjection.go:10:7:11:30 | call to Sprintf | provenance | MaD:23 |
-| SqlInjection.go:10:7:11:30 | []type{args} [array] | SqlInjection.go:11:3:11:29 | index expression | provenance |  |
 | SqlInjection.go:10:7:11:30 | call to Sprintf | SqlInjection.go:12:11:12:11 | q | provenance | Sink:MaD:1 |
 | SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:11:3:11:17 | call to Query | provenance | Src:MaD:21 MaD:26 |
 | SqlInjection.go:11:3:11:17 | call to Query | SqlInjection.go:11:3:11:29 | index expression | provenance |  |
@@ -37,7 +36,6 @@ edges
 | issue48.go:18:17:18:17 | b | issue48.go:18:20:18:39 | &... | provenance | MaD:22 |
 | issue48.go:18:20:18:39 | &... | issue48.go:21:3:21:33 | index expression | provenance |  |
 | issue48.go:20:8:21:34 | []type{args} [array] | issue48.go:20:8:21:34 | call to Sprintf | provenance | MaD:23 |
-| issue48.go:20:8:21:34 | []type{args} [array] | issue48.go:21:3:21:33 | index expression | provenance |  |
 | issue48.go:20:8:21:34 | call to Sprintf | issue48.go:22:11:22:12 | q3 | provenance | Sink:MaD:1 |
 | issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | []type{args} [array] | provenance |  |
 | issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | call to Sprintf | provenance | FunctionModel |
@@ -46,7 +44,6 @@ edges
 | issue48.go:28:17:28:18 | b2 | issue48.go:28:21:28:41 | &... | provenance | MaD:22 |
 | issue48.go:28:21:28:41 | &... | issue48.go:31:3:31:31 | selection of Category | provenance |  |
 | issue48.go:30:8:31:32 | []type{args} [array] | issue48.go:30:8:31:32 | call to Sprintf | provenance | MaD:23 |
-| issue48.go:30:8:31:32 | []type{args} [array] | issue48.go:31:3:31:31 | selection of Category | provenance |  |
 | issue48.go:30:8:31:32 | call to Sprintf | issue48.go:32:11:32:12 | q4 | provenance | Sink:MaD:1 |
 | issue48.go:31:3:31:31 | selection of Category | issue48.go:30:8:31:32 | []type{args} [array] | provenance |  |
 | issue48.go:31:3:31:31 | selection of Category | issue48.go:30:8:31:32 | call to Sprintf | provenance | FunctionModel |
@@ -55,13 +52,11 @@ edges
 | issue48.go:37:24:37:38 | call to Query | issue48.go:37:17:37:50 | type conversion | provenance |  |
 | issue48.go:37:53:37:73 | &... | issue48.go:40:3:40:31 | selection of Category | provenance |  |
 | issue48.go:39:8:40:32 | []type{args} [array] | issue48.go:39:8:40:32 | call to Sprintf | provenance | MaD:23 |
-| issue48.go:39:8:40:32 | []type{args} [array] | issue48.go:40:3:40:31 | selection of Category | provenance |  |
 | issue48.go:39:8:40:32 | call to Sprintf | issue48.go:41:11:41:12 | q5 | provenance | Sink:MaD:1 |
 | issue48.go:40:3:40:31 | selection of Category | issue48.go:39:8:40:32 | []type{args} [array] | provenance |  |
 | issue48.go:40:3:40:31 | selection of Category | issue48.go:39:8:40:32 | call to Sprintf | provenance | FunctionModel |
 | main.go:11:11:11:16 | selection of Form | main.go:11:11:11:28 | index expression | provenance | Src:MaD:18 Sink:MaD:1 |
 | main.go:15:11:15:84 | []type{args} [array] | main.go:15:11:15:84 | call to Sprintf | provenance | MaD:23 Sink:MaD:2 |
-| main.go:15:11:15:84 | []type{args} [array] | main.go:15:63:15:83 | index expression | provenance |  |
 | main.go:15:63:15:67 | selection of URL | main.go:15:63:15:75 | call to Query | provenance | Src:MaD:21 MaD:26 |
 | main.go:15:63:15:75 | call to Query | main.go:15:63:15:83 | index expression | provenance |  |
 | main.go:15:63:15:83 | index expression | main.go:15:11:15:84 | []type{args} [array] | provenance |  |
@@ -76,7 +71,6 @@ edges
 | main.go:30:13:30:27 | call to Query | main.go:30:13:30:39 | index expression | provenance |  |
 | main.go:30:13:30:39 | index expression | main.go:28:18:31:2 | struct literal [Category] | provenance |  |
 | main.go:33:7:34:23 | []type{args} [array] | main.go:33:7:34:23 | call to Sprintf | provenance | MaD:23 |
-| main.go:33:7:34:23 | []type{args} [array] | main.go:34:3:34:22 | selection of Category | provenance |  |
 | main.go:33:7:34:23 | call to Sprintf | main.go:35:11:35:11 | q | provenance | Sink:MaD:1 |
 | main.go:34:3:34:13 | RequestData [pointer, Category] | main.go:34:3:34:13 | implicit dereference [Category] | provenance |  |
 | main.go:34:3:34:13 | implicit dereference [Category] | main.go:34:3:34:22 | selection of Category | provenance |  |
@@ -90,7 +84,6 @@ edges
 | main.go:40:25:40:39 | call to Query | main.go:40:25:40:51 | index expression | provenance |  |
 | main.go:40:25:40:51 | index expression | main.go:40:2:40:12 | implicit dereference [Category] | provenance |  |
 | main.go:42:7:43:23 | []type{args} [array] | main.go:42:7:43:23 | call to Sprintf | provenance | MaD:23 |
-| main.go:42:7:43:23 | []type{args} [array] | main.go:43:3:43:22 | selection of Category | provenance |  |
 | main.go:42:7:43:23 | call to Sprintf | main.go:44:11:44:11 | q | provenance | Sink:MaD:1 |
 | main.go:43:3:43:13 | RequestData [pointer, Category] | main.go:43:3:43:13 | implicit dereference [Category] | provenance |  |
 | main.go:43:3:43:13 | implicit dereference [Category] | main.go:43:3:43:22 | selection of Category | provenance |  |
@@ -104,7 +97,6 @@ edges
 | main.go:49:28:49:42 | call to Query | main.go:49:28:49:54 | index expression | provenance |  |
 | main.go:49:28:49:54 | index expression | main.go:49:3:49:14 | star expression [Category] | provenance |  |
 | main.go:51:7:52:23 | []type{args} [array] | main.go:51:7:52:23 | call to Sprintf | provenance | MaD:23 |
-| main.go:51:7:52:23 | []type{args} [array] | main.go:52:3:52:22 | selection of Category | provenance |  |
 | main.go:51:7:52:23 | call to Sprintf | main.go:53:11:53:11 | q | provenance | Sink:MaD:1 |
 | main.go:52:3:52:13 | RequestData [pointer, Category] | main.go:52:3:52:13 | implicit dereference [Category] | provenance |  |
 | main.go:52:3:52:13 | implicit dereference [Category] | main.go:52:3:52:22 | selection of Category | provenance |  |
@@ -118,7 +110,6 @@ edges
 | main.go:58:28:58:42 | call to Query | main.go:58:28:58:54 | index expression | provenance |  |
 | main.go:58:28:58:54 | index expression | main.go:58:3:58:14 | star expression [Category] | provenance |  |
 | main.go:60:7:61:26 | []type{args} [array] | main.go:60:7:61:26 | call to Sprintf | provenance | MaD:23 |
-| main.go:60:7:61:26 | []type{args} [array] | main.go:61:3:61:25 | selection of Category | provenance |  |
 | main.go:60:7:61:26 | call to Sprintf | main.go:62:11:62:11 | q | provenance | Sink:MaD:1 |
 | main.go:61:3:61:25 | selection of Category | main.go:60:7:61:26 | []type{args} [array] | provenance |  |
 | main.go:61:3:61:25 | selection of Category | main.go:60:7:61:26 | call to Sprintf | provenance | FunctionModel |

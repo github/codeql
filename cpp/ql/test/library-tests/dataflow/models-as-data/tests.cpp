@@ -465,3 +465,14 @@ void test_parameter_ref_to_return_ref() {
 	int y = s.parameter_ref_to_return_ref(x);
 	sink(y); // $ ir
 }
+
+using INT = int;
+
+int receive_array(INT a[20]); // $ interpretElement
+
+void test_receive_array() {
+	int x = source();
+	int array[10] = {x};
+	int y = receive_array(array);
+	sink(y); // $ ir
+}

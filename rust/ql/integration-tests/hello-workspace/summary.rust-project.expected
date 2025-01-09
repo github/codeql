@@ -14,5 +14,6 @@
 | Macro calls - resolved | 2 |
 | Macro calls - total | 2 |
 | Macro calls - unresolved | 0 |
+| Sensitive data | 0 |
 | Taint sources - active | 0 |
 | Taint sources - total | 0 |
