@@ -29,10 +29,6 @@ module UnsafeCodeConstruction {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // HTML sanitizers are insufficient protection against code injection
       node1 = node2.(HtmlSanitizerCall).getInput()
-      or
-      none()
-      // TODO: localFieldStep is too expensive with dataflow2
-      // DataFlow::localFieldStep(pred, succ)
     }
 
     DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }

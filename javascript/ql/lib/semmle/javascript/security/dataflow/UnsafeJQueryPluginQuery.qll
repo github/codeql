@@ -23,11 +23,6 @@ module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node sink) {
-    // jQuery plugins tend to be implemented as classes that store data in fields initialized by the constructor.
-    // TODO: localFieldStep is too expensive with dataflow2
-    // DataFlow::localFieldStep(pred, succ)
-    none()
-    or
     aliasPropertyPresenceStep(node1, sink)
   }
 

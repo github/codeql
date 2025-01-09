@@ -47,12 +47,6 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    // TODO: localFieldStep is too expensive with dataflow2
-    // DataFlow::localFieldStep(pred, succ) and
-    // inlbl.isTaint() and
-    // outlbl.isTaint()
-    none()
-    or
     TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
     or
     // property read from a tainted object is considered tainted

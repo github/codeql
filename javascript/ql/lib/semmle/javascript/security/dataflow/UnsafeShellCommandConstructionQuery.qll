@@ -26,12 +26,6 @@ module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
     node = TaintTracking::AdHocWhitelistCheckSanitizer::getABarrierNode()
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    none()
-    // TODO: localFieldStep is too expensive with dataflow2
-    // DataFlow::localFieldStep(pred, succ)
-  }
-
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 }
 

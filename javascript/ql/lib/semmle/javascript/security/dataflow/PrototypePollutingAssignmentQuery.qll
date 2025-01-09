@@ -99,11 +99,6 @@ module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
       state2 = FlowState::objectPrototype()
     )
     or
-    // TODO: local field step becomes a jump step, resulting in FPs (closure-lib)
-    // TODO: localFieldStep is too expensive with dataflow2
-    // DataFlow::localFieldStep(pred, succ)
-    none()
-    or
     state1 = FlowState::taint() and
     TaintTracking::defaultTaintStep(node1, node2) and
     state1 = state2
