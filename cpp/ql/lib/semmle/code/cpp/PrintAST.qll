@@ -645,7 +645,7 @@ class ConceptIdExprArgumentsNode extends PrintAstNode, TConceptIdExprArgumentsNo
 
   override string getChildAccessorPredicateInternal(int childIndex) {
     exists(this.getChildInternal(childIndex)) and
-    result = "getTemplateArgument(" + childIndex.toString() + ")"
+    result = "getTemplateArgument(" + childIndex + ")"
   }
 
   /**
@@ -698,7 +698,7 @@ class FunctionParametersNode extends PrintAstNode, TFunctionParametersNode {
 
   override string getChildAccessorPredicateInternal(int childIndex) {
     exists(this.getChildInternal(childIndex)) and
-    result = "getParameter(" + childIndex.toString() + ")"
+    result = "getParameter(" + childIndex + ")"
   }
 
   /**
@@ -725,7 +725,7 @@ class RequiresExprParametersNode extends PrintAstNode, TRequiresExprParametersNo
 
   override string getChildAccessorPredicateInternal(int childIndex) {
     exists(this.getChildInternal(childIndex)) and
-    result = "getParameter(" + childIndex.toString() + ")"
+    result = "getParameter(" + childIndex + ")"
   }
 
   /**
@@ -752,7 +752,7 @@ class ConstructorInitializersNode extends PrintAstNode, TConstructorInitializers
 
   final override string getChildAccessorPredicateInternal(int childIndex) {
     exists(this.getChildInternal(childIndex)) and
-    result = "getInitializer(" + childIndex.toString() + ")"
+    result = "getInitializer(" + childIndex + ")"
   }
 
   /**
@@ -779,7 +779,7 @@ class DestructorDestructionsNode extends PrintAstNode, TDestructorDestructionsNo
 
   final override string getChildAccessorPredicateInternal(int childIndex) {
     exists(this.getChildInternal(childIndex)) and
-    result = "getDestruction(" + childIndex.toString() + ")"
+    result = "getDestruction(" + childIndex + ")"
   }
 
   /**
