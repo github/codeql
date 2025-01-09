@@ -6,6 +6,7 @@ test_ExportDeclarations
 | arbitrarySpecifier.ts:5:1:5:32 | export  ... :new" } |
 | arbitrarySpecifier.ts:6:1:6:41 | export  ... './mod' |
 | arbitrarySpecifier.ts:8:1:8:43 | export  ... where"; |
+| arbitrarySpecifier.ts:9:1:9:34 | export  ... where"; |
 | b.js:5:1:5:18 | export { f as g }; |
 | b.js:7:1:7:21 | export  ...  './a'; |
 | d.js:4:1:4:20 | export * from 'm/c'; |
@@ -24,6 +25,7 @@ test_ExportDefaultDeclarations
 test_ExportSpecifiers
 | arbitrarySpecifier.ts:5:10:5:30 | Foo_new ... o::new" | arbitrarySpecifier.ts:5:10:5:16 | Foo_new | arbitrarySpecifier.ts:5:21:5:30 | "Foo::new" |
 | arbitrarySpecifier.ts:8:10:8:23 | "<X>" as "<Y>" | arbitrarySpecifier.ts:8:10:8:14 | "<X>" | arbitrarySpecifier.ts:8:19:8:23 | "<Y>" |
+| arbitrarySpecifier.ts:9:10:9:14 | "<X>" | arbitrarySpecifier.ts:9:10:9:14 | "<X>" | arbitrarySpecifier.ts:9:10:9:14 | "<X>" |
 | b.js:5:10:5:15 | f as g | b.js:5:10:5:10 | f | b.js:5:15:5:15 | g |
 | e.js:2:10:2:10 | x | e.js:2:10:2:10 | x | e.js:2:10:2:10 | x |
 | e.js:2:13:2:13 | y | e.js:2:13:2:13 | y | e.js:2:13:2:13 | y |
@@ -83,8 +85,8 @@ test_Module_exports
 | a.js:1:1:5:32 | <toplevel> | default | a.js:1:16:3:1 | functio ... n 23;\\n} |
 | a.js:1:1:5:32 | <toplevel> | x | a.js:5:18:5:20 | f() |
 | a.js:1:1:5:32 | <toplevel> | y | a.js:5:25:5:25 | y |
-| arbitrarySpecifier.ts:1:1:9:0 | <toplevel> | Foo::new | arbitrarySpecifier.ts:5:10:5:16 | Foo_new |
-| arbitrarySpecifier.ts:1:1:9:0 | <toplevel> | Foo_types | arbitrarySpecifier.ts:6:13:6:28 | * as "Foo_types" |
+| arbitrarySpecifier.ts:1:1:10:0 | <toplevel> | Foo::new | arbitrarySpecifier.ts:5:10:5:16 | Foo_new |
+| arbitrarySpecifier.ts:1:1:10:0 | <toplevel> | Foo_types | arbitrarySpecifier.ts:6:13:6:28 | * as "Foo_types" |
 | b.js:1:1:8:0 | <toplevel> | f2 | a.js:1:16:3:1 | functio ... n 23;\\n} |
 | b.js:1:1:8:0 | <toplevel> | g | b.js:5:10:5:10 | f |
 | e.js:1:1:4:0 | <toplevel> | g | a.js:1:16:3:1 | functio ... n 23;\\n} |
@@ -112,6 +114,7 @@ test_OtherImports
 test_ReExportDeclarations
 | arbitrarySpecifier.ts:6:1:6:41 | export  ... './mod' | arbitrarySpecifier.ts:6:35:6:41 | './mod' |
 | arbitrarySpecifier.ts:8:1:8:43 | export  ... where"; | arbitrarySpecifier.ts:8:32:8:42 | "somewhere" |
+| arbitrarySpecifier.ts:9:1:9:34 | export  ... where"; | arbitrarySpecifier.ts:9:23:9:33 | "somewhere" |
 | b.js:7:1:7:21 | export  ...  './a'; | b.js:7:16:7:20 | './a' |
 | d.js:4:1:4:20 | export * from 'm/c'; | d.js:4:15:4:19 | 'm/c' |
 | e.js:3:1:3:35 | export  ...  './a'; | e.js:3:30:3:34 | './a' |
@@ -132,6 +135,7 @@ test_getExportedName
 | arbitrarySpecifier.ts:5:10:5:30 | Foo_new ... o::new" | Foo::new |
 | arbitrarySpecifier.ts:6:13:6:28 | * as "Foo_types" | Foo_types |
 | arbitrarySpecifier.ts:8:10:8:23 | "<X>" as "<Y>" | <Y> |
+| arbitrarySpecifier.ts:9:10:9:14 | "<X>" | <X> |
 | b.js:5:10:5:15 | f as g | g |
 | b.js:7:8:7:9 | f2 | f2 |
 | e.js:2:10:2:10 | x | x |
@@ -157,6 +161,7 @@ test_getImportedName
 test_getLocalName
 | arbitrarySpecifier.ts:5:10:5:30 | Foo_new ... o::new" | Foo_new |
 | arbitrarySpecifier.ts:8:10:8:23 | "<X>" as "<Y>" | <X> |
+| arbitrarySpecifier.ts:9:10:9:14 | "<X>" | <X> |
 | b.js:5:10:5:15 | f as g | f |
 | b.js:7:8:7:9 | f2 | default |
 | e.js:2:10:2:10 | x | x |

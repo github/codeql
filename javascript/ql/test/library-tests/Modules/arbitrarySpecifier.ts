@@ -6,3 +6,4 @@ export { Foo_new as "Foo::new" }
 export type * as "Foo_types" from './mod'
 
 export { "<X>" as "<Y>" } from "somewhere";
+export { "<X>" } from "somewhere";
