@@ -81,7 +81,7 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.11.1",
+    version = "1.11.3",
     deps = [
         "@vendor__memchr-2.7.4//:memchr",
     ],

@@ -288,8 +288,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_asm_expr(&mut self, node: ast::AsmExpr) -> Option<Label<generated::AsmExpr>> {
-        let asm_pieces = node.asm_pieces().filter_map(|x| self.emit_asm_piece(x)).collect();
         if self.should_be_excluded(&node) { return None; }
+        let asm_pieces = node.asm_pieces().filter_map(|x| self.emit_asm_piece(x)).collect();
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let template = node.template().filter_map(|x| self.emit_expr(x)).collect();
         let label = self.trap.emit(generated::AsmExpr {
@@ -409,8 +409,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_assoc_item_list(&mut self, node: ast::AssocItemList) -> Option<Label<generated::AssocItemList>> {
-        let assoc_items = node.assoc_items().filter_map(|x| self.emit_assoc_item(x)).collect();
         if self.should_be_excluded(&node) { return None; }
+        let assoc_items = node.assoc_items().filter_map(|x| self.emit_assoc_item(x)).collect();
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let label = self.trap.emit(generated::AssocItemList {
             id: TrapId::Star,
@@ -569,8 +569,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_call_expr(&mut self, node: ast::CallExpr) -> Option<Label<generated::CallExpr>> {
-        let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
         if self.should_be_excluded(&node) { return None; }
+        let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let function = node.expr().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::CallExpr {
@@ -780,8 +780,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_extern_block(&mut self, node: ast::ExternBlock) -> Option<Label<generated::ExternBlock>> {
-        let abi = node.abi().and_then(|x| self.emit_abi(x));
         if self.should_be_excluded(&node) { return None; }
+        let abi = node.abi().and_then(|x| self.emit_abi(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let extern_item_list = node.extern_item_list().and_then(|x| self.emit_extern_item_list(x));
         let is_unsafe = node.unsafe_token().is_some();
@@ -850,8 +850,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_fn(&mut self, node: ast::Fn) -> Option<Label<generated::Function>> {
-        let abi = node.abi().and_then(|x| self.emit_abi(x));
         if self.should_be_excluded(&node) { return None; }
+        let abi = node.abi().and_then(|x| self.emit_abi(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let body = node.body().and_then(|x| self.emit_block_expr(x));
         let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
@@ -960,8 +960,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_format_args_expr(&mut self, node: ast::FormatArgsExpr) -> Option<Label<generated::FormatArgsExpr>> {
-        let args = node.args().filter_map(|x| self.emit_format_args_arg(x)).collect();
         if self.should_be_excluded(&node) { return None; }
+        let args = node.args().filter_map(|x| self.emit_format_args_arg(x)).collect();
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let template = node.template().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::FormatArgsExpr {
@@ -1041,8 +1041,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_impl(&mut self, node: ast::Impl) -> Option<Label<generated::Impl>> {
-        let assoc_item_list = node.assoc_item_list().and_then(|x| self.emit_assoc_item_list(x));
         if self.should_be_excluded(&node) { return None; }
+        let assoc_item_list = node.assoc_item_list().and_then(|x| self.emit_assoc_item_list(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let is_const = node.const_token().is_some();
@@ -1290,8 +1290,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_macro_def(&mut self, node: ast::MacroDef) -> Option<Label<generated::MacroDef>> {
-        let args = node.args().and_then(|x| self.emit_token_tree(x));
         if self.should_be_excluded(&node) { return None; }
+        let args = node.args().and_then(|x| self.emit_token_tree(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let body = node.body().and_then(|x| self.emit_token_tree(x));
         let name = node.name().and_then(|x| self.emit_name(x));
@@ -1411,8 +1411,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_match_arm_list(&mut self, node: ast::MatchArmList) -> Option<Label<generated::MatchArmList>> {
-        let arms = node.arms().filter_map(|x| self.emit_match_arm(x)).collect();
         if self.should_be_excluded(&node) { return None; }
+        let arms = node.arms().filter_map(|x| self.emit_match_arm(x)).collect();
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let label = self.trap.emit(generated::MatchArmList {
             id: TrapId::Star,
@@ -1473,8 +1473,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_method_call_expr(&mut self, node: ast::MethodCallExpr) -> Option<Label<generated::MethodCallExpr>> {
-        let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
         if self.should_be_excluded(&node) { return None; }
+        let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
         let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
@@ -2179,8 +2179,8 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_trait(&mut self, node: ast::Trait) -> Option<Label<generated::Trait>> {
-        let assoc_item_list = node.assoc_item_list().and_then(|x| self.emit_assoc_item_list(x));
         if self.should_be_excluded(&node) { return None; }
+        let assoc_item_list = node.assoc_item_list().and_then(|x| self.emit_assoc_item_list(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let is_auto = node.auto_token().is_some();
@@ -2643,5 +2643,4 @@ impl Translator<'_> {
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
-
 }

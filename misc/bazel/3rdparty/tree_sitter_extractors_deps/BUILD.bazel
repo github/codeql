@@ -116,6 +116,12 @@ alias(
 )
 
 alias(
+    name = "mustache",
+    actual = "@vendor__mustache-0.9.0//:mustache",
+    tags = ["manual"],
+)
+
+alias(
     name = "num-traits",
     actual = "@vendor__num-traits-0.2.19//:num_traits",
     tags = ["manual"],
@@ -291,7 +297,7 @@ alias(
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor__tree-sitter-0.24.5//:tree_sitter",
+    actual = "@vendor__tree-sitter-0.24.6//:tree_sitter",
     tags = ["manual"],
 )
 
