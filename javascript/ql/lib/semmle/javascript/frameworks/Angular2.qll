@@ -580,8 +580,9 @@ module Angular2 {
 
     override string getName() { result = propertyNode.getStringValue() }
 
-    /** Get the `DataFlow::Node` that is affected by this Attribute Definition.
-     * 
+    /**
+     * Get the `DataFlow::Node` that is affected by this Attribute Definition.
+     *
      *  Defined instead of defining `getElement()`, which requires returning a DOM element defintion, `ElementDefinition`.
      */
     DataFlow::Node getElementNode() { result = elementNode }
