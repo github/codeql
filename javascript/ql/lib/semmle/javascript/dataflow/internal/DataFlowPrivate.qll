@@ -1401,7 +1401,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     // shift known array indices
     c.asSingleton().asArrayIndex() = content.asArrayIndex() + restIndex
     or
-    content.isUnknownArrayElement() and // TODO: don't read unknown array elements from static array
+    content.isUnknownArrayElement() and
     c = ContentSet::arrayElementUnknown()
   )
   or
