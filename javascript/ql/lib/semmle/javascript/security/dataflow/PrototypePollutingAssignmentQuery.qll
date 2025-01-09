@@ -65,10 +65,7 @@ module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
     state = FlowState::objectPrototype()
   }
 
-  predicate isBarrierIn(DataFlow::Node node, FlowState state) {
-    // FIXME: This should only be an in-barrier for the corresponding flow state, but flow-state specific in-barriers are not supported right now.
-    isSource(node, state)
-  }
+  predicate isBarrierIn(DataFlow::Node node, FlowState state) { isSource(node, state) }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
