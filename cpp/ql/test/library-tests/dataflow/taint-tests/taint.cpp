@@ -790,3 +790,24 @@ void fopen_test(char* source) {
 	fopen_s(&f2, source, "r");
 	sink(f2); // $ ast,ir
 }
+
+typedef wchar_t OLECHAR;
+typedef OLECHAR* LPOLESTR;
+typedef const LPOLESTR LPCOLESTR;
+typedef OLECHAR* BSTR;
+typedef const char* LPCSTR;
+
+BSTR SysAllocString(const OLECHAR *);
+BSTR SysAllocStringByteLen(LPCSTR, unsigned );
+BSTR SysAllocStringLen(const OLECHAR *,unsigned);
+
+void test_sysalloc() {
+	auto p1 = SysAllocString((LPOLESTR)indirect_source());
+	sink(*p1); // $ MISSING: ir,ast
+
+	auto p2 = SysAllocStringByteLen(indirect_source(), 10);
+	sink(*p2); // $ MISSING: ir,ast
+
+	auto p3 = SysAllocStringLen((LPOLESTR)indirect_source(), 10);
+	sink(*p3); // $ MISSING: ir,ast
+}
