@@ -66,11 +66,6 @@ predicate containerReadStep(Node node1, Node node2, Content c) {
     (
       node2.(Read).readsElement(node1, _)
       or
-      exists(ImplicitVarargsSlice ivs |
-        node1.(PostUpdateNode).getPreUpdateNode() = ivs and
-        node2.(PostUpdateNode).getPreUpdateNode() = ivs.getCallNode().getAnImplicitVarargsArgument()
-      )
-      or
       node2.(RangeElementNode).getBase() = node1
       or
       // To model data flow from array elements of the base of a `SliceNode` to

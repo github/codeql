@@ -32,10 +32,8 @@ edges
 | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | provenance | Src:MaD:8  |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file | provenance | Src:MaD:7  |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename | provenance | Src:MaD:7  |
-| reflectedxsstest.go:32:2:32:8 | definition of content | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
 | reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | provenance | MaD:13 |
-| reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:32:2:32:8 | definition of content | provenance |  |
 | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion | provenance |  |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | provenance |  |
@@ -65,33 +63,11 @@ edges
 | tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:34 | call to Get | provenance | Src:MaD:6 MaD:18 |
 | tst.go:48:14:48:34 | call to Get | tst.go:53:12:53:26 | type conversion | provenance |  |
 | websocketXss.go:30:7:30:10 | definition of xnet | websocketXss.go:32:24:32:27 | xnet | provenance | Src:MaD:5  |
-| websocketXss.go:30:7:30:10 | definition of xnet | websocketXss.go:32:24:32:27 | xnet | provenance | Src:MaD:5  |
-| websocketXss.go:32:3:32:28 | []type{args} [array] | websocketXss.go:30:7:30:10 | definition of xnet | provenance |  |
-| websocketXss.go:32:24:32:27 | xnet | websocketXss.go:32:3:32:28 | []type{args} [array] | provenance |  |
 | websocketXss.go:34:3:34:7 | definition of xnet2 | websocketXss.go:36:24:36:28 | xnet2 | provenance | Src:MaD:4  |
-| websocketXss.go:34:3:34:7 | definition of xnet2 | websocketXss.go:36:24:36:28 | xnet2 | provenance | Src:MaD:4  |
-| websocketXss.go:36:3:36:29 | []type{args} [array] | websocketXss.go:34:3:34:7 | definition of xnet2 | provenance |  |
-| websocketXss.go:36:24:36:28 | xnet2 | websocketXss.go:36:3:36:29 | []type{args} [array] | provenance |  |
 | websocketXss.go:40:3:40:40 | ... := ...[1] | websocketXss.go:41:24:41:29 | nhooyr | provenance | Src:MaD:11  |
-| websocketXss.go:40:3:40:40 | ... := ...[1] | websocketXss.go:41:24:41:29 | nhooyr | provenance | Src:MaD:11  |
-| websocketXss.go:40:6:40:11 | definition of nhooyr | websocketXss.go:41:24:41:29 | nhooyr | provenance |  |
-| websocketXss.go:40:6:40:11 | definition of nhooyr | websocketXss.go:41:24:41:29 | nhooyr | provenance |  |
-| websocketXss.go:41:3:41:30 | []type{args} [array] | websocketXss.go:40:6:40:11 | definition of nhooyr | provenance |  |
-| websocketXss.go:41:24:41:29 | nhooyr | websocketXss.go:41:3:41:30 | []type{args} [array] | provenance |  |
 | websocketXss.go:46:7:46:16 | definition of gorillaMsg | websocketXss.go:48:24:48:33 | gorillaMsg | provenance | Src:MaD:1  |
-| websocketXss.go:46:7:46:16 | definition of gorillaMsg | websocketXss.go:48:24:48:33 | gorillaMsg | provenance | Src:MaD:1  |
-| websocketXss.go:48:3:48:34 | []type{args} [array] | websocketXss.go:46:7:46:16 | definition of gorillaMsg | provenance |  |
-| websocketXss.go:48:24:48:33 | gorillaMsg | websocketXss.go:48:3:48:34 | []type{args} [array] | provenance |  |
 | websocketXss.go:50:3:50:10 | definition of gorilla2 | websocketXss.go:52:24:52:31 | gorilla2 | provenance | Src:MaD:2  |
-| websocketXss.go:50:3:50:10 | definition of gorilla2 | websocketXss.go:52:24:52:31 | gorilla2 | provenance | Src:MaD:2  |
-| websocketXss.go:52:3:52:32 | []type{args} [array] | websocketXss.go:50:3:50:10 | definition of gorilla2 | provenance |  |
-| websocketXss.go:52:24:52:31 | gorilla2 | websocketXss.go:52:3:52:32 | []type{args} [array] | provenance |  |
 | websocketXss.go:54:3:54:38 | ... := ...[1] | websocketXss.go:55:24:55:31 | gorilla3 | provenance | Src:MaD:3  |
-| websocketXss.go:54:3:54:38 | ... := ...[1] | websocketXss.go:55:24:55:31 | gorilla3 | provenance | Src:MaD:3  |
-| websocketXss.go:54:6:54:13 | definition of gorilla3 | websocketXss.go:55:24:55:31 | gorilla3 | provenance |  |
-| websocketXss.go:54:6:54:13 | definition of gorilla3 | websocketXss.go:55:24:55:31 | gorilla3 | provenance |  |
-| websocketXss.go:55:3:55:32 | []type{args} [array] | websocketXss.go:54:6:54:13 | definition of gorilla3 | provenance |  |
-| websocketXss.go:55:24:55:31 | gorilla3 | websocketXss.go:55:3:55:32 | []type{args} [array] | provenance |  |
 models
 | 1 | Source: github.com/gorilla/websocket; ; false; ReadJSON; ; ; Argument[1]; remote; manual |
 | 2 | Source: github.com/gorilla/websocket; Conn; true; ReadJSON; ; ; Argument[0]; remote; manual |
@@ -132,7 +108,6 @@ nodes
 | contenttype.go:114:50:114:53 | data | semmle.label | data |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | semmle.label | ... := ...[1] |
-| reflectedxsstest.go:32:2:32:8 | definition of content | semmle.label | definition of content |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:32:34:32:37 | file | semmle.label | file |
 | reflectedxsstest.go:33:10:33:57 | type conversion | semmle.label | type conversion |
@@ -167,29 +142,15 @@ nodes
 | tst.go:48:14:48:34 | call to Get | semmle.label | call to Get |
 | tst.go:53:12:53:26 | type conversion | semmle.label | type conversion |
 | websocketXss.go:30:7:30:10 | definition of xnet | semmle.label | definition of xnet |
-| websocketXss.go:32:3:32:28 | []type{args} [array] | semmle.label | []type{args} [array] |
-| websocketXss.go:32:24:32:27 | xnet | semmle.label | xnet |
 | websocketXss.go:32:24:32:27 | xnet | semmle.label | xnet |
 | websocketXss.go:34:3:34:7 | definition of xnet2 | semmle.label | definition of xnet2 |
-| websocketXss.go:36:3:36:29 | []type{args} [array] | semmle.label | []type{args} [array] |
-| websocketXss.go:36:24:36:28 | xnet2 | semmle.label | xnet2 |
 | websocketXss.go:36:24:36:28 | xnet2 | semmle.label | xnet2 |
 | websocketXss.go:40:3:40:40 | ... := ...[1] | semmle.label | ... := ...[1] |
-| websocketXss.go:40:6:40:11 | definition of nhooyr | semmle.label | definition of nhooyr |
-| websocketXss.go:41:3:41:30 | []type{args} [array] | semmle.label | []type{args} [array] |
-| websocketXss.go:41:24:41:29 | nhooyr | semmle.label | nhooyr |
 | websocketXss.go:41:24:41:29 | nhooyr | semmle.label | nhooyr |
 | websocketXss.go:46:7:46:16 | definition of gorillaMsg | semmle.label | definition of gorillaMsg |
-| websocketXss.go:48:3:48:34 | []type{args} [array] | semmle.label | []type{args} [array] |
-| websocketXss.go:48:24:48:33 | gorillaMsg | semmle.label | gorillaMsg |
 | websocketXss.go:48:24:48:33 | gorillaMsg | semmle.label | gorillaMsg |
 | websocketXss.go:50:3:50:10 | definition of gorilla2 | semmle.label | definition of gorilla2 |
-| websocketXss.go:52:3:52:32 | []type{args} [array] | semmle.label | []type{args} [array] |
-| websocketXss.go:52:24:52:31 | gorilla2 | semmle.label | gorilla2 |
 | websocketXss.go:52:24:52:31 | gorilla2 | semmle.label | gorilla2 |
 | websocketXss.go:54:3:54:38 | ... := ...[1] | semmle.label | ... := ...[1] |
-| websocketXss.go:54:6:54:13 | definition of gorilla3 | semmle.label | definition of gorilla3 |
-| websocketXss.go:55:3:55:32 | []type{args} [array] | semmle.label | []type{args} [array] |
-| websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 | websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 subpaths
