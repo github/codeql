@@ -8,10 +8,10 @@ import { Component } from "@angular/core";
 })
 export class Foo {
     setInput1(event) {
-        document.write(event.target.value); // NOT OK [INCONSISTENCY]
+        document.write(event.target.value); // NOT OK
     }
 
     setInput2(target) {
-        document.write(target.value); // NOT OK [INCONSISTENCY]
+        document.write(target.value); // NOT OK
     }
 }
