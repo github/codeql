@@ -289,7 +289,11 @@ impl<'a> Translator<'a> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
-        if let Some(expanded) = self.semantics.as_ref().and_then(|s| s.expand(mcall)) {
+        if let Some(expanded) = self
+            .semantics
+            .as_ref()
+            .and_then(|s| s.expand_macro_call(mcall))
+        {
             self.emit_macro_expansion_parse_errors(mcall, &expanded);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
@@ -544,7 +548,7 @@ impl<'a> Translator<'a> {
         (|| {
             let sema = self.semantics.as_ref()?;
             let resolved = sema.resolve_method_call_fallback(item)?;
-            let Either::Left(function) = resolved else {
+            let (Either::Left(function), _) = resolved else {
                 return None;
             };
             let origin = self.origin_from_hir(function);

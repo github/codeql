@@ -10,19 +10,9 @@ load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "a
 
 ra_ap_syntax_workspace, _, _ = str(ra_ap_syntax_label).partition("//")
 
-ungram_source = "%s//:rust.ungram" % ra_ap_syntax_workspace
-
-genrule(
+alias(
     name = "ungram",
-    srcs = [
-        ungram_source,
-        "patches/rust.ungram.patch",
-    ],
-    outs = ["rust.ungram"],
-    cmd = "\n".join([
-        "cp $(location %s) $@" % ungram_source,
-        "patch $@ $(location patches/rust.ungram.patch)",
-    ]),
+    actual = "%s//:rust.ungram" % ra_ap_syntax_workspace,
     visibility = ["//rust/codegen:__pkg__"],
 )
 
