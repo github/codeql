@@ -5,6 +5,7 @@ overlay[local?]
 module;
 
 import Element
+private import semmle.code.java.Overlay
 
 /** A variable is a field, a local variable or a parameter. */
 class Variable extends @variable, Annotatable, Element, Modifiable {
@@ -132,4 +133,16 @@ class Parameter extends Element, @param, LocalScopeVariable {
 
   /** Holds if this is an anonymous parameter, `_` */
   predicate isAnonymous() { this.getName() = "" }
+}
+
+overlay[local]
+private predicate discardableLocalVarDecl(string file, @localscopevariable l) {
+  not isOverlay() and
+  file = getRawFile(l)
+}
+
+/** Discard base local scoped variables in files fully extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardLocalVarDecl(@localscopevariable l) {
+  exists(string file | discardableLocalVarDecl(file, l) and extractedInOverlay(file))
 }

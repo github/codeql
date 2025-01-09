@@ -8,6 +8,7 @@ module;
 
 import FileSystem
 import semmle.code.java.Element
+private import semmle.code.java.Overlay
 private import semmle.code.SMAP
 
 /** Holds if element `e` has name `name`. */
@@ -220,4 +221,17 @@ private predicate fixedHasLocation(Top l, Location loc, File f) {
     ) and
   not hasSourceLocation(l, _, _) and
   locations_default(loc, f, _, _, _, _)
+}
+
+overlay[local]
+private predicate discardableLocation(string file, @location l) {
+  not isOverlay() and
+  file = getRawFileForLoc(l) and
+  not exists(@file f | hasLocation(f, l))
+}
+
+/** Discard base locations in files fully extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardLocation(@location l) {
+  exists(string file | discardableLocation(file, l) and extractedInOverlay(file))
 }
