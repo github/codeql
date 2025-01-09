@@ -3147,7 +3147,8 @@ dominance
 | Patterns.cs:10:13:10:43 | ...; | Patterns.cs:10:33:10:36 | "int " |
 | Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:10:13:10:42 | call to method WriteLine |
 | Patterns.cs:10:33:10:36 | "int " | Patterns.cs:10:38:10:39 | access to local variable i1 |
-| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:31:10:41 | $"..." |
+| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:38:10:39 | call to method ToString |
+| Patterns.cs:10:38:10:39 | call to method ToString | Patterns.cs:10:31:10:41 | $"..." |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:18 | access to local variable o |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:23:12:31 | String s1 |
 | Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:16:14:18:9 | if (...) ... |
@@ -3179,7 +3180,8 @@ dominance
 | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:25:37:25:45 | "positive " |
 | Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:25:17:25:51 | call to method WriteLine |
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:47:25:48 | access to local variable i2 |
-| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:35:25:50 | $"..." |
+| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:47:25:48 | call to method ToString |
+| Patterns.cs:25:47:25:48 | call to method ToString | Patterns.cs:25:35:25:50 | $"..." |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:28:17:28:47 | ...; |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:30:13:30:27 | case ...: |
@@ -3187,7 +3189,8 @@ dominance
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:17:28:46 | call to method WriteLine |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:42:28:43 | access to local variable i3 |
-| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:35:28:45 | $"..." |
+| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:42:28:43 | call to method ToString |
+| Patterns.cs:28:42:28:43 | call to method ToString | Patterns.cs:28:35:28:45 | $"..." |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:31:17:31:50 | ...; |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:33:13:33:24 | case ...: |
@@ -7341,9 +7344,10 @@ postDominance
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:8:13:8:23 | [true] ... is ... |
 | Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:10:31:10:41 | $"..." |
 | Patterns.cs:10:13:10:43 | ...; | Patterns.cs:9:9:11:9 | {...} |
-| Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:10:38:10:39 | access to local variable i1 |
+| Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:10:38:10:39 | call to method ToString |
 | Patterns.cs:10:33:10:36 | "int " | Patterns.cs:10:13:10:43 | ...; |
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:33:10:36 | "int " |
+| Patterns.cs:10:38:10:39 | call to method ToString | Patterns.cs:10:38:10:39 | access to local variable i1 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:8:13:8:23 | [false] ... is ... |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:14:18:9 | if (...) ... |
 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:18:12:18 | access to local variable o |
@@ -7368,15 +7372,17 @@ postDominance
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:35:24:35 | 0 |
 | Patterns.cs:24:35:24:35 | 0 | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | Patterns.cs:25:17:25:51 | call to method WriteLine | Patterns.cs:25:35:25:50 | $"..." |
-| Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:25:47:25:48 | access to local variable i2 |
+| Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:25:47:25:48 | call to method ToString |
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:17:25:52 | ...; |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:37:25:45 | "positive " |
+| Patterns.cs:25:47:25:48 | call to method ToString | Patterns.cs:25:47:25:48 | access to local variable i2 |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:25:17:25:51 | call to method WriteLine |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:13:27:24 | case ...: |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:35:28:45 | $"..." |
-| Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:42:28:43 | access to local variable i3 |
+| Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:42:28:43 | call to method ToString |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:17:28:47 | ...; |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:37:28:40 | "int " |
+| Patterns.cs:28:42:28:43 | call to method ToString | Patterns.cs:28:42:28:43 | access to local variable i3 |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:28:17:28:46 | call to method WriteLine |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:13:30:27 | case ...: |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:35:31:48 | $"..." |

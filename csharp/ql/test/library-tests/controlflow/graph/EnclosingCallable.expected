@@ -3437,6 +3437,7 @@ nodeEnclosing
 | Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:10:33:10:36 | "int " | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:38:10:39 | call to method ToString | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
@@ -3469,6 +3470,7 @@ nodeEnclosing
 | Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:47:25:48 | call to method ToString | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:5:10:5:11 | M1 |
@@ -3477,6 +3479,7 @@ nodeEnclosing
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:42:28:43 | call to method ToString | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:5:10:5:11 | M1 |

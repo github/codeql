@@ -38,10 +38,11 @@ csharp6.cs:
 #   25|                 4: [NameOfExpr] nameof(...)
 #   25|                   0: [LocalVariableAccess] access to local variable bar
 #   25|                 5: [StringLiteralUtf16] " has length "
-#   25|                 6: [NullCoalescingExpr] ... ?? ...
-#   25|                   0: [PropertyCall] access to property Length
-#   25|                     -1: [LocalVariableAccess] access to local variable bar
-#   25|                   1: [IntLiteral] 0
+#   25|                 6: [MethodCall] call to method ToString
+#   25|                   -1: [NullCoalescingExpr] ... ?? ...
+#   25|                     0: [PropertyCall] access to property Length
+#   25|                       -1: [LocalVariableAccess] access to local variable bar
+#   25|                     1: [IntLiteral] 0
 #   27|           2: [ExprStmt] ...;
 #   27|             0: [MethodCall] call to method Fn
 #   27|               0: [InterpolatedStringExpr] $"..."
@@ -53,10 +54,11 @@ csharp6.cs:
 #   27|                 4: [NameOfExpr] nameof(...)
 #   27|                   0: [LocalVariableAccess] access to local variable bar
 #   27|                 5: [StringLiteralUtf16] " has length "
-#   27|                 6: [NullCoalescingExpr] ... ?? ...
-#   27|                   0: [PropertyCall] access to property Length
-#   27|                     -1: [LocalVariableAccess] access to local variable bar
-#   27|                   1: [IntLiteral] 0
+#   27|                 6: [MethodCall] call to method ToString
+#   27|                   -1: [NullCoalescingExpr] ... ?? ...
+#   27|                     0: [PropertyCall] access to property Length
+#   27|                       -1: [LocalVariableAccess] access to local variable bar
+#   27|                     1: [IntLiteral] 0
 #   29|           3: [LocalVariableDeclStmt] ... ...;
 #   29|             0: [LocalVariableDeclAndInitExpr] Nullable<Boolean> anythingInBar = ...
 #   29|               -1: [TypeMention] bool?

@@ -254,7 +254,7 @@
 | CSharp7.cs:233:28:233:33 | ... > ... | CSharp7.cs:233:13:233:33 | [true] ... && ... |
 | CSharp7.cs:235:13:235:42 | [input] SSA phi read(o) | CSharp7.cs:248:9:274:9 | SSA phi read(o) |
 | CSharp7.cs:235:33:235:36 | "int " | CSharp7.cs:235:31:235:41 | $"..." |
-| CSharp7.cs:235:38:235:39 | access to local variable i1 | CSharp7.cs:235:31:235:41 | $"..." |
+| CSharp7.cs:235:38:235:39 | call to method ToString | CSharp7.cs:235:31:235:41 | $"..." |
 | CSharp7.cs:237:18:237:18 | access to local variable o | CSharp7.cs:237:23:237:31 | String s1 |
 | CSharp7.cs:237:18:237:18 | access to local variable o | CSharp7.cs:239:13:239:45 | [input] SSA phi read(o) |
 | CSharp7.cs:237:18:237:18 | access to local variable o | CSharp7.cs:241:18:241:18 | access to local variable o |
@@ -289,11 +289,11 @@
 | CSharp7.cs:257:30:257:31 | access to local variable i2 | CSharp7.cs:257:30:257:35 | ... > ... |
 | CSharp7.cs:257:30:257:31 | access to local variable i2 | CSharp7.cs:258:47:258:48 | access to local variable i2 |
 | CSharp7.cs:258:37:258:45 | "positive " | CSharp7.cs:258:35:258:50 | $"..." |
-| CSharp7.cs:258:47:258:48 | access to local variable i2 | CSharp7.cs:258:35:258:50 | $"..." |
+| CSharp7.cs:258:47:258:48 | call to method ToString | CSharp7.cs:258:35:258:50 | $"..." |
 | CSharp7.cs:260:18:260:23 | Int32 i3 | CSharp7.cs:260:18:260:23 | SSA def(i3) |
 | CSharp7.cs:260:18:260:23 | SSA def(i3) | CSharp7.cs:261:42:261:43 | access to local variable i3 |
 | CSharp7.cs:261:37:261:40 | "int " | CSharp7.cs:261:35:261:45 | $"..." |
-| CSharp7.cs:261:42:261:43 | access to local variable i3 | CSharp7.cs:261:35:261:45 | $"..." |
+| CSharp7.cs:261:42:261:43 | call to method ToString | CSharp7.cs:261:35:261:45 | $"..." |
 | CSharp7.cs:263:18:263:26 | SSA def(s2) | CSharp7.cs:264:45:264:46 | access to local variable s2 |
 | CSharp7.cs:263:18:263:26 | String s2 | CSharp7.cs:263:18:263:26 | SSA def(s2) |
 | CSharp7.cs:264:37:264:43 | "string " | CSharp7.cs:264:35:264:48 | $"..." |

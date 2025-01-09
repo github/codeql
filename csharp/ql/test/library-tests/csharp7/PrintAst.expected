@@ -727,7 +727,8 @@ CSharp7.cs:
 #  235|                 0: [TypeMention] Console
 #  235|               0: [InterpolatedStringExpr] $"..."
 #  235|                 0: [StringLiteralUtf16] "int "
-#  235|                 1: [LocalVariableAccess] access to local variable i1
+#  235|                 1: [MethodCall] call to method ToString
+#  235|                   -1: [LocalVariableAccess] access to local variable i1
 #  237|         2: [IfStmt] if (...) ...
 #  237|           0: [IsExpr] ... is ...
 #  237|             0: [LocalVariableAccess] access to local variable o
@@ -789,7 +790,8 @@ CSharp7.cs:
 #  258|               0: [TypeMention] Console
 #  258|             0: [InterpolatedStringExpr] $"..."
 #  258|               0: [StringLiteralUtf16] "positive "
-#  258|               1: [LocalVariableAccess] access to local variable i2
+#  258|               1: [MethodCall] call to method ToString
+#  258|                 -1: [LocalVariableAccess] access to local variable i2
 #  259|         9: [BreakStmt] break;
 #  260|         10: [CaseStmt] case ...:
 #  260|           0: [VariablePatternExpr] Int32 i3
@@ -800,7 +802,8 @@ CSharp7.cs:
 #  261|               0: [TypeMention] Console
 #  261|             0: [InterpolatedStringExpr] $"..."
 #  261|               0: [StringLiteralUtf16] "int "
-#  261|               1: [LocalVariableAccess] access to local variable i3
+#  261|               1: [MethodCall] call to method ToString
+#  261|                 -1: [LocalVariableAccess] access to local variable i3
 #  262|         12: [BreakStmt] break;
 #  263|         13: [CaseStmt] case ...:
 #  263|           0: [VariablePatternExpr] String s2
