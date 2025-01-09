@@ -235,7 +235,7 @@ class Declaration extends Locatable, @declaration {
    *
    * `Foo<int, 1> bar;`
    *
-   * Will have `getTemplateArgument())` return `int`, and
+   * Will have `getTemplateArgument(0)` return `int`, and
    * `getTemplateArgument(1)` return `1`.
    */
   final Locatable getTemplateArgument(int index) {
