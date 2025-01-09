@@ -14,8 +14,6 @@ import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruct
  * A taint-tracking configuration for reasoning about shell command constructed from library input vulnerabilities.
  */
 module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
-  // TODO: we get a FP in the test case due to SanitizingRegExpTest not being able to generate a barrier edge
-  //       for an edge into a phi node.
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
@@ -24,12 +22,6 @@ module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
     node instanceof Sanitizer or
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode() or
     node = TaintTracking::AdHocWhitelistCheckSanitizer::getABarrierNode()
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    none()
-    // TODO: localFieldStep is too expensive with dataflow2
-    // DataFlow::localFieldStep(pred, succ)
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }

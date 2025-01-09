@@ -20,7 +20,6 @@ private class Node = DataFlow::Node;
 
 class PostUpdateNode = DataFlow::PostUpdateNode;
 
-// TODO: this bypasses refinement nodes, and therefore some sanitisers
 class SsaUseNode extends DataFlow::Node, TSsaUseNode {
   private ControlFlowNode expr;
 
@@ -524,7 +523,7 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   // receiver of accessor call
   pos.isThis() and n = call.asAccessorCall().getBase()
   or
-  // argument to setter (TODO: this has no post-update node)
+  // argument to setter
   pos.asPositional() = 0 and n = call.asAccessorCall().(DataFlow::PropWrite).getRhs()
   or
   FlowSummaryImpl::Private::summaryArgumentNode(call.(SummaryCall).getReceiver(),
@@ -640,7 +639,7 @@ predicate nodeIsHidden(Node node) {
   node instanceof CaptureNode
   or
   // Hide function expressions, as capture-flow causes them to appear in unhelpful ways
-  // TODO: Instead hide PathNodes with a capture content as the head of its access path?
+  // In the future we could hide PathNodes with a capture content as the head of its access path.
   node.asExpr() instanceof Function
   or
   // Also hide post-update nodes for function expressions
@@ -1402,7 +1401,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     // shift known array indices
     c.asSingleton().asArrayIndex() = content.asArrayIndex() + restIndex
     or
-    content.isUnknownArrayElement() and // TODO: don't read unknown array elements from static array
+    content.isUnknownArrayElement() and
     c = ContentSet::arrayElementUnknown()
   )
   or

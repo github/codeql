@@ -12,8 +12,6 @@ private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizati
  * A taint-tracking configuration for reasoning about XSS through the DOM.
  */
 module XssThroughDomConfig implements DataFlow::ConfigSig {
-  // NOTE: Gained FP in Lucifier due to spurious source but with more data flow (I think).
-  // TODO: Seen unexplained FP in meteor, likely due to spurious flow into a callback coming from another call site
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DomBasedXss::Sink }

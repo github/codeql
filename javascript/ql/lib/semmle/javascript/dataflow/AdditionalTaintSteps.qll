@@ -232,10 +232,7 @@ class LegacyTaintStep extends Unit {
 cached
 private module Cached {
   cached
-  predicate forceStage() {
-    // TODO: ensure that this stage is only evaluated if using the old data flow library
-    Stages::Taint::ref()
-  }
+  predicate forceStage() { Stages::Taint::ref() }
 
   /**
    * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
