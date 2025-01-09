@@ -114,7 +114,6 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
   class Callable extends js::StmtContainer {
     predicate isConstructor() {
-      // TODO: clarify exactly what the library wants to know here as the meaning of "constructor" varies between languages.
       // JS constructors should not be seen as "constructors" in this context.
       none()
     }
