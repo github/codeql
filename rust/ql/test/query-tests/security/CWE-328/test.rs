@@ -17,8 +17,8 @@ fn test_hash_algorithms(
 
     // MD5 (alternative / older library)
     _ = md5_alt::compute(harmless);
-    _ = md5_alt::compute(credit_card_no); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
-    _ = md5_alt::compute(password); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
+    _ = md5_alt::compute(credit_card_no); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5_alt::compute(password); // $ Source Alert[rust/weak-sensitive-data-hashing]
     _ = md5_alt::compute(encrypted_password);
 
     // SHA-1
