@@ -639,7 +639,7 @@ predicate nodeIsHidden(Node node) {
   node instanceof CaptureNode
   or
   // Hide function expressions, as capture-flow causes them to appear in unhelpful ways
-  // TODO: Instead hide PathNodes with a capture content as the head of its access path?
+  // In the future we could hide PathNodes with a capture content as the head of its access path.
   node.asExpr() instanceof Function
   or
   // Also hide post-update nodes for function expressions
