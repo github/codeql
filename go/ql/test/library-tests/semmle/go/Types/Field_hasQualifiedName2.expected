@@ -1,6 +1,7 @@
 | aliases.go:6:26:6:26 | x | codeql-go-types.S3 | x |
 | aliases.go:8:26:8:26 | x | codeql-go-types.S3 | x |
 | aliases.go:19:17:19:17 | x | codeql-go-types.S3 | x |
+| aliases.go:29:34:29:34 | x | codeql-go-types.MyType | x |
 | cyclic.go:4:3:4:3 | s | codeql-go-types.s | s |
 | cyclic.go:8:3:8:3 | u | codeql-go-types.t | u |
 | cyclic.go:8:3:8:3 | u | codeql-go-types.u | u |

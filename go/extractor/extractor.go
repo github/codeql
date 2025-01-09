@@ -478,6 +478,8 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 			// Populate type parameter parents for named types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
 				if tp, ok := typeNameObj.Type().(*types.Named); ok && !typeNameObj.IsAlias() {
+					// `typeNameObj` can only be an alias in versions of Go
+					// before 1.24.
 					populateTypeParamParents(tp.TypeParams(), obj)
 				} else if tp, ok := typeNameObj.Type().(*types.Alias); ok {
 					populateTypeParamParents(tp.TypeParams(), obj)
