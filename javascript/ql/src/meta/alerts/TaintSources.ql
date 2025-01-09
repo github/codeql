@@ -11,6 +11,6 @@
 import javascript
 import meta.internal.TaintMetrics
 
-from DataFlow::Node node
-where node = relevantTaintSource()
+from ThreatModelSource node
+where node = relevantTaintSource() and node.getThreatModel() = "remote"
 select node, getTaintSourceName(node)
