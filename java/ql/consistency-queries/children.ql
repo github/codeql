@@ -13,6 +13,39 @@ predicate duplicateChildren(Element e, int i) {
   not e instanceof Constructor
 }
 
+predicate allowableGap(Element e, int i) {
+  // Annotations are child 0 upwards, 'implements' are -2 downwards,
+  // and there may or may not be an 'extends' for child -1.
+  e instanceof ClassOrInterface and i = -1
+  or
+  // A class instance creation expression has the type as child -3,
+  // may or may not have a qualifier as child -2, and will never have
+  // a child -1.
+  e instanceof ClassInstanceExpr and i = [-2, -1]
+  or
+  // Type access have annotations from -2 down, and type
+  // arguments from 0 up, but may or may not have a qualifier
+  // at -1.
+  e instanceof TypeAccess and i = -1
+  or
+  // Try statements have their 'finally' clause as child 2,
+  // and that may or may not exist.
+  e instanceof TryStmt and i = -2
+  or
+  // For statements may or may not declare a new variable (child 0), or
+  // have a condition (child 1).
+  e instanceof ForStmt and i = [0, 1]
+  or
+  // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
+  i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule()
+  or
+  // Pattern case statements can have a gap at -3 when they have more than one pattern but no guard.
+  i = -3 and count(e.(PatternCase).getAPattern()) > 1 and not exists(e.(PatternCase).getGuard())
+  or
+  // Instanceof with a record pattern is not expected to have a type access in position 1
+  i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr
+}
+
 predicate gapInChildren(Element e, int i) {
   exists(int left, int right |
     left = min(int l | exists(nthChildOf(e, l))) and
@@ -20,48 +53,24 @@ predicate gapInChildren(Element e, int i) {
     i in [left .. right] and
     not exists(nthChildOf(e, i))
   ) and
-  // Annotations are child 0 upwards, 'implements' are -2 downwards,
-  // and there may or may not be an 'extends' for child -1.
-  not (e instanceof ClassOrInterface and i = -1) and
-  // A class instance creation expression has the type as child -3,
-  // may or may not have a qualifier as child -2, and will never have
-  // a child -1.
-  not (e instanceof ClassInstanceExpr and i = [-2, -1]) and
-  // Type access have annotations from -2 down, and type
-  // arguments from 0 up, but may or may not have a qualifier
-  // at -1.
-  not (e instanceof TypeAccess and i = -1) and
-  // Try statements have their 'finally' clause as child 2,
-  // and that may or may not exist.
-  not (e instanceof TryStmt and i = -2) and
-  // For statements may or may not declare a new variable (child 0), or
-  // have a condition (child 1).
-  not (e instanceof ForStmt and i = [0, 1]) and
-  // TODO: Clarify situation with Kotlin and MethodCall.
-  // -1 can be skipped (type arguments from -2 down, no qualifier at -1,
-  // then arguments from 0).
-  // Can we also skip arguments, e.g. due to defaults for parameters?
-  not (e instanceof MethodCall and e.getFile().isKotlinSourceFile()) and
+  not allowableGap(e, i) and
+  not (
+    // Pattern case statements may have some missing type accesses, depending on the nature of the direct child
+    (i = -2 or i < -4) and
+    e instanceof PatternCase
+  ) and
+  // RecordPatternExpr extracts type-accesses only for its LocalVariableDeclExpr children
+  not (i < 0 and e instanceof RecordPatternExpr) and
   // Kotlin-extracted annotations can have missing children where a default
   // value should be, because kotlinc doesn't load annotation defaults and we
   // want to leave a space for another extractor to fill in the default if it
   // is able.
   not e instanceof Annotation and
-  // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
-  not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule()) and
-  // Pattern case statements can have a gap at -3 when they have more than one pattern but no guard.
-  not (
-    i = -3 and count(e.(PatternCase).getAPattern()) > 1 and not exists(e.(PatternCase).getGuard())
-  ) and
-  // Pattern case statements may have some missing type accesses, depending on the nature of the direct child
-  not (
-    (i = -2 or i < -4) and
-    e instanceof PatternCase
-  ) and
-  // Instanceof with a record pattern is not expected to have a type access in position 1
-  not (i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr) and
-  // RecordPatternExpr extracts type-accesses only for its LocalVariableDeclExpr children
-  not (i < 0 and e instanceof RecordPatternExpr)
+  // TODO: Clarify situation with Kotlin and MethodCall.
+  // -1 can be skipped (type arguments from -2 down, no qualifier at -1,
+  // then arguments from 0).
+  // Can we also skip arguments, e.g. due to defaults for parameters?
+  not (e instanceof MethodCall and e.getFile().isKotlinSourceFile())
 }
 
 predicate lateFirstChild(Element e, int i) {
