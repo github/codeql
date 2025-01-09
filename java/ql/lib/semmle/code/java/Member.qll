@@ -897,3 +897,36 @@ class ExtensionMethod extends Method {
     else result = 0
   }
 }
+
+overlay[local]
+pragma[nomagic]
+predicate discardableMethod(string file, @method m) {
+  not hasOverlay() and
+  file = getRawFile(m) and
+  exists(@classorinterface c | methods(m, _, _, _, c, _) and isAnonymClass(c, _))
+}
+
+overlay[discard_entity]
+pragma[nomagic]
+predicate discardAnonMethod(@method m) {
+  exists(string file | discardableMethod(file, m) and discardFile(file))
+}
+
+overlay[local]
+pragma[nomagic]
+predicate discardableBaseMethod(string file, @method m) {
+  not hasOverlay() and
+  file = getRawFile(m)
+}
+
+overlay[local]
+pragma[nomagic]
+predicate usedOverlayMethod(@method m) { hasOverlay() and methods(m, _, _, _, _, _) }
+
+overlay[discard_entity]
+pragma[nomagic]
+predicate discardMethod(@method m) {
+  exists(string file |
+    discardableBaseMethod(file, m) and discardFile(file) and not usedOverlayMethod(m)
+  )
+}

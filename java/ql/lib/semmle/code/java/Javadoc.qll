@@ -196,3 +196,16 @@ class KtCommentSection extends @ktcommentsection {
   /** Gets the string representation of this section. */
   string toString() { result = this.getContent() }
 }
+
+overlay[local]
+pragma[nomagic]
+predicate discardableJavadoc(string file, @javadoc d) {
+  not hasOverlay() and
+  exists(@member m | file = getRawFile(m) and hasJavadoc(m, d))
+}
+
+overlay[discard_entity]
+pragma[nomagic]
+predicate discardJavadoc(@javadoc d) {
+  exists(string file | discardableJavadoc(file, d) and discardFile(file))
+}
