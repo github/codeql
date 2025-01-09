@@ -1,0 +1,40 @@
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: ${{ github.repository_owner == 'test' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the appropriate Endo branch
+        id: branch
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |-
+            let branch = 'NOPE';
+            if (context.payload.pull_request) {
+              const { body } = context.payload.pull_request;
+              const regex = /^\#endo-branch:\s+(\S+)/m;
+              const result = regex.exec(body);
+              if (result) {
+                branch = result[1];
+              }
+            }
+            return branch;
+      - name: check out
+        id: checkout
+        if: steps.branch.outputs.result != 'NOPE'
+        uses: actions/checkout@v4
+        with:
+          repository: test/test
+          path: ./tmp
+          ref: ${{ steps.branch.outputs.result }}
+          clean: 'false'
+          submodules: 'true'
+          persist-credentials: false
+
+      - name: Find Netlify site ID
+        run: |
+          echo "NETLIFY_SITE_ID=$(cat COVERAGE_NETLIFY_SITE_ID)" >> $GITHUB_ENV

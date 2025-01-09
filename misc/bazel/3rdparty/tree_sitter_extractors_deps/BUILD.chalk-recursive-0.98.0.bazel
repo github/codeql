@@ -85,6 +85,6 @@ rust_library(
         "@vendor__chalk-ir-0.98.0//:chalk_ir",
         "@vendor__chalk-solve-0.98.0//:chalk_solve",
         "@vendor__rustc-hash-1.1.0//:rustc_hash",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

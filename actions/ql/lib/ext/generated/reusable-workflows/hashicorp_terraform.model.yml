@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/terraform/.github/workflows/build-terraform-cli.yml", "*", "input.product-version", "code-injection", "generated"]
+     - ["hashicorp/terraform/.github/workflows/build-terraform-cli.yml", "*", "input.package-name", "code-injection", "generated"]
+     - ["hashicorp/terraform/.github/workflows/build-terraform-cli.yml", "*", "input.goarch", "code-injection", "generated"]
+     - ["hashicorp/terraform/.github/workflows/build-terraform-cli.yml", "*", "input.goos", "code-injection", "generated"]

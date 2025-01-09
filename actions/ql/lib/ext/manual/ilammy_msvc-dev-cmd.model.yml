@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["ilammy/msvc-dev-cmd", "*", "input.vsversion", "command-injection", "manual"]
+      - ["ilammy/msvc-dev-cmd", "*", "input.arch", "command-injection", "manual"]
+      - ["ilammy/msvc-dev-cmd", "*", "input.sdk", "command-injection", "manual"]
+      - ["ilammy/msvc-dev-cmd", "*", "input.toolset", "command-injection", "manual"]

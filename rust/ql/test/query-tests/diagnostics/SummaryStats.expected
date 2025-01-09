@@ -5,6 +5,7 @@
 | Files extracted - total | 7 |
 | Files extracted - with errors | 3 |
 | Files extracted - without errors | 4 |
+| Files extracted - without errors % | 57 |
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - data flow | 0 |

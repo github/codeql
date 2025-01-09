@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CSimpleMap", True, "Add", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "GetValueAt", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "Lookup", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "SetAt", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "SetAtIndex", "", "", "Argument[*@2]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]

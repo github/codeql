@@ -90,10 +90,17 @@ class Addressable(AstNode):
 
 class Resolvable(AstNode):
     """
-    Either a `Path`, or a `MethodCallExpr`.
+    One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
     """
     resolved_path: optional[string] | rust.detach | ql.internal
     resolved_crate_origin: optional[string] | rust.detach | ql.internal
+
+
+class PathAstNode(Resolvable):
+    """
+    An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
+    """
+    path: optional["Path"] | child
 
 
 @qltest.skip

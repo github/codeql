@@ -3,7 +3,7 @@
  */
 
 import rust
-import utils.InlineFlowTest
+import utils.test.InlineFlowTest
 import DefaultFlowTest
 import ValueFlow::PathGraph
 

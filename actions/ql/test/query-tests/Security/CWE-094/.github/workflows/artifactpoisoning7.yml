@@ -1,0 +1,31 @@
+# It consumes an artifact produced by the First Workflow
+
+on: workflow_run
+jobs:
+  my-second-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+            workflow: ${{github.event.workflow_run.workflow_id}}
+            run_id: ${{github.event.workflow_run.id}}
+            name: artifact
+
+      - id: artifact
+        run: |
+          set -eou pipefail
+          pr_number=$(cat -e artifact.txt)
+          pr_number=${pr_number%?}
+          pr_length=${#pr_number}
+          only_numbers_re="^[0-9]+$"
+          if ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then
+            echo "invalid PR number"
+            exit 1
+          fi
+          echo "::set-output name=pr_number::$pr_number"
+          mkdir firebase-android
+          unzip firebase-android.zip -d firebase-android
+      - name: Use artifact
+        run: echo ${{ steps.artifact.outputs.pr_number }} 
+

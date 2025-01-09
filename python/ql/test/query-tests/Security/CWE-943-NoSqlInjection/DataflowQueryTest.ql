@@ -1,4 +1,4 @@
 import python
-import TestUtilities.dataflow.DataflowQueryTest
+import utils.test.dataflow.DataflowQueryTest
 import semmle.python.security.dataflow.NoSqlInjectionQuery
 import FromTaintTrackingStateConfig<NoSqlInjectionConfig>

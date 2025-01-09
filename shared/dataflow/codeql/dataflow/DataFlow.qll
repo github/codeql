@@ -900,4 +900,241 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
   }
+
+  /**
+   * Generates a `PathGraph` in which equivalent path nodes are merged, in order to avoid duplicate paths.
+   */
+  module DeduplicatePathGraph<PathNodeSig InputPathNode, PathGraphSig<InputPathNode> Graph> {
+    // NOTE: there is a known limitation in that this module cannot see which nodes are sources or sinks.
+    // This only matters in the rare case where a sink PathNode has a non-empty set of succesors, and there is a
+    // non-sink PathNode with the same `(node, toString)` value and the same successors, but is transitively
+    // reachable from a different set of PathNodes. (And conversely for sources).
+    //
+    pragma[nomagic]
+    private InputPathNode getAPathNode(Node node, string toString) {
+      result.getNode() = node and
+      Graph::nodes(result, _, toString)
+    }
+
+    private signature predicate collapseCandidateSig(Node node, string toString);
+
+    private signature predicate stepSig(
+      InputPathNode node1, InputPathNode node2, string key, string val
+    );
+
+    private signature predicate subpathStepSig(
+      InputPathNode arg, InputPathNode param, InputPathNode ret, InputPathNode out
+    );
+
+    /**
+     * Performs a forward or backward pass computing which `(node, toString)` pairs can subsume their corresponding
+     * path nodes.
+     *
+     * This is similar to automaton minimization, but for an NFA. Since minimizing an NFA is NP-hard (and does not have
+     * a unique minimal NFA), we operate with the simpler model: for a given `(node, toString)` pair, either all
+     * corresponding path nodes are merged, or none are merged.
+     *
+     * Comments are written as if this checks for outgoing edges and propagates backward, though the module is also
+     * used to perform the opposite direction.
+     */
+    private module MakeDiscriminatorPass<
+      collapseCandidateSig/2 collapseCandidate, stepSig/4 step, subpathStepSig/4 subpathStep>
+    {
+      /**
+       * Gets the number of `(key, val, node, toString)` tuples reachable in one step from `pathNode`.
+       *
+       * That is, two edges are counted as one if their target nodes are the same after projection, and the edges have the
+       * same `(key, val)`.
+       */
+      private int getOutDegreeFromPathNode(InputPathNode pathNode) {
+        result =
+          count(Node node, string toString, string key, string val |
+            step(pathNode, getAPathNode(node, toString), key, val)
+          )
+      }
+
+      /**
+       * Gets the number of `(key, val, node2, toString2)` pairs reachable in one step from path nodes corresponding to `(node, toString)`.
+       */
+      private int getOutDegreeFromNode(Node node, string toString) {
+        result =
+          strictcount(Node node2, string toString2, string key, string val |
+            step(getAPathNode(node, toString), getAPathNode(node2, toString2), key, val)
+          )
+      }
+
+      /**
+       * Like `getOutDegreeFromPathNode` except counts `subpath` tuples.
+       */
+      private int getSubpathOutDegreeFromPathNode(InputPathNode pathNode) {
+        result =
+          count(Node n1, string s1, Node n2, string s2, Node n3, string s3 |
+            subpathStep(pathNode, getAPathNode(n1, s1), getAPathNode(n2, s2), getAPathNode(n3, s3))
+          )
+      }
+
+      /**
+       * Like `getOutDegreeFromNode` except counts `subpath` tuples.
+       */
+      private int getSubpathOutDegreeFromNode(Node node, string toString) {
+        result =
+          strictcount(Node n1, string s1, Node n2, string s2, Node n3, string s3 |
+            subpathStep(getAPathNode(node, toString), getAPathNode(n1, s1), getAPathNode(n2, s2),
+              getAPathNode(n3, s3))
+          )
+      }
+
+      /** Gets a successor of `node`, including subpath flow-through, but not enter or exit subpath steps. */
+      InputPathNode stepEx(InputPathNode node) {
+        step(node, result, _, _) and
+        not result = enterSubpathStep(node) and
+        not result = exitSubpathStep(node)
+        or
+        // Assuming the input is pruned properly, all subpaths have flow-through.
+        // This step should be in 'step' as well, but include it here for clarity as we rely on it.
+        subpathStep(node, _, _, result)
+      }
+
+      InputPathNode enterSubpathStep(InputPathNode node) { subpathStep(node, result, _, _) }
+
+      InputPathNode exitSubpathStep(InputPathNode node) { subpathStep(_, _, node, result) }
+
+      /** Holds if `(node, toString)` cannot be collapsed (but was a candidate for being collapsed). */
+      predicate discriminatedPair(Node node, string toString, boolean hasEnter) {
+        collapseCandidate(node, toString) and
+        hasEnter = false and
+        (
+          // Check if all corresponding PathNodes have the same successor sets when projected to `(node, toString)`.
+          // To do this, we check that each successor set has the same size as the union of the succesor sets.
+          // - If the successor sets are equal, then they are also equal to their union, and so have the correct size.
+          // - Conversely, if two successor sets are not equal, one of them must be missing an element that is present
+          //   in the union, but must still be a subset of the union, and thus be strictly smaller than the union.
+          getOutDegreeFromPathNode(getAPathNode(node, toString)) <
+            getOutDegreeFromNode(node, toString)
+          or
+          // Same as above but counting associated subpath triples instead
+          getSubpathOutDegreeFromPathNode(getAPathNode(node, toString)) <
+            getSubpathOutDegreeFromNode(node, toString)
+        )
+        or
+        collapseCandidate(node, toString) and
+        (
+          // Retain flow state if one of the successors requires it to be retained
+          discriminatedPathNode(stepEx(getAPathNode(node, toString)), hasEnter)
+          or
+          // Propagate backwards from parameter to argument
+          discriminatedPathNode(enterSubpathStep(getAPathNode(node, toString)), false) and
+          hasEnter = false
+          or
+          // Propagate backwards from out to return
+          discriminatedPathNode(exitSubpathStep(getAPathNode(node, toString)), _) and
+          hasEnter = true
+        )
+      }
+
+      /** Holds if `pathNode` cannot be collapsed. */
+      private predicate discriminatedPathNode(InputPathNode pathNode, boolean hasEnter) {
+        exists(Node node, string toString |
+          discriminatedPair(node, toString, hasEnter) and
+          getAPathNode(node, toString) = pathNode
+        )
+      }
+
+      /** Holds if `(node, toString)` cannot be collapsed (but was a candidate for being collapsed). */
+      predicate discriminatedPair(Node node, string toString) {
+        discriminatedPair(node, toString, _)
+      }
+
+      /** Holds if `pathNode` cannot be collapsed. */
+      predicate discriminatedPathNode(InputPathNode pathNode) { discriminatedPathNode(pathNode, _) }
+    }
+
+    private InputPathNode getUniqPathNode(Node node, string toString) {
+      result = unique(InputPathNode pathNode | pathNode = getAPathNode(node, toString))
+    }
+
+    private predicate initialCandidate(Node node, string toString) {
+      exists(getAPathNode(node, toString)) and not exists(getUniqPathNode(node, toString))
+    }
+
+    private module Pass1 =
+      MakeDiscriminatorPass<initialCandidate/2, Graph::edges/4, Graph::subpaths/4>;
+
+    private predicate edgesRev(InputPathNode node1, InputPathNode node2, string key, string val) {
+      Graph::edges(node2, node1, key, val)
+    }
+
+    private predicate subpathsRev(
+      InputPathNode n1, InputPathNode n2, InputPathNode n3, InputPathNode n4
+    ) {
+      Graph::subpaths(n4, n3, n2, n1)
+    }
+
+    private module Pass2 =
+      MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/4, subpathsRev/4>;
+
+    private newtype TPathNode =
+      TPreservedPathNode(InputPathNode node) {
+        Pass2::discriminatedPathNode(node) or node = getUniqPathNode(_, _)
+      } or
+      TCollapsedPathNode(Node node, string toString) {
+        initialCandidate(node, toString) and
+        not Pass2::discriminatedPair(node, toString)
+      }
+
+    /** A node in the path graph after equivalent nodes have been collapsed. */
+    class PathNode extends TPathNode {
+      private Node asCollapsedNode() { this = TCollapsedPathNode(result, _) }
+
+      private InputPathNode asPreservedNode() { this = TPreservedPathNode(result) }
+
+      /** Gets a correspondng node in the original graph. */
+      InputPathNode getAnOriginalPathNode() {
+        exists(Node node, string toString |
+          this = TCollapsedPathNode(node, toString) and
+          result = getAPathNode(node, toString)
+        )
+        or
+        result = this.asPreservedNode()
+      }
+
+      /** Gets a string representation of this node. */
+      string toString() {
+        result = this.asPreservedNode().toString() or this = TCollapsedPathNode(_, result)
+      }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getAnOriginalPathNode().getLocation() }
+
+      /** Gets the corresponding data-flow node. */
+      Node getNode() {
+        result = this.asCollapsedNode()
+        or
+        result = this.asPreservedNode().getNode()
+      }
+    }
+
+    /**
+     * Provides the query predicates needed to include a graph in a path-problem query.
+     */
+    module PathGraph implements PathGraphSig<PathNode> {
+      query predicate nodes(PathNode node, string key, string val) {
+        Graph::nodes(node.getAnOriginalPathNode(), key, val)
+      }
+
+      query predicate edges(PathNode node1, PathNode node2, string key, string val) {
+        Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode(), key, val)
+      }
+
+      query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+        // Note: this may look suspiciously simple, but it's not an oversight. Even if the caller needs to retain state,
+        // it is entirely possible to step through a subpath in which state has been projected away.
+        Graph::subpaths(arg.getAnOriginalPathNode(), par.getAnOriginalPathNode(),
+          ret.getAnOriginalPathNode(), out.getAnOriginalPathNode())
+      }
+    }
+
+    // Re-export the PathGraph so the user can import a single module and get both PathNode and the query predicates
+    import PathGraph
+  }
 }

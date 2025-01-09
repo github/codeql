@@ -3,7 +3,7 @@
  */
 
 import ruby
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import TaintFlow::PathGraph
 import codeql.ruby.frameworks.Rails
 

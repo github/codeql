@@ -7,7 +7,7 @@ private import internal.PathSegmentImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.ParamList
+import codeql.rust.elements.ParenthesizedArgList
 import codeql.rust.elements.PathTypeRepr
 import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax

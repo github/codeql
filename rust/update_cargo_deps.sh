@@ -2,8 +2,6 @@
 
 set -eu
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+WORKSPACE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )
 
-cd "$SCRIPT_DIR/.."
-time bazel run //misc/bazel/3rdparty:vendor_tree_sitter_extractors
-bazel mod tidy
+exec "$WORKSPACE_DIR/misc/bazel/3rdparty/update_tree_sitter_extractors_deps.sh"

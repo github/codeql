@@ -161,6 +161,87 @@
 | test2.swift:69:25:69:25 | $generator | test2.swift:69:25:69:25 | SSA def($generator) |
 | test2.swift:69:25:69:25 | SSA def($generator) | test2.swift:69:5:69:5 | $generator |
 | test2.swift:69:25:69:25 | call to makeIterator() | test2.swift:69:25:69:25 | $generator |
+| test2.swift:76:9:76:9 | SSA def(a1) | test2.swift:78:14:78:14 | a1 |
+| test2.swift:76:9:76:9 | a1 | test2.swift:76:9:76:9 | SSA def(a1) |
+| test2.swift:76:14:76:47 | [...] | test2.swift:76:9:76:9 | a1 |
+| test2.swift:78:5:78:5 | $v$generator | test2.swift:78:5:78:5 | &... |
+| test2.swift:78:5:78:5 | &... | test2.swift:78:5:78:5 | $v$generator |
+| test2.swift:78:5:78:5 | [post] $v$generator | test2.swift:78:5:78:5 | &... |
+| test2.swift:78:9:78:9 | SSA def(v) | test2.swift:79:19:79:19 | v |
+| test2.swift:78:9:78:9 | v | test2.swift:78:9:78:9 | SSA def(v) |
+| test2.swift:78:14:78:14 | $v$generator | test2.swift:78:14:78:14 | SSA def($v$generator) |
+| test2.swift:78:14:78:14 | SSA def($v$generator) | test2.swift:78:5:78:5 | $v$generator |
+| test2.swift:78:14:78:14 | [post] a1 | test2.swift:81:21:81:21 | a1 |
+| test2.swift:78:14:78:14 | a1 | test2.swift:81:21:81:21 | a1 |
+| test2.swift:78:14:78:14 | call to makeIterator() | test2.swift:78:14:78:14 | $v$generator |
+| test2.swift:81:5:81:5 | $ix$generator | test2.swift:81:5:81:5 | &... |
+| test2.swift:81:5:81:5 | &... | test2.swift:81:5:81:5 | $ix$generator |
+| test2.swift:81:5:81:5 | [post] $ix$generator | test2.swift:81:5:81:5 | &... |
+| test2.swift:81:9:81:9 | SSA def(ix) | test2.swift:82:22:82:22 | ix |
+| test2.swift:81:9:81:9 | ix | test2.swift:81:9:81:9 | SSA def(ix) |
+| test2.swift:81:15:81:15 | $ix$generator | test2.swift:81:15:81:15 | SSA def($ix$generator) |
+| test2.swift:81:15:81:15 | SSA def($ix$generator) | test2.swift:81:5:81:5 | $ix$generator |
+| test2.swift:81:15:81:24 | call to makeIterator() | test2.swift:81:15:81:15 | $ix$generator |
+| test2.swift:81:21:81:21 | [post] a1 | test2.swift:82:19:82:19 | a1 |
+| test2.swift:81:21:81:21 | [post] a1 | test2.swift:84:20:84:20 | a1 |
+| test2.swift:81:21:81:21 | a1 | test2.swift:82:19:82:19 | a1 |
+| test2.swift:81:21:81:21 | a1 | test2.swift:84:20:84:20 | a1 |
+| test2.swift:82:19:82:19 | &... | test2.swift:82:19:82:19 | a1 |
+| test2.swift:82:19:82:19 | &... | test2.swift:84:20:84:20 | a1 |
+| test2.swift:82:19:82:19 | [post] a1 | test2.swift:82:19:82:19 | &... |
+| test2.swift:82:19:82:19 | a1 | test2.swift:82:19:82:19 | &... |
+| test2.swift:84:5:84:5 | $generator | test2.swift:84:5:84:5 | &... |
+| test2.swift:84:5:84:5 | &... | test2.swift:84:5:84:5 | $generator |
+| test2.swift:84:5:84:5 | [post] $generator | test2.swift:84:5:84:5 | &... |
+| test2.swift:84:10:84:10 | SSA def(ix) | test2.swift:85:19:85:19 | ix |
+| test2.swift:84:10:84:10 | ix | test2.swift:84:10:84:10 | SSA def(ix) |
+| test2.swift:84:14:84:14 | SSA def(v) | test2.swift:86:19:86:19 | v |
+| test2.swift:84:14:84:14 | v | test2.swift:84:14:84:14 | SSA def(v) |
+| test2.swift:84:20:84:20 | $generator | test2.swift:84:20:84:20 | SSA def($generator) |
+| test2.swift:84:20:84:20 | SSA def($generator) | test2.swift:84:5:84:5 | $generator |
+| test2.swift:84:20:84:34 | call to makeIterator() | test2.swift:84:20:84:20 | $generator |
+| test2.swift:91:9:91:9 | SSA def(a2) | test2.swift:93:5:93:5 | a2 |
+| test2.swift:91:9:91:9 | a2 | test2.swift:91:9:91:9 | SSA def(a2) |
+| test2.swift:91:14:91:33 | [...] | test2.swift:91:9:91:9 | a2 |
+| test2.swift:93:5:93:5 | &... | test2.swift:95:14:95:14 | a2 |
+| test2.swift:93:5:93:5 | [post] a2 | test2.swift:93:5:93:5 | &... |
+| test2.swift:93:5:93:5 | a2 | test2.swift:93:5:93:5 | &... |
+| test2.swift:95:5:95:5 | $v$generator | test2.swift:95:5:95:5 | &... |
+| test2.swift:95:5:95:5 | &... | test2.swift:95:5:95:5 | $v$generator |
+| test2.swift:95:5:95:5 | [post] $v$generator | test2.swift:95:5:95:5 | &... |
+| test2.swift:95:9:95:9 | SSA def(v) | test2.swift:96:19:96:19 | v |
+| test2.swift:95:9:95:9 | v | test2.swift:95:9:95:9 | SSA def(v) |
+| test2.swift:95:14:95:14 | $v$generator | test2.swift:95:14:95:14 | SSA def($v$generator) |
+| test2.swift:95:14:95:14 | SSA def($v$generator) | test2.swift:95:5:95:5 | $v$generator |
+| test2.swift:95:14:95:14 | [post] a2 | test2.swift:98:21:98:21 | a2 |
+| test2.swift:95:14:95:14 | a2 | test2.swift:98:21:98:21 | a2 |
+| test2.swift:95:14:95:14 | call to makeIterator() | test2.swift:95:14:95:14 | $v$generator |
+| test2.swift:98:5:98:5 | $ix$generator | test2.swift:98:5:98:5 | &... |
+| test2.swift:98:5:98:5 | &... | test2.swift:98:5:98:5 | $ix$generator |
+| test2.swift:98:5:98:5 | [post] $ix$generator | test2.swift:98:5:98:5 | &... |
+| test2.swift:98:9:98:9 | SSA def(ix) | test2.swift:99:22:99:22 | ix |
+| test2.swift:98:9:98:9 | ix | test2.swift:98:9:98:9 | SSA def(ix) |
+| test2.swift:98:15:98:15 | $ix$generator | test2.swift:98:15:98:15 | SSA def($ix$generator) |
+| test2.swift:98:15:98:15 | SSA def($ix$generator) | test2.swift:98:5:98:5 | $ix$generator |
+| test2.swift:98:15:98:24 | call to makeIterator() | test2.swift:98:15:98:15 | $ix$generator |
+| test2.swift:98:21:98:21 | [post] a2 | test2.swift:99:19:99:19 | a2 |
+| test2.swift:98:21:98:21 | [post] a2 | test2.swift:101:20:101:20 | a2 |
+| test2.swift:98:21:98:21 | a2 | test2.swift:99:19:99:19 | a2 |
+| test2.swift:98:21:98:21 | a2 | test2.swift:101:20:101:20 | a2 |
+| test2.swift:99:19:99:19 | &... | test2.swift:99:19:99:19 | a2 |
+| test2.swift:99:19:99:19 | &... | test2.swift:101:20:101:20 | a2 |
+| test2.swift:99:19:99:19 | [post] a2 | test2.swift:99:19:99:19 | &... |
+| test2.swift:99:19:99:19 | a2 | test2.swift:99:19:99:19 | &... |
+| test2.swift:101:5:101:5 | $generator | test2.swift:101:5:101:5 | &... |
+| test2.swift:101:5:101:5 | &... | test2.swift:101:5:101:5 | $generator |
+| test2.swift:101:5:101:5 | [post] $generator | test2.swift:101:5:101:5 | &... |
+| test2.swift:101:10:101:10 | SSA def(ix) | test2.swift:102:19:102:19 | ix |
+| test2.swift:101:10:101:10 | ix | test2.swift:101:10:101:10 | SSA def(ix) |
+| test2.swift:101:14:101:14 | SSA def(v) | test2.swift:103:19:103:19 | v |
+| test2.swift:101:14:101:14 | v | test2.swift:101:14:101:14 | SSA def(v) |
+| test2.swift:101:20:101:20 | $generator | test2.swift:101:20:101:20 | SSA def($generator) |
+| test2.swift:101:20:101:20 | SSA def($generator) | test2.swift:101:5:101:5 | $generator |
+| test2.swift:101:20:101:34 | call to makeIterator() | test2.swift:101:20:101:20 | $generator |
 | test.swift:5:9:5:13 | ... as ... | test.swift:5:9:5:9 | t2 |
 | test.swift:6:9:6:9 | SSA def(t1) | test.swift:7:15:7:15 | t1 |
 | test.swift:6:9:6:9 | t1 | test.swift:6:9:6:9 | SSA def(t1) |

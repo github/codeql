@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AsmPiece
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
@@ -29,6 +30,26 @@ module Generated {
     override string getAPrimaryQlClass() { result = "AsmExpr" }
 
     /**
+     * Gets the `index`th asm piece of this asm expression (0-based).
+     */
+    AsmPiece getAsmPiece(int index) {
+      result =
+        Synth::convertAsmPieceFromRaw(Synth::convertAsmExprToRaw(this)
+              .(Raw::AsmExpr)
+              .getAsmPiece(index))
+    }
+
+    /**
+     * Gets any of the asm pieces of this asm expression.
+     */
+    final AsmPiece getAnAsmPiece() { result = this.getAsmPiece(_) }
+
+    /**
+     * Gets the number of asm pieces of this asm expression.
+     */
+    final int getNumberOfAsmPieces() { result = count(int i | exists(this.getAsmPiece(i))) }
+
+    /**
      * Gets the `index`th attr of this asm expression (0-based).
      */
     Attr getAttr(int index) {
@@ -47,15 +68,21 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this asm expression, if it exists.
+     * Gets the `index`th template of this asm expression (0-based).
      */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getExpr())
+    Expr getTemplate(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getTemplate(index))
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Gets any of the templates of this asm expression.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final Expr getATemplate() { result = this.getTemplate(_) }
+
+    /**
+     * Gets the number of templates of this asm expression.
+     */
+    final int getNumberOfTemplates() { result = count(int i | exists(this.getTemplate(i))) }
   }
 }

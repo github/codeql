@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
 private import codeql.threatmodels.ThreatModels
 
@@ -663,6 +663,20 @@ module CorsMiddlewareTest implements TestSig {
   }
 }
 
+module TemplateConstructionTest implements TestSig {
+  string getARelevantTag() { result = "templateConstruction" }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(TemplateConstruction tc |
+      location = tc.getLocation() and
+      element = tc.toString() and
+      value = prettyNodeForInlineTest(tc.getSourceArg()) and
+      tag = "templateConstruction"
+    )
+  }
+}
+
 import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest, EncodingTest, LoggingTest,
     CodeExecutionTest>,
   MergeTests5<SqlConstructionTest, SqlExecutionTest, XPathConstructionTest, XPathExecutionTest,
@@ -673,4 +687,5 @@ import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest
   MergeTests5<FileSystemAccessTest, FileSystemWriteAccessTest, PathNormalizationTest,
     SafeAccessCheckTest, PublicKeyGenerationTest>,
   MergeTests5<CryptographicOperationTest, HttpClientRequestTest, CsrfProtectionSettingTest,
-    CsrfLocalProtectionSettingTest, MergeTests<XmlParsingTest, ThreatModelSourceTest>>>>
+    CsrfLocalProtectionSettingTest,
+    MergeTests3<XmlParsingTest, ThreatModelSourceTest, TemplateConstructionTest>>>>

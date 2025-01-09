@@ -3,6 +3,7 @@ Wrappers and helpers around `rules_pkg` to build codeql packs.
 """
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@bazel_skylib//rules:native_binary.bzl", "native_test")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", _strip_prefix = "strip_prefix")
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
@@ -351,25 +352,42 @@ def _codeql_pack_install(name, srcs, install_dest = None, build_file_label = Non
             visibility = ["//visibility:private"],
         )
         build_file_label = internal("build-file")
-
+    data = [
+        internal("script"),
+        internal("zip-manifest"),
+        Label("//misc/ripunzip"),
+    ] + ([build_file_label] if build_file_label else [])
+    args = [
+        "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
+        "--ripunzip=$(rlocationpath %s)" % Label("//misc/ripunzip"),
+        "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
+    ] + ([
+        "--build-file=$(rlocationpath %s)" % build_file_label,
+    ] if build_file_label else []) + (
+        ["--destdir", "\"%s\"" % install_dest] if install_dest else []
+    )
     py_binary(
         name = name,
         srcs = [Label("//misc/bazel/internal:install.py")],
         main = Label("//misc/bazel/internal:install.py"),
-        data = [
-            internal("script"),
-            internal("zip-manifest"),
-            Label("//misc/ripunzip"),
-        ] + ([build_file_label] if build_file_label else []),
         deps = ["@rules_python//python/runfiles"],
-        args = [
-                   "--pkg-install-script=$(rlocationpath %s)" % internal("script"),
-                   "--ripunzip=$(rlocationpath %s)" % Label("//misc/ripunzip"),
-                   "--zip-manifest=$(rlocationpath %s)" % internal("zip-manifest"),
-               ] + ([
-                   "--build-file=$(rlocationpath %s)" % build_file_label,
-               ] if build_file_label else []) +
-               (["--destdir", "\"%s\"" % install_dest] if install_dest else []),
+        data = data,
+        args = args,
+    )
+
+    # this hack is meant to be an optimization when using install for tests, where
+    # the install step is skipped if nothing changed. If the installation directory
+    # is somehow messed up, `bazel run` can be used to force install
+    native_test(
+        name = internal("as", "test"),
+        src = name,
+        tags = [
+            "manual",  # avoid having this picked up by `...`, `:all` or `:*`
+            "local",  # make sure installation does not run sandboxed
+        ],
+        data = data,
+        args = args,
+        size = "small",
     )
 
 def codeql_pack_group(name, srcs, visibility = None, skip_installer = False, prefix = "", install_dest = None, build_file_label = None, compression_level = 6):

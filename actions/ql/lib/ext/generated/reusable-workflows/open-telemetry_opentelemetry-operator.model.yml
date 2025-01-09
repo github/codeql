@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-telemetry/opentelemetry-operator/.github/workflows/reusable-publish-autoinstrumentation-e2e-images.yaml", "*", "input.language", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-operator/.github/workflows/reusable-operator-hub-release.yaml", "*", "input.org", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-operator/.github/workflows/reusable-operator-hub-release.yaml", "*", "input.repo", "code-injection", "generated"]

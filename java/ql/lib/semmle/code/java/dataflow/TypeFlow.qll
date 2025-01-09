@@ -252,8 +252,8 @@ private module Input implements TypeFlowInput<Location> {
       downcastSuccessorAux(pragma[only_bind_into](cast), v, t, t1, t2) and
       t1.getASourceSupertype+() = t2 and
       va = v.getAUse() and
-      dominates(cast, va) and
-      dominates(cast.(ControlFlowNode).getANormalSuccessor(), va)
+      dominates(cast.getControlFlowNode(), va.getControlFlowNode()) and
+      dominates(cast.getControlFlowNode().getANormalSuccessor(), va.getControlFlowNode())
     )
   }
 

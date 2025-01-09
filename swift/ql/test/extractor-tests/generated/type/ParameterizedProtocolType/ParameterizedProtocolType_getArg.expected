@@ -1,2 +1,18 @@
 | P<Int, String> | 0 | Int |
 | P<Int, String> | 1 | String |
+| RawRepresentable<Bool> | 0 | Bool |
+| RawRepresentable<Double> | 0 | Double |
+| RawRepresentable<Float> | 0 | Float |
+| RawRepresentable<Int8> | 0 | Int8 |
+| RawRepresentable<Int16> | 0 | Int16 |
+| RawRepresentable<Int32> | 0 | Int32 |
+| RawRepresentable<Int64> | 0 | Int64 |
+| RawRepresentable<Int128> | 0 | Int128 |
+| RawRepresentable<Int> | 0 | Int |
+| RawRepresentable<String> | 0 | String |
+| RawRepresentable<UInt8> | 0 | UInt8 |
+| RawRepresentable<UInt16> | 0 | UInt16 |
+| RawRepresentable<UInt32> | 0 | UInt32 |
+| RawRepresentable<UInt64> | 0 | UInt64 |
+| RawRepresentable<UInt128> | 0 | UInt128 |
+| RawRepresentable<UInt> | 0 | UInt |

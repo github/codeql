@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["firebaseextended/action-hosting-deploy", "*", "input.firebaseToolsVersion", "command-injection", "manual"]

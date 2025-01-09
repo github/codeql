@@ -3,7 +3,7 @@ import codeql.swift.regex.Regex
 private import codeql.swift.regex.internal.ParseRegex
 private import codeql.swift.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 bindingset[s]
 string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }

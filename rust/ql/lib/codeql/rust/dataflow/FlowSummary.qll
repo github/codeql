@@ -7,17 +7,7 @@ private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprB
 // import all instances below
 private module Summaries {
   private import codeql.rust.Frameworks
-
-  // TODO: Use models-as-data when it's available
-  private class UnwrapSummary extends SummarizedCallable::Range {
-    UnwrapSummary() { this = "lang:core::_::<crate::option::Option>::unwrap" }
-
-    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Variant[crate::option::Option::Some(0)]" and
-      output = "ReturnValue" and
-      preservesValue = true
-    }
-  }
+  private import codeql.rust.dataflow.internal.ModelsAsData
 }
 
 /** Provides the `Range` class used to define the extent of `LibraryCallable`. */
@@ -62,7 +52,7 @@ module SummarizedCallable {
      *
      * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
      */
-    abstract predicate propagatesFlow(string input, string output, boolean preservesValue);
+    predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
   }
 }
 

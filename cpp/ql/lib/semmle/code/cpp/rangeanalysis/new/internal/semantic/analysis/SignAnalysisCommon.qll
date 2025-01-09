@@ -437,6 +437,78 @@ module SignAnalysis<DeltaSig D> {
     not hasGuard(v, pos, result)
   }
 
+  private SemExpr posBoundGetElement(int i, SemSsaVariable v, SsaReadPosition pos) {
+    result =
+      rank[i + 1](SemExpr bound, SemBasicBlock b, int blockOrder, int indexOrder |
+        posBound(bound, v, pos) and
+        b = bound.getBasicBlock() and
+        blockOrder = b.getUniqueId() and
+        bound = b.getInstruction(indexOrder)
+      |
+        bound order by blockOrder, indexOrder
+      )
+  }
+
+  private predicate posBoundOkFromIndex(int i, SemSsaVariable v, SsaReadPosition pos) {
+    i = 0 and
+    posBoundOk(posBoundGetElement(i, v, pos), v, pos)
+    or
+    posBoundOkFromIndex(i - 1, v, pos) and
+    posBoundOk(posBoundGetElement(i, v, pos), v, pos)
+  }
+
+  private predicate posBoundGuardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
+    posBoundOkFromIndex(max(int i | exists(posBoundGetElement(i, v, pos))), v, pos)
+  }
+
+  private SemExpr negBoundGetElement(int i, SemSsaVariable v, SsaReadPosition pos) {
+    result =
+      rank[i + 1](SemExpr bound, SemBasicBlock b, int blockOrder, int indexOrder |
+        negBound(bound, v, pos) and
+        b = bound.getBasicBlock() and
+        blockOrder = b.getUniqueId() and
+        bound = b.getInstruction(indexOrder)
+      |
+        bound order by blockOrder, indexOrder
+      )
+  }
+
+  private predicate negBoundOkFromIndex(int i, SemSsaVariable v, SsaReadPosition pos) {
+    i = 0 and
+    negBoundOk(negBoundGetElement(i, v, pos), v, pos)
+    or
+    negBoundOkFromIndex(i - 1, v, pos) and
+    negBoundOk(negBoundGetElement(i, v, pos), v, pos)
+  }
+
+  private predicate negBoundGuardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
+    negBoundOkFromIndex(max(int i | exists(negBoundGetElement(i, v, pos))), v, pos)
+  }
+
+  private SemExpr zeroBoundGetElement(int i, SemSsaVariable v, SsaReadPosition pos) {
+    result =
+      rank[i + 1](SemExpr bound, SemBasicBlock b, int blockOrder, int indexOrder |
+        zeroBound(bound, v, pos) and
+        b = bound.getBasicBlock() and
+        blockOrder = b.getUniqueId() and
+        bound = b.getInstruction(indexOrder)
+      |
+        bound order by blockOrder, indexOrder
+      )
+  }
+
+  private predicate zeroBoundOkFromIndex(int i, SemSsaVariable v, SsaReadPosition pos) {
+    i = 0 and
+    zeroBoundOk(zeroBoundGetElement(i, v, pos), v, pos)
+    or
+    zeroBoundOkFromIndex(i - 1, v, pos) and
+    zeroBoundOk(zeroBoundGetElement(i, v, pos), v, pos)
+  }
+
+  private predicate zeroBoundGuardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
+    zeroBoundOkFromIndex(max(int i | exists(zeroBoundGetElement(i, v, pos))), v, pos)
+  }
+
   /**
    * Gets a possible sign of `v` at read position `pos`, where a guard could have
    * ruled out the sign but does not.
@@ -444,13 +516,19 @@ module SignAnalysis<DeltaSig D> {
    */
   private Sign guardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
     result = TPos() and
-    forex(SemExpr bound | posBound(bound, v, pos) | posBoundOk(bound, v, pos))
+    // optimised version of
+    // `forex(SemExpr bound | posBound(bound, v, pos) | posBoundOk(bound, v, pos))`
+    posBoundGuardedSsaSignOk(v, pos)
     or
     result = TNeg() and
-    forex(SemExpr bound | negBound(bound, v, pos) | negBoundOk(bound, v, pos))
+    // optimised version of
+    // `forex(SemExpr bound | negBound(bound, v, pos) | negBoundOk(bound, v, pos))`
+    negBoundGuardedSsaSignOk(v, pos)
     or
     result = TZero() and
-    forex(SemExpr bound | zeroBound(bound, v, pos) | zeroBoundOk(bound, v, pos))
+    // optimised version of
+    // `forex(SemExpr bound | zeroBound(bound, v, pos) | zeroBoundOk(bound, v, pos))`
+    zeroBoundGuardedSsaSignOk(v, pos)
   }
 
   /** Gets a possible sign for `v` at `pos`. */

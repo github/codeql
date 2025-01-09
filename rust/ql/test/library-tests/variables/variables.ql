@@ -1,5 +1,5 @@
 import rust
-import utils.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 query predicate variable(Variable v) { any() }
 

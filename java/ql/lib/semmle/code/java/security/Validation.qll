@@ -50,7 +50,7 @@ private predicate validatedAccess(VarAccess va) {
         bb.getNode(i + 1) = node.getANormalSuccessor()
       |
         bb.bbStrictlyDominates(va.getBasicBlock()) or
-        bb.getNode(any(int j | j > i)) = va
+        bb.getNode(any(int j | j > i)).asExpr() = va
       )
     )
   )

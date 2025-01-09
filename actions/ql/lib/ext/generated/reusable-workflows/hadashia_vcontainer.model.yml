@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hadashia/vcontainer/.github/workflows/update-version-number.yaml", "*", "input.dry-run", "code-injection", "generated"]
+     - ["hadashia/vcontainer/.github/workflows/update-version-number.yaml", "*", "input.tag", "code-injection", "generated"]

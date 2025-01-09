@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["angular/dev-infra", "*", "input.firebase-public-dir", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "input.workflow-artifact-name", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "input.artifact-build-revision", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "input.pull-number", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "input.deploy-directory", "code-injection", "generated"]

@@ -20,6 +20,10 @@ module Generated {
    * ```rust
    * println!("Hello {}", "world");
    * ```
+   * or the `{value:#width$.precision$}` in:
+   * ```rust
+   * println!("Value {value:#width$.precision$}");
+   * ```
    * INTERNAL: Do not reference the `Generated::Format` class directly.
    * Use the subclass `Format`, where the following predicates are available.
    */

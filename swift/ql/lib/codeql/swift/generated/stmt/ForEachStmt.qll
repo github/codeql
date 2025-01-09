@@ -11,6 +11,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.internal.LabeledStmtImpl::Impl as LabeledStmtImpl
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.PatternBindingDecl
+import codeql.swift.elements.decl.VarDecl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ForEachStmt` and should not
@@ -23,6 +24,26 @@ module Generated {
    */
   class ForEachStmt extends Synth::TForEachStmt, LabeledStmtImpl::LabeledStmt {
     override string getAPrimaryQlClass() { result = "ForEachStmt" }
+
+    /**
+     * Gets the `index`th variable of this for each statement (0-based).
+     */
+    VarDecl getVariable(int index) {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertForEachStmtToRaw(this)
+              .(Raw::ForEachStmt)
+              .getVariable(index))
+    }
+
+    /**
+     * Gets any of the variables of this for each statement.
+     */
+    final VarDecl getAVariable() { result = this.getVariable(_) }
+
+    /**
+     * Gets the number of variables of this for each statement.
+     */
+    final int getNumberOfVariables() { result = count(int i | exists(this.getVariable(i))) }
 
     /**
      * Gets the pattern of this for each statement.

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["zenml-io/zenml", "*", "input.install_integrations", "code-injection", "generated"]

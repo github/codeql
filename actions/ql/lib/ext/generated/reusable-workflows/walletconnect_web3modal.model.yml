@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["walletconnect/web3modal/.github/workflows/ui_tests.yml", "*", "input.command", "code-injection", "generated"]

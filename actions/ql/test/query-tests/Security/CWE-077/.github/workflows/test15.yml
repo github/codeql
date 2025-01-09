@@ -1,0 +1,29 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title 
+        run: |
+          echo "BODY=$(jq --raw-output .pull_request.body ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"
+      - run: echo "$TITLE"
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title 
+        run: |
+          PR_BODY=$(jq --raw-output .pull_request.body ${GITHUB_EVENT_PATH})
+          echo "BODY=$PR_BODY" >> "$GITHUB_ENV"
+      - run: echo "$TITLE"
+  test3:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "branch_name=$(jq --raw-output .pull_request.head.ref $GITHUB_EVENT_PATH)" >> $GITHUB_ENV
+
+
+

@@ -1,0 +1,19 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+            workflow: ${{github.event.workflow_run.workflow_id}}
+            run_id: ${{github.event.workflow_run.id}}
+            name: artifact
+      - id: pr_number    
+        run: |
+            PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)
+            echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT 

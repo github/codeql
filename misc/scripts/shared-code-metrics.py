@@ -1,7 +1,7 @@
 #!/bin/env python3
 # Generates a report on the amount of code sharing in this repo
 #
-# The purpose of this is 
+# The purpose of this is
 # a) To be able to understand the structure and dependencies
 # b) To provide a metric that measures the amount of shared vs non-shared code
 
@@ -224,7 +224,7 @@ for qlfile in ql_file_index.values():
     if lang in language_info:
         info = language_info[lang]
         if qlfile.isOnlyInLanguage(lang):
-            info.addQlFile(qlfile)            
+            info.addQlFile(qlfile)
 
 # Determine all package dependencies
 
@@ -276,15 +276,15 @@ def print_package_dependencies(packages):
         nlines = package.lines + package.total_imported_lines
         shared_percentage = 100 * package.total_imported_lines / nlines if nlines>0 else 0
         print('|', package.link(), '|', package.files, '|', package.lines, '|', package.total_imported_files, '|', package.total_imported_lines, '|',
-            # ','.join([p.name for p in package.all_dependencies]), 
+            # ','.join([p.name for p in package.all_dependencies]),
             "%.2f" % shared_percentage, '|')
     print()
 
 def print_language_dependencies(packages):
-    print_package_dependencies([p for p in packages if p.name.endswith('-all') and p.name.count('-')==1]) 
+    print_package_dependencies([p for p in packages if p.name.endswith('-all') and p.name.count('-')==1])
 
 def list_shared_code_by_language(language_info):
-    # For each language directory, list the files that are (1) inside the directory and not shared, 
+    # For each language directory, list the files that are (1) inside the directory and not shared,
     # (2) packages from outside the directory, plus identical files
     print('| Language | Non-shared files | Non-shared lines of code | Imported files | Imported lines of code | Shared code % |')
     print('| -------- | ---------------- | ------------------------ | -------------- | ---------------------- | ------------- |')

@@ -1,6 +1,6 @@
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.FlowSources
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import TaintFlowTest<FilesConfig>
 
 module FilesConfig implements DataFlow::ConfigSig {

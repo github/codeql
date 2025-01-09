@@ -1,1 +1,1 @@
-semmle-extractor-options: --microsoft /Zc:wchar_t- --edg --target --edg win64
+semmle-extractor-options: --microsoft --edg --no_wchar_t_keyword --edg --target --edg win64
