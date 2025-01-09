@@ -495,7 +495,6 @@ var_decls(
     int location: @location_default ref
 );
 var_def(unique int id: @var_decl ref);
-var_specialized(int id: @var_decl ref);
 var_decl_specifiers(
     int id: @var_decl ref,
     string name: string ref
