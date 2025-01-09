@@ -5,9 +5,12 @@ import { NgForm } from "@angular/forms";
     template: `
         <input type="text" (input)="setInput1($event)"></input>
         <input type="text" (input)="setInput2($event.target)"></input>
+        <input type="text" [(ngModel)]="field"></input>
     `
 })
 export class Foo {
+    field: string = "";
+
     setInput1(event) {
         document.write(event.target.value); // NOT OK
     }
@@ -18,5 +21,9 @@ export class Foo {
 
     blah(form: NgForm) {
         document.write(form.value.foo); // NOT OK
+    }
+
+    useField() {
+        document.write(this.field); // NOT OK [INCONSISTENCY]
     }
 }
