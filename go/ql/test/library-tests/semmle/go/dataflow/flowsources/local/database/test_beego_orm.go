@@ -5,7 +5,7 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 )
 
-func test_DB(db orm.DB) {
+func test_beego_DB(db orm.DB) {
 	rows, err := db.Query("SELECT * FROM users") // $ source
 	ignore(rows, err)
 
@@ -19,14 +19,14 @@ func test_DB(db orm.DB) {
 	ignore(row)
 }
 
-func test_Ormer() {
+func test_beego_Ormer() {
 	o := oldOrm.NewOrm()
 	o.Read(&User{})                             // $ source
 	o.ReadForUpdate(&User{})                    // $ source
 	o.ReadOrCreate(&User{}, "name")             // $ source
 }
 
-func test_DQL() {
+func test_beego_DQL() {
 	o := orm.NewOrm()
 	o.Read(&User{})                             // $ source
 	o.ReadWithCtx(nil, &User{})                 // $ source
