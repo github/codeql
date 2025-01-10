@@ -91,8 +91,8 @@ function test12(url) {
 
 function test13(url) {
 	let scheme = goog.uri.utils.getScheme(url);
-	switch (scheme) {
-    	case "javascript": // $ Alert
+	switch (scheme) { // $ Alert
+    	case "javascript":
 	    case "data":
 		    return "about:blank";
 	    default:
@@ -107,9 +107,9 @@ function test14(url) {
 }
 
 function chain1(url) {
-    return url  // $ Alert
+    return url
         .replace(/javascript:/, "")
-        .replace(/data:/, "");
+        .replace(/data:/, ""); // $ Alert
 }
 
 function chain2(url) {
