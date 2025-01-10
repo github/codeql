@@ -550,10 +550,22 @@ macro_rules! let_in_macro {
     };
 }
 
+macro_rules! let_in_macro2 {
+    ($e:expr) => {
+        {
+            let var_in_macro = 0;
+            $e
+        }
+    };
+}
+
 fn macro_invocation() {
-    let var_from_macro =
+    let var_from_macro = // var_from_macro1
         let_in_macro!(37); // $ MISSING: read_access=var_in_macro
-    print_i64(var_from_macro); // $ read_access=var_from_macro
+    print_i64(var_from_macro); // $ read_access=var_from_macro1
+    let var_in_macro = 33; // var_in_macro1
+    print_i64(let_in_macro2!(var_in_macro)); // $ read_access=var_in_macro1
+    print_i64(var_in_macro); // $ read_access=var_in_macro1
 }
 
 fn main() {

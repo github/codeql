@@ -145,7 +145,8 @@ definition
 | main.rs:519:9:519:9 | x | main.rs:519:9:519:9 | x |
 | main.rs:523:9:523:9 | z | main.rs:523:9:523:9 | z |
 | main.rs:532:10:532:18 | SelfParam | main.rs:532:15:532:18 | self |
-| main.rs:554:9:554:22 | var_from_macro | main.rs:554:9:554:22 | var_from_macro |
+| main.rs:563:9:563:22 | var_from_macro | main.rs:563:9:563:22 | var_from_macro |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:9:566:20 | var_in_macro |
 read
 | main.rs:3:14:3:14 | s | main.rs:3:14:3:14 | s | main.rs:4:20:4:20 | s |
 | main.rs:7:14:7:14 | i | main.rs:7:14:7:14 | i | main.rs:8:20:8:20 | i |
@@ -283,7 +284,9 @@ read
 | main.rs:519:9:519:9 | x | main.rs:519:9:519:9 | x | main.rs:521:15:521:15 | x |
 | main.rs:523:9:523:9 | z | main.rs:523:9:523:9 | z | main.rs:524:20:524:20 | z |
 | main.rs:532:10:532:18 | SelfParam | main.rs:532:15:532:18 | self | main.rs:533:6:533:9 | self |
-| main.rs:554:9:554:22 | var_from_macro | main.rs:554:9:554:22 | var_from_macro | main.rs:556:15:556:28 | var_from_macro |
+| main.rs:563:9:563:22 | var_from_macro | main.rs:563:9:563:22 | var_from_macro | main.rs:565:15:565:28 | var_from_macro |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:9:566:20 | var_in_macro | main.rs:567:30:567:41 | var_in_macro |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:9:566:20 | var_in_macro | main.rs:568:15:568:26 | var_in_macro |
 firstRead
 | main.rs:3:14:3:14 | s | main.rs:3:14:3:14 | s | main.rs:4:20:4:20 | s |
 | main.rs:7:14:7:14 | i | main.rs:7:14:7:14 | i | main.rs:8:20:8:20 | i |
@@ -394,7 +397,8 @@ firstRead
 | main.rs:519:9:519:9 | x | main.rs:519:9:519:9 | x | main.rs:520:20:520:20 | x |
 | main.rs:523:9:523:9 | z | main.rs:523:9:523:9 | z | main.rs:524:20:524:20 | z |
 | main.rs:532:10:532:18 | SelfParam | main.rs:532:15:532:18 | self | main.rs:533:6:533:9 | self |
-| main.rs:554:9:554:22 | var_from_macro | main.rs:554:9:554:22 | var_from_macro | main.rs:556:15:556:28 | var_from_macro |
+| main.rs:563:9:563:22 | var_from_macro | main.rs:563:9:563:22 | var_from_macro | main.rs:565:15:565:28 | var_from_macro |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:9:566:20 | var_in_macro | main.rs:567:30:567:41 | var_in_macro |
 lastRead
 | main.rs:3:14:3:14 | s | main.rs:3:14:3:14 | s | main.rs:4:20:4:20 | s |
 | main.rs:7:14:7:14 | i | main.rs:7:14:7:14 | i | main.rs:8:20:8:20 | i |
@@ -506,7 +510,8 @@ lastRead
 | main.rs:519:9:519:9 | x | main.rs:519:9:519:9 | x | main.rs:521:15:521:15 | x |
 | main.rs:523:9:523:9 | z | main.rs:523:9:523:9 | z | main.rs:524:20:524:20 | z |
 | main.rs:532:10:532:18 | SelfParam | main.rs:532:15:532:18 | self | main.rs:533:6:533:9 | self |
-| main.rs:554:9:554:22 | var_from_macro | main.rs:554:9:554:22 | var_from_macro | main.rs:556:15:556:28 | var_from_macro |
+| main.rs:563:9:563:22 | var_from_macro | main.rs:563:9:563:22 | var_from_macro | main.rs:565:15:565:28 | var_from_macro |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:9:566:20 | var_in_macro | main.rs:568:15:568:26 | var_in_macro |
 adjacentReads
 | main.rs:35:9:35:10 | x3 | main.rs:35:9:35:10 | x3 | main.rs:36:15:36:16 | x3 | main.rs:38:9:38:10 | x3 |
 | main.rs:43:9:43:10 | x4 | main.rs:43:9:43:10 | x4 | main.rs:44:15:44:16 | x4 | main.rs:49:15:49:16 | x4 |
@@ -538,6 +543,7 @@ adjacentReads
 | main.rs:510:9:510:13 | a | main.rs:510:13:510:13 | a | main.rs:511:15:511:15 | a | main.rs:512:5:512:5 | a |
 | main.rs:510:9:510:13 | a | main.rs:510:13:510:13 | a | main.rs:512:5:512:5 | a | main.rs:513:15:513:15 | a |
 | main.rs:519:9:519:9 | x | main.rs:519:9:519:9 | x | main.rs:520:20:520:20 | x | main.rs:521:15:521:15 | x |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:9:566:20 | var_in_macro | main.rs:567:30:567:41 | var_in_macro | main.rs:568:15:568:26 | var_in_macro |
 phi
 | main.rs:191:9:191:44 | [match(true)] phi | main.rs:191:9:191:44 | a3 | main.rs:191:22:191:23 | a3 |
 | main.rs:191:9:191:44 | [match(true)] phi | main.rs:191:9:191:44 | a3 | main.rs:191:42:191:43 | a3 |
@@ -658,4 +664,5 @@ assigns
 | main.rs:514:5:514:5 | a | main.rs:514:9:514:17 | [...] |
 | main.rs:519:9:519:9 | x | main.rs:519:13:519:14 | 16 |
 | main.rs:523:9:523:9 | z | main.rs:523:13:523:14 | 17 |
-| main.rs:554:9:554:22 | var_from_macro | main.rs:555:9:555:25 | MacroExpr |
+| main.rs:563:9:563:22 | var_from_macro | main.rs:564:9:564:25 | MacroExpr |
+| main.rs:566:9:566:20 | var_in_macro | main.rs:566:24:566:25 | 33 |
