@@ -1,6 +1,7 @@
 package test
 
 import (
+	oldOrm "github.com/astaxie/beego/orm"
 	"github.com/beego/beego/v2/client/orm"
 )
 
@@ -16,6 +17,13 @@ func test_DB(db orm.DB) {
 
 	row = db.QueryRowContext(nil, "SELECT * FROM users") // $ source
 	ignore(row)
+}
+
+func test_Ormer() {
+	o := oldOrm.NewOrm()
+	o.Read(&User{})                             // $ source
+	o.ReadForUpdate(&User{})                    // $ source
+	o.ReadOrCreate(&User{}, "name")             // $ source
 }
 
 func test_DQL() {

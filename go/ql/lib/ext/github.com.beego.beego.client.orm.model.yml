@@ -20,6 +20,9 @@ extensions:
       - ["group:beego-orm", "DQL", True, "ReadForUpdateWithCtx", "", "", "Argument[1]", "database", "manual"]
       - ["group:beego-orm", "DQL", True, "ReadOrCreate", "", "", "Argument[0]", "database", "manual"]
       - ["group:beego-orm", "DQL", True, "ReadOrCreateWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "Read", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "ReadForUpdate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "ReadOrCreate", "", "", "Argument[0]", "database", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel
