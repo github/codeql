@@ -10,25 +10,25 @@
 
         <p>
             A strong cryptographic hash function should be resistant to:
-            <ul>
-                <li>
-                    <b>Pre-image attacks</b>. If you know a hash value <code>h(x)</code>,
-                    you should not be able to easily find the input <code>x</code>.
-                </li>
-                <li>
-                    <b>Collision attacks</b>. If you know a hash value <code>h(x)</code>,
-                    you should not be able to easily find a different input
-                    <code>y</code>
-                    with the same hash value <code>h(x) = h(y)</code>.
-                </li>
-                <li>
-                    <b>Brute force</b>. For passwords and other data with limited
-                    input space, if you know a hash value <code>h(x)</code>
-                    you should not be able to find the input <code>x</code> even using
-                    a brute force attack (without significant computational effort).
-                </li>
-            </ul>
         </p>
+        <ul>
+            <li>
+                <b>Pre-image attacks</b>. If you know a hash value <code>h(x)</code>,
+                you should not be able to easily find the input <code>x</code>.
+            </li>
+            <li>
+                <b>Collision attacks</b>. If you know a hash value <code>h(x)</code>,
+                you should not be able to easily find a different input
+                <code>y</code>
+                with the same hash value <code>h(x) = h(y)</code>.
+            </li>
+            <li>
+                <b>Brute force</b>. For passwords and other data with limited
+                input space, if you know a hash value <code>h(x)</code>
+                you should not be able to find the input <code>x</code> even using
+                a brute force attack (without significant computational effort).
+            </li>
+        </ul>
 
         <p>
             As an example, both MD5 and SHA-1 are known to be vulnerable to collision attacks.
@@ -51,16 +51,17 @@
 
         <p>
             Ensure that you use a strong, modern cryptographic hash function, such as:
-            <ul>
-                <li>
-                    Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
-                    a dictionary-like attack is feasible.
-                </li>
-                <li>
-                    SHA-2, or SHA-3 in other cases.
-                </li>
-            </ul>
         </p>
+
+        <ul>
+            <li>
+                Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
+                a dictionary-like attack is feasible.
+            </li>
+            <li>
+                SHA-2, or SHA-3 in other cases.
+            </li>
+        </ul>
 
         <p>
             Note that special purpose algorithms, which are used to ensure that a message comes from a
