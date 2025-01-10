@@ -131,7 +131,9 @@ predicate immutableActionsDataModel(string action) { Extensions::immutableAction
  * Fields:
  *    - owner: owner name
  */
-predicate trustedActionsOwnerDataModel(string owner) { Extensions::trustedActionsOwnerDataModel(owner) }
+predicate trustedActionsOwnerDataModel(string owner) {
+  Extensions::trustedActionsOwnerDataModel(owner)
+}
 
 /**
  * MaD models for untrusted git commands
