@@ -2,39 +2,14 @@ package test
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 
 	beegoOrm "github.com/beego/beego/orm"
 	gocb "github.com/couchbase/gocb/v2"
 	"github.com/gogf/gf/database/gdb"
-	"github.com/jmoiron/sqlx"
 	"github.com/rqlite/gorqlite"
 	"go.mongodb.org/mongo-driver/mongo"
-	"gorm.io/gorm"
 )
-
-func stdlib() {
-	pool, err := sql.Open("mysql", "user:password@localhost:5555/dbname")
-	if err != nil {
-		return
-	}
-
-	row := pool.QueryRow("SELECT * FROM users WHERE id = ?", 1) // $source
-	fmt.Println(row)
-}
-
-func gormDB(db *gorm.DB) {
-	type User struct {
-		gorm.Model
-	}
-
-	var u1 User
-	var u2 User
-
-	db.Find(&u1, 1)          // $source
-	db.FirstOrCreate(&u2, 1) // $source
-}
 
 func mongoDB(ctx context.Context, userCollection mongo.Collection) {
 	type User struct {
@@ -56,26 +31,6 @@ func gogf(g gdb.DB) {
 	}
 
 	fmt.Println(u1)
-}
-
-func Sqlx() {
-	db, err := sqlx.Connect("mysql", "user:password@localhost:5555/dbname")
-
-	if err != nil {
-		return
-	}
-
-	u1 := db.QueryRow("SELECT * FROM users WHERE id = ?", 1) // $source
-
-	fmt.Println(u1)
-
-	type User struct{}
-
-	rows, err := db.Queryx("SELECT * FROM users") // $source
-	for rows.Next() {
-		var user User
-		rows.StructScan(&user)
-	}
 }
 
 func beego() {
