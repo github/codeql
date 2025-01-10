@@ -42,6 +42,13 @@ module Generated {
 
     /**
      * Gets the argument reference of this format, if it exists.
+     *
+     * For example `name` and `0` in:
+     * ```rust
+     * let name = "Alice";
+     * println!("{name} in wonderland");
+     * println!("{0} in wonderland", name);
+     * ```
      */
     FormatArgument getArgumentRef() { none() }
 
@@ -52,6 +59,13 @@ module Generated {
 
     /**
      * Gets the width argument of this format, if it exists.
+     *
+     * For example `width` and `1` in:
+     * ```rust
+     * let width = 6;
+     * println!("{:width$}", PI);
+     * println!("{:1$}", PI, width);
+     * ```
      */
     FormatArgument getWidthArgument() { none() }
 
@@ -62,6 +76,13 @@ module Generated {
 
     /**
      * Gets the precision argument of this format, if it exists.
+     *
+     * For example `prec` and `1` in:
+     * ```rust
+     * let prec = 6;
+     * println!("{:.prec$}", PI);
+     * println!("{:.1$}", PI, prec);
+     * ```
      */
     FormatArgument getPrecisionArgument() { none() }
 
