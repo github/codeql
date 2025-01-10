@@ -1,3 +1,4 @@
+problems
 | tst-IncompleteHostnameRegExp.js:3:3:3:28 | ^http:\\/\\/test.example.com | This regular expression has an unescaped '.' before 'example.com', so it might match more hosts than expected. | tst-IncompleteHostnameRegExp.js:3:2:3:29 | /^http: ... le.com/ | here |
 | tst-IncompleteHostnameRegExp.js:5:3:5:28 | ^http:\\/\\/test.example.net | This regular expression has an unescaped '.' before 'example.net', so it might match more hosts than expected. | tst-IncompleteHostnameRegExp.js:5:2:5:29 | /^http: ... le.net/ | here |
 | tst-IncompleteHostnameRegExp.js:6:3:6:42 | ^http:\\/\\/test.(example-a\|example-b).com | This regular expression has an unescaped '.' before '(example-a\|example-b).com', so it might match more hosts than expected. | tst-IncompleteHostnameRegExp.js:6:2:6:43 | /^http: ... b).com/ | here |
@@ -26,3 +27,10 @@
 | tst-IncompleteHostnameRegExp.js:55:14:55:38 | ^http://test.example.com | This regular expression has an unescaped '.' before 'example.com', so it might match more hosts than expected. | tst-IncompleteHostnameRegExp.js:55:13:55:39 | '^http: ... le.com' | here |
 | tst-IncompleteHostnameRegExp.js:59:5:59:20 | foo.example\\.com | This regular expression has an unescaped '.' before 'example\\.com', so it might match more hosts than expected. | tst-IncompleteHostnameRegExp.js:59:2:59:32 | /^(foo. ... ever)$/ | here |
 | tst-IncompleteHostnameRegExp.js:61:18:61:41 | ^http://test.example.com | This regular expression has an unescaped '.' before 'example.com', so it might match more hosts than expected. | tst-IncompleteHostnameRegExp.js:61:17:61:42 | "^http: ... le.com" | here |
+testFailures
+| tst-IncompleteHostnameRegExp.js:9:45:9:54 | // $ Alert | Missing result: Alert |
+| tst-IncompleteHostnameRegExp.js:10:3:10:36 | This regular expression has an unescaped '.' before 'example.com', so it might match more hosts than expected. | Unexpected result: Alert |
+| tst-IncompleteHostnameRegExp.js:17:35:17:44 | // $ Alert | Missing result: Alert |
+| tst-IncompleteHostnameRegExp.js:36:43:36:52 | // $ Alert | Missing result: Alert |
+| tst-IncompleteHostnameRegExp.js:42:69:42:78 | // $ Alert | Missing result: Alert |
+| tst-IncompleteHostnameRegExp.js:59:5:59:20 | This regular expression has an unescaped '.' before 'example\\.com', so it might match more hosts than expected. | Unexpected result: Alert |
