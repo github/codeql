@@ -1,3 +1,4 @@
+#select
 | IncompleteUrlSchemeCheck.js:5:9:5:35 | u.start ... ript:") | This check does not consider data: and vbscript:. |
 | IncompleteUrlSchemeCheck.js:16:9:16:39 | badProt ... otocol) | This check does not consider vbscript:. |
 | IncompleteUrlSchemeCheck.js:23:9:23:43 | badProt ... scheme) | This check does not consider vbscript:. |
@@ -13,3 +14,8 @@
 | IncompleteUrlSchemeCheck.js:104:6:104:39 | /^(java ... scheme) | This check does not consider vbscript:. |
 | IncompleteUrlSchemeCheck.js:110:12:112:29 | url  // ... :/, "") | This check does not consider vbscript:. |
 | IncompleteUrlSchemeCheck.js:124:11:124:34 | url.rep ... :/, "") | This check does not consider vbscript:. |
+testFailures
+| IncompleteUrlSchemeCheck.js:94:10:94:15 | This check does not consider vbscript:. | Unexpected result: Alert |
+| IncompleteUrlSchemeCheck.js:95:25:95:34 | // $ Alert | Missing result: Alert |
+| IncompleteUrlSchemeCheck.js:110:12:112:29 | This check does not consider vbscript:. | Unexpected result: Alert |
+| IncompleteUrlSchemeCheck.js:110:17:110:26 | // $ Alert | Missing result: Alert |
