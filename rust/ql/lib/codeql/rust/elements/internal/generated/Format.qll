@@ -41,18 +41,33 @@ module Generated {
     int getIndex() { none() }
 
     /**
-     * Gets the `index`th argument of this format (0-based).
+     * Gets the argument reference of this format, if it exists.
      */
-    FormatArgument getArgument(int index) { none() }
+    FormatArgument getArgumentRef() { none() }
 
     /**
-     * Gets any of the arguments of this format.
+     * Holds if `getArgumentRef()` exists.
      */
-    final FormatArgument getAnArgument() { result = this.getArgument(_) }
+    final predicate hasArgumentRef() { exists(this.getArgumentRef()) }
 
     /**
-     * Gets the number of arguments of this format.
+     * Gets the width argument of this format, if it exists.
      */
-    final int getNumberOfArguments() { result = count(int i | exists(this.getArgument(i))) }
+    FormatArgument getWidthArgument() { none() }
+
+    /**
+     * Holds if `getWidthArgument()` exists.
+     */
+    final predicate hasWidthArgument() { exists(this.getWidthArgument()) }
+
+    /**
+     * Gets the precision argument of this format, if it exists.
+     */
+    FormatArgument getPrecisionArgument() { none() }
+
+    /**
+     * Holds if `getPrecisionArgument()` exists.
+     */
+    final predicate hasPrecisionArgument() { exists(this.getPrecisionArgument()) }
   }
 }

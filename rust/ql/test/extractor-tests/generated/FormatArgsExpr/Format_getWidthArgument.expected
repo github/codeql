@@ -1,0 +1,3 @@
+| gen_format.rs:7:21:7:46 | {value:#width$.precision$} | gen_format.rs:7:29:7:33 | width |
+| gen_format_argument.rs:5:21:5:46 | {value:#width$.precision$} | gen_format_argument.rs:5:29:5:33 | width |
+| gen_format_argument.rs:7:21:7:30 | {0:#1$.2$} | gen_format_argument.rs:7:25:7:25 | 1 |

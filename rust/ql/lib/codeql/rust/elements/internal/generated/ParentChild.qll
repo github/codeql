@@ -69,18 +69,29 @@ private module Impl {
   }
 
   private Element getImmediateChildOfFormat(Format e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n, int nArgument |
+    exists(
+      int b, int bLocatable, int n, int nArgumentRef, int nWidthArgument, int nPrecisionArgument
+    |
       b = 0 and
       bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
       n = bLocatable and
-      nArgument = n + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgumentRef = n + 1 and
+      nWidthArgument = nArgumentRef + 1 and
+      nPrecisionArgument = nWidthArgument + 1 and
       (
         none()
         or
         result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
         or
-        result = e.getArgument(index - n) and
-        partialPredicateCall = "Argument(" + (index - n).toString() + ")"
+        index = n and result = e.getArgumentRef() and partialPredicateCall = "ArgumentRef()"
+        or
+        index = nArgumentRef and
+        result = e.getWidthArgument() and
+        partialPredicateCall = "WidthArgument()"
+        or
+        index = nWidthArgument and
+        result = e.getPrecisionArgument() and
+        partialPredicateCall = "PrecisionArgument()"
       )
     )
   }

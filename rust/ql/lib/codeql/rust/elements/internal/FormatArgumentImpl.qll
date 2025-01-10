@@ -40,16 +40,6 @@ module Impl {
 
     override Format getParent() { result = Synth::TFormat(parent, index, _, _) }
 
-    /** Gets the position of this argument. */
-    int getPosition() {
-      this =
-        rank[result + 1](FormatArgument f, int offs |
-          f = Synth::TFormatArgument(parent, index, _, _, _, offs)
-        |
-          f order by offs
-        )
-    }
-
     override FormatTemplateVariableAccess getVariable() { result.getArgument() = this }
   }
 

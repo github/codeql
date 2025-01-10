@@ -42,10 +42,6 @@ module Impl {
 
     override int getIndex() { result = index }
 
-    override FormatArgument getArgument(int i) {
-      result.getParent() = this and i = result.getPosition()
-    }
-
     /**
      * Gets the name or position reference of this format, if any. For example `name` and `0` in:
      * ```rust
@@ -54,7 +50,7 @@ module Impl {
      * println!("{0} in wonderland", name);
      * ```
      */
-    FormatArgument getArgumentRef() {
+    override FormatArgument getArgumentRef() {
       result.getParent() = this and result = Synth::TFormatArgument(_, _, 0, _, _, _)
     }
 
@@ -66,7 +62,7 @@ module Impl {
      * println!("{:1$}", PI, width);
      * ```
      */
-    FormatArgument getWidthArgument() {
+    override FormatArgument getWidthArgument() {
       result.getParent() = this and result = Synth::TFormatArgument(_, _, 1, _, _, _)
     }
 
@@ -78,7 +74,7 @@ module Impl {
      * println!("{:.1$}", PI, prec);
      * ```
      */
-    FormatArgument getPrecisionArgument() {
+    override FormatArgument getPrecisionArgument() {
       result.getParent() = this and result = Synth::TFormatArgument(_, _, 2, _, _, _)
     }
   }
