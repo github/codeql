@@ -595,10 +595,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      private ReturnKindExtOption getDisallowedReturnKind(ParamNodeEx p) {
+      private ReturnKindExtOption getDisallowedReturnKind0(ParamNodeEx p) {
         if allowParameterReturnInSelfEx(p)
         then result.isNone()
         else p.isParameterOf(_, result.asSome().(ParamUpdateReturnKind).getPosition())
+      }
+
+      bindingset[p]
+      pragma[inline_late]
+      private ReturnKindExtOption getDisallowedReturnKind(ParamNodeEx p) {
+        result = getDisallowedReturnKind0(p)
       }
 
       /**
