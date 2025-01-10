@@ -21,9 +21,9 @@ func test_beego_DB(db orm.DB) {
 
 func test_beego_Ormer() {
 	o := oldOrm.NewOrm()
-	o.Read(&User{})                             // $ source
-	o.ReadForUpdate(&User{})                    // $ source
-	o.ReadOrCreate(&User{}, "name")             // $ source
+	o.Read(&User{})                 // $ source
+	o.ReadForUpdate(&User{})        // $ source
+	o.ReadOrCreate(&User{}, "name") // $ source
 }
 
 func test_beego_DQL() {
