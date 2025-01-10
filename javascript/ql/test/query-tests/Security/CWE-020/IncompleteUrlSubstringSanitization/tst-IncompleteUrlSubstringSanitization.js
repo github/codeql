@@ -59,9 +59,9 @@
     x.startsWith("https://example.internal:80");
 
 	x.indexOf("secure.com") !== -1; // $ Alert
-	x.indexOf("secure.com") === -1;
-	!(x.indexOf("secure.com") !== -1);
-	!x.includes("secure.com");
+	x.indexOf("secure.com") === -1; // $ Alert
+	!(x.indexOf("secure.com") !== -1); // $ Alert
+	!x.includes("secure.com"); // $ Alert
 
 	if(!x.includes("secure.com")) { // $ Alert
 
