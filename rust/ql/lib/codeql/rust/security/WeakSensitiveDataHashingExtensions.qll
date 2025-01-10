@@ -57,7 +57,7 @@ module NormalHashFunction {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A flow source modelled by the `SensitiveData` library.
+   * A flow source modeled by the `SensitiveData` library.
    */
   class SensitiveDataAsSource extends Source instanceof SensitiveData {
     SensitiveDataAsSource() {
@@ -71,7 +71,7 @@ module NormalHashFunction {
   }
 
   /**
-   * A flow sink modelled by the `Cryptography` module.
+   * A flow sink modeled by the `Cryptography` module.
    */
   class WeakHashingOperationInputAsSink extends Sink {
     Cryptography::HashingAlgorithm algorithm;
@@ -134,7 +134,7 @@ module ComputationallyExpensiveHashFunction {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A flow source modelled by the `SensitiveData` library.
+   * A flow source modeled by the `SensitiveData` library.
    */
   class PasswordAsSource extends Source instanceof SensitiveData {
     PasswordAsSource() {
@@ -147,7 +147,7 @@ module ComputationallyExpensiveHashFunction {
   }
 
   /**
-   * A flow sink modelled by the `Cryptography` module.
+   * A flow sink modeled by the `Cryptography` module.
    */
   class WeakPasswordHashingOperationInputSink extends Sink {
     Cryptography::CryptographicAlgorithm algorithm;
@@ -174,19 +174,20 @@ module ComputationallyExpensiveHashFunction {
 }
 
 /**
- * An externally modelled operation that hashes data, for example a call to `md5::Md5::digest(data)`.
+ * An externally modeled operation that hashes data, for example a call to `md5::Md5::digest(data)`.
  */
-class ModelledHashOperation extends Cryptography::CryptographicOperation::Range {
+class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
   DataFlow::Node input;
-  CallExpr call;
   string algorithmName;
 
-  ModelledHashOperation() {
-    sinkNode(input, "hasher-input") and
-    call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
-    call = this.asExpr().getExpr() and
-    algorithmName =
-      call.getFunction().(PathExpr).getPath().getQualifier().getPart().getNameRef().getText()
+  ModeledHashOperation() {
+    exists(CallExpr call |
+      sinkNode(input, "hasher-input") and
+      call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
+      call = this.asExpr().getExpr() and
+      algorithmName =
+        call.getFunction().(PathExpr).getPath().getQualifier().getPart().getNameRef().getText()
+    )
   }
 
   override DataFlow::Node getInitialization() { result = this }
