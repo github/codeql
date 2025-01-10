@@ -103,6 +103,11 @@
             <a href="https://github.com/RustCrypto/password-hashes?tab=readme-ov-file#rustcrypto-password-hashes">
                 RustCrypto: Password Hashes
             </a>
+            The RustCrypto Book:
+            <a href="https://rustcrypto.org/key-derivation/hashing-password.html">
+                Password Hashing
+            </a>
+
         </li>
     </references>
 
