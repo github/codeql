@@ -736,8 +736,6 @@ class RefStruct extends Struct {
 
   override string getAPrimaryQlClass() { result = "RefStruct" }
 
-  override predicate isValueType() { none() }
-
   override predicate isRefLikeType() { any() }
 }
 
