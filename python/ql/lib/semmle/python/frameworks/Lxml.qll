@@ -8,6 +8,7 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.data.ModelsAsData
@@ -68,16 +69,9 @@ module Lxml {
    */
   class XPathCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XPathCall() {
-      exists(API::Node parseResult |
-        parseResult =
-          etreeRef().getMember(["parse", "fromstring", "fromstringlist", "HTML", "XML"]).getReturn()
-        or
-        // TODO: lxml.etree.parseid(<text>)[0] will contain the root element from parsing <text>
-        // but we don't really have a way to model that nicely.
-        parseResult = etreeRef().getMember("XMLParser").getReturn().getMember("close").getReturn()
-      |
-        this = parseResult.getMember("xpath").getACall()
-      )
+      // TODO: lxml.etree.parseid(<text>)[0] will contain the root element from parsing <text>
+      // but we don't really have a way to model that nicely.
+      this = [Element::instance(), ElementTree::instance()].getMember("xpath").getACall()
     }
 
     override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("_path")] }
@@ -209,16 +203,20 @@ module Lxml {
    * A call to either of:
    * - `lxml.etree.fromstring`
    * - `lxml.etree.fromstringlist`
+   * - `lxml.etree.HTML`
    * - `lxml.etree.XML`
    * - `lxml.etree.XMLID`
+   * - `lxml.etree.XMLDTDID`
    * - `lxml.etree.parse`
    * - `lxml.etree.parseid`
    *
    * See
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstringlist
+   * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.HTML
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XML
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XMLID
+   * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.XMLDTDID
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
@@ -226,14 +224,16 @@ module Lxml {
     string functionName;
 
     LxmlParsing() {
-      functionName in ["fromstring", "fromstringlist", "XML", "XMLID", "parse", "parseid"] and
+      functionName in [
+          "fromstring", "fromstringlist", "HTML", "XML", "XMLID", "XMLDTDID", "parse", "parseid"
+        ] and
       this = etreeRef().getMember(functionName).getACall()
     }
 
     override DataFlow::Node getAnInput() {
       result in [
           this.getArg(0),
-          // fromstring / XML / XMLID
+          // fromstring / HTML / XML / XMLID / XMLDTDID
           this.getArgByName("text"),
           // fromstringlist
           this.getArgByName("strings"),
@@ -248,7 +248,8 @@ module Lxml {
       this.getParserArg() = XmlParser::instanceVulnerableTo(kind)
       or
       kind.isXxe() and
-      not exists(this.getParserArg())
+      not exists(this.getParserArg()) and
+      not functionName = "HTML"
     }
 
     override predicate mayExecuteInput() { none() }
@@ -318,4 +319,183 @@ module Lxml {
 
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
+
+  /** Provides models for the `lxml.etree.Element` class. */
+  module Element {
+    /** Gets a reference to the `Element` class. */
+    API::Node classRef() { result = etreeRef().getMember(["Element", "_Element"]) }
+
+    /**
+     * A source of `lxml.etree.Element` instances, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Element::instance()` to get references to instances of `lxml.etree.Element` instances.
+     */
+    abstract class InstanceSource instanceof API::Node {
+      /** Gets a textual representation of this element. */
+      string toString() { result = super.toString() }
+    }
+
+    /** Gets a reference to an `lxml.etree.Element` instance. */
+    API::Node instance() { result instanceof InstanceSource }
+
+    /** An `Element` instantiated directly. */
+    private class ElementInstance extends InstanceSource {
+      ElementInstance() { this = classRef().getAnInstance() }
+    }
+
+    /** The result of a parse operation that returns an `Element`. */
+    private class ParseResult extends InstanceSource {
+      ParseResult() {
+        // TODO: The XmlParser module does not currently use API graphs
+        this =
+          [
+            etreeRef().getMember("XMLParser").getAnInstance(),
+            etreeRef().getMember("get_default_parser").getReturn()
+          ].getMember("close").getReturn()
+        or
+        // TODO: `XMLID`, `XMLDTDID`, `parseid` returns a tuple of which the first element is an `Element`.
+        // `iterparse` returns an iterator of tuples, each of which has a second element that is an `Element`.
+        this = etreeRef().getMember(["XML", "HTML", "fromstring", "fromstringlist"]).getReturn()
+      }
+    }
+
+    /** A call to a method on an `Element` that returns another `Element`. */
+    private class ElementMethod extends InstanceSource {
+      ElementMethod() {
+        // an Element is an iterator of Elements
+        this = instance().getASubscript()
+        or
+        // methods that return an Element
+        this = instance().getMember(["find", "getnext", "getprevious", "getparent"]).getReturn()
+        or
+        // methods that return an iterator of Elements
+        this =
+          instance()
+              .getMember([
+                  "cssselect", "findall", "getchildren", "getiterator", "iter", "iterancestors",
+                  "iterdecendants", "iterchildren", "itersiblings", "iterfind", "xpath"
+                ])
+              .getReturn()
+              .getASubscript()
+      }
+    }
+
+    /** A call to a method on an `ElementTree` that returns an `Element`. */
+    private class ElementTreeMethod extends InstanceSource {
+      ElementTreeMethod() {
+        this = ElementTree::instance().getMember(["getroot", "find"]).getReturn()
+        or
+        this =
+          ElementTree::instance()
+              .getMember(["findall", "getiterator", "iter", "iterfind", "xpath"])
+              .getReturn()
+              .getASubscript()
+      }
+    }
+
+    /**
+     * An additional taint step from an `Element` instance.
+     * See https://lxml.de/apidoc/lxml.etree.html#lxml.etree.ElementBase.
+     */
+    private class ElementTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        exists(DataFlow::MethodCallNode call |
+          nodeTo = call and instance().asSource().flowsTo(nodeFrom)
+        |
+          call.calls(nodeFrom,
+            // We consider a node to be tainted if there could be taint anywhere in the element tree;
+            // so sibling nodes (e.g. `getnext`) are also tainted.
+            // This ensures nodes like `elem[0].getnext()` are tracked.
+            [
+              "cssselect", "find", "findall", "findtext", "get", "getchildren", "getiterator",
+              "getnext", "getparent", "getprevious", "getroottree", "items", "iter",
+              "iterancestors", "iterchildren", "iterdescendants", "itersiblings", "iterfind",
+              "itertext", "keys", "values", "xpath"
+            ])
+        )
+        or
+        exists(DataFlow::AttrRead attr | nodeTo = attr and instance().asSource().flowsTo(nodeFrom) |
+          attr.accesses(nodeFrom, ["attrib", "base", "nsmap", "prefix", "tag", "tail", "text"])
+        )
+      }
+    }
+  }
+
+  /** Provides models for the `lxml.etree.ElementTree` class. */
+  module ElementTree {
+    /** Gets a reference to the `ElementTree` class. */
+    API::Node classRef() { result = etreeRef().getMember(["ElementTree", "_ElementTree"]) }
+
+    /**
+     * A source of `lxml.etree.ElementTree` instances; extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `ElementTree::instance()` to get references to instances of `lxml.etree.ElementTree` instances.
+     */
+    abstract class InstanceSource instanceof API::Node {
+      /** Gets a textual representation of this element. */
+      string toString() { result = super.toString() }
+    }
+
+    /** Gets a reference to an `lxml.etree.ElementTree` instance. */
+    API::Node instance() { result instanceof InstanceSource }
+
+    /** An `ElementTree` instantiated directly. */
+    private class ElementTreeInstance extends InstanceSource {
+      ElementTreeInstance() { this = classRef().getAnInstance() }
+    }
+
+    /** The result of a parse operation that returns an `ElementTree`. */
+    private class ParseResult extends InstanceSource {
+      ParseResult() { this = etreeRef().getMember("parse").getReturn() }
+    }
+
+    /** A call to a method on an `Element` that returns another `Element`. */
+    private class ElementMethod extends InstanceSource {
+      ElementMethod() { this = Element::instance().getMember("getroottree").getReturn() }
+    }
+
+    /** An additional taint step from an `ElementTree` instance. See https://lxml.de/apidoc/lxml.etree.html#lxml.etree._ElementTree */
+    private class ElementTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        exists(DataFlow::MethodCallNode call |
+          nodeTo = call and instance().asSource().flowsTo(nodeFrom)
+        |
+          call.calls(nodeFrom,
+            [
+              "find", "findall", "findtext", "get", "getiterator", "getroot", "iter", "iterfind",
+              "xpath"
+            ])
+        )
+        or
+        exists(DataFlow::AttrRead attr | nodeTo = attr and instance().asSource().flowsTo(nodeFrom) |
+          attr.accesses(nodeFrom, "docinfo")
+        )
+      }
+    }
+  }
+
+  /** A call to serialise xml to a string */
+  private class XmlEncoding extends Encoding::Range, DataFlow::CallCfgNode {
+    XmlEncoding() {
+      this = etreeRef().getMember(["tostring", "tostringlist", "tounicode"]).getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result = [this.getArg(0), this.getArgByName("element_or_tree")]
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "XML" }
+  }
+  // TODO: ElementTree.write can write to a file-like object; should that be a flow step?
+  // It also can accept a filepath which could be a path injection sink.
 }
