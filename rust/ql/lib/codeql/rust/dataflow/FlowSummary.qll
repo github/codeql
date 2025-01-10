@@ -57,3 +57,5 @@ module SummarizedCallable {
 }
 
 final class SummarizedCallable = SummarizedCallable::Range;
+
+final class Provenance = Impl::Public::Provenance;
