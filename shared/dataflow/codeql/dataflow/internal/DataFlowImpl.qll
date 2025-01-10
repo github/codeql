@@ -2405,7 +2405,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           revFlow(pragma[only_bind_into](p), state, TReturnCtxMaybeFlowThrough(pos),
             apSome(returnAp), pragma[only_bind_into](ap)) and
           parameterFlowThroughAllowed(p, pos.getKind()) and
-          PrevStage::parameterMayFlowThrough(p, isNil(ap))
+          PrevStage::parameterMayFlowThrough(p, isNil(ap)) and
+          flowThroughIntoCall(_, _, p, ap, returnAp) and
         }
 
         pragma[nomagic]
