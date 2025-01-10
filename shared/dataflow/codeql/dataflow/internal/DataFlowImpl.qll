@@ -595,10 +595,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      private ReturnKindExtOption getDisallowedReturnKind(ParamNodeEx p) {
+      private ReturnKindExtOption getDisallowedReturnKind0(ParamNodeEx p) {
         if allowParameterReturnInSelfEx(p)
         then result.isNone()
         else p.isParameterOf(_, result.asSome().(ParamUpdateReturnKind).getPosition())
+      }
+
+      bindingset[p]
+      pragma[inline_late]
+      private ReturnKindExtOption getDisallowedReturnKind(ParamNodeEx p) {
+        result = getDisallowedReturnKind0(p)
       }
 
       /**
@@ -1034,19 +1040,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate sourceModel(NodeEx node, string model) {
       sourceNode(node, _) and
-      exists(Node n | n = node.asNode() |
-        knownSourceModel(n, model)
+      (
+        model = getSourceModel(node)
         or
-        not knownSourceModel(n, _) and model = ""
+        not exists(getSourceModel(node)) and model = ""
       )
     }
 
     private predicate sinkModel(NodeEx node, string model) {
       sinkNode(node, _) and
-      exists(Node n | n = node.asNodeOrImplicitRead() |
-        knownSinkModel(n, model)
+      (
+        model = getSinkModel(node)
         or
-        not knownSinkModel(n, _) and model = ""
+        not exists(getSinkModel(node)) and model = ""
       )
     }
 

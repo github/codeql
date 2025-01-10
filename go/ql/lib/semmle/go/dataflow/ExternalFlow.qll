@@ -90,7 +90,7 @@ import internal.ExternalFlowExtensions as FlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
-private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Public as Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
@@ -583,13 +583,13 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
-private class SummarizedCallableAdapter extends SummarizedCallable {
+private class SummarizedCallableAdapter extends Public::SummarizedCallable {
   SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
   ) {
-    exists(Provenance provenance |
+    exists(Public::Provenance provenance |
       summaryElement(this, input, output, kind, provenance, model) and
       provenance.isManual()
     )
@@ -598,11 +598,11 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   private predicate relevantSummaryElementGenerated(
     string input, string output, string kind, string model
   ) {
-    exists(Provenance provenance |
+    exists(Public::Provenance provenance |
       summaryElement(this, input, output, kind, provenance, model) and
       provenance.isGenerated()
     ) and
-    not exists(Provenance provenance |
+    not exists(Public::Provenance provenance |
       neutralElement(this, "summary", provenance) and
       provenance.isManual()
     )
@@ -621,7 +621,7 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     )
   }
 
-  override predicate hasProvenance(Provenance provenance) {
+  override predicate hasProvenance(Public::Provenance provenance) {
     summaryElement(this, _, _, _, provenance, _)
   }
 }

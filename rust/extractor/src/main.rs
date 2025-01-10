@@ -183,7 +183,10 @@ fn main() -> anyhow::Result<()> {
         .iter()
         .map(|file| {
             let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
-            std::fs::canonicalize(&file).unwrap_or(file)
+            // On Windows, rust analyzer expects non-`//?/` prefixed paths (see [1]), which is what
+            // `std::fs::canonicalize` returns. So we use `dunce::canonicalize` instead.
+            // [1]: https://github.com/rust-lang/rust-analyzer/issues/18894#issuecomment-2580014730
+            dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect();
     let manifests = rust_analyzer::find_project_manifests(&files)?;

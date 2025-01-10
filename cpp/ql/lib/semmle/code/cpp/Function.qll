@@ -253,7 +253,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
-  /** Holds if this Function is a Template specialization. */
+  /** Holds if this function is a template specialization. */
   predicate isSpecialization() {
     exists(FunctionDeclarationEntry fde |
       fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
@@ -665,7 +665,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Holds if this declaration is also a definition of its function. */
   override predicate isDefinition() { fun_def(underlyingElement(this)) }
 
-  /** Holds if this declaration is a Template specialization. */
+  /** Holds if this declaration is a template specialization. */
   predicate isSpecialization() { fun_specialized(underlyingElement(this)) }
 
   /**

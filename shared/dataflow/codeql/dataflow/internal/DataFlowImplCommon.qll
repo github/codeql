@@ -1064,6 +1064,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
+    string getSourceModel(NodeEx node) { knownSourceModel(node.asNode(), result) }
+
+    cached
+    string getSinkModel(NodeEx node) { knownSinkModel(node.asNodeOrImplicitRead(), result) }
+
+    cached
     predicate parameterNode(Node p, DataFlowCallable c, ParameterPosition pos) {
       isParameterNode(p, c, pos)
     }

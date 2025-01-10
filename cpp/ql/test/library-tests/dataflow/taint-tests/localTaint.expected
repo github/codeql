@@ -7735,6 +7735,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:790:11:790:12 | f2 [inner post update] |  |
 | taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:791:7:791:8 | f2 |  |
 | taint.cpp:790:11:790:12 | f2 | taint.cpp:790:10:790:12 | & ... |  |
+| taint.cpp:805:12:805:25 | call to SysAllocString | taint.cpp:806:8:806:9 | p1 |  |
+| taint.cpp:806:8:806:9 | p1 | taint.cpp:806:7:806:9 | * ... | TAINT |
+| taint.cpp:808:12:808:32 | call to SysAllocStringByteLen | taint.cpp:809:8:809:9 | p2 |  |
+| taint.cpp:809:8:809:9 | p2 | taint.cpp:809:7:809:9 | * ... | TAINT |
+| taint.cpp:811:12:811:28 | call to SysAllocStringLen | taint.cpp:812:8:812:9 | p3 |  |
+| taint.cpp:812:8:812:9 | p3 | taint.cpp:812:7:812:9 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

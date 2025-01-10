@@ -1,6 +1,7 @@
 private import codeql.rangeanalysis.RangeAnalysis
+private import codeql.util.Location
 
-module MakeUtils<Semantic Lang, DeltaSig D> {
+module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
   private import Lang
 
   /**
