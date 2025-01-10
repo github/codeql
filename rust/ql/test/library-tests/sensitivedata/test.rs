@@ -33,14 +33,14 @@ fn test_passwords(
 	sink(passwd); // $ sensitive=password
 	sink(my_password); // $ sensitive=password
 	sink(password_str); // $ sensitive=password
-	sink(pass_phrase); // $ MISSING: sensitive=password
+	sink(pass_phrase); // $ sensitive=password
 	sink(passphrase); // $ sensitive=password
 	sink(passPhrase); // $ sensitive=password
 
-	sink(auth_key); // $ MISSING: sensitive=password
+	sink(auth_key); // $ sensitive=password
 	sink(authkey); // $ sensitive=password
 	sink(authKey); // $ sensitive=password
-	sink(authentication_key); // $ MISSING: sensitive=password
+	sink(authentication_key); // $ sensitive=password
 	sink(authenticationkey); // $ sensitive=password
 	sink(authenticationKey); // $ sensitive=password
 
@@ -85,13 +85,13 @@ fn test_credentials(
 	sink(secret_key); // $ sensitive=secret
 
 	sink(username); // $ sensitive=id
-	sink(user_name); // $ MISSING: sensitive=id
+	sink(user_name); // $ sensitive=id
 	sink(userid); // $ sensitive=id
-	sink(user_id); // $ MISSING: sensitive=id
-	sink(my_user_id_64); // $ MISSING: sensitive=id
+	sink(user_id); // $ sensitive=id
+	sink(my_user_id_64); // $ sensitive=id
 
 	sink(sessionkey); // $ sensitive=id
-	sink(session_key); // $ MISSING: sensitive=id
+	sink(session_key); // $ sensitive=id
 
 	sink(ms.get_certificate()); // $ sensitive=certificate
 
