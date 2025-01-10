@@ -2414,9 +2414,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ArgNodeEx arg
         ) {
           exists(ParamNodeEx p, ReturnPosition pos, Ap innerReturnAp |
-            flowThroughIntoCall(call, arg, p, ap, innerReturnAp) and
             revFlowParamToReturn(p, state, pos, innerReturnAp, ap) and
-            revFlowIsReturned(call, returnCtx, returnAp, pos, innerReturnAp)
+            revFlowIsReturned(call, returnCtx, returnAp, pos, innerReturnAp, arg, p, ap)
           )
         }
 
@@ -2427,13 +2426,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate revFlowIsReturned(
-          DataFlowCall call, ReturnCtx returnCtx, ApOption returnAp, ReturnPosition pos, Ap ap
+          DataFlowCall call, ReturnCtx returnCtx, ApOption returnAp, ReturnPosition pos, Ap ap, ArgNodeEx arg, ParamNodeEx p, Ap argAp
         ) {
           exists(RetNodeEx ret, FlowState state, CcCall ccc |
             revFlowOut(call, ret, pos, state, returnCtx, _, returnAp, ap) and
-            returnFlowsThrough(ret, pos, state, ccc, _, _, _, _, ap) and
+            returnFlowsThrough(ret, pos, state, ccc, p, _, argAp, _, ap) and
             matchesCall(ccc, call)
-          )
+          ) and
+          flowThroughIntoCall(call, arg, p, argAp, ap)
         }
 
         pragma[nomagic]
