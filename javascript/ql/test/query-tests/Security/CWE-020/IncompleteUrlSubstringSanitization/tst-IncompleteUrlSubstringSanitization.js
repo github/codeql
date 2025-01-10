@@ -13,32 +13,32 @@
 
     x.startsWith("https://secure.com"); // $ Alert
     x.endsWith("secure.com"); // $ Alert
-    x.endsWith(".secure.com"); // OK
-    x.startsWith("secure.com/"); // OK
-    x.indexOf("secure.com/") === 0; // OK
+    x.endsWith(".secure.com");
+    x.startsWith("secure.com/");
+    x.indexOf("secure.com/") === 0;
 
     x.includes("secure.com"); // $ Alert
 
-    x.indexOf("#") !== -1; // OK
-    x.indexOf(":") !== -1; // OK
-    x.indexOf(":/") !== -1; // OK
-    x.indexOf("://") !== -1; // OK
-    x.indexOf("//") !== -1; // OK
-    x.indexOf(":443") !== -1; // OK
-    x.indexOf("/some/path/") !== -1; // OK
-    x.indexOf("some/path") !== -1; // OK
-    x.indexOf("/index.html") !== -1; // OK
-    x.indexOf(":template:") !== -1; // OK
+    x.indexOf("#") !== -1;
+    x.indexOf(":") !== -1;
+    x.indexOf(":/") !== -1;
+    x.indexOf("://") !== -1;
+    x.indexOf("//") !== -1;
+    x.indexOf(":443") !== -1;
+    x.indexOf("/some/path/") !== -1;
+    x.indexOf("some/path") !== -1;
+    x.indexOf("/index.html") !== -1;
+    x.indexOf(":template:") !== -1;
     x.indexOf("https://secure.com") !== -1; // $ Alert
     x.indexOf("https://secure.com:443") !== -1; // $ Alert
     x.indexOf("https://secure.com/") !== -1; // $ Alert
 
     x.indexOf(".cn") !== -1; // $ MISSING: Alert
-    x.indexOf(".jpg") !== -1; // OK
-    x.indexOf("index.html") !== -1; // OK
-    x.indexOf("index.js") !== -1; // OK
-    x.indexOf("index.php") !== -1; // OK
-    x.indexOf("index.css") !== -1; // OK
+    x.indexOf(".jpg") !== -1;
+    x.indexOf("index.html") !== -1;
+    x.indexOf("index.js") !== -1;
+    x.indexOf("index.php") !== -1;
+    x.indexOf("index.css") !== -1;
 
     x.indexOf("secure=true") !== -1; // OK (query param)
     x.indexOf("&auth=") !== -1; // OK (query param)
@@ -46,22 +46,22 @@
     x.indexOf(getCurrentDomain()) !== -1; // $ MISSING: Alert
     x.indexOf(location.origin) !== -1; // $ MISSING: Alert
 
-	x.indexOf("tar.gz") + offset; // OK
-	x.indexOf("tar.gz") - offset; // OK
+	x.indexOf("tar.gz") + offset;
+	x.indexOf("tar.gz") - offset;
 
     x.indexOf("https://example.internal") !== -1; // $ Alert
-    x.indexOf("https://") !== -1; // OK
+    x.indexOf("https://") !== -1;
 
     x.startsWith("https://example.internal"); // $ Alert
     x.indexOf('https://example.internal.org') !== 0; // $ Alert
     x.indexOf('https://example.internal.org') === 0; // $ Alert
     x.endsWith("internal.com"); // $ Alert
-    x.startsWith("https://example.internal:80"); // OK
+    x.startsWith("https://example.internal:80");
 
 	x.indexOf("secure.com") !== -1; // $ Alert
-	x.indexOf("secure.com") === -1; // OK
-	!(x.indexOf("secure.com") !== -1); // OK
-	!x.includes("secure.com"); // OK
+	x.indexOf("secure.com") === -1;
+	!(x.indexOf("secure.com") !== -1);
+	!x.includes("secure.com");
 
 	if(!x.includes("secure.com")) { // $ Alert
 
