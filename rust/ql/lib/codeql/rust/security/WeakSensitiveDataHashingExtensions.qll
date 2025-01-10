@@ -191,7 +191,7 @@ class ModelledHashOperation extends Cryptography::CryptographicOperation::Range 
 
   override DataFlow::Node getInitialization() { result = this }
 
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
+  override Cryptography::HashingAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
 
   override DataFlow::Node getAnInput() { result = input }
 
