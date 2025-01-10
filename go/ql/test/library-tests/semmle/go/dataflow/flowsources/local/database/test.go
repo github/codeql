@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	beegoOrm "github.com/beego/beego/orm"
 	gocb "github.com/couchbase/gocb/v2"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/rqlite/gorqlite"
@@ -31,18 +30,6 @@ func gogf(g gdb.DB) {
 	}
 
 	fmt.Println(u1)
-}
-
-func beego() {
-	orm := beegoOrm.NewOrm()
-
-	type User struct {
-		Id   int
-		Name string
-	}
-
-	var user User
-	orm.Read(&user) // $source
 }
 
 func couchbase(coll *gocb.Collection) {
