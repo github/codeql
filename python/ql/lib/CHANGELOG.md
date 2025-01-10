@@ -1,3 +1,9 @@
+## 3.1.1
+
+### Minor Analysis Improvements
+
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+
 ## 3.1.0
 
 ### New Features

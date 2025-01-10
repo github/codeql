@@ -1,3 +1,9 @@
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* The Razor source generator invocation in `build-mode:none` extraction has been changed to use relative file paths instead of absolute ones.
+
 ## 4.0.1
 
 ### Minor Analysis Improvements
