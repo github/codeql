@@ -4,4 +4,4 @@ import TestUtils
 
 from Format x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getArgument()
+select x, x.getPrecisionArgument()
