@@ -797,6 +797,19 @@ private module Cached {
     Instruction getSuccessor(CaseEdge kind) { result = switch.getSuccessor(kind) }
   }
 
+  /**
+   * A value number such that at least one of the instructions provides
+   * the operand to a `ConditionalBranchInstruction`.
+   */
+  private class ConditionalBranchConditionValueNumber extends ValueNumber {
+    ConditionalBranchInstruction branch;
+
+    pragma[nomagic]
+    ConditionalBranchConditionValueNumber() { this.getAnInstruction() = branch.getCondition() }
+
+    Operand getConditionOperand() { result = branch.getConditionOperand() }
+  }
+
   private class BuiltinExpectCallValueNumber extends ValueNumber {
     BuiltinExpectCallInstruction instr;
 
@@ -899,48 +912,31 @@ private module Cached {
    * Holds if `op` is an operand that is eventually used in a unary comparison
    * with a constant.
    */
-  private predicate isRelevantUnaryComparisonOperand(Operand op) {
-    // Base case: `op` is an operand of a `CompareEQInstruction` or `CompareNEInstruction`,
-    // and the other operand is a constant.
-    exists(CompareInstruction eq, Instruction instr |
-      eq.hasOperands(op, instr.getAUse()) and
-      exists(int_value(instr))
-    |
-      eq instanceof CompareEQInstruction
-      or
-      eq instanceof CompareNEInstruction
-    )
-    or
-    // C doesn't have int-to-bool conversions, so `if(x)` will just generate:
-    // r2_1(glval<int>) = VariableAddress[x]
-    // r2_2(int)        = Load[x]                : &:r2_1, m1_6
-    // v2_3(void)       = ConditionalBranch      : r2_2
-    exists(ConditionalBranchInstruction branch | branch.getConditionOperand() = op)
+  private predicate mayBranchOn(Instruction instr) {
+    exists(ConditionalBranchInstruction branch | branch.getCondition() = instr)
     or
     // If `!x` is a relevant unary comparison then so is `x`.
     exists(LogicalNotInstruction logicalNot |
-      isRelevantUnaryComparisonOperand(unique( | | logicalNot.getAUse())) and
-      logicalNot.getUnaryOperand() = op
+      mayBranchOn(logicalNot) and
+      logicalNot.getUnary() = instr
     )
     or
     // If `y` is a relevant unary comparison and `y = x` then so is `x`.
-    not op.isDefinitionInexact() and
     exists(CopyInstruction copy |
-      isRelevantUnaryComparisonOperand(unique( | | copy.getAUse())) and
-      op = copy.getSourceValueOperand()
+      mayBranchOn(copy) and
+      instr = copy.getSourceValue()
     )
     or
     // If phi(x1, x2) is a relevant unary comparison then so are `x1` and `x2`.
-    not op.isDefinitionInexact() and
     exists(PhiInstruction phi |
-      isRelevantUnaryComparisonOperand(unique( | | phi.getAUse())) and
-      op = phi.getAnInputOperand()
+      mayBranchOn(phi) and
+      instr = phi.getAnInput()
     )
     or
     // If `__builtin_expect(x)` is a relevant unary comparison then so is `x`.
     exists(BuiltinExpectCallInstruction call |
-      isRelevantUnaryComparisonOperand(unique( | | call.getAUse())) and
-      op = call.getConditionOperand()
+      mayBranchOn(call) and
+      instr = call.getCondition()
     )
   }
 
@@ -956,14 +952,33 @@ private module Cached {
       case.getValue().toInt() = k
     )
     or
-    isRelevantUnaryComparisonOperand(op) and
-    op.getDef() = test.getAnInstruction() and
-    (
-      k = 1 and
-      value.(BooleanValue).getValue() = true
+    exists(Instruction const | int_value(const) = k |
+      value.(BooleanValue).getValue() = true and
+      test.(CompareEQValueNumber).hasOperands(op, const.getAUse())
       or
+      value.(BooleanValue).getValue() = false and
+      test.(CompareNEValueNumber).hasOperands(op, const.getAUse())
+    )
+    or
+    test.(ConditionalBranchConditionValueNumber).getConditionOperand() = op and
+    // Don't include comparisons since these are already included in the binary relation.
+    not test instanceof CompareValueNumber and
+    (
       k = 0 and
       value.(BooleanValue).getValue() = false
+      or
+      k = 1 and
+      value.(BooleanValue).getValue() = true
+    )
+    or
+    op = test.(LogicalNotValueNumber).getUnary().getAUse() and
+    mayBranchOn(op.getDef()) and
+    (
+      k = 1 and
+      value.(BooleanValue).getValue() = false
+      or
+      k = 0 and
+      value.(BooleanValue).getValue() = true
     )
   }
 
