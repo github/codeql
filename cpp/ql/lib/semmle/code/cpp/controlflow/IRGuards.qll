@@ -588,7 +588,7 @@ class IRGuardCondition extends Instruction {
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   pragma[inline]
   predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
-    unary_compares_eq(valueNumber(this), op, k, areEqual, false, value)
+    unary_compares_eq(valueNumber(this), op, k, areEqual, value)
   }
 
   /**
@@ -610,7 +610,7 @@ class IRGuardCondition extends Instruction {
   pragma[inline]
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      unary_compares_eq(valueNumber(this), op, k, areEqual, false, value) and
+      unary_compares_eq(valueNumber(this), op, k, areEqual, value) and
       this.valueControls(block, value)
     )
   }
@@ -636,7 +636,7 @@ class IRGuardCondition extends Instruction {
   pragma[inline]
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
     exists(AbstractValue value |
-      unary_compares_eq(valueNumber(this), op, k, areEqual, false, value) and
+      unary_compares_eq(valueNumber(this), op, k, areEqual, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -849,75 +849,35 @@ private module Cached {
 
   /**
    * Holds if `op == k` is `areEqual` given that `test` is equal to `value`.
-   *
-   * Many internal predicates in this file have a `inNonZeroCase` column.
-   * Ideally, the `k` column would be a type such as `Option<int>::Option`, to
-   * represent whether we have a concrete value `k` such that `op == k`, or whether
-   * we only know that `op != 0`.
-   * However, cannot instantiate `Option` with an infinite type. Thus the boolean
-   * `inNonZeroCase` is used to distinquish the `Some` (where we have a concrete
-   * value `k`) and `None` cases (where we only know that `op != 0`).
-   *
-   * Thus, if `inNonZeroCase = true` then `op != 0` and the value of `k` is
-   * meaningless.
-   *
-   * To see why `inNonZeroCase` is needed consider the following C program:
-   * ```c
-   * char* p = ...;
-   * if(p) {
-   *   use(p);
-   * }
-   * ```
-   * in C++ there would be an int-to-bool conversion on `p`. However, since C
-   * does not have booleans there is no conversion. We want to be able to
-   * conclude that `p` is non-zero in the true branch, so we need to give `k`
-   * some value. However, simply setting `k = 1` would make the rest of the
-   * analysis think that `k == 1` holds inside the branch. So we distinquish
-   * between the above case and
-   * ```c
-   * if(p == 1) {
-   *   use(p)
-   * }
-   * ```
-   * by setting `inNonZeroCase` to `true` in the former case, but not in the
-   * latter.
    */
   cached
   predicate unary_compares_eq(
-    ValueNumber test, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
     /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-    exists(AbstractValue v | unary_simple_comparison_eq(test, op, k, inNonZeroCase, v) |
+    exists(AbstractValue v | unary_simple_comparison_eq(test, op, k, v) |
       areEqual = true and value = v
       or
       areEqual = false and value = v.getDualValue()
     )
     or
-    unary_complex_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_complex_eq(test, op, k, areEqual, value)
     or
     /* (x is true => (op == k)) => (!x is false => (op == k)) */
-    exists(AbstractValue dual, boolean inNonZeroCase0 |
+    exists(AbstractValue dual |
       value = dual.getDualValue() and
-      unary_compares_eq(test.(LogicalNotValueNumber).getUnary(), op, k, inNonZeroCase0, areEqual,
-        dual)
-    |
-      k = 0 and inNonZeroCase = inNonZeroCase0
-      or
-      k != 0 and inNonZeroCase = true
+      unary_compares_eq(test.(LogicalNotValueNumber).getUnary(), op, k, areEqual, dual)
     )
     or
     // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
     // test is `areEqual` => op == k1 + k2
-    inNonZeroCase = false and
     exists(int k1, int k2, Instruction const |
       compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
       int_value(const) = k1 and
       k = k1 + k2
     )
     or
-    unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual,
-      inNonZeroCase, value)
+    unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
   }
 
   /** Rearrange various simple comparisons into `left == right + k` form. */
@@ -986,27 +946,24 @@ private module Cached {
 
   /** Rearrange various simple comparisons into `op == k` form. */
   private predicate unary_simple_comparison_eq(
-    ValueNumber test, Operand op, int k, boolean inNonZeroCase, AbstractValue value
+    ValueNumber test, Operand op, int k, AbstractValue value
   ) {
     exists(CaseEdge case, SwitchConditionValueNumber condition |
       condition = test and
       op = condition.getExpressionOperand() and
       case = value.(MatchValue).getCase() and
       exists(condition.getSuccessor(case)) and
-      case.getValue().toInt() = k and
-      inNonZeroCase = false
+      case.getValue().toInt() = k
     )
     or
     isRelevantUnaryComparisonOperand(op) and
     op.getDef() = test.getAnInstruction() and
     (
       k = 1 and
-      value.(BooleanValue).getValue() = true and
-      inNonZeroCase = true
+      value.(BooleanValue).getValue() = true
       or
       k = 0 and
-      value.(BooleanValue).getValue() = false and
-      inNonZeroCase = false
+      value.(BooleanValue).getValue() = false
     )
   }
 
@@ -1061,13 +1018,12 @@ private module Cached {
    * an instruction that compares the value of `__builtin_expect(op == k, _)` to `0`.
    */
   private predicate unary_builtin_expect_eq(
-    CompareValueNumber cmp, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    CompareValueNumber cmp, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
     exists(BuiltinExpectCallValueNumber call, Instruction const, AbstractValue innerValue |
       int_value(const) = 0 and
       cmp.hasOperands(call.getAUse(), const.getAUse()) and
-      unary_compares_eq(call.getCondition(), op, k, areEqual, inNonZeroCase, innerValue)
+      unary_compares_eq(call.getCondition(), op, k, areEqual, innerValue)
     |
       cmp instanceof CompareNEValueNumber and
       value = innerValue
@@ -1078,14 +1034,13 @@ private module Cached {
   }
 
   private predicate unary_complex_eq(
-    ValueNumber test, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
-    unary_sub_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_sub_eq(test, op, k, areEqual, value)
     or
-    unary_add_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_add_eq(test, op, k, areEqual, value)
     or
-    unary_builtin_expect_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_builtin_expect_eq(test, op, k, areEqual, value)
   }
 
   /*
@@ -1347,20 +1302,17 @@ private module Cached {
 
   // op - x == c => op == (c+x)
   private predicate unary_sub_eq(
-    ValueNumber test, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
-    inNonZeroCase = false and
     exists(SubInstruction sub, int c, int x |
-      unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, sub.getAUse(), c, areEqual, value) and
       op = sub.getLeftOperand() and
       x = int_value(sub.getRight()) and
       k = c + x
     )
     or
-    inNonZeroCase = false and
     exists(PointerSubInstruction sub, int c, int x |
-      unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, sub.getAUse(), c, areEqual, value) and
       op = sub.getLeftOperand() and
       x = int_value(sub.getRight()) and
       k = c + x
@@ -1415,12 +1367,10 @@ private module Cached {
 
   // left + x == right + c => left == right + (c-x)
   private predicate unary_add_eq(
-    ValueNumber test, Operand left, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand left, int k, boolean areEqual, AbstractValue value
   ) {
-    inNonZeroCase = false and
     exists(AddInstruction lhs, int c, int x |
-      unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, lhs.getAUse(), c, areEqual, value) and
       (
         left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
         or
@@ -1429,9 +1379,8 @@ private module Cached {
       k = c - x
     )
     or
-    inNonZeroCase = false and
     exists(PointerAddInstruction lhs, int c, int x |
-      unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, lhs.getAUse(), c, areEqual, value) and
       (
         left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
         or
