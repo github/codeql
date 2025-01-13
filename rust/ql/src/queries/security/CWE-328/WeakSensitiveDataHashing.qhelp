@@ -5,7 +5,7 @@
     <overview>
         <p>
             A broken or weak cryptographic hash function can leave data
-            vulnerable, and should not be used in security related code.
+            vulnerable, and should not be used in security-related code.
         </p>
 
         <p>
@@ -24,7 +24,7 @@
             </li>
             <li>
                 <b>Brute force</b>. For passwords and other data with limited
-                input space, if you know a hash value <code>h(x)</code>
+                input space, if you know a hash value <code>h(x)</code>,
                 you should not be able to find the input <code>x</code> even using
                 a brute force attack (without significant computational effort).
             </li>
@@ -37,7 +37,8 @@
         <p>
             All of MD5, SHA-1, SHA-2 and SHA-3 are weak against offline brute forcing, so
             they are not suitable for hashing passwords. This includes SHA-224, SHA-256,
-            SHA-384 and SHA-512, which are in the SHA-2 family.
+
+            SHA-384, and SHA-512, which are in the SHA-2 family.
         </p>
 
         <p>
@@ -94,7 +95,8 @@
             and
             <a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html">
                 Transport Layer Security Cheat Sheet
-            </a>
+
+            </a>.
         </li>
         <li>
             GitHub:
@@ -104,13 +106,13 @@
             and
             <a href="https://github.com/RustCrypto/password-hashes?tab=readme-ov-file#rustcrypto-password-hashes">
                 RustCrypto: Password Hashes
-            </a>
+            </a>.
         </li>
         <li>
             The RustCrypto Book:
             <a href="https://rustcrypto.org/key-derivation/hashing-password.html">
                 Password Hashing
-            </a>
+            </a>.
         </li>
     </references>
 
