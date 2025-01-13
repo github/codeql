@@ -51,6 +51,8 @@ class Type extends Member, TypeContainer, @type {
 
   /**
    * Holds if this type is a ref like type.
+   *
+   * Only `ref struct` types are considered ref like types.
    */
   predicate isRefLikeType() { none() }
 }
