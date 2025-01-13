@@ -61,12 +61,12 @@ module NormalHashFunction {
    */
   class SensitiveDataAsSource extends Source instanceof SensitiveData {
     SensitiveDataAsSource() {
-      not this.(SensitiveData).getClassification() = SensitiveDataClassification::password() and // (covered in ComputationallyExpensiveHashFunction)
-      not this.(SensitiveData).getClassification() = SensitiveDataClassification::id() // (not accurate enough)
+      not SensitiveData.super.getClassification() = SensitiveDataClassification::password() and // (covered in ComputationallyExpensiveHashFunction)
+      not SensitiveData.super.getClassification() = SensitiveDataClassification::id() // (not accurate enough)
     }
 
     override SensitiveDataClassification getClassification() {
-      result = this.(SensitiveData).getClassification()
+      result = SensitiveData.super.getClassification()
     }
   }
 
@@ -138,11 +138,11 @@ module ComputationallyExpensiveHashFunction {
    */
   class PasswordAsSource extends Source instanceof SensitiveData {
     PasswordAsSource() {
-      this.(SensitiveData).getClassification() = SensitiveDataClassification::password()
+      SensitiveData.super.getClassification() = SensitiveDataClassification::password()
     }
 
     override SensitiveDataClassification getClassification() {
-      result = this.(SensitiveData).getClassification()
+      result = SensitiveData.super.getClassification()
     }
   }
 

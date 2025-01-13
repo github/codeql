@@ -43,7 +43,7 @@ module NormalHashFunctionFlow {
     }
   }
 
-  module Flow = TaintTracking::Global<Config>;
+  import TaintTracking::Global<Config>
 }
 
 /**
@@ -74,7 +74,7 @@ module ComputationallyExpensiveHashFunctionFlow {
     }
   }
 
-  module Flow = TaintTracking::Global<Config>;
+  import TaintTracking::Global<Config>
 }
 
 /**
@@ -83,10 +83,10 @@ module ComputationallyExpensiveHashFunctionFlow {
  * merged to generate a combined path graph.
  */
 module WeakSensitiveDataHashingFlow =
-  DataFlow::MergePathGraph<NormalHashFunctionFlow::Flow::PathNode,
-    ComputationallyExpensiveHashFunctionFlow::Flow::PathNode,
-    NormalHashFunctionFlow::Flow::PathGraph,
-    ComputationallyExpensiveHashFunctionFlow::Flow::PathGraph>;
+  DataFlow::MergePathGraph<NormalHashFunctionFlow::PathNode,
+    ComputationallyExpensiveHashFunctionFlow::PathNode,
+    NormalHashFunctionFlow::PathGraph,
+    ComputationallyExpensiveHashFunctionFlow::PathGraph>;
 
 import WeakSensitiveDataHashingFlow::PathGraph
 
@@ -94,12 +94,12 @@ from
   WeakSensitiveDataHashingFlow::PathNode source, WeakSensitiveDataHashingFlow::PathNode sink,
   string ending, string algorithmName, string classification
 where
-  NormalHashFunctionFlow::Flow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
+  NormalHashFunctionFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   algorithmName = sink.getNode().(NormalHashFunction::Sink).getAlgorithmName() and
   classification = source.getNode().(NormalHashFunction::Source).getClassification() and
   ending = "."
   or
-  ComputationallyExpensiveHashFunctionFlow::Flow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+  ComputationallyExpensiveHashFunctionFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   algorithmName = sink.getNode().(ComputationallyExpensiveHashFunction::Sink).getAlgorithmName() and
   classification =
     source.getNode().(ComputationallyExpensiveHashFunction::Source).getClassification() and
