@@ -443,8 +443,6 @@ nodes
 | GuardedString.cs:34:9:37:40 | if (...) ... |
 | GuardedString.cs:34:26:34:26 | 0 |
 | GuardedString.cs:35:31:35:31 | access to local variable s |
-| ImplicitToString.cs:7:16:7:23 | SSA def(o) |
-| ImplicitToString.cs:8:23:8:23 | access to local variable o |
 | NullAlwaysBad.cs:7:29:7:29 | SSA param(s) |
 | NullAlwaysBad.cs:9:30:9:30 | access to parameter s |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o |
@@ -839,7 +837,6 @@ edges
 | GuardedString.cs:31:26:31:27 | 10 | GuardedString.cs:34:9:37:40 | if (...) ... |
 | GuardedString.cs:34:9:37:40 | if (...) ... | GuardedString.cs:34:26:34:26 | 0 |
 | GuardedString.cs:34:26:34:26 | 0 | GuardedString.cs:35:31:35:31 | access to local variable s |
-| ImplicitToString.cs:7:16:7:23 | SSA def(o) | ImplicitToString.cs:8:23:8:23 | access to local variable o |
 | NullAlwaysBad.cs:7:29:7:29 | SSA param(s) | NullAlwaysBad.cs:9:30:9:30 | access to parameter s |
 | NullMaybeBad.cs:13:17:13:20 | null | NullMaybeBad.cs:7:27:7:27 | access to parameter o |
 | Params.cs:20:12:20:15 | null | Params.cs:14:17:14:20 | access to parameter args |
