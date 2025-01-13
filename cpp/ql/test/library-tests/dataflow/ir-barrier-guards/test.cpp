@@ -4,6 +4,6 @@ void sink(int);
 
 void testCheckArgument(int* p) {
   if (checkArgument(p)) {
-    sink(*p); // $ barrier MISSING:barrier=1
+    sink(*p); // $ barrier barrier=1
   }
 }
