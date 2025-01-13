@@ -769,7 +769,7 @@ private float getLowerBoundsImpl(Expr expr) {
       exists(float x, float y |
         x = getFullyConvertedLowerBounds(maxExpr.getLeftOperand()) and
         y = getFullyConvertedLowerBounds(maxExpr.getRightOperand()) and
-        if x >= y then result = x else result = y
+        result = x.maximum(y)
       )
     )
     or
@@ -979,7 +979,7 @@ private float getUpperBoundsImpl(Expr expr) {
       exists(float x, float y |
         x = getFullyConvertedUpperBounds(minExpr.getLeftOperand()) and
         y = getFullyConvertedUpperBounds(minExpr.getRightOperand()) and
-        if x <= y then result = x else result = y
+        result = x.minimum(y)
       )
     )
     or
@@ -1152,10 +1152,7 @@ private float getUpperBoundsImpl(Expr expr) {
   not expr instanceof SimpleRangeAnalysisExpr
   or
   // A modeled expression for range analysis
-  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
-    rangeAnalysisExpr = expr and
-    result = rangeAnalysisExpr.getUpperBounds()
-  )
+  result = expr.(SimpleRangeAnalysisExpr).getUpperBounds()
 }
 
 /**
@@ -1606,7 +1603,7 @@ private module SimpleRangeAnalysisCached {
    * the lower bound of the expression after all the casts have been applied,
    * call `lowerBound` like this:
    *
-   *    `lowerBound(expr.getFullyConverted())`
+   *    lowerBound(expr.getFullyConverted())
    */
   cached
   float lowerBound(Expr expr) {
@@ -1625,7 +1622,7 @@ private module SimpleRangeAnalysisCached {
    * the upper bound of the expression after all the casts have been applied,
    * call `upperBound` like this:
    *
-   *    `upperBound(expr.getFullyConverted())`
+   *    upperBound(expr.getFullyConverted())
    */
   cached
   float upperBound(Expr expr) {
