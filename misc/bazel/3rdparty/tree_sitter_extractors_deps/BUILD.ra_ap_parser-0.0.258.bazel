@@ -11,11 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "chalk_ir",
+    name = "ra_ap_parser",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
+    aliases = {
+        "@vendor__ra_ap_edition-0.0.258//:ra_ap_edition": "edition",
+        "@vendor__ra_ap_limit-0.0.258//:ra_ap_limit": "limit",
+    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -28,17 +32,18 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "src/lib.rs",
-    edition = "2018",
-    proc_macro_deps = [
-        "@vendor__chalk-derive-0.98.0//:chalk_derive",
+    crate_features = [
+        "default",
+        "tracing",
     ],
+    crate_root = "src/lib.rs",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=chalk-ir",
+        "crate-name=ra_ap_parser",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,8 +85,12 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.98.0",
+    version = "0.0.258",
     deps = [
-        "@vendor__bitflags-2.7.0//:bitflags",
+        "@vendor__drop_bomb-0.1.5//:drop_bomb",
+        "@vendor__ra-ap-rustc_lexer-0.87.0//:ra_ap_rustc_lexer",
+        "@vendor__ra_ap_edition-0.0.258//:ra_ap_edition",
+        "@vendor__ra_ap_limit-0.0.258//:ra_ap_limit",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

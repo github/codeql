@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "chalk_ir",
+    name = "ra_salsa",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,16 +29,16 @@ rust_library(
         ],
     ),
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
     proc_macro_deps = [
-        "@vendor__chalk-derive-0.98.0//:chalk_derive",
+        "@vendor__ra_ap_salsa-macros-0.0.258//:ra_salsa_macros",
     ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=chalk-ir",
+        "crate-name=ra_ap_salsa",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,8 +80,16 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.98.0",
+    version = "0.0.258",
     deps = [
-        "@vendor__bitflags-2.7.0//:bitflags",
+        "@vendor__indexmap-2.7.0//:indexmap",
+        "@vendor__itertools-0.12.1//:itertools",
+        "@vendor__lock_api-0.4.12//:lock_api",
+        "@vendor__oorandom-11.1.4//:oorandom",
+        "@vendor__parking_lot-0.12.3//:parking_lot",
+        "@vendor__rustc-hash-2.1.0//:rustc_hash",
+        "@vendor__smallvec-1.13.2//:smallvec",
+        "@vendor__tracing-0.1.41//:tracing",
+        "@vendor__triomphe-0.1.14//:triomphe",
     ],
 )
