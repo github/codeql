@@ -2494,6 +2494,12 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       result = TSsaPhiInputNode(phi, input)
     )
   }
+
+  /**
+   * Gets an indirect node with indirection index `indirectionIndex` that is
+   * safely guarded by the given guard check.
+   */
+  Node getAnIndirectBarrierNode(int indirectionIndex) { none() }
 }
 
 /**
