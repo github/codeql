@@ -847,9 +847,11 @@ class_template_argument_value(
     int arg_value: @expr ref
 );
 
+@user_or_decltype = @usertype | @decltype;
+
 is_proxy_class_for(
     unique int id: @usertype ref,
-    unique int templ_param_id: @usertype ref
+    int templ_param_id: @user_or_decltype ref
 );
 
 type_mentions(
