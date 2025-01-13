@@ -84,8 +84,7 @@ module ComputationallyExpensiveHashFunctionFlow {
  */
 module WeakSensitiveDataHashingFlow =
   DataFlow::MergePathGraph<NormalHashFunctionFlow::PathNode,
-    ComputationallyExpensiveHashFunctionFlow::PathNode,
-    NormalHashFunctionFlow::PathGraph,
+    ComputationallyExpensiveHashFunctionFlow::PathNode, NormalHashFunctionFlow::PathGraph,
     ComputationallyExpensiveHashFunctionFlow::PathGraph>;
 
 import WeakSensitiveDataHashingFlow::PathGraph
