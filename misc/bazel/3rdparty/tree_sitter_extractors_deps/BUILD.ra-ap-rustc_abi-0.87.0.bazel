@@ -82,7 +82,7 @@ rust_library(
     }),
     version = "0.87.0",
     deps = [
-        "@vendor__bitflags-2.6.0//:bitflags",
+        "@vendor__bitflags-2.7.0//:bitflags",
         "@vendor__ra-ap-rustc_index-0.87.0//:ra_ap_rustc_index",
         "@vendor__tracing-0.1.41//:tracing",
     ],
