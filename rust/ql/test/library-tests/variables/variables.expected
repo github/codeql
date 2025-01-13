@@ -206,9 +206,7 @@ variableAccess
 | main.rs:336:15:336:15 | f | main.rs:333:9:333:9 | f |
 | main.rs:339:9:339:9 | x | main.rs:338:10:338:10 | x |
 | main.rs:342:15:342:15 | f | main.rs:333:9:333:9 | f |
-| main.rs:345:19:345:19 | f | main.rs:333:9:333:9 | f |
 | main.rs:347:17:347:17 | x | main.rs:346:14:346:14 | x |
-| main.rs:351:23:351:23 | f | main.rs:333:9:333:9 | f |
 | main.rs:356:13:356:13 | x | main.rs:355:14:355:14 | x |
 | main.rs:357:19:357:19 | f | main.rs:354:13:354:13 | f |
 | main.rs:365:12:365:12 | v | main.rs:362:9:362:9 | v |
@@ -393,9 +391,7 @@ variableReadAccess
 | main.rs:336:15:336:15 | f | main.rs:333:9:333:9 | f |
 | main.rs:339:9:339:9 | x | main.rs:338:10:338:10 | x |
 | main.rs:342:15:342:15 | f | main.rs:333:9:333:9 | f |
-| main.rs:345:19:345:19 | f | main.rs:333:9:333:9 | f |
 | main.rs:347:17:347:17 | x | main.rs:346:14:346:14 | x |
-| main.rs:351:23:351:23 | f | main.rs:333:9:333:9 | f |
 | main.rs:356:13:356:13 | x | main.rs:355:14:355:14 | x |
 | main.rs:357:19:357:19 | f | main.rs:354:13:354:13 | f |
 | main.rs:365:12:365:12 | v | main.rs:362:9:362:9 | v |
@@ -542,3 +538,6 @@ capturedAccess
 | main.rs:459:9:459:9 | z |
 | main.rs:468:9:468:9 | i |
 | main.rs:523:13:523:16 | self |
+nestedFunctionAccess
+| main.rs:345:19:345:19 | f | main.rs:346:9:348:9 | fn f |
+| main.rs:351:23:351:23 | f | main.rs:346:9:348:9 | fn f |

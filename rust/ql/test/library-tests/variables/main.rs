@@ -342,13 +342,13 @@ fn nested_function() {
     print_i64(f(2)); // $ read_access=f1
 
     {
-        print_i64(f(3)); // $ SPURIOUS: read_access=f1
+        print_i64(f(3));
         fn f(x: i64) -> i64 { // x_3
             2 * x // $ read_access=x_3
         }
 
         {
-            print_i64(f(4)); // $ SPURIOUS: read_access=f1
+            print_i64(f(4));
         }
 
         let f = // f2

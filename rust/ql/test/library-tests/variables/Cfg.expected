@@ -748,17 +748,17 @@ edges
 | main.rs:342:17:342:17 | 2 | main.rs:342:15:342:18 | f(...) |  |
 | main.rs:344:5:358:5 | { ... } | main.rs:331:22:359:1 | { ... } |  |
 | main.rs:345:9:345:17 | print_i64 | main.rs:345:19:345:19 | f |  |
-| main.rs:345:9:345:23 | print_i64(...) | main.rs:345:26:348:9 | fn f |  |
+| main.rs:345:9:345:23 | print_i64(...) | main.rs:346:9:348:9 | fn f |  |
 | main.rs:345:9:345:24 | ExprStmt | main.rs:345:9:345:17 | print_i64 |  |
 | main.rs:345:19:345:19 | f | main.rs:345:21:345:21 | 3 |  |
 | main.rs:345:19:345:22 | f(...) | main.rs:345:9:345:23 | print_i64(...) |  |
 | main.rs:345:21:345:21 | 3 | main.rs:345:19:345:22 | f(...) |  |
-| main.rs:345:26:348:9 | enter fn f | main.rs:346:14:346:14 | x |  |
-| main.rs:345:26:348:9 | exit fn f (normal) | main.rs:345:26:348:9 | exit fn f |  |
-| main.rs:345:26:348:9 | fn f | main.rs:350:9:352:9 | ExprStmt |  |
+| main.rs:346:9:348:9 | enter fn f | main.rs:346:14:346:14 | x |  |
+| main.rs:346:9:348:9 | exit fn f (normal) | main.rs:346:9:348:9 | exit fn f |  |
+| main.rs:346:9:348:9 | fn f | main.rs:350:9:352:9 | ExprStmt |  |
 | main.rs:346:14:346:14 | x | main.rs:346:14:346:19 | ...: i64 | match |
 | main.rs:346:14:346:19 | ...: i64 | main.rs:347:13:347:13 | 2 |  |
-| main.rs:346:29:348:9 | { ... } | main.rs:345:26:348:9 | exit fn f (normal) |  |
+| main.rs:346:29:348:9 | { ... } | main.rs:346:9:348:9 | exit fn f (normal) |  |
 | main.rs:347:13:347:13 | 2 | main.rs:347:17:347:17 | x |  |
 | main.rs:347:13:347:17 | ... * ... | main.rs:346:29:348:9 | { ... } |  |
 | main.rs:347:17:347:17 | x | main.rs:347:13:347:17 | ... * ... |  |
