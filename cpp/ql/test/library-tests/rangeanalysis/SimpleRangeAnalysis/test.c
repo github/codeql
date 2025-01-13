@@ -401,12 +401,14 @@ double test_ternary_nested_of_literals(double m, double n, double o, double p, d
   double h = m ? n ? o ? p ? q ? 0.38708626 : 0.32876044 : 0.14963485 : 0.45041108 : 0.48640909 : 0.84331272;
   double i = m ? n ? o ? p ? q ? 0.15755063 : 0.77086833 : 0.26428481 : 0.14800508 : 0.37428143 : 0.05328182;
   double j = m ? n ? o ? p ? q ? 0.41736536 : 0.76826628 : 0.27643238 : 0.55679274 : 0.39468857 : 0.69072144;
+  double k = m ? n ? o ? p ? q ? 0.88955345 : 0.29904824 : 0.76242583 : 0.20519110 : 0.88745559 : 0.81372798;
+  double l = m ? n ? o ? p ? q ? 0.42186276 : 0.53843358 : 0.44996679 : 0.13204114 : 0.52031241 : 0.42762647;
 
   // Since the abstract interpretation of `+` produces a product of the bounds
-  // of the input operands, `output` will have k^10 bounds, where `k` is the
+  // of the input operands, `output` will have k^12 bounds, where `k` is the
   // number of bounds that each of the variables above have. This blows up
   // unless `k` is 1.
-  double output = a + b + c + d + e + f + g + h + i + j;
+  double output = a + b + c + d + e + f + g + h + i + j + k + l;
 
   return output;
 }
