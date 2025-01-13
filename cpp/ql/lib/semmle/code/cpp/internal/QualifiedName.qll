@@ -227,11 +227,11 @@ class ProxyClass extends UserType {
 }
 
 class TypeTemplateParameter extends UserType {
-  TypeTemplateParameter() { usertypes(this, _, 7) or usertypes(this, _, 8) }
+  TypeTemplateParameter() { usertypes(this, _, [7, 8]) }
 }
 
 class TemplateClass extends UserType {
-  TemplateClass() { usertypes(this, _, 6) }
+  TemplateClass() { usertypes(this, _, [15, 16, 17]) }
 
   UserType getAnInstantiation() {
     class_instantiation(result, this) and

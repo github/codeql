@@ -21,7 +21,7 @@ string kindstr(Class c) {
     or
     kind = 2 and result = "Class"
     or
-    kind = 6 and result = "Template class"
+    kind = [15, 16] and result = "Template class"
   )
 }
 

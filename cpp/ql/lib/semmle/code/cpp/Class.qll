@@ -869,7 +869,7 @@ class AbstractClass extends Class {
  * `FullClassTemplateSpecialization`.
  */
 class TemplateClass extends Class {
-  TemplateClass() { usertypes(underlyingElement(this), _, 6) }
+  TemplateClass() { usertypes(underlyingElement(this), _, [15, 16, 17]) }
 
   /**
    * Gets a class instantiated from this template.

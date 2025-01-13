@@ -771,12 +771,13 @@ decltypes(
 
 /*
 case @usertype.kind of
-   1 = @struct
+|  0 = @unknown_usertype
+|  1 = @struct
 |  2 = @class
 |  3 = @union
 |  4 = @enum
 |  5 = @typedef                       // classic C: typedef typedef type name
-|  6 = @template
+// ... 6 = @template deprecated
 |  7 = @template_parameter
 |  8 = @template_template_parameter
 |  9 = @proxy_class                   // a proxy class associated with a template parameter
@@ -785,6 +786,9 @@ case @usertype.kind of
 // ... 12 objc_category deprecated
 | 13 = @scoped_enum
 | 14 = @using_alias                  // a using name = type style typedef
+| 15 = @template_struct
+| 16 = @template_class
+| 17 = @template_union
 ;
 */
 
