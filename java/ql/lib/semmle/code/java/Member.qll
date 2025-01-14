@@ -623,7 +623,11 @@ class SrcMethod extends Method {
       then implementsInterfaceMethod(result, this)
       else result.getASourceOverriddenMethod*() = this
     ) and
-    (exists(result.getBody()) or result.hasModifier("native"))
+    (
+      hasOverlay() or
+      exists(result.getBody()) or
+      result.hasModifier("native")
+    )
   }
 }
 
