@@ -234,6 +234,125 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
 }
 
 /**
+ * Holds if `ir` controls `block`, meaning that `block` is only
+ * entered if the value of this condition is `v`. This helper
+ * predicate does not necessarily hold for binary logical operations like
+ * `&&` and `||`. See the detailed explanation on predicate `controls`.
+ */
+private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, AbstractValue v) {
+  exists(IRBlock irb |
+    ir.valueControls(irb, v) and
+    nonExcludedIRAndBasicBlock(irb, controlled) and
+    not isUnreachedBlock(irb)
+  )
+}
+
+private class GuardConditionFromNotExpr extends GuardConditionImpl {
+  IRGuardCondition ir;
+
+  GuardConditionFromNotExpr() {
+    // When `!` is applied to an integer (such as `x`) the generated IR looks
+    // like:
+    // ```
+    // r1(glval<int>) = VariableAddress[myInt] :
+    // r2(int)        = Load[x]                : &:r1, m1_6
+    // r3(int)        = Constant[0]            :
+    // r4(bool)       = CompareEQ              : r2, r3
+    // ```
+    // And so the `IRGuardCondition` for an expression such as `if(!x)` is the
+    // `CompareEQ` instruction. However, users often expect the `x` to also
+    // be a guard condition. But from the perspective of the IR the `x` is just
+    // the left-hand side of a comparison against 0 so it's not included as a
+    // normal `IRGuardCondition`. So to align with user expectations we make
+    // that `x` a `GuardCondition`.
+    exists(NotExpr notExpr, Type t |
+      this = notExpr.getOperand() and
+      t = this.getUnspecifiedType() and
+      not t instanceof BoolType and
+      ir.getUnconvertedResultExpression() = notExpr
+    )
+  }
+
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
+    // This condition must determine the flow of control; that is, this
+    // node must be a top-level condition.
+    controlsBlock(ir, controlled, v.getDualValue())
+  }
+
+  pragma[inline]
+  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+    exists(Instruction li, Instruction ri |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue.booleanNot())
+    )
+  }
+
+  pragma[inline]
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue())
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+    exists(Instruction li, Instruction ri, boolean testIsTrue |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue.booleanNot()) and
+      this.controls(block, testIsTrue)
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue()) and
+      this.valueControls(block, value)
+    )
+  }
+
+  pragma[inline]
+  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
+    exists(Instruction li, Instruction ri |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue.booleanNot())
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+    exists(Instruction li, Instruction ri, boolean testIsTrue |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue.booleanNot()) and
+      this.controls(block, testIsTrue)
+    )
+  }
+
+  pragma[inline]
+  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue())
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue()) and
+      this.valueControls(block, value)
+    )
+  }
+}
+
+/**
  * A Boolean condition in the AST that guards one or more basic blocks and has a corresponding IR
  * instruction.
  */
@@ -245,7 +364,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
-    this.controlsBlock(controlled, v)
+    controlsBlock(ir, controlled, v)
   }
 
   pragma[inline]
@@ -317,20 +436,6 @@ private class GuardConditionFromIR extends GuardConditionImpl {
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value) and
       this.valueControls(block, value)
-    )
-  }
-
-  /**
-   * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `v`. This helper
-   * predicate does not necessarily hold for binary logical operations like
-   * `&&` and `||`. See the detailed explanation on predicate `controls`.
-   */
-  private predicate controlsBlock(BasicBlock controlled, AbstractValue v) {
-    exists(IRBlock irb |
-      ir.valueControls(irb, v) and
-      nonExcludedIRAndBasicBlock(irb, controlled) and
-      not isUnreachedBlock(irb)
     )
   }
 }
