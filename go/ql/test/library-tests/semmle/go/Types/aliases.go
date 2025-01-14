@@ -15,7 +15,7 @@ func G(Afs2 aliasesS2) int {
 	return Afs2.x
 }
 
-// This is a named type, not an alias
+// This is a defined type, not an alias
 type S3 struct{ x int }
 
 // This is a type alias

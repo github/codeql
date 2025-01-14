@@ -14,7 +14,7 @@
 import go
 
 /*
- * Returns the type after all aliases, named types, and pointer
+ * Returns the type after all aliases, defined types, and pointer
  * types have been replaced with the actual underlying type.
  */
 

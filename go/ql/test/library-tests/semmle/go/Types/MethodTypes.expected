@@ -13,7 +13,7 @@
 | generic.go:47:6:47:16 | MyInterface | dummy14 | func() GenericMap1 |
 | generic.go:47:6:47:16 | MyInterface | dummy15 | func() GenericMap2 |
 | generic.go:47:6:47:16 | MyInterface | dummy17 | func() GenericChannel |
-| generic.go:47:6:47:16 | MyInterface | dummy18 | func() GenericNamed |
+| generic.go:47:6:47:16 | MyInterface | dummy18 | func() GenericDefined |
 | generic.go:47:6:47:16 | MyInterface | dummy19 | func() MyFuncType1 |
 | generic.go:47:6:47:16 | MyInterface | dummy20 | func() MyFuncType2 |
 | interface.go:28:6:28:7 | i6 | String | func() string |
