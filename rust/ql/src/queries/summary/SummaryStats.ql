@@ -9,6 +9,7 @@
 import rust
 import codeql.rust.Concepts
 import codeql.rust.security.SensitiveData
+import codeql.rust.security.WeakSensitiveDataHashingExtensions
 import codeql.rust.Diagnostics
 import Stats
 
@@ -59,4 +60,9 @@ where
   key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
   or
   key = "Sensitive data" and value = count(SensitiveData d)
+  or
+  key = "Taint sinks - query sinks" and value = getQuerySinksCount()
+  or
+  key = "Taint sinks - cryptographic operations" and
+  value = count(Cryptography::CryptographicOperation o)
 select key, value order by key

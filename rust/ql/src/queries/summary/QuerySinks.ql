@@ -11,15 +11,7 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
-import codeql.rust.security.SqlInjectionExtensions
 import Stats
-
-/**
- * Gets a kind of query for which `n` is a sink (if any).
- */
-string getAQuerySinkKind(DataFlow::Node n) {
-  (n instanceof SqlInjection::Sink and result = "SqlInjection")
-}
 
 from DataFlow::Node n
 select n, "sink for " + strictconcat(getAQuerySinkKind(n), ", ")
