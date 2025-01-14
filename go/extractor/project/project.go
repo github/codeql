@@ -193,7 +193,7 @@ func findGoModFiles(root string) []string {
 }
 
 // A regular expression for the Go toolchain version syntax.
-var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+\.[0-9]+)$`)
+var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+(\.[0-9]+|rc[0-9]+))$`)
 
 // Returns true if the `go.mod` file specifies a Go language version, that version is `1.21` or greater, and
 // there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
