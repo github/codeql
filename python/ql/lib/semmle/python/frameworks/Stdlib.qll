@@ -4540,8 +4540,11 @@ module StdlibPrivate {
           or
           input = "Argument[" + (i + 1).toString() + "].SetElement"
           or
+          // We reduce generality slightly by not tracking tuple contents on list arguments beyond the first, for performance.
+          // TODO: Once we have TupleElementAny, this generality can be increased.
+          i = 0 and
           exists(DataFlow::TupleElementContent tc, int j | j = tc.getIndex() |
-            input = "Argument[" + (i + 1).toString() + "].TupleElement[" + j.toString() + "]"
+            input = "Argument[1].TupleElement[" + j.toString() + "]"
           )
           // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
         ) and
@@ -4624,6 +4627,9 @@ module StdlibPrivate {
           or
           input = "Argument[" + i.toString() + "].SetElement"
           or
+          // We reduce generality slightly by not tracking tuple contents on arguments beyond the first two, for performance.
+          // TODO: Once we have TupleElementAny, this generality can be increased.
+          i in [0 .. 1] and
           exists(DataFlow::TupleElementContent tc, int j | j = tc.getIndex() |
             input = "Argument[" + i.toString() + "].TupleElement[" + j.toString() + "]"
           )

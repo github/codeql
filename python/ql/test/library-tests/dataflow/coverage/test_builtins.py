@@ -414,6 +414,7 @@ def test_map_tuple():
     SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
     SINK_F(rl[0][1])
 
+
 @expects(4)
 def test_map_dict():
     d1 = {SOURCE: "v1"}
@@ -428,6 +429,35 @@ def test_map_dict():
     rl = list(map(f, d1, d2))
     SINK(rl[0][0]) #$ MISSING: flow="SOURCE, l:-10 -> rl[0][0]"
     SINK_F(rl[0][1])
+
+@expects(6)
+def test_map_multi_list():
+    l1 = [SOURCE]
+    l2 = [SOURCE]
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK(p2)  #$ flow="SOURCE, l:-4 -> p2"
+
+        return p1,p2
+
+    rl = list(map(f, l1, l2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK(rl[0][1]) #$ flow="SOURCE, l:-10 -> rl[0][1]"
+
+@expects(6)
+def test_map_multi_tuple():
+    l1 = (SOURCE,)
+    l2 = (SOURCE,)
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK(p2)  #$ MISSING: flow="SOURCE, l:-4 -> p2" # Tuples are not tracked beyond the first list argument for performance.
+        return p1,p2
+
+    rl = list(map(f, l1, l2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK(rl[0][1]) #$ MISSING: flow="SOURCE, l:-10 -> rl[0][1]"
 
 ### filter 
 
@@ -474,3 +504,11 @@ def test_filter_dict():
 
     rl = list(filter(f,d))
     SINK(rl[0]) #$ MISSING: flow="SOURCE, l:-7 -> rl[0]"
+
+def test_enumerate_list():
+    # TODO
+    pass
+
+def test_zip_list():
+    # TODO
+    pass
