@@ -7,6 +7,7 @@ use log::{info, warn};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
@@ -161,6 +162,15 @@ impl<'a> Extractor<'a> {
     }
 }
 
+fn cwd() -> anyhow::Result<AbsPathBuf> {
+    let path = std::env::current_dir().context("current directory")?;
+    let utf8_path = Utf8PathBuf::from_path_buf(path)
+        .map_err(|p| anyhow::anyhow!("{} is not a valid UTF-8 path", p.display()))?;
+    let abs_path = AbsPathBuf::try_from(utf8_path)
+        .map_err(|p| anyhow::anyhow!("{} is not absolute", p.as_str()))?;
+    Ok(abs_path)
+}
+
 fn main() -> anyhow::Result<()> {
     let start = Instant::now();
     let mut cfg = config::Config::extract().context("failed to load configuration")?;
@@ -204,7 +214,7 @@ fn main() -> anyhow::Result<()> {
         }
         extractor.extract_without_semantics(file, "no manifest found");
     }
-    let cargo_config = cfg.to_cargo_config();
+    let cargo_config = cfg.to_cargo_config(&cwd()?);
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
             let semantics = Semantics::new(db);
