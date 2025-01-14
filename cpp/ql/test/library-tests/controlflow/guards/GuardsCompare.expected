@@ -342,7 +342,9 @@
 | 146 | ! ... == 0 when ! ... is false |
 | 146 | ! ... == 1 when ! ... is true |
 | 146 | x != 0 when ! ... is false |
+| 146 | x != 0 when x is true |
 | 146 | x == 0 when ! ... is true |
+| 146 | x == 0 when x is false |
 | 152 | p != 0 when p is true |
 | 152 | p != 1 when p is false |
 | 152 | p == 0 when p is false |
@@ -352,7 +354,9 @@
 | 158 | ! ... == 0 when ! ... is false |
 | 158 | ! ... == 1 when ! ... is true |
 | 158 | p != 0 when ! ... is false |
+| 158 | p != 0 when p is true |
 | 158 | p == 0 when ! ... is true |
+| 158 | p == 0 when p is false |
 | 164 | s != 0 when s is true |
 | 164 | s != 1 when s is false |
 | 164 | s == 0 when s is false |
@@ -362,4 +366,6 @@
 | 170 | ! ... == 0 when ! ... is false |
 | 170 | ! ... == 1 when ! ... is true |
 | 170 | s != 0 when ! ... is false |
+| 170 | s != 0 when s is true |
 | 170 | s == 0 when ! ... is true |
+| 170 | s == 0 when s is false |
