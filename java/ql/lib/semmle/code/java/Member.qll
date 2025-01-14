@@ -624,7 +624,13 @@ class SrcMethod extends Method {
       then implementsInterfaceMethod(result, this)
       else result.getASourceOverriddenMethod*() = this
     ) and
-    (exists(result.getBody()) or result.hasModifier("native"))
+    (
+      // We allow empty method bodies for the local overlay variant to allow
+      // calls to methods only fully extracted in base.
+      isOverlay() or
+      exists(result.getBody()) or
+      result.hasModifier("native")
+    )
   }
 }
 
