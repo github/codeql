@@ -9,7 +9,7 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.TaintTracking
 
 /**
- * A taint configuration for taint reach (flow to any node from any modelled source).
+ * A taint configuration for taint reach (flow to any node from any modeled source).
  */
 private module TaintReachConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }

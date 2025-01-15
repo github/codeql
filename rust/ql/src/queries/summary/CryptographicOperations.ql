@@ -38,7 +38,7 @@ string describeAlgorithm(Cryptography::CryptographicAlgorithm alg) {
 }
 
 /**
- * Gets a feature of cryptographic operation `operation`.
+ * Gets a feature of cryptographic operation `op`.
  */
 string getOperationFeature(Cryptography::CryptographicOperation op) {
   result = "inputs:" + strictcount(op.getAnInput()).toString() or
@@ -46,7 +46,7 @@ string getOperationFeature(Cryptography::CryptographicOperation op) {
 }
 
 /**
- * Gets a description of cryptographic operation `operation`.
+ * Gets a description of cryptographic operation `op`.
  */
 string describeOperation(Cryptography::CryptographicOperation op) {
   result = describeAlgorithm(op.getAlgorithm()) + " " + concat(getOperationFeature(op), ", ")
