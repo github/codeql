@@ -5,7 +5,7 @@
  * The analysis is implemented as an abstract interpretation over the
  * three-valued domain `{negative, zero, positive}`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import SignAnalysisSpecific::Private

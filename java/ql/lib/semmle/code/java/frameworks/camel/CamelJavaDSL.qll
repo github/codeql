@@ -13,7 +13,7 @@
  *
  * This creates a route to the `TargetBean` class for messages sent to "direct.start".
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

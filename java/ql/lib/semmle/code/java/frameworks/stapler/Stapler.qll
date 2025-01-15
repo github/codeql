@@ -1,5 +1,5 @@
 /** Provides classes and predicates related to the Stapler framework. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

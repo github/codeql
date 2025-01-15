@@ -1,5 +1,5 @@
 /** Provides classes and predicates related to `androidx.slice`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

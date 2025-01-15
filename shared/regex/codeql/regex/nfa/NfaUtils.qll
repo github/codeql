@@ -1,7 +1,7 @@
 /**
  * A shared library for creating and reasoning about NFA's.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.regex.RegexTreeView

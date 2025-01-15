@@ -1,7 +1,7 @@
 /**
  * This file contains a `RegexTreeViewSig` module describing the syntax tree of regular expressions.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

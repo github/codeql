@@ -1,5 +1,5 @@
 /** Detection of strings and arrays of strings containing relative paths. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

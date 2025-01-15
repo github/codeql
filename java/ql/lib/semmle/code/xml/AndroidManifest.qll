@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with Android manifest files.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import XML

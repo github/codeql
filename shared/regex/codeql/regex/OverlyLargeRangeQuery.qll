@@ -1,7 +1,7 @@
 /**
  * Classes and predicates for working with suspicious character ranges.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import RegexTreeView

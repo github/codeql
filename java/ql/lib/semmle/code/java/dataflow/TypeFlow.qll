@@ -7,7 +7,7 @@
  * type has a subtype or if an inferred upper bound passed through at least one
  * explicit or implicit cast that lost type information.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java as J

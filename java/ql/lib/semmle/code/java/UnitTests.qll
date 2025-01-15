@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with test classes and methods.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Type

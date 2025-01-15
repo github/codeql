@@ -1,7 +1,7 @@
 /**
  * Provides a class that represents named elements in Java programs.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import CompilationUnit

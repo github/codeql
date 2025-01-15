@@ -1,5 +1,5 @@
 /** Provides definitions related to the `java.beans` package. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

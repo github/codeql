@@ -1,7 +1,7 @@
 /**
  * Definitions related to `java.net.*`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.java.Type

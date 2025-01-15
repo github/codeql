@@ -3,7 +3,7 @@
  * an expression, `b` is a `Bound` (typically zero or the value of an SSA
  * variable), and `v` is an integer in the range `[0 .. m-1]`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /*

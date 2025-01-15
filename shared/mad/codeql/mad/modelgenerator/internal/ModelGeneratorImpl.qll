@@ -4,7 +4,7 @@
  * Provides classes and predicates related to capturing summary, source,
  * and sink models of the Standard or a 3rd party library.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.dataflow.DataFlow

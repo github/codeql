@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with the most common types of generated files.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Type

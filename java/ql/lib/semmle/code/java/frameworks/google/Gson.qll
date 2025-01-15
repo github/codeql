@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with the Gson framework.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

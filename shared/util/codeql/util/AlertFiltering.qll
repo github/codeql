@@ -2,7 +2,7 @@
  * Provides the `restrictAlertsTo` extensible predicate to restrict alerts to specific source
  * locations, and the `AlertFilteringImpl` parameterized module to apply the filtering.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.util.Location

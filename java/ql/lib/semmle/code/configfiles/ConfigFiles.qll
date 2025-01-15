@@ -1,4 +1,4 @@
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.Location

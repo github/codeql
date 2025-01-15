@@ -1,5 +1,5 @@
 /** Provides classes and predicates related to `kotlin.text`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

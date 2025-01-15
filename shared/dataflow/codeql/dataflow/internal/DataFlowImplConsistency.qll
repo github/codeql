@@ -2,7 +2,7 @@
  * Provides consistency queries for checking invariants in the language-specific
  * data-flow classes and predicates.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.dataflow.DataFlow as DF

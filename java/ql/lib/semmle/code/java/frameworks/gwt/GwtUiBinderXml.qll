@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for identifying GWT UiBinder framework XML templates.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

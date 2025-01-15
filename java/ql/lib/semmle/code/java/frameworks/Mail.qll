@@ -1,5 +1,5 @@
 /** Provides classes and predicates to work with email */
-overlay[local]
+overlay[local?]
 module;
 
 import java

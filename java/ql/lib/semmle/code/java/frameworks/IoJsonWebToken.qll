@@ -1,5 +1,5 @@
 /** Predicates and classes to reason about the `io.jsonwebtoken` library. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

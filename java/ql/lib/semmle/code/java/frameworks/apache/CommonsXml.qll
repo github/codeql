@@ -1,5 +1,5 @@
 /** Provides XML definitions related to the `org.apache.commons` package. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

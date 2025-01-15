@@ -6,7 +6,7 @@
  * hold, so results guarded by, for example, `assert x != null;` or
  * `if (x == null) { assert false; }` are excluded.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /*

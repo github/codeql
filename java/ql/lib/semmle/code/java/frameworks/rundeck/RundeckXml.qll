@@ -1,5 +1,5 @@
 /** Provides definitions related to XML parsing in Rundeck. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

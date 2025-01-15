@@ -3,7 +3,7 @@
  * `com.google.common.base.Preconditions` and
  * `org.apache.commons.lang3.Validate`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

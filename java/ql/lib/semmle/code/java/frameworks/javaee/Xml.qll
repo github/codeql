@@ -1,5 +1,5 @@
 /** Provides definitions related to the `javax.xml` package. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

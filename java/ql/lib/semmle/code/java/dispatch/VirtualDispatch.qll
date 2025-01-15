@@ -2,7 +2,7 @@
  * Provides predicates for reasoning about runtime call targets through virtual
  * dispatch.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

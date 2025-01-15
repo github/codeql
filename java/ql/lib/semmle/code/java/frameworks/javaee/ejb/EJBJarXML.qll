@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with
  * EJB deployment descriptor XML files (`ejb-jar.xml`).
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

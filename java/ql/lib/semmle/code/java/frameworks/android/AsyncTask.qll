@@ -1,5 +1,5 @@
 /** Provides classes and predicates to reason about `AsyncTask`s in Android. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

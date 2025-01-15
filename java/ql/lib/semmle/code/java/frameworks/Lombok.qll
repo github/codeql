@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for identifying use of the Lombok framework.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

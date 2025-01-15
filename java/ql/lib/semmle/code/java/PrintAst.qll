@@ -5,7 +5,7 @@
  * extend `PrintAstConfiguration` and override `shouldPrint` to hold for only the elements
  * you wish to view the AST for.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

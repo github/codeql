@@ -2,7 +2,7 @@
  * Provides predicates for reasoning about regular expressions
  * without anchors.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import RegexTreeView

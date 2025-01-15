@@ -1,7 +1,7 @@
 /**
  * Provides classes for representing abstract bounds for use in, for example, range analysis.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import internal.rangeanalysis.BoundSpecific

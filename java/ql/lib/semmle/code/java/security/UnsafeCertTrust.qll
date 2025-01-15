@@ -1,5 +1,5 @@
 /** Provides classes and predicates to reason about unsafe certificate trust vulnerablities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

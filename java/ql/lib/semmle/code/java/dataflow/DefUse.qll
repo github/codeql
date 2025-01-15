@@ -2,7 +2,7 @@
  * Provides classes and predicates for def-use and use-use pairs. Built on top of the SSA library for
  * maximal precision.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

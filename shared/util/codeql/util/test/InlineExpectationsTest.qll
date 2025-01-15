@@ -95,7 +95,7 @@
  *
  * `tag1=expected-value tag2=expected-value`
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

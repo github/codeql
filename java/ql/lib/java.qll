@@ -1,5 +1,5 @@
 /** Provides all default Java QL imports. */
-overlay[local]
+overlay[local?]
 module;
 
 import Customizations

@@ -1,5 +1,5 @@
 /** Definitions related to the server-side template injection (SST) query. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

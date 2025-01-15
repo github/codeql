@@ -1,5 +1,5 @@
 /** Provides the empty `Void` class. */
-overlay[local]
+overlay[local?]
 module;
 
 /** The empty void type. */

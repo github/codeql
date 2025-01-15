@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with Java Serialization.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

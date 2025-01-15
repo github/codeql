@@ -1,5 +1,5 @@
 /** Provides classes to reason about partial path traversal vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

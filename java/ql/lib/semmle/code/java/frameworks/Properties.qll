@@ -1,5 +1,5 @@
 /** Definitions related to `java.util.Properties`. */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.java.Type

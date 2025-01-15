@@ -1,7 +1,7 @@
 /**
  * Provides Java-specific definitions for use in the taint tracking library.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.dataflow.TaintTracking

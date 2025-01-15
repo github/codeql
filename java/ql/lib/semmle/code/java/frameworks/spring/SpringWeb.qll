@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with Spring web requests.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

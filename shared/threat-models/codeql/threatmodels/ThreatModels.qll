@@ -4,7 +4,7 @@
  * This module provides extensible predicates for configuring which kinds of MaD models
  * are applicable to generic queries.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

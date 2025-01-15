@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with the Java Servlet API.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.java.Type

@@ -1,5 +1,5 @@
 /** Provides classes related to `android.content.SharedPreferences`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

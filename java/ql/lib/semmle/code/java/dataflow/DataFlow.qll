@@ -2,7 +2,7 @@
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) data flow analyses.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

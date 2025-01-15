@@ -1,7 +1,7 @@
 /**
  * Provdides a module to calculate constant integer and boolean values.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

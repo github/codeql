@@ -1,5 +1,5 @@
 /** Provides definitions related to `java.io.InputStream`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

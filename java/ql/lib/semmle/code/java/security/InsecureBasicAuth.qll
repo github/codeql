@@ -1,5 +1,5 @@
 /** Provides classes and predicates to reason about Insecure Basic Authentication vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

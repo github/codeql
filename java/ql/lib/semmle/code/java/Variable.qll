@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with Java variables and their declarations.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Element

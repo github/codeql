@@ -1,5 +1,5 @@
 /** Provides classes and predicates related to the Hudson framework. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

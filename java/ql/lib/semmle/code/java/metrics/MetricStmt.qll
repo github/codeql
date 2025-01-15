@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for computing metrics on Java statements.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.java.Statement

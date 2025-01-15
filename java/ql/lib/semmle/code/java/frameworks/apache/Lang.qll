@@ -1,5 +1,5 @@
 /** Definitions related to the Apache Commons Lang library. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

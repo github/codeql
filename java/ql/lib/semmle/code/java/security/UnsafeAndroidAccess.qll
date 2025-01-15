@@ -1,7 +1,7 @@
 /**
  * Provides classes to reason about Unsafe Resource Fetching vulnerabilities in Android.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

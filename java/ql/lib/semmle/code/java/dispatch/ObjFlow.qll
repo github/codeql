@@ -6,7 +6,7 @@
  * The set of dispatch targets for `Object.toString()` calls are reduced based
  * on possible data flow from objects of more specific types to the qualifier.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with Java statements.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Expr

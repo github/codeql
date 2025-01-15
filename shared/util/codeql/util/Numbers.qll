@@ -2,7 +2,7 @@
  * Provides predicates for working with numeric values and their string
  * representations.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

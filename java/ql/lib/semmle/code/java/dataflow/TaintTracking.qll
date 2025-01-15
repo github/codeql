@@ -2,7 +2,7 @@
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.java.dataflow.DataFlow

@@ -1,5 +1,5 @@
 /** Provides classes and predicates to reason about sanitization of path injection vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

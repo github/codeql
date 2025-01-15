@@ -25,7 +25,7 @@
  * String.format("%sfoo:%s", notSuffix, suffix4);
  * ```
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

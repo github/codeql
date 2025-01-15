@@ -1,5 +1,5 @@
 /** Definitions related to `java.util.stream`. */
-overlay[local]
+overlay[local?]
 module;
 
 private import semmle.code.java.dataflow.FlowSummary

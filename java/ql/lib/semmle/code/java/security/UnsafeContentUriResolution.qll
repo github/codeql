@@ -1,5 +1,5 @@
 /** Provides classes to reason about vulnerabilites related to content URIs. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

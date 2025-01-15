@@ -1,5 +1,5 @@
 /** Provides a class to identify implicitly exported Android components. */
-overlay[local]
+overlay[local?]
 module;
 
 private import semmle.code.xml.AndroidManifest

@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates related to `org.apache.http.*` and `org.apache.hc.*`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

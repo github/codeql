@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with Java expressions.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

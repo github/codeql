@@ -1,5 +1,5 @@
 /** Provides the `Unit` class. */
-overlay[local]
+overlay[local?]
 module;
 
 import codeql.util.Unit

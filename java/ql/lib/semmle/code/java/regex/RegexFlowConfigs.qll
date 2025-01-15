@@ -1,7 +1,7 @@
 /**
  * Defines configurations and steps for handling regexes
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

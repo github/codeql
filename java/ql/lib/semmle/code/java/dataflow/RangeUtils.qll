@@ -1,7 +1,7 @@
 /**
  * Provides utility predicates for range analysis.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

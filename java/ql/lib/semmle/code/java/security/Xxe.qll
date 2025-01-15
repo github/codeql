@@ -1,5 +1,5 @@
 /** Provides classes to reason about XML eXternal Entity (XXE) vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

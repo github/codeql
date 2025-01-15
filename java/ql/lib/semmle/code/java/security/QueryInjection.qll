@@ -1,5 +1,5 @@
 /** Provides classes to reason about database query language injection vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

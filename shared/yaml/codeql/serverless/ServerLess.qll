@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with serverless handlers.
  * E.g. [AWS](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html) or [serverless](https://npmjs.com/package/serverless)
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

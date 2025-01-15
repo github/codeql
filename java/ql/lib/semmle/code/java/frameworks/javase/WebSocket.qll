@@ -1,7 +1,7 @@
 /**
  * Provides classes for identifying methods called by the Java SE WebSocket package.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

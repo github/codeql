@@ -1,5 +1,5 @@
 /** Provides classes to reason about System Information Leak vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

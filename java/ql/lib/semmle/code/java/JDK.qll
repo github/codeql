@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with standard classes and methods from the JDK.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Member

@@ -2,7 +2,7 @@
  * Provides classes and predicates for reasoning about guards and the control
  * flow elements controlled by those guards.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

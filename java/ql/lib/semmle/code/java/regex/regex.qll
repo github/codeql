@@ -1,7 +1,7 @@
 /**
  * Definitions for parsing regular expressions.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

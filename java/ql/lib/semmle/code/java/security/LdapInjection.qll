@@ -1,5 +1,5 @@
 /** Provides classes to reason about LDAP injection attacks. */
-overlay[local]
+overlay[local?]
 module;
 
 import java
