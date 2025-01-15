@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>If the argument for a <code>sizeof</code> call is a macro that expands to a constant integer type, it is a likely indication that the macro operation may be misused or that the argument was selected by mistake (i.e. typo).</p> 
+    <p>This query detects if the argument for <code>sizeof</code> is a macro that expands to a constant integer value.</p>
+    <p>NOTE: This rule will ignore multicharacter literal values that are exactly 4 bytes long as it matches the length of <code>int</code> and may be expected.</p>
+  </overview>
+
+<recommendation>
+  <p>Any findings from this rule may indicate that the <code>sizeof</code> is being used incorrectly.</p>
+  <p>Review the logic of the call.</p>
+</recommendation>
+
+<example>
+<p>The following example shows a case where <code>sizeof</code> a constant was used instead of the <code>sizeof</code> of a structure by mistake as the names are similar.</p>
+<sample src="SizeOfConstIntMacroBad.c" />
+
+<p>In this example, the fix is to replace the argument for <code>sizeof</code> with the structure name.</p>
+
+<sample src="SizeOfConstIntMacroGood.c" />
+
+</example>
+
+</qhelp>
