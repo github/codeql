@@ -263,9 +263,13 @@ astGuardsCompare
 | 137 | 0 == 0 when 0 is false |
 | 137 | 0 == 1 when 0 is true |
 | 146 | ! ... != 0 when ! ... is true |
+| 146 | ! ... != 0 when x is false |
 | 146 | ! ... != 1 when ! ... is false |
+| 146 | ! ... != 1 when x is true |
 | 146 | ! ... == 0 when ! ... is false |
+| 146 | ! ... == 0 when x is true |
 | 146 | ! ... == 1 when ! ... is true |
+| 146 | ! ... == 1 when x is false |
 | 146 | x != 0 when ! ... is false |
 | 146 | x != 0 when x is true |
 | 146 | x == 0 when ! ... is true |
@@ -841,6 +845,8 @@ astGuardsEnsure_const
 | test.c:146:7:146:8 | ! ... | test.c:146:7:146:8 | ! ... | != | 0 | 146 | 147 |
 | test.c:146:7:146:8 | ! ... | test.c:146:7:146:8 | ! ... | == | 1 | 146 | 147 |
 | test.c:146:7:146:8 | ! ... | test.c:146:8:146:8 | x | == | 0 | 146 | 147 |
+| test.c:146:8:146:8 | x | test.c:146:7:146:8 | ! ... | != | 0 | 146 | 147 |
+| test.c:146:8:146:8 | x | test.c:146:7:146:8 | ! ... | == | 1 | 146 | 147 |
 | test.c:146:8:146:8 | x | test.c:146:8:146:8 | x | == | 0 | 146 | 147 |
 | test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | != | 0 | 151 | 152 |
 | test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | != | 0 | 152 | 152 |

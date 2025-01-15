@@ -952,6 +952,14 @@ private module Cached {
     compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), left, right, k, areEqual, value)
   }
 
+  private predicate isConvertedBool(Instruction instr) {
+    instr.getResultIRType() instanceof IRBooleanType
+    or
+    isConvertedBool(instr.(ConvertInstruction).getUnary())
+    or
+    isConvertedBool(instr.(BuiltinExpectCallInstruction).getCondition())
+  }
+
   /**
    * Holds if `op == k` is `areEqual` given that `test` is equal to `value`.
    */
@@ -980,6 +988,20 @@ private module Cached {
       compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
       int_value(const) = k1 and
       k = k1 + k2
+    )
+    or
+    exists(CompareValueNumber cmp, Operand left, Operand right, AbstractValue v |
+      test = cmp and
+      cmp.hasOperands(left, right) and
+      isConvertedBool(left.getDef()) and
+      int_value(right.getDef()) = 0 and
+      unary_compares_eq(valueNumberOfOperand(left), op, k, areEqual, v)
+    |
+      cmp instanceof CompareNEValueNumber and
+      v = value
+      or
+      cmp instanceof CompareEQValueNumber and
+      v.getDualValue() = value
     )
     or
     unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
