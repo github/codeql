@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <include src="LeapYear.inc.qhelp" />  
+  <p>This anti-pattern occurs when a developer uses conditional logic to execute a different path of code for a leap year than for a common year, without fully testing both code paths.</p>
+  <p>Though using a framework or library's leap year function is better than manually calculating the leap year (as described in anti-pattern 5), it can still be a source of errors if the result is used to execute a different code path. The bug is especially easy to be masked if the year is derived from the current time of the system clock. See Prevention Measures for techniques to avoid this bug.</p>
+</overview>
+<recommendation>
+  <ul>
+  <li>Avoid using conditional logic that creates a separate branch in your code for leap year.</li>
+  <li>Ensure your code is testable, and test how it will behave when presented with leap year dates of February 29th and December 31st as inputs.</li>
+  </ul>
+</recommendation>
+<example>
+<p>Note in the following examples, that year, month, and day might instead be .wYear, .wMonth, and .wDay fields of a SYSTEMTIME structure, or might be .tm_year, .tm_mon, and .tm_mday fields of a struct tm.</p>
+<sample src="LeapYearConditionalLogicBad.c" />
+</example>
+
+<references>
+  <li>NASA / Goddard Space Flight Center - <a href="https://eclipse.gsfc.nasa.gov/SEhelp/calendars.html">Calendars</a></li>
+  <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
+  <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
+</references>
+</qhelp>
