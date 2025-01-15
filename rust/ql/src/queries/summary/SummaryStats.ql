@@ -58,7 +58,8 @@ where
   or
   key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
   or
-  key = "Taint sources - disabled" and value = count(ThreatModelSource s | not s instanceof ActiveThreatModelSource)
+  key = "Taint sources - disabled" and
+  value = count(ThreatModelSource s | not s instanceof ActiveThreatModelSource)
   or
   key = "Taint sources - sensitive data" and value = count(SensitiveData d)
   or
