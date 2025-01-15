@@ -47,7 +47,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 {
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
-  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisited when we get unnamed destructors
 
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
