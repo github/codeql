@@ -17,6 +17,7 @@ var V1_14 = util.NewSemVer("v1.14.0")
 var V1_16 = util.NewSemVer("v1.16.0")
 var V1_18 = util.NewSemVer("v1.18.0")
 var V1_21 = util.NewSemVer("v1.21.0")
+var V1_23 = util.NewSemVer("v1.23.0")
 
 // Check if Go is installed in the environment.
 func IsInstalled() bool {
