@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> 
+    Finds explicit uses of symmetric encryption algorithms that are weak, obsolete, or otherwise unapproved.
+</p>
+<p>
+    Encryption algorithms such as DES, (uses keys of 56 bits only), RC2 (uses keys of 128 bits only), and TripleDES (provides at most 112 bits of security) are considered to be weak.
+</p>
+<p>
+    These cryptographic algorithms do not provide as much security assurance as more modern counterparts.
+</p>
+</overview>
+
+<recommendation>
+<p>
+    For Microsoft internal security standards:
+</p>
+<p>
+    For WinCrypt, switch to ALG_SID_AES, ALG_SID_AES_128, ALG_SID_AES_192, or ALG_SID_AES_256.
+</p>
+<p>
+    For BCrypt, switch to AES or any algorithm other than RC2, RC4, DES, DESX, 3DES, 3DES_112. AES_GMAC and AES_CMAC require crypto board review.
+</p>
+</recommendation>
+
+<example>
+<p>Violations:</p>
+
+<sample src="examples/WeakEncryption/WeakEncryption1.cpp" />
+<sample src="examples/WeakEncryption/WeakEncryption3.cpp" />
+
+<p>Solutions:</p>
+
+<sample src="examples/WeakEncryption/WeakEncryption2.cpp" />
+<sample src="examples/WeakEncryption/WeakEncryption4.cpp" />
+</example>
+
+<references>
+<li>Microsoft Docs: <a href="https://learn.microsoft.com/en-us/security/engineering/cryptographic-recommendations">Microsoft SDL Cryptographic Recommendations</a>.</li>
+</references>
+
+</qhelp>
