@@ -1,12 +1,12 @@
 use itertools::Itertools;
-use log::{debug, info};
+use log::{debug, error, info};
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_paths::Utf8PathBuf;
-use ra_ap_project_model::CargoConfig;
 use ra_ap_project_model::ProjectManifest;
+use ra_ap_project_model::{CargoConfig, ManifestPath};
 use ra_ap_span::Edition;
 use ra_ap_span::EditionedFileId;
 use ra_ap_span::TextRange;
@@ -17,7 +17,10 @@ use ra_ap_vfs::Vfs;
 use ra_ap_vfs::VfsPath;
 use ra_ap_vfs::{AbsPathBuf, FileId};
 use std::borrow::Cow;
+use std::collections::{HashMap, HashSet};
+use std::fs;
 use std::path::{Path, PathBuf};
+use std::rc::Rc;
 use triomphe::Arc;
 
 pub enum RustAnalyzer<'a> {
@@ -128,6 +131,76 @@ impl<'a> RustAnalyzer<'a> {
     }
 }
 
+struct ToMlReader {
+    cache: HashMap<ManifestPath, Rc<toml::Table>>,
+}
+
+impl ToMlReader {
+    fn new() -> Self {
+        Self {
+            cache: HashMap::new(),
+        }
+    }
+
+    fn read(&mut self, manifest: &ManifestPath) -> anyhow::Result<Rc<toml::Table>> {
+        if let Some(table) = self.cache.get(manifest) {
+            return Ok(table.clone());
+        }
+        let content = fs::read_to_string(manifest).map_err(|e| {
+            error!("failed to read {} ({e})", manifest.as_str());
+            e
+        })?;
+        let table = Rc::<toml::Table>::new(content.parse().map_err(|e| {
+            error!("failed to parse {} ({e})", manifest.as_str());
+            e
+        })?);
+        self.cache.insert(manifest.clone(), table.clone());
+        Ok(table)
+    }
+}
+
+fn find_workspace(
+    reader: &mut ToMlReader,
+    manifest: &ProjectManifest,
+) -> anyhow::Result<ProjectManifest> {
+    let ProjectManifest::CargoToml(cargo) = manifest else {
+        return Err(anyhow::anyhow!("{manifest} not a cargo manifest"));
+    };
+    let toml = reader.read(cargo)?;
+    if toml.contains_key("workspace") {
+        return Ok(manifest.clone());
+    }
+    let Some(parent_dir) = cargo.parent().parent() else {
+        return Err(anyhow::anyhow!("no parent dir for {cargo}"));
+    };
+    let discovered = ProjectManifest::discover(parent_dir)?;
+    discovered
+        .iter()
+        .filter_map(|it| match it {
+            ProjectManifest::CargoToml(other)
+                if cargo.starts_with(other.parent())
+                    && reader.read(other).is_ok_and(|it| {
+                        it.get("workspace")
+                            .and_then(|w| w.as_table())
+                            .and_then(|t| t.get("members"))
+                            .and_then(|ms| ms.as_array())
+                            .is_some_and(|ms| {
+                                ms.iter().any(|m| {
+                                    m.as_str()
+                                        .is_some_and(|s| other.parent().join(s) == cargo.parent())
+                                })
+                            })
+                    }) =>
+            {
+                debug!("found workspace {other} containing {cargo}");
+                Some(it.clone())
+            }
+            _ => None,
+        })
+        .next()
+        .ok_or(anyhow::anyhow!("no workspace found for {manifest}"))
+}
+
 pub fn find_project_manifests(
     files: &[PathBuf],
 ) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
@@ -136,7 +209,13 @@ pub fn find_project_manifests(
         .iter()
         .map(|path| AbsPathBuf::assert_utf8(current.join(path)))
         .collect();
-    let ret = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
+    let discovered = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
+    let mut ret = HashSet::new();
+    let mut reader = ToMlReader::new();
+    for manifest in discovered {
+        let workspace = find_workspace(&mut reader, &manifest).unwrap_or(manifest);
+        ret.insert(workspace);
+    }
     let iter = || ret.iter().map(|m| format!("  {m}"));
     const LOG_LIMIT: usize = 10;
     if ret.len() <= LOG_LIMIT {
@@ -152,8 +231,9 @@ pub fn find_project_manifests(
             iter().dropping(LOG_LIMIT).join("\n")
         );
     }
-    Ok(ret)
+    Ok(ret.into_iter().collect())
 }
+
 fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
     let mut iter = v.utf8_chunks();
     let (first_valid, first_invalid) = if let Some(chunk) = iter.next() {
