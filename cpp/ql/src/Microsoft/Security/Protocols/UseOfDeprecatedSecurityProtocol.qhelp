@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Older protocol versions of TLS are less secure than TLS 1.2 and TLS 1.3 and are more likely to have new vulnerabilities. Avoid older protocol versions to minimize risk.</p>
+<p>The <code>grbitEnabledProtocols</code> member of the <code>SCHANNEL_CRED</code> struct contains a bit string that represents the protocols supported by connections made with credentials acquired by using this structure. If this member is zero, Schannel selects the protocol. Applications should set <code>grbitEnabledProtocols</code> to zero and use the protocol versions enabled on the system by default.</p>
+</overview>
+
+<recommendation>
+<p> - Set the <code>grbitEnabledProtocols</code> member of the <code>SCHANNEL_CRED</code> struct to <code>0</code>.</p>
+</recommendation>
+
+<example>
+<p>Violation:</p>
+
+<sample src="examples/UseOfDeprecatedSecurityProtocol/UseOfDeprecatedSecurityProtocol1.cpp" />
+
+<p>Solution:</p>
+
+<sample src="examples/UseOfDeprecatedSecurityProtocol/UseOfDeprecatedSecurityProtocol2.cpp" />
+</example>
+
+<references>
+<li>Microsoft Docs: <a href="https://learn.microsoft.com/en-us/windows/win32/api/schannel/ns-schannel-schannel_cred">SCHANNEL_CRED structure</a>.</li>
+</references>
+
+</qhelp>
