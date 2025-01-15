@@ -2912,7 +2912,6 @@
 | Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:10:31:10:41 | $"..." | normal |
 | Patterns.cs:10:33:10:36 | "int " | Patterns.cs:10:33:10:36 | "int " | normal |
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:38:10:39 | access to local variable i1 | normal |
-| Patterns.cs:10:38:10:39 | call to method ToString | Patterns.cs:10:38:10:39 | call to method ToString | normal |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:14:13:14:45 | call to method WriteLine | normal |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:16:18:16:28 | ... is ... | false |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:17:9:18:9 | {...} | normal |
@@ -2961,7 +2960,6 @@
 | Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:25:35:25:50 | $"..." | normal |
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:37:25:45 | "positive " | normal |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:47:25:48 | access to local variable i2 | normal |
-| Patterns.cs:25:47:25:48 | call to method ToString | Patterns.cs:25:47:25:48 | call to method ToString | normal |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:26:17:26:22 | break; | break |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | no-match |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:28:17:28:46 | call to method WriteLine | normal |
@@ -2972,7 +2970,6 @@
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:35:28:45 | $"..." | normal |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:37:28:40 | "int " | normal |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:42:28:43 | access to local variable i3 | normal |
-| Patterns.cs:28:42:28:43 | call to method ToString | Patterns.cs:28:42:28:43 | call to method ToString | normal |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:29:17:29:22 | break; | break |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | no-match |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:31:17:31:49 | call to method WriteLine | normal |
