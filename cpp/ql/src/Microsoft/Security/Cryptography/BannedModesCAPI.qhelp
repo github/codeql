@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> Violation - Use of one of the following unsafe encryption modes that is not approved: ECB, OFB, CFB, CTR, CCM, or GCM.</p>
+<p> These modes are vulnerable to attacks and may cause exposure of sensitive information. For example, using <code> ECB </code> to encrypt a plaintext block always produces a same cipher text, so it can easily tell if two encrypted messages are identical. Using approved modes can avoid these unnecessary risks.</p>
+</overview>
+
+<recommendation>
+<p> - Use only approved modes CBC, CTS and XTS.</p>
+</recommendation>
+
+<example>
+<p>Violation:</p>
+
+<sample src="examples/BannedModesCAPI/BannedModesCAPI1.cpp" />
+
+<p>Solution:</p>
+
+<sample src="examples/BannedModesCAPI/BannedModesCAPI2.cpp" />
+</example>
+
+<references>
+<li>Microsoft Docs: <a href="https://learn.microsoft.com/en-us/security/engineering/cryptographic-recommendations">Microsoft SDL Cryptographic Recommendations</a>.</li>
+</references>
+
+</qhelp>
