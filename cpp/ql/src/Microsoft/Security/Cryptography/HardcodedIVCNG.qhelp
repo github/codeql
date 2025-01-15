@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>An initialization vector (IV) is an input to a cryptographic primitive being used to provide the initial state. The IV is typically required to be random or pseudorandom (randomized scheme), but sometimes an IV only needs to be unpredictable or unique (stateful scheme).</p>
+    <p>Randomization is crucial for some encryption schemes to achieve semantic security, a property whereby repeated usage of the scheme under the same key does not allow an attacker to infer relationships between (potentially similar) segments of the encrypted message.</p>
+  </overview>
+
+  <recommendation>
+    <p>All symmetric block ciphers must also be used with an appropriate initialization vector (IV) according to the mode of operation being used.</p>
+    <p>If using a randomized scheme such as CBC, it is recommended to use cryptographically secure pseudorandom number generator such as <code>BCryptGenRandom</code>.</p>
+  </recommendation>
+  
+  <references>
+    <li>
+      <a href="https://docs.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptencrypt">BCryptEncrypt function (bcrypt.h)</a>
+      <a href="https://docs.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom">BCryptGenRandom function (bcrypt.h)</a>
+      <a href="https://en.wikipedia.org/wiki/Initialization_vector">Initialization vector (Wikipedia)</a>
+    </li>
+  </references>
+
+</qhelp>
