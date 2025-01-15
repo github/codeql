@@ -208,7 +208,9 @@ func hasInvalidToolchainVersion(installedToolchainVersion util.SemVer, modFile *
 		// does not match the toolchain version format in Go 1.21 and Go 1.22.
 		// This is a problem if the installed Go toolchain is within that version range
 		// as it will try to use the language version as the toolchain version.
-		return installedToolchainVersion.IsAtLeast(toolchain.V1_21) && installedToolchainVersion.IsOlderThan(toolchain.V1_23)
+		return util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_21) &&
+			installedToolchainVersion.IsAtLeast(toolchain.V1_21) &&
+			installedToolchainVersion.IsOlderThan(toolchain.V1_23)
 	}
 	return false
 }
