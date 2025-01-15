@@ -573,9 +573,9 @@ def test_zip_set():
     
     z =  list(zip(s1,s2,s3,s4))
 
-    SINK(z[0][0])  #$ flow="SOURCE, l:-11 -> z[0][0]"
+    SINK(z[0][0])  #$ flow="SOURCE, l:-7 -> z[0][0]"
     SINK_F(z[0][1])
-    SINK(z[0][2]) #$ flow="SOURCE, l:-11 -> z[0][2]"
+    SINK(z[0][2]) #$ flow="SOURCE, l:-7 -> z[0][2]"
     SINK_F(z[0][3])
 
 @expects(8)
@@ -605,7 +605,7 @@ def test_zip_dict():
     
     z =  list(zip(d1,d2,d3,d4))
 
-    SINK(z[0][0])  #$ MISSING: flow="SOURCE, l:-11 -> z[0][0]"
+    SINK(z[0][0])  #$ MISSING: flow="SOURCE, l:-7 -> z[0][0]"
     SINK_F(z[0][1]) 
-    SINK(z[0][2]) #$ MISSING: flow="SOURCE, l:-11 -> z[0][2]"
+    SINK(z[0][2]) #$ MISSING: flow="SOURCE, l:-7 -> z[0][2]"
     SINK_F(z[0][3])
