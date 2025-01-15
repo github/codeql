@@ -291,6 +291,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * to `lambdaCall`, if any. That is, `lastCall` is able to target the enclosing
      * callable of `lambdaCall`.
      */
+    overlay[global]
     pragma[nomagic]
     predicate revLambdaFlow(
       Call lambdaCall, LambdaCallKind kind, Node node, Type t, boolean toReturn, boolean toJump,
