@@ -4610,7 +4610,7 @@ module StdlibPrivate {
     }
   }
 
-  /** A flow summary for ``zip`. */
+  /** A flow summary for `zip`. */
   class ZipSummary extends SummarizedCallable {
     ZipSummary() { this = "builtins.zip" }
 
