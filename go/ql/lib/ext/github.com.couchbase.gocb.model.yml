@@ -11,6 +11,32 @@ extensions:
       - ["gocb2", "github.com/couchbaselabs/gocb/v2"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:gocb1", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb1", "Cluster", True, "ExecuteN1qlQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb1", "Cluster", True, "ExecuteSearchQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Cluster", True, "AnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Cluster", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Scope", True, "AnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Scope", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "Get", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "GetAndLock", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "GetAndTouch", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "GetAnyReplica", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "LookupIn", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "LookupInAllReplicas", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "LookupInAnyReplica", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "Collection", True, "Scan", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionAttemptContext", True, "Get", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionAttemptContext", True, "GetReplicaFromPreferredServerGroup", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionAttemptContext", True, "Insert", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionAttemptContext", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionAttemptContext", True, "Replace", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "ViewIndexManager", True, "GetAllDesignDocuments", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "ViewIndexManager", True, "GetDesignDocument", "", "", "ReturnValue[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["group:gocb1", "Bucket", True, "ExecuteN1qlQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
@@ -73,29 +99,3 @@ extensions:
       - ["group:gocb2", "ViewResult", True, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb2", "ViewResult", True, "Row", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb2", "ViewResultRaw", True, "NextBytes", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
-  - addsTo:
-      pack: codeql/go-all
-      extensible: sourceModel
-    data:
-      - ["group:gocb1", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb1", "Cluster", True, "ExecuteN1qlQuery", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb1", "Cluster", True, "ExecuteSearchQuery", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Cluster", True, "AnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Cluster", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Scope", True, "AnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Scope", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "Get", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "GetAndLock", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "GetAndTouch", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "GetAnyReplica", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "LookupIn", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "LookupInAllReplicas", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "LookupInAnyReplica", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "Collection", True, "Scan", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "TransactionAttemptContext", True, "Get", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "TransactionAttemptContext", True, "GetReplicaFromPreferredServerGroup", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "TransactionAttemptContext", True, "Insert", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "TransactionAttemptContext", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "TransactionAttemptContext", True, "Replace", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "ViewIndexManager", True, "GetAllDesignDocuments", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:gocb2", "ViewIndexManager", True, "GetDesignDocument", "", "", "ReturnValue[0]", "database", "manual"]
