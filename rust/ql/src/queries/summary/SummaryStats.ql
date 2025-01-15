@@ -56,17 +56,17 @@ where
   or
   key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
   or
-  key = "Taint sources - total" and value = count(ThreatModelSource s)
-  or
   key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
+  or
+  key = "Taint sources - disabled" and value = count(ThreatModelSource s | not s instanceof ActiveThreatModelSource)
+  or
+  key = "Taint sources - sensitive data" and value = count(SensitiveData d)
   or
   key = "Taint edges - number of edges" and value = getTaintEdgesCount()
   or
   key = "Taint reach - nodes tainted" and value = getTaintedNodesCount()
   or
   key = "Taint reach - per million nodes" and value = getTaintReach().floor()
-  or
-  key = "Sensitive data" and value = count(SensitiveData d)
   or
   key = "Taint sinks - query sinks" and value = getQuerySinksCount()
   or
