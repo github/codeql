@@ -48,7 +48,7 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
   }
 
-  /** Gets the CFG scope of AST node `n`. */
+  /** Gets the CFG scope of the AST node `n`. */
   CfgScope getCfgScope(AstNode n);
 
   /** Holds if `first` is executed first when entering `scope`. */
@@ -77,6 +77,20 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t);
+
+  /**
+   * Gets an `id` of `node`. This is used to order the predecessors of a join
+   * basic block.
+   */
+  bindingset[node]
+  default predicate idOfAstNode(AstNode node, int id) { none() }
+
+  /**
+   * Gets an `id` of `scope`. This is used to order the predecessors of a join
+   * basic block.
+   */
+  bindingset[scope]
+  default predicate idOfCfgScope(CfgScope scope, int id) { none() }
 }
 
 /** Provides input needed for CFG splitting. */
@@ -1513,6 +1527,261 @@ module MakeWithSplitting<
 
     /** Holds if CFG scope `scope` lacks an initial AST node. */
     query predicate scopeNoFirst(CfgScope scope) { not scopeFirst(scope, _) }
+  }
+
+  /**
+   * Provides a basic block construction on top of the control flow graph.
+   */
+  module BasicBlocks {
+    private import codeql.controlflow.BasicBlock as BB
+
+    private class NodeAlias = Node;
+
+    private module BasicBlockInputSig implements BB::InputSig {
+      class SuccessorType = Input::SuccessorType;
+
+      predicate successorTypeIsCondition = Input::successorTypeIsCondition/1;
+
+      class Node = NodeAlias;
+
+      Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
+
+      predicate nodeIsEntry(Node node) { node instanceof EntryNode }
+
+      predicate nodeIsExit(Node node) { node.(AnnotatedExitNode).isNormal() }
+    }
+
+    private module BasicBlockImpl = BB::Make<BasicBlockInputSig>;
+
+    /**
+     * A basic block, that is, a maximal straight-line sequence of control flow nodes
+     * without branches or joins.
+     */
+    final class BasicBlock extends BasicBlockImpl::BasicBlock {
+      // We extend `BasicBlockImpl::BasicBlock` to add the `getScope` and
+      // `getLocation`.
+      /** Gets the scope of this basic block. */
+      CfgScope getScope() {
+        if this instanceof EntryBasicBlock
+        then result = this.getFirstNode().getScope()
+        else result = this.getAPredecessor().getScope()
+      }
+
+      /** Gets the location of this basic block. */
+      Location getLocation() { result = this.getFirstNode().getLocation() }
+
+      /** Gets an immediate successor of this basic block, if any. */
+      BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+      /** Gets an immediate successor of this basic block of a given type, if any. */
+      BasicBlock getASuccessor(SuccessorType t) {
+        result.getFirstNode() = this.getLastNode().getASuccessor(t)
+      }
+
+      /** Gets an immediate predecessor of this basic block, if any. */
+      BasicBlock getAPredecessor() { result.getASuccessor() = this }
+
+      /** Gets an immediate predecessor of this basic block of a given type, if any. */
+      BasicBlock getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
+
+      /**
+       * Holds if this basic block immediately dominates basic block `bb`.
+       *
+       * That is, `bb` is an immediate successor of this basic block and all
+       * paths reaching basic block `bb` from some entry point basic block must
+       * go through this basic block.
+       */
+      predicate immediatelyDominates(BasicBlock bb) { super.immediatelyDominates(bb) }
+
+      /**
+       * Holds if this basic block strictly dominates basic block `bb`.
+       *
+       * That is, all paths reaching `bb` from some entry point basic block must
+       * go through this basic block and this basic block is different from `bb`.
+       */
+      predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
+
+      /**
+       * Holds if this basic block dominates basic block `bb`.
+       *
+       * That is, all paths reaching `bb` from some entry point basic block must
+       * go through this basic block.
+       */
+      predicate dominates(BasicBlock bb) { super.dominates(bb) }
+
+      /**
+       * Holds if `df` is in the dominance frontier of this basic block. That is,
+       * this basic block dominates a predecessor of `df`, but does not dominate
+       * `df` itself.
+       */
+      predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+
+      /**
+       * Gets the basic block that immediately dominates this basic block, if any.
+       *
+       * That is, all paths reaching this basic block from some entry point
+       * basic block must go through the result, which is an immediate basic block
+       * predecessor of this basic block.
+       */
+      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+      /**
+       * Holds if this basic block strictly post-dominates basic block `bb`.
+       *
+       * That is, all paths reaching a normal exit point basic block from basic
+       * block `bb` must go through this basic block and this basic block is
+       * different from `bb`.
+       */
+      predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
+
+      /**
+       * Holds if this basic block post-dominates basic block `bb`.
+       *
+       * That is, all paths reaching a normal exit point basic block from basic
+       * block `bb` must go through this basic block.
+       */
+      predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
+    }
+
+    /**
+     * An entry basic block, that is, a basic block whose first node is
+     * an entry node.
+     */
+    final class EntryBasicBlock extends BasicBlock {
+      EntryBasicBlock() { this.getFirstNode() instanceof EntryNode }
+    }
+
+    /**
+     * An annotated exit basic block, that is, a basic block that contains an
+     * annotated exit node.
+     */
+    final class AnnotatedExitBasicBlock extends BasicBlock {
+      private boolean normal;
+
+      AnnotatedExitBasicBlock() {
+        exists(AnnotatedExitNode n |
+          n = this.getANode() and
+          if n.isNormal() then normal = true else normal = false
+        )
+      }
+
+      /** Holds if this block represent a normal exit. */
+      final predicate isNormal() { normal = true }
+    }
+
+    /**
+     * An exit basic block, that is, a basic block whose last node is
+     * an exit node.
+     */
+    final class ExitBasicBlock extends BasicBlock {
+      ExitBasicBlock() { this.getLastNode() instanceof ExitNode }
+    }
+
+    private module JoinBlockPredecessors {
+      int getId(JoinPredecessorBasicBlock jbp) {
+        idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode(), result)
+        or
+        idOfCfgScope(jbp.(EntryBasicBlock).getScope(), result)
+      }
+
+      string getSplitString(JoinPredecessorBasicBlock jbp) {
+        result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
+        or
+        not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
+        result = ""
+      }
+    }
+
+    /**
+     * Gets the `i`th predecessor of join block `jb`, with respect to some
+     * arbitrary order.
+     */
+    cached
+    JoinPredecessorBasicBlock getJoinBlockPredecessor(JoinBasicBlock jb, int i) {
+      result =
+        rank[i + 1](JoinPredecessorBasicBlock jbp |
+          jbp = jb.getAPredecessor()
+        |
+          jbp order by JoinBlockPredecessors::getId(jbp), JoinBlockPredecessors::getSplitString(jbp)
+        )
+    }
+
+    /** A basic block with more than one predecessor. */
+    final class JoinBasicBlock extends BasicBlock {
+      JoinBasicBlock() { this.getFirstNode().isJoin() }
+
+      /**
+       * Gets the `i`th predecessor of this join block, with respect to some
+       * arbitrary order.
+       */
+      JoinPredecessorBasicBlock getJoinBlockPredecessor(int i) {
+        result = getJoinBlockPredecessor(this, i)
+      }
+    }
+
+    /** A basic block that is an immediate predecessor of a join block. */
+    final class JoinPredecessorBasicBlock extends BasicBlock {
+      JoinPredecessorBasicBlock() { this.getASuccessor() instanceof JoinBasicBlock }
+    }
+
+    /** A basic block that terminates in a condition, splitting the subsequent control flow. */
+    final class ConditionBasicBlock extends BasicBlock {
+      ConditionBasicBlock() { this.getLastNode().isCondition() }
+
+      /**
+       * Holds if basic block `succ` is immediately controlled by this basic
+       * block with conditional value `s`. That is, `succ` is an immediate
+       * successor of this block, and `succ` can only be reached from
+       * the callable entry point by going via the `s` edge out of this basic block.
+       */
+      pragma[nomagic]
+      predicate immediatelyControls(BasicBlock succ, SuccessorType s) {
+        succ = this.getASuccessor(s) and
+        forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this |
+          succ.dominates(pred)
+        )
+      }
+
+      /**
+       * Holds if basic block `controlled` is controlled by this basic block with
+       * conditional value `s`. That is, `controlled` can only be reached from
+       * the callable entry point by going via the `s` edge out of this basic block.
+       */
+      predicate controls(BasicBlock controlled, SuccessorType s) {
+        // For this block to control the block `controlled` with `testIsTrue` the following must be true:
+        // 1/ Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
+        // 2/ Execution must have passed through the `testIsTrue` edge leaving `this`.
+        //
+        // Although "passed through the true edge" implies that `this.getATrueSuccessor()` dominates `controlled`,
+        // the reverse is not true, as flow may have passed through another edge to get to `this.getATrueSuccessor()`
+        // so we need to assert that `this.getATrueSuccessor()` dominates `controlled` *and* that
+        // all predecessors of `this.getATrueSuccessor()` are either `this` or dominated by `this.getATrueSuccessor()`.
+        //
+        // For example, in the following C# snippet:
+        // ```csharp
+        // if (x)
+        //   controlled;
+        // false_successor;
+        // uncontrolled;
+        // ```
+        // `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
+        //  or dominated by itself. Whereas in the following code:
+        // ```csharp
+        // if (x)
+        //   while (controlled)
+        //     also_controlled;
+        // false_successor;
+        // uncontrolled;
+        // ```
+        // the block `while controlled` is controlled because all of its predecessors are `this` (`if (x)`)
+        // or (in the case of `also_controlled`) dominated by itself.
+        //
+        // The additional constraint on the predecessors of the test successor implies
+        // that `this` strictly dominates `controlled` so that isn't necessary to check
+        // directly.
+        exists(BasicBlock succ | this.immediatelyControls(succ, s) | succ.dominates(controlled))
+      }
+    }
   }
 }
 

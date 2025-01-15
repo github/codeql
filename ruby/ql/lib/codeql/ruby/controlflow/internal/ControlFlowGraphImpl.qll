@@ -60,6 +60,14 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof Cfg::SuccessorTypes::RaiseSuccessor or
     t instanceof Cfg::SuccessorTypes::ExitSuccessor
   }
+
+  private predicate id(Ruby::AstNode node1, Ruby::AstNode node2) { node1 = node2 }
+
+  private predicate idOf(Ruby::AstNode node, int id) = equivalenceRelation(id/2)(node, id)
+
+  predicate idOfAstNode(AstNode node, int id) { idOf(AstInternal::toGeneratedInclSynth(node), id) }
+
+  predicate idOfCfgScope(CfgScope node, int id) { idOfAstNode(node, id) }
 }
 
 private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {

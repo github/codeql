@@ -184,9 +184,13 @@ dominates
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:39:153:48 | [boolean(false)] { ... } |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:39:153:48 | [boolean(true)] { ... } |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:41:153:41 | a |
+| test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:154:13:154:13 | 1 |
+| test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:156:13:156:13 | 0 |
 | test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:153:9:157:9 | if ... {...} else {...} |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} |
+| test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:156:13:156:13 | 0 |
 | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} |
+| test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | test.rs:154:13:154:13 | 1 |
 | test.rs:153:22:153:32 | [boolean(false)] { ... } | test.rs:153:22:153:32 | [boolean(false)] { ... } |
 | test.rs:153:22:153:32 | [boolean(true)] { ... } | test.rs:153:22:153:32 | [boolean(true)] { ... } |
 | test.rs:153:24:153:24 | a | test.rs:153:22:153:32 | [boolean(false)] { ... } |
@@ -197,27 +201,55 @@ dominates
 | test.rs:153:41:153:41 | a | test.rs:153:39:153:48 | [boolean(false)] { ... } |
 | test.rs:153:41:153:41 | a | test.rs:153:39:153:48 | [boolean(true)] { ... } |
 | test.rs:153:41:153:41 | a | test.rs:153:41:153:41 | a |
+| test.rs:154:13:154:13 | 1 | test.rs:154:13:154:13 | 1 |
+| test.rs:156:13:156:13 | 0 | test.rs:156:13:156:13 | 0 |
 | test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:160:5:169:5 | enter fn test_nested_if_match |
 | test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:161:9:168:9 | if ... {...} else {...} |
+| test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
+| test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
 | test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:162:18:162:21 | true |
 | test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:163:13:163:13 | _ |
+| test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:165:13:165:13 | 1 |
+| test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:167:13:167:13 | 0 |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:161:9:168:9 | if ... {...} else {...} |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:167:13:167:13 | 0 |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:165:13:165:13 | 1 |
+| test.rs:162:18:162:21 | true | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
 | test.rs:162:18:162:21 | true | test.rs:162:18:162:21 | true |
+| test.rs:162:18:162:21 | true | test.rs:165:13:165:13 | 1 |
+| test.rs:163:13:163:13 | _ | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
 | test.rs:163:13:163:13 | _ | test.rs:163:13:163:13 | _ |
+| test.rs:163:13:163:13 | _ | test.rs:167:13:167:13 | 0 |
+| test.rs:165:13:165:13 | 1 | test.rs:165:13:165:13 | 1 |
+| test.rs:167:13:167:13 | 0 | test.rs:167:13:167:13 | 0 |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:171:5:180:5 | enter fn test_nested_if_block |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:9:179:9 | if ... {...} else {...} |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:12:175:9 | [boolean(false)] { ... } |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:12:175:9 | [boolean(true)] { ... } |
+| test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:176:13:176:13 | 1 |
+| test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:178:13:178:13 | 0 |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:172:9:179:9 | if ... {...} else {...} |
 | test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:172:12:175:9 | [boolean(false)] { ... } |
+| test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:178:13:178:13 | 0 |
 | test.rs:172:12:175:9 | [boolean(true)] { ... } | test.rs:172:12:175:9 | [boolean(true)] { ... } |
+| test.rs:172:12:175:9 | [boolean(true)] { ... } | test.rs:176:13:176:13 | 1 |
+| test.rs:176:13:176:13 | 1 | test.rs:176:13:176:13 | 1 |
+| test.rs:178:13:178:13 | 0 | test.rs:178:13:178:13 | 0 |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:182:5:192:5 | enter fn test_if_assignment |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:9:191:9 | if ... {...} else {...} |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:12:187:9 | [boolean(false)] { ... } |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:12:187:9 | [boolean(true)] { ... } |
+| test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:188:13:188:13 | 1 |
+| test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:190:13:190:13 | 0 |
 | test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:184:9:191:9 | if ... {...} else {...} |
 | test.rs:184:12:187:9 | [boolean(false)] { ... } | test.rs:184:12:187:9 | [boolean(false)] { ... } |
+| test.rs:184:12:187:9 | [boolean(false)] { ... } | test.rs:190:13:190:13 | 0 |
 | test.rs:184:12:187:9 | [boolean(true)] { ... } | test.rs:184:12:187:9 | [boolean(true)] { ... } |
+| test.rs:184:12:187:9 | [boolean(true)] { ... } | test.rs:188:13:188:13 | 1 |
+| test.rs:188:13:188:13 | 1 | test.rs:188:13:188:13 | 1 |
+| test.rs:190:13:190:13 | 0 | test.rs:190:13:190:13 | 0 |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:194:5:205:5 | enter fn test_if_loop1 |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:195:9:204:9 | if ... {...} else {...} |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:196:13:198:13 | if ... {...} |
@@ -225,6 +257,8 @@ dominates
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:197:17:197:28 | [boolean(false)] break ... |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:197:17:197:28 | [boolean(true)] break ... |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:197:17:197:29 | ExprStmt |
+| test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:201:13:201:13 | 1 |
+| test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:203:13:203:13 | 0 |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:195:9:204:9 | if ... {...} else {...} |
 | test.rs:196:13:198:13 | if ... {...} | test.rs:196:13:198:13 | if ... {...} |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:195:9:204:9 | if ... {...} else {...} |
@@ -233,12 +267,20 @@ dominates
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:28 | [boolean(false)] break ... |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:28 | [boolean(true)] break ... |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:29 | ExprStmt |
+| test.rs:196:13:198:14 | ExprStmt | test.rs:201:13:201:13 | 1 |
+| test.rs:196:13:198:14 | ExprStmt | test.rs:203:13:203:13 | 0 |
 | test.rs:197:17:197:28 | [boolean(false)] break ... | test.rs:197:17:197:28 | [boolean(false)] break ... |
+| test.rs:197:17:197:28 | [boolean(false)] break ... | test.rs:203:13:203:13 | 0 |
 | test.rs:197:17:197:28 | [boolean(true)] break ... | test.rs:197:17:197:28 | [boolean(true)] break ... |
+| test.rs:197:17:197:28 | [boolean(true)] break ... | test.rs:201:13:201:13 | 1 |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:195:9:204:9 | if ... {...} else {...} |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:28 | [boolean(false)] break ... |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:28 | [boolean(true)] break ... |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:29 | ExprStmt |
+| test.rs:197:17:197:29 | ExprStmt | test.rs:201:13:201:13 | 1 |
+| test.rs:197:17:197:29 | ExprStmt | test.rs:203:13:203:13 | 0 |
+| test.rs:201:13:201:13 | 1 | test.rs:201:13:201:13 | 1 |
+| test.rs:203:13:203:13 | 0 | test.rs:203:13:203:13 | 0 |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:207:5:218:5 | enter fn test_if_loop2 |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:208:9:217:9 | if ... {...} else {...} |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:209:13:211:13 | if ... {...} |
@@ -246,6 +288,8 @@ dominates
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:210:17:210:36 | ExprStmt |
+| test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:214:13:214:13 | 1 |
+| test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:216:13:216:13 | 0 |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:208:9:217:9 | if ... {...} else {...} |
 | test.rs:209:13:211:13 | if ... {...} | test.rs:209:13:211:13 | if ... {...} |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:208:9:217:9 | if ... {...} else {...} |
@@ -254,49 +298,75 @@ dominates
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:36 | ExprStmt |
+| test.rs:209:13:211:14 | ExprStmt | test.rs:214:13:214:13 | 1 |
+| test.rs:209:13:211:14 | ExprStmt | test.rs:216:13:216:13 | 0 |
 | test.rs:210:17:210:35 | [boolean(false)] break ''label ... | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
+| test.rs:210:17:210:35 | [boolean(false)] break ''label ... | test.rs:216:13:216:13 | 0 |
 | test.rs:210:17:210:35 | [boolean(true)] break ''label ... | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
+| test.rs:210:17:210:35 | [boolean(true)] break ''label ... | test.rs:214:13:214:13 | 1 |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:208:9:217:9 | if ... {...} else {...} |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:36 | ExprStmt |
+| test.rs:210:17:210:36 | ExprStmt | test.rs:214:13:214:13 | 1 |
+| test.rs:210:17:210:36 | ExprStmt | test.rs:216:13:216:13 | 0 |
+| test.rs:214:13:214:13 | 1 | test.rs:214:13:214:13 | 1 |
+| test.rs:216:13:216:13 | 0 | test.rs:216:13:216:13 | 0 |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:220:5:228:5 | enter fn test_labelled_block |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:221:9:227:9 | if ... {...} else {...} |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:222:13:222:30 | [boolean(false)] break ''block ... |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:222:13:222:30 | [boolean(true)] break ''block ... |
+| test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:224:13:224:13 | 1 |
+| test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:226:13:226:13 | 0 |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:221:9:227:9 | if ... {...} else {...} |
 | test.rs:222:13:222:30 | [boolean(false)] break ''block ... | test.rs:222:13:222:30 | [boolean(false)] break ''block ... |
+| test.rs:222:13:222:30 | [boolean(false)] break ''block ... | test.rs:226:13:226:13 | 0 |
 | test.rs:222:13:222:30 | [boolean(true)] break ''block ... | test.rs:222:13:222:30 | [boolean(true)] break ''block ... |
+| test.rs:222:13:222:30 | [boolean(true)] break ''block ... | test.rs:224:13:224:13 | 1 |
+| test.rs:224:13:224:13 | 1 | test.rs:224:13:224:13 | 1 |
+| test.rs:226:13:226:13 | 0 | test.rs:226:13:226:13 | 0 |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:233:5:236:5 | enter fn test_and_operator |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:17:234:22 | [boolean(false)] ... && ... |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:17:234:27 | ... && ... |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:22:234:22 | b |
+| test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:27:234:27 | c |
 | test.rs:234:17:234:22 | [boolean(false)] ... && ... | test.rs:234:17:234:22 | [boolean(false)] ... && ... |
 | test.rs:234:17:234:22 | [boolean(true)] ... && ... | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
+| test.rs:234:17:234:22 | [boolean(true)] ... && ... | test.rs:234:27:234:27 | c |
 | test.rs:234:17:234:27 | ... && ... | test.rs:234:17:234:27 | ... && ... |
 | test.rs:234:22:234:22 | b | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
 | test.rs:234:22:234:22 | b | test.rs:234:22:234:22 | b |
+| test.rs:234:22:234:22 | b | test.rs:234:27:234:27 | c |
+| test.rs:234:27:234:27 | c | test.rs:234:27:234:27 | c |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:238:5:241:5 | enter fn test_or_operator |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:17:239:27 | ... \|\| ... |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:22:239:22 | b |
+| test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:27:239:27 | c |
 | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... |
+| test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | test.rs:239:27:239:27 | c |
 | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... |
 | test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:17:239:27 | ... \|\| ... |
 | test.rs:239:22:239:22 | b | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... |
 | test.rs:239:22:239:22 | b | test.rs:239:22:239:22 | b |
+| test.rs:239:22:239:22 | b | test.rs:239:27:239:27 | c |
+| test.rs:239:27:239:27 | c | test.rs:239:27:239:27 | c |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:243:5:246:5 | enter fn test_or_operator_2 |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:17:244:35 | ... \|\| ... |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:23:244:23 | b |
+| test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:35:244:35 | c |
 | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... |
+| test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | test.rs:244:35:244:35 | c |
 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... |
 | test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:17:244:35 | ... \|\| ... |
 | test.rs:244:23:244:23 | b | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... |
 | test.rs:244:23:244:23 | b | test.rs:244:23:244:23 | b |
+| test.rs:244:23:244:23 | b | test.rs:244:35:244:35 | c |
+| test.rs:244:35:244:35 | c | test.rs:244:35:244:35 | c |
 | test.rs:248:5:251:5 | enter fn test_not_operator | test.rs:248:5:251:5 | enter fn test_not_operator |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:253:5:259:5 | enter fn test_if_and_operator |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:9:258:9 | if ... {...} else {...} |
@@ -305,15 +375,29 @@ dominates
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:12:254:22 | [boolean(false)] ... && ... |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:17:254:17 | b |
+| test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:22:254:22 | c |
+| test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:255:13:255:16 | true |
+| test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:257:13:257:17 | false |
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:9:258:9 | if ... {...} else {...} |
 | test.rs:254:12:254:17 | [boolean(false)] ... && ... | test.rs:254:12:254:17 | [boolean(false)] ... && ... |
 | test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:12:254:17 | [boolean(true)] ... && ... |
 | test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
+| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:22:254:22 | c |
+| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:255:13:255:16 | true |
 | test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:254:12:254:22 | [boolean(false)] ... && ... |
+| test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:257:13:257:17 | false |
 | test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
+| test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:255:13:255:16 | true |
 | test.rs:254:17:254:17 | b | test.rs:254:12:254:17 | [boolean(true)] ... && ... |
 | test.rs:254:17:254:17 | b | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
 | test.rs:254:17:254:17 | b | test.rs:254:17:254:17 | b |
+| test.rs:254:17:254:17 | b | test.rs:254:22:254:22 | c |
+| test.rs:254:17:254:17 | b | test.rs:255:13:255:16 | true |
+| test.rs:254:22:254:22 | c | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
+| test.rs:254:22:254:22 | c | test.rs:254:22:254:22 | c |
+| test.rs:254:22:254:22 | c | test.rs:255:13:255:16 | true |
+| test.rs:255:13:255:16 | true | test.rs:255:13:255:16 | true |
+| test.rs:257:13:257:17 | false | test.rs:257:13:257:17 | false |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:261:5:267:5 | enter fn test_if_or_operator |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:9:266:9 | if ... {...} else {...} |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
@@ -321,22 +405,42 @@ dominates
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:17:262:17 | b |
+| test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:22:262:22 | c |
+| test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:263:13:263:16 | true |
+| test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:265:13:265:17 | false |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:9:266:9 | if ... {...} else {...} |
 | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
 | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
+| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:22:262:22 | c |
+| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:265:13:265:17 | false |
 | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... |
 | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
+| test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:265:13:265:17 | false |
 | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... |
+| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:263:13:263:16 | true |
 | test.rs:262:17:262:17 | b | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
 | test.rs:262:17:262:17 | b | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
 | test.rs:262:17:262:17 | b | test.rs:262:17:262:17 | b |
+| test.rs:262:17:262:17 | b | test.rs:262:22:262:22 | c |
+| test.rs:262:17:262:17 | b | test.rs:265:13:265:17 | false |
+| test.rs:262:22:262:22 | c | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
+| test.rs:262:22:262:22 | c | test.rs:262:22:262:22 | c |
+| test.rs:262:22:262:22 | c | test.rs:265:13:265:17 | false |
+| test.rs:263:13:263:16 | true | test.rs:263:13:263:16 | true |
+| test.rs:265:13:265:17 | false | test.rs:265:13:265:17 | false |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:269:5:275:5 | enter fn test_if_not_operator |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:9:274:9 | if ... {...} else {...} |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:12:270:13 | [boolean(false)] ! ... |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:12:270:13 | [boolean(true)] ! ... |
+| test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:271:13:271:16 | true |
+| test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:273:13:273:17 | false |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:270:9:274:9 | if ... {...} else {...} |
 | test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:270:12:270:13 | [boolean(false)] ! ... |
+| test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:273:13:273:17 | false |
 | test.rs:270:12:270:13 | [boolean(true)] ! ... | test.rs:270:12:270:13 | [boolean(true)] ! ... |
+| test.rs:270:12:270:13 | [boolean(true)] ! ... | test.rs:271:13:271:16 | true |
+| test.rs:271:13:271:16 | true | test.rs:271:13:271:16 | true |
+| test.rs:273:13:273:17 | false | test.rs:273:13:273:17 | false |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:277:5:279:5 | enter fn test_and_return |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:277:5:279:5 | exit fn test_and_return (normal) |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:278:9:278:19 | ... && ... |
@@ -346,11 +450,21 @@ dominates
 | test.rs:278:14:278:19 | return | test.rs:278:14:278:19 | return |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:281:5:286:5 | enter fn test_and_true |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:281:5:286:5 | exit fn test_and_true (normal) |
+| test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:9:284:9 | if ... {...} |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:13:282:21 | [boolean(false)] ... && ... |
+| test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:18:282:21 | true |
+| test.rs:281:5:286:5 | enter fn test_and_true | test.rs:283:13:283:21 | ExprStmt |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:281:5:286:5 | exit fn test_and_true (normal) |
+| test.rs:282:9:284:9 | if ... {...} | test.rs:282:9:284:9 | if ... {...} |
+| test.rs:282:13:282:21 | [boolean(false)] ... && ... | test.rs:282:9:284:9 | if ... {...} |
 | test.rs:282:13:282:21 | [boolean(false)] ... && ... | test.rs:282:13:282:21 | [boolean(false)] ... && ... |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:283:13:283:21 | ExprStmt |
+| test.rs:282:18:282:21 | true | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
 | test.rs:282:18:282:21 | true | test.rs:282:18:282:21 | true |
+| test.rs:282:18:282:21 | true | test.rs:283:13:283:21 | ExprStmt |
+| test.rs:283:13:283:21 | ExprStmt | test.rs:283:13:283:21 | ExprStmt |
 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 |
 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) |
 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 | test.rs:293:32:293:32 | 4 |
@@ -408,12 +522,16 @@ dominates
 | test.rs:326:5:331:5 | enter fn test_match_and | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
 | test.rs:326:5:331:5 | enter fn test_match_and | test.rs:328:18:328:18 | a |
 | test.rs:326:5:331:5 | enter fn test_match_and | test.rs:329:13:329:13 | _ |
+| test.rs:326:5:331:5 | enter fn test_match_and | test.rs:330:15:330:18 | cond |
 | test.rs:327:9:330:18 | ... && ... | test.rs:327:9:330:18 | ... && ... |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:327:10:330:9 | [boolean(false)] match r { ... } |
 | test.rs:327:10:330:9 | [boolean(true)] match r { ... } | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
+| test.rs:327:10:330:9 | [boolean(true)] match r { ... } | test.rs:330:15:330:18 | cond |
 | test.rs:328:18:328:18 | a | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
 | test.rs:328:18:328:18 | a | test.rs:328:18:328:18 | a |
+| test.rs:328:18:328:18 | a | test.rs:330:15:330:18 | cond |
 | test.rs:329:13:329:13 | _ | test.rs:329:13:329:13 | _ |
+| test.rs:330:15:330:18 | cond | test.rs:330:15:330:18 | cond |
 | test.rs:333:5:338:5 | enter fn test_match_with_no_arms | test.rs:333:5:338:5 | enter fn test_match_with_no_arms |
 | test.rs:333:5:338:5 | enter fn test_match_with_no_arms | test.rs:334:9:337:9 | match r { ... } |
 | test.rs:333:5:338:5 | enter fn test_match_with_no_arms | test.rs:335:16:335:20 | value |
@@ -490,16 +608,23 @@ dominates
 | test.rs:411:17:411:41 | ExprStmt | test.rs:411:17:411:41 | ExprStmt |
 | test.rs:421:5:423:5 | enter fn add_two | test.rs:421:5:423:5 | enter fn add_two |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:427:5:435:5 | enter fn const_block_assert |
+| test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:13:431:49 | ExprStmt |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | [boolean(false)] ! ... |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | [boolean(true)] ! ... |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | if ... {...} |
+| test.rs:431:13:431:49 | ExprStmt | test.rs:431:13:431:49 | ExprStmt |
 | test.rs:431:13:431:49 | enter fn panic_cold_explicit | test.rs:431:13:431:49 | enter fn panic_cold_explicit |
 | test.rs:431:21:431:48 | [boolean(false)] ! ... | test.rs:431:21:431:48 | [boolean(false)] ! ... |
+| test.rs:431:21:431:48 | [boolean(true)] ! ... | test.rs:431:13:431:49 | ExprStmt |
 | test.rs:431:21:431:48 | [boolean(true)] ! ... | test.rs:431:21:431:48 | [boolean(true)] ! ... |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:431:21:431:48 | if ... {...} |
 | test.rs:437:5:446:5 | enter fn const_block_panic | test.rs:437:5:446:5 | enter fn const_block_panic |
+| test.rs:437:5:446:5 | enter fn const_block_panic | test.rs:439:9:444:9 | if false {...} |
+| test.rs:439:9:444:9 | if false {...} | test.rs:439:9:444:9 | if false {...} |
 | test.rs:442:17:442:24 | enter fn panic_cold_explicit | test.rs:442:17:442:24 | enter fn panic_cold_explicit |
 | test.rs:449:1:454:1 | enter fn dead_code | test.rs:449:1:454:1 | enter fn dead_code |
+| test.rs:449:1:454:1 | enter fn dead_code | test.rs:451:9:451:17 | ExprStmt |
+| test.rs:451:9:451:17 | ExprStmt | test.rs:451:9:451:17 | ExprStmt |
 | test.rs:456:1:456:16 | enter fn do_thing | test.rs:456:1:456:16 | enter fn do_thing |
 | test.rs:458:1:460:1 | enter fn condition_not_met | test.rs:458:1:460:1 | enter fn condition_not_met |
 | test.rs:462:1:462:21 | enter fn do_next_thing | test.rs:462:1:462:21 | enter fn do_next_thing |
@@ -671,6 +796,8 @@ postDominance
 | test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:153:39:153:48 | [boolean(false)] { ... } |
 | test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:153:39:153:48 | [boolean(true)] { ... } |
 | test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:153:41:153:41 | a |
+| test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:154:13:154:13 | 1 |
+| test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:156:13:156:13 | 0 |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:153:22:153:32 | [boolean(false)] { ... } |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:153:39:153:48 | [boolean(false)] { ... } |
@@ -683,27 +810,61 @@ postDominance
 | test.rs:153:39:153:48 | [boolean(false)] { ... } | test.rs:153:39:153:48 | [boolean(false)] { ... } |
 | test.rs:153:39:153:48 | [boolean(true)] { ... } | test.rs:153:39:153:48 | [boolean(true)] { ... } |
 | test.rs:153:41:153:41 | a | test.rs:153:41:153:41 | a |
+| test.rs:154:13:154:13 | 1 | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} |
+| test.rs:154:13:154:13 | 1 | test.rs:153:22:153:32 | [boolean(true)] { ... } |
+| test.rs:154:13:154:13 | 1 | test.rs:153:39:153:48 | [boolean(true)] { ... } |
+| test.rs:154:13:154:13 | 1 | test.rs:154:13:154:13 | 1 |
+| test.rs:156:13:156:13 | 0 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} |
+| test.rs:156:13:156:13 | 0 | test.rs:153:22:153:32 | [boolean(false)] { ... } |
+| test.rs:156:13:156:13 | 0 | test.rs:153:39:153:48 | [boolean(false)] { ... } |
+| test.rs:156:13:156:13 | 0 | test.rs:156:13:156:13 | 0 |
 | test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:160:5:169:5 | enter fn test_nested_if_match |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:160:5:169:5 | enter fn test_nested_if_match |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:161:9:168:9 | if ... {...} else {...} |
+| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
+| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:162:18:162:21 | true |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:163:13:163:13 | _ |
+| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:165:13:165:13 | 1 |
+| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:167:13:167:13 | 0 |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:163:13:163:13 | _ |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:162:18:162:21 | true |
 | test.rs:162:18:162:21 | true | test.rs:162:18:162:21 | true |
 | test.rs:163:13:163:13 | _ | test.rs:163:13:163:13 | _ |
+| test.rs:165:13:165:13 | 1 | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
+| test.rs:165:13:165:13 | 1 | test.rs:162:18:162:21 | true |
+| test.rs:165:13:165:13 | 1 | test.rs:165:13:165:13 | 1 |
+| test.rs:167:13:167:13 | 0 | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
+| test.rs:167:13:167:13 | 0 | test.rs:163:13:163:13 | _ |
+| test.rs:167:13:167:13 | 0 | test.rs:167:13:167:13 | 0 |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:171:5:180:5 | enter fn test_nested_if_block |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:171:5:180:5 | enter fn test_nested_if_block |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:172:9:179:9 | if ... {...} else {...} |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:172:12:175:9 | [boolean(false)] { ... } |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:172:12:175:9 | [boolean(true)] { ... } |
+| test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:176:13:176:13 | 1 |
+| test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:178:13:178:13 | 0 |
 | test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:172:12:175:9 | [boolean(false)] { ... } |
 | test.rs:172:12:175:9 | [boolean(true)] { ... } | test.rs:172:12:175:9 | [boolean(true)] { ... } |
+| test.rs:176:13:176:13 | 1 | test.rs:172:12:175:9 | [boolean(true)] { ... } |
+| test.rs:176:13:176:13 | 1 | test.rs:176:13:176:13 | 1 |
+| test.rs:178:13:178:13 | 0 | test.rs:172:12:175:9 | [boolean(false)] { ... } |
+| test.rs:178:13:178:13 | 0 | test.rs:178:13:178:13 | 0 |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:182:5:192:5 | enter fn test_if_assignment |
 | test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:182:5:192:5 | enter fn test_if_assignment |
 | test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:184:9:191:9 | if ... {...} else {...} |
 | test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:184:12:187:9 | [boolean(false)] { ... } |
 | test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:184:12:187:9 | [boolean(true)] { ... } |
+| test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:188:13:188:13 | 1 |
+| test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:190:13:190:13 | 0 |
 | test.rs:184:12:187:9 | [boolean(false)] { ... } | test.rs:184:12:187:9 | [boolean(false)] { ... } |
 | test.rs:184:12:187:9 | [boolean(true)] { ... } | test.rs:184:12:187:9 | [boolean(true)] { ... } |
+| test.rs:188:13:188:13 | 1 | test.rs:184:12:187:9 | [boolean(true)] { ... } |
+| test.rs:188:13:188:13 | 1 | test.rs:188:13:188:13 | 1 |
+| test.rs:190:13:190:13 | 0 | test.rs:184:12:187:9 | [boolean(false)] { ... } |
+| test.rs:190:13:190:13 | 0 | test.rs:190:13:190:13 | 0 |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:194:5:205:5 | enter fn test_if_loop1 |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:194:5:205:5 | enter fn test_if_loop1 |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:195:9:204:9 | if ... {...} else {...} |
@@ -712,6 +873,8 @@ postDominance
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:197:17:197:28 | [boolean(false)] break ... |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:197:17:197:28 | [boolean(true)] break ... |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:197:17:197:29 | ExprStmt |
+| test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:201:13:201:13 | 1 |
+| test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:203:13:203:13 | 0 |
 | test.rs:196:13:198:13 | if ... {...} | test.rs:196:13:198:13 | if ... {...} |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:194:5:205:5 | enter fn test_if_loop1 |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:196:13:198:13 | if ... {...} |
@@ -722,6 +885,10 @@ postDominance
 | test.rs:197:17:197:29 | ExprStmt | test.rs:196:13:198:13 | if ... {...} |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:196:13:198:14 | ExprStmt |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:29 | ExprStmt |
+| test.rs:201:13:201:13 | 1 | test.rs:197:17:197:28 | [boolean(true)] break ... |
+| test.rs:201:13:201:13 | 1 | test.rs:201:13:201:13 | 1 |
+| test.rs:203:13:203:13 | 0 | test.rs:197:17:197:28 | [boolean(false)] break ... |
+| test.rs:203:13:203:13 | 0 | test.rs:203:13:203:13 | 0 |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:207:5:218:5 | enter fn test_if_loop2 |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:207:5:218:5 | enter fn test_if_loop2 |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:208:9:217:9 | if ... {...} else {...} |
@@ -730,6 +897,8 @@ postDominance
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:210:17:210:36 | ExprStmt |
+| test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:214:13:214:13 | 1 |
+| test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:216:13:216:13 | 0 |
 | test.rs:209:13:211:13 | if ... {...} | test.rs:209:13:211:13 | if ... {...} |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:207:5:218:5 | enter fn test_if_loop2 |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:209:13:211:13 | if ... {...} |
@@ -740,13 +909,23 @@ postDominance
 | test.rs:210:17:210:36 | ExprStmt | test.rs:209:13:211:13 | if ... {...} |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:209:13:211:14 | ExprStmt |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:36 | ExprStmt |
+| test.rs:214:13:214:13 | 1 | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
+| test.rs:214:13:214:13 | 1 | test.rs:214:13:214:13 | 1 |
+| test.rs:216:13:216:13 | 0 | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
+| test.rs:216:13:216:13 | 0 | test.rs:216:13:216:13 | 0 |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:220:5:228:5 | enter fn test_labelled_block |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:220:5:228:5 | enter fn test_labelled_block |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:221:9:227:9 | if ... {...} else {...} |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:222:13:222:30 | [boolean(false)] break ''block ... |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:222:13:222:30 | [boolean(true)] break ''block ... |
+| test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:224:13:224:13 | 1 |
+| test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:226:13:226:13 | 0 |
 | test.rs:222:13:222:30 | [boolean(false)] break ''block ... | test.rs:222:13:222:30 | [boolean(false)] break ''block ... |
 | test.rs:222:13:222:30 | [boolean(true)] break ''block ... | test.rs:222:13:222:30 | [boolean(true)] break ''block ... |
+| test.rs:224:13:224:13 | 1 | test.rs:222:13:222:30 | [boolean(true)] break ''block ... |
+| test.rs:224:13:224:13 | 1 | test.rs:224:13:224:13 | 1 |
+| test.rs:226:13:226:13 | 0 | test.rs:222:13:222:30 | [boolean(false)] break ''block ... |
+| test.rs:226:13:226:13 | 0 | test.rs:226:13:226:13 | 0 |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:233:5:236:5 | enter fn test_and_operator |
 | test.rs:234:17:234:22 | [boolean(false)] ... && ... | test.rs:234:17:234:22 | [boolean(false)] ... && ... |
 | test.rs:234:17:234:22 | [boolean(true)] ... && ... | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
@@ -755,7 +934,10 @@ postDominance
 | test.rs:234:17:234:27 | ... && ... | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
 | test.rs:234:17:234:27 | ... && ... | test.rs:234:17:234:27 | ... && ... |
 | test.rs:234:17:234:27 | ... && ... | test.rs:234:22:234:22 | b |
+| test.rs:234:17:234:27 | ... && ... | test.rs:234:27:234:27 | c |
 | test.rs:234:22:234:22 | b | test.rs:234:22:234:22 | b |
+| test.rs:234:27:234:27 | c | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
+| test.rs:234:27:234:27 | c | test.rs:234:27:234:27 | c |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:238:5:241:5 | enter fn test_or_operator |
 | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... |
 | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... |
@@ -764,7 +946,10 @@ postDominance
 | test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... |
 | test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:17:239:27 | ... \|\| ... |
 | test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:22:239:22 | b |
+| test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:27:239:27 | c |
 | test.rs:239:22:239:22 | b | test.rs:239:22:239:22 | b |
+| test.rs:239:27:239:27 | c | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... |
+| test.rs:239:27:239:27 | c | test.rs:239:27:239:27 | c |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:243:5:246:5 | enter fn test_or_operator_2 |
 | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... |
 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... |
@@ -773,7 +958,10 @@ postDominance
 | test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... |
 | test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:17:244:35 | ... \|\| ... |
 | test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:23:244:23 | b |
+| test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:35:244:35 | c |
 | test.rs:244:23:244:23 | b | test.rs:244:23:244:23 | b |
+| test.rs:244:35:244:35 | c | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... |
+| test.rs:244:35:244:35 | c | test.rs:244:35:244:35 | c |
 | test.rs:248:5:251:5 | enter fn test_not_operator | test.rs:248:5:251:5 | enter fn test_not_operator |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:253:5:259:5 | enter fn test_if_and_operator |
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:253:5:259:5 | enter fn test_if_and_operator |
@@ -783,12 +971,22 @@ postDominance
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:12:254:22 | [boolean(false)] ... && ... |
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:17:254:17 | b |
+| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:22:254:22 | c |
+| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:255:13:255:16 | true |
+| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:257:13:257:17 | false |
 | test.rs:254:12:254:17 | [boolean(false)] ... && ... | test.rs:254:12:254:17 | [boolean(false)] ... && ... |
 | test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:12:254:17 | [boolean(true)] ... && ... |
 | test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:254:12:254:17 | [boolean(false)] ... && ... |
 | test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:254:12:254:22 | [boolean(false)] ... && ... |
 | test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
 | test.rs:254:17:254:17 | b | test.rs:254:17:254:17 | b |
+| test.rs:254:22:254:22 | c | test.rs:254:12:254:17 | [boolean(true)] ... && ... |
+| test.rs:254:22:254:22 | c | test.rs:254:22:254:22 | c |
+| test.rs:255:13:255:16 | true | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
+| test.rs:255:13:255:16 | true | test.rs:255:13:255:16 | true |
+| test.rs:257:13:257:17 | false | test.rs:254:12:254:17 | [boolean(false)] ... && ... |
+| test.rs:257:13:257:17 | false | test.rs:254:12:254:22 | [boolean(false)] ... && ... |
+| test.rs:257:13:257:17 | false | test.rs:257:13:257:17 | false |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:261:5:267:5 | enter fn test_if_or_operator |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:261:5:267:5 | enter fn test_if_or_operator |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:9:266:9 | if ... {...} else {...} |
@@ -797,19 +995,35 @@ postDominance
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:17:262:17 | b |
+| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:22:262:22 | c |
+| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:263:13:263:16 | true |
+| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:265:13:265:17 | false |
 | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
 | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... |
 | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
 | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... |
 | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... |
 | test.rs:262:17:262:17 | b | test.rs:262:17:262:17 | b |
+| test.rs:262:22:262:22 | c | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
+| test.rs:262:22:262:22 | c | test.rs:262:22:262:22 | c |
+| test.rs:263:13:263:16 | true | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... |
+| test.rs:263:13:263:16 | true | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... |
+| test.rs:263:13:263:16 | true | test.rs:263:13:263:16 | true |
+| test.rs:265:13:265:17 | false | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
+| test.rs:265:13:265:17 | false | test.rs:265:13:265:17 | false |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:269:5:275:5 | enter fn test_if_not_operator |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:269:5:275:5 | enter fn test_if_not_operator |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:270:9:274:9 | if ... {...} else {...} |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:270:12:270:13 | [boolean(false)] ! ... |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:270:12:270:13 | [boolean(true)] ! ... |
+| test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:271:13:271:16 | true |
+| test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:273:13:273:17 | false |
 | test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:270:12:270:13 | [boolean(false)] ! ... |
 | test.rs:270:12:270:13 | [boolean(true)] ! ... | test.rs:270:12:270:13 | [boolean(true)] ! ... |
+| test.rs:271:13:271:16 | true | test.rs:270:12:270:13 | [boolean(true)] ! ... |
+| test.rs:271:13:271:16 | true | test.rs:271:13:271:16 | true |
+| test.rs:273:13:273:17 | false | test.rs:270:12:270:13 | [boolean(false)] ! ... |
+| test.rs:273:13:273:17 | false | test.rs:273:13:273:17 | false |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:277:5:279:5 | enter fn test_and_return |
 | test.rs:277:5:279:5 | exit fn test_and_return (normal) | test.rs:277:5:279:5 | enter fn test_and_return |
 | test.rs:277:5:279:5 | exit fn test_and_return (normal) | test.rs:277:5:279:5 | exit fn test_and_return (normal) |
@@ -820,10 +1034,20 @@ postDominance
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:281:5:286:5 | enter fn test_and_true |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:281:5:286:5 | enter fn test_and_true |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:281:5:286:5 | exit fn test_and_true (normal) |
+| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:9:284:9 | if ... {...} |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:13:282:21 | [boolean(false)] ... && ... |
+| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:18:282:21 | true |
+| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:283:13:283:21 | ExprStmt |
+| test.rs:282:9:284:9 | if ... {...} | test.rs:282:9:284:9 | if ... {...} |
+| test.rs:282:9:284:9 | if ... {...} | test.rs:282:13:282:21 | [boolean(false)] ... && ... |
 | test.rs:282:13:282:21 | [boolean(false)] ... && ... | test.rs:282:13:282:21 | [boolean(false)] ... && ... |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:282:18:282:21 | true |
 | test.rs:282:18:282:21 | true | test.rs:282:18:282:21 | true |
+| test.rs:283:13:283:21 | ExprStmt | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
+| test.rs:283:13:283:21 | ExprStmt | test.rs:282:18:282:21 | true |
+| test.rs:283:13:283:21 | ExprStmt | test.rs:283:13:283:21 | ExprStmt |
 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 |
 | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 |
 | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) |
@@ -879,11 +1103,14 @@ postDominance
 | test.rs:327:9:330:18 | ... && ... | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
 | test.rs:327:9:330:18 | ... && ... | test.rs:328:18:328:18 | a |
 | test.rs:327:9:330:18 | ... && ... | test.rs:329:13:329:13 | _ |
+| test.rs:327:9:330:18 | ... && ... | test.rs:330:15:330:18 | cond |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:327:10:330:9 | [boolean(false)] match r { ... } |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:329:13:329:13 | _ |
 | test.rs:327:10:330:9 | [boolean(true)] match r { ... } | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
 | test.rs:328:18:328:18 | a | test.rs:328:18:328:18 | a |
 | test.rs:329:13:329:13 | _ | test.rs:329:13:329:13 | _ |
+| test.rs:330:15:330:18 | cond | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
+| test.rs:330:15:330:18 | cond | test.rs:330:15:330:18 | cond |
 | test.rs:333:5:338:5 | enter fn test_match_with_no_arms | test.rs:333:5:338:5 | enter fn test_match_with_no_arms |
 | test.rs:334:9:337:9 | match r { ... } | test.rs:333:5:338:5 | enter fn test_match_with_no_arms |
 | test.rs:334:9:337:9 | match r { ... } | test.rs:334:9:337:9 | match r { ... } |
@@ -943,16 +1170,23 @@ postDominance
 | test.rs:411:17:411:41 | ExprStmt | test.rs:411:17:411:41 | ExprStmt |
 | test.rs:421:5:423:5 | enter fn add_two | test.rs:421:5:423:5 | enter fn add_two |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:427:5:435:5 | enter fn const_block_assert |
+| test.rs:431:13:431:49 | ExprStmt | test.rs:431:13:431:49 | ExprStmt |
+| test.rs:431:13:431:49 | ExprStmt | test.rs:431:21:431:48 | [boolean(true)] ! ... |
 | test.rs:431:13:431:49 | enter fn panic_cold_explicit | test.rs:431:13:431:49 | enter fn panic_cold_explicit |
 | test.rs:431:21:431:48 | [boolean(false)] ! ... | test.rs:431:21:431:48 | [boolean(false)] ! ... |
 | test.rs:431:21:431:48 | [boolean(true)] ! ... | test.rs:431:21:431:48 | [boolean(true)] ! ... |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:427:5:435:5 | enter fn const_block_assert |
+| test.rs:431:21:431:48 | if ... {...} | test.rs:431:13:431:49 | ExprStmt |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:431:21:431:48 | [boolean(false)] ! ... |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:431:21:431:48 | [boolean(true)] ! ... |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:431:21:431:48 | if ... {...} |
 | test.rs:437:5:446:5 | enter fn const_block_panic | test.rs:437:5:446:5 | enter fn const_block_panic |
+| test.rs:439:9:444:9 | if false {...} | test.rs:437:5:446:5 | enter fn const_block_panic |
+| test.rs:439:9:444:9 | if false {...} | test.rs:439:9:444:9 | if false {...} |
 | test.rs:442:17:442:24 | enter fn panic_cold_explicit | test.rs:442:17:442:24 | enter fn panic_cold_explicit |
 | test.rs:449:1:454:1 | enter fn dead_code | test.rs:449:1:454:1 | enter fn dead_code |
+| test.rs:451:9:451:17 | ExprStmt | test.rs:449:1:454:1 | enter fn dead_code |
+| test.rs:451:9:451:17 | ExprStmt | test.rs:451:9:451:17 | ExprStmt |
 | test.rs:456:1:456:16 | enter fn do_thing | test.rs:456:1:456:16 | enter fn do_thing |
 | test.rs:458:1:460:1 | enter fn condition_not_met | test.rs:458:1:460:1 | enter fn condition_not_met |
 | test.rs:462:1:462:21 | enter fn do_next_thing | test.rs:462:1:462:21 | enter fn do_next_thing |
@@ -1042,63 +1276,93 @@ immediateDominator
 | test.rs:153:39:153:48 | [boolean(false)] { ... } | test.rs:153:41:153:41 | a |
 | test.rs:153:39:153:48 | [boolean(true)] { ... } | test.rs:153:41:153:41 | a |
 | test.rs:153:41:153:41 | a | test.rs:152:5:158:5 | enter fn test_nested_if |
+| test.rs:154:13:154:13 | 1 | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} |
+| test.rs:156:13:156:13 | 0 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:160:5:169:5 | enter fn test_nested_if_match |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:163:13:163:13 | _ |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:162:18:162:21 | true |
 | test.rs:162:18:162:21 | true | test.rs:160:5:169:5 | enter fn test_nested_if_match |
 | test.rs:163:13:163:13 | _ | test.rs:160:5:169:5 | enter fn test_nested_if_match |
+| test.rs:165:13:165:13 | 1 | test.rs:161:13:164:9 | [boolean(true)] match a { ... } |
+| test.rs:167:13:167:13 | 0 | test.rs:161:13:164:9 | [boolean(false)] match a { ... } |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:171:5:180:5 | enter fn test_nested_if_block |
 | test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:171:5:180:5 | enter fn test_nested_if_block |
 | test.rs:172:12:175:9 | [boolean(true)] { ... } | test.rs:171:5:180:5 | enter fn test_nested_if_block |
+| test.rs:176:13:176:13 | 1 | test.rs:172:12:175:9 | [boolean(true)] { ... } |
+| test.rs:178:13:178:13 | 0 | test.rs:172:12:175:9 | [boolean(false)] { ... } |
 | test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:182:5:192:5 | enter fn test_if_assignment |
 | test.rs:184:12:187:9 | [boolean(false)] { ... } | test.rs:182:5:192:5 | enter fn test_if_assignment |
 | test.rs:184:12:187:9 | [boolean(true)] { ... } | test.rs:182:5:192:5 | enter fn test_if_assignment |
+| test.rs:188:13:188:13 | 1 | test.rs:184:12:187:9 | [boolean(true)] { ... } |
+| test.rs:190:13:190:13 | 0 | test.rs:184:12:187:9 | [boolean(false)] { ... } |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:197:17:197:29 | ExprStmt |
 | test.rs:196:13:198:13 | if ... {...} | test.rs:196:13:198:14 | ExprStmt |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:194:5:205:5 | enter fn test_if_loop1 |
 | test.rs:197:17:197:28 | [boolean(false)] break ... | test.rs:197:17:197:29 | ExprStmt |
 | test.rs:197:17:197:28 | [boolean(true)] break ... | test.rs:197:17:197:29 | ExprStmt |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:196:13:198:14 | ExprStmt |
+| test.rs:201:13:201:13 | 1 | test.rs:197:17:197:28 | [boolean(true)] break ... |
+| test.rs:203:13:203:13 | 0 | test.rs:197:17:197:28 | [boolean(false)] break ... |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:210:17:210:36 | ExprStmt |
 | test.rs:209:13:211:13 | if ... {...} | test.rs:209:13:211:14 | ExprStmt |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:207:5:218:5 | enter fn test_if_loop2 |
 | test.rs:210:17:210:35 | [boolean(false)] break ''label ... | test.rs:210:17:210:36 | ExprStmt |
 | test.rs:210:17:210:35 | [boolean(true)] break ''label ... | test.rs:210:17:210:36 | ExprStmt |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:209:13:211:14 | ExprStmt |
+| test.rs:214:13:214:13 | 1 | test.rs:210:17:210:35 | [boolean(true)] break ''label ... |
+| test.rs:216:13:216:13 | 0 | test.rs:210:17:210:35 | [boolean(false)] break ''label ... |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:220:5:228:5 | enter fn test_labelled_block |
 | test.rs:222:13:222:30 | [boolean(false)] break ''block ... | test.rs:220:5:228:5 | enter fn test_labelled_block |
 | test.rs:222:13:222:30 | [boolean(true)] break ''block ... | test.rs:220:5:228:5 | enter fn test_labelled_block |
+| test.rs:224:13:224:13 | 1 | test.rs:222:13:222:30 | [boolean(true)] break ''block ... |
+| test.rs:226:13:226:13 | 0 | test.rs:222:13:222:30 | [boolean(false)] break ''block ... |
 | test.rs:234:17:234:22 | [boolean(false)] ... && ... | test.rs:233:5:236:5 | enter fn test_and_operator |
 | test.rs:234:17:234:22 | [boolean(true)] ... && ... | test.rs:234:22:234:22 | b |
 | test.rs:234:17:234:27 | ... && ... | test.rs:233:5:236:5 | enter fn test_and_operator |
 | test.rs:234:22:234:22 | b | test.rs:233:5:236:5 | enter fn test_and_operator |
+| test.rs:234:27:234:27 | c | test.rs:234:17:234:22 | [boolean(true)] ... && ... |
 | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | test.rs:239:22:239:22 | b |
 | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | test.rs:238:5:241:5 | enter fn test_or_operator |
 | test.rs:239:17:239:27 | ... \|\| ... | test.rs:238:5:241:5 | enter fn test_or_operator |
 | test.rs:239:22:239:22 | b | test.rs:238:5:241:5 | enter fn test_or_operator |
+| test.rs:239:27:239:27 | c | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... |
 | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | test.rs:244:23:244:23 | b |
 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | test.rs:243:5:246:5 | enter fn test_or_operator_2 |
 | test.rs:244:17:244:35 | ... \|\| ... | test.rs:243:5:246:5 | enter fn test_or_operator_2 |
 | test.rs:244:23:244:23 | b | test.rs:243:5:246:5 | enter fn test_or_operator_2 |
+| test.rs:244:35:244:35 | c | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... |
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:253:5:259:5 | enter fn test_if_and_operator |
 | test.rs:254:12:254:17 | [boolean(false)] ... && ... | test.rs:253:5:259:5 | enter fn test_if_and_operator |
 | test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:17:254:17 | b |
 | test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:253:5:259:5 | enter fn test_if_and_operator |
-| test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:254:12:254:17 | [boolean(true)] ... && ... |
+| test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:254:22:254:22 | c |
 | test.rs:254:17:254:17 | b | test.rs:253:5:259:5 | enter fn test_if_and_operator |
+| test.rs:254:22:254:22 | c | test.rs:254:12:254:17 | [boolean(true)] ... && ... |
+| test.rs:255:13:255:16 | true | test.rs:254:12:254:22 | [boolean(true)] ... && ... |
+| test.rs:257:13:257:17 | false | test.rs:254:12:254:22 | [boolean(false)] ... && ... |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:261:5:267:5 | enter fn test_if_or_operator |
 | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:17:262:17 | b |
 | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | test.rs:261:5:267:5 | enter fn test_if_or_operator |
-| test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
+| test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:262:22:262:22 | c |
 | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:261:5:267:5 | enter fn test_if_or_operator |
 | test.rs:262:17:262:17 | b | test.rs:261:5:267:5 | enter fn test_if_or_operator |
+| test.rs:262:22:262:22 | c | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... |
+| test.rs:263:13:263:16 | true | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... |
+| test.rs:265:13:265:17 | false | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:269:5:275:5 | enter fn test_if_not_operator |
 | test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:269:5:275:5 | enter fn test_if_not_operator |
 | test.rs:270:12:270:13 | [boolean(true)] ! ... | test.rs:269:5:275:5 | enter fn test_if_not_operator |
+| test.rs:271:13:271:16 | true | test.rs:270:12:270:13 | [boolean(true)] ! ... |
+| test.rs:273:13:273:17 | false | test.rs:270:12:270:13 | [boolean(false)] ! ... |
 | test.rs:277:5:279:5 | exit fn test_and_return (normal) | test.rs:277:5:279:5 | enter fn test_and_return |
 | test.rs:278:9:278:19 | ... && ... | test.rs:277:5:279:5 | enter fn test_and_return |
 | test.rs:278:14:278:19 | return | test.rs:277:5:279:5 | enter fn test_and_return |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:281:5:286:5 | enter fn test_and_true |
+| test.rs:282:9:284:9 | if ... {...} | test.rs:282:13:282:21 | [boolean(false)] ... && ... |
 | test.rs:282:13:282:21 | [boolean(false)] ... && ... | test.rs:281:5:286:5 | enter fn test_and_true |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:282:18:282:21 | true |
 | test.rs:282:18:282:21 | true | test.rs:281:5:286:5 | enter fn test_and_true |
+| test.rs:283:13:283:21 | ExprStmt | test.rs:282:13:282:21 | [boolean(true)] ... && ... |
 | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 |
 | test.rs:293:32:293:32 | 4 | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 |
 | test.rs:296:5:301:5 | exit fn test_question_mark_operator_2 (normal) | test.rs:296:5:301:5 | enter fn test_question_mark_operator_2 |
@@ -1123,6 +1387,7 @@ immediateDominator
 | test.rs:327:10:330:9 | [boolean(true)] match r { ... } | test.rs:328:18:328:18 | a |
 | test.rs:328:18:328:18 | a | test.rs:326:5:331:5 | enter fn test_match_and |
 | test.rs:329:13:329:13 | _ | test.rs:326:5:331:5 | enter fn test_match_and |
+| test.rs:330:15:330:18 | cond | test.rs:327:10:330:9 | [boolean(true)] match r { ... } |
 | test.rs:334:9:337:9 | match r { ... } | test.rs:333:5:338:5 | enter fn test_match_with_no_arms |
 | test.rs:335:16:335:20 | value | test.rs:333:5:338:5 | enter fn test_match_with_no_arms |
 | test.rs:336:13:336:22 | Err(...) | test.rs:333:5:338:5 | enter fn test_match_with_no_arms |
@@ -1146,9 +1411,12 @@ immediateDominator
 | test.rs:409:28:414:9 | exit { ... } (normal) | test.rs:409:28:414:9 | enter { ... } |
 | test.rs:410:13:412:13 | if b {...} | test.rs:409:28:414:9 | enter { ... } |
 | test.rs:411:17:411:41 | ExprStmt | test.rs:409:28:414:9 | enter { ... } |
+| test.rs:431:13:431:49 | ExprStmt | test.rs:431:21:431:48 | [boolean(true)] ! ... |
 | test.rs:431:21:431:48 | [boolean(false)] ! ... | test.rs:427:5:435:5 | enter fn const_block_assert |
 | test.rs:431:21:431:48 | [boolean(true)] ! ... | test.rs:427:5:435:5 | enter fn const_block_assert |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:427:5:435:5 | enter fn const_block_assert |
+| test.rs:439:9:444:9 | if false {...} | test.rs:437:5:446:5 | enter fn const_block_panic |
+| test.rs:451:9:451:17 | ExprStmt | test.rs:449:1:454:1 | enter fn dead_code |
 | test.rs:467:18:478:5 | 'block: { ... } | test.rs:466:1:480:1 | enter fn labelled_block1 |
 | test.rs:469:9:471:9 | if ... {...} | test.rs:466:1:480:1 | enter fn labelled_block1 |
 | test.rs:470:13:470:27 | ExprStmt | test.rs:466:1:480:1 | enter fn labelled_block1 |
@@ -1207,68 +1475,146 @@ controls
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:39:153:48 | [boolean(false)] { ... } | false |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:39:153:48 | [boolean(true)] { ... } | false |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:41:153:41 | a | false |
+| test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:156:13:156:13 | 0 | false |
+| test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | test.rs:154:13:154:13 | 1 | true |
 | test.rs:153:24:153:24 | a | test.rs:153:22:153:32 | [boolean(false)] { ... } | false |
 | test.rs:153:24:153:24 | a | test.rs:153:22:153:32 | [boolean(true)] { ... } | true |
 | test.rs:153:41:153:41 | a | test.rs:153:39:153:48 | [boolean(false)] { ... } | false |
 | test.rs:153:41:153:41 | a | test.rs:153:39:153:48 | [boolean(true)] { ... } | true |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:167:13:167:13 | 0 | false |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:165:13:165:13 | 1 | true |
+| test.rs:162:18:162:21 | true | test.rs:161:13:164:9 | [boolean(true)] match a { ... } | true |
+| test.rs:162:18:162:21 | true | test.rs:165:13:165:13 | 1 | true |
+| test.rs:163:13:163:13 | _ | test.rs:161:13:164:9 | [boolean(false)] match a { ... } | false |
+| test.rs:163:13:163:13 | _ | test.rs:167:13:167:13 | 0 | false |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:12:175:9 | [boolean(false)] { ... } | false |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:12:175:9 | [boolean(true)] { ... } | true |
+| test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:176:13:176:13 | 1 | true |
+| test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:178:13:178:13 | 0 | false |
+| test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:178:13:178:13 | 0 | false |
+| test.rs:172:12:175:9 | [boolean(true)] { ... } | test.rs:176:13:176:13 | 1 | true |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:12:187:9 | [boolean(false)] { ... } | false |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:12:187:9 | [boolean(true)] { ... } | true |
+| test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:188:13:188:13 | 1 | true |
+| test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:190:13:190:13 | 0 | false |
+| test.rs:184:12:187:9 | [boolean(false)] { ... } | test.rs:190:13:190:13 | 0 | false |
+| test.rs:184:12:187:9 | [boolean(true)] { ... } | test.rs:188:13:188:13 | 1 | true |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:195:9:204:9 | if ... {...} else {...} | true |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:196:13:198:13 | if ... {...} | false |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:28 | [boolean(false)] break ... | true |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:28 | [boolean(true)] break ... | true |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:29 | ExprStmt | true |
+| test.rs:196:13:198:14 | ExprStmt | test.rs:201:13:201:13 | 1 | true |
+| test.rs:196:13:198:14 | ExprStmt | test.rs:203:13:203:13 | 0 | true |
+| test.rs:197:17:197:28 | [boolean(false)] break ... | test.rs:203:13:203:13 | 0 | false |
+| test.rs:197:17:197:28 | [boolean(true)] break ... | test.rs:201:13:201:13 | 1 | true |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:28 | [boolean(false)] break ... | false |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:28 | [boolean(true)] break ... | true |
+| test.rs:197:17:197:29 | ExprStmt | test.rs:201:13:201:13 | 1 | true |
+| test.rs:197:17:197:29 | ExprStmt | test.rs:203:13:203:13 | 0 | false |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:208:9:217:9 | if ... {...} else {...} | true |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:209:13:211:13 | if ... {...} | false |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:35 | [boolean(false)] break ''label ... | true |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:35 | [boolean(true)] break ''label ... | true |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:36 | ExprStmt | true |
+| test.rs:209:13:211:14 | ExprStmt | test.rs:214:13:214:13 | 1 | true |
+| test.rs:209:13:211:14 | ExprStmt | test.rs:216:13:216:13 | 0 | true |
+| test.rs:210:17:210:35 | [boolean(false)] break ''label ... | test.rs:216:13:216:13 | 0 | false |
+| test.rs:210:17:210:35 | [boolean(true)] break ''label ... | test.rs:214:13:214:13 | 1 | true |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:35 | [boolean(false)] break ''label ... | false |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:35 | [boolean(true)] break ''label ... | true |
+| test.rs:210:17:210:36 | ExprStmt | test.rs:214:13:214:13 | 1 | true |
+| test.rs:210:17:210:36 | ExprStmt | test.rs:216:13:216:13 | 0 | false |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:222:13:222:30 | [boolean(false)] break ''block ... | false |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:222:13:222:30 | [boolean(true)] break ''block ... | true |
+| test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:224:13:224:13 | 1 | true |
+| test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:226:13:226:13 | 0 | false |
+| test.rs:222:13:222:30 | [boolean(false)] break ''block ... | test.rs:226:13:226:13 | 0 | false |
+| test.rs:222:13:222:30 | [boolean(true)] break ''block ... | test.rs:224:13:224:13 | 1 | true |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:17:234:22 | [boolean(true)] ... && ... | true |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:22:234:22 | b | true |
+| test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:27:234:27 | c | true |
+| test.rs:234:17:234:22 | [boolean(true)] ... && ... | test.rs:234:27:234:27 | c | true |
 | test.rs:234:22:234:22 | b | test.rs:234:17:234:22 | [boolean(true)] ... && ... | true |
+| test.rs:234:22:234:22 | b | test.rs:234:27:234:27 | c | true |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | false |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:22:239:22 | b | false |
+| test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:27:239:27 | c | false |
+| test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | test.rs:239:27:239:27 | c | false |
 | test.rs:239:22:239:22 | b | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:239:22:239:22 | b | test.rs:239:27:239:27 | c | false |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | false |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:23:244:23 | b | false |
+| test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:35:244:35 | c | false |
+| test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | test.rs:244:35:244:35 | c | false |
 | test.rs:244:23:244:23 | b | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | false |
+| test.rs:244:23:244:23 | b | test.rs:244:35:244:35 | c | false |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:12:254:17 | [boolean(true)] ... && ... | true |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:12:254:22 | [boolean(true)] ... && ... | true |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:17:254:17 | b | true |
+| test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:22:254:22 | c | true |
+| test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:255:13:255:16 | true | true |
 | test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:12:254:22 | [boolean(true)] ... && ... | true |
+| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:22:254:22 | c | true |
+| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:255:13:255:16 | true | true |
+| test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:257:13:257:17 | false | false |
+| test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:255:13:255:16 | true | true |
 | test.rs:254:17:254:17 | b | test.rs:254:12:254:17 | [boolean(true)] ... && ... | true |
 | test.rs:254:17:254:17 | b | test.rs:254:12:254:22 | [boolean(true)] ... && ... | true |
+| test.rs:254:17:254:17 | b | test.rs:254:22:254:22 | c | true |
+| test.rs:254:17:254:17 | b | test.rs:255:13:255:16 | true | true |
+| test.rs:254:22:254:22 | c | test.rs:254:12:254:22 | [boolean(true)] ... && ... | true |
+| test.rs:254:22:254:22 | c | test.rs:255:13:255:16 | true | true |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | false |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | false |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:17:262:17 | b | false |
+| test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:22:262:22 | c | false |
+| test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:265:13:265:17 | false | false |
 | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:22:262:22 | c | false |
+| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:265:13:265:17 | false | false |
+| test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:265:13:265:17 | false | false |
+| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:263:13:263:16 | true | true |
 | test.rs:262:17:262:17 | b | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | false |
 | test.rs:262:17:262:17 | b | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:262:17:262:17 | b | test.rs:262:22:262:22 | c | false |
+| test.rs:262:17:262:17 | b | test.rs:265:13:265:17 | false | false |
+| test.rs:262:22:262:22 | c | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:262:22:262:22 | c | test.rs:265:13:265:17 | false | false |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:12:270:13 | [boolean(false)] ! ... | true |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:12:270:13 | [boolean(true)] ! ... | false |
+| test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:271:13:271:16 | true | false |
+| test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:273:13:273:17 | false | true |
+| test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:273:13:273:17 | false | false |
+| test.rs:270:12:270:13 | [boolean(true)] ! ... | test.rs:271:13:271:16 | true | true |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:278:9:278:19 | ... && ... | false |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:278:14:278:19 | return | true |
+| test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:9:284:9 | if ... {...} | false |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:13:282:21 | [boolean(false)] ... && ... | false |
+| test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:13:282:21 | [boolean(true)] ... && ... | true |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:18:282:21 | true | true |
+| test.rs:281:5:286:5 | enter fn test_and_true | test.rs:283:13:283:21 | ExprStmt | true |
+| test.rs:282:13:282:21 | [boolean(false)] ... && ... | test.rs:282:9:284:9 | if ... {...} | false |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:283:13:283:21 | ExprStmt | true |
+| test.rs:282:18:282:21 | true | test.rs:282:13:282:21 | [boolean(true)] ... && ... | true |
+| test.rs:282:18:282:21 | true | test.rs:283:13:283:21 | ExprStmt | true |
 | test.rs:309:26:309:26 | x | test.rs:309:42:309:42 | x | true |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:316:9:323:9 | match ... { ... } | false |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:317:13:317:21 | ExprStmt | true |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:319:13:319:23 | maybe_digit | false |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:321:26:321:26 | x | false |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:322:13:322:24 | ...::None | false |
+| test.rs:327:10:330:9 | [boolean(true)] match r { ... } | test.rs:330:15:330:18 | cond | true |
 | test.rs:328:18:328:18 | a | test.rs:327:10:330:9 | [boolean(true)] match r { ... } | true |
+| test.rs:328:18:328:18 | a | test.rs:330:15:330:18 | cond | true |
 | test.rs:409:28:414:9 | enter { ... } | test.rs:410:13:412:13 | if b {...} | false |
 | test.rs:409:28:414:9 | enter { ... } | test.rs:411:17:411:41 | ExprStmt | true |
+| test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:13:431:49 | ExprStmt | false |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | [boolean(false)] ! ... | true |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | [boolean(true)] ! ... | false |
+| test.rs:431:21:431:48 | [boolean(true)] ! ... | test.rs:431:13:431:49 | ExprStmt | true |
+| test.rs:437:5:446:5 | enter fn const_block_panic | test.rs:439:9:444:9 | if false {...} | false |
+| test.rs:449:1:454:1 | enter fn dead_code | test.rs:451:9:451:17 | ExprStmt | true |
 | test.rs:466:1:480:1 | enter fn labelled_block1 | test.rs:469:9:471:9 | if ... {...} | false |
 | test.rs:466:1:480:1 | enter fn labelled_block1 | test.rs:470:13:470:27 | ExprStmt | true |
 | test.rs:466:1:480:1 | enter fn labelled_block1 | test.rs:473:9:475:9 | if ... {...} | false |
@@ -1308,6 +1654,8 @@ successor
 | test.rs:129:5:135:5 | enter fn test_if_else | test.rs:133:13:133:13 | n | false |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:24:153:24 | a | true |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:153:41:153:41 | a | false |
+| test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:156:13:156:13 | 0 | false |
+| test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | test.rs:154:13:154:13 | 1 | true |
 | test.rs:153:22:153:32 | [boolean(false)] { ... } | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | false |
 | test.rs:153:22:153:32 | [boolean(true)] { ... } | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | true |
 | test.rs:153:24:153:24 | a | test.rs:153:22:153:32 | [boolean(false)] { ... } | false |
@@ -1316,60 +1664,89 @@ successor
 | test.rs:153:39:153:48 | [boolean(true)] { ... } | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | true |
 | test.rs:153:41:153:41 | a | test.rs:153:39:153:48 | [boolean(false)] { ... } | false |
 | test.rs:153:41:153:41 | a | test.rs:153:39:153:48 | [boolean(true)] { ... } | true |
+| test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:167:13:167:13 | 0 | false |
+| test.rs:161:13:164:9 | [boolean(true)] match a { ... } | test.rs:165:13:165:13 | 1 | true |
+| test.rs:162:18:162:21 | true | test.rs:161:13:164:9 | [boolean(true)] match a { ... } | true |
+| test.rs:163:13:163:13 | _ | test.rs:161:13:164:9 | [boolean(false)] match a { ... } | false |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:12:175:9 | [boolean(false)] { ... } | false |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:172:12:175:9 | [boolean(true)] { ... } | true |
+| test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:178:13:178:13 | 0 | false |
+| test.rs:172:12:175:9 | [boolean(true)] { ... } | test.rs:176:13:176:13 | 1 | true |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:12:187:9 | [boolean(false)] { ... } | false |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:184:12:187:9 | [boolean(true)] { ... } | true |
+| test.rs:184:12:187:9 | [boolean(false)] { ... } | test.rs:190:13:190:13 | 0 | false |
+| test.rs:184:12:187:9 | [boolean(true)] { ... } | test.rs:188:13:188:13 | 1 | true |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:196:13:198:13 | if ... {...} | false |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:197:17:197:29 | ExprStmt | true |
+| test.rs:197:17:197:28 | [boolean(false)] break ... | test.rs:203:13:203:13 | 0 | false |
+| test.rs:197:17:197:28 | [boolean(true)] break ... | test.rs:201:13:201:13 | 1 | true |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:28 | [boolean(false)] break ... | false |
 | test.rs:197:17:197:29 | ExprStmt | test.rs:197:17:197:28 | [boolean(true)] break ... | true |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:209:13:211:13 | if ... {...} | false |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:210:17:210:36 | ExprStmt | true |
+| test.rs:210:17:210:35 | [boolean(false)] break ''label ... | test.rs:216:13:216:13 | 0 | false |
+| test.rs:210:17:210:35 | [boolean(true)] break ''label ... | test.rs:214:13:214:13 | 1 | true |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:35 | [boolean(false)] break ''label ... | false |
 | test.rs:210:17:210:36 | ExprStmt | test.rs:210:17:210:35 | [boolean(true)] break ''label ... | true |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:222:13:222:30 | [boolean(false)] break ''block ... | false |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:222:13:222:30 | [boolean(true)] break ''block ... | true |
+| test.rs:222:13:222:30 | [boolean(false)] break ''block ... | test.rs:226:13:226:13 | 0 | false |
+| test.rs:222:13:222:30 | [boolean(true)] break ''block ... | test.rs:224:13:224:13 | 1 | true |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:17:234:22 | [boolean(false)] ... && ... | false |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:234:22:234:22 | b | true |
 | test.rs:234:17:234:22 | [boolean(false)] ... && ... | test.rs:234:17:234:27 | ... && ... | false |
+| test.rs:234:17:234:22 | [boolean(true)] ... && ... | test.rs:234:27:234:27 | c | true |
 | test.rs:234:22:234:22 | b | test.rs:234:17:234:22 | [boolean(false)] ... && ... | false |
 | test.rs:234:22:234:22 | b | test.rs:234:17:234:22 | [boolean(true)] ... && ... | true |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | true |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:239:22:239:22 | b | false |
+| test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | test.rs:239:27:239:27 | c | false |
 | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | test.rs:239:17:239:27 | ... \|\| ... | true |
 | test.rs:239:22:239:22 | b | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | false |
 | test.rs:239:22:239:22 | b | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | true |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | true |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:244:23:244:23 | b | false |
+| test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | test.rs:244:35:244:35 | c | false |
 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | test.rs:244:17:244:35 | ... \|\| ... | true |
 | test.rs:244:23:244:23 | b | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | false |
 | test.rs:244:23:244:23 | b | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | true |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:12:254:17 | [boolean(false)] ... && ... | false |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:254:17:254:17 | b | true |
 | test.rs:254:12:254:17 | [boolean(false)] ... && ... | test.rs:254:12:254:22 | [boolean(false)] ... && ... | false |
-| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:12:254:22 | [boolean(false)] ... && ... | false |
-| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:12:254:22 | [boolean(true)] ... && ... | true |
+| test.rs:254:12:254:17 | [boolean(true)] ... && ... | test.rs:254:22:254:22 | c | true |
+| test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:257:13:257:17 | false | false |
+| test.rs:254:12:254:22 | [boolean(true)] ... && ... | test.rs:255:13:255:16 | true | true |
 | test.rs:254:17:254:17 | b | test.rs:254:12:254:17 | [boolean(false)] ... && ... | false |
 | test.rs:254:17:254:17 | b | test.rs:254:12:254:17 | [boolean(true)] ... && ... | true |
+| test.rs:254:22:254:22 | c | test.rs:254:12:254:22 | [boolean(false)] ... && ... | false |
+| test.rs:254:22:254:22 | c | test.rs:254:12:254:22 | [boolean(true)] ... && ... | true |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | true |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:262:17:262:17 | b | false |
-| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | false |
-| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | true |
+| test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | test.rs:262:22:262:22 | c | false |
 | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | true |
+| test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | test.rs:265:13:265:17 | false | false |
+| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:263:13:263:16 | true | true |
 | test.rs:262:17:262:17 | b | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | false |
 | test.rs:262:17:262:17 | b | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | true |
+| test.rs:262:22:262:22 | c | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:262:22:262:22 | c | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | true |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:12:270:13 | [boolean(false)] ! ... | true |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:270:12:270:13 | [boolean(true)] ! ... | false |
+| test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:273:13:273:17 | false | false |
+| test.rs:270:12:270:13 | [boolean(true)] ! ... | test.rs:271:13:271:16 | true | true |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:278:9:278:19 | ... && ... | false |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:278:14:278:19 | return | true |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:13:282:21 | [boolean(false)] ... && ... | false |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:282:18:282:21 | true | true |
+| test.rs:282:13:282:21 | [boolean(false)] ... && ... | test.rs:282:9:284:9 | if ... {...} | false |
+| test.rs:282:13:282:21 | [boolean(true)] ... && ... | test.rs:283:13:283:21 | ExprStmt | true |
+| test.rs:282:18:282:21 | true | test.rs:282:13:282:21 | [boolean(true)] ... && ... | true |
 | test.rs:309:26:309:26 | x | test.rs:309:42:309:42 | x | true |
 | test.rs:309:26:309:26 | x | test.rs:310:13:310:27 | ...::Some(...) | false |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:317:13:317:21 | ExprStmt | true |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:319:13:319:23 | maybe_digit | false |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:327:9:330:18 | ... && ... | false |
+| test.rs:327:10:330:9 | [boolean(true)] match r { ... } | test.rs:330:15:330:18 | cond | true |
 | test.rs:328:18:328:18 | a | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | false |
 | test.rs:328:18:328:18 | a | test.rs:327:10:330:9 | [boolean(true)] match r { ... } | true |
 | test.rs:329:13:329:13 | _ | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | false |
@@ -1378,6 +1755,9 @@ successor
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | [boolean(false)] ! ... | true |
 | test.rs:427:5:435:5 | enter fn const_block_assert | test.rs:431:21:431:48 | [boolean(true)] ! ... | false |
 | test.rs:431:21:431:48 | [boolean(false)] ! ... | test.rs:431:21:431:48 | if ... {...} | false |
+| test.rs:431:21:431:48 | [boolean(true)] ! ... | test.rs:431:13:431:49 | ExprStmt | true |
+| test.rs:437:5:446:5 | enter fn const_block_panic | test.rs:439:9:444:9 | if false {...} | false |
+| test.rs:449:1:454:1 | enter fn dead_code | test.rs:451:9:451:17 | ExprStmt | true |
 | test.rs:466:1:480:1 | enter fn labelled_block1 | test.rs:469:9:471:9 | if ... {...} | false |
 | test.rs:466:1:480:1 | enter fn labelled_block1 | test.rs:470:13:470:27 | ExprStmt | true |
 | test.rs:469:9:471:9 | if ... {...} | test.rs:473:9:475:9 | if ... {...} | false |
@@ -1421,58 +1801,58 @@ joinBlockPredecessor
 | test.rs:138:9:142:9 | if ... {...} else {...} | test.rs:141:13:141:13 | 0 | 1 |
 | test.rs:145:5:150:5 | exit fn test_if_let (normal) | test.rs:146:9:148:9 | if ... {...} | 1 |
 | test.rs:145:5:150:5 | exit fn test_if_let (normal) | test.rs:146:21:146:21 | n | 0 |
-| test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | 0 |
-| test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | 1 |
+| test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:154:13:154:13 | 1 | 1 |
+| test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:156:13:156:13 | 0 | 0 |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:153:22:153:32 | [boolean(false)] { ... } | 1 |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:153:39:153:48 | [boolean(false)] { ... } | 0 |
 | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | test.rs:153:22:153:32 | [boolean(true)] { ... } | 1 |
 | test.rs:153:13:153:48 | [boolean(true)] if ... {...} else {...} | test.rs:153:39:153:48 | [boolean(true)] { ... } | 0 |
-| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:162:18:162:21 | true | 0 |
-| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:163:13:163:13 | _ | 1 |
-| test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:172:12:175:9 | [boolean(false)] { ... } | 0 |
-| test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:172:12:175:9 | [boolean(true)] { ... } | 1 |
-| test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:184:12:187:9 | [boolean(false)] { ... } | 0 |
-| test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:184:12:187:9 | [boolean(true)] { ... } | 1 |
-| test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:197:17:197:28 | [boolean(false)] break ... | 0 |
-| test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:197:17:197:28 | [boolean(true)] break ... | 1 |
+| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:165:13:165:13 | 1 | 1 |
+| test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:167:13:167:13 | 0 | 0 |
+| test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:176:13:176:13 | 1 | 1 |
+| test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:178:13:178:13 | 0 | 0 |
+| test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:188:13:188:13 | 1 | 1 |
+| test.rs:184:9:191:9 | if ... {...} else {...} | test.rs:190:13:190:13 | 0 | 0 |
+| test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:201:13:201:13 | 1 | 1 |
+| test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:203:13:203:13 | 0 | 0 |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:194:5:205:5 | enter fn test_if_loop1 | 1 |
 | test.rs:196:13:198:14 | ExprStmt | test.rs:196:13:198:13 | if ... {...} | 0 |
-| test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:210:17:210:35 | [boolean(false)] break ''label ... | 0 |
-| test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:210:17:210:35 | [boolean(true)] break ''label ... | 1 |
+| test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:214:13:214:13 | 1 | 1 |
+| test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:216:13:216:13 | 0 | 0 |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:207:5:218:5 | enter fn test_if_loop2 | 1 |
 | test.rs:209:13:211:14 | ExprStmt | test.rs:209:13:211:13 | if ... {...} | 0 |
-| test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:222:13:222:30 | [boolean(false)] break ''block ... | 0 |
-| test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:222:13:222:30 | [boolean(true)] break ''block ... | 1 |
+| test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:224:13:224:13 | 1 | 1 |
+| test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:226:13:226:13 | 0 | 0 |
 | test.rs:234:17:234:22 | [boolean(false)] ... && ... | test.rs:233:5:236:5 | enter fn test_and_operator | 1 |
 | test.rs:234:17:234:22 | [boolean(false)] ... && ... | test.rs:234:22:234:22 | b | 0 |
 | test.rs:234:17:234:27 | ... && ... | test.rs:234:17:234:22 | [boolean(false)] ... && ... | 0 |
-| test.rs:234:17:234:27 | ... && ... | test.rs:234:17:234:22 | [boolean(true)] ... && ... | 1 |
+| test.rs:234:17:234:27 | ... && ... | test.rs:234:27:234:27 | c | 1 |
 | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | test.rs:238:5:241:5 | enter fn test_or_operator | 1 |
 | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | test.rs:239:22:239:22 | b | 0 |
-| test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:17:239:22 | [boolean(false)] ... \|\| ... | 0 |
-| test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | 1 |
+| test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:17:239:22 | [boolean(true)] ... \|\| ... | 0 |
+| test.rs:239:17:239:27 | ... \|\| ... | test.rs:239:27:239:27 | c | 1 |
 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | test.rs:243:5:246:5 | enter fn test_or_operator_2 | 1 |
 | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | test.rs:244:23:244:23 | b | 0 |
-| test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:17:244:30 | [boolean(false)] ... \|\| ... | 0 |
-| test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | 1 |
-| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:12:254:22 | [boolean(false)] ... && ... | 0 |
-| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:254:12:254:22 | [boolean(true)] ... && ... | 1 |
+| test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:17:244:30 | [boolean(true)] ... \|\| ... | 0 |
+| test.rs:244:17:244:35 | ... \|\| ... | test.rs:244:35:244:35 | c | 1 |
+| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:255:13:255:16 | true | 1 |
+| test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:257:13:257:17 | false | 0 |
 | test.rs:254:12:254:17 | [boolean(false)] ... && ... | test.rs:253:5:259:5 | enter fn test_if_and_operator | 1 |
 | test.rs:254:12:254:17 | [boolean(false)] ... && ... | test.rs:254:17:254:17 | b | 0 |
 | test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:254:12:254:17 | [boolean(false)] ... && ... | 0 |
-| test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:254:12:254:17 | [boolean(true)] ... && ... | 1 |
-| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:12:262:22 | [boolean(false)] ... \|\| ... | 0 |
-| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | 1 |
+| test.rs:254:12:254:22 | [boolean(false)] ... && ... | test.rs:254:22:254:22 | c | 1 |
+| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:263:13:263:16 | true | 1 |
+| test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:265:13:265:17 | false | 0 |
 | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | test.rs:261:5:267:5 | enter fn test_if_or_operator | 1 |
 | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | test.rs:262:17:262:17 | b | 0 |
-| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(false)] ... \|\| ... | 0 |
-| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | 1 |
-| test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:270:12:270:13 | [boolean(false)] ! ... | 0 |
-| test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:270:12:270:13 | [boolean(true)] ! ... | 1 |
+| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | 0 |
+| test.rs:262:12:262:22 | [boolean(true)] ... \|\| ... | test.rs:262:22:262:22 | c | 1 |
+| test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:271:13:271:16 | true | 1 |
+| test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:273:13:273:17 | false | 0 |
 | test.rs:277:5:279:5 | exit fn test_and_return (normal) | test.rs:278:9:278:19 | ... && ... | 1 |
 | test.rs:277:5:279:5 | exit fn test_and_return (normal) | test.rs:278:14:278:19 | return | 0 |
-| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:13:282:21 | [boolean(false)] ... && ... | 1 |
-| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:18:282:21 | true | 0 |
+| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:282:9:284:9 | if ... {...} | 1 |
+| test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:283:13:283:21 | ExprStmt | 0 |
 | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) | test.rs:292:5:294:5 | enter fn test_question_mark_operator_1 | 1 |
 | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) | test.rs:293:32:293:32 | 4 | 0 |
 | test.rs:296:5:301:5 | exit fn test_question_mark_operator_2 (normal) | test.rs:296:5:301:5 | enter fn test_question_mark_operator_2 | 1 |
@@ -1489,7 +1869,7 @@ joinBlockPredecessor
 | test.rs:316:9:323:9 | match ... { ... } | test.rs:321:26:321:26 | x | 0 |
 | test.rs:316:9:323:9 | match ... { ... } | test.rs:322:13:322:24 | ...::None | 1 |
 | test.rs:327:9:330:18 | ... && ... | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | 0 |
-| test.rs:327:9:330:18 | ... && ... | test.rs:327:10:330:9 | [boolean(true)] match r { ... } | 1 |
+| test.rs:327:9:330:18 | ... && ... | test.rs:330:15:330:18 | cond | 1 |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:328:18:328:18 | a | 0 |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:329:13:329:13 | _ | 1 |
 | test.rs:334:9:337:9 | match r { ... } | test.rs:335:16:335:20 | value | 0 |
@@ -1511,8 +1891,8 @@ joinBlockPredecessor
 | test.rs:385:13:385:14 | TupleExpr | test.rs:385:13:385:14 | TupleExpr | 0 |
 | test.rs:409:28:414:9 | exit { ... } (normal) | test.rs:410:13:412:13 | if b {...} | 1 |
 | test.rs:409:28:414:9 | exit { ... } (normal) | test.rs:411:17:411:41 | ExprStmt | 0 |
+| test.rs:431:21:431:48 | if ... {...} | test.rs:431:13:431:49 | ExprStmt | 1 |
 | test.rs:431:21:431:48 | if ... {...} | test.rs:431:21:431:48 | [boolean(false)] ! ... | 0 |
-| test.rs:431:21:431:48 | if ... {...} | test.rs:431:21:431:48 | [boolean(true)] ! ... | 1 |
 | test.rs:467:18:478:5 | 'block: { ... } | test.rs:470:13:470:27 | ExprStmt | 0 |
 | test.rs:467:18:478:5 | 'block: { ... } | test.rs:473:9:475:9 | if ... {...} | 2 |
 | test.rs:467:18:478:5 | 'block: { ... } | test.rs:474:13:474:27 | ExprStmt | 1 |
