@@ -60,6 +60,8 @@ where
   or
   key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
   or
+  key = "Taint edges - number of edges" and value = getTaintEdgesCount()
+  or
   key = "Taint reach - nodes tainted" and value = getTaintedNodesCount()
   or
   key = "Taint reach - per million nodes" and value = getTaintReach().floor()

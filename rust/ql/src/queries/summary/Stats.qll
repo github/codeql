@@ -45,6 +45,16 @@ int getTotalDataFlowInconsistencies() {
 }
 
 /**
+ * Gets the total number of taint edges in the database.
+ */
+int getTaintEdgesCount() {
+  result =
+    count(DataFlow::Node a, DataFlow::Node b |
+      RustTaintTracking::defaultAdditionalTaintStep(a, b, _)
+    )
+}
+
+/**
  * Gets a kind of query for which `n` is a sink (if any).
  */
 string getAQuerySinkKind(DataFlow::Node n) {
