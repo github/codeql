@@ -1,5 +1,5 @@
 /** Provides classes for working with JSON Web Token (JWT) libraries. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

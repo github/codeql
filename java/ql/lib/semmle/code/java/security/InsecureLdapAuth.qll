@@ -1,5 +1,5 @@
 /** Provides classes to reason about insecure LDAP authentication. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

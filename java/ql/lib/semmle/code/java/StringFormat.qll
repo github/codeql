@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for reasoning about string formatting.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

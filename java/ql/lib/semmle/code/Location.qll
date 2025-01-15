@@ -3,7 +3,7 @@
  *
  * Locations represent parts of files and are used to map elements to their source location.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import FileSystem

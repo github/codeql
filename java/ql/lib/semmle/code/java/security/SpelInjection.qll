@@ -1,5 +1,5 @@
 /** Provides classes to reason about SpEL injection attacks. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

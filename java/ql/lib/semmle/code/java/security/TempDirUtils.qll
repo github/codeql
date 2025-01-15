@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for reasoning about temporary file/directory creations.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

@@ -25,7 +25,7 @@
  * that subsequently calculated properties hold under the assumption that the
  * value is not null.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.util.Location

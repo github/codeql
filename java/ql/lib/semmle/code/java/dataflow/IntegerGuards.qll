@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for integer guards.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

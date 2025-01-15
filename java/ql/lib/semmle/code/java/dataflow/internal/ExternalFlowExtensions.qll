@@ -1,7 +1,7 @@
 /**
  * This module provides extensible predicates for defining MaD models.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

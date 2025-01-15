@@ -2,7 +2,7 @@
  * Provides classes for working with Spring classes and interfaces from
  * `org.springframework.http`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

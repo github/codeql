@@ -1,5 +1,5 @@
 /** Provides a module for constructing optional versions of types. */
-overlay[local]
+overlay[local?]
 module;
 
 /** A type with `toString`. */

@@ -1,5 +1,5 @@
 /** Provides classes and predicates related to the class `PendingIntent`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

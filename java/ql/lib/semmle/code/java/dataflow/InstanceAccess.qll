@@ -2,7 +2,7 @@
  * Provides classes and predicates for reasoning about explicit and implicit
  * instance accesses.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

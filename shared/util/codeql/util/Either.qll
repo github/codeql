@@ -1,5 +1,5 @@
 /** Provides a module for constructing a union `Either` type. */
-overlay[local]
+overlay[local?]
 module;
 
 /** A type with `toString`. */

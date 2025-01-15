@@ -1,5 +1,5 @@
 /** Provides a utility for normalizing filepaths. */
-overlay[local]
+overlay[local?]
 module;
 
 /**

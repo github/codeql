@@ -2,7 +2,7 @@
  * Provides classes and predicates for the Spring BlazeDS integration. BlazeDS allows Java applications to integrate with
  * Apache Flex applications, which are ultimately deployed as Adobe Flash applications.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

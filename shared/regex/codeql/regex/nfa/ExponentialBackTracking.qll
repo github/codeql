@@ -61,7 +61,7 @@
  *   * Lastly we ensure that any state reached by repeating `n` copies of `w` has
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import NfaUtils as NfaUtils

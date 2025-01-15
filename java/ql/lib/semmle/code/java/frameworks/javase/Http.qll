@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates related to `java.net.http.*`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

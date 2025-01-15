@@ -1,5 +1,5 @@
 /** Provides classes representing various flow sinks for data flow / taint tracking. */
-overlay[local]
+overlay[local?]
 module;
 
 private import java

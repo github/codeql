@@ -8,7 +8,7 @@
  * If an inferred bound relies directly on a condition, then this condition is
  * reported as the reason for the bound.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /*

@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with the Hibernate framework.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

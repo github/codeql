@@ -1,5 +1,5 @@
 /** Provides classes to reason about XSLT injection vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

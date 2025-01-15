@@ -1,5 +1,5 @@
 /** Provides classes to reason about Groovy code injection attacks. */
-overlay[local]
+overlay[local?]
 module;
 
 private import semmle.code.java.dataflow.DataFlow

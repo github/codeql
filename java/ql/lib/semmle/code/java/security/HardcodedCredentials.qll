@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates relating to hardcoded credentials.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

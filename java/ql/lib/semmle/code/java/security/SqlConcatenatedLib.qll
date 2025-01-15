@@ -1,5 +1,5 @@
 /** Definitions used by `SqlConcatenated.ql`. */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.code.java.security.ControlledString

@@ -2,7 +2,7 @@
  * Provides a language-independent implementation of static single assignment
  * (SSA) form.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.util.Location

@@ -1,7 +1,7 @@
 /**
  * Provides Java-specific definitions for bounds.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import java as J

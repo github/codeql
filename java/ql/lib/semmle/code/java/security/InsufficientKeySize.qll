@@ -1,5 +1,5 @@
 /** Provides classes and predicates related to insufficient key sizes in Java. */
-overlay[local]
+overlay[local?]
 module;
 
 private import semmle.code.java.security.Encryption

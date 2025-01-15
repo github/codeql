@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with the Jackson serialization framework.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

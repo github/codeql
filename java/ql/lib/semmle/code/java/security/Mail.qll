@@ -1,5 +1,5 @@
 /** Provides classes and predicates to reason about email vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

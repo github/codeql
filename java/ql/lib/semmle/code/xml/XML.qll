@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with XML files and their content.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import semmle.files.FileSystem

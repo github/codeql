@@ -1,5 +1,5 @@
 /** Provides classes and predicates for working with the GWT framework. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

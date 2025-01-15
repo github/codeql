@@ -1,5 +1,5 @@
 /** Definitions of flow steps through the collection types in the Guava framework */
-overlay[local]
+overlay[local?]
 module;
 
 import java

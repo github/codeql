@@ -1,5 +1,5 @@
 /** Definitions related to `java.lang.ThreadLocal`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

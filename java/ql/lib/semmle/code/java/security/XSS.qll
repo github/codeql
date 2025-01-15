@@ -1,5 +1,5 @@
 /** Provides classes to reason about Cross-site scripting (XSS) vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

@@ -1,7 +1,7 @@
 /**
  * Provides predicates for reasoning about bad tag filter vulnerabilities.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import NfaUtils as NfaUtils

@@ -1,5 +1,5 @@
 /** Provides classes and predicates for working with Enterprise Java Beans. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

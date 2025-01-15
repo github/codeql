@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for guards that check for the current OS.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

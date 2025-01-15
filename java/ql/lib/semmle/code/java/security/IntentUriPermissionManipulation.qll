@@ -2,7 +2,7 @@
  * Provides classes and predicates to reason about Intent URI permission manipulation
  * vulnerabilities on Android.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

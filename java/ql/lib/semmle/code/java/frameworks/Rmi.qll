@@ -1,5 +1,5 @@
 /** Remote Method Invocation. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

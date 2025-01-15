@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with java system properties.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

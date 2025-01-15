@@ -2,7 +2,7 @@
  * Provides classes and predicates for reasoning about instances of
  * `java.util.Collection` and their methods.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

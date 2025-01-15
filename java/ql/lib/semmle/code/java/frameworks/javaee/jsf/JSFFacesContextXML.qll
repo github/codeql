@@ -1,7 +1,7 @@
 /**
  * Provides classes for JSF "Application Configuration Resources File", usually called `faces-config.xml`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import default

@@ -1,5 +1,5 @@
 /** Provides definitions to reason about HTTP cookies. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

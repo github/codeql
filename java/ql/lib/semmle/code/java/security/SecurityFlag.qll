@@ -1,7 +1,7 @@
 /**
  * Provides utility predicates to spot variable names, parameter names, and string literals that suggest deliberately insecure settings.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

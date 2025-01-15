@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with the Json-io framework.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

@@ -1,5 +1,5 @@
 /** Provides classes and predicates for working with Java Server Faces. */
-overlay[local]
+overlay[local?]
 module;
 
 import default

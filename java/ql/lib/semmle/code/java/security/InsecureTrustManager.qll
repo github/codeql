@@ -1,5 +1,5 @@
 /** Provides classes and predicates to reason about insecure `TrustManager`s. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

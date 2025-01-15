@@ -1,7 +1,7 @@
 /**
  * Provides utility predicates for representing dependencies between types.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Type

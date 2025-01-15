@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates related to `ratpack.exec.*`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

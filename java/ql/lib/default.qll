@@ -1,5 +1,5 @@
 /** DEPRECATED: use `java.qll` instead. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

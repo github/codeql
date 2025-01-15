@@ -4,7 +4,7 @@
  * The UiBinder framework allows the specification of user interfaces in XML template files. These
  * can then be interacted with programmatically by writing an associated owner class.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

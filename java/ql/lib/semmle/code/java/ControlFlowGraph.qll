@@ -7,7 +7,7 @@
  * statement, an expression, or an exit node for a callable, indicating that
  * execution of the callable terminates.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /*

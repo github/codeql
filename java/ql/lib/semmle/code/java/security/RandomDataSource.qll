@@ -1,7 +1,7 @@
 /**
  * Defines classes representing random data sources.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

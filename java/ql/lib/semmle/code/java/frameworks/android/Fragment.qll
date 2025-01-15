@@ -1,5 +1,5 @@
 /** Provides classes and predicates to track Android fragments. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

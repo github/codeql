@@ -1,7 +1,7 @@
 /**
  * Basic definitions for use in the data flow library.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import java

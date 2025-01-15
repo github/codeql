@@ -2,7 +2,7 @@
  * This library provides predicates for reasoning about the set of all paths
  * through a callable.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

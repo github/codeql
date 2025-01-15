@@ -86,7 +86,7 @@
  *    This information is used in a heuristic for dataflow analysis to determine, if a
  *    model or source code should be used for determining flow.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

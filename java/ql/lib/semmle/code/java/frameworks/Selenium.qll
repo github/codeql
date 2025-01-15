@@ -2,7 +2,7 @@
  * Provides classes and predicates for identifying classes reflectively constructed by Selenium using the
  * `PageFactory.initElements(...)` method.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import default

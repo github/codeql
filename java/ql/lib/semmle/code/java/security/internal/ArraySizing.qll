@@ -1,5 +1,5 @@
 /** Provides predicates and classes to reason about the sizing and indexing of arrays. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

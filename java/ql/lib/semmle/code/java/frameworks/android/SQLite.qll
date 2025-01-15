@@ -1,5 +1,5 @@
 /** Provides classes and predicates for working with SQLite databases. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

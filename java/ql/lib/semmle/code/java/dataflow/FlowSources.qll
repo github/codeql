@@ -1,7 +1,7 @@
 /**
  * Provides classes representing various flow sources for taint tracking.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

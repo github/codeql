@@ -1,5 +1,5 @@
 /** Provides classes to reason about Android Intent redirect vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

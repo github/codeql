@@ -1,5 +1,5 @@
 /** Provides classes to reason about JNDI injection vulnerabilities. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

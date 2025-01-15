@@ -1,5 +1,5 @@
 /** Definitions related to `java.util.regex`. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

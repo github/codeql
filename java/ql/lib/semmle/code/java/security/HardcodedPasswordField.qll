@@ -1,7 +1,7 @@
 /**
  * Provides a predicate identifying assignments of harcoded values to password fields.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

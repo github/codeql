@@ -1,5 +1,5 @@
 /** Provides classes and predicates for modeling XML parsers in Java. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

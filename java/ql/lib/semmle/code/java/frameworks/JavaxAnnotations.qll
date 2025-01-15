@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with annotations in the `javax` package.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

@@ -2,7 +2,7 @@
  * Provides a default taint sanitizer identifying comparisons against lists of
  * compile-time constants.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

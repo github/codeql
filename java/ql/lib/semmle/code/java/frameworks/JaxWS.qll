@@ -2,7 +2,7 @@
  * Definitions relating to JAX-WS (Java/Jakarta API for XML Web Services) and JAX-RS
  * (Java/Jakarta API for RESTful Web Services).
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

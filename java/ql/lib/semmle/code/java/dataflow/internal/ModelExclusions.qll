@@ -1,5 +1,5 @@
 /** Provides classes and predicates for exclusions related to MaD models. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

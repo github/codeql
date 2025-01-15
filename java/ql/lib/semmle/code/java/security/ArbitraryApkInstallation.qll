@@ -1,5 +1,5 @@
 /** Provide classes to reason about Android Intents that can install APKs. */
-overlay[local]
+overlay[local?]
 module;
 
 import java

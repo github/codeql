@@ -5,7 +5,7 @@
  * This file is used by the shared data flow library and by the JavaScript libraries
  * (which does not use the shared data flow libraries).
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

@@ -3,7 +3,7 @@
  * adds a global analysis, mainly exposed through the `Global` and `GlobalWithState`
  * modules.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import codeql.util.Location

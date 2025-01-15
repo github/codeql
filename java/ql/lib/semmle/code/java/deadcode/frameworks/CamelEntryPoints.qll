@@ -1,7 +1,7 @@
 /**
  * Apache Camel is a messaging framework, which can integrate with Spring.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

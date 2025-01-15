@@ -1,5 +1,5 @@
 /** Provides classes for working with locations. */
-overlay[local]
+overlay[local?]
 module;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for working with Java modifiers.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import Element

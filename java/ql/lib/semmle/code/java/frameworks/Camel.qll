@@ -1,7 +1,7 @@
 /**
  * Apache Camel messaging framework.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import java

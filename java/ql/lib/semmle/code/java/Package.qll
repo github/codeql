@@ -1,6 +1,6 @@
 /**
  * Provides classes and predicates for working with Java packages.
- */overlay[local]
+ */overlay[local?]
 module;
 
 

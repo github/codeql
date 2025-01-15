@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for representing completions.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /*
