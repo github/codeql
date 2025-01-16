@@ -171,3 +171,9 @@ void test9(short s) {
         
     }
 }
+
+void test10(int a, int b) {
+    if(!(a < b)) {
+
+    }
+}

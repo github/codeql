@@ -381,3 +381,15 @@
 | 170 | s != 0 when s is true |
 | 170 | s == 0 when ! ... is true |
 | 170 | s == 0 when s is false |
+| 176 | ! ... != 0 when ! ... is true |
+| 176 | ! ... != 0 when ... < ... is false |
+| 176 | ! ... != 1 when ! ... is false |
+| 176 | ! ... != 1 when ... < ... is true |
+| 176 | ! ... == 0 when ! ... is false |
+| 176 | ! ... == 0 when ... < ... is true |
+| 176 | ! ... == 1 when ! ... is true |
+| 176 | ! ... == 1 when ... < ... is false |
+| 176 | ... < ... != 0 when ! ... is false |
+| 176 | ... < ... != 0 when ... < ... is true |
+| 176 | ... < ... == 0 when ! ... is true |
+| 176 | ... < ... == 0 when ... < ... is false |
