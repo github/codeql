@@ -4,15 +4,15 @@
 //#pragma byte_order(big_endian)
 #warning "Not in Kansas any more"
 
-//#define MULTILINE \
+#define MULTILINE \
   /* Hello */ \
   world \
   /* from */ \
   a long \
   /* macro */
-//#undef \
+#undef \
   MULTILINE
 
-//#include \
-  <pp.h> \
+#include \
+  "pp.h" \
   \

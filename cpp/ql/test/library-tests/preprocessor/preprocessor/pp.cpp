@@ -68,3 +68,10 @@ int templateClassContext<T> :: val = MACRO_TEMPLATECLASSCONTEXT_REFERENCED;
 
 #define INSTANTIATION
 templateClassContext<int> tcci;
+
+#define BAR
+
+#if defined(BAR) && \
+  defined(BAR)
+#warning BAR defined
+#endif
