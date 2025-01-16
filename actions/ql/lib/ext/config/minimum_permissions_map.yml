@@ -1,0 +1,25 @@
+:
+  - addsTo:
+    pack: github/actions-all
+    extensible: minimumPermissionsDataModel
+    data:
+    - ["actions/cache", "{}"]
+    - ["actions/setup-node", "contents:read"]
+    - ["actions/upload-artifact", "{}"]
+    - ["actions/setup-python", "contents:read"]
+    - ["actions/download-artifact", "{}"]
+    - ["actions/github-script", "It depends on what the script does"]
+    - ["actions/setup-java", "contents:read"]
+    - ["actions/setup-go", "contents:read"]
+    - ["actions/setup-dotnet", "contents:read"]
+    - ["actions/labeler", "contents:read, pull-requests:write"]
+    - ["actions/attest", "id-token:write, attestations:write"]
+    - ["actions/add-to-project", "repository-projects:read, repository-projects:write, issues:read, pull-requests:read"]
+    - ["actions/dependency-review-action", "contents:read"]
+    - ["actions/attest-sbom", "id-token:write, attestations:write"]
+    - ["actions/stale", "contents:write, issues:write, pull-requests:write"]
+    - ["actions/attest-build-provenance", "id-token:write, attestations:write"]
+    - ["actions/jekyll-build-pages", "contents:read, pages:write, id-token:write"]
+    - ["actions/publish-action", "contents:write"]
+    - ["actions/version-package-tools", "contents:read, actions:read"]
+    - ["actions/reusable-workflows", "contents:read, actions:read"]
