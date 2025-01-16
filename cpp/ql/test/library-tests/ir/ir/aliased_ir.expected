@@ -3032,6 +3032,47 @@ generic.c:
 #   26|     v26_8(void)                = AliasedUse             : m26_3
 #   26|     v26_9(void)                = ExitFunction           : 
 
+ir-not-microsoft.c:
+#    1| void gnuConditionalOmittedOperand()
+#    1|   Block 0
+#    1|     v1_1(void)       = EnterFunction      : 
+#    1|     m1_2(unknown)    = AliasedDefinition  : 
+#    1|     m1_3(unknown)    = InitializeNonLocal : 
+#    1|     m1_4(unknown)    = Chi                : total:m1_2, partial:m1_3
+#    2|     r2_1(glval<int>) = VariableAddress[i] : 
+#    2|     m2_2(int)        = Uninitialized[i]   : &:r2_1
+#    2|     r2_3(glval<int>) = VariableAddress[j] : 
+#    2|     m2_4(int)        = Uninitialized[j]   : &:r2_3
+#    3|     r3_1(glval<int>) = VariableAddress[j] : 
+#    3|     r3_2(int)        = Load[j]            : &:r3_1, m2_4
+#    3|     r3_3(int)        = Constant[0]        : 
+#    3|     r3_4(bool)       = CompareNE          : r3_2, r3_3
+#    3|     v3_5(void)       = ConditionalBranch  : r3_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#    3|   Block 1
+#    3|     m3_6(int)        = Phi                       : from 2:m3_12, from 3:m3_15
+#    3|     r3_7(glval<int>) = VariableAddress[#temp3:9] : 
+#    3|     r3_8(int)        = Load[#temp3:9]            : &:r3_7, m3_6
+#    3|     r3_9(glval<int>) = VariableAddress[i]        : 
+#    3|     m3_10(int)       = Store[i]                  : &:r3_9, r3_8
+#    4|     v4_1(void)       = NoOp                      : 
+#    1|     v1_5(void)       = ReturnVoid                : 
+#    1|     v1_6(void)       = AliasedUse                : m1_3
+#    1|     v1_7(void)       = ExitFunction              : 
+
+#    3|   Block 2
+#    3|     r3_11(glval<int>) = VariableAddress[#temp3:9] : 
+#    3|     m3_12(int)        = Store[#temp3:9]           : &:r3_11, r3_2
+#-----|   Goto -> Block 1
+
+#    3|   Block 3
+#    3|     r3_13(int)        = Constant[2]               : 
+#    3|     r3_14(glval<int>) = VariableAddress[#temp3:9] : 
+#    3|     m3_15(int)        = Store[#temp3:9]           : &:r3_14, r3_13
+#-----|   Goto -> Block 1
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0
