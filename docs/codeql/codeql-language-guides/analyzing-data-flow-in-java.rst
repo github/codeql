@@ -177,6 +177,7 @@ You use the global data flow library by implementing the signature ``DataFlow::C
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    module MyFlowConfiguration implements DataFlow::ConfigSig {
@@ -213,6 +214,7 @@ Global taint tracking is to global data flow as local taint tracking is to local
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.TaintTracking
 
    module MyFlowConfiguration implements DataFlow::ConfigSig {
@@ -271,6 +273,7 @@ Exercise 1
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    from Constructor url, Call call, StringLiteral src
@@ -285,6 +288,7 @@ Exercise 2
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    module LiteralToURLConfig implements DataFlow::ConfigSig {
@@ -327,6 +331,7 @@ Exercise 4
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    class GetenvSource extends DataFlow::ExprNode {
