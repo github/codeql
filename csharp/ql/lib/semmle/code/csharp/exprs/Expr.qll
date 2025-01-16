@@ -82,10 +82,18 @@ class Expr extends ControlFlowElement, @expr {
   Expr stripCasts() { result = this }
 
   /**
+   * DEPRECATED: Use `stripImplicit` instead.
+   *
    * Gets an expression that is the result of stripping (recursively) all
    * implicit casts from this expression, if any.
    */
-  Expr stripImplicitCasts() { result = this }
+  deprecated Expr stripImplicitCasts() { result = this.stripImplicit() }
+
+  /**
+   * Gets an expression that is the result of stripping (recursively) all
+   * implicit casts and implicit ToString calls from this expression, if any.
+   */
+  Expr stripImplicit() { result = this }
 
   /**
    * Gets the explicit parameter name used to pass this expression as an
@@ -714,8 +722,8 @@ class Cast extends Expr {
 
   override Expr stripCasts() { result = this.getExpr().stripCasts() }
 
-  override Expr stripImplicitCasts() {
-    if this.isImplicit() then result = this.getExpr().stripImplicitCasts() else result = this
+  override Expr stripImplicit() {
+    if this.isImplicit() then result = this.getExpr().stripImplicit() else result = this
   }
 }
 

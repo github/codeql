@@ -514,7 +514,7 @@ edges
 | GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | provenance | MaD:16 |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | provenance |  |
-| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
+| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | provenance | MaD:14 |
 | GlobalDataFlowStringBuilder.cs:31:13:31:17 | access to local variable sink0 : String | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 | provenance |  |
@@ -527,6 +527,8 @@ edges
 | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:36:13:36:17 | access to local variable sink1 : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | provenance | MaD:16 |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | provenance | MaD:17 |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
 | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | provenance |  |
 | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | provenance | MaD:17 |
 | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | provenance |  |
@@ -1046,6 +1048,8 @@ nodes
 | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | semmle.label | access to local variable sink1 |
 | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | semmle.label | [post] access to local variable sb2 : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | semmle.label | (...) ... : AppendInterpolatedStringHandler |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | semmle.label | access to local variable sink2 : String |
 | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | semmle.label | access to local variable sb2 : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | semmle.label | call to method ToString : String |
