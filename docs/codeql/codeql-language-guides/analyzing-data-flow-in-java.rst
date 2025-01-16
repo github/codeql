@@ -145,7 +145,7 @@ This query finds calls to formatting functions where the format string is not ha
    import semmle.code.java.dataflow.DataFlow
    import semmle.code.java.StringFormat
 
-   from StringFormatMethod format, MethodAccess call, Expr formatString
+   from StringFormatMethod format, MethodCall call, Expr formatString
    where
      call.getMethod() = format and
      call.getArgument(format.getFormatStringIndex()) = formatString and
@@ -313,7 +313,7 @@ Exercise 3
 
    import java
 
-   class GetenvSource extends MethodAccess {
+   class GetenvSource extends MethodCall {
      GetenvSource() {
        exists(Method m | m = this.getMethod() |
          m.hasName("getenv") and
@@ -331,7 +331,7 @@ Exercise 4
 
    class GetenvSource extends DataFlow::ExprNode {
      GetenvSource() {
-       exists(Method m | m = this.asExpr().(MethodAccess).getMethod() |
+       exists(Method m | m = this.asExpr().(MethodCall).getMethod() |
          m.hasName("getenv") and
          m.getDeclaringType() instanceof TypeSystem
        )
