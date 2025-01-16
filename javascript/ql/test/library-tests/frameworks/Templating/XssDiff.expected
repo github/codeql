@@ -1,0 +1,41 @@
+legacyDataFlowDifference
+flow
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| app.js:39:38:39:74 | req.que ... ringRaw | views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB | projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |

@@ -12,20 +12,20 @@
 import javascript
 import meta.internal.TaintMetrics
 
-class BasicTaintConfiguration extends TaintTracking::Configuration {
-  BasicTaintConfiguration() { this = "BasicTaintConfiguration" }
+module BasicTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node = relevantTaintSource() }
 
-  override predicate isSource(DataFlow::Node node) { node = relevantTaintSource() }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     // To reduce noise from synthetic nodes, only count value nodes
     node instanceof DataFlow::ValueNode and
     not node.getFile() instanceof IgnoredFile
   }
 }
 
+module BasicTaintFlow = TaintTracking::Global<BasicTaintConfig>;
+
 // Avoid linking to the source as this would upset the statistics: nodes reachable
-// from multiple sources would be counted multilpe times, and that's not what we intend to measure.
+// from multiple sources would be counted multiple times, and that's not what we intend to measure.
 from DataFlow::Node node
-where any(BasicTaintConfiguration cfg).hasFlow(_, node)
+where BasicTaintFlow::flowTo(node)
 select node, "Tainted node"
