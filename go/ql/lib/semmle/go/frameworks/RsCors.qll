@@ -173,7 +173,7 @@ module RsCors {
 
     RsOptions() {
       this = v.getBaseVariable().getSourceVariable() and
-      exists(Type t | t.hasQualifiedName(packagePath(), "Options") | v.getType() = t)
+      v.getType().hasQualifiedName(packagePath(), "Options")
     }
 
     /**
