@@ -25,7 +25,7 @@ Using local data flow
 
 The ``DataFlow`` module defines the class ``Node`` denoting any element that data can flow through.
 The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for expressions, ``ParameterNode`` for parameters, and ``InstructionNode`` for control-flow nodes.
-You can map between data flow nodes and expressions/control-flow nodes/parameters using the member predicates ``asExpr``, ``asParameter`` and ``asInstructionNode``:
+You can map between data flow nodes and expressions/control-flow nodes/parameters using the member predicates ``asExpr``, ``asParameter`` and ``asInstruction``:
 
 .. code-block:: ql
 
