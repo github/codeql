@@ -1,130 +1,42 @@
 nodes
-| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
-| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
-| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
-| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
-| TarSlipBad.js:6:36:6:46 | header.name |
-| TarSlipBad.js:6:36:6:46 | header.name |
-| TarSlipBad.js:6:36:6:46 | header.name |
-| TarSlipBad.js:6:36:6:46 | header.name |
-| TarSlipBad.js:9:17:9:31 | header.linkname |
-| TarSlipBad.js:9:17:9:31 | header.linkname |
-| TarSlipBad.js:9:17:9:31 | header.linkname |
-| TarSlipBad.js:9:17:9:31 | header.linkname |
-| ZipSlipBad2.js:5:9:5:46 | fileName |
-| ZipSlipBad2.js:5:9:5:46 | fileName |
-| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
-| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
-| ZipSlipBad2.js:5:37:5:46 | entry.path |
-| ZipSlipBad2.js:5:37:5:46 | entry.path |
-| ZipSlipBad2.js:5:37:5:46 | entry.path |
-| ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad.js:7:11:7:31 | fileName |
-| ZipSlipBad.js:7:11:7:31 | fileName |
-| ZipSlipBad.js:7:22:7:31 | entry.path |
-| ZipSlipBad.js:7:22:7:31 | entry.path |
-| ZipSlipBad.js:7:22:7:31 | entry.path |
-| ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:15:11:15:31 | fileName |
-| ZipSlipBad.js:15:11:15:31 | fileName |
-| ZipSlipBad.js:15:22:15:31 | entry.path |
-| ZipSlipBad.js:15:22:15:31 | entry.path |
-| ZipSlipBad.js:15:22:15:31 | entry.path |
-| ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:22:11:22:31 | fileName |
-| ZipSlipBad.js:22:11:22:31 | fileName |
-| ZipSlipBad.js:22:22:22:31 | entry.path |
-| ZipSlipBad.js:22:22:22:31 | entry.path |
-| ZipSlipBad.js:22:22:22:31 | entry.path |
-| ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:30:14:30:17 | name |
-| ZipSlipBad.js:30:14:30:17 | name |
-| ZipSlipBad.js:30:14:30:17 | name |
-| ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name |
-| ZipSlipBad.js:34:16:34:19 | name |
-| ZipSlipBad.js:34:16:34:19 | name |
-| ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
-| ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
-| ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
-| ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
-| ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName | semmle.label | zipEntry.entryName |
+| TarSlipBad.js:6:36:6:46 | header.name | semmle.label | header.name |
+| TarSlipBad.js:9:17:9:31 | header.linkname | semmle.label | header.linkname |
+| ZipSlipBad2.js:5:9:5:46 | fileName | semmle.label | fileName |
+| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | semmle.label | 'output ... ry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path | semmle.label | entry.path |
+| ZipSlipBad2.js:6:22:6:29 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:7:11:7:31 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:7:22:7:31 | entry.path | semmle.label | entry.path |
+| ZipSlipBad.js:8:37:8:44 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | semmle.label | entry.path |
+| ZipSlipBad.js:16:30:16:37 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:22:22:22:31 | entry.path | semmle.label | entry.path |
+| ZipSlipBad.js:23:28:23:35 | fileName | semmle.label | fileName |
+| ZipSlipBad.js:30:14:30:17 | name | semmle.label | name |
+| ZipSlipBad.js:31:26:31:29 | name | semmle.label | name |
+| ZipSlipBad.js:34:16:34:19 | name | semmle.label | name |
+| ZipSlipBad.js:35:26:35:29 | name | semmle.label | name |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | semmle.label | fileName |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | semmle.label | entry.path |
+| ZipSlipBadUnzipper.js:8:37:8:44 | fileName | semmle.label | fileName |
 edges
-| AdmZipBad.js:6:24:6:41 | zipEntry.entryName | AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
-| TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name |
-| TarSlipBad.js:9:17:9:31 | header.linkname | TarSlipBad.js:9:17:9:31 | header.linkname |
-| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
-| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | ZipSlipBad2.js:5:9:5:46 | fileName |
-| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | ZipSlipBad2.js:5:9:5:46 | fileName |
-| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
-| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
-| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
-| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
-| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
-| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
-| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
-| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
-| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
-| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
-| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
-| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
-| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
-| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
-| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
-| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
-| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
-| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
-| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
-| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
-| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
-| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
-| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName | provenance |  |
+| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | ZipSlipBad2.js:5:9:5:46 | fileName | provenance |  |
+| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | provenance | Config |
+| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName | provenance |  |
+| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName | provenance |  |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName | provenance |  |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName | provenance |  |
+| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName | provenance |  |
+| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName | provenance |  |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name | provenance |  |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name | provenance |  |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName | provenance |  |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName | provenance |  |
+subpaths
 #select
 | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | Unsanitized archive entry, which may contain '..', is used in a $@. | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | file system operation |
 | TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name | Unsanitized archive entry, which may contain '..', is used in a $@. | TarSlipBad.js:6:36:6:46 | header.name | file system operation |

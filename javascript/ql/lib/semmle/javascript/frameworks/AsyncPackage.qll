@@ -142,7 +142,7 @@ module AsyncPackage {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::FunctionNode iteratee, IterationCall call |
         iteratee = call.getIteratorCallback() and // Require a closure to avoid spurious call/return mismatch.
-        pred = call.getCollection() and
+        pred = call.getCollection() and // TODO: needs a flow summary to ensure ArrayElement content is unfolded
         succ = iteratee.getParameter(0)
       )
     }

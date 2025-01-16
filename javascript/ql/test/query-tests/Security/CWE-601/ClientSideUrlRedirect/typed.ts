@@ -1,11 +1,11 @@
 export class MyComponent {
     componentDidMount() {
         const { location }: { location: Location } = (this as any).props;
-        var params = location.search;
+        var params = location.search.substring(1);
         this.doRedirect(params);
     }
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri);
+        window.location.replace(redirectUri); // NOT OK
     }
 }
 
@@ -17,16 +17,16 @@ export class MyTrackingComponent {
             loc: location
         };
         var secondLoc = container.loc; // type-tracking step 1 - not the source
-        
-        this.myIndirectRedirect(secondLoc); 
+
+        this.myIndirectRedirect(secondLoc);
     }
 
     private myIndirectRedirect(loc) { // type-tracking step 2 - also not the source
-        this.doRedirect(loc.search);
+        this.doRedirect(loc.search.substring(1));
     }
 
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri);
+        window.location.replace(redirectUri); // NOT OK
     }
 }
 
@@ -38,21 +38,21 @@ export class WeirdTracking {
             loc: location
         };
         var secondLoc = container.loc; // type-tracking step 1 - not the source
-        
-        this.myIndirectRedirect(secondLoc); 
+
+        this.myIndirectRedirect(secondLoc);
     }
 
     private myIndirectRedirect(loc) { // type-tracking step 2 - also not the source
-        const loc2 : Location = (loc as any).componentDidMount;
-        this.doRedirect(loc.search);
-        this.doRedirect2(loc2.search);
+        const loc2: Location = (loc as any).componentDidMount;
+        this.doRedirect(loc.search.substring(1));
+        this.doRedirect2(loc2.search.substring(1));
     }
 
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK - and correctly flagged
+        window.location.replace(redirectUri); // NOT OK
     }
 
     private doRedirect2(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK - and correctly flagged
+        window.location.replace(redirectUri); // NOT OK
     }
 }

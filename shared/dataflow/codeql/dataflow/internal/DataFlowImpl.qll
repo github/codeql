@@ -3127,6 +3127,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override predicate isSource() { sourceNode(node, state) }
           }
 
+          bindingset[p, state, t, ap, stored]
+          pragma[inline_late]
+          private SummaryCtxSome mkSummaryCtxSome(
+            ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored
+          ) {
+            result = TSummaryCtxSome(p, state, t, ap, stored)
+          }
+
           pragma[nomagic]
           private predicate fwdFlowInStep(
             ArgNodeEx arg, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
@@ -3138,7 +3146,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             or
             FwdFlowInThrough::fwdFlowIn(_, arg, _, p, state, outercc, innercc, outerSummaryCtx, t,
               ap, stored, _) and
-            innerSummaryCtx = TSummaryCtxSome(p, state, t, ap, stored)
+            innerSummaryCtx = mkSummaryCtxSome(p, state, t, ap, stored)
           }
 
           pragma[nomagic]
@@ -3871,11 +3879,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[node, state, t0, ap]
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
         exists(state) and
-        // We can get away with not using type strengthening here, since we aren't
-        // going to use the tracked types in the construction of Stage 4 access
-        // paths. For Stage 4 and onwards, the tracked types must be consistent as
-        // the cons candidates including types are used to construct subsequent
-        // access path approximations.
         t0 = t and
         (
           notExpectsContent(node)
