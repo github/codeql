@@ -52,6 +52,27 @@ query predicate multipleParents(Element child, string childClass, Element parent
   parentClass = parent.getPrimaryQlClasses()
 }
 
+/** Holds if `parent` has multiple children at the same index. */
+query predicate multipleChildren(Element parent, int index, Element child1, Element child2) {
+  child1 = getChildAndAccessor(parent, index, _) and
+  child2 = getChildAndAccessor(parent, index, _) and
+  child1 != child2
+}
+
+/**
+ * Holds if `child` has multiple positions amongst the `accessor` children
+ * of `parent`.
+ *
+ * Children are allowed to have multiple positions for _different_ accessors,
+ * for example in an array repeat expression `[1; 10]`, `1` has positions for
+ * both `getRepeatOperand()` and `getExpr()`.
+ */
+query predicate multiplePositions(Element parent, int pos1, int pos2, string accessor, Element child) {
+  child = getChildAndAccessor(parent, pos1, accessor) and
+  child = getChildAndAccessor(parent, pos2, accessor) and
+  pos1 != pos2
+}
+
 /**
  * Gets counts of abstract syntax tree inconsistencies of each type.
  */
@@ -71,4 +92,10 @@ int getAstInconsistencyCounts(string type) {
   or
   type = "Multiple parents" and
   result = count(Element e | multipleParents(e) | e)
+  or
+  type = "Multiple children" and
+  result = count(Element e | multipleChildren(_, _, e, _) | e)
+  or
+  type = "Multiple positions" and
+  result = count(Element e | multiplePositions(_, _, _, _, e) | e)
 }

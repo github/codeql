@@ -165,7 +165,7 @@ module Impl {
 
   /**
    * A path expression that may access a local variable. These are paths that
-   * only consists of a simple name (i.e., without generic arguments,
+   * only consist of a simple name (i.e., without generic arguments,
    * qualifiers, etc.).
    */
   private class VariableAccessCand extends PathExprBase {
@@ -231,23 +231,115 @@ module Impl {
     )
   }
 
+  /** A subset of `Element`s for which we want to compute pre-order numbers. */
+  private class RelevantElement extends Element {
+    RelevantElement() {
+      this instanceof VariableScope or
+      this instanceof VariableAccessCand or
+      this instanceof LetStmt or
+      getImmediateChildAndAccessor(this, _, _) instanceof RelevantElement
+    }
+
+    pragma[nomagic]
+    private RelevantElement getChild(int index) {
+      result = getImmediateChildAndAccessor(this, index, _)
+    }
+
+    pragma[nomagic]
+    private RelevantElement getImmediateChildMin(int index) {
+      // A child may have multiple positions for different accessors,
+      // so always use the first
+      result = this.getChild(index) and
+      index = min(int i | result = this.getChild(i) | i)
+    }
+
+    pragma[nomagic]
+    RelevantElement getImmediateChild(int index) {
+      result =
+        rank[index + 1](Element res, int i | res = this.getImmediateChildMin(i) | res order by i)
+    }
+
+    pragma[nomagic]
+    RelevantElement getImmediateLastChild() {
+      exists(int last |
+        result = this.getImmediateChild(last) and
+        not exists(this.getImmediateChild(last + 1))
+      )
+    }
+  }
+
+  /**
+   * Gets the pre-order numbering of `n`, where the immediately enclosing
+   * variable scope of `n` is `scope`.
+   */
+  pragma[nomagic]
+  private int getPreOrderNumbering(VariableScope scope, RelevantElement n) {
+    n = scope and
+    result = 0
+    or
+    exists(RelevantElement parent |
+      not parent instanceof VariableScope
+      or
+      parent = scope
+    |
+      // first child of a previously numbered node
+      result = getPreOrderNumbering(scope, parent) + 1 and
+      n = parent.getImmediateChild(0)
+      or
+      // non-first child of a previously numbered node
+      exists(RelevantElement child, int i |
+        result = getLastPreOrderNumbering(scope, child) + 1 and
+        child = parent.getImmediateChild(i) and
+        n = parent.getImmediateChild(i + 1)
+      )
+    )
+  }
+
+  /**
+   * Gets the pre-order numbering of the _last_ node nested under `n`, where the
+   * immediately enclosing variable scope of `n` (and the last node) is `scope`.
+   */
+  pragma[nomagic]
+  private int getLastPreOrderNumbering(VariableScope scope, RelevantElement n) {
+    exists(RelevantElement leaf |
+      result = getPreOrderNumbering(scope, leaf) and
+      leaf != scope and
+      (
+        not exists(leaf.getImmediateChild(_))
+        or
+        leaf instanceof VariableScope
+      )
+    |
+      n = leaf
+      or
+      n.getImmediateLastChild() = leaf and
+      not n instanceof VariableScope
+    )
+    or
+    exists(RelevantElement mid |
+      mid = n.getImmediateLastChild() and
+      result = getLastPreOrderNumbering(scope, mid) and
+      not mid instanceof VariableScope and
+      not n instanceof VariableScope
+    )
+  }
+
   /**
    * Holds if `v` is named `name` and is declared inside variable scope
-   * `scope`, and `v` is bound starting from `(line, column)`.
+   * `scope`. The pre-order numbering of the binding site of `v`, amongst
+   * all nodes nester under `scope`, is `ord`.
    */
-  private predicate variableDeclInScope(
-    Variable v, VariableScope scope, string name, int line, int column
-  ) {
+  private predicate variableDeclInScope(Variable v, VariableScope scope, string name, int ord) {
     name = v.getName() and
     (
       parameterDeclInScope(v, scope) and
-      scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+      ord = getPreOrderNumbering(scope, scope)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |
         scope =
           any(MatchArmScope arm |
             arm.getPat() = pat and
-            arm.getLocation().hasLocationFileInfo(_, line, column, _, _)
+            ord = getPreOrderNumbering(scope, arm)
           )
         or
         exists(LetStmt let |
@@ -255,56 +347,53 @@ module Impl {
           scope = getEnclosingScope(let) and
           // for `let` statements, variables are bound _after_ the statement, i.e.
           // not in the RHS
-          let.getLocation().hasLocationFileInfo(_, _, _, line, column)
+          ord = getLastPreOrderNumbering(scope, let) + 1
         )
         or
         exists(IfExpr ie, LetExpr let |
           let.getPat() = pat and
           ie.getCondition() = let and
           scope = ie.getThen() and
-          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+          ord = getPreOrderNumbering(scope, scope)
         )
         or
         exists(ForExpr fe |
           fe.getPat() = pat and
           scope = fe.getLoopBody() and
-          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+          ord = getPreOrderNumbering(scope, scope)
         )
         or
         exists(WhileExpr we, LetExpr let |
           let.getPat() = pat and
           we.getCondition() = let and
           scope = we.getLoopBody() and
-          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+          ord = getPreOrderNumbering(scope, scope)
         )
       )
     )
   }
 
   /**
-   * Holds if `cand` may access a variable named `name` at
-   * `(startline, startcolumn, endline, endcolumn)` in the variable scope
-   * `scope`.
+   * Holds if `cand` may access a variable named `name` at pre-order number `ord`
+   * in the variable scope `scope`.
    *
    * `nestLevel` is the number of nested scopes that need to be traversed
    * to reach `scope` from `cand`.
    */
   private predicate variableAccessCandInScope(
-    VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int startline,
-    int startcolumn, int endline, int endcolumn
+    VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
   ) {
     name = cand.getName() and
     scope = [cand.(VariableScope), getEnclosingScope(cand)] and
-    cand.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn) and
+    ord = getPreOrderNumbering(scope, cand) and
     nestLevel = 0
     or
     exists(VariableScope inner |
-      variableAccessCandInScope(cand, inner, name, nestLevel - 1, _, _, _, _) and
+      variableAccessCandInScope(cand, inner, name, nestLevel - 1, _) and
       scope = getEnclosingScope(inner) and
-      // Use the location of the inner scope as the location of the access, instead of the
-      // actual access location. This allows us to collapse multiple accesses in inner
-      // scopes to a single entity
-      inner.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn)
+      // Use the pre-order number of the inner scope as the number of the access. This allows
+      // us to collapse multiple accesses in inner scopes to a single entity
+      ord = getPreOrderNumbering(scope, inner)
     )
   }
 
@@ -375,15 +464,12 @@ module Impl {
     }
 
     pragma[nomagic]
-    predicate rankBy(
-      string name, VariableScope scope, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      variableDeclInScope(this.asVariable(), scope, name, startline, startcolumn) and
-      endline = -1 and
-      endcolumn = -1
+    predicate rankBy(string name, VariableScope scope, int ord, int kind) {
+      variableDeclInScope(this.asVariable(), scope, name, ord) and
+      kind = 0
       or
-      variableAccessCandInScope(this.asVariableAccessCand(), scope, name, _, startline, startcolumn,
-        endline, endcolumn)
+      variableAccessCandInScope(this.asVariableAccessCand(), scope, name, _, ord) and
+      kind = 1
     }
   }
 
@@ -396,11 +482,10 @@ module Impl {
 
     int getRank(VariableScope scope, string name, VariableOrAccessCand v) {
       v =
-        rank[result](VariableOrAccessCand v0, int startline, int startcolumn, int endline,
-          int endcolumn |
-          v0.rankBy(name, scope, startline, startcolumn, endline, endcolumn)
+        rank[result](VariableOrAccessCand v0, int ord, int kind |
+          v0.rankBy(name, scope, ord, kind)
         |
-          v0 order by startline, startcolumn, endline, endcolumn
+          v0 order by ord, kind
         )
     }
   }
@@ -440,7 +525,7 @@ module Impl {
     exists(int rnk |
       variableReachesRank(scope, name, v, rnk) and
       rnk = rankVariableOrAccess(scope, name, TVariableOrAccessCandVariableAccessCand(cand)) and
-      variableAccessCandInScope(cand, scope, name, nestLevel, _, _, _, _)
+      variableAccessCandInScope(cand, scope, name, nestLevel, _)
     )
   }
 

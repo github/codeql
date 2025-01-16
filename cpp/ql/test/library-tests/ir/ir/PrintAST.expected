@@ -12445,11 +12445,11 @@ ir.cpp:
 # 1088| [ConstMemberFunction] bool std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator==(std::iterator<Category, value_type, difference_type, pointer_type, reference_type>) const
 # 1088|   <params>: 
 # 1088|     getParameter(0): [Parameter] other
-# 1088|         Type = [TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
+# 1088|         Type = [Struct,TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
 # 1089| [ConstMemberFunction] bool std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator!=(std::iterator<Category, value_type, difference_type, pointer_type, reference_type>) const
 # 1089|   <params>: 
 # 1089|     getParameter(0): [Parameter] other
-# 1089|         Type = [TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
+# 1089|         Type = [Struct,TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
 # 1089| [ConstMemberFunction] bool std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>::operator!=(std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>) const
 # 1089|   <params>: 
 # 1089|     getParameter(0): [Parameter] other
@@ -12497,7 +12497,7 @@ ir.cpp:
 # 1096| [MemberFunction] int std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator-(std::iterator<Category, value_type, difference_type, pointer_type, reference_type>)
 # 1096|   <params>: 
 # 1096|     getParameter(0): [Parameter] (unnamed parameter 0)
-# 1096|         Type = [TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
+# 1096|         Type = [Struct,TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
 # 1097| [MemberFunction] reference_type std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator[](int)
 # 1097|   <params>: 
 # 1097|     getParameter(0): [Parameter] (unnamed parameter 0)

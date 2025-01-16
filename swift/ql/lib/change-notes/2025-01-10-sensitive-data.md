@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.

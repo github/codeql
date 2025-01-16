@@ -1453,3 +1453,25 @@ private module Cached {
 }
 
 private import Cached
+
+/**
+ * Holds if `left < right + k` evaluates to `isLt` given that some guard
+ * evaluates to `value`.
+ *
+ * To find the specific guard that performs the comparison
+ * use `IRGuards.comparesLt`.
+ */
+predicate comparesLt(Operand left, Operand right, int k, boolean isLt, AbstractValue value) {
+  compares_lt(_, left, right, k, isLt, value)
+}
+
+/**
+ * Holds if `left = right + k` evaluates to `isLt` given that some guard
+ * evaluates to `value`.
+ *
+ * To find the specific guard that performs the comparison
+ * use `IRGuards.comparesEq`.
+ */
+predicate comparesEq(Operand left, Operand right, int k, boolean isLt, AbstractValue value) {
+  compares_eq(_, left, right, k, isLt, value)
+}

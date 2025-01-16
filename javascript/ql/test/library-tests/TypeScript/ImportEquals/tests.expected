@@ -1,3 +1,4 @@
+legacyDataFlowDifference
 dataFlowModuleImports
 | ./esDefaultExport | tst.ts:1:26:1:53 | require ... xport') |
 | ./esNamedExports | tst.ts:2:18:2:44 | require ... ports') |
@@ -29,4 +30,4 @@ resolution
 | tst.ts:10:1:10:20 | new NodeFullExport() | nodeFullExport.ts:3:18:3:40 | class N ... port {} | tst.ts | NodeFullExport | nodeFullExport.ts |
 | tst.ts:11:1:11:31 | new nod ... xport() | nodeNamedExport.ts:3:27:3:50 | class N ... port {} | tst.ts | NodeNamedExport | nodeNamedExport.ts |
 taint
-| test taint config | taintSource.ts:3:27:3:47 | externa ... ource() | tst.ts:18:19:18:42 | taintSo ... edValue |
+| taintSource.ts:3:27:3:47 | externa ... ource() | tst.ts:18:19:18:42 | taintSo ... edValue |

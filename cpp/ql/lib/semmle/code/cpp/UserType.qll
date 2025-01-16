@@ -129,4 +129,9 @@ class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
    * class or typedef.
    */
   predicate isTopLevel() { type_decl_top(underlyingElement(this)) }
+
+  /**
+   * Gets the requires clause if this declaration is a template with such a clause.
+   */
+  Expr getRequiresClause() { type_requires(underlyingElement(this), unresolveElement(result)) }
 }

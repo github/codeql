@@ -16,14 +16,20 @@ module CleartextLogging {
     /** Gets a string that describes the type of this data flow source. */
     abstract string describe();
 
-    abstract DataFlow::FlowLabel getLabel();
+    /**
+     * DEPRECATED. Overriding this predicate no longer has any effect.
+     */
+    deprecated DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
    * A data flow sink for clear-text logging of sensitive information.
    */
   abstract class Sink extends DataFlow::Node {
-    DataFlow::FlowLabel getLabel() { result.isTaint() }
+    /**
+     * DEPRECATED. Overriding this predicate no longer has any effect.
+     */
+    deprecated DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
@@ -106,29 +112,28 @@ module CleartextLogging {
   abstract private class NonCleartextPassword extends DataFlow::Node { }
 
   /**
-   * An object with a property that may contain password information
-   *
-   * This is a source since `console.log(obj)` will show the properties of `obj`.
+   * A value stored in a property that may contain password information
    */
   private class ObjectPasswordPropertySource extends DataFlow::ValueNode, Source {
     string name;
 
     ObjectPasswordPropertySource() {
       exists(DataFlow::PropWrite write |
+        write.getPropertyName() = name and
         name.regexpMatch(maybePassword()) and
         not name.regexpMatch(notSensitiveRegexp()) and
-        write = this.(DataFlow::SourceNode).getAPropertyWrite(name) and
+        this = write.getRhs() and
         // avoid safe values assigned to presumably unsafe names
-        not write.getRhs() instanceof NonCleartextPassword
+        not this instanceof NonCleartextPassword
       )
     }
 
     override string describe() { result = "an access to " + name }
-
-    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
-  /** An access to a variable or property that might contain a password. */
+  /**
+   * An access to a variable or property that might contain a password.
+   */
   private class ReadPasswordSource extends DataFlow::ValueNode, Source {
     string name;
 
@@ -150,8 +155,6 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an access to " + name }
-
-    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** A call that might return a password. */
@@ -164,8 +167,6 @@ module CleartextLogging {
     }
 
     override string describe() { result = "a call to " + name }
-
-    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** An access to the sensitive object `process.env`. */
@@ -173,8 +174,28 @@ module CleartextLogging {
     ProcessEnvSource() { this = NodeJSLib::process().getAPropertyRead("env") }
 
     override string describe() { result = "process environment" }
+  }
 
-    override DataFlow::FlowLabel getLabel() { result.isTaint() }
+  /** Gets a data flow node referring to `process.env`. */
+  private DataFlow::SourceNode processEnv(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof ProcessEnvSource
+    or
+    exists(DataFlow::TypeTracker t2 | result = processEnv(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to `process.env`. */
+  DataFlow::SourceNode processEnv() { result = processEnv(DataFlow::TypeTracker::end()) }
+
+  /**
+   * A property access on `process.env`, seen as a barrier.
+   */
+  private class SafeEnvironmentVariableBarrier extends Barrier instanceof DataFlow::PropRead {
+    SafeEnvironmentVariableBarrier() {
+      this = processEnv().getAPropertyRead() and
+      // If the name is known, it should not be sensitive
+      not nameIndicatesSensitiveData(this.getPropertyName(), _)
+    }
   }
 
   /**
@@ -186,26 +207,10 @@ module CleartextLogging {
     succ.(DataFlow::PropRead).getBase() = pred
   }
 
-  private class PropReadAsBarrier extends Barrier {
-    PropReadAsBarrier() {
-      this = any(DataFlow::PropRead read).getBase() and
-      // the 'foo' in 'foo.bar()' may have flow, we only want to suppress plain property reads
-      not this = any(DataFlow::MethodCallNode call).getReceiver() and
-      // do not block custom taint steps from this node
-      not isAdditionalTaintStep(this, _)
-    }
-  }
-
   /**
    * Holds if the edge `src` -> `trg` is an additional taint-step for clear-text logging of sensitive information.
    */
   predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
-    // A taint propagating data flow edge through objects: a tainted write taints the entire object.
-    exists(DataFlow::PropWrite write |
-      write.getRhs() = src and
-      trg.(DataFlow::SourceNode).flowsTo(write.getBase())
-    )
-    or
     // A property-copy step,
     // dst[x] = src[x]
     // dst[x] = JSON.stringify(src[x])
@@ -221,7 +226,7 @@ module CleartextLogging {
       not exists(read.getPropertyName()) and
       not isFilteredPropertyName(read.getPropertyNameExpr().flow().getALocalSource()) and
       src = read.getBase() and
-      trg = write.getBase().getALocalSource()
+      trg = write.getBase().getPostUpdateNode()
     )
     or
     // Taint through the arguments object.

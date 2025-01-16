@@ -715,6 +715,27 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * specification.
    */
   predicate isNoExcept() { fun_decl_empty_noexcept(underlyingElement(this)) }
+
+  /**
+   * Gets a requires clause if this declaration is a template with such a clause.
+   */
+  Expr getARequiresClause() { fun_requires(underlyingElement(this), _, unresolveElement(result)) }
+
+  /**
+   * Gets the requires clause that appears after the template argument list if this
+   * declaration is a template with such a clause.
+   */
+  Expr getTemplateRequiresClause() {
+    fun_requires(underlyingElement(this), 1, unresolveElement(result))
+  }
+
+  /**
+   * Gets the requires clause that appears after the declarator if this declaration
+   * is a template with such a clause.
+   */
+  Expr getFunctionRequiresClause() {
+    fun_requires(underlyingElement(this), 2, unresolveElement(result))
+  }
 }
 
 /**

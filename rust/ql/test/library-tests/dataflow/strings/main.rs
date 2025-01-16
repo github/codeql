@@ -83,8 +83,8 @@ fn format_macro() {
     let s2 = "2";
     let s3 = "3";
 
-    sink(format!("{}", s1)); // $ MISSING: hasTaintFlow=34
-    sink(format!("{s1} and {s3}")); // $ MISSING: hasTaintFlow=34
+    sink(format!("{}", s1)); // $ hasTaintFlow=34
+    sink(format!("{s1} and {s3}")); // $ hasTaintFlow=34
     sink(format!("{s2} and {s3}"));
 }
 

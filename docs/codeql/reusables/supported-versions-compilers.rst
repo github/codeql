@@ -29,7 +29,7 @@
 
 .. container:: footnote-group
 
-    .. [1] C++20 support is currently in beta. Modules are *not* supported.
+    .. [1] C++20 modules are *not* supported.
     .. [2] Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.
     .. [3] Support for the clang-cl compiler is preliminary.
     .. [4] Support for the Arm Compiler (armcc) is preliminary.
