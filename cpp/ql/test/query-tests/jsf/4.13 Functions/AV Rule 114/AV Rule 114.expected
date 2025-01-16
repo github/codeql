@@ -3,9 +3,6 @@
 | test.c:8:5:8:14 | declaration | Function f2 should return a value of type int but does not return a value here |
 | test.c:25:9:25:14 | ExprStmt | Function f4 should return a value of type int but does not return a value here |
 | test.c:39:9:39:14 | ExprStmt | Function f6 should return a value of type int but does not return a value here |
-| test.c:117:5:117:10 | ExprStmt | Function f19 should return a value of type int but does not return a value here |
-| test.c:123:5:123:10 | ExprStmt | Function f21 should return a value of type int but does not return a value here |
-| test.c:135:5:135:10 | ExprStmt | Function f25 should return a value of type int but does not return a value here |
 | test.cpp:16:1:18:1 | { ... } | Function g2 should return a value of type MyValue but does not return a value here |
 | test.cpp:52:1:52:1 | return ... | Function g7 should return a value of type MyValue but does not return a value here |
 | test.cpp:74:1:76:1 | { ... } | Function g10 should return a value of type second but does not return a value here |

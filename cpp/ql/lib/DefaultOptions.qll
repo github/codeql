@@ -54,11 +54,11 @@ class Options extends string {
    *
    * By default, this holds for `exit`, `_exit`, `_Exit`, `abort`,
    * `__assert_fail`, `longjmp`, `__builtin_unreachable` and any
-   * function with a `noreturn` or `__noreturn__` attribute or
-   * `noreturn` specifier.
+   * function with a `noreturn`, `__noreturn__`, `_Noreturn`, or
+   * `_noreturn` attribute or `noreturn` specifier.
    */
   predicate exits(Function f) {
-    f.getAnAttribute().hasName(["noreturn", "__noreturn__"])
+    f.getAnAttribute().hasName(["noreturn", "__noreturn__", "_Noreturn", "_noreturn"])
     or
     f.getASpecifier().hasName("noreturn")
     or
