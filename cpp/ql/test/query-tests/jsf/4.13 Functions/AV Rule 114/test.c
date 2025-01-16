@@ -129,7 +129,7 @@ int f23() {
     f22(); // GOOD
 }
 
-[[___noreturn__]] void f24();
+[[__noreturn__]] void f24();
 
 int f25() {
     f24(); // GOOD
