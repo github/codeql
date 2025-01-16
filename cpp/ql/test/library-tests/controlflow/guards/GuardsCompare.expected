@@ -405,10 +405,78 @@
 | 158 | p != 0 when p is true |
 | 158 | p == 0 when ! ... is true |
 | 158 | p == 0 when p is false |
+| 160 | ! ... != 0 when ! ... is true |
+| 160 | ! ... != 0 when c is false |
+| 160 | ! ... != 1 when ! ... is false |
+| 160 | ! ... != 1 when c is true |
+| 160 | ! ... == 0 when ! ... is false |
+| 160 | ! ... == 0 when c is true |
+| 160 | ! ... == 1 when ! ... is true |
+| 160 | ! ... == 1 when c is false |
+| 160 | ... != ... != 0 when ! ... is false |
+| 160 | ... != ... != 0 when c is true |
+| 160 | ... != ... != 1 when ! ... is true |
+| 160 | ... != ... != 1 when c is false |
+| 160 | ... != ... == 0 when ! ... is true |
+| 160 | ... != ... == 0 when c is false |
+| 160 | ... != ... == 1 when ! ... is false |
+| 160 | ... != ... == 1 when c is true |
+| 160 | a != b+0 when ! ... is false |
+| 160 | a != b+0 when c is true |
+| 160 | a == b+0 when ! ... is true |
+| 160 | a == b+0 when c is false |
+| 160 | b != a+0 when ! ... is false |
+| 160 | b != a+0 when c is true |
+| 160 | b == a+0 when ! ... is true |
+| 160 | b == a+0 when c is false |
+| 160 | c != 0 when ! ... is false |
+| 160 | c != 0 when c is true |
+| 160 | c != 1 when ! ... is true |
+| 160 | c != 1 when c is false |
+| 160 | c == 0 when ! ... is true |
+| 160 | c == 0 when c is false |
+| 160 | c == 1 when ! ... is false |
+| 160 | c == 1 when c is true |
 | 164 | s != 0 when s is true |
 | 164 | s != 1 when s is false |
 | 164 | s == 0 when s is false |
 | 164 | s == 1 when s is true |
+| 168 | 10 < a+0 when ! ... is false |
+| 168 | 10 < a+0 when b is true |
+| 168 | 10 >= a+0 when ! ... is true |
+| 168 | 10 >= a+0 when b is false |
+| 168 | ! ... != 0 when ! ... is true |
+| 168 | ! ... != 0 when b is false |
+| 168 | ! ... != 1 when ! ... is false |
+| 168 | ! ... != 1 when b is true |
+| 168 | ! ... == 0 when ! ... is false |
+| 168 | ! ... == 0 when b is true |
+| 168 | ! ... == 1 when ! ... is true |
+| 168 | ! ... == 1 when b is false |
+| 168 | ... > ... != 0 when ! ... is false |
+| 168 | ... > ... != 0 when b is true |
+| 168 | ... > ... != 1 when ! ... is true |
+| 168 | ... > ... != 1 when b is false |
+| 168 | ... > ... == 0 when ! ... is true |
+| 168 | ... > ... == 0 when b is false |
+| 168 | ... > ... == 1 when ! ... is false |
+| 168 | ... > ... == 1 when b is true |
+| 168 | a < 10+1 when ! ... is true |
+| 168 | a < 10+1 when b is false |
+| 168 | a < 11 when ! ... is true |
+| 168 | a < 11 when b is false |
+| 168 | a >= 10+1 when ! ... is false |
+| 168 | a >= 10+1 when b is true |
+| 168 | a >= 11 when ! ... is false |
+| 168 | a >= 11 when b is true |
+| 168 | b != 0 when ! ... is false |
+| 168 | b != 0 when b is true |
+| 168 | b != 1 when ! ... is true |
+| 168 | b != 1 when b is false |
+| 168 | b == 0 when ! ... is true |
+| 168 | b == 0 when b is false |
+| 168 | b == 1 when ! ... is false |
+| 168 | b == 1 when b is true |
 | 170 | ! ... != 0 when ! ... is true |
 | 170 | ! ... != 0 when s is false |
 | 170 | ! ... != 1 when ! ... is false |
@@ -423,16 +491,44 @@
 | 170 | s == 0 when s is false |
 | 176 | ! ... != 0 when ! ... is true |
 | 176 | ! ... != 0 when ... < ... is false |
+| 176 | ! ... != 0 when c is false |
 | 176 | ! ... != 1 when ! ... is false |
 | 176 | ! ... != 1 when ... < ... is true |
+| 176 | ! ... != 1 when c is true |
 | 176 | ! ... == 0 when ! ... is false |
 | 176 | ! ... == 0 when ... < ... is true |
+| 176 | ! ... == 0 when c is true |
 | 176 | ! ... == 1 when ! ... is true |
 | 176 | ! ... == 1 when ... < ... is false |
+| 176 | ! ... == 1 when c is false |
 | 176 | ... < ... != 0 when ! ... is false |
 | 176 | ... < ... != 0 when ... < ... is true |
 | 176 | ... < ... == 0 when ! ... is true |
 | 176 | ... < ... == 0 when ... < ... is false |
+| 176 | ... > ... != 0 when ! ... is false |
+| 176 | ... > ... != 0 when c is true |
+| 176 | ... > ... != 1 when ! ... is true |
+| 176 | ... > ... != 1 when c is false |
+| 176 | ... > ... == 0 when ! ... is true |
+| 176 | ... > ... == 0 when c is false |
+| 176 | ... > ... == 1 when ! ... is false |
+| 176 | ... > ... == 1 when c is true |
+| 176 | a < b+1 when ! ... is true |
+| 176 | a < b+1 when c is false |
+| 176 | a >= b+1 when ! ... is false |
+| 176 | a >= b+1 when c is true |
+| 176 | b < a+0 when ! ... is false |
+| 176 | b < a+0 when c is true |
+| 176 | b >= a+0 when ! ... is true |
+| 176 | b >= a+0 when c is false |
+| 176 | c != 0 when ! ... is false |
+| 176 | c != 0 when c is true |
+| 176 | c != 1 when ! ... is true |
+| 176 | c != 1 when c is false |
+| 176 | c == 0 when ! ... is true |
+| 176 | c == 0 when c is false |
+| 176 | c == 1 when ! ... is false |
+| 176 | c == 1 when c is true |
 | 182 | 1.0 < foo+1 when ... < ... is false |
 | 182 | 1.0 >= foo+1 when ... && ... is true |
 | 182 | 1.0 >= foo+1 when ... < ... is true |
@@ -469,3 +565,39 @@
 | 182 | foo >= 1.0+0 when ... < ... is false |
 | 182 | foo >= 9.999999999999999547e-07+0 when ... && ... is true |
 | 182 | foo >= 9.999999999999999547e-07+0 when ... >= ... is true |
+| 190 | ! ... != 0 when ! ... is true |
+| 190 | ! ... != 0 when c is false |
+| 190 | ! ... != 1 when ! ... is false |
+| 190 | ! ... != 1 when c is true |
+| 190 | ! ... == 0 when ! ... is false |
+| 190 | ! ... == 0 when c is true |
+| 190 | ! ... == 1 when ! ... is true |
+| 190 | ! ... == 1 when c is false |
+| 190 | c != 0 when ! ... is false |
+| 190 | c != 0 when c is true |
+| 190 | c == 0 when ! ... is true |
+| 190 | c == 0 when c is false |
+| 198 | ! ... != 0 when ! ... is true |
+| 198 | ! ... != 0 when b is false |
+| 198 | ! ... != 1 when ! ... is false |
+| 198 | ! ... != 1 when b is true |
+| 198 | ! ... == 0 when ! ... is false |
+| 198 | ! ... == 0 when b is true |
+| 198 | ! ... == 1 when ! ... is true |
+| 198 | ! ... == 1 when b is false |
+| 198 | b != 0 when ! ... is false |
+| 198 | b != 0 when b is true |
+| 198 | b == 0 when ! ... is true |
+| 198 | b == 0 when b is false |
+| 206 | ! ... != 0 when ! ... is true |
+| 206 | ! ... != 0 when c is false |
+| 206 | ! ... != 1 when ! ... is false |
+| 206 | ! ... != 1 when c is true |
+| 206 | ! ... == 0 when ! ... is false |
+| 206 | ! ... == 0 when c is true |
+| 206 | ! ... == 1 when ! ... is true |
+| 206 | ! ... == 1 when c is false |
+| 206 | c != 0 when ! ... is false |
+| 206 | c != 0 when c is true |
+| 206 | c == 0 when ! ... is true |
+| 206 | c == 0 when c is false |

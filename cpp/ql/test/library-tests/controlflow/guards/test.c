@@ -183,3 +183,27 @@ void test11(double foo) {
 
     }
 }
+
+void test12(int a, int b) {
+  int c = a != b;
+
+  if (!c) {
+
+  }
+}
+
+void test13(int a) {
+  int b = a > 10;
+
+  if (!b) {
+
+  }
+}
+
+void test14(int a, int b) {
+  int c = a > b;
+
+  if (!c) {
+
+  }
+}
