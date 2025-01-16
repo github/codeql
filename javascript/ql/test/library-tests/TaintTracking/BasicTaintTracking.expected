@@ -1,3 +1,4 @@
+consistencyIssue
 typeInferenceMismatch
 | call-apply.js:27:14:27:21 | source() | call-apply.js:3:1:5:1 | 'arguments' object of function foo1 |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:7:1:9:1 | 'arguments' object of function foo2 |
@@ -7,9 +8,9 @@ typeInferenceMismatch
 | call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | reflective call |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | reflective call |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:33:6:33:35 | reflective call |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:64:3:66:3 | 'arguments' object of function sinkArguments1 |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:67:3:69:3 | 'arguments' object of function sinkArguments0 |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:71:3:74:3 | 'arguments' object of function fowardArguments |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:58:3:60:3 | 'arguments' object of function sinkArguments1 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:61:3:63:3 | 'arguments' object of function sinkArguments0 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:65:3:68:3 | 'arguments' object of function fowardArguments |
 | destruct.js:20:7:20:14 | source() | destruct.js:13:14:13:19 | [a, b] |
 #select
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
@@ -51,22 +52,22 @@ typeInferenceMismatch
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:22:10:22:10 | x |
-| bound-function.js:12:12:12:19 | source() | bound-function.js:4:10:4:10 | y |
-| bound-function.js:14:6:14:13 | source() | bound-function.js:4:10:4:10 | y |
-| bound-function.js:22:8:22:15 | source() | bound-function.js:25:10:25:10 | y |
-| bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
-| bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
-| bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |
+| bound-function.js:17:21:17:28 | source() | bound-function.js:5:10:5:16 | y.test2 |
+| bound-function.js:19:15:19:22 | source() | bound-function.js:6:10:6:16 | y.test3 |
+| bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y |
+| bound-function.js:50:10:50:17 | source() | bound-function.js:50:6:50:18 | id3(source()) |
+| bound-function.js:54:12:54:19 | source() | bound-function.js:59:6:59:14 | source0() |
+| bound-function.js:54:12:54:19 | source() | bound-function.js:60:6:60:14 | source1() |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | foo1.ca ... ce, "") |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:33:6:33:35 | foo2.ap ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:40:6:40:29 | foo1_ap ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:46:6:46:28 | foo1_ca ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:47:6:47:28 | foo1_ca ... ource]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:65:10:65:21 | arguments[1] |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:68:10:68:21 | arguments[0] |
-| call-apply.js:87:17:87:24 | source() | call-apply.js:84:8:84:11 | this |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:40:6:40:28 | foo1_ca ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:41:6:41:28 | foo1_ca ... ource]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:59:10:59:21 | arguments[1] |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:62:10:62:21 | arguments[0] |
+| call-apply.js:81:17:81:24 | source() | call-apply.js:78:8:78:11 | this |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
 | callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |
@@ -81,6 +82,7 @@ typeInferenceMismatch
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
 | capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
+| capture-flow.js:48:16:48:23 | source() | capture-flow.js:48:6:48:24 | innerRead(source()) |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | case.js:2:16:2:23 | source() | case.js:5:8:5:35 | changeC ... source) |
 | case.js:2:16:2:23 | source() | case.js:8:8:8:24 | camelCase(source) |

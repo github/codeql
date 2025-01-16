@@ -1,8 +1,8 @@
 function test() {
   let x = source();
-  
+
   sink(x); // NOT OK
-  
+
   if (isSafe(x)) {
     sink(x); // OK
   }
@@ -18,7 +18,7 @@ class C {
       sink(this.x); // OK
 
       addEventListener('hey', () => {
-        sink(this.x); // OK - but still flagged
+        sink(this.x); // OK - but still flagged [INCONSISTENCY]
       });
     }
 
@@ -77,13 +77,13 @@ function phi2() {
 
 function falsy() {
   let x = source();
-  
+
   sink(x); // NOT OK
-  
+
   if (x) {
-    sink(x); // OK (for taint-tracking)
+    sink(x); // NOT OK (for taint-tracking)
   } else {
-	sink(x); // NOT OK
+	  sink(x); // OK
   }
 }
 

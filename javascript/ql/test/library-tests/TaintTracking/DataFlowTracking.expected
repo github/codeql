@@ -13,18 +13,18 @@
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:22:10:22:10 | x |
-| bound-function.js:12:12:12:19 | source() | bound-function.js:4:10:4:10 | y |
-| bound-function.js:14:6:14:13 | source() | bound-function.js:4:10:4:10 | y |
-| bound-function.js:22:8:22:15 | source() | bound-function.js:25:10:25:10 | y |
-| bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
-| bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
-| bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |
+| bound-function.js:17:21:17:28 | source() | bound-function.js:5:10:5:16 | y.test2 |
+| bound-function.js:19:15:19:22 | source() | bound-function.js:6:10:6:16 | y.test3 |
+| bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y |
+| bound-function.js:50:10:50:17 | source() | bound-function.js:50:6:50:18 | id3(source()) |
+| bound-function.js:54:12:54:19 | source() | bound-function.js:59:6:59:14 | source0() |
+| bound-function.js:54:12:54:19 | source() | bound-function.js:60:6:60:14 | source1() |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | foo1.ca ... ce, "") |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:46:6:46:28 | foo1_ca ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:68:10:68:21 | arguments[0] |
-| call-apply.js:87:17:87:24 | source() | call-apply.js:84:8:84:11 | this |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:40:6:40:28 | foo1_ca ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:62:10:62:21 | arguments[0] |
+| call-apply.js:81:17:81:24 | source() | call-apply.js:78:8:78:11 | this |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
 | callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |
@@ -39,6 +39,7 @@
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
 | capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
+| capture-flow.js:46:16:46:23 | source() | capture-flow.js:46:6:46:24 | innerRead(source()) |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
@@ -102,7 +103,7 @@
 | sanitizer-guards.js:68:11:68:18 | source() | sanitizer-guards.js:75:8:75:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |
-| sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:86:7:86:7 | x |
+| sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:86:9:86:9 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:96:10:96:10 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
