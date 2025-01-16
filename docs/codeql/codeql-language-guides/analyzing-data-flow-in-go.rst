@@ -122,7 +122,7 @@ Then we can make the source more specific, for example an access to a parameter.
 
 .. code-block:: ql
 
-import go
+   import go
 
    from Function osOpen, CallExpr call, Parameter p
    where
