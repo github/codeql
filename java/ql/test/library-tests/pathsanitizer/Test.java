@@ -3,6 +3,9 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import android.net.Uri;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
 public class Test {
 
@@ -461,6 +464,147 @@ public class Test {
                 sink(source); // $ hasTaintFlow
                 sink(normalized); // $ hasTaintFlow
             }
+        }
+    }
+
+    private void fileConstructorValidation(String path) throws Exception {
+        // Use `indexOf` instead of `contains` for this test since a `contains`
+        // call in this scenario will already be sanitized due to the inclusion
+        // of `ValidatedVariableAccess` nodes in `defaultTaintSanitizer`.
+        if (path.indexOf("..") != -1)
+            throw new Exception();
+    }
+
+    public void fileConstructorSanitizer() throws Exception {
+        // PathTraversalGuard
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (!source.contains("..")) {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ MISSING: hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1Tainted = (File) source();
+            if (!source.contains("..")) {
+                // `f2` is unsafe if `f1` is tainted
+                File f2 = new File(f1Tainted, source);
+                sink(f2); // $ hasTaintFlow
+                sink(source); // $ MISSING: hasTaintFlow
+            } else {
+                File f3 = new File(f1Tainted, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1Null = null;
+            if (!source.contains("..")) {
+                // `f2` is unsafe if `f1` is null
+                File f2 = new File(f1Null, source);
+                sink(f2); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1Null, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (source.indexOf("..") == -1) {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ MISSING: hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (source.indexOf("..") != -1) {
+                File f2 = new File(f1, source);
+                sink(f2); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // Safe
+                sink(source); // $ MISSING: hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (source.lastIndexOf("..") == -1) {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ MISSING: hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        // validation method
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            fileConstructorValidation(source);
+            File f2 = new File(f1, source);
+            sink(f2); // Safe
+            sink(source); // $ MISSING: hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+
+            if (source.contains("..")) {
+                throw new Exception();
+            } else {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ MISSING: hasTaintFlow
+            }
+        }
+        // PathNormalizeSanitizer
+        {
+            File source = (File) source();
+            String normalized = source.getCanonicalPath();
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+            sink(normalized); // $ MISSING: hasTaintFlow
+        }
+        {
+            File source = (File) source();
+            String normalized = source.getCanonicalFile().toString();
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+            sink(normalized); // $ MISSING: hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            String normalized = Paths.get(source).normalize().toString();
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+            sink(normalized); // $ MISSING: hasTaintFlow
         }
     }
 }

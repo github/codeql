@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.frameworks.kotlin.IO
 private import semmle.code.java.frameworks.kotlin.Text
+private import semmle.code.java.dataflow.Nullness
 
 /** A sanitizer that protects against path injection vulnerabilities. */
 abstract class PathInjectionSanitizer extends DataFlow::Node { }
@@ -143,8 +144,7 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   //  String strPath = path.toString();
   //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
   //    sink(path);
-  branch = g.(PathTraversalGuard).getBranch() and
-  localTaintFlowToPathGuard(e, g) and
+  pathTraversalGuard(g, e, branch) and
   exists(Guard previousGuard |
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
@@ -349,6 +349,46 @@ private class FileGetNameSanitizer extends PathInjectionSanitizer {
     exists(MethodCall mc |
       mc.getMethod().hasQualifiedName("java.io", "File", "getName") and
       this.asExpr() = mc
+    )
+  }
+}
+
+/** Holds if `expr` may be null. */
+private predicate maybeNull(Expr expr) {
+  exists(DataFlow::Node src, DataFlow::Node sink |
+    src.asExpr() = nullExpr() and
+    sink.asExpr() = expr
+  |
+    DataFlow::localFlow(src, sink)
+  )
+}
+
+/** Holds if `g` is a guard that checks for `..` components. */
+private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
+  branch = g.(PathTraversalGuard).getBranch() and
+  localTaintFlowToPathGuard(e, g)
+}
+
+/**
+ * A sanitizer that considers the second argument to a `File` constructor safe
+ * if it is checked for `..` components (`PathTraversalGuard`) or if any internal
+ * `..` components are removed from it (`PathNormalizeSanitizer`).
+ */
+private class FileConstructorSanitizer extends PathInjectionSanitizer {
+  FileConstructorSanitizer() {
+    exists(ConstructorCall constrCall, Argument arg |
+      constrCall.getConstructedType() instanceof TypeFile and
+      // Exclude cases where the parent argument is null since the
+      // `java.io.File` documentation states that such cases are
+      // treated as if invoking the single-argument `File` constructor.
+      not maybeNull(constrCall.getArgument(0)) and
+      arg = constrCall.getArgument(1) and
+      (
+        arg = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode().asExpr() or
+        arg = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode().asExpr() or
+        TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), arg)
+      ) and
+      this.asExpr() = arg
     )
   }
 }
