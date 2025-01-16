@@ -20,12 +20,12 @@ private module TaintReachConfig implements DataFlow::ConfigSig {
 private module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
 
 /**
- * Gets the total number of dataflow nodes that taint reaches (from any source).
+ * Gets the total number of data flow nodes that taint reaches (from any source).
  */
 int getTaintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::flowTo(n)) }
 
 /**
- * Gets the proportion of dataflow nodes that taint reaches (from any source),
+ * Gets the proportion of data flow nodes that taint reaches (from any source),
  * expressed as a count per million nodes.
  */
 float getTaintReach() { result = (getTaintedNodesCount() * 1000000.0) / count(DataFlow::Node n) }

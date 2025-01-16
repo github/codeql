@@ -64,4 +64,4 @@ string getAQuerySinkKind(DataFlow::Node n) {
 /**
  * Gets a count of the total number of query sinks in the database.
  */
-int getQuerySinksCount() { result = count(DataFlow::Node n | exists(getAQuerySinkKind(n)) | n) }
+int getQuerySinksCount() { result = count(DataFlow::Node n | exists(getAQuerySinkKind(n))) }
