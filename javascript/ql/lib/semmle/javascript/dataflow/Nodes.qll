@@ -1611,7 +1611,12 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
    * Gets the AST of the regular expression created here, provided that the
    * first argument is a string literal.
    */
-  RegExpTerm getRoot() { result = this.getArgument(0).asExpr().(StringLiteral).asRegExp() }
+  RegExpTerm getRoot() {
+    result = this.getArgument(0).asExpr().(StringLiteral).asRegExp()
+    or
+    // In case someone writes `new RegExp(/foo/)` for some reason
+    result = this.getArgument(0).asExpr().(RegExpLiteral).getRoot()
+  }
 
   /**
    * Gets the flags provided in the second argument, or an empty string if no
@@ -1701,5 +1706,20 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   DataFlow::SourceNode getAReference() {
     Stages::FlowSteps::ref() and
     result = this.getAReference(DataFlow::TypeTracker::end())
+  }
+}
+
+/**
+ * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+ * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
+ */
+class VarAccessBarrier extends DataFlow::Node {
+  VarAccessBarrier() {
+    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
+      this = DataFlow::ssaDefinitionNode(refinement) and
+      refinement.getGuard() = guard and
+      guard.getTest() instanceof VarAccess and
+      guard.getOutcome() = false
+    )
   }
 }

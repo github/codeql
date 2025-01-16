@@ -1451,6 +1451,8 @@
 | GuardedString.cs:35:31:35:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
 | GuardedString.cs:37:31:37:31 | access to local variable s | non-null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | non-null |
 | GuardedString.cs:37:31:37:31 | access to local variable s | null | GuardedString.cs:7:20:7:32 | ... ? ... : ... | null |
+| ImplicitToString.cs:8:23:8:23 | access to local variable o | non-null | ImplicitToString.cs:7:20:7:23 | null | non-null |
+| ImplicitToString.cs:8:23:8:23 | access to local variable o | null | ImplicitToString.cs:7:20:7:23 | null | null |
 | NullAlwaysBad.cs:9:17:9:25 | ... != ... | false | NullAlwaysBad.cs:9:17:9:17 | access to parameter s | null |
 | NullAlwaysBad.cs:9:17:9:25 | ... != ... | true | NullAlwaysBad.cs:9:17:9:17 | access to parameter s | non-null |
 | NullAlwaysBad.cs:9:17:9:41 | ... \|\| ... | false | NullAlwaysBad.cs:9:17:9:25 | ... != ... | false |

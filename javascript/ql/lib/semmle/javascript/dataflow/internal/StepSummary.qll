@@ -1,6 +1,8 @@
 import javascript
 private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.Contents as Contents
+private import sharedlib.SummaryTypeTracker as SummaryTypeTracker
 private import FlowSteps
 
 cached
@@ -29,6 +31,8 @@ private module Cached {
         SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
         or
         this = DataFlow::PseudoProperties::arrayLikeElement()
+        or
+        this instanceof Contents::Private::PropertyName
       }
     }
 
@@ -45,6 +49,12 @@ private module Cached {
       CopyStep(PropertyName prop) or
       LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
         SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
+        or
+        exists(DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent |
+          SummaryTypeTracker::basicLoadStoreStep(_, _, loadContent, storeContent) and
+          fromProp = loadContent.asPropertyName() and
+          toProp = storeContent.asPropertyName()
+        )
         or
         summarizedLoadStoreStep(_, _, fromProp, toProp)
       } or
@@ -204,6 +214,21 @@ private module Cached {
       pred = parameter.getAnInvocation().getArgument(i) and
       succ = getACallbackSource(parameter).getParameter(i) and
       summary = ReturnStep()
+    )
+    or
+    SummaryTypeTracker::levelStepNoCall(pred, succ) and summary = LevelStep()
+    or
+    exists(DataFlow::ContentSet content |
+      SummaryTypeTracker::basicLoadStep(pred, succ, content) and
+      summary = LoadStep(content.asPropertyName())
+      or
+      SummaryTypeTracker::basicStoreStep(pred, succ, content) and
+      summary = StoreStep(content.asPropertyName())
+    )
+    or
+    exists(DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent |
+      SummaryTypeTracker::basicLoadStoreStep(pred, succ, loadContent, storeContent) and
+      summary = LoadStoreStep(loadContent.asPropertyName(), storeContent.asPropertyName())
     )
   }
 }

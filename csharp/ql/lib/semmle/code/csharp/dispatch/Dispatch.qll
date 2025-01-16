@@ -857,7 +857,7 @@ private module Internal {
     private predicate hasDynamicArg(int i, Type argumentType) {
       exists(Expr argument |
         argument = this.getArgument(i) and
-        argument.stripImplicitCasts().getType() instanceof DynamicType and
+        argument.stripImplicit().getType() instanceof DynamicType and
         argumentType = getAPossibleType(argument, _)
       )
     }

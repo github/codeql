@@ -42,7 +42,7 @@ function test() {
 
     let taintGetter = id.bind(null, taint);
     sink(taintGetter);   // OK - this is a function object
-    sink(taintGetter()); // NOT OK - but not currently detected
+    sink(taintGetter()); // NOT OK - but not currently detected [INCONSISTENCY]
 
     function safearray(x) {
         sink(x); // OK

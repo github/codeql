@@ -1,6 +1,7 @@
 import javascript
 
-class Configuration extends TaintTracking::Configuration {
+// Note: this test has not been ported to ConfigSig, because isAdditionalLoadStep has no equivalent there
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "PromiseFlowTestingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -33,6 +34,6 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::Node pred, DataFlow::Node succ, Configuration cfg
-where cfg.hasFlow(pred, succ)
-select pred, succ
+deprecated query predicate flow(DataFlow::Node source, DataFlow::Node sink) {
+  any(Configuration cfg).hasFlow(source, sink)
+}
