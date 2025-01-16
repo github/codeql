@@ -2,3 +2,5 @@
 | implicitToString.cs:37:22:37:30 | call to method ToString |
 | implicitToString.cs:39:22:39:30 | call to method ToString |
 | implicitToString.cs:44:23:44:42 | call to method ToString |
+| implicitToString.cs:49:23:49:32 | call to method ToString |
+| implicitToString.cs:52:23:52:32 | call to method ToString |
