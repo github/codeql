@@ -14,4 +14,4 @@ import codeql.rust.dataflow.DataFlow
 import Stats
 
 from DataFlow::Node n
-select n, "Sink for " + strictconcat(getAQuerySinkKind(n), ", ")
+select n, "Sink for " + strictconcat(getAQuerySinkKind(n), ", ") + "."
