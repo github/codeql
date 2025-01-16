@@ -3879,11 +3879,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[node, state, t0, ap]
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
         exists(state) and
-        // We can get away with not using type strengthening here, since we aren't
-        // going to use the tracked types in the construction of Stage 4 access
-        // paths. For Stage 4 and onwards, the tracked types must be consistent as
-        // the cons candidates including types are used to construct subsequent
-        // access path approximations.
         t0 = t and
         (
           notExpectsContent(node)
