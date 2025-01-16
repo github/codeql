@@ -540,6 +540,8 @@ unary
 | test.cpp:125:13:125:20 | ! ... | test.cpp:125:13:125:20 | ! ... | == | 1 | 125 | 125 |
 | test.cpp:125:13:125:20 | ! ... | test.cpp:125:14:125:17 | call to safe | != | 1 | 125 | 125 |
 | test.cpp:125:13:125:20 | ! ... | test.cpp:125:14:125:17 | call to safe | == | 0 | 125 | 125 |
+| test.cpp:125:14:125:17 | call to safe | test.cpp:125:13:125:20 | ! ... | != | 0 | 125 | 125 |
+| test.cpp:125:14:125:17 | call to safe | test.cpp:125:13:125:20 | ! ... | == | 1 | 125 | 125 |
 | test.cpp:125:14:125:17 | call to safe | test.cpp:125:14:125:17 | call to safe | != | 1 | 125 | 125 |
 | test.cpp:125:14:125:17 | call to safe | test.cpp:125:14:125:17 | call to safe | == | 0 | 125 | 125 |
 | test.cpp:131:6:131:21 | call to __builtin_expect | test.cpp:131:6:131:21 | call to __builtin_expect | != | 0 | 131 | 132 |

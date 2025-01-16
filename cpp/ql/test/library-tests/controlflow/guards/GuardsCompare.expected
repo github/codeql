@@ -262,9 +262,13 @@
 | 122 | b == 0 when b is false |
 | 122 | b == 1 when b is true |
 | 125 | ! ... != 0 when ! ... is true |
+| 125 | ! ... != 0 when call to safe is false |
 | 125 | ! ... != 1 when ! ... is false |
+| 125 | ! ... != 1 when call to safe is true |
 | 125 | ! ... == 0 when ! ... is false |
+| 125 | ! ... == 0 when call to safe is true |
 | 125 | ! ... == 1 when ! ... is true |
+| 125 | ! ... == 1 when call to safe is false |
 | 125 | call to safe != 0 when ! ... is false |
 | 125 | call to safe != 0 when call to safe is true |
 | 125 | call to safe != 1 when ! ... is true |

@@ -268,7 +268,6 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
     exists(NotExpr notExpr, Type t |
       this = notExpr.getOperand() and
       t = this.getUnspecifiedType() and
-      not t instanceof BoolType and
       ir.getUnconvertedResultExpression() = notExpr
     )
   }
