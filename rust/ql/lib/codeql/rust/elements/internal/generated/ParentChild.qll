@@ -12,6 +12,21 @@ private module Impl {
     none()
   }
 
+  private Element getImmediateChildOfEnumVariant(
+    EnumVariant e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfExtractorStep(
     ExtractorStep e, int index, string partialPredicateCall
   ) {
@@ -27,7 +42,76 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfImplItem(ImplItem e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfLocatable(Locatable e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfModuleContainer(
+    ModuleContainer e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfType(Type e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeBoundType(
+    TypeBoundType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeItem(TypeItem e, int index, string partialPredicateCall) {
     exists(int b, int bElement, int n |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
@@ -55,6 +139,47 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfValueItem(ValueItem e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfVariantData(
+    VariantData e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfArrayType(ArrayType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfAstNode(AstNode e, int index, string partialPredicateCall) {
     exists(int b, int bLocatable, int n |
       b = 0 and
@@ -64,6 +189,93 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCrate(Crate e, int index, string partialPredicateCall) {
+    exists(int b, int bModuleContainer, int n |
+      b = 0 and
+      bModuleContainer =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfModuleContainer(e, i, _)) | i) and
+      n = bModuleContainer and
+      (
+        none()
+        or
+        result = getImmediateChildOfModuleContainer(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCrateModule(
+    CrateModule e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bModuleContainer, int n |
+      b = 0 and
+      bModuleContainer =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfModuleContainer(e, i, _)) | i) and
+      n = bModuleContainer and
+      (
+        none()
+        or
+        result = getImmediateChildOfModuleContainer(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfDynTraitType(
+    DynTraitType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfEnumItem(EnumItem e, int index, string partialPredicateCall) {
+    exists(int b, int bTypeItem, int n |
+      b = 0 and
+      bTypeItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeItem(e, i, _)) | i) and
+      n = bTypeItem and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeItem(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfErrorType(ErrorType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfForLifetimeTypeBound(
+    ForLifetimeTypeBound e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeBoundType, int n |
+      b = 0 and
+      bTypeBoundType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeBoundType(e, i, _)) | i) and
+      n = bTypeBoundType and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeBoundType(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -114,6 +326,52 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfFunctionType(
+    FunctionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfImplTraitType(
+    ImplTraitType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfLifetimeTypeBound(
+    LifetimeTypeBound e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeBoundType, int n |
+      b = 0 and
+      bTypeBoundType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeBoundType(e, i, _)) | i) and
+      n = bTypeBoundType and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeBoundType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfMissing(Missing e, int index, string partialPredicateCall) {
     exists(int b, int bUnextracted, int n |
       b = 0 and
@@ -124,6 +382,143 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfUnextracted(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfNeverType(NeverType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPathType(PathType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPlaceholderType(
+    PlaceholderType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfRawPtrType(RawPtrType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfReferenceType(
+    ReferenceType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfSliceType(SliceType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfStructItem(StructItem e, int index, string partialPredicateCall) {
+    exists(int b, int bTypeItem, int n |
+      b = 0 and
+      bTypeItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeItem(e, i, _)) | i) and
+      n = bTypeItem and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeItem(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTraitItem(TraitItem e, int index, string partialPredicateCall) {
+    exists(int b, int bTypeItem, int n |
+      b = 0 and
+      bTypeItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeItem(e, i, _)) | i) and
+      n = bTypeItem and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeItem(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTraitTypeBound(
+    TraitTypeBound e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeBoundType, int n |
+      b = 0 and
+      bTypeBoundType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeBoundType(e, i, _)) | i) and
+      n = bTypeBoundType and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeBoundType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTupleType(TupleType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -4043,13 +4438,61 @@ private module Impl {
     // * none() simplifies generation, as we can append `or ...` without a special case for the first item
     none()
     or
+    result = getImmediateChildOfEnumVariant(e, index, partialAccessor)
+    or
     result = getImmediateChildOfExtractorStep(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfImplItem(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfValueItem(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfVariantData(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArrayType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCrate(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCrateModule(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDynTraitType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumItem(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfErrorType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForLifetimeTypeBound(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormat(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormatArgument(e, index, partialAccessor)
     or
+    result = getImmediateChildOfFunctionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfImplTraitType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLifetimeTypeBound(e, index, partialAccessor)
+    or
     result = getImmediateChildOfMissing(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNeverType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPathType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPlaceholderType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRawPtrType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfReferenceType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSliceType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStructItem(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTraitItem(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTraitTypeBound(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTupleType(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnimplemented(e, index, partialAccessor)
     or

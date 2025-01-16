@@ -44,6 +44,12 @@ alias(
 )
 
 alias(
+    name = "chalk-ir",
+    actual = "@vendor__chalk-ir-0.98.0//:chalk_ir",
+    tags = ["manual"],
+)
+
+alias(
     name = "chrono",
     actual = "@vendor__chrono-0.4.39//:chrono",
     tags = ["manual"],
@@ -172,6 +178,12 @@ alias(
 alias(
     name = "ra_ap_hir_expand",
     actual = "@vendor__ra_ap_hir_expand-0.0.258//:ra_ap_hir_expand",
+    tags = ["manual"],
+)
+
+alias(
+    name = "ra_ap_hir_ty",
+    actual = "@vendor__ra_ap_hir_ty-0.0.258//:ra_ap_hir_ty",
     tags = ["manual"],
 )
 

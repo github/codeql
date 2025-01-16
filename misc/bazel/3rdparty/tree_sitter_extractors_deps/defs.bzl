@@ -327,6 +327,7 @@ _NORMAL_DEPENDENCIES = {
         _COMMON_CONDITION: {
             "anyhow": Label("@vendor__anyhow-1.0.95//:anyhow"),
             "argfile": Label("@vendor__argfile-0.2.1//:argfile"),
+            "chalk-ir": Label("@vendor__chalk-ir-0.98.0//:chalk_ir"),
             "chrono": Label("@vendor__chrono-0.4.39//:chrono"),
             "clap": Label("@vendor__clap-4.5.26//:clap"),
             "dunce": Label("@vendor__dunce-1.0.5//:dunce"),
@@ -340,6 +341,7 @@ _NORMAL_DEPENDENCIES = {
             "ra_ap_hir": Label("@vendor__ra_ap_hir-0.0.258//:ra_ap_hir"),
             "ra_ap_hir_def": Label("@vendor__ra_ap_hir_def-0.0.258//:ra_ap_hir_def"),
             "ra_ap_hir_expand": Label("@vendor__ra_ap_hir_expand-0.0.258//:ra_ap_hir_expand"),
+            "ra_ap_hir_ty": Label("@vendor__ra_ap_hir_ty-0.0.258//:ra_ap_hir_ty"),
             "ra_ap_ide_db": Label("@vendor__ra_ap_ide_db-0.0.258//:ra_ap_ide_db"),
             "ra_ap_intern": Label("@vendor__ra_ap_intern-0.0.258//:ra_ap_intern"),
             "ra_ap_load-cargo": Label("@vendor__ra_ap_load-cargo-0.0.258//:ra_ap_load_cargo"),
@@ -3392,6 +3394,7 @@ def crate_repositories():
     return [
         struct(repo = "vendor__anyhow-1.0.95", is_dev_dep = False),
         struct(repo = "vendor__argfile-0.2.1", is_dev_dep = False),
+        struct(repo = "vendor__chalk-ir-0.98.0", is_dev_dep = False),
         struct(repo = "vendor__chrono-0.4.39", is_dev_dep = False),
         struct(repo = "vendor__clap-4.5.26", is_dev_dep = False),
         struct(repo = "vendor__dunce-1.0.5", is_dev_dep = False),
@@ -3414,6 +3417,7 @@ def crate_repositories():
         struct(repo = "vendor__ra_ap_hir-0.0.258", is_dev_dep = False),
         struct(repo = "vendor__ra_ap_hir_def-0.0.258", is_dev_dep = False),
         struct(repo = "vendor__ra_ap_hir_expand-0.0.258", is_dev_dep = False),
+        struct(repo = "vendor__ra_ap_hir_ty-0.0.258", is_dev_dep = False),
         struct(repo = "vendor__ra_ap_ide_db-0.0.258", is_dev_dep = False),
         struct(repo = "vendor__ra_ap_intern-0.0.258", is_dev_dep = False),
         struct(repo = "vendor__ra_ap_load-cargo-0.0.258", is_dev_dep = False),

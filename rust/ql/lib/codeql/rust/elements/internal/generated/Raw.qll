@@ -15,6 +15,23 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class EnumVariant extends @enum_variant, Element {
+    override string toString() { result = "EnumVariant" }
+
+    /**
+     * Gets the name of this enum variant.
+     */
+    string getName() { enum_variants(this, result) }
+
+    /**
+     * Gets the content of this enum variant, if it exists.
+     */
+    VariantData getContent() { enum_variant_contents(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExtractorStep extends @extractor_step, Element {
     override string toString() { result = "ExtractorStep" }
 
@@ -37,7 +54,54 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class ImplItem extends @impl_item, Element {
+    override string toString() { result = "ImplItem" }
+
+    /**
+     * Gets the `index`th target trait of this impl item (0-based).
+     */
+    string getTargetTrait(int index) { impl_item_target_traits(this, index, result) }
+
+    /**
+     * Gets the self ty of this impl item.
+     */
+    Type getSelfTy() { impl_items(this, result) }
+
+    /**
+     * Gets the `index`th method name of this impl item (0-based).
+     */
+    string getMethodName(int index) { impl_item_method_names(this, index, result) }
+
+    /**
+     * Gets the `index`th method type of this impl item (0-based).
+     */
+    FunctionType getMethodType(int index) { impl_item_method_types(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class Locatable extends @locatable, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ModuleContainer extends @module_container, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Type extends @type, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TypeBoundType extends @type_bound_type, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TypeItem extends @type_item, Element { }
 
   /**
    * INTERNAL: Do not use.
@@ -51,7 +115,236 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class ValueItem extends @value_item, Element {
+    override string toString() { result = "ValueItem" }
+
+    /**
+     * Gets the name of this value item.
+     */
+    string getName() { value_items(this, result, _) }
+
+    /**
+     * Gets the type of this value item.
+     */
+    Type getType() { value_items(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class VariantData extends @variant_data, Element {
+    override string toString() { result = "VariantData" }
+
+    /**
+     * Gets the `index`th type of this variant data (0-based).
+     */
+    Type getType(int index) { variant_data_types(this, index, result) }
+
+    /**
+     * Gets the `index`th field of this variant data (0-based).
+     */
+    string getField(int index) { variant_data_fields(this, index, result) }
+
+    /**
+     * Holds if this variant data is record.
+     */
+    predicate isRecord() { variant_data_is_record(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ArrayType extends @array_type, Type {
+    override string toString() { result = "ArrayType" }
+
+    /**
+     * Gets the type of this array type.
+     */
+    Type getType() { array_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class AstNode extends @ast_node, Locatable { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Crate extends @crate, ModuleContainer {
+    override string toString() { result = "Crate" }
+
+    /**
+     * Gets the name of this crate, if it exists.
+     */
+    string getName() { crate_names(this, result) }
+
+    /**
+     * Gets the version of this crate, if it exists.
+     */
+    string getVersion() { crate_versions(this, result) }
+
+    /**
+     * Gets the `index`th cfg option of this crate (0-based).
+     */
+    string getCfgOption(int index) { crate_cfg_options(this, index, result) }
+
+    /**
+     * Gets the `index`th dependency of this crate (0-based).
+     */
+    Crate getDependency(int index) { crate_dependencies(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class CrateModule extends @crate_module, ModuleContainer {
+    override string toString() { result = "CrateModule" }
+
+    /**
+     * Gets the parent of this crate module.
+     */
+    ModuleContainer getParent() { crate_modules(this, result, _) }
+
+    /**
+     * Gets the name of this crate module.
+     */
+    string getName() { crate_modules(this, _, result) }
+
+    /**
+     * Gets the `index`th value of this crate module (0-based).
+     */
+    ValueItem getValue(int index) { crate_module_values(this, index, result) }
+
+    /**
+     * Gets the `index`th type of this crate module (0-based).
+     */
+    TypeItem getType(int index) { crate_module_types(this, index, result) }
+
+    /**
+     * Gets the `index`th impl of this crate module (0-based).
+     */
+    ImplItem getImpl(int index) { crate_module_impls(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class DynTraitType extends @dyn_trait_type, Type {
+    override string toString() { result = "DynTraitType" }
+
+    /**
+     * Gets the `index`th type bound of this dyn trait type (0-based).
+     */
+    TypeBoundType getTypeBound(int index) { dyn_trait_type_type_bounds(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class EnumItem extends @enum_item, TypeItem {
+    override string toString() { result = "EnumItem" }
+
+    /**
+     * Gets the name of this enum item.
+     */
+    string getName() { enum_items(this, result) }
+
+    /**
+     * Gets the `index`th variant of this enum item (0-based).
+     */
+    EnumVariant getVariant(int index) { enum_item_variants(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ErrorType extends @error_type, Type {
+    override string toString() { result = "ErrorType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ForLifetimeTypeBound extends @for_lifetime_type_bound, TypeBoundType {
+    override string toString() { result = "ForLifetimeTypeBound" }
+
+    /**
+     * Gets the `index`th name of this for lifetime type bound (0-based).
+     */
+    string getName(int index) { for_lifetime_type_bound_names(this, index, result) }
+
+    /**
+     * Gets the `index`th path of this for lifetime type bound (0-based).
+     */
+    string getPath(int index) { for_lifetime_type_bound_paths(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class FunctionType extends @function_type, Type {
+    override string toString() { result = "FunctionType" }
+
+    /**
+     * Gets the self type of this function type, if it exists.
+     */
+    Type getSelfType() { function_type_self_types(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this function type (0-based).
+     */
+    Type getParam(int index) { function_type_params(this, index, result) }
+
+    /**
+     * Gets the ret type of this function type.
+     */
+    Type getRetType() { function_types(this, result) }
+
+    /**
+     * Holds if this function type is const.
+     */
+    predicate isConst() { function_type_is_const(this) }
+
+    /**
+     * Holds if this function type is async.
+     */
+    predicate isAsync() { function_type_is_async(this) }
+
+    /**
+     * Holds if this function type is unsafe.
+     */
+    predicate isUnsafe() { function_type_is_unsafe(this) }
+
+    /**
+     * Holds if this function type has varargs.
+     */
+    predicate hasVarargs() { function_type_has_varargs(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ImplTraitType extends @impl_trait_type, Type {
+    override string toString() { result = "ImplTraitType" }
+
+    /**
+     * Gets the `index`th type bound of this impl trait type (0-based).
+     */
+    TypeBoundType getTypeBound(int index) { impl_trait_type_type_bounds(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class LifetimeTypeBound extends @lifetime_type_bound, TypeBoundType {
+    override string toString() { result = "LifetimeTypeBound" }
+
+    /**
+     * Gets the name of this lifetime type bound.
+     */
+    string getName() { lifetime_type_bounds(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -59,6 +352,151 @@ module Raw {
    */
   class Missing extends @missing, Unextracted {
     override string toString() { result = "Missing" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class NeverType extends @never_type, Type {
+    override string toString() { result = "NeverType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class PathType extends @path_type, Type {
+    override string toString() { result = "PathType" }
+
+    /**
+     * Gets the `index`th path of this path type (0-based).
+     */
+    string getPath(int index) { path_type_paths(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class PlaceholderType extends @placeholder_type, Type {
+    override string toString() { result = "PlaceholderType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class RawPtrType extends @raw_ptr_type, Type {
+    override string toString() { result = "RawPtrType" }
+
+    /**
+     * Gets the type of this raw ptr type.
+     */
+    Type getType() { raw_ptr_types(this, result) }
+
+    /**
+     * Holds if this raw ptr type is mut.
+     */
+    predicate isMut() { raw_ptr_type_is_mut(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ReferenceType extends @reference_type, Type {
+    override string toString() { result = "ReferenceType" }
+
+    /**
+     * Gets the type of this reference type.
+     */
+    Type getType() { reference_types(this, result) }
+
+    /**
+     * Gets the lifetime of this reference type, if it exists.
+     */
+    string getLifetime() { reference_type_lifetimes(this, result) }
+
+    /**
+     * Holds if this reference type is mut.
+     */
+    predicate isMut() { reference_type_is_mut(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class SliceType extends @slice_type, Type {
+    override string toString() { result = "SliceType" }
+
+    /**
+     * Gets the type of this slice type.
+     */
+    Type getType() { slice_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class StructItem extends @struct_item, TypeItem {
+    override string toString() { result = "StructItem" }
+
+    /**
+     * Gets the name of this struct item.
+     */
+    string getName() { struct_items(this, result) }
+
+    /**
+     * Gets the content of this struct item, if it exists.
+     */
+    VariantData getContent() { struct_item_contents(this, result) }
+
+    /**
+     * Holds if this struct item is union.
+     */
+    predicate isUnion() { struct_item_is_union(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TraitItem extends @trait_item, TypeItem {
+    override string toString() { result = "TraitItem" }
+
+    /**
+     * Gets the name of this trait item.
+     */
+    string getName() { trait_items(this, result) }
+
+    /**
+     * Gets the `index`th method name of this trait item (0-based).
+     */
+    string getMethodName(int index) { trait_item_method_names(this, index, result) }
+
+    /**
+     * Gets the `index`th method type of this trait item (0-based).
+     */
+    FunctionType getMethodType(int index) { trait_item_method_types(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TraitTypeBound extends @trait_type_bound, TypeBoundType {
+    override string toString() { result = "TraitTypeBound" }
+
+    /**
+     * Gets the `index`th path of this trait type bound (0-based).
+     */
+    string getPath(int index) { trait_type_bound_paths(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TupleType extends @tuple_type, Type {
+    override string toString() { result = "TupleType" }
+
+    /**
+     * Gets the `index`th field of this tuple type (0-based).
+     */
+    Type getField(int index) { tuple_type_fields(this, index, result) }
   }
 
   /**

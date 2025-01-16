@@ -120,10 +120,29 @@ locatable_locations(
 // from schema
 
 @element =
-  @extractor_step
+  @enum_variant
+| @extractor_step
+| @impl_item
 | @locatable
+| @module_container
+| @type
+| @type_bound_type
+| @type_item
 | @unextracted
+| @value_item
+| @variant_data
 ;
+
+enum_variants(
+  unique int id: @enum_variant,
+  string name: string ref
+);
+
+#keyset[id]
+enum_variant_contents(
+  int id: @enum_variant ref,
+  int content: @variant_data ref
+);
 
 extractor_steps(
   unique int id: @extractor_step,
@@ -132,14 +151,106 @@ extractor_steps(
   int duration_ms: int ref
 );
 
+impl_items(
+  unique int id: @impl_item,
+  int self_ty: @type ref
+);
+
+#keyset[id, index]
+impl_item_target_traits(
+  int id: @impl_item ref,
+  int index: int ref,
+  string target_trait: string ref
+);
+
+#keyset[id, index]
+impl_item_method_names(
+  int id: @impl_item ref,
+  int index: int ref,
+  string method_name: string ref
+);
+
+#keyset[id, index]
+impl_item_method_types(
+  int id: @impl_item ref,
+  int index: int ref,
+  int method_type: @function_type ref
+);
+
 @locatable =
   @ast_node
+;
+
+@module_container =
+  @crate
+| @crate_module
+;
+
+@type =
+  @array_type
+| @dyn_trait_type
+| @error_type
+| @function_type
+| @impl_trait_type
+| @never_type
+| @path_type
+| @placeholder_type
+| @raw_ptr_type
+| @reference_type
+| @slice_type
+| @tuple_type
+;
+
+@type_bound_type =
+  @for_lifetime_type_bound
+| @lifetime_type_bound
+| @trait_type_bound
+;
+
+@type_item =
+  @enum_item
+| @struct_item
+| @trait_item
 ;
 
 @unextracted =
   @missing
 | @unimplemented
 ;
+
+value_items(
+  unique int id: @value_item,
+  string name: string ref,
+  int type_: @type ref
+);
+
+variant_data(
+  unique int id: @variant_data
+);
+
+#keyset[id, index]
+variant_data_types(
+  int id: @variant_data ref,
+  int index: int ref,
+  int type_: @type ref
+);
+
+#keyset[id, index]
+variant_data_fields(
+  int id: @variant_data ref,
+  int index: int ref,
+  string field: string ref
+);
+
+#keyset[id]
+variant_data_is_record(
+  int id: @variant_data ref
+);
+
+array_types(
+  unique int id: @array_type,
+  int type_: @type ref
+);
 
 @ast_node =
   @abi
@@ -209,8 +320,271 @@ extractor_steps(
 | @where_pred
 ;
 
+crates(
+  unique int id: @crate
+);
+
+#keyset[id]
+crate_names(
+  int id: @crate ref,
+  string name: string ref
+);
+
+#keyset[id]
+crate_versions(
+  int id: @crate ref,
+  string version: string ref
+);
+
+#keyset[id, index]
+crate_cfg_options(
+  int id: @crate ref,
+  int index: int ref,
+  string cfg_option: string ref
+);
+
+#keyset[id, index]
+crate_dependencies(
+  int id: @crate ref,
+  int index: int ref,
+  int dependency: @crate ref
+);
+
+crate_modules(
+  unique int id: @crate_module,
+  int parent: @module_container ref,
+  string name: string ref
+);
+
+#keyset[id, index]
+crate_module_values(
+  int id: @crate_module ref,
+  int index: int ref,
+  int value: @value_item ref
+);
+
+#keyset[id, index]
+crate_module_types(
+  int id: @crate_module ref,
+  int index: int ref,
+  int type_: @type_item ref
+);
+
+#keyset[id, index]
+crate_module_impls(
+  int id: @crate_module ref,
+  int index: int ref,
+  int impl: @impl_item ref
+);
+
+dyn_trait_types(
+  unique int id: @dyn_trait_type
+);
+
+#keyset[id, index]
+dyn_trait_type_type_bounds(
+  int id: @dyn_trait_type ref,
+  int index: int ref,
+  int type_bound: @type_bound_type ref
+);
+
+enum_items(
+  unique int id: @enum_item,
+  string name: string ref
+);
+
+#keyset[id, index]
+enum_item_variants(
+  int id: @enum_item ref,
+  int index: int ref,
+  int variant: @enum_variant ref
+);
+
+error_types(
+  unique int id: @error_type
+);
+
+for_lifetime_type_bounds(
+  unique int id: @for_lifetime_type_bound
+);
+
+#keyset[id, index]
+for_lifetime_type_bound_names(
+  int id: @for_lifetime_type_bound ref,
+  int index: int ref,
+  string name: string ref
+);
+
+#keyset[id, index]
+for_lifetime_type_bound_paths(
+  int id: @for_lifetime_type_bound ref,
+  int index: int ref,
+  string path: string ref
+);
+
+function_types(
+  unique int id: @function_type,
+  int ret_type: @type ref
+);
+
+#keyset[id]
+function_type_self_types(
+  int id: @function_type ref,
+  int self_type: @type ref
+);
+
+#keyset[id, index]
+function_type_params(
+  int id: @function_type ref,
+  int index: int ref,
+  int param: @type ref
+);
+
+#keyset[id]
+function_type_is_const(
+  int id: @function_type ref
+);
+
+#keyset[id]
+function_type_is_async(
+  int id: @function_type ref
+);
+
+#keyset[id]
+function_type_is_unsafe(
+  int id: @function_type ref
+);
+
+#keyset[id]
+function_type_has_varargs(
+  int id: @function_type ref
+);
+
+impl_trait_types(
+  unique int id: @impl_trait_type
+);
+
+#keyset[id, index]
+impl_trait_type_type_bounds(
+  int id: @impl_trait_type ref,
+  int index: int ref,
+  int type_bound: @type_bound_type ref
+);
+
+lifetime_type_bounds(
+  unique int id: @lifetime_type_bound,
+  string name: string ref
+);
+
 missings(
   unique int id: @missing
+);
+
+never_types(
+  unique int id: @never_type
+);
+
+path_types(
+  unique int id: @path_type
+);
+
+#keyset[id, index]
+path_type_paths(
+  int id: @path_type ref,
+  int index: int ref,
+  string path: string ref
+);
+
+placeholder_types(
+  unique int id: @placeholder_type
+);
+
+raw_ptr_types(
+  unique int id: @raw_ptr_type,
+  int type_: @type ref
+);
+
+#keyset[id]
+raw_ptr_type_is_mut(
+  int id: @raw_ptr_type ref
+);
+
+reference_types(
+  unique int id: @reference_type,
+  int type_: @type ref
+);
+
+#keyset[id]
+reference_type_lifetimes(
+  int id: @reference_type ref,
+  string lifetime: string ref
+);
+
+#keyset[id]
+reference_type_is_mut(
+  int id: @reference_type ref
+);
+
+slice_types(
+  unique int id: @slice_type,
+  int type_: @type ref
+);
+
+struct_items(
+  unique int id: @struct_item,
+  string name: string ref
+);
+
+#keyset[id]
+struct_item_contents(
+  int id: @struct_item ref,
+  int content: @variant_data ref
+);
+
+#keyset[id]
+struct_item_is_union(
+  int id: @struct_item ref
+);
+
+trait_items(
+  unique int id: @trait_item,
+  string name: string ref
+);
+
+#keyset[id, index]
+trait_item_method_names(
+  int id: @trait_item ref,
+  int index: int ref,
+  string method_name: string ref
+);
+
+#keyset[id, index]
+trait_item_method_types(
+  int id: @trait_item ref,
+  int index: int ref,
+  int method_type: @function_type ref
+);
+
+trait_type_bounds(
+  unique int id: @trait_type_bound
+);
+
+#keyset[id, index]
+trait_type_bound_paths(
+  int id: @trait_type_bound ref,
+  int index: int ref,
+  string path: string ref
+);
+
+tuple_types(
+  unique int id: @tuple_type
+);
+
+#keyset[id, index]
+tuple_type_fields(
+  int id: @tuple_type ref,
+  int index: int ref,
+  int field: @type ref
 );
 
 unimplementeds(

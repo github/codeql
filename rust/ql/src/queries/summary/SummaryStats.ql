@@ -12,9 +12,23 @@ import codeql.rust.security.SensitiveData
 import codeql.rust.Diagnostics
 import Stats
 
+class CrateElement extends Element {
+  CrateElement() {
+    this instanceof ModuleContainer or
+    this instanceof Type or
+    this instanceof ValueItem or
+    this instanceof TypeItem or
+    this instanceof VariantData or
+    this instanceof EnumVariant or
+    this instanceof ImplItem or
+    this instanceof TypeBoundType
+  }
+}
+
 from string key, int value
 where
-  key = "Elements extracted" and value = count(Element e | not e instanceof Unextracted)
+  key = "Elements extracted" and
+  value = count(Element e | not e instanceof Unextracted and not e instanceof CrateElement)
   or
   key = "Elements unextracted" and value = count(Unextracted e)
   or

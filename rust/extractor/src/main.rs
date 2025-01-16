@@ -19,6 +19,7 @@ use std::{
 
 mod archive;
 mod config;
+mod crate_graph;
 mod diagnostics;
 pub mod generated;
 mod qltest;
@@ -217,6 +218,7 @@ fn main() -> anyhow::Result<()> {
     let cargo_config = cfg.to_cargo_config(&cwd()?);
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
+            crate_graph::extract_crate_graph(extractor.traps, db, vfs);
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {

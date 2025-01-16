@@ -37,6 +37,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TArrayType(Raw::ArrayType id) { constructArrayType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TArrayTypeRepr(Raw::ArrayTypeRepr id) { constructArrayTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -165,11 +169,35 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCrate(Raw::Crate id) { constructCrate(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCrateModule(Raw::CrateModule id) { constructCrateModule(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDynTraitType(Raw::DynTraitType id) { constructDynTraitType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TDynTraitTypeRepr(Raw::DynTraitTypeRepr id) { constructDynTraitTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TEnum(Raw::Enum id) { constructEnum(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TEnumItem(Raw::EnumItem id) { constructEnumItem(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TEnumVariant(Raw::EnumVariant id) { constructEnumVariant(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TErrorType(Raw::ErrorType id) { constructErrorType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -202,6 +230,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TForExpr(Raw::ForExpr id) { constructForExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TForLifetimeTypeBound(Raw::ForLifetimeTypeBound id) { constructForLifetimeTypeBound(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -241,6 +273,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TFunctionType(Raw::FunctionType id) { constructFunctionType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TGenericArgList(Raw::GenericArgList id) { constructGenericArgList(id) } or
     /**
      * INTERNAL: Do not use.
@@ -258,6 +294,14 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TImpl(Raw::Impl id) { constructImpl(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TImplItem(Raw::ImplItem id) { constructImplItem(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TImplTraitType(Raw::ImplTraitType id) { constructImplTraitType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -302,6 +346,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TLifetimeParam(Raw::LifetimeParam id) { constructLifetimeParam(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TLifetimeTypeBound(Raw::LifetimeTypeBound id) { constructLifetimeTypeBound(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -389,6 +437,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TNeverType(Raw::NeverType id) { constructNeverType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TNeverTypeRepr(Raw::NeverTypeRepr id) { constructNeverTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -441,7 +493,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TPathType(Raw::PathType id) { constructPathType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TPathTypeRepr(Raw::PathTypeRepr id) { constructPathTypeRepr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPlaceholderType(Raw::PlaceholderType id) { constructPlaceholderType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -458,6 +518,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TRangePat(Raw::RangePat id) { constructRangePat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRawPtrType(Raw::RawPtrType id) { constructRawPtrType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -505,6 +569,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TReferenceType(Raw::ReferenceType id) { constructReferenceType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TRename(Raw::Rename id) { constructRename(id) } or
     /**
      * INTERNAL: Do not use.
@@ -533,6 +601,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TSliceType(Raw::SliceType id) { constructSliceType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TSliceTypeRepr(Raw::SliceTypeRepr id) { constructSliceTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -553,6 +625,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TStructItem(Raw::StructItem id) { constructStructItem(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TTokenTree(Raw::TokenTree id) { constructTokenTree(id) } or
     /**
      * INTERNAL: Do not use.
@@ -562,6 +638,14 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TTraitAlias(Raw::TraitAlias id) { constructTraitAlias(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TTraitItem(Raw::TraitItem id) { constructTraitItem(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TTraitTypeBound(Raw::TraitTypeBound id) { constructTraitTypeBound(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -586,6 +670,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TTupleStructPat(Raw::TupleStructPat id) { constructTupleStructPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TTupleType(Raw::TupleType id) { constructTupleType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -641,7 +729,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TValueItem(Raw::ValueItem id) { constructValueItem(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TVariant(Raw::Variant id) { constructVariant(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TVariantData(Raw::VariantData id) { constructVariantData(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -784,6 +880,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TModuleContainer = TCrate or TCrateModule;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TParamBase = TParam or TSelfParam;
 
   /**
@@ -818,6 +919,23 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TToken = TComment;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TType =
+    TArrayType or TDynTraitType or TErrorType or TFunctionType or TImplTraitType or TNeverType or
+        TPathType or TPlaceholderType or TRawPtrType or TReferenceType or TSliceType or TTupleType;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TTypeBoundType = TForLifetimeTypeBound or TLifetimeTypeBound or TTraitTypeBound;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TTypeItem = TEnumItem or TStructItem or TTraitItem;
 
   /**
    * INTERNAL: Do not use.
@@ -868,6 +986,12 @@ module Synth {
    * Converts a raw element to a synthesized `TArrayRepeatExpr`, if possible.
    */
   TArrayRepeatExpr convertArrayRepeatExprFromRaw(Raw::Element e) { result = TArrayRepeatExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TArrayType`, if possible.
+   */
+  TArrayType convertArrayTypeFromRaw(Raw::Element e) { result = TArrayType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1063,6 +1187,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCrate`, if possible.
+   */
+  TCrate convertCrateFromRaw(Raw::Element e) { result = TCrate(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCrateModule`, if possible.
+   */
+  TCrateModule convertCrateModuleFromRaw(Raw::Element e) { result = TCrateModule(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TDynTraitType`, if possible.
+   */
+  TDynTraitType convertDynTraitTypeFromRaw(Raw::Element e) { result = TDynTraitType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TDynTraitTypeRepr`, if possible.
    */
   TDynTraitTypeRepr convertDynTraitTypeReprFromRaw(Raw::Element e) { result = TDynTraitTypeRepr(e) }
@@ -1072,6 +1214,24 @@ module Synth {
    * Converts a raw element to a synthesized `TEnum`, if possible.
    */
   TEnum convertEnumFromRaw(Raw::Element e) { result = TEnum(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TEnumItem`, if possible.
+   */
+  TEnumItem convertEnumItemFromRaw(Raw::Element e) { result = TEnumItem(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TEnumVariant`, if possible.
+   */
+  TEnumVariant convertEnumVariantFromRaw(Raw::Element e) { result = TEnumVariant(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TErrorType`, if possible.
+   */
+  TErrorType convertErrorTypeFromRaw(Raw::Element e) { result = TErrorType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1123,6 +1283,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TForLifetimeTypeBound`, if possible.
+   */
+  TForLifetimeTypeBound convertForLifetimeTypeBoundFromRaw(Raw::Element e) {
+    result = TForLifetimeTypeBound(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TForTypeRepr`, if possible.
    */
   TForTypeRepr convertForTypeReprFromRaw(Raw::Element e) { result = TForTypeRepr(e) }
@@ -1167,6 +1335,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFunctionType`, if possible.
+   */
+  TFunctionType convertFunctionTypeFromRaw(Raw::Element e) { result = TFunctionType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TGenericArgList`, if possible.
    */
   TGenericArgList convertGenericArgListFromRaw(Raw::Element e) { result = TGenericArgList(e) }
@@ -1194,6 +1368,18 @@ module Synth {
    * Converts a raw element to a synthesized `TImpl`, if possible.
    */
   TImpl convertImplFromRaw(Raw::Element e) { result = TImpl(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TImplItem`, if possible.
+   */
+  TImplItem convertImplItemFromRaw(Raw::Element e) { result = TImplItem(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TImplTraitType`, if possible.
+   */
+  TImplTraitType convertImplTraitTypeFromRaw(Raw::Element e) { result = TImplTraitType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1262,6 +1448,14 @@ module Synth {
    * Converts a raw element to a synthesized `TLifetimeParam`, if possible.
    */
   TLifetimeParam convertLifetimeParamFromRaw(Raw::Element e) { result = TLifetimeParam(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TLifetimeTypeBound`, if possible.
+   */
+  TLifetimeTypeBound convertLifetimeTypeBoundFromRaw(Raw::Element e) {
+    result = TLifetimeTypeBound(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1391,6 +1585,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TNeverType`, if possible.
+   */
+  TNeverType convertNeverTypeFromRaw(Raw::Element e) { result = TNeverType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TNeverTypeRepr`, if possible.
    */
   TNeverTypeRepr convertNeverTypeReprFromRaw(Raw::Element e) { result = TNeverTypeRepr(e) }
@@ -1471,9 +1671,21 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPathType`, if possible.
+   */
+  TPathType convertPathTypeFromRaw(Raw::Element e) { result = TPathType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TPathTypeRepr`, if possible.
    */
   TPathTypeRepr convertPathTypeReprFromRaw(Raw::Element e) { result = TPathTypeRepr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPlaceholderType`, if possible.
+   */
+  TPlaceholderType convertPlaceholderTypeFromRaw(Raw::Element e) { result = TPlaceholderType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1498,6 +1710,12 @@ module Synth {
    * Converts a raw element to a synthesized `TRangePat`, if possible.
    */
   TRangePat convertRangePatFromRaw(Raw::Element e) { result = TRangePat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRawPtrType`, if possible.
+   */
+  TRawPtrType convertRawPtrTypeFromRaw(Raw::Element e) { result = TRawPtrType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1571,6 +1789,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TReferenceType`, if possible.
+   */
+  TReferenceType convertReferenceTypeFromRaw(Raw::Element e) { result = TReferenceType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TRename`, if possible.
    */
   TRename convertRenameFromRaw(Raw::Element e) { result = TRename(e) }
@@ -1613,6 +1837,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TSliceType`, if possible.
+   */
+  TSliceType convertSliceTypeFromRaw(Raw::Element e) { result = TSliceType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TSliceTypeRepr`, if possible.
    */
   TSliceTypeRepr convertSliceTypeReprFromRaw(Raw::Element e) { result = TSliceTypeRepr(e) }
@@ -1643,6 +1873,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TStructItem`, if possible.
+   */
+  TStructItem convertStructItemFromRaw(Raw::Element e) { result = TStructItem(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TTokenTree`, if possible.
    */
   TTokenTree convertTokenTreeFromRaw(Raw::Element e) { result = TTokenTree(e) }
@@ -1658,6 +1894,18 @@ module Synth {
    * Converts a raw element to a synthesized `TTraitAlias`, if possible.
    */
   TTraitAlias convertTraitAliasFromRaw(Raw::Element e) { result = TTraitAlias(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTraitItem`, if possible.
+   */
+  TTraitItem convertTraitItemFromRaw(Raw::Element e) { result = TTraitItem(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTraitTypeBound`, if possible.
+   */
+  TTraitTypeBound convertTraitTypeBoundFromRaw(Raw::Element e) { result = TTraitTypeBound(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1694,6 +1942,12 @@ module Synth {
    * Converts a raw element to a synthesized `TTupleStructPat`, if possible.
    */
   TTupleStructPat convertTupleStructPatFromRaw(Raw::Element e) { result = TTupleStructPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTupleType`, if possible.
+   */
+  TTupleType convertTupleTypeFromRaw(Raw::Element e) { result = TTupleType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1777,9 +2031,21 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TValueItem`, if possible.
+   */
+  TValueItem convertValueItemFromRaw(Raw::Element e) { result = TValueItem(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TVariant`, if possible.
    */
   TVariant convertVariantFromRaw(Raw::Element e) { result = TVariant(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TVariantData`, if possible.
+   */
+  TVariantData convertVariantDataFromRaw(Raw::Element e) { result = TVariantData(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2050,11 +2316,27 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   TElement convertElementFromRaw(Raw::Element e) {
+    result = convertEnumVariantFromRaw(e)
+    or
     result = convertExtractorStepFromRaw(e)
+    or
+    result = convertImplItemFromRaw(e)
     or
     result = convertLocatableFromRaw(e)
     or
+    result = convertModuleContainerFromRaw(e)
+    or
+    result = convertTypeFromRaw(e)
+    or
+    result = convertTypeBoundTypeFromRaw(e)
+    or
+    result = convertTypeItemFromRaw(e)
+    or
     result = convertUnextractedFromRaw(e)
+    or
+    result = convertValueItemFromRaw(e)
+    or
+    result = convertVariantDataFromRaw(e)
   }
 
   /**
@@ -2255,6 +2537,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TModuleContainer`, if possible.
+   */
+  TModuleContainer convertModuleContainerFromRaw(Raw::Element e) {
+    result = convertCrateFromRaw(e)
+    or
+    result = convertCrateModuleFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TParamBase`, if possible.
    */
   TParamBase convertParamBaseFromRaw(Raw::Element e) {
@@ -2357,6 +2649,60 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TType`, if possible.
+   */
+  TType convertTypeFromRaw(Raw::Element e) {
+    result = convertArrayTypeFromRaw(e)
+    or
+    result = convertDynTraitTypeFromRaw(e)
+    or
+    result = convertErrorTypeFromRaw(e)
+    or
+    result = convertFunctionTypeFromRaw(e)
+    or
+    result = convertImplTraitTypeFromRaw(e)
+    or
+    result = convertNeverTypeFromRaw(e)
+    or
+    result = convertPathTypeFromRaw(e)
+    or
+    result = convertPlaceholderTypeFromRaw(e)
+    or
+    result = convertRawPtrTypeFromRaw(e)
+    or
+    result = convertReferenceTypeFromRaw(e)
+    or
+    result = convertSliceTypeFromRaw(e)
+    or
+    result = convertTupleTypeFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TTypeBoundType`, if possible.
+   */
+  TTypeBoundType convertTypeBoundTypeFromRaw(Raw::Element e) {
+    result = convertForLifetimeTypeBoundFromRaw(e)
+    or
+    result = convertLifetimeTypeBoundFromRaw(e)
+    or
+    result = convertTraitTypeBoundFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TTypeItem`, if possible.
+   */
+  TTypeItem convertTypeItemFromRaw(Raw::Element e) {
+    result = convertEnumItemFromRaw(e)
+    or
+    result = convertStructItemFromRaw(e)
+    or
+    result = convertTraitItemFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TTypeRepr`, if possible.
    */
   TTypeRepr convertTypeReprFromRaw(Raw::Element e) {
@@ -2440,6 +2786,12 @@ module Synth {
    * Converts a synthesized `TArrayRepeatExpr` to a raw DB element, if possible.
    */
   Raw::Element convertArrayRepeatExprToRaw(TArrayRepeatExpr e) { e = TArrayRepeatExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TArrayType` to a raw DB element, if possible.
+   */
+  Raw::Element convertArrayTypeToRaw(TArrayType e) { e = TArrayType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2635,6 +2987,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TCrate` to a raw DB element, if possible.
+   */
+  Raw::Element convertCrateToRaw(TCrate e) { e = TCrate(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCrateModule` to a raw DB element, if possible.
+   */
+  Raw::Element convertCrateModuleToRaw(TCrateModule e) { e = TCrateModule(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDynTraitType` to a raw DB element, if possible.
+   */
+  Raw::Element convertDynTraitTypeToRaw(TDynTraitType e) { e = TDynTraitType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TDynTraitTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertDynTraitTypeReprToRaw(TDynTraitTypeRepr e) { e = TDynTraitTypeRepr(result) }
@@ -2644,6 +3014,24 @@ module Synth {
    * Converts a synthesized `TEnum` to a raw DB element, if possible.
    */
   Raw::Element convertEnumToRaw(TEnum e) { e = TEnum(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TEnumItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertEnumItemToRaw(TEnumItem e) { e = TEnumItem(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TEnumVariant` to a raw DB element, if possible.
+   */
+  Raw::Element convertEnumVariantToRaw(TEnumVariant e) { e = TEnumVariant(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TErrorType` to a raw DB element, if possible.
+   */
+  Raw::Element convertErrorTypeToRaw(TErrorType e) { e = TErrorType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2695,6 +3083,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TForLifetimeTypeBound` to a raw DB element, if possible.
+   */
+  Raw::Element convertForLifetimeTypeBoundToRaw(TForLifetimeTypeBound e) {
+    e = TForLifetimeTypeBound(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TForTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertForTypeReprToRaw(TForTypeRepr e) { e = TForTypeRepr(result) }
@@ -2737,6 +3133,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TFunctionType` to a raw DB element, if possible.
+   */
+  Raw::Element convertFunctionTypeToRaw(TFunctionType e) { e = TFunctionType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TGenericArgList` to a raw DB element, if possible.
    */
   Raw::Element convertGenericArgListToRaw(TGenericArgList e) { e = TGenericArgList(result) }
@@ -2764,6 +3166,18 @@ module Synth {
    * Converts a synthesized `TImpl` to a raw DB element, if possible.
    */
   Raw::Element convertImplToRaw(TImpl e) { e = TImpl(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TImplItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertImplItemToRaw(TImplItem e) { e = TImplItem(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TImplTraitType` to a raw DB element, if possible.
+   */
+  Raw::Element convertImplTraitTypeToRaw(TImplTraitType e) { e = TImplTraitType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2832,6 +3246,14 @@ module Synth {
    * Converts a synthesized `TLifetimeParam` to a raw DB element, if possible.
    */
   Raw::Element convertLifetimeParamToRaw(TLifetimeParam e) { e = TLifetimeParam(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLifetimeTypeBound` to a raw DB element, if possible.
+   */
+  Raw::Element convertLifetimeTypeBoundToRaw(TLifetimeTypeBound e) {
+    e = TLifetimeTypeBound(result)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2961,6 +3383,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TNeverType` to a raw DB element, if possible.
+   */
+  Raw::Element convertNeverTypeToRaw(TNeverType e) { e = TNeverType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TNeverTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertNeverTypeReprToRaw(TNeverTypeRepr e) { e = TNeverTypeRepr(result) }
@@ -3041,9 +3469,21 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TPathType` to a raw DB element, if possible.
+   */
+  Raw::Element convertPathTypeToRaw(TPathType e) { e = TPathType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TPathTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertPathTypeReprToRaw(TPathTypeRepr e) { e = TPathTypeRepr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPlaceholderType` to a raw DB element, if possible.
+   */
+  Raw::Element convertPlaceholderTypeToRaw(TPlaceholderType e) { e = TPlaceholderType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3068,6 +3508,12 @@ module Synth {
    * Converts a synthesized `TRangePat` to a raw DB element, if possible.
    */
   Raw::Element convertRangePatToRaw(TRangePat e) { e = TRangePat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRawPtrType` to a raw DB element, if possible.
+   */
+  Raw::Element convertRawPtrTypeToRaw(TRawPtrType e) { e = TRawPtrType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3141,6 +3587,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TReferenceType` to a raw DB element, if possible.
+   */
+  Raw::Element convertReferenceTypeToRaw(TReferenceType e) { e = TReferenceType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TRename` to a raw DB element, if possible.
    */
   Raw::Element convertRenameToRaw(TRename e) { e = TRename(result) }
@@ -3183,6 +3635,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TSliceType` to a raw DB element, if possible.
+   */
+  Raw::Element convertSliceTypeToRaw(TSliceType e) { e = TSliceType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TSliceTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertSliceTypeReprToRaw(TSliceTypeRepr e) { e = TSliceTypeRepr(result) }
@@ -3213,6 +3671,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TStructItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertStructItemToRaw(TStructItem e) { e = TStructItem(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TTokenTree` to a raw DB element, if possible.
    */
   Raw::Element convertTokenTreeToRaw(TTokenTree e) { e = TTokenTree(result) }
@@ -3228,6 +3692,18 @@ module Synth {
    * Converts a synthesized `TTraitAlias` to a raw DB element, if possible.
    */
   Raw::Element convertTraitAliasToRaw(TTraitAlias e) { e = TTraitAlias(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTraitItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertTraitItemToRaw(TTraitItem e) { e = TTraitItem(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTraitTypeBound` to a raw DB element, if possible.
+   */
+  Raw::Element convertTraitTypeBoundToRaw(TTraitTypeBound e) { e = TTraitTypeBound(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3264,6 +3740,12 @@ module Synth {
    * Converts a synthesized `TTupleStructPat` to a raw DB element, if possible.
    */
   Raw::Element convertTupleStructPatToRaw(TTupleStructPat e) { e = TTupleStructPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTupleType` to a raw DB element, if possible.
+   */
+  Raw::Element convertTupleTypeToRaw(TTupleType e) { e = TTupleType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3347,9 +3829,21 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TValueItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertValueItemToRaw(TValueItem e) { e = TValueItem(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TVariant` to a raw DB element, if possible.
    */
   Raw::Element convertVariantToRaw(TVariant e) { e = TVariant(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TVariantData` to a raw DB element, if possible.
+   */
+  Raw::Element convertVariantDataToRaw(TVariantData e) { e = TVariantData(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3620,11 +4114,27 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   Raw::Element convertElementToRaw(TElement e) {
+    result = convertEnumVariantToRaw(e)
+    or
     result = convertExtractorStepToRaw(e)
+    or
+    result = convertImplItemToRaw(e)
     or
     result = convertLocatableToRaw(e)
     or
+    result = convertModuleContainerToRaw(e)
+    or
+    result = convertTypeToRaw(e)
+    or
+    result = convertTypeBoundTypeToRaw(e)
+    or
+    result = convertTypeItemToRaw(e)
+    or
     result = convertUnextractedToRaw(e)
+    or
+    result = convertValueItemToRaw(e)
+    or
+    result = convertVariantDataToRaw(e)
   }
 
   /**
@@ -3825,6 +4335,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TModuleContainer` to a raw DB element, if possible.
+   */
+  Raw::Element convertModuleContainerToRaw(TModuleContainer e) {
+    result = convertCrateToRaw(e)
+    or
+    result = convertCrateModuleToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TParamBase` to a raw DB element, if possible.
    */
   Raw::Element convertParamBaseToRaw(TParamBase e) {
@@ -3924,6 +4444,60 @@ module Synth {
    * Converts a synthesized `TToken` to a raw DB element, if possible.
    */
   Raw::Element convertTokenToRaw(TToken e) { result = convertCommentToRaw(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TType` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeToRaw(TType e) {
+    result = convertArrayTypeToRaw(e)
+    or
+    result = convertDynTraitTypeToRaw(e)
+    or
+    result = convertErrorTypeToRaw(e)
+    or
+    result = convertFunctionTypeToRaw(e)
+    or
+    result = convertImplTraitTypeToRaw(e)
+    or
+    result = convertNeverTypeToRaw(e)
+    or
+    result = convertPathTypeToRaw(e)
+    or
+    result = convertPlaceholderTypeToRaw(e)
+    or
+    result = convertRawPtrTypeToRaw(e)
+    or
+    result = convertReferenceTypeToRaw(e)
+    or
+    result = convertSliceTypeToRaw(e)
+    or
+    result = convertTupleTypeToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeBoundType` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeBoundTypeToRaw(TTypeBoundType e) {
+    result = convertForLifetimeTypeBoundToRaw(e)
+    or
+    result = convertLifetimeTypeBoundToRaw(e)
+    or
+    result = convertTraitTypeBoundToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeItemToRaw(TTypeItem e) {
+    result = convertEnumItemToRaw(e)
+    or
+    result = convertStructItemToRaw(e)
+    or
+    result = convertTraitItemToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
