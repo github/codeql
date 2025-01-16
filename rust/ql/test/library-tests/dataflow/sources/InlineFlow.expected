@@ -1,0 +1,4 @@
+| test.rs:8:34:8:84 | //... | Missing result: hasTaintFlow |
+| test.rs:9:37:9:87 | //... | Missing result: hasTaintFlow |
+| test.rs:41:20:41:36 | //... | Missing result: hasTaintFlow |
+| test.rs:45:20:45:36 | //... | Missing result: hasTaintFlow |
