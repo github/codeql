@@ -52,7 +52,7 @@ func test_mongo_driver_mongo_collection(coll *mongo.Collection, ctx context.Cont
 
 	sink(user2) // $ hasTaintFlow="user2"
 
-	single3 := coll.FindOneAndReplace(ctx, nil) // $ source
+	single3 := coll.FindOneAndReplace(ctx, nil, nil) // $ source
 	if err != nil {
 		return
 	}
