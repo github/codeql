@@ -3127,6 +3127,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override predicate isSource() { sourceNode(node, state) }
           }
 
+          bindingset[p, state, t, ap, stored]
+          pragma[inline_late]
+          private SummaryCtxSome mkSummaryCtxSome(
+            ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored
+          ) {
+            result = TSummaryCtxSome(p, state, t, ap, stored)
+          }
+
           pragma[nomagic]
           private predicate fwdFlowInStep(
             ArgNodeEx arg, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
@@ -3138,7 +3146,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             or
             FwdFlowInThrough::fwdFlowIn(_, arg, _, p, state, outercc, innercc, outerSummaryCtx, t,
               ap, stored, _) and
-            innerSummaryCtx = TSummaryCtxSome(p, state, t, ap, stored)
+            innerSummaryCtx = mkSummaryCtxSome(p, state, t, ap, stored)
           }
 
           pragma[nomagic]
