@@ -34,6 +34,10 @@
 | test.c:170:9:170:9 | s |
 | test.c:176:8:176:15 | ! ... |
 | test.c:176:10:176:14 | ... < ... |
+| test.c:182:8:182:34 | ! ... |
+| test.c:182:10:182:20 | ... >= ... |
+| test.c:182:10:182:33 | ... && ... |
+| test.c:182:25:182:33 | ... < ... |
 | test.cpp:18:8:18:10 | call to get |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |
@@ -51,3 +55,5 @@
 | test.cpp:135:6:135:21 | call to __builtin_expect |
 | test.cpp:141:6:141:21 | call to __builtin_expect |
 | test.cpp:145:6:145:21 | call to __builtin_expect |
+| test.cpp:152:7:152:8 | ! ... |
+| test.cpp:152:8:152:8 | b |

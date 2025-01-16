@@ -349,6 +349,42 @@
 | 146 | x != 0 when x is true |
 | 146 | x == 0 when ! ... is true |
 | 146 | x == 0 when x is false |
+| 152 | 10 < a+1 when ! ... is true |
+| 152 | 10 < a+1 when b is false |
+| 152 | 10 >= a+1 when ! ... is false |
+| 152 | 10 >= a+1 when b is true |
+| 152 | ! ... != 0 when ! ... is true |
+| 152 | ! ... != 0 when b is false |
+| 152 | ! ... != 1 when ! ... is false |
+| 152 | ! ... != 1 when b is true |
+| 152 | ! ... == 0 when ! ... is false |
+| 152 | ! ... == 0 when b is true |
+| 152 | ! ... == 1 when ! ... is true |
+| 152 | ! ... == 1 when b is false |
+| 152 | ... < ... != 0 when ! ... is false |
+| 152 | ... < ... != 0 when b is true |
+| 152 | ... < ... != 1 when ! ... is true |
+| 152 | ... < ... != 1 when b is false |
+| 152 | ... < ... == 0 when ! ... is true |
+| 152 | ... < ... == 0 when b is false |
+| 152 | ... < ... == 1 when ! ... is false |
+| 152 | ... < ... == 1 when b is true |
+| 152 | a < 10 when ! ... is false |
+| 152 | a < 10 when b is true |
+| 152 | a < 10+0 when ! ... is false |
+| 152 | a < 10+0 when b is true |
+| 152 | a >= 10 when ! ... is true |
+| 152 | a >= 10 when b is false |
+| 152 | a >= 10+0 when ! ... is true |
+| 152 | a >= 10+0 when b is false |
+| 152 | b != 0 when ! ... is false |
+| 152 | b != 0 when b is true |
+| 152 | b != 1 when ! ... is true |
+| 152 | b != 1 when b is false |
+| 152 | b == 0 when ! ... is true |
+| 152 | b == 0 when b is false |
+| 152 | b == 1 when ! ... is false |
+| 152 | b == 1 when b is true |
 | 152 | p != 0 when p is true |
 | 152 | p != 1 when p is false |
 | 152 | p == 0 when p is false |
@@ -393,3 +429,39 @@
 | 176 | ... < ... != 0 when ... < ... is true |
 | 176 | ... < ... == 0 when ! ... is true |
 | 176 | ... < ... == 0 when ... < ... is false |
+| 182 | 1.0 < foo+1 when ... < ... is false |
+| 182 | 1.0 >= foo+1 when ... && ... is true |
+| 182 | 1.0 >= foo+1 when ... < ... is true |
+| 182 | 9.999999999999999547e-07 < foo+1 when ... && ... is true |
+| 182 | 9.999999999999999547e-07 < foo+1 when ... >= ... is true |
+| 182 | 9.999999999999999547e-07 >= foo+1 when ... >= ... is false |
+| 182 | ! ... != 0 when ! ... is true |
+| 182 | ! ... != 0 when ... && ... is false |
+| 182 | ! ... != 1 when ! ... is false |
+| 182 | ! ... != 1 when ... && ... is true |
+| 182 | ! ... == 0 when ! ... is false |
+| 182 | ! ... == 0 when ... && ... is true |
+| 182 | ! ... == 1 when ! ... is true |
+| 182 | ! ... == 1 when ... && ... is false |
+| 182 | ... && ... != 0 when ! ... is false |
+| 182 | ... && ... != 0 when ... && ... is true |
+| 182 | ... && ... == 0 when ! ... is true |
+| 182 | ... && ... == 0 when ... && ... is false |
+| 182 | ... < ... != 0 when ... && ... is true |
+| 182 | ... < ... != 0 when ... < ... is true |
+| 182 | ... < ... != 1 when ... < ... is false |
+| 182 | ... < ... == 0 when ... < ... is false |
+| 182 | ... < ... == 1 when ... && ... is true |
+| 182 | ... < ... == 1 when ... < ... is true |
+| 182 | ... >= ... != 0 when ... && ... is true |
+| 182 | ... >= ... != 0 when ... >= ... is true |
+| 182 | ... >= ... != 1 when ... >= ... is false |
+| 182 | ... >= ... == 0 when ... >= ... is false |
+| 182 | ... >= ... == 1 when ... && ... is true |
+| 182 | ... >= ... == 1 when ... >= ... is true |
+| 182 | foo < 1.0+0 when ... && ... is true |
+| 182 | foo < 1.0+0 when ... < ... is true |
+| 182 | foo < 9.999999999999999547e-07+0 when ... >= ... is false |
+| 182 | foo >= 1.0+0 when ... < ... is false |
+| 182 | foo >= 9.999999999999999547e-07+0 when ... && ... is true |
+| 182 | foo >= 9.999999999999999547e-07+0 when ... >= ... is true |

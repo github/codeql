@@ -177,3 +177,9 @@ void test10(int a, int b) {
 
     }
 }
+
+void test11(double foo) {
+    if(!(foo >= 1e-6 && foo < 1.0)) {
+
+    }
+}
