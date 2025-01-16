@@ -194,10 +194,10 @@ You use the global data flow library by implementing the signature ``DataFlow::C
 
 These predicates are defined in the configuration:
 
--  ``isSource``—defines where data may flow from
--  ``isSink``—defines where data may flow to
--  ``isBarrier``—optional, restricts the data flow
--  ``isAdditionalFlowStep``—optional, adds additional flow steps
+-  ``isSource`` - defines where data may flow from.
+-  ``isSink`` - defines where data may flow to.
+-  ``isBarrier`` - optional, restricts the data flow.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -210,7 +210,7 @@ The data flow analysis is performed using the predicate ``flow(DataFlow::Node so
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by applying the module ``TaintTracking::Global<ConfigSig>`` to your configuration instead of ``DataFlow::Global<ConfigSig>``:
+Global taint tracking is to global data flow what local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by applying the module ``TaintTracking::Global<ConfigSig>`` to your configuration instead of ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
