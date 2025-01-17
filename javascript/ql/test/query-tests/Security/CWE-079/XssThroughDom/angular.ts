@@ -10,6 +10,7 @@ import { NgForm } from "@angular/forms";
 })
 export class Foo {
     field: string = "";
+    safeField: string = "";
 
     setInput1(event) {
         document.write(event.target.value); // NOT OK
@@ -25,5 +26,6 @@ export class Foo {
 
     useField() {
         document.write(this.field); // NOT OK
+        document.write(this.safeField); // OK
     }
 }
