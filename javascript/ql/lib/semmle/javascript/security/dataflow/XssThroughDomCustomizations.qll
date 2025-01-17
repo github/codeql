@@ -232,6 +232,15 @@ module XssThroughDom {
         )
       }
     }
+
+    /**
+     * An object containing input values from an Angular form, accessed through an `NgForm` object.
+     */
+    class AngularFormSource extends Source {
+      AngularFormSource() {
+        this = API::Node::ofType("@angular/forms", "NgForm").getMember("value").asSource()
+      }
+    }
   }
 
   /**
@@ -259,6 +268,18 @@ module XssThroughDom {
   class SelectionSource extends Source {
     SelectionSource() {
       this = getSelectionCall(DataFlow::TypeTracker::end()).getAMethodCall("toString")
+    }
+  }
+
+  /**
+   * A source of DOM input originating from an Angular two-way data binding.
+   */
+  private class AngularNgModelSource extends Source {
+    AngularNgModelSource() {
+      exists(Angular2::ComponentClass component, string fieldName |
+        fieldName = component.getATemplateElement().getAttributeByName("[(ngModel)]").getValue() and
+        this = component.getFieldInputNode(fieldName)
+      )
     }
   }
 }
