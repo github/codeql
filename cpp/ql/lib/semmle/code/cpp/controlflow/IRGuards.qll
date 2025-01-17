@@ -251,20 +251,11 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   IRGuardCondition ir;
 
   GuardConditionFromNotExpr() {
-    // When `!` is applied to an integer (such as `x`) the generated IR looks
-    // like:
-    // ```
-    // r1(glval<int>) = VariableAddress[myInt] :
-    // r2(int)        = Load[x]                : &:r1, m1_6
-    // r3(int)        = Constant[0]            :
-    // r4(bool)       = CompareEQ              : r2, r3
-    // ```
-    // And so the `IRGuardCondition` for an expression such as `if(!x)` is the
-    // `CompareEQ` instruction. However, users often expect the `x` to also
-    // be a guard condition. But from the perspective of the IR the `x` is just
-    // the left-hand side of a comparison against 0 so it's not included as a
-    // normal `IRGuardCondition`. So to align with user expectations we make
-    // that `x` a `GuardCondition`.
+    // Users often expect the `x` in `!x` to also be a guard condition. But
+    // from the perspective of the IR the `x` is just the left-hand side of a
+    // comparison against 0 so it's not included as a normal
+    // `IRGuardCondition`. So to align with user expectations we make that `x`
+    // a `GuardCondition`.
     exists(NotExpr notExpr, Type t |
       this = notExpr.getOperand() and
       t = this.getUnspecifiedType() and
