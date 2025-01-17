@@ -16,4 +16,5 @@ dependencies:
 dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
   - codeql/ruby/frameworks/**/*.model.yml
+  - '*.model.yml'
 warnOnImplicitThis: true
