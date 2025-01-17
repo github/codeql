@@ -22,10 +22,7 @@ private module DifferentKindsComparisonBypassConfig implements DataFlow::ConfigS
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/lib/semmle/javascript/security/dataflow/DifferentKindsComparisonBypassQuery.qll:39: Flow call outside 'select' clause
-    // ql/lib/semmle/javascript/security/dataflow/DifferentKindsComparisonBypassQuery.qll:40: Flow call outside 'select' clause
-    none()
+    none() // Disabled since multiple related sinks are selected simultaneously
   }
 }
 
