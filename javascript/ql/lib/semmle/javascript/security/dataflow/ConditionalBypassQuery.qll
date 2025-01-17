@@ -26,11 +26,7 @@ module ConditionalBypassConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/lib/semmle/javascript/security/dataflow/ConditionalBypassQuery.qll:104: Flow call outside 'select' clause
-    // ql/lib/semmle/javascript/security/dataflow/ConditionalBypassQuery.qll:113: Flow call outside 'select' clause
-    // ql/lib/semmle/javascript/security/dataflow/ConditionalBypassQuery.qll:115: Flow call outside 'select' clause
-    none()
+    none() // Disabled since the enclosing comparison is sometimes selected instead of the sink
   }
 }
 
