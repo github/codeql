@@ -33,11 +33,7 @@ module ExternalAPIUsedWithUntrustedDataConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/lib/semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedDataQuery.qll:96: Flow call outside 'select' clause
-    // ql/lib/semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedDataQuery.qll:99: Flow call outside 'select' clause
-    // ql/lib/semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedDataQuery.qll:109: Flow call outside 'select' clause
-    none()
+    none() // Not used for PR analysis
   }
 }
 
