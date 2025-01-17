@@ -106,9 +106,9 @@ module CfgInput implements InputSig<Location> {
     result = n.(FuncDeclElement).getAst()
   }
 
-  predicate idOfAstNode(AstNode node, int id) { idOf(projectToAst(node), id) }
+  int idOfAstNode(AstNode node) { idOf(projectToAst(node), result) }
 
-  predicate idOfCfgScope(CfgScope node, int id) { idOf(node, id) }
+  int idOfCfgScope(CfgScope node) { idOf(node, result) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {

@@ -4,11 +4,9 @@ private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.controlflow.ControlFlowGraph
-private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import CfgNodes
 private import SuccessorTypes
-private import codeql.controlflow.BasicBlock as BB
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 
 /**

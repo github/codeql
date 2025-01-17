@@ -96,9 +96,9 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof ST::SuccessorTypes::ExitSuccessor
   }
 
-  predicate idOfAstNode(AstNode node, int id) { node.getId() = id }
+  int idOfAstNode(AstNode node) { result = node.getId() }
 
-  predicate idOfCfgScope(CfgScope node, int id) { idOfAstNode(node, id) }
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {

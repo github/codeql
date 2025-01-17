@@ -65,9 +65,9 @@ private module CfgInput implements CfgShared::InputSig<Location> {
 
   private predicate idOf(Ruby::AstNode node, int id) = equivalenceRelation(id/2)(node, id)
 
-  predicate idOfAstNode(AstNode node, int id) { idOf(AstInternal::toGeneratedInclSynth(node), id) }
+  int idOfAstNode(AstNode node) { idOf(AstInternal::toGeneratedInclSynth(node), result) }
 
-  predicate idOfCfgScope(CfgScope node, int id) { idOfAstNode(node, id) }
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {

@@ -56,11 +56,9 @@ private module CfgInput implements InputSig<Location> {
   private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   // TODO: does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
-  predicate idOfAstNode(AstNode node, int id) {
-    idOfDbAstNode(Synth::convertAstNodeToRaw(node), id)
-  }
+  int idOfAstNode(AstNode node) { idOfDbAstNode(Synth::convertAstNodeToRaw(node), result) }
 
-  predicate idOfCfgScope(CfgScope node, int id) { idOfAstNode(node, id) }
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {

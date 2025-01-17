@@ -83,14 +83,14 @@ signature module InputSig<LocationSig Location> {
    * basic block.
    */
   bindingset[node]
-  default predicate idOfAstNode(AstNode node, int id) { none() }
+  int idOfAstNode(AstNode node);
 
   /**
    * Gets an `id` of `scope`. This is used to order the predecessors of a join
    * basic block.
    */
   bindingset[scope]
-  default predicate idOfCfgScope(CfgScope scope, int id) { none() }
+  int idOfCfgScope(CfgScope scope);
 }
 
 /** Provides input needed for CFG splitting. */
@@ -1537,7 +1537,7 @@ module MakeWithSplitting<
 
     private class NodeAlias = Node;
 
-    private module BasicBlockInputSig implements BB::InputSig {
+    private module BasicBlockInputSig implements BB::InputSig<Location> {
       class SuccessorType = Input::SuccessorType;
 
       predicate successorTypeIsCondition = Input::successorTypeIsCondition/1;
@@ -1546,29 +1546,25 @@ module MakeWithSplitting<
 
       Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
 
-      predicate nodeIsEntry(Node node) { node instanceof EntryNode }
+      predicate nodeIsDominanceEntry(Node node) { node instanceof EntryNode }
 
-      predicate nodeIsExit(Node node) { node.(AnnotatedExitNode).isNormal() }
+      predicate nodeIsPostDominanceExit(Node node) { node.(AnnotatedExitNode).isNormal() }
     }
 
-    private module BasicBlockImpl = BB::Make<BasicBlockInputSig>;
+    private module BasicBlockImpl = BB::Make<Location, BasicBlockInputSig>;
 
     /**
      * A basic block, that is, a maximal straight-line sequence of control flow nodes
      * without branches or joins.
      */
     final class BasicBlock extends BasicBlockImpl::BasicBlock {
-      // We extend `BasicBlockImpl::BasicBlock` to add the `getScope` and
-      // `getLocation`.
+      // We extend `BasicBlockImpl::BasicBlock` to add the `getScope`.
       /** Gets the scope of this basic block. */
       CfgScope getScope() {
         if this instanceof EntryBasicBlock
         then result = this.getFirstNode().getScope()
         else result = this.getAPredecessor().getScope()
       }
-
-      /** Gets the location of this basic block. */
-      Location getLocation() { result = this.getFirstNode().getLocation() }
 
       /** Gets an immediate successor of this basic block, if any. */
       BasicBlock getASuccessor() { result = super.getASuccessor() }
@@ -1678,10 +1674,13 @@ module MakeWithSplitting<
     }
 
     private module JoinBlockPredecessors {
-      int getId(JoinPredecessorBasicBlock jbp) {
-        idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode(), result)
+      predicate hasIdAndKind(JoinPredecessorBasicBlock jbp, int id, int kind) {
+        id = idOfCfgScope(jbp.(EntryBasicBlock).getScope()) and
+        kind = 0
         or
-        idOfCfgScope(jbp.(EntryBasicBlock).getScope(), result)
+        not jbp instanceof EntryBasicBlock and
+        id = idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode()) and
+        kind = 1
       }
 
       string getSplitString(JoinPredecessorBasicBlock jbp) {
@@ -1699,10 +1698,10 @@ module MakeWithSplitting<
     cached
     JoinPredecessorBasicBlock getJoinBlockPredecessor(JoinBasicBlock jb, int i) {
       result =
-        rank[i + 1](JoinPredecessorBasicBlock jbp |
-          jbp = jb.getAPredecessor()
+        rank[i + 1](JoinPredecessorBasicBlock jbp, int id, int kind |
+          jbp = jb.getAPredecessor() and JoinBlockPredecessors::hasIdAndKind(jbp, id, kind)
         |
-          jbp order by JoinBlockPredecessors::getId(jbp), JoinBlockPredecessors::getSplitString(jbp)
+          jbp order by id, kind, JoinBlockPredecessors::getSplitString(jbp)
         )
     }
 

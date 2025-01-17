@@ -1,13 +1,15 @@
 /**
- * This modules provides an implementation of a basic block class based based
- * on a control flow graph implementation.
+ * This modules provides an implementation of a basic block class based on a
+ * control flow graph implementation.
  *
  * INTERNAL use only. This is an experimental API subject to change without
  * notice.
  */
 
+private import codeql.util.Location
+
 /** Provides the language-specific input specification. */
-signature module InputSig {
+signature module InputSig<LocationSig Location> {
   class SuccessorType;
 
   /** Hold if `t` represents a conditional successor type. */
@@ -16,21 +18,31 @@ signature module InputSig {
   /** The class of control flow nodes. */
   class Node {
     string toString();
+
+    /** Gets the location of this control flow node. */
+    Location getLocation();
   }
 
+  /** Gets an immediate successor of this node. */
   Node nodeGetASuccessor(Node node, SuccessorType t);
 
-  /** Holds if `node` is the beginning of an entry basic block. */
-  predicate nodeIsEntry(Node node);
+  /**
+   * Holds if `node` represents an entry node to be used when calculating
+   * dominance.
+   */
+  predicate nodeIsDominanceEntry(Node node);
 
-  /** Holds if `node` is the beginning of an entry basic block. */
-  predicate nodeIsExit(Node node);
+  /**
+   * Holds if `node` represents an exit node to be used when calculating
+   * post dominance.
+   */
+  predicate nodeIsPostDominanceExit(Node node);
 }
 
 /**
  * Provides a basic block construction on top of a control flow graph.
  */
-module Make<InputSig Input> {
+module Make<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
   final class BasicBlock = BasicBlockImpl;
@@ -42,6 +54,7 @@ module Make<InputSig Input> {
   /** Holds if this node has more than one predecessor. */
   private predicate nodeIsJoin(Node node) { strictcount(nodeGetAPredecessor(node, _)) > 1 }
 
+  /** Holds if this node has more than one successor. */
   private predicate nodeIsBranch(Node node) { strictcount(nodeGetASuccessor(node, _)) > 1 }
 
   /**
@@ -49,6 +62,9 @@ module Make<InputSig Input> {
    * without branches or joins.
    */
   private class BasicBlockImpl extends TBasicBlockStart {
+    /** Gets the location of this basic block. */
+    Location getLocation() { result = this.getFirstNode().getLocation() }
+
     /** Gets an immediate successor of this basic block, if any. */
     BasicBlock getASuccessor() { result = this.getASuccessor(_) }
 
@@ -64,6 +80,7 @@ module Make<InputSig Input> {
     BasicBlock getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
 
     /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
+    cached
     Node getNode(int pos) { bbIndex(this.getFirstNode(), result, pos) }
 
     /** Gets a control flow node in this basic block. */
@@ -166,52 +183,6 @@ module Make<InputSig Input> {
     cached
     newtype TBasicBlock = TBasicBlockStart(Node cfn) { startsBB(cfn) }
 
-    /** Holds if `cfn` starts a new basic block. */
-    private predicate startsBB(Node cfn) {
-      not exists(nodeGetAPredecessor(cfn, _)) and exists(nodeGetASuccessor(cfn, _))
-      or
-      nodeIsJoin(cfn)
-      or
-      nodeIsBranch(nodeGetAPredecessor(cfn, _))
-      or
-      // In cases such as
-      //
-      // ```rb
-      // if x or y
-      //     foo
-      // else
-      //     bar
-      // ```
-      //
-      // we have a CFG that looks like
-      //
-      // x --false--> [false] x or y --false--> bar
-      // \                    |
-      //  --true--> y --false--
-      //            \
-      //             --true--> [true] x or y --true--> foo
-      //
-      // and we want to ensure that both `foo` and `bar` start a new basic block.
-      exists(nodeGetAPredecessor(cfn, any(SuccessorType s | successorTypeIsCondition(s))))
-    }
-
-    /**
-     * Holds if `succ` is a control flow successor of `pred` within
-     * the same basic block.
-     */
-    private predicate intraBBSucc(Node pred, Node succ) {
-      succ = nodeGetASuccessor(pred, _) and
-      not startsBB(succ)
-    }
-
-    /**
-     * Holds if `bbStart` is the first node in a basic block and `cfn` is the
-     * `i`th node in the same basic block.
-     */
-    cached
-    predicate bbIndex(Node bbStart, Node cfn, int i) =
-      shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
-
     /**
      * Holds if the first node of basic block `succ` is a control flow
      * successor of the last node of basic block `pred`.
@@ -227,7 +198,7 @@ module Make<InputSig Input> {
     private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
     /** Holds if `bb` is an exit basic block that represents normal exit. */
-    private predicate exitBB(BasicBlock bb) { nodeIsExit(bb.getANode()) }
+    private predicate exitBB(BasicBlock bb) { nodeIsPostDominanceExit(bb.getANode()) }
 
     /** Holds if `dom` is an immediate post-dominator of `bb`. */
     cached
@@ -237,6 +208,51 @@ module Make<InputSig Input> {
 
   private import Cached
 
+  /** Holds if `cfn` starts a new basic block. */
+  private predicate startsBB(Node cfn) {
+    not exists(nodeGetAPredecessor(cfn, _)) and exists(nodeGetASuccessor(cfn, _))
+    or
+    nodeIsJoin(cfn)
+    or
+    nodeIsBranch(nodeGetAPredecessor(cfn, _))
+    or
+    // In cases such as
+    //
+    // ```rb
+    // if x or y
+    //     foo
+    // else
+    //     bar
+    // ```
+    //
+    // we have a CFG that looks like
+    //
+    // x --false--> [false] x or y --false--> bar
+    // \                    |
+    //  --true--> y --false--
+    //            \
+    //             --true--> [true] x or y --true--> foo
+    //
+    // and we want to ensure that both `foo` and `bar` start a new basic block.
+    exists(nodeGetAPredecessor(cfn, any(SuccessorType s | successorTypeIsCondition(s))))
+  }
+
+  /**
+   * Holds if `succ` is a control flow successor of `pred` within
+   * the same basic block.
+   */
+  predicate intraBBSucc(Node pred, Node succ) {
+    succ = nodeGetASuccessor(pred, _) and
+    not startsBB(succ)
+  }
+
+  /**
+   * Holds if `bbStart` is the first node in a basic block and `cfn` is the
+   * `i`th node in the same basic block.
+   */
+  private predicate bbIndex(Node bbStart, Node cfn, int i) =
+    shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
+
   /** Holds if `bb` is an entry basic block. */
-  private predicate entryBB(BasicBlock bb) { nodeIsEntry(bb.getFirstNode()) }
+  private predicate entryBB(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
 }
