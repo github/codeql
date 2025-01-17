@@ -1782,6 +1782,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TValueReturn(ReturnKind kind) or
       TParamUpdate(ParameterPosition pos) { exists(ParamNode p | p.isParameterOf(_, pos)) }
 
+    // TODO: delete
     cached
     newtype TBooleanOption =
       TBooleanNone() or
@@ -1799,20 +1800,24 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TReturnCtxMaybeFlowThrough(ReturnPosition pos)
 
     cached
-    newtype TAccessPathFront =
+    newtype TAccessPathFrontTrace =
       TFrontNil() or
-      TFrontHead(Content c)
+      TFrontHead(Content c) or
+      TFrontTail(Content c)
 
     cached
-    newtype TApproxAccessPathFront =
+    newtype TApproxAccessPathFrontTrace =
       TApproxFrontNil() or
-      TApproxFrontHead(ContentApprox c)
+      TApproxFrontHead(ContentApprox c) or
+      TApproxFrontTail(ContentApprox c)
 
+    // TODO: delete
     cached
     newtype TAccessPathFrontOption =
       TAccessPathFrontNone() or
       TAccessPathFrontSome(AccessPathFront apf)
 
+    // TODO: delete
     cached
     newtype TApproxAccessPathFrontOption =
       TApproxAccessPathFrontNone() or
@@ -2458,6 +2463,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     nodeDataFlowType(pragma[only_bind_out](n), pragma[only_bind_into](result))
   }
 
+  // TODO: delete
   /** An optional Boolean value. */
   class BooleanOption extends TBooleanOption {
     string toString() {
@@ -2506,15 +2512,32 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   }
 
   /**
-   * The front of an approximated access path. This is either a head or a nil.
+   * The front of a trace of an approximated access path. This is either a head or a nil or a tail.
    */
-  abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
+  abstract class ApproxAccessPathFrontTrace extends TApproxAccessPathFrontTrace {
     abstract string toString();
 
+    predicate isConsOf(ContentApprox c) { this = TApproxFrontHead(c) }
+
+    predicate isTailOf(ContentApprox c) { this = TApproxFrontTail(c) }
+
+    pragma[nomagic]
+    predicate isApproxConsOf(Content c) { this = TApproxFrontHead(getContentApproxCached(c)) }
+
+    pragma[nomagic]
+    predicate isApproxTailOf(Content c) { this = TApproxFrontTail(getContentApproxCached(c)) }
+  }
+
+  /**
+   * The front of an approximated access path. This is either a head or a nil.
+   */
+  abstract class ApproxAccessPathFront extends ApproxAccessPathFrontTrace {
     abstract boolean toBoolNonEmpty();
 
+    // TODO: delete
     ContentApprox getHead() { this = TApproxFrontHead(result) }
 
+    // TODO: delete
     pragma[nomagic]
     Content getAHead() {
       exists(ContentApprox cont |
@@ -2524,23 +2547,80 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
   }
 
-  class ApproxAccessPathFrontNil extends ApproxAccessPathFront, TApproxFrontNil {
+  class ApproxAccessPathFrontNil extends ApproxAccessPathFront, ApproxAccessPathFrontTrace,
+    TApproxFrontNil
+  {
     override string toString() { result = "nil" }
 
     override boolean toBoolNonEmpty() { result = false }
   }
 
-  class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead {
+  class ApproxAccessPathFrontHead extends ApproxAccessPathFront, ApproxAccessPathFrontTrace,
+    TApproxFrontHead
+  {
     private ContentApprox c;
 
     ApproxAccessPathFrontHead() { this = TApproxFrontHead(c) }
 
-    override string toString() { result = c.toString() }
+    override string toString() { result = "cons:" + c.toString() }
 
     override boolean toBoolNonEmpty() { result = true }
   }
 
-  /** An optional approximated access path front. */
+  class ApproxAccessPathFrontTail extends ApproxAccessPathFrontTrace, TApproxFrontTail {
+    private ContentApprox c;
+
+    ApproxAccessPathFrontTail() { this = TApproxFrontTail(c) }
+
+    override string toString() { result = "tail:" + c.toString() }
+  }
+
+  /**
+   * The front of a trace of an access path. This is either a head or a nil or a tail.
+   */
+  class AccessPathFrontTrace extends TAccessPathFrontTrace {
+    abstract string toString();
+
+    predicate isConsOf(Content c) { this = TFrontHead(c) }
+
+    predicate isTailOf(Content c) { this = TFrontTail(c) }
+  }
+
+  /**
+   * The front of an access path. This is either a head or a nil.
+   */
+  abstract class AccessPathFront extends AccessPathFrontTrace {
+    abstract ApproxAccessPathFront toApprox();
+
+    // TODO: delete
+    Content getHead() { this = TFrontHead(result) }
+  }
+
+  class AccessPathFrontNil extends AccessPathFront, AccessPathFrontTrace, TFrontNil {
+    override string toString() { result = "nil" }
+
+    override ApproxAccessPathFront toApprox() { result = TApproxFrontNil() }
+  }
+
+  class AccessPathFrontHead extends AccessPathFront, AccessPathFrontTrace, TFrontHead {
+    private Content c;
+
+    AccessPathFrontHead() { this = TFrontHead(c) }
+
+    override string toString() { result = "cons:" + c.toString() }
+
+    override ApproxAccessPathFront toApprox() { result.isApproxConsOf(c) }
+  }
+
+  class AccessPathFrontTail extends AccessPathFrontTrace, TFrontTail {
+    private Content c;
+
+    AccessPathFrontTail() { this = TFrontTail(c) }
+
+    override string toString() { result = "tail:" + c.toString() }
+  }
+
+  // TODO: delete
   class ApproxAccessPathFrontOption extends TApproxAccessPathFrontOption {
     string toString() {
       this = TApproxAccessPathFrontNone() and result = "<none>"
@@ -2549,33 +2629,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
   }
 
-  /**
-   * The front of an access path. This is either a head or a nil.
-   */
-  abstract class AccessPathFront extends TAccessPathFront {
-    abstract string toString();
-
-    abstract ApproxAccessPathFront toApprox();
-
-    Content getHead() { this = TFrontHead(result) }
-  }
-
-  class AccessPathFrontNil extends AccessPathFront, TFrontNil {
-    override string toString() { result = "nil" }
-
-    override ApproxAccessPathFront toApprox() { result = TApproxFrontNil() }
-  }
-
-  class AccessPathFrontHead extends AccessPathFront, TFrontHead {
-    private Content c;
-
-    AccessPathFrontHead() { this = TFrontHead(c) }
-
-    override string toString() { result = c.toString() }
-
-    override ApproxAccessPathFront toApprox() { result.getAHead() = c }
-  }
-
+  // TODO: delete
   /** An optional access path front. */
   class AccessPathFrontOption extends TAccessPathFrontOption {
     string toString() {

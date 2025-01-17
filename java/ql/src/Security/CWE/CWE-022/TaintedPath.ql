@@ -17,6 +17,8 @@ import java
 import semmle.code.java.security.TaintedPathQuery
 import TaintedPathFlow::PathGraph
 
+private predicate stats = TaintedPathFlow::stageStats/10;
+
 from TaintedPathFlow::PathNode source, TaintedPathFlow::PathNode sink
 where TaintedPathFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This path depends on a $@.", source.getNode(),
