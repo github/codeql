@@ -228,8 +228,8 @@ These predicates are defined in the configuration:
 
 -  ``isSource`` - defines where data may flow from.
 -  ``isSink`` - defines where data may flow to.
--  ``isBarrier`` - optionally, restricts the data flow.
--  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
+-  ``isBarrier`` - optional, defines where data flow is blocked.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
