@@ -327,7 +327,6 @@ irFlow
 | test.cpp:1117:27:1117:34 | call to source | test.cpp:1117:27:1117:34 | call to source |
 | test.cpp:1132:11:1132:16 | call to source | test.cpp:1121:8:1121:8 | x |
 | test.cpp:1138:17:1138:22 | call to source | test.cpp:1140:8:1140:18 | * ... |
-| test.cpp:1153:10:1153:15 | call to source | test.cpp:1148:10:1148:12 | * ... |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |

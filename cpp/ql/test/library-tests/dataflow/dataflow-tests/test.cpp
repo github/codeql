@@ -1145,7 +1145,7 @@ namespace conflation_regression {
   char* source(int);
 
   void read_deref_deref(char **l) { // $ ast-def=l ir-def=*l ir-def=**l
-    sink(**l); // $ SPURIOUS: ir
+    sink(**l); // Clean. Only *l is tainted
   }
 
   void f(char ** p) // $ ast-def=p ir-def=*p ir-def=**p
