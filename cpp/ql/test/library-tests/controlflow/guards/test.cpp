@@ -177,3 +177,25 @@ void test_with_negated_binary_relational(int a, int b) {
 
   }
 }
+
+void test_logical_and(bool b1, bool b2) {
+  if(!(b1 && b2)) {
+    use(b1);
+    use(b2);
+  } else {
+    // b1 = true and b2 = true
+    use(b1);
+    use(b2);
+  }
+}
+
+void test_logical_or(bool b1, bool b2) {
+  if(!(b1 || b2)) {
+    // b1 = false and b2 = false
+    use(b1);
+    use(b2);
+  } else {
+    use(b1);
+    use(b2);
+  }
+}
