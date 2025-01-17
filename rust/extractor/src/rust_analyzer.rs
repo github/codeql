@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use log::{debug, error, info};
+use log::{debug, error, info, warn};
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
@@ -16,6 +16,7 @@ use ra_ap_syntax::SyntaxError;
 use ra_ap_vfs::Vfs;
 use ra_ap_vfs::VfsPath;
 use ra_ap_vfs::{AbsPathBuf, FileId};
+use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 use std::fs;
@@ -131,8 +132,19 @@ impl<'a> RustAnalyzer<'a> {
     }
 }
 
+#[derive(Deserialize)]
+struct CargoManifestMembersSlice {
+    #[serde(default)]
+    members: Vec<String>,
+}
+
+#[derive(Deserialize)]
+struct CargoManifestSlice {
+    workspace: Option<CargoManifestMembersSlice>,
+}
+
 struct ToMlReader {
-    cache: HashMap<ManifestPath, Rc<toml::Table>>,
+    cache: HashMap<ManifestPath, Rc<CargoManifestSlice>>,
 }
 
 impl ToMlReader {
@@ -142,7 +154,7 @@ impl ToMlReader {
         }
     }
 
-    fn read(&mut self, manifest: &ManifestPath) -> anyhow::Result<Rc<toml::Table>> {
+    fn read(&mut self, manifest: &ManifestPath) -> anyhow::Result<Rc<CargoManifestSlice>> {
         if let Some(table) = self.cache.get(manifest) {
             return Ok(table.clone());
         }
@@ -150,7 +162,7 @@ impl ToMlReader {
             error!("failed to read {} ({e})", manifest.as_str());
             e
         })?;
-        let table = Rc::<toml::Table>::new(content.parse().map_err(|e| {
+        let table = Rc::<CargoManifestSlice>::new(toml::from_str(&content).map_err(|e| {
             error!("failed to parse {} ({e})", manifest.as_str());
             e
         })?);
@@ -159,37 +171,39 @@ impl ToMlReader {
     }
 }
 
-fn find_workspace(
-    reader: &mut ToMlReader,
-    manifest: &ProjectManifest,
-) -> anyhow::Result<ProjectManifest> {
+fn find_workspace(reader: &mut ToMlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
-        return Err(anyhow::anyhow!("{manifest} not a cargo manifest"));
+        return None;
     };
-    let toml = reader.read(cargo)?;
-    if toml.contains_key("workspace") {
-        return Ok(manifest.clone());
+    let parsed_cargo = reader.read(cargo).ok()?;
+    if parsed_cargo.workspace.is_some() {
+        debug!("{cargo} is a workspace");
+        return Some(manifest.clone());
     }
     let Some(parent_dir) = cargo.parent().parent() else {
-        return Err(anyhow::anyhow!("no parent dir for {cargo}"));
+        warn!("no parent dir for {cargo}");
+        return None;
     };
-    let discovered = ProjectManifest::discover(parent_dir)?;
+    let discovered = ProjectManifest::discover(parent_dir)
+        .map_err(|e| {
+            error!(
+                "encountered error while searching for manifests under {}: {e}",
+                parent_dir.as_str()
+            );
+            e
+        })
+        .ok()?;
     discovered
         .iter()
-        .filter_map(|it| match it {
+        .find_map(|it| match it {
             ProjectManifest::CargoToml(other)
                 if cargo.starts_with(other.parent())
                     && reader.read(other).is_ok_and(|it| {
-                        it.get("workspace")
-                            .and_then(|w| w.as_table())
-                            .and_then(|t| t.get("members"))
-                            .and_then(|ms| ms.as_array())
-                            .is_some_and(|ms| {
-                                ms.iter().any(|m| {
-                                    m.as_str()
-                                        .is_some_and(|s| other.parent().join(s) == cargo.parent())
-                                })
-                            })
+                        it.workspace.as_ref().is_some_and(|w| {
+                            w.members
+                                .iter()
+                                .any(|m| other.parent().join(m) == cargo.parent())
+                        })
                     }) =>
             {
                 debug!("found workspace {other} containing {cargo}");
@@ -197,8 +211,10 @@ fn find_workspace(
             }
             _ => None,
         })
-        .next()
-        .ok_or(anyhow::anyhow!("no workspace found for {manifest}"))
+        .or_else(|| {
+            debug!("no workspace found for {cargo}");
+            None
+        })
 }
 
 pub fn find_project_manifests(
