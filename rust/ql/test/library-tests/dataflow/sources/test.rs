@@ -34,8 +34,8 @@ fn test_env_args() {
 
     sink(my_path); // $ MISSING: hasTaintFlow
     sink(arg1); // $ MISSING: hasTaintFlow
-    sink(arg2); // $ MISSING: hasTaintFlow
-    sink(arg3); // $ MISSING: hasTaintFlow
+    sink(arg2); // $ hasTaintFlow
+    sink(arg3); // $ hasTaintFlow
 
     for arg in std::env::args() { // $ Alert[rust/summary/taint-sources]
         sink(arg); // $ hasTaintFlow
