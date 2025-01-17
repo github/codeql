@@ -82,14 +82,12 @@ signature module InputSig<LocationSig Location> {
    * Gets an `id` of `node`. This is used to order the predecessors of a join
    * basic block.
    */
-  bindingset[node]
   int idOfAstNode(AstNode node);
 
   /**
    * Gets an `id` of `scope`. This is used to order the predecessors of a join
    * basic block.
    */
-  bindingset[scope]
   int idOfCfgScope(CfgScope scope);
 }
 
@@ -1008,6 +1006,41 @@ module MakeWithSplitting<
       )
     }
 
+    private module JoinBlockPredecessors {
+      predicate hasIdAndKind(BasicBlocks::JoinPredecessorBasicBlock jbp, int id, int kind) {
+        id = idOfCfgScope(jbp.(BasicBlocks::EntryBasicBlock).getScope()) and
+        kind = 0
+        or
+        not jbp instanceof BasicBlocks::EntryBasicBlock and
+        id = idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode()) and
+        kind = 1
+      }
+
+      string getSplitString(BasicBlocks::JoinPredecessorBasicBlock jbp) {
+        result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
+        or
+        not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
+        result = ""
+      }
+    }
+
+    /**
+     * Gets the `i`th predecessor of join block `jb`, with respect to some
+     * arbitrary order.
+     */
+    cached
+    BasicBlocks::JoinPredecessorBasicBlock getJoinBlockPredecessor(
+      BasicBlocks::JoinBasicBlock jb, int i
+    ) {
+      result =
+        rank[i + 1](BasicBlocks::JoinPredecessorBasicBlock jbp, int id, int kind |
+          jbp = jb.getAPredecessor() and
+          JoinBlockPredecessors::hasIdAndKind(jbp, id, kind)
+        |
+          jbp order by id, kind, JoinBlockPredecessors::getSplitString(jbp)
+        )
+    }
+
     cached
     module Public {
       /**
@@ -1570,15 +1603,13 @@ module MakeWithSplitting<
       BasicBlock getASuccessor() { result = super.getASuccessor() }
 
       /** Gets an immediate successor of this basic block of a given type, if any. */
-      BasicBlock getASuccessor(SuccessorType t) {
-        result.getFirstNode() = this.getLastNode().getASuccessor(t)
-      }
+      BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 
       /** Gets an immediate predecessor of this basic block, if any. */
-      BasicBlock getAPredecessor() { result.getASuccessor() = this }
+      BasicBlock getAPredecessor() { result = super.getAPredecessor() }
 
       /** Gets an immediate predecessor of this basic block of a given type, if any. */
-      BasicBlock getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
+      BasicBlock getAPredecessor(SuccessorType t) { result = super.getAPredecessor(t) }
 
       /**
        * Holds if this basic block immediately dominates basic block `bb`.
@@ -1671,38 +1702,6 @@ module MakeWithSplitting<
      */
     final class ExitBasicBlock extends BasicBlock {
       ExitBasicBlock() { this.getLastNode() instanceof ExitNode }
-    }
-
-    private module JoinBlockPredecessors {
-      predicate hasIdAndKind(JoinPredecessorBasicBlock jbp, int id, int kind) {
-        id = idOfCfgScope(jbp.(EntryBasicBlock).getScope()) and
-        kind = 0
-        or
-        not jbp instanceof EntryBasicBlock and
-        id = idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode()) and
-        kind = 1
-      }
-
-      string getSplitString(JoinPredecessorBasicBlock jbp) {
-        result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
-        or
-        not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
-        result = ""
-      }
-    }
-
-    /**
-     * Gets the `i`th predecessor of join block `jb`, with respect to some
-     * arbitrary order.
-     */
-    cached
-    JoinPredecessorBasicBlock getJoinBlockPredecessor(JoinBasicBlock jb, int i) {
-      result =
-        rank[i + 1](JoinPredecessorBasicBlock jbp, int id, int kind |
-          jbp = jb.getAPredecessor() and JoinBlockPredecessors::hasIdAndKind(jbp, id, kind)
-        |
-          jbp order by id, kind, JoinBlockPredecessors::getSplitString(jbp)
-        )
     }
 
     /** A basic block with more than one predecessor. */

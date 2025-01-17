@@ -126,17 +126,22 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Holds if `df` is in the dominance frontier of this basic block. That is,
      * this basic block dominates a predecessor of `df`, but does not dominate
-     * `df` itself.
+     * `df` itself. I.e., it is equivaluent to:
+     * ```
+     * this.dominates(df.getAPredecessor()) and not this.strictlyDominates(df)
+     * ```
      */
     predicate inDominanceFrontier(BasicBlock df) {
-      this.dominatesPredecessor(df) and
-      not this.strictlyDominates(df)
+      // Algorithm from Cooper et al., "A Simple, Fast Dominance Algorithm" (Figure 5),
+      // who in turn attribute it to Ferrante et al., "The program dependence graph and
+      // its use in optimization".
+      this = df.getAPredecessor() and not bbIDominates(this, df)
+      or
+      exists(BasicBlock prev | prev.inDominanceFrontier(df) |
+        bbIDominates(this, prev) and
+        not bbIDominates(this, df)
+      )
     }
-
-    /**
-     * Holds if this basic block dominates a predecessor of `df`.
-     */
-    private predicate dominatesPredecessor(BasicBlock df) { this.dominates(df.getAPredecessor()) }
 
     /**
      * Gets the basic block that immediately dominates this basic block, if any.
@@ -219,7 +224,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     // In cases such as
     //
     // ```rb
-    // if x or y
+    // if x and y
     //     foo
     // else
     //     bar
