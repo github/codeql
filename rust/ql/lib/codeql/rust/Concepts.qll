@@ -71,9 +71,7 @@ module CommandLineArgsSource {
  * An externally modeled source for command line arguments.
  */
 class ModeledCommandLineArgsSource extends CommandLineArgsSource::Range {
-  ModeledCommandLineArgsSource() {
-    sourceNode(this, "command-line-source")
-  }
+  ModeledCommandLineArgsSource() { sourceNode(this, "command-line-source") }
 }
 
 /**
@@ -99,9 +97,7 @@ module EnvironmentSource {
  * An externally modeled source for data from the program's environment.
  */
 class ModeledEnvironmentSource extends EnvironmentSource::Range {
-  ModeledEnvironmentSource() {
-    sourceNode(this, "environment-source")
-  }
+  ModeledEnvironmentSource() { sourceNode(this, "environment-source") }
 }
 
 /**
@@ -127,9 +123,7 @@ module RemoteSource {
  * An externally modeled source for remote (network) data.
  */
 class ModeledRemoteSource extends RemoteSource::Range {
-  ModeledRemoteSource() {
-    sourceNode(this, "remote-source")
-  }
+  ModeledRemoteSource() { sourceNode(this, "remote-source") }
 }
 
 /**
