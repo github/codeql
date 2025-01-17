@@ -168,12 +168,7 @@ where
     strictcount(string fieldName |
       exists(Field f |
         f.getDeclaringType() = c and
-        fieldName = f.getName() and
-        // IBOutlet's are a way of building GUIs
-        // automatically out of ObjC properties.
-        // We don't want to count those for the
-        // purposes of this query.
-        not f.getType().getAnAttribute().hasName("iboutlet")
+        fieldName = f.getName()
       )
     ) and
   n > 15 and

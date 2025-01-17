@@ -26,7 +26,7 @@ impl trap::TrapClass for Element {
 pub struct ExtractorStep {
     pub id: trap::TrapId<ExtractorStep>,
     pub action: String,
-    pub file: trap::Label<File>,
+    pub file: Option<trap::Label<File>>,
     pub duration_ms: usize,
 }
 
@@ -36,7 +36,10 @@ impl trap::TrapEntry for ExtractorStep {
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("extractor_steps", vec![id.into(), self.action.into(), self.file.into(), self.duration_ms.into()]);
+        out.add_tuple("extractor_steps", vec![id.into(), self.action.into(), self.duration_ms.into()]);
+        if let Some(v) = self.file {
+            out.add_tuple("extractor_step_files", vec![id.into(), v.into()]);
+        }
     }
 }
 
