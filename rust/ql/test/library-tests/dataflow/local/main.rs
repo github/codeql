@@ -235,7 +235,7 @@ fn option_unwrap_or() {
 
 fn option_unwrap_or_else() {
     let s1 = Some(source(47));
-    sink(s1.unwrap_or_else(|| 0)); // $ MISSING: hasValueFlow=47
+    sink(s1.unwrap_or_else(|| 0)); // $ hasValueFlow=47
 
     let s2 = None;
     sink(s2.unwrap_or_else(|| source(48))); // $ MISSING: hasValueFlow=48
@@ -265,12 +265,12 @@ fn result_questionmark() -> Result<i64, i64> {
 
 fn result_expect() {
     let s1: Result<i64, i64> = Ok(source(78));
-    sink(s1.expect("")); // $ MISSING: hasValueFlow=78
+    sink(s1.expect("")); // $ hasValueFlow=78
     sink(s1.expect_err(""));
 
     let s2: Result<i64, i64> = Err(source(79));
     sink(s2.expect(""));
-    sink(s2.expect_err("")); // $ MISSING: hasValueFlow=79
+    sink(s2.expect_err("")); // $ hasValueFlow=79
 }
 
 enum MyTupleEnum {

@@ -1,11 +1,24 @@
 localStep
-| file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or | MaD:3 |
-| file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or | MaD:6 |
-| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::hint::must_use | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::hint::must_use | MaD:8 |
-| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap | MaD:2 |
-| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or | MaD:4 |
-| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap | MaD:5 |
-| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or | MaD:7 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or | MaD:4 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or | MaD:15 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::hint::must_use | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::hint::must_use | MaD:21 |
+| file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else | MaD:7 |
+| file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else | MaD:18 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::expect | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::expect | MaD:2 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap | MaD:3 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or | MaD:5 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or_default | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_default | MaD:6 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else | MaD:8 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_unchecked | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_unchecked | MaD:9 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::expect_err | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::expect_err | MaD:11 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::unwrap_err | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_err | MaD:13 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::unwrap_err_unchecked | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_err_unchecked | MaD:14 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::expect | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::expect | MaD:10 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap | MaD:12 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or | MaD:16 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_default | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_default | MaD:17 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else | MaD:19 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_unchecked | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_unchecked | MaD:20 |
 | main.rs:3:11:3:11 | [SSA] i | main.rs:4:12:4:12 | i |  |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | [SSA] i |  |
 | main.rs:3:11:3:16 | ...: i64 | main.rs:3:11:3:11 | i |  |
@@ -486,13 +499,26 @@ localStep
 | main.rs:466:36:466:41 | ...::new(...) | main.rs:466:36:466:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
-| 2 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
-| 3 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
-| 4 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
-| 5 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 6 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[0]; ReturnValue; value |
-| 7 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 8 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
+| 2 | Summary: lang:core; <crate::option::Option>::expect; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 3 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 4 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
+| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 6 | Summary: lang:core; <crate::option::Option>::unwrap_or_default; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 7 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
+| 8 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 9 | Summary: lang:core; <crate::option::Option>::unwrap_unchecked; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 10 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 11 | Summary: lang:core; <crate::result::Result>::expect_err; Argument[self].Variant[crate::result::Result::Err(0)]; ReturnValue; value |
+| 12 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 13 | Summary: lang:core; <crate::result::Result>::unwrap_err; Argument[self].Variant[crate::result::Result::Err(0)]; ReturnValue; value |
+| 14 | Summary: lang:core; <crate::result::Result>::unwrap_err_unchecked; Argument[self].Variant[crate::result::Result::Err(0)]; ReturnValue; value |
+| 15 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[0]; ReturnValue; value |
+| 16 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 17 | Summary: lang:core; <crate::result::Result>::unwrap_or_default; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 18 | Summary: lang:core; <crate::result::Result>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
+| 19 | Summary: lang:core; <crate::result::Result>::unwrap_or_else; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 20 | Summary: lang:core; <crate::result::Result>::unwrap_unchecked; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 21 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
 storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text |
@@ -577,10 +603,21 @@ storeStep
 | main.rs:414:35:414:61 | default_name | captured default_name | main.rs:414:35:414:61 | \|...\| ... |
 | main.rs:436:27:436:27 | 0 | Some | main.rs:436:22:436:28 | Some(...) |
 readStep
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::expect | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::expect |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap_or | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap_or_default | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or_default |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap_or_else | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or_else |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap_unchecked | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_unchecked |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::expect | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::expect |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::expect_err | Err | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::expect_err |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_err | Err | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::unwrap_err |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_err_unchecked | Err | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::unwrap_err_unchecked |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_default | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_default |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_else | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_else |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_unchecked | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_unchecked |
 | main.rs:33:9:33:15 | Some(...) | Some | main.rs:33:14:33:14 | _ |
 | main.rs:87:11:87:11 | i | &ref | main.rs:87:10:87:11 | * ... |
 | main.rs:95:10:95:10 | a | tuple.0 | main.rs:95:10:95:12 | a.0 |

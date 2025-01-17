@@ -11,7 +11,7 @@ fn test_env_vars() {
     let var1 = std::env::var("HOME").expect("HOME not set"); // $ Alert[rust/summary/taint-sources]
     let var2 = std::env::var_os("PATH").unwrap(); // $ Alert[rust/summary/taint-sources]
 
-    sink(var1); // $ MISSING: hasTaintFlow
+    sink(var1); // $ hasTaintFlow="HOME"
     sink(var2); // $ hasTaintFlow="PATH"
 
     for (key, value) in std::env::vars() { // $ Alert[rust/summary/taint-sources]
@@ -51,9 +51,9 @@ fn test_env_dirs() {
     let exe = std::env::current_exe().expect("FAILED"); // $ Alert[rust/summary/taint-sources]
     let home = std::env::home_dir().expect("FAILED"); // $ Alert[rust/summary/taint-sources]
 
-    sink(dir); // $ MISSING: hasTaintFlow
-    sink(exe); // $ MISSING: hasTaintFlow
-    sink(home); // $ MISSING: hasTaintFlow
+    sink(dir); // $ hasTaintFlow
+    sink(exe); // $ hasTaintFlow
+    sink(home); // $ hasTaintFlow
 }
 
 async fn test_reqwest() -> Result<(), reqwest::Error> {
