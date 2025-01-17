@@ -132,6 +132,7 @@ Then we can make the source more specific, for example an access to a parameter.
    select p
 
 This query finds calls to formatting functions where the format string is not hard-coded.
+Note that `StringOps::Formatting::Range <https://codeql.github.com/codeql-standard-libraries/go/semmle/go/StringOps.qll/type.StringOps$StringOps$Formatting$Range.html>`_ is a class that represents all functions which have a format string, and its member predicate `getFormatStringIndex` gives the index of the argument which is the format string.
 
 .. code-block:: ql
 
