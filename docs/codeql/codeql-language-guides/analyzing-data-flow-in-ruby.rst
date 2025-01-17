@@ -226,7 +226,7 @@ However, global data flow is less precise than local data flow, and the analysis
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
