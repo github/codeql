@@ -256,9 +256,8 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
     // comparison against 0 so it's not included as a normal
     // `IRGuardCondition`. So to align with user expectations we make that `x`
     // a `GuardCondition`.
-    exists(NotExpr notExpr, Type t |
+    exists(NotExpr notExpr |
       this = notExpr.getOperand() and
-      t = this.getUnspecifiedType() and
       ir.getUnconvertedResultExpression() = notExpr
     )
   }
