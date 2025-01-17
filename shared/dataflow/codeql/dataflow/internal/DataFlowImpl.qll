@@ -2154,8 +2154,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate storeStepFwd(NodeEx node1, Ap ap1, Content c, NodeEx node2, Ap ap2) {
           fwdFlowStore(node1, _, ap1, _, c, _, _, node2, _, _, _) and
-          ap2 = apCons(c, ap1) and
-          readStepFwd(_, ap2, c, _, _)
+          readStepFwd(_, ap2, c, _, ap1)
         }
 
         pragma[nomagic]
@@ -4393,6 +4392,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Typ getTyp(DataFlowType t) { result = t }
 
       bindingset[c, tail]
+      pragma[inline_late]
       Ap apCons(Content c, Ap tail) { result.isCons(c, tail) }
 
       class ApHeadContent = Content;
@@ -4462,6 +4462,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       abstract Content getHead();
 
       /** Holds if this is a representation of `head` followed by `tail`. */
+      pragma[nomagic]
       abstract predicate isCons(Content head, AccessPath tail);
 
       /** Gets the front of this access path. */

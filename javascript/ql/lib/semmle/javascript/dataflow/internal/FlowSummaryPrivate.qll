@@ -16,6 +16,14 @@ private import semmle.javascript.internal.flow_summaries.ExceptionFlow
  */
 class SummarizedCallableBase = string;
 
+class SourceBase extends Unit {
+  SourceBase() { none() }
+}
+
+class SinkBase extends Unit {
+  SinkBase() { none() }
+}
+
 /** Gets the parameter position representing a callback itself, if any. */
 ArgumentPosition callbackSelfParameterPosition() { result.isFunctionSelfReference() }
 
@@ -139,6 +147,10 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
         ]
     )
   }
+
+  DataFlow::Node getSourceNode(SourceBase source, Private::SummaryComponent sc) { none() }
+
+  DataFlow::Node getSinkNode(SinkBase sink, Private::SummaryComponent sc) { none() }
 }
 
 module Steps = Private::Steps<FlowSummaryStepInput>;
