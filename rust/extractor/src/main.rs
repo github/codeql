@@ -145,7 +145,7 @@ impl<'a> Extractor<'a> {
         emit_extraction_diagnostics(start, cfg, &self.steps)?;
         let mut trap = self.traps.create("diagnostics", "extraction");
         for step in self.steps {
-            let file = trap.emit_file(&step.file);
+            let file = step.file.as_ref().map(|f| trap.emit_file(f));
             let duration_ms = usize::try_from(step.ms).unwrap_or_else(|_e| {
                 warn!("extraction step duration overflowed ({step:?})");
                 i32::MAX as usize
@@ -159,6 +159,13 @@ impl<'a> Extractor<'a> {
         }
         trap.commit()?;
         Ok(())
+    }
+
+    pub fn find_manifests(&mut self, files: &[PathBuf]) -> anyhow::Result<Vec<ProjectManifest>> {
+        let before = Instant::now();
+        let ret = rust_analyzer::find_project_manifests(files);
+        self.steps.push(ExtractionStep::find_manifests(before));
+        ret
     }
 }
 
@@ -199,7 +206,7 @@ fn main() -> anyhow::Result<()> {
             dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect();
-    let manifests = rust_analyzer::find_project_manifests(&files)?;
+    let manifests = extractor.find_manifests(&files)?;
     let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
         .iter()
         .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
