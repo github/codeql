@@ -1,6 +1,6 @@
 edges
-| angular.ts:12:5:12:23 | field: string = ""; | angular.ts:28:24:28:33 | this.field | provenance |  |
-| angular.ts:24:24:24:33 | form.value | angular.ts:24:24:24:37 | form.value.foo | provenance |  |
+| angular.ts:12:5:12:23 | field: string = ""; | angular.ts:33:24:33:33 | this.field | provenance |  |
+| angular.ts:29:24:29:33 | form.value | angular.ts:29:24:29:37 | form.value.foo | provenance |  |
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values | provenance |  |
 | forms.js:9:31:9:36 | values | forms.js:9:31:9:40 | values.foo | provenance |  |
 | forms.js:11:24:11:29 | values | forms.js:12:31:12:36 | values | provenance |  |
@@ -47,9 +47,9 @@ nodes
 | angular.ts:12:5:12:23 | field: string = ""; | semmle.label | field: string = ""; |
 | angular.ts:16:24:16:41 | event.target.value | semmle.label | event.target.value |
 | angular.ts:20:24:20:35 | target.value | semmle.label | target.value |
-| angular.ts:24:24:24:33 | form.value | semmle.label | form.value |
-| angular.ts:24:24:24:37 | form.value.foo | semmle.label | form.value.foo |
-| angular.ts:28:24:28:33 | this.field | semmle.label | this.field |
+| angular.ts:29:24:29:33 | form.value | semmle.label | form.value |
+| angular.ts:29:24:29:37 | form.value.foo | semmle.label | form.value.foo |
+| angular.ts:33:24:33:33 | this.field | semmle.label | this.field |
 | forms.js:8:23:8:28 | values | semmle.label | values |
 | forms.js:9:31:9:36 | values | semmle.label | values |
 | forms.js:9:31:9:40 | values.foo | semmle.label | values.foo |
@@ -134,8 +134,8 @@ subpaths
 #select
 | angular.ts:16:24:16:41 | event.target.value | angular.ts:16:24:16:41 | event.target.value | angular.ts:16:24:16:41 | event.target.value | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:16:24:16:41 | event.target.value | DOM text |
 | angular.ts:20:24:20:35 | target.value | angular.ts:20:24:20:35 | target.value | angular.ts:20:24:20:35 | target.value | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:20:24:20:35 | target.value | DOM text |
-| angular.ts:24:24:24:37 | form.value.foo | angular.ts:24:24:24:33 | form.value | angular.ts:24:24:24:37 | form.value.foo | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:24:24:24:33 | form.value | DOM text |
-| angular.ts:28:24:28:33 | this.field | angular.ts:12:5:12:23 | field: string = ""; | angular.ts:28:24:28:33 | this.field | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:12:5:12:23 | field: string = ""; | DOM text |
+| angular.ts:29:24:29:37 | form.value.foo | angular.ts:29:24:29:33 | form.value | angular.ts:29:24:29:37 | form.value.foo | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:29:24:29:33 | form.value | DOM text |
+| angular.ts:33:24:33:33 | this.field | angular.ts:12:5:12:23 | field: string = ""; | angular.ts:33:24:33:33 | this.field | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:12:5:12:23 | field: string = ""; | DOM text |
 | forms.js:9:31:9:40 | values.foo | forms.js:8:23:8:28 | values | forms.js:9:31:9:40 | values.foo | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:8:23:8:28 | values | DOM text |
 | forms.js:12:31:12:40 | values.bar | forms.js:11:24:11:29 | values | forms.js:12:31:12:40 | values.bar | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:11:24:11:29 | values | DOM text |
 | forms.js:25:23:25:34 | values.email | forms.js:24:15:24:20 | values | forms.js:25:23:25:34 | values.email | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:24:15:24:20 | values | DOM text |

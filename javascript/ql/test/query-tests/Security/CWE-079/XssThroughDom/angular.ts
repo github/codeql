@@ -20,6 +20,11 @@ export class Foo {
         document.write(target.value); // NOT OK
     }
 
+    setOtherInput(e) {
+        document.write(e.target.value); // OK
+        document.write(e.value); // OK
+    }
+
     blah(form: NgForm) {
         document.write(form.value.foo); // NOT OK
     }
