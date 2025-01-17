@@ -76,8 +76,7 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 .. code-block:: go
 
-     temp := x;
-     y := temp + ", " + temp;
+     y := "Hello " + x;
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 

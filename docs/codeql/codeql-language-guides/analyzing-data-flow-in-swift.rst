@@ -72,8 +72,7 @@ For example:
 
 .. code-block:: swift
 
-     temp = x
-     y = temp + ", " + temp
+     y = "Hello " + x
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 

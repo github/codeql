@@ -74,8 +74,7 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 .. code-block:: java
 
-     String temp = x;
-     String y = temp + ", " + temp;
+     String y = "Hello " + x;
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 

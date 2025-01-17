@@ -65,8 +65,7 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 .. code-block:: csharp
 
-     var temp = x;
-     var y = temp + ", " + temp;
+     var y = "Hello " + x;
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
