@@ -97,7 +97,7 @@ For example, you can find taint propagation from a parameter ``source`` to an ex
 Examples
 ~~~~~~~~
 
-This query finds the filename passed to ``new FileReader(..)``.
+This query finds the filename passed to ``new FileReader(..)``:
 
 .. code-block:: ql
 
@@ -137,7 +137,7 @@ Then we can make the source more specific, for example an access to a public par
      DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(call.getArgument(0)))
    select p
 
-This query finds calls to formatting functions where the format string is not hard-coded.
+The following query finds calls to formatting functions where the format string is not hard-coded.
 
 .. code-block:: ql
 

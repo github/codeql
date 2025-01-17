@@ -117,7 +117,7 @@ Then we can make the source more specific, for example an access to a public par
      and call.getEnclosingCallable().(Member).isPublic()
    select p, "Opening a file from a public method."
 
-This query finds calls to ``String.Format`` where the format string isn't hard-coded:
+The following query finds calls to ``String.Format`` where the format string isn't hard-coded:
 
 .. code-block:: ql
 
