@@ -143,11 +143,11 @@ struct CargoManifestSlice {
     workspace: Option<CargoManifestMembersSlice>,
 }
 
-struct ToMlReader {
+struct TomlReader {
     cache: HashMap<ManifestPath, Rc<CargoManifestSlice>>,
 }
 
-impl ToMlReader {
+impl TomlReader {
     fn new() -> Self {
         Self {
             cache: HashMap::new(),
@@ -171,7 +171,7 @@ impl ToMlReader {
     }
 }
 
-fn find_workspace(reader: &mut ToMlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
+fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
         return None;
     };
@@ -227,7 +227,7 @@ pub fn find_project_manifests(
         .collect();
     let discovered = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
     let mut ret = HashSet::new();
-    let mut reader = ToMlReader::new();
+    let mut reader = TomlReader::new();
     for manifest in discovered {
         let workspace = find_workspace(&mut reader, &manifest).unwrap_or(manifest);
         ret.insert(workspace);
