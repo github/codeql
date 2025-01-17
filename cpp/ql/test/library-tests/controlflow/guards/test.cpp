@@ -146,3 +146,34 @@ void unary_test_builtin_expected(int a) {
       use(a);
   }
 }
+
+void test_with_reference(bool& b, int a) {
+   b = a < 10;
+   if(!b) {
+      use(a);
+   }
+}
+
+void test_with_negated_binary_equality(int a, int b) {
+  bool c = a != b;
+
+  if (!c) {
+
+  }
+}
+
+void test_with_negated_unary_relational(int a) {
+  bool b = a > 10;
+
+  if (!b) {
+
+  }
+}
+
+void test_with_negated_binary_relational(int a, int b) {
+  bool c = a > b;
+
+  if (!c) {
+
+  }
+}

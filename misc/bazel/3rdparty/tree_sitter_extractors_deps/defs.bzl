@@ -353,6 +353,7 @@ _NORMAL_DEPENDENCIES = {
             "serde_json": Label("@vendor__serde_json-1.0.135//:serde_json"),
             "serde_with": Label("@vendor__serde_with-3.12.0//:serde_with"),
             "stderrlog": Label("@vendor__stderrlog-0.6.0//:stderrlog"),
+            "toml": Label("@vendor__toml-0.8.19//:toml"),
             "triomphe": Label("@vendor__triomphe-0.1.14//:triomphe"),
         },
     },
@@ -2601,6 +2602,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor__serde_spanned-0.6.8",
+        sha256 = "87607cb1398ed59d48732e575a4c28a7a8ebf2454b964fe3f224f2afc07909e1",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/serde_spanned/0.6.8/download"],
+        strip_prefix = "serde_spanned-0.6.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_spanned-0.6.8.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor__serde_with-3.12.0",
         sha256 = "d6b6f7f2fcb69f747921f79f3926bd1e203fce4fef62c268dd3abfb6d86029aa",
         type = "tar.gz",
@@ -2817,6 +2828,36 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/time-macros/0.2.19/download"],
         strip_prefix = "time-macros-0.2.19",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.time-macros-0.2.19.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor__toml-0.8.19",
+        sha256 = "a1ed1f98e3fdc28d6d910e6737ae6ab1a93bf1985935a1193e68f93eeb68d24e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/toml/0.8.19/download"],
+        strip_prefix = "toml-0.8.19",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml-0.8.19.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor__toml_datetime-0.6.8",
+        sha256 = "0dd7358ecb8fc2f8d014bf86f6f638ce72ba252a2c3a2572f2a795f1d23efb41",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/toml_datetime/0.6.8/download"],
+        strip_prefix = "toml_datetime-0.6.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_datetime-0.6.8.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor__toml_edit-0.22.22",
+        sha256 = "4ae48d6208a266e853d946088ed816055e556cc6028c5e8e2b84d9fa5dd7c7f5",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/toml_edit/0.22.22/download"],
+        strip_prefix = "toml_edit-0.22.22",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_edit-0.22.22.bazel"),
     )
 
     maybe(
@@ -3361,6 +3402,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor__winnow-0.6.24",
+        sha256 = "c8d71a593cc5c42ad7876e2c1fda56f314f3754c084128833e64f1345ff8a03a",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/winnow/0.6.24/download"],
+        strip_prefix = "winnow-0.6.24",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.winnow-0.6.24.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor__yansi-1.0.1",
         sha256 = "cfe53a6657fd280eaa890a3bc59152892ffa3e30101319d168b781ed6529b049",
         type = "tar.gz",
@@ -3431,6 +3482,7 @@ def crate_repositories():
         struct(repo = "vendor__serde_with-3.12.0", is_dev_dep = False),
         struct(repo = "vendor__stderrlog-0.6.0", is_dev_dep = False),
         struct(repo = "vendor__syn-2.0.96", is_dev_dep = False),
+        struct(repo = "vendor__toml-0.8.19", is_dev_dep = False),
         struct(repo = "vendor__tracing-0.1.41", is_dev_dep = False),
         struct(repo = "vendor__tracing-subscriber-0.3.19", is_dev_dep = False),
         struct(repo = "vendor__tree-sitter-0.24.6", is_dev_dep = False),

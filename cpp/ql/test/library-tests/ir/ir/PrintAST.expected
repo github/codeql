@@ -4351,6 +4351,33 @@ generic.c:
 #   28|               Type = [IntType] unsigned int
 #   28|               ValueCategory = prvalue
 #   29|     getStmt(2): [ReturnStmt] return ...
+ir-not-microsoft.c:
+#    1| [TopLevelFunction] void gnuConditionalOmittedOperand()
+#    1|   <params>: 
+#    1|   getEntryPoint(): [BlockStmt] { ... }
+#    2|     getStmt(0): [DeclStmt] declaration
+#    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#    2|           Type = [IntType] int
+#    2|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+#    2|           Type = [IntType] int
+#    3|     getStmt(1): [ExprStmt] ExprStmt
+#    3|       getExpr(): [AssignExpr] ... = ...
+#    3|           Type = [IntType] int
+#    3|           ValueCategory = prvalue
+#    3|         getLValue(): [VariableAccess] i
+#    3|             Type = [IntType] int
+#    3|             ValueCategory = lvalue
+#    3|         getRValue(): [ConditionalExpr] ... ? ... : ...
+#    3|             Type = [IntType] int
+#    3|             ValueCategory = prvalue(load)
+#    3|           getCondition(): [VariableAccess] j
+#    3|               Type = [IntType] int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getElse(): [Literal] 2
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 2
+#    3|               ValueCategory = prvalue
+#    4|     getStmt(2): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

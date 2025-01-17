@@ -14,6 +14,8 @@ module Impl {
   class ExtractorStep extends Generated::ExtractorStep {
     override string toString() {
       result = this.getAction() + "(" + this.getFile().getAbsolutePath() + ")"
+      or
+      not this.hasFile() and result = this.getAction()
     }
 
     /**

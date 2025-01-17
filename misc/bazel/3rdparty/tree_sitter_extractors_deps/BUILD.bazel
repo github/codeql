@@ -284,6 +284,12 @@ alias(
 )
 
 alias(
+    name = "toml",
+    actual = "@vendor__toml-0.8.19//:toml",
+    tags = ["manual"],
+)
+
+alias(
     name = "tracing",
     actual = "@vendor__tracing-0.1.41//:tracing",
     tags = ["manual"],
