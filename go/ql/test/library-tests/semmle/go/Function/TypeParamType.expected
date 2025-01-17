@@ -93,6 +93,7 @@ numberOfTypeParameters
 | internal/sync.HashTrieMap.iter | 0 | K | comparable |
 | internal/sync.HashTrieMap.iter | 1 | V | interface { } |
 | internal/sync.entry | 0 | K | comparable |
+| internal/sync.entry | 1 | V | interface { } |
 | internal/sync.entry.compareAndDelete | 0 | K | comparable |
 | internal/sync.entry.compareAndDelete | 1 | V | interface { } |
 | internal/sync.entry.compareAndSwap | 0 | K | comparable |
