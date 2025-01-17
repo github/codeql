@@ -1,7 +1,7 @@
-:
+extensions:
   - addsTo:
-    pack: github/actions-all
-    extensible: minimumPermissionsDataModel
+      pack: github/actions-all
+      extensible: minimumPermissionsDataModel
     data:
     - ["actions/cache", "{}"]
     - ["actions/setup-node", "contents:read"]
