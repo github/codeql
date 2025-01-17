@@ -122,7 +122,7 @@ Unfortunately, this only gives the expression in the argument, not the values wh
      DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(call.getArgument(0)))
    select src
 
-Then we can make the source more specific, for example an access to a public parameter. This query finds where a public parameter is passed to ``new FileReader(..)``:
+To restrict sources to only an access to a public parameter, rather than arbitrary expressions, we can modify this query as follows:
 
 .. code-block:: ql
 
