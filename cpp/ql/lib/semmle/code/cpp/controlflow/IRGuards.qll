@@ -994,6 +994,18 @@ private module Cached {
     )
     or
     unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
+    or
+    exists(BinaryLogicalOperation logical, Expr operand, boolean b |
+      test.getAnInstruction().getUnconvertedResultExpression() = logical and
+      op.getDef().getUnconvertedResultExpression() = operand and
+      logical.impliesValue(operand, b, value.(BooleanValue).getValue())
+    |
+      k = 1 and
+      areEqual = b
+      or
+      k = 0 and
+      areEqual = b.booleanNot()
+    )
   }
 
   /** Rearrange various simple comparisons into `left == right + k` form. */
