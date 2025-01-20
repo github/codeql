@@ -123,7 +123,7 @@ module RemoteSource {
  * An externally modeled source for remote (network) data.
  */
 class ModeledRemoteSource extends RemoteSource::Range {
-  ModeledRemoteSource() { sourceNode(this, "remote-source") }
+  ModeledRemoteSource() { sourceNode(this, "remote") }
 }
 
 /**

@@ -3,8 +3,8 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::get", "ReturnValue", "remote-source", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::blocking::get", "ReturnValue", "remote-source", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::get", "ReturnValue", "remote", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::blocking::get", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
