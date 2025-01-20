@@ -13,5 +13,5 @@ predicate isConstevalIf(Stmt stmt) {
 from Stmt stmt, int kind, int kind_new, Location location
 where
   stmts(stmt, kind, location) and
-  if isConstevalIf(stmt) then kind_new = 7 else kind_new = kind // Turns consteval if into a block with two block statement in it
+  if isConstevalIf(stmt) then kind_new = 7 else kind_new = kind // Turns consteval if into a block with two block statements in it
 select stmt, kind_new, location
