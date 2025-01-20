@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::ast::{Const, Fn, HasName, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -598,7 +598,34 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded(&self, item: &(impl ast::HasAttrs + ast::AstNode)) -> bool {
+        if "true"
+            == std::env::var("CODEQL_EXTRACTOR_RUST_OPTION_EXCLUDE_BODIES").unwrap_or_default()
+        {
+            let syntax = item.syntax();
+            if let Some(body) = syntax.parent().and_then(Fn::cast).and_then(|x| x.body()) {
+                if body.syntax() == syntax {
+                    tracing::debug!("Skipping Fn body");
+                    return true;
+                }
+            }
+            if let Some(body) = syntax.parent().and_then(Const::cast).and_then(|x| x.body()) {
+                if body.syntax() == syntax {
+                    tracing::debug!("Skipping Const body");
+                    return true;
+                }
+            }
+            if let Some(body) = syntax
+                .parent()
+                .and_then(Static::cast)
+                .and_then(|x| x.body())
+            {
+                if body.syntax() == syntax {
+                    tracing::debug!("Skipping Static body");
+                    return true;
+                }
+            }
+        }
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {
