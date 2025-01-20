@@ -5,29 +5,47 @@
 import go
 
 /**
- * Provides abstract class for modeling the Go CORS handler model origin write.
+ * An abstract class for modeling the Go CORS handler model origin write.
  */
 abstract class UniversalOriginWrite extends DataFlow::ExprNode {
+  /**
+   * Get config variable holding header values
+   */
   abstract DataFlow::Node getBase();
 
+  /**
+   * Get config variable holding header values
+   */
   abstract Variable getConfig();
 }
 
 /**
- * Provides abstract class for modeling the Go CORS handler model allow all origins write.
+ * An abstract class for modeling the Go CORS handler model allow all origins write.
  */
 abstract class UniversalAllowAllOriginsWrite extends DataFlow::ExprNode {
+  /**
+   * Get config variable holding header values
+   */
   abstract DataFlow::Node getBase();
 
+  /**
+   * Get config variable holding header values
+   */
   abstract Variable getConfig();
 }
 
 /**
- * Provides abstract class for modeling the Go CORS handler model allow credentials write.
+ * An abstract class for modeling the Go CORS handler model allow credentials write.
  */
 abstract class UniversalAllowCredentialsWrite extends DataFlow::ExprNode {
+  /**
+   * Get config struct holding header values
+   */
   abstract DataFlow::Node getBase();
 
+  /**
+   * Get config variable holding header values
+   */
   abstract Variable getConfig();
 }
 
