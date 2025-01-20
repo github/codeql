@@ -5,35 +5,58 @@ Partial.cs:
 #    5|   6: [Method] Method2
 #    5|     -1: [TypeMention] Void
 #    5|     4: [BlockStmt] {...}
-#    7|   7: [Property] PartialProperty1
+#   14|   7: [Method] PartialMethodWithBody1
+#    3|     -1: [TypeMention] Void
+#   14|     4: [BlockStmt] {...}
+#   15|   8: [Method] Method3
+#   15|     -1: [TypeMention] Void
+#   15|     4: [BlockStmt] {...}
+#   16|   9: [Field] _backingField
+#   16|     -1: [TypeMention] object
+#   18|   10: [Property] PartialProperty1
 #    7|     -1: [TypeMention] object
-#    7|     3: [Getter] get_PartialProperty1
-#    7|     4: [Setter] set_PartialProperty1
+#   18|     -1: [TypeMention] object
+#   20|     3: [Getter] get_PartialProperty1
+#   20|       4: [BlockStmt] {...}
+#   20|         0: [ReturnStmt] return ...;
+#   20|           0: [FieldAccess] access to field _backingField
+#   21|     4: [Setter] set_PartialProperty1
 #-----|       2: (Parameters)
-#    7|         0: [Parameter] value
-#    9|   8: [Indexer] Item
+#   21|         0: [Parameter] value
+#   21|       4: [BlockStmt] {...}
+#   21|         0: [ExprStmt] ...;
+#   21|           0: [AssignExpr] ... = ...
+#   21|             0: [FieldAccess] access to field _backingField
+#   21|             1: [ParameterAccess] access to parameter value
+#   23|   11: [Field] _backingArray
+#   23|     -1: [TypeMention] Object[]
+#   23|       1: [TypeMention] object
+#   25|   12: [Indexer] Item
 #    9|     -1: [TypeMention] object
+#   25|     -1: [TypeMention] object
 #-----|     1: (Parameters)
 #    9|       0: [Parameter] index
 #    9|         -1: [TypeMention] int
-#    9|     3: [Getter] get_Item
+#   25|         -1: [TypeMention] int
+#   27|     3: [Getter] get_Item
 #-----|       2: (Parameters)
-#    9|         0: [Parameter] index
-#    9|     4: [Setter] set_Item
+#   25|         0: [Parameter] index
+#   27|       4: [BlockStmt] {...}
+#   27|         0: [ReturnStmt] return ...;
+#   27|           0: [ArrayAccess] access to array element
+#   27|             -1: [FieldAccess] access to field _backingArray
+#   27|             0: [ParameterAccess] access to parameter index
+#   28|     4: [Setter] set_Item
 #-----|       2: (Parameters)
-#    9|         0: [Parameter] index
-#    9|         1: [Parameter] value
-#   14|   9: [Method] PartialMethodWithBody1
-#    3|     -1: [TypeMention] Void
-#   14|     4: [BlockStmt] {...}
-#   15|   10: [Method] Method3
-#   15|     -1: [TypeMention] Void
-#   15|     4: [BlockStmt] {...}
-#   16|   11: [Field] _backingField
-#   16|     -1: [TypeMention] object
-#   23|   12: [Field] _backingArray
-#   23|     -1: [TypeMention] Object[]
-#   23|       1: [TypeMention] object
+#   25|         0: [Parameter] index
+#   28|         1: [Parameter] value
+#   28|       4: [BlockStmt] {...}
+#   28|         0: [ExprStmt] ...;
+#   28|           0: [AssignExpr] ... = ...
+#   28|             0: [ArrayAccess] access to array element
+#   28|               -1: [FieldAccess] access to field _backingArray
+#   28|               0: [ParameterAccess] access to parameter index
+#   28|             1: [ParameterAccess] access to parameter value
 #   32| [Class] OnePartPartialClass
 #   34|   5: [Method] PartialMethodWithoutBody2
 #   34|     -1: [TypeMention] Void
