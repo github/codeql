@@ -695,6 +695,20 @@ module Bash {
       not varMatchesRegexTest(script, var2, alphaNumericRegex())
     )
     or
+    exists(string var2, string value2, string var3, string value3 |
+      // VAR2=$(cmd)
+      // VAR3=$VAR2
+      // echo "FIELD=${VAR3:-default}" >> $GITHUB_ENV (field, file_write_value)
+      script.getAnAssignment(var2, value2) and
+      script.getAnAssignment(var3, value3) and
+      var2 != var3 and
+      not varMatchesRegexTest(script, var2, alphaNumericRegex()) and
+      not varMatchesRegexTest(script, var3, alphaNumericRegex()) and
+      containsCmdSubstitution(value2, cmd) and
+      containsParameterExpansion(value3, var2, _, _) and
+      containsParameterExpansion(expr, var3, _, _)
+    )
+    or
     // var reaches the file write directly
     // echo "FIELD=$(cmd)" >> $GITHUB_ENV (field, file_write_value)
     containsCmdSubstitution(expr, cmd)
