@@ -23,6 +23,13 @@ module DecodeWithoutVerificationConfig implements DataFlow::ConfigSig {
     or
     sink = verifiedDecode()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationLocalSource.ql:32: Flow call outside 'select' clause
+    // ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationLocalSource.ql:42: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module DecodeWithoutVerificationFlow = TaintTracking::Global<DecodeWithoutVerificationConfig>;

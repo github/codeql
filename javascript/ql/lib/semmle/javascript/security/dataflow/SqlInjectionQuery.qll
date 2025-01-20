@@ -31,6 +31,8 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
       node2 = call
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

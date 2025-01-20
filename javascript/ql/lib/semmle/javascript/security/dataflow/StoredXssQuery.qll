@@ -18,6 +18,8 @@ module StoredXssConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer or node = Shared::BarrierGuard::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

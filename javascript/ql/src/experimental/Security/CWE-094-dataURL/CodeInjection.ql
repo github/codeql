@@ -87,6 +87,8 @@ module CodeInjectionConfig implements DataFlow::StateConfigSig {
     state1 = TTaint() and
     state2 = TUrlConstructor()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module CodeInjectionFlow = TaintTracking::GlobalWithState<CodeInjectionConfig>;

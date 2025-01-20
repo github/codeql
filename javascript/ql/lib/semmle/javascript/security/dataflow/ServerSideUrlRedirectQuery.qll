@@ -30,6 +30,8 @@ module ServerSideUrlRedirectConfig implements DataFlow::ConfigSig {
       node2 = call
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -27,6 +27,8 @@ module TypeConfusionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Barrier or node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

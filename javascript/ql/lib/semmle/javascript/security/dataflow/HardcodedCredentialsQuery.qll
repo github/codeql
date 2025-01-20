@@ -69,6 +69,8 @@ module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
       node2 = n.getACall()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
