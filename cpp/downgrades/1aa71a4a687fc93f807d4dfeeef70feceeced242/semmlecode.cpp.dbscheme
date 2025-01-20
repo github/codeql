@@ -2152,8 +2152,6 @@ case @stmt.kind of
 // ...  34 @stmt_finally_end deprecated
 |  35 = @stmt_constexpr_if
 |  37 = @stmt_co_return
-|  38 = @stmt_consteval_if
-|  39 = @stmt_not_consteval_if
 ;
 
 type_vla(
@@ -2193,18 +2191,6 @@ constexpr_if_then(
 
 constexpr_if_else(
     unique int constexpr_if_stmt: @stmt_constexpr_if ref,
-    int else_id: @stmt ref
-);
-
-@stmt_consteval_or_not_consteval_if = @stmt_consteval_if | @stmt_not_consteval_if;
-
-consteval_if_then(
-    unique int constexpr_if_stmt: @stmt_consteval_or_not_consteval_if ref,
-    int then_id: @stmt ref
-);
-
-consteval_if_else(
-    unique int constexpr_if_stmt: @stmt_consteval_or_not_consteval_if ref,
     int else_id: @stmt ref
 );
 
