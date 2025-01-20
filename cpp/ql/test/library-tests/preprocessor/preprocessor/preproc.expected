@@ -7,6 +7,7 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 7 | 1 | 7 | 5 | PreprocessorElse | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 9 | 1 | 9 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 11 | 1 | 11 | 10 | PreprocessorUndef | BAR | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 12 | 1 | 12 | 68 | Macro | SCARY(a,aa,aaah) | (aa ) |
 | pp.cpp:0:0:0:0 | pp.cpp | 13 | 1 | 13 | 63 | Macro | LOG(fmt,__VA_ARGS__...) | printf("Warning: %s", fmt, __VA__ARGS__) |
 | pp.cpp:0:0:0:0 | pp.cpp | 14 | 1 | 14 | 15 | Include | "pp.h" | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 16 | 1 | 16 | 5 | PreprocessorIf | 0 | N/A |
@@ -32,7 +33,9 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 76 | 1 | 76 | 20 | PreprocessorWarning | BAR defined | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 77 | 1 | 77 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.h:0:0:0:0 | pp.h | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
+| pp.h:0:0:0:0 | pp.h | 2 | 1 | 2 | 29 | PreprocessorWarning | "This should happen" | N/A |
 | pp.h:0:0:0:0 | pp.h | 3 | 1 | 3 | 27 | PreprocessorLine | 33  "emerald_city.h" | N/A |
+| pp.h:0:0:0:0 | pp.h | 4 | 1 | 4 | 30 | PreprocessorPragma | byte_order(big_endian) | N/A |
 | pp.h:0:0:0:0 | pp.h | 5 | 1 | 5 | 33 | PreprocessorWarning | "Not in Kansas any more" | N/A |
 | pp.h:0:0:0:0 | pp.h | 7 | 1 | 11 | 8 | Macro | MULTILINE | world a long |
 | pp.h:0:0:0:0 | pp.h | 13 | 1 | 14 | 11 | PreprocessorUndef | MULTILINE | N/A |
