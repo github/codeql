@@ -113,6 +113,8 @@ module DomBasedXssConfig implements DataFlow::StateConfigSig {
       state1 = state2
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

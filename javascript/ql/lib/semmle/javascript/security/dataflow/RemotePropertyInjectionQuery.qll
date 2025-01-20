@@ -23,6 +23,8 @@ module RemotePropertyInjectionConfig implements DataFlow::ConfigSig {
     node instanceof Sanitizer or
     node = StringConcatenation::getRoot(any(ConstantString str).flow())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

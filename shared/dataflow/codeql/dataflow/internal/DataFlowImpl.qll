@@ -2186,11 +2186,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate flowThroughIntoCall(
-          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap argAp, Ap ap
+          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap argAp
         ) {
           exists(Typ argT, TypOption argStored |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
-              pragma[only_bind_into](argAp), pragma[only_bind_into](argStored), ap) and
+              pragma[only_bind_into](argAp), pragma[only_bind_into](argStored), _) and
             flowIntoCallTaken(call, _, pragma[only_bind_into](arg), p, isNil(argAp)) and
             fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               pragma[only_bind_into](argStored))
@@ -2284,9 +2284,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           returnAp = apNone()
           or
           // flow through a callable
-          exists(DataFlowCall call, ParamNodeEx p, Ap innerReturnAp |
-            revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
-            flowThroughIntoCall(call, node, p, ap, innerReturnAp)
+          exists(DataFlowCall call, ParamNodeEx p |
+            revFlowThrough(call, returnCtx, p, state, returnAp, ap) and
+            flowThroughIntoCall(call, node, p, ap)
           )
           or
           // flow out of a callable
@@ -2436,11 +2436,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowThrough(
-          DataFlowCall call, ReturnCtx returnCtx, ParamNodeEx p, FlowState state,
-          ReturnPosition pos, ApOption returnAp, Ap ap, Ap innerReturnAp
+          DataFlowCall call, ReturnCtx returnCtx, ParamNodeEx p, FlowState state, ApOption returnAp,
+          Ap ap
         ) {
-          revFlowParamToReturn(p, state, pos, innerReturnAp, ap) and
-          revFlowIsReturned(call, returnCtx, returnAp, pos, innerReturnAp)
+          exists(ReturnPosition pos, Ap innerReturnAp |
+            revFlowParamToReturn(p, state, pos, innerReturnAp, ap) and
+            revFlowIsReturned(call, returnCtx, returnAp, pos, innerReturnAp)
+          )
         }
 
         /**
@@ -2566,9 +2568,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
           Ap ap
         ) {
-          exists(ParamNodeEx p, Ap innerReturnAp |
-            revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
-            flowThroughIntoCall(call, arg, p, ap, innerReturnAp)
+          exists(ParamNodeEx p |
+            revFlowThrough(call, returnCtx, p, state, returnAp, ap) and
+            flowThroughIntoCall(call, arg, p, ap)
           )
         }
 

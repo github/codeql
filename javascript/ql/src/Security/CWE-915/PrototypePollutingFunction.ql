@@ -283,6 +283,10 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     // flows through any contents, apart from a capture content.
     result = 1
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Disabled since the alert references some locations other than the source or sink
+  }
 }
 
 class FlowState = PropNameTrackingConfig::FlowState;

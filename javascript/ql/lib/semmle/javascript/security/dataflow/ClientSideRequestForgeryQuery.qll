@@ -31,6 +31,8 @@ module ClientSideRequestForgeryConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalRequestForgeryStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

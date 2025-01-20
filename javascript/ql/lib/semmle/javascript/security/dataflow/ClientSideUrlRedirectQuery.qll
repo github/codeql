@@ -54,6 +54,8 @@ module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
       state1 = state2
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

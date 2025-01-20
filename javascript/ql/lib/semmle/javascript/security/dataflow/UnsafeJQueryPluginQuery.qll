@@ -36,6 +36,8 @@ module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
     // prefixing through a poor-mans templating system:
     node = any(StringReplaceCall call).getRawReplacement()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

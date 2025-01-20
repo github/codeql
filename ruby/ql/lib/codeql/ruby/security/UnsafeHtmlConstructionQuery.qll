@@ -21,6 +21,8 @@ private module UnsafeHtmlConstructionConfig implements DataFlow::ConfigSig {
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

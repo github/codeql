@@ -23,6 +23,8 @@ module CorsMisconfigurationConfig implements DataFlow::ConfigSig {
     node instanceof Sanitizer or
     node = TaintTracking::AdHocWhitelistCheckSanitizer::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

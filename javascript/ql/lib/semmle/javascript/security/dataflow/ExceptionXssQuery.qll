@@ -155,6 +155,8 @@ module ExceptionXssConfig implements DataFlow::StateConfigSig {
   }
 
   int accessPathLimit() { result = 1 }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
