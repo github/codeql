@@ -382,7 +382,7 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
     exists(int indirectionIndex |
       pos = TIndirectionPosition(argumentIndex, pragma[only_bind_into](indirectionIndex)) and
       this.getCallInstruction() = dfCall.asCallInstruction() and
-      super.hasAddressOperandAndIndirectionIndex(_, pragma[only_bind_into](indirectionIndex))
+      super.hasAddressOperandAndIndirectionIndex(arg, pragma[only_bind_into](indirectionIndex))
     )
   }
 }

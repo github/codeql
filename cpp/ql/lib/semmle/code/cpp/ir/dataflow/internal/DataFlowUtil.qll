@@ -757,9 +757,11 @@ class SsaIteratorNode extends Node, TSsaIteratorNode {
 class SideEffectOperandNode extends Node instanceof IndirectOperand {
   CallInstruction call;
   int argumentIndex;
+  ArgumentOperand arg;
 
   SideEffectOperandNode() {
-    IndirectOperand.super.hasOperandAndIndirectionIndex(call.getArgumentOperand(argumentIndex), _)
+    arg = call.getArgumentOperand(argumentIndex) and
+    IndirectOperand.super.hasOperandAndIndirectionIndex(arg, _)
   }
 
   CallInstruction getCallInstruction() { result = call }
