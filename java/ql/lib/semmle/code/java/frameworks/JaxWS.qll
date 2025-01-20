@@ -148,7 +148,7 @@ private predicate hasPathAnnotation(Annotatable annotatable) {
 }
 
 /**
- * Holds if the class inherites the JaxRs `@Path` annotation.
+ * Holds if the class has or inherits the JaxRs `@Path` annotation.
  */
 private predicate hasOrInheritsPathAnnotation(Class c) {
   hasPathAnnotation(c)
@@ -156,7 +156,8 @@ private predicate hasOrInheritsPathAnnotation(Class c) {
   // Note that by the JAX-RS spec, JAX-RS annotations on classes and interfaces
   // are not inherited, but some implementations, like Apache CXF, do inherit
   // them. I think this only applies if there are no JaxRS annotations on the
-  // class itself.
+  // class itself, as that is the rule in the JAX-RS spec for method
+  // annotations.
   hasPathAnnotation(c.getAnAncestor()) and
   not exists(c.getAnAnnotation().(JaxRSAnnotation))
 }

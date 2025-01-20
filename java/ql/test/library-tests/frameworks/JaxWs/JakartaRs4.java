@@ -24,9 +24,11 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.MessageBodyReader;
 
-// This is not a resource class because it doesn't have a @Path annotation.
-// Note that inheritance of class or interface annotations is not supported in
-// JAX-RS.
+// By the JAX-RS spec, this is not a resource class because it doesn't
+// have a @Path annotation. Inheritance of class or interface annotations
+// is not supported in JAX-RS. However, this is a resource class for some
+// implementations, like Apache CXF, that allow inheritance of JAX-RS
+// annotations on classes and interfaces.
 public class JakartaRs4 implements JakartaRsInterface { // $ RootResourceClass
   public JakartaRs4() { // $ InjectableConstructor
   }
