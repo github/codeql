@@ -30,6 +30,8 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSinkWithHighlight(sink, _) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

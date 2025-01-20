@@ -18,6 +18,8 @@ module ReflectedXssConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer or node = SharedXss::BarrierGuard::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

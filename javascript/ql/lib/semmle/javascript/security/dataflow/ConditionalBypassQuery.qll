@@ -24,6 +24,10 @@ module ConditionalBypassConfig implements DataFlow::ConfigSig {
     // comparing a tainted expression against a constant gives a tainted result
     node2.asExpr().(Comparison).hasOperands(node1.asExpr(), any(ConstantExpr c))
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Disabled since the enclosing comparison is sometimes selected instead of the sink
+  }
 }
 
 /**

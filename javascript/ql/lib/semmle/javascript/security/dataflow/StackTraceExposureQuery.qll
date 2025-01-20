@@ -28,6 +28,8 @@ module StackTraceExposureConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node snk) { snk instanceof Sink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

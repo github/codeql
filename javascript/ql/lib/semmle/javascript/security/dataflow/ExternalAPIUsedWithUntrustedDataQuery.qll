@@ -31,6 +31,10 @@ module ExternalAPIUsedWithUntrustedDataConfig implements DataFlow::ConfigSig {
     // Also report values that escape while inside a property
     isSink(node) and contents = DataFlow::ContentSet::anyProperty()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Not used for PR analysis
+  }
 }
 
 /**

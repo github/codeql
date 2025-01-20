@@ -18132,6 +18132,143 @@ ir.cpp:
 # 2724|     v2724_10(void)                      = AliasedUse                  : ~m?
 # 2724|     v2724_11(void)                      = ExitFunction                : 
 
+ir23.cpp:
+#    1| bool consteval_1()
+#    1|   Block 0
+#    1|     v1_1(void)        = EnterFunction            : 
+#    1|     mu1_2(unknown)    = AliasedDefinition        : 
+#    1|     mu1_3(unknown)    = InitializeNonLocal       : 
+#    6|     r6_1(glval<bool>) = VariableAddress[#return] : 
+#    6|     r6_2(bool)        = Constant[0]              : 
+#    6|     mu6_3(bool)       = Store[#return]           : &:r6_1, r6_2
+#-----|   Goto -> Block 1
+
+#    1|   Block 1
+#    1|     r1_4(glval<bool>) = VariableAddress[#return] : 
+#    1|     v1_5(void)        = ReturnValue              : &:r1_4, ~m?
+#    1|     v1_6(void)        = AliasedUse               : ~m?
+#    1|     v1_7(void)        = ExitFunction             : 
+
+#    4|   Block 2
+#    4|     r4_1(glval<bool>) = VariableAddress[#return] : 
+#    4|     r4_2(bool)        = Constant[1]              : 
+#    4|     mu4_3(bool)       = Store[#return]           : &:r4_1, r4_2
+#-----|   Goto -> Block 1
+
+#   10| bool consteval_2()
+#   10|   Block 0
+#   10|     v10_1(void)        = EnterFunction            : 
+#   10|     mu10_2(unknown)    = AliasedDefinition        : 
+#   10|     mu10_3(unknown)    = InitializeNonLocal       : 
+#   13|     r13_1(glval<bool>) = VariableAddress[#return] : 
+#   13|     r13_2(bool)        = Constant[1]              : 
+#   13|     mu13_3(bool)       = Store[#return]           : &:r13_1, r13_2
+#-----|   Goto -> Block 1
+
+#   10|   Block 1
+#   10|     r10_4(glval<bool>) = VariableAddress[#return] : 
+#   10|     v10_5(void)        = ReturnValue              : &:r10_4, ~m?
+#   10|     v10_6(void)        = AliasedUse               : ~m?
+#   10|     v10_7(void)        = ExitFunction             : 
+
+#   15|   Block 2
+#   15|     r15_1(glval<bool>) = VariableAddress[#return] : 
+#   15|     r15_2(bool)        = Constant[0]              : 
+#   15|     mu15_3(bool)       = Store[#return]           : &:r15_1, r15_2
+#-----|   Goto -> Block 1
+
+#   19| bool consteval_3()
+#   19|   Block 0
+#   19|     v19_1(void)        = EnterFunction            : 
+#   19|     mu19_2(unknown)    = AliasedDefinition        : 
+#   19|     mu19_3(unknown)    = InitializeNonLocal       : 
+#   21|     v21_1(void)        = NoOp                     : 
+#   25|     r25_1(glval<bool>) = VariableAddress[#return] : 
+#   25|     r25_2(bool)        = Constant[0]              : 
+#   25|     mu25_3(bool)       = Store[#return]           : &:r25_1, r25_2
+#-----|   Goto -> Block 1
+
+#   19|   Block 1
+#   19|     r19_4(glval<bool>) = VariableAddress[#return] : 
+#   19|     v19_5(void)        = ReturnValue              : &:r19_4, ~m?
+#   19|     v19_6(void)        = AliasedUse               : ~m?
+#   19|     v19_7(void)        = ExitFunction             : 
+
+#   22|   Block 2
+#   22|     r22_1(glval<bool>) = VariableAddress[#return] : 
+#   22|     r22_2(bool)        = Constant[1]              : 
+#   22|     mu22_3(bool)       = Store[#return]           : &:r22_1, r22_2
+#-----|   Goto -> Block 1
+
+#   28| bool consteval_4()
+#   28|   Block 0
+#   28|     v28_1(void)        = EnterFunction            : 
+#   28|     mu28_2(unknown)    = AliasedDefinition        : 
+#   28|     mu28_3(unknown)    = InitializeNonLocal       : 
+#   31|     r31_1(glval<bool>) = VariableAddress[#return] : 
+#   31|     r31_2(bool)        = Constant[1]              : 
+#   31|     mu31_3(bool)       = Store[#return]           : &:r31_1, r31_2
+#-----|   Goto -> Block 1
+
+#   28|   Block 1
+#   28|     r28_4(glval<bool>) = VariableAddress[#return] : 
+#   28|     v28_5(void)        = ReturnValue              : &:r28_4, ~m?
+#   28|     v28_6(void)        = AliasedUse               : ~m?
+#   28|     v28_7(void)        = ExitFunction             : 
+
+#   34|   Block 2
+#   34|     r34_1(glval<bool>) = VariableAddress[#return] : 
+#   34|     r34_2(bool)        = Constant[0]              : 
+#   34|     mu34_3(bool)       = Store[#return]           : &:r34_1, r34_2
+#-----|   Goto -> Block 1
+
+#   37| bool consteval_5()
+#   37|   Block 0
+#   37|     v37_1(void)        = EnterFunction            : 
+#   37|     mu37_2(unknown)    = AliasedDefinition        : 
+#   37|     mu37_3(unknown)    = InitializeNonLocal       : 
+#   39|     r39_1(glval<bool>) = VariableAddress[r]       : 
+#   39|     r39_2(bool)        = Constant[1]              : 
+#   39|     mu39_3(bool)       = Store[r]                 : &:r39_1, r39_2
+#   42|     r42_1(bool)        = Constant[0]              : 
+#   42|     r42_2(glval<bool>) = VariableAddress[r]       : 
+#   42|     mu42_3(bool)       = Store[r]                 : &:r42_2, r42_1
+#   45|     r45_1(glval<bool>) = VariableAddress[#return] : 
+#   45|     r45_2(glval<bool>) = VariableAddress[r]       : 
+#   45|     r45_3(bool)        = Load[r]                  : &:r45_2, ~m?
+#   45|     mu45_4(bool)       = Store[#return]           : &:r45_1, r45_3
+#   37|     r37_4(glval<bool>) = VariableAddress[#return] : 
+#   37|     v37_5(void)        = ReturnValue              : &:r37_4, ~m?
+#   37|     v37_6(void)        = AliasedUse               : ~m?
+#   37|     v37_7(void)        = ExitFunction             : 
+
+#   48| bool consteval_6()
+#   48|   Block 0
+#   48|     v48_1(void)        = EnterFunction      : 
+#   48|     mu48_2(unknown)    = AliasedDefinition  : 
+#   48|     mu48_3(unknown)    = InitializeNonLocal : 
+#   50|     r50_1(glval<bool>) = VariableAddress[r] : 
+#   50|     r50_2(bool)        = Constant[1]        : 
+#   50|     mu50_3(bool)       = Store[r]           : &:r50_1, r50_2
+#   52|     v52_1(void)        = NoOp               : 
+#-----|   Goto -> Block 2
+
+#   53|   Block 1
+#   53|     r53_1(bool)        = Constant[0]        : 
+#   53|     r53_2(glval<bool>) = VariableAddress[r] : 
+#   53|     mu53_3(bool)       = Store[r]           : &:r53_2, r53_1
+#-----|   Goto -> Block 2
+
+#   56|   Block 2
+#   56|     r56_1(glval<bool>) = VariableAddress[#return] : 
+#   56|     r56_2(glval<bool>) = VariableAddress[r]       : 
+#   56|     r56_3(bool)        = Load[r]                  : &:r56_2, ~m?
+#   56|     mu56_4(bool)       = Store[#return]           : &:r56_1, r56_3
+#   48|     r48_4(glval<bool>) = VariableAddress[#return] : 
+#   48|     v48_5(void)        = ReturnValue              : &:r48_4, ~m?
+#   48|     v48_6(void)        = AliasedUse               : ~m?
+#   48|     v48_7(void)        = ExitFunction             : 
+
 many-defs-per-use.cpp:
 #   34| void many_defs_per_use()
 #   34|   Block 0

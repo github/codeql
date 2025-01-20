@@ -113,6 +113,8 @@ module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
     or
     node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Taint-tracking for reasoning about prototype-polluting assignments. */
