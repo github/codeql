@@ -10,6 +10,10 @@ public class TestImplicitToString
         }
     }
 
+    public class Container2 : Container { }
+
+    public class Container3 { }
+
     public class FormattableContainer : IFormattable
     {
         public string ToString(string format, IFormatProvider formatProvider)
@@ -40,5 +44,11 @@ public class TestImplicitToString
         y = "Hello" + formattableContainer; // Implicit call to ToString().
         y = $"Hello {formattableContainer}"; // Implicit call to ToString(string, IFormatProvider). We don't handle this.
         y = $"Hello {formattableContainer:D}"; // Implicit call to ToString(string, IFormatProvider). We don't handle this.
+
+        var container2 = new Container2();
+        y = "Hello" + container2; // Implicit Container.ToString call.
+
+        var container3 = new Container3();
+        y = "Hello" + container3; // Implicit Object.ToString call.
     }
 }

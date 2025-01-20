@@ -37,6 +37,8 @@ module PostMessageStarConfig implements DataFlow::ConfigSig {
     // If an object leaks, all of its properties have leaked
     isSink(node) and contents = DataFlow::ContentSet::anyProperty()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

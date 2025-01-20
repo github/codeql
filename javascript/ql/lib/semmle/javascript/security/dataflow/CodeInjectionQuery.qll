@@ -24,6 +24,8 @@ module CodeInjectionConfig implements DataFlow::ConfigSig {
     // HTML sanitizers are insufficient protection against code injection
     node1 = node2.(HtmlSanitizerCall).getInput()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

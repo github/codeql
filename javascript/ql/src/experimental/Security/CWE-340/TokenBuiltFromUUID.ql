@@ -41,6 +41,8 @@ module TokenBuiltFromUuidConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof PredictableResultSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TokenAssignmentValueSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module TokenBuiltFromUuidFlow = TaintTracking::Global<TokenBuiltFromUuidConfig>;
