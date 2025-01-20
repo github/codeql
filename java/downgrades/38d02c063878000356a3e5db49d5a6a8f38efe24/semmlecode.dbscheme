@@ -206,11 +206,6 @@ sourceLocationPrefix(
   string prefix : string ref
 );
 
-databaseMetadata(
-  string metadataKey : string ref,
-  string value : string ref
-);
-
 /*
  * SMAP
  */
