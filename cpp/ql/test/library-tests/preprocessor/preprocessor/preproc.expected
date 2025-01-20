@@ -27,6 +27,13 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 60 | 3 | 60 | 21 | Macro | IN_TEMPLATE |  |
 | pp.cpp:0:0:0:0 | pp.cpp | 61 | 1 | 61 | 7 | PreprocessorEndif | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 69 | 1 | 69 | 21 | Macro | INSTANTIATION |  |
+| pp.cpp:0:0:0:0 | pp.cpp | 72 | 1 | 72 | 11 | Macro | BAR |  |
+| pp.cpp:0:0:0:0 | pp.cpp | 74 | 1 | 74 | 21 | PreprocessorIf | defined(BAR) && \\ | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 76 | 1 | 76 | 20 | PreprocessorWarning | BAR defined | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 77 | 1 | 77 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.h:0:0:0:0 | pp.h | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
 | pp.h:0:0:0:0 | pp.h | 3 | 1 | 3 | 27 | PreprocessorLine | 33  "emerald_city.h" | N/A |
 | pp.h:0:0:0:0 | pp.h | 5 | 1 | 5 | 33 | PreprocessorWarning | "Not in Kansas any more" | N/A |
+| pp.h:0:0:0:0 | pp.h | 7 | 1 | 11 | 8 | Macro | MULTILINE | world a long |
+| pp.h:0:0:0:0 | pp.h | 13 | 1 | 14 | 11 | PreprocessorUndef | MULTILINE | N/A |
+| pp.h:0:0:0:0 | pp.h | 16 | 1 | 17 | 8 | Include | "pp.h" | N/A |

@@ -545,8 +545,12 @@
 | 182 | ! ... == 1 when ... && ... is false |
 | 182 | ... && ... != 0 when ! ... is false |
 | 182 | ... && ... != 0 when ... && ... is true |
+| 182 | ... && ... != 1 when ! ... is true |
+| 182 | ... && ... != 1 when ... && ... is false |
 | 182 | ... && ... == 0 when ! ... is true |
 | 182 | ... && ... == 0 when ... && ... is false |
+| 182 | ... && ... == 1 when ! ... is false |
+| 182 | ... && ... == 1 when ... && ... is true |
 | 182 | ... < ... != 0 when ... && ... is true |
 | 182 | ... < ... != 0 when ... < ... is true |
 | 182 | ... < ... != 1 when ... < ... is false |
@@ -559,6 +563,22 @@
 | 182 | ... >= ... == 0 when ... >= ... is false |
 | 182 | ... >= ... == 1 when ... && ... is true |
 | 182 | ... >= ... == 1 when ... >= ... is true |
+| 182 | b1 != 0 when ! ... is false |
+| 182 | b1 != 0 when ... && ... is true |
+| 182 | b1 != 0 when b1 is true |
+| 182 | b1 != 1 when b1 is false |
+| 182 | b1 == 0 when b1 is false |
+| 182 | b1 == 1 when ! ... is false |
+| 182 | b1 == 1 when ... && ... is true |
+| 182 | b1 == 1 when b1 is true |
+| 182 | b2 != 0 when ! ... is false |
+| 182 | b2 != 0 when ... && ... is true |
+| 182 | b2 != 0 when b2 is true |
+| 182 | b2 != 1 when b2 is false |
+| 182 | b2 == 0 when b2 is false |
+| 182 | b2 == 1 when ! ... is false |
+| 182 | b2 == 1 when ... && ... is true |
+| 182 | b2 == 1 when b2 is true |
 | 182 | foo < 1.0+0 when ... && ... is true |
 | 182 | foo < 1.0+0 when ... < ... is true |
 | 182 | foo < 9.999999999999999547e-07+0 when ... >= ... is false |
@@ -577,6 +597,38 @@
 | 190 | c != 0 when c is true |
 | 190 | c == 0 when ! ... is true |
 | 190 | c == 0 when c is false |
+| 193 | ! ... != 0 when ! ... is true |
+| 193 | ! ... != 0 when ... \|\| ... is false |
+| 193 | ! ... != 1 when ! ... is false |
+| 193 | ! ... != 1 when ... \|\| ... is true |
+| 193 | ! ... == 0 when ! ... is false |
+| 193 | ! ... == 0 when ... \|\| ... is true |
+| 193 | ! ... == 1 when ! ... is true |
+| 193 | ! ... == 1 when ... \|\| ... is false |
+| 193 | ... \|\| ... != 0 when ! ... is false |
+| 193 | ... \|\| ... != 0 when ... \|\| ... is true |
+| 193 | ... \|\| ... != 1 when ! ... is true |
+| 193 | ... \|\| ... != 1 when ... \|\| ... is false |
+| 193 | ... \|\| ... == 0 when ! ... is true |
+| 193 | ... \|\| ... == 0 when ... \|\| ... is false |
+| 193 | ... \|\| ... == 1 when ! ... is false |
+| 193 | ... \|\| ... == 1 when ... \|\| ... is true |
+| 193 | b1 != 0 when b1 is true |
+| 193 | b1 != 1 when ! ... is true |
+| 193 | b1 != 1 when ... \|\| ... is false |
+| 193 | b1 != 1 when b1 is false |
+| 193 | b1 == 0 when ! ... is true |
+| 193 | b1 == 0 when ... \|\| ... is false |
+| 193 | b1 == 0 when b1 is false |
+| 193 | b1 == 1 when b1 is true |
+| 193 | b2 != 0 when b2 is true |
+| 193 | b2 != 1 when ! ... is true |
+| 193 | b2 != 1 when ... \|\| ... is false |
+| 193 | b2 != 1 when b2 is false |
+| 193 | b2 == 0 when ! ... is true |
+| 193 | b2 == 0 when ... \|\| ... is false |
+| 193 | b2 == 0 when b2 is false |
+| 193 | b2 == 1 when b2 is true |
 | 198 | ! ... != 0 when ! ... is true |
 | 198 | ! ... != 0 when b is false |
 | 198 | ! ... != 1 when ! ... is false |

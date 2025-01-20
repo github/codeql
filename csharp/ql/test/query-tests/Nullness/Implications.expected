@@ -908,8 +908,8 @@
 | D.cs:253:13:253:14 | access to local variable o2 | null | D.cs:249:18:249:38 | ... ? ... : ... | null |
 | D.cs:266:13:266:27 | ... is ... | true | D.cs:266:13:266:17 | access to local variable other | non-null |
 | D.cs:310:21:310:26 | ... + ... | non-null | D.cs:310:21:310:22 | "" | non-null |
-| D.cs:310:21:310:26 | ... + ... | non-null | D.cs:310:26:310:26 | access to parameter a | non-null |
-| D.cs:310:21:310:26 | ... + ... | null | D.cs:310:26:310:26 | access to parameter a | null |
+| D.cs:310:21:310:26 | ... + ... | non-null | D.cs:310:26:310:26 | call to method ToString | non-null |
+| D.cs:310:21:310:26 | ... + ... | null | D.cs:310:26:310:26 | call to method ToString | null |
 | D.cs:312:17:312:23 | !... | false | D.cs:312:18:312:23 | access to local variable s_null | true |
 | D.cs:312:17:312:23 | !... | true | D.cs:312:18:312:23 | access to local variable s_null | false |
 | D.cs:318:16:318:62 | ... && ... | true | D.cs:318:16:318:36 | ... == ... | true |
