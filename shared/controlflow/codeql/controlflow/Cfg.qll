@@ -1591,13 +1591,8 @@ module MakeWithSplitting<
      * without branches or joins.
      */
     final class BasicBlock extends BasicBlockImpl::BasicBlock {
-      // We extend `BasicBlockImpl::BasicBlock` to add the `getScope`.
       /** Gets the scope of this basic block. */
-      CfgScope getScope() {
-        if this instanceof EntryBasicBlock
-        then result = this.getFirstNode().getScope()
-        else result = this.getAPredecessor().getScope()
-      }
+      CfgScope getScope() { result = this.getFirstNode().getScope() }
 
       /** Gets an immediate successor of this basic block, if any. */
       BasicBlock getASuccessor() { result = super.getASuccessor() }
@@ -1725,60 +1720,6 @@ module MakeWithSplitting<
     /** A basic block that terminates in a condition, splitting the subsequent control flow. */
     final class ConditionBasicBlock extends BasicBlock {
       ConditionBasicBlock() { this.getLastNode().isCondition() }
-
-      /**
-       * Holds if basic block `succ` is immediately controlled by this basic
-       * block with conditional value `s`. That is, `succ` is an immediate
-       * successor of this block, and `succ` can only be reached from
-       * the callable entry point by going via the `s` edge out of this basic block.
-       */
-      pragma[nomagic]
-      predicate immediatelyControls(BasicBlock succ, SuccessorType s) {
-        succ = this.getASuccessor(s) and
-        forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this |
-          succ.dominates(pred)
-        )
-      }
-
-      /**
-       * Holds if basic block `controlled` is controlled by this basic block with
-       * conditional value `s`. That is, `controlled` can only be reached from
-       * the callable entry point by going via the `s` edge out of this basic block.
-       */
-      predicate controls(BasicBlock controlled, SuccessorType s) {
-        // For this block to control the block `controlled` with `testIsTrue` the following must be true:
-        // 1/ Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
-        // 2/ Execution must have passed through the `testIsTrue` edge leaving `this`.
-        //
-        // Although "passed through the true edge" implies that `this.getATrueSuccessor()` dominates `controlled`,
-        // the reverse is not true, as flow may have passed through another edge to get to `this.getATrueSuccessor()`
-        // so we need to assert that `this.getATrueSuccessor()` dominates `controlled` *and* that
-        // all predecessors of `this.getATrueSuccessor()` are either `this` or dominated by `this.getATrueSuccessor()`.
-        //
-        // For example, in the following C# snippet:
-        // ```csharp
-        // if (x)
-        //   controlled;
-        // false_successor;
-        // uncontrolled;
-        // ```
-        // `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
-        //  or dominated by itself. Whereas in the following code:
-        // ```csharp
-        // if (x)
-        //   while (controlled)
-        //     also_controlled;
-        // false_successor;
-        // uncontrolled;
-        // ```
-        // the block `while controlled` is controlled because all of its predecessors are `this` (`if (x)`)
-        // or (in the case of `also_controlled`) dominated by itself.
-        //
-        // The additional constraint on the predecessors of the test successor implies
-        // that `this` strictly dominates `controlled` so that isn't necessary to check
-        // directly.
-        exists(BasicBlock succ | this.immediatelyControls(succ, s) | succ.dominates(controlled))
-      }
     }
   }
 }

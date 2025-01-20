@@ -80,7 +80,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     BasicBlock getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
 
     /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-    cached
     Node getNode(int pos) { bbIndex(this.getFirstNode(), result, pos) }
 
     /** Gets a control flow node in this basic block. */
@@ -153,6 +152,60 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     BasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
     /**
+     * Holds if basic block `succ` is immediately controlled by this basic
+     * block with conditional value `s`. That is, `succ` is an immediate
+     * successor of this block, and `succ` can only be reached from
+     * the callable entry point by going via the `s` edge out of this basic block.
+     */
+    pragma[nomagic]
+    predicate immediatelyControls(BasicBlock succ, SuccessorType s) {
+      succ = this.getASuccessor(s) and
+      forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this |
+        succ.dominates(pred)
+      )
+    }
+
+    /**
+     * Holds if basic block `controlled` is controlled by this basic block with
+     * conditional value `s`. That is, `controlled` can only be reached from
+     * the callable entry point by going via the `s` edge out of this basic block.
+     */
+    predicate controls(BasicBlock controlled, SuccessorType s) {
+      // For this block to control the block `controlled` with `s` the following must be true:
+      // 1/ Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
+      // 2/ Execution must have passed through the `s` edge leaving `this`.
+      //
+      // Although "passed through the `s` edge" implies that `this.getASuccessor(s)` dominates `controlled`,
+      // the reverse is not true, as flow may have passed through another edge to get to `this.getASuccessor(s)`
+      // so we need to assert that `this.getASuccessor(s)` dominates `controlled` *and* that
+      // all predecessors of `this.getASuccessor(s)` are either `this` or dominated by `this.getASuccessor(s)`.
+      //
+      // For example, in the following C# snippet:
+      // ```csharp
+      // if (x)
+      //   controlled;
+      // false_successor;
+      // uncontrolled;
+      // ```
+      // `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
+      //  or dominated by itself. Whereas in the following code:
+      // ```csharp
+      // if (x)
+      //   while (controlled)
+      //     also_controlled;
+      // false_successor;
+      // uncontrolled;
+      // ```
+      // the block `while controlled` is controlled because all of its predecessors are `this` (`if (x)`)
+      // or (in the case of `also_controlled`) dominated by itself.
+      //
+      // The additional constraint on the predecessors of the test successor implies
+      // that `this` strictly dominates `controlled` so that isn't necessary to check
+      // directly.
+      exists(BasicBlock succ | this.immediatelyControls(succ, s) | succ.dominates(controlled))
+    }
+
+    /**
      * Holds if this basic block strictly post-dominates basic block `bb`.
      *
      * That is, all paths reaching a normal exit point basic block from basic
@@ -188,6 +241,52 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     cached
     newtype TBasicBlock = TBasicBlockStart(Node cfn) { startsBB(cfn) }
 
+    /** Holds if `cfn` starts a new basic block. */
+    private predicate startsBB(Node cfn) {
+      not exists(nodeGetAPredecessor(cfn, _)) and exists(nodeGetASuccessor(cfn, _))
+      or
+      nodeIsJoin(cfn)
+      or
+      nodeIsBranch(nodeGetAPredecessor(cfn, _))
+      or
+      // In cases such as
+      //
+      // ```rb
+      // if x and y
+      //     foo
+      // else
+      //     bar
+      // ```
+      //
+      // we have a CFG that looks like
+      //
+      // x --false--> [false] x and y --false--> bar
+      //  \                    |
+      //   --true--> y --false--
+      //            \
+      //             --true--> [true] x and y --true--> foo
+      //
+      // and we want to ensure that both `foo` and `bar` start a new basic block.
+      exists(nodeGetAPredecessor(cfn, any(SuccessorType s | successorTypeIsCondition(s))))
+    }
+
+    /**
+     * Holds if `succ` is a control flow successor of `pred` within
+     * the same basic block.
+     */
+    private predicate intraBBSucc(Node pred, Node succ) {
+      succ = nodeGetASuccessor(pred, _) and
+      not startsBB(succ)
+    }
+
+    /**
+     * Holds if `bbStart` is the first node in a basic block and `cfn` is the
+     * `i`th node in the same basic block.
+     */
+    cached
+    predicate bbIndex(Node bbStart, Node cfn, int i) =
+      shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
+
     /**
      * Holds if the first node of basic block `succ` is a control flow
      * successor of the last node of basic block `pred`.
@@ -212,51 +311,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   private import Cached
-
-  /** Holds if `cfn` starts a new basic block. */
-  private predicate startsBB(Node cfn) {
-    not exists(nodeGetAPredecessor(cfn, _)) and exists(nodeGetASuccessor(cfn, _))
-    or
-    nodeIsJoin(cfn)
-    or
-    nodeIsBranch(nodeGetAPredecessor(cfn, _))
-    or
-    // In cases such as
-    //
-    // ```rb
-    // if x and y
-    //     foo
-    // else
-    //     bar
-    // ```
-    //
-    // we have a CFG that looks like
-    //
-    // x --false--> [false] x or y --false--> bar
-    // \                    |
-    //  --true--> y --false--
-    //            \
-    //             --true--> [true] x or y --true--> foo
-    //
-    // and we want to ensure that both `foo` and `bar` start a new basic block.
-    exists(nodeGetAPredecessor(cfn, any(SuccessorType s | successorTypeIsCondition(s))))
-  }
-
-  /**
-   * Holds if `succ` is a control flow successor of `pred` within
-   * the same basic block.
-   */
-  predicate intraBBSucc(Node pred, Node succ) {
-    succ = nodeGetASuccessor(pred, _) and
-    not startsBB(succ)
-  }
-
-  /**
-   * Holds if `bbStart` is the first node in a basic block and `cfn` is the
-   * `i`th node in the same basic block.
-   */
-  private predicate bbIndex(Node bbStart, Node cfn, int i) =
-    shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
 
   /** Holds if `bb` is an entry basic block. */
   private predicate entryBB(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
