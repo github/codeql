@@ -14,7 +14,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// </summary>
         private static IMethodSymbol? GetToStringMethod(ITypeSymbol? type)
         {
-            return type?
+            if (type is null)
+            {
+                return null;
+            }
+
+            var toString = type
                 .GetMembers()
                 .OfType<IMethodSymbol>()
                 .Where(method =>
@@ -22,6 +27,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     method.Parameters.Length == 0
                 )
                 .FirstOrDefault();
+
+            return toString ?? GetToStringMethod(type.BaseType);
         }
 
         private ImplicitToString(ExpressionNodeInfo info, IMethodSymbol toString) : base(new ExpressionInfo(info.Context, AnnotatedTypeSymbol.CreateNotAnnotated(toString.ReturnType), info.Location, ExprKind.METHOD_INVOCATION, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
