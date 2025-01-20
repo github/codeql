@@ -876,8 +876,8 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeAfter(n2, s)
   )
   or
-  // ConstevalOrNotConstevalIfStmt -> { then, else } ->
-  exists(ConstevalOrNotConstevalIfStmt s |
+  // NotConstevalIfStmt -> { then, else } ->
+  exists(ConstevalIfStmt s |
     p1.nodeAt(n1, s) and
     p2.nodeBefore(n2, s.getThen())
     or

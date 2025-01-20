@@ -446,7 +446,27 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
  * }
  * ```
  */
-class ConstevalOrNotConstevalIfStmt extends Stmt, @stmt_consteval_or_not_consteval_if {
+class ConstevalIfStmt extends Stmt, @stmt_consteval_or_not_consteval_if {
+  override string getAPrimaryQlClass() { result = "ConstevalIfStmt" }
+
+  override string toString() {
+    if this.isNot() then result = "if ! consteval ..." else result = "if consteval ..."
+  }
+
+  /**
+   * Holds if this is a 'not consteval if' statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate isNot() { this instanceof @stmt_not_consteval_if }
+
   /**
    * Gets the 'then' statement of this '(not) consteval if' statement.
    *
@@ -515,7 +535,9 @@ class ConstevalOrNotConstevalIfStmt extends Stmt, @stmt_consteval_or_not_constev
    * ```
    * there is no result.
    */
-  Stmt getCompileTimeEvaluatedBranch() { none() }
+  Stmt getCompileTimeEvaluatedBranch() {
+    if this.isNot() then result = this.getElse() else result = this.getThen()
+  }
 
   /**
    * Holds if this '(not) constexpr if' statement has a compile time evaluated statement.
@@ -544,7 +566,9 @@ class ConstevalOrNotConstevalIfStmt extends Stmt, @stmt_consteval_or_not_constev
    * ```
    * there is no result.
    */
-  Stmt getRuntimeEvaluatedBranch() { none() }
+  Stmt getRuntimeEvaluatedBranch() {
+    if this.isNot() then result = this.getThen() else result = this.getElse()
+  }
 
   /**
    * Holds if this '(not) constexpr if' statement has a runtime evaluated statement.
@@ -559,44 +583,6 @@ class ConstevalOrNotConstevalIfStmt extends Stmt, @stmt_consteval_or_not_constev
    * ```
    */
   predicate hasRuntimeEvaluatedBranch() { exists(this.getRuntimeEvaluatedBranch()) }
-}
-
-/**
- * A C/C++ 'consteval if'. For example, the `if consteval` statement
- * in the following code:
- * ```cpp
- * if consteval {
- *   ...
- * }
- * ```
- */
-class ConstevalIfStmt extends ConstevalOrNotConstevalIfStmt, @stmt_consteval_if {
-  override string getAPrimaryQlClass() { result = "ConstevalIfStmt" }
-
-  override string toString() { result = "if consteval ..." }
-
-  override Stmt getCompileTimeEvaluatedBranch() { result = this.getThen() }
-
-  override Stmt getRuntimeEvaluatedBranch() { result = this.getElse() }
-}
-
-/**
- * A C/C++ 'not consteval if'. For example, the `if ! consteval` statement
- * in the following code:
- * ```cpp
- * if ! consteval {
- *   ...
- * }
- * ```
- */
-class NotConstevalIfStmt extends ConstevalOrNotConstevalIfStmt, @stmt_not_consteval_if {
-  override string getAPrimaryQlClass() { result = "NotConstevalIfStmt" }
-
-  override string toString() { result = "if ! consteval ..." }
-
-  override Stmt getCompileTimeEvaluatedBranch() { result = this.getElse() }
-
-  override Stmt getRuntimeEvaluatedBranch() { result = this.getThen() }
 }
 
 private class TLoop = @stmt_while or @stmt_end_test_while or @stmt_range_based_for or @stmt_for;

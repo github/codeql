@@ -1098,8 +1098,8 @@ class TranslatedConstExprIfStmt extends TranslatedIfLikeStmt {
   override predicate hasElse() { exists(stmt.getElse()) }
 }
 
-class TranslatedConstevalOrNotConstevalIfStmt extends TranslatedStmt {
-  override ConstevalOrNotConstevalIfStmt stmt;
+class TranslatedConstevalIfStmt extends TranslatedStmt {
+  override ConstevalIfStmt stmt;
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     if not this.hasEvaluatedBranch()
