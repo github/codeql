@@ -109,10 +109,16 @@ jobs:
   pulls3:
     runs-on: ubuntu-latest
     steps:
-      - id: title2
+      - id: title1
         run: |
           DETAILS=$(gh pr view $PR_NUMBER --json "title,author,headRefName")
           TITLE=$(echo $DETAILS | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title1.outputs.title}}"
+      - id: title2
+        run: |
+          TITLE=$(gh pr view $PR_NUMBER --json "title,author,headRefName")
+          TITLE=$(echo $TITLE | jq -r '.title')
           echo "title=$TITLE" >> "$GITHUB_OUTPUT"
       - run: echo "${{ steps.title2.outputs.title}}"
 
