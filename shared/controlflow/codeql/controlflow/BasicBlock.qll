@@ -162,9 +162,25 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /**
      * Holds if basic block `succ` is immediately controlled by this basic
-     * block with conditional value `s`. That is, `succ` is an immediate
-     * successor of this block, and `succ` can only be reached from
-     * the callable entry point by going via the `s` edge out of this basic block.
+     * block with successor type `s`. That is, `succ` is an immediate successor
+     * of this block, and `succ` can only be reached from the entry block by
+     * going via the `s` edge out of this basic block.
+     *
+     * The above implies that this block immediately dominates `succ`. But
+     * "controls" is a stronger notion than "dominates". It is not the case
+     * that any immediate successor that is immediately dominated by this block
+     * is also immediately controlled by this block. To see why, consider this
+     * example corresponding to an `if`-statement without an `else` block:
+     * ```
+     * ... --> cond --[true]--> ... --> if stmt
+     *           \                      /
+     *            ----[false]-----------
+     * ```
+     * The basic block for `cond` immediately dominates the immediately
+     * succeeding basic block for the `if` statement. But the `if` statement
+     * is not immediately controlled by the `cond` basic block and the `false`
+     * edge since it is also possible to reach the `if` statement via a path
+     * through the `true` edge.
      */
     pragma[nomagic]
     predicate immediatelyControls(BasicBlock succ, SuccessorType s) {
@@ -176,8 +192,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /**
      * Holds if basic block `controlled` is controlled by this basic block with
-     * conditional value `s`. That is, `controlled` can only be reached from
-     * the callable entry point by going via the `s` edge out of this basic block.
+     * successor type `s`. That is, `controlled` can only be reached from the
+     * entry point by going via the `s` edge out of this basic block.
      */
     predicate controls(BasicBlock controlled, SuccessorType s) {
       // For this block to control the block `controlled` with `s` the following must be true:
