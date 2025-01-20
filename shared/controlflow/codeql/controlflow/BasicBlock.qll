@@ -15,6 +15,9 @@ signature module InputSig<LocationSig Location> {
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t);
 
+  /** Represents a delineated part of the AST with its own CFG. */
+  class CfgScope;
+
   /** The class of control flow nodes. */
   class Node {
     string toString();
@@ -22,6 +25,9 @@ signature module InputSig<LocationSig Location> {
     /** Gets the location of this control flow node. */
     Location getLocation();
   }
+
+  /** Gets the CFG scope in which this node occurs. */
+  CfgScope nodeGetCfgScope(Node node);
 
   /** Gets an immediate successor of this node. */
   Node nodeGetASuccessor(Node node, SuccessorType t);
@@ -62,6 +68,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * without branches or joins.
    */
   private class BasicBlockImpl extends TBasicBlockStart {
+    /** Gets the CFG scope of this basic block. */
+    CfgScope getScope() { result = nodeGetCfgScope(this.getFirstNode()) }
+
     /** Gets the location of this basic block. */
     Location getLocation() { result = this.getFirstNode().getLocation() }
 

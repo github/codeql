@@ -1568,6 +1568,8 @@ module MakeWithSplitting<
   module BasicBlocks {
     private import codeql.controlflow.BasicBlock as BB
 
+    private class CfgScopeAlias = CfgScope;
+
     private class NodeAlias = Node;
 
     private module BasicBlockInputSig implements BB::InputSig<Location> {
@@ -1575,7 +1577,11 @@ module MakeWithSplitting<
 
       predicate successorTypeIsCondition = Input::successorTypeIsCondition/1;
 
+      class CfgScope = CfgScopeAlias;
+
       class Node = NodeAlias;
+
+      CfgScope nodeGetCfgScope(Node node) { result = node.getScope() }
 
       Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
 
@@ -1586,84 +1592,7 @@ module MakeWithSplitting<
 
     private module BasicBlockImpl = BB::Make<Location, BasicBlockInputSig>;
 
-    /**
-     * A basic block, that is, a maximal straight-line sequence of control flow nodes
-     * without branches or joins.
-     */
-    final class BasicBlock extends BasicBlockImpl::BasicBlock {
-      /** Gets the scope of this basic block. */
-      CfgScope getScope() { result = this.getFirstNode().getScope() }
-
-      /** Gets an immediate successor of this basic block, if any. */
-      BasicBlock getASuccessor() { result = super.getASuccessor() }
-
-      /** Gets an immediate successor of this basic block of a given type, if any. */
-      BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
-
-      /** Gets an immediate predecessor of this basic block, if any. */
-      BasicBlock getAPredecessor() { result = super.getAPredecessor() }
-
-      /** Gets an immediate predecessor of this basic block of a given type, if any. */
-      BasicBlock getAPredecessor(SuccessorType t) { result = super.getAPredecessor(t) }
-
-      /**
-       * Holds if this basic block immediately dominates basic block `bb`.
-       *
-       * That is, `bb` is an immediate successor of this basic block and all
-       * paths reaching basic block `bb` from some entry point basic block must
-       * go through this basic block.
-       */
-      predicate immediatelyDominates(BasicBlock bb) { super.immediatelyDominates(bb) }
-
-      /**
-       * Holds if this basic block strictly dominates basic block `bb`.
-       *
-       * That is, all paths reaching `bb` from some entry point basic block must
-       * go through this basic block and this basic block is different from `bb`.
-       */
-      predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
-
-      /**
-       * Holds if this basic block dominates basic block `bb`.
-       *
-       * That is, all paths reaching `bb` from some entry point basic block must
-       * go through this basic block.
-       */
-      predicate dominates(BasicBlock bb) { super.dominates(bb) }
-
-      /**
-       * Holds if `df` is in the dominance frontier of this basic block. That is,
-       * this basic block dominates a predecessor of `df`, but does not dominate
-       * `df` itself.
-       */
-      predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
-
-      /**
-       * Gets the basic block that immediately dominates this basic block, if any.
-       *
-       * That is, all paths reaching this basic block from some entry point
-       * basic block must go through the result, which is an immediate basic block
-       * predecessor of this basic block.
-       */
-      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
-
-      /**
-       * Holds if this basic block strictly post-dominates basic block `bb`.
-       *
-       * That is, all paths reaching a normal exit point basic block from basic
-       * block `bb` must go through this basic block and this basic block is
-       * different from `bb`.
-       */
-      predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
-
-      /**
-       * Holds if this basic block post-dominates basic block `bb`.
-       *
-       * That is, all paths reaching a normal exit point basic block from basic
-       * block `bb` must go through this basic block.
-       */
-      predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
-    }
+    final class BasicBlock = BasicBlockImpl::BasicBlock;
 
     /**
      * An entry basic block, that is, a basic block whose first node is
