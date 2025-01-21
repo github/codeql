@@ -1,5 +1,7 @@
 
 use log::{debug, error, info, trace, warn, log, Level};
+use std::io::Write as _;
+use std::fmt::Write as _;
 
 // --- tests ---
 
@@ -97,6 +99,21 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     let m3 = format!("message = {}", password); // $ MISSING:=m3
     info!("{}", m3); // $  MISSING: Alert[rust/cleartext-logging]=m3
 
+    let mut m4 = String::new();
+    write!(&mut m4, "message = {}", password); // $ MISSING: Source=m4
+    info!("{}", m4); // $ MISSING: Alert[rust/cleartext-logging]=m4
+
+    let mut m5 = String::new();
+    writeln!(&mut m5, "message = {}", password); // $ MISSING: Source=m5
+    info!("{}", m5); // $ MISSING: Alert[rust/cleartext-logging]=m5
+
+    let mut m6 = Vec::new();
+    write!(&mut m6, "message = {}", password); // $ MISSING: Source=m6
+    info!("{}", std::str::from_utf8(&m6).unwrap()); // $ MISSING: Alert[rust/cleartext-logging]=m6
+    unsafe {
+        info!("{}", std::str::from_utf8_unchecked(&m6)); // $ MISSING: Alert[rust/cleartext-logging]=m6
+    }
+
     // logging with a call
     trace!("message = {}", get_password()); // $ MISSING: Alert[rust/cleartext-logging]
 
@@ -129,4 +146,37 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     warn!("message = {}", s2); // (this implementation does not output the password field)
     warn!("message = {:?}", s2); // $ MISSING: Alert[rust/cleartext-logging]=s2
     warn!("message = {:#?}", s2); // $ MISSING: Alert[rust/cleartext-logging]=s2
+}
+
+fn test_std(password: String, i: i32, opt_i: Option<i32>) {
+    print!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
+    println!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
+    eprint!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
+    eprintln!("message = {}", password); // $ MISSING: Alert[rust/cleartext-logging]
+
+    match i {
+        1 => { panic!("message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        2 => { todo!("message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        3 => { unimplemented!("message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        4 => { unreachable!("message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        5 => { assert!(false, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        6 => { assert_eq!(1, 2, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        7 => { assert_ne!(1, 1, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        8 => { debug_assert!(false, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        9 => { debug_assert_eq!(1, 2, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        10 => { debug_assert_ne!(1, 1, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        11 => { _ = opt_i.expect(format!("message = {}", password).as_str()); } // $ MISSING: Alert[rust/cleartext-logging]
+        _ => {}
+    }
+
+    std::io::stdout().lock().write_fmt(format_args!("message = {}", password)); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stderr().lock().write_fmt(format_args!("message = {}", password)); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write(format!("message = {}", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write_all(format!("message = {}", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging]
+
+    let mut out = std::io::stdout().lock();
+    out.write(format!("message = {}", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging]
+
+    let mut err = std::io::stderr().lock();
+    err.write(format!("message = {}", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging]
 }
