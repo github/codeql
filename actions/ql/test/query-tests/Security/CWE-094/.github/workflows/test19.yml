@@ -121,6 +121,12 @@ jobs:
           TITLE=$(echo $TITLE | jq -r '.title')
           echo "title=$TITLE" >> "$GITHUB_OUTPUT"
       - run: echo "${{ steps.title2.outputs.title}}"
+      - id: title3
+        run: |
+          TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,author)
+          TITLE=$(echo $TITLE | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title3.outputs.title}}"
 
 
 

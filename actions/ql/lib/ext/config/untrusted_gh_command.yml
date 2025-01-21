@@ -23,11 +23,13 @@ extensions:
       # ISSUES
       #
       # TITLE=$(gh issue view "$ISSUE_NUMBER" --json title --jq '.title')
-      - ["gh\\s+issue\\b.*\\bview\\b.*\\.title.*", "title,oneline"]
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,body)
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json "title,body")
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\btitle\\b", "title,oneline"]
       # BODY=$(gh issue view -R ${GITHUB_REPOSITORY} ${ORIGINAL_ISSUE_NUMBER} --json title,body,assignees --jq .body)
-      - ["gh\\s+issue\\b.*\\bview\\b.*\\.body.*", "text,multiline"]
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\bbody\\b", "text,multiline"]
       # COMMENTS=$(gh issue view "$ISSUE_NUMBER" --json comments --jq '.comments[].body')
-      - ["gh\\s+issue\\b.*\\bview\\b.*\\.comments.*", "text,multiline"]
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\bcomments\\b", "text,multiline"]
       #
       # API
       #
