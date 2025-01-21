@@ -827,5 +827,5 @@ void test_write_to_const_ptr_ptr() {
   const char* in = indirect_source();
   const char* out;
   take_const_ptr(out, in);
-  sink(out); // $ SPURIOUS: ast,ir
+  sink(out); // $ SPURIOUS: ast
 }
