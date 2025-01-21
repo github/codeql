@@ -1,3 +1,0 @@
-[VALUE_NOT_IN_TYPE] predicate toplevel_parent_xml_node(@toplevel toplevel, @xml_node_with_code xmlnode): Value 16 of field toplevel is not in type @toplevel. Appears in tuple (16,-16777216)
-	Relevant element: toplevel=16
-		Full ID for 16: @"script;(0),4,25". The ID may expand to @"script;{@"/Users/asger/git/code/ql/javascript/ql/test/library-tests/TypeScript/RegressionTests/EmbeddedTypeScriptNoTSConfig/embedded-typescript.vue;sourcefile"},4,25"
