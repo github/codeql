@@ -3,7 +3,7 @@
 ### New Features
 
 * Add a new predicate `getAnIndirectBarrier` to the parameterized module `InstructionBarrierGuard` in `semmle.code.cpp.dataflow.new.DataFlow` for computing indirect dataflow nodes that are guarded by a given instruction. This predicate is similar to the `getAnIndirectBarrier` predicate on the parameterized module `BarrierGuard`.
-* A new predicate `getDecltype`was added to the `ProxyClass` class, which yields the decltype for the proxy class.
+* A new predicate `getDecltype` was added to the `ProxyClass` class, which yields the decltype for the proxy class.
 * Template classes that are of `struct` type are now also instances of the `Struct` class.
 * Template classes that are of `union` type are now also instances of the `Union` class.
 * A new abstract class `ConfigurationTestFile` (`semmle.code.cpp.ConfigurationTestFile.ConfigurationTestFile`) was introduced, which represents files created to test the build configuration. A subclass `CmakeTryCompileFile` of `ConfigurationTestFile` was also introduced, which represents files created by CMake to test the build configuration.
