@@ -470,7 +470,7 @@ class ByteSliceType extends SliceType {
 // by unpacking the first 5 fields and tags, allowing a single join
 // to strongly constrain the available candidates.
 private predicate hasComponentTypeAndTag(StructType s, int i, string name, Type tp, string tag) {
-  component_types(s, i, name, tp) and struct_tags(s, i, tag)
+  component_types(s, i, name, tp) and tag = getStructTag(s, i)
 }
 
 private newtype TOptStructComponent =
@@ -554,6 +554,14 @@ private predicate unpackAndUnaliasStructType(
   )
 }
 
+bindingset[i]
+pragma[inline]
+private string getStructTag(StructType st, int i) {
+  struct_tags(st, i, result)
+  or
+  not struct_tags(st, i, _) and result = ""
+}
+
 /** A struct type. */
 class StructType extends @structtype, CompositeType {
   /**
@@ -582,12 +590,7 @@ class StructType extends @structtype, CompositeType {
    * Note that this predicate does not take promoted fields into account.
    */
   predicate hasOwnFieldWithTag(int i, string name, Type tp, boolean isEmbedded, string tag) {
-    this.hasOwnField(i, name, tp, isEmbedded) and
-    (
-      struct_tags(this, i, tag)
-      or
-      not struct_tags(this, i, _) and tag = ""
-    )
+    this.hasOwnField(i, name, tp, isEmbedded) and tag = getStructTag(this, i)
   }
 
   /**
