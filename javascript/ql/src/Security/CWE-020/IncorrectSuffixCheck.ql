@@ -58,7 +58,7 @@ class IndexOfCall extends DataFlow::MethodCallNode {
       // both use the same concatenation of a string and a value
       exists(Expr origin, StringLiteral str, AddExpr otherAdd |
         this.getArgument(0).asExpr().(AddExpr).hasOperands(origin, str) and
-        otherAdd = result.getArgument(0).asExpr().(AddExpr)
+        otherAdd = result.getArgument(0).asExpr()
       |
         otherAdd.getAnOperand().(StringLiteral).getStringValue() = str.getStringValue() and
         otherAdd.getAnOperand().flow().getALocalSource() = origin.flow().getALocalSource()
