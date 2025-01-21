@@ -2318,15 +2318,12 @@ case @preprocdirect.kind of
 | 11 = @ppd_pragma
 | 12 = @ppd_objc_import
 | 13 = @ppd_include_next
-| 14 = @ppd_ms_import
-| 15 = @ppd_elifdef
-| 16 = @ppd_elifndef
 | 18 = @ppd_warning
 ;
 
-@ppd_include = @ppd_plain_include | @ppd_objc_import | @ppd_include_next | @ppd_ms_import;
+@ppd_include = @ppd_plain_include | @ppd_objc_import | @ppd_include_next;
 
-@ppd_branch = @ppd_if | @ppd_ifdef | @ppd_ifndef | @ppd_elif | @ppd_elifdef | @ppd_elifndef;
+@ppd_branch = @ppd_if | @ppd_ifdef | @ppd_ifndef | @ppd_elif;
 
 preprocpair(
     int begin : @ppd_branch ref,
