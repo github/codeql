@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -177,6 +178,12 @@ public class Main {
       if (!extractedFiles.contains(f.getAbsoluteFile())
           && FileType.forFileExtension(f) == FileType.TYPESCRIPT) {
         remainingTypescriptFiles.add(f);
+      }
+    }
+    for (Map.Entry<Path, FileSnippet> entry : extractorState.getSnippets().entrySet()) {
+      if (!extractedFiles.contains(entry.getKey().toFile())
+          && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+        remainingTypescriptFiles.add(entry.getKey().toFile());
       }
     }
     if (!remainingTypescriptFiles.isEmpty()) {
