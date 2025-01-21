@@ -44,6 +44,8 @@ class IndexOfCall extends DataFlow::MethodCallNode {
    * Gets an `indexOf` call with the same receiver, argument, and method name, including this call itself.
    */
   IndexOfCall getAnEquivalentIndexOfCall() {
+    result = this
+    or
     exists(DataFlow::Node recv, string m |
       this.receiverAndMethodName(recv, m) and result.receiverAndMethodName(recv, m)
     |
