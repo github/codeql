@@ -6,7 +6,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.8
- * @precision low
+ * @precision medium
  * @id java/csrf-unprotected-request-type
  * @tags security
  *       external/cwe/cwe-352
