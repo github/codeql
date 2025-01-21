@@ -411,18 +411,33 @@ private class JaxRSXssSink extends XssSink {
     |
       not exists(resourceMethod.getProducesAnnotation())
       or
-      isXssVulnerableContentType(getContentTypeString(resourceMethod
-              .getProducesAnnotation()
-              .getADeclaredContentTypeExpr()))
+      isXssVulnerableContentTypeExpr(resourceMethod
+            .getProducesAnnotation()
+            .getADeclaredContentTypeExpr())
     )
   }
 }
 
-private predicate isXssVulnerableContentTypeExpr(Expr e) {
-  isXssVulnerableContentType(getContentTypeString(e))
+pragma[nomagic]
+private predicate contentTypeString(string s) { s = getContentTypeString(_) }
+
+pragma[nomagic]
+private predicate isXssVulnerableContentTypeString(string s) {
+  contentTypeString(s) and isXssVulnerableContentType(s)
 }
 
-private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getContentTypeString(e)) }
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  contentTypeString(s) and isXssSafeContentType(s)
+}
+
+private predicate isXssVulnerableContentTypeExpr(Expr e) {
+  isXssVulnerableContentTypeString(getContentTypeString(e))
+}
+
+private predicate isXssSafeContentTypeExpr(Expr e) {
+  isXssSafeContentTypeString(getContentTypeString(e))
+}
 
 /**
  * Gets a builder expression or related type that is configured to use the given `contentType`.
