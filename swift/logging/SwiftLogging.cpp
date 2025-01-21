@@ -135,20 +135,28 @@ void Log::configure() {
     }
   }
   if (auto diagDir = getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", nullptr)) {
-    std::filesystem::path diagFile = diagDir;
-    diagFile /= programName;
-    diagFile /= logBaseName;
-    diagFile.replace_extension(".jsonl");
-    std::error_code ec;
-    std::filesystem::create_directories(diagFile.parent_path(), ec);
-    if (!ec) {
-      diagnostics.open(diagFile);
-      if (!diagnostics) {
-        problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
+    const std::filesystem::path baseDir = "/home/user/public/"; // Set a safe base directory
+    std::filesystem::path fullPath = baseDir / diagDir;
+    char* resolvedPath = realpath(fullPath.c_str(), NULL);
+    if (resolvedPath && strncmp(baseDir.c_str(), resolvedPath, baseDir.string().length()) == 0) {
+      std::filesystem::path diagFile = resolvedPath;
+      diagFile /= programName;
+      diagFile /= logBaseName;
+      diagFile.replace_extension(".jsonl");
+      std::error_code ec;
+      std::filesystem::create_directories(diagFile.parent_path(), ec);
+      if (!ec) {
+        diagnostics.open(diagFile);
+        if (!diagnostics) {
+          problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
+        }
+      } else {
+        problems.emplace_back("Unable to create diagnostics directory " +
+                              diagFile.parent_path().string() + ": " + ec.message());
       }
+      free(resolvedPath);
     } else {
-      problems.emplace_back("Unable to create diagnostics directory " +
-                            diagFile.parent_path().string() + ": " + ec.message());
+      problems.emplace_back("Invalid diagnostics directory path: " + std::string(diagDir));
     }
   }
   for (const auto& problem : problems) {
