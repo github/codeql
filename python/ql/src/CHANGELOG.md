@@ -1,3 +1,7 @@
+## 1.4.1
+
+No user-facing changes.
+
 ## 1.4.0
 
 ### New Queries
