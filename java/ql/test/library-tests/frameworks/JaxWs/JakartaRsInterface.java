@@ -24,7 +24,7 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.MessageBodyReader;
 
-@Path("/resource") // This annotation has no effect, as class/interface annotations are not inherited in jax-rs
+@Path("/resource")
 public interface JakartaRsInterface {
   @GET
   int Get(); // $ ResourceMethod
