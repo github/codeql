@@ -811,3 +811,21 @@ void test_sysalloc() {
 	auto p3 = SysAllocStringLen((LPOLESTR)indirect_source(), 10);
 	sink(*p3); // $ ir MISSING: ast
 }
+
+char* strchr(const char*, int);
+
+void write_to_const_ptr_ptr(const char **p_out, const char **p_in) {
+  const char* q = *p_in;
+  *p_out = strchr(q, '/');
+}
+
+void take_const_ptr(const char *out, const char *in) {
+  write_to_const_ptr_ptr(&out, &in);
+}
+
+void test_write_to_const_ptr_ptr() {
+  const char* in = indirect_source();
+  const char* out;
+  take_const_ptr(out, in);
+  sink(out); // $ SPURIOUS: ast,ir
+}
