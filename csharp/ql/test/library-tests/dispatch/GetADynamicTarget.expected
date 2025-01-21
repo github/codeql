@@ -379,6 +379,7 @@
 | ViableCallable.cs:165:9:165:14 | dynamic access to element | C8.set_Item(int, string) |
 | ViableCallable.cs:165:9:165:14 | dynamic access to element | C9`1.set_Item(int, string) |
 | ViableCallable.cs:165:9:165:14 | dynamic access to element | C10.set_Item(int, bool) |
+| ViableCallable.cs:165:9:165:14 | dynamic access to element | C23+Partial1.set_Item(int, object) |
 | ViableCallable.cs:165:18:165:23 | dynamic access to element | C2<System.Decimal>.get_Item(decimal) |
 | ViableCallable.cs:165:18:165:23 | dynamic access to element | C2<System.Int32>.get_Item(int) |
 | ViableCallable.cs:165:18:165:23 | dynamic access to element | C2`1.get_Item(T) |
@@ -393,6 +394,7 @@
 | ViableCallable.cs:165:18:165:23 | dynamic access to element | C8.get_Item(int) |
 | ViableCallable.cs:165:18:165:23 | dynamic access to element | C9`1.get_Item(int) |
 | ViableCallable.cs:165:18:165:23 | dynamic access to element | C10.get_Item(int) |
+| ViableCallable.cs:165:18:165:23 | dynamic access to element | C23+Partial1.get_Item(int) |
 | ViableCallable.cs:167:9:167:54 | ... += ... | C2<System.Boolean>.add_Event(EventHandler<string>) |
 | ViableCallable.cs:167:9:167:54 | ... += ... | C2<System.Decimal>.add_Event(EventHandler<string>) |
 | ViableCallable.cs:167:9:167:54 | ... += ... | C2<System.Int32>.add_Event(EventHandler<string>) |
@@ -516,3 +518,7 @@
 | ViableCallable.cs:683:9:683:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(Int32[]) |
 | ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
 | ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(List<int>) |
+| ViableCallable.cs:712:9:712:18 | access to property Property | C23+Partial1.set_Property(object) |
+| ViableCallable.cs:715:13:715:22 | access to property Property | C23+Partial1.get_Property() |
+| ViableCallable.cs:718:9:718:12 | access to indexer | C23+Partial1.set_Item(int, object) |
+| ViableCallable.cs:721:13:721:16 | access to indexer | C23+Partial1.get_Item(int) |
