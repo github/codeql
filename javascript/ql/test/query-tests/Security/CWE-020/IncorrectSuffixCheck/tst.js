@@ -107,5 +107,5 @@ function sameCheck(allowedOrigin) {
 
 function sameConcatenation(allowedOrigin) {
     const trustedAuthority = "example.com";
-    return trustedAuthority.indexOf("." + allowedOrigin) > 0 && trustedAuthority.indexOf("." + allowedOrigin) === trustedAuthority.length - allowedOrigin.length - 1; // OK - but currently failing
+    return trustedAuthority.indexOf("." + allowedOrigin) > 0 && trustedAuthority.indexOf("." + allowedOrigin) === trustedAuthority.length - allowedOrigin.length - 1; // OK
 }
