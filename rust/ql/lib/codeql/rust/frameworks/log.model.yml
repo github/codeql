@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[0]", "log-injection", "manual"]
+      - ["lang:std", "crate::io::stdio::_print", "Argument[0]", "log-injection", "manual"]
+      - ["lang:std", "crate::io::stdio::_eprint", "Argument[0]", "log-injection", "manual"]
+      - ["lang:core", "crate::panicking::panic_fmt", "Argument[0]", "log-injection", "manual"]
+      - ["lang:core", "<crate::option::Option>::expect", "Argument[0]", "log-injection", "manual"]
