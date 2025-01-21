@@ -80,7 +80,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
   }
 
-  private module TypeTrackingInput implements Tt::TypeTrackingInput {
+  private module TypeTrackingInput implements Tt::TypeTrackingInput<Location> {
     final class Node = Lang::Node;
 
     class LocalSourceNode extends Node {
@@ -145,7 +145,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate hasFeatureBacktrackStoreTarget() { none() }
   }
 
-  private module TypeTracking = Tt::TypeTracking<TypeTrackingInput>;
+  private module TypeTracking = Tt::TypeTracking<Location, TypeTrackingInput>;
 
   /**
    * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
@@ -286,7 +286,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ) {
       revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
       not expectsContent(node, _) and
-      if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
+      if node instanceof CastNode or node instanceof ArgNode or node instanceof ReturnNode
       then compatibleTypesFilter(t, getNodeDataFlowType(node))
       else any()
     }
@@ -372,7 +372,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ) {
       revLambdaFlow(lambdaCall, kind, out, t, _, toJump, lastCall) and
       exists(ReturnKindExt rk |
-        out = rk.getAnOutNode(call) and
+        out = getAnOutNodeExt(call, rk) and
         lambdaCall(call, _, _)
       )
     }
@@ -678,6 +678,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       class CcNoCall = CallContextNoCall;
 
+      class CcReturn = CallContextReturn;
+
       Cc ccNone() { result instanceof CallContextAny }
 
       CcCall ccSomeCall() { result instanceof CallContextSomeCall }
@@ -889,6 +891,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asNode(), result)
       or
       nodeDataFlowType(this.asParamReturnNode(), result)
+      or
+      isTopType(result) and this.isImplicitReadNode(_)
     }
 
     pragma[inline]
@@ -899,20 +903,36 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     Location getLocation() { result = this.projectToNode().getLocation() }
   }
 
-  final class ArgNodeEx extends NodeEx {
-    ArgNodeEx() { this.asNode() instanceof ArgNode }
+  /**
+   * A `Node` at which a cast can occur such that the type should be checked.
+   */
+  final class CastingNodeEx extends NodeEx {
+    CastingNodeEx() { castingNodeEx(this) }
+  }
 
-    DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
+  final class ArgNodeEx extends NodeEx {
+    private DataFlowCall call_;
+    private ArgumentPosition pos_;
+
+    ArgNodeEx() { this.asNode().(ArgNode).argumentOf(call_, pos_) }
+
+    predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call = call_ and
+      pos = pos_
+    }
+
+    DataFlowCall getCall() { result = call_ }
   }
 
   final class ParamNodeEx extends NodeEx {
-    ParamNodeEx() { this.asNode() instanceof ParamNode }
+    private DataFlowCallable c_;
+    private ParameterPosition pos_;
 
-    predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.asNode().(ParamNode).isParameterOf(c, pos)
-    }
+    ParamNodeEx() { this.asNode().(ParamNode).isParameterOf(c_, pos_) }
 
-    ParameterPosition getPosition() { this.isParameterOf(_, result) }
+    predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { c = c_ and pos = pos_ }
+
+    ParameterPosition getPosition() { result = pos_ }
   }
 
   /**
@@ -929,6 +949,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ReturnKindExt getKind() { result = pos.getKind() }
   }
 
+  final class OutNodeEx extends NodeEx {
+    OutNodeEx() { this.asNode() instanceof OutNodeExt }
+  }
+
+  pragma[nomagic]
+  private SndLevelScopeOption getSecondLevelScope0(Node n) {
+    result = SndLevelScopeOption::some(getSecondLevelScope(n))
+    or
+    result instanceof SndLevelScopeOption::None and
+    not exists(getSecondLevelScope(n))
+  }
+
   cached
   private module Cached {
     /**
@@ -940,11 +972,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate forceCachingInSameStage() { any() }
 
     cached
-    SndLevelScopeOption getSecondLevelScopeCached(Node n) {
-      result = SndLevelScopeOption::some(getSecondLevelScope(n))
-      or
-      result instanceof SndLevelScopeOption::None and
-      not exists(getSecondLevelScope(n))
+    SndLevelScopeOption getSecondLevelScopeEx(NodeEx n) {
+      result = getSecondLevelScope0(n.asNode())
     }
 
     cached
@@ -976,10 +1005,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
     cached
-    predicate clearsContentCached(Node n, ContentSet c) { clearsContent(n, c) }
+    predicate clearsContentSet(NodeEx n, ContentSet c) { clearsContent(n.asNode(), c) }
 
     cached
     predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
+
+    cached
+    predicate expectsContentSet(NodeEx n, ContentSet c) { expectsContent(n.asNode(), c) }
 
     cached
     predicate isUnreachableInCallCached(NodeRegion nr, DataFlowCall call) {
@@ -994,16 +1026,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate hiddenNode(Node n) { nodeIsHidden(n) }
+    predicate hiddenNode(NodeEx n) {
+      nodeIsHidden([n.asNode(), n.asParamReturnNode()])
+      or
+      n instanceof TNodeImplicitRead
+    }
 
     cached
-    OutNodeExt getAnOutNodeExt(DataFlowCall call, ReturnKindExt k) {
-      result = getAnOutNode(call, k.(ValueReturnKind).getKind())
-      or
-      exists(ArgNode arg |
-        result.(PostUpdateNode).getPreUpdateNode() = arg and
-        arg.argumentOf(call, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
-      )
+    OutNodeEx getAnOutNodeEx(DataFlowCall call, ReturnKindExt k) {
+      result.asNode() = getAnOutNodeExt(call, k)
     }
 
     pragma[nomagic]
@@ -1014,23 +1045,29 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         parameterValueFlowsToPreUpdate(p, n) and
         p.isParameterOf(_, pos) and
         k = TParamUpdate(pos) and
-        scope = getSecondLevelScopeCached(n)
+        scope = getSecondLevelScope0(n)
       )
     }
 
     cached
-    predicate castNode(Node n) { n instanceof CastNode }
+    predicate flowCheckNode(NodeEx n) {
+      n.asNode() instanceof CastNode or
+      clearsContentSet(n, _) or
+      expectsContentSet(n, _) or
+      neverSkipInPathGraph(n.asNode())
+    }
 
     cached
-    predicate castingNode(Node n) {
-      castNode(n) or
-      n instanceof ParamNode or
-      n instanceof OutNodeExt or
-      // For reads, `x.f`, we want to check that the tracked type after the read (which
-      // is obtained by popping the head of the access path stack) is compatible with
-      // the type of `x.f`.
-      readSet(_, _, n)
+    predicate castingNodeEx(NodeEx n) {
+      n.asNode() instanceof CastingNode or
+      exists(n.asParamReturnNode())
     }
+
+    cached
+    string getSourceModel(NodeEx node) { knownSourceModel(node.asNode(), result) }
+
+    cached
+    string getSinkModel(NodeEx node) { knownSinkModel(node.asNodeOrImplicitRead(), result) }
 
     cached
     predicate parameterNode(Node p, DataFlowCallable c, ParameterPosition pos) {
@@ -1206,6 +1243,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
+    /**
+     * Holds if `arg` is a possible argument to `p` in `call`, taking virtual
+     * dispatch into account.
+     */
+    cached
+    predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
+      viableParamArg(call, p.asNode(), arg.asNode())
+    }
+
     pragma[nomagic]
     private ReturnPosition viableReturnPos(DataFlowCall call, ReturnKindExt kind) {
       viableCallableExt(call) = result.getCallable() and
@@ -1217,11 +1263,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * taking virtual dispatch into account.
      */
     cached
-    predicate viableReturnPosOut(DataFlowCall call, ReturnPosition pos, Node out) {
+    predicate viableReturnPosOut(DataFlowCall call, ReturnPosition pos, OutNodeExt out) {
       exists(ReturnKindExt kind |
         pos = viableReturnPos(call, kind) and
-        out = kind.getAnOutNode(call)
+        out = getAnOutNodeExt(call, kind)
       )
+    }
+
+    /**
+     * Holds if a value at return position `pos` can be returned to `out` via `call`,
+     * taking virtual dispatch into account.
+     */
+    cached
+    predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, OutNodeEx out) {
+      viableReturnPosOut(call, pos, out.asNode())
     }
 
     /** Provides predicates for calculating flow-through summaries. */
@@ -1338,6 +1393,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
        *   or summarized as a single read step with before and after types recorded
        *   in the `ReadStepTypesOption` parameter.
        * - Types are checked using the `compatibleTypes()` relation.
+       * - Call contexts are taken into account.
        */
       private module Final {
         /**
@@ -1348,8 +1404,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
          * If a read step was taken, then `read` captures the `Content`, the
          * container type, and the content type.
          */
-        predicate parameterValueFlow(ParamNode p, Node node, ReadStepTypesOption read, string model) {
-          parameterValueFlow0(p, node, read, model) and
+        predicate parameterValueFlow(
+          ParamNode p, Node node, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          parameterValueFlow0(p, node, read, model, ctx) and
+          Cand::cand(p, node) and
           if node instanceof CastingNode
           then
             // normal flow through
@@ -1369,16 +1429,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate parameterValueFlow0(
-          ParamNode p, Node node, ReadStepTypesOption read, string model
+          ParamNode p, Node node, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
         ) {
           p = node and
           Cand::cand(p, _) and
           read = TReadStepTypesNone() and
-          model = ""
+          model = "" and
+          CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx)
           or
           // local flow
           exists(Node mid, string model1, string model2 |
-            parameterValueFlow(p, mid, read, model1) and
+            parameterValueFlow(p, mid, read, model1, ctx) and
             simpleLocalFlowStep(mid, node, model2) and
             validParameterAliasStep(mid, node) and
             model = mergeModels(model1, model2)
@@ -1386,50 +1448,106 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           or
           // read
           exists(Node mid |
-            parameterValueFlow(p, mid, TReadStepTypesNone(), model) and
+            parameterValueFlow(p, mid, TReadStepTypesNone(), model, ctx) and
             readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
               read.getContentType()) and
             Cand::parameterValueFlowReturnCand(p, _, true) and
             compatibleTypesFilter(getNodeDataFlowType(p), read.getContainerType())
           )
           or
-          parameterValueFlow0_0(TReadStepTypesNone(), p, node, read, model)
+          parameterValueFlow0_0(TReadStepTypesNone(), p, node, read, model, ctx)
+        }
+
+        bindingset[ctx1, ctx2]
+        pragma[inline_late]
+        private CachedCallContextSensitivity::CcNoCall mergeContexts(
+          CachedCallContextSensitivity::CcNoCall ctx1, CachedCallContextSensitivity::CcNoCall ctx2
+        ) {
+          if CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx1)
+          then result = ctx2
+          else
+            if CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx2)
+            then result = ctx1
+            else
+              // check that `ctx1` is compatible with `ctx2` for at least _some_ outer call,
+              // and then (arbitrarily) continue with `ctx2`
+              exists(DataFlowCall someOuterCall, DataFlowCallable callable |
+                someOuterCall =
+                  CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx1) and
+                someOuterCall =
+                  CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx2) and
+                result = ctx2
+              )
         }
 
         pragma[nomagic]
         private predicate parameterValueFlow0_0(
           ReadStepTypesOption mustBeNone, ParamNode p, Node node, ReadStepTypesOption read,
-          string model
+          string model, CachedCallContextSensitivity::CcNoCall ctx
         ) {
-          // flow through: no prior read
-          exists(ArgNode arg, string model1, string model2 |
-            parameterValueFlowArg(p, arg, mustBeNone, model1) and
-            argumentValueFlowsThrough(arg, read, node, model2) and
-            model = mergeModels(model1, model2)
-          )
-          or
-          // flow through: no read inside method
-          exists(ArgNode arg, string model1, string model2 |
-            parameterValueFlowArg(p, arg, read, model1) and
-            argumentValueFlowsThrough(arg, mustBeNone, node, model2) and
-            model = mergeModels(model1, model2)
+          exists(
+            ArgNode arg, string model1, string model2, CachedCallContextSensitivity::CcNoCall ctx1,
+            CachedCallContextSensitivity::CcNoCall ctx2
+          |
+            model = mergeModels(model1, model2) and
+            ctx = mergeContexts(ctx1, ctx2)
+          |
+            // flow through: no prior read
+            parameterValueFlowArg(p, arg, mustBeNone, model1, ctx1) and
+            argumentValueFlowsThrough(arg, read, node, model2, ctx2)
+            or
+            // flow through: no read inside method
+            parameterValueFlowArg(p, arg, read, model1, ctx1) and
+            argumentValueFlowsThrough(arg, mustBeNone, node, model2, ctx2)
           )
         }
 
         pragma[nomagic]
         private predicate parameterValueFlowArg(
-          ParamNode p, ArgNode arg, ReadStepTypesOption read, string model
+          ParamNode p, ArgNode arg, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
         ) {
-          parameterValueFlow(p, arg, read, model) and
+          parameterValueFlow(p, arg, read, model, ctx) and
           Cand::argumentValueFlowsThroughCand(arg, _, _)
         }
 
         pragma[nomagic]
         private predicate argumentValueFlowsThrough0(
-          DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read, string model
+          DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall outerCtx
         ) {
-          exists(ParamNode param | viableParamArg(call, param, arg) |
-            parameterValueFlowReturn(param, kind, read, model)
+          exists(
+            ParamNode param, DataFlowCallable callable,
+            CachedCallContextSensitivity::CcNoCall innerCtx
+          |
+            viableParamArg(call, param, arg) and
+            parameterValueFlowReturn(param, kind, read, model, innerCtx) and
+            callable = nodeGetEnclosingCallable(param) and
+            outerCtx = CachedCallContextSensitivity::getCallContextReturn(callable, call)
+          |
+            CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(innerCtx)
+            or
+            call =
+              CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, innerCtx)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate argumentValueFlowsThrough(
+          ArgNode arg, ReadStepTypesOption read, Node out, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          exists(DataFlowCall call, ReturnKind kind |
+            argumentValueFlowsThrough0(call, arg, kind, read, model, ctx) and
+            out = getAnOutNode(call, kind)
+          |
+            // normal flow through
+            read = TReadStepTypesNone() and
+            compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(out))
+            or
+            // getter
+            compatibleTypesFilter(getNodeDataFlowType(arg), read.getContainerType()) and
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(out))
           )
         }
 
@@ -1445,18 +1563,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         predicate argumentValueFlowsThrough(
           ArgNode arg, ReadStepTypesOption read, Node out, string model
         ) {
-          exists(DataFlowCall call, ReturnKind kind |
-            argumentValueFlowsThrough0(call, arg, kind, read, model) and
-            out = getAnOutNode(call, kind)
-          |
-            // normal flow through
-            read = TReadStepTypesNone() and
-            compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(out))
-            or
-            // getter
-            compatibleTypesFilter(getNodeDataFlowType(arg), read.getContainerType()) and
-            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(out))
-          )
+          argumentValueFlowsThrough(arg, read, out, model, _)
         }
 
         /**
@@ -1479,10 +1586,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
          * container type, and the content type.
          */
         private predicate parameterValueFlowReturn(
-          ParamNode p, ReturnKind kind, ReadStepTypesOption read, string model
+          ParamNode p, ReturnKind kind, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
         ) {
           exists(ReturnNode ret |
-            parameterValueFlow(p, ret, read, model) and
+            parameterValueFlow(p, ret, read, model, ctx) and
             kind = ret.getKind()
           )
         }
@@ -1498,11 +1606,16 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * node `n`, in the same callable, using only value-preserving steps.
      */
     private predicate parameterValueFlowsToPreUpdate(ParamNode p, PostUpdateNode n) {
-      parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone(), _)
+      parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone(), _, _)
     }
 
     cached
     predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
+
+    cached
+    predicate readEx(NodeEx node1, ContentSet c, NodeEx node2) {
+      readSet(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()))
+    }
 
     cached
     predicate storeSet(
@@ -1532,11 +1645,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * been stored into, in order to handle cases like `x.f1.f2 = y`.
      */
     cached
-    predicate store(
-      Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+    predicate storeEx(
+      NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
       exists(ContentSet cs |
-        c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
+        c = cs.getAStoreContent() and
+        storeSet(pragma[only_bind_into](node1.asNode()), cs, pragma[only_bind_into](node2.asNode()),
+          contentType, containerType)
       )
     }
 
@@ -1572,7 +1687,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
+    predicate allowParameterReturnInSelfEx(ParamNodeEx p) { allowParameterReturnInSelf(p.asNode()) }
 
     cached
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
@@ -1602,7 +1717,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       string toString() { result = "Unreachable" }
 
       cached
-      predicate contains(Node n) { exists(NodeRegion nr | super.contains(nr) and nr.contains(n)) }
+      predicate contains(NodeEx n) {
+        exists(NodeRegion nr | super.contains(nr) and nr.contains(n.asNode()))
+      }
 
       cached
       DataFlowCallable getEnclosingCallable() {
@@ -2154,7 +2271,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    * A `Node` at which a cast can occur such that the type should be checked.
    */
   class CastingNode extends NodeFinal {
-    CastingNode() { castingNode(this) }
+    CastingNode() {
+      this instanceof CastNode or
+      this instanceof ParamNode or
+      this instanceof OutNodeExt or
+      // For reads, `x.f`, we want to check that the tracked type after the read (which
+      // is obtained by popping the head of the access path stack) is compatible with
+      // the type of `x.f`.
+      readSet(_, _, this)
+    }
   }
 
   private predicate readStepWithTypes(
@@ -2211,7 +2336,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     /** Holds if this call context makes `n` unreachable. */
-    predicate unreachable(Node n) { ns.contains(n) }
+    predicate unreachable(NodeEx n) { ns.contains(n) }
   }
 
   private DataFlowCallable getNodeRegionEnclosingCallable(NodeRegion nr) {
@@ -2252,6 +2377,16 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     OutNodeExt() { outNodeExt(this) }
   }
 
+  pragma[nomagic]
+  OutNodeExt getAnOutNodeExt(DataFlowCall call, ReturnKindExt k) {
+    result = getAnOutNode(call, k.(ValueReturnKind).getKind())
+    or
+    exists(ArgNode arg |
+      result.(PostUpdateNode).getPreUpdateNode() = arg and
+      arg.argumentOf(call, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
+    )
+  }
+
   /**
    * An extended return kind. A return kind describes how data can be returned
    * from a callable. This can either be through a returned value or an updated
@@ -2262,7 +2397,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     abstract string toString();
 
     /** Gets a node corresponding to data flow out of `call`. */
-    final OutNodeExt getAnOutNode(DataFlowCall call) { result = getAnOutNodeExt(call, this) }
+    final OutNodeEx getAnOutNodeEx(DataFlowCall call) { result = getAnOutNodeEx(call, this) }
   }
 
   class ValueReturnKind extends ReturnKindExt, TValueReturn {
@@ -2287,6 +2422,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     override string toString() { result = "param update " + pos }
   }
+
+  class ReturnKindExtOption = Option<ReturnKindExt>::Option;
 
   /** A callable tagged with a relevant return kind. */
   class ReturnPosition extends TReturnPosition0 {

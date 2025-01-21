@@ -11,7 +11,7 @@
     return source;
   }
   let sink3 = sync(); // NOT OK
-  let sink4 = await sync(); // OK
+  let sink4 = await sync(); // NOT OK
 
   async function throwsAsync() {
     throw source;
@@ -64,7 +64,7 @@
       return x.x;
     }
 
-    var sink8 = unpack(pack(source)); // OK 
+    var sink8 = unpack(pack(source)); // OK
     let sink9 = unpack(await (pack(source))); // NOT OK - but not found
   }
 })();
@@ -75,19 +75,19 @@ async function props() {
       p: x
     };
   }
-  
+
   let source = "source";
   let sink = (await (foo(source))).p; // NOT OK - this requires the immidiatly awaited storeStep.
   let sink2 = foo("not a source").p;
-  
+
   async function getP(base) {
     return base.p;
   }
-  
+
   async function getQ(base) {
     return base.q;
   }
-  
+
   let o3 = { p: source };
   let sink6 = await (getP(o3)); // NOT OK - this requires the immidiatly awaited loadStep
   let sink7 = await (getQ(o3));

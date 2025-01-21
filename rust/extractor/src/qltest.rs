@@ -21,7 +21,7 @@ fn dump_lib() -> anyhow::Result<()> {
     fs::write("lib.rs", lib).context("writing lib.rs")
 }
 
-fn dump_cargo_manifest() -> anyhow::Result<()> {
+fn dump_cargo_manifest(dependencies: &[String]) -> anyhow::Result<()> {
     let mut manifest = String::from(
         r#"[workspace]
 [package]
@@ -40,11 +40,18 @@ path = "main.rs"
 "#,
         );
     }
+    if !dependencies.is_empty() {
+        manifest.push_str("[dependencies]\n");
+        for dep in dependencies {
+            manifest.push_str(dep);
+            manifest.push('\n');
+        }
+    }
     fs::write("Cargo.toml", manifest).context("writing Cargo.toml")
 }
 
 fn set_sources(config: &mut Config) -> anyhow::Result<()> {
-    let path_iterator = glob("*.rs").context("globbing test sources")?;
+    let path_iterator = glob("**/*.rs").context("globbing test sources")?;
     config.inputs = path_iterator
         .collect::<Result<Vec<_>, _>>()
         .context("fetching test sources")?;
@@ -54,7 +61,7 @@ fn set_sources(config: &mut Config) -> anyhow::Result<()> {
 pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
     dump_lib()?;
     set_sources(config)?;
-    dump_cargo_manifest()?;
+    dump_cargo_manifest(&config.qltest_dependencies)?;
     if config.qltest_cargo_check {
         let status = Command::new("cargo")
             .env("RUSTFLAGS", "-Awarnings")

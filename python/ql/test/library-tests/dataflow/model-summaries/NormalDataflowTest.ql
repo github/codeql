@@ -1,2 +1,2 @@
 import python
-import TestUtilities.dataflow.NormalDataflowTest
+import utils.test.dataflow.NormalDataflowTest

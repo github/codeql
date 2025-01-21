@@ -7,6 +7,7 @@ private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Unit
 import DataFlowNodes::Public
 
 /**
@@ -48,6 +49,18 @@ abstract class FunctionModel extends Function {
   predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
     this.flowStepForCall(pred, succ, _)
   }
+}
+
+/**
+ * A unit class for adding nodes that should implicitly read from all nested content.
+ *
+ * For example, this might be appropriate for the argument to a method that serializes a struct.
+ */
+class ImplicitFieldReadNode extends Unit {
+  /**
+   * Holds if the node `n` should implicitly read from all nested content in a taint-tracking context.
+   */
+  abstract predicate shouldImplicitlyReadAllFields(DataFlow::Node n);
 }
 
 /**
@@ -169,6 +182,11 @@ class Content extends TContent {
   ) {
     filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
   }
+
+  /**
+   * Gets the `ContentSet` contaning only this content.
+   */
+  ContentSet asContentSet() { result.asOneContent() = this }
 }
 
 /** A reference through a field. */
@@ -236,21 +254,33 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   override string toString() { result = s.toString() }
 }
 
+private newtype TContentSet =
+  TOneContent(Content c) or
+  TAllContent()
+
 /**
  * An entity that represents a set of `Content`s.
  *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet instanceof Content {
+class ContentSet instanceof TContentSet {
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() { this = TOneContent(result) }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() {
+    this = TOneContent(result)
+    or
+    this = TAllContent() and exists(result)
+  }
 
   /** Gets a textual representation of this content set. */
-  string toString() { result = super.toString() }
+  string toString() {
+    exists(Content c | this = TOneContent(c) | result = c.toString())
+    or
+    this = TAllContent() and result = "all content"
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -262,8 +292,27 @@ class ContentSet instanceof Content {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    exists(Content c | this = TOneContent(c) |
+      c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    )
+    or
+    this = TAllContent() and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
   }
+
+  /**
+   * If this is a singleton content set, returns the content.
+   */
+  Content asOneContent() { this = TOneContent(result) }
+
+  /**
+   * Holds if this is a universal content set.
+   */
+  predicate isUniversalContent() { this = TAllContent() }
 }
 
 /**

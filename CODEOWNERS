@@ -1,3 +1,4 @@
+/actions/ @github/codeql-dynamic
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
 /csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor
@@ -42,3 +43,6 @@ MODULE.bazel @github/codeql-ci-reviewers
 # Misc
 /misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
 /misc/scripts/generate-code-scanning-query-list.py @RasmusWL
+
+# .devcontainer
+/.devcontainer/ @github/codeql-ci-reviewers

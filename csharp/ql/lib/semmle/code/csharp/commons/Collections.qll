@@ -2,6 +2,8 @@
 
 import csharp
 import semmle.code.csharp.frameworks.system.Collections
+private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.frameworks.system.collections.Generic
 
 private string modifyMethodName() {
   result =
@@ -66,6 +68,42 @@ class CollectionType extends RefType {
     this instanceof ArrayType
   }
 }
+
+/**
+ * A collection type that can be used as a `params` parameter type.
+ */
+abstract private class ParamsCollectionTypeImpl extends ValueOrRefType {
+  /**
+   * Gets the element type of this collection, for example `int` in `IEnumerable<int>`.
+   */
+  abstract Type getElementType();
+}
+
+private class ParamsArrayType extends ParamsCollectionTypeImpl instanceof ArrayType {
+  override Type getElementType() { result = ArrayType.super.getElementType() }
+}
+
+private class ParamsConstructedCollectionTypes extends ParamsCollectionTypeImpl {
+  private ConstructedType base;
+
+  ParamsConstructedCollectionTypes() {
+    exists(UnboundGenericType unboundbase |
+      base = this.getABaseType*() and unboundbase = base.getUnboundGeneric()
+    |
+      unboundbase instanceof SystemCollectionsGenericIEnumerableTInterface or
+      unboundbase instanceof SystemCollectionsGenericICollectionInterface or
+      unboundbase instanceof SystemCollectionsGenericIListTInterface or
+      unboundbase instanceof SystemCollectionsGenericIReadOnlyCollectionTInterface or
+      unboundbase instanceof SystemCollectionsGenericIReadOnlyListTInterface or
+      unboundbase instanceof SystemSpanStruct or
+      unboundbase instanceof SystemReadOnlySpanStruct
+    )
+  }
+
+  override Type getElementType() { result = base.getTypeArgument(0) }
+}
+
+final class ParamsCollectionType = ParamsCollectionTypeImpl;
 
 /** Holds if `t` is a collection type. */
 predicate isCollectionType(ValueOrRefType t) {

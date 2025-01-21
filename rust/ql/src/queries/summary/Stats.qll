@@ -3,8 +3,13 @@
  */
 
 import rust
-import codeql.rust.AstConsistency as AstConsistency
+private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.TaintTrackingImpl
+private import codeql.rust.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
+private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
+private import codeql.rust.security.SqlInjectionExtensions
 
 /**
  * Gets a count of the total number of lines of code in the database.
@@ -31,3 +36,32 @@ int getTotalAstInconsistencies() {
 int getTotalCfgInconsistencies() {
   result = sum(string type | | CfgConsistency::getCfgInconsistencyCounts(type))
 }
+
+/**
+ * Gets a count of the total number of data flow inconsistencies in the database.
+ */
+int getTotalDataFlowInconsistencies() {
+  result = sum(string type | | DataFlowConsistency::getInconsistencyCounts(type))
+}
+
+/**
+ * Gets the total number of taint edges in the database.
+ */
+int getTaintEdgesCount() {
+  result =
+    count(DataFlow::Node a, DataFlow::Node b |
+      RustTaintTracking::defaultAdditionalTaintStep(a, b, _)
+    )
+}
+
+/**
+ * Gets a kind of query for which `n` is a sink (if any).
+ */
+string getAQuerySinkKind(DataFlow::Node n) {
+  (n instanceof SqlInjection::Sink and result = "SqlInjection")
+}
+
+/**
+ * Gets a count of the total number of query sinks in the database.
+ */
+int getQuerySinksCount() { result = count(DataFlow::Node n | exists(getAQuerySinkKind(n))) }

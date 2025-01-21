@@ -23,6 +23,13 @@ common --registry=file:///%workspace%/misc/bazel/registry
 common --registry=https://bcr.bazel.build
 
 common --@rules_dotnet//dotnet/settings:strict_deps=false
-common --experimental_isolated_extension_usages
+
+# Reduce this eventually to empty, once we've fixed all our usages of java, and https://github.com/bazel-contrib/rules_go/issues/4193 is fixed
+common --incompatible_autoload_externally="+@rules_java,+@rules_shell"
+
+build --java_language_version=17
+build --tool_java_language_version=17
+build --tool_java_runtime_version=remotejdk_17
+build --java_runtime_version=remotejdk_17
 
 try-import %workspace%/local.bazelrc

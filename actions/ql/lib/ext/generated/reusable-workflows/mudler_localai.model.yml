@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mudler/localai/.github/workflows/image_build.yml", "*", "input.latest-image-aio", "code-injection", "generated"]
+     - ["mudler/localai/.github/workflows/image_build.yml", "*", "input.latest-image", "code-injection", "generated"]

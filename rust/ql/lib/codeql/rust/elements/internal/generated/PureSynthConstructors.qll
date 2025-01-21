@@ -3,6 +3,8 @@
  * This module exports all modules providing `Element` subclasses.
  */
 
+import codeql.rust.elements.internal.ArrayListExprConstructor
+import codeql.rust.elements.internal.ArrayRepeatExprConstructor
 import codeql.rust.elements.internal.FormatConstructor
 import codeql.rust.elements.internal.FormatArgumentConstructor
 import codeql.rust.elements.internal.FormatTemplateVariableAccessConstructor

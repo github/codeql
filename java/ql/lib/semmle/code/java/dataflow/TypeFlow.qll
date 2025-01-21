@@ -13,24 +13,27 @@ private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
 private import codeql.typeflow.TypeFlow
+private import codeql.typeflow.UniversalFlow as UniversalFlow
 
-private module Input implements TypeFlowInput<Location> {
-  private newtype TTypeFlowNode =
+/** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
+private RefType boxIfNeeded(J::Type t) {
+  t.(PrimitiveType).getBoxedType() = result or
+  result = t
+}
+
+/** Provides the input types and predicates for instantiation of `UniversalFlow`. */
+module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
+  private newtype TFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
     TSsa(BaseSsaVariable ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
     TExpr(Expr e) or
     TMethod(Method m) { not m.getReturnType() instanceof PrimitiveType }
 
-  /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
-  private RefType boxIfNeeded(J::Type t) {
-    t.(PrimitiveType).getBoxedType() = result or
-    result = t
-  }
-
   /**
    * A `Field`, `BaseSsaVariable`, `Expr`, or `Method`.
    */
-  class TypeFlowNode extends TTypeFlowNode {
+  class FlowNode extends TFlowNode {
+    /** Gets a textual representation of this element. */
     string toString() {
       result = this.asField().toString() or
       result = this.asSsa().toString() or
@@ -38,6 +41,7 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().toString()
     }
 
+    /** Gets the source location for this element. */
     Location getLocation() {
       result = this.asField().getLocation() or
       result = this.asSsa().getLocation() or
@@ -45,14 +49,19 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().getLocation()
     }
 
+    /** Gets the field corresponding to this node, if any. */
     Field asField() { this = TField(result) }
 
+    /** Gets the SSA variable corresponding to this node, if any. */
     BaseSsaVariable asSsa() { this = TSsa(result) }
 
+    /** Gets the expression corresponding to this node, if any. */
     Expr asExpr() { this = TExpr(result) }
 
+    /** Gets the method corresponding to this node, if any. */
     Method asMethod() { this = TMethod(result) }
 
+    /** Gets the type of this node. */
     RefType getType() {
       result = this.asField().getType() or
       result = this.asSsa().getSourceVariable().getType() or
@@ -60,8 +69,6 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().getReturnType()
     }
   }
-
-  class Type = RefType;
 
   private SrcCallable viableCallable_v1(Call c) {
     result = viableImpl_v1(c)
@@ -84,10 +91,11 @@ private module Input implements TypeFlowInput<Location> {
   }
 
   /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
-   * necessarily functionally determined by `n2`.
+   * Holds if data can flow from `n1` to `n2` in one step.
+   *
+   * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
    */
-  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate step(FlowNode n1, FlowNode n2) {
     n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
     or
     exists(Field f, Expr e |
@@ -112,13 +120,7 @@ private module Input implements TypeFlowInput<Location> {
       // skip trivial recursion
       not arg = n2.asSsa().getAUse()
     )
-  }
-
-  /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
-   * functionally determined by `n2`.
-   */
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+    or
     n2.asExpr() = n1.asField().getAnAccess()
     or
     n2.asExpr() = n1.asSsa().getAUse()
@@ -132,26 +134,38 @@ private module Input implements TypeFlowInput<Location> {
     n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
     or
     n2.asSsa().(BaseSsaImplicitInit).captures(n1.asSsa())
+    or
+    n2.asExpr().(NotNullExpr).getExpr() = n1.asExpr()
   }
 
   /**
    * Holds if `null` is the only value that flows to `n`.
    */
-  predicate isNullValue(TypeFlowNode n) {
+  predicate isNullValue(FlowNode n) {
     n.asExpr() instanceof NullLiteral
     or
     exists(LocalVariableDeclExpr decl |
       n.asSsa().(BaseSsaUpdate).getDefiningExpr() = decl and
       not decl.hasImplicitInit() and
-      not exists(decl.getInit())
+      not exists(decl.getInitOrPatternSource())
     )
   }
 
-  predicate isExcludedFromNullAnalysis(TypeFlowNode n) {
+  predicate isExcludedFromNullAnalysis(FlowNode n) {
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
     exists(n.asField())
   }
+}
+
+private module Input implements TypeFlowInput<Location> {
+  import FlowStepsInput
+
+  class TypeFlowNode = FlowNode;
+
+  predicate isExcludedFromNullAnalysis = FlowStepsInput::isExcludedFromNullAnalysis/1;
+
+  class Type = RefType;
 
   predicate exactTypeBase(TypeFlowNode n, RefType t) {
     exists(ClassInstanceExpr e |
@@ -169,7 +183,7 @@ private module Input implements TypeFlowInput<Location> {
    */
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
-    exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
+    exists(TypeFlowNode next | step(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1.getErasure() = t1e and
@@ -238,8 +252,8 @@ private module Input implements TypeFlowInput<Location> {
       downcastSuccessorAux(pragma[only_bind_into](cast), v, t, t1, t2) and
       t1.getASourceSupertype+() = t2 and
       va = v.getAUse() and
-      dominates(cast, va) and
-      dominates(cast.(ControlFlowNode).getANormalSuccessor(), va)
+      dominates(cast.getControlFlowNode(), va.getControlFlowNode()) and
+      dominates(cast.getControlFlowNode().getANormalSuccessor(), va.getControlFlowNode())
     )
   }
 

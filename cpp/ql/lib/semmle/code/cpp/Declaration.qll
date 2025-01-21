@@ -187,7 +187,7 @@ class Declaration extends Locatable, @declaration {
       this instanceof Parameter or
       this instanceof ProxyClass or
       this instanceof LocalVariable or
-      this instanceof TemplateParameter or
+      this instanceof TypeTemplateParameter or
       this.(UserType).isLocal()
     )
   }
@@ -235,7 +235,7 @@ class Declaration extends Locatable, @declaration {
    *
    * `Foo<int, 1> bar;`
    *
-   * Will have `getTemplateArgument())` return `int`, and
+   * Will have `getTemplateArgument(0)` return `int`, and
    * `getTemplateArgument(1)` return `1`.
    */
   final Locatable getTemplateArgument(int index) {
@@ -277,6 +277,10 @@ class Declaration extends Locatable, @declaration {
     function_template_argument(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    template_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 
   private Expr getTemplateArgumentValue(int index) {
@@ -285,6 +289,10 @@ class Declaration extends Locatable, @declaration {
     function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    template_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument_value(underlyingElement(this), index, unresolveElement(result))
   }
 }
 

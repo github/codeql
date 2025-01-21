@@ -18,6 +18,7 @@ module Generated {
   /**
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    * INTERNAL: Do not reference the `Generated::Path` class directly.

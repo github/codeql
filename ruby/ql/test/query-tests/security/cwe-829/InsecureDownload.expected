@@ -1,17 +1,16 @@
 testFailures
-failures
 edges
-| insecure_download.rb:31:5:31:7 | url | insecure_download.rb:33:15:33:17 | url | provenance |  |
-| insecure_download.rb:31:5:31:7 | url | insecure_download.rb:33:15:33:17 | url | provenance |  |
-| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | insecure_download.rb:31:5:31:7 | url | provenance |  |
-| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | insecure_download.rb:31:5:31:7 | url | provenance |  |
+| insecure_download.rb:31:5:31:7 | url : String | insecure_download.rb:33:15:33:17 | url | provenance |  |
+| insecure_download.rb:31:5:31:7 | url : String | insecure_download.rb:33:15:33:17 | url | provenance |  |
+| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | insecure_download.rb:31:5:31:7 | url : String | provenance |  |
+| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | insecure_download.rb:31:5:31:7 | url : String | provenance |  |
 nodes
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | semmle.label | "http://example.org/unsafe.APK" |
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | semmle.label | "http://example.org/unsafe.APK" |
-| insecure_download.rb:31:5:31:7 | url | semmle.label | url |
-| insecure_download.rb:31:5:31:7 | url | semmle.label | url |
-| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | semmle.label | "http://example.org/unsafe.APK" |
-| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | semmle.label | "http://example.org/unsafe.APK" |
+| insecure_download.rb:31:5:31:7 | url : String | semmle.label | url : String |
+| insecure_download.rb:31:5:31:7 | url : String | semmle.label | url : String |
+| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | semmle.label | "http://example.org/unsafe.APK" : String |
+| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | semmle.label | "http://example.org/unsafe.APK" : String |
 | insecure_download.rb:33:15:33:17 | url | semmle.label | url |
 | insecure_download.rb:33:15:33:17 | url | semmle.label | url |
 | insecure_download.rb:37:42:37:68 | "http://example.org/unsafe" | semmle.label | "http://example.org/unsafe" |
@@ -22,8 +21,8 @@ subpaths
 #select
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | $@ | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | "http://example.org/unsafe.APK" |
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | $@ | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | "http://example.org/unsafe.APK" |
-| insecure_download.rb:33:15:33:17 | url | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | insecure_download.rb:33:15:33:17 | url | $@ | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | "http://example.org/unsafe.APK" |
-| insecure_download.rb:33:15:33:17 | url | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | insecure_download.rb:33:15:33:17 | url | $@ | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" | "http://example.org/unsafe.APK" |
+| insecure_download.rb:33:15:33:17 | url | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | insecure_download.rb:33:15:33:17 | url | $@ | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | "http://example.org/unsafe.APK" : String |
+| insecure_download.rb:33:15:33:17 | url | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | insecure_download.rb:33:15:33:17 | url | $@ | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" : String | "http://example.org/unsafe.APK" : String |
 | insecure_download.rb:33:15:33:17 | url | insecure_download.rb:33:15:33:17 | url | insecure_download.rb:33:15:33:17 | url | $@ | insecure_download.rb:33:15:33:17 | url | url |
 | insecure_download.rb:33:15:33:17 | url | insecure_download.rb:33:15:33:17 | url | insecure_download.rb:33:15:33:17 | url | $@ | insecure_download.rb:33:15:33:17 | url | url |
 | insecure_download.rb:37:42:37:68 | "http://example.org/unsafe" | insecure_download.rb:37:42:37:68 | "http://example.org/unsafe" | insecure_download.rb:37:42:37:68 | "http://example.org/unsafe" | $@ | insecure_download.rb:37:42:37:68 | "http://example.org/unsafe" | "http://example.org/unsafe" |

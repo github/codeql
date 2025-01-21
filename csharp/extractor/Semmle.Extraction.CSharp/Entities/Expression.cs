@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         private readonly IExpressionInfo info;
         public AnnotatedTypeSymbol? Type { get; private set; }
-        public Extraction.Entities.Location Location { get; }
+        public Location Location { get; }
         public ExprKind Kind { get; }
 
         internal Expression(IExpressionInfo info, bool shouldPopulate = true)
@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.PopulateGenerics();
         }
 
-        public override Location? ReportingLocation => Location.Symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Location.Symbol;
 
         internal void SetType(ITypeSymbol? type)
         {
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets a string representation of a constant value.
         /// </summary>
-        /// <param name="obj">The value.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The string representation.</returns>
         public static string ValueAsString(object? value)
         {
@@ -98,7 +98,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The node to extract.</param>
         /// <param name="parent">The parent entity.</param>
         /// <param name="child">The child index.</param>
-        /// <param name="type">A type hint.</param>
         /// <returns>The new expression.</returns>
         public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, Boolean isCompilerGenerated = false)
         {
@@ -120,7 +119,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The node to extract.</param>
         /// <param name="parent">The parent entity.</param>
         /// <param name="child">The child index.</param>
-        /// <param name="type">A type hint.</param>
         public static void CreateDeferred(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child)
         {
             if (ContainsPattern(node))
@@ -131,14 +129,14 @@ namespace Semmle.Extraction.CSharp.Entities
                 cx.PopulateLater(() => Create(cx, node, parent, child));
         }
 
-        private static bool ContainsPattern(SyntaxNode node) =>
+        protected static bool ContainsPattern(SyntaxNode node) =>
             node is PatternSyntax || node is VariableDesignationSyntax || node.ChildNodes().Any(ContainsPattern);
 
         /// <summary>
         /// Creates a generated expression from a typed constant.
         /// </summary>
         public static Expression? CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
-            int childIndex, Extraction.Entities.Location location)
+            int childIndex, Location location)
         {
             if (constant.IsNull ||
                 constant.Type is null)
@@ -176,7 +174,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Creates a generated expression for a default argument value.
         /// </summary>
         public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
-            int childIndex, Extraction.Entities.Location location)
+            int childIndex, Location location)
         {
             if (!parameter.HasExplicitDefaultValue ||
                 parameter.Type is IErrorTypeSymbol)
@@ -244,7 +242,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to show the target of the call. Also note the dynamic method
         /// name if available.
         /// </summary>
-        /// <param name="cx">Context</param>
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
@@ -315,7 +312,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         /// <summary>
         /// Given `b` in `a?.b.c`, return `(a?.b, a?.b)`.
-        /// 
+        ///
         /// Given `c` in `a?.b?.c.d`, return `(b?.c, a?.b?.c)`.
         /// </summary>
         /// <param name="node">A MemberBindingExpression.</param>

@@ -166,7 +166,7 @@ private predicate ignoreExpr(Expr expr) {
 }
 
 /**
- * Holds if the side effects of `expr` should be ignoredf for the purposes of IR generation.
+ * Holds if the side effects of `expr` should be ignored for the purposes of IR generation.
  *
  * In cases involving `constexpr`, a call can wind up as a constant expression. `ignoreExpr()` will
  * not hold for such a call, since we do need to translate the call (as a constant), but we need to

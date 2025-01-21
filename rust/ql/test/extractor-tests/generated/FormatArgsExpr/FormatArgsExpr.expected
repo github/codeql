@@ -1,0 +1,15 @@
+| gen_format.rs:5:14:5:32 | FormatArgsExpr | getNumberOfArgs: | 1 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:7:14:7:47 | FormatArgsExpr | getNumberOfArgs: | 0 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:11:14:11:35 | FormatArgsExpr | getNumberOfArgs: | 0 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:12:14:12:38 | FormatArgsExpr | getNumberOfArgs: | 1 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:16:14:16:28 | FormatArgsExpr | getNumberOfArgs: | 1 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:17:14:17:31 | FormatArgsExpr | getNumberOfArgs: | 2 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:21:14:21:28 | FormatArgsExpr | getNumberOfArgs: | 1 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format.rs:22:14:22:31 | FormatArgsExpr | getNumberOfArgs: | 2 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format_args_arg.rs:5:17:5:39 | FormatArgsExpr | getNumberOfArgs: | 1 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format_args_expr.rs:5:17:5:27 | FormatArgsExpr | getNumberOfArgs: | 0 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 0 |
+| gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | getNumberOfArgs: | 2 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 2 |
+| gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | getNumberOfArgs: | 2 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 2 |
+| gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | getNumberOfArgs: | 0 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 2 |
+| gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | getNumberOfArgs: | 0 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |
+| gen_format_argument.rs:7:14:7:56 | FormatArgsExpr | getNumberOfArgs: | 3 | getNumberOfAttrs: | 0 | hasTemplate: | yes | getNumberOfFormats: | 1 |

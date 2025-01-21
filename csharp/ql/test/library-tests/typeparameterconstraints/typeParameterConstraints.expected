@@ -1,0 +1,24 @@
+typeParameterContraints
+| TypeParameterConstraints.cs:6:20:6:21 | T1 | file://:0:0:0:0 | where T1: ... |
+| TypeParameterConstraints.cs:8:20:8:21 | T2 | file://:0:0:0:0 | where T2: ... |
+| TypeParameterConstraints.cs:10:20:10:21 | T3 | file://:0:0:0:0 | where T3: ... |
+| TypeParameterConstraints.cs:12:20:12:21 | T4 | file://:0:0:0:0 | where T4: ... |
+| TypeParameterConstraints.cs:14:20:14:21 | T5 | file://:0:0:0:0 | where T5: ... |
+| TypeParameterConstraints.cs:16:20:16:21 | T6 | file://:0:0:0:0 | where T6: ... |
+| TypeParameterConstraints.cs:18:20:18:21 | T7 | file://:0:0:0:0 | where T7: ... |
+specificParameterConstraints
+| TypeParameterConstraints.cs:16:20:16:21 | T6 | IList<object> |
+hasConstructorConstraint
+| TypeParameterConstraints.cs:12:20:12:21 | T4 | file://:0:0:0:0 | where T4: ... |
+hasRefTypeConstraint
+| TypeParameterConstraints.cs:6:20:6:21 | T1 | file://:0:0:0:0 | where T1: ... |
+hasValueTypeConstraint
+| TypeParameterConstraints.cs:8:20:8:21 | T2 | file://:0:0:0:0 | where T2: ... |
+| TypeParameterConstraints.cs:10:20:10:21 | T3 | file://:0:0:0:0 | where T3: ... |
+hasUnmanagedTypeConstraint
+| TypeParameterConstraints.cs:10:20:10:21 | T3 | file://:0:0:0:0 | where T3: ... |
+hasNullableRefTypeConstraint
+hasNotNullConstraint
+| TypeParameterConstraints.cs:14:20:14:21 | T5 | file://:0:0:0:0 | where T5: ... |
+hasAllowRefLikeTypeConstraint
+| TypeParameterConstraints.cs:18:20:18:21 | T7 | file://:0:0:0:0 | where T7: ... |

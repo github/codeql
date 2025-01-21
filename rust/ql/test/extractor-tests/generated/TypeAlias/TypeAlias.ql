@@ -4,7 +4,7 @@ import TestUtils
 
 from
   TypeAlias x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasGenericParamList, string isDefault, string hasName, string hasTy,
+  string hasGenericParamList, string isDefault, string hasName, string hasTypeRepr,
   string hasTypeBoundList, string hasVisibility, string hasWhereClause
 where
   toBeTested(x) and
@@ -19,11 +19,11 @@ where
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasTy() then hasTy = "yes" else hasTy = "no") and
+  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
   "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "isDefault:",
-  isDefault, "hasName:", hasName, "hasTy:", hasTy, "hasTypeBoundList:", hasTypeBoundList,
-  "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+  isDefault, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr, "hasTypeBoundList:",
+  hasTypeBoundList, "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause

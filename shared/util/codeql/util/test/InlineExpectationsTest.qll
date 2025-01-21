@@ -500,55 +500,6 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
-  deprecated private module LegacyImpl implements TestSig {
-    string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
-
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasActualResult(location, element, tag, value)
-    }
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasOptionalResult(location, element, tag, value)
-    }
-  }
-
-  /**
-   * DEPRECATED: Use the InlineExpectationsTest module.
-   *
-   * The base class for tests with inline expectations. The test extends this class to provide the actual
-   * results of the query, which are then compared with the expected results in comments to produce a
-   * list of failure messages that point out where the actual results differ from the expected
-   * results.
-   */
-  abstract deprecated class InlineExpectationsTest extends string {
-    bindingset[this]
-    InlineExpectationsTest() { any() }
-
-    abstract string getARelevantTag();
-
-    abstract predicate hasActualResult(
-      Impl::Location location, string element, string tag, string value
-    );
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      none()
-    }
-  }
-
-  deprecated import MakeTest<LegacyImpl> as LegacyTest
-
-  deprecated query predicate failures = LegacyTest::testFailures/2;
-
-  deprecated class ActualResult = LegacyTest::ActualTestResult;
-
-  deprecated class GoodExpectation = LegacyTest::GoodTestExpectation;
-
-  deprecated class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
-
-  deprecated class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
-
-  deprecated class InvalidExpectation = LegacyTest::InvalidTestExpectation;
-
   /**
    * Holds if the expectation `tag=value` is found in one or more expectation comments.
    *
@@ -632,6 +583,9 @@ private string expectationPattern() {
   )
 }
 
+/** Gets the string `#select` or `problems`, which are equivalent result sets for a `problem` or `path-problem` query. */
+private string mainResultSet() { result = ["#select", "problems"] }
+
 /**
  * Provides logic for creating a `@kind test-postprocess` query that checks
  * inline test expectations using `$ Alert` markers.
@@ -699,8 +653,8 @@ module TestPostProcessing {
      */
     private string getSourceTag(int row) {
       getQueryKind() = "path-problem" and
-      exists(string loc | queryResults("#select", row, 2, loc) |
-        if queryResults("#select", row, 0, loc) then result = "Alert" else result = "Source"
+      exists(string loc | queryResults(mainResultSet(), row, 2, loc) |
+        if queryResults(mainResultSet(), row, 0, loc) then result = "Alert" else result = "Source"
       )
     }
 
@@ -712,8 +666,8 @@ module TestPostProcessing {
      */
     private string getSinkTag(int row) {
       getQueryKind() = "path-problem" and
-      exists(string loc | queryResults("#select", row, 4, loc) |
-        if queryResults("#select", row, 0, loc) then result = "Alert" else result = "Sink"
+      exists(string loc | queryResults(mainResultSet(), row, 4, loc) |
+        if queryResults(mainResultSet(), row, 0, loc) then result = "Alert" else result = "Sink"
       )
     }
 
@@ -766,8 +720,8 @@ module TestPostProcessing {
       ) {
         getQueryKind() = "path-problem" and
         exists(string loc |
-          queryResults("#select", row, 2, loc) and
-          queryResults("#select", row, 3, element) and
+          queryResults(mainResultSet(), row, 2, loc) and
+          queryResults(mainResultSet(), row, 3, element) and
           tag = getSourceTag(row) and
           value = "" and
           Input2::getRelativeUrl(location) = loc
@@ -806,8 +760,8 @@ module TestPostProcessing {
       ) {
         getQueryKind() = "path-problem" and
         exists(string loc |
-          queryResults("#select", row, 4, loc) and
-          queryResults("#select", row, 5, element) and
+          queryResults(mainResultSet(), row, 4, loc) and
+          queryResults(mainResultSet(), row, 5, element) and
           tag = getSinkTag(row) and
           Input2::getRelativeUrl(location) = loc
         )
@@ -816,8 +770,8 @@ module TestPostProcessing {
       private predicate hasAlert(int row, Input::Location location, string element, string tag) {
         getQueryKind() = ["problem", "path-problem"] and
         exists(string loc |
-          queryResults("#select", row, 0, loc) and
-          queryResults("#select", row, 2, element) and
+          queryResults(mainResultSet(), row, 0, loc) and
+          queryResults(mainResultSet(), row, 2, element) and
           tag = "Alert" and
           Input2::getRelativeUrl(location) = loc and
           not hasPathProblemSource(row, location, _, _, _) and

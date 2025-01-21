@@ -727,6 +727,25 @@ class ContentSet extends TContentSet {
     this = TElementContentOfTypeContent(type, true)
   }
 
+  /**
+   * Holds if this content set represents an element in a collection (array or hash).
+   */
+  predicate isElement() {
+    this.isSingleton(any(Content::ElementContent c))
+    or
+    this.isAnyElement()
+    or
+    this.isKnownOrUnknownElement(any(Content::KnownElementContent c))
+    or
+    this.isElementLowerBound(_)
+    or
+    this.isElementLowerBoundOrUnknown(_)
+    or
+    this.isElementOfType(_)
+    or
+    this.isElementOfTypeOrUnknown(_)
+  }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -829,7 +848,28 @@ class ContentSet extends TContentSet {
     this.isAny() and
     exists(result)
     or
-    result = this.getAnElementReadContent()
+    exists(Content elementContent | elementContent = this.getAnElementReadContent() |
+      result = elementContent
+      or
+      // Do not distinguish symbol keys from string keys. This allows us to
+      // give more precise summaries for something like `with_indifferent_access`,
+      // and the amount of false-positive flow arising from this should be very
+      // limited.
+      elementContent =
+        any(Content::KnownElementContent known, ConstantValue cv |
+          cv = known.getIndex() and
+          result.(Content::KnownElementContent).getIndex() =
+            any(ConstantValue cv2 |
+              cv2.(ConstantValue::ConstantSymbolValue).getStringlikeValue() =
+                cv.(ConstantValue::ConstantStringValue).getStringlikeValue()
+              or
+              cv2.(ConstantValue::ConstantStringValue).getStringlikeValue() =
+                cv.(ConstantValue::ConstantSymbolValue).getStringlikeValue()
+            )
+        |
+          known
+        )
+    )
   }
 }
 

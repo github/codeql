@@ -1,7 +1,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module InlinePoorMansFunctionResolutionTest implements TestSig {
   string getARelevantTag() { result = "resolved" }

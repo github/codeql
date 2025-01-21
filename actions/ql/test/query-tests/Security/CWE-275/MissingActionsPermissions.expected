@@ -1,0 +1,3 @@
+| .github/workflows/perms1.yml:6:5:9:32 | Job: build | Actions Job or Workflow does not set permissions |
+| .github/workflows/perms2.yml:6:5:10:2 | Job: build | Actions Job or Workflow does not set permissions |
+| .github/workflows/perms5.yml:7:5:10:32 | Job: build | Actions Job or Workflow does not set permissions |

@@ -1,0 +1,16 @@
+| file://:0:0:0:0 | FindManifests |
+| rust-project.json:0:0:0:0 | LoadManifest(rust-project.json) |
+| src/directory_module/mod.rs:0:0:0:0 | Extract(src/directory_module/mod.rs) |
+| src/directory_module/mod.rs:0:0:0:0 | LoadSource(src/directory_module/mod.rs) |
+| src/directory_module/mod.rs:0:0:0:0 | Parse(src/directory_module/mod.rs) |
+| src/directory_module/nested_module.rs:0:0:0:0 | Extract(src/directory_module/nested_module.rs) |
+| src/directory_module/nested_module.rs:0:0:0:0 | LoadSource(src/directory_module/nested_module.rs) |
+| src/directory_module/nested_module.rs:0:0:0:0 | Parse(src/directory_module/nested_module.rs) |
+| src/directory_module/not_loaded.rs:0:0:0:0 | Extract(src/directory_module/not_loaded.rs) |
+| src/directory_module/not_loaded.rs:0:0:0:0 | Parse(src/directory_module/not_loaded.rs) |
+| src/file_module.rs:0:0:0:0 | Extract(src/file_module.rs) |
+| src/file_module.rs:0:0:0:0 | LoadSource(src/file_module.rs) |
+| src/file_module.rs:0:0:0:0 | Parse(src/file_module.rs) |
+| src/main.rs:0:0:0:0 | Extract(src/main.rs) |
+| src/main.rs:0:0:0:0 | LoadSource(src/main.rs) |
+| src/main.rs:0:0:0:0 | Parse(src/main.rs) |

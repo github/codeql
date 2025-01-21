@@ -1,5 +1,5 @@
 name: codeql/actions-all
-version: 0.0.1-dev
+version: 0.4.2-dev
 library: true
 warnOnImplicitThis: true
 dependencies:
@@ -10,3 +10,7 @@ dependencies:
   codeql/javascript-all: ${workspace}
 extractor: actions
 groups: actions
+dataExtensions:
+  - ext/manual/*.model.yml
+  - ext/generated/**/*.model.yml
+  - ext/config/*.yml

@@ -2,7 +2,7 @@ import cpp
 
 private predicate mightHaveConstMethods(Type t) {
   t instanceof Class or
-  t instanceof TemplateParameter
+  t instanceof TypeTemplateParameter
 }
 
 predicate hasSuperfluousConstReturn(Function f) {

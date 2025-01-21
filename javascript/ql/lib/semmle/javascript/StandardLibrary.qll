@@ -69,7 +69,7 @@ private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInv
  * A flow step propagating the exception thrown from a callback to a method whose name coincides
  * a built-in Array iteration method, such as `forEach` or `map`.
  */
-private class IteratorExceptionStep extends DataFlow::SharedFlowStep {
+private class IteratorExceptionStep extends DataFlow::LegacyFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::MethodCallNode call |
       call.getMethodName() = ["forEach", "each", "map", "filter", "some", "every", "fold", "reduce"] and
@@ -118,6 +118,12 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   predicate isGlobal() { this.getRegExp().isGlobal() or this.getMethodName() = "replaceAll" }
 
   /**
+   * Holds if this is a global replacement, that is, the first argument is a regular expression
+   * with the `g` flag or unknown flags, or this is a call to `.replaceAll()`.
+   */
+  predicate maybeGlobal() { this.getRegExp().maybeGlobal() or this.getMethodName() = "replaceAll" }
+
+  /**
    * Holds if this call to `replace` replaces `old` with `new`.
    */
   predicate replaces(string old, string new) {
@@ -153,6 +159,15 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       guard.dominates(ret.getBasicBlock()) and
       new = ret.getStringValue()
     )
+  }
+
+  /**
+   * Holds if this call takes a regexp containing a wildcard-like term such as `.`.
+   *
+   * Also see `RegExp::isWildcardLike`.
+   */
+  final predicate hasRegExpContainingWildcard() {
+    RegExp::isWildcardLike(this.getRegExp().getRoot().getAChild*())
   }
 }
 

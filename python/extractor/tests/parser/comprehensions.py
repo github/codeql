@@ -65,3 +65,10 @@ t = tuple(x for y in z)
     d for e in f if g # comment
     # comment
 ] # comment
+
+# Generator expression with comments
+(# comment
+    alpha # comment
+    for beta in gamma # comment
+    # comment
+)

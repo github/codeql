@@ -26,24 +26,10 @@ class NoState extends PendingIntentState, TNoState {
 }
 
 /** A source for an implicit `PendingIntent` flow. */
-abstract class ImplicitPendingIntentSource extends ApiSourceNode {
-  /**
-   * DEPRECATED: Open-ended flow state is not intended to be part of the extension points.
-   *
-   * Holds if this source has the specified `state`.
-   */
-  deprecated predicate hasState(DataFlow::FlowState state) { state = "" }
-}
+abstract class ImplicitPendingIntentSource extends ApiSourceNode { }
 
 /** A sink that sends an implicit and mutable `PendingIntent` to a third party. */
-abstract class ImplicitPendingIntentSink extends DataFlow::Node {
-  /**
-   * DEPRECATED: Open-ended flow state is not intended to be part of the extension points.
-   *
-   * Holds if this sink has the specified `state`.
-   */
-  deprecated predicate hasState(DataFlow::FlowState state) { state = "" }
-}
+abstract class ImplicitPendingIntentSink extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -62,21 +48,6 @@ class ImplicitPendingIntentAdditionalTaintStep extends Unit {
    * Holds if the step from `node1` to `node2` creates a mutable `PendingIntent`.
    */
   predicate mutablePendingIntentCreation(DataFlow::Node node1, DataFlow::Node node2) { none() }
-
-  /**
-   * DEPRECATED: Open-ended flow state is not intended to be part of the extension points.
-   * Use `mutablePendingIntentCreation` instead.
-   *
-   * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for flows related to the use of implicit `PendingIntent`s. This step is only applicable
-   * in `state1` and updates the flow state to `state2`.
-   */
-  deprecated predicate step(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
-  ) {
-    none()
-  }
 }
 
 private class IntentCreationSource extends ImplicitPendingIntentSource {

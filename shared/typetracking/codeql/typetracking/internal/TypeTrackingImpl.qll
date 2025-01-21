@@ -6,6 +6,7 @@
 private import codeql.util.Boolean
 private import codeql.util.Option
 private import codeql.typetracking.TypeTracking
+private import codeql.util.Location
 
 /**
  * Given a set of step relations, this module provides classes and predicates
@@ -14,7 +15,7 @@ private import codeql.typetracking.TypeTracking
  * The constructed module contains both public and internal logic; the public
  * interface is exposed via `codeql.typetracking.TypeTracking`.
  */
-module TypeTracking<TypeTrackingInput I> {
+module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
   private import I
 
   signature module ConsistencyChecksInputSig {

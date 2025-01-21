@@ -13,10 +13,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * ```
  */
 class TypedefType extends UserType {
-  TypedefType() {
-    usertypes(underlyingElement(this), _, 5) or
-    usertypes(underlyingElement(this), _, 14)
-  }
+  TypedefType() { usertypes(underlyingElement(this), _, [5, 14]) }
 
   /**
    * Gets the base type of this typedef type.

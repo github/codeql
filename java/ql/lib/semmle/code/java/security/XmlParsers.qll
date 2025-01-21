@@ -2,8 +2,6 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow3
-private import semmle.code.java.dataflow.DataFlow3
 private import semmle.code.java.dataflow.RangeUtils
 
 private module Frameworks {

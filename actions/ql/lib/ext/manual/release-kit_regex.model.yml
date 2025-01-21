@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["release-kit/regex", "*", "input.string", "output.*", "taint", "manual"]
+

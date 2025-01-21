@@ -23,8 +23,10 @@ extensions:
       - ["System.ComponentModel.Composition", "CompositionException", False, "get_Errors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Composition", "CompositionException", False, "get_RootCauses", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Composition", "CompositionException", True, "get_Message", "()", "", "Argument[this].Property[System.Exception.Message]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.ComponentModel.Composition", "ExportFactory<T,TMetadata>", False, "get_Metadata", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.ComponentModel.Composition", "ExportLifetimeContext<T>", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition", "ExportFactory<T,TMetadata>", False, "ExportFactory", "(System.Func<System.Tuple<T,System.Action>>,TMetadata)", "", "Argument[1]", "Argument[this].SyntheticField[System.ComponentModel.Composition.ExportFactory`2._metadata]", "value", "dfc-generated"]
+      - ["System.ComponentModel.Composition", "ExportFactory<T,TMetadata>", False, "get_Metadata", "()", "", "Argument[this].SyntheticField[System.ComponentModel.Composition.ExportFactory`2._metadata]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.ComponentModel.Composition", "ExportLifetimeContext<T>", False, "ExportLifetimeContext", "(T,System.Action)", "", "Argument[0]", "Argument[this].SyntheticField[System.ComponentModel.Composition.ExportLifetimeContext`1._value]", "value", "dfc-generated"]
+      - ["System.ComponentModel.Composition", "ExportLifetimeContext<T>", False, "get_Value", "()", "", "Argument[this].SyntheticField[System.ComponentModel.Composition.ExportLifetimeContext`1._value]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -62,6 +64,7 @@ extensions:
       - ["System.ComponentModel.Composition", "ExportAttribute", "ExportAttribute", "(System.String,System.Type)", "summary", "df-generated"]
       - ["System.ComponentModel.Composition", "ExportAttribute", "ExportAttribute", "(System.Type)", "summary", "df-generated"]
       - ["System.ComponentModel.Composition", "ExportFactory<T>", "CreateExport", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.Composition", "ExportFactory<T>", "ExportFactory", "(System.Func<System.Tuple<T,System.Action>>)", "summary", "df-generated"]
       - ["System.ComponentModel.Composition", "ExportLifetimeContext<T>", "Dispose", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Composition", "ExportMetadataAttribute", "ExportMetadataAttribute", "(System.String,System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.Composition", "ICompositionService", "SatisfyImportsOnce", "(System.ComponentModel.Composition.Primitives.ComposablePart)", "summary", "df-generated"]

@@ -1,8 +1,10 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 _args = [
     "//rust/ast-generator",
-    "//rust/ast-generator:manifest",
+    "//rust/ast-generator:ungram",
+    "//rust/ast-generator:Cargo.toml",
     "//misc/codegen",
     "//rust:codegen-conf",
 ]

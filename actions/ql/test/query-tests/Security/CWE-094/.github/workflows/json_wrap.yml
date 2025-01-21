@@ -1,0 +1,59 @@
+name: Issue Comment Created
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  jira:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.comment.body == '/jira ticket' }}
+    steps:
+      - run: echo ${{ github.event.comment.body }}
+
+      - name: Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      - name: SearchParam
+        run: echo 'summary ~ ${{ toJSON(github.event.issue.title)}} AND project=${{ secrets.JIRA_PROJECT }}'
+
+      - name: Search
+        id: search
+        uses: tomhjp/gh-action-jira-search@v0.2.1
+        with:
+          jql: 'summary ~ ${{ toJSON(github.event.issue.title)}} AND project=${{ secrets.JIRA_PROJECT }}'
+
+      - name: Log
+        run: echo "Found issue ${{ steps.search.outputs.issue }}"
+
+      - name: Create
+        id: create
+        if: steps.search.outputs.issue == ''
+        uses: atlassian/gajira-create@v3
+        with:
+          project: ${{ secrets.JIRA_PROJECT }}
+          issuetype: Task
+          summary: '${{ github.event.repository.name }}: ${{ github.event.issue.title }}'
+          description: |
+            *Issue Link:* ${{ github.event.issue.html_url }}
+            
+            ${{ github.event.issue.body }}
+          fields: '{"customfield_10006": ${{ toJSON(secrets.JIRA_EPIC_TICKET) }}, "customfield_17401":{"value":${{ toJSON( secrets.JIRA_LAYER_CAKE )}}}}'
+
+      - name: Add Comment
+        if: steps.search.outputs.issue == '' && steps.create.outputs.issue != ''
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks, Jira [${{steps.create.outputs.issue}}] ticket created.'
+            })

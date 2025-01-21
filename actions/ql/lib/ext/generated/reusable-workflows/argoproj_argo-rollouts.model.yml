@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["argoproj/argo-rollouts/.github/workflows/image-reuse.yaml", "*", "input.docker_image_name", "code-injection", "generated"]
+     - ["argoproj/argo-rollouts/.github/workflows/image-reuse.yaml", "*", "input.ghcr_image_name", "code-injection", "generated"]
+     - ["argoproj/argo-rollouts/.github/workflows/image-reuse.yaml", "*", "input.quay_image_name", "code-injection", "generated"]

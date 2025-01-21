@@ -3,8 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
+        private readonly DependabotProxy? dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly TemporaryDirectory legacyPackageDirectory;
         private readonly TemporaryDirectory missingPackageDirectory;
@@ -33,6 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             FileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
+            DependabotProxy? dependabotProxy,
             IDiagnosticsWriter diagnosticsWriter,
             ILogger logger,
             ICompilationInfoContainer compilationInfoContainer)
@@ -40,6 +43,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileProvider = fileProvider;
             this.fileContent = fileContent;
             this.dotnet = dotnet;
+            this.dependabotProxy = dependabotProxy;
             this.diagnosticsWriter = diagnosticsWriter;
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
@@ -264,7 +268,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
 
-            var sync = new object();
+            var sync = new Lock();
             var projectGroups = projects.GroupBy(Path.GetDirectoryName);
             Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
             {
@@ -346,7 +350,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
 
             var successCount = 0;
-            var sync = new object();
+            var sync = new Lock();
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, package =>
             {
@@ -589,7 +593,35 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, bool allowExceptions = true)
         {
             logger.LogInfo($"Checking if Nuget feed '{feed}' is reachable...");
-            using HttpClient client = new();
+
+            // Configure the HttpClient to be aware of the Dependabot Proxy, if used.
+            HttpClientHandler httpClientHandler = new();
+            if (this.dependabotProxy != null)
+            {
+                httpClientHandler.Proxy = new WebProxy(this.dependabotProxy.Address);
+
+                if (this.dependabotProxy.Certificate != null)
+                {
+                    httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
+                    {
+                        if (chain is null || cert is null)
+                        {
+                            var msg = cert is null && chain is null
+                                ? "certificate and chain"
+                                : chain is null
+                                    ? "chain"
+                                    : "certificate";
+                            logger.LogWarning($"Dependabot proxy certificate validation failed due to missing {msg}");
+                            return false;
+                        }
+                        chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+                        chain.ChainPolicy.CustomTrustStore.Add(this.dependabotProxy.Certificate);
+                        return chain.Build(cert);
+                    };
+                }
+            }
+
+            using HttpClient client = new(httpClientHandler);
 
             for (var i = 0; i < tryCount; i++)
             {

@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "get_BaseUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "get_Uri", "", "", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "SupplyParameterFromFormAttribute", False, "", "", "Attribute.Getter", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "SupplyParameterFromQueryAttribute", False, "", "", "Attribute.Getter", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "ToAbsoluteUri", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["Microsoft.AspNetCore.Components", "MarkupString", False, "MarkupString", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
+      - ["Microsoft.AspNetCore.Components", "MarkupString", False, "op_Explicit", "(System.String)", "", "Argument[0]", "html-injection", "manual"]

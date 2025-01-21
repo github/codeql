@@ -1,0 +1,52 @@
+edges
+| .github/workflows/code_injection2.yml:12:9:16:6 | Uses Step: modified_files | .github/workflows/code_injection2.yml:16:9:16:71 | Run Step |
+| .github/workflows/direct_cache1.yml:10:9:13:6 | Uses Step: comment-branch | .github/workflows/direct_cache1.yml:13:9:18:6 | Uses Step |
+| .github/workflows/direct_cache1.yml:13:9:18:6 | Uses Step | .github/workflows/direct_cache1.yml:18:9:22:6 | Uses Step |
+| .github/workflows/direct_cache1.yml:18:9:22:6 | Uses Step | .github/workflows/direct_cache1.yml:22:9:23:21 | Run Step |
+| .github/workflows/direct_cache2.yml:11:9:14:6 | Uses Step | .github/workflows/direct_cache2.yml:14:9:18:6 | Uses Step |
+| .github/workflows/direct_cache2.yml:14:9:18:6 | Uses Step | .github/workflows/direct_cache2.yml:18:9:19:21 | Run Step |
+| .github/workflows/direct_cache3.yml:11:9:14:6 | Uses Step: comment-branch | .github/workflows/direct_cache3.yml:14:9:19:6 | Uses Step |
+| .github/workflows/direct_cache3.yml:14:9:19:6 | Uses Step | .github/workflows/direct_cache3.yml:19:9:23:6 | Uses Step |
+| .github/workflows/direct_cache3.yml:19:9:23:6 | Uses Step | .github/workflows/direct_cache3.yml:23:9:24:21 | Run Step |
+| .github/workflows/direct_cache4.yml:14:9:17:6 | Uses Step | .github/workflows/direct_cache4.yml:17:9:21:6 | Uses Step |
+| .github/workflows/direct_cache4.yml:17:9:21:6 | Uses Step | .github/workflows/direct_cache4.yml:21:9:22:21 | Run Step |
+| .github/workflows/direct_cache5.yml:14:9:17:6 | Uses Step | .github/workflows/direct_cache5.yml:17:9:21:6 | Uses Step |
+| .github/workflows/direct_cache5.yml:17:9:21:6 | Uses Step | .github/workflows/direct_cache5.yml:21:9:22:21 | Run Step |
+| .github/workflows/direct_cache6.yml:13:9:16:6 | Uses Step | .github/workflows/direct_cache6.yml:16:9:20:6 | Uses Step |
+| .github/workflows/direct_cache6.yml:16:9:20:6 | Uses Step | .github/workflows/direct_cache6.yml:20:9:26:46 | Uses Step: cache-pip |
+| .github/workflows/neg_direct_cache1.yml:14:9:17:6 | Uses Step | .github/workflows/neg_direct_cache1.yml:17:9:21:6 | Uses Step |
+| .github/workflows/neg_direct_cache1.yml:17:9:21:6 | Uses Step | .github/workflows/neg_direct_cache1.yml:21:9:22:21 | Run Step |
+| .github/workflows/neg_direct_cache2.yml:14:9:17:6 | Uses Step | .github/workflows/neg_direct_cache2.yml:17:9:21:6 | Uses Step |
+| .github/workflows/neg_direct_cache2.yml:17:9:21:6 | Uses Step | .github/workflows/neg_direct_cache2.yml:21:9:22:21 | Run Step |
+| .github/workflows/neg_direct_cache3.yml:13:9:14:6 | Uses Step | .github/workflows/neg_direct_cache3.yml:14:9:18:6 | Uses Step |
+| .github/workflows/neg_direct_cache3.yml:14:9:18:6 | Uses Step | .github/workflows/neg_direct_cache3.yml:18:9:25:6 | Uses Step: cache-pip |
+| .github/workflows/neg_direct_cache3.yml:18:9:25:6 | Uses Step: cache-pip | .github/workflows/neg_direct_cache3.yml:25:9:30:6 | Uses Step |
+| .github/workflows/neg_direct_cache3.yml:25:9:30:6 | Uses Step | .github/workflows/neg_direct_cache3.yml:30:9:35:36 | Uses Step |
+| .github/workflows/neg_direct_cache4.yml:10:9:13:6 | Uses Step: comment-branch | .github/workflows/neg_direct_cache4.yml:13:9:18:6 | Uses Step |
+| .github/workflows/neg_direct_cache4.yml:13:9:18:6 | Uses Step | .github/workflows/neg_direct_cache4.yml:18:9:22:6 | Uses Step |
+| .github/workflows/neg_direct_cache4.yml:18:9:22:6 | Uses Step | .github/workflows/neg_direct_cache4.yml:22:9:23:21 | Run Step |
+| .github/workflows/neg_direct_cache5.yml:10:9:13:6 | Uses Step: comment-branch | .github/workflows/neg_direct_cache5.yml:13:9:18:6 | Uses Step |
+| .github/workflows/neg_direct_cache5.yml:13:9:18:6 | Uses Step | .github/workflows/neg_direct_cache5.yml:18:9:22:6 | Uses Step |
+| .github/workflows/neg_direct_cache5.yml:18:9:22:6 | Uses Step | .github/workflows/neg_direct_cache5.yml:22:9:23:21 | Run Step |
+| .github/workflows/neg_poisonable_step1.yml:11:9:14:6 | Uses Step: comment-branch | .github/workflows/neg_poisonable_step1.yml:14:9:19:6 | Uses Step |
+| .github/workflows/neg_poisonable_step1.yml:14:9:19:6 | Uses Step | .github/workflows/neg_poisonable_step1.yml:19:9:20:30 | Run Step |
+| .github/workflows/neg_poisonable_step2.yml:13:9:16:6 | Uses Step | .github/workflows/neg_poisonable_step2.yml:16:9:17:54 | Run Step |
+| .github/workflows/poisonable_step1.yml:10:9:12:6 | Uses Step: comment-branch | .github/workflows/poisonable_step1.yml:12:9:15:6 | Uses Step |
+| .github/workflows/poisonable_step1.yml:12:9:15:6 | Uses Step | .github/workflows/poisonable_step1.yml:15:9:17:2 | Run Step |
+| .github/workflows/poisonable_step1.yml:21:9:23:6 | Uses Step: comment-branch | .github/workflows/poisonable_step1.yml:23:9:26:6 | Uses Step |
+| .github/workflows/poisonable_step1.yml:23:9:26:6 | Uses Step | .github/workflows/poisonable_step1.yml:26:9:28:2 | Uses Step |
+| .github/workflows/poisonable_step1.yml:32:9:34:6 | Uses Step: comment-branch | .github/workflows/poisonable_step1.yml:34:9:37:6 | Uses Step |
+| .github/workflows/poisonable_step1.yml:34:9:37:6 | Uses Step | .github/workflows/poisonable_step1.yml:37:9:37:75 | Run Step |
+| .github/workflows/poisonable_step2.yml:15:9:20:6 | Uses Step | .github/workflows/poisonable_step2.yml:20:9:22:6 | Uses Step |
+| .github/workflows/poisonable_step2.yml:20:9:22:6 | Uses Step | .github/workflows/poisonable_step2.yml:22:9:26:31 | Uses Step |
+| .github/workflows/poisonable_step3.yml:13:7:19:4 | Uses Step | .github/workflows/poisonable_step3.yml:19:7:19:32 | Run Step |
+| .github/workflows/poisonable_step4.yml:13:9:18:6 | Uses Step | .github/workflows/poisonable_step4.yml:18:9:18:19 | Run Step |
+| .github/workflows/poisonable_step5.yml:17:9:22:6 | Uses Step | .github/workflows/poisonable_step5.yml:22:9:24:6 | Uses Step |
+| .github/workflows/poisonable_step5.yml:22:9:24:6 | Uses Step | .github/workflows/poisonable_step5.yml:24:9:28:31 | Uses Step |
+#select
+| .github/workflows/direct_cache1.yml:18:9:22:6 | Uses Step | .github/workflows/direct_cache1.yml:13:9:18:6 | Uses Step | .github/workflows/direct_cache1.yml:18:9:22:6 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/direct_cache1.yml:2:3:2:15 | issue_comment | issue_comment |
+| .github/workflows/direct_cache2.yml:14:9:18:6 | Uses Step | .github/workflows/direct_cache2.yml:11:9:14:6 | Uses Step | .github/workflows/direct_cache2.yml:14:9:18:6 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/direct_cache2.yml:3:5:3:23 | pull_request_target | pull_request_target |
+| .github/workflows/direct_cache3.yml:19:9:23:6 | Uses Step | .github/workflows/direct_cache3.yml:14:9:19:6 | Uses Step | .github/workflows/direct_cache3.yml:19:9:23:6 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/direct_cache3.yml:2:3:2:15 | issue_comment | issue_comment |
+| .github/workflows/direct_cache4.yml:17:9:21:6 | Uses Step | .github/workflows/direct_cache4.yml:14:9:17:6 | Uses Step | .github/workflows/direct_cache4.yml:17:9:21:6 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/direct_cache4.yml:4:3:4:21 | pull_request_target | pull_request_target |
+| .github/workflows/direct_cache5.yml:17:9:21:6 | Uses Step | .github/workflows/direct_cache5.yml:14:9:17:6 | Uses Step | .github/workflows/direct_cache5.yml:17:9:21:6 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/direct_cache5.yml:4:3:4:21 | pull_request_target | pull_request_target |
+| .github/workflows/direct_cache6.yml:20:9:26:46 | Uses Step: cache-pip | .github/workflows/direct_cache6.yml:13:9:16:6 | Uses Step | .github/workflows/direct_cache6.yml:20:9:26:46 | Uses Step: cache-pip | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/direct_cache6.yml:4:3:4:21 | pull_request_target | pull_request_target |

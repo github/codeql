@@ -12,9 +12,10 @@
 
 import javascript
 import CorsPermissiveConfigurationQuery
-import DataFlow::PathGraph
+import CorsPermissiveConfigurationFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from
+  CorsPermissiveConfigurationFlow::PathNode source, CorsPermissiveConfigurationFlow::PathNode sink
+where CorsPermissiveConfigurationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "CORS Origin misconfiguration due to a $@.", source.getNode(),
   "too permissive or user controlled value"

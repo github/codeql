@@ -14,7 +14,28 @@ import CorsMisconfigurationForCredentialsCustomizations::CorsMisconfigurationFor
 /**
  * A data flow configuration for CORS misconfiguration for credentials transfer.
  */
-class Configuration extends TaintTracking::Configuration {
+module CorsMisconfigurationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or
+    node = TaintTracking::AdHocWhitelistCheckSanitizer::getABarrierNode()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Data flow for CORS misconfiguration for credentials transfer.
+ */
+module CorsMisconfigurationFlow = TaintTracking::Global<CorsMisconfigurationConfig>;
+
+/**
+ * DEPRECATED. Use the `CorsMisconfigurationFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CorsMisconfigurationForCredentials" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

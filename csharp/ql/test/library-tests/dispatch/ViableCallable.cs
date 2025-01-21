@@ -144,10 +144,20 @@ public class ViableCallable
         d.M3(0);
         d.M3(0, 0.0);
 
+        // Viable callables: C8.M5(), C9.M5()
+        d = Mock<C8>();
+        d.M5();
+        d.M5(0);
+        d.M5(0, 0.0);
+
         // Viable callables: {C8,C9,C10}.M3()
         dyn.M3();
         dyn.M3(0);
         dyn.M3(0, 0.0);
+        // Viable callables: {C8,C9,C10}.M5()
+        dyn.M5();
+        dyn.M5(0);
+        dyn.M5(0, 0.0);
         // Viable callables: {C8,C9,C10}.{get_Prop1(),set_Prop1()}
         dyn.Prop1 = dyn.Prop1;
         // Viable callables: {C2,C3,C6,C7,C8,C9,C10}.{get_Item(),set_Item()}
@@ -313,6 +323,7 @@ public class C8
     public static void M2<T>(T[] x) { }
     public void M3(params double[] x) { }
     public void M4(byte b, IEnumerable<string> s) { }
+    public void M5(params IEnumerable<double> x) { }
     public virtual string Prop1 { get; set; }
     public static string Prop2 { get; set; }
     public string Prop3 { get; set; }
@@ -324,6 +335,7 @@ public class C9<T> : C8
 {
     public override void M(IEnumerable<C1<string[], bool>> x) { }
     public void M3(params T[] x) { }
+    public void M5(params IEnumerable<T> s) { }
     public override string Prop1 { get; set; }
     public string Prop3 { get; set; }
     public override string this[int x] { get { throw new Exception(); } set { throw new Exception(); } }
@@ -333,6 +345,7 @@ public class C9<T> : C8
 public class C10
 {
     public void M3(params double[] x) { }
+    public void M5(params IEnumerable<double> x) { }
     public static C10 operator +(C10 x, C10 y) { return x; }
     public bool Prop1 { get; set; }
     public static string Prop3 { get; set; }
@@ -573,5 +586,35 @@ public class C20 : I3<C20>
 
         // Viable callables: I3<C20>.M13()
         c.M13();
+    }
+}
+
+public class C21
+{
+    public interface I
+    {
+        void M();
+    }
+
+    public class A1 : I
+    {
+        public void M() { }
+    }
+
+    public ref struct A2 : I
+    {
+        public void M() { }
+    }
+
+    public void Run1<T>(T t) where T : I
+    {
+        // Viable callable: A1.M()
+        t.M();
+    }
+
+    public void Run2<T>(T t) where T : I, allows ref struct
+    {
+        // Viable callable: {A1, A2}.M()
+        t.M();
     }
 }

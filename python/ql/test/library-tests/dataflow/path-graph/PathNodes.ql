@@ -5,8 +5,8 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import TestUtilities.dataflow.testConfig
-import TestUtilities.InlineExpectationsTest
+import utils.test.dataflow.testConfig
+import utils.test.InlineExpectationsTest
 
 module TestTaintFlow = TaintTracking::Global<TestConfig>;
 

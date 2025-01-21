@@ -1,0 +1,15 @@
+| gen_format.rs:5:14:5:32 | FormatArgsExpr | gen_format.rs:5:14:5:23 | "Hello {}\\n" |
+| gen_format.rs:7:14:7:47 | FormatArgsExpr | gen_format.rs:7:14:7:47 | "Value {value:#width$.precisio... |
+| gen_format.rs:11:14:11:35 | FormatArgsExpr | gen_format.rs:11:14:11:35 | "{name} in wonderland\\n" |
+| gen_format.rs:12:14:12:38 | FormatArgsExpr | gen_format.rs:12:14:12:32 | "{0} in wonderland\\n" |
+| gen_format.rs:16:14:16:28 | FormatArgsExpr | gen_format.rs:16:14:16:24 | "{:width$}\\n" |
+| gen_format.rs:17:14:17:31 | FormatArgsExpr | gen_format.rs:17:14:17:20 | "{:1$}\\n" |
+| gen_format.rs:21:14:21:28 | FormatArgsExpr | gen_format.rs:21:14:21:24 | "{:.prec$}\\n" |
+| gen_format.rs:22:14:22:31 | FormatArgsExpr | gen_format.rs:22:14:22:21 | "{:.1$}\\n" |
+| gen_format_args_arg.rs:5:17:5:39 | FormatArgsExpr | gen_format_args_arg.rs:5:18:5:29 | "Hello, {}!" |
+| gen_format_args_expr.rs:5:17:5:27 | FormatArgsExpr | gen_format_args_expr.rs:5:18:5:26 | "no args" |
+| gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | gen_format_args_expr.rs:6:18:6:30 | "{} foo {:?}" |
+| gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | gen_format_args_expr.rs:7:18:7:32 | "{b} foo {a:?}" |
+| gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | gen_format_args_expr.rs:9:18:9:27 | "{x}, {y}" |
+| gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | gen_format_argument.rs:5:14:5:47 | "Value {value:#width$.precisio... |
+| gen_format_argument.rs:7:14:7:56 | FormatArgsExpr | gen_format_argument.rs:7:14:7:31 | "Value {0:#1$.2$}\\n" |

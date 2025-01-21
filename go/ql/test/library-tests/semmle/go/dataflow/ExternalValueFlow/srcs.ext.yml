@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
+      - ["github.com/nonexistent/test", "", False, "SourceVariable", "", "", "", "qltest", "manual"]
       - ["github.com/nonexistent/test", "A", False, "Src1", "", "", "ReturnValue", "qltest", "manual"]
       - ["github.com/nonexistent/test", "A", False, "Src2", "", "", "ReturnValue", "qltest", "manual"]
       - ["github.com/nonexistent/test", "A", True, "Src2", "", "", "ReturnValue", "qltest-w-subtypes", "manual"]

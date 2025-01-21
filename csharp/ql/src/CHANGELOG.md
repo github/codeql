@@ -1,3 +1,29 @@
+## 1.0.15
+
+No user-facing changes.
+
+## 1.0.14
+
+### Minor Analysis Improvements
+
+* The `ExternalApi` and `TestLibrary` modules have been moved to the library pack.
+
+## 1.0.13
+
+### Minor Analysis Improvements
+
+* `csharp/diagnostic/database-quality` has been changed to exclude various property access expressions from database quality evaluation. The excluded property access expressions are expected to have no target callables even in manual or autobuilt databases.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+### Minor Analysis Improvements
+
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+
 ## 1.0.10
 
 No user-facing changes.

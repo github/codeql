@@ -1,0 +1,16 @@
+| gen_format.rs:5:26:5:32 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:12:35:12:38 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:16:27:16:28 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:17:23:17:24 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:17:27:17:31 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:21:27:21:28 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:22:24:22:25 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format.rs:22:28:22:31 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format_args_arg.rs:5:32:5:38 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format_args_expr.rs:6:33:6:33 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format_args_expr.rs:6:36:6:36 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format_args_expr.rs:7:35:7:37 | FormatArgsArg | hasExpr: | yes | hasName: | yes |
+| gen_format_args_expr.rs:7:40:7:42 | FormatArgsArg | hasExpr: | yes | hasName: | yes |
+| gen_format_argument.rs:7:34:7:38 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format_argument.rs:7:41:7:45 | FormatArgsArg | hasExpr: | yes | hasName: | no |
+| gen_format_argument.rs:7:48:7:56 | FormatArgsArg | hasExpr: | yes | hasName: | no |

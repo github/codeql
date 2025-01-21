@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["marcelotduarte/cx_freeze/.github/workflows/build-wheel.yml", "*", "input.branch", "code-injection", "generated"]

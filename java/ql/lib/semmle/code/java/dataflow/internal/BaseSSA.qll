@@ -38,6 +38,7 @@ class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
   /** Gets the `Callable` in which this `BaseSsaSourceVariable` is defined. */
   Callable getEnclosingCallable() { this = TLocalVar(result, _) }
 
+  /** Gets a textual representation of this element. */
   string toString() {
     exists(LocalScopeVariable v, Callable c | this = TLocalVar(c, v) |
       if c = v.getCallable()
@@ -46,6 +47,7 @@ class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
     )
   }
 
+  /** Gets the source location for this element. */
   Location getLocation() {
     exists(LocalScopeVariable v | this = TLocalVar(_, v) and result = v.getLocation())
   }
@@ -71,15 +73,15 @@ private module SsaImpl {
   /** Holds if `n` updates the local variable `v`. */
   cached
   predicate variableUpdate(BaseSsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-    exists(VariableUpdate a | a = n | getDestVar(a) = v) and
+    exists(VariableUpdate a | a.getControlFlowNode() = n | getDestVar(a) = v) and
     b.getNode(i) = n and
     hasDominanceInformation(b)
   }
 
   /** Gets the definition point of a nested class in the parent scope. */
   private ControlFlowNode parentDef(NestedClass nc) {
-    nc.(AnonymousClass).getClassInstanceExpr() = result or
-    nc.(LocalClass).getLocalTypeDeclStmt() = result
+    nc.(AnonymousClass).getClassInstanceExpr().getControlFlowNode() = result or
+    nc.(LocalClass).getLocalTypeDeclStmt().getControlFlowNode() = result
   }
 
   /**
@@ -119,7 +121,7 @@ private module SsaImpl {
 
   /** Holds if `VarAccess` `use` of `v` occurs in `b` at index `i`. */
   private predicate variableUse(BaseSsaSourceVariable v, VarRead use, BasicBlock b, int i) {
-    v.getAnAccess() = use and b.getNode(i) = use
+    v.getAnAccess() = use and b.getNode(i) = use.getControlFlowNode()
   }
 
   /** Holds if the value of `v` is captured in `b` at index `i`. */
@@ -162,7 +164,9 @@ private module SsaImpl {
   /** Holds if `v` has an implicit definition at the entry, `b`, of the callable. */
   cached
   predicate hasEntryDef(BaseSsaSourceVariable v, BasicBlock b) {
-    exists(LocalScopeVariable l, Callable c | v = TLocalVar(c, l) and c.getBody() = b |
+    exists(LocalScopeVariable l, Callable c |
+      v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b
+    |
       l instanceof Parameter or
       l.getCallable() != c
     )
@@ -482,8 +486,10 @@ class BaseSsaVariable extends TBaseSsaVariable {
     this = TSsaEntryDef(_, result)
   }
 
+  /** Gets a textual representation of this element. */
   string toString() { none() }
 
+  /** Gets the source location for this element. */
   Location getLocation() { result = this.getCfgNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
@@ -533,7 +539,7 @@ class BaseSsaVariable extends TBaseSsaVariable {
 class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
   BaseSsaUpdate() {
     exists(VariableUpdate upd |
-      upd = this.getCfgNode() and getDestVar(upd) = this.getSourceVariable()
+      upd.getControlFlowNode() = this.getCfgNode() and getDestVar(upd) = this.getSourceVariable()
     )
   }
 
@@ -541,7 +547,8 @@ class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCfgNode() and getDestVar(result) = this.getSourceVariable()
+    result.getControlFlowNode() = this.getCfgNode() and
+    getDestVar(result) = this.getSourceVariable()
   }
 }
 
@@ -562,7 +569,7 @@ class BaseSsaImplicitInit extends BaseSsaVariable, TSsaEntryDef {
    */
   predicate isParameterDefinition(Parameter p) {
     this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
-    p.getCallable().getBody() = this.getCfgNode()
+    p.getCallable().getBody().getControlFlowNode() = this.getCfgNode()
   }
 }
 

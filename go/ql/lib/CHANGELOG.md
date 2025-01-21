@@ -1,3 +1,49 @@
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* `database` local source models have been added for the Beego ORM package.
+* `database` local source models have been added for the `github.com/jmoiron/sqlx` package.
+* Added `database` source models for database methods from the `gorm.io/gorm` package.
+* `database` local source models have been added for the `database/sql` and `database/sql/driver` packages.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Added a `commandargs` local source model for the `os.Args` variable.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* A call to a method whose name starts with "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn" or "With" defined on an interface whose name ends in "logger" or "Logger" is now considered a LoggerCall. In particular, it is a sink for `go/clear-text-logging` and `go/log-injection`. This may lead to some more alerts in those queries.
+
+### Bug Fixes
+
+* Fixed a bug which meant that promoted fields and methods were missing when the embedded parent was not promoted due to a name clash.
+
+## 2.1.3
+
+### Minor Analysis Improvements
+
+* The `subtypes` column has been set to true in all models-as-data models except some tests. This means that existing models will apply in some cases where they didn't before, which may lead to more alerts.
+
+### Bug Fixes
+
+* The behaviour of the `subtypes` column in models-as-data now matches other languages more closely.
+* Fixed a bug which meant that some qualified names for promoted methods were not being recognised in some very specific circumstances.
+
+## 2.1.2
+
+### Minor Analysis Improvements
+
+* The AST viewer now shows type parameter declarations in the correct place in the AST.
+
 ## 2.1.1
 
 ### Minor Analysis Improvements

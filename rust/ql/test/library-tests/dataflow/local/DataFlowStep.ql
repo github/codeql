@@ -1,5 +1,8 @@
 import codeql.rust.dataflow.DataFlow
+import codeql.rust.dataflow.internal.DataFlowImpl
 
-from DataFlow::Node pred, DataFlow::Node succ
-where DataFlow::localFlowStep(pred, succ)
-select pred, succ
+query predicate localStep = DataFlow::localFlowStep/2;
+
+query predicate storeStep = RustDataFlow::storeStep/3;
+
+query predicate readStep = RustDataFlow::readStep/3;

@@ -1,0 +1,4 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - anyhow = "1.0.86"
+    - log = "0.4.22"

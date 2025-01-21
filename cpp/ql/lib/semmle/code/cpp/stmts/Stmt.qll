@@ -437,6 +437,154 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   }
 }
 
+/**
+ * A C/C++ '(not) consteval if'. For example, the `if consteval` statement
+ * in the following code:
+ * ```cpp
+ * if consteval {
+ *   ...
+ * }
+ * ```
+ */
+class ConstevalIfStmt extends Stmt, @stmt_consteval_or_not_consteval_if {
+  override string getAPrimaryQlClass() { result = "ConstevalIfStmt" }
+
+  override string toString() {
+    if this.isNot() then result = "if ! consteval ..." else result = "if consteval ..."
+  }
+
+  /**
+   * Holds if this is a 'not consteval if' statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate isNot() { this instanceof @stmt_not_consteval_if }
+
+  /**
+   * Gets the 'then' statement of this '(not) consteval if' statement.
+   *
+   * For example, for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   * the result is the `BlockStmt` `{ return true; }`.
+   */
+  Stmt getThen() { consteval_if_then(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Gets the 'else' statement of this '(not) constexpr if' statement, if any.
+   *
+   * For example, for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * the result is the `BlockStmt` `{ return false; }`, and for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   * there is no result.
+   */
+  Stmt getElse() { consteval_if_else(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Holds if this '(not) constexpr if' statement has an 'else' statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate hasElse() { exists(this.getElse()) }
+
+  override predicate mayBeImpure() {
+    this.getThen().mayBeImpure() or
+    this.getElse().mayBeImpure()
+  }
+
+  override predicate mayBeGloballyImpure() {
+    this.getThen().mayBeGloballyImpure() or
+    this.getElse().mayBeGloballyImpure()
+  }
+
+  override MacroInvocation getGeneratingMacro() {
+    this.getThen().getGeneratingMacro() = result and
+    (this.hasElse() implies this.getElse().getGeneratingMacro() = result)
+  }
+
+  /**
+   * Gets the statement of this '(not) consteval if' statement evaluated during compile time, if any.
+   *
+   * For example, for
+   * ```cpp
+   * if ! consteval { return true; } else { return false; }
+   * ```
+   * the result is the `BlockStmt` `{ return false; }`, and for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   * there is no result.
+   */
+  Stmt getCompileTimeEvaluatedBranch() {
+    if this.isNot() then result = this.getElse() else result = this.getThen()
+  }
+
+  /**
+   * Holds if this '(not) constexpr if' statement has a compile time evaluated statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if ! consteval { return true; } else { return false; }
+   * ```
+   * but not for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   */
+  predicate hasCompileTimeEvaluatedBranch() { exists(this.getCompileTimeEvaluatedBranch()) }
+
+  /**
+   * Gets the statement of this '(not) consteval if' statement evaluated during runtime, if any.
+   *
+   * For example, for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * the result is the `BlockStmt` `{ return false; }`, and for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   * there is no result.
+   */
+  Stmt getRuntimeEvaluatedBranch() {
+    if this.isNot() then result = this.getThen() else result = this.getElse()
+  }
+
+  /**
+   * Holds if this '(not) constexpr if' statement has a runtime evaluated statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate hasRuntimeEvaluatedBranch() { exists(this.getRuntimeEvaluatedBranch()) }
+}
+
 private class TLoop = @stmt_while or @stmt_end_test_while or @stmt_range_based_for or @stmt_for;
 
 /**

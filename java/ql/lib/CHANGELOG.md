@@ -1,3 +1,62 @@
+## 6.1.0
+
+### New Features
+
+* The Java and Kotlin extractors now support `CODEQL_PATH_TRANSFORMER`. `SEMMLE_PATH_TRANSFORMER` is still supported, but deprecated.
+
+### Minor Analysis Improvements
+
+* `JavacTool`-based compiler interception no longer requires an `--add-opens` directive when `FileObject.toUri` is accessible.
+* `JavacTool`-based compiler interception no longer throws an exception visible to the program using `JavacTool` on failure to extract a file path from a passed `JavaFileObject`.
+* `JavacTool`-based compiler interception now supports files that don't simply wrap a `file://` URL, such as a source file inside a JAR, or an in-memory file, but which do implement `getCharContent`.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The class `ControlFlowNode` (and by extension `BasicBlock`) is no longer
+  directly equatable to `Expr` and `Stmt`. Any queries that have been
+  exploiting these equalities, for example by using casts, will need minor
+  updates in order to fix any compilation errors. Conversions can be inserted
+  in either direction depending on what is most convenient. Available
+  conversions include `Expr.getControlFlowNode()`, `Stmt.getControlFlowNode()`,
+  `ControlFlowNode.asExpr()`, `ControlFlowNode.asStmt()`, and
+  `ControlFlowNode.asCall()`. Exit nodes were until now modelled as a
+  `ControlFlowNode` equal to its enclosing `Callable`; these are now instead
+  modelled by the class `ControlFlow::ExitNode`.
+
+### Minor Analysis Improvements
+
+* Added `java.io.File.getName()` as a path injection sanitizer.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* Added a sink for "Server-side request forgery" (`java/ssrf`) for the third parameter to org.springframework.web.client.RestTemplate.getForObject, when we cannot statically determine that it does not affect the host in the URL.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Calling `coll.contains(x)` is now a taint sanitizer (for any query) for the value `x`, where `coll` is a collection of constants.
+
+## 4.2.1
+
+### Minor Analysis Improvements
+
+* In a switch statement with a constant switch expression, all non-matching cases were being marked as unreachable, including those that can be reached by falling through from the matching case. This has now been fixed.
+
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Java: The generated JDK 17 models have been updated.
+
+### Minor Analysis Improvements
+
+* Java `build-mode=none` extraction now packages the Maven plugin used to examine project dependencies. This means that dependency identification is more likely to succeed, and therefore analysis quality may rise, in scenarios where Maven Central is not reachable.
+
 ## 4.1.1
 
 No user-facing changes.

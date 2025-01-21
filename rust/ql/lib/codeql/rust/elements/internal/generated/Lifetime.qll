@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.UseBoundGenericArgImpl::Impl as UseBoundGenericArgImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Lifetime` and should not
@@ -21,7 +21,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Lifetime` class directly.
    * Use the subclass `Lifetime`, where the following predicates are available.
    */
-  class Lifetime extends Synth::TLifetime, AstNodeImpl::AstNode {
+  class Lifetime extends Synth::TLifetime, UseBoundGenericArgImpl::UseBoundGenericArg {
     override string getAPrimaryQlClass() { result = "Lifetime" }
 
     /**

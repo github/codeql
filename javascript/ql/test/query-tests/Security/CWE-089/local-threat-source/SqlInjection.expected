@@ -1,0 +1,12 @@
+nodes
+| test.js:4:5:4:29 | temp | semmle.label | temp |
+| test.js:4:12:4:22 | process.env | semmle.label | process.env |
+| test.js:7:14:7:61 | 'SELECT ...  + temp | semmle.label | 'SELECT ...  + temp |
+| test.js:7:58:7:61 | temp | semmle.label | temp |
+edges
+| test.js:4:5:4:29 | temp | test.js:7:58:7:61 | temp | provenance |  |
+| test.js:4:12:4:22 | process.env | test.js:4:5:4:29 | temp | provenance |  |
+| test.js:7:58:7:61 | temp | test.js:7:14:7:61 | 'SELECT ...  + temp | provenance |  |
+subpaths
+#select
+| test.js:7:14:7:61 | 'SELECT ...  + temp | test.js:4:12:4:22 | process.env | test.js:7:14:7:61 | 'SELECT ...  + temp | This query string depends on a $@. | test.js:4:12:4:22 | process.env | user-provided value |

@@ -1,4 +1,8 @@
-//fn cond() -> bool;
+mod more;
+mod unreachable;
+
+use more::*;
+use unreachable::*;
 
 // --- locals ---
 
@@ -80,6 +84,10 @@ struct MyStruct {
 impl MyStruct {
     fn my_get(&mut self) -> i64 {
         return self.val;
+    }
+
+    fn get_flags(&self) -> i64 {
+        return 0;
     }
 }
 
@@ -191,8 +199,16 @@ fn loops() {
     }
 
     for x in 1..10 {
-        _ = format!("x is {x}"); // $ SPURIOUS: Alert[rust/unused-value]
+        _ = format!("x is {x}");
     }
+
+    for x in 1..10 {
+        _ = format!("x is {x:?}");
+    }
+
+    [1, 2, 3].iter().for_each(|x| {
+        _ = format!("x is {x}");
+    });
 
     for x in 1..10 {
         println!("x is {val}", val = x);
@@ -203,11 +219,13 @@ fn loops() {
     }
 
     for x in 1..10 {
-        assert_eq!(x, 1); // $ SPURIOUS: Alert[rust/unused-value]
+        assert_eq!(x, 1);
+        break;
     }
 
     for x in 1..10 {
-        assert_eq!(id(x), id(1)); // $ SPURIOUS: Alert[rust/unused-value]
+        assert_eq!(id(x), id(1));
+        break;
     }
 }
 
@@ -331,7 +349,7 @@ fn if_lets_matches() {
     }
 
     let duration1 = std::time::Duration::new(10, 0); // ten seconds
-    assert_eq!(duration1.as_secs(), 10); // $ SPURIOUS: Alert[rust/unused-value]
+    assert_eq!(duration1.as_secs(), 10);
 
     let duration2: Result<std::time::Duration, String> = Ok(std::time::Duration::new(10, 0));
     match duration2 {
@@ -434,7 +452,7 @@ impl Incrementable for MyValue {
     fn increment(
         &mut self,
         times: i32,
-        unused: i32, // $ Alert[rust/unused-variable]
+        unused: &mut i32, // $ Alert[rust/unused-variable]
     ) {
         self.value += times;
     }
@@ -443,9 +461,63 @@ impl Incrementable for MyValue {
 fn traits() {
     let mut i = MyValue { value: 0 };
     let a = 1;
-    let b = 2;
+    let mut b = 2;
 
-    i.increment(a, b);
+    i.increment(a, &mut b);
+}
+
+// --- macros ---
+
+fn macros() {
+    let x;
+    println!(
+        "The value of x is {}",
+        ({
+            x = 10; // $ MISSING: Alert[rust/unused-value]
+            10
+        })
+    )
+}
+// --- references ---
+
+fn references() {
+    let a = 1;
+    let b = &a;
+    let c = *b; // $ Alert[rust/unused-value]
+    let d = 2;
+    let e = 3;
+    let f = &&e;
+
+    assert!(&d != *f);
+}
+
+// --- declarations in types ---
+
+pub struct my_declaration {
+    field1: fn(i32) -> i32,
+    field2: fn(x: i32) -> i32,
+    field3: fn(y: fn(z: i32) -> i32) -> i32,
+}
+
+type MyType = fn(x: i32) -> i32;
+
+trait MyTrait {
+    fn my_func2(&self, x: i32) -> i32;
+}
+
+macro_rules! let_in_macro {
+    ($e:expr) => {{
+        let var_in_macro = 0;
+        $e
+    }};
+}
+
+// Our analysis does not currently respect the hygiene rules of Rust macros
+// (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
+// all we have access to is the expanded AST
+fn hygiene_mismatch() {
+    let var_in_macro = 0; // $ SPURIOUS: Alert[rust/unused-value]
+    let_in_macro!(var_in_macro);
 }
 
 // --- main ---
@@ -462,14 +534,22 @@ fn main() {
     shadowing();
     func_ptrs();
     folds_and_closures();
+    macros();
+    references();
+
+    generics();
+    pointers();
 
     unreachable_if_1();
+    unreachable_if_2();
+    unreachable_if_3();
     unreachable_panic();
+    _ = unreachable_bail();
     unreachable_match();
     unreachable_loop();
+    unreachable_loop_async();
     unreachable_paren();
     unreachable_let_1();
     unreachable_let_2();
-    unreachable_if_2();
-    unreachable_if_3();
+    unreachable_attributes();
 }

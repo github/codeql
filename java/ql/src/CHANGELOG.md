@@ -1,3 +1,30 @@
+## 1.1.12
+
+### Bug Fixes
+
+* Classes that define a `writeReplace` method are no longer flagged by the `java/missing-no-arg-constructor-on-serializable` query on the assumption they are unlikely to be deserialized using the default algorithm.
+* The query "Use of a broken or risky cryptographic algorithm" (`java/weak-cryptographic-algorithm`) now gives the reason why the cryptographic algorithm is considered weak.
+
+## 1.1.11
+
+No user-facing changes.
+
+## 1.1.10
+
+### Minor Analysis Improvements
+
+* Added SHA-384 to the list of secure hashing algorithms. As a result the `java/potentially-weak-cryptographic-algorithm` query should no longer flag up uses of SHA-384.
+* Added SHA3 to the list of secure hashing algorithms. As a result the `java/potentially-weak-cryptographic-algorithm` query should no longer flag up uses of SHA3.
+* The `java/weak-cryptographic-algorithm` query has been updated to no longer report uses of hash functions such as `MD5` and `SHA1` even if they are known to be weak. These hash algorithms are used very often in non-sensitive contexts, making the query too imprecise in practice. The `java/potentially-weak-cryptographic-algorithm` query has been updated to report these uses instead.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+No user-facing changes.
+
 ## 1.1.7
 
 No user-facing changes.

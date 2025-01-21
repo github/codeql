@@ -899,6 +899,24 @@ class MemoryLocation extends FinalMemoryLocation {
   MemoryLocation() { not useOverlapWithBusyDef(this) }
 }
 
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getUnknownMemoryLocation(IRFunction fun, boolean isMayAccess) {
+  result = TUnknownMemoryLocation(fun, isMayAccess)
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getAllAliasedMemory(IRFunction fun, boolean isMayAccess) {
+  result = TAllAliasedMemory(fun, isMayAccess)
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getAllNonLocalMemory(IRFunction fun, boolean isMayAccess) {
+  result = TAllNonLocalMemory(fun, isMayAccess)
+}
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   not canReuseSsaForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
@@ -926,7 +944,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
               // And otherwise we assign it a memory location that groups all the relevant memory locations into one.
               result = getGroupedMemoryLocation(var, unbindBool(isMayAccess), false)
           )
-        else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
+        else result = getUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
@@ -935,10 +953,10 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = getAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
       or
       kind instanceof NonLocalMemoryAccess and
-      result = TAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = getAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
     )
   )
 }

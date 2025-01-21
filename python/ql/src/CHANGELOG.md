@@ -1,3 +1,27 @@
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Queries
+
+* The Server Side Template Injection query (`py/template-injection`), originally contributed to the experimental query pack by @porcupineyhairs, has been promoted to the main query suite. This query finds instances of templates for a template engine such as Jinja being constructed with user input.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+No user-facing changes.
+
+## 1.3.2
+
+### Minor Analysis Improvements
+
+* Improved modelling for the `pycurl` framework.
+
 ## 1.3.1
 
 No user-facing changes.

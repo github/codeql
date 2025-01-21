@@ -11,12 +11,16 @@ private import semmle.python.frameworks.Aiohttp
 private import semmle.python.frameworks.Aiomysql
 private import semmle.python.frameworks.Aiopg
 private import semmle.python.frameworks.Aiosqlite
+private import semmle.python.frameworks.Airspeed
 private import semmle.python.frameworks.Anyio
 private import semmle.python.frameworks.Asyncpg
 private import semmle.python.frameworks.Baize
+private import semmle.python.frameworks.Bottle
 private import semmle.python.frameworks.BSon
 private import semmle.python.frameworks.CassandraDriver
+private import semmle.python.frameworks.Chameleon
 private import semmle.python.frameworks.Cherrypy
+private import semmle.python.frameworks.Chevron
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Cryptodome
 private import semmle.python.frameworks.Cryptography
@@ -29,10 +33,12 @@ private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FlaskAdmin
 private import semmle.python.frameworks.FlaskSqlAlchemy
+private import semmle.python.frameworks.Genshi
 private import semmle.python.frameworks.Gradio
 private import semmle.python.frameworks.Httpx
 private import semmle.python.frameworks.Idna
 private import semmle.python.frameworks.Invoke
+private import semmle.python.frameworks.Jinja2
 private import semmle.python.frameworks.Jmespath
 private import semmle.python.frameworks.Joblib
 private import semmle.python.frameworks.JsonPickle
@@ -41,6 +47,7 @@ private import semmle.python.frameworks.Ldap3
 private import semmle.python.frameworks.Libtaxii
 private import semmle.python.frameworks.Libxml2
 private import semmle.python.frameworks.Lxml
+private import semmle.python.frameworks.Mako
 private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
@@ -77,6 +84,7 @@ private import semmle.python.frameworks.Streamlit
 private import semmle.python.frameworks.Toml
 private import semmle.python.frameworks.Torch
 private import semmle.python.frameworks.Tornado
+private import semmle.python.frameworks.TRender
 private import semmle.python.frameworks.Twisted
 private import semmle.python.frameworks.Ujson
 private import semmle.python.frameworks.Urllib3

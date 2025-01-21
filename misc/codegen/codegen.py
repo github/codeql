@@ -54,6 +54,8 @@ def _parse_args() -> argparse.Namespace:
                             "generated qll file importing every class file"),
         p.add_argument("--ql-test-output",
                        help="output directory for QL generated extractor test files"),
+        p.add_argument("--ql-cfg-output",
+                       help="output directory for QL CFG layer (optional)."),
         p.add_argument("--cpp-output",
                        help="output directory for generated C++ files, required if trap or cpp is provided to "
                             "--generate"),

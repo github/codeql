@@ -1,0 +1,14 @@
+| exe/src/a_module.rs:0:0:0:0 | Extract(exe/src/a_module.rs) |
+| exe/src/a_module.rs:0:0:0:0 | LoadSource(exe/src/a_module.rs) |
+| exe/src/a_module.rs:0:0:0:0 | Parse(exe/src/a_module.rs) |
+| exe/src/main.rs:0:0:0:0 | Extract(exe/src/main.rs) |
+| exe/src/main.rs:0:0:0:0 | LoadSource(exe/src/main.rs) |
+| exe/src/main.rs:0:0:0:0 | Parse(exe/src/main.rs) |
+| file://:0:0:0:0 | FindManifests |
+| lib/src/a_module/mod.rs:0:0:0:0 | Extract(lib/src/a_module/mod.rs) |
+| lib/src/a_module/mod.rs:0:0:0:0 | LoadSource(lib/src/a_module/mod.rs) |
+| lib/src/a_module/mod.rs:0:0:0:0 | Parse(lib/src/a_module/mod.rs) |
+| lib/src/lib.rs:0:0:0:0 | Extract(lib/src/lib.rs) |
+| lib/src/lib.rs:0:0:0:0 | LoadSource(lib/src/lib.rs) |
+| lib/src/lib.rs:0:0:0:0 | Parse(lib/src/lib.rs) |
+| rust-project.json:0:0:0:0 | LoadManifest(rust-project.json) |

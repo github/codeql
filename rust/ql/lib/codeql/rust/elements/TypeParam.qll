@@ -8,7 +8,7 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParam
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * A TypeParam. For example:

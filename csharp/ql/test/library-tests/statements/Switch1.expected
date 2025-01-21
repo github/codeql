@@ -1,2 +1,2 @@
-| statements.cs:71:13:82:13 | switch (...) {...} | statements.cs:71:21:71:21 | access to local variable n | 2 | 1 | 9 |
-| statements.cs:87:13:106:13 | switch (...) {...} | statements.cs:87:21:87:23 | access to parameter foo | 9 | 0 | 17 |
+| statements.cs:72:13:83:13 | switch (...) {...} | statements.cs:72:21:72:21 | access to local variable n | 2 | 1 | 9 |
+| statements.cs:88:13:107:13 | switch (...) {...} | statements.cs:88:21:88:23 | access to parameter foo | 9 | 0 | 17 |

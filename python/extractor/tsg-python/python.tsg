@@ -404,7 +404,7 @@
 
 ;;; GeneratorExp
 
-(generator_expression . "(" . (comment)* . (_) @start (_) @end . (comment)* . ")" .) @generatorexp
+(generator_expression . "(" . (comment)* . (expression) @start [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @generatorexp
 {
     attr (@generatorexp.node) _location_start = (location-start @start)
     attr (@generatorexp.node) _location_end = (location-end @end)
@@ -416,13 +416,13 @@
     attr (@if.node) _location_end = (location-end @expr)
 }
 
-(generator_expression . "(" . (comment)* . (_) @start (for_in_clause) @child (_) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @child [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     attr (@child.node) _location_start = (location-start @start)
     attr (@child.node) _location_end = (location-end @end)
 }
 
-(generator_expression . "(" . (comment)* . (_) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
 {
     attr (@end.node) _location_start = (location-start @start)
     attr (@end.node) _location_end = (location-end @end)
@@ -863,7 +863,7 @@
 ; information for the entire generator expression (yes, it is a wide parameter!) and so we must recreate the logic for
 ; setting this location information correctly.
 
-(generator_expression . "(" . (comment)* . (_) @start  (_) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start  [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     ; Synthesize the `genexpr` function
     let @genexpr.fun = (ast-node @genexpr "Function")
@@ -2661,6 +2661,14 @@
     let @with.first = @first.node
 }
 
+; Async status
+; NOTE: We only set the `is_async` field on the _first_ clause of the `with` statement,
+; as this is the behaviour of the old parser.
+(with_statement "async" "with" @with_keyword (with_clause . (with_item) @with))
+{
+    attr (@with.node) is_async = #true
+}
+
 (with_item
     value: (_) @value
 ) @with
@@ -3264,6 +3272,16 @@
     }
 }
 
+; Async status
+(function_definition "async" "def" @def_keyword) @funcdef
+{
+    let start = (location-start @def_keyword)
+    attr (@funcdef.function) is_async = #true
+    attr (@funcdef.node) _location_start = start
+    attr (@funcdef.function) _location_start = start
+    attr (@funcdef.funcexpr) _location_start = start
+}
+
 ;;; Decorators
 
 (decorated_definition
@@ -3478,5 +3496,9 @@
 
 [(tuple element: (_)) (tuple_pattern)] @tup
 {
-    attr (@tup.node) parenthesised = #true
+    ; In order to avoid writing to the `parenthesised` attribute twice, we only set it here
+    ; if the surrounding expression is not a `parenthesized_expression`.
+    if (not (instance-of (get-parent @tup) "parenthesized_expression")) {
+        attr (@tup.node) parenthesised = #true
+    }
 }

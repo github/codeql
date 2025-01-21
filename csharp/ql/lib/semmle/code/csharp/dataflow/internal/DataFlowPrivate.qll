@@ -13,6 +13,7 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
@@ -702,7 +703,7 @@ module LocalFlow {
       or
       t = any(TypeParameter tp | not tp.isValueType())
       or
-      t.(Struct).isRef()
+      t.isRefLikeType()
     ) and
     not exists(getALastEvalNode(result))
   }
@@ -730,11 +731,9 @@ module LocalFlow {
     or
     node2 = node1.(LocalFunctionCreationNode).getAnAccess(true)
     or
-    node1 =
-      unique(FlowSummaryNode n1 |
-        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-          node2.(FlowSummaryNode).getSummaryNode(), true, _)
-      )
+    FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1
+          .(FlowSummaryNode)
+          .getSummaryNode(), node2.(FlowSummaryNode).getSummaryNode())
   }
 }
 
@@ -775,7 +774,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
 
 /**
  * Holds if `arg` is a `params` argument of `c`, for parameter `p`, and `arg` will
- * be wrapped in an array by the C# compiler.
+ * be wrapped in an collection by the C# compiler.
  */
 private predicate isParamsArg(Call c, Expr arg, Parameter p) {
   exists(Callable target, int numArgs |
@@ -884,6 +883,17 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
         )
       )
   )
+  or
+  // A write to a dynamic property
+  exists(DynamicMemberAccess dma, AssignableDefinition def, DynamicProperty dp |
+    def.getTargetAccess() = dma and
+    dp.getAnAccess() = dma and
+    c.isDynamicProperty(dp) and
+    src = def.getSource() and
+    q = dma.getQualifier() and
+    e = def.getExpr() and
+    postUpdate = true
+  )
 }
 
 /**
@@ -893,6 +903,18 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
 private predicate fieldOrPropertyRead(Expr e1, ContentSet c, FieldOrPropertyRead e2) {
   e1 = e2.getQualifier() and
   c = e2.getTarget().(FieldOrProperty).getContentSet()
+}
+
+/**
+ * Holds if `e2` is an expression that reads the dynamic property `c` from
+ * expression `e1`.
+ */
+private predicate dynamicPropertyRead(Expr e1, ContentSet c, DynamicMemberRead e2) {
+  exists(DynamicPropertyContent dpc |
+    e1 = e2.getQualifier() and
+    dpc.getAnAccess() = e2 and
+    c.isDynamicProperty(dpc.getName())
+  )
 }
 
 /**
@@ -1100,6 +1122,8 @@ private module Cached {
         |
           fieldOrPropertyRead(e, _, read)
           or
+          dynamicPropertyRead(e, _, read)
+          or
           arrayRead(e, read)
         )
       )
@@ -1141,28 +1165,39 @@ private module Cached {
   newtype TContent =
     TFieldContent(Field f) { f.isUnboundDeclaration() } or
     TPropertyContent(Property p) { p.isUnboundDeclaration() } or
+    TDynamicPropertyContent(DynamicProperty dp) or
     TElementContent() or
     TSyntheticFieldContent(SyntheticField f) or
     TPrimaryConstructorParameterContent(Parameter p) {
       p.getCallable() instanceof PrimaryConstructor
     } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v)
+    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+    TDelegateCallArgumentContent(int i) {
+      i = [0 .. max(any(DelegateLikeCall dc).getNumberOfArguments()) - 1]
+    } or
+    TDelegateCallReturnContent()
 
   cached
   newtype TContentSet =
     TSingletonContent(Content c) { not c instanceof PropertyContent } or
-    TPropertyContentSet(Property p) { p.isUnboundDeclaration() }
+    TPropertyContentSet(Property p) { p.isUnboundDeclaration() } or
+    TDynamicPropertyContentSet(DynamicProperty dp)
 
   cached
   newtype TContentApprox =
     TFieldApproxContent(string firstChar) { firstChar = approximateFieldContent(_) } or
     TPropertyApproxContent(string firstChar) { firstChar = approximatePropertyContent(_) } or
+    TDynamicPropertyApproxContent(string firstChar) {
+      firstChar = approximateDynamicPropertyContent(_)
+    } or
     TElementApproxContent() or
     TSyntheticFieldApproxContent() or
     TPrimaryConstructorParameterApproxContent(string firstChar) {
       firstChar = approximatePrimaryConstructorParameterContent(_)
     } or
-    TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
+    TCapturedVariableContentApprox(VariableCapture::CapturedVariable v) or
+    TDelegateCallArgumentApproxContent() or
+    TDelegateCallReturnApproxContent()
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantGvnType t2) {
@@ -1610,7 +1645,7 @@ private module ArgumentNodes {
   }
 
   /**
-   * A data-flow node that represents the implicit array creation in a call to a
+   * A data-flow node that represents the implicit collection creation in a call to a
    * callable with a `params` parameter. For example, there is an implicit array
    * creation `new [] { "a", "b", "c" }` in
    *
@@ -1649,7 +1684,7 @@ private module ArgumentNodes {
 
     override Location getLocationImpl() { result = callCfn.getLocation() }
 
-    override string toStringImpl() { result = "[implicit array creation] " + callCfn }
+    override string toStringImpl() { result = "[implicit collection creation] " + callCfn }
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNodeImpl {
@@ -2079,6 +2114,18 @@ class FieldOrProperty extends Assignable, Modifiable {
   }
 }
 
+/** A string that is a reference to a late-bound target of a dynamic member access. */
+class DynamicProperty extends string {
+  private DynamicMemberAccess dma;
+
+  DynamicProperty() { this = dma.getLateBoundTargetName() }
+
+  ContentSet getContentSet() { result.isDynamicProperty(this) }
+
+  /** Gets an access of this dynamic property. */
+  DynamicMemberAccess getAnAccess() { result = dma }
+}
+
 private class InstanceFieldOrProperty extends FieldOrProperty {
   InstanceFieldOrProperty() { not this.isStatic() }
 }
@@ -2275,6 +2322,21 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
 
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
+ * the content set `c` of a delegate call.
+ *
+ * If there is a delegate call f(x), then we store "x" on "f"
+ * using a delegate argument content set.
+ */
+private predicate storeStepDelegateCall(ExplicitArgumentNode node1, ContentSet c, Node node2) {
+  exists(ExplicitDelegateLikeDataFlowCall call, int i |
+    node1.argumentOf(call, TPositionalArgumentPosition(i)) and
+    lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
+    c.isDelegateCallArgument(i)
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
@@ -2305,6 +2367,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  storeStepDelegateCall(node1, c, node2)
 }
 
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2316,6 +2380,11 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     exactScope = false and
     isSuccessor = true and
     fieldOrPropertyRead(e1, _, e2) and
+    scope = e2
+    or
+    exactScope = false and
+    isSuccessor = true and
+    dynamicPropertyRead(e1, _, e2) and
     scope = e2
     or
     exactScope = false and
@@ -2426,6 +2495,21 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
 }
 
 /**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * the content set `c` of a delegate call.
+ *
+ * If there is a delegate call f(x), then we read the return of the delegate
+ * call.
+ */
+private predicate readStepDelegateCall(Node node1, ContentSet c, OutNode node2) {
+  exists(ExplicitDelegateLikeDataFlowCall call |
+    lambdaCall(call, _, node1) and
+    node2.getCall(TNormalReturnKind()) = call and
+    c.isDelegateCallReturn()
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
@@ -2437,12 +2521,16 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(ReadStepConfiguration x | hasNodePath(x, node1, node2) |
     fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
     or
+    dynamicPropertyRead(node1.asExpr(), c, node2.asExpr())
+    or
     node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
     c = getResultContent()
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  readStepDelegateCall(node1, c, node2)
 }
 
 private predicate clearsCont(Node n, Content c) {
@@ -3025,6 +3113,11 @@ class ContentApprox extends TContentApprox {
       this = TPropertyApproxContent(firstChar) and result = "approximated property " + firstChar
     )
     or
+    exists(string firstChar |
+      this = TDynamicPropertyApproxContent(firstChar) and
+      result = "approximated dynamic property " + firstChar
+    )
+    or
     this = TElementApproxContent() and result = "element"
     or
     this = TSyntheticFieldApproxContent() and result = "approximated synthetic field"
@@ -3037,6 +3130,12 @@ class ContentApprox extends TContentApprox {
     exists(VariableCapture::CapturedVariable v |
       this = TCapturedVariableContentApprox(v) and result = "captured " + v
     )
+    or
+    this = TDelegateCallArgumentApproxContent() and
+    result = "approximated delegate call argument"
+    or
+    this = TDelegateCallReturnApproxContent() and
+    result = "approximated delegate call return"
   }
 }
 
@@ -3048,6 +3147,11 @@ private string approximateFieldContent(FieldContent fc) {
 /** Gets a string for approximating the name of a property. */
 private string approximatePropertyContent(PropertyContent pc) {
   result = pc.getProperty().getName().prefix(1)
+}
+
+/** Gets a string for approximating the name of a dynamic property. */
+private string approximateDynamicPropertyContent(DynamicPropertyContent dpc) {
+  result = dpc.getName().prefix(1)
 }
 
 /**
@@ -3065,6 +3169,8 @@ ContentApprox getContentApprox(Content c) {
   or
   result = TPropertyApproxContent(approximatePropertyContent(c))
   or
+  result = TDynamicPropertyApproxContent(approximateDynamicPropertyContent(c))
+  or
   c instanceof ElementContent and result = TElementApproxContent()
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
@@ -3073,6 +3179,12 @@ ContentApprox getContentApprox(Content c) {
     TPrimaryConstructorParameterApproxContent(approximatePrimaryConstructorParameterContent(c))
   or
   result = TCapturedVariableContentApprox(VariableCapture::getCapturedVariableContent(c))
+  or
+  c instanceof DelegateCallArgumentContent and
+  result = TDelegateCallArgumentApproxContent()
+  or
+  c instanceof DelegateCallReturnContent and
+  result = TDelegateCallReturnApproxContent()
 }
 
 /**

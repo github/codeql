@@ -106,10 +106,10 @@ namespace Semmle.Extraction.CSharp
                 var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
                 var pathTransformer = new PathTransformer(canonicalPathCache);
 
-                if (options.BinaryLogPath is string binlogPath)
+                if (options.BinaryLogPaths is string[] binlogPaths)
                 {
                     logger.LogInfo(" Running binary log analysis.");
-                    return RunBinaryLogAnalysis(analyzerStopwatch, options, binlogPath, logger, canonicalPathCache, pathTransformer);
+                    return RunBinaryLogAnalysis(analyzerStopwatch, options, binlogPaths, logger, canonicalPathCache, pathTransformer);
                 }
                 else
                 {
@@ -122,6 +122,25 @@ namespace Semmle.Extraction.CSharp
                 logger.LogError($"  Unhandled exception: {ex}");
                 return ExitCode.Errors;
             }
+        }
+
+        private static ExitCode RunBinaryLogAnalysis(Stopwatch stopwatch, Options options, string[] binlogPaths, ILogger logger, CanonicalPathCache canonicalPathCache, PathTransformer pathTransformer)
+        {
+            var allFailed = true;
+            foreach (var binlogPath in binlogPaths)
+            {
+                var exit = RunBinaryLogAnalysis(stopwatch, options, binlogPath, logger, canonicalPathCache, pathTransformer);
+                switch (exit)
+                {
+                    case ExitCode.Ok:
+                    case ExitCode.Errors:
+                        allFailed = false;
+                        break;
+                    case ExitCode.Failed:
+                        break;
+                }
+            }
+            return allFailed ? ExitCode.Failed : ExitCode.Ok;
         }
 
         private static ExitCode RunBinaryLogAnalysis(Stopwatch stopwatch, Options options, string binlogPath, ILogger logger, CanonicalPathCache canonicalPathCache, PathTransformer pathTransformer)
@@ -142,7 +161,15 @@ namespace Semmle.Extraction.CSharp
                 var allCompilationData = reader.ReadAllCompilationData(filter);
                 var allFailed = true;
 
-                logger.LogInfo($"  Found {allCompilationData.Count} compilations in binary log");
+                if (allCompilationData.Count == 0)
+                {
+                    logger.LogWarning("  No compilations found in binary log.");
+                    return ExitCode.Ok;
+                }
+                else
+                {
+                    logger.LogInfo($"  Found {allCompilationData.Count} compilations in binary log");
+                }
 
                 foreach (var compilationData in allCompilationData)
                 {
@@ -190,11 +217,11 @@ namespace Semmle.Extraction.CSharp
                     switch (exit)
                     {
                         case ExitCode.Ok:
-                            allFailed &= false;
+                            allFailed = false;
                             logger.LogInfo($"  Compilation {diagnosticName} succeeded");
                             break;
                         case ExitCode.Errors:
-                            allFailed &= false;
+                            allFailed = false;
                             logger.LogWarning($"  Compilation {diagnosticName} had errors");
                             break;
                         case ExitCode.Failed:
@@ -522,7 +549,6 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationOptions
                             .WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default)
                             .WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
-                            .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation, cwd, args),

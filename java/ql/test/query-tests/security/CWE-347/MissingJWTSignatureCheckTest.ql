@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.MissingJWTSignatureCheckQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HasMissingJwtSignatureCheckTest implements TestSig {
   string getARelevantTag() { result = "hasMissingJwtSignatureCheck" }

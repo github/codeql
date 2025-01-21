@@ -168,7 +168,7 @@ def read_tsg_python_output(path, logger):
     p.stdout.close()
     p.terminate()
     p.wait()
-    logger.info("Read {} nodes and {} edges from TSG output".format(len(node_attr), len(edge_attr)))
+    logger.debug("Read {} nodes and {} edges from TSG output".format(len(node_attr), len(edge_attr)))
     return node_attr, edge_attr
 
 def evaluate_string(s):

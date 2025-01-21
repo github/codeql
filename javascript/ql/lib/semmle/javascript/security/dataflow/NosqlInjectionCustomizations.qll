@@ -8,6 +8,8 @@ import javascript
 import semmle.javascript.security.TaintedObject
 
 module NosqlInjection {
+  import semmle.javascript.security.CommonFlowState
+
   /**
    * A data flow source for NoSQL injection vulnerabilities.
    */
@@ -22,7 +24,10 @@ module NosqlInjection {
      *
      * Defaults to deeply tainted objects only.
      */
-    DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+    FlowState getAFlowState() { result.isTaintedObject() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -30,8 +35,15 @@ module NosqlInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for NoSql injection. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /** An expression interpreted as a NoSql query, viewed as a sink. */
   class NosqlQuerySink extends Sink instanceof NoSql::Query { }

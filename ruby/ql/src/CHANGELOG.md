@@ -1,3 +1,23 @@
+## 1.1.10
+
+No user-facing changes.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+No user-facing changes.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+No user-facing changes.
+
 ## 1.1.5
 
 ### Minor Analysis Improvements

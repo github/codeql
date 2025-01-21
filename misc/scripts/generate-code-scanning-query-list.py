@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 import json
 import csv
@@ -28,7 +30,7 @@ arguments = parser.parse_args()
 assert hasattr(arguments, "ignore_missing_query_packs")
 
 # Define which languages and query packs to consider
-languages = [ "cpp", "csharp", "go", "java", "javascript", "python", "ruby", "swift" ]
+languages = [ "actions", "cpp", "csharp", "go", "java", "javascript", "python", "ruby", "swift" ]
 packs = [ "code-scanning", "security-and-quality", "security-extended", "security-experimental" ]
 
 class CodeQL:
@@ -52,7 +54,7 @@ class CodeQL:
         except:
             self.proc.kill()
 
-    def command(self, args): 
+    def command(self, args):
         data = json.dumps(args)
         data_bytes = data.encode('utf-8')
         self.proc.stdin.write(data_bytes)

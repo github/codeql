@@ -1,0 +1,3 @@
+| Quality.cs:26:19:26:26 | access to indexer | Call without target $@. | Quality.cs:26:19:26:26 | access to indexer | access to indexer |
+| Quality.cs:29:21:29:27 | access to indexer | Call without target $@. | Quality.cs:29:21:29:27 | access to indexer | access to indexer |
+| Quality.cs:32:9:32:21 | access to indexer | Call without target $@. | Quality.cs:32:9:32:21 | access to indexer | access to indexer |

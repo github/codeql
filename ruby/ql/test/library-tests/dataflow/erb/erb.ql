@@ -4,7 +4,7 @@
 
 import codeql.ruby.AST
 import codeql.ruby.CFG
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import ValueFlowTest<DefaultFlowConfig>
 import ValueFlow::PathGraph
 

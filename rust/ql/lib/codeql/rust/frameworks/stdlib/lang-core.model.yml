@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      # Option
+      - ["lang:core", "<crate::option::Option>::unwrap", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::option::Option>::unwrap_or", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::option::Option>::unwrap_or", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Result
+      - ["lang:core", "<crate::result::Result>::unwrap", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[0]", "ReturnValue", "value", "manual"]
+      # String
+      - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Hint
+      - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Fmt
+      - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
