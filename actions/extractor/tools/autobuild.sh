@@ -4,8 +4,8 @@ set -eu
 
 DEFAULT_PATH_FILTERS=$(cat << END
 exclude:**/*
-include:.github/workflows/**/*.yml
-include:.github/workflows/**/*.yaml
+include:.github/workflows/*.yml
+include:.github/workflows/*.yaml
 include:**/action.yml
 include:**/action.yaml
 END
