@@ -39,6 +39,8 @@ private module DecompressionApiConfig implements DataFlow::ConfigSig {
 
   // our Decompression APIs defined above will be the sinks we use for this query
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module DecompressionApiFlow = TaintTracking::Global<DecompressionApiConfig>;

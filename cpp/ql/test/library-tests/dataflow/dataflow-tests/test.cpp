@@ -1139,3 +1139,18 @@ void test_uncertain_array(int n1, int n2) {
   *data = 0;
   sink(*(data + 1)); // $ ast=1138:17 ast=1137:7 ir
 }
+
+namespace conflation_regression {
+
+  char* source(int);
+
+  void read_deref_deref(char **l) { // $ ast-def=l ir-def=*l ir-def=**l
+    sink(**l); // Clean. Only *l is tainted
+  }
+
+  void f(char ** p) // $ ast-def=p ir-def=*p ir-def=**p
+  {
+    *p = source(0);
+    read_deref_deref(p);
+  }
+}

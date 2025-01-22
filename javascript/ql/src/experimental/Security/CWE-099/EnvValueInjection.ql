@@ -19,6 +19,8 @@ module EnvValueInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("process").getMember("env").getAMember().asSink()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module EnvValueInjectionFlow = TaintTracking::Global<EnvValueInjectionConfig>;

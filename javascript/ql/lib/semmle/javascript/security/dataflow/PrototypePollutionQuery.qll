@@ -47,6 +47,8 @@ module PrototypePollutionConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     node = TaintedObject::SanitizerGuard::getABarrierNode(state)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

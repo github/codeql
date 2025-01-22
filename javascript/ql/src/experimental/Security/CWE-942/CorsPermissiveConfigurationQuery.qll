@@ -33,6 +33,8 @@ module CorsPermissiveConfigurationConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module CorsPermissiveConfigurationFlow =

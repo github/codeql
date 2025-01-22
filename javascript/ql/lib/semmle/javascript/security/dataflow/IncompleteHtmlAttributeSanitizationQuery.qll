@@ -42,6 +42,8 @@ module IncompleteHtmlAttributeSanitizationConfig implements DataFlow::StateConfi
   }
 
   predicate isBarrier(DataFlow::Node n) { n instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

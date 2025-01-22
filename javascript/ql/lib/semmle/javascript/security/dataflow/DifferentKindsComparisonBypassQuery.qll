@@ -20,6 +20,10 @@ private module DifferentKindsComparisonBypassConfig implements DataFlow::ConfigS
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Disabled since multiple related sinks are selected simultaneously
+  }
 }
 
 /**
