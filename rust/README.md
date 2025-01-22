@@ -48,17 +48,17 @@ TODO
 
 ### Code Generation
 
-If you do changes to either
-* `ast-generator`, or
+If you make changes to either
+* `ast-generator/`, or
 * `schema/*.py`
 
 you'll need to regenerate code. You can do so running
-```bash
+```sh
 bazel run @codeql//rust/codegen
 ```
 
 Sometimes, especially if resolving conflicts on generated files, you might need to run
-```bash
+```sh
 bazel run @codeql//rust/codegen -- --force
 ```
 for code generation to succeed.
