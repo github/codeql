@@ -506,7 +506,6 @@ extensions:
       # rlespinasse/github-slug-action
       # https://github.com/advisories/GHSA-6q4m-7476-932w Affected versions: >= 4.0.0, < 4.4.1
       # CVE-2023-27581
-      - ["rlespinasse/github-slug-action", "v4.4.1", "102b1a064a9b145e56556e22b18b19c624538d94", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.4.0", "a362e5fb42057a3a23a62218b050838f1bacca5d", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.3.2", "b011e83cf8cb29e22dda828db30586691ae164e4", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.3.1", "00198f89920d4454e37e4b27af2b7a8eba79c530", "4.4.1"]
