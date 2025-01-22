@@ -1,0 +1,7 @@
+models
+edges
+nodes
+subpaths
+testFailures
+| Indexers.cs:38:22:38:40 | // ... | Missing result: hasValueFlow=1 |
+#select
