@@ -152,14 +152,30 @@ private string getSpringConstantContentType(FieldAccess e) {
   )
 }
 
+private string getContentTypeString(Expr e) {
+  result = e.(CompileTimeConstantExpr).getStringValue() or
+  result = getSpringConstantContentType(e)
+}
+
+pragma[nomagic]
+private predicate contentTypeString(string s) { s = getContentTypeString(_) }
+
+pragma[nomagic]
+private predicate isXssVulnerableContentTypeString(string s) {
+  contentTypeString(s) and XSS::isXssVulnerableContentType(s)
+}
+
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  contentTypeString(s) and XSS::isXssSafeContentType(s)
+}
+
 private predicate isXssVulnerableContentTypeExpr(Expr e) {
-  XSS::isXssVulnerableContentType(e.(CompileTimeConstantExpr).getStringValue()) or
-  XSS::isXssVulnerableContentType(getSpringConstantContentType(e))
+  isXssVulnerableContentTypeString(getContentTypeString(e))
 }
 
 private predicate isXssSafeContentTypeExpr(Expr e) {
-  XSS::isXssSafeContentType(e.(CompileTimeConstantExpr).getStringValue()) or
-  XSS::isXssSafeContentType(getSpringConstantContentType(e))
+  isXssSafeContentTypeString(getContentTypeString(e))
 }
 
 private DataFlow::Node getABodyBuilderWithExplicitContentType(Expr contentType) {
