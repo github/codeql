@@ -3,6 +3,7 @@
  *
  * Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details.
  */
+deprecated module;
 
 import csharp
 
