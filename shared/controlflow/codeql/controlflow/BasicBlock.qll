@@ -15,7 +15,7 @@ signature module InputSig<LocationSig Location> {
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t);
 
-  /** Represents a delineated part of the AST with its own CFG. */
+  /** A delineated part of the AST with its own CFG. */
   class CfgScope;
 
   /** The class of control flow nodes. */
@@ -106,16 +106,20 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Holds if this basic block immediately dominates basic block `bb`.
      *
-     * That is, `bb` is an immediate successor of this basic block and all
-     * paths reaching basic block `bb` from some entry point basic block must
-     * go through this basic block.
+     * That is, this basic block is the unique basic block satisfying:
+     * 1. This basic block strictly dominates `bb`
+     * 2. There exists no other basic block that is strictly dominated by this
+     *    basic block and which strictly dominates `bb`.
+     *
+     * All basic blocks, except entry basic blocks, have a unique immediate
+     * dominator.
      */
     predicate immediatelyDominates(BasicBlock bb) { bbIDominates(this, bb) }
 
     /**
      * Holds if this basic block strictly dominates basic block `bb`.
      *
-     * That is, all paths reaching `bb` from some entry point basic block must
+     * That is, all paths reaching `bb` from the entry point basic block must
      * go through this basic block and this basic block is different from `bb`.
      */
     predicate strictlyDominates(BasicBlock bb) { bbIDominates+(this, bb) }
@@ -123,7 +127,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Holds if this basic block dominates basic block `bb`.
      *
-     * That is, all paths reaching `bb` from some entry point basic block must
+     * That is, all paths reaching `bb` from the entry point basic block must
      * go through this basic block.
      */
     predicate dominates(BasicBlock bb) {
@@ -154,37 +158,44 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the basic block that immediately dominates this basic block, if any.
      *
-     * That is, all paths reaching this basic block from some entry point
-     * basic block must go through the result, which is an immediate basic block
-     * predecessor of this basic block.
+     * That is, the result is the unique basic block satisfying:
+     * 1. The result strictly dominates this basic block.
+     * 2. There exists no other basic block that is strictly dominated by the
+     *    result and which strictly dominates this basic block.
+     *
+     * All basic blocks, except entry basic blocks, have a unique immediate
+     * dominator.
      */
     BasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
     /**
      * Holds if basic block `succ` is immediately controlled by this basic
-     * block with successor type `s`. That is, `succ` is an immediate successor
-     * of this block, and `succ` can only be reached from the entry block by
-     * going via the `s` edge out of this basic block.
+     * block with successor type `s`.
      *
-     * The above implies that this block immediately dominates `succ`. But
-     * "controls" is a stronger notion than "dominates". It is not the case
-     * that any immediate successor that is immediately dominated by this block
-     * is also immediately controlled by this block. To see why, consider this
-     * example corresponding to an `if`-statement without an `else` block:
-     * ```
-     * ... --> cond --[true]--> ... --> if stmt
-     *           \                      /
-     *            ----[false]-----------
-     * ```
-     * The basic block for `cond` immediately dominates the immediately
-     * succeeding basic block for the `if` statement. But the `if` statement
-     * is not immediately controlled by the `cond` basic block and the `false`
-     * edge since it is also possible to reach the `if` statement via a path
-     * through the `true` edge.
+     * That is, `succ` is an immediate successor of this block, and `succ` can
+     * only be reached from the entry block by going via the `s` edge out of
+     * this basic block.
      */
     pragma[nomagic]
     predicate immediatelyControls(BasicBlock succ, SuccessorType s) {
       succ = this.getASuccessor(s) and
+      bbIDominates(this, succ) and
+      // The above is not sufficient to ensure that `succ` can only be reached
+      // through `s`. To see why, consider this example corresponding to an
+      // `if` expression without an `else` block:
+      // ```
+      // ... --> cond --[true]--> ... --> if expr
+      //           \                      /
+      //            ----[false]-----------
+      // ```
+      // The basic block for `cond` immediately dominates the directly
+      // succeeding basic block for the `if` expression. But the `if`
+      // expression is not immediately controlled by the `cond` basic block and
+      // the `false` edge since it is also possible to reach the `if`
+      // expression via the `true` edge.
+      //
+      // Note that the first and third conjunct implies the second. But
+      // explicitly including the second conjunct leads to a better join order.
       forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this |
         succ.dominates(pred)
       )
@@ -192,8 +203,22 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /**
      * Holds if basic block `controlled` is controlled by this basic block with
-     * successor type `s`. That is, `controlled` can only be reached from the
-     * entry point by going via the `s` edge out of this basic block.
+     * successor type `s`.
+     *
+     * That is, all paths reaching `controlled` from the entry point basic
+     * block must go through the `s` edge out of this basic block.
+     *
+     * Control is similar to dominance except it concerns edges instead of
+     * nodes: A basic block is _dominated_ by a _basic block_ `bb` if it can
+     * only be reached through `bb` and _controlled_ by an _edge_ `s` if it can
+     * only be reached through `s`.
+     *
+     * Note that where all basic blocks (except the entry basic block) are
+     * strictly dominated by at least one basic block, a basic block may not be
+     * controlled by any edge. If an edge controls a basic block `bb`, then
+     * both endpoints of the edge dominates `bb`. The converse is not the case,
+     * as there may be multiple paths between the endpoints with none of them
+     * dominating.
      */
     predicate controls(BasicBlock controlled, SuccessorType s) {
       // For this block to control the block `controlled` with `s` the following must be true:
@@ -308,6 +333,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if `bbStart` is the first node in a basic block and `cfn` is the
      * `i`th node in the same basic block.
      */
+    pragma[nomagic]
     private predicate bbIndex(Node bbStart, Node cfn, int i) =
       shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
 

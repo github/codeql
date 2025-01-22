@@ -76,9 +76,13 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   /**
    * Holds if this basic block immediately dominates basic block `bb`.
    *
-   * That is, all paths reaching basic block `bb` from some entry point
-   * basic block must go through this basic block (which is an immediate
-   * predecessor of `bb`).
+   * That is, this basic block is the unique basic block satisfying:
+   * 1. This basic block strictly dominates `bb`
+   * 2. There exists no other basic block that is strictly dominated by this
+   *    basic block and which strictly dominates `bb`.
+   *
+   * All basic blocks, except entry basic blocks, have a unique immediate
+   * dominator.
    *
    * Example:
    *
@@ -174,8 +178,13 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   /**
    * Gets the basic block that immediately dominates this basic block, if any.
    *
-   * That is, all paths reaching this basic block from some entry point
-   * basic block must go through the result.
+   * That is, the result is the unique basic block satisfying:
+   * 1. The result strictly dominates this basic block.
+   * 2. There exists no other basic block that is strictly dominated by the
+   *    result and which strictly dominates this basic block.
+   *
+   * All basic blocks, except entry basic blocks, have a unique immediate
+   * dominator.
    *
    * Example:
    *
