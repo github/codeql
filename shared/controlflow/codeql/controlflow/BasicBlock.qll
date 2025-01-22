@@ -89,7 +89,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     BasicBlock getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
 
     /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-    Node getNode(int pos) { bbIndex(this.getFirstNode(), result, pos) }
+    Node getNode(int pos) { result = getNode(this, pos) }
 
     /** Gets a control flow node in this basic block. */
     Node getANode() { result = this.getNode(_) }
@@ -308,9 +308,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if `bbStart` is the first node in a basic block and `cfn` is the
      * `i`th node in the same basic block.
      */
-    cached
-    predicate bbIndex(Node bbStart, Node cfn, int i) =
+    private predicate bbIndex(Node bbStart, Node cfn, int i) =
       shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
+
+    cached
+    Node getNode(BasicBlock bb, int pos) { bbIndex(bb.getFirstNode(), result, pos) }
 
     /**
      * Holds if the first node of basic block `succ` is a control flow
