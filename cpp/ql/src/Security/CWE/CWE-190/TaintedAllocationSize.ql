@@ -46,10 +46,13 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
-  exists(Instruction instr | instr = node.asOperand().getDef() |
-    readsVariable(instr, checkedVar) and
-    any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+predicate nodeHasBarrierEquality(DataFlow::Node node) {
+  exists(Variable checkedVar, Operand access |
+    readsVariable(access.getDef(), checkedVar) and
+    exists(Instruction instr | instr = node.asOperand().getDef() |
+      readsVariable(pragma[only_bind_into](instr), pragma[only_bind_into](checkedVar)) and
+      any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+    )
   )
 }
 
@@ -76,10 +79,7 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
       hasUpperBoundsCheck(checkedVar)
     )
     or
-    exists(Variable checkedVar, Operand access |
-      readsVariable(access.getDef(), checkedVar) and
-      nodeIsBarrierEqualityCandidate(node, access, checkedVar)
-    )
+    nodeHasBarrierEquality(node)
     or
     // block flow to inside of identified allocation functions (this flow leads
     // to duplicate results)

@@ -685,6 +685,12 @@ class IRGuardCondition extends Instruction {
     unary_compares_eq(valueNumber(this), op, k, areEqual, value)
   }
 
+  bindingset[value]
+  pragma[inline_late]
+  private predicate ensuresEqvalueControls(IRBlock block, AbstractValue value) {
+    this.valueControls(block, value)
+  }
+
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `left != right + k`.
@@ -693,7 +699,7 @@ class IRGuardCondition extends Instruction {
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
       compares_eq(valueNumber(this), left, right, k, areEqual, value) and
-      this.valueControls(block, value)
+      this.ensuresEqvalueControls(block, value)
     )
   }
 
