@@ -6,6 +6,8 @@ DEFAULT_PATH_FILTERS=$(cat << END
 exclude:**/*
 include:.github/workflows/*.yml
 include:.github/workflows/*.yaml
+include:.github/reusable_workflows/**/*.yml
+include:.github/reusable_workflows/**/*.yaml
 include:**/action.yml
 include:**/action.yaml
 END
