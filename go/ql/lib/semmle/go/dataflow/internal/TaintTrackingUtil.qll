@@ -35,11 +35,11 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 private Type getElementType(Type containerType) {
-  result = containerType.(ArrayType).getElementType() or
-  result = containerType.(SliceType).getElementType() or
-  result = containerType.(ChanType).getElementType() or
-  result = containerType.(MapType).getValueType() or
-  result = containerType.(PointerType).getPointerType()
+  result = containerType.getDeepUnaliasedType().(ArrayType).getElementType() or
+  result = containerType.getDeepUnaliasedType().(SliceType).getElementType() or
+  result = containerType.getDeepUnaliasedType().(ChanType).getElementType() or
+  result = containerType.getDeepUnaliasedType().(MapType).getValueType() or
+  result = containerType.getDeepUnaliasedType().(PointerType).getPointerType()
 }
 
 /**
@@ -50,7 +50,7 @@ bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
   exists(Type containerType, DataFlow::Content c |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = containerType and
+    getElementType*(node.getType()).getDeepUnaliasedType() = containerType and
     cs.asOneContent() = c
   |
     containerType instanceof ArrayType and
@@ -65,7 +65,7 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs)
     containerType instanceof MapType and
     c instanceof DataFlow::MapValueContent
     or
-    c.(DataFlow::PointerContent).getPointerType() = containerType
+    c.(DataFlow::PointerContent).getPointerType().getDeepUnaliasedType() = containerType
   )
 }
 

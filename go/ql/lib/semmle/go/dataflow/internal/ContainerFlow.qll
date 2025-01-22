@@ -57,7 +57,7 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
  * as well as array iteration through enhanced `for` statements.
  */
 predicate containerReadStep(Node node1, Node node2, Content c) {
-  exists(Type t | t = node1.getType().getUnderlyingType() |
+  exists(Type t | t = node1.getType().getUnderlyingType().getDeepUnaliasedType() |
     c instanceof ArrayContent and
     (
       t instanceof ArrayType or

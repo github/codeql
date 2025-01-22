@@ -180,12 +180,21 @@ predicate readStep(Node node1, ContentSet cs, Node node2) {
   exists(Content c | cs.asOneContent() = c |
     node1 = node2.(PointerDereferenceNode).getOperand() and
     c =
-      any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType().getDeepUnaliasedType())
+      any(DataFlow::PointerContent pc |
+        pc.getPointerType().getDeepUnaliasedType() = node1.getType().getDeepUnaliasedType()
+      )
     or
     exists(FieldReadNode read |
       node2 = read and
       node1 = read.getBase() and
-      c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+      exists(DataFlow::FieldContent fc, Field f1, Field f2 |
+        f1 = fc.getField() and
+        f2 = read.getField() and
+        f1.getDeclaringType().getDeepUnaliasedType() = f2.getDeclaringType().getDeepUnaliasedType() and
+        f1.getName() = f2.getName()
+      |
+        c = fc
+      )
     )
     or
     containerReadStep(node1, node2, c)
