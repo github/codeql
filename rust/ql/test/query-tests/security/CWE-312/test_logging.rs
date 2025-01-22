@@ -160,11 +160,11 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
         3 => { unimplemented!("message = {}", password); } // $ Source Alert[rust/cleartext-logging]
         4 => { unreachable!("message = {}", password); } // $ Source Alert[rust/cleartext-logging]
         5 => { assert!(false, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        6 => { assert_eq!(1, 2, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
-        7 => { assert_ne!(1, 1, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        6 => { assert_eq!(1, 2, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
+        7 => { assert_ne!(1, 1, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
         8 => { debug_assert!(false, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        9 => { debug_assert_eq!(1, 2, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
-        10 => { debug_assert_ne!(1, 1, "message = {}", password); } // $ MISSING: Alert[rust/cleartext-logging]
+        9 => { debug_assert_eq!(1, 2, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
+        10 => { debug_assert_ne!(1, 1, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
         11 => { _ = opt_i.expect(format!("message = {}", password).as_str()); } // $ Source Alert[rust/cleartext-logging]
         _ => {}
     }
