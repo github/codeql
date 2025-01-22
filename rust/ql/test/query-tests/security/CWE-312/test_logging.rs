@@ -58,21 +58,21 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     debug!("message = {password:?}"); // $ Source Alert[rust/cleartext-logging]
     debug!(target: "target", "message = {}", harmless);
     debug!(target: "target", "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    debug!(target: &password, "message = {}", harmless); // $ MISSING: Alert[rust/cleartext-logging]
+    debug!(target: &password, "message = {}", harmless); // $ Source Alert[rust/cleartext-logging]
 
     // log! macro, various formatting
     log!(Level::Error, "message = {}", harmless);
     log!(Level::Error, "message = {}", password); // $ Source Alert[rust/cleartext-logging]
     log!(target: "target", Level::Error, "message = {}", harmless);
     log!(target: "target", Level::Error, "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    log!(target: &password, Level::Error, "message = {}", harmless); // $ MISSING: Alert[rust/cleartext-logging]
+    log!(target: &password, Level::Error, "message = {}", harmless); // $ Source Alert[rust/cleartext-logging]
 
     // structured logging
     error!(value = 1; "message = {}", harmless);
     error!(value = 1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
     error!(target: "target", value = 1; "message");
     error!(target: "target", value = 1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    error!(target: &password, value = 1; "message"); // $ MISSING: Alert[rust/cleartext-logging]
+    error!(target: &password, value = 1; "message"); // $ Source Alert[rust/cleartext-logging]
     error!(value = 1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
     error!(value = password.as_str(); "message"); // $ MISSING: Alert[rust/cleartext-logging]
     error!(value:? = password.as_str(); "message"); // $ MISSING: Alert[rust/cleartext-logging]
@@ -82,7 +82,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     error!(value1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
     error!(target: "target", value1; "message");
     error!(target: "target", value1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    error!(target: &password, value1; "message"); // $ MISSING: Alert[rust/cleartext-logging]
+    error!(target: &password, value1; "message"); // $ Source Alert[rust/cleartext-logging]
     error!(value1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
 
     let value2 = password.as_str();

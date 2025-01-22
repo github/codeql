@@ -773,7 +773,7 @@ final class ArrayElementContent extends Content, TArrayElement {
  * NOTE: Unlike `struct`s and `enum`s tuples are structural and not nominal,
  * hence we don't store a canonical path for them.
  */
-private class TuplePositionContent extends Content, TTuplePositionContent {
+final class TuplePositionContent extends Content, TTuplePositionContent {
   private int pos;
 
   TuplePositionContent() { this = TTuplePositionContent(pos) }
