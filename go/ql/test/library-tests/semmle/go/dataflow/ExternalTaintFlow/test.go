@@ -203,7 +203,7 @@ func simpleflow() {
 }
 
 func srcParam(src string, b test.B) {
-	b.Sink1(src) // $ MISSING: hasTaintFlow="src"
+	b.Sink1(src) // $ hasTaintFlow="src"
 }
 
 type mapstringstringtype map[string]string
