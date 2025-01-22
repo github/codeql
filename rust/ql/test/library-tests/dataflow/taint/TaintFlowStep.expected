@@ -1,9 +1,6 @@
-| file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::crate::fmt::format | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::crate::fmt::format | MaD:25 |
-| file://:0:0:0:0 | [summary param] self in lang:alloc::_::<crate::string::String>::as_str | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::<crate::string::String>::as_str | MaD:23 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | MaD:2 |
-| file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::crate::fmt::format | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::crate::fmt::format | MaD:24 |
-| file://:0:0:0:0 | [summary param] self in lang:alloc::_::<crate::string::String>::as_str | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::<crate::string::String>::as_str | MaD:22 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | MaD:10 |
+| file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::crate::fmt::format | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::crate::fmt::format | MaD:35 |
+| file://:0:0:0:0 | [summary param] self in lang:alloc::_::<crate::string::String>::as_str | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::<crate::string::String>::as_str | MaD:33 |
+| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | MaD:12 |
 | main.rs:4:5:4:8 | 1000 | main.rs:4:5:4:12 | ... + ... |  |
 | main.rs:4:12:4:12 | i | main.rs:4:5:4:12 | ... + ... |  |
 | main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |  |
