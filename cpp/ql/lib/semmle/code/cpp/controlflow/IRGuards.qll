@@ -981,7 +981,8 @@ private module Cached {
     or
     exists(CompareValueNumber cmp, Operand left, Operand right, AbstractValue v |
       test = cmp and
-      cmp.hasOperands(left, right) and
+      pragma[only_bind_into](cmp)
+          .hasOperands(pragma[only_bind_into](left), pragma[only_bind_into](right)) and
       isConvertedBool(left.getDef()) and
       int_value(right.getDef()) = 0 and
       unary_compares_eq(valueNumberOfOperand(left), op, k, areEqual, v)
