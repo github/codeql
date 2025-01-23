@@ -271,12 +271,6 @@ module UserInputSecretConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
-
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/experimental/semmle/python/security/TimingAttack.qll:176: Flow call outside 'select' clause
-    none()
-  }
 }
 
 module UserInputSecretFlow = TaintTracking::Global<UserInputSecretConfig>;
@@ -294,12 +288,6 @@ module UserInputInComparisonConfig implements DataFlow::ConfigSig {
       sink.asExpr() = [left, right]
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/experimental/semmle/python/security/TimingAttack.qll:165: Flow call outside 'select' clause
-    none()
-  }
 }
 
 module UserInputInComparisonFlow = TaintTracking::Global<UserInputInComparisonConfig>;
@@ -315,12 +303,6 @@ private module ExcludeLenFuncConfig implements DataFlow::ConfigSig {
       call.getFunc().(Name).getId() = "len" and
       sink.asExpr() = call.getArg(0)
     )
-  }
-
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/experimental/semmle/python/security/TimingAttack.qll:347: Flow call outside 'select' clause
-    none()
   }
 }
 
