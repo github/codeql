@@ -34,6 +34,8 @@ private module MyConfig implements DataFlow::ConfigSig {
     isSink(node) and
     set instanceof DataFlow::FieldContent
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;

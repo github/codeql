@@ -25,6 +25,8 @@ private module MyConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(CompositeAction c | c.getAnOutputExpr() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;

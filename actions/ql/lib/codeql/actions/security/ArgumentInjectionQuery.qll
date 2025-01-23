@@ -88,6 +88,12 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
       run.getScript().getAnEnvReachingArgumentInjectionSink(var, _, _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-088/ArgumentInjectionCritical.ql:29: Column 7 does not select a source or sink originating from the flow call on line 22
+    none()
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a code script. */

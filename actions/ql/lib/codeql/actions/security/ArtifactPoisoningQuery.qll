@@ -316,6 +316,12 @@ private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-829/ArtifactPoisoningCritical.ql:28: Column 7 does not select a source or sink originating from the flow call on line 21
+    none()
+  }
 }
 
 /** Tracks flow of unsafe artifacts that is used in an insecure way. */

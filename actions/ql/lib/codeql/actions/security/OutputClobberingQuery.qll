@@ -214,6 +214,8 @@ private module OutputClobberingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate an environment variable. */
