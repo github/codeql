@@ -9,5 +9,3 @@ target/classes/my-app.properties
 target/classes/page.xml
 target/classes/struts.xml
 target/maven-archiver/pom.properties
-test-db/log/ext/javac-1.properties
-test-db/log/ext/javac.properties
