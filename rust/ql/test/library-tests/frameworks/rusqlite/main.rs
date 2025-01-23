@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     connection.execute(       // $ sql-sink
         "CREATE TABLE person (
-            id SERIAL PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name VARCHAR NOT NULL,
             age INT NOT NULL
         )",
