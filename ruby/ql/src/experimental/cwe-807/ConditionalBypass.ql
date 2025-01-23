@@ -29,28 +29,6 @@ predicate flowsToGuardExpr(DataFlow::Node nd, SensitiveActionGuardConditional gu
 }
 
 /**
- * A comparison that guards a sensitive action, e.g. the comparison in:
- * ```rb
- * ok = x == y
- * if ok
- *   login
- * end
- * ```
- */
-class SensitiveActionGuardComparison extends ComparisonOperation {
-  SensitiveActionGuardConditional guard;
-
-  SensitiveActionGuardComparison() {
-    exists(DataFlow::Node node | this = node.asExpr().getExpr() | flowsToGuardExpr(node, guard))
-  }
-
-  /**
-   * Gets the guard that uses this comparison.
-   */
-  SensitiveActionGuardConditional getGuard() { result = guard }
-}
-
-/**
  * Holds if `sink` guards `action`, and `source` taints `sink`.
  *
  * If flow from `source` taints `sink`, then an attacker can
