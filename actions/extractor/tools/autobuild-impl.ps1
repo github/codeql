@@ -2,10 +2,16 @@ if (($null -ne $env:LGTM_INDEX_INCLUDE) -or ($null -ne $env:LGTM_INDEX_EXCLUDE) 
     Write-Output 'Path filters set. Passing them through to the JavaScript extractor.' 
 } else {
     Write-Output 'No path filters set. Using the default filters.'
+    # Note: We're adding the `reusable_workflows` subdirectories to proactively
+    # record workflows that were called cross-repo, check them out locally,
+    # and enable an interprocedural analysis across the workflow files.
+    # These workflows follow the convention `.github/reusable_workflows/<nwo>/*.ya?ml`
     $DefaultPathFilters = @(
         'exclude:**/*',
-        'include:.github/workflows/**/*.yml',
-        'include:.github/workflows/**/*.yaml',
+        'include:.github/workflows/*.yml',
+        'include:.github/workflows/*.yaml',
+        'include:.github/reusable_workflows/**/*.yml',
+        'include:.github/reusable_workflows/**/*.yaml',
         'include:**/action.yml',
         'include:**/action.yaml'
     )
