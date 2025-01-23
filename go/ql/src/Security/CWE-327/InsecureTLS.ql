@@ -71,6 +71,13 @@ module TlsVersionFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-327/InsecureTLS.ql:87: Flow call outside 'select' clause
+    // ql/src/Security/CWE-327/InsecureTLS.ql:128: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -201,6 +208,12 @@ module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
    * suites.
    */
   predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-327/InsecureTLS.ql:221: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**

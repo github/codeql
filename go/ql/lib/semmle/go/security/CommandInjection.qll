@@ -24,6 +24,13 @@ module CommandInjection {
     }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-078/CommandInjection.ql:28: Column 1 does not select a source or sink originating from the flow call on line 26
+      // ql/src/Security/CWE-078/CommandInjection.ql:28: Column 5 does not select a source or sink originating from the flow call on line 26
+      none()
+    }
   }
 
   /**
@@ -79,6 +86,13 @@ module CommandInjection {
     predicate isBarrier(DataFlow::Node node) {
       node instanceof Sanitizer or
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
+    }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-078/CommandInjection.ql:28: Column 1 does not select a source or sink originating from the flow call on line 27
+      // ql/src/Security/CWE-078/CommandInjection.ql:28: Column 5 does not select a source or sink originating from the flow call on line 27
+      none()
     }
   }
 

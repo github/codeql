@@ -19,6 +19,8 @@ private module DsnInjectionConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof RegexpCheckBarrier }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

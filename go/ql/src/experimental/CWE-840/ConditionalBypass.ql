@@ -22,6 +22,15 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ComparisonExpr c | c.getAnOperand() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-840/ConditionalBypass.ql:38: Column 1 does not select a source or sink originating from the flow call on line 34
+    // ql/src/experimental/CWE-840/ConditionalBypass.ql:38: Column 1 does not select a source or sink originating from the flow call on line 36
+    // ql/src/experimental/CWE-840/ConditionalBypass.ql:38: Column 3 does not select a source or sink originating from the flow call on line 34
+    // ql/src/experimental/CWE-840/ConditionalBypass.ql:39: Column 5 does not select a source or sink originating from the flow call on line 36
+    none()
+  }
 }
 
 /** Tracks taint flow for reasoning about conditional bypass. */

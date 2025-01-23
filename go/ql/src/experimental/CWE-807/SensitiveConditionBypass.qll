@@ -59,6 +59,12 @@ private module Config implements DataFlow::ConfigSig {
       not c.isPotentialFalsePositive()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-807/SensitiveConditionBypass.ql:33: Column 1 does not select a source or sink originating from the flow call on line 24
+    none()
+  }
 }
 
 /**

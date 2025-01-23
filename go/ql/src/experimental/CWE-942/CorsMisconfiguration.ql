@@ -67,6 +67,12 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkHW(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-942/CorsMisconfiguration.ql:129: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
@@ -75,6 +81,12 @@ module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
   additional predicate isSinkWrite(DataFlow::Node sink, UniversalOriginWrite w) { sink = w }
 
   predicate isSink(DataFlow::Node sink) { isSinkWrite(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-942/CorsMisconfiguration.ql:132: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -173,7 +185,13 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSinkCgn(sink, _) }
 
-  additional predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
+  additional predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-942/CorsMisconfiguration.ql:221: Flow call outside 'select' clause
+    none()
+  }
+
+  predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
     exists(IfStmt ifs |
       exists(Expr operand |
         operand = ifs.getCond().getAChildExpr*() and
@@ -204,6 +222,12 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
     |
       cgn.getCondition() = ifs.getCond()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-942/CorsMisconfiguration.ql:221: Flow call outside 'select' clause
+    none()
   }
 }
 

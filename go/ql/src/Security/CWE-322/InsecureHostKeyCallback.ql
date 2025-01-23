@@ -68,6 +68,13 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { writeIsSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-322/InsecureHostKeyCallback.ql:90: Flow call outside 'select' clause
+    // ql/src/Security/CWE-322/InsecureHostKeyCallback.ql:96: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**

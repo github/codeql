@@ -56,6 +56,8 @@ module DecompressionBomb {
         addStep.isAdditionalFlowStep(fromNode, fromState, toNode, toState)
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about decompression bomb vulnerabilities. */

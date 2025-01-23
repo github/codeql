@@ -51,6 +51,14 @@ module UnsafeTypeCastingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { conversionIsSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { typeCastNodeIsSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Unsafe/WrongUsageOfUnsafe.ql:73: Flow call outside 'select' clause
+    // ql/src/experimental/Unsafe/WrongUsageOfUnsafe.ql:120: Flow call outside 'select' clause
+    // ql/src/experimental/Unsafe/WrongUsageOfUnsafe.ql:150: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /** Tracks taint flow for reasoning about type casting from a `unsafe.Pointer`. */

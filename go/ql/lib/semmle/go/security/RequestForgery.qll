@@ -31,6 +31,12 @@ module RequestForgery {
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-918/RequestForgery.ql:25: Column 1 selects sink.getARequest
+      none()
+    }
   }
 
   /** Tracks taint flow from untrusted data to request forgery attack vectors. */

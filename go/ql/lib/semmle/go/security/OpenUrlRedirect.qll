@@ -54,6 +54,8 @@ module OpenUrlRedirect {
       or
       hostnameSanitizingPrefixEdge(node, _)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow from unvalidated, untrusted data to URL redirections. */

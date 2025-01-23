@@ -50,6 +50,12 @@ module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig
   predicate isBarrier(DataFlow::Node node) {
     node instanceof SharedXss::Sanitizer or node.getType() instanceof NumericType
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-79/HTMLTemplateEscapingPassthrough.ql:24: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -85,6 +91,12 @@ module PassthroughTypeConversionToTemplateExecutionCallConfig implements DataFlo
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-79/HTMLTemplateEscapingPassthrough.ql:70: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -112,6 +124,12 @@ module FromUntrustedToTemplateExecutionCallConfig implements DataFlow::ConfigSig
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-79/HTMLTemplateEscapingPassthrough.ql:133: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**

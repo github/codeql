@@ -23,6 +23,8 @@ module MissingJwtSignatureCheck {
     predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       any(AdditionalFlowStep s).step(nodeFrom, nodeTo)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about JWT vulnerabilities. */
@@ -35,6 +37,12 @@ module MissingJwtSignatureCheck {
 
     predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       any(AdditionalFlowStep s).step(nodeFrom, nodeTo)
+    }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/go/security/MissingJwtSignatureCheck.qll:18: Flow call outside 'select' clause
+      none()
     }
   }
 

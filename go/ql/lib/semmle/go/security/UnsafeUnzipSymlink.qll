@@ -20,6 +20,12 @@ module UnsafeUnzipSymlink {
     predicate isSink(DataFlow::Node sink) { sink instanceof EvalSymlinksSink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof EvalSymlinksInvalidator }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/go/security/UnsafeUnzipSymlink.qll:35: Flow call outside 'select' clause
+      none()
+    }
   }
 
   /**
@@ -44,6 +50,8 @@ module UnsafeUnzipSymlink {
     predicate isSink(DataFlow::Node sink) { sink instanceof SymlinkSink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof SymlinkSanitizer }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

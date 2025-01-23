@@ -440,6 +440,12 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
     state2 = node2.(FlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-681/IncorrectIntegerConversionQuery.ql:26: Column 1 selects sink.getASuccessor
+    none()
+  }
 }
 
 /**
