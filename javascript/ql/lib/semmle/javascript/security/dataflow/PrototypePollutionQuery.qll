@@ -48,10 +48,15 @@ module PrototypePollutionConfig implements DataFlow::StateConfigSig {
     node = TaintedObject::SanitizerGuard::getABarrierNode(state)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-915/PrototypePollutingMergeCall.ql:30: Column 7 does not select a source or sink originating from the flow call on line 26
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    exists(Locatable loc |
+      sink.(Sink).dependencyInfo(_, loc) and
+      result = loc.getLocation()
+    )
   }
 }
 

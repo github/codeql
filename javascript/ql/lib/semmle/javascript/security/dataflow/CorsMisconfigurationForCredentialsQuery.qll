@@ -24,11 +24,12 @@ module CorsMisconfigurationConfig implements DataFlow::ConfigSig {
     node = TaintTracking::AdHocWhitelistCheckSanitizer::getABarrierNode()
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-346/CorsMisconfigurationForCredentials.ql:22: Column 5 selects sink.getCredentialsHeader
-    // ql/src/experimental/heuristics/ql/src/Security/CWE-346/CorsMisconfigurationForCredentials.ql:25: Column 5 selects sink.getCredentialsHeader
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getCredentialsHeader().getLocation()
   }
 }
 

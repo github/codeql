@@ -32,14 +32,7 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-089/SqlInjection.ql:35: Column 1 does not select a source or sink originating from the flow call on line 28
-    // ql/src/Security/CWE-089/SqlInjection.ql:35: Column 5 does not select a source or sink originating from the flow call on line 28
-    // ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql:37: Column 1 does not select a source or sink originating from the flow call on line 30
-    // ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql:37: Column 5 does not select a source or sink originating from the flow call on line 30
-    none()
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

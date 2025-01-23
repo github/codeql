@@ -26,11 +26,14 @@ module PolynomialReDoSConfig implements DataFlow::ConfigSig {
 
   int fieldFlowBranchLimit() { result = 1 } // library inputs are too expensive on some projects
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Performance/PolynomialReDoS.ql:31: Column 1 selects sink.getHighlight
-    // ql/src/Performance/PolynomialReDoS.ql:33: Column 5 selects sink.getRegExp
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getHighlight().getLocation()
+    or
+    result = sink.(Sink).getRegExp().getLocation()
   }
 }
 

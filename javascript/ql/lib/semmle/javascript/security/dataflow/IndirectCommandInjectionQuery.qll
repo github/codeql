@@ -27,10 +27,13 @@ module IndirectCommandInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-078/IndirectCommandInjection.ql:29: Column 1 does not select a source or sink originating from the flow call on line 25
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node node |
+      isSinkWithHighlight(sink, node) and
+      result = node.getLocation()
+    )
   }
 }
 

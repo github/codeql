@@ -34,10 +34,15 @@ module DeepObjectResourceExhaustionConfig implements DataFlow::StateConfigSig {
     TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-400/DeepObjectResourceExhaustion.ql:23: Column 7 does not select a source or sink originating from the flow call on line 19
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    exists(DataFlow::Node link |
+      sink.(Sink).hasReason(link, _) and
+      result = link.getLocation()
+    )
   }
 }
 

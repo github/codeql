@@ -61,10 +61,12 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-079/UnsafeHtmlConstruction.ql:25: Column 7 selects sink.getSink
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getSink().getLocation()
   }
 }
 

@@ -52,14 +52,7 @@ module NosqlInjectionConfig implements DataFlow::StateConfigSig {
     state2 = state1
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-089/SqlInjection.ql:35: Column 1 does not select a source or sink originating from the flow call on line 32
-    // ql/src/Security/CWE-089/SqlInjection.ql:35: Column 5 does not select a source or sink originating from the flow call on line 32
-    // ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql:37: Column 1 does not select a source or sink originating from the flow call on line 34
-    // ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql:37: Column 5 does not select a source or sink originating from the flow call on line 34
-    none()
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
