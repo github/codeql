@@ -820,6 +820,9 @@ void write_to_const_ptr_ptr(const char **p_out, const char **p_in) {
 }
 
 void take_const_ptr(const char *out, const char *in) {
+  // NOTE: We take the address of `out` in `take_const_ptr`'s stack space.
+  // Assigning to this pointer does not change `out` in
+  // `test_write_to_const_ptr_ptr`.
   write_to_const_ptr_ptr(&out, &in);
 }
 
