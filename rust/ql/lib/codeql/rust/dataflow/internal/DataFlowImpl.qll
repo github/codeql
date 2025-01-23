@@ -766,8 +766,8 @@ final class ReferenceContent extends Content, TReferenceContent {
  *
  * Examples include the elements of a set, array, vector, or stack.
  */
-final class CollectionContent extends Content, TArrayElement {
-  CollectionContent() { this = TArrayElement() }
+final class ElementContent extends Content, TElementContent {
+  ElementContent() { this = TElementContent() }
 
   override string toString() { result = "element" }
 }
@@ -1091,19 +1091,19 @@ module RustDataFlow implements InputSig<Location> {
       )
       or
       exists(IndexExprCfgNode arr |
-        c instanceof CollectionContent and
+        c instanceof ElementContent and
         node1.asExpr() = arr.getBase() and
         node2.asExpr() = arr
       )
       or
       exists(ForExprCfgNode for |
-        c instanceof CollectionContent and
+        c instanceof ElementContent and
         node1.asExpr() = for.getIterable() and
         node2.asPat() = for.getPat()
       )
       or
       exists(SlicePatCfgNode pat |
-        c instanceof CollectionContent and
+        c instanceof ElementContent and
         node1.asPat() = pat and
         node2.asPat() = pat.getAPat()
       )
@@ -1183,7 +1183,7 @@ module RustDataFlow implements InputSig<Location> {
       node2.asExpr() = tuple
     )
     or
-    c instanceof CollectionContent and
+    c instanceof ElementContent and
     node1.asExpr() =
       [
         node2.asExpr().(ArrayRepeatExprCfgNode).getRepeatOperand(),
@@ -1193,7 +1193,7 @@ module RustDataFlow implements InputSig<Location> {
     tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
     exists(AssignmentExprCfgNode assignment, IndexExprCfgNode index |
-      c instanceof CollectionContent and
+      c instanceof ElementContent and
       assignment.getLhs() = index and
       node1.asExpr() = assignment.getRhs() and
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
@@ -1566,7 +1566,7 @@ private module Cached {
     TVariantFieldContent(VariantCanonicalPath v, string field) {
       field = v.getVariant().getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
-    TArrayElement() or
+    TElementContent() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
                 any(TuplePat pat).getNumberOfFields(),

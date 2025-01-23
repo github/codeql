@@ -6,12 +6,12 @@ models
 | 5 | Source: repo::test; crate::enum_source; test-source; ReturnValue.Variant[crate::MyFieldEnum::D::field_d] |
 | 6 | Source: repo::test; crate::simple_source; test-source; ReturnValue |
 | 7 | Summary: repo::test; crate::coerce; Argument[0]; ReturnValue; taint |
-| 8 | Summary: repo::test; crate::get_array_element; Argument[0].ArrayElement; ReturnValue; value |
+| 8 | Summary: repo::test; crate::get_array_element; Argument[0].Element; ReturnValue; value |
 | 9 | Summary: repo::test; crate::get_struct_field; Argument[0].Struct[crate::MyStruct::field1]; ReturnValue; value |
 | 10 | Summary: repo::test; crate::get_tuple_element; Argument[0].Tuple[0]; ReturnValue; value |
 | 11 | Summary: repo::test; crate::get_var_field; Argument[0].Variant[crate::MyFieldEnum::C::field_c]; ReturnValue; value |
 | 12 | Summary: repo::test; crate::get_var_pos; Argument[0].Variant[crate::MyPosEnum::A(0)]; ReturnValue; value |
-| 13 | Summary: repo::test; crate::set_array_element; Argument[0]; ReturnValue.ArrayElement; value |
+| 13 | Summary: repo::test; crate::set_array_element; Argument[0]; ReturnValue.Element; value |
 | 14 | Summary: repo::test; crate::set_tuple_element; Argument[0]; ReturnValue.Tuple[1]; value |
 | 15 | Summary: repo::test; crate::set_var_field; Argument[0]; ReturnValue.Variant[crate::MyFieldEnum::D::field_d]; value |
 | 16 | Summary: repo::test; crate::set_var_pos; Argument[0]; ReturnValue.Variant[crate::MyPosEnum::B(0)]; value |
