@@ -22,7 +22,11 @@ private module UnsafeHtmlConstructionConfig implements DataFlow::ConfigSig {
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/security/cwe-079/UnsafeHtmlConstruction.ql:24: Column 7 selects sink.getXssSink
+    none()
+  }
 }
 
 /**

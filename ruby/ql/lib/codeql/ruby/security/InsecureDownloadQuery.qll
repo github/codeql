@@ -21,7 +21,11 @@ private module InsecureDownloadConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/security/cwe-829/InsecureDownload.ql:20: Column 5 selects sink.getDownloadCall
+    none()
+  }
 }
 
 /**

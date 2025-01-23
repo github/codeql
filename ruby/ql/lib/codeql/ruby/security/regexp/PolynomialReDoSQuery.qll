@@ -19,7 +19,12 @@ private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/security/cwe-1333/PolynomialReDoS.ql:27: Column 1 selects sink.getHighlight
+    // ql/src/queries/security/cwe-1333/PolynomialReDoS.ql:29: Column 5 selects sink.getRegExp
+    none()
+  }
 }
 
 /**

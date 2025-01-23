@@ -18,7 +18,11 @@ private module Config implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/cwe-807/ConditionalBypass.ql:78: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**

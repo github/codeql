@@ -55,7 +55,11 @@ private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
     exists(FileSystemPermissionModification mod | mod.getAPermissionNode() = sink)
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/security/cwe-732/WeakFilePermissions.ql:71: Column 5 does not select a source or sink originating from the flow call on line 69
+    none()
+  }
 }
 
 private module PermissivePermissionsFlow = DataFlow::Global<PermissivePermissionsConfig>;

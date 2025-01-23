@@ -18,7 +18,12 @@ private module MissingFullAnchorConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/security/cwe-020/MissingFullAnchor.ql:20: Column 7 selects sink.getCallNode
+    // ql/src/queries/security/cwe-020/MissingFullAnchor.ql:20: Column 9 selects sink.getRegex
+    none()
+  }
 }
 
 /**
