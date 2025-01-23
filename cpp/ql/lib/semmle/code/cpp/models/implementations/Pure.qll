@@ -52,7 +52,7 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
     // If there is taint flow from *input to *output then there is also taint
     // flow from input to output.
     this.hasTaintFlow(input.getIndirectionInput(), output.getIndirectionOutput()) and
-    // no need to add taint-flow if we already have dataflow
+    // No need to add taint flow if we already have data flow.
     not this.hasDataFlow(input, output)
   }
 
