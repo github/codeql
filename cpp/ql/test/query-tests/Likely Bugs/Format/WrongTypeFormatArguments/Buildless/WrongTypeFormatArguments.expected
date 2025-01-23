@@ -1,8 +1,4 @@
 | tests.c:7:18:7:18 | 1 | This format specifier for type 'char *' does not match the argument type 'int'. |
-| tests.c:12:27:12:29 | 42 | This format specifier for type 'int' does not match the argument type 'long'. |
-| tests.c:12:32:12:35 | 42 | This format specifier for type 'int' does not match the argument type 'unsigned long'. |
-| tests.c:12:38:12:40 | 42 | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
-| tests.c:12:43:12:46 | 42 | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long'. |
 | tests.c:13:27:13:30 | 42 | This format specifier for type 'int' does not match the argument type 'long long'. |
 | tests.c:13:33:13:37 | 42 | This format specifier for type 'int' does not match the argument type 'unsigned long long'. |
 | tests.c:13:40:13:43 | 42 | This format specifier for type 'unsigned int' does not match the argument type 'long long'. |
