@@ -7,7 +7,7 @@
 <p>
 Sensitive user data and system information that is logged could be seen by an attacker when it is
 displayed. Also, external processes often store the standard output and standard error streams of
-an application, which will include logged sensitive information.</p>
+an application, which will include logged sensitive information.
 </p>
 </overview>
 
