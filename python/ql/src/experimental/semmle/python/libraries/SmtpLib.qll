@@ -38,6 +38,12 @@ module SmtpLib {
     predicate isSink(DataFlow::Node sink) {
       sink = smtpMimeMultipartInstance().getACall().getArgByName("_subparts")
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/experimental/semmle/python/libraries/SmtpLib.qll:91: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module SmtpMessageFlow = TaintTracking::Global<SmtpMessageConfig>;

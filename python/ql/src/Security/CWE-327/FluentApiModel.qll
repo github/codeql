@@ -110,6 +110,12 @@ module InsecureContextConfiguration implements DataFlow::StateConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-327/FluentApiModel.qll:130: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfiguration>;

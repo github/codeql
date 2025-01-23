@@ -18,6 +18,12 @@ private module RegexInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-730/RegexInjection.ql:29: Column 7 selects sink.getRegexExecution
+    none()
+  }
 }
 
 /** Global taint-tracking for detecting "regular expression injection" vulnerabilities. */
