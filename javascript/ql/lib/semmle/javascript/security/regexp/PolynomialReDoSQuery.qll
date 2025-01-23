@@ -26,7 +26,12 @@ module PolynomialReDoSConfig implements DataFlow::ConfigSig {
 
   int fieldFlowBranchLimit() { result = 1 } // library inputs are too expensive on some projects
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Performance/PolynomialReDoS.ql:31: Column 1 selects sink.getHighlight
+    // ql/src/Performance/PolynomialReDoS.ql:33: Column 5 selects sink.getRegExp
+    none()
+  }
 }
 
 /** Taint-tracking for reasoning about polynomial regular expression denial-of-service attacks. */

@@ -28,7 +28,11 @@ module VerifiedDecodeConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink = verifiedDecode() }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerification.ql:42: Column 5 does not select a source or sink originating from the flow call on line 41
+    none()
+  }
 }
 
 module VerifiedDecodeFlow = TaintTracking::Global<VerifiedDecodeConfig>;

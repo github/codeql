@@ -32,7 +32,11 @@ module ClientSideRequestForgeryConfig implements DataFlow::ConfigSig {
     isAdditionalRequestForgeryStep(node1, node2)
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-918/ClientSideRequestForgery.ql:24: Column 1 selects sink.getARequest
+    none()
+  }
 }
 
 /**

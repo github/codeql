@@ -34,7 +34,11 @@ module EnvValueAndKeyInjectionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE-099/EnvValueAndKeyInjection.ql:71: Column 1 does not select a source or sink originating from the flow call on line 68
+    none()
+  }
 }
 
 module EnvValueAndKeyInjectionFlow = TaintTracking::Global<EnvValueAndKeyInjectionConfig>;

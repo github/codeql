@@ -37,7 +37,11 @@ module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
     node = any(StringReplaceCall call).getRawReplacement()
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-079/UnsafeJQueryPlugin.ql:25: Column 5 selects source.getPlugin
+    none()
+  }
 }
 
 /**

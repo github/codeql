@@ -28,7 +28,11 @@ module ShellCommandInjectionFromEnvironmentConfig implements DataFlow::ConfigSig
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-078/ShellCommandInjectionFromEnvironment.ql:30: Column 1 does not select a source or sink originating from the flow call on line 26
+    none()
+  }
 }
 
 /**
