@@ -479,3 +479,38 @@ attributes.cs:
 #  161|         -1: [TypeMention] ExperimentalAttribute
 #  161|         0: [StringLiteralUtf16] "MyExperimentalMethodId"
 #  162|     4: [BlockStmt] {...}
+#  165| [Class] MyOverloadResolutionClass
+#  168|   5: [Method] M
+#  168|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  167|       1: [DefaultAttribute] [OverloadResolutionPriority(...)]
+#  167|         -1: [TypeMention] OverloadResolutionPriorityAttribute
+#  167|         0: [UnaryMinusExpr] -...
+#  167|           0: [IntLiteral] 1
+#-----|     2: (Parameters)
+#  168|       0: [Parameter] arr
+#  168|         -1: [TypeMention] Int32[]
+#  168|           1: [TypeMention] int
+#  168|     4: [BlockStmt] {...}
+#  171|   6: [Method] M
+#  171|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  170|       1: [DefaultAttribute] [OverloadResolutionPriority(...)]
+#  170|         -1: [TypeMention] OverloadResolutionPriorityAttribute
+#  170|         0: [IntLiteral] 1
+#-----|     2: (Parameters)
+#  171|       0: [Parameter] e
+#  171|         -1: [TypeMention] IEnumerable<int>
+#  171|           1: [TypeMention] int
+#  171|     4: [BlockStmt] {...}
+#  174|   7: [Method] M
+#  174|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  173|       1: [DefaultAttribute] [OverloadResolutionPriority(...)]
+#  173|         -1: [TypeMention] OverloadResolutionPriorityAttribute
+#  173|         0: [IntLiteral] 2
+#-----|     2: (Parameters)
+#  174|       0: [Parameter] s
+#  174|         -1: [TypeMention] ReadOnlySpan<int>
+#  174|           1: [TypeMention] int
+#  174|     4: [BlockStmt] {...}

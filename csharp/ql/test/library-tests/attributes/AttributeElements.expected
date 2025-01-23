@@ -40,6 +40,9 @@
 | attributes.cs:155:17:155:18 | M4 | attributes.cs:154:6:154:11 | [Params(...)] | Class1+ParamsAttribute |
 | attributes.cs:159:14:159:32 | MyExperimentalClass | attributes.cs:158:2:158:13 | [Experimental(...)] | System.Diagnostics.CodeAnalysis.ExperimentalAttribute |
 | attributes.cs:162:17:162:36 | MyExperimentalMethod | attributes.cs:161:6:161:17 | [Experimental(...)] | System.Diagnostics.CodeAnalysis.ExperimentalAttribute |
+| attributes.cs:168:17:168:17 | M | attributes.cs:167:6:167:31 | [OverloadResolutionPriority(...)] | System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute |
+| attributes.cs:171:17:171:17 | M | attributes.cs:170:6:170:31 | [OverloadResolutionPriority(...)] | System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute |
+| attributes.cs:174:17:174:17 | M | attributes.cs:173:6:173:31 | [OverloadResolutionPriority(...)] | System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:24 | [assembly: AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:30 | [assembly: AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:32 | [assembly: AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |

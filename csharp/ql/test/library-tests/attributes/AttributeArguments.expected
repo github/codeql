@@ -110,6 +110,9 @@ arguments
 | attributes.cs:154:6:154:11 | [Params(...)] | 2 | attributes.cs:154:19:154:29 | array creation of type Int32[] |
 | attributes.cs:158:2:158:13 | [Experimental(...)] | 0 | attributes.cs:158:15:158:37 | "MyExperimentalClassId" |
 | attributes.cs:161:6:161:17 | [Experimental(...)] | 0 | attributes.cs:161:19:161:42 | "MyExperimentalMethodId" |
+| attributes.cs:167:6:167:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:167:33:167:34 | -... |
+| attributes.cs:170:6:170:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:170:33:170:33 | 1 |
+| attributes.cs:173:6:173:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:173:33:173:33 | 2 |
 constructorArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
@@ -210,6 +213,9 @@ constructorArguments
 | attributes.cs:154:6:154:11 | [Params(...)] | 2 | attributes.cs:154:19:154:29 | array creation of type Int32[] |
 | attributes.cs:158:2:158:13 | [Experimental(...)] | 0 | attributes.cs:158:15:158:37 | "MyExperimentalClassId" |
 | attributes.cs:161:6:161:17 | [Experimental(...)] | 0 | attributes.cs:161:19:161:42 | "MyExperimentalMethodId" |
+| attributes.cs:167:6:167:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:167:33:167:34 | -... |
+| attributes.cs:170:6:170:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:170:33:170:33 | 1 |
+| attributes.cs:173:6:173:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:173:33:173:33 | 2 |
 namedArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
