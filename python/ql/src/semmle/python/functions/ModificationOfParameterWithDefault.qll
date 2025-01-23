@@ -45,9 +45,7 @@ module ModificationOfParameterWithDefault {
       copyTarget(node) and state in [true, false]
     }
 
-    private predicate observeDiffInformedIncrementalMode() { any() }
-
-    predicate copyTarget(DataFlow::Node node) {
+    private predicate copyTarget(DataFlow::Node node) {
       node = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall()
       or
       node.(DataFlow::MethodCallNode).calls(_, "copy")
