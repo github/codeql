@@ -44,6 +44,12 @@ module KeyStrengthFlowConfig implements DataFlow::ConfigSig {
       exists(getMinimumKeyStrength(name, param))
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-326/InsufficientKeySize.ql:62: Column 1 does not select a source or sink originating from the flow call on line 55
+    none()
+  }
 }
 
 module KeyStrengthFlow = DataFlow::Global<KeyStrengthFlowConfig>;

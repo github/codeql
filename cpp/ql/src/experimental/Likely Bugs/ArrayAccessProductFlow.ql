@@ -59,6 +59,13 @@ module ArraySizeConfig implements ProductFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql:83: Column 1 does not select a source or sink originating from the flow call on line 81
+    // ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql:84: Column 7 does not select a source or sink originating from the flow call on line 81
+    none()
+  }
 }
 
 module ArraySizeFlow = ProductFlow::Global<ArraySizeConfig>;

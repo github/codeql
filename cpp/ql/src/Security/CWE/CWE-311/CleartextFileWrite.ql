@@ -31,6 +31,13 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql:87: Column 1 does not select a source or sink originating from the flow call on line 84
+    // ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql:88: Column 5 does not select a source or sink originating from the flow call on line 84
+    none()
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;

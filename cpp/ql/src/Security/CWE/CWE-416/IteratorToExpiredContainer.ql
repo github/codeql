@@ -90,6 +90,12 @@ module Config0 implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { qualifierToDestroyed(_, source) }
 
   predicate isSink(DataFlow::Node sink) { destroyedToBeginSink(sink) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql:113: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module Flow0 = DataFlow::Global<Config0>;
@@ -144,6 +150,12 @@ module Config implements DataFlow::StateConfigSig {
     // foo(create_temporary())
     // ```
     result instanceof DataFlow::FeatureHasSinkCallContext
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql:157: Column 1 does not select a source or sink originating from the flow call on line 154
+    none()
   }
 }
 

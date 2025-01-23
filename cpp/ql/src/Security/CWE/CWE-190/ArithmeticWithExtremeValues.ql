@@ -113,6 +113,12 @@ module Config implements DataFlow::ConfigSig {
       not iTo instanceof PointerArithmeticInstruction
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-190/ArithmeticWithExtremeValues.ql:126: Column 1 does not select a source or sink originating from the flow call on line 122
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

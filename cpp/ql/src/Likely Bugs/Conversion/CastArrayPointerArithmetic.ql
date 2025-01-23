@@ -44,6 +44,8 @@ module CastToPointerArithFlowConfig implements DataFlow::StateConfigSig {
     ) and
     getFullyConvertedType(node) = state
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

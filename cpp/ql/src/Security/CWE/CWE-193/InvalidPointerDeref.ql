@@ -122,6 +122,12 @@ module FinalConfig implements DataFlow::StateConfigSig {
       operationIsOffBy(_, pai, _, node1, _, node2, _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-193/InvalidPointerDeref.ql:142: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module FinalFlow = DataFlow::GlobalWithState<FinalConfig>;

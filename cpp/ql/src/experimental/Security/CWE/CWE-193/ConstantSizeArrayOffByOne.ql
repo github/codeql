@@ -123,6 +123,13 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
   predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink1(sink, _, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql:132: Flow call outside 'select' clause
+    // ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql:167: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
@@ -182,6 +189,14 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
       node2.asInstruction() = pai and
       pointerArithOverflow(pai, _)
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql:199: Column 1 does not select a source or sink originating from the flow call on line 194
+    // ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql:201: Column 5 does not select a source or sink originating from the flow call on line 194
+    // ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql:201: Column 7 does not select a source or sink originating from the flow call on line 194
+    none()
   }
 }
 

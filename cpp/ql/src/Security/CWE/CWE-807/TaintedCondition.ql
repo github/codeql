@@ -65,6 +65,12 @@ module Config implements DataFlow::ConfigSig {
       iFrom1 != iFrom2
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-807/TaintedCondition.ql:88: Column 7 does not select a source or sink originating from the flow call on line 86
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

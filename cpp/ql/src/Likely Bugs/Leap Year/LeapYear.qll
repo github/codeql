@@ -215,6 +215,17 @@ private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ChecksForLeapYearFunctionCall fc | sink.asExpr() = fc.getAnArgument())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql:57: Column 1 does not select a source or sink originating from the flow call on line 34
+    // ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql:57: Column 1 does not select a source or sink originating from the flow call on line 41
+    // ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql:59: Column 3 does not select a source or sink originating from the flow call on line 34
+    // ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql:59: Column 3 does not select a source or sink originating from the flow call on line 41
+    // ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql:59: Column 5 does not select a source or sink originating from the flow call on line 34
+    // ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql:59: Column 5 does not select a source or sink originating from the flow call on line 41
+    none()
+  }
 }
 
 module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
@@ -284,6 +295,13 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
       fa.isModified() and
       aexpr.getLValue() = fa
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Likely Bugs/Leap Year/Adding365DaysPerYear.ql:21: Column 1 does not select a source or sink originating from the flow call on line 19
+    // ql/src/Likely Bugs/Leap Year/Adding365DaysPerYear.ql:23: Column 3 does not select a source or sink originating from the flow call on line 19
+    none()
   }
 }
 

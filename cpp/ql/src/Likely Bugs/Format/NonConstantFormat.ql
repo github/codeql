@@ -168,6 +168,12 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
       cannotContainString(t)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Likely Bugs/Format/NonConstantFormat.ql:184: Column 5 does not select a source or sink originating from the flow call on line 181
+    none()
+  }
 }
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;

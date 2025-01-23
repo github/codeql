@@ -46,6 +46,13 @@ private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll:13: Flow call outside 'select' clause
+    // ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll:16: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module UntrustedDataToExternalApiFlow = TaintTracking::Global<UntrustedDataToExternalApiConfig>;

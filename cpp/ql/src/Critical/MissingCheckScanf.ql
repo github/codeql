@@ -60,6 +60,12 @@ module UninitializedToScanfConfig implements ConfigSig {
   FlowFeature getAFeature() { result instanceof FeatureEqualSourceSinkCallContext }
 
   int accessPathLimit() { result = 0 }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Critical/MissingCheckScanf.ql:72: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module UninitializedToScanfFlow = Global<UninitializedToScanfConfig>;
@@ -110,6 +116,12 @@ module ScanfToUseConfig implements ConfigSig {
     // If the node is being passed to a function it may be
     // modified, and thus it's safe to later read the value.
     exists(n.asIndirectArgument())
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Critical/MissingCheckScanf.ql:127: Flow call outside 'select' clause
+    none()
   }
 }
 

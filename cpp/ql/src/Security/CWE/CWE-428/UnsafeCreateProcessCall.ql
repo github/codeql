@@ -62,6 +62,12 @@ module NullAppNameCreateProcessFunctionConfig implements DataFlow::ConfigSig {
       val = call.getArgument(call.getApplicationNameArgumentId())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql:111: Column 1 does not select a source or sink originating from the flow call on line 101
+    none()
+  }
 }
 
 module NullAppNameCreateProcessFunction = DataFlow::Global<NullAppNameCreateProcessFunctionConfig>;
@@ -81,6 +87,12 @@ module QuotedCommandInCreateProcessFunctionConfig implements DataFlow::ConfigSig
     exists(CreateProcessFunctionCall call, Expr val | val = sink.asExpr() |
       val = call.getArgument(call.getCommandLineArgumentId())
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql:111: Column 1 does not select a source or sink originating from the flow call on line 106
+    none()
   }
 }
 

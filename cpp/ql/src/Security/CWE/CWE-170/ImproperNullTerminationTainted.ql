@@ -43,6 +43,12 @@ private module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-170/ImproperNullTerminationTainted.ql:55: Column 1 does not select a source or sink originating from the flow call on line 52
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

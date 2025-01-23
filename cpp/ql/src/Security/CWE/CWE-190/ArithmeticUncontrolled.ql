@@ -120,6 +120,12 @@ module UncontrolledArithConfig implements DataFlow::ConfigSig {
     // block unintended flow to pointers
     node.asExpr().getUnspecifiedType() instanceof PointerType
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-190/ArithmeticUncontrolled.ql:139: Column 5 does not select a source or sink originating from the flow call on line 134
+    none()
+  }
 }
 
 module UncontrolledArith = TaintTracking::Global<UncontrolledArithConfig>;

@@ -28,6 +28,12 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(DecompressionFlowStep s).isAdditionalFlowStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE/CWE-409/DecompressionBombs.ql:39: Column 5 does not select a source or sink originating from the flow call on line 38
+    none()
+  }
 }
 
 module DecompressionTaint = TaintTracking::Global<DecompressionTaintConfig>;
