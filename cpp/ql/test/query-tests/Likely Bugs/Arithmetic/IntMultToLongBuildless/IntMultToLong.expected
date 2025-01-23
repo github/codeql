@@ -1,0 +1,2 @@
+| IntMulToLong.c:8:12:8:16 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long'. |
+| IntMulToLong.c:9:21:9:25 | ... * ... | Multiplication result may overflow 'unsigned int' before it is converted to 'unsigned long'. |
