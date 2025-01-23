@@ -27,13 +27,13 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // For these functions we add taint flow according to the following rules:
+    // 1. If the parameter is of a pointer type then there is taint from the
+    // indirection of the parameter. Otherwise, there is taint from the
+    // parameter.
+    // 2. If the return value is of a pointer type then there is taint to the
+    // indirection of the return. Otherwise, there is taint to the return.
     exists(ParameterIndex i | exists(this.getParameter(i)) |
-      // For these functions we add taint flow according to the following rules:
-      // 1. If the parameter is of a pointer type then there is taint from the
-      // indirection of the parameter. Otherwise, there is taint from the
-      // parameter.
-      // 2. If the return value is of a pointer type then there is taint to the
-      // indirection of the return. Otherwise, there is taint to the return.
       (
         if this.getParameter(i).getUnspecifiedType() instanceof PointerType
         then input.isParameterDeref(i)
