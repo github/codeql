@@ -161,3 +161,15 @@ public class MyExperimentalClass
     [Experimental("MyExperimentalMethodId")]
     public void MyExperimentalMethod() { }
 }
+
+public class MyOverloadResolutionClass
+{
+    [OverloadResolutionPriority(-1)]
+    public void M(int[] arr) { }
+
+    [OverloadResolutionPriority(1)]
+    public void M(IEnumerable<int> e) { }
+
+    [OverloadResolutionPriority(2)]
+    public void M(ReadOnlySpan<int> s) { }
+}
