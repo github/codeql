@@ -1,2 +1,2 @@
-let password = "P@ssw0rd"
+let password = "P@ssw0rd";
 info!("User password changed to {password}")
