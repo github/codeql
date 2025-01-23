@@ -97,22 +97,22 @@ edges
 | main.rs:138:9:138:9 | s | main.rs:139:29:139:29 | s | provenance |  |
 | main.rs:138:13:138:21 | source(...) | main.rs:138:9:138:9 | s | provenance |  |
 | main.rs:138:13:138:21 | source(...) | main.rs:138:9:138:9 | s | provenance |  |
-| main.rs:139:28:139:30 | [...] [array[]] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:8 |
-| main.rs:139:28:139:30 | [...] [array[]] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:8 |
-| main.rs:139:29:139:29 | s | main.rs:139:28:139:30 | [...] [array[]] | provenance |  |
-| main.rs:139:29:139:29 | s | main.rs:139:28:139:30 | [...] [array[]] | provenance |  |
+| main.rs:139:28:139:30 | [...] [element] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:8 |
+| main.rs:139:28:139:30 | [...] [element] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:8 |
+| main.rs:139:29:139:29 | s | main.rs:139:28:139:30 | [...] [element] | provenance |  |
+| main.rs:139:29:139:29 | s | main.rs:139:28:139:30 | [...] [element] | provenance |  |
 | main.rs:148:9:148:9 | s | main.rs:149:33:149:33 | s | provenance |  |
 | main.rs:148:9:148:9 | s | main.rs:149:33:149:33 | s | provenance |  |
 | main.rs:148:13:148:21 | source(...) | main.rs:148:9:148:9 | s | provenance |  |
 | main.rs:148:13:148:21 | source(...) | main.rs:148:9:148:9 | s | provenance |  |
-| main.rs:149:9:149:11 | arr [array[]] | main.rs:150:10:150:12 | arr [array[]] | provenance |  |
-| main.rs:149:9:149:11 | arr [array[]] | main.rs:150:10:150:12 | arr [array[]] | provenance |  |
-| main.rs:149:15:149:34 | set_array_element(...) [array[]] | main.rs:149:9:149:11 | arr [array[]] | provenance |  |
-| main.rs:149:15:149:34 | set_array_element(...) [array[]] | main.rs:149:9:149:11 | arr [array[]] | provenance |  |
-| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [array[]] | provenance | MaD:13 |
-| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [array[]] | provenance | MaD:13 |
-| main.rs:150:10:150:12 | arr [array[]] | main.rs:150:10:150:15 | arr[0] | provenance |  |
-| main.rs:150:10:150:12 | arr [array[]] | main.rs:150:10:150:15 | arr[0] | provenance |  |
+| main.rs:149:9:149:11 | arr [element] | main.rs:150:10:150:12 | arr [element] | provenance |  |
+| main.rs:149:9:149:11 | arr [element] | main.rs:150:10:150:12 | arr [element] | provenance |  |
+| main.rs:149:15:149:34 | set_array_element(...) [element] | main.rs:149:9:149:11 | arr [element] | provenance |  |
+| main.rs:149:15:149:34 | set_array_element(...) [element] | main.rs:149:9:149:11 | arr [element] | provenance |  |
+| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [element] | provenance | MaD:13 |
+| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [element] | provenance | MaD:13 |
+| main.rs:150:10:150:12 | arr [element] | main.rs:150:10:150:15 | arr[0] | provenance |  |
+| main.rs:150:10:150:12 | arr [element] | main.rs:150:10:150:15 | arr[0] | provenance |  |
 | main.rs:159:9:159:9 | s | main.rs:160:14:160:14 | s | provenance |  |
 | main.rs:159:9:159:9 | s | main.rs:160:14:160:14 | s | provenance |  |
 | main.rs:159:13:159:22 | source(...) | main.rs:159:9:159:9 | s | provenance |  |
@@ -290,22 +290,22 @@ nodes
 | main.rs:138:13:138:21 | source(...) | semmle.label | source(...) |
 | main.rs:139:10:139:31 | get_array_element(...) | semmle.label | get_array_element(...) |
 | main.rs:139:10:139:31 | get_array_element(...) | semmle.label | get_array_element(...) |
-| main.rs:139:28:139:30 | [...] [array[]] | semmle.label | [...] [array[]] |
-| main.rs:139:28:139:30 | [...] [array[]] | semmle.label | [...] [array[]] |
+| main.rs:139:28:139:30 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:139:28:139:30 | [...] [element] | semmle.label | [...] [element] |
 | main.rs:139:29:139:29 | s | semmle.label | s |
 | main.rs:139:29:139:29 | s | semmle.label | s |
 | main.rs:148:9:148:9 | s | semmle.label | s |
 | main.rs:148:9:148:9 | s | semmle.label | s |
 | main.rs:148:13:148:21 | source(...) | semmle.label | source(...) |
 | main.rs:148:13:148:21 | source(...) | semmle.label | source(...) |
-| main.rs:149:9:149:11 | arr [array[]] | semmle.label | arr [array[]] |
-| main.rs:149:9:149:11 | arr [array[]] | semmle.label | arr [array[]] |
-| main.rs:149:15:149:34 | set_array_element(...) [array[]] | semmle.label | set_array_element(...) [array[]] |
-| main.rs:149:15:149:34 | set_array_element(...) [array[]] | semmle.label | set_array_element(...) [array[]] |
+| main.rs:149:9:149:11 | arr [element] | semmle.label | arr [element] |
+| main.rs:149:9:149:11 | arr [element] | semmle.label | arr [element] |
+| main.rs:149:15:149:34 | set_array_element(...) [element] | semmle.label | set_array_element(...) [element] |
+| main.rs:149:15:149:34 | set_array_element(...) [element] | semmle.label | set_array_element(...) [element] |
 | main.rs:149:33:149:33 | s | semmle.label | s |
 | main.rs:149:33:149:33 | s | semmle.label | s |
-| main.rs:150:10:150:12 | arr [array[]] | semmle.label | arr [array[]] |
-| main.rs:150:10:150:12 | arr [array[]] | semmle.label | arr [array[]] |
+| main.rs:150:10:150:12 | arr [element] | semmle.label | arr [element] |
+| main.rs:150:10:150:12 | arr [element] | semmle.label | arr [element] |
 | main.rs:150:10:150:15 | arr[0] | semmle.label | arr[0] |
 | main.rs:150:10:150:15 | arr[0] | semmle.label | arr[0] |
 | main.rs:159:9:159:9 | s | semmle.label | s |
