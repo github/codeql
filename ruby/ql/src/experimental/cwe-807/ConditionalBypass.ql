@@ -51,18 +51,6 @@ class SensitiveActionGuardComparison extends ComparisonOperation {
 }
 
 /**
- * An intermediary sink to enable reuse of the taint configuration.
- * This sink should not be presented to the client of this query.
- */
-class SensitiveActionGuardComparisonOperand extends Sink {
-  SensitiveActionGuardComparison comparison;
-
-  SensitiveActionGuardComparisonOperand() { this.asExpr().getExpr() = comparison.getAnOperand() }
-
-  override SensitiveAction getAction() { result = comparison.getGuard().getAction() }
-}
-
-/**
  * Holds if `sink` guards `action`, and `source` taints `sink`.
  *
  * If flow from `source` taints `sink`, then an attacker can
@@ -73,8 +61,6 @@ predicate isTaintedGuardForSensitiveAction(
   SensitiveAction action
 ) {
   action = sink.getNode().(Sink).getAction() and
-  // exclude the intermediary sink
-  not sink.getNode() instanceof SensitiveActionGuardComparisonOperand and
   ConditionalBypassFlow::flowPath(source, sink)
 }
 
