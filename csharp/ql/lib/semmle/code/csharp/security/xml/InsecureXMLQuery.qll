@@ -213,6 +213,13 @@ module XmlReader {
     predicate isSink(DataFlow::Node sink) {
       sink.asExpr() = any(InsecureXmlReaderCreate create).getSettings()
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/code/csharp/security/xml/InsecureXMLQuery.qll:186: Flow call outside 'select' clause
+      // ql/lib/semmle/code/csharp/security/xml/InsecureXMLQuery.qll:194: Flow call outside 'select' clause
+      none()
+    }
   }
 
   private module SettingsDataFlow = DataFlow::Global<SettingsDataFlowConfig>;

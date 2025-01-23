@@ -39,6 +39,12 @@ private module ConditionalBypassConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-807/ConditionalBypass.ql:23: Column 5 selects sink.getSensitiveMethodCall
+    none()
+  }
 }
 
 /**

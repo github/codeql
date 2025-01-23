@@ -38,6 +38,12 @@ module ConnectionStringConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof StringFormatSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-798/HardcodedConnectionString.ql:52: Column 5 does not select a source or sink originating from the flow call on line 49
+    none()
+  }
 }
 
 /**

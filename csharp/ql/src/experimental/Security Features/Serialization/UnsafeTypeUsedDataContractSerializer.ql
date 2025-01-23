@@ -35,6 +35,12 @@ deprecated module FlowToDataSerializerConstructorConfig implements DataFlow::Con
   predicate isSource(DataFlow::Node node) { unsafeDataContractTypeCreation(node.asExpr()) }
 
   predicate isSink(DataFlow::Node node) { xmlSerializerConstructorArgument(node.asExpr()) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/Serialization/UnsafeTypeUsedDataContractSerializer.ql:46: Flow call outside 'select' clause
+    none()
+  }
 }
 
 deprecated module FlowToDataSerializerConstructor =

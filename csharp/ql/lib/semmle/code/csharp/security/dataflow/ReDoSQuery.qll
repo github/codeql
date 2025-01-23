@@ -33,6 +33,8 @@ private module ReDoSConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -77,6 +79,12 @@ private module ExponentialRegexDataFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node s) { isExponentialRegex(s.asExpr()) }
 
   predicate isSink(DataFlow::Node s) { s.asExpr() = any(RegexOperation c).getPattern() }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/ReDoSQuery.qll:92: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module ExponentialRegexDataFlow = DataFlow::Global<ExponentialRegexDataFlowConfig>;

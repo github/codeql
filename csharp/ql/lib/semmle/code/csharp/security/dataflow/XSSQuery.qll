@@ -158,6 +158,12 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
    * `node` from the data flow graph.
    */
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/XSSQuery.qll:22: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module XssTracking = TaintTracking::Global<XssTrackingConfig>;

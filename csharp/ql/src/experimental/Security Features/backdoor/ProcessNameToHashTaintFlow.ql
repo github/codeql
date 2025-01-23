@@ -18,6 +18,12 @@ module DataFlowFromMethodToHashConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSuspiciousPropertyName(source.asExpr()) }
 
   predicate isSink(DataFlow::Node sink) { isGetHash(sink.asExpr()) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/backdoor/ProcessNameToHashTaintFlow.ql:52: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module DataFlowFromMethodToHash = TaintTracking::Global<DataFlowFromMethodToHashConfig>;

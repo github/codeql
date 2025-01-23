@@ -34,6 +34,12 @@ private module AuthCookieNameConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
 
   predicate isSink(DataFlow::Node sink) { exists(Call c | sink.asExpr() = c.getAnArgument()) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/dataflow/flowsources/AuthCookie.qll:14: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -55,6 +61,15 @@ private module CookieOptionsTrackingConfig implements DataFlow::ConfigSig {
       iResponse.getAppendMethod() = mc.getTarget() and
       mc.getArgument(2) = sink.asExpr()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql:42: Flow call outside 'select' clause
+    // ql/src/experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql:80: Flow call outside 'select' clause
+    // ql/src/experimental/Security Features/CWE-614/CookieWithoutSecure.ql:41: Flow call outside 'select' clause
+    // ql/src/experimental/Security Features/CWE-614/CookieWithoutSecure.ql:86: Flow call outside 'select' clause
+    none()
   }
 }
 
@@ -166,6 +181,15 @@ private module OnAppendCookieTrackingConfig<propertyName/0 getPropertyName> impl
         pr.getProperty().getDeclaringType() instanceof
           MicrosoftAspNetCoreCookiePolicyAppendCookieContext
       )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql:39: Flow call outside 'select' clause
+    // ql/src/experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql:70: Flow call outside 'select' clause
+    // ql/src/experimental/Security Features/CWE-614/CookieWithoutSecure.ql:33: Flow call outside 'select' clause
+    // ql/src/experimental/Security Features/CWE-614/CookieWithoutSecure.ql:83: Flow call outside 'select' clause
+    none()
   }
 }
 

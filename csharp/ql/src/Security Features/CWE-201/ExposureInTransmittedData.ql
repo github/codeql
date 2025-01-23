@@ -41,6 +41,8 @@ module ExposureInTransmittedDataConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module ExposureInTransmittedData = TaintTracking::Global<ExposureInTransmittedDataConfig>;

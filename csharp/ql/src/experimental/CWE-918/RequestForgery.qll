@@ -52,6 +52,12 @@ module RequestForgery {
     }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/experimental/CWE-918/RequestForgery.ql:21: Flow call outside 'select' clause
+      none()
+    }
   }
 
   /**
