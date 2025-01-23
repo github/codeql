@@ -27,3 +27,5 @@ mayBenefitFromCallContext
 | ViableCallable.cs:580:26:580:30 | call to operator checked / |
 | ViableCallable.cs:586:9:586:15 | call to method M12 |
 | ViableCallable.cs:619:9:619:13 | call to method M |
+| ViableCallable.cs:683:9:683:16 | call to method M |
+| ViableCallable.cs:687:9:687:16 | call to method M |

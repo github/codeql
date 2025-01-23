@@ -508,3 +508,11 @@
 | ViableCallable.cs:613:9:613:13 | call to method M | C21+A1.M() |
 | ViableCallable.cs:619:9:619:13 | call to method M | C21+A1.M() |
 | ViableCallable.cs:619:9:619:13 | call to method M | C21+A2.M() |
+| ViableCallable.cs:661:9:661:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(Int32[]) |
+| ViableCallable.cs:665:9:665:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
+| ViableCallable.cs:672:9:672:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(ReadOnlySpan<int>) |
+| ViableCallable.cs:676:9:676:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(IEnumerable<int>) |
+| ViableCallable.cs:683:9:683:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(Int32[]) |
+| ViableCallable.cs:683:9:683:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(Int32[]) |
+| ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
+| ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(List<int>) |
