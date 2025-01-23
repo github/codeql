@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::execute", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::execute_batch", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::prepare", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::prepare_with_flags", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::query_row", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::query_row_and_then", "Argument[0]", "sql-injection", "manual"]
