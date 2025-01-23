@@ -182,17 +182,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       bbIDominates(this, succ) and
       // The above is not sufficient to ensure that `succ` can only be reached
       // through `s`. To see why, consider this example corresponding to an
-      // `if` expression without an `else` block:
+      // `if` statement without an `else` block and whe `A` is the basic block
+      // following the `if` statement:
       // ```
-      // ... --> cond --[true]--> ... --> if expr
+      // ... --> cond --[true]--> ... --> A
       //           \                      /
       //            ----[false]-----------
       // ```
-      // The basic block for `cond` immediately dominates the directly
-      // succeeding basic block for the `if` expression. But the `if`
-      // expression is not immediately controlled by the `cond` basic block and
-      // the `false` edge since it is also possible to reach the `if`
-      // expression via the `true` edge.
+      // Here `A` is a direct successor of `cond` along the `false` edge and it
+      // is immediately dominated by `cond`, but `A` is not controlled by the
+      // `false` edge since it is also possible to reach `A` via the `true`
+      // edge.
       //
       // Note that the first and third conjunct implies the second. But
       // explicitly including the second conjunct leads to a better join order.
