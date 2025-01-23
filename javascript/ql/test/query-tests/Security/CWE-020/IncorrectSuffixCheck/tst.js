@@ -97,3 +97,15 @@ function lastIndexNeqMinusOne(x) {
 function lastIndexEqMinusOne(x) {
   return x.lastIndexOf("example.com") === -1 || x.lastIndexOf("example.com") === x.length - "example.com".length; // OK
 }
+
+function sameCheck(allowedOrigin) {
+    const trustedAuthority = "example.com";
+
+    const ind = trustedAuthority.indexOf("." + allowedOrigin);
+    return ind > 0 && ind === trustedAuthority.length - allowedOrigin.length - 1; // OK
+}
+
+function sameConcatenation(allowedOrigin) {
+    const trustedAuthority = "example.com";
+    return trustedAuthority.indexOf("." + allowedOrigin) > 0 && trustedAuthority.indexOf("." + allowedOrigin) === trustedAuthority.length - allowedOrigin.length - 1; // OK
+}
