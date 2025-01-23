@@ -26,6 +26,11 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
     this.getParameter(bufParam).getUnspecifiedType() instanceof PointerType
   }
 
+  /** Holds if `i` is a locale parameter that does not carry taint. */
+  private predicate isLocaleParameter(ParameterIndex i) {
+    this.getName().matches("%\\_l") and i + 1 = this.getNumberOfParameters()
+  }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // For these functions we add taint flow according to the following rules:
     // 1. If the parameter is of a pointer type then there is taint from the
@@ -33,15 +38,15 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
     // parameter.
     // 2. If the return value is of a pointer type then there is taint to the
     // indirection of the return. Otherwise, there is taint to the return.
-    exists(ParameterIndex i | exists(this.getParameter(i)) |
-      (
-        if this.getParameter(i).getUnspecifiedType() instanceof PointerType
-        then input.isParameterDeref(i)
-        else input.isParameter(i)
-      ) and
+    exists(ParameterIndex i |
+      exists(this.getParameter(i)) and
       // Functions that end with _l also take a locale argument (always as the last argument),
       // and we don't want taint from those arguments.
-      (not this.getName().matches("%\\_l") or exists(this.getParameter(i + 1)))
+      not this.isLocaleParameter(i)
+    |
+      if this.getParameter(i).getUnspecifiedType() instanceof PointerType
+      then input.isParameterDeref(i)
+      else input.isParameter(i)
     ) and
     (
       if this.getUnspecifiedType() instanceof PointerType
@@ -59,8 +64,7 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     exists(int i |
       input.isParameter(i) and
-      // see the comment in `hasTaintFlow` for an explanation
-      (not this.getName().matches("%\\_l") or exists(this.getParameter(i + 1))) and
+      not this.isLocaleParameter(i) and
       // These functions always return the same pointer as they are given
       this.hasGlobalOrStdOrBslName([strrev(), strlwr(), strupr()]) and
       this.getParameter(i).getUnspecifiedType() instanceof PointerType and
