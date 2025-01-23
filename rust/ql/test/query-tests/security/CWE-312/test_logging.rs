@@ -90,11 +90,11 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     error!(value2:?; "message"); // $ MISSING: Alert[rust/cleartext-logging]
 
     // pre-formatted
-    let m1 = &password; // $ MISSING: Source=m1
-    info!("message = {}", m1); // $ MISSING: Alert[rust/cleartext-logging]=m1
+    let m1 = &password; // $ Source=m1
+    info!("message = {}", m1); // $ Alert[rust/cleartext-logging]=m1
 
-    let m2 = "message = ".to_string() + &password; // $ MISSING: Source=m2
-    info!("{}", m2); // $ MISSING: Alert[rust/cleartext-logging]=m2
+    let m2 = "message = ".to_string() + &password; // $ Source=m2
+    info!("{}", m2); // $ Alert[rust/cleartext-logging]=m2
 
     let m3 = format!("message = {}", password); // $ Source=m3
     info!("{}", m3); // $  Alert[rust/cleartext-logging]=m3

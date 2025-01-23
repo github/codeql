@@ -36,6 +36,12 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     isSource(node)
   }
 
+  predicate isAdditionalFlowStep(Node node1, Node node2) {
+    // flow from `a` to `&a`
+    node2.(Node::ExprNode).asExpr().getExpr().(RefExpr).getExpr() =
+      node1.(Node::ExprNode).asExpr().getExpr()
+  }
+
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // flow out from tuple content at sinks.
     isSink(node) and
