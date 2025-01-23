@@ -177,6 +177,12 @@ predicate overflows(MulExpr me, Type t) {
   )
 }
 
+predicate buildModeNoneIntLongConversion(IntType argType, LongType resultType) {
+  exists(argType) and
+  exists(resultType) and
+  exists(Compilation c | c.buildModeNone())
+}
+
 from MulExpr me, Type t1, Type t2
 where
   t1 = me.getType().getUnderlyingType() and
@@ -218,7 +224,10 @@ where
   // only report if we cannot prove that the result of the
   // multiplication will be less (resp. greater) than the
   // maximum (resp. minimum) number we can compute.
-  overflows(me, t1)
+  overflows(me, t1) and
+  // In build mode none, many conversions from integer to long are caused by incorrect types,
+  // so exclude those results
+  not buildModeNoneIntLongConversion(t1, t2)
 select me,
   "Multiplication result may overflow '" + me.getType().toString() + "' before it is converted to '"
     + me.getFullyConverted().getType().toString() + "'."

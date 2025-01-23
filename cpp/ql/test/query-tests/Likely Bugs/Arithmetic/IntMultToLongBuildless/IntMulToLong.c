@@ -5,6 +5,6 @@ int f();
 void test() {
   int i = f();
   unsigned u = i;
-  long j = i * i; // BAD (FP)
-  unsigned long k = u * u; // BAD (FP)
+  long j = i * i; // GOOD: build mode none
+  unsigned long k = u * u; // GOOD: build mode none
 }
