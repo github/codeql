@@ -1,3 +1,4 @@
+
 typedef unsigned short      WORD;
 typedef unsigned long       DWORD, HANDLE;
 typedef int					BOOL, BOOLEAN, errno_t;
@@ -153,30 +154,26 @@ GetFileTime(
 	LPFILETIME lpLastWriteTime
 );
 
+void print(const char* s);
+
 /**
- * AntiPattern2 - datetime.AddDays(±365)
+ * AntiPattern7 - isLeapYear Conditional
 */
-void antipattern2()
+void antipattern7()
 {
-	// get the current time as a FILETIME
+    // get the current time as a FILETIME
 	SYSTEMTIME st; FILETIME ft;
 	GetSystemTime(&st);
 	SystemTimeToFileTime(&st, &ft);
 
-	// convert to a quadword (64-bit integer) to do arithmetic
-	ULONGLONG qwLongTime;
-	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
-
-	// add a year by calculating the ticks in 365 days
-	// (which may be incorrect when crossing a leap day)
-	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
-
-	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // BAD
-
-	// convert back to SYSTEMTIME for display or other usage
-	FileTimeToSystemTime(&ft, &st);
+	bool isLeapYear = st.wYear % 4 == 0 && (st.wYear % 100 != 0 || st.wYear % 400 == 0);
+    if(isLeapYear){
+        // do something to cater for a leap year....
+		print("It was a leap year");
+    }else{
+        // do another (different) thing
+		print("It was **not** a leap year");
+    }
 }
 
 time_t mktime(struct tm *timeptr);
@@ -198,55 +195,4 @@ time_t mkTime(int days)
 	t = mktime(&tm); // convert tm -> time_t
 
 	return t;
-}
-
-void checkedExample()
-{
-	// get the current time as a FILETIME
-	SYSTEMTIME st; FILETIME ft;
-	GetSystemTime(&st);
-	SystemTimeToFileTime(&st, &ft);
-
-	// convert to a quadword (64-bit integer) to do arithmetic
-	ULONGLONG qwLongTime;
-	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
-
-	// add a year by calculating the ticks in 365 days
-	// (which may be incorrect when crossing a leap day)
-	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
-
-	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // GOOD [FALSE POSITIVE]
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // GOOD [FALSE POSITIVE]
-
-	// convert back to SYSTEMTIME for display or other usage
-	if (FileTimeToSystemTime(&ft, &st) == 0)
-	{
-		// handle error...
-	}
-}
-
-
-void antipattern2A()
-{
-	// get the current time as a FILETIME
-	SYSTEMTIME st; FILETIME ft;
-	GetSystemTime(&st);
-	SystemTimeToFileTime(&st, &ft);
-
-	// convert to a quadword (64-bit integer) to do arithmetic
-	ULONGLONG qwLongTime;
-	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
-	int days_in_year = 365;
-
-	// add a year by calculating the ticks in 365 days
-	// (which may be incorrect when crossing a leap day)
-	qwLongTime += days_in_year * 24 * 60 * 60 * 10000000LLU;
-
-	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // BAD
-
-	// convert back to SYSTEMTIME for display or other usage
-	FileTimeToSystemTime(&ft, &st);
 }

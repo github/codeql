@@ -2,12 +2,11 @@
  * @name Leap Year Invalid Check (AntiPattern 5)
  * @description An expression is used to check a year is presumably a leap year, but the conditions used are insufficient.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id cpp/leap-year/invalid-leap-year-check
  * @precision medium
  * @tags leap-year
  *       correctness
- *       security
  */
 
 import cpp

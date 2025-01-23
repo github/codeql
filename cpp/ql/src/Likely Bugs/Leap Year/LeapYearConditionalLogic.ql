@@ -2,12 +2,11 @@
  * @name Leap Year Conditional Logic (AntiPattern 7)
  * @description Conditional logic is present for leap years and common years, potentially leading to untested code pathways.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id cpp/leap-year/conditional-logic-branches
  * @precision medium
  * @tags leap-year
  *       correctness
- *       security
  */
 
 import cpp

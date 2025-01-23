@@ -153,32 +153,6 @@ GetFileTime(
 	LPFILETIME lpLastWriteTime
 );
 
-/**
- * AntiPattern2 - datetime.AddDays(±365)
-*/
-void antipattern2()
-{
-	// get the current time as a FILETIME
-	SYSTEMTIME st; FILETIME ft;
-	GetSystemTime(&st);
-	SystemTimeToFileTime(&st, &ft);
-
-	// convert to a quadword (64-bit integer) to do arithmetic
-	ULONGLONG qwLongTime;
-	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
-
-	// add a year by calculating the ticks in 365 days
-	// (which may be incorrect when crossing a leap day)
-	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
-
-	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // BAD
-
-	// convert back to SYSTEMTIME for display or other usage
-	FileTimeToSystemTime(&ft, &st);
-}
-
 time_t mktime(struct tm *timeptr);
 struct tm *gmtime(const time_t *timer);
 
@@ -200,53 +174,82 @@ time_t mkTime(int days)
 	return t;
 }
 
-void checkedExample()
+/**
+ * Positive AntiPattern 5 - year % 4 == 0
+*/
+void antipattern5()
 {
+    int year = 1;
+    bool isLeapYear = year % 4 == 0;
+
 	// get the current time as a FILETIME
 	SYSTEMTIME st; FILETIME ft;
 	GetSystemTime(&st);
 	SystemTimeToFileTime(&st, &ft);
 
-	// convert to a quadword (64-bit integer) to do arithmetic
-	ULONGLONG qwLongTime;
-	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
-
-	// add a year by calculating the ticks in 365 days
-	// (which may be incorrect when crossing a leap day)
-	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
-
-	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // GOOD [FALSE POSITIVE]
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // GOOD [FALSE POSITIVE]
-
-	// convert back to SYSTEMTIME for display or other usage
-	if (FileTimeToSystemTime(&ft, &st) == 0)
-	{
-		// handle error...
-	}
+    bool isLeapYear2 = st.wYear % 4 == 0;
 }
 
-
-void antipattern2A()
+/**
+ * Negative AntiPattern 5 - year % 4 == 0
+*/
+void antipattern5_negative()
 {
-	// get the current time as a FILETIME
 	SYSTEMTIME st; FILETIME ft;
 	GetSystemTime(&st);
 	SystemTimeToFileTime(&st, &ft);
+	bool isLeapYear = st.wYear % 4 == 0 && (st.wYear % 100 != 0 || st.wYear % 400 == 0);
 
-	// convert to a quadword (64-bit integer) to do arithmetic
-	ULONGLONG qwLongTime;
-	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
-	int days_in_year = 365;
+    int year = 1;
+	bool isLeapYear2 = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+}
 
-	// add a year by calculating the ticks in 365 days
-	// (which may be incorrect when crossing a leap day)
-	qwLongTime += days_in_year * 24 * 60 * 60 * 10000000LLU;
+/**
+* Negative - Valid Leap year check (logically equivalent) (#1035)
+*/
+bool ap5_negative_inverted_form(int year){
+	return year % 400 == 0 || (year % 100 != 0 && year % 4 == 0);
+}
 
-	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // BAD
+/**
+* Negative - Valid Leap Year check (#1035)
+* Century subexpression component is inverted `!(year % 100 == 0)`
+*/
+bool ap5_negative_inverted_century_100(int year){
+	return !((year % 4 == 0) && (!(year % 100 == 0) || (year % 400 == 0)));
+}
 
-	// convert back to SYSTEMTIME for display or other usage
-	FileTimeToSystemTime(&ft, &st);
+class SomeResultClass{
+  public:
+    int GetYear() {
+      return 2000;
+    }
+};
+
+/**
+ * Negative - Valid Leap Year Check (#1038)
+ * Valid leap year check, but the expression is the result of a Call and thus breaks SSA.
+*/
+bool ap5_fp_expr_call(SomeResultClass result){
+	if (result.GetYear() % 4 == 0 && (result.GetYear() % 100 != 0 || result.GetYear() % 400 == 0)){
+		return true;
+	}
+	return false;
+}
+
+/**
+* Positive - Invalid Leap Year check
+* Components are split up and distributed across multiple if statements.
+*/
+bool tp_leap_year_multiple_if_statements(int year){
+	if (year % 4 == 0) {
+		if (year % 100 == 0) {
+			if (year % 400 == 0) {
+				return true;
+			}
+		}else{
+			return true;
+		}
+	}
+	return false;
 }

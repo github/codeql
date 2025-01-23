@@ -27,10 +27,10 @@
 </recommendation>
 <example>
 <p>In this example, we are adding 1 year to the current date. This may work most of the time, but on any given February 29th, the resulting value will be invalid.</p>
-<sample src="UncheckedLeapYearAfterYearModificationBad.c" />
+<sample src="examples/UncheckedLeapYearAfterYearModificationBad.c" />
 
 <p>To fix this bug, you must verify the return value for <code>SystemTimeToFileTime</code> and handle any potential error accordingly.</p>
-<sample src="UncheckedLeapYearAfterYearModificationGood.c" />
+<sample src="examples/UncheckedLeapYearAfterYearModificationGood.c" />
 </example>
 
 <references>
