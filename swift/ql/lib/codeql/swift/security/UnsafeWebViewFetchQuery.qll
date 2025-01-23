@@ -28,6 +28,12 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(UnsafeWebViewFetchAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/Security/CWE-079/UnsafeWebViewFetch.ql:39: Column 1 does not select a source or sink originating from the flow call on line 36
+    none()
+  }
 }
 
 /**
