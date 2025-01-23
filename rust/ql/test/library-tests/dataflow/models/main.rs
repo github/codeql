@@ -175,6 +175,71 @@ fn test_set_tuple_element() {
     sink(t.1); // $ hasValueFlow=11
 }
 
+impl MyFieldEnum {
+    // has a source model
+    fn source(&self, i: i64) -> MyFieldEnum {
+        MyFieldEnum::C { field_c: 0 }
+    }
+
+    // has a sink model
+    fn sink(self) {}
+}
+
+// has a source model
+fn enum_source(i: i64) -> MyFieldEnum {
+    MyFieldEnum::C { field_c: 0 }
+}
+
+fn test_enum_source() {
+    let s = enum_source(12);
+    match s {
+        MyFieldEnum::C { field_c: i } => sink(i),
+        MyFieldEnum::D { field_d: i } => sink(i), // $ hasValueFlow=12
+    }
+}
+
+fn test_enum_method_source() {
+    let e = MyFieldEnum::D { field_d: 0 };
+    let s = e.source(13);
+    match s {
+        MyFieldEnum::C { field_c: i } => sink(i), // $ hasValueFlow=13
+        MyFieldEnum::D { field_d: i } => sink(i),
+    }
+}
+
+// has a sink model
+fn enum_sink(e: MyFieldEnum) {}
+
+fn test_enum_sink() {
+    let s = source(14);
+    enum_sink(MyFieldEnum::C { field_c: s }); // $ hasValueFlow=14
+    enum_sink(MyFieldEnum::D { field_d: s });
+}
+
+fn test_enum_method_sink() {
+    let s = source(15);
+    let e = MyFieldEnum::D { field_d: s };
+    e.sink(); // $ hasValueFlow=15
+}
+
+// has a source model
+fn simple_source(i: i64) -> i64 {
+    0
+}
+
+fn test_simple_source() {
+    let s = simple_source(16);
+    sink(s) // $ hasValueFlow=16
+}
+
+// has a sink model
+fn simple_sink(i: i64) {}
+
+fn test_simple_sink() {
+    let s = source(17);
+    simple_sink(s); // $ hasValueFlow=17
+}
+
 fn main() {
     test_identify();
     test_get_var_pos();
@@ -187,5 +252,11 @@ fn main() {
     test_set_array_element();
     test_get_tuple_element();
     test_set_tuple_element();
+    test_enum_source();
+    test_enum_method_source();
+    test_enum_sink();
+    test_enum_method_sink();
+    test_simple_source();
+    test_simple_sink();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }

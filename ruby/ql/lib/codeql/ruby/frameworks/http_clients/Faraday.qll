@@ -99,6 +99,10 @@ private module FaradayDisablesCertificateValidationConfig implements DataFlow::S
   predicate isSink(DataFlow::Node sink, FlowState state) {
     sink = any(FaradayHttpRequest req).getCertificateValidationControllingValue(state)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
 
 private module FaradayDisablesCertificateValidationFlow =

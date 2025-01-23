@@ -11,6 +11,10 @@ class Test {
 			"des_function",
 			"function_using_des",
 			"EncryptWithDES",
+			"RC2",
+			"RC4",
+			"ARCFOUR",
+			"RC5",
 			"AES/ECB/NoPadding",
 			"AES/CBC/PKCS5Padding");
 

@@ -12,12 +12,17 @@ private import semmle.javascript.security.TaintedObjectCustomizations
  * template object injection vulnerabilities.
  */
 module TemplateObjectInjection {
+  import semmle.javascript.security.CommonFlowState
+
   /**
    * A data flow source for template object injection vulnerabilities.
    */
   abstract class Source extends DataFlow::Node {
-    /** Gets a flow label to associate with this source. */
-    abstract DataFlow::FlowLabel getAFlowLabel();
+    /** Gets a flow state for which this is a source. */
+    FlowState getAFlowState() { result.isTaint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -31,12 +36,12 @@ module TemplateObjectInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   private class TaintedObjectSourceAsSource extends Source instanceof TaintedObject::Source {
-    override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+    override FlowState getAFlowState() { result.isTaintedObject() }
   }
 
   /** An active threat-model source, considered as a flow source. */
   private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource {
-    override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+    override FlowState getAFlowState() { result.isTaint() }
   }
 
   /**

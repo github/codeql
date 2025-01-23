@@ -869,7 +869,7 @@ class AbstractClass extends Class {
  * `FullClassTemplateSpecialization`.
  */
 class TemplateClass extends Class {
-  TemplateClass() { usertypes(underlyingElement(this), _, 6) }
+  TemplateClass() { usertypes(underlyingElement(this), _, [15, 16, 17]) }
 
   /**
    * Gets a class instantiated from this template.
@@ -1076,13 +1076,19 @@ class VirtualBaseClass extends Class {
 }
 
 /**
- * The proxy class (where needed) associated with a template parameter, as
- * in the following code:
- * ```
+ * The proxy class (where needed) associated with a template parameter or a
+ * decltype, as in the following code:
+ * ```cpp
  * template <typename T>
  * struct S : T { // the type of this T is a proxy class
  *   ...
  * };
+ *
+ * template <typename T>
+ * concept C =
+ *   decltype(std::span{std::declval<T&>()})::extent
+ *     != std::dynamic_extent;
+ *   // the type of decltype(std::span{std::declval<T&>()}) is a proxy class
  * ```
  */
 class ProxyClass extends UserType {
@@ -1093,10 +1099,13 @@ class ProxyClass extends UserType {
   /** Gets the location of the proxy class. */
   override Location getLocation() { result = this.getTemplateParameter().getDefinitionLocation() }
 
-  /** Gets the template parameter for which this is the proxy class. */
+  /** Gets the template parameter for which this is the proxy class, if any. */
   TypeTemplateParameter getTemplateParameter() {
     is_proxy_class_for(underlyingElement(this), unresolveElement(result))
   }
+
+  /** Gets the decltype for which this is the proxy class, if any. */
+  Decltype getDecltype() { is_proxy_class_for(underlyingElement(this), unresolveElement(result)) }
 }
 
 // Unpacks "array of ... of array of t" into t.

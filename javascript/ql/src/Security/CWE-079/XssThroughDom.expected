@@ -1,0 +1,13 @@
+nodes
+| examples/XssThroughDom.js:2:9:2:44 | target |
+| examples/XssThroughDom.js:2:18:2:44 | $(this) ... arget") |
+| examples/XssThroughDom.js:2:18:2:44 | $(this) ... arget") |
+| examples/XssThroughDom.js:3:7:3:12 | target |
+| examples/XssThroughDom.js:3:7:3:12 | target |
+edges
+| examples/XssThroughDom.js:2:9:2:44 | target | examples/XssThroughDom.js:3:7:3:12 | target |
+| examples/XssThroughDom.js:2:9:2:44 | target | examples/XssThroughDom.js:3:7:3:12 | target |
+| examples/XssThroughDom.js:2:18:2:44 | $(this) ... arget") | examples/XssThroughDom.js:2:9:2:44 | target |
+| examples/XssThroughDom.js:2:18:2:44 | $(this) ... arget") | examples/XssThroughDom.js:2:9:2:44 | target |
+#select
+| examples/XssThroughDom.js:3:7:3:12 | target | examples/XssThroughDom.js:2:18:2:44 | $(this) ... arget") | examples/XssThroughDom.js:3:7:3:12 | target | $@ is reinterpreted as HTML without escaping meta-characters. | examples/XssThroughDom.js:2:18:2:44 | $(this) ... arget") | DOM text |

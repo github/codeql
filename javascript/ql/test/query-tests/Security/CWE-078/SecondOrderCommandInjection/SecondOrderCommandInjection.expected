@@ -1,51 +1,26 @@
 nodes
-| second-order.js:6:9:6:33 | remote |
-| second-order.js:6:18:6:33 | req.query.remote |
-| second-order.js:6:18:6:33 | req.query.remote |
-| second-order.js:7:33:7:38 | remote |
-| second-order.js:7:33:7:38 | remote |
-| second-order.js:9:29:9:34 | remote |
-| second-order.js:9:29:9:34 | remote |
-| second-order.js:11:33:11:38 | remote |
-| second-order.js:11:33:11:38 | remote |
-| second-order.js:13:9:13:31 | myArgs |
-| second-order.js:13:18:13:31 | req.query.args |
-| second-order.js:13:18:13:31 | req.query.args |
-| second-order.js:15:19:15:24 | myArgs |
-| second-order.js:15:19:15:24 | myArgs |
-| second-order.js:26:35:26:40 | remote |
-| second-order.js:26:35:26:40 | remote |
-| second-order.js:29:19:29:32 | req.query.args |
-| second-order.js:29:19:29:32 | req.query.args |
-| second-order.js:29:19:29:32 | req.query.args |
-| second-order.js:40:28:40:43 | req.query.remote |
-| second-order.js:40:28:40:43 | req.query.remote |
-| second-order.js:40:28:40:43 | req.query.remote |
-| second-order.js:42:31:42:46 | req.query.remote |
-| second-order.js:42:31:42:46 | req.query.remote |
-| second-order.js:42:31:42:46 | req.query.remote |
-| second-order.js:44:18:44:31 | req.query.args |
-| second-order.js:44:18:44:31 | req.query.args |
-| second-order.js:44:18:44:31 | req.query.args |
+| second-order.js:6:9:6:33 | remote | semmle.label | remote |
+| second-order.js:6:18:6:33 | req.query.remote | semmle.label | req.query.remote |
+| second-order.js:7:33:7:38 | remote | semmle.label | remote |
+| second-order.js:9:29:9:34 | remote | semmle.label | remote |
+| second-order.js:11:33:11:38 | remote | semmle.label | remote |
+| second-order.js:13:9:13:31 | myArgs | semmle.label | myArgs |
+| second-order.js:13:18:13:31 | req.query.args | semmle.label | req.query.args |
+| second-order.js:15:19:15:24 | myArgs | semmle.label | myArgs |
+| second-order.js:26:35:26:40 | remote | semmle.label | remote |
+| second-order.js:29:19:29:32 | req.query.args | semmle.label | req.query.args |
+| second-order.js:40:28:40:43 | req.query.remote | semmle.label | req.query.remote |
+| second-order.js:42:31:42:46 | req.query.remote | semmle.label | req.query.remote |
+| second-order.js:44:18:44:31 | req.query.args | semmle.label | req.query.args |
 edges
-| second-order.js:6:9:6:33 | remote | second-order.js:7:33:7:38 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:7:33:7:38 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:9:29:9:34 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:9:29:9:34 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:11:33:11:38 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:11:33:11:38 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:26:35:26:40 | remote |
-| second-order.js:6:9:6:33 | remote | second-order.js:26:35:26:40 | remote |
-| second-order.js:6:18:6:33 | req.query.remote | second-order.js:6:9:6:33 | remote |
-| second-order.js:6:18:6:33 | req.query.remote | second-order.js:6:9:6:33 | remote |
-| second-order.js:13:9:13:31 | myArgs | second-order.js:15:19:15:24 | myArgs |
-| second-order.js:13:9:13:31 | myArgs | second-order.js:15:19:15:24 | myArgs |
-| second-order.js:13:18:13:31 | req.query.args | second-order.js:13:9:13:31 | myArgs |
-| second-order.js:13:18:13:31 | req.query.args | second-order.js:13:9:13:31 | myArgs |
-| second-order.js:29:19:29:32 | req.query.args | second-order.js:29:19:29:32 | req.query.args |
-| second-order.js:40:28:40:43 | req.query.remote | second-order.js:40:28:40:43 | req.query.remote |
-| second-order.js:42:31:42:46 | req.query.remote | second-order.js:42:31:42:46 | req.query.remote |
-| second-order.js:44:18:44:31 | req.query.args | second-order.js:44:18:44:31 | req.query.args |
+| second-order.js:6:9:6:33 | remote | second-order.js:7:33:7:38 | remote | provenance |  |
+| second-order.js:6:9:6:33 | remote | second-order.js:9:29:9:34 | remote | provenance |  |
+| second-order.js:6:9:6:33 | remote | second-order.js:11:33:11:38 | remote | provenance |  |
+| second-order.js:6:9:6:33 | remote | second-order.js:26:35:26:40 | remote | provenance |  |
+| second-order.js:6:18:6:33 | req.query.remote | second-order.js:6:9:6:33 | remote | provenance |  |
+| second-order.js:13:9:13:31 | myArgs | second-order.js:15:19:15:24 | myArgs | provenance |  |
+| second-order.js:13:18:13:31 | req.query.args | second-order.js:13:9:13:31 | myArgs | provenance |  |
+subpaths
 #select
 | second-order.js:7:33:7:38 | remote | second-order.js:6:18:6:33 | req.query.remote | second-order.js:7:33:7:38 | remote | Command line argument that depends on $@ can execute an arbitrary command if --upload-pack is used with git. | second-order.js:6:18:6:33 | req.query.remote | a user-provided value |
 | second-order.js:9:29:9:34 | remote | second-order.js:6:18:6:33 | req.query.remote | second-order.js:9:29:9:34 | remote | Command line argument that depends on $@ can execute an arbitrary command if --upload-pack is used with git. | second-order.js:6:18:6:33 | req.query.remote | a user-provided value |

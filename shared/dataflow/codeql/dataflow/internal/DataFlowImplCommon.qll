@@ -80,7 +80,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
   }
 
-  private module TypeTrackingInput implements Tt::TypeTrackingInput {
+  private module TypeTrackingInput implements Tt::TypeTrackingInput<Location> {
     final class Node = Lang::Node;
 
     class LocalSourceNode extends Node {
@@ -145,7 +145,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate hasFeatureBacktrackStoreTarget() { none() }
   }
 
-  private module TypeTracking = Tt::TypeTracking<TypeTrackingInput>;
+  private module TypeTracking = Tt::TypeTracking<Location, TypeTrackingInput>;
 
   /**
    * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
@@ -1062,6 +1062,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       n.asNode() instanceof CastingNode or
       exists(n.asParamReturnNode())
     }
+
+    cached
+    string getSourceModel(NodeEx node) { knownSourceModel(node.asNode(), result) }
+
+    cached
+    string getSinkModel(NodeEx node) { knownSinkModel(node.asNodeOrImplicitRead(), result) }
 
     cached
     predicate parameterNode(Node p, DataFlowCallable c, ParameterPosition pos) {

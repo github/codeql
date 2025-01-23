@@ -589,4 +589,25 @@ module Angular2 {
 
     override DataFlow::Node getValueNode() { result = valueNode }
   }
+
+  /**
+   * A source of DOM events originating from the `$event` variable in an event handler installed in an Angular template.
+   */
+  private class DomEventSources extends DOM::DomEventSource::Range {
+    DomEventSources() {
+      exists(HTML::Element elm, string attributeName |
+        elm = any(ComponentClass cls).getATemplateElement() and
+        // Ignore instantiations of known element (mainly focus on native DOM elements)
+        not elm = any(ComponentClass cls).getATemplateInstantiation() and
+        not elm.getName().matches("ng-%") and
+        this =
+          elm.getAttributeByName(attributeName)
+              .getCodeInAttribute()
+              .(TemplateTopLevel)
+              .getAVariableUse("$event") and
+        attributeName.matches("(%)") and // event handler attribute
+        not attributeName.matches("(ng%)") // exclude NG events which aren't necessarily DOM events
+      )
+    }
+  }
 }

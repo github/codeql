@@ -339,3 +339,11 @@ def ok_match(x):  # FP
             return 0
         case _:
             raise ValueError(x)
+
+
+def ok_match2(x):  # FP
+    match x:
+        case None:
+            return 0
+        case _:
+            return 1

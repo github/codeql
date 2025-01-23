@@ -11,10 +11,18 @@ If you don't have the `semmle-code` repo you may need to install Bazel manually,
 
 ### Building the Rust Extractor
 
-This approach uses a released `codeql` version and is simpler to use for QL development. From your `semmle-code` directory run:
+This approach uses a released `codeql` version and is simpler to use for QL development. From anywhere under your `semmle-code` or `codeql` directory you can run:
 ```bash
 bazel run @codeql//rust:install
 ```
+
+You can use shorter versions of the above command:
+```bash
+bazel run //rust:install  # if under the `codeql` checkout
+bazel run rust:install  # if at the root of the `codeql` checkout
+bazel run :install  # if at the `rust` directory of the `codeql` checkout
+```
+
 You now need to create a [per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file) and specify the option:
 ```
 --search-path PATH/TO/semmle-code/ql
@@ -40,4 +48,17 @@ TODO
 
 ### Code Generation
 
-TODO
+If you make changes to either
+* `ast-generator/`, or
+* `schema/*.py`
+
+you'll need to regenerate code. You can do so running
+```sh
+bazel run @codeql//rust/codegen
+```
+
+Sometimes, especially if resolving conflicts on generated files, you might need to run
+```sh
+bazel run @codeql//rust/codegen -- --force
+```
+for code generation to succeed.

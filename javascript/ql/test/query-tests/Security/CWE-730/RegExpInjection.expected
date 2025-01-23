@@ -1,159 +1,117 @@
-nodes
-| RegExpInjection.js:5:7:5:28 | key |
-| RegExpInjection.js:5:13:5:28 | req.param("key") |
-| RegExpInjection.js:5:13:5:28 | req.param("key") |
-| RegExpInjection.js:5:31:5:56 | input |
-| RegExpInjection.js:5:39:5:56 | req.param("input") |
-| RegExpInjection.js:5:39:5:56 | req.param("input") |
-| RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
-| RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
-| RegExpInjection.js:8:31:8:33 | key |
-| RegExpInjection.js:19:14:19:22 | wrap(key) |
-| RegExpInjection.js:19:14:19:22 | wrap(key) |
-| RegExpInjection.js:19:19:19:21 | key |
-| RegExpInjection.js:21:14:21:22 | wrap(key) |
-| RegExpInjection.js:21:14:21:22 | wrap(key) |
-| RegExpInjection.js:21:19:21:21 | key |
-| RegExpInjection.js:24:12:24:27 | req.param("key") |
-| RegExpInjection.js:24:12:24:27 | req.param("key") |
-| RegExpInjection.js:27:14:27:21 | getKey() |
-| RegExpInjection.js:27:14:27:21 | getKey() |
-| RegExpInjection.js:29:21:29:21 | s |
-| RegExpInjection.js:29:21:29:21 | s |
-| RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:33:12:33:14 | key |
-| RegExpInjection.js:34:12:34:19 | getKey() |
-| RegExpInjection.js:40:23:40:27 | input |
-| RegExpInjection.js:40:23:40:27 | input |
-| RegExpInjection.js:41:26:41:30 | input |
-| RegExpInjection.js:41:26:41:30 | input |
-| RegExpInjection.js:42:25:42:29 | input |
-| RegExpInjection.js:42:25:42:29 | input |
-| RegExpInjection.js:45:24:45:28 | input |
-| RegExpInjection.js:45:24:45:28 | input |
-| RegExpInjection.js:46:27:46:31 | input |
-| RegExpInjection.js:46:27:46:31 | input |
-| RegExpInjection.js:47:26:47:30 | input |
-| RegExpInjection.js:47:26:47:30 | input |
-| RegExpInjection.js:54:14:54:16 | key |
-| RegExpInjection.js:54:14:54:27 | key.split(".") |
-| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) |
-| RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
-| RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
-| RegExpInjection.js:60:31:60:56 | input |
-| RegExpInjection.js:60:39:60:56 | req.param("input") |
-| RegExpInjection.js:60:39:60:56 | req.param("input") |
-| RegExpInjection.js:64:14:64:18 | input |
-| RegExpInjection.js:64:14:64:18 | input |
-| RegExpInjection.js:82:7:82:32 | input |
-| RegExpInjection.js:82:15:82:32 | req.param("input") |
-| RegExpInjection.js:82:15:82:32 | req.param("input") |
-| RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" |
-| RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" |
-| RegExpInjection.js:87:25:87:29 | input |
-| RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") |
-| RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` |
-| RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` |
-| RegExpInjection.js:91:20:91:30 | process.env |
-| RegExpInjection.js:91:20:91:30 | process.env |
-| RegExpInjection.js:91:20:91:35 | process.env.HOME |
-| RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` |
-| RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` |
-| RegExpInjection.js:93:20:93:31 | process.argv |
-| RegExpInjection.js:93:20:93:31 | process.argv |
-| RegExpInjection.js:93:20:93:34 | process.argv[1] |
-| RegExpInjection.js:97:7:97:32 | input |
-| RegExpInjection.js:97:15:97:32 | req.param("input") |
-| RegExpInjection.js:97:15:97:32 | req.param("input") |
-| RegExpInjection.js:99:7:99:106 | sanitized |
-| RegExpInjection.js:99:19:99:23 | input |
-| RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") |
-| RegExpInjection.js:100:14:100:22 | sanitized |
-| RegExpInjection.js:100:14:100:22 | sanitized |
-| tst.js:5:9:5:29 | data |
-| tst.js:5:16:5:29 | req.query.data |
-| tst.js:5:16:5:29 | req.query.data |
-| tst.js:6:16:6:35 | "^"+ data.name + "$" |
-| tst.js:6:16:6:35 | "^"+ data.name + "$" |
-| tst.js:6:21:6:24 | data |
-| tst.js:6:21:6:29 | data.name |
 edges
-| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:8:31:8:33 | key |
-| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:19:19:19:21 | key |
-| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:21:19:21:21 | key |
-| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:33:12:33:14 | key |
-| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:54:14:54:16 | key |
-| RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:5:7:5:28 | key |
-| RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:5:7:5:28 | key |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:40:23:40:27 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:40:23:40:27 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:41:26:41:30 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:41:26:41:30 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:42:25:42:29 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:42:25:42:29 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:24:45:28 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:24:45:28 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:27:46:31 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:27:46:31 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:26:47:30 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:26:47:30 | input |
-| RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:5:31:5:56 | input |
-| RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:5:31:5:56 | input |
-| RegExpInjection.js:8:31:8:33 | key | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
-| RegExpInjection.js:8:31:8:33 | key | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
-| RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:19:14:19:22 | wrap(key) |
-| RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:19:14:19:22 | wrap(key) |
-| RegExpInjection.js:21:19:21:21 | key | RegExpInjection.js:21:14:21:22 | wrap(key) |
-| RegExpInjection.js:21:19:21:21 | key | RegExpInjection.js:21:14:21:22 | wrap(key) |
-| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:27:14:27:21 | getKey() |
-| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:27:14:27:21 | getKey() |
-| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:27:14:27:21 | getKey() |
-| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:27:14:27:21 | getKey() |
-| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:34:12:34:19 | getKey() |
-| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:34:12:34:19 | getKey() |
-| RegExpInjection.js:29:21:29:21 | s | RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:29:21:29:21 | s | RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:29:21:29:21 | s | RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:29:21:29:21 | s | RegExpInjection.js:31:23:31:23 | s |
-| RegExpInjection.js:33:12:33:14 | key | RegExpInjection.js:29:21:29:21 | s |
-| RegExpInjection.js:34:12:34:19 | getKey() | RegExpInjection.js:29:21:29:21 | s |
-| RegExpInjection.js:54:14:54:16 | key | RegExpInjection.js:54:14:54:27 | key.split(".") |
-| RegExpInjection.js:54:14:54:27 | key.split(".") | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) |
-| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
-| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
-| RegExpInjection.js:60:31:60:56 | input | RegExpInjection.js:64:14:64:18 | input |
-| RegExpInjection.js:60:31:60:56 | input | RegExpInjection.js:64:14:64:18 | input |
-| RegExpInjection.js:60:39:60:56 | req.param("input") | RegExpInjection.js:60:31:60:56 | input |
-| RegExpInjection.js:60:39:60:56 | req.param("input") | RegExpInjection.js:60:31:60:56 | input |
-| RegExpInjection.js:82:7:82:32 | input | RegExpInjection.js:87:25:87:29 | input |
-| RegExpInjection.js:82:15:82:32 | req.param("input") | RegExpInjection.js:82:7:82:32 | input |
-| RegExpInjection.js:82:15:82:32 | req.param("input") | RegExpInjection.js:82:7:82:32 | input |
-| RegExpInjection.js:87:25:87:29 | input | RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") |
-| RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" |
-| RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" |
-| RegExpInjection.js:91:20:91:30 | process.env | RegExpInjection.js:91:20:91:35 | process.env.HOME |
-| RegExpInjection.js:91:20:91:30 | process.env | RegExpInjection.js:91:20:91:35 | process.env.HOME |
-| RegExpInjection.js:91:20:91:35 | process.env.HOME | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` |
-| RegExpInjection.js:91:20:91:35 | process.env.HOME | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` |
-| RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:20:93:34 | process.argv[1] |
-| RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:20:93:34 | process.argv[1] |
-| RegExpInjection.js:93:20:93:34 | process.argv[1] | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` |
-| RegExpInjection.js:93:20:93:34 | process.argv[1] | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` |
-| RegExpInjection.js:97:7:97:32 | input | RegExpInjection.js:99:19:99:23 | input |
-| RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:97:7:97:32 | input |
-| RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:97:7:97:32 | input |
-| RegExpInjection.js:99:7:99:106 | sanitized | RegExpInjection.js:100:14:100:22 | sanitized |
-| RegExpInjection.js:99:7:99:106 | sanitized | RegExpInjection.js:100:14:100:22 | sanitized |
-| RegExpInjection.js:99:19:99:23 | input | RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") |
-| RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") | RegExpInjection.js:99:7:99:106 | sanitized |
-| tst.js:5:9:5:29 | data | tst.js:6:21:6:24 | data |
-| tst.js:5:16:5:29 | req.query.data | tst.js:5:9:5:29 | data |
-| tst.js:5:16:5:29 | req.query.data | tst.js:5:9:5:29 | data |
-| tst.js:6:21:6:24 | data | tst.js:6:21:6:29 | data.name |
-| tst.js:6:21:6:29 | data.name | tst.js:6:16:6:35 | "^"+ data.name + "$" |
-| tst.js:6:21:6:29 | data.name | tst.js:6:16:6:35 | "^"+ data.name + "$" |
+| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:8:31:8:33 | key | provenance |  |
+| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:19:19:19:21 | key | provenance |  |
+| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:21:19:21:21 | key | provenance |  |
+| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:33:12:33:14 | key | provenance |  |
+| RegExpInjection.js:5:7:5:28 | key | RegExpInjection.js:54:14:54:16 | key | provenance |  |
+| RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:5:7:5:28 | key | provenance |  |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:40:23:40:27 | input | provenance |  |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:41:26:41:30 | input | provenance |  |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:42:25:42:29 | input | provenance |  |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:24:45:28 | input | provenance |  |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:27:46:31 | input | provenance |  |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:26:47:30 | input | provenance |  |
+| RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:5:31:5:56 | input | provenance |  |
+| RegExpInjection.js:8:31:8:33 | key | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" | provenance |  |
+| RegExpInjection.js:10:17:10:17 | s | RegExpInjection.js:11:26:11:26 | s | provenance |  |
+| RegExpInjection.js:11:20:11:27 | wrap2(s) | RegExpInjection.js:11:12:11:27 | "\\\\b" + wrap2(s) | provenance |  |
+| RegExpInjection.js:11:26:11:26 | s | RegExpInjection.js:11:20:11:27 | wrap2(s) | provenance |  |
+| RegExpInjection.js:11:26:11:26 | s | RegExpInjection.js:14:18:14:18 | s | provenance |  |
+| RegExpInjection.js:14:18:14:18 | s | RegExpInjection.js:15:12:15:12 | s | provenance |  |
+| RegExpInjection.js:15:12:15:12 | s | RegExpInjection.js:15:12:15:24 | s + "=(.*)\\n" | provenance |  |
+| RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:10:17:10:17 | s | provenance |  |
+| RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:19:14:19:22 | wrap(key) | provenance |  |
+| RegExpInjection.js:21:19:21:21 | key | RegExpInjection.js:10:17:10:17 | s | provenance |  |
+| RegExpInjection.js:21:19:21:21 | key | RegExpInjection.js:21:14:21:22 | wrap(key) | provenance |  |
+| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:27:14:27:21 | getKey() | provenance |  |
+| RegExpInjection.js:24:12:24:27 | req.param("key") | RegExpInjection.js:34:12:34:19 | getKey() | provenance |  |
+| RegExpInjection.js:29:21:29:21 | s | RegExpInjection.js:31:23:31:23 | s | provenance |  |
+| RegExpInjection.js:33:12:33:14 | key | RegExpInjection.js:29:21:29:21 | s | provenance |  |
+| RegExpInjection.js:34:12:34:19 | getKey() | RegExpInjection.js:29:21:29:21 | s | provenance |  |
+| RegExpInjection.js:54:14:54:16 | key | RegExpInjection.js:54:14:54:27 | key.split(".") | provenance |  |
+| RegExpInjection.js:54:14:54:16 | key | RegExpInjection.js:54:14:54:27 | key.split(".") [ArrayElement] | provenance |  |
+| RegExpInjection.js:54:14:54:27 | key.split(".") | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | provenance |  |
+| RegExpInjection.js:54:14:54:27 | key.split(".") [ArrayElement] | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) [ArrayElement] | provenance |  |
+| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | provenance |  |
+| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) [ArrayElement] | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | provenance |  |
+| RegExpInjection.js:60:31:60:56 | input | RegExpInjection.js:64:14:64:18 | input | provenance |  |
+| RegExpInjection.js:60:39:60:56 | req.param("input") | RegExpInjection.js:60:31:60:56 | input | provenance |  |
+| RegExpInjection.js:82:7:82:32 | input | RegExpInjection.js:87:25:87:29 | input | provenance |  |
+| RegExpInjection.js:82:15:82:32 | req.param("input") | RegExpInjection.js:82:7:82:32 | input | provenance |  |
+| RegExpInjection.js:87:25:87:29 | input | RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") | provenance |  |
+| RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | provenance |  |
+| RegExpInjection.js:91:20:91:30 | process.env | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | provenance |  |
+| RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | provenance |  |
+| RegExpInjection.js:97:7:97:32 | input | RegExpInjection.js:99:19:99:23 | input | provenance |  |
+| RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:97:7:97:32 | input | provenance |  |
+| RegExpInjection.js:99:7:99:106 | sanitized | RegExpInjection.js:100:14:100:22 | sanitized | provenance |  |
+| RegExpInjection.js:99:19:99:23 | input | RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") | provenance |  |
+| RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") | RegExpInjection.js:99:7:99:106 | sanitized | provenance |  |
+| tst.js:5:9:5:29 | data | tst.js:6:21:6:24 | data | provenance |  |
+| tst.js:5:16:5:29 | req.query.data | tst.js:5:9:5:29 | data | provenance |  |
+| tst.js:6:21:6:24 | data | tst.js:6:16:6:35 | "^"+ data.name + "$" | provenance |  |
+nodes
+| RegExpInjection.js:5:7:5:28 | key | semmle.label | key |
+| RegExpInjection.js:5:13:5:28 | req.param("key") | semmle.label | req.param("key") |
+| RegExpInjection.js:5:31:5:56 | input | semmle.label | input |
+| RegExpInjection.js:5:39:5:56 | req.param("input") | semmle.label | req.param("input") |
+| RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" | semmle.label | "\\\\b" + ... (.*)\\n" |
+| RegExpInjection.js:8:31:8:33 | key | semmle.label | key |
+| RegExpInjection.js:10:17:10:17 | s | semmle.label | s |
+| RegExpInjection.js:11:12:11:27 | "\\\\b" + wrap2(s) | semmle.label | "\\\\b" + wrap2(s) |
+| RegExpInjection.js:11:20:11:27 | wrap2(s) | semmle.label | wrap2(s) |
+| RegExpInjection.js:11:26:11:26 | s | semmle.label | s |
+| RegExpInjection.js:14:18:14:18 | s | semmle.label | s |
+| RegExpInjection.js:15:12:15:12 | s | semmle.label | s |
+| RegExpInjection.js:15:12:15:24 | s + "=(.*)\\n" | semmle.label | s + "=(.*)\\n" |
+| RegExpInjection.js:19:14:19:22 | wrap(key) | semmle.label | wrap(key) |
+| RegExpInjection.js:19:19:19:21 | key | semmle.label | key |
+| RegExpInjection.js:21:14:21:22 | wrap(key) | semmle.label | wrap(key) |
+| RegExpInjection.js:21:19:21:21 | key | semmle.label | key |
+| RegExpInjection.js:24:12:24:27 | req.param("key") | semmle.label | req.param("key") |
+| RegExpInjection.js:27:14:27:21 | getKey() | semmle.label | getKey() |
+| RegExpInjection.js:29:21:29:21 | s | semmle.label | s |
+| RegExpInjection.js:31:23:31:23 | s | semmle.label | s |
+| RegExpInjection.js:33:12:33:14 | key | semmle.label | key |
+| RegExpInjection.js:34:12:34:19 | getKey() | semmle.label | getKey() |
+| RegExpInjection.js:40:23:40:27 | input | semmle.label | input |
+| RegExpInjection.js:41:26:41:30 | input | semmle.label | input |
+| RegExpInjection.js:42:25:42:29 | input | semmle.label | input |
+| RegExpInjection.js:45:24:45:28 | input | semmle.label | input |
+| RegExpInjection.js:46:27:46:31 | input | semmle.label | input |
+| RegExpInjection.js:47:26:47:30 | input | semmle.label | input |
+| RegExpInjection.js:54:14:54:16 | key | semmle.label | key |
+| RegExpInjection.js:54:14:54:27 | key.split(".") | semmle.label | key.split(".") |
+| RegExpInjection.js:54:14:54:27 | key.split(".") [ArrayElement] | semmle.label | key.split(".") [ArrayElement] |
+| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | semmle.label | key.spl ... x => x) |
+| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) [ArrayElement] | semmle.label | key.spl ... x => x) [ArrayElement] |
+| RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | semmle.label | key.spl ... in("-") |
+| RegExpInjection.js:60:31:60:56 | input | semmle.label | input |
+| RegExpInjection.js:60:39:60:56 | req.param("input") | semmle.label | req.param("input") |
+| RegExpInjection.js:64:14:64:18 | input | semmle.label | input |
+| RegExpInjection.js:82:7:82:32 | input | semmle.label | input |
+| RegExpInjection.js:82:15:82:32 | req.param("input") | semmle.label | req.param("input") |
+| RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | semmle.label | "^.*\\.( ...  + ")$" |
+| RegExpInjection.js:87:25:87:29 | input | semmle.label | input |
+| RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") | semmle.label | input.r ... g, "\|") |
+| RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | semmle.label | `^${pro ... r.app$` |
+| RegExpInjection.js:91:20:91:30 | process.env | semmle.label | process.env |
+| RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | semmle.label | `^${pro ... r.app$` |
+| RegExpInjection.js:93:20:93:31 | process.argv | semmle.label | process.argv |
+| RegExpInjection.js:97:7:97:32 | input | semmle.label | input |
+| RegExpInjection.js:97:15:97:32 | req.param("input") | semmle.label | req.param("input") |
+| RegExpInjection.js:99:7:99:106 | sanitized | semmle.label | sanitized |
+| RegExpInjection.js:99:19:99:23 | input | semmle.label | input |
+| RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") | semmle.label | input.r ... "\\\\$&") |
+| RegExpInjection.js:100:14:100:22 | sanitized | semmle.label | sanitized |
+| tst.js:5:9:5:29 | data | semmle.label | data |
+| tst.js:5:16:5:29 | req.query.data | semmle.label | req.query.data |
+| tst.js:6:16:6:35 | "^"+ data.name + "$" | semmle.label | "^"+ data.name + "$" |
+| tst.js:6:21:6:24 | data | semmle.label | data |
+subpaths
+| RegExpInjection.js:11:26:11:26 | s | RegExpInjection.js:14:18:14:18 | s | RegExpInjection.js:15:12:15:24 | s + "=(.*)\\n" | RegExpInjection.js:11:20:11:27 | wrap2(s) |
+| RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:10:17:10:17 | s | RegExpInjection.js:11:12:11:27 | "\\\\b" + wrap2(s) | RegExpInjection.js:19:14:19:22 | wrap(key) |
+| RegExpInjection.js:21:19:21:21 | key | RegExpInjection.js:10:17:10:17 | s | RegExpInjection.js:11:12:11:27 | "\\\\b" + wrap2(s) | RegExpInjection.js:21:14:21:22 | wrap(key) |
 #select
 | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" | RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" | This regular expression is constructed from a $@. | RegExpInjection.js:5:13:5:28 | req.param("key") | user-provided value |
 | RegExpInjection.js:19:14:19:22 | wrap(key) | RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:19:14:19:22 | wrap(key) | This regular expression is constructed from a $@. | RegExpInjection.js:5:13:5:28 | req.param("key") | user-provided value |

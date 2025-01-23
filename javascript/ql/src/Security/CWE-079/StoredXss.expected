@@ -1,0 +1,30 @@
+nodes
+| examples/StoredXss.js:5:44:5:52 | fileNames |
+| examples/StoredXss.js:5:44:5:52 | fileNames |
+| examples/StoredXss.js:7:9:7:17 | fileNames |
+| examples/StoredXss.js:7:27:7:34 | fileName |
+| examples/StoredXss.js:9:13:9:16 | list |
+| examples/StoredXss.js:9:13:9:47 | list |
+| examples/StoredXss.js:9:21:9:47 | '<li>'  ... '</li>' |
+| examples/StoredXss.js:9:30:9:37 | fileName |
+| examples/StoredXss.js:11:9:11:12 | list |
+| examples/StoredXss.js:11:9:11:23 | list |
+| examples/StoredXss.js:12:18:12:21 | list |
+| examples/StoredXss.js:12:18:12:21 | list |
+edges
+| examples/StoredXss.js:5:44:5:52 | fileNames | examples/StoredXss.js:7:9:7:17 | fileNames |
+| examples/StoredXss.js:5:44:5:52 | fileNames | examples/StoredXss.js:7:9:7:17 | fileNames |
+| examples/StoredXss.js:7:9:7:17 | fileNames | examples/StoredXss.js:7:27:7:34 | fileName |
+| examples/StoredXss.js:7:27:7:34 | fileName | examples/StoredXss.js:9:30:9:37 | fileName |
+| examples/StoredXss.js:9:13:9:16 | list | examples/StoredXss.js:9:13:9:47 | list |
+| examples/StoredXss.js:9:13:9:47 | list | examples/StoredXss.js:9:13:9:16 | list |
+| examples/StoredXss.js:9:13:9:47 | list | examples/StoredXss.js:11:9:11:12 | list |
+| examples/StoredXss.js:9:21:9:47 | '<li>'  ... '</li>' | examples/StoredXss.js:9:13:9:47 | list |
+| examples/StoredXss.js:9:30:9:37 | fileName | examples/StoredXss.js:9:21:9:47 | '<li>'  ... '</li>' |
+| examples/StoredXss.js:11:9:11:12 | list | examples/StoredXss.js:11:9:11:23 | list |
+| examples/StoredXss.js:11:9:11:23 | list | examples/StoredXss.js:9:13:9:16 | list |
+| examples/StoredXss.js:11:9:11:23 | list | examples/StoredXss.js:11:9:11:12 | list |
+| examples/StoredXss.js:11:9:11:23 | list | examples/StoredXss.js:12:18:12:21 | list |
+| examples/StoredXss.js:11:9:11:23 | list | examples/StoredXss.js:12:18:12:21 | list |
+#select
+| examples/StoredXss.js:12:18:12:21 | list | examples/StoredXss.js:5:44:5:52 | fileNames | examples/StoredXss.js:12:18:12:21 | list | Stored cross-site scripting vulnerability due to $@. | examples/StoredXss.js:5:44:5:52 | fileNames | stored value |

@@ -7735,6 +7735,38 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:790:11:790:12 | f2 [inner post update] |  |
 | taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:791:7:791:8 | f2 |  |
 | taint.cpp:790:11:790:12 | f2 | taint.cpp:790:10:790:12 | & ... |  |
+| taint.cpp:805:12:805:25 | call to SysAllocString | taint.cpp:806:8:806:9 | p1 |  |
+| taint.cpp:806:8:806:9 | p1 | taint.cpp:806:7:806:9 | * ... | TAINT |
+| taint.cpp:808:12:808:32 | call to SysAllocStringByteLen | taint.cpp:809:8:809:9 | p2 |  |
+| taint.cpp:809:8:809:9 | p2 | taint.cpp:809:7:809:9 | * ... | TAINT |
+| taint.cpp:811:12:811:28 | call to SysAllocStringLen | taint.cpp:812:8:812:9 | p3 |  |
+| taint.cpp:812:8:812:9 | p3 | taint.cpp:812:7:812:9 | * ... | TAINT |
+| taint.cpp:817:42:817:46 | p_out | taint.cpp:817:42:817:46 | p_out |  |
+| taint.cpp:817:42:817:46 | p_out | taint.cpp:819:4:819:8 | p_out |  |
+| taint.cpp:817:62:817:65 | p_in | taint.cpp:817:62:817:65 | p_in |  |
+| taint.cpp:817:62:817:65 | p_in | taint.cpp:818:20:818:23 | p_in |  |
+| taint.cpp:818:19:818:23 | * ... | taint.cpp:819:19:819:19 | q |  |
+| taint.cpp:818:20:818:23 | p_in | taint.cpp:818:19:818:23 | * ... | TAINT |
+| taint.cpp:819:3:819:8 | * ... [post update] | taint.cpp:817:42:817:46 | p_out |  |
+| taint.cpp:819:3:819:8 | * ... [post update] | taint.cpp:819:4:819:8 | p_out [inner post update] |  |
+| taint.cpp:819:3:819:25 | ... = ... | taint.cpp:819:3:819:8 | * ... [post update] |  |
+| taint.cpp:819:4:819:8 | p_out | taint.cpp:819:3:819:8 | * ... | TAINT |
+| taint.cpp:819:12:819:17 | call to strchr | taint.cpp:819:3:819:25 | ... = ... |  |
+| taint.cpp:819:19:819:19 | q | taint.cpp:819:12:819:17 | call to strchr | TAINT |
+| taint.cpp:819:22:819:24 | 47 | taint.cpp:819:12:819:17 | call to strchr | TAINT |
+| taint.cpp:822:33:822:35 | out | taint.cpp:822:33:822:35 | out |  |
+| taint.cpp:822:33:822:35 | out | taint.cpp:826:27:826:29 | out |  |
+| taint.cpp:822:50:822:51 | in | taint.cpp:822:50:822:51 | in |  |
+| taint.cpp:822:50:822:51 | in | taint.cpp:826:33:826:34 | in |  |
+| taint.cpp:826:26:826:29 | ref arg & ... | taint.cpp:822:33:822:35 | out |  |
+| taint.cpp:826:26:826:29 | ref arg & ... | taint.cpp:826:27:826:29 | out [inner post update] |  |
+| taint.cpp:826:27:826:29 | out | taint.cpp:826:26:826:29 | & ... |  |
+| taint.cpp:826:32:826:34 | ref arg & ... | taint.cpp:822:50:822:51 | in |  |
+| taint.cpp:826:32:826:34 | ref arg & ... | taint.cpp:826:33:826:34 | in [inner post update] |  |
+| taint.cpp:826:33:826:34 | in | taint.cpp:826:32:826:34 | & ... |  |
+| taint.cpp:830:20:830:34 | call to indirect_source | taint.cpp:832:23:832:24 | in |  |
+| taint.cpp:831:15:831:17 | out | taint.cpp:832:18:832:20 | out |  |
+| taint.cpp:831:15:831:17 | out | taint.cpp:833:8:833:10 | out |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

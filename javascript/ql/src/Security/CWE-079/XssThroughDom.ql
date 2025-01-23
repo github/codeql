@@ -14,9 +14,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XssThroughDomQuery
-import DataFlow::PathGraph
+import XssThroughDomFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from XssThroughDomFlow::PathNode source, XssThroughDomFlow::PathNode sink
+where
+  XssThroughDomFlow::flowPath(source, sink) and
+  not isIgnoredSourceSinkPair(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
   "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(), "DOM text"

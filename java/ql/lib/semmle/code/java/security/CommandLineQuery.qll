@@ -58,6 +58,13 @@ module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(CommandInjectionAdditionalTaintStep s).step(n1, n2)
   }
+
+  // It's valid to use diff-informed data flow for this configuration because
+  // the location of the selected element in the query is contained inside the
+  // location of the sink. The query, as a predicate, is used negated in
+  // another query, but that's only to prevent overlapping results between two
+  // queries.
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

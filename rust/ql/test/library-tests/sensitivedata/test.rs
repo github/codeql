@@ -21,20 +21,28 @@ impl MyStruct {
 fn get_password() -> String { get_string() }
 
 fn test_passwords(
-	password: &str, passwd: &str, my_password: &str, password_str: &str, pass_phrase: &str,
-	auth_key: &str, authenticationkey: &str, authKey: &str,
+	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str,
+	pass_phrase: &str, passphrase: &str, passPhrase: &str,
+	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str,
 	harmless: &str, encrypted_password: &str, password_hash: &str,
 	ms: &MyStruct
 ) {
 	// passwords
 	sink(password); // $ sensitive=password
+	sink(pass_word); // $ MISSING: sensitive=password
 	sink(passwd); // $ sensitive=password
 	sink(my_password); // $ sensitive=password
 	sink(password_str); // $ sensitive=password
-	sink(pass_phrase); // $ MISSING: sensitive=password
-	sink(auth_key); // $ MISSING: sensitive=password
-	sink(authenticationkey); // $ sensitive=password
+	sink(pass_phrase); // $ sensitive=password
+	sink(passphrase); // $ sensitive=password
+	sink(passPhrase); // $ sensitive=password
+
+	sink(auth_key); // $ sensitive=password
+	sink(authkey); // $ sensitive=password
 	sink(authKey); // $ sensitive=password
+	sink(authentication_key); // $ sensitive=password
+	sink(authenticationkey); // $ sensitive=password
+	sink(authenticationKey); // $ sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ MISSING: sensitive=password
@@ -65,7 +73,9 @@ fn get_secret_token() -> String { get_string() }
 fn get_next_token() -> String { get_string() }
 
 fn test_credentials(
-	account_key: &str, accnt_key: &str, license_key: &str, secret_key: &str, is_secret: bool, num_accounts: i64, uid: i64,
+	account_key: &str, accnt_key: &str, license_key: &str, secret_key: &str, is_secret: bool, num_accounts: i64,
+	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, unique_id: i64, uid: i64,
+	sessionkey: &[u64; 4], session_key: &[u64; 4], hashkey: &[u64; 4], hash_key: &[u64; 4],
 	ms: &MyStruct
 ) {
 	// credentials
@@ -74,6 +84,15 @@ fn test_credentials(
 	sink(license_key); // $ MISSING: sensitive=secret
 	sink(secret_key); // $ sensitive=secret
 
+	sink(username); // $ sensitive=id
+	sink(user_name); // $ sensitive=id
+	sink(userid); // $ sensitive=id
+	sink(user_id); // $ sensitive=id
+	sink(my_user_id_64); // $ sensitive=id
+
+	sink(sessionkey); // $ sensitive=id
+	sink(session_key); // $ sensitive=id
+
 	sink(ms.get_certificate()); // $ sensitive=certificate
 
 	sink(generate_secret_key()); // $ sensitive=secret
@@ -81,10 +100,13 @@ fn test_credentials(
 	sink(get_private_key()); // $ MISSING: sensitive=secret
 	sink(get_secret_token()); // $ sensitive=secret
 
-	// not credentials
+	// not (necessarily) credentials
 	sink(is_secret);
 	sink(num_accounts); // $ SPURIOUS: sensitive=id
+	sink(unique_id);
 	sink(uid); // $ SPURIOUS: sensitive=id
+	sink(hashkey);
+	sink(hash_key);
 
 	sink(ms.get_certificate_url()); // $ SPURIOUS: sensitive=certificate
 	sink(ms.get_certificate_file()); // $ SPURIOUS: sensitive=certificate
