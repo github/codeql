@@ -18,11 +18,12 @@ private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-730/PolynomialReDoS.ql:31: Column 1 selects sink.getHighlight
-    // ql/src/Security/CWE-730/PolynomialReDoS.ql:33: Column 5 does not select a source or sink originating from the flow call on line 24
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getHighlight().getLocation()
+    or
+    result = sink.(Sink).getABacktrackingTerm().getLocation()
   }
 }
 
