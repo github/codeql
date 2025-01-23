@@ -4,7 +4,6 @@ use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
-use log::Level;
 use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
@@ -170,20 +169,37 @@ impl<'a> Translator<'a> {
         location: (LineCol, LineCol),
     ) {
         let (start, end) = location;
-        let level = match severity {
-            DiagnosticSeverity::Debug => Level::Debug,
-            DiagnosticSeverity::Info => Level::Info,
-            DiagnosticSeverity::Warning => Level::Warn,
-            DiagnosticSeverity::Error => Level::Error,
+        match severity {
+            DiagnosticSeverity::Debug => tracing::debug!(
+                "{}:{}:{}: {}",
+                self.path,
+                start.line + 1,
+                start.col + 1,
+                &full_message
+            ),
+            DiagnosticSeverity::Info => tracing::info!(
+                "{}:{}:{}: {}",
+                self.path,
+                start.line + 1,
+                start.col + 1,
+                &full_message
+            ),
+            DiagnosticSeverity::Warning => tracing::warn!(
+                "{}:{}:{}: {}",
+                self.path,
+                start.line + 1,
+                start.col + 1,
+                &full_message
+            ),
+            DiagnosticSeverity::Error => tracing::error!(
+                "{}:{}:{}: {}",
+                self.path,
+                start.line + 1,
+                start.col + 1,
+                &full_message
+            ),
         };
-        log::log!(
-            level,
-            "{}:{}:{}: {}",
-            self.path,
-            start.line + 1,
-            start.col + 1,
-            &full_message
-        );
+
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);
             self.trap

@@ -3,7 +3,6 @@ use crate::rust_analyzer::path_to_file_id;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use log::{info, warn};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
@@ -16,6 +15,9 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use tracing::{info, warn};
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
@@ -85,7 +87,7 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(ast);
         translator.trap.commit().unwrap_or_else(|err| {
-            log::error!(
+            tracing::error!(
                 "Failed to write trap file for: {}: {}",
                 display_path,
                 err.to_string()
@@ -180,11 +182,19 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 
 fn main() -> anyhow::Result<()> {
     let start = Instant::now();
+    let flame_layer = if let Ok(path) = std::env::var("CODEQL_EXTRACTOR_RUST_OPTION_FLAME_LOG") {
+        tracing_flame::FlameLayer::with_file(path).ok()
+    } else {
+        None
+    };
+    tracing_subscriber::registry()
+        .with(codeql_extractor::extractor::default_subscriber_with_level(
+            "single_arch",
+        ))
+        .with(flame_layer.map(|x| x.0))
+        .init();
+
     let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    stderrlog::new()
-        .module(module_path!())
-        .verbosity(2 + cfg.verbose as usize)
-        .init()?;
     if cfg.qltest {
         qltest::prepare(&mut cfg)?;
     }

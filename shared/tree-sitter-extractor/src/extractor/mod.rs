@@ -7,6 +7,13 @@ use std::collections::BTreeSet as Set;
 use std::env;
 use std::path::Path;
 
+use tracing_subscriber::filter::Filtered;
+use tracing_subscriber::fmt::format::DefaultFields;
+use tracing_subscriber::fmt::format::Format;
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::Layer;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
@@ -15,11 +22,29 @@ pub mod simple;
 /// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
 /// falling back to `warn` if neither is set.
 pub fn set_tracing_level(language: &str) {
-    tracing_subscriber::fmt()
+    tracing_subscriber::registry()
+        .with(default_subscriber_with_level(language))
+        .init();
+}
+
+/// Create a `Subscriber` configured with the tracing level based on the environment variables
+/// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order), falling back to `warn` if neither is set.
+pub fn default_subscriber_with_level(
+    language: &str,
+) -> Filtered<
+    tracing_subscriber::fmt::Layer<
+        tracing_subscriber::Registry,
+        DefaultFields,
+        Format<tracing_subscriber::fmt::format::Full, ()>,
+    >,
+    EnvFilter,
+    tracing_subscriber::Registry,
+> {
+    tracing_subscriber::fmt::layer()
         .with_target(false)
         .without_time()
         .with_level(true)
-        .with_env_filter(
+        .with_filter(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
                 |_| -> tracing_subscriber::EnvFilter {
                     let verbosity = env::var("CODEQL_VERBOSITY")
@@ -38,9 +63,7 @@ pub fn set_tracing_level(language: &str) {
                 },
             ),
         )
-        .init();
 }
-
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
         &file_paths::normalize_path(absolute_path),

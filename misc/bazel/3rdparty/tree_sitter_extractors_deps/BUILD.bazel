@@ -188,18 +188,6 @@ alias(
 )
 
 alias(
-    name = "log-0.4.22",
-    actual = "@vendor__log-0.4.22//:log",
-    tags = ["manual"],
-)
-
-alias(
-    name = "log",
-    actual = "@vendor__log-0.4.22//:log",
-    tags = ["manual"],
-)
-
-alias(
     name = "mustache-0.9.0",
     actual = "@vendor__mustache-0.9.0//:mustache",
     tags = ["manual"],
@@ -518,18 +506,6 @@ alias(
 )
 
 alias(
-    name = "stderrlog-0.6.0",
-    actual = "@vendor__stderrlog-0.6.0//:stderrlog",
-    tags = ["manual"],
-)
-
-alias(
-    name = "stderrlog",
-    actual = "@vendor__stderrlog-0.6.0//:stderrlog",
-    tags = ["manual"],
-)
-
-alias(
     name = "syn-2.0.96",
     actual = "@vendor__syn-2.0.96//:syn",
     tags = ["manual"],
@@ -562,6 +538,18 @@ alias(
 alias(
     name = "tracing",
     actual = "@vendor__tracing-0.1.41//:tracing",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tracing-flame-0.2.0",
+    actual = "@vendor__tracing-flame-0.2.0//:tracing_flame",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tracing-flame",
+    actual = "@vendor__tracing-flame-0.2.0//:tracing_flame",
     tags = ["manual"],
 )
 
