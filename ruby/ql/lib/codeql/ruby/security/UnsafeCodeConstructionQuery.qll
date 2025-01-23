@@ -25,10 +25,12 @@ private module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/queries/security/cwe-094/UnsafeCodeConstruction.ql:25: Column 7 selects sink.getCodeSink
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getCodeSink().getLocation()
   }
 }
 

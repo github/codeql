@@ -29,11 +29,7 @@ module NormalHashFunction {
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    predicate observeDiffInformedIncrementalMode() {
-      // TODO(diff-informed): Manually verify if config can be diff-informed.
-      // ql/lib/codeql/ruby/security/WeakSensitiveDataHashingQuery.qll:83: Flow call outside 'select' clause
-      none()
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on sensitive data" vulnerabilities. */
@@ -61,11 +57,7 @@ module ComputationallyExpensiveHashFunction {
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    predicate observeDiffInformedIncrementalMode() {
-      // TODO(diff-informed): Manually verify if config can be diff-informed.
-      // ql/lib/codeql/ruby/security/WeakSensitiveDataHashingQuery.qll:90: Flow call outside 'select' clause
-      none()
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on passwords" vulnerabilities. */

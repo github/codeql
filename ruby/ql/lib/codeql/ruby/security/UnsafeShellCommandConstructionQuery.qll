@@ -27,11 +27,14 @@ private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigS
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/queries/security/cwe-078/UnsafeShellCommandConstruction.ql:26: Column 1 selects sink.getStringConstruction
-    // ql/src/queries/security/cwe-078/UnsafeShellCommandConstruction.ql:28: Column 7 selects sink.getCommandExecution
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getStringConstruction().getLocation()
+    or
+    result = sink.(Sink).getCommandExecution().getLocation()
   }
 }
 
