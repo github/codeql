@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Sensitive user data and system information that is logged could be seen by an attacker when it is
+Sensitive user data and system information that is logged could be exposed to an attacker when it is
 displayed. Also, external processes often store the standard output and standard error streams of
 an application, which will include logged sensitive information.
 </p>
@@ -23,7 +23,7 @@ The following example code logs user credentials (in this case, their password) 
 </p>
 <sample src="CleartextLoggingBad.rs"/>
 <p>
-Instead, you should encrypt the credentials, or better still omit them entirely:
+Instead, you should encrypt the credentials, or better still, omit them entirely:
 </p>
 <sample src="CleartextLoggingGood.rs"/>
 </example>

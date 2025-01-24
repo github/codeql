@@ -6,7 +6,7 @@ use std::fmt::Write as _;
 // --- tests ---
 
 fn get_password() -> String {
-    return "123456".to_string();
+    "123456".to_string()
 }
 
 fn use_password(password: &String) {
