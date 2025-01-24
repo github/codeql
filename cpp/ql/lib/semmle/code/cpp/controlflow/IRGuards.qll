@@ -102,27 +102,34 @@ abstract private class GuardConditionImpl extends Expr {
     this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
-  /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
+  /**
+   * Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this
+   * expression evaluates to `testIsTrue`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
+   */
   pragma[inline]
   abstract predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-   *   If `isLessThan = false` then this implies `left >= right + k`.
+   *   If `isLessThan = false` then this implies `left >= right + k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
 
   /**
    * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
-   * this expression evaluates to `value`.
+   * this expression evaluates to `value`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `e >= k`.
+   * If `isLessThan = false` then this implies `e >= k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
@@ -142,7 +149,8 @@ abstract private class GuardConditionImpl extends Expr {
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `left != right + k`.
+   * If `areEqual = false` then this implies `left != right + k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
@@ -162,7 +170,8 @@ abstract private class GuardConditionImpl extends Expr {
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `e != k`.
+   * If `areEqual = false` then this implies `e != k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
