@@ -127,7 +127,16 @@ abstract private class GuardConditionImpl extends Expr {
   pragma[inline]
   abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
 
-  /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  /**
+   * Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this
+   * expression evaluates to `testIsTrue`. Note that there's a 4-argument ("unary") and a
+   * 5-argument ("binary") version of `comparesEq` and they are not equivalent:
+   *  - the unary version is suitable for guards where there is no expression representing the
+   *    right-hand side, such as `if (x)`, and also works for equality with an integer constant
+   *    (such as `if (x == k)`).
+   *  - the binary version is the more general case for comparison of any expressions (not
+   *    necessarily integer).
+   */
   pragma[inline]
   abstract predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
 
@@ -138,7 +147,16 @@ abstract private class GuardConditionImpl extends Expr {
   pragma[inline]
   abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 
-  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
+  /**
+   * Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression
+   * evaluates to `value`. Note that there's a 4-argument ("unary") and a 5-argument ("binary")
+   * version of `comparesEq` and they are not equivalent:
+   *  - the unary version is suitable for guards where there is no expression representing the
+   *    right-hand side, such as `if (x)`, and also works for equality with an integer constant
+   *    (such as `if (x == k)`).
+   *  - the binary version is the more general case for comparison of any expressions (not
+   *    necessarily integer).
+   */
   pragma[inline]
   abstract predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value);
 
