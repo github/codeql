@@ -759,12 +759,15 @@ final class ReferenceContent extends Content, TReferenceContent {
 }
 
 /**
- * An element in an array.
+ * An element in a collection where we do not track the specific collection
+ * type nor the placement of the element in the collection. Therefore the
+ * collection should be one where the elements are reasonably homogeneous,
+ * i.e., if one is tainted all elements are considered tainted.
+ *
+ * Examples include the elements of a set, array, vector, or stack.
  */
-final class ArrayElementContent extends Content, TArrayElement {
-  ArrayElementContent() { this = TArrayElement() }
-
-  override string toString() { result = "array[]" }
+final class ElementContent extends Content, TElementContent {
+  override string toString() { result = "element" }
 }
 
 /**
@@ -1086,19 +1089,19 @@ module RustDataFlow implements InputSig<Location> {
       )
       or
       exists(IndexExprCfgNode arr |
-        c instanceof ArrayElementContent and
+        c instanceof ElementContent and
         node1.asExpr() = arr.getBase() and
         node2.asExpr() = arr
       )
       or
       exists(ForExprCfgNode for |
-        c instanceof ArrayElementContent and
+        c instanceof ElementContent and
         node1.asExpr() = for.getIterable() and
         node2.asPat() = for.getPat()
       )
       or
       exists(SlicePatCfgNode pat |
-        c instanceof ArrayElementContent and
+        c instanceof ElementContent and
         node1.asPat() = pat and
         node2.asPat() = pat.getAPat()
       )
@@ -1178,7 +1181,7 @@ module RustDataFlow implements InputSig<Location> {
       node2.asExpr() = tuple
     )
     or
-    c instanceof ArrayElementContent and
+    c instanceof ElementContent and
     node1.asExpr() =
       [
         node2.asExpr().(ArrayRepeatExprCfgNode).getRepeatOperand(),
@@ -1188,7 +1191,7 @@ module RustDataFlow implements InputSig<Location> {
     tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
     exists(AssignmentExprCfgNode assignment, IndexExprCfgNode index |
-      c instanceof ArrayElementContent and
+      c instanceof ElementContent and
       assignment.getLhs() = index and
       node1.asExpr() = assignment.getRhs() and
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
@@ -1561,7 +1564,7 @@ private module Cached {
     TVariantFieldContent(VariantCanonicalPath v, string field) {
       field = v.getVariant().getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
-    TArrayElement() or
+    TElementContent() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
                 any(TuplePat pat).getNumberOfFields(),

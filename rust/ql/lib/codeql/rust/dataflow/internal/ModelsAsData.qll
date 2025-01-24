@@ -28,7 +28,7 @@
  *     - `Parameter[n]`: the `n`-th parameter of a callback. May be a range of form `x..y` (inclusive)
  *                       and/or a comma-separated list.
  *     - `ReturnValue`: the value returned by a function call.
- *     - `ArrayElement`: an element of an array.
+ *     - `Element`: an element in a collection.
  *     - `Variant[v::f]`: field `f` of the variant with canonical path `v`, for example
  *                        `Variant[crate::ihex::Record::Data::value]`.
  *     - `Variant[v(i)]`: position `i` inside the variant with canonical path `v`, for example
