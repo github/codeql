@@ -64,7 +64,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      edgeName = "algorithm" and
+      edgeName = "uses" and
       if exists(this.getAlgorithm()) then result = this.getAlgorithm() else result = this
     }
   }
@@ -89,13 +89,43 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getOperationName() { result = "hash" }
   }
 
+  // Rule: no newtype representing a type of algorithm should be modelled with multiple interfaces
+  //
+  // Example: HKDF and PKCS12KDF are both key derivation algorithms.
+  //          However, PKCS12KDF also has a property: the iteration count.
+  //
+  //          If we have HKDF and PKCS12KDF under TKeyDerivationType,
+  //          someone modelling a library might try to make a generic identification of both of those algorithms.
+  //
+  //          They will therefore not use the specialized type for PKCS12KDF,
+  //          meaning "from PKCS12KDF algo select algo" will have no results.
+  //
+  newtype THashType =
+    // We're saying by this that all of these have an identical interface / properties / edges
+    MD5() or
+    SHA1() or
+    SHA256() or
+    SHA512()
+
+  class HashAlgorithmType extends THashType {
+    string toString() { hashTypeToNameMapping(this, result) }
+  }
+
+  predicate hashTypeToNameMapping(THashType type, string name) {
+    type instanceof SHA1 and name = "SHA-1"
+    or
+    type instanceof SHA256 and name = "SHA-256"
+    or
+    type instanceof SHA512 and name = "SHA-512"
+  }
+
   /**
    * A hashing algorithm that transforms variable-length input into a fixed-size hash value.
    */
-  abstract class HashAlgorithm extends Algorithm { }
+  abstract class HashAlgorithm extends Algorithm {
+    abstract HashAlgorithmType getHashType();
 
-  abstract class SHA1 extends HashAlgorithm {
-    override string getAlgorithmName() { result = "SHA1" }
+    override string getAlgorithmName() { hashTypeToNameMapping(this.getHashType(), result) }
   }
 
   /**

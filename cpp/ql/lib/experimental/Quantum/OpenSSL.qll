@@ -6,8 +6,10 @@ module OpenSSLModel {
 
   abstract class KeyDerivationOperation extends Crypto::KeyDerivationOperation { }
 
-  class SHA1Algo extends Crypto::SHA1 instanceof MacroAccess {
+  class SHA1Algo extends Crypto::HashAlgorithm instanceof MacroAccess {
     SHA1Algo() { this.getMacro().getName() = "SN_sha1" }
+
+    override Crypto::HashAlgorithmType getHashType() { result instanceof Crypto::SHA1 }
   }
 
   module AlgorithmToEVPKeyDeriveConfig implements DataFlow::ConfigSig {
