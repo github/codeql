@@ -699,13 +699,13 @@ module Bash {
       // VAR2=$(cmd)
       // VAR3=$VAR2
       // echo "FIELD=${VAR3:-default}" >> $GITHUB_ENV (field, file_write_value)
-      script.getAnAssignment(var2, value2) and
-      script.getAnAssignment(var3, value3) and
-      not varMatchesRegexTest(script, var2, alphaNumericRegex()) and
-      not varMatchesRegexTest(script, var3, alphaNumericRegex()) and
       containsCmdSubstitution(value2, cmd) and
+      script.getAnAssignment(var2, value2) and
       containsParameterExpansion(value3, var2, _, _) and
-      containsParameterExpansion(expr, var3, _, _)
+      script.getAnAssignment(var3, value3) and
+      containsParameterExpansion(expr, var3, _, _) and
+      not varMatchesRegexTest(script, var2, alphaNumericRegex()) and
+      not varMatchesRegexTest(script, var3, alphaNumericRegex())
     )
     or
     // var reaches the file write directly
