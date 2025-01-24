@@ -32,8 +32,6 @@ postWithInFlow
 | test.cpp:1077:10:1077:11 | swap output argument | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
-| ../../../include/iterator.h:22:3:22:10 | iterator | *0 | ../../../include/iterator.h:22:3:22:10 | [summary param] *0 in iterator | Parameters with overlapping positions. |
-| ../../../include/iterator.h:22:3:22:10 | iterator | *0 | ../../../include/iterator.h:22:67:22:71 | *other | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
