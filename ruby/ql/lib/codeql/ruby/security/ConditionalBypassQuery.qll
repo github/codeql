@@ -19,6 +19,10 @@ private module Config implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation() or result = sink.(Sink).getAction().getLocation()
+  }
 }
 
 /**
