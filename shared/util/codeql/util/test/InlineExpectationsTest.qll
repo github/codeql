@@ -739,7 +739,13 @@ module TestPostProcessing {
       bindingset[result]
       string getARelevantTag() { any() }
 
-      predicate tagMatches = PathProblemSourceTestInput::tagMatches/2;
+      bindingset[expectedTag, actualTag]
+      predicate tagMatches(string expectedTag, string actualTag) {
+        PathProblemSourceTestInput::tagMatches(expectedTag, actualTag)
+        or
+        not exists(getQueryKind()) and
+        expectedTag = actualTag
+      }
 
       bindingset[expectedTag]
       predicate tagIsOptional(string expectedTag) {
@@ -751,6 +757,9 @@ module TestPostProcessing {
           queryId = expectedTag.regexpCapture(getTagRegex(), 3) and
           queryId != getQueryId()
         )
+        or
+        not exists(getQueryKind()) and
+        expectedTag = ["Alert", "Source", "Sink"]
       }
 
       private predicate hasPathProblemSource = PathProblemSourceTestInput::hasPathProblemSource/5;
@@ -776,6 +785,22 @@ module TestPostProcessing {
           Input2::getRelativeUrl(location) = loc and
           not hasPathProblemSource(row, location, _, _, _) and
           not hasPathProblemSink(row, location, _, _)
+        )
+      }
+
+      private predicate hasCustomQueryPredicateResult(
+        Input::Location location, string tag, string value
+      ) {
+        not exists(getQueryKind()) and
+        exists(int row |
+          queryResults(tag, row, 0, Input2::getRelativeUrl(location)) and
+          not tag = [mainResultSet(), "nodes", "edges", "subpaths"] and
+          (
+            queryResults(tag, row, 2, value)
+            or
+            not queryResults(tag, row, 2, _) and
+            value = ""
+          )
         )
       }
 
@@ -805,6 +830,9 @@ module TestPostProcessing {
           or
           value = getValue(row)
         )
+        or
+        hasCustomQueryPredicateResult(location, tag, value) and
+        element = ""
       }
     }
 
