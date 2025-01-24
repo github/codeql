@@ -134,6 +134,10 @@ private module Implementation implements CfgShared::InputSig<Location> {
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
 
   predicate isAbnormalExitType(SuccessorType t) { none() }
+
+  int idOfAstNode(AstNode node) { none() }
+
+  int idOfCfgScope(CfgScope scope) { none() }
 }
 
 module CfgImpl = CfgShared::Make<Location, Implementation>;

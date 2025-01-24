@@ -328,6 +328,36 @@ fn closure_variable() {
     print_i64(n2); // $ read_access=n2
 }
 
+fn nested_function() {
+    // local variables shadow local functions
+    let f = // f1
+        |x: i64| // x_1
+        x; // $ read_access=x_1
+    print_i64(f(1)); // $ read_access=f1
+
+    fn f(x: i64) -> i64 { // x_2
+        x + 1 // $ read_access=x_2
+    }
+
+    print_i64(f(2)); // $ read_access=f1
+
+    {
+        print_i64(f(3));
+        fn f(x: i64) -> i64 { // x_3
+            2 * x // $ read_access=x_3
+        }
+
+        {
+            print_i64(f(4));
+        }
+
+        let f = // f2
+            |x: i64| // x_4
+            x; // $ read_access=x_4
+        print_i64(f(5)); // $ read_access=f2
+    }
+}
+
 fn for_variable() {
     let v = &["apples", "cake", "coffee"]; // v
 
@@ -594,6 +624,7 @@ fn main() {
     param_pattern2(Either::Left(45));
     destruct_assignment();
     closure_variable();
+    nested_function();
     for_variable();
     add_assign();
     mutate();

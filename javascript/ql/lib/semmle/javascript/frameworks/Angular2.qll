@@ -8,6 +8,7 @@ private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.ViewComponentInput
 
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
@@ -574,5 +575,18 @@ module Angular2 {
         not attributeName.matches("(ng%)") // exclude NG events which aren't necessarily DOM events
       )
     }
+  }
+
+  private class InputFieldAsViewComponentInput extends ViewComponentInput {
+    InputFieldAsViewComponentInput() {
+      this =
+        API::moduleImport("@angular/core")
+            .getMember("Input")
+            .getReturn()
+            .getADecoratedMember()
+            .asSource()
+    }
+
+    override string getSourceType() { result = "Angular component input field" }
   }
 }

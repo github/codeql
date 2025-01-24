@@ -5,8 +5,8 @@ fn sink<T>(_: T) { }
 // --- tests ---
 
 fn test_env_vars() {
-    sink(std::env::var("HOME")); // $ Alert[rust/summary/taint-sources] hasTaintFlow
-    sink(std::env::var_os("PATH")); // $ Alert[rust/summary/taint-sources] hasTaintFlow
+    sink(std::env::var("HOME")); // $ Alert[rust/summary/taint-sources] hasTaintFlow="HOME"
+    sink(std::env::var_os("PATH")); // $ Alert[rust/summary/taint-sources] hasTaintFlow="PATH"
 
     let var1 = std::env::var("HOME").expect("HOME not set"); // $ Alert[rust/summary/taint-sources]
     let var2 = std::env::var_os("PATH").unwrap(); // $ Alert[rust/summary/taint-sources]

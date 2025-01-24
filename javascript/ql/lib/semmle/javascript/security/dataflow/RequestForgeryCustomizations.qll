@@ -52,7 +52,7 @@ module RequestForgery {
       not this.(ClientSideRemoteFlowSource).getKind().isPathOrUrl()
     }
 
-    override predicate isServerSide() { not this instanceof ClientSideRemoteFlowSource }
+    override predicate isServerSide() { not super.isClientSideSource() }
   }
 
   /**
