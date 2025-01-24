@@ -1306,7 +1306,34 @@ abstract private class AbstractParameterNode extends Node {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  abstract predicate isParameterOf(DataFlowCallable f, ParameterPosition pos);
+  predicate isSourceParameterOf(Function f, ParameterPosition pos) { none() }
+
+  /**
+   * Holds if this node is the parameter of `sc` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
+   */
+  predicate isSummaryParameterOf(
+    FlowSummaryImpl::Public::SummarizedCallable sc, ParameterPosition pos
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if this node is the parameter of `c` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
+   */
+  final predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    this.isSummaryParameterOf(c.asSummarizedCallable(), pos)
+    or
+    exists(Function f | this.isSourceParameterOf(f, pos) |
+      not exists(TSummarizedCallable(f)) and
+      c.asSourceCallable() = f
+      or
+      c.asSummarizedCallable() = f
+    )
+  }
 
   /** Gets the `Parameter` associated with this node, if it exists. */
   Parameter getParameter() { none() } // overridden by subclasses
@@ -1366,8 +1393,8 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
 
   override Declaration getFunction() { result = init.getEnclosingFunction() }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    this.getEnclosingCallable() = f.getUnderlyingCallable() and
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    this.getEnclosingCallable() = f and
     exists(int argumentIndex, int indirectionIndex |
       indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
       indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
@@ -1424,9 +1451,8 @@ private class ExplicitParameterInstructionNode extends AbstractExplicitParameter
 {
   ExplicitParameterInstructionNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    f.getUnderlyingCallable().(Function).getParameter(pos.(DirectPosition).getIndex()) =
-      instr.getParameter()
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
@@ -1440,9 +1466,9 @@ class ThisParameterInstructionNode extends AbstractExplicitParameterNode,
 {
   ThisParameterInstructionNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
     pos.(DirectPosition).getIndex() = -1 and
-    instr.getEnclosingFunction() = f.getUnderlyingCallable()
+    instr.getEnclosingFunction() = f
   }
 
   override string toStringImpl() { result = "this" }
@@ -1460,8 +1486,10 @@ class SummaryParameterNode extends AbstractParameterNode, FlowSummaryNode {
     FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
   }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
-    c.getUnderlyingCallable() = this.getSummarizedCallable() and
+  override predicate isSummaryParameterOf(
+    FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition p
+  ) {
+    c = this.getSummarizedCallable() and
     p = this.getPosition()
   }
 }
@@ -1471,12 +1499,9 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
 {
   DirectBodyLessParameterNode() { indirectionIndex = 0 }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    exists(Function func |
-      this.getFunction() = func and
-      f.asSourceCallable() = func and
-      func.getParameter(pos.(DirectPosition).getIndex()) = p
-    )
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    this.getFunction() = f and
+    f.getParameter(pos.(DirectPosition).getIndex()) = p
   }
 
   override Parameter getParameter() { result = p }
@@ -1487,12 +1512,11 @@ private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNod
 {
   IndirectBodyLessParameterNode() { not this instanceof DirectBodyLessParameterNode }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    exists(Function func, int argumentPosition |
-      this.getFunction() = func and
-      f.asSourceCallable() = func and
-      indirectPositionHasArgumentIndexAndIndex(pos, argumentPosition, indirectionIndex) and
-      func.getParameter(argumentPosition) = p
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    exists(int argumentPosition |
+      this.getFunction() = f and
+      f.getParameter(argumentPosition) = p and
+      indirectPositionHasArgumentIndexAndIndex(pos, argumentPosition, indirectionIndex)
     )
   }
 
