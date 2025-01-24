@@ -6,8 +6,6 @@ import codeql.util.Location
 import codeql.util.Option
 
 signature module InputSig<LocationSig Location> {
-  class KnownUnknownLocation extends Location;
-
   class LocatableElement {
     Location getLocation();
   }
@@ -16,14 +14,7 @@ signature module InputSig<LocationSig Location> {
 module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final class LocatableElement = Input::LocatableElement;
 
-  newtype TNode =
-    TNodeUnknown() or
-    TNodeAsset() or
-    TNodeValue() // currently unused
-
-  class KnownNode = TNodeAsset or TNodeValue;
-
-  abstract class NodeBase extends TNode {
+  abstract class NodeBase instanceof LocatableElement {
     /**
      * Returns a string representation of this node, usually the name of the operation/algorithm/property.
      */
@@ -32,14 +23,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Returns the location of this node in the code.
      */
-    abstract Location getLocation();
+    Location getLocation() { result = super.getLocation() }
 
     /**
      * Returns the child of this node with the given edge name.
      *
      * This predicate is used by derived classes to construct the graph of cryptographic operations.
      */
-    NodeBase getChild(string edgeName) { none() }
+    NodeBase getChild(string edgeName) { edgeName = "origin" and result = this.getOrigin() }
+
+    /**
+     * Gets the origin of this node, e.g., a string literal in source describing it.
+     */
+    NodeBase getOrigin() { none() }
 
     /**
      * Returns the parent of this node.
@@ -47,30 +43,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final NodeBase getAParent() { result.getChild(_) = this }
   }
 
-  /**
-   * A node representing an unknown value.
-   *
-   * If a property should have a value but that value is unknown, `UnknownNode` to represent that value.
-   */
-  final class UnknownNode extends NodeBase, TNodeUnknown {
-    override string toString() { result = "unknown" }
-
-    override Location getLocation() { result instanceof Input::KnownUnknownLocation }
-  }
-
-  /**
-   * A node with a known location in the code.
-   */
-  abstract class LocatableNode extends NodeBase, TNodeAsset {
-    abstract LocatableElement toElement();
-
-    override Location getLocation() { result = this.toElement().getLocation() }
-  }
-
-  /**
-   * A node representing a known asset, i.e., an algorithm, operation, or property.
-   */
-  class Asset = LocatableNode;
+  class Asset = NodeBase;
 
   /**
    * A cryptographic operation, such as hashing or encryption.
@@ -79,12 +52,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the algorithm associated with this operation.
      */
-    private NodeBase getAlgorithmOrUnknown() {
-      if exists(this.getAlgorithm())
-      then result = this.getAlgorithm()
-      else result instanceof UnknownNode
-    }
-
     abstract Algorithm getAlgorithm();
 
     /**
@@ -95,8 +62,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override string toString() { result = this.getOperationName() }
 
     override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
       edgeName = "algorithm" and
-      this.getAlgorithmOrUnknown() = result
+      if exists(this.getAlgorithm()) then result = this.getAlgorithm() else result = this
     }
   }
 
@@ -125,6 +94,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class HashAlgorithm extends Algorithm { }
 
+  abstract class SHA1 extends HashAlgorithm {
+    override string getAlgorithmName() { result = "SHA1" }
+  }
+
   /**
    * An operation that derives one or more keys from an input value.
    */
@@ -142,24 +115,27 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * HKDF Extract+Expand key derivation function.
    */
-  abstract class HKDFAlgorithm extends KeyDerivationAlgorithm {
+  abstract class HKDF extends KeyDerivationAlgorithm {
     final override string getAlgorithmName() { result = "HKDF" }
-
-    private NodeBase getHashAlgorithmOrUnknown() {
-      if exists(this.getHashAlgorithm())
-      then result = this.getHashAlgorithm()
-      else result instanceof UnknownNode
-    }
 
     abstract HashAlgorithm getHashAlgorithm();
 
-    /**
-     * digest:HashAlgorithm
-     */
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      edgeName = "digest" and result = this.getHashAlgorithmOrUnknown()
+      edgeName = "digest" and result = this.getHashAlgorithm()
+    }
+  }
+
+  abstract class PKCS12KDF extends KeyDerivationAlgorithm {
+    final override string getAlgorithmName() { result = "PKCS12KDF" }
+
+    abstract HashAlgorithm getHashAlgorithm();
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      edgeName = "digest" and result = this.getHashAlgorithm()
     }
   }
 }
