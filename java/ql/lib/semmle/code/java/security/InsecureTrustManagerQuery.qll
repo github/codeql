@@ -18,6 +18,17 @@ module InsecureTrustManagerConfig implements DataFlow::ConfigSig {
     node.getType() instanceof Array and
     c instanceof DataFlow::ArrayContent
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    isSource(source) and
+    (
+      result = source.getLocation()
+      or
+      result = source.asExpr().(ClassInstanceExpr).getConstructedType().getLocation()
+    )
+  }
 }
 
 module InsecureTrustManagerFlow = DataFlow::Global<InsecureTrustManagerConfig>;
