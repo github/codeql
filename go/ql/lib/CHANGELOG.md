@@ -1,3 +1,18 @@
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* `database` local source models have been added for the Beego ORM package.
+* `database` local source models have been added for the `github.com/jmoiron/sqlx` package.
+* Added `database` source models for database methods from the `gorm.io/gorm` package.
+* `database` local source models have been added for the `database/sql` and `database/sql/driver` packages.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Added a `commandargs` local source model for the `os.Args` variable.
+
 ## 3.0.0
 
 ### Breaking Changes

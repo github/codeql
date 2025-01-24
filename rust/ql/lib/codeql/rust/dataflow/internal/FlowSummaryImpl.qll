@@ -9,7 +9,47 @@ private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.FlowSummary
 
 module Input implements InputSig<Location, RustDataFlow> {
+  private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
+
   class SummarizedCallableBase = string;
+
+  abstract private class SourceSinkBase extends AstNode {
+    /** Gets the associated call. */
+    abstract CallExprBase getCall();
+
+    /** Holds if the associated call resolves to `crate, path`. */
+    final predicate callResolvesTo(string crate, string path) {
+      exists(Resolvable r |
+        r = CallExprBaseImpl::getCallResolvable(this.getCall()) and
+        path = r.getResolvedPath()
+      |
+        crate = r.getResolvedCrateOrigin()
+        or
+        not r.hasResolvedCrateOrigin() and
+        crate = ""
+      )
+    }
+  }
+
+  abstract class SourceBase extends SourceSinkBase { }
+
+  abstract class SinkBase extends SourceSinkBase { }
+
+  private class CallExprFunction extends SourceBase, SinkBase {
+    private CallExpr call;
+
+    CallExprFunction() { this = call.getFunction() }
+
+    override CallExpr getCall() { result = call }
+  }
+
+  private class MethodCallExprNameRef extends SourceBase, SinkBase {
+    private MethodCallExpr call;
+
+    MethodCallExprNameRef() { this = call.getNameRef() }
+
+    override MethodCallExpr getCall() { result = call }
+  }
 
   RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { none() }
 
@@ -39,8 +79,8 @@ module Input implements InputSig<Location, RustDataFlow> {
         arg = s.getExtendedCanonicalPath() + "::" + field
       )
       or
-      result = "ArrayElement" and
-      c = TArrayElement() and
+      result = "Element" and
+      c = TElementContent() and
       arg = ""
       or
       exists(int pos |
@@ -86,12 +126,32 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.asCallBaseExprCfgNode().getCallExprBase() = sc.(LibraryCallable).getACall()
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+    sc = Impl::Private::SummaryComponent::return(_) and
+    result.asExpr().getExpr() = source.getCall()
+  }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
+    exists(CallExprBase call, Expr arg, ParameterPosition pos |
+      result.asExpr().getExpr() = arg and
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      call = sink.getCall()
+    |
+      arg = call.getArgList().getArg(pos.getPosition())
+      or
+      arg = call.(MethodCallExpr).getReceiver() and pos.isSelf()
+    )
+  }
 }
 
 module Private {
   import Impl::Private
 
   module Steps = Impl::Private::Steps<StepsInput>;
+
+  private import codeql.rust.dataflow.FlowSource
+  private import codeql.rust.dataflow.FlowSink
 }
 
 module Public = Impl::Public;

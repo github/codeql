@@ -1,8 +1,8 @@
 edges
-| test.go:80:13:80:16 | &... | test.go:81:13:81:29 | type conversion | provenance |  |
-| test.go:80:13:80:16 | &... | test.go:82:13:82:43 | type conversion | provenance |  |
-| test.go:85:22:85:26 | &... | test.go:86:13:86:30 | type conversion | provenance |  |
-| test.go:89:21:89:25 | &... | test.go:90:13:90:30 | type conversion | provenance |  |
+| test.go:80:13:80:16 | &... | test.go:81:13:81:29 | type conversion | provenance | Src:MaD:339  |
+| test.go:80:13:80:16 | &... | test.go:82:13:82:43 | type conversion | provenance | Src:MaD:339  |
+| test.go:85:22:85:26 | &... | test.go:86:13:86:30 | type conversion | provenance | Src:MaD:340  |
+| test.go:89:21:89:25 | &... | test.go:90:13:90:30 | type conversion | provenance | Src:MaD:341  |
 | test.go:95:20:95:36 | call to Value | test.go:95:13:95:37 | type conversion | provenance |  |
 | test.go:96:20:96:39 | call to RawValue | test.go:96:13:96:49 | type conversion | provenance |  |
 | test.go:97:20:97:37 | call to String | test.go:97:13:97:38 | type conversion | provenance |  |
@@ -24,11 +24,7 @@ edges
 | test.go:148:16:148:23 | &... | test.go:149:13:149:39 | type conversion | provenance |  |
 | test.go:152:15:152:24 | &... | test.go:153:13:153:47 | type conversion | provenance |  |
 | test.go:156:18:156:30 | &... | test.go:157:13:157:38 | type conversion | provenance |  |
-| test.go:160:2:160:23 | []type{args} [array] | test.go:160:14:160:22 | &... | provenance |  |
-| test.go:160:14:160:22 | &... | test.go:160:2:160:23 | []type{args} [array] | provenance |  |
 | test.go:160:14:160:22 | &... | test.go:161:13:161:28 | type conversion | provenance |  |
-| test.go:164:2:164:25 | []type{args} [array] | test.go:164:15:164:24 | &... | provenance |  |
-| test.go:164:15:164:24 | &... | test.go:164:2:164:25 | []type{args} [array] | provenance |  |
 | test.go:164:15:164:24 | &... | test.go:165:13:165:32 | type conversion | provenance |  |
 nodes
 | test.go:80:13:80:16 | &... | semmle.label | &... |
@@ -80,10 +76,8 @@ nodes
 | test.go:153:13:153:47 | type conversion | semmle.label | type conversion |
 | test.go:156:18:156:30 | &... | semmle.label | &... |
 | test.go:157:13:157:38 | type conversion | semmle.label | type conversion |
-| test.go:160:2:160:23 | []type{args} [array] | semmle.label | []type{args} [array] |
 | test.go:160:14:160:22 | &... | semmle.label | &... |
 | test.go:161:13:161:28 | type conversion | semmle.label | type conversion |
-| test.go:164:2:164:25 | []type{args} [array] | semmle.label | []type{args} [array] |
 | test.go:164:15:164:24 | &... | semmle.label | &... |
 | test.go:165:13:165:32 | type conversion | semmle.label | type conversion |
 subpaths

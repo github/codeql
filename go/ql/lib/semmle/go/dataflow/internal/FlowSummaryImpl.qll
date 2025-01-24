@@ -21,7 +21,13 @@ private string positionToString(int pos) {
 }
 
 module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = Callable;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
@@ -55,26 +61,28 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    exists(Field f, string package, string className, string fieldName |
-      f = cs.(FieldContent).getField() and
-      f.hasQualifiedName(package, className, fieldName) and
-      result = "Field" and
-      arg = package + "." + className + "." + fieldName
+    exists(Content c | cs.asOneContent() = c |
+      exists(Field f, string package, string className, string fieldName |
+        f = c.(FieldContent).getField() and
+        f.hasQualifiedName(package, className, fieldName) and
+        result = "Field" and
+        arg = package + "." + className + "." + fieldName
+      )
+      or
+      exists(SyntheticField f |
+        f = c.(SyntheticFieldContent).getField() and result = "SyntheticField" and arg = f
+      )
+      or
+      c instanceof ArrayContent and result = "ArrayElement" and arg = ""
+      or
+      c instanceof CollectionContent and result = "Element" and arg = ""
+      or
+      c instanceof MapKeyContent and result = "MapKey" and arg = ""
+      or
+      c instanceof MapValueContent and result = "MapValue" and arg = ""
+      or
+      c instanceof PointerContent and result = "Dereference" and arg = ""
     )
-    or
-    exists(SyntheticField f |
-      f = cs.(SyntheticFieldContent).getField() and result = "SyntheticField" and arg = f
-    )
-    or
-    cs instanceof ArrayContent and result = "ArrayElement" and arg = ""
-    or
-    cs instanceof CollectionContent and result = "Element" and arg = ""
-    or
-    cs instanceof MapKeyContent and result = "MapKey" and arg = ""
-    or
-    cs instanceof MapValueContent and result = "MapValue" and arg = ""
-    or
-    cs instanceof PointerContent and result = "Dereference" and arg = ""
   }
 
   bindingset[token]
@@ -108,6 +116,10 @@ private module StepsInput implements Impl::Private::StepsInputSig {
       call.getACalleeIncludingExternals() = sc
     )
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements
@@ -513,7 +525,9 @@ module Private {
     SummaryComponent qualifier() { result = argument(-1) }
 
     /** Gets a summary component for field `f`. */
-    SummaryComponent field(Field f) { result = content(any(FieldContent c | c.getField() = f)) }
+    SummaryComponent field(Field f) {
+      result = content(any(FieldContent c | c.getField() = f).asContentSet())
+    }
 
     /** Gets a summary component that represents the return value of a call. */
     SummaryComponent return() { result = SC::return(_) }

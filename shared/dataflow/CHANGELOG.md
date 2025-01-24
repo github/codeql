@@ -1,3 +1,13 @@
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+### Minor Analysis Improvements
+
+* Added a module `DataFlow::DeduplicatePathGraph` that can be used to avoid generating duplicate path explanations in queries that use flow state.
+
 ## 1.1.7
 
 No user-facing changes.

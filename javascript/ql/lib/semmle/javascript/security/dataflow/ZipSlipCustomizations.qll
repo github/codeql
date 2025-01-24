@@ -14,7 +14,12 @@ module ZipSlip {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a source. */
-    TaintedPath::Label::PosixPath getAFlowLabel() { result.isRelative() }
+    TaintedPath::FlowState::PosixPath getAFlowState() { result.isRelative() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated TaintedPath::Label::PosixPath getAFlowLabel() {
+      result = this.getAFlowState().toFlowLabel()
+    }
   }
 
   /**
@@ -22,7 +27,12 @@ module ZipSlip {
    */
   abstract class Sink extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a sink. */
-    TaintedPath::Label::PosixPath getAFlowLabel() { any() }
+    TaintedPath::FlowState::PosixPath getAFlowState() { any() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated TaintedPath::Label::PosixPath getAFlowLabel() {
+      result = this.getAFlowState().toFlowLabel()
+    }
   }
 
   /**

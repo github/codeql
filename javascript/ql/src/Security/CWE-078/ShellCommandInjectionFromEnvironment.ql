@@ -14,17 +14,18 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQuery
+import ShellCommandInjectionFromEnvironmentFlow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight,
+  ShellCommandInjectionFromEnvironmentFlow::PathNode source,
+  ShellCommandInjectionFromEnvironmentFlow::PathNode sink, DataFlow::Node highlight,
   Source sourceNode
 where
   sourceNode = source.getNode() and
-  cfg.hasFlowPath(source, sink) and
-  if cfg.isSinkWithHighlight(sink.getNode(), _)
-  then cfg.isSinkWithHighlight(sink.getNode(), highlight)
+  ShellCommandInjectionFromEnvironmentFlow::flowPath(source, sink) and
+  if ShellCommandInjectionFromEnvironmentConfig::isSinkWithHighlight(sink.getNode(), _)
+  then ShellCommandInjectionFromEnvironmentConfig::isSinkWithHighlight(sink.getNode(), highlight)
   else highlight = sink.getNode()
 select highlight, source, sink, "This shell command depends on an uncontrolled $@.", sourceNode,
   sourceNode.getSourceType()

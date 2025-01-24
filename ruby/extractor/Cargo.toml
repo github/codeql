@@ -10,12 +10,12 @@ edition = "2021"
 tree-sitter = ">= 0.23.0"
 tree-sitter-embedded-template = "0.23.2"
 tree-sitter-ruby = "0.23.1"
-clap = { version = "4.2", features = ["derive"] }
+clap = { version = "4.5", features = ["derive"] }
 tracing = "0.1"
-tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
-rayon = "1.5.0"
-regex = "1.7.1"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+rayon = "1.10.0"
+regex = "1.11.1"
 encoding = "0.2"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
 
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

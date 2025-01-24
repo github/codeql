@@ -1,4 +1,4 @@
-| Elements extracted | 404 |
+| Elements extracted | 405 |
 | Elements unextracted | 0 |
 | Extraction errors | 0 |
 | Extraction warnings | 7 |
@@ -14,5 +14,11 @@
 | Macro calls - resolved | 8 |
 | Macro calls - total | 9 |
 | Macro calls - unresolved | 1 |
+| Taint edges - number of edges | 2 |
+| Taint reach - nodes tainted | 0 |
+| Taint reach - per million nodes | 0 |
+| Taint sinks - cryptographic operations | 0 |
+| Taint sinks - query sinks | 0 |
 | Taint sources - active | 0 |
-| Taint sources - total | 0 |
+| Taint sources - disabled | 0 |
+| Taint sources - sensitive data | 0 |

@@ -14,11 +14,14 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.SecondOrderCommandInjectionQuery
+import DataFlow::DeduplicatePathGraph<SecondOrderCommandInjectionFlow::PathNode, SecondOrderCommandInjectionFlow::PathGraph>
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
-where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
+from PathNode source, PathNode sink, Sink sinkNode
+where
+  SecondOrderCommandInjectionFlow::flowPath(source.getAnOriginalPathNode(),
+    sink.getAnOriginalPathNode()) and
+  sinkNode = sink.getNode()
 select sink.getNode(), source, sink,
   "Command line argument that depends on $@ can execute an arbitrary command if " +
     sinkNode.getVulnerableArgumentExample() + " is used with " + sinkNode.getCommand() + ".",

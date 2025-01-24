@@ -8,6 +8,8 @@ import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.FlowSummary
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.dataflow.internal.FlowSummaryImpl
+import codeql.rust.dataflow.FlowSource
+import codeql.rust.dataflow.FlowSink
 import PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
@@ -31,9 +33,17 @@ private class SummarizedCallableIdentity extends SummarizedCallable::Range {
 }
 
 module CustomConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { DefaultFlowConfig::isSource(source) }
+  predicate isSource(DataFlow::Node source) {
+    DefaultFlowConfig::isSource(source)
+    or
+    sourceNode(source, "test-source")
+  }
 
-  predicate isSink(DataFlow::Node sink) { DefaultFlowConfig::isSink(sink) }
+  predicate isSink(DataFlow::Node sink) {
+    DefaultFlowConfig::isSink(sink)
+    or
+    sinkNode(sink, "test-sink")
+  }
 }
 
 import FlowTest<CustomConfig, CustomConfig>

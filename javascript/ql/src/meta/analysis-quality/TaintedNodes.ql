@@ -12,16 +12,16 @@
 import javascript
 import meta.internal.TaintMetrics
 
-class BasicTaintConfiguration extends TaintTracking::Configuration {
-  BasicTaintConfiguration() { this = "BasicTaintConfiguration" }
+module BasicTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node = relevantTaintSource() }
 
-  override predicate isSource(DataFlow::Node node) { node = relevantTaintSource() }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     // To reduce noise from synthetic nodes, only count value nodes
     node instanceof DataFlow::ValueNode and
     not node.getFile() instanceof IgnoredFile
   }
 }
 
-select projectRoot(), count(DataFlow::Node node | any(BasicTaintConfiguration cfg).hasFlow(_, node))
+module BasicTaintFlow = TaintTracking::Global<BasicTaintConfig>;
+
+select projectRoot(), count(DataFlow::Node node | BasicTaintFlow::flowTo(node))

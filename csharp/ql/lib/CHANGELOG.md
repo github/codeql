@@ -1,3 +1,24 @@
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Added extractor support for extracting implicit `ToString` calls in binary `+` expressions and string interpolation expressions.
+* The Razor source generator invocation in `build-mode:none` extraction has been changed to use relative file paths instead of absolute ones.
+* C# 13: Added extractor support and call dispatch logic (data flow) for the (negative) type parameter constraint `allows ref struct`. Added extractor support for the type parameter constraint `notnull`.
+
+## 4.0.1
+
+### Minor Analysis Improvements
+
+* C# 13: Added QL library support for *collection* like type `params` parameters.
+* Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
+  - `[SupplyParameterFromForm]`
+  - `[SupplyParameterFromQuery]`
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
+* Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
+
 ## 4.0.0
 
 ### Breaking Changes

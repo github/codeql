@@ -6,6 +6,7 @@
 import javascript
 private import semmle.javascript.internal.CachedStages
 private import Expressions.ExprHasNoEffect
+private import semmle.javascript.dataflow.internal.DataFlowNode
 
 /**
  * Companion module to the `AmdModuleDefinition` class.
@@ -84,10 +85,15 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
     result instanceof DataFlow::ValueNode
   }
 
-  private DataFlow::Node getFactoryNodeInternal() {
-    // To avoid recursion, this should not depend on `SourceNode`.
-    result = DataFlow::valueNode(this.getLastArgument()) or
-    result = this.getFactoryNodeInternal().getAPredecessor()
+  /**
+   * Gets the factory function of this module definition.
+   */
+  Function getFactoryFunction() { TValueNode(result) = this.getFactoryNodeInternal() }
+
+  private EarlyStageNode getFactoryNodeInternal() {
+    result = TValueNode(this.getLastArgument())
+    or
+    DataFlow::localFlowStep(result, this.getFactoryNodeInternal())
   }
 
   /** Gets the expression defining this module. */
@@ -139,7 +145,10 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
    * Gets the `i`th parameter of the factory function of this module.
    */
   private Parameter getFactoryParameter(int i) {
-    this.getFactoryNodeInternal().asExpr().(Function).getParameter(i) = result
+    exists(Function fun |
+      this.getFactoryNodeInternal() = TValueNode(fun) and
+      result = fun.getParameter(i)
+    )
   }
 
   /**

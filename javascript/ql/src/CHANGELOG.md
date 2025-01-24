@@ -1,3 +1,18 @@
+## 1.3.0
+
+### Major Analysis Improvements
+
+* The `js/xss-through-dom` query now recognises sources of DOM input originating from Angular templates.
+
+### Bug Fixes
+
+* Fixed a TypeScript extractor crash that would occur when encountering an export specifier
+  whose local specifier was a string literal.
+
+## 1.2.6
+
+No user-facing changes.
+
 ## 1.2.5
 
 No user-facing changes.

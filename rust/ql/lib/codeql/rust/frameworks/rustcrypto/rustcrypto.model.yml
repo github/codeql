@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/RustCrypto/traits:digest", "<_ as crate::digest::Digest>::new_with_prefix", "Argument[0]", "hasher-input", "manual"]
+      - ["repo:https://github.com/RustCrypto/traits:digest", "<_ as crate::digest::Digest>::update", "Argument[0]", "hasher-input", "manual"]
+      - ["repo:https://github.com/RustCrypto/traits:digest", "<_ as crate::digest::Digest>::chain_update", "Argument[0]", "hasher-input", "manual"]
+      - ["repo:https://github.com/RustCrypto/traits:digest", "<_ as crate::digest::Digest>::digest", "Argument[0]", "hasher-input", "manual"]
+      - ["repo:https://github.com/stainless-steel/md5:md5", "crate::compute", "Argument[0]", "hasher-input", "manual"]

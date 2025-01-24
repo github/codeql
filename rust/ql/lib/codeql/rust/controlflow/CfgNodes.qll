@@ -174,6 +174,54 @@ final class MethodCallExprCfgNode extends CallExprBaseCfgNode, Nodes::MethodCall
 final class CallExprCfgNode extends CallExprBaseCfgNode, Nodes::CallExprCfgNode { }
 
 /**
+ * A FormatArgsExpr. For example:
+ * ```rust
+ * format_args!("no args");
+ * format_args!("{} foo {:?}", 1, 2);
+ * format_args!("{b} foo {a:?}", a=1, b=2);
+ * let (x, y) = (1, 42);
+ * format_args!("{x}, {y}");
+ * ```
+ */
+final class FormatArgsExprCfgNode extends Nodes::FormatArgsExprCfgNode {
+  private FormatArgsExprChildMapping node;
+
+  FormatArgsExprCfgNode() { node = this.getAstNode() }
+
+  /** Gets the `i`th argument of this format arguments expression (0-based). */
+  ExprCfgNode getArgumentExpr(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getArg(i).getExpr(), this, result)
+  }
+
+  /** Gets a format argument of the `i`th format of this format arguments expression (0-based). */
+  FormatTemplateVariableAccessCfgNode getFormatTemplateVariableAccess(int i) {
+    exists(FormatTemplateVariableAccess v, Format f |
+      f = node.getFormat(i) and
+      v.getArgument() = [f.getArgumentRef(), f.getWidthArgument(), f.getPrecisionArgument()] and
+      result.getFormatTemplateVariableAccess() = v and
+      any(ChildMapping mapping).hasCfgChild(node, v, this, result)
+    )
+  }
+}
+
+/**
+ * A MacroCall. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
+final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
+  private MacroCallChildMapping node;
+
+  MacroCallCfgNode() { node = this.getAstNode() }
+
+  /** Gets the CFG node for the expansion of this macro call, if it exists. */
+  CfgNode getExpandedNode() {
+    any(ChildMapping mapping).hasCfgChild(node, node.getExpanded(), this, result)
+  }
+}
+
+/**
  * A record expression. For example:
  * ```rust
  * let first = Foo { a: 1, b: 2 };

@@ -847,7 +847,7 @@ RequiredMembers.cs:
 #   40|         0: [Parameter] value
 Scoped.cs:
 #    1| [Struct] S1
-#    2| [Struct] S2
+#    2| [RefStruct] S2
 #    7| [Class] ScopedModifierTest
 #    9|   5: [Method] M1
 #    9|     -1: [TypeMention] int
@@ -1402,7 +1402,7 @@ Strings.cs:
 Struct.cs:
 #    1| [NamespaceDeclaration] namespace ... { ... }
 #    3|   1: [Class] MyEmptyClass
-#    5|   2: [Struct] RefStruct
+#    5|   2: [RefStruct] RefStruct
 #    7|     5: [Field] MyInt
 #    7|       -1: [TypeMention] int
 #    8|     6: [Field] MyByte

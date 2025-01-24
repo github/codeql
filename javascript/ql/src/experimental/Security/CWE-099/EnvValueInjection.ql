@@ -11,20 +11,23 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 
 /** A taint tracking configuration for unsafe environment injection. */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "envInjection" }
+module EnvValueInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("process").getMember("env").getAMember().asSink()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+module EnvValueInjectionFlow = TaintTracking::Global<EnvValueInjectionConfig>;
+
+import EnvValueInjectionFlow::PathGraph
+
+from EnvValueInjectionFlow::PathNode source, EnvValueInjectionFlow::PathNode sink
+where EnvValueInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "this environment variable assignment is $@.",
   source.getNode(), "user controllable"

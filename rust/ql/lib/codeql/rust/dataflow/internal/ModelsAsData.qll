@@ -28,7 +28,7 @@
  *     - `Parameter[n]`: the `n`-th parameter of a callback. May be a range of form `x..y` (inclusive)
  *                       and/or a comma-separated list.
  *     - `ReturnValue`: the value returned by a function call.
- *     - `ArrayElement`: an element of an array.
+ *     - `Element`: an element in a collection.
  *     - `Variant[v::f]`: field `f` of the variant with canonical path `v`, for example
  *                        `Variant[crate::ihex::Record::Data::value]`.
  *     - `Variant[v(i)]`: position `i` inside the variant with canonical path `v`, for example
@@ -47,6 +47,8 @@
 
 private import rust
 private import codeql.rust.dataflow.FlowSummary
+private import codeql.rust.dataflow.FlowSource
+private import codeql.rust.dataflow.FlowSink
 
 /**
  * Holds if in a call to the function with canonical path `path`, defined in the
@@ -135,6 +137,40 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
       or
       kind = "taint" and
       preservesValue = false
+    )
+  }
+}
+
+private class FlowSourceFromModel extends FlowSource::Range {
+  private string crate;
+  private string path;
+
+  FlowSourceFromModel() {
+    sourceModel(crate, path, _, _, _, _) and
+    this.callResolvesTo(crate, path)
+  }
+
+  override predicate isSource(string output, string kind, Provenance provenance, string model) {
+    exists(QlBuiltins::ExtensionId madId |
+      sourceModel(crate, path, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+}
+
+private class FlowSinkFromModel extends FlowSink::Range {
+  private string crate;
+  private string path;
+
+  FlowSinkFromModel() {
+    sinkModel(crate, path, _, _, _, _) and
+    this.callResolvesTo(crate, path)
+  }
+
+  override predicate isSink(string input, string kind, Provenance provenance, string model) {
+    exists(QlBuiltins::ExtensionId madId |
+      sinkModel(crate, path, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
     )
   }
 }

@@ -12,7 +12,13 @@ private import DataFlowImplCommon
 private import codeql.swift.dataflow.ExternalFlow
 
 module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = Function;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
@@ -106,6 +112,10 @@ private import Make<Location, DataFlowImplSpecific::SwiftDataFlow, Input> as Imp
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements

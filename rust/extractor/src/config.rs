@@ -12,9 +12,10 @@ use figment::{
 use itertools::Itertools;
 use num_traits::Zero;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
+use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
-use ra_ap_paths::Utf8PathBuf;
-use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource};
+use ra_ap_paths::{AbsPath, Utf8PathBuf};
+use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
@@ -85,8 +86,13 @@ impl Config {
         figment.extract().context("loading configuration")
     }
 
-    pub fn to_cargo_config(&self) -> CargoConfig {
-        let sysroot = Some(RustLibSource::Discover);
+    pub fn to_cargo_config(&self, dir: &AbsPath) -> CargoConfig {
+        let sysroot = Sysroot::discover(dir, &FxHashMap::default());
+        let sysroot_src = sysroot.src_root().map(ToOwned::to_owned);
+        let sysroot = sysroot
+            .root()
+            .map(ToOwned::to_owned)
+            .map(RustLibSource::Path);
 
         let target_dir = self
             .cargo_target_dir
@@ -111,6 +117,7 @@ impl Config {
 
         CargoConfig {
             sysroot,
+            sysroot_src,
             target_dir,
             features,
             target,

@@ -790,3 +790,45 @@ void fopen_test(char* source) {
 	fopen_s(&f2, source, "r");
 	sink(f2); // $ ast,ir
 }
+
+typedef wchar_t OLECHAR;
+typedef OLECHAR* LPOLESTR;
+typedef const LPOLESTR LPCOLESTR;
+typedef OLECHAR* BSTR;
+typedef const char* LPCSTR;
+
+BSTR SysAllocString(const OLECHAR *);
+BSTR SysAllocStringByteLen(LPCSTR, unsigned );
+BSTR SysAllocStringLen(const OLECHAR *,unsigned);
+
+void test_sysalloc() {
+	auto p1 = SysAllocString((LPOLESTR)indirect_source());
+	sink(*p1); // $ ir MISSING: ast
+
+	auto p2 = SysAllocStringByteLen(indirect_source(), 10);
+	sink(*p2); // $ ir MISSING: ast
+
+	auto p3 = SysAllocStringLen((LPOLESTR)indirect_source(), 10);
+	sink(*p3); // $ ir MISSING: ast
+}
+
+char* strchr(const char*, int);
+
+void write_to_const_ptr_ptr(const char **p_out, const char **p_in) {
+  const char* q = *p_in;
+  *p_out = strchr(q, '/');
+}
+
+void take_const_ptr(const char *out, const char *in) {
+  // NOTE: We take the address of `out` in `take_const_ptr`'s stack space.
+  // Assigning to this pointer does not change `out` in
+  // `test_write_to_const_ptr_ptr`.
+  write_to_const_ptr_ptr(&out, &in);
+}
+
+void test_write_to_const_ptr_ptr() {
+  const char* in = indirect_source();
+  const char* out;
+  take_const_ptr(out, in);
+  sink(out); // $ SPURIOUS: ast
+}

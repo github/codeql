@@ -1,3 +1,15 @@
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+
+## 3.1.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.0.2.
+
 ## 3.0.0
 
 ### Breaking Changes

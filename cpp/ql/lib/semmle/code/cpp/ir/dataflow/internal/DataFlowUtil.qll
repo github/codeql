@@ -757,9 +757,11 @@ class SsaIteratorNode extends Node, TSsaIteratorNode {
 class SideEffectOperandNode extends Node instanceof IndirectOperand {
   CallInstruction call;
   int argumentIndex;
+  ArgumentOperand arg;
 
   SideEffectOperandNode() {
-    IndirectOperand.super.hasOperandAndIndirectionIndex(call.getArgumentOperand(argumentIndex), _)
+    arg = call.getArgumentOperand(argumentIndex) and
+    IndirectOperand.super.hasOperandAndIndirectionIndex(arg, _)
   }
 
   CallInstruction getCallInstruction() { result = call }
@@ -2489,6 +2491,36 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
     |
       instructionGuardChecks(g, def.getARead().asOperand().getDef(), branch) and
+      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
+        pragma[only_bind_into](phi)) and
+      result = TSsaPhiInputNode(phi, input)
+    )
+  }
+
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate indirectOperandHasValueNumber(ValueNumber value, int indirectionIndex, Node n) {
+    exists(Operand use |
+      use = value.getAnInstruction().getAUse() and
+      n.asIndirectOperand(indirectionIndex) = use
+    )
+  }
+
+  /**
+   * Gets an indirect node with indirection index `indirectionIndex` that is
+   * safely guarded by the given guard check.
+   */
+  Node getAnIndirectBarrierNode(int indirectionIndex) {
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
+      indirectOperandHasValueNumber(value, indirectionIndex, result) and
+      controls(g, result, edge)
+    )
+    or
+    exists(
+      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
+    |
+      instructionGuardChecks(g, def.getARead().asIndirectOperand(indirectionIndex).getDef(), branch) and
       guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
         pragma[only_bind_into](phi)) and
       result = TSsaPhiInputNode(phi, input)

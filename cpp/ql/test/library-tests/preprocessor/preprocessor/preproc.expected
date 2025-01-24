@@ -1,4 +1,13 @@
 | a.h:0:0:0:0 | a.h | 1 | 1 | 1 | 19 | IncludeNext | "a.h" | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 3 | 1 | 3 | 11 | Macro | BAR |  |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 5 | 1 | 5 | 10 | PreprocessorIfdef | FOO | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 7 | 1 | 7 | 12 | PreprocessorElifdef | BAR | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 8 | 1 | 8 | 16 | PreprocessorWarning | C++23 2 | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 9 | 1 | 9 | 6 | PreprocessorEndif | N/A | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 11 | 1 | 11 | 10 | PreprocessorIfdef | FOO | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 13 | 1 | 13 | 13 | PreprocessorElifndef | FOO | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 14 | 1 | 14 | 16 | PreprocessorWarning | C++23 3 | N/A |
+| pp23.cpp:0:0:0:0 | pp23.cpp | 15 | 1 | 15 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 1 | 1 | 1 | 16 | PreprocessorIf | defined(FOO) | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 3 | 1 | 3 | 19 | PreprocessorElif | !defined(BAR) | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 4 | 1 | 4 | 11 | Macro | BAR |  |
@@ -7,6 +16,7 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 7 | 1 | 7 | 5 | PreprocessorElse | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 9 | 1 | 9 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 11 | 1 | 11 | 10 | PreprocessorUndef | BAR | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 12 | 1 | 12 | 68 | Macro | SCARY(a,aa,aaah) | (aa ) |
 | pp.cpp:0:0:0:0 | pp.cpp | 13 | 1 | 13 | 63 | Macro | LOG(fmt,__VA_ARGS__...) | printf("Warning: %s", fmt, __VA__ARGS__) |
 | pp.cpp:0:0:0:0 | pp.cpp | 14 | 1 | 14 | 15 | Include | "pp.h" | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 16 | 1 | 16 | 5 | PreprocessorIf | 0 | N/A |
@@ -27,6 +37,18 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 60 | 3 | 60 | 21 | Macro | IN_TEMPLATE |  |
 | pp.cpp:0:0:0:0 | pp.cpp | 61 | 1 | 61 | 7 | PreprocessorEndif | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 69 | 1 | 69 | 21 | Macro | INSTANTIATION |  |
+| pp.cpp:0:0:0:0 | pp.cpp | 72 | 1 | 72 | 11 | Macro | BAR |  |
+| pp.cpp:0:0:0:0 | pp.cpp | 74 | 1 | 74 | 21 | PreprocessorIf | defined(BAR) && \\ | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 76 | 1 | 76 | 20 | PreprocessorWarning | BAR defined | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 77 | 1 | 77 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.h:0:0:0:0 | pp.h | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
+| pp.h:0:0:0:0 | pp.h | 2 | 1 | 2 | 29 | PreprocessorWarning | "This should happen" | N/A |
 | pp.h:0:0:0:0 | pp.h | 3 | 1 | 3 | 27 | PreprocessorLine | 33  "emerald_city.h" | N/A |
+| pp.h:0:0:0:0 | pp.h | 4 | 1 | 4 | 30 | PreprocessorPragma | byte_order(big_endian) | N/A |
 | pp.h:0:0:0:0 | pp.h | 5 | 1 | 5 | 33 | PreprocessorWarning | "Not in Kansas any more" | N/A |
+| pp.h:0:0:0:0 | pp.h | 7 | 1 | 11 | 8 | Macro | MULTILINE | world a long |
+| pp.h:0:0:0:0 | pp.h | 13 | 1 | 14 | 11 | PreprocessorUndef | MULTILINE | N/A |
+| pp.h:0:0:0:0 | pp.h | 16 | 1 | 17 | 8 | Include | "pp.h" | N/A |
+| ppms.cpp:0:0:0:0 | ppms.cpp | 3 | 1 | 3 | 18 | TypeLibraryImport | "test.tlb" | N/A |
+| test.tlh:0:0:0:0 | test.tlh | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
+| test.tlh:0:0:0:0 | test.tlh | 3 | 1 | 3 | 21 | PreprocessorWarning | type library | N/A |

@@ -1,45 +1,18 @@
 nodes
-| insecure-download.js:5:16:5:28 | installer.url |
-| insecure-download.js:5:16:5:28 | installer.url |
-| insecure-download.js:9:27:9:138 | 'http:/ ... ll.exe' |
-| insecure-download.js:9:27:9:138 | 'http:/ ... ll.exe' |
-| insecure-download.js:15:18:15:40 | buildTo ... llerUrl |
-| insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" |
-| insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" |
-| insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" |
-| insecure-download.js:36:9:36:45 | url |
-| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" |
-| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" |
-| insecure-download.js:37:23:37:25 | url |
-| insecure-download.js:37:23:37:25 | url |
-| insecure-download.js:39:26:39:28 | url |
-| insecure-download.js:39:26:39:28 | url |
-| insecure-download.js:41:12:41:41 | "ftp:// ... fe.APK" |
-| insecure-download.js:41:12:41:41 | "ftp:// ... fe.APK" |
-| insecure-download.js:41:12:41:41 | "ftp:// ... fe.APK" |
-| insecure-download.js:48:12:48:38 | "http:/ ... unsafe" |
-| insecure-download.js:48:12:48:38 | "http:/ ... unsafe" |
-| insecure-download.js:48:12:48:38 | "http:/ ... unsafe" |
-| insecure-download.js:52:11:52:45 | "http:/ ... nknown" |
-| insecure-download.js:52:11:52:45 | "http:/ ... nknown" |
-| insecure-download.js:52:11:52:45 | "http:/ ... nknown" |
+| insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | semmle.label | "http:/ ... fe.APK" |
+| insecure-download.js:36:9:36:45 | url | semmle.label | url |
+| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | semmle.label | "http:/ ... fe.APK" |
+| insecure-download.js:37:23:37:25 | url | semmle.label | url |
+| insecure-download.js:39:26:39:28 | url | semmle.label | url |
+| insecure-download.js:41:12:41:41 | "ftp:// ... fe.APK" | semmle.label | "ftp:// ... fe.APK" |
+| insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | semmle.label | "http:/ ... unsafe" |
+| insecure-download.js:52:11:52:45 | "http:/ ... nknown" | semmle.label | "http:/ ... nknown" |
 edges
-| insecure-download.js:9:27:9:138 | 'http:/ ... ll.exe' | insecure-download.js:15:18:15:40 | buildTo ... llerUrl |
-| insecure-download.js:9:27:9:138 | 'http:/ ... ll.exe' | insecure-download.js:15:18:15:40 | buildTo ... llerUrl |
-| insecure-download.js:15:18:15:40 | buildTo ... llerUrl | insecure-download.js:5:16:5:28 | installer.url |
-| insecure-download.js:15:18:15:40 | buildTo ... llerUrl | insecure-download.js:5:16:5:28 | installer.url |
-| insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" |
-| insecure-download.js:36:9:36:45 | url | insecure-download.js:37:23:37:25 | url |
-| insecure-download.js:36:9:36:45 | url | insecure-download.js:37:23:37:25 | url |
-| insecure-download.js:36:9:36:45 | url | insecure-download.js:39:26:39:28 | url |
-| insecure-download.js:36:9:36:45 | url | insecure-download.js:39:26:39:28 | url |
-| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:36:9:36:45 | url |
-| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:36:9:36:45 | url |
-| insecure-download.js:41:12:41:41 | "ftp:// ... fe.APK" | insecure-download.js:41:12:41:41 | "ftp:// ... fe.APK" |
-| insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | insecure-download.js:48:12:48:38 | "http:/ ... unsafe" |
-| insecure-download.js:52:11:52:45 | "http:/ ... nknown" | insecure-download.js:52:11:52:45 | "http:/ ... nknown" |
+| insecure-download.js:36:9:36:45 | url | insecure-download.js:37:23:37:25 | url | provenance |  |
+| insecure-download.js:36:9:36:45 | url | insecure-download.js:39:26:39:28 | url | provenance |  |
+| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:36:9:36:45 | url | provenance |  |
+subpaths
 #select
-| insecure-download.js:5:16:5:28 | installer.url | insecure-download.js:9:27:9:138 | 'http:/ ... ll.exe' | insecure-download.js:5:16:5:28 | installer.url | $@ of sensitive file from $@. | insecure-download.js:5:9:5:44 | nugget( ... => { }) | Download | insecure-download.js:9:27:9:138 | 'http:/ ... ll.exe' | HTTP source |
 | insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | $@ of sensitive file from $@. | insecure-download.js:30:5:30:43 | nugget( ... e.APK") | Download | insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | HTTP source |
 | insecure-download.js:37:23:37:25 | url | insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:37:23:37:25 | url | $@ of sensitive file from $@. | insecure-download.js:37:5:37:42 | cp.exec ...  () {}) | Download | insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | HTTP source |
 | insecure-download.js:39:26:39:28 | url | insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:39:26:39:28 | url | $@ of sensitive file from $@. | insecure-download.js:39:5:39:46 | cp.exec ...  () {}) | Download | insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | HTTP source |

@@ -1,0 +1,95 @@
+implicitToString.cs:
+#    3| [Class] TestClass
+#    5|   5: [Class] MyClass
+#    5|     4: [InstanceConstructor,PrimaryConstructor] MyClass
+#    7|     5: [Method] ToString
+#    7|       -1: [TypeMention] string
+#    8|       4: [BlockStmt] {...}
+#    9|         0: [ReturnStmt] return ...;
+#    9|           0: [StringLiteralUtf16] "tainted"
+#   13|   6: [Method] Sink
+#   13|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   13|       0: [Parameter] o
+#   13|         -1: [TypeMention] object
+#   13|     4: [BlockStmt] {...}
+#   15|   7: [Method] M1
+#   15|     -1: [TypeMention] Void
+#   16|     4: [BlockStmt] {...}
+#   17|       0: [LocalVariableDeclStmt] ... ...;
+#   17|         0: [LocalVariableDeclAndInitExpr] MyClass x1 = ...
+#   17|           -1: [TypeMention] MyClass
+#   17|           0: [LocalVariableAccess] access to local variable x1
+#   17|           1: [ObjectCreation] object creation of type MyClass
+#   17|             0: [TypeMention] MyClass
+#   18|       1: [LocalVariableDeclStmt] ... ...;
+#   18|         0: [LocalVariableDeclAndInitExpr] String x2 = ...
+#   18|           -1: [TypeMention] string
+#   18|           0: [LocalVariableAccess] access to local variable x2
+#   18|           1: [AddExpr] ... + ...
+#   18|             0: [StringLiteralUtf16] "Hello"
+#   18|             1: [MethodCall] call to method ToString
+#   18|               -1: [LocalVariableAccess] access to local variable x1
+#   19|       2: [ExprStmt] ...;
+#   19|         0: [MethodCall] call to method Sink
+#   19|           0: [LocalVariableAccess] access to local variable x2
+#   22|   8: [Method] M2
+#   22|     -1: [TypeMention] Void
+#   23|     4: [BlockStmt] {...}
+#   24|       0: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] MyClass x1 = ...
+#   24|           -1: [TypeMention] MyClass
+#   24|           0: [LocalVariableAccess] access to local variable x1
+#   24|           1: [ObjectCreation] object creation of type MyClass
+#   24|             0: [TypeMention] MyClass
+#   25|       1: [LocalVariableDeclStmt] ... ...;
+#   25|         0: [LocalVariableDeclAndInitExpr] String x2 = ...
+#   25|           -1: [TypeMention] string
+#   25|           0: [LocalVariableAccess] access to local variable x2
+#   25|           1: [AddExpr] ... + ...
+#   25|             0: [StringLiteralUtf16] "Hello"
+#   25|             1: [MethodCall] call to method ToString
+#   25|               -1: [LocalVariableAccess] access to local variable x1
+#   26|       2: [ExprStmt] ...;
+#   26|         0: [MethodCall] call to method Sink
+#   26|           0: [LocalVariableAccess] access to local variable x2
+#   29|   9: [Method] M3
+#   29|     -1: [TypeMention] Void
+#   30|     4: [BlockStmt] {...}
+#   31|       0: [LocalVariableDeclStmt] ... ...;
+#   31|         0: [LocalVariableDeclAndInitExpr] MyClass x1 = ...
+#   31|           -1: [TypeMention] MyClass
+#   31|           0: [LocalVariableAccess] access to local variable x1
+#   31|           1: [ObjectCreation] object creation of type MyClass
+#   31|             0: [TypeMention] MyClass
+#   32|       1: [LocalVariableDeclStmt] ... ...;
+#   32|         0: [LocalVariableDeclAndInitExpr] String x2 = ...
+#   32|           -1: [TypeMention] string
+#   32|           0: [LocalVariableAccess] access to local variable x2
+#   32|           1: [InterpolatedStringExpr] $"..."
+#   32|             0: [StringLiteralUtf16] "Hello "
+#   32|             1: [MethodCall] call to method ToString
+#   32|               -1: [LocalVariableAccess] access to local variable x1
+#   33|       2: [ExprStmt] ...;
+#   33|         0: [MethodCall] call to method Sink
+#   33|           0: [LocalVariableAccess] access to local variable x2
+#   36|   10: [Method] M4
+#   36|     -1: [TypeMention] Void
+#   37|     4: [BlockStmt] {...}
+#   38|       0: [LocalVariableDeclStmt] ... ...;
+#   38|         0: [LocalVariableDeclAndInitExpr] MyClass x1 = ...
+#   38|           -1: [TypeMention] MyClass
+#   38|           0: [LocalVariableAccess] access to local variable x1
+#   38|           1: [ObjectCreation] object creation of type MyClass
+#   38|             0: [TypeMention] MyClass
+#   39|       1: [LocalVariableDeclStmt] ... ...;
+#   39|         0: [LocalVariableDeclAndInitExpr] String x2 = ...
+#   39|           -1: [TypeMention] string
+#   39|           0: [LocalVariableAccess] access to local variable x2
+#   39|           1: [InterpolatedStringExpr] $"..."
+#   39|             0: [StringLiteralUtf16] "Hello "
+#   39|             1: [MethodCall] call to method ToString
+#   39|               -1: [LocalVariableAccess] access to local variable x1
+#   40|       2: [ExprStmt] ...;
+#   40|         0: [MethodCall] call to method Sink
+#   40|           0: [LocalVariableAccess] access to local variable x2

@@ -27,21 +27,11 @@ predicate localExprTaint(Expr src, Expr sink) {
  * Holds if taint can flow in one local step from `src` to `sink`.
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  DataFlow::localFlowStep(src, sink)
-  or
-  localAdditionalTaintStep(src, sink, _)
-  or
+  DataFlow::localFlowStep(src, sink) or
+  localAdditionalTaintStep(src, sink, _) or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
-  or
-  // Treat container flow as taint for the local taint flow relation
-  exists(DataFlow::Content c | DataFlowPrivate::containerContent(c) |
-    DataFlowPrivate::readStep(src, c, sink) or
-    DataFlowPrivate::storeStep(src, c, sink) or
-    FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
-    FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
-  )
 }
 
 private Type getElementType(Type containerType) {
@@ -57,10 +47,11 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
-  exists(Type containerType |
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
+  exists(Type containerType, DataFlow::Content c |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = containerType
+    getElementType*(node.getType()) = containerType and
+    cs.asOneContent() = c
   |
     containerType instanceof ArrayType and
     c instanceof DataFlow::ArrayContent
@@ -98,18 +89,12 @@ class AdditionalTaintStep extends Unit {
  */
 predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
   (
-    referenceStep(pred, succ)
-    or
-    elementWriteStep(pred, succ)
-    or
-    fieldReadStep(pred, succ)
-    or
-    elementStep(pred, succ)
-    or
-    tupleStep(pred, succ)
-    or
-    stringConcatStep(pred, succ)
-    or
+    referenceStep(pred, succ) or
+    elementWriteStep(pred, succ) or
+    fieldReadStep(pred, succ) or
+    elementStep(pred, succ) or
+    tupleStep(pred, succ) or
+    stringConcatStep(pred, succ) or
     sliceStep(pred, succ)
   ) and
   model = ""
@@ -158,7 +143,7 @@ predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
-        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+        .getSummaryNode(), any(DataFlow::ArrayContent ac).asContentSet(),
     succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
@@ -178,12 +163,6 @@ predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
     pred.asInstruction() = nextEntry.getDomain() and
     // only step into the value, not the index
     succ.asInstruction() = IR::extractTupleElement(nextEntry, 1)
-  )
-  or
-  exists(DataFlow::ImplicitVarargsSlice ivs |
-    pred.(DataFlow::PostUpdateNode).getPreUpdateNode() = ivs and
-    succ.(DataFlow::PostUpdateNode).getPreUpdateNode() =
-      ivs.getCallNode().getAnImplicitVarargsArgument()
   )
 }
 

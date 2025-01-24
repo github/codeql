@@ -9,11 +9,13 @@
  */
 
 import cpp
+import semmle.code.cpp.ConfigurationTestFile
 
 from GlobalVariable gv
 where
   gv.getName().length() <= 3 and
-  not gv.isStatic()
+  not gv.isStatic() and
+  not gv.getFile() instanceof ConfigurationTestFile // variables in files generated during configuration are likely false positives
 select gv,
   "Poor global variable name '" + gv.getName() +
     "'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo)."

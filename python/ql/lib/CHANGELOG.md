@@ -1,3 +1,21 @@
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+
+## 3.1.0
+
+### New Features
+
+* Added support for parameter annotations in API graphs. This means that in a function definition such as `def foo(x: Bar): ...`, you can now use the `getInstanceFromAnnotation()` method to step from `Bar` to `x`. In addition to this, the `getAnInstance` method now also includes instances arising from parameter annotations.
+
+### Minor Analysis Improvements
+
+* Added modeling of `fastapi.Request` and `starlette.requests.Request` as sources of untrusted input,
+  and modeling of tainted data flow out of these request objects.
+
 ## 3.0.0
 
 ### Breaking Changes

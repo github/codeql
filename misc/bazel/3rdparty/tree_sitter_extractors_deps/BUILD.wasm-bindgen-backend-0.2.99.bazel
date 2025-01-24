@@ -85,9 +85,9 @@ rust_library(
     deps = [
         "@vendor__bumpalo-3.16.0//:bumpalo",
         "@vendor__log-0.4.22//:log",
-        "@vendor__proc-macro2-1.0.92//:proc_macro2",
-        "@vendor__quote-1.0.37//:quote",
-        "@vendor__syn-2.0.90//:syn",
+        "@vendor__proc-macro2-1.0.93//:proc_macro2",
+        "@vendor__quote-1.0.38//:quote",
+        "@vendor__syn-2.0.96//:syn",
         "@vendor__wasm-bindgen-shared-0.2.99//:wasm_bindgen_shared",
     ],
 )

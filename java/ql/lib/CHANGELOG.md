@@ -1,3 +1,36 @@
+## 6.1.0
+
+### New Features
+
+* The Java and Kotlin extractors now support `CODEQL_PATH_TRANSFORMER`. `SEMMLE_PATH_TRANSFORMER` is still supported, but deprecated.
+
+### Minor Analysis Improvements
+
+* `JavacTool`-based compiler interception no longer requires an `--add-opens` directive when `FileObject.toUri` is accessible.
+* `JavacTool`-based compiler interception no longer throws an exception visible to the program using `JavacTool` on failure to extract a file path from a passed `JavaFileObject`.
+* `JavacTool`-based compiler interception now supports files that don't simply wrap a `file://` URL, such as a source file inside a JAR, or an in-memory file, but which do implement `getCharContent`.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The class `ControlFlowNode` (and by extension `BasicBlock`) is no longer
+  directly equatable to `Expr` and `Stmt`. Any queries that have been
+  exploiting these equalities, for example by using casts, will need minor
+  updates in order to fix any compilation errors. Conversions can be inserted
+  in either direction depending on what is most convenient. Available
+  conversions include `Expr.getControlFlowNode()`, `Stmt.getControlFlowNode()`,
+  `ControlFlowNode.asExpr()`, `ControlFlowNode.asStmt()`, and
+  `ControlFlowNode.asCall()`. Exit nodes were until now modelled as a
+  `ControlFlowNode` equal to its enclosing `Callable`; these are now instead
+  modelled by the class `ControlFlow::ExitNode`.
+
+### Minor Analysis Improvements
+
+* Added `java.io.File.getName()` as a path injection sanitizer.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* Added a sink for "Server-side request forgery" (`java/ssrf`) for the third parameter to org.springframework.web.client.RestTemplate.getForObject, when we cannot statically determine that it does not affect the host in the URL.
+
 ## 5.0.0
 
 ### Breaking Changes

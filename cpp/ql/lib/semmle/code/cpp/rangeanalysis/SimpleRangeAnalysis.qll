@@ -769,26 +769,32 @@ private float getLowerBoundsImpl(Expr expr) {
       exists(float x, float y |
         x = getFullyConvertedLowerBounds(maxExpr.getLeftOperand()) and
         y = getFullyConvertedLowerBounds(maxExpr.getRightOperand()) and
-        if x >= y then result = x else result = y
+        result = x.maximum(y)
       )
     )
     or
-    // ConditionalExpr (true branch)
-    exists(ConditionalExpr condExpr |
+    exists(ConditionalExpr condExpr, Expr conv, float ub, float lb |
       expr = condExpr and
+      conv = condExpr.getCondition().getFullyConverted() and
       // Use `boolConversionUpperBound` to determine whether the condition
       // might evaluate to `true`.
-      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
-      result = getFullyConvertedLowerBounds(condExpr.getThen())
-    )
-    or
-    // ConditionalExpr (false branch)
-    exists(ConditionalExpr condExpr |
-      expr = condExpr and
-      // Use `boolConversionLowerBound` to determine whether the condition
-      // might evaluate to `false`.
-      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
-      result = getFullyConvertedLowerBounds(condExpr.getElse())
+      lb = boolConversionLowerBound(conv) and
+      ub = boolConversionUpperBound(conv)
+    |
+      // Both branches can be taken
+      ub = 1 and
+      lb = 0 and
+      exists(float thenLb, float elseLb |
+        thenLb = getFullyConvertedLowerBounds(condExpr.getThen()) and
+        elseLb = getFullyConvertedLowerBounds(condExpr.getElse()) and
+        result = thenLb.minimum(elseLb)
+      )
+      or
+      // Only the `true` branch can be taken
+      ub = 1 and lb != 0 and result = getFullyConvertedLowerBounds(condExpr.getThen())
+      or
+      // Only the `false` branch can be taken
+      ub != 1 and lb = 0 and result = getFullyConvertedLowerBounds(condExpr.getElse())
     )
     or
     exists(AddExpr addExpr, float xLow, float yLow |
@@ -973,26 +979,32 @@ private float getUpperBoundsImpl(Expr expr) {
       exists(float x, float y |
         x = getFullyConvertedUpperBounds(minExpr.getLeftOperand()) and
         y = getFullyConvertedUpperBounds(minExpr.getRightOperand()) and
-        if x <= y then result = x else result = y
+        result = x.minimum(y)
       )
     )
     or
-    // ConditionalExpr (true branch)
-    exists(ConditionalExpr condExpr |
+    exists(ConditionalExpr condExpr, Expr conv, float ub, float lb |
       expr = condExpr and
+      conv = condExpr.getCondition().getFullyConverted() and
       // Use `boolConversionUpperBound` to determine whether the condition
       // might evaluate to `true`.
-      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
-      result = getFullyConvertedUpperBounds(condExpr.getThen())
-    )
-    or
-    // ConditionalExpr (false branch)
-    exists(ConditionalExpr condExpr |
-      expr = condExpr and
-      // Use `boolConversionLowerBound` to determine whether the condition
-      // might evaluate to `false`.
-      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
-      result = getFullyConvertedUpperBounds(condExpr.getElse())
+      lb = boolConversionLowerBound(conv) and
+      ub = boolConversionUpperBound(conv)
+    |
+      // Both branches can be taken
+      ub = 1 and
+      lb = 0 and
+      exists(float thenLb, float elseLb |
+        thenLb = getFullyConvertedUpperBounds(condExpr.getThen()) and
+        elseLb = getFullyConvertedUpperBounds(condExpr.getElse()) and
+        result = thenLb.maximum(elseLb)
+      )
+      or
+      // Only the `true` branch can be taken
+      ub = 1 and lb != 0 and result = getFullyConvertedUpperBounds(condExpr.getThen())
+      or
+      // Only the `false` branch can be taken
+      ub != 1 and lb = 0 and result = getFullyConvertedUpperBounds(condExpr.getElse())
     )
     or
     exists(AddExpr addExpr, float xHigh, float yHigh |
@@ -1140,10 +1152,7 @@ private float getUpperBoundsImpl(Expr expr) {
   not expr instanceof SimpleRangeAnalysisExpr
   or
   // A modeled expression for range analysis
-  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
-    rangeAnalysisExpr = expr and
-    result = rangeAnalysisExpr.getUpperBounds()
-  )
+  result = expr.(SimpleRangeAnalysisExpr).getUpperBounds()
 }
 
 /**
@@ -1594,7 +1603,7 @@ private module SimpleRangeAnalysisCached {
    * the lower bound of the expression after all the casts have been applied,
    * call `lowerBound` like this:
    *
-   *    `lowerBound(expr.getFullyConverted())`
+   *    lowerBound(expr.getFullyConverted())
    */
   cached
   float lowerBound(Expr expr) {
@@ -1613,7 +1622,7 @@ private module SimpleRangeAnalysisCached {
    * the upper bound of the expression after all the casts have been applied,
    * call `upperBound` like this:
    *
-   *    `upperBound(expr.getFullyConverted())`
+   *    upperBound(expr.getFullyConverted())
    */
   cached
   float upperBound(Expr expr) {

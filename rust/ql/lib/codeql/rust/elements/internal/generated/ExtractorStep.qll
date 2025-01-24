@@ -29,11 +29,16 @@ module Generated {
     }
 
     /**
-     * Gets the file of this extractor step.
+     * Gets the file of this extractor step, if it exists.
      */
     File getFile() {
       result = Synth::convertExtractorStepToRaw(this).(Raw::ExtractorStep).getFile()
     }
+
+    /**
+     * Holds if `getFile()` exists.
+     */
+    final predicate hasFile() { exists(this.getFile()) }
 
     /**
      * Gets the duration ms of this extractor step.

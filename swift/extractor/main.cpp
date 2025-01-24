@@ -208,8 +208,11 @@ static auto argDump(int argc, char** argv) {
 static auto envDump(char** envp) {
   std::string ret;
   for (auto env = envp; *env; ++env) {
-    ret += *env;
-    ret += '\n';
+    if (std::string_view envVar{*env};
+        envVar.starts_with("CODEQL_") || envVar.starts_with("SEMMLE_")) {
+      ret += *env;
+      ret += '\n';
+    }
   }
   return ret;
 }
@@ -229,7 +232,7 @@ int main(int argc, char** argv, char** envp) {
 
   const auto configuration = configure(argc, argv);
   LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
-  LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  LOG_DEBUG("CodeQL environment:\n{}\n", envDump(envp));
 
   auto openInterception = codeql::setupFileInterception(configuration);
 

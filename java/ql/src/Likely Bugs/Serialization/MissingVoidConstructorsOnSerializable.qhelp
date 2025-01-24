@@ -23,7 +23,9 @@ is not the case. The error will be detected at runtime. </p>
 
 </overview>
 <recommendation>
-<p>Make sure that every non-serializable class that is extended by a serializable class has a no-argument constructor.</p>
+<p>Make sure that every non-serializable class that is extended by a serializable class has a no-argument constructor.
+Alternatively, consider defining a <code>writeReplace</code> method that replaces the <code>Serializable</code> class instance with
+a serialization proxy, so as to avoid direct deserialization of a class whose parent lacks a no-argument constructor.</p>
 
 </recommendation>
 <example>
