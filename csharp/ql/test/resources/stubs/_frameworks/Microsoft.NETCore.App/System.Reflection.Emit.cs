@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Reflection.Emit, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Reflection.Emit, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -332,6 +332,9 @@ namespace System
                 public void CreateGlobalFunctions() => throw null;
                 protected abstract void CreateGlobalFunctionsCore();
                 protected ModuleBuilder() => throw null;
+                public System.Diagnostics.SymbolStore.ISymbolDocumentWriter DefineDocument(string url, System.Guid language, System.Guid languageVendor, System.Guid documentType) => throw null;
+                public System.Diagnostics.SymbolStore.ISymbolDocumentWriter DefineDocument(string url, System.Guid language = default(System.Guid)) => throw null;
+                protected virtual System.Diagnostics.SymbolStore.ISymbolDocumentWriter DefineDocumentCore(string url, System.Guid language = default(System.Guid)) => throw null;
                 public System.Reflection.Emit.EnumBuilder DefineEnum(string name, System.Reflection.TypeAttributes visibility, System.Type underlyingType) => throw null;
                 protected abstract System.Reflection.Emit.EnumBuilder DefineEnumCore(string name, System.Reflection.TypeAttributes visibility, System.Type underlyingType);
                 public System.Reflection.Emit.MethodBuilder DefineGlobalMethod(string name, System.Reflection.MethodAttributes attributes, System.Reflection.CallingConventions callingConvention, System.Type returnType, System.Type[] parameterTypes) => throw null;
@@ -392,6 +395,20 @@ namespace System
                 public void SetCustomAttribute(System.Reflection.ConstructorInfo con, byte[] binaryAttribute) => throw null;
                 public void SetCustomAttribute(System.Reflection.Emit.CustomAttributeBuilder customBuilder) => throw null;
                 protected abstract void SetCustomAttributeCore(System.Reflection.ConstructorInfo con, System.ReadOnlySpan<byte> binaryAttribute);
+            }
+            public sealed class PersistedAssemblyBuilder : System.Reflection.Emit.AssemblyBuilder
+            {
+                public PersistedAssemblyBuilder(System.Reflection.AssemblyName name, System.Reflection.Assembly coreAssembly, System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> assemblyAttributes = default(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder>)) => throw null;
+                protected override System.Reflection.Emit.ModuleBuilder DefineDynamicModuleCore(string name) => throw null;
+                public override string FullName { get => throw null; }
+                public System.Reflection.Metadata.Ecma335.MetadataBuilder GenerateMetadata(out System.Reflection.Metadata.BlobBuilder ilStream, out System.Reflection.Metadata.BlobBuilder mappedFieldData) => throw null;
+                public System.Reflection.Metadata.Ecma335.MetadataBuilder GenerateMetadata(out System.Reflection.Metadata.BlobBuilder ilStream, out System.Reflection.Metadata.BlobBuilder mappedFieldData, out System.Reflection.Metadata.Ecma335.MetadataBuilder pdbBuilder) => throw null;
+                protected override System.Reflection.Emit.ModuleBuilder GetDynamicModuleCore(string name) => throw null;
+                public override System.Reflection.AssemblyName GetName(bool copiedName) => throw null;
+                public override System.Reflection.Module ManifestModule { get => throw null; }
+                public void Save(string assemblyFileName) => throw null;
+                public void Save(System.IO.Stream stream) => throw null;
+                protected override void SetCustomAttributeCore(System.Reflection.ConstructorInfo con, System.ReadOnlySpan<byte> binaryAttribute) => throw null;
             }
             public abstract class PropertyBuilder : System.Reflection.PropertyInfo
             {
