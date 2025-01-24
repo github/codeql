@@ -47,6 +47,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
     else result = this.getADeclarationLocation()
   }
 
+  pragma[nomagic]
   private TypeDeclarationEntry getADeclarationEntryBase() {
     type_decls(underlyingElement(result), unresolveElement(this), _)
   }
