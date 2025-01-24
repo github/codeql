@@ -526,26 +526,26 @@ storeStep
 | main.rs:306:41:306:41 | 2 | D | main.rs:306:14:306:43 | ...::D {...} |
 | main.rs:324:18:324:27 | source(...) | C | main.rs:323:14:325:5 | C {...} |
 | main.rs:326:27:326:27 | 2 | D | main.rs:326:14:326:29 | D {...} |
-| main.rs:344:17:344:17 | 1 | array[] | main.rs:344:16:344:33 | [...] |
-| main.rs:344:20:344:20 | 2 | array[] | main.rs:344:16:344:33 | [...] |
-| main.rs:344:23:344:32 | source(...) | array[] | main.rs:344:16:344:33 | [...] |
-| main.rs:348:17:348:26 | source(...) | array[] | main.rs:348:16:348:31 | [...; 10] |
-| main.rs:352:17:352:17 | 1 | array[] | main.rs:352:16:352:24 | [...] |
-| main.rs:352:20:352:20 | 2 | array[] | main.rs:352:16:352:24 | [...] |
-| main.rs:352:23:352:23 | 3 | array[] | main.rs:352:16:352:24 | [...] |
-| main.rs:358:17:358:17 | 1 | array[] | main.rs:358:16:358:33 | [...] |
-| main.rs:358:20:358:20 | 2 | array[] | main.rs:358:16:358:33 | [...] |
-| main.rs:358:23:358:32 | source(...) | array[] | main.rs:358:16:358:33 | [...] |
-| main.rs:363:17:363:17 | 1 | array[] | main.rs:363:16:363:24 | [...] |
-| main.rs:363:20:363:20 | 2 | array[] | main.rs:363:16:363:24 | [...] |
-| main.rs:363:23:363:23 | 3 | array[] | main.rs:363:16:363:24 | [...] |
-| main.rs:370:17:370:17 | 1 | array[] | main.rs:370:16:370:33 | [...] |
-| main.rs:370:20:370:20 | 2 | array[] | main.rs:370:16:370:33 | [...] |
-| main.rs:370:23:370:32 | source(...) | array[] | main.rs:370:16:370:33 | [...] |
-| main.rs:381:24:381:24 | 1 | array[] | main.rs:381:23:381:31 | [...] |
-| main.rs:381:27:381:27 | 2 | array[] | main.rs:381:23:381:31 | [...] |
-| main.rs:381:30:381:30 | 3 | array[] | main.rs:381:23:381:31 | [...] |
-| main.rs:384:18:384:27 | source(...) | array[] | main.rs:384:5:384:11 | [post] mut_arr |
+| main.rs:344:17:344:17 | 1 | element | main.rs:344:16:344:33 | [...] |
+| main.rs:344:20:344:20 | 2 | element | main.rs:344:16:344:33 | [...] |
+| main.rs:344:23:344:32 | source(...) | element | main.rs:344:16:344:33 | [...] |
+| main.rs:348:17:348:26 | source(...) | element | main.rs:348:16:348:31 | [...; 10] |
+| main.rs:352:17:352:17 | 1 | element | main.rs:352:16:352:24 | [...] |
+| main.rs:352:20:352:20 | 2 | element | main.rs:352:16:352:24 | [...] |
+| main.rs:352:23:352:23 | 3 | element | main.rs:352:16:352:24 | [...] |
+| main.rs:358:17:358:17 | 1 | element | main.rs:358:16:358:33 | [...] |
+| main.rs:358:20:358:20 | 2 | element | main.rs:358:16:358:33 | [...] |
+| main.rs:358:23:358:32 | source(...) | element | main.rs:358:16:358:33 | [...] |
+| main.rs:363:17:363:17 | 1 | element | main.rs:363:16:363:24 | [...] |
+| main.rs:363:20:363:20 | 2 | element | main.rs:363:16:363:24 | [...] |
+| main.rs:363:23:363:23 | 3 | element | main.rs:363:16:363:24 | [...] |
+| main.rs:370:17:370:17 | 1 | element | main.rs:370:16:370:33 | [...] |
+| main.rs:370:20:370:20 | 2 | element | main.rs:370:16:370:33 | [...] |
+| main.rs:370:23:370:32 | source(...) | element | main.rs:370:16:370:33 | [...] |
+| main.rs:381:24:381:24 | 1 | element | main.rs:381:23:381:31 | [...] |
+| main.rs:381:27:381:27 | 2 | element | main.rs:381:23:381:31 | [...] |
+| main.rs:381:30:381:30 | 3 | element | main.rs:381:23:381:31 | [...] |
+| main.rs:384:18:384:27 | source(...) | element | main.rs:384:5:384:11 | [post] mut_arr |
 | main.rs:396:35:396:61 | default_name | captured default_name | main.rs:396:35:396:61 | \|...\| ... |
 | main.rs:418:27:418:27 | 0 | Some | main.rs:418:22:418:28 | Some(...) |
 readStep
@@ -612,20 +612,20 @@ readStep
 | main.rs:332:28:332:43 | D {...} | D | main.rs:332:41:332:41 | n |
 | main.rs:335:9:335:24 | C {...} | C | main.rs:335:22:335:22 | n |
 | main.rs:336:9:336:24 | D {...} | D | main.rs:336:22:336:22 | n |
-| main.rs:345:14:345:17 | arr1 | array[] | main.rs:345:14:345:20 | arr1[2] |
-| main.rs:349:14:349:17 | arr2 | array[] | main.rs:349:14:349:20 | arr2[4] |
-| main.rs:353:14:353:17 | arr3 | array[] | main.rs:353:14:353:20 | arr3[2] |
-| main.rs:359:15:359:18 | arr1 | array[] | main.rs:359:9:359:10 | n1 |
-| main.rs:364:15:364:18 | arr2 | array[] | main.rs:364:9:364:10 | n2 |
-| main.rs:372:9:372:17 | SlicePat | array[] | main.rs:372:10:372:10 | a |
-| main.rs:372:9:372:17 | SlicePat | array[] | main.rs:372:13:372:13 | b |
-| main.rs:372:9:372:17 | SlicePat | array[] | main.rs:372:16:372:16 | c |
-| main.rs:382:10:382:16 | mut_arr | array[] | main.rs:382:10:382:19 | mut_arr[1] |
-| main.rs:384:5:384:11 | mut_arr | array[] | main.rs:384:5:384:14 | mut_arr[1] |
-| main.rs:385:13:385:19 | mut_arr | array[] | main.rs:385:13:385:22 | mut_arr[1] |
-| main.rs:387:10:387:16 | mut_arr | array[] | main.rs:387:10:387:19 | mut_arr[0] |
+| main.rs:345:14:345:17 | arr1 | element | main.rs:345:14:345:20 | arr1[2] |
+| main.rs:349:14:349:17 | arr2 | element | main.rs:349:14:349:20 | arr2[4] |
+| main.rs:353:14:353:17 | arr3 | element | main.rs:353:14:353:20 | arr3[2] |
+| main.rs:359:15:359:18 | arr1 | element | main.rs:359:9:359:10 | n1 |
+| main.rs:364:15:364:18 | arr2 | element | main.rs:364:9:364:10 | n2 |
+| main.rs:372:9:372:17 | SlicePat | element | main.rs:372:10:372:10 | a |
+| main.rs:372:9:372:17 | SlicePat | element | main.rs:372:13:372:13 | b |
+| main.rs:372:9:372:17 | SlicePat | element | main.rs:372:16:372:16 | c |
+| main.rs:382:10:382:16 | mut_arr | element | main.rs:382:10:382:19 | mut_arr[1] |
+| main.rs:384:5:384:11 | mut_arr | element | main.rs:384:5:384:14 | mut_arr[1] |
+| main.rs:385:13:385:19 | mut_arr | element | main.rs:385:13:385:22 | mut_arr[1] |
+| main.rs:387:10:387:16 | mut_arr | element | main.rs:387:10:387:19 | mut_arr[0] |
 | main.rs:394:7:394:18 | TuplePat | tuple.0 | main.rs:394:8:394:11 | cond |
 | main.rs:394:7:394:18 | TuplePat | tuple.1 | main.rs:394:14:394:17 | name |
-| main.rs:394:23:394:27 | names | array[] | main.rs:394:7:394:18 | TuplePat |
+| main.rs:394:23:394:27 | names | element | main.rs:394:7:394:18 | TuplePat |
 | main.rs:396:35:396:61 | [post] \|...\| ... | captured default_name | main.rs:396:35:396:61 | [post] default_name |
 | main.rs:396:38:396:49 | this | captured default_name | main.rs:396:38:396:49 | default_name |

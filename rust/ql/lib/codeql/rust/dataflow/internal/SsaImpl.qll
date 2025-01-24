@@ -488,7 +488,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
-    exists(ConditionBlock conditionBlock, ConditionalSuccessor s |
+    exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.controls(bb, s)
