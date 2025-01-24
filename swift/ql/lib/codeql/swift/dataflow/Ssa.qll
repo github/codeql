@@ -21,7 +21,7 @@ module Ssa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
+    class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
 
     private newtype TSourceVariable =
       TNormalSourceVariable(VarDecl v) or

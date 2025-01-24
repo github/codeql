@@ -3,6 +3,7 @@
  */
 
 import javascript
+import semmle.javascript.ViewComponentInput
 
 module Vue {
   /** The global variable `Vue`, as an API graph entry point. */
@@ -85,17 +86,16 @@ module Vue {
    * A class with a `@Component` decorator, making it usable as an "options" object in Vue.
    */
   class ClassComponent extends DataFlow::ClassNode {
+    private ClassDefinition cls;
     DataFlow::Node decorator;
 
     ClassComponent() {
-      exists(ClassDefinition cls |
-        this = cls.flow() and
-        cls.getADecorator().getExpression() = decorator.asExpr() and
-        (
-          componentDecorator().flowsTo(decorator)
-          or
-          componentDecorator().getACall() = decorator
-        )
+      this = cls.flow() and
+      cls.getADecorator().getExpression() = decorator.asExpr() and
+      (
+        componentDecorator().flowsTo(decorator)
+        or
+        componentDecorator().getACall() = decorator
       )
     }
 
@@ -105,6 +105,9 @@ module Vue {
      * These options correspond to the options one would pass to `new Vue({...})` or similar.
      */
     API::Node getDecoratorOptions() { result = decorator.(API::CallNode).getParameter(0) }
+
+    /** Gets the AST node for the class definition. */
+    ClassDefinition getClassDefinition() { result = cls }
   }
 
   private string memberKindVerb(DataFlow::MemberKind kind) {
@@ -460,6 +463,12 @@ module Vue {
 
     SingleFileComponent() { this = MkSingleFileComponent(file) }
 
+    /** Gets a call to `defineProps` in this component. */
+    DataFlow::CallNode getDefinePropsCall() {
+      result = DataFlow::globalVarRef("defineProps").getACall() and
+      result.getFile() = file
+    }
+
     override Template::Element getTemplateElement() {
       exists(HTML::Element e | result.(Template::HtmlElement).getElement() = e |
         e.getFile() = file and
@@ -696,5 +705,69 @@ module Vue {
     override string getSourceType() { result = "Vue route parameter" }
 
     override ClientSideRemoteFlowKind getKind() { result = kind }
+  }
+
+  /**
+   * Holds if the given type annotation indicates a value that is not typically considered taintable.
+   */
+  private predicate isSafeType(TypeAnnotation type) {
+    type.isBooleany() or
+    type.isNumbery() or
+    type.isRawFunction() or
+    type instanceof FunctionTypeExpr
+  }
+
+  /**
+   * Holds if the given field has a type that indicates that is can not contain a taintable value.
+   */
+  private predicate isSafeField(FieldDeclaration field) { isSafeType(field.getTypeAnnotation()) }
+
+  private DataFlow::Node getPropSpec(Component component) {
+    result = component.getOption("props")
+    or
+    result = component.(SingleFileComponent).getDefinePropsCall().getArgument(0)
+  }
+
+  /**
+   * Holds if `component` has an input prop with the given name, that is of a taintable type.
+   */
+  private predicate hasTaintableProp(Component component, string name) {
+    exists(DataFlow::SourceNode spec | spec = getPropSpec(component).getALocalSource() |
+      spec.(DataFlow::ArrayCreationNode).getAnElement().getStringValue() = name
+      or
+      exists(DataFlow::PropWrite write |
+        write = spec.getAPropertyWrite(name) and
+        not DataFlow::globalVarRef(["Number", "Boolean"]).flowsTo(write.getRhs())
+      )
+    )
+    or
+    exists(FieldDeclaration field |
+      field = component.getAsClassComponent().getClassDefinition().getField(name) and
+      DataFlow::moduleMember("vue-property-decorator", "Prop")
+          .getACall()
+          .flowsToExpr(field.getADecorator().getExpression()) and
+      not isSafeField(field)
+    )
+    or
+    // defineProps() can be called with only type arguments and then the Vue compiler will
+    // infer the prop types.
+    exists(CallExpr call, FieldDeclaration field |
+      call = component.(SingleFileComponent).getDefinePropsCall().asExpr() and
+      field = call.getTypeArgument(0).(InterfaceTypeExpr).getMember(name) and
+      not isSafeField(field)
+    )
+  }
+
+  private class PropAsViewComponentInput extends ViewComponentInput {
+    PropAsViewComponentInput() {
+      exists(Component component, string name | hasTaintableProp(component, name) |
+        this = component.getAnInstanceRef().getAPropertyRead(name)
+        or
+        // defineProps() returns the props
+        this = component.(SingleFileComponent).getDefinePropsCall().getAPropertyRead(name)
+      )
+    }
+
+    override string getSourceType() { result = "Vue prop" }
   }
 }
