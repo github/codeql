@@ -1677,9 +1677,9 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 		if !transparentAliases && containsAliasTypes(tp) {
 			// Ensure the (deep) underlying type is also extracted, so that it is
 			// possible to implement deepUnalias in QL.
-			// For example, if we had type A = int and type B = string, we would need
-			// to extract map[string]int so that deepUnalias(map[B]A) has a real member
-			// of @type to return.
+			// For example, if we had type A = int and type B = string, when extracting
+			// map[B]A we would need to also extract map[string]int so that
+			// deepUnalias(map[B]A) has a real member of @type to return.
 			extractTypeWithFlags(tw, tp, true)
 		}
 		var kind int
