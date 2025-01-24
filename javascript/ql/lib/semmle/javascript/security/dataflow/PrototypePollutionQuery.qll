@@ -49,6 +49,15 @@ module PrototypePollutionConfig implements DataFlow::StateConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    exists(Locatable loc |
+      sink.(Sink).dependencyInfo(_, loc) and
+      result = loc.getLocation()
+    )
+  }
 }
 
 /**
