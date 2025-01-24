@@ -149,9 +149,9 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
 }
 
 fn test_std(password: String, i: i32, opt_i: Option<i32>) {
-    print!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    print!("message = {}\n", password); // $ Source Alert[rust/cleartext-logging]
     println!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    eprint!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    eprint!("message = {}\n", password); // $ Source Alert[rust/cleartext-logging]
     eprintln!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
 
     match i {
@@ -169,14 +169,21 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
         _ => {}
     }
 
-    std::io::stdout().lock().write_fmt(format_args!("message = {}", password)); // $ MISSING: Alert[rust/cleartext-logging]
-    std::io::stderr().lock().write_fmt(format_args!("message = {}", password)); // $ MISSING: Alert[rust/cleartext-logging]
-    std::io::stdout().lock().write(format!("message = {}", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
-    std::io::stdout().lock().write_all(format!("message = {}", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stderr().lock().write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write_all(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
 
     let mut out = std::io::stdout().lock();
-    out.write(format!("message = {}", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    out.write(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
 
     let mut err = std::io::stderr().lock();
-    err.write(format!("message = {}", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    err.write(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+}
+
+fn main() {
+    simple_logger::SimpleLogger::new().init().unwrap();
+
+    test_log("harmless".to_string(), "123456".to_string(), "[encrypted]".to_string());
+    test_std("123456".to_string(), 0, None);
 }
