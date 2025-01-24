@@ -10,22 +10,32 @@ result in exposure of data or unintended code execution.</p>
 </overview>
 
 <recommendation>
-<p>When handling requests, make sure any requests that change application state are protected from
-Cross Site Request Forgery (CSRF). Some application frameworks, such as Spring, provide default CSRF
-protection for HTTP request types that may change application state, such as POST. Other HTTP request
-types, such as GET, should not be used for actions that change the state of the application, since these
-request types are not default-protected from CSRF by the framework.</p>
+<p>Make sure any requests that change application state are protected from Cross Site Request Forgery (CSRF).
+Some application frameworks provide default CSRF protection for unsafe HTTP request methods (<code>POST</code>,
+<code>PUT</code>, <code>DELETE</code>, <code>PATCH</code>, <code>CONNECT</code>) which may change the state of
+the application. Safe HTTP request methods (<code>GET</code>, <code>HEAD</code>, <code>OPTIONS</code>,
+<code>TRACE</code>) should be read-only and should not be used for actions that change application state.</p>
+
+<p>This query currently supports the Spring and Stapler web frameworks. Spring provides default CSRF protection
+for all unsafe HTTP methods. Stapler provides default CSRF protection for the <code>POST</code> method.</p>
 </recommendation>
 
 <example>
-<p>The following example shows a Spring request handler using a GET request for a state-changing action.
-Since a GET request does not have default CSRF protection in Spring, this type of request should
-not be used when modifying application state. Instead use one of Spring's default-protected request
-types, such as POST.</p>
+<p> The following examples show Spring request handlers allowing safe HTTP request methods for state-changing actions.
+Since safe HTTP request methods do not have default CSRF protection in Spring, they should not be used when modifying
+application state. Instead use one of the unsafe HTTP methods which Spring default-protects from CSRF.</p>
 
-<sample src="CsrfUnprotectedRequestTypeBad.java" />
+<sample src="CsrfUnprotectedRequestTypeBadSpring.java" />
 
-<sample src="CsrfUnprotectedRequestTypeGood.java" />
+<sample src="CsrfUnprotectedRequestTypeGoodSpring.java" />
+
+<p> The following examples show Stapler web methods allowing safe HTTP request methods for state-changing actions.
+Since safe HTTP request methods do not have default CSRF protection in Stapler, they should not be used when modifying
+application state. Instead use the <code>POST</code> method which Stapler default-protects from CSRF.</p>
+
+<sample src="CsrfUnprotectedRequestTypeBadStapler.java" />
+
+<sample src="CsrfUnprotectedRequestTypeGoodStapler.java" />
 </example>
 
 <references>
@@ -36,8 +46,17 @@ OWASP:
 <li>
 Spring Security Reference:
 <a href="https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html">
-  Cross Site Request Forgery (CSRF)
-</a>.
+  Cross Site Request Forgery (CSRF)</a>.
+</li>
+<li>
+Jenkins Developer Documentation:
+<a href="https://www.jenkins.io/doc/developer/security/form-validation/#protecting-from-csrf">
+  Protecting from CSRF</a>.
+</li>
+<li>
+MDN web docs:
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">
+  HTTP request methods</a>.
 </li>
 </references>
 </qhelp>
