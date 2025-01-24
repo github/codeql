@@ -53,7 +53,7 @@ class Type extends @type {
    * with the corresponding named type instead.
    */
   Method getMethod(string m) {
-    result.getReceiverType() = this and
+    result.getReceiverType().getDeepUnaliasedType() = this.getDeepUnaliasedType() and
     result.getName() = m
   }
 
