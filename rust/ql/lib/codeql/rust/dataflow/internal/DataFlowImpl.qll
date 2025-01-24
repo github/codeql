@@ -767,8 +767,6 @@ final class ReferenceContent extends Content, TReferenceContent {
  * Examples include the elements of a set, array, vector, or stack.
  */
 final class ElementContent extends Content, TElementContent {
-  ElementContent() { this = TElementContent() }
-
   override string toString() { result = "element" }
 }
 
