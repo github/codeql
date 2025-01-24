@@ -54,7 +54,7 @@ deprecated class LogInjectionConfiguration extends TaintTracking::Configuration 
  * A source of remote user controlled input.
  */
 class RemoteSource extends Source instanceof RemoteFlowSource {
-  RemoteSource() { not this instanceof ClientSideRemoteFlowSource }
+  RemoteSource() { not this.isClientSideSource() }
 }
 
 /**
