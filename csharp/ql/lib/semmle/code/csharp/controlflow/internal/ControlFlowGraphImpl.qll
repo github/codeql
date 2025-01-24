@@ -95,6 +95,10 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof ST::SuccessorTypes::ExceptionSuccessor or
     t instanceof ST::SuccessorTypes::ExitSuccessor
   }
+
+  int idOfAstNode(AstNode node) { result = node.getId() }
+
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
