@@ -14,6 +14,8 @@ private predicate isMetaclass(Class c) {
 /** Holds if `f` is a class method. */
 private predicate isClassMethod(Function f) {
   f.getADecorator() = API::builtin("classmethod").asSource().asExpr()
+  or
+  f.getName() in ["__new__", "__init_subclass__", "__metaclass__", "__class_getitem__"]
 }
 
 /** Holds if `f` is a static method. */
@@ -37,8 +39,7 @@ predicate shouldBeSelf(Function f, Class c) {
   methodOfClass(f, c) and
   not isStaticMethod(f) and
   not isClassMethod(f) and
-  not f.getName() in ["__new__", "__init_subclass__", "__metaclass__", "__class_getitem__"] and
-  isMetaclass(c) and
+  not isMetaclass(c) and
   not isZopeInterface(c)
 }
 
@@ -47,9 +48,9 @@ predicate shouldBeCls(Function f, Class c) {
   methodOfClass(f, c) and
   not isStaticMethod(f) and
   (
-    isClassMethod(f)
+    isClassMethod(f) and not isMetaclass(c)
     or
-    f.getName() in ["__new__", "__init_subclass__", "__metaclass__", "__class_getitem__"]
+    isMetaclass(c) and not isClassMethod(f)
   )
 }
 
@@ -68,12 +69,12 @@ predicate firstArgNamedCls(Function f) {
 
 /** Holds if the first parameter of `f` should be named `self`, but isn't. */
 predicate firstArgShouldBeNamedSelfAndIsnt(Function f) {
-  exists(Class c | shouldBeSelf(f, c)) and
+  shouldBeSelf(f, _) and
   not firstArgNamedSelf(f)
 }
 
 /** Holds if the first parameter of `f` should be named `cls`, but isn't. */
 predicate firstArgShouldBeNamedClsAndIsnt(Function f) {
-  exists(Class c | shouldBeCls(f, c)) and
+  shouldBeCls(f, _) and
   not firstArgNamedCls(f)
 }

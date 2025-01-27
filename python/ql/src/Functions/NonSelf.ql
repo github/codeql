@@ -20,15 +20,13 @@ from Function f, string message
 where
   firstArgShouldBeNamedSelfAndIsnt(f) and
   (
-    (
-      if exists(f.getArgName(0))
-      then
-        message =
-          "Normal methods should have 'self', rather than '" + f.getArgName(0) +
-            "', as their first parameter."
-      else
-        message =
-          "Normal methods should have at least one parameter (the first of which should be 'self')."
-    ) and
-  ) 
+    if exists(f.getArgName(0))
+    then
+      message =
+        "Normal methods should have 'self', rather than '" + f.getArgName(0) +
+          "', as their first parameter."
+    else
+      message =
+        "Normal methods should have at least one parameter (the first of which should be 'self')."
+  )
 select f, message
