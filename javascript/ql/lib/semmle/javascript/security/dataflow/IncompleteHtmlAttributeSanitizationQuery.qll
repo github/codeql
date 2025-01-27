@@ -51,35 +51,3 @@ module IncompleteHtmlAttributeSanitizationConfig implements DataFlow::StateConfi
  */
 module IncompleteHtmlAttributeSanitizationFlow =
   TaintTracking::GlobalWithState<IncompleteHtmlAttributeSanitizationConfig>;
-
-/**
- * DEPRECATED. Use the `IncompleteHtmlAttributeSanitizationFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "IncompleteHtmlAttributeSanitization" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    label = Label::characterToLabel(source.(Source).getAnUnsanitizedCharacter())
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    label = Label::characterToLabel(sink.(Sink).getADangerousCharacter())
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-    DataFlow::FlowLabel dstlabel
-  ) {
-    super.isAdditionalFlowStep(src, dst) and srclabel = dstlabel
-  }
-
-  override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    lbl = Label::characterToLabel(node.(StringReplaceCall).getAReplacedString()) or
-    this.isSanitizer(node)
-  }
-
-  override predicate isSanitizer(DataFlow::Node n) {
-    n instanceof Sanitizer or
-    super.isSanitizer(n)
-  }
-}

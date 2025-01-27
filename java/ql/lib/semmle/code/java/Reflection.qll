@@ -83,9 +83,6 @@ class ReflectiveClassIdentifierMethodCall extends ReflectiveClassIdentifier, Met
   }
 }
 
-/** DEPRECATED: Alias for `ReflectiveClassIdentifierMethodCall`. */
-deprecated class ReflectiveClassIdentifierMethodAccess = ReflectiveClassIdentifierMethodCall;
-
 /**
  * Gets a `ReflectiveClassIdentifier` that we believe may represent the value of `expr`.
  */
@@ -320,9 +317,6 @@ class ClassMethodCall extends MethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `ClassMethodCall`. */
-deprecated class ClassMethodAccess = ClassMethodCall;
-
 /**
  * A call to `Class.getConstructors(..)` or `Class.getDeclaredConstructors(..)`.
  */
@@ -333,9 +327,6 @@ class ReflectiveGetConstructorsCall extends ClassMethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `ReflectiveGetConstructorsCall`. */
-deprecated class ReflectiveConstructorsAccess = ReflectiveGetConstructorsCall;
-
 /**
  * A call to `Class.getMethods(..)` or `Class.getDeclaredMethods(..)`.
  */
@@ -345,9 +336,6 @@ class ReflectiveGetMethodsCall extends ClassMethodCall {
     this.getCallee().hasName("getDeclaredMethods")
   }
 }
-
-/** DEPRECATED: Alias for `ReflectiveGetMethodsCall`. */
-deprecated class ReflectiveMethodsAccess = ReflectiveGetMethodsCall;
 
 /**
  * A call to `Class.getMethod(..)` or `Class.getDeclaredMethod(..)`.
@@ -378,9 +366,6 @@ class ReflectiveGetMethodCall extends ClassMethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `ReflectiveGetMethodCall`. */
-deprecated class ReflectiveMethodAccess = ReflectiveGetMethodCall;
-
 /**
  * A call to `Class.getAnnotation(..)`.
  */
@@ -394,9 +379,6 @@ class ReflectiveGetAnnotationCall extends ClassMethodCall {
     result = inferClassParameterType(this.getArgument(0))
   }
 }
-
-/** DEPRECATED: Alias for `ReflectiveGetAnnotationCall`. */
-deprecated class ReflectiveAnnotationAccess = ReflectiveGetAnnotationCall;
 
 /**
  * A call to `Class.getField(..)` that accesses a field.
@@ -423,6 +405,3 @@ class ReflectiveGetFieldCall extends ClassMethodCall {
     result.hasName(this.getArgument(0).(StringLiteral).getValue())
   }
 }
-
-/** DEPRECATED: Alias for `ReflectiveGetFieldCall`. */
-deprecated class ReflectiveFieldAccess = ReflectiveGetFieldCall;

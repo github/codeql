@@ -201,25 +201,6 @@ abstract class LocalUserInput extends UserInput {
 }
 
 /**
- * DEPRECATED: Use the threat models feature.
- * That is, use `ActiveThreatModelSource` as the class of nodes for sources
- * and set up the threat model configuration to filter source nodes.
- * Alternatively, use `getThreatModel` to filter nodes to create the
- * class of nodes you need.
- *
- * A node with input from the local environment, such as files, standard in,
- * environment variables, and main method parameters.
- */
-deprecated class EnvInput extends DataFlow::Node {
-  EnvInput() {
-    this instanceof EnvironmentInput or
-    this instanceof CliInput or
-    this instanceof FileInput or
-    this instanceof StdinInput
-  }
-}
-
-/**
  * A node with input from the local environment, such as
  * environment variables.
  */
@@ -270,17 +251,6 @@ private class FileInput extends LocalUserInput {
 
   override string getThreatModel() { result = "file" }
 }
-
-/**
- * DEPRECATED: Use the threat models feature.
- * That is, use `ActiveThreatModelSource` as the class of nodes for sources
- * and set up the threat model configuration to filter source nodes.
- * Alternatively, use `getThreatModel` to filter nodes to create the
- * class of nodes you need.
- *
- * A node with input from a database.
- */
-deprecated class DatabaseInput = DbInput;
 
 /**
  * A node with input from a database.

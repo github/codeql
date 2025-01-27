@@ -45,16 +45,3 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about command-injection vulnerabilities.
  */
 module CommandInjectionFlow = TaintTracking::Global<CommandInjectionConfig>;
-
-/**
- * DEPRECATED. Use the `CommandInjectionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CommandInjection" }
-
-  override predicate isSource(DataFlow::Node source) { CommandInjectionConfig::isSource(source) }
-
-  override predicate isSink(DataFlow::Node sink) { CommandInjectionConfig::isSink(sink) }
-
-  override predicate isSanitizer(DataFlow::Node node) { CommandInjectionConfig::isBarrier(node) }
-}

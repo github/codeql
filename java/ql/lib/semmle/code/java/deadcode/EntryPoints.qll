@@ -168,9 +168,6 @@ class ReflectiveGetMethodCallEntryPoint extends EntryPoint, ReflectiveGetMethodC
   }
 }
 
-/** DEPRECATED: Alias for `ReflectiveGetMethodCallEntryPoint`. */
-deprecated class ReflectiveMethodAccessEntryPoint = ReflectiveGetMethodCallEntryPoint;
-
 /**
  * Classes that are entry points recognised by annotations.
  */

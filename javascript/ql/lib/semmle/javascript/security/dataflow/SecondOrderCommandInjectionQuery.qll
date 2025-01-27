@@ -56,32 +56,3 @@ module SecondOrderCommandInjectionConfig implements DataFlow::StateConfigSig {
  */
 module SecondOrderCommandInjectionFlow =
   DataFlow::GlobalWithState<SecondOrderCommandInjectionConfig>;
-
-/**
- * DEPRECATED. Use the `SecondOrderCommandInjectionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "SecondOrderCommandInjection" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getALabel() = label
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink.(Sink).getALabel() = label
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof PrefixStringSanitizer or
-    guard instanceof DoubleDashSanitizer or
-    guard instanceof TaintedObject::SanitizerGuard
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
-  ) {
-    TaintedObject::step(src, trg, inlbl, outlbl)
-  }
-}

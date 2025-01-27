@@ -43,20 +43,3 @@ module HardcodedDataInterpretedAsCodeConfig implements DataFlow::StateConfigSig 
  */
 module HardcodedDataInterpretedAsCodeFlow =
   DataFlow::GlobalWithState<HardcodedDataInterpretedAsCodeConfig>;
-
-/**
- * DEPRECATED. Use the `HardcodedDataInterpretedAsCodeFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "HardcodedDataInterpretedAsCode" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-    source.(Source).getLabel() = lbl
-  }
-
-  override predicate isSink(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
-    nd.(Sink).getLabel() = lbl
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}

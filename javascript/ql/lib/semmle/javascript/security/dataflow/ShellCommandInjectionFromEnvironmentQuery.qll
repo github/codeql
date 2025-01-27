@@ -43,23 +43,3 @@ module ShellCommandInjectionFromEnvironmentConfig implements DataFlow::ConfigSig
  */
 module ShellCommandInjectionFromEnvironmentFlow =
   TaintTracking::Global<ShellCommandInjectionFromEnvironmentConfig>;
-
-/**
- * DEPRECATED. Use the `ShellCommandInjectionFromEnvironmentFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ShellCommandInjectionFromEnvironment" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  /** Holds if `sink` is a command-injection sink with `highlight` as the corresponding alert location. */
-  predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
-    sink instanceof Sink and highlight = sink
-    or
-    isIndirectCommandArgument(sink, highlight)
-  }
-
-  override predicate isSink(DataFlow::Node sink) { this.isSinkWithHighlight(sink, _) }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}

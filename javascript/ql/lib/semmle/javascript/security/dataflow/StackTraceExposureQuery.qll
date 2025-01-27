@@ -36,20 +36,3 @@ module StackTraceExposureConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about stack trace exposure problems.
  */
 module StackTraceExposureFlow = TaintTracking::Global<StackTraceExposureConfig>;
-
-/**
- * DEPRECATED. Use the `StackTraceExposureFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "StackTraceExposure" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof Source }
-
-  override predicate isSanitizer(DataFlow::Node nd) {
-    super.isSanitizer(nd)
-    or
-    StackTraceExposureConfig::isBarrier(nd)
-  }
-
-  override predicate isSink(DataFlow::Node snk) { snk instanceof Sink }
-}

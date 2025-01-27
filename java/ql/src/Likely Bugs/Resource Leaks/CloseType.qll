@@ -54,9 +54,6 @@ class SqlResourceOpeningMethodCall extends MethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `SqlResourceOpeningMethodCall`. */
-deprecated class SqlResourceOpeningMethodAccess = SqlResourceOpeningMethodCall;
-
 /**
  * A candidate for a "closeable init" expression, which may require calling a "close" method.
  */

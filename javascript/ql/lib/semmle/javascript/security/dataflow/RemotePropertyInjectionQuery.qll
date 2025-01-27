@@ -31,20 +31,3 @@ module RemotePropertyInjectionConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about remote property injection.
  */
 module RemotePropertyInjectionFlow = TaintTracking::Global<RemotePropertyInjectionConfig>;
-
-/**
- * DEPRECATED. Use the `RemotePropertyInjectionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RemotePropertyInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer or
-    node = StringConcatenation::getRoot(any(ConstantString str).flow())
-  }
-}

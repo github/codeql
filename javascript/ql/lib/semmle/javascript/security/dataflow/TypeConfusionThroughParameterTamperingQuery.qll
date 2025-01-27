@@ -59,25 +59,3 @@ private class IsArrayBarrier extends BarrierGuard, DataFlow::CallNode {
     outcome = [true, false] // separation between string/array removes type confusion in both branches
   }
 }
-
-/**
- * DEPRECATED. Use the `TypeConfusionFlow` module instead.
- */
-deprecated class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "TypeConfusionThroughParameterTampering" }
-
-  override predicate isSource(DataFlow::Node source) { TypeConfusionConfig::isSource(source) }
-
-  override predicate isSink(DataFlow::Node sink) { TypeConfusionConfig::isSink(sink) }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    super.isBarrier(node)
-    or
-    node instanceof Barrier
-  }
-
-  override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
-    guard instanceof TypeOfTestBarrier or
-    guard instanceof IsArrayBarrier
-  }
-}

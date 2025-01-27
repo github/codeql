@@ -163,33 +163,3 @@ module ExceptionXssConfig implements DataFlow::StateConfigSig {
  * Taint-tracking for reasoning about XSS with possible exceptional flow.
  */
 module ExceptionXssFlow = TaintTracking::GlobalWithState<ExceptionXssConfig>;
-
-/**
- * DEPRECATED. Use the `ExceptionXssFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ExceptionXss" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getAFlowLabel() = label
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof XssShared::Sink and not label instanceof NotYetThrown
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof XssShared::Sanitizer }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
-  ) {
-    ExceptionXssConfig::isAdditionalFlowStep(pred, FlowState::fromFlowLabel(inlbl), succ,
-      FlowState::fromFlowLabel(outlbl))
-    or
-    // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
-    // Note: this step is not needed in StateConfigSig module since flow states inherit taint steps.
-    this.isAdditionalFlowStep(pred, succ) and
-    inlbl instanceof NotYetThrown and
-    outlbl instanceof NotYetThrown
-  }
-}
