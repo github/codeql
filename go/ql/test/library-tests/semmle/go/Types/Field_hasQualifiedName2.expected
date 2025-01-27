@@ -1,6 +1,7 @@
-| aliases.go:6:26:6:26 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 | x |
-| aliases.go:8:26:8:26 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 | x |
+| aliases.go:6:26:6:26 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.aliasesS1 | x |
+| aliases.go:8:26:8:26 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.aliasesS2 | x |
 | aliases.go:19:17:19:17 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 | x |
+| aliases.go:19:17:19:17 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.T | x |
 | cyclic.go:4:3:4:3 | s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s | s |
 | cyclic.go:8:3:8:3 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.t | u |
 | cyclic.go:8:3:8:3 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.u | u |

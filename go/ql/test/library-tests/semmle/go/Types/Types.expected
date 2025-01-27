@@ -1,4 +1,9 @@
+| aliases.go:3:6:3:13 | aliasesX | aliasesX |
+| aliases.go:4:6:4:13 | aliasesY | aliasesY |
+| aliases.go:6:6:6:14 | aliasesS1 | aliasesS1 |
+| aliases.go:8:6:8:14 | aliasesS2 | aliasesS2 |
 | aliases.go:19:6:19:7 | S3 | S3 |
+| aliases.go:22:6:22:6 | T | T |
 | cyclic.go:3:6:3:6 | s | s |
 | cyclic.go:7:6:7:6 | t | t |
 | cyclic.go:12:6:12:6 | u | u |
@@ -30,7 +35,9 @@
 | generic.go:47:6:47:16 | MyInterface | MyInterface |
 | generic.go:67:6:67:22 | HasBlankTypeParam | HasBlankTypeParam |
 | generic.go:68:6:68:23 | HasBlankTypeParams | HasBlankTypeParams |
+| generic.go:82:6:82:14 | TypeAlias | TypeAlias |
 | generic.go:84:6:84:21 | GenericSignature | GenericSignature |
+| generic.go:85:6:85:26 | GenericSignatureAlias | GenericSignatureAlias |
 | interface.go:3:6:3:7 | i0 | i0 |
 | interface.go:5:6:5:7 | i1 | i1 |
 | interface.go:9:6:9:7 | i2 | i2 |
