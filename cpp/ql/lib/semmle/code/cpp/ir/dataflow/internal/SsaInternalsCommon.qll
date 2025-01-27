@@ -41,9 +41,7 @@ predicate ignoreInstruction(Instruction instr) {
     instr instanceof AliasedUseInstruction or
     instr instanceof InitializeNonLocalInstruction or
     instr instanceof ReturnIndirectionInstruction or
-    instr instanceof UninitializedGroupInstruction or
-    // We exclude instructions belonging to functions that have a summary.
-    instr.getEnclosingFunction() = any(SummarizedCallable sc).getUnderlyingCallable()
+    instr instanceof UninitializedGroupInstruction
   )
 }
 
