@@ -63,8 +63,22 @@ async fn test_reqwest() -> Result<(), reqwest::Error> {
     let remote_string2 = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap(); // $ Alert[rust/summary/taint-sources]
     sink(remote_string2); // $ MISSING: hasTaintFlow
 
-    let remote_string3 = reqwest::get("http://example.com/").await?.text().await?; // $ Alert[rust/summary/taint-sources]
+    let remote_string3 = reqwest::blocking::get("http://example.com/").unwrap().text_with_charset("utf-8").unwrap(); // $ Alert[rust/summary/taint-sources]
     sink(remote_string3); // $ MISSING: hasTaintFlow
+
+    let remote_string4 = reqwest::blocking::get("http://example.com/").unwrap().bytes().unwrap(); // $ Alert[rust/summary/taint-sources]
+    sink(remote_string4); // $ MISSING: hasTaintFlow
+
+    let remote_string5 = reqwest::get("http://example.com/").await?.text().await?; // $ Alert[rust/summary/taint-sources]
+    sink(remote_string5); // $ MISSING: hasTaintFlow
+
+    let remote_string6 = reqwest::get("http://example.com/").await?.bytes().await?; // $ Alert[rust/summary/taint-sources]
+    sink(remote_string6); // $ MISSING: hasTaintFlow
+
+    let mut request1 = reqwest::get("http://example.com/").await?; // $ Alert[rust/summary/taint-sources]
+    while let Some(chunk) = request1.chunk().await? {
+        sink(chunk); // $ MISSING: hasTaintFlow
+    }
 
     Ok(())
 }
