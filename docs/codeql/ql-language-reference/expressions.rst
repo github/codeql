@@ -731,7 +731,7 @@ You can use the following binary operators in QL:
 +------------------------+--------+
 
 If both expressions are numbers, these operators act as standard arithmetic operators. For 
-example, ``10.6 - 3.2`` has value ``7.4``, ``123.456 * 0`` has value ``0``, and ``9 % 4`` has 
+example, ``10.6 - 3.2`` has value ``7.4``, ``123.456 * 0`` has value ``0.0``, and ``9 % 4`` has 
 value ``1`` (the remainder after dividing ``9`` by ``4``).
 If both operands are integers, then the result is an integer. Otherwise the result is a 
 floating-point number.

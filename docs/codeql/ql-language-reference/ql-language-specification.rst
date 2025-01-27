@@ -718,7 +718,7 @@ An integer literal is a possibly negated sequence of decimal digits (``0`` throu
 Float literals (float)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-A floating-point literals is a possibly negated two non-negative integers literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
+A floating-point literal is a possibly negated pair of non-negative integer literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
 
 ::
 
