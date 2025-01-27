@@ -103,9 +103,6 @@ class ActiveRecordModelClass extends ClassDeclaration {
     cls = activeRecordBaseClass().getADescendentModule() and this = cls.getADeclaration()
   }
 
-  // Gets the class declaration for this class and all of its super classes
-  private ModuleBase getAllClassDeclarations() { result = cls.getAnAncestor().getADeclaration() }
-
   /** Gets the class as a `DataFlow::ClassNode`. */
   DataFlow::ClassNode getClassNode() { result = cls }
 }
