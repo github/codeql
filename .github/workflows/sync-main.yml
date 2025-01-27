@@ -30,9 +30,13 @@ jobs:
           git fetch upstream --tags --force
           git merge codeql-cli/latest
       - name: Setup CodeQL
-        uses: ./.github/actions/fetch-codeql
-        with:
-          channel: 'release'
+        shell: bash
+        run: |
+          gh extension install github/gh-codeql
+          gh codeql version
+          printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
       - name: Compile PowerShell Queries
         run: |
           codeql query compile --check-only --keep-going powershell/ql/src
