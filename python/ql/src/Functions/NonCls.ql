@@ -13,30 +13,11 @@
  */
 
 import python
-
-predicate first_arg_cls(Function f) {
-  exists(string argname | argname = f.getArgName(0) |
-    argname = "cls"
-    or
-    /* Not PEP8, but relatively common */
-    argname = "mcls"
-  )
-}
-
-predicate is_type_method(Function f) {
-  exists(ClassValue c | c.getScope() = f.getScope() and c.getASuperType() = ClassValue::type())
-}
-
-predicate classmethod_decorators_only(Function f) {
-  forall(Expr decorator | decorator = f.getADecorator() | decorator.(Name).getId() = "classmethod")
-}
+import MethodArgNames
 
 from Function f, string message
 where
-  (f.getADecorator().(Name).getId() = "classmethod" or is_type_method(f)) and
-  not first_arg_cls(f) and
-  classmethod_decorators_only(f) and
-  not f.getName() = "__new__" and
+  firstArgShouldBeNamedClsAndIsnt(f) and
   (
     if exists(f.getArgName(0))
     then
