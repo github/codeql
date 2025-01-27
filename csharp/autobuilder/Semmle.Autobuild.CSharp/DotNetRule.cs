@@ -46,7 +46,9 @@ namespace Semmle.Autobuild.CSharp
 
             return WithDotNet(builder, ensureDotNetAvailable: false, (dotNetPath, environment) =>
                 {
-                    var ret = GetInfoCommand(builder.Actions, dotNetPath, environment);
+                    // When a custom .NET CLI has been installed, `dotnet --info` has already been executed
+                    // to verify the installation.
+                    var ret = dotNetPath is null ? GetInfoCommand(builder.Actions, dotNetPath, environment) : BuildScript.Success;
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
                     {
                         var cleanCommand = GetCleanCommand(builder.Actions, dotNetPath, environment);
