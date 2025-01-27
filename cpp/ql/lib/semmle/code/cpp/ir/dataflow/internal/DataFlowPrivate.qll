@@ -1127,7 +1127,21 @@ class DataFlowCall extends TDataFlowCall {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  DataFlowCallable getStaticCallTarget() { none() }
+  Function getStaticCallSourceTarget() { none() }
+
+  /**
+   * Gets the target of this call. If a summarized callable exists for the
+   * target this is chosen, and otherwise the callable is the implementation
+   * from the source code.
+   */
+  DataFlowCallable getStaticCallTarget() {
+    exists(Function target | target = this.getStaticCallSourceTarget() |
+      not exists(TSummarizedCallable(target)) and
+      result.asSourceCallable() = target
+      or
+      result.asSummarizedCallable() = target
+    )
+  }
 
   /**
    * Gets the `index`'th argument operand. The qualifier is considered to have index `-1`.
@@ -1173,14 +1187,12 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override CallTargetOperand getCallTargetOperand() { result = call.getCallTargetOperand() }
 
-  override DataFlowCallable getStaticCallTarget() {
-    result.getUnderlyingCallable() = call.getStaticCallTarget()
-  }
+  override Function getStaticCallSourceTarget() { result = call.getStaticCallTarget() }
 
   override ArgumentOperand getArgumentOperand(int index) { result = call.getArgumentOperand(index) }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.getUnderlyingCallable() = call.getEnclosingFunction()
+    result.asSourceCallable() = call.getEnclosingFunction()
   }
 
   override string toString() { result = call.toString() }
