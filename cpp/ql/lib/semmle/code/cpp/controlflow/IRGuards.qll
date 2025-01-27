@@ -112,7 +112,7 @@ abstract private class GuardConditionImpl extends Expr {
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-   *   If `isLessThan = false` then this implies `left >= right + k`. Note that there's a 4-argument
+   * If `isLessThan = false` then this implies `left >= right + k`. Note that there's a 4-argument
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
