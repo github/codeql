@@ -35,6 +35,13 @@ module SsrfConfig implements DataFlow::ConfigSig {
 module SsrfFlow = TaintTracking::Global<SsrfConfig>;
 
 /**
+ * DEPRECATED. Use the `SsrfFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "SSRF" }
+}
+
+/**
  * A sanitizer for ternary operators.
  *
  * This sanitizers models the next example:

@@ -69,6 +69,8 @@ module TaintedPath {
     }
   }
 
+  deprecated class BarrierGuardNode = BarrierGuard;
+
   private newtype TFlowState =
     TPosixPath(FlowState::Normalization normalization, FlowState::Relativeness relativeness) or
     TSplitPath()
