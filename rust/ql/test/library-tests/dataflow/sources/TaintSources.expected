@@ -19,3 +19,4 @@
 | test.rs:72:26:72:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:75:26:75:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:78:24:78:35 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:193:16:193:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs. |
