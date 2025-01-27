@@ -315,7 +315,7 @@ modules exported by ``tutorial``.
 The type namespace of ``Villagers`` has entries for:
     - The class ``Child``.
     - The types exported by the module ``tutorial``.
-    - The built-in types, namely ``int``, ``float``, ``string``, ``date``, and ``boolean``.
+    - The built-in top-level types, namely ``int``, ``float``, ``string``, ``date``, and ``boolean``.
 
 The type namespace of ``S`` has entries for:
     - All the above types.
