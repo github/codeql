@@ -16,7 +16,7 @@ public class XSS extends HttpServlet {
 			throws ServletException, IOException {
 		// BAD: a request parameter is written directly to the Servlet response stream
 		response.getWriter()
-				.print("The page \"" + request.getParameter("page") + "\" was not found."); // $xss
+				.print("The page \"" + request.getParameter("page") + "\" was not found."); // $ xss
 
 		// GOOD: servlet API encodes the error message HTML for the HTML context
 		response.sendError(HttpServletResponse.SC_NOT_FOUND,
@@ -31,10 +31,10 @@ public class XSS extends HttpServlet {
 				"The page \"" + capitalizeName(request.getParameter("page")) + "\" was not found.");
 
 		// BAD: outputting the path of the resource
-		response.getWriter().print("The path section of the URL was " + request.getPathInfo()); // $xss
+		response.getWriter().print("The path section of the URL was " + request.getPathInfo()); // $ xss
 
 		// BAD: typical XSS, this time written to an OutputStream instead of a Writer
-		response.getOutputStream().write(request.getPathInfo().getBytes()); // $xss
+		response.getOutputStream().write(request.getPathInfo().getBytes()); // $ xss
 
 		// GOOD: sanitizer
 		response.getOutputStream().write(hudson.Util.escape(request.getPathInfo()).getBytes()); // safe
