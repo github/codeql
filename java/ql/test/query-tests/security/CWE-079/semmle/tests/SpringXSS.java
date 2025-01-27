@@ -17,7 +17,7 @@ public class SpringXSS {
 
     ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
 
-    if(safeContentType) {
+    if(!safeContentType) {
       if(chainDirectly) {
         return builder.contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
       }
