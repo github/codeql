@@ -1,0 +1,4 @@
+| test.rs:61:10:61:23 | remote_string1 | Unexpected result: hasTaintFlow="http://example.com/" |
+| test.rs:64:10:64:23 | remote_string2 | Unexpected result: hasTaintFlow="http://example.com/" |
+| test.rs:67:10:67:23 | remote_string3 | Unexpected result: hasTaintFlow="http://example.com/" |
+| test.rs:70:10:70:23 | remote_string4 | Unexpected result: hasTaintFlow="http://example.com/" |
