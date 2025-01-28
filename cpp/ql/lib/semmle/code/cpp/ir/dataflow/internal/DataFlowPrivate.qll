@@ -1009,7 +1009,7 @@ class CastNode extends Node {
 }
 
 cached
-newtype TDataFlowCallable =
+private newtype TDataFlowCallable =
   TSourceCallable(Cpp::Declaration decl) or
   TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
 

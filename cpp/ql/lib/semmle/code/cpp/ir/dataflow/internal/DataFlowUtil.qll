@@ -66,7 +66,6 @@ private newtype TIRDataFlowNode =
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
   TInitialGlobalValue(Ssa::GlobalDef globalUse) or
   TBodyLessParameterNodeImpl(Parameter p, int indirectionIndex) {
-    not exists(TSummarizedCallable(p.getFunction())) and
     // Rule out parameters of catch blocks.
     not exists(p.getCatchBlock()) and
     // We subtract one because `getMaxIndirectionsForType` returns the maximum
