@@ -54,13 +54,28 @@ private int isSource(Expr bufferExpr, Element why) {
   result = bufferExpr.(AllocationExpr).getSizeBytes() and
   why = bufferExpr
   or
-  exists(Type bufferType |
+  exists(Type bufferType, Variable v |
+    v = why and
     // buffer is the address of a variable
     why = bufferExpr.(AddressOfExpr).getAddressable() and
-    bufferType = why.(Variable).getUnspecifiedType() and
-    result = bufferType.getSize() and
+    bufferType = v.getUnspecifiedType() and
     not bufferType instanceof ReferenceType and
     not any(Union u).getAMemberVariable() = why
+  |
+    not v instanceof Field and
+    result = bufferType.getSize()
+    or
+    // If it's an address of a field (i.e., a non-static member variable)
+    // then it's okay to use that address to access the other member variables.
+    // For example, this is okay:
+    // ```
+    // struct S { uint8_t a, b, c; };
+    // S s;
+    // memset(&s.a, 0, sizeof(S) - offsetof(S, a));
+    exists(Field f |
+      v = f and
+      result = f.getDeclaringType().getSize() - f.getByteOffset()
+    )
   )
   or
   exists(Union bufferType |
