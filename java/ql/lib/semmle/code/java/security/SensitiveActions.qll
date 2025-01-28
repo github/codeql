@@ -65,9 +65,6 @@ class SensitiveMethodCall extends SensitiveExpr, MethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `SensitiveMethodCall`. */
-deprecated class SensitiveMethodAccess = SensitiveMethodCall;
-
 /** Access to a variable that might contain sensitive data. */
 class SensitiveVarAccess extends SensitiveExpr, VarAccess {
   SensitiveVarAccess() {
