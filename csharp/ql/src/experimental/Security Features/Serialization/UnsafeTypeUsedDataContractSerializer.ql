@@ -10,7 +10,7 @@
  */
 
 import csharp
-import DataSetSerialization
+deprecated import DataSetSerialization
 
 predicate xmlSerializerConstructorArgument(Expr e) {
   exists(ObjectCreation oc, Constructor c | e = oc.getArgument(0) |
@@ -21,7 +21,7 @@ predicate xmlSerializerConstructorArgument(Expr e) {
   )
 }
 
-predicate unsafeDataContractTypeCreation(Expr e) {
+deprecated predicate unsafeDataContractTypeCreation(Expr e) {
   exists(MethodCall gt |
     gt.getTarget().getName() = "GetType" and
     e = gt and
@@ -31,16 +31,20 @@ predicate unsafeDataContractTypeCreation(Expr e) {
   e.(TypeofExpr).getTypeAccess().getTarget() instanceof DataSetOrTableRelatedClass
 }
 
-module FlowToDataSerializerConstructorConfig implements DataFlow::ConfigSig {
+deprecated module FlowToDataSerializerConstructorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { unsafeDataContractTypeCreation(node.asExpr()) }
 
   predicate isSink(DataFlow::Node node) { xmlSerializerConstructorArgument(node.asExpr()) }
 }
 
-module FlowToDataSerializerConstructor = DataFlow::Global<FlowToDataSerializerConstructorConfig>;
+deprecated module FlowToDataSerializerConstructor =
+  DataFlow::Global<FlowToDataSerializerConstructorConfig>;
 
-from DataFlow::Node source, DataFlow::Node sink
-where FlowToDataSerializerConstructor::flow(source, sink)
-select sink,
-  "Unsafe type is used in data contract serializer. Make sure $@ comes from the trusted source.",
-  source, source.toString()
+deprecated query predicate problems(
+  DataFlow::Node sink, string message, DataFlow::Node source, string sourceMessage
+) {
+  FlowToDataSerializerConstructor::flow(source, sink) and
+  message =
+    "Unsafe type is used in data contract serializer. Make sure $@ comes from the trusted source." and
+  sourceMessage = source.toString()
+}

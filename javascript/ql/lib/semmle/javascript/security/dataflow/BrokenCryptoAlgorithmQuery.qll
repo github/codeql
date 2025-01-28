@@ -27,6 +27,12 @@ module BrokenCryptoAlgorithmConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getInitialization().getLocation()
+  }
 }
 
 /**

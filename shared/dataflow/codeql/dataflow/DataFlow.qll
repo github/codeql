@@ -442,6 +442,28 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     default predicate observeDiffInformedIncrementalMode() { none() }
+
+    /**
+     * Gets a location that will be associated with the given `source` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the source itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the source at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    /**
+     * Gets a location that will be associated with the given `sink` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the sink itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the sink at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -569,6 +591,28 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     default predicate observeDiffInformedIncrementalMode() { none() }
+
+    /**
+     * Gets a location that will be associated with the given `source` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the source itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the source at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    /**
+     * Gets a location that will be associated with the given `sink` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the sink itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the sink at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
 }
 
@@ -659,11 +703,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     import Impl<C>
   }
 
-  /** DEPRECATED: Use `Global` instead. */
-  deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
-    import Global<Config>
-  }
-
   /**
    * Constructs a global data flow computation using flow state.
    */
@@ -685,11 +724,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     }
 
     import Impl<C>
-  }
-
-  /** DEPRECATED: Use `GlobalWithState` instead. */
-  deprecated module MakeWithState<StateConfigSig Config> implements GlobalFlowSig {
-    import GlobalWithState<Config>
   }
 
   signature class PathNodeSig {

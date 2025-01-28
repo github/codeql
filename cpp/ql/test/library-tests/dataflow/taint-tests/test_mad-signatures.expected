@@ -626,6 +626,11 @@ signatureMatches
 | taint.cpp:725:10:725:15 | strtol | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
 | taint.cpp:727:6:727:16 | test_strtol | (char *) | CStringT | CStringT | 0 |
 | taint.cpp:785:6:785:15 | fopen_test | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:815:7:815:12 | strchr | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:815:7:815:12 | strchr | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:815:7:815:12 | strchr | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:815:7:815:12 | strchr | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:815:7:815:12 | strchr | (wchar_t,int) | CStringT | CStringT | 1 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (char,int) | CStringT | CStringT | 1 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (const XCHAR *,int) | CStringT | CStringT | 1 |
@@ -2029,6 +2034,12 @@ getParameterTypeName
 | taint.cpp:802:6:802:22 | SysAllocStringLen | 0 | const OLECHAR * |
 | taint.cpp:802:6:802:22 | SysAllocStringLen | 0 | const wchar_t * |
 | taint.cpp:802:6:802:22 | SysAllocStringLen | 1 | unsigned int |
+| taint.cpp:815:7:815:12 | strchr | 0 | const char * |
+| taint.cpp:815:7:815:12 | strchr | 1 | int |
+| taint.cpp:817:6:817:27 | write_to_const_ptr_ptr | 0 | const char ** |
+| taint.cpp:817:6:817:27 | write_to_const_ptr_ptr | 1 | const char ** |
+| taint.cpp:822:6:822:19 | take_const_ptr | 0 | const char * |
+| taint.cpp:822:6:822:19 | take_const_ptr | 1 | const char * |
 | vector.cpp:13:6:13:9 | sink | 0 | int |
 | vector.cpp:14:27:14:30 | sink | 0 | vector> & |
 | vector.cpp:14:27:14:30 | sink | 0 | vector> & |

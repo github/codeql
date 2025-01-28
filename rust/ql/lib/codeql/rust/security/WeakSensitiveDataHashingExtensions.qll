@@ -174,7 +174,8 @@ module ComputationallyExpensiveHashFunction {
 }
 
 /**
- * An externally modeled operation that hashes data, for example a call to `md5::Md5::digest(data)`.
+ * An externally modeled operation that hashes data, for example a call to `md5::Md5::digest(data)`. The
+ * model should identify the argument of a call that is the data to be hashed.
  */
 class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
   DataFlow::Node input;

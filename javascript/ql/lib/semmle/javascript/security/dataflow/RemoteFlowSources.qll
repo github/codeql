@@ -24,12 +24,18 @@ private module Cached {
 
   /**
    * A source of remote input in a web browser environment.
+   *
+   * Note that this does not include `view-component-input` sources even if that threat model has been enabled by the user.
+   * Consider using the predicate `ThreatModelSource#isClientSideSource()` to check for a broader class of client-side sources.
    */
   cached
   abstract class ClientSideRemoteFlowSource extends RemoteFlowSource {
     /** Gets a string indicating what part of the browser environment this was derived from. */
     cached
     abstract ClientSideRemoteFlowKind getKind();
+
+    cached
+    final override predicate isClientSideSource() { any() }
   }
 }
 

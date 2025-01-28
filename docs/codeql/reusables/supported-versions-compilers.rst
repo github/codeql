@@ -20,12 +20,12 @@
    Java,"Java 7 to 22 [5]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [6]_",``.java``
-   Kotlin,"Kotlin 1.5.0 to 2.1.0\ *x*","kotlinc",``.kt``
+   Kotlin,"Kotlin 1.5.0 to 2.1.2\ *x*","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [9]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Swift [10]_,"Swift 5.4-5.10","Swift compiler","``.swift``"
-   TypeScript [11]_,"2.6-5.6",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   TypeScript [11]_,"2.6-5.7",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 

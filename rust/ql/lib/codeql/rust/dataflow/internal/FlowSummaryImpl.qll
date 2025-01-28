@@ -79,8 +79,8 @@ module Input implements InputSig<Location, RustDataFlow> {
         arg = s.getExtendedCanonicalPath() + "::" + field
       )
       or
-      result = "ArrayElement" and
-      c = TArrayElement() and
+      result = "Element" and
+      c = TElementContent() and
       arg = ""
       or
       exists(int pos |

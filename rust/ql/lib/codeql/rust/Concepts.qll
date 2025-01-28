@@ -7,6 +7,7 @@
 private import codeql.rust.dataflow.DataFlow
 private import codeql.threatmodels.ThreatModels
 private import codeql.rust.Frameworks
+private import codeql.rust.dataflow.FlowSource
 
 /**
  * A data flow source for a specific threat-model.
@@ -67,6 +68,13 @@ module CommandLineArgsSource {
 }
 
 /**
+ * An externally modeled source for command line arguments.
+ */
+class ModeledCommandLineArgsSource extends CommandLineArgsSource::Range {
+  ModeledCommandLineArgsSource() { sourceNode(this, "command-line-source") }
+}
+
+/**
  * A data flow source corresponding to the program's environment.
  */
 final class EnvironmentSource = EnvironmentSource::Range;
@@ -86,6 +94,13 @@ module EnvironmentSource {
 }
 
 /**
+ * An externally modeled source for data from the program's environment.
+ */
+class ModeledEnvironmentSource extends EnvironmentSource::Range {
+  ModeledEnvironmentSource() { sourceNode(this, "environment-source") }
+}
+
+/**
  * A data flow source for remote (network) data.
  */
 final class RemoteSource = RemoteSource::Range;
@@ -102,6 +117,13 @@ module RemoteSource {
 
     override string getSourceType() { result = "RemoteSource" }
   }
+}
+
+/**
+ * An externally modeled source for remote (network) data.
+ */
+class ModeledRemoteSource extends RemoteSource::Range {
+  ModeledRemoteSource() { sourceNode(this, "remote") }
 }
 
 /**

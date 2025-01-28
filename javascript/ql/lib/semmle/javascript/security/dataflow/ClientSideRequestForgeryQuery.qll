@@ -33,6 +33,12 @@ module ClientSideRequestForgeryConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getARequest().getLocation()
+  }
 }
 
 /**
