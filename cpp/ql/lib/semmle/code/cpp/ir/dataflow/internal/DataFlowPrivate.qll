@@ -333,9 +333,7 @@ private module IndirectInstructions {
 import IndirectInstructions
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) {
-  result.getUnderlyingCallable() = n.getEnclosingCallable()
-}
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
