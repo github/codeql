@@ -1012,9 +1012,7 @@ class CastNode extends Node {
 
 cached
 newtype TDataFlowCallable =
-  TSourceCallable(Cpp::Declaration decl) {
-    not decl instanceof FlowSummaryImpl::Public::SummarizedCallable
-  } or
+  TSourceCallable(Cpp::Declaration decl) or
   TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
 
 /**
