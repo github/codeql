@@ -201,7 +201,7 @@ invoke_block2 (taint 37) do |x|
 end
 
 invoke_block2 "safe" do |x|
-  sink x # $ SPURIOUS hasValueFlow=37
+  sink x
 end
 
 def call_m (x, y)

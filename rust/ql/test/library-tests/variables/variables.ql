@@ -1,5 +1,6 @@
 import rust
 import utils.test.InlineExpectationsTest
+import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 
 query predicate variable(Variable v) { any() }
 
@@ -14,6 +15,10 @@ query predicate variableInitializer(Variable v, Expr e) { e = v.getInitializer()
 query predicate capturedVariable(Variable v) { v.isCaptured() }
 
 query predicate capturedAccess(VariableAccess va) { va.isCapture() }
+
+query predicate nestedFunctionAccess(VariableImpl::NestedFunctionAccess nfa, Function f) {
+  f = nfa.getFunction()
+}
 
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = ["", "write_", "read_"] + "access" }

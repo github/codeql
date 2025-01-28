@@ -41,7 +41,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private int conflictedReferences = 0;
         private readonly DirectoryInfo sourceDir;
         private string? dotnetPath;
-
         private readonly TemporaryDirectory tempWorkingDirectory;
         private readonly bool cleanupTempWorkingDirectory;
 
