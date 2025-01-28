@@ -1,0 +1,32 @@
+uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+uniqueType
+uniqueNodeLocation
+missingLocation
+uniqueNodeToString
+parameterCallable
+localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+postWithInFlow
+| tests.cpp:436:6:436:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode should not be the target of local flow. |
+viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+| tests.cpp:155:5:155:28 | madAndImplementedComplex | 2 | tests.cpp:155:5:155:28 | [summary param] 2 in madAndImplementedComplex | Parameters with overlapping positions. |
+| tests.cpp:155:5:155:28 | madAndImplementedComplex | 2 | tests.cpp:155:48:155:48 | c | Parameters with overlapping positions. |
+uniqueParameterNodePosition
+uniqueContentApprox
+identityLocalStep
+missingArgumentCall
+multipleArgumentCall
+lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel
