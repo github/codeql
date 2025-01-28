@@ -587,8 +587,8 @@ module ProductFlow {
 
     pragma[nomagic]
     private predicate interprocEdge1(
-      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1,
-      TKind kind
+      DataFlowCallable predDecl, DataFlowCallable succDecl, Flow1::PathNode pred1,
+      Flow1::PathNode succ1, TKind kind
     ) {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       predDecl != succDecl and
@@ -607,8 +607,8 @@ module ProductFlow {
 
     pragma[nomagic]
     private predicate interprocEdge2(
-      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2,
-      TKind kind
+      DataFlowCallable predDecl, DataFlowCallable succDecl, Flow2::PathNode pred2,
+      Flow2::PathNode succ2, TKind kind
     ) {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       predDecl != succDecl and
@@ -628,7 +628,7 @@ module ProductFlow {
     private predicate interprocEdgePair(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      exists(Declaration predDecl, Declaration succDecl, TKind kind |
+      exists(DataFlowCallable predDecl, DataFlowCallable succDecl, TKind kind |
         interprocEdge1(predDecl, succDecl, pred1, succ1, kind) and
         interprocEdge2(predDecl, succDecl, pred2, succ2, kind)
       )
