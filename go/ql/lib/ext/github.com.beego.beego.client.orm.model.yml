@@ -8,6 +8,23 @@ extensions:
       - ["beego-orm", "github.com/beego/beego/orm"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:beego-orm", "DB", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "Read", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadForUpdate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadForUpdateWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadOrCreate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadOrCreateWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "Read", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "ReadForUpdate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "ReadOrCreate", "", "", "Argument[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["group:beego-orm", "Condition", True, "Raw", "", "", "Argument[1]", "sql-injection", "manual"]
@@ -40,3 +57,4 @@ extensions:
       - ["group:beego-orm", "QueryBuilder", True, "Values", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:beego-orm", "QueryBuilder", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:beego-orm", "QuerySeter", True, "FilterRaw", "", "", "Argument[1]", "sql-injection", "manual"]
+

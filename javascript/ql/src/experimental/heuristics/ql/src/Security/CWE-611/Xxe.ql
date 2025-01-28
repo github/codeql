@@ -15,11 +15,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XxeQuery
-import DataFlow::PathGraph
+import XxeFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from XxeFlow::PathNode source, XxeFlow::PathNode sink
+where XxeFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink,
   "XML parsing depends on a $@ without guarding against external entity expansion.",
   source.getNode(), "user-provided value"

@@ -9,5 +9,8 @@ class RedundantToString
 
         Console.WriteLine($"Hello: {o.ToString()}"); // BAD
         Console.WriteLine($"Hello: {o}"); // GOOD
+
+        Console.WriteLine("Hello: " + o.ToString()); // BAD
+        Console.WriteLine("Hello: " + o); // GOOD
     }
 }

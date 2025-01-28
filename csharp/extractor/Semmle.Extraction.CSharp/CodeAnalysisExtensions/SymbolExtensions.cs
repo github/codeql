@@ -533,6 +533,12 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
+        /// Returns true if this type implements `System.IFormattable`.
+        /// </summary>
+        public static bool ImplementsIFormattable(this ITypeSymbol type) =>
+            type.AllInterfaces.Any(i => i.Name == "IFormattable" && i.ContainingNamespace.ToString() == "System");
+
+        /// <summary>
         /// Holds if this type is of the form <code>System.ReadOnlySpan&lt;byte&gt;</code>.
         /// </summary>
         public static bool IsBoundReadOnlySpan(this ITypeSymbol type) =>

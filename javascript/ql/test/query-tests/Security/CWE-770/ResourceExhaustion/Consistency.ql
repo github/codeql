@@ -1,3 +1,3 @@
 import javascript
 import semmle.javascript.security.dataflow.ResourceExhaustionQuery
-import utils.test.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking

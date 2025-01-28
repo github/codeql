@@ -406,10 +406,7 @@ class IntegralOrEnumType extends Type {
     isIntegralType(underlyingElement(this), _)
     or
     // Enum type
-    (
-      usertypes(underlyingElement(this), _, 4) or
-      usertypes(underlyingElement(this), _, 13)
-    )
+    usertypes(underlyingElement(this), _, [4, 13])
   }
 }
 

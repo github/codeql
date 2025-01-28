@@ -14,10 +14,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.UnsafeDeserializationQuery
-import DataFlow::PathGraph
+import UnsafeDeserializationFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from UnsafeDeserializationFlow::PathNode source, UnsafeDeserializationFlow::PathNode sink
+where
+  UnsafeDeserializationFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
   "user-provided value"

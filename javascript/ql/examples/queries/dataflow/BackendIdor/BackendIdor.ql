@@ -9,42 +9,42 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
 /**
  * A taint-tracking configuration that tracks user-controlled values into a 'userId' property sent to a backend service.
  */
-class IdorTaint extends TaintTracking::Configuration {
-  IdorTaint() { this = "IdorTaint" }
+module IdorTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSource(Node node) { node instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node node) { exists(ClientRequest req | node = req.getADataNode()) }
 
-  override predicate isSink(Node node) { exists(ClientRequest req | node = req.getADataNode()) }
-
-  override predicate isAdditionalTaintStep(Node pred, Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Step from x -> { userId: x }
-    succ.(SourceNode).getAPropertyWrite("userId").getRhs() = pred
+    node2.(DataFlow::SourceNode).getAPropertyWrite("userId").getRhs() = node1
   }
 
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
+  predicate isBarrier(DataFlow::Node node) {
     // After a check like `if (userId === session.user.id)`, the userId is considered safe.
-    node instanceof EqualityGuard
+    node = DataFlow::MakeBarrierGuard<EqualityGuard>::getABarrierNode()
   }
 }
 
 /**
  * A sanitizer for values that have successfully been compared to another value.
  */
-class EqualityGuard extends TaintTracking::SanitizerGuardNode, ValueNode {
+class EqualityGuard extends DataFlow::ValueNode {
   override EqualityTest astNode;
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  predicate blocksExpr(boolean outcome, Expr e) {
     e = astNode.getAnOperand() and
     outcome = astNode.getPolarity()
   }
 }
 
-from IdorTaint cfg, PathNode source, PathNode sink
-where cfg.hasFlowPath(source, sink)
+module IdorTaintFlow = TaintTracking::Global<IdorTaintConfig>;
+
+import IdorTaintFlow::PathGraph
+
+from IdorTaintFlow::PathNode source, IdorTaintFlow::PathNode sink
+where IdorTaintFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Unauthenticated user ID from $@.", source.getNode(), "here"

@@ -1,3 +1,5 @@
+legacyDataFlowDifference
+| react-redux.jsx:70:30:70:37 | source() | react-redux.jsx:77:10:77:28 | props.propFromAsync | only flow with OLD data flow library |
 reducerArg
 | exportedReducer.js:12:12:12:35 | (state, ... > state |
 | react-redux.jsx:12:33:17:9 | (state, ...       } |
@@ -111,7 +113,6 @@ taintFlow
 | react-redux.jsx:69:31:69:38 | source() | react-redux.jsx:74:10:74:35 | props.p ... lAction |
 | react-redux.jsx:69:31:69:38 | source() | react-redux.jsx:75:10:75:36 | props.p ... Action2 |
 | react-redux.jsx:69:31:69:38 | source() | react-redux.jsx:76:10:76:36 | props.p ... Action3 |
-| react-redux.jsx:70:30:70:37 | source() | react-redux.jsx:77:10:77:28 | props.propFromAsync |
 reactComponentRef
 | accessPaths.js:7:1:15:1 | functio ... pan>;\\n} | accessPaths.js:7:1:15:1 | functio ... pan>;\\n} |
 | react-redux.jsx:64:1:80:1 | functio ... r}}/>\\n} | react-redux.jsx:64:1:80:1 | functio ... r}}/>\\n} |

@@ -815,7 +815,9 @@
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgument.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgument_getVariable.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess.ql linguist-generated
-/test/extractor-tests/generated/FormatArgsExpr/Format_getArgument.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsExpr/Format_getArgumentRef.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsExpr/Format_getPrecisionArgument.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsExpr/Format_getWidthArgument.ql linguist-generated
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getAbi.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getAttr.ql linguist-generated

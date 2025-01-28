@@ -107,5 +107,5 @@ class PathAstNode(Resolvable):
 @ql.internal
 class ExtractorStep(Element):
     action: string
-    file: File
+    file: optional[File]
     duration_ms: int

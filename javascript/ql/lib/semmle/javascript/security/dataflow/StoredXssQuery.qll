@@ -8,9 +8,29 @@ import StoredXssCustomizations::StoredXss
 private import Xss::Shared as Shared
 
 /**
- * A taint-tracking configuration for reasoning about XSS.
+ * A taint-tracking configuration for reasoning about stored XSS.
  */
-class Configuration extends TaintTracking::Configuration {
+module StoredXssConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or node = Shared::BarrierGuard::getABarrierNode()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for reasoning about stored XSS.
+ */
+module StoredXssFlow = TaintTracking::Global<StoredXssConfig>;
+
+/**
+ * DEPRECATED. Use the `StoredXssFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "StoredXss" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -28,11 +48,10 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+private class QuoteGuard extends Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
-{
+private class ContainsHtmlGuard extends Shared::ContainsHtmlGuard {
   ContainsHtmlGuard() { this = this }
 }

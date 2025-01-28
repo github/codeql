@@ -415,6 +415,7 @@
 | Microsoft.AspNetCore.Http;HttpResponse;OnStarting;(System.Func<System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Http;IEndpointFilter;InvokeAsync;(Microsoft.AspNetCore.Http.EndpointFilterInvocationContext,Microsoft.AspNetCore.Http.EndpointFilterDelegate);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Http;IMiddleware;InvokeAsync;(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.RequestDelegate);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
+| Microsoft.AspNetCore.Http;PathString;ToString;();Argument[this];ReturnValue;taint;manual |
 | Microsoft.AspNetCore.Http;ProblemDetailsOptions;set_CustomizeProblemDetails;(System.Action<Microsoft.AspNetCore.Http.ProblemDetailsContext>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Http;RequestDelegate;BeginInvoke;(Microsoft.AspNetCore.Http.HttpContext,System.AsyncCallback,System.Object);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Http;RequestDelegateFactory;Create;(System.Reflection.MethodInfo,System.Func<Microsoft.AspNetCore.Http.HttpContext,System.Object>,Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |

@@ -41,13 +41,54 @@ module Generated {
     int getIndex() { none() }
 
     /**
-     * Gets the argument of this format, if it exists.
+     * Gets the argument reference of this format, if it exists.
+     *
+     * For example `name` and `0` in:
+     * ```rust
+     * let name = "Alice";
+     * println!("{name} in wonderland");
+     * println!("{0} in wonderland", name);
+     * ```
      */
-    FormatArgument getArgument() { none() }
+    FormatArgument getArgumentRef() { none() }
 
     /**
-     * Holds if `getArgument()` exists.
+     * Holds if `getArgumentRef()` exists.
      */
-    final predicate hasArgument() { exists(this.getArgument()) }
+    final predicate hasArgumentRef() { exists(this.getArgumentRef()) }
+
+    /**
+     * Gets the width argument of this format, if it exists.
+     *
+     * For example `width` and `1` in:
+     * ```rust
+     * let width = 6;
+     * println!("{:width$}", PI);
+     * println!("{:1$}", PI, width);
+     * ```
+     */
+    FormatArgument getWidthArgument() { none() }
+
+    /**
+     * Holds if `getWidthArgument()` exists.
+     */
+    final predicate hasWidthArgument() { exists(this.getWidthArgument()) }
+
+    /**
+     * Gets the precision argument of this format, if it exists.
+     *
+     * For example `prec` and `1` in:
+     * ```rust
+     * let prec = 6;
+     * println!("{:.prec$}", PI);
+     * println!("{:.1$}", PI, prec);
+     * ```
+     */
+    FormatArgument getPrecisionArgument() { none() }
+
+    /**
+     * Holds if `getPrecisionArgument()` exists.
+     */
+    final predicate hasPrecisionArgument() { exists(this.getPrecisionArgument()) }
   }
 }

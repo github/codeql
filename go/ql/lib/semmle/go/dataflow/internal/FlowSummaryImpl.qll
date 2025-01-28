@@ -21,7 +21,13 @@ private string positionToString(int pos) {
 }
 
 module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = Callable;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
@@ -108,6 +114,10 @@ private module StepsInput implements Impl::Private::StepsInputSig {
       call.getACalleeIncludingExternals() = sc
     )
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements

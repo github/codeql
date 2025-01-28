@@ -9,7 +9,7 @@ module ArrayTaintTracking {
   /**
    * A taint propagating data flow edge caused by the builtin array functions.
    */
-  private class ArrayFunctionTaintStep extends TaintTracking::SharedTaintStep {
+  private class ArrayFunctionTaintStep extends TaintTracking::LegacyTaintStep {
     override predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
       arrayFunctionTaintStep(pred, succ, _)
     }
@@ -130,7 +130,7 @@ private module ArrayDataFlow {
    * A step modeling the creation of an Array using the `Array.from(x)` method.
    * The step copies the elements of the argument (set, array, or iterator elements) into the resulting array.
    */
-  private class ArrayFrom extends PreCallGraphStep {
+  private class ArrayFrom extends LegacyPreCallGraphStep {
     override predicate loadStoreStep(
       DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
@@ -150,7 +150,7 @@ private module ArrayDataFlow {
    *
    * Such a step can occur both with the `push` and `unshift` methods, or when creating a new array.
    */
-  private class ArrayCopySpread extends PreCallGraphStep {
+  private class ArrayCopySpread extends LegacyPreCallGraphStep {
     override predicate loadStoreStep(
       DataFlow::Node pred, DataFlow::SourceNode succ, string fromProp, string toProp
     ) {
@@ -171,7 +171,7 @@ private module ArrayDataFlow {
   /**
    * A step for storing an element on an array using `arr.push(e)` or `arr.unshift(e)`.
    */
-  private class ArrayAppendStep extends PreCallGraphStep {
+  private class ArrayAppendStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       exists(DataFlow::MethodCallNode call |
@@ -202,7 +202,7 @@ private module ArrayDataFlow {
    * A step for reading/writing an element from an array inside a for-loop.
    * E.g. a read from `foo[i]` to `bar` in `for(var i = 0; i < arr.length; i++) {bar = foo[i]}`.
    */
-  private class ArrayIndexingStep extends PreCallGraphStep {
+  private class ArrayIndexingStep extends LegacyPreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(ArrayIndexingAccess access |
         prop = arrayElement() and
@@ -224,7 +224,7 @@ private module ArrayDataFlow {
    * A step for retrieving an element from an array using `.pop()`, `.shift()`, or `.at()`.
    * E.g. `array.pop()`.
    */
-  private class ArrayPopStep extends PreCallGraphStep {
+  private class ArrayPopStep extends LegacyPreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = ["pop", "shift", "at"] and
@@ -245,7 +245,7 @@ private module ArrayDataFlow {
    *
    * And the second parameter in the callback is the array ifself, so there is a `loadStoreStep` from the array to that second parameter.
    */
-  private class ArrayIteration extends PreCallGraphStep {
+  private class ArrayIteration extends LegacyPreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = ["map", "forEach"] and
@@ -277,7 +277,7 @@ private module ArrayDataFlow {
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends PreCallGraphStep {
+  private class ArrayCreationStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::ArrayCreationNode array, int i |
         element = array.getElement(i) and
@@ -291,7 +291,7 @@ private module ArrayDataFlow {
    * A step modeling that `splice` can insert elements into an array.
    * For example in `array.splice(i, del, e1, e2, ...)`: if any item is tainted, then so is `array`
    */
-  private class ArraySpliceStep extends PreCallGraphStep {
+  private class ArraySpliceStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = ["splice", "toSpliced"] and
@@ -319,7 +319,7 @@ private module ArrayDataFlow {
    * A step for modeling `concat`.
    * For example in `e = arr1.concat(arr2, arr3)`: if any of the `arr` is tainted, then so is `e`.
    */
-  private class ArrayConcatStep extends PreCallGraphStep {
+  private class ArrayConcatStep extends LegacyPreCallGraphStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = "concat" and
@@ -333,7 +333,7 @@ private module ArrayDataFlow {
   /**
    * A step for modeling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`/`toSpliced`.
    */
-  private class ArraySliceStep extends PreCallGraphStep {
+  private class ArraySliceStep extends LegacyPreCallGraphStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = ["slice", "splice", "filter", "toSpliced"] and
@@ -347,7 +347,7 @@ private module ArrayDataFlow {
   /**
    * A step modeling that elements from an array `arr` are received by calling `find`.
    */
-  private class ArrayFindStep extends PreCallGraphStep {
+  private class ArrayFindStep extends LegacyPreCallGraphStep {
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       exists(DataFlow::CallNode call |
         call = arrayFindCall(pred) and
@@ -397,7 +397,7 @@ private module ArrayLibraries {
   /**
    * A taint step through the `arrify` library, or other libraries that (maybe) convert values into arrays.
    */
-  private class ArrayifyStep extends TaintTracking::SharedTaintStep {
+  private class ArrayifyStep extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(API::CallNode call | call = API::moduleImport(["arrify", "array-ify"]).getACall() |
         pred = call.getArgument(0) and succ = call
@@ -417,7 +417,7 @@ private module ArrayLibraries {
   /**
    * A taint step for a library that copies the elements of an array into another array.
    */
-  private class ArrayCopyTaint extends TaintTracking::SharedTaintStep {
+  private class ArrayCopyTaint extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call |
         call = arrayCopyCall(pred) and
@@ -429,7 +429,7 @@ private module ArrayLibraries {
   /**
    * A loadStoreStep for a library that copies the elements of an array into another array.
    */
-  private class ArrayCopyLoadStore extends PreCallGraphStep {
+  private class ArrayCopyLoadStore extends LegacyPreCallGraphStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::CallNode call |
         call = arrayCopyCall(pred) and
@@ -442,7 +442,7 @@ private module ArrayLibraries {
   /**
    * A taint step through a call to `Array.prototype.flat` or a polyfill implementing array flattening.
    */
-  private class ArrayFlatStep extends TaintTracking::SharedTaintStep {
+  private class ArrayFlatStep extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call | succ = call |
         call.(DataFlow::MethodCallNode).getMethodName() = "flat" and

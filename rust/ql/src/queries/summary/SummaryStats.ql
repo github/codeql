@@ -8,8 +8,11 @@
 
 import rust
 import codeql.rust.Concepts
+import codeql.rust.security.SensitiveData
+import codeql.rust.security.WeakSensitiveDataHashingExtensions
 import codeql.rust.Diagnostics
 import Stats
+import TaintReach
 
 from string key, int value
 where
@@ -53,7 +56,21 @@ where
   or
   key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
   or
-  key = "Taint sources - total" and value = count(ThreatModelSource s)
-  or
   key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
+  or
+  key = "Taint sources - disabled" and
+  value = count(ThreatModelSource s | not s instanceof ActiveThreatModelSource)
+  or
+  key = "Taint sources - sensitive data" and value = count(SensitiveData d)
+  or
+  key = "Taint edges - number of edges" and value = getTaintEdgesCount()
+  or
+  key = "Taint reach - nodes tainted" and value = getTaintedNodesCount()
+  or
+  key = "Taint reach - per million nodes" and value = getTaintReach().floor()
+  or
+  key = "Taint sinks - query sinks" and value = getQuerySinksCount()
+  or
+  key = "Taint sinks - cryptographic operations" and
+  value = count(Cryptography::CryptographicOperation o)
 select key, value order by key

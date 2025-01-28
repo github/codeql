@@ -1878,7 +1878,30 @@ class Format(Locatable):
     """
     parent: FormatArgsExpr
     index: int
-    argument: optional["FormatArgument"] | child
+    argument_ref: optional["FormatArgument"] | child | desc("""
+        For example `name` and `0` in:
+        ```rust
+        let name = "Alice";
+        println!("{name} in wonderland");
+        println!("{0} in wonderland", name);
+        ```
+    """)
+    width_argument: optional["FormatArgument"] | child | desc("""
+        For example `width` and `1` in:
+        ```rust
+        let width = 6;
+        println!("{:width$}", PI);
+        println!("{:1$}", PI, width);
+        ```
+    """)
+    precision_argument: optional["FormatArgument"] | child | desc("""
+        For example `prec` and `1` in:
+        ```rust
+        let prec = 6;
+        println!("{:.prec$}", PI);
+        println!("{:.1$}", PI, prec);
+        ```
+    """)
 
 
 @synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)

@@ -1,28 +1,33 @@
 import * as dummy from 'dummy';
 
 function foo(x, y) {
-    sink(y);
+    sink(y.test1); // OK
+    sink(y.test2); // NOT OK
+    sink(y.test3); // NOT OK
+    sink(y.test4); // OK
+    sink(y.test5); // OK
+    sink(y.test6); // OK
 }
 
 let foo0 = foo.bind(null);
 let foo1 = foo.bind(null, null);
 let foo2 = foo.bind(null, null, null);
 
-foo0(source(), null);   // OK
-foo0(null, source());   // NOT OK
+foo0({ test1: source() }, null);
+foo0(null, { test2: source() });
 
-foo1(source());         // NOT OK
-foo1(null, source());   // OK
+foo1({ test3: source() });
+foo1(null, { test4: source() });
 
-foo2(source());         // OK
-foo2(null, source());   // OK
+foo2({ test5: source() });
+foo2(null, { test6: source() });
 
 
 function takesCallback(cb) {
-    cb(source());       // NOT OK
+    cb(source());
 }
 function callback(x, y) {
-    sink(y);
+    sink(y); // NOT OK [INCONSISTENCY] - lambda flow in dataflow2 does not handle partial invocations yet
 }
 takesCallback(callback.bind(null, null));
 
@@ -33,7 +38,7 @@ function id(x) {
 let sourceGetter = id.bind(null, source());
 let constGetter = id.bind(null, 'safe');
 
-sink(sourceGetter()); // NOT OK - but not flagged
+sink(sourceGetter()); // NOT OK [INCONSISTENCY]
 sink(constGetter());   // OK
 
 function id2(x, y) {

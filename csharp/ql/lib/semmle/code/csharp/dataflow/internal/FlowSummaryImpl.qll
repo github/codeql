@@ -14,7 +14,13 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = UnboundCallable;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
     interpretNeutral(c, kind, provenance) and
@@ -176,12 +182,22 @@ private module TypesInput implements Impl::Private::TypesInputSig {
       result.asGvnType() = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
     )
   }
+
+  DataFlowType getSourceType(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+    none()
+  }
+
+  DataFlowType getSinkType(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     sc = viableCallable(result).asSummarizedCallable()
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements
