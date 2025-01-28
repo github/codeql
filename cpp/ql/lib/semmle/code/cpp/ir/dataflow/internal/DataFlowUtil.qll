@@ -1328,12 +1328,7 @@ abstract private class AbstractParameterNode extends Node {
   final predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
     this.isSummaryParameterOf(c.asSummarizedCallable(), pos)
     or
-    exists(Function f | this.isSourceParameterOf(f, pos) |
-      not exists(TSummarizedCallable(f)) and
-      c.asSourceCallable() = f
-      or
-      c.asSummarizedCallable() = f
-    )
+    this.isSourceParameterOf(c.asSourceCallable(), pos)
   }
 
   /** Gets the `Parameter` associated with this node, if it exists. */
