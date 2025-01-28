@@ -693,11 +693,11 @@ struct HasSomeFields {
 	unsigned long c;
 
 	void test29() {
-		memset(&a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD [FALSE POSITIVE]
+		memset(&a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD
 	};
 
 	void test30() {
-		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // GOOD [FALSE POSITIVE]
+		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // GOOD
 	};
 
 	void test31() {
@@ -723,7 +723,7 @@ struct HasSomeFields {
 
 void test36() {
 	HasSomeFields hsf;
-	memset(&hsf.a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD [FALSE POSITIVE]
+	memset(&hsf.a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD
 	memset(&hsf.c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
 }
 
