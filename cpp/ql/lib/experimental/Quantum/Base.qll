@@ -9,10 +9,18 @@ signature module InputSig<LocationSig Location> {
   class LocatableElement {
     Location getLocation();
   }
+
+  class UnknownLocation instanceof Location;
 }
 
 module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final class LocatableElement = Input::LocatableElement;
+
+  final class UnknownLocation = Input::UnknownLocation;
+
+  final class UnknownPropertyValue extends string {
+    UnknownPropertyValue() { this = "<unknown>" }
+  }
 
   abstract class NodeBase instanceof LocatableElement {
     /**
@@ -26,16 +34,25 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     Location getLocation() { result = super.getLocation() }
 
     /**
+     * Gets the origin of this node, e.g., a string literal in source describing it.
+     */
+    LocatableElement getOrigin(string value) { none() }
+
+    /**
      * Returns the child of this node with the given edge name.
      *
      * This predicate is used by derived classes to construct the graph of cryptographic operations.
      */
-    NodeBase getChild(string edgeName) { edgeName = "origin" and result = this.getOrigin() }
+    NodeBase getChild(string edgeName) { none() }
 
     /**
-     * Gets the origin of this node, e.g., a string literal in source describing it.
+     * Defines properties of this node by name and either a value or location or both.
+     *
+     * This predicate is used by derived classes to construct the graph of cryptographic operations.
      */
-    NodeBase getOrigin() { none() }
+    predicate properties(string key, string value, Location location) {
+      key = "origin" and location = this.getOrigin(value).getLocation()
+    }
 
     /**
      * Returns the parent of this node.
@@ -86,7 +103,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class HashOperation extends Operation {
     abstract override HashAlgorithm getAlgorithm();
 
-    override string getOperationName() { result = "hash" }
+    override string getOperationName() { result = "HASH" }
   }
 
   // Rule: no newtype representing a type of algorithm should be modelled with multiple interfaces
@@ -105,34 +122,40 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     MD5() or
     SHA1() or
     SHA256() or
-    SHA512()
-
-  class HashAlgorithmType extends THashType {
-    string toString() { hashTypeToNameMapping(this, result) }
-  }
-
-  predicate hashTypeToNameMapping(THashType type, string name) {
-    type instanceof SHA1 and name = "SHA-1"
-    or
-    type instanceof SHA256 and name = "SHA-256"
-    or
-    type instanceof SHA512 and name = "SHA-512"
-  }
+    SHA512() or
+    OtherHashType()
 
   /**
    * A hashing algorithm that transforms variable-length input into a fixed-size hash value.
    */
   abstract class HashAlgorithm extends Algorithm {
-    abstract HashAlgorithmType getHashType();
+    final predicate hashTypeToNameMapping(THashType type, string name) {
+      type instanceof MD5 and name = "MD5"
+      or
+      type instanceof SHA1 and name = "SHA-1"
+      or
+      type instanceof SHA256 and name = "SHA-256"
+      or
+      type instanceof SHA512 and name = "SHA-512"
+      or
+      type instanceof OtherHashType and name = this.getRawAlgorithmName()
+    }
 
-    override string getAlgorithmName() { hashTypeToNameMapping(this.getHashType(), result) }
+    abstract THashType getHashType();
+
+    override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashType(), result) }
+
+    /**
+     * Gets the raw name of this hash algorithm from source.
+     */
+    abstract string getRawAlgorithmName();
   }
 
   /**
    * An operation that derives one or more keys from an input value.
    */
   abstract class KeyDerivationOperation extends Operation {
-    override string getOperationName() { result = "key derivation" }
+    override string getOperationName() { result = "KEY_DERIVATION" }
   }
 
   /**
@@ -143,7 +166,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * HKDF Extract+Expand key derivation function.
+   * HKDF key derivation function
    */
   abstract class HKDF extends KeyDerivationAlgorithm {
     final override string getAlgorithmName() { result = "HKDF" }
@@ -157,6 +180,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  /**
+   * PKCS #12 key derivation function
+   */
   abstract class PKCS12KDF extends KeyDerivationAlgorithm {
     final override string getAlgorithmName() { result = "PKCS12KDF" }
 
@@ -166,6 +192,33 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = super.getChild(edgeName)
       or
       edgeName = "digest" and result = this.getHashAlgorithm()
+    }
+  }
+
+  /**
+   * Elliptic curve algorithm
+   */
+  abstract class EllipticCurve extends Algorithm {
+    abstract string getVersion(Location location);
+
+    abstract string getKeySize(Location location);
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      key = "version" and
+      if exists(this.getVersion(location))
+      then value = this.getVersion(location)
+      else (
+        value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+      )
+      or
+      key = "key_size" and
+      if exists(this.getKeySize(location))
+      then value = this.getKeySize(location)
+      else (
+        value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+      )
     }
   }
 }

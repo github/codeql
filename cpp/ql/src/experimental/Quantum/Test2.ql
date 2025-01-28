@@ -4,5 +4,5 @@
 
 import experimental.Quantum.Language
 
-from Crypto::KeyDerivationAlgorithm n
-select n
+from Crypto::NodeBase node
+select node

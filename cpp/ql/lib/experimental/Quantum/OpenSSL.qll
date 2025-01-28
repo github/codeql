@@ -9,7 +9,9 @@ module OpenSSLModel {
   class SHA1Algo extends Crypto::HashAlgorithm instanceof MacroAccess {
     SHA1Algo() { this.getMacro().getName() = "SN_sha1" }
 
-    override Crypto::HashAlgorithmType getHashType() { result instanceof Crypto::SHA1 }
+    override string getRawAlgorithmName() { result = "SN_sha1" }
+
+    override Crypto::THashType getHashType() { result instanceof Crypto::SHA1 }
   }
 
   module AlgorithmToEVPKeyDeriveConfig implements DataFlow::ConfigSig {
@@ -77,7 +79,9 @@ module OpenSSLModel {
 
     override Crypto::HashAlgorithm getHashAlgorithm() { none() }
 
-    override Crypto::NodeBase getOrigin() { result = origin }
+    override Crypto::LocatableElement getOrigin(string name) {
+      result = origin and name = origin.toString()
+    }
   }
 
   class TestKeyDerivationOperationHacky extends KeyDerivationOperation instanceof FunctionCall {
@@ -97,6 +101,8 @@ module OpenSSLModel {
 
     override Crypto::HashAlgorithm getHashAlgorithm() { none() }
 
-    override Crypto::NodeBase getOrigin() { result = origin }
+    override Crypto::NodeBase getOrigin(string name) {
+      result = origin and name = origin.toString()
+    }
   }
 }
