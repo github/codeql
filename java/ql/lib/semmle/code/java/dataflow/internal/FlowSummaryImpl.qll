@@ -27,7 +27,13 @@ private string positionToString(int pos) {
 }
 
 module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
@@ -123,12 +129,22 @@ private module TypesInput implements Impl::Private::TypesInputSig {
     result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType()) and
     exists(rk)
   }
+
+  DataFlowType getSourceType(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+    none()
+  }
+
+  DataFlowType getSinkType(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     sc = viableCallable(result).asSummarizedCallable()
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private predicate relatedArgSpec(Callable c, string spec) {

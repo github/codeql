@@ -3,6 +3,7 @@
  */
 
 private import Semantic
+private import SemanticLocation
 private import SemanticExprSpecific::SemanticExprConfig as Specific
 private import SemanticType
 
@@ -15,7 +16,7 @@ private import SemanticType
 class SemExpr instanceof Specific::Expr {
   final string toString() { result = super.toString() }
 
-  final Specific::Location getLocation() { result = super.getLocation() }
+  SemLocation getLocation() { result = super.getLocation() }
 
   Opcode getOpcode() { result instanceof Opcode::Unknown }
 

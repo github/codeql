@@ -1,12 +1,12 @@
 use itertools::Itertools;
-use log::{debug, info};
+use log::{debug, error, info, warn};
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_paths::Utf8PathBuf;
-use ra_ap_project_model::CargoConfig;
 use ra_ap_project_model::ProjectManifest;
+use ra_ap_project_model::{CargoConfig, ManifestPath};
 use ra_ap_span::Edition;
 use ra_ap_span::EditionedFileId;
 use ra_ap_span::TextRange;
@@ -16,9 +16,12 @@ use ra_ap_syntax::SyntaxError;
 use ra_ap_vfs::Vfs;
 use ra_ap_vfs::VfsPath;
 use ra_ap_vfs::{AbsPathBuf, FileId};
+use serde::Deserialize;
 use std::borrow::Cow;
-use std::iter;
+use std::collections::{HashMap, HashSet};
+use std::fs;
 use std::path::{Path, PathBuf};
+use std::rc::Rc;
 use triomphe::Arc;
 
 pub enum RustAnalyzer<'a> {
@@ -129,6 +132,91 @@ impl<'a> RustAnalyzer<'a> {
     }
 }
 
+#[derive(Deserialize)]
+struct CargoManifestMembersSlice {
+    #[serde(default)]
+    members: Vec<String>,
+}
+
+#[derive(Deserialize)]
+struct CargoManifestSlice {
+    workspace: Option<CargoManifestMembersSlice>,
+}
+
+struct TomlReader {
+    cache: HashMap<ManifestPath, Rc<CargoManifestSlice>>,
+}
+
+impl TomlReader {
+    fn new() -> Self {
+        Self {
+            cache: HashMap::new(),
+        }
+    }
+
+    fn read(&mut self, manifest: &ManifestPath) -> anyhow::Result<Rc<CargoManifestSlice>> {
+        if let Some(table) = self.cache.get(manifest) {
+            return Ok(table.clone());
+        }
+        let content = fs::read_to_string(manifest).map_err(|e| {
+            error!("failed to read {} ({e})", manifest.as_str());
+            e
+        })?;
+        let table = Rc::<CargoManifestSlice>::new(toml::from_str(&content).map_err(|e| {
+            error!("failed to parse {} ({e})", manifest.as_str());
+            e
+        })?);
+        self.cache.insert(manifest.clone(), table.clone());
+        Ok(table)
+    }
+}
+
+fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
+    let ProjectManifest::CargoToml(cargo) = manifest else {
+        return None;
+    };
+    let parsed_cargo = reader.read(cargo).ok()?;
+    if parsed_cargo.workspace.is_some() {
+        debug!("{cargo} is a workspace");
+        return Some(manifest.clone());
+    }
+    let Some(parent_dir) = cargo.parent().parent() else {
+        warn!("no parent dir for {cargo}");
+        return None;
+    };
+    let discovered = ProjectManifest::discover(parent_dir)
+        .map_err(|e| {
+            error!(
+                "encountered error while searching for manifests under {}: {e}",
+                parent_dir.as_str()
+            );
+            e
+        })
+        .ok()?;
+    discovered
+        .iter()
+        .find_map(|it| match it {
+            ProjectManifest::CargoToml(other)
+                if cargo.starts_with(other.parent())
+                    && reader.read(other).is_ok_and(|it| {
+                        it.workspace.as_ref().is_some_and(|w| {
+                            w.members
+                                .iter()
+                                .any(|m| other.parent().join(m) == cargo.parent())
+                        })
+                    }) =>
+            {
+                debug!("found workspace {other} containing {cargo}");
+                Some(it.clone())
+            }
+            _ => None,
+        })
+        .or_else(|| {
+            debug!("no workspace found for {cargo}");
+            None
+        })
+}
+
 pub fn find_project_manifests(
     files: &[PathBuf],
 ) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
@@ -137,7 +225,13 @@ pub fn find_project_manifests(
         .iter()
         .map(|path| AbsPathBuf::assert_utf8(current.join(path)))
         .collect();
-    let ret = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
+    let discovered = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
+    let mut ret = HashSet::new();
+    let mut reader = TomlReader::new();
+    for manifest in discovered {
+        let workspace = find_workspace(&mut reader, &manifest).unwrap_or(manifest);
+        ret.insert(workspace);
+    }
     let iter = || ret.iter().map(|m| format!("  {m}"));
     const LOG_LIMIT: usize = 10;
     if ret.len() <= LOG_LIMIT {
@@ -153,8 +247,9 @@ pub fn find_project_manifests(
             iter().dropping(LOG_LIMIT).join("\n")
         );
     }
-    Ok(ret)
+    Ok(ret.into_iter().collect())
 }
+
 fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
     let mut iter = v.utf8_chunks();
     let (first_valid, first_invalid) = if let Some(chunk) = iter.next() {
@@ -189,28 +284,10 @@ fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
     (Cow::Owned(res), Some(error))
 }
 
-fn canonicalize_if_on_windows(path: &Path) -> Option<PathBuf> {
-    if cfg!(windows) {
-        dunce::canonicalize(path).ok()
-    } else {
-        None
-    }
-}
-
 pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
-    // There seems to be some flaky inconsistencies around paths on Windows, where sometimes paths
-    // are registered in `vfs` without the `//?/` long path prefix. Then it happens that paths with
-    // that prefix are not found. To work around that, on Windows after failing to find `path` as
-    // is, we then try to canonicalize it using dunce. Dunce will be able to losslessly convert a
-    // `//?/` path into its equivalent one in `vfs` without the prefix, if there is one.
-    iter::once(path.to_path_buf())
-        .chain(canonicalize_if_on_windows(path))
-        .filter_map(|p| {
-            Utf8PathBuf::from_path_buf(p)
-                .ok()
-                .and_then(|x| AbsPathBuf::try_from(x).ok())
-                .map(VfsPath::from)
-                .and_then(|x| vfs.file_id(&x))
-        })
-        .next()
+    Utf8PathBuf::from_path_buf(path.to_path_buf())
+        .ok()
+        .and_then(|x| AbsPathBuf::try_from(x).ok())
+        .map(VfsPath::from)
+        .and_then(|x| vfs.file_id(&x))
 }

@@ -9,7 +9,7 @@
 #endif
 // semmle-extractor-options: -I${testdir}/more_headers/ "-U SOME_SYM"
 #undef BAR
-//#define SCARY(a,aa,aaah) /* we ignore a */ (aa /* but we take aa */) /* and we ignore aaa */
+#define SCARY(a,aa,aaah) /* we ignore a */ (aa /* but we take aa */) /* and we ignore aaa */
 #define LOG(fmt, ...)  printf("Warning: %s", fmt, __VA__ARGS__)  
 #include "pp.h"
 
@@ -68,3 +68,10 @@ int templateClassContext<T> :: val = MACRO_TEMPLATECLASSCONTEXT_REFERENCED;
 
 #define INSTANTIATION
 templateClassContext<int> tcci;
+
+#define BAR
+
+#if defined(BAR) && \
+  defined(BAR)
+#warning BAR defined
+#endif

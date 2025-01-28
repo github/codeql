@@ -3,5 +3,6 @@
  * for tracking types.
  */
 
+private import powershell
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl as Impl
-import Impl::Shared::TypeTracking<Impl::TypeTrackingInput>
+import Impl::Shared::TypeTracking<Location, Impl::TypeTrackingInput>

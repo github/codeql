@@ -52,8 +52,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (!string.IsNullOrWhiteSpace(cert))
             {
-                logger.LogInfo("No certificate configured for Dependabot proxy.");
-
                 var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
                 Directory.CreateDirectory(certDirPath.FullName);
 

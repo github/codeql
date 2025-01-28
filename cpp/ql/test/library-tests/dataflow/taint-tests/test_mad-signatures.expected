@@ -2021,6 +2021,14 @@ getParameterTypeName
 | taint.cpp:783:5:783:11 | fopen_s | 1 | const char * |
 | taint.cpp:783:5:783:11 | fopen_s | 2 | const char * |
 | taint.cpp:785:6:785:15 | fopen_test | 0 | char * |
+| taint.cpp:800:6:800:19 | SysAllocString | 0 | const OLECHAR * |
+| taint.cpp:800:6:800:19 | SysAllocString | 0 | const wchar_t * |
+| taint.cpp:801:6:801:26 | SysAllocStringByteLen | 0 | LPCSTR |
+| taint.cpp:801:6:801:26 | SysAllocStringByteLen | 0 | const char * |
+| taint.cpp:801:6:801:26 | SysAllocStringByteLen | 1 | unsigned int |
+| taint.cpp:802:6:802:22 | SysAllocStringLen | 0 | const OLECHAR * |
+| taint.cpp:802:6:802:22 | SysAllocStringLen | 0 | const wchar_t * |
+| taint.cpp:802:6:802:22 | SysAllocStringLen | 1 | unsigned int |
 | vector.cpp:13:6:13:9 | sink | 0 | int |
 | vector.cpp:14:27:14:30 | sink | 0 | vector> & |
 | vector.cpp:14:27:14:30 | sink | 0 | vector> & |

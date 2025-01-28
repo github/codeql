@@ -2,7 +2,7 @@ import * as dummy from 'dummy';
 
 function sanitizeUrl(url) {
     let u = decodeURI(url).trim().toLowerCase();
-    if (u.startsWith("javascript:")) // NOT OK
+    if (u.startsWith("javascript:")) // $ Alert
         return "about:blank";
     return url;
 }
@@ -13,28 +13,28 @@ let badProtocolsGood = ['javascript:', 'data:', 'vbscript:'];
 
 function test2(url) {
     let protocol = new URL(url).protocol;
-    if (badProtocols.includes(protocol)) // NOT OK
+    if (badProtocols.includes(protocol)) // $ Alert
         return "about:blank";
     return url;
 }
 
 function test3(url) {
     let scheme = goog.uri.utils.getScheme(url);
-    if (badProtocolNoColon.includes(scheme)) // NOT OK
+    if (badProtocolNoColon.includes(scheme)) // $ Alert
         return "about:blank";
     return url;
 }
 
 function test4(url) {
     let scheme = url.split(':')[0];
-    if (badProtocolNoColon.includes(scheme)) // NOT OK
+    if (badProtocolNoColon.includes(scheme)) // $ Alert
         return "about:blank";
     return url;
 }
 
 function test5(url) {
     let scheme = url.split(':')[0];
-    if (scheme === "javascript") // NOT OK
+    if (scheme === "javascript") // $ Alert
         return "about:blank";
     return url;
 }
@@ -48,35 +48,35 @@ function test6(url) {
 
 function test7(url) {
     let scheme = url.split(/:/)[0];
-    if (scheme === "javascript") // NOT OK
+    if (scheme === "javascript") // $ Alert
         return "about:blank";
     return url;
 }
 
 function test8(url) {
     let scheme = goog.uri.utils.getScheme(url);
-	if ("javascript|data".split("|").indexOf(scheme) !== -1) // NOT OK
+	if ("javascript|data".split("|").indexOf(scheme) !== -1) // $ Alert
         return "about:blank";
     return url;
 }
 
 function test9(url) {
     let scheme = goog.uri.utils.getScheme(url);
-	if ("javascript" === scheme || "data" === scheme) // NOT OK
+	if ("javascript" === scheme || "data" === scheme) // $ Alert
         return "about:blank";
     return url;
 }
 
 function test10(url) {
     let scheme = goog.uri.utils.getScheme(url);
-	if (/^(javascript|data)$/.exec(scheme) !== null) // NOT OK
+	if (/^(javascript|data)$/.exec(scheme) !== null) // $ Alert
         return "about:blank";
     return url;
 }
 
 function test11(url) {
     let scheme = goog.uri.utils.getScheme(url);
-	if (/^(javascript|data)$/.exec(scheme) === null) // NOT OK
+	if (/^(javascript|data)$/.exec(scheme) === null) // $ Alert
 		return url;
 	return "about:blank";
 }
@@ -84,15 +84,15 @@ function test11(url) {
 
 function test12(url) {
     let scheme = goog.uri.utils.getScheme(url);
-	if (!/^(javascript|data)$/.exec(scheme)) // NOT OK
+	if (!/^(javascript|data)$/.exec(scheme)) // $ Alert
 		return url;
 	return "about:blank";
 }
 
 function test13(url) {
 	let scheme = goog.uri.utils.getScheme(url);
-	switch (scheme) {
-    	case "javascript": // NOT OK
+	switch (scheme) { // $ Alert
+    	case "javascript":
 	    case "data":
 		    return "about:blank";
 	    default:
@@ -101,15 +101,15 @@ function test13(url) {
 }
 function test14(url) {
     let scheme = goog.uri.utils.getScheme(url);
-	if (/^(javascript|data)$/.exec(scheme)) // NOT OK
+	if (/^(javascript|data)$/.exec(scheme)) // $ Alert
         return "about:blank";
     return url;
 }
 
 function chain1(url) {
-    return url  // NOT OK
+    return url
         .replace(/javascript:/, "")
-        .replace(/data:/, "");
+        .replace(/data:/, ""); // $ Alert
 }
 
 function chain2(url) {
@@ -121,10 +121,10 @@ function chain2(url) {
 
 function chain3(url) {
     url = url.replace(/javascript:/, "")
-    url = url.replace(/data:/, ""); // NOT OK
+    url = url.replace(/data:/, ""); // $ Alert
     return url;
 }
 
 function chain4(url) {
-    return url.replace(/(javascript|data):/, ""); // NOT OK - but not flagged [INCONSISTENCY]
+    return url.replace(/(javascript|data):/, ""); // $ MISSING: Alert
 }

@@ -73,11 +73,42 @@ predicate isSink(DataFlow::Node sink, BufferWrite bw, boolean qualifier) {
   unboundedWriteSource(sink.asDefiningArgument(), bw, qualifier)
 }
 
+/**
+ * A configuration that specifies flow from a `FlowSource` to a relational
+ * comparison.
+ *
+ * This configuration is used to speed up the barrier computations in Config.
+ */
+module BarrierConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSource(source, _) }
+
+  predicate isSink(DataFlow::Node sink) {
+    comparesEq(sink.asOperand(), _, _, true, _) or
+    comparesLt(sink.asOperand(), _, _, true, _)
+  }
+}
+
+module BarrierFlow = TaintTracking::Global<BarrierConfig>;
+
+import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
+
+/**
+ * Holds if `left` is a left operand of some relational comparison that may
+ * depend on user input.
+ */
+predicate interestingLessThanOrEqual(Operand left) {
+  exists(DataFlowImplCommon::NodeEx node |
+    node.asNode().asOperand() = left and
+    BarrierFlow::Stages::Stage1::sinkNode(node, _)
+  )
+}
+
 predicate lessThanOrEqual(IRGuardCondition g, Expr e, boolean branch) {
   exists(Operand left |
     g.comparesLt(left, _, _, true, branch) or
     g.comparesEq(left, _, _, true, branch)
   |
+    interestingLessThanOrEqual(left) and
     left.getDef().getUnconvertedResultExpression() = e
   )
 }

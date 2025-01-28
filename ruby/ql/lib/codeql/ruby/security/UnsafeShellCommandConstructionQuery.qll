@@ -26,6 +26,8 @@ private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigS
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

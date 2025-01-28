@@ -7,6 +7,7 @@ use log::{info, warn};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
@@ -144,7 +145,7 @@ impl<'a> Extractor<'a> {
         emit_extraction_diagnostics(start, cfg, &self.steps)?;
         let mut trap = self.traps.create("diagnostics", "extraction");
         for step in self.steps {
-            let file = trap.emit_file(&step.file);
+            let file = step.file.as_ref().map(|f| trap.emit_file(f));
             let duration_ms = usize::try_from(step.ms).unwrap_or_else(|_e| {
                 warn!("extraction step duration overflowed ({step:?})");
                 i32::MAX as usize
@@ -159,6 +160,22 @@ impl<'a> Extractor<'a> {
         trap.commit()?;
         Ok(())
     }
+
+    pub fn find_manifests(&mut self, files: &[PathBuf]) -> anyhow::Result<Vec<ProjectManifest>> {
+        let before = Instant::now();
+        let ret = rust_analyzer::find_project_manifests(files);
+        self.steps.push(ExtractionStep::find_manifests(before));
+        ret
+    }
+}
+
+fn cwd() -> anyhow::Result<AbsPathBuf> {
+    let path = std::env::current_dir().context("current directory")?;
+    let utf8_path = Utf8PathBuf::from_path_buf(path)
+        .map_err(|p| anyhow::anyhow!("{} is not a valid UTF-8 path", p.display()))?;
+    let abs_path = AbsPathBuf::try_from(utf8_path)
+        .map_err(|p| anyhow::anyhow!("{} is not absolute", p.as_str()))?;
+    Ok(abs_path)
 }
 
 fn main() -> anyhow::Result<()> {
@@ -183,10 +200,13 @@ fn main() -> anyhow::Result<()> {
         .iter()
         .map(|file| {
             let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
-            std::fs::canonicalize(&file).unwrap_or(file)
+            // On Windows, rust analyzer expects non-`//?/` prefixed paths (see [1]), which is what
+            // `std::fs::canonicalize` returns. So we use `dunce::canonicalize` instead.
+            // [1]: https://github.com/rust-lang/rust-analyzer/issues/18894#issuecomment-2580014730
+            dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect();
-    let manifests = rust_analyzer::find_project_manifests(&files)?;
+    let manifests = extractor.find_manifests(&files)?;
     let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
         .iter()
         .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
@@ -201,7 +221,7 @@ fn main() -> anyhow::Result<()> {
         }
         extractor.extract_without_semantics(file, "no manifest found");
     }
-    let cargo_config = cfg.to_cargo_config();
+    let cargo_config = cfg.to_cargo_config(&cwd()?);
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
             let semantics = Semantics::new(db);

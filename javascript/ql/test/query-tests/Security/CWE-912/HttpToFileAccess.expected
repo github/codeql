@@ -1,33 +1,22 @@
-nodes
-| HttpToFileAccess.js:5:18:5:18 | d |
-| HttpToFileAccess.js:5:18:5:18 | d |
-| HttpToFileAccess.js:6:37:6:37 | d |
-| HttpToFileAccess.js:6:37:6:37 | d |
-| tst.js:15:26:15:26 | c |
-| tst.js:15:26:15:26 | c |
-| tst.js:16:33:16:33 | c |
-| tst.js:16:33:16:33 | c |
-| tst.js:19:25:19:25 | c |
-| tst.js:19:25:19:25 | c |
-| tst.js:24:22:24:22 | c |
-| tst.js:24:22:24:22 | c |
 edges
-| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
-| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
-| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
-| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d |
-| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
-| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
-| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
-| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
-| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
-| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
-| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
-| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
-| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
-| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
-| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
-| tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c |
+| HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d | provenance |  |
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c | provenance |  |
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c | provenance |  |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c | provenance |  |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c | provenance |  |
+| tst.js:16:33:16:33 | c | tst.js:19:25:19:25 | c | provenance |  |
+| tst.js:16:33:16:33 | c | tst.js:19:25:19:25 | c | provenance |  |
+| tst.js:19:25:19:25 | c | tst.js:24:22:24:22 | c | provenance |  |
+nodes
+| HttpToFileAccess.js:5:18:5:18 | d | semmle.label | d |
+| HttpToFileAccess.js:6:37:6:37 | d | semmle.label | d |
+| tst.js:15:26:15:26 | c | semmle.label | c |
+| tst.js:16:33:16:33 | c | semmle.label | c |
+| tst.js:16:33:16:33 | c | semmle.label | c |
+| tst.js:19:25:19:25 | c | semmle.label | c |
+| tst.js:19:25:19:25 | c | semmle.label | c |
+| tst.js:24:22:24:22 | c | semmle.label | c |
+subpaths
 #select
 | HttpToFileAccess.js:6:37:6:37 | d | HttpToFileAccess.js:5:18:5:18 | d | HttpToFileAccess.js:6:37:6:37 | d | Write to file system depends on $@. | HttpToFileAccess.js:5:18:5:18 | d | Untrusted data |
 | tst.js:16:33:16:33 | c | tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c | Write to file system depends on $@. | tst.js:15:26:15:26 | c | Untrusted data |

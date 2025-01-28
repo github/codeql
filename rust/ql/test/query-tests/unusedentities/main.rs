@@ -496,14 +496,28 @@ fn references() {
 pub struct my_declaration {
     field1: fn(i32) -> i32,
     field2: fn(x: i32) -> i32,
-    field3: fn(y:
-        fn(z: i32) -> i32) -> i32,
+    field3: fn(y: fn(z: i32) -> i32) -> i32,
 }
 
 type MyType = fn(x: i32) -> i32;
 
 trait MyTrait {
     fn my_func2(&self, x: i32) -> i32;
+}
+
+macro_rules! let_in_macro {
+    ($e:expr) => {{
+        let var_in_macro = 0;
+        $e
+    }};
+}
+
+// Our analysis does not currently respect the hygiene rules of Rust macros
+// (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
+// all we have access to is the expanded AST
+fn hygiene_mismatch() {
+    let var_in_macro = 0; // $ SPURIOUS: Alert[rust/unused-value]
+    let_in_macro!(var_in_macro);
 }
 
 // --- main ---
