@@ -238,7 +238,7 @@ fn option_unwrap_or_else() {
     sink(s1.unwrap_or_else(|| 0)); // $ hasValueFlow=47
 
     let s2 = None;
-    sink(s2.unwrap_or_else(|| source(48))); // $ MISSING: hasValueFlow=48
+    sink(s2.unwrap_or_else(|| source(48))); // $ hasValueFlow=48
 }
 
 fn option_questionmark() -> Option<i64> {
@@ -408,14 +408,14 @@ fn array_assignment() {
 // Test data flow inconsistency occuring with captured variables and `continue`
 // in a loop.
 pub fn captured_variable_and_continue(names: Vec<(bool, Option<String>)>) {
-  let default_name = source(83).to_string();
-  for (cond, name) in names {
-    if cond {
-      let n = name.unwrap_or_else(|| default_name.to_string());
-      sink(n.len() as i64);
-      continue;
+    let default_name = source(83).to_string();
+    for (cond, name) in names {
+        if cond {
+            let n = name.unwrap_or_else(|| default_name.to_string());
+            sink(n.len() as i64);
+            continue;
+        }
     }
-  }
 }
 
 macro_rules! get_source {
