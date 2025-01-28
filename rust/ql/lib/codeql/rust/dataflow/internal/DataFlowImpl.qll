@@ -14,6 +14,7 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.rust.elements.internal.PathResolution as PathResolution
 
 /**
  * A return kind. A return kind describes how a value can be returned from a
@@ -601,46 +602,124 @@ module LocalFlow {
   }
 }
 
-private import codeql.util.Option
+/**
+ * Provides temporary modeling of built-in variants, for which no source code
+ * `Item`s are available.
+ *
+ * TODO: Remove once library code is extracted.
+ */
+private module VariantLib {
+  private import codeql.util.Option
 
-private class CrateOrigin extends string {
-  CrateOrigin() {
-    this = [any(Item i).getCrateOrigin(), any(Resolvable r).getResolvedCrateOrigin()]
+  private class CrateOrigin extends string {
+    CrateOrigin() { this = any(Resolvable r).getResolvedCrateOrigin() }
+  }
+
+  private class CrateOriginOption = Option<CrateOrigin>::Option;
+
+  private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
+
+  private newtype TVariantLib =
+    MkVariantLib(CrateOriginOption crate, string path, string name) {
+      crate = langCoreCrate() and
+      (
+        path = "crate::option::Option" and
+        name = "Some"
+        or
+        path = "crate::result::Result" and
+        name = ["Ok", "Err"]
+      )
+    }
+
+  /** A canonical path pointing to an enum variant. */
+  class VariantLib extends MkVariantLib {
+    CrateOriginOption crate;
+    string path;
+    string name;
+
+    VariantLib() { this = MkVariantLib(crate, path, name) }
+
+    string getExtendedCanonicalPath() { result = path + "::" + name }
+
+    string toString() { result = name }
+  }
+
+  predicate variantLibPos(VariantLib::VariantLib v, int pos) {
+    v = MkVariantLib(langCoreCrate(), "crate::option::Option", "Some") and
+    pos = 0
+    or
+    v = MkVariantLib(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
+    pos = 0
+  }
+
+  /** A tuple variant from library code. */
+  class VariantLibTupleFieldContent extends VariantContent, TVariantLibTupleFieldContent {
+    private VariantLib::VariantLib v;
+    private int pos_;
+
+    VariantLibTupleFieldContent() { this = TVariantLibTupleFieldContent(v, pos_) }
+
+    VariantLib::VariantLib getVariantLib(int pos) { result = v and pos = pos_ }
+
+    string getExtendedCanonicalPath() { result = v.getExtendedCanonicalPath() }
+
+    int getPosition() { result = pos_ }
+
+    final override string toString() {
+      // only print indices when the arity is > 1
+      if exists(TVariantLibTupleFieldContent(v, 1))
+      then result = v.toString() + "(" + pos_ + ")"
+      else result = v.toString()
+    }
+
+    final override Location getLocation() { result instanceof EmptyLocation }
+  }
+
+  pragma[nomagic]
+  private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption crate, string path) {
+    path = r.getResolvedPath() and
+    (
+      crate.asSome() = r.getResolvedCrateOrigin()
+      or
+      crate.isNone() and
+      not r.hasResolvedCrateOrigin()
+    )
+  }
+
+  /** Holds if path `p` resolves to variant `v`. */
+  private predicate pathResolveToVariantLib(PathAstNode p, VariantLib v) {
+    exists(CrateOriginOption crate, string path, string name |
+      resolveExtendedCanonicalPath(p, pragma[only_bind_into](crate), path + "::" + name) and
+      v = MkVariantLib(pragma[only_bind_into](crate), path, name)
+    )
+  }
+
+  /** Holds if `p` destructs an enum variant `v`. */
+  pragma[nomagic]
+  private predicate tupleVariantCanonicalDestruction(TupleStructPat p, VariantLib v) {
+    pathResolveToVariantLib(p, v)
+  }
+
+  bindingset[pos]
+  predicate tupleVariantCanonicalDestruction(
+    TupleStructPat pat, VariantLibTupleFieldContent c, int pos
+  ) {
+    tupleVariantCanonicalDestruction(pat, c.getVariantLib(pos))
+  }
+
+  /** Holds if `ce` constructs an enum value of type `v`. */
+  pragma[nomagic]
+  private predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantLib v) {
+    pathResolveToVariantLib(ce.getFunction().(PathExpr), v)
+  }
+
+  bindingset[pos]
+  predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantLibTupleFieldContent c, int pos) {
+    tupleVariantCanonicalConstruction(ce, c.getVariantLib(pos))
   }
 }
 
-private class CrateOriginOption = Option<CrateOrigin>::Option;
-
-pragma[nomagic]
-private predicate hasExtendedCanonicalPath(Item i, CrateOriginOption crate, string path) {
-  path = i.getExtendedCanonicalPath() and
-  (
-    crate.asSome() = i.getCrateOrigin()
-    or
-    crate.isNone() and
-    not i.hasCrateOrigin()
-  )
-}
-
-pragma[nomagic]
-private predicate variantHasExtendedCanonicalPath(
-  Enum e, Variant v, CrateOriginOption crate, string path, string name
-) {
-  hasExtendedCanonicalPath(e, crate, path) and
-  v = e.getVariantList().getAVariant() and
-  name = v.getName().getText()
-}
-
-pragma[nomagic]
-private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption crate, string path) {
-  path = r.getResolvedPath() and
-  (
-    crate.asSome() = r.getResolvedCrateOrigin()
-    or
-    crate.isNone() and
-    not r.hasResolvedCrateOrigin()
-  )
-}
+class VariantLibTupleFieldContent = VariantLib::VariantLibTupleFieldContent;
 
 /**
  * A path to a value contained in an object. For example a field name of a struct.
@@ -648,24 +727,9 @@ private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption c
 abstract class Content extends TContent {
   /** Gets a textual representation of this content. */
   abstract string toString();
-}
 
-/** A canonical path pointing to an enum variant. */
-class VariantCanonicalPath extends MkVariantCanonicalPath {
-  CrateOriginOption crate;
-  string path;
-  string name;
-
-  VariantCanonicalPath() { this = MkVariantCanonicalPath(crate, path, name) }
-
-  /** Gets the underlying variant. */
-  Variant getVariant() { variantHasExtendedCanonicalPath(_, result, crate, path, name) }
-
-  string getExtendedCanonicalPath() { result = path + "::" + name }
-
-  string toString() { result = name }
-
-  Location getLocation() { result = this.getVariant().getLocation() }
+  /** Gets the location of this content. */
+  abstract Location getLocation();
 }
 
 /**
@@ -674,67 +738,76 @@ class VariantCanonicalPath extends MkVariantCanonicalPath {
  */
 abstract class VariantContent extends Content { }
 
+private TupleField getVariantTupleField(Variant v, int i) {
+  result = v.getFieldList().(TupleFieldList).getField(i)
+}
+
 /** A tuple variant. */
-private class VariantPositionContent extends VariantContent, TVariantPositionContent {
-  private VariantCanonicalPath v;
+private class VariantTupleFieldContent extends VariantContent, TVariantTupleFieldContent {
+  private Variant v;
   private int pos_;
 
-  VariantPositionContent() { this = TVariantPositionContent(v, pos_) }
+  VariantTupleFieldContent() { this = TVariantTupleFieldContent(v, pos_) }
 
-  VariantCanonicalPath getVariantCanonicalPath(int pos) { result = v and pos = pos_ }
+  Variant getVariant(int pos) { result = v and pos = pos_ }
 
   final override string toString() {
-    // only print indices when the arity is > 1
-    if exists(TVariantPositionContent(v, 1))
-    then result = v.toString() + "(" + pos_ + ")"
-    else result = v.toString()
+    exists(string name |
+      name = v.getName().getText() and
+      // only print indices when the arity is > 1
+      if exists(getVariantTupleField(v, 1)) then result = name + "(" + pos_ + ")" else result = name
+    )
   }
+
+  final override Location getLocation() { result = getVariantTupleField(v, pos_).getLocation() }
+}
+
+private RecordField getVariantRecordField(Variant v, string field) {
+  result = v.getFieldList().(RecordFieldList).getAField() and
+  field = result.getName().getText()
 }
 
 /** A record variant. */
-private class VariantFieldContent extends VariantContent, TVariantFieldContent {
-  private VariantCanonicalPath v;
+private class VariantRecordFieldContent extends VariantContent, TVariantRecordFieldContent {
+  private Variant v;
   private string field_;
 
-  VariantFieldContent() { this = TVariantFieldContent(v, field_) }
+  VariantRecordFieldContent() { this = TVariantRecordFieldContent(v, field_) }
 
-  VariantCanonicalPath getVariantCanonicalPath(string field) { result = v and field = field_ }
+  Variant getVariant(string field) { result = v and field = field_ }
 
   final override string toString() {
-    // only print field when the arity is > 1
-    if strictcount(string f | exists(TVariantFieldContent(v, f))) > 1
-    then result = v.toString() + "{" + field_ + "}"
-    else result = v.toString()
+    exists(string name |
+      name = v.getName().getText() and
+      // only print field when the arity is > 1
+      if strictcount(string f | exists(getVariantRecordField(v, f))) > 1
+      then result = name + "{" + field_ + "}"
+      else result = name
+    )
   }
-}
 
-/** A canonical path pointing to a struct. */
-class StructCanonicalPath extends MkStructCanonicalPath {
-  CrateOriginOption crate;
-  string path;
-
-  StructCanonicalPath() { this = MkStructCanonicalPath(crate, path) }
-
-  /** Gets the underlying struct. */
-  Struct getStruct() { hasExtendedCanonicalPath(result, crate, path) }
-
-  string getExtendedCanonicalPath() { result = path }
-
-  string toString() { result = this.getStruct().getName().getText() }
-
-  Location getLocation() { result = this.getStruct().getLocation() }
+  final override Location getLocation() {
+    result = getVariantRecordField(v, field_).getName().getLocation()
+  }
 }
 
 /** Content stored in a field on a struct. */
 private class StructFieldContent extends Content, TStructFieldContent {
-  private StructCanonicalPath s;
+  private Struct s;
   private string field_;
 
   StructFieldContent() { this = TStructFieldContent(s, field_) }
 
-  StructCanonicalPath getStructCanonicalPath(string field) { result = s and field = field_ }
+  Struct getStruct(string field) { result = s and field = field_ }
 
-  override string toString() { result = s.toString() + "." + field_.toString() }
+  override string toString() { result = s.getName().getText() + "." + field_.toString() }
+
+  override Location getLocation() {
+    exists(Name f | f = s.getFieldList().(RecordFieldList).getAField().getName() |
+      f.getText() = field_ and
+      result = f.getLocation()
+    )
+  }
 }
 
 /** A captured variable. */
@@ -747,11 +820,15 @@ private class CapturedVariableContent extends Content, TCapturedVariableContent 
   Variable getVariable() { result = v }
 
   override string toString() { result = "captured " + v }
+
+  override Location getLocation() { result = v.getLocation() }
 }
 
 /** A value referred to by a reference. */
 final class ReferenceContent extends Content, TReferenceContent {
   override string toString() { result = "&ref" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
@@ -764,6 +841,8 @@ final class ReferenceContent extends Content, TReferenceContent {
  */
 final class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
@@ -780,6 +859,8 @@ final class TuplePositionContent extends Content, TTuplePositionContent {
   int getPosition() { result = pos }
 
   override string toString() { result = "tuple." + pos.toString() }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /** Holds if `access` indexes a tuple at an index corresponding to `c`. */
@@ -1007,38 +1088,28 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   /** Holds if path `p` resolves to struct `s`. */
-  private predicate pathResolveToStructCanonicalPath(PathAstNode p, StructCanonicalPath s) {
-    exists(CrateOriginOption crate, string path |
-      resolveExtendedCanonicalPath(p, crate, path) and
-      s = MkStructCanonicalPath(crate, path)
-    )
+  private predicate pathResolveToStruct(PathAstNode p, Struct s) {
+    s = PathResolution::resolvePath(p.getPath())
   }
 
   /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariantCanonicalPath(PathAstNode p, VariantCanonicalPath v) {
-    exists(CrateOriginOption crate, string path, string name |
-      resolveExtendedCanonicalPath(p, pragma[only_bind_into](crate), path + "::" + name) and
-      v = MkVariantCanonicalPath(pragma[only_bind_into](crate), path, name)
-    )
+  private predicate pathResolveToVariant(PathAstNode p, Variant v) {
+    v = PathResolution::resolvePath(p.getPath())
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
-  private predicate tupleVariantDestruction(TupleStructPat p, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(p, v)
+  private predicate tupleVariantDestruction(TupleStructPat p, Variant v) {
+    pathResolveToVariant(p, v)
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
-  private predicate recordVariantDestruction(RecordPat p, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(p, v)
-  }
+  private predicate recordVariantDestruction(RecordPat p, Variant v) { pathResolveToVariant(p, v) }
 
   /** Holds if `p` destructs a struct `s`. */
   pragma[nomagic]
-  private predicate structDestruction(RecordPat p, StructCanonicalPath s) {
-    pathResolveToStructCanonicalPath(p, s)
-  }
+  private predicate structDestruction(RecordPat p, Struct s) { pathResolveToStruct(p, s) }
 
   /**
    * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
@@ -1049,9 +1120,11 @@ module RustDataFlow implements InputSig<Location> {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       exists(TupleStructPatCfgNode pat, int pos |
         pat = node1.asPat() and
-        tupleVariantDestruction(pat.getPat(),
-          c.(VariantPositionContent).getVariantCanonicalPath(pos)) and
         node2.asPat() = pat.getField(pos)
+      |
+        tupleVariantDestruction(pat.getPat(), c.(VariantTupleFieldContent).getVariant(pos))
+        or
+        VariantLib::tupleVariantCanonicalDestruction(pat.getPat(), c, pos)
       )
       or
       exists(TuplePatCfgNode pat, int pos |
@@ -1064,11 +1137,10 @@ module RustDataFlow implements InputSig<Location> {
         pat = node1.asPat() and
         (
           // Pattern destructs a struct-like variant.
-          recordVariantDestruction(pat.getPat(),
-            c.(VariantFieldContent).getVariantCanonicalPath(field))
+          recordVariantDestruction(pat.getPat(), c.(VariantRecordFieldContent).getVariant(field))
           or
           // Pattern destructs a struct.
-          structDestruction(pat.getPat(), c.(StructFieldContent).getStructCanonicalPath(field))
+          structDestruction(pat.getPat(), c.(StructFieldContent).getStruct(field))
         ) and
         node2.asPat() = pat.getFieldPat(field)
       )
@@ -1105,7 +1177,7 @@ module RustDataFlow implements InputSig<Location> {
       exists(TryExprCfgNode try |
         node1.asExpr() = try.getExpr() and
         node2.asExpr() = try and
-        c.(VariantPositionContent).getVariantCanonicalPath(0).getExtendedCanonicalPath() =
+        c.(VariantLibTupleFieldContent).getVariantLib(0).getExtendedCanonicalPath() =
           ["crate::option::Option::Some", "crate::result::Result::Ok"]
       )
       or
@@ -1125,21 +1197,19 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
-  private predicate tupleVariantConstruction(CallExpr ce, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(ce.getFunction().(PathExpr), v)
+  private predicate tupleVariantConstruction(CallExpr ce, Variant v) {
+    pathResolveToVariant(ce.getFunction().(PathExpr), v)
   }
 
   /** Holds if `re` constructs an enum value of type `v`. */
   pragma[nomagic]
-  private predicate recordVariantConstruction(RecordExpr re, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(re, v)
+  private predicate recordVariantConstruction(RecordExpr re, Variant v) {
+    pathResolveToVariant(re, v)
   }
 
   /** Holds if `re` constructs a struct value of type `s`. */
   pragma[nomagic]
-  private predicate structConstruction(RecordExpr re, StructCanonicalPath s) {
-    pathResolveToStructCanonicalPath(re, s)
-  }
+  private predicate structConstruction(RecordExpr re, Struct s) { pathResolveToStruct(re, s) }
 
   private predicate tupleAssignment(Node node1, Node node2, TuplePositionContent c) {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
@@ -1153,20 +1223,22 @@ module RustDataFlow implements InputSig<Location> {
   pragma[nomagic]
   private predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExprCfgNode call, int pos |
-      tupleVariantConstruction(call.getCallExpr(),
-        c.(VariantPositionContent).getVariantCanonicalPath(pos)) and
       node1.asExpr() = call.getArgument(pos) and
       node2.asExpr() = call
+    |
+      tupleVariantConstruction(call.getCallExpr(), c.(VariantTupleFieldContent).getVariant(pos))
+      or
+      VariantLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
     )
     or
     exists(RecordExprCfgNode re, string field |
       (
         // Expression is for a struct-like enum variant.
         recordVariantConstruction(re.getRecordExpr(),
-          c.(VariantFieldContent).getVariantCanonicalPath(field))
+          c.(VariantRecordFieldContent).getVariant(field))
         or
         // Expression is for a struct.
-        structConstruction(re.getRecordExpr(), c.(StructFieldContent).getStructCanonicalPath(field))
+        structConstruction(re.getRecordExpr(), c.(StructFieldContent).getStruct(field))
       ) and
       node1.asExpr() = re.getFieldExpr(field) and
       node2.asExpr() = re
@@ -1524,46 +1596,14 @@ private module Cached {
   cached
   newtype TReturnKind = TNormalReturnKind()
 
-  private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
-
-  cached
-  newtype TVariantCanonicalPath =
-    MkVariantCanonicalPath(CrateOriginOption crate, string path, string name) {
-      variantHasExtendedCanonicalPath(_, _, crate, path, name)
-      or
-      // TODO: Remove once library types are extracted
-      crate = langCoreCrate() and
-      (
-        path = "crate::option::Option" and
-        name = "Some"
-        or
-        path = "crate::result::Result" and
-        name = ["Ok", "Err"]
-      )
-    }
-
-  cached
-  newtype TStructCanonicalPath =
-    MkStructCanonicalPath(CrateOriginOption crate, string path) {
-      exists(Struct s | hasExtendedCanonicalPath(s, crate, path))
-    }
-
   cached
   newtype TContent =
-    TVariantPositionContent(VariantCanonicalPath v, int pos) {
-      pos in [0 .. v.getVariant().getFieldList().(TupleFieldList).getNumberOfFields() - 1]
-      or
-      // TODO: Remove once library types are extracted
-      v = MkVariantCanonicalPath(langCoreCrate(), "crate::option::Option", "Some") and
-      pos = 0
-      or
-      // TODO: Remove once library types are extracted
-      v = MkVariantCanonicalPath(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
-      pos = 0
+    TVariantTupleFieldContent(Variant v, int pos) { exists(getVariantTupleField(v, pos)) } or
+    // TODO: Remove once library types are extracted
+    TVariantLibTupleFieldContent(VariantLib::VariantLib v, int pos) {
+      VariantLib::variantLibPos(v, pos)
     } or
-    TVariantFieldContent(VariantCanonicalPath v, string field) {
-      field = v.getVariant().getFieldList().(RecordFieldList).getAField().getName().getText()
-    } or
+    TVariantRecordFieldContent(Variant v, string field) { exists(getVariantRecordField(v, field)) } or
     TElementContent() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
@@ -1572,8 +1612,8 @@ private module Cached {
               ]
           )]
     } or
-    TStructFieldContent(StructCanonicalPath s, string field) {
-      field = s.getStruct().getFieldList().(RecordFieldList).getAField().getName().getText()
+    TStructFieldContent(Struct s, string field) {
+      field = s.getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TReferenceContent()

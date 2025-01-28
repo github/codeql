@@ -61,21 +61,30 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
-      exists(VariantCanonicalPath v | result = "Variant" |
+      exists(Variant v | result = "Variant" |
         exists(int pos |
-          c = TVariantPositionContent(v, pos) and
+          c = TVariantTupleFieldContent(v, pos) and
+          // TODO: calculate in QL
           arg = v.getExtendedCanonicalPath() + "(" + pos + ")"
         )
         or
         exists(string field |
-          c = TVariantFieldContent(v, field) and
+          // TODO: calculate in QL
+          c = TVariantRecordFieldContent(v, field) and
           arg = v.getExtendedCanonicalPath() + "::" + field
         )
       )
       or
-      exists(StructCanonicalPath s, string field |
+      result = "Variant" and
+      c =
+        any(VariantLibTupleFieldContent v |
+          arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
+        )
+      or
+      exists(Struct s, string field |
         result = "Struct" and
         c = TStructFieldContent(s, field) and
+        // TODO: calculate in QL
         arg = s.getExtendedCanonicalPath() + "::" + field
       )
       or
