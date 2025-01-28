@@ -784,7 +784,7 @@ class TransformerFactorySource extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    SafeTransformerFactoryFlow2::flowsTo(DataFlow::exprNode(this.getQualifier()))
+    SafeTransformerFactoryFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
@@ -803,7 +803,7 @@ private predicate safeTransformerFactoryNode(DataFlow::Node src) {
   src.asExpr() instanceof SafeTransformerFactory
 }
 
-private module SafeTransformerFactoryFlow2 = DataFlow::SimpleGlobal<safeTransformerFactoryNode/1>;
+private module SafeTransformerFactoryFlow = DataFlow::SimpleGlobal<safeTransformerFactoryNode/1>;
 
 /** A safely configured `TransformerFactory`. */
 class SafeTransformerFactory extends VarAccess {
@@ -826,7 +826,7 @@ class SafeTransformer extends MethodCall {
       this.getMethod() = m and
       m.getDeclaringType() instanceof TransformerFactory and
       m.hasName("newTransformer") and
-      SafeTransformerFactoryFlow2::flowsTo(DataFlow::exprNode(this.getQualifier()))
+      SafeTransformerFactoryFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
     )
   }
 }
@@ -849,7 +849,7 @@ class SaxTransformerFactoryNewXmlFilter extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    SafeTransformerFactoryFlow2::flowsTo(DataFlow::exprNode(this.getQualifier()))
+    SafeTransformerFactoryFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
