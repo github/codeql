@@ -415,7 +415,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate compatibleContainer0(ApHeadContent apc, DataFlowType containerType) {
           exists(DataFlowType containerType0, Content c |
             PrevStage::storeStepCand(_, c, _, _, containerType0) and
-            not isTopType(containerType0) and
+            not topTypeContent(apc) and
             compatibleTypesCached(containerType0, containerType) and
             apc = projectToHeadContent(c)
           )
