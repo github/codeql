@@ -685,6 +685,47 @@ int test28(MYSTRUCTREF g)
 	return memcmp(&g, &_myStruct, sizeof(MYSTRUCT)); // GOOD
 }
 
+#define offsetof(s, m) __builtin_offsetof(s, m)
+
+struct HasSomeFields {
+	unsigned long a;
+	unsigned long b;
+	unsigned long c;
+
+	void test29() {
+		memset(&a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD
+	};
+
+	void test30() {
+		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // GOOD
+	};
+
+	void test31() {
+		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, c)); // GOOD
+	};
+
+	void test32() {
+		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
+	};
+
+	void test33() {
+		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // BAD
+	};
+
+	void test34() {
+		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
+	};
+
+	void test35() {
+		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b) - sizeof(unsigned long)); // GOOD
+	};
+};
+
+void test36() {
+	HasSomeFields hsf;
+	memset(&hsf.a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD
+	memset(&hsf.c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
+}
 
 int tests_main(int argc, char *argv[])
 {
