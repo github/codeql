@@ -1,5 +1,6 @@
 /**
- * @name "Outputs a graph representation of the cryptographic bill of materials."
+ * @name "Print CBOM Graph"
+ * @description "Outputs a graph representation of the cryptographic bill of materials."
  * @kind graph
  * @id cbomgraph
  */
