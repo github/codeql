@@ -394,7 +394,7 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, .xsaccess files, package.json files, 
+    // include .eslintrc files, .xsaccess files, package.json files,
     // tsconfig.json files, and codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/.xsaccess");
@@ -895,7 +895,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           // For named packages, find the main file.
           String name = packageJson.getName();
           if (name != null) {
-            Path entryPoint = null; 
+            Path entryPoint = null;
             try {
               entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
               if (entryPoint == null) {
