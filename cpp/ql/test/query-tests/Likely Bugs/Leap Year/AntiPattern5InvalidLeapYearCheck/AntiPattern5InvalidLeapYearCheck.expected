@@ -1,0 +1,3 @@
+| test.cpp:183:23:183:35 | ... == ... | Possible Insufficient Leap Year check (AntiPattern 5) |
+| test.cpp:190:24:190:40 | ... == ... | Possible Insufficient Leap Year check (AntiPattern 5) |
+| test.cpp:245:6:245:18 | ... == ... | Possible Insufficient Leap Year check (AntiPattern 5) |

@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>Checking for overflow of an addition by comparing against one of the arguments of the addition fails if the size of all the argument types are smaller than 4 bytes. This is because the result of the addition is promoted to a 4 byte int.</p>
+</overview>
+  
+<recommendation>
+<p>Check the overflow by comparing the addition against a value that is at least 4 bytes.</p>
+</recommendation>
+
+<example>
+  <p>In this example, the result of the comparison will result in an integer overflow.</p>
+  <sample src="BadOverflowGuardBadCode.c" />
+
+  <p>To fix the bug, check the overflow by comparing the addition against a value that is at least 4 bytes.</p>
+  <sample src="BadOverflowGuardGoodCode.c" />
+</example>
+</qhelp>

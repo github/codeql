@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Use of KDF algorithm BCryptDeriveKeyPBKDF2 uses insecure hash from BCryptOpenAlgorithmProvider.</p>
+</overview>
+
+<recommendation>
+<p>Use SHA 256, 384, or 512.</p>
+</recommendation>
+
+</qhelp>

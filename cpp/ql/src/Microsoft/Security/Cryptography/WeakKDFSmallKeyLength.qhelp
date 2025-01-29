@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Use of KDF algorithm BCryptDeriveKeyPBKDF2 uses small key size (less than 16 bytes).</p>
+</overview>
+
+<recommendation>
+<p>Use a minimum of 16 bytes for key size.</p>
+</recommendation>
+
+</qhelp>

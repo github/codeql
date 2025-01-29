@@ -11,7 +11,7 @@ It is not safe to assume that a year is 365 days long.</p>
 
 <recommendation>
 <p>Determine whether the time span in question contains a leap day, then perform the calculation using the correct number
-of days.  Alternatively, use an established library routine that already contains correct leap year logic.</p>
+of days. Alternatively, use an established library routine that already contains correct leap year logic.</p>
 </recommendation>
 
 <references>

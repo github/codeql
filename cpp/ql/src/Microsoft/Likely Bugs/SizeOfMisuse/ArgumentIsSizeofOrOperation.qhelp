@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>If the argument for a <code>sizeof</code> call is a binary operation or a <code>sizeof</code> call, it is typically a sign that there is a confusion on the usage of the sizeof usage.</p>
+  </overview>
+
+<recommendation>
+  <p>Any findings from this rule may indicate that the <code>sizeof</code> is being used incorrectly.</p>
+  <p>Review the logic of the call.</p>
+</recommendation>
+
+<example>
+  <p>The following example shows a case where <code>sizeof</code> a binary operation by mistake.</p>
+  <sample src="ArgumentIsSizeofOrOperationBad.c" />
+
+  <p>In this example, the fix is to multiply the result of <code>sizeof</code> by the number of elements.</p>
+  <sample src="ArgumentIsSizeofOrOperationGood.c" />
+</example>
+
+</qhelp>

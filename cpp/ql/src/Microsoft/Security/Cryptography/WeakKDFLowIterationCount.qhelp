@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Use of KDF algorithm BCryptDeriveKeyPBKDF2 uses low iteration count (less than 100k).</p>
+</overview>
+
+<recommendation>
+<p>Use a minimum of 100,000 for iteration count.</p>
+</recommendation>
+
+</qhelp>

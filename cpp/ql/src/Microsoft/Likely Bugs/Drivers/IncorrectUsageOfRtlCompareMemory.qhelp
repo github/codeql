@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p><code>RtlCompareMemory</code> routine compares two blocks of memory and returns the number of bytes that match, not a boolean value indicating a full comparison like <code>RtlEqualMemory</code> does.</p> 
+    <p>This query detects the return value of <code>RtlCompareMemory</code> being handled as a boolean.</p>
+  </overview>
+
+<recommendation>
+  <p>Any findings from this rule may indicate that the return value of a call to <code>RtlCompareMemory</code> is being incorrectly interpreted as a boolean.</p>
+  <p>Review the logic of the call, and if necessary, replace the function call with <code>RtlEqualMemory</code>.</p>
+</recommendation>
+
+<example>
+<p>The following example is a typical one where an identity comparison is intended, but the wrong API is being used.</p>
+<sample src="IncorrectUsageOfRtlCompareMemoryBad.c" />
+
+<p>In this example, the fix is to replace the call to <code>RtlCompareMemory</code> with <code>RtlEqualMemory</code>.</p>
+
+<sample src="IncorrectUsageOfRtlCompareMemoryGood.c" />
+
+</example>
+<references>
+    <li>Books online <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlcomparememory">RtlCompareMemory function (wdm.h)</a></li>
+    <li>Books online <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlequalmemory">RtlEqualMemory macro (wdm.h)</a></li>
+</references>
+
+</qhelp>
