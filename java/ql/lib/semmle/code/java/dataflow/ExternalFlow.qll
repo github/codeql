@@ -98,94 +98,14 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.ExternalFlowExtensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 
-/**
- * A class for activating additional model rows.
- *
- * Extend this class to include experimental model rows with `this` name
- * in data flow analysis.
- */
-abstract private class ActiveExperimentalModelsInternal extends string {
-  bindingset[this]
-  ActiveExperimentalModelsInternal() { any() }
-
-  /**
-   * Holds if an experimental source model exists for the given parameters.
-   */
-  predicate sourceModel(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-  ) {
-    Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
-      provenance, this, madId)
-  }
-
-  /**
-   * Holds if an experimental sink model exists for the given parameters.
-   */
-  predicate sinkModel(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-  ) {
-    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
-      provenance, this, madId)
-  }
-
-  /**
-   * Holds if an experimental summary model exists for the given parameters.
-   */
-  predicate summaryModel(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-  ) {
-    Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
-      output, kind, provenance, this, madId)
-  }
-}
-
-deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
-
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
-  )
-}
+predicate sourceModel = Extensions::sourceModel/10;
 
 /** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
-  )
-}
+predicate sinkModel = Extensions::sinkModel/10;
 
 /** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-          provenance, madId)
-  )
-}
+predicate summaryModel = Extensions::summaryModel/11;
 
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
@@ -197,9 +117,7 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance
   |
-    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) or
-    Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
-      provenance, _, madId)
+    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
   |
     model =
       "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
@@ -210,9 +128,7 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   |
-    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) or
-    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
-      provenance, _, madId)
+    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
   |
     model =
       "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
@@ -224,9 +140,7 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string input, string output, string kind, string provenance
   |
     summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) or
-    Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
-      output, kind, provenance, _, madId)
+      madId)
   |
     model =
       "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
