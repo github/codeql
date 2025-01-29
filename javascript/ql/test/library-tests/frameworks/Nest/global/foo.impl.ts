@@ -2,6 +2,6 @@ import { Foo } from "./foo.interface";
 
 export class FooImpl extends Foo {
     fooMethod(x: string) {
-        sink(x); // $ MISSING: hasValueFlow=x
+        sink(x); // $ hasValueFlow=x
     }
 }
