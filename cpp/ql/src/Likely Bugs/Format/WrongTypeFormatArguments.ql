@@ -152,10 +152,6 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
-predicate functionHasUniqueArguments(Function fn) {
-  forall(Parameter p | p = fn.getAParameter() | count(p.getType().getUnspecifiedType()) = 1)
-}
-
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where
   (
@@ -176,7 +172,8 @@ where
   not arg.isFromUninstantiatedTemplate(_) and
   not actual.stripType() instanceof ErroneousType and
   not arg.(Call).mayBeFromImplicitlyDeclaredFunction() and
-  functionHasUniqueArguments(ffc.getTarget())
+  // Make sure that the format function definition is consistent
+  count(ffc.getTarget().getFormatParameterIndex()) = 1
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
     actual.getUnspecifiedType().getName() + "'."
