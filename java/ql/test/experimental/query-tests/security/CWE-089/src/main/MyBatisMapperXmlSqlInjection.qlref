@@ -1,2 +1,0 @@
-query: experimental/Security/CWE/CWE-089/MyBatisMapperXmlSqlInjection.ql
-postprocess: utils/test/PrettyPrintModels.ql

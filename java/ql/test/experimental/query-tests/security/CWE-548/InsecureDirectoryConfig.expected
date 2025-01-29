@@ -1,1 +1,0 @@
-| insecure-web.xml:16:9:19:22 | init-param | Directory listing should be disabled to mitigate filename and path disclosure. |
