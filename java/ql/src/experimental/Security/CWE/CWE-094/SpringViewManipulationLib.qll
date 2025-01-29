@@ -1,6 +1,7 @@
 /**
  * Provides classes for reasoning about Spring View Manipulation vulnerabilities
  */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.FlowSources
