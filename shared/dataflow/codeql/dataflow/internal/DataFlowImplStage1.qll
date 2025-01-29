@@ -24,15 +24,14 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     bindingset[source, sink]
     predicate isRelevantSourceSinkPair(Node source, Node sink);
 
-    predicate isRelevantSink(Node sink, FlowState state);
-
-    predicate isRelevantSink(Node sink);
-
     predicate inBarrier(NodeEx node, FlowState state);
 
     predicate outBarrier(NodeEx node, FlowState state);
 
     predicate stateBarrier(NodeEx node, FlowState state);
+
+    /** If `node` corresponds to a sink, gets the normal node for that sink. */
+    NodeEx toNormalSinkNode(NodeEx node);
 
     predicate sourceNode(NodeEx node, FlowState state);
 
@@ -267,6 +266,16 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       isRelevantSink(node.asNodeOrImplicitRead(), state) and
       not fullBarrier(node) and
       not stateBarrier(node, state)
+    }
+
+    /** If `node` corresponds to a sink, gets the normal node for that sink. */
+    pragma[nomagic]
+    NodeEx toNormalSinkNodeEx(NodeEx node) {
+      exists(Node n |
+        pragma[only_bind_out](node.asNodeOrImplicitRead()) = n and
+        (isRelevantSink(n) or isRelevantSink(n, _)) and
+        result.asNode() = n
+      )
     }
 
     /** Provides the relevant barriers for a step from `node1` to `node2`. */
@@ -1212,12 +1221,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     private predicate localStateStepNodeCand1Alias = localStateStepNodeCand1/7;
 
     module Stage1NoState implements Stage1Output<FlowState> {
-      predicate isRelevantSink(Node sink, FlowState state) {
-        SourceSinkFiltering::isRelevantSink(sink, state)
-      }
-
-      predicate isRelevantSink(Node sink) { SourceSinkFiltering::isRelevantSink(sink) }
-
       predicate inBarrier = inBarrierAlias/2;
 
       predicate outBarrier = outBarrierAlias/2;
@@ -1240,6 +1243,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       import Stage1
       import Stage1Common
+
+      predicate toNormalSinkNode = toNormalSinkNodeEx/1;
 
       predicate sourceNode = sourceNodeAlias/2;
 

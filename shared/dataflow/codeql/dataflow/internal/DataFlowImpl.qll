@@ -180,6 +180,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate stateBarrier = Stage1::stateBarrier/2;
 
+    private predicate toNormalSinkNode = Stage1::toNormalSinkNode/1;
+
     private predicate sourceNode = Stage1::sourceNode/2;
 
     private predicate sinkNode = Stage1::sinkNode/2;
@@ -1770,7 +1772,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             TPathNodeSink(NodeEx node, FlowState state) {
               exists(PathNodeMid sink |
                 sink.isAtSink() and
-                node = sink.toNormalSinkNodeEx() and
+                node = sink.toNormalSinkNode() and
                 state = sink.getState()
               )
             } or
@@ -1930,13 +1932,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             /** If this node corresponds to a sink, gets the normal node for that sink. */
             pragma[nomagic]
-            NodeEx toNormalSinkNodeEx() {
-              exists(Node n |
-                pragma[only_bind_out](node.asNodeOrImplicitRead()) = n and
-                (Stage1::isRelevantSink(n) or Stage1::isRelevantSink(n, _)) and
-                result.asNode() = n
-              )
-            }
+            NodeEx toNormalSinkNode() { result = toNormalSinkNode(node) }
 
             override PathNodeImpl getASuccessorImpl(string label) {
               // an intermediate step to another intermediate node
@@ -2031,7 +2027,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               exists(string model |
                 this.isAtSink() and
                 sinkModel(node, model) and
-                result.getNodeEx() = this.toNormalSinkNodeEx() and
+                result.getNodeEx() = this.toNormalSinkNode() and
                 result.getState() = state and
                 if model != "" then label = "Sink:" + model else label = ""
               )
