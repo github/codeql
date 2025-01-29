@@ -1108,6 +1108,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     return false;
   }
 
+  public static boolean treatAsTSConfig(String basename) {
+    return basename.contains("tsconfig.") && basename.endsWith(".json");
+  }
+
   private void findFilesToExtract(
       FileExtractor extractor, final Set<Path> filesToExtract, final List<Path> tsconfigFiles)
       throws IOException {
@@ -1140,7 +1144,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
 
             // extract TypeScript projects from 'tsconfig.json'
             if (typeScriptMode == TypeScriptMode.FULL
-                && (file.getFileName().toString().contains("tsconfig.") && file.getFileName().toString().endsWith(".json"))
+                && treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {
               tsconfigFiles.add(file);
