@@ -293,7 +293,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
     or
     i = 4 and result = ExternalFlow::paramsString(api) // parameters
     or
-    i = 5 and result = "" // ext
+    i = 5 and result = "" and exists(api) // ext
   }
 
   string partialNeutralModelRow(Callable api, int i) {

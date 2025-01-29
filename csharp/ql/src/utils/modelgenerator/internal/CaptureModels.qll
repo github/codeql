@@ -372,7 +372,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     or
     i = 4 and ExternalFlow::partialModel(api, _, _, _, _, result) // parameters
     or
-    i = 5 and result = "" // ext
+    i = 5 and result = "" and exists(api) // ext
   }
 
   string partialNeutralModelRow(Callable api, int i) {
