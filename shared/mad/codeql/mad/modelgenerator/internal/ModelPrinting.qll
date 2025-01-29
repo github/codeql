@@ -37,14 +37,14 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Computes the first columns for MaD rows used for summaries, sources and sinks.
      */
     private string asPartialModel(Lang::Callable api) {
-      result = concat(int i | | Lang::partialModelRow(api, i), ";" order by i) + ";"
+      result = strictconcat(int i | | Lang::partialModelRow(api, i), ";" order by i) + ";"
     }
 
     /**
      * Computes the first columns for neutral MaD rows.
      */
     private string asPartialNeutralModel(Printing::SummaryApi api) {
-      result = concat(int i | | Lang::partialNeutralModelRow(api, i), ";" order by i) + ";"
+      result = strictconcat(int i | | Lang::partialNeutralModelRow(api, i), ";" order by i) + ";"
     }
 
     /**
