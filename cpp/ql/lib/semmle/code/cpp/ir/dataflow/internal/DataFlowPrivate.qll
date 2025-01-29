@@ -1339,7 +1339,12 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   (
-    call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode() or
+    call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode()
+    or
+    // No need to infer a lambda call if we already have a static dispatch target.
+    // We only need to check this in the disjunct since a `SummaryCall` never
+    // has a result for `getStaticCallTarget`.
+    not exists(call.getStaticCallTarget()) and
     call.asCallInstruction().getCallTargetOperand() = receiver.asOperand()
   ) and
   exists(kind)
