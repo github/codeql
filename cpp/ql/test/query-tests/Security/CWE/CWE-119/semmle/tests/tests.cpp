@@ -713,7 +713,7 @@ struct HasSomeFields {
 	};
 
 	void test34() {
-		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // BAD
+		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
 	};
 
 	void test35() {
