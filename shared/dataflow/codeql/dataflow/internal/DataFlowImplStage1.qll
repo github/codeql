@@ -24,77 +24,100 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     bindingset[source, sink]
     predicate isRelevantSourceSinkPair(Node source, Node sink);
 
-    predicate inBarrier(NodeEx node, FlowState state);
+    class Nd {
+      NodeEx getNodeEx();
 
-    predicate outBarrier(NodeEx node, FlowState state);
+      string toString();
 
-    predicate stateBarrier(NodeEx node, FlowState state);
+      Location getLocation();
+
+      DataFlowType getDataFlowType();
+
+      DataFlowCallable getEnclosingCallable();
+    }
+
+    class ArgNd extends Nd;
+
+    class ParamNd extends Nd;
+
+    class RetNd extends Nd {
+      ReturnPosition getReturnPosition();
+
+      ReturnKindExt getKind();
+    }
+
+    class OutNd extends Nd;
+
+    class CastingNd extends Nd;
+
+    predicate inBarrier(Nd node, FlowState state);
+
+    predicate outBarrier(Nd node, FlowState state);
+
+    predicate stateBarrier(Nd node, FlowState state);
 
     /** If `node` corresponds to a sink, gets the normal node for that sink. */
-    NodeEx toNormalSinkNode(NodeEx node);
+    Nd toNormalSinkNode(Nd node);
 
-    predicate sourceNode(NodeEx node, FlowState state);
+    predicate sourceNode(Nd node, FlowState state);
 
-    predicate sinkNode(NodeEx node, FlowState state);
+    predicate sinkNode(Nd node, FlowState state);
 
     predicate hasSourceCallCtx();
 
     predicate hasSinkCallCtx();
 
-    predicate jumpStepEx(NodeEx node1, NodeEx node2);
+    predicate jumpStepEx(Nd node1, Nd node2);
 
-    predicate additionalJumpStep(NodeEx node1, NodeEx node2, string model);
+    predicate additionalJumpStep(Nd node1, Nd node2, string model);
 
-    predicate additionalJumpStateStep(
-      NodeEx node1, FlowState s1, NodeEx node2, FlowState s2, string model
-    );
+    predicate additionalJumpStateStep(Nd node1, FlowState s1, Nd node2, FlowState s2, string model);
 
     predicate localStepNodeCand1(
-      NodeEx node1, NodeEx node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
-      string label
+      Nd node1, Nd node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc, string label
     );
 
     predicate localStateStepNodeCand1(
-      NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, DataFlowType t,
-      LocalCallContext lcc, string label
+      Nd node1, FlowState state1, Nd node2, FlowState state2, DataFlowType t, LocalCallContext lcc,
+      string label
     );
 
     bindingset[c]
-    predicate expectsContentEx(NodeEx n, Content c);
+    predicate expectsContentEx(Nd n, Content c);
 
-    predicate notExpectsContent(NodeEx n);
+    predicate notExpectsContent(Nd n);
 
     bindingset[p, kind]
-    predicate parameterFlowThroughAllowed(ParamNodeEx p, ReturnKindExt kind);
+    predicate parameterFlowThroughAllowed(ParamNd p, ReturnKindExt kind);
 
     // begin StageSig
     class Ap;
 
     class ApNil extends Ap;
 
-    predicate revFlow(NodeEx node);
+    predicate revFlow(Nd node);
 
     bindingset[node, state]
-    predicate revFlow(NodeEx node, FlowState state, Ap ap);
+    predicate revFlow(Nd node, FlowState state, Ap ap);
 
     predicate callMayFlowThroughRev(DataFlowCall call);
 
-    predicate parameterMayFlowThrough(ParamNodeEx p, boolean emptyAp);
+    predicate parameterMayFlowThrough(ParamNd p, boolean emptyAp);
 
-    predicate returnMayFlowThrough(RetNodeEx ret, ReturnKindExt kind);
+    predicate returnMayFlowThrough(RetNd ret, ReturnKindExt kind);
 
     predicate storeStepCand(
-      NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
+      Nd node1, Content c, Nd node2, DataFlowType contentType, DataFlowType containerType
     );
 
-    predicate readStepCand(NodeEx n1, Content c, NodeEx n2);
+    predicate readStepCand(Nd n1, Content c, Nd n2);
 
     predicate callEdgeArgParam(
-      DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+      DataFlowCall call, DataFlowCallable c, ArgNd arg, ParamNd p, boolean emptyAp
     );
 
     predicate callEdgeReturn(
-      DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+      DataFlowCall call, DataFlowCallable c, RetNd ret, ReturnKindExt kind, Nd out,
       boolean allowsFieldFlow
     );
 
@@ -1221,6 +1244,18 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     private predicate localStateStepNodeCand1Alias = localStateStepNodeCand1/7;
 
     module Stage1NoState implements Stage1Output<FlowState> {
+      class Nd = NodeEx;
+
+      class ArgNd = ArgNodeEx;
+
+      class ParamNd = ParamNodeEx;
+
+      class RetNd = RetNodeEx;
+
+      class OutNd = OutNodeEx;
+
+      class CastingNd = CastingNodeEx;
+
       predicate inBarrier = inBarrierAlias/2;
 
       predicate outBarrier = outBarrierAlias/2;

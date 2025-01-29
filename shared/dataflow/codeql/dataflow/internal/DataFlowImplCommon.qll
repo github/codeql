@@ -853,6 +853,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   class SndLevelScopeOption = SndLevelScopeOption::Option;
 
   final class NodeEx extends TNodeEx {
+    NodeEx getNodeEx() { result = this }
+
     string toString() {
       result = this.asNode().toString()
       or
