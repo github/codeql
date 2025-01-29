@@ -14,48 +14,6 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import Flow::PathGraph
 
-/**
- * Holds if `f` is a field located at byte offset `offset` in `c`.
- *
- * Note that predicate is recursive, so that given the following:
- * ```cpp
- * struct S1 {
- *   int a;
- *   void* b;
- * };
- *
- * struct S2 {
- *   S1 s1;
- *   char c;
- * };
- * ```
- * both `hasAFieldWithOffset(S2, s1, 0)` and `hasAFieldWithOffset(S2, a, 0)`
- * holds.
- */
-predicate hasAFieldWithOffset(Class c, Field f, int offset) {
-  // Base case: `f` is a field in `c`.
-  f = c.getAField() and
-  offset = f.getByteOffset() and
-  not f.getUnspecifiedType().(Class).hasDefinition()
-  or
-  // Otherwise, we find the struct that is a field of `c` which then has
-  // the field `f` as a member.
-  exists(Field g |
-    g = c.getAField() and
-    // Find the field with the largest offset that's less than or equal to
-    // offset. That's the struct we need to search recursively.
-    g =
-      max(Field cand, int candOffset |
-        cand = c.getAField() and
-        candOffset = cand.getByteOffset() and
-        offset >= candOffset
-      |
-        cand order by candOffset
-      ) and
-    hasAFieldWithOffset(g.getUnspecifiedType(), f, offset - g.getByteOffset())
-  )
-}
-
 /** Holds if `f` is the last field of its declaring class. */
 predicate lastField(Field f) {
   exists(Class c | c = f.getDeclaringType() |
@@ -75,7 +33,7 @@ predicate lastField(Field f) {
 bindingset[f1, offset, c2]
 pragma[inline_late]
 predicate hasCompatibleFieldAtOffset(Field f1, int offset, Class c2) {
-  exists(Field f2 | hasAFieldWithOffset(c2, f2, offset) |
+  exists(Field f2 | offset = f2.getOffsetInClass(c2) |
     // Let's not deal with bit-fields for now.
     f2 instanceof BitField
     or
@@ -100,7 +58,7 @@ predicate prefix(Class c1, Class c2) {
     exists(Field f1, int offset |
       // Let's not deal with bit-fields for now.
       not f1 instanceof BitField and
-      hasAFieldWithOffset(c1, f1, offset)
+      offset = f1.getOffsetInClass(c1)
     |
       hasCompatibleFieldAtOffset(f1, offset, c2)
     )
@@ -108,7 +66,7 @@ predicate prefix(Class c1, Class c2) {
     forall(Field f1, int offset |
       // Let's not deal with bit-fields for now.
       not f1 instanceof BitField and
-      hasAFieldWithOffset(c1, f1, offset)
+      offset = f1.getOffsetInClass(c1)
     |
       hasCompatibleFieldAtOffset(f1, offset, c2)
     )
