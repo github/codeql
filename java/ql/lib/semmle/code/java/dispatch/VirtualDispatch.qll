@@ -36,6 +36,7 @@ Callable exactCallable(Call c) {
 private predicate implCount(MethodCall m, int c) { strictcount(viableImpl(m)) = c }
 
 /** Gets a viable implementation of the target of the given `Call`. */
+overlay[local]
 Callable viableCallable(Call c) {
   result = viableImpl(c)
   or
