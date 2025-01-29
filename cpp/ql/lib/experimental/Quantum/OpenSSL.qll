@@ -84,16 +84,6 @@ module OpenSSLModel {
     }
   }
 
-  class TestKeyDerivationOperationHacky extends KeyDerivationOperation instanceof FunctionCall {
-    HKDF hkdf;
-
-    TestKeyDerivationOperationHacky() {
-      this.getEnclosingFunction() = hkdf.(Expr).getEnclosingFunction()
-    }
-
-    override Crypto::KeyDerivationAlgorithm getAlgorithm() { result = hkdf }
-  }
-
   class PKCS12KDF extends KeyDerivationAlgorithm, Crypto::PKCS12KDF instanceof Expr {
     KDFAlgorithmStringLiteral origin;
 
