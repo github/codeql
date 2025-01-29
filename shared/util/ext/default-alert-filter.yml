@@ -5,3 +5,9 @@ extensions:
       extensible: restrictAlertsTo
     # Empty predicate means no restrictions on alert locations
     data: []
+
+  - addsTo:
+      pack: codeql/util
+      extensible: restrictAlertsToExactLocation
+    # Empty predicate means no restrictions on alert locations
+    data: []
