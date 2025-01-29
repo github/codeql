@@ -146,6 +146,11 @@ module Node {
     ExprCfgNode asExpr() { none() }
 
     /**
+     * Gets the parameter that corresponds to this node, if any.
+     */
+    ParamBase asParameter() { result = this.(SourceParameterNode).getParameter().getParamBase() }
+
+    /**
      * Gets the pattern that corresponds to this node, if any.
      */
     PatCfgNode asPat() { none() }
@@ -273,6 +278,7 @@ module Node {
    * flow graph.
    */
   abstract class ParameterNode extends Node {
+    /** Holds if this node is a parameter of `c` at position `pos`. */
     abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
   }
 
@@ -726,7 +732,7 @@ class StructCanonicalPath extends MkStructCanonicalPath {
 }
 
 /** Content stored in a field on a struct. */
-private class StructFieldContent extends Content, TStructFieldContent {
+final class StructFieldContent extends Content, TStructFieldContent {
   private StructCanonicalPath s;
   private string field_;
 
