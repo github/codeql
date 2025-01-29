@@ -67,7 +67,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     /**
      * Holds if `source` is a relevant data flow source.
      */
-    signature predicate sourceNode(Node source);
+    signature predicate sourceNodeSig(Node source);
 
     /**
      * EXPERIMENTAL: This API is subject to change without notice.
@@ -75,7 +75,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * Given a source definition, this constructs a simple forward flow
      * computation with an access path limit of 1.
      */
-    module SimpleGlobal<sourceNode/1 source> {
+    module SimpleGlobal<sourceNodeSig/1 source> {
       import TypeTracking::TypeTrack<source/1>
     }
   }
