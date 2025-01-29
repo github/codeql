@@ -1095,6 +1095,11 @@ use_trees(
 );
 
 #keyset[id]
+use_tree_is_glob(
+  int id: @use_tree ref
+);
+
+#keyset[id]
 use_tree_paths(
   int id: @use_tree ref,
   int path: @path ref
