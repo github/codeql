@@ -1623,10 +1623,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               or
               node instanceof FlowCheckNode
               or
-              exists(FlowState s |
-                additionalLocalStateStep(_, s, node, state, _, _, _) and
-                s != state
-              )
+              additionalLocalStateStep(_, _, node, state, _, _, _)
             )
           }
 
@@ -1661,8 +1658,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               |
                 additionalJumpStateStep(node, state, next, s, _)
                 or
-                additionalLocalStateStep(node, state, next, s, _, _, _) and
-                s != state
+                additionalLocalStateStep(node, state, next, s, _, _, _)
               )
               or
               node instanceof FlowCheckNode
