@@ -2,6 +2,10 @@ models
 | 1 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
 | 2 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
 | 3 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 4 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
+| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 6 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 7 | Summary: lang:core; <crate::result::Result>::expect_err; Argument[self].Variant[crate::result::Result::Err(0)]; ReturnValue; value |
 edges
 | main.rs:19:9:19:9 | s | main.rs:20:10:20:10 | s | provenance |  |
 | main.rs:19:13:19:21 | source(...) | main.rs:19:9:19:9 | s | provenance |  |
@@ -66,94 +70,107 @@ edges
 | main.rs:229:19:229:28 | source(...) | main.rs:229:14:229:29 | Some(...) [Some] | provenance |  |
 | main.rs:230:10:230:11 | s1 [Some] | main.rs:230:10:230:24 | s1.unwrap_or(...) | provenance | MaD:3 |
 | main.rs:233:23:233:32 | source(...) | main.rs:233:10:233:33 | s2.unwrap_or(...) | provenance | MaD:2 |
-| main.rs:237:9:237:10 | s1 [Some] | main.rs:239:14:239:15 | s1 [Some] | provenance |  |
+| main.rs:237:9:237:10 | s1 [Some] | main.rs:238:10:238:11 | s1 [Some] | provenance |  |
 | main.rs:237:14:237:29 | Some(...) [Some] | main.rs:237:9:237:10 | s1 [Some] | provenance |  |
 | main.rs:237:19:237:28 | source(...) | main.rs:237:14:237:29 | Some(...) [Some] | provenance |  |
-| main.rs:239:9:239:10 | i1 | main.rs:240:10:240:11 | i1 | provenance |  |
-| main.rs:239:14:239:15 | s1 [Some] | main.rs:239:14:239:16 | TryExpr | provenance |  |
-| main.rs:239:14:239:16 | TryExpr | main.rs:239:9:239:10 | i1 | provenance |  |
-| main.rs:246:9:246:10 | s1 [Ok] | main.rs:249:14:249:15 | s1 [Ok] | provenance |  |
-| main.rs:246:32:246:45 | Ok(...) [Ok] | main.rs:246:9:246:10 | s1 [Ok] | provenance |  |
-| main.rs:246:35:246:44 | source(...) | main.rs:246:32:246:45 | Ok(...) [Ok] | provenance |  |
-| main.rs:249:9:249:10 | i1 | main.rs:251:10:251:11 | i1 | provenance |  |
-| main.rs:249:14:249:15 | s1 [Ok] | main.rs:249:14:249:16 | TryExpr | provenance |  |
-| main.rs:249:14:249:16 | TryExpr | main.rs:249:9:249:10 | i1 | provenance |  |
-| main.rs:264:9:264:10 | s1 [A] | main.rs:266:11:266:12 | s1 [A] | provenance |  |
-| main.rs:264:14:264:39 | ...::A(...) [A] | main.rs:264:9:264:10 | s1 [A] | provenance |  |
-| main.rs:264:29:264:38 | source(...) | main.rs:264:14:264:39 | ...::A(...) [A] | provenance |  |
-| main.rs:266:11:266:12 | s1 [A] | main.rs:267:9:267:25 | ...::A(...) [A] | provenance |  |
-| main.rs:266:11:266:12 | s1 [A] | main.rs:270:11:270:12 | s1 [A] | provenance |  |
-| main.rs:267:9:267:25 | ...::A(...) [A] | main.rs:267:24:267:24 | n | provenance |  |
-| main.rs:267:24:267:24 | n | main.rs:267:35:267:35 | n | provenance |  |
-| main.rs:270:11:270:12 | s1 [A] | main.rs:271:9:271:25 | ...::A(...) [A] | provenance |  |
-| main.rs:271:9:271:25 | ...::A(...) [A] | main.rs:271:24:271:24 | n | provenance |  |
-| main.rs:271:24:271:24 | n | main.rs:271:55:271:55 | n | provenance |  |
+| main.rs:238:10:238:11 | s1 [Some] | main.rs:238:10:238:32 | s1.unwrap_or_else(...) | provenance | MaD:5 |
+| main.rs:241:31:241:40 | source(...) | main.rs:241:10:241:41 | s2.unwrap_or_else(...) | provenance | MaD:4 |
+| main.rs:245:9:245:10 | s1 [Some] | main.rs:247:14:247:15 | s1 [Some] | provenance |  |
+| main.rs:245:14:245:29 | Some(...) [Some] | main.rs:245:9:245:10 | s1 [Some] | provenance |  |
+| main.rs:245:19:245:28 | source(...) | main.rs:245:14:245:29 | Some(...) [Some] | provenance |  |
+| main.rs:247:9:247:10 | i1 | main.rs:248:10:248:11 | i1 | provenance |  |
+| main.rs:247:14:247:15 | s1 [Some] | main.rs:247:14:247:16 | TryExpr | provenance |  |
+| main.rs:247:14:247:16 | TryExpr | main.rs:247:9:247:10 | i1 | provenance |  |
+| main.rs:254:9:254:10 | s1 [Ok] | main.rs:257:14:257:15 | s1 [Ok] | provenance |  |
+| main.rs:254:32:254:45 | Ok(...) [Ok] | main.rs:254:9:254:10 | s1 [Ok] | provenance |  |
+| main.rs:254:35:254:44 | source(...) | main.rs:254:32:254:45 | Ok(...) [Ok] | provenance |  |
+| main.rs:257:9:257:10 | i1 | main.rs:259:10:259:11 | i1 | provenance |  |
+| main.rs:257:14:257:15 | s1 [Ok] | main.rs:257:14:257:16 | TryExpr | provenance |  |
+| main.rs:257:14:257:16 | TryExpr | main.rs:257:9:257:10 | i1 | provenance |  |
+| main.rs:267:9:267:10 | s1 [Ok] | main.rs:268:10:268:11 | s1 [Ok] | provenance |  |
+| main.rs:267:32:267:45 | Ok(...) [Ok] | main.rs:267:9:267:10 | s1 [Ok] | provenance |  |
+| main.rs:267:35:267:44 | source(...) | main.rs:267:32:267:45 | Ok(...) [Ok] | provenance |  |
+| main.rs:268:10:268:11 | s1 [Ok] | main.rs:268:10:268:22 | s1.expect(...) | provenance | MaD:6 |
+| main.rs:271:9:271:10 | s2 [Err] | main.rs:273:10:273:11 | s2 [Err] | provenance |  |
+| main.rs:271:32:271:46 | Err(...) [Err] | main.rs:271:9:271:10 | s2 [Err] | provenance |  |
+| main.rs:271:36:271:45 | source(...) | main.rs:271:32:271:46 | Err(...) [Err] | provenance |  |
+| main.rs:273:10:273:11 | s2 [Err] | main.rs:273:10:273:26 | s2.expect_err(...) | provenance | MaD:7 |
 | main.rs:282:9:282:10 | s1 [A] | main.rs:284:11:284:12 | s1 [A] | provenance |  |
-| main.rs:282:14:282:26 | A(...) [A] | main.rs:282:9:282:10 | s1 [A] | provenance |  |
-| main.rs:282:16:282:25 | source(...) | main.rs:282:14:282:26 | A(...) [A] | provenance |  |
-| main.rs:284:11:284:12 | s1 [A] | main.rs:285:9:285:12 | A(...) [A] | provenance |  |
+| main.rs:282:14:282:39 | ...::A(...) [A] | main.rs:282:9:282:10 | s1 [A] | provenance |  |
+| main.rs:282:29:282:38 | source(...) | main.rs:282:14:282:39 | ...::A(...) [A] | provenance |  |
+| main.rs:284:11:284:12 | s1 [A] | main.rs:285:9:285:25 | ...::A(...) [A] | provenance |  |
 | main.rs:284:11:284:12 | s1 [A] | main.rs:288:11:288:12 | s1 [A] | provenance |  |
-| main.rs:285:9:285:12 | A(...) [A] | main.rs:285:11:285:11 | n | provenance |  |
-| main.rs:285:11:285:11 | n | main.rs:285:22:285:22 | n | provenance |  |
-| main.rs:288:11:288:12 | s1 [A] | main.rs:289:9:289:12 | A(...) [A] | provenance |  |
-| main.rs:289:9:289:12 | A(...) [A] | main.rs:289:11:289:11 | n | provenance |  |
-| main.rs:289:11:289:11 | n | main.rs:289:29:289:29 | n | provenance |  |
-| main.rs:303:9:303:10 | s1 [C] | main.rs:307:11:307:12 | s1 [C] | provenance |  |
-| main.rs:303:14:305:5 | ...::C {...} [C] | main.rs:303:9:303:10 | s1 [C] | provenance |  |
-| main.rs:304:18:304:27 | source(...) | main.rs:303:14:305:5 | ...::C {...} [C] | provenance |  |
-| main.rs:307:11:307:12 | s1 [C] | main.rs:308:9:308:38 | ...::C {...} [C] | provenance |  |
-| main.rs:307:11:307:12 | s1 [C] | main.rs:311:11:311:12 | s1 [C] | provenance |  |
-| main.rs:308:9:308:38 | ...::C {...} [C] | main.rs:308:36:308:36 | n | provenance |  |
-| main.rs:308:36:308:36 | n | main.rs:308:48:308:48 | n | provenance |  |
-| main.rs:311:11:311:12 | s1 [C] | main.rs:312:9:312:38 | ...::C {...} [C] | provenance |  |
-| main.rs:312:9:312:38 | ...::C {...} [C] | main.rs:312:36:312:36 | n | provenance |  |
-| main.rs:312:36:312:36 | n | main.rs:312:81:312:81 | n | provenance |  |
-| main.rs:323:9:323:10 | s1 [C] | main.rs:327:11:327:12 | s1 [C] | provenance |  |
-| main.rs:323:14:325:5 | C {...} [C] | main.rs:323:9:323:10 | s1 [C] | provenance |  |
-| main.rs:324:18:324:27 | source(...) | main.rs:323:14:325:5 | C {...} [C] | provenance |  |
-| main.rs:327:11:327:12 | s1 [C] | main.rs:328:9:328:24 | C {...} [C] | provenance |  |
-| main.rs:327:11:327:12 | s1 [C] | main.rs:331:11:331:12 | s1 [C] | provenance |  |
-| main.rs:328:9:328:24 | C {...} [C] | main.rs:328:22:328:22 | n | provenance |  |
-| main.rs:328:22:328:22 | n | main.rs:328:34:328:34 | n | provenance |  |
-| main.rs:331:11:331:12 | s1 [C] | main.rs:332:9:332:24 | C {...} [C] | provenance |  |
-| main.rs:332:9:332:24 | C {...} [C] | main.rs:332:22:332:22 | n | provenance |  |
-| main.rs:332:22:332:22 | n | main.rs:332:53:332:53 | n | provenance |  |
-| main.rs:344:9:344:12 | arr1 [element] | main.rs:345:14:345:17 | arr1 [element] | provenance |  |
-| main.rs:344:16:344:33 | [...] [element] | main.rs:344:9:344:12 | arr1 [element] | provenance |  |
-| main.rs:344:23:344:32 | source(...) | main.rs:344:16:344:33 | [...] [element] | provenance |  |
-| main.rs:345:9:345:10 | n1 | main.rs:346:10:346:11 | n1 | provenance |  |
-| main.rs:345:14:345:17 | arr1 [element] | main.rs:345:14:345:20 | arr1[2] | provenance |  |
-| main.rs:345:14:345:20 | arr1[2] | main.rs:345:9:345:10 | n1 | provenance |  |
-| main.rs:348:9:348:12 | arr2 [element] | main.rs:349:14:349:17 | arr2 [element] | provenance |  |
-| main.rs:348:16:348:31 | [...; 10] [element] | main.rs:348:9:348:12 | arr2 [element] | provenance |  |
-| main.rs:348:17:348:26 | source(...) | main.rs:348:16:348:31 | [...; 10] [element] | provenance |  |
-| main.rs:349:9:349:10 | n2 | main.rs:350:10:350:11 | n2 | provenance |  |
-| main.rs:349:14:349:17 | arr2 [element] | main.rs:349:14:349:20 | arr2[4] | provenance |  |
-| main.rs:349:14:349:20 | arr2[4] | main.rs:349:9:349:10 | n2 | provenance |  |
-| main.rs:358:9:358:12 | arr1 [element] | main.rs:359:15:359:18 | arr1 [element] | provenance |  |
-| main.rs:358:16:358:33 | [...] [element] | main.rs:358:9:358:12 | arr1 [element] | provenance |  |
-| main.rs:358:23:358:32 | source(...) | main.rs:358:16:358:33 | [...] [element] | provenance |  |
-| main.rs:359:9:359:10 | n1 | main.rs:360:14:360:15 | n1 | provenance |  |
-| main.rs:359:15:359:18 | arr1 [element] | main.rs:359:9:359:10 | n1 | provenance |  |
-| main.rs:370:9:370:12 | arr1 [element] | main.rs:371:11:371:14 | arr1 [element] | provenance |  |
-| main.rs:370:16:370:33 | [...] [element] | main.rs:370:9:370:12 | arr1 [element] | provenance |  |
-| main.rs:370:23:370:32 | source(...) | main.rs:370:16:370:33 | [...] [element] | provenance |  |
-| main.rs:371:11:371:14 | arr1 [element] | main.rs:372:9:372:17 | SlicePat [element] | provenance |  |
-| main.rs:372:9:372:17 | SlicePat [element] | main.rs:372:10:372:10 | a | provenance |  |
-| main.rs:372:9:372:17 | SlicePat [element] | main.rs:372:13:372:13 | b | provenance |  |
-| main.rs:372:9:372:17 | SlicePat [element] | main.rs:372:16:372:16 | c | provenance |  |
-| main.rs:372:10:372:10 | a | main.rs:373:18:373:18 | a | provenance |  |
-| main.rs:372:13:372:13 | b | main.rs:374:18:374:18 | b | provenance |  |
-| main.rs:372:16:372:16 | c | main.rs:375:18:375:18 | c | provenance |  |
-| main.rs:384:5:384:11 | [post] mut_arr [element] | main.rs:385:13:385:19 | mut_arr [element] | provenance |  |
-| main.rs:384:5:384:11 | [post] mut_arr [element] | main.rs:387:10:387:16 | mut_arr [element] | provenance |  |
-| main.rs:384:18:384:27 | source(...) | main.rs:384:5:384:11 | [post] mut_arr [element] | provenance |  |
-| main.rs:385:9:385:9 | d | main.rs:386:10:386:10 | d | provenance |  |
-| main.rs:385:13:385:19 | mut_arr [element] | main.rs:385:13:385:22 | mut_arr[1] | provenance |  |
-| main.rs:385:13:385:22 | mut_arr[1] | main.rs:385:9:385:9 | d | provenance |  |
-| main.rs:387:10:387:16 | mut_arr [element] | main.rs:387:10:387:19 | mut_arr[0] | provenance |  |
-| main.rs:410:9:410:9 | s | main.rs:411:10:411:10 | s | provenance |  |
-| main.rs:410:25:410:26 | source(...) | main.rs:410:9:410:9 | s | provenance |  |
+| main.rs:285:9:285:25 | ...::A(...) [A] | main.rs:285:24:285:24 | n | provenance |  |
+| main.rs:285:24:285:24 | n | main.rs:285:35:285:35 | n | provenance |  |
+| main.rs:288:11:288:12 | s1 [A] | main.rs:289:9:289:25 | ...::A(...) [A] | provenance |  |
+| main.rs:289:9:289:25 | ...::A(...) [A] | main.rs:289:24:289:24 | n | provenance |  |
+| main.rs:289:24:289:24 | n | main.rs:289:55:289:55 | n | provenance |  |
+| main.rs:300:9:300:10 | s1 [A] | main.rs:302:11:302:12 | s1 [A] | provenance |  |
+| main.rs:300:14:300:26 | A(...) [A] | main.rs:300:9:300:10 | s1 [A] | provenance |  |
+| main.rs:300:16:300:25 | source(...) | main.rs:300:14:300:26 | A(...) [A] | provenance |  |
+| main.rs:302:11:302:12 | s1 [A] | main.rs:303:9:303:12 | A(...) [A] | provenance |  |
+| main.rs:302:11:302:12 | s1 [A] | main.rs:306:11:306:12 | s1 [A] | provenance |  |
+| main.rs:303:9:303:12 | A(...) [A] | main.rs:303:11:303:11 | n | provenance |  |
+| main.rs:303:11:303:11 | n | main.rs:303:22:303:22 | n | provenance |  |
+| main.rs:306:11:306:12 | s1 [A] | main.rs:307:9:307:12 | A(...) [A] | provenance |  |
+| main.rs:307:9:307:12 | A(...) [A] | main.rs:307:11:307:11 | n | provenance |  |
+| main.rs:307:11:307:11 | n | main.rs:307:29:307:29 | n | provenance |  |
+| main.rs:321:9:321:10 | s1 [C] | main.rs:325:11:325:12 | s1 [C] | provenance |  |
+| main.rs:321:14:323:5 | ...::C {...} [C] | main.rs:321:9:321:10 | s1 [C] | provenance |  |
+| main.rs:322:18:322:27 | source(...) | main.rs:321:14:323:5 | ...::C {...} [C] | provenance |  |
+| main.rs:325:11:325:12 | s1 [C] | main.rs:326:9:326:38 | ...::C {...} [C] | provenance |  |
+| main.rs:325:11:325:12 | s1 [C] | main.rs:329:11:329:12 | s1 [C] | provenance |  |
+| main.rs:326:9:326:38 | ...::C {...} [C] | main.rs:326:36:326:36 | n | provenance |  |
+| main.rs:326:36:326:36 | n | main.rs:326:48:326:48 | n | provenance |  |
+| main.rs:329:11:329:12 | s1 [C] | main.rs:330:9:330:38 | ...::C {...} [C] | provenance |  |
+| main.rs:330:9:330:38 | ...::C {...} [C] | main.rs:330:36:330:36 | n | provenance |  |
+| main.rs:330:36:330:36 | n | main.rs:330:81:330:81 | n | provenance |  |
+| main.rs:341:9:341:10 | s1 [C] | main.rs:345:11:345:12 | s1 [C] | provenance |  |
+| main.rs:341:14:343:5 | C {...} [C] | main.rs:341:9:341:10 | s1 [C] | provenance |  |
+| main.rs:342:18:342:27 | source(...) | main.rs:341:14:343:5 | C {...} [C] | provenance |  |
+| main.rs:345:11:345:12 | s1 [C] | main.rs:346:9:346:24 | C {...} [C] | provenance |  |
+| main.rs:345:11:345:12 | s1 [C] | main.rs:349:11:349:12 | s1 [C] | provenance |  |
+| main.rs:346:9:346:24 | C {...} [C] | main.rs:346:22:346:22 | n | provenance |  |
+| main.rs:346:22:346:22 | n | main.rs:346:34:346:34 | n | provenance |  |
+| main.rs:349:11:349:12 | s1 [C] | main.rs:350:9:350:24 | C {...} [C] | provenance |  |
+| main.rs:350:9:350:24 | C {...} [C] | main.rs:350:22:350:22 | n | provenance |  |
+| main.rs:350:22:350:22 | n | main.rs:350:53:350:53 | n | provenance |  |
+| main.rs:362:9:362:12 | arr1 [element] | main.rs:363:14:363:17 | arr1 [element] | provenance |  |
+| main.rs:362:16:362:33 | [...] [element] | main.rs:362:9:362:12 | arr1 [element] | provenance |  |
+| main.rs:362:23:362:32 | source(...) | main.rs:362:16:362:33 | [...] [element] | provenance |  |
+| main.rs:363:9:363:10 | n1 | main.rs:364:10:364:11 | n1 | provenance |  |
+| main.rs:363:14:363:17 | arr1 [element] | main.rs:363:14:363:20 | arr1[2] | provenance |  |
+| main.rs:363:14:363:20 | arr1[2] | main.rs:363:9:363:10 | n1 | provenance |  |
+| main.rs:366:9:366:12 | arr2 [element] | main.rs:367:14:367:17 | arr2 [element] | provenance |  |
+| main.rs:366:16:366:31 | [...; 10] [element] | main.rs:366:9:366:12 | arr2 [element] | provenance |  |
+| main.rs:366:17:366:26 | source(...) | main.rs:366:16:366:31 | [...; 10] [element] | provenance |  |
+| main.rs:367:9:367:10 | n2 | main.rs:368:10:368:11 | n2 | provenance |  |
+| main.rs:367:14:367:17 | arr2 [element] | main.rs:367:14:367:20 | arr2[4] | provenance |  |
+| main.rs:367:14:367:20 | arr2[4] | main.rs:367:9:367:10 | n2 | provenance |  |
+| main.rs:376:9:376:12 | arr1 [element] | main.rs:377:15:377:18 | arr1 [element] | provenance |  |
+| main.rs:376:16:376:33 | [...] [element] | main.rs:376:9:376:12 | arr1 [element] | provenance |  |
+| main.rs:376:23:376:32 | source(...) | main.rs:376:16:376:33 | [...] [element] | provenance |  |
+| main.rs:377:9:377:10 | n1 | main.rs:378:14:378:15 | n1 | provenance |  |
+| main.rs:377:15:377:18 | arr1 [element] | main.rs:377:9:377:10 | n1 | provenance |  |
+| main.rs:388:9:388:12 | arr1 [element] | main.rs:389:11:389:14 | arr1 [element] | provenance |  |
+| main.rs:388:16:388:33 | [...] [element] | main.rs:388:9:388:12 | arr1 [element] | provenance |  |
+| main.rs:388:23:388:32 | source(...) | main.rs:388:16:388:33 | [...] [element] | provenance |  |
+| main.rs:389:11:389:14 | arr1 [element] | main.rs:390:9:390:17 | SlicePat [element] | provenance |  |
+| main.rs:390:9:390:17 | SlicePat [element] | main.rs:390:10:390:10 | a | provenance |  |
+| main.rs:390:9:390:17 | SlicePat [element] | main.rs:390:13:390:13 | b | provenance |  |
+| main.rs:390:9:390:17 | SlicePat [element] | main.rs:390:16:390:16 | c | provenance |  |
+| main.rs:390:10:390:10 | a | main.rs:391:18:391:18 | a | provenance |  |
+| main.rs:390:13:390:13 | b | main.rs:392:18:392:18 | b | provenance |  |
+| main.rs:390:16:390:16 | c | main.rs:393:18:393:18 | c | provenance |  |
+| main.rs:402:5:402:11 | [post] mut_arr [element] | main.rs:403:13:403:19 | mut_arr [element] | provenance |  |
+| main.rs:402:5:402:11 | [post] mut_arr [element] | main.rs:405:10:405:16 | mut_arr [element] | provenance |  |
+| main.rs:402:18:402:27 | source(...) | main.rs:402:5:402:11 | [post] mut_arr [element] | provenance |  |
+| main.rs:403:9:403:9 | d | main.rs:404:10:404:10 | d | provenance |  |
+| main.rs:403:13:403:19 | mut_arr [element] | main.rs:403:13:403:22 | mut_arr[1] | provenance |  |
+| main.rs:403:13:403:22 | mut_arr[1] | main.rs:403:9:403:9 | d | provenance |  |
+| main.rs:405:10:405:16 | mut_arr [element] | main.rs:405:10:405:19 | mut_arr[0] | provenance |  |
+| main.rs:428:9:428:9 | s | main.rs:429:10:429:10 | s | provenance |  |
+| main.rs:428:25:428:26 | source(...) | main.rs:428:9:428:9 | s | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:9:19:9 | s | semmle.label | s |
@@ -238,103 +255,120 @@ nodes
 | main.rs:237:9:237:10 | s1 [Some] | semmle.label | s1 [Some] |
 | main.rs:237:14:237:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:237:19:237:28 | source(...) | semmle.label | source(...) |
-| main.rs:239:9:239:10 | i1 | semmle.label | i1 |
-| main.rs:239:14:239:15 | s1 [Some] | semmle.label | s1 [Some] |
-| main.rs:239:14:239:16 | TryExpr | semmle.label | TryExpr |
-| main.rs:240:10:240:11 | i1 | semmle.label | i1 |
-| main.rs:246:9:246:10 | s1 [Ok] | semmle.label | s1 [Ok] |
-| main.rs:246:32:246:45 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
-| main.rs:246:35:246:44 | source(...) | semmle.label | source(...) |
-| main.rs:249:9:249:10 | i1 | semmle.label | i1 |
-| main.rs:249:14:249:15 | s1 [Ok] | semmle.label | s1 [Ok] |
-| main.rs:249:14:249:16 | TryExpr | semmle.label | TryExpr |
-| main.rs:251:10:251:11 | i1 | semmle.label | i1 |
-| main.rs:264:9:264:10 | s1 [A] | semmle.label | s1 [A] |
-| main.rs:264:14:264:39 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
-| main.rs:264:29:264:38 | source(...) | semmle.label | source(...) |
-| main.rs:266:11:266:12 | s1 [A] | semmle.label | s1 [A] |
-| main.rs:267:9:267:25 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
-| main.rs:267:24:267:24 | n | semmle.label | n |
-| main.rs:267:35:267:35 | n | semmle.label | n |
-| main.rs:270:11:270:12 | s1 [A] | semmle.label | s1 [A] |
-| main.rs:271:9:271:25 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
-| main.rs:271:24:271:24 | n | semmle.label | n |
-| main.rs:271:55:271:55 | n | semmle.label | n |
+| main.rs:238:10:238:11 | s1 [Some] | semmle.label | s1 [Some] |
+| main.rs:238:10:238:32 | s1.unwrap_or_else(...) | semmle.label | s1.unwrap_or_else(...) |
+| main.rs:241:10:241:41 | s2.unwrap_or_else(...) | semmle.label | s2.unwrap_or_else(...) |
+| main.rs:241:31:241:40 | source(...) | semmle.label | source(...) |
+| main.rs:245:9:245:10 | s1 [Some] | semmle.label | s1 [Some] |
+| main.rs:245:14:245:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:245:19:245:28 | source(...) | semmle.label | source(...) |
+| main.rs:247:9:247:10 | i1 | semmle.label | i1 |
+| main.rs:247:14:247:15 | s1 [Some] | semmle.label | s1 [Some] |
+| main.rs:247:14:247:16 | TryExpr | semmle.label | TryExpr |
+| main.rs:248:10:248:11 | i1 | semmle.label | i1 |
+| main.rs:254:9:254:10 | s1 [Ok] | semmle.label | s1 [Ok] |
+| main.rs:254:32:254:45 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| main.rs:254:35:254:44 | source(...) | semmle.label | source(...) |
+| main.rs:257:9:257:10 | i1 | semmle.label | i1 |
+| main.rs:257:14:257:15 | s1 [Ok] | semmle.label | s1 [Ok] |
+| main.rs:257:14:257:16 | TryExpr | semmle.label | TryExpr |
+| main.rs:259:10:259:11 | i1 | semmle.label | i1 |
+| main.rs:267:9:267:10 | s1 [Ok] | semmle.label | s1 [Ok] |
+| main.rs:267:32:267:45 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| main.rs:267:35:267:44 | source(...) | semmle.label | source(...) |
+| main.rs:268:10:268:11 | s1 [Ok] | semmle.label | s1 [Ok] |
+| main.rs:268:10:268:22 | s1.expect(...) | semmle.label | s1.expect(...) |
+| main.rs:271:9:271:10 | s2 [Err] | semmle.label | s2 [Err] |
+| main.rs:271:32:271:46 | Err(...) [Err] | semmle.label | Err(...) [Err] |
+| main.rs:271:36:271:45 | source(...) | semmle.label | source(...) |
+| main.rs:273:10:273:11 | s2 [Err] | semmle.label | s2 [Err] |
+| main.rs:273:10:273:26 | s2.expect_err(...) | semmle.label | s2.expect_err(...) |
 | main.rs:282:9:282:10 | s1 [A] | semmle.label | s1 [A] |
-| main.rs:282:14:282:26 | A(...) [A] | semmle.label | A(...) [A] |
-| main.rs:282:16:282:25 | source(...) | semmle.label | source(...) |
+| main.rs:282:14:282:39 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
+| main.rs:282:29:282:38 | source(...) | semmle.label | source(...) |
 | main.rs:284:11:284:12 | s1 [A] | semmle.label | s1 [A] |
-| main.rs:285:9:285:12 | A(...) [A] | semmle.label | A(...) [A] |
-| main.rs:285:11:285:11 | n | semmle.label | n |
-| main.rs:285:22:285:22 | n | semmle.label | n |
+| main.rs:285:9:285:25 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
+| main.rs:285:24:285:24 | n | semmle.label | n |
+| main.rs:285:35:285:35 | n | semmle.label | n |
 | main.rs:288:11:288:12 | s1 [A] | semmle.label | s1 [A] |
-| main.rs:289:9:289:12 | A(...) [A] | semmle.label | A(...) [A] |
-| main.rs:289:11:289:11 | n | semmle.label | n |
-| main.rs:289:29:289:29 | n | semmle.label | n |
-| main.rs:303:9:303:10 | s1 [C] | semmle.label | s1 [C] |
-| main.rs:303:14:305:5 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
-| main.rs:304:18:304:27 | source(...) | semmle.label | source(...) |
-| main.rs:307:11:307:12 | s1 [C] | semmle.label | s1 [C] |
-| main.rs:308:9:308:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
-| main.rs:308:36:308:36 | n | semmle.label | n |
-| main.rs:308:48:308:48 | n | semmle.label | n |
-| main.rs:311:11:311:12 | s1 [C] | semmle.label | s1 [C] |
-| main.rs:312:9:312:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
-| main.rs:312:36:312:36 | n | semmle.label | n |
-| main.rs:312:81:312:81 | n | semmle.label | n |
-| main.rs:323:9:323:10 | s1 [C] | semmle.label | s1 [C] |
-| main.rs:323:14:325:5 | C {...} [C] | semmle.label | C {...} [C] |
-| main.rs:324:18:324:27 | source(...) | semmle.label | source(...) |
-| main.rs:327:11:327:12 | s1 [C] | semmle.label | s1 [C] |
-| main.rs:328:9:328:24 | C {...} [C] | semmle.label | C {...} [C] |
-| main.rs:328:22:328:22 | n | semmle.label | n |
-| main.rs:328:34:328:34 | n | semmle.label | n |
-| main.rs:331:11:331:12 | s1 [C] | semmle.label | s1 [C] |
-| main.rs:332:9:332:24 | C {...} [C] | semmle.label | C {...} [C] |
-| main.rs:332:22:332:22 | n | semmle.label | n |
-| main.rs:332:53:332:53 | n | semmle.label | n |
-| main.rs:344:9:344:12 | arr1 [element] | semmle.label | arr1 [element] |
-| main.rs:344:16:344:33 | [...] [element] | semmle.label | [...] [element] |
-| main.rs:344:23:344:32 | source(...) | semmle.label | source(...) |
-| main.rs:345:9:345:10 | n1 | semmle.label | n1 |
-| main.rs:345:14:345:17 | arr1 [element] | semmle.label | arr1 [element] |
-| main.rs:345:14:345:20 | arr1[2] | semmle.label | arr1[2] |
-| main.rs:346:10:346:11 | n1 | semmle.label | n1 |
-| main.rs:348:9:348:12 | arr2 [element] | semmle.label | arr2 [element] |
-| main.rs:348:16:348:31 | [...; 10] [element] | semmle.label | [...; 10] [element] |
-| main.rs:348:17:348:26 | source(...) | semmle.label | source(...) |
-| main.rs:349:9:349:10 | n2 | semmle.label | n2 |
-| main.rs:349:14:349:17 | arr2 [element] | semmle.label | arr2 [element] |
-| main.rs:349:14:349:20 | arr2[4] | semmle.label | arr2[4] |
-| main.rs:350:10:350:11 | n2 | semmle.label | n2 |
-| main.rs:358:9:358:12 | arr1 [element] | semmle.label | arr1 [element] |
-| main.rs:358:16:358:33 | [...] [element] | semmle.label | [...] [element] |
-| main.rs:358:23:358:32 | source(...) | semmle.label | source(...) |
-| main.rs:359:9:359:10 | n1 | semmle.label | n1 |
-| main.rs:359:15:359:18 | arr1 [element] | semmle.label | arr1 [element] |
-| main.rs:360:14:360:15 | n1 | semmle.label | n1 |
-| main.rs:370:9:370:12 | arr1 [element] | semmle.label | arr1 [element] |
-| main.rs:370:16:370:33 | [...] [element] | semmle.label | [...] [element] |
-| main.rs:370:23:370:32 | source(...) | semmle.label | source(...) |
-| main.rs:371:11:371:14 | arr1 [element] | semmle.label | arr1 [element] |
-| main.rs:372:9:372:17 | SlicePat [element] | semmle.label | SlicePat [element] |
-| main.rs:372:10:372:10 | a | semmle.label | a |
-| main.rs:372:13:372:13 | b | semmle.label | b |
-| main.rs:372:16:372:16 | c | semmle.label | c |
-| main.rs:373:18:373:18 | a | semmle.label | a |
-| main.rs:374:18:374:18 | b | semmle.label | b |
-| main.rs:375:18:375:18 | c | semmle.label | c |
-| main.rs:384:5:384:11 | [post] mut_arr [element] | semmle.label | [post] mut_arr [element] |
-| main.rs:384:18:384:27 | source(...) | semmle.label | source(...) |
-| main.rs:385:9:385:9 | d | semmle.label | d |
-| main.rs:385:13:385:19 | mut_arr [element] | semmle.label | mut_arr [element] |
-| main.rs:385:13:385:22 | mut_arr[1] | semmle.label | mut_arr[1] |
-| main.rs:386:10:386:10 | d | semmle.label | d |
-| main.rs:387:10:387:16 | mut_arr [element] | semmle.label | mut_arr [element] |
-| main.rs:387:10:387:19 | mut_arr[0] | semmle.label | mut_arr[0] |
-| main.rs:410:9:410:9 | s | semmle.label | s |
-| main.rs:410:25:410:26 | source(...) | semmle.label | source(...) |
-| main.rs:411:10:411:10 | s | semmle.label | s |
+| main.rs:289:9:289:25 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
+| main.rs:289:24:289:24 | n | semmle.label | n |
+| main.rs:289:55:289:55 | n | semmle.label | n |
+| main.rs:300:9:300:10 | s1 [A] | semmle.label | s1 [A] |
+| main.rs:300:14:300:26 | A(...) [A] | semmle.label | A(...) [A] |
+| main.rs:300:16:300:25 | source(...) | semmle.label | source(...) |
+| main.rs:302:11:302:12 | s1 [A] | semmle.label | s1 [A] |
+| main.rs:303:9:303:12 | A(...) [A] | semmle.label | A(...) [A] |
+| main.rs:303:11:303:11 | n | semmle.label | n |
+| main.rs:303:22:303:22 | n | semmle.label | n |
+| main.rs:306:11:306:12 | s1 [A] | semmle.label | s1 [A] |
+| main.rs:307:9:307:12 | A(...) [A] | semmle.label | A(...) [A] |
+| main.rs:307:11:307:11 | n | semmle.label | n |
+| main.rs:307:29:307:29 | n | semmle.label | n |
+| main.rs:321:9:321:10 | s1 [C] | semmle.label | s1 [C] |
+| main.rs:321:14:323:5 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:322:18:322:27 | source(...) | semmle.label | source(...) |
+| main.rs:325:11:325:12 | s1 [C] | semmle.label | s1 [C] |
+| main.rs:326:9:326:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:326:36:326:36 | n | semmle.label | n |
+| main.rs:326:48:326:48 | n | semmle.label | n |
+| main.rs:329:11:329:12 | s1 [C] | semmle.label | s1 [C] |
+| main.rs:330:9:330:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:330:36:330:36 | n | semmle.label | n |
+| main.rs:330:81:330:81 | n | semmle.label | n |
+| main.rs:341:9:341:10 | s1 [C] | semmle.label | s1 [C] |
+| main.rs:341:14:343:5 | C {...} [C] | semmle.label | C {...} [C] |
+| main.rs:342:18:342:27 | source(...) | semmle.label | source(...) |
+| main.rs:345:11:345:12 | s1 [C] | semmle.label | s1 [C] |
+| main.rs:346:9:346:24 | C {...} [C] | semmle.label | C {...} [C] |
+| main.rs:346:22:346:22 | n | semmle.label | n |
+| main.rs:346:34:346:34 | n | semmle.label | n |
+| main.rs:349:11:349:12 | s1 [C] | semmle.label | s1 [C] |
+| main.rs:350:9:350:24 | C {...} [C] | semmle.label | C {...} [C] |
+| main.rs:350:22:350:22 | n | semmle.label | n |
+| main.rs:350:53:350:53 | n | semmle.label | n |
+| main.rs:362:9:362:12 | arr1 [element] | semmle.label | arr1 [element] |
+| main.rs:362:16:362:33 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:362:23:362:32 | source(...) | semmle.label | source(...) |
+| main.rs:363:9:363:10 | n1 | semmle.label | n1 |
+| main.rs:363:14:363:17 | arr1 [element] | semmle.label | arr1 [element] |
+| main.rs:363:14:363:20 | arr1[2] | semmle.label | arr1[2] |
+| main.rs:364:10:364:11 | n1 | semmle.label | n1 |
+| main.rs:366:9:366:12 | arr2 [element] | semmle.label | arr2 [element] |
+| main.rs:366:16:366:31 | [...; 10] [element] | semmle.label | [...; 10] [element] |
+| main.rs:366:17:366:26 | source(...) | semmle.label | source(...) |
+| main.rs:367:9:367:10 | n2 | semmle.label | n2 |
+| main.rs:367:14:367:17 | arr2 [element] | semmle.label | arr2 [element] |
+| main.rs:367:14:367:20 | arr2[4] | semmle.label | arr2[4] |
+| main.rs:368:10:368:11 | n2 | semmle.label | n2 |
+| main.rs:376:9:376:12 | arr1 [element] | semmle.label | arr1 [element] |
+| main.rs:376:16:376:33 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:376:23:376:32 | source(...) | semmle.label | source(...) |
+| main.rs:377:9:377:10 | n1 | semmle.label | n1 |
+| main.rs:377:15:377:18 | arr1 [element] | semmle.label | arr1 [element] |
+| main.rs:378:14:378:15 | n1 | semmle.label | n1 |
+| main.rs:388:9:388:12 | arr1 [element] | semmle.label | arr1 [element] |
+| main.rs:388:16:388:33 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:388:23:388:32 | source(...) | semmle.label | source(...) |
+| main.rs:389:11:389:14 | arr1 [element] | semmle.label | arr1 [element] |
+| main.rs:390:9:390:17 | SlicePat [element] | semmle.label | SlicePat [element] |
+| main.rs:390:10:390:10 | a | semmle.label | a |
+| main.rs:390:13:390:13 | b | semmle.label | b |
+| main.rs:390:16:390:16 | c | semmle.label | c |
+| main.rs:391:18:391:18 | a | semmle.label | a |
+| main.rs:392:18:392:18 | b | semmle.label | b |
+| main.rs:393:18:393:18 | c | semmle.label | c |
+| main.rs:402:5:402:11 | [post] mut_arr [element] | semmle.label | [post] mut_arr [element] |
+| main.rs:402:18:402:27 | source(...) | semmle.label | source(...) |
+| main.rs:403:9:403:9 | d | semmle.label | d |
+| main.rs:403:13:403:19 | mut_arr [element] | semmle.label | mut_arr [element] |
+| main.rs:403:13:403:22 | mut_arr[1] | semmle.label | mut_arr[1] |
+| main.rs:404:10:404:10 | d | semmle.label | d |
+| main.rs:405:10:405:16 | mut_arr [element] | semmle.label | mut_arr [element] |
+| main.rs:405:10:405:19 | mut_arr[0] | semmle.label | mut_arr[0] |
+| main.rs:428:9:428:9 | s | semmle.label | s |
+| main.rs:428:25:428:26 | source(...) | semmle.label | source(...) |
+| main.rs:429:10:429:10 | s | semmle.label | s |
 subpaths
 testFailures
 #select
@@ -355,22 +389,26 @@ testFailures
 | main.rs:225:10:225:20 | s1.unwrap(...) | main.rs:224:19:224:28 | source(...) | main.rs:225:10:225:20 | s1.unwrap(...) | $@ | main.rs:224:19:224:28 | source(...) | source(...) |
 | main.rs:230:10:230:24 | s1.unwrap_or(...) | main.rs:229:19:229:28 | source(...) | main.rs:230:10:230:24 | s1.unwrap_or(...) | $@ | main.rs:229:19:229:28 | source(...) | source(...) |
 | main.rs:233:10:233:33 | s2.unwrap_or(...) | main.rs:233:23:233:32 | source(...) | main.rs:233:10:233:33 | s2.unwrap_or(...) | $@ | main.rs:233:23:233:32 | source(...) | source(...) |
-| main.rs:240:10:240:11 | i1 | main.rs:237:19:237:28 | source(...) | main.rs:240:10:240:11 | i1 | $@ | main.rs:237:19:237:28 | source(...) | source(...) |
-| main.rs:251:10:251:11 | i1 | main.rs:246:35:246:44 | source(...) | main.rs:251:10:251:11 | i1 | $@ | main.rs:246:35:246:44 | source(...) | source(...) |
-| main.rs:267:35:267:35 | n | main.rs:264:29:264:38 | source(...) | main.rs:267:35:267:35 | n | $@ | main.rs:264:29:264:38 | source(...) | source(...) |
-| main.rs:271:55:271:55 | n | main.rs:264:29:264:38 | source(...) | main.rs:271:55:271:55 | n | $@ | main.rs:264:29:264:38 | source(...) | source(...) |
-| main.rs:285:22:285:22 | n | main.rs:282:16:282:25 | source(...) | main.rs:285:22:285:22 | n | $@ | main.rs:282:16:282:25 | source(...) | source(...) |
-| main.rs:289:29:289:29 | n | main.rs:282:16:282:25 | source(...) | main.rs:289:29:289:29 | n | $@ | main.rs:282:16:282:25 | source(...) | source(...) |
-| main.rs:308:48:308:48 | n | main.rs:304:18:304:27 | source(...) | main.rs:308:48:308:48 | n | $@ | main.rs:304:18:304:27 | source(...) | source(...) |
-| main.rs:312:81:312:81 | n | main.rs:304:18:304:27 | source(...) | main.rs:312:81:312:81 | n | $@ | main.rs:304:18:304:27 | source(...) | source(...) |
-| main.rs:328:34:328:34 | n | main.rs:324:18:324:27 | source(...) | main.rs:328:34:328:34 | n | $@ | main.rs:324:18:324:27 | source(...) | source(...) |
-| main.rs:332:53:332:53 | n | main.rs:324:18:324:27 | source(...) | main.rs:332:53:332:53 | n | $@ | main.rs:324:18:324:27 | source(...) | source(...) |
-| main.rs:346:10:346:11 | n1 | main.rs:344:23:344:32 | source(...) | main.rs:346:10:346:11 | n1 | $@ | main.rs:344:23:344:32 | source(...) | source(...) |
-| main.rs:350:10:350:11 | n2 | main.rs:348:17:348:26 | source(...) | main.rs:350:10:350:11 | n2 | $@ | main.rs:348:17:348:26 | source(...) | source(...) |
-| main.rs:360:14:360:15 | n1 | main.rs:358:23:358:32 | source(...) | main.rs:360:14:360:15 | n1 | $@ | main.rs:358:23:358:32 | source(...) | source(...) |
-| main.rs:373:18:373:18 | a | main.rs:370:23:370:32 | source(...) | main.rs:373:18:373:18 | a | $@ | main.rs:370:23:370:32 | source(...) | source(...) |
-| main.rs:374:18:374:18 | b | main.rs:370:23:370:32 | source(...) | main.rs:374:18:374:18 | b | $@ | main.rs:370:23:370:32 | source(...) | source(...) |
-| main.rs:375:18:375:18 | c | main.rs:370:23:370:32 | source(...) | main.rs:375:18:375:18 | c | $@ | main.rs:370:23:370:32 | source(...) | source(...) |
-| main.rs:386:10:386:10 | d | main.rs:384:18:384:27 | source(...) | main.rs:386:10:386:10 | d | $@ | main.rs:384:18:384:27 | source(...) | source(...) |
-| main.rs:387:10:387:19 | mut_arr[0] | main.rs:384:18:384:27 | source(...) | main.rs:387:10:387:19 | mut_arr[0] | $@ | main.rs:384:18:384:27 | source(...) | source(...) |
-| main.rs:411:10:411:10 | s | main.rs:410:25:410:26 | source(...) | main.rs:411:10:411:10 | s | $@ | main.rs:410:25:410:26 | source(...) | source(...) |
+| main.rs:238:10:238:32 | s1.unwrap_or_else(...) | main.rs:237:19:237:28 | source(...) | main.rs:238:10:238:32 | s1.unwrap_or_else(...) | $@ | main.rs:237:19:237:28 | source(...) | source(...) |
+| main.rs:241:10:241:41 | s2.unwrap_or_else(...) | main.rs:241:31:241:40 | source(...) | main.rs:241:10:241:41 | s2.unwrap_or_else(...) | $@ | main.rs:241:31:241:40 | source(...) | source(...) |
+| main.rs:248:10:248:11 | i1 | main.rs:245:19:245:28 | source(...) | main.rs:248:10:248:11 | i1 | $@ | main.rs:245:19:245:28 | source(...) | source(...) |
+| main.rs:259:10:259:11 | i1 | main.rs:254:35:254:44 | source(...) | main.rs:259:10:259:11 | i1 | $@ | main.rs:254:35:254:44 | source(...) | source(...) |
+| main.rs:268:10:268:22 | s1.expect(...) | main.rs:267:35:267:44 | source(...) | main.rs:268:10:268:22 | s1.expect(...) | $@ | main.rs:267:35:267:44 | source(...) | source(...) |
+| main.rs:273:10:273:26 | s2.expect_err(...) | main.rs:271:36:271:45 | source(...) | main.rs:273:10:273:26 | s2.expect_err(...) | $@ | main.rs:271:36:271:45 | source(...) | source(...) |
+| main.rs:285:35:285:35 | n | main.rs:282:29:282:38 | source(...) | main.rs:285:35:285:35 | n | $@ | main.rs:282:29:282:38 | source(...) | source(...) |
+| main.rs:289:55:289:55 | n | main.rs:282:29:282:38 | source(...) | main.rs:289:55:289:55 | n | $@ | main.rs:282:29:282:38 | source(...) | source(...) |
+| main.rs:303:22:303:22 | n | main.rs:300:16:300:25 | source(...) | main.rs:303:22:303:22 | n | $@ | main.rs:300:16:300:25 | source(...) | source(...) |
+| main.rs:307:29:307:29 | n | main.rs:300:16:300:25 | source(...) | main.rs:307:29:307:29 | n | $@ | main.rs:300:16:300:25 | source(...) | source(...) |
+| main.rs:326:48:326:48 | n | main.rs:322:18:322:27 | source(...) | main.rs:326:48:326:48 | n | $@ | main.rs:322:18:322:27 | source(...) | source(...) |
+| main.rs:330:81:330:81 | n | main.rs:322:18:322:27 | source(...) | main.rs:330:81:330:81 | n | $@ | main.rs:322:18:322:27 | source(...) | source(...) |
+| main.rs:346:34:346:34 | n | main.rs:342:18:342:27 | source(...) | main.rs:346:34:346:34 | n | $@ | main.rs:342:18:342:27 | source(...) | source(...) |
+| main.rs:350:53:350:53 | n | main.rs:342:18:342:27 | source(...) | main.rs:350:53:350:53 | n | $@ | main.rs:342:18:342:27 | source(...) | source(...) |
+| main.rs:364:10:364:11 | n1 | main.rs:362:23:362:32 | source(...) | main.rs:364:10:364:11 | n1 | $@ | main.rs:362:23:362:32 | source(...) | source(...) |
+| main.rs:368:10:368:11 | n2 | main.rs:366:17:366:26 | source(...) | main.rs:368:10:368:11 | n2 | $@ | main.rs:366:17:366:26 | source(...) | source(...) |
+| main.rs:378:14:378:15 | n1 | main.rs:376:23:376:32 | source(...) | main.rs:378:14:378:15 | n1 | $@ | main.rs:376:23:376:32 | source(...) | source(...) |
+| main.rs:391:18:391:18 | a | main.rs:388:23:388:32 | source(...) | main.rs:391:18:391:18 | a | $@ | main.rs:388:23:388:32 | source(...) | source(...) |
+| main.rs:392:18:392:18 | b | main.rs:388:23:388:32 | source(...) | main.rs:392:18:392:18 | b | $@ | main.rs:388:23:388:32 | source(...) | source(...) |
+| main.rs:393:18:393:18 | c | main.rs:388:23:388:32 | source(...) | main.rs:393:18:393:18 | c | $@ | main.rs:388:23:388:32 | source(...) | source(...) |
+| main.rs:404:10:404:10 | d | main.rs:402:18:402:27 | source(...) | main.rs:404:10:404:10 | d | $@ | main.rs:402:18:402:27 | source(...) | source(...) |
+| main.rs:405:10:405:19 | mut_arr[0] | main.rs:402:18:402:27 | source(...) | main.rs:405:10:405:19 | mut_arr[0] | $@ | main.rs:402:18:402:27 | source(...) | source(...) |
+| main.rs:429:10:429:10 | s | main.rs:428:25:428:26 | source(...) | main.rs:429:10:429:10 | s | $@ | main.rs:428:25:428:26 | source(...) | source(...) |

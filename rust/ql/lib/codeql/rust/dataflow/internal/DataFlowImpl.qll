@@ -49,16 +49,12 @@ final class DataFlowCallable extends TDataFlowCallable {
 }
 
 final class DataFlowCall extends TDataFlowCall {
-  private CallExprBaseCfgNode call;
-
-  DataFlowCall() { this = TCall(call) }
-
   /** Gets the underlying call in the CFG, if any. */
-  CallExprCfgNode asCallExprCfgNode() { result = call }
+  CallExprCfgNode asCallExprCfgNode() { result = this.asCallBaseExprCfgNode() }
 
-  MethodCallExprCfgNode asMethodCallExprCfgNode() { result = call }
+  MethodCallExprCfgNode asMethodCallExprCfgNode() { result = this.asCallBaseExprCfgNode() }
 
-  CallExprBaseCfgNode asCallBaseExprCfgNode() { result = call }
+  CallExprBaseCfgNode asCallBaseExprCfgNode() { this = TCall(result) }
 
   predicate isSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -67,7 +63,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(call.getExpr().getEnclosingCfgScope())
+    result = TCfgScope(this.asCallBaseExprCfgNode().getExpr().getEnclosingCfgScope())
     or
     exists(FlowSummaryImpl::Public::SummarizedCallable c |
       this.isSummaryCall(c, _) and
@@ -1298,10 +1294,14 @@ module RustDataFlow implements InputSig<Location> {
    * invoked expression.
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-    receiver.asExpr() = call.asCallExprCfgNode().getFunction() and
-    // All calls to complex expressions and local variable accesses are lambda call.
-    exists(Expr f | f = receiver.asExpr().getExpr() |
-      f instanceof PathExpr implies f = any(Variable v).getAnAccess()
+    (
+      receiver.asExpr() = call.asCallExprCfgNode().getFunction() and
+      // All calls to complex expressions and local variable accesses are lambda call.
+      exists(Expr f | f = receiver.asExpr().getExpr() |
+        f instanceof PathExpr implies f = any(Variable v).getAnAccess()
+      )
+      or
+      call.isSummaryCall(_, receiver.(Node::FlowSummaryNode).getSummaryNode())
     ) and
     exists(kind)
   }
