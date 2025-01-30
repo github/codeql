@@ -1520,8 +1520,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       predicate callContextNone = CachedCallContextSensitivity::ccNone/0;
 
-      predicate callContextSomeCall = CachedCallContextSensitivity::ccSomeCall/0;
-
       private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2) {
         exists(NodeEx node1, NodeEx node2 |
           jumpStepEx1(node1, node2)
