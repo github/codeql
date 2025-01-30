@@ -30,7 +30,7 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
  * `this` expression.
  */
 private Class getRootType(FieldAccess fa) {
-  // If the object is accessed inside a ember function then the root will
+  // If the object is accessed inside a member function then the root will
   // be a(n implicit) `this`. And the root type will be the type of `this`.
   exists(VariableAccess root |
     root = fa.getQualifier*() and
