@@ -134,7 +134,7 @@ module TaintFlowMake<
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
 
     import Flow
   }
@@ -236,7 +236,7 @@ module TaintFlowMake<
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
 
     import Flow
   }
@@ -274,7 +274,7 @@ module TaintFlowMake<
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
 
     import Flow
   }

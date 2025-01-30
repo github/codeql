@@ -27,6 +27,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     class Nd {
       NodeEx getNodeEx();
 
+      FlowState getState();
+
       string toString();
 
       Location getLocation();
@@ -50,18 +52,12 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
     class CastingNd extends Nd;
 
-    predicate inBarrier(Nd node, FlowState state);
-
-    predicate outBarrier(Nd node, FlowState state);
-
-    predicate stateBarrier(Nd node, FlowState state);
-
     /** If `node` corresponds to a sink, gets the normal node for that sink. */
     Nd toNormalSinkNode(Nd node);
 
-    predicate sourceNode(Nd node, FlowState state);
+    predicate sourceNode(Nd node);
 
-    predicate sinkNode(Nd node, FlowState state);
+    predicate sinkNode(Nd node);
 
     predicate hasSourceCallCtx();
 
@@ -71,16 +67,11 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
     predicate additionalJumpStep(Nd node1, Nd node2, string model);
 
-    predicate additionalJumpStateStep(Nd node1, FlowState s1, Nd node2, FlowState s2, string model);
-
-    predicate localStepNodeCand1(
+    predicate localStep1(
       Nd node1, Nd node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc, string label
     );
 
-    predicate localStateStepNodeCand1(
-      Nd node1, FlowState state1, Nd node2, FlowState state2, DataFlowType t, LocalCallContext lcc,
-      string label
-    );
+    predicate isStateStep(Nd node1, Nd node2);
 
     bindingset[c]
     predicate expectsContentEx(Nd n, Content c);
@@ -97,8 +88,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
     predicate revFlow(Nd node);
 
-    bindingset[node, state]
-    predicate revFlow(Nd node, FlowState state, Ap ap);
+    bindingset[node]
+    predicate revFlow(Nd node, Ap ap);
 
     predicate callMayFlowThroughRev(DataFlowCall call);
 
@@ -131,8 +122,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     predicate stats(
       boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges
     );
-
-    predicate revFlowState(FlowState state);
   }
 
   module ImplStage1<Impl::FullStateConfigSig Config> {
@@ -870,13 +859,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       predicate revFlow(NodeEx node) { revFlow(node, _) }
 
-      bindingset[node, state]
-      predicate revFlow(NodeEx node, FlowState state, Ap ap) {
-        revFlow(node, _) and
-        exists(state) and
-        exists(ap)
-      }
-
       private predicate throughFlowNodeCand(NodeEx node) {
         revFlow(node, true) and
         fwdFlow(node, true) and
@@ -1231,25 +1213,12 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private predicate inBarrierAlias = inBarrier/2;
-
-    private predicate outBarrierAlias = outBarrier/2;
-
-    private predicate stateBarrierAlias = stateBarrier/2;
-
-    private predicate sourceNodeAlias = sourceNode/2;
-
     private predicate jumpStepExAlias = jumpStepEx/2;
 
     private predicate additionalJumpStepAlias = additionalJumpStep/3;
 
-    private predicate additionalJumpStateStepAlias = additionalJumpStateStep/5;
 
-    private predicate localStepNodeCand1Alias = localStepNodeCand1/6;
-
-    private predicate localStateStepNodeCand1Alias = localStateStepNodeCand1/7;
-
-    module Stage1NoState implements Stage1Output<FlowState> {
+    module Stage1NoState implements Stage1Output<Unit> {
       class Nd = NodeEx;
 
       class ArgNd = ArgNodeEx;
@@ -1261,12 +1230,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       class OutNd = OutNodeEx;
 
       class CastingNd = CastingNodeEx;
-
-      predicate inBarrier = inBarrierAlias/2;
-
-      predicate outBarrier = outBarrierAlias/2;
-
-      predicate stateBarrier = stateBarrierAlias/2;
 
       // inline to reduce fan-out via `getAReadContent`
       bindingset[c]
@@ -1285,23 +1248,24 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       import Stage1
       import Stage1Common
 
+      predicate revFlow(NodeEx node, Ap ap) { Stage1::revFlow(node) and exists(ap) }
+
       predicate toNormalSinkNode = toNormalSinkNodeEx/1;
 
-      predicate sourceNode = sourceNodeAlias/2;
+      predicate sourceNode(NodeEx node) { sourceNode(node, _) }
+
+      predicate sinkNode(NodeEx node) { sinkNode(node, _) }
 
       predicate jumpStepEx = jumpStepExAlias/2;
 
       predicate additionalJumpStep = additionalJumpStepAlias/3;
 
-      predicate additionalJumpStateStep = additionalJumpStateStepAlias/5;
+      predicate localStep1 = localStepNodeCand1/6;
 
-      predicate localStepNodeCand1 = localStepNodeCand1Alias/6;
-
-      predicate localStateStepNodeCand1 = localStateStepNodeCand1Alias/7;
+      predicate isStateStep(NodeEx node1, NodeEx node2) { none() }
     }
 
-    // TODO: implements Stage1Output<FlowState>
-    module Stage1WithState {
+    module Stage1WithState implements Stage1Output<FlowState> {
       private predicate flowState(NodeEx node, FlowState state) {
         Stage1::revFlow(node) and
         Stage1::revFlowState(state) and

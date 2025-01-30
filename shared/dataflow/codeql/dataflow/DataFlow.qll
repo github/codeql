@@ -734,7 +734,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
     import Stage1::PartialFlow
 
-    private module Flow = Impl<C, Stage1::Stage1NoState>;
+    private module Flow = Impl<C, Stage1::Stage1WithState>;
 
     import Flow
   }

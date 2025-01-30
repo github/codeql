@@ -855,6 +855,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   final class NodeEx extends TNodeEx {
     NodeEx getNodeEx() { result = this }
 
+    Unit getState() { any() }
+
     string toString() {
       result = this.asNode().toString()
       or
