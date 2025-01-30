@@ -17,6 +17,7 @@ module Impl {
   private import codeql.rust.elements.internal.CallExprImpl::Impl
   private import codeql.rust.elements.internal.PathExprImpl::Impl
   private import codeql.rust.elements.internal.PathResolution
+  private import codeql.rust.elements.internal.TypeInference
 
   pragma[nomagic]
   Resolvable getCallResolvable(CallExprBase call) {
@@ -35,9 +36,11 @@ module Impl {
      * be statically resolved.
      */
     Callable getStaticTarget() {
-      getCallResolvable(this).resolvesAsItem(result)
-      or
+      // getCallResolvable(this).resolvesAsItem(result)
+      // or
       result = resolvePath(this.(CallExpr).getFunction().(PathExpr).getPath())
+      or
+      result = resolveMethodCallExpr(this)
     }
   }
 }
