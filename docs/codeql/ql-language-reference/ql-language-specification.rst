@@ -1464,7 +1464,7 @@ If the aggregation id is ``max``, ``min`` or ``rank`` and there was no ordering 
 
 The values of the aggregation expression are given by applying the aggregation function to each set of tuples obtained by picking exactly one aggregation tuple for each range tuple.
 
--  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the value for the aggregation variable in each tuple in the set, weighted by the number of tuples in the set, after converting the value to a its appropriate base type of ``float`` or ``QlBuiltins::BigInt``, then converting the final result to ``float``.
+-  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the value for the aggregation variable in each tuple in the set, weighted by the number of tuples in the set, after converting the value to its appropriate base type of ``float`` or ``QlBuiltins::BigInt``, then converting the final result to ``float``.
 
 -  If the aggregation id is ``count``, then the resulting value is the number of tuples in the set. If there are no tuples in the set, then the value is the integer ``0``.
 
