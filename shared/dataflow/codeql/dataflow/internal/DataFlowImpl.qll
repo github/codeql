@@ -246,7 +246,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       predicate revFlow(Nd node);
 
-      bindingset[node]
       predicate revFlow(Nd node, Ap ap);
 
       predicate callMayFlowThroughRev(DataFlowCall call);
@@ -361,8 +360,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[cc]
         LocalCc getLocalCc(Cc cc);
 
-        bindingset[node1]
-        bindingset[node2]
         predicate localStep(
           Nd node1, Nd node2, boolean preservesValue, Typ t, LocalCc lcc, string label
         );
@@ -1504,8 +1501,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         /** Holds if `node1` can step to `node2` in one or more local steps. */
-        bindingset[node1]
-        bindingset[node2]
         signature predicate localStepSig(
           Nd node1, Nd node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
           string label
@@ -2582,8 +2577,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CachedCallContextSensitivity
       import NoLocalCallContext
 
-      bindingset[node1]
-      bindingset[node2]
       predicate localStep(
         Nd node1, Nd node2, boolean preservesValue, Typ t, LocalCc lcc, string label
       ) {
@@ -2668,25 +2661,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import NoLocalCallContext
 
-      bindingset[node1]
-      bindingset[node2]
-      private predicate localStepInput(
-        Nd node1, Nd node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
-        string label
-      ) {
-        localStep1(node1, node2, preservesValue, t, lcc, label)
-      }
-
       additional predicate localFlowBigStep(
         Nd node1, Nd node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
         string label
       ) {
-        PrevStage::LocalFlowBigStep<localStepInput/6>::localFlowBigStep(node1, node2,
-          preservesValue, t, lcc, label)
+        PrevStage::LocalFlowBigStep<localStep1/6>::localFlowBigStep(node1, node2, preservesValue, t,
+          lcc, label)
       }
 
-      bindingset[node1]
-      bindingset[node2]
       predicate localStep(
         Nd node1, Nd node2, boolean preservesValue, Typ t, LocalCc lcc, string label
       ) {

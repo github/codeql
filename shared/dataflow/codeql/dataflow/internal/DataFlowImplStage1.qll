@@ -88,7 +88,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
     predicate revFlow(Nd node);
 
-    bindingset[node]
     predicate revFlow(Nd node, Ap ap);
 
     predicate callMayFlowThroughRev(DataFlowCall call);
