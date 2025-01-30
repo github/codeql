@@ -57,6 +57,12 @@ edges
 | main.rs:183:9:186:9 | Point3D {...} [Point3D.plane, Point.y] | main.rs:184:20:184:33 | Point {...} [Point.y] | provenance |  |
 | main.rs:184:20:184:33 | Point {...} [Point.y] | main.rs:184:31:184:31 | y | provenance |  |
 | main.rs:184:31:184:31 | y | main.rs:188:18:188:18 | y | provenance |  |
+| main.rs:197:9:197:9 | s [MyTupleStruct(0)] | main.rs:201:11:201:11 | s [MyTupleStruct(0)] | provenance |  |
+| main.rs:197:13:197:40 | MyTupleStruct(...) [MyTupleStruct(0)] | main.rs:197:9:197:9 | s [MyTupleStruct(0)] | provenance |  |
+| main.rs:197:27:197:36 | source(...) | main.rs:197:13:197:40 | MyTupleStruct(...) [MyTupleStruct(0)] | provenance |  |
+| main.rs:201:11:201:11 | s [MyTupleStruct(0)] | main.rs:202:9:202:27 | MyTupleStruct(...) [MyTupleStruct(0)] | provenance |  |
+| main.rs:202:9:202:27 | MyTupleStruct(...) [MyTupleStruct(0)] | main.rs:202:23:202:23 | x | provenance |  |
+| main.rs:202:23:202:23 | x | main.rs:203:18:203:18 | x | provenance |  |
 | main.rs:213:9:213:10 | s1 [Some] | main.rs:215:11:215:12 | s1 [Some] | provenance |  |
 | main.rs:213:14:213:37 | ...::Some(...) [Some] | main.rs:213:9:213:10 | s1 [Some] | provenance |  |
 | main.rs:213:27:213:36 | source(...) | main.rs:213:14:213:37 | ...::Some(...) [Some] | provenance |  |
@@ -243,6 +249,13 @@ nodes
 | main.rs:184:20:184:33 | Point {...} [Point.y] | semmle.label | Point {...} [Point.y] |
 | main.rs:184:31:184:31 | y | semmle.label | y |
 | main.rs:188:18:188:18 | y | semmle.label | y |
+| main.rs:197:9:197:9 | s [MyTupleStruct(0)] | semmle.label | s [MyTupleStruct(0)] |
+| main.rs:197:13:197:40 | MyTupleStruct(...) [MyTupleStruct(0)] | semmle.label | MyTupleStruct(...) [MyTupleStruct(0)] |
+| main.rs:197:27:197:36 | source(...) | semmle.label | source(...) |
+| main.rs:201:11:201:11 | s [MyTupleStruct(0)] | semmle.label | s [MyTupleStruct(0)] |
+| main.rs:202:9:202:27 | MyTupleStruct(...) [MyTupleStruct(0)] | semmle.label | MyTupleStruct(...) [MyTupleStruct(0)] |
+| main.rs:202:23:202:23 | x | semmle.label | x |
+| main.rs:203:18:203:18 | x | semmle.label | x |
 | main.rs:213:9:213:10 | s1 [Some] | semmle.label | s1 [Some] |
 | main.rs:213:14:213:37 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
 | main.rs:213:27:213:36 | source(...) | semmle.label | source(...) |
@@ -402,6 +415,7 @@ testFailures
 | main.rs:121:10:121:15 | ... .1 | main.rs:118:17:118:26 | source(...) | main.rs:121:10:121:15 | ... .1 | $@ | main.rs:118:17:118:26 | source(...) | source(...) |
 | main.rs:152:10:152:10 | a | main.rs:148:12:148:21 | source(...) | main.rs:152:10:152:10 | a | $@ | main.rs:148:12:148:21 | source(...) | source(...) |
 | main.rs:188:18:188:18 | y | main.rs:178:16:178:25 | source(...) | main.rs:188:18:188:18 | y | $@ | main.rs:178:16:178:25 | source(...) | source(...) |
+| main.rs:203:18:203:18 | x | main.rs:197:27:197:36 | source(...) | main.rs:203:18:203:18 | x | $@ | main.rs:197:27:197:36 | source(...) | source(...) |
 | main.rs:216:33:216:33 | n | main.rs:213:27:213:36 | source(...) | main.rs:216:33:216:33 | n | $@ | main.rs:213:27:213:36 | source(...) | source(...) |
 | main.rs:229:25:229:25 | n | main.rs:226:19:226:28 | source(...) | main.rs:229:25:229:25 | n | $@ | main.rs:226:19:226:28 | source(...) | source(...) |
 | main.rs:240:10:240:20 | s1.unwrap(...) | main.rs:239:19:239:28 | source(...) | main.rs:240:10:240:20 | s1.unwrap(...) | $@ | main.rs:239:19:239:28 | source(...) | source(...) |

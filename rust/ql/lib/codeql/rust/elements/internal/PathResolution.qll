@@ -187,7 +187,7 @@ abstract private class ImplOrTraitItemNode extends ItemNode {
 private class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   override string getName() { result = "(impl)" }
 
-  override Visibility getVisibility() { none() }
+  override Visibility getVisibility() { result = Impl.super.getVisibility() }
 }
 
 private class MacroCallItemNode extends ItemNode instanceof MacroCall {

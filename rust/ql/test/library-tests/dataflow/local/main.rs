@@ -200,7 +200,7 @@ fn tuple_struct() {
 
     match s {
         MyTupleStruct(x, y) => {
-            sink(x); // $ MISSING: hasValueFlow=94
+            sink(x); // $ hasValueFlow=94
             sink(y);
         }
     }

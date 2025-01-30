@@ -569,6 +569,8 @@ storeStep
 | main.rs:177:16:177:16 | 2 | Point.x | main.rs:176:16:179:9 | Point {...} |
 | main.rs:178:16:178:25 | source(...) | Point.y | main.rs:176:16:179:9 | Point {...} |
 | main.rs:180:12:180:12 | 4 | Point3D.z | main.rs:175:13:181:5 | Point3D {...} |
+| main.rs:197:27:197:36 | source(...) | MyTupleStruct(0) | main.rs:197:13:197:40 | MyTupleStruct(...) |
+| main.rs:197:39:197:39 | 2 | MyTupleStruct(1) | main.rs:197:13:197:40 | MyTupleStruct(...) |
 | main.rs:213:27:213:36 | source(...) | Some | main.rs:213:14:213:37 | ...::Some(...) |
 | main.rs:214:27:214:27 | 2 | Some | main.rs:214:14:214:28 | ...::Some(...) |
 | main.rs:226:19:226:28 | source(...) | Some | main.rs:226:14:226:29 | Some(...) |
@@ -660,6 +662,8 @@ readStep
 | main.rs:184:20:184:33 | Point {...} | Point.y | main.rs:184:31:184:31 | y |
 | main.rs:198:10:198:10 | s | tuple.0 | main.rs:198:10:198:12 | s.0 |
 | main.rs:199:10:199:10 | s | tuple.1 | main.rs:199:10:199:12 | s.1 |
+| main.rs:202:9:202:27 | MyTupleStruct(...) | MyTupleStruct(0) | main.rs:202:23:202:23 | x |
+| main.rs:202:9:202:27 | MyTupleStruct(...) | MyTupleStruct(1) | main.rs:202:26:202:26 | y |
 | main.rs:216:9:216:23 | ...::Some(...) | Some | main.rs:216:22:216:22 | n |
 | main.rs:220:9:220:23 | ...::Some(...) | Some | main.rs:220:22:220:22 | n |
 | main.rs:229:9:229:15 | Some(...) | Some | main.rs:229:14:229:14 | n |

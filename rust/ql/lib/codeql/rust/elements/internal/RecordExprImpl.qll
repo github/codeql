@@ -11,6 +11,9 @@ private import codeql.rust.elements.internal.generated.RecordExpr
  * be referenced directly.
  */
 module Impl {
+  private import rust
+  private import PathResolution as PathResolution
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A record expression. For example:
@@ -23,5 +26,17 @@ module Impl {
    */
   class RecordExpr extends Generated::RecordExpr {
     override string toString() { result = this.getPath().toString() + " {...}" }
+
+    /** Gets the record field that matches the `name` field of this record expression. */
+    pragma[nomagic]
+    RecordField getRecordField(string name) {
+      exists(PathResolution::ItemNode i |
+        i = PathResolution::resolvePath(this.getPath()) and
+        name = this.getRecordExprFieldList().getAField().getNameRef().getText()
+      |
+        result.isStructField(i, name) or
+        result.isVariantField(i, name)
+      )
+    }
   }
 }
