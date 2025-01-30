@@ -470,10 +470,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     private module Stage1 {
       private import Stage1Common
 
-      class Ap = Unit;
-
-      class ApNil = Ap;
-
       private class Cc = boolean;
 
       /* Begin: Stage 1 logic. */
@@ -954,14 +950,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         c = ret.getEnclosingCallable()
       }
 
-      predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-        callEdgeArgParam(call, c, _, _, _)
-      }
-
-      predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-        callEdgeReturn(call, c, _, _, _, _)
-      }
-
       predicate stats(
         boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges
       ) {
@@ -991,6 +979,10 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     private module Stage1Common {
       predicate isRelevantSourceSinkPair = SourceSinkFiltering::isRelevantSourceSinkPair/2;
 
+      class Ap = Unit;
+
+      class ApNil = Ap;
+
       predicate hasSourceCallCtx() {
         exists(FlowFeature feature | feature = Config::getAFeature() |
           feature instanceof FeatureHasSourceCallContext or
@@ -1004,6 +996,20 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           feature instanceof FeatureEqualSourceSinkCallContext
         )
       }
+
+      predicate revFlowIsReadAndStored = Stage1::revFlowIsReadAndStored/1;
+
+      predicate callMayFlowThroughRev = Stage1::callMayFlowThroughRev/1;
+
+      predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
+        Stage1::callEdgeArgParam(call, c, _, _, _)
+      }
+
+      predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+        Stage1::callEdgeReturn(call, c, _, _, _, _)
+      }
+
+      predicate stats = Stage1::stats/7;
     }
 
     pragma[nomagic]
@@ -1292,6 +1298,235 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       predicate localStepNodeCand1 = localStepNodeCand1Alias/6;
 
       predicate localStateStepNodeCand1 = localStateStepNodeCand1Alias/7;
+    }
+
+    // TODO: implements Stage1Output<FlowState>
+    module Stage1WithState {
+      private predicate flowState(NodeEx node, FlowState state) {
+        Stage1::revFlow(node) and
+        Stage1::revFlowState(state) and
+        not stateBarrier(node, state) and
+        (
+          sourceNode(node, state)
+          or
+          exists(NodeEx mid, FlowState state0 | flowState(mid, state0) |
+            additionalLocalStateStep(mid, state0, node, state, _) or
+            additionalJumpStateStep(mid, state0, node, state, _)
+          )
+          or
+          exists(NodeEx mid | flowState(mid, state) |
+            localFlowStepEx(mid, node, _) or
+            additionalLocalFlowStep(mid, node, _) or
+            jumpStepExAlias(mid, node) or
+            additionalJumpStepAlias(mid, node, _) or
+            store(mid, _, node, _, _) or
+            readSetEx(mid, _, node) or
+            flowIntoCallNodeCand1(_, mid, node) or
+            flowOutOfCallNodeCand1(_, mid, _, node)
+          )
+        )
+      }
+
+      private newtype TNd = TNodeState(NodeEx node, FlowState state) { flowState(node, state) }
+
+      class Nd extends TNd {
+        NodeEx node;
+
+        Nd() { this = TNodeState(node, _) }
+
+        NodeEx getNodeEx() { result = node }
+
+        FlowState getState() { this = TNodeState(_, result) }
+
+        string toString() { result = node.toString() }
+
+        Location getLocation() { result = node.getLocation() }
+
+        DataFlowType getDataFlowType() { result = node.getDataFlowType() }
+
+        DataFlowCallable getEnclosingCallable() { result = node.getEnclosingCallable() }
+      }
+
+      class ArgNd extends Nd {
+        ArgNd() { node instanceof ArgNodeEx }
+      }
+
+      class ParamNd extends Nd {
+        ParamNd() { node instanceof ParamNodeEx }
+      }
+
+      class RetNd extends Nd {
+        override RetNodeEx node;
+
+        ReturnPosition getReturnPosition() { result = node.getReturnPosition() }
+
+        ReturnKindExt getKind() { result = node.getKind() }
+      }
+
+      class OutNd extends Nd {
+        OutNd() { node instanceof OutNodeEx }
+      }
+
+      class CastingNd extends Nd {
+        CastingNd() { node instanceof CastingNodeEx }
+      }
+
+      // inline to reduce fan-out via `getAReadContent`
+      bindingset[c]
+      predicate expectsContentEx(Nd n, Content c) {
+        Stage1NoState::expectsContentEx(n.getNodeEx(), c)
+      }
+
+      pragma[nomagic]
+      predicate notExpectsContent(Nd n) { Stage1NoState::notExpectsContent(n.getNodeEx()) }
+
+      bindingset[p, kind]
+      pragma[inline_late]
+      predicate parameterFlowThroughAllowed(ParamNd p, ReturnKindExt kind) {
+        parameterFlowThroughAllowedEx(p.getNodeEx(), kind)
+      }
+
+      import Stage1Common
+
+      predicate revFlow(Nd node) { Stage1::revFlow(node.getNodeEx()) }
+
+      predicate revFlow(Nd node, Ap ap) { Stage1::revFlow(node.getNodeEx()) and exists(ap) }
+
+      predicate parameterMayFlowThrough(ParamNd p, boolean emptyAp) {
+        Stage1::parameterMayFlowThrough(p.getNodeEx(), emptyAp)
+      }
+
+      predicate returnMayFlowThrough(RetNd ret, ReturnKindExt kind) {
+        Stage1::returnMayFlowThrough(ret.getNodeEx(), kind)
+      }
+
+      pragma[nomagic]
+      predicate storeStepCand(
+        Nd node1, Content c, Nd node2, DataFlowType contentType, DataFlowType containerType
+      ) {
+        exists(NodeEx n1, NodeEx n2, FlowState s |
+          Stage1::storeStepCand(n1, c, n2, contentType, containerType) and
+          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
+          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          not outBarrier(n1, s) and
+          not inBarrier(n2, s)
+        )
+      }
+
+      pragma[nomagic]
+      predicate readStepCand(Nd node1, Content c, Nd node2) {
+        exists(NodeEx n1, NodeEx n2, FlowState s |
+          Stage1::readStepCand(n1, c, n2) and
+          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
+          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          not outBarrier(n1, s) and
+          not inBarrier(n2, s)
+        )
+      }
+
+      predicate callEdgeArgParam(
+        DataFlowCall call, DataFlowCallable c, ArgNd arg, ParamNd p, boolean emptyAp
+      ) {
+        exists(ArgNodeEx arg0, ParamNodeEx p0, FlowState s |
+          Stage1::callEdgeArgParam(call, c, arg0, p0, emptyAp) and
+          arg = TNodeState(arg0, pragma[only_bind_into](s)) and
+          p = TNodeState(p0, pragma[only_bind_into](s)) and
+          not outBarrier(arg0, s) and
+          not inBarrier(p0, s)
+        )
+      }
+
+      predicate callEdgeReturn(
+        DataFlowCall call, DataFlowCallable c, RetNd ret, ReturnKindExt kind, Nd out,
+        boolean allowsFieldFlow
+      ) {
+        exists(RetNodeEx ret0, NodeEx out0, FlowState s |
+          Stage1::callEdgeReturn(call, c, ret0, kind, out0, allowsFieldFlow) and
+          ret = TNodeState(ret0, pragma[only_bind_into](s)) and
+          out = TNodeState(out0, pragma[only_bind_into](s)) and
+          not outBarrier(ret0, s) and
+          not inBarrier(out0, s)
+        )
+      }
+
+      /** If `node` corresponds to a sink, gets the normal node for that sink. */
+      Nd toNormalSinkNode(Nd node) {
+        exists(NodeEx res, NodeEx n, FlowState s |
+          res = toNormalSinkNodeEx(n) and
+          node = TNodeState(n, pragma[only_bind_into](s)) and
+          result = TNodeState(res, pragma[only_bind_into](s))
+        )
+      }
+
+      predicate sourceNode(Nd node) {
+        exists(NodeEx n, FlowState state |
+          sourceNode(n, state) and
+          node = TNodeState(n, state)
+        )
+      }
+
+      predicate sinkNode(Nd node) {
+        exists(NodeEx n, FlowState state |
+          Stage1::sinkNode(n, state) and
+          node = TNodeState(n, state)
+        )
+      }
+
+      predicate jumpStepEx(Nd node1, Nd node2) {
+        exists(NodeEx n1, NodeEx n2, FlowState s |
+          jumpStepExAlias(n1, n2) and
+          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
+          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          not outBarrier(n1, s) and
+          not inBarrier(n2, s)
+        )
+      }
+
+      predicate additionalJumpStep(Nd node1, Nd node2, string model) {
+        exists(NodeEx n1, NodeEx n2, FlowState s |
+          additionalJumpStepAlias(n1, n2, model) and
+          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
+          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          not outBarrier(n1, s) and
+          not inBarrier(n2, s)
+        )
+        or
+        exists(NodeEx n1, FlowState s1, NodeEx n2, FlowState s2 |
+          additionalJumpStateStep(n1, s1, n2, s2, model) and
+          node1 = TNodeState(n1, s1) and
+          node2 = TNodeState(n2, s2)
+        )
+      }
+
+      pragma[nomagic]
+      predicate localStep1(
+        Nd node1, Nd node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
+        string label
+      ) {
+        exists(NodeEx n1, NodeEx n2, FlowState s |
+          localStepNodeCand1(n1, n2, preservesValue, t, lcc, label) and
+          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
+          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          not outBarrier(n1, s) and
+          not inBarrier(n2, s)
+        )
+        or
+        exists(NodeEx n1, NodeEx n2, FlowState s1, FlowState s2 |
+          localStateStepNodeCand1(n1, s1, n2, s2, t, lcc, label) and
+          preservesValue = false and
+          node1 = TNodeState(n1, s1) and
+          node2 = TNodeState(n2, s2)
+        )
+      }
+
+      predicate isStateStep(Nd node1, Nd node2) {
+        exists(NodeEx n1, NodeEx n2, FlowState s1, FlowState s2 |
+          localStateStepNodeCand1(n1, s1, n2, s2, _, _, _) and
+          s1 != s2 and
+          node1 = TNodeState(n1, s1) and
+          node2 = TNodeState(n2, s2)
+        )
+      }
     }
 
     private signature predicate flag();
