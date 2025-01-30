@@ -25,7 +25,7 @@ private class SpringCsrfUnprotectedMethod extends CsrfUnprotectedMethod instance
     or
     this.hasAnnotation("org.springframework.web.bind.annotation", "RequestMapping") and
     (
-      this.getMethodValue() = ["GET", "HEAD", "OPTIONS", "TRACE"]
+      this.getMethodValue() = ["GET", "HEAD"]
       or
       // If no request type is specified with `@RequestMapping`, then all request types
       // are possible, so we treat this as unsafe; example: @RequestMapping(value = "test").
@@ -43,7 +43,10 @@ private class StaplerCsrfUnprotectedMethod extends CsrfUnprotectedMethod instanc
 {
   StaplerCsrfUnprotectedMethod() {
     not this.hasAnnotation("org.kohsuke.stapler.interceptor", "RequirePOST") and
-    not this.hasAnnotation("org.kohsuke.stapler.verb", "POST")
+    // Jenkins only explicitly protects against CSRF for POST requests, but we
+    // also exclude PUT and DELETE since these request types are only exploitable
+    // if there is a CORS issue.
+    not this.hasAnnotation("org.kohsuke.stapler.verb", ["POST", "PUT", "DELETE"])
   }
 }
 

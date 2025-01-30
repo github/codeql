@@ -88,6 +88,17 @@ public class CsrfUnprotectedRequestTypeTest {
         } catch (SQLException e) { }
     }
 
+    // GOOD: uses OPTIONS or TRACE, which are unlikely to be exploitable via CSRF
+    @RequestMapping(value = "", method = { OPTIONS, TRACE })
+    public void good0() {
+        try {
+            String sql = "DELETE";
+            Connection conn = DriverManager.getConnection("url");
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.executeUpdate(); // database update method call
+        } catch (SQLException e) { }
+    }
+
     // GOOD: uses POST request when updating a database
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void good1() {
@@ -430,11 +441,10 @@ public class CsrfUnprotectedRequestTypeTest {
 		return "post";
 	}
 
-    // BAD: Stapler web method annotated with `@PUT` and method name that implies a state-change
-    // We treat this case as bad for Stapler since the Jenkins docs only say that @POST/@RequirePOST
-    // provide default protection against CSRF.
+    // GOOD: Stapler web method annotated with `@PUT` and method name that implies a state-change
+    // We treat this case as good since PUT is only exploitable if there is a CORS issue.
     @PUT
-	public String doPut(String user) { // $ hasCsrfUnprotectedRequestType
+	public String doPut(String user) {
 		return "put";
 	}
 
