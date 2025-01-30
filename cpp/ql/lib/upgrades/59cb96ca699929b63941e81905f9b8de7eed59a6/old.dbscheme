@@ -776,7 +776,7 @@ case @usertype.kind of
 |  2 = @class
 |  3 = @union
 |  4 = @enum
-// ... 5 = @typedef deprecated        // classic C: typedef typedef type name
+|  5 = @typedef                       // classic C: typedef typedef type name
 // ... 6 = @template deprecated
 |  7 = @template_parameter
 |  8 = @template_template_parameter
@@ -785,11 +785,10 @@ case @usertype.kind of
 // ... 11 objc_protocol deprecated
 // ... 12 objc_category deprecated
 | 13 = @scoped_enum
-// ... 14 = @using_alias deprecated   // a using name = type style typedef
+| 14 = @using_alias                  // a using name = type style typedef
 | 15 = @template_struct
 | 16 = @template_class
 | 17 = @template_union
-| 18 = @alias
 ;
 */
 
@@ -811,17 +810,6 @@ usertype_uuid(
     unique int id: @usertype ref,
     string uuid: string ref
 );
-
-/*
-case @usertype.alias_kind of
-| 0 = @typedef
-| 1 = @alias
-*/
-
-usertype_alias_kind(
-    int id: @usertype ref,
-    int alias_kind: int ref
-)
 
 nontype_template_parameters(
     int id: @expr ref
