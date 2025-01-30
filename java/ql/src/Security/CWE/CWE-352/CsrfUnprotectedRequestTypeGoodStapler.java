@@ -8,6 +8,6 @@ public HttpRedirect doTransfer() {
 
 // GOOD - use POST
 @POST
-public HttpRedirect doDelete() {
-  return delete();
+public HttpRedirect doPost() {
+  return post();
 }

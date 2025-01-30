@@ -11,10 +11,9 @@ result in exposure of data or unintended code execution.</p>
 
 <recommendation>
 <p>Make sure any requests that change application state are protected from Cross Site Request Forgery (CSRF).
-Some application frameworks provide default CSRF protection for unsafe HTTP request methods (<code>POST</code>,
-<code>PUT</code>, <code>DELETE</code>, <code>PATCH</code>, <code>CONNECT</code>) which may change the state of
-the application. Safe HTTP request methods (<code>GET</code>, <code>HEAD</code>, <code>OPTIONS</code>,
-<code>TRACE</code>) should be read-only and should not be used for actions that change application state.</p>
+Some application frameworks provide default CSRF protection for unsafe HTTP request methods (such as
+<code>POST</code>) which may change the state of the application. Safe HTTP request methods (such as
+<code>GET</code>) should be read-only and should not be used for actions that change application state.</p>
 
 <p>This query currently supports the Spring and Stapler web frameworks. Spring provides default CSRF protection
 for all unsafe HTTP methods. Stapler provides default CSRF protection for the <code>POST</code> method.</p>

@@ -7,6 +7,6 @@ public HttpRedirect doTransfer() {
 }
 
 // BAD - no HTTP request type is specified, so safe HTTP requests are allowed
-public HttpRedirect doDelete() {
-  return delete();
+public HttpRedirect doPost() {
+  return post();
 }
