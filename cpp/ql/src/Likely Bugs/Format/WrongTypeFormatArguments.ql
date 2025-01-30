@@ -152,6 +152,12 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
+predicate buildModeNoneIntLongConversion(IntType formatType, LongType argumentType) {
+  exists(formatType) and
+  exists(argumentType) and
+  exists(Compilation c | c.buildModeNone())
+}
+
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where
   (
@@ -171,7 +177,8 @@ where
   not arg.isAffectedByMacro() and
   not arg.isFromUninstantiatedTemplate(_) and
   not actual.stripType() instanceof ErroneousType and
-  not arg.(Call).mayBeFromImplicitlyDeclaredFunction()
+  not arg.(Call).mayBeFromImplicitlyDeclaredFunction() and
+  not buildModeNoneIntLongConversion(expected, actual.getUnspecifiedType())
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
     actual.getUnspecifiedType().getName() + "'."
