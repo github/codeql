@@ -11,6 +11,9 @@ private import codeql.rust.elements.internal.generated.FieldExpr
  * be referenced directly.
  */
 module Impl {
+  private import rust
+  private import TypeInference as TypeInference
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A field access expression. For example:
@@ -26,5 +29,11 @@ module Impl {
         if abbr = "..." then result = "... ." + name else result = abbr + "." + name
       )
     }
+
+    /** Gets the record field that this access references, if any. */
+    RecordField getRecordField() { result = TypeInference::resolveRecordFieldExpr(this) }
+
+    /** Gets the tuple field that this access references, if any. */
+    TupleField getTupleField() { result = TypeInference::resolveTupleFieldExpr(this) }
   }
 }
