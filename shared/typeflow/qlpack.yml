@@ -1,5 +1,5 @@
 name: codeql/typeflow
-version: 1.0.12
+version: 1.0.15
 groups: shared
 library: true
 dependencies:

@@ -1,442 +1,349 @@
 nodes
-| electron.js:4:12:4:22 | window.name |
-| electron.js:4:12:4:22 | window.name |
-| electron.js:7:20:7:29 | getTaint() |
-| electron.js:7:20:7:29 | getTaint() |
-| react.js:10:60:10:81 | documen ... on.hash |
-| react.js:10:60:10:81 | documen ... on.hash |
-| react.js:10:60:10:81 | documen ... on.hash |
-| react.js:21:24:21:45 | documen ... on.hash |
-| react.js:21:24:21:45 | documen ... on.hash |
-| react.js:21:24:21:45 | documen ... on.hash |
-| react.js:28:43:28:64 | documen ... on.hash |
-| react.js:28:43:28:64 | documen ... on.hash |
-| react.js:28:43:28:74 | documen ... bstr(1) |
-| react.js:28:43:28:74 | documen ... bstr(1) |
-| react.js:34:43:34:64 | documen ... on.hash |
-| react.js:34:43:34:64 | documen ... on.hash |
-| react.js:34:43:34:74 | documen ... bstr(1) |
-| react.js:34:43:34:74 | documen ... bstr(1) |
-| react.js:40:19:40:40 | documen ... on.hash |
-| react.js:40:19:40:40 | documen ... on.hash |
-| react.js:40:19:40:50 | documen ... bstr(1) |
-| react.js:40:19:40:50 | documen ... bstr(1) |
-| sanitizer.js:2:9:2:25 | url |
-| sanitizer.js:2:15:2:25 | window.name |
-| sanitizer.js:2:15:2:25 | window.name |
-| sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:37:27:37:29 | url |
-| sanitizer.js:37:27:37:29 | url |
-| tst2.js:2:7:2:33 | href |
-| tst2.js:2:14:2:28 | window.location |
-| tst2.js:2:14:2:28 | window.location |
-| tst2.js:2:14:2:33 | window.location.href |
-| tst2.js:2:14:2:33 | window.location.href |
-| tst2.js:4:21:4:24 | href |
-| tst2.js:4:21:4:55 | href.su ... '?')+1) |
-| tst2.js:4:21:4:55 | href.su ... '?')+1) |
-| tst6.js:2:7:2:45 | redirect |
-| tst6.js:2:18:2:45 | $locati ... irect') |
-| tst6.js:2:18:2:45 | $locati ... irect') |
-| tst6.js:4:21:4:28 | redirect |
-| tst6.js:4:21:4:28 | redirect |
-| tst6.js:6:17:6:24 | redirect |
-| tst6.js:6:17:6:24 | redirect |
-| tst6.js:8:21:8:48 | $locati ... irect') |
-| tst6.js:8:21:8:48 | $locati ... irect') |
-| tst6.js:8:21:8:56 | $locati ... + "foo" |
-| tst6.js:8:21:8:56 | $locati ... + "foo" |
-| tst7.js:2:12:2:35 | documen ... .search |
-| tst7.js:2:12:2:35 | documen ... .search |
-| tst7.js:2:12:2:35 | documen ... .search |
-| tst7.js:5:27:5:50 | documen ... .search |
-| tst7.js:5:27:5:50 | documen ... .search |
-| tst7.js:5:27:5:50 | documen ... .search |
-| tst9.js:2:21:2:42 | documen ... on.hash |
-| tst9.js:2:21:2:42 | documen ... on.hash |
-| tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst10.js:5:17:5:46 | '/' + d ... .search |
-| tst10.js:5:17:5:46 | '/' + d ... .search |
-| tst10.js:5:23:5:46 | documen ... .search |
-| tst10.js:5:23:5:46 | documen ... .search |
-| tst10.js:8:17:8:47 | '//' +  ... .search |
-| tst10.js:8:17:8:47 | '//' +  ... .search |
-| tst10.js:8:24:8:47 | documen ... .search |
-| tst10.js:8:24:8:47 | documen ... .search |
-| tst10.js:11:17:11:50 | '//foo' ... .search |
-| tst10.js:11:17:11:50 | '//foo' ... .search |
-| tst10.js:11:27:11:50 | documen ... .search |
-| tst10.js:11:27:11:50 | documen ... .search |
-| tst10.js:14:17:14:56 | 'https: ... .search |
-| tst10.js:14:17:14:56 | 'https: ... .search |
-| tst10.js:14:33:14:56 | documen ... .search |
-| tst10.js:14:33:14:56 | documen ... .search |
-| tst12.js:3:9:3:50 | urlParts |
-| tst12.js:3:20:3:39 | window.location.hash |
-| tst12.js:3:20:3:39 | window.location.hash |
-| tst12.js:3:20:3:50 | window. ... it('?') |
-| tst12.js:4:9:4:45 | loc |
-| tst12.js:4:15:4:22 | urlParts |
-| tst12.js:4:15:4:25 | urlParts[0] |
-| tst12.js:4:15:4:45 | urlPart ... s.value |
-| tst12.js:5:23:5:25 | loc |
-| tst12.js:5:23:5:25 | loc |
-| tst13.js:2:9:2:52 | payload |
-| tst13.js:2:19:2:42 | documen ... .search |
-| tst13.js:2:19:2:42 | documen ... .search |
-| tst13.js:2:19:2:52 | documen ... bstr(1) |
-| tst13.js:4:15:4:21 | payload |
-| tst13.js:4:15:4:21 | payload |
-| tst13.js:8:21:8:27 | payload |
-| tst13.js:8:21:8:27 | payload |
-| tst13.js:12:14:12:20 | payload |
-| tst13.js:12:14:12:20 | payload |
-| tst13.js:16:17:16:23 | payload |
-| tst13.js:16:17:16:23 | payload |
-| tst13.js:20:14:20:20 | payload |
-| tst13.js:20:14:20:20 | payload |
-| tst13.js:24:14:24:20 | payload |
-| tst13.js:24:14:24:20 | payload |
-| tst13.js:28:21:28:27 | payload |
-| tst13.js:28:21:28:27 | payload |
-| tst13.js:32:17:32:23 | payload |
-| tst13.js:32:17:32:23 | payload |
-| tst13.js:36:21:36:27 | payload |
-| tst13.js:36:21:36:27 | payload |
-| tst13.js:40:15:40:21 | payload |
-| tst13.js:40:15:40:21 | payload |
-| tst13.js:44:14:44:20 | payload |
-| tst13.js:44:14:44:20 | payload |
-| tst13.js:49:32:49:32 | e |
-| tst13.js:49:32:49:32 | e |
-| tst13.js:50:23:50:23 | e |
-| tst13.js:50:23:50:23 | e |
-| tst13.js:52:34:52:34 | e |
-| tst13.js:52:34:52:34 | e |
-| tst13.js:53:28:53:28 | e |
-| tst13.js:53:28:53:28 | e |
-| tst13.js:59:9:59:52 | payload |
-| tst13.js:59:19:59:42 | documen ... .search |
-| tst13.js:59:19:59:42 | documen ... .search |
-| tst13.js:59:19:59:52 | documen ... bstr(1) |
-| tst13.js:61:18:61:24 | payload |
-| tst13.js:61:18:61:24 | payload |
-| tst13.js:65:9:65:49 | payload |
-| tst13.js:65:19:65:39 | history ... on.hash |
-| tst13.js:65:19:65:39 | history ... on.hash |
-| tst13.js:65:19:65:49 | history ... bstr(1) |
-| tst13.js:67:21:67:27 | payload |
-| tst13.js:67:21:67:27 | payload |
-| tst13.js:72:9:72:49 | payload |
-| tst13.js:72:19:72:39 | history ... on.hash |
-| tst13.js:72:19:72:39 | history ... on.hash |
-| tst13.js:72:19:72:49 | history ... bstr(1) |
-| tst13.js:74:21:74:27 | payload |
-| tst13.js:74:21:74:27 | payload |
-| tst13.js:78:9:78:48 | url |
-| tst13.js:78:15:78:38 | documen ... .search |
-| tst13.js:78:15:78:38 | documen ... .search |
-| tst13.js:78:15:78:48 | documen ... bstr(1) |
-| tst13.js:80:21:80:23 | url |
-| tst13.js:80:21:80:23 | url |
-| tst13.js:81:28:81:30 | url |
-| tst13.js:81:28:81:30 | url |
-| tst13.js:82:27:82:29 | url |
-| tst13.js:82:27:82:29 | url |
-| tst13.js:83:22:83:24 | url |
-| tst13.js:83:22:83:24 | url |
-| tst.js:2:19:2:69 | /.*redi ... n.href) |
-| tst.js:2:19:2:72 | /.*redi ... ref)[1] |
-| tst.js:2:19:2:72 | /.*redi ... ref)[1] |
-| tst.js:2:47:2:63 | document.location |
-| tst.js:2:47:2:63 | document.location |
-| tst.js:2:47:2:68 | documen ... on.href |
-| tst.js:2:47:2:68 | documen ... on.href |
-| tst.js:6:20:6:56 | indirec ... n.href) |
-| tst.js:6:20:6:59 | indirec ... ref)[1] |
-| tst.js:6:20:6:59 | indirec ... ref)[1] |
-| tst.js:6:34:6:50 | document.location |
-| tst.js:6:34:6:50 | document.location |
-| tst.js:6:34:6:55 | documen ... on.href |
-| tst.js:6:34:6:55 | documen ... on.href |
-| tst.js:10:19:10:81 | new Reg ... n.href) |
-| tst.js:10:19:10:84 | new Reg ... ref)[1] |
-| tst.js:10:19:10:84 | new Reg ... ref)[1] |
-| tst.js:10:59:10:75 | document.location |
-| tst.js:10:59:10:75 | document.location |
-| tst.js:10:59:10:80 | documen ... on.href |
-| tst.js:10:59:10:80 | documen ... on.href |
-| tst.js:14:20:14:56 | indirec ... n.href) |
-| tst.js:14:20:14:59 | indirec ... ref)[1] |
-| tst.js:14:20:14:59 | indirec ... ref)[1] |
-| tst.js:14:34:14:50 | document.location |
-| tst.js:14:34:14:50 | document.location |
-| tst.js:14:34:14:55 | documen ... on.href |
-| tst.js:14:34:14:55 | documen ... on.href |
-| tst.js:18:19:18:81 | new Reg ... n.href) |
-| tst.js:18:19:18:84 | new Reg ... ref)[1] |
-| tst.js:18:19:18:84 | new Reg ... ref)[1] |
-| tst.js:18:59:18:75 | document.location |
-| tst.js:18:59:18:75 | document.location |
-| tst.js:18:59:18:80 | documen ... on.href |
-| tst.js:18:59:18:80 | documen ... on.href |
-| tst.js:22:20:22:56 | indirec ... n.href) |
-| tst.js:22:20:22:59 | indirec ... ref)[1] |
-| tst.js:22:20:22:59 | indirec ... ref)[1] |
-| tst.js:22:34:22:50 | document.location |
-| tst.js:22:34:22:50 | document.location |
-| tst.js:22:34:22:55 | documen ... on.href |
-| tst.js:22:34:22:55 | documen ... on.href |
-| tst.js:26:22:26:79 | new Reg ... n.href) |
-| tst.js:26:22:26:82 | new Reg ... ref)[1] |
-| tst.js:26:22:26:82 | new Reg ... ref)[1] |
-| tst.js:26:62:26:78 | win.location.href |
-| tst.js:26:62:26:78 | win.location.href |
-| typed.ts:4:13:4:36 | params |
-| typed.ts:4:22:4:36 | location.search |
-| typed.ts:4:22:4:36 | location.search |
-| typed.ts:5:25:5:30 | params |
-| typed.ts:7:24:7:34 | redirectUri |
-| typed.ts:8:33:8:43 | redirectUri |
-| typed.ts:8:33:8:43 | redirectUri |
-| typed.ts:25:25:25:34 | loc.search |
-| typed.ts:25:25:25:34 | loc.search |
-| typed.ts:28:24:28:34 | redirectUri |
-| typed.ts:29:33:29:43 | redirectUri |
-| typed.ts:29:33:29:43 | redirectUri |
-| typed.ts:47:25:47:34 | loc.search |
-| typed.ts:47:25:47:34 | loc.search |
-| typed.ts:48:26:48:36 | loc2.search |
-| typed.ts:48:26:48:36 | loc2.search |
-| typed.ts:51:24:51:34 | redirectUri |
-| typed.ts:52:33:52:43 | redirectUri |
-| typed.ts:52:33:52:43 | redirectUri |
-| typed.ts:55:25:55:35 | redirectUri |
-| typed.ts:56:33:56:43 | redirectUri |
-| typed.ts:56:33:56:43 | redirectUri |
+| electron.js:4:12:4:22 | window.name | semmle.label | window.name |
+| electron.js:7:20:7:29 | getTaint() | semmle.label | getTaint() |
+| react.js:10:60:10:81 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react.js:10:60:10:91 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| react.js:23:19:23:40 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react.js:23:19:23:50 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| react.js:31:43:31:64 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react.js:31:43:31:74 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| react.js:37:43:37:64 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react.js:37:43:37:74 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| react.js:43:19:43:40 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react.js:43:19:43:50 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| regexp-exec.js:4:11:4:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:4:11:4:57 | group1 | semmle.label | group1 |
+| regexp-exec.js:4:24:4:57 | /#(.*)/ ... n.href) | semmle.label | /#(.*)/ ... n.href) |
+| regexp-exec.js:4:37:4:56 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:5:28:5:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:9:11:9:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:9:11:9:58 | group1 | semmle.label | group1 |
+| regexp-exec.js:9:24:9:58 | /\\?(.*) ... n.href) | semmle.label | /\\?(.*) ... n.href) |
+| regexp-exec.js:9:38:9:57 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:10:28:10:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:29:11:29:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:29:11:29:58 | group1 | semmle.label | group1 |
+| regexp-exec.js:29:24:29:43 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:29:24:29:58 | window. ... #(.*)/) | semmle.label | window. ... #(.*)/) |
+| regexp-exec.js:30:28:30:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:34:11:34:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:34:11:34:64 | group1 | semmle.label | group1 |
+| regexp-exec.js:34:24:34:43 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:34:24:34:61 | window. ... #(.*)/) | semmle.label | window. ... #(.*)/) |
+| regexp-exec.js:35:28:35:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:39:11:39:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:39:11:39:71 | group1 | semmle.label | group1 |
+| regexp-exec.js:39:24:39:71 | new Reg ... n.href) | semmle.label | new Reg ... n.href) |
+| regexp-exec.js:39:51:39:70 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:40:28:40:33 | group1 | semmle.label | group1 |
+| sanitizer.js:2:9:2:25 | url | semmle.label | url |
+| sanitizer.js:2:15:2:25 | window.name | semmle.label | window.name |
+| sanitizer.js:4:27:4:29 | url | semmle.label | url |
+| sanitizer.js:16:27:16:29 | url | semmle.label | url |
+| sanitizer.js:19:27:19:29 | url | semmle.label | url |
+| sanitizer.js:22:27:22:29 | url | semmle.label | url |
+| sanitizer.js:25:27:25:29 | url | semmle.label | url |
+| sanitizer.js:28:27:28:29 | url | semmle.label | url |
+| sanitizer.js:31:27:31:29 | url | semmle.label | url |
+| sanitizer.js:37:27:37:29 | url | semmle.label | url |
+| tst2.js:2:7:2:33 | href | semmle.label | href |
+| tst2.js:2:14:2:33 | window.location.href | semmle.label | window.location.href |
+| tst2.js:4:21:4:24 | href | semmle.label | href |
+| tst2.js:4:21:4:55 | href.su ... '?')+1) | semmle.label | href.su ... '?')+1) |
+| tst6.js:2:7:2:45 | redirect | semmle.label | redirect |
+| tst6.js:2:18:2:45 | $locati ... irect') | semmle.label | $locati ... irect') |
+| tst6.js:4:21:4:28 | redirect | semmle.label | redirect |
+| tst6.js:6:17:6:24 | redirect | semmle.label | redirect |
+| tst6.js:8:21:8:48 | $locati ... irect') | semmle.label | $locati ... irect') |
+| tst6.js:8:21:8:56 | $locati ... + "foo" | semmle.label | $locati ... + "foo" |
+| tst7.js:2:12:2:35 | documen ... .search | semmle.label | documen ... .search |
+| tst7.js:2:12:2:48 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst7.js:5:27:5:50 | documen ... .search | semmle.label | documen ... .search |
+| tst7.js:5:27:5:63 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst9.js:2:21:2:42 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst9.js:2:21:2:55 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst10.js:5:17:5:59 | '/' + d ... ring(1) | semmle.label | '/' + d ... ring(1) |
+| tst10.js:5:23:5:46 | documen ... .search | semmle.label | documen ... .search |
+| tst10.js:5:23:5:59 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst10.js:8:17:8:60 | '//' +  ... ring(1) | semmle.label | '//' +  ... ring(1) |
+| tst10.js:8:24:8:47 | documen ... .search | semmle.label | documen ... .search |
+| tst10.js:8:24:8:60 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst10.js:11:17:11:63 | '//foo' ... ring(1) | semmle.label | '//foo' ... ring(1) |
+| tst10.js:11:27:11:50 | documen ... .search | semmle.label | documen ... .search |
+| tst10.js:11:27:11:63 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst10.js:14:17:14:69 | 'https: ... ring(1) | semmle.label | 'https: ... ring(1) |
+| tst10.js:14:33:14:56 | documen ... .search | semmle.label | documen ... .search |
+| tst10.js:14:33:14:69 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst13.js:2:9:2:52 | payload | semmle.label | payload |
+| tst13.js:2:19:2:42 | documen ... .search | semmle.label | documen ... .search |
+| tst13.js:2:19:2:52 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| tst13.js:4:15:4:21 | payload | semmle.label | payload |
+| tst13.js:8:21:8:27 | payload | semmle.label | payload |
+| tst13.js:12:14:12:20 | payload | semmle.label | payload |
+| tst13.js:16:17:16:23 | payload | semmle.label | payload |
+| tst13.js:20:14:20:20 | payload | semmle.label | payload |
+| tst13.js:24:14:24:20 | payload | semmle.label | payload |
+| tst13.js:28:21:28:27 | payload | semmle.label | payload |
+| tst13.js:32:17:32:23 | payload | semmle.label | payload |
+| tst13.js:36:21:36:27 | payload | semmle.label | payload |
+| tst13.js:40:15:40:21 | payload | semmle.label | payload |
+| tst13.js:44:14:44:20 | payload | semmle.label | payload |
+| tst13.js:49:32:49:32 | e | semmle.label | e |
+| tst13.js:50:23:50:23 | e | semmle.label | e |
+| tst13.js:52:34:52:34 | e | semmle.label | e |
+| tst13.js:53:28:53:28 | e | semmle.label | e |
+| tst13.js:59:9:59:52 | payload | semmle.label | payload |
+| tst13.js:59:19:59:42 | documen ... .search | semmle.label | documen ... .search |
+| tst13.js:59:19:59:52 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| tst13.js:61:18:61:24 | payload | semmle.label | payload |
+| tst13.js:65:9:65:49 | payload | semmle.label | payload |
+| tst13.js:65:19:65:39 | history ... on.hash | semmle.label | history ... on.hash |
+| tst13.js:65:19:65:49 | history ... bstr(1) | semmle.label | history ... bstr(1) |
+| tst13.js:67:21:67:27 | payload | semmle.label | payload |
+| tst13.js:72:9:72:49 | payload | semmle.label | payload |
+| tst13.js:72:19:72:39 | history ... on.hash | semmle.label | history ... on.hash |
+| tst13.js:72:19:72:49 | history ... bstr(1) | semmle.label | history ... bstr(1) |
+| tst13.js:74:21:74:27 | payload | semmle.label | payload |
+| tst13.js:78:9:78:48 | url | semmle.label | url |
+| tst13.js:78:15:78:38 | documen ... .search | semmle.label | documen ... .search |
+| tst13.js:78:15:78:48 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| tst13.js:80:21:80:23 | url | semmle.label | url |
+| tst13.js:81:28:81:30 | url | semmle.label | url |
+| tst13.js:82:27:82:29 | url | semmle.label | url |
+| tst13.js:83:22:83:24 | url | semmle.label | url |
+| tst15.js:2:9:2:42 | url | semmle.label | url |
+| tst15.js:2:15:2:31 | document.location | semmle.label | document.location |
+| tst15.js:2:15:2:42 | documen ... tring() | semmle.label | documen ... tring() |
+| tst15.js:3:23:3:25 | url | semmle.label | url |
+| tst15.js:3:23:3:38 | url.substring(0) | semmle.label | url.substring(0) |
+| tst15.js:3:23:3:51 | url.sub ... ring(1) | semmle.label | url.sub ... ring(1) |
+| tst15.js:4:23:4:25 | url | semmle.label | url |
+| tst15.js:4:23:4:42 | url.substring(0, 10) | semmle.label | url.substring(0, 10) |
+| tst15.js:4:23:4:55 | url.sub ... ring(1) | semmle.label | url.sub ... ring(1) |
+| tst15.js:5:23:5:25 | url | semmle.label | url |
+| tst15.js:5:23:5:60 | url.sub ... ', 10)) | semmle.label | url.sub ... ', 10)) |
+| tst15.js:5:23:5:73 | url.sub ... ring(1) | semmle.label | url.sub ... ring(1) |
+| tst15.js:7:9:7:43 | url2 | semmle.label | url2 |
+| tst15.js:7:16:7:32 | document.location | semmle.label | document.location |
+| tst15.js:7:16:7:43 | documen ... tring() | semmle.label | documen ... tring() |
+| tst15.js:8:23:8:26 | url2 | semmle.label | url2 |
+| tst15.js:8:23:8:39 | url2.substring(0) | semmle.label | url2.substring(0) |
+| tst15.js:8:23:8:60 | url2.su ... nown()) | semmle.label | url2.su ... nown()) |
+| tst15.js:9:23:9:26 | url2 | semmle.label | url2 |
+| tst15.js:9:23:9:43 | url2.su ... (0, 10) | semmle.label | url2.su ... (0, 10) |
+| tst15.js:9:23:9:64 | url2.su ... nown()) | semmle.label | url2.su ... nown()) |
+| tst15.js:10:23:10:26 | url2 | semmle.label | url2 |
+| tst15.js:10:23:10:62 | url2.su ... ', 10)) | semmle.label | url2.su ... ', 10)) |
+| tst15.js:10:23:10:83 | url2.su ... nown()) | semmle.label | url2.su ... nown()) |
+| tst15.js:12:9:12:52 | search | semmle.label | search |
+| tst15.js:12:18:12:41 | documen ... .search | semmle.label | documen ... .search |
+| tst15.js:12:18:12:52 | documen ... tring() | semmle.label | documen ... tring() |
+| tst15.js:13:23:13:28 | search | semmle.label | search |
+| tst15.js:13:23:13:41 | search.substring(0) | semmle.label | search.substring(0) |
+| tst15.js:13:23:13:54 | search. ... ring(1) | semmle.label | search. ... ring(1) |
+| tst15.js:14:23:14:28 | search | semmle.label | search |
+| tst15.js:14:23:14:45 | search. ... (0, 10) | semmle.label | search. ... (0, 10) |
+| tst15.js:14:23:14:58 | search. ... ring(1) | semmle.label | search. ... ring(1) |
+| tst15.js:15:23:15:28 | search | semmle.label | search |
+| tst15.js:15:23:15:66 | search. ... ', 10)) | semmle.label | search. ... ', 10)) |
+| tst15.js:15:23:15:79 | search. ... ring(1) | semmle.label | search. ... ring(1) |
+| tst.js:2:19:2:69 | /.*redi ... n.href) | semmle.label | /.*redi ... n.href) |
+| tst.js:2:19:2:72 | /.*redi ... ref)[1] | semmle.label | /.*redi ... ref)[1] |
+| tst.js:2:47:2:68 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:6:20:6:56 | indirec ... n.href) | semmle.label | indirec ... n.href) |
+| tst.js:6:20:6:59 | indirec ... ref)[1] | semmle.label | indirec ... ref)[1] |
+| tst.js:6:34:6:55 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:10:19:10:81 | new Reg ... n.href) | semmle.label | new Reg ... n.href) |
+| tst.js:10:19:10:84 | new Reg ... ref)[1] | semmle.label | new Reg ... ref)[1] |
+| tst.js:10:59:10:80 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:14:20:14:56 | indirec ... n.href) | semmle.label | indirec ... n.href) |
+| tst.js:14:20:14:59 | indirec ... ref)[1] | semmle.label | indirec ... ref)[1] |
+| tst.js:14:34:14:55 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:18:19:18:81 | new Reg ... n.href) | semmle.label | new Reg ... n.href) |
+| tst.js:18:19:18:84 | new Reg ... ref)[1] | semmle.label | new Reg ... ref)[1] |
+| tst.js:18:59:18:80 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:22:20:22:56 | indirec ... n.href) | semmle.label | indirec ... n.href) |
+| tst.js:22:20:22:59 | indirec ... ref)[1] | semmle.label | indirec ... ref)[1] |
+| tst.js:22:34:22:55 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:26:22:26:79 | new Reg ... n.href) | semmle.label | new Reg ... n.href) |
+| tst.js:26:22:26:82 | new Reg ... ref)[1] | semmle.label | new Reg ... ref)[1] |
+| tst.js:26:62:26:78 | win.location.href | semmle.label | win.location.href |
+| typed.ts:4:13:4:49 | params | semmle.label | params |
+| typed.ts:4:22:4:36 | location.search | semmle.label | location.search |
+| typed.ts:4:22:4:49 | locatio ... ring(1) | semmle.label | locatio ... ring(1) |
+| typed.ts:5:25:5:30 | params | semmle.label | params |
+| typed.ts:7:24:7:34 | redirectUri | semmle.label | redirectUri |
+| typed.ts:8:33:8:43 | redirectUri | semmle.label | redirectUri |
+| typed.ts:25:25:25:34 | loc.search | semmle.label | loc.search |
+| typed.ts:25:25:25:47 | loc.sea ... ring(1) | semmle.label | loc.sea ... ring(1) |
+| typed.ts:28:24:28:34 | redirectUri | semmle.label | redirectUri |
+| typed.ts:29:33:29:43 | redirectUri | semmle.label | redirectUri |
+| typed.ts:47:25:47:34 | loc.search | semmle.label | loc.search |
+| typed.ts:47:25:47:47 | loc.sea ... ring(1) | semmle.label | loc.sea ... ring(1) |
+| typed.ts:48:26:48:36 | loc2.search | semmle.label | loc2.search |
+| typed.ts:48:26:48:49 | loc2.se ... ring(1) | semmle.label | loc2.se ... ring(1) |
+| typed.ts:51:24:51:34 | redirectUri | semmle.label | redirectUri |
+| typed.ts:52:33:52:43 | redirectUri | semmle.label | redirectUri |
+| typed.ts:55:25:55:35 | redirectUri | semmle.label | redirectUri |
+| typed.ts:56:33:56:43 | redirectUri | semmle.label | redirectUri |
 edges
-| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
-| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
-| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
-| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
-| react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash |
-| react.js:21:24:21:45 | documen ... on.hash | react.js:21:24:21:45 | documen ... on.hash |
-| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) |
-| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) |
-| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) |
-| react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) |
-| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) |
-| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) |
-| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) |
-| react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) |
-| react.js:40:19:40:40 | documen ... on.hash | react.js:40:19:40:50 | documen ... bstr(1) |
-| react.js:40:19:40:40 | documen ... on.hash | react.js:40:19:40:50 | documen ... bstr(1) |
-| react.js:40:19:40:40 | documen ... on.hash | react.js:40:19:40:50 | documen ... bstr(1) |
-| react.js:40:19:40:40 | documen ... on.hash | react.js:40:19:40:50 | documen ... bstr(1) |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url |
-| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url |
-| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url |
-| tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
-| tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
-| tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
-| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
-| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
-| tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
-| tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
-| tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect |
-| tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect |
-| tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect |
-| tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect |
-| tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect |
-| tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect |
-| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
-| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
-| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
-| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
-| tst7.js:2:12:2:35 | documen ... .search | tst7.js:2:12:2:35 | documen ... .search |
-| tst7.js:5:27:5:50 | documen ... .search | tst7.js:5:27:5:50 | documen ... .search |
-| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) |
-| tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
-| tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
-| tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
-| tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search |
-| tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search |
-| tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search |
-| tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search |
-| tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search |
-| tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search |
-| tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search |
-| tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search |
-| tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search |
-| tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search |
-| tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search |
-| tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search |
-| tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search |
-| tst12.js:3:9:3:50 | urlParts | tst12.js:4:15:4:22 | urlParts |
-| tst12.js:3:20:3:39 | window.location.hash | tst12.js:3:20:3:50 | window. ... it('?') |
-| tst12.js:3:20:3:39 | window.location.hash | tst12.js:3:20:3:50 | window. ... it('?') |
-| tst12.js:3:20:3:50 | window. ... it('?') | tst12.js:3:9:3:50 | urlParts |
-| tst12.js:4:9:4:45 | loc | tst12.js:5:23:5:25 | loc |
-| tst12.js:4:9:4:45 | loc | tst12.js:5:23:5:25 | loc |
-| tst12.js:4:15:4:22 | urlParts | tst12.js:4:15:4:25 | urlParts[0] |
-| tst12.js:4:15:4:25 | urlParts[0] | tst12.js:4:15:4:45 | urlPart ... s.value |
-| tst12.js:4:15:4:45 | urlPart ... s.value | tst12.js:4:9:4:45 | loc |
-| tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:16:17:16:23 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:16:17:16:23 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:20:14:20:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:20:14:20:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:24:14:24:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:24:14:24:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:28:21:28:27 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:28:21:28:27 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:32:17:32:23 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:32:17:32:23 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:36:21:36:27 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:36:21:36:27 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:40:15:40:21 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:40:15:40:21 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:44:14:44:20 | payload |
-| tst13.js:2:9:2:52 | payload | tst13.js:44:14:44:20 | payload |
-| tst13.js:2:19:2:42 | documen ... .search | tst13.js:2:19:2:52 | documen ... bstr(1) |
-| tst13.js:2:19:2:42 | documen ... .search | tst13.js:2:19:2:52 | documen ... bstr(1) |
-| tst13.js:2:19:2:52 | documen ... bstr(1) | tst13.js:2:9:2:52 | payload |
-| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
-| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
-| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
-| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
-| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
-| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
-| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
-| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
-| tst13.js:59:9:59:52 | payload | tst13.js:61:18:61:24 | payload |
-| tst13.js:59:9:59:52 | payload | tst13.js:61:18:61:24 | payload |
-| tst13.js:59:19:59:42 | documen ... .search | tst13.js:59:19:59:52 | documen ... bstr(1) |
-| tst13.js:59:19:59:42 | documen ... .search | tst13.js:59:19:59:52 | documen ... bstr(1) |
-| tst13.js:59:19:59:52 | documen ... bstr(1) | tst13.js:59:9:59:52 | payload |
-| tst13.js:65:9:65:49 | payload | tst13.js:67:21:67:27 | payload |
-| tst13.js:65:9:65:49 | payload | tst13.js:67:21:67:27 | payload |
-| tst13.js:65:19:65:39 | history ... on.hash | tst13.js:65:19:65:49 | history ... bstr(1) |
-| tst13.js:65:19:65:39 | history ... on.hash | tst13.js:65:19:65:49 | history ... bstr(1) |
-| tst13.js:65:19:65:49 | history ... bstr(1) | tst13.js:65:9:65:49 | payload |
-| tst13.js:72:9:72:49 | payload | tst13.js:74:21:74:27 | payload |
-| tst13.js:72:9:72:49 | payload | tst13.js:74:21:74:27 | payload |
-| tst13.js:72:19:72:39 | history ... on.hash | tst13.js:72:19:72:49 | history ... bstr(1) |
-| tst13.js:72:19:72:39 | history ... on.hash | tst13.js:72:19:72:49 | history ... bstr(1) |
-| tst13.js:72:19:72:49 | history ... bstr(1) | tst13.js:72:9:72:49 | payload |
-| tst13.js:78:9:78:48 | url | tst13.js:80:21:80:23 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:80:21:80:23 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:81:28:81:30 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:81:28:81:30 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:82:27:82:29 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:82:27:82:29 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:83:22:83:24 | url |
-| tst13.js:78:9:78:48 | url | tst13.js:83:22:83:24 | url |
-| tst13.js:78:15:78:38 | documen ... .search | tst13.js:78:15:78:48 | documen ... bstr(1) |
-| tst13.js:78:15:78:38 | documen ... .search | tst13.js:78:15:78:48 | documen ... bstr(1) |
-| tst13.js:78:15:78:48 | documen ... bstr(1) | tst13.js:78:9:78:48 | url |
-| tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
-| tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
-| tst.js:2:47:2:63 | document.location | tst.js:2:47:2:68 | documen ... on.href |
-| tst.js:2:47:2:63 | document.location | tst.js:2:47:2:68 | documen ... on.href |
-| tst.js:2:47:2:68 | documen ... on.href | tst.js:2:19:2:69 | /.*redi ... n.href) |
-| tst.js:2:47:2:68 | documen ... on.href | tst.js:2:19:2:69 | /.*redi ... n.href) |
-| tst.js:6:20:6:56 | indirec ... n.href) | tst.js:6:20:6:59 | indirec ... ref)[1] |
-| tst.js:6:20:6:56 | indirec ... n.href) | tst.js:6:20:6:59 | indirec ... ref)[1] |
-| tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
-| tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
-| tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
-| tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
-| tst.js:10:19:10:81 | new Reg ... n.href) | tst.js:10:19:10:84 | new Reg ... ref)[1] |
-| tst.js:10:19:10:81 | new Reg ... n.href) | tst.js:10:19:10:84 | new Reg ... ref)[1] |
-| tst.js:10:59:10:75 | document.location | tst.js:10:59:10:80 | documen ... on.href |
-| tst.js:10:59:10:75 | document.location | tst.js:10:59:10:80 | documen ... on.href |
-| tst.js:10:59:10:80 | documen ... on.href | tst.js:10:19:10:81 | new Reg ... n.href) |
-| tst.js:10:59:10:80 | documen ... on.href | tst.js:10:19:10:81 | new Reg ... n.href) |
-| tst.js:14:20:14:56 | indirec ... n.href) | tst.js:14:20:14:59 | indirec ... ref)[1] |
-| tst.js:14:20:14:56 | indirec ... n.href) | tst.js:14:20:14:59 | indirec ... ref)[1] |
-| tst.js:14:34:14:50 | document.location | tst.js:14:34:14:55 | documen ... on.href |
-| tst.js:14:34:14:50 | document.location | tst.js:14:34:14:55 | documen ... on.href |
-| tst.js:14:34:14:55 | documen ... on.href | tst.js:14:20:14:56 | indirec ... n.href) |
-| tst.js:14:34:14:55 | documen ... on.href | tst.js:14:20:14:56 | indirec ... n.href) |
-| tst.js:18:19:18:81 | new Reg ... n.href) | tst.js:18:19:18:84 | new Reg ... ref)[1] |
-| tst.js:18:19:18:81 | new Reg ... n.href) | tst.js:18:19:18:84 | new Reg ... ref)[1] |
-| tst.js:18:59:18:75 | document.location | tst.js:18:59:18:80 | documen ... on.href |
-| tst.js:18:59:18:75 | document.location | tst.js:18:59:18:80 | documen ... on.href |
-| tst.js:18:59:18:80 | documen ... on.href | tst.js:18:19:18:81 | new Reg ... n.href) |
-| tst.js:18:59:18:80 | documen ... on.href | tst.js:18:19:18:81 | new Reg ... n.href) |
-| tst.js:22:20:22:56 | indirec ... n.href) | tst.js:22:20:22:59 | indirec ... ref)[1] |
-| tst.js:22:20:22:56 | indirec ... n.href) | tst.js:22:20:22:59 | indirec ... ref)[1] |
-| tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
-| tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
-| tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) |
-| tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) |
-| tst.js:26:22:26:79 | new Reg ... n.href) | tst.js:26:22:26:82 | new Reg ... ref)[1] |
-| tst.js:26:22:26:79 | new Reg ... n.href) | tst.js:26:22:26:82 | new Reg ... ref)[1] |
-| tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:79 | new Reg ... n.href) |
-| tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:79 | new Reg ... n.href) |
-| typed.ts:4:13:4:36 | params | typed.ts:5:25:5:30 | params |
-| typed.ts:4:22:4:36 | location.search | typed.ts:4:13:4:36 | params |
-| typed.ts:4:22:4:36 | location.search | typed.ts:4:13:4:36 | params |
-| typed.ts:5:25:5:30 | params | typed.ts:7:24:7:34 | redirectUri |
-| typed.ts:7:24:7:34 | redirectUri | typed.ts:8:33:8:43 | redirectUri |
-| typed.ts:7:24:7:34 | redirectUri | typed.ts:8:33:8:43 | redirectUri |
-| typed.ts:25:25:25:34 | loc.search | typed.ts:28:24:28:34 | redirectUri |
-| typed.ts:25:25:25:34 | loc.search | typed.ts:28:24:28:34 | redirectUri |
-| typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
-| typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
-| typed.ts:47:25:47:34 | loc.search | typed.ts:51:24:51:34 | redirectUri |
-| typed.ts:47:25:47:34 | loc.search | typed.ts:51:24:51:34 | redirectUri |
-| typed.ts:48:26:48:36 | loc2.search | typed.ts:55:25:55:35 | redirectUri |
-| typed.ts:48:26:48:36 | loc2.search | typed.ts:55:25:55:35 | redirectUri |
-| typed.ts:51:24:51:34 | redirectUri | typed.ts:52:33:52:43 | redirectUri |
-| typed.ts:51:24:51:34 | redirectUri | typed.ts:52:33:52:43 | redirectUri |
-| typed.ts:55:25:55:35 | redirectUri | typed.ts:56:33:56:43 | redirectUri |
-| typed.ts:55:25:55:35 | redirectUri | typed.ts:56:33:56:43 | redirectUri |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | provenance |  |
+| react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:91 | documen ... bstr(1) | provenance | Config |
+| react.js:23:19:23:40 | documen ... on.hash | react.js:23:19:23:50 | documen ... bstr(1) | provenance | Config |
+| react.js:31:43:31:64 | documen ... on.hash | react.js:31:43:31:74 | documen ... bstr(1) | provenance | Config |
+| react.js:37:43:37:64 | documen ... on.hash | react.js:37:43:37:74 | documen ... bstr(1) | provenance | Config |
+| react.js:43:19:43:40 | documen ... on.hash | react.js:43:19:43:50 | documen ... bstr(1) | provenance | Config |
+| regexp-exec.js:4:11:4:20 | [, group1] | regexp-exec.js:4:11:4:57 | group1 | provenance |  |
+| regexp-exec.js:4:11:4:57 | group1 | regexp-exec.js:5:28:5:33 | group1 | provenance |  |
+| regexp-exec.js:4:24:4:57 | /#(.*)/ ... n.href) | regexp-exec.js:4:11:4:20 | [, group1] | provenance |  |
+| regexp-exec.js:4:37:4:56 | window.location.href | regexp-exec.js:4:24:4:57 | /#(.*)/ ... n.href) | provenance | Config |
+| regexp-exec.js:9:11:9:20 | [, group1] | regexp-exec.js:9:11:9:58 | group1 | provenance |  |
+| regexp-exec.js:9:11:9:58 | group1 | regexp-exec.js:10:28:10:33 | group1 | provenance |  |
+| regexp-exec.js:9:24:9:58 | /\\?(.*) ... n.href) | regexp-exec.js:9:11:9:20 | [, group1] | provenance |  |
+| regexp-exec.js:9:38:9:57 | window.location.href | regexp-exec.js:9:24:9:58 | /\\?(.*) ... n.href) | provenance | Config |
+| regexp-exec.js:29:11:29:20 | [, group1] | regexp-exec.js:29:11:29:58 | group1 | provenance |  |
+| regexp-exec.js:29:11:29:58 | group1 | regexp-exec.js:30:28:30:33 | group1 | provenance |  |
+| regexp-exec.js:29:24:29:43 | window.location.href | regexp-exec.js:29:24:29:58 | window. ... #(.*)/) | provenance | Config |
+| regexp-exec.js:29:24:29:58 | window. ... #(.*)/) | regexp-exec.js:29:11:29:20 | [, group1] | provenance |  |
+| regexp-exec.js:34:11:34:20 | [, group1] | regexp-exec.js:34:11:34:64 | group1 | provenance |  |
+| regexp-exec.js:34:11:34:64 | group1 | regexp-exec.js:35:28:35:33 | group1 | provenance |  |
+| regexp-exec.js:34:24:34:43 | window.location.href | regexp-exec.js:34:24:34:61 | window. ... #(.*)/) | provenance | Config |
+| regexp-exec.js:34:24:34:61 | window. ... #(.*)/) | regexp-exec.js:34:11:34:20 | [, group1] | provenance |  |
+| regexp-exec.js:39:11:39:20 | [, group1] | regexp-exec.js:39:11:39:71 | group1 | provenance |  |
+| regexp-exec.js:39:11:39:71 | group1 | regexp-exec.js:40:28:40:33 | group1 | provenance |  |
+| regexp-exec.js:39:24:39:71 | new Reg ... n.href) | regexp-exec.js:39:11:39:20 | [, group1] | provenance |  |
+| regexp-exec.js:39:51:39:70 | window.location.href | regexp-exec.js:39:24:39:71 | new Reg ... n.href) | provenance | Config |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url | provenance |  |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url | provenance |  |
+| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url | provenance |  |
+| tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href | provenance |  |
+| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href | provenance |  |
+| tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) | provenance | Config |
+| tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect | provenance |  |
+| tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect | provenance |  |
+| tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect | provenance |  |
+| tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" | provenance |  |
+| tst7.js:2:12:2:35 | documen ... .search | tst7.js:2:12:2:48 | documen ... ring(1) | provenance | Config |
+| tst7.js:5:27:5:50 | documen ... .search | tst7.js:5:27:5:63 | documen ... ring(1) | provenance | Config |
+| tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) | provenance | Config |
+| tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:23:5:59 | documen ... ring(1) | provenance | Config |
+| tst10.js:5:23:5:59 | documen ... ring(1) | tst10.js:5:17:5:59 | '/' + d ... ring(1) | provenance |  |
+| tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:24:8:60 | documen ... ring(1) | provenance | Config |
+| tst10.js:8:24:8:60 | documen ... ring(1) | tst10.js:8:17:8:60 | '//' +  ... ring(1) | provenance |  |
+| tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:27:11:63 | documen ... ring(1) | provenance | Config |
+| tst10.js:11:27:11:63 | documen ... ring(1) | tst10.js:11:17:11:63 | '//foo' ... ring(1) | provenance |  |
+| tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:33:14:69 | documen ... ring(1) | provenance | Config |
+| tst10.js:14:33:14:69 | documen ... ring(1) | tst10.js:14:17:14:69 | 'https: ... ring(1) | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:16:17:16:23 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:20:14:20:20 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:24:14:24:20 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:28:21:28:27 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:32:17:32:23 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:36:21:36:27 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:40:15:40:21 | payload | provenance |  |
+| tst13.js:2:9:2:52 | payload | tst13.js:44:14:44:20 | payload | provenance |  |
+| tst13.js:2:19:2:42 | documen ... .search | tst13.js:2:19:2:52 | documen ... bstr(1) | provenance | Config |
+| tst13.js:2:19:2:52 | documen ... bstr(1) | tst13.js:2:9:2:52 | payload | provenance |  |
+| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e | provenance |  |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e | provenance |  |
+| tst13.js:59:9:59:52 | payload | tst13.js:61:18:61:24 | payload | provenance |  |
+| tst13.js:59:19:59:42 | documen ... .search | tst13.js:59:19:59:52 | documen ... bstr(1) | provenance | Config |
+| tst13.js:59:19:59:52 | documen ... bstr(1) | tst13.js:59:9:59:52 | payload | provenance |  |
+| tst13.js:65:9:65:49 | payload | tst13.js:67:21:67:27 | payload | provenance |  |
+| tst13.js:65:19:65:39 | history ... on.hash | tst13.js:65:19:65:49 | history ... bstr(1) | provenance |  |
+| tst13.js:65:19:65:49 | history ... bstr(1) | tst13.js:65:9:65:49 | payload | provenance |  |
+| tst13.js:72:9:72:49 | payload | tst13.js:74:21:74:27 | payload | provenance |  |
+| tst13.js:72:19:72:39 | history ... on.hash | tst13.js:72:19:72:49 | history ... bstr(1) | provenance |  |
+| tst13.js:72:19:72:49 | history ... bstr(1) | tst13.js:72:9:72:49 | payload | provenance |  |
+| tst13.js:78:9:78:48 | url | tst13.js:80:21:80:23 | url | provenance |  |
+| tst13.js:78:9:78:48 | url | tst13.js:81:28:81:30 | url | provenance |  |
+| tst13.js:78:9:78:48 | url | tst13.js:82:27:82:29 | url | provenance |  |
+| tst13.js:78:9:78:48 | url | tst13.js:83:22:83:24 | url | provenance |  |
+| tst13.js:78:15:78:38 | documen ... .search | tst13.js:78:15:78:48 | documen ... bstr(1) | provenance | Config |
+| tst13.js:78:15:78:48 | documen ... bstr(1) | tst13.js:78:9:78:48 | url | provenance |  |
+| tst15.js:2:9:2:42 | url | tst15.js:3:23:3:25 | url | provenance |  |
+| tst15.js:2:9:2:42 | url | tst15.js:4:23:4:25 | url | provenance |  |
+| tst15.js:2:9:2:42 | url | tst15.js:5:23:5:25 | url | provenance |  |
+| tst15.js:2:15:2:31 | document.location | tst15.js:2:15:2:42 | documen ... tring() | provenance |  |
+| tst15.js:2:15:2:42 | documen ... tring() | tst15.js:2:9:2:42 | url | provenance |  |
+| tst15.js:3:23:3:25 | url | tst15.js:3:23:3:38 | url.substring(0) | provenance |  |
+| tst15.js:3:23:3:38 | url.substring(0) | tst15.js:3:23:3:51 | url.sub ... ring(1) | provenance | Config |
+| tst15.js:4:23:4:25 | url | tst15.js:4:23:4:42 | url.substring(0, 10) | provenance |  |
+| tst15.js:4:23:4:42 | url.substring(0, 10) | tst15.js:4:23:4:55 | url.sub ... ring(1) | provenance | Config |
+| tst15.js:5:23:5:25 | url | tst15.js:5:23:5:60 | url.sub ... ', 10)) | provenance |  |
+| tst15.js:5:23:5:60 | url.sub ... ', 10)) | tst15.js:5:23:5:73 | url.sub ... ring(1) | provenance | Config |
+| tst15.js:7:9:7:43 | url2 | tst15.js:8:23:8:26 | url2 | provenance |  |
+| tst15.js:7:9:7:43 | url2 | tst15.js:9:23:9:26 | url2 | provenance |  |
+| tst15.js:7:9:7:43 | url2 | tst15.js:10:23:10:26 | url2 | provenance |  |
+| tst15.js:7:16:7:32 | document.location | tst15.js:7:16:7:43 | documen ... tring() | provenance |  |
+| tst15.js:7:16:7:43 | documen ... tring() | tst15.js:7:9:7:43 | url2 | provenance |  |
+| tst15.js:8:23:8:26 | url2 | tst15.js:8:23:8:39 | url2.substring(0) | provenance |  |
+| tst15.js:8:23:8:39 | url2.substring(0) | tst15.js:8:23:8:60 | url2.su ... nown()) | provenance | Config |
+| tst15.js:9:23:9:26 | url2 | tst15.js:9:23:9:43 | url2.su ... (0, 10) | provenance |  |
+| tst15.js:9:23:9:43 | url2.su ... (0, 10) | tst15.js:9:23:9:64 | url2.su ... nown()) | provenance | Config |
+| tst15.js:10:23:10:26 | url2 | tst15.js:10:23:10:62 | url2.su ... ', 10)) | provenance |  |
+| tst15.js:10:23:10:62 | url2.su ... ', 10)) | tst15.js:10:23:10:83 | url2.su ... nown()) | provenance | Config |
+| tst15.js:12:9:12:52 | search | tst15.js:13:23:13:28 | search | provenance |  |
+| tst15.js:12:9:12:52 | search | tst15.js:14:23:14:28 | search | provenance |  |
+| tst15.js:12:9:12:52 | search | tst15.js:15:23:15:28 | search | provenance |  |
+| tst15.js:12:18:12:41 | documen ... .search | tst15.js:12:18:12:52 | documen ... tring() | provenance |  |
+| tst15.js:12:18:12:52 | documen ... tring() | tst15.js:12:9:12:52 | search | provenance |  |
+| tst15.js:13:23:13:28 | search | tst15.js:13:23:13:41 | search.substring(0) | provenance |  |
+| tst15.js:13:23:13:41 | search.substring(0) | tst15.js:13:23:13:54 | search. ... ring(1) | provenance | Config |
+| tst15.js:14:23:14:28 | search | tst15.js:14:23:14:45 | search. ... (0, 10) | provenance |  |
+| tst15.js:14:23:14:45 | search. ... (0, 10) | tst15.js:14:23:14:58 | search. ... ring(1) | provenance | Config |
+| tst15.js:15:23:15:28 | search | tst15.js:15:23:15:66 | search. ... ', 10)) | provenance |  |
+| tst15.js:15:23:15:66 | search. ... ', 10)) | tst15.js:15:23:15:79 | search. ... ring(1) | provenance | Config |
+| tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] | provenance |  |
+| tst.js:2:47:2:68 | documen ... on.href | tst.js:2:19:2:69 | /.*redi ... n.href) | provenance | Config |
+| tst.js:6:20:6:56 | indirec ... n.href) | tst.js:6:20:6:59 | indirec ... ref)[1] | provenance |  |
+| tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) | provenance | Config |
+| tst.js:10:19:10:81 | new Reg ... n.href) | tst.js:10:19:10:84 | new Reg ... ref)[1] | provenance |  |
+| tst.js:10:59:10:80 | documen ... on.href | tst.js:10:19:10:81 | new Reg ... n.href) | provenance | Config |
+| tst.js:14:20:14:56 | indirec ... n.href) | tst.js:14:20:14:59 | indirec ... ref)[1] | provenance |  |
+| tst.js:14:34:14:55 | documen ... on.href | tst.js:14:20:14:56 | indirec ... n.href) | provenance | Config |
+| tst.js:18:19:18:81 | new Reg ... n.href) | tst.js:18:19:18:84 | new Reg ... ref)[1] | provenance |  |
+| tst.js:18:59:18:80 | documen ... on.href | tst.js:18:19:18:81 | new Reg ... n.href) | provenance | Config |
+| tst.js:22:20:22:56 | indirec ... n.href) | tst.js:22:20:22:59 | indirec ... ref)[1] | provenance |  |
+| tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) | provenance | Config |
+| tst.js:26:22:26:79 | new Reg ... n.href) | tst.js:26:22:26:82 | new Reg ... ref)[1] | provenance |  |
+| tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:79 | new Reg ... n.href) | provenance | Config |
+| typed.ts:4:13:4:49 | params | typed.ts:5:25:5:30 | params | provenance |  |
+| typed.ts:4:22:4:36 | location.search | typed.ts:4:22:4:49 | locatio ... ring(1) | provenance | Config |
+| typed.ts:4:22:4:49 | locatio ... ring(1) | typed.ts:4:13:4:49 | params | provenance |  |
+| typed.ts:5:25:5:30 | params | typed.ts:7:24:7:34 | redirectUri | provenance |  |
+| typed.ts:7:24:7:34 | redirectUri | typed.ts:8:33:8:43 | redirectUri | provenance |  |
+| typed.ts:25:25:25:34 | loc.search | typed.ts:25:25:25:47 | loc.sea ... ring(1) | provenance | Config |
+| typed.ts:25:25:25:47 | loc.sea ... ring(1) | typed.ts:28:24:28:34 | redirectUri | provenance |  |
+| typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri | provenance |  |
+| typed.ts:47:25:47:34 | loc.search | typed.ts:47:25:47:47 | loc.sea ... ring(1) | provenance | Config |
+| typed.ts:47:25:47:47 | loc.sea ... ring(1) | typed.ts:51:24:51:34 | redirectUri | provenance |  |
+| typed.ts:48:26:48:36 | loc2.search | typed.ts:48:26:48:49 | loc2.se ... ring(1) | provenance | Config |
+| typed.ts:48:26:48:49 | loc2.se ... ring(1) | typed.ts:55:25:55:35 | redirectUri | provenance |  |
+| typed.ts:51:24:51:34 | redirectUri | typed.ts:52:33:52:43 | redirectUri | provenance |  |
+| typed.ts:55:25:55:35 | redirectUri | typed.ts:56:33:56:43 | redirectUri | provenance |  |
+subpaths
 #select
 | electron.js:7:20:7:29 | getTaint() | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | Untrusted URL redirection depends on a $@. | electron.js:4:12:4:22 | window.name | user-provided value |
-| react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash | Untrusted URL redirection depends on a $@. | react.js:10:60:10:81 | documen ... on.hash | user-provided value |
-| react.js:21:24:21:45 | documen ... on.hash | react.js:21:24:21:45 | documen ... on.hash | react.js:21:24:21:45 | documen ... on.hash | Untrusted URL redirection depends on a $@. | react.js:21:24:21:45 | documen ... on.hash | user-provided value |
-| react.js:28:43:28:74 | documen ... bstr(1) | react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:28:43:28:64 | documen ... on.hash | user-provided value |
-| react.js:34:43:34:74 | documen ... bstr(1) | react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:34:43:34:64 | documen ... on.hash | user-provided value |
-| react.js:40:19:40:50 | documen ... bstr(1) | react.js:40:19:40:40 | documen ... on.hash | react.js:40:19:40:50 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:40:19:40:40 | documen ... on.hash | user-provided value |
+| react.js:10:60:10:91 | documen ... bstr(1) | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:91 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:10:60:10:81 | documen ... on.hash | user-provided value |
+| react.js:23:19:23:50 | documen ... bstr(1) | react.js:23:19:23:40 | documen ... on.hash | react.js:23:19:23:50 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:23:19:23:40 | documen ... on.hash | user-provided value |
+| react.js:31:43:31:74 | documen ... bstr(1) | react.js:31:43:31:64 | documen ... on.hash | react.js:31:43:31:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:31:43:31:64 | documen ... on.hash | user-provided value |
+| react.js:37:43:37:74 | documen ... bstr(1) | react.js:37:43:37:64 | documen ... on.hash | react.js:37:43:37:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:37:43:37:64 | documen ... on.hash | user-provided value |
+| react.js:43:19:43:50 | documen ... bstr(1) | react.js:43:19:43:40 | documen ... on.hash | react.js:43:19:43:50 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:43:19:43:40 | documen ... on.hash | user-provided value |
+| regexp-exec.js:5:28:5:33 | group1 | regexp-exec.js:4:37:4:56 | window.location.href | regexp-exec.js:5:28:5:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:4:37:4:56 | window.location.href | user-provided value |
+| regexp-exec.js:10:28:10:33 | group1 | regexp-exec.js:9:38:9:57 | window.location.href | regexp-exec.js:10:28:10:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:9:38:9:57 | window.location.href | user-provided value |
+| regexp-exec.js:30:28:30:33 | group1 | regexp-exec.js:29:24:29:43 | window.location.href | regexp-exec.js:30:28:30:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:29:24:29:43 | window.location.href | user-provided value |
+| regexp-exec.js:35:28:35:33 | group1 | regexp-exec.js:34:24:34:43 | window.location.href | regexp-exec.js:35:28:35:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:34:24:34:43 | window.location.href | user-provided value |
+| regexp-exec.js:40:28:40:33 | group1 | regexp-exec.js:39:51:39:70 | window.location.href | regexp-exec.js:40:28:40:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:39:51:39:70 | window.location.href | user-provided value |
 | sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
@@ -445,19 +352,17 @@ edges
 | sanitizer.js:28:27:28:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:28:27:28:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:31:27:31:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:31:27:31:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:37:27:37:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:37:27:37:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection depends on a $@. | tst2.js:2:14:2:28 | window.location | user-provided value |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:33 | window.location.href | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection depends on a $@. | tst2.js:2:14:2:33 | window.location.href | user-provided value |
 | tst6.js:4:21:4:28 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:4:21:4:28 | redirect | Untrusted URL redirection depends on a $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:6:17:6:24 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:6:17:6:24 | redirect | Untrusted URL redirection depends on a $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:8:21:8:56 | $locati ... + "foo" | tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" | Untrusted URL redirection depends on a $@. | tst6.js:8:21:8:48 | $locati ... irect') | user-provided value |
-| tst7.js:2:12:2:35 | documen ... .search | tst7.js:2:12:2:35 | documen ... .search | tst7.js:2:12:2:35 | documen ... .search | Untrusted URL redirection depends on a $@. | tst7.js:2:12:2:35 | documen ... .search | user-provided value |
-| tst7.js:5:27:5:50 | documen ... .search | tst7.js:5:27:5:50 | documen ... .search | tst7.js:5:27:5:50 | documen ... .search | Untrusted URL redirection depends on a $@. | tst7.js:5:27:5:50 | documen ... .search | user-provided value |
+| tst7.js:2:12:2:48 | documen ... ring(1) | tst7.js:2:12:2:35 | documen ... .search | tst7.js:2:12:2:48 | documen ... ring(1) | Untrusted URL redirection depends on a $@. | tst7.js:2:12:2:35 | documen ... .search | user-provided value |
+| tst7.js:5:27:5:63 | documen ... ring(1) | tst7.js:5:27:5:50 | documen ... .search | tst7.js:5:27:5:63 | documen ... ring(1) | Untrusted URL redirection depends on a $@. | tst7.js:5:27:5:50 | documen ... .search | user-provided value |
 | tst9.js:2:21:2:55 | documen ... ring(1) | tst9.js:2:21:2:42 | documen ... on.hash | tst9.js:2:21:2:55 | documen ... ring(1) | Untrusted URL redirection depends on a $@. | tst9.js:2:21:2:42 | documen ... on.hash | user-provided value |
-| tst10.js:5:17:5:46 | '/' + d ... .search | tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:46 | '/' + d ... .search | Untrusted URL redirection depends on a $@. | tst10.js:5:23:5:46 | documen ... .search | user-provided value |
-| tst10.js:8:17:8:47 | '//' +  ... .search | tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:47 | '//' +  ... .search | Untrusted URL redirection depends on a $@. | tst10.js:8:24:8:47 | documen ... .search | user-provided value |
-| tst10.js:11:17:11:50 | '//foo' ... .search | tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search | Untrusted URL redirection depends on a $@. | tst10.js:11:27:11:50 | documen ... .search | user-provided value |
-| tst10.js:14:17:14:56 | 'https: ... .search | tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search | Untrusted URL redirection depends on a $@. | tst10.js:14:33:14:56 | documen ... .search | user-provided value |
-| tst12.js:5:23:5:25 | loc | tst12.js:3:20:3:39 | window.location.hash | tst12.js:5:23:5:25 | loc | Untrusted URL redirection depends on a $@. | tst12.js:3:20:3:39 | window.location.hash | user-provided value |
+| tst10.js:5:17:5:59 | '/' + d ... ring(1) | tst10.js:5:23:5:46 | documen ... .search | tst10.js:5:17:5:59 | '/' + d ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:5:23:5:46 | documen ... .search | user-provided value |
+| tst10.js:8:17:8:60 | '//' +  ... ring(1) | tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:60 | '//' +  ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:8:24:8:47 | documen ... .search | user-provided value |
+| tst10.js:11:17:11:63 | '//foo' ... ring(1) | tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:63 | '//foo' ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:11:27:11:50 | documen ... .search | user-provided value |
+| tst10.js:14:17:14:69 | 'https: ... ring(1) | tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:69 | 'https: ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:14:33:14:56 | documen ... .search | user-provided value |
 | tst13.js:4:15:4:21 | payload | tst13.js:2:19:2:42 | documen ... .search | tst13.js:4:15:4:21 | payload | Untrusted URL redirection depends on a $@. | tst13.js:2:19:2:42 | documen ... .search | user-provided value |
 | tst13.js:8:21:8:27 | payload | tst13.js:2:19:2:42 | documen ... .search | tst13.js:8:21:8:27 | payload | Untrusted URL redirection depends on a $@. | tst13.js:2:19:2:42 | documen ... .search | user-provided value |
 | tst13.js:12:14:12:20 | payload | tst13.js:2:19:2:42 | documen ... .search | tst13.js:12:14:12:20 | payload | Untrusted URL redirection depends on a $@. | tst13.js:2:19:2:42 | documen ... .search | user-provided value |
@@ -478,17 +383,20 @@ edges
 | tst13.js:81:28:81:30 | url | tst13.js:78:15:78:38 | documen ... .search | tst13.js:81:28:81:30 | url | Untrusted URL redirection depends on a $@. | tst13.js:78:15:78:38 | documen ... .search | user-provided value |
 | tst13.js:82:27:82:29 | url | tst13.js:78:15:78:38 | documen ... .search | tst13.js:82:27:82:29 | url | Untrusted URL redirection depends on a $@. | tst13.js:78:15:78:38 | documen ... .search | user-provided value |
 | tst13.js:83:22:83:24 | url | tst13.js:78:15:78:38 | documen ... .search | tst13.js:83:22:83:24 | url | Untrusted URL redirection depends on a $@. | tst13.js:78:15:78:38 | documen ... .search | user-provided value |
-| tst.js:2:19:2:72 | /.*redi ... ref)[1] | tst.js:2:47:2:63 | document.location | tst.js:2:19:2:72 | /.*redi ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:2:47:2:63 | document.location | user-provided value |
+| tst15.js:3:23:3:51 | url.sub ... ring(1) | tst15.js:2:15:2:31 | document.location | tst15.js:3:23:3:51 | url.sub ... ring(1) | Untrusted URL redirection depends on a $@. | tst15.js:2:15:2:31 | document.location | user-provided value |
+| tst15.js:4:23:4:55 | url.sub ... ring(1) | tst15.js:2:15:2:31 | document.location | tst15.js:4:23:4:55 | url.sub ... ring(1) | Untrusted URL redirection depends on a $@. | tst15.js:2:15:2:31 | document.location | user-provided value |
+| tst15.js:5:23:5:73 | url.sub ... ring(1) | tst15.js:2:15:2:31 | document.location | tst15.js:5:23:5:73 | url.sub ... ring(1) | Untrusted URL redirection depends on a $@. | tst15.js:2:15:2:31 | document.location | user-provided value |
+| tst15.js:8:23:8:60 | url2.su ... nown()) | tst15.js:7:16:7:32 | document.location | tst15.js:8:23:8:60 | url2.su ... nown()) | Untrusted URL redirection depends on a $@. | tst15.js:7:16:7:32 | document.location | user-provided value |
+| tst15.js:9:23:9:64 | url2.su ... nown()) | tst15.js:7:16:7:32 | document.location | tst15.js:9:23:9:64 | url2.su ... nown()) | Untrusted URL redirection depends on a $@. | tst15.js:7:16:7:32 | document.location | user-provided value |
+| tst15.js:10:23:10:83 | url2.su ... nown()) | tst15.js:7:16:7:32 | document.location | tst15.js:10:23:10:83 | url2.su ... nown()) | Untrusted URL redirection depends on a $@. | tst15.js:7:16:7:32 | document.location | user-provided value |
+| tst15.js:13:23:13:54 | search. ... ring(1) | tst15.js:12:18:12:41 | documen ... .search | tst15.js:13:23:13:54 | search. ... ring(1) | Untrusted URL redirection depends on a $@. | tst15.js:12:18:12:41 | documen ... .search | user-provided value |
+| tst15.js:14:23:14:58 | search. ... ring(1) | tst15.js:12:18:12:41 | documen ... .search | tst15.js:14:23:14:58 | search. ... ring(1) | Untrusted URL redirection depends on a $@. | tst15.js:12:18:12:41 | documen ... .search | user-provided value |
+| tst15.js:15:23:15:79 | search. ... ring(1) | tst15.js:12:18:12:41 | documen ... .search | tst15.js:15:23:15:79 | search. ... ring(1) | Untrusted URL redirection depends on a $@. | tst15.js:12:18:12:41 | documen ... .search | user-provided value |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] | tst.js:2:47:2:68 | documen ... on.href | tst.js:2:19:2:72 | /.*redi ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:2:47:2:68 | documen ... on.href | user-provided value |
-| tst.js:6:20:6:59 | indirec ... ref)[1] | tst.js:6:34:6:50 | document.location | tst.js:6:20:6:59 | indirec ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:6:34:6:50 | document.location | user-provided value |
 | tst.js:6:20:6:59 | indirec ... ref)[1] | tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:59 | indirec ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:6:34:6:55 | documen ... on.href | user-provided value |
-| tst.js:10:19:10:84 | new Reg ... ref)[1] | tst.js:10:59:10:75 | document.location | tst.js:10:19:10:84 | new Reg ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:10:59:10:75 | document.location | user-provided value |
 | tst.js:10:19:10:84 | new Reg ... ref)[1] | tst.js:10:59:10:80 | documen ... on.href | tst.js:10:19:10:84 | new Reg ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:10:59:10:80 | documen ... on.href | user-provided value |
-| tst.js:14:20:14:59 | indirec ... ref)[1] | tst.js:14:34:14:50 | document.location | tst.js:14:20:14:59 | indirec ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:14:34:14:50 | document.location | user-provided value |
 | tst.js:14:20:14:59 | indirec ... ref)[1] | tst.js:14:34:14:55 | documen ... on.href | tst.js:14:20:14:59 | indirec ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:14:34:14:55 | documen ... on.href | user-provided value |
-| tst.js:18:19:18:84 | new Reg ... ref)[1] | tst.js:18:59:18:75 | document.location | tst.js:18:19:18:84 | new Reg ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:18:59:18:75 | document.location | user-provided value |
 | tst.js:18:19:18:84 | new Reg ... ref)[1] | tst.js:18:59:18:80 | documen ... on.href | tst.js:18:19:18:84 | new Reg ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:18:59:18:80 | documen ... on.href | user-provided value |
-| tst.js:22:20:22:59 | indirec ... ref)[1] | tst.js:22:34:22:50 | document.location | tst.js:22:20:22:59 | indirec ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:22:34:22:50 | document.location | user-provided value |
 | tst.js:22:20:22:59 | indirec ... ref)[1] | tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:59 | indirec ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:22:34:22:55 | documen ... on.href | user-provided value |
 | tst.js:26:22:26:82 | new Reg ... ref)[1] | tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:82 | new Reg ... ref)[1] | Untrusted URL redirection depends on a $@. | tst.js:26:62:26:78 | win.location.href | user-provided value |
 | typed.ts:8:33:8:43 | redirectUri | typed.ts:4:22:4:36 | location.search | typed.ts:8:33:8:43 | redirectUri | Untrusted URL redirection depends on a $@. | typed.ts:4:22:4:36 | location.search | user-provided value |

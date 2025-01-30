@@ -73,24 +73,35 @@ module Impl {
    * where `definingNode` is the entire `Either::Left(x) | Either::Right(x)`
    * pattern.
    */
-  private predicate variableDecl(AstNode definingNode, IdentPat p, string name) {
-    (
-      definingNode = getOutermostEnclosingOrPat(p)
-      or
-      not exists(getOutermostEnclosingOrPat(p)) and
-      definingNode = p.getName()
-    ) and
-    name = p.getName().getText() and
-    // exclude for now anything starting with an uppercase character, which may be a reference to
-    // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-    // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-    // naming guidelines, which they generally do, but they're not enforced.
-    not name.charAt(0).isUppercase() and
-    // exclude parameters from functions without a body as these are trait method declarations
-    // without implementations
-    not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p) and
-    // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-    not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = p)
+  private predicate variableDecl(AstNode definingNode, AstNode p, string name) {
+    p =
+      any(SelfParam sp |
+        definingNode = sp.getName() and
+        name = sp.getName().getText() and
+        // exclude self parameters from functions without a body as these are
+        // trait method declarations without implementations
+        not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
+      )
+    or
+    p =
+      any(IdentPat pat |
+        (
+          definingNode = getOutermostEnclosingOrPat(pat)
+          or
+          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = pat.getName()
+        ) and
+        name = pat.getName().getText() and
+        // exclude for now anything starting with an uppercase character, which may be a reference to
+        // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
+        // which we don't appear to recognize yet anyway. This also assumes programmers follow the
+        // naming guidelines, which they generally do, but they're not enforced.
+        not name.charAt(0).isUppercase() and
+        // exclude parameters from functions without a body as these are trait method declarations
+        // without implementations
+        not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
+        // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
+        not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
+      )
   }
 
   /** A variable. */
@@ -112,8 +123,11 @@ module Impl {
     /** Gets an access to this variable. */
     VariableAccess getAnAccess() { result.getVariable() = this }
 
+    /** Gets the `self` parameter that declares this variable, if one exists. */
+    SelfParam getSelfParam() { variableDecl(definingNode, result, name) }
+
     /**
-     * Gets the pattern that declares this variable.
+     * Gets the pattern that declares this variable, if any.
      *
      * Normally, the pattern is unique, except when introduced in an or pattern:
      *
@@ -125,6 +139,9 @@ module Impl {
      */
     IdentPat getPat() { variableDecl(definingNode, result, name) }
 
+    /** Gets the enclosing CFG scope for this variable declaration. */
+    CfgScope getEnclosingCfgScope() { result = definingNode.getEnclosingCfgScope() }
+
     /** Gets the `let` statement that introduces this variable, if any. */
     LetStmt getLetStmt() { this.getPat() = result.getPat() }
 
@@ -135,7 +152,9 @@ module Impl {
     predicate isCaptured() { this.getAnAccess().isCapture() }
 
     /** Gets the parameter that introduces this variable, if any. */
-    Param getParameter() { parameterDeclInScope(result, this, _) }
+    ParamBase getParameter() {
+      result = this.getSelfParam() or result.(Param).getPat() = getAVariablePatAncestor(this)
+    }
 
     /** Hold is this variable is mutable. */
     predicate isMutable() { this.getPat().isMut() }
@@ -144,7 +163,11 @@ module Impl {
     predicate isImmutable() { not this.isMutable() }
   }
 
-  /** A path expression that may access a local variable. */
+  /**
+   * A path expression that may access a local variable. These are paths that
+   * only consist of a simple name (i.e., without generic arguments,
+   * qualifiers, etc.).
+   */
   private class VariableAccessCand extends PathExprBase {
     string name_;
 
@@ -154,7 +177,7 @@ module Impl {
         not p.hasQualifier() and
         ps = p.getPart() and
         not ps.hasGenericArgList() and
-        not ps.hasParamList() and
+        not ps.hasParenthesizedArgList() and
         not ps.hasPathType() and
         not ps.hasReturnTypeSyntax() and
         name_ = ps.getNameRef().getText()
@@ -190,10 +213,7 @@ module Impl {
   private VariableScope getEnclosingScope(AstNode n) { result = getAnAncestorInVariableScope(n) }
 
   private Pat getAVariablePatAncestor(Variable v) {
-    exists(AstNode definingNode, string name |
-      v = MkVariable(definingNode, name) and
-      variableDecl(definingNode, result, name)
-    )
+    result = v.getPat()
     or
     exists(Pat mid |
       mid = getAVariablePatAncestor(v) and
@@ -202,43 +222,124 @@ module Impl {
   }
 
   /**
-   * Holds if parameter `p` introduces the variable `v` inside variable scope
-   * `scope`.
+   * Holds if a parameter declares the variable `v` inside variable scope `scope`.
    */
-  private predicate parameterDeclInScope(Param p, Variable v, VariableScope scope) {
-    exists(Pat pat |
-      pat = getAVariablePatAncestor(v) and
-      p.getPat() = pat
-    |
-      exists(Function f |
-        f.getParamList().getAParam() = p and
-        scope = f.getBody()
+  private predicate parameterDeclInScope(Variable v, VariableScope scope) {
+    exists(Callable f |
+      v.getParameter() = f.getParamList().getAParamBase() and
+      scope = [f.(Function).getBody(), f.(ClosureExpr).getBody()]
+    )
+  }
+
+  /** A subset of `Element`s for which we want to compute pre-order numbers. */
+  private class RelevantElement extends Element {
+    RelevantElement() {
+      this instanceof VariableScope or
+      this instanceof VariableAccessCand or
+      this instanceof LetStmt or
+      getImmediateChildAndAccessor(this, _, _) instanceof RelevantElement
+    }
+
+    pragma[nomagic]
+    private RelevantElement getChild(int index) {
+      result = getImmediateChildAndAccessor(this, index, _)
+    }
+
+    pragma[nomagic]
+    private RelevantElement getImmediateChildMin(int index) {
+      // A child may have multiple positions for different accessors,
+      // so always use the first
+      result = this.getChild(index) and
+      index = min(int i | result = this.getChild(i) | i)
+    }
+
+    pragma[nomagic]
+    RelevantElement getImmediateChild(int index) {
+      result =
+        rank[index + 1](Element res, int i | res = this.getImmediateChildMin(i) | res order by i)
+    }
+
+    pragma[nomagic]
+    RelevantElement getImmediateLastChild() {
+      exists(int last |
+        result = this.getImmediateChild(last) and
+        not exists(this.getImmediateChild(last + 1))
       )
+    }
+  }
+
+  /**
+   * Gets the pre-order numbering of `n`, where the immediately enclosing
+   * variable scope of `n` is `scope`.
+   */
+  pragma[nomagic]
+  private int getPreOrderNumbering(VariableScope scope, RelevantElement n) {
+    n = scope and
+    result = 0
+    or
+    exists(RelevantElement parent |
+      not parent instanceof VariableScope
       or
-      exists(ClosureExpr ce |
-        ce.getParamList().getAParam() = p and
-        scope = ce.getBody()
+      parent = scope
+    |
+      // first child of a previously numbered node
+      result = getPreOrderNumbering(scope, parent) + 1 and
+      n = parent.getImmediateChild(0)
+      or
+      // non-first child of a previously numbered node
+      exists(RelevantElement child, int i |
+        result = getLastPreOrderNumbering(scope, child) + 1 and
+        child = parent.getImmediateChild(i) and
+        n = parent.getImmediateChild(i + 1)
       )
     )
   }
 
   /**
-   * Holds if `v` is named `name` and is declared inside variable scope
-   * `scope`, and `v` is bound starting from `(line, column)`.
+   * Gets the pre-order numbering of the _last_ node nested under `n`, where the
+   * immediately enclosing variable scope of `n` (and the last node) is `scope`.
    */
-  private predicate variableDeclInScope(
-    Variable v, VariableScope scope, string name, int line, int column
-  ) {
+  pragma[nomagic]
+  private int getLastPreOrderNumbering(VariableScope scope, RelevantElement n) {
+    exists(RelevantElement leaf |
+      result = getPreOrderNumbering(scope, leaf) and
+      leaf != scope and
+      (
+        not exists(leaf.getImmediateChild(_))
+        or
+        leaf instanceof VariableScope
+      )
+    |
+      n = leaf
+      or
+      n.getImmediateLastChild() = leaf and
+      not n instanceof VariableScope
+    )
+    or
+    exists(RelevantElement mid |
+      mid = n.getImmediateLastChild() and
+      result = getLastPreOrderNumbering(scope, mid) and
+      not mid instanceof VariableScope and
+      not n instanceof VariableScope
+    )
+  }
+
+  /**
+   * Holds if `v` is named `name` and is declared inside variable scope
+   * `scope`. The pre-order numbering of the binding site of `v`, amongst
+   * all nodes nester under `scope`, is `ord`.
+   */
+  private predicate variableDeclInScope(Variable v, VariableScope scope, string name, int ord) {
     name = v.getName() and
     (
-      parameterDeclInScope(_, v, scope) and
-      scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+      parameterDeclInScope(v, scope) and
+      ord = getPreOrderNumbering(scope, scope)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |
         scope =
           any(MatchArmScope arm |
             arm.getPat() = pat and
-            arm.getLocation().hasLocationFileInfo(_, line, column, _, _)
+            ord = getPreOrderNumbering(scope, arm)
           )
         or
         exists(LetStmt let |
@@ -246,56 +347,53 @@ module Impl {
           scope = getEnclosingScope(let) and
           // for `let` statements, variables are bound _after_ the statement, i.e.
           // not in the RHS
-          let.getLocation().hasLocationFileInfo(_, _, _, line, column)
+          ord = getLastPreOrderNumbering(scope, let) + 1
         )
         or
         exists(IfExpr ie, LetExpr let |
           let.getPat() = pat and
           ie.getCondition() = let and
           scope = ie.getThen() and
-          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+          ord = getPreOrderNumbering(scope, scope)
         )
         or
         exists(ForExpr fe |
           fe.getPat() = pat and
           scope = fe.getLoopBody() and
-          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+          ord = getPreOrderNumbering(scope, scope)
         )
         or
         exists(WhileExpr we, LetExpr let |
           let.getPat() = pat and
           we.getCondition() = let and
           scope = we.getLoopBody() and
-          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
+          ord = getPreOrderNumbering(scope, scope)
         )
       )
     )
   }
 
   /**
-   * Holds if `cand` may access a variable named `name` at
-   * `(startline, startcolumn, endline, endcolumn)` in the variable scope
-   * `scope`.
+   * Holds if `cand` may access a variable named `name` at pre-order number `ord`
+   * in the variable scope `scope`.
    *
    * `nestLevel` is the number of nested scopes that need to be traversed
    * to reach `scope` from `cand`.
    */
   private predicate variableAccessCandInScope(
-    VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int startline,
-    int startcolumn, int endline, int endcolumn
+    VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
   ) {
     name = cand.getName() and
     scope = [cand.(VariableScope), getEnclosingScope(cand)] and
-    cand.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn) and
+    ord = getPreOrderNumbering(scope, cand) and
     nestLevel = 0
     or
     exists(VariableScope inner |
-      variableAccessCandInScope(cand, inner, name, nestLevel - 1, _, _, _, _) and
+      variableAccessCandInScope(cand, inner, name, nestLevel - 1, _) and
       scope = getEnclosingScope(inner) and
-      // Use the location of the inner scope as the location of the access, instead of the
-      // actual access location. This allows us to collapse multiple accesses in inner
-      // scopes to a single entity
-      inner.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn)
+      // Use the pre-order number of the inner scope as the number of the access. This allows
+      // us to collapse multiple accesses in inner scopes to a single entity
+      ord = getPreOrderNumbering(scope, inner)
     )
   }
 
@@ -366,19 +464,16 @@ module Impl {
     }
 
     pragma[nomagic]
-    predicate rankBy(
-      string name, VariableScope scope, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      variableDeclInScope(this.asVariable(), scope, name, startline, startcolumn) and
-      endline = -1 and
-      endcolumn = -1
+    predicate rankBy(string name, VariableScope scope, int ord, int kind) {
+      variableDeclInScope(this.asVariable(), scope, name, ord) and
+      kind = 0
       or
-      variableAccessCandInScope(this.asVariableAccessCand(), scope, name, _, startline, startcolumn,
-        endline, endcolumn)
+      variableAccessCandInScope(this.asVariableAccessCand(), scope, name, _, ord) and
+      kind = 1
     }
   }
 
-  private module DenseRankInput implements DenseRankInputSig3 {
+  private module DenseRankInput implements DenseRankInputSig2 {
     class C1 = VariableScope;
 
     class C2 = string;
@@ -387,11 +482,10 @@ module Impl {
 
     int getRank(VariableScope scope, string name, VariableOrAccessCand v) {
       v =
-        rank[result](VariableOrAccessCand v0, int startline, int startcolumn, int endline,
-          int endcolumn |
-          v0.rankBy(name, scope, startline, startcolumn, endline, endcolumn)
+        rank[result](VariableOrAccessCand v0, int ord, int kind |
+          v0.rankBy(name, scope, ord, kind)
         |
-          v0 order by startline, startcolumn, endline, endcolumn
+          v0 order by ord, kind
         )
     }
   }
@@ -401,7 +495,7 @@ module Impl {
    * to a variable named `name` in the variable scope `scope`.
    */
   private int rankVariableOrAccess(VariableScope scope, string name, VariableOrAccessCand v) {
-    result = DenseRank3<DenseRankInput>::denseRank(scope, name, v) - 1
+    v = DenseRank2<DenseRankInput>::denseRank(scope, name, result + 1)
   }
 
   /**
@@ -431,7 +525,7 @@ module Impl {
     exists(int rnk |
       variableReachesRank(scope, name, v, rnk) and
       rnk = rankVariableOrAccess(scope, name, TVariableOrAccessCandVariableAccessCand(cand)) and
-      variableAccessCandInScope(cand, scope, name, nestLevel, _, _, _, _)
+      variableAccessCandInScope(cand, scope, name, nestLevel, _)
     )
   }
 
@@ -446,7 +540,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { this.getEnclosingCfgScope() != v.getPat().getEnclosingCfgScope() }
+    predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
 
     override string toString() { result = name }
 
@@ -461,7 +555,8 @@ module Impl {
       assignmentExprDescendant(mid) and
       getImmediateParent(e) = mid and
       not mid.(PrefixExpr).getOperatorName() = "*" and
-      not mid instanceof FieldExpr
+      not mid instanceof FieldExpr and
+      not mid instanceof IndexExpr
     )
   }
 

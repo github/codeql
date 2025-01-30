@@ -21,7 +21,13 @@ private string positionToString(int pos) {
 }
 
 module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = Callable;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
@@ -108,6 +114,10 @@ private module StepsInput implements Impl::Private::StepsInputSig {
       call.getACalleeIncludingExternals() = sc
     )
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements
@@ -399,6 +409,13 @@ module SourceSinkInterpretationInput implements
         c = "" and
         pragma[only_bind_into](e) = getElementWithQualifier(frn.getField(), frn.getBase())
       )
+      or
+      // A package-scope (or universe-scope) variable
+      exists(Variable v | not v instanceof Field |
+        c = "" and
+        n.(DataFlow::ReadNode).reads(v) and
+        pragma[only_bind_into](e).asEntity() = v
+      )
     )
   }
 
@@ -419,6 +436,17 @@ module SourceSinkInterpretationInput implements
       c = "" and
       fw.writesField(base, f, node.asNode()) and
       pragma[only_bind_into](e) = getElementWithQualifier(f, base)
+    )
+    or
+    // A package-scope (or universe-scope) variable
+    exists(Node n, SourceOrSinkElement e, DataFlow::Write w, Variable v |
+      n = node.asNode() and
+      e = mid.asElement() and
+      not v instanceof Field
+    |
+      c = "" and
+      w.writes(v, n) and
+      pragma[only_bind_into](e).asEntity() = v
     )
   }
 }

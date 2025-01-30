@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["ilammy/setup-nasm", "*", "input.version", "command-injection", "manual"]
+      - ["ilammy/setup-nasm", "*", "input.destination", "command-injection", "manual"]

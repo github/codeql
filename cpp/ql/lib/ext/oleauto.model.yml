@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "", False, "SysAllocString", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["", "", False, "SysAllocStringByteLen", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["", "", False, "SysAllocStringLen", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]

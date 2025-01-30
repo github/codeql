@@ -38,7 +38,8 @@
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
  *    "Argument[n]", or "Argument[n1..n2]":
- *    - "": Selects a write to the selected element in case this is a field.
+ *    - "": Selects a write to the selected element in case this is a field or
+ *      package-level variable.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
@@ -47,7 +48,7 @@
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", , "ReturnValue", "ReturnValue[n]", or
  *    "ReturnValue[n1..n2]":
- *    - "": Selects a read of a selected field.
+ *    - "": Selects a read of a selected field or package-level variable.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
  *      The arguments are zero-indexed, and `receiver` specifies the receiver.
@@ -89,7 +90,7 @@ import internal.ExternalFlowExtensions as FlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
-private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Public as Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
@@ -582,13 +583,13 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
-private class SummarizedCallableAdapter extends SummarizedCallable {
+private class SummarizedCallableAdapter extends Public::SummarizedCallable {
   SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
   ) {
-    exists(Provenance provenance |
+    exists(Public::Provenance provenance |
       summaryElement(this, input, output, kind, provenance, model) and
       provenance.isManual()
     )
@@ -597,11 +598,11 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   private predicate relevantSummaryElementGenerated(
     string input, string output, string kind, string model
   ) {
-    exists(Provenance provenance |
+    exists(Public::Provenance provenance |
       summaryElement(this, input, output, kind, provenance, model) and
       provenance.isGenerated()
     ) and
-    not exists(Provenance provenance |
+    not exists(Public::Provenance provenance |
       neutralElement(this, "summary", provenance) and
       provenance.isManual()
     )
@@ -620,7 +621,7 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     )
   }
 
-  override predicate hasProvenance(Provenance provenance) {
+  override predicate hasProvenance(Public::Provenance provenance) {
     summaryElement(this, _, _, _, provenance, _)
   }
 }

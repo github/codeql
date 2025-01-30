@@ -113,16 +113,6 @@ class DataFlowCallable extends TDataFlowCallable {
     this instanceof TLibraryCallable and
     result instanceof EmptyLocation
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -153,23 +143,6 @@ abstract class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  // #46: Stubs Below
-  /** Gets an argument to this call as a Node. */
-  ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
-
-  /** Gets the target of the call, as a DataFlowCallable. */
-  DataFlowCallable getARuntimeTarget(){ none() } // TODO
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
   }
 }
 

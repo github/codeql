@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ldc-developers/ldc", "*", "input.cmake_flags", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.build_targets", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.host_dc", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.llvm_dir", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.build_dir", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.arch", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.os", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.cross_target_triple", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.ios_deployment_target", "code-injection", "generated"]
+     - ["ldc-developers/ldc", "*", "input.cross_compiling", "code-injection", "generated"]

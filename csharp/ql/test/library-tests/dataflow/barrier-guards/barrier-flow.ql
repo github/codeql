@@ -17,7 +17,7 @@ class StringConstCompareBarrier extends DataFlow::Node {
   }
 }
 
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import PathGraph
 
 module FlowConfig implements DataFlow::ConfigSig {

@@ -4,7 +4,7 @@
  */
 
 private import internal.NameRefImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.UseBoundGenericArg
 
 /**
  * A NameRef. For example:

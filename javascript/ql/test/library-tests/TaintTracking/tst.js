@@ -14,7 +14,7 @@ function test() {
     sink(x.sort()); // NOT OK
 
     var a = [];
-    sink(a); // NOT OK (flow-insensitive treatment of `a`)
+    sink(a); // OK
     a.push(x);
     sink(a); // NOT OK
 
@@ -68,6 +68,34 @@ function test() {
     sink(x.toReversed()) // NOT OK
     const xReversed = x.toReversed();
     sink(xReversed) // NOT OK
+
+    sink(Map.groupBy(x, z => z)); // NOT OK
+    sink(Custom.groupBy(x, z => z)); // OK
+    sink(Object.groupBy(x, z => z)); // NOT OK
+    sink(Map.groupBy(source(), (item) => sink(item))); // NOT OK
+
+    { 
+        const grouped = Map.groupBy(x, (item) => sink(item)); // NOT OK
+        sink(grouped.get(unknown())); // NOT OK
+    }
+    {
+        const list = [source()];
+        const grouped = Map.groupBy(list, (item) => sink(item)); // NOT OK
+        sink(grouped.get(unknown())); // NOT OK
+    }
+    {
+        const data = source();
+        const result = Object.groupBy(data, item => item);
+        const taintedValue = result[notDefined()];
+        sink(taintedValue); // NOT OK
+    }
+    {
+        const data = source();
+        const map = Map.groupBy(data, item => item);
+        const taintedValue = map.get(true); 
+        sink(taintedValue); // NOT OK
+        sink(map.get(true)); // NOT OK
+    }
 
     sink(x.with()) // NOT OK
     const xWith = x.with();

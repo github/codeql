@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 predicate isBad(DataFlow::Node g, Expr e, boolean branch) {
   g.(DataFlow::CallNode).getTarget().getName() = "isBad" and

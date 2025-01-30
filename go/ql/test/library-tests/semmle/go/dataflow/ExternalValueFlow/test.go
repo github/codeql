@@ -205,6 +205,9 @@ func simpleflow() {
 	b.Sink1(min(srcInt, 0, 1)) // $ hasValueFlow="call to min"
 	b.Sink1(min(0, srcInt, 1)) // $ hasValueFlow="call to min"
 	b.Sink1(min(0, 1, srcInt)) // $ hasValueFlow="call to min"
+
+	temp := test.SourceVariable
+	test.SinkVariable = temp // $ hasValueFlow="temp"
 }
 
 type mapstringstringtype map[string]string

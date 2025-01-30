@@ -4351,6 +4351,33 @@ generic.c:
 #   28|               Type = [IntType] unsigned int
 #   28|               ValueCategory = prvalue
 #   29|     getStmt(2): [ReturnStmt] return ...
+ir-not-microsoft.c:
+#    1| [TopLevelFunction] void gnuConditionalOmittedOperand()
+#    1|   <params>: 
+#    1|   getEntryPoint(): [BlockStmt] { ... }
+#    2|     getStmt(0): [DeclStmt] declaration
+#    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#    2|           Type = [IntType] int
+#    2|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+#    2|           Type = [IntType] int
+#    3|     getStmt(1): [ExprStmt] ExprStmt
+#    3|       getExpr(): [AssignExpr] ... = ...
+#    3|           Type = [IntType] int
+#    3|           ValueCategory = prvalue
+#    3|         getLValue(): [VariableAccess] i
+#    3|             Type = [IntType] int
+#    3|             ValueCategory = lvalue
+#    3|         getRValue(): [ConditionalExpr] ... ? ... : ...
+#    3|             Type = [IntType] int
+#    3|             ValueCategory = prvalue(load)
+#    3|           getCondition(): [VariableAccess] j
+#    3|               Type = [IntType] int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getElse(): [Literal] 2
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 2
+#    3|               ValueCategory = prvalue
+#    4|     getStmt(2): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 
@@ -9016,9 +9043,9 @@ ir.cpp:
 #  704| [TemplateFunction,TopLevelFunction] T min<T>(T, T)
 #  704|   <params>: 
 #  704|     getParameter(0): [Parameter] x
-#  704|         Type = [TemplateParameter] T
+#  704|         Type = [TypeTemplateParameter] T
 #  704|     getParameter(1): [Parameter] y
-#  704|         Type = [TemplateParameter] T
+#  704|         Type = [TypeTemplateParameter] T
 #  704|   getEntryPoint(): [BlockStmt] { ... }
 #  705|     getStmt(0): [ReturnStmt] return ...
 #  705|       getExpr(): [ConditionalExpr] ... ? ... : ...
@@ -9028,16 +9055,16 @@ ir.cpp:
 #  705|             Type = [UnknownType] unknown
 #  705|             ValueCategory = prvalue
 #  705|           getLesserOperand(): [VariableAccess] x
-#  705|               Type = [TemplateParameter] T
+#  705|               Type = [TypeTemplateParameter] T
 #  705|               ValueCategory = lvalue
 #  705|           getGreaterOperand(): [VariableAccess] y
-#  705|               Type = [TemplateParameter] T
+#  705|               Type = [TypeTemplateParameter] T
 #  705|               ValueCategory = lvalue
 #  705|         getThen(): [VariableAccess] x
-#  705|             Type = [TemplateParameter] T
+#  705|             Type = [TypeTemplateParameter] T
 #  705|             ValueCategory = lvalue
 #  705|         getElse(): [VariableAccess] y
-#  705|             Type = [TemplateParameter] T
+#  705|             Type = [TypeTemplateParameter] T
 #  705|             ValueCategory = lvalue
 #  705|         getCondition().getFullyConverted(): [CStyleCast] (bool)...
 #  705|             Conversion = [BoolConversion] conversion to bool
@@ -9095,24 +9122,24 @@ ir.cpp:
 #  715| [MemberFunction,TemplateFunction] T Outer<T>::Func<U, V>(U, V)
 #  715|   <params>: 
 #  715|     getParameter(0): [Parameter] x
-#  715|         Type = [TemplateParameter] U
+#  715|         Type = [TypeTemplateParameter] U
 #  715|     getParameter(1): [Parameter] y
-#  715|         Type = [TemplateParameter] V
+#  715|         Type = [TypeTemplateParameter] V
 #  715|   getEntryPoint(): [BlockStmt] { ... }
 #  716|     getStmt(0): [ReturnStmt] return ...
 #  716|       getExpr(): [Literal] 0
-#  716|           Type = [TemplateParameter] T
+#  716|           Type = [TypeTemplateParameter] T
 #  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
 #  716|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
-#  716|           Type = [TemplateParameter] T
+#  716|           Type = [TypeTemplateParameter] T
 #  716|           ValueCategory = prvalue(load)
 #  715| [MemberFunction,TemplateFunction] long Outer<long>::Func<U, V>(U, V)
 #  715|   <params>: 
 #  715|     getParameter(0): [Parameter] x
-#  715|         Type = [TemplateParameter] U
+#  715|         Type = [TypeTemplateParameter] U
 #  715|     getParameter(1): [Parameter] y
-#  715|         Type = [TemplateParameter] V
+#  715|         Type = [TypeTemplateParameter] V
 #  715| [FunctionTemplateInstantiation,MemberFunction] long Outer<long>::Func<void*, char>(void*, char)
 #  715|   <params>: 
 #  715|     getParameter(0): [Parameter] x
@@ -12445,11 +12472,11 @@ ir.cpp:
 # 1088| [ConstMemberFunction] bool std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator==(std::iterator<Category, value_type, difference_type, pointer_type, reference_type>) const
 # 1088|   <params>: 
 # 1088|     getParameter(0): [Parameter] other
-# 1088|         Type = [TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
+# 1088|         Type = [Struct,TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
 # 1089| [ConstMemberFunction] bool std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator!=(std::iterator<Category, value_type, difference_type, pointer_type, reference_type>) const
 # 1089|   <params>: 
 # 1089|     getParameter(0): [Parameter] other
-# 1089|         Type = [TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
+# 1089|         Type = [Struct,TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
 # 1089| [ConstMemberFunction] bool std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>::operator!=(std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>) const
 # 1089|   <params>: 
 # 1089|     getParameter(0): [Parameter] other
@@ -12497,7 +12524,7 @@ ir.cpp:
 # 1096| [MemberFunction] int std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator-(std::iterator<Category, value_type, difference_type, pointer_type, reference_type>)
 # 1096|   <params>: 
 # 1096|     getParameter(0): [Parameter] (unnamed parameter 0)
-# 1096|         Type = [TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
+# 1096|         Type = [Struct,TemplateClass] iterator<Category, value_type, difference_type, pointer_type, reference_type>
 # 1097| [MemberFunction] reference_type std::iterator<Category, value_type, difference_type, pointer_type, reference_type>::operator[](int)
 # 1097|   <params>: 
 # 1097|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -12559,7 +12586,7 @@ ir.cpp:
 # 1109| [Constructor] void std::vector<T>::vector(T)
 # 1109|   <params>: 
 # 1109|     getParameter(0): [Parameter] (unnamed parameter 0)
-# 1109|         Type = [TemplateParameter] T
+# 1109|         Type = [TypeTemplateParameter] T
 # 1109| [Constructor] void std::vector<char>::vector(char)
 # 1109|   <params>: 
 # 1109|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -12601,15 +12628,15 @@ ir.cpp:
 # 1120| [Operator,TemplateFunction,TopLevelFunction] bool std::operator==<T>(iterator, iterator)
 # 1120|   <params>: 
 # 1120|     getParameter(0): [Parameter] left
-# 1120|         Type = [TemplateParameter] iterator
+# 1120|         Type = [TypeTemplateParameter] iterator
 # 1120|     getParameter(1): [Parameter] right
-# 1120|         Type = [TemplateParameter] iterator
+# 1120|         Type = [TypeTemplateParameter] iterator
 # 1122| [Operator,TemplateFunction,TopLevelFunction] bool std::operator!=<T>(iterator, iterator)
 # 1122|   <params>: 
 # 1122|     getParameter(0): [Parameter] left
-# 1122|         Type = [TemplateParameter] iterator
+# 1122|         Type = [TypeTemplateParameter] iterator
 # 1122|     getParameter(1): [Parameter] right
-# 1122|         Type = [TemplateParameter] iterator
+# 1122|         Type = [TypeTemplateParameter] iterator
 # 1126| [TopLevelFunction] void RangeBasedFor(std::vector<int> const&)
 # 1126|   <params>: 
 # 1126|     getParameter(0): [Parameter] v
@@ -14129,11 +14156,11 @@ ir.cpp:
 # 1375|   getEntryPoint(): [BlockStmt] { ... }
 # 1376|     getStmt(0): [ReturnStmt] return ...
 # 1376|       getExpr(): [Literal] 0
-# 1376|           Type = [TemplateParameter] T
+# 1376|           Type = [TypeTemplateParameter] T
 # 1376|           Value = [Literal] 0
 # 1376|           ValueCategory = prvalue
 # 1376|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
-# 1376|           Type = [TemplateParameter] T
+# 1376|           Type = [TypeTemplateParameter] T
 # 1376|           ValueCategory = prvalue(load)
 # 1375| [FunctionTemplateInstantiation,TopLevelFunction] copy_constructor defaultConstruct<copy_constructor>()
 # 1375|   <params>: 
@@ -14223,7 +14250,7 @@ ir.cpp:
 # 1409| [TemplateFunction,TopLevelFunction] void acceptValue<T>(T)
 # 1409|   <params>: 
 # 1409|     getParameter(0): [Parameter] v
-# 1409|         Type = [TemplateParameter] T
+# 1409|         Type = [TypeTemplateParameter] T
 # 1409| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<copy_constructor>(copy_constructor)
 # 1409|   <params>: 
 # 1409|     getParameter(0): [Parameter] v
@@ -20584,7 +20611,7 @@ ir.cpp:
 # 2256|           Type = [LValueReferenceType] T &
 # 2256|           ValueCategory = prvalue(load)
 # 2256|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 2256|           Type = [TemplateParameter] T
+# 2256|           Type = [TypeTemplateParameter] T
 # 2256|           ValueCategory = lvalue
 # 2256| [FunctionTemplateInstantiation,TopLevelFunction] int& vacuous_destructor_call::get<int>(int&)
 # 2256|   <params>: 
@@ -20648,7 +20675,7 @@ ir.cpp:
 # 2260|                 Type = [LValueReferenceType] T &
 # 2260|                 ValueCategory = prvalue(load)
 # 2260|             getArgument(0).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 2260|                 Type = [TemplateParameter] T
+# 2260|                 Type = [TypeTemplateParameter] T
 # 2260|                 ValueCategory = lvalue
 # 2261|     getStmt(1): [ReturnStmt] return ...
 # 2259| [FunctionTemplateInstantiation,TopLevelFunction] void vacuous_destructor_call::call_destructor<int>(int&)
@@ -24086,6 +24113,157 @@ ir.cpp:
 # 2717|             ValueCategory = prvalue
 # 2717|       getThen(): [BlockStmt] { ... }
 # 2718|     getStmt(16): [ReturnStmt] return ...
+# 2720| [CopyAssignmentOperator] WithBracketOperator& WithBracketOperator::operator=(WithBracketOperator const&)
+# 2720|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const WithBracketOperator &
+# 2720| [MoveAssignmentOperator] WithBracketOperator& WithBracketOperator::operator=(WithBracketOperator&&)
+# 2720|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] WithBracketOperator &&
+# 2721| [ConstMemberFunction] char const& WithBracketOperator::operator[](int) const
+# 2721|   <params>: 
+# 2721|     getParameter(0): [Parameter] pos
+# 2721|         Type = [IntType] int
+# 2724| [TopLevelFunction] char UseBracketOperator(WithBracketOperator const, int)
+# 2724|   <params>: 
+# 2724|     getParameter(0): [Parameter] x
+# 2724|         Type = [SpecifiedType] const WithBracketOperator
+# 2724|     getParameter(1): [Parameter] i
+# 2724|         Type = [IntType] int
+# 2724|   getEntryPoint(): [BlockStmt] { ... }
+# 2725|     getStmt(0): [ReturnStmt] return ...
+# 2725|       getExpr(): [OverloadedArrayExpr] call to operator[]
+# 2725|           Type = [LValueReferenceType] const char &
+# 2725|           ValueCategory = prvalue
+# 2725|         getArrayBase(): [VariableAccess] x
+# 2725|             Type = [SpecifiedType] const WithBracketOperator
+# 2725|             ValueCategory = lvalue
+# 2725|         getArrayOffset(): [VariableAccess] i
+# 2725|             Type = [IntType] int
+# 2725|             ValueCategory = prvalue(load)
+# 2725|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2725|           Type = [PlainCharType] char
+# 2725|           ValueCategory = prvalue(load)
+ir23.cpp:
+#    1| [TopLevelFunction] bool consteval_1()
+#    1|   <params>: 
+#    2|   getEntryPoint(): [BlockStmt] { ... }
+#    3|     getStmt(0): [ConstevalIfStmt] if consteval ...
+#    3|       getThen(): [BlockStmt] { ... }
+#    4|         getStmt(0): [ReturnStmt] return ...
+#    4|           getExpr(): [Literal] 1
+#    4|               Type = [BoolType] bool
+#    4|               Value = [Literal] 1
+#    4|               ValueCategory = prvalue
+#    5|       getElse(): [BlockStmt] { ... }
+#    6|         getStmt(0): [ReturnStmt] return ...
+#    6|           getExpr(): [Literal] 0
+#    6|               Type = [BoolType] bool
+#    6|               Value = [Literal] 0
+#    6|               ValueCategory = prvalue
+#   10| [TopLevelFunction] bool consteval_2()
+#   10|   <params>: 
+#   11|   getEntryPoint(): [BlockStmt] { ... }
+#   12|     getStmt(0): [ConstevalIfStmt] if ! consteval ...
+#   12|       getThen(): [BlockStmt] { ... }
+#   13|         getStmt(0): [ReturnStmt] return ...
+#   13|           getExpr(): [Literal] 1
+#   13|               Type = [BoolType] bool
+#   13|               Value = [Literal] 1
+#   13|               ValueCategory = prvalue
+#   14|       getElse(): [BlockStmt] { ... }
+#   15|         getStmt(0): [ReturnStmt] return ...
+#   15|           getExpr(): [Literal] 0
+#   15|               Type = [BoolType] bool
+#   15|               Value = [Literal] 0
+#   15|               ValueCategory = prvalue
+#   19| [TopLevelFunction] bool consteval_3()
+#   19|   <params>: 
+#   20|   getEntryPoint(): [BlockStmt] { ... }
+#   21|     getStmt(0): [ConstevalIfStmt] if consteval ...
+#   21|       getThen(): [BlockStmt] { ... }
+#   22|         getStmt(0): [ReturnStmt] return ...
+#   22|           getExpr(): [Literal] 1
+#   22|               Type = [BoolType] bool
+#   22|               Value = [Literal] 1
+#   22|               ValueCategory = prvalue
+#   25|     getStmt(1): [ReturnStmt] return ...
+#   25|       getExpr(): [Literal] 0
+#   25|           Type = [BoolType] bool
+#   25|           Value = [Literal] 0
+#   25|           ValueCategory = prvalue
+#   28| [TopLevelFunction] bool consteval_4()
+#   28|   <params>: 
+#   29|   getEntryPoint(): [BlockStmt] { ... }
+#   30|     getStmt(0): [ConstevalIfStmt] if ! consteval ...
+#   30|       getThen(): [BlockStmt] { ... }
+#   31|         getStmt(0): [ReturnStmt] return ...
+#   31|           getExpr(): [Literal] 1
+#   31|               Type = [BoolType] bool
+#   31|               Value = [Literal] 1
+#   31|               ValueCategory = prvalue
+#   34|     getStmt(1): [ReturnStmt] return ...
+#   34|       getExpr(): [Literal] 0
+#   34|           Type = [BoolType] bool
+#   34|           Value = [Literal] 0
+#   34|           ValueCategory = prvalue
+#   37| [TopLevelFunction] bool consteval_5()
+#   37|   <params>: 
+#   38|   getEntryPoint(): [BlockStmt] { ... }
+#   39|     getStmt(0): [DeclStmt] declaration
+#   39|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#   39|           Type = [BoolType] bool
+#   39|         getVariable().getInitializer(): [Initializer] initializer for r
+#   39|           getExpr(): [Literal] 1
+#   39|               Type = [BoolType] bool
+#   39|               Value = [Literal] 1
+#   39|               ValueCategory = prvalue
+#   41|     getStmt(1): [ConstevalIfStmt] if ! consteval ...
+#   41|       getThen(): [BlockStmt] { ... }
+#   42|         getStmt(0): [ExprStmt] ExprStmt
+#   42|           getExpr(): [AssignExpr] ... = ...
+#   42|               Type = [BoolType] bool
+#   42|               ValueCategory = lvalue
+#   42|             getLValue(): [VariableAccess] r
+#   42|                 Type = [BoolType] bool
+#   42|                 ValueCategory = lvalue
+#   42|             getRValue(): [Literal] 0
+#   42|                 Type = [BoolType] bool
+#   42|                 Value = [Literal] 0
+#   42|                 ValueCategory = prvalue
+#   45|     getStmt(2): [ReturnStmt] return ...
+#   45|       getExpr(): [VariableAccess] r
+#   45|           Type = [BoolType] bool
+#   45|           ValueCategory = prvalue(load)
+#   48| [TopLevelFunction] bool consteval_6()
+#   48|   <params>: 
+#   49|   getEntryPoint(): [BlockStmt] { ... }
+#   50|     getStmt(0): [DeclStmt] declaration
+#   50|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#   50|           Type = [BoolType] bool
+#   50|         getVariable().getInitializer(): [Initializer] initializer for r
+#   50|           getExpr(): [Literal] 1
+#   50|               Type = [BoolType] bool
+#   50|               Value = [Literal] 1
+#   50|               ValueCategory = prvalue
+#   52|     getStmt(1): [ConstevalIfStmt] if consteval ...
+#   52|       getThen(): [BlockStmt] { ... }
+#   53|         getStmt(0): [ExprStmt] ExprStmt
+#   53|           getExpr(): [AssignExpr] ... = ...
+#   53|               Type = [BoolType] bool
+#   53|               ValueCategory = lvalue
+#   53|             getLValue(): [VariableAccess] r
+#   53|                 Type = [BoolType] bool
+#   53|                 ValueCategory = lvalue
+#   53|             getRValue(): [Literal] 0
+#   53|                 Type = [BoolType] bool
+#   53|                 Value = [Literal] 0
+#   53|                 ValueCategory = prvalue
+#   56|     getStmt(2): [ReturnStmt] return ...
+#   56|       getExpr(): [VariableAccess] r
+#   56|           Type = [BoolType] bool
+#   56|           ValueCategory = prvalue(load)
 many-defs-per-use.cpp:
 #   34| [TopLevelFunction] void many_defs_per_use()
 #   34|   <params>: 

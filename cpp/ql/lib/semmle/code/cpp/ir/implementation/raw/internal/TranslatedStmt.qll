@@ -932,7 +932,7 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
       kind instanceof GotoEdge and
       result = this.getParameter().getFirstInstruction(kind)
       or
-      kind instanceof ExceptionEdge and
+      kind instanceof CppExceptionEdge and
       if exists(this.getDestructors())
       then result = this.getDestructors().getFirstInstruction(any(GotoEdge edge))
       else result = this.getParent().(TranslatedTryStmt).getNextHandler(this, any(GotoEdge edge))
@@ -1096,6 +1096,61 @@ class TranslatedConstExprIfStmt extends TranslatedIfLikeStmt {
   override TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
 
   override predicate hasElse() { exists(stmt.getElse()) }
+}
+
+class TranslatedConstevalIfStmt extends TranslatedStmt {
+  override ConstevalIfStmt stmt;
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    if not this.hasEvaluatedBranch()
+    then
+      kind instanceof GotoEdge and
+      result = this.getInstruction(OnlyInstructionTag())
+    else result = this.getEvaluatedBranch().getFirstInstruction(kind)
+  }
+
+  override TranslatedElement getChildInternal(int id) {
+    id = 0 and
+    result = this.getThen()
+    or
+    id = 1 and
+    result = this.getElse()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    not this.hasEvaluatedBranch() and
+    opcode instanceof Opcode::NoOp and
+    tag = OnlyInstructionTag() and
+    resultType = getVoidType()
+  }
+
+  override Instruction getALastInstructionInternal() {
+    if not this.hasEvaluatedBranch()
+    then result = this.getInstruction(OnlyInstructionTag())
+    else result = this.getEvaluatedBranch().getALastInstruction()
+  }
+
+  override TranslatedElement getLastChild() { result = this.getEvaluatedBranch() }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    (child = this.getThen() or child = this.getElse()) and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  TranslatedStmt getEvaluatedBranch() {
+    result = getTranslatedStmt(stmt.getRuntimeEvaluatedBranch())
+  }
+
+  predicate hasEvaluatedBranch() { stmt.hasRuntimeEvaluatedBranch() }
+
+  TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
+
+  TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
 }
 
 abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {

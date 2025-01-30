@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  changed_files:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files 1
+        id: changed-files1
+        uses: tj-actions/changed-files@v40
+      - name: List all changed files 1
+        run: |
+          for file in ${{ steps.changed-files1.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Get changed files 2
+        id: changed-files2
+        uses: tj-actions/changed-files@v41
+      - name: List all changed files 2
+        run: |
+          for file in ${{ steps.changed-files2.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Get changed files 3
+        id: changed-files3
+        uses: tj-actions/changed-files@v41
+        with:
+          safe_output: false
+      - name: List all changed files 3
+        run: |
+          for file in ${{ steps.changed-files3.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Get changed files 4
+        id: changed-files4
+        uses: tj-actions/changed-files@0874344d6ebbaa00a27da73276ae7162fadcaf69 # v44.3.0
+      - name: List all changed files 4
+        run: |
+          for file in ${{ steps.changed-files4.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Get changed files 5
+        id: changed-files5
+        uses: tj-actions/changed-files@95690f9ece77c1740f4a55b7f1de9023ed6b1f87 # v39.2.3
+      - name: List all changed files 5
+        run: |
+          for file in ${{ steps.changed-files5.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done

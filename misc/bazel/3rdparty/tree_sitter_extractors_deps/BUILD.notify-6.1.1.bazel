@@ -85,14 +85,14 @@ rust_library(
     }),
     version = "6.1.1",
     deps = [
-        "@vendor__crossbeam-channel-0.5.13//:crossbeam_channel",
+        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
         "@vendor__filetime-0.2.25//:filetime",
-        "@vendor__libc-0.2.162//:libc",
+        "@vendor__libc-0.2.169//:libc",
         "@vendor__log-0.4.22//:log",
         "@vendor__walkdir-2.5.0//:walkdir",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor__bitflags-2.6.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor__bitflags-2.7.0//:bitflags",  # cfg(target_os = "macos")
             "@vendor__fsevent-sys-4.1.0//:fsevent_sys",  # aarch64-apple-darwin
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
@@ -123,7 +123,7 @@ rust_library(
             "@vendor__mio-0.8.11//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor__bitflags-2.6.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor__bitflags-2.7.0//:bitflags",  # cfg(target_os = "macos")
             "@vendor__fsevent-sys-4.1.0//:fsevent_sys",  # i686-apple-darwin
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
@@ -150,7 +150,7 @@ rust_library(
             "@vendor__mio-0.8.11//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor__bitflags-2.6.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor__bitflags-2.7.0//:bitflags",  # cfg(target_os = "macos")
             "@vendor__fsevent-sys-4.1.0//:fsevent_sys",  # x86_64-apple-darwin
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [

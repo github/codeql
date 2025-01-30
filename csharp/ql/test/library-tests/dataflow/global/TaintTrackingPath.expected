@@ -146,8 +146,8 @@ edges
 | Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | provenance |  |
 | Capture.cs:339:17:339:30 | "taint source" : String | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
 | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
-| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
@@ -514,7 +514,7 @@ edges
 | GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | provenance | MaD:16 |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | provenance |  |
-| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
+| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | provenance | MaD:14 |
 | GlobalDataFlowStringBuilder.cs:31:13:31:17 | access to local variable sink0 : String | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 | provenance |  |
@@ -527,6 +527,8 @@ edges
 | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:36:13:36:17 | access to local variable sink1 : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | provenance | MaD:16 |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | provenance | MaD:17 |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
 | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | provenance |  |
 | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | provenance | MaD:17 |
 | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | provenance |  |
@@ -709,7 +711,7 @@ nodes
 | Capture.cs:339:17:339:30 | "taint source" : String | semmle.label | "taint source" : String |
 | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | semmle.label | (...) => ... : (...) => ... [captured x] : String |
 | Capture.cs:341:45:341:45 | access to local variable x | semmle.label | access to local variable x |
-| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | semmle.label | access to local variable capturedLambda : (...) => ... [captured x] : String |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | semmle.label | access to local variable capturedLambda : Action [captured x] : String |
 | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | semmle.label | a : (...) => ... [captured s] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
@@ -1046,6 +1048,8 @@ nodes
 | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | semmle.label | access to local variable sink1 |
 | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | semmle.label | [post] access to local variable sb2 : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | semmle.label | (...) ... : AppendInterpolatedStringHandler |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | semmle.label | access to local variable sink2 : String |
 | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | semmle.label | access to local variable sb2 : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | semmle.label | call to method ToString : String |

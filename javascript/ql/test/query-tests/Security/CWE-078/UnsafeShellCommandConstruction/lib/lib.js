@@ -250,7 +250,7 @@ module.exports.goodSanitizer = function (name) {
 
 	var cleaned = cleanInput(name);
 
-	cp.exec("rm -rf " + cleaned); // OK
+	cp.exec("rm -rf " + cleaned); // OK - But FP due to SanitizingRegExpTest not being able to generate a barrier edge for an edge into a phi node.
 }
 
 var fs = require("fs");
@@ -627,4 +627,15 @@ module.exports.veryIndeirect = function (name) {
     }
 
     cp.exec("rm -rf " + name); // NOT OK
+}
+
+module.exports.sanitizer = function (name) {
+	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'"
+	cp.exec("rm -rf " + sanitized); // NOT OK 
+
+	var sanitized = "'" + name.replace(new RegExp("\'", 'g'), "'\\''") + "'"
+	cp.exec("rm -rf " + sanitized); // OK 
+
+	var sanitized = "'" + name.replace(new RegExp("\'", unknownFlags()), "'\\''") + "'"
+	cp.exec("rm -rf " + sanitized); // OK -- Most likely should be okay and not flagged to reduce false positives.
 }

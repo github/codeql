@@ -61,10 +61,10 @@ class Expr extends ExprParent, @expr {
   Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
   /** Gets the basic block in which this expression occurs, if any. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  BasicBlock getBasicBlock() { result.getANode().asExpr() = this }
 
   /** Gets the `ControlFlowNode` corresponding to this expression. */
-  ControlFlowNode getControlFlowNode() { result = this }
+  ControlFlowNode getControlFlowNode() { result.asExpr() = this }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   string getHalsteadID() { result = this.toString() }

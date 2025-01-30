@@ -1,4 +1,4 @@
-// semmle-extractor-options: --c++14
+// semmle-extractor-options: -std=c++14
 
 const int int_const = 1;
 extern const int extern_int_const = 1;

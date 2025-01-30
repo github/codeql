@@ -84,9 +84,9 @@ rust_library(
     version = "0.4.15",
     deps = [
         "@vendor__aho-corasick-1.1.3//:aho_corasick",
-        "@vendor__bstr-1.10.0//:bstr",
+        "@vendor__bstr-1.11.3//:bstr",
         "@vendor__log-0.4.22//:log",
-        "@vendor__regex-automata-0.4.8//:regex_automata",
+        "@vendor__regex-automata-0.4.9//:regex_automata",
         "@vendor__regex-syntax-0.8.5//:regex_syntax",
     ],
 )

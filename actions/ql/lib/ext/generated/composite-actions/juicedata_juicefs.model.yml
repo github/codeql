@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["juicedata/juicefs", "*", "input.compress", "code-injection", "generated"]
+     - ["juicedata/juicefs", "*", "input.storage", "code-injection", "generated"]
+     - ["juicedata/juicefs", "*", "input.meta", "code-injection", "generated"]
+     - ["juicedata/juicefs", "*", "input.name", "code-injection", "generated"]
+     - ["juicedata/juicefs", "*", "input.mysql_password", "code-injection", "generated"]
+     - ["juicedata/juicefs", "*", "input.file_test_mode", "code-injection", "generated"]
+     - ["juicedata/juicefs", "*", "input.file_total_size", "code-injection", "generated"]

@@ -288,16 +288,6 @@ class DataFlowCallable extends TDataFlowCallable {
     or
     result = this.asCapturedVariable().getLocation()
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /** A call relevant for data flow. */
@@ -323,9 +313,6 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets the argument at position `pos` of this call. */
   final ArgumentNode getArgument(ArgumentPosition pos) { result.argumentOf(this, pos) }
 
-  /** Gets an argument of this call. */
-  final ArgumentNode getAnArgumentNode() { result.argumentOf(this, _) }
-
   /** Gets a textual representation of this call. */
   abstract string toString();
 
@@ -343,16 +330,6 @@ abstract class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
   }
 }
 
@@ -447,7 +424,11 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   Callable getATarget(boolean static) {
     result = dc.getADynamicTarget().getUnboundDeclaration() and static = false
     or
-    result = dc.getAStaticTarget().getUnboundDeclaration() and static = true
+    result = dc.getAStaticTarget().getUnboundDeclaration() and
+    static = true and
+    // In reflection calls, _all_ methods with matching names and arities are considered
+    // static targets, so we need to exclude them
+    not dc.isReflection()
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

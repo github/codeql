@@ -1,55 +1,105 @@
-nodes
-| xss-through-filenames.js:7:43:7:48 | files1 |
-| xss-through-filenames.js:7:43:7:48 | files1 |
-| xss-through-filenames.js:8:18:8:23 | files1 |
-| xss-through-filenames.js:8:18:8:23 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 |
-| xss-through-filenames.js:26:19:26:24 | files1 |
-| xss-through-filenames.js:26:19:26:24 | files1 |
-| xss-through-filenames.js:29:13:29:23 | files2 |
-| xss-through-filenames.js:29:22:29:23 | [] |
-| xss-through-filenames.js:30:9:30:14 | files1 |
-| xss-through-filenames.js:30:34:30:37 | file |
-| xss-through-filenames.js:31:25:31:28 | file |
-| xss-through-filenames.js:33:19:33:24 | files2 |
-| xss-through-filenames.js:33:19:33:24 | files2 |
-| xss-through-filenames.js:35:13:35:35 | files3 |
-| xss-through-filenames.js:35:22:35:35 | format(files2) |
-| xss-through-filenames.js:35:29:35:34 | files2 |
-| xss-through-filenames.js:37:19:37:24 | files3 |
-| xss-through-filenames.js:37:19:37:24 | files3 |
-| xss-through-torrent.js:6:6:6:24 | name |
-| xss-through-torrent.js:6:13:6:24 | torrent.name |
-| xss-through-torrent.js:6:13:6:24 | torrent.name |
-| xss-through-torrent.js:7:11:7:14 | name |
-| xss-through-torrent.js:7:11:7:14 | name |
 edges
-| xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 |
-| xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 |
-| xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 |
-| xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:30:9:30:14 | files1 |
-| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:30:9:30:14 | files1 |
-| xss-through-filenames.js:29:13:29:23 | files2 | xss-through-filenames.js:33:19:33:24 | files2 |
-| xss-through-filenames.js:29:13:29:23 | files2 | xss-through-filenames.js:33:19:33:24 | files2 |
-| xss-through-filenames.js:29:13:29:23 | files2 | xss-through-filenames.js:35:29:35:34 | files2 |
-| xss-through-filenames.js:29:22:29:23 | [] | xss-through-filenames.js:29:13:29:23 | files2 |
-| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file |
-| xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:25:31:28 | file |
-| xss-through-filenames.js:31:25:31:28 | file | xss-through-filenames.js:29:22:29:23 | [] |
-| xss-through-filenames.js:35:13:35:35 | files3 | xss-through-filenames.js:37:19:37:24 | files3 |
-| xss-through-filenames.js:35:13:35:35 | files3 | xss-through-filenames.js:37:19:37:24 | files3 |
-| xss-through-filenames.js:35:22:35:35 | format(files2) | xss-through-filenames.js:35:13:35:35 | files3 |
-| xss-through-filenames.js:35:29:35:34 | files2 | xss-through-filenames.js:35:22:35:35 | format(files2) |
-| xss-through-torrent.js:6:6:6:24 | name | xss-through-torrent.js:7:11:7:14 | name |
-| xss-through-torrent.js:6:6:6:24 | name | xss-through-torrent.js:7:11:7:14 | name |
-| xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:6:6:6:24 | name |
-| xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:6:6:6:24 | name |
+| xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 | provenance |  |
+| xss-through-filenames.js:17:21:17:26 | files2 | xss-through-filenames.js:19:9:19:14 | files2 | provenance |  |
+| xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | xss-through-filenames.js:19:9:19:14 | files2 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:9:19:14 | files2 | xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | provenance |  |
+| xss-through-filenames.js:19:9:19:14 | files2 | xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:9:19:14 | files2 [ArrayElement] | xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | provenance |  |
+| xss-through-filenames.js:19:9:19:14 | files2 [ArrayElement] | xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:19:45:19:48 | file | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:19:45:19:48 | file | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:22:16:22:21 | files3 | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:22:16:22:21 | files3 | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:34:20:37 | file | provenance |  |
+| xss-through-filenames.js:20:25:20:47 | '<li>'  ... '</li>' | xss-through-filenames.js:20:13:20:18 | [post update] files3 | provenance |  |
+| xss-through-filenames.js:20:25:20:47 | '<li>'  ... '</li>' | xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:20:34:20:37 | file | xss-through-filenames.js:20:25:20:47 | '<li>'  ... '</li>' | provenance |  |
+| xss-through-filenames.js:22:16:22:21 | files3 | xss-through-filenames.js:22:16:22:30 | files3.join('') | provenance |  |
+| xss-through-filenames.js:22:16:22:21 | files3 | xss-through-filenames.js:22:16:22:30 | files3.join('') | provenance |  |
+| xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | xss-through-filenames.js:22:16:22:30 | files3.join('') | provenance |  |
+| xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | xss-through-filenames.js:22:16:22:30 | files3.join('') | provenance |  |
+| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 | provenance |  |
+| xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:30:9:30:14 | files1 | provenance |  |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | provenance |  |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:33:19:33:24 | files2 | provenance |  |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:33:19:33:24 | files2 | provenance |  |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:25:31:28 | file | provenance |  |
+| xss-through-filenames.js:31:25:31:28 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 | provenance |  |
+| xss-through-filenames.js:31:25:31:28 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:33:19:33:24 | files2 | xss-through-filenames.js:35:29:35:34 | files2 | provenance |  |
+| xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:35:13:35:35 | files3 | xss-through-filenames.js:37:19:37:24 | files3 | provenance |  |
+| xss-through-filenames.js:35:22:35:35 | format(files2) | xss-through-filenames.js:35:13:35:35 | files3 | provenance |  |
+| xss-through-filenames.js:35:29:35:34 | files2 | xss-through-filenames.js:17:21:17:26 | files2 | provenance |  |
+| xss-through-filenames.js:35:29:35:34 | files2 | xss-through-filenames.js:35:22:35:35 | format(files2) | provenance |  |
+| xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | provenance |  |
+| xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:35:22:35:35 | format(files2) | provenance |  |
+| xss-through-torrent.js:6:6:6:24 | name | xss-through-torrent.js:7:11:7:14 | name | provenance |  |
+| xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:6:6:6:24 | name | provenance |  |
+nodes
+| xss-through-filenames.js:7:43:7:48 | files1 | semmle.label | files1 |
+| xss-through-filenames.js:8:18:8:23 | files1 | semmle.label | files1 |
+| xss-through-filenames.js:17:21:17:26 | files2 | semmle.label | files2 |
+| xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | semmle.label | files2 [ArrayElement] |
+| xss-through-filenames.js:19:9:19:14 | files2 | semmle.label | files2 |
+| xss-through-filenames.js:19:9:19:14 | files2 [ArrayElement] | semmle.label | files2 [ArrayElement] |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | semmle.label | files2.sort(sort) |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | semmle.label | files2.sort(sort) |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | semmle.label | files2.sort(sort) [ArrayElement] |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | semmle.label | files2.sort(sort) [ArrayElement] |
+| xss-through-filenames.js:19:45:19:48 | file | semmle.label | file |
+| xss-through-filenames.js:20:13:20:18 | [post update] files3 | semmle.label | [post update] files3 |
+| xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | semmle.label | [post update] files3 [ArrayElement] |
+| xss-through-filenames.js:20:25:20:47 | '<li>'  ... '</li>' | semmle.label | '<li>'  ... '</li>' |
+| xss-through-filenames.js:20:34:20:37 | file | semmle.label | file |
+| xss-through-filenames.js:22:16:22:21 | files3 | semmle.label | files3 |
+| xss-through-filenames.js:22:16:22:21 | files3 | semmle.label | files3 |
+| xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | semmle.label | files3 [ArrayElement] |
+| xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] | semmle.label | files3 [ArrayElement] |
+| xss-through-filenames.js:22:16:22:30 | files3.join('') | semmle.label | files3.join('') |
+| xss-through-filenames.js:22:16:22:30 | files3.join('') | semmle.label | files3.join('') |
+| xss-through-filenames.js:25:43:25:48 | files1 | semmle.label | files1 |
+| xss-through-filenames.js:26:19:26:24 | files1 | semmle.label | files1 |
+| xss-through-filenames.js:30:9:30:14 | files1 | semmle.label | files1 |
+| xss-through-filenames.js:30:34:30:37 | file | semmle.label | file |
+| xss-through-filenames.js:31:13:31:18 | [post update] files2 | semmle.label | [post update] files2 |
+| xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | semmle.label | [post update] files2 [ArrayElement] |
+| xss-through-filenames.js:31:25:31:28 | file | semmle.label | file |
+| xss-through-filenames.js:33:19:33:24 | files2 | semmle.label | files2 |
+| xss-through-filenames.js:33:19:33:24 | files2 | semmle.label | files2 |
+| xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | semmle.label | files2 [ArrayElement] |
+| xss-through-filenames.js:35:13:35:35 | files3 | semmle.label | files3 |
+| xss-through-filenames.js:35:22:35:35 | format(files2) | semmle.label | format(files2) |
+| xss-through-filenames.js:35:29:35:34 | files2 | semmle.label | files2 |
+| xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | semmle.label | files2 [ArrayElement] |
+| xss-through-filenames.js:37:19:37:24 | files3 | semmle.label | files3 |
+| xss-through-torrent.js:6:6:6:24 | name | semmle.label | name |
+| xss-through-torrent.js:6:13:6:24 | torrent.name | semmle.label | torrent.name |
+| xss-through-torrent.js:7:11:7:14 | name | semmle.label | name |
+subpaths
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 | xss-through-filenames.js:22:16:22:21 | files3 |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 | xss-through-filenames.js:22:16:22:21 | files3 |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 | xss-through-filenames.js:22:16:22:21 | files3 |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 | xss-through-filenames.js:22:16:22:21 | files3 |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] |
+| xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 | xss-through-filenames.js:33:19:33:24 | files2 |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 | xss-through-filenames.js:33:19:33:24 | files2 |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] |
+| xss-through-filenames.js:35:29:35:34 | files2 | xss-through-filenames.js:17:21:17:26 | files2 | xss-through-filenames.js:22:16:22:30 | files3.join('') | xss-through-filenames.js:35:22:35:35 | format(files2) |
+| xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | xss-through-filenames.js:22:16:22:30 | files3.join('') | xss-through-filenames.js:35:22:35:35 | format(files2) |
 #select
 | xss-through-filenames.js:8:18:8:23 | files1 | xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:7:43:7:48 | files1 | stored value |
 | xss-through-filenames.js:26:19:26:24 | files1 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |

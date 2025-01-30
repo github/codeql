@@ -40,6 +40,12 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
                 trapFile.general_type_parameter_constraints(this, 5);
 
+            if (Symbol.HasNotNullConstraint)
+                trapFile.general_type_parameter_constraints(this, 6);
+
+            if (Symbol.AllowsRefLikeType)
+                trapFile.general_type_parameter_constraints(this, 7);
+
             foreach (var abase in Symbol.GetAnnotatedTypeConstraints())
             {
                 var t = Type.Create(Context, abase.Symbol);

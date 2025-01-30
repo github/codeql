@@ -1,3 +1,56 @@
+## 3.2.0
+
+### New Features
+
+* Add a new predicate `getAnIndirectBarrier` to the parameterized module `InstructionBarrierGuard` in `semmle.code.cpp.dataflow.new.DataFlow` for computing indirect dataflow nodes that are guarded by a given instruction. This predicate is similar to the `getAnIndirectBarrier` predicate on the parameterized module `BarrierGuard`.
+* A new predicate `getDecltype` was added to the `ProxyClass` class, which yields the decltype for the proxy class.
+* Template classes that are of `struct` type are now also instances of the `Struct` class.
+* Template classes that are of `union` type are now also instances of the `Union` class.
+* A new abstract class `ConfigurationTestFile` (`semmle.code.cpp.ConfigurationTestFile.ConfigurationTestFile`) was introduced, which represents files created to test the build configuration. A subclass `CmakeTryCompileFile` of `ConfigurationTestFile` was also introduced, which represents files created by CMake to test the build configuration.
+* New predicates `getARequiresClause`, `getTemplateRequiresClause` and `getFunctionRequiresClause` were added to the `FunctionDeclarationEntry` class, which yield the requires clauses when the entry represents a function template declaration with requires clauses.
+* A new predicate `getRequiresClause` was added to the `TypeDeclarationEntry` class, which yields the requires clause when the entry represents a class template declaration with a requires clause.
+* A new predicate `getRequiresClause` was added to the `VariableDeclarationEntry` class, which yields the requires clause when the entry represents a variable template declaration with a requires clause.
+* A new predicate `getTypeConstraint` was added to the `TypeTemplateParameter` class, which yields the type constraint of the parameter if it exists.
+* A new class `VariableTemplateSpecialization` was introduced, which represents explicit specializations of variable templates.
+* A new predicate `isSpecialization` was added to the `Variable` class, which holds if the variable is a template specialization.
+* A new class `ConceptIdExpr` was introduced, which represents C++20 concept id expressions.
+* A new class `Concept` was introduced, which represents C++20 concepts.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of concepts.
+* A new class `ConstevalIfStmt` was introduced, which represents the C++23 `if consteval` and `if ! consteval` statements.
+
+### Minor Analysis Improvements
+
+* `DefaultOptions::exits` now holds for C23 functions with the `_Noreturn` or `___Noreturn__` attribute.
+
+## 3.1.0
+
+### Deprecated APIs
+
+* The `TemplateParameter` class, representing C++ type template parameters has been deprecated. Use `TypeTemplateParameter` instead.
+
+### New Features
+
+* New classes `SizeofPackExprOperator` and `SizeofPackTypeOperator` were introduced, which represent the C++ `sizeof...` operator taking expressions and type arguments, respectively.
+* A new class `TemplateTemplateParameterInstantiation` was introduced, which represents instantiations of template template parameters.
+* A new predicate `getAnInstantiation` was added to the `TemplateTemplateParameter` class, which yields instantiations of template template parameters.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of template template parameters.
+* A new class `NonTypeTemplateParameter` was introduced, which represents C++ non-type template parameters.
+* A new class `TemplateParameterBase` was introduced, which represents C++ non-type template parameters, type template parameters, and template template parameters.
+
+### Minor Analysis Improvements
+
+* The `Guards` library (`semmle.code.cpp.controlflow.Guards`) has been improved to recognize more guard conditions.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Deprecated APIs
+
+* The `NonThrowingFunction` class (`semmle.code.cpp.models.interfaces.NonThrowing.NonThrowingFunction`) has been deprecated. Please use the `NonCppThrowingFunction` class instead.
+
 ## 2.1.1
 
 No user-facing changes.

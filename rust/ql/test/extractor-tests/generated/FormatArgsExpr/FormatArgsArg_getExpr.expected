@@ -1,0 +1,16 @@
+| gen_format.rs:5:26:5:32 | FormatArgsArg | gen_format.rs:5:26:5:32 | "world" |
+| gen_format.rs:12:35:12:38 | FormatArgsArg | gen_format.rs:12:35:12:38 | name |
+| gen_format.rs:16:27:16:28 | FormatArgsArg | gen_format.rs:16:27:16:28 | PI |
+| gen_format.rs:17:23:17:24 | FormatArgsArg | gen_format.rs:17:23:17:24 | PI |
+| gen_format.rs:17:27:17:31 | FormatArgsArg | gen_format.rs:17:27:17:31 | width |
+| gen_format.rs:21:27:21:28 | FormatArgsArg | gen_format.rs:21:27:21:28 | PI |
+| gen_format.rs:22:24:22:25 | FormatArgsArg | gen_format.rs:22:24:22:25 | PI |
+| gen_format.rs:22:28:22:31 | FormatArgsArg | gen_format.rs:22:28:22:31 | prec |
+| gen_format_args_arg.rs:5:32:5:38 | FormatArgsArg | gen_format_args_arg.rs:5:32:5:38 | "world" |
+| gen_format_args_expr.rs:6:33:6:33 | FormatArgsArg | gen_format_args_expr.rs:6:33:6:33 | 1 |
+| gen_format_args_expr.rs:6:36:6:36 | FormatArgsArg | gen_format_args_expr.rs:6:36:6:36 | 2 |
+| gen_format_args_expr.rs:7:35:7:37 | FormatArgsArg | gen_format_args_expr.rs:7:37:7:37 | 1 |
+| gen_format_args_expr.rs:7:40:7:42 | FormatArgsArg | gen_format_args_expr.rs:7:42:7:42 | 2 |
+| gen_format_argument.rs:7:34:7:38 | FormatArgsArg | gen_format_argument.rs:7:34:7:38 | value |
+| gen_format_argument.rs:7:41:7:45 | FormatArgsArg | gen_format_argument.rs:7:41:7:45 | width |
+| gen_format_argument.rs:7:48:7:56 | FormatArgsArg | gen_format_argument.rs:7:48:7:56 | precision |

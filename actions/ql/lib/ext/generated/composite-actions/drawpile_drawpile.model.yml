@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["drawpile/drawpile", "*", "input.cache_key", "output.cache_key", "taint", "manual"]
+      - ["drawpile/drawpile", "*", "input.path", "output.path", "taint", "manual"]

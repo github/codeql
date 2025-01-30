@@ -1,0 +1,463 @@
+name: "pr-workflow"
+concurrency:
+  group: ${{ github.workflow }}-pr-workflow-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+on:
+  workflow_call:
+    inputs:
+      github_event_name:
+        required: true
+        type: string
+      github_event_pull_request_head_repo_id:
+        required: true
+        type: number
+      github_workflow:
+        required: true
+        type: string
+      github_event_pull_request_head_sha:
+        required: true
+        type: string
+      flow:
+        required: true
+        type: string
+      sha_to_check:
+        required: true
+        type: string
+    secrets:
+      NIXBUILD_TOKEN:
+        required: true
+      CACHIX_AUTH_TOKEN:
+        required: true
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_ACCESS_TOKEN:
+        required: true
+      PABLO_PROJ_JSON:
+        required: true
+      VERCEL_TOKEN:
+        required: true
+      CANCEL_GITHUB_TOKEN:
+        required: true
+
+permissions:
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    outputs:
+      ok: ${{ steps.ok.outputs.ok }}
+    concurrency:
+      group: ${{ inputs.github_workflow }}-dependency-review-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    needs:
+      - privilege-check
+    runs-on:
+      - ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        if: ${{ inputs.github_event_name != 'merge_group' && inputs.github_event_name != 'push' }}
+      - uses: amannn/action-semantic-pull-request@v5
+        if: ${{ inputs.github_event_name != 'merge_group' && inputs.github_event_name != 'push' }}
+        with:
+          requireScope: false
+          subjectPattern: (.*[a-zA-Z].*){16,}
+          subjectPatternError: |
+            https://regexper.com/#%28.*%5Ba-zA-Z%5D.*%29%7B16%2C%7D
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: dependency-review
+        if: ${{ inputs.github_event_name != 'merge_group' && inputs.github_event_name != 'push' }}
+        uses: actions/dependency-review-action@v3
+        with:
+          # GHSA-pfrx-2q88-qq97, GHSA-w5p7-h5w8-2hfq, GHSA-wcg3-cvx6-7396 are ignored because they are casued by the static Docusaurus build. Please remove when Docusaurus gets updated.
+          # GHSA-969w-q74q-9j8v, GHSA-44mr-8vmm-wjhg, GHSA-wh6w-3828-g9qf are ignored because they are transitive dependencies still used by the master branch of Substrate. Please remove when Substrate update the according dependencies.
+          # GHSA-fjx5-qpf4-xjf2 is ignored because it is a transitive dependencies still used by the master branch of ibc-proto-rs. Please remove when ibc-rs-proto updates it.
+          allow-ghsas: GHSA-pfrx-2q88-qq97, GHSA-w5p7-h5w8-2hfq, GHSA-wcg3-cvx6-7396, GHSA-969w-q74q-9j8v, GHSA-44mr-8vmm-wjhg, GHSA-wh6w-3828-g9qf, GHSA-ff4p-7xrq-q5r8, GHSA-xm67-587q-r2vw, GHSA-fjx5-qpf4-xjf2
+      - id: ok
+        run: echo "ok=true" >> "$GITHUB_OUTPUT"
+
+  privilege-check:
+    name: "privilege-check"
+    if: ${{ inputs.flow == 'push' || inputs.github_event_name == 'merge_group' || (inputs.github_event_name == 'pull_request_target' && inputs.github_event_pull_request_head_repo_id != 383289760) || (inputs.github_event_name == 'pull_request' && inputs.github_event_pull_request_head_repo_id == 383289760) }}
+    continue-on-error: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ inputs.github_event_name }}"" 
+          echo "${{ inputs.flow }}"" 
+          echo "${{ github.ref_name }}"
+          echo "${{ inputs.github_event_pull_request_head_repo_id }}"
+
+  lfs-check:
+    name: lfs-check
+    needs:
+      - privilege-check
+    continue-on-error: false
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ inputs.github_workflow }}-lfs-check-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+          persist-credentials: false
+          submodules: false
+          lfs: true
+      - uses: actionsdesk/lfs-warning@v3.2
+        name: lfs-warning
+        with:
+          labelName: lfs-detected!
+          filesizelimit: 20KB
+          exclusionPatterns: |
+            **/*.rs
+            **/*.ts
+            **/*.md
+            **/*.json
+            **/*.lock
+            **/*.nix
+            **/*.sol
+            **/*.toml
+            flake/eth-pos-devnet
+      - run: echo ${{ steps.lfs-warning.outputs.lfsFiles }}
+
+  nix-flake-check:
+    name: "nix-flake-check"
+    outputs:
+      ok: ${{ steps.ok.outputs.ok }}
+    needs:
+      - privilege-check
+    runs-on:
+      - ubuntu-latest-m
+    continue-on-error: false
+    concurrency:
+      group: ${{ inputs.github_workflow }}-nix-flake-check-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+          persist-credentials: false
+      - uses: cachix/install-nix-action@v20
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/cachix-action@master
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          skipAddingSubstituter: false
+          skipPush: false                
+      - run: |
+          nix --version
+          nix show-config
+          nix run .#nix-flake-check --accept-flake-config
+      - id: ok
+        run: echo "ok=true" >> "$GITHUB_OUTPUT"
+
+
+  # build-all-outputs-packages-arm:
+  #   outputs:
+  #     ok: ${{ steps.ok.outputs.ok }}
+  #   name: build-all-outputs-packages-arm
+  #   needs:
+  #     - privilege-check
+  #   runs-on:
+  #     - aarch64-linux-80C-128GB-2048GB
+  #   concurrency:
+  #     group: ${{ inputs.github_workflow }}-build-all-outputs-packages-arm-${{ github.event.pull_request.number || github.ref }}
+  #     cancel-in-progress: true
+  #   steps:
+  #     - name: Set up Cachix
+  #       if: ${{ inputs.flow == 'push' }}
+  #       uses: cachix/cachix-action@586bf280495080c5a6d4868237ad28a860e4b309
+  #       with:
+  #         authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+  #         name: composable
+  #         installCommand: "true"
+  #     - uses: actions/checkout@v3
+  #       if: ${{ inputs.flow == 'push' }}
+  #       with:
+  #         lfs: true
+  #         ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+  #         persist-credentials: false
+  #     - name: Build all packages
+  #       if: ${{ inputs.flow == 'push' }}
+  #       uses: "./.github/templates/watch-exec"
+  #       with:
+  #         command: nix -- build .#all-outputs
+  #     - id: ok
+  #       run: echo "ok=true" >> "$GITHUB_OUTPUT"
+        
+
+  build-all-outputs-packages:
+    outputs:
+      ok: ${{ steps.ok.outputs.ok }}
+    name: build-all-outputs-packages
+    needs:
+      - privilege-check
+      - build-all-deps-packages
+    runs-on:
+      - x86_64-linux-32C-128GB-2TB
+    concurrency:
+      group: ${{ inputs.github_workflow }}-build-all-outputs-packages-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Set up Cachix
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' }}
+        uses: cachix/cachix-action@586bf280495080c5a6d4868237ad28a860e4b309
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          installCommand: "true"
+      - uses: actions/checkout@v3
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' }}
+        with:
+          lfs: true
+          ref: ${{ inputs.github_event_pull_request_head_sha }}
+          persist-credentials: false
+      - name: Build all packages
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' }}
+        uses: "./.github/templates/watch-exec"
+        with:
+          command: nix -- build .#all-outputs
+      - id: ok
+        run: echo "ok=true" >> "$GITHUB_OUTPUT"
+
+  build-all-checks-packages:
+    outputs:
+      ok: ${{ steps.ok.outputs.ok }}
+    name: build-all-checks-packages
+    needs:
+      - privilege-check
+      - build-all-outputs-packages
+    runs-on:
+      - x86_64-linux-32C-128GB-2TB
+    concurrency:
+      group: ${{ inputs.github_workflow }}-build-all-checks-packages-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Set up Cachix
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' }}
+        uses: cachix/cachix-action@586bf280495080c5a6d4868237ad28a860e4b309
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          installCommand: "true"
+      - uses: actions/checkout@v3
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' }}
+        with:
+          lfs: true
+          ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+          persist-credentials: false
+      - name: Build all packages
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' }}
+        uses: "./.github/templates/watch-exec"
+        with:
+          command: nix -- build .#all-checks
+      - id: ok
+        run: echo "ok=true" >> "$GITHUB_OUTPUT"
+      
+
+  build-all-deps-packages:
+    name: build-all-deps-packages
+    outputs:
+      ok: ${{ steps.ok.outputs.ok }}
+    needs:
+      - privilege-check
+    runs-on:
+      - x86_64-linux-32C-128GB-2TB
+    concurrency:
+      group: ${{ inputs.github_workflow }}-build-all-deps-packages-${{ matrix.runner }}-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Set up Cachix
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' || inputs.flow == 'pr_from_fork' }}
+        uses: cachix/cachix-action@586bf280495080c5a6d4868237ad28a860e4b309
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          installCommand: "true"
+      - uses: actions/checkout@v3
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' || inputs.flow == 'pr_from_fork' }}
+        with:
+          lfs: true
+          ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+          persist-credentials: false
+      - name: build-all-deps-packages
+        if: ${{ inputs.flow == 'push' || inputs.flow == 'pr_from_branch' || inputs.flow == 'pr_from_fork' }}
+        uses: "./.github/templates/watch-exec"
+        with:
+          command: nix -- build .#all-deps
+      - id: ok
+        run: echo "ok=true" >> "$GITHUB_OUTPUT"
+
+  draft-release-check:
+    name: "draft-release-check"
+    if: ${{ failure() || cancelled() || success() }}
+    continue-on-error: false
+    runs-on: ubuntu-latest
+    needs:
+      - build-all-checks-packages
+      - dependency-review
+      - nix-flake-check
+      - mantis-e2e
+    steps:
+      - run: |
+          echo "nix-flake-check" ${{ needs.nix-flake-check.outputs.ok }}
+          echo "dependency-review" ${{ needs.dependency-review.outputs.ok }}
+          echo "build-all-checks-packages" ${{ needs.build-all-checks-packages.outputs.ok }}
+          echo "mantis-e2e" ${{ needs.mantis-e2e.outputs.ok  }}
+      - if: ${{ needs.nix-flake-check.outputs.ok == 'true' && needs.dependency-review.outputs.ok == 'true' && needs.build-all-checks-packages.outputs.ok == 'true' && needs.mantis-e2e.outputs.ok == 'true'  }}
+        run: |
+          echo "All dependencies built well"
+          exit 0
+      - if: ${{ !(needs.nix-flake-check.outputs.ok == 'true' && needs.dependency-review.outputs.ok == 'true' && needs.build-all-checks-packages.outputs.ok == 'true' && needs.mantis-e2e.outputs.ok == 'true' ) }}
+        run: |
+          echo "Some of dependencies (see jobs graph, needs attributes, and output of this job) failed"      
+          exit 42
+
+  draft-release-artifacts:
+    name: "draft-release-artifacts"
+    runs-on:
+      - x86_64-linux-32C-128GB-2TB
+    needs:
+      - draft-release-check
+    if: ${{ inputs.github_event_name == 'push' }}
+    permissions:
+      pull-requests: write
+      contents: write
+    concurrency:
+      group: ${{ inputs.github_workflow }}-draft-release-artifacts-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Set up Cachix
+        uses: cachix/cachix-action@586bf280495080c5a6d4868237ad28a860e4b309
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          installCommand: "true"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Download artifacts
+        run: |
+          nix run .#generate-release-artifacts --print-build-logs
+
+      - name: Release artifacts
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          prerelease: false
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          body_path: release-artifacts/release.txt
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          files: |
+            release-artifacts/to-upload/*
+
+  push-docker-images:
+    name: push-docker-images
+    if: ${{ inputs.flow == 'push' }}
+    needs:
+      - draft-release-check
+    runs-on:
+      - x86_64-linux-32C-128GB-2TB
+    concurrency:
+      group: ${{inputs.flow}}-${{ inputs.github_workflow }}-push-docker-images-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Set up Cachix
+        uses: cachix/cachix-action@586bf280495080c5a6d4868237ad28a860e4b309
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          installCommand: "true"
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+          persist-credentials: false
+      - name: Build all packages
+        uses: "./.github/templates/watch-exec"
+        with:
+          command: nix -- build .#all
+      - name: Publish cmc-api to docker hub
+        uses: "./.github/templates/docker-publish"
+        with:
+          image_path: result/docker-image-cmc-api.tar.gz
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          name: cmc-api
+          artifact: cmc-api:latest
+
+      - name: Publish devnet-xc to docker hub
+        uses: "./.github/templates/docker-publish"
+        with:
+          image_path: result/docker-image-devnet-xc.tar.gz
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          name: devnet-xc
+          artifact: devnet-xc:latest
+          tag: ${{ inputs.github_event_name == 'push' && 'main' || ''}}
+
+      - name: Publish hyperspace-composable-rococo-picasso-rococo to docker hub
+        uses: "./.github/templates/docker-publish"
+        with:
+          image_path: result/hyperspace-composable-rococo-picasso-rococo.tar.gz
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          name: hyperspace-composable-rococo-picasso-rococo
+          artifact: hyperspace-composable-rococo-picasso-rococo:latest
+
+      - name: Publish hyperspace-composable-polkadot-picasso-kusama to docker hub
+        uses: "./.github/templates/docker-publish"
+        with:
+          image_path: result/hyperspace-composable-polkadot-picasso-kusama.tar.gz
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          name: hyperspace-composable-polkadot-picasso-kusama
+          artifact: hyperspace-composable-polkadot-picasso-kusama:latest
+
+  mantis-e2e:
+    name: mantis-e2e
+    outputs:
+      ok: ${{ steps.ok.outputs.ok }}
+    needs:
+      - build-all-checks-packages
+    runs-on:
+      - ubuntu-latest-m
+    concurrency:
+      group: ${{ inputs.github_workflow }}-mantis-e2e-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          ref: ${{ inputs.github_event_pull_request_head_sha || github.sha }}
+          persist-credentials: false
+      - uses: cachix/install-nix-action@v20
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/cachix-action@master
+        with:
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          name: composable
+          skipAddingSubstituter: false
+          skipPush: false                
+      - name: Devnet integration tests
+        run: |
+          nix run .#mantis-e2e --accept-flake-config --impure
+      - id: ok
+        run: echo "ok=true" >> "$GITHUB_OUTPUT"

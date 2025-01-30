@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["cypress-io/github-action", "*", "env.GH_BRANCH", "branch", "manual"]

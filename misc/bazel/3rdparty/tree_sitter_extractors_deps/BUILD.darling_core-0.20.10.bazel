@@ -85,9 +85,9 @@ rust_library(
     deps = [
         "@vendor__fnv-1.0.7//:fnv",
         "@vendor__ident_case-1.0.1//:ident_case",
-        "@vendor__proc-macro2-1.0.89//:proc_macro2",
-        "@vendor__quote-1.0.37//:quote",
+        "@vendor__proc-macro2-1.0.93//:proc_macro2",
+        "@vendor__quote-1.0.38//:quote",
         "@vendor__strsim-0.11.1//:strsim",
-        "@vendor__syn-2.0.87//:syn",
+        "@vendor__syn-2.0.96//:syn",
     ],
 )

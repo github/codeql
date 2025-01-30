@@ -77,6 +77,12 @@ def _download_lfs(repository_ctx):
         )
     repository_ctx.file("BUILD.bazel", build)
 
+    # this is for drop-in compatibility with `http_file`
+    repository_ctx.file(
+        "file/BUILD.bazel",
+        'alias(name = "file", actual = "//:%s", visibility = ["//visibility:public"])\n' % name,
+    )
+
 lfs_archive = repository_rule(
     doc = "Export the contents from an on-demand LFS archive. The corresponding path should be added to be ignored " +
           "in `.lfsconfig`.",

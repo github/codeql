@@ -12,11 +12,15 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery
-import DataFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
+import ExternalAPIUsedWithUntrustedDataFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from
+  ExternalAPIUsedWithUntrustedDataFlow::PathNode source,
+  ExternalAPIUsedWithUntrustedDataFlow::PathNode sink
+where
+  ExternalAPIUsedWithUntrustedDataFlow::flowPath(source, sink) and
+  source.getNode() instanceof HeuristicSource
 select sink, source, sink,
   "Call to " + sink.getNode().(Sink).getApiName() + " with untrusted data from $@.", source,
   source.toString()

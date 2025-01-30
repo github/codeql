@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               Using broken or weak cryptographic algorithms can leave data
+               vulnerable to being decrypted or forged by an attacker.
+          </p>
+
+          <p>
+               Many cryptographic algorithms provided by cryptography
+               libraries are known to be weak, or flawed. Using such an
+               algorithm means that encrypted or hashed data is less
+               secure than it appears to be.
+          </p>
+
+          <p>
+               This query alerts on any use of a weak cryptographic algorithm, that is
+               not a hashing algorithm. Use of broken or weak cryptographic hash
+               functions are handled by the
+               <code>rust/weak-sensitive-data-hashing</code> query.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Ensure that you use a strong, modern cryptographic
+               algorithm, such as AES-128 or RSA-2048.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following code uses the <code>des</code> crate from the
+               <code>RustCrypto</code> family to encrypt some secret data. The
+               DES algorithm is old and considered very weak.
+          </p>
+
+          <sample src="BrokenCryptoAlgorithmBad.rs" />
+
+          <p>
+               Instead, we should use a strong modern algorithm. In this
+               case, we have selected the 256-bit version of the AES
+               algorithm.
+          </p>
+
+          <sample src="BrokenCryptoAlgorithmGood.rs" />
+
+     </example>
+
+     <references>
+          <li>NIST, FIPS 140 Annex A: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+          <li>NIST, SP 800-131A Revision 2: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+          <li>OWASP: <a
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#algorithms"> Cryptographic Storage Cheat Sheet - Algorithms</a>.
+          </li>
+     </references>
+
+</qhelp>

@@ -17,12 +17,13 @@ mayBenefitFromCallContext
 | ViableCallable.cs:26:27:26:41 | access to indexer |
 | ViableCallable.cs:28:9:28:16 | access to event Event |
 | ViableCallable.cs:29:9:29:16 | access to event Event |
-| ViableCallable.cs:234:9:234:15 | call to method M<Int32> |
-| ViableCallable.cs:283:9:283:15 | call to method M<Int32> |
-| ViableCallable.cs:286:9:286:20 | call to method M<Int32> |
-| ViableCallable.cs:411:9:411:18 | call to method M<Int32> |
-| ViableCallable.cs:455:9:455:30 | call to method M2<T> |
-| ViableCallable.cs:461:9:461:30 | call to method M2<T> |
-| ViableCallable.cs:563:18:563:22 | call to operator / |
-| ViableCallable.cs:566:26:566:30 | call to operator checked / |
-| ViableCallable.cs:572:9:572:15 | call to method M12 |
+| ViableCallable.cs:244:9:244:15 | call to method M<Int32> |
+| ViableCallable.cs:293:9:293:15 | call to method M<Int32> |
+| ViableCallable.cs:296:9:296:20 | call to method M<Int32> |
+| ViableCallable.cs:424:9:424:18 | call to method M<Int32> |
+| ViableCallable.cs:468:9:468:30 | call to method M2<T> |
+| ViableCallable.cs:474:9:474:30 | call to method M2<T> |
+| ViableCallable.cs:576:18:576:22 | call to operator / |
+| ViableCallable.cs:579:26:579:30 | call to operator checked / |
+| ViableCallable.cs:585:9:585:15 | call to method M12 |
+| ViableCallable.cs:618:9:618:13 | call to method M |

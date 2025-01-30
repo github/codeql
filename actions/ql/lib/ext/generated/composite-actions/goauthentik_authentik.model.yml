@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["goauthentik/authentik", "*", "input.postgresql_version", "code-injection", "generated"]

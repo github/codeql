@@ -10,7 +10,13 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 
 module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = string;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   ArgumentPosition callbackSelfParameterPosition() { none() }
 
@@ -114,6 +120,10 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     or
     result.asCall().getAstNode() = sc.(LibraryCallable).getACallSimple()
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase source, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module Private {

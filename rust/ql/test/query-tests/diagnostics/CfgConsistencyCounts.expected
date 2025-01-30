@@ -1,5 +1,6 @@
 | CFG scope lacks initial AST node | 0 |
 | Dead end | 0 |
+| Missing CFG child | 0 |
 | Multiple successors of the same type | 0 |
 | Multiple toStrings | 0 |
 | Non-PostOrderTree Expr node | 0 |

@@ -1,6 +1,3 @@
-class ViewComponent::Base
-end
-
 class View1 < ViewComponent::Base
     def initialize(x)
         @x = x

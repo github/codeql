@@ -41,6 +41,7 @@ impl<'de, T: From<String>> Visitor<'de> for VectorVisitor<T> {
 /// deserialize into a vector of `T` either of:
 /// * a sequence of elements serializable into `String`s, or
 /// * a single element serializable into `String`, then split on `,` and `\n`
+///
 /// This is required to be in scope when the `extractor_cli_config` macro is used.
 pub(crate) fn deserialize_newline_or_comma_separated<'a, D: Deserializer<'a>, T: From<String>>(
     deserializer: D,

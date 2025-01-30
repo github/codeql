@@ -19,7 +19,7 @@ fn data_out_of_call() {
 }
 
 fn data_in(n: i64) {
-    sink(n + 7); // $ hasValueFlow
+    sink(n); // $ hasValueFlow=3
 }
 
 fn data_in_to_call() {
@@ -35,6 +35,14 @@ fn data_through_call() {
     let a = source(1);
     let b = pass_through(a);
     sink(b); // $ hasValueFlow=1
+}
+
+fn block_expression_as_argument() {
+    let a = pass_through({
+        println!("Hello");
+        source(14)
+    });
+    sink(a); // $ hasValueFlow=14
 }
 
 // -----------------------------------------------------------------------------
@@ -67,7 +75,7 @@ impl MyFlag {
 fn data_out_of_method() {
     let mn = MyFlag { flag: true };
     let a = mn.get_data();
-    sink(a);
+    sink(a); // $ hasValueFlow=2
 }
 
 fn data_in_to_method_call() {
@@ -79,8 +87,40 @@ fn data_in_to_method_call() {
 fn data_through_method() {
     let mn = MyFlag { flag: true };
     let a = source(4);
-    mn.data_through(a);
-    sink(a); // $ hasValueFlow=4
+    let b = mn.data_through(a);
+    sink(b); // $ hasValueFlow=4
+}
+
+use std::ops::Add;
+
+struct MyInt {
+    value: i64,
+}
+
+impl Add for MyInt {
+    type Output = MyInt;
+
+    fn add(self, _other: MyInt) -> MyInt {
+        // Ignore `_other` to get value flow for `self.value`
+        MyInt { value: self.value }
+    }
+}
+
+pub fn test_operator_overloading() {
+    let a = MyInt { value: source(5) };
+    let b = MyInt { value: 2 };
+    let c = a + b;
+    sink(c.value); // $ MISSING: hasValueFlow=5
+
+    let a = MyInt { value: 2 };
+    let b = MyInt { value: source(6) };
+    let d = a + b;
+    sink(d.value);
+
+    let a = MyInt { value: source(7) };
+    let b = MyInt { value: 2 };
+    let d = a.add(b);
+    sink(d.value); // $ MISSING: hasValueFlow=7
 }
 
 fn main() {
@@ -91,4 +131,6 @@ fn main() {
     data_out_of_method();
     data_in_to_method_call();
     data_through_method();
+
+    test_operator_overloading();
 }

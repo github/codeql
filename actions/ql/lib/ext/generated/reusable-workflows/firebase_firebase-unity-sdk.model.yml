@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.triggered_by_callable", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.package_version_number", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.base_branch", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.cpp_release_version", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/package.yml", "*", "input.platforms", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/package.yml", "*", "input.runIntegrationTests", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/package.yml", "*", "input.apis", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/package.yml", "*", "input.working_branch", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/package.yml", "*", "input.release_label", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/package.yml", "*", "input.create_new_branch", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/build_windows.yml", "*", "input.apis", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/build_tvos.yml", "*", "input.apis", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/build_macos.yml", "*", "input.apis", "code-injection", "generated"]
+     - ["firebase/firebase-unity-sdk/.github/workflows/build_linux.yml", "*", "input.apis", "code-injection", "generated"]

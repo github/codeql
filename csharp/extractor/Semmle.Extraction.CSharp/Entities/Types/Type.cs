@@ -225,7 +225,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Called to extract all members and nested types.
+        /// Called to extract members and nested types.
         /// This is called on each member of a namespace,
         /// in either source code or an assembly.
         /// </summary>
@@ -236,7 +236,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, l);
             }
 
-            foreach (var member in Symbol.GetMembers())
+            foreach (var member in Symbol.GetMembers().ExtractionCandidates())
             {
                 switch (member.Kind)
                 {
@@ -262,16 +262,16 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 var members = new List<ISymbol>();
 
-                foreach (var member in Symbol.GetMembers())
+                foreach (var member in Symbol.GetMembers().ExtractionCandidates())
                     members.Add(member);
-                foreach (var member in Symbol.GetTypeMembers())
+                foreach (var member in Symbol.GetTypeMembers().ExtractionCandidates())
                     members.Add(member);
 
                 // Mono extractor puts all BASE interface members as members of the current interface.
 
                 if (Symbol.TypeKind == TypeKind.Interface)
                 {
-                    foreach (var baseInterface in Symbol.Interfaces)
+                    foreach (var baseInterface in Symbol.Interfaces.ExtractionCandidates())
                     {
                         foreach (var member in baseInterface.GetMembers())
                             members.Add(member);
@@ -288,7 +288,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (Symbol.BaseType is not null)
                     Create(Context, Symbol.BaseType).PopulateGenerics();
 
-                foreach (var i in Symbol.Interfaces)
+                foreach (var i in Symbol.Interfaces.ExtractionCandidates())
                 {
                     Create(Context, i).PopulateGenerics();
                 }

@@ -41,7 +41,10 @@ public abstract class PathTransformer {
 
 	private static final PathTransformer DEFAULT_TRANSFORMER;
 	static {
-		String layout = Env.systemEnv().get(Var.SEMMLE_PATH_TRANSFORMER);
+		String layout = Env.systemEnv().get(Var.CODEQL_PATH_TRANSFORMER);
+		if (layout == null) {
+			layout = Env.systemEnv().get(Var.SEMMLE_PATH_TRANSFORMER);
+		}
 		if (layout == null)
 			DEFAULT_TRANSFORMER = new NoopTransformer();
 		else

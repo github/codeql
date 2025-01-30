@@ -1,0 +1,32 @@
+on:
+  pull_request_target:
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - run: |
+          npm install
+          npm run lint
+  test2:
+    runs-on: ubuntu-latest
+    env:
+      HEAD: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ env.HEAD }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - run: |
+          npm install
+          npm run lint

@@ -17,6 +17,5 @@ codeql_csharp_binary(
         "//csharp/extractor/Semmle.Extraction.CSharp.Standalone:bin/Semmle.Extraction.CSharp.Standalone",
         "//csharp/extractor/Semmle.Util",
         "@paket.main//microsoft.build",
-        "@paket.main//newtonsoft.json",
     ],
 )

@@ -373,7 +373,7 @@ function test() {
   // NOT OK
   $('myId').html(target)
 
-  // OK
+  // OK - but only safe because contents are URI-encoded
   $('myid').html(document.location.href.split("?")[0]);
 }
 
@@ -502,4 +502,11 @@ function Foo() {
     }
   };
   Object.assign(this, obj);
+}
+
+function nonGlobalSanitizer() {
+  var target = document.location.search
+  $("#foo").html(target.replace(new RegExp("<|>"), '')); // NOT OK
+  $("#foo").html(target.replace(new RegExp("<|>", unknownFlags()), '')); // OK -- most likely good. We don't know what the flags are.
+  $("#foo").html(target.replace(new RegExp("<|>", "g"), '')); // OK
 }

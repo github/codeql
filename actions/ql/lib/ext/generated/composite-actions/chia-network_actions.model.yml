@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["chia-network/actions", "*", "input.keypair_path", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "input.role_name", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "input.backend_name", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "input.vault_url", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "input.ttl", "code-injection", "generated"]
+     - ["chia-network/actions", "*", "input.vault_token", "code-injection", "generated"]

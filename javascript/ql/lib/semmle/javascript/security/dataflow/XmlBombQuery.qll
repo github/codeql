@@ -13,7 +13,25 @@ import XmlBombCustomizations::XmlBomb
 /**
  * A taint-tracking configuration for reasoning about XML-bomb vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module XmlBombConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for reasoning about XML-bomb vulnerabilities.
+ */
+module XmlBombFlow = TaintTracking::Global<XmlBombConfig>;
+
+/**
+ * DEPRECATED. Use the `XmlBombFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "XmlBomb" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

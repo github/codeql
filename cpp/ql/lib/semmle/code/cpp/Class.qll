@@ -570,10 +570,13 @@ class Class extends UserType {
   /**
    * Holds if this class, struct or union is constructed from another class as
    * a result of template instantiation. It originates either from a class
-   * template or from a class nested in a class template.
+   * template, a class nested in a class template, or a template template
+   * parameter.
    */
-  predicate isConstructedFrom(Class c) {
-    class_instantiation(underlyingElement(this), unresolveElement(c))
+  predicate isConstructedFrom(UserType t) {
+    class_instantiation(underlyingElement(this), unresolveElement(t))
+    or
+    template_template_instantiation(underlyingElement(this), unresolveElement(t))
   }
 
   /**
@@ -866,7 +869,7 @@ class AbstractClass extends Class {
  * `FullClassTemplateSpecialization`.
  */
 class TemplateClass extends Class {
-  TemplateClass() { usertypes(underlyingElement(this), _, 6) }
+  TemplateClass() { usertypes(underlyingElement(this), _, [15, 16, 17]) }
 
   /**
    * Gets a class instantiated from this template.
@@ -952,7 +955,7 @@ class ClassTemplateSpecialization extends Class {
     result.getNamespace() = this.getNamespace() and
     // It is distinguished by the fact that each of its template arguments
     // is a distinct template parameter.
-    count(TemplateParameter tp | tp = result.getATemplateArgument()) =
+    count(TemplateParameterBase tp | tp = result.getATemplateArgument()) =
       count(int i | exists(result.getTemplateArgument(i)))
   }
 
@@ -1006,7 +1009,7 @@ private predicate isPartialClassTemplateSpecialization(Class c) {
    */
 
   exists(Type ta | ta = c.getATemplateArgument() and ta.involvesTemplateParameter()) and
-  count(TemplateParameter tp | tp = c.getATemplateArgument()) !=
+  count(TemplateParameterBase tp | tp = c.getATemplateArgument()) !=
     count(int i | exists(c.getTemplateArgument(i)))
 }
 
@@ -1073,13 +1076,19 @@ class VirtualBaseClass extends Class {
 }
 
 /**
- * The proxy class (where needed) associated with a template parameter, as
- * in the following code:
- * ```
+ * The proxy class (where needed) associated with a template parameter or a
+ * decltype, as in the following code:
+ * ```cpp
  * template <typename T>
  * struct S : T { // the type of this T is a proxy class
  *   ...
  * };
+ *
+ * template <typename T>
+ * concept C =
+ *   decltype(std::span{std::declval<T&>()})::extent
+ *     != std::dynamic_extent;
+ *   // the type of decltype(std::span{std::declval<T&>()}) is a proxy class
  * ```
  */
 class ProxyClass extends UserType {
@@ -1090,10 +1099,13 @@ class ProxyClass extends UserType {
   /** Gets the location of the proxy class. */
   override Location getLocation() { result = this.getTemplateParameter().getDefinitionLocation() }
 
-  /** Gets the template parameter for which this is the proxy class. */
-  TemplateParameter getTemplateParameter() {
+  /** Gets the template parameter for which this is the proxy class, if any. */
+  TypeTemplateParameter getTemplateParameter() {
     is_proxy_class_for(underlyingElement(this), unresolveElement(result))
   }
+
+  /** Gets the decltype for which this is the proxy class, if any. */
+  Decltype getDecltype() { is_proxy_class_for(underlyingElement(this), unresolveElement(result)) }
 }
 
 // Unpacks "array of ... of array of t" into t.

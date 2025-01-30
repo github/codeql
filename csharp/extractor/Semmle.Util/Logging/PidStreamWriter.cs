@@ -1,5 +1,5 @@
 using System.IO;
-using System.Diagnostics;
+using System.Threading;
 
 namespace Semmle.Util.Logging
 {
@@ -33,6 +33,6 @@ namespace Semmle.Util.Logging
             WriteLine(format is null ? format : string.Format(format, args));
         }
 
-        private readonly object mutex = new object();
+        private readonly Lock mutex = new();
     }
 }

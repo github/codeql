@@ -16,15 +16,15 @@
 </recommendation>
 <example>
 <p>In this example, we are allocating 365 integers, one for each day of the year. This code will fail on a leap year, when there are 366 days.</p>
-<sample src="UnsafeArrayForDaysOfYearBad.c" />
+<sample src="examples/UnsafeArrayForDaysOfYearBad.c" />
 
 <p>When using arrays, allocate the correct number of elements to match the year.</p>
-<sample src="UnsafeArrayForDaysOfYearGood.c" />
+<sample src="examples/UnsafeArrayForDaysOfYearGood.c" />
 </example>
 
 <references>
   <li>NASA / Goddard Space Flight Center - <a href="https://eclipse.gsfc.nasa.gov/SEhelp/calendars.html">Calendars</a></li>
-  <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
+  <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a></li>
   <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
 </references>
 </qhelp>

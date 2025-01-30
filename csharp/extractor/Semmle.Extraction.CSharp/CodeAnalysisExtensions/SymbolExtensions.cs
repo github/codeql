@@ -133,9 +133,6 @@ namespace Semmle.Extraction.CSharp
 
         /// <summary>
         /// Constructs a unique string for this type symbol.
-        ///
-        /// The supplied action <paramref name="subTermAction"/> is applied to the
-        /// syntactic sub terms of this type (if any).
         /// </summary>
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
@@ -495,31 +492,31 @@ namespace Semmle.Extraction.CSharp
 
         /// <summary>
         /// Holds if this type is of the form <code>int?</code> or
-        /// <code>System.Nullable<int></code>.
+        /// <code>System.Nullable&lt;int&gt;</code>.
         /// </summary>
         public static bool IsBoundNullable(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundNullable();
 
         /// <summary>
-        /// Holds if this type is <code>System.Nullable<T></code>.
+        /// Holds if this type is <code>System.Nullable&lt;T&gt;</code>.
         /// </summary>
         public static bool IsUnboundNullable(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.System_Nullable_T;
 
         /// <summary>
-        /// Holds if this type is <code>System.Span<T></code>.
+        /// Holds if this type is <code>System.Span&lt;T&gt;</code>.
         /// </summary>
         public static bool IsUnboundSpan(this ITypeSymbol type) =>
             type.ToString() == "System.Span<T>";
 
         /// <summary>
-        /// Holds if this type is of the form <code>System.Span<byte></code>.
+        /// Holds if this type is of the form <code>System.Span&lt;byte&gt;</code>.
         /// </summary>
         public static bool IsBoundSpan(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundSpan();
 
         /// <summary>
-        /// Holds if this type is <code>System.ReadOnlySpan<T></code>.
+        /// Holds if this type is <code>System.ReadOnlySpan&lt;T&gt;</code>.
         /// </summary>
         public static bool IsUnboundReadOnlySpan(this ITypeSymbol type) =>
             type.ToString() == "System.ReadOnlySpan<T>";
@@ -536,7 +533,13 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
-        /// Holds if this type is of the form <code>System.ReadOnlySpan<byte></code>.
+        /// Returns true if this type implements `System.IFormattable`.
+        /// </summary>
+        public static bool ImplementsIFormattable(this ITypeSymbol type) =>
+            type.AllInterfaces.Any(i => i.Name == "IFormattable" && i.ContainingNamespace.ToString() == "System");
+
+        /// <summary>
+        /// Holds if this type is of the form <code>System.ReadOnlySpan&lt;byte&gt;</code>.
         /// </summary>
         public static bool IsBoundReadOnlySpan(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundReadOnlySpan();
@@ -645,5 +648,40 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        /// <summary>
+        /// Returns true if the symbol is public, protected or protected internal.
+        /// </summary>
+        public static bool IsPublicOrProtected(this ISymbol symbol) =>
+            symbol.DeclaredAccessibility == Accessibility.Public
+            || symbol.DeclaredAccessibility == Accessibility.Protected
+            || symbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal;
+
+        /// <summary>
+        /// Returns true if the given symbol should be extracted.
+        /// </summary>
+        public static bool ShouldExtractSymbol(this ISymbol symbol)
+        {
+            // Extract all source symbols and public/protected metadata symbols.
+            if (symbol.Locations.Any(x => !x.IsInMetadata) || symbol.IsPublicOrProtected())
+            {
+                return true;
+            }
+            if (symbol is IMethodSymbol method)
+            {
+                return method.ExplicitInterfaceImplementations.Any(m => m.ContainingType.ShouldExtractSymbol());
+            }
+            if (symbol is IPropertySymbol property)
+            {
+                return property.ExplicitInterfaceImplementations.Any(m => m.ContainingType.ShouldExtractSymbol());
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the symbols that should be extracted.
+        /// </summary>
+        public static IEnumerable<T> ExtractionCandidates<T>(this IEnumerable<T> symbols) where T : ISymbol =>
+            symbols.Where(symbol => symbol.ShouldExtractSymbol());
     }
 }

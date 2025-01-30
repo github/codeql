@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>This rule finds code where an enumerated type (<code>enum</code>) is used to check for an upper boundary, but not the lower boundary, and the value is used as an index to access an array.</p>
+  <p>By default an enum variable is signed, and therefore it is important to ensure that it cannot take on a negative value. When the enum is subsequently used to index an array, or worse still an array of function pointers, then a negative enum value would lead to potentially arbitrary memory being read, used and/or executed.</p>
+</overview>
+<recommendation>
+<p>In the majority of cases the fix is simply to add the required lower bounds check to ensure that the enum has a positive value.</p>
+</recommendation>
+
+<example>
+<p>The following example a value is passed and gets cast to an enumerated type and only partially bounds checked.</p>
+<sample src="UncheckedBoundsEnumAsIndex.c" />
+<p>In this example, the result of the out-of-bounds may allow for arbitrary code execution.</p>
+<p>To fix the problem in this example, you need to add an additional check to the guarding if statement to verify that the index is a positive value.</p>
+</example>
+ 
+
+<references>
+
+</references>
+</qhelp>

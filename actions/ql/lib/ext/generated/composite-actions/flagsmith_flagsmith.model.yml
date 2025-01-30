@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["flagsmith/flagsmith", "*", "input.aws_ecr_repository_arn", "output.image", "taint", "manual"]

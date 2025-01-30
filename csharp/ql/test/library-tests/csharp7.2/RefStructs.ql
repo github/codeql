@@ -1,7 +1,5 @@
 import csharp
 
-from Struct s
-where
-  s.fromSource() and
-  s.isRef()
+from RefStruct s
+where s.fromSource()
 select s

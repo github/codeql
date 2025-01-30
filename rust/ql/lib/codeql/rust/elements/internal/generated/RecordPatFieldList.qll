@@ -27,7 +27,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RecordPatFieldList" }
 
     /**
-     * Gets the `index`th field of this record pat field list (0-based).
+     * Gets the `index`th field of this record pattern field list (0-based).
      */
     RecordPatField getField(int index) {
       result =
@@ -37,17 +37,17 @@ module Generated {
     }
 
     /**
-     * Gets any of the fields of this record pat field list.
+     * Gets any of the fields of this record pattern field list.
      */
     final RecordPatField getAField() { result = this.getField(_) }
 
     /**
-     * Gets the number of fields of this record pat field list.
+     * Gets the number of fields of this record pattern field list.
      */
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
     /**
-     * Gets the rest pat of this record pat field list, if it exists.
+     * Gets the rest pattern of this record pattern field list, if it exists.
      */
     RestPat getRestPat() {
       result =

@@ -146,3 +146,56 @@ void unary_test_builtin_expected(int a) {
       use(a);
   }
 }
+
+void test_with_reference(bool& b, int a) {
+   b = a < 10;
+   if(!b) {
+      use(a);
+   }
+}
+
+void test_with_negated_binary_equality(int a, int b) {
+  bool c = a != b;
+
+  if (!c) {
+
+  }
+}
+
+void test_with_negated_unary_relational(int a) {
+  bool b = a > 10;
+
+  if (!b) {
+
+  }
+}
+
+void test_with_negated_binary_relational(int a, int b) {
+  bool c = a > b;
+
+  if (!c) {
+
+  }
+}
+
+void test_logical_and(bool b1, bool b2) {
+  if(!(b1 && b2)) {
+    use(b1);
+    use(b2);
+  } else {
+    // b1 = true and b2 = true
+    use(b1);
+    use(b2);
+  }
+}
+
+void test_logical_or(bool b1, bool b2) {
+  if(!(b1 || b2)) {
+    // b1 = false and b2 = false
+    use(b1);
+    use(b2);
+  } else {
+    use(b1);
+    use(b2);
+  }
+}

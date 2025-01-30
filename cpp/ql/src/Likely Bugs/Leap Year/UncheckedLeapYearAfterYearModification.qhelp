@@ -15,10 +15,10 @@
 </recommendation>
 <example>
 <p>In this example, we are adding 1 year to the current date. This may work most of the time, but on any given February 29th, the resulting value will be invalid.</p>
-<sample src="UncheckedLeapYearAfterYearModificationBad.c" />
+<sample src="examples/UncheckedLeapYearAfterYearModificationBad.c" />
 
 <p>To fix this bug, check the result for leap year.</p>
-<sample src="UncheckedLeapYearAfterYearModificationGood.c" />
+<sample src="examples/UncheckedLeapYearAfterYearModificationGood.c" />
 </example>
 
 <references>

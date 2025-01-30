@@ -1,5 +1,5 @@
 /**
- * @name Unchecked return value for time conversion function
+ * @name Unchecked return value for time conversion function (AntiPattern 6)
  * @description When the return value of a fallible time conversion function is
  *              not checked for failure, its output parameters may contain
  *              invalid dates.
@@ -13,51 +13,6 @@
 
 import cpp
 import LeapYear
-
-/**
- * A `YearFieldAccess` that is modifying the year by any arithmetic operation.
- *
- * NOTE:
- * To change this class to work for general purpose date transformations that do not check the return value,
- * make the following changes:
- *  - change `extends LeapYearFieldAccess` to `extends FieldAccess`.
- *  - change `this.isModifiedByArithmeticOperation()` to `this.isModified()`.
- * Expect a lower precision for a general purpose version.
- */
-class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
-  DateStructModifiedFieldAccess() {
-    exists(Field f, StructLikeClass struct |
-      f.getAnAccess() = this and
-      struct.getAField() = f and
-      struct.getUnderlyingType() instanceof UnpackedTimeType and
-      this.isModifiedByArithmeticOperation()
-    )
-  }
-}
-
-/**
- * This is a list of APIs that will get the system time, and therefore guarantee that the value is valid.
- */
-class SafeTimeGatheringFunction extends Function {
-  SafeTimeGatheringFunction() {
-    this.getQualifiedName() = ["GetFileTime", "GetSystemTime", "NtQuerySystemTime"]
-  }
-}
-
-/**
- * This list of APIs should check for the return value to detect problems during the conversion.
- */
-class TimeConversionFunction extends Function {
-  TimeConversionFunction() {
-    this.getQualifiedName() =
-      [
-        "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
-        "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
-        "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
-        "RtlTimeToSecondsSince1970", "_mkgmtime"
-      ]
-  }
-}
 
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
@@ -104,5 +59,6 @@ where
     )
   )
 select fcall,
-  "Return value of $@ function should be verified to check for any error because variable $@ is not guaranteed to be safe.",
-  trf, trf.getQualifiedName().toString(), var, var.getName()
+  "$@: Return value of $@ function should be verified to check for any error because variable $@ is not guaranteed to be safe.",
+  fcall.getEnclosingFunction(), fcall.getEnclosingFunction().toString(), trf,
+  trf.getQualifiedName().toString(), var, var.getName()

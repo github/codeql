@@ -253,7 +253,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
-  /** Holds if this Function is a Template specialization. */
+  /** Holds if this function is a template specialization. */
   predicate isSpecialization() {
     exists(FunctionDeclarationEntry fde |
       fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
@@ -665,7 +665,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Holds if this declaration is also a definition of its function. */
   override predicate isDefinition() { fun_def(underlyingElement(this)) }
 
-  /** Holds if this declaration is a Template specialization. */
+  /** Holds if this declaration is a template specialization. */
   predicate isSpecialization() { fun_specialized(underlyingElement(this)) }
 
   /**
@@ -715,6 +715,27 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * specification.
    */
   predicate isNoExcept() { fun_decl_empty_noexcept(underlyingElement(this)) }
+
+  /**
+   * Gets a requires clause if this declaration is a template with such a clause.
+   */
+  Expr getARequiresClause() { fun_requires(underlyingElement(this), _, unresolveElement(result)) }
+
+  /**
+   * Gets the requires clause that appears after the template argument list if this
+   * declaration is a template with such a clause.
+   */
+  Expr getTemplateRequiresClause() {
+    fun_requires(underlyingElement(this), 1, unresolveElement(result))
+  }
+
+  /**
+   * Gets the requires clause that appears after the declarator if this declaration
+   * is a template with such a clause.
+   */
+  Expr getFunctionRequiresClause() {
+    fun_requires(underlyingElement(this), 2, unresolveElement(result))
+  }
 }
 
 /**

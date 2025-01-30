@@ -1,0 +1,12 @@
+edges
+| action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:41:30:41:55 | inputs.who-to-greet | provenance |  |
+| action1/action.yml:37:7:42:4 | Run Step: reflector [reflected] | action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | provenance |  |
+| action1/action.yml:41:30:41:55 | inputs.who-to-greet | action1/action.yml:37:7:42:4 | Run Step: reflector [reflected] | provenance |  |
+nodes
+| action1/action.yml:4:3:4:14 | input who-to-greet | semmle.label | input who-to-greet |
+| action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | semmle.label | steps.reflector.outputs.reflected |
+| action1/action.yml:37:7:42:4 | Run Step: reflector [reflected] | semmle.label | Run Step: reflector [reflected] |
+| action1/action.yml:41:30:41:55 | inputs.who-to-greet | semmle.label | inputs.who-to-greet |
+subpaths
+#select
+| action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | Summary |

@@ -92,6 +92,8 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     or
     node2.(PointerOffsetInstruction).getLeftOperand() = node1
   }
+
+  override predicate isBarrier(Instruction n) { n.getResultType() instanceof ErroneousType }
 }
 
 from

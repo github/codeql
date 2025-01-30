@@ -3,7 +3,7 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.dataflow.new.TaintTracking
 import semmle.code.cpp.commons.DateTime
 
 /**
@@ -41,6 +41,271 @@ class CheckForLeapYearOperation extends Expr {
   }
 }
 
+bindingset[modVal]
+Expr moduloCheckEQ_0(EQExpr eq, int modVal) {
+  exists(RemExpr rem | rem = eq.getLeftOperand() |
+    result = rem.getLeftOperand() and
+    rem.getRightOperand().getValue().toInt() = modVal
+  ) and
+  eq.getRightOperand().getValue().toInt() = 0
+}
+
+bindingset[modVal]
+Expr moduloCheckNEQ_0(NEExpr neq, int modVal) {
+  exists(RemExpr rem | rem = neq.getLeftOperand() |
+    result = rem.getLeftOperand() and
+    rem.getRightOperand().getValue().toInt() = modVal
+  ) and
+  neq.getRightOperand().getValue().toInt() = 0
+}
+
+/**
+ * Returns if the two expressions resolve to the same value, albeit it is a fuzzy attempt.
+ * SSA is not fit for purpose here as calls break SSA equivalence.
+ */
+predicate exprEq_propertyPermissive(Expr e1, Expr e2) {
+  not e1 = e2 and
+  (
+    DataFlow::localFlow(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
+    or
+    if e1 instanceof ThisExpr and e2 instanceof ThisExpr
+    then any()
+    else
+      /* If it's a direct Access, check that the target is the same. */
+      if e1 instanceof Access
+      then e1.(Access).getTarget() = e2.(Access).getTarget()
+      else
+        /* If it's a Call, compare qualifiers and only permit no-argument Calls. */
+        if e1 instanceof Call
+        then
+          e1.(Call).getTarget() = e2.(Call).getTarget() and
+          e1.(Call).getNumberOfArguments() = 0 and
+          e2.(Call).getNumberOfArguments() = 0 and
+          if e1.(Call).hasQualifier()
+          then exprEq_propertyPermissive(e1.(Call).getQualifier(), e2.(Call).getQualifier())
+          else any()
+        else
+          /* If it's a binaryOperation, compare op and recruse */
+          if e1 instanceof BinaryOperation
+          then
+            e1.(BinaryOperation).getOperator() = e2.(BinaryOperation).getOperator() and
+            exprEq_propertyPermissive(e1.(BinaryOperation).getLeftOperand(),
+              e2.(BinaryOperation).getLeftOperand()) and
+            exprEq_propertyPermissive(e1.(BinaryOperation).getRightOperand(),
+              e2.(BinaryOperation).getRightOperand())
+          else
+            // Otherwise fail (and permit the raising of a finding)
+            if e1 instanceof Literal
+            then e1.(Literal).getValue() = e2.(Literal).getValue()
+            else none()
+  )
+}
+
+/**
+ * An expression that is the subject of a mod-4 check.
+ * ie `expr % 4 == 0`
+ */
+class Mod4CheckedExpr extends Expr {
+  Mod4CheckedExpr() { exists(Expr e | e = moduloCheckEQ_0(this, 4)) }
+}
+
+/**
+ * Year Div of 100 not equal to 0:
+ * - `year % 100 != 0`
+ * - `!(year % 100 == 0)`
+ */
+abstract class ExprCheckCenturyComponentDiv100 extends Expr {
+  abstract Expr getYearExpr();
+}
+
+/**
+ * The normal form of the expression `year % 100 != 0`.
+ */
+final class ExprCheckCenturyComponentDiv100Normative extends ExprCheckCenturyComponentDiv100 {
+  ExprCheckCenturyComponentDiv100Normative() { exists(moduloCheckNEQ_0(this, 100)) }
+
+  override Expr getYearExpr() { result = moduloCheckNEQ_0(this, 100) }
+}
+
+/**
+ * The inverted form of the expression `year % 100 != 0`, ie `!(year % 100 == 0)`
+ */
+final class ExprCheckCenturyComponentDiv100Inverted extends ExprCheckCenturyComponentDiv100, NotExpr
+{
+  ExprCheckCenturyComponentDiv100Inverted() { exists(moduloCheckEQ_0(this.getOperand(), 100)) }
+
+  override Expr getYearExpr() { result = moduloCheckEQ_0(this.getOperand(), 100) }
+}
+
+/**
+ * A check that an expression is divisible by 400 or not
+ * - `(year % 400 == 0)`
+ * - `!(year % 400 != 0)`
+ */
+abstract class ExprCheckCenturyComponentDiv400 extends Expr {
+  abstract Expr getYearExpr();
+}
+
+/**
+ * The normative form of expression is divisible by 400:
+ * ie `year % 400 == 0`
+ */
+final class ExprCheckCenturyComponentDiv400Normative extends ExprCheckCenturyComponentDiv400 {
+  ExprCheckCenturyComponentDiv400Normative() { exists(moduloCheckEQ_0(this, 400)) }
+
+  override Expr getYearExpr() {
+    exists(Expr e |
+      e = moduloCheckEQ_0(this, 400) and
+      (
+        if e instanceof ConvertedYearByOffset
+        then result = e.(ConvertedYearByOffset).getYearOperand()
+        else result = e
+      )
+    )
+  }
+}
+
+/**
+ * An arithmetic operation that seemingly converts an operand between time formats.
+ */
+class ConvertedYearByOffset extends BinaryArithmeticOperation {
+  ConvertedYearByOffset() {
+    this.getAnOperand().getValue().toInt() instanceof TimeFormatConversionOffset
+  }
+
+  Expr getYearOperand() {
+    this.getLeftOperand().getValue().toInt() instanceof TimeFormatConversionOffset and
+    result = this.getRightOperand()
+    or
+    this.getRightOperand().getValue().toInt() instanceof TimeFormatConversionOffset and
+    result = this.getLeftOperand()
+  }
+}
+
+/**
+ * A flow configuration to track DataFlow from a `CovertedYearByOffset` to some `StructTmLeapYearFieldAccess`.
+ */
+module LocalConvertedYearByOffsetToLeapYearCheckFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { not n.asExpr() instanceof ConvertedYearByOffset }
+
+  predicate isSink(DataFlow::Node n) { n.asExpr() instanceof StructTmLeapYearFieldAccess }
+}
+
+module LocalConvertedYearByOffsetToLeapYearCheckFlow =
+  DataFlow::Global<LocalConvertedYearByOffsetToLeapYearCheckFlowConfig>;
+
+/**
+ * The set of ints (or strings) which represent a value that is typically used to convert between time data types.
+ */
+final class TimeFormatConversionOffset extends int {
+  TimeFormatConversionOffset() {
+    this =
+      [
+        1900, // tm_year represents years since 1900
+        1970, // converting from/to Unix epoch
+        2000, // some systems may use 2000 for 2-digit year conversions
+      ]
+  }
+}
+
+/**
+ * The inverted form of expression is divisible by 400:
+ * ie `!(year % 400 != 0)`
+ */
+final class ExprCheckCenturyComponentDiv400Inverted extends ExprCheckCenturyComponentDiv400, NotExpr
+{
+  ExprCheckCenturyComponentDiv400Inverted() { exists(moduloCheckNEQ_0(this.getOperand(), 400)) }
+
+  override Expr getYearExpr() { result = moduloCheckNEQ_0(this.getOperand(), 400) }
+}
+
+/**
+ * The Century component of a Leap-Year guard
+ */
+class ExprCheckCenturyComponent extends LogicalOrExpr {
+  ExprCheckCenturyComponent() {
+    exists(ExprCheckCenturyComponentDiv400 exprDiv400, ExprCheckCenturyComponentDiv100 exprDiv100 |
+      this.getAnOperand() = exprDiv100 and
+      this.getAnOperand() = exprDiv400 and
+      exprEq_propertyPermissive(exprDiv100.getYearExpr(), exprDiv400.getYearExpr())
+    )
+  }
+
+  Expr getYearExpr() {
+    exists(ExprCheckCenturyComponentDiv400 exprDiv400 |
+      this.getAnOperand() = exprDiv400 and
+      result = exprDiv400.getYearExpr()
+    )
+  }
+}
+
+/**
+ * A **Valid** Leap year check expression.
+ */
+abstract class ExprCheckLeapYear extends Expr { }
+
+/**
+ * A valid Leap-Year guard expression of the following form:
+ *  `dt.Year % 4 == 0 && (dt.Year % 100 != 0 || dt.Year % 400 == 0)`
+ */
+final class ExprCheckLeapYearFormA extends ExprCheckLeapYear, LogicalAndExpr {
+  ExprCheckLeapYearFormA() {
+    exists(Expr e, ExprCheckCenturyComponent centuryCheck |
+      e = moduloCheckEQ_0(this.getLeftOperand(), 4) and
+      centuryCheck = this.getAnOperand().getAChild*() and
+      exprEq_propertyPermissive(e, centuryCheck.getYearExpr())
+    )
+  }
+}
+
+/**
+ * A valid Leap-Year guard expression of the following forms:
+ *  `year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)`
+ *  `(year + 1900) % 400 == 0 || (year % 100 != 0 && year % 4 == 0)`
+ */
+final class ExprCheckLeapYearFormB extends ExprCheckLeapYear, LogicalOrExpr {
+  ExprCheckLeapYearFormB() {
+    exists(VariableAccess va1, VariableAccess va2, VariableAccess va3 |
+      va1 = moduloCheckEQ_0(this.getAnOperand(), 400) and
+      va2 = moduloCheckNEQ_0(this.getAnOperand().(LogicalAndExpr).getAnOperand(), 100) and
+      va3 = moduloCheckEQ_0(this.getAnOperand().(LogicalAndExpr).getAnOperand(), 4) and
+      // The 400-leap year check may be offset by [1900,1970,2000].
+      exists(Expr va1_subExpr | va1_subExpr = va1.getAChild*() |
+        exprEq_propertyPermissive(va1_subExpr, va2) and
+        exprEq_propertyPermissive(va2, va3)
+      )
+    )
+  }
+}
+
+Expr leapYearOpEnclosingElement(CheckForLeapYearOperation op) { result = op.getEnclosingElement() }
+
+/**
+ * A value that resolves as a constant integer that represents some normalization or conversion between date types.
+ */
+pragma[inline]
+private predicate isNormalizationPrimitiveValue(Expr e) {
+  e.getValue().toInt() = [1900, 2000, 1980, 80]
+}
+
+/**
+ * A normalization operation is an expression that is merely attempting to convert between two different datetime schemes,
+ * and does not apply any additional mutation to the represented value.
+ */
+pragma[inline]
+predicate isNormalizationOperation(Expr e) {
+  isNormalizationPrimitiveValue([e, e.(Operation).getAChild()])
+  or
+  // Special case for transforming marshaled 2-digit year date:
+  // theTime.wYear += 100*value;
+  e.(Operation).getAChild().(MulExpr).getValue().toInt() = 100
+}
+
+/**
+ * Get the field accesses used in a `ExprCheckLeapYear` expression.
+ */
+LeapYearFieldAccess leapYearCheckFieldAccess(ExprCheckLeapYear a) { result = a.getAChild*() }
+
 /**
  * A `YearFieldAccess` that would represent an access to a year field on a struct and is used for arguing about leap year calculations.
  */
@@ -73,48 +338,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
     this.isModified() and
     exists(Operation op |
       op.getAnOperand() = this and
-      (
-        op instanceof AssignArithmeticOperation and
-        not (
-          op.getAChild().getValue().toInt() = 1900
-          or
-          op.getAChild().getValue().toInt() = 2000
-          or
-          op.getAChild().getValue().toInt() = 1980
-          or
-          op.getAChild().getValue().toInt() = 80
-          or
-          // Special case for transforming marshaled 2-digit year date:
-          // theTime.wYear += 100*value;
-          exists(MulExpr mulBy100 | mulBy100 = op.getAChild() |
-            mulBy100.getAChild().getValue().toInt() = 100
-          )
-        )
-        or
-        exists(BinaryArithmeticOperation bao |
-          bao = op.getAnOperand() and
-          // we're specifically interested in calculations that update the existing
-          // value (like `x = x + 1`), so look for a child `YearFieldAccess`.
-          bao.getAChild*() instanceof YearFieldAccess and
-          not (
-            bao.getAChild().getValue().toInt() = 1900
-            or
-            bao.getAChild().getValue().toInt() = 2000
-            or
-            bao.getAChild().getValue().toInt() = 1980
-            or
-            bao.getAChild().getValue().toInt() = 80
-            or
-            // Special case for transforming marshaled 2-digit year date:
-            // theTime.wYear += 100*value;
-            exists(MulExpr mulBy100 | mulBy100 = op.getAChild() |
-              mulBy100.getAChild().getValue().toInt() = 100
-            )
-          )
-        )
-        or
-        op instanceof CrementOperation
-      )
+      not isNormalizationOperation(op)
     )
   }
 
@@ -155,9 +379,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
     // but these centurial years are leap years if they are exactly divisible by 400
     //
     // https://aa.usno.navy.mil/faq/docs/calendars.php
-    this.isUsedInMod4Operation() and
-    this.additionalModulusCheckForLeapYear(400) and
-    this.additionalModulusCheckForLeapYear(100)
+    this = leapYearCheckFieldAccess(_)
   }
 }
 
@@ -175,19 +397,9 @@ class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
   StructTmLeapYearFieldAccess() { this.getTarget().getName() = "tm_year" }
 
   override predicate isUsedInCorrectLeapYearCheck() {
-    this.isUsedInMod4Operation() and
-    this.additionalModulusCheckForLeapYear(400) and
-    this.additionalModulusCheckForLeapYear(100) and
-    // tm_year represents years since 1900
-    (
-      this.additionalAdditionOrSubstractionCheckForLeapYear(1900)
-      or
-      // some systems may use 2000 for 2-digit year conversions
-      this.additionalAdditionOrSubstractionCheckForLeapYear(2000)
-      or
-      // converting from/to Unix epoch
-      this.additionalAdditionOrSubstractionCheckForLeapYear(1970)
-    )
+    this = leapYearCheckFieldAccess(_) and
+    /* There is some data flow from some conversion arithmetic to this expression. */
+    LocalConvertedYearByOffsetToLeapYearCheckFlow::flow(_, DataFlow::exprNode(this))
   }
 }
 
@@ -206,10 +418,10 @@ class ChecksForLeapYearFunctionCall extends FunctionCall {
 }
 
 /**
- * Data flow configuration for finding a variable access that would flow into
+ * A `DataFlow` configuraiton for finding a variable access that would flow into
  * a function call that includes an operation to check for leap year.
  */
-private module LeapYearCheckConfig implements DataFlow::ConfigSig {
+private module LeapYearCheckFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof VariableAccess }
 
   predicate isSink(DataFlow::Node sink) {
@@ -217,11 +429,10 @@ private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   }
 }
 
-module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
+module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckFlowConfig>;
 
 /**
- * Data flow configuration for finding an operation with hardcoded 365 that will flow into
- * a `FILEINFO` field.
+ * A `DataFlow` configuration for finding an operation with hardcoded 365 that will flow into a `_FILETIME` field.
  */
 private module FiletimeYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -246,46 +457,72 @@ module FiletimeYearArithmeticOperationCheckFlow =
   DataFlow::Global<FiletimeYearArithmeticOperationCheckConfig>;
 
 /**
- * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
+ * A `DataFlow` configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
 private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asExpr() |
-      op.getAChild*().getValue().toInt() = 365 and
-      (
-        not op.getParent() instanceof Expr or
-        op.getParent() instanceof Assignment
-      )
-    )
-  }
-
-  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // flow from anything on the RHS of an assignment to a time/date structure to that
-    // assignment.
-    exists(StructLikeClass dds, FieldAccess fa, Assignment aexpr, Expr e |
-      e = node1.asExpr() and
-      fa = node2.asExpr()
-    |
-      (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
-      fa.getQualifier().getUnderlyingType() = dds and
-      aexpr.getLValue() = fa and
-      aexpr.getRValue().getAChild*() = e
-    )
+    // NOTE: addressing current issue with new IR dataflow, where
+    // constant folding occurs before dataflow nodes are associated
+    // with the constituent literals.
+    source.asExpr().getAChild*().getValue().toInt() = 365 and
+    not exists(DataFlow::Node parent | parent.asExpr().getAChild+() = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
-      aexpr.getRValue() = sink.asExpr()
-    |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
       fa.isModified() and
-      aexpr.getLValue() = fa
+      aexpr.getLValue() = fa and
+      sink.asExpr() = aexpr.getRValue()
     )
   }
 }
 
 module PossibleYearArithmeticOperationCheckFlow =
   TaintTracking::Global<PossibleYearArithmeticOperationCheckConfig>;
+
+/**
+ * A `YearFieldAccess` that is modifying the year by any arithmetic operation.
+ *
+ * NOTE:
+ * To change this class to work for general purpose date transformations that do not check the return value,
+ * make the following changes:
+ *  - change `extends LeapYearFieldAccess` to `extends FieldAccess`.
+ *  - change `this.isModifiedByArithmeticOperation()` to `this.isModified()`.
+ * Expect a lower precision for a general purpose version.
+ */
+class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
+  DateStructModifiedFieldAccess() {
+    exists(Field f, StructLikeClass struct |
+      f.getAnAccess() = this and
+      struct.getAField() = f and
+      struct.getUnderlyingType() instanceof UnpackedTimeType and
+      this.isModifiedByArithmeticOperation()
+    )
+  }
+}
+
+/**
+ * This is a list of APIs that will get the system time, and therefore guarantee that the value is valid.
+ */
+class SafeTimeGatheringFunction extends Function {
+  SafeTimeGatheringFunction() {
+    this.getQualifiedName() = ["GetFileTime", "GetSystemTime", "NtQuerySystemTime"]
+  }
+}
+
+/**
+ * This list of APIs should check for the return value to detect problems during the conversion.
+ */
+class TimeConversionFunction extends Function {
+  TimeConversionFunction() {
+    this.getQualifiedName() =
+      [
+        "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
+        "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
+        "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
+        "RtlTimeToSecondsSince1970", "_mkgmtime"
+      ]
+  }
+}

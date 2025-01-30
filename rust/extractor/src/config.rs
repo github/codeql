@@ -10,14 +10,15 @@ use figment::{
     Figment,
 };
 use itertools::Itertools;
-use log::warn;
 use num_traits::Zero;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
+use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
-use ra_ap_paths::Utf8PathBuf;
-use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource};
+use ra_ap_paths::{AbsPath, Utf8PathBuf};
+use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fmt::Debug;
 use std::ops::Not;
 use std::path::PathBuf;
@@ -45,6 +46,7 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
+    pub diagnostic_dir: PathBuf,
     pub cargo_target_dir: Option<PathBuf>,
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
@@ -84,8 +86,13 @@ impl Config {
         figment.extract().context("loading configuration")
     }
 
-    pub fn to_cargo_config(&self) -> CargoConfig {
-        let sysroot = Some(RustLibSource::Discover);
+    pub fn to_cargo_config(&self, dir: &AbsPath) -> CargoConfig {
+        let sysroot = Sysroot::discover(dir, &FxHashMap::default());
+        let sysroot_src = sysroot.src_root().map(ToOwned::to_owned);
+        let sysroot = sysroot
+            .root()
+            .map(ToOwned::to_owned)
+            .map(RustLibSource::Path);
 
         let target_dir = self
             .cargo_target_dir
@@ -110,6 +117,7 @@ impl Config {
 
         CargoConfig {
             sysroot,
+            sysroot_src,
             target_dir,
             features,
             target,
@@ -131,33 +139,26 @@ fn to_cfg_override(spec: &str) -> CfgAtom {
 }
 
 fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
-    let mut enabled_cfgs = Vec::new();
-    let mut disabled_cfgs = Vec::new();
-    let mut has_test_explicitly_enabled = false;
+    let mut enabled_cfgs = HashSet::new();
+    enabled_cfgs.insert(to_cfg_override("test"));
+    let mut disabled_cfgs = HashSet::new();
     for spec in specs {
-        if spec.starts_with("-") {
-            disabled_cfgs.push(to_cfg_override(&spec[1..]));
+        if let Some(spec) = spec.strip_prefix("-") {
+            let cfg = to_cfg_override(spec);
+            enabled_cfgs.remove(&cfg);
+            disabled_cfgs.insert(cfg);
         } else {
-            enabled_cfgs.push(to_cfg_override(spec));
-            if spec == "test" {
-                has_test_explicitly_enabled = true;
-            }
+            let cfg = to_cfg_override(spec);
+            disabled_cfgs.remove(&cfg);
+            enabled_cfgs.insert(cfg);
         }
     }
-    if !has_test_explicitly_enabled {
-        disabled_cfgs.push(to_cfg_override("test"));
-    }
-    if let Some(global) = CfgDiff::new(enabled_cfgs, disabled_cfgs) {
-        CfgOverrides {
-            global,
-            ..Default::default()
-        }
-    } else {
-        warn!("non-disjoint cfg overrides, ignoring: {}", specs.join(", "));
-        CfgOverrides {
-            global: CfgDiff::new(Vec::new(), vec![to_cfg_override("test")])
-                .expect("disabling one cfg should always succeed"),
-            ..Default::default()
-        }
+    let enabled_cfgs = enabled_cfgs.into_iter().collect();
+    let disabled_cfgs = disabled_cfgs.into_iter().collect();
+    let global = CfgDiff::new(enabled_cfgs, disabled_cfgs)
+        .expect("There should be no duplicate cfgs by construction");
+    CfgOverrides {
+        global,
+        ..Default::default()
     }
 }

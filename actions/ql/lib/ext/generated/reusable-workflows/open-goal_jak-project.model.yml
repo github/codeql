@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-goal/jak-project/.github/workflows/windows-build-msvc.yaml", "*", "input.cmakePreset", "code-injection", "generated"]
+     - ["open-goal/jak-project/.github/workflows/windows-build-clang.yaml", "*", "input.cmakePreset", "code-injection", "generated"]
+     - ["open-goal/jak-project/.github/workflows/macos-build.yaml", "*", "input.cmakePreset", "code-injection", "generated"]
+     - ["open-goal/jak-project/.github/workflows/macos-build-arm.yaml", "*", "input.cmakePreset", "code-injection", "generated"]
+     - ["open-goal/jak-project/.github/workflows/linux-build-gcc.yaml", "*", "input.cmakePreset", "code-injection", "generated"]
+     - ["open-goal/jak-project/.github/workflows/linux-build-clang.yaml", "*", "input.cmakePreset", "code-injection", "generated"]

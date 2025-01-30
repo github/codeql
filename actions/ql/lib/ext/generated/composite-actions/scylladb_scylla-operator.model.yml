@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["scylladb/scylla-operator", "*", "input.containerImageName", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.githubToken", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.githubRef", "code-injection", "generated"]
+     - ["scylladb/scylla-operator", "*", "input.githubRepository", "code-injection", "generated"]

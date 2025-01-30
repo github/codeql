@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["gradle/gradle-build-action", "*", "input.cache-encryption-key", "env.GRADLE_ENCRYPTION_KEY", "taint", "manual"]
+      - ["gradle/gradle-build-action", "*", "input.build-scan-terms-of-service-agree", "env.BUILD_SCAN_TERMS_OF_SERVICE_AGREE", "taint", "manual"]
+      - ["gradle/gradle-build-action", "*", "input.build-scan-terms-of-service-url", "env.BUILD_SCAN_TERMS_OF_SERVICE_URL", "taint", "manual"]
