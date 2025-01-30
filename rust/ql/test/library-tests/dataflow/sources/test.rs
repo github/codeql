@@ -105,7 +105,7 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     // make the request
     println!("sending request...");
     let request = http::Request::builder().uri(url).body(String::from(""))?;
-    let mut response = sender.send_request(request).await?; // $ MISSING: Alert[rust/summary/taint-sources]
+    let mut response = sender.send_request(request).await?; // $ Alert[rust/summary/taint-sources]
     sink(&response); // $ MISSING: hasTaintFlow
 
     if !response.status().is_success() {
