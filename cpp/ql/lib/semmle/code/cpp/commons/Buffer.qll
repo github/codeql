@@ -71,7 +71,7 @@ private int getSize(VariableAccess va) {
       // Otherwise, we find the "outermost" object and compute the size
       // as the difference between the size of the type of the "outermost
       // object" and the offset of the field relative to that type.
-      // For example, consider an access such as:
+      // For example, consider the following structs:
       // ```
       // struct S {
       //   uint32_t x;
