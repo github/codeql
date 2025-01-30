@@ -351,7 +351,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     /**
      * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
      */
-    private predicate jumpStepEx(NodeEx node1, NodeEx node2) {
+    private predicate jumpStepEx1(NodeEx node1, NodeEx node2) {
       exists(Node n1, Node n2 |
         node1.asNode() = n1 and
         node2.asNode() = n2 and
@@ -364,7 +364,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     /**
      * Holds if the additional step from `node1` to `node2` jumps between callables.
      */
-    private predicate additionalJumpStep(NodeEx node1, NodeEx node2, string model) {
+    private predicate additionalJumpStep1(NodeEx node1, NodeEx node2, string model) {
       exists(Node n1, Node n2 |
         node1.asNodeOrImplicitRead() = n1 and
         node2.asNode() = n2 and
@@ -478,8 +478,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         exists(NodeEx mid | fwdFlow(mid, _) and cc = false |
-          jumpStepEx(mid, node) or
-          additionalJumpStep(mid, node, _) or
+          jumpStepEx1(mid, node) or
+          additionalJumpStep1(mid, node, _) or
           additionalJumpStateStep(mid, _, node, _, _)
         )
         or
@@ -693,8 +693,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         exists(NodeEx mid | revFlow(mid, _) and toReturn = false |
-          jumpStepEx(node, mid) or
-          additionalJumpStep(node, mid, _) or
+          jumpStepEx1(node, mid) or
+          additionalJumpStep1(node, mid, _) or
           additionalJumpStateStep(node, _, mid, _, _)
         )
         or
@@ -1212,11 +1212,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private predicate jumpStepExAlias = jumpStepEx/2;
-
-    private predicate additionalJumpStepAlias = additionalJumpStep/3;
-
-
     module Stage1NoState implements Stage1Output<Unit> {
       class Nd = NodeEx;
 
@@ -1255,9 +1250,9 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       predicate sinkNode(NodeEx node) { sinkNode(node, _) }
 
-      predicate jumpStepEx = jumpStepExAlias/2;
+      predicate jumpStepEx = jumpStepEx1/2;
 
-      predicate additionalJumpStep = additionalJumpStepAlias/3;
+      predicate additionalJumpStep = additionalJumpStep1/3;
 
       predicate localStep1 = localStepNodeCand1/6;
 
@@ -1280,8 +1275,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           exists(NodeEx mid | flowState(mid, state) |
             localFlowStepEx(mid, node, _) or
             additionalLocalFlowStep(mid, node, _) or
-            jumpStepExAlias(mid, node) or
-            additionalJumpStepAlias(mid, node, _) or
+            jumpStepEx1(mid, node) or
+            additionalJumpStep1(mid, node, _) or
             store(mid, _, node, _, _) or
             readSetEx(mid, _, node) or
             flowIntoCallNodeCand1(_, mid, node) or
@@ -1437,7 +1432,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       predicate jumpStepEx(Nd node1, Nd node2) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
-          jumpStepExAlias(n1, n2) and
+          jumpStepEx1(n1, n2) and
           node1 = TNodeState(n1, pragma[only_bind_into](s)) and
           node2 = TNodeState(n2, pragma[only_bind_into](s)) and
           not outBarrier(n1, s) and
@@ -1447,7 +1442,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       predicate additionalJumpStep(Nd node1, Nd node2, string model) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
-          additionalJumpStepAlias(n1, n2, model) and
+          additionalJumpStep1(n1, n2, model) and
           node1 = TNodeState(n1, pragma[only_bind_into](s)) and
           node2 = TNodeState(n2, pragma[only_bind_into](s)) and
           not outBarrier(n1, s) and
@@ -1529,9 +1524,9 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2) {
         exists(NodeEx node1, NodeEx node2 |
-          jumpStepEx(node1, node2)
+          jumpStepEx1(node1, node2)
           or
-          additionalJumpStep(node1, node2, _)
+          additionalJumpStep1(node1, node2, _)
           or
           additionalJumpStateStep(node1, _, node2, _, _)
           or
@@ -2012,7 +2007,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         ) and
         isStoreStep = false
         or
-        jumpStepEx(mid.getNodeEx(), node) and
+        jumpStepEx1(mid.getNodeEx(), node) and
         state = mid.getState() and
         cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
@@ -2023,7 +2018,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         ap = mid.getAp() and
         isStoreStep = false
         or
-        additionalJumpStep(mid.getNodeEx(), node, _) and
+        additionalJumpStep1(mid.getNodeEx(), node, _) and
         state = mid.getState() and
         cc = callContextNone() and
         sc1 = TSummaryCtx1None() and
@@ -2314,7 +2309,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         ap = TPartialNil() and
         isStoreStep = false
         or
-        jumpStepEx(node, mid.getNodeEx()) and
+        jumpStepEx1(node, mid.getNodeEx()) and
         state = mid.getState() and
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
@@ -2322,7 +2317,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         ap = mid.getAp() and
         isStoreStep = false
         or
-        additionalJumpStep(node, mid.getNodeEx(), _) and
+        additionalJumpStep1(node, mid.getNodeEx(), _) and
         state = mid.getState() and
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
