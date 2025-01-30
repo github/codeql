@@ -181,6 +181,16 @@ mod m8 {
     } // I55
 } // I46
 
+mod m9 {
+    pub struct MyStruct {} // I56
+
+    #[rustfmt::skip]
+    pub fn f() -> self::MyStruct { // $ item=I56
+        println!("main.rs::m9::f");
+        self::MyStruct {} // $ item=I56
+    } // I57
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -198,4 +208,5 @@ fn main() {
     m6::g(); // $ item=I36
     m7::f(); // $ item=I45
     m8::g(); // $ item=I55
+    m9::f(); // $ item=I57
 }

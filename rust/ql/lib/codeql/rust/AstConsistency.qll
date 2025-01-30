@@ -75,8 +75,8 @@ query predicate multiplePositions(Element parent, int pos1, int pos2, string acc
 
 private import codeql.rust.elements.internal.PathResolution
 
-/** Holds if `p` may resolve to multiple items. */
-query predicate multiplePathResolutions(Path p, Item i) {
+/** Holds if `p` may resolve to multiple items including `i`. */
+query predicate multiplePathResolutions(Path p, ItemNode i) {
   i = resolvePath(p) and
   strictcount(resolvePath(p)) > 1
 }

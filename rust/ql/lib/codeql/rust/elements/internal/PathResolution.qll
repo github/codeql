@@ -57,7 +57,7 @@ abstract class ItemNode extends AstNode {
   pragma[inline_late]
   predicate isPublic() { exists(this.getVisibility()) }
 
-  /** Gets an element that has this item as immediately enlcosing item. */
+  /** Gets an element that has this item as immediately enclosing item. */
   pragma[nomagic]
   Element getADescendant() {
     getImmediateParent(result) = this
@@ -77,9 +77,8 @@ abstract class ItemNode extends AstNode {
   pragma[nomagic]
   ModuleLikeNode getImmediateParentModule() { this = result.getAnItemInScope() }
 
-  /** Gets a successor named `name` of this item, if any. */
   pragma[nomagic]
-  ItemNode getASuccessor(string name) {
+  private ItemNode getASuccessorRec(string name) {
     sourceFileEdge(this, name, result)
     or
     this = result.getImmediateParent() and
@@ -91,15 +90,21 @@ abstract class ItemNode extends AstNode {
     or
     // items made available through `use` are available to nodes that contain the `use`
     exists(UseItemNode use |
-      use = this.getASuccessor(_) and
-      result = use.getASuccessor(name)
+      use = this.getASuccessorRec(_) and
+      result = use.(ItemNode).getASuccessorRec(name)
     )
     or
     // items made available through macro calls are available to nodes that contain the macro call
     exists(MacroCallItemNode call |
-      call = this.getASuccessor(_) and
-      result = call.getASuccessor(name)
+      call = this.getASuccessorRec(_) and
+      result = call.(ItemNode).getASuccessorRec(name)
     )
+  }
+
+  /** Gets a successor named `name` of this item, if any. */
+  pragma[nomagic]
+  ItemNode getASuccessor(string name) {
+    result = this.getASuccessorRec(name)
     or
     name = "super" and
     if this instanceof Module
@@ -107,7 +112,8 @@ abstract class ItemNode extends AstNode {
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
     name = "self" and
-    if this instanceof Module then result = this else result = this.getImmediateParentModule()
+    not this instanceof Module and
+    result = this.getImmediateParentModule()
     or
     name = "Self" and
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
@@ -224,6 +230,7 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override Visibility getVisibility() { none() }
 }
 
+/** Holds if `item` has the name `name` and is a top-level item inside `f`. */
 private predicate sourceFileEdge(SourceFile f, string name, ItemNode item) {
   item = f.getAnItem() and
   name = item.getName()
@@ -257,7 +264,7 @@ private predicate modImport(Module m, string fileName, string name, Folder paren
     // #[path = "foo.rs"]
     // mod bar;
     // ```
-    not m.getAnAttr().getMeta().getPath().getPart().getNameRef().getText() = "path" and
+    not m.getAnAttr().getMeta().getPath().getText() = "path" and
     name = m.getName().getText() and
     parent = f.getParentContainer() and
     fileName = f.getStem()
@@ -303,7 +310,7 @@ private predicate useTreeDeclares(UseTree tree, string name) {
     name != "_"
     or
     not tree.hasRename() and
-    name = tree.getPath().getPart().getNameRef().getText()
+    name = tree.getPath().getText()
   )
   or
   exists(UseTree mid |
@@ -330,31 +337,32 @@ private predicate declares(ItemNode item, string name) {
   )
 }
 
+/** A path that does not access a local variable. */
 private class RelevantPath extends Path {
   RelevantPath() { not this = any(VariableAccess va).(PathExpr).getPath() }
 
   pragma[nomagic]
-  predicate isRoot(string name) {
+  predicate isUnqualified(string name) {
     not exists(this.getQualifier()) and
     not this = any(UseTreeList list).getAUseTree().getPath() and
-    name = this.getPart().getNameRef().getText()
+    name = this.getText()
   }
 }
 
 /**
- * Holds if the root path `root` references an item named `name`, and `name`
+ * Holds if the unqualified path `p` references an item named `name`, and `name`
  * may be looked up inside enclosing item `encl`.
  */
 pragma[nomagic]
-private predicate rootPathLookup(RelevantPath root, string name, ItemNode encl) {
+private predicate unqualifiedPathLookup(RelevantPath p, string name, ItemNode encl) {
   exists(ItemNode encl0 |
     // lookup in the immediately enclosing item
-    root.isRoot(name) and
-    encl0.getADescendant() = root
+    p.isUnqualified(name) and
+    encl0.getADescendant() = p
     or
     // lookup in an outer scope, but only if the item is not declared in inner scope
     exists(ItemNode mid |
-      rootPathLookup(root, name, mid) and
+      unqualifiedPathLookup(p, name, mid) and
       not declares(mid, name)
     |
       // nested modules do not have unqualified access to items from outer modules,
@@ -374,7 +382,7 @@ private predicate rootPathLookup(RelevantPath root, string name, ItemNode encl) 
 cached
 ItemNode resolvePath(RelevantPath path) {
   exists(ItemNode encl, string name |
-    rootPathLookup(path, name, encl) and
+    unqualifiedPathLookup(path, name, encl) and
     result = encl.getASuccessor(name)
   )
   or
@@ -389,7 +397,7 @@ ItemNode resolvePath(RelevantPath path) {
 pragma[nomagic]
 private ItemNode resolvePathQualifier(RelevantPath path, string name) {
   result = resolvePath(path.getQualifier()) and
-  name = path.getPart().getNameRef().getText()
+  name = path.getText()
 }
 
 private predicate isUseTreeSubPath(UseTree tree, RelevantPath path) {
@@ -405,7 +413,7 @@ pragma[nomagic]
 private predicate isUseTreeSubPathUnqualified(UseTree tree, RelevantPath path, string name) {
   isUseTreeSubPath(tree, path) and
   not exists(path.getQualifier()) and
-  name = path.getPart().getNameRef().getText()
+  name = path.getText()
 }
 
 pragma[nomagic]
@@ -428,7 +436,7 @@ private ItemNode resolveUseTreeListItemQualifier(
   Use use, UseTree tree, RelevantPath path, string name
 ) {
   result = resolveUseTreeListItem(use, tree, path.getQualifier()) and
-  name = path.getPart().getNameRef().getText()
+  name = path.getText()
 }
 
 pragma[nomagic]
