@@ -69,14 +69,6 @@ signature module InputSig<LocationSig Location> {
   Node exprNode(DataFlowExpr e);
 
   class DataFlowCall {
-
-    /**
-     * Gets a run-time target of this call. A target is always a source
-     * declaration, and if the callable has both CIL and source code, only
-     * the source code version is returned.
-     */
-    DataFlowCallable getARuntimeTarget();
-
     /** Gets a textual representation of this element. */
     string toString();
 
@@ -84,11 +76,6 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
 
     DataFlowCallable getEnclosingCallable();
-
-    ArgumentNode getAnArgumentNode();
-
-    /** Gets a best-effort total ordering. */
-    int totalorder();
   }
 
   class DataFlowCallable {
@@ -97,9 +84,6 @@ signature module InputSig<LocationSig Location> {
 
     /** Gets the location of this callable. */
     Location getLocation();
-
-    /** Gets a best-effort total ordering. */
-    int totalorder();
   }
 
   class ReturnKind {
@@ -274,8 +258,6 @@ signature module InputSig<LocationSig Location> {
   class NodeRegion {
     /** Holds if this region contains `n`. */
     predicate contains(Node n);
-
-    int totalOrder();
   }
 
   /**
@@ -460,6 +442,28 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     default predicate observeDiffInformedIncrementalMode() { none() }
+
+    /**
+     * Gets a location that will be associated with the given `source` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the source itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the source at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    /**
+     * Gets a location that will be associated with the given `sink` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the sink itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the sink at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -587,6 +591,28 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     default predicate observeDiffInformedIncrementalMode() { none() }
+
+    /**
+     * Gets a location that will be associated with the given `source` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the source itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the source at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    /**
+     * Gets a location that will be associated with the given `sink` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the sink itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the sink at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
 }
 
@@ -633,16 +659,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * A `Node` augmented with a call context (except for sinks) and an access path.
      * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
      */
-    class PathNode{
-      /** Gets the underlying Node. */
-      Node getNode();
-
-      /** Holds if this node is a source. */
-      predicate isSource();
-
-      /** Gets a successor of this node, if any. */
-      PathNode getASuccessor();
-    }
+    class PathNode;
 
     /**
      * Holds if data can flow from `source` to `sink`.
@@ -726,9 +743,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     /** Gets the underlying `Node`. */
     Node getNode();
 
-    /** Holds if this node is a source. */
-    predicate isSource();
-
     /** Gets the location of this node. */
     Location getLocation();
   }
@@ -780,15 +794,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
         this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
-
-      predicate isSource(){
-        this.asPathNode1().isSource() or
-        this.asPathNode2().isSource()
-      }
-
-      PathNode getASuccessor(){
-        none()
       }
     }
 
@@ -861,16 +866,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }
-
-      predicate isSource(){
-        this.asPathNode1().isSource() or
-        this.asPathNode2().isSource() or
-        this.asPathNode3().isSource()
-      }
-
-      PathNode getASuccessor(){
-        none()
-      }
 
       /** Gets the location of this node. */
       Location getLocation() { result = super.getLocation() }
