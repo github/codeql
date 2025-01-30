@@ -113,16 +113,6 @@ class DataFlowCallable extends TDataFlowCallable {
     this instanceof TLibraryCallable and
     result instanceof EmptyLocation
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -153,23 +143,6 @@ abstract class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  // #46: Stubs Below
-  /** Gets an argument to this call as a Node. */
-  ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
-
-  /** Gets the target of the call, as a DataFlowCallable. */
-  DataFlowCallable getARuntimeTarget(){ none() } // TODO
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
   }
 }
 
@@ -264,7 +237,7 @@ class NormalCall extends DataFlowCall, TNormalCall {
  * need to track the `View` instance (2) into the receiver of the adjusted method
  * call, in order to figure out that the call target is in fact `view.html.erb`.
  */
-module ViewComponentRenderModeling {
+private module ViewComponentRenderModeling {
   private import codeql.ruby.frameworks.ViewComponent
 
   private class RenderMethod extends SummarizedCallable, LibraryCallableToIncludeInTypeTracking {
@@ -360,13 +333,74 @@ private predicate selfInModule(SelfVariable self, Module m) {
 
 /** Holds if `self` belongs to method `method` inside module `m`. */
 pragma[nomagic]
-predicate selfInMethod(SelfVariable self, MethodBase method, Module m) {
+private predicate selfInMethod(SelfVariable self, MethodBase method, Module m) {
   exists(ModuleBase encl |
     method = self.getDeclaringScope() and
     encl = method.getEnclosingModule() and
     if encl instanceof SingletonClass
     then m = encl.getEnclosingModule().getModule()
     else m = encl.getModule()
+  )
+}
+
+/** Holds if `self` belongs to the top-level. */
+pragma[nomagic]
+private predicate selfInToplevel(SelfVariable self, Module m) {
+  ViewComponentRenderModeling::selfInErbToplevel(self, m)
+  or
+  not ViewComponentRenderModeling::selfInErbToplevel(self, _) and
+  self.getDeclaringScope() instanceof Toplevel and
+  m = Module::TResolved("Object")
+}
+
+/**
+ * Holds if SSA definition `def` belongs to a variable introduced via pattern
+ * matching on type `m`. For example, in
+ *
+ * ```rb
+ * case object
+ *   in C => c then c.foo
+ * end
+ * ```
+ *
+ * the SSA definition for `c` is introduced by matching on `C`.
+ */
+private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
+  exists(AsPattern ap |
+    m = Module::resolveConstantReadAccess(ap.getPattern()) and
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
+      ap.getVariableAccess()
+  )
+}
+
+/**
+ * Holds if `read1` and `read2` are adjacent reads of SSA definition `def`,
+ * and `read2` is checked to have type `m`. For example, in
+ *
+ * ```rb
+ * case object
+ *   when C then object.foo
+ * end
+ * ```
+ *
+ * the two reads of `object` are adjacent, and the second is checked to have type `C`.
+ */
+private predicate hasAdjacentTypeCheckedReads(
+  Ssa::Definition def, CfgNodes::ExprCfgNode read1, CfgNodes::ExprCfgNode read2, Module m
+) {
+  exists(
+    CfgNodes::ExprCfgNode pattern, ConditionBlock cb, CfgNodes::ExprNodes::CaseExprCfgNode case
+  |
+    m = Module::resolveConstantReadAccess(pattern.getExpr()) and
+    cb.getLastNode() = pattern and
+    cb.controls(read2.getBasicBlock(),
+      any(SuccessorTypes::MatchingSuccessor match | match.getValue() = true)) and
+    def.hasAdjacentReads(read1, read2) and
+    case.getValue() = read1
+  |
+    pattern = case.getBranch(_).(CfgNodes::ExprNodes::WhenClauseCfgNode).getPattern(_)
+    or
+    pattern = case.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
   )
 }
 
@@ -604,7 +638,7 @@ private predicate hasUserDefinedNew(Module m) {
  * `self.new` on `m`.
  */
 pragma[nomagic]
-predicate isStandardNewCall(RelevantCall new, Module m, boolean exact) {
+private predicate isStandardNewCall(RelevantCall new, Module m, boolean exact) {
   exists(DataFlow::LocalSourceNode sourceNode |
     flowsToMethodCallReceiver(TNormalCall(new), sourceNode, "new") and
     // `m` should not have a user-defined `self.new` method
@@ -633,11 +667,106 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, 
 }
 
 private module TrackInstanceInput implements CallGraphConstruction::InputSig {
+  pragma[nomagic]
+  private predicate isInstanceNoCall(DataFlow::Node n, Module tp, boolean exact) {
+    n.asExpr().getExpr() instanceof NilLiteral and
+    tp = Module::TResolved("NilClass") and
+    exact = true
+    or
+    n.asExpr().getExpr().(BooleanLiteral).isFalse() and
+    tp = Module::TResolved("FalseClass") and
+    exact = true
+    or
+    n.asExpr().getExpr().(BooleanLiteral).isTrue() and
+    tp = Module::TResolved("TrueClass") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof IntegerLiteral and
+    tp = Module::TResolved("Integer") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof FloatLiteral and
+    tp = Module::TResolved("Float") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof RationalLiteral and
+    tp = Module::TResolved("Rational") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof ComplexLiteral and
+    tp = Module::TResolved("Complex") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof StringlikeLiteral and
+    tp = Module::TResolved("String") and
+    exact = true
+    or
+    n.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and
+    tp = Module::TResolved("Array") and
+    exact = true
+    or
+    n.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and
+    tp = Module::TResolved("Hash") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof MethodBase and
+    tp = Module::TResolved("Symbol") and
+    exact = true
+    or
+    n.asParameter() instanceof BlockParameter and
+    tp = Module::TResolved("Proc") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof Lambda and
+    tp = Module::TResolved("Proc") and
+    exact = true
+    or
+    // `self` reference in method or top-level (but not in module or singleton method,
+    // where instance methods cannot be called; only singleton methods)
+    n =
+      any(SelfLocalSourceNode self |
+        exists(MethodBase m |
+          selfInMethod(self.getVariable(), m, tp) and
+          not m instanceof SingletonMethod and
+          if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
+        )
+        or
+        selfInToplevel(self.getVariable(), tp) and
+        exact = true
+      )
+    or
+    // `in C => c then c.foo`
+    asModulePattern(n, tp) and
+    exact = false
+    or
+    // `case object when C then object.foo`
+    hasAdjacentTypeCheckedReads(_, _, n.asExpr(), tp) and
+    exact = false
+  }
+
+  pragma[nomagic]
+  private predicate isInstanceCall(DataFlow::Node n, Module tp, boolean exact) {
+    isStandardNewCall(n.asExpr(), tp, exact)
+  }
+
+  /** Holds if `n` is an instance of type `tp`. */
+  pragma[inline]
+  private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
+    isInstanceNoCall(n, tp, exact)
+    or
+    isInstanceCall(n, tp, exact)
+  }
+
+  pragma[nomagic]
+  private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
+    hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
+  }
+
   newtype State = additional MkState(Module m, Boolean exact)
 
   predicate start(DataFlow::Node start, State state) {
     exists(Module tp, boolean exact | state = MkState(tp, exact) |
-      TypeInference::hasType(start, tp, exact)
+      isInstance(start, tp, exact)
       or
       exists(Module m |
         (if m.isClass() then tp = Module::TResolved("Class") else tp = Module::TResolved("Module")) and
@@ -656,19 +785,14 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   }
 
   pragma[nomagic]
-  private predicate hasAdjacentTypeCheckedRead(DataFlow::Node node) {
-    TypeInference::hasAdjacentTypeCheckedRead(node.asExpr(), _)
-  }
-
-  pragma[nomagic]
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
     smallStepNoCall(nodeFrom, nodeTo, summary)
     or
     // We exclude steps into type checked variables. For those, we instead rely on the
     // type being checked against
     localFlowStep(nodeFrom, nodeTo, summary) and
-    not hasAdjacentTypeCheckedRead(nodeTo) and
-    not TypeInference::asModulePattern(nodeTo.(SsaDefinitionExtNode).getDefinitionExt(), _)
+    not hasAdjacentTypeCheckedReads(nodeTo) and
+    not asModulePattern(nodeTo, _)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
