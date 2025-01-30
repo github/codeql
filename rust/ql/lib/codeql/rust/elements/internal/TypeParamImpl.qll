@@ -11,6 +11,8 @@ private import codeql.rust.elements.internal.generated.TypeParam
  * be referenced directly.
  */
 module Impl {
+  private import rust
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A TypeParam. For example:
@@ -19,6 +21,9 @@ module Impl {
    * ```
    */
   class TypeParam extends Generated::TypeParam {
+    /** Gets the position of this type parameter. */
+    int getPosition() { this = any(GenericParamList l).getTypeParam(result) }
+
     override string toAbbreviatedString() { result = this.getName().getText() }
 
     override string toString() { result = this.getName().getText() }

@@ -11,6 +11,8 @@ private import codeql.rust.elements.internal.generated.GenericArgList
  * be referenced directly.
  */
 module Impl {
+  private import rust
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * The base class for generic arguments.
@@ -22,5 +24,15 @@ module Impl {
     override string toString() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = "<...>" }
+
+    /** Gets the `i`th type argument of this list. */
+    TypeRepr getTypeArgument(int i) {
+      result =
+        rank[i + 1](TypeRepr res, int j |
+          res = this.getGenericArg(j).(TypeArg).getTypeRepr()
+        |
+          res order by j
+        )
+    }
   }
 }

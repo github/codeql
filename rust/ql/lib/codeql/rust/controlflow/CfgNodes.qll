@@ -239,9 +239,8 @@ final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
   pragma[nomagic]
   ExprCfgNode getFieldExpr(string field) {
     exists(RecordExprField ref |
-      ref = node.getRecordExprFieldList().getAField() and
-      any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result) and
-      field = ref.getFieldName()
+      ref = node.getFieldExpr(field) and
+      any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result)
     )
   }
 }
