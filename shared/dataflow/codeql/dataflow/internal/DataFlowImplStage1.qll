@@ -460,7 +460,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       private class Cc = boolean;
 
-      /* Begin: Stage 1 logic. */
       /**
        * Holds if `node` is reachable from a source.
        *
@@ -954,7 +953,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
             callEdgeReturn(call, c, _, _, _, _)
           )
       }
-      /* End: Stage 1 logic. */
     }
 
     private module Stage1Common {

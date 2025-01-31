@@ -169,7 +169,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   }
 
   /**
-   * Constructs a data flow computation given a full input configuration.
+   * Constructs a data flow computation given a full input configuration, and
+   * an initial stage 1 pruning.
    */
   module Impl<FullStateConfigSig Config, Stage1Output<Config::FlowState> Stage1> {
     private class FlowState = Config::FlowState;
