@@ -404,8 +404,8 @@ app.get('/dotdot-regexp', (req, res) => {
 });
 
 app.get('/join-spread', (req, res) => {
-  fs.readFileSync(pathModule.join('foo', ...req.query.x.split('/'))); // $ Alert Source
-  fs.readFileSync(pathModule.join(...req.query.x.split('/'))); // $ Alert Source
+  fs.readFileSync(pathModule.join('foo', ...req.query.x.split('/'))); // $ Alert
+  fs.readFileSync(pathModule.join(...req.query.x.split('/'))); // $ Alert
 });
 
 app.get('/dotdot-matchAll-regexp', (req, res) => {

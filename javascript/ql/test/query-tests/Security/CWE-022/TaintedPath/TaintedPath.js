@@ -51,9 +51,9 @@ var server = http.createServer(function(req, res) {
 
 var server = http.createServer(function(req, res) {
     // tests for a few uri-libraries
-    res.write(fs.readFileSync(require("querystringify").parse(req.url).query)); // $ Alert Source
-    res.write(fs.readFileSync(require("query-string").parse(req.url).query)); // $ Alert Source
-    res.write(fs.readFileSync(require("querystring").parse(req.url).query)); // $ Alert Source
+    res.write(fs.readFileSync(require("querystringify").parse(req.url).query)); // $ Alert
+    res.write(fs.readFileSync(require("query-string").parse(req.url).query)); // $ Alert
+    res.write(fs.readFileSync(require("querystring").parse(req.url).query)); // $ Alert
 });
 
 (function(){
@@ -173,10 +173,10 @@ import normalizeUrl from 'normalize-url';
 var server = http.createServer(function(req, res) {
   // tests for a few more uri-libraries
   const qs = require("qs");
-  res.write(fs.readFileSync(qs.parse(req.url).foo)); // $ Alert Source
-  res.write(fs.readFileSync(qs.parse(normalizeUrl(req.url)).foo)); // $ Alert Source
+  res.write(fs.readFileSync(qs.parse(req.url).foo)); // $ Alert
+  res.write(fs.readFileSync(qs.parse(normalizeUrl(req.url)).foo)); // $ Alert
   const parseqs = require("parseqs");
-  res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // $ Alert Source
+  res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // $ Alert
 });
 
 const cp = require("child_process");
