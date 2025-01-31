@@ -383,3 +383,73 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
     )
   }
 }
+
+/**
+ * A complementary sanitizer that protects against path injection vulnerabilities
+ * by replacing all directory characters ('..', '/', and '\') with safe characters.
+ */
+private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
+  ReplaceDirectoryCharactersSanitizer() {
+    exists(MethodCall mc |
+      // TODO: "java.lang.String.replace" as well
+      mc.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
+      // TODO: unhardcode all of the below to handle more valid replacements and several calls
+      (
+        mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "\\.\\.|[/\\\\]"
+        or
+        exists(MethodCall mc2 |
+          mc2.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
+          mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "\\." and
+          mc2.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "/"
+        )
+      ) and
+      // TODO: accept more replacement characters?
+      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_"] and
+      this = mc
+    )
+  }
+}
+
+/**
+ * A complementary guard that protects against path traversal by looking
+ * for patterns that exclude directory characters: `..`, '/', and '\'.
+ */
+private class DirectoryCharactersGuard extends PathGuard {
+  Expr checkedExpr;
+
+  DirectoryCharactersGuard() {
+    exists(MethodCall mc, Method m | m = mc.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("matches") and
+      // TODO: unhardcode to handle more valid matches
+      mc.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "[0-9a-fA-F]{20,}" and
+      checkedExpr = mc.getQualifier() and
+      this = mc
+    )
+  }
+
+  override Expr getCheckedExpr() { result = checkedExpr }
+}
+
+/**
+ * Holds if `g` is a guard that considers a path safe because it is checked to make
+ * sure it does not contain any directory characters: '..', '/', and '\'.
+ */
+private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
+  branch = true and
+  g instanceof DirectoryCharactersGuard and
+  localTaintFlowToPathGuard(e, g)
+}
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by ensuring that the path does not contain any directory characters:
+ *  '..', '/', and '\'.
+ */
+private class DirectoryCharactersSanitizer extends PathInjectionSanitizer {
+  DirectoryCharactersSanitizer() {
+    this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer or
+    this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode() or
+    this = ValidationMethod<directoryCharactersGuard/3>::getAValidatedNode()
+  }
+}
