@@ -6,7 +6,7 @@ var fs = require('fs'),
     ;
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
 
   res.write(fs.readFileSync(path)); // $ Alert - This could read any file on the file system
 
@@ -33,7 +33,7 @@ var server = http.createServer(function(req, res) {
   path = sanitize(path);
   res.write(fs.readFileSync(path)); // OK - Path is sanitized
 
-  path = url.parse(req.url, true).query.path;
+  path = url.parse(req.url, true).query.path; // $ Source
   // OK - basename is safe
   res.write(fs.readFileSync(pathModule.basename(path)));
   res.write(fs.readFileSync(pathModule.dirname(path))); // $ Alert - taint is preserved
@@ -51,9 +51,9 @@ var server = http.createServer(function(req, res) {
 
 var server = http.createServer(function(req, res) {
     // tests for a few uri-libraries
-    res.write(fs.readFileSync(require("querystringify").parse(req.url).query)); // $ Alert
-    res.write(fs.readFileSync(require("query-string").parse(req.url).query)); // $ Alert
-    res.write(fs.readFileSync(require("querystring").parse(req.url).query)); // $ Alert
+    res.write(fs.readFileSync(require("querystringify").parse(req.url).query)); // $ Alert Source
+    res.write(fs.readFileSync(require("query-string").parse(req.url).query)); // $ Alert Source
+    res.write(fs.readFileSync(require("querystring").parse(req.url).query)); // $ Alert Source
 });
 
 (function(){
@@ -70,7 +70,7 @@ var server = http.createServer(function(req, res) {
 })();
 
 var server = http.createServer(function(req, res) {
-	let path = url.parse(req.url, true).query.path;
+	let path = url.parse(req.url, true).query.path; // $ Source
 
 	res.write(fs.readFileSync(fs.realpathSync(path))); // $ Alert
 	fs.realpath(path,
@@ -106,13 +106,13 @@ var server = http.createServer(function(req, res) {
 });
 
 var server = http.createServer(function(req, res) {
-	let path = url.parse(req.url, true).query.path;
+	let path = url.parse(req.url, true).query.path; // $ Source
 
 	require('send')(req, path); // $ Alert
 });
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
 
@@ -136,7 +136,7 @@ var server = http.createServer(function(req, res) {
 });
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
 
   // Removal of forward-slash or dots.
   res.write(fs.readFileSync(path.replace(/[\]\[*,;'"`<>\\?\/]/g, '')));
@@ -173,22 +173,22 @@ import normalizeUrl from 'normalize-url';
 var server = http.createServer(function(req, res) {
   // tests for a few more uri-libraries
   const qs = require("qs");
-  res.write(fs.readFileSync(qs.parse(req.url).foo)); // $ Alert
-  res.write(fs.readFileSync(qs.parse(normalizeUrl(req.url)).foo)); // $ Alert
+  res.write(fs.readFileSync(qs.parse(req.url).foo)); // $ Alert Source
+  res.write(fs.readFileSync(qs.parse(normalizeUrl(req.url)).foo)); // $ Alert Source
   const parseqs = require("parseqs");
-  res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // $ Alert
+  res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // $ Alert Source
 });
 
 const cp = require("child_process");
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
   cp.execSync("foobar", {cwd: path}); // $ Alert
   cp.execFileSync("foobar", ["args"], {cwd: path}); // $ Alert
   cp.execFileSync("foobar", {cwd: path}); // $ Alert
 });
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
 
   // Removal of forward-slash or dots.
   res.write(fs.readFileSync(path.replace(new RegExp("[\\]\\[*,;'\"`<>\\?/]", 'g'), '')));
@@ -197,7 +197,7 @@ var server = http.createServer(function(req, res) {
 });
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
 
   res.write(fs.readFileSync(path.replace(new RegExp("[.]", 'g'), ''))); // $ Alert - can be absolute
 

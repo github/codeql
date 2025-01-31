@@ -26,7 +26,7 @@ function init() {
 init();
 
 app.get('/some/path1', function (req, res) {
-    res.send(data.compiledFileAccess({ path: req.params.path })); // template uses vulnerable catFile
+    res.send(data.compiledFileAccess({ path: req.params.path })); // $ Source - template uses vulnerable catFile
 });
 
 app.get('/some/path2', function (req, res) {
@@ -40,7 +40,7 @@ app.get('/some/path3', function (req, res) {
 app.get('/some/path4', function (req, res) {
     res.send(data.compiledMixed({
         prefix: ">>> ",
-        path: req.params.path // template uses vulnerable helper
+        path: req.params.path // $ Source - template uses vulnerable helper
     }));
 });
 

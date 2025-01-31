@@ -18,8 +18,8 @@ app.get('/some/path/:x', function(req, res) {
   res.sendFile(homeDir + '/data/' + req.params.x); // OK - sendFile disallows ../
   res.sendfile('data/' + req.params.x); // OK - sendfile disallows ../
 
-  res.sendFile(path.resolve('data', req.params.x)); // $ Alert
-  res.sendfile(path.join('data', req.params.x)); // $ Alert
+  res.sendFile(path.resolve('data', req.params.x)); // $ Alert Source
+  res.sendfile(path.join('data', req.params.x)); // $ Alert Source
 
   res.sendFile(homeDir + path.join('data', req.params.x)); // kinda OK - can only escape from 'data/'
 });
