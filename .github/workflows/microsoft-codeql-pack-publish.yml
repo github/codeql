@@ -60,16 +60,10 @@ jobs:
         $DEPENDENCIES
         EOF
 
-        cat "$LANGUAGE/ql/src/qlpack.yml"
-      env:
-        LANGUAGE: ${{ matrix.language }}
-    - name: Prepare Publish
-      shell: bash
-      run: |
         echo "___________________________________________________________"
         cat "$LANGUAGE/ql/src/qlpack.yml"
         echo "___________________________________________________________"
         gh pack publish --dry-run "$LANGUAGE/ql/src"
       env:
-        GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
         LANGUAGE: ${{ matrix.language }}
+        GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
