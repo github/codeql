@@ -17,6 +17,8 @@ jobs:
       - name: Set CodeQL Version
         id: set_codeql_version
         run: |
+            git fetch
+            git fetch --tags
             CURRENT_COMMIT=$(git rev-list -1 HEAD)
             CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'codeql-cli/v*' $CURRENT_COMMIT)
             CURRENT_VERSION="${CURRENT_TAG#codeql-cli/}"
