@@ -22,14 +22,14 @@ module TaintedObject {
   import TaintedObjectCustomizations::TaintedObject
 
   // Materialize flow labels
-  deprecated private class ConcreteTaintedObjectLabel extends TaintedObjectLabel {
+  private class ConcreteTaintedObjectLabel extends TaintedObjectLabel {
     ConcreteTaintedObjectLabel() { this = this }
   }
 
   /**
    * DEPRECATED. Use `isAdditionalFlowStep(node1, state1, node2, state2)` instead.
    */
-  deprecated predicate step(Node src, Node trg, FlowLabel inlbl, FlowLabel outlbl) {
+  predicate step(Node src, Node trg, FlowLabel inlbl, FlowLabel outlbl) {
     isAdditionalFlowStep(src, FlowState::fromFlowLabel(inlbl), trg, FlowState::fromFlowLabel(outlbl))
   }
 
@@ -80,7 +80,7 @@ module TaintedObject {
    *
    * Holds if `node` is a source of JSON taint and label is the JSON taint label.
    */
-  deprecated predicate isSource(Node source, FlowLabel label) {
+  predicate isSource(Node source, FlowLabel label) {
     source instanceof Source and label = label()
   }
 
@@ -100,21 +100,21 @@ module TaintedObject {
     predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
-    deprecated predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+    predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
-    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+    predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
   }
 
-  deprecated private class SanitizerGuardLegacy extends TaintTracking::LabeledSanitizerGuardNode instanceof SanitizerGuard
+  private class SanitizerGuardLegacy extends TaintTracking::LabeledSanitizerGuardNode instanceof SanitizerGuard
   {
-    deprecated override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+    override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       SanitizerGuard.super.sanitizes(outcome, e, label)
     }
 
-    deprecated override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate sanitizes(boolean outcome, Expr e) {
       SanitizerGuard.super.sanitizes(outcome, e)
     }
   }

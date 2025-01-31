@@ -19,14 +19,14 @@ module TaintedUrlSuffix {
    *
    * Can also be accessed using `TaintedUrlSuffix::label()`.
    */
-  abstract deprecated class TaintedUrlSuffixLabel extends FlowLabel {
+  abstract class TaintedUrlSuffixLabel extends FlowLabel {
     TaintedUrlSuffixLabel() { this = "tainted-url-suffix" }
   }
 
   /**
    * Gets the flow label representing a URL with a tainted query and fragment part.
    */
-  deprecated FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
+  FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
 
   /** Gets a remote flow source that is a tainted URL query or fragment part from `window.location`. */
   ClientSideRemoteFlowSource source() {
@@ -45,7 +45,7 @@ module TaintedUrlSuffix {
    * This should be used in the `isBarrier` predicate of a configuration that uses the tainted-url-suffix
    * label.
    */
-  deprecated predicate isBarrier(Node node, FlowLabel label) {
+  predicate isBarrier(Node node, FlowLabel label) {
     isStateBarrier(node, FlowState::fromFlowLabel(label))
   }
 
@@ -60,7 +60,7 @@ module TaintedUrlSuffix {
   /**
    * DEPRECATED. Use `isAdditionalFlowStep` instead.
    */
-  deprecated predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+  predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
     isAdditionalFlowStep(src, FlowState::fromFlowLabel(srclbl), dst,
       FlowState::fromFlowLabel(dstlbl))
   }

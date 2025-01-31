@@ -1929,7 +1929,7 @@ module DataFlow {
   import Nodes
   import Sources
   import TypeInference
-  deprecated import Configuration
+  import Configuration
   import TypeTracking
   import AdditionalFlowSteps
   import internal.FunctionWrapperSteps
