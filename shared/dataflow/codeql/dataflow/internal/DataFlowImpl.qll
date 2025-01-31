@@ -2113,6 +2113,113 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
+        pragma[nomagic]
+        private predicate debug_fwdFlowRetKindFromArg(
+          CcCall ccc, ParamNodeEx p, Typ argT, Ap argAp, ReturnKindExt kind, FlowState state, Typ t,
+          Ap ap
+        ) {
+          exists(RetNodeEx ret |
+            fwdFlowRetFromArg(ret, state, ccc, p, argT, argAp, _, t, ap, _) and
+            ret.getKind() = kind
+          )
+        }
+
+        predicate debug_flowThroughFanoutParam(
+          DataFlowCallable c, CcCall ccc, ParamNodeEx p, Typ argT, Ap argAp, ReturnKindExt kind,
+          int states, int typs, int aps, int total
+        ) {
+          c = p.getEnclosingCallable() and
+          states =
+            strictcount(FlowState s |
+              debug_fwdFlowRetKindFromArg(ccc, p, argT, argAp, kind, s, _, _)
+            ) and
+          typs =
+            strictcount(Typ t | debug_fwdFlowRetKindFromArg(ccc, p, argT, argAp, kind, _, t, _)) and
+          aps =
+            strictcount(Ap ap | debug_fwdFlowRetKindFromArg(ccc, p, argT, argAp, kind, _, _, ap)) and
+          total =
+            strictcount(FlowState s, Typ t, Ap ap |
+              debug_fwdFlowRetKindFromArg(ccc, p, argT, argAp, kind, s, t, ap)
+            ) and
+          total > 1
+        }
+
+        pragma[nomagic]
+        private predicate debug_fwdFlowThrough(
+          /* context params */
+          DataFlowCallable c, Cc cc, TypOption argT, ApOption argAp, ParamNodeOption summaryCtx,
+          /* call-site through-edge */
+          DataFlowCall call, CcCall ccc, ParameterPosition pos, ReturnKindExt kind,
+          /* call target */
+          ParamNodeEx p,
+          /* entry state */
+          Typ innerArgT, Ap innerArgAp,
+          /* exit state */
+          FlowState state, Typ t, Ap ap
+        ) {
+          exists(RetNodeEx ret |
+            fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, _, ret, p,
+              innerArgT, innerArgAp, _) and
+            ret.getKind() = kind and
+            pos = p.getPosition() and
+            c = call.getEnclosingCallable()
+          )
+        }
+
+        predicate debug_nestedFlowThroughFanout(
+          DataFlowCallable c, int ctxFanout, int entrycost, DataFlowCall call,
+          ParameterPosition pos, ReturnKindExt kind, int dispatch, int maxNested, int total
+        ) {
+          ctxFanout =
+            max(ParamNodeEx p, int p_fanout |
+              p.getEnclosingCallable() = c and
+              debug_flowThroughFanoutParam(_, _, p, _, _, _, _, _, _, p_fanout)
+            |
+              p_fanout
+            ) and
+          entrycost =
+            strictcount(Cc cc, TypOption argT, ApOption argAp, ParamNodeOption summaryCtx |
+              debug_fwdFlowThrough(c, cc, argT, argAp, summaryCtx, call, _, pos, kind, _, _, _, _,
+                _, _)
+            ) and
+          dispatch =
+            strictcount(DataFlowCallable tgt |
+              exists(ParamNodeEx p |
+                debug_fwdFlowThrough(c, _, _, _, _, call, _, pos, kind, p, _, _, _, _, _) and
+                tgt = p.getEnclosingCallable()
+              )
+            ) and
+          maxNested =
+            max(ParamNodeEx p, Typ innerArgT, Ap innerArgAp |
+              |
+              strictcount(FlowState state, Typ t, Ap ap |
+                  debug_fwdFlowThrough(c, _, _, _, _, call, _, pos, kind, p, innerArgT, innerArgAp,
+                    state, t, ap)
+                )
+            ) and
+          total =
+            max(Typ innerArgT, Ap innerArgAp |
+              |
+              strictcount(FlowState state, Typ t, Ap ap |
+                  debug_fwdFlowThrough(c, _, _, _, _, call, _, pos, kind, _, innerArgT, innerArgAp,
+                    state, t, ap)
+                )
+            )
+        }
+
+        predicate debug_conscandFanout(Typ t2, Ap cons, Content c, int fanout) {
+          fanout = strictcount(Typ t1, Ap tail | fwdFlowConsCand(t2, cons, c, t1, tail)) and
+          fanout > 1
+        }
+
+        predicate debug_storeStep(
+          NodeEx n1, Typ t1, Ap tail, Content c, NodeEx n2, Typ t2, Ap cons, int conscandFanout
+        ) {
+          fwdFlowStore(n1, t1, tail, c, t2, n2, _, _, _, _, _) and
+          cons = apCons(c, t1, tail) and
+          debug_conscandFanout(t2, cons, c, conscandFanout)
+        }
+
         pragma[inline]
         private predicate fwdFlowThrough0(
           DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
@@ -4765,6 +4872,122 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         stage = "6 Rev" and
         n = 65 and
         Stage6::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+    }
+
+    private module Stage2alias = Stage2;
+
+    private module Stage3alias = Stage3;
+
+    private module Stage4alias = Stage4;
+
+    private module Stage5alias = Stage5;
+
+    module Debug {
+      module Stage2 = Stage2alias;
+
+      module Stage3 = Stage3alias;
+
+      module Stage4 = Stage4alias;
+
+      module Stage5 = Stage5alias;
+
+      predicate stageStats1(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stage = "1 Fwd" and
+        n = 10 and
+        Stage1::stats(true, nodes, fields, conscand, states, tuples, calledges) and
+        tfnodes = -1 and
+        tftuples = -1
+        or
+        stage = "1 Rev" and
+        n = 15 and
+        Stage1::stats(false, nodes, fields, conscand, states, tuples, calledges) and
+        tfnodes = -1 and
+        tftuples = -1
+      }
+
+      predicate stageStats2(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats1(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "2 Fwd" and
+        n = 20 and
+        Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "2 Rev" and
+        n = 25 and
+        Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats3(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats2(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "3 Fwd" and
+        n = 30 and
+        Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "3 Rev" and
+        n = 35 and
+        Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats4(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats3(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "4 Fwd" and
+        n = 40 and
+        Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "4 Rev" and
+        n = 45 and
+        Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats5(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats4(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "5 Fwd" and
+        n = 50 and
+        Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "5 Rev" and
+        n = 55 and
+        Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats5(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "6 Fwd" and
+        n = 60 and
+        finalStats(true, nodes, fields, conscand, states, tuples) and
+        calledges = -1 and
+        tfnodes = -1 and
+        tftuples = -1
+        or
+        stage = "6 Rev" and
+        n = 65 and
+        finalStats(false, nodes, fields, conscand, states, tuples) and
+        calledges = -1 and
+        tfnodes = -1 and
+        tftuples = -1
       }
     }
 
