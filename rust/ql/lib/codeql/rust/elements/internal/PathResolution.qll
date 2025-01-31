@@ -1,4 +1,6 @@
-/** Provides functionality for resolving paths. */
+/**
+ * Provides functionality for resolving paths, using the predicate `resolvePath`.
+ */
 
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
