@@ -296,16 +296,8 @@ private predicate fileImportEdge(Module mod, string name, ItemNode item) {
   )
 }
 
-pragma[nomagic]
-private predicate useTreeIsGlobImport(UseTree use) {
-  // TODO: the extractor should provide this information
-  use.getLocation() != use.getPath().getLocation() and
-  not use.hasUseTreeList() and
-  not use.hasRename()
-}
-
 private predicate useTreeDeclares(UseTree tree, string name) {
-  not useTreeIsGlobImport(tree) and
+  not tree.isGlob() and
   not exists(tree.getUseTreeList()) and
   (
     name = tree.getRename().getName().getText() and
@@ -455,7 +447,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
   exists(UseTree tree, ItemNode used |
     used = resolveUseTreeListItem(use, tree) and
     not exists(tree.getUseTreeList()) and
-    if useTreeIsGlobImport(tree)
+    if tree.isGlob()
     then
       exists(ItemNode encl |
         encl.getADescendant() = use and
