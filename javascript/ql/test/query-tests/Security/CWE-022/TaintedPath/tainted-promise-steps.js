@@ -8,8 +8,8 @@ var server = http.createServer(function(req, res) {
 });
 
 async function doRead(pathPromise) {
-  fs.readFileSync(await pathPromise); // NOT OK
-  pathPromise.then(path => fs.readFileSync(path)); // NO TOK
+  fs.readFileSync(await pathPromise); // $ Alert
+  pathPromise.then(path => fs.readFileSync(path)); // $ Alert
 }
 
 server.listen();
