@@ -122,7 +122,7 @@ class Class:
         if self.properties:
             self.properties[0].first = True
             for prop in self.properties:
-                if prop.type is self.name:
+                if prop.type == self.name:
                     prop.type_is_self = True
 
     @property
