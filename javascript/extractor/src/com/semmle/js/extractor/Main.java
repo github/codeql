@@ -539,7 +539,7 @@ public class Main {
       }
 
       if (extractorConfig.getTypeScriptMode() == TypeScriptMode.FULL
-          && root.getName().equals("tsconfig.json")
+          && AutoBuild.treatAsTSConfig(root.getName())
           && !excludeMatcher.matches(path)) {
         projectFiles.add(root);
       }
