@@ -242,7 +242,7 @@ module TaintTrackingStackMake<
         exists(Flow::PathNode source, Flow::PathNode sink |
           flowStack = TFlowStack(source, sink) and
           frame.getPathNode() = TaintTrackingStack::getASuccessor*(source) and
-          TaintTrackingStack::getASuccessor(frame.getPathNode()) = sink
+          TaintTrackingStack::getASuccessor*(frame.getPathNode()) = sink
         )
       }
 
