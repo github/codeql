@@ -56,11 +56,11 @@ module PolynomialReDoS {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
-    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+    predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
   }
 
   /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
   {
     override predicate sanitizes(boolean outcome, Expr e) {
       BarrierGuard.super.sanitizes(outcome, e)

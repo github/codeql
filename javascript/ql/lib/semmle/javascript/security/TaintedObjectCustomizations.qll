@@ -10,7 +10,7 @@ module TaintedObject {
   import CommonFlowState
 
   /** A flow label representing a deeply tainted object. */
-  abstract deprecated class TaintedObjectLabel extends DataFlow::FlowLabel {
+  abstract class TaintedObjectLabel extends DataFlow::FlowLabel {
     TaintedObjectLabel() { this = "tainted-object" }
   }
 
@@ -21,7 +21,7 @@ module TaintedObject {
    *
    * Note that the presence of the this label generally implies the presence of the `taint` label as well.
    */
-  deprecated DataFlow::FlowLabel label() { result instanceof TaintedObjectLabel }
+  DataFlow::FlowLabel label() { result instanceof TaintedObjectLabel }
 
   /**
    * A source of a user-controlled deep object.
