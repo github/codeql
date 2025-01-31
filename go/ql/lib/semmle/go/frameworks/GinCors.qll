@@ -128,7 +128,7 @@ module GinCors {
 
     GinConfig() {
       this = v.getBaseVariable().getSourceVariable() and
-      exists(Type t | t.hasQualifiedName(packagePath(), "Config") | v.getType() = t)
+      v.getType().hasQualifiedName(packagePath(), "Config")
     }
 
     /**

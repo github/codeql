@@ -4614,9 +4614,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     import S6
 
-    /** DEPRECATED: Use `flowPath` instead. */
-    deprecated predicate hasFlowPath = flowPath/2;
-
     /**
      * Holds if data can flow from `source` to `sink`.
      */
@@ -4626,24 +4623,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    /** DEPRECATED: Use `flow` instead. */
-    deprecated predicate hasFlow = flow/2;
-
     /**
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowTo(Node sink) { exists(PathNode n | n.isSink() and n.getNode() = sink) }
 
-    /** DEPRECATED: Use `flowTo` instead. */
-    deprecated predicate hasFlowTo = flowTo/1;
-
     /**
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowToExpr(DataFlowExpr sink) { flowTo(exprNode(sink)) }
-
-    /** DEPRECATED: Use `flowToExpr` instead. */
-    deprecated predicate hasFlowToExpr = flowToExpr/1;
 
     /**
      * INTERNAL: Only for debugging.

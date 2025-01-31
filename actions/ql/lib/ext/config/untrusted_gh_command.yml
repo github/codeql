@@ -7,26 +7,29 @@ extensions:
       # PULL REQUESTS
       #
       # HEAD_REF=$(gh pr view "${{ github.event.issue.number }}" --json headRefName -q '.headRefName')
-      - ["gh\\s+pr\\b.*\\bview\\b.*\\.headRefName.*", "branch,oneline"]
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bheadRefName\\b", "branch,oneline"]
       # TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
-      - ["gh\\s+pr\\b.*\\bview\\b.*\\.title.*", "title,oneline"]
+      # TITLE=$(gh pr view $PR_NUMBER --json "title")
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\btitle\\b", "title,oneline"]
       # BODY=$(gh pr view $PR_NUMBER --json body --jq .body)
-      - ["gh\\s+pr\\b.*\\bview\\b.*\\.body.*", "text,multiline"]
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bbody\\b", "text,multiline"]
       # COMMENTS="$(gh pr view --repo ${{ github.repository }} "$PR_NUMBER" --json "body,comments" -q '.body, .comments[].body')"
-      - ["gh\\s+pr\\b.*\\bview\\b.*\\.comments.*", "text,multiline"]
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bcomments\\b", "text,multiline"]
       # CHANGED_FILES="$(gh pr view --repo ${{ github.repository }} ${{ needs.check-comment.outputs.pull_number }} --json files --jq '.files.[].path')"
-      - ["gh\\s+pr\\b.*\\bview\\b.*\\.files.*", "filename,multiline"]
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bfiles\\b", "filename,multiline"]
       # AUTHOR=$(gh pr view ${ORI_PR} -R ${REPO} --json author -q '.author.login') 
-      - ["gh\\s+pr\\b.*\\bview\\b.*\\.author.*", "username,oneline"]
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bauthor\\b", "username,oneline"]
       #
       # ISSUES
       #
       # TITLE=$(gh issue view "$ISSUE_NUMBER" --json title --jq '.title')
-      - ["gh\\s+issue\\b.*\\bview\\b.*\\.title.*", "title,oneline"]
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,body)
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json "title,body")
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\btitle\\b", "title,oneline"]
       # BODY=$(gh issue view -R ${GITHUB_REPOSITORY} ${ORIGINAL_ISSUE_NUMBER} --json title,body,assignees --jq .body)
-      - ["gh\\s+issue\\b.*\\bview\\b.*\\.body.*", "text,multiline"]
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\bbody\\b", "text,multiline"]
       # COMMENTS=$(gh issue view "$ISSUE_NUMBER" --json comments --jq '.comments[].body')
-      - ["gh\\s+issue\\b.*\\bview\\b.*\\.comments.*", "text,multiline"]
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\bcomments\\b", "text,multiline"]
       #
       # API
       #

@@ -25,6 +25,74 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
 }
 
 /**
+ * Given a chain of accesses of the form `x.f1.f2...fn` this
+ * predicate gives the type of `x`. Note that `x` may be an implicit
+ * `this` expression.
+ */
+private Class getRootType(FieldAccess fa) {
+  // If the object is accessed inside a member function then the root will
+  // be a(n implicit) `this`. And the root type will be the type of `this`.
+  exists(VariableAccess root |
+    root = fa.getQualifier*() and
+    result =
+      root.getQualifier()
+          .(ThisExpr)
+          .getUnspecifiedType()
+          .(PointerType)
+          .getBaseType()
+          .getUnspecifiedType()
+  )
+  or
+  // Otherwise, if this is not inside a member function there will not be
+  // a(n implicit) `this`. And the root type is the type of the outermost
+  // access.
+  exists(VariableAccess root |
+    root = fa.getQualifier+() and
+    not exists(root.getQualifier()) and
+    result = root.getUnspecifiedType()
+  )
+}
+
+/**
+ * Gets the size of the buffer access at `va`.
+ */
+private int getSize(VariableAccess va) {
+  exists(Variable v | va.getTarget() = v |
+    // If `v` is not a field then the size of the buffer is just
+    // the size of the type of `v`.
+    exists(Type t |
+      t = v.getUnspecifiedType() and
+      not v instanceof Field and
+      not t instanceof ReferenceType and
+      result = t.getSize()
+    )
+    or
+    exists(Class c |
+      // Otherwise, we find the "outermost" object and compute the size
+      // as the difference between the size of the type of the "outermost
+      // object" and the offset of the field relative to that type.
+      // For example, consider the following structs:
+      // ```
+      // struct S {
+      //   uint32_t x;
+      //   uint32_t y;
+      // };
+      // struct S2 {
+      //   S s;
+      //   uint32_t z;
+      // };
+      // ```
+      // Given an object `S2 s2` the size of the buffer `&s2.s.y`
+      // is the size of the base object type (i.e., `S2`) minutes the offset
+      // of `y` relative to the type `S2` (i.e., `4`). So the size of the
+      // buffer is `12 - 4 = 8`.
+      c = getRootType(va) and
+      result = c.getSize() - v.(Field).getOffsetInClass(c)
+    )
+  )
+}
+
+/**
  * Holds if `bufferExpr` is an allocation-like expression.
  *
  * This includes both actual allocations, as well as various operations that return a pointer to
@@ -54,22 +122,11 @@ private int isSource(Expr bufferExpr, Element why) {
   result = bufferExpr.(AllocationExpr).getSizeBytes() and
   why = bufferExpr
   or
-  exists(Type bufferType |
+  exists(Variable v |
+    v = why and
     // buffer is the address of a variable
     why = bufferExpr.(AddressOfExpr).getAddressable() and
-    bufferType = why.(Variable).getUnspecifiedType() and
-    result = bufferType.getSize() and
-    not bufferType instanceof ReferenceType and
-    not any(Union u).getAMemberVariable() = why
-  )
-  or
-  exists(Union bufferType |
-    // buffer is the address of a union member; in this case, we
-    // take the size of the union itself rather the union member, since
-    // it's usually OK to access that amount (e.g. clearing with memset).
-    why = bufferExpr.(AddressOfExpr).getAddressable() and
-    bufferType.getAMemberVariable() = why and
-    result = bufferType.getSize()
+    result = getSize(bufferExpr.(AddressOfExpr).getOperand())
   )
 }
 

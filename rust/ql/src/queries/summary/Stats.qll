@@ -10,6 +10,7 @@ private import codeql.rust.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.security.SqlInjectionExtensions
+private import codeql.rust.security.CleartextLoggingExtensions
 
 /**
  * Gets a count of the total number of lines of code in the database.
@@ -58,7 +59,9 @@ int getTaintEdgesCount() {
  * Gets a kind of query for which `n` is a sink (if any).
  */
 string getAQuerySinkKind(DataFlow::Node n) {
-  (n instanceof SqlInjection::Sink and result = "SqlInjection")
+  n instanceof SqlInjection::Sink and result = "SqlInjection"
+  or
+  n instanceof CleartextLogging::Sink and result = "CleartextLogging"
 }
 
 /**

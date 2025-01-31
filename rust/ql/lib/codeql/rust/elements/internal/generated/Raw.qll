@@ -1090,11 +1090,19 @@ module Raw {
    * INTERNAL: Do not use.
    * A UseTree. For example:
    * ```rust
-   * todo!()
+   * use std::collections::HashMap;
+   * use std::collections::*;
+   * use std::collections::HashMap as MyHashMap;
+   * use std::collections::{self, HashMap, HashSet};
    * ```
    */
   class UseTree extends @use_tree, AstNode {
     override string toString() { result = "UseTree" }
+
+    /**
+     * Holds if this use tree is glob.
+     */
+    predicate isGlob() { use_tree_is_glob(this) }
 
     /**
      * Gets the path of this use tree, if it exists.

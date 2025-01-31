@@ -11,8 +11,8 @@ fn test_env_vars() {
     let var1 = std::env::var("HOME").expect("HOME not set"); // $ Alert[rust/summary/taint-sources]
     let var2 = std::env::var_os("PATH").unwrap(); // $ Alert[rust/summary/taint-sources]
 
-    sink(var1); // $ MISSING: hasTaintFlow
-    sink(var2); // $ MISSING: hasTaintFlow
+    sink(var1); // $ hasTaintFlow="HOME"
+    sink(var2); // $ hasTaintFlow="PATH"
 
     for (key, value) in std::env::vars() { // $ Alert[rust/summary/taint-sources]
         sink(key); // $ MISSING: hasTaintFlow
@@ -51,20 +51,34 @@ fn test_env_dirs() {
     let exe = std::env::current_exe().expect("FAILED"); // $ Alert[rust/summary/taint-sources]
     let home = std::env::home_dir().expect("FAILED"); // $ Alert[rust/summary/taint-sources]
 
-    sink(dir); // $ MISSING: hasTaintFlow
-    sink(exe); // $ MISSING: hasTaintFlow
-    sink(home); // $ MISSING: hasTaintFlow
+    sink(dir); // $ hasTaintFlow
+    sink(exe); // $ hasTaintFlow
+    sink(home); // $ hasTaintFlow
 }
 
 async fn test_reqwest() -> Result<(), reqwest::Error> {
-    let remote_string1 = reqwest::blocking::get("http://example.com/")?.text()?; // $ Alert[rust/summary/taint-sources]
-    sink(remote_string1); // $ MISSING: hasTaintFlow
+    let remote_string1 = reqwest::blocking::get("example.com")?.text()?; // $ Alert[rust/summary/taint-sources]
+    sink(remote_string1); // $ hasTaintFlow="example.com"
 
-    let remote_string2 = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap(); // $ Alert[rust/summary/taint-sources]
-    sink(remote_string2); // $ MISSING: hasTaintFlow
+    let remote_string2 = reqwest::blocking::get("example.com").unwrap().text().unwrap(); // $ Alert[rust/summary/taint-sources]
+    sink(remote_string2); // $ hasTaintFlow="example.com"
 
-    let remote_string3 = reqwest::get("http://example.com/").await?.text().await?; // $ Alert[rust/summary/taint-sources]
-    sink(remote_string3); // $ MISSING: hasTaintFlow
+    let remote_string3 = reqwest::blocking::get("example.com").unwrap().text_with_charset("utf-8").unwrap(); // $ Alert[rust/summary/taint-sources]
+    sink(remote_string3); // $ hasTaintFlow="example.com"
+
+    let remote_string4 = reqwest::blocking::get("example.com").unwrap().bytes().unwrap(); // $ Alert[rust/summary/taint-sources]
+    sink(remote_string4); // $ hasTaintFlow="example.com"
+
+    let remote_string5 = reqwest::get("example.com").await?.text().await?; // $ Alert[rust/summary/taint-sources]
+    sink(remote_string5); // $ MISSING: hasTaintFlow
+
+    let remote_string6 = reqwest::get("example.com").await?.bytes().await?; // $ Alert[rust/summary/taint-sources]
+    sink(remote_string6); // $ MISSING: hasTaintFlow
+
+    let mut request1 = reqwest::get("example.com").await?; // $ Alert[rust/summary/taint-sources]
+    while let Some(chunk) = request1.chunk().await? {
+        sink(chunk); // $ MISSING: hasTaintFlow
+    }
 
     Ok(())
 }

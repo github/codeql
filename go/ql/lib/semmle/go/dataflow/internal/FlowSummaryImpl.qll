@@ -252,7 +252,9 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the callable that this node corresponds to, if any. */
     DataFlowCallable asCallable() {
-      result.asSummarizedCallable().asFunction() = this.asElement().asEntity()
+      this.asElement().asEntity() = result.asSummarizedCallable().asFunction() or
+      this.asElement().asEntity() = result.asCallable().asFunction() or
+      this.asElement().asAstNode() = result.asCallable().asFuncLit()
     }
 
     /** Gets the target of this call, if any. */

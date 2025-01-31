@@ -333,9 +333,7 @@ private module IndirectInstructions {
 import IndirectInstructions
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) {
-  result.getUnderlyingCallable() = n.getEnclosingCallable()
-}
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
@@ -1012,9 +1010,7 @@ class CastNode extends Node {
 
 cached
 private newtype TDataFlowCallable =
-  TSourceCallable(Cpp::Declaration decl) {
-    not decl instanceof FlowSummaryImpl::Public::SummarizedCallable
-  } or
+  TSourceCallable(Cpp::Declaration decl) or
   TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
 
 /**
@@ -1127,7 +1123,21 @@ class DataFlowCall extends TDataFlowCall {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  DataFlowCallable getStaticCallTarget() { none() }
+  Function getStaticCallSourceTarget() { none() }
+
+  /**
+   * Gets the target of this call. If a summarized callable exists for the
+   * target this is chosen, and otherwise the callable is the implementation
+   * from the source code.
+   */
+  DataFlowCallable getStaticCallTarget() {
+    exists(Function target | target = this.getStaticCallSourceTarget() |
+      not exists(TSummarizedCallable(target)) and
+      result.asSourceCallable() = target
+      or
+      result.asSummarizedCallable() = target
+    )
+  }
 
   /**
    * Gets the `index`'th argument operand. The qualifier is considered to have index `-1`.
@@ -1173,14 +1183,12 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override CallTargetOperand getCallTargetOperand() { result = call.getCallTargetOperand() }
 
-  override DataFlowCallable getStaticCallTarget() {
-    result.getUnderlyingCallable() = call.getStaticCallTarget()
-  }
+  override Function getStaticCallSourceTarget() { result = call.getStaticCallTarget() }
 
   override ArgumentOperand getArgumentOperand(int index) { result = call.getArgumentOperand(index) }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.getUnderlyingCallable() = call.getEnclosingFunction()
+    result.asSourceCallable() = call.getEnclosingFunction()
   }
 
   override string toString() { result = call.toString() }
@@ -1331,7 +1339,12 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   (
-    call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode() or
+    call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode()
+    or
+    // No need to infer a lambda call if we already have a static dispatch target.
+    // We only need to check this in the disjunct since a `SummaryCall` never
+    // has a result for `getStaticCallTarget`.
+    not exists(call.getStaticCallTarget()) and
     call.asCallInstruction().getCallTargetOperand() = receiver.asOperand()
   ) and
   exists(kind)
