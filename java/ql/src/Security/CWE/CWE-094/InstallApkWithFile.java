@@ -9,6 +9,6 @@ import java.io.File;
 File file = new File(Environment.getExternalStorageDirectory(), "myapp.apk");
 Intent intent = new Intent(Intent.ACTION_VIEW);
 /* Set the mimetype to APK */
-intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive"); // BAD: The file may be altered by another app
 
 startActivity(intent);
