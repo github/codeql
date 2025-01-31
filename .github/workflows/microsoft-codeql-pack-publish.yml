@@ -1,4 +1,4 @@
-name: Fetch CodeQL
+name: Microsoft CodeQL Pack Publish
 description: Fetches the latest version of CodeQL
 
 on:
