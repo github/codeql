@@ -37,6 +37,11 @@ jobs:
     - name: Prepare Publish
       shell: bash
       run: |
+        # Install CodeqL
+        gh extension install github/gh-codeql
+        gh codeql download "${{ needs.codeqlversion.outputs.codeql_version }}"
+        gh codeql set-version "${{ needs.codeqlversion.outputs.codeql_version }}"
+
         # # Download latest qlpack
         # gh codeql pack download "microsoft/$LANGUAGE-queries"
         # PACK_DIR="$HOME/.codeql/packages/microsoft/$LANGUAGE"
@@ -71,7 +76,7 @@ jobs:
         echo "___________________________________________________________"
         cat "$LANGUAGE/ql/src/qlpack.yml"
         echo "___________________________________________________________"
-        gh pack publish --dry-run "$LANGUAGE/ql/src"
+        gh codeql pack publish --dry-run "$LANGUAGE/ql/src"
       env:
         LANGUAGE: ${{ matrix.language }}
         GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
