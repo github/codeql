@@ -6,7 +6,7 @@ edges
 | StoredXSS.cs:22:60:22:73 | access to local variable customerReader : SqlDataReader | StoredXSS.cs:22:60:22:86 | call to method GetString : String | provenance | MaD:2 |
 | StoredXSS.cs:22:60:22:86 | call to method GetString : String | StoredXSS.cs:22:44:22:86 | ... + ... | provenance | Sink:MaD:1 |
 models
-| 1 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
+| 1 | Sink: System.Web; HttpResponse; true; Write; ; ; Argument[0]; html-injection; manual |
 | 2 | Summary: System.Data; IDataRecord; true; GetString; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | StoredXSS.cs:17:31:17:44 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |

@@ -1,28 +1,28 @@
 models
-| 1 | Summary: System.Collections.Generic; List<T>; false; ForEach; (System.Action<T>); ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
-| 2 | Summary: System.Linq; Enumerable; false; Aggregate<TSource,TAccumulate,TResult>; (System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>); ; Argument[0].Element; Argument[2].Parameter[1]; value; manual |
-| 3 | Summary: System.Linq; Enumerable; false; Aggregate<TSource,TAccumulate,TResult>; (System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>); ; Argument[1]; Argument[2].Parameter[0]; value; manual |
-| 4 | Summary: System.Linq; Enumerable; false; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
-| 5 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
-| 6 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[1].ReturnValue; ReturnValue.Element; value; manual |
-| 7 | Summary: System.Linq; Enumerable; false; Zip<TFirst,TSecond,TResult>; (System.Collections.Generic.IEnumerable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Func<TFirst,TSecond,TResult>); ; Argument[0].Element; Argument[2].Parameter[0]; value; manual |
-| 8 | Summary: System.Linq; Enumerable; false; Zip<TFirst,TSecond,TResult>; (System.Collections.Generic.IEnumerable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Func<TFirst,TSecond,TResult>); ; Argument[1].Element; Argument[2].Parameter[1]; value; manual |
-| 9 | Summary: System.Linq; Queryable; false; AsQueryable<TElement>; (System.Collections.Generic.IEnumerable<TElement>); ; Argument[0].Element; ReturnValue.Element; value; manual |
-| 10 | Summary: System.Linq; Queryable; false; First<TSource>; (System.Linq.IQueryable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
-| 11 | Summary: System.Linq; Queryable; false; Select<TSource,TResult>; (System.Linq.IQueryable<TSource>,System.Linq.Expressions.Expression<System.Func<TSource,TResult>>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
-| 12 | Summary: System.Runtime.CompilerServices; ConfiguredTaskAwaitable<TResult>+ConfiguredTaskAwaiter; false; GetResult; (); ; Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task`1.Result]; ReturnValue; value; manual |
-| 13 | Summary: System.Runtime.CompilerServices; ConfiguredTaskAwaitable<TResult>; false; GetAwaiter; (); ; Argument[this].SyntheticField[m_configuredTaskAwaiter]; ReturnValue; value; manual |
-| 14 | Summary: System.Text; StringBuilder; false; Append; (System.String); ; Argument[0]; Argument[this]; taint; manual |
-| 15 | Summary: System.Text; StringBuilder; false; Append; (System.Text.StringBuilder); ; Argument[0]; Argument[this]; taint; manual |
-| 16 | Summary: System.Text; StringBuilder; false; Append; (System.Text.StringBuilder+AppendInterpolatedStringHandler); ; Argument[0]; Argument[this]; taint; manual |
-| 17 | Summary: System.Text; StringBuilder; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
-| 18 | Summary: System.Threading.Tasks; Task; false; Run<TResult>; (System.Func<TResult>); ; Argument[0].ReturnValue; ReturnValue.Property[System.Threading.Tasks.Task`1.Result]; value; manual |
-| 19 | Summary: System.Threading.Tasks; Task<TResult>; false; ConfigureAwait; (System.Boolean); ; Argument[this]; ReturnValue.SyntheticField[m_configuredTaskAwaiter].SyntheticField[m_task_configured_task_awaitable]; value; manual |
-| 20 | Summary: System; Boolean; false; TryParse; (System.String,System.Boolean); ; Argument[0]; Argument[1]; taint; manual |
-| 21 | Summary: System; Int32; false; TryParse; (System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32); ; Argument[0]; Argument[3]; taint; manual |
-| 22 | Summary: System; Int32; false; TryParse; (System.String,System.Int32); ; Argument[0]; Argument[1]; taint; manual |
-| 23 | Summary: System; Lazy<T>; false; Lazy; (System.Func<T>); ; Argument[0].ReturnValue; Argument[this].Property[System.Lazy`1.Value]; value; manual |
-| 24 | Summary: System; String; false; Join; (System.String,System.String[]); ; Argument[1].Element; ReturnValue; taint; manual |
+| 1 | Summary: System.Collections.Generic; List<T>; true; ForEach; (System.Action<T>); ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 2 | Summary: System.Linq; Enumerable; true; Aggregate<TSource,TAccumulate,TResult>; (System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>); ; Argument[0].Element; Argument[2].Parameter[1]; value; manual |
+| 3 | Summary: System.Linq; Enumerable; true; Aggregate<TSource,TAccumulate,TResult>; (System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>); ; Argument[1]; Argument[2].Parameter[0]; value; manual |
+| 4 | Summary: System.Linq; Enumerable; true; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 5 | Summary: System.Linq; Enumerable; true; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
+| 6 | Summary: System.Linq; Enumerable; true; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[1].ReturnValue; ReturnValue.Element; value; manual |
+| 7 | Summary: System.Linq; Enumerable; true; Zip<TFirst,TSecond,TResult>; (System.Collections.Generic.IEnumerable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Func<TFirst,TSecond,TResult>); ; Argument[0].Element; Argument[2].Parameter[0]; value; manual |
+| 8 | Summary: System.Linq; Enumerable; true; Zip<TFirst,TSecond,TResult>; (System.Collections.Generic.IEnumerable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Func<TFirst,TSecond,TResult>); ; Argument[1].Element; Argument[2].Parameter[1]; value; manual |
+| 9 | Summary: System.Linq; Queryable; true; AsQueryable<TElement>; (System.Collections.Generic.IEnumerable<TElement>); ; Argument[0].Element; ReturnValue.Element; value; manual |
+| 10 | Summary: System.Linq; Queryable; true; First<TSource>; (System.Linq.IQueryable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 11 | Summary: System.Linq; Queryable; true; Select<TSource,TResult>; (System.Linq.IQueryable<TSource>,System.Linq.Expressions.Expression<System.Func<TSource,TResult>>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
+| 12 | Summary: System.Runtime.CompilerServices; ConfiguredTaskAwaitable<TResult>+ConfiguredTaskAwaiter; true; GetResult; (); ; Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task`1.Result]; ReturnValue; value; manual |
+| 13 | Summary: System.Runtime.CompilerServices; ConfiguredTaskAwaitable<TResult>; true; GetAwaiter; (); ; Argument[this].SyntheticField[m_configuredTaskAwaiter]; ReturnValue; value; manual |
+| 14 | Summary: System.Text; StringBuilder; true; Append; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 15 | Summary: System.Text; StringBuilder; true; Append; (System.Text.StringBuilder); ; Argument[0]; Argument[this]; taint; manual |
+| 16 | Summary: System.Text; StringBuilder; true; Append; (System.Text.StringBuilder+AppendInterpolatedStringHandler); ; Argument[0]; Argument[this]; taint; manual |
+| 17 | Summary: System.Text; StringBuilder; true; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 18 | Summary: System.Threading.Tasks; Task; true; Run<TResult>; (System.Func<TResult>); ; Argument[0].ReturnValue; ReturnValue.Property[System.Threading.Tasks.Task`1.Result]; value; manual |
+| 19 | Summary: System.Threading.Tasks; Task<TResult>; true; ConfigureAwait; (System.Boolean); ; Argument[this]; ReturnValue.SyntheticField[m_configuredTaskAwaiter].SyntheticField[m_task_configured_task_awaitable]; value; manual |
+| 20 | Summary: System; Boolean; true; TryParse; (System.String,System.Boolean); ; Argument[0]; Argument[1]; taint; manual |
+| 21 | Summary: System; Int32; true; TryParse; (System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32); ; Argument[0]; Argument[3]; taint; manual |
+| 22 | Summary: System; Int32; true; TryParse; (System.String,System.Int32); ; Argument[0]; Argument[1]; taint; manual |
+| 23 | Summary: System; Lazy<T>; true; Lazy; (System.Func<T>); ; Argument[0].ReturnValue; Argument[this].Property[System.Lazy`1.Value]; value; manual |
+| 24 | Summary: System; String; true; Join; (System.String,System.String[]); ; Argument[1].Element; ReturnValue; taint; manual |
 edges
 | Capture.cs:7:20:7:26 | tainted : String | Capture.cs:14:9:14:18 | access to local function CaptureIn1 : CaptureIn1 [captured tainted] : String | provenance |  |
 | Capture.cs:7:20:7:26 | tainted : String | Capture.cs:25:9:25:18 | access to local function CaptureIn2 : CaptureIn2 [captured tainted] : String | provenance |  |

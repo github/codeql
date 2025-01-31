@@ -34,9 +34,9 @@ edges
 | ConditionalBypass.cs:84:13:84:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:84:13:84:29 | access to property Value : String | provenance | MaD:3 |
 | ConditionalBypass.cs:84:13:84:29 | access to property Value : String | ConditionalBypass.cs:84:13:84:40 | ... == ... | provenance |  |
 models
-| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
-| 2 | Summary: System.Net; IPHostEntry; false; get_HostName; (); ; Argument[this]; ReturnValue; taint; manual |
-| 3 | Summary: System.Web; HttpCookie; false; get_Value; (); ; Argument[this]; ReturnValue; taint; manual |
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 2 | Summary: System.Net; IPHostEntry; true; get_HostName; (); ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: System.Web; HttpCookie; true; get_Value; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | ConditionalBypass.cs:12:16:12:22 | access to local variable isAdmin : String | semmle.label | access to local variable isAdmin : String |
 | ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |

@@ -19,7 +19,7 @@ edges
 | TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | TaintedPath.cs:36:25:36:31 | access to local variable badPath | provenance |  |
 | TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | TaintedPath.cs:38:49:38:55 | access to local variable badPath | provenance |  |
 models
-| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | TaintedPath.cs:10:16:10:19 | access to local variable path : String | semmle.label | access to local variable path : String |
 | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |

@@ -49,12 +49,12 @@ edges
 | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | provenance |  |
 | script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> | provenance |  |
 models
-| 1 | Sink: System.Net.Http; StringContent; false; StringContent; ; ; Argument[0]; js-injection; manual |
-| 2 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
-| 3 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
-| 4 | Summary: System.Text; StringBuilder; false; AppendFormat; (System.String,System.Object); ; Argument[1]; Argument[this]; taint; manual |
-| 5 | Summary: System.Text; StringBuilder; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
-| 6 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
+| 1 | Sink: System.Net.Http; StringContent; true; StringContent; ; ; Argument[0]; js-injection; manual |
+| 2 | Sink: System.Web; HttpResponse; true; Write; ; ; Argument[0]; html-injection; manual |
+| 3 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 4 | Summary: System.Text; StringBuilder; true; AppendFormat; (System.String,System.Object); ; Argument[1]; Argument[this]; taint; manual |
+| 5 | Summary: System.Text; StringBuilder; true; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: System.Web.UI.WebControls; TextBox; true; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | XSS.cs:26:13:26:21 | [post] access to local variable userInput : StringBuilder | semmle.label | [post] access to local variable userInput : StringBuilder |
 | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |

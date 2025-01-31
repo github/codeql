@@ -42,9 +42,9 @@ edges
 | XSSAspNetCore.cs:77:17:77:22 | access to local variable header : StringValues | XSSAspNetCore.cs:78:51:78:56 | call to operator implicit conversion | provenance |  |
 | XSSAspNetCore.cs:77:26:77:40 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:77:17:77:22 | access to local variable header : StringValues | provenance |  |
 models
-| 1 | Summary: Microsoft.Extensions.Primitives; StringValues; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
-| 2 | Summary: Microsoft.Extensions.Primitives; StringValues; false; get_Item; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
-| 3 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Summary: Microsoft.Extensions.Primitives; StringValues; true; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: Microsoft.Extensions.Primitives; StringValues; true; get_Item; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | Index.cshtml:5:9:5:15 | access to local variable message : StringValues | semmle.label | access to local variable message : StringValues |
 | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |

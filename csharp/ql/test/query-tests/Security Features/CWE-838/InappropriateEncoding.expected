@@ -28,9 +28,9 @@ edges
 | SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:14:17:14:21 | access to local variable query : String | provenance |  |
 | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... | provenance |  |
 models
-| 1 | Sink: System.Data.SqlClient; SqlDataAdapter; false; SqlDataAdapter; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
-| 2 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
-| 3 | Summary: System; String; false; Format; (System.String,System.Object); ; Argument[1]; ReturnValue; taint; manual |
+| 1 | Sink: System.Data.SqlClient; SqlDataAdapter; true; SqlDataAdapter; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
+| 2 | Sink: System.Web; HttpResponse; true; Write; ; ; Argument[0]; html-injection; manual |
+| 3 | Summary: System; String; true; Format; (System.String,System.Object); ; Argument[1]; ReturnValue; taint; manual |
 nodes
 | HtmlEncode.cs:10:28:10:65 | ... + ... | semmle.label | ... + ... |
 | HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | semmle.label | call to method UrlEncode : String |

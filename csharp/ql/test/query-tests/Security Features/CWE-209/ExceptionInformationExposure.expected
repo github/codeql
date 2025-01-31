@@ -14,8 +14,8 @@ edges
 | ExceptionInformationExposure.cs:47:28:47:44 | object creation of type MyException : MyException | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | provenance | Config Sink:MaD:1 |
 | ExceptionInformationExposure.cs:47:28:47:44 | object creation of type MyException : MyException | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | provenance | MaD:2 Sink:MaD:1 |
 models
-| 1 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
-| 2 | Summary: System; Exception; false; ToString; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Sink: System.Web; HttpResponse; true; Write; ; ; Argument[0]; html-injection; manual |
+| 2 | Summary: System; Exception; true; ToString; (); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | semmle.label | access to local variable ex : Exception |
 | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | semmle.label | call to method ToString |

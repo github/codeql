@@ -6,7 +6,7 @@ edges
 | RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:10:24:10:55 | access to indexer : String | provenance | MaD:1 |
 | RegexInjection.cs:10:24:10:55 | access to indexer : String | RegexInjection.cs:10:16:10:20 | access to local variable regex : String | provenance |  |
 models
-| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | RegexInjection.cs:10:16:10:20 | access to local variable regex : String | semmle.label | access to local variable regex : String |
 | RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |

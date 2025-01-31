@@ -21,7 +21,7 @@ edges
 | LDAPInjection.cs:41:80:41:93 | access to local variable customerReader : SqlDataReader | LDAPInjection.cs:41:80:41:106 | call to method GetString : String | provenance | MaD:2 |
 | LDAPInjection.cs:41:80:41:106 | call to method GetString : String | LDAPInjection.cs:41:63:41:106 | ... + ... | provenance |  |
 models
-| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 | 2 | Summary: System.Data; IDataRecord; true; GetString; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | LDAPInjection.cs:12:16:12:23 | access to local variable userName : String | semmle.label | access to local variable userName : String |

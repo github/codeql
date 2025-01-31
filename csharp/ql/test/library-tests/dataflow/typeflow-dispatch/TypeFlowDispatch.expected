@@ -1,6 +1,6 @@
 models
 | 1 | Summary: System.Collections.Generic; ICollection<T>; true; Add; (T); ; Argument[0]; Argument[this].Element; value; manual |
-| 2 | Summary: System.Collections.Generic; List<T>; false; ForEach; (System.Action<T>); ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 2 | Summary: System.Collections.Generic; List<T>; true; ForEach; (System.Action<T>); ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
 edges
 | TypeFlowDispatch.cs:11:42:11:42 | x : String | TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | provenance |  |
 | TypeFlowDispatch.cs:11:42:11:42 | x : String | TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | provenance |  |

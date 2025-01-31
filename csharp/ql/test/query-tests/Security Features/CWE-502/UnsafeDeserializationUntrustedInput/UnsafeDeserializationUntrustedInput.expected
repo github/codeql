@@ -27,9 +27,9 @@ edges
 | XmlSerializerUntrustedInputBad.cs:13:71:13:74 | access to parameter data : TextBox | XmlSerializerUntrustedInputBad.cs:13:71:13:79 | access to property Text : String | provenance | MaD:3 |
 | XmlSerializerUntrustedInputBad.cs:13:71:13:79 | access to property Text : String | XmlSerializerUntrustedInputBad.cs:13:48:13:80 | call to method GetBytes : Byte[] | provenance | MaD:2 |
 models
-| 1 | Summary: System.IO; MemoryStream; false; MemoryStream; (System.Byte[]); ; Argument[0]; Argument[this]; taint; manual |
+| 1 | Summary: System.IO; MemoryStream; true; MemoryStream; (System.Byte[]); ; Argument[0]; Argument[this]; taint; manual |
 | 2 | Summary: System.Text; Encoding; true; GetBytes; (System.String); ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: System.Web.UI.WebControls; TextBox; true; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | BinaryFormatterUntrustedInputBad.cs:12:31:12:84 | object creation of type MemoryStream | semmle.label | object creation of type MemoryStream |
 | BinaryFormatterUntrustedInputBad.cs:12:48:12:83 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |

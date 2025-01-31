@@ -17,8 +17,8 @@ edges
 | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | provenance | MaD:2 |
 | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | provenance |  |
 models
-| 1 | Source: System; Console; false; ReadLine; ; ; ReturnValue; stdin; manual |
-| 2 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Source: System; Console; true; ReadLine; ; ; ReturnValue; stdin; manual |
+| 2 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | ConsoleUncontrolledFormatString.cs:8:13:8:18 | access to local variable format : String | semmle.label | access to local variable format : String |
 | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |

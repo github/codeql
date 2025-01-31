@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.dataflow.internal.ExternalFlowExtensions
 import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 bindingset[namespace0, type0, name0, signature0]

@@ -11,6 +11,7 @@ private import DataFlowImplSpecific as DataFlowImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.dataflow.internal.ExternalFlowExtensions as ExternalFlowExtensions
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow> {
@@ -214,7 +215,8 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
       QlBuiltins::ExtensionId madId
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      ExternalFlowExtensions::sourceModel(namespace, type, _, name, signature, ext, output, kind,
+        provenance, madId) and
       model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
@@ -227,7 +229,8 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
       QlBuiltins::ExtensionId madId
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      ExternalFlowExtensions::sinkModel(namespace, type, _, name, signature, ext, input, kind,
+        provenance, madId) and
       model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )

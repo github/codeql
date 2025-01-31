@@ -23,7 +23,7 @@ edges
 | CommandInjection.cs:51:54:51:80 | call to method GetString : String | CommandInjection.cs:51:46:51:80 | ... + ... | provenance |  |
 models
 | 1 | Summary: System.Data; IDataRecord; true; GetString; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
-| 2 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: System.Web.UI.WebControls; TextBox; true; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
 | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
