@@ -23,8 +23,8 @@ jobs:
             git fetch --tags
             CURRENT_COMMIT=$(git rev-list -1 HEAD)
             CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'codeql-cli/v*' $CURRENT_COMMIT)
-            CURRENT_VERSION="${CURRENT_TAG#codeql-cli/}"
-            echo "CODEQL_VERSION=$CURRENT_TAG" >> $GITHUB_OUTPUT
+            CODEQL_VERSION="${CURRENT_TAG#codeql-cli/}"
+            echo "CODEQL_VERSION=$CODEQL_VERSION" >> $GITHUB_OUTPUT
   publish:
     needs: codeqlversion
     runs-on: ubuntu-latest
