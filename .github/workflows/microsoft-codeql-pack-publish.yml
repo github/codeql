@@ -58,9 +58,9 @@ jobs:
         # PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
         # NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
 
-        # # Extract dependencies from the existing qlpack.yml before deleting
-        # DEPENDENCIES=$(yq '.dependencies' "$LANGUAGE/ql/src/qlpack.yml" 2>/dev/null || echo "")
-        # rm -f "$LANGUAGE/ql/src/qlpack.yml" "$LANGUAGE/ql/src/qlpack.lock"
+        # Extract dependencies from the existing qlpack.yml before deleting
+        DEPENDENCIES=$(yq '.dependencies' "$LANGUAGE/ql/src/qlpack.yml" 2>/dev/null || echo "")
+        rm -f "$LANGUAGE/ql/src/qlpack.yml" "$LANGUAGE/ql/src/qlpack.lock"
 
         FIRST_VERSION="0.0.1"
 
@@ -68,6 +68,7 @@ jobs:
         cat <<EOF > "$LANGUAGE/ql/src/qlpack.yml"
         name: microsoft/$LANGUAGE-queries
         version: $FIRST_VERSION
+        extractor: $LANGUAGE
         groups:
           - $LANGUAGE
           - queries
