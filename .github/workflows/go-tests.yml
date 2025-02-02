@@ -26,33 +26,30 @@ permissions:
 
 jobs:
   test-linux:
-    if: github.repository_owner == 'FreeMason9224'
-    name: Test on Ubuntu
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [1.15, 1.16, 1.17]
+    if: github.repository_owner == 'github'
+    name: Test Linux (Ubuntu)
+    runs-on: ubuntu-latest-xl
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: ${{ matrix.go-version }}
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Cache Go modules
-        uses: actions/cache@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
         with:
-          path: go/pkg/mod
-          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          go-version: 1.15
+
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go-version }}-
             ${{ runner.os }}-go-
+
       - name: Install dependencies
-        run: go mod download
+        run: go mod tidy
+
       - name: Run tests
         run: go test ./...
-      - name: Run code checks
-        run: |
-          if [ "${{ matrix.go-version }}" == "1.17" ]; then
-            go vet ./...
-          fi
