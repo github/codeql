@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.DataProtection, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -212,6 +212,11 @@ namespace Microsoft
             }
             namespace KeyManagement
             {
+                public interface IDeletableKeyManager : Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager
+                {
+                    bool CanDeleteKeys { get; }
+                    bool DeleteKeys(System.Func<Microsoft.AspNetCore.DataProtection.KeyManagement.IKey, bool> shouldDelete);
+                }
                 public interface IKey
                 {
                     System.DateTimeOffset ActivationDate { get; }
@@ -283,10 +288,12 @@ namespace Microsoft
                 }
                 public sealed class XmlKeyManager : Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IInternalXmlKeyManager, Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager
                 {
+                    public bool CanDeleteKeys { get => throw null; }
                     public Microsoft.AspNetCore.DataProtection.KeyManagement.IKey CreateNewKey(System.DateTimeOffset activationDate, System.DateTimeOffset expirationDate) => throw null;
                     Microsoft.AspNetCore.DataProtection.KeyManagement.IKey Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IInternalXmlKeyManager.CreateNewKey(System.Guid keyId, System.DateTimeOffset creationDate, System.DateTimeOffset activationDate, System.DateTimeOffset expirationDate) => throw null;
                     public XmlKeyManager(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions> keyManagementOptions, Microsoft.AspNetCore.DataProtection.Internal.IActivator activator) => throw null;
                     public XmlKeyManager(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions> keyManagementOptions, Microsoft.AspNetCore.DataProtection.Internal.IActivator activator, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
+                    public bool DeleteKeys(System.Func<Microsoft.AspNetCore.DataProtection.KeyManagement.IKey, bool> shouldDelete) => throw null;
                     Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.IAuthenticatedEncryptorDescriptor Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IInternalXmlKeyManager.DeserializeDescriptorFromKeyElement(System.Xml.Linq.XElement keyElement) => throw null;
                     public System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.DataProtection.KeyManagement.IKey> GetAllKeys() => throw null;
                     public System.Threading.CancellationToken GetCacheExpirationToken() => throw null;
@@ -297,23 +304,34 @@ namespace Microsoft
             }
             namespace Repositories
             {
-                public class FileSystemXmlRepository : Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository
+                public class FileSystemXmlRepository : Microsoft.AspNetCore.DataProtection.Repositories.IDeletableXmlRepository, Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository
                 {
                     public FileSystemXmlRepository(System.IO.DirectoryInfo directory, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                     public static System.IO.DirectoryInfo DefaultKeyStorageDirectory { get => throw null; }
+                    public virtual bool DeleteElements(System.Action<System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.DataProtection.Repositories.IDeletableElement>> chooseElements) => throw null;
                     public System.IO.DirectoryInfo Directory { get => throw null; }
                     public virtual System.Collections.Generic.IReadOnlyCollection<System.Xml.Linq.XElement> GetAllElements() => throw null;
                     public virtual void StoreElement(System.Xml.Linq.XElement element, string friendlyName) => throw null;
+                }
+                public interface IDeletableElement
+                {
+                    int? DeletionOrder { get; set; }
+                    System.Xml.Linq.XElement Element { get; }
+                }
+                public interface IDeletableXmlRepository : Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository
+                {
+                    bool DeleteElements(System.Action<System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.DataProtection.Repositories.IDeletableElement>> chooseElements);
                 }
                 public interface IXmlRepository
                 {
                     System.Collections.Generic.IReadOnlyCollection<System.Xml.Linq.XElement> GetAllElements();
                     void StoreElement(System.Xml.Linq.XElement element, string friendlyName);
                 }
-                public class RegistryXmlRepository : Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository
+                public class RegistryXmlRepository : Microsoft.AspNetCore.DataProtection.Repositories.IDeletableXmlRepository, Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository
                 {
                     public RegistryXmlRepository(Microsoft.Win32.RegistryKey registryKey, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                     public static Microsoft.Win32.RegistryKey DefaultRegistryKey { get => throw null; }
+                    public virtual bool DeleteElements(System.Action<System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.DataProtection.Repositories.IDeletableElement>> chooseElements) => throw null;
                     public virtual System.Collections.Generic.IReadOnlyCollection<System.Xml.Linq.XElement> GetAllElements() => throw null;
                     public Microsoft.Win32.RegistryKey RegistryKey { get => throw null; }
                     public virtual void StoreElement(System.Xml.Linq.XElement element, string friendlyName) => throw null;
