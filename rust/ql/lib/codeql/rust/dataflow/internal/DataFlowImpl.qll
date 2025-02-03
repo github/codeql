@@ -608,7 +608,7 @@ module LocalFlow {
  *
  * TODO: Remove once library code is extracted.
  */
-private module VariantLib {
+private module VariantInLib {
   private import codeql.util.Option
 
   private class CrateOrigin extends string {
@@ -619,8 +619,8 @@ private module VariantLib {
 
   private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
 
-  private newtype TVariantLib =
-    MkVariantLib(CrateOriginOption crate, string path, string name) {
+  private newtype TVariantInLib =
+    MkVariantInLib(CrateOriginOption crate, string path, string name) {
       crate = langCoreCrate() and
       (
         path = "crate::option::Option" and
@@ -631,35 +631,35 @@ private module VariantLib {
       )
     }
 
-  /** A canonical path pointing to an enum variant. */
-  class VariantLib extends MkVariantLib {
+  /** An enum variant from library code, represented by its canonical path. */
+  class VariantInLib extends MkVariantInLib {
     CrateOriginOption crate;
     string path;
     string name;
 
-    VariantLib() { this = MkVariantLib(crate, path, name) }
+    VariantInLib() { this = MkVariantInLib(crate, path, name) }
+
+    int getAPosition() {
+      this = MkVariantInLib(langCoreCrate(), "crate::option::Option", "Some") and
+      result = 0
+      or
+      this = MkVariantInLib(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
+      result = 0
+    }
 
     string getExtendedCanonicalPath() { result = path + "::" + name }
 
     string toString() { result = name }
   }
 
-  predicate variantLibPos(VariantLib::VariantLib v, int pos) {
-    v = MkVariantLib(langCoreCrate(), "crate::option::Option", "Some") and
-    pos = 0
-    or
-    v = MkVariantLib(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
-    pos = 0
-  }
-
   /** A tuple variant from library code. */
-  class VariantLibTupleFieldContent extends VariantContent, TVariantLibTupleFieldContent {
-    private VariantLib::VariantLib v;
+  class VariantInLibTupleFieldContent extends VariantContent, TVariantInLibTupleFieldContent {
+    private VariantInLib::VariantInLib v;
     private int pos_;
 
-    VariantLibTupleFieldContent() { this = TVariantLibTupleFieldContent(v, pos_) }
+    VariantInLibTupleFieldContent() { this = TVariantInLibTupleFieldContent(v, pos_) }
 
-    VariantLib::VariantLib getVariantLib(int pos) { result = v and pos = pos_ }
+    VariantInLib::VariantInLib getVariantInLib(int pos) { result = v and pos = pos_ }
 
     string getExtendedCanonicalPath() { result = v.getExtendedCanonicalPath() }
 
@@ -667,7 +667,7 @@ private module VariantLib {
 
     final override string toString() {
       // only print indices when the arity is > 1
-      if exists(TVariantLibTupleFieldContent(v, 1))
+      if exists(TVariantInLibTupleFieldContent(v, 1))
       then result = v.toString() + "(" + pos_ + ")"
       else result = v.toString()
     }
@@ -687,39 +687,39 @@ private module VariantLib {
   }
 
   /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariantLib(PathAstNode p, VariantLib v) {
+  private predicate pathResolveToVariantInLib(PathAstNode p, VariantInLib v) {
     exists(CrateOriginOption crate, string path, string name |
       resolveExtendedCanonicalPath(p, pragma[only_bind_into](crate), path + "::" + name) and
-      v = MkVariantLib(pragma[only_bind_into](crate), path, name)
+      v = MkVariantInLib(pragma[only_bind_into](crate), path, name)
     )
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
-  private predicate tupleVariantCanonicalDestruction(TupleStructPat p, VariantLib v) {
-    pathResolveToVariantLib(p, v)
+  private predicate tupleVariantCanonicalDestruction(TupleStructPat p, VariantInLib v) {
+    pathResolveToVariantInLib(p, v)
   }
 
   bindingset[pos]
   predicate tupleVariantCanonicalDestruction(
-    TupleStructPat pat, VariantLibTupleFieldContent c, int pos
+    TupleStructPat pat, VariantInLibTupleFieldContent c, int pos
   ) {
-    tupleVariantCanonicalDestruction(pat, c.getVariantLib(pos))
+    tupleVariantCanonicalDestruction(pat, c.getVariantInLib(pos))
   }
 
   /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
-  private predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantLib v) {
-    pathResolveToVariantLib(ce.getFunction().(PathExpr), v)
+  private predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantInLib v) {
+    pathResolveToVariantInLib(ce.getFunction().(PathExpr), v)
   }
 
   bindingset[pos]
-  predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantLibTupleFieldContent c, int pos) {
-    tupleVariantCanonicalConstruction(ce, c.getVariantLib(pos))
+  predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantInLibTupleFieldContent c, int pos) {
+    tupleVariantCanonicalConstruction(ce, c.getVariantInLib(pos))
   }
 }
 
-class VariantLibTupleFieldContent = VariantLib::VariantLibTupleFieldContent;
+class VariantInLibTupleFieldContent = VariantInLib::VariantInLibTupleFieldContent;
 
 /**
  * A path to a value contained in an object. For example a field name of a struct.
@@ -1087,29 +1087,22 @@ module RustDataFlow implements InputSig<Location> {
       node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
-  /** Holds if path `p` resolves to struct `s`. */
-  private predicate pathResolveToStruct(PathAstNode p, Struct s) {
-    s = PathResolution::resolvePath(p.getPath())
-  }
-
-  /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariant(PathAstNode p, Variant v) {
-    v = PathResolution::resolvePath(p.getPath())
+  /** Gets the item that `p` resolves to, if any. */
+  private PathResolution::ItemNode resolvePath(PathAstNode p) {
+    result = PathResolution::resolvePath(p.getPath())
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
-  private predicate tupleVariantDestruction(TupleStructPat p, Variant v) {
-    pathResolveToVariant(p, v)
-  }
+  private predicate tupleVariantDestruction(TupleStructPat p, Variant v) { v = resolvePath(p) }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
-  private predicate recordVariantDestruction(RecordPat p, Variant v) { pathResolveToVariant(p, v) }
+  private predicate recordVariantDestruction(RecordPat p, Variant v) { v = resolvePath(p) }
 
   /** Holds if `p` destructs a struct `s`. */
   pragma[nomagic]
-  private predicate structDestruction(RecordPat p, Struct s) { pathResolveToStruct(p, s) }
+  private predicate structDestruction(RecordPat p, Struct s) { s = resolvePath(p) }
 
   /**
    * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
@@ -1124,7 +1117,7 @@ module RustDataFlow implements InputSig<Location> {
       |
         tupleVariantDestruction(pat.getPat(), c.(VariantTupleFieldContent).getVariant(pos))
         or
-        VariantLib::tupleVariantCanonicalDestruction(pat.getPat(), c, pos)
+        VariantInLib::tupleVariantCanonicalDestruction(pat.getPat(), c, pos)
       )
       or
       exists(TuplePatCfgNode pat, int pos |
@@ -1177,7 +1170,7 @@ module RustDataFlow implements InputSig<Location> {
       exists(TryExprCfgNode try |
         node1.asExpr() = try.getExpr() and
         node2.asExpr() = try and
-        c.(VariantLibTupleFieldContent).getVariantLib(0).getExtendedCanonicalPath() =
+        c.(VariantInLibTupleFieldContent).getVariantInLib(0).getExtendedCanonicalPath() =
           ["crate::option::Option::Some", "crate::result::Result::Ok"]
       )
       or
@@ -1198,18 +1191,16 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
   private predicate tupleVariantConstruction(CallExpr ce, Variant v) {
-    pathResolveToVariant(ce.getFunction().(PathExpr), v)
+    v = resolvePath(ce.getFunction().(PathExpr))
   }
 
   /** Holds if `re` constructs an enum value of type `v`. */
   pragma[nomagic]
-  private predicate recordVariantConstruction(RecordExpr re, Variant v) {
-    pathResolveToVariant(re, v)
-  }
+  private predicate recordVariantConstruction(RecordExpr re, Variant v) { v = resolvePath(re) }
 
   /** Holds if `re` constructs a struct value of type `s`. */
   pragma[nomagic]
-  private predicate structConstruction(RecordExpr re, Struct s) { pathResolveToStruct(re, s) }
+  private predicate structConstruction(RecordExpr re, Struct s) { s = resolvePath(re) }
 
   private predicate tupleAssignment(Node node1, Node node2, TuplePositionContent c) {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
@@ -1228,7 +1219,7 @@ module RustDataFlow implements InputSig<Location> {
     |
       tupleVariantConstruction(call.getCallExpr(), c.(VariantTupleFieldContent).getVariant(pos))
       or
-      VariantLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
+      VariantInLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
     )
     or
     exists(RecordExprCfgNode re, string field |
@@ -1600,9 +1591,7 @@ private module Cached {
   newtype TContent =
     TVariantTupleFieldContent(Variant v, int pos) { exists(getVariantTupleField(v, pos)) } or
     // TODO: Remove once library types are extracted
-    TVariantLibTupleFieldContent(VariantLib::VariantLib v, int pos) {
-      VariantLib::variantLibPos(v, pos)
-    } or
+    TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
     TVariantRecordFieldContent(Variant v, string field) { exists(getVariantRecordField(v, field)) } or
     TElementContent() or
     TTuplePositionContent(int pos) {

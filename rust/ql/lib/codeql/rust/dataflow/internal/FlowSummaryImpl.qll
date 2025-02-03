@@ -77,7 +77,7 @@ module Input implements InputSig<Location, RustDataFlow> {
       or
       result = "Variant" and
       c =
-        any(VariantLibTupleFieldContent v |
+        any(VariantInLibTupleFieldContent v |
           arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
         )
       or
