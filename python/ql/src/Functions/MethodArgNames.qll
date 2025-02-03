@@ -9,7 +9,7 @@ private predicate methodOfClass(Function f, Class c) { f.getScope() = c }
 
 /** Holds if `c` is a metaclass. */
 private predicate isMetaclass(Class c) {
-  c.getABase() = API::builtin("type").getASubclass*().asSource().asExpr()
+  c = API::builtin("type").getASubclass*().asSource().asExpr().(ClassExpr).getInnerScope()
 }
 
 /** Holds if `f` is a class method. */
@@ -26,13 +26,15 @@ private predicate isStaticMethod(Function f) {
 
 /** Holds if `c` is a Zope interface. */
 private predicate isZopeInterface(Class c) {
-  c.getABase() =
-    API::moduleImport("zone")
+  c =
+    API::moduleImport("zope")
         .getMember("interface")
-        .getMember("interface")
+        .getMember("Interface")
         .getASubclass*()
         .asSource()
         .asExpr()
+        .(ClassExpr)
+        .getInnerScope()
 }
 
 /**
