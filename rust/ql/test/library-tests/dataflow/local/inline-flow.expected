@@ -49,6 +49,14 @@ edges
 | main.rs:148:12:148:21 | source(...) | main.rs:147:13:150:5 | Point {...} [Point.x] | provenance |  |
 | main.rs:151:9:151:28 | Point {...} [Point.x] | main.rs:151:20:151:20 | a | provenance |  |
 | main.rs:151:20:151:20 | a | main.rs:152:10:152:10 | a | provenance |  |
+| main.rs:175:9:175:9 | p [Point3D.plane, Point.y] | main.rs:182:11:182:11 | p [Point3D.plane, Point.y] | provenance |  |
+| main.rs:175:13:181:5 | Point3D {...} [Point3D.plane, Point.y] | main.rs:175:9:175:9 | p [Point3D.plane, Point.y] | provenance |  |
+| main.rs:176:16:179:9 | Point {...} [Point.y] | main.rs:175:13:181:5 | Point3D {...} [Point3D.plane, Point.y] | provenance |  |
+| main.rs:178:16:178:25 | source(...) | main.rs:176:16:179:9 | Point {...} [Point.y] | provenance |  |
+| main.rs:182:11:182:11 | p [Point3D.plane, Point.y] | main.rs:183:9:186:9 | Point3D {...} [Point3D.plane, Point.y] | provenance |  |
+| main.rs:183:9:186:9 | Point3D {...} [Point3D.plane, Point.y] | main.rs:184:20:184:33 | Point {...} [Point.y] | provenance |  |
+| main.rs:184:20:184:33 | Point {...} [Point.y] | main.rs:184:31:184:31 | y | provenance |  |
+| main.rs:184:31:184:31 | y | main.rs:188:18:188:18 | y | provenance |  |
 | main.rs:198:9:198:10 | s1 [Some] | main.rs:200:11:200:12 | s1 [Some] | provenance |  |
 | main.rs:198:14:198:37 | ...::Some(...) [Some] | main.rs:198:9:198:10 | s1 [Some] | provenance |  |
 | main.rs:198:27:198:36 | source(...) | main.rs:198:14:198:37 | ...::Some(...) [Some] | provenance |  |
@@ -226,6 +234,15 @@ nodes
 | main.rs:151:9:151:28 | Point {...} [Point.x] | semmle.label | Point {...} [Point.x] |
 | main.rs:151:20:151:20 | a | semmle.label | a |
 | main.rs:152:10:152:10 | a | semmle.label | a |
+| main.rs:175:9:175:9 | p [Point3D.plane, Point.y] | semmle.label | p [Point3D.plane, Point.y] |
+| main.rs:175:13:181:5 | Point3D {...} [Point3D.plane, Point.y] | semmle.label | Point3D {...} [Point3D.plane, Point.y] |
+| main.rs:176:16:179:9 | Point {...} [Point.y] | semmle.label | Point {...} [Point.y] |
+| main.rs:178:16:178:25 | source(...) | semmle.label | source(...) |
+| main.rs:182:11:182:11 | p [Point3D.plane, Point.y] | semmle.label | p [Point3D.plane, Point.y] |
+| main.rs:183:9:186:9 | Point3D {...} [Point3D.plane, Point.y] | semmle.label | Point3D {...} [Point3D.plane, Point.y] |
+| main.rs:184:20:184:33 | Point {...} [Point.y] | semmle.label | Point {...} [Point.y] |
+| main.rs:184:31:184:31 | y | semmle.label | y |
+| main.rs:188:18:188:18 | y | semmle.label | y |
 | main.rs:198:9:198:10 | s1 [Some] | semmle.label | s1 [Some] |
 | main.rs:198:14:198:37 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
 | main.rs:198:27:198:36 | source(...) | semmle.label | source(...) |
@@ -384,6 +401,7 @@ testFailures
 | main.rs:113:10:113:12 | a.0 | main.rs:111:11:111:20 | source(...) | main.rs:113:10:113:12 | a.0 | $@ | main.rs:111:11:111:20 | source(...) | source(...) |
 | main.rs:121:10:121:15 | ... .1 | main.rs:118:17:118:26 | source(...) | main.rs:121:10:121:15 | ... .1 | $@ | main.rs:118:17:118:26 | source(...) | source(...) |
 | main.rs:152:10:152:10 | a | main.rs:148:12:148:21 | source(...) | main.rs:152:10:152:10 | a | $@ | main.rs:148:12:148:21 | source(...) | source(...) |
+| main.rs:188:18:188:18 | y | main.rs:178:16:178:25 | source(...) | main.rs:188:18:188:18 | y | $@ | main.rs:178:16:178:25 | source(...) | source(...) |
 | main.rs:201:33:201:33 | n | main.rs:198:27:198:36 | source(...) | main.rs:201:33:201:33 | n | $@ | main.rs:198:27:198:36 | source(...) | source(...) |
 | main.rs:214:25:214:25 | n | main.rs:211:19:211:28 | source(...) | main.rs:214:25:214:25 | n | $@ | main.rs:211:19:211:28 | source(...) | source(...) |
 | main.rs:225:10:225:20 | s1.unwrap(...) | main.rs:224:19:224:28 | source(...) | main.rs:225:10:225:20 | s1.unwrap(...) | $@ | main.rs:224:19:224:28 | source(...) | source(...) |
