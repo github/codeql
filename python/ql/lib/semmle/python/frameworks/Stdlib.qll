@@ -1781,15 +1781,6 @@ module StdlibPrivate {
      * See https://docs.python.org/3/library/cgi.html.
      */
     module FieldStorage {
-      /**
-       * DEPRECATED: Use `subclassRef` predicate instead.
-       *
-       * Gets a reference to the `cgi.FieldStorage` class.
-       */
-      deprecated API::Node classRef() {
-        result = API::moduleImport("cgi").getMember("FieldStorage")
-      }
-
       /** Gets a reference to the `cgi.FieldStorage` class or any subclass. */
       API::Node subclassRef() {
         result = API::moduleImport("cgi").getMember("FieldStorage").getASubclass*()
@@ -1900,168 +1891,15 @@ module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // BaseHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /**
-   * DEPRECATED: Use API-graphs directly instead.
-   *
-   *  Gets a reference to the `BaseHttpServer` module.
-   */
-  deprecated API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
-
-  /**
-   * DEPRECATED: Use API-graphs directly instead.
-   *
-   *  Provides models for the `BaseHttpServer` module.
-   */
-  deprecated module BaseHttpServer {
-    /**
-     * DEPRECATED: Use API-graphs directly instead.
-     *
-     * Provides models for the `BaseHTTPServer.BaseHTTPRequestHandler` class (Python 2 only).
-     */
-    deprecated module BaseHttpRequestHandler {
-      /**
-       * DEPRECATED: Use API-graphs directly instead.
-       *
-       *  Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class.
-       */
-      deprecated API::Node classRef() {
-        result = baseHttpServer().getMember("BaseHTTPRequestHandler")
-      }
-    }
-  }
-
   // ---------------------------------------------------------------------------
   // SimpleHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /**
-   * DEPRECATED: Use API-graphs directly instead.
-   *
-   *  Gets a reference to the `SimpleHttpServer` module.
-   */
-  deprecated API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
-
-  /**
-   * DEPRECATED: Use API-graphs directly instead.
-   *
-   *  Provides models for the `SimpleHttpServer` module.
-   */
-  deprecated module SimpleHttpServer {
-    /**
-     * DEPRECATED: Use API-graphs directly instead.
-     *
-     * Provides models for the `SimpleHTTPServer.SimpleHTTPRequestHandler` class (Python 2 only).
-     */
-    deprecated module SimpleHttpRequestHandler {
-      /**
-       * DEPRECATED: Use API-graphs directly instead.
-       *
-       *  Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class.
-       */
-      deprecated API::Node classRef() {
-        result = simpleHttpServer().getMember("SimpleHTTPRequestHandler")
-      }
-    }
-  }
-
   // ---------------------------------------------------------------------------
   // CGIHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /**
-   * DEPRECATED: Use API-graphs directly instead.
-   *
-   *  Gets a reference to the `CGIHTTPServer` module.
-   */
-  deprecated API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
-
-  /** Provides models for the `CGIHTTPServer` module. */
-  deprecated module CgiHttpServer {
-    /**
-     * DEPRECATED: Use API-graphs directly instead.
-     *
-     * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
-     */
-    deprecated module CgiHttpRequestHandler {
-      /**
-       * DEPRECATED: Use API-graphs directly instead.
-       *
-       *  Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class.
-       */
-      deprecated API::Node classRef() {
-        result = cgiHttpServer().getMember("CGIHTTPRequestHandler")
-      }
-    }
-  }
-
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
   // ---------------------------------------------------------------------------
-  /**
-   * DEPRECATED: Use API-graphs directly instead.
-   *
-   * Gets a reference to the `http` module.
-   */
-  deprecated API::Node http() { result = API::moduleImport("http") }
-
-  /** Provides models for the `http` module. */
-  deprecated module StdlibHttp {
-    // -------------------------------------------------------------------------
-    // http.server
-    // -------------------------------------------------------------------------
-    /**
-     * DEPRECATED: Use API-graphs directly instead.
-     *
-     * Gets a reference to the `http.server` module.
-     */
-    deprecated API::Node server() { result = http().getMember("server") }
-
-    /**
-     * DEPRECATED: Use API-graphs directly instead.
-     *
-     * Provides models for the `http.server` module
-     */
-    deprecated module Server {
-      /**
-       * DEPRECATED: Use API-graphs directly instead.
-       *
-       * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
-       *
-       * See https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler.
-       */
-      deprecated module BaseHttpRequestHandler {
-        /** Gets a reference to the `http.server.BaseHttpRequestHandler` class. */
-        deprecated API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
-      }
-
-      /**
-       * DEPRECATED: Use API-graphs directly instead.
-       *
-       * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
-       *
-       * See https://docs.python.org/3.9/library/http.server.html#http.server.SimpleHTTPRequestHandler.
-       */
-      deprecated module SimpleHttpRequestHandler {
-        /** Gets a reference to the `http.server.SimpleHttpRequestHandler` class. */
-        deprecated API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
-      }
-
-      /**
-       * DEPRECATED: Use API-graphs directly instead.
-       *
-       * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
-       *
-       * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
-       */
-      deprecated module CgiHttpRequestHandler {
-        /**
-         * DEPRECATED: Use API-graphs directly instead.
-         *
-         * Gets a reference to the `http.server.CGIHTTPRequestHandler` class.
-         */
-        deprecated API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
-      }
-    }
-  }
-
   /**
    * Provides models for the `BaseHTTPRequestHandler` class and subclasses.
    *

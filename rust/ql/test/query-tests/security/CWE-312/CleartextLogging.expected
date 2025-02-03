@@ -1,0 +1,451 @@
+#select
+| test_logging.rs:42:5:42:36 | ...::log | test_logging.rs:42:28:42:35 | password | test_logging.rs:42:5:42:36 | ...::log | This operation writes $@ to a log file. | test_logging.rs:42:28:42:35 | password | password |
+| test_logging.rs:43:5:43:36 | ...::log | test_logging.rs:43:28:43:35 | password | test_logging.rs:43:5:43:36 | ...::log | This operation writes $@ to a log file. | test_logging.rs:43:28:43:35 | password | password |
+| test_logging.rs:44:5:44:35 | ...::log | test_logging.rs:44:27:44:34 | password | test_logging.rs:44:5:44:35 | ...::log | This operation writes $@ to a log file. | test_logging.rs:44:27:44:34 | password | password |
+| test_logging.rs:45:5:45:36 | ...::log | test_logging.rs:45:28:45:35 | password | test_logging.rs:45:5:45:36 | ...::log | This operation writes $@ to a log file. | test_logging.rs:45:28:45:35 | password | password |
+| test_logging.rs:46:5:46:35 | ...::log | test_logging.rs:46:27:46:34 | password | test_logging.rs:46:5:46:35 | ...::log | This operation writes $@ to a log file. | test_logging.rs:46:27:46:34 | password | password |
+| test_logging.rs:47:5:47:48 | ...::log | test_logging.rs:47:40:47:47 | password | test_logging.rs:47:5:47:48 | ...::log | This operation writes $@ to a log file. | test_logging.rs:47:40:47:47 | password | password |
+| test_logging.rs:52:5:52:36 | ...::log | test_logging.rs:52:28:52:35 | password | test_logging.rs:52:5:52:36 | ...::log | This operation writes $@ to a log file. | test_logging.rs:52:28:52:35 | password | password |
+| test_logging.rs:54:5:54:49 | ...::log | test_logging.rs:54:41:54:48 | password | test_logging.rs:54:5:54:49 | ...::log | This operation writes $@ to a log file. | test_logging.rs:54:41:54:48 | password | password |
+| test_logging.rs:56:5:56:47 | ...::log | test_logging.rs:56:39:56:46 | password | test_logging.rs:56:5:56:47 | ...::log | This operation writes $@ to a log file. | test_logging.rs:56:39:56:46 | password | password |
+| test_logging.rs:57:5:57:34 | ...::log | test_logging.rs:57:24:57:31 | password | test_logging.rs:57:5:57:34 | ...::log | This operation writes $@ to a log file. | test_logging.rs:57:24:57:31 | password | password |
+| test_logging.rs:58:5:58:36 | ...::log | test_logging.rs:58:24:58:31 | password | test_logging.rs:58:5:58:36 | ...::log | This operation writes $@ to a log file. | test_logging.rs:58:24:58:31 | password | password |
+| test_logging.rs:60:5:60:54 | ...::log | test_logging.rs:60:46:60:53 | password | test_logging.rs:60:5:60:54 | ...::log | This operation writes $@ to a log file. | test_logging.rs:60:46:60:53 | password | password |
+| test_logging.rs:61:5:61:55 | ...::log | test_logging.rs:61:21:61:28 | password | test_logging.rs:61:5:61:55 | ...::log | This operation writes $@ to a log file. | test_logging.rs:61:21:61:28 | password | password |
+| test_logging.rs:65:5:65:48 | ...::log | test_logging.rs:65:40:65:47 | password | test_logging.rs:65:5:65:48 | ...::log | This operation writes $@ to a log file. | test_logging.rs:65:40:65:47 | password | password |
+| test_logging.rs:67:5:67:66 | ...::log | test_logging.rs:67:58:67:65 | password | test_logging.rs:67:5:67:66 | ...::log | This operation writes $@ to a log file. | test_logging.rs:67:58:67:65 | password | password |
+| test_logging.rs:68:5:68:67 | ...::log | test_logging.rs:68:19:68:26 | password | test_logging.rs:68:5:68:67 | ...::log | This operation writes $@ to a log file. | test_logging.rs:68:19:68:26 | password | password |
+| test_logging.rs:72:5:72:47 | ...::log::<...> | test_logging.rs:72:39:72:46 | password | test_logging.rs:72:5:72:47 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:72:39:72:46 | password | password |
+| test_logging.rs:74:5:74:65 | ...::log::<...> | test_logging.rs:74:57:74:64 | password | test_logging.rs:74:5:74:65 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:74:57:74:64 | password | password |
+| test_logging.rs:75:5:75:51 | ...::log::<...> | test_logging.rs:75:21:75:28 | password | test_logging.rs:75:5:75:51 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:75:21:75:28 | password | password |
+| test_logging.rs:76:5:76:47 | ...::log::<...> | test_logging.rs:76:39:76:46 | password | test_logging.rs:76:5:76:47 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:76:39:76:46 | password | password |
+| test_logging.rs:82:5:82:44 | ...::log::<...> | test_logging.rs:82:36:82:43 | password | test_logging.rs:82:5:82:44 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:82:36:82:43 | password | password |
+| test_logging.rs:84:5:84:62 | ...::log::<...> | test_logging.rs:84:54:84:61 | password | test_logging.rs:84:5:84:62 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:84:54:84:61 | password | password |
+| test_logging.rs:85:5:85:48 | ...::log::<...> | test_logging.rs:85:21:85:28 | password | test_logging.rs:85:5:85:48 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:85:21:85:28 | password | password |
+| test_logging.rs:86:5:86:44 | ...::log::<...> | test_logging.rs:86:36:86:43 | password | test_logging.rs:86:5:86:44 | ...::log::<...> | This operation writes $@ to a log file. | test_logging.rs:86:36:86:43 | password | password |
+| test_logging.rs:94:5:94:29 | ...::log | test_logging.rs:93:15:93:22 | password | test_logging.rs:94:5:94:29 | ...::log | This operation writes $@ to a log file. | test_logging.rs:93:15:93:22 | password | password |
+| test_logging.rs:97:5:97:19 | ...::log | test_logging.rs:96:42:96:49 | password | test_logging.rs:97:5:97:19 | ...::log | This operation writes $@ to a log file. | test_logging.rs:96:42:96:49 | password | password |
+| test_logging.rs:100:5:100:19 | ...::log | test_logging.rs:99:38:99:45 | password | test_logging.rs:100:5:100:19 | ...::log | This operation writes $@ to a log file. | test_logging.rs:99:38:99:45 | password | password |
+| test_logging.rs:118:5:118:42 | ...::log | test_logging.rs:118:28:118:41 | get_password(...) | test_logging.rs:118:5:118:42 | ...::log | This operation writes $@ to a log file. | test_logging.rs:118:28:118:41 | get_password(...) | get_password(...) |
+| test_logging.rs:131:5:131:32 | ...::log | test_logging.rs:129:25:129:32 | password | test_logging.rs:131:5:131:32 | ...::log | This operation writes $@ to a log file. | test_logging.rs:129:25:129:32 | password | password |
+| test_logging.rs:152:5:152:38 | ...::_print | test_logging.rs:152:30:152:37 | password | test_logging.rs:152:5:152:38 | ...::_print | This operation writes $@ to a log file. | test_logging.rs:152:30:152:37 | password | password |
+| test_logging.rs:153:5:153:38 | ...::_print | test_logging.rs:153:30:153:37 | password | test_logging.rs:153:5:153:38 | ...::_print | This operation writes $@ to a log file. | test_logging.rs:153:30:153:37 | password | password |
+| test_logging.rs:154:5:154:39 | ...::_eprint | test_logging.rs:154:31:154:38 | password | test_logging.rs:154:5:154:39 | ...::_eprint | This operation writes $@ to a log file. | test_logging.rs:154:31:154:38 | password | password |
+| test_logging.rs:155:5:155:39 | ...::_eprint | test_logging.rs:155:31:155:38 | password | test_logging.rs:155:5:155:39 | ...::_eprint | This operation writes $@ to a log file. | test_logging.rs:155:31:155:38 | password | password |
+| test_logging.rs:158:16:158:47 | ...::panic_fmt | test_logging.rs:158:39:158:46 | password | test_logging.rs:158:16:158:47 | ...::panic_fmt | This operation writes $@ to a log file. | test_logging.rs:158:39:158:46 | password | password |
+| test_logging.rs:159:16:159:46 | ...::panic_fmt | test_logging.rs:159:38:159:45 | password | test_logging.rs:159:16:159:46 | ...::panic_fmt | This operation writes $@ to a log file. | test_logging.rs:159:38:159:45 | password | password |
+| test_logging.rs:160:16:160:55 | ...::panic_fmt | test_logging.rs:160:47:160:54 | password | test_logging.rs:160:16:160:55 | ...::panic_fmt | This operation writes $@ to a log file. | test_logging.rs:160:47:160:54 | password | password |
+| test_logging.rs:161:16:161:53 | ...::panic_fmt | test_logging.rs:161:45:161:52 | password | test_logging.rs:161:16:161:53 | ...::panic_fmt | This operation writes $@ to a log file. | test_logging.rs:161:45:161:52 | password | password |
+| test_logging.rs:162:16:162:55 | ...::panic_fmt | test_logging.rs:162:47:162:54 | password | test_logging.rs:162:16:162:55 | ...::panic_fmt | This operation writes $@ to a log file. | test_logging.rs:162:47:162:54 | password | password |
+| test_logging.rs:163:16:163:57 | ...::assert_failed | test_logging.rs:163:49:163:56 | password | test_logging.rs:163:16:163:57 | ...::assert_failed | This operation writes $@ to a log file. | test_logging.rs:163:49:163:56 | password | password |
+| test_logging.rs:164:16:164:57 | ...::assert_failed | test_logging.rs:164:49:164:56 | password | test_logging.rs:164:16:164:57 | ...::assert_failed | This operation writes $@ to a log file. | test_logging.rs:164:49:164:56 | password | password |
+| test_logging.rs:165:16:165:61 | ...::panic_fmt | test_logging.rs:165:53:165:60 | password | test_logging.rs:165:16:165:61 | ...::panic_fmt | This operation writes $@ to a log file. | test_logging.rs:165:53:165:60 | password | password |
+| test_logging.rs:166:16:166:63 | ...::assert_failed | test_logging.rs:166:55:166:62 | password | test_logging.rs:166:16:166:63 | ...::assert_failed | This operation writes $@ to a log file. | test_logging.rs:166:55:166:62 | password | password |
+| test_logging.rs:167:17:167:64 | ...::assert_failed | test_logging.rs:167:56:167:63 | password | test_logging.rs:167:17:167:64 | ...::assert_failed | This operation writes $@ to a log file. | test_logging.rs:167:56:167:63 | password | password |
+| test_logging.rs:168:27:168:32 | expect | test_logging.rs:168:58:168:65 | password | test_logging.rs:168:27:168:32 | expect | This operation writes $@ to a log file. | test_logging.rs:168:58:168:65 | password | password |
+| test_logging.rs:174:30:174:34 | write | test_logging.rs:174:62:174:69 | password | test_logging.rs:174:30:174:34 | write | This operation writes $@ to a log file. | test_logging.rs:174:62:174:69 | password | password |
+| test_logging.rs:175:30:175:38 | write_all | test_logging.rs:175:66:175:73 | password | test_logging.rs:175:30:175:38 | write_all | This operation writes $@ to a log file. | test_logging.rs:175:66:175:73 | password | password |
+| test_logging.rs:178:9:178:13 | write | test_logging.rs:178:41:178:48 | password | test_logging.rs:178:9:178:13 | write | This operation writes $@ to a log file. | test_logging.rs:178:41:178:48 | password | password |
+| test_logging.rs:181:9:181:13 | write | test_logging.rs:181:41:181:48 | password | test_logging.rs:181:9:181:13 | write | This operation writes $@ to a log file. | test_logging.rs:181:41:181:48 | password | password |
+edges
+| test_logging.rs:42:12:42:35 | MacroExpr | test_logging.rs:42:5:42:36 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:42:28:42:35 | password | test_logging.rs:42:12:42:35 | MacroExpr | provenance |  |
+| test_logging.rs:43:12:43:35 | MacroExpr | test_logging.rs:43:5:43:36 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:43:28:43:35 | password | test_logging.rs:43:12:43:35 | MacroExpr | provenance |  |
+| test_logging.rs:44:11:44:34 | MacroExpr | test_logging.rs:44:5:44:35 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:44:27:44:34 | password | test_logging.rs:44:11:44:34 | MacroExpr | provenance |  |
+| test_logging.rs:45:12:45:35 | MacroExpr | test_logging.rs:45:5:45:36 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:45:28:45:35 | password | test_logging.rs:45:12:45:35 | MacroExpr | provenance |  |
+| test_logging.rs:46:11:46:34 | MacroExpr | test_logging.rs:46:5:46:35 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:46:27:46:34 | password | test_logging.rs:46:11:46:34 | MacroExpr | provenance |  |
+| test_logging.rs:47:24:47:47 | MacroExpr | test_logging.rs:47:5:47:48 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:47:40:47:47 | password | test_logging.rs:47:24:47:47 | MacroExpr | provenance |  |
+| test_logging.rs:52:12:52:35 | MacroExpr | test_logging.rs:52:5:52:36 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:52:28:52:35 | password | test_logging.rs:52:12:52:35 | MacroExpr | provenance |  |
+| test_logging.rs:54:12:54:48 | MacroExpr | test_logging.rs:54:5:54:49 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:54:41:54:48 | password | test_logging.rs:54:12:54:48 | MacroExpr | provenance |  |
+| test_logging.rs:56:12:56:46 | MacroExpr | test_logging.rs:56:5:56:47 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:56:39:56:46 | password | test_logging.rs:56:12:56:46 | MacroExpr | provenance |  |
+| test_logging.rs:57:12:57:33 | MacroExpr | test_logging.rs:57:5:57:34 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:57:24:57:31 | password | test_logging.rs:57:12:57:33 | MacroExpr | provenance |  |
+| test_logging.rs:58:12:58:35 | MacroExpr | test_logging.rs:58:5:58:36 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:58:24:58:31 | password | test_logging.rs:58:12:58:35 | MacroExpr | provenance |  |
+| test_logging.rs:60:30:60:53 | MacroExpr | test_logging.rs:60:5:60:54 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:60:46:60:53 | password | test_logging.rs:60:30:60:53 | MacroExpr | provenance |  |
+| test_logging.rs:61:20:61:28 | &... [&ref, tuple.0, &ref] | test_logging.rs:61:5:61:55 | ...::log | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:61:20:61:28 | &... [&ref, tuple.0, &ref] | test_logging.rs:61:5:61:55 | ...::log | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:61:20:61:28 | &... [&ref, tuple.0] | test_logging.rs:61:5:61:55 | ...::log | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:61:20:61:28 | &password | test_logging.rs:61:20:61:28 | TupleExpr [tuple.0] | provenance |  |
+| test_logging.rs:61:20:61:28 | &password [&ref] | test_logging.rs:61:20:61:28 | TupleExpr [tuple.0, &ref] | provenance |  |
+| test_logging.rs:61:20:61:28 | TupleExpr [tuple.0, &ref] | test_logging.rs:61:20:61:28 | &... [&ref, tuple.0, &ref] | provenance |  |
+| test_logging.rs:61:20:61:28 | TupleExpr [tuple.0] | test_logging.rs:61:20:61:28 | &... [&ref, tuple.0] | provenance |  |
+| test_logging.rs:61:21:61:28 | password | test_logging.rs:61:20:61:28 | &password | provenance | Config |
+| test_logging.rs:61:21:61:28 | password | test_logging.rs:61:20:61:28 | &password [&ref] | provenance |  |
+| test_logging.rs:65:24:65:47 | MacroExpr | test_logging.rs:65:5:65:48 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:65:40:65:47 | password | test_logging.rs:65:24:65:47 | MacroExpr | provenance |  |
+| test_logging.rs:67:42:67:65 | MacroExpr | test_logging.rs:67:5:67:66 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:67:58:67:65 | password | test_logging.rs:67:42:67:65 | MacroExpr | provenance |  |
+| test_logging.rs:68:18:68:26 | &... [&ref, tuple.0, &ref] | test_logging.rs:68:5:68:67 | ...::log | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:68:18:68:26 | &... [&ref, tuple.0, &ref] | test_logging.rs:68:5:68:67 | ...::log | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:68:18:68:26 | &... [&ref, tuple.0] | test_logging.rs:68:5:68:67 | ...::log | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:68:18:68:26 | &password | test_logging.rs:68:18:68:26 | TupleExpr [tuple.0] | provenance |  |
+| test_logging.rs:68:18:68:26 | &password [&ref] | test_logging.rs:68:18:68:26 | TupleExpr [tuple.0, &ref] | provenance |  |
+| test_logging.rs:68:18:68:26 | TupleExpr [tuple.0, &ref] | test_logging.rs:68:18:68:26 | &... [&ref, tuple.0, &ref] | provenance |  |
+| test_logging.rs:68:18:68:26 | TupleExpr [tuple.0] | test_logging.rs:68:18:68:26 | &... [&ref, tuple.0] | provenance |  |
+| test_logging.rs:68:19:68:26 | password | test_logging.rs:68:18:68:26 | &password | provenance | Config |
+| test_logging.rs:68:19:68:26 | password | test_logging.rs:68:18:68:26 | &password [&ref] | provenance |  |
+| test_logging.rs:72:23:72:46 | MacroExpr | test_logging.rs:72:5:72:47 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:72:39:72:46 | password | test_logging.rs:72:23:72:46 | MacroExpr | provenance |  |
+| test_logging.rs:74:41:74:64 | MacroExpr | test_logging.rs:74:5:74:65 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:74:57:74:64 | password | test_logging.rs:74:41:74:64 | MacroExpr | provenance |  |
+| test_logging.rs:75:20:75:28 | &... [&ref, tuple.0, &ref] | test_logging.rs:75:5:75:51 | ...::log::<...> | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:75:20:75:28 | &... [&ref, tuple.0, &ref] | test_logging.rs:75:5:75:51 | ...::log::<...> | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:75:20:75:28 | &... [&ref, tuple.0] | test_logging.rs:75:5:75:51 | ...::log::<...> | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:75:20:75:28 | &password | test_logging.rs:75:20:75:28 | TupleExpr [tuple.0] | provenance |  |
+| test_logging.rs:75:20:75:28 | &password [&ref] | test_logging.rs:75:20:75:28 | TupleExpr [tuple.0, &ref] | provenance |  |
+| test_logging.rs:75:20:75:28 | TupleExpr [tuple.0, &ref] | test_logging.rs:75:20:75:28 | &... [&ref, tuple.0, &ref] | provenance |  |
+| test_logging.rs:75:20:75:28 | TupleExpr [tuple.0] | test_logging.rs:75:20:75:28 | &... [&ref, tuple.0] | provenance |  |
+| test_logging.rs:75:21:75:28 | password | test_logging.rs:75:20:75:28 | &password | provenance | Config |
+| test_logging.rs:75:21:75:28 | password | test_logging.rs:75:20:75:28 | &password [&ref] | provenance |  |
+| test_logging.rs:76:23:76:46 | MacroExpr | test_logging.rs:76:5:76:47 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:76:39:76:46 | password | test_logging.rs:76:23:76:46 | MacroExpr | provenance |  |
+| test_logging.rs:82:20:82:43 | MacroExpr | test_logging.rs:82:5:82:44 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:82:36:82:43 | password | test_logging.rs:82:20:82:43 | MacroExpr | provenance |  |
+| test_logging.rs:84:38:84:61 | MacroExpr | test_logging.rs:84:5:84:62 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:84:54:84:61 | password | test_logging.rs:84:38:84:61 | MacroExpr | provenance |  |
+| test_logging.rs:85:20:85:28 | &... [&ref, tuple.0, &ref] | test_logging.rs:85:5:85:48 | ...::log::<...> | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:85:20:85:28 | &... [&ref, tuple.0, &ref] | test_logging.rs:85:5:85:48 | ...::log::<...> | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:85:20:85:28 | &... [&ref, tuple.0] | test_logging.rs:85:5:85:48 | ...::log::<...> | provenance | MaD:10 Sink:MaD:10 Sink:MaD:10 |
+| test_logging.rs:85:20:85:28 | &password | test_logging.rs:85:20:85:28 | TupleExpr [tuple.0] | provenance |  |
+| test_logging.rs:85:20:85:28 | &password [&ref] | test_logging.rs:85:20:85:28 | TupleExpr [tuple.0, &ref] | provenance |  |
+| test_logging.rs:85:20:85:28 | TupleExpr [tuple.0, &ref] | test_logging.rs:85:20:85:28 | &... [&ref, tuple.0, &ref] | provenance |  |
+| test_logging.rs:85:20:85:28 | TupleExpr [tuple.0] | test_logging.rs:85:20:85:28 | &... [&ref, tuple.0] | provenance |  |
+| test_logging.rs:85:21:85:28 | password | test_logging.rs:85:20:85:28 | &password | provenance | Config |
+| test_logging.rs:85:21:85:28 | password | test_logging.rs:85:20:85:28 | &password [&ref] | provenance |  |
+| test_logging.rs:86:20:86:43 | MacroExpr | test_logging.rs:86:5:86:44 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:86:36:86:43 | password | test_logging.rs:86:20:86:43 | MacroExpr | provenance |  |
+| test_logging.rs:93:9:93:10 | m1 | test_logging.rs:94:11:94:28 | MacroExpr | provenance |  |
+| test_logging.rs:93:14:93:22 | &password | test_logging.rs:93:9:93:10 | m1 | provenance |  |
+| test_logging.rs:93:15:93:22 | password | test_logging.rs:93:14:93:22 | &password | provenance | Config |
+| test_logging.rs:94:11:94:28 | MacroExpr | test_logging.rs:94:5:94:29 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:96:9:96:10 | m2 | test_logging.rs:97:11:97:18 | MacroExpr | provenance |  |
+| test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:9:96:10 | m2 | provenance |  |
+| test_logging.rs:96:42:96:49 | password | test_logging.rs:96:41:96:49 | &password | provenance | Config |
+| test_logging.rs:97:11:97:18 | MacroExpr | test_logging.rs:97:5:97:19 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:99:9:99:10 | m3 | test_logging.rs:100:11:100:18 | MacroExpr | provenance |  |
+| test_logging.rs:99:14:99:46 | res | test_logging.rs:99:22:99:45 | { ... } | provenance |  |
+| test_logging.rs:99:22:99:45 | ...::format(...) | test_logging.rs:99:14:99:46 | res | provenance |  |
+| test_logging.rs:99:22:99:45 | ...::must_use(...) | test_logging.rs:99:9:99:10 | m3 | provenance |  |
+| test_logging.rs:99:22:99:45 | MacroExpr | test_logging.rs:99:22:99:45 | ...::format(...) | provenance | MaD:13 |
+| test_logging.rs:99:22:99:45 | { ... } | test_logging.rs:99:22:99:45 | ...::must_use(...) | provenance | MaD:14 |
+| test_logging.rs:99:38:99:45 | password | test_logging.rs:99:22:99:45 | MacroExpr | provenance |  |
+| test_logging.rs:100:11:100:18 | MacroExpr | test_logging.rs:100:5:100:19 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:118:12:118:41 | MacroExpr | test_logging.rs:118:5:118:42 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:118:28:118:41 | get_password(...) | test_logging.rs:118:12:118:41 | MacroExpr | provenance |  |
+| test_logging.rs:129:9:129:10 | t1 [tuple.1] | test_logging.rs:131:28:131:29 | t1 [tuple.1] | provenance |  |
+| test_logging.rs:129:14:129:33 | TupleExpr [tuple.1] | test_logging.rs:129:9:129:10 | t1 [tuple.1] | provenance |  |
+| test_logging.rs:129:25:129:32 | password | test_logging.rs:129:14:129:33 | TupleExpr [tuple.1] | provenance |  |
+| test_logging.rs:131:12:131:31 | MacroExpr | test_logging.rs:131:5:131:32 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:131:28:131:29 | t1 [tuple.1] | test_logging.rs:131:28:131:31 | t1.1 | provenance |  |
+| test_logging.rs:131:28:131:31 | t1.1 | test_logging.rs:131:12:131:31 | MacroExpr | provenance |  |
+| test_logging.rs:152:12:152:37 | MacroExpr | test_logging.rs:152:5:152:38 | ...::_print | provenance | MaD:8 Sink:MaD:8 |
+| test_logging.rs:152:30:152:37 | password | test_logging.rs:152:12:152:37 | MacroExpr | provenance |  |
+| test_logging.rs:153:14:153:37 | MacroExpr | test_logging.rs:153:5:153:38 | ...::_print | provenance | MaD:8 Sink:MaD:8 |
+| test_logging.rs:153:30:153:37 | password | test_logging.rs:153:14:153:37 | MacroExpr | provenance |  |
+| test_logging.rs:154:13:154:38 | MacroExpr | test_logging.rs:154:5:154:39 | ...::_eprint | provenance | MaD:7 Sink:MaD:7 |
+| test_logging.rs:154:31:154:38 | password | test_logging.rs:154:13:154:38 | MacroExpr | provenance |  |
+| test_logging.rs:155:15:155:38 | MacroExpr | test_logging.rs:155:5:155:39 | ...::_eprint | provenance | MaD:7 Sink:MaD:7 |
+| test_logging.rs:155:31:155:38 | password | test_logging.rs:155:15:155:38 | MacroExpr | provenance |  |
+| test_logging.rs:158:23:158:46 | MacroExpr | test_logging.rs:158:16:158:47 | ...::panic_fmt | provenance | MaD:3 Sink:MaD:3 |
+| test_logging.rs:158:39:158:46 | password | test_logging.rs:158:23:158:46 | MacroExpr | provenance |  |
+| test_logging.rs:159:22:159:45 | MacroExpr | test_logging.rs:159:16:159:46 | ...::panic_fmt | provenance | MaD:3 Sink:MaD:3 |
+| test_logging.rs:159:38:159:45 | password | test_logging.rs:159:22:159:45 | MacroExpr | provenance |  |
+| test_logging.rs:160:31:160:54 | MacroExpr | test_logging.rs:160:16:160:55 | ...::panic_fmt | provenance | MaD:3 Sink:MaD:3 |
+| test_logging.rs:160:47:160:54 | password | test_logging.rs:160:31:160:54 | MacroExpr | provenance |  |
+| test_logging.rs:161:29:161:52 | MacroExpr | test_logging.rs:161:16:161:53 | ...::panic_fmt | provenance | MaD:3 Sink:MaD:3 |
+| test_logging.rs:161:45:161:52 | password | test_logging.rs:161:29:161:52 | MacroExpr | provenance |  |
+| test_logging.rs:162:31:162:54 | MacroExpr | test_logging.rs:162:16:162:55 | ...::panic_fmt | provenance | MaD:3 Sink:MaD:3 |
+| test_logging.rs:162:47:162:54 | password | test_logging.rs:162:31:162:54 | MacroExpr | provenance |  |
+| test_logging.rs:163:33:163:56 | ...::Some(...) [Some] | test_logging.rs:163:16:163:57 | ...::assert_failed | provenance | MaD:2 Sink:MaD:2 |
+| test_logging.rs:163:33:163:56 | MacroExpr | test_logging.rs:163:33:163:56 | ...::Some(...) [Some] | provenance |  |
+| test_logging.rs:163:49:163:56 | password | test_logging.rs:163:33:163:56 | MacroExpr | provenance |  |
+| test_logging.rs:164:33:164:56 | ...::Some(...) [Some] | test_logging.rs:164:16:164:57 | ...::assert_failed | provenance | MaD:2 Sink:MaD:2 |
+| test_logging.rs:164:33:164:56 | MacroExpr | test_logging.rs:164:33:164:56 | ...::Some(...) [Some] | provenance |  |
+| test_logging.rs:164:49:164:56 | password | test_logging.rs:164:33:164:56 | MacroExpr | provenance |  |
+| test_logging.rs:165:37:165:60 | MacroExpr | test_logging.rs:165:16:165:61 | ...::panic_fmt | provenance | MaD:3 Sink:MaD:3 |
+| test_logging.rs:165:53:165:60 | password | test_logging.rs:165:37:165:60 | MacroExpr | provenance |  |
+| test_logging.rs:166:39:166:62 | ...::Some(...) [Some] | test_logging.rs:166:16:166:63 | ...::assert_failed | provenance | MaD:2 Sink:MaD:2 |
+| test_logging.rs:166:39:166:62 | MacroExpr | test_logging.rs:166:39:166:62 | ...::Some(...) [Some] | provenance |  |
+| test_logging.rs:166:55:166:62 | password | test_logging.rs:166:39:166:62 | MacroExpr | provenance |  |
+| test_logging.rs:167:40:167:63 | ...::Some(...) [Some] | test_logging.rs:167:17:167:64 | ...::assert_failed | provenance | MaD:2 Sink:MaD:2 |
+| test_logging.rs:167:40:167:63 | MacroExpr | test_logging.rs:167:40:167:63 | ...::Some(...) [Some] | provenance |  |
+| test_logging.rs:167:56:167:63 | password | test_logging.rs:167:40:167:63 | MacroExpr | provenance |  |
+| test_logging.rs:168:34:168:66 | MacroExpr | test_logging.rs:168:34:168:75 | ... .as_str(...) | provenance | MaD:12 |
+| test_logging.rs:168:34:168:66 | res | test_logging.rs:168:42:168:65 | { ... } | provenance |  |
+| test_logging.rs:168:34:168:75 | ... .as_str(...) | test_logging.rs:168:27:168:32 | expect | provenance | MaD:1 Sink:MaD:1 |
+| test_logging.rs:168:42:168:65 | ...::format(...) | test_logging.rs:168:34:168:66 | res | provenance |  |
+| test_logging.rs:168:42:168:65 | ...::must_use(...) | test_logging.rs:168:34:168:66 | MacroExpr | provenance |  |
+| test_logging.rs:168:42:168:65 | MacroExpr | test_logging.rs:168:42:168:65 | ...::format(...) | provenance | MaD:13 |
+| test_logging.rs:168:42:168:65 | { ... } | test_logging.rs:168:42:168:65 | ...::must_use(...) | provenance | MaD:14 |
+| test_logging.rs:168:58:168:65 | password | test_logging.rs:168:42:168:65 | MacroExpr | provenance |  |
+| test_logging.rs:174:36:174:70 | MacroExpr | test_logging.rs:174:36:174:81 | ... .as_bytes(...) | provenance | MaD:11 |
+| test_logging.rs:174:36:174:70 | res | test_logging.rs:174:44:174:69 | { ... } | provenance |  |
+| test_logging.rs:174:36:174:81 | ... .as_bytes(...) | test_logging.rs:174:30:174:34 | write | provenance | MaD:5 Sink:MaD:5 |
+| test_logging.rs:174:44:174:69 | ...::format(...) | test_logging.rs:174:36:174:70 | res | provenance |  |
+| test_logging.rs:174:44:174:69 | ...::must_use(...) | test_logging.rs:174:36:174:70 | MacroExpr | provenance |  |
+| test_logging.rs:174:44:174:69 | MacroExpr | test_logging.rs:174:44:174:69 | ...::format(...) | provenance | MaD:13 |
+| test_logging.rs:174:44:174:69 | { ... } | test_logging.rs:174:44:174:69 | ...::must_use(...) | provenance | MaD:14 |
+| test_logging.rs:174:62:174:69 | password | test_logging.rs:174:44:174:69 | MacroExpr | provenance |  |
+| test_logging.rs:175:40:175:74 | MacroExpr | test_logging.rs:175:40:175:85 | ... .as_bytes(...) | provenance | MaD:11 |
+| test_logging.rs:175:40:175:74 | res | test_logging.rs:175:48:175:73 | { ... } | provenance |  |
+| test_logging.rs:175:40:175:85 | ... .as_bytes(...) | test_logging.rs:175:30:175:38 | write_all | provenance | MaD:6 Sink:MaD:6 |
+| test_logging.rs:175:48:175:73 | ...::format(...) | test_logging.rs:175:40:175:74 | res | provenance |  |
+| test_logging.rs:175:48:175:73 | ...::must_use(...) | test_logging.rs:175:40:175:74 | MacroExpr | provenance |  |
+| test_logging.rs:175:48:175:73 | MacroExpr | test_logging.rs:175:48:175:73 | ...::format(...) | provenance | MaD:13 |
+| test_logging.rs:175:48:175:73 | { ... } | test_logging.rs:175:48:175:73 | ...::must_use(...) | provenance | MaD:14 |
+| test_logging.rs:175:66:175:73 | password | test_logging.rs:175:48:175:73 | MacroExpr | provenance |  |
+| test_logging.rs:178:15:178:49 | MacroExpr | test_logging.rs:178:15:178:60 | ... .as_bytes(...) | provenance | MaD:11 |
+| test_logging.rs:178:15:178:49 | res | test_logging.rs:178:23:178:48 | { ... } | provenance |  |
+| test_logging.rs:178:15:178:60 | ... .as_bytes(...) | test_logging.rs:178:9:178:13 | write | provenance | MaD:5 Sink:MaD:5 |
+| test_logging.rs:178:23:178:48 | ...::format(...) | test_logging.rs:178:15:178:49 | res | provenance |  |
+| test_logging.rs:178:23:178:48 | ...::must_use(...) | test_logging.rs:178:15:178:49 | MacroExpr | provenance |  |
+| test_logging.rs:178:23:178:48 | MacroExpr | test_logging.rs:178:23:178:48 | ...::format(...) | provenance | MaD:13 |
+| test_logging.rs:178:23:178:48 | { ... } | test_logging.rs:178:23:178:48 | ...::must_use(...) | provenance | MaD:14 |
+| test_logging.rs:178:41:178:48 | password | test_logging.rs:178:23:178:48 | MacroExpr | provenance |  |
+| test_logging.rs:181:15:181:49 | MacroExpr | test_logging.rs:181:15:181:60 | ... .as_bytes(...) | provenance | MaD:11 |
+| test_logging.rs:181:15:181:49 | res | test_logging.rs:181:23:181:48 | { ... } | provenance |  |
+| test_logging.rs:181:15:181:60 | ... .as_bytes(...) | test_logging.rs:181:9:181:13 | write | provenance | MaD:4 Sink:MaD:4 |
+| test_logging.rs:181:23:181:48 | ...::format(...) | test_logging.rs:181:15:181:49 | res | provenance |  |
+| test_logging.rs:181:23:181:48 | ...::must_use(...) | test_logging.rs:181:15:181:49 | MacroExpr | provenance |  |
+| test_logging.rs:181:23:181:48 | MacroExpr | test_logging.rs:181:23:181:48 | ...::format(...) | provenance | MaD:13 |
+| test_logging.rs:181:23:181:48 | { ... } | test_logging.rs:181:23:181:48 | ...::must_use(...) | provenance | MaD:14 |
+| test_logging.rs:181:41:181:48 | password | test_logging.rs:181:23:181:48 | MacroExpr | provenance |  |
+models
+| 1 | Sink: lang:core; <crate::option::Option>::expect; log-injection; Argument[0] |
+| 2 | Sink: lang:core; crate::panicking::assert_failed; log-injection; Argument[3].Variant[crate::option::Option::Some(0)] |
+| 3 | Sink: lang:core; crate::panicking::panic_fmt; log-injection; Argument[0] |
+| 4 | Sink: lang:std; <crate::io::stdio::StderrLock as crate::io::Write>::write; log-injection; Argument[0] |
+| 5 | Sink: lang:std; <crate::io::stdio::StdoutLock as crate::io::Write>::write; log-injection; Argument[0] |
+| 6 | Sink: lang:std; <crate::io::stdio::StdoutLock as crate::io::Write>::write_all; log-injection; Argument[0] |
+| 7 | Sink: lang:std; crate::io::stdio::_eprint; log-injection; Argument[0] |
+| 8 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
+| 9 | Sink: repo:https://github.com/rust-lang/log:log; crate::__private_api::log; log-injection; Argument[0] |
+| 10 | Sink: repo:https://github.com/rust-lang/log:log; crate::__private_api::log; log-injection; Argument[2] |
+| 11 | Summary: lang:alloc; <crate::string::String>::as_bytes; Argument[self]; ReturnValue; taint |
+| 12 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
+| 13 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
+| 14 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
+nodes
+| test_logging.rs:42:5:42:36 | ...::log | semmle.label | ...::log |
+| test_logging.rs:42:12:42:35 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:42:28:42:35 | password | semmle.label | password |
+| test_logging.rs:43:5:43:36 | ...::log | semmle.label | ...::log |
+| test_logging.rs:43:12:43:35 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:43:28:43:35 | password | semmle.label | password |
+| test_logging.rs:44:5:44:35 | ...::log | semmle.label | ...::log |
+| test_logging.rs:44:11:44:34 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:44:27:44:34 | password | semmle.label | password |
+| test_logging.rs:45:5:45:36 | ...::log | semmle.label | ...::log |
+| test_logging.rs:45:12:45:35 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:45:28:45:35 | password | semmle.label | password |
+| test_logging.rs:46:5:46:35 | ...::log | semmle.label | ...::log |
+| test_logging.rs:46:11:46:34 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:46:27:46:34 | password | semmle.label | password |
+| test_logging.rs:47:5:47:48 | ...::log | semmle.label | ...::log |
+| test_logging.rs:47:24:47:47 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:47:40:47:47 | password | semmle.label | password |
+| test_logging.rs:52:5:52:36 | ...::log | semmle.label | ...::log |
+| test_logging.rs:52:12:52:35 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:52:28:52:35 | password | semmle.label | password |
+| test_logging.rs:54:5:54:49 | ...::log | semmle.label | ...::log |
+| test_logging.rs:54:12:54:48 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:54:41:54:48 | password | semmle.label | password |
+| test_logging.rs:56:5:56:47 | ...::log | semmle.label | ...::log |
+| test_logging.rs:56:12:56:46 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:56:39:56:46 | password | semmle.label | password |
+| test_logging.rs:57:5:57:34 | ...::log | semmle.label | ...::log |
+| test_logging.rs:57:12:57:33 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:57:24:57:31 | password | semmle.label | password |
+| test_logging.rs:58:5:58:36 | ...::log | semmle.label | ...::log |
+| test_logging.rs:58:12:58:35 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:58:24:58:31 | password | semmle.label | password |
+| test_logging.rs:60:5:60:54 | ...::log | semmle.label | ...::log |
+| test_logging.rs:60:30:60:53 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:60:46:60:53 | password | semmle.label | password |
+| test_logging.rs:61:5:61:55 | ...::log | semmle.label | ...::log |
+| test_logging.rs:61:20:61:28 | &... [&ref, tuple.0, &ref] | semmle.label | &... [&ref, tuple.0, &ref] |
+| test_logging.rs:61:20:61:28 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
+| test_logging.rs:61:20:61:28 | &password | semmle.label | &password |
+| test_logging.rs:61:20:61:28 | &password [&ref] | semmle.label | &password [&ref] |
+| test_logging.rs:61:20:61:28 | TupleExpr [tuple.0, &ref] | semmle.label | TupleExpr [tuple.0, &ref] |
+| test_logging.rs:61:20:61:28 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| test_logging.rs:61:21:61:28 | password | semmle.label | password |
+| test_logging.rs:65:5:65:48 | ...::log | semmle.label | ...::log |
+| test_logging.rs:65:24:65:47 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:65:40:65:47 | password | semmle.label | password |
+| test_logging.rs:67:5:67:66 | ...::log | semmle.label | ...::log |
+| test_logging.rs:67:42:67:65 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:67:58:67:65 | password | semmle.label | password |
+| test_logging.rs:68:5:68:67 | ...::log | semmle.label | ...::log |
+| test_logging.rs:68:18:68:26 | &... [&ref, tuple.0, &ref] | semmle.label | &... [&ref, tuple.0, &ref] |
+| test_logging.rs:68:18:68:26 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
+| test_logging.rs:68:18:68:26 | &password | semmle.label | &password |
+| test_logging.rs:68:18:68:26 | &password [&ref] | semmle.label | &password [&ref] |
+| test_logging.rs:68:18:68:26 | TupleExpr [tuple.0, &ref] | semmle.label | TupleExpr [tuple.0, &ref] |
+| test_logging.rs:68:18:68:26 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| test_logging.rs:68:19:68:26 | password | semmle.label | password |
+| test_logging.rs:72:5:72:47 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:72:23:72:46 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:72:39:72:46 | password | semmle.label | password |
+| test_logging.rs:74:5:74:65 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:74:41:74:64 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:74:57:74:64 | password | semmle.label | password |
+| test_logging.rs:75:5:75:51 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:75:20:75:28 | &... [&ref, tuple.0, &ref] | semmle.label | &... [&ref, tuple.0, &ref] |
+| test_logging.rs:75:20:75:28 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
+| test_logging.rs:75:20:75:28 | &password | semmle.label | &password |
+| test_logging.rs:75:20:75:28 | &password [&ref] | semmle.label | &password [&ref] |
+| test_logging.rs:75:20:75:28 | TupleExpr [tuple.0, &ref] | semmle.label | TupleExpr [tuple.0, &ref] |
+| test_logging.rs:75:20:75:28 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| test_logging.rs:75:21:75:28 | password | semmle.label | password |
+| test_logging.rs:76:5:76:47 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:76:23:76:46 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:76:39:76:46 | password | semmle.label | password |
+| test_logging.rs:82:5:82:44 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:82:20:82:43 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:82:36:82:43 | password | semmle.label | password |
+| test_logging.rs:84:5:84:62 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:84:38:84:61 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:84:54:84:61 | password | semmle.label | password |
+| test_logging.rs:85:5:85:48 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:85:20:85:28 | &... [&ref, tuple.0, &ref] | semmle.label | &... [&ref, tuple.0, &ref] |
+| test_logging.rs:85:20:85:28 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
+| test_logging.rs:85:20:85:28 | &password | semmle.label | &password |
+| test_logging.rs:85:20:85:28 | &password [&ref] | semmle.label | &password [&ref] |
+| test_logging.rs:85:20:85:28 | TupleExpr [tuple.0, &ref] | semmle.label | TupleExpr [tuple.0, &ref] |
+| test_logging.rs:85:20:85:28 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| test_logging.rs:85:21:85:28 | password | semmle.label | password |
+| test_logging.rs:86:5:86:44 | ...::log::<...> | semmle.label | ...::log::<...> |
+| test_logging.rs:86:20:86:43 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:86:36:86:43 | password | semmle.label | password |
+| test_logging.rs:93:9:93:10 | m1 | semmle.label | m1 |
+| test_logging.rs:93:14:93:22 | &password | semmle.label | &password |
+| test_logging.rs:93:15:93:22 | password | semmle.label | password |
+| test_logging.rs:94:5:94:29 | ...::log | semmle.label | ...::log |
+| test_logging.rs:94:11:94:28 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:96:9:96:10 | m2 | semmle.label | m2 |
+| test_logging.rs:96:41:96:49 | &password | semmle.label | &password |
+| test_logging.rs:96:42:96:49 | password | semmle.label | password |
+| test_logging.rs:97:5:97:19 | ...::log | semmle.label | ...::log |
+| test_logging.rs:97:11:97:18 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:99:9:99:10 | m3 | semmle.label | m3 |
+| test_logging.rs:99:14:99:46 | res | semmle.label | res |
+| test_logging.rs:99:22:99:45 | ...::format(...) | semmle.label | ...::format(...) |
+| test_logging.rs:99:22:99:45 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| test_logging.rs:99:22:99:45 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:99:22:99:45 | { ... } | semmle.label | { ... } |
+| test_logging.rs:99:38:99:45 | password | semmle.label | password |
+| test_logging.rs:100:5:100:19 | ...::log | semmle.label | ...::log |
+| test_logging.rs:100:11:100:18 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:118:5:118:42 | ...::log | semmle.label | ...::log |
+| test_logging.rs:118:12:118:41 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:118:28:118:41 | get_password(...) | semmle.label | get_password(...) |
+| test_logging.rs:129:9:129:10 | t1 [tuple.1] | semmle.label | t1 [tuple.1] |
+| test_logging.rs:129:14:129:33 | TupleExpr [tuple.1] | semmle.label | TupleExpr [tuple.1] |
+| test_logging.rs:129:25:129:32 | password | semmle.label | password |
+| test_logging.rs:131:5:131:32 | ...::log | semmle.label | ...::log |
+| test_logging.rs:131:12:131:31 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:131:28:131:29 | t1 [tuple.1] | semmle.label | t1 [tuple.1] |
+| test_logging.rs:131:28:131:31 | t1.1 | semmle.label | t1.1 |
+| test_logging.rs:152:5:152:38 | ...::_print | semmle.label | ...::_print |
+| test_logging.rs:152:12:152:37 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:152:30:152:37 | password | semmle.label | password |
+| test_logging.rs:153:5:153:38 | ...::_print | semmle.label | ...::_print |
+| test_logging.rs:153:14:153:37 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:153:30:153:37 | password | semmle.label | password |
+| test_logging.rs:154:5:154:39 | ...::_eprint | semmle.label | ...::_eprint |
+| test_logging.rs:154:13:154:38 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:154:31:154:38 | password | semmle.label | password |
+| test_logging.rs:155:5:155:39 | ...::_eprint | semmle.label | ...::_eprint |
+| test_logging.rs:155:15:155:38 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:155:31:155:38 | password | semmle.label | password |
+| test_logging.rs:158:16:158:47 | ...::panic_fmt | semmle.label | ...::panic_fmt |
+| test_logging.rs:158:23:158:46 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:158:39:158:46 | password | semmle.label | password |
+| test_logging.rs:159:16:159:46 | ...::panic_fmt | semmle.label | ...::panic_fmt |
+| test_logging.rs:159:22:159:45 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:159:38:159:45 | password | semmle.label | password |
+| test_logging.rs:160:16:160:55 | ...::panic_fmt | semmle.label | ...::panic_fmt |
+| test_logging.rs:160:31:160:54 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:160:47:160:54 | password | semmle.label | password |
+| test_logging.rs:161:16:161:53 | ...::panic_fmt | semmle.label | ...::panic_fmt |
+| test_logging.rs:161:29:161:52 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:161:45:161:52 | password | semmle.label | password |
+| test_logging.rs:162:16:162:55 | ...::panic_fmt | semmle.label | ...::panic_fmt |
+| test_logging.rs:162:31:162:54 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:162:47:162:54 | password | semmle.label | password |
+| test_logging.rs:163:16:163:57 | ...::assert_failed | semmle.label | ...::assert_failed |
+| test_logging.rs:163:33:163:56 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
+| test_logging.rs:163:33:163:56 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:163:49:163:56 | password | semmle.label | password |
+| test_logging.rs:164:16:164:57 | ...::assert_failed | semmle.label | ...::assert_failed |
+| test_logging.rs:164:33:164:56 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
+| test_logging.rs:164:33:164:56 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:164:49:164:56 | password | semmle.label | password |
+| test_logging.rs:165:16:165:61 | ...::panic_fmt | semmle.label | ...::panic_fmt |
+| test_logging.rs:165:37:165:60 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:165:53:165:60 | password | semmle.label | password |
+| test_logging.rs:166:16:166:63 | ...::assert_failed | semmle.label | ...::assert_failed |
+| test_logging.rs:166:39:166:62 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
+| test_logging.rs:166:39:166:62 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:166:55:166:62 | password | semmle.label | password |
+| test_logging.rs:167:17:167:64 | ...::assert_failed | semmle.label | ...::assert_failed |
+| test_logging.rs:167:40:167:63 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
+| test_logging.rs:167:40:167:63 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:167:56:167:63 | password | semmle.label | password |
+| test_logging.rs:168:27:168:32 | expect | semmle.label | expect |
+| test_logging.rs:168:34:168:66 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:168:34:168:66 | res | semmle.label | res |
+| test_logging.rs:168:34:168:75 | ... .as_str(...) | semmle.label | ... .as_str(...) |
+| test_logging.rs:168:42:168:65 | ...::format(...) | semmle.label | ...::format(...) |
+| test_logging.rs:168:42:168:65 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| test_logging.rs:168:42:168:65 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:168:42:168:65 | { ... } | semmle.label | { ... } |
+| test_logging.rs:168:58:168:65 | password | semmle.label | password |
+| test_logging.rs:174:30:174:34 | write | semmle.label | write |
+| test_logging.rs:174:36:174:70 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:174:36:174:70 | res | semmle.label | res |
+| test_logging.rs:174:36:174:81 | ... .as_bytes(...) | semmle.label | ... .as_bytes(...) |
+| test_logging.rs:174:44:174:69 | ...::format(...) | semmle.label | ...::format(...) |
+| test_logging.rs:174:44:174:69 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| test_logging.rs:174:44:174:69 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:174:44:174:69 | { ... } | semmle.label | { ... } |
+| test_logging.rs:174:62:174:69 | password | semmle.label | password |
+| test_logging.rs:175:30:175:38 | write_all | semmle.label | write_all |
+| test_logging.rs:175:40:175:74 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:175:40:175:74 | res | semmle.label | res |
+| test_logging.rs:175:40:175:85 | ... .as_bytes(...) | semmle.label | ... .as_bytes(...) |
+| test_logging.rs:175:48:175:73 | ...::format(...) | semmle.label | ...::format(...) |
+| test_logging.rs:175:48:175:73 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| test_logging.rs:175:48:175:73 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:175:48:175:73 | { ... } | semmle.label | { ... } |
+| test_logging.rs:175:66:175:73 | password | semmle.label | password |
+| test_logging.rs:178:9:178:13 | write | semmle.label | write |
+| test_logging.rs:178:15:178:49 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:178:15:178:49 | res | semmle.label | res |
+| test_logging.rs:178:15:178:60 | ... .as_bytes(...) | semmle.label | ... .as_bytes(...) |
+| test_logging.rs:178:23:178:48 | ...::format(...) | semmle.label | ...::format(...) |
+| test_logging.rs:178:23:178:48 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| test_logging.rs:178:23:178:48 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:178:23:178:48 | { ... } | semmle.label | { ... } |
+| test_logging.rs:178:41:178:48 | password | semmle.label | password |
+| test_logging.rs:181:9:181:13 | write | semmle.label | write |
+| test_logging.rs:181:15:181:49 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:181:15:181:49 | res | semmle.label | res |
+| test_logging.rs:181:15:181:60 | ... .as_bytes(...) | semmle.label | ... .as_bytes(...) |
+| test_logging.rs:181:23:181:48 | ...::format(...) | semmle.label | ...::format(...) |
+| test_logging.rs:181:23:181:48 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| test_logging.rs:181:23:181:48 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:181:23:181:48 | { ... } | semmle.label | { ... } |
+| test_logging.rs:181:41:181:48 | password | semmle.label | password |
+subpaths

@@ -284,7 +284,7 @@ private predicate isControlFlowJump(Expr e) { e instanceof CallExprBase or e ins
 private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) {
   isControlFlowJump(call) and
   exists(Cfg::CfgScope scope |
-    hasCapturedRead(v, scope) and
+    hasCapturedRead(pragma[only_bind_into](v), pragma[only_bind_into](scope)) and
     (
       variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
       variableWriteInOuterScope(bb.getAPredecessor+(), _, v, scope)
@@ -488,7 +488,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
-    exists(ConditionBlock conditionBlock, ConditionalSuccessor s |
+    exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.controls(bb, s)

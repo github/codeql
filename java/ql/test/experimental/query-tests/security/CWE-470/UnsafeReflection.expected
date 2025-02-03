@@ -1,7 +1,3 @@
-#select
-| UnsafeReflection.java:25:29:25:62 | ...[...] | UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:25:29:25:62 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:21:28:21:60 | getParameter(...) | user input |
-| UnsafeReflection.java:39:13:39:41 | ...[...] | UnsafeReflection.java:33:28:33:60 | getParameter(...) : String | UnsafeReflection.java:39:13:39:41 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:33:28:33:60 | getParameter(...) | user input |
-| UnsafeReflection.java:119:21:119:26 | method | UnsafeReflection.java:46:24:46:82 | beanIdOrClassName : String | UnsafeReflection.java:119:21:119:26 | method | Unsafe reflection of $@. | UnsafeReflection.java:46:24:46:82 | beanIdOrClassName | user input |
 edges
 | UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:24:41:24:49 | className : String | provenance | Src:MaD:1  |
 | UnsafeReflection.java:22:33:22:70 | getParameter(...) : String | UnsafeReflection.java:25:76:25:89 | parameterValue | provenance | Src:MaD:1  |
@@ -86,4 +82,8 @@ nodes
 | UnsafeReflection.java:119:21:119:26 | method | semmle.label | method |
 | UnsafeReflection.java:119:35:119:38 | bean | semmle.label | bean |
 | UnsafeReflection.java:119:41:119:44 | data | semmle.label | data |
+problems
+| UnsafeReflection.java:25:29:25:62 | ...[...] | UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:25:29:25:62 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:21:28:21:60 | getParameter(...) | user input |
+| UnsafeReflection.java:39:13:39:41 | ...[...] | UnsafeReflection.java:33:28:33:60 | getParameter(...) : String | UnsafeReflection.java:39:13:39:41 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:33:28:33:60 | getParameter(...) | user input |
+| UnsafeReflection.java:119:21:119:26 | method | UnsafeReflection.java:46:24:46:82 | beanIdOrClassName : String | UnsafeReflection.java:119:21:119:26 | method | Unsafe reflection of $@. | UnsafeReflection.java:46:24:46:82 | beanIdOrClassName | user input |
 subpaths

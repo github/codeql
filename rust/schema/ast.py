@@ -727,6 +727,7 @@ class UseBoundGenericArgs(AstNode, ):
     use_bound_generic_args: list["UseBoundGenericArg"] | child
 
 class UseTree(AstNode, ):
+    is_glob: predicate
     path: optional["Path"] | child
     rename: optional["Rename"] | child
     use_tree_list: optional["UseTreeList"] | child

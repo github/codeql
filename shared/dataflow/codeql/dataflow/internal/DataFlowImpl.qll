@@ -137,6 +137,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     predicate observeDiffInformedIncrementalMode();
+
+    Location getASelectedSourceLocation(Node source);
+
+    Location getASelectedSinkLocation(Node sink);
   }
 
   /**
@@ -177,7 +181,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private predicate isFilteredSource(Node source) {
         Config::isSource(source, _) and
         if Config::observeDiffInformedIncrementalMode()
-        then AlertFiltering::filterByLocation(source.getLocation())
+        then AlertFiltering::filterByLocation(Config::getASelectedSourceLocation(source))
         else any()
       }
 
@@ -188,7 +192,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           Config::isSink(sink)
         ) and
         if Config::observeDiffInformedIncrementalMode()
-        then AlertFiltering::filterByLocation(sink.getLocation())
+        then AlertFiltering::filterByLocation(Config::getASelectedSinkLocation(sink))
         else any()
       }
 
@@ -4610,9 +4614,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     import S6
 
-    /** DEPRECATED: Use `flowPath` instead. */
-    deprecated predicate hasFlowPath = flowPath/2;
-
     /**
      * Holds if data can flow from `source` to `sink`.
      */
@@ -4622,24 +4623,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    /** DEPRECATED: Use `flow` instead. */
-    deprecated predicate hasFlow = flow/2;
-
     /**
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowTo(Node sink) { exists(PathNode n | n.isSink() and n.getNode() = sink) }
 
-    /** DEPRECATED: Use `flowTo` instead. */
-    deprecated predicate hasFlowTo = flowTo/1;
-
     /**
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowToExpr(DataFlowExpr sink) { flowTo(exprNode(sink)) }
-
-    /** DEPRECATED: Use `flowToExpr` instead. */
-    deprecated predicate hasFlowToExpr = flowToExpr/1;
 
     /**
      * INTERNAL: Only for debugging.

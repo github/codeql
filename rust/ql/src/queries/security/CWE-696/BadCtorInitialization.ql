@@ -20,7 +20,7 @@ class CtorAttr extends Attr {
   string whichAttr;
 
   CtorAttr() {
-    whichAttr = this.getMeta().getPath().getPart().getNameRef().getText() and
+    whichAttr = this.getMeta().getPath().getText() and
     whichAttr = ["ctor", "dtor"]
   }
 

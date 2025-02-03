@@ -2,5 +2,8 @@
 
 fn test_use_tree() -> () {
     // A UseTree. For example:
-    todo!()
+    use std::collections::HashMap;
+    use std::collections::*;
+    use std::collections::HashMap as MyHashMap;
+    use std::collections::{self, HashMap, HashSet};
 }

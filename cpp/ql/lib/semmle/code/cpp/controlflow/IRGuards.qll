@@ -102,49 +102,76 @@ abstract private class GuardConditionImpl extends Expr {
     this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
-  /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
+  /**
+   * Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this
+   * expression evaluates to `testIsTrue`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
+   */
   pragma[inline]
   abstract predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-   *   If `isLessThan = false` then this implies `left >= right + k`.
+   * If `isLessThan = false` then this implies `left >= right + k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
 
   /**
    * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
-   * this expression evaluates to `value`.
+   * this expression evaluates to `value`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `e >= k`.
+   * If `isLessThan = false` then this implies `e >= k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
 
-  /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  /**
+   * Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this
+   * expression evaluates to `testIsTrue`. Note that there's a 4-argument ("unary") and a
+   * 5-argument ("binary") version of `comparesEq` and they are not equivalent:
+   *  - the unary version is suitable for guards where there is no expression representing the
+   *    right-hand side, such as `if (x)`, and also works for equality with an integer constant
+   *    (such as `if (x == k)`).
+   *  - the binary version is the more general case for comparison of any expressions (not
+   *    necessarily integer).
+   */
   pragma[inline]
   abstract predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `left != right + k`.
+   * If `areEqual = false` then this implies `left != right + k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 
-  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
+  /**
+   * Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression
+   * evaluates to `value`. Note that there's a 4-argument ("unary") and a 5-argument ("binary")
+   * version of `comparesEq` and they are not equivalent:
+   *  - the unary version is suitable for guards where there is no expression representing the
+   *    right-hand side, such as `if (x)`, and also works for equality with an integer constant
+   *    (such as `if (x == k)`).
+   *  - the binary version is the more general case for comparison of any expressions (not
+   *    necessarily integer).
+   */
   pragma[inline]
   abstract predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `e != k`.
+   * If `areEqual = false` then this implies `e != k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
@@ -981,7 +1008,8 @@ private module Cached {
     or
     exists(CompareValueNumber cmp, Operand left, Operand right, AbstractValue v |
       test = cmp and
-      cmp.hasOperands(left, right) and
+      pragma[only_bind_into](cmp)
+          .hasOperands(pragma[only_bind_into](left), pragma[only_bind_into](right)) and
       isConvertedBool(left.getDef()) and
       int_value(right.getDef()) = 0 and
       unary_compares_eq(valueNumberOfOperand(left), op, k, areEqual, v)

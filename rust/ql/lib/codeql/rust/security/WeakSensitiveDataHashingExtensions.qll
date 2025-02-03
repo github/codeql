@@ -174,7 +174,8 @@ module ComputationallyExpensiveHashFunction {
 }
 
 /**
- * An externally modeled operation that hashes data, for example a call to `md5::Md5::digest(data)`.
+ * An externally modeled operation that hashes data, for example a call to `md5::Md5::digest(data)`. The
+ * model should identify the argument of a call that is the data to be hashed.
  */
 class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
   DataFlow::Node input;
@@ -185,8 +186,7 @@ class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
       sinkNode(input, "hasher-input") and
       call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
       call = this.asExpr().getExpr() and
-      algorithmName =
-        call.getFunction().(PathExpr).getPath().getQualifier().getPart().getNameRef().getText()
+      algorithmName = call.getFunction().(PathExpr).getPath().getQualifier().(Path).getText() // todo: remove infix cast when codegenerator has been fixed
     )
   }
 

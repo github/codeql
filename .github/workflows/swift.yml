@@ -48,12 +48,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
-  build-and-test-linux:
-    if: github.repository_owner == 'github'
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/build-and-test
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos

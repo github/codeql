@@ -449,20 +449,6 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
 module Flow = DataFlow::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
 
 /** Gets a string describing the size of the integer parsed. */
-deprecated string describeBitSize(int bitSize, int intTypeBitSize) {
-  intTypeBitSize in [0, 32, 64] and
-  if bitSize != 0
-  then bitSize in [8, 16, 32, 64] and result = "a " + bitSize + "-bit integer"
-  else
-    if intTypeBitSize = 0
-    then result = "an integer with architecture-dependent bit size"
-    else
-      result =
-        "a number with architecture-dependent bit-width, which is constrained to be " +
-          intTypeBitSize + "-bit by build constraints,"
-}
-
-/** Gets a string describing the size of the integer parsed. */
 string describeBitSize2(DataFlow::Node source) {
   exists(int sourceBitSize, int intTypeBitSize, boolean isSigned, string signedString |
     isSourceWithBitSize(source, sourceBitSize, isSigned) and

@@ -1,4 +1,5 @@
 /** Definitions related to test methods. */
+deprecated module;
 
 import java
 

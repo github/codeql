@@ -200,13 +200,6 @@ module ExprNodes {
 
     override LhsExpr getExpr() { result = super.getExpr() }
 
-    /**
-     * DEPRECATED: use `getVariable` instead.
-     *
-     * Gets a variable used in (or introduced by) this LHS.
-     */
-    deprecated Variable getAVariable() { result = e.(VariableAccess).getVariable() }
-
     /** Gets the variable used in (or introduced by) this LHS. */
     Variable getVariable() { result = e.(VariableAccess).getVariable() }
   }
