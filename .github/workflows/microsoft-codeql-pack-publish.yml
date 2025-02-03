@@ -42,7 +42,7 @@ jobs:
         gh codeql set-version "${{ needs.codeqlversion.outputs.codeql_version }}"
       env:
         GITHUB_TOKEN: ${{ github.token }}
-    - name: Prepare Publish
+    - name: Publish OS Microsoft CodeQL Pack
       shell: bash
       run: |
         # # Download latest qlpack
@@ -73,14 +73,14 @@ jobs:
           - $LANGUAGE
           - queries
         suites: microsoft-suites
-        defaultSuiteFile: microsoft-suites/sdl-required.qls
+        defaultSuiteFile: codeql-suites/csharp-code-scanning.qls
         $DEPENDENCIES
         EOF
 
         echo "___________________________________________________________"
         cat "$LANGUAGE/ql/src/qlpack.yml"
         echo "___________________________________________________________"
-        gh codeql pack publish --dry-run "$LANGUAGE/ql/src"
+        gh codeql pack publish "$LANGUAGE/ql/src"
       env:
         LANGUAGE: ${{ matrix.language }}
         GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
