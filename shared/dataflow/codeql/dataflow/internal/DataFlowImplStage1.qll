@@ -1356,14 +1356,18 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         Stage1::returnMayFlowThrough(ret.getNodeEx(), kind)
       }
 
+      bindingset[node]
+      pragma[inline_late]
+      private Nd mkNodeState(NodeEx node, FlowState state) { result = TNodeState(node, state) }
+
       pragma[nomagic]
       predicate storeStepCand(
         Nd node1, Content c, Nd node2, DataFlowType contentType, DataFlowType containerType
       ) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
           Stage1::storeStepCand(n1, c, n2, contentType, containerType) and
-          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
-          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          node1 = mkNodeState(n1, s) and
+          node2 = mkNodeState(n2, s) and
           not outBarrier(n1, s) and
           not inBarrier(n2, s)
         )
@@ -1373,8 +1377,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       predicate readStepCand(Nd node1, Content c, Nd node2) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
           Stage1::readStepCand(n1, c, n2) and
-          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
-          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          node1 = mkNodeState(n1, s) and
+          node2 = mkNodeState(n2, s) and
           not outBarrier(n1, s) and
           not inBarrier(n2, s)
         )
@@ -1385,8 +1389,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       ) {
         exists(ArgNodeEx arg0, ParamNodeEx p0, FlowState s |
           Stage1::callEdgeArgParam(call, c, arg0, p0, emptyAp) and
-          arg = TNodeState(arg0, pragma[only_bind_into](s)) and
-          p = TNodeState(p0, pragma[only_bind_into](s)) and
+          arg = mkNodeState(arg0, s) and
+          p = mkNodeState(p0, s) and
           not outBarrier(arg0, s) and
           not inBarrier(p0, s)
         )
@@ -1398,8 +1402,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       ) {
         exists(RetNodeEx ret0, NodeEx out0, FlowState s |
           Stage1::callEdgeReturn(call, c, ret0, kind, out0, allowsFieldFlow) and
-          ret = TNodeState(ret0, pragma[only_bind_into](s)) and
-          out = TNodeState(out0, pragma[only_bind_into](s)) and
+          ret = mkNodeState(ret0, s) and
+          out = mkNodeState(out0, s) and
           not outBarrier(ret0, s) and
           not inBarrier(out0, s)
         )
@@ -1409,8 +1413,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       Nd toNormalSinkNode(Nd node) {
         exists(NodeEx res, NodeEx n, FlowState s |
           res = toNormalSinkNodeEx(n) and
-          node = TNodeState(n, pragma[only_bind_into](s)) and
-          result = TNodeState(res, pragma[only_bind_into](s))
+          node = mkNodeState(n, s) and
+          result = mkNodeState(res, s)
         )
       }
 
@@ -1431,8 +1435,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       predicate jumpStepEx(Nd node1, Nd node2) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
           jumpStepEx1(n1, n2) and
-          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
-          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          node1 = mkNodeState(n1, s) and
+          node2 = mkNodeState(n2, s) and
           not outBarrier(n1, s) and
           not inBarrier(n2, s)
         )
@@ -1441,16 +1445,16 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       predicate additionalJumpStep(Nd node1, Nd node2, string model) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
           additionalJumpStep1(n1, n2, model) and
-          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
-          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          node1 = mkNodeState(n1, s) and
+          node2 = mkNodeState(n2, s) and
           not outBarrier(n1, s) and
           not inBarrier(n2, s)
         )
         or
         exists(NodeEx n1, FlowState s1, NodeEx n2, FlowState s2 |
           additionalJumpStateStep(n1, s1, n2, s2, model) and
-          node1 = TNodeState(n1, s1) and
-          node2 = TNodeState(n2, s2)
+          node1 = mkNodeState(n1, s1) and
+          node2 = mkNodeState(n2, s2)
         )
       }
 
@@ -1461,8 +1465,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       ) {
         exists(NodeEx n1, NodeEx n2, FlowState s |
           localStepNodeCand1(n1, n2, preservesValue, t, lcc, label) and
-          node1 = TNodeState(n1, pragma[only_bind_into](s)) and
-          node2 = TNodeState(n2, pragma[only_bind_into](s)) and
+          node1 = mkNodeState(n1, s) and
+          node2 = mkNodeState(n2, s) and
           not outBarrier(n1, s) and
           not inBarrier(n2, s)
         )
@@ -1470,8 +1474,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx n1, NodeEx n2, FlowState s1, FlowState s2 |
           localStateStepNodeCand1(n1, s1, n2, s2, t, lcc, label) and
           preservesValue = false and
-          node1 = TNodeState(n1, s1) and
-          node2 = TNodeState(n2, s2)
+          node1 = mkNodeState(n1, s1) and
+          node2 = mkNodeState(n2, s2)
         )
       }
 
