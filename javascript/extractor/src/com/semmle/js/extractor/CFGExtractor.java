@@ -1255,9 +1255,12 @@ public class CFGExtractor {
 
     @Override
     public Void visit(BlockStatement nd, SuccessorInfo i) {
-      if (nd.getBody().isEmpty()) writeSuccessors(nd, i.getAllSuccessors());
-      else writeSuccessor(nd, First.of(nd.getBody().get(0)));
-      visitSequence(nd.getBody(), i.getAllSuccessors());
+      // Hoist function declarations in a block statement to the top of the block.
+      // This reflects non-standard behaviour implemented by most engines.
+      // See also: EcmaScript "B.3.2 Block-Level Function Declarations Web Legacy Compatibility Semantics".
+      List<Identifier> hoisted = HoistedFunDecls.of(nd.getBody());
+      hoistedFns.addAll(hoisted);
+      writeSuccessors(nd, visitSequence(hoisted, nd.getBody(), i.getAllSuccessors()));
       return null;
     }
 
