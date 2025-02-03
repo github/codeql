@@ -3,17 +3,18 @@
 
 <overview>
 <p>When you set up a web server to receive a request from a client without any mechanism
-for verifying that it was intentionally sent, then it is vulnerable to attack. An attacker can
-trick a client into making an unintended request to the web server that will be treated as
-an authentic request. This can be done via a URL, image load, XMLHttpRequest, etc. and can
-result in exposure of data or unintended code execution.</p>
+for verifying that it was intentionally sent, then it is vulnerable to a Cross Site Request
+Forgery (CSRF) attack. An attacker can trick a client into making an unintended request
+to the web server that will be treated as an authentic request. This can be done via a URL,
+image load, XMLHttpRequest, etc. and can result in exposure of data or unintended code execution.</p>
 </overview>
 
 <recommendation>
-<p>Make sure any requests that change application state are protected from Cross Site Request Forgery (CSRF).
-Some application frameworks provide default CSRF protection for unsafe HTTP request methods (such as
-<code>POST</code>) which may change the state of the application. Safe HTTP request methods (such as
-<code>GET</code>) should be read-only and should not be used for actions that change application state.</p>
+<p>Make sure any requests that change application state are protected from CSRF. Some application
+frameworks provide default CSRF protection for unsafe HTTP request methods (such as <code>POST</code>)
+which may change the state of the application. Safe HTTP request methods (such as <code>GET</code>)
+should only perform read-only operations and should not be used for actions that change application
+state.</p>
 
 <p>This query currently supports the Spring and Stapler web frameworks. Spring provides default CSRF protection
 for all unsafe HTTP methods. Stapler provides default CSRF protection for the <code>POST</code> method.</p>
