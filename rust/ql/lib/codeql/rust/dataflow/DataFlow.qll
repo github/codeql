@@ -13,7 +13,7 @@ private import DataFlowImpl::Node as Node
  * (inter-procedural) data flow analyses.
  */
 module DataFlow {
-  final class Node = Node::Node;
+  final class Node = Node::NodePublic;
 
   /**
    * The value of a parameter at function entry, viewed as a node in a data
@@ -21,7 +21,7 @@ module DataFlow {
    */
   final class ParameterNode = Node::SourceParameterNode;
 
-  final class PostUpdateNode = Node::PostUpdateNode;
+  final class PostUpdateNode = Node::PostUpdateNodePublic;
 
   final class Content = DataFlowImpl::Content;
 

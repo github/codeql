@@ -727,6 +727,148 @@ void test36() {
 	memset(&hsf.c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
 }
 
+struct AnonUnionInStruct
+{
+  union {
+    struct {
+      unsigned int a_1;
+      unsigned int b_1;
+      unsigned int c_1;
+    };
+    struct {
+      unsigned int a_2;
+      unsigned int b_2;
+    };
+  };  
+  unsigned int d;
+
+  void test37() {
+    memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // GOOD
+    memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // GOOD
+    memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
+    memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // GOOD
+    memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
+    memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
+
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // BAD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // GOOD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // BAD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
+
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // BAD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // BAD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // BAD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
+
+    memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // GOOD
+    memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // GOOD
+    memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
+    memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // GOOD
+    memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
+    memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
+
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // BAD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // GOOD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // BAD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
+  };
+};
+
+struct UnionWithoutStruct
+{
+  union
+  {
+    unsigned int a;
+  };
+
+  unsigned int b;
+
+  void test37() {
+    memset(&a, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, a)); // GOOD
+    memset(&a, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, b)); // GOOD
+    memset(&b, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, a)); // BAD
+  };
+};
+
+struct ThreeUInts {
+  unsigned int a;
+  unsigned int b;
+  unsigned int c;
+};
+
+struct FourUInts {
+  ThreeUInts inner;
+  unsigned int x;
+};
+
+struct S2 {
+  FourUInts f;
+  unsigned u;
+  void test38() {
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // GOOD
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // GOOD
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(FourUInts, inner)); // GOOD
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
+    memset(&f.inner.a, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // GOOD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(S2, f)); // BAD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(S2, f)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+
+    memset(&f.inner, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // GOOD
+    memset(&f.inner, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // GOOD
+    memset(&f.inner, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
+    memset(&f.inner, 0, sizeof(S2) - offsetof(FourUInts, inner)); // GOOD
+    memset(&f.inner, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
+    memset(&f.inner, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
+    memset(&f.inner, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+
+    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
+    memset(&f.x, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
+    memset(&f.x, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+
+    memset(&f, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // GOOD
+    memset(&f, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // GOOD
+    memset(&f, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
+    memset(&f, 0, sizeof(S2) - offsetof(FourUInts, inner)); // GOOD
+    memset(&f, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
+    memset(&f, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
+    memset(&f, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+
+    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(FourUInts, x)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(S2, f)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
+  }
+};
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];

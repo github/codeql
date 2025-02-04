@@ -186,8 +186,7 @@ class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
       sinkNode(input, "hasher-input") and
       call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
       call = this.asExpr().getExpr() and
-      algorithmName =
-        call.getFunction().(PathExpr).getPath().getQualifier().getPart().getNameRef().getText()
+      algorithmName = call.getFunction().(PathExpr).getPath().getQualifier().(Path).getText() // todo: remove infix cast when codegenerator has been fixed
     )
   }
 

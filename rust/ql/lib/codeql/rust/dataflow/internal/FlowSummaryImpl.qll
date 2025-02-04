@@ -127,12 +127,12 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     result.asCallBaseExprCfgNode().getCallExprBase() = sc.(LibraryCallable).getACall()
   }
 
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+  RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
     sc = Impl::Private::SummaryComponent::return(_) and
     result.asExpr().getExpr() = source.getCall()
   }
 
-  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
+  RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
     exists(CallExprBase call, Expr arg, ParameterPosition pos |
       result.asExpr().getExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
