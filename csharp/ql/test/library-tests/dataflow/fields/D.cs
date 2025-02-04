@@ -51,3 +51,41 @@ public class D
 
     static T Source<T>(object source) => throw null;
 }
+
+public partial class DPartial
+{
+    private object _backingField;
+    public partial object PartialProp1
+    {
+        get { return _backingField; }
+        set { _backingField = value; }
+    }
+
+    public partial object PartialProp2
+    {
+        get { return null; }
+        set { }
+    }
+}
+
+public partial class DPartial
+{
+    public partial object PartialProp1 { get; set; }
+    public partial object PartialProp2 { get; set; }
+
+    public void M()
+    {
+        var o = Source<object>(1);
+
+        var d = new DPartial();
+        d.PartialProp1 = o;
+        d.PartialProp2 = o;
+
+        Sink(d.PartialProp1); // $ hasValueFlow=1
+        Sink(d.PartialProp2); // no flow
+    }
+
+    public static void Sink(object o) { }
+
+    static T Source<T>(object source) => throw null;
+}

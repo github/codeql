@@ -1,0 +1,8 @@
+| Partial.cs:20:9:20:11 | get_PartialProperty1 | true |
+| Partial.cs:21:9:21:11 | set_PartialProperty1 | true |
+| Partial.cs:27:9:27:11 | get_Item | true |
+| Partial.cs:28:9:28:11 | set_Item | true |
+| Partial.cs:41:30:41:32 | get_Property | false |
+| Partial.cs:41:35:41:37 | set_Property | false |
+| Partial.cs:44:9:44:11 | get_Item | false |
+| Partial.cs:45:9:45:11 | set_Item | false |

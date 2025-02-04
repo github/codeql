@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Threading, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Threading
@@ -149,6 +149,10 @@ namespace System
             public static uint And(ref uint location1, uint value) => throw null;
             public static ulong And(ref ulong location1, ulong value) => throw null;
             public static double CompareExchange(ref double location1, double value, double comparand) => throw null;
+            public static byte CompareExchange(ref byte location1, byte value, byte comparand) => throw null;
+            public static sbyte CompareExchange(ref sbyte location1, sbyte value, sbyte comparand) => throw null;
+            public static short CompareExchange(ref short location1, short value, short comparand) => throw null;
+            public static ushort CompareExchange(ref ushort location1, ushort value, ushort comparand) => throw null;
             public static int CompareExchange(ref int location1, int value, int comparand) => throw null;
             public static long CompareExchange(ref long location1, long value, long comparand) => throw null;
             public static nint CompareExchange(ref nint location1, nint value, nint comparand) => throw null;
@@ -157,12 +161,16 @@ namespace System
             public static float CompareExchange(ref float location1, float value, float comparand) => throw null;
             public static uint CompareExchange(ref uint location1, uint value, uint comparand) => throw null;
             public static ulong CompareExchange(ref ulong location1, ulong value, ulong comparand) => throw null;
-            public static T CompareExchange<T>(ref T location1, T value, T comparand) where T : class => throw null;
+            public static T CompareExchange<T>(ref T location1, T value, T comparand) => throw null;
             public static int Decrement(ref int location) => throw null;
             public static long Decrement(ref long location) => throw null;
             public static uint Decrement(ref uint location) => throw null;
             public static ulong Decrement(ref ulong location) => throw null;
             public static double Exchange(ref double location1, double value) => throw null;
+            public static byte Exchange(ref byte location1, byte value) => throw null;
+            public static sbyte Exchange(ref sbyte location1, sbyte value) => throw null;
+            public static short Exchange(ref short location1, short value) => throw null;
+            public static ushort Exchange(ref ushort location1, ushort value) => throw null;
             public static int Exchange(ref int location1, int value) => throw null;
             public static long Exchange(ref long location1, long value) => throw null;
             public static nint Exchange(ref nint location1, nint value) => throw null;
@@ -171,7 +179,7 @@ namespace System
             public static float Exchange(ref float location1, float value) => throw null;
             public static uint Exchange(ref uint location1, uint value) => throw null;
             public static ulong Exchange(ref ulong location1, ulong value) => throw null;
-            public static T Exchange<T>(ref T location1, T value) where T : class => throw null;
+            public static T Exchange<T>(ref T location1, T value) => throw null;
             public static int Increment(ref int location) => throw null;
             public static long Increment(ref long location) => throw null;
             public static uint Increment(ref uint location) => throw null;

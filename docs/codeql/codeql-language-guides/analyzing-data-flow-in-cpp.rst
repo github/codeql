@@ -172,7 +172,7 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The global data flow library is used by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>`` as follows:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
@@ -314,7 +314,7 @@ Exercise 2: Write a query that finds all hard-coded strings used to create a ``h
 
 Exercise 3: Write a class that represents flow sources from ``getenv``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``gethostbyname``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``getenv`` to ``gethostbyname``. (`Answer <#exercise-4>`__)
 
 Answers
 -------
