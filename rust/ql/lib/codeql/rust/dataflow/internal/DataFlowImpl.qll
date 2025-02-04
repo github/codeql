@@ -890,7 +890,7 @@ final class FunctionCallArgumentContent extends Content, TFunctionCallArgumentCo
 }
 
 /**
- * A content for the index of an argument to at function call.
+ * A content for the return value of function call.
  *
  * Used by the model generator to create flow summaries for higher-order
  * functions.
@@ -1661,7 +1661,7 @@ private module Cached {
     } or
     TFunctionCallReturnContent() or
     TFunctionCallArgumentContent(int pos) {
-      pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs()]
+      pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TReferenceContent()
