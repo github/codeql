@@ -3,9 +3,12 @@
 fn source(i: i64) -> i64 {
     1000 + i
 }
-
 fn sink(s: i64) {
     println!("{}", s);
+}
+
+fn sink_ref(sr: &i64) {
+    println!("{}", sr);
 }
 
 // -----------------------------------------------------------------------------
@@ -411,6 +414,18 @@ fn macro_invocation() {
     sink(s); // $ hasValueFlow=37
 }
 
+fn references() {
+    let a = source(40);
+    let b = source(41);
+    let c = source(42);
+    let c_ref = &c;
+
+    sink(a); // $ hasValueFlow=40
+    sink_ref(&b); // $ hasTaintFlow=41
+    sink_ref(c_ref); // $ hasTaintFlow=42
+    sink(*c_ref); // $ hasValueFlow=42
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -447,4 +462,5 @@ fn main() {
     array_assignment();
     captured_variable_and_continue(vec![]);
     macro_invocation();
+    references();
 }
