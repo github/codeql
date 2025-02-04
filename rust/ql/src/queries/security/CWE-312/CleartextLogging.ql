@@ -36,7 +36,7 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     isSource(node)
   }
 
-  predicate isAdditionalFlowStep(Node node1, Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from `a` to `&a`
     node2.asExpr().getExpr().(RefExpr).getExpr() = node1.asExpr().getExpr()
   }
