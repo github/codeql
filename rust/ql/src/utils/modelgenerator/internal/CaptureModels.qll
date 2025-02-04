@@ -20,7 +20,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
     Type getType() { any() }
 
-    Callable getEnclosingCallable() { result = super.getEnclosingCallable().asCfgScope() }
+    Callable getEnclosingCallable() {
+      result = this.(Node::Node).getEnclosingCallable().asCfgScope()
+    }
   }
 
   private predicate relevant(Function api) {
@@ -91,7 +93,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   }
 
   Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
-    result = ret.getEnclosingCallable().asCfgScope()
+    result = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isOwnInstanceAccessNode(RustDataFlow::ReturnNode node) {

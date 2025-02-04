@@ -19,7 +19,7 @@ module DataFlow {
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class ParameterNode = Node::SourceParameterNode;
+  final class ParameterNode extends Node instanceof Node::SourceParameterNode { }
 
   final class PostUpdateNode = Node::PostUpdateNodePublic;
 
