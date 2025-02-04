@@ -1052,10 +1052,6 @@ public class ASTExtractor {
     }
 
     private void extractFunction(IFunction nd, Label key) {
-      // If the function has no body we process it like any other function, it
-      // just won't contain any statements.
-      contextManager.enterContainer(key);
-
       boolean bodyIsStrict = isStrict;
       if (!isStrict && nd.getBody() instanceof BlockStatement)
         bodyIsStrict = hasUseStrict(((BlockStatement) nd.getBody()).getBody());
@@ -1064,6 +1060,10 @@ public class ASTExtractor {
       if (nd instanceof FunctionDeclaration) {
         visit(nd.getId(), key, -1, IdContext.VAR_DECL);
       }
+
+      // If the function has no body we process it like any other function, it
+      // just won't contain any statements.
+      contextManager.enterContainer(key);
 
       DeclaredNames locals =
           scopeManager.collectDeclaredNames(nd.getBody(), bodyIsStrict, false, DeclKind.none);
