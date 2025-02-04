@@ -191,6 +191,21 @@ fn struct_nested_match() {
     }
 }
 
+struct MyTupleStruct(i64, i64);
+
+fn tuple_struct() {
+    let s = MyTupleStruct(source(94), 2);
+    sink(s.0); // $ MISSING: hasValueFlow=94
+    sink(s.1);
+
+    match s {
+        MyTupleStruct(x, y) => {
+            sink(x); // $ MISSING: hasValueFlow=94
+            sink(y);
+        }
+    }
+}
+
 // -----------------------------------------------------------------------------
 // Data flow through enums
 
@@ -442,6 +457,7 @@ fn main() {
     tuple_mutation();
     tuple_nested();
     struct_field();
+    tuple_struct();
     struct_mutation();
     struct_pattern_match();
     struct_nested_field();
