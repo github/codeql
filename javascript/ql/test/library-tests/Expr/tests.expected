@@ -1869,7 +1869,7 @@ test_getContainer
 | es2015.js:6:5:6:9 | Array | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:6:11:6:17 | ...elts | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:6:14:6:17 | elts | es2015.js:1:1:29:0 | <toplevel> |
-| es2015.js:8:10:8:10 | f | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:8:10:8:10 | f | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:8:12:8:17 | [x, y] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:8:13:8:13 | x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:8:16:8:16 | y | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
@@ -1888,7 +1888,7 @@ test_getContainer
 | es2015.js:13:3:13:16 | console.log(d) | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:13:11:13:13 | log | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:13:15:13:15 | d | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:17:10:17:10 | g | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:17:10:17:10 | g | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:17:12:17:22 | { x, y: z } | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
@@ -1900,7 +1900,7 @@ test_getContainer
 | es2015.js:18:13:18:13 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:18:19:18:19 | z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:19:9:19:9 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:22:11:22:13 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:22:11:22:13 | foo | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:22:15:22:15 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:23:8:23:8 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:23:8:23:10 | n-- | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
@@ -1912,13 +1912,13 @@ test_getContainer
 | es2015.js:25:9:25:11 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:25:9:25:14 | foo(1) | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:25:13:25:13 | 1 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:28:10:28:12 | bar | es2015.js:28:1:28:26 | functio ... +19) {} |
+| es2015.js:28:10:28:12 | bar | es2015.js:1:1:29:0 | <toplevel> |
 | es2015.js:28:14:28:14 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:17:28:17 | y | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:19:28:19 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:19:28:22 | x+19 | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:21:28:22 | 19 | es2015.js:28:1:28:26 | functio ... +19) {} |
-| functions.js:1:10:1:10 | f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:1:10:1:10 | f | functions.js:1:1:10:7 | <toplevel> |
 | functions.js:2:2:2:5 | in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:3:9:3:17 | also_in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
@@ -2349,6 +2349,7 @@ test_getEnclosingStmt
 | es2015.js:6:5:6:9 | Array | es2015.js:6:1:6:19 | new Array(...elts); |
 | es2015.js:6:11:6:17 | ...elts | es2015.js:6:1:6:19 | new Array(...elts); |
 | es2015.js:6:14:6:17 | elts | es2015.js:6:1:6:19 | new Array(...elts); |
+| es2015.js:8:10:8:10 | f | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:9:6:9:15 | [a, [, c]] | es2015.js:9:2:9:20 | var [a, [, c]] = x; |
 | es2015.js:9:6:9:19 | [a, [, c]] = x | es2015.js:9:2:9:20 | var [a, [, c]] = x; |
 | es2015.js:9:7:9:7 | a | es2015.js:9:2:9:20 | var [a, [, c]] = x; |
@@ -2364,12 +2365,14 @@ test_getEnclosingStmt
 | es2015.js:13:3:13:16 | console.log(d) | es2015.js:13:3:13:17 | console.log(d); |
 | es2015.js:13:11:13:13 | log | es2015.js:13:3:13:17 | console.log(d); |
 | es2015.js:13:15:13:15 | d | es2015.js:13:3:13:17 | console.log(d); |
+| es2015.js:17:10:17:10 | g | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:18:6:18:15 | { [x]: w } | es2015.js:18:2:18:20 | var { [x]: w } = z; |
 | es2015.js:18:6:18:19 | { [x]: w } = z | es2015.js:18:2:18:20 | var { [x]: w } = z; |
 | es2015.js:18:9:18:9 | x | es2015.js:18:2:18:20 | var { [x]: w } = z; |
 | es2015.js:18:13:18:13 | w | es2015.js:18:2:18:20 | var { [x]: w } = z; |
 | es2015.js:18:19:18:19 | z | es2015.js:18:2:18:20 | var { [x]: w } = z; |
 | es2015.js:19:9:19:9 | w | es2015.js:19:2:19:10 | return w; |
+| es2015.js:22:11:22:13 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:23:8:23:8 | n | es2015.js:23:2:24:10 | while(n ... ield n; |
 | es2015.js:23:8:23:10 | n-- | es2015.js:23:2:24:10 | while(n ... ield n; |
 | es2015.js:23:8:23:12 | n-->0 | es2015.js:23:2:24:10 | while(n ... ield n; |
@@ -2380,6 +2383,8 @@ test_getEnclosingStmt
 | es2015.js:25:9:25:11 | foo | es2015.js:25:2:25:15 | yield* foo(1); |
 | es2015.js:25:9:25:14 | foo(1) | es2015.js:25:2:25:15 | yield* foo(1); |
 | es2015.js:25:13:25:13 | 1 | es2015.js:25:2:25:15 | yield* foo(1); |
+| es2015.js:28:10:28:12 | bar | es2015.js:28:1:28:26 | functio ... +19) {} |
+| functions.js:1:10:1:10 | f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:2:2:2:5 | in_f | functions.js:2:2:2:6 | in_f; |
 | functions.js:3:9:3:17 | also_in_f | functions.js:3:2:8:5 | while ( ... n\\n\\t\\t}); |
 | functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:4:3:8:5 | (functi ... n\\n\\t\\t}); |
@@ -2653,7 +2658,6 @@ test_getEnclosingFunction
 | es2015.js:3:20:3:24 | alert | es2015.js:3:12:3:39 | () => { ... p!"); } |
 | es2015.js:3:20:3:36 | alert("Wake up!") | es2015.js:3:12:3:39 | () => { ... p!"); } |
 | es2015.js:3:26:3:35 | "Wake up!" | es2015.js:3:12:3:39 | () => { ... p!"); } |
-| es2015.js:8:10:8:10 | f | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:8:12:8:17 | [x, y] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:8:13:8:13 | x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:8:16:8:16 | y | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
@@ -2672,7 +2676,6 @@ test_getEnclosingFunction
 | es2015.js:13:3:13:16 | console.log(d) | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:13:11:13:13 | log | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
 | es2015.js:13:15:13:15 | d | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:17:10:17:10 | g | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:17:12:17:22 | { x, y: z } | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
@@ -2684,7 +2687,6 @@ test_getEnclosingFunction
 | es2015.js:18:13:18:13 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:18:19:18:19 | z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
 | es2015.js:19:9:19:9 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:22:11:22:13 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:22:15:22:15 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:23:8:23:8 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:23:8:23:10 | n-- | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
@@ -2696,13 +2698,11 @@ test_getEnclosingFunction
 | es2015.js:25:9:25:11 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:25:9:25:14 | foo(1) | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
 | es2015.js:25:13:25:13 | 1 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:28:10:28:12 | bar | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:14:28:14 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:17:28:17 | y | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:19:28:19 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:19:28:22 | x+19 | es2015.js:28:1:28:26 | functio ... +19) {} |
 | es2015.js:28:21:28:22 | 19 | es2015.js:28:1:28:26 | functio ... +19) {} |
-| functions.js:1:10:1:10 | f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:2:2:2:5 | in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:3:9:3:17 | also_in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
