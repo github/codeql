@@ -73,8 +73,13 @@ module SensitiveGetQueryConfig implements DataFlow::ConfigSig {
 
 module SensitiveGetQueryFlow = TaintTracking::Global<SensitiveGetQueryConfig>;
 
-from SensitiveGetQueryFlow::PathNode source, SensitiveGetQueryFlow::PathNode sink
-where SensitiveGetQueryFlow::flowPath(source, sink)
-select sink.getNode(), source, sink,
-  "$@ uses the GET request method to transmit sensitive information.", source.getNode(),
-  "This request"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, SensitiveGetQueryFlow::PathNode source,
+  SensitiveGetQueryFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  SensitiveGetQueryFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "$@ uses the GET request method to transmit sensitive information." and
+  sourceNode = source.getNode() and
+  message2 = "This request"
+}

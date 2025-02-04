@@ -687,3 +687,37 @@ public class C22
         tor.M(l);
     }
 }
+
+public class C23
+{
+    public partial class Partial1
+    {
+        public partial object Property { get; set; }
+
+        public partial object this[int index] { get; set; }
+    }
+
+    public partial class Partial1
+    {
+        public partial object Property { get { return null; } set { } }
+
+        public partial object this[int index] { get { return null; } set { } }
+    }
+
+    public void Run1(Partial1 p)
+    {
+        object o;
+
+        // Viable callable: Partial1.set_Property
+        p.Property = new object();
+
+        // Viable callable: Partial1.get_Property
+        o = p.Property;
+
+        // Viable callable: Partial1.set_Item(int, object)
+        p[0] = new object();
+
+        // Viable callable: Partial1.get_Item(int)
+        o = p[0];
+    }
+}

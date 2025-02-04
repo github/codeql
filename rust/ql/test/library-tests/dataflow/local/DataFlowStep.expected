@@ -647,6 +647,9 @@ readStep
 | main.rs:151:9:151:28 | Point {...} | Point.x | main.rs:151:20:151:20 | a |
 | main.rs:151:9:151:28 | Point {...} | Point.y | main.rs:151:26:151:26 | b |
 | main.rs:183:9:186:9 | Point3D {...} | Point3D.plane | main.rs:184:20:184:33 | Point {...} |
+| main.rs:183:9:186:9 | Point3D {...} | Point3D.z | main.rs:185:13:185:13 | z |
+| main.rs:184:20:184:33 | Point {...} | Point.x | main.rs:184:28:184:28 | x |
+| main.rs:184:20:184:33 | Point {...} | Point.y | main.rs:184:31:184:31 | y |
 | main.rs:201:9:201:23 | ...::Some(...) | Some | main.rs:201:22:201:22 | n |
 | main.rs:205:9:205:23 | ...::Some(...) | Some | main.rs:205:22:205:22 | n |
 | main.rs:214:9:214:15 | Some(...) | Some | main.rs:214:14:214:14 | n |

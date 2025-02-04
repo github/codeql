@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -357,6 +357,7 @@ namespace Microsoft
                 public sealed class DisableRequestTimeoutAttribute : System.Attribute
                 {
                     public DisableRequestTimeoutAttribute() => throw null;
+                    public override string ToString() => throw null;
                 }
                 public interface IHttpRequestTimeoutFeature
                 {

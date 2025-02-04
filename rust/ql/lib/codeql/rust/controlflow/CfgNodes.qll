@@ -261,11 +261,16 @@ final class RecordPatCfgNode extends Nodes::RecordPatCfgNode {
   RecordPatCfgNode() { node = this.getRecordPat() }
 
   /** Gets the record pattern for the field `field`. */
+  pragma[nomagic]
   PatCfgNode getFieldPat(string field) {
     exists(RecordPatField rpf |
       rpf = node.getRecordPatFieldList().getAField() and
-      any(ChildMapping mapping).hasCfgChild(node, rpf.getPat(), this, result) and
+      any(ChildMapping mapping).hasCfgChild(node, rpf.getPat(), this, result)
+    |
       field = rpf.getNameRef().getText()
+      or
+      not rpf.hasNameRef() and
+      field = result.(IdentPatCfgNode).getName().getText()
     )
   }
 }

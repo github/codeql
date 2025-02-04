@@ -56,8 +56,7 @@ nodes
 | MybatisSqlInjectionService.java:41:27:41:32 | params | semmle.label | params |
 | MybatisSqlInjectionService.java:44:19:44:33 | params : String[] | semmle.label | params : String[] |
 | MybatisSqlInjectionService.java:45:27:45:32 | params | semmle.label | params |
-subpaths
-#select
+problems
 | MybatisSqlInjectionService.java:14:47:14:50 | name | MybatisSqlInjection.java:19:25:19:49 | name : String | MybatisSqlInjectionService.java:14:47:14:50 | name | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:19:25:19:49 | name | this user input | SqlInjectionMapper.xml:23:3:25:12 | select | this SQL operation |
 | MybatisSqlInjectionService.java:19:47:19:50 | name | MybatisSqlInjection.java:25:25:25:49 | name : String | MybatisSqlInjectionService.java:19:47:19:50 | name | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:25:25:25:49 | name | this user input | SqlInjectionMapper.xml:27:3:29:12 | select | this SQL operation |
 | MybatisSqlInjectionService.java:24:47:24:50 | test | MybatisSqlInjection.java:31:25:31:49 | test : Test | MybatisSqlInjectionService.java:24:47:24:50 | test | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:31:25:31:49 | test | this user input | SqlInjectionMapper.xml:31:3:33:12 | select | this SQL operation |
@@ -67,3 +66,4 @@ subpaths
 | MybatisSqlInjectionService.java:37:27:37:32 | params | MybatisSqlInjection.java:47:19:47:57 | params : Map | MybatisSqlInjectionService.java:37:27:37:32 | params | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:47:19:47:57 | params | this user input | SqlInjectionMapper.xml:59:3:61:12 | select | this SQL operation |
 | MybatisSqlInjectionService.java:41:27:41:32 | params | MybatisSqlInjection.java:52:19:52:50 | params : List | MybatisSqlInjectionService.java:41:27:41:32 | params | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:52:19:52:50 | params | this user input | SqlInjectionMapper.xml:65:5:67:15 | foreach | this SQL operation |
 | MybatisSqlInjectionService.java:45:27:45:32 | params | MybatisSqlInjection.java:57:19:57:46 | params : String[] | MybatisSqlInjectionService.java:45:27:45:32 | params | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:57:19:57:46 | params | this user input | SqlInjectionMapper.xml:72:5:74:15 | foreach | this SQL operation |
+subpaths

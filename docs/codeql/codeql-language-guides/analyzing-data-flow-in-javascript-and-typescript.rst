@@ -455,7 +455,7 @@ using global data flow. (`Answer <#exercise-2>`__).
 Exercise 3: Write a class which represents flow sources from the array elements of the result of a call, for example the expression ``myObject.myMethod(myArgument)[myIndex]``.
 Hint: array indices are properties with numeric names; you can use regular expression matching to check this. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from array elements of the result of a call to the ``tagName`` argument to the
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from array elements of the result of a call to the ``tagName`` argument to the
 ``createElement`` function. (`Answer <#exercise-4>`__)
 
 Answers
