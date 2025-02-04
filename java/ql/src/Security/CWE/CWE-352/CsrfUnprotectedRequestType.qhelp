@@ -3,7 +3,7 @@
 
 <overview>
 <p>When you set up a web server to receive a request from a client without any mechanism
-for verifying that it was intentionally sent, then it is vulnerable to a Cross Site Request
+for verifying that it was intentionally sent, then it is vulnerable to a Cross-Site Request
 Forgery (CSRF) attack. An attacker can trick a client into making an unintended request
 to the web server that will be treated as an authentic request. This can be done via a URL,
 image load, XMLHttpRequest, etc. and can result in exposure of data or unintended code execution.</p>
@@ -17,13 +17,13 @@ should only perform read-only operations and should not be used for actions that
 state.</p>
 
 <p>This query currently supports the Spring and Stapler web frameworks. Spring provides default CSRF protection
-for all unsafe HTTP methods. Stapler provides default CSRF protection for the <code>POST</code> method.</p>
+for all unsafe HTTP methods whereas Stapler provides default CSRF protection for the <code>POST</code> method.</p>
 </recommendation>
 
 <example>
 <p> The following examples show Spring request handlers allowing safe HTTP request methods for state-changing actions.
 Since safe HTTP request methods do not have default CSRF protection in Spring, they should not be used when modifying
-application state. Instead use one of the unsafe HTTP methods which Spring default-protects from CSRF.</p>
+application state. Instead, use one of the unsafe HTTP methods which Spring default-protects from CSRF.</p>
 
 <sample src="CsrfUnprotectedRequestTypeBadSpring.java" />
 
@@ -31,7 +31,7 @@ application state. Instead use one of the unsafe HTTP methods which Spring defau
 
 <p> The following examples show Stapler web methods allowing safe HTTP request methods for state-changing actions.
 Since safe HTTP request methods do not have default CSRF protection in Stapler, they should not be used when modifying
-application state. Instead use the <code>POST</code> method which Stapler default-protects from CSRF.</p>
+application state. Instead, use the <code>POST</code> method which Stapler default-protects from CSRF.</p>
 
 <sample src="CsrfUnprotectedRequestTypeBadStapler.java" />
 
