@@ -13,21 +13,21 @@ fn option_clone() {
     let a = Some(source(88));
     sink(a.unwrap()); // $ hasValueFlow=88
     let b = a.clone();
-    sink(b.unwrap()); // $ MISSING: hasValueFlow=88
+    sink(b.unwrap()); // $ hasValueFlow=88
 }
 
 fn result_clone() {
     let a: Result<i64, i64> = Ok(source(37));
     sink(a.unwrap()); // $ hasValueFlow=37
     let b = a.clone();
-    sink(b.unwrap()); // $ MISSING: hasValueFlow=37
+    sink(b.unwrap()); // $ hasValueFlow=37
 }
 
 fn i64_clone() {
     let a = source(12);
     sink(a); // $ hasValueFlow=12
     let b = a.clone();
-    sink(b); // $ MISSING: hasValueFlow=12
+    sink(b); // $ hasValueFlow=12
 }
 
 mod my_clone {
@@ -45,7 +45,7 @@ mod my_clone {
         }
         let u = w.clone();
         match u {
-            Wrapper { n: n } => sink(n) // $ MISSING: hasValueFlow=73
+            Wrapper { n: n } => sink(n) // $ hasValueFlow=73
         }
     }
 }
