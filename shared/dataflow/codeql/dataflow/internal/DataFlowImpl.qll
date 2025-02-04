@@ -172,6 +172,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   module Impl<FullStateConfigSig Config> {
     private class FlowState = Config::FlowState;
 
+    import PathGraph
+
     private module SourceSinkFiltering {
       private import codeql.util.AlertFiltering
 

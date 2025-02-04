@@ -659,7 +659,16 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * A `Node` augmented with a call context (except for sinks) and an access path.
      * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
      */
-    class PathNode;
+    class PathNode {
+      /** Gets a textual representation of this element. */
+      string toString();
+
+      /** Gets the underlying `Node`. */
+      Node getNode();
+
+      /** Gets the location of this node. */
+      Location getLocation();
+    }
 
     /**
      * Holds if data can flow from `source` to `sink`.
@@ -683,6 +692,19 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowToExpr(DataFlowExpr sink);
+
+    /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+    predicate edges(PathNode a, PathNode b, string key, string val);
+
+    /** Holds if `n` is a node in the graph of data flow path explanations. */
+    predicate nodes(PathNode n, string key, string val);
+
+    /**
+     * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+     * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+     * `ret -> out` is summarized as the edge `arg -> out`.
+     */
+    predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
   }
 
   /**
@@ -738,6 +760,35 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   }
 
   import PathGraphSigMod
+
+  private module GetPathGraph<GlobalFlowSig Flow> implements PathGraphSig<Flow::PathNode> {
+    import Flow
+  }
+
+  /**
+   * Constructs a graph containing the disjoint union of two graphs.
+   */
+  module MergeFlows<GlobalFlowSig Graph1, GlobalFlowSig Graph2> implements GlobalFlowSig {
+    private module PathGraph1 = GetPathGraph<Graph1>;
+
+    private module PathGraph2 = GetPathGraph<Graph2>;
+
+    import MergePathGraph<Graph1::PathNode, Graph2::PathNode, PathGraph1, PathGraph2>
+    import PathGraph
+
+    predicate flowPath(PathNode source, PathNode sink) {
+      Graph1::flowPath(source.asPathNode1(), sink.asPathNode1()) or
+      Graph2::flowPath(source.asPathNode2(), sink.asPathNode2())
+    }
+
+    predicate flow(Node source, Node sink) {
+      Graph1::flow(source, sink) or Graph2::flow(source, sink)
+    }
+
+    predicate flowTo(Node sink) { Graph1::flowTo(sink) or Graph2::flowTo(sink) }
+
+    predicate flowToExpr(DataFlowExpr sink) { Graph1::flowToExpr(sink) or Graph2::flowToExpr(sink) }
+  }
 
   /**
    * Constructs a `PathGraph` from two `PathGraph`s by disjoint union.
