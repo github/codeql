@@ -17,14 +17,6 @@
       credentials that are automatically included in the request, then this
       request will appear as legitimate to the server.
     </p>
-
-    <p>
-      A common countermeasure for CSRF is to generate a unique token to be
-      included in the HTML sent from the server to a user. This token can be
-      used as a hidden field to be sent back with requests to the server, where
-      the server can then check that the token is valid and associated with the
-      relevant user session.
-    </p>
 </overview>
 
 <recommendation>
