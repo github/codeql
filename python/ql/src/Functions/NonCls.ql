@@ -1,7 +1,6 @@
 /**
  * @name First parameter of a class method is not named 'cls'
- * @description Using an alternative name for the first parameter of a class method makes code more
- *              difficult to read; PEP8 states that the first parameter to class methods should be 'cls'.
+ * @description By the PEP8 style guide, the first parameter of a class method should be named `cls`.
  * @kind problem
  * @tags maintainability
  *       readability

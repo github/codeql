@@ -1,8 +1,6 @@
 /**
  * @name First parameter of a method is not named 'self'
- * @description Using an alternative name for the first parameter of an instance method makes
- *              code more difficult to read; PEP8 states that the first parameter to instance
- *              methods should be 'self'.
+ * @description By the PEP8 style guide, the first parameter of a normal method should be named `self`.
  * @kind problem
  * @tags maintainability
  *       readability
