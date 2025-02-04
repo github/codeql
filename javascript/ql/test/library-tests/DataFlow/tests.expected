@@ -16,18 +16,18 @@ basicBlock
 | arguments.js:1:1:12:4 | exceptional return of (functi ... );\\n})() | arguments.js:1:1:1:0 | entry node of <toplevel> |
 | arguments.js:1:2:1:1 | this | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:1:2:12:1 | [function self-reference] functio ... , 3);\\n} | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:1:2:12:1 | exceptional return of anonymous function | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
+| arguments.js:1:2:12:1 | exceptional return of anonymous function | arguments.js:2:5:10:5 | functio ... ;\\n    } |
 | arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:1:0 | entry node of <toplevel> |
-| arguments.js:1:2:12:1 | return of anonymous function | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
+| arguments.js:1:2:12:1 | return of anonymous function | arguments.js:2:5:10:5 | functio ... ;\\n    } |
 | arguments.js:2:5:2:4 | this | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:2:5 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | [function self-reference] functio ... ;\\n    } | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | exceptional return of function f | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
-| arguments.js:2:5:10:5 | functio ... ;\\n    } | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
+| arguments.js:2:5:10:5 | functio ... ;\\n    } | arguments.js:2:5:10:5 | functio ... ;\\n    } |
 | arguments.js:2:5:10:5 | return of function f | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
-| arguments.js:2:14:2:14 | f | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:2:14:2:14 | f | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
+| arguments.js:2:14:2:14 | f | arguments.js:2:14:2:14 | f |
+| arguments.js:2:14:2:14 | f | arguments.js:2:14:2:14 | f |
 | arguments.js:2:16:2:16 | x | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:2:16:2:16 | x | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:3:13:3:20 | firstArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
@@ -61,12 +61,12 @@ basicBlock
 | arguments.js:9:27:9:35 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:27:9:38 | arguments[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:37:9:37 | 0 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
-| arguments.js:11:5:11:5 | f | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:11:5:11:14 | exceptional return of f(1, 2, 3) | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:11:5:11:14 | f(1, 2, 3) | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:11:7:11:7 | 1 | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:11:10:11:10 | 2 | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
-| arguments.js:11:13:11:13 | 3 | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
+| arguments.js:11:5:11:5 | f | arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:11:5:11:14 | exceptional return of f(1, 2, 3) | arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:11:5:11:14 | f(1, 2, 3) | arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:11:7:11:7 | 1 | arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:11:10:11:10 | 2 | arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:11:13:11:13 | 3 | arguments.js:2:5:10:5 | functio ... ;\\n    } |
 | eval.js:1:1:1:0 | this | eval.js:1:1:1:0 | entry node of <toplevel> |
 | eval.js:1:1:1:0 | this | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:1:1:5:1 | [function self-reference] functio ... eval`\\n} | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
