@@ -20,4 +20,5 @@ webview.addJavaScriptInterface(new ExposedObject(), "exposedObject");
 webview.loadData("", "text/html", null);
 
 String name = "Robert'; DROP TABLE students; --";
-webview.loadUrl("javascript:alert(exposedObject.studentEmail(\""+ name +"\"))"); // BAD: Untrusted input loaded into WebView
+// BAD: Untrusted input loaded into WebView
+webview.loadUrl("javascript:alert(exposedObject.studentEmail(\""+ name +"\"))");

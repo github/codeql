@@ -4,7 +4,8 @@ public Object evaluate(Socket socket) throws IOException {
 
     String string = reader.readLine();
     ExpressionParser parser = new SpelExpressionParser();
-    Expression expression = parser.parseExpression(string); // BAD: string is controlled by the user
+    // BAD: string is controlled by the user
+    Expression expression = parser.parseExpression(string);
     return expression.getValue();
   }
 }

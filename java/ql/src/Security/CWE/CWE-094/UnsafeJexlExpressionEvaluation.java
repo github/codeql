@@ -4,7 +4,8 @@ public void evaluate(Socket socket) throws IOException {
     
     String input = reader.readLine();
     JexlEngine jexl = new JexlBuilder().create();
-    JexlExpression expression = jexl.createExpression(input); // BAD: input is controlled by the user
+    // BAD: input is controlled by the user
+    JexlExpression expression = jexl.createExpression(input);
     JexlContext context = new MapContext();
     expression.evaluate(context);
   }
