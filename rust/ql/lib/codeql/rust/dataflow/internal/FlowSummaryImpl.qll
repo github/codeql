@@ -51,7 +51,7 @@ module Input implements InputSig<Location, RustDataFlow> {
     override MethodCallExpr getCall() { result = call }
   }
 
-  RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { none() }
+  RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { result.isClosureSelf() }
 
   ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() }
 

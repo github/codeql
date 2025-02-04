@@ -71,8 +71,8 @@ impl MyStruct {
 
 // Higher-order functions
 
-// MISSING: summary=repo::test;crate::summaries::apply;Argument[0];Argument[1].Parameter[0];value;dfc-generated
-// MISSING: summary=repo::test;crate::summaries::apply;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
+// summary=repo::test;crate::summaries::apply;Argument[0];Argument[1].Parameter[0];value;dfc-generated
+// summary=repo::test;crate::summaries::apply;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
 pub fn apply<F>(n: i64, f: F) -> i64 where F : FnOnce(i64) -> i64 {
     f(n)
 }

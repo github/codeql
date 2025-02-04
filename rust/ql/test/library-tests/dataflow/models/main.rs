@@ -193,7 +193,7 @@ fn test_apply_flow_out() {
     let s = source(86);
     let f = |n| if n != 0 { n } else { s };
     let t = apply(34, f);
-    sink(t); // $ MISSING: hasValueFlow=86
+    sink(t); // $ hasValueFlow=86
 }
 
 fn test_apply_flow_through() {
