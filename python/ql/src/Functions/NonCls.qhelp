@@ -28,7 +28,7 @@ in PEP 8.</p>
 
 <li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#function-and-method-arguments">Function and method arguments</a>.</li>
 <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
-<li>Python Docs: <a href="https://docs.python.org/3/library/functions.html#classmethod"><code>classmethod</code></a>.</li>
+<li>Python Docs: <a href="https://docs.python.org/3/library/functions.html#classmethod">classmethod</a>.</li>
 
 
 </references>
