@@ -128,12 +128,15 @@ private predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, P
   arg = call.(MethodCallExprCfgNode).getReceiver() and pos.isSelf()
 }
 
+/**
+ * Provides the `Node` class and subclasses thereof.
+ *
+ * Classes with names ending in `Public` are exposed as `final` aliases in the
+ * public `DataFlow` API, so they should not expose internal implementation details.
+ */
 module Node {
-  /**
-   * An element, viewed as a node in a data flow graph. Either an expression
-   * (`ExprNode`) or a parameter (`ParameterNode`).
-   */
-  abstract class Node extends TNode {
+  /** An element, viewed as a node in a data flow graph. */
+  abstract class NodePublic extends TNode {
     /** Gets the location of this node. */
     abstract Location getLocation();
 
@@ -149,7 +152,9 @@ module Node {
      * Gets the pattern that corresponds to this node, if any.
      */
     PatCfgNode asPat() { none() }
+  }
 
+  abstract class Node extends NodePublic {
     /** Gets the enclosing callable. */
     DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
 
@@ -160,11 +165,6 @@ module Node {
      * Gets the control flow node that corresponds to this data flow node.
      */
     CfgNode getCfgNode() { none() }
-
-    /**
-     * Gets this node's underlying SSA definition, if any.
-     */
-    Ssa::Definition asDefinition() { none() }
   }
 
   /** A node type that is not implemented. */
@@ -462,10 +462,12 @@ module Node {
    * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
    * to the value before the update.
    */
-  abstract class PostUpdateNode extends Node {
+  abstract class PostUpdateNodePublic extends NodePublic {
     /** Gets the node before the state update. */
-    abstract Node getPreUpdateNode();
+    abstract NodePublic getPreUpdateNode();
+  }
 
+  abstract class PostUpdateNode extends PostUpdateNodePublic, Node {
     override string toString() { result = "[post] " + this.getPreUpdateNode().toString() }
   }
 
@@ -857,12 +859,13 @@ private module Aliases {
 
 module RustDataFlow implements InputSig<Location> {
   private import Aliases
+  private import codeql.rust.dataflow.DataFlow
 
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
    * (`ExprNode`) or a parameter (`ParameterNode`).
    */
-  final class Node = Node::Node;
+  class Node = DataFlow::Node;
 
   final class ParameterNode = Node::ParameterNode;
 
@@ -872,7 +875,7 @@ module RustDataFlow implements InputSig<Location> {
 
   final class OutNode = Node::OutNode;
 
-  final class PostUpdateNode = Node::PostUpdateNode;
+  class PostUpdateNode = DataFlow::PostUpdateNode;
 
   final class CastNode = Node::NaNode;
 
@@ -886,7 +889,9 @@ module RustDataFlow implements InputSig<Location> {
     n.isArgumentOf(call, pos)
   }
 
-  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallable() }
+  DataFlowCallable nodeGetEnclosingCallable(Node node) {
+    result = node.(Node::Node).getEnclosingCallable()
+  }
 
   DataFlowType getNodeType(Node node) { any() }
 
@@ -901,9 +906,9 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   predicate neverSkipInPathGraph(Node node) {
-    node.getCfgNode() = any(LetStmtCfgNode s).getPat()
+    node.(Node::Node).getCfgNode() = any(LetStmtCfgNode s).getPat()
     or
-    node.getCfgNode() = any(AssignmentExprCfgNode a).getLhs()
+    node.(Node::Node).getCfgNode() = any(AssignmentExprCfgNode a).getLhs()
     or
     exists(MatchExprCfgNode match |
       node.asExpr() = match.getScrutinee() or
