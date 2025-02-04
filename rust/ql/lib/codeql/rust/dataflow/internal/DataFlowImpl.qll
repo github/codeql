@@ -631,7 +631,7 @@ private module VariantInLib {
       )
     }
 
-  /** An enum variant from library code, represented by its canonical path. */
+  /** An enum variant from library code, represented by the enum's canonical path and the variant's name. */
   class VariantInLib extends MkVariantInLib {
     CrateOriginOption crate;
     string path;
