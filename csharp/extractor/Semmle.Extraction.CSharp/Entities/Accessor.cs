@@ -30,6 +30,10 @@ namespace Semmle.Extraction.CSharp.Entities
             return props.SingleOrDefault();
         }
 
+        public override bool NeedsPopulation =>
+            base.NeedsPopulation &&
+            !Symbol.IsPartialDefinition; // Accessors always have an implementing declaration as well.
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
