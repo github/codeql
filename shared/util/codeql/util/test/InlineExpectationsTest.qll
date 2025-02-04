@@ -645,27 +645,19 @@ module TestPostProcessing {
     private import InlineExpectationsTest as InlineExpectationsTest
     private import InlineExpectationsTest::Make<Input>
 
-    bindingset[loc]
-    private predicate parseLocation(
-      string loc, string file, int startLine, int startColumn, int endLine, int endColumn
-    ) {
-      exists(string regexp |
-        regexp = "(.*):(-?\\d+):(-?\\d+):(-?\\d+):(-?\\d+)" and
-        file = loc.regexpCapture(regexp, 1) and
-        startLine = loc.regexpCapture(regexp, 2).toInt() and
-        startColumn = loc.regexpCapture(regexp, 3).toInt() and
-        endLine = loc.regexpCapture(regexp, 4).toInt() and
-        endColumn = loc.regexpCapture(regexp, 5).toInt()
+    /** Holds if the given locations refer to the same lines, but possibly with different column numbers. */
+    bindingset[loc1, loc2]
+    pragma[inline_late]
+    private predicate sameLineInfo(Input::Location loc1, Input::Location loc2) {
+      exists(string file, int line1, int line2 |
+        loc1.hasLocationInfo(file, line1, _, line2, _) and
+        loc2.hasLocationInfo(file, line1, _, line2, _)
       )
     }
 
-    /** Holds if the given location strings refer to the same lines, but possibly with different column numbers. */
-    bindingset[loc1, loc2]
-    private predicate sameLineInfo(string loc1, string loc2) {
-      exists(string file, int line1, int line2 |
-        parseLocation(loc1, file, line1, _, line2, _) and
-        parseLocation(loc2, file, line1, _, line2, _)
-      )
+    pragma[nomagic]
+    private predicate mainQueryResult(int row, int column, Input::Location loc) {
+      queryResults(mainResultSet(), row, column, Input2::getRelativeUrl(loc))
     }
 
     /**
@@ -676,9 +668,9 @@ module TestPostProcessing {
      */
     private string getSourceTag(int row) {
       getQueryKind() = "path-problem" and
-      exists(string sourceLoc, string selectLoc |
-        queryResults(mainResultSet(), row, 0, selectLoc) and
-        queryResults(mainResultSet(), row, 2, sourceLoc) and
+      exists(Input::Location sourceLoc, Input::Location selectLoc |
+        mainQueryResult(row, 0, selectLoc) and
+        mainQueryResult(row, 2, sourceLoc) and
         if sameLineInfo(selectLoc, sourceLoc) then result = "Alert" else result = "Source"
       )
     }
@@ -744,13 +736,10 @@ module TestPostProcessing {
         int row, Input::Location location, string element, string tag, string value
       ) {
         getQueryKind() = "path-problem" and
-        exists(string loc |
-          queryResults(mainResultSet(), row, 2, loc) and
-          queryResults(mainResultSet(), row, 3, element) and
-          tag = getSourceTag(row) and
-          value = "" and
-          Input2::getRelativeUrl(location) = loc
-        )
+        mainQueryResult(row, 2, location) and
+        queryResults(mainResultSet(), row, 3, element) and
+        tag = getSourceTag(row) and
+        value = ""
       }
 
       predicate hasActualResult(Input::Location location, string element, string tag, string value) {
@@ -784,24 +773,18 @@ module TestPostProcessing {
         int row, Input::Location location, string element, string tag
       ) {
         getQueryKind() = "path-problem" and
-        exists(string loc |
-          queryResults(mainResultSet(), row, 4, loc) and
-          queryResults(mainResultSet(), row, 5, element) and
-          tag = getSinkTag(row) and
-          Input2::getRelativeUrl(location) = loc
-        )
+        mainQueryResult(row, 4, location) and
+        queryResults(mainResultSet(), row, 5, element) and
+        tag = getSinkTag(row)
       }
 
       private predicate hasAlert(int row, Input::Location location, string element, string tag) {
         getQueryKind() = ["problem", "path-problem"] and
-        exists(string loc |
-          queryResults(mainResultSet(), row, 0, loc) and
-          queryResults(mainResultSet(), row, 2, element) and
-          tag = "Alert" and
-          Input2::getRelativeUrl(location) = loc and
-          not hasPathProblemSource(row, location, _, _, _) and
-          not hasPathProblemSink(row, location, _, _)
-        )
+        mainQueryResult(row, 0, location) and
+        queryResults(mainResultSet(), row, 2, element) and
+        tag = "Alert" and
+        not hasPathProblemSource(row, location, _, _, _) and
+        not hasPathProblemSink(row, location, _, _)
       }
 
       /**
