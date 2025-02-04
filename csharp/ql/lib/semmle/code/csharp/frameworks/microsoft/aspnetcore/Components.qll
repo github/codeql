@@ -21,12 +21,6 @@ private class MicrosoftAspNetCoreComponentsClass extends Class {
   }
 }
 
-/** The `Microsoft.AspNetCore.Components.ParameterAttribute` class. */
-class MicrosoftAspNetCoreComponentsParamaterAttributeClass extends MicrosoftAspNetCoreComponentsClass
-{
-  MicrosoftAspNetCoreComponentsParamaterAttributeClass() { this.hasName("ParameterAttribute") }
-}
-
 /** The `Microsoft.AspNetCore.Components.CascadingParameterAttributeBase` class. */
 class MicrosoftAspNetCoreComponentsCascadingParameterAttributeBaseClass extends MicrosoftAspNetCoreComponentsClass
 {
