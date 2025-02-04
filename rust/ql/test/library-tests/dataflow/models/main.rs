@@ -175,6 +175,34 @@ fn test_set_tuple_element() {
     sink(t.1); // $ hasValueFlow=11
 }
 
+// has a flow model
+pub fn apply<F>(n: i64, f: F) -> i64 where F : FnOnce(i64) -> i64 {
+    0
+}
+
+fn test_apply_flow_in() {
+    let s = source(83);
+    let f = |n| {
+        sink(n); // $ hasValueFlow=83
+        n + 3
+    };
+    apply(s, f);
+}
+
+fn test_apply_flow_out() {
+    let s = source(86);
+    let f = |n| if n != 0 { n } else { s };
+    let t = apply(34, f);
+    sink(t); // $ MISSING: hasValueFlow=86
+}
+
+fn test_apply_flow_through() {
+    let s = source(33);
+    let f = |n| if n != 0 { n } else { 0 };
+    let t = apply(s, f);
+    sink(t); // $ hasValueFlow=33
+}
+
 impl MyFieldEnum {
     // has a source model
     fn source(&self, i: i64) -> MyFieldEnum {
