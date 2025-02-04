@@ -132,8 +132,7 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
             println!("streaming response...");
             while let Some(frame) = response.frame().await {
                 if let Some(data) = frame?.data_ref() {
-                    std::io::stdout().write_all(data);
-
+                    std::io::stdout().write_all(data)?;
                     sink(data); // $ MISSING: hasTaintFlow
                     sink(data[0]); // $ MISSING: hasTaintFlow
                     for byte in data {
