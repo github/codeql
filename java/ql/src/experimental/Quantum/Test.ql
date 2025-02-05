@@ -3,11 +3,6 @@
  */
 
  import experimental.Quantum.Language
- //import java
 
- from Crypto::NodeBase node
- select node
- 
-// from Class t
-// where t.hasQualifiedName("javax.crypto", "CipherSpi")
-// select t, t.getADescendant*()
+from JCAModel::AESLiteral l 
+select l, l.getAlg(), l.getMode().getValue(), l.getPadding().getValue()

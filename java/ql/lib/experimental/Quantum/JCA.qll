@@ -13,6 +13,18 @@ predicate cipher_modes(string mode) {mode = ["NONE", "CBC", "CCM", "CFB", "CFBx"
 //todo same as above, OAEPWith has asuffix type
 predicate cipher_padding(string padding) {padding = ["NoPadding", "ISO10126Padding", "OAEPPadding", "OAEPWith", "PKCS1Padding", "PKCS5Padding", "SSL3Padding"]}
 
+
+abstract class BlockCiper extends Crypto::Algorithm {
+  CipherAlgorithmStringLiteral alg;
+  CipherAlgorithmMode mode;
+  CipherAlgorithmPadding padding;
+
+
+  CipherAlgorithmStringLiteral getAlg() {result = alg } 
+  CipherAlgorithmMode getMode() {result = mode }
+
+  CipherAlgorithmPadding getPadding() {result =padding}
+}
   /**
    * Symmetric algorithms
    */
@@ -45,6 +57,9 @@ class CipherInstance extends Call {
     Expr getAlgorithmArg() { result = this.getArgument(0) }
   }
 
+  /**
+   * this may be specified either in the ALG/MODE/PADDING or just ALG format
+   */
 class CipherAlgorithmStringLiteral extends Crypto::NodeBase instanceof StringLiteral {
     CipherAlgorithmStringLiteral() { cipher_names(this.getValue().splitAt("/"))}
 
@@ -53,20 +68,28 @@ class CipherAlgorithmStringLiteral extends Crypto::NodeBase instanceof StringLit
     string getValue() { result = this.(StringLiteral).getValue() }
   }
 
-  class CipherAlgorithmModeStringLiteral extends Crypto::NodeBase instanceof StringLiteral {
-    CipherAlgorithmModeStringLiteral() { cipher_modes(this.getValue().splitAt("/"))}
+abstract class CipherAlgorithmMode extends Crypto::NodeBase {
+  string getValue() {result = ""}
+}
+
+  class CipherAlgorithmModeStringLiteral extends CipherAlgorithmMode instanceof StringLiteral {
+    CipherAlgorithmModeStringLiteral() { cipher_modes(this.(StringLiteral).getValue().splitAt("/"))}
 
     override string toString() { result = this.(StringLiteral).toString() }
 
-    string getValue() { result = this.(StringLiteral).getValue() }
+    override string getValue() { result = this.(StringLiteral).getValue().regexpCapture(".*/(.*)/.*",1) }
   }
 
-  class CipherAlgorithmPaddingStringLiteral extends Crypto::NodeBase instanceof StringLiteral {
-    CipherAlgorithmPaddingStringLiteral() { cipher_padding(this.getValue().splitAt("/"))}
+  abstract class CipherAlgorithmPadding extends Crypto::NodeBase {
+    string getValue() {result = ""}
+  }
+
+  class CipherAlgorithmPaddingStringLiteral extends CipherAlgorithmPadding instanceof StringLiteral {
+    CipherAlgorithmPaddingStringLiteral() { cipher_padding(this.(StringLiteral).getValue().splitAt("/"))}
 
     override string toString() { result = this.(StringLiteral).toString() }
 
-    string getValue() { result = this.(StringLiteral).getValue() }
+    override string getValue() { result = this.(StringLiteral).getValue().regexpCapture(".*/.*/(.*)",1) }
   }
 
   private module AlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
@@ -79,27 +102,32 @@ class CipherAlgorithmStringLiteral extends Crypto::NodeBase instanceof StringLit
 
   module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
 
-  predicate algorithmStringToCipherInstanceArgFlow(string name, CipherAlgorithmStringLiteral origin, Expr arg) {
+  predicate algorithmStringToCipherInstanceArgFlow(string name, CipherAlgorithmStringLiteral origin, CipherAlgorithmModeStringLiteral mode, CipherAlgorithmPaddingStringLiteral padding, Expr arg) {
     exists(CipherInstance sinkCall |
-      origin.getValue().toUpperCase() = name and
+      origin.getValue().splitAt("/") = name and
+     origin = mode and
+      origin = padding and
       arg = sinkCall.getAlgorithmArg() and
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(origin), DataFlow::exprNode(arg))
     )
   }
 
-  class AES extends SymmetricAlgorithm instanceof Expr {
-    CipherAlgorithmStringLiteral origin;
+  /**
+   * A class to represent when AES is used AND it has literal mode and padding provided
+   * this does not capture the use without
+   */
+  class AESLiteral extends SymmetricAlgorithm, BlockCiper instanceof Expr {
 
-    AES() { algorithmStringToCipherInstanceArgFlow("AES", origin, this) }
+
+    AESLiteral() { algorithmStringToCipherInstanceArgFlow("AES", alg, mode, padding, this) 
+}
 
     override Crypto::LocatableElement getOrigin(string name) {
-      result = origin and name = origin.toString()
+      result = alg and name = alg.toString()
     }
 
-    override string getAlgorithmName(){ result = "AES"}
+    override string getAlgorithmName(){ result = this.getAlgorithmName()}
   }
-
-  
 
   
 }
