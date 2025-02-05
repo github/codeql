@@ -88,21 +88,26 @@ class MicrosoftAspNetCoreComponentsComponent extends Class {
    *
    * An example of a route parameter is `@page "/counter/{id:int}/{other?}/{*rest}"`, from this we're getting the `id`, `other` and `rest` parameters.
    */
+  pragma[nomagic]
   private string getARouteParameter() {
-    result = this.getRouteAttributeUrl().splitAt("{").regexpCapture("\\*?([^:?}]+)[:?}](.*)", 1)
+    exists(string s |
+      s = this.getRouteAttributeUrl().splitAt("{").regexpCapture("\\*?([^:?}]+)[:?}](.*)", 1) and
+      result = s.toLowerCase()
+    )
   }
 
   /** Gets a property attributed with `[Parameter]` attribute. */
-  Property getAParameterProperty() {
+  pragma[nomagic]
+  private Property getAParameterProperty(string name) {
     result = this.getAProperty() and
-    result.getAnAttribute() instanceof MicrosoftAspNetCoreComponentsParameterAttribute
+    result.getAnAttribute() instanceof MicrosoftAspNetCoreComponentsParameterAttribute and
+    name = result.getName().toLowerCase()
   }
 
   /** Gets a property whose value is populated from route parameters. */
   Property getARouteParameterProperty() {
-    result = this.getAParameterProperty() and
-    exists(string urlParamName | urlParamName = this.getARouteParameter() |
-      result.getName().toLowerCase() = urlParamName.toLowerCase()
+    exists(string name | name = this.getARouteParameter() |
+      result = this.getAParameterProperty(name)
     )
   }
 }
