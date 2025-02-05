@@ -29,46 +29,46 @@ macro_rules! emit_detached {
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
         $self.extract_macro_call_expanded(&$node, $label);
     };
-    (Function, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Trait, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Struct, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Enum, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Union, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Module, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Variant, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_enum_variant(&$node, $label);
-    };
-    // TODO canonical origin of other items
-    (PathExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (RecordExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (PathPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (RecordPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (TupleStructPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_method_canonical_destination(&$node, $label);
-    };
+    // (Function, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin(&$node, $label.into());
+    // };
+    // (Trait, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin(&$node, $label.into());
+    // };
+    // (Struct, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin(&$node, $label.into());
+    // };
+    // (Enum, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin(&$node, $label.into());
+    // };
+    // (Union, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin(&$node, $label.into());
+    // };
+    // (Module, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin(&$node, $label.into());
+    // };
+    // (Variant, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_canonical_origin_of_enum_variant(&$node, $label);
+    // };
+    // // TODO canonical origin of other items
+    // (PathExpr, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_path_canonical_destination(&$node, $label.into());
+    // };
+    // (RecordExpr, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_path_canonical_destination(&$node, $label.into());
+    // };
+    // (PathPat, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_path_canonical_destination(&$node, $label.into());
+    // };
+    // (RecordPat, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_path_canonical_destination(&$node, $label.into());
+    // };
+    // (TupleStructPat, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_path_canonical_destination(&$node, $label.into());
+    // };
+    // (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
+    //     $self.extract_method_canonical_destination(&$node, $label);
+    // };
     ($($_:tt)*) => {};
 }
 
