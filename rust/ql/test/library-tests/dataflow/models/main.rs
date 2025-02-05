@@ -203,6 +203,16 @@ fn test_apply_flow_through() {
     sink(t); // $ hasValueFlow=33
 }
 
+async fn get_async_number(a: i64) -> i64 {
+    37
+}
+
+async fn test_get_async_number() {
+    let s = source(46);
+    let t = get_async_number(s).await;
+    sink(t); // $ MISSING: hasValueFlow=46
+}
+
 impl MyFieldEnum {
     // has a source model
     fn source(&self, i: i64) -> MyFieldEnum {
@@ -268,7 +278,8 @@ fn test_simple_sink() {
     simple_sink(s); // $ hasValueFlow=17
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     test_identify();
     test_get_var_pos();
     test_set_var_pos();
@@ -286,5 +297,6 @@ fn main() {
     test_enum_method_sink();
     test_simple_source();
     test_simple_sink();
+    test_get_async_number().await;
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }
