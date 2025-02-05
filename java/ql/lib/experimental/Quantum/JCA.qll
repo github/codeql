@@ -126,7 +126,7 @@ abstract class CipherAlgorithmMode extends Crypto::NodeBase {
       result = alg and name = alg.toString()
     }
 
-    override string getAlgorithmName(){ result = this.getAlgorithmName()}
+    override string getAlgorithmName(){ result = alg.getValue()}
   }
 
   
