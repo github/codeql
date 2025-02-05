@@ -86,7 +86,7 @@ class MicrosoftAspNetCoreComponentsComponent extends Class {
    * There are various extensions that can be added next to the parameter name, such as `:int` or `?` to make the parameter optional.
    * Optionally, the parameter name can start with a `*` to make it a catch-all parameter.
    *
-   * And example of a route parameter is `@page "/counter/{id:int}/{other?}/{*rest}"`, from this we're getting the `id`, `other` and `rest` parameters.
+   * An example of a route parameter is `@page "/counter/{id:int}/{other?}/{*rest}"`, from this we're getting the `id`, `other` and `rest` parameters.
    */
   private string getARouteParameter() {
     result = this.getRouteAttributeUrl().splitAt("{").regexpCapture("\\*?([^:?}]+)[:?}](.*)", 1)
