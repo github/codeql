@@ -871,6 +871,36 @@ final class TuplePositionContent extends Content, TTuplePositionContent {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
+/**
+ * A content for the index of an argument to at function call.
+ *
+ * Used by the model generator to create flow summaries for higher-order
+ * functions.
+ */
+final class FunctionCallArgumentContent extends Content, TFunctionCallArgumentContent {
+  private int pos;
+
+  FunctionCallArgumentContent() { this = TFunctionCallArgumentContent(pos) }
+
+  int getPosition() { result = pos }
+
+  override string toString() { result = "function argument at " + pos }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A content for the return value of function call.
+ *
+ * Used by the model generator to create flow summaries for higher-order
+ * functions.
+ */
+final class FunctionCallReturnContent extends Content, TFunctionCallReturnContent {
+  override string toString() { result = "function return" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
 /** Holds if `access` indexes a tuple at an index corresponding to `c`. */
 private predicate fieldTuplePositionContent(FieldExprCfgNode access, TuplePositionContent c) {
   access.getNameRef().getText().toInt() = c.getPosition()
@@ -1192,6 +1222,13 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = deref
       )
       or
+      // Read from function return
+      exists(DataFlowCall call |
+        lambdaCall(call, _, node1) and
+        call = node2.(OutNode).getCall(TNormalReturnKind()) and
+        c instanceof FunctionCallReturnContent
+      )
+      or
       VariableCapture::readStep(node1, c, node2)
     )
     or
@@ -1271,6 +1308,13 @@ module RustDataFlow implements InputSig<Location> {
       c instanceof ReferenceContent and
       node1.asExpr() = ref.getExpr() and
       node2.asExpr() = ref
+    )
+    or
+    // Store in function argument
+    exists(DataFlowCall call, int i |
+      isArgumentNode(node1, call, TPositionalParameterPosition(i)) and
+      lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
+      c.(FunctionCallArgumentContent).getPosition() = i
     )
     or
     VariableCapture::storeStep(node1, c, node2)
@@ -1614,6 +1658,10 @@ private module Cached {
     } or
     TStructFieldContent(Struct s, string field) {
       field = s.getFieldList().(RecordFieldList).getAField().getName().getText()
+    } or
+    TFunctionCallReturnContent() or
+    TFunctionCallArgumentContent(int pos) {
+      pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TReferenceContent()

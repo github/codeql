@@ -88,8 +88,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
   bindingset[c]
   string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
-    // TODO: Implement this to support returning through parameters.
-    result = "paramReturnNodeAsContentOutput(" + c + ", " + pos + ")"
+    result = parameterContentAccess(c.getParamList().getParam(pos.getPosition()))
+    or
+    pos.isSelf() and result = qualifierString()
   }
 
   Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
@@ -131,12 +132,34 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
     c.(SingletonContentSet).getContent() instanceof StructFieldContent
   }
 
-  predicate isCallback(DataFlow::ContentSet c) { none() }
+  predicate isCallback(DataFlow::ContentSet cs) {
+    exists(Content c | c = cs.(SingletonContentSet).getContent() |
+      c instanceof FunctionCallReturnContent or
+      c instanceof FunctionCallArgumentContent
+    )
+  }
 
   string getSyntheticName(DataFlow::ContentSet c) { none() }
 
+  private string encodeContent(ContentSet cs, string arg) {
+    result = FlowSummary::Input::encodeContent(cs, arg)
+    or
+    exists(Content c | cs = TSingletonContentSet(c) |
+      exists(int pos |
+        pos = c.(FunctionCallArgumentContent).getPosition() and
+        result = "Parameter" and
+        arg = pos.toString()
+      )
+      or
+      c instanceof FunctionCallReturnContent and result = "ReturnValue" and arg = ""
+    )
+  }
+
   string printContent(DataFlow::ContentSet cs) {
-    exists(string arg | result = FlowSummary::Input::encodeContent(cs, arg) + "[" + arg + "]")
+    exists(string name, string arg |
+      name = encodeContent(cs, arg) and
+      if arg = "" then result = name else result = name + "[" + arg + "]"
+    )
   }
 
   string partialModelRow(Callable api, int i) {
