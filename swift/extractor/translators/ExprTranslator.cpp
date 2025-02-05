@@ -379,12 +379,7 @@ codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExp
       entry.components.push_back(emitKeyPathComponent(component));
     }
     if (auto rootTypeRepr = expr.getExplicitRootType()) {
-      auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
-      CODEQL_EXPECT_OR(return entry, keyPathType, "KeyPathExpr must have BoundGenericClassType");
-      auto keyPathTypeArgs = keyPathType->getGenericArgs();
-      CODEQL_EXPECT_OR(return entry, keyPathTypeArgs.size() != 0,
-                              "KeyPathExpr type must have generic args");
-      entry.root = dispatcher.fetchLabel(rootTypeRepr, keyPathTypeArgs[0]);
+      entry.root = dispatcher.fetchLabel(rootTypeRepr, expr.getRootType());
     }
   }
   return entry;
