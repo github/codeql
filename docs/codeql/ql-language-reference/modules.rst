@@ -444,7 +444,7 @@ The other built-in operations are:
 *   bitwise operations: ``.bitAnd(BigInt)``, ``.bitOr(BigInt)``,
     ``.bitXor(BigInt)``, ``.bitShiftLeft(int)``, ``.bitShiftRightSigned(int)``,
     ``.bitNot()``, ``.bitLength()``,
-*   aggregates: ``min``, ``max``, (``strict``)\ ``sum``, (``strict``)\ ``count``, ``avg``,
+*   aggregates: ``min``, ``max``, (``strict``)\ ``sum``, (``strict``)\ ``count``,
     ``rank``, ``unique``, ``any``.
 *   other: ``.pow(int)``, ``.abs()``, ``.gcd(BigInt)``, ``.minimum(BigInt)``,
     ``.maximum(BigInt)``.
