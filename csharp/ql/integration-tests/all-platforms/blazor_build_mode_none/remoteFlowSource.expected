@@ -1,4 +1,0 @@
-| BlazorTest/Components/Pages/TestPage.razor:10:29:10:36 | access to property UrlParam | ASP.NET Core component route parameter |
-| BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | ASP.NET Core component route parameter |
-| BlazorTest/Components/Pages/TestPage.razor:19:38:19:47 | access to property QueryParam | external |
-| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | external |
