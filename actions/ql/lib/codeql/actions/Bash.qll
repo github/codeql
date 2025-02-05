@@ -81,7 +81,9 @@ class BashShellScript extends ShellScript {
           "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
             quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
       )
-    )
+    ) and
+    // Only do this for strings that might otherwise disrupt subsequent parsing
+    quotedStr.regexpMatch("[\"'].*[$\n\r'\"" + Bash::separator() + "].*[\"']")
   }
 
   private predicate rankedQuotedStringReplacements(int i, string old, string new) {
