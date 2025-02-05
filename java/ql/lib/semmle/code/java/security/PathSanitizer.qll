@@ -357,6 +357,21 @@ private predicate maybeNull(Expr expr) {
   )
 }
 
+/** A taint-tracking configuration for reasoning about tainted arguments. */
+private module TaintedArgConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
+    src instanceof ActiveThreatModelSource or
+    src instanceof ApiSourceNode or
+    // for InlineFlowTest
+    src.asExpr().(MethodCall).getMethod().getName() = "source"
+  }
+
+  predicate isSink(DataFlow::Node sink) { exists(Call call | sink.asExpr() = call.getAnArgument()) }
+}
+
+/** Tracks taint flow to any argument. */
+private module TaintedArgFlow = TaintTracking::Global<TaintedArgConfig>;
+
 /** Holds if `g` is a guard that checks for `..` components. */
 private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
   // Local taint-flow is used here to handle cases where the validated expression comes from the
@@ -370,9 +385,12 @@ private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
 }
 
 /**
- * A sanitizer that considers the second argument to a `File` constructor safe
- * if it is checked for `..` components (`PathTraversalGuard`) or if any internal
+ * A sanitizer that considers a `File` constructor safe if its second argument
+ * is checked for `..` components (`PathTraversalGuard`) or if any internal
  * `..` components are removed from it (`PathNormalizeSanitizer`).
+ *
+ * This also requires a check to ensure that the first argument of the
+ * `File` constructor is not tainted.
  */
 private class FileConstructorSanitizer extends PathInjectionSanitizer {
   FileConstructorSanitizer() {
@@ -382,6 +400,9 @@ private class FileConstructorSanitizer extends PathInjectionSanitizer {
       // `java.io.File` documentation states that such cases are
       // treated as if invoking the single-argument `File` constructor.
       not maybeNull(constrCall.getArgument(0)) and
+      // Since we are sanitizing the constructor call, we need to check
+      // that the parent argument is not tainted.
+      not TaintedArgFlow::flowToExpr(constrCall.getArgument(0)) and
       arg = constrCall.getArgument(1) and
       (
         arg = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode().asExpr() or
