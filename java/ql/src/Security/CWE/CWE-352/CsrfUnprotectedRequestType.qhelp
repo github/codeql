@@ -10,7 +10,7 @@
 
     <p>
       The attacker tricks an authenticated user into submitting a request to the
-      web application. Typically this request will result in a state change on
+      web application. Typically, this request will result in a state change on
       the server, such as changing the user's password. The request can be
       initiated when the user visits a site controlled by the attacker. If the
       web application relies only on cookies for authentication, or on other
@@ -51,7 +51,7 @@ application state. Instead, use the <code>POST</code> method which Stapler defau
 <references>
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery (CSRF)</a>.
+<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross Site Request Forgery (CSRF)</a>.
 </li>
 <li>
 Spring Security Reference:
