@@ -15,26 +15,26 @@ unsafe fn test_std_alloc_from_size(v: usize) {
     let _ = std::alloc::alloc(l1.align_to(8).unwrap());
     let _ = std::alloc::alloc(l1.align_to(8).unwrap().pad_to_align());
     let _ = std::alloc::alloc_zeroed(l1);
-    let _ = std::alloc::realloc(m1, l1, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::realloc(m1, l1, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l2 = std::alloc::Layout::from_size_align(v, 1).unwrap();
-    let _ = std::alloc::alloc(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::alloc(l2.align_to(8).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
     let _ = std::alloc::alloc(l2.align_to(8).unwrap().pad_to_align()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::alloc_zeroed(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc_zeroed(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l3 = std::alloc::Layout::from_size_align(1, v).unwrap(); // not obviously dangerous?
     let _ = std::alloc::alloc(l3);
 
     let l4 = std::alloc::Layout::from_size_align_unchecked(v, 1);
-    let _ = std::alloc::alloc(l4); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l4); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l5 = std::alloc::Layout::from_size_align_unchecked(v * std::mem::size_of::<i64>(), std::mem::size_of::<i64>());
-    let _ = std::alloc::alloc(l5); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l5); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let s6 = (std::mem::size_of::<MyStruct>() * v) + 1;
     let l6 = std::alloc::Layout::from_size_align_unchecked(s6, 4);
-    let _ = std::alloc::alloc(l6); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l6); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l7 = std::alloc::Layout::from_size_align_unchecked(l6.size(), 8);
     let _ = std::alloc::alloc(l7); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
@@ -47,25 +47,25 @@ unsafe fn test_std_alloc_new_repeat_extend(v: usize) {
     let l2 = std::alloc::Layout::new::<MyStruct>();
     let _ = std::alloc::alloc(l2);
     let _ = std::alloc::alloc(l2.repeat(10).unwrap().0);
-    let _ = std::alloc::alloc(l2.repeat(v).unwrap().0); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::alloc(l2.repeat(v + 1).unwrap().0); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l2.repeat(v).unwrap().0); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(l2.repeat(v + 1).unwrap().0); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::alloc(l2.repeat_packed(10).unwrap());
-    let _ = std::alloc::alloc(l2.repeat_packed(v).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::alloc(l2.repeat_packed(v * 10).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l2.repeat_packed(v).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(l2.repeat_packed(v * 10).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l3 = std::alloc::Layout::array::<u8>(10).unwrap();
     let _ = std::alloc::alloc(l3);
     let (k1, _offs1) = l3.repeat(v).expect("arithmetic overflow?");
-    let _ = std::alloc::alloc(k1); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(k1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let (k2, _offs2) = l3.extend(k1).unwrap();
-    let _ = std::alloc::alloc(k2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(k2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let (k3, _offs3) = k1.extend(l3).unwrap();
-    let _ = std::alloc::alloc(k3); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::alloc(l3.extend_packed(k1).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::alloc(k1.extend_packed(l3).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(k3); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(l3.extend_packed(k1).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(k1.extend_packed(l3).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l4 = std::alloc::Layout::array::<u8>(v).unwrap();
-    let _ = std::alloc::alloc(l4); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l4); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 fn clamp<T: std::cmp::PartialOrd>(v: T, min: T, max: T) -> T {
@@ -82,15 +82,15 @@ unsafe fn test_std_alloc_with_bounds(v: usize) {
     let l1 = std::alloc::Layout::array::<u32>(v).unwrap();
 
     if v < 100 {
-        let _ = std::alloc::alloc(l1);
+        let _ = std::alloc::alloc(l1); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
     } else {
-        let _ = std::alloc::alloc(l1); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+        let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     }
 
     if v == 100 {
-        let _ = std::alloc::alloc(l1);
+        let _ = std::alloc::alloc(l1); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
     } else {
-        let _ = std::alloc::alloc(l1); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+        let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     }
 
     {
@@ -101,26 +101,26 @@ unsafe fn test_std_alloc_with_bounds(v: usize) {
         }
 
         let l2 = std::alloc::Layout::array::<u32>(v_mut).unwrap();
-        let _ = std::alloc::alloc(l2);
+        let _ = std::alloc::alloc(l2); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 
         let l3 = std::alloc::Layout::array::<u32>(v).unwrap();
-        let _ = std::alloc::alloc(l3); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+        let _ = std::alloc::alloc(l3); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     }
 
     let l4 = std::alloc::Layout::array::<u32>(std::cmp::min(v, 100)).unwrap();
-    let _ = std::alloc::alloc(l4);
+    let _ = std::alloc::alloc(l4); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l5 = std::alloc::Layout::array::<u32>(std::cmp::max(v, 100)).unwrap();
-    let _ = std::alloc::alloc(l5); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l5); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l6 = std::alloc::Layout::array::<u32>(clamp(v, 1, 100)).unwrap();
-    let _ = std::alloc::alloc(l6);
+    let _ = std::alloc::alloc(l6); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 
-    let _ = std::alloc::alloc(l1); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     if v > 100 {
         return;
     }
-    let _ = std::alloc::alloc(l1);
+    let _ = std::alloc::alloc(l1); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 use std::alloc::{GlobalAlloc, Allocator};
@@ -135,12 +135,12 @@ unsafe fn test_system_alloc(v: usize) {
     let _ = std::alloc::Global.allocate_zeroed(l1).unwrap();
 
     let l2 = std::alloc::Layout::array::<u8>(v).unwrap();
-    let _ = std::alloc::System.alloc(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::System.alloc_zeroed(l2); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::System.allocate(l2).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::System.allocate_zeroed(l2).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::Global.allocate(l2).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::Global.allocate_zeroed(l2).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::System.alloc(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::System.alloc_zeroed(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::System.allocate(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::System.allocate_zeroed(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::Global.allocate(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::Global.allocate_zeroed(l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l3 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m3 = std::alloc::System.alloc(l3);
@@ -150,9 +150,9 @@ unsafe fn test_system_alloc(v: usize) {
     let m4 = std::ptr::NonNull::<u8>::new(std::alloc::alloc(l4)).unwrap();
     if v > 10 {
         if v % 2 == 0 {
-            let _ = std::alloc::System.grow(m4, l4, l2).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+            let _ = std::alloc::System.grow(m4, l4, l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
         } else {
-            let _ = std::alloc::System.grow_zeroed(m4, l4, l2).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+            let _ = std::alloc::System.grow_zeroed(m4, l4, l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
         }
     } else {
         let _ = std::alloc::System.shrink(m4, l4, l2).unwrap();
@@ -161,12 +161,12 @@ unsafe fn test_system_alloc(v: usize) {
 
 unsafe fn test_libc_alloc(v: usize) {
     let m1 = libc::malloc(256);
-    let _ = libc::malloc(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = libc::aligned_alloc(8, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = libc::malloc(v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::aligned_alloc(8, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = libc::aligned_alloc(v, 8);
-    let _ = libc::calloc(64, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = libc::calloc(v, std::mem::size_of::<i64>()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = libc::realloc(m1, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = libc::calloc(64, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::calloc(v, std::mem::size_of::<i64>()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::realloc(m1, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 unsafe fn test_vectors(v: usize) {

@@ -1,4 +1,447 @@
 #select
+| main.rs:18:13:18:31 | ...::realloc | main.rs:211:13:211:26 | ...::args | main.rs:18:13:18:31 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:21:13:21:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:21:13:21:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:24:13:24:36 | ...::alloc_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:24:13:24:36 | ...::alloc_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:30:13:30:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:30:13:30:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:33:13:33:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:33:13:33:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:37:13:37:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:37:13:37:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:50:13:50:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:50:13:50:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:51:13:51:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:51:13:51:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:53:13:53:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:53:13:53:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:54:13:54:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:54:13:54:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:59:13:59:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:59:13:59:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:61:13:61:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:61:13:61:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:63:13:63:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:63:13:63:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:64:13:64:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:64:13:64:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:65:13:65:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:65:13:65:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:68:13:68:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:68:13:68:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:85:17:85:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:85:17:85:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:87:17:87:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:87:17:87:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:91:17:91:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:91:17:91:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:93:17:93:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:93:17:93:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:104:17:104:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:104:17:104:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:107:17:107:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:107:17:107:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:111:13:111:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:111:13:111:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:114:13:114:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:114:13:114:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:117:13:117:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:117:13:117:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:119:13:119:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:119:13:119:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:123:13:123:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:123:13:123:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:138:32:138:36 | alloc | main.rs:211:13:211:26 | ...::args | main.rs:138:32:138:36 | alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:139:32:139:43 | alloc_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:139:32:139:43 | alloc_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:140:32:140:39 | allocate | main.rs:211:13:211:26 | ...::args | main.rs:140:32:140:39 | allocate | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:141:32:141:46 | allocate_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:141:32:141:46 | allocate_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:142:32:142:39 | allocate | main.rs:211:13:211:26 | ...::args | main.rs:142:32:142:39 | allocate | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:143:32:143:46 | allocate_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:143:32:143:46 | allocate_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:153:40:153:43 | grow | main.rs:211:13:211:26 | ...::args | main.rs:153:40:153:43 | grow | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:155:40:155:50 | grow_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:155:40:155:50 | grow_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:164:13:164:24 | ...::malloc | main.rs:211:13:211:26 | ...::args | main.rs:164:13:164:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:164:13:164:24 | ...::malloc | main.rs:211:13:211:26 | ...::args | main.rs:164:13:164:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:165:13:165:31 | ...::aligned_alloc | main.rs:211:13:211:26 | ...::args | main.rs:165:13:165:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:165:13:165:31 | ...::aligned_alloc | main.rs:211:13:211:26 | ...::args | main.rs:165:13:165:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:167:13:167:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:167:13:167:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:167:13:167:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:167:13:167:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:168:13:168:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:168:13:168:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:168:13:168:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:168:13:168:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:169:13:169:25 | ...::realloc | main.rs:211:13:211:26 | ...::args | main.rs:169:13:169:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:169:13:169:25 | ...::realloc | main.rs:211:13:211:26 | ...::args | main.rs:169:13:169:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
 edges
+| main.rs:12:36:12:43 | ...: usize | main.rs:18:41:18:41 | v | provenance |  |
+| main.rs:18:41:18:41 | v | main.rs:18:13:18:31 | ...::realloc | provenance | MaD:5 Sink:MaD:5 |
+| main.rs:18:41:18:41 | v | main.rs:20:50:20:50 | v | provenance |  |
+| main.rs:18:41:18:41 | v | main.rs:29:60:29:60 | v | provenance |  |
+| main.rs:18:41:18:41 | v | main.rs:32:60:32:89 | ... * ... | provenance |  |
+| main.rs:18:41:18:41 | v | main.rs:35:9:35:10 | s6 | provenance |  |
+| main.rs:20:9:20:10 | l2 | main.rs:21:31:21:32 | l2 | provenance |  |
+| main.rs:20:14:20:54 | ...::from_size_align(...) [Ok] | main.rs:20:14:20:63 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:20:14:20:63 | ... .unwrap(...) | main.rs:20:9:20:10 | l2 | provenance |  |
+| main.rs:20:50:20:50 | v | main.rs:20:14:20:54 | ...::from_size_align(...) [Ok] | provenance | MaD:22 |
+| main.rs:21:31:21:32 | l2 | main.rs:21:13:21:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:21:31:21:32 | l2 | main.rs:24:38:24:39 | l2 | provenance |  |
+| main.rs:24:38:24:39 | l2 | main.rs:24:13:24:36 | ...::alloc_zeroed | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:29:9:29:10 | l4 | main.rs:30:31:30:32 | l4 | provenance |  |
+| main.rs:29:14:29:64 | ...::from_size_align_unchecked(...) | main.rs:29:9:29:10 | l4 | provenance |  |
+| main.rs:29:60:29:60 | v | main.rs:29:14:29:64 | ...::from_size_align_unchecked(...) | provenance | MaD:23 |
+| main.rs:30:31:30:32 | l4 | main.rs:30:13:30:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:32:9:32:10 | l5 | main.rs:33:31:33:32 | l5 | provenance |  |
+| main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | main.rs:32:9:32:10 | l5 | provenance |  |
+| main.rs:32:60:32:89 | ... * ... | main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | provenance | MaD:23 |
+| main.rs:33:31:33:32 | l5 | main.rs:33:13:33:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:35:9:35:10 | s6 | main.rs:36:60:36:61 | s6 | provenance |  |
+| main.rs:36:9:36:10 | l6 | main.rs:37:31:37:32 | l6 | provenance |  |
+| main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | main.rs:36:9:36:10 | l6 | provenance |  |
+| main.rs:36:60:36:61 | s6 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | provenance | MaD:23 |
+| main.rs:37:31:37:32 | l6 | main.rs:37:13:37:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:43:44:43:51 | ...: usize | main.rs:50:41:50:41 | v | provenance |  |
+| main.rs:43:44:43:51 | ...: usize | main.rs:51:41:51:45 | ... + ... | provenance |  |
+| main.rs:43:44:43:51 | ...: usize | main.rs:53:48:53:48 | v | provenance |  |
+| main.rs:43:44:43:51 | ...: usize | main.rs:54:48:54:53 | ... * ... | provenance |  |
+| main.rs:43:44:43:51 | ...: usize | main.rs:58:34:58:34 | v | provenance |  |
+| main.rs:43:44:43:51 | ...: usize | main.rs:67:46:67:46 | v | provenance |  |
+| main.rs:50:31:50:42 | l2.repeat(...) [Ok, tuple.0] | main.rs:50:31:50:51 | ... .unwrap(...) [tuple.0] | provenance | MaD:28 |
+| main.rs:50:31:50:51 | ... .unwrap(...) [tuple.0] | main.rs:50:31:50:53 | ... .0 | provenance |  |
+| main.rs:50:31:50:53 | ... .0 | main.rs:50:13:50:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:50:41:50:41 | v | main.rs:50:31:50:42 | l2.repeat(...) [Ok, tuple.0] | provenance | MaD:24 |
+| main.rs:51:31:51:46 | l2.repeat(...) [Ok, tuple.0] | main.rs:51:31:51:55 | ... .unwrap(...) [tuple.0] | provenance | MaD:28 |
+| main.rs:51:31:51:55 | ... .unwrap(...) [tuple.0] | main.rs:51:31:51:57 | ... .0 | provenance |  |
+| main.rs:51:31:51:57 | ... .0 | main.rs:51:13:51:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:51:41:51:45 | ... + ... | main.rs:51:31:51:46 | l2.repeat(...) [Ok, tuple.0] | provenance | MaD:24 |
+| main.rs:53:31:53:49 | l2.repeat_packed(...) [Ok] | main.rs:53:31:53:58 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:53:31:53:58 | ... .unwrap(...) | main.rs:53:13:53:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:53:48:53:48 | v | main.rs:53:31:53:49 | l2.repeat_packed(...) [Ok] | provenance | MaD:25 |
+| main.rs:54:31:54:54 | l2.repeat_packed(...) [Ok] | main.rs:54:31:54:63 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:54:31:54:63 | ... .unwrap(...) | main.rs:54:13:54:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:54:48:54:53 | ... * ... | main.rs:54:31:54:54 | l2.repeat_packed(...) [Ok] | provenance | MaD:25 |
+| main.rs:58:9:58:20 | TuplePat [tuple.0] | main.rs:58:10:58:11 | k1 | provenance |  |
+| main.rs:58:10:58:11 | k1 | main.rs:59:31:59:32 | k1 | provenance |  |
+| main.rs:58:24:58:35 | l3.repeat(...) [Ok, tuple.0] | main.rs:58:24:58:66 | ... .expect(...) [tuple.0] | provenance | MaD:27 |
+| main.rs:58:24:58:66 | ... .expect(...) [tuple.0] | main.rs:58:9:58:20 | TuplePat [tuple.0] | provenance |  |
+| main.rs:58:34:58:34 | v | main.rs:58:24:58:35 | l3.repeat(...) [Ok, tuple.0] | provenance | MaD:24 |
+| main.rs:59:31:59:32 | k1 | main.rs:59:13:59:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:59:31:59:32 | k1 | main.rs:60:34:60:35 | k1 | provenance |  |
+| main.rs:59:31:59:32 | k1 | main.rs:62:24:62:36 | k1.extend(...) [Ok, tuple.0] | provenance | MaD:19 |
+| main.rs:59:31:59:32 | k1 | main.rs:64:48:64:49 | k1 | provenance |  |
+| main.rs:59:31:59:32 | k1 | main.rs:65:31:65:50 | k1.extend_packed(...) [Ok] | provenance | MaD:21 |
+| main.rs:60:9:60:20 | TuplePat [tuple.0] | main.rs:60:10:60:11 | k2 | provenance |  |
+| main.rs:60:10:60:11 | k2 | main.rs:61:31:61:32 | k2 | provenance |  |
+| main.rs:60:24:60:36 | l3.extend(...) [Ok, tuple.0] | main.rs:60:24:60:45 | ... .unwrap(...) [tuple.0] | provenance | MaD:28 |
+| main.rs:60:24:60:45 | ... .unwrap(...) [tuple.0] | main.rs:60:9:60:20 | TuplePat [tuple.0] | provenance |  |
+| main.rs:60:34:60:35 | k1 | main.rs:60:24:60:36 | l3.extend(...) [Ok, tuple.0] | provenance | MaD:18 |
+| main.rs:61:31:61:32 | k2 | main.rs:61:13:61:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:62:9:62:20 | TuplePat [tuple.0] | main.rs:62:10:62:11 | k3 | provenance |  |
+| main.rs:62:10:62:11 | k3 | main.rs:63:31:63:32 | k3 | provenance |  |
+| main.rs:62:24:62:36 | k1.extend(...) [Ok, tuple.0] | main.rs:62:24:62:45 | ... .unwrap(...) [tuple.0] | provenance | MaD:28 |
+| main.rs:62:24:62:45 | ... .unwrap(...) [tuple.0] | main.rs:62:9:62:20 | TuplePat [tuple.0] | provenance |  |
+| main.rs:63:31:63:32 | k3 | main.rs:63:13:63:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | main.rs:64:31:64:59 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:64:31:64:59 | ... .unwrap(...) | main.rs:64:13:64:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:64:48:64:49 | k1 | main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | provenance | MaD:20 |
+| main.rs:65:31:65:50 | k1.extend_packed(...) [Ok] | main.rs:65:31:65:59 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:65:31:65:59 | ... .unwrap(...) | main.rs:65:13:65:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:67:9:67:10 | l4 | main.rs:68:31:68:32 | l4 | provenance |  |
+| main.rs:67:14:67:47 | ...::array::<...>(...) [Ok] | main.rs:67:14:67:56 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:67:14:67:56 | ... .unwrap(...) | main.rs:67:9:67:10 | l4 | provenance |  |
+| main.rs:67:46:67:46 | v | main.rs:67:14:67:47 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:68:31:68:32 | l4 | main.rs:68:13:68:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:71:35:71:38 | ...: T | main.rs:77:9:77:16 | return v | provenance |  |
+| main.rs:81:38:81:45 | ...: usize | main.rs:82:47:82:47 | v | provenance |  |
+| main.rs:81:38:81:45 | ...: usize | main.rs:97:13:97:21 | mut v_mut | provenance |  |
+| main.rs:81:38:81:45 | ...: usize | main.rs:106:51:106:51 | v | provenance |  |
+| main.rs:81:38:81:45 | ...: usize | main.rs:110:61:110:61 | v | provenance |  |
+| main.rs:81:38:81:45 | ...: usize | main.rs:113:61:113:61 | v | provenance |  |
+| main.rs:81:38:81:45 | ...: usize | main.rs:116:53:116:53 | v | provenance |  |
+| main.rs:82:9:82:10 | l1 | main.rs:85:35:85:36 | l1 | provenance |  |
+| main.rs:82:9:82:10 | l1 | main.rs:87:35:87:36 | l1 | provenance |  |
+| main.rs:82:14:82:48 | ...::array::<...>(...) [Ok] | main.rs:82:14:82:57 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:82:14:82:57 | ... .unwrap(...) | main.rs:82:9:82:10 | l1 | provenance |  |
+| main.rs:82:47:82:47 | v | main.rs:82:14:82:48 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:85:35:85:36 | l1 | main.rs:85:17:85:33 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:85:35:85:36 | l1 | main.rs:91:35:91:36 | l1 | provenance |  |
+| main.rs:85:35:85:36 | l1 | main.rs:93:35:93:36 | l1 | provenance |  |
+| main.rs:87:35:87:36 | l1 | main.rs:87:17:87:33 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:87:35:87:36 | l1 | main.rs:91:35:91:36 | l1 | provenance |  |
+| main.rs:87:35:87:36 | l1 | main.rs:93:35:93:36 | l1 | provenance |  |
+| main.rs:91:35:91:36 | l1 | main.rs:91:17:91:33 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:91:35:91:36 | l1 | main.rs:119:31:119:32 | l1 | provenance |  |
+| main.rs:93:35:93:36 | l1 | main.rs:93:17:93:33 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:93:35:93:36 | l1 | main.rs:119:31:119:32 | l1 | provenance |  |
+| main.rs:97:13:97:21 | mut v_mut | main.rs:103:51:103:55 | v_mut | provenance |  |
+| main.rs:103:13:103:14 | l2 | main.rs:104:35:104:36 | l2 | provenance |  |
+| main.rs:103:18:103:56 | ...::array::<...>(...) [Ok] | main.rs:103:18:103:65 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:103:18:103:65 | ... .unwrap(...) | main.rs:103:13:103:14 | l2 | provenance |  |
+| main.rs:103:51:103:55 | v_mut | main.rs:103:18:103:56 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:104:35:104:36 | l2 | main.rs:104:17:104:33 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:106:13:106:14 | l3 | main.rs:107:35:107:36 | l3 | provenance |  |
+| main.rs:106:18:106:52 | ...::array::<...>(...) [Ok] | main.rs:106:18:106:61 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:106:18:106:61 | ... .unwrap(...) | main.rs:106:13:106:14 | l3 | provenance |  |
+| main.rs:106:51:106:51 | v | main.rs:106:18:106:52 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:107:35:107:36 | l3 | main.rs:107:17:107:33 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:110:9:110:10 | l4 | main.rs:111:31:111:32 | l4 | provenance |  |
+| main.rs:110:14:110:68 | ...::array::<...>(...) [Ok] | main.rs:110:14:110:77 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:110:14:110:77 | ... .unwrap(...) | main.rs:110:9:110:10 | l4 | provenance |  |
+| main.rs:110:47:110:67 | ...::min(...) | main.rs:110:14:110:68 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:110:61:110:61 | v | main.rs:110:47:110:67 | ...::min(...) | provenance | MaD:31 |
+| main.rs:111:31:111:32 | l4 | main.rs:111:13:111:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:113:9:113:10 | l5 | main.rs:114:31:114:32 | l5 | provenance |  |
+| main.rs:113:14:113:68 | ...::array::<...>(...) [Ok] | main.rs:113:14:113:77 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:113:14:113:77 | ... .unwrap(...) | main.rs:113:9:113:10 | l5 | provenance |  |
+| main.rs:113:47:113:67 | ...::max(...) | main.rs:113:14:113:68 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:113:61:113:61 | v | main.rs:113:47:113:67 | ...::max(...) | provenance | MaD:30 |
+| main.rs:114:31:114:32 | l5 | main.rs:114:13:114:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:116:9:116:10 | l6 | main.rs:117:31:117:32 | l6 | provenance |  |
+| main.rs:116:14:116:63 | ...::array::<...>(...) [Ok] | main.rs:116:14:116:72 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:116:14:116:72 | ... .unwrap(...) | main.rs:116:9:116:10 | l6 | provenance |  |
+| main.rs:116:47:116:62 | clamp(...) | main.rs:116:14:116:63 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:116:53:116:53 | v | main.rs:71:35:71:38 | ...: T | provenance |  |
+| main.rs:116:53:116:53 | v | main.rs:116:47:116:62 | clamp(...) | provenance |  |
+| main.rs:117:31:117:32 | l6 | main.rs:117:13:117:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:119:31:119:32 | l1 | main.rs:119:13:119:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:119:31:119:32 | l1 | main.rs:123:31:123:32 | l1 | provenance |  |
+| main.rs:123:31:123:32 | l1 | main.rs:123:13:123:29 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:128:29:128:36 | ...: usize | main.rs:137:46:137:46 | v | provenance |  |
+| main.rs:137:9:137:10 | l2 | main.rs:138:38:138:39 | l2 | provenance |  |
+| main.rs:137:14:137:47 | ...::array::<...>(...) [Ok] | main.rs:137:14:137:56 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:137:14:137:56 | ... .unwrap(...) | main.rs:137:9:137:10 | l2 | provenance |  |
+| main.rs:137:46:137:46 | v | main.rs:137:14:137:47 | ...::array::<...>(...) [Ok] | provenance | MaD:17 |
+| main.rs:138:38:138:39 | l2 | main.rs:138:32:138:36 | alloc | provenance | MaD:10 Sink:MaD:10 |
+| main.rs:138:38:138:39 | l2 | main.rs:139:45:139:46 | l2 | provenance |  |
+| main.rs:139:45:139:46 | l2 | main.rs:139:32:139:43 | alloc_zeroed | provenance | MaD:11 Sink:MaD:11 |
+| main.rs:139:45:139:46 | l2 | main.rs:140:41:140:42 | l2 | provenance |  |
+| main.rs:140:41:140:42 | l2 | main.rs:140:32:140:39 | allocate | provenance | MaD:6 Sink:MaD:6 |
+| main.rs:140:41:140:42 | l2 | main.rs:141:48:141:49 | l2 | provenance |  |
+| main.rs:141:48:141:49 | l2 | main.rs:141:32:141:46 | allocate_zeroed | provenance | MaD:7 Sink:MaD:7 |
+| main.rs:141:48:141:49 | l2 | main.rs:142:41:142:42 | l2 | provenance |  |
+| main.rs:142:41:142:42 | l2 | main.rs:142:32:142:39 | allocate | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:142:41:142:42 | l2 | main.rs:143:48:143:49 | l2 | provenance |  |
+| main.rs:143:48:143:49 | l2 | main.rs:143:32:143:46 | allocate_zeroed | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:143:48:143:49 | l2 | main.rs:153:53:153:54 | l2 | provenance |  |
+| main.rs:143:48:143:49 | l2 | main.rs:155:60:155:61 | l2 | provenance |  |
+| main.rs:153:53:153:54 | l2 | main.rs:153:40:153:43 | grow | provenance | MaD:8 Sink:MaD:8 |
+| main.rs:155:60:155:61 | l2 | main.rs:155:40:155:50 | grow_zeroed | provenance | MaD:9 Sink:MaD:9 |
+| main.rs:162:27:162:34 | ...: usize | main.rs:164:26:164:26 | v | provenance |  |
+| main.rs:164:26:164:26 | v | main.rs:164:13:164:24 | ...::malloc | provenance | MaD:14 Sink:MaD:14 |
+| main.rs:164:26:164:26 | v | main.rs:164:13:164:24 | ...::malloc | provenance | MaD:14 Sink:MaD:14 |
+| main.rs:164:26:164:26 | v | main.rs:165:36:165:36 | v | provenance |  |
+| main.rs:165:36:165:36 | v | main.rs:165:13:165:31 | ...::aligned_alloc | provenance | MaD:12 Sink:MaD:12 |
+| main.rs:165:36:165:36 | v | main.rs:165:13:165:31 | ...::aligned_alloc | provenance | MaD:12 Sink:MaD:12 |
+| main.rs:165:36:165:36 | v | main.rs:167:30:167:30 | v | provenance |  |
+| main.rs:167:30:167:30 | v | main.rs:167:13:167:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
+| main.rs:167:30:167:30 | v | main.rs:167:13:167:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
+| main.rs:167:30:167:30 | v | main.rs:168:26:168:26 | v | provenance |  |
+| main.rs:168:26:168:26 | v | main.rs:168:13:168:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
+| main.rs:168:26:168:26 | v | main.rs:168:13:168:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
+| main.rs:168:26:168:26 | v | main.rs:169:31:169:31 | v | provenance |  |
+| main.rs:169:31:169:31 | v | main.rs:169:13:169:25 | ...::realloc | provenance | MaD:15 Sink:MaD:15 |
+| main.rs:169:31:169:31 | v | main.rs:169:13:169:25 | ...::realloc | provenance | MaD:15 Sink:MaD:15 |
+| main.rs:211:9:211:9 | v | main.rs:214:34:214:34 | v | provenance |  |
+| main.rs:211:9:211:9 | v | main.rs:215:42:215:42 | v | provenance |  |
+| main.rs:211:9:211:9 | v | main.rs:216:36:216:36 | v | provenance |  |
+| main.rs:211:9:211:9 | v | main.rs:217:27:217:27 | v | provenance |  |
+| main.rs:211:9:211:9 | v | main.rs:218:25:218:25 | v | provenance |  |
+| main.rs:211:13:211:26 | ...::args | main.rs:211:13:211:28 | ...::args(...) [element] | provenance | Src:MaD:16  |
+| main.rs:211:13:211:28 | ...::args(...) [element] | main.rs:211:13:211:35 | ... .nth(...) [Some] | provenance | MaD:32 |
+| main.rs:211:13:211:35 | ... .nth(...) [Some] | main.rs:211:13:211:65 | ... .unwrap_or(...) | provenance | MaD:26 |
+| main.rs:211:13:211:65 | ... .unwrap_or(...) | main.rs:211:13:211:82 | ... .parse(...) [Ok] | provenance | MaD:29 |
+| main.rs:211:13:211:82 | ... .parse(...) [Ok] | main.rs:211:13:211:91 | ... .unwrap(...) | provenance | MaD:28 |
+| main.rs:211:13:211:91 | ... .unwrap(...) | main.rs:211:9:211:9 | v | provenance |  |
+| main.rs:214:34:214:34 | v | main.rs:12:36:12:43 | ...: usize | provenance |  |
+| main.rs:215:42:215:42 | v | main.rs:43:44:43:51 | ...: usize | provenance |  |
+| main.rs:216:36:216:36 | v | main.rs:81:38:81:45 | ...: usize | provenance |  |
+| main.rs:217:27:217:27 | v | main.rs:128:29:128:36 | ...: usize | provenance |  |
+| main.rs:218:25:218:25 | v | main.rs:162:27:162:34 | ...: usize | provenance |  |
+models
+| 1 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate; alloc-layout; Argument[0] |
+| 2 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed; alloc-layout; Argument[0] |
+| 3 | Sink: lang:alloc; crate::alloc::alloc; alloc-layout; Argument[0] |
+| 4 | Sink: lang:alloc; crate::alloc::alloc_zeroed; alloc-layout; Argument[0] |
+| 5 | Sink: lang:alloc; crate::alloc::realloc; alloc-size; Argument[2] |
+| 6 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::allocate; alloc-layout; Argument[0] |
+| 7 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::allocate_zeroed; alloc-layout; Argument[0] |
+| 8 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow; alloc-layout; Argument[2] |
+| 9 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow_zeroed; alloc-layout; Argument[2] |
+| 10 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; alloc-layout; Argument[0] |
+| 11 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; alloc-layout; Argument[0] |
+| 12 | Sink: repo:https://github.com/rust-lang/libc:libc; ::aligned_alloc; alloc-size; Argument[1] |
+| 13 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; alloc-size; Argument[0,1] |
+| 14 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; alloc-size; Argument[0] |
+| 15 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; alloc-size; Argument[1] |
+| 16 | Source: lang:std; crate::env::args; command-line-source; ReturnValue.Element |
+| 17 | Summary: lang:core; <crate::alloc::layout::Layout>::array; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 18 | Summary: lang:core; <crate::alloc::layout::Layout>::extend; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; taint |
+| 19 | Summary: lang:core; <crate::alloc::layout::Layout>::extend; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; taint |
+| 20 | Summary: lang:core; <crate::alloc::layout::Layout>::extend_packed; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 21 | Summary: lang:core; <crate::alloc::layout::Layout>::extend_packed; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 22 | Summary: lang:core; <crate::alloc::layout::Layout>::from_size_align; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 23 | Summary: lang:core; <crate::alloc::layout::Layout>::from_size_align_unchecked; Argument[0]; ReturnValue; taint |
+| 24 | Summary: lang:core; <crate::alloc::layout::Layout>::repeat; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; taint |
+| 25 | Summary: lang:core; <crate::alloc::layout::Layout>::repeat_packed; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 26 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 27 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 28 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 29 | Summary: lang:core; <str>::parse; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 30 | Summary: lang:core; crate::cmp::max; Argument[0]; ReturnValue; value |
+| 31 | Summary: lang:core; crate::cmp::min; Argument[0]; ReturnValue; value |
+| 32 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
 nodes
+| main.rs:12:36:12:43 | ...: usize | semmle.label | ...: usize |
+| main.rs:18:13:18:31 | ...::realloc | semmle.label | ...::realloc |
+| main.rs:18:41:18:41 | v | semmle.label | v |
+| main.rs:20:9:20:10 | l2 | semmle.label | l2 |
+| main.rs:20:14:20:54 | ...::from_size_align(...) [Ok] | semmle.label | ...::from_size_align(...) [Ok] |
+| main.rs:20:14:20:63 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:20:50:20:50 | v | semmle.label | v |
+| main.rs:21:13:21:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:21:31:21:32 | l2 | semmle.label | l2 |
+| main.rs:24:13:24:36 | ...::alloc_zeroed | semmle.label | ...::alloc_zeroed |
+| main.rs:24:38:24:39 | l2 | semmle.label | l2 |
+| main.rs:29:9:29:10 | l4 | semmle.label | l4 |
+| main.rs:29:14:29:64 | ...::from_size_align_unchecked(...) | semmle.label | ...::from_size_align_unchecked(...) |
+| main.rs:29:60:29:60 | v | semmle.label | v |
+| main.rs:30:13:30:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:30:31:30:32 | l4 | semmle.label | l4 |
+| main.rs:32:9:32:10 | l5 | semmle.label | l5 |
+| main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | semmle.label | ...::from_size_align_unchecked(...) |
+| main.rs:32:60:32:89 | ... * ... | semmle.label | ... * ... |
+| main.rs:33:13:33:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:33:31:33:32 | l5 | semmle.label | l5 |
+| main.rs:35:9:35:10 | s6 | semmle.label | s6 |
+| main.rs:36:9:36:10 | l6 | semmle.label | l6 |
+| main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | semmle.label | ...::from_size_align_unchecked(...) |
+| main.rs:36:60:36:61 | s6 | semmle.label | s6 |
+| main.rs:37:13:37:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:37:31:37:32 | l6 | semmle.label | l6 |
+| main.rs:43:44:43:51 | ...: usize | semmle.label | ...: usize |
+| main.rs:50:13:50:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:50:31:50:42 | l2.repeat(...) [Ok, tuple.0] | semmle.label | l2.repeat(...) [Ok, tuple.0] |
+| main.rs:50:31:50:51 | ... .unwrap(...) [tuple.0] | semmle.label | ... .unwrap(...) [tuple.0] |
+| main.rs:50:31:50:53 | ... .0 | semmle.label | ... .0 |
+| main.rs:50:41:50:41 | v | semmle.label | v |
+| main.rs:51:13:51:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:51:31:51:46 | l2.repeat(...) [Ok, tuple.0] | semmle.label | l2.repeat(...) [Ok, tuple.0] |
+| main.rs:51:31:51:55 | ... .unwrap(...) [tuple.0] | semmle.label | ... .unwrap(...) [tuple.0] |
+| main.rs:51:31:51:57 | ... .0 | semmle.label | ... .0 |
+| main.rs:51:41:51:45 | ... + ... | semmle.label | ... + ... |
+| main.rs:53:13:53:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:53:31:53:49 | l2.repeat_packed(...) [Ok] | semmle.label | l2.repeat_packed(...) [Ok] |
+| main.rs:53:31:53:58 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:53:48:53:48 | v | semmle.label | v |
+| main.rs:54:13:54:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:54:31:54:54 | l2.repeat_packed(...) [Ok] | semmle.label | l2.repeat_packed(...) [Ok] |
+| main.rs:54:31:54:63 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:54:48:54:53 | ... * ... | semmle.label | ... * ... |
+| main.rs:58:9:58:20 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:58:10:58:11 | k1 | semmle.label | k1 |
+| main.rs:58:24:58:35 | l3.repeat(...) [Ok, tuple.0] | semmle.label | l3.repeat(...) [Ok, tuple.0] |
+| main.rs:58:24:58:66 | ... .expect(...) [tuple.0] | semmle.label | ... .expect(...) [tuple.0] |
+| main.rs:58:34:58:34 | v | semmle.label | v |
+| main.rs:59:13:59:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:59:31:59:32 | k1 | semmle.label | k1 |
+| main.rs:60:9:60:20 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:60:10:60:11 | k2 | semmle.label | k2 |
+| main.rs:60:24:60:36 | l3.extend(...) [Ok, tuple.0] | semmle.label | l3.extend(...) [Ok, tuple.0] |
+| main.rs:60:24:60:45 | ... .unwrap(...) [tuple.0] | semmle.label | ... .unwrap(...) [tuple.0] |
+| main.rs:60:34:60:35 | k1 | semmle.label | k1 |
+| main.rs:61:13:61:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:61:31:61:32 | k2 | semmle.label | k2 |
+| main.rs:62:9:62:20 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:62:10:62:11 | k3 | semmle.label | k3 |
+| main.rs:62:24:62:36 | k1.extend(...) [Ok, tuple.0] | semmle.label | k1.extend(...) [Ok, tuple.0] |
+| main.rs:62:24:62:45 | ... .unwrap(...) [tuple.0] | semmle.label | ... .unwrap(...) [tuple.0] |
+| main.rs:63:13:63:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:63:31:63:32 | k3 | semmle.label | k3 |
+| main.rs:64:13:64:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | semmle.label | l3.extend_packed(...) [Ok] |
+| main.rs:64:31:64:59 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:64:48:64:49 | k1 | semmle.label | k1 |
+| main.rs:65:13:65:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:65:31:65:50 | k1.extend_packed(...) [Ok] | semmle.label | k1.extend_packed(...) [Ok] |
+| main.rs:65:31:65:59 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:67:9:67:10 | l4 | semmle.label | l4 |
+| main.rs:67:14:67:47 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:67:14:67:56 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:67:46:67:46 | v | semmle.label | v |
+| main.rs:68:13:68:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:68:31:68:32 | l4 | semmle.label | l4 |
+| main.rs:71:35:71:38 | ...: T | semmle.label | ...: T |
+| main.rs:77:9:77:16 | return v | semmle.label | return v |
+| main.rs:81:38:81:45 | ...: usize | semmle.label | ...: usize |
+| main.rs:82:9:82:10 | l1 | semmle.label | l1 |
+| main.rs:82:14:82:48 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:82:14:82:57 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:82:47:82:47 | v | semmle.label | v |
+| main.rs:85:17:85:33 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:85:35:85:36 | l1 | semmle.label | l1 |
+| main.rs:87:17:87:33 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:87:35:87:36 | l1 | semmle.label | l1 |
+| main.rs:91:17:91:33 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:91:35:91:36 | l1 | semmle.label | l1 |
+| main.rs:93:17:93:33 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:93:35:93:36 | l1 | semmle.label | l1 |
+| main.rs:97:13:97:21 | mut v_mut | semmle.label | mut v_mut |
+| main.rs:103:13:103:14 | l2 | semmle.label | l2 |
+| main.rs:103:18:103:56 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:103:18:103:65 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:103:51:103:55 | v_mut | semmle.label | v_mut |
+| main.rs:104:17:104:33 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:104:35:104:36 | l2 | semmle.label | l2 |
+| main.rs:106:13:106:14 | l3 | semmle.label | l3 |
+| main.rs:106:18:106:52 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:106:18:106:61 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:106:51:106:51 | v | semmle.label | v |
+| main.rs:107:17:107:33 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:107:35:107:36 | l3 | semmle.label | l3 |
+| main.rs:110:9:110:10 | l4 | semmle.label | l4 |
+| main.rs:110:14:110:68 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:110:14:110:77 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:110:47:110:67 | ...::min(...) | semmle.label | ...::min(...) |
+| main.rs:110:61:110:61 | v | semmle.label | v |
+| main.rs:111:13:111:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:111:31:111:32 | l4 | semmle.label | l4 |
+| main.rs:113:9:113:10 | l5 | semmle.label | l5 |
+| main.rs:113:14:113:68 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:113:14:113:77 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:113:47:113:67 | ...::max(...) | semmle.label | ...::max(...) |
+| main.rs:113:61:113:61 | v | semmle.label | v |
+| main.rs:114:13:114:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:114:31:114:32 | l5 | semmle.label | l5 |
+| main.rs:116:9:116:10 | l6 | semmle.label | l6 |
+| main.rs:116:14:116:63 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:116:14:116:72 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:116:47:116:62 | clamp(...) | semmle.label | clamp(...) |
+| main.rs:116:53:116:53 | v | semmle.label | v |
+| main.rs:117:13:117:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:117:31:117:32 | l6 | semmle.label | l6 |
+| main.rs:119:13:119:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:119:31:119:32 | l1 | semmle.label | l1 |
+| main.rs:123:13:123:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:123:31:123:32 | l1 | semmle.label | l1 |
+| main.rs:128:29:128:36 | ...: usize | semmle.label | ...: usize |
+| main.rs:137:9:137:10 | l2 | semmle.label | l2 |
+| main.rs:137:14:137:47 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
+| main.rs:137:14:137:56 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:137:46:137:46 | v | semmle.label | v |
+| main.rs:138:32:138:36 | alloc | semmle.label | alloc |
+| main.rs:138:38:138:39 | l2 | semmle.label | l2 |
+| main.rs:139:32:139:43 | alloc_zeroed | semmle.label | alloc_zeroed |
+| main.rs:139:45:139:46 | l2 | semmle.label | l2 |
+| main.rs:140:32:140:39 | allocate | semmle.label | allocate |
+| main.rs:140:41:140:42 | l2 | semmle.label | l2 |
+| main.rs:141:32:141:46 | allocate_zeroed | semmle.label | allocate_zeroed |
+| main.rs:141:48:141:49 | l2 | semmle.label | l2 |
+| main.rs:142:32:142:39 | allocate | semmle.label | allocate |
+| main.rs:142:41:142:42 | l2 | semmle.label | l2 |
+| main.rs:143:32:143:46 | allocate_zeroed | semmle.label | allocate_zeroed |
+| main.rs:143:48:143:49 | l2 | semmle.label | l2 |
+| main.rs:153:40:153:43 | grow | semmle.label | grow |
+| main.rs:153:53:153:54 | l2 | semmle.label | l2 |
+| main.rs:155:40:155:50 | grow_zeroed | semmle.label | grow_zeroed |
+| main.rs:155:60:155:61 | l2 | semmle.label | l2 |
+| main.rs:162:27:162:34 | ...: usize | semmle.label | ...: usize |
+| main.rs:164:13:164:24 | ...::malloc | semmle.label | ...::malloc |
+| main.rs:164:13:164:24 | ...::malloc | semmle.label | ...::malloc |
+| main.rs:164:26:164:26 | v | semmle.label | v |
+| main.rs:165:13:165:31 | ...::aligned_alloc | semmle.label | ...::aligned_alloc |
+| main.rs:165:13:165:31 | ...::aligned_alloc | semmle.label | ...::aligned_alloc |
+| main.rs:165:36:165:36 | v | semmle.label | v |
+| main.rs:167:13:167:24 | ...::calloc | semmle.label | ...::calloc |
+| main.rs:167:13:167:24 | ...::calloc | semmle.label | ...::calloc |
+| main.rs:167:30:167:30 | v | semmle.label | v |
+| main.rs:168:13:168:24 | ...::calloc | semmle.label | ...::calloc |
+| main.rs:168:13:168:24 | ...::calloc | semmle.label | ...::calloc |
+| main.rs:168:26:168:26 | v | semmle.label | v |
+| main.rs:169:13:169:25 | ...::realloc | semmle.label | ...::realloc |
+| main.rs:169:13:169:25 | ...::realloc | semmle.label | ...::realloc |
+| main.rs:169:31:169:31 | v | semmle.label | v |
+| main.rs:211:9:211:9 | v | semmle.label | v |
+| main.rs:211:13:211:26 | ...::args | semmle.label | ...::args |
+| main.rs:211:13:211:28 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:211:13:211:35 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:211:13:211:65 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:211:13:211:82 | ... .parse(...) [Ok] | semmle.label | ... .parse(...) [Ok] |
+| main.rs:211:13:211:91 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:214:34:214:34 | v | semmle.label | v |
+| main.rs:215:42:215:42 | v | semmle.label | v |
+| main.rs:216:36:216:36 | v | semmle.label | v |
+| main.rs:217:27:217:27 | v | semmle.label | v |
+| main.rs:218:25:218:25 | v | semmle.label | v |
 subpaths
+| main.rs:116:53:116:53 | v | main.rs:71:35:71:38 | ...: T | main.rs:77:9:77:16 | return v | main.rs:116:47:116:62 | clamp(...) |
