@@ -138,12 +138,6 @@ private class AllowedPrefixSanitizer extends PathInjectionSanitizer {
  * been checked for a trusted prefix.
  */
 private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
-  // Local taint-flow is used here to handle cases where the validated expression comes from the
-  // expression reaching the sink, but it's not the same one, e.g.:
-  //  Path path = source();
-  //  String strPath = path.toString();
-  //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
-  //    sink(path);
   pathTraversalGuard(g, e, branch) and
   exists(Guard previousGuard |
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
@@ -365,6 +359,12 @@ private predicate maybeNull(Expr expr) {
 
 /** Holds if `g` is a guard that checks for `..` components. */
 private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
+  // Local taint-flow is used here to handle cases where the validated expression comes from the
+  // expression reaching the sink, but it's not the same one, e.g.:
+  //  Path path = source();
+  //  String strPath = path.toString();
+  //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
+  //    sink(path);
   branch = g.(PathTraversalGuard).getBranch() and
   localTaintFlowToPathGuard(e, g)
 }
