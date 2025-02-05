@@ -388,7 +388,7 @@ private class FileConstructorSanitizer extends PathInjectionSanitizer {
         arg = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode().asExpr() or
         TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), arg)
       ) and
-      this.asExpr() = arg
+      this.asExpr() = constrCall
     )
   }
 }

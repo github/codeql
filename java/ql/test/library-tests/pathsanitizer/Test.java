@@ -483,7 +483,7 @@ public class Test {
             if (!source.contains("..")) {
                 File f2 = new File(f1, source);
                 sink(f2); // Safe
-                sink(source); // $ MISSING: hasTaintFlow
+                sink(source); // $ hasTaintFlow
             } else {
                 File f3 = new File(f1, source);
                 sink(f3); // $ hasTaintFlow
@@ -497,7 +497,7 @@ public class Test {
                 // `f2` is unsafe if `f1` is tainted
                 File f2 = new File(f1Tainted, source);
                 sink(f2); // $ hasTaintFlow
-                sink(source); // $ MISSING: hasTaintFlow
+                sink(source); // $ hasTaintFlow
             } else {
                 File f3 = new File(f1Tainted, source);
                 sink(f3); // $ hasTaintFlow
@@ -524,7 +524,7 @@ public class Test {
             if (source.indexOf("..") == -1) {
                 File f2 = new File(f1, source);
                 sink(f2); // Safe
-                sink(source); // $ MISSING: hasTaintFlow
+                sink(source); // $ hasTaintFlow
             } else {
                 File f3 = new File(f1, source);
                 sink(f3); // $ hasTaintFlow
@@ -541,7 +541,7 @@ public class Test {
             } else {
                 File f3 = new File(f1, source);
                 sink(f3); // Safe
-                sink(source); // $ MISSING: hasTaintFlow
+                sink(source); // $ hasTaintFlow
             }
         }
         {
@@ -550,7 +550,7 @@ public class Test {
             if (source.lastIndexOf("..") == -1) {
                 File f2 = new File(f1, source);
                 sink(f2); // Safe
-                sink(source); // $ MISSING: hasTaintFlow
+                sink(source); // $ hasTaintFlow
             } else {
                 File f3 = new File(f1, source);
                 sink(f3); // $ hasTaintFlow
@@ -564,7 +564,7 @@ public class Test {
             fileConstructorValidation(source);
             File f2 = new File(f1, source);
             sink(f2); // Safe
-            sink(source); // $ MISSING: hasTaintFlow
+            sink(source); // $ hasTaintFlow
         }
         {
             String source = (String) source();
@@ -575,7 +575,7 @@ public class Test {
             } else {
                 File f2 = new File(f1, source);
                 sink(f2); // Safe
-                sink(source); // $ MISSING: hasTaintFlow
+                sink(source); // $ hasTaintFlow
             }
         }
         // PathNormalizeSanitizer
@@ -586,7 +586,7 @@ public class Test {
             File f2 = new File(f1, normalized);
             sink(f2); // Safe
             sink(source); // $ hasTaintFlow
-            sink(normalized); // $ MISSING: hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
         }
         {
             File source = (File) source();
@@ -595,7 +595,7 @@ public class Test {
             File f2 = new File(f1, normalized);
             sink(f2); // Safe
             sink(source); // $ hasTaintFlow
-            sink(normalized); // $ MISSING: hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
         }
         {
             String source = (String) source();
@@ -604,7 +604,7 @@ public class Test {
             File f2 = new File(f1, normalized);
             sink(f2); // Safe
             sink(source); // $ hasTaintFlow
-            sink(normalized); // $ MISSING: hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
         }
     }
 }
