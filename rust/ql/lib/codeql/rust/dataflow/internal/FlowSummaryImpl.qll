@@ -97,6 +97,10 @@ module Input implements InputSig<Location, RustDataFlow> {
         c = TTuplePositionContent(pos) and
         arg = pos.toString()
       )
+      or
+      result = "Future" and
+      c = TFutureContent() and
+      arg = ""
     )
   }
 

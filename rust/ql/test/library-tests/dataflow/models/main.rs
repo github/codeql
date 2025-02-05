@@ -210,7 +210,7 @@ async fn get_async_number(a: i64) -> i64 {
 async fn test_get_async_number() {
     let s = source(46);
     let t = get_async_number(s).await;
-    sink(t); // $ MISSING: hasValueFlow=46
+    sink(t); // $ hasValueFlow=46
 }
 
 impl MyFieldEnum {
