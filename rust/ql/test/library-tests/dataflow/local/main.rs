@@ -441,8 +441,8 @@ fn parse() {
 
     sink(a); // $ hasValueFlow=90
     sink_string(b); // $ hasTaintFlow=90
-    sink(c); // $ MISSING: hasTaintFlow=90
-    sink(d); // $ MISSING: hasTaintFlow=90
+    sink(c); // $ hasTaintFlow=90
+    sink(d); // $ hasTaintFlow=90
 }
 
 fn iterators() {
