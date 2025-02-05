@@ -5,6 +5,7 @@
 
 private import DataFlow as DF
 private import internal.DataFlowImpl
+private import internal.DataFlowImplStage1
 private import codeql.util.Location
 
 /**
@@ -47,6 +48,7 @@ module TaintFlowMake<
   private import TaintTrackingLang
   private import DF::DataFlowMake<Location, DataFlowLang> as DataFlow
   private import MakeImpl<Location, DataFlowLang> as DataFlowInternal
+  private import MakeImplStage1<Location, DataFlowLang> as DataFlowInternalStage1
 
   private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
     DataFlowInternal::FullStateConfigSig
@@ -94,7 +96,13 @@ module TaintFlowMake<
       import AddTaintDefaults<Config0>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
   }
 
   /**
@@ -122,7 +130,13 @@ module TaintFlowMake<
       import AddTaintDefaults<Config0>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   signature int speculationLimitSig();
@@ -218,7 +232,13 @@ module TaintFlowMake<
       import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   /**
@@ -250,6 +270,12 @@ module TaintFlowMake<
       import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 }
