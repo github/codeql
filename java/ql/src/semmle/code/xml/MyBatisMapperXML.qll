@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with MyBatis mapper xml files and their content.
  */
+deprecated module;
 
 import java
 

@@ -635,8 +635,7 @@ private module Cached {
     } or
     TElementContentOfTypeContent(string type, Boolean includeUnknown) {
       type = any(Content::KnownElementContent content).getIndex().getValueType()
-    } or
-    deprecated TNoContentSet() // Only used by type-tracking
+    }
 
   cached
   class TContentSet =

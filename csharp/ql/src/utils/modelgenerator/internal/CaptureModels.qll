@@ -361,7 +361,29 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     c.isDelegateCallReturn() and result = "ReturnValue"
   }
 
-  predicate partialModel = ExternalFlow::partialModel/6;
+  string partialModelRow(Callable api, int i) {
+    i = 0 and ExternalFlow::partialModel(api, result, _, _, _, _) // package
+    or
+    i = 1 and ExternalFlow::partialModel(api, _, result, _, _, _) // type
+    or
+    i = 2 and ExternalFlow::partialModel(api, _, _, result, _, _) // extensible
+    or
+    i = 3 and ExternalFlow::partialModel(api, _, _, _, result, _) // name
+    or
+    i = 4 and ExternalFlow::partialModel(api, _, _, _, _, result) // parameters
+    or
+    i = 5 and result = "" and exists(api) // ext
+  }
+
+  string partialNeutralModelRow(Callable api, int i) {
+    i = 0 and result = partialModelRow(api, 0) // package
+    or
+    i = 1 and result = partialModelRow(api, 1) // type
+    or
+    i = 2 and result = partialModelRow(api, 3) // name
+    or
+    i = 3 and result = partialModelRow(api, 4) // parameters
+  }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;
 

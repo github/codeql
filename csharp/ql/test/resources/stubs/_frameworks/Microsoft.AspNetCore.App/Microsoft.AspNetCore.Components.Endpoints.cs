@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Endpoints, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Endpoints, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -14,6 +14,7 @@ namespace Microsoft
             public static partial class RazorComponentsEndpointConventionBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder AddAdditionalAssemblies(this Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder, params System.Reflection.Assembly[] assemblies) => throw null;
+                public static Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder WithStaticAssets(this Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder, string manifestPath = default(string)) => throw null;
             }
             public static partial class RazorComponentsEndpointRouteBuilderExtensions
             {
@@ -40,6 +41,7 @@ namespace Microsoft
                     public static class ComponentEndpointConventionBuilderHelper
                     {
                         public static void AddRenderMode(Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder, Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
+                        public static Microsoft.AspNetCore.Routing.IEndpointRouteBuilder GetEndpointRouteBuilder(Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder) => throw null;
                     }
                     public abstract class RenderModeEndpointProvider
                     {
@@ -68,11 +70,46 @@ namespace Microsoft
                     public System.Type Type { get => throw null; }
                 }
             }
+            public sealed class ImportMap : Microsoft.AspNetCore.Components.IComponent
+            {
+                public System.Collections.Generic.IReadOnlyDictionary<string, object> AdditionalAttributes { get => throw null; set { } }
+                void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
+                public ImportMap() => throw null;
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
+                public Microsoft.AspNetCore.Components.ImportMapDefinition ImportMapDefinition { get => throw null; set { } }
+                System.Threading.Tasks.Task Microsoft.AspNetCore.Components.IComponent.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
+            }
+            public sealed class ImportMapDefinition
+            {
+                public static Microsoft.AspNetCore.Components.ImportMapDefinition Combine(params Microsoft.AspNetCore.Components.ImportMapDefinition[] sources) => throw null;
+                public ImportMapDefinition(System.Collections.Generic.IReadOnlyDictionary<string, string> imports, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IReadOnlyDictionary<string, string>> scopes, System.Collections.Generic.IReadOnlyDictionary<string, string> integrity) => throw null;
+                public static Microsoft.AspNetCore.Components.ImportMapDefinition FromResourceCollection(Microsoft.AspNetCore.Components.ResourceAssetCollection assets) => throw null;
+                public System.Collections.Generic.IReadOnlyDictionary<string, string> Imports { get => throw null; }
+                public System.Collections.Generic.IReadOnlyDictionary<string, string> Integrity { get => throw null; }
+                public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IReadOnlyDictionary<string, string>> Scopes { get => throw null; }
+                public override string ToString() => throw null;
+            }
             public enum PersistedStateSerializationMode
             {
                 Infer = 1,
                 Server = 2,
                 WebAssembly = 3,
+            }
+            namespace Routing
+            {
+                public static partial class RazorComponentsEndpointHttpContextExtensions
+                {
+                    public static bool AcceptsInteractiveRouting(this Microsoft.AspNetCore.Http.HttpContext context) => throw null;
+                }
+            }
+            namespace Server
+            {
+                public class ServerAuthenticationStateProvider : Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider, Microsoft.AspNetCore.Components.Authorization.IHostEnvironmentAuthenticationStateProvider
+                {
+                    public ServerAuthenticationStateProvider() => throw null;
+                    public override System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> GetAuthenticationStateAsync() => throw null;
+                    public void SetAuthenticationState(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> authenticationStateTask) => throw null;
+                }
             }
         }
         namespace Http

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.NETCore.Platforms/1.1.0/Microsoft.NETCore.Platforms.csproj" />
+    <ProjectReference Include="../../Microsoft.NETCore.Platforms/3.1.0/Microsoft.NETCore.Platforms.csproj" />
     <ProjectReference Include="../../System.Buffers/4.3.0/System.Buffers.csproj" />
     <ProjectReference Include="../../System.Collections/4.3.0/System.Collections.csproj" />
     <ProjectReference Include="../../System.Diagnostics.Debug/4.3.0/System.Diagnostics.Debug.csproj" />

@@ -12,9 +12,14 @@
  */
 
 import java
-import RevocationCheckingLib
-import DisabledRevocationCheckingFlow::PathGraph
+deprecated import RevocationCheckingLib
+deprecated import DisabledRevocationCheckingFlow::PathGraph
 
-from DisabledRevocationCheckingFlow::PathNode source, DisabledRevocationCheckingFlow::PathNode sink
-where DisabledRevocationCheckingFlow::flowPath(source, sink)
-select source.getNode(), source, sink, "This disables revocation checking."
+deprecated query predicate problems(
+  DataFlow::Node sourceNode, DisabledRevocationCheckingFlow::PathNode source,
+  DisabledRevocationCheckingFlow::PathNode sink, string message
+) {
+  DisabledRevocationCheckingFlow::flowPath(source, sink) and
+  sourceNode = source.getNode() and
+  message = "This disables revocation checking."
+}

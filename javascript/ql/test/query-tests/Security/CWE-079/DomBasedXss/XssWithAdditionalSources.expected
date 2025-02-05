@@ -8,24 +8,26 @@ nodes
 | addEventListener.js:10:21:10:25 | event | semmle.label | event |
 | addEventListener.js:12:24:12:28 | event | semmle.label | event |
 | addEventListener.js:12:24:12:33 | event.data | semmle.label | event.data |
-| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href | semmle.label | \\u0275getDOM ... ().href |
-| angular2-client.ts:24:44:24:69 | this.ro ... .params | semmle.label | this.ro ... .params |
-| angular2-client.ts:24:44:24:73 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
-| angular2-client.ts:25:44:25:74 | this.ro ... yParams | semmle.label | this.ro ... yParams |
-| angular2-client.ts:25:44:25:78 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
-| angular2-client.ts:26:44:26:71 | this.ro ... ragment | semmle.label | this.ro ... ragment |
-| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
-| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
-| angular2-client.ts:30:46:30:59 | map.get('foo') | semmle.label | map.get('foo') |
-| angular2-client.ts:33:44:33:74 | this.ro ... 1].path | semmle.label | this.ro ... 1].path |
-| angular2-client.ts:34:44:34:80 | this.ro ... ameters | semmle.label | this.ro ... ameters |
-| angular2-client.ts:34:44:34:82 | this.ro ... eters.x | semmle.label | this.ro ... eters.x |
-| angular2-client.ts:35:44:35:91 | this.ro ... et('x') | semmle.label | this.ro ... et('x') |
-| angular2-client.ts:36:44:36:89 | this.ro ... .params | semmle.label | this.ro ... .params |
-| angular2-client.ts:36:44:36:91 | this.ro ... arams.x | semmle.label | this.ro ... arams.x |
-| angular2-client.ts:38:44:38:58 | this.router.url | semmle.label | this.router.url |
-| angular2-client.ts:40:45:40:59 | this.router.url | semmle.label | this.router.url |
-| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | semmle.label | routeSn ... ('foo') |
+| angular2-client.ts:24:44:24:71 | \\u0275getDOM ... ().href | semmle.label | \\u0275getDOM ... ().href |
+| angular2-client.ts:26:44:26:69 | this.ro ... .params | semmle.label | this.ro ... .params |
+| angular2-client.ts:26:44:26:73 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
+| angular2-client.ts:27:44:27:74 | this.ro ... yParams | semmle.label | this.ro ... yParams |
+| angular2-client.ts:27:44:27:78 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
+| angular2-client.ts:28:44:28:71 | this.ro ... ragment | semmle.label | this.ro ... ragment |
+| angular2-client.ts:29:44:29:82 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
+| angular2-client.ts:30:44:30:87 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
+| angular2-client.ts:32:46:32:59 | map.get('foo') | semmle.label | map.get('foo') |
+| angular2-client.ts:35:44:35:74 | this.ro ... 1].path | semmle.label | this.ro ... 1].path |
+| angular2-client.ts:36:44:36:80 | this.ro ... ameters | semmle.label | this.ro ... ameters |
+| angular2-client.ts:36:44:36:82 | this.ro ... eters.x | semmle.label | this.ro ... eters.x |
+| angular2-client.ts:37:44:37:91 | this.ro ... et('x') | semmle.label | this.ro ... et('x') |
+| angular2-client.ts:38:44:38:89 | this.ro ... .params | semmle.label | this.ro ... .params |
+| angular2-client.ts:38:44:38:91 | this.ro ... arams.x | semmle.label | this.ro ... arams.x |
+| angular2-client.ts:40:44:40:58 | this.router.url | semmle.label | this.router.url |
+| angular2-client.ts:42:45:42:59 | this.router.url | semmle.label | this.router.url |
+| angular2-client.ts:43:75:43:105 | this.ro ... yParams | semmle.label | this.ro ... yParams |
+| angular2-client.ts:43:75:43:109 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
+| angular2-client.ts:47:44:47:76 | routeSn ... ('foo') | semmle.label | routeSn ... ('foo') |
 | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | semmle.label | Cookie.get("unsafe") |
 | angular-tempate-url.js:13:30:13:31 | ev | semmle.label | ev |
 | angular-tempate-url.js:14:26:14:27 | ev | semmle.label | ev |
@@ -657,10 +659,11 @@ edges
 | addEventListener.js:5:43:5:48 | {data} | addEventListener.js:5:43:5:48 | data | provenance |  |
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event | provenance |  |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data | provenance |  |
-| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo | provenance |  |
-| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo | provenance |  |
-| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x | provenance |  |
-| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x | provenance |  |
+| angular2-client.ts:26:44:26:69 | this.ro ... .params | angular2-client.ts:26:44:26:73 | this.ro ... ams.foo | provenance |  |
+| angular2-client.ts:27:44:27:74 | this.ro ... yParams | angular2-client.ts:27:44:27:78 | this.ro ... ams.foo | provenance |  |
+| angular2-client.ts:36:44:36:80 | this.ro ... ameters | angular2-client.ts:36:44:36:82 | this.ro ... eters.x | provenance |  |
+| angular2-client.ts:38:44:38:89 | this.ro ... .params | angular2-client.ts:38:44:38:91 | this.ro ... arams.x | provenance |  |
+| angular2-client.ts:43:75:43:105 | this.ro ... yParams | angular2-client.ts:43:75:43:109 | this.ro ... ams.foo | provenance |  |
 | angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev | provenance |  |
 | angular-tempate-url.js:14:26:14:27 | ev | angular-tempate-url.js:14:26:14:32 | ev.data | provenance |  |
 | angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | provenance |  |

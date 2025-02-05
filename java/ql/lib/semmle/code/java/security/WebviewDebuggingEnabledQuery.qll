@@ -46,6 +46,12 @@ module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    // This module is only used in `WebviewDebuggingEnabled.ql`, which doesn't
+    // select the source in any "$@" column.
+    none()
+  }
 }
 
 /**

@@ -284,7 +284,7 @@ private predicate isControlFlowJump(Expr e) { e instanceof CallExprBase or e ins
 private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) {
   isControlFlowJump(call) and
   exists(Cfg::CfgScope scope |
-    hasCapturedRead(v, scope) and
+    hasCapturedRead(pragma[only_bind_into](v), pragma[only_bind_into](scope)) and
     (
       variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
       variableWriteInOuterScope(bb.getAPredecessor+(), _, v, scope)

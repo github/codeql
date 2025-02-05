@@ -3074,6 +3074,7 @@ impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<Locatable> {
 #[derive(Debug)]
 pub struct UseTree {
     pub id: trap::TrapId<UseTree>,
+    pub is_glob: bool,
     pub path: Option<trap::Label<Path>>,
     pub rename: Option<trap::Label<Rename>>,
     pub use_tree_list: Option<trap::Label<UseTreeList>>,
@@ -3086,6 +3087,9 @@ impl trap::TrapEntry for UseTree {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("use_trees", vec![id.into()]);
+        if self.is_glob {
+            out.add_tuple("use_tree_is_glob", vec![id.into()]);
+        }
         if let Some(v) = self.path {
             out.add_tuple("use_tree_paths", vec![id.into(), v.into()]);
         }
