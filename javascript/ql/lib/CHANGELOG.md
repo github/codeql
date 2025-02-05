@@ -1,3 +1,9 @@
+## 2.4.0
+
+### Major Analysis Improvements
+
+* Added new XSS sink where `innerHTML` or `outerHTML` is assigned to with the Angular Renderer2 API, plus modeled this API as a general attribute setter
+
 ## 2.3.0
 
 ### Deprecated APIs

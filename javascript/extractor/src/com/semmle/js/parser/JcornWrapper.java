@@ -14,9 +14,14 @@ import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 
 public class JcornWrapper {
+  public static boolean alwaysParseWithJsx(String extension) {
+    // Note that .tsx is not relevant here since this is specifically for the JS parser.
+    return extension.equals(".jsx");
+  }
+
   /** Parse source code as a program. */
   public static JSParser.Result parse(
-      ExtractorConfig config, SourceType sourceType, String source) {
+      ExtractorConfig config, SourceType sourceType, String extension, String source) {
     ECMAVersion ecmaVersion = config.getEcmaVersion();
     List<Comment> comments = new ArrayList<>();
     List<Token> tokens = new ArrayList<>();
@@ -32,7 +37,11 @@ public class JcornWrapper {
 
     Program program = null;
     List<ParseError> errors = new ArrayList<>();
-    
+
+    // If the file extension implies JSX syntax, use that in the first parsing attempt.
+    // This enables us to parse JSX files that the Flow parser cannot handle due to ambiguous syntax.
+    if (alwaysParseWithJsx(extension)) options = new JSXOptions(options);
+
     try {
       try {
         // First try to parse as a regular JavaScript program.
