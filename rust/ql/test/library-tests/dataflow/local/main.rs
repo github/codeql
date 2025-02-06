@@ -440,7 +440,7 @@ fn parse() {
     let d : i64 = b.parse().unwrap();
 
     sink(a); // $ hasValueFlow=90
-    sink_string(b); // $ MISSING: hasTaintFlow=90
+    sink_string(b); // $ hasTaintFlow=90
     sink(c); // $ MISSING: hasTaintFlow=90
     sink(d); // $ MISSING: hasTaintFlow=90
 }
