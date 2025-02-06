@@ -1,4 +1,4 @@
 var e = {};
 module.exports = e;
-exports = e; // OK
+exports = e;
 exports.a = 12;

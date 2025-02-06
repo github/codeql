@@ -5,7 +5,7 @@ function copyUsingForIn(dst, src) {
         if (dst[key]) {
             copyUsingForIn(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -15,7 +15,7 @@ function copyUsingKeys(dst, src) {
         if (dst[key]) {
             copyUsingKeys(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     });
 }
@@ -33,7 +33,7 @@ function copyRestAux(dst, value, key) {
     if (dstValue) {
         copyRest(dstValue, value);
     } else {
-        dst[key] = value; // NOT OK
+        dst[key] = value; // $ Alert
     }
 }
 
@@ -43,7 +43,7 @@ function copyProtoGuarded(dst, src) {
         if (dst[key]) {
             copyProtoGuarded(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -54,7 +54,7 @@ function copyCtorGuarded(dst, src) {
         if (dst[key]) {
             copyCtorGuarded(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -65,7 +65,7 @@ function copyDoubleGuarded(dst, src) {
         if (dst[key]) {
             copyDoubleGuarded(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -80,7 +80,7 @@ function copyComplex(dst, src) {
             if (dst[key]) {
                 copyComplex(dst[key], src[key]);
             } else {
-                dst[key] = src[key]; // OK
+                dst[key] = src[key];
             }
         }
     }
@@ -93,7 +93,7 @@ function copyHasOwnProperty(dst, src) {
         if (dst.hasOwnProperty(key)) {
             copyHasOwnProperty(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -106,7 +106,7 @@ function copyHasOwnPropertyBad(dst, src) {
         if (dst[key]) {
             copyHasOwnPropertyBad(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -118,21 +118,21 @@ function copyHasOwnPropertyTearOff(dst, src) {
         if (_hasOwnProp.call(dst, key)) {
             copyHasOwnPropertyTearOff(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
 
 function shallowExtend(dst, src) {
     for (let key in src) {
-        dst[key] = src[key]; // OK
+        dst[key] = src[key];
     }
 }
 
 function transform(src, fn) {
     if (typeof src !== 'object') return fn(src);
     for (let key in src) {
-        src[key] = transform(src[key], fn); // OK
+        src[key] = transform(src[key], fn);
     }
     return src;
 }
@@ -141,7 +141,7 @@ function clone(src) {
     if (typeof src !== 'object') return src;
     let result = {};
     for (let key in src) {
-        result[key] = clone(src[key]); // OK
+        result[key] = clone(src[key]);
     }
     return result;
 }
@@ -151,7 +151,7 @@ function higherOrderRecursion(dst, src, callback) {
         if (dst[key]) {
             callback(dst, src, key);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -168,7 +168,7 @@ function instanceofObjectGuard(dst, src) {
         if (typeof dstValue === 'object' && dstValue instanceof Object) {
             instanceofObjectGuard(dstValue, src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -181,7 +181,7 @@ function copyWithBlacklist(dst, src) {
         if (dst[key]) {
             copyWithBlacklist(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -193,7 +193,7 @@ function copyUsingPlainForLoop(dst, src) {
         if (dst[key]) {
             copyUsingPlainForLoop(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -205,7 +205,7 @@ function copyUsingPlainForLoopNoAlias(dst, src) {
         if (dst[key]) {
             copyUsingPlainForLoopNoAlias(dst[keys[i]], src[keys[i]]);
         } else {
-            dst[keys[i]] = src[keys[i]]; // NOT OK - but not flagged
+            dst[keys[i]] = src[keys[i]]; // $ MISSING: Alert
         }
     }
 }
@@ -214,7 +214,7 @@ function deepSet(map, key1, key2, value) {
     if (!map[key1]) {
         map[key1] = Object.create(null);
     }
-    map[key1][key2] = value; // OK
+    map[key1][key2] = value;
 }
 
 function deepSetCaller(data) {
@@ -230,7 +230,7 @@ function deepSetBad(map, key1, key2, value) {
     if (!map[key1]) {
         map[key1] = Object.create(null);
     }
-    map[key1][key2] = value; // NOT OK - object literal can flow here
+    map[key1][key2] = value; // $ Alert - object literal can flow here
 }
 
 function deepSetCallerBad(data) {
@@ -254,7 +254,7 @@ function mergeWithCopy(dst, src) {
     let result = maybeCopy(dst);
     for (let key in src) {
         if (src.hasOwnProperty(key)) {
-            result[key] = mergeWithCopy(dst[key], src[key]); // OK
+            result[key] = mergeWithCopy(dst[key], src[key]);
         }
     }
     return result;
@@ -267,7 +267,7 @@ function copyUsingEntries(dst, src) {
         if (dst[key]) {
             copyUsingEntries(dst[key], value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
@@ -277,7 +277,7 @@ function copyUsingReflect(dst, src) {
         if (dst[key]) {
             copyUsingReflect(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     });
 }
@@ -290,7 +290,7 @@ function copyWithPath(dst, src, path) {
             } else {
                 let target = {};
                 target[path] = {};
-                target[path][key] = src[key]; // OK
+                target[path][key] = src[key];
                 doSomething(target);
             }
         }
@@ -305,7 +305,7 @@ function typeofObjectTest(dst, src) {
             if (dst[key] && typeof value === 'object') {
                 typeofObjectTest(dst[key], value);
             } else {
-                dst[key] = value; // NOT OK
+                dst[key] = value; // $ Alert
             }
         }
     }
@@ -319,7 +319,7 @@ function mergeRephinementNode(dst, src) {
             if (dst[key] && typeof value === 'object') {
                 mergeRephinementNode(dst[key], value);
             } else {
-                dst[key] = value; // NOT OK
+                dst[key] = value; // $ Alert
             }
         }
     }
@@ -335,7 +335,7 @@ function mergeSelective(dst, src) {
             if (dst[key]) {
                 mergeSelective(dst[key], src[key]);
             } else {
-                dst[key] = src[key]; // OK
+                dst[key] = src[key];
             }
         }
     }
@@ -354,7 +354,7 @@ function mergePlainObjectsOnly(target, source) {
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnly(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK - but flagged anyway due to imprecise barrier for captured variable
+                target[key] = source[key]; // $ SPURIOUS: Alert - due to imprecise barrier for captured variable
             }
         });
     }
@@ -370,7 +370,7 @@ function mergePlainObjectsOnlyNoClosure(target, source) {
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnlyNoClosure(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK
+                target[key] = source[key];
             }
         }
     }
@@ -390,7 +390,7 @@ function mergeUsingCallback(dst, src) {
         if (dst[key]) {
             mergeUsingCallback(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK - but not currently flagged
+            dst[key] = src[key]; // $ MISSING: Alert
         }
     });
 }
@@ -400,7 +400,7 @@ function mergeUsingCallback2(dst, src) {
         if (dst[key]) {
             mergeUsingCallback2(dst[key], value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
@@ -416,7 +416,7 @@ function copyUsingWrappedRead(dst, src) {
         if (target) {
             copyUsingWrappedRead(target, value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     }
 }
@@ -433,7 +433,7 @@ function copyUsingAlmostSafeRead(dst, src) {
         if (target) {
             copyUsingAlmostSafeRead(target, value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     }
 }
@@ -450,7 +450,7 @@ function copyUsingSafeRead(dst, src) {
         if (target) {
             copyUsingSafeRead(target, value);
         } else {
-            dst[key] = value; // OK
+            dst[key] = value;
         }
     }
 }
@@ -462,9 +462,9 @@ function copyUsingForOwn(dst, src) {
             copyUsingForOwn(dst[key], src[key]);
         } else {
             // Handle a few different ways to access src[key]
-            if (something()) dst[key] = src[key]; // NOT OK
-            if (something()) dst[key] = o[key]; // NOT OK
-            if (something()) dst[key] = value; // NOT OK
+            if (something()) dst[key] = src[key]; // $ Alert
+            if (something()) dst[key] = o[key]; // $ Alert
+            if (something()) dst[key] = value; // $ Alert
         }
     });
 }
@@ -474,7 +474,7 @@ function copyUsingUnderscoreOrLodash(dst, src) {
         if (dst[key]) {
             copyUsingUnderscoreOrLodash(dst[key], src[key]);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
@@ -486,7 +486,7 @@ function copyPlainObject(dst, src) {
         if (dst[key] && isPlainObject(src)) {
             copyPlainObject(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK - but flagged anyway
+            dst[key] = src[key]; // $ SPURIOUS: Alert
         }
     }
 }
@@ -499,7 +499,7 @@ function copyPlainObject2(dst, src) {
         if (isPlainObject(target) && isPlainObject(value)) {
             copyPlainObject2(target, value);
         } else {
-            dst[key] = value; // OK
+            dst[key] = value;
         }
     }
 }
@@ -514,7 +514,7 @@ function usingDefineProperty(dst, src) {
         } else {
             var descriptor = {};
             descriptor.value = src[key];
-            Object.defineProperty(dst, key, descriptor);  // NOT OK
+            Object.defineProperty(dst, key, descriptor);  // $ Alert
         }
     }
 }
@@ -526,7 +526,7 @@ function copyUsingForInAndRest(...args) {
         if (dst[key]) {
             copyUsingForInAndRest(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -544,7 +544,7 @@ function mergeUsingCallback3(dst, src) {
         if (dst[key]) {
             mergeUsingCallback3(dst[key], value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
@@ -556,7 +556,7 @@ function copyHasOwnProperty2(dst, src) {
         if (Object.hasOwn(dst, key)) {
             copyHasOwnProperty2(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -568,7 +568,7 @@ function copyHasOwnProperty3(dst, src) {
         if (_.has(dst, key)) {
             copyHasOwnProperty3(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -602,7 +602,7 @@ function merge_captureBarrier(dest, source) {
         if (dest[key]) {
             merge_captureBarrier(dest[key], source[key]);
         } else {
-            dest[key] = captureBarrier(source[key]); // OK - but currently flagged anyway
+            dest[key] = captureBarrier(source[key]); // $ SPURIOUS: Alert
         }
     }
 }

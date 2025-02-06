@@ -8,17 +8,17 @@ var lusca = require('lusca');
 var app = express()
 app.use(cookieParser()) // $ Alert
 
-app.post('/process', parseForm, lusca.csrf(), function (req, res) { // OK
+app.post('/process', parseForm, lusca.csrf(), function (req, res) {
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
 })
 
-app.post('/process', parseForm, lusca({csrf:true}), function (req, res) { // OK
+app.post('/process', parseForm, lusca({csrf:true}), function (req, res) {
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
 })
 
-app.post('/process', parseForm, lusca({csrf:{}}), function (req, res) { // OK
+app.post('/process', parseForm, lusca({csrf:{}}), function (req, res) {
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
 })

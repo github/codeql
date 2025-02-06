@@ -5,7 +5,7 @@ export class MyComponent {
         this.doRedirect(params);
     }
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 }
 
@@ -26,7 +26,7 @@ export class MyTrackingComponent {
     }
 
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 }
 
@@ -49,10 +49,10 @@ export class WeirdTracking {
     }
 
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 
     private doRedirect2(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 }

@@ -2,7 +2,7 @@
 	var o = f1();
 	while (f2()) {
 		if (f4()) {
-			o.p = 42; // NOT OK
+			o.p = 42; // $ Alert
 			break;
 		}
 		f5();
@@ -12,8 +12,8 @@
 
 (function(){
 	var o = f1();
-	o.p1 = o.p1 += 42; // NOT OK
-	o.p2 -= (o.p2 *= 42); // NOT OK
+	o.p1 = o.p1 += 42; // $ Alert
+	o.p2 -= (o.p2 *= 42); // $ Alert
 });
 
 (function(){
@@ -26,7 +26,7 @@
 				f3();
 			} catch (e) {
 				f4();
-				o.p = 42; // NOT OK
+				o.p = 42; // $ Alert
 			}
 		}
 		o.p = 42;
@@ -35,5 +35,5 @@
 
 (function(){
 	var o = f1();
-	o.p = f2() ? o.p = f3() : f4(); // NOT OK
+	o.p = f2() ? o.p = f3() : f4(); // $ Alert
 });

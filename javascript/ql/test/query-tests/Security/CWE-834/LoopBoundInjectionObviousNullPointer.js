@@ -21,7 +21,7 @@ rootRoute.post(function(req, res) {
 function nullPointer(val) {
     var ret = [];
 
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i].foo + 42);
     }
 }
@@ -30,7 +30,7 @@ function nullPointer(val) {
 function nullPointer2(val) {
     var ret = [];
 
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
     	var element = val[i];
         ret.push(element.foo + 42);
     }
@@ -38,7 +38,7 @@ function nullPointer2(val) {
 
 function nullPointer3(val) {
 	let arr = val.messaging
-	for (let i = 0; i < arr.length; i++) { // OK
+	for (let i = 0; i < arr.length; i++) {
 		let event = val.messaging[i]
 		let sender = event.sender.id
 	}
@@ -46,13 +46,13 @@ function nullPointer3(val) {
 
 
 function lodashPointer(val) {
-    return _.map(val, function(e) { // OK
+    return _.map(val, function(e) {
         return e.foo;
     })
 }
 
 function lodashArrowFunc(val) {
-	return _.map(val, (e) => { // OK
+	return _.map(val, (e) => {
         return e.foo;
     });
 }

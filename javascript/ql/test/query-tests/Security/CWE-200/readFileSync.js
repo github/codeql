@@ -22,8 +22,7 @@ try {
       res.setEncoding('utf8');
   });
 
-  // BAD: post the data from file to request body
-  post_req.write(s);
+  post_req.write(s); // $ Alert - post the data from file to request body
   post_req.end();
 } catch (e) {
 }

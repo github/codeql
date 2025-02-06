@@ -1,2 +1,2 @@
-Array(45); // OK
-new Array(45); // OK
+Array(45);
+new Array(45);

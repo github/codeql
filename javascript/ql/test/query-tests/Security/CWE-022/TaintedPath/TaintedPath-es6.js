@@ -6,6 +6,5 @@ import { join } from 'path';
 var server = createServer(function(req, res) {
   let path = parse(req.url, true).query.path;
 
-  // BAD: This could read any file on the file system
-  res.write(readFileSync(join("public", path)));
+  res.write(readFileSync(join("public", path))); // $ Alert - This could read any file on the file system
 });

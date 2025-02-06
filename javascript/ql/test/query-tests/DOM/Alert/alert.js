@@ -1,4 +1,4 @@
-alert("hi!"); // NOT OK
-x.alert("hi!"); // OK
-new alert(); // OK
-function alert() { } // OK
+alert("hi!"); // $ Alert
+x.alert("hi!");
+new alert();
+function alert() { }

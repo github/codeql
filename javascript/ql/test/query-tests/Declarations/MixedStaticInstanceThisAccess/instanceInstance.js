@@ -1,6 +1,6 @@
 class Foo {
     bar(){
-        this.baz; // OK
+        this.baz;
     }
     baz(){
 

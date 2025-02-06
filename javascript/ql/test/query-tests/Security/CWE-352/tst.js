@@ -17,6 +17,6 @@ function middlewares() {
 
 app.use(middlewares());
 
-app.post('/safe', (req, res) => { // OK
+app.post('/safe', (req, res) => {
   req.cookies.x;
 });

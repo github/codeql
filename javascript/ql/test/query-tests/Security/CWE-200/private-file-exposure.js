@@ -22,7 +22,7 @@ const nodeDir = path.join(rootDir + "/node_modules");
 app.use('/angular', express.static(nodeDir + '/angular/'));
 
 
-// Good
+
 app.use(express.static('./node_modules/jquery/dist'));
 app.use(express.static('./node_modules/bootstrap/dist'));
 app.use('/js', express.static(__dirname + '/node_modules/html5sortable/dist'));
@@ -33,14 +33,14 @@ app.use(express.static(__dirname + "/static/js"));
 app.use('/docs/api', express.static('docs/api'));
 app.use('/js/', express.static('node_modules/bootstrap/dist/js'))
 app.use('/css/', express.static('node_modules/font-awesome/css'));
-app.use('basedir', express.static(__dirname)); // GOOD, because there is no package.json in the same folder.
-app.use('/monthly', express.static(__dirname + '/')); // GOOD, because there is no package.json in the same folder.
+app.use('basedir', express.static(__dirname)); // OK - because there is no package.json in the same folder.
+app.use('/monthly', express.static(__dirname + '/')); // OK - because there is no package.json in the same folder.
 
 const connect = require("connect");
-app.use('/angular', connect.static(path.join(__dirname, "/node_modules") + '/angular/')); // NOT OK
-app.use('/angular', require('serve-static')(path.join(__dirname, "/node_modules") + '/angular/')); // NOT OK
-app.use('/home', require('serve-static')(require("os").homedir())); // NOT OK
-app.use('/root', require('serve-static')("/")); // NOT OK
+app.use('/angular', connect.static(path.join(__dirname, "/node_modules") + '/angular/')); // $ Alert
+app.use('/angular', require('serve-static')(path.join(__dirname, "/node_modules") + '/angular/')); // $ Alert
+app.use('/home', require('serve-static')(require("os").homedir())); // $ Alert
+app.use('/root', require('serve-static')("/")); // $ Alert
 
 // Bad documentation example
 function bad() {
@@ -48,7 +48,7 @@ function bad() {
 
     var app = express();
 
-    app.use('/node_modules', express.static(path.resolve(__dirname, '../node_modules'))); // NOT OK
+    app.use('/node_modules', express.static(path.resolve(__dirname, '../node_modules'))); // $ Alert
 }
 
 // Good documentation example
@@ -57,17 +57,17 @@ function good() {
 
     var app = express();
 
-    app.use("jquery", express.static('./node_modules/jquery/dist')); // OK
-    app.use("bootstrap", express.static('./node_modules/bootstrap/dist')); // OK
+    app.use("jquery", express.static('./node_modules/jquery/dist'));
+    app.use("bootstrap", express.static('./node_modules/bootstrap/dist'));
 }
 
-app.use(express.static(__dirname)) // NOT OK
+app.use(express.static(__dirname)) // $ Alert
 
 const serveHandler = require("serve-handler");
 const http = require("http");
 
 http.createServer((request, response) => {
-    serveHandler(request, response, {public: "./node_modules/angular"}); // NOT OK
+    serveHandler(request, response, {public: "./node_modules/angular"}); // $ Alert
 
-    serveHandler(request, response); // OK
+    serveHandler(request, response);
 }).listen(8080);

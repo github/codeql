@@ -8,5 +8,5 @@ export async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-    res.setHeader("Location", req.body.callbackUrl); // NOT OK
+    res.setHeader("Location", req.body.callbackUrl); // $ Alert
 }

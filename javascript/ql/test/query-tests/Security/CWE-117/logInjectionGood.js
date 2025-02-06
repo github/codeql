@@ -14,13 +14,13 @@ const another_logger = console.log
 const server = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
 
-    // GOOD: remove `\n` line from user controlled input before logging
+    // OK - remove `\n` line from user controlled input before logging
     let username = q.query.username.replace(/\n|\r/g, "");
 
-    console.info(`[INFO] User: ${username}`); // OK
-    console.info(`[INFO] User: %s`, username); // OK
-    logger.log('[INFO] User:', username); // OK
-    another_logger('[INFO] User:', username); // OK
+    console.info(`[INFO] User: ${username}`);
+    console.info(`[INFO] User: %s`, username);
+    logger.log('[INFO] User:', username);
+    another_logger('[INFO] User:', username);
     try {
         check_username(username)
     } catch (error) {

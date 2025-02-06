@@ -4,9 +4,9 @@ const app = express();
 
 app.get('/some/route', function(req, res) {
   let tainted = req.param("userName");
-  xpath.parse(tainted); // NOT OK
-  xpath.select(tainted); // NOT OK
-  xpath.select1(tainted); // NOT OK
+  xpath.parse(tainted); // $ Alert
+  xpath.select(tainted); // $ Alert
+  xpath.select1(tainted); // $ Alert
   let expr = xpath.useNamespaces(map);
-  expr(tainted); // NOT OK
+  expr(tainted); // $ Alert
 });

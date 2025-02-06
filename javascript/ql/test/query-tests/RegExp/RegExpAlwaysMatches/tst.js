@@ -1,37 +1,37 @@
 function optionalPrefix(x) {
-  return /^(https:)?/.test(x); // NOT OK
+  return /^(https:)?/.test(x); // $ Alert
 }
 
 function mandatoryPrefix(x) {
-  return /^https:/.test(x); // OK
+  return /^https:/.test(x);
 }
 
 function httpOrHttps(x) {
-  return /^https?:/.test(x); // OK
+  return /^https?:/.test(x);
 }
 
 function optionalSuffix(x) {
-  return /(\.com)?$/.test(x); // NOT OK
+  return /(\.com)?$/.test(x); // $ Alert
 }
 
 function mandatorySuffix(x) {
-  return /\.com$/.test(x); // OK
+  return /\.com$/.test(x);
 }
 
 function protocol(x) {
-  return /^(?:https?:|ftp:|file:)?/.test(x); // NOT OK
+  return /^(?:https?:|ftp:|file:)?/.test(x); // $ Alert
 }
 
 function doubleAnchored(x) {
-  return /^(foo|bar)?$/.test(x); // OK
+  return /^(foo|bar)?$/.test(x);
 }
 
 function noAnchor(x) {
-  return /(foo|bar)?/.test(x); // NOT OK
+  return /(foo|bar)?/.test(x); // $ Alert
 }
 
 function altAnchor(x) {
-  return /^foo|bar$|(baz)?/.test(x); // NOT OK
+  return /^foo|bar$|(baz)?/.test(x); // $ Alert
 }
 
 function wildcard(x) {
@@ -43,31 +43,31 @@ function wildcard2(x) {
 }
 
 function emptyAlt(x) {
-  return /^$|foo|bar/.test(x); // OK
+  return /^$|foo|bar/.test(x);
 }
 
 function emptyAlt2(x) {
-  return /(^$|foo|bar)/.test(x); // OK
+  return /(^$|foo|bar)/.test(x);
 }
 
 function emptyAlt3(x) {
-  return /((^$|foo|bar))/.test(x); // OK
+  return /((^$|foo|bar))/.test(x);
 }
 
 function search(x) {
-  return x.search(/[a-z]*/) > -1; // NOT OK
+  return x.search(/[a-z]*/) > -1; // $ Alert
 }
 
 function search2(x) {
-  return x.search(/[a-z]/) > -1; // OK
+  return x.search(/[a-z]/) > -1;
 }
 
 function lookahead(x) {
-  return x.search(/(?!x)/) > -1; // OK
+  return x.search(/(?!x)/) > -1;
 }
 
 function searchPrefix(x) {
-  return x.search(/^(foo)?/) > -1; // NOT OK - `foo?` does not affect the returned index
+  return x.search(/^(foo)?/) > -1; // $ Alert - `foo?` does not affect the returned index
 }
 
 function searchSuffix(x) {
@@ -83,10 +83,10 @@ function nonWordBoundary(x) {
 }
 
 function emptyRegex(x) {
-  return new RegExp("").test(x); // OK
+  return new RegExp("").test(x);
 }
 
 function parserTest(x) {
-  /(\w\s*:\s*[^:}]+|#){|@import[^\n]+(?:url|,)/.test(x); // OK
-  /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/.text(x); // ok
+  /(\w\s*:\s*[^:}]+|#){|@import[^\n]+(?:url|,)/.test(x);
+  /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/.text(x);
 }

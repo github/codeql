@@ -37,7 +37,7 @@ function foo1() {
     const foobar = 4;
 
     const data = {name: name, date: date};
-    writer.emit("Name: ${name}, Date: ${date}.", data); // OK 
+    writer.emit("Name: ${name}, Date: ${date}.", data);
 
-    writer.emit("Name: ${name}, Date: ${date}, ${foobar}", data); // NOT OK - `foobar` is not in `data`.     
+    writer.emit("Name: ${name}, Date: ${date}, ${foobar}", data); // $ Alert - `foobar` is not in `data`.
 }

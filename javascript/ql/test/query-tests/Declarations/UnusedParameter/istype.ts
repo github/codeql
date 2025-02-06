@@ -12,10 +12,10 @@ class SingletonTreeModel implements ITreeModel {
   isLeafNode(node: Node): node is LeafNode {
     return node instanceof LeafNode;
   }
-  isBranchNode(node: Node): node is BranchNode { // OK
+  isBranchNode(node: Node): node is BranchNode {
     return false; // This model has no branches.
   }
-  isValidNode(node: Node): boolean { // NOT OK
+  isValidNode(node: Node): boolean { // $ Alert
     return Node != null; // woops
   }
 }

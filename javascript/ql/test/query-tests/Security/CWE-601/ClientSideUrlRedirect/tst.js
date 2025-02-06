@@ -1,21 +1,18 @@
-// NOT OK
-window.location = /.*redirect=([^&]*).*/.exec(document.location.href)[1];
+window.location = /.*redirect=([^&]*).*/.exec(document.location.href)[1]; // $ Alert
 
 (function(){
 	var indirect = /.*redirect=([^&]*).*/;
 	window.location = indirect.exec(document.location.href)[1];
 });
 
-// NOT OK
-window.location = new RegExp('.*redirect=([^&]*).*').exec(document.location.href)[1];
+window.location = new RegExp('.*redirect=([^&]*).*').exec(document.location.href)[1]; // $ Alert
 
 (function(){
 	var indirect = new RegExp('.*redirect=([^&]*).*')
 	window.location = indirect.exec(document.location.href)[1];
 });
 
-// NOT OK
-window.location = new RegExp(/.*redirect=([^&]*).*/).exec(document.location.href)[1];
+window.location = new RegExp(/.*redirect=([^&]*).*/).exec(document.location.href)[1]; // $ Alert
 
 (function(){
 	var indirect = new RegExp(/.*redirect=([^&]*).*/)
@@ -23,7 +20,7 @@ window.location = new RegExp(/.*redirect=([^&]*).*/).exec(document.location.href
 });
 
 function foo(win) {
-	win.location.assign(new RegExp(/.*redirect=([^&]*).*/).exec(win.location.href)[1]); // NOT OK
+	win.location.assign(new RegExp(/.*redirect=([^&]*).*/).exec(win.location.href)[1]); // $ Alert
 }
 
 foo(window);

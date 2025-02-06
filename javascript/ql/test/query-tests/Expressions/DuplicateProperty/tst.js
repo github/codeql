@@ -1,12 +1,12 @@
 var duplicate = {
-  "key": "value",      // NOT OK: duplicated on line 5
+  "key": "value",      // $ Alert - duplicated on line 5
   " key": "value",
-  "1": "value",        // NOT OK: duplicated on line 11
-  "key": "value",      // NOT OK: duplicated on next line
-  'key': "value",      // NOT OK: duplicated on next line
-  key: "value",        // NOT OK: duplicated on next line
-  \u006bey: "value",   // NOT OK: duplicated on next line
-  "\u006bey": "value", // NOT OK: duplicated on next line
+  "1": "value",        // $ Alert - duplicated on line 11
+  "key": "value",      // $ Alert - duplicated on next line
+  'key': "value",      // $ Alert - duplicated on next line
+  key: "value",        // $ Alert - duplicated on next line
+  \u006bey: "value",   // $ Alert - duplicated on next line
+  "\u006bey": "value", // $ Alert - duplicated on next line
   "\x6bey": "value",
   1: "value"
 };

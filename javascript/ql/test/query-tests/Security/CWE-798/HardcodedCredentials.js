@@ -2,78 +2,78 @@
     const pg = require('pg');
 
     const client = new pg.Client({
-        user: 'dbuser',  // NOT OK
+        user: 'dbuser',  // $ Alert
         host: 'database.server.com',
         database: 'mydb',
-        password: 'hgfedcba',  // NOT OK
+        password: 'hgfedcba',  // $ Alert
         port: 3211,
     });
     client.connect();
 })();
 
 (function() {
-    require("http").request({auth: "user:hgfedcba"});  // NOT OK
-    require("https").request({auth: "user:hgfedcba"}); // NOT OK
+    require("http").request({auth: "user:hgfedcba"});  // $ Alert
+    require("https").request({auth: "user:hgfedcba"}); // $ Alert
     function getCredentials() {
         return "user:hgfedcba";
     }
-    require("http").request({auth: getCredentials()}); // NOT OK
-    require("http").request({auth: getUnknownCredentials()}); // OK
+    require("http").request({auth: getCredentials()}); // $ Alert
+    require("http").request({auth: getUnknownCredentials()});
 })();
 
 (function() {
     var basicAuth = require('express-basic-auth');
 
-    basicAuth({users: { 'admin': 'hgfedcba' }});  // NOT OK
+    basicAuth({users: { 'admin': 'hgfedcba' }});  // $ Alert
     var users = {};
-    users['unknown-admin-name'] = 'hgfedcba'; // NOT OK
+    users['unknown-admin-name'] = 'hgfedcba'; // $ Alert
     basicAuth({users: users});
 })();
 
 (function() {
     var basicAuth = require('basic-auth-connect');
-    basicAuth('username', 'hgfedcba'); // NOT OK
-    basicAuth(function(){}); // OK
+    basicAuth('username', 'hgfedcba'); // $ Alert
+    basicAuth(function(){});
 })();
 
 (function() {
     var AWS = require('aws-sdk');
-    AWS.config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
-    new AWS.Config({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
+    AWS.config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // $ Alert
+    new AWS.Config({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // $ Alert
     var config = new AWS.Config();
-    config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
+    config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // $ Alert
     var o = {};
-    o.secretAccessKey = 'hgfedcba'; // NOT OK
+    o.secretAccessKey = 'hgfedcba'; // $ Alert
     config.update(o);
 })();
 
 (function() {
     var request = require('request');
 
-    request.get(url).auth('username', 'hgfedcba'); // NOT OK
+    request.get(url).auth('username', 'hgfedcba'); // $ Alert
     request.get(url, {
         'auth': {
-            'user': 'username', // NOT OK
-            'pass': 'hgfedcba' // NOT OK
+            'user': 'username', // $ Alert
+            'pass': 'hgfedcba' // $ Alert
         }
     });
 
-    request.get(url).auth(null, null, _, 'bearerToken'); // NOT OK
+    request.get(url).auth(null, null, _, 'bearerToken'); // $ Alert
 
     request.get(url, {
         'auth': {
-            'bearer': 'bearerToken' // NOT OK
+            'bearer': 'bearerToken' // $ Alert
         }
     });
 
-    request.post(url).auth('username', 'hgfedcba'); // NOT OK
-    request.head(url).auth('username', 'hgfedcba'); // NOT OK
+    request.post(url).auth('username', 'hgfedcba'); // $ Alert
+    request.head(url).auth('username', 'hgfedcba'); // $ Alert
 
-    request(url).auth('username', 'hgfedcba'); // NOT OK
+    request(url).auth('username', 'hgfedcba'); // $ Alert
     request(url, {
         'auth': {
-            'user': 'username', // NOT OK
-            'pass': 'hgfedcba' // NOT OK
+            'user': 'username', // $ Alert
+            'pass': 'hgfedcba' // $ Alert
         }
     });
 })();
@@ -81,46 +81,46 @@
 (function() {
     const MsRest = require('ms-rest-azure');
 
-    MsRest.loginWithUsernamePassword('username', 'hgfedcba', function(){}); // NOT OK
-    MsRest.loginWithUsernamePassword(process.env.AZURE_USER, process.env.AZURE_PASS, function(){}); // OK
-    MsRest.loginWithServicePrincipalSecret('username', 'hgfedcba', function(){}); // NOT OK
+    MsRest.loginWithUsernamePassword('username', 'hgfedcba', function(){}); // $ Alert
+    MsRest.loginWithUsernamePassword(process.env.AZURE_USER, process.env.AZURE_PASS, function(){});
+    MsRest.loginWithServicePrincipalSecret('username', 'hgfedcba', function(){}); // $ Alert
 })();
 
 (function() {
     var digitalocean = require('digitalocean');
-    digitalocean.client('TOKEN'); // NOT OK
-    digitalocean.client(process.env.DIGITAL_OCEAN_TOKEN); // OK
+    digitalocean.client('TOKEN'); // $ Alert
+    digitalocean.client(process.env.DIGITAL_OCEAN_TOKEN);
 })();
 
 (function() {
     var pkgcloud = require('pkgcloud');
     pkgcloud.compute.createClient({
-        account: 'x1', // NOT OK
-        keyId: 'x2',// NOT OK
-        storageAccount: 'x3', // NOT OK
-        username: 'x4', // NOT OK
-        key: 'hgfedcba', // NOT OK
-        apiKey: 'hgfedcba', // NOT OK
-        storageAccessKey: 'hgfedcba', // NOT OK
-        password: 'hgfedcba', // NOT OK
-        token: 'hgfedcba' // NOT OK
+        account: 'x1', // $ Alert
+        keyId: 'x2',// $ Alert
+        storageAccount: 'x3', // $ Alert
+        username: 'x4', // $ Alert
+        key: 'hgfedcba', // $ Alert
+        apiKey: 'hgfedcba', // $ Alert
+        storageAccessKey: 'hgfedcba', // $ Alert
+        password: 'hgfedcba', // $ Alert
+        token: 'hgfedcba' // $ Alert
     });
-    pkgcloud.compute.createClient({ // OK
+    pkgcloud.compute.createClient({
         INNOCENT_DATA: '42'
     });
     pkgcloud.providers.SOME_PROVIDER.compute.createClient({
-        username: 'x5', // NOT OK
-        password: 'hgfedcba' // NOT OK
+        username: 'x5', // $ Alert
+        password: 'hgfedcba' // $ Alert
     });
-    pkgcloud.UNKNOWN_SERVICE.createClient({  // OK
+    pkgcloud.UNKNOWN_SERVICE.createClient({
         username: 'x6',
         password: 'hgfedcba'
     });
     pkgcloud.providers.SOME_PROVIDER.UNKNOWN_SERVICE.createClient({
-        username: 'x7', // OK
-        password: 'hgfedcba' // OK
+        username: 'x7',
+        password: 'hgfedcba'
     });
-    pkgcloud.compute.createClient({ // OK
+    pkgcloud.compute.createClient({
         username: process.env.USERNAME,
         password: process.env.PASSWORD
     });
@@ -137,7 +137,7 @@
 
 (function(){
     var request = require('request');
-    request.get(url, { // OK
+    request.get(url, {
         'auth': {
             'user': '',
             'pass': process.env.PASSWORD
@@ -148,7 +148,7 @@
 (function(){
     var request = require('request');
     let pass = getPassword() || '';
-    request.get(url, { // OK
+    request.get(url, {
         'auth': {
             'user': process.env.USER || '',
             'pass': pass,
@@ -157,11 +157,11 @@
 })();
 
 (function(){
-	require("cookie-session")({ secret: "oiuneawrgiyubaegr" }); // NOT OK
-	require('crypto').createHmac('sha256', 'oiuneawrgiyubaegr'); // NOT OK
+	require("cookie-session")({ secret: "oiuneawrgiyubaegr" }); // $ Alert
+	require('crypto').createHmac('sha256', 'oiuneawrgiyubaegr'); // $ Alert
 
 	var basicAuth = require('express-basic-auth');
-	basicAuth({users: { [adminName]: 'change_me' }});  // OK
+	basicAuth({users: { [adminName]: 'change_me' }});
 })();
 
 (async function () {
@@ -272,41 +272,41 @@
 });
 
 (function() {
-    require("http").request({auth: "user:{{ INSERT_HERE }}"}); // OK
-    require("http").request({auth: "user:token {{ INSERT_HERE }}"}); // OK
-    require("http").request({auth: "user:( INSERT_HERE )"}); // OK
-    require("http").request({auth: "user:{{ env.access_token }}"}); // OK
-    require("http").request({auth: "user:abcdefgh"}); // OK
-    require("http").request({auth: "user:12345678"}); // OK
-    require("http").request({auth: "user:foo"}); // OK
-    require("http").request({auth: "user:mypassword"}) // OK
-    require("http").request({auth: "user:mytoken"}) // OK
-    require("http").request({auth: "user:fake token"}) // OK
-    require("http").request({auth: "user:dcba"}) // OK
-    require("http").request({auth: "user:custom string"}) // OK
+    require("http").request({auth: "user:{{ INSERT_HERE }}"});
+    require("http").request({auth: "user:token {{ INSERT_HERE }}"});
+    require("http").request({auth: "user:( INSERT_HERE )"});
+    require("http").request({auth: "user:{{ env.access_token }}"});
+    require("http").request({auth: "user:abcdefgh"});
+    require("http").request({auth: "user:12345678"});
+    require("http").request({auth: "user:foo"});
+    require("http").request({auth: "user:mypassword"})
+    require("http").request({auth: "user:mytoken"})
+    require("http").request({auth: "user:fake token"})
+    require("http").request({auth: "user:dcba"})
+    require("http").request({auth: "user:custom string"})
 });
 
 (function () {
     // browser API
     var headers = new Headers();
-    headers.append("Authorization", `Basic sdsdag:sdsdag`); // NOT OK
-    headers.append("Authorization", `Basic sdsdag:xxxxxxxxxxxxxx`); // OK
-    headers.append("Authorization", `Basic sdsdag:aaaiuogrweuibgbbbbb`); // NOT OK
-    headers.append("Authorization", `Basic sdsdag:000000000000001`); // OK
+    headers.append("Authorization", `Basic sdsdag:sdsdag`); // $ Alert
+    headers.append("Authorization", `Basic sdsdag:xxxxxxxxxxxxxx`);
+    headers.append("Authorization", `Basic sdsdag:aaaiuogrweuibgbbbbb`); // $ Alert
+    headers.append("Authorization", `Basic sdsdag:000000000000001`);
 });
 
 (function () {
-    require('crypto').createHmac('sha256', 'mytoken'); // OK
-    require('crypto').createHmac('sha256', 'SampleToken'); // OK
-    require('crypto').createHmac('sha256', 'MyPassword'); // OK
-    require('crypto').createHmac('sha256', 'iubfewiaaweiybgaeuybgera'); // NOT OK
+    require('crypto').createHmac('sha256', 'mytoken');
+    require('crypto').createHmac('sha256', 'SampleToken');
+    require('crypto').createHmac('sha256', 'MyPassword');
+    require('crypto').createHmac('sha256', 'iubfewiaaweiybgaeuybgera'); // $ Alert
 })();
 
 (function () {
     const jwt_simple = require("jwt-simple");
 
     var privateKey = "myHardCodedPrivateKey";
-    jwt_simple.decode(UserToken, privateKey); // NOT OK
+    jwt_simple.decode(UserToken, privateKey); // $ Alert
 })();
 
 
@@ -314,13 +314,13 @@
     const jose = require("jose");
 
     var privateKey = "myHardCodedPrivateKey";
-    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // NOT OK
+    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // $ Alert
 
     const spki = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhYOFK2Ocbbpb/zVypi9...
     -----END PUBLIC KEY-----`
     let publicKey = await jose.importSPKI(spki, 'RS256')
-    jose.jwtVerify(token, publicKey) // NOT OK
+    jose.jwtVerify(token, publicKey) // $ Alert
 
     const alg = 'RS256'
     const jwk = {
@@ -332,7 +332,7 @@
     const jwt =
         'eyJhbGciOiJSUzI1NiJ9.eyJ1cm46ZXhhbXBsZTpjbGFpbSI6dHJ1ZSwiaWF0IjoxNjY5MDU2NDg4LCJpc3MiOiJ1cm46ZXhhbXBsZTppc3N1ZXIiLCJhdWQiOiJ1cm46ZXhhbXBsZTphdWRpZW5jZSJ9.gXrPZ3yM_60dMXGE69dusbpzYASNA-XIOwsb5D5xYnSxyj6_D6OR_uR_1vqhUm4AxZxcrH1_-XJAve9HCw8az_QzHcN-nETt-v6stCsYrn6Bv1YOc-mSJRZ8ll57KVqLbCIbjKwerNX5r2_Qg2TwmJzQdRs-AQDhy-s_DlJd8ql6wR4n-kDZpar-pwIvz4fFIN0Fj57SXpAbLrV6Eo4Byzl0xFD8qEYEpBwjrMMfxCZXTlAVhAq6KCoGlDTwWuExps342-0UErEtyIqDnDGcrfNWiUsoo8j-29IpKd-w9-C388u-ChCxoHz--H8WmMSZzx3zTXsZ5lXLZ9IKfanDKg'
 
-    await jose.jwtVerify(jwt, publicKey, { // NOT OK
+    await jose.jwtVerify(jwt, publicKey, { // $ Alert
         issuer: 'urn:example:issuer',
         audience: 'urn:example:audience',
     })
@@ -346,7 +346,7 @@
     app.get(
         "/protected",
         expressjwt.expressjwt({
-            secret: secretKey, algorithms: ["HS256"] // NOT OK
+            secret: secretKey, algorithms: ["HS256"] // $ Alert
         }),
         function (req, res) {
             if (!req.auth.admin) return res.sendStatus(401);
@@ -357,7 +357,7 @@
     app.get(
         "/protected",
         expressjwt.expressjwt({
-            secret: Buffer.from(secretKey, "base64"), // NOT OK
+            secret: Buffer.from(secretKey, "base64"), // $ Alert
             algorithms: ["RS256"],
         }),
         function (req, res) {
@@ -375,14 +375,14 @@
     var secretKey = "myHardCodedPrivateKey";
 
     const opts = {}
-    opts.secretOrKey = secretKey; // NOT OK
+    opts.secretOrKey = secretKey; // $ Alert
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         return done(null, false);
     }));
 
     passport.use(new JwtStrategy({
         secretOrKeyProvider: function (request, rawJwtToken, done) {
-            return done(null, secretKey) // NOT OK
+            return done(null, secretKey) // $ Alert
         }
     }, function (jwt_payload, done) {
         return done(null, false);
@@ -396,7 +396,7 @@
     var secretKey = "myHardCodedPrivateKey";
 
     NextAuth({
-        secret: secretKey, // NOT OK
+        secret: secretKey, // $ Alert
         providers: [
             AppleProvider({
                 clientId: process.env.APPLE_ID,
@@ -413,5 +413,5 @@
 
     var secretKey = "myHardCodedPrivateKey";
 
-    app.use(jwt({ secret: secretKey })); // NOT OK
+    app.use(jwt({ secret: secretKey })); // $ Alert
 })();

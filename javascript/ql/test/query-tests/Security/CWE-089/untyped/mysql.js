@@ -6,17 +6,17 @@ app.get("search", function handler(req, res) {
     let temp = req.params.value;
     pool.getConnection(function(err, connection) {
         connection.query({
-            sql: 'SELECT * FROM `books` WHERE `author` = ?', // OK
+            sql: 'SELECT * FROM `books` WHERE `author` = ?',
             values: [temp]
         }, function(error, results, fields) {});
     });
     pool.getConnection(function(err, connection) {
         connection.query({
-            sql: 'SELECT * FROM `books` WHERE `author` = ' + temp, // NOT OK
+            sql: 'SELECT * FROM `books` WHERE `author` = ' + temp, // $ Alert
         }, function(error, results, fields) {});
     });
     pool.getConnection(function(err, connection) {
-        connection.query('SELECT * FROM `books` WHERE `author` = ' + temp, // NOT OK
+        connection.query('SELECT * FROM `books` WHERE `author` = ' + temp, // $ Alert
             function(error, results, fields) {});
     });
 });

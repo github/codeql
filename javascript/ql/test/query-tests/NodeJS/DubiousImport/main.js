@@ -20,7 +20,7 @@ k.foo;
 
 var l = require('./l');
 l.foo();
-l.bar(); // not OK
+l.bar(); // $ Alert
 
 require('./m').foo;
 

@@ -1,12 +1,12 @@
 angular.module('myApp', [])
     .directive('myCustomer', function() {
         return {
-            templateUrl: "SAFE" // OK
+            templateUrl: "SAFE"
         }
     })
     .directive('myCustomer', function() {
         return {
-            templateUrl: Cookie.get("unsafe") // NOT OK
+            templateUrl: Cookie.get("unsafe") // $ Alert
         }
     });
 

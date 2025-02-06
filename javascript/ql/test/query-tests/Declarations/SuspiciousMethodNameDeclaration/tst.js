@@ -1,4 +1,4 @@
- // OK: don't report anything in .js files.
+ // OK - don't report anything in .js files.
 function getStuff(number) {
     return {
         "new": function() {

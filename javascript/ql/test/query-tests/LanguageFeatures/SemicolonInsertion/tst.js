@@ -1,22 +1,22 @@
 function tst() {
-  var a = { // NOT OK
+  var a = { // $ Alert
     'i': 1,
     'j': 2
   }
 
-  return 1 // NOT OK
+  return 1 // $ Alert
 
-  if (condition) { // OK
+  if (condition) {
   }
 
-  for (i = 0; i < 10; i++) { // OK
+  for (i = 0; i < 10; i++) {
   }
 
-  label: while (condition) { // OK
-    break label; // OK
+  label: while (condition) {
+    break label;
   }
 
-  return 1; // OK
+  return 1;
 
   //pad with enough explicit semicolons to satisfy 90% threshold
   foo();

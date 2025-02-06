@@ -98,17 +98,17 @@ function encodeDecodeEncode(s) {
 function badEncode(s) {
   return s.replace(new RegExp("\"", "g"), "&quot;")
           .replace(new RegExp("\'", "g"), "&apos;")
-          .replace(new RegExp("&", "g"), "&amp;"); // NOT OK
+          .replace(new RegExp("&", "g"), "&amp;"); // $ Alert
 }
 
 function goodEncode(s) {
   return s.replace(new RegExp("\"", ""), "&quot;")
           .replace(new RegExp("\'", ""), "&apos;")
-          .replace(new RegExp("&", ""), "&amp;"); // OK
+          .replace(new RegExp("&", ""), "&amp;");
 }
 
 function goodEncode(s) {
   return s.replace(new RegExp("\"", unknownFlags()), "&quot;")
           .replace(new RegExp("\'", unknownFlags()), "&apos;")
-          .replace(new RegExp("&", unknownFlags()), "&amp;"); // OK
+          .replace(new RegExp("&", unknownFlags()), "&amp;");
 }

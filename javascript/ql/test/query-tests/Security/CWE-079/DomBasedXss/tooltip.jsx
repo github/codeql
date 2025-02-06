@@ -5,17 +5,17 @@ import ReactTooltip from 'react-tooltip';
 function tooltips() {
     const source = window.name;
     return <span>
-        <span data-tip={source}/> // OK
-        <span data-tip={source} data-html={false} /> // OK
-        <span data-tip={source} data-html="true" /> // NOT OK
-        <span data-tip={source} data-html={true} /> // NOT OK
+        <span data-tip={source}/>
+        <span data-tip={source} data-html={false} />
+        <span data-tip={source} data-html="true" /> // $ Alert
+        <span data-tip={source} data-html={true} /> // $ Alert
         <ReactTooltip />
     </span>
 }
 
 function MyElement(props) {
     const provide = props.provide;
-    return <div dangerouslySetInnerHTML={{__html: provide()}} />; // NOT OK
+    return <div dangerouslySetInnerHTML={{__html: provide()}} />; // $ Alert
 }
 
 function useMyElement() {

@@ -18,7 +18,7 @@ namespace N {
   var x;
   x.p = 5;
 
-  var q = M.Color.Blue; // OK
+  var q = M.Color.Blue;
 
   namespace M {
     export const enum Color { Blue }

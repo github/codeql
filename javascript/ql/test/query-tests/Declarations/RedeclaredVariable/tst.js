@@ -1,5 +1,5 @@
 function f() {
-	// OK
+	
 	var f;
 }
 

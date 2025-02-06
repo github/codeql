@@ -1,7 +1,7 @@
 function removeX(string) {
   let parts = string.split('/');
   for (let i = 0; i < parts.length; ++i) {
-    if (parts[i] === 'X') parts.splice(i, 1); // NOT OK
+    if (parts[i] === 'X') parts.splice(i, 1); // $ Alert
   }
   return parts.join('/');
 }
@@ -10,7 +10,7 @@ function removeXInnerLoop(string, n) {
   let parts = string.split('/');
   for (let j = 0; j < n; ++j) {
     for (let i = 0; i < parts.length; ++i) {
-      if (parts[i] === 'X') parts.splice(i, 1); // NOT OK
+      if (parts[i] === 'X') parts.splice(i, 1); // $ Alert
     }
   }
   return parts.join('/');
@@ -21,7 +21,7 @@ function removeXOuterLoop(string, n) {
   for (let i = 0; i < parts.length; ++i) {
     for (let j = 0; j < n; ++j) {
       if (parts[i] === 'X') {
-        parts.splice(i, 1); // NOT OK
+        parts.splice(i, 1); // $ Alert
         break;
       }
     }
@@ -33,7 +33,7 @@ function decrementAfter(string) {
   let parts = string.split('/');
   for (let i = 0; i < parts.length; ++i) {
     if (parts[i] === 'X') {
-        parts.splice(i, 1); // OK
+        parts.splice(i, 1);
         --i;
     }
   }
@@ -44,7 +44,7 @@ function postDecrementArgument(string) {
   let parts = string.split('/');
   for (let i = 0; i < parts.length; ++i) {
     if (parts[i] === 'X') {
-        parts.splice(i--, 1); // OK
+        parts.splice(i--, 1);
     }
   }
   return parts.join('/');
@@ -79,7 +79,7 @@ function spliceAfterLoop(string) {
     if (parts[i] === 'X') break;
   }
   if (parts[i] === 'X') {
-    parts.splice(i, 1); // OK - not inside loop 
+    parts.splice(i, 1); // OK - not inside loop
   }
   return parts.join('/');
 }

@@ -8,7 +8,7 @@ ajv.addSchema({type: 'object', additionalProperties: {type: 'number'}}, 'pollDat
 
 app.post('/polldata', (req, res) => {
     if (!ajv.validate('pollData', req.body)) {
-        res.send(ajv.errorsText()); // NOT OK
+        res.send(ajv.errorsText()); // $ Alert
     }
 });
 
@@ -21,6 +21,6 @@ const joiSchema = joi.object().keys({
 app.post('/votedata', (req, res) => {
     const val = joiSchema.validate(req.body);
     if (val.error) {
-        res.send(val.error); // NOT OK
+        res.send(val.error); // $ Alert
     }
 });

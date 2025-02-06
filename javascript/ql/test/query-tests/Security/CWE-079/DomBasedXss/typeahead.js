@@ -22,7 +22,7 @@
       },
       templates: {
         suggestion: function(val) {
-          return val; // NOT OK 
+          return val; // $ Alert
         }
       }
     }

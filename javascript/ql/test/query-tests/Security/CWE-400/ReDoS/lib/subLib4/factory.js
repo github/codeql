@@ -5,6 +5,6 @@
   }(this, (function (exports) { 'use strict';
 
   exports.foo = function (name) {
-	/f*g/.test(name); // NOT OK
+	/f*g/.test(name); // $ Alert[js/polynomial-redos]
   }
 })));

@@ -3,5 +3,5 @@ const app = express();
 
 app.get('/foo', (req, res) => {
     let data = req.query.data;
-    new RegExp("^"+ data.name + "$", "i"); // NOT OK
+    new RegExp("^"+ data.name + "$", "i"); // $ Alert[js/regex-injection]
 });

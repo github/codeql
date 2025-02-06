@@ -1,19 +1,16 @@
-// OK
+
 for (j = i - 1; j >= 0; --j) {
 }
 
-// NOT OK
-for (j = i + 1; j < strLength; --j) {
+for (j = i + 1; j < strLength; --j) { // $ Alert
 }
 
-// NOT OK
-for (var i = 0, l = c.length; i > l; i ++) {
+for (var i = 0, l = c.length; i > l; i ++) { // $ Alert
 }
 
-// OK
+
 for (i=lower-1; i>=0; --i)
     a[i] = 0;
 
-// NOT OK
-for (i=upper+1; i<a.length; --i)
+for (i=upper+1; i<a.length; --i) // $ Alert
     a[i] = 0;

@@ -19,7 +19,7 @@ function getfileRoot(workspaceId) {
 }
 
 function withStatsAndETag(filepath, callback) {
-	fs.readFileSync(filepath); // NOT OK
+	fs.readFileSync(filepath); // $ Alert
 };
 
 function decodeUserIdFromWorkspaceId(workspaceId) {

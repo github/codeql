@@ -3,7 +3,7 @@ module.exports.set = function recSet(obj, path, value) {
   var currentValue = obj[currentPath];
   if (path.length === 1) {
     if (currentValue === void 0) {
-      obj[currentPath] = value; // NOT OK
+      obj[currentPath] = value; // $ Alert
     }
     return currentValue;
   }
@@ -12,18 +12,18 @@ module.exports.set = function recSet(obj, path, value) {
 }
 
 module.exports.set2 = function (obj, path, value) {
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.setWithArgs = function() {
   var obj = arguments[0];
   var path = arguments[1];
   var value = arguments[2];
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.usedInTest = function (obj, path, value) {
-  return obj[path[0]][path[1]] = value; // NOT OK
+  return obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.setWithArgs2 = function() {
@@ -31,7 +31,7 @@ module.exports.setWithArgs2 = function() {
   var obj = args[0];
   var path = args[1];
   var value = args[2];
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.setWithArgs3 = function() {
@@ -39,7 +39,7 @@ module.exports.setWithArgs3 = function() {
   var obj = args[0];
   var path = args[1];
   var value = args[2];
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 function id(s) {
@@ -52,7 +52,7 @@ module.exports.notVulnerable = function () {
   const path = id("x");
   const value = id("y");
   const obj = id("z");
-  return (obj[path[0]][path[1]] = value); // OK
+  return (obj[path[0]][path[1]] = value);
 }
 
 class Foo {
@@ -67,12 +67,12 @@ class Foo {
     const obj = this.obj;
     const path = this.path;
     const value = this.value;
-    return (obj[path[0]][path[1]] = value); // NOT OK
+    return (obj[path[0]][path[1]] = value); // $ Alert
   }
 
   safe() {
     const obj = this.obj;
-    obj[path[0]] = this.value; // OK
+    obj[path[0]] = this.value;
   }
 }
 
@@ -81,10 +81,10 @@ module.exports.Foo = Foo;
 module.exports.delete = function() {
   var obj = arguments[0];
   var path = arguments[1];
-  delete obj[path[0]]; // OK
+  delete obj[path[0]];
   var prop = arguments[2];
   var proto = obj[path[0]];
-  delete proto[prop]; // NOT OK
+  delete proto[prop]; // $ Alert
 }
 
 module.exports.fixedProp = function (obj, path, value) {
@@ -105,18 +105,18 @@ module.exports.sanWithFcuntion = function() {
   var two = arguments[2];
   var value = arguments[3];
   
-  obj[one][two] = value; // NOT OK
+  obj[one][two] = value; // $ Alert
 
   if (isPossibilityOfPrototypePollution(one) || isPossibilityOfPrototypePollution(two)) {
     throw new Error('Prototype pollution is not allowed');
   }
-  obj[one][two] = value; // OK
+  obj[one][two] = value;
 }
 
 module.exports.returnsObj = function () {
     return {
         set: function (obj, path, value) {
-            obj[path[0]][path[1]] = value; // NOT OK
+            obj[path[0]][path[1]] = value; // $ Alert
         }
     }
 }
@@ -125,7 +125,7 @@ class MyClass {
     constructor() {}
 
     set(obj, path, value) {
-        obj[path[0]][path[1]] = value; // NOT OK
+        obj[path[0]][path[1]] = value; // $ Alert
     }
 
     static staticSet(obj, path, value) {

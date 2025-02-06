@@ -7,13 +7,13 @@ export default function Post(params) {
   return (
     <>
       <div
-        dangerouslySetInnerHTML={{ __html: id }} // NOT OK
+        dangerouslySetInnerHTML={{ __html: id }} // $ Alert
       />
       <div
-        dangerouslySetInnerHTML={{ __html: params.id }} // NOT OK
+        dangerouslySetInnerHTML={{ __html: params.id }} // $ Alert
       />
       <div
-        dangerouslySetInnerHTML={{ __html: params.q }} // NOT OK
+        dangerouslySetInnerHTML={{ __html: params.q }} // $ Alert
       />
     </>
   )

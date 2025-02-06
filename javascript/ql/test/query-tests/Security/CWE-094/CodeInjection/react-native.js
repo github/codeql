@@ -5,7 +5,7 @@ var app = express();
 
 app.get('/some/path', function(req, res) {
   let tainted = req.param("code");
-  <WebView injectedJavaScript={tainted}/>;  // NOT OK
+  <WebView injectedJavaScript={tainted}/>;  // $ Alert[js/code-injection]
   let wv = <WebView/>;
-  wv.injectJavaScript(tainted);             // NOT OK
+  wv.injectJavaScript(tainted);             // $ Alert[js/code-injection]
 });

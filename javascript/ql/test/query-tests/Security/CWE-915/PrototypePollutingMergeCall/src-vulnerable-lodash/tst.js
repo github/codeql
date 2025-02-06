@@ -4,17 +4,17 @@ let _ = require('lodash');
 let app = express();
 
 app.get('/hello', function(req, res) {
-    _.merge({}, req.query.foo); // NOT OK
-    _.merge({}, req.query); // NOT OK - but not flagged
+    _.merge({}, req.query.foo); // $ Alert
+    _.merge({}, req.query); // $ MISSING: Alert
 
     _.merge({}, {
-        value: req.query.value // NOT OK
+        value: req.query.value // $ Alert
     });
 
     let opts = {
       thing: req.query.value // wrapped and unwrapped value
     };
     _.merge({}, {
-        value: opts.thing // NOT OK
+        value: opts.thing // $ Alert
     });
 });

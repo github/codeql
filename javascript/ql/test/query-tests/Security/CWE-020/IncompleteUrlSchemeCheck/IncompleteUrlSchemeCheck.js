@@ -41,7 +41,7 @@ function test5(url) {
 
 function test6(url) {
     let protocol = new URL(url).protocol;
-    if (badProtocolsGood.includes(protocol)) // OK
+    if (badProtocolsGood.includes(protocol))
         return "about:blank";
     return url;
 }
@@ -113,7 +113,7 @@ function chain1(url) {
 }
 
 function chain2(url) {
-    return url  // OK
+    return url
         .replace(/javascript:/, "")
         .replace(/data:/, "")
         .replace(/vbscript:/, "");

@@ -3,4 +3,4 @@ declare function returnsSomething(): number;
 
 console.log(returnsSomething());
 
-console.log(returnsVoid()); // NOT OK!
+console.log(returnsVoid()); // $ Alert

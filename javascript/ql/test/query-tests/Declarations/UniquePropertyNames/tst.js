@@ -17,9 +17,9 @@ var accessors = {
 };
 
 var clobbering = {
-  x: 23,       // NOT OK: clobbered by `x: 56`
-  y: "hello",  // NOT OK: clobbered by `"y": "world"`
-  x: 42,       // NOT OK: clobbered by `x: 56`
+  x: 23,       // $ Alert - clobbered by `x: 56`
+  y: "hello",  // $ Alert - clobbered by `"y": "world"`
+  x: 42,       // $ Alert - clobbered by `x: 56`
   x: 56,
   "y": "world"
 }

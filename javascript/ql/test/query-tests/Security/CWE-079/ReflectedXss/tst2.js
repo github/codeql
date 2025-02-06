@@ -4,8 +4,8 @@ var app = express();
 
 app.get('/user/:id', function(req, res) {
   let { p, q: r } = req.params;
-  res.send(p); // NOT OK
-  res.send(r); // NOT OK
+  res.send(p); // $ Alert
+  res.send(r); // $ Alert
 });
 
 const aKnownValue = "foo";
@@ -14,13 +14,13 @@ app.get('/bar', function(req, res) {
   let { p } = req.params;
 
   if (p == aKnownValue)
-    res.send(p); // OK
-  res.send(p);   // NOT OK
+    res.send(p);
+  res.send(p);   // $ Alert
 
   if (p != aKnownValue)
-    res.send(p); // NOT OK
+    res.send(p); // $ Alert
   else
-    res.send(p); // OK
+    res.send(p);
 });
 
 
@@ -33,8 +33,8 @@ app.get('/baz', function(req, res) {
   obj.p = p;
   var other = clone(obj);
 
-  res.send(p); // NOT OK
-  res.send(other.p); // NOT OK
+  res.send(p); // $ Alert
+  res.send(other.p); // $ Alert
 });
 
 const serializeJavaScript = require('serialize-javascript');
@@ -44,11 +44,11 @@ app.get('/baz', function(req, res) {
 
   var serialized = serializeJavaScript(p);
 
-  res.send(serialized); // OK
+  res.send(serialized);
   
   var unsafe = serializeJavaScript(p, {unsafe: true});
 
-  res.send(unsafe); // NOT OK
+  res.send(unsafe); // $ Alert
 });
 
 const fclone = require('fclone');
@@ -60,8 +60,8 @@ app.get('/baz', function(req, res) {
   obj.p = p;
   var other = fclone(obj);
 
-  res.send(p); // NOT OK
-  res.send(other.p); // NOT OK
+  res.send(p); // $ Alert
+  res.send(other.p); // $ Alert
 });
 
 const jc = require('json-cycle');
@@ -72,8 +72,8 @@ app.get('/baz', function(req, res) {
   obj.p = p;
   var other = jc.retrocycle(jc.decycle(obj));
 
-  res.send(p); // NOT OK
-  res.send(other.p); // NOT OK
+  res.send(p); // $ Alert
+  res.send(other.p); // $ Alert
 });
 
 const sortKeys = require('sort-keys');
@@ -85,6 +85,6 @@ app.get('/baz', function(req, res) {
   obj.p = p;
   var other = sortKeys(obj);
 
-  res.send(p); // NOT OK
-  res.send(other.p); // NOT OK
+  res.send(p); // $ Alert
+  res.send(other.p); // $ Alert
 });

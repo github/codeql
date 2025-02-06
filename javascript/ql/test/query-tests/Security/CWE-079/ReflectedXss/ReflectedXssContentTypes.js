@@ -7,7 +7,7 @@ app.get('/user/:id', function (req, res) {
     res.send("FOO: " + req.params.id); // OK - content type is plain text
   } else {
     res.set('Content-Type', 'text/html');
-    res.send("FOO: " + req.params.id); // NOT OK - content type is HTML.
+    res.send("FOO: " + req.params.id); // $ Alert - content type is HTML.
   }
 });
 
@@ -17,7 +17,7 @@ app.get('/user/:id', function (req, res) {
     res.send("FOO: " + req.params.id); // OK - content type is JSON
   } else {
     res.writeHead(404);
-    res.send("FOO: " + req.params.id); // NOT OK - content type is not set.
+    res.send("FOO: " + req.params.id); // $ Alert - content type is not set.
   }
 });
 
@@ -36,10 +36,10 @@ app.get('/user/:id', function (req, res) {
 app.get('/user/:id', function (req, res) {
   if (err) {
     res.statusCode = 404;
-    res.end("FOO: " + req.params.id); // NOT OK
+    res.end("FOO: " + req.params.id); // $ Alert
   } else {
     res.setHeader('Content-Type', 'text/plain;charset=utf8');
-    res.end("FOO: " + req.params.id); // OK
+    res.end("FOO: " + req.params.id);
   }
 });
 
@@ -50,10 +50,10 @@ function textContentType() {
 app.get('/user/:id', function (req, res) {
   if (err) {
     res.header({'Content-Type': textContentType()});
-    res.end("FOO: " + req.params.id); // OK
+    res.end("FOO: " + req.params.id);
   } else {
     res.setHeader('Content-Type', 'text/plain;charset=utf8');
-    res.end("FOO: " + req.params.id); // OK
+    res.end("FOO: " + req.params.id);
   }
 });
 
@@ -67,13 +67,13 @@ app.get('/user/:id', function (req, res) {
   somethingMore();
   while(Math.random()) {};
   res.writeHead(404);
-  res.send("FOO: " + req.params.id); // NOT OK - content type is not set.
+  res.send("FOO: " + req.params.id); // $ Alert - content type is not set.
 });
 
 app.get('/user/:id', function (req, res) {
   res.header({'Content-Type': textContentType()});
   myFancyFunction(() => {
-	res.send("FOO: " + req.params.id); // OK
+	res.send("FOO: " + req.params.id);
   });
-  res.end("FOO: " + req.params.id); // OK
+  res.end("FOO: " + req.params.id);
 });

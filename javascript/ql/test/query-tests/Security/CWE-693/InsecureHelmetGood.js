@@ -3,7 +3,7 @@ const helmet = require("helmet");
 
 const app = express();
 
-app.use(helmet());  // GOOD: use the defaults
+app.use(helmet());  // OK - use the defaults
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");

@@ -1,27 +1,25 @@
-// NOT OK
-function f(x) {
+function f(x) { // $ Alert
 	return x = 23;
 }
 
-// NOT OK
-function g() {
+function g() { // $ Alert
 	var x;
 	return x = 23;
 }
 
-// OK
+
 function h() {
 	return x = 23;
 }
 
-// OK
+
 function k() {
 	try {
 		return x = 23;
 	} catch(x) {}
 }
 
-// OK: the return statement assigns to a global, not the catch variable
+// OK - the return statement assigns to a global, not the catch variable
 function l() {
 	try {
 		throw new Error();
@@ -29,7 +27,7 @@ function l() {
 	return x = 23;
 }
 
-// OK
+
 function m() {
 	var x = 23;
 	return function() {
@@ -37,7 +35,7 @@ function m() {
 	};
 }
 
-// OK
+
 function n(x) {
 	global_getter = function() {
 		return x;
@@ -45,7 +43,7 @@ function n(x) {
 	return x = 23;
 }
 
-// OK
+
 function p() {
 	var x;
 	return {

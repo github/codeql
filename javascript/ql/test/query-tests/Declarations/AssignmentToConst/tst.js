@@ -1,23 +1,19 @@
 const x = 23, y = 42;
 
-// NOT OK
-x = 42;
+x = 42; // $ Alert
 
-// NOT OK
-y = 23;
+y = 23; // $ Alert
 
-// NOT OK
-var y = -1;
+var y = -1; // $ Alert
 
-// NOT OK
-++x;
+++x; // $ Alert
 
 var z = 56;
 
-// OK
+
 z = 72;
 
-// OK
+
 const s = "hi";
 
 (function (){

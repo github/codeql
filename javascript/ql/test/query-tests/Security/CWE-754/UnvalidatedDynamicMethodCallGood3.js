@@ -12,7 +12,7 @@ actions.put("pause", function pause(data) {
 app.get('/perform/:action/:payload', function(req, res) {
     let action = actions.get(req.params.action);
     if (typeof action === 'function') {
-        res.end(action(req.params.payload)); // GOOD: `action` is either the `play` or the `pause` function from above
+        res.end(action(req.params.payload)); // OK - `action` is either the `play` or the `pause` function from above
     } else {
         res.end("Unsupported action.");
     }

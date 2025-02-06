@@ -1,16 +1,16 @@
 let Vue = require('vue');
 
 new Vue( {
-	created: () => this, // NOT OK
+	created: () => this, // $ Alert
 	computed: {
-		x: () => this, // NOT OK
-		y: { get: () => this }, // NOT OK
-		z: { set: () => this } // NOT OK
+		x: () => this, // $ Alert
+		y: { get: () => this }, // $ Alert
+		z: { set: () => this } // $ Alert
 	},
 	methods: {
-		arrow: () => this, // NOT OK
-		nonArrow: function() { this; }, // OK
-		arrowWithoutThis: () => 42, // OK
-		arrowWithNestedThis: () => (() => this) // OK
+		arrow: () => this, // $ Alert
+		nonArrow: function() { this; },
+		arrowWithoutThis: () => 42,
+		arrowWithNestedThis: () => (() => this)
 	}
 });

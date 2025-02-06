@@ -3,30 +3,23 @@ var express = require('express');
 var app = express();
 
 app.get('/some/path', function(req, res) {
-  // NOT OK
-  var f = new Function("return wibbles[" + req.param("wobble") + "];");
-  // NOT OK
-  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];");
+  var f = new Function("return wibbles[" + req.param("wobble") + "];"); // $ Alert
+  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];"); // $ Alert
   var runC = require("vm").runInNewContext;
-  // NOT OK
-  runC("return wibbles[" + req.param("wobble") + "];");
+  runC("return wibbles[" + req.param("wobble") + "];"); // $ Alert
   var vm = require("vm");
-  // NOT OK
-  vm.compileFunction(req.param("code_compileFunction"));
-  // NOT OK
-  var script = new vm.Script(req.param("code_Script"));
-  // NOT OK
-  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule"));
-  // NOT OK
-  vm.runInContext(req.param("code_runInContext"), vm.createContext());
+  vm.compileFunction(req.param("code_compileFunction")); // $ Alert
+  var script = new vm.Script(req.param("code_Script")); // $ Alert
+  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule")); // $ Alert
+  vm.runInContext(req.param("code_runInContext"), vm.createContext()); // $ Alert
 });
 
 const cp = require('child_process');
 app.get('/other/path', function(req, res) {
   const taint = req.param("wobble");
-  cp.execFileSync('node', ['-e', taint]); // NOT OK
+  cp.execFileSync('node', ['-e', taint]); // $ Alert[js/code-injection]
 
-  cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]); // OK
+  cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]);
 });
 
 const pty = require('node-pty');
@@ -40,13 +33,13 @@ app.get('/terminal', function(req, res) {
     env: process.env
   });
 
-  shell.write(taint); // NOT OK
+  shell.write(taint); // $ Alert[js/code-injection]
 });
   
 require("express-ws")(app);
 
 app.ws("/socket-thing/", function (ws, req) {
   ws.on("message", function (msg) {
-    eval(msg); // NOT OK
+    eval(msg); // $ Alert[js/code-injection]
   });
 });

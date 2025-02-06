@@ -1,5 +1,4 @@
-// NOT OK
-while(c){
+while(c){ // $ Alert
   switch(c){
     case "/":
       break;
@@ -8,8 +7,7 @@ while(c){
   break;
 }
 
-// NOT OK
-function f() {
+function f() { // $ Alert
   for (; k < numprecincts;) {
     var packet = createPacket(resolution, k, l);
     k++;
@@ -17,14 +15,14 @@ function f() {
   }
 }
 
-// OK
+
 var oHasProps = false;
 for (var p in o) {
   oHasProps = true;
   break;
 }
 
-// OK
+
 while(c){
   if (c === '"')
     break;
