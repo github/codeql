@@ -1,1 +1,9 @@
+#select
 | polyfill-nocheck.html:4:9:4:98 | <script>...</> | Content loaded from untrusted domain with no integrity check. |
+testFailures
+| DynamicCreationOfUntrustedSourceUse.html:16:62:16:88 | // $ Al ... ternary | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:20:60:20:80 | // $ Al ... ttp URL | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:27:42:27:84 | // $ Al ... h calls | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:33:61:33:113 | // $ Al ... tribute | Missing result: Alert |
+| StaticCreationOfUntrustedSourceUse.html:20:157:20:191 | <!--  $ Alert - digest missing  --> | Missing result: Alert |
+| polyfill-nocheck.html:4:9:4:98 | Content loaded from untrusted domain with no integrity check. | Unexpected result: Alert |

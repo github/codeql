@@ -1,3 +1,4 @@
+#select
 | lib/tst.js:7:1:7:45 | app.use ... rname)) | Serves the folder lib, which can contain private information. |
 | lib/tst.js:9:1:9:43 | app.use ... otDir)) | Serves the folder lib, which can contain private information. |
 | lib/tst.js:11:1:11:52 | app.use ... + '/')) | Serves the folder lib, which can contain private information. |
@@ -21,3 +22,27 @@
 | private-file-exposure.js:51:5:51:88 | app.use ... les'))) | Serves the folder "../node_modules", which can contain private information. |
 | private-file-exposure.js:70:5:70:71 | serveHa ... ular"}) | Serves the folder "./node_modules/angular", which can contain private information. |
 | subfolder/private-file-exposure-2.js:6:1:6:34 | app.use ... rname)) | Serves the folder subfolder, which can contain private information. |
+testFailures
+| bufferRead.js:32:32:32:80 | // $ Al ... st body | Missing result: Alert |
+| googlecompiler.js:14:32:14:91 | // $ Al ... on body | Missing result: Alert |
+| googlecompiler.js:37:30:37:81 | // $ Al ... st body | Missing result: Alert |
+| private-file-exposure.js:8:1:8:49 | Serves the folder "./node_modules/angular", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:9:1:9:59 | Serves the folder "node_modules/angular", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:10:1:10:67 | Serves the folder "node_modules/angular-animate", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:11:1:11:67 | Serves the folder "/node_modules/angular", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:12:1:12:78 | Serves the folder "/node_modules/angular-route/", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:13:1:13:48 | Serves the folder "/node_modules/angular", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:14:1:14:84 | Serves the folder "../node_modules", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:15:1:15:35 | Serves the current working folder, which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:16:1:16:67 | Serves the folder "./node_modules/angular/", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:17:1:17:78 | Serves the folder "./node_modules/angular/", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:18:1:18:74 | Serves the folder "/node_modules", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:19:1:19:88 | Serves the folder "/node_modules/angular/", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:22:1:22:58 | Serves the folder "/node_modules/angular/", which can contain private information. | Unexpected result: Alert |
+| private-file-exposure.js:64:36:64:45 | // $ Alert | Missing result: Alert |
+| readFileSync.js:25:22:25:73 | // $ Al ... st body | Missing result: Alert |
+| readStreamRead.js:29:27:29:75 | // $ Al ... st body | Missing result: Alert |
+| request.js:22:22:22:76 | // $ Al ... st body | Missing result: Alert |
+| sentAsHeaders.js:18:57:18:102 | // $ Al ...  header | Missing result: Alert |
+| sentAsHeaders.js:24:57:24:102 | // $ Al ...  header | Missing result: Alert |
+| subfolder/private-file-exposure-2.js:6:1:6:34 | Serves the folder subfolder, which can contain private information. | Unexpected result: Alert |

@@ -1,3 +1,12 @@
+#select
+| FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | Outbound network request depends on $@. | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | file data |
+| bufferRead.js:32:21:32:28 | postData | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:32:21:32:28 | postData | Outbound network request depends on $@. | bufferRead.js:12:22:12:43 | new Buf ... s.size) | file data |
+| readFileSync.js:25:18:25:18 | s | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:25:18:25:18 | s | Outbound network request depends on $@. | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | file data |
+| readStreamRead.js:29:19:29:23 | chunk | readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:29:19:29:23 | chunk | Outbound network request depends on $@. | readStreamRead.js:13:21:13:35 | readable.read() | file data |
+| request.js:8:11:8:20 | {jsonData} | request.js:28:52:28:55 | data | request.js:8:11:8:20 | {jsonData} | Outbound network request depends on $@. | request.js:28:52:28:55 | data | file data |
+| request.js:16:11:23:3 | {\\n    u ... ody\\n  } | request.js:43:51:43:54 | data | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | Outbound network request depends on $@. | request.js:43:51:43:54 | data | file data |
+| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | Outbound network request depends on $@. | sentAsHeaders.js:10:79:10:84 | buffer | file data |
+| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | Outbound network request depends on $@. | sentAsHeaders.js:10:79:10:84 | buffer | file data |
 edges
 | FileAccessToHttp.js:4:5:4:47 | content | FileAccessToHttp.js:9:23:9:29 | content | provenance |  |
 | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:47 | content | provenance |  |
@@ -91,12 +100,30 @@ nodes
 | sentAsHeaders.js:24:31:24:53 | "http:/ ... content | semmle.label | "http:/ ... content |
 | sentAsHeaders.js:24:47:24:53 | content | semmle.label | content |
 subpaths
-#select
-| FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | Outbound network request depends on $@. | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | file data |
-| bufferRead.js:32:21:32:28 | postData | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:32:21:32:28 | postData | Outbound network request depends on $@. | bufferRead.js:12:22:12:43 | new Buf ... s.size) | file data |
-| readFileSync.js:25:18:25:18 | s | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:25:18:25:18 | s | Outbound network request depends on $@. | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | file data |
-| readStreamRead.js:29:19:29:23 | chunk | readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:29:19:29:23 | chunk | Outbound network request depends on $@. | readStreamRead.js:13:21:13:35 | readable.read() | file data |
-| request.js:8:11:8:20 | {jsonData} | request.js:28:52:28:55 | data | request.js:8:11:8:20 | {jsonData} | Outbound network request depends on $@. | request.js:28:52:28:55 | data | file data |
-| request.js:16:11:23:3 | {\\n    u ... ody\\n  } | request.js:43:51:43:54 | data | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | Outbound network request depends on $@. | request.js:43:51:43:54 | data | file data |
-| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | Outbound network request depends on $@. | sentAsHeaders.js:10:79:10:84 | buffer | file data |
-| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | Outbound network request depends on $@. | sentAsHeaders.js:10:79:10:84 | buffer | file data |
+testFailures
+| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | Unexpected result: Source |
+| FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | Unexpected result: Alert |
+| bufferRead.js:12:22:12:43 | new Buf ... s.size) | Unexpected result: Source |
+| googlecompiler.js:14:32:14:91 | // $ Al ... on body | Missing result: Alert |
+| googlecompiler.js:37:30:37:81 | // $ Al ... st body | Missing result: Alert |
+| lib/tst.js:7:48:7:57 | // $ Alert | Missing result: Alert |
+| lib/tst.js:9:46:9:55 | // $ Alert | Missing result: Alert |
+| lib/tst.js:11:55:11:64 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:40:91:40:100 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:41:100:41:109 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:42:69:42:78 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:43:49:43:58 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:51:91:51:100 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:64:36:64:45 | // $ Alert | Missing result: Alert |
+| private-file-exposure.js:70:74:70:83 | // $ Alert | Missing result: Alert |
+| readFileSync.js:5:12:5:39 | fs.read ... t.txt") | Unexpected result: Source |
+| readStreamRead.js:13:21:13:35 | readable.read() | Unexpected result: Source |
+| request.js:16:11:23:3 | {\\n    u ... ody\\n  } | Unexpected result: Alert |
+| request.js:22:22:22:76 | // $ Al ... st body | Missing result: Alert |
+| request.js:28:52:28:55 | data | Unexpected result: Source |
+| request.js:43:51:43:54 | data | Unexpected result: Source |
+| sentAsHeaders.js:10:79:10:84 | buffer | Unexpected result: Source |
+| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | Unexpected result: Alert |
+| sentAsHeaders.js:18:57:18:102 | // $ Al ...  header | Missing result: Alert |
+| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | Unexpected result: Alert |
+| sentAsHeaders.js:24:57:24:102 | // $ Al ...  header | Missing result: Alert |

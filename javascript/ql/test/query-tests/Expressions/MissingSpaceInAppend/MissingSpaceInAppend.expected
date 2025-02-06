@@ -1,3 +1,4 @@
+#select
 | missing.js:2:5:2:15 | "this text" | This string appears to be missing a space after 'text'. |
 | missing.js:4:5:4:35 | "the cl ... ayList" | This string appears to be missing a space after 'java.util.ArrayList'. |
 | missing.js:6:5:6:16 | "This isn't" | This string appears to be missing a space after 'isn't'. |
@@ -13,3 +14,19 @@
 | missing.js:28:5:28:21 | `missing a space` | This string appears to be missing a space after 'space'. |
 | missing.js:30:7:30:21 | "missing space" | This string appears to be missing a space after 'space'. |
 | missing.js:32:7:32:12 | "h. 0" | This string appears to be missing a space after '0'. |
+testFailures
+| missing.js:2:5:2:15 | This string appears to be missing a space after 'text'. | Unexpected result: Alert |
+| missing.js:4:5:4:35 | This string appears to be missing a space after 'java.util.ArrayList'. | Unexpected result: Alert |
+| missing.js:6:5:6:16 | This string appears to be missing a space after 'isn't'. | Unexpected result: Alert |
+| missing.js:8:5:8:15 | This string appears to be missing a space after '1'. | Unexpected result: Alert |
+| missing.js:10:5:10:17 | This string appears to be missing a space after 'A/B'. | Unexpected result: Alert |
+| missing.js:12:5:12:21 | This string appears to be missing a space after 'it....'. | Unexpected result: Alert |
+| missing.js:14:5:14:23 | This string appears to be missing a space after 'space?'. | Unexpected result: Alert |
+| missing.js:17:15:17:23 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:20:5:20:21 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:22:5:22:21 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:24:5:24:21 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:26:5:26:21 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:28:5:28:21 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:30:7:30:21 | This string appears to be missing a space after 'space'. | Unexpected result: Alert |
+| missing.js:32:7:32:12 | This string appears to be missing a space after '0'. | Unexpected result: Alert |

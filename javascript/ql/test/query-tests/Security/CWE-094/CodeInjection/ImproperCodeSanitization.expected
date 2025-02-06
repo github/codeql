@@ -1,3 +1,12 @@
+#select
+| bad-code-sanitization.js:8:27:8:46 | statements.join(';') | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | bad-code-sanitization.js:8:27:8:46 | statements.join(';') | Code construction depends on an $@. | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | improperly sanitized value |
+| bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | Code construction depends on an $@. | bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | improperly sanitized value |
+| bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | improperly sanitized value |
+| bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | improperly sanitized value |
+| bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | improperly sanitized value |
+| bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | improperly sanitized value |
+| bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | Code construction depends on an $@. | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | improperly sanitized value |
+| bad-code-sanitization.js:64:27:64:36 | assignment | bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | bad-code-sanitization.js:64:27:64:36 | assignment | Code construction depends on an $@. | bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | improperly sanitized value |
 edges
 | bad-code-sanitization.js:2:12:2:90 | /^[_$a- ... key)}]` | bad-code-sanitization.js:7:31:7:43 | safeProp(key) | provenance |  |
 | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | bad-code-sanitization.js:2:12:2:90 | /^[_$a- ... key)}]` | provenance |  |
@@ -27,12 +36,30 @@ nodes
 | bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | semmle.label | JSON.stringify(key) |
 | bad-code-sanitization.js:64:27:64:36 | assignment | semmle.label | assignment |
 subpaths
-#select
-| bad-code-sanitization.js:8:27:8:46 | statements.join(';') | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | bad-code-sanitization.js:8:27:8:46 | statements.join(';') | Code construction depends on an $@. | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | improperly sanitized value |
-| bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | Code construction depends on an $@. | bad-code-sanitization.js:15:44:15:63 | htmlescape(pathname) | improperly sanitized value |
-| bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:19:27:19:47 | JSON.st ... (input) | improperly sanitized value |
-| bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:31:30:31:50 | JSON.st ... (input) | improperly sanitized value |
-| bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:40:23:40:43 | JSON.st ... (input) | improperly sanitized value |
-| bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | Code construction depends on an $@. | bad-code-sanitization.js:44:22:44:42 | JSON.st ... (input) | improperly sanitized value |
-| bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | Code construction depends on an $@. | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | improperly sanitized value |
-| bad-code-sanitization.js:64:27:64:36 | assignment | bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | bad-code-sanitization.js:64:27:64:36 | assignment | Code construction depends on an $@. | bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | improperly sanitized value |
+testFailures
+| bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | Unexpected result: Source |
+| bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | Unexpected result: Alert |
+| bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | Unexpected result: Source |
+| express.js:6:73:6:82 | // $ Alert | Missing result: Alert |
+| express.js:7:83:7:92 | // $ Alert | Missing result: Alert |
+| express.js:9:57:9:66 | // $ Alert | Missing result: Alert |
+| express.js:11:58:11:67 | // $ Alert | Missing result: Alert |
+| express.js:12:57:12:66 | // $ Alert | Missing result: Alert |
+| express.js:13:74:13:83 | // $ Alert | Missing result: Alert |
+| express.js:14:72:14:81 | // $ Alert | Missing result: Alert |
+| lib/index.js:51:56:51:65 | // $ Alert | Missing result: Alert |
+| lib/index.js:103:71:103:80 | // $ Alert | Missing result: Alert |
+| lib/index.js:104:71:104:80 | // $ Alert | Missing result: Alert |
+| lib/index.js:105:71:105:80 | // $ Alert | Missing result: Alert |
+| lib/index.js:106:54:106:63 | // $ Alert | Missing result: Alert |
+| lib/index.js:135:73:135:82 | // $ Alert | Missing result: Alert |
+| lib/index.js:136:73:136:82 | // $ Alert | Missing result: Alert |
+| lib/index.js:137:73:137:82 | // $ Alert | Missing result: Alert |
+| lib/index.js:138:56:138:65 | // $ Alert | Missing result: Alert |
+| tst.js:1:86:1:95 | // $ Alert | Missing result: Alert |
+| tst.js:3:37:3:46 | // $ Alert | Missing result: Alert |
+| tst.js:11:78:11:87 | // $ Alert | Missing result: Alert |
+| tst.js:13:46:13:55 | // $ Alert | Missing result: Alert |
+| tst.js:15:55:15:64 | // $ Alert | Missing result: Alert |
+| tst.js:17:50:17:59 | // $ Alert | Missing result: Alert |
+| tst.js:19:57:19:66 | // $ Alert | Missing result: Alert |

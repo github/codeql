@@ -1,1 +1,4 @@
+#select
 | tst.js:6:7:6:13 | 'start' | This case label is a duplicate of $@. | tst.js:3:7:3:13 | 'start' | 'start' |
+testFailures
+| tst.js:6:7:6:13 | This case label is a duplicate of $@. | Unexpected result: Alert |

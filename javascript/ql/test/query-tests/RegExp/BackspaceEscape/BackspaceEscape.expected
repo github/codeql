@@ -1,1 +1,4 @@
+#select
 | tst.js:2:3:2:4 | \\b | Backspace escape in regular expression. |
+testFailures
+| tst.js:2:3:2:4 | Backspace escape in regular expression. | Unexpected result: Alert |

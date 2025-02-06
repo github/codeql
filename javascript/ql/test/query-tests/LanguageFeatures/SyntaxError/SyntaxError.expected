@@ -1,3 +1,8 @@
+#select
 | arrows.js:1:5:1:5 | Error: Argument name clash | Error: Argument name clash |
 | destructingPrivate.js:4:6:4:6 | Error: Unexpected token | Error: Unexpected token |
 | tst.js:2:12:2:12 | Error: Unterminated string constant | Error: Unterminated string constant |
+testFailures
+| arrows.js:1:5:1:5 | Error: Argument name clash | Unexpected result: Alert |
+| destructingPrivate.js:4:6:4:6 | Error: Unexpected token | Unexpected result: Alert |
+| tst.js:2:12:2:12 | Error: Unterminated string constant | Unexpected result: Alert |

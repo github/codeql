@@ -1,1 +1,4 @@
+#select
 | DangerousWebPreferences.js:6:13:6:30 | webSecurity: false | Disabling webSecurity is strongly discouraged. |
+testFailures
+| DangerousWebPreferences.js:6:13:6:30 | Disabling webSecurity is strongly discouraged. | Unexpected result: Alert |

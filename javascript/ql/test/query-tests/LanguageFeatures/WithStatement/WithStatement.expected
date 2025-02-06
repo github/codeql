@@ -1,1 +1,4 @@
+#select
 | withStatement.js:2:3:2:14 | with (f ...  x;\\n  } | Do not use 'with'. |
+testFailures
+| withStatement.js:2:3:2:14 | Do not use 'with'. | Unexpected result: Alert |

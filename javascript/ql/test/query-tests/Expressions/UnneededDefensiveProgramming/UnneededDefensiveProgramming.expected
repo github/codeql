@@ -1,3 +1,4 @@
+#select
 | module-environment-detection.js:23:8:23:36 | typeof  ... efined' | This guard always evaluates to true. |
 | regression.js:9:9:9:12 | date | This guard always evaluates to true. |
 | regression.js:13:25:13:40 | obj != undefined | This guard always evaluates to true. |
@@ -74,3 +75,9 @@
 | tst.js:158:13:158:21 | x != null | This guard always evaluates to true. |
 | tst.js:177:2:177:2 | u | This guard always evaluates to false. |
 | tst.js:178:2:178:2 | u | This guard always evaluates to false. |
+testFailures
+| global-module-definition.js:10:30:10:39 | // $ Alert | Missing result: Alert |
+| tst.js:13:19:13:28 | // $ Alert | Missing result: Alert |
+| tst.js:14:19:14:28 | // $ Alert | Missing result: Alert |
+| tst.js:15:19:15:28 | // $ Alert | Missing result: Alert |
+| tst.js:165:26:165:35 | // $ Alert | Missing result: Alert |
