@@ -14,7 +14,7 @@ query predicate newStyleBarrierGuards(DataFlow::Node n) {
 
 query predicate controls(CfgNode condition, BasicBlock bb, SuccessorTypes::ConditionalSuccessor s) {
   exists(ConditionBlock cb |
-    cb.controls(bb, s) and
+    cb.edgeDominates(bb, s) and
     condition = cb.getLastNode()
   )
 }
