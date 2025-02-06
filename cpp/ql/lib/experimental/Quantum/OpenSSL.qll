@@ -77,6 +77,8 @@ module OpenSSLModel {
 
     HKDF() { algorithmStringToKDFFetchArgFlow("HKDF", origin, this) }
 
+    override string getRawAlgorithmName() { result = origin.getValue() }
+
     override Crypto::HashAlgorithm getHashAlgorithm() { none() }
 
     override Crypto::LocatableElement getOrigin(string name) {
@@ -88,6 +90,8 @@ module OpenSSLModel {
     KDFAlgorithmStringLiteral origin;
 
     PKCS12KDF() { algorithmStringToKDFFetchArgFlow("PKCS12KDF", origin, this) }
+
+    override string getRawAlgorithmName() { result = origin.getValue() }
 
     override Crypto::HashAlgorithm getHashAlgorithm() { none() }
 
