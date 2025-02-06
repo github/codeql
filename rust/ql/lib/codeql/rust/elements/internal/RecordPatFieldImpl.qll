@@ -21,6 +21,17 @@ module Impl {
    * ```
    */
   class RecordPatField extends Generated::RecordPatField {
+    override string toString() { result = concat(int i | | this.toStringPart(i) order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = this.getNameRef().getText()
+      or
+      index = 1 and this.hasNameRef() and result = ": "
+      or
+      index = 2 and
+      result = this.getPat().toAbbreviatedString()
+    }
+
     /**
      * Gets the name of the field. This includes the case when shorthand syntax is used:
      *

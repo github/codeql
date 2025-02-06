@@ -183,7 +183,7 @@ fn struct_nested_match() {
             z,
         } => {
             sink(x);
-            sink(y); // $ MISSING: hasValueFlow=93
+            sink(y); // $ hasValueFlow=93
             sink(z);
         }
     }

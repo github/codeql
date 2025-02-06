@@ -570,6 +570,7 @@ storeStep
 | main.rs:167:12:167:12 | 4 | Point3D.z | main.rs:162:13:168:5 | Point3D {...} |
 | main.rs:177:16:177:32 | Point {...} | Point3D.plane | main.rs:176:13:179:5 | Point3D {...} |
 | main.rs:177:27:177:27 | 2 | Point.x | main.rs:177:16:177:32 | Point {...} |
+| main.rs:177:30:177:30 | y | Point.y | main.rs:177:16:177:32 | Point {...} |
 | main.rs:178:12:178:12 | 4 | Point3D.z | main.rs:176:13:179:5 | Point3D {...} |
 | main.rs:195:27:195:36 | source(...) | MyTupleStruct(0) | main.rs:195:13:195:40 | MyTupleStruct(...) |
 | main.rs:195:39:195:39 | 2 | MyTupleStruct(1) | main.rs:195:13:195:40 | MyTupleStruct(...) |
