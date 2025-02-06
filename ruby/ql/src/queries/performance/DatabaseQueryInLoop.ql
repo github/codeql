@@ -15,18 +15,20 @@ import codeql.ruby.Concepts
 import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.TaintTracking
 
-string loopMethodName() {
+/** Gets the name of a built-in method that involves a loop operation. */
+string getALoopMethodName() {
   result in [
       "each", "reverse_each", "map", "map!", "foreach", "flat_map", "in_batches", "one?", "all?",
       "collect", "collect!", "select", "select!", "reject", "reject!"
     ]
 }
 
+/** A call to a loop operation. */
 class LoopingCall extends DataFlow::CallNode {
   DataFlow::CallableNode loopBlock;
 
   LoopingCall() {
-    this.getMethodName() = loopMethodName() and loopBlock = this.getBlock().asCallable()
+    this.getMethodName() = getALoopMethodName() and loopBlock = this.getBlock().asCallable()
   }
 
   DataFlow::CallableNode getLoopBlock() { result = loopBlock }
