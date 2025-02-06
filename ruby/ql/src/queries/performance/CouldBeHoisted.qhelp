@@ -15,7 +15,7 @@ Performance can usually be improved by performing a single database query outsid
 </p>
 </recommendation>
 <example>
-<p>The following (suboptimal) example code queries the User object in each iteration of the loop:</p>
+<p>The following (suboptimal) example code queries the <code>User</code> object in each iteration of the loop:</p>
 <sample src="examples/straight_loop.rb" />
 <p>To improve the performance, we instead query the <code>User</code> object once outside the loop, gathering all necessary information in a single query:</p>
 <sample src="examples/preload.rb" />
