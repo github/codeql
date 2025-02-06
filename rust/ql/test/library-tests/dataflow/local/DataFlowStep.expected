@@ -185,318 +185,332 @@ localStep
 | main.rs:185:13:185:13 | [SSA] z | main.rs:189:18:189:18 | z |  |
 | main.rs:185:13:185:13 | z | main.rs:185:13:185:13 | [SSA] z |  |
 | main.rs:186:14:190:9 | { ... } | main.rs:182:5:191:5 | match p { ... } |  |
-| main.rs:198:9:198:10 | [SSA] s1 | main.rs:200:11:200:12 | s1 |  |
-| main.rs:198:9:198:10 | s1 | main.rs:198:9:198:10 | [SSA] s1 |  |
-| main.rs:198:14:198:37 | ...::Some(...) | main.rs:198:9:198:10 | s1 |  |
-| main.rs:199:9:199:10 | [SSA] s2 | main.rs:204:11:204:12 | s2 |  |
-| main.rs:199:9:199:10 | s2 | main.rs:199:9:199:10 | [SSA] s2 |  |
-| main.rs:199:14:199:28 | ...::Some(...) | main.rs:199:9:199:10 | s2 |  |
-| main.rs:200:11:200:12 | s1 | main.rs:201:9:201:23 | ...::Some(...) |  |
-| main.rs:200:11:200:12 | s1 | main.rs:202:9:202:20 | ...::None |  |
-| main.rs:201:22:201:22 | [SSA] n | main.rs:201:33:201:33 | n |  |
-| main.rs:201:22:201:22 | n | main.rs:201:22:201:22 | [SSA] n |  |
-| main.rs:201:28:201:34 | sink(...) | main.rs:200:5:203:5 | match s1 { ... } |  |
-| main.rs:202:25:202:31 | sink(...) | main.rs:200:5:203:5 | match s1 { ... } |  |
-| main.rs:204:5:207:5 | match s2 { ... } | main.rs:197:37:208:1 | { ... } |  |
-| main.rs:204:11:204:12 | s2 | main.rs:205:9:205:23 | ...::Some(...) |  |
-| main.rs:204:11:204:12 | s2 | main.rs:206:9:206:20 | ...::None |  |
-| main.rs:205:22:205:22 | [SSA] n | main.rs:205:33:205:33 | n |  |
-| main.rs:205:22:205:22 | n | main.rs:205:22:205:22 | [SSA] n |  |
-| main.rs:205:28:205:34 | sink(...) | main.rs:204:5:207:5 | match s2 { ... } |  |
-| main.rs:206:25:206:31 | sink(...) | main.rs:204:5:207:5 | match s2 { ... } |  |
-| main.rs:211:9:211:10 | [SSA] s1 | main.rs:213:11:213:12 | s1 |  |
-| main.rs:211:9:211:10 | s1 | main.rs:211:9:211:10 | [SSA] s1 |  |
-| main.rs:211:14:211:29 | Some(...) | main.rs:211:9:211:10 | s1 |  |
-| main.rs:212:9:212:10 | [SSA] s2 | main.rs:217:11:217:12 | s2 |  |
-| main.rs:212:9:212:10 | s2 | main.rs:212:9:212:10 | [SSA] s2 |  |
-| main.rs:212:14:212:20 | Some(...) | main.rs:212:9:212:10 | s2 |  |
-| main.rs:213:11:213:12 | s1 | main.rs:214:9:214:15 | Some(...) |  |
-| main.rs:213:11:213:12 | s1 | main.rs:215:9:215:12 | None |  |
-| main.rs:214:14:214:14 | [SSA] n | main.rs:214:25:214:25 | n |  |
-| main.rs:214:14:214:14 | n | main.rs:214:14:214:14 | [SSA] n |  |
-| main.rs:214:20:214:26 | sink(...) | main.rs:213:5:216:5 | match s1 { ... } |  |
-| main.rs:215:17:215:23 | sink(...) | main.rs:213:5:216:5 | match s1 { ... } |  |
-| main.rs:217:5:220:5 | match s2 { ... } | main.rs:210:39:221:1 | { ... } |  |
-| main.rs:217:11:217:12 | s2 | main.rs:218:9:218:15 | Some(...) |  |
-| main.rs:217:11:217:12 | s2 | main.rs:219:9:219:12 | None |  |
-| main.rs:218:14:218:14 | [SSA] n | main.rs:218:25:218:25 | n |  |
-| main.rs:218:14:218:14 | n | main.rs:218:14:218:14 | [SSA] n |  |
-| main.rs:218:20:218:26 | sink(...) | main.rs:217:5:220:5 | match s2 { ... } |  |
-| main.rs:219:17:219:23 | sink(...) | main.rs:217:5:220:5 | match s2 { ... } |  |
-| main.rs:224:9:224:10 | [SSA] s1 | main.rs:225:10:225:11 | s1 |  |
-| main.rs:224:9:224:10 | s1 | main.rs:224:9:224:10 | [SSA] s1 |  |
-| main.rs:224:14:224:29 | Some(...) | main.rs:224:9:224:10 | s1 |  |
-| main.rs:229:9:229:10 | [SSA] s1 | main.rs:230:10:230:11 | s1 |  |
-| main.rs:229:9:229:10 | s1 | main.rs:229:9:229:10 | [SSA] s1 |  |
-| main.rs:229:14:229:29 | Some(...) | main.rs:229:9:229:10 | s1 |  |
-| main.rs:232:9:232:10 | [SSA] s2 | main.rs:233:10:233:11 | s2 |  |
-| main.rs:232:9:232:10 | s2 | main.rs:232:9:232:10 | [SSA] s2 |  |
-| main.rs:232:14:232:20 | Some(...) | main.rs:232:9:232:10 | s2 |  |
-| main.rs:237:9:237:10 | [SSA] s1 | main.rs:238:10:238:11 | s1 |  |
-| main.rs:237:9:237:10 | s1 | main.rs:237:9:237:10 | [SSA] s1 |  |
-| main.rs:237:14:237:29 | Some(...) | main.rs:237:9:237:10 | s1 |  |
-| main.rs:240:9:240:10 | [SSA] s2 | main.rs:241:10:241:11 | s2 |  |
-| main.rs:240:9:240:10 | s2 | main.rs:240:9:240:10 | [SSA] s2 |  |
-| main.rs:240:14:240:17 | None | main.rs:240:9:240:10 | s2 |  |
-| main.rs:245:9:245:10 | [SSA] s1 | main.rs:247:14:247:15 | s1 |  |
-| main.rs:245:9:245:10 | s1 | main.rs:245:9:245:10 | [SSA] s1 |  |
-| main.rs:245:14:245:29 | Some(...) | main.rs:245:9:245:10 | s1 |  |
-| main.rs:246:9:246:10 | [SSA] s2 | main.rs:249:10:249:11 | s2 |  |
-| main.rs:246:9:246:10 | s2 | main.rs:246:9:246:10 | [SSA] s2 |  |
-| main.rs:246:14:246:20 | Some(...) | main.rs:246:9:246:10 | s2 |  |
-| main.rs:247:9:247:10 | [SSA] i1 | main.rs:248:10:248:11 | i1 |  |
-| main.rs:247:9:247:10 | i1 | main.rs:247:9:247:10 | [SSA] i1 |  |
-| main.rs:247:14:247:16 | TryExpr | main.rs:247:9:247:10 | i1 |  |
-| main.rs:250:5:250:11 | Some(...) | main.rs:244:41:251:1 | { ... } |  |
-| main.rs:254:9:254:10 | [SSA] s1 | main.rs:257:14:257:15 | s1 |  |
-| main.rs:254:9:254:10 | s1 | main.rs:254:9:254:10 | [SSA] s1 |  |
-| main.rs:254:32:254:45 | Ok(...) | main.rs:254:9:254:10 | s1 |  |
-| main.rs:255:9:255:10 | [SSA] s2 | main.rs:258:14:258:15 | s2 |  |
+| main.rs:197:9:197:9 | [SSA] s | main.rs:198:10:198:10 | s |  |
+| main.rs:197:9:197:9 | s | main.rs:197:9:197:9 | [SSA] s |  |
+| main.rs:197:13:197:40 | MyTupleStruct(...) | main.rs:197:9:197:9 | s |  |
+| main.rs:198:10:198:10 | [post] s | main.rs:199:10:199:10 | s |  |
+| main.rs:198:10:198:10 | s | main.rs:199:10:199:10 | s |  |
+| main.rs:199:10:199:10 | [post] s | main.rs:201:11:201:11 | s |  |
+| main.rs:199:10:199:10 | s | main.rs:201:11:201:11 | s |  |
+| main.rs:201:5:206:5 | match s { ... } | main.rs:196:19:207:1 | { ... } |  |
+| main.rs:201:11:201:11 | s | main.rs:202:9:202:27 | MyTupleStruct(...) |  |
+| main.rs:202:23:202:23 | [SSA] x | main.rs:203:18:203:18 | x |  |
+| main.rs:202:23:202:23 | x | main.rs:202:23:202:23 | [SSA] x |  |
+| main.rs:202:26:202:26 | [SSA] y | main.rs:204:18:204:18 | y |  |
+| main.rs:202:26:202:26 | y | main.rs:202:26:202:26 | [SSA] y |  |
+| main.rs:202:32:205:9 | { ... } | main.rs:201:5:206:5 | match s { ... } |  |
+| main.rs:213:9:213:10 | [SSA] s1 | main.rs:215:11:215:12 | s1 |  |
+| main.rs:213:9:213:10 | s1 | main.rs:213:9:213:10 | [SSA] s1 |  |
+| main.rs:213:14:213:37 | ...::Some(...) | main.rs:213:9:213:10 | s1 |  |
+| main.rs:214:9:214:10 | [SSA] s2 | main.rs:219:11:219:12 | s2 |  |
+| main.rs:214:9:214:10 | s2 | main.rs:214:9:214:10 | [SSA] s2 |  |
+| main.rs:214:14:214:28 | ...::Some(...) | main.rs:214:9:214:10 | s2 |  |
+| main.rs:215:11:215:12 | s1 | main.rs:216:9:216:23 | ...::Some(...) |  |
+| main.rs:215:11:215:12 | s1 | main.rs:217:9:217:20 | ...::None |  |
+| main.rs:216:22:216:22 | [SSA] n | main.rs:216:33:216:33 | n |  |
+| main.rs:216:22:216:22 | n | main.rs:216:22:216:22 | [SSA] n |  |
+| main.rs:216:28:216:34 | sink(...) | main.rs:215:5:218:5 | match s1 { ... } |  |
+| main.rs:217:25:217:31 | sink(...) | main.rs:215:5:218:5 | match s1 { ... } |  |
+| main.rs:219:5:222:5 | match s2 { ... } | main.rs:212:37:223:1 | { ... } |  |
+| main.rs:219:11:219:12 | s2 | main.rs:220:9:220:23 | ...::Some(...) |  |
+| main.rs:219:11:219:12 | s2 | main.rs:221:9:221:20 | ...::None |  |
+| main.rs:220:22:220:22 | [SSA] n | main.rs:220:33:220:33 | n |  |
+| main.rs:220:22:220:22 | n | main.rs:220:22:220:22 | [SSA] n |  |
+| main.rs:220:28:220:34 | sink(...) | main.rs:219:5:222:5 | match s2 { ... } |  |
+| main.rs:221:25:221:31 | sink(...) | main.rs:219:5:222:5 | match s2 { ... } |  |
+| main.rs:226:9:226:10 | [SSA] s1 | main.rs:228:11:228:12 | s1 |  |
+| main.rs:226:9:226:10 | s1 | main.rs:226:9:226:10 | [SSA] s1 |  |
+| main.rs:226:14:226:29 | Some(...) | main.rs:226:9:226:10 | s1 |  |
+| main.rs:227:9:227:10 | [SSA] s2 | main.rs:232:11:232:12 | s2 |  |
+| main.rs:227:9:227:10 | s2 | main.rs:227:9:227:10 | [SSA] s2 |  |
+| main.rs:227:14:227:20 | Some(...) | main.rs:227:9:227:10 | s2 |  |
+| main.rs:228:11:228:12 | s1 | main.rs:229:9:229:15 | Some(...) |  |
+| main.rs:228:11:228:12 | s1 | main.rs:230:9:230:12 | None |  |
+| main.rs:229:14:229:14 | [SSA] n | main.rs:229:25:229:25 | n |  |
+| main.rs:229:14:229:14 | n | main.rs:229:14:229:14 | [SSA] n |  |
+| main.rs:229:20:229:26 | sink(...) | main.rs:228:5:231:5 | match s1 { ... } |  |
+| main.rs:230:17:230:23 | sink(...) | main.rs:228:5:231:5 | match s1 { ... } |  |
+| main.rs:232:5:235:5 | match s2 { ... } | main.rs:225:39:236:1 | { ... } |  |
+| main.rs:232:11:232:12 | s2 | main.rs:233:9:233:15 | Some(...) |  |
+| main.rs:232:11:232:12 | s2 | main.rs:234:9:234:12 | None |  |
+| main.rs:233:14:233:14 | [SSA] n | main.rs:233:25:233:25 | n |  |
+| main.rs:233:14:233:14 | n | main.rs:233:14:233:14 | [SSA] n |  |
+| main.rs:233:20:233:26 | sink(...) | main.rs:232:5:235:5 | match s2 { ... } |  |
+| main.rs:234:17:234:23 | sink(...) | main.rs:232:5:235:5 | match s2 { ... } |  |
+| main.rs:239:9:239:10 | [SSA] s1 | main.rs:240:10:240:11 | s1 |  |
+| main.rs:239:9:239:10 | s1 | main.rs:239:9:239:10 | [SSA] s1 |  |
+| main.rs:239:14:239:29 | Some(...) | main.rs:239:9:239:10 | s1 |  |
+| main.rs:244:9:244:10 | [SSA] s1 | main.rs:245:10:245:11 | s1 |  |
+| main.rs:244:9:244:10 | s1 | main.rs:244:9:244:10 | [SSA] s1 |  |
+| main.rs:244:14:244:29 | Some(...) | main.rs:244:9:244:10 | s1 |  |
+| main.rs:247:9:247:10 | [SSA] s2 | main.rs:248:10:248:11 | s2 |  |
+| main.rs:247:9:247:10 | s2 | main.rs:247:9:247:10 | [SSA] s2 |  |
+| main.rs:247:14:247:20 | Some(...) | main.rs:247:9:247:10 | s2 |  |
+| main.rs:252:9:252:10 | [SSA] s1 | main.rs:253:10:253:11 | s1 |  |
+| main.rs:252:9:252:10 | s1 | main.rs:252:9:252:10 | [SSA] s1 |  |
+| main.rs:252:14:252:29 | Some(...) | main.rs:252:9:252:10 | s1 |  |
+| main.rs:255:9:255:10 | [SSA] s2 | main.rs:256:10:256:11 | s2 |  |
 | main.rs:255:9:255:10 | s2 | main.rs:255:9:255:10 | [SSA] s2 |  |
-| main.rs:255:32:255:36 | Ok(...) | main.rs:255:9:255:10 | s2 |  |
-| main.rs:256:9:256:10 | [SSA] s3 | main.rs:261:14:261:15 | s3 |  |
-| main.rs:256:9:256:10 | s3 | main.rs:256:9:256:10 | [SSA] s3 |  |
-| main.rs:256:32:256:46 | Err(...) | main.rs:256:9:256:10 | s3 |  |
-| main.rs:257:9:257:10 | [SSA] i1 | main.rs:259:10:259:11 | i1 |  |
-| main.rs:257:9:257:10 | i1 | main.rs:257:9:257:10 | [SSA] i1 |  |
-| main.rs:257:14:257:16 | TryExpr | main.rs:257:9:257:10 | i1 |  |
-| main.rs:258:9:258:10 | [SSA] i2 | main.rs:260:10:260:11 | i2 |  |
-| main.rs:258:9:258:10 | i2 | main.rs:258:9:258:10 | [SSA] i2 |  |
-| main.rs:258:14:258:16 | TryExpr | main.rs:258:9:258:10 | i2 |  |
-| main.rs:261:9:261:10 | [SSA] i3 | main.rs:262:10:262:11 | i3 |  |
-| main.rs:261:9:261:10 | i3 | main.rs:261:9:261:10 | [SSA] i3 |  |
-| main.rs:261:14:261:16 | TryExpr | main.rs:261:9:261:10 | i3 |  |
-| main.rs:263:5:263:9 | Ok(...) | main.rs:253:46:264:1 | { ... } |  |
-| main.rs:267:9:267:10 | [SSA] s1 | main.rs:268:10:268:11 | s1 |  |
-| main.rs:267:9:267:10 | s1 | main.rs:267:9:267:10 | [SSA] s1 |  |
-| main.rs:267:32:267:45 | Ok(...) | main.rs:267:9:267:10 | s1 |  |
-| main.rs:268:10:268:11 | [post] s1 | main.rs:269:10:269:11 | s1 |  |
-| main.rs:268:10:268:11 | s1 | main.rs:269:10:269:11 | s1 |  |
-| main.rs:271:9:271:10 | [SSA] s2 | main.rs:272:10:272:11 | s2 |  |
-| main.rs:271:9:271:10 | s2 | main.rs:271:9:271:10 | [SSA] s2 |  |
-| main.rs:271:32:271:46 | Err(...) | main.rs:271:9:271:10 | s2 |  |
-| main.rs:272:10:272:11 | [post] s2 | main.rs:273:10:273:11 | s2 |  |
-| main.rs:272:10:272:11 | s2 | main.rs:273:10:273:11 | s2 |  |
-| main.rs:282:9:282:10 | [SSA] s1 | main.rs:284:11:284:12 | s1 |  |
+| main.rs:255:14:255:17 | None | main.rs:255:9:255:10 | s2 |  |
+| main.rs:260:9:260:10 | [SSA] s1 | main.rs:262:14:262:15 | s1 |  |
+| main.rs:260:9:260:10 | s1 | main.rs:260:9:260:10 | [SSA] s1 |  |
+| main.rs:260:14:260:29 | Some(...) | main.rs:260:9:260:10 | s1 |  |
+| main.rs:261:9:261:10 | [SSA] s2 | main.rs:264:10:264:11 | s2 |  |
+| main.rs:261:9:261:10 | s2 | main.rs:261:9:261:10 | [SSA] s2 |  |
+| main.rs:261:14:261:20 | Some(...) | main.rs:261:9:261:10 | s2 |  |
+| main.rs:262:9:262:10 | [SSA] i1 | main.rs:263:10:263:11 | i1 |  |
+| main.rs:262:9:262:10 | i1 | main.rs:262:9:262:10 | [SSA] i1 |  |
+| main.rs:262:14:262:16 | TryExpr | main.rs:262:9:262:10 | i1 |  |
+| main.rs:265:5:265:11 | Some(...) | main.rs:259:41:266:1 | { ... } |  |
+| main.rs:269:9:269:10 | [SSA] s1 | main.rs:272:14:272:15 | s1 |  |
+| main.rs:269:9:269:10 | s1 | main.rs:269:9:269:10 | [SSA] s1 |  |
+| main.rs:269:32:269:45 | Ok(...) | main.rs:269:9:269:10 | s1 |  |
+| main.rs:270:9:270:10 | [SSA] s2 | main.rs:273:14:273:15 | s2 |  |
+| main.rs:270:9:270:10 | s2 | main.rs:270:9:270:10 | [SSA] s2 |  |
+| main.rs:270:32:270:36 | Ok(...) | main.rs:270:9:270:10 | s2 |  |
+| main.rs:271:9:271:10 | [SSA] s3 | main.rs:276:14:276:15 | s3 |  |
+| main.rs:271:9:271:10 | s3 | main.rs:271:9:271:10 | [SSA] s3 |  |
+| main.rs:271:32:271:46 | Err(...) | main.rs:271:9:271:10 | s3 |  |
+| main.rs:272:9:272:10 | [SSA] i1 | main.rs:274:10:274:11 | i1 |  |
+| main.rs:272:9:272:10 | i1 | main.rs:272:9:272:10 | [SSA] i1 |  |
+| main.rs:272:14:272:16 | TryExpr | main.rs:272:9:272:10 | i1 |  |
+| main.rs:273:9:273:10 | [SSA] i2 | main.rs:275:10:275:11 | i2 |  |
+| main.rs:273:9:273:10 | i2 | main.rs:273:9:273:10 | [SSA] i2 |  |
+| main.rs:273:14:273:16 | TryExpr | main.rs:273:9:273:10 | i2 |  |
+| main.rs:276:9:276:10 | [SSA] i3 | main.rs:277:10:277:11 | i3 |  |
+| main.rs:276:9:276:10 | i3 | main.rs:276:9:276:10 | [SSA] i3 |  |
+| main.rs:276:14:276:16 | TryExpr | main.rs:276:9:276:10 | i3 |  |
+| main.rs:278:5:278:9 | Ok(...) | main.rs:268:46:279:1 | { ... } |  |
+| main.rs:282:9:282:10 | [SSA] s1 | main.rs:283:10:283:11 | s1 |  |
 | main.rs:282:9:282:10 | s1 | main.rs:282:9:282:10 | [SSA] s1 |  |
-| main.rs:282:14:282:39 | ...::A(...) | main.rs:282:9:282:10 | s1 |  |
-| main.rs:283:9:283:10 | [SSA] s2 | main.rs:291:11:291:12 | s2 |  |
-| main.rs:283:9:283:10 | s2 | main.rs:283:9:283:10 | [SSA] s2 |  |
-| main.rs:283:14:283:30 | ...::B(...) | main.rs:283:9:283:10 | s2 |  |
-| main.rs:284:11:284:12 | s1 | main.rs:285:9:285:25 | ...::A(...) |  |
-| main.rs:284:11:284:12 | s1 | main.rs:286:9:286:25 | ...::B(...) |  |
-| main.rs:284:11:284:12 | s1 | main.rs:288:11:288:12 | s1 |  |
-| main.rs:285:24:285:24 | [SSA] n | main.rs:285:35:285:35 | n |  |
-| main.rs:285:24:285:24 | n | main.rs:285:24:285:24 | [SSA] n |  |
-| main.rs:285:30:285:36 | sink(...) | main.rs:284:5:287:5 | match s1 { ... } |  |
-| main.rs:286:24:286:24 | [SSA] n | main.rs:286:35:286:35 | n |  |
-| main.rs:286:24:286:24 | n | main.rs:286:24:286:24 | [SSA] n |  |
-| main.rs:286:30:286:36 | sink(...) | main.rs:284:5:287:5 | match s1 { ... } |  |
-| main.rs:288:11:288:12 | s1 | main.rs:289:9:289:45 | ... \| ... |  |
-| main.rs:289:9:289:45 | ... \| ... | main.rs:289:9:289:25 | ...::A(...) |  |
-| main.rs:289:9:289:45 | ... \| ... | main.rs:289:29:289:45 | ...::B(...) |  |
-| main.rs:289:9:289:45 | [SSA] [match(true)] phi | main.rs:289:55:289:55 | n |  |
-| main.rs:289:24:289:24 | [SSA] [input] [match(true)] phi | main.rs:289:9:289:45 | [SSA] [match(true)] phi |  |
-| main.rs:289:24:289:24 | [SSA] n | main.rs:289:24:289:24 | [SSA] [input] [match(true)] phi |  |
-| main.rs:289:24:289:24 | n | main.rs:289:24:289:24 | [SSA] n |  |
-| main.rs:289:44:289:44 | [SSA] [input] [match(true)] phi | main.rs:289:9:289:45 | [SSA] [match(true)] phi |  |
-| main.rs:289:44:289:44 | [SSA] n | main.rs:289:44:289:44 | [SSA] [input] [match(true)] phi |  |
-| main.rs:289:44:289:44 | n | main.rs:289:44:289:44 | [SSA] n |  |
-| main.rs:289:50:289:56 | sink(...) | main.rs:288:5:290:5 | match s1 { ... } |  |
-| main.rs:291:5:294:5 | match s2 { ... } | main.rs:281:48:295:1 | { ... } |  |
-| main.rs:291:11:291:12 | s2 | main.rs:292:9:292:25 | ...::A(...) |  |
-| main.rs:291:11:291:12 | s2 | main.rs:293:9:293:25 | ...::B(...) |  |
-| main.rs:292:24:292:24 | [SSA] n | main.rs:292:35:292:35 | n |  |
-| main.rs:292:24:292:24 | n | main.rs:292:24:292:24 | [SSA] n |  |
-| main.rs:292:30:292:36 | sink(...) | main.rs:291:5:294:5 | match s2 { ... } |  |
-| main.rs:293:24:293:24 | [SSA] n | main.rs:293:35:293:35 | n |  |
-| main.rs:293:24:293:24 | n | main.rs:293:24:293:24 | [SSA] n |  |
-| main.rs:293:30:293:36 | sink(...) | main.rs:291:5:294:5 | match s2 { ... } |  |
-| main.rs:300:9:300:10 | [SSA] s1 | main.rs:302:11:302:12 | s1 |  |
-| main.rs:300:9:300:10 | s1 | main.rs:300:9:300:10 | [SSA] s1 |  |
-| main.rs:300:14:300:26 | A(...) | main.rs:300:9:300:10 | s1 |  |
-| main.rs:301:9:301:10 | [SSA] s2 | main.rs:309:11:309:12 | s2 |  |
-| main.rs:301:9:301:10 | s2 | main.rs:301:9:301:10 | [SSA] s2 |  |
-| main.rs:301:14:301:17 | B(...) | main.rs:301:9:301:10 | s2 |  |
-| main.rs:302:11:302:12 | s1 | main.rs:303:9:303:12 | A(...) |  |
-| main.rs:302:11:302:12 | s1 | main.rs:304:9:304:12 | B(...) |  |
-| main.rs:302:11:302:12 | s1 | main.rs:306:11:306:12 | s1 |  |
-| main.rs:303:11:303:11 | [SSA] n | main.rs:303:22:303:22 | n |  |
-| main.rs:303:11:303:11 | n | main.rs:303:11:303:11 | [SSA] n |  |
-| main.rs:303:17:303:23 | sink(...) | main.rs:302:5:305:5 | match s1 { ... } |  |
-| main.rs:304:11:304:11 | [SSA] n | main.rs:304:22:304:22 | n |  |
-| main.rs:304:11:304:11 | n | main.rs:304:11:304:11 | [SSA] n |  |
-| main.rs:304:17:304:23 | sink(...) | main.rs:302:5:305:5 | match s1 { ... } |  |
-| main.rs:306:11:306:12 | s1 | main.rs:307:9:307:19 | ... \| ... |  |
-| main.rs:307:9:307:19 | ... \| ... | main.rs:307:9:307:12 | A(...) |  |
-| main.rs:307:9:307:19 | ... \| ... | main.rs:307:16:307:19 | B(...) |  |
-| main.rs:307:9:307:19 | [SSA] [match(true)] phi | main.rs:307:29:307:29 | n |  |
-| main.rs:307:11:307:11 | [SSA] [input] [match(true)] phi | main.rs:307:9:307:19 | [SSA] [match(true)] phi |  |
-| main.rs:307:11:307:11 | [SSA] n | main.rs:307:11:307:11 | [SSA] [input] [match(true)] phi |  |
-| main.rs:307:11:307:11 | n | main.rs:307:11:307:11 | [SSA] n |  |
-| main.rs:307:18:307:18 | [SSA] [input] [match(true)] phi | main.rs:307:9:307:19 | [SSA] [match(true)] phi |  |
-| main.rs:307:18:307:18 | [SSA] n | main.rs:307:18:307:18 | [SSA] [input] [match(true)] phi |  |
-| main.rs:307:18:307:18 | n | main.rs:307:18:307:18 | [SSA] n |  |
-| main.rs:307:24:307:30 | sink(...) | main.rs:306:5:308:5 | match s1 { ... } |  |
-| main.rs:309:5:312:5 | match s2 { ... } | main.rs:299:50:313:1 | { ... } |  |
-| main.rs:309:11:309:12 | s2 | main.rs:310:9:310:12 | A(...) |  |
-| main.rs:309:11:309:12 | s2 | main.rs:311:9:311:12 | B(...) |  |
-| main.rs:310:11:310:11 | [SSA] n | main.rs:310:22:310:22 | n |  |
-| main.rs:310:11:310:11 | n | main.rs:310:11:310:11 | [SSA] n |  |
-| main.rs:310:17:310:23 | sink(...) | main.rs:309:5:312:5 | match s2 { ... } |  |
-| main.rs:311:11:311:11 | [SSA] n | main.rs:311:22:311:22 | n |  |
-| main.rs:311:11:311:11 | n | main.rs:311:11:311:11 | [SSA] n |  |
-| main.rs:311:17:311:23 | sink(...) | main.rs:309:5:312:5 | match s2 { ... } |  |
-| main.rs:321:9:321:10 | [SSA] s1 | main.rs:325:11:325:12 | s1 |  |
-| main.rs:321:9:321:10 | s1 | main.rs:321:9:321:10 | [SSA] s1 |  |
-| main.rs:321:14:323:5 | ...::C {...} | main.rs:321:9:321:10 | s1 |  |
-| main.rs:324:9:324:10 | [SSA] s2 | main.rs:332:11:332:12 | s2 |  |
-| main.rs:324:9:324:10 | s2 | main.rs:324:9:324:10 | [SSA] s2 |  |
-| main.rs:324:14:324:43 | ...::D {...} | main.rs:324:9:324:10 | s2 |  |
-| main.rs:325:11:325:12 | s1 | main.rs:326:9:326:38 | ...::C {...} |  |
-| main.rs:325:11:325:12 | s1 | main.rs:327:9:327:38 | ...::D {...} |  |
-| main.rs:325:11:325:12 | s1 | main.rs:329:11:329:12 | s1 |  |
-| main.rs:326:36:326:36 | [SSA] n | main.rs:326:48:326:48 | n |  |
-| main.rs:326:36:326:36 | n | main.rs:326:36:326:36 | [SSA] n |  |
-| main.rs:326:43:326:49 | sink(...) | main.rs:325:5:328:5 | match s1 { ... } |  |
-| main.rs:327:36:327:36 | [SSA] n | main.rs:327:48:327:48 | n |  |
-| main.rs:327:36:327:36 | n | main.rs:327:36:327:36 | [SSA] n |  |
-| main.rs:327:43:327:49 | sink(...) | main.rs:325:5:328:5 | match s1 { ... } |  |
-| main.rs:329:11:329:12 | s1 | main.rs:330:9:330:71 | ... \| ... |  |
-| main.rs:330:9:330:71 | ... \| ... | main.rs:330:9:330:38 | ...::C {...} |  |
-| main.rs:330:9:330:71 | ... \| ... | main.rs:330:42:330:71 | ...::D {...} |  |
-| main.rs:330:9:330:71 | [SSA] [match(true)] phi | main.rs:330:81:330:81 | n |  |
-| main.rs:330:36:330:36 | [SSA] [input] [match(true)] phi | main.rs:330:9:330:71 | [SSA] [match(true)] phi |  |
-| main.rs:330:36:330:36 | [SSA] n | main.rs:330:36:330:36 | [SSA] [input] [match(true)] phi |  |
-| main.rs:330:36:330:36 | n | main.rs:330:36:330:36 | [SSA] n |  |
-| main.rs:330:69:330:69 | [SSA] [input] [match(true)] phi | main.rs:330:9:330:71 | [SSA] [match(true)] phi |  |
-| main.rs:330:69:330:69 | [SSA] n | main.rs:330:69:330:69 | [SSA] [input] [match(true)] phi |  |
-| main.rs:330:69:330:69 | n | main.rs:330:69:330:69 | [SSA] n |  |
-| main.rs:330:76:330:82 | sink(...) | main.rs:329:5:331:5 | match s1 { ... } |  |
-| main.rs:332:5:335:5 | match s2 { ... } | main.rs:320:49:336:1 | { ... } |  |
-| main.rs:332:11:332:12 | s2 | main.rs:333:9:333:38 | ...::C {...} |  |
-| main.rs:332:11:332:12 | s2 | main.rs:334:9:334:38 | ...::D {...} |  |
-| main.rs:333:36:333:36 | [SSA] n | main.rs:333:48:333:48 | n |  |
-| main.rs:333:36:333:36 | n | main.rs:333:36:333:36 | [SSA] n |  |
-| main.rs:333:43:333:49 | sink(...) | main.rs:332:5:335:5 | match s2 { ... } |  |
-| main.rs:334:36:334:36 | [SSA] n | main.rs:334:48:334:48 | n |  |
-| main.rs:334:36:334:36 | n | main.rs:334:36:334:36 | [SSA] n |  |
-| main.rs:334:43:334:49 | sink(...) | main.rs:332:5:335:5 | match s2 { ... } |  |
-| main.rs:341:9:341:10 | [SSA] s1 | main.rs:345:11:345:12 | s1 |  |
-| main.rs:341:9:341:10 | s1 | main.rs:341:9:341:10 | [SSA] s1 |  |
-| main.rs:341:14:343:5 | C {...} | main.rs:341:9:341:10 | s1 |  |
-| main.rs:344:9:344:10 | [SSA] s2 | main.rs:352:11:352:12 | s2 |  |
-| main.rs:344:9:344:10 | s2 | main.rs:344:9:344:10 | [SSA] s2 |  |
-| main.rs:344:14:344:29 | D {...} | main.rs:344:9:344:10 | s2 |  |
-| main.rs:345:11:345:12 | s1 | main.rs:346:9:346:24 | C {...} |  |
-| main.rs:345:11:345:12 | s1 | main.rs:347:9:347:24 | D {...} |  |
-| main.rs:345:11:345:12 | s1 | main.rs:349:11:349:12 | s1 |  |
-| main.rs:346:22:346:22 | [SSA] n | main.rs:346:34:346:34 | n |  |
-| main.rs:346:22:346:22 | n | main.rs:346:22:346:22 | [SSA] n |  |
-| main.rs:346:29:346:35 | sink(...) | main.rs:345:5:348:5 | match s1 { ... } |  |
-| main.rs:347:22:347:22 | [SSA] n | main.rs:347:34:347:34 | n |  |
-| main.rs:347:22:347:22 | n | main.rs:347:22:347:22 | [SSA] n |  |
-| main.rs:347:29:347:35 | sink(...) | main.rs:345:5:348:5 | match s1 { ... } |  |
-| main.rs:349:11:349:12 | s1 | main.rs:350:9:350:43 | ... \| ... |  |
-| main.rs:350:9:350:43 | ... \| ... | main.rs:350:9:350:24 | C {...} |  |
-| main.rs:350:9:350:43 | ... \| ... | main.rs:350:28:350:43 | D {...} |  |
-| main.rs:350:9:350:43 | [SSA] [match(true)] phi | main.rs:350:53:350:53 | n |  |
-| main.rs:350:22:350:22 | [SSA] [input] [match(true)] phi | main.rs:350:9:350:43 | [SSA] [match(true)] phi |  |
-| main.rs:350:22:350:22 | [SSA] n | main.rs:350:22:350:22 | [SSA] [input] [match(true)] phi |  |
-| main.rs:350:22:350:22 | n | main.rs:350:22:350:22 | [SSA] n |  |
-| main.rs:350:41:350:41 | [SSA] [input] [match(true)] phi | main.rs:350:9:350:43 | [SSA] [match(true)] phi |  |
-| main.rs:350:41:350:41 | [SSA] n | main.rs:350:41:350:41 | [SSA] [input] [match(true)] phi |  |
-| main.rs:350:41:350:41 | n | main.rs:350:41:350:41 | [SSA] n |  |
-| main.rs:350:48:350:54 | sink(...) | main.rs:349:5:351:5 | match s1 { ... } |  |
-| main.rs:352:5:355:5 | match s2 { ... } | main.rs:340:51:356:1 | { ... } |  |
-| main.rs:352:11:352:12 | s2 | main.rs:353:9:353:24 | C {...} |  |
-| main.rs:352:11:352:12 | s2 | main.rs:354:9:354:24 | D {...} |  |
-| main.rs:353:22:353:22 | [SSA] n | main.rs:353:34:353:34 | n |  |
-| main.rs:353:22:353:22 | n | main.rs:353:22:353:22 | [SSA] n |  |
-| main.rs:353:29:353:35 | sink(...) | main.rs:352:5:355:5 | match s2 { ... } |  |
-| main.rs:354:22:354:22 | [SSA] n | main.rs:354:34:354:34 | n |  |
-| main.rs:354:22:354:22 | n | main.rs:354:22:354:22 | [SSA] n |  |
-| main.rs:354:29:354:35 | sink(...) | main.rs:352:5:355:5 | match s2 { ... } |  |
-| main.rs:362:9:362:12 | [SSA] arr1 | main.rs:363:14:363:17 | arr1 |  |
-| main.rs:362:9:362:12 | arr1 | main.rs:362:9:362:12 | [SSA] arr1 |  |
-| main.rs:362:16:362:33 | [...] | main.rs:362:9:362:12 | arr1 |  |
-| main.rs:363:9:363:10 | [SSA] n1 | main.rs:364:10:364:11 | n1 |  |
-| main.rs:363:9:363:10 | n1 | main.rs:363:9:363:10 | [SSA] n1 |  |
-| main.rs:363:14:363:20 | arr1[2] | main.rs:363:9:363:10 | n1 |  |
-| main.rs:366:9:366:12 | [SSA] arr2 | main.rs:367:14:367:17 | arr2 |  |
-| main.rs:366:9:366:12 | arr2 | main.rs:366:9:366:12 | [SSA] arr2 |  |
-| main.rs:366:16:366:31 | [...; 10] | main.rs:366:9:366:12 | arr2 |  |
-| main.rs:367:9:367:10 | [SSA] n2 | main.rs:368:10:368:11 | n2 |  |
-| main.rs:367:9:367:10 | n2 | main.rs:367:9:367:10 | [SSA] n2 |  |
-| main.rs:367:14:367:20 | arr2[4] | main.rs:367:9:367:10 | n2 |  |
-| main.rs:370:9:370:12 | [SSA] arr3 | main.rs:371:14:371:17 | arr3 |  |
-| main.rs:370:9:370:12 | arr3 | main.rs:370:9:370:12 | [SSA] arr3 |  |
-| main.rs:370:16:370:24 | [...] | main.rs:370:9:370:12 | arr3 |  |
-| main.rs:371:9:371:10 | [SSA] n3 | main.rs:372:10:372:11 | n3 |  |
-| main.rs:371:9:371:10 | n3 | main.rs:371:9:371:10 | [SSA] n3 |  |
-| main.rs:371:14:371:20 | arr3[2] | main.rs:371:9:371:10 | n3 |  |
-| main.rs:376:9:376:12 | [SSA] arr1 | main.rs:377:15:377:18 | arr1 |  |
-| main.rs:376:9:376:12 | arr1 | main.rs:376:9:376:12 | [SSA] arr1 |  |
-| main.rs:376:16:376:33 | [...] | main.rs:376:9:376:12 | arr1 |  |
-| main.rs:377:9:377:10 | [SSA] n1 | main.rs:378:14:378:15 | n1 |  |
-| main.rs:377:9:377:10 | n1 | main.rs:377:9:377:10 | [SSA] n1 |  |
-| main.rs:381:9:381:12 | [SSA] arr2 | main.rs:382:15:382:18 | arr2 |  |
+| main.rs:282:32:282:45 | Ok(...) | main.rs:282:9:282:10 | s1 |  |
+| main.rs:283:10:283:11 | [post] s1 | main.rs:284:10:284:11 | s1 |  |
+| main.rs:283:10:283:11 | s1 | main.rs:284:10:284:11 | s1 |  |
+| main.rs:286:9:286:10 | [SSA] s2 | main.rs:287:10:287:11 | s2 |  |
+| main.rs:286:9:286:10 | s2 | main.rs:286:9:286:10 | [SSA] s2 |  |
+| main.rs:286:32:286:46 | Err(...) | main.rs:286:9:286:10 | s2 |  |
+| main.rs:287:10:287:11 | [post] s2 | main.rs:288:10:288:11 | s2 |  |
+| main.rs:287:10:287:11 | s2 | main.rs:288:10:288:11 | s2 |  |
+| main.rs:297:9:297:10 | [SSA] s1 | main.rs:299:11:299:12 | s1 |  |
+| main.rs:297:9:297:10 | s1 | main.rs:297:9:297:10 | [SSA] s1 |  |
+| main.rs:297:14:297:39 | ...::A(...) | main.rs:297:9:297:10 | s1 |  |
+| main.rs:298:9:298:10 | [SSA] s2 | main.rs:306:11:306:12 | s2 |  |
+| main.rs:298:9:298:10 | s2 | main.rs:298:9:298:10 | [SSA] s2 |  |
+| main.rs:298:14:298:30 | ...::B(...) | main.rs:298:9:298:10 | s2 |  |
+| main.rs:299:11:299:12 | s1 | main.rs:300:9:300:25 | ...::A(...) |  |
+| main.rs:299:11:299:12 | s1 | main.rs:301:9:301:25 | ...::B(...) |  |
+| main.rs:299:11:299:12 | s1 | main.rs:303:11:303:12 | s1 |  |
+| main.rs:300:24:300:24 | [SSA] n | main.rs:300:35:300:35 | n |  |
+| main.rs:300:24:300:24 | n | main.rs:300:24:300:24 | [SSA] n |  |
+| main.rs:300:30:300:36 | sink(...) | main.rs:299:5:302:5 | match s1 { ... } |  |
+| main.rs:301:24:301:24 | [SSA] n | main.rs:301:35:301:35 | n |  |
+| main.rs:301:24:301:24 | n | main.rs:301:24:301:24 | [SSA] n |  |
+| main.rs:301:30:301:36 | sink(...) | main.rs:299:5:302:5 | match s1 { ... } |  |
+| main.rs:303:11:303:12 | s1 | main.rs:304:9:304:45 | ... \| ... |  |
+| main.rs:304:9:304:45 | ... \| ... | main.rs:304:9:304:25 | ...::A(...) |  |
+| main.rs:304:9:304:45 | ... \| ... | main.rs:304:29:304:45 | ...::B(...) |  |
+| main.rs:304:9:304:45 | [SSA] [match(true)] phi | main.rs:304:55:304:55 | n |  |
+| main.rs:304:24:304:24 | [SSA] [input] [match(true)] phi | main.rs:304:9:304:45 | [SSA] [match(true)] phi |  |
+| main.rs:304:24:304:24 | [SSA] n | main.rs:304:24:304:24 | [SSA] [input] [match(true)] phi |  |
+| main.rs:304:24:304:24 | n | main.rs:304:24:304:24 | [SSA] n |  |
+| main.rs:304:44:304:44 | [SSA] [input] [match(true)] phi | main.rs:304:9:304:45 | [SSA] [match(true)] phi |  |
+| main.rs:304:44:304:44 | [SSA] n | main.rs:304:44:304:44 | [SSA] [input] [match(true)] phi |  |
+| main.rs:304:44:304:44 | n | main.rs:304:44:304:44 | [SSA] n |  |
+| main.rs:304:50:304:56 | sink(...) | main.rs:303:5:305:5 | match s1 { ... } |  |
+| main.rs:306:5:309:5 | match s2 { ... } | main.rs:296:48:310:1 | { ... } |  |
+| main.rs:306:11:306:12 | s2 | main.rs:307:9:307:25 | ...::A(...) |  |
+| main.rs:306:11:306:12 | s2 | main.rs:308:9:308:25 | ...::B(...) |  |
+| main.rs:307:24:307:24 | [SSA] n | main.rs:307:35:307:35 | n |  |
+| main.rs:307:24:307:24 | n | main.rs:307:24:307:24 | [SSA] n |  |
+| main.rs:307:30:307:36 | sink(...) | main.rs:306:5:309:5 | match s2 { ... } |  |
+| main.rs:308:24:308:24 | [SSA] n | main.rs:308:35:308:35 | n |  |
+| main.rs:308:24:308:24 | n | main.rs:308:24:308:24 | [SSA] n |  |
+| main.rs:308:30:308:36 | sink(...) | main.rs:306:5:309:5 | match s2 { ... } |  |
+| main.rs:315:9:315:10 | [SSA] s1 | main.rs:317:11:317:12 | s1 |  |
+| main.rs:315:9:315:10 | s1 | main.rs:315:9:315:10 | [SSA] s1 |  |
+| main.rs:315:14:315:26 | A(...) | main.rs:315:9:315:10 | s1 |  |
+| main.rs:316:9:316:10 | [SSA] s2 | main.rs:324:11:324:12 | s2 |  |
+| main.rs:316:9:316:10 | s2 | main.rs:316:9:316:10 | [SSA] s2 |  |
+| main.rs:316:14:316:17 | B(...) | main.rs:316:9:316:10 | s2 |  |
+| main.rs:317:11:317:12 | s1 | main.rs:318:9:318:12 | A(...) |  |
+| main.rs:317:11:317:12 | s1 | main.rs:319:9:319:12 | B(...) |  |
+| main.rs:317:11:317:12 | s1 | main.rs:321:11:321:12 | s1 |  |
+| main.rs:318:11:318:11 | [SSA] n | main.rs:318:22:318:22 | n |  |
+| main.rs:318:11:318:11 | n | main.rs:318:11:318:11 | [SSA] n |  |
+| main.rs:318:17:318:23 | sink(...) | main.rs:317:5:320:5 | match s1 { ... } |  |
+| main.rs:319:11:319:11 | [SSA] n | main.rs:319:22:319:22 | n |  |
+| main.rs:319:11:319:11 | n | main.rs:319:11:319:11 | [SSA] n |  |
+| main.rs:319:17:319:23 | sink(...) | main.rs:317:5:320:5 | match s1 { ... } |  |
+| main.rs:321:11:321:12 | s1 | main.rs:322:9:322:19 | ... \| ... |  |
+| main.rs:322:9:322:19 | ... \| ... | main.rs:322:9:322:12 | A(...) |  |
+| main.rs:322:9:322:19 | ... \| ... | main.rs:322:16:322:19 | B(...) |  |
+| main.rs:322:9:322:19 | [SSA] [match(true)] phi | main.rs:322:29:322:29 | n |  |
+| main.rs:322:11:322:11 | [SSA] [input] [match(true)] phi | main.rs:322:9:322:19 | [SSA] [match(true)] phi |  |
+| main.rs:322:11:322:11 | [SSA] n | main.rs:322:11:322:11 | [SSA] [input] [match(true)] phi |  |
+| main.rs:322:11:322:11 | n | main.rs:322:11:322:11 | [SSA] n |  |
+| main.rs:322:18:322:18 | [SSA] [input] [match(true)] phi | main.rs:322:9:322:19 | [SSA] [match(true)] phi |  |
+| main.rs:322:18:322:18 | [SSA] n | main.rs:322:18:322:18 | [SSA] [input] [match(true)] phi |  |
+| main.rs:322:18:322:18 | n | main.rs:322:18:322:18 | [SSA] n |  |
+| main.rs:322:24:322:30 | sink(...) | main.rs:321:5:323:5 | match s1 { ... } |  |
+| main.rs:324:5:327:5 | match s2 { ... } | main.rs:314:50:328:1 | { ... } |  |
+| main.rs:324:11:324:12 | s2 | main.rs:325:9:325:12 | A(...) |  |
+| main.rs:324:11:324:12 | s2 | main.rs:326:9:326:12 | B(...) |  |
+| main.rs:325:11:325:11 | [SSA] n | main.rs:325:22:325:22 | n |  |
+| main.rs:325:11:325:11 | n | main.rs:325:11:325:11 | [SSA] n |  |
+| main.rs:325:17:325:23 | sink(...) | main.rs:324:5:327:5 | match s2 { ... } |  |
+| main.rs:326:11:326:11 | [SSA] n | main.rs:326:22:326:22 | n |  |
+| main.rs:326:11:326:11 | n | main.rs:326:11:326:11 | [SSA] n |  |
+| main.rs:326:17:326:23 | sink(...) | main.rs:324:5:327:5 | match s2 { ... } |  |
+| main.rs:336:9:336:10 | [SSA] s1 | main.rs:340:11:340:12 | s1 |  |
+| main.rs:336:9:336:10 | s1 | main.rs:336:9:336:10 | [SSA] s1 |  |
+| main.rs:336:14:338:5 | ...::C {...} | main.rs:336:9:336:10 | s1 |  |
+| main.rs:339:9:339:10 | [SSA] s2 | main.rs:347:11:347:12 | s2 |  |
+| main.rs:339:9:339:10 | s2 | main.rs:339:9:339:10 | [SSA] s2 |  |
+| main.rs:339:14:339:43 | ...::D {...} | main.rs:339:9:339:10 | s2 |  |
+| main.rs:340:11:340:12 | s1 | main.rs:341:9:341:38 | ...::C {...} |  |
+| main.rs:340:11:340:12 | s1 | main.rs:342:9:342:38 | ...::D {...} |  |
+| main.rs:340:11:340:12 | s1 | main.rs:344:11:344:12 | s1 |  |
+| main.rs:341:36:341:36 | [SSA] n | main.rs:341:48:341:48 | n |  |
+| main.rs:341:36:341:36 | n | main.rs:341:36:341:36 | [SSA] n |  |
+| main.rs:341:43:341:49 | sink(...) | main.rs:340:5:343:5 | match s1 { ... } |  |
+| main.rs:342:36:342:36 | [SSA] n | main.rs:342:48:342:48 | n |  |
+| main.rs:342:36:342:36 | n | main.rs:342:36:342:36 | [SSA] n |  |
+| main.rs:342:43:342:49 | sink(...) | main.rs:340:5:343:5 | match s1 { ... } |  |
+| main.rs:344:11:344:12 | s1 | main.rs:345:9:345:71 | ... \| ... |  |
+| main.rs:345:9:345:71 | ... \| ... | main.rs:345:9:345:38 | ...::C {...} |  |
+| main.rs:345:9:345:71 | ... \| ... | main.rs:345:42:345:71 | ...::D {...} |  |
+| main.rs:345:9:345:71 | [SSA] [match(true)] phi | main.rs:345:81:345:81 | n |  |
+| main.rs:345:36:345:36 | [SSA] [input] [match(true)] phi | main.rs:345:9:345:71 | [SSA] [match(true)] phi |  |
+| main.rs:345:36:345:36 | [SSA] n | main.rs:345:36:345:36 | [SSA] [input] [match(true)] phi |  |
+| main.rs:345:36:345:36 | n | main.rs:345:36:345:36 | [SSA] n |  |
+| main.rs:345:69:345:69 | [SSA] [input] [match(true)] phi | main.rs:345:9:345:71 | [SSA] [match(true)] phi |  |
+| main.rs:345:69:345:69 | [SSA] n | main.rs:345:69:345:69 | [SSA] [input] [match(true)] phi |  |
+| main.rs:345:69:345:69 | n | main.rs:345:69:345:69 | [SSA] n |  |
+| main.rs:345:76:345:82 | sink(...) | main.rs:344:5:346:5 | match s1 { ... } |  |
+| main.rs:347:5:350:5 | match s2 { ... } | main.rs:335:49:351:1 | { ... } |  |
+| main.rs:347:11:347:12 | s2 | main.rs:348:9:348:38 | ...::C {...} |  |
+| main.rs:347:11:347:12 | s2 | main.rs:349:9:349:38 | ...::D {...} |  |
+| main.rs:348:36:348:36 | [SSA] n | main.rs:348:48:348:48 | n |  |
+| main.rs:348:36:348:36 | n | main.rs:348:36:348:36 | [SSA] n |  |
+| main.rs:348:43:348:49 | sink(...) | main.rs:347:5:350:5 | match s2 { ... } |  |
+| main.rs:349:36:349:36 | [SSA] n | main.rs:349:48:349:48 | n |  |
+| main.rs:349:36:349:36 | n | main.rs:349:36:349:36 | [SSA] n |  |
+| main.rs:349:43:349:49 | sink(...) | main.rs:347:5:350:5 | match s2 { ... } |  |
+| main.rs:356:9:356:10 | [SSA] s1 | main.rs:360:11:360:12 | s1 |  |
+| main.rs:356:9:356:10 | s1 | main.rs:356:9:356:10 | [SSA] s1 |  |
+| main.rs:356:14:358:5 | C {...} | main.rs:356:9:356:10 | s1 |  |
+| main.rs:359:9:359:10 | [SSA] s2 | main.rs:367:11:367:12 | s2 |  |
+| main.rs:359:9:359:10 | s2 | main.rs:359:9:359:10 | [SSA] s2 |  |
+| main.rs:359:14:359:29 | D {...} | main.rs:359:9:359:10 | s2 |  |
+| main.rs:360:11:360:12 | s1 | main.rs:361:9:361:24 | C {...} |  |
+| main.rs:360:11:360:12 | s1 | main.rs:362:9:362:24 | D {...} |  |
+| main.rs:360:11:360:12 | s1 | main.rs:364:11:364:12 | s1 |  |
+| main.rs:361:22:361:22 | [SSA] n | main.rs:361:34:361:34 | n |  |
+| main.rs:361:22:361:22 | n | main.rs:361:22:361:22 | [SSA] n |  |
+| main.rs:361:29:361:35 | sink(...) | main.rs:360:5:363:5 | match s1 { ... } |  |
+| main.rs:362:22:362:22 | [SSA] n | main.rs:362:34:362:34 | n |  |
+| main.rs:362:22:362:22 | n | main.rs:362:22:362:22 | [SSA] n |  |
+| main.rs:362:29:362:35 | sink(...) | main.rs:360:5:363:5 | match s1 { ... } |  |
+| main.rs:364:11:364:12 | s1 | main.rs:365:9:365:43 | ... \| ... |  |
+| main.rs:365:9:365:43 | ... \| ... | main.rs:365:9:365:24 | C {...} |  |
+| main.rs:365:9:365:43 | ... \| ... | main.rs:365:28:365:43 | D {...} |  |
+| main.rs:365:9:365:43 | [SSA] [match(true)] phi | main.rs:365:53:365:53 | n |  |
+| main.rs:365:22:365:22 | [SSA] [input] [match(true)] phi | main.rs:365:9:365:43 | [SSA] [match(true)] phi |  |
+| main.rs:365:22:365:22 | [SSA] n | main.rs:365:22:365:22 | [SSA] [input] [match(true)] phi |  |
+| main.rs:365:22:365:22 | n | main.rs:365:22:365:22 | [SSA] n |  |
+| main.rs:365:41:365:41 | [SSA] [input] [match(true)] phi | main.rs:365:9:365:43 | [SSA] [match(true)] phi |  |
+| main.rs:365:41:365:41 | [SSA] n | main.rs:365:41:365:41 | [SSA] [input] [match(true)] phi |  |
+| main.rs:365:41:365:41 | n | main.rs:365:41:365:41 | [SSA] n |  |
+| main.rs:365:48:365:54 | sink(...) | main.rs:364:5:366:5 | match s1 { ... } |  |
+| main.rs:367:5:370:5 | match s2 { ... } | main.rs:355:51:371:1 | { ... } |  |
+| main.rs:367:11:367:12 | s2 | main.rs:368:9:368:24 | C {...} |  |
+| main.rs:367:11:367:12 | s2 | main.rs:369:9:369:24 | D {...} |  |
+| main.rs:368:22:368:22 | [SSA] n | main.rs:368:34:368:34 | n |  |
+| main.rs:368:22:368:22 | n | main.rs:368:22:368:22 | [SSA] n |  |
+| main.rs:368:29:368:35 | sink(...) | main.rs:367:5:370:5 | match s2 { ... } |  |
+| main.rs:369:22:369:22 | [SSA] n | main.rs:369:34:369:34 | n |  |
+| main.rs:369:22:369:22 | n | main.rs:369:22:369:22 | [SSA] n |  |
+| main.rs:369:29:369:35 | sink(...) | main.rs:367:5:370:5 | match s2 { ... } |  |
+| main.rs:377:9:377:12 | [SSA] arr1 | main.rs:378:14:378:17 | arr1 |  |
+| main.rs:377:9:377:12 | arr1 | main.rs:377:9:377:12 | [SSA] arr1 |  |
+| main.rs:377:16:377:33 | [...] | main.rs:377:9:377:12 | arr1 |  |
+| main.rs:378:9:378:10 | [SSA] n1 | main.rs:379:10:379:11 | n1 |  |
+| main.rs:378:9:378:10 | n1 | main.rs:378:9:378:10 | [SSA] n1 |  |
+| main.rs:378:14:378:20 | arr1[2] | main.rs:378:9:378:10 | n1 |  |
+| main.rs:381:9:381:12 | [SSA] arr2 | main.rs:382:14:382:17 | arr2 |  |
 | main.rs:381:9:381:12 | arr2 | main.rs:381:9:381:12 | [SSA] arr2 |  |
-| main.rs:381:16:381:24 | [...] | main.rs:381:9:381:12 | arr2 |  |
-| main.rs:382:5:384:5 | for ... in ... { ... } | main.rs:375:21:385:1 | { ... } |  |
-| main.rs:382:9:382:10 | [SSA] n2 | main.rs:383:14:383:15 | n2 |  |
+| main.rs:381:16:381:31 | [...; 10] | main.rs:381:9:381:12 | arr2 |  |
+| main.rs:382:9:382:10 | [SSA] n2 | main.rs:383:10:383:11 | n2 |  |
 | main.rs:382:9:382:10 | n2 | main.rs:382:9:382:10 | [SSA] n2 |  |
-| main.rs:388:9:388:12 | [SSA] arr1 | main.rs:389:11:389:14 | arr1 |  |
-| main.rs:388:9:388:12 | arr1 | main.rs:388:9:388:12 | [SSA] arr1 |  |
-| main.rs:388:16:388:33 | [...] | main.rs:388:9:388:12 | arr1 |  |
-| main.rs:389:5:395:5 | match arr1 { ... } | main.rs:387:26:396:1 | { ... } |  |
-| main.rs:389:11:389:14 | arr1 | main.rs:390:9:390:17 | SlicePat |  |
-| main.rs:390:10:390:10 | [SSA] a | main.rs:391:18:391:18 | a |  |
-| main.rs:390:10:390:10 | a | main.rs:390:10:390:10 | [SSA] a |  |
-| main.rs:390:13:390:13 | [SSA] b | main.rs:392:18:392:18 | b |  |
-| main.rs:390:13:390:13 | b | main.rs:390:13:390:13 | [SSA] b |  |
-| main.rs:390:16:390:16 | [SSA] c | main.rs:393:18:393:18 | c |  |
-| main.rs:390:16:390:16 | c | main.rs:390:16:390:16 | [SSA] c |  |
-| main.rs:390:22:394:9 | { ... } | main.rs:389:5:395:5 | match arr1 { ... } |  |
-| main.rs:399:9:399:19 | [SSA] mut_arr | main.rs:400:10:400:16 | mut_arr |  |
-| main.rs:399:9:399:19 | mut_arr | main.rs:399:9:399:19 | [SSA] mut_arr |  |
-| main.rs:399:23:399:31 | [...] | main.rs:399:9:399:19 | mut_arr |  |
-| main.rs:400:10:400:16 | [post] mut_arr | main.rs:402:5:402:11 | mut_arr |  |
-| main.rs:400:10:400:16 | mut_arr | main.rs:402:5:402:11 | mut_arr |  |
-| main.rs:402:5:402:11 | [post] mut_arr | main.rs:403:13:403:19 | mut_arr |  |
-| main.rs:402:5:402:11 | mut_arr | main.rs:403:13:403:19 | mut_arr |  |
-| main.rs:402:18:402:27 | source(...) | main.rs:402:5:402:14 | mut_arr[1] |  |
-| main.rs:403:9:403:9 | [SSA] d | main.rs:404:10:404:10 | d |  |
-| main.rs:403:9:403:9 | d | main.rs:403:9:403:9 | [SSA] d |  |
-| main.rs:403:13:403:19 | [post] mut_arr | main.rs:405:10:405:16 | mut_arr |  |
-| main.rs:403:13:403:19 | mut_arr | main.rs:405:10:405:16 | mut_arr |  |
-| main.rs:403:13:403:22 | mut_arr[1] | main.rs:403:9:403:9 | d |  |
-| main.rs:410:39:410:43 | [SSA] names | main.rs:412:25:412:29 | names |  |
-| main.rs:410:39:410:43 | names | main.rs:410:39:410:43 | [SSA] names |  |
-| main.rs:410:39:410:72 | ...: Vec::<...> | main.rs:410:39:410:43 | names |  |
-| main.rs:411:9:411:20 | default_name | main.rs:411:9:411:20 | [SSA] default_name |  |
-| main.rs:411:24:411:45 | ... .to_string(...) | main.rs:411:9:411:20 | default_name |  |
-| main.rs:411:24:411:45 | ... .to_string(...) | main.rs:412:9:412:20 | phi(default_name) |  |
-| main.rs:412:5:418:5 | for ... in ... { ... } | main.rs:410:75:419:1 | { ... } |  |
-| main.rs:412:9:412:20 | phi(default_name) | main.rs:412:9:412:20 | phi(default_name) |  |
-| main.rs:412:9:412:20 | phi(default_name) | main.rs:414:41:414:67 | default_name |  |
-| main.rs:412:10:412:13 | [SSA] cond | main.rs:413:12:413:15 | cond |  |
-| main.rs:412:10:412:13 | cond | main.rs:412:10:412:13 | [SSA] cond |  |
-| main.rs:412:16:412:19 | [SSA] name | main.rs:414:21:414:24 | name |  |
-| main.rs:412:16:412:19 | name | main.rs:412:16:412:19 | [SSA] name |  |
-| main.rs:413:9:417:9 | if cond {...} | main.rs:412:31:418:5 | { ... } |  |
-| main.rs:414:17:414:17 | [SSA] n | main.rs:415:18:415:18 | n |  |
-| main.rs:414:17:414:17 | n | main.rs:414:17:414:17 | [SSA] n |  |
-| main.rs:414:21:414:68 | name.unwrap_or_else(...) | main.rs:414:17:414:17 | n |  |
-| main.rs:414:41:414:67 | [post] default_name | main.rs:412:9:412:20 | phi(default_name) |  |
-| main.rs:414:41:414:67 | closure self in \|...\| ... | main.rs:414:44:414:55 | this |  |
-| main.rs:414:41:414:67 | default_name | main.rs:412:9:412:20 | phi(default_name) |  |
-| main.rs:428:9:428:9 | [SSA] s | main.rs:429:10:429:10 | s |  |
-| main.rs:428:9:428:9 | s | main.rs:428:9:428:9 | [SSA] s |  |
-| main.rs:428:13:428:27 | MacroExpr | main.rs:428:9:428:9 | s |  |
-| main.rs:428:25:428:26 | source(...) | main.rs:428:13:428:27 | MacroExpr |  |
-| main.rs:454:13:454:33 | result_questionmark(...) | main.rs:454:9:454:9 | _ |  |
-| main.rs:466:36:466:41 | ...::new(...) | main.rs:466:36:466:41 | MacroExpr |  |
+| main.rs:382:14:382:20 | arr2[4] | main.rs:382:9:382:10 | n2 |  |
+| main.rs:385:9:385:12 | [SSA] arr3 | main.rs:386:14:386:17 | arr3 |  |
+| main.rs:385:9:385:12 | arr3 | main.rs:385:9:385:12 | [SSA] arr3 |  |
+| main.rs:385:16:385:24 | [...] | main.rs:385:9:385:12 | arr3 |  |
+| main.rs:386:9:386:10 | [SSA] n3 | main.rs:387:10:387:11 | n3 |  |
+| main.rs:386:9:386:10 | n3 | main.rs:386:9:386:10 | [SSA] n3 |  |
+| main.rs:386:14:386:20 | arr3[2] | main.rs:386:9:386:10 | n3 |  |
+| main.rs:391:9:391:12 | [SSA] arr1 | main.rs:392:15:392:18 | arr1 |  |
+| main.rs:391:9:391:12 | arr1 | main.rs:391:9:391:12 | [SSA] arr1 |  |
+| main.rs:391:16:391:33 | [...] | main.rs:391:9:391:12 | arr1 |  |
+| main.rs:392:9:392:10 | [SSA] n1 | main.rs:393:14:393:15 | n1 |  |
+| main.rs:392:9:392:10 | n1 | main.rs:392:9:392:10 | [SSA] n1 |  |
+| main.rs:396:9:396:12 | [SSA] arr2 | main.rs:397:15:397:18 | arr2 |  |
+| main.rs:396:9:396:12 | arr2 | main.rs:396:9:396:12 | [SSA] arr2 |  |
+| main.rs:396:16:396:24 | [...] | main.rs:396:9:396:12 | arr2 |  |
+| main.rs:397:5:399:5 | for ... in ... { ... } | main.rs:390:21:400:1 | { ... } |  |
+| main.rs:397:9:397:10 | [SSA] n2 | main.rs:398:14:398:15 | n2 |  |
+| main.rs:397:9:397:10 | n2 | main.rs:397:9:397:10 | [SSA] n2 |  |
+| main.rs:403:9:403:12 | [SSA] arr1 | main.rs:404:11:404:14 | arr1 |  |
+| main.rs:403:9:403:12 | arr1 | main.rs:403:9:403:12 | [SSA] arr1 |  |
+| main.rs:403:16:403:33 | [...] | main.rs:403:9:403:12 | arr1 |  |
+| main.rs:404:5:410:5 | match arr1 { ... } | main.rs:402:26:411:1 | { ... } |  |
+| main.rs:404:11:404:14 | arr1 | main.rs:405:9:405:17 | SlicePat |  |
+| main.rs:405:10:405:10 | [SSA] a | main.rs:406:18:406:18 | a |  |
+| main.rs:405:10:405:10 | a | main.rs:405:10:405:10 | [SSA] a |  |
+| main.rs:405:13:405:13 | [SSA] b | main.rs:407:18:407:18 | b |  |
+| main.rs:405:13:405:13 | b | main.rs:405:13:405:13 | [SSA] b |  |
+| main.rs:405:16:405:16 | [SSA] c | main.rs:408:18:408:18 | c |  |
+| main.rs:405:16:405:16 | c | main.rs:405:16:405:16 | [SSA] c |  |
+| main.rs:405:22:409:9 | { ... } | main.rs:404:5:410:5 | match arr1 { ... } |  |
+| main.rs:414:9:414:19 | [SSA] mut_arr | main.rs:415:10:415:16 | mut_arr |  |
+| main.rs:414:9:414:19 | mut_arr | main.rs:414:9:414:19 | [SSA] mut_arr |  |
+| main.rs:414:23:414:31 | [...] | main.rs:414:9:414:19 | mut_arr |  |
+| main.rs:415:10:415:16 | [post] mut_arr | main.rs:417:5:417:11 | mut_arr |  |
+| main.rs:415:10:415:16 | mut_arr | main.rs:417:5:417:11 | mut_arr |  |
+| main.rs:417:5:417:11 | [post] mut_arr | main.rs:418:13:418:19 | mut_arr |  |
+| main.rs:417:5:417:11 | mut_arr | main.rs:418:13:418:19 | mut_arr |  |
+| main.rs:417:18:417:27 | source(...) | main.rs:417:5:417:14 | mut_arr[1] |  |
+| main.rs:418:9:418:9 | [SSA] d | main.rs:419:10:419:10 | d |  |
+| main.rs:418:9:418:9 | d | main.rs:418:9:418:9 | [SSA] d |  |
+| main.rs:418:13:418:19 | [post] mut_arr | main.rs:420:10:420:16 | mut_arr |  |
+| main.rs:418:13:418:19 | mut_arr | main.rs:420:10:420:16 | mut_arr |  |
+| main.rs:418:13:418:22 | mut_arr[1] | main.rs:418:9:418:9 | d |  |
+| main.rs:425:39:425:43 | [SSA] names | main.rs:427:25:427:29 | names |  |
+| main.rs:425:39:425:43 | names | main.rs:425:39:425:43 | [SSA] names |  |
+| main.rs:425:39:425:72 | ...: Vec::<...> | main.rs:425:39:425:43 | names |  |
+| main.rs:426:9:426:20 | default_name | main.rs:426:9:426:20 | [SSA] default_name |  |
+| main.rs:426:24:426:45 | ... .to_string(...) | main.rs:426:9:426:20 | default_name |  |
+| main.rs:426:24:426:45 | ... .to_string(...) | main.rs:427:9:427:20 | phi(default_name) |  |
+| main.rs:427:5:433:5 | for ... in ... { ... } | main.rs:425:75:434:1 | { ... } |  |
+| main.rs:427:9:427:20 | phi(default_name) | main.rs:427:9:427:20 | phi(default_name) |  |
+| main.rs:427:9:427:20 | phi(default_name) | main.rs:429:41:429:67 | default_name |  |
+| main.rs:427:10:427:13 | [SSA] cond | main.rs:428:12:428:15 | cond |  |
+| main.rs:427:10:427:13 | cond | main.rs:427:10:427:13 | [SSA] cond |  |
+| main.rs:427:16:427:19 | [SSA] name | main.rs:429:21:429:24 | name |  |
+| main.rs:427:16:427:19 | name | main.rs:427:16:427:19 | [SSA] name |  |
+| main.rs:428:9:432:9 | if cond {...} | main.rs:427:31:433:5 | { ... } |  |
+| main.rs:429:17:429:17 | [SSA] n | main.rs:430:18:430:18 | n |  |
+| main.rs:429:17:429:17 | n | main.rs:429:17:429:17 | [SSA] n |  |
+| main.rs:429:21:429:68 | name.unwrap_or_else(...) | main.rs:429:17:429:17 | n |  |
+| main.rs:429:41:429:67 | [post] default_name | main.rs:427:9:427:20 | phi(default_name) |  |
+| main.rs:429:41:429:67 | closure self in \|...\| ... | main.rs:429:44:429:55 | this |  |
+| main.rs:429:41:429:67 | default_name | main.rs:427:9:427:20 | phi(default_name) |  |
+| main.rs:443:9:443:9 | [SSA] s | main.rs:444:10:444:10 | s |  |
+| main.rs:443:9:443:9 | s | main.rs:443:9:443:9 | [SSA] s |  |
+| main.rs:443:13:443:27 | MacroExpr | main.rs:443:9:443:9 | s |  |
+| main.rs:443:25:443:26 | source(...) | main.rs:443:13:443:27 | MacroExpr |  |
+| main.rs:470:13:470:33 | result_questionmark(...) | main.rs:470:9:470:9 | _ |  |
+| main.rs:482:36:482:41 | ...::new(...) | main.rs:482:36:482:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:core; <crate::option::Option>::expect; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
@@ -555,53 +569,55 @@ storeStep
 | main.rs:177:16:177:16 | 2 | Point.x | main.rs:176:16:179:9 | Point {...} |
 | main.rs:178:16:178:25 | source(...) | Point.y | main.rs:176:16:179:9 | Point {...} |
 | main.rs:180:12:180:12 | 4 | Point3D.z | main.rs:175:13:181:5 | Point3D {...} |
-| main.rs:198:27:198:36 | source(...) | Some | main.rs:198:14:198:37 | ...::Some(...) |
-| main.rs:199:27:199:27 | 2 | Some | main.rs:199:14:199:28 | ...::Some(...) |
-| main.rs:211:19:211:28 | source(...) | Some | main.rs:211:14:211:29 | Some(...) |
-| main.rs:212:19:212:19 | 2 | Some | main.rs:212:14:212:20 | Some(...) |
-| main.rs:224:19:224:28 | source(...) | Some | main.rs:224:14:224:29 | Some(...) |
-| main.rs:229:19:229:28 | source(...) | Some | main.rs:229:14:229:29 | Some(...) |
-| main.rs:232:19:232:19 | 0 | Some | main.rs:232:14:232:20 | Some(...) |
-| main.rs:237:19:237:28 | source(...) | Some | main.rs:237:14:237:29 | Some(...) |
-| main.rs:245:19:245:28 | source(...) | Some | main.rs:245:14:245:29 | Some(...) |
-| main.rs:246:19:246:19 | 2 | Some | main.rs:246:14:246:20 | Some(...) |
-| main.rs:250:10:250:10 | 0 | Some | main.rs:250:5:250:11 | Some(...) |
-| main.rs:254:35:254:44 | source(...) | Ok | main.rs:254:32:254:45 | Ok(...) |
-| main.rs:255:35:255:35 | 2 | Ok | main.rs:255:32:255:36 | Ok(...) |
-| main.rs:256:36:256:45 | source(...) | Err | main.rs:256:32:256:46 | Err(...) |
-| main.rs:263:8:263:8 | 0 | Ok | main.rs:263:5:263:9 | Ok(...) |
-| main.rs:267:35:267:44 | source(...) | Ok | main.rs:267:32:267:45 | Ok(...) |
+| main.rs:197:27:197:36 | source(...) | MyTupleStruct(0) | main.rs:197:13:197:40 | MyTupleStruct(...) |
+| main.rs:197:39:197:39 | 2 | MyTupleStruct(1) | main.rs:197:13:197:40 | MyTupleStruct(...) |
+| main.rs:213:27:213:36 | source(...) | Some | main.rs:213:14:213:37 | ...::Some(...) |
+| main.rs:214:27:214:27 | 2 | Some | main.rs:214:14:214:28 | ...::Some(...) |
+| main.rs:226:19:226:28 | source(...) | Some | main.rs:226:14:226:29 | Some(...) |
+| main.rs:227:19:227:19 | 2 | Some | main.rs:227:14:227:20 | Some(...) |
+| main.rs:239:19:239:28 | source(...) | Some | main.rs:239:14:239:29 | Some(...) |
+| main.rs:244:19:244:28 | source(...) | Some | main.rs:244:14:244:29 | Some(...) |
+| main.rs:247:19:247:19 | 0 | Some | main.rs:247:14:247:20 | Some(...) |
+| main.rs:252:19:252:28 | source(...) | Some | main.rs:252:14:252:29 | Some(...) |
+| main.rs:260:19:260:28 | source(...) | Some | main.rs:260:14:260:29 | Some(...) |
+| main.rs:261:19:261:19 | 2 | Some | main.rs:261:14:261:20 | Some(...) |
+| main.rs:265:10:265:10 | 0 | Some | main.rs:265:5:265:11 | Some(...) |
+| main.rs:269:35:269:44 | source(...) | Ok | main.rs:269:32:269:45 | Ok(...) |
+| main.rs:270:35:270:35 | 2 | Ok | main.rs:270:32:270:36 | Ok(...) |
 | main.rs:271:36:271:45 | source(...) | Err | main.rs:271:32:271:46 | Err(...) |
-| main.rs:282:29:282:38 | source(...) | A | main.rs:282:14:282:39 | ...::A(...) |
-| main.rs:283:29:283:29 | 2 | B | main.rs:283:14:283:30 | ...::B(...) |
-| main.rs:300:16:300:25 | source(...) | A | main.rs:300:14:300:26 | A(...) |
-| main.rs:301:16:301:16 | 2 | B | main.rs:301:14:301:17 | B(...) |
-| main.rs:322:18:322:27 | source(...) | C | main.rs:321:14:323:5 | ...::C {...} |
-| main.rs:324:41:324:41 | 2 | D | main.rs:324:14:324:43 | ...::D {...} |
-| main.rs:342:18:342:27 | source(...) | C | main.rs:341:14:343:5 | C {...} |
-| main.rs:344:27:344:27 | 2 | D | main.rs:344:14:344:29 | D {...} |
-| main.rs:362:17:362:17 | 1 | element | main.rs:362:16:362:33 | [...] |
-| main.rs:362:20:362:20 | 2 | element | main.rs:362:16:362:33 | [...] |
-| main.rs:362:23:362:32 | source(...) | element | main.rs:362:16:362:33 | [...] |
-| main.rs:366:17:366:26 | source(...) | element | main.rs:366:16:366:31 | [...; 10] |
-| main.rs:370:17:370:17 | 1 | element | main.rs:370:16:370:24 | [...] |
-| main.rs:370:20:370:20 | 2 | element | main.rs:370:16:370:24 | [...] |
-| main.rs:370:23:370:23 | 3 | element | main.rs:370:16:370:24 | [...] |
-| main.rs:376:17:376:17 | 1 | element | main.rs:376:16:376:33 | [...] |
-| main.rs:376:20:376:20 | 2 | element | main.rs:376:16:376:33 | [...] |
-| main.rs:376:23:376:32 | source(...) | element | main.rs:376:16:376:33 | [...] |
-| main.rs:381:17:381:17 | 1 | element | main.rs:381:16:381:24 | [...] |
-| main.rs:381:20:381:20 | 2 | element | main.rs:381:16:381:24 | [...] |
-| main.rs:381:23:381:23 | 3 | element | main.rs:381:16:381:24 | [...] |
-| main.rs:388:17:388:17 | 1 | element | main.rs:388:16:388:33 | [...] |
-| main.rs:388:20:388:20 | 2 | element | main.rs:388:16:388:33 | [...] |
-| main.rs:388:23:388:32 | source(...) | element | main.rs:388:16:388:33 | [...] |
-| main.rs:399:24:399:24 | 1 | element | main.rs:399:23:399:31 | [...] |
-| main.rs:399:27:399:27 | 2 | element | main.rs:399:23:399:31 | [...] |
-| main.rs:399:30:399:30 | 3 | element | main.rs:399:23:399:31 | [...] |
-| main.rs:402:18:402:27 | source(...) | element | main.rs:402:5:402:11 | [post] mut_arr |
-| main.rs:414:41:414:67 | default_name | captured default_name | main.rs:414:41:414:67 | \|...\| ... |
-| main.rs:436:27:436:27 | 0 | Some | main.rs:436:22:436:28 | Some(...) |
+| main.rs:278:8:278:8 | 0 | Ok | main.rs:278:5:278:9 | Ok(...) |
+| main.rs:282:35:282:44 | source(...) | Ok | main.rs:282:32:282:45 | Ok(...) |
+| main.rs:286:36:286:45 | source(...) | Err | main.rs:286:32:286:46 | Err(...) |
+| main.rs:297:29:297:38 | source(...) | A | main.rs:297:14:297:39 | ...::A(...) |
+| main.rs:298:29:298:29 | 2 | B | main.rs:298:14:298:30 | ...::B(...) |
+| main.rs:315:16:315:25 | source(...) | A | main.rs:315:14:315:26 | A(...) |
+| main.rs:316:16:316:16 | 2 | B | main.rs:316:14:316:17 | B(...) |
+| main.rs:337:18:337:27 | source(...) | C | main.rs:336:14:338:5 | ...::C {...} |
+| main.rs:339:41:339:41 | 2 | D | main.rs:339:14:339:43 | ...::D {...} |
+| main.rs:357:18:357:27 | source(...) | C | main.rs:356:14:358:5 | C {...} |
+| main.rs:359:27:359:27 | 2 | D | main.rs:359:14:359:29 | D {...} |
+| main.rs:377:17:377:17 | 1 | element | main.rs:377:16:377:33 | [...] |
+| main.rs:377:20:377:20 | 2 | element | main.rs:377:16:377:33 | [...] |
+| main.rs:377:23:377:32 | source(...) | element | main.rs:377:16:377:33 | [...] |
+| main.rs:381:17:381:26 | source(...) | element | main.rs:381:16:381:31 | [...; 10] |
+| main.rs:385:17:385:17 | 1 | element | main.rs:385:16:385:24 | [...] |
+| main.rs:385:20:385:20 | 2 | element | main.rs:385:16:385:24 | [...] |
+| main.rs:385:23:385:23 | 3 | element | main.rs:385:16:385:24 | [...] |
+| main.rs:391:17:391:17 | 1 | element | main.rs:391:16:391:33 | [...] |
+| main.rs:391:20:391:20 | 2 | element | main.rs:391:16:391:33 | [...] |
+| main.rs:391:23:391:32 | source(...) | element | main.rs:391:16:391:33 | [...] |
+| main.rs:396:17:396:17 | 1 | element | main.rs:396:16:396:24 | [...] |
+| main.rs:396:20:396:20 | 2 | element | main.rs:396:16:396:24 | [...] |
+| main.rs:396:23:396:23 | 3 | element | main.rs:396:16:396:24 | [...] |
+| main.rs:403:17:403:17 | 1 | element | main.rs:403:16:403:33 | [...] |
+| main.rs:403:20:403:20 | 2 | element | main.rs:403:16:403:33 | [...] |
+| main.rs:403:23:403:32 | source(...) | element | main.rs:403:16:403:33 | [...] |
+| main.rs:414:24:414:24 | 1 | element | main.rs:414:23:414:31 | [...] |
+| main.rs:414:27:414:27 | 2 | element | main.rs:414:23:414:31 | [...] |
+| main.rs:414:30:414:30 | 3 | element | main.rs:414:23:414:31 | [...] |
+| main.rs:417:18:417:27 | source(...) | element | main.rs:417:5:417:11 | [post] mut_arr |
+| main.rs:429:41:429:67 | default_name | captured default_name | main.rs:429:41:429:67 | \|...\| ... |
+| main.rs:451:27:451:27 | 0 | Some | main.rs:451:22:451:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else |
@@ -644,58 +660,62 @@ readStep
 | main.rs:183:9:186:9 | Point3D {...} | Point3D.z | main.rs:185:13:185:13 | z |
 | main.rs:184:20:184:33 | Point {...} | Point.x | main.rs:184:28:184:28 | x |
 | main.rs:184:20:184:33 | Point {...} | Point.y | main.rs:184:31:184:31 | y |
-| main.rs:201:9:201:23 | ...::Some(...) | Some | main.rs:201:22:201:22 | n |
-| main.rs:205:9:205:23 | ...::Some(...) | Some | main.rs:205:22:205:22 | n |
-| main.rs:214:9:214:15 | Some(...) | Some | main.rs:214:14:214:14 | n |
-| main.rs:218:9:218:15 | Some(...) | Some | main.rs:218:14:218:14 | n |
-| main.rs:247:14:247:15 | s1 | Ok | main.rs:247:14:247:16 | TryExpr |
-| main.rs:247:14:247:15 | s1 | Some | main.rs:247:14:247:16 | TryExpr |
-| main.rs:249:10:249:11 | s2 | Ok | main.rs:249:10:249:12 | TryExpr |
-| main.rs:249:10:249:11 | s2 | Some | main.rs:249:10:249:12 | TryExpr |
-| main.rs:257:14:257:15 | s1 | Ok | main.rs:257:14:257:16 | TryExpr |
-| main.rs:257:14:257:15 | s1 | Some | main.rs:257:14:257:16 | TryExpr |
-| main.rs:258:14:258:15 | s2 | Ok | main.rs:258:14:258:16 | TryExpr |
-| main.rs:258:14:258:15 | s2 | Some | main.rs:258:14:258:16 | TryExpr |
-| main.rs:261:14:261:15 | s3 | Ok | main.rs:261:14:261:16 | TryExpr |
-| main.rs:261:14:261:15 | s3 | Some | main.rs:261:14:261:16 | TryExpr |
-| main.rs:285:9:285:25 | ...::A(...) | A | main.rs:285:24:285:24 | n |
-| main.rs:286:9:286:25 | ...::B(...) | B | main.rs:286:24:286:24 | n |
-| main.rs:289:9:289:25 | ...::A(...) | A | main.rs:289:24:289:24 | n |
-| main.rs:289:29:289:45 | ...::B(...) | B | main.rs:289:44:289:44 | n |
-| main.rs:292:9:292:25 | ...::A(...) | A | main.rs:292:24:292:24 | n |
-| main.rs:293:9:293:25 | ...::B(...) | B | main.rs:293:24:293:24 | n |
-| main.rs:303:9:303:12 | A(...) | A | main.rs:303:11:303:11 | n |
-| main.rs:304:9:304:12 | B(...) | B | main.rs:304:11:304:11 | n |
-| main.rs:307:9:307:12 | A(...) | A | main.rs:307:11:307:11 | n |
-| main.rs:307:16:307:19 | B(...) | B | main.rs:307:18:307:18 | n |
-| main.rs:310:9:310:12 | A(...) | A | main.rs:310:11:310:11 | n |
-| main.rs:311:9:311:12 | B(...) | B | main.rs:311:11:311:11 | n |
-| main.rs:326:9:326:38 | ...::C {...} | C | main.rs:326:36:326:36 | n |
-| main.rs:327:9:327:38 | ...::D {...} | D | main.rs:327:36:327:36 | n |
-| main.rs:330:9:330:38 | ...::C {...} | C | main.rs:330:36:330:36 | n |
-| main.rs:330:42:330:71 | ...::D {...} | D | main.rs:330:69:330:69 | n |
-| main.rs:333:9:333:38 | ...::C {...} | C | main.rs:333:36:333:36 | n |
-| main.rs:334:9:334:38 | ...::D {...} | D | main.rs:334:36:334:36 | n |
-| main.rs:346:9:346:24 | C {...} | C | main.rs:346:22:346:22 | n |
-| main.rs:347:9:347:24 | D {...} | D | main.rs:347:22:347:22 | n |
-| main.rs:350:9:350:24 | C {...} | C | main.rs:350:22:350:22 | n |
-| main.rs:350:28:350:43 | D {...} | D | main.rs:350:41:350:41 | n |
-| main.rs:353:9:353:24 | C {...} | C | main.rs:353:22:353:22 | n |
-| main.rs:354:9:354:24 | D {...} | D | main.rs:354:22:354:22 | n |
-| main.rs:363:14:363:17 | arr1 | element | main.rs:363:14:363:20 | arr1[2] |
-| main.rs:367:14:367:17 | arr2 | element | main.rs:367:14:367:20 | arr2[4] |
-| main.rs:371:14:371:17 | arr3 | element | main.rs:371:14:371:20 | arr3[2] |
-| main.rs:377:15:377:18 | arr1 | element | main.rs:377:9:377:10 | n1 |
-| main.rs:382:15:382:18 | arr2 | element | main.rs:382:9:382:10 | n2 |
-| main.rs:390:9:390:17 | SlicePat | element | main.rs:390:10:390:10 | a |
-| main.rs:390:9:390:17 | SlicePat | element | main.rs:390:13:390:13 | b |
-| main.rs:390:9:390:17 | SlicePat | element | main.rs:390:16:390:16 | c |
-| main.rs:400:10:400:16 | mut_arr | element | main.rs:400:10:400:19 | mut_arr[1] |
-| main.rs:402:5:402:11 | mut_arr | element | main.rs:402:5:402:14 | mut_arr[1] |
-| main.rs:403:13:403:19 | mut_arr | element | main.rs:403:13:403:22 | mut_arr[1] |
-| main.rs:405:10:405:16 | mut_arr | element | main.rs:405:10:405:19 | mut_arr[0] |
-| main.rs:412:9:412:20 | TuplePat | tuple.0 | main.rs:412:10:412:13 | cond |
-| main.rs:412:9:412:20 | TuplePat | tuple.1 | main.rs:412:16:412:19 | name |
-| main.rs:412:25:412:29 | names | element | main.rs:412:9:412:20 | TuplePat |
-| main.rs:414:41:414:67 | [post] \|...\| ... | captured default_name | main.rs:414:41:414:67 | [post] default_name |
-| main.rs:414:44:414:55 | this | captured default_name | main.rs:414:44:414:55 | default_name |
+| main.rs:198:10:198:10 | s | tuple.0 | main.rs:198:10:198:12 | s.0 |
+| main.rs:199:10:199:10 | s | tuple.1 | main.rs:199:10:199:12 | s.1 |
+| main.rs:202:9:202:27 | MyTupleStruct(...) | MyTupleStruct(0) | main.rs:202:23:202:23 | x |
+| main.rs:202:9:202:27 | MyTupleStruct(...) | MyTupleStruct(1) | main.rs:202:26:202:26 | y |
+| main.rs:216:9:216:23 | ...::Some(...) | Some | main.rs:216:22:216:22 | n |
+| main.rs:220:9:220:23 | ...::Some(...) | Some | main.rs:220:22:220:22 | n |
+| main.rs:229:9:229:15 | Some(...) | Some | main.rs:229:14:229:14 | n |
+| main.rs:233:9:233:15 | Some(...) | Some | main.rs:233:14:233:14 | n |
+| main.rs:262:14:262:15 | s1 | Ok | main.rs:262:14:262:16 | TryExpr |
+| main.rs:262:14:262:15 | s1 | Some | main.rs:262:14:262:16 | TryExpr |
+| main.rs:264:10:264:11 | s2 | Ok | main.rs:264:10:264:12 | TryExpr |
+| main.rs:264:10:264:11 | s2 | Some | main.rs:264:10:264:12 | TryExpr |
+| main.rs:272:14:272:15 | s1 | Ok | main.rs:272:14:272:16 | TryExpr |
+| main.rs:272:14:272:15 | s1 | Some | main.rs:272:14:272:16 | TryExpr |
+| main.rs:273:14:273:15 | s2 | Ok | main.rs:273:14:273:16 | TryExpr |
+| main.rs:273:14:273:15 | s2 | Some | main.rs:273:14:273:16 | TryExpr |
+| main.rs:276:14:276:15 | s3 | Ok | main.rs:276:14:276:16 | TryExpr |
+| main.rs:276:14:276:15 | s3 | Some | main.rs:276:14:276:16 | TryExpr |
+| main.rs:300:9:300:25 | ...::A(...) | A | main.rs:300:24:300:24 | n |
+| main.rs:301:9:301:25 | ...::B(...) | B | main.rs:301:24:301:24 | n |
+| main.rs:304:9:304:25 | ...::A(...) | A | main.rs:304:24:304:24 | n |
+| main.rs:304:29:304:45 | ...::B(...) | B | main.rs:304:44:304:44 | n |
+| main.rs:307:9:307:25 | ...::A(...) | A | main.rs:307:24:307:24 | n |
+| main.rs:308:9:308:25 | ...::B(...) | B | main.rs:308:24:308:24 | n |
+| main.rs:318:9:318:12 | A(...) | A | main.rs:318:11:318:11 | n |
+| main.rs:319:9:319:12 | B(...) | B | main.rs:319:11:319:11 | n |
+| main.rs:322:9:322:12 | A(...) | A | main.rs:322:11:322:11 | n |
+| main.rs:322:16:322:19 | B(...) | B | main.rs:322:18:322:18 | n |
+| main.rs:325:9:325:12 | A(...) | A | main.rs:325:11:325:11 | n |
+| main.rs:326:9:326:12 | B(...) | B | main.rs:326:11:326:11 | n |
+| main.rs:341:9:341:38 | ...::C {...} | C | main.rs:341:36:341:36 | n |
+| main.rs:342:9:342:38 | ...::D {...} | D | main.rs:342:36:342:36 | n |
+| main.rs:345:9:345:38 | ...::C {...} | C | main.rs:345:36:345:36 | n |
+| main.rs:345:42:345:71 | ...::D {...} | D | main.rs:345:69:345:69 | n |
+| main.rs:348:9:348:38 | ...::C {...} | C | main.rs:348:36:348:36 | n |
+| main.rs:349:9:349:38 | ...::D {...} | D | main.rs:349:36:349:36 | n |
+| main.rs:361:9:361:24 | C {...} | C | main.rs:361:22:361:22 | n |
+| main.rs:362:9:362:24 | D {...} | D | main.rs:362:22:362:22 | n |
+| main.rs:365:9:365:24 | C {...} | C | main.rs:365:22:365:22 | n |
+| main.rs:365:28:365:43 | D {...} | D | main.rs:365:41:365:41 | n |
+| main.rs:368:9:368:24 | C {...} | C | main.rs:368:22:368:22 | n |
+| main.rs:369:9:369:24 | D {...} | D | main.rs:369:22:369:22 | n |
+| main.rs:378:14:378:17 | arr1 | element | main.rs:378:14:378:20 | arr1[2] |
+| main.rs:382:14:382:17 | arr2 | element | main.rs:382:14:382:20 | arr2[4] |
+| main.rs:386:14:386:17 | arr3 | element | main.rs:386:14:386:20 | arr3[2] |
+| main.rs:392:15:392:18 | arr1 | element | main.rs:392:9:392:10 | n1 |
+| main.rs:397:15:397:18 | arr2 | element | main.rs:397:9:397:10 | n2 |
+| main.rs:405:9:405:17 | SlicePat | element | main.rs:405:10:405:10 | a |
+| main.rs:405:9:405:17 | SlicePat | element | main.rs:405:13:405:13 | b |
+| main.rs:405:9:405:17 | SlicePat | element | main.rs:405:16:405:16 | c |
+| main.rs:415:10:415:16 | mut_arr | element | main.rs:415:10:415:19 | mut_arr[1] |
+| main.rs:417:5:417:11 | mut_arr | element | main.rs:417:5:417:14 | mut_arr[1] |
+| main.rs:418:13:418:19 | mut_arr | element | main.rs:418:13:418:22 | mut_arr[1] |
+| main.rs:420:10:420:16 | mut_arr | element | main.rs:420:10:420:19 | mut_arr[0] |
+| main.rs:427:9:427:20 | TuplePat | tuple.0 | main.rs:427:10:427:13 | cond |
+| main.rs:427:9:427:20 | TuplePat | tuple.1 | main.rs:427:16:427:19 | name |
+| main.rs:427:25:427:29 | names | element | main.rs:427:9:427:20 | TuplePat |
+| main.rs:429:41:429:67 | [post] \|...\| ... | captured default_name | main.rs:429:41:429:67 | [post] default_name |
+| main.rs:429:44:429:55 | this | captured default_name | main.rs:429:44:429:55 | default_name |
