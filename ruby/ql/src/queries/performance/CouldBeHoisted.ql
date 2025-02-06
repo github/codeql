@@ -8,15 +8,6 @@
  * @tags performance
  */
 
-// Possible Improvements;
-// - Consider also Associations.
-//   Associations are lazy-loading by default, so something like
-//   in a loop over `article` do
-//      `article.book`
-//   if you have 1000 articles it will do a 1000 calls to `book`.
-//   If you already did `article includes book`, there should be no problem.
-// - Consider instances of ActiveRecordInstanceMethodCall, for instance
-//   calls to `pluck`.
 import ruby
 private import codeql.ruby.AST
 import codeql.ruby.ast.internal.Constant
@@ -87,4 +78,6 @@ where
   // Only report calls that are likely to be expensive
   call instanceof ActiveRecordModelFinderCall and
   not call.getMethodName() in ["new", "create"]
-select call, "This call to a database query operation happens inside $@, and could be hoisted to a single call outside the loop.", loop, "this loop"
+select call,
+  "This call to a database query operation happens inside $@, and could be hoisted to a single call outside the loop.",
+  loop, "this loop"
