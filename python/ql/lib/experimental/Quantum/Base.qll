@@ -51,9 +51,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * This predicate is used by derived classes to construct the graph of cryptographic operations.
      */
     predicate properties(string key, string value, Location location) {
-      key = "origin" and
-      location = this.getOrigin(value).getLocation() and
-      not location = this.getLocation()
+      key = "origin" and location = this.getOrigin(value).getLocation()
     }
 
     /**
