@@ -366,10 +366,16 @@ private module TaintedArgConfig implements DataFlow::ConfigSig {
     src.asExpr().(MethodCall).getMethod().getName() = "source"
   }
 
-  predicate isSink(DataFlow::Node sink) { exists(Call call | sink.asExpr() = call.getAnArgument()) }
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() =
+      any(ConstructorCall constrCall |
+        constrCall.getConstructedType() instanceof TypeFile and
+        constrCall.getNumArgument() = 2
+      ).getArgument(0)
+  }
 }
 
-/** Tracks taint flow to any argument. */
+/** Tracks taint flow to the parent argument of a `File` constructor. */
 private module TaintedArgFlow = TaintTracking::Global<TaintedArgConfig>;
 
 /** Holds if `g` is a guard that checks for `..` components. */
