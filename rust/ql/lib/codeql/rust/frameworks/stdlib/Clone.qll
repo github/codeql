@@ -1,7 +1,7 @@
 /** A model for `clone` on the `Clone` trait. */
 
-import rust
-import codeql.rust.dataflow.FlowSummary
+private import rust
+private import codeql.rust.dataflow.FlowSummary
 
 /** A `clone` method. */
 final class CloneCallable extends SummarizedCallable::Range {
