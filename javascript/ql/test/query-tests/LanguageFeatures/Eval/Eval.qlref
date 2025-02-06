@@ -1,1 +1,2 @@
-LanguageFeatures/Eval.ql
+query: LanguageFeatures/Eval.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

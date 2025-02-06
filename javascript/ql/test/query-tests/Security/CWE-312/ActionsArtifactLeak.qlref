@@ -1,1 +1,2 @@
-Security/CWE-312/ActionsArtifactLeak.ql
+query: Security/CWE-312/ActionsArtifactLeak.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
