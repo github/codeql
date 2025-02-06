@@ -329,10 +329,10 @@ edges
 | polynomial-redos.js:114:2:114:8 | tainted | polynomial-redos.js:116:2:116:8 | tainted | provenance |  |
 | polynomial-redos.js:116:2:116:8 | tainted | polynomial-redos.js:118:2:118:8 | tainted | provenance |  |
 | polynomial-redos.js:116:2:116:8 | tainted | polynomial-redos.js:118:2:118:8 | tainted | provenance |  |
-| polynomial-redos.js:118:2:118:8 | tainted | polynomial-redos.js:120:2:125:3 | (functi ...  OK\\n\\t}) [tainted] | provenance |  |
+| polynomial-redos.js:118:2:118:8 | tainted | polynomial-redos.js:120:2:125:3 | (functi ... os]\\n\\t}) [tainted] | provenance |  |
 | polynomial-redos.js:118:2:118:8 | tainted | polynomial-redos.js:121:18:121:24 | tainted | provenance |  |
 | polynomial-redos.js:118:2:118:8 | tainted | polynomial-redos.js:127:2:127:8 | tainted | provenance |  |
-| polynomial-redos.js:120:2:125:3 | (functi ...  OK\\n\\t}) [tainted] | polynomial-redos.js:121:18:121:24 | tainted | provenance |  |
+| polynomial-redos.js:120:2:125:3 | (functi ... os]\\n\\t}) [tainted] | polynomial-redos.js:121:18:121:24 | tainted | provenance |  |
 | polynomial-redos.js:121:7:121:55 | replaced | polynomial-redos.js:123:13:123:20 | replaced | provenance |  |
 | polynomial-redos.js:121:18:121:24 | tainted | polynomial-redos.js:121:18:121:55 | tainted ... /g, '') | provenance |  |
 | polynomial-redos.js:121:18:121:55 | tainted ... /g, '') | polynomial-redos.js:121:7:121:55 | replaced | provenance |  |
@@ -555,7 +555,7 @@ nodes
 | polynomial-redos.js:116:2:116:8 | tainted | semmle.label | tainted |
 | polynomial-redos.js:118:2:118:8 | tainted | semmle.label | tainted |
 | polynomial-redos.js:118:2:118:8 | tainted | semmle.label | tainted |
-| polynomial-redos.js:120:2:125:3 | (functi ...  OK\\n\\t}) [tainted] | semmle.label | (functi ...  OK\\n\\t}) [tainted] |
+| polynomial-redos.js:120:2:125:3 | (functi ... os]\\n\\t}) [tainted] | semmle.label | (functi ... os]\\n\\t}) [tainted] |
 | polynomial-redos.js:121:7:121:55 | replaced | semmle.label | replaced |
 | polynomial-redos.js:121:18:121:24 | tainted | semmle.label | tainted |
 | polynomial-redos.js:121:18:121:55 | tainted ... /g, '') | semmle.label | tainted ... /g, '') |

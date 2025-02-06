@@ -517,25 +517,25 @@
 | tst.js:351:15:351:16 | a+ | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a+)* |
 | tst.js:352:15:352:16 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a*)+b |
 | tst.js:353:15:353:16 | a+ | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a+)+ |
-| tst.js:372:16:372:21 | [^"]*? | Strings starting with '"' and with many repetitions of '""' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+(?=\\s*\|\\s*$)X |
+| tst.js:371:16:371:21 | [^"]*? | Strings starting with '"' and with many repetitions of '""' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+(?=\\s*\|\\s*$)X |
+| tst.js:371:24:371:30 | [^"\\s]+ | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+ |
+| tst.js:372:16:372:21 | [^"]*? | Strings starting with '"' and with many repetitions of '""' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+(?=X) |
 | tst.js:372:24:372:30 | [^"\\s]+ | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+ |
-| tst.js:373:16:373:21 | [^"]*? | Strings starting with '"' and with many repetitions of '""' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+(?=X) |
-| tst.js:373:24:373:30 | [^"\\s]+ | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+ |
-| tst.js:374:15:374:16 | x* | Strings with many repetitions of 'x' can start matching anywhere after the start of the preceeding (x*)+(?=$) |
-| tst.js:375:15:375:16 | x* | Strings with many repetitions of 'x' can start matching anywhere after the start of the preceeding (x*)+(?=$\|y) |
-| tst.js:378:16:378:22 | [\\s\\S]* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding ([\\s\\S]*)+(?=$) |
-| tst.js:379:16:379:22 | [\\s\\S]* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding ([\\s\\S]*)+(?=$\|y) |
-| tst.js:381:15:381:24 | (foo\|FOO)* | Strings with many repetitions of 'FOO' can start matching anywhere after the start of the preceeding (foo\|FOO)*bar |
-| tst.js:382:14:382:23 | (foo\|FOO)* | Strings with many repetitions of 'foo' can start matching anywhere after the start of the preceeding (foo\|FOO)*bar |
-| tst.js:384:15:384:26 | ([AB]\|[ab])* | Strings with many repetitions of 'A' can start matching anywhere after the start of the preceeding ([AB]\|[ab])*C |
-| tst.js:385:14:385:25 | ([DE]\|[de])* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ([DE]\|[de])*F |
-| tst.js:388:14:388:20 | (a\|aa)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a\|aa)*$ |
-| tst.js:391:6:394:5 | (a\|aa)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a\|aa)*b$ |
-| tst.js:398:6:398:12 | (c\|cc)* | Strings with many repetitions of 'c' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
-| tst.js:399:6:399:12 | (d\|dd)* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
-| tst.js:400:6:401:1 | (e\|ee)* | Strings with many repetitions of 'e' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
-| tst.js:404:6:405:7 | (g\|gg)* | Strings with many repetitions of 'g' can start matching anywhere after the start of the preceeding (g\|gg)*h$ |
-| tst.js:407:128:407:129 |  * | Strings starting with '0/*' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s* |
-| tst.js:409:23:409:29 | [\\w.-]* | Strings starting with '//' and with many repetitions of '//' can start matching anywhere after the start of the preceeding (\\/(?:\\/[\\w.-]*)*){0,1}:([\\w.-]+) |
-| tst.js:411:15:411:19 | a{1,} | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a{1,})* |
-| tst.js:417:20:417:25 | (aa?)* | Strings with many repetitions of 'aa' can start matching anywhere after the start of the preceeding (aa?)*b |
+| tst.js:373:15:373:16 | x* | Strings with many repetitions of 'x' can start matching anywhere after the start of the preceeding (x*)+(?=$) |
+| tst.js:374:15:374:16 | x* | Strings with many repetitions of 'x' can start matching anywhere after the start of the preceeding (x*)+(?=$\|y) |
+| tst.js:377:16:377:22 | [\\s\\S]* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding ([\\s\\S]*)+(?=$) |
+| tst.js:378:16:378:22 | [\\s\\S]* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding ([\\s\\S]*)+(?=$\|y) |
+| tst.js:380:15:380:24 | (foo\|FOO)* | Strings with many repetitions of 'FOO' can start matching anywhere after the start of the preceeding (foo\|FOO)*bar |
+| tst.js:381:14:381:23 | (foo\|FOO)* | Strings with many repetitions of 'foo' can start matching anywhere after the start of the preceeding (foo\|FOO)*bar |
+| tst.js:383:15:383:26 | ([AB]\|[ab])* | Strings with many repetitions of 'A' can start matching anywhere after the start of the preceeding ([AB]\|[ab])*C |
+| tst.js:384:14:384:25 | ([DE]\|[de])* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ([DE]\|[de])*F |
+| tst.js:387:14:387:20 | (a\|aa)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a\|aa)*$ |
+| tst.js:390:6:393:5 | (a\|aa)* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a\|aa)*b$ |
+| tst.js:397:6:397:12 | (c\|cc)* | Strings with many repetitions of 'c' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
+| tst.js:398:6:398:12 | (d\|dd)* | Strings with many repetitions of 'd' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
+| tst.js:399:6:400:1 | (e\|ee)* | Strings with many repetitions of 'e' can start matching anywhere after the start of the preceeding ((c\|cc)*\|(d\|dd)*\|(e\|ee)*)f$ |
+| tst.js:403:6:404:7 | (g\|gg)* | Strings with many repetitions of 'g' can start matching anywhere after the start of the preceeding (g\|gg)*h$ |
+| tst.js:406:128:406:129 |  * | Strings starting with '0/*' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s* |
+| tst.js:408:23:408:29 | [\\w.-]* | Strings starting with '//' and with many repetitions of '//' can start matching anywhere after the start of the preceeding (\\/(?:\\/[\\w.-]*)*){0,1}:([\\w.-]+) |
+| tst.js:410:15:410:19 | a{1,} | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a{1,})* |
+| tst.js:416:20:416:25 | (aa?)* | Strings with many repetitions of 'aa' can start matching anywhere after the start of the preceeding (aa?)*b |
