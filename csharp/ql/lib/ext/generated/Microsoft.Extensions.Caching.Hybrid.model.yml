@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "GetOrCreateAsync<T>", "(System.String,System.Func<System.Threading.CancellationToken,System.Threading.Tasks.ValueTask<T>>,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Collections.Generic.IEnumerable<System.String>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "GetOrCreateAsync<TState,T>", "(System.String,TState,System.Func<TState,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask<T>>,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Collections.Generic.IEnumerable<System.String>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "RemoveAsync", "(System.Collections.Generic.IEnumerable<System.String>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "RemoveAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "RemoveByTagAsync", "(System.Collections.Generic.IEnumerable<System.String>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "RemoveByTagAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "HybridCache", "SetAsync<T>", "(System.String,T,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Collections.Generic.IEnumerable<System.String>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "IHybridCacheSerializer<T>", "Deserialize", "(System.Buffers.ReadOnlySequence<System.Byte>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "IHybridCacheSerializer<T>", "Serialize", "(T,System.Buffers.IBufferWriter<System.Byte>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Hybrid", "IHybridCacheSerializerFactory", "TryCreateSerializer<T>", "(Microsoft.Extensions.Caching.Hybrid.IHybridCacheSerializer<T>)", "summary", "df-generated"]

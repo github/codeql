@@ -7,6 +7,7 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", True, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue.SyntheticField[Microsoft.Extensions.FileSystemGlobbing.Internal.InMemoryFileInfo._parent]", "value", "dfc-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddExclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddInclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", False, "GetResultsInFullPath", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String)", "", "Argument[1]", "ReturnValue.Element", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -22,7 +23,6 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", "Matcher", "(System.StringComparison)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "AddExcludePatterns", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "AddIncludePatterns", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>[])", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "GetResultsInFullPath", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]

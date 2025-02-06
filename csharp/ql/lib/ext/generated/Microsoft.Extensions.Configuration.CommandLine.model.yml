@@ -6,4 +6,5 @@ extensions:
     data:
       - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "CommandLineConfigurationProvider", "(System.Collections.Generic.IEnumerable<System.String>,System.Collections.Generic.IDictionary<System.String,System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "Load", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "get_Args", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

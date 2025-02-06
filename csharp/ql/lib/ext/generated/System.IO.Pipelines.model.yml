@@ -18,6 +18,7 @@ extensions:
       - ["System.IO.Pipelines", "PipeWriter", True, "AsStream", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", True, "GetMemory", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", True, "GetSpan", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Pipelines", "PipeWriter", True, "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Pipelines", "ReadResult", False, "ReadResult", "(System.Buffers.ReadOnlySequence<System.Byte>,System.Boolean,System.Boolean)", "", "Argument[0]", "Argument[this].SyntheticField[System.IO.Pipelines.ReadResult._resultBuffer]", "value", "dfc-generated"]
       - ["System.IO.Pipelines", "ReadResult", False, "get_Buffer", "()", "", "Argument[this].SyntheticField[System.IO.Pipelines.ReadResult._resultBuffer]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
@@ -59,7 +60,6 @@ extensions:
       - ["System.IO.Pipelines", "PipeWriter", "CopyFromAsync", "(System.IO.Stream,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", "FlushAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", "OnReaderCompleted", "(System.Action<System.Exception,System.Object>,System.Object)", "summary", "df-generated"]
-      - ["System.IO.Pipelines", "PipeWriter", "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", "get_CanGetUnflushedBytes", "()", "summary", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", "get_UnflushedBytes", "()", "summary", "df-generated"]
       - ["System.IO.Pipelines", "ReadResult", "get_IsCanceled", "()", "summary", "df-generated"]

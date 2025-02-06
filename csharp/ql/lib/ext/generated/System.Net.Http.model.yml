@@ -21,8 +21,6 @@ extensions:
       - ["System.Net.Http", "HttpContent", False, "CopyToAsync", "(System.IO.Stream,System.Net.TransportContext)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Net.Http", "HttpContent", False, "CopyToAsync", "(System.IO.Stream,System.Net.TransportContext,System.Threading.CancellationToken)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Net.Http", "HttpContent", False, "CopyToAsync", "(System.IO.Stream,System.Threading.CancellationToken)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
-      - ["System.Net.Http", "HttpContent", False, "ReadAsByteArrayAsync", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Net.Http", "HttpContent", False, "ReadAsByteArrayAsync", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Http", "HttpContent", False, "ReadAsStream", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Http", "HttpContent", False, "ReadAsStream", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Http", "HttpContent", False, "ReadAsStreamAsync", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -63,8 +61,9 @@ extensions:
       - ["System.Net.Http", "SocketsHttpPlaintextStreamFilterContext", False, "get_InitialRequestMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Http", "SocketsHttpPlaintextStreamFilterContext", False, "get_NegotiatedHttpVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Http", "SocketsHttpPlaintextStreamFilterContext", False, "get_PlaintextStream", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Net.Http", "StreamContent", False, "StreamContent", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Net.Http", "StreamContent", False, "StreamContent", "(System.IO.Stream,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Net.Http", "StreamContent", False, "StreamContent", "(System.IO.Stream)", "", "Argument[0]", "Argument[this].SyntheticField[System.Net.Http.StreamContent._content]", "value", "dfc-generated"]
+      - ["System.Net.Http", "StreamContent", False, "StreamContent", "(System.IO.Stream,System.Int32)", "", "Argument[0]", "Argument[this].SyntheticField[System.Net.Http.StreamContent._content]", "value", "dfc-generated"]
+      - ["System.Net.Http", "StreamContent", True, "SerializeToStream", "(System.IO.Stream,System.Net.TransportContext,System.Threading.CancellationToken)", "", "Argument[this].SyntheticField[System.Net.Http.StreamContent._content]", "Argument[0]", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -128,6 +127,10 @@ extensions:
       - ["System.Net.Http", "HttpContent", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Net.Http", "HttpContent", "LoadIntoBufferAsync", "()", "summary", "df-generated"]
       - ["System.Net.Http", "HttpContent", "LoadIntoBufferAsync", "(System.Int64)", "summary", "df-generated"]
+      - ["System.Net.Http", "HttpContent", "LoadIntoBufferAsync", "(System.Int64,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http", "HttpContent", "LoadIntoBufferAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http", "HttpContent", "ReadAsByteArrayAsync", "()", "summary", "df-generated"]
+      - ["System.Net.Http", "HttpContent", "ReadAsByteArrayAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http", "HttpContent", "ReadAsStringAsync", "()", "summary", "df-generated"]
       - ["System.Net.Http", "HttpContent", "ReadAsStringAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http", "HttpContent", "TryComputeLength", "(System.Int64)", "summary", "df-generated"]

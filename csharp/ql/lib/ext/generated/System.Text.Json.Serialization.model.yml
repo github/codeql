@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Text.Json.Serialization", "BinaryDataJsonConverter", False, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.Json.Serialization", "JsonConverter<T>", True, "ReadAsPropertyName", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0].Property[System.Text.Json.Utf8JsonReader.ValueSpan].Element", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", True, "ReadAsPropertyName", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.Json.Serialization", "JsonConverterFactory", True, "CreateConverter", "(System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonSerializerContext", False, "JsonSerializerContext", "(System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "Argument[this].SyntheticField[System.Text.Json.Serialization.JsonSerializerContext._options]", "value", "dfc-generated"]
@@ -30,6 +31,7 @@ extensions:
       - ["System.Text.Json.Serialization", "JsonConverter<T>", "get_Type", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverterAttribute", "CreateConverter", "(System.Type)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverterAttribute", "JsonConverterAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.Text.Json.Serialization", "JsonConverterAttribute", "get_ConverterType", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonConverterFactory", "get_Type", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonDerivedTypeAttribute", "JsonDerivedTypeAttribute", "(System.Type)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonDerivedTypeAttribute", "JsonDerivedTypeAttribute", "(System.Type,System.Int32)", "summary", "df-generated"]
@@ -51,6 +53,8 @@ extensions:
       - ["System.Text.Json.Serialization", "JsonSourceGenerationOptionsAttribute", "JsonSourceGenerationOptionsAttribute", "(System.Text.Json.JsonSerializerDefaults)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonStringEnumConverter", "CanConvert", "(System.Type)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonStringEnumConverter<TEnum>", "CanConvert", "(System.Type)", "summary", "df-generated"]
+      - ["System.Text.Json.Serialization", "JsonStringEnumMemberNameAttribute", "JsonStringEnumMemberNameAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Text.Json.Serialization", "JsonStringEnumMemberNameAttribute", "get_Name", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonUnmappedMemberHandlingAttribute", "JsonUnmappedMemberHandlingAttribute", "(System.Text.Json.Serialization.JsonUnmappedMemberHandling)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonUnmappedMemberHandlingAttribute", "get_UnmappedMemberHandling", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "ReferenceHandler", "CreateResolver", "()", "summary", "df-generated"]

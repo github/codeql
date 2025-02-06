@@ -85,3 +85,8 @@ extensions:
       - ["System.Net.WebSockets", "WebSocketException", "get_WebSocketErrorCode", "()", "summary", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean)", "summary", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean,System.Nullable<System.Net.WebSockets.WebSocketCloseStatus>,System.String)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_CloseStatus", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_CloseStatusDescription", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_Count", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_EndOfMessage", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_MessageType", "()", "summary", "df-generated"]
