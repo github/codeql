@@ -123,6 +123,11 @@ module Config implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     // Block flow if the node is guarded by any <, <= or = operations.
     node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
+    or
+    // Block flow if we manage to flow to a single `int` or `float`.
+    node.asDefinition().getUnspecifiedType() instanceof IntegralType
+    or
+    node.asDefinition().getUnspecifiedType() instanceof FloatingPointType
   }
 }
 

@@ -5,17 +5,17 @@
 | tests2.cpp:37:3:37:8 | call to wcscpy | This 'call to wcscpy' operation requires 28 bytes but the destination is only 24 bytes. |
 | tests2.cpp:42:3:42:8 | call to wcscpy | This 'call to wcscpy' operation requires 32 bytes but the destination is only 28 bytes. |
 | tests2.cpp:47:3:47:8 | call to wcscpy | This 'call to wcscpy' operation requires 36 bytes but the destination is only 32 bytes. |
-| tests.c:54:3:54:9 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
-| tests.c:58:3:58:9 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
-| tests.c:62:17:62:24 | buffer10 | This 'scanf string argument' operation requires 11 bytes but the destination is only 10 bytes. |
-| tests.c:63:17:63:24 | buffer10 | This 'scanf string argument' operation requires 12 bytes but the destination is only 10 bytes. |
-| tests.c:86:3:86:8 | call to strcpy | This 'call to strcpy' operation requires 6 bytes but the destination is only 5 bytes. |
-| tests.c:93:3:93:8 | call to strcpy | This 'call to strcpy' operation requires 6 bytes but the destination is only 5 bytes. |
-| tests.c:120:3:120:9 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 1 bytes. |
-| tests.c:121:3:121:9 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 16 bytes. |
-| tests.c:136:2:136:8 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
-| tests.c:186:3:186:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 2 bytes. |
-| tests.c:189:3:189:9 | call to sprintf | This 'call to sprintf' operation requires 3 bytes but the destination is only 2 bytes. |
+| tests.c:59:3:59:9 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
+| tests.c:63:3:63:9 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
+| tests.c:67:17:67:24 | buffer10 | This 'scanf string argument' operation requires 11 bytes but the destination is only 10 bytes. |
+| tests.c:68:17:68:24 | buffer10 | This 'scanf string argument' operation requires 12 bytes but the destination is only 10 bytes. |
+| tests.c:91:3:91:8 | call to strcpy | This 'call to strcpy' operation requires 6 bytes but the destination is only 5 bytes. |
+| tests.c:98:3:98:8 | call to strcpy | This 'call to strcpy' operation requires 6 bytes but the destination is only 5 bytes. |
+| tests.c:125:3:125:9 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 1 bytes. |
+| tests.c:126:3:126:9 | call to sprintf | This 'call to sprintf' operation requires 17 bytes but the destination is only 16 bytes. |
+| tests.c:141:2:141:8 | call to sprintf | This 'call to sprintf' operation requires 11 bytes but the destination is only 10 bytes. |
+| tests.c:191:3:191:9 | call to sprintf | This 'call to sprintf' operation requires 9 bytes but the destination is only 2 bytes. |
+| tests.c:194:3:194:9 | call to sprintf | This 'call to sprintf' operation requires 3 bytes but the destination is only 2 bytes. |
 | unions.c:26:2:26:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 16 bytes. |
 | unions.c:27:2:27:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 16 bytes. |
 | var_size_struct.cpp:22:3:22:8 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 9 bytes. |
