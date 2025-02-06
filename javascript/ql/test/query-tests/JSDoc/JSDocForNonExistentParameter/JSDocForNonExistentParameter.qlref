@@ -1,2 +1,1 @@
 query: JSDoc/JSDocForNonExistentParameter.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql

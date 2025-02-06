@@ -1,2 +1,1 @@
 query: JSDoc/BadParamTag.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
