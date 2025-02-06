@@ -182,7 +182,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       bbIDominates(this, succ) and
       // The above is not sufficient to ensure that `succ` can only be reached
       // through `s`. To see why, consider this example corresponding to an
-      // `if` statement without an `else` block and whe `A` is the basic block
+      // `if` statement without an `else` block and where `A` is the basic block
       // following the `if` statement:
       // ```
       // ... --> cond --[true]--> ... --> A
