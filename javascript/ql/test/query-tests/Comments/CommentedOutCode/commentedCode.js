@@ -80,7 +80,7 @@ function sayHello() {
    * }
    */
 
-  // good
+
 
   // ====
   // ----

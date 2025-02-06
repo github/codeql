@@ -1,76 +1,76 @@
 (function coreRegExp() {
 	/^a|/;
-	/^a|b/; // NOT OK
+	/^a|b/; // $ Alert
 	/a|^b/;
 	/^a|^b/;
-	/^a|b|c/; // NOT OK
+	/^a|b|c/; // $ Alert
 	/a|^b|c/;
 	/a|b|^c/;
 	/^a|^b|c/;
 
 	/(^a)|b/;
-	/^a|(b)/; // NOT OK
+	/^a|(b)/; // $ Alert
 	/^a|(^b)/;
-	/^(a)|(b)/; // NOT OK
+	/^(a)|(b)/; // $ Alert
 
 
-	/a|b$/; // NOT OK
+	/a|b$/; // $ Alert
 	/a$|b/;
 	/a$|b$/;
-	/a|b|c$/; // NOT OK
+	/a|b|c$/; // $ Alert
 	/a|b$|c/;
 	/a$|b|c/;
 	/a|b$|c$/;
 
 	/a|(b$)/;
-	/(a)|b$/; // NOT OK
+	/(a)|b$/; // $ Alert
 	/(a$)|b$/;
-	/(a)|(b)$/; // NOT OK
+	/(a)|(b)$/; // $ Alert
 
-	/^good.com|better.com/; // NOT OK
-	/^good\.com|better\.com/; // NOT OK
-	/^good\\.com|better\\.com/; // NOT OK
-	/^good\\\.com|better\\\.com/; // NOT OK
-	/^good\\\\.com|better\\\\.com/; // NOT OK
+	/^good.com|better.com/; // $ Alert
+	/^good\.com|better\.com/; // $ Alert
+	/^good\\.com|better\\.com/; // $ Alert
+	/^good\\\.com|better\\\.com/; // $ Alert
+	/^good\\\\.com|better\\\\.com/; // $ Alert
 
-	/^foo|bar|baz$/; // NOT OK
-	/^foo|%/; // OK
+	/^foo|bar|baz$/; // $ Alert
+	/^foo|%/;
 });
 
 (function coreString() {
 	new RegExp("^a|");
-	new RegExp("^a|b"); // NOT OK
+	new RegExp("^a|b"); // $ Alert
 	new RegExp("a|^b");
 	new RegExp("^a|^b");
-	new RegExp("^a|b|c"); // NOT OK
+	new RegExp("^a|b|c"); // $ Alert
 	new RegExp("a|^b|c");
 	new RegExp("a|b|^c");
 	new RegExp("^a|^b|c");
 
 	new RegExp("(^a)|b");
-	new RegExp("^a|(b)"); // NOT OK
+	new RegExp("^a|(b)"); // $ Alert
 	new RegExp("^a|(^b)");
-	new RegExp("^(a)|(b)"); // NOT OK
+	new RegExp("^(a)|(b)"); // $ Alert
 
 
-	new RegExp("a|b$"); // NOT OK
+	new RegExp("a|b$"); // $ Alert
 	new RegExp("a$|b");
 	new RegExp("a$|b$");
-	new RegExp("a|b|c$"); // NOT OK
+	new RegExp("a|b|c$"); // $ Alert
 	new RegExp("a|b$|c");
 	new RegExp("a$|b|c");
 	new RegExp("a|b$|c$");
 
 	new RegExp("a|(b$)");
-	new RegExp("(a)|b$"); // NOT OK
+	new RegExp("(a)|b$"); // $ Alert
 	new RegExp("(a$)|b$");
-	new RegExp("(a)|(b)$"); // NOT OK
+	new RegExp("(a)|(b)$"); // $ Alert
 
-	new RegExp('^good.com|better.com'); // NOT OK
-	new RegExp('^good\.com|better\.com'); // NOT OK
-	new RegExp('^good\\.com|better\\.com'); // NOT OK
-	new RegExp('^good\\\.com|better\\\.com'); // NOT OK
-	new RegExp('^good\\\\.com|better\\\\.com'); // NOT OK
+	new RegExp('^good.com|better.com'); // $ Alert
+	new RegExp('^good\.com|better\.com'); // $ Alert
+	new RegExp('^good\\.com|better\\.com'); // $ Alert
+	new RegExp('^good\\\.com|better\\\.com'); // $ Alert
+	new RegExp('^good\\\\.com|better\\\\.com'); // $ Alert
 });
 
 (function realWorld() {

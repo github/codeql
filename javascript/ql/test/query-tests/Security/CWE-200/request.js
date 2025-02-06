@@ -5,7 +5,7 @@ var request = require('request');
 
 function PostJSON(jsonData)
 {
-  request({jsonData}, function (error, response, body){ // BAD: passing data from file to the request body
+  request({jsonData}, function (error, response, body){ // $ Alert[js/file-access-to-http] - passing data from file to the request body
     console.log(response);
   });
 }
@@ -19,7 +19,7 @@ function PostXML(xmlData)
     headers: {
         "content-type": "application/xml",
     },
-    body: xmlData    // BAD: passing data from file to the request body
+    body: xmlData    // $ Alert - passing data from file to the request body
   }, function (error, response, body){
     console.log(response);
   });

@@ -50,6 +50,6 @@ function doZipSlip() {
     files.push(name);
   }
   for (const file of files) {
-    fs.createWriteStream(path.join(extractTo, file)); // OK
+    fs.createWriteStream(path.join(extractTo, file));
   }
 }

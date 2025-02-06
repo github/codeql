@@ -1,11 +1,11 @@
 const webpack = require("webpack");
 
 
-var plugin = new webpack.DefinePlugin({ // NOT OK
+var plugin = new webpack.DefinePlugin({ // $ Alert
     "process.env": JSON.stringify(process.env)
 });
 
-// OK
+
 new webpack.DefinePlugin({ 'process.env': JSON.stringify({ DEBUG: process.env.DEBUG }) })
 
 
@@ -31,14 +31,14 @@ function getEnv(env) {
     }
 }
 
-new webpack.DefinePlugin(getEnv('production').stringified); // NOT OK
+new webpack.DefinePlugin(getEnv('production').stringified); // $ Alert[js/build-artifact-leak]
 
 var https = require('https');
 var url = require('url');
 
 var server = https.createServer(function (req, res) {
     let pw = url.parse(req.url, true).query.current_password;
-    var plugin = new webpack.DefinePlugin({ "process.env.secret": JSON.stringify(pw) }); // NOT OK
+    var plugin = new webpack.DefinePlugin({ "process.env.secret": JSON.stringify(pw) }); // $ Alert[js/build-artifact-leak]
 });
 
 (function () {
@@ -57,7 +57,7 @@ var server = https.createServer(function (req, res) {
         return raw;
     }
 
-    new webpack.DefinePlugin(getOnlyReactVariables()); // OK
+    new webpack.DefinePlugin(getOnlyReactVariables());
 
     function getOnlyReactVariables2() {
         const raw = Object.keys(process.env)
@@ -73,7 +73,7 @@ var server = https.createServer(function (req, res) {
         return raw;
     }
 
-    new webpack.DefinePlugin(getOnlyReactVariables2()); // OK
+    new webpack.DefinePlugin(getOnlyReactVariables2());
 
     function getOnlyReactVariables3() {
         const raw = Object.keys(process.env)
@@ -89,5 +89,5 @@ var server = https.createServer(function (req, res) {
         return raw;
     }
 
-    new webpack.DefinePlugin(getOnlyReactVariables3()); // OK
+    new webpack.DefinePlugin(getOnlyReactVariables3());
 })();

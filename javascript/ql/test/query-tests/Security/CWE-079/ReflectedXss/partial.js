@@ -7,7 +7,7 @@ let app = express();
 
 app.get("/some/path", (req, res) => {
   function sendResponse(x, y) {
-    res.send(x + y); // NOT OK
+    res.send(x + y); // $ Alert
   }
   
   let callback = sendResponse.bind(null, req.url);
@@ -16,7 +16,7 @@ app.get("/some/path", (req, res) => {
 
 app.get("/underscore", (req, res) => {
   function sendResponse(x, y) {
-    res.send(x + y); // NOT OK
+    res.send(x + y); // $ Alert
   }
   
   let callback = underscore.partial(sendResponse, req.url);
@@ -25,7 +25,7 @@ app.get("/underscore", (req, res) => {
 
 app.get("/lodash", (req, res) => {
   function sendResponse(x, y) {
-    res.send(x + y); // NOT OK
+    res.send(x + y); // $ Alert
   }
   
   let callback = lodash.partial(sendResponse, req.url);
@@ -34,7 +34,7 @@ app.get("/lodash", (req, res) => {
 
 app.get("/ramda", (req, res) => {
   function sendResponse(x, y) {
-    res.send(x + y); // NOT OK
+    res.send(x + y); // $ Alert
   }
   
   let callback = R.partial(sendResponse, [req.url]);
@@ -49,7 +49,7 @@ app.get("/return", (req, res) => {
   let callback = getFirst.bind(null, req.url);
 
   res.send(callback);   // OK - the callback itself is not tainted
-  res.send(callback()); // NOT OK - but not currently detected [INCONSISTENCY]
+  res.send(callback()); // $ MISSING: Alert - not currently detected
 
   res.send(getFirst("Hello")); // OK - argument is not tainted from this call site
 });

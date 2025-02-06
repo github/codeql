@@ -1,27 +1,26 @@
 function f() {
-    // NOT OK
-    s = null;
+    s = null; // $ Alert
     let s = "hi";
-    // OK
+
     s = "hello";
 }
 
 function g() {
-    // OK
+
     s = null;
     var s = "hi";
-    // OK
+
     s = "hello";
 }
 
 function do_something() {
-    // OK
+
     let foo;
     let foo;
 }
 
 function do_something() {
-    // OK
+
     let foo;
     foo = "bar";
     let foo;
@@ -29,7 +28,7 @@ function do_something() {
 
 if (true) { // enter new scope, TDZ starts
     const func = function () {
-        console.log(myVar); // OK!
+        console.log(myVar);
     };
 
     function otherfunc() {

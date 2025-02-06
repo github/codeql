@@ -1,10 +1,10 @@
 function f() {
   if (arguments[0].isArray())
-    arguments = arguments[0]; // NOT OK
+    arguments = arguments[0]; // $ Alert
 }
 
 function g(x, y) {
-  var arguments = [y, x]; // NOT OK
+  var arguments = [y, x]; // $ Alert
 }
 
 (function (){

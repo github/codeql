@@ -1,13 +1,13 @@
 function f1() {
-    var password = Math.random(); // NOT OK
+    var password = Math.random(); // $ Alert
 }
 
 function f2() {
-    var password = "prefix" + Math.random(); // NOT OK
+    var password = "prefix" + Math.random(); // $ Alert
 }
 
 function f3() {
-    var password = Math.random(); // NOT OK
+    var password = Math.random(); // $ Alert
 
     // (no complaining about further uses)
     f(password);
@@ -17,73 +17,73 @@ function f3() {
 
 function f4() {
     var suffix = Math.random() % 255;
-    var password = "prefix" + suffix; // NOT OK
+    var password = "prefix" + suffix; // $ Alert
 }
 
 function f5() {
-    var pw = Math.random(); // NOT OK, but our naming heuristic does not identify `pw` as sensitive [INCONSISTENCY]
+    var pw = Math.random(); // $ MISSING: Alert - our naming heuristic does not identify `pw` as sensitive
 }
 
 function f6() {
     var pw = Math.random();
-    var password = pw; // NOT OK
+    var password = pw; // $ Alert
 }
 
 function f7() {
-    var number = Math.random() // OK
+    var number = Math.random()
 }
 
 function f8() {
-    var password = someSecureRandomThing(); // OK
+    var password = someSecureRandomThing();
 }
 
 function f9() {
-    var password = !Math.random(); // NOT OK
+    var password = !Math.random(); // $ Alert
 }
 
 function f10() {
-    var secret = Math.random(); // NOT OK
+    var secret = Math.random(); // $ Alert
 }
 
 function f11() {
     var o = {};
-    o.secret = Math.random() // NOT OK
+    o.secret = Math.random() // $ Alert
 }
 
 function f12() {
     ({
-        secret: Math.random() // NOT OK
+        secret: Math.random() // $ Alert
     });
 }
 
 function f13() {
     ({
-        secret: '' + Math.random() // NOT OK
+        secret: '' + Math.random() // $ Alert
     });
 }
 
 function f14() {
-    var secret = Math.floor(Math.random()); // NOT OK
+    var secret = Math.floor(Math.random()); // $ Alert
 }
 
 function f15() {
     var ts = new Date().getTime();
     var rand = Math.floor(Math.random()*9999999);
     var concat = ts.toString() + rand.toString();
-    res.send({secret: concat}); // NOT OK
+    res.send({secret: concat}); // $ Alert
 }
 
 function f16() {
-    function f(secret) { // NOT OK
+    function f(secret) { // $ Alert
         secret++;
     }
     f(Math.random());
 }
 
 function f17() {
-    var secret1 = Math.random(); // NOT OK
-    var secret2 = secret1; // OK (we flagged secret1 above)
-    var secret3 = secret2; // OK (we flagged secret1 above)
+    var secret1 = Math.random(); // $ Alert
+    var secret2 = secret1; // OK - we flagged secret1 above
+    var secret3 = secret2; // OK - we flagged secret1 above
 }
 
 function f18() {
@@ -112,12 +112,12 @@ function f18() {
 })();
 
 function uid() {
-    var uuid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
-    var sessionUid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
-    var uid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
-    var my_nice_uid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
-    var liquid = Math.random(); // OK
-    var UUID = Math.random(); // NOT OK
+    var uuid = Math.floor(Math.random() * 4_000_000_000); // $ Alert
+    var sessionUid = Math.floor(Math.random() * 4_000_000_000); // $ Alert
+    var uid = Math.floor(Math.random() * 4_000_000_000); // $ Alert
+    var my_nice_uid = Math.floor(Math.random() * 4_000_000_000); // $ Alert
+    var liquid = Math.random();
+    var UUID = Math.random(); // $ Alert
     var MY_UID = Math.random(); // NOK OK
 }
 
@@ -133,7 +133,7 @@ function buildPass(opts, length) {
 
     const password = "";
     for (let i = 0; i < length; i++) {
-        password += chars[Math.floor(Math.random() * chars.length)]; // NOT OK
+        password += chars[Math.floor(Math.random() * chars.length)]; // $ Alert
     }
     return password;
 }

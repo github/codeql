@@ -1,2 +1,2 @@
-exports.a = 23; // OK
-exports = 56; // NOT OK
+exports.a = 23;
+exports = 56; // $ Alert

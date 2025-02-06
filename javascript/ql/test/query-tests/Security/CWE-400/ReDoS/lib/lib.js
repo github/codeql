@@ -1,11 +1,11 @@
 var regexp = /a*b/;
 
 module.exports = function (name) {
-	regexp.test(name); // NOT OK
+	regexp.test(name); // $ Alert[js/polynomial-redos]
 };
 
 function bar(reg, name) {
-	/f*g/.test(name); // NOT OK
+	/f*g/.test(name); // $ Alert[js/polynomial-redos]
 }
 
 if (typeof define !== 'undefined' && define.amd) { // AMD
@@ -25,7 +25,7 @@ module.exports.id = id;
 
 module.exports.safe = function (x) {
 	var y = id("safe");
-	/f*g/.test(y); // OK
+	/f*g/.test(y);
 }
 
 module.exports.useArguments = function () {
@@ -33,16 +33,16 @@ module.exports.useArguments = function () {
 }
 
 function usedWithArguments(name) {
-	/f*g/.test(name); // NOT OK
+	/f*g/.test(name); // $ Alert[js/polynomial-redos]
 }
 
 module.exports.snapdragon = require("./snapdragon")
 
 module.exports.foo = function (name) {
-    var data1 = name.match(/f*g/); // NOT OK
+    var data1 = name.match(/f*g/); // $ Alert[js/polynomial-redos]
 
     name = name.substr(1);
-    var data2 = name.match(/f*g/); // NOT OK
+    var data2 = name.match(/f*g/); // $ Alert[js/polynomial-redos]
 }
 
 var indirectAssign = {};
@@ -50,6 +50,6 @@ module.exports.indirectAssign = indirectAssign;
 
 Object.assign(indirectAssign, {
   myThing: function (name) {
-    /f*g/.test(name); // NOT OK
+    /f*g/.test(name); // $ Alert[js/polynomial-redos]
   },
 });

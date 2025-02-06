@@ -12,7 +12,7 @@ function assignToPath(target, path, value) {
             }
             target = target[key];
         } else {
-            target[key] = value; // NOT OK
+            target[key] = value; // $ Alert
         }
     }
 }
@@ -28,7 +28,7 @@ function assignToPathSafe(target, path, value) {
             }
             target = target[key];
         } else {
-            target[key] = value; // OK
+            target[key] = value;
         }
     }
 }
@@ -41,7 +41,7 @@ function assignToPathAfterLoop(target, path, value) {
         let key = keys[i];
         target = target[key] = target[key] || {};
     }
-    target[keys[i]] = value; // NOT OK
+    target[keys[i]] = value; // $ Alert
 }
 
 function splitHelper(path, sep) {
@@ -58,7 +58,7 @@ function assignToPathWithHelper(target, path, value, sep) {
         let key = keys[i];
         target = target[key] = target[key] || {};
     }
-    target[keys[i]] = value; // NOT OK
+    target[keys[i]] = value; // $ Alert
 }
 
 function spltOnRegexp(target, path, value) {
@@ -68,5 +68,5 @@ function spltOnRegexp(target, path, value) {
         let key = keys[i];
         target = target[key] = target[key] || {};
     }
-    target[keys[i]] = value; // NOT OK
+    target[keys[i]] = value; // $ Alert
 }

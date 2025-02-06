@@ -13,40 +13,40 @@ let Uri = goog.require('goog.Uri');
 var server = http.createServer(function(req, res) {
     var tainted = url.parse(req.url, true).query.url;
 
-    request("example.com"); // OK
+    request("example.com");
 
-    request(tainted); // NOT OK
+    request(tainted); // $ Alert[js/request-forgery]
 
-    request.get(tainted); // NOT OK
+    request.get(tainted); // $ Alert[js/request-forgery]
 
     var options = {};
-    options.url = tainted; // NOT OK
+    options.url = tainted; // $ Alert
     request(options);
 
-    request("http://" + tainted); // NOT OK
+    request("http://" + tainted); // $ Alert[js/request-forgery]
 
-    request("http://example.com" + tainted); // NOT OK
+    request("http://example.com" + tainted); // $ Alert[js/request-forgery]
 
-    request("http://example.com/" + tainted); // NOT OK
+    request("http://example.com/" + tainted); // $ Alert[js/request-forgery]
 
-    request("http://example.com/?" + tainted); // OK
+    request("http://example.com/?" + tainted);
 
-    http.get(relativeUrl, {host: tainted}); // NOT OK
+    http.get(relativeUrl, {host: tainted}); // $ Alert[js/request-forgery]
 
-    XhrIo.send(new Uri(tainted)); // NOT OK
-    new XhrIo().send(new Uri(tainted)); // NOT OK
+    XhrIo.send(new Uri(tainted)); // $ Alert[js/request-forgery]
+    new XhrIo().send(new Uri(tainted)); // $ Alert[js/request-forgery]
 
     let base = require('./config').base;
 
-    request(`http://example.com/${base}/${tainted}`); // NOT OK
+    request(`http://example.com/${base}/${tainted}`); // $ Alert[js/request-forgery]
 
-    request(`http://example.com/${base}/v1/${tainted}`); // NOT OK
+    request(`http://example.com/${base}/v1/${tainted}`); // $ Alert[js/request-forgery]
 
-    request('http://example.com/' + base + '/' + tainted); // NOT OK
+    request('http://example.com/' + base + '/' + tainted); // $ Alert[js/request-forgery]
 
-    request('http://example.com/' + base + ('/' + tainted)); // NOT OK - but not flagged [INCONSISTENCY]
+    request('http://example.com/' + base + ('/' + tainted)); // $ MISSING: Alert
 
-    request(`http://example.com/?${base}/${tainted}`); // OK
+    request(`http://example.com/?${base}/${tainted}`);
 
     request(`http://example.com/${base}${tainted}`); // OK - assumed safe
 
@@ -58,14 +58,14 @@ var server = http.createServer(async function(req, res) {
     var tainted = url.parse(req.url, true).query.url;
 
     var client = await CDP(options);
-	client.Page.navigate({url: tainted}); // NOT OK.
+	client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
 	
 	CDP(options).catch((ignored) => {}).then((client) => {
-		client.Page.navigate({url: tainted}); // NOT OK.	
+		client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
 	})
 	
 	CDP(options, (client) => {
-		client.Page.navigate({url: tainted}); // NOT OK.	
+		client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
 	});
 })
 
@@ -73,7 +73,7 @@ import {JSDOM} from "jsdom";
 var server = http.createServer(async function(req, res) {
     var tainted = url.parse(req.url, true).query.url;
 
-    JSDOM.fromURL(tainted); // NOT OK
+    JSDOM.fromURL(tainted); // $ Alert[js/request-forgery]
 });
 
 var route = require('koa-route');
@@ -81,15 +81,15 @@ var Koa = require('koa');
 var app = new Koa();
 
 app.use(route.get('/pets', (context, param1, param2, param3) => { 
-    JSDOM.fromURL(param1); // NOT OK
+    JSDOM.fromURL(param1); // $ Alert[js/request-forgery]
 }));
 
 const router = require('koa-router')();
 const app = new Koa();
 router.get('/', async (ctx, next) => {
-    JSDOM.fromURL(ctx.params.foo); // NOT OK
+    JSDOM.fromURL(ctx.params.foo); // $ Alert[js/request-forgery]
 }).post('/', async (ctx, next) => {
-    JSDOM.fromURL(ctx.params.foo); // NOT OK
+    JSDOM.fromURL(ctx.params.foo); // $ Alert[js/request-forgery]
 });
 app.use(router.routes());
 
@@ -97,7 +97,7 @@ import {JSDOM} from "jsdom";
 var server = http.createServer(async function(req, res) {
     var tainted = url.parse(req.url, true).query.url;
 
-    new WebSocket(tainted); // NOT OK
+    new WebSocket(tainted); // $ Alert[js/request-forgery]
 });
 
 
@@ -124,12 +124,12 @@ var server2 = http.createServer(function(req, res) {
 
     axios({
         method: 'get',
-        url: tainted // NOT OK
+        url: tainted // $ Alert
     })
 
     var myUrl = `${something}/bla/${tainted}`; 
-    axios.get(myUrl); // NOT OK
+    axios.get(myUrl); // $ Alert[js/request-forgery]
 
     var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`; 
-    axios.get(myEncodedUrl); // OK
+    axios.get(myEncodedUrl);
 })
