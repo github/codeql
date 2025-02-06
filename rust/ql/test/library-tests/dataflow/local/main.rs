@@ -465,6 +465,7 @@ fn iterators() {
     }
 
     vs.iter().map(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+    vs.iter().for_each(|x| sink(*x)); // $ MISSING: hasValueFlow=91
 
     for v in vs.into_iter() {
         sink(v); // $ MISSING: hasValueFlow=91

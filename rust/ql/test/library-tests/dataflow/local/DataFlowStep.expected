@@ -541,16 +541,21 @@ localStep
 | main.rs:462:27:462:45 | ... .collect(...) | main.rs:462:9:462:11 | vs2 |  |
 | main.rs:463:10:463:10 | [SSA] v | main.rs:464:14:464:14 | v |  |
 | main.rs:463:10:463:10 | v | main.rs:463:10:463:10 | [SSA] v |  |
-| main.rs:467:5:467:6 | [post] vs | main.rs:469:14:469:15 | vs |  |
-| main.rs:467:5:467:6 | vs | main.rs:469:14:469:15 | vs |  |
+| main.rs:467:5:467:6 | [post] vs | main.rs:468:5:468:6 | vs |  |
+| main.rs:467:5:467:6 | vs | main.rs:468:5:468:6 | vs |  |
 | main.rs:467:20:467:20 | ... | main.rs:467:20:467:20 | x |  |
 | main.rs:467:20:467:20 | [SSA] x | main.rs:467:29:467:29 | x |  |
 | main.rs:467:20:467:20 | x | main.rs:467:20:467:20 | [SSA] x |  |
-| main.rs:469:5:471:5 | for ... in ... { ... } | main.rs:448:16:472:1 | { ... } |  |
-| main.rs:469:9:469:9 | [SSA] v | main.rs:470:14:470:14 | v |  |
-| main.rs:469:9:469:9 | v | main.rs:469:9:469:9 | [SSA] v |  |
-| main.rs:496:13:496:33 | result_questionmark(...) | main.rs:496:9:496:9 | _ |  |
-| main.rs:508:36:508:41 | ...::new(...) | main.rs:508:36:508:41 | MacroExpr |  |
+| main.rs:468:5:468:6 | [post] vs | main.rs:470:14:470:15 | vs |  |
+| main.rs:468:5:468:6 | vs | main.rs:470:14:470:15 | vs |  |
+| main.rs:468:25:468:25 | ... | main.rs:468:25:468:25 | x |  |
+| main.rs:468:25:468:25 | [SSA] x | main.rs:468:34:468:34 | x |  |
+| main.rs:468:25:468:25 | x | main.rs:468:25:468:25 | [SSA] x |  |
+| main.rs:470:5:472:5 | for ... in ... { ... } | main.rs:448:16:473:1 | { ... } |  |
+| main.rs:470:9:470:9 | [SSA] v | main.rs:471:14:471:14 | v |  |
+| main.rs:470:9:470:9 | v | main.rs:470:9:470:9 | [SSA] v |  |
+| main.rs:497:13:497:33 | result_questionmark(...) | main.rs:497:9:497:9 | _ |  |
+| main.rs:509:36:509:41 | ...::new(...) | main.rs:509:36:509:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:core; <crate::option::Option>::expect; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
@@ -660,7 +665,7 @@ storeStep
 | main.rs:449:27:449:27 | 2 | element | main.rs:449:14:449:34 | [...] |
 | main.rs:449:30:449:30 | 3 | element | main.rs:449:14:449:34 | [...] |
 | main.rs:449:33:449:33 | 4 | element | main.rs:449:14:449:34 | [...] |
-| main.rs:478:27:478:27 | 0 | Some | main.rs:478:22:478:28 | Some(...) |
+| main.rs:479:27:479:27 | 0 | Some | main.rs:479:22:479:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else |
@@ -767,4 +772,5 @@ readStep
 | main.rs:463:9:463:10 | &... | &ref | main.rs:463:10:463:10 | v |
 | main.rs:463:15:463:17 | vs2 | element | main.rs:463:9:463:10 | &... |
 | main.rs:467:29:467:29 | x | &ref | main.rs:467:28:467:29 | * ... |
-| main.rs:469:14:469:27 | vs.into_iter(...) | element | main.rs:469:9:469:9 | v |
+| main.rs:468:34:468:34 | x | &ref | main.rs:468:33:468:34 | * ... |
+| main.rs:470:14:470:27 | vs.into_iter(...) | element | main.rs:470:9:470:9 | v |
