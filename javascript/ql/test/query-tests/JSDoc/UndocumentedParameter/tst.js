@@ -14,8 +14,7 @@ function g(x, y) {
     return x+y;
 }
 
-// NOT OK
-/**
+/** // $ Alert
  * @param {int}   x
  * @param {float} y
  */

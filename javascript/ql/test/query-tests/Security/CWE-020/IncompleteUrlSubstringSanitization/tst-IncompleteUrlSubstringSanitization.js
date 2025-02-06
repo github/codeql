@@ -40,8 +40,8 @@
     x.indexOf("index.php") !== -1;
     x.indexOf("index.css") !== -1;
 
-    x.indexOf("secure=true") !== -1; // OK (query param)
-    x.indexOf("&auth=") !== -1; // OK (query param)
+    x.indexOf("secure=true") !== -1; // OK - query param
+    x.indexOf("&auth=") !== -1; // OK - query param
 
     x.indexOf(getCurrentDomain()) !== -1; // $ MISSING: Alert
     x.indexOf(location.origin) !== -1; // $ MISSING: Alert

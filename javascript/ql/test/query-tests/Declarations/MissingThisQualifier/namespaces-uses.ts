@@ -1,25 +1,25 @@
 class GlobalClass {
   globalFunction(){
-    globalFunction(); // NOT OK
+    globalFunction(); // $ Alert
   }
   topNamespaceFunction(){
-    topNamespaceFunction(); // NOT OK
+    topNamespaceFunction(); // $ Alert
   }
   childNamespaceFunction(){
-    childNamespaceFunction(); // NOT OK
+    childNamespaceFunction(); // $ Alert
   }
 }
 
 namespace Top {
   class TopClass {
     globalFunction(){
-      globalFunction(); // NOT OK
+      globalFunction(); // $ Alert
     }
     topNamespaceFunction(){
-      topNamespaceFunction(); // OK
+      topNamespaceFunction();
     }
     childNamespaceFunction(){
-      childNamespaceFunction();  // NOT OK, but not flagged since the namespace resolution is ignored
+      childNamespaceFunction();  // $ Alert - but not flagged since the namespace resolution is ignored
     }
   }
 }
@@ -27,13 +27,13 @@ namespace Top {
 namespace Top.Child {
   class ChildClass {
     globalFunction(){
-      globalFunction(); // NOT OK
+      globalFunction(); // $ Alert
     }
     topNamespaceFunction(){
-      topNamespaceFunction(); // OK
+      topNamespaceFunction();
     }
     childNamespaceFunction(){
-      childNamespaceFunction(); // OK
+      childNamespaceFunction();
     }
   }
 }

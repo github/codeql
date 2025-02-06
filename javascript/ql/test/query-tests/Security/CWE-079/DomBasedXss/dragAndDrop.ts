@@ -12,7 +12,7 @@ function drop(e) {
 
     const div = document.createElement('div');
     if (html) {
-        div.innerHTML = html; // NOT OK
+        div.innerHTML = html; // $ Alert
     } else {
         div.textContent = text;
     }
@@ -21,16 +21,16 @@ function drop(e) {
 
 export function install(el: HTMLElement): void {
     el.addEventListener('drop', (e) => {
-        $("#id").html(e.dataTransfer.getData('text/html')); // NOT OK    
+        $("#id").html(e.dataTransfer.getData('text/html')); // $ Alert
     })
 }
 
 document.addEventListener('drop', (e) => {
-    $("#id").html(e.dataTransfer.getData('text/html')); // NOT OK
+    $("#id").html(e.dataTransfer.getData('text/html')); // $ Alert
 });
 
 $("#foo").bind('drop', (e) => {
-    $("#id").html(e.originalEvent.dataTransfer.getData('text/html')); // NOT OK
+    $("#id").html(e.originalEvent.dataTransfer.getData('text/html')); // $ Alert
 });
 
 (function () {
@@ -47,7 +47,7 @@ $("#foo").bind('drop', (e) => {
 
         const div = document.createElement('div');
         if (html) {
-            div.innerHTML = html; // NOT OK
+            div.innerHTML = html; // $ Alert
         } else {
             div.textContent = text;
         }

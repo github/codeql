@@ -6,10 +6,10 @@ const FormikBasic = () => (
         <Formik
             initialValues={{ email: '', password: '' }}
             validate={values => {
-                $("#id").html(values.foo); // NOT OK
+                $("#id").html(values.foo); // $ Alert
             }}
             onSubmit={(values, { setSubmitting }) => {
-                $("#id").html(values.bar); // NOT OK
+                $("#id").html(values.bar); // $ Alert
             }}
         >
             {(inputs) => (
@@ -22,19 +22,19 @@ const FormikBasic = () => (
 const FormikEnhanced = withFormik({
     mapPropsToValues: () => ({ name: '' }),
     validate: values => {
-        $("#id").html(values.email); // NOT OK
+        $("#id").html(values.email); // $ Alert
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-        $("#id").html(values.email); // NOT OK
+        $("#id").html(values.email); // $ Alert
     }
 })(MyForm);
 
 (function () {
     const { values, submitForm } = useFormikContext();
-    $("#id").html(values.email); // NOT OK
+    $("#id").html(values.email); // $ Alert
 
-    $("#id").html(submitForm.email); // OK 
+    $("#id").html(submitForm.email);
 })
 
 import { Form } from 'react-final-form'
@@ -42,7 +42,7 @@ import { Form } from 'react-final-form'
 const App = () => (
   <Form
     onSubmit={async values => {
-      $("#id").html(values.stooge); // NOT OK
+      $("#id").html(values.stooge); // $ Alert
     }}
     initialValues={{ stooge: 'larry', employed: false }}
     render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -54,7 +54,7 @@ const App = () => (
 );
 
 function plainSubmit(e) {
-    $("#id").html(e.target.value); // NOT OK
+    $("#id").html(e.target.value); // $ Alert
 }
 
 const plainReact = () => (
@@ -69,7 +69,7 @@ import { useForm } from 'react-hook-form';
 function HookForm() {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data) => {
-    $("#id").html(data.name); // NOT OK 
+    $("#id").html(data.name); // $ Alert
   };
 
   return (
@@ -90,7 +90,7 @@ function HookForm2() {
         type="button"
         onClick={() => {
           const values = getValues(); // { test: "test-input", test1: "test1-input" }
-          $("#id").html(values.name); // NOT OK
+          $("#id").html(values.name); // $ Alert
         }}
       >
       </button>
@@ -100,10 +100,10 @@ function HookForm2() {
 
 function vanillaJS() {
     document.querySelector("form.myform").addEventListener("submit", e => {
-        $("#id").html(e.target.value); // NOT OK
+        $("#id").html(e.target.value); // $ Alert
     });
 
     document.querySelector("form.myform").onsubmit = function (e) {
-        $("#id").html(e.target.value); // NOT OK
+        $("#id").html(e.target.value); // $ Alert
     }
 }

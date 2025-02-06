@@ -1,5 +1,4 @@
 function f() {
   var href = window.location.href;
-  // NOT OK
-  window.location = href.substring(href.indexOf('?')+1);
+  window.location = href.substring(href.indexOf('?')+1); // $ Alert
 }

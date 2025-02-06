@@ -11,7 +11,7 @@ function PostCode(codestring) {
       'output_format': 'json',
       'output_info': 'compiled_code',
         'warning_level' : 'QUIET',
-        'js_code' : codestring // BAD: passing data from file to the request json body
+        'js_code' : codestring // $ Alert - passing data from file to the request json body
   });
 
   // An object of options to indicate where to post to
@@ -34,8 +34,7 @@ function PostCode(codestring) {
       });
   });
 
-  // BAD: post the data from file to request body
-  post_req.write(post_data);
+  post_req.write(post_data); // $ Alert - post the data from file to request body
   post_req.end();
 
 }

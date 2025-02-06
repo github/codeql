@@ -5,7 +5,7 @@ export class Foo {
 
   onRequest(req, res) {
     let taint = req.params.x;
-    this.db.one(taint); // NOT OK
+    this.db.one(taint); // $ Alert
     res.end();
   }
 }

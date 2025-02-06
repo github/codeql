@@ -1,10 +1,10 @@
-x.f() & 0x0A != 0;   // NOT OK
-x.f() & (0x0A != 0); // OK
-x.f()  &  0x0A != 0; // OK
-x.f() & 0x0A!=0;     // OK
+x.f() & 0x0A != 0;   // $ Alert
+x.f() & (0x0A != 0);
+x.f()  &  0x0A != 0;
+x.f() & 0x0A!=0;
 
-x !== y & 1;         // NOT OK
+x !== y & 1;         // $ Alert
 
-x > 0 & x < 10;      // OK
+x > 0 & x < 10;
 
-a&b==c;          // NOT OK
+a&b==c;          // $ Alert

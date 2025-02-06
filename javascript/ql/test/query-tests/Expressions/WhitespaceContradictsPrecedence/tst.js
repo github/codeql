@@ -42,14 +42,13 @@ function ok10(o, p) {
 	return p in o&&o[p];
 }
 
-// OK
+
 x==y ** 2;
 
-// NOT OK
-x  +  x >> 1
+x  +  x >> 1 // $ Alert
 
-// OK
+
 x +   x >> 1
 
-// OK (asm.js-like)
+// OK - asm.js-like
 x = x - 1|0;

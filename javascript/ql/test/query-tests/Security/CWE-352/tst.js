@@ -5,7 +5,7 @@ const csrf = require('csurf')
 const app = express()
 app.use(cookieParser())
 
-app.post('/unsafe', (req, res) => { // NOT OK
+app.post('/unsafe', (req, res) => { // $ Alert
   req.cookies.x;
 });
 
@@ -17,6 +17,6 @@ function middlewares() {
 
 app.use(middlewares());
 
-app.post('/safe', (req, res) => { // OK
+app.post('/safe', (req, res) => {
   req.cookies.x;
 });

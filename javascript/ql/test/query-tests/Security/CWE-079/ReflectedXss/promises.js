@@ -3,9 +3,9 @@ let app = express();
 
 app.get("/some/path", (req, res) => {
   new Promise((resolve, reject) => resolve(req.query.data))
-    .then(x => res.send(x)); // NOT OK
+    .then(x => res.send(x)); // $ Alert
 
   new Promise((resolve, reject) => resolve(req.query.data))
     .then(x => escapeHtml(x))
-    .then(x => res.send(x)); // OK
+    .then(x => res.send(x));
 });

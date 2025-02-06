@@ -10,95 +10,95 @@
     var o_ = o;
     var x_ = x;
 
-    u_ = u_ || e; // NOT OK
-    n_ = n_ || e; // NOT OK
-    o_ = o_ || e; // NOT OK
+    u_ = u_ || e; // $ Alert
+    n_ = n_ || e; // $ Alert
+    o_ = o_ || e; // $ Alert
     x_ = x_ || e;
 
-    u && u.p; // NOT OK
-    n && n.p; // NOT OK
-    o && o.p; // NOT OK
+    u && u.p; // $ Alert
+    n && n.p; // $ Alert
+    o && o.p; // $ Alert
     x && x.p;
 
-    u && u(); // NOT OK
-    n && n(); // NOT OK
-    o && o(); // NOT OK
+    u && u(); // $ Alert
+    n && n(); // $ Alert
+    o && o(); // $ Alert
     x && x();
 
-    !u || u.p; // NOT OK
-    !n || n.p; // NOT OK
-    !o || o.p; // NOT OK
+    !u || u.p; // $ Alert
+    !n || n.p; // $ Alert
+    !o || o.p; // $ Alert
     !x || x.p;
 
-    !!u && u.p; // NOT OK
-    !!n && n.p; // NOT OK
-    !!o && o.p; // NOT OK
+    !!u && u.p; // $ Alert
+    !!n && n.p; // $ Alert
+    !!o && o.p; // $ Alert
     !!x && x.p;
 
-    u != undefined && u.p; // NOT OK
-    n != undefined && n.p; // NOT OK
-    o != undefined && o.p; // NOT OK
+    u != undefined && u.p; // $ Alert
+    n != undefined && n.p; // $ Alert
+    o != undefined && o.p; // $ Alert
     x != undefined && x.p;
 
-    u == undefined || u.p; // NOT OK
-    n == undefined || n.p; // NOT OK
-    o == undefined || o.p; // NOT OK
+    u == undefined || u.p; // $ Alert
+    n == undefined || n.p; // $ Alert
+    o == undefined || o.p; // $ Alert
     x == undefined || x.p;
 
-    u === undefined || u.p; // NOT OK
-    n === undefined || n.p; // NOT OK
-    o === undefined || o.p; // NOT OK
+    u === undefined || u.p; // $ Alert
+    n === undefined || n.p; // $ Alert
+    o === undefined || o.p; // $ Alert
     x === undefined || x.p;
 
-    if (u) { // NOT OK
+    if (u) { // $ Alert
         u.p;
     }
-    if (n) { // NOT OK
+    if (n) { // $ Alert
         n.p;
     }
-    if (o) { // NOT OK
+    if (o) { // $ Alert
         o.p;
     }
     if (x) {
         x.p;
     }
 
-    u? u():_; // NOT OK
-    n? n(): _; // NOT OK
-    o? o(): _; // NOT OK
+    u? u():_; // $ Alert
+    n? n(): _; // $ Alert
+    o? o(): _; // $ Alert
     x? x(): _;
 
-    if (u !== undefined) { // NOT OK
+    if (u !== undefined) { // $ Alert
         u.p;
     }
-    if (n !== undefined) { // NOT OK
+    if (n !== undefined) { // $ Alert
         n.p;
     }
-    if (o !== undefined) { // NOT OK
+    if (o !== undefined) { // $ Alert
         o.p;
     }
     if (x !== undefined) {
         x.p;
     }
 
-    if (u == undefined){} // NOT OK
-    if (n == undefined){} // NOT OK
-    if (o == undefined){} // NOT OK
+    if (u == undefined){} // $ Alert
+    if (n == undefined){} // $ Alert
+    if (o == undefined){} // $ Alert
     if (x == undefined){}
 
-    if (u != undefined){} // NOT OK
-    if (n != undefined){} // NOT OK
-    if (o != undefined){} // NOT OK
+    if (u != undefined){} // $ Alert
+    if (n != undefined){} // $ Alert
+    if (o != undefined){} // $ Alert
     if (x != undefined){}
 
-    if (typeof u === "undefined"){} // NOT OK
-    if (typeof n === "undefined"){} // NOT OK
-    if (typeof o === "undefined"){} // NOT OK
+    if (typeof u === "undefined"){} // $ Alert
+    if (typeof n === "undefined"){} // $ Alert
+    if (typeof o === "undefined"){} // $ Alert
     if (typeof x === "undefined"){}
 
     function f() { }
-    typeof f === "function" && f(); // NOT OK
-    typeof u === "function" && u(); // NOT OK
+    typeof f === "function" && f(); // $ Alert
+    typeof u === "function" && u(); // $ Alert
     typeof x === "function" && x();
 
     var empty_array = [];
@@ -111,9 +111,9 @@
     var _true = true;
     var _false = false;
 
-    empty_array && empty_array.pop(); // NOT OK
-    pseudo_empty_array && pseudo_empty_array.pop(); // NOT OK
-    non_empty_array && non_empty_array.pop(); // NOT OK
+    empty_array && empty_array.pop(); // $ Alert
+    pseudo_empty_array && pseudo_empty_array.pop(); // $ Alert
+    non_empty_array && non_empty_array.pop(); // $ Alert
     empty_string && empty_string.charAt(0);
     non_empty_string && non_empty_string.charAt(0);
     zero && zero();
@@ -121,23 +121,23 @@
     _true && _true();
     _false && _false();
 
-    (u !== undefined && u !== null) && u.p; // NOT OK
-    u !== undefined && u !== null && u.p; // NOT OK
+    (u !== undefined && u !== null) && u.p; // $ Alert
+    u !== undefined && u !== null && u.p; // $ Alert
 
-    u != undefined && u != null; // NOT OK
-    u == undefined || u == null; // NOT OK
-    u !== undefined && u !== null; // NOT OK
-    !(u === undefined) && !(u === null); // NOT OK
-    u === undefined || u === null; // NOT OK
-    !(u === undefined || u === null); // NOT OK
-    !(u === undefined) && u !== null; // NOT OK
+    u != undefined && u != null; // $ Alert
+    u == undefined || u == null; // $ Alert
+    u !== undefined && u !== null; // $ Alert
+    !(u === undefined) && !(u === null); // $ Alert
+    u === undefined || u === null; // $ Alert
+    !(u === undefined || u === null); // $ Alert
+    !(u === undefined) && u !== null; // $ Alert
     u !== undefined && n !== null;
-    u == undefined && u == null; // NOT OK
+    u == undefined && u == null; // $ Alert
     x == undefined && x == null;
 
-    x === undefined && x === null; // NOT OK
+    x === undefined && x === null; // $ Alert
     if (x === undefined) {
-        if (x === null) { // NOT OK
+        if (x === null) { // $ Alert
         }
     }
 
@@ -153,16 +153,16 @@
         }
     }
 
-    x != undefined && x != null; // NOT OK
+    x != undefined && x != null; // $ Alert
     if (x != undefined) {
-        if (x != null) { // NOT OK
+        if (x != null) { // $ Alert
         }
     }
 
     if (typeof x !== undefined);
     if (typeof window !== undefined);
     if (typeof x !== x);
-    if (typeof x !== u); // NOT OK
+    if (typeof x !== u); // $ Alert
 
     if (typeof window !== "undefined");
     if (typeof module !== "undefined");
@@ -174,8 +174,8 @@
 
 	u && (f(), u.p);
 	u && (u.p, f()); // technically not OK, but it seems like an unlikely pattern
-	u && !u.p; // NOT OK
-	u && !u(); // NOT OK
+	u && !u.p; // $ Alert
+	u && !u(); // $ Alert
 
     
     function hasCallbacks(success, error) {

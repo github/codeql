@@ -4,5 +4,5 @@ import rateLimiter from './rateLimit';
 const app = express();
 app.use(rateLimiter);
 app.get('/', (req, res) => {
-    res.sendFile('index.html'); // OK
+    res.sendFile('index.html');
 });
