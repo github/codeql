@@ -35,7 +35,7 @@ genrule(
 pkg_files(
     name = "resources",
     srcs = [
-        "LICENSE",
+        "//:LICENSE",
         "codeql-extractor.yml",
         "ql/lib/go.dbscheme.stats",
         ":dbscheme",
