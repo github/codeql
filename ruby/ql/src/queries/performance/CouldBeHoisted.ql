@@ -87,4 +87,4 @@ where
   // Only report calls that are likely to be expensive
   call instanceof ActiveRecordModelFinderCall and
   not call.getMethodName() in ["new", "create"]
-select call, "This call happens inside $@, and could be hoisted.", loop, "this loop"
+select call, "This call to a database query operation happens inside $@, and could be hoisted to a single call outside the loop.", loop, "this loop"
