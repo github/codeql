@@ -172,11 +172,9 @@ fn struct_nested_field() {
 }
 
 fn struct_nested_match() {
+    let y = source(93);
     let p = Point3D {
-        plane: Point {
-            x: 2,
-            y: source(93),
-        },
+        plane: Point { x: 2, y },
         z: 4,
     };
     match p {
@@ -185,7 +183,7 @@ fn struct_nested_match() {
             z,
         } => {
             sink(x);
-            sink(y); // $ hasValueFlow=93
+            sink(y); // $ MISSING: hasValueFlow=93
             sink(z);
         }
     }
