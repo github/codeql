@@ -2,8 +2,8 @@
  * @name Artifact poisoning
  * @description An attacker may be able to poison the workflow's artifacts and influence on consequent steps.
  * @kind path-problem
- * @problem.severity warning
- * @precision high
+ * @problem.severity error
+ * @precision medium
  * @security-severity 5.0
  * @id actions/artifact-poisoning/medium
  * @tags actions
