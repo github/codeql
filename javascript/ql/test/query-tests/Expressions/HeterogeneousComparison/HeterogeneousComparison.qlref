@@ -1,1 +1,2 @@
-Expressions/HeterogeneousComparison.ql
+query: Expressions/HeterogeneousComparison.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

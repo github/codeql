@@ -1,1 +1,2 @@
-Expressions/StringInsteadOfRegex.ql
+query: Expressions/StringInsteadOfRegex.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

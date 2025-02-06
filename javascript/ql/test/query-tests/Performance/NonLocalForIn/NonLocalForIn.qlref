@@ -1,1 +1,2 @@
-Performance/NonLocalForIn.ql
+query: Performance/NonLocalForIn.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

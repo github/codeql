@@ -1,1 +1,2 @@
-Security/CWE-094/ExpressionInjection.ql
+query: Security/CWE-094/ExpressionInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

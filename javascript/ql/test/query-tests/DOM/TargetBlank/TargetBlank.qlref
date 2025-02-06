@@ -1,1 +1,2 @@
-DOM/TargetBlank.ql
+query: DOM/TargetBlank.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

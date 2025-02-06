@@ -1,1 +1,2 @@
-Security/CWE-094/UnsafeCodeConstruction.ql
+query: Security/CWE-094/UnsafeCodeConstruction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

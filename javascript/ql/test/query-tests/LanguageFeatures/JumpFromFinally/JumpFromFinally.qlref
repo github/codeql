@@ -1,1 +1,2 @@
-LanguageFeatures/JumpFromFinally.ql
+query: LanguageFeatures/JumpFromFinally.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

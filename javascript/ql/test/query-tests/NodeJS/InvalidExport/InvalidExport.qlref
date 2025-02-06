@@ -1,1 +1,2 @@
-NodeJS/InvalidExport.ql
+query: NodeJS/InvalidExport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

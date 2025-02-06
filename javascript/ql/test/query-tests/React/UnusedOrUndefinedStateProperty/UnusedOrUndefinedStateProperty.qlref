@@ -1,1 +1,2 @@
-React/UnusedOrUndefinedStateProperty.ql
+query: React/UnusedOrUndefinedStateProperty.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

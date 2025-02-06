@@ -1,1 +1,2 @@
-Declarations/DeadStoreOfProperty.ql
+query: Declarations/DeadStoreOfProperty.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

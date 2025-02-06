@@ -1,1 +1,2 @@
-LanguageFeatures/SyntaxError.ql
+query: LanguageFeatures/SyntaxError.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

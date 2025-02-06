@@ -1,1 +1,2 @@
-AngularJS/UnusedAngularDependency.ql
+query: AngularJS/UnusedAngularDependency.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Security/CWE-116/DoubleEscaping.ql
+query: Security/CWE-116/DoubleEscaping.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

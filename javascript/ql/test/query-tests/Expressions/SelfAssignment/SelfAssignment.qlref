@@ -1,1 +1,2 @@
-Expressions/SelfAssignment.ql
+query: Expressions/SelfAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

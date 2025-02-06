@@ -1,1 +1,2 @@
-external/DuplicateFunction.ql
+query: external/DuplicateFunction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

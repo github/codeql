@@ -1,1 +1,2 @@
-LanguageFeatures/PropertyWriteOnPrimitive.ql
+query: LanguageFeatures/PropertyWriteOnPrimitive.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

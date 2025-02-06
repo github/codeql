@@ -1,1 +1,2 @@
-LanguageFeatures/InconsistentNew.ql
+query: LanguageFeatures/InconsistentNew.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

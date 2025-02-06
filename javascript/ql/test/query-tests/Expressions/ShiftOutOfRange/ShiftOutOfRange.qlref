@@ -1,1 +1,2 @@
-Expressions/ShiftOutOfRange.ql
+query: Expressions/ShiftOutOfRange.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Expressions/DuplicateProperty.ql
+query: Expressions/DuplicateProperty.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

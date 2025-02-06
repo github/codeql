@@ -1,1 +1,2 @@
-DOM/PseudoEval.ql
+query: DOM/PseudoEval.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Expressions/MissingAwait.ql
+query: Expressions/MissingAwait.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
