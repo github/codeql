@@ -627,8 +627,7 @@ private module Cached {
     } or
     TElementContentOfTypeContent(string type, Boolean includeUnknown) {
       type = any(Content::KnownElementContent content).getIndex().getValueType()
-    } or
-    deprecated TNoContentSet() // Only used by type-tracking
+    }
 
   cached
   class TContentSet =
@@ -1900,7 +1899,26 @@ private predicate mustHaveLambdaType(ExprNode n, Callable c) {
   )
 }
 
-predicate localMustFlowStep(Node node1, Node node2) { none() }
+predicate localMustFlowStep(Node node1, Node node2) {
+  node1 = SsaFlow::toParameterNodeImpl(node2)
+  or
+  exists(SsaImpl::Definition def |
+    def.(Ssa::WriteDefinition).assigns(node1.asExpr()) and
+    node2.(SsaDefinitionExtNode).getDefinitionExt() = def
+    or
+    def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+    node2.asExpr() = SsaImpl::getARead(def)
+  )
+  or
+  node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+  or
+  node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
+  or
+  node2.(ImplicitBlockArgumentNode).getParameterNode(_) = node1
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode())
+}
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {

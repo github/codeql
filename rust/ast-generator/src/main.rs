@@ -38,6 +38,7 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         (_, "else_branch") => "else_",
         ("ArrayType", "ty") => "element_type_repr",
         ("SelfParam", "is_amp") => "is_ref",
+        ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
         _ => field_name,
     };
@@ -360,6 +361,12 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         "SelfParam" => {
             result.push(FieldInfo {
                 name: "is_amp".to_string(),
+                ty: FieldType::Predicate,
+            });
+        }
+        "UseTree" => {
+            result.push(FieldInfo {
+                name: "is_star".to_string(),
                 ty: FieldType::Predicate,
             });
         }

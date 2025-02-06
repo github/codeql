@@ -27,6 +27,14 @@ module PolynomialReDoSConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 1 } // library inputs are too expensive on some projects
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getHighlight().getLocation()
+    or
+    result = sink.(Sink).getRegExp().getLocation()
+  }
 }
 
 /** Taint-tracking for reasoning about polynomial regular expression denial-of-service attacks. */

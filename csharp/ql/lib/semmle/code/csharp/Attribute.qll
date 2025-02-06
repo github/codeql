@@ -69,6 +69,9 @@ class Attribute extends TopLevelExprParent, @attribute {
     attributes(this, _, getTypeRef(result), _)
   }
 
+  /** Gets the namespace containing the attribute type declaration. */
+  Namespace getNamespace() { result = this.getType().getNamespace() }
+
   /** Gets the element that this attribute is attached to. */
   Attributable getTarget() { attributes(this, _, _, result) }
 

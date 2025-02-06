@@ -14,11 +14,11 @@
 | Macro calls - resolved | 2 |
 | Macro calls - total | 2 |
 | Macro calls - unresolved | 0 |
-| Taint edges - number of edges | 2 |
+| Taint edges - number of edges | 3 |
 | Taint reach - nodes tainted | 0 |
 | Taint reach - per million nodes | 0 |
 | Taint sinks - cryptographic operations | 0 |
-| Taint sinks - query sinks | 0 |
+| Taint sinks - query sinks | 1 |
 | Taint sources - active | 0 |
 | Taint sources - disabled | 0 |
 | Taint sources - sensitive data | 0 |

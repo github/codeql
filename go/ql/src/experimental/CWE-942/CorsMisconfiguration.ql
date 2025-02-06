@@ -72,7 +72,7 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
 module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  additional predicate isSinkWrite(DataFlow::Node sink, GinCors::AllowOriginsWrite w) { sink = w }
+  additional predicate isSinkWrite(DataFlow::Node sink, UniversalOriginWrite w) { sink = w }
 
   predicate isSink(DataFlow::Node sink) { isSinkWrite(sink, _) }
 }
@@ -102,17 +102,17 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
       allowCredentialsHW.getResponseWriter()
   )
   or
-  exists(GinCors::AllowCredentialsWrite allowCredentialsGin |
+  exists(UniversalAllowCredentialsWrite allowCredentialsGin |
     allowCredentialsGin.getExpr().getBoolValue() = true
   |
-    allowCredentialsGin.getConfig() = allowOriginHW.(GinCors::AllowOriginsWrite).getConfig() and
-    not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
+    allowCredentialsGin.getConfig() = allowOriginHW.(UniversalOriginWrite).getConfig() and
+    not exists(UniversalAllowAllOriginsWrite allowAllOrigins |
       allowAllOrigins.getExpr().getBoolValue() = true and
       allowCredentialsGin.getConfig() = allowAllOrigins.getConfig()
     )
     or
-    allowCredentialsGin.getBase() = allowOriginHW.(GinCors::AllowOriginsWrite).getBase() and
-    not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
+    allowCredentialsGin.getBase() = allowOriginHW.(UniversalOriginWrite).getBase() and
+    not exists(UniversalAllowAllOriginsWrite allowAllOrigins |
       allowAllOrigins.getExpr().getBoolValue() = true and
       allowCredentialsGin.getBase() = allowAllOrigins.getBase()
     )
@@ -150,7 +150,7 @@ predicate allowOriginIsNull(DataFlow::ExprNode allowOriginHW, string message) {
       + " is set to `true`"
   or
   allowOriginHW
-      .(GinCors::AllowOriginsWrite)
+      .(UniversalOriginWrite)
       .asExpr()
       .(SliceLit)
       .getAnElement()

@@ -74,11 +74,9 @@ edges
 | call_sensitivity.rb:194:17:194:17 | x | call_sensitivity.rb:189:19:189:19 | x | provenance |  |
 | call_sensitivity.rb:194:23:194:23 | x | call_sensitivity.rb:195:11:195:11 | x | provenance |  |
 | call_sensitivity.rb:195:11:195:11 | x | call_sensitivity.rb:199:30:199:30 | x | provenance |  |
-| call_sensitivity.rb:195:11:195:11 | x | call_sensitivity.rb:203:26:203:26 | x | provenance |  |
 | call_sensitivity.rb:199:15:199:24 | ( ... ) | call_sensitivity.rb:193:19:193:19 | x | provenance |  |
 | call_sensitivity.rb:199:16:199:23 | call to taint | call_sensitivity.rb:199:15:199:24 | ( ... ) | provenance |  |
 | call_sensitivity.rb:199:30:199:30 | x | call_sensitivity.rb:200:8:200:8 | x | provenance |  |
-| call_sensitivity.rb:203:26:203:26 | x | call_sensitivity.rb:204:8:204:8 | x | provenance |  |
 | call_sensitivity.rb:207:16:207:16 | y | call_sensitivity.rb:209:9:209:9 | y | provenance |  |
 | call_sensitivity.rb:209:9:209:9 | y | call_sensitivity.rb:214:9:214:9 | x | provenance |  |
 | call_sensitivity.rb:214:9:214:9 | x | call_sensitivity.rb:215:10:215:10 | x | provenance |  |
@@ -169,8 +167,6 @@ nodes
 | call_sensitivity.rb:199:16:199:23 | call to taint | semmle.label | call to taint |
 | call_sensitivity.rb:199:30:199:30 | x | semmle.label | x |
 | call_sensitivity.rb:200:8:200:8 | x | semmle.label | x |
-| call_sensitivity.rb:203:26:203:26 | x | semmle.label | x |
-| call_sensitivity.rb:204:8:204:8 | x | semmle.label | x |
 | call_sensitivity.rb:207:16:207:16 | y | semmle.label | y |
 | call_sensitivity.rb:209:9:209:9 | y | semmle.label | y |
 | call_sensitivity.rb:214:9:214:9 | x | semmle.label | x |
@@ -204,7 +200,6 @@ testFailures
 | call_sensitivity.rb:105:10:105:10 | x | call_sensitivity.rb:178:11:178:19 | call to taint | call_sensitivity.rb:105:10:105:10 | x | $@ | call_sensitivity.rb:178:11:178:19 | call to taint | call to taint |
 | call_sensitivity.rb:105:10:105:10 | x | call_sensitivity.rb:187:12:187:19 | call to taint | call_sensitivity.rb:105:10:105:10 | x | $@ | call_sensitivity.rb:187:12:187:19 | call to taint | call to taint |
 | call_sensitivity.rb:200:8:200:8 | x | call_sensitivity.rb:199:16:199:23 | call to taint | call_sensitivity.rb:200:8:200:8 | x | $@ | call_sensitivity.rb:199:16:199:23 | call to taint | call to taint |
-| call_sensitivity.rb:204:8:204:8 | x | call_sensitivity.rb:199:16:199:23 | call to taint | call_sensitivity.rb:204:8:204:8 | x | $@ | call_sensitivity.rb:199:16:199:23 | call to taint | call to taint |
 | call_sensitivity.rb:215:10:215:10 | x | call_sensitivity.rb:222:16:222:23 | call to taint | call_sensitivity.rb:215:10:215:10 | x | $@ | call_sensitivity.rb:222:16:222:23 | call to taint | call to taint |
 mayBenefitFromCallContext
 | call_sensitivity.rb:6:5:6:21 | call to puts |

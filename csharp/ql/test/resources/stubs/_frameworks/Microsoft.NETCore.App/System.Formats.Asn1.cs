@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Formats.Asn1, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Formats.Asn1, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Formats
@@ -50,6 +50,7 @@ namespace System
             }
             public static class AsnDecoder
             {
+                public static int? DecodeLength(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int bytesConsumed) => throw null;
                 public static byte[] ReadBitString(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int unusedBitCount, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public static bool ReadBoolean(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public static string ReadCharacterString(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, System.Formats.Asn1.UniversalTagNumber encodingType, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
@@ -69,6 +70,7 @@ namespace System
                 public static void ReadSequence(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int contentOffset, out int contentLength, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public static void ReadSetOf(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int contentOffset, out int contentLength, out int bytesConsumed, bool skipSortOrderValidation = default(bool), System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public static System.DateTimeOffset ReadUtcTime(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int bytesConsumed, int twoDigitYearMax = default(int), System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
+                public static bool TryDecodeLength(System.ReadOnlySpan<byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int? decodedLength, out int bytesConsumed) => throw null;
                 public static bool TryReadBitString(System.ReadOnlySpan<byte> source, System.Span<byte> destination, System.Formats.Asn1.AsnEncodingRules ruleSet, out int unusedBitCount, out int bytesConsumed, out int bytesWritten, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public static bool TryReadCharacterString(System.ReadOnlySpan<byte> source, System.Span<char> destination, System.Formats.Asn1.AsnEncodingRules ruleSet, System.Formats.Asn1.UniversalTagNumber encodingType, out int bytesConsumed, out int charsWritten, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public static bool TryReadCharacterStringBytes(System.ReadOnlySpan<byte> source, System.Span<byte> destination, System.Formats.Asn1.AsnEncodingRules ruleSet, System.Formats.Asn1.Asn1Tag expectedTag, out int bytesConsumed, out int bytesWritten) => throw null;

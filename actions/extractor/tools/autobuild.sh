@@ -2,10 +2,16 @@
 
 set -eu
 
+# Note: We're adding the `reusable_workflows` subdirectories to proactively
+# record workflows that were called cross-repo, check them out locally,
+# and enable an interprocedural analysis across the workflow files.
+# These workflows follow the convention `.github/reusable_workflows/<nwo>/*.ya?ml`
 DEFAULT_PATH_FILTERS=$(cat << END
 exclude:**/*
-include:.github/workflows/**/*.yml
-include:.github/workflows/**/*.yaml
+include:.github/workflows/*.yml
+include:.github/workflows/*.yaml
+include:.github/reusable_workflows/**/*.yml
+include:.github/reusable_workflows/**/*.yaml
 include:**/action.yml
 include:**/action.yaml
 END

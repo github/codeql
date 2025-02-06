@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading.Channels, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Threading.Channels, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Threading
@@ -26,6 +26,8 @@ namespace System
                 public static System.Threading.Channels.Channel<T> CreateBounded<T>(System.Threading.Channels.BoundedChannelOptions options, System.Action<T> itemDropped) => throw null;
                 public static System.Threading.Channels.Channel<T> CreateUnbounded<T>() => throw null;
                 public static System.Threading.Channels.Channel<T> CreateUnbounded<T>(System.Threading.Channels.UnboundedChannelOptions options) => throw null;
+                public static System.Threading.Channels.Channel<T> CreateUnboundedPrioritized<T>() => throw null;
+                public static System.Threading.Channels.Channel<T> CreateUnboundedPrioritized<T>(System.Threading.Channels.UnboundedPrioritizedChannelOptions<T> options) => throw null;
             }
             public abstract class Channel<T> : System.Threading.Channels.Channel<T, T>
             {
@@ -79,6 +81,11 @@ namespace System
             public sealed class UnboundedChannelOptions : System.Threading.Channels.ChannelOptions
             {
                 public UnboundedChannelOptions() => throw null;
+            }
+            public sealed class UnboundedPrioritizedChannelOptions<T> : System.Threading.Channels.ChannelOptions
+            {
+                public System.Collections.Generic.IComparer<T> Comparer { get => throw null; set { } }
+                public UnboundedPrioritizedChannelOptions() => throw null;
             }
         }
     }

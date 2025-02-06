@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for queries that detect timing attacks.
  */
+deprecated module;
 
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking

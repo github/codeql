@@ -38,6 +38,12 @@ module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.(Source).getLocation()
+    or
+    result = source.(Source).getPlugin().getLocation()
+  }
 }
 
 /**

@@ -4,6 +4,7 @@
 
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Provides classes and predicates for reasoning about [Nest](https://nestjs.com/).
@@ -460,6 +461,56 @@ module NestJS {
      */
     override Http::RouteHandler getRouteHandler() {
       result.(DataFlow::FunctionNode).getAParameter() = this
+    }
+  }
+
+  /**
+   * A value passed in the `providers` array in:
+   * ```js
+   * @Module({ providers: [ ... ] })
+   * class App { ... }
+   * ```
+   */
+  private DataFlow::Node providerTuple() {
+    result =
+      DataFlow::moduleImport("@nestjs/common")
+          .getAPropertyRead("Module")
+          .getACall()
+          .getOptionArgument(0, "providers")
+          .getALocalSource()
+          .(DataFlow::ArrayCreationNode)
+          .getAnElement()
+  }
+
+  private predicate providerPair(DataFlow::Node interface, DataFlow::Node concreteClass) {
+    exists(DataFlow::SourceNode tuple |
+      tuple = providerTuple().getALocalSource() and
+      interface = tuple.getAPropertyWrite("provide").getRhs() and
+      concreteClass = tuple.getAPropertyWrite("useClass").getRhs()
+    )
+  }
+
+  /** Gets the class being referenced at `node` without relying on the call graph. */
+  private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
+    result.getAstNode() = node.analyze().getAValue().(AbstractClass).getClass()
+  }
+
+  private predicate providerClassPair(
+    DataFlow::ClassNode interface, DataFlow::ClassNode concreteClass
+  ) {
+    exists(DataFlow::Node interfaceNode, DataFlow::Node concreteClassNode |
+      providerPair(interfaceNode, concreteClassNode) and
+      interface = getClassFromNode(interfaceNode) and
+      concreteClass = getClassFromNode(concreteClassNode)
+    )
+  }
+
+  private class DependencyInjectionStep extends PreCallGraphStep {
+    override predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
+      exists(DataFlow::ClassNode interfaceClass |
+        node.asExpr().(Parameter).getType().(ClassType).getClass() = interfaceClass.getAstNode() and
+        providerClassPair(interfaceClass, cls)
+      )
     }
   }
 }

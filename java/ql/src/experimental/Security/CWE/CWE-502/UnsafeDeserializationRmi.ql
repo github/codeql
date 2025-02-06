@@ -73,6 +73,11 @@ private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
 private module BindingUnsafeRemoteObjectFlow =
   TaintTracking::Global<BindingUnsafeRemoteObjectConfig>;
 
-from BindingUnsafeRemoteObjectFlow::PathNode source, BindingUnsafeRemoteObjectFlow::PathNode sink
-where BindingUnsafeRemoteObjectFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe deserialization in a remote object."
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, BindingUnsafeRemoteObjectFlow::PathNode source,
+  BindingUnsafeRemoteObjectFlow::PathNode sink, string message
+) {
+  BindingUnsafeRemoteObjectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message = "Unsafe deserialization in a remote object."
+}
