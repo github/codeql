@@ -1,2 +1,0 @@
-query: experimental/Security/CWE/CWE-502/UnsafeDeserializationRmi.ql
-postprocess: utils/test/PrettyPrintModels.ql

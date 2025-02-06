@@ -1,2 +1,0 @@
-query: experimental/Security/CWE/CWE-755/NFEAndroidDoS.ql
-postprocess: utils/test/PrettyPrintModels.ql
