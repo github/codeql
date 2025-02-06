@@ -94,7 +94,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract string getAlgorithmName();
 
-     /**
+    /**
      * Gets the raw name of this algorithm from source (no parsing or formatting)
      */
     abstract string getRawAlgorithmName();
@@ -151,7 +151,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract THashType getHashType();
 
     override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashType(), result) }
-
   }
 
   /**
@@ -199,26 +198,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   newtype TEllipticCurveFamilyType =
-  // We're saying by this that all of these have an identical interface / properties / edges
-  NIST() or
-  SEC() or
-  NUMS() or
-  PRIME() or
-  BRAINPOOL() or
-  CURVE25519() or
-  CURVE448() or
-  C2() or
-  SM2() or
-  ES() or
-  OtherEllipticCurveFamilyType()
-
+    // We're saying by this that all of these have an identical interface / properties / edges
+    NIST() or
+    SEC() or
+    NUMS() or
+    PRIME() or
+    BRAINPOOL() or
+    CURVE25519() or
+    CURVE448() or
+    C2() or
+    SM2() or
+    ES() or
+    OtherEllipticCurveFamilyType()
 
   /**
    * Elliptic curve algorithm
    */
   abstract class EllipticCurve extends Algorithm {
-
-
     abstract string getKeySize(Location location);
 
     abstract TEllipticCurveFamilyType getCurveFamilyType();
@@ -235,18 +231,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // other properties, like field type are possible, but not modeled until considered necessary
     }
 
-    override string getAlgorithmName() { result = this.getRawAlgorithmName().toUpperCase()}
+    override string getAlgorithmName() { result = this.getRawAlgorithmName().toUpperCase() }
 
     /**
      * Mandating that for Elliptic Curves specifically, users are responsible
-     * for providing as the 'raw' name, the official name of the algorithm. 
-     * Casing doesn't matter, we will enforce further naming restrictions on 
-     * `getAlgorithmName` by default. 
+     * for providing as the 'raw' name, the official name of the algorithm.
+     * Casing doesn't matter, we will enforce further naming restrictions on
+     * `getAlgorithmName` by default.
      * Rationale: elliptic curve names can have a lot of variation in their components
      * (e.g., "secp256r1" vs "P-256"), trying to produce generalized set of properties
-     * is possible to capture all cases, but such modeling is likely not necessary. 
-     * if all properties need to be captured, we can reassess how names are generated. 
+     * is possible to capture all cases, but such modeling is likely not necessary.
+     * if all properties need to be captured, we can reassess how names are generated.
      */
-    override abstract string getRawAlgorithmName();
+    abstract override string getRawAlgorithmName();
   }
 }
