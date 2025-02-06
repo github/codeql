@@ -3,14 +3,14 @@ edges
 | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | provenance |  |
 | NoSQLCodeInjection.js:22:36:22:43 | req.body | NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name | provenance |  |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c | provenance |  |
-| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" | provenance |  |
-| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" | provenance |  |
-| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" | provenance |  |
-| express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint | provenance |  |
-| express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint | provenance |  |
-| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint | provenance |  |
-| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint | provenance |  |
-| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg | provenance |  |
+| express.js:6:44:6:62 | req.param("wobble") | express.js:6:24:6:69 | "return ...  + "];" | provenance |  |
+| express.js:7:54:7:72 | req.param("wobble") | express.js:7:34:7:79 | "return ...  + "];" | provenance |  |
+| express.js:9:28:9:46 | req.param("wobble") | express.js:9:8:9:53 | "return ...  + "];" | provenance |  |
+| express.js:19:9:19:35 | taint | express.js:20:34:20:38 | taint | provenance |  |
+| express.js:19:17:19:35 | req.param("wobble") | express.js:19:9:19:35 | taint | provenance |  |
+| express.js:27:9:27:35 | taint | express.js:36:15:36:19 | taint | provenance |  |
+| express.js:27:17:27:35 | req.param("wobble") | express.js:27:9:27:35 | taint | provenance |  |
+| express.js:42:30:42:32 | msg | express.js:43:10:43:12 | msg | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
@@ -29,17 +29,17 @@ edges
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:32:16:32:22 | tainted | provenance |  |
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:33:17:33:23 | tainted | provenance |  |
 | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:18:9:18:31 | tainted | provenance |  |
-| tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) | provenance |  |
-| tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") | provenance |  |
-| tst.js:23:11:23:32 | documen ... on.hash | tst.js:23:11:23:45 | documen ... ring(1) | provenance |  |
-| tst.js:23:11:23:45 | documen ... ring(1) | tst.js:23:6:23:46 | atob(do ... ing(1)) | provenance |  |
-| tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source | provenance |  |
-| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") | provenance |  |
-| tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source | provenance |  |
+| tst.js:1:6:1:27 | documen ... on.href | tst.js:1:6:1:83 | documen ... t=")+8) | provenance |  |
+| tst.js:11:10:11:33 | documen ... .search | tst.js:11:10:11:74 | documen ... , "$1") | provenance |  |
+| tst.js:17:11:17:32 | documen ... on.hash | tst.js:17:11:17:45 | documen ... ring(1) | provenance |  |
+| tst.js:17:11:17:45 | documen ... ring(1) | tst.js:17:6:17:46 | atob(do ... ing(1)) | provenance |  |
+| tst.js:19:26:19:40 | location.search | tst.js:19:26:19:53 | locatio ... ring(1) | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:24:18:24:23 | source | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:26:14:26:19 | source | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:28:28:28:33 | source | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:30:33:30:38 | source | provenance |  |
+| tst.js:22:18:22:41 | documen ... .search | tst.js:22:18:22:82 | documen ... , "$1") | provenance |  |
+| tst.js:22:18:22:82 | documen ... , "$1") | tst.js:22:9:22:82 | source | provenance |  |
 nodes
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | semmle.label | req.body |
 | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | semmle.label | req.body.query |
@@ -64,24 +64,24 @@ nodes
 | angularjs.js:53:32:53:46 | location.search | semmle.label | location.search |
 | eslint-escope-build.js:20:22:20:22 | c | semmle.label | c |
 | eslint-escope-build.js:21:16:21:16 | c | semmle.label | c |
-| express.js:7:24:7:69 | "return ...  + "];" | semmle.label | "return ...  + "];" |
-| express.js:7:44:7:62 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:9:34:9:79 | "return ...  + "];" | semmle.label | "return ...  + "];" |
-| express.js:9:54:9:72 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:12:8:12:53 | "return ...  + "];" | semmle.label | "return ...  + "];" |
-| express.js:12:28:12:46 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:15:22:15:54 | req.par ... ction") | semmle.label | req.par ... ction") |
-| express.js:17:30:17:53 | req.par ... cript") | semmle.label | req.par ... cript") |
-| express.js:19:37:19:70 | req.par ... odule") | semmle.label | req.par ... odule") |
-| express.js:21:19:21:48 | req.par ... ntext") | semmle.label | req.par ... ntext") |
-| express.js:26:9:26:35 | taint | semmle.label | taint |
-| express.js:26:17:26:35 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:27:34:27:38 | taint | semmle.label | taint |
-| express.js:34:9:34:35 | taint | semmle.label | taint |
-| express.js:34:17:34:35 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:43:15:43:19 | taint | semmle.label | taint |
-| express.js:49:30:49:32 | msg | semmle.label | msg |
-| express.js:50:10:50:12 | msg | semmle.label | msg |
+| express.js:6:24:6:69 | "return ...  + "];" | semmle.label | "return ...  + "];" |
+| express.js:6:44:6:62 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:7:34:7:79 | "return ...  + "];" | semmle.label | "return ...  + "];" |
+| express.js:7:54:7:72 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:9:8:9:53 | "return ...  + "];" | semmle.label | "return ...  + "];" |
+| express.js:9:28:9:46 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:11:22:11:54 | req.par ... ction") | semmle.label | req.par ... ction") |
+| express.js:12:30:12:53 | req.par ... cript") | semmle.label | req.par ... cript") |
+| express.js:13:37:13:70 | req.par ... odule") | semmle.label | req.par ... odule") |
+| express.js:14:19:14:48 | req.par ... ntext") | semmle.label | req.par ... ntext") |
+| express.js:19:9:19:35 | taint | semmle.label | taint |
+| express.js:19:17:19:35 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:20:34:20:38 | taint | semmle.label | taint |
+| express.js:27:9:27:35 | taint | semmle.label | taint |
+| express.js:27:17:27:35 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:36:15:36:19 | taint | semmle.label | taint |
+| express.js:42:30:42:32 | msg | semmle.label | msg |
+| express.js:43:10:43:12 | msg | semmle.label | msg |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |
@@ -105,25 +105,25 @@ nodes
 | template-sinks.js:31:19:31:25 | tainted | semmle.label | tainted |
 | template-sinks.js:32:16:32:22 | tainted | semmle.label | tainted |
 | template-sinks.js:33:17:33:23 | tainted | semmle.label | tainted |
-| tst.js:2:6:2:27 | documen ... on.href | semmle.label | documen ... on.href |
-| tst.js:2:6:2:83 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
-| tst.js:5:12:5:33 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:14:10:14:33 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:14:10:14:74 | documen ... , "$1") | semmle.label | documen ... , "$1") |
-| tst.js:17:21:17:42 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:20:30:20:51 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:23:6:23:46 | atob(do ... ing(1)) | semmle.label | atob(do ... ing(1)) |
-| tst.js:23:11:23:32 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:23:11:23:45 | documen ... ring(1) | semmle.label | documen ... ring(1) |
-| tst.js:26:26:26:40 | location.search | semmle.label | location.search |
-| tst.js:26:26:26:53 | locatio ... ring(1) | semmle.label | locatio ... ring(1) |
-| tst.js:29:9:29:82 | source | semmle.label | source |
-| tst.js:29:18:29:41 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:29:18:29:82 | documen ... , "$1") | semmle.label | documen ... , "$1") |
-| tst.js:31:18:31:23 | source | semmle.label | source |
-| tst.js:33:14:33:19 | source | semmle.label | source |
-| tst.js:35:28:35:33 | source | semmle.label | source |
-| tst.js:37:33:37:38 | source | semmle.label | source |
+| tst.js:1:6:1:27 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:1:6:1:83 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
+| tst.js:3:12:3:33 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:11:10:11:33 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:11:10:11:74 | documen ... , "$1") | semmle.label | documen ... , "$1") |
+| tst.js:13:21:13:42 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:15:30:15:51 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:17:6:17:46 | atob(do ... ing(1)) | semmle.label | atob(do ... ing(1)) |
+| tst.js:17:11:17:32 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:17:11:17:45 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst.js:19:26:19:40 | location.search | semmle.label | location.search |
+| tst.js:19:26:19:53 | locatio ... ring(1) | semmle.label | locatio ... ring(1) |
+| tst.js:22:9:22:82 | source | semmle.label | source |
+| tst.js:22:18:22:41 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:22:18:22:82 | documen ... , "$1") | semmle.label | documen ... , "$1") |
+| tst.js:24:18:24:23 | source | semmle.label | source |
+| tst.js:26:14:26:19 | source | semmle.label | source |
+| tst.js:28:28:28:33 | source | semmle.label | source |
+| tst.js:30:33:30:38 | source | semmle.label | source |
 | webix/webix.html:3:16:3:37 | documen ... on.hash | semmle.label | documen ... on.hash |
 | webix/webix.html:4:26:4:47 | documen ... on.hash | semmle.label | documen ... on.hash |
 | webix/webix.html:5:47:5:68 | documen ... on.hash | semmle.label | documen ... on.hash |
