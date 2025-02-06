@@ -1,1 +1,2 @@
-Comments/TodoComments.ql
+query: Comments/TodoComments.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Statements/UselessConditional.ql
+query: Statements/UselessConditional.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
