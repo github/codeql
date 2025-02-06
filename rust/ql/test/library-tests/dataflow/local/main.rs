@@ -429,6 +429,22 @@ fn macro_invocation() {
     sink(s); // $ hasValueFlow=37
 }
 
+fn sink_string(s: String) {
+    println!("{}", s);
+}
+
+fn parse() {
+    let a = source(90);
+    let b = a.to_string();
+    let c = b.parse::<i64>().unwrap();
+    let d : i64 = b.parse().unwrap();
+
+    sink(a); // $ hasValueFlow=90
+    sink_string(b); // $ MISSING: hasTaintFlow=90
+    sink(c); // $ MISSING: hasTaintFlow=90
+    sink(d); // $ MISSING: hasTaintFlow=90
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -465,4 +481,5 @@ fn main() {
     array_assignment();
     captured_variable_and_continue(vec![]);
     macro_invocation();
+    parse();
 }

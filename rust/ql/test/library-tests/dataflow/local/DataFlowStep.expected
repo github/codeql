@@ -495,8 +495,31 @@ localStep
 | main.rs:428:9:428:9 | s | main.rs:428:9:428:9 | [SSA] s |  |
 | main.rs:428:13:428:27 | MacroExpr | main.rs:428:9:428:9 | s |  |
 | main.rs:428:25:428:26 | source(...) | main.rs:428:13:428:27 | MacroExpr |  |
-| main.rs:454:13:454:33 | result_questionmark(...) | main.rs:454:9:454:9 | _ |  |
-| main.rs:466:36:466:41 | ...::new(...) | main.rs:466:36:466:41 | MacroExpr |  |
+| main.rs:432:16:432:16 | [SSA] s | main.rs:433:20:433:20 | s |  |
+| main.rs:432:16:432:16 | s | main.rs:432:16:432:16 | [SSA] s |  |
+| main.rs:432:16:432:24 | ...: String | main.rs:432:16:432:16 | s |  |
+| main.rs:433:14:433:20 | FormatArgsExpr | main.rs:433:14:433:20 | MacroExpr |  |
+| main.rs:433:14:433:20 | MacroExpr | main.rs:433:5:433:21 | ...::_print | MaD:1 |
+| main.rs:437:9:437:9 | [SSA] a | main.rs:438:13:438:13 | a |  |
+| main.rs:437:9:437:9 | a | main.rs:437:9:437:9 | [SSA] a |  |
+| main.rs:437:13:437:22 | source(...) | main.rs:437:9:437:9 | a |  |
+| main.rs:438:9:438:9 | [SSA] b | main.rs:439:13:439:13 | b |  |
+| main.rs:438:9:438:9 | b | main.rs:438:9:438:9 | [SSA] b |  |
+| main.rs:438:13:438:13 | [post] a | main.rs:442:10:442:10 | a |  |
+| main.rs:438:13:438:13 | a | main.rs:442:10:442:10 | a |  |
+| main.rs:438:13:438:25 | a.to_string(...) | main.rs:438:9:438:9 | b |  |
+| main.rs:439:9:439:9 | [SSA] c | main.rs:444:10:444:10 | c |  |
+| main.rs:439:9:439:9 | c | main.rs:439:9:439:9 | [SSA] c |  |
+| main.rs:439:13:439:13 | [post] b | main.rs:440:19:440:19 | b |  |
+| main.rs:439:13:439:13 | b | main.rs:440:19:440:19 | b |  |
+| main.rs:439:13:439:37 | ... .unwrap(...) | main.rs:439:9:439:9 | c |  |
+| main.rs:440:9:440:9 | [SSA] d | main.rs:445:10:445:10 | d |  |
+| main.rs:440:9:440:9 | d | main.rs:440:9:440:9 | [SSA] d |  |
+| main.rs:440:19:440:19 | [post] b | main.rs:443:17:443:17 | b |  |
+| main.rs:440:19:440:19 | b | main.rs:443:17:443:17 | b |  |
+| main.rs:440:19:440:36 | ... .unwrap(...) | main.rs:440:9:440:9 | d |  |
+| main.rs:470:13:470:33 | result_questionmark(...) | main.rs:470:9:470:9 | _ |  |
+| main.rs:482:36:482:41 | ...::new(...) | main.rs:482:36:482:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:core; <crate::option::Option>::expect; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
@@ -601,7 +624,7 @@ storeStep
 | main.rs:399:30:399:30 | 3 | element | main.rs:399:23:399:31 | [...] |
 | main.rs:402:18:402:27 | source(...) | element | main.rs:402:5:402:11 | [post] mut_arr |
 | main.rs:414:41:414:67 | default_name | captured default_name | main.rs:414:41:414:67 | \|...\| ... |
-| main.rs:436:27:436:27 | 0 | Some | main.rs:436:22:436:28 | Some(...) |
+| main.rs:452:27:452:27 | 0 | Some | main.rs:452:22:452:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else |
