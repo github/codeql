@@ -1,3 +1,4 @@
+#select
 | tst.js:1:1:1:7 | !method | This expression will be implicitly converted from boolean to string. |
 | tst.js:15:6:15:9 | null | This expression will be implicitly converted from null to object. |
 | tst.js:17:6:17:13 | 'string' | This expression will be implicitly converted from string to object. |
@@ -15,3 +16,9 @@
 | tst.js:99:13:99:15 | g() | This expression will be implicitly converted from undefined to string. |
 | tst.js:106:8:106:8 | y | This expression will be implicitly converted from string to number. |
 | tst.js:111:10:111:10 | y | This expression will be implicitly converted from string to number. |
+testFailures
+| tst.js:77:9:77:46 | // $ Al ... flagged | Missing result: Alert |
+| tst.js:89:5:89:7 | This expression will be implicitly converted from undefined to number. | Unexpected result: Alert |
+| tst.js:95:5:95:7 | This expression will be implicitly converted from undefined to number. | Unexpected result: Alert |
+| tst.js:98:13:98:15 | This expression will be implicitly converted from undefined to number. | Unexpected result: Alert |
+| tst.js:99:13:99:15 | This expression will be implicitly converted from undefined to string. | Unexpected result: Alert |

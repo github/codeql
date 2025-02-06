@@ -1,3 +1,4 @@
+#select
 | examples/IncorrectSuffixCheck.js:2:10:2:49 | x.lastI ... .length | This suffix check is missing a length comparison to correctly handle lastIndexOf returning -1. |
 | tst.js:2:10:2:45 | x.index ... .length | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
 | tst.js:9:10:9:55 | x.index ... gth - 1 | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
@@ -9,3 +10,5 @@
 | tst.js:67:32:67:71 | x.index ... gth - 1 | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
 | tst.js:76:25:76:57 | index = ... gth - 1 | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
 | tst.js:80:10:80:57 | x.index ... th + 1) | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
+testFailures
+| examples/IncorrectSuffixCheck.js:2:10:2:49 | This suffix check is missing a length comparison to correctly handle lastIndexOf returning -1. | Unexpected result: Alert |

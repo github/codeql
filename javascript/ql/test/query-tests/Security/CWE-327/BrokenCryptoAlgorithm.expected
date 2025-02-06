@@ -1,3 +1,9 @@
+#select
+| tst.js:11:17:11:26 | secretText | tst.js:3:18:3:24 | trusted | tst.js:11:17:11:26 | secretText | $@ depends on $@. | tst.js:5:19:5:49 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
+| tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | $@ depends on $@. | tst.js:5:19:5:49 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:11:17:11:26 | secretText | sensitive data from an access to secretText |
+| tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | $@ depends on $@. | tst.js:5:19:5:49 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:17:17:17:25 | o.trusted | sensitive data from an access to trusted |
+| tst.js:22:21:22:30 | secretText | tst.js:3:18:3:24 | trusted | tst.js:22:21:22:30 | secretText | $@ depends on $@. | tst.js:21:22:21:60 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
+| tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | $@ depends on $@. | tst.js:21:22:21:60 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:22:21:22:30 | secretText | sensitive data from an access to secretText |
 edges
 | tst.js:3:5:3:24 | secretText | tst.js:11:17:11:26 | secretText | provenance |  |
 | tst.js:3:5:3:24 | secretText | tst.js:22:21:22:30 | secretText | provenance |  |
@@ -10,9 +16,17 @@ nodes
 | tst.js:19:17:19:24 | password | semmle.label | password |
 | tst.js:22:21:22:30 | secretText | semmle.label | secretText |
 subpaths
-#select
-| tst.js:11:17:11:26 | secretText | tst.js:3:18:3:24 | trusted | tst.js:11:17:11:26 | secretText | $@ depends on $@. | tst.js:5:19:5:49 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
-| tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | $@ depends on $@. | tst.js:5:19:5:49 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:11:17:11:26 | secretText | sensitive data from an access to secretText |
-| tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | $@ depends on $@. | tst.js:5:19:5:49 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:17:17:17:25 | o.trusted | sensitive data from an access to trusted |
-| tst.js:22:21:22:30 | secretText | tst.js:3:18:3:24 | trusted | tst.js:22:21:22:30 | secretText | $@ depends on $@. | tst.js:21:22:21:60 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
-| tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | $@ depends on $@. | tst.js:21:22:21:60 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:22:21:22:30 | secretText | sensitive data from an access to secretText |
+testFailures
+| bad-random.js:3:64:3:73 | // $ Alert | Missing result: Alert |
+| bad-random.js:4:64:4:73 | // $ Alert | Missing result: Alert |
+| bad-random.js:9:48:9:57 | // $ Alert | Missing result: Alert |
+| bad-random.js:11:35:11:44 | // $ Alert | Missing result: Alert |
+| bad-random.js:14:66:14:75 | // $ Alert | Missing result: Alert |
+| bad-random.js:73:47:73:56 | // $ Alert | Missing result: Alert |
+| bad-random.js:75:34:75:43 | // $ Alert | Missing result: Alert |
+| bad-random.js:81:54:81:63 | // $ Alert | Missing result: Alert |
+| bad-random.js:85:38:85:47 | // $ Alert | Missing result: Alert |
+| bad-random.js:90:59:90:169 | // $ Al ... hmetic. | Missing result: Alert |
+| bad-random.js:96:63:96:165 | // $ Al ... hmetic. | Missing result: Alert |
+| bad-random.js:118:49:118:58 | // $ Alert | Missing result: Alert |
+| tst.js:3:18:3:24 | trusted | Unexpected result: Source |

@@ -1,2 +1,5 @@
+#select
 | tst.js:11:10:11:15 | y <= y | This expression compares $@ to itself. | tst.js:11:10:11:10 | y | y |
 | tst.js:21:1:21:35 | (functi ... n() {}) | This expression compares $@ to itself. | tst.js:21:1:21:16 | (function() { }) | (function() { }) |
+testFailures
+| tst.js:11:10:11:15 | This expression compares $@ to itself. | Unexpected result: Alert |

@@ -1,3 +1,11 @@
+#select
 | tst.js:5:1:6:1 | for (j  ... Alert\\n} | This loop counts downward, but its variable is bounded upward. |
 | tst.js:8:1:9:1 | for (va ... Alert\\n} | This loop counts upward, but its variable is bounded downward. |
 | tst.js:15:1:16:13 | for (i= ... i] = 0; | This loop counts downward, but its variable is bounded upward. |
+testFailures
+| tst.js:5:1:6:1 | This loop counts downward, but its variable is bounded upward. | Unexpected result: Alert |
+| tst.js:5:39:5:48 | // $ Alert | Missing result: Alert |
+| tst.js:8:1:9:1 | This loop counts upward, but its variable is bounded downward. | Unexpected result: Alert |
+| tst.js:8:46:8:55 | // $ Alert | Missing result: Alert |
+| tst.js:15:1:16:13 | This loop counts downward, but its variable is bounded upward. | Unexpected result: Alert |
+| tst.js:15:34:15:43 | // $ Alert | Missing result: Alert |
