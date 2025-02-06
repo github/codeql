@@ -181,6 +181,13 @@ edges
 | main.rs:428:25:428:26 | source(...) | main.rs:428:9:428:9 | s | provenance |  |
 | main.rs:437:9:437:9 | a | main.rs:442:10:442:10 | a | provenance |  |
 | main.rs:437:13:437:22 | source(...) | main.rs:437:9:437:9 | a | provenance |  |
+| main.rs:449:9:449:10 | vs [element] | main.rs:451:10:451:11 | vs [element] | provenance |  |
+| main.rs:449:9:449:10 | vs [element] | main.rs:455:14:455:15 | vs [element] | provenance |  |
+| main.rs:449:14:449:34 | [...] [element] | main.rs:449:9:449:10 | vs [element] | provenance |  |
+| main.rs:449:15:449:24 | source(...) | main.rs:449:14:449:34 | [...] [element] | provenance |  |
+| main.rs:451:10:451:11 | vs [element] | main.rs:451:10:451:14 | vs[0] | provenance |  |
+| main.rs:455:9:455:9 | v | main.rs:456:14:456:14 | v | provenance |  |
+| main.rs:455:14:455:15 | vs [element] | main.rs:455:9:455:9 | v | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:9:19:9 | s | semmle.label | s |
@@ -391,6 +398,14 @@ nodes
 | main.rs:437:9:437:9 | a | semmle.label | a |
 | main.rs:437:13:437:22 | source(...) | semmle.label | source(...) |
 | main.rs:442:10:442:10 | a | semmle.label | a |
+| main.rs:449:9:449:10 | vs [element] | semmle.label | vs [element] |
+| main.rs:449:14:449:34 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:449:15:449:24 | source(...) | semmle.label | source(...) |
+| main.rs:451:10:451:11 | vs [element] | semmle.label | vs [element] |
+| main.rs:451:10:451:14 | vs[0] | semmle.label | vs[0] |
+| main.rs:455:9:455:9 | v | semmle.label | v |
+| main.rs:455:14:455:15 | vs [element] | semmle.label | vs [element] |
+| main.rs:456:14:456:14 | v | semmle.label | v |
 subpaths
 testFailures
 #select
@@ -436,3 +451,5 @@ testFailures
 | main.rs:405:10:405:19 | mut_arr[0] | main.rs:402:18:402:27 | source(...) | main.rs:405:10:405:19 | mut_arr[0] | $@ | main.rs:402:18:402:27 | source(...) | source(...) |
 | main.rs:429:10:429:10 | s | main.rs:428:25:428:26 | source(...) | main.rs:429:10:429:10 | s | $@ | main.rs:428:25:428:26 | source(...) | source(...) |
 | main.rs:442:10:442:10 | a | main.rs:437:13:437:22 | source(...) | main.rs:442:10:442:10 | a | $@ | main.rs:437:13:437:22 | source(...) | source(...) |
+| main.rs:451:10:451:14 | vs[0] | main.rs:449:15:449:24 | source(...) | main.rs:451:10:451:14 | vs[0] | $@ | main.rs:449:15:449:24 | source(...) | source(...) |
+| main.rs:456:14:456:14 | v | main.rs:449:15:449:24 | source(...) | main.rs:456:14:456:14 | v | $@ | main.rs:449:15:449:24 | source(...) | source(...) |

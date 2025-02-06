@@ -518,8 +518,39 @@ localStep
 | main.rs:440:19:440:19 | [post] b | main.rs:443:17:443:17 | b |  |
 | main.rs:440:19:440:19 | b | main.rs:443:17:443:17 | b |  |
 | main.rs:440:19:440:36 | ... .unwrap(...) | main.rs:440:9:440:9 | d |  |
-| main.rs:470:13:470:33 | result_questionmark(...) | main.rs:470:9:470:9 | _ |  |
-| main.rs:482:36:482:41 | ...::new(...) | main.rs:482:36:482:41 | MacroExpr |  |
+| main.rs:449:9:449:10 | [SSA] vs | main.rs:451:10:451:11 | vs |  |
+| main.rs:449:9:449:10 | vs | main.rs:449:9:449:10 | [SSA] vs |  |
+| main.rs:449:14:449:34 | [...] | main.rs:449:9:449:10 | vs |  |
+| main.rs:451:10:451:11 | [post] vs | main.rs:452:11:452:12 | vs |  |
+| main.rs:451:10:451:11 | vs | main.rs:452:11:452:12 | vs |  |
+| main.rs:452:11:452:12 | [post] vs | main.rs:453:11:453:12 | vs |  |
+| main.rs:452:11:452:12 | vs | main.rs:453:11:453:12 | vs |  |
+| main.rs:453:11:453:12 | [post] vs | main.rs:455:14:455:15 | vs |  |
+| main.rs:453:11:453:12 | vs | main.rs:455:14:455:15 | vs |  |
+| main.rs:455:9:455:9 | [SSA] v | main.rs:456:14:456:14 | v |  |
+| main.rs:455:9:455:9 | v | main.rs:455:9:455:9 | [SSA] v |  |
+| main.rs:455:14:455:15 | vs | main.rs:458:15:458:16 | vs |  |
+| main.rs:458:10:458:10 | [SSA] v | main.rs:459:14:459:14 | v |  |
+| main.rs:458:10:458:10 | v | main.rs:458:10:458:10 | [SSA] v |  |
+| main.rs:458:15:458:16 | [post] vs | main.rs:462:27:462:28 | vs |  |
+| main.rs:458:15:458:16 | vs | main.rs:462:27:462:28 | vs |  |
+| main.rs:462:9:462:11 | [SSA] vs2 | main.rs:463:15:463:17 | vs2 |  |
+| main.rs:462:9:462:11 | vs2 | main.rs:462:9:462:11 | [SSA] vs2 |  |
+| main.rs:462:27:462:28 | [post] vs | main.rs:467:5:467:6 | vs |  |
+| main.rs:462:27:462:28 | vs | main.rs:467:5:467:6 | vs |  |
+| main.rs:462:27:462:45 | ... .collect(...) | main.rs:462:9:462:11 | vs2 |  |
+| main.rs:463:10:463:10 | [SSA] v | main.rs:464:14:464:14 | v |  |
+| main.rs:463:10:463:10 | v | main.rs:463:10:463:10 | [SSA] v |  |
+| main.rs:467:5:467:6 | [post] vs | main.rs:469:14:469:15 | vs |  |
+| main.rs:467:5:467:6 | vs | main.rs:469:14:469:15 | vs |  |
+| main.rs:467:20:467:20 | ... | main.rs:467:20:467:20 | x |  |
+| main.rs:467:20:467:20 | [SSA] x | main.rs:467:29:467:29 | x |  |
+| main.rs:467:20:467:20 | x | main.rs:467:20:467:20 | [SSA] x |  |
+| main.rs:469:5:471:5 | for ... in ... { ... } | main.rs:448:16:472:1 | { ... } |  |
+| main.rs:469:9:469:9 | [SSA] v | main.rs:470:14:470:14 | v |  |
+| main.rs:469:9:469:9 | v | main.rs:469:9:469:9 | [SSA] v |  |
+| main.rs:496:13:496:33 | result_questionmark(...) | main.rs:496:9:496:9 | _ |  |
+| main.rs:508:36:508:41 | ...::new(...) | main.rs:508:36:508:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:core; <crate::option::Option>::expect; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
@@ -624,7 +655,11 @@ storeStep
 | main.rs:399:30:399:30 | 3 | element | main.rs:399:23:399:31 | [...] |
 | main.rs:402:18:402:27 | source(...) | element | main.rs:402:5:402:11 | [post] mut_arr |
 | main.rs:414:41:414:67 | default_name | captured default_name | main.rs:414:41:414:67 | \|...\| ... |
-| main.rs:452:27:452:27 | 0 | Some | main.rs:452:22:452:28 | Some(...) |
+| main.rs:449:15:449:24 | source(...) | element | main.rs:449:14:449:34 | [...] |
+| main.rs:449:27:449:27 | 2 | element | main.rs:449:14:449:34 | [...] |
+| main.rs:449:30:449:30 | 3 | element | main.rs:449:14:449:34 | [...] |
+| main.rs:449:33:449:33 | 4 | element | main.rs:449:14:449:34 | [...] |
+| main.rs:478:27:478:27 | 0 | Some | main.rs:478:22:478:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or_else | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else |
@@ -722,3 +757,13 @@ readStep
 | main.rs:412:25:412:29 | names | element | main.rs:412:9:412:20 | TuplePat |
 | main.rs:414:41:414:67 | [post] \|...\| ... | captured default_name | main.rs:414:41:414:67 | [post] default_name |
 | main.rs:414:44:414:55 | this | captured default_name | main.rs:414:44:414:55 | default_name |
+| main.rs:451:10:451:11 | vs | element | main.rs:451:10:451:14 | vs[0] |
+| main.rs:452:11:452:35 | ... .unwrap(...) | &ref | main.rs:452:10:452:35 | * ... |
+| main.rs:453:11:453:35 | ... .unwrap(...) | &ref | main.rs:453:10:453:35 | * ... |
+| main.rs:455:14:455:15 | vs | element | main.rs:455:9:455:9 | v |
+| main.rs:458:9:458:10 | &... | &ref | main.rs:458:10:458:10 | v |
+| main.rs:458:15:458:23 | vs.iter(...) | element | main.rs:458:9:458:10 | &... |
+| main.rs:463:9:463:10 | &... | &ref | main.rs:463:10:463:10 | v |
+| main.rs:463:15:463:17 | vs2 | element | main.rs:463:9:463:10 | &... |
+| main.rs:467:29:467:29 | x | &ref | main.rs:467:28:467:29 | * ... |
+| main.rs:469:14:469:27 | vs.into_iter(...) | element | main.rs:469:9:469:9 | v |

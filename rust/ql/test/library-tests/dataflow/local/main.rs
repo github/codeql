@@ -445,6 +445,32 @@ fn parse() {
     sink(d); // $ MISSING: hasTaintFlow=90
 }
 
+fn iterators() {
+    let vs = [source(91), 2, 3, 4];
+
+    sink(vs[0]); // $ hasValueFlow=91
+    sink(*vs.iter().next().unwrap()); // $ MISSING: hasValueFlow=91
+    sink(*vs.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=91
+
+    for v in vs {
+        sink(v); // $ hasValueFlow=91
+    }
+    for &v in vs.iter() {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    let vs2 : Vec<&i64> = vs.iter().collect();
+    for &v in vs2 {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    vs.iter().map(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+
+    for v in vs.into_iter() {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -482,4 +508,5 @@ fn main() {
     captured_variable_and_continue(vec![]);
     macro_invocation();
     parse();
+    iterators();
 }
