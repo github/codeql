@@ -1,3 +1,7 @@
+#select
 | tst.js:2:9:2:16 | x + x>>1 | Whitespace around nested operators contradicts precedence. |
 | tst.js:42:9:42:20 | p in o&&o[p] | Whitespace around nested operators contradicts precedence. |
 | tst.js:48:1:48:12 | x  +  x >> 1 | Whitespace around nested operators contradicts precedence. |
+testFailures
+| tst.js:2:9:2:16 | Whitespace around nested operators contradicts precedence. | Unexpected result: Alert |
+| tst.js:42:9:42:20 | Whitespace around nested operators contradicts precedence. | Unexpected result: Alert |

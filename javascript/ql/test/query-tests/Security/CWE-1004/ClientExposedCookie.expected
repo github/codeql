@@ -1,3 +1,4 @@
+#select
 | tst-httpOnly.js:11:9:15:2 | session ... lert\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
 | tst-httpOnly.js:29:9:29:21 | session(sess) | Sensitive server cookie is missing 'httpOnly' flag. |
 | tst-httpOnly.js:38:9:38:22 | session(sess2) | Sensitive server cookie is missing 'httpOnly' flag. |
@@ -18,3 +19,18 @@
 | tst-httpOnly.js:301:9:305:2 | session ... lert\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
 | tst-httpOnly.js:318:9:322:2 | session ... tter\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
 | tst-httpOnly.js:328:37:328:68 | "sessio ... onKey() | Sensitive server cookie is missing 'httpOnly' flag. |
+testFailures
+| tst-httpOnly.js:11:9:15:2 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:14:21:14:30 | // $ Alert | Missing result: Alert |
+| tst-httpOnly.js:51:9:55:2 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:54:21:54:30 | // $ Alert | Missing result: Alert |
+| tst-httpOnly.js:68:5:73:10 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:71:30:71:39 | // $ Alert | Missing result: Alert |
+| tst-httpOnly.js:78:5:81:10 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:82:19:82:28 | // $ Alert | Missing result: Alert |
+| tst-httpOnly.js:98:26:98:35 | // $ Alert | Missing result: Alert |
+| tst-httpOnly.js:101:5:101:43 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:301:9:305:2 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:304:33:304:42 | // $ Alert | Missing result: Alert |
+| tst-httpOnly.js:318:9:322:2 | Sensitive server cookie is missing 'httpOnly' flag. | Unexpected result: Alert |
+| tst-httpOnly.js:321:33:321:88 | // $ Al ...  matter | Missing result: Alert |

@@ -1,3 +1,4 @@
+#select
 | DynamicCreationOfUntrustedSourceUse.html:18:28:18:129 | ('https ... /ga.js' | Script loaded using unencrypted connection. |
 | DynamicCreationOfUntrustedSourceUse.html:21:26:21:50 | 'http:/ ... e.com/' | Iframe loaded using unencrypted connection. |
 | DynamicCreationOfUntrustedSourceUse.html:31:27:31:40 | getUrl('v123') | Iframe loaded using unencrypted connection. |
@@ -5,3 +6,12 @@
 | StaticCreationOfUntrustedSourceUse.html:6:9:6:56 | <script>...</> | Script loaded using unencrypted connection. |
 | StaticCreationOfUntrustedSourceUse.html:9:9:9:58 | <iframe>...</> | Iframe loaded using unencrypted connection. |
 | StaticCreationOfUntrustedSourceUse.html:20:9:20:155 | <script>...</> | Script loaded from content delivery network with no integrity check. |
+testFailures
+| DynamicCreationOfUntrustedSourceUse.html:16:62:16:88 | // $ Al ... ternary | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:18:28:18:129 | Script loaded using unencrypted connection. | Unexpected result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:20:60:20:80 | // $ Al ... ttp URL | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:21:26:21:50 | Iframe loaded using unencrypted connection. | Unexpected result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:27:42:27:84 | // $ Al ... h calls | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:31:27:31:40 | Iframe loaded using unencrypted connection. | Unexpected result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:33:61:33:113 | // $ Al ... tribute | Missing result: Alert |
+| DynamicCreationOfUntrustedSourceUse.html:34:41:34:76 | Iframe loaded using unencrypted connection. | Unexpected result: Alert |

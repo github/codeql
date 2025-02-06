@@ -1,3 +1,4 @@
+#select
 | MissingCsrfMiddlewareBad.js:7:9:7:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | MissingCsrfMiddlewareBad.js:10:26:12:1 | functio ... il"];\\n} | request handler |
 | MissingCsrfMiddlewareBad.js:17:13:17:26 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | MissingCsrfMiddlewareBad.js:25:30:27:6 | errorCa ... \\n    }) | request handler |
 | MissingCsrfMiddlewareBad.js:33:13:33:26 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | MissingCsrfMiddlewareBad.js:41:30:43:6 | errorCa ... \\n    }) | request handler |
@@ -12,3 +13,22 @@
 | unused_cookies.js:6:9:6:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | unused_cookies.js:8:34:13:1 | (req, r ... Ok');\\n} | request handler |
 | unused_cookies.js:6:9:6:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | unused_cookies.js:29:19:32:1 | (req, r ... Ok');\\n} | request handler |
 | unused_cookies.js:6:9:6:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | unused_cookies.js:34:22:37:1 | (req, r ... Ok');\\n} | request handler |
+testFailures
+| MissingCsrfMiddlewareBad.js:7:9:7:22 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| MissingCsrfMiddlewareBad.js:17:13:17:26 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| MissingCsrfMiddlewareBad.js:33:13:33:26 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| csurf_example.js:18:9:18:22 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| csurf_example.js:31:62:31:71 | // $ Alert | Missing result: Alert |
+| fastify.js:5:14:5:38 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| fastify.js:20:36:20:69 | // $ Al ... tection | Missing result: Alert |
+| fastify2.js:7:16:7:40 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| fastify2.js:24:36:24:69 | // $ Al ... tection | Missing result: Alert |
+| lusca_example.js:9:9:9:22 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| lusca_example.js:26:64:26:95 | // $ Al ...  option | Missing result: Alert |
+| lusca_example.js:31:62:31:71 | // $ Alert | Missing result: Alert |
+| tst.js:6:9:6:22 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| tst.js:8:37:8:46 | // $ Alert | Missing result: Alert |
+| unused_cookies.js:6:9:6:22 | This cookie middleware is serving a $@ without CSRF protection. | Unexpected result: Alert |
+| unused_cookies.js:8:50:8:74 | // $ Al ... cookies | Missing result: Alert |
+| unused_cookies.js:29:35:29:80 | // $ Al ... otected | Missing result: Alert |
+| unused_cookies.js:34:38:34:86 | // $ Al ... otected | Missing result: Alert |
