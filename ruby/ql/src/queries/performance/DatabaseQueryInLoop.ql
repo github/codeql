@@ -71,8 +71,6 @@ from LoopingCall loop, DataFlow::CallNode call
 where
   // Disregard loops over constants
   not isArrayConstant(loop.getReceiver().asExpr(), _) and
-  // Disregard tests
-  not call.getLocation().getFile().getAbsolutePath().matches("%test%") and
   // Disregard cases where the looping is influenced by the query result
   not usedInLoopControlGuard(call, _) and
   // Only report the inner most loop
