@@ -1,10 +1,10 @@
 /**
- * @name Could be hoisted
- * @description Hoist Rails `ActiveRecord::Relation` query calls out of loops.
+ * @name Database query in a loop
+ * @description Database queries in a loop can lead to an unnecessary amount of database calls and poor performance.
  * @kind problem
  * @problem.severity info
  * @precision high
- * @id rb/could-be-hoisted
+ * @id rb/database-query-in-loop
  * @tags performance
  */
 
