@@ -241,7 +241,7 @@ final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
     exists(RecordExprField ref |
       ref = node.getRecordExprFieldList().getAField() and
       any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result) and
-      field = ref.getNameRef().getText()
+      field = ref.getFieldName()
     )
   }
 }

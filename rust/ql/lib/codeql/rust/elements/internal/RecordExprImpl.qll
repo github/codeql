@@ -32,7 +32,7 @@ module Impl {
     RecordField getRecordField(string name) {
       exists(PathResolution::ItemNode i |
         i = PathResolution::resolvePath(this.getPath()) and
-        name = this.getRecordExprFieldList().getAField().getNameRef().getText()
+        name = this.getRecordExprFieldList().getAField().getFieldName()
       |
         result.isStructField(i, name) or
         result.isVariantField(i, name)
