@@ -11,6 +11,8 @@
    }
  
    class UnknownLocation instanceof Location;
+
+   
  }
  
  module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
@@ -91,6 +93,11 @@
       * Gets the name of this algorithm, e.g., "AES" or "SHA".
       */
      abstract string getAlgorithmName();
+
+    /**
+     * Gets the raw name of this algorithm from source (no parsing or formatting)
+     */
+    abstract string getRawAlgorithmName();
  
      final override string toString() { result = this.getAlgorithmName() }
    }
@@ -148,7 +155,7 @@
      /**
       * Gets the raw name of this hash algorithm from source.
       */
-     abstract string getRawAlgorithmName();
+     override abstract string getRawAlgorithmName();
    }
  
    /**
@@ -231,5 +238,90 @@
 
     override string getOperationName() { result = "ENCRYPTION" }
   }
+
+//   newtype TBlockCipherFamilyType =
+// // We're saying by this that all of these have an identical interface / properties / edges
+// CBC() or ECB()
+
+
+// abstract class BlockCiper extends Algorithm {
+
+//   abstract string getKeySize(Location location);
+
+//     abstract TBlockCipherFamilyType getBlockCipherFamilyType();
+
+//     override predicate properties(string key, string value, Location location) {
+//       super.properties(key, value, location)
+//       or
+//       key = "key_size" and
+//       if exists(this.getKeySize(location))
+//       then value = this.getKeySize(location)
+//       else (
+//         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+//       )
+//       // other properties, like field type are possible, but not modeled until considered necessary
+//     }
+
+//     override string getAlgorithmName() { result = this.getRawAlgorithmName().toUpperCase()}
+
+//     override abstract string getRawAlgorithmName();
+// }
+
+newtype TModeOperation =
+ECB() or OtherMode()
+
+abstract class ModeOfOperation extends Algorithm {
+  string getValue() {result = ""}
+
+  final private predicate modeToNameMapping(TModeOperation type, string name) {
+    type instanceof ECB and name = "ECB"
+    or
+    type instanceof OtherMode and name = this.getRawAlgorithmName()
+  }
+
+  abstract TModeOperation getModeType();
+
+  override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
+
+}
+
+newtype TCipherStructure =
+Block() or Stream()
+
+  newtype TSymmetricCipherFamilyType =
+// We're saying by this that all of these have an identical interface / properties / edges
+AES()
+
+  /**
+   * Symmetric algorithms
+   */
+  abstract class SymmetricAlgorithm extends Algorithm {
+
+
+    abstract TSymmetricCipherFamilyType getSymmetricCipherFamilyType();
+
+    abstract string getKeySize(Location location);
+
+    abstract TCipherStructure getCipherType();
+
+
+    //mode, padding scheme, keysize, block/stream, auth'd
+    //nodes = mode, padding scheme
+    //properties = keysize, block/stream, auth'd
+    //leave authd to lang specific
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      key = "key_size" and
+      if exists(this.getKeySize(location))
+      then value = this.getKeySize(location)
+      else (
+        value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+      )
+      //add more keys to index props
+    }
+
+    abstract ModeOfOperation getModeOfOperation();
+}
  }
  
