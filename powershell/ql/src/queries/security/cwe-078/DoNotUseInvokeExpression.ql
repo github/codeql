@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 9.8
  * @precision high
- * @id powershell/microsoft-public/do-not-use-invoke-expression
+ * @id powershell/microsoft/microsoft-public/do-not-use-invoke-expression
  * @tags security
  */
 import powershell
