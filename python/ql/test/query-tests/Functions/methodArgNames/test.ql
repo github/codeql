@@ -14,7 +14,7 @@ module MethodArgTest implements TestSig {
         firstArgShouldBeNamedSelfAndIsnt(f) and
         tag = "shouldBeSelf"
         or
-        firstArgShouldBeNamedClsAndIsnt(f) and
+        firstArgShouldReferToClsAndDoesnt(f) and
         tag = "shouldBeCls"
       )
     )

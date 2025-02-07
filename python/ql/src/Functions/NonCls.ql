@@ -16,7 +16,7 @@ import MethodArgNames
 
 from Function f, string message
 where
-  firstArgShouldBeNamedClsAndIsnt(f) and
+  firstArgShouldReferToClsAndDoesnt(f) and
   (
     if exists(f.getArgName(0))
     then

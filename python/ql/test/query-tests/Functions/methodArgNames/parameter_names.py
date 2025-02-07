@@ -141,3 +141,10 @@ class SpecialMethodNames(object):
 
     def __class_getitem__(cls):
         pass
+
+from dataclasses import dataclass, field
+
+@dataclass 
+class A:
+    # Lambdas used in initilisation aren't methods.
+    x: int = field(default_factory = lambda: 2)
