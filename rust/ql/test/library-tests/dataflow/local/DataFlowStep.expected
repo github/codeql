@@ -4,6 +4,8 @@ localStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::hint::must_use | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::hint::must_use | MaD:21 |
 | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or_else | MaD:7 |
 | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or_else | MaD:18 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | MaD:22 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::nth | MaD:23 |
 | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::expect | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::expect | MaD:2 |
 | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap | MaD:3 |
 | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unwrap_or | MaD:5 |
@@ -536,7 +538,11 @@ models
 | 19 | Summary: lang:core; <crate::result::Result>::unwrap_or_else; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
 | 20 | Summary: lang:core; <crate::result::Result>::unwrap_unchecked; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
 | 21 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
+| 22 | Summary: lang:core; crate::iter::traits::iterator::Iterator::collect; Argument[self].Element; ReturnValue.Element; value |
+| 23 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Variant[crate::option::Option::Some(0)]; value |
 storeStep
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::collect |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::nth | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::nth |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text_with_charset | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text_with_charset |
@@ -639,6 +645,8 @@ readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_default | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_default |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_else | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_unchecked | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_unchecked |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::collect | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::nth | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth |
 | main.rs:33:9:33:15 | Some(...) | Some | main.rs:33:14:33:14 | _ |
 | main.rs:87:11:87:11 | i | &ref | main.rs:87:10:87:11 | * ... |
 | main.rs:95:10:95:10 | a | tuple.0 | main.rs:95:10:95:12 | a.0 |
