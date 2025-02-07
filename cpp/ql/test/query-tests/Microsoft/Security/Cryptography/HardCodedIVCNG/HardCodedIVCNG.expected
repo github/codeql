@@ -1,0 +1,1 @@
+| Test.cpp:56:16:60:2 | {...} | Calling BCryptEncrypt with a hard-coded IV on function  |

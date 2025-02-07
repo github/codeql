@@ -1,0 +1,8 @@
+| test.cpp:50:43:50:61 | 1 | Hard-coded use of deprecated security protocol SP_PROT_PCT1_SERVER set here $@. | test.cpp:50:43:50:61 | 1 | SP_PROT_PCT1_SERVER |
+| test.cpp:51:43:51:61 | 4 | Hard-coded use of deprecated security protocol SP_PROT_SSL2_SERVER set here $@. | test.cpp:51:43:51:61 | 4 | SP_PROT_SSL2_SERVER |
+| test.cpp:52:43:52:61 | 16 | Hard-coded use of deprecated security protocol SP_PROT_SSL3_SERVER set here $@. | test.cpp:52:43:52:61 | 16 | SP_PROT_SSL3_SERVER |
+| test.cpp:53:43:53:56 | ... \| ... | Hard-coded use of deprecated security protocol SP_PROT_TLS1_1 set here $@. | test.cpp:53:43:53:56 | ... \| ... | SP_PROT_TLS1_1 |
+| test.cpp:54:44:54:88 | ... \| ... | Hard-coded use of deprecated security protocol ... \| ... set here $@. | test.cpp:54:44:54:88 | ... \| ... | ... \| ... |
+| test.cpp:55:43:55:58 | ... \| ... | Hard-coded use of deprecated security protocol SP_PROT_SSL3TLS1 set here $@. | test.cpp:55:43:55:58 | ... \| ... | SP_PROT_SSL3TLS1 |
+| test.cpp:56:54:56:74 | 256 | Hard-coded use of deprecated security protocol SP_PROT_TLS1_1_SERVER set here $@. | test.cpp:56:54:56:74 | 256 | SP_PROT_TLS1_1_SERVER |
+| test.cpp:56:78:56:98 | 512 | Hard-coded use of deprecated security protocol SP_PROT_TLS1_1_CLIENT set here $@. | test.cpp:56:78:56:98 | 512 | SP_PROT_TLS1_1_CLIENT |
