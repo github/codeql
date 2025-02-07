@@ -1,5 +1,5 @@
 /**
- * @id cpp/microsoft/microsoft-public/sizeof/sizeof-or-operation-as-argument
+ * @id cpp/microsoft/public/sizeof/sizeof-or-operation-as-argument
  * @name Usage of an expression that is a binary operation, or sizeof call passed as an argument to a sizeof call
  * @description When the `expr` passed to `sizeof` is a binary operation, or a sizeof call, this is typically a sign that there is a confusion on the usage of sizeof.
  * @tags security
