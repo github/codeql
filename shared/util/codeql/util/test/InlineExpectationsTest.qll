@@ -347,11 +347,11 @@ module Make<InlineExpectationsTestSig Impl> {
     }
 
     class FalsePositiveTestExpectation extends ValidTestExpectation {
-      FalsePositiveTestExpectation() { this.getKnownFailure() = "SPURIOUS" }
+      FalsePositiveTestExpectation() { this.getKnownFailure() = ["", "TODO-"] + "SPURIOUS" }
     }
 
     class FalseNegativeTestExpectation extends ValidTestExpectation {
-      FalseNegativeTestExpectation() { this.getKnownFailure() = "MISSING" }
+      FalseNegativeTestExpectation() { this.getKnownFailure() = ["", "TODO-"] + "MISSING" }
     }
 
     class InvalidTestExpectation extends Expectation, TInvalidExpectation {
@@ -529,7 +529,7 @@ private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(
  */
 private newtype TColumn =
   TDefaultColumn() or
-  TNamedColumn(string name) { name = ["MISSING", "SPURIOUS"] }
+  TNamedColumn(string name) { name = ["", "TODO-"] + ["MISSING", "SPURIOUS"] }
 
 bindingset[start, content]
 private int getEndOfColumnPosition(int start, string content) {
