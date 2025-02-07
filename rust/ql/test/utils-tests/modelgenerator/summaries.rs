@@ -57,14 +57,14 @@ impl MyStruct {
     // summary=repo::test;<crate::summaries::MyStruct>::get_foo;Argument[self].Struct[crate::summaries::MyStruct::foo];ReturnValue;value;dfc-generated
     pub fn get_foo(self) -> i64 {
         match self {
-            MyStruct { foo, bar: _ } => foo
+            MyStruct { foo, bar: _ } => foo,
         }
     }
 
     // summary=repo::test;<crate::summaries::MyStruct>::get_bar;Argument[self].Struct[crate::summaries::MyStruct::bar];ReturnValue;value;dfc-generated
     pub fn get_bar(self) -> f64 {
         match self {
-            MyStruct { foo: _, bar } => bar
+            MyStruct { foo: _, bar } => bar,
         }
     }
 }
