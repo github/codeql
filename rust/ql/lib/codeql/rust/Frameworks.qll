@@ -4,3 +4,4 @@
 
 private import codeql.rust.frameworks.rustcrypto.RustCrypto
 private import codeql.rust.frameworks.Sqlx
+private import codeql.rust.frameworks.stdlib.Clone
