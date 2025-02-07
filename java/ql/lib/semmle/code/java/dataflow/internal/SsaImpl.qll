@@ -44,7 +44,7 @@ private module TrackedVariablesImpl {
   }
 
   /** Holds if `f` is accessed more than once or inside a loop. */
-  predicate multiAccessed(SsaSourceField f) { loopAccessed(f) or 1 < numberOfAccesses(f) }
+  private predicate multiAccessed(SsaSourceField f) { loopAccessed(f) or 1 < numberOfAccesses(f) }
 
   /**
    * Holds if `f` is a field that is interesting as a basis for SSA.
