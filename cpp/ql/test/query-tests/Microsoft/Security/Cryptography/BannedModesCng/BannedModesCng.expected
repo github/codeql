@@ -1,0 +1,8 @@
+| Test.cpp:57:2:57:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:71:2:71:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:73:2:73:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:75:2:75:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:77:2:77:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:79:2:79:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:81:2:81:18 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
+| Test.cpp:83:2:83:50 | call to BCryptSetProperty | Call to 'BCryptSetProperty' function with argument pszProperty = "ChainingMode" is setting up a banned block cipher mode. |
