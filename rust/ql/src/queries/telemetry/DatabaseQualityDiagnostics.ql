@@ -38,4 +38,4 @@ query predicate diagnosticAttributes(DbQualityDiagnostic e, string key, string v
 
 from DbQualityDiagnostic d
 select d, d.toString(), 1
-/* Warning severity */
+/* 1 = Warning severity */
