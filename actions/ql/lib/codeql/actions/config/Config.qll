@@ -127,6 +127,18 @@ predicate vulnerableActionsDataModel(
 predicate immutableActionsDataModel(string action) { Extensions::immutableActionsDataModel(action) }
 
 /**
+ * MaD models for minimum permissions for actions
+ * Fields:
+ *    - action: action name
+ *    - minimum_permissions: list of minimum permissions
+ */
+predicate minimumPermissionsDataModel(
+  string action, string minimum_permissions
+) {
+  Extensions::minimumPermissionsDataModel(action, minimum_permissions)
+}
+
+/**
  * MaD models for untrusted git commands
  * Fields:
  *    - cmd_regex: Regular expression for matching untrusted git commands

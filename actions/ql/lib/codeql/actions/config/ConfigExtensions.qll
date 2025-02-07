@@ -64,6 +64,11 @@ extensible predicate vulnerableActionsDataModel(
 extensible predicate immutableActionsDataModel(string action);
 
 /**
+ * Holds for actions that have a minimum permissions definition.
+ */
+extensible predicate minimumPermissionsDataModel(string action, string minimum_permissions);
+
+/**
  * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
  */
 extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag);
