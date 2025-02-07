@@ -38,18 +38,6 @@ predicate happensInLoop(LoopingCall loop, DataFlow::CallNode e) {
   loop.getLoopBlock().asCallableAstNode() = e.asExpr().getScope()
 }
 
-predicate happensInOuterLoop(LoopingCall outerLoop, DataFlow::CallNode e) {
-  exists(LoopingCall innerLoop |
-    happensInLoop(outerLoop, innerLoop) and
-    happensInLoop(innerLoop, e)
-  )
-}
-
-predicate happensInInnermostLoop(LoopingCall loop, DataFlow::CallNode e) {
-  happensInLoop(loop, e) and
-  not happensInOuterLoop(loop, e)
-}
-
 // The ActiveRecord instance is used to potentially control the loop
 predicate usedInLoopControlGuard(ActiveRecordInstance ar, DataFlow::Node guard) {
   TaintTracking::localTaint(ar, guard) and
@@ -73,8 +61,7 @@ where
   not isArrayConstant(loop.getReceiver().asExpr(), _) and
   // Disregard cases where the looping is influenced by the query result
   not usedInLoopControlGuard(call, _) and
-  // Only report the inner most loop
-  happensInInnermostLoop(loop, call) and
+  happensInLoop(loop, call) and
   // Only report calls that are likely to be expensive
   call instanceof ActiveRecordModelFinderCall and
   not call.getMethodName() in ["new", "create"]
