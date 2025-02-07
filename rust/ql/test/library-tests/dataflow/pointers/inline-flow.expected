@@ -8,6 +8,9 @@ edges
 | main.rs:15:9:15:9 | c | main.rs:16:10:16:10 | c | provenance |  |
 | main.rs:15:13:15:14 | * ... | main.rs:15:9:15:9 | c | provenance |  |
 | main.rs:15:14:15:14 | b [&ref] | main.rs:15:13:15:14 | * ... | provenance |  |
+| main.rs:31:6:31:6 | [post] b [&ref] | main.rs:32:11:32:11 | b [&ref] | provenance |  |
+| main.rs:31:10:31:19 | source(...) | main.rs:31:6:31:6 | [post] b [&ref] | provenance |  |
+| main.rs:32:11:32:11 | b [&ref] | main.rs:32:10:32:11 | * ... | provenance |  |
 | main.rs:37:25:37:26 | &... [&ref] | main.rs:37:26:37:26 | n | provenance |  |
 | main.rs:37:25:37:32 | ...: ... [&ref] | main.rs:37:25:37:26 | &... [&ref] | provenance |  |
 | main.rs:37:26:37:26 | n | main.rs:38:10:38:10 | n | provenance |  |
@@ -54,6 +57,10 @@ nodes
 | main.rs:15:13:15:14 | * ... | semmle.label | * ... |
 | main.rs:15:14:15:14 | b [&ref] | semmle.label | b [&ref] |
 | main.rs:16:10:16:10 | c | semmle.label | c |
+| main.rs:31:6:31:6 | [post] b [&ref] | semmle.label | [post] b [&ref] |
+| main.rs:31:10:31:19 | source(...) | semmle.label | source(...) |
+| main.rs:32:10:32:11 | * ... | semmle.label | * ... |
+| main.rs:32:11:32:11 | b [&ref] | semmle.label | b [&ref] |
 | main.rs:37:25:37:26 | &... [&ref] | semmle.label | &... [&ref] |
 | main.rs:37:25:37:32 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
 | main.rs:37:26:37:26 | n | semmle.label | n |
@@ -100,6 +107,7 @@ subpaths
 testFailures
 #select
 | main.rs:16:10:16:10 | c | main.rs:13:13:13:22 | source(...) | main.rs:16:10:16:10 | c | $@ | main.rs:13:13:13:22 | source(...) | source(...) |
+| main.rs:32:10:32:11 | * ... | main.rs:31:10:31:19 | source(...) | main.rs:32:10:32:11 | * ... | $@ | main.rs:31:10:31:19 | source(...) | source(...) |
 | main.rs:38:10:38:10 | n | main.rs:42:15:42:24 | source(...) | main.rs:38:10:38:10 | n | $@ | main.rs:42:15:42:24 | source(...) | source(...) |
 | main.rs:70:10:70:30 | my_number.to_number(...) | main.rs:69:40:69:49 | source(...) | main.rs:70:10:70:30 | my_number.to_number(...) | $@ | main.rs:69:40:69:49 | source(...) | source(...) |
 | main.rs:80:10:80:31 | my_number.get_number(...) | main.rs:79:41:79:50 | source(...) | main.rs:80:10:80:31 | my_number.get_number(...) | $@ | main.rs:79:41:79:50 | source(...) | source(...) |

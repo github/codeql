@@ -79,11 +79,12 @@ pub fn apply<F>(n: i64, f: F) -> i64 where F : FnOnce(i64) -> i64 {
 
 // Flow out of mutated arguments
 
+// summary=repo::test;crate::summaries::set_int;Argument[1];Argument[0].Reference;value;dfc-generated
 pub fn set_int(n: &mut i64, c: i64) {
     *n = c;
 }
 
-// summary=repo::test;crate::summaries::read_int;Argument[0];ReturnValue;value;dfc-generated
+// summary=repo::test;crate::summaries::read_int;Argument[0].Reference;ReturnValue;value;dfc-generated
 pub fn read_int(n: &mut i64) -> i64 {
     *n
 }

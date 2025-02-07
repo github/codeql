@@ -29,7 +29,7 @@ fn write_and_read_through_borrow() {
     let b = &mut a;
     sink(*b);
     *b = source(37);
-    sink(*b); // $ MISSING: hasValueFlow=37
+    sink(*b); // $ hasValueFlow=37
     *b = 0;
     sink(*b); // now cleared
 }

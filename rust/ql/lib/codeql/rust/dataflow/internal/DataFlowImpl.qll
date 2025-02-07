@@ -1212,6 +1212,17 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   pragma[nomagic]
+  private predicate referenceAssignment(Node node1, Node node2, ReferenceContent c) {
+    exists(AssignmentExprCfgNode assignment, PrefixExprCfgNode deref |
+      assignment.getLhs() = deref and
+      deref.getOperatorName() = "*" and
+      node1.asExpr() = assignment.getRhs() and
+      node2.asExpr() = deref.getExpr() and
+      exists(c)
+    )
+  }
+
+  pragma[nomagic]
   private predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExprCfgNode call, int pos |
       node1.asExpr() = call.getArgument(pragma[only_bind_into](pos)) and
@@ -1241,6 +1252,8 @@ module RustDataFlow implements InputSig<Location> {
       ]
     or
     fieldAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
+    or
+    referenceAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
     exists(AssignmentExprCfgNode assignment, IndexExprCfgNode index |
       c instanceof ElementContent and
@@ -1284,6 +1297,8 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate clearsContent(Node n, ContentSet cs) {
     fieldAssignment(_, n, cs.(SingletonContentSet).getContent())
+    or
+    referenceAssignment(_, n, cs.(SingletonContentSet).getContent())
     or
     FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(Node::FlowSummaryNode).getSummaryNode(),
       cs)

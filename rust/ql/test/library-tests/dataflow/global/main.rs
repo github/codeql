@@ -146,7 +146,7 @@ fn mutates_argument_1() {
     let m = &mut n;
     sink(*m);
     set_int(m, source(37));
-    sink(*m); // $ MISSING: hasValueFlow=37
+    sink(*m); // $ hasValueFlow=37
 }
 
 fn mutates_argument_2() {
