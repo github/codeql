@@ -2080,6 +2080,16 @@ class CaptureNode extends NodeImpl, TCaptureNode {
   override string toStringImpl() { result = cn.toString() }
 }
 
+/**
+ * Holds if a property has accessors declared in multiple locations, and where
+ * all accessors have at least one declaration without a body.
+ * This can happen if both a "real" and a "stub" implementation is included in the
+ * same database (which is the case for .NET Runtime).
+ */
+private predicate hasAutoImplementation(Property p) {
+  forall(Accessor a | a = p.getAnAccessor() | count(getASourceLocation(a)) > count(a.getBody()))
+}
+
 /** A field or a property. */
 class FieldOrProperty extends Assignable, Modifiable {
   FieldOrProperty() {
@@ -2100,6 +2110,8 @@ class FieldOrProperty extends Assignable, Modifiable {
           p.isAutoImplementedReadOnly()
           or
           p.getDeclaringType() instanceof AnonymousClass
+          or
+          hasAutoImplementation(p)
         )
         or
         p.fromLibrary()
