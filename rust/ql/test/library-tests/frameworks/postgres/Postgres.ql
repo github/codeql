@@ -15,10 +15,10 @@ module PostgresTest implements TestSig {
       value = ""
     )
     or
-    exists(ModeledDatabaseSource sink |
-      location = sink.getLocation() and
+    exists(ModeledDatabaseSource source |
+      location = source.getLocation() and
       location.getFile().getBaseName() != "" and
-      element = sink.toString() and
+      element = source.toString() and
       tag = "database-read" and
       value = ""
     )
