@@ -1,6 +1,6 @@
 function f(x) {
 	if (x > 23) {
-		function g() {
+		function g() { // $ TODO-SPURIOUS: Alert
 			return 42;
 		}
 	} else {

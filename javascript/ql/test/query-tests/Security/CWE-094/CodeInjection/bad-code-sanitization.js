@@ -49,7 +49,7 @@ var express = require('express');
 var app = express();
 
 app.get('/some/path', function(req, res) {
-  var foo = `(function(){${JSON.stringify(req.param("wobble"))}))` // NOT - the source is remote-flow, but we know of no sink.
+  var foo = `(function(){${JSON.stringify(req.param("wobble"))}))` // $ TODO-SPURIOUS: Alert[js/bad-code-sanitization] - NOT - the source is remote-flow, but we know of no sink.
 
   setTimeout(`(function(){${JSON.stringify(req.param("wobble"))}))`); // OK - the source is remote-flow, and the sink is code-injection.
 

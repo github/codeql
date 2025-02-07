@@ -12,12 +12,12 @@
 })();
 
 (function() {
-    require("http").request({auth: "user:hgfedcba"});  // $ Alert
-    require("https").request({auth: "user:hgfedcba"}); // $ Alert
+    require("http").request({auth: "user:hgfedcba"});  // $ TODO-MISSING: Alert
+    require("https").request({auth: "user:hgfedcba"}); // $ TODO-MISSING: Alert
     function getCredentials() {
         return "user:hgfedcba";
     }
-    require("http").request({auth: getCredentials()}); // $ Alert
+    require("http").request({auth: getCredentials()}); // $ TODO-MISSING: Alert
     require("http").request({auth: getUnknownCredentials()});
 })();
 
@@ -127,12 +127,12 @@
 })();
 
 (function(){
-    require('crypto').createHmac('sha256', 'hgfedcba');
-    require("crypto-js/aes").encrypt('my message', 'hgfedcba');
+    require('crypto').createHmac('sha256', 'hgfedcba'); // $ TODO-SPURIOUS: Alert
+    require("crypto-js/aes").encrypt('my message', 'hgfedcba'); // $ TODO-SPURIOUS: Alert
 })()
 
 (function(){
-    require("cookie-session")({ secret: "hgfedcba" });
+    require("cookie-session")({ secret: "hgfedcba" }); // $ TODO-SPURIOUS: Alert
 })()
 
 (function(){
@@ -168,8 +168,8 @@
     const base64 = require('base-64');
     const fetch = require("node-fetch");
 
-    const USER = 'sdsdag';
-    const PASS = 'sdsdag';
+    const USER = 'sdsdag'; // $ TODO-SPURIOUS: Alert
+    const PASS = 'sdsdag'; // $ TODO-SPURIOUS: Alert
     const AUTH = base64.encode(`${USER}:${PASS}`);
 
     const rsp = await fetch(ENDPOINT, {
@@ -211,8 +211,8 @@
 (function () {
     const base64 = require('base-64');
 
-    const USER = 'sdsdag';
-    const PASS = 'sdsdag';
+    const USER = 'sdsdag'; // $ TODO-SPURIOUS: Alert
+    const PASS = 'sdsdag'; // $ TODO-SPURIOUS: Alert
     const AUTH = base64.encode(`${USER}:${PASS}`);
 
     // browser API
@@ -228,7 +228,7 @@
 (async function () {
     import fetch from 'node-fetch';
 
-    const username = 'sdsdag';
+    const username = 'sdsdag'; // $ TODO-SPURIOUS: Alert
     const password = config.get('some_actually_secrect_password');
     const response = await fetch(ENDPOINT, {
       method: 'get',
@@ -242,10 +242,10 @@
 (function () {
     import jwt from "jsonwebtoken";
 
-    var privateKey = "myHardCodedPrivateKey";
+    var privateKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
     var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'});
 
-    var publicKey = "myHardCodedPublicKey";
+    var publicKey = "myHardCodedPublicKey"; // $ TODO-SPURIOUS: Alert
     jwt.verify(token, publicKey, function(err, decoded) {
         console.log(decoded);
     });
@@ -305,34 +305,34 @@
 (function () {
     const jwt_simple = require("jwt-simple");
 
-    var privateKey = "myHardCodedPrivateKey";
-    jwt_simple.decode(UserToken, privateKey); // $ Alert
+    var privateKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
+    jwt_simple.decode(UserToken, privateKey); // $ TODO-MISSING: Alert
 })();
 
 
 (async function () {
     const jose = require("jose");
 
-    var privateKey = "myHardCodedPrivateKey";
-    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // $ Alert
+    var privateKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
+    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // $ TODO-MISSING: Alert
 
     const spki = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhYOFK2Ocbbpb/zVypi9...
-    -----END PUBLIC KEY-----`
+    -----END PUBLIC KEY-----` // $ TODO-SPURIOUS: Alert
     let publicKey = await jose.importSPKI(spki, 'RS256')
-    jose.jwtVerify(token, publicKey) // $ Alert
+    jose.jwtVerify(token, publicKey) // $ TODO-MISSING: Alert
 
     const alg = 'RS256'
     const jwk = {
         kty: 'RSA',
-        n: 'whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6f...',
+        n: 'whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6f...', // $ TODO-SPURIOUS: Alert
         e: 'AQAB',
     }
     publicKey = await jose.importJWK(jwk, alg)
     const jwt =
         'eyJhbGciOiJSUzI1NiJ9.eyJ1cm46ZXhhbXBsZTpjbGFpbSI6dHJ1ZSwiaWF0IjoxNjY5MDU2NDg4LCJpc3MiOiJ1cm46ZXhhbXBsZTppc3N1ZXIiLCJhdWQiOiJ1cm46ZXhhbXBsZTphdWRpZW5jZSJ9.gXrPZ3yM_60dMXGE69dusbpzYASNA-XIOwsb5D5xYnSxyj6_D6OR_uR_1vqhUm4AxZxcrH1_-XJAve9HCw8az_QzHcN-nETt-v6stCsYrn6Bv1YOc-mSJRZ8ll57KVqLbCIbjKwerNX5r2_Qg2TwmJzQdRs-AQDhy-s_DlJd8ql6wR4n-kDZpar-pwIvz4fFIN0Fj57SXpAbLrV6Eo4Byzl0xFD8qEYEpBwjrMMfxCZXTlAVhAq6KCoGlDTwWuExps342-0UErEtyIqDnDGcrfNWiUsoo8j-29IpKd-w9-C388u-ChCxoHz--H8WmMSZzx3zTXsZ5lXLZ9IKfanDKg'
 
-    await jose.jwtVerify(jwt, publicKey, { // $ Alert
+    await jose.jwtVerify(jwt, publicKey, { // $ TODO-MISSING: Alert
         issuer: 'urn:example:issuer',
         audience: 'urn:example:audience',
     })
@@ -341,12 +341,12 @@
 (function () {
     const expressjwt = require("express-jwt");
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
 
     app.get(
         "/protected",
         expressjwt.expressjwt({
-            secret: secretKey, algorithms: ["HS256"] // $ Alert
+            secret: secretKey, algorithms: ["HS256"] // $ TODO-MISSING: Alert
         }),
         function (req, res) {
             if (!req.auth.admin) return res.sendStatus(401);
@@ -357,7 +357,7 @@
     app.get(
         "/protected",
         expressjwt.expressjwt({
-            secret: Buffer.from(secretKey, "base64"), // $ Alert
+            secret: Buffer.from(secretKey, "base64"), // $ TODO-MISSING: Alert
             algorithms: ["RS256"],
         }),
         function (req, res) {
@@ -372,17 +372,17 @@
     const JwtStrategy = require('passport-jwt').Strategy;
     const passport = require('passport')
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
 
     const opts = {}
-    opts.secretOrKey = secretKey; // $ Alert
+    opts.secretOrKey = secretKey; // $ TODO-MISSING: Alert
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         return done(null, false);
     }));
 
     passport.use(new JwtStrategy({
         secretOrKeyProvider: function (request, rawJwtToken, done) {
-            return done(null, secretKey) // $ Alert
+            return done(null, secretKey) // $ TODO-MISSING: Alert
         }
     }, function (jwt_payload, done) {
         return done(null, false);
@@ -393,10 +393,10 @@
     import NextAuth from "next-auth"
     import AppleProvider from "next-auth/providers/apple"
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
 
     NextAuth({
-        secret: secretKey, // $ Alert
+        secret: secretKey, // $ TODO-MISSING: Alert
         providers: [
             AppleProvider({
                 clientId: process.env.APPLE_ID,
@@ -411,7 +411,7 @@
     const jwt = require('koa-jwt');
     const app = new Koa();
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ TODO-SPURIOUS: Alert
 
-    app.use(jwt({ secret: secretKey })); // $ Alert
+    app.use(jwt({ secret: secretKey })); // $ TODO-MISSING: Alert
 })();

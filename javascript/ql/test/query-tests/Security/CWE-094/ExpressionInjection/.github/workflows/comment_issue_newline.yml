@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo '${{ github.event.comment.body }}'
+          echo '${{ github.event.comment.body }}' // $ TODO-SPURIOUS: Alert

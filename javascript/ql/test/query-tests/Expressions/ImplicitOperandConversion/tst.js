@@ -74,7 +74,7 @@ function l() {
   x ** 2; // $ Alert
 }
 
-1n + 1; // $ Alert - but not currently flagged
+1n + 1; // $ TODO-MISSING: Alert - but not currently flagged
 
 (function(){
     let sum = 0;
@@ -86,17 +86,17 @@ function l() {
 (function(){
     function f() {
     }
-    f()|0;
+    f()|0; // $ TODO-SPURIOUS: Alert
 
     unknown()|0;
 
     function g() {
     }
-    g()|0;
+    g()|0; // $ TODO-SPURIOUS: Alert
     g();
 
-    var a = g() + 2;
-    var b = g() + "str";
+    var a = g() + 2; // $ TODO-SPURIOUS: Alert
+    var b = g() + "str"; // $ TODO-SPURIOUS: Alert
 });
 
 

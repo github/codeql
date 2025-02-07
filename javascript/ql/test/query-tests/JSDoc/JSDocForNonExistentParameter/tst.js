@@ -1,7 +1,7 @@
 /**
  * NOT OK: The following param tag has a misspelled value.
  *
- * @param prameter The parameter's value.
+ * @param prameter The parameter's value. // $ TODO-SPURIOUS: Alert
  */ 
 function typo(parameter){ return parameter+19; }
 
@@ -9,7 +9,7 @@ function typo(parameter){ return parameter+19; }
  * NOT OK: The following param tag appears to be outdated
  * since the method does not take any parameters.
  *
- * @param sign The number's sign.
+ * @param sign The number's sign. // $ TODO-SPURIOUS: Alert
  */ 
 function outdated(){ return 42; }
 
@@ -48,13 +48,13 @@ function good3() {
 }
 
 /**
- * @param {IncomingMessage} opts
+ * @param {IncomingMessage} opts // $ TODO-SPURIOUS: Alert
  */
 var Cookie = foo.bar = function Cookie(options) {
 }
 
 /**
- * @param {IncomingMessage} opts
+ * @param {IncomingMessage} opts // $ TODO-SPURIOUS: Alert
  */
 Cookie2 = foo.bar2 = function Cookie2(options) {
 }

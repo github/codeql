@@ -30,11 +30,11 @@ fs.access("myfile", (err) => {
     return;
   }
 
-  fs.open("myfile", "wx", (err, fd) => { // $ Alert
+  fs.open("myfile", "wx", (err, fd) => { // $ TODO-MISSING: Alert
     if (err) throw err;
 
     // ....
-  });
+  }); // $ TODO-SPURIOUS: Alert
 });
 
 const filePath3 = createFile();

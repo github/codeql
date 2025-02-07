@@ -10,30 +10,30 @@
   },
   "dependencies": {
     "acorn": "*",
-    "esprima": "*",
+    "esprima": "*", // $ TODO-SPURIOUS: Alert
     "lodash": "*",
     "react": "*",
     "not_really_unused": "*",
-    "eslint-plugin-babel": "3.3.0",
+    "eslint-plugin-babel": "3.3.0", // $ TODO-SPURIOUS: Alert
     "jade": "*",
     "ejs": "*",
     "used-first-in-install-script": "*",
     "used-middle-in-install-script": "*",
     "used-middle-in-install-script-with-some-slashes": "*",
     "used-last-in-install-script": "*",
-    "not-really-used-in-install-script-because-of-substring": "*",
+    "not-really-used-in-install-script-because-of-substring": "*", // $ TODO-SPURIOUS: Alert
     "used-first-in-postinstall-script-dotslashed": "*",
     "used-in-preinstall-script": "*",
     "used-in-postinstall-script": "*",
-    "used-in-test-script": "*",
-    "used-in-custom-script": "*",
+    "used-in-test-script": "*", // $ TODO-SPURIOUS: Alert
+    "used-in-custom-script": "*", // $ TODO-SPURIOUS: Alert
     "used-in-require-with-exclamation-mark-separator": "*",
     "used-in-mjs-import": "*",
-    "used-in-mjs-require": "*",
+    "used-in-mjs-require": "*", // $ TODO-SPURIOUS: Alert
     "used-in-js-import": "*",
     "used-in-js-require": "*",
     "used-in-constant-template-require-string": "*",
-    "used-in-dynamic-template-require-string": "*",
+    "used-in-dynamic-template-require-string": "*", // $ TODO-SPURIOUS: Alert
     "used-in-silly-template-require-string": "*"
   },
   "devDependencies": {

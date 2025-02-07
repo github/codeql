@@ -158,7 +158,7 @@ module.exports.indirect2 = function (name) {
 	let args = ["-c", cmd];
 	cp.spawn(sh, args, cb);
 
-	let cmd2 = "rm -rf " + name;
+	let cmd2 = "rm -rf " + name; // $ TODO-SPURIOUS: Alert
 	var args2 = [cmd2];
 	cp.spawn(
 		'cmd.exe',
@@ -178,7 +178,7 @@ module.exports.sanitizer = function (name) {
 	var sanitized = "'" + name.replace(/'/g, "'\\''") + "'"
 	cp.exec("rm -rf " + sanitized);
 
-	var broken = "'" + name.replace(/'/g, "'\''") + "'"
+	var broken = "'" + name.replace(/'/g, "'\''") + "'" // $ TODO-SPURIOUS: Alert
 	cp.exec("rm -rf " + broken); // $ Alert
 }
 
@@ -250,7 +250,7 @@ module.exports.goodSanitizer = function (name) {
 
 	var cleaned = cleanInput(name);
 
-	cp.exec("rm -rf " + cleaned); // OK - But FP due to SanitizingRegExpTest not being able to generate a barrier edge for an edge into a phi node.
+	cp.exec("rm -rf " + cleaned); // $ TODO-SPURIOUS: Alert - OK - But FP due to SanitizingRegExpTest not being able to generate a barrier edge for an edge into a phi node.
 }
 
 var fs = require("fs");
@@ -363,7 +363,7 @@ function MyTrainer(opts) {
 
 MyTrainer.prototype = {
 	train: function() {
-		var command = "learn " + this.learn_args + " " + model; // $ Alert
+		var command = "learn " + this.learn_args + " " + model; // $ TODO-MISSING: Alert
 		cp.exec(command); 
 	}
 };
@@ -424,8 +424,8 @@ module.exports.shellOption = function (name) {
 	spawn("rm", ["first", name], SPAWN_OPT); // $ Alert
 	var arr = [];
 	arr.push(name); // $ Alert
-	spawn("rm", arr, SPAWN_OPT); 
-	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT);  // This is bad, but the alert location is down in `build`.
+	spawn("rm", arr, SPAWN_OPT);  // $ TODO-SPURIOUS: Alert
+	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT);  // $ TODO-SPURIOUS: Alert - This is bad, but the alert location is down in `build`.
 }
 
 function build(first, last) {
@@ -552,7 +552,7 @@ module.exports.shellThing = function (name) {
         cp.spawn(cmd, args, spawnOpts); // $ Alert
     }
     
-    indirectShell("rm", ["-rf", name], {shell: true});
+    indirectShell("rm", ["-rf", name], {shell: true}); // $ TODO-SPURIOUS: Alert
 }
 
 module.exports.badSanitizer = function (name) {
@@ -630,7 +630,7 @@ module.exports.veryIndeirect = function (name) {
 }
 
 module.exports.sanitizer = function (name) {
-	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'"
+	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'" // $ TODO-SPURIOUS: Alert
 	cp.exec("rm -rf " + sanitized); // $ Alert
 
 	var sanitized = "'" + name.replace(new RegExp("\'", 'g'), "'\\''") + "'"

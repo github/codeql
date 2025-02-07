@@ -14,7 +14,7 @@ app.use(function(req, res) {
 	tainted.replace(/^.*\./, '');
 	tainted.replace(/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/); // $ Alert[js/polynomial-redos]
 	tainted.replace(/^(`+)([\s\S]*?[^`])\1(?!`)/); // $ Alert[js/polynomial-redos]
-	/^(.*,)+(.+)?$/.test(tainted); // $ Alert[js/polynomial-redos]
+	/^(.*,)+(.+)?$/.test(tainted); // $ Alert[js/polynomial-redos] TODO-SPURIOUS: Alert[js/redos]
 	tainted.match(/[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i); // $ Alert[js/polynomial-redos]
 	tainted.match(/[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i); // $ Alert[js/polynomial-redos] - even though it is a proposed fix for the above
 	tainted.match(/^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/); // $ Alert[js/polynomial-redos]
@@ -24,10 +24,10 @@ app.use(function(req, res) {
 
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/ \t\n]+[=]*)(.*)$/); // $ Alert[js/polynomial-redos]
 	tainted.match(/^([a-z0-9-]+)[ \t\n]+([a-zA-Z0-9+\/][a-zA-Z0-9+\/ \t\n=]*)([^a-zA-Z0-9+\/ \t\n=].*)?$/);
-	/[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted); // $ Alert - but not detected due to not supporting ranges
+	/[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted); // $ Alert TODO-MISSING: Alert[js/polynomial-redos] Alert[js/redos] - but not detected due to not supporting ranges
 	/[a-z][A-Z]|[A-Z]{2}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted);
 
-	tainted.replace(/[?]+.*$/g, ""); // OK - can not fail - but still flagged
+	tainted.replace(/[?]+.*$/g, ""); // $ TODO-SPURIOUS: Alert[js/polynomial-redos] - OK - can not fail - but still flagged
 	tainted.replace(/\-\-+/g, "-").replace(/-+$/, ""); // OK - indirectly sanitized
 	tainted.replace(/\n\n\n+/g, "\n").replace(/\n*$/g, "");  // OK - indirectly sanitized
 	tainted.match(/(.)*solve\/challenges\/server-side(.)*/); // $ Alert[js/polynomial-redos]
@@ -38,12 +38,12 @@ app.use(function(req, res) {
 	tainted.match(/<.*href="([^"]+)".*>/); // $ Alert[js/polynomial-redos]
 
 	tainted.match(/^([^-]+)-([A-Za-z0-9+/]+(?:=?=?))([?\x21-\x7E]*)$/); // $ Alert[js/polynomial-redos]
-	tainted.match(/^([^-]+)-([A-Za-z0-9+/=]{44,88})(\?[\x21-\x7E]*)*$/); // $ Alert - it is a fix for the above, but it introduces exponential complexity elsewhere
+	tainted.match(/^([^-]+)-([A-Za-z0-9+/=]{44,88})(\?[\x21-\x7E]*)*$/); // $ Alert TODO-MISSING: Alert[js/polynomial-redos] - it is a fix for the above, but it introduces exponential complexity elsewhere
 
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([\n \t]+([^\n]+))?$/); // $ Alert[js/polynomial-redos]
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([ \t]+([^ \t][^\n]*[\n]*)?)?$/);
 
-	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // $ Alert - also flagged by js/redos
+	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // $ Alert TODO-MISSING: Alert[js/polynomial-redos] - also flagged by js/redos
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/);
 	tainted.replaceAll(/\s*\n\s*/g, ' '); // $ Alert[js/polynomial-redos]
 
@@ -75,7 +75,7 @@ app.use(function(req, res) {
 	tainted.match(/<.*class="([^"]+)".*>/); // $ Alert[js/polynomial-redos]
 
 	tainted.match(/Y.*X/); // $ Alert[js/polynomial-redos]
-	tatined.match(/B?(YH|K)(YH|J)*X/); // $ Alert - but not detected
+	tatined.match(/B?(YH|K)(YH|J)*X/); // $ Alert TODO-MISSING: Alert[js/polynomial-redos] Alert[js/redos] - but not detected
 
 	tainted.match(/a*b/); // $ Alert[js/polynomial-redos] - the initial repetition can start matching anywhere.
 	tainted.match(/cc*D/); // $ Alert[js/polynomial-redos]
@@ -101,7 +101,7 @@ app.use(function(req, res) {
 	tainted.match(/a+X/); // $ Alert[js/polynomial-redos]
 	tainted.match(/^a+a+X/); // $ Alert[js/polynomial-redos]
 	tainted.match(/\wa+X/); // $ Alert[js/polynomial-redos]
-	tainted.match(/a+b+c+/); //NOT  OK
+	tainted.match(/a+b+c+/); // $ TODO-SPURIOUS: Alert[js/polynomial-redos] - NOT  OK
 	tainted.match(/a+a+a+a+/);
 
 	tainted.match(/^([3-7]|A)+([2-5]|B)+X/); // $ Alert[js/polynomial-redos]
@@ -115,7 +115,7 @@ app.use(function(req, res) {
 
 	tainted.match(/\/\*[\d\D]*?\*\//g); // $ Alert[js/polynomial-redos]
 
-	tainted.match(/(#\d+)+/); // OK - but still flagged due to insufficient suffix-checking.
+	tainted.match(/(#\d+)+/); // $ TODO-SPURIOUS: Alert[js/polynomial-redos] - OK - but still flagged due to insufficient suffix-checking.
 
 	(function foo() {
 		var replaced = tainted.replace(/[^\w\s\-\.\_~]/g, '');

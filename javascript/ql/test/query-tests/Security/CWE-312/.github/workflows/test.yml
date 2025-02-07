@@ -11,7 +11,7 @@ jobs:
         with:
           name: file
           path: .
-  test2: # NOT VULNERABLE
+  test2: # NOT VULNERABLE // $ TODO-SPURIOUS: Alert[js/actions/actions-artifact-leak]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
         with:
           name: file
           path: "*"
-  test4: # VULNERABLE
+  test4: # VULNERABLE // $ TODO-SPURIOUS: Alert[js/actions/actions-artifact-leak]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
         with:
           name: file
           path: foo
-  test5: # VULNERABLE
+  test5: # VULNERABLE // $ TODO-SPURIOUS: Alert[js/actions/actions-artifact-leak]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
         with:
           name: file
           path: foo/*
-  test6: # NOT VULNERABLE
+  test6: # NOT VULNERABLE // $ TODO-SPURIOUS: Alert[js/actions/actions-artifact-leak]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -83,5 +83,5 @@ jobs:
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4.3.2
         with:
           name: file
-          path: .
+          path: . // $ TODO-SPURIOUS: Alert[js/actions/actions-artifact-leak]
 

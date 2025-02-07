@@ -3,9 +3,9 @@ let cookieParser = require('cookie-parser');
 
 let app = express();
 
-app.use(cookieParser());
+app.use(cookieParser()); // $ TODO-SPURIOUS: Alert
 
-app.post('/doSomethingTerrible', (req, res) => { // $ Alert - uses cookies
+app.post('/doSomethingTerrible', (req, res) => { // $ TODO-MISSING: Alert - uses cookies
     if (req.cookies['secret'] === app.secret) {
         somethingTerrible();
     }
@@ -26,12 +26,12 @@ app.post('/doWithCaptcha', (req, res) => { // OK - attacker can't guess the capt
     res.end('Ok');
 });
 
-app.post('/user', (req, res) => { // $ Alert - access to req.user is unprotected
+app.post('/user', (req, res) => { // $ TODO-MISSING: Alert - access to req.user is unprotected
     somethingElse(req.user.name);
     res.end('Ok');
 });
 
-app.post('/session', (req, res) => { // $ Alert - access to req.session is unprotected
+app.post('/session', (req, res) => { // $ TODO-MISSING: Alert - access to req.session is unprotected
     somethingElse(req.session.name);
     res.end('Ok');
 });

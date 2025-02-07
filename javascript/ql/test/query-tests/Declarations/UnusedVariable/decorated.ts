@@ -1,7 +1,7 @@
-import {actionHandler, actionHandlerFactory, actionHandlerFactoryProvider, actionHandlerFactoryProviderKind} from 'somewhere'; // OK - imports used as decorators
+import {actionHandler, actionHandlerFactory, actionHandlerFactoryProvider, actionHandlerFactoryProviderKind} from 'somewhere'; // $ TODO-SPURIOUS: Alert - OK - imports used as decorators
 
 @actionHandler
-function fun() {} // OK - decorator might use the function
+function fun() {} // $ TODO-SPURIOUS: Alert - OK - decorator might use the function
 
 @actionHandlerFactory
 class Class {}  // OK - decorator might use the class

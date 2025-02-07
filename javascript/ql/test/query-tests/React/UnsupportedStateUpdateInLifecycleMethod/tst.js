@@ -97,7 +97,7 @@ React.createClass({
         this.setState({})
     },
     render: function() {
-        this.indirectUpdate();
+        this.indirectUpdate(); // $ TODO-SPURIOUS: Alert
         return <div/>
     }
 });
@@ -105,9 +105,9 @@ React.createClass({
 // eslint examples
 React.createClass({
   componentDidUpdate: function() {
-     this.setState({ // $ Alert
+     this.setState({ // $ TODO-MISSING: Alert
         name: this.props.name.toUpperCase()
-      });
+      }); // $ TODO-SPURIOUS: Alert
     },
   render: function() {
     return <div>Hello {this.state.name}</div>;
@@ -115,9 +115,9 @@ React.createClass({
 });
 React.createClass({
   componentWillUpdate: function() {
-     this.setState({ // $ Alert
+     this.setState({ // $ TODO-MISSING: Alert
         name: this.props.name.toUpperCase()
-      });
+      }); // $ TODO-SPURIOUS: Alert
     },
   render: function() {
     return <div>Hello {this.state.name}</div>;

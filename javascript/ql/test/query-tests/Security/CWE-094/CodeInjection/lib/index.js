@@ -19,7 +19,7 @@ const matter = require("gray-matter");
 export function greySink(data) {
     const str = `
     ---js
-    ${data}
+    ${data} // $ TODO-SPURIOUS: Alert[js/unsafe-code-construction]
     ---
     `
     const res = matter(str);
@@ -48,7 +48,7 @@ export function Template(text, opts) {
 Template.prototype = {
   compile: function () {
     var opts = this.opts;
-    eval("  var " + opts.varName + " = something();"); // $ Alert
+    eval("  var " + opts.varName + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
   },
   // The below are justs tests that ensure the global-access-path computations terminate.
   pathsTerminate1: function (node, prev) {
@@ -100,10 +100,10 @@ export class AccessPathClass {
   }
 
   doesTaint() {
-    eval("  var " + this.options1.taintedOption + " = something();"); // $ Alert
-    eval("  var " + this.options2.taintedOption + " = something();"); // $ Alert
-    eval("  var " + this.options3.taintedOption + " = something();"); // $ Alert
-    eval("  var " + this.taint + " = something();"); // $ Alert
+    eval("  var " + this.options1.taintedOption + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+    eval("  var " + this.options2.taintedOption + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+    eval("  var " + this.options3.taintedOption + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+    eval("  var " + this.taint + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
   }
 }
 
@@ -132,10 +132,10 @@ export class AccessPathClassBB {
     }
   
     doesTaint() {
-      eval("  var " + this.options1.taintedOption + " = something();"); // $ Alert
-      eval("  var " + this.options2.taintedOption + " = something();"); // $ Alert
-      eval("  var " + this.options3.taintedOption + " = something();"); // $ Alert
-      eval("  var " + this.taint + " = something();"); // $ Alert
+      eval("  var " + this.options1.taintedOption + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+      eval("  var " + this.options2.taintedOption + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+      eval("  var " + this.options3.taintedOption + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+      eval("  var " + this.taint + " = something();"); // $ Alert TODO-MISSING: Alert[js/code-injection] Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
     }
   }
   

@@ -12,7 +12,7 @@ let c = new C();
 C();             // $ Alert
 new (x=>x);      // $ Alert
 c.m();
-new c.m();       // $ Alert - but not flagged
+new c.m();       // $ TODO-MISSING: Alert - but not flagged
 
 var o = {
   f: function() {},
@@ -21,7 +21,7 @@ var o = {
 o.f();
 new o.f();
 o.g();
-new o.g();       // $ Alert - but not flagged
+new o.g();       // $ TODO-MISSING: Alert - but not flagged
 
 function f(b) {
   var g;

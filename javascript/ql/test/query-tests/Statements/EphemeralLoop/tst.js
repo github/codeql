@@ -1,4 +1,4 @@
-while(c){ // $ Alert
+while(c){ // $ TODO-MISSING: Alert
   switch(c){
     case "/":
       break;
@@ -7,7 +7,7 @@ while(c){ // $ Alert
   break;
 }
 
-function f() { // $ Alert
+function f() { // $ TODO-MISSING: Alert
   for (; k < numprecincts;) {
     var packet = createPacket(resolution, k, l);
     k++;

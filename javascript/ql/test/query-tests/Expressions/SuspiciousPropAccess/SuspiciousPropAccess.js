@@ -1,7 +1,7 @@
 function f() {
   var result;
   res = computeInterestingResult();
-  return result.value;
+  return result.value; // $ TODO-SPURIOUS: Alert
 }
 
 (function(_window) {

@@ -1,5 +1,5 @@
 function f() {
 	if (someCond())
-		return;
+		return; // $ TODO-SPURIOUS: Alert
 	return 42;
 }

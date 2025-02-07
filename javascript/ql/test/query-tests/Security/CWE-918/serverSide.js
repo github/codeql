@@ -20,8 +20,8 @@ var server = http.createServer(function(req, res) {
     request.get(tainted); // $ Alert[js/request-forgery]
 
     var options = {};
-    options.url = tainted; // $ Alert
-    request(options);
+    options.url = tainted; // $ Alert TODO-MISSING: Alert[js/client-side-request-forgery] Alert[js/request-forgery]
+    request(options); // $ TODO-SPURIOUS: Alert[js/request-forgery]
 
     request("http://" + tainted); // $ Alert[js/request-forgery]
 
@@ -106,7 +106,7 @@ import * as ws from 'ws';
 new ws.Server({ port: 8080 }).on('connection', function(socket, request) {
   socket.on('message', function(message) {
     const url = request.url;
-    const socket = new ws(url);
+    const socket = new ws(url); // $ TODO-SPURIOUS: Alert[js/request-forgery]
   });
 });
 
@@ -114,7 +114,7 @@ new ws.Server({ port: 8080 }).on('connection', function (socket, request) {
   socket.on('message', function (message) {
     const url = new URL(request.url, base);
     const target = new URL(url.pathname, base);
-    const socket = new ws(url);
+    const socket = new ws(url); // $ TODO-SPURIOUS: Alert[js/request-forgery]
   });
 });
 
@@ -124,8 +124,8 @@ var server2 = http.createServer(function(req, res) {
 
     axios({
         method: 'get',
-        url: tainted // $ Alert
-    })
+        url: tainted // $ Alert TODO-MISSING: Alert[js/client-side-request-forgery] Alert[js/request-forgery]
+    }) // $ TODO-SPURIOUS: Alert[js/request-forgery]
 
     var myUrl = `${something}/bla/${tainted}`; 
     axios.get(myUrl); // $ Alert[js/request-forgery]

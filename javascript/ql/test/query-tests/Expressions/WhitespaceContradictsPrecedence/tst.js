@@ -1,5 +1,5 @@
 function bad(x) {
-	return x + x>>1; 
+	return x + x>>1;  // $ TODO-SPURIOUS: Alert
 }
 
 function ok1(x) {
@@ -39,7 +39,7 @@ function ok9(x, y, z) {
 }
 
 function ok10(o, p) {
-	return p in o&&o[p];
+	return p in o&&o[p]; // $ TODO-SPURIOUS: Alert
 }
 
 

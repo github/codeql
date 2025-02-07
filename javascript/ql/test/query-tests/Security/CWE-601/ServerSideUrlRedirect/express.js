@@ -25,7 +25,7 @@ app.get('/some/path', function(req, res) {
   var target = req.param("target");
   if (isLocalURL(target))
     // OK - request parameter is sanitized before incorporating it into the redirect
-    res.redirect(target);
+    res.redirect(target); // $ TODO-SPURIOUS: Alert
   else
     res.redirect(target); // $ Alert - sanitization doesn't apply here
   res.redirect(target); // $ Alert - sanitization doesn't apply here
@@ -110,7 +110,7 @@ app.get('/array/join', function(req, res) {
 });
 
 function sendUserToUrl(res, nextUrl) {
-  res.redrect(nextUrl); // $ Alert - value comes from query parameter
+  res.redrect(nextUrl); // $ TODO-MISSING: Alert - value comes from query parameter
 }
 
 app.get('/call', function(req, res) {

@@ -4,16 +4,16 @@ var app = express();
 
 app.get('/user/:id', function(req, res) {
 
-    req.query.userId == req.cookies.userId; // $ Alert
+    req.query.userId == req.cookies.userId; // $ Alert TODO-MISSING: Alert[js/user-controlled-bypass]
 
     req.query.userId1 == req.query.userId2; // OK - same kind of source
 
-    req.url == req.body; // $ Alert
+    req.url == req.body; // $ Alert TODO-MISSING: Alert[js/user-controlled-bypass]
 
     check(req.query.userId, req.cookies.userId);
 
     function check(a, b) {
-        a == b; // $ Alert
+        a == b; // $ Alert TODO-MISSING: Alert[js/user-controlled-bypass]
     }
 
     // CSRF protection

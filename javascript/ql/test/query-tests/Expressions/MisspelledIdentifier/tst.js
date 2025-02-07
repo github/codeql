@@ -26,7 +26,7 @@ var lenght123, Lenght; // $ Alert
 
 var LENght, JKLenght;
 
-Mandreel_HttpRequest_BytesAvalable; // $ Alert
+Mandreel_HttpRequest_BytesAvalable; // $ TODO-MISSING: Alert
 
 
 EValue;
@@ -36,5 +36,5 @@ ReactDOMOther;
 there;
 
 // NO OK
-var throught, through, throughout; // NB: we don't suggest "thought", since it isn't used anywhere
-var sheat, cheat, sheath, sheet;
+var throught, through, throughout; // $ TODO-SPURIOUS: Alert - NB: we don't suggest "thought", since it isn't used anywhere
+var sheat, cheat, sheath, sheet; // $ TODO-SPURIOUS: Alert

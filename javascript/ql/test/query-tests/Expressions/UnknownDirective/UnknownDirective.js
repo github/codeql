@@ -1,5 +1,5 @@
 "use foo"; // $ Alert
-"use strict"; // $ Alert
+"use strict"; // $ TODO-MISSING: Alert
 
 function bad() {
     "'use strict'"; // $ Alert

@@ -3,15 +3,15 @@
     "password": "$pwd"
   },
   {
-    "password": ""
+    "password": "" // $ TODO-SPURIOUS: Alert
   },
   {
     "password": "ff"
   },
   {
-    "config": "username=foo&password= "
+    "config": "username=foo&password= " // $ TODO-SPURIOUS: Alert
   },
   {
-    "config": "password=&username=foo"
+    "config": "password=&username=foo" // $ TODO-SPURIOUS: Alert
   }
 ]

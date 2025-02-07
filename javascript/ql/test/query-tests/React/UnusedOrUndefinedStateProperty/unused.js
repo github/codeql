@@ -3,7 +3,7 @@ class C1 extends React.Component {
         this.state.readDirectly = 42;
         this.state.readInChain = {};
         this.state.readInOtherMethod = {};
-        this.state.notRead = 42; // $ Alert
+        this.state.notRead = 42; // $ TODO-MISSING: Alert
         this.state.readDirectly;
         this.state.readInChain.foo;
     }
@@ -18,7 +18,7 @@ function f(s){
 }
 class C2 extends React.Component {
     constructor() {
-        this.state.readWhenEscaped = 42; // $ Alert
+        this.state.readWhenEscaped = 42; // $ TODO-MISSING: Alert
         f(this.state);
     }
 }
@@ -27,7 +27,7 @@ class C2 extends React.Component {
 class C3 extends React.Component {
     constructor() {
         this.state.readThrougExternaPropertyAccess = 42;
-        this.state.notReadThrougExternaPropertyAccess = 42; // $ Alert
+        this.state.notReadThrougExternaPropertyAccess = 42; // $ TODO-MISSING: Alert
     }
 }
 
@@ -37,7 +37,7 @@ class C4 extends React.Component {
     constructor() {
         function f() { return "readThroughUnknownDynamicPropertyAccess"; }
         this.state.readThroughUnknownDynamicPropertyAccess = 42;
-        this.state.notReadThroughUnknownDynamicPropertyAccess = 42; // $ Alert - but ignored to avoid FP above
+        this.state.notReadThroughUnknownDynamicPropertyAccess = 42; // $ TODO-MISSING: Alert - but ignored to avoid FP above
 
         this.state[f()];
     }
@@ -54,7 +54,7 @@ class C5 extends React.Component {
 React.createClass({
     render: function() {
         this.state.readThroughMixin = 42;
-        this.state.notReadThroughMixin = 42;  // $ Alert - but ignored to avoid FP above
+        this.state.notReadThroughMixin = 42;  // $ TODO-MISSING: Alert - but ignored to avoid FP above
         return <h1>Hello</h1>;
     },
 

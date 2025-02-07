@@ -4,7 +4,7 @@ var URI = require("urijs");
 app.get('/findKey', function(req, res) {
   var key = req.param("key"), input = req.param("input");
 
-  var re = new RegExp("\\b" + key + "=(.*)\n"); // $ Alert - Unsanitized user input is used to construct a regular expression
+  var re = new RegExp("\\b" + key + "=(.*)\n"); // $ Alert TODO-MISSING: Alert[js/server-crash] - Unsanitized user input is used to construct a regular expression
 
   function wrap(s) {
     return "\\b" + wrap2(s);
@@ -14,16 +14,16 @@ app.get('/findKey', function(req, res) {
     return s + "=(.*)\n";
   }
 
-  new RegExp(wrap(key)); // $ Alert
-  new RegExp(wrap(key)); // $ Alert - duplicated to test precision of flow tracking
+  new RegExp(wrap(key)); // $ Alert TODO-MISSING: Alert[js/server-crash]
+  new RegExp(wrap(key)); // $ Alert TODO-MISSING: Alert[js/server-crash] - duplicated to test precision of flow tracking
 
   function getKey() {
     return req.param("key");
   }
-  new RegExp(getKey()); // $ Alert
+  new RegExp(getKey()); // $ Alert TODO-MISSING: Alert[js/server-crash]
 
   function mkRegExp(s) {
-    return new RegExp(s); // $ Alert
+    return new RegExp(s); // $ Alert TODO-MISSING: Alert[js/server-crash]
   }
   mkRegExp(key);
   mkRegExp(getKey());

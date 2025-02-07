@@ -1,6 +1,6 @@
-eval(document.location.href.substring(document.location.href.indexOf("default=")+8)) // $ Alert
+eval(document.location.href.substring(document.location.href.indexOf("default=")+8)) // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
-setTimeout(document.location.hash); // $ Alert
+setTimeout(document.location.hash); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
 
 setTimeout(document.location.protocol);
@@ -8,15 +8,15 @@ setTimeout(document.location.protocol);
 
 $('. ' + document.location.hostname);
 
-Function(document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1")); // $ Alert
+Function(document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1")); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
-WebAssembly.compile(document.location.hash); // $ Alert
+WebAssembly.compile(document.location.hash); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
-WebAssembly.compileStreaming(document.location.hash); // $ Alert
+WebAssembly.compileStreaming(document.location.hash); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
-eval(atob(document.location.hash.substring(1))); // $ Alert
+eval(atob(document.location.hash.substring(1))); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
-$('<a>').attr("onclick", location.search.substring(1)); // $ Alert
+$('<a>').attr("onclick", location.search.substring(1)); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 
 (function test() {
     var source = document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"); 

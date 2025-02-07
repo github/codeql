@@ -6,12 +6,12 @@ app.use(session({
     secret: 'keyboard cat'
 }));
 // handle login
-app.get('/login', function (req, res) { // $ Alert - no regenerate
+app.get('/login', function (req, res) { // $ TODO-MISSING: Alert - no regenerate
     req.session.user = {
         userId: something
     };
     res.send('logged in');
-});
+}); // $ TODO-SPURIOUS: Alert
 
 // with regenerate
 app.get('/login2', function (req, res) {

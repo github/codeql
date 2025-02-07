@@ -40,18 +40,18 @@ var server = http.createServer(function(req, res) {
 
     let args = [];
     args[0] = "-c";
-    args[1] = cmd;  // $ Alert
-    cp.execFile("/bin/bash", args);
+    args[1] = cmd;  // $ TODO-MISSING: Alert
+    cp.execFile("/bin/bash", args); // $ TODO-SPURIOUS: Alert
 
     let args = [];
     args[0] = "-c";
-    args[1] = cmd;  // $ Alert
+    args[1] = cmd;  // $ TODO-MISSING: Alert
     run("sh", args);
 
     let args = [];
     args[0] = `-` + "c";
-    args[1] = cmd; // $ Alert
-    cp.execFile(`/bin` + "/bash", args);
+    args[1] = cmd; // $ TODO-MISSING: Alert
+    cp.execFile(`/bin` + "/bash", args); // $ TODO-SPURIOUS: Alert
 
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert
@@ -59,12 +59,12 @@ var server = http.createServer(function(req, res) {
 	let myArgs = [];
     myArgs.push(`-` + "c");
     myArgs.push(cmd);
-    cp.execFile(`/bin` + "/bash", args); // NOT OK - but no support for `[].push()` for indirect arguments [INCONSISTENCY] 
+    cp.execFile(`/bin` + "/bash", args); // $ TODO-SPURIOUS: Alert - NOT OK - but no support for `[].push()` for indirect arguments [INCONSISTENCY]
 
 });
 
 function run(cmd, args) {
-  cp.spawn(cmd, args); // OK - the alert happens where `args` is build.
+  cp.spawn(cmd, args); // $ TODO-SPURIOUS: Alert - OK - the alert happens where `args` is build.
 }
 
 var util = require("util")

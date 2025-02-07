@@ -40,13 +40,13 @@ function k(data) {
 }
 
 function l() {
-	var x = 23;
+	var x = 23; // $ TODO-SPURIOUS: Alert
 	x = 42;
 	return x;
 }
 
 function m() {
-	var x = 23, y;
+	var x = 23, y; // $ TODO-SPURIOUS: Alert
 	x = 42, y = x+14;
 	return x+y;
 }
@@ -127,7 +127,7 @@ function v() {
 }
 
 !function(o) {
-  var {x} = o;
+  var {x} = o; // $ TODO-SPURIOUS: Alert
   x = 42;
   return x;
 }
@@ -157,7 +157,7 @@ function v() {
 });
 
 (function() {
-	let [x] = [0], // OK - but flagged due to destructuring limitations
+	let [x] = [0], // $ TODO-SPURIOUS: Alert - OK - but flagged due to destructuring limitations
 	    y = 0;
 	x = 42;
 	y = 87;
@@ -167,7 +167,7 @@ function v() {
 
 (function() {
 	if (something()) {
-		var nSign = foo;
+		var nSign = foo; // $ TODO-SPURIOUS: Alert
 	} else {
 		console.log(nSign);
 	}

@@ -4,8 +4,8 @@ jobs:
   echo-chamber:
     runs-on: ubuntu-latest
     steps:
-    - run: echo '${{ github.event.pages[1].title }}'
-    - run: echo '${{ github.event.pages[11].title }}'
-    - run: echo '${{ github.event.pages[0].page_name }}'
-    - run: echo '${{ github.event.pages[2222].page_name }}'
+    - run: echo '${{ github.event.pages[1].title }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pages[11].title }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pages[0].page_name }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pages[2222].page_name }}' // $ TODO-SPURIOUS: Alert
     - run: echo '${{ toJSON(github.event.pages.*.title) }}' # safe

@@ -17,7 +17,7 @@ app.use(async ctx => {
 	if(!url || isCrossDomainRedirect || url.match(VALID)) {
 		ctx.redirect('/');
 	} else {
-		ctx.redirect(url); // possibly OK - flagged anyway
+		ctx.redirect(url); // $ TODO-SPURIOUS: Alert - possibly OK - flagged anyway
 	}
 
 	if(!url || isCrossDomainRedirect || url.match(/[^\w/-]/)) {

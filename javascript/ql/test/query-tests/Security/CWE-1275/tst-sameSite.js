@@ -4,8 +4,8 @@ function esCookies() {
   Cookies.set("authkey", "value", {
     secure: true,
     httpOnly: true,
-    sameSite: "None", // $ Alert
-  });
+    sameSite: "None", // $ TODO-MISSING: Alert
+  }); // $ TODO-SPURIOUS: Alert
 
   Cookies.set("authkey", "value", {
     secure: true,
@@ -21,8 +21,8 @@ function browserCookies() {
     expires: 365,
     secure: true,
     httponly: true,
-    samesite: "None", // $ Alert
-  });
+    samesite: "None", // $ TODO-MISSING: Alert
+  }); // $ TODO-SPURIOUS: Alert
 
   cookies.set("authkey", "value", {
     expires: 365,
@@ -40,7 +40,7 @@ function cookie() {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-  });
+  }); // $ TODO-SPURIOUS: Alert
 
   var setCookie = cookie.serialize("authkey", "value", {
     maxAge: 9000000000,
@@ -59,8 +59,8 @@ app.get("/a", function (req, res, next) {
     maxAge: 9000000000,
     httpOnly: true,
     secure: true,
-    sameSite: "None", // $ Alert
-  });
+    sameSite: "None", // $ TODO-MISSING: Alert
+  }); // $ TODO-SPURIOUS: Alert
 
   res.cookie("session", "value", {
     maxAge: 9000000000,
@@ -78,8 +78,8 @@ app.use(
     keys: ["key1", "key2"],
     httpOnly: true,
     secure: true,
-    sameSite: "None", // $ Alert
-  })
+    sameSite: "None", // $ TODO-MISSING: Alert
+  }) // $ TODO-SPURIOUS: Alert
 );
 
 app.use(
@@ -101,9 +101,9 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: "None", // $ Alert
+      sameSite: "None", // $ TODO-MISSING: Alert
     },
-  })
+  }) // $ TODO-SPURIOUS: Alert
 );
 
 app.use(

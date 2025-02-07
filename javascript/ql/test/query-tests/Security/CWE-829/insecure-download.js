@@ -49,8 +49,8 @@ function test() {
 
     nugget("http://example.org/unsafe", {target: "foo.safe"}, () => { })
 
-    $.get("http://example.org/unsafe.unknown", function( data ) {
-        writeFileAtomic('unsafe.exe', data, {}, function (err) {}); // $ Alert
+    $.get("http://example.org/unsafe.unknown", function( data ) { // $ TODO-SPURIOUS: Alert
+        writeFileAtomic('unsafe.exe', data, {}, function (err) {}); // $ TODO-MISSING: Alert
     });
 
     $.get("http://example.org/unsafe.unknown", function( data ) {

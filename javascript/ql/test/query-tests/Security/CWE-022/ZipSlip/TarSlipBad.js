@@ -3,10 +3,10 @@ const tar = require('tar-stream');
 const extract = tar.extract();
 
 extract.on('entry', (header, stream, next) => {
-  const out = fs.createWriteStream(header.name);
+  const out = fs.createWriteStream(header.name); // $ TODO-SPURIOUS: Alert
 
   if (header.linkname) {
-    fs.linkSync(header.linkname, "foo");
+    fs.linkSync(header.linkname, "foo"); // $ TODO-SPURIOUS: Alert
   }
 
   stream.pipe(out);

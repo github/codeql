@@ -18,8 +18,8 @@ String.prototype.slice;
 /** @typedef {(string|number)} */
 goog.NumberLike;
 
-/** Useless */ // $ Alert
-x;
+/** Useless */ // $ TODO-MISSING: Alert
+x; // $ TODO-SPURIOUS: Alert
 
 // OK - magic DOM property
 elt.clientTop;

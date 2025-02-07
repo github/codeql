@@ -9,7 +9,7 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data)); // $ Alert
+    fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data)); // $ TODO-MISSING: Alert
     fflate.unzip(new Uint8Array(new Uint8Array(req.files.CompressedFile.data)));
     fflate.unzlib(new Uint8Array(req.files.CompressedFile.data));
     fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data));

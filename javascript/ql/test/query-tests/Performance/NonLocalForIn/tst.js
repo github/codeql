@@ -9,8 +9,8 @@ function f() {
 }
 
 function g() {
-    var q = [], i = 0; // $ Alert - property
-    for (q[i++] in o);
+    var q = [], i = 0; // $ TODO-MISSING: Alert - property
+    for (q[i++] in o); // $ TODO-SPURIOUS: Alert
 }
 
 function h() {

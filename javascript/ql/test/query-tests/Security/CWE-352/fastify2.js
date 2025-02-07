@@ -4,7 +4,7 @@ const fp = require('fastify-plugin');
 const app = fastify();
 
 function plugin(app) {
-  app.register(require('fastify-cookie'));
+  app.register(require('fastify-cookie')); // $ TODO-SPURIOUS: Alert
   app.register(require('fastify-csrf'));
 }
 app.register(fp(plugin));
@@ -21,7 +21,7 @@ app.route({
 app.route({
   method: 'POST',
   path: '/',
-  handler: async (req, reply) => { // $ Alert - lacks CSRF protection
+  handler: async (req, reply) => { // $ TODO-MISSING: Alert - lacks CSRF protection
     req.session.blah;
     return req.body
   }

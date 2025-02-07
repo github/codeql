@@ -1,4 +1,4 @@
 /\bx\b/;
-/[\b]x/;
+/[\b]x/; // $ TODO-SPURIOUS: Alert
 /[\ch]x[\cH]/;
 /\ch\ch/;

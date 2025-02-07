@@ -1,6 +1,6 @@
 (function(){
-    function f(){}
-    f.$inject = ['dup5', 'dup5']; // $ Alert
+    function f(){} // $ TODO-SPURIOUS: Alert
+    f.$inject = ['dup5', 'dup5']; // $ TODO-MISSING: Alert
     angular.module('myModule', [])
         .run(['dup1a', 'dup1a', function(dup1a, dup1a){}]) // OK - flagged by js/duplicate-parameter-name
         .run(['dup2a', 'dup2a', function(dup2a, dup2b){}]) // $ Alert
@@ -12,7 +12,7 @@
         .run(['notDup8a', 'notDup8b', function(notDup8a, notDup8b){}])
         .run(['notDup9a', 'notDup9b', function(notDup9c, notDup9d){}])
         .run(['dup10a', 'dup10a', 'dup10a', function(dup10a, dup10a, dup10a){}]) // OK - flagged by js/duplicate-parameter-name
-        .run(['dup11a', 'dup11a', function(dup11a, dup11b){ // $ Alert - alert formatting for multi-line function
+        .run(['dup11a', 'dup11a', function(dup11a, dup11b){ // $ TODO-MISSING: Alert - alert formatting for multi-line function
         }])
     ;
 })();

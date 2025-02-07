@@ -4,6 +4,6 @@ jobs:
   echo-chamber:
     runs-on: ubuntu-latest
     steps:
-    - run: echo '${{ github.event.discussion.title }}'
-    - run: echo '${{ github.event.discussion.body }}'
-    - run: echo '${{ github.event.comment.body }}'
+    - run: echo '${{ github.event.discussion.title }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.discussion.body }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.comment.body }}' // $ TODO-SPURIOUS: Alert

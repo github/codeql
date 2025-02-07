@@ -5,7 +5,7 @@ let requestOptions = {
         "content-type": "application/json",
         "accept": "application/json"
     },
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // $ TODO-SPURIOUS: Alert
     requestCert: true,
     agent: false
 }

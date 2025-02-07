@@ -11,8 +11,8 @@ app.use(session({
 app.use(session({
     name: 'session',
     keys: ['key1', 'key2'],
-    httpOnly: false // $ Alert
-}))
+    httpOnly: false // $ TODO-MISSING: Alert
+})) // $ TODO-SPURIOUS: Alert
 
 app.use(session({
     name: 'session',
@@ -51,8 +51,8 @@ var flag2 = flag
 app.use(session({
     name: 'session',
     keys: ['key1', 'key2'],
-    httpOnly: flag2 // $ Alert
-}))
+    httpOnly: flag2 // $ TODO-MISSING: Alert
+})) // $ TODO-SPURIOUS: Alert
 
 app.get('/a', function (req, res, next) {
     res.cookie('authkey', 'value',
@@ -68,9 +68,9 @@ app.get('/a', function (req, res, next) {
     res.cookie('authkey', 'value',
         {
             maxAge: 9000000000,
-            httpOnly: false, // $ Alert
+            httpOnly: false, // $ TODO-MISSING: Alert
             secure: false
-        });
+        }); // $ TODO-SPURIOUS: Alert
     res.end('ok')
 })
 
@@ -78,8 +78,8 @@ app.get('/a', function (req, res, next) {
     res.cookie('authkey', 'value',
         {
             maxAge: 9000000000
-        });
-    res.end('ok') // $ Alert
+        }); // $ TODO-SPURIOUS: Alert
+    res.end('ok') // $ TODO-MISSING: Alert
 })
 
 app.get('/a', function (req, res, next) {
@@ -95,10 +95,10 @@ app.get('/a', function (req, res, next) {
 app.get('/a', function (req, res, next) {
     let options = {
         maxAge: 9000000000,
-        httpOnly: false, // $ Alert
+        httpOnly: false, // $ TODO-MISSING: Alert
         secure: false
     }
-    res.cookie('authkey', 'value', options);
+    res.cookie('authkey', 'value', options); // $ TODO-SPURIOUS: Alert
     res.end('ok')
 })
 
@@ -301,8 +301,8 @@ app.use(session({
 app.use(session({
     name: 'session',
     keys: ['key1', 'key2'],
-    cookie: { httpOnly: false } // $ Alert
-}))
+    cookie: { httpOnly: false } // $ TODO-MISSING: Alert
+})) // $ TODO-SPURIOUS: Alert
 
 app.use(session({
     name: 'session',
@@ -318,8 +318,8 @@ app.use(session({ // OK - httpOnly is true by default
 app.use(session({
     name: 'mycookie',
     keys: ['key1', 'key2'],
-    cookie: { httpOnly: false } // $ Alert - It is a session cookie, name doesn't matter
-}))
+    cookie: { httpOnly: false } // $ TODO-MISSING: Alert - It is a session cookie, name doesn't matter
+})) // $ TODO-SPURIOUS: Alert
 
 const http = require('http');
 function test10() {

@@ -2,32 +2,32 @@ function getLastLine(input) {
   var lines = [], nextLine;
   while ((nextLine = readNextLine(input)))
     lines.push(nextLine);
-  if (!lines)
+  if (!lines) // $ TODO-SPURIOUS: Alert
     throw new Error("No lines!");
   return lines[lines.length-1];
 }
 
 function lookup(cache, k) {
   var v;
-  return k in cache ? cache[k] : (v = new Entry(recompute())) && (cache[k] = v);
+  return k in cache ? cache[k] : (v = new Entry(recompute())) && (cache[k] = v); // $ TODO-SPURIOUS: Alert
 }
 
 function test(a, b) {
   if (!a && !b) {
-    if (a);
-    if (b);
+    if (a); // $ TODO-SPURIOUS: Alert
+    if (b); // $ TODO-SPURIOUS: Alert
   }
   if (!(a || b)) {
-    if (a);
-    if (b);
+    if (a); // $ TODO-SPURIOUS: Alert
+    if (b); // $ TODO-SPURIOUS: Alert
   }
 
   var x = new X();
-  if(x){}
-  if (new X()){}
-  if((x)){}
-  if(((x))){}
-  if ((new X())){}
+  if(x){} // $ TODO-SPURIOUS: Alert
+  if (new X()){} // $ TODO-SPURIOUS: Alert
+  if((x)){} // $ TODO-SPURIOUS: Alert
+  if(((x))){} // $ TODO-SPURIOUS: Alert
+  if ((new X())){} // $ TODO-SPURIOUS: Alert
 
   x = 0n;
   if (x) // $ Alert
@@ -51,7 +51,7 @@ async function awaitFlow(){
     var known = knownF();
     if (known)
         return;
-    if (known)
+    if (known) // $ TODO-SPURIOUS: Alert
         return;
 
     var unknown = unknownF();
@@ -67,7 +67,7 @@ async function awaitFlow(){
 
 (function() {
     function f1(x) {
-        x || y // $ Alert - but whitelisted
+        x || y // $ TODO-MISSING: Alert - but whitelisted
     }
     f1(true);
 
@@ -79,14 +79,14 @@ async function awaitFlow(){
 
     function f3(x) {
         (function(){
-            x || y // $ Alert - but whitelisted
+            x || y // $ TODO-MISSING: Alert - but whitelisted
         });
     }
     f3(true);
 });
 
 (function() {
-    if ((x, true));
+    if ((x, true)); // $ TODO-SPURIOUS: Alert
 });
 
 (function (x, y) {
@@ -150,7 +150,7 @@ async function awaitFlow(){
 	var v = p();
 	if (v) { // $ Alert
 	}
-	if (v) { // $ Alert - but not detected due to SSA limitations
+	if (v) { // $ TODO-MISSING: Alert - but not detected due to SSA limitations
 	}
 });
 
@@ -165,7 +165,7 @@ async function awaitFlow(){
 	var v = findOrThrow();
 	if (v) { // $ Alert
 	}
-	if (v) { // $ Alert - but not detected due to SSA limitations
+	if (v) { // $ TODO-MISSING: Alert - but not detected due to SSA limitations
 	}
 });
 
@@ -180,7 +180,7 @@ async function awaitFlow(){
 (function() {
     function outer(x) {
         addEventListener("click", () => {
-            if (!x && something()) { // $ Alert - but whitelisted
+            if (!x && something()) { // $ TODO-MISSING: Alert - but whitelisted
                 something();
             }
         });

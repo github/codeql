@@ -16,7 +16,7 @@ app.get('/post/:id', function(req, res) {
           }
         }
       }
-    `);
+    `); // $ TODO-SPURIOUS: Alert
 });
 
 import { graphql, withCustomRequest } from "@octokit/graphql";
@@ -85,7 +85,7 @@ app.get('/thing/:id', async function(req, res) {
           url
           ${id}
         }
-      }`
+      }` // $ TODO-SPURIOUS: Alert
     })
   })
 

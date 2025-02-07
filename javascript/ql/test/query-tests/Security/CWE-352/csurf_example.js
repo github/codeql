@@ -15,7 +15,7 @@ var app = express()
 
 // parse cookies
 // we need this because "cookie" is true in csrfProtection
-app.use(cookieParser())
+app.use(cookieParser()) // $ TODO-SPURIOUS: Alert
 
 app.get('/form', csrfProtection, function (req, res) {
   let newEmail = req.cookies["newEmail"];
@@ -28,7 +28,7 @@ app.post('/process', parseForm, csrfProtection, function (req, res) {
   res.send('data is being processed')
 })
 
-app.post('/process_unsafe', parseForm, function (req, res) { // $ Alert
+app.post('/process_unsafe', parseForm, function (req, res) { // $ TODO-MISSING: Alert
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
 })

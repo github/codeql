@@ -28,7 +28,7 @@ function h(k) {
 
 new Array(1, 2, 3);
 
-new String(1, 2, 3); // $ Alert
+new String(1, 2, 3); // $ TODO-MISSING: Alert
 
 (function(f) {
 	f(42); // $ Alert
@@ -40,7 +40,7 @@ new String(1, 2, 3); // $ Alert
 	h(function(x) { return x; });
 })(function() {});
 
-parseFloat("123", 10);
+parseFloat("123", 10); // $ TODO-SPURIOUS: Alert
 
 (function testWhitelistEmptyFunctions(){
 	function nonEmpty(){
@@ -115,7 +115,7 @@ parseFloat("123", 10);
 	throwerArrow(42);
 	throwerCustom(42);
 	throwerWithParam(42, 87); // $ Alert
-	throwerIndirect(42); // OK - but still flagged due to complexity
+	throwerIndirect(42); // $ TODO-SPURIOUS: Alert - OK - but still flagged due to complexity
 });
 
 function sum2() {

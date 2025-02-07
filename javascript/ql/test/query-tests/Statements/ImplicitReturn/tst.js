@@ -1,4 +1,4 @@
-function f() { // $ Alert
+function f() { // $ TODO-MISSING: Alert
 	if (foo())
 		return true;
 }
@@ -95,12 +95,12 @@ function t(n) {
 	} while("true");
 }
 
-var u = function() { // $ Alert
+var u = function() { // $ TODO-MISSING: Alert
 	if (foo())
 		return true;
 };
 
-function v(b) { // $ Alert
+function v(b) { // $ TODO-MISSING: Alert
 	if (b)
 		return 1;
 }

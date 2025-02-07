@@ -1,6 +1,6 @@
-function countOccurrences(xs, p) { // $ Alert
+function countOccurrences(xs, p) { // $ TODO-MISSING: Alert
 	var count = 0;
-	for (let x of xs)
+	for (let x of xs) // $ TODO-SPURIOUS: Alert
 		if (p())
 			++count;
 	return count;
@@ -146,4 +146,4 @@ for (const [key, key2, key3, value] of array) {
 }
 
 for (const [key, key2, key3, value] of array) {} // $ Alert
-for (let i of [1, 2]) {}
+for (let i of [1, 2]) {} // $ TODO-SPURIOUS: Alert

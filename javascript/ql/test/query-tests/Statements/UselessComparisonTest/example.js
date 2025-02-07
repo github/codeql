@@ -5,7 +5,7 @@ function findValue(values, x, start, end) {
         return i;
     }
   }
-  if (i < end) {
+  if (i < end) { // $ TODO-SPURIOUS: Alert
     return i;
   }
   return -1;

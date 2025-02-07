@@ -4,11 +4,11 @@ jobs:
   echo-chamber:
     runs-on: ubuntu-latest
     steps:
-    - run: echo '${{ github.event.pull_request.title }}'
-    - run: echo '${{ github.event.pull_request.body }}'
-    - run: echo '${{ github.event.pull_request.head.label }}'
-    - run: echo '${{ github.event.pull_request.head.repo.default_branch }}'
-    - run: echo '${{ github.event.pull_request.head.repo.description }}'
-    - run: echo '${{ github.event.pull_request.head.repo.homepage }}'
-    - run: echo '${{ github.event.pull_request.head.ref }}'
-    - run: echo '${{ github.event.comment.body }}'
+    - run: echo '${{ github.event.pull_request.title }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pull_request.body }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pull_request.head.label }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pull_request.head.repo.default_branch }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pull_request.head.repo.description }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pull_request.head.repo.homepage }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.pull_request.head.ref }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.comment.body }}' // $ TODO-SPURIOUS: Alert

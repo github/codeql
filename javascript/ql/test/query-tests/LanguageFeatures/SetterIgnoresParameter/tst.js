@@ -13,7 +13,7 @@ function A() {
 			return _x;
 		},
 		set x(v) {
-		}, // $ Alert
+		}, // $ TODO-MISSING: Alert
 
 		get y() {
 			return 56;

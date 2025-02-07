@@ -3,6 +3,6 @@
 /*global: z*/  // also not a proper global declaration
 w;
 x;
-y; // $ Alert
+y; // $ TODO-MISSING: Alert
 z; // $ Alert
 var x, y, z;

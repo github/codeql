@@ -1,10 +1,10 @@
-function f(x) { // $ Alert
-	return x = 23;
+function f(x) { // $ TODO-MISSING: Alert
+	return x = 23; // $ TODO-SPURIOUS: Alert
 }
 
-function g() { // $ Alert
+function g() { // $ TODO-MISSING: Alert
 	var x;
-	return x = 23;
+	return x = 23; // $ TODO-SPURIOUS: Alert
 }
 
 

@@ -11,7 +11,7 @@
 
 /a$\nb/m;
 
-/a$\\nb/m; // $ Alert - but not recognised
+/a$\\nb/m; // $ TODO-MISSING: Alert - but not recognised
 
 /a$b*c/; // $ Alert
 

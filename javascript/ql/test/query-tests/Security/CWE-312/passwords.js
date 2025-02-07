@@ -75,7 +75,7 @@
     console.log(config);
 
     var temp = { encryptedPassword: req.body.password };
-    console.log(temp.encryptedPassword); // OK - XXX
+    console.log(temp.encryptedPassword); // $ TODO-SPURIOUS: Alert[js/clear-text-logging] - OK - XXX
 
     var secret = password;
     console.log(`pw: ${secret}`); // $ Alert[js/clear-text-logging]
@@ -139,19 +139,19 @@
 });
 
 function indirectLogCall() {
-	console.log.apply(this, arguments);
+	console.log.apply(this, arguments); // $ TODO-SPURIOUS: Alert[js/clear-text-logging]
 }
 var Util = require('util');
 (function() {
     var config = {
         x: password
     };
-    indirectLogCall(config.x); // $ Alert
-    indirectLogCall(process.env); // $ Alert
+    indirectLogCall(config.x); // $ Alert TODO-MISSING: Alert[js/actions/actions-artifact-leak] Alert[js/build-artifact-leak] Alert[js/clear-text-storage-of-sensitive-data] Alert[js/clear-text-logging]
+    indirectLogCall(process.env); // $ Alert TODO-MISSING: Alert[js/actions/actions-artifact-leak] Alert[js/build-artifact-leak] Alert[js/clear-text-storage-of-sensitive-data] Alert[js/clear-text-logging]
 
     var procdesc = Util.inspect(process.env).replace(/\n/g, '')
 
-    indirectLogCall(procdesc); // $ Alert
+    indirectLogCall(procdesc); // $ Alert TODO-MISSING: Alert[js/actions/actions-artifact-leak] Alert[js/build-artifact-leak] Alert[js/clear-text-storage-of-sensitive-data] Alert[js/clear-text-logging]
 
     console.log(process.env); // $ Alert[js/clear-text-logging]
     console.log(process.env.PATH);

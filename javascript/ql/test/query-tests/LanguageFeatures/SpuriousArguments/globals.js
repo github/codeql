@@ -14,4 +14,4 @@ var o = {
 
 otherglobal(x); // $ Alert - can never refer to function on line 12
 otherglobal.call(null, x); // $ Alert
-otherglobal.call(null, x, y); // $ Alert
+otherglobal.call(null, x, y); // $ TODO-MISSING: Alert

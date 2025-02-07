@@ -3,15 +3,15 @@ var express = require('express');
 var app = express();
 
 app.get('/some/path', function(req, res) {
-  var f = new Function("return wibbles[" + req.param("wobble") + "];"); // $ Alert
-  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];"); // $ Alert
+  var f = new Function("return wibbles[" + req.param("wobble") + "];"); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];"); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
   var runC = require("vm").runInNewContext;
-  runC("return wibbles[" + req.param("wobble") + "];"); // $ Alert
+  runC("return wibbles[" + req.param("wobble") + "];"); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
   var vm = require("vm");
-  vm.compileFunction(req.param("code_compileFunction")); // $ Alert
-  var script = new vm.Script(req.param("code_Script")); // $ Alert
-  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule")); // $ Alert
-  vm.runInContext(req.param("code_runInContext"), vm.createContext()); // $ Alert
+  vm.compileFunction(req.param("code_compileFunction")); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+  var script = new vm.Script(req.param("code_Script")); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule")); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
+  vm.runInContext(req.param("code_runInContext"), vm.createContext()); // $ Alert TODO-MISSING: Alert[js/unsafe-code-construction] Alert[js/bad-code-sanitization]
 });
 
 const cp = require('child_process');

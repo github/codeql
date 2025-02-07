@@ -39,7 +39,7 @@ require('express')().get('/foo', (req, res) => {
       req.params.id, // $ Alert
       req.params.name, // $ Alert
       req.params.foo, // OK - not using raw interpolation
-    ]
+    ] // $ TODO-SPURIOUS: Alert
   });
   db.one({
     text: 'SELECT * FROM news where id = ${id}:raw AND name = ${name}',

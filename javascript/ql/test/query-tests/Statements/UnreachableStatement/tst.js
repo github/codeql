@@ -2,7 +2,7 @@
 
 function f() {
 	return 23;
-	var a = 42;
+	var a = 42; // $ TODO-SPURIOUS: Alert
 }
 
 function g(x) {
@@ -35,7 +35,7 @@ function k() {
 }
 
 throw new Error();
-f();
+f(); // $ TODO-SPURIOUS: Alert
 
 function l(x) {
 	switch(x) {
@@ -60,7 +60,7 @@ function m(x) {
 if (true)
 	x;
 else
-	y;
+	y; // $ TODO-SPURIOUS: Alert
 
 function f(){
 	if (x) {

@@ -16,8 +16,8 @@ undefined == null;
 
 null == 0; // $ Alert
 
-switch ("hi") { // $ Alert
-case 42:
+switch ("hi") { // $ TODO-MISSING: Alert
+case 42: // $ TODO-SPURIOUS: Alert
 }
 
 Object.toString() + "!" == undefined; // $ Alert
@@ -38,7 +38,7 @@ function g() {
 
   number == "0";
   // NO OK
-  number == "zero";
+  number == "zero"; // $ TODO-SPURIOUS: Alert
 }
 
 0 < (Math.random() > 0.5 ? void 0 : [1, 2]); // $ Alert
@@ -136,7 +136,7 @@ function h() {
 }
 
 function i() {
-    "foo" === undefined
+    "foo" === undefined // $ TODO-SPURIOUS: Alert
     undefined === "foo" // $ Alert
     var NaN = 0; // trick analysis to consider warning about NaN, for the purpose of testing pretty printing
     NaN === "foo" // $ Alert
@@ -221,5 +221,5 @@ function l() {
 })();
 
 function f(...x) {
-    x === 42
+    x === 42 // $ TODO-SPURIOUS: Alert
 };

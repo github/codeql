@@ -1,5 +1,5 @@
 function tst() {
-  var a = { // $ Alert
+  var a = { // $ TODO-MISSING: Alert
     'i': 1,
     'j': 2
   }

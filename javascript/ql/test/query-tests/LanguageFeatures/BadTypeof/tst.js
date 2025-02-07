@@ -15,10 +15,10 @@ typeof c != "string";
 
 typeof es6 === 'symbol';
 
-switch (typeof a) {
+switch (typeof a) { // $ TODO-SPURIOUS: Alert
 
 case 'undefined':
-case 'null': // $ Alert
+case 'null': // $ TODO-MISSING: Alert
 }
 
 

@@ -30,7 +30,7 @@ app.get('/user/:id', function(req, res) {
     ['Name', 'Content'],
     ['body', req.body]
   ]);
-  res.send(mytable); // $ Alert - FIXME: only works in OLD dataflow, add implicit reads before library-contributed taint steps
+  res.send(mytable); // $ TODO-MISSING: Alert - FIXME: only works in OLD dataflow, add implicit reads before library-contributed taint steps
 });
 
 var showdown  = require('showdown');
@@ -118,7 +118,7 @@ app.get("invalid/keys/:id", async (req, res) => {
     const invalidKeys = keyArray.filter(key => !whitelist.includes(key));
 
     if (invalidKeys.length) {
-        res.status(400).send(`${invalidKeys.join(', ')} not in whitelist`);
+        res.status(400).send(`${invalidKeys.join(', ')} not in whitelist`); // $ TODO-SPURIOUS: Alert
         return;
     }
 });

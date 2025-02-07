@@ -5,24 +5,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo '${{ github.event.comment.body }}'
+        echo '${{ github.event.comment.body }}' // $ TODO-SPURIOUS: Alert
 
   echo-chamber2:
     runs-on: ubuntu-latest
     steps:
-    - run: echo '${{ github.event.comment.body }}'
-    - run: echo '${{ github.event.issue.body }}'
-    - run: echo '${{ github.event.issue.title }}'
+    - run: echo '${{ github.event.comment.body }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.issue.body }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.issue.title }}' // $ TODO-SPURIOUS: Alert
 
   echo-chamber3:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/github-script@v3
       with:
-        script: console.log('${{ github.event.comment.body }}')
+        script: console.log('${{ github.event.comment.body }}') // $ TODO-SPURIOUS: Alert
     - uses: actions/github-script@v3
       with:
-        script: console.log('${{ github.event.issue.body }}')
+        script: console.log('${{ github.event.issue.body }}') // $ TODO-SPURIOUS: Alert
     - uses: actions/github-script@v3
       with:
-        script: console.log('${{ github.event.issue.title }}')
+        script: console.log('${{ github.event.issue.title }}') // $ TODO-SPURIOUS: Alert
