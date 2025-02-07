@@ -232,6 +232,12 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override Visibility getVisibility() { none() }
 }
 
+private class TypeParamItemNode extends ItemNode instanceof TypeParam {
+  override string getName() { result = TypeParam.super.getName().getText() }
+
+  override Visibility getVisibility() { none() }
+}
+
 /** Holds if `item` has the name `name` and is a top-level item inside `f`. */
 private predicate sourceFileEdge(SourceFile f, string name, ItemNode item) {
   item = f.getAnItem() and
