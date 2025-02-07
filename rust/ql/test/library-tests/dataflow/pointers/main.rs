@@ -30,6 +30,8 @@ fn write_and_read_through_borrow() {
     sink(*b);
     *b = source(37);
     sink(*b); // $ MISSING: hasValueFlow=37
+    *b = 0;
+    sink(*b); // now cleared
 }
 
 fn takes_borrowed_value(&n: &i64) {
