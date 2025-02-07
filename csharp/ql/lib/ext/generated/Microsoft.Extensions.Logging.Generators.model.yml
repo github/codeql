@@ -22,6 +22,7 @@ extensions:
       - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MissingLoggerField", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MissingRequiredType", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_MultipleLoggerFields", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_PrimaryConstructorParameterLoggerHidden", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_RedundantQualifierInMessage", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntMentionExceptionInMessage", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Generators", "DiagnosticDescriptors", "get_ShouldntMentionLogLevelInMessage", "()", "summary", "df-generated"]
