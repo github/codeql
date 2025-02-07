@@ -93,6 +93,14 @@ module SsaFlow {
     result = TSelfToplevelParameterNode(p.asToplevelSelf())
   }
 
+  ParameterNodeImpl toParameterNodeImpl(SsaDefinitionExtNode node) {
+    exists(SsaImpl::WriteDefinition def, SsaImpl::ParameterExt p |
+      def = node.getDefinitionExt() and
+      result = toParameterNode(p) and
+      p.isInitializedBy(def)
+    )
+  }
+
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
