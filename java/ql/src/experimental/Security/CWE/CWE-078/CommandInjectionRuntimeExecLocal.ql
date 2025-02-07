@@ -12,15 +12,21 @@
  *       external/cwe/cwe-078
  */
 
-import CommandInjectionRuntimeExec
-import ExecUserFlow::PathGraph
+deprecated import CommandInjectionRuntimeExec
+deprecated import ExecUserFlow::PathGraph
 
-class LocalSource extends Source instanceof LocalUserInput { }
+deprecated class LocalSource extends Source instanceof LocalUserInput { }
 
-from
-  ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,
-  DataFlow::Node sinkCmd
-where callIsTaintedByUserInputAndDangerousCommand(source, sink, sourceCmd, sinkCmd)
-select sink, source, sink,
-  "Call to dangerous java.lang.Runtime.exec() with command '$@' with arg from untrusted input '$@'",
-  sourceCmd, sourceCmd.toString(), source.getNode(), source.toString()
+deprecated query predicate problems(
+  ExecUserFlow::PathNode sink, ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink0,
+  string message1, DataFlow::Node sourceCmd, string message2, DataFlow::Node sourceNode,
+  string message3
+) {
+  callIsTaintedByUserInputAndDangerousCommand(source, sink, sourceCmd, _) and
+  sink0 = sink and
+  message1 =
+    "Call to dangerous java.lang.Runtime.exec() with command '$@' with arg from untrusted input '$@'" and
+  message2 = sourceCmd.toString() and
+  sourceNode = source.getNode() and
+  message3 = source.toString()
+}

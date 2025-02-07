@@ -586,14 +586,6 @@ public class CFGExtractor {
     public static List<Identifier> of(Program p) {
       return of(p.getBody());
     }
-
-    public static List<Identifier> of(IFunction fn) {
-      Node body = fn.getBody();
-      if (body instanceof BlockStatement) return of(((BlockStatement) body).getBody());
-      // if the body of the function is missing or is an expression, then there are
-      // no hoisted functions
-      return Collections.emptyList();
-    }
   }
 
   /**
@@ -1096,8 +1088,6 @@ public class CFGExtractor {
       if (nd.hasRest()) paramsAndDefaults.add((Expression) nd.getRest());
 
       Node entry = getEntryNode(nd);
-      List<Identifier> fns = HoistedFunDecls.of(nd);
-      hoistedFns.addAll(fns);
 
       // if this is the constructor of a class without a superclass, we need to
       // initialise all fields before running the body of the constructor
@@ -1117,7 +1107,7 @@ public class CFGExtractor {
       if (firstField != null) fst = Collections.singleton(First.of(firstField));
       fst =
           visitSequence(
-              nd instanceof FunctionDeclaration ? null : nd.getId(), paramsAndDefaults, fns, fst);
+              nd instanceof FunctionDeclaration ? null : nd.getId(), paramsAndDefaults, fst);
       writeSuccessors(entry, fst);
 
       this.ctxt.pop();
@@ -1255,9 +1245,12 @@ public class CFGExtractor {
 
     @Override
     public Void visit(BlockStatement nd, SuccessorInfo i) {
-      if (nd.getBody().isEmpty()) writeSuccessors(nd, i.getAllSuccessors());
-      else writeSuccessor(nd, First.of(nd.getBody().get(0)));
-      visitSequence(nd.getBody(), i.getAllSuccessors());
+      // Hoist function declarations in a block statement to the top of the block.
+      // This reflects non-standard behaviour implemented by most engines.
+      // See also: ECMAScript "B.3.2 Block-Level Function Declarations Web Legacy Compatibility Semantics".
+      List<Identifier> hoisted = HoistedFunDecls.of(nd.getBody());
+      hoistedFns.addAll(hoisted);
+      writeSuccessors(nd, visitSequence(hoisted, nd.getBody(), i.getAllSuccessors()));
       return null;
     }
 

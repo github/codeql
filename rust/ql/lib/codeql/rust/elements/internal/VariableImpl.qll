@@ -1,6 +1,7 @@
 private import rust
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.elements.internal.PathImpl::Impl as PathImpl
 private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
@@ -172,16 +173,7 @@ module Impl {
     string name_;
 
     VariableAccessCand() {
-      exists(Path p, PathSegment ps |
-        p = this.(PathExpr).getPath() and
-        not p.hasQualifier() and
-        ps = p.getPart() and
-        not ps.hasGenericArgList() and
-        not ps.hasParenthesizedArgList() and
-        not ps.hasPathType() and
-        not ps.hasReturnTypeSyntax() and
-        name_ = ps.getNameRef().getText()
-      )
+      name_ = this.(PathExpr).getPath().(PathImpl::IdentPath).getName()
       or
       this.(FormatTemplateVariableAccess).getName() = name_
     }
@@ -397,20 +389,23 @@ module Impl {
     )
   }
 
-  private newtype TVariableOrAccessCand =
-    TVariableOrAccessCandVariable(Variable v) or
-    TVariableOrAccessCandVariableAccessCand(VariableAccessCand va)
+  private newtype TDefOrAccessCand =
+    TDefOrAccessCandNestedFunction(Function f, BlockExprScope scope) {
+      f = scope.getStmtList().getAStatement()
+    } or
+    TDefOrAccessCandVariable(Variable v) or
+    TDefOrAccessCandVariableAccessCand(VariableAccessCand va)
 
   /**
-   * A variable declaration or variable access candidate.
+   * A nested function declaration, variable declaration, or variable (or function)
+   * access candidate.
    *
-   * In order to determine whether a candidate is an actual variable access,
-   * we rank declarations and candidates by their position in source code.
+   * In order to determine whether a candidate is an actual variable/function access,
+   * we rank declarations and candidates by their position in the AST.
    *
-   * The ranking must take variable names into account, but also variable scopes;
-   * below a comment `rank(scope, name, i)` means that the declaration/access on
-   * the given line has rank `i` amongst all declarations/accesses inside variable
-   * scope `scope`, for variable name `name`:
+   * The ranking must take names into account, but also variable scopes; below a comment
+   * `rank(scope, name, i)` means that the declaration/access on the given line has rank
+   * `i` amongst all declarations/accesses inside variable scope `scope`, for name `name`:
    *
    * ```rust
    * fn f() {           // scope0
@@ -430,8 +425,8 @@ module Impl {
    * }
    * ```
    *
-   * Variable declarations are only ranked in the scope that they bind into, while
-   * accesses candidates propagate outwards through scopes, as they may access
+   * Function/variable declarations are only ranked in the scope that they bind into,
+   * while accesses candidates propagate outwards through scopes, as they may access
    * declarations from outer scopes.
    *
    * For an access candidate with ranks `{ rank(scope_i, name, rnk_i) | i in I }` and
@@ -448,28 +443,67 @@ module Impl {
    * i.e., its the nearest declaration before the access in the same (or outer) scope
    * as the access.
    */
-  private class VariableOrAccessCand extends TVariableOrAccessCand {
-    Variable asVariable() { this = TVariableOrAccessCandVariable(result) }
+  abstract private class DefOrAccessCand extends TDefOrAccessCand {
+    abstract string toString();
 
-    VariableAccessCand asVariableAccessCand() {
-      this = TVariableOrAccessCandVariableAccessCand(result)
-    }
-
-    string toString() {
-      result = this.asVariable().toString() or result = this.asVariableAccessCand().toString()
-    }
-
-    Location getLocation() {
-      result = this.asVariable().getLocation() or result = this.asVariableAccessCand().getLocation()
-    }
+    abstract Location getLocation();
 
     pragma[nomagic]
-    predicate rankBy(string name, VariableScope scope, int ord, int kind) {
-      variableDeclInScope(this.asVariable(), scope, name, ord) and
+    abstract predicate rankBy(string name, VariableScope scope, int ord, int kind);
+  }
+
+  abstract private class NestedFunctionOrVariable extends DefOrAccessCand { }
+
+  private class DefOrAccessCandNestedFunction extends NestedFunctionOrVariable,
+    TDefOrAccessCandNestedFunction
+  {
+    private Function f;
+    private BlockExprScope scope_;
+
+    DefOrAccessCandNestedFunction() { this = TDefOrAccessCandNestedFunction(f, scope_) }
+
+    override string toString() { result = f.toString() }
+
+    override Location getLocation() { result = f.getLocation() }
+
+    override predicate rankBy(string name, VariableScope scope, int ord, int kind) {
+      // nested functions behave as if they are defined at the beginning of the scope
+      name = f.getName().getText() and
+      scope = scope_ and
+      ord = 0 and
       kind = 0
-      or
-      variableAccessCandInScope(this.asVariableAccessCand(), scope, name, _, ord) and
+    }
+  }
+
+  private class DefOrAccessCandVariable extends NestedFunctionOrVariable, TDefOrAccessCandVariable {
+    private Variable v;
+
+    DefOrAccessCandVariable() { this = TDefOrAccessCandVariable(v) }
+
+    override string toString() { result = v.toString() }
+
+    override Location getLocation() { result = v.getLocation() }
+
+    override predicate rankBy(string name, VariableScope scope, int ord, int kind) {
+      variableDeclInScope(v, scope, name, ord) and
       kind = 1
+    }
+  }
+
+  private class DefOrAccessCandVariableAccessCand extends DefOrAccessCand,
+    TDefOrAccessCandVariableAccessCand
+  {
+    private VariableAccessCand va;
+
+    DefOrAccessCandVariableAccessCand() { this = TDefOrAccessCandVariableAccessCand(va) }
+
+    override string toString() { result = va.toString() }
+
+    override Location getLocation() { result = va.getLocation() }
+
+    override predicate rankBy(string name, VariableScope scope, int ord, int kind) {
+      variableAccessCandInScope(va, scope, name, _, ord) and
+      kind = 2
     }
   }
 
@@ -478,11 +512,11 @@ module Impl {
 
     class C2 = string;
 
-    class Ranked = VariableOrAccessCand;
+    class Ranked = DefOrAccessCand;
 
-    int getRank(VariableScope scope, string name, VariableOrAccessCand v) {
+    int getRank(VariableScope scope, string name, DefOrAccessCand v) {
       v =
-        rank[result](VariableOrAccessCand v0, int ord, int kind |
+        rank[result](DefOrAccessCand v0, int ord, int kind |
           v0.rankBy(name, scope, ord, kind)
         |
           v0 order by ord, kind
@@ -494,7 +528,7 @@ module Impl {
    * Gets the rank of `v` amongst all other declarations or access candidates
    * to a variable named `name` in the variable scope `scope`.
    */
-  private int rankVariableOrAccess(VariableScope scope, string name, VariableOrAccessCand v) {
+  private int rankVariableOrAccess(VariableScope scope, string name, DefOrAccessCand v) {
     v = DenseRank2<DenseRankInput>::denseRank(scope, name, result + 1)
   }
 
@@ -512,25 +546,38 @@ module Impl {
    * the declaration at rank 0 can only reach the access at rank 1, while the declaration
    * at rank 2 can only reach the access at rank 3.
    */
-  private predicate variableReachesRank(VariableScope scope, string name, Variable v, int rnk) {
-    rnk = rankVariableOrAccess(scope, name, TVariableOrAccessCandVariable(v))
+  private predicate variableReachesRank(
+    VariableScope scope, string name, NestedFunctionOrVariable v, int rnk
+  ) {
+    rnk = rankVariableOrAccess(scope, name, v)
     or
     variableReachesRank(scope, name, v, rnk - 1) and
-    rnk = rankVariableOrAccess(scope, name, TVariableOrAccessCandVariableAccessCand(_))
+    rnk = rankVariableOrAccess(scope, name, TDefOrAccessCandVariableAccessCand(_))
   }
 
   private predicate variableReachesCand(
-    VariableScope scope, string name, Variable v, VariableAccessCand cand, int nestLevel
+    VariableScope scope, string name, NestedFunctionOrVariable v, VariableAccessCand cand,
+    int nestLevel
   ) {
     exists(int rnk |
       variableReachesRank(scope, name, v, rnk) and
-      rnk = rankVariableOrAccess(scope, name, TVariableOrAccessCandVariableAccessCand(cand)) and
+      rnk = rankVariableOrAccess(scope, name, TDefOrAccessCandVariableAccessCand(cand)) and
       variableAccessCandInScope(cand, scope, name, nestLevel, _)
     )
   }
 
+  pragma[nomagic]
+  predicate access(string name, NestedFunctionOrVariable v, VariableAccessCand cand) {
+    v =
+      min(NestedFunctionOrVariable v0, int nestLevel |
+        variableReachesCand(_, name, v0, cand, nestLevel)
+      |
+        v0 order by nestLevel
+      )
+  }
+
   /** A variable access. */
-  class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand {
+  class VariableAccess extends PathExprBaseImpl::PathExprBase {
     private string name;
     private Variable v;
 
@@ -574,6 +621,16 @@ module Impl {
     }
   }
 
+  /** A nested function access. */
+  class NestedFunctionAccess extends PathExprBaseImpl::PathExprBase {
+    private Function f;
+
+    NestedFunctionAccess() { nestedFunctionAccess(_, f, this) }
+
+    /** Gets the function being accessed. */
+    Function getFunction() { result = f }
+  }
+
   cached
   private module Cached {
     cached
@@ -582,12 +639,12 @@ module Impl {
 
     cached
     predicate variableAccess(string name, Variable v, VariableAccessCand cand) {
-      v =
-        min(Variable v0, int nestLevel |
-          variableReachesCand(_, name, v0, cand, nestLevel)
-        |
-          v0 order by nestLevel
-        )
+      access(name, TDefOrAccessCandVariable(v), cand)
+    }
+
+    cached
+    predicate nestedFunctionAccess(string name, Function f, VariableAccessCand cand) {
+      access(name, TDefOrAccessCandNestedFunction(f, _), cand)
     }
   }
 

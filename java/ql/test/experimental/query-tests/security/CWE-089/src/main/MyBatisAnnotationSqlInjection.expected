@@ -1,6 +1,3 @@
-#select
-| MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:62:19:62:43 | name | this user input | SqlInjectionMapper.java:33:2:33:54 | Select | this SQL operation |
-| MybatisSqlInjectionService.java:55:32:55:35 | name | MybatisSqlInjection.java:67:46:67:70 | name : String | MybatisSqlInjectionService.java:55:32:55:35 | name | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:67:46:67:70 | name | this user input | SqlInjectionMapper.java:36:2:36:72 | Select | this SQL operation |
 edges
 | MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjection.java:63:35:63:38 | name : String | provenance |  |
 | MybatisSqlInjection.java:63:35:63:38 | name : String | MybatisSqlInjectionService.java:48:19:48:29 | name : String | provenance |  |
@@ -44,4 +41,7 @@ nodes
 | MybatisSqlInjectionService.java:85:28:85:30 | age | semmle.label | age |
 | MybatisSqlInjectionService.java:88:32:88:42 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:89:32:89:35 | name | semmle.label | name |
+problems
+| MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:62:19:62:43 | name | this user input | SqlInjectionMapper.java:33:2:33:54 | Select | this SQL operation |
+| MybatisSqlInjectionService.java:55:32:55:35 | name | MybatisSqlInjection.java:67:46:67:70 | name : String | MybatisSqlInjectionService.java:55:32:55:35 | name | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:67:46:67:70 | name | this user input | SqlInjectionMapper.java:36:2:36:72 | Select | this SQL operation |
 subpaths

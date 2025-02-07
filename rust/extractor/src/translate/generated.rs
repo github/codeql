@@ -2483,11 +2483,13 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_use_tree(&mut self, node: ast::UseTree) -> Option<Label<generated::UseTree>> {
+        let is_glob = node.star_token().is_some();
         let path = node.path().and_then(|x| self.emit_path(x));
         let rename = node.rename().and_then(|x| self.emit_rename(x));
         let use_tree_list = node.use_tree_list().and_then(|x| self.emit_use_tree_list(x));
         let label = self.trap.emit(generated::UseTree {
             id: TrapId::Star,
+            is_glob,
             path,
             rename,
             use_tree_list,

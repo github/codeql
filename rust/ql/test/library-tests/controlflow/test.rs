@@ -134,6 +134,14 @@ mod if_expression {
         }
     }
 
+    fn test_if_without_else(b: bool) -> i64 {
+        let mut i = 3;
+        if b {
+            i += 1;
+        }
+        i
+    }
+
     fn test_if_let_else(a: Option<i64>) -> i64 {
         if let Some(n) = a {
             n
@@ -155,6 +163,17 @@ mod if_expression {
         } else {
             0
         }
+    }
+
+    fn test_nested_if_2(cond1: bool, cond2: bool) -> () {
+        if cond1 {
+            if cond2 {
+                println!("1");
+            } else {
+                println!("2");
+            }
+            println!("3");
+        };
     }
 
     fn test_nested_if_match(a: i64) -> i64 {

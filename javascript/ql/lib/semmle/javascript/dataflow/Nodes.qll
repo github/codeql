@@ -8,6 +8,7 @@ private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * A data flow node corresponding to an expression.
@@ -995,6 +996,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
+    t.start() and
+    PreCallGraphStep::classObjectSource(this, result)
+    or
     result = this.getAClassReferenceRec(t)
   }
 
@@ -1044,6 +1048,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
     // Note that this also blocks flows into a property of the receiver,
     // but the `localFieldStep` rule will often compensate for this.
     not result = any(DataFlow::ClassNode cls).getAReceiverNode()
+    or
+    t.start() and
+    PreCallGraphStep::classInstanceSource(this, result)
   }
 
   pragma[noinline]

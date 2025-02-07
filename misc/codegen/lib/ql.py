@@ -45,6 +45,7 @@ class Property:
     synth: bool = False
     type_is_hideable: bool = False
     type_is_codegen_class: bool = False
+    type_is_self: bool = False
     internal: bool = False
     cfg: bool = False
 
@@ -83,6 +84,10 @@ class Property:
     def is_indexed(self) -> bool:
         return self.is_repeated and not self.is_unordered
 
+    @property
+    def type_alias(self) -> Optional[str]:
+        return self.type + "Alias" if self.type_is_self else self.type
+
 
 @dataclass
 class Base:
@@ -116,10 +121,17 @@ class Class:
         self.bases_impl = get_bases(self.bases_impl)
         if self.properties:
             self.properties[0].first = True
+            for prop in self.properties:
+                if prop.type == self.name:
+                    prop.type_is_self = True
 
     @property
     def root(self) -> bool:
         return not self.bases
+
+    @property
+    def needs_self_alias(self) -> bool:
+        return self.root or any(p.type_is_self for p in self.properties)
 
     @property
     def path(self) -> pathlib.Path:

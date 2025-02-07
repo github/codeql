@@ -58,6 +58,3 @@ class PartialPathTraversalMethodCall extends MethodCall {
     not isSafe(this.getArgument(0))
   }
 }
-
-/** DEPRECATED: Alias for `PartialPathTraversalMethodCall`. */
-deprecated class PartialPathTraversalMethodAccess = PartialPathTraversalMethodCall;

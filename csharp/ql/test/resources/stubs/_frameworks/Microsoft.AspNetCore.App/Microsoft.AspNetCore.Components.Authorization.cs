@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Authorization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Authorization, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -14,6 +14,13 @@ namespace Microsoft
                     public System.Security.Claims.ClaimsPrincipal User { get => throw null; }
                 }
                 public delegate void AuthenticationStateChangedHandler(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task);
+                public class AuthenticationStateData
+                {
+                    public System.Collections.Generic.IList<Microsoft.AspNetCore.Components.Authorization.ClaimData> Claims { get => throw null; set { } }
+                    public AuthenticationStateData() => throw null;
+                    public string NameClaimType { get => throw null; set { } }
+                    public string RoleClaimType { get => throw null; set { } }
+                }
                 public abstract class AuthenticationStateProvider
                 {
                     public event Microsoft.AspNetCore.Components.Authorization.AuthenticationStateChangedHandler AuthenticationStateChanged;
@@ -55,6 +62,13 @@ namespace Microsoft
                     public CascadingAuthenticationState() => throw null;
                     void System.IDisposable.Dispose() => throw null;
                     protected override void OnInitialized() => throw null;
+                }
+                public struct ClaimData
+                {
+                    public ClaimData(string type, string value) => throw null;
+                    public ClaimData(System.Security.Claims.Claim claim) => throw null;
+                    public string Type { get => throw null; }
+                    public string Value { get => throw null; }
                 }
                 public interface IHostEnvironmentAuthenticationStateProvider
                 {

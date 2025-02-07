@@ -14,4 +14,8 @@
 | test.rs:52:16:52:33 | ...::home_dir | Flow source 'CommandLineArgs' of type commandargs. |
 | test.rs:60:26:60:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:63:26:63:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:66:26:66:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:66:26:66:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:69:26:69:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:72:26:72:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:75:26:75:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:78:24:78:35 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |

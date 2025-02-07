@@ -16,6 +16,7 @@ module Impl {
   private import codeql.rust.elements.internal.MethodCallExprImpl::Impl
   private import codeql.rust.elements.internal.CallExprImpl::Impl
   private import codeql.rust.elements.internal.PathExprImpl::Impl
+  private import codeql.rust.elements.internal.PathResolution
 
   pragma[nomagic]
   Resolvable getCallResolvable(CallExprBase call) {
@@ -33,6 +34,10 @@ module Impl {
      * Gets the target callable of this call, if a unique such target can
      * be statically resolved.
      */
-    Callable getStaticTarget() { getCallResolvable(this).resolvesAsItem(result) }
+    Callable getStaticTarget() {
+      getCallResolvable(this).resolvesAsItem(result)
+      or
+      result = resolvePath(this.(CallExpr).getFunction().(PathExpr).getPath())
+    }
   }
 }

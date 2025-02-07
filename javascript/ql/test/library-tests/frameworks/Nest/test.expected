@@ -1,5 +1,7 @@
+testFailures
 routeHandler
-| global/validation.ts:6:3:9:3 | route1( ...  OK\\n  } |
+| global/validation.ts:11:3:14:3 | route1( ...  OK\\n  } |
+| global/validation.ts:17:3:19:3 | route2( ... x);\\n  } |
 | local/customDecorator.ts:18:3:20:3 | sneaky( ...  OK\\n  } |
 | local/customDecorator.ts:23:3:25:3 | safe(@S ...  OK\\n  } |
 | local/customPipe.ts:20:5:22:5 | sanitiz ... K\\n    } |
@@ -36,8 +38,9 @@ requestInputAccess
 | body | local/routes.ts:40:16:40:19 | body |
 | body | local/routes.ts:66:26:66:29 | file |
 | body | local/routes.ts:71:31:71:35 | files |
-| parameter | global/validation.ts:6:22:6:33 | validatedObj |
-| parameter | global/validation.ts:6:56:6:66 | unvalidated |
+| parameter | global/validation.ts:11:22:11:33 | validatedObj |
+| parameter | global/validation.ts:11:56:11:66 | unvalidated |
+| parameter | global/validation.ts:17:22:17:22 | x |
 | parameter | local/customDecorator.ts:6:12:6:41 | request ... ryParam |
 | parameter | local/customPipe.ts:5:15:5:19 | value |
 | parameter | local/customPipe.ts:13:15:13:19 | value |
@@ -58,8 +61,8 @@ requestInputAccess
 | parameter | local/validation.ts:42:22:42:33 | validatedObj |
 | parameter | local/validation.ts:42:56:42:66 | unvalidated |
 responseSendArgument
-| global/validation.ts:7:31:7:41 | unvalidated |
-| global/validation.ts:8:12:8:27 | validatedObj.key |
+| global/validation.ts:12:31:12:41 | unvalidated |
+| global/validation.ts:13:12:13:27 | validatedObj.key |
 | local/customDecorator.ts:19:12:19:16 | value |
 | local/customDecorator.ts:24:12:24:16 | value |
 | local/customPipe.ts:21:16:21:29 | '' + sanitized |

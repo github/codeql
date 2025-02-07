@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Routing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Routing, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -103,7 +103,9 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Produces<TResponse>(this Microsoft.AspNetCore.Builder.RouteHandlerBuilder builder, int statusCode = default(int), string contentType = default(string), params string[] additionalContentTypes) => throw null;
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Produces(this Microsoft.AspNetCore.Builder.RouteHandlerBuilder builder, int statusCode, System.Type responseType = default(System.Type), string contentType = default(string), params string[] additionalContentTypes) => throw null;
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder ProducesProblem(this Microsoft.AspNetCore.Builder.RouteHandlerBuilder builder, int statusCode, string contentType = default(string)) => throw null;
+                public static TBuilder ProducesProblem<TBuilder>(this TBuilder builder, int statusCode, string contentType = default(string)) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder ProducesValidationProblem(this Microsoft.AspNetCore.Builder.RouteHandlerBuilder builder, int statusCode = default(int), string contentType = default(string)) => throw null;
+                public static TBuilder ProducesValidationProblem<TBuilder>(this TBuilder builder, int statusCode = default(int), string contentType = default(string)) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithDescription<TBuilder>(this TBuilder builder, string description) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithSummary<TBuilder>(this TBuilder builder, string summary) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithTags<TBuilder>(this TBuilder builder, params string[] tags) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
@@ -274,6 +276,12 @@ namespace Microsoft
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
+            }
+            public sealed class ContentEncodingMetadata
+            {
+                public ContentEncodingMetadata(string value, double quality) => throw null;
+                public double Quality { get => throw null; }
+                public string Value { get => throw null; }
             }
             public sealed class DataTokensMetadata : Microsoft.AspNetCore.Routing.IDataTokensMetadata
             {
@@ -798,6 +806,7 @@ namespace Microsoft
             public static class RouteHandlerServices
             {
                 public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Map(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern, System.Delegate handler, System.Collections.Generic.IEnumerable<string> httpMethods, System.Func<System.Reflection.MethodInfo, Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions, Microsoft.AspNetCore.Http.RequestDelegateMetadataResult> populateMetadata, System.Func<System.Delegate, Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions, Microsoft.AspNetCore.Http.RequestDelegateMetadataResult, Microsoft.AspNetCore.Http.RequestDelegateResult> createRequestDelegate) => throw null;
+                public static Microsoft.AspNetCore.Builder.RouteHandlerBuilder Map(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern, System.Delegate handler, System.Collections.Generic.IEnumerable<string> httpMethods, System.Func<System.Reflection.MethodInfo, Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions, Microsoft.AspNetCore.Http.RequestDelegateMetadataResult> populateMetadata, System.Func<System.Delegate, Microsoft.AspNetCore.Http.RequestDelegateFactoryOptions, Microsoft.AspNetCore.Http.RequestDelegateMetadataResult, Microsoft.AspNetCore.Http.RequestDelegateResult> createRequestDelegate, System.Reflection.MethodInfo methodInfo) => throw null;
             }
             public sealed class RouteNameMetadata : Microsoft.AspNetCore.Routing.IRouteNameMetadata
             {

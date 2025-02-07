@@ -183,3 +183,8 @@ const debug = require('debug')('test');
 	console.log(password.replace(new RegExp(".", unknownFlags()), "*")); // OK -- Most likely not a problem.
     console.log(password.replace(new RegExp("pre_._suf", "g"), "*")); // OK
 })();
+
+(function () {
+  console.log(JSON.stringify(process.env)); // NOT OK
+  console.log(process.env.PATH); // OK.
+});

@@ -4,4 +4,3 @@
 .gradle/vcs-1/gc.properties
 gradle/wrapper/gradle-wrapper.properties
 src/main/java/com/fractestexample/Test.java
-test-db/log/ext/javac.properties
