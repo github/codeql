@@ -26,18 +26,18 @@ edges
 | main.rs:29:9:29:9 | b | main.rs:30:10:30:10 | b | provenance |  |
 | main.rs:29:13:29:13 | a | main.rs:29:13:29:21 | a.clone(...) | provenance |  |
 | main.rs:29:13:29:21 | a.clone(...) | main.rs:29:9:29:9 | b | provenance |  |
-| main.rs:42:13:42:13 | w [Wrapper.n] | main.rs:43:15:43:15 | w [Wrapper.n] | provenance |  |
-| main.rs:42:17:42:41 | Wrapper {...} [Wrapper.n] | main.rs:42:13:42:13 | w [Wrapper.n] | provenance |  |
-| main.rs:42:30:42:39 | source(...) | main.rs:42:17:42:41 | Wrapper {...} [Wrapper.n] | provenance |  |
-| main.rs:43:15:43:15 | w [Wrapper.n] | main.rs:44:13:44:28 | Wrapper {...} [Wrapper.n] | provenance |  |
-| main.rs:43:15:43:15 | w [Wrapper.n] | main.rs:46:17:46:17 | w [Wrapper.n] | provenance |  |
-| main.rs:44:13:44:28 | Wrapper {...} [Wrapper.n] | main.rs:44:26:44:26 | n | provenance |  |
+| main.rs:42:13:42:13 | w [Wrapper] | main.rs:43:15:43:15 | w [Wrapper] | provenance |  |
+| main.rs:42:17:42:41 | Wrapper {...} [Wrapper] | main.rs:42:13:42:13 | w [Wrapper] | provenance |  |
+| main.rs:42:30:42:39 | source(...) | main.rs:42:17:42:41 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:43:15:43:15 | w [Wrapper] | main.rs:44:13:44:28 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:43:15:43:15 | w [Wrapper] | main.rs:46:17:46:17 | w [Wrapper] | provenance |  |
+| main.rs:44:13:44:28 | Wrapper {...} [Wrapper] | main.rs:44:26:44:26 | n | provenance |  |
 | main.rs:44:26:44:26 | n | main.rs:44:38:44:38 | n | provenance |  |
-| main.rs:46:13:46:13 | u [Wrapper.n] | main.rs:47:15:47:15 | u [Wrapper.n] | provenance |  |
-| main.rs:46:17:46:17 | w [Wrapper.n] | main.rs:46:17:46:25 | w.clone(...) [Wrapper.n] | provenance |  |
-| main.rs:46:17:46:25 | w.clone(...) [Wrapper.n] | main.rs:46:13:46:13 | u [Wrapper.n] | provenance |  |
-| main.rs:47:15:47:15 | u [Wrapper.n] | main.rs:48:13:48:28 | Wrapper {...} [Wrapper.n] | provenance |  |
-| main.rs:48:13:48:28 | Wrapper {...} [Wrapper.n] | main.rs:48:26:48:26 | n | provenance |  |
+| main.rs:46:13:46:13 | u [Wrapper] | main.rs:47:15:47:15 | u [Wrapper] | provenance |  |
+| main.rs:46:17:46:17 | w [Wrapper] | main.rs:46:17:46:25 | w.clone(...) [Wrapper] | provenance |  |
+| main.rs:46:17:46:25 | w.clone(...) [Wrapper] | main.rs:46:13:46:13 | u [Wrapper] | provenance |  |
+| main.rs:47:15:47:15 | u [Wrapper] | main.rs:48:13:48:28 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:48:13:48:28 | Wrapper {...} [Wrapper] | main.rs:48:26:48:26 | n | provenance |  |
 | main.rs:48:26:48:26 | n | main.rs:48:38:48:38 | n | provenance |  |
 nodes
 | main.rs:13:9:13:9 | a [Some] | semmle.label | a [Some] |
@@ -67,18 +67,18 @@ nodes
 | main.rs:29:13:29:13 | a | semmle.label | a |
 | main.rs:29:13:29:21 | a.clone(...) | semmle.label | a.clone(...) |
 | main.rs:30:10:30:10 | b | semmle.label | b |
-| main.rs:42:13:42:13 | w [Wrapper.n] | semmle.label | w [Wrapper.n] |
-| main.rs:42:17:42:41 | Wrapper {...} [Wrapper.n] | semmle.label | Wrapper {...} [Wrapper.n] |
+| main.rs:42:13:42:13 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:42:17:42:41 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
 | main.rs:42:30:42:39 | source(...) | semmle.label | source(...) |
-| main.rs:43:15:43:15 | w [Wrapper.n] | semmle.label | w [Wrapper.n] |
-| main.rs:44:13:44:28 | Wrapper {...} [Wrapper.n] | semmle.label | Wrapper {...} [Wrapper.n] |
+| main.rs:43:15:43:15 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:44:13:44:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
 | main.rs:44:26:44:26 | n | semmle.label | n |
 | main.rs:44:38:44:38 | n | semmle.label | n |
-| main.rs:46:13:46:13 | u [Wrapper.n] | semmle.label | u [Wrapper.n] |
-| main.rs:46:17:46:17 | w [Wrapper.n] | semmle.label | w [Wrapper.n] |
-| main.rs:46:17:46:25 | w.clone(...) [Wrapper.n] | semmle.label | w.clone(...) [Wrapper.n] |
-| main.rs:47:15:47:15 | u [Wrapper.n] | semmle.label | u [Wrapper.n] |
-| main.rs:48:13:48:28 | Wrapper {...} [Wrapper.n] | semmle.label | Wrapper {...} [Wrapper.n] |
+| main.rs:46:13:46:13 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:46:17:46:17 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:46:17:46:25 | w.clone(...) [Wrapper] | semmle.label | w.clone(...) [Wrapper] |
+| main.rs:47:15:47:15 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:48:13:48:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
 | main.rs:48:26:48:26 | n | semmle.label | n |
 | main.rs:48:38:48:38 | n | semmle.label | n |
 subpaths
