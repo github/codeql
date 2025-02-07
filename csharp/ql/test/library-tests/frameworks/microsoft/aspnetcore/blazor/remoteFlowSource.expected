@@ -1,0 +1,4 @@
+| Components_Pages_TestPage_razor.g.cs:126:1:126:8 | access to property UrlParam | ASP.NET Core component route parameter |
+| Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | ASP.NET Core component route parameter |
+| Components_Pages_TestPage_razor.g.cs:176:1:176:10 | access to property QueryParam | external |
+| Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | external |
