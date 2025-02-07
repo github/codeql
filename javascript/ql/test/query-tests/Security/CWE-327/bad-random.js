@@ -112,12 +112,13 @@ var good = (a[i] * 0x100000000) + a[i + 6]; // OK - generating a large number fr
 var good = (a[i + 2] * 0x10000000) + a[i + 6]; // OK - generating a large number from smaller bytes.
 var foo = 0xffffffffffff + 0xfffffffffff + 0xffffffffff + 0xfffffffff + 0xffffffff + 0xfffffff + 0xffffff
 
-const digits = []; // $ Alert - documentation example:
+// Bad documentation example: 
+const digits = [];
 for (let i = 0; i < 10; i++) {
     digits.push(crypto.randomBytes(1)[0] % 10); // $ Alert
 }
 
-// OK - documentation example:
+// Good documentation example: 
 const digits = [];
 while (digits.length < 10) {
     const byte = crypto.randomBytes(1)[0];

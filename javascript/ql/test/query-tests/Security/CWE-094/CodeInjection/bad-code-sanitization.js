@@ -58,12 +58,13 @@ app.get('/some/path', function(req, res) {
   setTimeout(`(function(){${JSON.stringify(taint)}))`); // OK - the source is remote-flow, and the sink is code-injection.
 });
 
-function createObjectWrite() { // $ Alert - documentation example:
+// Bad documentation example: 
+function createObjectWrite() {
     const assignment = `obj[${JSON.stringify(key)}]=42`;
     return `(function(){${assignment}})` // $ Alert[js/bad-code-sanitization]
 }
 
-// OK - documentation example:
+// Good documentation example: 
 function good() {
     const charMap = {
         '<': '\\u003C',

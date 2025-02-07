@@ -42,7 +42,8 @@ app.use('/angular', require('serve-static')(path.join(__dirname, "/node_modules"
 app.use('/home', require('serve-static')(require("os").homedir())); // $ Alert
 app.use('/root', require('serve-static')("/")); // $ Alert
 
-function bad() { // $ Alert - documentation example
+// Bad documentation example
+function bad() {
     var express = require('express');
 
     var app = express();
@@ -50,7 +51,7 @@ function bad() { // $ Alert - documentation example
     app.use('/node_modules', express.static(path.resolve(__dirname, '../node_modules'))); // $ Alert
 }
 
-// OK - documentation example
+// Good documentation example
 function good() {
     var express = require('express');
 

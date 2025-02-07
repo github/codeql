@@ -1,9 +1,7 @@
 /**
- * NOT OK: Parameter y is not documented.
- *
  * @param x The first operand.
  */
-function f(x, y) {
+function f(x, y) { // $ Alert
     return x+y;
 }
 
@@ -14,7 +12,7 @@ function g(x, y) {
     return x+y;
 }
 
-/** // $ Alert
+/**
  * @param {int}   x
  * @param {float} y
  */
@@ -22,6 +20,6 @@ var o = {
   /**
    * @param {String} x first argument.
    */
-  f : function(x, y) {
+  f : function(x, y) { // $ Alert
   }
 };
