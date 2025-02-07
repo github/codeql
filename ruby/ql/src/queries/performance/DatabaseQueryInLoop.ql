@@ -14,6 +14,8 @@ import codeql.ruby.ast.internal.Constant
 import codeql.ruby.Concepts
 import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.TaintTracking
+private import codeql.ruby.CFG
+private import codeql.ruby.controlflow.internal.Guards as Guards
 
 /** Gets the name of a built-in method that involves a loop operation. */
 string getALoopMethodName() {
@@ -36,21 +38,26 @@ class LoopingCall extends DataFlow::CallNode {
   predicate executesCall(DataFlow::CallNode c) { c.asExpr().getScope() = loopScope }
 }
 
-/** Holds if `ar` influences `guard`, which may control the execution of a loop. */
-predicate usedInLoopControlGuard(ActiveRecordInstance ar, DataFlow::Node guard) {
-  TaintTracking::localTaint(ar, guard) and
-  guard = guardForLoopControl(_, _)
+/** Holds if `ar` influences a guard that may control the execution of a loop. */
+predicate usedInLoopControlGuard(ActiveRecordInstance ar) {
+  exists(DataFlow::Node insideGuard, CfgNodes::ExprCfgNode guard |
+    // For a guard like `cond && ar`, the whole guard will not be tainted
+    // so we need to look at the taint of the individual parts.
+    insideGuard.asExpr().getExpr() = guard.getExpr().getAChild*()
+  |
+    TaintTracking::localTaint(ar, insideGuard) and
+    guardForLoopControl(guard, _)
+  )
 }
 
-/** Gets a dataflow node that is used to decide whether to break a loop. */
-DataFlow::Node guardForLoopControl(ConditionalExpr cond, Stmt control) {
-  result.asExpr().getAstNode() = cond.getCondition().getAChild*() and
+/** Holds if `guard` controls `break` and `break` would break out of a loop. */
+predicate guardForLoopControl(CfgNodes::ExprCfgNode guard, CfgNodes::AstCfgNode break) {
+  Guards::guardControlsBlock(guard, break.getBasicBlock(), _) and
   (
-    control.(MethodCall).getMethodName() = "raise"
+    break.(CfgNodes::ExprNodes::MethodCallCfgNode).getMethodName() = "raise"
     or
-    control instanceof NextStmt
-  ) and
-  control = cond.getBranch(_).getAChild()
+    break instanceof CfgNodes::ReturningCfgNode
+  )
 }
 
 from LoopingCall loop, ActiveRecordModelFinderCall call
@@ -59,7 +66,7 @@ where
   // Disregard loops over constants
   not isArrayConstant(loop.getReceiver().asExpr(), _) and
   // Disregard cases where the looping is influenced by the query result
-  not usedInLoopControlGuard(call, _) and
+  not usedInLoopControlGuard(call) and
   // Only report calls that are likely to be expensive
   not call.getMethodName() in ["new", "create"]
 select call,

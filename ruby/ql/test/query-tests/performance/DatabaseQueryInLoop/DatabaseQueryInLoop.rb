@@ -42,6 +42,14 @@ class DatabaseQueryInLoopTest
             end
         end
 
+        # more complicated condition
+        names.map do |name|
+            user = User.where(login: name).pluck(:id).first
+            unless cond && user
+                raise Error.new("User '#{name}' not found")
+            end
+        end
+
         # skipping through the loop when users are not relevant
         names.map do |name|
             user = User.where(login: name).pluck(:id).first
