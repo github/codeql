@@ -149,7 +149,6 @@ fn write_schema(
             .iter()
             .map(|node| node_src_to_schema_class(node, &super_types)),
     );
-    // the concat dance is currently required by bazel
     let template = mustache::compile_str(include_str!("templates/schema.mustache"))?;
     let res = template.render_to_string(&schema)?;
     Ok(fix_blank_lines(&res))
