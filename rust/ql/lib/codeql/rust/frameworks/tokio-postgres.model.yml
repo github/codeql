@@ -4,7 +4,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::execute", "Argument[0]", "sql-injection", "manual"]
-      - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::btah_execute", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::batch_execute", "Argument[0]", "sql-injection", "manual"]
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::execute_raw", "Argument[0]", "sql-injection", "manual"]
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::prepare", "Argument[0]", "sql-injection", "manual"]
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::prepare_typed", "Argument[0]", "sql-injection", "manual"]
