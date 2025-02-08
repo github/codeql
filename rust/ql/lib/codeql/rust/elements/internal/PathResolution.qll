@@ -187,7 +187,7 @@ abstract private class ImplOrTraitItemNode extends ItemNode {
 private class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   override string getName() { result = "(impl)" }
 
-  override Visibility getVisibility() { none() }
+  override Visibility getVisibility() { result = Impl.super.getVisibility() }
 }
 
 private class MacroCallItemNode extends ItemNode instanceof MacroCall {
@@ -228,6 +228,12 @@ private class UseItemNode extends ItemNode instanceof Use {
 
 private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override string getName() { result = "(block expr)" }
+
+  override Visibility getVisibility() { none() }
+}
+
+private class TypeParamItemNode extends ItemNode instanceof TypeParam {
+  override string getName() { result = TypeParam.super.getName().getText() }
 
   override Visibility getVisibility() { none() }
 }
