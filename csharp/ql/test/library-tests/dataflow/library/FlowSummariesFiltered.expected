@@ -16955,7 +16955,12 @@
 | System;Uri;get_Query;();Argument[this];ReturnValue;taint;manual |
 | System;Uri;get_Scheme;();Argument[this];ReturnValue;taint;df-generated |
 | System;Uri;get_UserInfo;();Argument[this];ReturnValue;taint;df-generated |
-| System;UriBuilder;ToString;();Argument[this];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Fragment];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Host];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Path];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Port];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Query];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Scheme];ReturnValue;taint;manual |
 | System;UriBuilder;UriBuilder;(System.String);Argument[0];Argument[this].Property[System.UriBuilder.Fragment];taint;manual |
 | System;UriBuilder;UriBuilder;(System.String);Argument[0];Argument[this].Property[System.UriBuilder.Host];taint;manual |
 | System;UriBuilder;UriBuilder;(System.String);Argument[0];Argument[this].Property[System.UriBuilder.Path];taint;manual |
