@@ -127,6 +127,15 @@ predicate vulnerableActionsDataModel(
 predicate immutableActionsDataModel(string action) { Extensions::immutableActionsDataModel(action) }
 
 /**
+ * MaD models for trusted actions owners
+ * Fields:
+ *    - owner: owner name
+ */
+predicate trustedActionsOwnerDataModel(string owner) {
+  Extensions::trustedActionsOwnerDataModel(owner)
+}
+
+/**
  * MaD models for untrusted git commands
  * Fields:
  *    - cmd_regex: Regular expression for matching untrusted git commands

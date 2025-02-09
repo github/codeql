@@ -643,6 +643,7 @@ private module PathGraphSigMod {
 module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
   import Configs<Location, Lang>
 
   /**
@@ -700,7 +701,13 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    import Impl<C>
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
   }
 
   /**
@@ -723,7 +730,13 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    import Impl<C>
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   signature class PathNodeSig {

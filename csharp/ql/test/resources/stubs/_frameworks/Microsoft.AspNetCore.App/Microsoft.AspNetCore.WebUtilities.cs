@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.WebUtilities, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.WebUtilities, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -264,6 +264,7 @@ namespace Microsoft
                 public static string Base64UrlEncode(byte[] input, int offset, int count) => throw null;
                 public static int Base64UrlEncode(byte[] input, int offset, char[] output, int outputOffset, int count) => throw null;
                 public static string Base64UrlEncode(System.ReadOnlySpan<byte> input) => throw null;
+                public static int Base64UrlEncode(System.ReadOnlySpan<byte> input, System.Span<char> output) => throw null;
                 public static int GetArraySizeRequiredToDecode(int count) => throw null;
                 public static int GetArraySizeRequiredToEncode(int count) => throw null;
             }

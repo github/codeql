@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Collections.Concurrent, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Collections.Concurrent, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Collections
@@ -80,6 +80,17 @@ namespace System
                 public TValue AddOrUpdate(TKey key, System.Func<TKey, TValue> addValueFactory, System.Func<TKey, TValue, TValue> updateValueFactory) => throw null;
                 public TValue AddOrUpdate(TKey key, TValue addValue, System.Func<TKey, TValue, TValue> updateValueFactory) => throw null;
                 public TValue AddOrUpdate<TArg>(TKey key, System.Func<TKey, TArg, TValue> addValueFactory, System.Func<TKey, TValue, TArg, TValue> updateValueFactory, TArg factoryArgument) => throw null;
+                public struct AlternateLookup<TAlternateKey>
+                {
+                    public bool ContainsKey(TAlternateKey key) => throw null;
+                    public System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue> Dictionary { get => throw null; }
+                    public TValue this[TAlternateKey key] { get => throw null; set { } }
+                    public bool TryAdd(TAlternateKey key, TValue value) => throw null;
+                    public bool TryGetValue(TAlternateKey key, out TValue value) => throw null;
+                    public bool TryGetValue(TAlternateKey key, out TKey actualKey, out TValue value) => throw null;
+                    public bool TryRemove(TAlternateKey key, out TValue value) => throw null;
+                    public bool TryRemove(TAlternateKey key, out TKey actualKey, out TValue value) => throw null;
+                }
                 public void Clear() => throw null;
                 public System.Collections.Generic.IEqualityComparer<TKey> Comparer { get => throw null; }
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
@@ -95,6 +106,7 @@ namespace System
                 public ConcurrentDictionary(int concurrencyLevel, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> collection, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
                 public ConcurrentDictionary(int concurrencyLevel, int capacity) => throw null;
                 public ConcurrentDictionary(int concurrencyLevel, int capacity, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+                public System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>.AlternateLookup<TAlternateKey> GetAlternateLookup<TAlternateKey>() => throw null;
                 public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator() => throw null;
                 System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
@@ -117,6 +129,7 @@ namespace System
                 public TValue this[TKey key] { get => throw null; set { } }
                 public System.Collections.Generic.KeyValuePair<TKey, TValue>[] ToArray() => throw null;
                 public bool TryAdd(TKey key, TValue value) => throw null;
+                public bool TryGetAlternateLookup<TAlternateKey>(out System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>.AlternateLookup<TAlternateKey> lookup) => throw null;
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
                 public bool TryRemove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
                 public bool TryRemove(TKey key, out TValue value) => throw null;

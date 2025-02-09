@@ -49,7 +49,11 @@ private Class getRootType(FieldAccess fa) {
   exists(VariableAccess root |
     root = fa.getQualifier+() and
     not exists(root.getQualifier()) and
-    result = root.getUnspecifiedType()
+    // We strip the type because the root may be a pointer. For example `p` in:
+    // struct S { char buffer[10]; };
+    // S* p = ...;
+    // strcpy(p->buffer, "abc");
+    result = root.getUnspecifiedType().stripType()
   )
 }
 
