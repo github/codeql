@@ -31,18 +31,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let person = connection.query_row(&query, (), |row| {    // $ sql-sink
         Ok(Person {
-            id: row.get(0)?,
-            name: row.get(1)?,
-            age: row.get(2)?,
+            id: row.get(0)?,        // $ database-read
+            name: row.get(1)?,      // $ database-read
+            age: row.get(2)?,       // $ database-read
         })
     })?;
 
     let mut stmt = connection.prepare("SELECT id, name, age FROM person")?;      // $ sql-sink
     let people = stmt.query_map([], |row| {
         Ok(Person {
-            id: row.get(0)?,
-            name: row.get(1)?,
-            age: row.get(2)?,
+            id: row.get_unwrap(0),      // $ database-read
+            name: row.get_unwrap(1),    // $ database-read
+            age: row.get_unwrap(2),     // $ database-read
         })
     })?;
 
