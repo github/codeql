@@ -228,9 +228,10 @@ class SsaImplicitUpdate extends SsaUpdate {
   }
 
   private predicate hasExplicitQualifierUpdate() {
-    exists(SsaExplicitUpdate qdef, BasicBlock bb, int i |
+    exists(SsaUpdate qdef, BasicBlock bb, int i |
       qdef.definesAt(this.getSourceVariable().getQualifier(), bb, i) and
-      this.definesAt(_, bb, i)
+      this.definesAt(_, bb, i) and
+      not qdef instanceof SsaUncertainImplicitUpdate
     )
   }
 
