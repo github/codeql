@@ -258,6 +258,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   newtype TModeOperation =
     ECB() or
+    CBC() or
     OtherMode()
 
   abstract class ModeOfOperation extends Algorithm {

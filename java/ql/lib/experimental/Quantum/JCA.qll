@@ -47,16 +47,18 @@ module JCAModel {
     CipherAlgorithmStringLiteral() { cipher_names(this.getValue().splitAt("/")) }
   }
 
-  class ModeOfOperationStringLiteral extends Crypto::ModeOfOperation instanceof StringLiteral {
+  class ModeOfOperationStringLiteral extends StringLiteral {
     ModeOfOperationStringLiteral() { cipher_modes(this.(StringLiteral).getValue().splitAt("/")) }
 
-    override string getRawAlgorithmName() {
-      result = this.(StringLiteral).getValue().regexpCapture(".*/(.*)/.*", 1)
-    }
+    string getRawAlgorithmName() { result = this.getValue().regexpCapture(".*/(.*)/.*", 1) }
+  }
 
-    override string getValue() {
-      result = this.(StringLiteral).getValue().regexpCapture(".*/(.*)/.*", 1)
-    }
+  class ECBMode extends Crypto::ModeOfOperation {
+    ModeOfOperationStringLiteral mode;
+
+    ECBMode() { modeStringToCipherInstanceArgFlow("ECB", mode, this) }
+
+    override string getRawAlgorithmName() { result = mode.getRawAlgorithmName() }
 
     predicate modeToNameMapping(Crypto::TModeOperation type, string name) {
       name = "ECB" and type instanceof Crypto::ECB
@@ -65,24 +67,26 @@ module JCAModel {
     override Crypto::TModeOperation getModeType() {
       modeToNameMapping(result, this.getRawAlgorithmName())
     }
+
+    override Crypto::LocatableElement getOrigin(string name) {
+      result = mode and name = mode.toString()
+    }
   }
 
   abstract class CipherAlgorithmPadding extends Crypto::NodeBase {
     string getValue() { result = "" }
   }
 
-  class CipherAlgorithmPaddingStringLiteral extends CipherAlgorithmPadding instanceof StringLiteral {
-    CipherAlgorithmPaddingStringLiteral() {
-      cipher_padding(this.(StringLiteral).getValue().splitAt("/"))
-    }
-
-    override string toString() { result = this.(StringLiteral).toString() }
-
-    override string getValue() {
-      result = this.(StringLiteral).getValue().regexpCapture(".*/.*/(.*)", 1)
-    }
-  }
-
+  //todo refactor
+  // class CipherAlgorithmPaddingStringLiteral extends CipherAlgorithmPadding instanceof StringLiteral {
+  //   CipherAlgorithmPaddingStringLiteral() {
+  //     cipher_padding(this.(StringLiteral).getValue().splitAt("/"))
+  //   }
+  //   override string toString() { result = this.(StringLiteral).toString() }
+  //   override string getValue() {
+  //     result = this.(StringLiteral).getValue().regexpCapture(".*/.*/(.*)", 1)
+  //   }
+  // }
   private module AlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherAlgorithmStringLiteral }
 
@@ -108,6 +112,7 @@ module JCAModel {
     string name, ModeOfOperationStringLiteral mode, Expr arg
   ) {
     exists(CipherInstance sinkCall |
+      //consider if this should be a more specific predicate
       mode.getRawAlgorithmName() = name and
       arg = sinkCall and
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(mode),
@@ -127,8 +132,10 @@ module JCAModel {
 
     AESAlgo() { algorithmStringToCipherInstanceArgFlow("AES", alg, this) }
 
+    //todo this is really not correct yet
     override Crypto::ModeOfOperation getModeOfOperation() {
-      modeStringToCipherInstanceArgFlow(result.getAlgorithmName(), result, this)
+      none()
+      //exists(Crypto::ModeOfOperation mode | mode = this and result = this)
     }
 
     override Crypto::LocatableElement getOrigin(string name) {
