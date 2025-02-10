@@ -295,19 +295,19 @@ def aliases(
 _NORMAL_DEPENDENCIES = {
     "python/extractor/tsg-python": {
         _COMMON_CONDITION: {
-            "anyhow": Label("@vendor//:anyhow-1.0.44"),
-            "clap": Label("@vendor//:clap-2.33.3"),
-            "regex": Label("@vendor//:regex-1.5.5"),
-            "smallvec": Label("@vendor//:smallvec-1.6.1"),
-            "string-interner": Label("@vendor//:string-interner-0.12.2"),
-            "thiserror": Label("@vendor//:thiserror-1.0.29"),
-            "tree-sitter": Label("@vendor//:tree-sitter-0.20.4"),
-            "tree-sitter-graph": Label("@vendor//:tree-sitter-graph-0.7.0"),
+            "anyhow": Label("@vendor__anyhow-1.0.44//:anyhow"),
+            "clap": Label("@vendor__clap-2.33.3//:clap"),
+            "regex": Label("@vendor__regex-1.5.5//:regex"),
+            "smallvec": Label("@vendor__smallvec-1.6.1//:smallvec"),
+            "string-interner": Label("@vendor__string-interner-0.12.2//:string_interner"),
+            "thiserror": Label("@vendor__thiserror-1.0.29//:thiserror"),
+            "tree-sitter": Label("@vendor__tree-sitter-0.20.4//:tree_sitter"),
+            "tree-sitter-graph": Label("@vendor__tree-sitter-graph-0.7.0//:tree_sitter_graph"),
         },
     },
     "python/extractor/tsg-python/tsp": {
         _COMMON_CONDITION: {
-            "tree-sitter": Label("@vendor//:tree-sitter-0.20.4"),
+            "tree-sitter": Label("@vendor__tree-sitter-0.20.4//:tree_sitter"),
         },
     },
 }
@@ -370,7 +370,7 @@ _BUILD_DEPENDENCIES = {
     },
     "python/extractor/tsg-python/tsp": {
         _COMMON_CONDITION: {
-            "cc": Label("@vendor//:cc-1.0.70"),
+            "cc": Label("@vendor__cc-1.0.70//:cc"),
         },
     },
 }
