@@ -53,15 +53,6 @@ use_repo(rust, "rust_toolchains")
 
 register_toolchains("@rust_toolchains//:all")
 
-rust_host_tools = use_extension("@rules_rust//rust:extensions.bzl", "rust_host_tools")
-
-# Don't download a second toolchain as host toolchain, make sure this is the same version as above
-# The host toolchain is used for vendoring dependencies.
-rust_host_tools.host_tools(
-    edition = RUST_EDITION,
-    version = RUST_VERSION,
-)
-
 # deps for python extractor
 # keep in sync by running `misc/bazel/3rdparty/update_cargo_deps.sh`
 py_deps = use_extension("//misc/bazel/3rdparty:py_deps_extension.bzl", "p")
