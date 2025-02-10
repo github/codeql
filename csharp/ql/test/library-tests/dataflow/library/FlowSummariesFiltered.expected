@@ -16957,10 +16957,12 @@
 | System;Uri;get_UserInfo;();Argument[this];ReturnValue;taint;df-generated |
 | System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Fragment];ReturnValue;taint;manual |
 | System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Host];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Password];ReturnValue;taint;manual |
 | System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Path];ReturnValue;taint;manual |
 | System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Port];ReturnValue;taint;manual |
 | System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Query];ReturnValue;taint;manual |
 | System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.Scheme];ReturnValue;taint;manual |
+| System;UriBuilder;ToString;();Argument[this].Property[System.UriBuilder.UserName];ReturnValue;taint;manual |
 | System;UriBuilder;UriBuilder;(System.String);Argument[0];Argument[this].Property[System.UriBuilder.Fragment];taint;manual |
 | System;UriBuilder;UriBuilder;(System.String);Argument[0];Argument[this].Property[System.UriBuilder.Host];taint;manual |
 | System;UriBuilder;UriBuilder;(System.String);Argument[0];Argument[this].Property[System.UriBuilder.Path];taint;manual |
@@ -16990,10 +16992,12 @@
 | System;UriBuilder;UriBuilder;(System.Uri);Argument[0];Argument[this].Property[System.UriBuilder.Scheme];taint;manual |
 | System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Fragment];ReturnValue;taint;manual |
 | System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Host];ReturnValue;taint;manual |
+| System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Password];ReturnValue;taint;manual |
 | System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Path];ReturnValue;taint;manual |
 | System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Port];ReturnValue;taint;manual |
 | System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Query];ReturnValue;taint;manual |
 | System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.Scheme];ReturnValue;taint;manual |
+| System;UriBuilder;get_Uri;();Argument[this].Property[System.UriBuilder.UserName];ReturnValue;taint;manual |
 | System;UriParser;GetComponents;(System.Uri,System.UriComponents,System.UriFormat);Argument[0];ReturnValue;taint;df-generated |
 | System;UriParser;OnNewUri;();Argument[this];ReturnValue;value;dfc-generated |
 | System;UriParser;Register;(System.UriParser,System.String,System.Int32);Argument[1];Argument[0];taint;df-generated |
