@@ -90,7 +90,7 @@ module PreSsa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock extends BasicBlock {
+    private class ExitBasicBlock extends BasicBlock {
       ExitBasicBlock() { scopeLast(_, this.getLastElement(), _) }
     }
 

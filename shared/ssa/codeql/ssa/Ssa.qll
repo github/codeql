@@ -60,12 +60,6 @@ signature module InputSig<LocationSig Location> {
   /** Gets an immediate successor of basic block `bb`, if any. */
   BasicBlock getABasicBlockSuccessor(BasicBlock bb);
 
-  /**
-   * An exit basic block, that is, a basic block whose last node is
-   * an exit node.
-   */
-  class ExitBasicBlock extends BasicBlock;
-
   /** A variable that can be SSA converted. */
   class SourceVariable {
     /** Gets a textual representation of this variable. */
@@ -855,6 +849,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     lastRefRedef(inp, _, _, def)
   }
 
+  /** Holds if `bb` is a control-flow exit point. */
+  private predicate exitBlock(BasicBlock bb) { not exists(getABasicBlockSuccessor(bb)) }
+
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
@@ -873,7 +870,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     lastSsaRefExt(def, _, bb, i) and
     (
       // Can reach exit directly
-      bb instanceof ExitBasicBlock
+      exitBlock(bb)
       or
       // Can reach a block using one or more steps, where `def` is no longer live
       varBlockReachesExitExt(def, bb)
@@ -893,7 +890,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     lastSsaRef(def, _, bb, i) and
     (
       // Can reach exit directly
-      bb instanceof ExitBasicBlock
+      exitBlock(bb)
       or
       // Can reach a block using one or more steps, where `def` is no longer live
       varBlockReachesExit(def, bb)

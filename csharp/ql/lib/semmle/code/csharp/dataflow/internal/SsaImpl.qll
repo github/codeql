@@ -17,8 +17,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
-
   class SourceVariable = Ssa::SourceVariable;
 
   /**

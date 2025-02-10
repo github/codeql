@@ -47,8 +47,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
-
   /**
    * A variable amenable to SSA construction.
    *
