@@ -1,4 +1,4 @@
-private import Base
+private import codeql.cryptography.Model
 private import cpp as Lang
 
 module CryptoInput implements InputSig<Lang::Location> {
