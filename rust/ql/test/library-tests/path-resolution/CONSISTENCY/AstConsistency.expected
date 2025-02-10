@@ -1,3 +1,23 @@
 multiplePathResolutions
 | main.rs:118:9:118:9 | f | main.rs:104:5:106:5 | fn f |
 | main.rs:118:9:118:9 | f | main.rs:110:5:112:5 | fn f |
+| main.rs:221:17:221:19 | Foo | main.rs:216:5:216:21 | struct Foo |
+| main.rs:221:17:221:19 | Foo | main.rs:218:5:218:15 | fn Foo |
+| main.rs:222:9:222:11 | Foo | main.rs:216:5:216:21 | struct Foo |
+| main.rs:222:9:222:11 | Foo | main.rs:218:5:218:15 | fn Foo |
+| main.rs:236:13:236:15 | Foo | main.rs:216:5:216:21 | struct Foo |
+| main.rs:236:13:236:15 | Foo | main.rs:218:5:218:15 | fn Foo |
+| main.rs:237:17:237:22 | FooBar | main.rs:228:9:228:17 | FooBar |
+| main.rs:237:17:237:22 | FooBar | main.rs:233:5:233:18 | fn FooBar |
+| main.rs:238:17:238:22 | FooBar | main.rs:228:9:228:17 | FooBar |
+| main.rs:238:17:238:22 | FooBar | main.rs:233:5:233:18 | fn FooBar |
+| main.rs:273:13:273:25 | ...::f | main.rs:269:5:269:17 | fn f |
+| main.rs:273:13:273:25 | ...::f | main.rs:269:19:270:19 | struct f |
+| main.rs:276:17:276:17 | f | main.rs:269:5:269:17 | fn f |
+| main.rs:276:17:276:17 | f | main.rs:269:19:270:19 | struct f |
+| main.rs:277:21:277:21 | f | main.rs:269:5:269:17 | fn f |
+| main.rs:277:21:277:21 | f | main.rs:269:19:270:19 | struct f |
+| main.rs:278:13:278:13 | f | main.rs:269:5:269:17 | fn f |
+| main.rs:278:13:278:13 | f | main.rs:269:19:270:19 | struct f |
+| main.rs:301:5:301:10 | ...::f | main.rs:220:5:223:5 | fn f |
+| main.rs:301:5:301:10 | ...::f | main.rs:225:5:225:12 | mod f |
