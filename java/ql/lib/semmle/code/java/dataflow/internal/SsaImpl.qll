@@ -465,10 +465,16 @@ private module Cached {
     )
   }
 
+  bindingset[call, f]
+  pragma[inline_late]
+  private predicate updatesNamedField0(Call call, TrackedField f, Callable setter) {
+    updatesNamedField(call, f, setter)
+  }
+
   cached
   predicate defUpdatesNamedField(SsaImplicitUpdate def, TrackedField f, Callable setter) {
     f = def.getSourceVariable() and
-    updatesNamedField(def.getCfgNode().asCall(), f, setter)
+    updatesNamedField0(def.getCfgNode().asCall(), f, setter)
   }
 
   cached

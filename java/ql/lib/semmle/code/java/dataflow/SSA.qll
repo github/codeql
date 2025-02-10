@@ -144,13 +144,14 @@ class SsaVariable extends Definition {
   SsaSourceVariable getSourceVariable() { result = super.getSourceVariable() }
 
   /** Gets the `ControlFlowNode` at which this SSA variable is defined. */
+  pragma[nomagic]
   ControlFlowNode getCfgNode() {
     exists(BasicBlock bb, int i, int j |
       this.definesAt(_, bb, i) and
       // untracked definitions are inserted just before reads
       (if this instanceof UntrackedDef then j = i + 1 else j = i) and
       // phi nodes are inserted at position `-1`
-      result = bb.getNode(max([j, 0]))
+      result = bb.getNode(0.maximum(j))
     )
   }
 
