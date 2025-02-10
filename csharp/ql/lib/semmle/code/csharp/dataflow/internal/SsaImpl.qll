@@ -794,6 +794,15 @@ deprecated private predicate lastRefSkipUncertainReads(
   )
 }
 
+pragma[nomagic]
+deprecated predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
+  exists(ControlFlow::BasicBlock bb, int i |
+    lastRefSkipUncertainReads(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    cfn = bb.getNode(i)
+  )
+}
+
 cached
 private module Cached {
   cached
@@ -954,15 +963,6 @@ private module Cached {
     exists(SsaInput::BasicBlock bb0, int i0 |
       Impl::lastRefRedef(def, bb0, i0, next) and
       adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-    )
-  }
-
-  cached
-  deprecated predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
-    exists(ControlFlow::BasicBlock bb, int i |
-      lastRefSkipUncertainReads(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      cfn = bb.getNode(i)
     )
   }
 
