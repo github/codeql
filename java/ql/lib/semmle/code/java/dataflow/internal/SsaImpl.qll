@@ -619,13 +619,12 @@ private module Cached {
         useReaches(use, mid, sameVarMid) and
         DataFlowIntegration::localFlowStep(_, mid, node, _)
       |
-        // flow into phi input node
-        mid instanceof DataFlowIntegration::SsaInputNode and
-        sameVar = false
-        or
-        // flow into definition
         exists(Impl::DefinitionExt def |
+          // flow into definition
           def = mid.(DataFlowIntegration::SsaDefinitionExtNode).getDefinitionExt()
+          or
+          // flow into phi input node
+          def = mid.(DataFlowIntegration::SsaInputNode).getDefinitionExt()
         |
           if def instanceof Impl::PhiReadNode then sameVar = sameVarMid else sameVar = false
         )
