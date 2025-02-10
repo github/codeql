@@ -25,8 +25,6 @@ module DataFlow {
 
   final class Content = DataFlowImpl::Content;
 
-  final class VariantContent = DataFlowImpl::VariantContent;
-
   final class ContentSet = DataFlowImpl::ContentSet;
 
   /**

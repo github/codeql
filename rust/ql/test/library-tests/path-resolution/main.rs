@@ -191,6 +191,27 @@ mod m9 {
     } // I57
 }
 
+mod m10 {
+    #[rustfmt::skip]
+    pub struct MyStruct<
+      T // I58
+    >
+    {
+        x: T, // $ item=I58
+    } // I59
+
+    #[rustfmt::skip]
+    pub fn f<T>( // I60
+        x: T // $ item=I60
+    ) ->
+      MyStruct<
+        T // $ item=I60
+      > // $ item=I59
+    {
+        MyStruct { x } // $ item=I59
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38

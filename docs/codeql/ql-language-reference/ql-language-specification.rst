@@ -1445,7 +1445,8 @@ The number and types of the aggregation expressions are restricted as follows:
 -  A ``max``, ``min``, ``rank`` or ``unique`` aggregation must have a single expression.
 -  The type of the expression in a ``max``, ``min`` or ``rank`` aggregation without an ordering directive expression must be an orderable type.
 -  A ``count`` or ``strictcount`` aggregation must not have an expression.
--  A ``sum``, ``strictsum`` or ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float`` or ``QlBuiltins::BigInt``.
+-  A ``sum`` or ``strictsum`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float`` or ``QlBuiltins::BigInt``.
+-  An ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
 -  A ``concat`` or ``strictconcat`` aggregation must have two expressions. Both expressions must have types which are subtypes of ``string``.
 
 The type of a ``count``, ``strictcount`` aggregation is ``int``. The type of an ``avg`` aggregation is ``float``. The type of a ``concat`` or ``strictconcat`` aggregation is ``string``. The type of a ``sum`` or ``strictsum`` aggregation is ``int`` if the aggregation expression is a subtype of ``int``; otherwise it is ``QlBuiltins::BigInt`` if the aggregation expression is a subtype of ``QlBuiltins::BigInt``; otherwise it is ``float``. The type of a ``rank``, ``min`` or ``max`` aggregation is the type of the single expression.
@@ -1464,7 +1465,7 @@ If the aggregation id is ``max``, ``min`` or ``rank`` and there was no ordering 
 
 The values of the aggregation expression are given by applying the aggregation function to each set of tuples obtained by picking exactly one aggregation tuple for each range tuple.
 
--  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the value for the aggregation variable in each tuple in the set, weighted by the number of tuples in the set, after converting the value to its appropriate base type of ``float`` or ``QlBuiltins::BigInt``, then converting the final result to ``float``.
+-  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the aggregation variable's value in each tuple in the set, converted to ``float`` and weighted by the number of tuples in the set.
 
 -  If the aggregation id is ``count``, then the resulting value is the number of tuples in the set. If there are no tuples in the set, then the value is the integer ``0``.
 

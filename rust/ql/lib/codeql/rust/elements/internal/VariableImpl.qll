@@ -1,6 +1,7 @@
 private import rust
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.elements.internal.PathImpl::Impl as PathImpl
 private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
@@ -172,16 +173,7 @@ module Impl {
     string name_;
 
     VariableAccessCand() {
-      exists(Path p, PathSegment ps |
-        p = this.(PathExpr).getPath() and
-        not p.hasQualifier() and
-        ps = p.getPart() and
-        not ps.hasGenericArgList() and
-        not ps.hasParenthesizedArgList() and
-        not ps.hasPathType() and
-        not ps.hasReturnTypeSyntax() and
-        name_ = ps.getNameRef().getText()
-      )
+      name_ = this.(PathExpr).getPath().(PathImpl::IdentPath).getName()
       or
       this.(FormatTemplateVariableAccess).getName() = name_
     }
