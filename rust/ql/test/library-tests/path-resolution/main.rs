@@ -218,8 +218,8 @@ mod m11 {
     fn Foo() {} // I62
 
     pub fn f() {
-        let _ = Foo {}; // $ item=I61 $ SPURIOUS: item=I62
-        Foo(); // $ item=I62 $ SPURIOUS: item=I61
+        let _ = Foo {}; // $ item=I61
+        Foo(); // $ item=I62
     } // I63
 
     mod f {} // I66
@@ -233,9 +233,9 @@ mod m11 {
     fn FooBar() {} // I65
 
     #[rustfmt::skip]
-    fn g(x: Foo) { // $ item=I61 $ SPURIOUS: item=I62
-        let _ = FooBar {}; // $ item=I64 $ SPURIOUS: item=I65
-        let _ = FooBar(); // $ item=I65 $ SPURIOUS: item=I64
+    fn g(x: Foo) { // $ item=I61
+        let _ = FooBar {}; // $ item=I64
+        let _ = FooBar(); // $ item=I65
     }
 
     struct S; // I67
@@ -260,8 +260,8 @@ mod m12 {
 
         fn f(
             &self,
-            x: T // $ MISSING: item=I69
-        ) -> Self::AssociatedType; // $ MISSING: item=I70
+            x: T // $ item=I69
+        ) -> Self::AssociatedType; // $ item=I70
     }
 }
 
@@ -273,9 +273,9 @@ mod m13 {
         use crate::m13::f; // $ item=I71 item=I72
 
         #[rustfmt::skip]
-        fn g(x: f) { // $ item=I72 $ SPUROUS: item=I71
-            let _ = f {}; // $ item=I72 $ SPUROUS: item=I71
-            f(); // $ item=I71 $ SPUROUS: item=I72
+        fn g(x: f) { // $ item=I72
+            let _ = f {}; // $ item=I72
+            f(); // $ item=I71
         }
     }
 }
@@ -298,5 +298,5 @@ fn main() {
     m7::f(); // $ item=I45
     m8::g(); // $ item=I55
     m9::f(); // $ item=I57
-    m11::f(); // $ item=I63 $ SPUROUS: item=I66
+    m11::f(); // $ item=I63
 }
