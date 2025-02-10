@@ -866,7 +866,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * another read.
    */
   pragma[nomagic]
-  predicate lastRefExt(DefinitionExt def, BasicBlock bb, int i) {
+  deprecated predicate lastRefExt(DefinitionExt def, BasicBlock bb, int i) {
     // Can reach another definition
     lastRefRedefExt(def, _, bb, i, _)
     or
@@ -886,7 +886,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * Same as `lastRefExt`, but ignores phi-reads.
    */
   pragma[nomagic]
-  predicate lastRef(Definition def, BasicBlock bb, int i) {
+  deprecated predicate lastRef(Definition def, BasicBlock bb, int i) {
     // Can reach another definition
     lastRefRedef(def, bb, i, _)
     or

@@ -292,7 +292,9 @@ private predicate adjacentDefReachesUncertainReadExt(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReadsExt(
+  DefinitionExt def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
@@ -407,7 +409,7 @@ private module Cached {
    * the end of the CFG scope, without passing through another non-pseudo read.
    */
   cached
-  predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
+  deprecated predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
     exists(Cfg::BasicBlock bb, int i |
       lastRefSkipUncertainReadsExt(def, bb, i) and
       variableReadActual(bb, i, _) and

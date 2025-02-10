@@ -784,7 +784,9 @@ private predicate adjacentDefReachesUncertainRead(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReads(Definition def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReads(
+  Definition def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
@@ -958,7 +960,7 @@ private module Cached {
   }
 
   cached
-  predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
+  deprecated predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
     exists(ControlFlow::BasicBlock bb, int i |
       lastRefSkipUncertainReads(def, bb, i) and
       variableReadActual(bb, i, _) and
