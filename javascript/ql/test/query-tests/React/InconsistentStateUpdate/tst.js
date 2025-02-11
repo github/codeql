@@ -1,7 +1,7 @@
 class C1 extends React.Component {
   upd8() {
     this.setState({
-      counter: this.state.counter + 1 // $ Alert - but ignored because it is safe in practice
+      counter: this.state.counter + 1 // OK - ignored because it is safe in practice
     });
   }
 }
@@ -18,7 +18,7 @@ class C3 extends React.Component {
   upd8() {
     var app = this;
     app.setState({
-      counter: this.state.counter + 1 // $ Alert - but ignored because it is safe in practice
+      counter: this.state.counter + 1 // OK - ignored because it is safe in practice
     });
   }
 }
@@ -85,8 +85,8 @@ class C10 extends React.Component {
     upd8a() {
         this.setState({
             foo: this.state.foo, // $ Alert
-            bar: this.state.bar // $ Alert - but ignored because it is safe in practice
         });
+            bar: this.state.bar // OK - ignored because it is safe in practice
     }
 
     upd8b() {
