@@ -74,7 +74,7 @@ function l() {
   x ** 2; // $ Alert
 }
 
-1n + 1; // $ Alert - but not currently flagged
+1n + 1; // $ MISSED: Alert
 
 (function(){
     let sum = 0;
