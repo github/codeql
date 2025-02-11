@@ -659,7 +659,7 @@ module TestPostProcessing {
     private string getRelativePathTo(string absolutePath) {
       exists(Input::Location loc |
         loc.hasLocationInfo(absolutePath, _, _, _, _) and
-        result = Input2::getRelativeUrl(loc).splitAt(":", 0)
+        parseLocationString(Input2::getRelativeUrl(loc), result, _, _, _, _)
       )
     }
 
@@ -692,7 +692,7 @@ module TestPostProcessing {
 
       abstract string getRelativeUrl();
 
-      abstract string toString();
+      final string toString() { result = this.getRelativeUrl() }
 
       abstract predicate hasLocationInfo(string file, int sl, int sc, int el, int ec);
     }
@@ -731,12 +731,10 @@ module TestPostProcessing {
     module TestImpl2 implements InlineExpectationsTestSig {
       final class Location = TestLocation;
 
-      class ExpectationComment instanceof Input::ExpectationComment {
-        string getContents() { result = super.getContents() }
+      final private class ExpectationCommentFinal = Input::ExpectationComment;
 
+      class ExpectationComment extends ExpectationCommentFinal {
         Location getLocation() { result = MkInputLocation(super.getLocation()) }
-
-        string toString() { result = super.toString() }
       }
     }
 
