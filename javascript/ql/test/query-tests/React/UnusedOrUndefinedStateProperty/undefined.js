@@ -58,10 +58,10 @@ class C5 extends React.Component {
 }
 new C5({writtenInUnknownInitializerObject: 42});
 
-React.createClass({
+React.createClass({ // $ Alert
     render: function() {
         this.state.writtenInKnownInitializerObject;
-        this.state.notWrittenInKnownInitializerObject; // $ Alert
+        this.state.notWrittenInKnownInitializerObject;
         return <div/>;
   },
   getInitialState: function() {
