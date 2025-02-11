@@ -18,8 +18,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
-
   class SourceVariable = LocalVariable;
 
   /**
@@ -292,13 +290,29 @@ private predicate adjacentDefReachesUncertainReadExt(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReadsExt(
+  DefinitionExt def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
+  )
+}
+
+/**
+ * Holds if the read of `def` at `read` may be a last read. That is, `read`
+ * can either reach another definition of the underlying source variable or
+ * the end of the CFG scope, without passing through another non-pseudo read.
+ */
+pragma[nomagic]
+deprecated predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
+  exists(Cfg::BasicBlock bb, int i |
+    lastRefSkipUncertainReadsExt(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    read = bb.getNode(i)
   )
 }
 
@@ -398,20 +412,6 @@ private module Cached {
       variableReadActual(bb1, i1, _) and
       adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
-   * Holds if the read of `def` at `read` may be a last read. That is, `read`
-   * can either reach another definition of the underlying source variable or
-   * the end of the CFG scope, without passing through another non-pseudo read.
-   */
-  cached
-  predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb, int i |
-      lastRefSkipUncertainReadsExt(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      read = bb.getNode(i)
     )
   }
 

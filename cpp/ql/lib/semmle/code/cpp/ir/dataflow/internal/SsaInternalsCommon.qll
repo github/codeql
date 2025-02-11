@@ -769,8 +769,4 @@ module InputSigCommon {
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock extends BasicBlock {
-    ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
-  }
 }
