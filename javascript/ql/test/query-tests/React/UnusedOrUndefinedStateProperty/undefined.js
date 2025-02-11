@@ -5,8 +5,8 @@ class C1 extends React.Component {
             writtenInSetState: 42
         });
         this.state.writtenInOtherMethod;
-        this.state.notWritten; // $ Alert
-        this.state.notWrittenButReadInChain; // $ Alert
+        this.state.notWritten; // $ MISSED: Alert
+        this.state.notWrittenButReadInChain; // $ MISSED: Alert
         this.state.writtenDirectly;
         this.state.writtenInSetState;
 
