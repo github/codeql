@@ -1,2 +1,1 @@
 query: NodeJS/UnusedDependency.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
