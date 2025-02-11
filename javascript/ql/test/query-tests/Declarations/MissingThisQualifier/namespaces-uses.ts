@@ -19,7 +19,7 @@ namespace Top {
       topNamespaceFunction();
     }
     childNamespaceFunction(){
-      childNamespaceFunction();  // $ Alert - but not flagged since the namespace resolution is ignored
+      childNamespaceFunction();  // $ MISSING: Alert - not flagged since the namespace resolution is ignored
     }
   }
 }
