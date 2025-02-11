@@ -89,6 +89,10 @@ module Input implements InputSig<Location, RustDataFlow> {
           arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
         )
       or
+      result = "Reference" and
+      c = TReferenceContent() and
+      arg = ""
+      or
       result = "Element" and
       c = TElementContent() and
       arg = ""
@@ -98,6 +102,10 @@ module Input implements InputSig<Location, RustDataFlow> {
         c = TTuplePositionContent(pos) and
         arg = pos.toString()
       )
+      or
+      result = "Future" and
+      c = TFutureContent() and
+      arg = ""
     )
   }
 

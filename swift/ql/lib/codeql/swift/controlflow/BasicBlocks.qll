@@ -44,6 +44,10 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
 
   BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
 
+  predicate edgeDominates(BasicBlock dominated, SuccessorType s) {
+    super.edgeDominates(dominated, s)
+  }
+
   predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
 
   predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
@@ -84,21 +88,26 @@ class JoinBlockPredecessor extends BasicBlock, BasicBlocksImpl::JoinPredecessorB
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
 final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBlock {
   /**
+   * DEPRECATED: Use `edgeDominates` instead.
+   *
    * Holds if basic block `succ` is immediately controlled by this basic
    * block with conditional value `s`. That is, `succ` is an immediate
    * successor of this block, and `succ` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
-    super.immediatelyControls(succ, s)
+  deprecated predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
+    this.getASuccessor(s) = succ and
+    BasicBlocksImpl::dominatingEdge(this, succ)
   }
 
   /**
+   * DEPRECATED: Use `edgeDominates` instead.
+   *
    * Holds if basic block `controlled` is controlled by this basic block with
    * conditional value `s`. That is, `controlled` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
-    super.controls(controlled, s)
+  deprecated predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
+    super.edgeDominates(controlled, s)
   }
 }

@@ -21,8 +21,6 @@ module Ssa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
-
     private newtype TSourceVariable =
       TNormalSourceVariable(VarDecl v) or
       TKeyPathSourceVariable(EntryNode entry) { entry.getScope() instanceof KeyPathExpr }
