@@ -18,14 +18,14 @@ function f() {
 
 function g() {
 	var x;
-	
+
 	x = 23, x += 19;
-	
+
 	var y = 42;
 }
 
 function h() {
-	
+
 	var x = false;
 	try {
 		this.mayThrow();
@@ -35,7 +35,7 @@ function h() {
 }
 
 function k(data) {
-	
+
 	for(var i=0;i<data.length;i++);
 }
 
@@ -60,7 +60,7 @@ function p() {
 	var i;
 	for (i=0; i < 10; ++i) {
 		if (Math.random() > .5)
-			
+
 			i = 23;
 	}
 }
