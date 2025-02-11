@@ -71,6 +71,18 @@ macro_rules! emit_detached {
     ($($_:tt)*) => {};
 }
 
+// see https://github.com/tokio-rs/tracing/issues/2730
+macro_rules! dispatch_to_tracing {
+    ($lvl:ident, $($arg:tt)+) => {
+        match $lvl {
+            DiagnosticSeverity::Debug => ::tracing::debug!($($arg)+),
+            DiagnosticSeverity::Info => ::tracing::info!($($arg)+),
+            DiagnosticSeverity::Warning => ::tracing::warn!($($arg)+),
+            DiagnosticSeverity::Error => ::tracing::error!($($arg)+),
+        }
+    };
+}
+
 pub struct Translator<'a> {
     pub trap: TrapFile,
     path: &'a str,
@@ -169,36 +181,14 @@ impl<'a> Translator<'a> {
         location: (LineCol, LineCol),
     ) {
         let (start, end) = location;
-        match severity {
-            DiagnosticSeverity::Debug => tracing::debug!(
-                "{}:{}:{}: {}",
-                self.path,
-                start.line + 1,
-                start.col + 1,
-                &full_message
-            ),
-            DiagnosticSeverity::Info => tracing::info!(
-                "{}:{}:{}: {}",
-                self.path,
-                start.line + 1,
-                start.col + 1,
-                &full_message
-            ),
-            DiagnosticSeverity::Warning => tracing::warn!(
-                "{}:{}:{}: {}",
-                self.path,
-                start.line + 1,
-                start.col + 1,
-                &full_message
-            ),
-            DiagnosticSeverity::Error => tracing::error!(
-                "{}:{}:{}: {}",
-                self.path,
-                start.line + 1,
-                start.col + 1,
-                &full_message
-            ),
-        };
+        dispatch_to_tracing!(
+            severity,
+            "{}:{}:{}: {}",
+            self.path,
+            start.line + 1,
+            start.col + 1,
+            &full_message,
+        );
 
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);

@@ -21,7 +21,7 @@ use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
-use tracing::{debug, error, info, warn};
+use tracing::{debug, error, info, trace, warn};
 use triomphe::Arc;
 
 pub enum RustAnalyzer<'a> {
@@ -51,7 +51,7 @@ impl<'a> RustAnalyzer<'a> {
         project: &ProjectManifest,
         config: &CargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
-        let progress = |t| (tracing::trace!("progress: {}", t));
+        let progress = |t| (trace!("progress: {}", t));
         let load_config = LoadCargoConfig {
             load_out_dirs_from_check: true,
             with_proc_macro_server: ProcMacroServerChoice::Sysroot,
@@ -62,7 +62,7 @@ impl<'a> RustAnalyzer<'a> {
         match load_workspace_at(manifest.as_ref(), config, &load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
-                tracing::error!("failed to load workspace for {}: {}", manifest, err);
+                error!("failed to load workspace for {}: {}", manifest, err);
                 None
             }
         }

@@ -15,7 +15,7 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
-use tracing::{info, warn};
+use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 
@@ -87,7 +87,7 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(ast);
         translator.trap.commit().unwrap_or_else(|err| {
-            tracing::error!(
+            error!(
                 "Failed to write trap file for: {}: {}",
                 display_path,
                 err.to_string()
