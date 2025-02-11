@@ -815,10 +815,15 @@ private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
   vml.getStartBitOffset() != Ints::unknown()
 }
 
+pragma[noinline]
+private int getRank(VirtualVariable vvar, IntValue offset) {
+  offset = rank[result](IntValue offset_ | isRelevantOffset(vvar, offset_))
+}
+
 private predicate isCoveredOffset(Allocation var, int offsetRank, VariableMemoryLocation vml) {
   exists(int startRank, int endRank, VirtualVariable vvar |
-    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
-    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
+    startRank = getRank(vvar, vml.getStartBitOffset()) and
+    endRank = getRank(vvar, vml.getEndBitOffset()) and
     var = vml.getAnAllocation() and
     vvar = vml.getVirtualVariable() and
     isRelatableMemoryLocation(vml) and
