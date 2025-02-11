@@ -1,12 +1,3 @@
-#select
 | AmbiguousIdAttribute.html:4:5:4:14 | id=first | This element has the same id as $@. | AmbiguousIdAttribute.html:5:5:5:14 | id=first | another element |
 | AmbiguousIdAttribute_fragment.html:2:7:2:16 | id=first | This element has the same id as $@. | AmbiguousIdAttribute_fragment.html:3:7:3:16 | id=first | another element |
 | tst.js:17:22:17:33 | id="theDiff" | This element has the same id as $@. | tst.js:17:46:17:57 | id="theDiff" | another element |
-testFailures
-| AmbiguousIdAttribute.html:4:5:4:14 | This element has the same id as $@. | Unexpected result: Alert |
-| AmbiguousIdAttribute_fragment.html:2:7:2:16 | This element has the same id as $@. | Unexpected result: Alert |
-| tst.js:5:67:5:76 | // $ Alert | Missing result: Alert |
-| tst.js:7:68:7:77 | // $ Alert | Missing result: Alert |
-| tst.js:9:20:9:29 | // $ Alert | Missing result: Alert |
-| tst.js:12:60:12:69 | // $ Alert | Missing result: Alert |
-| tst.js:19:51:19:60 | // $ Alert | Missing result: Alert |
