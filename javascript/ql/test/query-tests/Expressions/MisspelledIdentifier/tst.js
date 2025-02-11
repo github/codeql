@@ -26,7 +26,7 @@ var lenght123, Lenght; // $ Alert
 
 var LENght, JKLenght;
 
-Mandreel_HttpRequest_BytesAvalable; // $ Alert
+Mandreel_HttpRequest_BytesAvalable; // $ MISSING: Alert
 
 
 EValue;
