@@ -111,7 +111,7 @@
 	};
 
 	var o = { set setter(value) { } };
-	o.setter = 42; // probably OK, but still flagged - it seems fishy
+	o.setter = 42; // $ Alert - probably OK, but still flagged - it seems fishy
 	o.setter = 87;
 
 	var o = {};

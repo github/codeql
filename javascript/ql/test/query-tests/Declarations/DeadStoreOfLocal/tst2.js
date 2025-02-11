@@ -24,6 +24,6 @@ function f(event) {
 function g() {
     let x = 23; // $ Alert
     {
-        x = 42;
+        x = 42; // $ Alert
     }
 }
