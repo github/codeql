@@ -51,8 +51,8 @@ function p() {
 }
 
 function q() {
-	var x; // $ Alert
-	    y = 23,
+	var x;
+	    y = 23, // $ Alert
 	    z = y+19;
 }
 
@@ -63,7 +63,7 @@ function r() {
 }
 
 (function() {
-	for ([ unresolvable ] of o) {
+	for ([ unresolvable ] of o) { // $ Alert
 		unresolvable;
 	}
 });
