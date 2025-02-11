@@ -181,8 +181,12 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
+    let mut cfg = config::Config::extract().context("failed to load configuration")?;
+    if cfg.qltest {
+        qltest::prepare(&mut cfg)?;
+    }
     let start = Instant::now();
-    let flame_layer = if let Ok(path) = std::env::var("CODEQL_EXTRACTOR_RUST_OPTION_FLAME_LOG") {
+    let flame_layer = if let Some(path) = &cfg.flame_log {
         tracing_flame::FlameLayer::with_file(path).ok()
     } else {
         None
@@ -193,11 +197,6 @@ fn main() -> anyhow::Result<()> {
         ))
         .with(flame_layer.map(|x| x.0))
         .init();
-
-    let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    if cfg.qltest {
-        qltest::prepare(&mut cfg)?;
-    }
     info!("{cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;

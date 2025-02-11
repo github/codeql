@@ -51,6 +51,7 @@ pub struct Config {
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
+    pub flame_log: Option<PathBuf>,
     pub verbose: u8,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
