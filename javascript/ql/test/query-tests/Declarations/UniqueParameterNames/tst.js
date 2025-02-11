@@ -1,7 +1,7 @@
 function f(
-x,
 x, // $ Alert
-\u0078 // $ Alert
+x, // $ Alert
+\u0078
 ) { return; }
 
 this.addPropertyListener(prop.name, function(_, _, _, a) {
