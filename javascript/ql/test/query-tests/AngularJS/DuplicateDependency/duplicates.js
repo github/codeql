@@ -1,6 +1,6 @@
 (function(){
-    function f(){}
-    f.$inject = ['dup5', 'dup5']; // $ Alert
+    function f(){} // $ Alert
+    f.$inject = ['dup5', 'dup5'];
     angular.module('myModule', [])
         .run(['dup1a', 'dup1a', function(dup1a, dup1a){}]) // OK - flagged by js/duplicate-parameter-name
         .run(['dup2a', 'dup2a', function(dup2a, dup2b){}]) // $ Alert
