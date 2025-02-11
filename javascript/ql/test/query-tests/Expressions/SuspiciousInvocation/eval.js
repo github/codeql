@@ -6,7 +6,7 @@ function foo() {
 
 function bar() {
     var g;
-    g();    // $ Alert - but not currently flagged
+    g();    // $ MISSED: Alert
     eval("g = alert");
 }
 
