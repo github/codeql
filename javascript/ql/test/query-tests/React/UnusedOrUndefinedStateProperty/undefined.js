@@ -24,7 +24,7 @@ class C2 extends React.Component {
         }
         f(this.state);
         this.state.writtenWhenEscaped;
-        this.state.notWrittenWhenEscaped; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenWhenEscaped; // OK - ignored to avoid FP above
     }
 }
 
@@ -45,7 +45,7 @@ class C4 extends React.Component {
         }
         this.state = f();
         this.state.writtenInUnknownInitializerObject;
-        this.state.notWrittenInUnknownInitializerObject; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenInUnknownInitializerObject; // OK - ignored to avoid FP above
     }
 }
 
@@ -53,7 +53,7 @@ class C5 extends React.Component {
     constructor(x) {
         this.state = x;
         this.state.writtenInUnknownInitializerObject;
-        this.state.notWrittenInUnknownInitializerObject; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenInUnknownInitializerObject; // OK - ignored to avoid FP above
     }
 }
 new C5({writtenInUnknownInitializerObject: 42});
@@ -75,7 +75,7 @@ React.createClass({
             return { writtenInUnknownInitializerObject: 42 };
         }
         this.state.writtenInUnknownInitializerObject;
-        this.state.notWrittenInUnknownInitializerObject; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenInUnknownInitializerObject; // OK - ignored to avoid FP above
         return <div/>;
   },
   getInitialState: function() {
@@ -87,7 +87,7 @@ class C6 extends React.Component {
     constructor(x) {
         Object.assign(this.state, {writtenInObjectAssign: 42});
         this.state.writtenInObjectAssign;
-        this.state.notWrittenInObjectAssign; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenInObjectAssign; // OK - ignored to avoid FP above
     }
 }
 
@@ -97,7 +97,7 @@ class C6 extends React.Component {
             return { writtenInSetState: 42 };
         }
         this.state.writtenSetState;
-        this.state.notWrittenSetState; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenSetState; // OK - ignored to avoid FP above
         this.setState(f());
     }
 }
@@ -121,7 +121,7 @@ class C8 extends React.Component {
             return { writtenInSetState: 42 }
         }
         this.state.writtenInSetState;
-        this.state.notInWrittenSetState; // $ Alert - but ignored to avoid FP above
+        this.state.notInWrittenSetState; // OK - ignored to avoid FP above
         this.setState(f());
     }
 }
@@ -132,7 +132,7 @@ class C9 extends React.Component {
         this.state[f()] = 42;
 
         this.state.writtenThroughUnknownDynamicPropertyAccess;
-        this.state.notWrittenThroughUnknownDynamicPropertyAccess; // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenThroughUnknownDynamicPropertyAccess; // OK - ignored to avoid FP above
 
     }
 }
@@ -142,14 +142,14 @@ class C10 extends React.Component {
         var x = { writtenThroughUnknownSpreadAccess: 42 };
         this.state = { ...x };
         this.state.writtenThroughUnknownSpreadAccess;
-        this.state.notWrittenThroughUnknownSpreadAccess// $ Alert - but ignored to avoid FP above
+        this.state.notWrittenThroughUnknownSpreadAccess// OK - ignored to avoid FP above
     }
 }
 
 React.createClass({
     render: function() {
         this.state.writtenThroughMixin;
-        this.state.notWrittenThroughMixin;  // $ Alert - but ignored to avoid FP above
+        this.state.notWrittenThroughMixin;  // OK - ignored to avoid FP above
         return <h1>Hello</h1>;
     },
 
