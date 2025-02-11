@@ -192,7 +192,7 @@ pub fn extract(
 
     let _enter = span.enter();
 
-    tracing::info!("extracting: {}", path_str);
+    tracing::debug!("extracting: {}", path_str);
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();

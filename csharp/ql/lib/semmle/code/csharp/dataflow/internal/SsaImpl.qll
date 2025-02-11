@@ -17,8 +17,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
-
   class SourceVariable = Ssa::SourceVariable;
 
   /**
@@ -784,13 +782,24 @@ private predicate adjacentDefReachesUncertainRead(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReads(Definition def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReads(
+  Definition def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+  )
+}
+
+pragma[nomagic]
+deprecated predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
+  exists(ControlFlow::BasicBlock bb, int i |
+    lastRefSkipUncertainReads(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    cfn = bb.getNode(i)
   )
 }
 
@@ -958,15 +967,6 @@ private module Cached {
   }
 
   cached
-  predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
-    exists(ControlFlow::BasicBlock bb, int i |
-      lastRefSkipUncertainReads(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      cfn = bb.getNode(i)
-    )
-  }
-
-  cached
   Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
     Impl::uncertainWriteDefinitionInput(def, result)
   }
@@ -1119,7 +1119,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and
-      conditionBlock.controls(bb, s)
+      conditionBlock.edgeDominates(bb, s)
     )
   }
 

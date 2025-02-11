@@ -1594,6 +1594,8 @@ module MakeWithSplitting<
 
     final class BasicBlock = BasicBlockImpl::BasicBlock;
 
+    predicate dominatingEdge = BasicBlockImpl::dominatingEdge/2;
+
     /**
      * An entry basic block, that is, a basic block whose first node is
      * an entry node.

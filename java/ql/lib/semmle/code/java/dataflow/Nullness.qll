@@ -463,6 +463,21 @@ private predicate interestingCond(SsaSourceVariable npecand, ConditionBlock cond
   not cond.getCondition().(Expr).getAChildExpr*() = npecand.getAnAccess()
 }
 
+pragma[nomagic]
+private ConditionBlock ssaIntegerGuard(SsaVariable v, boolean branch, int k, boolean is_k) {
+  result.getCondition() = integerGuard(v.getAUse(), branch, k, is_k)
+}
+
+pragma[nomagic]
+private ConditionBlock ssaIntBoundGuard(SsaVariable v, boolean branch_with_lower_bound_k, int k) {
+  result.getCondition() = intBoundGuard(v.getAUse(), branch_with_lower_bound_k, k)
+}
+
+pragma[nomagic]
+private ConditionBlock ssaEnumConstEquality(SsaVariable v, boolean polarity, EnumConstant c) {
+  result.getCondition() = enumConstEquality(v.getAUse(), polarity, c)
+}
+
 /** A pair of correlated conditions for a given NPE candidate. */
 private predicate correlatedConditions(
   SsaSourceVariable npecand, ConditionBlock cond1, ConditionBlock cond2, boolean inverted
@@ -485,25 +500,23 @@ private predicate correlatedConditions(
       inverted = branch1.booleanXor(branch2)
     )
     or
-    exists(SsaVariable v, VarRead rv1, VarRead rv2, int k, boolean branch1, boolean branch2 |
-      rv1 = v.getAUse() and
-      rv2 = v.getAUse() and
-      cond1.getCondition() = integerGuard(rv1, branch1, k, true) and
-      cond1.getCondition() = integerGuard(rv1, branch1.booleanNot(), k, false) and
-      cond2.getCondition() = integerGuard(rv2, branch2, k, true) and
-      cond2.getCondition() = integerGuard(rv2, branch2.booleanNot(), k, false) and
+    exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
+      cond1 = ssaIntegerGuard(v, branch1, k, true) and
+      cond1 = ssaIntegerGuard(v, branch1.booleanNot(), k, false) and
+      cond2 = ssaIntegerGuard(v, branch2, k, true) and
+      cond2 = ssaIntegerGuard(v, branch2.booleanNot(), k, false) and
       inverted = branch1.booleanXor(branch2)
     )
     or
     exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
-      cond1.getCondition() = intBoundGuard(v.getAUse(), branch1, k) and
-      cond2.getCondition() = intBoundGuard(v.getAUse(), branch2, k) and
+      cond1 = ssaIntBoundGuard(v, branch1, k) and
+      cond2 = ssaIntBoundGuard(v, branch2, k) and
       inverted = branch1.booleanXor(branch2)
     )
     or
     exists(SsaVariable v, EnumConstant c, boolean pol1, boolean pol2 |
-      cond1.getCondition() = enumConstEquality(v.getAUse(), pol1, c) and
-      cond2.getCondition() = enumConstEquality(v.getAUse(), pol2, c) and
+      cond1 = ssaEnumConstEquality(v, pol1, c) and
+      cond2 = ssaEnumConstEquality(v, pol2, c) and
       inverted = pol1.booleanXor(pol2)
     )
     or

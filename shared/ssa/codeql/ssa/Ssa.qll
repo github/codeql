@@ -60,12 +60,6 @@ signature module InputSig<LocationSig Location> {
   /** Gets an immediate successor of basic block `bb`, if any. */
   BasicBlock getABasicBlockSuccessor(BasicBlock bb);
 
-  /**
-   * An exit basic block, that is, a basic block whose last node is
-   * an exit node.
-   */
-  class ExitBasicBlock extends BasicBlock;
-
   /** A variable that can be SSA converted. */
   class SourceVariable {
     /** Gets a textual representation of this variable. */
@@ -855,6 +849,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     lastRefRedef(inp, _, _, def)
   }
 
+  /** Holds if `bb` is a control-flow exit point. */
+  private predicate exitBlock(BasicBlock bb) { not exists(getABasicBlockSuccessor(bb)) }
+
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
@@ -866,14 +863,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * another read.
    */
   pragma[nomagic]
-  predicate lastRefExt(DefinitionExt def, BasicBlock bb, int i) {
+  deprecated predicate lastRefExt(DefinitionExt def, BasicBlock bb, int i) {
     // Can reach another definition
     lastRefRedefExt(def, _, bb, i, _)
     or
     lastSsaRefExt(def, _, bb, i) and
     (
       // Can reach exit directly
-      bb instanceof ExitBasicBlock
+      exitBlock(bb)
       or
       // Can reach a block using one or more steps, where `def` is no longer live
       varBlockReachesExitExt(def, bb)
@@ -886,14 +883,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * Same as `lastRefExt`, but ignores phi-reads.
    */
   pragma[nomagic]
-  predicate lastRef(Definition def, BasicBlock bb, int i) {
+  deprecated predicate lastRef(Definition def, BasicBlock bb, int i) {
     // Can reach another definition
     lastRefRedef(def, bb, i, _)
     or
     lastSsaRef(def, _, bb, i) and
     (
       // Can reach exit directly
-      bb instanceof ExitBasicBlock
+      exitBlock(bb)
       or
       // Can reach a block using one or more steps, where `def` is no longer live
       varBlockReachesExit(def, bb)

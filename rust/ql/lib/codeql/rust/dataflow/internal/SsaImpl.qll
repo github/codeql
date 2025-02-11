@@ -47,8 +47,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
-
   /**
    * A variable amenable to SSA construction.
    *
@@ -218,25 +216,6 @@ private predicate adjacentDefSkipUncertainReads(
   SsaInput::variableRead(bb2, i2, _, true)
 }
 
-private predicate adjacentDefReachesUncertainReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, false)
-}
-
-/** Same as `lastRefRedef`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, BasicBlock bb, int i) {
-  Impl::lastRef(def, bb, i) and
-  not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
-  or
-  exists(BasicBlock bb0, int i0 |
-    Impl::lastRef(def, bb0, i0) and
-    adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
-  )
-}
-
 private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
   result = bb.getANode().getAstNode() and
   result.isCapture() and
@@ -381,20 +360,6 @@ private module Cached {
     )
   }
 
-  /**
-   * Holds if the read of `def` at `read` may be a last read. That is, `read`
-   * can either reach another definition of the underlying source variable or
-   * the end of the CFG scope, without passing through another non-pseudo read.
-   */
-  cached
-  predicate lastRead(Definition def, CfgNode read) {
-    exists(BasicBlock bb, int i |
-      lastRefSkipUncertainReadsExt(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      read = bb.getNode(i)
-    )
-  }
-
   cached
   Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
     Impl::uncertainWriteDefinitionInput(def, result)
@@ -491,7 +456,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
-      conditionBlock.controls(bb, s)
+      conditionBlock.edgeDominates(bb, s)
     )
   }
 

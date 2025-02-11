@@ -408,6 +408,8 @@ module BombsConfig implements DataFlow::ConfigSig {
       isAdditionalTaintStepTextIOWrapper(pred, succ)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module BombsFlow = TaintTracking::Global<BombsConfig>;
