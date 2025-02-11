@@ -175,10 +175,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
 
-  class ExitBasicBlock extends BasicBlock {
-    ExitBasicBlock() { not exists(this.getABBSuccessor()) }
-  }
-
   class SourceVariable = SsaSourceVariable;
 
   /**
