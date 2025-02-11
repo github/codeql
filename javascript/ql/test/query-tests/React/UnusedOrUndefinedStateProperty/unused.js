@@ -37,7 +37,7 @@ class C4 extends React.Component {
     constructor() {
         function f() { return "readThroughUnknownDynamicPropertyAccess"; }
         this.state.readThroughUnknownDynamicPropertyAccess = 42;
-        this.state.notReadThroughUnknownDynamicPropertyAccess = 42; // $ Alert - but ignored to avoid FP above
+        this.state.notReadThroughUnknownDynamicPropertyAccess = 42; // $ OK - ignored to avoid FP above
 
         this.state[f()];
     }
@@ -54,7 +54,7 @@ class C5 extends React.Component {
 React.createClass({
     render: function() {
         this.state.readThroughMixin = 42;
-        this.state.notReadThroughMixin = 42;  // $ Alert - but ignored to avoid FP above
+        this.state.notReadThroughMixin = 42;  // $ OK - ignored to avoid FP above
         return <h1>Hello</h1>;
     },
 
