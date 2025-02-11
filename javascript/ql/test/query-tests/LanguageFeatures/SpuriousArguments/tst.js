@@ -40,7 +40,7 @@ new String(1, 2, 3); // $ Alert
 	h(function(x) { return x; });
 })(function() {});
 
-parseFloat("123", 10);
+parseFloat("123", 10); // $ Alert - unlike parseInt this does not take a radix
 
 (function testWhitelistEmptyFunctions(){
 	function nonEmpty(){
@@ -115,7 +115,7 @@ parseFloat("123", 10);
 	throwerArrow(42);
 	throwerCustom(42);
 	throwerWithParam(42, 87); // $ Alert
-	throwerIndirect(42); // OK - but still flagged due to complexity
+	throwerIndirect(42); // $ SPURIOUS: Alert - flagged due to complexity
 });
 
 function sum2() {
