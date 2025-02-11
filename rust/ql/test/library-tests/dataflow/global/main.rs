@@ -157,6 +157,8 @@ fn test_async_await() {
     sink(a); // $ MISSING: hasValueFlow=1
 
     futures::executor::block_on(test_async_await_async_part());
+}
+
 // Flow out of mutable parameters.
 
 fn set_int(n: &mut i64, c: i64) {
