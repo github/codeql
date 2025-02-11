@@ -54,7 +54,7 @@ Error();
 
 class C {}
 new C();
-C(); // $ Alert - but flagged by IllegalInvocation
+C(); // OK - flagged by IllegalInvocation
 
 (function() {
 	function A(x) {
@@ -64,5 +64,5 @@ C(); // $ Alert - but flagged by IllegalInvocation
 	A.call({}, 23);
 })();
 
-new Point(42, 23); // $ Alert - but not flagged since line 6 above was already flagged
-Point(56, 72);     // $ Alert - but not flagged since line 7 above was already flagged
+new Point(42, 23); // OK - not flagged since line 6 above was already flagged
+Point(56, 72);     // OK - not flagged since line 7 above was already flagged
