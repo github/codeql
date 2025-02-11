@@ -4,5 +4,8 @@
 | tst.js:104:2:104:7 | if (b)\\n\\t\\treturn 1; | $@ may implicitly return 'undefined' here, while $@ an explicit value is returned. | tst.js:103:1:106:1 | functio ... rn 1;\\n} | Function v | tst.js:105:3:105:11 | return 1; | elsewhere |
 testFailures
 | tst.js:1:16:1:25 | // $ Alert | Missing result: Alert |
+| tst.js:2:2:2:11 | $@ may implicitly return 'undefined' here, while $@ an explicit value is returned. | Unexpected result: Alert |
 | tst.js:98:22:98:31 | // $ Alert | Missing result: Alert |
+| tst.js:99:2:99:11 | $@ may implicitly return 'undefined' here, while $@ an explicit value is returned. | Unexpected result: Alert |
 | tst.js:103:17:103:26 | // $ Alert | Missing result: Alert |
+| tst.js:104:2:104:7 | $@ may implicitly return 'undefined' here, while $@ an explicit value is returned. | Unexpected result: Alert |

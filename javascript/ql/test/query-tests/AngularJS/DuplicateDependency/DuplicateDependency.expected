@@ -7,4 +7,3 @@
 testFailures
 | duplicates.js:2:5:2:18 | This function has a duplicate dependency $@. | Unexpected result: Alert |
 | duplicates.js:3:35:3:44 | // $ Alert | Missing result: Alert |
-| duplicates.js:15:61:15:113 | // $ Al ... unction | Missing result: Alert |

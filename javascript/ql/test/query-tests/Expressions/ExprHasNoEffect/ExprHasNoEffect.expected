@@ -16,3 +16,4 @@
 testFailures
 | tst.js:21:16:21:25 | // $ Alert | Missing result: Alert |
 | tst.js:22:1:22:1 | This expression has no effect. | Unexpected result: Alert |
+| uselessfn.js:1:1:1:15 | This expression has no effect. | Unexpected result: Alert |

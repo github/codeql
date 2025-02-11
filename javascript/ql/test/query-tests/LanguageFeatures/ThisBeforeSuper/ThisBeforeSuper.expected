@@ -26,3 +26,4 @@ testFailures
 | invalid.js:14:35:14:118 | The super constructor must be called before using $@. | Unexpected result: Alert |
 | invalid.js:15:71:15:95 | The super constructor must be called before using $@. | Unexpected result: Alert |
 | invalid.js:16:35:16:66 | The super constructor must be called before using $@. | Unexpected result: Alert |
+| invalid.js:26:16:26:19 | The super constructor must be called before using $@. | Unexpected result: Alert |
