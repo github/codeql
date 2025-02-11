@@ -86,17 +86,17 @@ function l() {
 (function(){
     function f() {
     }
-    f()|0;
+    f()|0; // $ Alert
 
     unknown()|0;
 
     function g() {
     }
-    g()|0;
+    g()|0; // $ Alert
     g();
 
-    var a = g() + 2;
-    var b = g() + "str";
+    var a = g() + 2; // $ Alert
+    var b = g() + "str"; // $ Alert
 });
 
 

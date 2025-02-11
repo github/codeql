@@ -9,8 +9,8 @@ function f() {
 }
 
 function g() {
-    var q = [], i = 0; // $ Alert - property
-    for (q[i++] in o);
+    var q = [], i = 0; // property
+    for (q[i++] in o); // $ Alert
 }
 
 function h() {

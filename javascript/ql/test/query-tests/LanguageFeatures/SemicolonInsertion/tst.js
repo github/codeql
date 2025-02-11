@@ -1,8 +1,8 @@
 function tst() {
-  var a = { // $ Alert
+  var a = {
     'i': 1,
     'j': 2
-  }
+  } // $ Alert
 
   return 1 // $ Alert
 

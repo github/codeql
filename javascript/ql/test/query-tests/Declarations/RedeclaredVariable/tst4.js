@@ -19,4 +19,4 @@ function k() {
       y = 2; // $ Alert
 }
 
-var g;
+var g; // $ Alert

@@ -22,7 +22,7 @@ try {
       res.setEncoding('utf8');
   });
 
-  post_req.write(s); // $ Alert - post the data from file to request body
+  post_req.write(s); // $ Alert[js/file-access-to-http] - post the data from file to request body
   post_req.end();
 } catch (e) {
 }

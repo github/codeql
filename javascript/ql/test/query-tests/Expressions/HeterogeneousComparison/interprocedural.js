@@ -8,13 +8,13 @@
         // disable the whitelist
         known = known; unknown = unknown; gotKnown = gotKnown; gotUnknown = gotUnknown;
 
-        known === 42;
+        known === 42; // $ Alert
         known == 42;
         gotKnown === 42;
         gotKnown == 42;
-        getKnown() === 42;
+        getKnown() === 42; // $ Alert
         getKnown() == 42;
-        getKnown_indirect() === 42;
+        getKnown_indirect() === 42; // $ Alert
         getKnown_indirect() == 42;
 
         unknown === 42;

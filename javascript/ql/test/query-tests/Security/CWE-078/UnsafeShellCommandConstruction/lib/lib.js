@@ -158,7 +158,7 @@ module.exports.indirect2 = function (name) {
 	let args = ["-c", cmd];
 	cp.spawn(sh, args, cb);
 
-	let cmd2 = "rm -rf " + name;
+	let cmd2 = "rm -rf " + name; // $ Alert
 	var args2 = [cmd2];
 	cp.spawn(
 		'cmd.exe',
@@ -178,7 +178,7 @@ module.exports.sanitizer = function (name) {
 	var sanitized = "'" + name.replace(/'/g, "'\\''") + "'"
 	cp.exec("rm -rf " + sanitized);
 
-	var broken = "'" + name.replace(/'/g, "'\''") + "'"
+	var broken = "'" + name.replace(/'/g, "'\''") + "'" // $ Alert
 	cp.exec("rm -rf " + broken); // $ Alert
 }
 
@@ -551,8 +551,8 @@ module.exports.shellThing = function (name) {
     function indirectShell(cmd, args, spawnOpts) {
         cp.spawn(cmd, args, spawnOpts); // $ Alert
     }
-    
-    indirectShell("rm", ["-rf", name], {shell: true});
+
+    indirectShell("rm", ["-rf", name], {shell: true}); // $ Alert
 }
 
 module.exports.badSanitizer = function (name) {
@@ -630,7 +630,7 @@ module.exports.veryIndeirect = function (name) {
 }
 
 module.exports.sanitizer = function (name) {
-	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'"
+	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'" // $ Alert
 	cp.exec("rm -rf " + sanitized); // $ Alert
 
 	var sanitized = "'" + name.replace(new RegExp("\'", 'g'), "'\\''") + "'"

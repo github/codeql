@@ -1,7 +1,7 @@
 switch (a) {
   case 0:
   case 1:
-  case2:
+  case2: // $ Alert
     f();
     break;
   default:

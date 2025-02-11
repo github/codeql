@@ -2,71 +2,71 @@ let express = require('express');
 var app = express();
 
 function bad1(s) {
-  return s.replace("'", ""); // $ Alert
+  return s.replace("'", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad2(s) {
-  return s.replace(/'/, ""); // $ Alert
+  return s.replace(/'/, ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad3(s) {
-  return s.replace(/'/g, "\\'"); // $ Alert
+  return s.replace(/'/g, "\\'"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad4(s) {
-  return s.replace(/'/g, "\\$&"); // $ Alert
+  return s.replace(/'/g, "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad5(s) {
-  return s.replace(/['"]/g, "\\$&"); // $ Alert
+  return s.replace(/['"]/g, "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad6(s) {
-  return s.replace(/(['"])/g, "\\$1"); // $ Alert
+  return s.replace(/(['"])/g, "\\$1"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad7(s) {
-  return s.replace(/('|")/g, "\\$1"); // $ Alert
+  return s.replace(/('|")/g, "\\$1"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad8(s) {
-  return s.replace('|', '');  // $ Alert
+  return s.replace('|', ''); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad9(s) {
-  return s.replace(/"/g, "\\\"");  // $ Alert
+  return s.replace(/"/g, "\\\""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad10(s) {
-  return s.replace("/", "%2F"); // $ Alert
+  return s.replace("/", "%2F"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad11(s) {
-  return s.replace("%25", "%"); // $ Alert
+  return s.replace("%25", "%"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad12(s) {
-  return s.replace(`'`, ""); // $ Alert
+  return s.replace(`'`, ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad13(s) {
-  return s.replace("'", ``); // $ Alert
+  return s.replace("'", ``); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad14(s) {
-  return s.replace(`'`, ``); // $ Alert
+  return s.replace(`'`, ``); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad15(s) {
-  return s.replace("'" + "", ""); // $ Alert
+  return s.replace("'" + "", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad16(s) {
-  return s.replace("'", "" + ""); // $ Alert
+  return s.replace("'", "" + ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad17(s) {
-  return s.replace("'" + "", "" + ""); // $ Alert
+  return s.replace("'" + "", "" + ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function good1(s) {
@@ -130,23 +130,23 @@ function good12(s) {
 	s.replace('[', '').replace(']', '');
 	s.replace('(', '').replace(')', '');
 	s.replace('{', '').replace('}', '');
-	s.replace('<', '').replace('>', ''); // $ Alert - too common as a bad HTML sanitizer
+	s.replace('<', '').replace('>', ''); // too common as a bad HTML sanitizer
 
-	s.replace('[', '\\[').replace(']', '\\]'); // $ Alert
-	s.replace('{', '\\{').replace('}', '\\}'); // $ Alert
+	s.replace('[', '\\[').replace(']', '\\]');
+	s.replace('{', '\\{').replace('}', '\\}');
 
 	s = s.replace('[', '');
 	s = s.replace(']', '');
-	s.replace(/{/, '').replace(/}/, ''); // $ Alert - should have used a string literal if a single replacement was intended
-	s.replace(']', '').replace('[', ''); // probably OK, but still flagged
+	s.replace(/{/, '').replace(/}/, ''); // should have used a string literal if a single replacement was intended
+	s.replace(']', '').replace('[', ''); // $ Alert[js/incomplete-sanitization] - probably OK, but still flagged
 }
 
 function newlines(s) {
 	// motivation for whitelist
 	require("child_process").execSync("which emacs").toString().replace("\n", "");
 
-	x.replace("\n", "").replace(x, y); // $ Alert
-	x.replace(x, y).replace("\n", ""); // $ Alert
+	x.replace("\n", "").replace(x, y);
+	x.replace(x, y).replace("\n", "");
 }
 
 app.get('/some/path', function(req, res) {
@@ -190,7 +190,7 @@ app.get('/some/path', function(req, res) {
 
 (function (s) {
 	var indirect = /'/;
-	return s.replace(indirect, ""); // $ Alert
+	return s.replace(indirect, ""); // $ Alert[js/incomplete-sanitization]
 });
 
 (function (s) {
@@ -199,20 +199,20 @@ app.get('/some/path', function(req, res) {
 });
 
 function bad18(p) {
-  return p.replace("/../", ""); // $ Alert
+  return p.replace("/../", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function typicalBadHtmlSanitizers(s) {
-	s().replace(/[<>]/g,''); // $ Alert
-	s().replace(/[<>&]/g, ''); // $ Alert
-	s().replace(/[<>"]/g, ''); // $ Alert
-	s().replace(/</g, '').replace(/>/g, ''); // $ Alert
-	s().replace(/</g, '').replace(/>/g, '').replace(/&/g, ''); // $ Alert
-	s().replace(/</g, '').replace(/&/g, '').replace(/>/g, ''); // $ Alert
-	s().replace(/&/g, '').replace(/>/g, '').replace(/</g, ''); // $ Alert
+	s().replace(/[<>]/g,'');
+	s().replace(/[<>&]/g, '');
+	s().replace(/[<>"]/g, '');
+	s().replace(/</g, '').replace(/>/g, '');
+	s().replace(/</g, '').replace(/>/g, '').replace(/&/g, '');
+	s().replace(/</g, '').replace(/&/g, '').replace(/>/g, '');
+	s().replace(/&/g, '').replace(/>/g, '').replace(/</g, '');
 
 	var s = s().replace(/</g, '');
-	s = s.replace(/>/g, '');  // $ Alert
+	s = s.replace(/>/g, '');
 	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/"/g, '&#34;');
 	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/'/g, '&#39;'); // OK - single quotes or double quotes both work
 
@@ -306,7 +306,7 @@ function incompleteHtmlAttributeSanitization2() {
 }
 
 function incompleteComplexSanitizers() {
-	'=\'' + s().replace(/[&<>"]/gm, function (str) { // $ Alert
+	'=\'' + s().replace(/[&<>"]/gm, function (str) {
 		if (str === "&")
 			return "&amp;";
 		if (str === "<")
@@ -315,7 +315,7 @@ function incompleteComplexSanitizers() {
 			return "&gt;";
 		if (str === "\"")
 			return "&quot;";
-	}) + '\'';
+	}) + '\''; // $ Alert[js/incomplete-html-attribute-sanitization]
 
 	'="' + s().replace(/[&<>"]/gm, function (str) {
 		if (str === "&")
@@ -330,27 +330,27 @@ function incompleteComplexSanitizers() {
 }
 
 function typicalBadHtmlSanitizers(s) {
-	s().replace(new RegExp("[<>]", "g"),''); // $ Alert
+	s().replace(new RegExp("[<>]", "g"),'');
 }
 
 function typicalBadHtmlSanitizers(s) {
-	s().replace(new RegExp("[<>]", unknown()),''); // $ Alert
+	s().replace(new RegExp("[<>]", unknown()),'');
 }
 
 function bad18NewRegExp(p) {
-	return p.replace(new RegExp("\\.\\./"), ""); // $ Alert
+	return p.replace(new RegExp("\\.\\./"), "");
 }
 
 function bad4NewRegExpG(s) {
-	return s.replace(new RegExp("\'","g"), "\\$&"); // $ Alert
+	return s.replace(new RegExp("\'","g"), "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad4NewRegExp(s) {
-	return s.replace(new RegExp("\'"), "\\$&"); // $ Alert
+	return s.replace(new RegExp("\'"), "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad4NewRegExpUnknown(s) {
-	return s.replace(new RegExp("\'", unknownFlags()), "\\$&"); // $ Alert
+	return s.replace(new RegExp("\'", unknownFlags()), "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function newlinesNewReGexp(s) {
@@ -359,8 +359,8 @@ function newlinesNewReGexp(s) {
 	x.replace(new RegExp("\n", "g"), "").replace(x, y);
 	x.replace(x, y).replace(new RegExp("\n", "g"), "");
 
-	x.replace(new RegExp("\n"), "").replace(x, y); // $ Alert
-	x.replace(x, y).replace(new RegExp("\n"), ""); // $ Alert
+	x.replace(new RegExp("\n"), "").replace(x, y); // $ Alert[js/incomplete-sanitization]
+	x.replace(x, y).replace(new RegExp("\n"), ""); // $ Alert[js/incomplete-sanitization]
 
 	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y);
 	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), "");

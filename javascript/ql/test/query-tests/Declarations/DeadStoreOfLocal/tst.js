@@ -40,13 +40,13 @@ function k(data) {
 }
 
 function l() {
-	var x = 23;
+	var x = 23; // $ Alert
 	x = 42;
 	return x;
 }
 
 function m() {
-	var x = 23, y;
+	var x = 23, y; // $ Alert
 	x = 42, y = x+14;
 	return x+y;
 }
@@ -127,7 +127,7 @@ function v() {
 }
 
 !function(o) {
-  var {x} = o;
+  var {x} = o; // $ Alert
   x = 42;
   return x;
 }
@@ -167,7 +167,7 @@ function v() {
 
 (function() {
 	if (something()) {
-		var nSign = foo;
+		var nSign = foo; // $ Alert
 	} else {
 		console.log(nSign);
 	}

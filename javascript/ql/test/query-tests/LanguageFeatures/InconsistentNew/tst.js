@@ -1,4 +1,4 @@
-function Point(x, y) {
+function Point(x, y) { // $ Alert
 	this.x = x;
 	this.y = y;
 }

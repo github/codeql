@@ -335,7 +335,7 @@ function mergeSelective(dst, src) {
             if (dst[key]) {
                 mergeSelective(dst[key], src[key]);
             } else {
-                dst[key] = src[key];
+                dst[key] = src[key]; // $ Alert
             }
         }
     }

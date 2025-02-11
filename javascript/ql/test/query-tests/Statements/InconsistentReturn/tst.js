@@ -1,5 +1,5 @@
 function f() {
 	if (someCond())
-		return;
+		return; // $ Alert
 	return 42;
 }

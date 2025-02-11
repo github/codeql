@@ -8,6 +8,6 @@ function g(x, y) {
 }
 
 (function (){
-    for ([arguments] of o);
-    for ([arguments = 4] of o);
+    for ([arguments] of o); // $ Alert
+    for ([arguments = 4] of o); // $ Alert
 });

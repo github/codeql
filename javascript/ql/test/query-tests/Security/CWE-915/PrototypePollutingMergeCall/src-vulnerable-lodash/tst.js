@@ -8,13 +8,13 @@ app.get('/hello', function(req, res) {
     _.merge({}, req.query); // $ MISSING: Alert
 
     _.merge({}, {
-        value: req.query.value // $ Alert
-    });
+        value: req.query.value
+    }); // $ Alert
 
     let opts = {
       thing: req.query.value // wrapped and unwrapped value
     };
     _.merge({}, {
-        value: opts.thing // $ Alert
-    });
+        value: opts.thing
+    }); // $ Alert
 });

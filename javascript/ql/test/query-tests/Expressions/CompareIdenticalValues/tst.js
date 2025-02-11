@@ -8,7 +8,7 @@ function Rectangle(x, y, width, height) {
 Rectangle.prototype.contains = function(x, y) {
 	return (this.x <= x &&
             x < this.x+this.width) &&
-	       (y <= y &&
+	       (y <= y && // $ Alert
 	        y < this.y+this.height);
 };
 

@@ -88,7 +88,7 @@ app.get('/baz3/a', (req, resp) => {
   resp.send({ test: 123 });
 });
 
-app.use(/\/summonerByName|\/currentGame/,apiLimit1, apiLimit2);
+app.use(/\/summonerByName|\/currentGame/,apiLimit1, apiLimit2); // $ Alert
 
 app.get('/currentGame', function (req, res) {
     res.send("FOO");

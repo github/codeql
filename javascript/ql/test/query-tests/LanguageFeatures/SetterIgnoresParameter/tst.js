@@ -12,8 +12,8 @@ function A() {
 		get x() {
 			return _x;
 		},
-		set x(v) {
-		}, // $ Alert
+		set x(v) { // $ Alert
+		},
 
 		get y() {
 			return 56;

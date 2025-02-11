@@ -16,8 +16,8 @@ undefined == null;
 
 null == 0; // $ Alert
 
-switch ("hi") { // $ Alert
-case 42:
+switch ("hi") {
+case 42: // $ Alert
 }
 
 Object.toString() + "!" == undefined; // $ Alert
@@ -136,7 +136,7 @@ function h() {
 }
 
 function i() {
-    "foo" === undefined
+    "foo" === undefined // $ Alert
     undefined === "foo" // $ Alert
     var NaN = 0; // trick analysis to consider warning about NaN, for the purpose of testing pretty printing
     NaN === "foo" // $ Alert
@@ -221,5 +221,5 @@ function l() {
 })();
 
 function f(...x) {
-    x === 42
+    x === 42 // $ Alert
 };

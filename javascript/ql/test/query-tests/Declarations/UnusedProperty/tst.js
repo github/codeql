@@ -1,7 +1,7 @@
 (function(){
     var captured1 = {
         used1: 42,
-        unused1: 42
+        unused1: 42 // $ Alert
     };
     captured1.used1;
 
@@ -16,20 +16,20 @@
     f(...{used6: 42});
     [...{used7: 42}];
 	({...{used8: 42}});
-	({ unused9: 42 }) + "";
+	({ unused9: 42 }) + ""; // $ Alert
     ({ used10: 42 }).hasOwnProperty;
     ({ used10: 42 }).propertyIsEnumerable;
 
     (function(){
         var captured11 = {
             used11: 42,
-            unused11: 42
+            unused11: 42 // $ Alert
         };
         captured11.used11;
 
         var captured12 = {
-            used12_butNotReally: 42,
-            unused12: 42
+            used12_butNotReally: 42, // $ Alert
+            unused12: 42 // $ Alert
         };
 
         throw x;
@@ -49,10 +49,10 @@
     });
 
 	var captured14 = {
-		unused14: 42
+		unused14: 42 // $ Alert
 	};
-	captured14.unused14 = 42;
-	captured14.unused14 = 42;
+	captured14.unused14 = 42; // $ Alert
+	captured14.unused14 = 42; // $ Alert
 
 
 	var captured15 = {

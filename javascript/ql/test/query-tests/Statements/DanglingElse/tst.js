@@ -2,7 +2,7 @@ function bad1() {
 	if (cond1())
 		if (cond2())
 			return 23;
-	else
+	else // $ Alert
 		return 42;
 }
 
@@ -18,7 +18,7 @@ function bad2() {
 	if (cond1()) {
 		if (cond2()) {
 			return 23;
-	} else {
+	} else { // $ Alert
 		return 42;
 	}}
 }
@@ -37,7 +37,7 @@ function bad3() {
 	else if (cond2())
 		if (cond2())
 			return 42;
-	else
+	else // $ Alert
 		return 42;
 }
 

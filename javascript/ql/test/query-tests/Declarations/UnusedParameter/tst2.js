@@ -25,7 +25,7 @@ function K(x, y) {
  * @param {*} x the first argument
  * @param {*} y the second argument
  */
-function K(x, y) {
+function K(x, y) { // $ Alert
     return y;
 }
 

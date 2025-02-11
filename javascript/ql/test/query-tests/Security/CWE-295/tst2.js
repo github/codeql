@@ -5,7 +5,7 @@ let requestOptions = {
         "content-type": "application/json",
         "accept": "application/json"
     },
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // $ Alert
     requestCert: true,
     agent: false
 }

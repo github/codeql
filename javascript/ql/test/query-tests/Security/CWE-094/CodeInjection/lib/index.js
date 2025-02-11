@@ -19,7 +19,7 @@ const matter = require("gray-matter");
 export function greySink(data) {
     const str = `
     ---js
-    ${data}
+    ${data /* $ Alert[js/unsafe-code-construction] */}
     ---
     `
     const res = matter(str);

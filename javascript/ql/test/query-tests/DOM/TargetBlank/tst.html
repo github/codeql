@@ -20,14 +20,14 @@
 <a data-ng-href="https://example.com/{{X}}" target="_blank">Example</a>
 
 <h1>NOT OK, because of dynamic URL</h1>
-<a href="http://example.com{{X}}" target="_blank">Example</a>
-<a href="{{target}}" target="_blank">Example</a>
-<a href="{{target}}" target="_blank">
+<a href="http://example.com{{X}}" target="_blank">Example</a> <!-- $ Alert -->
+<a href="{{target}}" target="_blank">Example</a> <!-- $ Alert -->
+<a href="{{target}}" target="_blank"> <!-- $ Alert -->
   Example
 </a>
 
 <h1>NOT OK: mailto is not fine.</h1>
-<a target="_blank" href="mailto:{{var:mail}}">mail somone</a>
+<a target="_blank" href="mailto:{{var:mail}}">mail somone</a> <!-- $ Alert -->
 
 <h1>OK: template elements after # or ? are fine.</h1>
 <a href="file.extension?#[% row.href %]" target="_blank">Example</a>

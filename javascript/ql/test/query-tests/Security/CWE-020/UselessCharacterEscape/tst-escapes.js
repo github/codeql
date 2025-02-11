@@ -13,8 +13,8 @@ RegExp(" ");
 RegExp("\a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\\u\v\\x\y\z");
 RegExp("\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\X\Y\Z");
 RegExp("\`\1\2\3\4\5\6\7\8\9\0\-\=");
-RegExp("\~\!\@\#\$\%\^\&\*\(\)\_\+");
-RegExp("\[\]\'\\,\.\/");
+RegExp("\~\!\@\#\$\%\^\&\*\(\)\_\+"); // $ Alert
+RegExp("\[\]\'\\,\.\/"); // $ Alert
 RegExp("\{\}\\\"\|\<\>\?");
 RegExp("\ ");
 /\a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\\x\y\z"/;
@@ -38,7 +38,7 @@ RegExp("\\\\\\\\\a");
 RegExp("\\\\\\\\\\a");
 
 // string vs regexp
-RegExp("\.")
+RegExp("\.") // $ Alert
 "\.";
 
 // other
@@ -53,8 +53,8 @@ RegExp("^\\\\Q\\\\E$");
 RegExp("/\\*");
 RegExp("/\
 ");
-RegExp("[\.]");
-RegExp("a[b\.c]d");
+RegExp("[\.]"); // $ Alert
+RegExp("a[b\.c]d"); // $ Alert
 RegExp("\b");
 RegExp(`\b`);
 RegExp(`\k\\k\d\\d`)

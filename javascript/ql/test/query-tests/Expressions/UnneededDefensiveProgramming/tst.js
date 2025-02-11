@@ -159,10 +159,10 @@
         }
     }
 
-    if (typeof x !== undefined);
-    if (typeof window !== undefined);
+    if (typeof x !== undefined); // $ Alert[js/comparison-between-incompatible-types]
+    if (typeof window !== undefined); // $ Alert[js/comparison-between-incompatible-types]
     if (typeof x !== x);
-    if (typeof x !== u); // $ Alert
+    if (typeof x !== u); // $ Alert[js/comparison-between-incompatible-types]
 
     if (typeof window !== "undefined");
     if (typeof module !== "undefined");
@@ -172,12 +172,12 @@
     if (typeof module !== "undefined" && module.exports);
     if (typeof global !== "undefined" && global.process);
 
-	u && (f(), u.p);
-	u && (u.p, f()); // technically not OK, but it seems like an unlikely pattern
+	u && (f(), u.p); // $ Alert[js/trivial-conditional]
+	u && (u.p, f()); // $ Alert[js/trivial-conditional] - technically not OK, but it seems like an unlikely pattern
 	u && !u.p; // $ Alert
 	u && !u(); // $ Alert
 
-    
+
     function hasCallbacks(success, error) {
         if (success) success()
         if (error) error()

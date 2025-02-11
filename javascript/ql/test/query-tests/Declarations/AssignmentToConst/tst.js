@@ -18,5 +18,5 @@ const s = "hi";
 
 (function (){
     const c = null;
-    for ([ c ] of o);
+    for ([ c ] of o); // $ Alert
 });

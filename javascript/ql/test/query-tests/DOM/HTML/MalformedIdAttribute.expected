@@ -1,16 +1,5 @@
-#select
 | AmbiguousIdAttributeGood.html:8:5:8:19 | id=invalid id | The value of the id attribute must not contain any space characters. |
 | AmbiguousIdAttributeGood.html:9:5:9:19 | id=invalid id | The value of the id attribute must not contain any space characters. |
 | MalformedIdAttribute.html:1:6:1:27 | id=heading important | The value of the id attribute must not contain any space characters. |
 | tst.js:9:6:9:10 | id="" | The value of the id attribute must contain at least one character. |
 | tst.js:10:6:10:13 | id="a b" | The value of the id attribute must not contain any space characters. |
-testFailures
-| AmbiguousIdAttributeGood.html:8:5:8:19 | The value of the id attribute must not contain any space characters. | Unexpected result: Alert |
-| AmbiguousIdAttributeGood.html:9:5:9:19 | The value of the id attribute must not contain any space characters. | Unexpected result: Alert |
-| MalformedIdAttribute.html:1:6:1:27 | The value of the id attribute must not contain any space characters. | Unexpected result: Alert |
-| tst.js:5:67:5:76 | // $ Alert | Missing result: Alert |
-| tst.js:7:68:7:77 | // $ Alert | Missing result: Alert |
-| tst.js:10:6:10:13 | The value of the id attribute must not contain any space characters. | Unexpected result: Alert |
-| tst.js:12:60:12:69 | // $ Alert | Missing result: Alert |
-| tst.js:17:73:17:82 | // $ Alert | Missing result: Alert |
-| tst.js:19:51:19:60 | // $ Alert | Missing result: Alert |
