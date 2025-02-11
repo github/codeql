@@ -157,7 +157,7 @@ function v() {
 });
 
 (function() {
-	let [x] = [0], // OK - but flagged due to destructuring limitations
+	let [x] = [0], // $ SPURIOUS: Alert - flagged due to destructuring limitations
 	    y = 0;
 	x = 42;
 	y = 87;
