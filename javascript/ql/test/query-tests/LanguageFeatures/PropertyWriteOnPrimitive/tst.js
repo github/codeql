@@ -1,6 +1,6 @@
 (0).foo = 42; // $ Alert
 
-null.bar = 23;  undefined.baz = 42; // $ Alert - but already flagged by SuspiciousPropAccess.ql
+null.bar = 23;  undefined.baz = 42; // OK - already flagged by SuspiciousPropAccess.ql
 
 function f() {
   var s = "";
