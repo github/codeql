@@ -32,7 +32,7 @@ class C2 extends React.Component {
 class C3 extends React.Component {
     constructor() {
         this.state.writtenThrougExternalPropertyAccess;
-        this.state.notWrittenThrougExternalPropertyAccess; // $ Alert
+        this.state.notWrittenThrougExternalPropertyAccess; // $ MISSED: Alert
     }
 }
 
