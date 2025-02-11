@@ -74,7 +74,7 @@ function l() {
   x ** 2; // $ Alert
 }
 
-1n + 1; // $ MISSED: Alert
+1n + 1; // $ MISSING: Alert
 
 (function(){
     let sum = 0;

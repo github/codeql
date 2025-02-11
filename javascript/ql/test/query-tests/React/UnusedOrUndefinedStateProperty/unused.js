@@ -1,9 +1,9 @@
-class C1 extends React.Component {
+class C1 extends React.Component { // $ Alert
     constructor() {
         this.state.readDirectly = 42;
         this.state.readInChain = {};
         this.state.readInOtherMethod = {};
-        this.state.notRead = 42; // $ Alert
+        this.state.notRead = 42; // $ RelatedLocation
         this.state.readDirectly;
         this.state.readInChain.foo;
     }
@@ -18,16 +18,16 @@ function f(s){
 }
 class C2 extends React.Component {
     constructor() {
-        this.state.readWhenEscaped = 42; // $ Alert
+        this.state.readWhenEscaped = 42; // $ MISSING: Alert
         f(this.state);
     }
 }
 
 
-class C3 extends React.Component {
+class C3 extends React.Component { // $ Alert
     constructor() {
         this.state.readThrougExternaPropertyAccess = 42;
-        this.state.notReadThrougExternaPropertyAccess = 42; // $ Alert
+        this.state.notReadThrougExternaPropertyAccess = 42; // $ RelatedLocation
     }
 }
 

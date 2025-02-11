@@ -6,7 +6,7 @@ function foo() {
 
 function bar() {
     var g;
-    g();    // $ MISSED: Alert
+    g();    // $ MISSING: Alert
     eval("g = alert");
 }
 

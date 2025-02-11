@@ -12,7 +12,7 @@ let c = new C();
 C();             // $ Alert
 new (x=>x);      // $ Alert
 c.m();
-new c.m();       // $ MISSED: Alert
+new c.m();       // $ MISSING: Alert
 
 var o = {
   f: function() {},
@@ -21,7 +21,7 @@ var o = {
 o.f();
 new o.f();
 o.g();
-new o.g();       // $ MISSED: Alert
+new o.g();       // $ MISSING: Alert
 
 function f(b) {
   var g;

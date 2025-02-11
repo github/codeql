@@ -59,7 +59,7 @@ function useThingPossiblySync(b) {
 
     if (thing == null) {}
 
-    return thing + "bar"; // $ MISSED: Alert
+    return thing + "bar"; // $ MISSING: Alert
 }
 
 function useThingInVoid() {

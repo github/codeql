@@ -1,12 +1,12 @@
-class C1 extends React.Component {
+class C1 extends React.Component { // $ Alert
     constructor() {
         this.state.writtenDirectly = 42;
         this.setState({
             writtenInSetState: 42
         });
         this.state.writtenInOtherMethod;
-        this.state.notWritten; // $ Alert
-        this.state.notWrittenButReadInChain; // $ Alert
+        this.state.notWritten; // $ RelatedLocation
+        this.state.notWrittenButReadInChain; // $ RelatedLocation
         this.state.writtenDirectly;
         this.state.writtenInSetState;
 
@@ -29,10 +29,10 @@ class C2 extends React.Component {
 }
 
 
-class C3 extends React.Component {
+class C3 extends React.Component { // $ Alert
     constructor() {
         this.state.writtenThrougExternalPropertyAccess;
-        this.state.notWrittenThrougExternalPropertyAccess; // $ Alert
+        this.state.notWrittenThrougExternalPropertyAccess; // $ RelatedLocation
     }
 }
 
