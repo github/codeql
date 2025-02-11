@@ -203,6 +203,7 @@ fn test_apply_flow_through() {
     sink(t); // $ hasValueFlow=33
 }
 
+// has a flow model with value flow from argument to returned future
 async fn get_async_number(a: i64) -> i64 {
     37
 }
