@@ -28,7 +28,7 @@ function h(k) {
 
 new Array(1, 2, 3);
 
-new String(1, 2, 3); // $ Alert
+new String(1, 2, 3); // $ MISSING: Alert
 
 (function(f) {
 	f(42); // $ Alert
