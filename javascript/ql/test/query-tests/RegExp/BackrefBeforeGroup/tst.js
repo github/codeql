@@ -6,4 +6,4 @@
 /<tpl\b[^>]*>((?:(?=([^<]+))\2|<(?!tpl\b[^>]*>))*?)<\/tpl>/;
 /\k<ws>(?<ws>\w+)/; // $ Alert
 /(?<=\1(.))a/;
-/(?<=(.)\1)a/;  // $ Alert - but not currently flagged
+/(?<=(.)\1)a/;  // $ MISSING: Alert
