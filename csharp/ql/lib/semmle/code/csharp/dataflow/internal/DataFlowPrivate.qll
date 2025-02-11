@@ -2087,7 +2087,9 @@ class CaptureNode extends NodeImpl, TCaptureNode {
  * same database (which is the case for .NET Runtime).
  */
 private predicate hasAutoImplementation(Property p) {
-  forall(Accessor a | a = p.getAnAccessor() | count(getASourceLocation(a)) > count(a.getBody()))
+  forex(Accessor a | a = p.getAnAccessor() |
+    strictcount(getASourceLocation(a)) > count(a.getBody())
+  )
 }
 
 /** A field or a property. */
