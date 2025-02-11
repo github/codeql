@@ -1,7 +1,7 @@
 (function(){
     var v;
     (function(){
-        if(typeof v === "undefined"){ // $ Alert
+        if(typeof v === "undefined"){ // $ Alert[js/unneeded-defensive-code]
             v = 42;
         }
         for(var v in x){
