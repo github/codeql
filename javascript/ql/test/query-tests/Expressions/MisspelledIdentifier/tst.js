@@ -35,6 +35,6 @@ EValue;
 ReactDOMOther;
 there;
 
-// NO OK
-var throught, through, throughout; // NB: we don't suggest "thought", since it isn't used anywhere
-var sheat, cheat, sheath, sheet;
+
+var throught, through, throughout; // $ Alert - NB: we don't suggest "thought", since it isn't used anywhere
+var sheat, cheat, sheath, sheet; // $ Alert
