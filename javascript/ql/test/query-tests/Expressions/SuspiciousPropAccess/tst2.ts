@@ -16,7 +16,7 @@ C.foo = 3;
 
 namespace N {
   var x;
-  x.p = 5;
+  x.p = 5; // $ Alert
 
   var q = M.Color.Blue;
 
