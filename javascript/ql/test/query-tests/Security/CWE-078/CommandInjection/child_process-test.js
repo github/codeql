@@ -40,18 +40,18 @@ var server = http.createServer(function(req, res) {
 
     let args = [];
     args[0] = "-c";
-    args[1] = cmd;  // $ Alert
-    cp.execFile("/bin/bash", args);
+    args[1] = cmd;
+    cp.execFile("/bin/bash", args); // $ Alert
 
     let args = [];
     args[0] = "-c";
-    args[1] = cmd;  // $ Alert
+    args[1] = cmd;
     run("sh", args);
 
     let args = [];
     args[0] = `-` + "c";
-    args[1] = cmd; // $ Alert
-    cp.execFile(`/bin` + "/bash", args);
+    args[1] = cmd;
+    cp.execFile(`/bin` + "/bash", args); // $ Alert
 
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert
@@ -64,7 +64,7 @@ var server = http.createServer(function(req, res) {
 });
 
 function run(cmd, args) {
-  cp.spawn(cmd, args); // OK - the alert happens where `args` is build.
+  cp.spawn(cmd, args); // $ Alert - but note that the sink is where `args` is build.
 }
 
 var util = require("util")

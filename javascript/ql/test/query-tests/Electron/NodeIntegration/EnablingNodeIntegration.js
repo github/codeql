@@ -1,30 +1,30 @@
 const {BrowserWindow} = require('electron')
 
 function test() {
-    var unsafe_1 = { // $ Alert - both enabled
+    var unsafe_1 = { // both enabled
            webPreferences: {
             nodeIntegration: true,
 			nodeIntegrationInWorker: true,
             plugins: true,
             webSecurity: true,
             sandbox: true
-        }
+        } // $ Alert
     };
     
-    var options_1 = { // $ Alert - `nodeIntegrationInWorker` enabled
+    var options_1 = { // `nodeIntegrationInWorker` enabled
 	    webPreferences: {
             plugins: true,
 			nodeIntegrationInWorker: false,
             webSecurity: true,
             sandbox: true     
-        }
+        } // $ Alert
     };
     
-    var pref = { // $ Alert - implicitly enabled
+    var pref = { // implicitly enabled
             plugins: true,
             webSecurity: true,
             sandbox: true     
-        };
+        }; // $ Alert
 	
     var options_2 = {  // $ Alert - implicitly enabled
             webPreferences: pref,

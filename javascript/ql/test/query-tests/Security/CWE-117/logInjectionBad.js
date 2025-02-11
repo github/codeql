@@ -120,11 +120,11 @@ const server4 = http.createServer((req, res) => {
 
 const serverMatchAll = http.createServer((req, res) => {
     let username = url.parse(req.url, true).query.username;
-    let otherStr = username.matchAll(/.*/g)[0]; // $ Alert
-    console.log(otherStr);
+    let otherStr = username.matchAll(/.*/g)[0];
+    console.log(otherStr); // $ Alert
 });
 
 const serverMatchAl2l = http.createServer((req, res) => {
-    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g); // $ Alert
-    console.log("First captured group:", RegExp.$1);
+    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g);
+    console.log("First captured group:", RegExp.$1); // $ Alert
 });

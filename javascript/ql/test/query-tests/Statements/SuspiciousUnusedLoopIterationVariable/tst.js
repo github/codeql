@@ -1,6 +1,6 @@
-function countOccurrences(xs, p) { // $ Alert
+function countOccurrences(xs, p) {
 	var count = 0;
-	for (let x of xs)
+	for (let x of xs) // $ Alert
 		if (p())
 			++count;
 	return count;
