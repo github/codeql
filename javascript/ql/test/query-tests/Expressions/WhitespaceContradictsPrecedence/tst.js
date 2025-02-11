@@ -38,8 +38,8 @@ function ok9(x, y, z) {
 	return x * y*z;
 }
 
-function ok10(o, p) {
-	return p in o&&o[p];
+function bad10(o, p) {
+	return p in o&&o[p]; // $ Alert
 }
 
 
