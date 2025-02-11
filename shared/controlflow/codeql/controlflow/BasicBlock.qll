@@ -264,17 +264,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
     bb1.getASuccessor(_) = bb2 and
     bbIDominates(bb1, bb2) and
-    // The above is not sufficient to ensure that `bb1` can only be reached
+    // The above is not sufficient to ensure that `bb2` can only be reached
     // through `(bb1, bb2)`. To see why, consider this example corresponding to
-    // an `if` statement without an `else` block and whe `A` is the basic block
+    // an `if` statement without an `else` block where `A` is the basic block
     // following the `if` statement:
     // ```
     // ... --> cond --[true]--> ... --> A
-    //           \                      /
+    //           \                      ^
     //            ----[false]-----------
     // ```
     // Here `A` is a direct successor of `cond` along the `false` edge and it
-    // is immediately dominated by `cond`, but `A` is not controlled by the
+    // is immediately dominated by `cond`, but `A` is not dominated by the
     // `false` edge since it is also possible to reach `A` via the `true`
     // edge.
     //
