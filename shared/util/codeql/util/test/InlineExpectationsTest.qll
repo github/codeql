@@ -705,8 +705,6 @@ module TestPostProcessing {
         )
       }
 
-      override string toString() { result = this.getRelativeUrl() }
-
       override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
         this = MkResultLocation(getRelativePathTo(file), sl, sc, el, ec)
       }
@@ -718,8 +716,6 @@ module TestPostProcessing {
       LocationFromInput() { this = MkInputLocation(loc) }
 
       override string getRelativeUrl() { result = Input2::getRelativeUrl(loc) }
-
-      override string toString() { result = this.getRelativeUrl() }
 
       override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
         loc.hasLocationInfo(file, sl, sc, el, ec)
