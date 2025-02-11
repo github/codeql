@@ -15,10 +15,10 @@ typeof c != "string";
 
 typeof es6 === 'symbol';
 
-switch (typeof a) {
+switch (typeof a) { // $ Alert
 
 case 'undefined':
-case 'null': // $ Alert
+case 'null':
 }
 
 
