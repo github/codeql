@@ -3,33 +3,33 @@ function bad(x) {
 }
 
 function ok1(x) {
-	return x + x >> 1; 
+	return x + x >> 1;
 }
 
 function ok2(x) {
-	return x+x >> 1; 
+	return x+x >> 1;
 }
 
 function ok3(x) {
-	return x + (x>>1); 
+	return x + (x>>1);
 }
 
 function ok4(x, y, z) {
 	return x + y + z;
 }
-	
+
 function ok5(x, y, z) {
 	return x + y+z;
 }
 
 function ok6(x) {
-	return x + x>> 1; 
+	return x + x>> 1;
 }
 
 function ok7(x, y, z) {
 	return x + y - z;
 }
-	
+
 function ok8(x, y, z) {
 	return x + y-z;
 }
