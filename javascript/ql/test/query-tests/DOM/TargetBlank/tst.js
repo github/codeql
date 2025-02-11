@@ -15,8 +15,8 @@ var o = { rel: "noopener noreferrer "};
 <a data-ng-href="https://example.com" target="_blank">Example</a>;
 
 <a href="{{X}}" target="_blank">Example</a>; // $ Alert - because of dynamic URL
-<a href="{{X}}" target="_blank" rel="nopoener">Example</a>;
-<a data-ng-href="{{X}}" target="_blank">Example</a>;
+<a href="{{X}}" target="_blank" rel="nopoener">Example</a>; // $ Alert
+<a data-ng-href="{{X}}" target="_blank">Example</a>; // $ Alert
 
 function f() {
 

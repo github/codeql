@@ -1,5 +1,5 @@
 function bitIsSet(x, n) {
-	return (x & (1<<n)) > 0;
+	return (x & (1<<n)) > 0; // $ Alert
 }
 
 console.log(bitIsSet(-1, 31)); // prints 'false'
