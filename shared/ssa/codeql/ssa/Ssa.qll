@@ -189,6 +189,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the (1-based) rank of the first reference to `v` inside basic block `bb`
      * that is either a read or a certain write.
+     *
+     * Note that uncertain writes have no impact on liveness: a variable is
+     * live before an uncertain write if and only if it is live after.
+     * The reference identified here therefore determines liveness at the
+     * beginning of `bb`: if it is a read then the variable is live and if it
+     * is a write then it is not. For basic blocks without reads or certain
+     * writes, liveness at the beginning of the block is equivalent to liveness
+     * at the end of the block.
      */
     private int firstReadOrCertainWrite(BasicBlock bb, SourceVariable v) {
       result =
