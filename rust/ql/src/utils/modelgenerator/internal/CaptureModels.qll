@@ -129,7 +129,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 
   predicate isField(DataFlow::ContentSet c) {
-    c.(SingletonContentSet).getContent() instanceof StructFieldContent
+    c.(SingletonContentSet).getContent() instanceof FieldContent
   }
 
   predicate isCallback(DataFlow::ContentSet cs) {

@@ -7,6 +7,9 @@ extensions:
       - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Hint
       - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Iterator
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Variant[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       # Option
       - ["lang:core", "<crate::option::Option>::unwrap", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
       - ["lang:core", "<crate::option::Option>::unwrap_or", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]

@@ -61,18 +61,26 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
-      exists(Variant v | result = "Variant" |
-        exists(int pos |
-          c = TVariantTupleFieldContent(v, pos) and
-          // TODO: calculate in QL
-          arg = v.getExtendedCanonicalPath() + "(" + pos + ")"
-        )
+      exists(Addressable a, int pos |
+        // TODO: calculate in QL
+        arg = a.getExtendedCanonicalPath() + "(" + pos + ")"
+      |
+        result = "Struct" and
+        c.(TupleFieldContent).isStructField(a, pos)
         or
-        exists(string field |
-          // TODO: calculate in QL
-          c = TVariantRecordFieldContent(v, field) and
-          arg = v.getExtendedCanonicalPath() + "::" + field
-        )
+        result = "Variant" and
+        c.(TupleFieldContent).isVariantField(a, pos)
+      )
+      or
+      exists(Addressable a, string field |
+        // TODO: calculate in QL
+        arg = a.getExtendedCanonicalPath() + "::" + field
+      |
+        result = "Struct" and
+        c.(RecordFieldContent).isStructField(a, field)
+        or
+        result = "Variant" and
+        c.(RecordFieldContent).isVariantField(a, field)
       )
       or
       result = "Variant" and
@@ -80,13 +88,6 @@ module Input implements InputSig<Location, RustDataFlow> {
         any(VariantInLibTupleFieldContent v |
           arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
         )
-      or
-      exists(Struct s, string field |
-        result = "Struct" and
-        c = TStructFieldContent(s, field) and
-        // TODO: calculate in QL
-        arg = s.getExtendedCanonicalPath() + "::" + field
-      )
       or
       result = "Element" and
       c = TElementContent() and
