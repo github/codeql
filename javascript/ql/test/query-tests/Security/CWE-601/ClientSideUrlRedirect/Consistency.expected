@@ -1,3 +1,0 @@
-| tst16.js:5 | expected an alert, but found none | NOT OK | ClientSideUrlRedirectConsistency |
-| tst16.js:6 | expected an alert, but found none | NOT OK | ClientSideUrlRedirectConsistency |
-| tst16.js:7 | expected an alert, but found none | NOT OK | ClientSideUrlRedirectConsistency |
