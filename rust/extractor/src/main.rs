@@ -194,6 +194,7 @@ fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
+            &cfg.verbosity,
         ))
         .with(flame_layer.map(|x| x.0))
         .init();

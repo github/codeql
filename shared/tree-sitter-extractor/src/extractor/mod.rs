@@ -22,15 +22,17 @@ pub mod simple;
 /// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
 /// falling back to `warn` if neither is set.
 pub fn set_tracing_level(language: &str) {
+    let verbosity = env::var("CODEQL_VERBOSITY").ok();
     tracing_subscriber::registry()
-        .with(default_subscriber_with_level(language))
+        .with(default_subscriber_with_level(language, &verbosity))
         .init();
 }
 
 /// Create a `Subscriber` configured with the tracing level based on the environment variables
-/// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order), falling back to `warn` if neither is set.
+/// `RUST_LOG` and `verbosity` (prioritized in that order), falling back to `warn` if neither is set.
 pub fn default_subscriber_with_level(
     language: &str,
+    verbosity: &Option<String>,
 ) -> Filtered<
     tracing_subscriber::fmt::Layer<
         tracing_subscriber::Registry,
@@ -47,7 +49,8 @@ pub fn default_subscriber_with_level(
         .with_filter(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
                 |_| -> tracing_subscriber::EnvFilter {
-                    let verbosity = env::var("CODEQL_VERBOSITY")
+                    let verbosity = verbosity
+                        .as_ref()
                         .map(|v| match v.to_lowercase().as_str() {
                             "off" | "errors" => "error",
                             "warnings" => "warn",
@@ -56,7 +59,7 @@ pub fn default_subscriber_with_level(
                             "trace" | "progress++" | "progress+++" => "trace",
                             _ => "warn",
                         })
-                        .unwrap_or_else(|_| "warn");
+                        .unwrap_or_else(|| "warn");
                     tracing_subscriber::EnvFilter::new(format!(
                         "{language}_extractor={verbosity},codeql_extractor={verbosity}"
                     ))

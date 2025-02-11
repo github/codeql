@@ -10,7 +10,6 @@ use figment::{
     Figment,
 };
 use itertools::Itertools;
-use num_traits::Zero;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
 use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
@@ -52,7 +51,7 @@ pub struct Config {
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
     pub flame_log: Option<PathBuf>,
-    pub verbose: u8,
+    pub verbosity: Option<String>,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
@@ -66,7 +65,7 @@ impl Config {
             .context("expanding parameter files")?;
         let cli_args = CliConfig::parse_from(args);
         let mut figment = Figment::new()
-            .merge(Env::raw().only(["CODEQL_VERBOSE"].as_slice()))
+            .merge(Env::prefixed("CODEQL_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args));
