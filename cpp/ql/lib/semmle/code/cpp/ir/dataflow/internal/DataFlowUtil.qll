@@ -2012,12 +2012,22 @@ module ExprFlowCached {
   }
 
   /**
+   * Holds if `asExpr(n1)` doesn't have a result and `n1` flows to `n2` in a single
+   * dataflow step.
+   * 
+   * i.e. this is the transpose of `localStepFromNonExpr`
+   */
+  private predicate localStepFromNonExprR(Node n2, Node n1) {
+    localStepFromNonExpr(n1, n2)
+  }
+
+  /**
    * Holds if `asExpr(n1)` doesn't have a result, `asExpr(n2) = e2` and
    * `n2` is the first node reachable from `n1` such that `asExpr(n2)` exists.
    */
   pragma[nomagic]
   private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
-    localStepFromNonExpr*(n1, n2) and
+    localStepFromNonExprR*(n2, n1) and
     e2 = asExprInternal(n2)
   }
 
