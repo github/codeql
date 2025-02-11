@@ -134,6 +134,29 @@ pub fn test_operator_overloading() {
     sink(d.value); // $ MISSING: hasValueFlow=7
 }
 
+// Flow out of mutable parameters.
+
+fn set_int(n: &mut i64, c: i64) {
+    *n = c;
+}
+
+fn mutates_argument_1() {
+    // Passing an already borrowed value to a function and then reading from the same borrow.
+    let mut n = 0;
+    let m = &mut n;
+    sink(*m);
+    set_int(m, source(37));
+    sink(*m); // $ hasValueFlow=37
+}
+
+fn mutates_argument_2() {
+    // Borrowing at the call and then reading from the unborrowed variable.
+    let mut n = 0;
+    sink(n);
+    set_int(&mut n, source(88));
+    sink(n); // $ MISSING: hasValueFlow=88
+}
+
 fn main() {
     data_out_of_call();
     data_in_to_call();
@@ -145,4 +168,6 @@ fn main() {
     data_through_method();
 
     test_operator_overloading();
+    mutates_argument_1();
+    mutates_argument_2();
 }
