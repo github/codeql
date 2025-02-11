@@ -844,6 +844,15 @@ final class ElementContent extends Content, TElementContent {
 }
 
 /**
+ * A value that a future resolves to.
+ */
+final class FutureContent extends Content, TFutureContent {
+  override string toString() { result = "future" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
  * Content stored at a position in a tuple.
  *
  * NOTE: Unlike `struct`s and `enum`s tuples are structural and not nominal,
@@ -1192,6 +1201,12 @@ module RustDataFlow implements InputSig<Location> {
         lambdaCall(call, _, node1) and
         call = node2.(OutNode).getCall(TNormalReturnKind()) and
         c instanceof FunctionCallReturnContent
+      )
+      or
+      exists(AwaitExprCfgNode await |
+        c instanceof FutureContent and
+        node1.asExpr() = await.getExpr() and
+        node2.asExpr() = await
       )
       or
       VariableCapture::readStep(node1, c, node2)
@@ -1553,7 +1568,8 @@ private module Cached {
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
           any(TryExprCfgNode try).getExpr(),
-          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr()
+          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
+          any(AwaitExprCfgNode a).getExpr()
         ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
@@ -1609,6 +1625,7 @@ private module Cached {
     // TODO: Remove once library types are extracted
     TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
     TElementContent() or
+    TFutureContent() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
                 any(TuplePat pat).getNumberOfFields(),
