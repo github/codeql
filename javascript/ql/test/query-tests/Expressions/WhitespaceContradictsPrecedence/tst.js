@@ -1,5 +1,5 @@
 function bad(x) {
-	return x + x>>1; 
+	return x + x>>1;  // $ Alert
 }
 
 function ok1(x) {
