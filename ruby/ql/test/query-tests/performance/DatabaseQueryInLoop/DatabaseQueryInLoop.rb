@@ -8,15 +8,15 @@ class DatabaseQueryInLoopTest
 
         # simple query in loop
         names.map do |name|
-            User.where(login: name).pluck(:id).first
+            User.where(login: name).pluck(:id).first # $ Alert
         end
         
         # nested loop
         names.map do |name|
-            user = User.where(login: name).pluck(:id).first
+            user = User.where(login: name).pluck(:id).first # $ Alert
 
             ids.map do |user_id|
-                User.where(id: user_id).pluck(:id).first
+                User.where(id: user_id).pluck(:id).first # $ Alert
             end
         end
 
