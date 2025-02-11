@@ -177,8 +177,8 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
    *
    * Edge dominance is similar to node dominance except it concerns edges
    * instead of nodes: A basic block is dominated by a _basic block_ `bb` if it
-   * can only be reached through `bb` and dominated by an _edge_ `s` if it can
-   * only be reached through `s`.
+   * can only be reached through `bb` and dominated by an _edge_ `e` if it can
+   * only be reached through `e`.
    *
    * Note that where all basic blocks (except the entry basic block) are
    * strictly dominated by at least one basic block, a basic block may not be
