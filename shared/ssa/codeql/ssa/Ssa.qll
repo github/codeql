@@ -237,7 +237,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         rnk = maxRefRank(bb, v) and
         liveAtExit(bb, v)
         or
-        ref(bb, i, v, kind) and
         kind = Read(_)
         or
         exists(RefKind nextKind |
