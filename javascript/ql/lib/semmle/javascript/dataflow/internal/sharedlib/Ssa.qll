@@ -14,10 +14,6 @@ module SsaConfig implements InputSig<js::DbLocation> {
 
   class BasicBlock = js::BasicBlock;
 
-  class ExitBasicBlock extends BasicBlock {
-    ExitBasicBlock() { this.isExitBlock() }
-  }
-
   class SourceVariable extends LocalVariableOrThis {
     SourceVariable() { not this.isCaptured() }
   }

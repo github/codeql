@@ -32,8 +32,20 @@ filegroup(
 
 # Workspace Member Dependencies
 alias(
+    name = "anyhow-1.0.44",
+    actual = "@vendor__anyhow-1.0.44//:anyhow",
+    tags = ["manual"],
+)
+
+alias(
     name = "anyhow",
     actual = "@vendor__anyhow-1.0.44//:anyhow",
+    tags = ["manual"],
+)
+
+alias(
+    name = "clap-2.33.3",
+    actual = "@vendor__clap-2.33.3//:clap",
     tags = ["manual"],
 )
 
@@ -44,8 +56,20 @@ alias(
 )
 
 alias(
+    name = "regex-1.5.5",
+    actual = "@vendor__regex-1.5.5//:regex",
+    tags = ["manual"],
+)
+
+alias(
     name = "regex",
     actual = "@vendor__regex-1.5.5//:regex",
+    tags = ["manual"],
+)
+
+alias(
+    name = "smallvec-1.6.1",
+    actual = "@vendor__smallvec-1.6.1//:smallvec",
     tags = ["manual"],
 )
 
@@ -56,8 +80,20 @@ alias(
 )
 
 alias(
+    name = "string-interner-0.12.2",
+    actual = "@vendor__string-interner-0.12.2//:string_interner",
+    tags = ["manual"],
+)
+
+alias(
     name = "string-interner",
     actual = "@vendor__string-interner-0.12.2//:string_interner",
+    tags = ["manual"],
+)
+
+alias(
+    name = "thiserror-1.0.29",
+    actual = "@vendor__thiserror-1.0.29//:thiserror",
     tags = ["manual"],
 )
 
@@ -68,14 +104,32 @@ alias(
 )
 
 alias(
+    name = "tree-sitter-0.20.4",
+    actual = "@vendor__tree-sitter-0.20.4//:tree_sitter",
+    tags = ["manual"],
+)
+
+alias(
     name = "tree-sitter",
     actual = "@vendor__tree-sitter-0.20.4//:tree_sitter",
     tags = ["manual"],
 )
 
 alias(
+    name = "tree-sitter-graph-0.7.0",
+    actual = "@vendor__tree-sitter-graph-0.7.0//:tree_sitter_graph",
+    tags = ["manual"],
+)
+
+alias(
     name = "tree-sitter-graph",
     actual = "@vendor__tree-sitter-graph-0.7.0//:tree_sitter_graph",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tsp-0.19.0",
+    actual = "@vendor__tsp-0.19.0//:tsp",
     tags = ["manual"],
 )
 
