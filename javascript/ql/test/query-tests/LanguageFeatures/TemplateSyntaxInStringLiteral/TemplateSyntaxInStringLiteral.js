@@ -2,7 +2,7 @@ function connectAndLog(id) {
     log.info(`Connecting to ${id}`)
     let connection = openConnection(id)
     if (!connection) {
-      log.error('Could not connect to ${id}')
+      log.error('Could not connect to ${id}') // $ Alert
     }
 }
 
@@ -14,9 +14,9 @@ function emitTemplate(name, date) {
 var globalVar = "global";
 
 function foo() {
-    log.error('globalVar = ${globalVar}');
+    log.error('globalVar = ${globalVar}'); // $ Alert
 }
-log.error('globalVar = ${globalVar}');
+log.error('globalVar = ${globalVar}'); // $ Alert
 
 function bar() {
     log.error('Something ${notInScope}');
@@ -25,7 +25,7 @@ function bar() {
 function baz(x){
     log.error("${x}");
     log.error("${y}");
-    log.error("${x} ");
+    log.error("${x} "); // $ Alert
     log.error("${y} ");
 }
 
