@@ -37,8 +37,8 @@ function g() {
   var number = 0; // number
 
   number == "0";
-  // NO OK
-  number == "zero";
+
+  number == "zero"; // $ Alert
 }
 
 0 < (Math.random() > 0.5 ? void 0 : [1, 2]); // $ Alert
