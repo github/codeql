@@ -50,7 +50,7 @@ mod my_clone {
     }
 }
 
-mod flow_throug_option {
+mod flow_through_option {
     use super::{source, sink};
     // Test the auto generated flow summaries for `Option`
 
@@ -61,7 +61,7 @@ mod flow_throug_option {
         match z {
             Some((n, m)) => {
                 sink(n);
-                sink(m); // $ MISSING: hasValueFlow=38
+                sink(m); // $ hasValueFlow=38
             },
             None => ()
         }
@@ -70,7 +70,7 @@ mod flow_throug_option {
     fn higher_order_flow() {
         let a = Some(0);
         let b = a.map_or(3, |n| n + source(63));
-        sink(b); // $ MISSING: hasTaintFlow=63
+        sink(b); // $ hasTaintFlow=63
     }
 }
 
