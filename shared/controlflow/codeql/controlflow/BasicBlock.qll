@@ -169,71 +169,38 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     BasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
     /**
-     * Holds if basic block `succ` is immediately controlled by this basic
-     * block with successor type `s`.
+     * Holds if the edge with successor type `s` out of this basic block is a
+     * dominating edge for `dominated`.
      *
-     * That is, `succ` is an immediate successor of this block, and `succ` can
-     * only be reached from the entry block by going via the `s` edge out of
-     * this basic block.
-     */
-    pragma[nomagic]
-    predicate immediatelyControls(BasicBlock succ, SuccessorType s) {
-      succ = this.getASuccessor(s) and
-      bbIDominates(this, succ) and
-      // The above is not sufficient to ensure that `succ` can only be reached
-      // through `s`. To see why, consider this example corresponding to an
-      // `if` statement without an `else` block and whe `A` is the basic block
-      // following the `if` statement:
-      // ```
-      // ... --> cond --[true]--> ... --> A
-      //           \                      /
-      //            ----[false]-----------
-      // ```
-      // Here `A` is a direct successor of `cond` along the `false` edge and it
-      // is immediately dominated by `cond`, but `A` is not controlled by the
-      // `false` edge since it is also possible to reach `A` via the `true`
-      // edge.
-      //
-      // Note that the first and third conjunct implies the second. But
-      // explicitly including the second conjunct leads to a better join order.
-      forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != this |
-        succ.dominates(pred)
-      )
-    }
-
-    /**
-     * Holds if basic block `controlled` is controlled by this basic block with
-     * successor type `s`.
-     *
-     * That is, all paths reaching `controlled` from the entry point basic
+     * That is, all paths reaching `dominated` from the entry point basic
      * block must go through the `s` edge out of this basic block.
      *
-     * Control is similar to dominance except it concerns edges instead of
-     * nodes: A basic block is _dominated_ by a _basic block_ `bb` if it can
-     * only be reached through `bb` and _controlled_ by an _edge_ `s` if it can
-     * only be reached through `s`.
+     * Edge dominance is similar to node dominance except it concerns edges
+     * instead of nodes: A basic block is dominated by a _basic block_ `bb` if
+     * it can only be reached through `bb` and dominated by an _edge_ `e` if it
+     * can only be reached through `e`.
      *
      * Note that where all basic blocks (except the entry basic block) are
      * strictly dominated by at least one basic block, a basic block may not be
-     * controlled by any edge. If an edge controls a basic block `bb`, then
+     * dominated by any edge. If an edge dominates a basic block `bb`, then
      * both endpoints of the edge dominates `bb`. The converse is not the case,
      * as there may be multiple paths between the endpoints with none of them
      * dominating.
      */
-    predicate controls(BasicBlock controlled, SuccessorType s) {
-      // For this block to control the block `controlled` with `s` the following must be true:
-      // 1/ Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
+    predicate edgeDominates(BasicBlock dominated, SuccessorType s) {
+      // For this block to control the block `dominated` with `s` the following must be true:
+      // 1/ Execution must have passed through the test i.e. `this` must strictly dominate `dominated`.
       // 2/ Execution must have passed through the `s` edge leaving `this`.
       //
-      // Although "passed through the `s` edge" implies that `this.getASuccessor(s)` dominates `controlled`,
+      // Although "passed through the `s` edge" implies that `this.getASuccessor(s)` dominates `dominated`,
       // the reverse is not true, as flow may have passed through another edge to get to `this.getASuccessor(s)`
-      // so we need to assert that `this.getASuccessor(s)` dominates `controlled` *and* that
+      // so we need to assert that `this.getASuccessor(s)` dominates `dominated` *and* that
       // all predecessors of `this.getASuccessor(s)` are either `this` or dominated by `this.getASuccessor(s)`.
       //
       // For example, in the following C# snippet:
       // ```csharp
       // if (x)
-      //   controlled;
+      //   dominated;
       // false_successor;
       // uncontrolled;
       // ```
@@ -241,18 +208,20 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       //  or dominated by itself. Whereas in the following code:
       // ```csharp
       // if (x)
-      //   while (controlled)
+      //   while (dominated)
       //     also_controlled;
       // false_successor;
       // uncontrolled;
       // ```
-      // the block `while controlled` is controlled because all of its predecessors are `this` (`if (x)`)
+      // the block `while dominated` is dominated because all of its predecessors are `this` (`if (x)`)
       // or (in the case of `also_controlled`) dominated by itself.
       //
       // The additional constraint on the predecessors of the test successor implies
-      // that `this` strictly dominates `controlled` so that isn't necessary to check
+      // that `this` strictly dominates `dominated` so that isn't necessary to check
       // directly.
-      exists(BasicBlock succ | this.immediatelyControls(succ, s) | succ.dominates(controlled))
+      exists(BasicBlock succ |
+        succ = this.getASuccessor(s) and dominatingEdge(this, succ) and succ.dominates(dominated)
+      )
     }
 
     /**
@@ -280,6 +249,38 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets a textual representation of this basic block. */
     string toString() { result = this.getFirstNode().toString() }
+  }
+
+  /**
+   * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
+   * and `bb2` is a dominating edge.
+   *
+   * An edge `(bb1, bb2)` is dominating if there exists a basic block that can
+   * only be reached from the entry block by going through `(bb1, bb2)`. This
+   * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
+   * only be reached from the entry block by going via `(bb1, bb2)`.
+   */
+  pragma[nomagic]
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    bb1.getASuccessor(_) = bb2 and
+    bbIDominates(bb1, bb2) and
+    // The above is not sufficient to ensure that `bb2` can only be reached
+    // through `(bb1, bb2)`. To see why, consider this example corresponding to
+    // an `if` statement without an `else` block where `A` is the basic block
+    // following the `if` statement:
+    // ```
+    // ... --> cond --[true]--> ... --> A
+    //           \                      ^
+    //            ----[false]-----------
+    // ```
+    // Here `A` is a direct successor of `cond` along the `false` edge and it
+    // is immediately dominated by `cond`, but `A` is not dominated by the
+    // `false` edge since it is also possible to reach `A` via the `true`
+    // edge.
+    //
+    // Note that the first and third conjunct implies the second. But
+    // explicitly including the second conjunct leads to a better join order.
+    forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
   }
 
   cached

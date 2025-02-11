@@ -456,7 +456,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
-      conditionBlock.controls(bb, s)
+      conditionBlock.edgeDominates(bb, s)
     )
   }
 
