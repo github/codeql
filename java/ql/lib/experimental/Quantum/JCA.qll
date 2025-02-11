@@ -7,12 +7,14 @@ module JCAModel {
   abstract class EncryptionOperation extends Crypto::EncryptionOperation { }
 
   //TODO PBEWith can have suffixes. how to do? enumerate? or match a pattern?
+  bindingset[algo]
   predicate cipher_names(string algo) {
-    algo =
-      [
-        "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "Blowfish", "ChaCha20", "ChaCha20-Poly1305",
-        "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith", "RC2", "RC4", "RC5", "RSA"
-      ]
+    // "Standard names are not case-sensitive."
+    algo.toUpperCase()
+        .matches([
+            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "Blowfish", "ChaCha20", "ChaCha20-Poly1305",
+            "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4", "RC5", "RSA"
+          ].toUpperCase())
   }
 
   //TODO solve the fact that x is an int of various values. same as above... enumerate?
@@ -33,9 +35,10 @@ module JCAModel {
       ]
   }
 
-  ////cipher specifics ----------------------------------------
-  class CipherInstance extends Call {
-    CipherInstance() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "getInstance") }
+  class CipherGetInstanceCall extends Call {
+    CipherGetInstanceCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "getInstance")
+    }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
   }
@@ -65,7 +68,7 @@ module JCAModel {
     }
 
     override Crypto::TModeOperation getModeType() {
-      modeToNameMapping(result, this.getRawAlgorithmName())
+      this.modeToNameMapping(result, this.getRawAlgorithmName())
     }
 
     override Crypto::LocatableElement getOrigin(string name) {
@@ -91,7 +94,7 @@ module JCAModel {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherAlgorithmStringLiteral }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(CipherInstance call | sink.asExpr() = call.getAlgorithmArg())
+      exists(CipherGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
     }
   }
 
@@ -100,7 +103,7 @@ module JCAModel {
   predicate algorithmStringToCipherInstanceArgFlow(
     string name, CipherAlgorithmStringLiteral origin, Expr arg
   ) {
-    exists(CipherInstance sinkCall |
+    exists(CipherGetInstanceCall sinkCall |
       origin.getValue().splitAt("/") = name and
       arg = sinkCall and
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(origin),
@@ -111,7 +114,7 @@ module JCAModel {
   predicate modeStringToCipherInstanceArgFlow(
     string name, ModeOfOperationStringLiteral mode, Expr arg
   ) {
-    exists(CipherInstance sinkCall |
+    exists(CipherGetInstanceCall sinkCall |
       //consider if this should be a more specific predicate
       mode.getRawAlgorithmName() = name and
       arg = sinkCall and

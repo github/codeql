@@ -22,6 +22,45 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     UnknownPropertyValue() { this = "<unknown>" }
   }
 
+  private string getPropertyAsGraphString(NodeBase node, string key) {
+    result =
+      strictconcat(any(string value, Location location, string parsed |
+            node.properties(key, value, location) and
+            parsed = "(" + value + "," + location.toString() + ")"
+          |
+            parsed
+          ), ","
+      )
+  }
+
+  predicate nodes_graph_impl(NodeBase node, string key, string value) {
+    key = "semmle.label" and
+    value = node.toString()
+    or
+    // CodeQL's DGML output does not include a location
+    key = "Location" and
+    value = node.getLocation().toString()
+    or
+    // Known unknown edges should be reported as properties rather than edges
+    node = node.getChild(key) and
+    value = "<unknown>"
+    or
+    // Report properties
+    value = getPropertyAsGraphString(node, key)
+  }
+
+  predicate edges_graph_impl(NodeBase source, NodeBase target, string key, string value) {
+    key = "semmle.label" and
+    target = source.getChild(value) and
+    // Known unknowns are reported as properties rather than edges
+    not source = target
+  }
+
+  /**
+   * The base class for all cryptographic assets, such as operations and algorithms.
+   *
+   * Each `NodeBase` is a node in a graph of cryptographic operations, where the edges are the relationships between the nodes.
+   */
   abstract class NodeBase instanceof LocatableElement {
     /**
      * Returns a string representation of this node, usually the name of the operation/algorithm/property.
@@ -104,6 +143,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   /**
    * A hashing operation that processes data to generate a hash value.
+   *
    * This operation takes an input message of arbitrary content and length and produces a fixed-size
    * hash value as the output using a specified hashing algorithm.
    */
@@ -113,19 +153,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getOperationName() { result = "HASH" }
   }
 
-  // Rule: no newtype representing a type of algorithm should be modelled with multiple interfaces
-  //
-  // Example: HKDF and PKCS12KDF are both key derivation algorithms.
-  //          However, PKCS12KDF also has a property: the iteration count.
-  //
-  //          If we have HKDF and PKCS12KDF under TKeyDerivationType,
-  //          someone modelling a library might try to make a generic identification of both of those algorithms.
-  //
-  //          They will therefore not use the specialized type for PKCS12KDF,
-  //          meaning "from PKCS12KDF algo select algo" will have no results.
-  //
   newtype THashType =
-    // We're saying by this that all of these have an identical interface / properties / edges
     MD5() or
     SHA1() or
     SHA256() or
@@ -197,8 +225,28 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  newtype TEllipticCurveFamilyType =
-    // We're saying by this that all of these have an identical interface / properties / edges
+  /*
+   * TODO:
+   *
+   * Rule: No newtype representing a type of algorithm should be modelled with multiple interfaces
+   *
+   * Example 1: HKDF and PKCS12KDF are both key derivation algorithms.
+   *            However, PKCS12KDF also has a property: the iteration count.
+   *
+   *            If we have HKDF and PKCS12KDF under TKeyDerivationType,
+   *            someone modelling a library might try to make a generic identification of both of those algorithms.
+   *
+   *            They will therefore not use the specialized type for PKCS12KDF,
+   *            meaning "from PKCS12KDF algo select algo" will have no results.
+   *
+   * Example 2: Each type below represents a common family of elliptic curves, with a shared interface, i.e.,
+   *            predicates for library modellers to implement as well as the properties and edges reported.
+   */
+
+  /**
+   * Elliptic curve algorithms
+   */
+  newtype TEllipticCurveFamily =
     NIST() or
     SEC() or
     NUMS() or
@@ -211,13 +259,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     ES() or
     OtherEllipticCurveFamilyType()
 
-  /**
-   * Elliptic curve algorithm
-   */
   abstract class EllipticCurve extends Algorithm {
     abstract string getKeySize(Location location);
 
-    abstract TEllipticCurveFamilyType getCurveFamilyType();
+    abstract TEllipticCurveFamily getCurveFamilyType();
 
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
@@ -236,8 +281,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Mandating that for Elliptic Curves specifically, users are responsible
      * for providing as the 'raw' name, the official name of the algorithm.
+     *
      * Casing doesn't matter, we will enforce further naming restrictions on
      * `getAlgorithmName` by default.
+     *
      * Rationale: elliptic curve names can have a lot of variation in their components
      * (e.g., "secp256r1" vs "P-256"), trying to produce generalized set of properties
      * is possible to capture all cases, but such modeling is likely not necessary.
@@ -256,16 +303,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getOperationName() { result = "ENCRYPTION" }
   }
 
+  /**
+   * Block cipher modes of operation algorithms
+   */
   newtype TModeOperation =
     ECB() or
     CBC() or
     OtherMode()
 
   abstract class ModeOfOperation extends Algorithm {
-    string getValue() { result = "" }
-
     final private predicate modeToNameMapping(TModeOperation type, string name) {
       type instanceof ECB and name = "ECB"
+      or
+      type instanceof CBC and name = "CBC"
       or
       type instanceof OtherMode and name = this.getRawAlgorithmName()
     }
@@ -275,17 +325,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
   }
 
+  /**
+   * A helper type for distinguishing between block and stream ciphers.
+   */
   newtype TCipherStructure =
     Block() or
     Stream()
 
-  newtype TSymmetricCipherFamilyType =
-    // We're saying by this that all of these have an identical interface / properties / edges
-    AES()
-
   /**
    * Symmetric algorithms
    */
+  newtype TSymmetricCipherFamilyType =
+    AES() or
+    OtherSymmetricCipherFamilyType()
+
   abstract class SymmetricAlgorithm extends Algorithm {
     abstract TSymmetricCipherFamilyType getSymmetricCipherFamilyType();
 
