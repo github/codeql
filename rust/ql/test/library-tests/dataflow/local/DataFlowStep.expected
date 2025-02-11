@@ -72,9 +72,9 @@ localStep
 | main.rs:44:13:46:5 | loop { ... } | main.rs:44:9:44:9 | b |  |
 | main.rs:45:9:45:23 | break ... | main.rs:44:13:46:5 | loop { ... } |  |
 | main.rs:45:15:45:23 | source(...) | main.rs:45:9:45:23 | break ... |  |
-| main.rs:51:9:51:13 | [SSA] i | main.rs:52:10:52:10 | i |  |
-| main.rs:51:9:51:13 | i | main.rs:51:9:51:13 | [SSA] i |  |
-| main.rs:51:17:51:17 | 1 | main.rs:51:9:51:13 | i |  |
+| main.rs:51:9:51:13 | [SSA] mut i | main.rs:52:10:52:10 | i |  |
+| main.rs:51:9:51:13 | mut i | main.rs:51:9:51:13 | [SSA] mut i |  |
+| main.rs:51:17:51:17 | 1 | main.rs:51:9:51:13 | mut i |  |
 | main.rs:53:5:53:5 | [SSA] i | main.rs:54:10:54:10 | i |  |
 | main.rs:53:5:53:5 | i | main.rs:53:5:53:5 | [SSA] i |  |
 | main.rs:53:9:53:17 | source(...) | main.rs:53:5:53:5 | i |  |
@@ -122,9 +122,9 @@ localStep
 | main.rs:101:18:101:19 | [SSA] a2 | main.rs:104:10:104:11 | a2 |  |
 | main.rs:101:18:101:19 | a2 | main.rs:101:18:101:19 | [SSA] a2 |  |
 | main.rs:101:24:101:24 | a | main.rs:101:9:101:20 | TuplePat |  |
-| main.rs:108:9:108:13 | [SSA] a | main.rs:109:10:109:10 | a |  |
-| main.rs:108:9:108:13 | a | main.rs:108:9:108:13 | [SSA] a |  |
-| main.rs:108:17:108:31 | TupleExpr | main.rs:108:9:108:13 | a |  |
+| main.rs:108:9:108:13 | [SSA] mut a | main.rs:109:10:109:10 | a |  |
+| main.rs:108:9:108:13 | mut a | main.rs:108:9:108:13 | [SSA] mut a |  |
+| main.rs:108:17:108:31 | TupleExpr | main.rs:108:9:108:13 | mut a |  |
 | main.rs:109:10:109:10 | [post] a | main.rs:110:10:110:10 | a |  |
 | main.rs:109:10:109:10 | a | main.rs:110:10:110:10 | a |  |
 | main.rs:110:10:110:10 | [post] a | main.rs:111:5:111:5 | a |  |
@@ -152,9 +152,9 @@ localStep
 | main.rs:134:13:134:40 | Point {...} | main.rs:134:9:134:9 | p |  |
 | main.rs:135:10:135:10 | [post] p | main.rs:136:10:136:10 | p |  |
 | main.rs:135:10:135:10 | p | main.rs:136:10:136:10 | p |  |
-| main.rs:140:9:140:13 | [SSA] p | main.rs:141:10:141:10 | p |  |
-| main.rs:140:9:140:13 | p | main.rs:140:9:140:13 | [SSA] p |  |
-| main.rs:140:17:140:44 | Point {...} | main.rs:140:9:140:13 | p |  |
+| main.rs:140:9:140:13 | [SSA] mut p | main.rs:141:10:141:10 | p |  |
+| main.rs:140:9:140:13 | mut p | main.rs:140:9:140:13 | [SSA] mut p |  |
+| main.rs:140:17:140:44 | Point {...} | main.rs:140:9:140:13 | mut p |  |
 | main.rs:141:10:141:10 | [post] p | main.rs:142:5:142:5 | p |  |
 | main.rs:141:10:141:10 | p | main.rs:142:5:142:5 | p |  |
 | main.rs:142:5:142:5 | [post] p | main.rs:143:10:143:10 | p |  |
@@ -477,9 +477,9 @@ localStep
 | main.rs:403:16:403:16 | [SSA] c | main.rs:406:18:406:18 | c |  |
 | main.rs:403:16:403:16 | c | main.rs:403:16:403:16 | [SSA] c |  |
 | main.rs:403:22:407:9 | { ... } | main.rs:402:5:408:5 | match arr1 { ... } |  |
-| main.rs:412:9:412:19 | [SSA] mut_arr | main.rs:413:10:413:16 | mut_arr |  |
-| main.rs:412:9:412:19 | mut_arr | main.rs:412:9:412:19 | [SSA] mut_arr |  |
-| main.rs:412:23:412:31 | [...] | main.rs:412:9:412:19 | mut_arr |  |
+| main.rs:412:9:412:19 | [SSA] mut mut_arr | main.rs:413:10:413:16 | mut_arr |  |
+| main.rs:412:9:412:19 | mut mut_arr | main.rs:412:9:412:19 | [SSA] mut mut_arr |  |
+| main.rs:412:23:412:31 | [...] | main.rs:412:9:412:19 | mut mut_arr |  |
 | main.rs:413:10:413:16 | [post] mut_arr | main.rs:415:5:415:11 | mut_arr |  |
 | main.rs:413:10:413:16 | mut_arr | main.rs:415:5:415:11 | mut_arr |  |
 | main.rs:415:5:415:11 | [post] mut_arr | main.rs:416:13:416:19 | mut_arr |  |

@@ -15,9 +15,9 @@ edges
 | test.rs:10:5:13:5 | exit fn method_call (normal) | test.rs:10:5:13:5 | exit fn method_call |  |
 | test.rs:10:22:13:5 | { ... } | test.rs:10:5:13:5 | exit fn method_call (normal) |  |
 | test.rs:11:9:11:37 | let ... = ... | test.rs:11:23:11:34 | ...::new |  |
-| test.rs:11:13:11:19 | map | test.rs:12:9:12:28 | ExprStmt | match |
+| test.rs:11:13:11:19 | mut map | test.rs:12:9:12:28 | ExprStmt | match |
 | test.rs:11:23:11:34 | ...::new | test.rs:11:23:11:36 | ...::new(...) |  |
-| test.rs:11:23:11:36 | ...::new(...) | test.rs:11:13:11:19 | map |  |
+| test.rs:11:23:11:36 | ...::new(...) | test.rs:11:13:11:19 | mut map |  |
 | test.rs:12:9:12:11 | map | test.rs:12:20:12:21 | 37 |  |
 | test.rs:12:9:12:27 | map.insert(...) | test.rs:10:22:13:5 | { ... } |  |
 | test.rs:12:9:12:28 | ExprStmt | test.rs:12:9:12:11 | map |  |
@@ -50,8 +50,8 @@ edges
 | test.rs:26:32:26:32 | n | test.rs:26:32:26:37 | ...: i64 | match |
 | test.rs:26:32:26:37 | ...: i64 | test.rs:27:9:27:22 | let ... = n |  |
 | test.rs:27:9:27:22 | let ... = n | test.rs:27:21:27:21 | n |  |
-| test.rs:27:13:27:17 | i | test.rs:28:9:40:9 | ExprStmt | match |
-| test.rs:27:21:27:21 | n | test.rs:27:13:27:17 | i |  |
+| test.rs:27:13:27:17 | mut i | test.rs:28:9:40:9 | ExprStmt | match |
+| test.rs:27:21:27:21 | n | test.rs:27:13:27:17 | mut i |  |
 | test.rs:28:9:40:9 | ExprStmt | test.rs:29:13:29:24 | ExprStmt |  |
 | test.rs:28:9:40:9 | loop { ... } | test.rs:41:9:41:20 | ExprStmt |  |
 | test.rs:28:14:40:9 | { ... } | test.rs:29:13:29:24 | ExprStmt |  |
@@ -161,8 +161,8 @@ edges
 | test.rs:86:19:86:24 | ...: i64 | test.rs:87:9:87:25 | let ... = true |  |
 | test.rs:86:27:95:5 | { ... } | test.rs:86:5:95:5 | exit fn test_while (normal) |  |
 | test.rs:87:9:87:25 | let ... = true | test.rs:87:21:87:24 | true |  |
-| test.rs:87:13:87:17 | b | test.rs:88:15:88:15 | b | match |
-| test.rs:87:21:87:24 | true | test.rs:87:13:87:17 | b |  |
+| test.rs:87:13:87:17 | mut b | test.rs:88:15:88:15 | b | match |
+| test.rs:87:21:87:24 | true | test.rs:87:13:87:17 | mut b |  |
 | test.rs:88:9:94:9 | while b { ... } | test.rs:86:27:95:5 | { ... } |  |
 | test.rs:88:15:88:15 | b | test.rs:88:9:94:9 | while b { ... } | false |
 | test.rs:88:15:88:15 | b | test.rs:89:13:89:14 | ExprStmt | true |
@@ -185,9 +185,9 @@ edges
 | test.rs:97:5:104:5 | exit fn test_while_let (normal) | test.rs:97:5:104:5 | exit fn test_while_let |  |
 | test.rs:97:25:104:5 | { ... } | test.rs:97:5:104:5 | exit fn test_while_let (normal) |  |
 | test.rs:98:9:98:29 | let ... = ... | test.rs:98:24:98:24 | 1 |  |
-| test.rs:98:13:98:20 | iter | test.rs:99:15:99:39 | let ... = ... | match |
+| test.rs:98:13:98:20 | mut iter | test.rs:99:15:99:39 | let ... = ... | match |
 | test.rs:98:24:98:24 | 1 | test.rs:98:27:98:28 | 10 |  |
-| test.rs:98:24:98:28 | 1..10 | test.rs:98:13:98:20 | iter |  |
+| test.rs:98:24:98:28 | 1..10 | test.rs:98:13:98:20 | mut iter |  |
 | test.rs:98:27:98:28 | 10 | test.rs:98:24:98:28 | 1..10 |  |
 | test.rs:99:9:103:9 | while ... { ... } | test.rs:97:25:104:5 | { ... } |  |
 | test.rs:99:15:99:39 | let ... = ... | test.rs:99:29:99:32 | iter |  |
@@ -273,8 +273,8 @@ edges
 | test.rs:137:29:137:35 | ...: bool | test.rs:138:9:138:22 | let ... = 3 |  |
 | test.rs:137:45:143:5 | { ... } | test.rs:137:5:143:5 | exit fn test_if_without_else (normal) |  |
 | test.rs:138:9:138:22 | let ... = 3 | test.rs:138:21:138:21 | 3 |  |
-| test.rs:138:13:138:17 | i | test.rs:139:9:141:9 | ExprStmt | match |
-| test.rs:138:21:138:21 | 3 | test.rs:138:13:138:17 | i |  |
+| test.rs:138:13:138:17 | mut i | test.rs:139:9:141:9 | ExprStmt | match |
+| test.rs:138:21:138:21 | 3 | test.rs:138:13:138:17 | mut i |  |
 | test.rs:139:9:141:9 | ExprStmt | test.rs:139:12:139:12 | b |  |
 | test.rs:139:9:141:9 | if b {...} | test.rs:142:9:142:9 | i |  |
 | test.rs:139:12:139:12 | b | test.rs:139:9:141:9 | if b {...} | false |
@@ -442,8 +442,8 @@ edges
 | test.rs:201:27:201:32 | ...: i64 | test.rs:202:9:202:26 | let ... = false |  |
 | test.rs:201:42:211:5 | { ... } | test.rs:201:5:211:5 | exit fn test_if_assignment (normal) |  |
 | test.rs:202:9:202:26 | let ... = false | test.rs:202:21:202:25 | false |  |
-| test.rs:202:13:202:17 | x | test.rs:204:13:204:21 | ExprStmt | match |
-| test.rs:202:21:202:25 | false | test.rs:202:13:202:17 | x |  |
+| test.rs:202:13:202:17 | mut x | test.rs:204:13:204:21 | ExprStmt | match |
+| test.rs:202:21:202:25 | false | test.rs:202:13:202:17 | mut x |  |
 | test.rs:203:9:210:9 | if ... {...} else {...} | test.rs:201:42:211:5 | { ... } |  |
 | test.rs:203:12:206:9 | [boolean(false)] { ... } | test.rs:209:13:209:13 | 0 | false |
 | test.rs:203:12:206:9 | [boolean(true)] { ... } | test.rs:207:13:207:13 | 1 | true |
@@ -906,13 +906,13 @@ edges
 | test.rs:400:52:405:5 | { ... } | test.rs:400:5:405:5 | exit fn identifier_pattern_with_subpattern (normal) |  |
 | test.rs:401:9:404:9 | match 43 { ... } | test.rs:400:52:405:5 | { ... } |  |
 | test.rs:401:15:401:16 | 43 | test.rs:402:17:402:21 | RangePat |  |
-| test.rs:402:13:402:21 | [match(true)] n | test.rs:402:26:402:26 | 2 | match |
+| test.rs:402:13:402:21 | [match(true)] n @ ... | test.rs:402:26:402:26 | 2 | match |
 | test.rs:402:17:402:17 | 1 | test.rs:402:17:402:17 | 1 |  |
 | test.rs:402:17:402:17 | 1 | test.rs:402:20:402:21 | 10 | match |
 | test.rs:402:17:402:17 | 1 | test.rs:403:13:403:13 | _ | no-match |
 | test.rs:402:17:402:21 | RangePat | test.rs:402:17:402:17 | 1 | match |
 | test.rs:402:17:402:21 | RangePat | test.rs:403:13:403:13 | _ | no-match |
-| test.rs:402:20:402:21 | 10 | test.rs:402:13:402:21 | [match(true)] n | match |
+| test.rs:402:20:402:21 | 10 | test.rs:402:13:402:21 | [match(true)] n @ ... | match |
 | test.rs:402:20:402:21 | 10 | test.rs:402:20:402:21 | 10 |  |
 | test.rs:402:20:402:21 | 10 | test.rs:403:13:403:13 | _ | no-match |
 | test.rs:402:26:402:26 | 2 | test.rs:402:30:402:30 | n |  |
@@ -924,25 +924,25 @@ edges
 | test.rs:407:5:414:5 | exit fn identifier_pattern_with_ref (normal) | test.rs:407:5:414:5 | exit fn identifier_pattern_with_ref |  |
 | test.rs:407:45:414:5 | { ... } | test.rs:407:5:414:5 | exit fn identifier_pattern_with_ref (normal) |  |
 | test.rs:408:9:408:23 | let ... = 10 | test.rs:408:21:408:22 | 10 |  |
-| test.rs:408:13:408:17 | a | test.rs:409:9:412:10 | ExprStmt | match |
-| test.rs:408:21:408:22 | 10 | test.rs:408:13:408:17 | a |  |
+| test.rs:408:13:408:17 | mut a | test.rs:409:9:412:10 | ExprStmt | match |
+| test.rs:408:21:408:22 | 10 | test.rs:408:13:408:17 | mut a |  |
 | test.rs:409:9:412:9 | match a { ... } | test.rs:413:9:413:9 | a |  |
 | test.rs:409:9:412:10 | ExprStmt | test.rs:409:15:409:15 | a |  |
 | test.rs:409:15:409:15 | a | test.rs:410:25:410:29 | RangePat |  |
-| test.rs:410:13:410:29 | [match(true)] n | test.rs:410:35:410:35 | n | match |
+| test.rs:410:13:410:29 | [match(true)] ref mut n @ ... | test.rs:410:35:410:35 | n | match |
 | test.rs:410:25:410:25 | 1 | test.rs:410:25:410:25 | 1 |  |
 | test.rs:410:25:410:25 | 1 | test.rs:410:28:410:29 | 10 | match |
-| test.rs:410:25:410:25 | 1 | test.rs:411:13:411:21 | n | no-match |
+| test.rs:410:25:410:25 | 1 | test.rs:411:13:411:21 | ref mut n | no-match |
 | test.rs:410:25:410:29 | RangePat | test.rs:410:25:410:25 | 1 | match |
-| test.rs:410:25:410:29 | RangePat | test.rs:411:13:411:21 | n | no-match |
-| test.rs:410:28:410:29 | 10 | test.rs:410:13:410:29 | [match(true)] n | match |
+| test.rs:410:25:410:29 | RangePat | test.rs:411:13:411:21 | ref mut n | no-match |
+| test.rs:410:28:410:29 | 10 | test.rs:410:13:410:29 | [match(true)] ref mut n @ ... | match |
 | test.rs:410:28:410:29 | 10 | test.rs:410:28:410:29 | 10 |  |
-| test.rs:410:28:410:29 | 10 | test.rs:411:13:411:21 | n | no-match |
+| test.rs:410:28:410:29 | 10 | test.rs:411:13:411:21 | ref mut n | no-match |
 | test.rs:410:34:410:35 | * ... | test.rs:410:40:410:41 | 10 |  |
 | test.rs:410:34:410:41 | ... += ... | test.rs:409:9:412:9 | match a { ... } |  |
 | test.rs:410:35:410:35 | n | test.rs:410:34:410:35 | * ... |  |
 | test.rs:410:40:410:41 | 10 | test.rs:410:34:410:41 | ... += ... |  |
-| test.rs:411:13:411:21 | n | test.rs:411:27:411:27 | n | match |
+| test.rs:411:13:411:21 | ref mut n | test.rs:411:27:411:27 | n | match |
 | test.rs:411:26:411:27 | * ... | test.rs:411:31:411:31 | 0 |  |
 | test.rs:411:26:411:31 | ... = ... | test.rs:409:9:412:9 | match a { ... } |  |
 | test.rs:411:27:411:27 | n | test.rs:411:26:411:27 | * ... |  |
@@ -1172,8 +1172,8 @@ edges
 | test.rs:527:1:533:1 | exit fn test_nested_function2 (normal) | test.rs:527:1:533:1 | exit fn test_nested_function2 |  |
 | test.rs:527:28:533:1 | { ... } | test.rs:527:1:533:1 | exit fn test_nested_function2 (normal) |  |
 | test.rs:528:5:528:18 | let ... = 0 | test.rs:528:17:528:17 | 0 |  |
-| test.rs:528:9:528:13 | x | test.rs:529:5:531:5 | fn nested | match |
-| test.rs:528:17:528:17 | 0 | test.rs:528:9:528:13 | x |  |
+| test.rs:528:9:528:13 | mut x | test.rs:529:5:531:5 | fn nested | match |
+| test.rs:528:17:528:17 | 0 | test.rs:528:9:528:13 | mut x |  |
 | test.rs:529:5:531:5 | enter fn nested | test.rs:529:15:529:15 | x |  |
 | test.rs:529:5:531:5 | exit fn nested (normal) | test.rs:529:5:531:5 | exit fn nested |  |
 | test.rs:529:5:531:5 | fn nested | test.rs:532:5:532:19 | ExprStmt |  |
