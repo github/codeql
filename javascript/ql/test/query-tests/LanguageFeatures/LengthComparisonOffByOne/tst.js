@@ -25,8 +25,8 @@ if (args.length > j) {
   console.log(args[j]);
 }
 
-function badContains(a, elt) { // $ Alert - incorrect upper bound
-  for (let i = 0; i <= a.length; ++i)
+function badContains(a, elt) { // incorrect upper bound
+  for (let i = 0; i <= a.length; ++i) // $ Alert
     if (a[i] === elt)
       return true;
   return false;
@@ -43,7 +43,7 @@ function goodContains(a, elt) {
 // this is arguably OK, but we flag it
 function same(a, b) {
   for (var i=0; i < a.length || i < b.length ; ++i)
-    if (i <= a.length && i <= b.length && a[i] !== b[i])
+    if (i <= a.length && i <= b.length && a[i] !== b[i]) // $ Alert
       return false;
   return true;
 }
