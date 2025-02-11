@@ -212,6 +212,74 @@ mod m10 {
     }
 }
 
+mod m11 {
+    pub struct Foo {} // I61
+
+    fn Foo() {} // I62
+
+    pub fn f() {
+        let _ = Foo {}; // $ item=I61
+        Foo(); // $ item=I62
+    } // I63
+
+    mod f {} // I66
+
+    pub enum Bar {
+        FooBar {}, // I64
+    } // I65
+
+    use Bar::FooBar; // $ item=I64
+
+    fn FooBar() {} // I65
+
+    #[rustfmt::skip]
+    fn g(x: Foo) { // $ item=I61
+        let _ = FooBar {}; // $ item=I64
+        let _ = FooBar(); // $ item=I65
+    }
+
+    struct S; // I67
+    enum E {
+        C, // I68
+    }
+
+    use E::C; // $ item=I68
+
+    fn h() {
+        let _ = S; // $ item=I67
+        let _ = C; // $ item=I68
+    }
+}
+
+mod m12 {
+    #[rustfmt::skip]
+    trait MyParamTrait<
+      T // I69
+    > {
+        type AssociatedType; // I70
+
+        fn f(
+            &self,
+            x: T // $ item=I69
+        ) -> Self::AssociatedType; // $ item=I70
+    }
+}
+
+mod m13 {
+    pub fn f() {} // I71
+    pub struct f {} // I72
+
+    mod m14 {
+        use crate::m13::f; // $ item=I71 item=I72
+
+        #[rustfmt::skip]
+        fn g(x: f) { // $ item=I72
+            let _ = f {}; // $ item=I72
+            f(); // $ item=I71
+        }
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -230,4 +298,5 @@ fn main() {
     m7::f(); // $ item=I45
     m8::g(); // $ item=I55
     m9::f(); // $ item=I57
+    m11::f(); // $ item=I63
 }
