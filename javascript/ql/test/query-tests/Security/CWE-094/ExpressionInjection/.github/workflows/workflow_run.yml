@@ -6,11 +6,11 @@ jobs:
   echo-chamber:
     runs-on: ubuntu-latest
     steps:
-    - run: echo '${{ github.event.workflow_run.display_title }}'
-    - run: echo '${{ github.event.workflow_run.head_commit.message }}'
-    - run: echo '${{ github.event.workflow_run.head_commit.author.email }}'
-    - run: echo '${{ github.event.workflow_run.head_commit.author.name }}'
-    - run: echo '${{ github.event.workflow_run.head_commit.committer.email }}'
-    - run: echo '${{ github.event.workflow_run.head_commit.committer.name }}'
-    - run: echo '${{ github.event.workflow_run.head_branch }}'
-    - run: echo '${{ github.event.workflow_run.head_repository.description }}'
+    - run: echo '${{ github.event.workflow_run.display_title }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_commit.message }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_commit.author.email }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_commit.author.name }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_commit.committer.email }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_commit.committer.name }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_branch }}' // $ TODO-SPURIOUS: Alert
+    - run: echo '${{ github.event.workflow_run.head_repository.description }}' // $ TODO-SPURIOUS: Alert

@@ -1,9 +1,9 @@
 (function(){
     var a = null;
-    a();
+    a(); // $ TODO-SPURIOUS: Alert
     a?.();
 
     var b = undefined;
-    b();
+    b(); // $ TODO-SPURIOUS: Alert
     b?.();
 });

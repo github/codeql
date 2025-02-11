@@ -15,35 +15,35 @@ function escapeAttr(s) {
 function test() {
   var tainted = window.name;
   var elt = document.createElement();
-  elt.innerHTML = "<a href=\"" + escapeAttr(tainted) + "\">" + escapeHtml(tainted) + "</a>"; // OK
-  elt.innerHTML = "<div>" + escapeAttr(tainted) + "</div>"; // NOT OK, but not flagged - [INCONSISTENCY]
+  elt.innerHTML = "<a href=\"" + escapeAttr(tainted) + "\">" + escapeHtml(tainted) + "</a>";
+  elt.innerHTML = "<div>" + escapeAttr(tainted) + "</div>"; // $ MISSING: Alert - not flagged -
 
   const regex = /[<>'"&]/;
   if (regex.test(tainted)) {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // NOT OK
+    elt.innerHTML = '<b>' + tainted + '</b>'; // $ Alert
   } else {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // OK
+    elt.innerHTML = '<b>' + tainted + '</b>';
   }
   if (!regex.test(tainted)) {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // OK
+    elt.innerHTML = '<b>' + tainted + '</b>';
   } else {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // NOT OK
+    elt.innerHTML = '<b>' + tainted + '</b>'; // $ Alert
   }
   if (regex.exec(tainted)) {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // NOT OK
+    elt.innerHTML = '<b>' + tainted + '</b>'; // $ Alert
   } else {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // OK
+    elt.innerHTML = '<b>' + tainted + '</b>';
   }
   if (regex.exec(tainted) != null) {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // NOT OK
+    elt.innerHTML = '<b>' + tainted + '</b>'; // $ Alert
   } else {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // OK
+    elt.innerHTML = '<b>' + tainted + '</b>';
   }
   if (regex.exec(tainted) == null) {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // OK
+    elt.innerHTML = '<b>' + tainted + '</b>';
   } else {
-    elt.innerHTML = '<b>' + tainted + '</b>'; // NOT OK
+    elt.innerHTML = '<b>' + tainted + '</b>'; // $ Alert
   }
 
-  elt.innerHTML = tainted.replace(/<\w+/g, ''); // NOT OK
+  elt.innerHTML = tainted.replace(/<\w+/g, ''); // $ Alert
 }

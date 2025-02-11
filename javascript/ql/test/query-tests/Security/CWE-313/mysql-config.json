@@ -1,6 +1,6 @@
 {
   "host"     : "localhost",
   "user"     : "me",
-  "password" : "hgfedcba",
+  "password" : "hgfedcba", // $ TODO-SPURIOUS: Alert
   "database" : "my_db"
 }

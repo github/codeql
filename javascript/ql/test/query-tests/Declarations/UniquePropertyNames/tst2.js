@@ -7,7 +7,7 @@ var o = {
 
   setX: function(x) {
     this.x = x;
-  },
+  }, // $ TODO-SPURIOUS: Alert
 
   getX: function() {
     return this.x;

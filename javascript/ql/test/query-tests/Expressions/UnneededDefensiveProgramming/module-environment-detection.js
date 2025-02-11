@@ -20,5 +20,5 @@ if (typeof exports !== 'undefined') {
 
 (function(){
     var module;
-    if(typeof module === 'undefined'); // NOT OK
+    if(typeof module === 'undefined'); // $ Alert TODO-MISSING: Alert[js/comparison-between-incompatible-types] Alert[js/trivial-conditional]
 });

@@ -7,10 +7,10 @@ password: <%= ENV['PASSWORD'] %>
 password: change_me
 others: 
  - one:
-   password:
+   password: // $ TODO-SPURIOUS: Alert
  - two: 
    password: <%= ENV['OTHER_PASSWORD'] %>
  - three:
-   config: password=;username=foo;
+   config: password=;username=foo; // $ TODO-SPURIOUS: Alert
  - four:
-   config: password="";username="foo";
+   config: password="";username="foo"; // $ TODO-SPURIOUS: Alert

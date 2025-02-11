@@ -5,10 +5,10 @@
   </head>
   <body>
   <!-- BAD -->
-  <a href="{{help_url}}">Help</a>
+  <a href="{{help_url}}">Help</a> // $ TODO-SPURIOUS: Alert
   <picture>
-    <source media="(min-width: 650px)" srcset="#/resources/pics-large/{{item._id}}">
-    <img src="#/resources/pics-default/{{item._id}}">
+    <source media="(min-width: 650px)" srcset="#/resources/pics-large/{{item._id}}"> // $ TODO-SPURIOUS: Alert
+    <img src="#/resources/pics-default/{{item._id}}"> // $ TODO-SPURIOUS: Alert
   </picture> 
   <!-- GOOD -->
   <a ng-href="{{help_url}}">Help</a>

@@ -1,1 +1,2 @@
-AngularJS/DuplicateDependency.ql
+query: AngularJS/DuplicateDependency.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

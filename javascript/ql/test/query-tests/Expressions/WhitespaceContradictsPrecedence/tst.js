@@ -1,5 +1,5 @@
 function bad(x) {
-	return x + x>>1; 
+	return x + x>>1;  // $ TODO-SPURIOUS: Alert
 }
 
 function ok1(x) {
@@ -39,17 +39,16 @@ function ok9(x, y, z) {
 }
 
 function ok10(o, p) {
-	return p in o&&o[p];
+	return p in o&&o[p]; // $ TODO-SPURIOUS: Alert
 }
 
-// OK
+
 x==y ** 2;
 
-// NOT OK
-x  +  x >> 1
+x  +  x >> 1 // $ Alert
 
-// OK
+
 x +   x >> 1
 
-// OK (asm.js-like)
+// OK - asm.js-like
 x = x - 1|0;

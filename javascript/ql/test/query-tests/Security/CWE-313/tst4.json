@@ -1,3 +1,3 @@
 {
-  "cmd": "script.sh password='secret'"
+  "cmd": "script.sh password='secret'" // $ TODO-SPURIOUS: Alert
 }

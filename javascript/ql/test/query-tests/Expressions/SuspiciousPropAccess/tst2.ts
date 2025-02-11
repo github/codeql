@@ -16,9 +16,9 @@ C.foo = 3;
 
 namespace N {
   var x;
-  x.p = 5;
+  x.p = 5; // $ TODO-SPURIOUS: Alert
 
-  var q = M.Color.Blue; // OK
+  var q = M.Color.Blue;
 
   namespace M {
     export const enum Color { Blue }

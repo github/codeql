@@ -1,3 +1,3 @@
 module.exports.foo = function (x) {
-    /k*h/.test(x); // NOT OK
+    /k*h/.test(x); // $ Alert[js/polynomial-redos]
 }

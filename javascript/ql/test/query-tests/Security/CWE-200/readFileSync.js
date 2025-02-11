@@ -22,8 +22,7 @@ try {
       res.setEncoding('utf8');
   });
 
-  // BAD: post the data from file to request body
-  post_req.write(s);
+  post_req.write(s); // $ Alert TODO-MISSING: Alert[js/exposure-of-private-files] - post the data from file to request body
   post_req.end();
 } catch (e) {
 }

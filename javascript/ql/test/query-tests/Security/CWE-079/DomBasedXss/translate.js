@@ -5,8 +5,7 @@
   };
   var target = document.location.search
   var searchParams = new URLSearchParams(target.substring(1));
-  // NOT OK
-  $('original-term').html(searchParams.get('term'));
-  // OK
+  $('original-term').html(searchParams.get('term')); // $ Alert
+
   $('translated-term').html(translate[searchParams.get('term')]);
 })();

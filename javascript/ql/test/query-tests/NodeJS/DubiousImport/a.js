@@ -1,4 +1,4 @@
-var foo = require('./b').foo,
+var foo = require('./b').foo, // $ TODO-SPURIOUS: Alert
     bar = require('./c').bar,
     sneaky = require('./d').sneaky;
 

@@ -1,11 +1,11 @@
 function f(x) {
-  console.log(x); // OK
+  console.log(x);
 }
 
-console.log(x); // NOT OK
+console.log(x); // $ Alert
 var x = 1;
 
 function g() {
-  console.log(y); // OK (not in same function)
+  console.log(y); // OK - not in same function
 }
 var y = 1;

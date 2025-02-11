@@ -1,5 +1,3 @@
-// NOT OK
-new Worker(document.location.search.substring(1));
+new Worker(document.location.search.substring(1)); // $ Alert
 
-// NOT OK
-$("<script>").attr("src", document.location.search.substring(1));
+$("<script>").attr("src", document.location.search.substring(1)); // $ Alert

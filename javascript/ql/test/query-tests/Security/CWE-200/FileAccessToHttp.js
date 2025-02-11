@@ -7,4 +7,4 @@ https.get({
   path: "/upload",
   method: "GET",
   headers: { Referer: content }
-}, () => { });
+}, () => { }); // $ TODO-SPURIOUS: Alert[js/file-access-to-http]

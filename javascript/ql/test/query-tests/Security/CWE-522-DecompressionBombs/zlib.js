@@ -26,16 +26,16 @@ app.post('/upload', async (req, res) => {
 
 function zlibBombAsync(zipFile) {
     zlib.gunzip(
-        zipFile.data,
+        zipFile.data, // $ TODO-SPURIOUS: Alert
         (err, buffer) => {
         });
     zlib.unzip(
-        zipFile.data,
+        zipFile.data, // $ TODO-SPURIOUS: Alert
         (err, buffer) => {
         });
 
     zlib.brotliDecompress(
-        zipFile.data,
+        zipFile.data, // $ TODO-SPURIOUS: Alert
         (err, buffer) => {
         });
 }
@@ -60,9 +60,9 @@ function zlibBombAsyncSafe(zipFile) {
 }
 
 function zlibBombSync(zipFile) {
-    zlib.gunzipSync(zipFile.data, { finishFlush: zlib.constants.Z_SYNC_FLUSH });
-    zlib.unzipSync(zipFile.data);
-    zlib.brotliDecompressSync(zipFile.data);
+    zlib.gunzipSync(zipFile.data, { finishFlush: zlib.constants.Z_SYNC_FLUSH }); // $ TODO-SPURIOUS: Alert
+    zlib.unzipSync(zipFile.data); // $ TODO-SPURIOUS: Alert
+    zlib.brotliDecompressSync(zipFile.data); // $ TODO-SPURIOUS: Alert
 }
 
 function zlibBombSyncSafe(zipFile) {
@@ -74,9 +74,9 @@ function zlibBombSyncSafe(zipFile) {
 function zlibBombPipeStream(zipFile) {
     const inputStream = Readable.from(zipFile.data);
     const outputFile = fs.createWriteStream('unzip.txt');
-    inputStream.pipe(zlib.createGunzip()).pipe(outputFile);
-    inputStream.pipe(zlib.createUnzip()).pipe(outputFile);
-    inputStream.pipe(zlib.createBrotliDecompress()).pipe(outputFile);
+    inputStream.pipe(zlib.createGunzip()).pipe(outputFile); // $ TODO-SPURIOUS: Alert
+    inputStream.pipe(zlib.createUnzip()).pipe(outputFile); // $ TODO-SPURIOUS: Alert
+    inputStream.pipe(zlib.createBrotliDecompress()).pipe(outputFile); // $ TODO-SPURIOUS: Alert
 }
 
 async function zlibBombPipeStreamPromises(zipFile) {
@@ -84,7 +84,7 @@ async function zlibBombPipeStreamPromises(zipFile) {
     const outputFile = fs.createWriteStream('unzip.txt');
     await stream.pipeline(
         inputStream,
-        zlib.createGunzip(),
+        zlib.createGunzip(), // $ TODO-SPURIOUS: Alert
         outputFile
     )
 }

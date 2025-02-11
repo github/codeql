@@ -1,6 +1,6 @@
 class C {
   #privDecl;
   bar() {
-    {#privDecl} = this;
+    {#privDecl} = this; // $ TODO-SPURIOUS: Alert
   }
 }

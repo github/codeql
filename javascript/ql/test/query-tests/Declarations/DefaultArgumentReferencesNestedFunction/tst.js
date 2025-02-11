@@ -1,4 +1,4 @@
-function f(x, y = defaultVal(x)) {
+function f(x, y = defaultVal(x)) { // $ TODO-SPURIOUS: Alert
     function defaultVal(x) {
         return x+19;
     }

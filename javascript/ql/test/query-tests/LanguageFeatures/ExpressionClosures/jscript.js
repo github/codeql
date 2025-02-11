@@ -1,3 +1,3 @@
-function window::onload() {}
+function window::onload() {} // $ TODO-SPURIOUS: Alert
 
 window.onload = function onload() {}

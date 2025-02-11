@@ -1,1 +1,2 @@
-Expressions/UnknownDirective.ql
+query: Expressions/UnknownDirective.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

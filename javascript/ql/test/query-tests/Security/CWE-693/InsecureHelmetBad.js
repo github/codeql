@@ -4,9 +4,9 @@ const helmet = require("helmet");
 const app = express();
 
 app.use(helmet({
-    contentSecurityPolicy: false, // BAD: switch off default CSP
-    frameguard: false // BAD: switch off default frameguard
-}));
+    contentSecurityPolicy: false, // $ TODO-MISSING: Alert - switch off default CSP
+    frameguard: false // $ TODO-MISSING: Alert - switch off default frameguard
+})); // $ TODO-SPURIOUS: Alert
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");

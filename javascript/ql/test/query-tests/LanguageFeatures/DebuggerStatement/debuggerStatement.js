@@ -1,3 +1,3 @@
 function sayHello() {
-  debugger;
+  debugger; // $ TODO-SPURIOUS: Alert
 }

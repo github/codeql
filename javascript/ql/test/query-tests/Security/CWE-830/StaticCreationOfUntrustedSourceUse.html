@@ -3,10 +3,10 @@
     <head>
     </head>
     <body>
-        <script src="http://test.local/foo.js"></script>> <!-- NOT OK -->
+        <script src="http://test.local/foo.js"></script>> <!-- NOT OK --> // $ TODO-SPURIOUS: Alert[js/functionality-from-untrusted-source]
         <script src="http://test.local/foo.js" integrity="some-integrity-hash"></script>>  <!-- OK (integrity digest present) -->
         <script src="https://test.local/bar.js"></script>> <!-- OK (https) -->
-        <iframe src="http://test.local/foo.html"></iframe> <!-- NOT OK -->
+        <iframe src="http://test.local/foo.html"></iframe> <!-- NOT OK --> // $ TODO-SPURIOUS: Alert[js/functionality-from-untrusted-source]
         <iframe src="https://test.local/foo.html"></iframe> <!-- OK (https) -->
         <iframe src="//test.local/foo.html"></iframe> <!-- OK (protocol-relative url is allowed as a http url of 
             the page is vulnerable in the first place) -->
@@ -18,6 +18,6 @@
         <!-- OK (digest present) -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!-- NOT OK (digest missing) -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script> // $ TODO-SPURIOUS: Alert[js/functionality-from-untrusted-source]
     </body>
 </html>

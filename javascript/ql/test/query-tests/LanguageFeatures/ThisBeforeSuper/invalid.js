@@ -2,18 +2,18 @@
 // under the MIT license; see file LICENSE.
 
 class B1 {}
-class A30 extends B1 { constructor() { this.c = 0; } }
-class A31 extends B1 { constructor() { this.c(); } }
-class A32 extends B1 { constructor() { super.c(); } }
-class A33 extends B1 { constructor() { this.c = 0; super(); } }
-class A34 extends B1 { constructor() { this.c(); super(); } }
-class A35 extends B1 { constructor() { super.c(); super(); } }
-class A36 extends B1 { constructor() { super(this.c); } }
-class A37 extends B1 { constructor() { super(this.c()); } }
-class A38 extends B1 { constructor() { super(super.c()); } }
-class A39 extends B1 { constructor() { class C extends D { constructor() { super(); this.e(); } } this.f(); super(); } }
-class A40 extends B1 { constructor() { class C extends D { constructor() { this.e(); super(); } } super(); this.f(); } }
-class A41 extends B1 { constructor() { if (a) super(); this.a(); } }
+class A30 extends B1 { constructor() { this.c = 0; } } // $ TODO-SPURIOUS: Alert
+class A31 extends B1 { constructor() { this.c(); } } // $ TODO-SPURIOUS: Alert
+class A32 extends B1 { constructor() { super.c(); } } // $ TODO-SPURIOUS: Alert
+class A33 extends B1 { constructor() { this.c = 0; super(); } } // $ TODO-SPURIOUS: Alert
+class A34 extends B1 { constructor() { this.c(); super(); } } // $ TODO-SPURIOUS: Alert
+class A35 extends B1 { constructor() { super.c(); super(); } } // $ TODO-SPURIOUS: Alert
+class A36 extends B1 { constructor() { super(this.c); } } // $ TODO-SPURIOUS: Alert
+class A37 extends B1 { constructor() { super(this.c()); } } // $ TODO-SPURIOUS: Alert
+class A38 extends B1 { constructor() { super(super.c()); } } // $ TODO-SPURIOUS: Alert
+class A39 extends B1 { constructor() { class C extends D { constructor() { super(); this.e(); } } this.f(); super(); } } // $ TODO-SPURIOUS: Alert
+class A40 extends B1 { constructor() { class C extends D { constructor() { this.e(); super(); } } super(); this.f(); } } // $ TODO-SPURIOUS: Alert
+class A41 extends B1 { constructor() { if (a) super(); this.a(); } } // $ TODO-SPURIOUS: Alert
 
 // the following two cases are not currently detected (even though they should be):
 // while `this` is, in both cases, guarded by a `super` call, the call does not complete

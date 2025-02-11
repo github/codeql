@@ -4,7 +4,7 @@ var passport = require('passport');
 
 var app = express();
 
-app.use(cookieParser());
+app.use(cookieParser()); // $ TODO-SPURIOUS: Alert
 app.use(passport.authorize({ session: true }));
 
 app.post('/changeEmail', function (req, res) {
@@ -14,7 +14,7 @@ app.post('/changeEmail', function (req, res) {
 (function () {
     var app = express();
 
-    app.use(cookieParser());
+    app.use(cookieParser()); // $ TODO-SPURIOUS: Alert
     app.use(passport.authorize({ session: true }));
 
     const errorCatch = (fn) =>
@@ -30,7 +30,7 @@ app.post('/changeEmail', function (req, res) {
 (function () {
     var app = express();
 
-    app.use(cookieParser());
+    app.use(cookieParser()); // $ TODO-SPURIOUS: Alert
     app.use(passport.authorize({ session: true }));
 
     const errorCatch = (fn) =>

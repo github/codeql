@@ -1,1 +1,2 @@
-JSDoc/BadParamTag.ql
+query: JSDoc/BadParamTag.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

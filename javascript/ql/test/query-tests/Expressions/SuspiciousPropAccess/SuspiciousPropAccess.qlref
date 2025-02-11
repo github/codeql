@@ -1,1 +1,2 @@
-Expressions/SuspiciousPropAccess.ql
+query: Expressions/SuspiciousPropAccess.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

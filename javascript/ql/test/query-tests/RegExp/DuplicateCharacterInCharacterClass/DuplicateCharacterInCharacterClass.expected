@@ -1,3 +1,4 @@
+#select
 | tst.js:1:4:1:4 | o | Character 'o' is $@. | tst.js:1:5:1:5 | o | repeated in the same character class |
 | tst.js:4:3:4:3 | ? | Character '?' is $@. | tst.js:4:4:4:4 | ? | repeated in the same character class |
 | tst.js:5:3:5:8 | \\u003F | Character '\\u003F' is $@. | tst.js:5:9:5:14 | \\u003f | repeated in the same character class |
@@ -7,3 +8,12 @@
 | tst.js:8:3:8:3 | a | Character 'a' is $@. | tst.js:8:5:8:5 | a | repeated in the same character class |
 | tst.js:9:3:9:6 | \\x0a | Character '\\x0a' is $@. | tst.js:9:7:9:10 | \\x0a | repeated in the same character class |
 | tst.js:10:3:10:8 | \\u000a | Character '\\u000a' is $@. | tst.js:10:9:10:10 | \\n | repeated in the same character class |
+testFailures
+| tst.js:1:4:1:4 | Character 'o' is $@. | Unexpected result: Alert |
+| tst.js:4:3:4:3 | Character '?' is $@. | Unexpected result: Alert |
+| tst.js:5:3:5:8 | Character '\\u003F' is $@. | Unexpected result: Alert |
+| tst.js:6:3:6:8 | Character '\\u003F' is $@. | Unexpected result: Alert |
+| tst.js:7:3:7:6 | Character '\\x3f' is $@. | Unexpected result: Alert |
+| tst.js:8:3:8:3 | Character 'a' is $@. | Unexpected result: Alert |
+| tst.js:9:3:9:6 | Character '\\x0a' is $@. | Unexpected result: Alert |
+| tst.js:10:3:10:8 | Character '\\u000a' is $@. | Unexpected result: Alert |

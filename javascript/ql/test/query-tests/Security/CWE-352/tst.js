@@ -3,9 +3,9 @@ const cookieParser = require('cookie-parser')
 const csrf = require('csurf')
 
 const app = express()
-app.use(cookieParser())
+app.use(cookieParser()) // $ TODO-SPURIOUS: Alert
 
-app.post('/unsafe', (req, res) => { // NOT OK
+app.post('/unsafe', (req, res) => { // $ TODO-MISSING: Alert
   req.cookies.x;
 });
 
@@ -17,6 +17,6 @@ function middlewares() {
 
 app.use(middlewares());
 
-app.post('/safe', (req, res) => { // OK
+app.post('/safe', (req, res) => {
   req.cookies.x;
 });

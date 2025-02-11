@@ -11,4 +11,4 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo '${{ github.event.comment.body }}'
+    - run: echo '${{ github.event.comment.body }}' // $ TODO-SPURIOUS: Alert

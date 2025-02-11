@@ -24,15 +24,15 @@ app.post('/documents/find', (req, res) => {
 
         const query = JSON.parse(req.query.data);
         if (checkSchema(query)) {
-            doc.find(query); // OK
+            doc.find(query);
         }
         if (ajv.validate(schema, query)) {
-            doc.find(query); // OK
+            doc.find(query);
         }
         if (validate(query)) {
-            doc.find(query); // NOT OK - validate() doesn't sanitize
+            doc.find(query); // $ Alert - validate() doesn't sanitize
         }
-        doc.find(query); // NOT OK
+        doc.find(query); // $ Alert
     });
 });
 
@@ -50,15 +50,15 @@ app.post('/documents/insert', (req, res) => {
         const query = JSON.parse(req.query.data);
         const validate = joiSchema.validate(query);
         if (!validate.error) {
-            doc.find(query); // OK
+            doc.find(query);
         } else {
-            doc.find(query); // NOT OK
+            doc.find(query); // $ Alert
         }
         try {
             await joiSchema.validateAsync(query);
-            doc.find(query); // OK - but still flagged [INCONSISTENCY]
+            doc.find(query); // $ SPURIOUS: Alert
         } catch (e) {
-            doc.find(query); // NOT OK
+            doc.find(query); // $ Alert
         }
     });
 });
