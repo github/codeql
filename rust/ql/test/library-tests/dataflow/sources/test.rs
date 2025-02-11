@@ -104,9 +104,18 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
 
     // make the request
     println!("sending request...");
+    if (case == 0) {
+        // simple flow case
+        let request = http::Request::builder().uri(url).body(String::from(""))?;
+        let mut response = sender.send_request(request).await?; // $ Alert[rust/summary/taint-sources]
+        sink(&response); // $ hasTaintFlow=request
+        sink(response); // $ hasTaintFlow=request
+        return Ok(())
+    }
+    // more realistic uses of results...
     let request = http::Request::builder().uri(url).body(String::from(""))?;
     let mut response = sender.send_request(request).await?; // $ Alert[rust/summary/taint-sources]
-    sink(&response); // $ MISSING: hasTaintFlow
+    sink(&response); // $ MISSING: hasTaintFlow=request
 
     if !response.status().is_success() {
         return Err("request failed".into())
