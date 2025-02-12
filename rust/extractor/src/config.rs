@@ -1,9 +1,8 @@
-mod deserialize_vec;
+mod deserialize;
 
 use anyhow::Context;
 use clap::Parser;
 use codeql_extractor::trap;
-use deserialize_vec::deserialize_newline_or_comma_separated;
 use figment::{
     providers::{Env, Format, Serialized, Yaml},
     value::Value,
@@ -14,7 +13,7 @@ use num_traits::Zero;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
 use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
-use ra_ap_paths::{AbsPath, Utf8PathBuf};
+use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
@@ -51,12 +50,20 @@ pub struct Config {
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
+    pub cargo_extra_env: FxHashMap<String, String>,
+    pub cargo_extra_args: Vec<String>,
+    pub cargo_all_targets: bool,
     pub verbose: u8,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
+    pub sysroot: Option<PathBuf>,
+    pub sysroot_src: Option<PathBuf>,
+    pub rustc_src: Option<PathBuf>,
+    pub build_script_command: Vec<String>,
+    pub extra_includes: Vec<PathBuf>,
 }
 
 impl Config {
@@ -87,41 +94,66 @@ impl Config {
     }
 
     pub fn to_cargo_config(&self, dir: &AbsPath) -> CargoConfig {
-        let sysroot = Sysroot::discover(dir, &FxHashMap::default());
-        let sysroot_src = sysroot.src_root().map(ToOwned::to_owned);
-        let sysroot = sysroot
-            .root()
-            .map(ToOwned::to_owned)
-            .map(RustLibSource::Path);
-
-        let target_dir = self
-            .cargo_target_dir
-            .clone()
-            .unwrap_or_else(|| self.scratch_dir.join("target"));
-        let target_dir = Utf8PathBuf::from_path_buf(target_dir).ok();
-
-        let features = if self.cargo_features.is_empty() {
-            Default::default()
-        } else if self.cargo_features.contains(&"*".to_string()) {
-            CargoFeatures::All
-        } else {
-            CargoFeatures::Selected {
-                features: self.cargo_features.clone(),
-                no_default_features: false,
-            }
+        let path_buf_to_abs_path_buf = |path: &PathBuf| {
+            let Ok(path) = Utf8PathBuf::from_path_buf(path.clone()) else {
+                panic!("non utf8 input: {}", path.display())
+            };
+            dir.join(path)
         };
+        let sysroot_input = self.sysroot.as_ref().map(path_buf_to_abs_path_buf);
+        let sysroot_src_input = self.sysroot_src.as_ref().map(path_buf_to_abs_path_buf);
+        let rustc_src_input = self.rustc_src.as_ref().map(path_buf_to_abs_path_buf);
 
-        let target = self.cargo_target.clone();
-
-        let cfg_overrides = to_cfg_overrides(&self.cargo_cfg_overrides);
-
+        let sysroot = match (sysroot_input, sysroot_src_input) {
+            (None, None) => Sysroot::discover(dir, &self.cargo_extra_env),
+            (Some(sysroot), None) => Sysroot::discover_sysroot_src_dir(sysroot),
+            (None, Some(sysroot_src)) => {
+                Sysroot::discover_with_src_override(dir, &self.cargo_extra_env, sysroot_src)
+            }
+            (Some(sysroot), Some(sysroot_src)) => Sysroot::new(Some(sysroot), Some(sysroot_src)),
+        };
         CargoConfig {
-            sysroot,
-            sysroot_src,
-            target_dir,
-            features,
-            target,
-            cfg_overrides,
+            all_targets: self.cargo_all_targets,
+            sysroot_src: sysroot.src_root().map(ToOwned::to_owned),
+            rustc_source: rustc_src_input
+                .or_else(|| sysroot.discover_rustc_src().map(AbsPathBuf::from))
+                .map(RustLibSource::Path),
+            sysroot: sysroot
+                .root()
+                .map(ToOwned::to_owned)
+                .map(RustLibSource::Path),
+
+            extra_env: self.cargo_extra_env.clone(),
+            extra_args: self.cargo_extra_args.clone(),
+            extra_includes: self
+                .extra_includes
+                .iter()
+                .map(path_buf_to_abs_path_buf)
+                .collect(),
+            target_dir: Utf8PathBuf::from_path_buf(
+                self.cargo_target_dir
+                    .clone()
+                    .unwrap_or_else(|| self.scratch_dir.join("target")),
+            )
+            .ok(),
+            features: if self.cargo_features.is_empty() {
+                Default::default()
+            } else if self.cargo_features.contains(&"*".to_string()) {
+                CargoFeatures::All
+            } else {
+                CargoFeatures::Selected {
+                    features: self.cargo_features.clone(),
+                    no_default_features: false,
+                }
+            },
+            target: self.cargo_target.clone(),
+            cfg_overrides: to_cfg_overrides(&self.cargo_cfg_overrides),
+            wrap_rustc_in_build_scripts: false,
+            run_build_script_command: if self.build_script_command.is_empty() {
+                None
+            } else {
+                Some(self.build_script_command.clone())
+            },
             ..Default::default()
         }
     }
