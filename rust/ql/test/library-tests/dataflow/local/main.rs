@@ -172,11 +172,9 @@ fn struct_nested_field() {
 }
 
 fn struct_nested_match() {
+    let y = source(93);
     let p = Point3D {
-        plane: Point {
-            x: 2,
-            y: source(93),
-        },
+        plane: Point { x: 2, y },
         z: 4,
     };
     match p {
@@ -187,6 +185,21 @@ fn struct_nested_match() {
             sink(x);
             sink(y); // $ hasValueFlow=93
             sink(z);
+        }
+    }
+}
+
+struct MyTupleStruct(i64, i64);
+
+fn tuple_struct() {
+    let s = MyTupleStruct(source(94), 2);
+    sink(s.0); // $ MISSING: hasValueFlow=94
+    sink(s.1);
+
+    match s {
+        MyTupleStruct(x, y) => {
+            sink(x); // $ hasValueFlow=94
+            sink(y);
         }
     }
 }
@@ -442,6 +455,7 @@ fn main() {
     tuple_mutation();
     tuple_nested();
     struct_field();
+    tuple_struct();
     struct_mutation();
     struct_pattern_match();
     struct_nested_field();

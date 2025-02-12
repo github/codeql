@@ -31,6 +31,8 @@ private module PamAuthorizationConfig implements DataFlow::ConfigSig {
     // Flow from handle to the authenticate call in the final step
     exists(VulnPamAuthCall c | c.getArg(0) = node1 | node2 = c)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "PAM Authorization" vulnerabilities. */

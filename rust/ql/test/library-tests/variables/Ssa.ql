@@ -17,10 +17,6 @@ query predicate firstRead(Ssa::Definition def, Variable v, CfgNode read) {
   def.getSourceVariable() = v and read = def.getAFirstRead()
 }
 
-query predicate lastRead(Ssa::Definition def, Variable v, CfgNode read) {
-  def.getSourceVariable() = v and read = def.getALastRead()
-}
-
 query predicate adjacentReads(Ssa::Definition def, Variable v, CfgNode read1, CfgNode read2) {
   def.getSourceVariable() = v and
   def.hasAdjacentReads(read1, read2)

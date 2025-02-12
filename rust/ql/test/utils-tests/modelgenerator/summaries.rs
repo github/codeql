@@ -57,14 +57,34 @@ impl MyStruct {
     // summary=repo::test;<crate::summaries::MyStruct>::get_foo;Argument[self].Struct[crate::summaries::MyStruct::foo];ReturnValue;value;dfc-generated
     pub fn get_foo(self) -> i64 {
         match self {
-            MyStruct { foo, bar: _ } => foo
+            MyStruct { foo, bar: _ } => foo,
         }
     }
 
     // summary=repo::test;<crate::summaries::MyStruct>::get_bar;Argument[self].Struct[crate::summaries::MyStruct::bar];ReturnValue;value;dfc-generated
     pub fn get_bar(self) -> f64 {
         match self {
-            MyStruct { foo: _, bar } => bar
+            MyStruct { foo: _, bar } => bar,
         }
     }
+}
+
+// Higher-order functions
+
+// summary=repo::test;crate::summaries::apply;Argument[0];Argument[1].Parameter[0];value;dfc-generated
+// summary=repo::test;crate::summaries::apply;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
+pub fn apply<F>(n: i64, f: F) -> i64 where F : FnOnce(i64) -> i64 {
+    f(n)
+}
+
+// Flow out of mutated arguments
+
+// summary=repo::test;crate::summaries::set_int;Argument[1];Argument[0].Reference;value;dfc-generated
+pub fn set_int(n: &mut i64, c: i64) {
+    *n = c;
+}
+
+// summary=repo::test;crate::summaries::read_int;Argument[0].Reference;ReturnValue;value;dfc-generated
+pub fn read_int(n: &mut i64) -> i64 {
+    *n
 }

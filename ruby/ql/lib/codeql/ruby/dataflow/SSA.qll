@@ -102,7 +102,7 @@ module Ssa {
      * end
      * ```
      */
-    final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
+    deprecated final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
 
     /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.

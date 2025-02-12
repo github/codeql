@@ -14,7 +14,6 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
-private import codeql.rust.elements.internal.PathResolution as PathResolution
 
 /**
  * A return kind. A return kind describes how a value can be returned from a
@@ -661,7 +660,7 @@ private module VariantInLib {
   }
 
   /** A tuple variant from library code. */
-  class VariantInLibTupleFieldContent extends VariantContent, TVariantInLibTupleFieldContent {
+  class VariantInLibTupleFieldContent extends Content, TVariantInLibTupleFieldContent {
     private VariantInLib::VariantInLib v;
     private int pos_;
 
@@ -740,82 +739,73 @@ abstract class Content extends TContent {
   abstract Location getLocation();
 }
 
-/**
- * A variant of an `enum`. In addition to the variant itself, this also includes the
- * position (for tuple variants) or the field name (for record variants).
- */
-abstract class VariantContent extends Content { }
-
-private TupleField getVariantTupleField(Variant v, int i) {
-  result = v.getFieldList().(TupleFieldList).getField(i)
+/** A field belonging to either a variant or a struct. */
+abstract class FieldContent extends Content {
+  /** Gets an access to this field. */
+  pragma[nomagic]
+  abstract FieldExprCfgNode getAnAccess();
 }
 
-/** A tuple variant. */
-private class VariantTupleFieldContent extends VariantContent, TVariantTupleFieldContent {
-  private Variant v;
-  private int pos_;
+/** A tuple field belonging to either a variant or a struct. */
+class TupleFieldContent extends FieldContent, TTupleFieldContent {
+  private TupleField field;
 
-  VariantTupleFieldContent() { this = TVariantTupleFieldContent(v, pos_) }
+  TupleFieldContent() { this = TTupleFieldContent(field) }
 
-  Variant getVariant(int pos) { result = v and pos = pos_ }
+  predicate isVariantField(Variant v, int pos) { field.isVariantField(v, pos) }
+
+  predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
+
+  override FieldExprCfgNode getAnAccess() { none() } // TODO
 
   final override string toString() {
-    exists(string name |
-      name = v.getName().getText() and
+    exists(Variant v, int pos, string vname |
+      this.isVariantField(v, pos) and
+      vname = v.getName().getText() and
       // only print indices when the arity is > 1
-      if exists(getVariantTupleField(v, 1)) then result = name + "(" + pos_ + ")" else result = name
+      if exists(v.getTupleField(1)) then result = vname + "(" + pos + ")" else result = vname
+    )
+    or
+    exists(Struct s, int pos, string sname |
+      this.isStructField(s, pos) and
+      sname = s.getName().getText() and
+      // only print indices when the arity is > 1
+      if exists(s.getTupleField(1)) then result = sname + "(" + pos + ")" else result = sname
     )
   }
 
-  final override Location getLocation() { result = getVariantTupleField(v, pos_).getLocation() }
+  final override Location getLocation() { result = field.getLocation() }
 }
 
-private RecordField getVariantRecordField(Variant v, string field) {
-  result = v.getFieldList().(RecordFieldList).getAField() and
-  field = result.getName().getText()
-}
+/** A record field belonging to either a variant or a struct. */
+class RecordFieldContent extends FieldContent, TRecordFieldContent {
+  private RecordField field;
 
-/** A record variant. */
-private class VariantRecordFieldContent extends VariantContent, TVariantRecordFieldContent {
-  private Variant v;
-  private string field_;
+  RecordFieldContent() { this = TRecordFieldContent(field) }
 
-  VariantRecordFieldContent() { this = TVariantRecordFieldContent(v, field_) }
+  predicate isVariantField(Variant v, string name) { field.isVariantField(v, name) }
 
-  Variant getVariant(string field) { result = v and field = field_ }
+  predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
+
+  override FieldExprCfgNode getAnAccess() { none() } // TODO
 
   final override string toString() {
-    exists(string name |
-      name = v.getName().getText() and
+    exists(Variant v, string name, string vname |
+      this.isVariantField(v, name) and
+      vname = v.getName().getText() and
       // only print field when the arity is > 1
-      if strictcount(string f | exists(getVariantRecordField(v, f))) > 1
-      then result = name + "{" + field_ + "}"
-      else result = name
+      if strictcount(v.getRecordField(_)) > 1 then result = vname + "." + name else result = vname
+    )
+    or
+    exists(Struct s, string name, string sname |
+      this.isStructField(s, name) and
+      sname = s.getName().getText() and
+      // only print field when the arity is > 1
+      if strictcount(s.getRecordField(_)) > 1 then result = sname + "." + name else result = sname
     )
   }
 
-  final override Location getLocation() {
-    result = getVariantRecordField(v, field_).getName().getLocation()
-  }
-}
-
-/** Content stored in a field on a struct. */
-class StructFieldContent extends Content, TStructFieldContent {
-  private Struct s;
-  private string field_;
-
-  StructFieldContent() { this = TStructFieldContent(s, field_) }
-
-  Struct getStruct(string field) { result = s and field = field_ }
-
-  override string toString() { result = s.getName().getText() + "." + field_.toString() }
-
-  override Location getLocation() {
-    exists(Name f | f = s.getFieldList().(RecordFieldList).getAField().getName() |
-      f.getText() = field_ and
-      result = f.getLocation()
-    )
-  }
+  final override Location getLocation() { result = field.getLocation() }
 }
 
 /** A captured variable. */
@@ -854,26 +844,65 @@ final class ElementContent extends Content, TElementContent {
 }
 
 /**
+ * A value that a future resolves to.
+ */
+final class FutureContent extends Content, TFutureContent {
+  override string toString() { result = "future" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
  * Content stored at a position in a tuple.
  *
  * NOTE: Unlike `struct`s and `enum`s tuples are structural and not nominal,
  * hence we don't store a canonical path for them.
  */
-final class TuplePositionContent extends Content, TTuplePositionContent {
+final class TuplePositionContent extends FieldContent, TTuplePositionContent {
   private int pos;
 
   TuplePositionContent() { this = TTuplePositionContent(pos) }
 
   int getPosition() { result = pos }
 
+  override FieldExprCfgNode getAnAccess() {
+    // TODO: limit to tuple types
+    result.getNameRef().getText().toInt() = pos
+  }
+
   override string toString() { result = "tuple." + pos.toString() }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
-/** Holds if `access` indexes a tuple at an index corresponding to `c`. */
-private predicate fieldTuplePositionContent(FieldExprCfgNode access, TuplePositionContent c) {
-  access.getNameRef().getText().toInt() = c.getPosition()
+/**
+ * A content for the index of an argument to at function call.
+ *
+ * Used by the model generator to create flow summaries for higher-order
+ * functions.
+ */
+final class FunctionCallArgumentContent extends Content, TFunctionCallArgumentContent {
+  private int pos;
+
+  FunctionCallArgumentContent() { this = TFunctionCallArgumentContent(pos) }
+
+  int getPosition() { result = pos }
+
+  override string toString() { result = "function argument at " + pos }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A content for the return value of function call.
+ *
+ * Used by the model generator to create flow summaries for higher-order
+ * functions.
+ */
+final class FunctionCallReturnContent extends Content, TFunctionCallReturnContent {
+  override string toString() { result = "function return" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /** A value that represents a set of `Content`s. */
@@ -1098,23 +1127,6 @@ module RustDataFlow implements InputSig<Location> {
       node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
-  /** Gets the item that `p` resolves to, if any. */
-  private PathResolution::ItemNode resolvePath(PathAstNode p) {
-    result = PathResolution::resolvePath(p.getPath())
-  }
-
-  /** Holds if `p` destructs an enum variant `v`. */
-  pragma[nomagic]
-  private predicate tupleVariantDestruction(TupleStructPat p, Variant v) { v = resolvePath(p) }
-
-  /** Holds if `p` destructs an enum variant `v`. */
-  pragma[nomagic]
-  private predicate recordVariantDestruction(RecordPat p, Variant v) { v = resolvePath(p) }
-
-  /** Holds if `p` destructs a struct `s`. */
-  pragma[nomagic]
-  private predicate structDestruction(RecordPat p, Struct s) { s = resolvePath(p) }
-
   /**
    * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
    * `node1` references an object with a content `c.getAReadContent()` whose
@@ -1126,7 +1138,7 @@ module RustDataFlow implements InputSig<Location> {
         pat = node1.asPat() and
         node2.asPat() = pat.getField(pos)
       |
-        tupleVariantDestruction(pat.getPat(), c.(VariantTupleFieldContent).getVariant(pos))
+        c = TTupleFieldContent(pat.getTupleStructPat().getTupleField(pos))
         or
         VariantInLib::tupleVariantCanonicalDestruction(pat.getPat(), c, pos)
       )
@@ -1139,13 +1151,7 @@ module RustDataFlow implements InputSig<Location> {
       or
       exists(RecordPatCfgNode pat, string field |
         pat = node1.asPat() and
-        (
-          // Pattern destructs a struct-like variant.
-          recordVariantDestruction(pat.getPat(), c.(VariantRecordFieldContent).getVariant(field))
-          or
-          // Pattern destructs a struct.
-          structDestruction(pat.getPat(), c.(StructFieldContent).getStruct(field))
-        ) and
+        c = TRecordFieldContent(pat.getRecordPat().getRecordField(field)) and
         node2.asPat() = pat.getFieldPat(field)
       )
       or
@@ -1153,11 +1159,9 @@ module RustDataFlow implements InputSig<Location> {
       node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
       or
       exists(FieldExprCfgNode access |
-        // Read of a tuple entry
-        fieldTuplePositionContent(access, c) and
-        // TODO: Handle read of a struct field.
         node1.asExpr() = access.getExpr() and
-        node2.asExpr() = access
+        node2.asExpr() = access and
+        access = c.(FieldContent).getAnAccess()
       )
       or
       exists(IndexExprCfgNode arr |
@@ -1192,6 +1196,19 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = deref
       )
       or
+      // Read from function return
+      exists(DataFlowCall call |
+        lambdaCall(call, _, node1) and
+        call = node2.(OutNode).getCall(TNormalReturnKind()) and
+        c instanceof FunctionCallReturnContent
+      )
+      or
+      exists(AwaitExprCfgNode await |
+        c instanceof FutureContent and
+        node1.asExpr() = await.getExpr() and
+        node2.asExpr() = await
+      )
+      or
       VariableCapture::readStep(node1, c, node2)
     )
     or
@@ -1199,49 +1216,40 @@ module RustDataFlow implements InputSig<Location> {
       cs, node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
-  /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
-  private predicate tupleVariantConstruction(CallExpr ce, Variant v) {
-    v = resolvePath(ce.getFunction().(PathExpr))
-  }
-
-  /** Holds if `re` constructs an enum value of type `v`. */
-  pragma[nomagic]
-  private predicate recordVariantConstruction(RecordExpr re, Variant v) { v = resolvePath(re) }
-
-  /** Holds if `re` constructs a struct value of type `s`. */
-  pragma[nomagic]
-  private predicate structConstruction(RecordExpr re, Struct s) { s = resolvePath(re) }
-
-  private predicate tupleAssignment(Node node1, Node node2, TuplePositionContent c) {
+  private predicate fieldAssignment(Node node1, Node node2, FieldContent c) {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
       assignment.getLhs() = access and
-      fieldTuplePositionContent(access, c) and
       node1.asExpr() = assignment.getRhs() and
-      node2.asExpr() = access.getExpr()
+      node2.asExpr() = access.getExpr() and
+      access = c.getAnAccess()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate referenceAssignment(Node node1, Node node2, ReferenceContent c) {
+    exists(AssignmentExprCfgNode assignment, PrefixExprCfgNode deref |
+      assignment.getLhs() = deref and
+      deref.getOperatorName() = "*" and
+      node1.asExpr() = assignment.getRhs() and
+      node2.asExpr() = deref.getExpr() and
+      exists(c)
     )
   }
 
   pragma[nomagic]
   private predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExprCfgNode call, int pos |
-      node1.asExpr() = call.getArgument(pos) and
+      node1.asExpr() = call.getArgument(pragma[only_bind_into](pos)) and
       node2.asExpr() = call
     |
-      tupleVariantConstruction(call.getCallExpr(), c.(VariantTupleFieldContent).getVariant(pos))
+      c = TTupleFieldContent(call.getCallExpr().getTupleField(pragma[only_bind_into](pos)))
       or
       VariantInLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
     )
     or
     exists(RecordExprCfgNode re, string field |
-      (
-        // Expression is for a struct-like enum variant.
-        recordVariantConstruction(re.getRecordExpr(),
-          c.(VariantRecordFieldContent).getVariant(field))
-        or
-        // Expression is for a struct.
-        structConstruction(re.getRecordExpr(), c.(StructFieldContent).getStruct(field))
-      ) and
+      c = TRecordFieldContent(re.getRecordExpr().getRecordField(field)) and
       node1.asExpr() = re.getFieldExpr(field) and
       node2.asExpr() = re
     )
@@ -1258,7 +1266,9 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr().(ArrayListExprCfgNode).getAnExpr()
       ]
     or
-    tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
+    fieldAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
+    or
+    referenceAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
     exists(AssignmentExprCfgNode assignment, IndexExprCfgNode index |
       c instanceof ElementContent and
@@ -1271,6 +1281,13 @@ module RustDataFlow implements InputSig<Location> {
       c instanceof ReferenceContent and
       node1.asExpr() = ref.getExpr() and
       node2.asExpr() = ref
+    )
+    or
+    // Store in function argument
+    exists(DataFlowCall call, int i |
+      isArgumentNode(node1, call, TPositionalParameterPosition(i)) and
+      lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
+      c.(FunctionCallArgumentContent).getPosition() = i
     )
     or
     VariableCapture::storeStep(node1, c, node2)
@@ -1294,7 +1311,9 @@ module RustDataFlow implements InputSig<Location> {
    * in `x.f = newValue`.
    */
   predicate clearsContent(Node n, ContentSet cs) {
-    tupleAssignment(_, n, cs.(SingletonContentSet).getContent())
+    fieldAssignment(_, n, cs.(SingletonContentSet).getContent())
+    or
+    referenceAssignment(_, n, cs.(SingletonContentSet).getContent())
     or
     FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(Node::FlowSummaryNode).getSummaryNode(),
       cs)
@@ -1549,7 +1568,8 @@ private module Cached {
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
           any(TryExprCfgNode try).getExpr(),
-          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr()
+          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
+          any(AwaitExprCfgNode a).getExpr()
         ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
@@ -1600,11 +1620,12 @@ private module Cached {
 
   cached
   newtype TContent =
-    TVariantTupleFieldContent(Variant v, int pos) { exists(getVariantTupleField(v, pos)) } or
+    TTupleFieldContent(TupleField field) or
+    TRecordFieldContent(RecordField field) or
     // TODO: Remove once library types are extracted
     TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
-    TVariantRecordFieldContent(Variant v, string field) { exists(getVariantRecordField(v, field)) } or
     TElementContent() or
+    TFutureContent() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
                 any(TuplePat pat).getNumberOfFields(),
@@ -1612,8 +1633,9 @@ private module Cached {
               ]
           )]
     } or
-    TStructFieldContent(Struct s, string field) {
-      field = s.getFieldList().(RecordFieldList).getAField().getName().getText()
+    TFunctionCallReturnContent() or
+    TFunctionCallArgumentContent(int pos) {
+      pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TReferenceContent()

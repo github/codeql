@@ -25,6 +25,12 @@ public class GuardTest {
 
     }
 
+    String s2 = "string";
+
+    if (!isSafe(s2)) {
+      s2 = null;
+    }
+    sink(s2);
   }
 
 }
