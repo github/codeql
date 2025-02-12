@@ -61,7 +61,7 @@ function good() {
     app.use("bootstrap", express.static('./node_modules/bootstrap/dist'));
 }
 
-app.use(express.static(__dirname)) // $ Alert
+app.use(express.static(__dirname)) // $ MISSING: Alert
 
 const serveHandler = require("serve-handler");
 const http = require("http");
