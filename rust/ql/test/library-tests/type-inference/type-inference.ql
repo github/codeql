@@ -3,11 +3,8 @@ import codeql.rust.elements.internal.TypeInference as TypeInference
 import TypeInference
 import utils.test.InlineExpectationsTest
 
-query predicate resolveType(AstNode n, Type t) { t = resolveType(n) }
-
-query predicate resolveTypeArg(AstNode n, TypePath path, Type t) {
-  t = TypeInference::resolveType(n, path) and
-  not path.isEmpty()
+query predicate resolveType(AstNode n, TypePath path, Type t) {
+  t = TypeInference::resolveType(n, path)
 }
 // module ResolveTest implements TestSig {
 //   string getARelevantTag() { result = "item" }

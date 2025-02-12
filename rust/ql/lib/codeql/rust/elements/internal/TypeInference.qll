@@ -103,6 +103,9 @@ private predicate isTargetTyped(AstNode n) {
   )
   or
   n = any(SelfParam self | not selfParamTyped(self, _))
+  or
+  exists(n) and
+  1 = 2 // todo
 }
 
 // todo: add more cases
@@ -124,6 +127,8 @@ abstract class Type extends TType {
 
   pragma[nomagic]
   abstract TupleField getTupleField(int i);
+
+  abstract TypeRepr getABaseType();
 
   abstract string toString();
 
@@ -147,6 +152,13 @@ class StructType extends Type, TStruct {
 
   override TupleField getTupleField(int i) { result = struct.getTupleField(i) }
 
+  override TypeRepr getABaseType() {
+    exists(ImplItemNode i |
+      struct = i.resolveSelfTy() and
+      result = i.(Impl).getTrait()
+    )
+  }
+
   override string toString() { result = struct.toString() }
 
   override Location getLocation() { result = struct.getLocation() }
@@ -169,6 +181,13 @@ class EnumType extends Type, TEnum {
 
   override TupleField getTupleField(int i) { none() }
 
+  override TypeRepr getABaseType() {
+    exists(ImplItemNode i |
+      enum = i.resolveSelfTy() and
+      result = i.(Impl).getTrait()
+    )
+  }
+
   override string toString() { result = enum.toString() }
 
   override Location getLocation() { result = enum.getLocation() }
@@ -185,6 +204,8 @@ class TraitType extends Type, TTrait {
 
   override TupleField getTupleField(int i) { none() }
 
+  override TypeRepr getABaseType() { none() }
+
   override string toString() { result = trait.toString() }
 
   override Location getLocation() { result = trait.getLocation() }
@@ -198,6 +219,8 @@ class ArrayType extends Type, TArrayType {
   override RecordField getRecordField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
+
+  override TypeRepr getABaseType() { none() }
 
   override string toString() { result = "[]" }
 
@@ -213,6 +236,8 @@ class RefType extends Type, TRefType {
 
   override TupleField getTupleField(int i) { none() }
 
+  override TypeRepr getABaseType() { none() }
+
   override string toString() { result = "&" }
 
   override Location getLocation() { result instanceof EmptyLocation }
@@ -223,8 +248,12 @@ class TypeParameter extends Type, TTypeParameter {
 
   TypeParameter() { this = TTypeParameter(typeParam) }
 
+  TypeParam getTypeParam() { result = typeParam }
+
   pragma[nomagic]
   private TypeRepr_ getABound() { result = typeParam.getTypeBoundList().getABound().getTypeRepr() }
+
+  int getPosition() { typeParam = any(GenericParamList l).getTypeParam(result) }
 
   override Function getMethod(string name) {
     result = this.getABound().resolveTypeAt("").getMethod(name)
@@ -233,6 +262,8 @@ class TypeParameter extends Type, TTypeParameter {
   override RecordField getRecordField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
+
+  override TypeRepr getABaseType() { result = this.getABound() }
 
   override string toString() { result = typeParam.toString() }
 
@@ -287,15 +318,7 @@ private class TypeRepr_ extends TypeReprOrPath, TypeRepr {
 
 private class Path_ extends TypeReprOrPath, Path {
   override TypeRepr_ getTypeReprArgument(int i) {
-    exists(GenericArgList args |
-      args = this.getPart().getGenericArgList() and
-      result =
-        rank[i + 1](TypeRepr_ res, int j |
-          res = args.getGenericArg(j).(TypeArg).getTypeRepr()
-        |
-          res order by j
-        )
-    )
+    result = this.getPart().getGenericArgList().getTypeArgument(i)
   }
 
   override Type resolveType() {
@@ -309,6 +332,398 @@ private class Path_ extends TypeReprOrPath, Path {
       result = TTypeParameter(i)
       or
       result = i.(TypeAlias).getTypeRepr().(TypeRepr_).resolveType()
+    )
+  }
+}
+
+/** Provides logic for computing base types. */
+private module BaseTypes {
+  /**
+   * Holds if `base` is a (transitive) base type mention of `sub`, and `tp`
+   * (belonging to `sub`) is mentioned (implicitly) at `path` inside `base`.
+   * For example, in
+   *
+   * ```csharp
+   * class C<T1> { }
+   *
+   * class Base<T2> { }
+   *
+   * class Mid<T3> : Base<C<T3>> { }
+   *
+   * class Sub<T4> : Mid<C<T4>> { }
+   * ```
+   *
+   * - `T3` is mentioned at `0.0` for immediate base type `Base` of `Mid`,
+   * - `T4` is mentioned at `0.0` for immediate base type `Mid` of `Sub`, and
+   * - `T4` is mentioned at `0.0.0` for transitive base type `Base` of `Sub`.
+   */
+  pragma[nomagic]
+  private predicate baseTypeMentionHasTypeParameterAt(
+    Type sub, TypeRepr base, TypePath path, TypeParameter tp
+  ) {
+    exists(TypeRepr_ immediateBase, TypePath pathToTypeParam |
+      immediateBase = sub.getABaseType() and
+      tp = immediateBase.resolveTypeAt(pathToTypeParam)
+    |
+      // immediate base class
+      base = immediateBase and
+      path = pathToTypeParam
+      or
+      // transitive base class
+      exists(TypePath prefix, TypePath suffix, int i |
+        baseTypeMentionHasTypeParameterAt0(immediateBase.resolveType(), base, prefix, i) and
+        pathToTypeParam.startsWith(i, suffix) and
+        path = prefix.append(suffix)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate baseTypeMentionHasTypeParameterAt0(Type sub, TypeRepr base, TypePath path, int i) {
+    exists(TypeParameter tp |
+      baseTypeMentionHasTypeParameterAt(sub, base, path, tp) and
+      i = tp.getPosition()
+    )
+  }
+
+  // pragma[nomagic]
+  // predicate arrayBaseTypeHasTypeParameterAt(Type base, TypePath path) {
+  //   exists(UnboundType::TsIListInterfaceType immediateBase |
+  //     base = immediateBase and
+  //     path = "0"
+  //     or
+  //     // transitive base class
+  //     exists(TypeRepr baseTypeMention |
+  //       baseTypeMentionHasTypeParameterAt(immediateBase, baseTypeMention, path, _) and
+  //       base = baseTypeMention.getType()
+  //     )
+  //   )
+  // }
+  // pragma[nomagic]
+  // predicate arrayBaseTypeHasNonTypeParameterAt(Type base, TypePath path, Type t) {
+  //   not t instanceof TypeParameter and
+  //   exists(UnboundType::TsIListInterfaceType immediateBase |
+  //     base = immediateBase and
+  //     t = base and
+  //     path = ""
+  //     or
+  //     // transitive base class
+  //     exists(TypeRepr baseTypeMention |
+  //       baseTypeMentionHasNonTypeParameterAt(immediateBase, baseTypeMention, path, t) and
+  //       base = baseTypeMention.getType()
+  //     )
+  //   )
+  // }
+  /**
+   * Holds if `base` is a (transitive) base type mention of `sub`, and
+   * non-type-parameter `t` is mentioned (implicitly) at `path` inside `base`.
+   * For example, in
+   *
+   * ```csharp
+   * class C<T1> { }
+   *
+   * class Base<T2> { }
+   *
+   * class Mid<T3> : Base<C<T3>> { }
+   *
+   * class Sub<T4> : Mid<C<T4>> { }
+   * ```
+   *
+   * - `C` is mentioned at `0` for immediate base type `Base` of `Mid`,
+   * - `C` is mentioned at `0` for immediate base type `Mid` of `Sub`, and
+   * - `C` is mentioned at `0` and `0.0` for transitive base type `Base` of `Sub`.
+   */
+  pragma[nomagic]
+  private predicate baseTypeMentionHasNonTypeParameterAt(
+    Type sub, TypeRepr_ base, TypePath path, Type t
+  ) {
+    not t instanceof TypeParameter and
+    exists(TypeRepr_ immediateBase |
+      pragma[only_bind_into](immediateBase) = pragma[only_bind_into](sub).getABaseType()
+    |
+      base = immediateBase and
+      t = base.resolveTypeAt(path)
+      or
+      baseTypeMentionHasNonTypeParameterAt(immediateBase.resolveType(), base, path, t)
+      or
+      exists(TypePath path0, TypePath prefix, TypePath suffix, int i |
+        baseTypeMentionHasTypeParameterAt0(immediateBase.resolveType(), base, prefix, i) and
+        t = immediateBase.resolveTypeAt(path0) and
+        path0.startsWith(i, suffix) and
+        path = prefix.append(suffix)
+      )
+    )
+  }
+
+  signature module BaseTypeAtInputSig {
+    class Node;
+
+    Type resolveType(Node n, TypePath path);
+  }
+
+  module NodeHasBaseTypeAt<BaseTypeAtInputSig Input> {
+    pragma[nomagic]
+    private Type resolveRootType(Input::Node n) { result = Input::resolveType(n, "") }
+
+    pragma[nomagic]
+    private Type resolveTypeAt(Input::Node n, int i, TypePath suffix) {
+      exists(TypePath path0, TypeParameter tp |
+        result = Input::resolveType(n, path0) and
+        i = tp.getPosition() and
+        path0.startsWith(i, suffix)
+      )
+    }
+
+    /**
+     * Holds if `base` is a (transitive) base type mention of the type of `n`, and
+     * `t` is mentioned (implicitly) at `path` inside `base`. For example, in
+     *
+     * ```csharp
+     * class C<T1> { }
+     *
+     * class Base<T2> { }
+     *
+     * class Mid<T3> : Base<C<T3>> { }
+     *
+     * class Sub<T4> : Mid<C<T4>> { }
+     *
+     * new Sub<int>();
+     * ```
+     *
+     * for the node `new Sub<int>()`:
+     *
+     * - `C` is mentioned at `0` for immediate base type `Mid`,
+     * - `int` is mentioned at `0.1` for immediate base type `Mid`,
+     * - `C` is mentioned at `0` and `0.0` for transitive base type `Base`, and
+     * - `int` is mentioned at `0.0.1` for transitive base type `Base`.
+     */
+    pragma[nomagic]
+    predicate hasBaseType(Input::Node n, TypeRepr base, TypePath path, Type t) {
+      exists(Type sub | sub = resolveRootType(n) |
+        baseTypeMentionHasNonTypeParameterAt(sub, base, path, t)
+        or
+        exists(TypePath prefix, TypePath suffix, int i |
+          baseTypeMentionHasTypeParameterAt0(sub, base, prefix, i) and
+          t = resolveTypeAt(n, i, suffix) and
+          path = prefix.append(suffix)
+        )
+      )
+    }
+  }
+}
+
+private import BaseTypes
+
+private signature module MatchingInputSig {
+  class Decl {
+    string toString();
+
+    Location getLocation();
+
+    TypeParameter getTypeParameter(int i);
+  }
+
+  class Access {
+    string toString();
+
+    Location getLocation();
+
+    Type getTypeArgument(int i, TypePath path);
+
+    predicate noExplicitTypeArguments();
+  }
+
+  bindingset[this]
+  class Pos;
+
+  Pos getReturnPos();
+
+  predicate target(Access a, Decl target);
+
+  predicate argumentType(Access a, Pos pos, TypePath path, Type t);
+
+  predicate argumentIsTargetTyped(Access a, Pos pos);
+
+  predicate argumentIsNotTargetTyped(Access a, Pos pos);
+
+  predicate parameterType(Decl decl, Pos pos, TypePath path, Type t);
+
+  predicate declType(Decl decl, TypePath path, Type t);
+}
+
+private module Matching<MatchingInputSig Input> {
+  private import Input
+
+  pragma[nomagic]
+  private predicate argumentType0(Access a, Pos pos, TypePath path, Type t) {
+    argumentType(a, pos, path, t) and
+    argumentIsNotTargetTyped(a, pos)
+  }
+
+  pragma[nomagic]
+  private predicate argumentTypeAt(Access a, Pos pos, Decl target, TypePath path, Type t) {
+    target(a, target) and
+    argumentType0(a, pos, path, t)
+  }
+
+  pragma[nomagic]
+  private predicate argumentTypeMatchAt(Access a, Pos pos, Decl target, TypePath path, TypePath end) {
+    exists(Type match |
+      argumentTypeAt(a, pos, target, path, match) and
+      path.endsWith(end, _) and
+      parameterType(target, pos, path, match)
+    )
+  }
+
+  /**
+   * Holds if the type `t` at `path` of `a` at position `pos` matches the type parameter
+   * of `target` at the same position, possibly except the types at `toMatch`.
+   *
+   * There is an actual match when `toMatch` is empty.
+   */
+  pragma[nomagic]
+  private predicate typeMatch(
+    Access a, Pos pos, Decl target, TypePath path, Type t, TypeParameter tp, TypePath toMatch
+  ) {
+    a.noExplicitTypeArguments() and
+    exists(TypePath pathToTypeParam |
+      argumentTypeAt(a, pos, target, pathToTypeParam.append(path), t) and
+      parameterType(target, pos, pathToTypeParam, tp) and
+      if pathToTypeParam.isEmpty()
+      then toMatch.isEmpty()
+      else (
+        pathToTypeParam.endsWith(toMatch, _) and
+        exists(Type match |
+          argumentTypeAt(a, pos, target, "", match) and
+          parameterType(target, pos, "", match)
+        )
+      )
+    )
+    or
+    exists(TypePath toMatch0 |
+      typeMatch(a, pos, target, path, t, tp, toMatch0) and
+      argumentTypeMatchAt(a, pos, target, toMatch0, toMatch)
+    )
+  }
+
+  predicate declType(Decl decl, Pos at, TypePath path, Type t) {
+    declType(decl, path, t) and
+    at = getReturnPos()
+    or
+    parameterType(decl, at, path, t)
+  }
+
+  private module BaseTypeAtInput implements BaseTypeAtInputSig {
+    newtype Node =
+      additional MkNode(Access a, Pos pos) {
+        exists(Decl target |
+          argumentTypeAt(a, pos, target, _, _) and
+          declType(target, _, _, any(TypeParameter tp))
+        )
+      }
+
+    Type resolveType(Node n, TypePath path) {
+      exists(Access a, Pos pos |
+        n = MkNode(a, pos) and
+        argumentType(a, pos, path, result)
+      )
+    }
+  }
+
+  // pragma[nomagic]
+  // private predicate arrayTypeAt(Access a, int pos, Type base, TypePath path, Type t) {
+  //   exists(UnboundType::TsUnboundArrayType at |
+  //     at.getRank() = 1 and
+  //     argumentType(a, pos, "", at)
+  //   |
+  //     BaseTypes::arrayBaseTypeHasTypeParameterAt(base, path) and
+  //     argumentType(a, pos, "0", t)
+  //     or
+  //     BaseTypes::arrayBaseTypeHasNonTypeParameterAt(base, path, t)
+  //   )
+  // }
+  pragma[nomagic]
+  private predicate argumentBaseTypeAt(
+    Access a, Pos pos, Decl target, Type base, TypePath path, Type t
+  ) {
+    exists(TypeRepr_ tm |
+      target(a, target) and
+      NodeHasBaseTypeAt<BaseTypeAtInput>::hasBaseType(BaseTypeAtInput::MkNode(a, pos), tm, path, t) and
+      base = tm.resolveType()
+    )
+    // or
+    // target(a, target) and
+    // arrayTypeAt(a, pos, base, path, t)
+  }
+
+  pragma[nomagic]
+  private predicate parameterBaseType(Decl decl, Pos pos, Type base, TypePath path, Type t) {
+    parameterType(decl, pos, path, t) and
+    parameterType(decl, pos, "", base)
+  }
+
+  /**
+   * Holds if the (transitive) base type `t` at `path` (which is somewhere inside `base`)
+   * of `a` at position `pos` matches the type parameter of `target` at the same position,
+   * possibly except the types at `toMatch`.
+   *
+   * There is an actual match when `toMatch` is empty.
+   */
+  pragma[nomagic]
+  private predicate baseTypeMatch(
+    Access a, Pos pos, Decl target, Type base, TypePath path, Type t, TypeParameter tp,
+    TypePath toMatch
+  ) {
+    a.noExplicitTypeArguments() and
+    exists(TypePath pathToTypeParam |
+      argumentBaseTypeAt(a, pos, target, base, pathToTypeParam.append(path), t) and
+      parameterBaseType(target, pos, base, pathToTypeParam, tp) and
+      // do not allow `pathToTypeParam` to be empty in this case, as we will match
+      // against the actual type and not one of the base types
+      pathToTypeParam.endsWith(toMatch, _)
+    )
+    or
+    exists(TypePath toMatch0, Type match |
+      baseTypeMatch(a, pos, target, base, path, t, tp, toMatch0) and
+      toMatch0.endsWith(toMatch, _) and
+      argumentBaseTypeAt(a, pos, target, base, toMatch0, match) and
+      parameterBaseType(target, pos, base, toMatch0, match)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate explicitTypeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
+    exists(int i |
+      t = a.getTypeArgument(pragma[only_bind_into](i), path) and
+      target(a, target) and
+      tp = target.getTypeParameter(pragma[only_bind_into](i))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate implicitTypeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
+    typeMatch(a, _, target, path, t, tp, "")
+    or
+    baseTypeMatch(a, _, target, _, path, t, tp, "")
+  }
+
+  pragma[inline]
+  private predicate typeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
+    explicitTypeMatch(a, target, path, t, tp)
+    or
+    implicitTypeMatch(a, target, path, t, tp)
+  }
+
+  pragma[nomagic]
+  Type resolveAccess(Access a, Pos at, TypePath path) {
+    exists(Decl target, TypePath prefix, TypeParameter tp, TypePath suffix |
+      declType(target, pragma[only_bind_into](at), prefix, tp) and
+      typeMatch(a, target, suffix, result, tp) and
+      path = prefix.append(suffix)
+    |
+      at = getReturnPos()
+      or
+      argumentIsTargetTyped(a, pragma[only_bind_into](at))
     )
   }
 }
@@ -359,8 +774,191 @@ private Type resolveTargetTyped(AstNode n, TypePath path) {
   )
 }
 
+private module RecordFieldMatchingInput implements MatchingInputSig {
+  class Decl extends Struct {
+    // todo or variant
+    TypeParameter getTypeParameter(int i) {
+      result.getTypeParam() = this.getGenericParamList().getTypeParam(i)
+    }
+  }
+
+  class Access extends RecordExpr {
+    // RecordExpr getRecordExpr(string name) { this = result.getFieldExpr(name) }
+    private TypeRepr_ getTypeArg(int i) {
+      result = this.getPath().getPart().getGenericArgList().getTypeArgument(i)
+    }
+
+    Type getTypeArgument(int i, TypePath path) { result = this.getTypeArg(i).resolveTypeAt(path) }
+
+    predicate noExplicitTypeArguments() { not exists(this.getTypeArg(_)) }
+  }
+
+  predicate target(Access a, Decl target) { target = resolvePath(a.getPath()) }
+
+  class Pos = string;
+
+  Pos getReturnPos() { result = "(return)" }
+
+  private AstNode getExplicitArgument(Access a, Pos pos) { result = a.getFieldExpr(pos).getExpr() }
+
+  private predicate explicitArgumentType(Access a, Pos pos, TypePath path, Type t) {
+    t = resolveType(getExplicitArgument(a, pos), path)
+  }
+
+  // private predicate implicitThis(Access a, int pos, TypePath path, Type t) {
+  //   a instanceof TsExplicitOrdinaryMethodCall and
+  //   exists(TsMethodDeclaration md |
+  //     md = a.getEnclosingMethodDecl() and
+  //     a.getFunction() instanceof TsUnqualifiedMemberAccess and
+  //     pos = -1 and
+  //     t = resolveThisInMethodDecl(md, path)
+  //   )
+  // }
+  predicate argumentType(Access a, Pos pos, TypePath path, Type t) {
+    explicitArgumentType(a, pos, path, t)
+    // or
+    // implicitThis(a, pos, path, t)
+  }
+
+  pragma[nomagic]
+  predicate argumentIsTargetTyped(Access a, Pos pos) { isTargetTyped(getExplicitArgument(a, pos)) }
+
+  pragma[nomagic]
+  predicate argumentIsNotTargetTyped(Access a, Pos pos) {
+    exists(AstNode arg |
+      arg = getExplicitArgument(a, pos) and
+      not isTargetTyped(arg)
+    )
+    // or
+    // implicitThis(a, pos, _, _)
+  }
+
+  predicate parameterType(Decl decl, Pos pos, TypePath path, Type t) {
+    exists(TypeRepr_ tp | tp = decl.getRecordField(pos).getTypeRepr() | t = tp.resolveTypeAt(path))
+  }
+
+  pragma[nomagic]
+  predicate declType(Decl decl, TypePath path, Type t) {
+    t = TStruct(decl) and
+    path.isEmpty()
+    or
+    exists(int i |
+      t = decl.getTypeParameter(i) and
+      path = typePath(i)
+    )
+  }
+}
+
+private module RecordFieldMatching = Matching<RecordFieldMatchingInput>;
+
 private Type resolveRecordExprType(RecordExpr re, TypePath path) {
   result = re.getPath().(Path_).resolveTypeAt(path)
+  or
+  // result = resolveFunctionReturnType(call.getStaticTarget(), path)
+  result = RecordFieldMatching::resolveAccess(re, "(return)", path)
+}
+
+// private Type resolveRecordExprType(RecordExpr re, TypePath path) {
+//   result = re.getPath().(Path_).resolveTypeAt(path)
+// }
+private module FunctionMatchingInput implements MatchingInputSig {
+  class Pos = int;
+
+  Pos getReturnPos() { result = -2 }
+
+  class Decl extends Function {
+    TypeParameter getTypeParameter(int i) {
+      result.getTypeParam() = this.getGenericParamList().getTypeParam(i)
+    }
+  }
+
+  class Access extends CallExprBase {
+    private TypeRepr_ getTypeArg(int i) {
+      result =
+        this.(CallExpr)
+            .getFunction()
+            .(PathExpr)
+            .getPath()
+            .getPart()
+            .getGenericArgList()
+            .getTypeArgument(i)
+      or
+      result = this.(MethodCallExpr).getGenericArgList().getTypeArgument(i)
+    }
+
+    Type getTypeArgument(int i, TypePath path) { result = this.getTypeArg(i).resolveTypeAt(path) }
+
+    predicate noExplicitTypeArguments() { not exists(this.getTypeArg(_)) }
+  }
+
+  predicate target(Access a, Decl target) { target = a.getStaticTarget() }
+
+  private AstNode getExplicitArgument(Access a, int pos) {
+    result = a.getArgList().getArg(pos)
+    or
+    (
+      result = a.(CallExpr).getFunction()
+      or
+      result = a.(MethodCallExpr).getReceiver()
+    ) and
+    pos = -1
+  }
+
+  private predicate explicitArgumentType(Access a, int pos, TypePath path, Type t) {
+    t = resolveType(getExplicitArgument(a, pos), path)
+  }
+
+  // private predicate implicitThis(Access a, int pos, TypePath path, Type t) {
+  //   a instanceof TsExplicitOrdinaryMethodCall and
+  //   exists(TsMethodDeclaration md |
+  //     md = a.getEnclosingMethodDecl() and
+  //     a.getFunction() instanceof TsUnqualifiedMemberAccess and
+  //     pos = -1 and
+  //     t = resolveThisInMethodDecl(md, path)
+  //   )
+  // }
+  predicate argumentType(Access a, int pos, TypePath path, Type t) {
+    explicitArgumentType(a, pos, path, t)
+    // or
+    // implicitThis(a, pos, path, t)
+  }
+
+  pragma[nomagic]
+  predicate argumentIsTargetTyped(Access a, int pos) { isTargetTyped(a.getArgList().getArg(pos)) }
+
+  pragma[nomagic]
+  predicate argumentIsNotTargetTyped(Access a, int pos) {
+    exists(AstNode arg |
+      arg = getExplicitArgument(a, pos) and
+      not isTargetTyped(arg)
+    )
+    // or
+    // implicitThis(a, pos, _, _)
+  }
+
+  predicate parameterType(Decl decl, int pos, TypePath path, Type t) {
+    exists(TypeRepr_ tp |
+      paramTyped(decl.getParamList().getParam(pos), _, tp)
+      or
+      selfParamTyped(decl.getParamList().getSelfParam(), tp) and
+      pos = -1
+    |
+      t = tp.resolveTypeAt(path)
+    )
+  }
+
+  pragma[nomagic]
+  predicate declType(Decl decl, TypePath path, Type t) {
+    t = decl.getRetType().getTypeRepr().(TypeRepr_).resolveTypeAt(path)
+  }
+}
+
+private module FunctionMatching = Matching<FunctionMatchingInput>;
+
+private Type resolveFunctionCall(CallExprBase call, TypePath path) {
+  result = resolveFunctionReturnType(call.getStaticTarget(), path)
+  or
+  result = FunctionMatching::resolveAccess(call, -2, path)
 }
 
 pragma[nomagic]
@@ -440,12 +1038,14 @@ pragma[nomagic]
 private Type resolveFieldExprType(FieldExpr fe, TypePath path) {
   exists(RecordField f |
     f = resolveRecordFieldExpr(fe) and
-    result = f.getTypeRepr().(TypeRepr_).resolveTypeAt(path)
+    result = f.getTypeRepr().(TypeRepr_).resolveTypeAt(path) and
+    not result instanceof TypeParameter
   )
   or
   exists(TupleField f |
     f = resolveTupleFieldExpr(fe) and
-    result = f.getTypeRepr().(TypeRepr_).resolveTypeAt(path)
+    result = f.getTypeRepr().(TypeRepr_).resolveTypeAt(path) and
+    not result instanceof TypeParameter
   )
 }
 

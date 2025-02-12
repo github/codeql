@@ -1,9 +1,9 @@
 multipleStaticCallTargets
-| main.rs:73:26:73:31 | x.m1(...) | main.rs:36:9:38:9 | fn m1 |
-| main.rs:73:26:73:31 | x.m1(...) | main.rs:42:9:44:9 | fn m1 |
-| main.rs:74:26:74:31 | y.m1(...) | main.rs:36:9:38:9 | fn m1 |
-| main.rs:74:26:74:31 | y.m1(...) | main.rs:42:9:44:9 | fn m1 |
-| main.rs:85:26:85:31 | x.m2(...) | main.rs:54:9:56:9 | fn m2 |
-| main.rs:85:26:85:31 | x.m2(...) | main.rs:60:9:62:9 | fn m2 |
-| main.rs:86:26:86:31 | y.m2(...) | main.rs:54:9:56:9 | fn m2 |
-| main.rs:86:26:86:31 | y.m2(...) | main.rs:60:9:62:9 | fn m2 |
+| main.rs:61:26:61:31 | x.m1(...) | main.rs:40:9:42:9 | fn m1 |
+| main.rs:61:26:61:31 | x.m1(...) | main.rs:46:9:48:9 | fn m1 |
+| main.rs:62:26:62:31 | y.m1(...) | main.rs:40:9:42:9 | fn m1 |
+| main.rs:62:26:62:31 | y.m1(...) | main.rs:46:9:48:9 | fn m1 |
+| main.rs:114:26:114:31 | x.m1(...) | main.rs:99:9:101:9 | fn m1 |
+| main.rs:114:26:114:31 | x.m1(...) | main.rs:105:9:107:9 | fn m1 |
+| main.rs:115:26:115:31 | y.m1(...) | main.rs:99:9:101:9 | fn m1 |
+| main.rs:115:26:115:31 | y.m1(...) | main.rs:105:9:107:9 | fn m1 |
