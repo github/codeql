@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Added result.download() function to ResponseDownloadAsFileSystemAccess to FileSystemReadAccess
+* The `response.download()` function in `express` is now recognized as a sink for path traversal attacks.
