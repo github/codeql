@@ -50,8 +50,8 @@ pub struct Config {
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
-    pub flame_log: Option<PathBuf>,
-    pub verbosity: Option<String>,
+    pub logging_flamegraph: Option<PathBuf>,
+    pub logging_verbosity: Option<String>,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
@@ -65,7 +65,13 @@ impl Config {
             .context("expanding parameter files")?;
         let cli_args = CliConfig::parse_from(args);
         let mut figment = Figment::new()
-            .merge(Env::prefixed("CODEQL_"))
+            .merge(Env::raw().filter_map(|f| {
+                if f.eq("CODEQL_VERBOSITY") {
+                    Some("LOGGING_VERBOSITY".into())
+                } else {
+                    None
+                }
+            }))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args));

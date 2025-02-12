@@ -186,7 +186,7 @@ fn main() -> anyhow::Result<()> {
         qltest::prepare(&mut cfg)?;
     }
     let start = Instant::now();
-    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.flame_log {
+    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
             .ok()
             .map(|(a, b)| (Some(a), Some(b)))
@@ -198,7 +198,7 @@ fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
-            &cfg.verbosity,
+            &cfg.logging_verbosity,
         ))
         .with(flame_layer)
         .init();
