@@ -1,3 +1,6 @@
+| aliases.go:32:38:32:57 | generic type instantiation expression | aliases.go:32:38:32:43 | MyType | 0 | aliases.go:32:45:32:56 | MyTypeAliasT |
+| aliases.go:34:23:34:41 | generic type instantiation expression | aliases.go:34:23:34:33 | MyTypeAlias | 0 | aliases.go:34:35:34:40 | string |
+| aliases.go:35:7:35:25 | generic type instantiation expression | aliases.go:35:7:35:17 | MyTypeAlias | 0 | aliases.go:35:19:35:24 | string |
 | generic.go:12:16:12:40 | generic type instantiation expression | generic.go:12:16:12:37 | CircularGenericStruct1 | 0 | generic.go:12:39:12:39 | T |
 | generic.go:16:7:16:31 | generic type instantiation expression | generic.go:16:7:16:28 | CircularGenericStruct1 | 0 | generic.go:16:30:16:30 | T |
 | generic.go:20:14:20:30 | generic type instantiation expression | generic.go:20:14:20:27 | GenericStruct1 | 0 | generic.go:20:29:20:29 | S |
