@@ -1,9 +1,9 @@
 const webpack = require("webpack");
 
 
-var plugin = new webpack.DefinePlugin({ // $ Alert
+var plugin = new webpack.DefinePlugin({
     "process.env": JSON.stringify(process.env)
-});
+}); // $ Alert[js/build-artifact-leak]
 
 
 new webpack.DefinePlugin({ 'process.env': JSON.stringify({ DEBUG: process.env.DEBUG }) })
