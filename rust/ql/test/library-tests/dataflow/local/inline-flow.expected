@@ -28,8 +28,8 @@ edges
 | main.rs:100:17:100:26 | source(...) | main.rs:100:13:100:30 | TupleExpr [tuple.1] | provenance |  |
 | main.rs:101:9:101:20 | TuplePat [tuple.1] | main.rs:101:14:101:15 | a1 | provenance |  |
 | main.rs:101:14:101:15 | a1 | main.rs:103:10:103:11 | a1 | provenance |  |
-| main.rs:108:9:108:13 | a [tuple.1] | main.rs:110:10:110:10 | a [tuple.1] | provenance |  |
-| main.rs:108:17:108:31 | TupleExpr [tuple.1] | main.rs:108:9:108:13 | a [tuple.1] | provenance |  |
+| main.rs:108:9:108:13 | mut a [tuple.1] | main.rs:110:10:110:10 | a [tuple.1] | provenance |  |
+| main.rs:108:17:108:31 | TupleExpr [tuple.1] | main.rs:108:9:108:13 | mut a [tuple.1] | provenance |  |
 | main.rs:108:21:108:30 | source(...) | main.rs:108:17:108:31 | TupleExpr [tuple.1] | provenance |  |
 | main.rs:110:10:110:10 | a [tuple.1] | main.rs:110:10:110:12 | a.1 | provenance |  |
 | main.rs:111:5:111:5 | [post] a [tuple.0] | main.rs:112:5:112:5 | a [tuple.0] | provenance |  |
@@ -217,7 +217,7 @@ nodes
 | main.rs:101:9:101:20 | TuplePat [tuple.1] | semmle.label | TuplePat [tuple.1] |
 | main.rs:101:14:101:15 | a1 | semmle.label | a1 |
 | main.rs:103:10:103:11 | a1 | semmle.label | a1 |
-| main.rs:108:9:108:13 | a [tuple.1] | semmle.label | a [tuple.1] |
+| main.rs:108:9:108:13 | mut a [tuple.1] | semmle.label | mut a [tuple.1] |
 | main.rs:108:17:108:31 | TupleExpr [tuple.1] | semmle.label | TupleExpr [tuple.1] |
 | main.rs:108:21:108:30 | source(...) | semmle.label | source(...) |
 | main.rs:110:10:110:10 | a [tuple.1] | semmle.label | a [tuple.1] |
