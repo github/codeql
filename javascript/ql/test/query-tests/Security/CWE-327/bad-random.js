@@ -1,17 +1,17 @@
 const crypto = require('crypto');
 
-var bad = crypto.randomBytes(1)[0] + crypto.randomBytes(1)[0]; // $ Alert
-var bad = crypto.randomBytes(1)[0] * crypto.randomBytes(1)[0]; // $ Alert
+var bad = crypto.randomBytes(1)[0] + crypto.randomBytes(1)[0]; // $ Alert[js/biased-cryptographic-random]
+var bad = crypto.randomBytes(1)[0] * crypto.randomBytes(1)[0]; // $ Alert[js/biased-cryptographic-random]
 
 const buffer = crypto.randomBytes(bytes);
 const digits = [];
 for (let i = 0; i < buffer.length; ++i) {
-    digits.push(Math.floor(buffer[i] / 25.6)); // $ Alert
+    digits.push(Math.floor(buffer[i] / 25.6)); // $ Alert[js/biased-cryptographic-random]
     digits.push(buffer[i] % 8); // OK - input is a random byte, so the output is a uniformly random number between 0 and 7.
-    digits.push(buffer[i] % 100); // $ Alert
+    digits.push(buffer[i] % 100); // $ Alert[js/biased-cryptographic-random]
 }
 
-var bad = Number('0.' + crypto.randomBytes(3).readUIntBE(0, 3)); // $ Alert
+var bad = Number('0.' + crypto.randomBytes(3).readUIntBE(0, 3)); // $ Alert[js/biased-cryptographic-random]
 var good = Number(10 + crypto.randomBytes(3).readUIntBE(0, 3));
 
 const internals = {};
@@ -70,30 +70,30 @@ function setSteps() {
     const buffer = crypto.randomBytes(bytes);
     const digits = [];
     for (const byte of buffer.values()) {
-        digits.push(Math.floor(byte / 25.6)); // $ Alert
+        digits.push(Math.floor(byte / 25.6)); // $ Alert[js/biased-cryptographic-random]
         digits.push(byte % 8); // OK - 8 is a power of 2, so the result is unbiased.
-        digits.push(byte % 100); // $ Alert
+        digits.push(byte % 100); // $ Alert[js/biased-cryptographic-random]
     }
 }
 
 const secureRandom = require("secure-random");
 
-var bad = secureRandom(10)[0] + secureRandom(10)[0]; // $ Alert
+var bad = secureRandom(10)[0] + secureRandom(10)[0]; // $ Alert[js/biased-cryptographic-random]
 
 var goodRandom1 = 5 + secureRandom(10)[0];
 var goodRandom2 = 5 + secureRandom(10)[0];
-var bad = goodRandom1 + goodRandom2; // $ Alert
+var bad = goodRandom1 + goodRandom2; // $ Alert[js/biased-cryptographic-random]
 
-var dontFlag = bad + bad; // OK - the operands have already been flagged - but flagged anyway due to us not detecting that [INCONSISTENCY].
+var dontFlag = bad + bad; // $ Alert[js/biased-cryptographic-random] - OK - the operands have already been flagged - but flagged anyway due to us not detecting that [INCONSISTENCY].
 
 var good = secureRandom(10)[0] / 0xff; // OK - result is not rounded.
-var good = Math.ceil(0.5 - (secureRandom(10)[0] / 25.6)); // $ Alert - division generally introduces bias - but not flagged due to not looking through nested arithmetic.
+var good = Math.ceil(0.5 - (secureRandom(10)[0] / 25.6)); // $ Alert[js/biased-cryptographic-random] - division generally introduces bias - but not flagged due to not looking through nested arithmetic.
 
 var good = (crypto.randomBytes(1)[0] << 8) + crypto.randomBytes(3)[0]; // OK - bit shifts are usually used to construct larger/smaller numbers,
 
 var good = Math.floor(max * (crypto.randomBytes(1)[0] / 0xff)); // OK - division by 0xff (255) gives a uniformly random number between 0 and 1.
 
-var bad = Math.floor(max * (crypto.randomBytes(1)[0] / 100)); // $ Alert - division by 100 gives bias - but not flagged due to not looking through nested arithmetic.
+var bad = Math.floor(max * (crypto.randomBytes(1)[0] / 100)); // $ Alert[js/biased-cryptographic-random] - division by 100 gives bias - but not flagged due to not looking through nested arithmetic.
 
 var crb = crypto.randomBytes(4);
 var cryptoRand = 0x01000000 * crb[0] + 0x00010000 * crb[1] + 0x00000100 * crb[2] + 0x00000001 * crb[3]; // OK - producing a larger number from smaller numbers.
@@ -115,7 +115,7 @@ var foo = 0xffffffffffff + 0xfffffffffff + 0xffffffffff + 0xfffffffff + 0xffffff
 // Bad documentation example: 
 const digits = [];
 for (let i = 0; i < 10; i++) {
-    digits.push(crypto.randomBytes(1)[0] % 10); // $ Alert
+    digits.push(crypto.randomBytes(1)[0] % 10); // $ Alert[js/biased-cryptographic-random]
 }
 
 // Good documentation example: 

@@ -3,15 +3,15 @@ var express = require('express');
 var app = express();
 
 app.get('/some/path', function(req, res) {
-  var f = new Function("return wibbles[" + req.param("wobble") + "];"); // $ Alert
-  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];"); // $ Alert
+  var f = new Function("return wibbles[" + req.param("wobble") + "];"); // $ Alert[js/code-injection]
+  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];"); // $ Alert[js/code-injection]
   var runC = require("vm").runInNewContext;
-  runC("return wibbles[" + req.param("wobble") + "];"); // $ Alert
+  runC("return wibbles[" + req.param("wobble") + "];"); // $ Alert[js/code-injection]
   var vm = require("vm");
-  vm.compileFunction(req.param("code_compileFunction")); // $ Alert
-  var script = new vm.Script(req.param("code_Script")); // $ Alert
-  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule")); // $ Alert
-  vm.runInContext(req.param("code_runInContext"), vm.createContext()); // $ Alert
+  vm.compileFunction(req.param("code_compileFunction")); // $ Alert[js/code-injection]
+  var script = new vm.Script(req.param("code_Script")); // $ Alert[js/code-injection]
+  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule")); // $ Alert[js/code-injection]
+  vm.runInContext(req.param("code_runInContext"), vm.createContext()); // $ Alert[js/code-injection]
 });
 
 const cp = require('child_process');

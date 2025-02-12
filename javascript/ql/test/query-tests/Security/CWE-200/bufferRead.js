@@ -29,8 +29,8 @@ fs.exists(fileName, function (exists) {
             res.setEncoding('utf8');
           });
 
-          req.write(postData); // $ Alert - write data from file to request body
-          req.end(); 
+          req.write(postData); // $ Alert[js/file-access-to-http] - write data from file to request body
+          req.end();
           });
 
           fs.close(fd);
