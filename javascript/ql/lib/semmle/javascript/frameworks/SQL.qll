@@ -221,7 +221,10 @@ private module Postgres {
 
     /** Gets a value that is plugged into a raw placeholder variable, making it a sink for SQL injection. */
     private DataFlow::Node getARawValue() {
-      result = this.getValues() and this.getARawParameterName() = "1" // Special case: if the argument is not an array or object, it's just plugged into $1
+      result = this.getValues() and
+      this.getARawParameterName() = "1" and // Special case: if the argument is not an array or object, it's just plugged into $1
+      not result instanceof DataFlow::ArrayCreationNode and
+      not result instanceof DataFlow::ObjectLiteralNode
       or
       exists(DataFlow::SourceNode values | values = this.getValues().getALocalSource() |
         result = values.getAPropertyWrite(this.getARawParameterName()).getRhs()
