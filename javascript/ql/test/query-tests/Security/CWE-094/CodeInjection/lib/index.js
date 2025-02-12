@@ -132,10 +132,10 @@ export class AccessPathClassBB {
     }
   
     doesTaint() {
-      eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to localFieldStep
-      eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to localFieldStep
-      eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to localFieldStep
-      eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to localFieldStep
+      eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
     }
   }
   
