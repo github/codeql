@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['actions', 'csharp']
+        languages: ['actions', 'csharp']
 
     runs-on: ubuntu-latest
 
