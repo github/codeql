@@ -3,7 +3,7 @@ package main
 import (
 	"regexp"
 
-	"github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1"
+	"codeql-go-types/pkg1"
 )
 
 func test(r *regexp.Regexp) {}
