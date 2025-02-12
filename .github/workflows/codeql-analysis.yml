@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        languages: ['actions', 'csharp']
+        language: ['actions', 'csharp']
 
     runs-on: ubuntu-latest
 
@@ -43,6 +43,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@main
       with:
+        languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
