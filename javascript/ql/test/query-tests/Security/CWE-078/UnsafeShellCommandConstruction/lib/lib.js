@@ -424,8 +424,8 @@ module.exports.shellOption = function (name) {
 	spawn("rm", ["first", name], SPAWN_OPT); // $ Alert
 	var arr = [];
 	arr.push(name); // $ Alert
-	spawn("rm", arr, SPAWN_OPT); 
-	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT);  // This is bad, but the alert location is down in `build`.
+	spawn("rm", arr, SPAWN_OPT); // $ Alert
+	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT); // $ Alert
 }
 
 function build(first, last) {
