@@ -50,6 +50,30 @@ mod my_clone {
     }
 }
 
+mod flow_through_option {
+    use super::{source, sink};
+    // Test the auto generated flow summaries for `Option`
+
+    fn zip_flow() {
+        let a = Some(2);
+        let b = Some(source(38));
+        let z = a.zip(b);
+        match z {
+            Some((n, m)) => {
+                sink(n);
+                sink(m); // $ hasValueFlow=38
+            },
+            None => ()
+        }
+    }
+
+    fn higher_order_flow() {
+        let a = Some(0);
+        let b = a.map_or(3, |n| n + source(63));
+        sink(b); // $ hasTaintFlow=63
+    }
+}
+
 fn main() {
     option_clone();
     result_clone();
