@@ -1,25 +1,26 @@
 models
-| 1 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
-| 2 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 1 | Summary: lang:core; <crate::option::Option as crate::clone::Clone>::clone; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue.Variant[crate::option::Option::Some(0)]; value |
+| 2 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
+| 3 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
 edges
 | main.rs:13:9:13:9 | a [Some] | main.rs:14:10:14:10 | a [Some] | provenance |  |
 | main.rs:13:9:13:9 | a [Some] | main.rs:15:13:15:13 | a [Some] | provenance |  |
 | main.rs:13:13:13:28 | Some(...) [Some] | main.rs:13:9:13:9 | a [Some] | provenance |  |
 | main.rs:13:18:13:27 | source(...) | main.rs:13:13:13:28 | Some(...) [Some] | provenance |  |
-| main.rs:14:10:14:10 | a [Some] | main.rs:14:10:14:19 | a.unwrap(...) | provenance | MaD:1 |
+| main.rs:14:10:14:10 | a [Some] | main.rs:14:10:14:19 | a.unwrap(...) | provenance | MaD:2 |
 | main.rs:15:9:15:9 | b [Some] | main.rs:16:10:16:10 | b [Some] | provenance |  |
-| main.rs:15:13:15:13 | a [Some] | main.rs:15:13:15:21 | a.clone(...) [Some] | provenance |  |
+| main.rs:15:13:15:13 | a [Some] | main.rs:15:13:15:21 | a.clone(...) [Some] | provenance | MaD:1 |
 | main.rs:15:13:15:21 | a.clone(...) [Some] | main.rs:15:9:15:9 | b [Some] | provenance |  |
-| main.rs:16:10:16:10 | b [Some] | main.rs:16:10:16:19 | b.unwrap(...) | provenance | MaD:1 |
+| main.rs:16:10:16:10 | b [Some] | main.rs:16:10:16:19 | b.unwrap(...) | provenance | MaD:2 |
 | main.rs:20:9:20:9 | a [Ok] | main.rs:21:10:21:10 | a [Ok] | provenance |  |
 | main.rs:20:9:20:9 | a [Ok] | main.rs:22:13:22:13 | a [Ok] | provenance |  |
 | main.rs:20:31:20:44 | Ok(...) [Ok] | main.rs:20:9:20:9 | a [Ok] | provenance |  |
 | main.rs:20:34:20:43 | source(...) | main.rs:20:31:20:44 | Ok(...) [Ok] | provenance |  |
-| main.rs:21:10:21:10 | a [Ok] | main.rs:21:10:21:19 | a.unwrap(...) | provenance | MaD:2 |
+| main.rs:21:10:21:10 | a [Ok] | main.rs:21:10:21:19 | a.unwrap(...) | provenance | MaD:3 |
 | main.rs:22:9:22:9 | b [Ok] | main.rs:23:10:23:10 | b [Ok] | provenance |  |
 | main.rs:22:13:22:13 | a [Ok] | main.rs:22:13:22:21 | a.clone(...) [Ok] | provenance |  |
 | main.rs:22:13:22:21 | a.clone(...) [Ok] | main.rs:22:9:22:9 | b [Ok] | provenance |  |
-| main.rs:23:10:23:10 | b [Ok] | main.rs:23:10:23:19 | b.unwrap(...) | provenance | MaD:2 |
+| main.rs:23:10:23:10 | b [Ok] | main.rs:23:10:23:19 | b.unwrap(...) | provenance | MaD:3 |
 | main.rs:27:9:27:9 | a | main.rs:28:10:28:10 | a | provenance |  |
 | main.rs:27:9:27:9 | a | main.rs:29:13:29:13 | a | provenance |  |
 | main.rs:27:13:27:22 | source(...) | main.rs:27:9:27:9 | a | provenance |  |

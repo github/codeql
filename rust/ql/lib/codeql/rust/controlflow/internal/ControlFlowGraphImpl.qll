@@ -662,7 +662,7 @@ module PatternTrees {
     }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge from succesful subpattern to name
+      // Edge from successful subpattern to name
       super.succ(pred, succ, c) and c.(MatchCompletion).succeeded()
       or
       // Edge from name to the identifier pattern itself

@@ -49,12 +49,12 @@ mod test_ref_pattern {
     pub fn read_through_ref() {
         let a = source(21);
         let ref p = a;
-        sink(*p); // $ MISSING: hasValueFlow=21
+        sink(*p); // $ hasValueFlow=21
     }
 
     pub fn write_through_ref_mut() {
         let ref mut a = source(78);
-        sink(*a); // $ MISSING: hasValueFlow=78
+        sink(*a); // $ hasValueFlow=78
         *a = 0;
         sink(*a); // now cleared
     }
@@ -62,7 +62,7 @@ mod test_ref_pattern {
     pub fn ref_pattern_in_match() {
         let a = Some(source(17));
         let b = match a {
-            Some(ref p) => sink(*p), // $ MISSING: hasValueFlow=17
+            Some(ref p) => sink(*p), // $ hasValueFlow=17
             None => (),
         };
     }

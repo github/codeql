@@ -7,24 +7,24 @@ private import Cfg
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ssa.Ssa as SsaImplCommon
 
-/** Holds if `v` is introduced like `let v : i64;`. */
-private predicate isUnitializedLet(IdentPat pat, Variable v) {
-  pat = v.getPat() and
+/**
+ * Holds if `name` occurs in the left-hand side of an uninitialized let
+ * statement such as in `let name : i64;`.
+ */
+private predicate isInUninitializedLet(Name name) {
   exists(LetStmt let |
-    let = v.getLetStmt() and
+    let.getPat().(IdentPat).getName() = name and
     not let.hasInitializer()
   )
 }
 
 /** Holds if `write` writes to variable `v`. */
 predicate variableWrite(AstNode write, Variable v) {
-  exists(IdentPat pat |
-    pat = write and
-    pat = v.getPat() and
-    not isUnitializedLet(pat, v)
+  exists(Name name |
+    name = write and
+    name = v.getName() and
+    not isInUninitializedLet(name)
   )
-  or
-  exists(SelfParam self | self = write and self = v.getSelfParam())
   or
   exists(VariableAccess access |
     access = write and

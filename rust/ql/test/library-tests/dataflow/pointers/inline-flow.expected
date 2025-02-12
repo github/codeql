@@ -18,6 +18,23 @@ edges
 | main.rs:42:15:42:24 | source(...) | main.rs:42:9:42:11 | val | provenance |  |
 | main.rs:43:26:43:29 | &val [&ref] | main.rs:37:25:37:32 | ...: ... [&ref] | provenance |  |
 | main.rs:43:27:43:29 | val | main.rs:43:26:43:29 | &val [&ref] | provenance |  |
+| main.rs:50:13:50:13 | a | main.rs:51:13:51:17 | ref p | provenance |  |
+| main.rs:50:17:50:26 | source(...) | main.rs:50:13:50:13 | a | provenance |  |
+| main.rs:51:13:51:17 | ref p | main.rs:51:17:51:17 | p [&ref] | provenance |  |
+| main.rs:51:17:51:17 | p [&ref] | main.rs:52:15:52:15 | p [&ref] | provenance |  |
+| main.rs:52:15:52:15 | p [&ref] | main.rs:52:14:52:15 | * ... | provenance |  |
+| main.rs:56:13:56:21 | ref mut a | main.rs:56:21:56:21 | a [&ref] | provenance |  |
+| main.rs:56:21:56:21 | a [&ref] | main.rs:57:15:57:15 | a [&ref] | provenance |  |
+| main.rs:56:25:56:34 | source(...) | main.rs:56:13:56:21 | ref mut a | provenance |  |
+| main.rs:57:15:57:15 | a [&ref] | main.rs:57:14:57:15 | * ... | provenance |  |
+| main.rs:63:13:63:13 | a [Some] | main.rs:64:23:64:23 | a [Some] | provenance |  |
+| main.rs:63:17:63:32 | Some(...) [Some] | main.rs:63:13:63:13 | a [Some] | provenance |  |
+| main.rs:63:22:63:31 | source(...) | main.rs:63:17:63:32 | Some(...) [Some] | provenance |  |
+| main.rs:64:23:64:23 | a [Some] | main.rs:65:13:65:23 | Some(...) [Some] | provenance |  |
+| main.rs:65:13:65:23 | Some(...) [Some] | main.rs:65:18:65:22 | ref p | provenance |  |
+| main.rs:65:18:65:22 | ref p | main.rs:65:22:65:22 | p [&ref] | provenance |  |
+| main.rs:65:22:65:22 | p [&ref] | main.rs:65:34:65:34 | p [&ref] | provenance |  |
+| main.rs:65:34:65:34 | p [&ref] | main.rs:65:33:65:34 | * ... | provenance |  |
 | main.rs:76:18:76:21 | SelfParam [MyNumber] | main.rs:77:15:77:18 | self [MyNumber] | provenance |  |
 | main.rs:77:15:77:18 | self [MyNumber] | main.rs:78:13:78:38 | ...::MyNumber(...) [MyNumber] | provenance |  |
 | main.rs:78:13:78:38 | ...::MyNumber(...) [MyNumber] | main.rs:78:32:78:37 | number | provenance |  |
@@ -69,6 +86,26 @@ nodes
 | main.rs:42:15:42:24 | source(...) | semmle.label | source(...) |
 | main.rs:43:26:43:29 | &val [&ref] | semmle.label | &val [&ref] |
 | main.rs:43:27:43:29 | val | semmle.label | val |
+| main.rs:50:13:50:13 | a | semmle.label | a |
+| main.rs:50:17:50:26 | source(...) | semmle.label | source(...) |
+| main.rs:51:13:51:17 | ref p | semmle.label | ref p |
+| main.rs:51:17:51:17 | p [&ref] | semmle.label | p [&ref] |
+| main.rs:52:14:52:15 | * ... | semmle.label | * ... |
+| main.rs:52:15:52:15 | p [&ref] | semmle.label | p [&ref] |
+| main.rs:56:13:56:21 | ref mut a | semmle.label | ref mut a |
+| main.rs:56:21:56:21 | a [&ref] | semmle.label | a [&ref] |
+| main.rs:56:25:56:34 | source(...) | semmle.label | source(...) |
+| main.rs:57:14:57:15 | * ... | semmle.label | * ... |
+| main.rs:57:15:57:15 | a [&ref] | semmle.label | a [&ref] |
+| main.rs:63:13:63:13 | a [Some] | semmle.label | a [Some] |
+| main.rs:63:17:63:32 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:63:22:63:31 | source(...) | semmle.label | source(...) |
+| main.rs:64:23:64:23 | a [Some] | semmle.label | a [Some] |
+| main.rs:65:13:65:23 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:65:18:65:22 | ref p | semmle.label | ref p |
+| main.rs:65:22:65:22 | p [&ref] | semmle.label | p [&ref] |
+| main.rs:65:33:65:34 | * ... | semmle.label | * ... |
+| main.rs:65:34:65:34 | p [&ref] | semmle.label | p [&ref] |
 | main.rs:76:18:76:21 | SelfParam [MyNumber] | semmle.label | SelfParam [MyNumber] |
 | main.rs:76:31:80:5 | { ... } | semmle.label | { ... } |
 | main.rs:77:15:77:18 | self [MyNumber] | semmle.label | self [MyNumber] |
@@ -109,6 +146,9 @@ testFailures
 | main.rs:16:10:16:10 | c | main.rs:13:13:13:22 | source(...) | main.rs:16:10:16:10 | c | $@ | main.rs:13:13:13:22 | source(...) | source(...) |
 | main.rs:32:10:32:11 | * ... | main.rs:31:10:31:19 | source(...) | main.rs:32:10:32:11 | * ... | $@ | main.rs:31:10:31:19 | source(...) | source(...) |
 | main.rs:38:10:38:10 | n | main.rs:42:15:42:24 | source(...) | main.rs:38:10:38:10 | n | $@ | main.rs:42:15:42:24 | source(...) | source(...) |
+| main.rs:52:14:52:15 | * ... | main.rs:50:17:50:26 | source(...) | main.rs:52:14:52:15 | * ... | $@ | main.rs:50:17:50:26 | source(...) | source(...) |
+| main.rs:57:14:57:15 | * ... | main.rs:56:25:56:34 | source(...) | main.rs:57:14:57:15 | * ... | $@ | main.rs:56:25:56:34 | source(...) | source(...) |
+| main.rs:65:33:65:34 | * ... | main.rs:63:22:63:31 | source(...) | main.rs:65:33:65:34 | * ... | $@ | main.rs:63:22:63:31 | source(...) | source(...) |
 | main.rs:91:10:91:30 | my_number.to_number(...) | main.rs:90:40:90:49 | source(...) | main.rs:91:10:91:30 | my_number.to_number(...) | $@ | main.rs:90:40:90:49 | source(...) | source(...) |
 | main.rs:101:10:101:31 | my_number.get_number(...) | main.rs:100:41:100:50 | source(...) | main.rs:101:10:101:31 | my_number.get_number(...) | $@ | main.rs:100:41:100:50 | source(...) | source(...) |
 | main.rs:111:10:111:10 | b | main.rs:105:15:105:24 | source(...) | main.rs:111:10:111:10 | b | $@ | main.rs:105:15:105:24 | source(...) | source(...) |
