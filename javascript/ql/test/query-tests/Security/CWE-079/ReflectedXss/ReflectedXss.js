@@ -118,7 +118,7 @@ app.get("invalid/keys/:id", async (req, res) => {
     const invalidKeys = keyArray.filter(key => !whitelist.includes(key));
 
     if (invalidKeys.length) {
-        res.status(400).send(`${invalidKeys.join(', ')} not in whitelist`);
+        res.status(400).send(`${invalidKeys.join(', ')} not in whitelist`); // $ Alert
         return;
     }
 });
