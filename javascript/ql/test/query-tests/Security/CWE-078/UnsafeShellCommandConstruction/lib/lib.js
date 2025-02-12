@@ -1,6 +1,6 @@
 var cp = require("child_process")
 
-module.exports = function (name) {
+module.exports.blah = function (name) {
 	cp.exec("rm -rf " + name); // $ Alert
 
 	cp.execFile(name, [name]);
@@ -19,7 +19,7 @@ function cla() { }
 cla.prototype.method = function (name) {
 	cp.exec("rm -rf " + name); // $ Alert
 }
-module.exports = new cla();
+module.exports.cla = new cla();
 
 
 function cla2() { }
@@ -474,7 +474,7 @@ const {promisify} = require('util');
 
 const exec = promisify(require('child_process').exec);
 
-module.exports = function check(config) {
+module.exports.check = function check(config) {
     const cmd = path.join(config.installedPath, 'myBinary -v'); // $ Alert
     return exec(cmd);
 }
