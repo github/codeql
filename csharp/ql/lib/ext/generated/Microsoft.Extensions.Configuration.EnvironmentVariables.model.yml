@@ -11,4 +11,3 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationProvider", "Load", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

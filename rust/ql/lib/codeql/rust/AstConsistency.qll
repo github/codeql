@@ -78,6 +78,12 @@ private import codeql.rust.elements.internal.PathResolution
 /** Holds if `p` may resolve to multiple items including `i`. */
 query predicate multiplePathResolutions(Path p, ItemNode i) {
   i = resolvePath(p) and
+  // `use foo::bar` may use both a type `bar` and a value `bar`
+  not p =
+    any(UseTree use |
+      not use.isGlob() and
+      not use.hasUseTreeList()
+    ).getPath() and
   strictcount(resolvePath(p)) > 1
 }
 

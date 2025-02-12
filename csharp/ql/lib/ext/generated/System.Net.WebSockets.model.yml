@@ -19,6 +19,8 @@ extensions:
       - ["System.Net.WebSockets", "WebSocketContext", True, "get_SecWebSocketVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketContext", True, "get_User", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketContext", True, "get_WebSocket", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", False, "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean,System.Nullable<System.Net.WebSockets.WebSocketCloseStatus>,System.String)", "", "Argument[3]", "Argument[this].Property[System.Net.WebSockets.WebSocketReceiveResult.CloseStatus]", "value", "dfc-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", False, "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean,System.Nullable<System.Net.WebSockets.WebSocketCloseStatus>,System.String)", "", "Argument[4]", "Argument[this].Property[System.Net.WebSockets.WebSocketReceiveResult.CloseStatusDescription]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -84,4 +86,8 @@ extensions:
       - ["System.Net.WebSockets", "WebSocketException", "get_ErrorCode", "()", "summary", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketException", "get_WebSocketErrorCode", "()", "summary", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean)", "summary", "df-generated"]
-      - ["System.Net.WebSockets", "WebSocketReceiveResult", "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean,System.Nullable<System.Net.WebSockets.WebSocketCloseStatus>,System.String)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_CloseStatus", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_CloseStatusDescription", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_Count", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_EndOfMessage", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_MessageType", "()", "summary", "df-generated"]

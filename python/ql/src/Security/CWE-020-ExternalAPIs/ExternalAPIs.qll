@@ -171,6 +171,10 @@ private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Not used for PR analysis
+  }
 }
 
 /** Global taint-tracking from `RemoteFlowSource`s to `ExternalApiDataNode`s. */

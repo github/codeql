@@ -553,7 +553,6 @@ fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
         enums: grammar.enums.iter().map(enum_to_extractor_info).collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
-    // the concat dance is currently required by bazel
     let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;
     let res = template.render_to_string(&extractor_info)?;
     Ok(fix_blank_lines(&res))

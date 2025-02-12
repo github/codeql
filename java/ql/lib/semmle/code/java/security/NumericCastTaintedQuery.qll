@@ -104,6 +104,13 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(NumericNarrowingCastExpr cast |
+      cast.getExpr() = sink.asExpr() and
+      result = cast.getLocation()
+    )
+  }
 }
 
 /**
