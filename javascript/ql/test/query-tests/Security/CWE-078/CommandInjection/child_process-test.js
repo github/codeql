@@ -59,7 +59,7 @@ var server = http.createServer(function(req, res) {
     let myArgs = [];
     myArgs.push(`-` + "c");
     myArgs.push(cmd);
-    cp.execFile(`/bin` + "/bash", myArgs); // NOT OK - but no support for `[].push()` for indirect arguments [INCONSISTENCY] 
+    cp.execFile(`/bin` + "/bash", myArgs); // $ MISSING: Alert - no support for `[].push()` for indirect arguments
 
 });
 
