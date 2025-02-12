@@ -1,0 +1,3 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - rusqlite = { version = "0.33", features = ["bundled"] }
