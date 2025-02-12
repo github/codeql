@@ -43,12 +43,12 @@ var server = http.createServer(function(req, res) {
     args[1] = cmd;  // $ Alert
     cp.execFile("/bin/bash", args);
 
-    let args = [];
+    args = [];
     args[0] = "-c";
     args[1] = cmd;  // $ Alert
     run("sh", args);
 
-    let args = [];
+    args = [];
     args[0] = `-` + "c";
     args[1] = cmd; // $ Alert
     cp.execFile(`/bin` + "/bash", args);
@@ -56,10 +56,10 @@ var server = http.createServer(function(req, res) {
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert
 
-	let myArgs = [];
+    let myArgs = [];
     myArgs.push(`-` + "c");
     myArgs.push(cmd);
-    cp.execFile(`/bin` + "/bash", args); // NOT OK - but no support for `[].push()` for indirect arguments [INCONSISTENCY] 
+    cp.execFile(`/bin` + "/bash", myArgs); // NOT OK - but no support for `[].push()` for indirect arguments [INCONSISTENCY] 
 
 });
 
