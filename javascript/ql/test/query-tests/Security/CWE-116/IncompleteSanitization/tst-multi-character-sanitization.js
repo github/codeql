@@ -88,11 +88,11 @@
 
   x = x.replace(/^(\.\.\/?)+/g, "");
 
-  x = x.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, function( // $ Alert
+  x = x.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, function(
     $0
   ) {
     return unknown ? $0 : "";
-  });
+  }); // $ Alert[js/incomplete-multi-character-sanitization]
 
   x = x.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, ""); // $ MISSING: Alert
 
