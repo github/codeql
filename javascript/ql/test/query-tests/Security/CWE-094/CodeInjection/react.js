@@ -1,6 +1,6 @@
 import React from "react";
 import {Helmet} from "react-helmet";
- 
+
 class Application extends React.Component {
   render () {
     return (
