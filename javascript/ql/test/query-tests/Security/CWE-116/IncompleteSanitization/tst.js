@@ -2,71 +2,71 @@ let express = require('express');
 var app = express();
 
 function bad1(s) {
-  return s.replace("'", "");
+  return s.replace("'", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad2(s) {
-  return s.replace(/'/, "");
+  return s.replace(/'/, ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad3(s) {
-  return s.replace(/'/g, "\\'");
+  return s.replace(/'/g, "\\'"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad4(s) {
-  return s.replace(/'/g, "\\$&");
+  return s.replace(/'/g, "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad5(s) {
-  return s.replace(/['"]/g, "\\$&");
+  return s.replace(/['"]/g, "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad6(s) {
-  return s.replace(/(['"])/g, "\\$1");
+  return s.replace(/(['"])/g, "\\$1"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad7(s) {
-  return s.replace(/('|")/g, "\\$1");
+  return s.replace(/('|")/g, "\\$1"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad8(s) {
-  return s.replace('|', '');
+  return s.replace('|', ''); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad9(s) {
-  return s.replace(/"/g, "\\\"");
+  return s.replace(/"/g, "\\\""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad10(s) {
-  return s.replace("/", "%2F");
+  return s.replace("/", "%2F"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad11(s) {
-  return s.replace("%25", "%");
+  return s.replace("%25", "%"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad12(s) {
-  return s.replace(`'`, "");
+  return s.replace(`'`, ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad13(s) {
-  return s.replace("'", ``);
+  return s.replace("'", ``); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad14(s) {
-  return s.replace(`'`, ``);
+  return s.replace(`'`, ``); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad15(s) {
-  return s.replace("'" + "", "");
+  return s.replace("'" + "", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad16(s) {
-  return s.replace("'", "" + "");
+  return s.replace("'", "" + ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad17(s) {
-  return s.replace("'" + "", "" + "");
+  return s.replace("'" + "", "" + ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function good1(s) {
@@ -190,7 +190,7 @@ app.get('/some/path', function(req, res) {
 
 (function (s) {
 	var indirect = /'/;
-	return s.replace(indirect, "");
+	return s.replace(indirect, ""); // $ Alert[js/incomplete-sanitization]
 });
 
 (function (s) {
@@ -199,7 +199,7 @@ app.get('/some/path', function(req, res) {
 });
 
 function bad18(p) {
-  return p.replace("/../", "");
+  return p.replace("/../", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 function typicalBadHtmlSanitizers(s) {
@@ -342,15 +342,15 @@ function bad18NewRegExp(p) {
 }
 
 function bad4NewRegExpG(s) {
-	return s.replace(new RegExp("\'","g"), "\\$&");
+	return s.replace(new RegExp("\'","g"), "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad4NewRegExp(s) {
-	return s.replace(new RegExp("\'"), "\\$&");
+	return s.replace(new RegExp("\'"), "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function bad4NewRegExpUnknown(s) {
-	return s.replace(new RegExp("\'", unknownFlags()), "\\$&");
+	return s.replace(new RegExp("\'", unknownFlags()), "\\$&"); // $ Alert[js/incomplete-sanitization]
 }
 
 function newlinesNewReGexp(s) {
@@ -359,8 +359,8 @@ function newlinesNewReGexp(s) {
 	x.replace(new RegExp("\n", "g"), "").replace(x, y);
 	x.replace(x, y).replace(new RegExp("\n", "g"), "");
 
-	x.replace(new RegExp("\n"), "").replace(x, y);
-	x.replace(x, y).replace(new RegExp("\n"), "");
+	x.replace(new RegExp("\n"), "").replace(x, y); // $ Alert[js/incomplete-sanitization]
+	x.replace(x, y).replace(new RegExp("\n"), ""); // $ Alert[js/incomplete-sanitization]
 
 	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y);
 	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), "");
