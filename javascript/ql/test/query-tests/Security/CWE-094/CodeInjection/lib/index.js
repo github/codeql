@@ -111,17 +111,17 @@ export class AccessPathClass {
 export class AccessPathClassBB {
     constructor(taint) {
       this.taint = taint;
-  
+
       var options1 = {taintedOption: taint};
       if (Math.random() < 0.5) { console.log("foo"); }
       this.options1 = options1;
-  
+
       var options2;
       if (Math.random() < 0.5) { console.log("foo"); }
       options2 = {taintedOption: taint};
       if (Math.random() < 0.5) { console.log("foo"); }
       this.options2 = options2;
-  
+
       var options3;
       if (Math.random() < 0.5) { console.log("foo"); }
       options3 = {};
@@ -130,7 +130,7 @@ export class AccessPathClassBB {
       if (Math.random() < 0.5) { console.log("foo"); }
       this.options3 = options3;
     }
-  
+
     doesTaint() {
       eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
       eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
@@ -138,4 +138,3 @@ export class AccessPathClassBB {
       eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
     }
   }
-  
