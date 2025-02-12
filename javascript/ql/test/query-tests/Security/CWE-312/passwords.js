@@ -139,19 +139,19 @@
 });
 
 function indirectLogCall() {
-	console.log.apply(this, arguments);
+	console.log.apply(this, arguments); // $ Alert[js/clear-text-logging]
 }
 var Util = require('util');
 (function() {
     var config = {
         x: password
     };
-    indirectLogCall(config.x); // $ Alert
-    indirectLogCall(process.env); // $ Alert
+    indirectLogCall(config.x);
+    indirectLogCall(process.env);
 
     var procdesc = Util.inspect(process.env).replace(/\n/g, '')
 
-    indirectLogCall(procdesc); // $ Alert
+    indirectLogCall(procdesc);
 
     console.log(process.env); // $ Alert[js/clear-text-logging]
     console.log(process.env.PATH);
