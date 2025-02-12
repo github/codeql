@@ -648,8 +648,12 @@ module PatternTrees {
 
   abstract class PostOrderPatTree extends StandardPatTree, StandardPostOrderTree { }
 
-  class IdentPatTree extends PostOrderPatTree, IdentPat {
-    override Pat getPat(int i) { i = 0 and result = this.getPat() }
+  class IdentPatTree extends StandardPostOrderTree, IdentPat {
+    override AstNode getChildNode(int i) {
+      i = 0 and result = this.getPat()
+      or
+      i = 1 and result = this.getName()
+    }
 
     override predicate last(AstNode node, Completion c) {
       super.last(node, c)
@@ -658,7 +662,11 @@ module PatternTrees {
     }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Edge from succesful subpattern to name
       super.succ(pred, succ, c) and c.(MatchCompletion).succeeded()
+      or
+      // Edge from name to the identifier pattern itself
+      last(this.getName(), pred, c) and succ = this and completionIsNormal(c)
     }
   }
 
