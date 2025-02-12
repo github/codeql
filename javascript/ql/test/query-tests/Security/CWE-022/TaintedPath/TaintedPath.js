@@ -61,7 +61,7 @@ var server = http.createServer(function(req, res) {
     var express = require('express');
     var application = express();
 
-    var views_local = (req, res) => res.render(req.params[0]);
+    var views_local = (req, res) => res.render(req.params[0]); // $ Alert
     application.get('/views/*', views_local);
 
     var views_imported = require("./views");
@@ -72,10 +72,10 @@ var server = http.createServer(function(req, res) {
 var server = http.createServer(function(req, res) {
 	let path = url.parse(req.url, true).query.path;
 
-	res.write(fs.readFileSync(fs.realpathSync(path)));
+	res.write(fs.readFileSync(fs.realpathSync(path))); // $ Alert
 	fs.realpath(path,
 	                function(err, realpath){
-		                res.write(fs.readFileSync(realpath));
+		                res.write(fs.readFileSync(realpath)); // $ Alert
 	                }
 	               );
 

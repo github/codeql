@@ -4,7 +4,7 @@ const unzip = require('unzip');
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
-    const fileName = entry.path;
+    const fileName = entry.path; // $ Alert
     entry.pipe(fs.createWriteStream(fileName));
   });
 
@@ -12,14 +12,14 @@ var Writer = require('fstream').Writer;
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
-    const fileName = entry.path;
+    const fileName = entry.path; // $ Alert
     entry.pipe(Writer({path: fileName}));
   });
 
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
-    const fileName = entry.path;
+    const fileName = entry.path; // $ Alert
     var file = fs.openSync(fileName, "w");
   });
 
@@ -27,11 +27,11 @@ const JSZip = require('jszip');
 const zip = new JSZip();
 const path = require('path');
 function doZipSlip() {
-  for (const name in zip.files) {
+  for (const name in zip.files) { // $ Alert
     fs.createWriteStream(name);
   }
 
-  zip.forEach((name, file) => {
+  zip.forEach((name, file) => { // $ Alert
     fs.createWriteStream(name);
   });
 
