@@ -363,7 +363,7 @@ function MyTrainer(opts) {
 
 MyTrainer.prototype = {
 	train: function() {
-		var command = "learn " + this.learn_args + " " + model; // $ Alert
+		var command = "learn " + this.learn_args + " " + model; // $ MISSING: Alert
 		cp.exec(command);
 	}
 };
