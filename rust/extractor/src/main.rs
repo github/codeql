@@ -186,17 +186,21 @@ fn main() -> anyhow::Result<()> {
         qltest::prepare(&mut cfg)?;
     }
     let start = Instant::now();
-    let flame_layer = if let Some(path) = &cfg.flame_log {
-        tracing_flame::FlameLayer::with_file(path).ok()
+    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.flame_log {
+        tracing_flame::FlameLayer::with_file(path)
+            .ok()
+            .map(|(a, b)| (Some(a), Some(b)))
+            .unwrap_or((None, None))
     } else {
-        None
+        (None, None)
     };
+
     tracing_subscriber::registry()
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
             &cfg.verbosity,
         ))
-        .with(flame_layer.map(|x| x.0))
+        .with(flame_layer)
         .init();
     info!("{cfg:#?}\n");
 
@@ -247,6 +251,5 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-
     extractor.emit_extraction_diagnostics(start, &cfg)
 }
