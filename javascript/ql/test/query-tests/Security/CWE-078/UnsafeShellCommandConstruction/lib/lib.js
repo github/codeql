@@ -363,8 +363,8 @@ function MyTrainer(opts) {
 
 MyTrainer.prototype = {
 	train: function() {
-		var command = "learn " + this.learn_args + " " + model; // $ Alert
-		cp.exec(command); 
+		var command = "learn " + this.learn_args + " " + model; // $ MISSING: Alert - lack of local field step
+		cp.exec(command);
 	}
 };
 module.exports.MyTrainer = MyTrainer;

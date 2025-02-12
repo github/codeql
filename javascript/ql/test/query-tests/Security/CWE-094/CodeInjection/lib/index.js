@@ -48,7 +48,7 @@ export function Template(text, opts) {
 Template.prototype = {
   compile: function () {
     var opts = this.opts;
-    eval("  var " + opts.varName + " = something();"); // $ Alert
+    eval("  var " + opts.varName + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
   },
   // The below are justs tests that ensure the global-access-path computations terminate.
   pathsTerminate1: function (node, prev) {
@@ -100,10 +100,10 @@ export class AccessPathClass {
   }
 
   doesTaint() {
-    eval("  var " + this.options1.taintedOption + " = something();"); // $ Alert
-    eval("  var " + this.options2.taintedOption + " = something();"); // $ Alert
-    eval("  var " + this.options3.taintedOption + " = something();"); // $ Alert
-    eval("  var " + this.taint + " = something();"); // $ Alert
+    eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
   }
 }
 
@@ -132,10 +132,10 @@ export class AccessPathClassBB {
     }
   
     doesTaint() {
-      eval("  var " + this.options1.taintedOption + " = something();"); // $ Alert
-      eval("  var " + this.options2.taintedOption + " = something();"); // $ Alert
-      eval("  var " + this.options3.taintedOption + " = something();"); // $ Alert
-      eval("  var " + this.taint + " = something();"); // $ Alert
+      eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
     }
   }
   
