@@ -56,12 +56,22 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     not source = target
   }
 
+  newtype TNode =
+    THashOperation(LocatableElement e) or
+    THashAlgorithm(LocatableElement e) or
+    TKeyDerivationOperation(LocatableElement e) or
+    TKeyDerivationAlgorithm(LocatableElement e) or
+    TEncryptionOperation(LocatableElement e) or
+    TSymmetricAlgorithm(LocatableElement e) or
+    TEllipticCurveAlgorithm(LocatableElement e) or
+    TModeOfOperationAlgorithm(LocatableElement e)
+
   /**
    * The base class for all cryptographic assets, such as operations and algorithms.
    *
    * Each `NodeBase` is a node in a graph of cryptographic operations, where the edges are the relationships between the nodes.
    */
-  abstract class NodeBase instanceof LocatableElement {
+  abstract class NodeBase extends TNode {
     /**
      * Returns a string representation of this node, usually the name of the operation/algorithm/property.
      */
@@ -70,7 +80,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Returns the location of this node in the code.
      */
-    Location getLocation() { result = super.getLocation() }
+    abstract Location getLocation();
 
     /**
      * Gets the origin of this node, e.g., a string literal in source describing it.
@@ -128,6 +138,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class Algorithm extends Asset {
+    final override string toString() { result = this.getAlgorithmType() }
+
     /**
      * Gets the name of this algorithm, e.g., "AES" or "SHA".
      */
@@ -138,7 +150,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract string getRawAlgorithmName();
 
-    final override string toString() { result = this.getAlgorithmName() }
+    /**
+     * Gets the type of this algorithm, e.g., "hash" or "key derivation".
+     */
+    abstract string getAlgorithmType();
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ONLY_KNOWN]
+      key = "name" and value = this.getAlgorithmName() and location = this.getLocation()
+      or
+      // [ONLY_KNOWN]
+      key = "raw_name" and value = this.getRawAlgorithmName() and location = this.getLocation()
+    }
   }
 
   /**
@@ -147,81 +172,318 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * This operation takes an input message of arbitrary content and length and produces a fixed-size
    * hash value as the output using a specified hashing algorithm.
    */
-  abstract class HashOperation extends Operation {
+  abstract class HashOperation extends Operation, THashOperation {
     abstract override HashAlgorithm getAlgorithm();
 
-    override string getOperationName() { result = "HASH" }
+    override string getOperationName() { result = "HashOperation" }
   }
 
   newtype THashType =
+    MD2() or
+    MD4() or
     MD5() or
     SHA1() or
-    SHA256() or
-    SHA512() or
+    SHA2() or
+    SHA3() or
+    RIPEMD160() or
+    WHIRLPOOL() or
     OtherHashType()
 
   /**
    * A hashing algorithm that transforms variable-length input into a fixed-size hash value.
    */
-  abstract class HashAlgorithm extends Algorithm {
+  abstract class HashAlgorithm extends Algorithm, THashAlgorithm {
+    override string getAlgorithmType() { result = "HashAlgorithm" }
+
     final predicate hashTypeToNameMapping(THashType type, string name) {
+      type instanceof MD2 and name = "MD2"
+      or
+      type instanceof MD4 and name = "MD4"
+      or
       type instanceof MD5 and name = "MD5"
       or
-      type instanceof SHA1 and name = "SHA-1"
+      type instanceof SHA1 and name = "SHA1"
       or
-      type instanceof SHA256 and name = "SHA-256"
+      type instanceof SHA2 and name = "SHA2"
       or
-      type instanceof SHA512 and name = "SHA-512"
+      type instanceof SHA3 and name = "SHA3"
+      or
+      type instanceof RIPEMD160 and name = "RIPEMD160"
+      or
+      type instanceof WHIRLPOOL and name = "WHIRLPOOL"
       or
       type instanceof OtherHashType and name = this.getRawAlgorithmName()
     }
 
+    /**
+     * Gets the type of this hashing algorithm, e.g., MD5 or SHA.
+     *
+     * When modeling a new hashing algorithm, use this predicate to specify the type of the algorithm.
+     */
     abstract THashType getHashType();
 
     override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashType(), result) }
+
+    /**
+     * Gets the digest size of SHA2 or SHA3 algorithms.
+     *
+     * This predicate does not need to hold for other algorithms,
+     * as the digest size is already known based on the algorithm itself.
+     *
+     * For `OtherHashType` algorithms where a digest size should be reported, `THashType`
+     * should be extended to explicitly model that algorithm. If the algorithm has variable
+     * or multiple digest size variants, a similar predicate to this one must be defined
+     * for that algorithm to report the digest size.
+     */
+    abstract string getSHA2OrSHA3DigestSize(Location location);
+
+    bindingset[type]
+    private string getDigestSize(THashType type, Location location) {
+      type instanceof MD2 and result = "128"
+      or
+      type instanceof MD4 and result = "128"
+      or
+      type instanceof MD5 and result = "128"
+      or
+      type instanceof SHA1 and result = "160"
+      or
+      type instanceof SHA2 and result = this.getSHA2OrSHA3DigestSize(location)
+      or
+      type instanceof SHA3 and result = this.getSHA2OrSHA3DigestSize(location)
+      or
+      type instanceof RIPEMD160 and result = "160"
+      or
+      type instanceof WHIRLPOOL and result = "512"
+    }
+
+    final override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "digest_size" and
+      if exists(this.getDigestSize(this.getHashType(), location))
+      then value = this.getDigestSize(this.getHashType(), location)
+      else (
+        value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+      )
+    }
   }
 
   /**
    * An operation that derives one or more keys from an input value.
    */
-  abstract class KeyDerivationOperation extends Operation {
-    override string getOperationName() { result = "KEY_DERIVATION" }
+  abstract class KeyDerivationOperation extends Operation, TKeyDerivationOperation {
+    final override Location getLocation() {
+      exists(LocatableElement le | this = TKeyDerivationOperation(le) and result = le.getLocation())
+    }
+
+    override string getOperationName() { result = "KeyDerivationOperation" }
   }
 
   /**
    * An algorithm that derives one or more keys from an input value.
+   *
+   * Only use this class to model UNKNOWN key derivation algorithms.
+   *
+   * For known algorithms, use the specialized classes, e.g., `HKDF` and `PKCS12KDF`.
    */
-  abstract class KeyDerivationAlgorithm extends Algorithm {
-    abstract override string getAlgorithmName();
+  abstract class KeyDerivationAlgorithm extends Algorithm, TKeyDerivationAlgorithm {
+    final override Location getLocation() {
+      exists(LocatableElement le | this = TKeyDerivationAlgorithm(le) and result = le.getLocation())
+    }
+
+    override string getAlgorithmType() { result = "KeyDerivationAlgorithm" }
+
+    override string getAlgorithmName() { result = this.getRawAlgorithmName() }
+  }
+
+  /**
+   * An algorithm that derives one or more keys from an input value, using a configurable digest algorithm.
+   */
+  abstract private class KeyDerivationWithDigestParameter extends KeyDerivationAlgorithm {
+    abstract HashAlgorithm getHashAlgorithm();
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        edgeName = "uses" and
+        if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this
+      )
+    }
   }
 
   /**
    * HKDF key derivation function
    */
-  abstract class HKDF extends KeyDerivationAlgorithm {
+  abstract class HKDF extends KeyDerivationWithDigestParameter {
     final override string getAlgorithmName() { result = "HKDF" }
+  }
 
-    abstract HashAlgorithm getHashAlgorithm();
+  /**
+   * PBKDF2 key derivation function
+   */
+  abstract class PBKDF2 extends KeyDerivationWithDigestParameter {
+    final override string getAlgorithmName() { result = "PBKDF2" }
 
-    override NodeBase getChild(string edgeName) {
-      result = super.getChild(edgeName)
+    /**
+     * Gets the iteration count of this key derivation algorithm.
+     */
+    abstract string getIterationCount(Location location);
+
+    /**
+     * Gets the bit-length of the derived key.
+     */
+    abstract string getKeyLength(Location location);
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
       or
-      edgeName = "digest" and result = this.getHashAlgorithm()
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "iterations" and
+        if exists(this.getIterationCount(location))
+        then value = this.getIterationCount(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "key_len" and
+        if exists(this.getKeyLength(location))
+        then value = this.getKeyLength(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
     }
   }
 
   /**
-   * PKCS #12 key derivation function
+   * PKCS12KDF key derivation function
    */
-  abstract class PKCS12KDF extends KeyDerivationAlgorithm {
-    final override string getAlgorithmName() { result = "PKCS12KDF" }
+  abstract class PKCS12KDF extends KeyDerivationWithDigestParameter {
+    override string getAlgorithmName() { result = "PKCS12KDF" }
 
-    abstract HashAlgorithm getHashAlgorithm();
+    /**
+     * Gets the iteration count of this key derivation algorithm.
+     */
+    abstract string getIterationCount(Location location);
 
-    override NodeBase getChild(string edgeName) {
-      result = super.getChild(edgeName)
+    /**
+     * Gets the raw ID argument specifying the intended use of the derived key.
+     *
+     * The intended use is defined in RFC 7292, appendix B.3, as follows:
+     *
+     * This standard specifies 3 different values for the ID byte mentioned above:
+     *
+     *   1.  If ID=1, then the pseudorandom bits being produced are to be used
+     *       as key material for performing encryption or decryption.
+     *
+     *   2.  If ID=2, then the pseudorandom bits being produced are to be used
+     *       as an IV (Initial Value) for encryption or decryption.
+     *
+     *   3.  If ID=3, then the pseudorandom bits being produced are to be used
+     *       as an integrity key for MACing.
+     */
+    abstract string getIDByte(Location location);
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
       or
-      edgeName = "digest" and result = this.getHashAlgorithm()
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "iterations" and
+        if exists(this.getIterationCount(location))
+        then value = this.getIterationCount(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "id_byte" and
+        if exists(this.getIDByte(location))
+        then value = this.getIDByte(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+    }
+  }
+
+  /**
+   * scrypt key derivation function
+   */
+  abstract class SCRYPT extends KeyDerivationAlgorithm {
+    final override string getAlgorithmName() { result = "scrypt" }
+
+    /**
+     * Gets the iteration count (`N`) argument
+     */
+    abstract string get_N(Location location);
+
+    /**
+     * Gets the block size (`r`) argument
+     */
+    abstract string get_r(Location location);
+
+    /**
+     * Gets the parallelization factor (`p`) argument
+     */
+    abstract string get_p(Location location);
+
+    /**
+     * Gets the derived key length argument
+     */
+    abstract string getDerivedKeyLength(Location location);
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "N" and
+        if exists(this.get_N(location))
+        then value = this.get_N(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "r" and
+        if exists(this.get_r(location))
+        then value = this.get_r(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "p" and
+        if exists(this.get_p(location))
+        then value = this.get_p(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "key_len" and
+        if exists(this.getDerivedKeyLength(location))
+        then value = this.getDerivedKeyLength(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
     }
   }
 
@@ -246,7 +508,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Elliptic curve algorithms
    */
-  newtype TEllipticCurveFamily =
+  newtype TEllipticCurveType =
     NIST() or
     SEC() or
     NUMS() or
@@ -257,16 +519,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     C2() or
     SM2() or
     ES() or
-    OtherEllipticCurveFamilyType()
+    OtherEllipticCurveType()
 
-  abstract class EllipticCurve extends Algorithm {
+  abstract class EllipticCurve extends Algorithm, TEllipticCurveAlgorithm {
     abstract string getKeySize(Location location);
 
-    abstract TEllipticCurveFamily getCurveFamilyType();
+    abstract TEllipticCurveType getCurveFamily();
 
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
+      // [KNOWN_OR_UNKNOWN]
       key = "key_size" and
       if exists(this.getKeySize(location))
       then value = this.getKeySize(location)
@@ -306,21 +569,47 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Block cipher modes of operation algorithms
    */
-  newtype TModeOperation =
+  newtype TModeOperationType =
     ECB() or
     CBC() or
+    CFB() or
+    OFB() or
+    CTR() or
+    GCM() or
+    CCM() or
+    XTS() or
     OtherMode()
 
   abstract class ModeOfOperation extends Algorithm {
-    final private predicate modeToNameMapping(TModeOperation type, string name) {
+    override string getAlgorithmType() { result = "ModeOfOperation" }
+
+    /**
+     * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
+     *
+     * When modeling a new mode of operation, use this predicate to specify the type of the mode.
+     */
+    abstract TModeOperationType getModeType();
+
+    bindingset[type]
+    final predicate modeToNameMapping(TModeOperationType type, string name) {
       type instanceof ECB and name = "ECB"
       or
       type instanceof CBC and name = "CBC"
       or
+      type instanceof CFB and name = "CFB"
+      or
+      type instanceof OFB and name = "OFB"
+      or
+      type instanceof CTR and name = "CTR"
+      or
+      type instanceof GCM and name = "GCM"
+      or
+      type instanceof CCM and name = "CCM"
+      or
+      type instanceof XTS and name = "XTS"
+      or
       type instanceof OtherMode and name = this.getRawAlgorithmName()
     }
-
-    abstract TModeOperation getModeType();
 
     override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
   }
@@ -328,40 +617,120 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A helper type for distinguishing between block and stream ciphers.
    */
-  newtype TCipherStructure =
+  newtype TCipherStructureType =
     Block() or
-    Stream()
+    Stream() or
+    UnknownCipherStructureType()
+
+  private string getCipherStructureTypeString(TCipherStructureType type) {
+    type instanceof Block and result = "Block"
+    or
+    type instanceof Stream and result = "Stream"
+    or
+    type instanceof UnknownCipherStructureType and result instanceof UnknownPropertyValue
+  }
 
   /**
    * Symmetric algorithms
    */
-  newtype TSymmetricCipherFamilyType =
+  newtype TSymmetricCipherType =
     AES() or
-    OtherSymmetricCipherFamilyType()
+    Camellia() or
+    DES() or
+    TripleDES() or
+    IDEA() or
+    CAST5() or
+    ChaCha20() or
+    RC4() or
+    RC5() or
+    OtherSymmetricCipherType()
 
   abstract class SymmetricAlgorithm extends Algorithm {
-    abstract TSymmetricCipherFamilyType getSymmetricCipherFamilyType();
+    final TCipherStructureType getCipherStructure() {
+      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), _, result)
+    }
 
+    final override string getAlgorithmName() {
+      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
+    }
+
+    final override string getAlgorithmType() { result = "SymmetricAlgorithm" }
+
+    /**
+     * Gets the key size of this symmetric cipher, e.g., "128" or "256".
+     */
     abstract string getKeySize(Location location);
 
-    abstract TCipherStructure getCipherType();
+    /**
+     * Gets the type of this symmetric cipher, e.g., "AES" or "ChaCha20".
+     */
+    abstract TSymmetricCipherType getCipherFamily();
+
+    /**
+     * Gets the mode of operation of this symmetric cipher, e.g., "GCM" or "CBC".
+     */
+    abstract ModeOfOperation getModeOfOperation();
+
+    bindingset[type]
+    final private predicate cipherFamilyToNameAndStructure(
+      TSymmetricCipherType type, string name, TCipherStructureType s
+    ) {
+      type instanceof AES and name = "AES" and s = Block()
+      or
+      type instanceof Camellia and name = "Camellia" and s = Block()
+      or
+      type instanceof DES and name = "DES" and s = Block()
+      or
+      type instanceof TripleDES and name = "TripleDES" and s = Block()
+      or
+      type instanceof IDEA and name = "IDEA" and s = Block()
+      or
+      type instanceof CAST5 and name = "CAST5" and s = Block()
+      or
+      type instanceof ChaCha20 and name = "ChaCha20" and s = Stream()
+      or
+      type instanceof RC4 and name = "RC4" and s = Stream()
+      or
+      type instanceof RC5 and name = "RC5" and s = Block()
+      or
+      type instanceof OtherSymmetricCipherType and
+      name = this.getRawAlgorithmName() and
+      s = UnknownCipherStructureType()
+    }
 
     //mode, padding scheme, keysize, block/stream, auth'd
     //nodes = mode, padding scheme
     //properties = keysize, block/stream, auth'd
     //leave authd to lang specific
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        edgeName = "mode" and
+        if exists(this.getModeOfOperation())
+        then result = this.getModeOfOperation()
+        else result = this
+      )
+    }
+
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
-      key = "key_size" and
-      if exists(this.getKeySize(location))
-      then value = this.getKeySize(location)
-      else (
-        value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+      // [ALWAYS_KNOWN]: unknown case is handled in `getCipherStructureTypeString`
+      key = "structure" and
+      getCipherStructureTypeString(this.getCipherStructure()) = value and
+      location instanceof UnknownLocation
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "key_size" and
+        if exists(this.getKeySize(location))
+        then value = this.getKeySize(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
       )
-      //add more keys to index props
     }
-
-    abstract ModeOfOperation getModeOfOperation();
   }
 }

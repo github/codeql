@@ -35,6 +35,19 @@ module JCAModel {
       ]
   }
 
+  /**
+   * this may be specified either in the ALG/MODE/PADDING or just ALG format
+   */
+  class CipherStringLiteral extends StringLiteral {
+    CipherStringLiteral() { cipher_names(this.getValue().splitAt("/")) }
+
+    string getAlgorithmName() { result = this.getValue().splitAt("/", 0) }
+
+    string getMode() { result = this.getValue().splitAt("/", 1) }
+
+    string getPadding() { result = this.getValue().splitAt("/", 2) }
+  }
+
   class CipherGetInstanceCall extends Call {
     CipherGetInstanceCall() {
       this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "getInstance")
@@ -43,41 +56,48 @@ module JCAModel {
     Expr getAlgorithmArg() { result = this.getArgument(0) }
   }
 
-  /**
-   * this may be specified either in the ALG/MODE/PADDING or just ALG format
-   */
-  class CipherAlgorithmStringLiteral extends StringLiteral {
-    CipherAlgorithmStringLiteral() { cipher_names(this.getValue().splitAt("/")) }
-  }
+  private module AlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherStringLiteral }
 
-  class ModeOfOperationStringLiteral extends StringLiteral {
-    ModeOfOperationStringLiteral() { cipher_modes(this.(StringLiteral).getValue().splitAt("/")) }
-
-    string getRawAlgorithmName() { result = this.getValue().regexpCapture(".*/(.*)/.*", 1) }
-  }
-
-  class ECBMode extends Crypto::ModeOfOperation {
-    ModeOfOperationStringLiteral mode;
-
-    ECBMode() { modeStringToCipherInstanceArgFlow("ECB", mode, this) }
-
-    override string getRawAlgorithmName() { result = mode.getRawAlgorithmName() }
-
-    predicate modeToNameMapping(Crypto::TModeOperation type, string name) {
-      name = "ECB" and type instanceof Crypto::ECB
-    }
-
-    override Crypto::TModeOperation getModeType() {
-      this.modeToNameMapping(result, this.getRawAlgorithmName())
-    }
-
-    override Crypto::LocatableElement getOrigin(string name) {
-      result = mode and name = mode.toString()
+    predicate isSink(DataFlow::Node sink) {
+      exists(CipherGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
     }
   }
 
-  abstract class CipherAlgorithmPadding extends Crypto::NodeBase {
-    string getValue() { result = "" }
+  module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
+
+  class CipherGetInstanceAlgorithmArg extends Expr {
+    CipherGetInstanceAlgorithmArg() {
+      exists(CipherGetInstanceCall call | this = call.getArgument(0))
+    }
+
+    StringLiteral getOrigin() {
+      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result), DataFlow::exprNode(this))
+    }
+  }
+
+  class ModeStringLiteral extends Crypto::ModeOfOperation {
+    CipherStringLiteral instance;
+
+    ModeStringLiteral() {
+      this = Crypto::TModeOfOperationAlgorithm(instance) and
+      exists(instance.getMode()) and
+      instance = any(CipherGetInstanceAlgorithmArg call).getOrigin()
+    }
+
+    override Location getLocation() { result = instance.getLocation() }
+
+    override string getRawAlgorithmName() { result = instance.getMode() }
+
+    predicate modeToNameMapping(Crypto::TModeOperationType type, string name) {
+      super.modeToNameMapping(type, name)
+    }
+
+    override Crypto::TModeOperationType getModeType() {
+      this.modeToNameMapping(result, instance.getMode().toUpperCase())
+    }
+
+    CipherStringLiteral getInstance() { result = instance }
   }
 
   //todo refactor
@@ -90,39 +110,6 @@ module JCAModel {
   //     result = this.(StringLiteral).getValue().regexpCapture(".*/.*/(.*)", 1)
   //   }
   // }
-  private module AlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherAlgorithmStringLiteral }
-
-    predicate isSink(DataFlow::Node sink) {
-      exists(CipherGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
-    }
-  }
-
-  module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
-
-  predicate algorithmStringToCipherInstanceArgFlow(
-    string name, CipherAlgorithmStringLiteral origin, Expr arg
-  ) {
-    exists(CipherGetInstanceCall sinkCall |
-      origin.getValue().splitAt("/") = name and
-      arg = sinkCall and
-      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(origin),
-        DataFlow::exprNode(sinkCall.getAlgorithmArg()))
-    )
-  }
-
-  predicate modeStringToCipherInstanceArgFlow(
-    string name, ModeOfOperationStringLiteral mode, Expr arg
-  ) {
-    exists(CipherGetInstanceCall sinkCall |
-      //consider if this should be a more specific predicate
-      mode.getRawAlgorithmName() = name and
-      arg = sinkCall and
-      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(mode),
-        DataFlow::exprNode(sinkCall.getAlgorithmArg()))
-    )
-  }
-
   /**
    * A class to represent when AES is used
    * AND currently it has literal mode and padding provided
@@ -130,32 +117,48 @@ module JCAModel {
    * this currently does not capture the use without a literal
    * though should be extended to
    */
-  class AESAlgo extends Crypto::SymmetricAlgorithm instanceof Expr {
-    CipherAlgorithmStringLiteral alg;
+  class CipherAlgorithm extends Crypto::SymmetricAlgorithm {
+    CipherStringLiteral origin;
+    CipherGetInstanceAlgorithmArg instance;
 
-    AESAlgo() { algorithmStringToCipherInstanceArgFlow("AES", alg, this) }
+    CipherAlgorithm() {
+      this = Crypto::TSymmetricAlgorithm(instance) and
+      instance.getOrigin() = origin
+    }
 
-    //todo this is really not correct yet
+    override Location getLocation() { result = instance.getLocation() }
+
     override Crypto::ModeOfOperation getModeOfOperation() {
-      none()
-      //exists(Crypto::ModeOfOperation mode | mode = this and result = this)
+      result.(ModeStringLiteral).getInstance() = origin
     }
 
     override Crypto::LocatableElement getOrigin(string name) {
-      result = alg and name = alg.toString()
+      result = origin and name = origin.toString()
     }
 
-    override string getAlgorithmName() { result = "AES" }
+    override string getRawAlgorithmName() { result = origin.getValue() }
 
-    override string getRawAlgorithmName() { result = alg.getValue() }
-
-    override Crypto::TSymmetricCipherFamilyType getSymmetricCipherFamilyType() {
-      result instanceof Crypto::AES
+    override Crypto::TSymmetricCipherType getCipherFamily() {
+      this.cipherNameMapping(result, origin.getAlgorithmName())
     }
 
-    //temp hacks for testing
-    override string getKeySize(Location location) { result = "" }
+    override string getKeySize(Location location) { none() }
 
-    override Crypto::TCipherStructure getCipherType() { none() }
+    bindingset[name]
+    private predicate cipherNameMappingKnown(Crypto::TSymmetricCipherType type, string name) {
+      name = "AES" and
+      type instanceof Crypto::AES
+      or
+      name = "RC4" and
+      type instanceof Crypto::RC4
+    }
+
+    bindingset[name]
+    predicate cipherNameMapping(Crypto::TSymmetricCipherType type, string name) {
+      this.cipherNameMappingKnown(type, name)
+      or
+      not this.cipherNameMappingKnown(_, name) and
+      type instanceof Crypto::OtherSymmetricCipherType
+    }
   }
 }

@@ -4,78 +4,172 @@ import semmle.code.cpp.dataflow.new.DataFlow
 module OpenSSLModel {
   import Language
 
-  abstract class KeyDerivationOperation extends Crypto::KeyDerivationOperation { }
+  class FunctionCallOrMacroAccess extends Element {
+    FunctionCallOrMacroAccess() { this instanceof FunctionCall or this instanceof MacroAccess }
 
-  class SHA1Algo extends Crypto::HashAlgorithm instanceof MacroAccess {
-    SHA1Algo() { this.getMacro().getName() = "SN_sha1" }
-
-    override string getRawAlgorithmName() { result = "SN_sha1" }
-
-    override Crypto::THashType getHashType() { result instanceof Crypto::SHA1 }
+    string getTargetName() {
+      result = this.(FunctionCall).getTarget().getName()
+      or
+      result = this.(MacroAccess).getMacroName()
+    }
   }
 
+  /**
+   * Hash function references in OpenSSL.
+   */
+  predicate hash_ref_type_mapping_known(string name, Crypto::THashType algo) {
+    // `ma` name has an LN_ or SN_ prefix, which we want to ignore
+    // capture any name after the _ prefix using regex matching
+    name = ["sha1", "sha160"] and algo instanceof Crypto::SHA1
+    or
+    name = ["sha224", "sha256", "sha384", "sha512"] and algo instanceof Crypto::SHA2
+    or
+    name = ["sha3-224", "sha3-256", "sha3-384", "sha3-512"] and algo instanceof Crypto::SHA3
+    or
+    name = "md2" and algo instanceof Crypto::MD2
+    or
+    name = "md4" and algo instanceof Crypto::MD4
+    or
+    name = "md5" and algo instanceof Crypto::MD5
+    or
+    name = "ripemd160" and algo instanceof Crypto::RIPEMD160
+    or
+    name = "whirlpool" and algo instanceof Crypto::WHIRLPOOL
+  }
+
+  predicate hash_ref_type_mapping(FunctionCallOrMacroAccess ref, string name, Crypto::THashType algo) {
+    name = ref.getTargetName().regexpCapture("(?:SN_|LN_|EVP_)([a-z0-9]+)", 1) and
+    hash_ref_type_mapping_known(name, algo)
+  }
+
+  class HashAlgorithmRef extends Crypto::HashAlgorithm {
+    FunctionCallOrMacroAccess instance;
+
+    HashAlgorithmRef() {
+      this = Crypto::THashAlgorithm(instance) and
+      hash_ref_type_mapping(instance, _, _)
+    }
+
+    override string getSHA2OrSHA3DigestSize(Location location) {
+      (
+        this.getHashType() instanceof Crypto::SHA2 or
+        this.getHashType() instanceof Crypto::SHA3
+      ) and
+      exists(string name |
+        hash_ref_type_mapping(instance, name, this.getHashType()) and
+        result = name.regexpFind("\\d{3}", 0, _) and
+        location = instance.getLocation()
+      )
+    }
+
+    override string getRawAlgorithmName() { result = instance.getTargetName() }
+
+    override Crypto::THashType getHashType() { hash_ref_type_mapping(instance, _, result) }
+
+    Element getInstance() { result = instance }
+
+    override Location getLocation() { result = instance.getLocation() }
+  }
+
+  /**
+   * Data-flow configuration for key derivation algorithm flow to EVP_KDF_derive.
+   */
   module AlgorithmToEVPKeyDeriveConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof KeyDerivationAlgorithm }
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr() = any(KeyDerivationAlgorithm a).getInstance()
+    }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(EVP_KDF_derive kdo | sink.asExpr() = kdo.getAlgorithmArg())
+      exists(EVP_KDF_derive kdo |
+        sink.asExpr() = kdo.getAlgorithmArg()
+        or
+        sink.asExpr() = kdo.getContextArg() // via `EVP_KDF_CTX_set_params`
+      )
+    }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      none() // TODO
     }
   }
 
   module AlgorithmToEVPKeyDeriveFlow = DataFlow::Global<AlgorithmToEVPKeyDeriveConfig>;
 
-  predicate algorithm_to_EVP_KDF_derive(Crypto::Algorithm algo, EVP_KDF_derive derive) {
-    algo.(Expr).getEnclosingFunction() = derive.(Expr).getEnclosingFunction()
+  predicate algorithm_to_EVP_KDF_derive(KeyDerivationAlgorithm algo, EVP_KDF_derive derive) {
+    none()
   }
 
-  class EVP_KDF_derive extends KeyDerivationOperation instanceof FunctionCall {
-    EVP_KDF_derive() { this.getTarget().getName() = "EVP_KDF_derive" }
+  /**
+   * Key derivation operation (e.g., `EVP_KDF_derive`)
+   */
+  abstract class KeyDerivationOperation extends Crypto::KeyDerivationOperation { }
+
+  class EVP_KDF_derive extends KeyDerivationOperation {
+    FunctionCall instance;
+
+    EVP_KDF_derive() {
+      this = Crypto::TKeyDerivationOperation(instance) and
+      instance.getTarget().getName() = "EVP_KDF_derive"
+    }
 
     override Crypto::Algorithm getAlgorithm() { algorithm_to_EVP_KDF_derive(result, this) }
 
-    Expr getAlgorithmArg() { result = this.(FunctionCall).getArgument(3) }
+    Expr getAlgorithmArg() { result = instance.getArgument(3) }
+
+    Expr getContextArg() { result = instance.getArgument(0) }
   }
 
-  abstract class KeyDerivationAlgorithm extends Crypto::KeyDerivationAlgorithm { }
+  /**
+   * Key derivation algorithm nodes
+   */
+  abstract class KeyDerivationAlgorithm extends Crypto::KeyDerivationAlgorithm {
+    abstract Expr getInstance();
+  }
 
+  /**
+   * `EVP_KDF_fetch` returns a key derivation algorithm.
+   */
   class EVP_KDF_fetch_Call extends FunctionCall {
     EVP_KDF_fetch_Call() { this.getTarget().getName() = "EVP_KDF_fetch" }
 
     Expr getAlgorithmArg() { result = this.getArgument(1) }
   }
 
-  predicate kdf_names(string algo) { algo = ["HKDF", "PKCS12KDF"] }
+  class EVP_KDF_fetch_AlgorithmArg extends Expr {
+    EVP_KDF_fetch_AlgorithmArg() { exists(EVP_KDF_fetch_Call call | this = call.getAlgorithmArg()) }
+  }
 
-  class KDFAlgorithmStringLiteral extends Crypto::NodeBase instanceof StringLiteral {
+  predicate kdf_names(string algo) { algo = ["HKDF", "PKCS12KDF", "PBKDF2"] }
+
+  class KDFAlgorithmStringLiteral extends StringLiteral {
     KDFAlgorithmStringLiteral() { kdf_names(this.getValue().toUpperCase()) }
-
-    override string toString() { result = this.(StringLiteral).toString() }
-
-    string getValue() { result = this.(StringLiteral).getValue() }
   }
 
   private module AlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof KDFAlgorithmStringLiteral }
 
-    predicate isSink(DataFlow::Node sink) {
-      exists(EVP_KDF_fetch_Call call | sink.asExpr() = call.getAlgorithmArg())
-    }
+    predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof EVP_KDF_fetch_AlgorithmArg }
   }
 
   module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
 
-  predicate algorithmStringToKDFFetchArgFlow(string name, KDFAlgorithmStringLiteral origin, Expr arg) {
-    exists(EVP_KDF_fetch_Call sinkCall |
-      origin.getValue().toUpperCase() = name and
-      arg = sinkCall.getAlgorithmArg() and
-      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(origin), DataFlow::exprNode(arg))
-    )
+  predicate algorithmStringToKDFFetchArgFlow(
+    string name, KDFAlgorithmStringLiteral origin, EVP_KDF_fetch_AlgorithmArg arg
+  ) {
+    origin.getValue().toUpperCase() = name and
+    AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(origin), DataFlow::exprNode(arg))
   }
 
-  class HKDF extends KeyDerivationAlgorithm, Crypto::HKDF instanceof Expr {
+  /**
+   * HKDF key derivation algorithm.
+   */
+  class HKDF extends KeyDerivationAlgorithm, Crypto::HKDF {
     KDFAlgorithmStringLiteral origin;
+    EVP_KDF_fetch_AlgorithmArg instance;
 
-    HKDF() { algorithmStringToKDFFetchArgFlow("HKDF", origin, this) }
+    HKDF() {
+      this = Crypto::TKeyDerivationAlgorithm(instance) and
+      algorithmStringToKDFFetchArgFlow("HKDF", origin, instance)
+    }
 
     override string getRawAlgorithmName() { result = origin.getValue() }
 
@@ -84,19 +178,61 @@ module OpenSSLModel {
     override Crypto::LocatableElement getOrigin(string name) {
       result = origin and name = origin.toString()
     }
+
+    override Expr getInstance() { result = origin }
   }
 
-  class PKCS12KDF extends KeyDerivationAlgorithm, Crypto::PKCS12KDF instanceof Expr {
+  /**
+   * PBKDF2 key derivation algorithm.
+   */
+  class PBKDF2 extends KeyDerivationAlgorithm, Crypto::PBKDF2 {
     KDFAlgorithmStringLiteral origin;
+    EVP_KDF_fetch_AlgorithmArg instance;
 
-    PKCS12KDF() { algorithmStringToKDFFetchArgFlow("PKCS12KDF", origin, this) }
+    PBKDF2() {
+      this = Crypto::TKeyDerivationAlgorithm(instance) and
+      algorithmStringToKDFFetchArgFlow("PBKDF2", origin, instance)
+    }
 
     override string getRawAlgorithmName() { result = origin.getValue() }
 
-    override Crypto::HashAlgorithm getHashAlgorithm() { none() }
+    override string getIterationCount(Location location) { none() } // TODO
 
-    override Crypto::NodeBase getOrigin(string name) {
+    override string getKeyLength(Location location) { none() } // TODO
+
+    override Crypto::HashAlgorithm getHashAlgorithm() { none() } // TODO
+
+    override Crypto::LocatableElement getOrigin(string name) {
       result = origin and name = origin.toString()
     }
+
+    override Expr getInstance() { result = instance }
+  }
+
+  /**
+   * PKCS12KDF key derivation algorithm.
+   */
+  class PKCS12KDF extends KeyDerivationAlgorithm, Crypto::PKCS12KDF {
+    KDFAlgorithmStringLiteral origin;
+    EVP_KDF_fetch_AlgorithmArg instance;
+
+    PKCS12KDF() {
+      this = Crypto::TKeyDerivationAlgorithm(instance) and
+      algorithmStringToKDFFetchArgFlow("PKCS12KDF", origin, instance)
+    }
+
+    override string getRawAlgorithmName() { result = origin.getValue() }
+
+    override string getIterationCount(Location location) { none() } // TODO
+
+    override string getIDByte(Location location) { none() } // TODO
+
+    override Crypto::HashAlgorithm getHashAlgorithm() { none() } // TODO
+
+    override Crypto::LocatableElement getOrigin(string name) {
+      result = origin and name = origin.toString()
+    }
+
+    override Expr getInstance() { result = instance }
   }
 }

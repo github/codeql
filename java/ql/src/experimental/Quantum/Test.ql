@@ -2,7 +2,8 @@
  * @name "PQC Test"
  */
 
- import experimental.Quantum.Language
+import experimental.Quantum.Language
 
-from JCAModel::AESLiteral l 
-select l, l.getAlg(), l.getMode().getValue(), l.getPadding().getValue()
+from Crypto::SymmetricAlgorithm a, Crypto::ModeOfOperation mode
+where a.getModeOfOperation() = mode
+select a, a.getAlgorithmName(), a.getRawAlgorithmName(), mode, mode.getAlgorithmName()
