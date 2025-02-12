@@ -335,7 +335,7 @@ function mergeSelective(dst, src) {
             if (dst[key]) {
                 mergeSelective(dst[key], src[key]);
             } else {
-                dst[key] = src[key];
+                dst[key] = src[key]; // $ Alert
             }
         }
     }
@@ -354,7 +354,7 @@ function mergePlainObjectsOnly(target, source) {
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnly(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK - but flagged anyway due to imprecise barrier for captured variable
+                target[key] = source[key]; // $ Alert - OK - but flagged anyway due to imprecise barrier for captured variable
             }
         });
     }
@@ -390,7 +390,7 @@ function mergeUsingCallback(dst, src) {
         if (dst[key]) {
             mergeUsingCallback(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // $ Alert - but not currently flagged
+            dst[key] = src[key]; // but not currently flagged
         }
     });
 }
@@ -486,7 +486,7 @@ function copyPlainObject(dst, src) {
         if (dst[key] && isPlainObject(src)) {
             copyPlainObject(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK - but flagged anyway
+            dst[key] = src[key]; // $ Alert - OK - but flagged anyway
         }
     }
 }
@@ -602,7 +602,7 @@ function merge_captureBarrier(dest, source) {
         if (dest[key]) {
             merge_captureBarrier(dest[key], source[key]);
         } else {
-            dest[key] = captureBarrier(source[key]); // OK - but currently flagged anyway
+            dest[key] = captureBarrier(source[key]); // $ Alert - OK - but currently flagged anyway
         }
     }
 }

@@ -79,23 +79,23 @@
 	/*
 	 * NOT OK: flagged
 	 */
-	/(\.xxx)|(\.yyy)|(\.zzz)$/;
+	/(\.xxx)|(\.yyy)|(\.zzz)$/; // $ Alert
 	/(^left|right|center)\sbottom$/; // not flagged at the moment due to interior anchors
-	/\.xxx|\.yyy|\.zzz$/ig;
-	/\.xxx|\.yyy|zzz$/;
+	/\.xxx|\.yyy|\.zzz$/ig; // $ Alert
+	/\.xxx|\.yyy|zzz$/; // $ Alert
 	/^([A-Z]|xxx[XY]$)/; // not flagged at the moment due to interior anchors
-	/^(xxx yyy zzz)|(xxx yyy)/i;
-	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i;
-	/^(xxx:)|(yyy:)|(zzz:)/;
-	/^(xxx?:)|(yyy:zzz\/)/;
-	/^@media|@page/;
-	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//;
-	/^click|mouse|touch/;
-	/^http:\/\/good\.com|http:\/\/better\.com/;
-	/^https?:\/\/good\.com|https?:\/\/better\.com/;
-	/^mouse|touch|click|contextmenu|drop|dragover|dragend/;
-	/^xxx:|yyy:/i;
-	/_xxx|_yyy|_zzz$/;
+	/^(xxx yyy zzz)|(xxx yyy)/i; // $ Alert
+	/^(xxx yyy zzz)|(xxx yyy)|(1st( xxx)? yyy)|xxx|1st/i; // $ Alert
+	/^(xxx:)|(yyy:)|(zzz:)/; // $ Alert
+	/^(xxx?:)|(yyy:zzz\/)/; // $ Alert
+	/^@media|@page/; // $ Alert
+	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//; // $ Alert
+	/^click|mouse|touch/; // $ Alert
+	/^http:\/\/good\.com|http:\/\/better\.com/; // $ Alert
+	/^https?:\/\/good\.com|https?:\/\/better\.com/; // $ Alert
+	/^mouse|touch|click|contextmenu|drop|dragover|dragend/; // $ Alert
+	/^xxx:|yyy:/i; // $ Alert
+	/_xxx|_yyy|_zzz$/; // $ Alert
 	/em|%$/; // not flagged at the moment due to the anchor not being for letters
 
 	/*
