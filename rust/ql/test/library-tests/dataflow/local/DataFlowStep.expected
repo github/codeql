@@ -1909,6 +1909,7 @@ models
 | 1058 | Summary: lang:std; crate::thread::current::set_current; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
 | 1059 | Summary: lang:std; crate::thread::current::try_with_current; Argument[0].ReturnValue; ReturnValue; value |
 | 1060 | Summary: lang:std; crate::thread::with_current_name; Argument[0].ReturnValue; ReturnValue; value |
+| 1061 | Summary: repo:https://github.com/rust-lang/futures-rs:futures-executor; crate::local_pool::block_on; Argument[0]; ReturnValue; value |
 storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[0].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | Some | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::<crate::option::Option>::zip_with |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0].Reference in lang:alloc::_::<crate::collections::vec_deque::VecDeque>::retain | &ref | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:alloc::_::<crate::collections::vec_deque::VecDeque>::retain |
