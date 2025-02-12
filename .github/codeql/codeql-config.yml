@@ -8,5 +8,6 @@ paths-ignore:
   - '/java/'
   - '/python/'
   - '/javascript/ql/test'
+  - '/javascript/ql/integration-tests'
   - '/javascript/extractor/tests'
   - '/rust/ql'
