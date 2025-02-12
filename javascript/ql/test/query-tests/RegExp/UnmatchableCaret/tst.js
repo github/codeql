@@ -11,7 +11,7 @@
 
 /a\n^b/m;
 
-/a\\n^b/m; // $ Alert - but not recognised
+/a\\n^b/m; // $ MISSING: Alert
 
 /ab*^c/; // $ Alert
 

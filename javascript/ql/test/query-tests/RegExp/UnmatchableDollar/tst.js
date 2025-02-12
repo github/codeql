@@ -11,7 +11,7 @@
 
 /a$\nb/m;
 
-/a$\\nb/m; // $ Alert - but not recognised
+/a$\\nb/m; // $ MISSING: Alert
 
 /a$b*c/; // $ Alert
 

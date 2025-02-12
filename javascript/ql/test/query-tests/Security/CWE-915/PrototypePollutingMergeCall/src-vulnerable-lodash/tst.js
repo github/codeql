@@ -5,7 +5,7 @@ let app = express();
 
 app.get('/hello', function(req, res) {
     _.merge({}, req.query.foo); // $ Alert
-    _.merge({}, req.query); // $ Alert - but not flagged
+    _.merge({}, req.query); // $ MISSING: Alert
 
     _.merge({}, {
         value: req.query.value // $ Alert

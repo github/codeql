@@ -280,7 +280,7 @@ function moreIncompleteHtmlAttributeSanitization() {
 	var x;
 	x = x.replace(/&/g, '&amp;');
 	x = x.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	'onclick="' + x + '"'; // $ Alert - but not flagged since the `x` replace chain is extended below
+	'onclick="' + x + '"'; // $ MISSING: Alert - since the `x` replace chain is extended below
 	x = x.replace(/"/g, '&quot;');
 	'onclick="' + x + '"';
 
@@ -289,7 +289,7 @@ function moreIncompleteHtmlAttributeSanitization() {
 		y = y.replace(/&/g, '&amp;');
 	}
 	y = y.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	'onclick="' + y + '"'; // $ Alert - but not flagged since the `x` replace chain is extended below
+	'onclick="' + y + '"'; // $ MISSING: Alert - since the `x` replace chain is extended below
 	if (escapeQuotes) {
 		y = y.replace(/"/g, '&quot;');
 	}
