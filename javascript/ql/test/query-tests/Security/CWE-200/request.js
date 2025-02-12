@@ -19,8 +19,8 @@ function PostXML(xmlData)
     headers: {
         "content-type": "application/xml",
     },
-    body: xmlData    // $ Alert - passing data from file to the request body
-  }, function (error, response, body){
+    body: xmlData    // passing data from file to the request body
+  }, function (error, response, body){ // $ Alert[js/file-access-to-http]
     console.log(response);
   });
 }

