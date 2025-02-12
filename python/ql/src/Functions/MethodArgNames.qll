@@ -43,6 +43,15 @@ private predicate usedInInit(Function f, Class c) {
   )
 }
 
+/**
+ * Holds if `f` has no arguments, and also has a decorator.
+ * We assume that the decorator affect the method in such a way that a `self` parameter is unneeded.
+ */
+private predicate noArgsWithDecorator(Function f) {
+  not exists(f.getAnArg()) and
+  exists(f.getADecorator())
+}
+
 /** Holds if the first parameter of `f` should be named `self`. */
 predicate shouldBeSelf(Function f, Class c) {
   methodOfClass(f, c) and
@@ -50,7 +59,8 @@ predicate shouldBeSelf(Function f, Class c) {
   not isClassmethod(f) and
   not isMetaclass(c) and
   not isZopeInterface(c) and
-  not usedInInit(f, c)
+  not usedInInit(f, c) and
+  not noArgsWithDecorator(f)
 }
 
 /** Holds if the first parameter of `f` should be named `cls`. */

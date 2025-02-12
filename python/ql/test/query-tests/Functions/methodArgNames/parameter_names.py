@@ -120,7 +120,15 @@ class Z(zope.interface.Interface):
 
 Z().meth(0)
 
+def weird_decorator(f):
+    def g(self):
+        return f()
+    return g 
 
+class B:
+    @weird_decorator
+    def f(): # allow no-arg functions with a decorator
+        pass
 
 # The `__init_subclass__` (introduced in Python 3.6)
 # and `__class_getitem__` (introduced in Python 3.7) methods are methods
