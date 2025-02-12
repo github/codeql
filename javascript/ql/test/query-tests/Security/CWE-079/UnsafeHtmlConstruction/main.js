@@ -44,7 +44,7 @@ class Foo {
 
     doXss() {
         // not called here, but still bad.
-        document.querySelector("#class").innerHTML = "<span>" + this.step + "</span>"; // $ Alert
+        document.querySelector("#class").innerHTML = "<span>" + this.step + "</span>"; // $ MISSING: Alert - needs localFieldStep
     }
 
 }
