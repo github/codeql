@@ -965,9 +965,7 @@ module Express {
     DataFlow::MethodCallNode
   {
     ResponseDownloadAsFileSystemAccess() {
-      exists(string name | name = "download" |
-        this.calls(any(ResponseNode res), name)
-      )
+      exists(string name | name = "download" | this.calls(any(ResponseNode res), name))
     }
 
     override DataFlow::Node getADataNode() { none() }
