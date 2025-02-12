@@ -421,3 +421,22 @@ private module ClosureLibraryUri {
     }
   }
 }
+
+private class QueryStringStringification extends DataFlow::SummarizedCallable {
+  QueryStringStringification() { this = "query-string stringification" }
+
+  override DataFlow::InvokeNode getACall() {
+    result =
+      API::moduleImport(["querystring", "query-string", "querystringify", "qs"])
+          .getMember("stringify")
+          .getACall() or
+    result = API::moduleImport("url-parse").getMember("qs").getMember("stringify").getACall() or
+    result = API::moduleImport("parseqs").getMember("encode").getACall()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = false and
+    input = ["Argument[0]", "Argument[0].AnyMemberDeep"] and
+    output = "ReturnValue"
+  }
+}

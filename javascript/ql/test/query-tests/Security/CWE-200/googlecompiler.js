@@ -34,7 +34,7 @@ function PostCode(codestring) {
       });
   });
 
-  post_req.write(post_data); // $ MISSING: Alert - post the data from file to request body
+  post_req.write(post_data); // $ Alert - post the data from file to request body
   post_req.end();
 
 }
