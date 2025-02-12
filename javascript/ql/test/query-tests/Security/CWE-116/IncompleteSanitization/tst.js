@@ -338,7 +338,7 @@ function typicalBadHtmlSanitizers(s) {
 }
 
 function bad18NewRegExp(p) {
-	return p.replace(new RegExp("\\.\\./"), "");
+	return p.replace(new RegExp("\\.\\./"), ""); // $ Alert[js/incomplete-sanitization] Alert[js/incomplete-multi-character-sanitization] -- both lacking global flag, and multi-char replacement problem
 }
 
 function bad4NewRegExpG(s) {
