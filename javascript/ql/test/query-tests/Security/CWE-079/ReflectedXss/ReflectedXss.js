@@ -30,7 +30,7 @@ app.get('/user/:id', function(req, res) {
     ['Name', 'Content'],
     ['body', req.body]
   ]);
-  res.send(mytable); // $ Alert - FIXME: only works in OLD dataflow, add implicit reads before library-contributed taint steps
+  res.send(mytable); // $ MISSING: Alert - the 'markdown-table' model needs to be converted to a flow summary
 });
 
 var showdown  = require('showdown');
