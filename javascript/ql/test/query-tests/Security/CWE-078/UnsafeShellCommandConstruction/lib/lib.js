@@ -250,7 +250,7 @@ module.exports.goodSanitizer = function (name) {
 
 	var cleaned = cleanInput(name);
 
-	cp.exec("rm -rf " + cleaned); // OK - But FP due to SanitizingRegExpTest not being able to generate a barrier edge for an edge into a phi node.
+	cp.exec("rm -rf " + cleaned); // $ SPURIOUS: Alert - SanitizingRegExpTest is not able to generate a barrier edge for an edge into a phi node.
 }
 
 var fs = require("fs");
