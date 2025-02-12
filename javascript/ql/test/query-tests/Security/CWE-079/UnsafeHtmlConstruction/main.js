@@ -2,7 +2,7 @@ module.exports.xssThroughHTMLConstruction = function (s) {
     const html = "<span>" + s + "</span>";// $ Alert
     document.querySelector("#html").innerHTML = html;
 }
- 
+
 module.exports.xssThroughXMLParsing = function (s) {
     const doc = new DOMParser().parseFromString(s, "text/xml"); // $ Alert
     document.querySelector("#xml").appendChild(doc.documentElement);
@@ -11,9 +11,9 @@ module.exports.xssThroughXMLParsing = function (s) {
 module.exports.xssThroughMoreComplexXMLParsing = function (s) {
     const doc = new DOMParser().parseFromString(s, "text/xml"); // $ Alert
     const xml = doc.documentElement;
-    
+
     const tmp = document.createElement('span');
-    tmp.appendChild(xml.cloneNode()); 
+    tmp.appendChild(xml.cloneNode());
     document.querySelector("#xml").appendChild(tmp);
 }
 
@@ -99,11 +99,11 @@ module.exports.usesCreateHTML = function (x) {
     myMermaid.render("id", x, function (svg) { // $ Alert
         $("#foo").html(svg);
     });
-    
+
     $("#foo").html(myMermaid.render("id", x)); // $ Alert
 
     mermaid.render("id", x, function (svg) {// $ Alert
-        $("#foo").html(svg); 
+        $("#foo").html(svg);
     });
 
     $("#foo").html(mermaid.render("id", x)); // $ Alert
