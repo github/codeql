@@ -14,7 +14,7 @@ new Router().get("/hello", (ctx) => {
         conditions.push(`version = ${version}`)
     }
 
-    new Sequelize().query(`SELECT * FROM t WHERE ${conditions.join(' and ')}`, null);
+    new Sequelize().query(`SELECT * FROM t WHERE ${conditions.join(' and ')}`, null); // $ Alert
 });
 
 function validVersion(version) {
