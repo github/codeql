@@ -126,18 +126,18 @@ function good11(s) {
   return s.replace("%d", "42");
 }
 
-function good12(s) {
+function goodOrBad12(s) {
 	s.replace('[', '').replace(']', '');
 	s.replace('(', '').replace(')', '');
 	s.replace('{', '').replace('}', '');
-	s.replace('<', '').replace('>', ''); // too common as a bad HTML sanitizer
+	s.replace('<', '').replace('>', ''); // $ Alert[js/incomplete-sanitization]
 
-	s.replace('[', '\\[').replace(']', '\\]');
-	s.replace('{', '\\{').replace('}', '\\}');
+	s.replace('[', '\\[').replace(']', '\\]'); // $ Alert[js/incomplete-sanitization]
+	s.replace('{', '\\{').replace('}', '\\}'); // $ Alert[js/incomplete-sanitization]
 
 	s = s.replace('[', '');
 	s = s.replace(']', '');
-	s.replace(/{/, '').replace(/}/, ''); // should have used a string literal if a single replacement was intended
+	s.replace(/{/, '').replace(/}/, ''); // $ Alert[js/incomplete-sanitization] - should have used a string literal if a single replacement was intended
 	s.replace(']', '').replace('[', ''); // $ Alert[js/incomplete-sanitization] - probably OK, but still flagged
 }
 
