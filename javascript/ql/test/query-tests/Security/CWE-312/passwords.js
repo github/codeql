@@ -75,7 +75,7 @@
     console.log(config);
 
     var temp = { encryptedPassword: req.body.password };
-    console.log(temp.encryptedPassword); // OK - XXX
+    console.log(temp.encryptedPassword); // $ SPURIOUS: Alert[js/clear-text-logging]
 
     var secret = password;
     console.log(`pw: ${secret}`); // $ Alert[js/clear-text-logging]
