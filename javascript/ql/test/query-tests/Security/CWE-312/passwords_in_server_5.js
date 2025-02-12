@@ -5,5 +5,5 @@ app.get('/some/path', function() {
 })
 
 function f(x) {
-    console.log(x);
+    console.log(x); // $ Alert[js/clear-text-logging]
 }
