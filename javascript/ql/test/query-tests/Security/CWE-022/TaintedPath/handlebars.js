@@ -8,11 +8,11 @@ const data = {};
 
 function init() {
     hb.registerHelper("catFile", function catFile(filePath) {
-        return fs.readFileSync(filePath); // SINK (reads file)
+        return fs.readFileSync(filePath); // $ Alert
     });
     hb.registerHelper("prependToLines", function prependToLines(prefix, filePath) {
         return fs
-          .readFileSync(filePath)
+          .readFileSync(filePath) // $ Alert
           .split("\n")
           .map((line) => prefix + line)
           .join("\n");
@@ -26,7 +26,7 @@ function init() {
 init();
 
 app.get('/some/path1', function (req, res) {
-    res.send(data.compiledFileAccess({ path: req.params.path })); // $ Alert - template uses vulnerable catFile
+    res.send(data.compiledFileAccess({ path: req.params.path })); // $ Source - template uses vulnerable catFile
 });
 
 app.get('/some/path2', function (req, res) {
@@ -40,7 +40,7 @@ app.get('/some/path3', function (req, res) {
 app.get('/some/path4', function (req, res) {
     res.send(data.compiledMixed({
         prefix: ">>> ",
-        path: req.params.path // $ Alert - template uses vulnerable helper
+        path: req.params.path // $ Source - template uses vulnerable helper
     }));
 });
 
