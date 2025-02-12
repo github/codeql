@@ -145,8 +145,8 @@ function newlines(s) {
 	// motivation for whitelist
 	require("child_process").execSync("which emacs").toString().replace("\n", "");
 
-	x.replace("\n", "").replace(x, y);
-	x.replace(x, y).replace("\n", "");
+	x.replace("\n", "").replace(x, y); // $ Alert[js/incomplete-sanitization]
+	x.replace(x, y).replace("\n", ""); // $ Alert[js/incomplete-sanitization]
 }
 
 app.get('/some/path', function(req, res) {
