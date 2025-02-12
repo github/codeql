@@ -6,28 +6,28 @@
 	html.replace(
 		/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,
 		expanded
-	); // $ Alert
-	html.replace(/<(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi, expanded); // $ Alert
+	); // $ Alert[js/unsafe-html-expansion]
+	html.replace(/<(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi, expanded); // $ Alert[js/unsafe-html-expansion]
 
 	// lib2
 	html.replace(
 		/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
 		expanded
-	); // $ Alert
-	html.replace(/<(([\w:]+)[^>]*)\/>/gi, expanded); // $ Alert
+	); // $ Alert[js/unsafe-html-expansion]
+	html.replace(/<(([\w:]+)[^>]*)\/>/gi, expanded); // $ Alert[js/unsafe-html-expansion]
 
 	// lib3
 	html.replace(
 		/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:-]+)[^>]*)\/>/gi,
 		expanded
-	); // $ Alert
-	html.replace(/<(([\w:-]+)[^>]*)\/>/gi, expanded); // $ Alert
+	); // $ Alert[js/unsafe-html-expansion]
+	html.replace(/<(([\w:-]+)[^>]*)\/>/gi, expanded); // $ Alert[js/unsafe-html-expansion]
 
-	html.replace(defaultPattern, expanded); // $ Alert
+	html.replace(defaultPattern, expanded); // $ Alert[js/unsafe-html-expansion]
 	function getPattern() {
 		return defaultPattern;
 	}
-	html.replace(getPattern(), expanded); // $ Alert
+	html.replace(getPattern(), expanded); // $ Alert[js/unsafe-html-expansion]
 
 	function getExpanded() {
 		return expanded;
