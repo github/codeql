@@ -70,7 +70,7 @@ async function getDropData(e: DragEvent): Promise<Array<File | string>> {
     if (e.dataTransfer.types.includes('text/html')) {
       const droppedHtml = e.dataTransfer.getData('text/html');
       const container = document.createElement('html');
-      container.innerHTML = droppedHtml;
+      container.innerHTML = droppedHtml; // $ Alert
       const imgs = container.getElementsByTagName('img');
       if (imgs.length === 1) {
         const src = imgs[0].src;

@@ -232,7 +232,7 @@ function react(){
         }
 
         render() {
-            return <span dangerouslySetInnerHTML={{__html: this.state.stateTainted}}/>;
+            return <span dangerouslySetInnerHTML={{__html: this.state.stateTainted}}/>; // $ Alert
         }
     }
 
