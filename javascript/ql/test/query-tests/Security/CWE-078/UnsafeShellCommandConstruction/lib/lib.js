@@ -52,7 +52,7 @@ module.exports.mz = function (name) {
 
 module.exports.flow = function (name) {
 	var cmd1 = "rm -rf " + name; // $ Alert
-	cp.exec(cmd1); 
+	cp.exec(cmd1);
 
 	var cmd2 = "rm -rf " + name;  // $ Alert
 	function myExec(cmd) {
@@ -313,7 +313,7 @@ module.exports.sanitizer2 = function (name) {
 
 module.exports.typeofcheck = function (name) {
 	cp.exec("rm -rf " + name); // $ Alert
-	
+
 	if (typeof name === "undefined") {
 		cp.exec("rm -rf " + name);
 	} else {
@@ -323,7 +323,7 @@ module.exports.typeofcheck = function (name) {
 
 module.exports.typeofcheck = function (arg) {
 	var cmd = "MyWindowCommand | findstr /i /c:" + arg; // $ Alert
-	cp.exec(cmd); 
+	cp.exec(cmd);
 }
 
 function id(x) {
@@ -499,7 +499,7 @@ module.exports.myCommand = function (myCommand) {
 		MyThing.cp.exec("rm -rf " + name); // $ Alert
 	}
 });
-  
+
 
 var imp = require('./isImported');
 for (var name in imp){
@@ -551,8 +551,8 @@ module.exports.shellThing = function (name) {
     function indirectShell(cmd, args, spawnOpts) {
         cp.spawn(cmd, args, spawnOpts); // $ Alert
     }
-    
     indirectShell("rm", ["-rf", name], {shell: true});
+
 }
 
 module.exports.badSanitizer = function (name) {
