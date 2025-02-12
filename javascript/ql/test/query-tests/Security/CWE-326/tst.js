@@ -32,7 +32,7 @@ var bad9 = forge.cipher.createDecipher('3DES-CBC', key3); // $ Alert
 var key4 = myBuffer.getBytes(16);
 var good5 = forge.cipher.createDecipher('AES-CBC', key4);
 
-var bad10 = crypto.createDiffieHellman(512);
+var bad10 = crypto.createDiffieHellman(512); // $ Alert
 var good6 = crypto.createDiffieHellman(2048);
 
 const NodeRSA = require('node-rsa');
