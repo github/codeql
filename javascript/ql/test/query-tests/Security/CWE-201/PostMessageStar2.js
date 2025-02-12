@@ -10,4 +10,4 @@ window.parent.postMessage(password, '*'); // $ Alert
   window.parent.postMessage(data.bar, '*');
 })();
 
-window.parent.postMessage(authKey, '*');
+window.parent.postMessage(authKey, '*'); // $ Alert
