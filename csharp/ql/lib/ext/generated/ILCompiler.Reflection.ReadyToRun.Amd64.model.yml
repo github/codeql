@@ -12,7 +12,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcInfo+SafePointOffset", "SafePointOffset", "(System.Int32,System.UInt32)", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcInfo", "GcInfo", "(System.Byte[],System.Int32,System.Reflection.PortableExecutable.Machine,System.UInt16)", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcInfo", "GcInfo", "(System.Byte[],System.Int32,System.Reflection.PortableExecutable.Machine,System.UInt16,System.UInt16)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcInfo", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcSlotTable+GcSlot", "WriteTo", "(System.Text.StringBuilder,System.Reflection.PortableExecutable.Machine,ILCompiler.Reflection.ReadyToRun.GcSlotFlags)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Amd64", "GcSlotTable", "GcSlotTable", "(System.Byte[],System.Reflection.PortableExecutable.Machine,ILCompiler.Reflection.ReadyToRun.GcInfoTypes,System.Int32)", "summary", "df-generated"]
