@@ -18,35 +18,35 @@ edges
 | main.rs:42:15:42:24 | source(...) | main.rs:42:9:42:11 | val | provenance |  |
 | main.rs:43:26:43:29 | &val [&ref] | main.rs:37:25:37:32 | ...: ... [&ref] | provenance |  |
 | main.rs:43:27:43:29 | val | main.rs:43:26:43:29 | &val [&ref] | provenance |  |
-| main.rs:51:18:51:21 | SelfParam [MyNumber] | main.rs:52:15:52:18 | self [MyNumber] | provenance |  |
-| main.rs:52:15:52:18 | self [MyNumber] | main.rs:53:13:53:38 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:53:13:53:38 | ...::MyNumber(...) [MyNumber] | main.rs:53:32:53:37 | number | provenance |  |
-| main.rs:53:32:53:37 | number | main.rs:51:31:57:5 | { ... } | provenance |  |
-| main.rs:59:19:59:23 | SelfParam [&ref, MyNumber] | main.rs:60:15:60:18 | self [&ref, MyNumber] | provenance |  |
-| main.rs:60:15:60:18 | self [&ref, MyNumber] | main.rs:61:13:61:39 | &... [&ref, MyNumber] | provenance |  |
-| main.rs:61:13:61:39 | &... [&ref, MyNumber] | main.rs:61:14:61:39 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:61:14:61:39 | ...::MyNumber(...) [MyNumber] | main.rs:61:33:61:38 | number | provenance |  |
-| main.rs:61:33:61:38 | number | main.rs:59:33:65:5 | { ... } | provenance |  |
-| main.rs:69:9:69:17 | my_number [MyNumber] | main.rs:70:10:70:18 | my_number [MyNumber] | provenance |  |
-| main.rs:69:21:69:50 | ...::MyNumber(...) [MyNumber] | main.rs:69:9:69:17 | my_number [MyNumber] | provenance |  |
-| main.rs:69:40:69:49 | source(...) | main.rs:69:21:69:50 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:70:10:70:18 | my_number [MyNumber] | main.rs:51:18:51:21 | SelfParam [MyNumber] | provenance |  |
-| main.rs:70:10:70:18 | my_number [MyNumber] | main.rs:70:10:70:30 | my_number.to_number(...) | provenance |  |
-| main.rs:79:9:79:17 | my_number [&ref, MyNumber] | main.rs:80:10:80:18 | my_number [&ref, MyNumber] | provenance |  |
-| main.rs:79:21:79:51 | &... [&ref, MyNumber] | main.rs:79:9:79:17 | my_number [&ref, MyNumber] | provenance |  |
-| main.rs:79:22:79:51 | ...::MyNumber(...) [MyNumber] | main.rs:79:21:79:51 | &... [&ref, MyNumber] | provenance |  |
-| main.rs:79:41:79:50 | source(...) | main.rs:79:22:79:51 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:80:10:80:18 | my_number [&ref, MyNumber] | main.rs:59:19:59:23 | SelfParam [&ref, MyNumber] | provenance |  |
-| main.rs:80:10:80:18 | my_number [&ref, MyNumber] | main.rs:80:10:80:31 | my_number.get_number(...) | provenance |  |
-| main.rs:84:9:84:9 | a [&ref, tuple.0] | main.rs:87:19:87:19 | a [&ref, tuple.0] | provenance |  |
-| main.rs:84:13:84:28 | &... [&ref, tuple.0] | main.rs:84:9:84:9 | a [&ref, tuple.0] | provenance |  |
-| main.rs:84:14:84:28 | TupleExpr [tuple.0] | main.rs:84:13:84:28 | &... [&ref, tuple.0] | provenance |  |
-| main.rs:84:15:84:24 | source(...) | main.rs:84:14:84:28 | TupleExpr [tuple.0] | provenance |  |
-| main.rs:87:9:87:9 | b | main.rs:90:10:90:10 | b | provenance |  |
-| main.rs:87:19:87:19 | a [&ref, tuple.0] | main.rs:88:9:88:15 | &... [&ref, tuple.0] | provenance |  |
-| main.rs:88:9:88:15 | &... [&ref, tuple.0] | main.rs:88:10:88:15 | TuplePat [tuple.0] | provenance |  |
-| main.rs:88:10:88:15 | TuplePat [tuple.0] | main.rs:88:11:88:11 | n | provenance |  |
-| main.rs:88:11:88:11 | n | main.rs:87:9:87:9 | b | provenance |  |
+| main.rs:76:18:76:21 | SelfParam [MyNumber] | main.rs:77:15:77:18 | self [MyNumber] | provenance |  |
+| main.rs:77:15:77:18 | self [MyNumber] | main.rs:78:13:78:38 | ...::MyNumber(...) [MyNumber] | provenance |  |
+| main.rs:78:13:78:38 | ...::MyNumber(...) [MyNumber] | main.rs:78:32:78:37 | number | provenance |  |
+| main.rs:78:32:78:37 | number | main.rs:76:31:80:5 | { ... } | provenance |  |
+| main.rs:82:19:82:23 | SelfParam [&ref, MyNumber] | main.rs:83:15:83:18 | self [&ref, MyNumber] | provenance |  |
+| main.rs:83:15:83:18 | self [&ref, MyNumber] | main.rs:84:13:84:39 | &... [&ref, MyNumber] | provenance |  |
+| main.rs:84:13:84:39 | &... [&ref, MyNumber] | main.rs:84:14:84:39 | ...::MyNumber(...) [MyNumber] | provenance |  |
+| main.rs:84:14:84:39 | ...::MyNumber(...) [MyNumber] | main.rs:84:33:84:38 | number | provenance |  |
+| main.rs:84:33:84:38 | number | main.rs:82:33:86:5 | { ... } | provenance |  |
+| main.rs:90:9:90:17 | my_number [MyNumber] | main.rs:91:10:91:18 | my_number [MyNumber] | provenance |  |
+| main.rs:90:21:90:50 | ...::MyNumber(...) [MyNumber] | main.rs:90:9:90:17 | my_number [MyNumber] | provenance |  |
+| main.rs:90:40:90:49 | source(...) | main.rs:90:21:90:50 | ...::MyNumber(...) [MyNumber] | provenance |  |
+| main.rs:91:10:91:18 | my_number [MyNumber] | main.rs:76:18:76:21 | SelfParam [MyNumber] | provenance |  |
+| main.rs:91:10:91:18 | my_number [MyNumber] | main.rs:91:10:91:30 | my_number.to_number(...) | provenance |  |
+| main.rs:100:9:100:17 | my_number [&ref, MyNumber] | main.rs:101:10:101:18 | my_number [&ref, MyNumber] | provenance |  |
+| main.rs:100:21:100:51 | &... [&ref, MyNumber] | main.rs:100:9:100:17 | my_number [&ref, MyNumber] | provenance |  |
+| main.rs:100:22:100:51 | ...::MyNumber(...) [MyNumber] | main.rs:100:21:100:51 | &... [&ref, MyNumber] | provenance |  |
+| main.rs:100:41:100:50 | source(...) | main.rs:100:22:100:51 | ...::MyNumber(...) [MyNumber] | provenance |  |
+| main.rs:101:10:101:18 | my_number [&ref, MyNumber] | main.rs:82:19:82:23 | SelfParam [&ref, MyNumber] | provenance |  |
+| main.rs:101:10:101:18 | my_number [&ref, MyNumber] | main.rs:101:10:101:31 | my_number.get_number(...) | provenance |  |
+| main.rs:105:9:105:9 | a [&ref, tuple.0] | main.rs:108:19:108:19 | a [&ref, tuple.0] | provenance |  |
+| main.rs:105:13:105:28 | &... [&ref, tuple.0] | main.rs:105:9:105:9 | a [&ref, tuple.0] | provenance |  |
+| main.rs:105:14:105:28 | TupleExpr [tuple.0] | main.rs:105:13:105:28 | &... [&ref, tuple.0] | provenance |  |
+| main.rs:105:15:105:24 | source(...) | main.rs:105:14:105:28 | TupleExpr [tuple.0] | provenance |  |
+| main.rs:108:9:108:9 | b | main.rs:111:10:111:10 | b | provenance |  |
+| main.rs:108:19:108:19 | a [&ref, tuple.0] | main.rs:109:9:109:15 | &... [&ref, tuple.0] | provenance |  |
+| main.rs:109:9:109:15 | &... [&ref, tuple.0] | main.rs:109:10:109:15 | TuplePat [tuple.0] | provenance |  |
+| main.rs:109:10:109:15 | TuplePat [tuple.0] | main.rs:109:11:109:11 | n | provenance |  |
+| main.rs:109:11:109:11 | n | main.rs:108:9:108:9 | b | provenance |  |
 nodes
 | main.rs:13:9:13:9 | a | semmle.label | a |
 | main.rs:13:13:13:22 | source(...) | semmle.label | source(...) |
@@ -69,46 +69,46 @@ nodes
 | main.rs:42:15:42:24 | source(...) | semmle.label | source(...) |
 | main.rs:43:26:43:29 | &val [&ref] | semmle.label | &val [&ref] |
 | main.rs:43:27:43:29 | val | semmle.label | val |
-| main.rs:51:18:51:21 | SelfParam [MyNumber] | semmle.label | SelfParam [MyNumber] |
-| main.rs:51:31:57:5 | { ... } | semmle.label | { ... } |
-| main.rs:52:15:52:18 | self [MyNumber] | semmle.label | self [MyNumber] |
-| main.rs:53:13:53:38 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
-| main.rs:53:32:53:37 | number | semmle.label | number |
-| main.rs:59:19:59:23 | SelfParam [&ref, MyNumber] | semmle.label | SelfParam [&ref, MyNumber] |
-| main.rs:59:33:65:5 | { ... } | semmle.label | { ... } |
-| main.rs:60:15:60:18 | self [&ref, MyNumber] | semmle.label | self [&ref, MyNumber] |
-| main.rs:61:13:61:39 | &... [&ref, MyNumber] | semmle.label | &... [&ref, MyNumber] |
-| main.rs:61:14:61:39 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
-| main.rs:61:33:61:38 | number | semmle.label | number |
-| main.rs:69:9:69:17 | my_number [MyNumber] | semmle.label | my_number [MyNumber] |
-| main.rs:69:21:69:50 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
-| main.rs:69:40:69:49 | source(...) | semmle.label | source(...) |
-| main.rs:70:10:70:18 | my_number [MyNumber] | semmle.label | my_number [MyNumber] |
-| main.rs:70:10:70:30 | my_number.to_number(...) | semmle.label | my_number.to_number(...) |
-| main.rs:79:9:79:17 | my_number [&ref, MyNumber] | semmle.label | my_number [&ref, MyNumber] |
-| main.rs:79:21:79:51 | &... [&ref, MyNumber] | semmle.label | &... [&ref, MyNumber] |
-| main.rs:79:22:79:51 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
-| main.rs:79:41:79:50 | source(...) | semmle.label | source(...) |
-| main.rs:80:10:80:18 | my_number [&ref, MyNumber] | semmle.label | my_number [&ref, MyNumber] |
-| main.rs:80:10:80:31 | my_number.get_number(...) | semmle.label | my_number.get_number(...) |
-| main.rs:84:9:84:9 | a [&ref, tuple.0] | semmle.label | a [&ref, tuple.0] |
-| main.rs:84:13:84:28 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
-| main.rs:84:14:84:28 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
-| main.rs:84:15:84:24 | source(...) | semmle.label | source(...) |
-| main.rs:87:9:87:9 | b | semmle.label | b |
-| main.rs:87:19:87:19 | a [&ref, tuple.0] | semmle.label | a [&ref, tuple.0] |
-| main.rs:88:9:88:15 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
-| main.rs:88:10:88:15 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
-| main.rs:88:11:88:11 | n | semmle.label | n |
-| main.rs:90:10:90:10 | b | semmle.label | b |
+| main.rs:76:18:76:21 | SelfParam [MyNumber] | semmle.label | SelfParam [MyNumber] |
+| main.rs:76:31:80:5 | { ... } | semmle.label | { ... } |
+| main.rs:77:15:77:18 | self [MyNumber] | semmle.label | self [MyNumber] |
+| main.rs:78:13:78:38 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
+| main.rs:78:32:78:37 | number | semmle.label | number |
+| main.rs:82:19:82:23 | SelfParam [&ref, MyNumber] | semmle.label | SelfParam [&ref, MyNumber] |
+| main.rs:82:33:86:5 | { ... } | semmle.label | { ... } |
+| main.rs:83:15:83:18 | self [&ref, MyNumber] | semmle.label | self [&ref, MyNumber] |
+| main.rs:84:13:84:39 | &... [&ref, MyNumber] | semmle.label | &... [&ref, MyNumber] |
+| main.rs:84:14:84:39 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
+| main.rs:84:33:84:38 | number | semmle.label | number |
+| main.rs:90:9:90:17 | my_number [MyNumber] | semmle.label | my_number [MyNumber] |
+| main.rs:90:21:90:50 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
+| main.rs:90:40:90:49 | source(...) | semmle.label | source(...) |
+| main.rs:91:10:91:18 | my_number [MyNumber] | semmle.label | my_number [MyNumber] |
+| main.rs:91:10:91:30 | my_number.to_number(...) | semmle.label | my_number.to_number(...) |
+| main.rs:100:9:100:17 | my_number [&ref, MyNumber] | semmle.label | my_number [&ref, MyNumber] |
+| main.rs:100:21:100:51 | &... [&ref, MyNumber] | semmle.label | &... [&ref, MyNumber] |
+| main.rs:100:22:100:51 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
+| main.rs:100:41:100:50 | source(...) | semmle.label | source(...) |
+| main.rs:101:10:101:18 | my_number [&ref, MyNumber] | semmle.label | my_number [&ref, MyNumber] |
+| main.rs:101:10:101:31 | my_number.get_number(...) | semmle.label | my_number.get_number(...) |
+| main.rs:105:9:105:9 | a [&ref, tuple.0] | semmle.label | a [&ref, tuple.0] |
+| main.rs:105:13:105:28 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
+| main.rs:105:14:105:28 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:105:15:105:24 | source(...) | semmle.label | source(...) |
+| main.rs:108:9:108:9 | b | semmle.label | b |
+| main.rs:108:19:108:19 | a [&ref, tuple.0] | semmle.label | a [&ref, tuple.0] |
+| main.rs:109:9:109:15 | &... [&ref, tuple.0] | semmle.label | &... [&ref, tuple.0] |
+| main.rs:109:10:109:15 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:109:11:109:11 | n | semmle.label | n |
+| main.rs:111:10:111:10 | b | semmle.label | b |
 subpaths
-| main.rs:70:10:70:18 | my_number [MyNumber] | main.rs:51:18:51:21 | SelfParam [MyNumber] | main.rs:51:31:57:5 | { ... } | main.rs:70:10:70:30 | my_number.to_number(...) |
-| main.rs:80:10:80:18 | my_number [&ref, MyNumber] | main.rs:59:19:59:23 | SelfParam [&ref, MyNumber] | main.rs:59:33:65:5 | { ... } | main.rs:80:10:80:31 | my_number.get_number(...) |
+| main.rs:91:10:91:18 | my_number [MyNumber] | main.rs:76:18:76:21 | SelfParam [MyNumber] | main.rs:76:31:80:5 | { ... } | main.rs:91:10:91:30 | my_number.to_number(...) |
+| main.rs:101:10:101:18 | my_number [&ref, MyNumber] | main.rs:82:19:82:23 | SelfParam [&ref, MyNumber] | main.rs:82:33:86:5 | { ... } | main.rs:101:10:101:31 | my_number.get_number(...) |
 testFailures
 #select
 | main.rs:16:10:16:10 | c | main.rs:13:13:13:22 | source(...) | main.rs:16:10:16:10 | c | $@ | main.rs:13:13:13:22 | source(...) | source(...) |
 | main.rs:32:10:32:11 | * ... | main.rs:31:10:31:19 | source(...) | main.rs:32:10:32:11 | * ... | $@ | main.rs:31:10:31:19 | source(...) | source(...) |
 | main.rs:38:10:38:10 | n | main.rs:42:15:42:24 | source(...) | main.rs:38:10:38:10 | n | $@ | main.rs:42:15:42:24 | source(...) | source(...) |
-| main.rs:70:10:70:30 | my_number.to_number(...) | main.rs:69:40:69:49 | source(...) | main.rs:70:10:70:30 | my_number.to_number(...) | $@ | main.rs:69:40:69:49 | source(...) | source(...) |
-| main.rs:80:10:80:31 | my_number.get_number(...) | main.rs:79:41:79:50 | source(...) | main.rs:80:10:80:31 | my_number.get_number(...) | $@ | main.rs:79:41:79:50 | source(...) | source(...) |
-| main.rs:90:10:90:10 | b | main.rs:84:15:84:24 | source(...) | main.rs:90:10:90:10 | b | $@ | main.rs:84:15:84:24 | source(...) | source(...) |
+| main.rs:91:10:91:30 | my_number.to_number(...) | main.rs:90:40:90:49 | source(...) | main.rs:91:10:91:30 | my_number.to_number(...) | $@ | main.rs:90:40:90:49 | source(...) | source(...) |
+| main.rs:101:10:101:31 | my_number.get_number(...) | main.rs:100:41:100:50 | source(...) | main.rs:101:10:101:31 | my_number.get_number(...) | $@ | main.rs:100:41:100:50 | source(...) | source(...) |
+| main.rs:111:10:111:10 | b | main.rs:105:15:105:24 | source(...) | main.rs:111:10:111:10 | b | $@ | main.rs:105:15:105:24 | source(...) | source(...) |
