@@ -160,8 +160,11 @@
 | main.rs:229:17:229:26 | ...::C1 |  | main.rs:208:5:212:5 | enum MyEnum |
 | main.rs:229:17:229:30 | ...::C1(...) |  | main.rs:208:5:212:5 | enum MyEnum |
 | main.rs:229:28:229:29 | S1 |  | main.rs:214:5:215:14 | struct S1 |
+| main.rs:230:13:230:13 | y | 0 | main.rs:216:5:217:14 | struct S2 |
+| main.rs:230:17:230:36 | ...::C2 {...} | 0 | main.rs:216:5:217:14 | struct S2 |
 | main.rs:230:33:230:34 | S2 |  | main.rs:216:5:217:14 | struct S2 |
 | main.rs:232:26:232:26 | x |  | main.rs:208:5:212:5 | enum MyEnum |
+| main.rs:233:26:233:26 | y | 0 | main.rs:216:5:217:14 | struct S2 |
 | main.rs:238:5:238:9 | ...::f |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:238:5:238:11 | ...::f(...) |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:239:5:239:9 | ...::g |  | main.rs:2:5:2:21 | struct Foo |
