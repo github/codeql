@@ -17,15 +17,19 @@
 | main.rs:40:15:40:18 | SelfParam | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:41:13:41:16 | self |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:41:13:41:16 | self | 0 | main.rs:34:5:35:14 | struct S1 |
+| main.rs:41:13:41:18 | self.a |  | main.rs:34:5:35:14 | struct S1 |
 | main.rs:46:15:46:18 | SelfParam |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:46:15:46:18 | SelfParam | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:47:13:47:30 | Self {...} |  | main.rs:29:5:32:5 | struct MyThing |
+| main.rs:47:13:47:30 | Self {...} | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:47:23:47:26 | self |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:47:23:47:26 | self | 0 | main.rs:36:5:37:14 | struct S2 |
+| main.rs:47:23:47:28 | self.a |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:52:15:52:18 | SelfParam |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:52:15:52:18 | SelfParam | 0 | main.rs:51:10:51:10 | T |
 | main.rs:53:13:53:16 | self |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:53:13:53:16 | self | 0 | main.rs:51:10:51:10 | T |
+| main.rs:53:13:53:18 | self.a |  | main.rs:51:10:51:10 | T |
 | main.rs:58:13:58:13 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:58:13:58:13 | x | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:58:17:58:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
@@ -64,11 +68,14 @@
 | main.rs:99:15:99:18 | SelfParam | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:100:13:100:16 | self |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:100:13:100:16 | self | 0 | main.rs:78:5:79:14 | struct S1 |
+| main.rs:100:13:100:18 | self.a |  | main.rs:78:5:79:14 | struct S1 |
 | main.rs:105:15:105:18 | SelfParam |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:105:15:105:18 | SelfParam | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:106:13:106:30 | Self {...} |  | main.rs:73:5:76:5 | struct MyThing |
+| main.rs:106:13:106:30 | Self {...} | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:106:23:106:26 | self |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:106:23:106:26 | self | 0 | main.rs:80:5:81:14 | struct S2 |
+| main.rs:106:23:106:28 | self.a |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:111:13:111:13 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:111:13:111:13 | x | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:111:17:111:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
@@ -107,6 +114,7 @@
 | main.rs:152:15:152:18 | SelfParam | 0 | main.rs:151:10:151:10 | T |
 | main.rs:153:13:153:16 | self |  | main.rs:126:5:129:5 | struct MyThing |
 | main.rs:153:13:153:16 | self | 0 | main.rs:151:10:151:10 | T |
+| main.rs:153:13:153:18 | self.a |  | main.rs:151:10:151:10 | T |
 | main.rs:158:13:158:13 | x |  | main.rs:126:5:129:5 | struct MyThing |
 | main.rs:158:13:158:13 | x | 0 | main.rs:131:5:132:14 | struct S1 |
 | main.rs:158:17:158:33 | MyThing {...} |  | main.rs:126:5:129:5 | struct MyThing |

@@ -38,19 +38,19 @@ mod m2 {
 
     impl MyThing<S1> {
         fn m1(self) -> S1 {
-            self.a // `self.a` missing type
+            self.a
         }
     }
 
     impl MyThing<S2> {
         fn m1(self) -> Self {
-            Self { a: self.a } // `self.a` missing type
+            Self { a: self.a }
         }
     }
 
     impl<T> MyThing<T> {
         fn m2(self) -> T {
-            self.a // `self.a` missing type
+            self.a
         }
     }
 
@@ -97,13 +97,13 @@ mod m3 {
 
     impl MyTrait<S1> for MyThing<S1> {
         fn m1(self) -> S1 {
-            self.a // `self.a` missing type
+            self.a
         }
     }
 
     impl MyTrait<Self> for MyThing<S2> {
         fn m1(self) -> Self {
-            Self { a: self.a } // `self.a` missing type, `Self` missing type at path 0
+            Self { a: self.a }
         }
     }
 
@@ -150,7 +150,7 @@ mod m4 {
 
     impl<T> MyTrait<T> for MyThing<T> {
         fn m1(self) -> T {
-            self.a // `self.a` missing type
+            self.a
         }
     }
 
