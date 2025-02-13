@@ -13,6 +13,7 @@ private import codeql.rust.elements.internal.generated.GenericParamList
 module Impl {
   private import rust
 
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A GenericParamList. For example:
    * ```rust
