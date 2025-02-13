@@ -225,10 +225,16 @@ abstract class DefImpl extends TDefImpl {
     )
   }
 
+  /**
+   * Holds if this definition is guaranteed to totally overwrite the
+   * destination buffer.
+   */
   abstract predicate isCertain();
 
+  /** Gets the value written to the destination variable by this definition. */
   abstract Node0Impl getValue();
 
+  /** Gets the operand that represents the address of this definition, if any. */
   Operand getAddressOperand() { none() }
 }
 
@@ -1078,6 +1084,10 @@ class GlobalDef extends DefinitionExt {
 
   GlobalDef() { impl = this.getImpl() }
 
+  /**
+   * Gets the global (or `static` local) variable written to by this SSA
+   * definition.
+   */
   GlobalLikeVariable getVariable() { result = impl.getVariable() }
 }
 
