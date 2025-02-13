@@ -1032,7 +1032,7 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
 deprecated class NamedType = DefinedType;
 
 /** A defined type. */
-class DefinedType extends @namedtype, CompositeType {
+class DefinedType extends @definedtype, CompositeType {
   /** Gets the type which this type is defined to be. */
   Type getBaseType() { underlying_type(this, result) }
 

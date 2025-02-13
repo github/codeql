@@ -856,7 +856,7 @@ var ChanTypes = map[gotypes.ChanDir]*BranchType{
 }
 
 // DefinedType is the type of defined types
-var DefinedType = TypeKind.NewBranch("@namedtype", CompositeType)
+var DefinedType = TypeKind.NewBranch("@definedtype", CompositeType)
 
 // TypeSetLiteral is the type of type set literals
 var TypeSetLiteral = TypeKind.NewBranch("@typesetliteraltype", CompositeType)
@@ -1138,7 +1138,7 @@ var BaseTypeTable = NewTable("base_type",
 // UnderlyingTypeTable is the table associating defined types with their
 // underlying type
 var UnderlyingTypeTable = NewTable("underlying_type",
-	EntityColumn(DefinedType, "named").Unique(),
+	EntityColumn(DefinedType, "defined").Unique(),
 	EntityColumn(TypeType, "tp"),
 )
 

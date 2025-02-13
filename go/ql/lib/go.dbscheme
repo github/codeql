@@ -184,7 +184,7 @@ methodreceivers(unique int method: @object ref, int receiver: @object ref);
 
 fieldstructs(unique int field: @object ref, int struct: @structtype ref);
 
-methodhosts(int method: @object ref, int host: @namedtype ref);
+methodhosts(int method: @object ref, int host: @definedtype ref);
 
 defs(int ident: @ident ref, int object: @object ref);
 
@@ -202,7 +202,7 @@ element_type(unique int container: @containertype ref, int tp: @type ref);
 
 base_type(unique int ptr: @pointertype ref, int tp: @type ref);
 
-underlying_type(unique int named: @namedtype ref, int tp: @type ref);
+underlying_type(unique int defined: @definedtype ref, int tp: @type ref);
 
 #keyset[parent, index]
 component_types(int parent: @compositetype ref, int index: int ref, string name: string ref, int tp: @type ref);
@@ -506,7 +506,7 @@ case @type.kind of
 | 35 = @sendchantype
 | 36 = @recvchantype
 | 37 = @sendrcvchantype
-| 38 = @namedtype
+| 38 = @definedtype
 | 39 = @typesetliteraltype;
 
 @basictype = @booltype | @numerictype | @stringtype | @literaltype | @invalidtype | @unsafepointertype;
@@ -531,7 +531,7 @@ case @type.kind of
              | @stringliteraltype | @nilliteraltype;
 
 @compositetype = @typeparamtype | @containertype | @structtype | @pointertype | @interfacetype | @tupletype
-               | @signaturetype | @namedtype | @typesetliteraltype;
+               | @signaturetype | @definedtype | @typesetliteraltype;
 
 @containertype = @arraytype | @slicetype | @maptype | @chantype;
 
