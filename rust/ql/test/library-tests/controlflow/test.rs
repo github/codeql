@@ -396,6 +396,22 @@ mod patterns {
             _ => 4,
         }
     }
+
+    fn identifier_pattern_with_subpattern() -> i64 {
+        match 43 {
+            n @ 1..10 => 2 * n,
+            _ => 0,
+        }
+    }
+
+    fn identifier_pattern_with_ref() -> i64 {
+        let mut a = 10;
+        match a {
+            ref mut n @ 1..10 => *n += 10,
+            ref mut n => *n = 0,
+        };
+        a
+    }
 }
 
 mod divergence {

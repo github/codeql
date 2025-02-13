@@ -25,3 +25,14 @@ type T = S3
 func H(Afs3 T) int {
 	return Afs3.x
 }
+
+type MyType[MyTypeT any] struct{ x MyTypeT }
+
+// An alias with a type parameter - added in Go 1.24
+type MyTypeAlias[MyTypeAliasT any] = MyType[MyTypeAliasT]
+
+func useMyTypeAlias(a MyTypeAlias[string]) string {
+	b := MyTypeAlias[string]{x: "hello"}
+	a.x = b.x
+	return a.x
+}

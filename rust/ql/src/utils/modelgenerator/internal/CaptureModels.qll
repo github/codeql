@@ -81,9 +81,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(R::Callable c, ParameterPosition pos) {
-    // TODO: Implement this to support returning through parameters.
-    result = "paramReturnNodeAsOutput(" + c + ", " + pos + ")"
+  string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
+    result = paramReturnNodeAsContentOutput(c, pos)
   }
 
   bindingset[c]

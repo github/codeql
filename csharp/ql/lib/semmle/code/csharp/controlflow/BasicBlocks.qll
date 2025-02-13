@@ -203,6 +203,29 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
 
   /**
+   * Holds if the edge with successor type `s` out of this basic block is a
+   * dominating edge for `dominated`.
+   *
+   * That is, all paths reaching `dominated` from the entry point basic
+   * block must go through the `s` edge out of this basic block.
+   *
+   * Edge dominance is similar to node dominance except it concerns edges
+   * instead of nodes: A basic block is dominated by a _basic block_ `bb` if it
+   * can only be reached through `bb` and dominated by an _edge_ `e` if it can
+   * only be reached through `e`.
+   *
+   * Note that where all basic blocks (except the entry basic block) are
+   * strictly dominated by at least one basic block, a basic block may not be
+   * dominated by any edge. If an edge dominates a basic block `bb`, then
+   * both endpoints of the edge dominates `bb`. The converse is not the case,
+   * as there may be multiple paths between the endpoints with none of them
+   * dominating.
+   */
+  predicate edgeDominates(BasicBlock dominated, ControlFlow::SuccessorType s) {
+    super.edgeDominates(dominated, s)
+  }
+
+  /**
    * Holds if this basic block strictly post-dominates basic block `bb`.
    *
    * That is, all paths reaching a normal exit point basic block from basic
@@ -296,11 +319,14 @@ final class JoinBlockPredecessor extends BasicBlock, BasicBlocksImpl::JoinPredec
  * control flow.
  */
 final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBlock {
-  predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
-    super.immediatelyControls(succ, s)
+  /** DEPRECATED: Use `edgeDominates` instead. */
+  deprecated predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
+    this.getASuccessor(s) = succ and
+    BasicBlocksImpl::dominatingEdge(this, succ)
   }
 
-  predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
-    super.controls(controlled, s)
+  /** DEPRECATED: Use `edgeDominates` instead. */
+  deprecated predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
+    super.edgeDominates(controlled, s)
   }
 }

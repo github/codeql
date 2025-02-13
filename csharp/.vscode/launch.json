@@ -70,7 +70,8 @@
             // Set the path to the folder that should be extracted:
             "cwd": "${workspaceFolder}/ql/test/library-tests/dataflow/local",
             "args": [
-                "LocalDataFlow.cs"
+                "LocalDataFlow.cs",
+                "/r:System.Private.CoreLib.dll"
             ],
             "env": {},
             "stopAtEntry": true,

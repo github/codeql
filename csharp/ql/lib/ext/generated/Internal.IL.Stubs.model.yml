@@ -70,3 +70,5 @@ extensions:
       - ["Internal.IL.Stubs", "PInvokeTargetNativeMethod", "get_IsNoInlining", "()", "summary", "df-generated"]
       - ["Internal.IL.Stubs", "PInvokeTargetNativeMethod", "get_IsPInvoke", "()", "summary", "df-generated"]
       - ["Internal.IL.Stubs", "PInvokeTargetNativeMethod", "get_Prefix", "()", "summary", "df-generated"]
+      - ["Internal.IL.Stubs", "SpecializableILStubMethod", "EmitIL", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["Internal.IL.Stubs", "SpecializableILStubMethod", "HasCustomAttribute", "(System.String,System.String)", "summary", "df-generated"]
