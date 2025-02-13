@@ -117,26 +117,28 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
    * directly accessed by the function.
    */
   final predicate hasUserVariable(Variable varUsed, CppType type) {
-    (
-      (
-        varUsed instanceof GlobalOrNamespaceVariable
-        or
-        varUsed instanceof StaticLocalVariable
-        or
-        varUsed instanceof MemberVariable and not varUsed instanceof Field
-      ) and
-      exists(VariableAccess access |
-        access.getTarget() = varUsed and
-        getEnclosingVariable(access) = var
-      )
-      or
-      var = varUsed
-      or
-      varUsed.(LocalScopeVariable).getEnclosingElement*() = var
-      or
-      varUsed.(Parameter).getCatchBlock().getEnclosingElement*() = var
-    ) and
+    this.hasUserVariable1(varUsed) and
     type = getTypeForPRValue(getVariableType(varUsed))
+  }
+
+  private predicate hasUserVariable1(Variable varUsed) {
+    (
+      varUsed instanceof GlobalOrNamespaceVariable
+      or
+      varUsed instanceof StaticLocalVariable
+      or
+      varUsed instanceof MemberVariable and not varUsed instanceof Field
+    ) and
+    exists(VariableAccess access |
+      access.getTarget() = varUsed and
+      getEnclosingVariable(access) = var
+    )
+    or
+    var = varUsed
+    or
+    varUsed.(LocalScopeVariable).getEnclosingElement*() = var
+    or
+    varUsed.(Parameter).getCatchBlock().getEnclosingElement*() = var
   }
 }
 
