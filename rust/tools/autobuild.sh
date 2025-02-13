@@ -3,4 +3,6 @@
 set -eu
 
 export RUST_BACKTRACE=1
-exec "$CODEQL_EXTRACTOR_RUST_ROOT/tools/$CODEQL_PLATFORM/autobuild"
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+exec /usr/bin/env python "${SCRIPT_DIR}/autobuild.py"
