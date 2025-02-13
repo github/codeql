@@ -775,11 +775,28 @@ private Type resolveTargetTyped(AstNode n, TypePath path) {
 }
 
 private module RecordFieldMatchingInput implements MatchingInputSig {
-  class Decl extends Struct {
-    // todo or variant
-    TypeParameter getTypeParameter(int i) {
+  abstract class Decl extends AstNode {
+    abstract TypeParameter getTypeParameter(int i);
+
+    abstract RecordField getField(string name);
+  }
+
+  private class StructDecl extends Decl, Struct {
+    override TypeParameter getTypeParameter(int i) {
       result.getTypeParam() = this.getGenericParamList().getTypeParam(i)
     }
+
+    override RecordField getField(string name) { result = this.getRecordField(name) }
+  }
+
+  private class VariantDecl extends Decl, Variant {
+    Enum getEnum() { result.getVariantList().getAVariant() = this }
+
+    override TypeParameter getTypeParameter(int i) {
+      result.getTypeParam() = this.getEnum().getGenericParamList().getTypeParam(i)
+    }
+
+    override RecordField getField(string name) { result = this.getRecordField(name) }
   }
 
   class Access extends RecordExpr {
@@ -834,7 +851,7 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
   }
 
   predicate parameterType(Decl decl, Pos pos, TypePath path, Type t) {
-    exists(TypeRepr_ tp | tp = decl.getRecordField(pos).getTypeRepr() | t = tp.resolveTypeAt(path))
+    exists(TypeRepr_ tp | tp = decl.getField(pos).getTypeRepr() | t = tp.resolveTypeAt(path))
   }
 
   pragma[nomagic]

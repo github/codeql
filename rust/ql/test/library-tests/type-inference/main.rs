@@ -227,7 +227,7 @@ mod m6 {
 
     pub fn f() {
         let x = MyEnum::C1(S1); // `MyEnum::C1(S1)` missing type at path 0
-        let y = MyEnum::C2 { a: S2 }; // `MyEnum::C2 { a: S2 }` missing type
+        let y = MyEnum::C2 { a: S2 }; // `MyEnum::C2 { a: S2 }` missing type at ""
 
         println!("{:?}", x.m1()); // `x.m1` missing type
         println!("{:?}", y.m1()); // `y`, `y.m1` missing type
