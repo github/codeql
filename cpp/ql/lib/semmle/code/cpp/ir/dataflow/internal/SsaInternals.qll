@@ -691,8 +691,10 @@ predicate outNodeHasAddressAndIndex(
  *
  * Holds if `node` is the node that corresponds to the definition of `def`.
  */
-predicate defToNode(Node node, Def def, SourceVariable sv, IRBlock bb, int i, boolean uncertain) {
-  def.hasIndexInBlock(bb, i, sv) and
+predicate defToNode(
+  Node node, DefinitionExt def, SourceVariable sv, IRBlock bb, int i, boolean uncertain
+) {
+  def.definesAt(sv, bb, i, _) and
   (
     nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
     or
