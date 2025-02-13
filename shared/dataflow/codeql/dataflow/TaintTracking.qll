@@ -71,7 +71,8 @@ module TaintFlowMake<
         Config::isSink(node) or
         Config::isSink(node, _) or
         Config::isAdditionalFlowStep(node, _, _) or
-        Config::isAdditionalFlowStep(node, _, _, _, _)
+        Config::isAdditionalFlowStep(node, _, _, _, _) or
+        defaultAdditionalTaintStep(node, _, _)
       ) and
       defaultImplicitTaintRead(node, c)
     }
