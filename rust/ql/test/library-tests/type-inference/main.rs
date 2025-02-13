@@ -204,6 +204,36 @@ mod m5 {
     }
 }
 
+mod m6 {
+    #[derive(Debug)]
+    enum MyEnum<A> {
+        C1(A),
+        C2 { a: A },
+    }
+
+    #[derive(Debug)]
+    struct S1;
+    #[derive(Debug)]
+    struct S2;
+
+    impl<T> MyEnum<T> {
+        fn m1(self) -> T {
+            match self {
+                MyEnum::C1(a) => a,    // `a` missing type
+                MyEnum::C2 { a } => a, // `a` missing type
+            }
+        }
+    }
+
+    pub fn f() {
+        let x = MyEnum::C1(S1); // `MyEnum::C1(S1)` missing type at path 0
+        let y = MyEnum::C2 { a: S2 }; // `MyEnum::C2 { a: S2 }` missing type
+
+        println!("{:?}", x.m1()); // `x.m1` missing type
+        println!("{:?}", y.m1()); // `y`, `y.m1` missing type
+    }
+}
+
 fn main() {
     m1::f();
     m1::g(m1::Foo {}, m1::Foo {});
@@ -211,4 +241,5 @@ fn main() {
     m3::f();
     m4::f();
     m5::f();
+    m6::f();
 }
