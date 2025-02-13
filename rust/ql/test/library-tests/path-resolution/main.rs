@@ -127,7 +127,7 @@ mod m7 {
     } // I41
 
     #[rustfmt::skip]
-    pub fn f() -> MyEnum // $ item=I41 
+    pub fn f() -> MyEnum // $ item=I41
     {
         println!("main.rs::m7::f");
         let _ = MyEnum::A(0); // $ item=I42
@@ -167,9 +167,18 @@ mod m8 {
     } // I52
 
     #[rustfmt::skip]
+    impl MyStruct { // $ item=I50
+        fn h(&self) {
+            println!("main.rs::m8::MyStruct::h");
+            f(); // $ item=I51
+        } // I74
+    } // I73
+
+    #[rustfmt::skip]
     pub fn g() {
         let x = MyStruct {}; // $ item=I50
         MyTrait::f(&x); // $ item=I48
+        MyStruct::f(&x); // $ MISSING: item=I53
         <MyStruct as // $ item=I50
          MyTrait // $ MISSING: item=I47
         > // $ MISSING: item=52
@@ -178,6 +187,8 @@ mod m8 {
         x.f(); // $ MISSING: item=I53
         let x = MyStruct {}; // $ item=I50
         x.g(); // $ MISSING: item=I54
+        MyStruct::h(&x); // $ MISSING: item=I74
+        x.h(); // $ MISSING: item=I74
     } // I55
 } // I46
 

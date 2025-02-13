@@ -65,8 +65,9 @@ struct MyFlag {
 
 impl MyFlag {
     fn data_in(&self, n: i64) {
-        sink(n); // $ hasValueFlow=1
+        sink(n); // $ hasValueFlow=1 MISSING: hasValueFlow=8
     }
+
     fn get_data(&self) -> i64 {
         if self.flag {
             0
@@ -74,6 +75,7 @@ impl MyFlag {
             source(2)
         }
     }
+
     fn data_through(&self, n: i64) -> i64 {
         if self.flag {
             0
@@ -102,10 +104,36 @@ fn data_through_method() {
     sink(b); // $ hasValueFlow=4
 }
 
+fn data_in_to_method_called_as_function() {
+    let mn = MyFlag { flag: true };
+    let a = source(8);
+    MyFlag::data_in(&mn, a);
+}
+
+fn data_through_method_called_as_function() {
+    let mn = MyFlag { flag: true };
+    let a = source(12);
+    let b = MyFlag::data_through(&mn, a);
+    sink(b); // $ MISSING: hasValueFlow=12
+}
+
 use std::ops::Add;
 
 struct MyInt {
     value: i64,
+}
+
+impl MyInt {
+    // Associated function
+    fn new(n: i64) -> Self {
+        MyInt { value: n }
+    }
+}
+
+fn data_through_associated_function() {
+    let n = MyInt::new(source(34));
+    let MyInt { value: m } = n;
+    sink(m); // $ hasValueFlow=34
 }
 
 impl Add for MyInt {
@@ -117,7 +145,7 @@ impl Add for MyInt {
     }
 }
 
-pub fn test_operator_overloading() {
+fn test_operator_overloading() {
     let a = MyInt { value: source(5) };
     let b = MyInt { value: 2 };
     let c = a + b;
@@ -132,6 +160,42 @@ pub fn test_operator_overloading() {
     let b = MyInt { value: 2 };
     let d = a.add(b);
     sink(d.value); // $ MISSING: hasValueFlow=7
+
+}
+
+trait MyTrait {
+    type Output;
+    fn take_self(self, _other: Self::Output) -> Self::Output;
+    fn take_second(self, other: Self::Output) -> Self::Output;
+}
+
+impl MyTrait for MyInt {
+    type Output = MyInt;
+
+    fn take_self(self, _other: MyInt) -> MyInt {
+        self
+    }
+
+    fn take_second(self, other: MyInt) -> MyInt {
+        other
+    }
+}
+
+fn data_through_trait_method_called_as_function() {
+    let a = MyInt { value: source(8) };
+    let b = MyInt { value: 2 };
+    let MyInt { value: c } = MyTrait::take_self(a, b);
+    sink(c); // $ MISSING: hasValueFlow=8
+
+    let a = MyInt { value: 0 };
+    let b = MyInt { value: source(37) };
+    let MyInt { value: c } = MyTrait::take_second(a, b);
+    sink(c); // $ MISSING: hasValueFlow=37
+
+    let a = MyInt { value: 0 };
+    let b = MyInt { value: source(38) };
+    let MyInt { value: c } = MyTrait::take_self(a, b);
+    sink(c);
 }
 
 async fn async_source() -> i64 {
