@@ -2,7 +2,7 @@
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Get input from CLI
-    let args: Vec<String> = std::env::args().collect();
+    let args: Vec<String> = std::env::args().collect(); // $ source
     let name = &args[1];
     let age = &args[2];
 
@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )",
         &[],
     )?;
-    
+
     let query = format!("INSERT INTO person (name, age) VALUES ('{}', '{}')", name, age);
 
     conn.execute(query.as_str(), &[])?;     // $ sql-sink
@@ -33,9 +33,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // conn.query_typed_raw(query.as_str(), &[])?;
 
     for row in &conn.query("SELECT id, name, age FROM person", &[])? {  // $ sql-sink
-        let id: i32 = row.get("id");        // $ database-read
-        let name: &str = row.try_get("name")?;   // $ database-read
-        let age: i32 = row.try_get("age").unwrap();      // $ database-read
+        let id: i32 = row.get("id");        // $ source
+        let name: &str = row.try_get("name")?;   // $ source
+        let age: i32 = row.try_get("age").unwrap();      // $ source
         println!("found person: {} {} {}", id, name, age);
     }
 
