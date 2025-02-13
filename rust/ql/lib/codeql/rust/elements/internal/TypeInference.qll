@@ -1008,6 +1008,100 @@ private Type resolveMethodCallExprType(MethodCallExpr mce, TypePath path) {
   )
 }
 
+private module FieldExprMatchingInput implements MatchingInputSig {
+  abstract class Decl extends AstNode {
+    TypeParameter getTypeParameter(int i) { none() }
+
+    abstract TypeRepr getTypeRepr();
+  }
+
+  private class RecordFieldDecl extends Decl instanceof RecordField {
+    override TypeRepr getTypeRepr() { result = RecordField.super.getTypeRepr() }
+  }
+
+  private class TupleFieldDecl extends Decl instanceof TupleField {
+    override TypeRepr getTypeRepr() { result = TupleField.super.getTypeRepr() }
+  }
+
+  class Access extends FieldExpr {
+    Type getTypeArgument(int i, TypePath path) { none() }
+
+    predicate noExplicitTypeArguments() { any() }
+  }
+
+  predicate target(Access a, Decl target) {
+    exists(Type t, Type lookupType, string name |
+      t = resolveType(a.getExpr()) and
+      name = a.getNameRef().getText() and
+      if t = TRefType()
+      then
+        // for reference types, lookup the field in the type being referenced
+        lookupType = resolveType(a.getExpr(), "0")
+      else lookupType = t
+    |
+      target = lookupType.getRecordField(name)
+      or
+      target = lookupType.getTupleField(name.toInt())
+    )
+  }
+
+  class Pos = int;
+
+  Pos getReturnPos() { result = -2 }
+
+  private AstNode getExplicitArgument(Access a, Pos pos) { result = a.getExpr() and pos = -1 }
+
+  private predicate explicitArgumentType(Access a, Pos pos, TypePath path, Type t) {
+    t = resolveType(getExplicitArgument(a, pos), path)
+  }
+
+  predicate argumentType(Access a, Pos pos, TypePath path, Type t) {
+    explicitArgumentType(a, pos, path, t)
+    // or
+    // implicitThis(a, pos, path, t)
+  }
+
+  pragma[nomagic]
+  predicate argumentIsTargetTyped(Access a, Pos pos) { isTargetTyped(getExplicitArgument(a, pos)) }
+
+  pragma[nomagic]
+  predicate argumentIsNotTargetTyped(Access a, Pos pos) {
+    exists(AstNode arg |
+      arg = getExplicitArgument(a, pos) and
+      not isTargetTyped(arg)
+    )
+    // or
+    // implicitThis(a, pos, _, _)
+  }
+
+  predicate parameterType(Decl decl, Pos pos, TypePath path, Type t) {
+    pos = -1 and
+    exists(Struct s | s.getRecordField(_) = decl or s.getTupleField(_) = decl |
+      t = TStruct(s) and
+      path.isEmpty()
+      or
+      exists(int i |
+        t = TTypeParameter(s.getGenericParamList().getTypeParam(i)) and
+        path = typePath(i)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  predicate declType(Decl decl, TypePath path, Type t) {
+    t = decl.getTypeRepr().(TypeRepr_).resolveTypeAt(path)
+  }
+}
+
+private module FieldExprMatching = Matching<FieldExprMatchingInput>;
+
+private Type resolveFieldExprType(FieldExpr fe, TypePath path) {
+  result = resolveFieldExprType0(fe, path)
+  or
+  // result = resolveFunctionReturnType(call.getStaticTarget(), path)
+  result = FieldExprMatching::resolveAccess(fe, -2, path)
+}
+
 pragma[nomagic]
 RecordField resolveRecordFieldExpr(FieldExpr fe) {
   exists(Type t, string name |
@@ -1035,7 +1129,7 @@ TupleField resolveTupleFieldExpr(FieldExpr fe) {
 }
 
 pragma[nomagic]
-private Type resolveFieldExprType(FieldExpr fe, TypePath path) {
+private Type resolveFieldExprType0(FieldExpr fe, TypePath path) {
   exists(RecordField f |
     f = resolveRecordFieldExpr(fe) and
     result = f.getTypeRepr().(TypeRepr_).resolveTypeAt(path) and
