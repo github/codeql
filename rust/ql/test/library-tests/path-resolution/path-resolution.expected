@@ -99,10 +99,10 @@ resolvePath
 | main.rs:188:19:188:32 | ...::MyStruct | main.rs:185:5:185:26 | struct MyStruct |
 | main.rs:190:9:190:12 | self | main.rs:184:1:192:1 | mod m9 |
 | main.rs:190:9:190:22 | ...::MyStruct | main.rs:185:5:185:26 | struct MyStruct |
-| main.rs:200:12:200:12 | T | main.rs:197:7:197:7 | TypeParam |
-| main.rs:205:12:205:12 | T | main.rs:204:14:204:14 | TypeParam |
+| main.rs:200:12:200:12 | T | main.rs:197:7:197:7 | T |
+| main.rs:205:12:205:12 | T | main.rs:204:14:204:14 | T |
 | main.rs:207:7:209:7 | MyStruct::<...> | main.rs:195:5:201:5 | struct MyStruct |
-| main.rs:208:9:208:9 | T | main.rs:204:14:204:14 | TypeParam |
+| main.rs:208:9:208:9 | T | main.rs:204:14:204:14 | T |
 | main.rs:211:9:211:16 | MyStruct | main.rs:195:5:201:5 | struct MyStruct |
 | main.rs:221:17:221:19 | Foo | main.rs:216:5:216:21 | struct Foo |
 | main.rs:222:9:222:11 | Foo | main.rs:218:5:218:15 | fn Foo |
@@ -115,7 +115,7 @@ resolvePath
 | main.rs:246:9:246:12 | ...::C | main.rs:243:9:243:9 | C |
 | main.rs:249:17:249:17 | S | main.rs:241:5:241:13 | struct S |
 | main.rs:250:17:250:17 | C | main.rs:243:9:243:9 | C |
-| main.rs:263:16:263:16 | T | main.rs:257:7:257:7 | TypeParam |
+| main.rs:263:16:263:16 | T | main.rs:257:7:257:7 | T |
 | main.rs:264:14:264:17 | Self | main.rs:255:5:265:5 | trait MyParamTrait |
 | main.rs:264:14:264:33 | ...::AssociatedType | main.rs:259:9:259:28 | TypeAlias |
 | main.rs:273:13:273:17 | crate | main.rs:1:1:302:2 | SourceFile |
