@@ -104,3 +104,16 @@ func test_mongo_driver_mongo_database(db *mongo.Database, ctx context.Context, p
 		sink(userCs) // $ hasTaintFlow="userCs"
 	}
 }
+
+func test_mongo_driver_mongo_Client(client *mongo.Client, ctx context.Context) {
+	changestream, err := client.Watch(ctx, nil) // $ source
+	if err != nil {
+		return
+	}
+
+	for changestream.Next(ctx) {
+		var user User
+		changestream.Decode(&user)
+		sink(user) // $ hasTaintFlow="user"
+	}
+}
