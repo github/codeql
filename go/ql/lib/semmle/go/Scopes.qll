@@ -195,8 +195,8 @@ class BuiltinEntity extends Entity, @builtinobject { }
 class PackageEntity extends Entity, @pkgobject { }
 
 /**
- * A named type (predeclared types, defined types, type parameters and aliases
- * which refer to those things).
+ * A named type: predeclared types, defined types, type parameters, and type
+ * aliases.
  */
 class TypeEntity extends Entity, @typeobject { }
 
