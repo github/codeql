@@ -270,14 +270,14 @@ fn option_ok() {
     let r1 : Result<i64, i64> = Ok(source(21));
     let o1a : Option<i64> = r1.ok();
     let o1b : Option<i64> = r1.err();
-    sink(o1a.unwrap()); // $ MISSING: hasValueFlow=21
+    sink(o1a.unwrap()); // $ hasValueFlow=21
     sink(o1b.unwrap());
 
     let r2 : Result<i64, i64> = Err(source(22));
     let o2a : Option<i64> = r2.ok();
     let o2b : Option<i64> = r2.err();
     sink(o2a.unwrap());
-    sink(o2b.unwrap()); // $ MISSING: hasValueFlow=22
+    sink(o2b.unwrap()); // $ hasValueFlow=22
 }
 
 fn result_questionmark() -> Result<i64, i64> {
