@@ -244,7 +244,11 @@ fn main() -> anyhow::Result<()> {
         if let Some((ref db, ref vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
         {
+            let before_crate_graph = Instant::now();
             crate_graph::extract_crate_graph(extractor.traps, db, vfs);
+            extractor
+                .steps
+                .push(ExtractionStep::crate_graph(before_crate_graph));
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
