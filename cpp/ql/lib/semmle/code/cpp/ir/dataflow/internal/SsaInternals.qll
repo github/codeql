@@ -1059,7 +1059,7 @@ module SsaCached {
   }
 
   cached
-  Definition phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
+  DefinitionExt phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
     SsaImpl::phiHasInputFromBlockExt(phi, result, bb)
   }
 
@@ -1116,12 +1116,12 @@ class PhiNode extends SsaImpl::DefinitionExt {
   }
 
   /** Gets a definition that is an input to this phi node. */
-  final Definition getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
+  final DefinitionExt getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
 }
 
 /** An static single assignment (SSA) definition. */
 class DefinitionExt extends SsaImpl::DefinitionExt {
-  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
+  private DefinitionExt getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is
@@ -1181,7 +1181,5 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
     )
   }
 }
-
-class Definition = SsaImpl::Definition;
 
 import SsaCached

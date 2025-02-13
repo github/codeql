@@ -2292,7 +2292,7 @@ class ContentSet instanceof Content {
 
 pragma[nomagic]
 private predicate guardControlsPhiInput(
-  IRGuardCondition g, boolean branch, Ssa::Definition def, IRBlock input, Ssa::PhiNode phi
+  IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
 ) {
   phi.hasInputFromBlock(def, _, _, _, input) and
   (
