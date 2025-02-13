@@ -18,13 +18,13 @@ edges
 | sqlx.rs:67:30:67:43 | unsafe_query_4 | sqlx.rs:67:30:67:52 | unsafe_query_4.as_str(...) | provenance | MaD:2 |
 | sqlx.rs:78:29:78:42 | unsafe_query_4 | sqlx.rs:78:29:78:51 | unsafe_query_4.as_str(...) | provenance | MaD:2 |
 models
-| 1 | Source: repo:https://github.com/seanmonstar/reqwest:reqwest; crate::blocking::get; remote; ReturnValue.Variant[crate::result::Result::Ok(0)] |
+| 1 | Source: repo:https://github.com/seanmonstar/reqwest:reqwest; crate::blocking::get; remote; ReturnValue.Field[crate::result::Result::Ok(0)] |
 | 2 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
 | 3 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
-| 4 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 5 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[self].Variant[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 4 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 5 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
 | 6 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
-| 7 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::text; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
+| 7 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
 nodes
 | sqlx.rs:48:9:48:21 | remote_string | semmle.label | remote_string |
 | sqlx.rs:48:25:48:46 | ...::get | semmle.label | ...::get |
