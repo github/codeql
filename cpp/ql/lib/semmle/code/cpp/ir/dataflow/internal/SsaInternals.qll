@@ -1130,6 +1130,45 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
     not result instanceof PhiNode
   }
 
+  /** INTERNAL: Do not use. */
+  DefImpl getImpl() {
+    exists(SourceVariable sv, IRBlock bb, int i |
+      this.definesAt(sv, bb, i, _) and
+      result.hasIndexInBlock(bb, i, sv)
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  Node0Impl getValue() { result = this.getImpl().getValue() }
+
+  /** Gets the indirection index of this definition. */
+  int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
+
+  /** Gets the indirection of this definition. */
+  int getIndirection() { result = this.getImpl().getIndirection() }
+
+  /**
+   * Holds if this definition is guaranteed to totally overwrite the buffer
+   * being written to.
+   */
+  predicate isCertain() { this.getImpl().isCertain() }
+
+  /**
+   * Gets the enclosing declaration of this definition.
+   *
+   * Note that this may be a variable when this definition defines a global, or
+   * a static local, variable.
+   */
+  Declaration getFunction() { result = this.getImpl().getBlock().getEnclosingFunction() }
+
+  /** Gets the underlying type of the variable being defined by this definition. */
+  Type getUnderlyingType() { result = this.getSourceVariable().getType() }
+
+  /** Gets the unspecified type of the variable being defined by this definition. */
+  Type getUnspecifiedType() { result = this.getUnderlyingType().getUnspecifiedType() }
+
   /** Gets a node that represents a read of this SSA definition. */
   pragma[nomagic]
   Node getARead() {
