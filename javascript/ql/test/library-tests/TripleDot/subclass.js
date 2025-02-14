@@ -29,6 +29,6 @@ class Subclass3 extends Base {
         this.baseMethod("safe");
     }
     subclassMethod(x) {
-        sink(x); // $ SPURIOUS: hasValueFlow=sub1 hasValueFlow=sub2
+        sink(x);
     }
 }
