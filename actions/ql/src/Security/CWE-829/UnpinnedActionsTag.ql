@@ -41,18 +41,7 @@ where
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
   not isImmutableAction(uses, nwo) and
-  not
-  (
-    (
-      isContainerImage(nwo) and
-      isPinnedContainer(version)
-    )
-    or
-    (
-      not isContainerImage(nwo) and
-      isPinnedCommit(version)
-    )
-  )
+  not if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)
 select uses.getCalleeNode(),
   "Unpinned 3rd party Action '" + name + "' step $@ uses '" + nwo + "' with ref '" + version +
     "', not a pinned commit hash", uses, uses.toString()
