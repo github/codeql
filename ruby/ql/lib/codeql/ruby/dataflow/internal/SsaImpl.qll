@@ -232,7 +232,7 @@ private predicate adjacentDefRead(
 }
 
 pragma[noinline]
-private predicate adjacentDefReadExt(
+deprecated private predicate adjacentDefReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
@@ -256,7 +256,7 @@ private predicate adjacentDefReachesRead(
   )
 }
 
-private predicate adjacentDefReachesReadExt(
+deprecated private predicate adjacentDefReachesReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
@@ -281,7 +281,7 @@ private predicate adjacentDefSkipUncertainReads(
   SsaInput::variableRead(bb2, i2, _, true)
 }
 
-private predicate adjacentDefReachesUncertainReadExt(
+deprecated private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
