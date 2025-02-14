@@ -128,14 +128,6 @@ private predicate adjacentDefRead(
   v = def.getSourceVariable()
 }
 
-pragma[noinline]
-private predicate adjacentDefReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
   exists(VariableAccess read |
@@ -188,22 +180,6 @@ private predicate adjacentDefReachesRead(
     adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
     SsaInput::variableRead(bb3, i3, _, false) and
     Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1, _)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(BasicBlock bb3, int i3 |
-    adjacentDefReachesReadExt(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefReadExt(def, _, bb3, i3, bb2, i2)
   )
 }
 
