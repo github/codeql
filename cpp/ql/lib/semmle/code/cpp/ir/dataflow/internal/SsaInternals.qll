@@ -1079,10 +1079,18 @@ module SsaCached {
   predicate variableWrite = SsaInput::variableWrite/4;
 }
 
+/** Gets the `DefImpl` corresponding to `def`. */
+private DefImpl getDefImpl(SsaImpl::DefinitionExt def) {
+  exists(SourceVariable sv, IRBlock bb, int i |
+    def.definesAt(sv, bb, i, _) and
+    result.hasIndexInBlock(bb, i, sv)
+  )
+}
+
 class GlobalDef extends DefinitionExt {
   GlobalDefImpl impl;
 
-  GlobalDef() { impl = this.getImpl() }
+  GlobalDef() { impl = getDefImpl(this) }
 
   /**
    * Gets the global (or `static` local) variable written to by this SSA
@@ -1142,30 +1150,22 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
     not result instanceof PhiNode
   }
 
-  /** INTERNAL: Do not use. */
-  DefImpl getImpl() {
-    exists(SourceVariable sv, IRBlock bb, int i |
-      this.definesAt(sv, bb, i, _) and
-      result.hasIndexInBlock(bb, i, sv)
-    )
-  }
-
   /**
    * INTERNAL: Do not use.
    */
-  Node0Impl getValue() { result = this.getImpl().getValue() }
+  Node0Impl getValue() { result = getDefImpl(this).getValue() }
 
   /** Gets the indirection index of this definition. */
-  int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
+  int getIndirectionIndex() { result = getDefImpl(this).getIndirectionIndex() }
 
   /** Gets the indirection of this definition. */
-  int getIndirection() { result = this.getImpl().getIndirection() }
+  int getIndirection() { result = getDefImpl(this).getIndirection() }
 
   /**
    * Holds if this definition is guaranteed to totally overwrite the buffer
    * being written to.
    */
-  predicate isCertain() { this.getImpl().isCertain() }
+  predicate isCertain() { getDefImpl(this).isCertain() }
 
   /**
    * Gets the enclosing declaration of this definition.
@@ -1173,7 +1173,7 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
    * Note that this may be a variable when this definition defines a global, or
    * a static local, variable.
    */
-  Declaration getFunction() { result = this.getImpl().getBlock().getEnclosingFunction() }
+  Declaration getFunction() { result = getDefImpl(this).getBlock().getEnclosingFunction() }
 
   /** Gets the underlying type of the variable being defined by this definition. */
   Type getUnderlyingType() { result = this.getSourceVariable().getType() }
