@@ -531,6 +531,13 @@ class LabeledPatternExpr extends PatternExpr {
   override string getAPrimaryQlClass() { result = "LabeledPatternExpr" }
 }
 
+/**
+ * A tuple pattern. For example, `var (x, y)`.
+ */
+class TuplePatternExpr extends TupleExpr, PatternExpr {
+  override string getAPrimaryQlClass() { result = "TuplePatternExpr" }
+}
+
 /** A positional pattern. For example, `(int x, int y)`. */
 class PositionalPatternExpr extends PatternExpr, @positional_pattern_expr {
   override string toString() { result = "( ... )" }
