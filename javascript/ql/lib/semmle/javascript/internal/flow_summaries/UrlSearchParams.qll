@@ -1,7 +1,7 @@
 /**
  * Contains a summary for `URLSearchParams` and `URL` objects.
  *
- * For now, the `URLSearchParams` object is modelled as a `Map` object.
+ * For now, the `URLSearchParams` object is modeled as a `Map` object.
  */
 
 private import javascript
