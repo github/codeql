@@ -5,16 +5,16 @@ class Base {
         /** calls:methodInBase */
         this.methodInBase();
 
-        /** calls:NONE */
+        /** calls:methodInSub1 calls:methodInSub2 */
         this.methodInSub();
 
-        /** calls:overridenInSub0 */
+        /** calls:overridenInSub0 calls:overridenInSub1 calls:overridenInSub2 */
         this.overridenInSub();
     }
 
     /** name:methodInBase */
     methodInBase() {
-        /** calls:NONE */
+        /** calls:methodInSub1 calls:methodInSub2 */
         this.methodInSub();
     }
 
