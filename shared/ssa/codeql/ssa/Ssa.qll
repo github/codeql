@@ -229,18 +229,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Holds if variable `v` is live in basic block `bb` at index `i`.
-     * The rank of `i` is `rnk` as defined by `refRank()`.
+     * Holds if variable `v` is live in basic block `bb` at rank `rnk`.
      */
-    private predicate liveAtRank(BasicBlock bb, int i, SourceVariable v, int rnk) {
-      exists(RefKind kind | rnk = refRank(bb, i, v, kind) |
+    private predicate liveAtRank(BasicBlock bb, SourceVariable v, int rnk) {
+      exists(RefKind kind | rnk = refRank(bb, _, v, kind) |
         rnk = maxRefRank(bb, v) and
         liveAtExit(bb, v)
         or
         kind = Read()
         or
         exists(RefKind nextKind |
-          liveAtRank(bb, _, v, rnk + 1) and
+          liveAtRank(bb, v, rnk + 1) and
           rnk + 1 = refRank(bb, _, v, nextKind) and
           nextKind != Write(true)
         )
@@ -252,7 +251,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * index `i` inside basic block `bb`.
      */
     predicate liveAfterWrite(BasicBlock bb, int i, SourceVariable v) {
-      exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, i, v, rnk))
+      exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, v, rnk))
     }
   }
 
