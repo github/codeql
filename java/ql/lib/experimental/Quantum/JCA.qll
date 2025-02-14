@@ -4,12 +4,9 @@ import semmle.code.java.dataflow.DataFlow
 module JCAModel {
   import Language
 
-  abstract class EncryptionOperation extends Crypto::EncryptionOperation { }
-
-  //TODO PBEWith can have suffixes. how to do? enumerate? or match a pattern?
+  // TODO: Verify that the PBEWith% case works correctly
   bindingset[algo]
   predicate cipher_names(string algo) {
-    // "Standard names are not case-sensitive."
     algo.toUpperCase()
         .matches([
             "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "Blowfish", "ChaCha20", "ChaCha20-Poly1305",
@@ -17,26 +14,29 @@ module JCAModel {
           ].toUpperCase())
   }
 
-  //TODO solve the fact that x is an int of various values. same as above... enumerate?
+  // TODO: Verify that the CFB% case works correctly
+  bindingset[mode]
   predicate cipher_modes(string mode) {
-    mode =
-      [
-        "NONE", "CBC", "CCM", "CFB", "CFBx", "CTR", "CTS", "ECB", "GCM", "KW", "KWP", "OFB", "OFBx",
-        "PCBC"
-      ]
+    mode.toUpperCase()
+        .matches([
+            "NONE", "CBC", "CCM", "CFB", "CFB%", "CTR", "CTS", "ECB", "GCM", "KW", "KWP", "OFB",
+            "OFB%", "PCBC"
+          ].toUpperCase())
   }
 
-  //todo same as above, OAEPWith has asuffix type
+  // TODO: Verify that the OAEPWith% case works correctly
+  bindingset[padding]
   predicate cipher_padding(string padding) {
-    padding =
-      [
-        "NoPadding", "ISO10126Padding", "OAEPPadding", "OAEPWith", "PKCS1Padding", "PKCS5Padding",
-        "SSL3Padding"
-      ]
+    padding
+        .toUpperCase()
+        .matches([
+            "NoPadding", "ISO10126Padding", "OAEPPadding", "OAEPWith%", "PKCS1Padding",
+            "PKCS5Padding", "SSL3Padding"
+          ].toUpperCase())
   }
 
   /**
-   * this may be specified either in the ALG/MODE/PADDING or just ALG format
+   * A `StringLiteral` in the `"ALG/MODE/PADDING"` or `"ALG"` format
    */
   class CipherStringLiteral extends StringLiteral {
     CipherStringLiteral() { cipher_names(this.getValue().splitAt("/")) }
@@ -56,6 +56,9 @@ module JCAModel {
     Expr getAlgorithmArg() { result = this.getArgument(0) }
   }
 
+  /**
+   * Data-flow configuration modelling flow from a cipher string literal to a `CipherGetInstanceCall` argument.
+   */
   private module AlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherStringLiteral }
 
@@ -66,70 +69,77 @@ module JCAModel {
 
   module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
 
-  class CipherGetInstanceAlgorithmArg extends Expr {
+  /**
+   * The cipher algorithm argument to a `CipherGetInstanceCall`.
+   *
+   * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
+   */
+  class CipherGetInstanceAlgorithmArg extends Crypto::EncryptionAlgorithmInstance,
+    Crypto::ModeOfOperationAlgorithmInstance instanceof Expr
+  {
     CipherGetInstanceAlgorithmArg() {
       exists(CipherGetInstanceCall call | this = call.getArgument(0))
     }
 
-    StringLiteral getOrigin() {
-      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result), DataFlow::exprNode(this))
+    /**
+     * Returns the `StringLiteral` from which this argument is derived, if known.
+     */
+    CipherStringLiteral getOrigin() {
+      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result),
+        DataFlow::exprNode(this.(Expr).getAChildExpr*()))
     }
   }
 
-  class ModeStringLiteral extends Crypto::ModeOfOperation {
-    CipherStringLiteral instance;
+  /**
+   * A block cipher mode of operation, where the mode is specified in the ALG or ALG/MODE/PADDING format.
+   *
+   * This class will only exist when the mode (*and its type*) is determinable.
+   * This is because the mode will always be specified alongside the algorithm and never independently.
+   * Therefore, we can always assume that a determinable algorithm will have a determinable mode.
+   *
+   * In the case that only an algorithm is specified, e.g., "AES", the provider provides a default mode.
+   *
+   * TODO: Model the case of relying on a provider default, but alert on it as a bad practice.
+   */
+  class ModeOfOperation extends Crypto::ModeOfOperationAlgorithm {
+    CipherGetInstanceAlgorithmArg instance;
 
-    ModeStringLiteral() {
+    ModeOfOperation() {
       this = Crypto::TModeOfOperationAlgorithm(instance) and
-      exists(instance.getMode()) and
-      instance = any(CipherGetInstanceAlgorithmArg call).getOrigin()
+      // TODO: this currently only holds for explicitly defined modes in a string literal.
+      // Cases with defaults, e.g., "AES", are not yet modelled.
+      // For these cases, in a CBOM, the AES node would have an unknown edge to its mode child.
+      exists(instance.getOrigin().getMode())
     }
 
     override Location getLocation() { result = instance.getLocation() }
 
-    override string getRawAlgorithmName() { result = instance.getMode() }
+    override string getRawAlgorithmName() { result = instance.getOrigin().getValue() }
 
     predicate modeToNameMapping(Crypto::TModeOperationType type, string name) {
       super.modeToNameMapping(type, name)
     }
 
     override Crypto::TModeOperationType getModeType() {
-      this.modeToNameMapping(result, instance.getMode().toUpperCase())
+      this.modeToNameMapping(result, instance.getOrigin().getMode())
     }
 
     CipherStringLiteral getInstance() { result = instance }
   }
 
-  //todo refactor
-  // class CipherAlgorithmPaddingStringLiteral extends CipherAlgorithmPadding instanceof StringLiteral {
-  //   CipherAlgorithmPaddingStringLiteral() {
-  //     cipher_padding(this.(StringLiteral).getValue().splitAt("/"))
-  //   }
-  //   override string toString() { result = this.(StringLiteral).toString() }
-  //   override string getValue() {
-  //     result = this.(StringLiteral).getValue().regexpCapture(".*/.*/(.*)", 1)
-  //   }
-  // }
-  /**
-   * A class to represent when AES is used
-   * AND currently it has literal mode and padding provided
-   *
-   * this currently does not capture the use without a literal
-   * though should be extended to
-   */
-  class CipherAlgorithm extends Crypto::SymmetricAlgorithm {
+  class EncryptionAlgorithm extends Crypto::EncryptionAlgorithm {
     CipherStringLiteral origin;
     CipherGetInstanceAlgorithmArg instance;
 
-    CipherAlgorithm() {
-      this = Crypto::TSymmetricAlgorithm(instance) and
+    EncryptionAlgorithm() {
+      this = Crypto::TEncryptionAlgorithm(instance) and
       instance.getOrigin() = origin
     }
 
     override Location getLocation() { result = instance.getLocation() }
 
-    override Crypto::ModeOfOperation getModeOfOperation() {
-      result.(ModeStringLiteral).getInstance() = origin
+    override Crypto::ModeOfOperationAlgorithm getModeOfOperation() {
+      result.(ModeOfOperation).getInstance() = origin
     }
 
     override Crypto::LocatableElement getOrigin(string name) {
@@ -138,23 +148,25 @@ module JCAModel {
 
     override string getRawAlgorithmName() { result = origin.getValue() }
 
-    override Crypto::TSymmetricCipherType getCipherFamily() {
+    override Crypto::TCipherType getCipherFamily() {
       this.cipherNameMapping(result, origin.getAlgorithmName())
     }
 
     override string getKeySize(Location location) { none() }
 
     bindingset[name]
-    private predicate cipherNameMappingKnown(Crypto::TSymmetricCipherType type, string name) {
+    private predicate cipherNameMappingKnown(Crypto::TCipherType type, string name) {
       name = "AES" and
       type instanceof Crypto::AES
       or
       name = "RC4" and
       type instanceof Crypto::RC4
+      // or
+      // TODO
     }
 
     bindingset[name]
-    predicate cipherNameMapping(Crypto::TSymmetricCipherType type, string name) {
+    predicate cipherNameMapping(Crypto::TCipherType type, string name) {
       this.cipherNameMappingKnown(type, name)
       or
       not this.cipherNameMappingKnown(_, name) and

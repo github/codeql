@@ -4,16 +4,6 @@ import semmle.code.cpp.dataflow.new.DataFlow
 module OpenSSLModel {
   import Language
 
-  class FunctionCallOrMacroAccess extends Element {
-    FunctionCallOrMacroAccess() { this instanceof FunctionCall or this instanceof MacroAccess }
-
-    string getTargetName() {
-      result = this.(FunctionCall).getTarget().getName()
-      or
-      result = this.(MacroAccess).getMacroName()
-    }
-  }
-
   /**
    * Hash function references in OpenSSL.
    */
@@ -42,13 +32,27 @@ module OpenSSLModel {
     hash_ref_type_mapping_known(name, algo)
   }
 
-  class HashAlgorithmRef extends Crypto::HashAlgorithm {
-    FunctionCallOrMacroAccess instance;
+  class FunctionCallOrMacroAccess extends Element {
+    FunctionCallOrMacroAccess() { this instanceof FunctionCall or this instanceof MacroAccess }
 
-    HashAlgorithmRef() {
-      this = Crypto::THashAlgorithm(instance) and
-      hash_ref_type_mapping(instance, _, _)
+    string getTargetName() {
+      result = this.(FunctionCall).getTarget().getName()
+      or
+      result = this.(MacroAccess).getMacroName()
     }
+  }
+
+  class HashAlgorithmCallOrMacro extends Crypto::HashAlgorithmInstance instanceof FunctionCallOrMacroAccess
+  {
+    HashAlgorithmCallOrMacro() { hash_ref_type_mapping(this, _, _) }
+
+    string getTargetName() { result = this.(FunctionCallOrMacroAccess).getTargetName() }
+  }
+
+  class HashAlgorithm extends Crypto::HashAlgorithm {
+    HashAlgorithmCallOrMacro instance;
+
+    HashAlgorithm() { this = Crypto::THashAlgorithm(instance) }
 
     override string getSHA2OrSHA3DigestSize(Location location) {
       (
@@ -81,9 +85,9 @@ module OpenSSLModel {
 
     predicate isSink(DataFlow::Node sink) {
       exists(EVP_KDF_derive kdo |
-        sink.asExpr() = kdo.getAlgorithmArg()
+        sink.asExpr() = kdo.getCall().getAlgorithmArg()
         or
-        sink.asExpr() = kdo.getContextArg() // via `EVP_KDF_CTX_set_params`
+        sink.asExpr() = kdo.getCall().getContextArg() // via `EVP_KDF_CTX_set_params`
       )
     }
 
@@ -101,21 +105,23 @@ module OpenSSLModel {
   /**
    * Key derivation operation (e.g., `EVP_KDF_derive`)
    */
-  abstract class KeyDerivationOperation extends Crypto::KeyDerivationOperation { }
+  class EVP_KDF_derive_FunctionCall extends Crypto::KeyDerivationOperationInstance instanceof FunctionCall
+  {
+    EVP_KDF_derive_FunctionCall() { this.getTarget().getName() = "EVP_KDF_derive" }
 
-  class EVP_KDF_derive extends KeyDerivationOperation {
-    FunctionCall instance;
+    Expr getAlgorithmArg() { result = super.getArgument(3) }
 
-    EVP_KDF_derive() {
-      this = Crypto::TKeyDerivationOperation(instance) and
-      instance.getTarget().getName() = "EVP_KDF_derive"
-    }
+    Expr getContextArg() { result = super.getArgument(0) }
+  }
+
+  class EVP_KDF_derive extends Crypto::KeyDerivationOperation {
+    EVP_KDF_derive_FunctionCall instance;
+
+    EVP_KDF_derive() { this = Crypto::TKeyDerivationOperation(instance) }
 
     override Crypto::Algorithm getAlgorithm() { algorithm_to_EVP_KDF_derive(result, this) }
 
-    Expr getAlgorithmArg() { result = instance.getArgument(3) }
-
-    Expr getContextArg() { result = instance.getArgument(0) }
+    EVP_KDF_derive_FunctionCall getCall() { result = instance }
   }
 
   /**
@@ -134,7 +140,7 @@ module OpenSSLModel {
     Expr getAlgorithmArg() { result = this.getArgument(1) }
   }
 
-  class EVP_KDF_fetch_AlgorithmArg extends Expr {
+  class EVP_KDF_fetch_AlgorithmArg extends Crypto::KeyDerivationAlgorithmInstance instanceof Expr {
     EVP_KDF_fetch_AlgorithmArg() { exists(EVP_KDF_fetch_Call call | this = call.getAlgorithmArg()) }
   }
 

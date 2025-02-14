@@ -8,6 +8,8 @@ import codeql.util.Option
 signature module InputSig<LocationSig Location> {
   class LocatableElement {
     Location getLocation();
+
+    string toString();
   }
 
   class UnknownLocation instanceof Location;
@@ -56,15 +58,67 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     not source = target
   }
 
+  /**
+   * All elements in the database that are mapped to nodes must extend the following classes
+   */
+  abstract class HashOperationInstance extends LocatableElement { }
+
+  abstract class HashAlgorithmInstance extends LocatableElement { }
+
+  abstract class KeyDerivationOperationInstance extends LocatableElement { }
+
+  abstract class KeyDerivationAlgorithmInstance extends LocatableElement { }
+
+  abstract class EncryptionOperationInstance extends LocatableElement { }
+
+  abstract class EncryptionAlgorithmInstance extends LocatableElement { }
+
+  abstract class KeyEncapsulationOperationInstance extends LocatableElement { }
+
+  abstract class KeyEncapsulationAlgorithmInstance extends LocatableElement { }
+
+  abstract class EllipticCurveAlgorithmInstance extends LocatableElement { }
+
+  // Non-standalone algorithms
+  abstract class ModeOfOperationAlgorithmInstance extends LocatableElement { }
+
+  abstract class PaddingAlgorithmInstance extends LocatableElement { }
+
+  // Artifacts
+  abstract class DigestArtifactInstance extends LocatableElement { }
+
+  abstract class KeyArtifactInstance extends LocatableElement { }
+
+  abstract class InitializationVectorArtifactInstance extends LocatableElement { }
+
+  abstract class NonceArtifactInstance extends LocatableElement { }
+
   newtype TNode =
-    THashOperation(LocatableElement e) or
-    THashAlgorithm(LocatableElement e) or
-    TKeyDerivationOperation(LocatableElement e) or
-    TKeyDerivationAlgorithm(LocatableElement e) or
-    TEncryptionOperation(LocatableElement e) or
-    TSymmetricAlgorithm(LocatableElement e) or
-    TEllipticCurveAlgorithm(LocatableElement e) or
-    TModeOfOperationAlgorithm(LocatableElement e)
+    // Artifacts (data that is not an operation or algorithm, e.g., a key)
+    TDigest(DigestArtifactInstance e) or
+    TKey(KeyArtifactInstance e) or
+    TInitializationVector(InitializationVectorArtifactInstance e) or
+    TNonce(NonceArtifactInstance e) or
+    // Operations (e.g., hashing, encryption)
+    THashOperation(HashOperationInstance e) or
+    TKeyDerivationOperation(KeyDerivationOperationInstance e) or
+    TEncryptionOperation(EncryptionOperationInstance e) or
+    TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
+    // Algorithms (e.g., SHA-256, AES)
+    TEncryptionAlgorithm(EncryptionAlgorithmInstance e) or
+    TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstance e) or
+    THashAlgorithm(HashAlgorithmInstance e) or
+    TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstance e) or
+    TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
+    // Non-standalone Algorithms (e.g., Mode, Padding)
+    TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
+    TPaddingAlgorithm(PaddingAlgorithmInstance e) or
+    // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
+    // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
+    TKemDemHybridCryptosystem(EncryptionAlgorithmInstance dem) or
+    TKeyAgreementHybridCryptosystem(EncryptionAlgorithmInstance ka) or
+    TAsymmetricEncryptionMacHybridCryptosystem(EncryptionAlgorithmInstance enc) or
+    TPostQuantumHybridCryptosystem(EncryptionAlgorithmInstance enc)
 
   /**
    * The base class for all cryptographic assets, such as operations and algorithms.
@@ -90,14 +144,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Returns the child of this node with the given edge name.
      *
-     * This predicate is used by derived classes to construct the graph of cryptographic operations.
+     * This predicate is overriden by derived classes to construct the graph of cryptographic operations.
      */
     NodeBase getChild(string edgeName) { none() }
 
     /**
      * Defines properties of this node by name and either a value or location or both.
      *
-     * This predicate is used by derived classes to construct the graph of cryptographic operations.
+     * This predicate is overriden by derived classes to construct the graph of cryptographic operations.
      */
     predicate properties(string key, string value, Location location) {
       key = "origin" and
@@ -113,6 +167,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   class Asset = NodeBase;
 
+  class Artifact = NodeBase;
+
   /**
    * A cryptographic operation, such as hashing or encryption.
    */
@@ -125,9 +181,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the name of this operation, e.g., "hash" or "encrypt".
      */
-    abstract string getOperationName();
+    abstract string getOperationType();
 
-    final override string toString() { result = this.getOperationName() }
+    final override string toString() { result = this.getOperationType() }
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
@@ -175,7 +231,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class HashOperation extends Operation, THashOperation {
     abstract override HashAlgorithm getAlgorithm();
 
-    override string getOperationName() { result = "HashOperation" }
+    override string getOperationType() { result = "HashOperation" }
   }
 
   newtype THashType =
@@ -238,7 +294,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract string getSHA2OrSHA3DigestSize(Location location);
 
     bindingset[type]
-    private string getDigestSize(THashType type, Location location) {
+    private string type_to_digest_size_fixed(THashType type) {
       type instanceof MD2 and result = "128"
       or
       type instanceof MD4 and result = "128"
@@ -247,13 +303,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type instanceof SHA1 and result = "160"
       or
-      type instanceof SHA2 and result = this.getSHA2OrSHA3DigestSize(location)
-      or
-      type instanceof SHA3 and result = this.getSHA2OrSHA3DigestSize(location)
-      or
       type instanceof RIPEMD160 and result = "160"
       or
       type instanceof WHIRLPOOL and result = "512"
+    }
+
+    bindingset[type]
+    private string getDigestSize(THashType type, Location location) {
+      result = this.type_to_digest_size_fixed(type) and location = this.getLocation()
+      or
+      type instanceof SHA2 and result = this.getSHA2OrSHA3DigestSize(location)
+      or
+      type instanceof SHA3 and result = this.getSHA2OrSHA3DigestSize(location)
     }
 
     final override predicate properties(string key, string value, Location location) {
@@ -277,7 +338,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       exists(LocatableElement le | this = TKeyDerivationOperation(le) and result = le.getLocation())
     }
 
-    override string getOperationName() { result = "KeyDerivationOperation" }
+    override string getOperationType() { result = "KeyDerivationOperation" }
   }
 
   /**
@@ -560,10 +621,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * An encryption operation that processes plaintext to generate a ciphertext.
    * This operation takes an input message (plaintext) of arbitrary content and length and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
    */
-  abstract class EncryptionOperation extends Operation {
+  abstract class EncryptionOperation extends Operation, TEncryptionOperation {
     abstract override Algorithm getAlgorithm();
 
-    override string getOperationName() { result = "ENCRYPTION" }
+    override string getOperationType() { result = "EncryptionOperation" }
   }
 
   /**
@@ -578,15 +639,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     GCM() or
     CCM() or
     XTS() or
+    OAEP() or
     OtherMode()
 
-  abstract class ModeOfOperation extends Algorithm {
+  abstract class ModeOfOperationAlgorithm extends Algorithm, TModeOfOperationAlgorithm {
     override string getAlgorithmType() { result = "ModeOfOperation" }
 
     /**
      * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
      *
      * When modeling a new mode of operation, use this predicate to specify the type of the mode.
+     *
+     * If a type cannot be determined, the result is `OtherMode`.
      */
     abstract TModeOperationType getModeType();
 
@@ -633,7 +697,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Symmetric algorithms
    */
-  newtype TSymmetricCipherType =
+  newtype TCipherType =
     AES() or
     Camellia() or
     DES() or
@@ -643,9 +707,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     ChaCha20() or
     RC4() or
     RC5() or
+    RSA() or
     OtherSymmetricCipherType()
 
-  abstract class SymmetricAlgorithm extends Algorithm {
+  abstract class EncryptionAlgorithm extends Algorithm, TEncryptionAlgorithm {
+    final LocatableElement getInstance() { this = TEncryptionAlgorithm(result) }
+
     final TCipherStructureType getCipherStructure() {
       this.cipherFamilyToNameAndStructure(this.getCipherFamily(), _, result)
     }
@@ -654,26 +721,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
     }
 
-    final override string getAlgorithmType() { result = "SymmetricAlgorithm" }
+    final override string getAlgorithmType() { result = "EncryptionAlgorithm" }
 
     /**
-     * Gets the key size of this symmetric cipher, e.g., "128" or "256".
+     * Gets the key size of this cipher, e.g., "128" or "256".
      */
     abstract string getKeySize(Location location);
 
     /**
-     * Gets the type of this symmetric cipher, e.g., "AES" or "ChaCha20".
+     * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
      */
-    abstract TSymmetricCipherType getCipherFamily();
+    abstract TCipherType getCipherFamily();
 
     /**
-     * Gets the mode of operation of this symmetric cipher, e.g., "GCM" or "CBC".
+     * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
      */
-    abstract ModeOfOperation getModeOfOperation();
+    abstract ModeOfOperationAlgorithm getModeOfOperation();
 
     bindingset[type]
     final private predicate cipherFamilyToNameAndStructure(
-      TSymmetricCipherType type, string name, TCipherStructureType s
+      TCipherType type, string name, TCipherStructureType s
     ) {
       type instanceof AES and name = "AES" and s = Block()
       or
@@ -692,6 +759,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof RC4 and name = "RC4" and s = Stream()
       or
       type instanceof RC5 and name = "RC5" and s = Block()
+      or
+      type instanceof RSA and name = "RSA" and s = Block()
       or
       type instanceof OtherSymmetricCipherType and
       name = this.getRawAlgorithmName() and
@@ -732,5 +801,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         )
       )
     }
+  }
+
+  abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, Algorithm {
+    final override string getAlgorithmType() { result = "KeyEncapsulationAlgorithm" }
   }
 }
