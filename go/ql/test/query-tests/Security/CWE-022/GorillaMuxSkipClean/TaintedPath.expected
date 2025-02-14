@@ -5,7 +5,7 @@ edges
 | MuxClean.go:14:58:14:73 | not_tainted_path | MuxClean.go:14:29:14:74 | call to Join | provenance | FunctionModel Sink:MaD:1 |
 models
 | 1 | Sink: io/ioutil; ; false; ReadFile; ; ; Argument[0]; path-injection; manual |
-| 2 | Source: github.com/gorilla/mux; ; true; Vars; ; ; ReturnValue; remote; manual |
+| 2 | Source: github.com/gorilla/mux; ; false; Vars; ; ; ReturnValue; remote; manual |
 nodes
 | MuxClean.go:13:22:13:32 | call to Vars | semmle.label | call to Vars |
 | MuxClean.go:14:29:14:74 | call to Join | semmle.label | call to Join |
