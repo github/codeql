@@ -27,7 +27,7 @@ bindingset[version]
 private predicate isPinnedContainer(string version) { version.regexpMatch("^sha256:[A-Fa-f0-9]{64}$") }
 
 bindingset[nwo]
-private predicate isContainerImage(string nwo) { version.regexpMatch("^docker:\/\/.*") }
+private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
 from UsesStep uses, string nwo, string version, Workflow workflow, string name
 where
@@ -39,17 +39,17 @@ where
     not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
   ) and
   uses.getVersion() = version and
-  isContainerImage(nwo) = isContainer and
   not isTrustedOwner(nwo) and
-  not isImmutableAction(uses, nwo)
-  not (
+  not isImmutableAction(uses, nwo) and
+  not
+  (
     (
-      isContainer and
-      isPinnedCommit(version)
+      isContainerImage(nwo) and
+      isPinnedContainer(version)
     )
     or
     (
-      not isContainer and
+      not isContainerImage(nwo) and
       isPinnedCommit(version)
     )
   )
