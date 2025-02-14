@@ -11,7 +11,7 @@ class Subclass1 extends Base {
         this.baseMethod(source("sub1"));
     }
     subclassMethod(x) {
-        sink(x); // $ hasValueFlow=sub1 SPURIOUS: hasValueFlow=sub2
+        sink(x); // $ hasValueFlow=sub1
     }
 }
 
@@ -20,7 +20,7 @@ class Subclass2 extends Base {
         this.baseMethod(source("sub2"));
     }
     subclassMethod(x) {
-        sink(x); // $ hasValueFlow=sub2 SPURIOUS: hasValueFlow=sub1
+        sink(x); // $ hasValueFlow=sub2
     }
 }
 

@@ -1089,17 +1089,54 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
 }
 
+private DataFlowCall getACallOnThis(DataFlow::ClassNode cls) {
+  result.asOrdinaryCall() = cls.getAReceiverNode().getAPropertyRead().getACall()
+  or
+  result.asAccessorCall() = cls.getAReceiverNode().getAPropertyRead()
+  or
+  result.asPartialCall().getACallbackNode() = cls.getAReceiverNode().getAPropertyRead()
+}
+
+private predicate downwardCall(DataFlowCall call) {
+  exists(DataFlow::ClassNode cls |
+    call = getACallOnThis(cls) and
+    viableCallable(call).asSourceCallable() =
+      cls.getADirectSubClass+().getAnInstanceMember().getFunction()
+  )
+}
+
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call) { downwardCall(call) }
+
+/** Gets the type of the receiver of `call`. */
+private DataFlowType getThisArgumentType(DataFlowCall call) {
+  exists(DataFlow::Node node |
+    isArgumentNodeImpl(node, call, MkThisParameter()) and
+    result = getNodeType(node)
+  )
+}
+
+/** Gets the type of the 'this' parameter of `call`. */
+private DataFlowType getThisParameterType(DataFlowCallable callable) {
+  exists(DataFlow::Node node |
+    isParameterNodeImpl(node, callable, MkThisParameter()) and
+    result = getNodeType(node)
+  )
+}
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  mayBenefitFromCallContext(call) and
+  result = viableCallable(call) and
+  viableCallable(ctx) = call.getEnclosingCallable() and
+  compatibleTypes(getThisArgumentType(ctx), getThisParameterType(result))
+}
 
 bindingset[node, fun]
 pragma[inline_late]
