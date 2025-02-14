@@ -241,7 +241,7 @@ final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
     exists(RecordExprField ref |
       ref = node.getRecordExprFieldList().getAField() and
       any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result) and
-      field = ref.getNameRef().getText()
+      field = ref.getFieldName()
     )
   }
 }
@@ -261,11 +261,12 @@ final class RecordPatCfgNode extends Nodes::RecordPatCfgNode {
   RecordPatCfgNode() { node = this.getRecordPat() }
 
   /** Gets the record pattern for the field `field`. */
+  pragma[nomagic]
   PatCfgNode getFieldPat(string field) {
     exists(RecordPatField rpf |
       rpf = node.getRecordPatFieldList().getAField() and
       any(ChildMapping mapping).hasCfgChild(node, rpf.getPat(), this, result) and
-      field = rpf.getNameRef().getText()
+      field = rpf.getFieldName()
     )
   }
 }

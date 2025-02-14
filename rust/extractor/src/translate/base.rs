@@ -81,6 +81,9 @@ pub struct Translator<'a> {
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
 }
 
+const UNKNOWN_LOCATION: (LineCol, LineCol) =
+    (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
+
 impl<'a> Translator<'a> {
     pub fn new(
         trap: TrapFile,
@@ -98,8 +101,8 @@ impl<'a> Translator<'a> {
             semantics: semantic_info.map(|i| i.semantics),
         }
     }
-    fn location(&self, range: TextRange) -> (LineCol, LineCol) {
-        let start = self.line_index.line_col(range.start());
+    fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
+        let start = self.line_index.try_line_col(range.start())?;
         let range_end = range.end();
         // QL end positions are inclusive, while TextRange offsets are exclusive and point at the position
         // right after the last character of the range. We need to shift the end offset one character to the left to
@@ -111,11 +114,11 @@ impl<'a> Translator<'a> {
                 .checked_sub(i.into())
                 .and_then(|x| self.line_index.try_line_col(x))
             {
-                return (start, end);
+                return Some((start, end));
             }
         }
-        let end = self.line_index.line_col(range_end);
-        (start, end)
+        let end = self.line_index.try_line_col(range_end)?;
+        Some((start, end))
     }
 
     pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
@@ -132,8 +135,10 @@ impl<'a> Translator<'a> {
         }
     }
     pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        if let Some(range) = self.text_range_for_node(node) {
-            let (start, end) = self.location(range);
+        if let Some((start, end)) = self
+            .text_range_for_node(node)
+            .and_then(|r| self.location(r))
+        {
             self.trap.emit_location(self.label, label, start, end)
         } else {
             self.emit_diagnostic(
@@ -141,7 +146,7 @@ impl<'a> Translator<'a> {
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
-                (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 }),
+                UNKNOWN_LOCATION,
             );
         }
     }
@@ -156,8 +161,9 @@ impl<'a> Translator<'a> {
         if let Some(clipped_range) = token_range.intersect(parent_range) {
             if let Some(parent_range2) = self.text_range_for_node(parent) {
                 let token_range = clipped_range + parent_range2.start() - parent_range.start();
-                let (start, end) = self.location(token_range);
-                self.trap.emit_location(self.label, label, start, end)
+                if let Some((start, end)) = self.location(token_range) {
+                    self.trap.emit_location(self.label, label, start, end)
+                }
             }
         }
     }
@@ -206,7 +212,7 @@ impl<'a> Translator<'a> {
                 "parse_error".to_owned(),
                 message.clone(),
                 message,
-                location,
+                location.unwrap_or(UNKNOWN_LOCATION),
             );
         }
     }

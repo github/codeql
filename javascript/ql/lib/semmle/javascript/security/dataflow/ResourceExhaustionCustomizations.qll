@@ -63,7 +63,7 @@ module ResourceExhaustion {
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
     ActiveThreatModelSourceAsSource() {
       // exclude source that only happen client-side
-      not this instanceof ClientSideRemoteFlowSource and
+      not this.isClientSideSource() and
       not this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())
     }
   }

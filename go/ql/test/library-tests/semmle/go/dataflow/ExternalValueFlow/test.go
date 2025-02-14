@@ -210,6 +210,10 @@ func simpleflow() {
 	test.SinkVariable = temp // $ hasValueFlow="temp"
 }
 
+func srcParam(src string, b test.B) {
+	b.Sink1(src) // $ hasValueFlow="src"
+}
+
 type mapstringstringtype map[string]string
 type arraytype []interface{}
 type channeltype chan interface{}

@@ -1,4 +1,4 @@
-/** Provides classes and predicates related to Spring URL redirect. */
+deprecated module;
 
 private import java
 private import semmle.code.java.dataflow.FlowSources

@@ -42,7 +42,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2025-01-21";
+  public static final String EXTRACTOR_VERSION = "2025-02-03";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -539,7 +539,7 @@ public class Main {
       }
 
       if (extractorConfig.getTypeScriptMode() == TypeScriptMode.FULL
-          && root.getName().equals("tsconfig.json")
+          && AutoBuild.treatAsTSConfig(root.getName())
           && !excludeMatcher.matches(path)) {
         projectFiles.add(root);
       }

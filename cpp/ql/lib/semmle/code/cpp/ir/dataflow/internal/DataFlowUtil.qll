@@ -146,7 +146,7 @@ class Node extends TIRDataFlowNode {
   /**
    * INTERNAL: Do not use.
    */
-  Declaration getEnclosingCallable() { none() } // overridden in subclasses
+  DataFlowCallable getEnclosingCallable() { none() } // overridden in subclasses
 
   /** Gets the function to which this node belongs, if any. */
   Declaration getFunction() { none() } // overridden in subclasses
@@ -508,7 +508,9 @@ private class Node0 extends Node, TNode0 {
 
   Node0() { this = TNode0(node) }
 
-  override Declaration getEnclosingCallable() { result = node.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = node.getEnclosingCallable()
+  }
 
   override Declaration getFunction() { result = node.getFunction() }
 
@@ -573,7 +575,9 @@ class PostUpdateNodeImpl extends PartialDefinitionNode, TPostUpdateNodeImpl {
 
   override Declaration getFunction() { result = operand.getUse().getEnclosingFunction() }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result = this.getPreUpdateNode().getEnclosingCallable()
+  }
 
   /** Gets the operand associated with this node. */
   Operand getOperand() { result = operand }
@@ -626,7 +630,9 @@ class SsaPhiNode extends Node, TSsaPhiNode {
   /** Gets the phi node associated with this node. */
   Ssa::PhiNode getPhiNode() { result = phi }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
@@ -709,7 +715,9 @@ class SsaPhiInputNode extends Node, TSsaPhiInputNode {
   /** Gets the basic block in which this input originates. */
   IRBlock getBlock() { result = block }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
@@ -738,7 +746,9 @@ class SsaIteratorNode extends Node, TSsaIteratorNode {
   /** Gets the phi node associated with this node. */
   IteratorFlow::IteratorFlowNode getIteratorFlowNode() { result = node }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = node.getFunction() }
 
@@ -773,7 +783,9 @@ class SideEffectOperandNode extends Node instanceof IndirectOperand {
 
   int getArgumentIndex() { result = argumentIndex }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = call.getEnclosingFunction() }
 
@@ -794,7 +806,9 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
   /** Gets the underlying SSA use. */
   Ssa::GlobalUse getGlobalUse() { result = globalUse }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = globalUse.getIRFunction().getFunction() }
 
@@ -824,7 +838,9 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
   /** Gets the underlying SSA definition. */
   Ssa::GlobalDef getGlobalDef() { result = globalDef }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = globalDef.getIRFunction().getFunction() }
 
@@ -855,7 +871,9 @@ class BodyLessParameterNodeImpl extends Node, TBodyLessParameterNodeImpl {
 
   BodyLessParameterNodeImpl() { this = TBodyLessParameterNodeImpl(p, indirectionIndex) }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = p.getFunction() }
 
@@ -901,7 +919,9 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
    * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
    * summarized function this node is part of.
    */
-  override Declaration getEnclosingCallable() { result = this.getSummarizedCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSummarizedCallable() = this.getSummarizedCallable()
+  }
 
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
 
@@ -922,7 +942,7 @@ class IndirectReturnNode extends Node {
         .hasOperandAndIndirectionIndex(any(ReturnValueInstruction ret).getReturnAddressOperand(), _)
   }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override SourceCallable getEnclosingCallable() { result.asSourceCallable() = this.getFunction() }
 
   /**
    * Holds if this node represents the value that is returned to the caller
@@ -1116,11 +1136,11 @@ private module RawIndirectNodes {
     /** Gets the underlying indirection index. */
     int getIndirectionIndex() { result = indirectionIndex }
 
-    override Declaration getFunction() {
-      result = this.getOperand().getDef().getEnclosingFunction()
-    }
+    override Declaration getFunction() { result = node.getFunction() }
 
-    override Declaration getEnclosingCallable() { result = this.getFunction() }
+    override DataFlowCallable getEnclosingCallable() {
+      result.asSourceCallable() = node.getEnclosingCallable()
+    }
 
     override predicate isGLValue() { this.getOperand().isGLValue() }
 
@@ -1162,9 +1182,11 @@ private module RawIndirectNodes {
     /** Gets the underlying indirection index. */
     int getIndirectionIndex() { result = indirectionIndex }
 
-    override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
+    override Declaration getFunction() { result = node.getFunction() }
 
-    override Declaration getEnclosingCallable() { result = this.getFunction() }
+    override DataFlowCallable getEnclosingCallable() {
+      result.asSourceCallable() = node.getEnclosingCallable()
+    }
 
     override predicate isGLValue() { this.getInstruction().isGLValue() }
 
@@ -1264,7 +1286,9 @@ class FinalParameterNode extends Node, TFinalParameterNode {
 
   override Declaration getFunction() { result = p.getFunction() }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override DataFlowType getType() { result = getTypeImpl(p.getUnderlyingType(), indirectionIndex) }
 
@@ -1306,7 +1330,29 @@ abstract private class AbstractParameterNode extends Node {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  abstract predicate isParameterOf(DataFlowCallable f, ParameterPosition pos);
+  predicate isSourceParameterOf(Function f, ParameterPosition pos) { none() }
+
+  /**
+   * Holds if this node is the parameter of `sc` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
+   */
+  predicate isSummaryParameterOf(
+    FlowSummaryImpl::Public::SummarizedCallable sc, ParameterPosition pos
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if this node is the parameter of `c` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
+   */
+  final predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    this.isSummaryParameterOf(c.asSummarizedCallable(), pos)
+    or
+    this.isSourceParameterOf(c.asSourceCallable(), pos)
+  }
 
   /** Gets the `Parameter` associated with this node, if it exists. */
   Parameter getParameter() { none() } // overridden by subclasses
@@ -1362,12 +1408,14 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
   /** Gets the parameter whose indirection is initialized. */
   override Parameter getParameter() { result = init.getParameter() }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
 
   override Declaration getFunction() { result = init.getEnclosingFunction() }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    this.getEnclosingCallable() = f.getUnderlyingCallable() and
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    this.getFunction() = f and
     exists(int argumentIndex, int indirectionIndex |
       indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
       indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
@@ -1424,9 +1472,8 @@ private class ExplicitParameterInstructionNode extends AbstractExplicitParameter
 {
   ExplicitParameterInstructionNode() { exists(instr.getParameter()) }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    f.getUnderlyingCallable().(Function).getParameter(pos.(DirectPosition).getIndex()) =
-      instr.getParameter()
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
@@ -1440,9 +1487,9 @@ class ThisParameterInstructionNode extends AbstractExplicitParameterNode,
 {
   ThisParameterInstructionNode() { instr.getIRVariable() instanceof IRThisVariable }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
     pos.(DirectPosition).getIndex() = -1 and
-    instr.getEnclosingFunction() = f.getUnderlyingCallable()
+    instr.getEnclosingFunction() = f
   }
 
   override string toStringImpl() { result = "this" }
@@ -1460,8 +1507,10 @@ class SummaryParameterNode extends AbstractParameterNode, FlowSummaryNode {
     FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
   }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
-    c.getUnderlyingCallable() = this.getSummarizedCallable() and
+  override predicate isSummaryParameterOf(
+    FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition p
+  ) {
+    c = this.getSummarizedCallable() and
     p = this.getPosition()
   }
 }
@@ -1471,12 +1520,9 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
 {
   DirectBodyLessParameterNode() { indirectionIndex = 0 }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    exists(Function func |
-      this.getFunction() = func and
-      f.asSourceCallable() = func and
-      func.getParameter(pos.(DirectPosition).getIndex()) = p
-    )
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    this.getFunction() = f and
+    f.getParameter(pos.(DirectPosition).getIndex()) = p
   }
 
   override Parameter getParameter() { result = p }
@@ -1487,12 +1533,11 @@ private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNod
 {
   IndirectBodyLessParameterNode() { not this instanceof DirectBodyLessParameterNode }
 
-  override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    exists(Function func, int argumentPosition |
-      this.getFunction() = func and
-      f.asSourceCallable() = func and
-      indirectPositionHasArgumentIndexAndIndex(pos, argumentPosition, indirectionIndex) and
-      func.getParameter(argumentPosition) = p
+  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+    exists(int argumentPosition |
+      this.getFunction() = f and
+      f.getParameter(argumentPosition) = p and
+      indirectPositionHasArgumentIndexAndIndex(pos, argumentPosition, indirectionIndex)
     )
   }
 
@@ -1605,13 +1650,13 @@ class VariableNode extends Node, TGlobalLikeVariableNode {
 
   override Declaration getFunction() { none() }
 
-  override Declaration getEnclosingCallable() {
+  override DataFlowCallable getEnclosingCallable() {
     // When flow crosses from one _enclosing callable_ to another, the
     // interprocedural data-flow library discards call contexts and inserts a
     // node in the big-step relation used for human-readable path explanations.
     // Therefore we want a distinct enclosing callable for each `VariableNode`,
     // and that can be the `Variable` itself.
-    result = v
+    result.asSourceCallable() = v
   }
 
   override DataFlowType getType() {

@@ -194,7 +194,7 @@ the **aggregation variables**.
 
 Ordered aggregates (namely ``min``, ``max``, ``rank``, ``concat``, and ``strictconcat``) are
 ordered by their ``<expression>`` values by default. The ordering is either numeric (for 
-integers and floating point numbers) or lexicographic (for strings). Lexicographic ordering is
+numeric types) or lexicographic (for strings). Lexicographic ordering is
 based on the `Unicode value <https://en.wikipedia.org/wiki/List_of_Unicode_characters#Basic_Latin>`_
 of each character.
 
@@ -684,7 +684,7 @@ Unary operations
 ****************
 
 A unary operation is a minus sign (``-``) or a plus sign (``+``) followed by an expression of type
-``int`` or ``float``. For example:
+``int``, ``float`` or ``QlBuiltins::BigInt``. For example:
 
 .. code-block:: ql
 
@@ -731,10 +731,11 @@ You can use the following binary operators in QL:
 +------------------------+--------+
 
 If both expressions are numbers, these operators act as standard arithmetic operators. For 
-example, ``10.6 - 3.2`` has value ``7.4``, ``123.456 * 0`` has value ``0``, and ``9 % 4`` has 
+example, ``10.6 - 3.2`` has value ``7.4``, ``123.456 * 0`` has value ``0.0``, and ``9 % 4`` has 
 value ``1`` (the remainder after dividing ``9`` by ``4``).
-If both operands are integers, then the result is an integer. Otherwise the result is a 
-floating-point number.
+If both operands are subtypes of ``int`` or ``QlBuiltins::BigInt``, then the result type is
+``int`` or ``QlBuiltins::BigInt``, respectively. Otherwise, if both operands are subtypes of
+``float``, then the result type is ``float``.
 
 You can also use ``+`` as a string concatenation operator. In this case, at least one of the 
 expressions must be a string—the other expression is implicitly converted to a string using the

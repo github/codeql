@@ -41,6 +41,12 @@ private module DecompressionApiConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(DecompressionApiUse).getLocation()
+    or
+    result = sink.(DecompressionApiUse).getCall().getLocation()
+  }
 }
 
 private module DecompressionApiFlow = TaintTracking::Global<DecompressionApiConfig>;

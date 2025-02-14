@@ -9,6 +9,8 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.internal.TypeDeclImpl::Impl as TypeDeclImpl
 
+private class ModuleDeclAlias = ModuleDecl;
+
 /**
  * INTERNAL: This module contains the fully generated definition of `ModuleDecl` and should not
  * be referenced directly.
@@ -39,7 +41,7 @@ module Generated {
      * Gets the `index`th imported module of this module declaration (0-based).
      *Gets any of the imported modules of this module declaration.
      */
-    ModuleDecl getAnImportedModule() {
+    ModuleDeclAlias getAnImportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
@@ -55,7 +57,7 @@ module Generated {
      * Gets the `index`th exported module of this module declaration (0-based).
      *Gets any of the exported modules of this module declaration.
      */
-    ModuleDecl getAnExportedModule() {
+    ModuleDeclAlias getAnExportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)

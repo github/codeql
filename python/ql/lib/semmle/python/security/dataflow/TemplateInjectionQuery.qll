@@ -17,6 +17,8 @@ private module TemplateInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof Sink }
 
   predicate isBarrierIn(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "template injection" vulnerabilities. */

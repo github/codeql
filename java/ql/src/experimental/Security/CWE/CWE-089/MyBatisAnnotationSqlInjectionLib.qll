@@ -1,6 +1,7 @@
 /**
  * Provides classes for SQL injection detection regarding MyBatis annotated methods.
  */
+deprecated module;
 
 import java
 import MyBatisCommonLib

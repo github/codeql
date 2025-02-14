@@ -240,8 +240,6 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   predicate entryBlock(BasicBlock bb) { bb instanceof js::EntryBasicBlock }
-
-  predicate exitBlock(BasicBlock bb) { bb.getLastNode() instanceof js::ControlFlowExitNode }
 }
 
 module VariableCaptureOutput = Flow<js::DbLocation, VariableCaptureConfig>;

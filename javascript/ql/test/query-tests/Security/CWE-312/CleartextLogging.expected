@@ -72,6 +72,7 @@ edges
 | passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") | provenance |  |
 | passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") | provenance |  |
 | passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") | provenance |  |
+| passwords.js:188:30:188:40 | process.env | passwords.js:188:15:188:41 | JSON.st ... ss.env) | provenance |  |
 | passwords_in_server_5.js:4:7:4:24 | req.query.password | passwords_in_server_5.js:7:12:7:12 | x | provenance |  |
 | passwords_in_server_5.js:7:12:7:12 | x | passwords_in_server_5.js:8:17:8:17 | x | provenance |  |
 nodes
@@ -167,6 +168,8 @@ nodes
 | passwords.js:176:17:176:26 | myPasscode | semmle.label | myPasscode |
 | passwords.js:182:14:182:21 | password | semmle.label | password |
 | passwords.js:182:14:182:51 | passwor ... ), "*") | semmle.label | passwor ... ), "*") |
+| passwords.js:188:15:188:41 | JSON.st ... ss.env) | semmle.label | JSON.st ... ss.env) |
+| passwords.js:188:30:188:40 | process.env | semmle.label | process.env |
 | passwords_in_browser1.js:2:13:2:20 | password | semmle.label | password |
 | passwords_in_browser2.js:2:13:2:20 | password | semmle.label | password |
 | passwords_in_server_1.js:6:13:6:20 | password | semmle.label | password |
@@ -214,6 +217,7 @@ subpaths
 | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword | This logs sensitive data returned by $@ as clear text. | passwords.js:173:17:173:26 | myPassword | an access to myPassword |
 | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode | This logs sensitive data returned by $@ as clear text. | passwords.js:176:17:176:26 | myPasscode | an access to myPasscode |
 | passwords.js:182:14:182:51 | passwor ... ), "*") | passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") | This logs sensitive data returned by $@ as clear text. | passwords.js:182:14:182:21 | password | an access to password |
+| passwords.js:188:15:188:41 | JSON.st ... ss.env) | passwords.js:188:30:188:40 | process.env | passwords.js:188:15:188:41 | JSON.st ... ss.env) | This logs sensitive data returned by $@ as clear text. | passwords.js:188:30:188:40 | process.env | process environment |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_1.js:6:13:6:20 | password | an access to password |
 | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_2.js:3:13:3:20 | password | an access to password |
 | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_3.js:2:13:2:20 | password | an access to password |

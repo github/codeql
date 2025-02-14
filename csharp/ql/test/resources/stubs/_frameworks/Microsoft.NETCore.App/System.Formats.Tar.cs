@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Formats.Tar, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Formats.Tar, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Formats
@@ -35,6 +35,7 @@ namespace System
             public abstract class TarEntry
             {
                 public int Checksum { get => throw null; }
+                public long DataOffset { get => throw null; }
                 public System.IO.Stream DataStream { get => throw null; set { } }
                 public System.Formats.Tar.TarEntryType EntryType { get => throw null; }
                 public void ExtractToFile(string destinationFileName, bool overwrite) => throw null;

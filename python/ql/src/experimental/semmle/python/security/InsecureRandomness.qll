@@ -27,6 +27,8 @@ module InsecureRandomness {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "random values that are not cryptographically secure" vulnerabilities. */

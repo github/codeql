@@ -288,6 +288,20 @@ module DomBasedXss {
   }
 
   /**
+   * A write to the `innerHTML` or `outerHTML` property of a DOM element, viewed as an XSS sink.
+   *
+   * Uses the Angular Renderer2 API, instead of the default `Element.innerHTML` property.
+   */
+  class AngularRender2SetPropertyInnerHtmlSink2 extends Sink {
+    AngularRender2SetPropertyInnerHtmlSink2() {
+      exists(Angular2::AngularRenderer2AttributeDefinition attrDef |
+        attrDef.getName() = ["innerHTML", "outerHTML"] and
+        this = attrDef.getValueNode()
+      )
+    }
+  }
+
+  /**
    * A value being piped into the `safe` pipe in a template file,
    * disabling subsequent HTML escaping.
    */

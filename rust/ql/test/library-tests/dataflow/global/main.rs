@@ -45,6 +45,17 @@ fn block_expression_as_argument() {
     sink(a); // $ hasValueFlow=14
 }
 
+fn data_through_nested_function() {
+    let a = source(15);
+
+    fn pass_through(i: i64) -> i64 {
+        i
+    }
+
+    let b = pass_through(a);
+    sink(b); // $ hasValueFlow=15
+}
+
 // -----------------------------------------------------------------------------
 // Data flow in, out, and through method.
 
@@ -123,14 +134,66 @@ pub fn test_operator_overloading() {
     sink(d.value); // $ MISSING: hasValueFlow=7
 }
 
+async fn async_source() -> i64 {
+    let a = source(1);
+    sink(a); // $ hasValueFlow=1
+    a
+}
+
+async fn test_async_await_async_part() {
+    let a = async_source().await;
+    sink(a); // $ MISSING: hasValueFlow=1
+
+    let b = async {
+        let c = source(2);
+        sink(c); // $ hasValueFlow=2
+        c
+    };
+    sink(b.await); // $ MISSING: hasValueFlow=2
+}
+
+fn test_async_await() {
+    let a = futures::executor::block_on(async_source());
+    sink(a); // $ MISSING: hasValueFlow=1
+
+    futures::executor::block_on(test_async_await_async_part());
+}
+
+// Flow out of mutable parameters.
+
+fn set_int(n: &mut i64, c: i64) {
+    *n = c;
+}
+
+fn mutates_argument_1() {
+    // Passing an already borrowed value to a function and then reading from the same borrow.
+    let mut n = 0;
+    let m = &mut n;
+    sink(*m);
+    set_int(m, source(37));
+    sink(*m); // $ hasValueFlow=37
+}
+
+fn mutates_argument_2() {
+    // Borrowing at the call and then reading from the unborrowed variable.
+    let mut n = 0;
+    sink(n);
+    set_int(&mut n, source(88));
+    sink(n); // $ MISSING: hasValueFlow=88
+}
+
 fn main() {
     data_out_of_call();
     data_in_to_call();
     data_through_call();
+    data_through_nested_function();
 
     data_out_of_method();
     data_in_to_method_call();
     data_through_method();
 
     test_operator_overloading();
+    test_async_await();
+    mutates_argument_1();
+    mutates_argument_2();
 }

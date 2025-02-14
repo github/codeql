@@ -81,7 +81,9 @@ class BashShellScript extends ShellScript {
           "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
             quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
       )
-    )
+    ) and
+    // Only do this for strings that might otherwise disrupt subsequent parsing
+    quotedStr.regexpMatch("[\"'].*[$\n\r'\"" + Bash::separator() + "].*[\"']")
   }
 
   private predicate rankedQuotedStringReplacements(int i, string old, string new) {
@@ -693,6 +695,19 @@ module Bash {
       containsCmdSubstitution(value2, cmd) and
       containsParameterExpansion(expr, var2, _, _) and
       not varMatchesRegexTest(script, var2, alphaNumericRegex())
+    )
+    or
+    exists(string var2, string value2, string var3, string value3 |
+      // VAR2=$(cmd)
+      // VAR3=$VAR2
+      // echo "FIELD=${VAR3:-default}" >> $GITHUB_ENV (field, file_write_value)
+      containsCmdSubstitution(value2, cmd) and
+      script.getAnAssignment(var2, value2) and
+      containsParameterExpansion(value3, var2, _, _) and
+      script.getAnAssignment(var3, value3) and
+      containsParameterExpansion(expr, var3, _, _) and
+      not varMatchesRegexTest(script, var2, alphaNumericRegex()) and
+      not varMatchesRegexTest(script, var3, alphaNumericRegex())
     )
     or
     // var reaches the file write directly

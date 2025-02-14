@@ -25,7 +25,7 @@ jobs:
     permissions:                       
       contents: write
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4.0.0
         with:
           name: results
       - run: python test.py

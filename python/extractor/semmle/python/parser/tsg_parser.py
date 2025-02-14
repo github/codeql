@@ -196,13 +196,13 @@ def resolve_node_id(id, node_attr):
         id = node_attr[id]["_skip_to"].id
     return id
 
-def get_context(id, node_attr, logger):
+def get_context(id, node_attr, path, logger):
     """Gets the context of the node with the given `id`. This is either whatever is stored in the
     `ctx` attribute of the node, or the result of dereferencing a sequence of `_inherited_ctx` attributes."""
 
     while "ctx" not in node_attr[id]:
         if "_inherited_ctx" not in node_attr[id]:
-            logger.error("No context for node {} with attributes {}\n".format(id, node_attr[id]))
+            logger.error("No context for node {} in file {} with attributes {}\n".format(id, path, node_attr[id]))
             # A missing context is most likely to be a "load", so return that.
             return ast.Load()
         id = node_attr[id]["_inherited_ctx"].id
@@ -344,7 +344,7 @@ def parse(path, logger):
 
         # Set up context information, if any
         if "ctx" in expected_fields:
-            node.ctx = get_context(id, node_attr, logger)
+            node.ctx = get_context(id, node_attr, path, logger)
         # Set the fields.
         for field, val in attrs.items():
             if field.startswith("_"): continue

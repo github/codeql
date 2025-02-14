@@ -1,0 +1,7 @@
+| gen_use_tree.rs:5:9:5:33 | UseTree | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
+| gen_use_tree.rs:6:9:6:27 | UseTree | isGlob: | yes | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
+| gen_use_tree.rs:7:9:7:46 | UseTree | isGlob: | no | hasPath: | yes | hasRename: | yes | hasUseTreeList: | no |
+| gen_use_tree.rs:8:9:8:50 | UseTree | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | yes |
+| gen_use_tree.rs:8:28:8:31 | UseTree | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
+| gen_use_tree.rs:8:34:8:40 | UseTree | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
+| gen_use_tree.rs:8:43:8:49 | UseTree | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |

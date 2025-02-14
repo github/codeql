@@ -1,3 +1,10 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `Make` and `MakeWithState` modules, use `Global` and `GlobalWithState` instead.
+* Deleted the deprecated `hasFlow`, `hasFlowPath`, `hasFlowTo`, and `hasFlowToExpr` predicates, use `flow`, `flowPath`, `flowTo`, and `flowToExpr` respectively instead.
+
 ## 1.1.9
 
 No user-facing changes.

@@ -33,8 +33,6 @@ module EnvValueAndKeyInjectionConfig implements DataFlow::ConfigSig {
       )
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module EnvValueAndKeyInjectionFlow = TaintTracking::Global<EnvValueAndKeyInjectionConfig>;
