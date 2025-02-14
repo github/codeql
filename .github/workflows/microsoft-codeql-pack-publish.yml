@@ -1,10 +1,10 @@
 name: Microsoft CodeQL Pack Publish
 description: Fetches the latest version of CodeQL
 
-on:
-  push:
-    branches:
-      - dilan/publish-opensource-packs
+# on:
+#   push:
+#     branches:
+#       - dilan/publish-opensource-packs
 
 jobs:
   codeqlversion:
