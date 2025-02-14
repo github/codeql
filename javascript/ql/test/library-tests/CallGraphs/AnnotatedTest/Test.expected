@@ -1,4 +1,5 @@
 spuriousCallee
+| accessors.js:54:1:54:7 | new D() | accessors.js:32:9:32:8 | () {} | -1 | calls |
 missingCallee
 | constructor-field.ts:40:5:40:14 | f3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
 | constructor-field.ts:71:1:71:11 | bf3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
