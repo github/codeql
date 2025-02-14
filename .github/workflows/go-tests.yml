@@ -1,10 +1,12 @@
-name: "Go: Run Tests"
+name: "Go: Prepare Tests"
 on:
   push:
     paths:
       - "go/**"
       - "shared/**"
       - .github/workflows/go-tests.yml
+      - .github/workflows/go-tests-linux.yml
+      - .github/workflows/go-tests-other-os.yml
       - .github/actions/**
       - codeql-workspace.yml
     branches:
@@ -15,24 +17,128 @@ on:
       - "go/**"
       - "shared/**"
       - .github/workflows/go-tests.yml
+      - .github/workflows/go-tests-linux.yml
+      - .github/workflows/go-tests-other-os.yml
       - .github/actions/**
       - codeql-workspace.yml
       - MODULE.bazel
       - .bazelrc
       - misc/bazel/**
 
-permissions:
-  contents: read
-
 jobs:
-  test-linux:
+  prepare-go-tests:
     if: github.repository_owner == 'github'
-    name: Test Linux (Ubuntu)
-    runs-on: ubuntu-latest-xl
+    name: "Prepare tests"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      # Skip tests for this workflow run if we just created a new commit/PR to run the
+      # tests on.
+      skipTests: ${{ steps.push-bazel-files.outputs.SKIP_TESTS }}
+      # We don't want to run macOS/Windows workflows if only .ql files have changed
+      onlyQL: ${{ steps.only-ql-check.outputs.ONLY_QL_CHANGES }}
     steps:
+      - name: Print information about the workflow
+        shell: bash
+        run: |
+          echo $GITHUB_CONTEXT
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Run tests
-        uses: ./go/actions/test
         with:
-          run-code-checks: true
+          # For PRs, this ensures that we do not end up in a detached HEAD state;
+          # For pushes, this does not change anything.
+          # We require this to be able to easily push changes, if needed.
+          ref: ${{ github.event.pull_request.head.ref || '' }}
+          # We need HEAD^ to determine the list of changed files
+          fetch-depth: 2
+
+      # Determine whether only .ql files changed: if so, we won't run the macOS and Windows workflows
+      - name: Determine whether only .ql files changed
+        id: only-ql-check
+        shell: bash
+        run: |
+          CHANGES=$(git diff --name-only HEAD^)
+          echo $CHANGES
+
+          ONLY_QL_CHANGES=true
+          for change in $(git diff --name-only HEAD^)
+          do
+            if [[ $change != go/ql/* ]];
+            then
+              ONLY_QL_CHANGES=false
+              echo "Files other than .ql files have changed"
+              break
+            fi
+          done
+
+          echo "Setting ONLY_QL_CHANGES to $ONLY_QL_CHANGES"
+          echo "ONLY_QL_CHANGES=$ONLY_QL_CHANGES" >> $GITHUB_OUTPUT
+
+      # Dependabot will nuke Bazel build files when it updates Go dependencies;
+      # this will restore them
+      - name: Regenerate Bazel files for Dependabot PR
+        if: github.event.pull_request.user.login == 'dependabot[bot]'
+        shell: bash
+        run: |
+          bazel run //go:gazelle
+          bazel run //go:gen
+
+      # And this will push the Bazel files to the PR branch
+      - name: Push Bazel files for Dependabot PR
+        id: push-bazel-files
+        if: github.event.pull_request.user.login == 'dependabot[bot]'
+        shell: bash
+        run: |
+          git add go/extractor/vendor/**
+
+          if git diff --exit-code HEAD;
+          then
+            echo "Regenerate Bazel files resulted in no changes"
+          else
+            BAZEL_BRANCH_NAME="${{ github.head_ref }}/bazel"
+
+            echo "Pushing regenerated Bazel files to $BAZEL_BRANCH_NAME"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m 'Regenerate Bazel build files for Dependabot PR'
+
+            git checkout -b "$BAZEL_BRANCH_NAME"
+            git push -u origin "$BAZEL_BRANCH_NAME"
+
+            echo "Creating PR for $BAZEL_BRANCH_NAME"
+            gh pr create -B "${{ github.head_ref }}" -H "$BAZEL_BRANCH_NAME" \
+                --title "Go: Regenerate Bazel files for Dependabot PR" \
+                --body "Created automatically to update Bazel build files for a Dependabot PR"
+
+            echo "Merging PR by pushing to ${{ github.head_ref }}"
+            git checkout "${{ github.head_ref }}"
+            git push
+          fi
+
+          echo "SKIP_TESTS=true" >> $GITHUB_OUTPUT
+
+  run-linux-tests:
+    name: "Run Linux tests"
+    if: needs.prepare-go-tests.outputs.skipTests != 'true'
+    needs:
+      - prepare-go-tests
+    uses: ./.github/workflows/go-tests-linux.yml
+    secrets: inherit
+    with:
+      ref: ${{ github.head_ref || github.ref_name }}
+
+  run-other-os-tests:
+    name: "Run other OS tests"
+    # Only run this workflow for PRs and only if something other than .ql files changed
+    if: github.event_name == 'pull_request' && needs.prepare-go-tests.outputs.skipTests != 'true' && !(needs.prepare-go-tests.outputs.onlyQL == 'true')
+    needs:
+      - prepare-go-tests
+    uses: ./.github/workflows/go-tests-other-os.yml
+    secrets: inherit
+    with:
+      ref: ${{ github.head_ref }}
