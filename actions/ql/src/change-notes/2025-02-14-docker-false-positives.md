@@ -2,4 +2,4 @@
 category: minorAnalysis
 ---
 
-* Fix CWE-829 false positives for Docker GitHub actions pinned by the container's SHA256 digest.
+* Fixed false positives in the query `actions/unpinned-tag` (CWE-829), which will no longer flag uses of Docker-based GitHub actions pinned by the container's SHA256 digest.
