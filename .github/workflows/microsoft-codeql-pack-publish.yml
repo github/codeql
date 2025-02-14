@@ -75,9 +75,8 @@ jobs:
         $DEPENDENCIES
         EOF
 
-        echo "___________________________________________________________"
+        # Publish pack
         cat "$LANGUAGE/ql/src/qlpack.yml"
-        echo "___________________________________________________________"
         gh codeql pack publish "$LANGUAGE/ql/src"
       env:
         LANGUAGE: ${{ matrix.language }}
