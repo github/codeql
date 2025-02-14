@@ -3,9 +3,6 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import android.net.Uri;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.Socket;
 
 public class Test {
 

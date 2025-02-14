@@ -357,27 +357,6 @@ private predicate maybeNull(Expr expr) {
   )
 }
 
-/** A taint-tracking configuration for reasoning about tainted arguments. */
-private module TaintedArgConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) {
-    src instanceof ActiveThreatModelSource or
-    src instanceof ApiSourceNode or
-    // for InlineFlowTest
-    src.asExpr().(MethodCall).getMethod().getName() = "source"
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() =
-      any(ConstructorCall constrCall |
-        constrCall.getConstructedType() instanceof TypeFile and
-        constrCall.getNumArgument() = 2
-      ).getArgument(0)
-  }
-}
-
-/** Tracks taint flow to the parent argument of a `File` constructor. */
-private module TaintedArgFlow = TaintTracking::Global<TaintedArgConfig>;
-
 /** Holds if `g` is a guard that checks for `..` components. */
 private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
   // Local taint-flow is used here to handle cases where the validated expression comes from the
@@ -391,31 +370,27 @@ private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
 }
 
 /**
- * A sanitizer that considers a `File` constructor safe if its second argument
- * is checked for `..` components (`PathTraversalGuard`) or if any internal
- * `..` components are removed from it (`PathNormalizeSanitizer`).
+ * A taint step from a child argument of a `java.io.File` constructor to the
+ * constructor call.
  *
- * This also requires a check to ensure that the first argument of the
- * `File` constructor is not tainted.
+ * This step only applies if the argument is not guarded by a check for `..`
+ * components (`PathTraversalGuard`), or it does not have any internal `..`
+ * components removed from it (`PathNormalizeSanitizer`), or if the parent
+ * argument of the constructor may be null.
  */
-private class FileConstructorSanitizer extends PathInjectionSanitizer {
-  FileConstructorSanitizer() {
-    exists(ConstructorCall constrCall, Argument arg |
+private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(ConstructorCall constrCall |
       constrCall.getConstructedType() instanceof TypeFile and
-      // Exclude cases where the parent argument is null since the
-      // `java.io.File` documentation states that such cases are
-      // treated as if invoking the single-argument `File` constructor.
-      not maybeNull(constrCall.getArgument(0)) and
-      // Since we are sanitizing the constructor call, we need to check
-      // that the parent argument is not tainted.
-      not TaintedArgFlow::flowToExpr(constrCall.getArgument(0)) and
-      arg = constrCall.getArgument(1) and
+      n1.asExpr() = constrCall.getArgument(1) and
+      n2.asExpr() = constrCall and
       (
-        arg = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode().asExpr() or
-        arg = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode().asExpr() or
-        TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), arg)
-      ) and
-      this.asExpr() = constrCall
+        not n1 = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode() and
+        not n1 = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode() and
+        not TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), n1.asExpr())
+        or
+        maybeNull(constrCall.getArgument(0))
+      )
     )
   }
 }
