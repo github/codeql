@@ -47,7 +47,7 @@ jobs:
       run: |
         # Download latest qlpack
         gh codeql pack download "microsoft/$LANGUAGE-queries"
-        PACK_DIR="$HOME/.codeql/packages/microsoft/$LANGUAGE"
+        PACK_DIR="$HOME/.codeql/packages/microsoft/$LANGUAGE-queries"
         VERSION_COUNT=$(ls -d "$PACK_DIR"/*/ | wc -l)
         [[ "$VERSION_COUNT" -ne 1 ]] && { echo "Expected exactly one version in $PACK_DIR, but found $VERSION_COUNT. Exiting."; exit 1; }
 
