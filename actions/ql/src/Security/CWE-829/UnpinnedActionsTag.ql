@@ -24,7 +24,9 @@ private predicate isTrustedOwner(string nwo) {
 }
 
 bindingset[version]
-private predicate isPinnedContainer(string version) { version.regexpMatch("^sha256:[A-Fa-f0-9]{64}$") }
+private predicate isPinnedContainer(string version) {
+  version.regexpMatch("^sha256:[A-Fa-f0-9]{64}$")
+}
 
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
