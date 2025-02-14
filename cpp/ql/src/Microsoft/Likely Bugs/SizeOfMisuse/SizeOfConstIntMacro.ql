@@ -1,5 +1,5 @@
 /**
- * @id cpp/sizeof/const-int-argument
+ * @id cpp/microsoft/public/sizeof/const-int-argument
  * @name Passing a constant integer macro to sizeof
  * @description The expression passed to sizeof is a macro that expands to an integer constant. A data type was likely intended instead.
  * @kind problem

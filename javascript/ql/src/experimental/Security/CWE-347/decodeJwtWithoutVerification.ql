@@ -27,8 +27,6 @@ module VerifiedDecodeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink = verifiedDecode() }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module VerifiedDecodeFlow = TaintTracking::Global<VerifiedDecodeConfig>;

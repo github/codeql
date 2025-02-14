@@ -97,11 +97,6 @@ module TaintFlowMake<
     import DataFlowInternal::Impl<C>
   }
 
-  /** DEPRECATED: Use `Global` instead. */
-  deprecated module Make<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
-    import Global<Config>
-  }
-
   /**
    * Constructs a global taint tracking computation using flow state.
    */
@@ -128,13 +123,6 @@ module TaintFlowMake<
     }
 
     import DataFlowInternal::Impl<C>
-  }
-
-  /** DEPRECATED: Use `GlobalWithState` instead. */
-  deprecated module MakeWithState<DataFlow::StateConfigSig Config> implements
-    DataFlow::GlobalFlowSig
-  {
-    import GlobalWithState<Config>
   }
 
   signature int speculationLimitSig();

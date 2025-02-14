@@ -118,10 +118,15 @@ class XssVulnerableWriterSourceNode extends ApiSourceNode {
  */
 bindingset[s]
 predicate isXssVulnerableContentType(string s) {
-  s.regexpMatch("(?i)text/(html|xml|xsl|rdf|vtt|cache-manifest).*") or
-  s.regexpMatch("(?i)application/(.*\\+)?xml.*") or
-  s.regexpMatch("(?i)cache-manifest.*") or
-  s.regexpMatch("(?i)image/svg\\+xml.*")
+  s.regexpMatch("(?i)(" +
+      //
+      "text/(html|xml|xsl|rdf|vtt|cache-manifest).*" + "|" +
+      //
+      "application/(.*\\+)?xml.*" + "|" +
+      //
+      "cache-manifest.*" + "|" +
+      //
+      "image/svg\\+xml.*" + ")")
 }
 
 /**

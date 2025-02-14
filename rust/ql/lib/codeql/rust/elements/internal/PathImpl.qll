@@ -27,5 +27,11 @@ module Impl {
       then result = "...::" + this.getPart().toAbbreviatedString()
       else result = this.getPart().toAbbreviatedString()
     }
+
+    /**
+     * Gets the text of this path, if it exists.
+     */
+    pragma[nomagic]
+    string getText() { result = this.getPart().getNameRef().getText() }
   }
 }

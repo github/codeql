@@ -9,7 +9,7 @@
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id cpp/enum-index
+ * @id cpp/microsoft/public/enum-index
  * @tags security
  *       external/cwe/cwe-125
  *       external/microsoft/c33010

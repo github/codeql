@@ -2,7 +2,7 @@
  * @name Weak cryptography
  * @description Finds usage of a static (hardcoded) IV. (CNG)
  * @kind problem
- * @id cpp/weak-crypto/cng/hardcoded-iv
+ * @id cpp/microsoft/public/weak-crypto/cng/hardcoded-iv
  * @problem.severity error
  * @precision high
  * @tags security

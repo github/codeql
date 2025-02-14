@@ -50,6 +50,14 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof Cfg::SuccessorTypes::ThrowSuccessor or
     t instanceof Cfg::SuccessorTypes::ExitSuccessor
   }
+
+  private predicate id(Ast node1, Ast node2) { node1 = node2 }
+
+  private predicate idOf(Ast node, int id) = equivalenceRelation(id/2)(node, id)
+
+  int idOfAstNode(AstNode node) { idOf(node, result) }
+
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private import CfgInput

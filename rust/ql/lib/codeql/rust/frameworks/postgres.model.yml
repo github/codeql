@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::execute", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::batch_execute", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::prepare", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::prepare_typed", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::query", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::query_one", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::query_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::query_raw", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::query_typed", "Argument[0]", "sql-injection", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:postgres", "<crate::client::Client>::query_typed_raw", "Argument[0]", "sql-injection", "manual"]

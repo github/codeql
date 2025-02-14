@@ -703,11 +703,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     import Impl<C>
   }
 
-  /** DEPRECATED: Use `Global` instead. */
-  deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
-    import Global<Config>
-  }
-
   /**
    * Constructs a global data flow computation using flow state.
    */
@@ -729,11 +724,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     }
 
     import Impl<C>
-  }
-
-  /** DEPRECATED: Use `GlobalWithState` instead. */
-  deprecated module MakeWithState<StateConfigSig Config> implements GlobalFlowSig {
-    import GlobalWithState<Config>
   }
 
   signature class PathNodeSig {

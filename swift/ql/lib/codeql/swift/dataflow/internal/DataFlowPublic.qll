@@ -250,11 +250,6 @@ module Content {
     override string toString() { result = "Collection element" }
   }
 
-  /**
-   * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
-   */
-  deprecated class ArrayContent = CollectionContent;
-
   /** A captured variable. */
   class CapturedVariableContent extends Content, TCapturedVariableContent {
     CapturedVariable v;

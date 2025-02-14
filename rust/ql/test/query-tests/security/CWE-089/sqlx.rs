@@ -64,7 +64,7 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
     if enable_remote {
         let _ = conn.execute(unsafe_query_2.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
         let _ = conn.execute(unsafe_query_3.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
-        let _ = conn.execute(unsafe_query_4.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
+        let _ = conn.execute(unsafe_query_4.as_str()).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
     }
 
     // prepared queries
@@ -75,7 +75,7 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
     if enable_remote {
         let _ = sqlx::query(unsafe_query_2.as_str()).execute(&pool).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
         let _ = sqlx::query(unsafe_query_3.as_str()).execute(&pool).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
-        let _ = sqlx::query(unsafe_query_4.as_str()).execute(&pool).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
+        let _ = sqlx::query(unsafe_query_4.as_str()).execute(&pool).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
     }
     let _ = sqlx::query(prepared_query_1.as_str()).bind(const_string).execute(&pool).await?; // $ sql-sink
     let _ = sqlx::query(prepared_query_1.as_str()).bind(arg_string).execute(&pool).await?; // $ sql-sink
@@ -93,7 +93,7 @@ async fn test_sqlx_sqlite(url: &str, enable_remote: bool) -> Result<(), sqlx::Er
 
     // construct queries
     let const_string = String::from("Alice");
-    let remote_string = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap_or(String::from("Alice")); // $ Source=remote2
+    let remote_string = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap_or(String::from("Alice")); // $ MISSING: Source=remote2
     let safe_query_1 = String::from("SELECT * FROM people WHERE firstname='") + &const_string + "'";
     let unsafe_query_1 = String::from("SELECT * FROM people WHERE firstname='") + &remote_string + "'";
     let prepared_query_1 = String::from("SELECT * FROM people WHERE firstname=?"); // (prepared arguments are safe)
@@ -166,7 +166,7 @@ async fn test_sqlx_postgres(url: &str, enable_remote: bool) -> Result<(), sqlx::
 
     // construct queries
     let const_string = String::from("Alice");
-    let remote_string = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap_or(String::from("Alice")); // $ Source=remote3
+    let remote_string = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap_or(String::from("Alice")); // $ MISSING: Source=remote3
     let safe_query_1 = String::from("SELECT * FROM people WHERE firstname='") + &const_string + "'";
     let unsafe_query_1 = String::from("SELECT * FROM people WHERE firstname='") + &remote_string + "'";
     let prepared_query_1 = String::from("SELECT * FROM people WHERE firstname=$1"); // (prepared arguments are safe)

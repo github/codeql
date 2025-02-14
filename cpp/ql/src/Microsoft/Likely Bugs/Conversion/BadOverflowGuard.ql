@@ -9,7 +9,7 @@
  * @tags security
  *       external/cwe/cwe-190
  *       external/cwe/cwe-191
- * @id cpp/badoverflowguard
+ * @id cpp/microsoft/public/badoverflowguard
  */
 
 import cpp

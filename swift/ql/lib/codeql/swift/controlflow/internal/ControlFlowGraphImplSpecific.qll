@@ -15,6 +15,8 @@ import Completion
 private import codeql.swift.controlflow.ControlFlowGraph as Cfg
 private import Splitting as Splitting
 private import Scope
+private import codeql.swift.generated.Raw
+private import codeql.swift.generated.Synth
 import ControlFlowElements
 import AstControlFlowTrees
 
@@ -82,6 +84,31 @@ module CfgInput implements InputSig<Location> {
   predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
     scope.(Impl::CfgScope::Range_).exit(last, c)
   }
+
+  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
+
+  private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+
+  // TODO: does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
+  private predicate idOf(S::AstNode x, int y) { idOfDbAstNode(Synth::convertAstNodeToRaw(x), y) }
+
+  private S::AstNode projectToAst(ControlFlowElement n) {
+    result = n.asAstNode()
+    or
+    isPropertyGetterElement(n, _, result)
+    or
+    isPropertySetterElement(n, _, result)
+    or
+    isPropertyObserverElement(n, _, result)
+    or
+    result = n.(KeyPathElement).getAst()
+    or
+    result = n.(FuncDeclElement).getAst()
+  }
+
+  int idOfAstNode(AstNode node) { idOf(projectToAst(node), result) }
+
+  int idOfCfgScope(CfgScope node) { idOf(node, result) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {

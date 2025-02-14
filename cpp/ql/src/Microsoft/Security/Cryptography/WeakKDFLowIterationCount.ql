@@ -7,7 +7,7 @@
  *      The rationale currently is that this query is meant to validate common uses of key derivation.
  *      Non-common uses (modifying the iteration count somehow or getting the count from outside sources) are assumed to be intentional.
  * @kind problem
- * @id cpp/kdf-low-iteration-count
+ * @id cpp/microsoft/public/kdf-low-iteration-count
  * @problem.severity error
  * @precision high
  * @tags security

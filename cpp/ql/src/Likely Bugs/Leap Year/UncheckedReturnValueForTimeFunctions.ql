@@ -5,7 +5,7 @@
  *              invalid dates.
  * @kind problem
  * @problem.severity warning
- * @id cpp/leap-year/unchecked-return-value-for-time-conversion-function
+ * @id cpp/microsoft/public/leap-year/unchecked-return-value-for-time-conversion-function
  * @precision medium
  * @tags leap-year
  *       correctness

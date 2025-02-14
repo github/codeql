@@ -25,10 +25,9 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
     exists(PathExpr p, string rawAlgorithmName |
       this.asExpr().getExpr().(CallExpr).getFunction() = p and
       p.getResolvedCrateOrigin().matches("%/RustCrypto%") and
-      p.getPath().getPart().getNameRef().getText() =
-        ["new", "new_from_slice", "new_from_slices", "new_with_eff_key_len"] and
+      p.getPath().getText() = ["new", "new_from_slice", "new_from_slices", "new_with_eff_key_len"] and
       (
-        rawAlgorithmName = p.getPath().getQualifier().getPart().getNameRef().getText() or
+        rawAlgorithmName = p.getPath().getQualifier().(Path).getText() or // todo: remove infix cast when codegenerator has been fixed
         rawAlgorithmName =
           p.getPath()
               .getQualifier()

@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 9.8
  * @precision high
- * @id powershell/command-injection
+ * @id powershell/microsoft/public/command-injection
  * @tags correctness
  *       security
  *       external/cwe/cwe-078
