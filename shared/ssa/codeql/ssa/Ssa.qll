@@ -123,18 +123,18 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * (certain or uncertain) writes.
      */
     private newtype TRefKind =
-      Read(boolean certain) { certain in [false, true] } or
+      Read() or
       Write(boolean certain) { certain in [false, true] }
 
     private class RefKind extends TRefKind {
       string toString() {
-        exists(boolean certain | this = Read(certain) and result = "read (" + certain + ")")
+        this = Read() and result = "read"
         or
         exists(boolean certain | this = Write(certain) and result = "write (" + certain + ")")
       }
 
       int getOrder() {
-        this = Read(_) and
+        this = Read() and
         result = 0
         or
         this = Write(_) and
@@ -146,7 +146,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
      */
     predicate ref(BasicBlock bb, int i, SourceVariable v, RefKind k) {
-      exists(boolean certain | variableRead(bb, i, v, certain) | k = Read(certain))
+      variableRead(bb, i, v, _) and k = Read()
       or
       exists(boolean certain | variableWrite(bb, i, v, certain) | k = Write(certain))
     }
@@ -183,7 +183,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     predicate lastRefIsRead(BasicBlock bb, SourceVariable v) {
-      maxRefRank(bb, v) = refRank(bb, _, v, Read(_))
+      maxRefRank(bb, v) = refRank(bb, _, v, Read())
     }
 
     /**
@@ -213,7 +213,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate liveAtEntry(BasicBlock bb, SourceVariable v) {
       // The first read or certain write to `v` inside `bb` is a read
-      refRank(bb, _, v, Read(_)) = firstReadOrCertainWrite(bb, v)
+      refRank(bb, _, v, Read()) = firstReadOrCertainWrite(bb, v)
       or
       // There is no certain write to `v` inside `bb`, but `v` is live at entry
       // to a successor basic block of `bb`
@@ -237,7 +237,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         rnk = maxRefRank(bb, v) and
         liveAtExit(bb, v)
         or
-        kind = Read(_)
+        kind = Read()
         or
         exists(RefKind nextKind |
           liveAtRank(bb, _, v, rnk + 1) and
