@@ -182,10 +182,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       not result + 1 = refRank(bb, _, v, _)
     }
 
-    predicate lastRefIsRead(BasicBlock bb, SourceVariable v) {
-      maxRefRank(bb, v) = refRank(bb, _, v, Read())
-    }
-
     /**
      * Gets the (1-based) rank of the first reference to `v` inside basic block `bb`
      * that is either a read or a certain write.
@@ -295,7 +291,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | inDominanceFrontier(readbb, bb) |
-      lastRefIsRead(readbb, v)
+      variableRead(readbb, _, v, _) and
+      not variableWrite(readbb, _, v, _)
       or
       exists(TPhiReadNode(v, readbb)) and
       not ref(readbb, _, v, _)
