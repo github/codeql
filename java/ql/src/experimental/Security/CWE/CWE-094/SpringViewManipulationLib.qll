@@ -1,6 +1,7 @@
 /**
  * Provides classes for reasoning about Spring View Manipulation vulnerabilities
  */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.FlowSources
@@ -55,7 +56,7 @@ module SpringViewManipulationConfig implements DataFlow::ConfigSig {
     // a = "redirect:" + taint`
     // ```
     exists(AddExpr e, StringLiteral sl |
-      node.asExpr() = e.getControlFlowNode().getASuccessor*() and
+      node.asExpr() = e.getControlFlowNode().getASuccessor*().asExpr() and
       sl = e.getLeftOperand*() and
       sl.getValue().matches(["redirect:%", "ajaxredirect:%", "forward:%"])
     )

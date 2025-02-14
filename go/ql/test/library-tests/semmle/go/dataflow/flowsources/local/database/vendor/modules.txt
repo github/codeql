@@ -1,0 +1,6 @@
+# gorm.io/gorm v1.23.0
+## explicit
+gorm.io/gorm
+# github.com/jmoiron/sqlx v1.4.0
+## explicit
+github.com/jmoiron/sqlx

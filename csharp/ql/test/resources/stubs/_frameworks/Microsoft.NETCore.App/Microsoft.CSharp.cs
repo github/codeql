@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.CSharp, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `Microsoft.CSharp, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace CSharp

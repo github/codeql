@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Runtime.Serialization", "ContractNamespaceAttribute", False, "ContractNamespaceAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Runtime.Serialization.ContractNamespaceAttribute.ContractNamespace]", "value", "dfc-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Runtime.Serialization.DataContractSerializerSettings)", "", "Argument[1].Property[System.Runtime.Serialization.DataContractSerializerSettings.DataContractResolver]", "Argument[this].SyntheticField[System.Runtime.Serialization.DataContractSerializer._dataContractResolver]", "value", "dfc-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractSerializer", False, "DataContractSerializer", "(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
@@ -22,6 +23,7 @@ extensions:
       - ["System.Runtime.Serialization", "IObjectReference", True, "GetRealObject", "(System.Runtime.Serialization.StreamingContext)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "ISerializable", True, "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "ISurrogateSelector", True, "GetSurrogate", "(System.Type,System.Runtime.Serialization.StreamingContext,System.Runtime.Serialization.ISurrogateSelector)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.Serialization", "KnownTypeAttribute", False, "KnownTypeAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Runtime.Serialization.KnownTypeAttribute.MethodName]", "value", "dfc-generated"]
       - ["System.Runtime.Serialization", "ObjectIDGenerator", True, "GetId", "(System.Object,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "ObjectManager", False, "ObjectManager", "(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization", "ObjectManager", False, "ObjectManager", "(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
@@ -80,7 +82,6 @@ extensions:
       - ["System.Runtime.Serialization", "CollectionDataContractAttribute", "get_IsNamespaceSetExplicitly", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "CollectionDataContractAttribute", "get_IsReferenceSetExplicitly", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "CollectionDataContractAttribute", "get_IsValueNameSetExplicitly", "()", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "ContractNamespaceAttribute", "ContractNamespaceAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "ContractNamespaceAttribute", "get_ContractNamespace", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractAttribute", "get_IsNameSetExplicitly", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "DataContractAttribute", "get_IsNamespaceSetExplicitly", "()", "summary", "df-generated"]
@@ -232,7 +233,6 @@ extensions:
       - ["System.Runtime.Serialization", "JsonFormatGeneratorStatics", "get_WriteJsonValueMethod", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "JsonFormatGeneratorStatics", "get_WriteStartElementMethod", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "JsonFormatGeneratorStatics", "get_WriteStartElementStringMethod", "()", "summary", "df-generated"]
-      - ["System.Runtime.Serialization", "KnownTypeAttribute", "KnownTypeAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "KnownTypeAttribute", "KnownTypeAttribute", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "KnownTypeAttribute", "get_MethodName", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization", "KnownTypeAttribute", "get_Type", "()", "summary", "df-generated"]

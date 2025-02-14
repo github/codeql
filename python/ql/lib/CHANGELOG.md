@@ -1,3 +1,49 @@
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated TypeTracking library.
+* Deleted the deprecated `classRef` predicate from the `FieldStorage` module, use `subclassRef` instead.
+* Deleted a lot of deprecated modules and predicates from `Stdlib.qll`, use API-graphs directly instead.
+
+### Minor Analysis Improvements
+
+* Additional data flow models for the builtin functions `map`, `filter`, `zip`, and `enumerate` have been added.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+
+## 3.1.0
+
+### New Features
+
+* Added support for parameter annotations in API graphs. This means that in a function definition such as `def foo(x: Bar): ...`, you can now use the `getInstanceFromAnnotation()` method to step from `Bar` to `x`. In addition to this, the `getAnInstance` method now also includes instances arising from parameter annotations.
+
+### Minor Analysis Improvements
+
+* Added modeling of `fastapi.Request` and `starlette.requests.Request` as sources of untrusted input,
+  and modeling of tainted data flow out of these request objects.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Bug Fixes
+
+- Fixed a problem with the control-flow graph construction, where writing `case True:` or `case False:` would cause parts of the graph to be pruned by mistake.
+
+## 2.2.0
+
+### Major Analysis Improvements
+
+* Added modeling of the `bottle` framework, leading to new remote flow sources and header writes
+
 ## 2.1.2
 
 ### Minor Analysis Improvements

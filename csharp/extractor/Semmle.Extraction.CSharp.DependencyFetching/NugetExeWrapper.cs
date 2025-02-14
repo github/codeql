@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal class NugetExeWrapper : IDisposable
     {
         private readonly string? nugetExe;
-        private readonly Util.Logging.ILogger logger;
+        private readonly Semmle.Util.Logging.ILogger logger;
 
         public int PackageCount => fileProvider.PackagesConfigs.Count;
 
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        public NugetExeWrapper(FileProvider fileProvider, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
+        public NugetExeWrapper(FileProvider fileProvider, TemporaryDirectory packageDirectory, Semmle.Util.Logging.ILogger logger)
         {
             this.fileProvider = fileProvider;
             this.packageDirectory = packageDirectory;

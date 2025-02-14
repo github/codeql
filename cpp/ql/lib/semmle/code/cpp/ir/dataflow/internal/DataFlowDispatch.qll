@@ -152,7 +152,7 @@ private module VirtualDispatch {
     ReturnNode node, ReturnKind kind, DataFlowCallable callable
   ) {
     node.getKind() = kind and
-    node.getEnclosingCallable() = callable.getUnderlyingCallable()
+    node.getFunction() = callable.getUnderlyingCallable()
   }
 
   /** Call through a function pointer. */

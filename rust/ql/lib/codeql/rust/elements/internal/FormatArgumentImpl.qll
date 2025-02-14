@@ -39,6 +39,8 @@ module Impl {
     override string toString() { result = name }
 
     override Format getParent() { result = Synth::TFormat(parent, index, _, _) }
+
+    override FormatTemplateVariableAccess getVariable() { result.getArgument() = this }
   }
 
   private class FormatSynthLocationImpl extends FormatArgument, LocatableImpl::SynthLocatable {

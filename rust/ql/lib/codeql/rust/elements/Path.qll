@@ -4,12 +4,13 @@
  */
 
 private import internal.PathImpl
+import codeql.rust.elements.AstNode
 import codeql.rust.elements.PathSegment
-import codeql.rust.elements.Resolvable
 
 /**
  * A path. For example:
  * ```rust
+ * use some_crate::some_module::some_item;
  * foo::bar;
  * ```
  */

@@ -69,7 +69,7 @@ edges
 | websocketXss.go:50:3:50:10 | definition of gorilla2 | websocketXss.go:52:24:52:31 | gorilla2 | provenance | Src:MaD:2  |
 | websocketXss.go:54:3:54:38 | ... := ...[1] | websocketXss.go:55:24:55:31 | gorilla3 | provenance | Src:MaD:3  |
 models
-| 1 | Source: github.com/gorilla/websocket; ; true; ReadJSON; ; ; Argument[1]; remote; manual |
+| 1 | Source: github.com/gorilla/websocket; ; false; ReadJSON; ; ; Argument[1]; remote; manual |
 | 2 | Source: github.com/gorilla/websocket; Conn; true; ReadJSON; ; ; Argument[0]; remote; manual |
 | 3 | Source: github.com/gorilla/websocket; Conn; true; ReadMessage; ; ; ReturnValue[1]; remote; manual |
 | 4 | Source: golang.org/x/net/websocket; Codec; true; Receive; ; ; Argument[1]; remote; manual |
@@ -80,7 +80,7 @@ models
 | 9 | Source: net/http; Request; true; MultipartReader; ; ; ReturnValue[0]; remote; manual |
 | 10 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 | 11 | Source: nhooyr.io/websocket; Conn; true; Read; ; ; ReturnValue[1]; remote; manual |
-| 12 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 12 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
 | 13 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 14 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
 | 15 | Summary: mime/multipart; Part; true; FileName; ; ; Argument[receiver]; ReturnValue; taint; manual |

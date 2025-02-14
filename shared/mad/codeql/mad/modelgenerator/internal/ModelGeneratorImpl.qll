@@ -238,12 +238,14 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   predicate isUninterestingForHeuristicDataFlowModels(Callable api);
 
   /**
-   * Holds if `namespace`, `type`, `extensible`, `name` and `parameters` are string representations
-   * for the corresponding MaD columns for `api`.
+   * Gets the string representation for the `i`th column in the MaD row for `api`.
    */
-  predicate partialModel(
-    Callable api, string namespace, string type, string extensible, string name, string parameters
-  );
+  string partialModelRow(Callable api, int i);
+
+  /**
+   * Gets the string representation for the `i`th column in the neutral MaD row for `api`.
+   */
+  string partialNeutralModelRow(Callable api, int i);
 
   /**
    * Holds if `node` is specified as a source with the given kind in a MaD flow
@@ -274,7 +276,9 @@ module MakeModelGenerator<
   private module ModelPrintingLang implements ModelPrintingLangSig {
     class Callable = ModelGeneratorInput::Callable;
 
-    predicate partialModel = ModelGeneratorInput::partialModel/6;
+    predicate partialModelRow = ModelGeneratorInput::partialModelRow/2;
+
+    predicate partialNeutralModelRow = ModelGeneratorInput::partialNeutralModelRow/2;
   }
 
   private import ModelPrintingImpl<ModelPrintingLang> as Printing
@@ -436,7 +440,7 @@ module MakeModelGenerator<
   }
 
   /**
-   * A data-flow configuration for tracking flow through APIs.
+   * A data flow configuration for tracking flow through APIs.
    * The sources are the parameters of an API and the sinks are the return values (excluding `this`) and parameters.
    *
    * This can be used to generate Flow summaries for APIs from parameter to return.
@@ -464,8 +468,10 @@ module MakeModelGenerator<
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
-      exists(DataFlow::ContentSet c |
-        DataFlow::store(node1, c.getAStoreContent(), node2, _, _) and
+      exists(DataFlow::NodeEx n1, DataFlow::NodeEx n2, DataFlow::ContentSet c |
+        node1 = n1.asNode() and
+        node2 = n2.asNode() and
+        DataFlow::storeEx(n1, c.getAStoreContent(), n2, _, _) and
         isRelevantContent0(c) and
         (
           state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
@@ -950,7 +956,7 @@ module MakeModelGenerator<
   }
 
   /**
-   * A dataflow configuration used for finding new sources.
+   * A data flow configuration used for finding new sources.
    * The sources are the already known existing sources and the sinks are the API return nodes.
    *
    * This can be used to generate Source summaries for an API, if the API expose an already known source
@@ -995,7 +1001,7 @@ module MakeModelGenerator<
   }
 
   /**
-   * A dataflow configuration used for finding new sinks.
+   * A data flow configuration used for finding new sinks.
    * The sources are the parameters of the API and the fields of the enclosing type.
    *
    * This can be used to generate Sink summaries for APIs, if the API propagates a parameter (or enclosing type field)

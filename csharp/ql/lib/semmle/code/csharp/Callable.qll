@@ -8,6 +8,7 @@ import Stmt
 import Type
 import exprs.Call
 private import commons.QualifiedName
+private import commons.Collections
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
@@ -273,7 +274,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   Type getParamsType() {
     exists(Parameter last | last = this.getParameter(this.getNumberOfParameters() - 1) |
       last.isParams() and
-      result = last.getType().(ArrayType).getElementType()
+      result = last.getType().(ParamsCollectionType).getElementType()
     )
   }
 

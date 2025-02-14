@@ -1,0 +1,41 @@
+name: tests
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
+
+permissions: { contents: read }
+
+jobs:
+  get-artifacts:
+    name: Get required artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      statuses: write
+    steps:
+      - name: Download and extract event file
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          name: event_file
+          path: artifacts/event_file
+
+      - name: Try to read PR number
+        id: set-ref
+        run: |
+          pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)
+          if [ -z "$pr_num" ] || [ "$pr_num" == "null" ]; then
+            pr_num=""
+          fi
+
+          ref=$pr_num
+          if [ -z "$ref" ] || [ "$ref" == "null" ]; then
+            ref=${{ github.ref }}
+          fi
+
+          echo "pr_num=$pr_num" >> $GITHUB_ENV
+          echo "ref=$ref" >> $GITHUB_ENV

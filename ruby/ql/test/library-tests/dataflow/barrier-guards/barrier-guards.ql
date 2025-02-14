@@ -5,7 +5,7 @@ import codeql.ruby.controlflow.CfgNodes
 import codeql.ruby.controlflow.ControlFlowGraph
 import codeql.ruby.controlflow.BasicBlocks
 import codeql.ruby.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 query predicate newStyleBarrierGuards(DataFlow::Node n) {
   n instanceof StringConstCompareBarrier or
@@ -14,7 +14,7 @@ query predicate newStyleBarrierGuards(DataFlow::Node n) {
 
 query predicate controls(CfgNode condition, BasicBlock bb, SuccessorTypes::ConditionalSuccessor s) {
   exists(ConditionBlock cb |
-    cb.controls(bb, s) and
+    cb.edgeDominates(bb, s) and
     condition = cb.getLastNode()
   )
 }

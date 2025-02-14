@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/flink/.github/workflows/template.flink-ci.yml", "*", "input.environment", "code-injection", "generated"]
+     - ["apache/flink/.github/workflows/template.flink-ci.yml", "*", "input.workflow-caller-id", "code-injection", "generated"]

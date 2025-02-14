@@ -1,3 +1,56 @@
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `describeBitSize` predicate from `IncorrectIntegerConversionLib.qll`
+
+### Minor Analysis Improvements
+
+* Models-as-data models using "Parameter", "Parameter[n]" or "Parameter[n1..n2]" as the output now work correctly.
+* By implementing `ImplicitFieldReadNode` it is now possible to declare a dataflow node that reads any content (fields, array members, map keys and values). For example, this is appropriate for modelling a serialization method that flattens a potentially deep data structure into a string or byte array.
+* The `Template.Execute[Template]` methods of the `text/template` package now correctly convey taint from any nested fields to their result. This may produce more results from any taint-tracking query when the `text/template` package is in use.
+* Added the [rs cors](https://github.com/rs/cors) library to the CorsMisconfiguration.ql query
+
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* `database` local source models have been added for the Beego ORM package.
+* `database` local source models have been added for the `github.com/jmoiron/sqlx` package.
+* Added `database` source models for database methods from the `gorm.io/gorm` package.
+* `database` local source models have been added for the `database/sql` and `database/sql/driver` packages.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Added a `commandargs` local source model for the `os.Args` variable.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* A call to a method whose name starts with "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn" or "With" defined on an interface whose name ends in "logger" or "Logger" is now considered a LoggerCall. In particular, it is a sink for `go/clear-text-logging` and `go/log-injection`. This may lead to some more alerts in those queries.
+
+### Bug Fixes
+
+* Fixed a bug which meant that promoted fields and methods were missing when the embedded parent was not promoted due to a name clash.
+
+## 2.1.3
+
+### Minor Analysis Improvements
+
+* The `subtypes` column has been set to true in all models-as-data models except some tests. This means that existing models will apply in some cases where they didn't before, which may lead to more alerts.
+
+### Bug Fixes
+
+* The behaviour of the `subtypes` column in models-as-data now matches other languages more closely.
+* Fixed a bug which meant that some qualified names for promoted methods were not being recognised in some very specific circumstances.
+
 ## 2.1.2
 
 ### Minor Analysis Improvements

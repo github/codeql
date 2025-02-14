@@ -500,55 +500,6 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
-  deprecated private module LegacyImpl implements TestSig {
-    string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
-
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasActualResult(location, element, tag, value)
-    }
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasOptionalResult(location, element, tag, value)
-    }
-  }
-
-  /**
-   * DEPRECATED: Use the InlineExpectationsTest module.
-   *
-   * The base class for tests with inline expectations. The test extends this class to provide the actual
-   * results of the query, which are then compared with the expected results in comments to produce a
-   * list of failure messages that point out where the actual results differ from the expected
-   * results.
-   */
-  abstract deprecated class InlineExpectationsTest extends string {
-    bindingset[this]
-    InlineExpectationsTest() { any() }
-
-    abstract string getARelevantTag();
-
-    abstract predicate hasActualResult(
-      Impl::Location location, string element, string tag, string value
-    );
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      none()
-    }
-  }
-
-  deprecated import MakeTest<LegacyImpl> as LegacyTest
-
-  deprecated query predicate failures = LegacyTest::testFailures/2;
-
-  deprecated class ActualResult = LegacyTest::ActualTestResult;
-
-  deprecated class GoodExpectation = LegacyTest::GoodTestExpectation;
-
-  deprecated class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
-
-  deprecated class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
-
-  deprecated class InvalidExpectation = LegacyTest::InvalidTestExpectation;
-
   /**
    * Holds if the expectation `tag=value` is found in one or more expectation comments.
    *
@@ -632,6 +583,9 @@ private string expectationPattern() {
   )
 }
 
+/** Gets the string `#select` or `problems`, which are equivalent result sets for a `problem` or `path-problem` query. */
+private string mainResultSet() { result = ["#select", "problems"] }
+
 /**
  * Provides logic for creating a `@kind test-postprocess` query that checks
  * inline test expectations using `$ Alert` markers.
@@ -689,7 +643,113 @@ module TestPostProcessing {
 
   module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {
     private import InlineExpectationsTest as InlineExpectationsTest
-    private import InlineExpectationsTest::Make<Input>
+
+    bindingset[loc]
+    private predicate parseLocationString(
+      string loc, string relativePath, int sl, int sc, int el, int ec
+    ) {
+      relativePath = loc.splitAt(":", 0) and
+      sl = loc.splitAt(":", 1).toInt() and
+      sc = loc.splitAt(":", 2).toInt() and
+      el = loc.splitAt(":", 3).toInt() and
+      ec = loc.splitAt(":", 4).toInt()
+    }
+
+    pragma[nomagic]
+    private string getRelativePathTo(string absolutePath) {
+      exists(Input::Location loc |
+        loc.hasLocationInfo(absolutePath, _, _, _, _) and
+        parseLocationString(Input2::getRelativeUrl(loc), result, _, _, _, _)
+      )
+    }
+
+    private newtype TTestLocation =
+      MkInputLocation(Input::Location loc) or
+      MkResultLocation(string relativePath, int sl, int sc, int el, int ec) {
+        exists(string data |
+          queryResults(_, _, _, data) and
+          parseLocationString(data, relativePath, sl, sc, el, ec) and
+          not Input2::getRelativeUrl(_) = data // avoid duplicate locations
+        )
+      }
+
+    /**
+     * A location that is either an `Input::Location` or a location from an alert.
+     *
+     * We use this location type to support queries that select a location that does not correspond
+     * to an instance of `Input::Location`.
+     */
+    abstract private class TestLocationImpl extends TTestLocation {
+      string getAbsoluteFile() { this.hasLocationInfo(result, _, _, _, _) }
+
+      int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
+
+      int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
+
+      int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
+
+      int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+
+      abstract string getRelativeUrl();
+
+      final string toString() { result = this.getRelativeUrl() }
+
+      abstract predicate hasLocationInfo(string file, int sl, int sc, int el, int ec);
+    }
+
+    private class LocationFromResult extends TestLocationImpl, MkResultLocation {
+      override string getRelativeUrl() {
+        exists(string file, int sl, int sc, int el, int ec |
+          this = MkResultLocation(file, sl, sc, el, ec) and
+          result = file + ":" + sl + ":" + sc + ":" + el + ":" + ec
+        )
+      }
+
+      override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
+        this = MkResultLocation(getRelativePathTo(file), sl, sc, el, ec)
+      }
+    }
+
+    private class LocationFromInput extends TestLocationImpl, MkInputLocation {
+      private Input::Location loc;
+
+      LocationFromInput() { this = MkInputLocation(loc) }
+
+      override string getRelativeUrl() { result = Input2::getRelativeUrl(loc) }
+
+      override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
+        loc.hasLocationInfo(file, sl, sc, el, ec)
+      }
+    }
+
+    final class TestLocation = TestLocationImpl;
+
+    module TestImpl2 implements InlineExpectationsTestSig {
+      final class Location = TestLocation;
+
+      final private class ExpectationCommentFinal = Input::ExpectationComment;
+
+      class ExpectationComment extends ExpectationCommentFinal {
+        Location getLocation() { result = MkInputLocation(super.getLocation()) }
+      }
+    }
+
+    private import InlineExpectationsTest::Make<TestImpl2>
+
+    /** Holds if the given locations refer to the same lines, but possibly with different column numbers. */
+    bindingset[loc1, loc2]
+    pragma[inline_late]
+    private predicate sameLineInfo(TestLocation loc1, TestLocation loc2) {
+      exists(string file, int line1, int line2 |
+        loc1.hasLocationInfo(file, line1, _, line2, _) and
+        loc2.hasLocationInfo(file, line1, _, line2, _)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate mainQueryResult(int row, int column, TestLocation loc) {
+      queryResults(mainResultSet(), row, column, loc.getRelativeUrl())
+    }
 
     /**
      * Gets the tag to be used for the path-problem source at result row `row`.
@@ -699,8 +759,10 @@ module TestPostProcessing {
      */
     private string getSourceTag(int row) {
       getQueryKind() = "path-problem" and
-      exists(string loc | queryResults("#select", row, 2, loc) |
-        if queryResults("#select", row, 0, loc) then result = "Alert" else result = "Source"
+      exists(TestLocation sourceLoc, TestLocation selectLoc |
+        mainQueryResult(row, 0, selectLoc) and
+        mainQueryResult(row, 2, sourceLoc) and
+        if sameLineInfo(selectLoc, sourceLoc) then result = "Alert" else result = "Source"
       )
     }
 
@@ -712,8 +774,8 @@ module TestPostProcessing {
      */
     private string getSinkTag(int row) {
       getQueryKind() = "path-problem" and
-      exists(string loc | queryResults("#select", row, 4, loc) |
-        if queryResults("#select", row, 0, loc) then result = "Alert" else result = "Sink"
+      exists(string loc | queryResults(mainResultSet(), row, 4, loc) |
+        if queryResults(mainResultSet(), row, 0, loc) then result = "Alert" else result = "Sink"
       )
     }
 
@@ -762,19 +824,16 @@ module TestPostProcessing {
       }
 
       additional predicate hasPathProblemSource(
-        int row, Input::Location location, string element, string tag, string value
+        int row, TestLocation location, string element, string tag, string value
       ) {
         getQueryKind() = "path-problem" and
-        exists(string loc |
-          queryResults("#select", row, 2, loc) and
-          queryResults("#select", row, 3, element) and
-          tag = getSourceTag(row) and
-          value = "" and
-          Input2::getRelativeUrl(location) = loc
-        )
+        mainQueryResult(row, 2, location) and
+        queryResults(mainResultSet(), row, 3, element) and
+        tag = getSourceTag(row) and
+        value = ""
       }
 
-      predicate hasActualResult(Input::Location location, string element, string tag, string value) {
+      predicate hasActualResult(TestLocation location, string element, string tag, string value) {
         hasPathProblemSource(_, location, element, tag, value)
       }
     }
@@ -802,27 +861,21 @@ module TestPostProcessing {
       private predicate hasPathProblemSource = PathProblemSourceTestInput::hasPathProblemSource/5;
 
       private predicate hasPathProblemSink(
-        int row, Input::Location location, string element, string tag
+        int row, TestLocation location, string element, string tag
       ) {
         getQueryKind() = "path-problem" and
-        exists(string loc |
-          queryResults("#select", row, 4, loc) and
-          queryResults("#select", row, 5, element) and
-          tag = getSinkTag(row) and
-          Input2::getRelativeUrl(location) = loc
-        )
+        mainQueryResult(row, 4, location) and
+        queryResults(mainResultSet(), row, 5, element) and
+        tag = getSinkTag(row)
       }
 
-      private predicate hasAlert(int row, Input::Location location, string element, string tag) {
+      private predicate hasAlert(int row, TestLocation location, string element, string tag) {
         getQueryKind() = ["problem", "path-problem"] and
-        exists(string loc |
-          queryResults("#select", row, 0, loc) and
-          queryResults("#select", row, 2, element) and
-          tag = "Alert" and
-          Input2::getRelativeUrl(location) = loc and
-          not hasPathProblemSource(row, location, _, _, _) and
-          not hasPathProblemSink(row, location, _, _)
-        )
+        mainQueryResult(row, 0, location) and
+        queryResults(mainResultSet(), row, 2, element) and
+        tag = "Alert" and
+        not hasPathProblemSource(row, location, _, _, _) and
+        not hasPathProblemSink(row, location, _, _)
       }
 
       /**
@@ -831,7 +884,7 @@ module TestPostProcessing {
        * present).
        */
       private string getValue(int row) {
-        exists(Input::Location location, string element, string tag, string val |
+        exists(TestLocation location, string element, string tag, string val |
           hasPathProblemSource(row, location, element, tag, val) and
           result =
             PathProblemSourceTest::getAMatchingExpectation(location, element, tag, val, false)
@@ -839,7 +892,7 @@ module TestPostProcessing {
         )
       }
 
-      predicate hasActualResult(Input::Location location, string element, string tag, string value) {
+      predicate hasActualResult(TestLocation location, string element, string tag, string value) {
         exists(int row |
           hasPathProblemSource(row, location, element, tag, _)
           or
@@ -878,7 +931,7 @@ module TestPostProcessing {
         rankedTestFailures(row, f) and
         f = MkTestFailure(fl, message)
       |
-        column = 0 and data = Input2::getRelativeUrl(fl.getLocation())
+        column = 0 and data = fl.getLocation().getRelativeUrl()
         or
         column = 1 and data = fl.toString()
         or

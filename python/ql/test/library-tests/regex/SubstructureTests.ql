@@ -1,5 +1,5 @@
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.regex
 
 module CharacterSetTest implements TestSig {

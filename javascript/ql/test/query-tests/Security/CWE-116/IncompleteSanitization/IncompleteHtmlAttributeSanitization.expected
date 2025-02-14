@@ -1,64 +1,25 @@
 nodes
-| tst.js:243:9:243:31 | s().rep ... ]/g,'') |
-| tst.js:243:9:243:31 | s().rep ... ]/g,'') |
-| tst.js:243:9:243:31 | s().rep ... ]/g,'') |
-| tst.js:244:9:244:33 | s().rep ... /g, '') |
-| tst.js:244:9:244:33 | s().rep ... /g, '') |
-| tst.js:244:9:244:33 | s().rep ... /g, '') |
-| tst.js:249:9:249:33 | s().rep ... ]/g,'') |
-| tst.js:249:9:249:33 | s().rep ... ]/g,'') |
-| tst.js:249:9:249:33 | s().rep ... ]/g,'') |
-| tst.js:250:9:250:33 | s().rep ... ]/g,'') |
-| tst.js:250:9:250:33 | s().rep ... ]/g,'') |
-| tst.js:250:9:250:33 | s().rep ... ]/g,'') |
-| tst.js:253:21:253:45 | s().rep ... /g, '') |
-| tst.js:253:21:253:45 | s().rep ... /g, '') |
-| tst.js:253:21:253:45 | s().rep ... /g, '') |
-| tst.js:254:32:254:56 | s().rep ... /g, '') |
-| tst.js:254:32:254:56 | s().rep ... /g, '') |
-| tst.js:254:32:254:56 | s().rep ... /g, '') |
-| tst.js:270:61:270:85 | s().rep ... /g, '') |
-| tst.js:270:61:270:85 | s().rep ... /g, '') |
-| tst.js:270:61:270:85 | s().rep ... /g, '') |
-| tst.js:274:6:274:94 | arr |
-| tst.js:274:12:274:94 | s().val ... g , '') |
-| tst.js:274:12:274:94 | s().val ... g , '') |
-| tst.js:275:9:275:11 | arr |
-| tst.js:275:9:275:21 | arr.join(" ") |
-| tst.js:275:9:275:21 | arr.join(" ") |
-| tst.js:300:10:300:33 | s().rep ... ]/g,'') |
-| tst.js:300:10:300:33 | s().rep ... ]/g,'') |
-| tst.js:300:10:300:33 | s().rep ... ]/g,'') |
-| tst.js:301:10:301:32 | s().rep ... ]/g,'') |
-| tst.js:301:10:301:32 | s().rep ... ]/g,'') |
-| tst.js:301:10:301:32 | s().rep ... ]/g,'') |
-| tst.js:302:10:302:34 | s().rep ... ]/g,'') |
-| tst.js:302:10:302:34 | s().rep ... ]/g,'') |
-| tst.js:302:10:302:34 | s().rep ... ]/g,'') |
-| tst.js:303:10:303:34 | s().rep ... /g, '') |
-| tst.js:303:10:303:34 | s().rep ... /g, '') |
-| tst.js:303:10:303:34 | s().rep ... /g, '') |
-| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
-| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
-| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
+| tst.js:244:9:244:33 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
+| tst.js:250:9:250:33 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
+| tst.js:253:21:253:45 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
+| tst.js:254:32:254:56 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
+| tst.js:270:61:270:85 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
+| tst.js:274:6:274:94 | arr | semmle.label | arr |
+| tst.js:274:12:274:94 | s().val ... g , '') | semmle.label | s().val ... g , '') |
+| tst.js:275:9:275:11 | arr | semmle.label | arr |
+| tst.js:275:9:275:21 | arr.join(" ") | semmle.label | arr.join(" ") |
+| tst.js:300:10:300:33 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
+| tst.js:301:10:301:32 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
+| tst.js:302:10:302:34 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
+| tst.js:303:10:303:34 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
+| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | semmle.label | s().rep ... ;";\\n\\t}) |
 edges
-| tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') |
-| tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') |
-| tst.js:249:9:249:33 | s().rep ... ]/g,'') | tst.js:249:9:249:33 | s().rep ... ]/g,'') |
-| tst.js:250:9:250:33 | s().rep ... ]/g,'') | tst.js:250:9:250:33 | s().rep ... ]/g,'') |
-| tst.js:253:21:253:45 | s().rep ... /g, '') | tst.js:253:21:253:45 | s().rep ... /g, '') |
-| tst.js:254:32:254:56 | s().rep ... /g, '') | tst.js:254:32:254:56 | s().rep ... /g, '') |
-| tst.js:270:61:270:85 | s().rep ... /g, '') | tst.js:270:61:270:85 | s().rep ... /g, '') |
-| tst.js:274:6:274:94 | arr | tst.js:275:9:275:11 | arr |
-| tst.js:274:12:274:94 | s().val ... g , '') | tst.js:274:6:274:94 | arr |
-| tst.js:274:12:274:94 | s().val ... g , '') | tst.js:274:6:274:94 | arr |
-| tst.js:275:9:275:11 | arr | tst.js:275:9:275:21 | arr.join(" ") |
-| tst.js:275:9:275:11 | arr | tst.js:275:9:275:21 | arr.join(" ") |
-| tst.js:300:10:300:33 | s().rep ... ]/g,'') | tst.js:300:10:300:33 | s().rep ... ]/g,'') |
-| tst.js:301:10:301:32 | s().rep ... ]/g,'') | tst.js:301:10:301:32 | s().rep ... ]/g,'') |
-| tst.js:302:10:302:34 | s().rep ... ]/g,'') | tst.js:302:10:302:34 | s().rep ... ]/g,'') |
-| tst.js:303:10:303:34 | s().rep ... /g, '') | tst.js:303:10:303:34 | s().rep ... /g, '') |
-| tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) |
+| tst.js:274:6:274:94 | arr | tst.js:275:9:275:11 | arr | provenance |  |
+| tst.js:274:12:274:94 | s().val ... g , '') | tst.js:274:6:274:94 | arr | provenance |  |
+| tst.js:275:9:275:11 | arr | tst.js:275:9:275:21 | arr.join(" ") | provenance |  |
+subpaths
 #select
 | tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain double quotes when it reaches this attribute definition. | tst.js:243:9:243:31 | s().rep ... ]/g,'') | this final HTML sanitizer step |
 | tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain double quotes when it reaches this attribute definition. | tst.js:244:9:244:33 | s().rep ... /g, '') | this final HTML sanitizer step |

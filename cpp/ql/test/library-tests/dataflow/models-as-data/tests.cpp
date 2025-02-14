@@ -205,7 +205,7 @@ void test_summaries() {
 
 	sink(madAndImplementedComplex(0, 0, 0));
 	sink(madAndImplementedComplex(source(), 0, 0));
-	sink(madAndImplementedComplex(0, source(), 0)); // $ ir
+	sink(madAndImplementedComplex(0, source(), 0)); // Clean. We have a MaD model specifying different behavior.
 	sink(madAndImplementedComplex(0, 0, source())); // $ ir
 
 	sink(madArgsAny(0, 0));
@@ -451,4 +451,28 @@ void test_function_pointers() {
 	madCallArg0WithValue(&sink, source()); // $ MISSING: ir
 	madCallReturnValueIgnoreFunction(&sink, source());
 	sink(madCallReturnValueIgnoreFunction(&dontUseValue, source())); // $ ir
+}
+
+template<typename X>
+struct StructWithTypedefInParameter {
+	typedef X Type;
+	X& parameter_ref_to_return_ref(const Type& x); // $ interpretElement
+};
+
+void test_parameter_ref_to_return_ref() {
+	int x = source();
+	StructWithTypedefInParameter<int> s;
+	int y = s.parameter_ref_to_return_ref(x);
+	sink(y); // $ ir
+}
+
+using INT = int;
+
+int receive_array(INT a[20]); // $ interpretElement
+
+void test_receive_array() {
+	int x = source();
+	int array[10] = {x};
+	int y = receive_array(array);
+	sink(y); // $ ir
 }

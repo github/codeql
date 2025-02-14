@@ -1,0 +1,43 @@
+{
+  "attributes": {
+    "durations": {
+      "extract": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "findManifests": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "loadManifest": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "loadSource": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "parse": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "total": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      }
+    },
+    "numberOfFiles": 5,
+    "numberOfManifests": 1
+  },
+  "severity": "note",
+  "source": {
+    "extractorName": "rust",
+    "id": "rust/extractor/telemetry",
+    "name": "telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

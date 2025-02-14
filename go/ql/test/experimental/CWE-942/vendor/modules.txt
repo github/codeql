@@ -4,6 +4,9 @@ github.com/gin-contrib/cors
 # github.com/gin-gonic/gin v1.9.1
 ## explicit
 github.com/gin-gonic/gin
+# github.com/rs/cors v1.10.1
+## explicit
+github.com/rs/cors
 # github.com/bytedance/sonic v1.9.1
 ## explicit
 github.com/bytedance/sonic

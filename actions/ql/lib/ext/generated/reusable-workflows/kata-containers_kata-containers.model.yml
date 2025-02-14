@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kata-containers/kata-containers/.github/workflows/release-s390x.yaml", "*", "input.target-arch", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/release-ppc64le.yaml", "*", "input.target-arch", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/release-arm64.yaml", "*", "input.target-arch", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/release-amd64.yaml", "*", "input.target-arch", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-s390x.yaml", "*", "input.tag", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-s390x.yaml", "*", "input.repo", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-s390x.yaml", "*", "input.registry", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-ppc64le.yaml", "*", "input.tag", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-ppc64le.yaml", "*", "input.repo", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-ppc64le.yaml", "*", "input.registry", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-arm64.yaml", "*", "input.tag", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-arm64.yaml", "*", "input.repo", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-arm64.yaml", "*", "input.registry", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-amd64.yaml", "*", "input.tag", "code-injection", "generated"]
+     - ["kata-containers/kata-containers/.github/workflows/publish-kata-deploy-payload-amd64.yaml", "*", "input.repo", "code-injection", "generated"]

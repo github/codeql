@@ -13,6 +13,8 @@ public class CollectionFlow
 
     public static void SinkElem<T>(T[] ts) => Sink(ts[0]);
 
+    public static void SinkLastElem<T>(T[] ts) => Sink(ts[^1]);
+
     public static void SinkListElem<T>(IList<T> list) => Sink(list[0]);
 
     public static void SinkDictValue<T>(IDictionary<int, T> dict) => Sink(dict[0]);
@@ -20,6 +22,8 @@ public class CollectionFlow
     public static void SinkDictKey<T>(IDictionary<T, int> dict) => Sink(dict.Keys.First());
 
     public static T First<T>(T[] ts) => ts[0];
+
+    public static T Last<T>(T[] ts) => ts[^1];
 
     public static T ListFirst<T>(IList<T> list) => list[0];
 
@@ -34,6 +38,8 @@ public class CollectionFlow
     public static T DictFirstKey<T>(IDictionary<T, int> dict) => dict.First().Key;
 
     public static void SinkParams<T>(params T[] args) => Sink(args[0]);
+
+    public static void SinkCollectionParams<T>(params IEnumerable<T> args) => Sink(args.First());
 
     public void ArrayInitializerFlow()
     {
@@ -71,6 +77,15 @@ public class CollectionFlow
         Sink(First(c.As)); // no flow
     }
 
+    public void ArrayInitializerImplicitIndexFlow()
+    {
+        var a = new A();
+        var c = new CollectionFlow() { As = { [^1] = a } };
+        Sink(c.As[^1]); // flow
+        SinkLastElem(c.As); // flow
+        Sink(Last(c.As)); // flow
+    }
+
     public void ArrayAssignmentFlow()
     {
         var a = new A();
@@ -89,6 +104,16 @@ public class CollectionFlow
         Sink(@as[0]); // no flow
         SinkElem(@as); // no flow
         Sink(First(@as)); // no flow
+    }
+
+    public void ArrayAssignmentImplicitIndexFlow()
+    {
+        var a = new A();
+        var @as = new A[1];
+        @as[^1] = a;
+        Sink(@as[^1]); // flow
+        SinkLastElem(@as); // flow
+        Sink(Last(@as)); // flow
     }
 
     public void ListAssignmentFlow()
@@ -382,6 +407,14 @@ public class CollectionFlow
         SinkParams(null, other); // no flow
         SinkParams(null, other, null); // no flow
         SinkParams(new A[] { other }); // no flow
+    }
+
+    public void ParamsCollectionFlow()
+    {
+        SinkCollectionParams(new A()); // flow
+        SinkCollectionParams(null, new A()); // flow
+        SinkCollectionParams(null, new A(), null); // flow
+        SinkCollectionParams([new A()]); // flow
     }
 
     public void ListAddClearNoFlow()

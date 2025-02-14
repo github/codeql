@@ -1,0 +1,99 @@
+models
+| 1 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
+| 2 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
+| 3 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
+edges
+| main.rs:26:9:26:9 | s | main.rs:27:19:27:25 | s[...] | provenance |  |
+| main.rs:26:13:26:22 | source(...) | main.rs:26:9:26:9 | s | provenance |  |
+| main.rs:27:9:27:14 | sliced [&ref] | main.rs:28:16:28:21 | sliced | provenance |  |
+| main.rs:27:18:27:25 | &... [&ref] | main.rs:27:9:27:14 | sliced [&ref] | provenance |  |
+| main.rs:27:19:27:25 | s[...] | main.rs:27:18:27:25 | &... [&ref] | provenance |  |
+| main.rs:32:9:32:10 | s1 | main.rs:35:9:35:10 | s4 | provenance |  |
+| main.rs:32:14:32:23 | source(...) | main.rs:32:9:32:10 | s1 | provenance |  |
+| main.rs:35:9:35:10 | s4 | main.rs:38:10:38:11 | s4 | provenance |  |
+| main.rs:63:9:63:9 | s | main.rs:64:16:64:16 | s | provenance |  |
+| main.rs:63:13:63:22 | source(...) | main.rs:63:9:63:9 | s | provenance |  |
+| main.rs:64:16:64:16 | s | main.rs:64:16:64:25 | s.as_str(...) | provenance | MaD:1 |
+| main.rs:68:9:68:9 | s | main.rs:70:34:70:61 | MacroExpr | provenance |  |
+| main.rs:68:9:68:9 | s | main.rs:73:34:73:59 | MacroExpr | provenance |  |
+| main.rs:68:13:68:22 | source(...) | main.rs:68:9:68:9 | s | provenance |  |
+| main.rs:70:9:70:18 | formatted1 | main.rs:71:10:71:19 | formatted1 | provenance |  |
+| main.rs:70:22:70:62 | ...::format(...) | main.rs:70:9:70:18 | formatted1 | provenance |  |
+| main.rs:70:34:70:61 | MacroExpr | main.rs:70:22:70:62 | ...::format(...) | provenance | MaD:2 |
+| main.rs:73:9:73:18 | formatted2 | main.rs:74:10:74:19 | formatted2 | provenance |  |
+| main.rs:73:22:73:60 | ...::format(...) | main.rs:73:9:73:18 | formatted2 | provenance |  |
+| main.rs:73:34:73:59 | MacroExpr | main.rs:73:22:73:60 | ...::format(...) | provenance | MaD:2 |
+| main.rs:76:9:76:13 | width | main.rs:77:34:77:74 | MacroExpr | provenance |  |
+| main.rs:76:17:76:32 | source_usize(...) | main.rs:76:9:76:13 | width | provenance |  |
+| main.rs:77:9:77:18 | formatted3 | main.rs:78:10:78:19 | formatted3 | provenance |  |
+| main.rs:77:22:77:75 | ...::format(...) | main.rs:77:9:77:18 | formatted3 | provenance |  |
+| main.rs:77:34:77:74 | MacroExpr | main.rs:77:22:77:75 | ...::format(...) | provenance | MaD:2 |
+| main.rs:82:9:82:10 | s1 | main.rs:86:18:86:25 | MacroExpr | provenance |  |
+| main.rs:82:9:82:10 | s1 | main.rs:87:18:87:32 | MacroExpr | provenance |  |
+| main.rs:82:14:82:23 | source(...) | main.rs:82:9:82:10 | s1 | provenance |  |
+| main.rs:86:10:86:26 | res | main.rs:86:18:86:25 | { ... } | provenance |  |
+| main.rs:86:18:86:25 | ...::format(...) | main.rs:86:10:86:26 | res | provenance |  |
+| main.rs:86:18:86:25 | ...::must_use(...) | main.rs:86:10:86:26 | MacroExpr | provenance |  |
+| main.rs:86:18:86:25 | MacroExpr | main.rs:86:18:86:25 | ...::format(...) | provenance | MaD:2 |
+| main.rs:86:18:86:25 | { ... } | main.rs:86:18:86:25 | ...::must_use(...) | provenance | MaD:3 |
+| main.rs:87:10:87:33 | res | main.rs:87:18:87:32 | { ... } | provenance |  |
+| main.rs:87:18:87:32 | ...::format(...) | main.rs:87:10:87:33 | res | provenance |  |
+| main.rs:87:18:87:32 | ...::must_use(...) | main.rs:87:10:87:33 | MacroExpr | provenance |  |
+| main.rs:87:18:87:32 | MacroExpr | main.rs:87:18:87:32 | ...::format(...) | provenance | MaD:2 |
+| main.rs:87:18:87:32 | { ... } | main.rs:87:18:87:32 | ...::must_use(...) | provenance | MaD:3 |
+nodes
+| main.rs:26:9:26:9 | s | semmle.label | s |
+| main.rs:26:13:26:22 | source(...) | semmle.label | source(...) |
+| main.rs:27:9:27:14 | sliced [&ref] | semmle.label | sliced [&ref] |
+| main.rs:27:18:27:25 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:27:19:27:25 | s[...] | semmle.label | s[...] |
+| main.rs:28:16:28:21 | sliced | semmle.label | sliced |
+| main.rs:32:9:32:10 | s1 | semmle.label | s1 |
+| main.rs:32:14:32:23 | source(...) | semmle.label | source(...) |
+| main.rs:35:9:35:10 | s4 | semmle.label | s4 |
+| main.rs:38:10:38:11 | s4 | semmle.label | s4 |
+| main.rs:63:9:63:9 | s | semmle.label | s |
+| main.rs:63:13:63:22 | source(...) | semmle.label | source(...) |
+| main.rs:64:16:64:16 | s | semmle.label | s |
+| main.rs:64:16:64:25 | s.as_str(...) | semmle.label | s.as_str(...) |
+| main.rs:68:9:68:9 | s | semmle.label | s |
+| main.rs:68:13:68:22 | source(...) | semmle.label | source(...) |
+| main.rs:70:9:70:18 | formatted1 | semmle.label | formatted1 |
+| main.rs:70:22:70:62 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:70:34:70:61 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:71:10:71:19 | formatted1 | semmle.label | formatted1 |
+| main.rs:73:9:73:18 | formatted2 | semmle.label | formatted2 |
+| main.rs:73:22:73:60 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:73:34:73:59 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:74:10:74:19 | formatted2 | semmle.label | formatted2 |
+| main.rs:76:9:76:13 | width | semmle.label | width |
+| main.rs:76:17:76:32 | source_usize(...) | semmle.label | source_usize(...) |
+| main.rs:77:9:77:18 | formatted3 | semmle.label | formatted3 |
+| main.rs:77:22:77:75 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:77:34:77:74 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:78:10:78:19 | formatted3 | semmle.label | formatted3 |
+| main.rs:82:9:82:10 | s1 | semmle.label | s1 |
+| main.rs:82:14:82:23 | source(...) | semmle.label | source(...) |
+| main.rs:86:10:86:26 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:86:10:86:26 | res | semmle.label | res |
+| main.rs:86:18:86:25 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:86:18:86:25 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:86:18:86:25 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:86:18:86:25 | { ... } | semmle.label | { ... } |
+| main.rs:87:10:87:33 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:87:10:87:33 | res | semmle.label | res |
+| main.rs:87:18:87:32 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:87:18:87:32 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:87:18:87:32 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:87:18:87:32 | { ... } | semmle.label | { ... } |
+subpaths
+testFailures
+#select
+| main.rs:28:16:28:21 | sliced | main.rs:26:13:26:22 | source(...) | main.rs:28:16:28:21 | sliced | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
+| main.rs:38:10:38:11 | s4 | main.rs:32:14:32:23 | source(...) | main.rs:38:10:38:11 | s4 | $@ | main.rs:32:14:32:23 | source(...) | source(...) |
+| main.rs:64:16:64:25 | s.as_str(...) | main.rs:63:13:63:22 | source(...) | main.rs:64:16:64:25 | s.as_str(...) | $@ | main.rs:63:13:63:22 | source(...) | source(...) |
+| main.rs:71:10:71:19 | formatted1 | main.rs:68:13:68:22 | source(...) | main.rs:71:10:71:19 | formatted1 | $@ | main.rs:68:13:68:22 | source(...) | source(...) |
+| main.rs:74:10:74:19 | formatted2 | main.rs:68:13:68:22 | source(...) | main.rs:74:10:74:19 | formatted2 | $@ | main.rs:68:13:68:22 | source(...) | source(...) |
+| main.rs:78:10:78:19 | formatted3 | main.rs:76:17:76:32 | source_usize(...) | main.rs:78:10:78:19 | formatted3 | $@ | main.rs:76:17:76:32 | source_usize(...) | source_usize(...) |
+| main.rs:86:10:86:26 | MacroExpr | main.rs:82:14:82:23 | source(...) | main.rs:86:10:86:26 | MacroExpr | $@ | main.rs:82:14:82:23 | source(...) | source(...) |
+| main.rs:87:10:87:33 | MacroExpr | main.rs:82:14:82:23 | source(...) | main.rs:87:10:87:33 | MacroExpr | $@ | main.rs:82:14:82:23 | source(...) | source(...) |

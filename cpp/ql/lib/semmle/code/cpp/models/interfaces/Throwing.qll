@@ -11,7 +11,7 @@ import semmle.code.cpp.models.Models
 import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
 /**
- * A class that models the exceptional behavior of a function.
+ * A function that is known to raise an exception.
  */
 abstract class ThrowingFunction extends Function {
   /**
@@ -20,3 +20,8 @@ abstract class ThrowingFunction extends Function {
    */
   abstract predicate mayThrowException(boolean unconditional);
 }
+
+/**
+ * A function that unconditionally raises a structured exception handling (SEH) exception.
+ */
+abstract class AlwaysSehThrowingFunction extends Function { }

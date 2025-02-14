@@ -18,6 +18,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.IO.Ports", "SerialDataReceivedEventArgs", "get_EventType", "()", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialErrorReceivedEventArgs", "get_EventType", "()", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPinChangedEventArgs", "get_EventType", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "Close", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "DiscardInBuffer", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "DiscardOutBuffer", "()", "summary", "df-generated"]
@@ -32,9 +35,15 @@ extensions:
       - ["System.IO.Ports", "SerialPort", "SerialPort", "(System.String,System.Int32)", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "SerialPort", "(System.String,System.Int32,System.IO.Ports.Parity)", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "SerialPort", "(System.String,System.Int32,System.IO.Ports.Parity,System.Int32)", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPort", "add_DataReceived", "(System.IO.Ports.SerialDataReceivedEventHandler)", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPort", "add_ErrorReceived", "(System.IO.Ports.SerialErrorReceivedEventHandler)", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPort", "add_PinChanged", "(System.IO.Ports.SerialPinChangedEventHandler)", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "get_BytesToRead", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "get_BytesToWrite", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "get_CDHolding", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "get_CtsHolding", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "get_DsrHolding", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "get_IsOpen", "()", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPort", "remove_DataReceived", "(System.IO.Ports.SerialDataReceivedEventHandler)", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPort", "remove_ErrorReceived", "(System.IO.Ports.SerialErrorReceivedEventHandler)", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPort", "remove_PinChanged", "(System.IO.Ports.SerialPinChangedEventHandler)", "summary", "df-generated"]

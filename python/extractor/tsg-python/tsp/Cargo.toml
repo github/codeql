@@ -24,6 +24,7 @@ include = [
 [lib]
 path = "bindings/rust/lib.rs"
 
+## When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
 [dependencies]
 tree-sitter = ">= 0.20, < 0.21"
 

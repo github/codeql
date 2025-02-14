@@ -1,0 +1,22 @@
+on:
+  schedule:
+    - cron: '7 18 * * *'
+  workflow_run:
+    workflows: [Trigger]
+    types: [completed]
+  workflow_dispatch:
+jobs:
+  resolve:
+    if: (github.repository == 'test/test' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')) || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/resolve-args.yml
+    with:
+      comment: "foo"
+  scale:
+    permissions:
+      id-token: write
+      statuses: write
+    needs: [resolve]
+    if: needs.resolve.outputs.SHOULD_RUN == 'true'
+    uses: ./.github/workflows/test27.yml
+    with:
+      git_ref: ${{ needs.resolve.outputs.GIT_REF }}

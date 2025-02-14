@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "MacroPat" }
 
     /**
-     * Gets the macro call of this macro pat, if it exists.
+     * Gets the macro call of this macro pattern, if it exists.
      */
     MacroCall getMacroCall() {
       result =

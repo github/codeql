@@ -1,3 +1,25 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ConsistencyChecks` module.
+
+## 1.0.15
+
+No user-facing changes.
+
+## 1.0.14
+
+No user-facing changes.
+
+## 1.0.13
+
+No user-facing changes.
+
+## 1.0.12
+
+No user-facing changes.
+
 ## 1.0.11
 
 No user-facing changes.

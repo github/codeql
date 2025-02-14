@@ -3,6 +3,8 @@ import codeql.controlflow.Cfg
 import Completion
 private import Scope as Scope
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
+private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.elements.internal.generated.Synth
 
 private module CfgInput implements InputSig<Location> {
   private import codeql.rust.internal.CachedStages
@@ -19,11 +21,11 @@ private module CfgInput implements InputSig<Location> {
 
   predicate completionIsValidFor = C::completionIsValidFor/2;
 
-  /** An AST node with an associated control-flow graph. */
+  /** An AST node with an associated control flow graph. */
   class CfgScope = Scope::CfgScope;
 
   CfgScope getCfgScope(AstNode n) {
-    result = n.getEnclosingCallable() and
+    result = n.getEnclosingCfgScope() and
     Stages::CfgStage::ref()
   }
 
@@ -44,12 +46,19 @@ private module CfgInput implements InputSig<Location> {
   predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
 
   /** Holds if `first` is first executed when entering `scope`. */
-  predicate scopeFirst(CfgScope scope, AstNode first) {
-    first(scope.(CfgScopeTree).getFirstChildNode(), first)
-  }
+  predicate scopeFirst(CfgScope scope, AstNode first) { scope.scopeFirst(first) }
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { last(scope.getBody(), last, c) }
+  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
+
+  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
+
+  private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+
+  // TODO: does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
+  int idOfAstNode(AstNode node) { idOfDbAstNode(Synth::convertAstNodeToRaw(node), result) }
+
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
@@ -71,20 +80,16 @@ private module CfgImpl =
 
 import CfgImpl
 
-class CfgScopeTree extends StandardTree, Scope::CfgScope {
-  override predicate first(AstNode first) { first = this }
-
-  override predicate last(AstNode last, Completion c) {
-    last = this and
-    completionIsValidFor(c, this)
-  }
-
+class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope::CallableScope {
   override predicate propagatesAbnormal(AstNode child) { none() }
 
   override AstNode getChildNode(int i) {
-    result = this.getParamList().getParam(i)
+    i = 0 and
+    result = this.getParamList().getSelfParam()
     or
-    i = this.getParamList().getNumberOfParams() and
+    result = this.getParamList().getParam(i - 1)
+    or
+    i = this.getParamList().getNumberOfParams() + 1 and
     result = this.getBody()
   }
 }
@@ -137,24 +142,8 @@ class LetStmtTree extends PreOrderTree, LetStmt {
   }
 }
 
-class MacroCallTree extends ControlFlowTree, MacroCall {
-  override predicate first(AstNode first) {
-    first(this.getExpanded(), first)
-    or
-    not exists(this.getExpanded()) and first = this
-  }
-
-  override predicate last(AstNode last, Completion c) {
-    last(this.getExpanded(), last, c)
-    or
-    not exists(this.getExpanded()) and
-    last = this and
-    completionIsValidFor(c, last)
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-
-  override predicate propagatesAbnormal(AstNode child) { child = this.getExpanded() }
+class MacroCallTree extends StandardPostOrderTree, MacroCall {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getExpanded() }
 }
 
 class MacroStmtsTree extends StandardPreOrderTree, MacroStmts {
@@ -200,7 +189,11 @@ class NameTree extends LeafTree, Name { }
 
 class NameRefTree extends LeafTree, NameRef { }
 
-class TypeRefTree extends LeafTree instanceof TypeRef { }
+class SelfParamTree extends StandardPostOrderTree, SelfParam {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getName() }
+}
+
+class TypeReprTree extends LeafTree instanceof TypeRepr { }
 
 /**
  * Provides `ControlFlowTree`s for expressions.
@@ -280,13 +273,23 @@ module ExprTrees {
     }
   }
 
+  private AstNode getBlockChildNode(BlockExpr b, int i) {
+    result = b.getStmtList().getStatement(i)
+    or
+    i = b.getStmtList().getNumberOfStatements() and
+    result = b.getStmtList().getTailExpr()
+  }
+
+  class AsyncBlockExprTree extends StandardTree, PreOrderTree, PostOrderTree, AsyncBlockExpr {
+    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
+
+    override predicate propagatesAbnormal(AstNode child) { none() }
+  }
+
   class BlockExprTree extends StandardPostOrderTree, BlockExpr {
-    override AstNode getChildNode(int i) {
-      result = this.getStmtList().getStatement(i)
-      or
-      i = this.getStmtList().getNumberOfStatements() and
-      result = this.getStmtList().getTailExpr()
-    }
+    BlockExprTree() { not this.isAsync() }
+
+    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
   }
@@ -305,7 +308,7 @@ module ExprTrees {
 
   class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
     override AstNode getChildNode(int i) {
-      i = 0 and result = super.getExpr()
+      i = 0 and result = super.getFunction()
       or
       result = super.getArgList().getArg(i - 1)
     }
@@ -402,7 +405,7 @@ module ExprTrees {
   class LetExprTree extends StandardPreOrderTree, LetExpr {
     override AstNode getChildNode(int i) {
       i = 0 and
-      result = this.getExpr()
+      result = this.getScrutinee()
       or
       i = 1 and
       result = this.getPat()
@@ -506,14 +509,14 @@ module ExprTrees {
 
   class MatchExprTree extends PostOrderTree instanceof MatchExpr {
     override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getExpr(), super.getAnArm().getExpr()]
+      child = [super.getScrutinee(), super.getAnArm().getExpr()]
     }
 
-    override predicate first(AstNode node) { first(super.getExpr(), node) }
+    override predicate first(AstNode node) { first(super.getScrutinee(), node) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Edge from the scrutinee to the first arm or to the match expression if no arms.
-      last(super.getExpr(), pred, c) and
+      last(super.getScrutinee(), pred, c) and
       (
         first(super.getArm(0).getPat(), succ)
         or

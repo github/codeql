@@ -23,4 +23,7 @@ predicate isUnused(Variable v) {
 predicate isAllowableUnused(Variable v) {
   // in a macro expansion
   v.getPat().isInMacroExpansion()
+  or
+  // a 'self' variable
+  v.getName() = "self"
 }

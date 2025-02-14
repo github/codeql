@@ -112,7 +112,7 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
 
     Location getLocation() { result = super.getLocation() }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i).asExpr() }
   }
 
   class VariableWrite extends Expr instanceof VariableUpdate {
@@ -581,7 +581,11 @@ predicate forceHighPrecision(Content c) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode
+  or
+  n instanceof SsaNode
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 

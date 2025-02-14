@@ -34,7 +34,7 @@ module RegExpInjection {
    * An active threat-model source, considered as a flow source.
    */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
-    ActiveThreatModelSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
+    ActiveThreatModelSourceAsSource() { not this.isClientSideSource() }
   }
 
   private import IndirectCommandInjectionCustomizations
@@ -76,7 +76,7 @@ module RegExpInjection {
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      this.isGlobal() and
+      this.maybeGlobal() and
       (
         RegExp::alwaysMatchesMetaCharacter(this.getRegExp().getRoot(), ["{", "[", "+"])
         or

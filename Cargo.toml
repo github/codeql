@@ -8,6 +8,7 @@ members = [
     "rust/extractor",
     "rust/extractor/macros",
     "rust/ast-generator",
+    "rust/autobuild",
 ]
 
 [patch.crates-io]

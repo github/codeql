@@ -1,371 +1,244 @@
-nodes
-| lib.js:1:38:1:40 | obj |
-| lib.js:1:43:1:46 | path |
-| lib.js:1:43:1:46 | path |
-| lib.js:1:43:1:46 | path |
-| lib.js:2:7:2:27 | currentPath |
-| lib.js:2:7:2:27 | currentPath |
-| lib.js:2:21:2:24 | path |
-| lib.js:2:21:2:24 | path |
-| lib.js:2:21:2:27 | path[0] |
-| lib.js:2:21:2:27 | path[0] |
-| lib.js:6:7:6:9 | obj |
-| lib.js:6:7:6:9 | obj |
-| lib.js:11:17:11:32 | obj[currentPath] |
-| lib.js:11:17:11:32 | obj[currentPath] |
-| lib.js:11:21:11:31 | currentPath |
-| lib.js:11:21:11:31 | currentPath |
-| lib.js:11:35:11:38 | path |
-| lib.js:11:35:11:38 | path |
-| lib.js:11:35:11:47 | path.slice(1) |
-| lib.js:11:35:11:47 | path.slice(1) |
-| lib.js:14:38:14:41 | path |
-| lib.js:14:38:14:41 | path |
-| lib.js:15:3:15:14 | obj[path[0]] |
-| lib.js:15:3:15:14 | obj[path[0]] |
-| lib.js:15:7:15:10 | path |
-| lib.js:15:7:15:13 | path[0] |
-| lib.js:20:7:20:25 | path |
-| lib.js:20:14:20:22 | arguments |
-| lib.js:20:14:20:22 | arguments |
-| lib.js:20:14:20:25 | arguments[1] |
-| lib.js:22:3:22:14 | obj[path[0]] |
-| lib.js:22:3:22:14 | obj[path[0]] |
-| lib.js:22:7:22:10 | path |
-| lib.js:22:7:22:13 | path[0] |
-| lib.js:25:44:25:47 | path |
-| lib.js:25:44:25:47 | path |
-| lib.js:26:10:26:21 | obj[path[0]] |
-| lib.js:26:10:26:21 | obj[path[0]] |
-| lib.js:26:14:26:17 | path |
-| lib.js:26:14:26:20 | path[0] |
-| lib.js:30:9:30:52 | args |
-| lib.js:30:16:30:52 | Array.p ... uments) |
-| lib.js:30:43:30:51 | arguments |
-| lib.js:30:43:30:51 | arguments |
-| lib.js:32:7:32:20 | path |
-| lib.js:32:14:32:17 | args |
-| lib.js:32:14:32:20 | args[1] |
-| lib.js:34:3:34:14 | obj[path[0]] |
-| lib.js:34:3:34:14 | obj[path[0]] |
-| lib.js:34:7:34:10 | path |
-| lib.js:34:7:34:13 | path[0] |
-| lib.js:38:9:38:36 | args |
-| lib.js:38:16:38:36 | Array.f ... uments) |
-| lib.js:38:27:38:35 | arguments |
-| lib.js:38:27:38:35 | arguments |
-| lib.js:40:7:40:20 | path |
-| lib.js:40:14:40:17 | args |
-| lib.js:40:14:40:20 | args[1] |
-| lib.js:42:3:42:14 | obj[path[0]] |
-| lib.js:42:3:42:14 | obj[path[0]] |
-| lib.js:42:7:42:10 | path |
-| lib.js:42:7:42:13 | path[0] |
-| lib.js:45:13:45:13 | s |
-| lib.js:45:13:45:13 | s |
-| lib.js:46:10:46:10 | s |
-| lib.js:52:9:52:22 | path |
-| lib.js:52:16:52:22 | id("x") |
-| lib.js:55:11:55:22 | obj[path[0]] |
-| lib.js:55:11:55:22 | obj[path[0]] |
-| lib.js:55:15:55:18 | path |
-| lib.js:55:15:55:21 | path[0] |
-| lib.js:59:18:59:18 | s |
-| lib.js:59:18:59:18 | s |
-| lib.js:61:17:61:17 | s |
-| lib.js:68:11:68:26 | path |
-| lib.js:68:18:68:26 | this.path |
-| lib.js:70:13:70:24 | obj[path[0]] |
-| lib.js:70:13:70:24 | obj[path[0]] |
-| lib.js:70:17:70:20 | path |
-| lib.js:70:17:70:23 | path[0] |
-| lib.js:83:7:83:25 | path |
-| lib.js:83:14:83:22 | arguments |
-| lib.js:83:14:83:22 | arguments |
-| lib.js:83:14:83:25 | arguments[1] |
-| lib.js:86:7:86:26 | proto |
-| lib.js:86:15:86:26 | obj[path[0]] |
-| lib.js:86:19:86:22 | path |
-| lib.js:86:19:86:25 | path[0] |
-| lib.js:87:10:87:14 | proto |
-| lib.js:87:10:87:14 | proto |
-| lib.js:90:43:90:46 | path |
-| lib.js:90:43:90:46 | path |
-| lib.js:91:7:91:28 | maybeProto |
-| lib.js:91:20:91:28 | obj[path] |
-| lib.js:91:24:91:27 | path |
-| lib.js:92:3:92:12 | maybeProto |
-| lib.js:92:3:92:12 | maybeProto |
-| lib.js:95:3:95:12 | maybeProto |
-| lib.js:95:3:95:12 | maybeProto |
-| lib.js:104:7:104:24 | one |
-| lib.js:104:13:104:21 | arguments |
-| lib.js:104:13:104:21 | arguments |
-| lib.js:104:13:104:24 | arguments[1] |
-| lib.js:108:3:108:10 | obj[one] |
-| lib.js:108:3:108:10 | obj[one] |
-| lib.js:108:7:108:9 | one |
-| lib.js:118:29:118:32 | path |
-| lib.js:118:29:118:32 | path |
-| lib.js:119:13:119:24 | obj[path[0]] |
-| lib.js:119:13:119:24 | obj[path[0]] |
-| lib.js:119:17:119:20 | path |
-| lib.js:119:17:119:23 | path[0] |
-| lib.js:127:14:127:17 | path |
-| lib.js:127:14:127:17 | path |
-| lib.js:128:9:128:20 | obj[path[0]] |
-| lib.js:128:9:128:20 | obj[path[0]] |
-| lib.js:128:13:128:16 | path |
-| lib.js:128:13:128:19 | path[0] |
-| otherlib/src/otherlibimpl.js:1:37:1:40 | path |
-| otherlib/src/otherlibimpl.js:1:37:1:40 | path |
-| otherlib/src/otherlibimpl.js:2:3:2:14 | obj[path[0]] |
-| otherlib/src/otherlibimpl.js:2:3:2:14 | obj[path[0]] |
-| otherlib/src/otherlibimpl.js:2:7:2:10 | path |
-| otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] |
-| sublib/other.js:5:28:5:31 | path |
-| sublib/other.js:5:28:5:31 | path |
-| sublib/other.js:6:7:6:18 | obj[path[0]] |
-| sublib/other.js:6:7:6:18 | obj[path[0]] |
-| sublib/other.js:6:11:6:14 | path |
-| sublib/other.js:6:11:6:17 | path[0] |
-| sublib/sub.js:1:37:1:40 | path |
-| sublib/sub.js:1:37:1:40 | path |
-| sublib/sub.js:2:3:2:14 | obj[path[0]] |
-| sublib/sub.js:2:3:2:14 | obj[path[0]] |
-| sublib/sub.js:2:7:2:10 | path |
-| sublib/sub.js:2:7:2:13 | path[0] |
-| tst.js:5:9:5:38 | taint |
-| tst.js:5:17:5:38 | String( ... y.data) |
-| tst.js:5:24:5:37 | req.query.data |
-| tst.js:5:24:5:37 | req.query.data |
-| tst.js:8:5:8:17 | object[taint] |
-| tst.js:8:5:8:17 | object[taint] |
-| tst.js:8:12:8:16 | taint |
-| tst.js:9:5:9:17 | object[taint] |
-| tst.js:9:5:9:17 | object[taint] |
-| tst.js:9:12:9:16 | taint |
-| tst.js:12:18:12:30 | object[taint] |
-| tst.js:12:25:12:29 | taint |
-| tst.js:14:5:14:32 | unsafeG ...  taint) |
-| tst.js:14:5:14:32 | unsafeG ...  taint) |
-| tst.js:14:27:14:31 | taint |
-| tst.js:33:23:33:25 | obj |
-| tst.js:34:5:34:7 | obj |
-| tst.js:34:5:34:7 | obj |
-| tst.js:39:9:39:11 | obj |
-| tst.js:39:9:39:11 | obj |
-| tst.js:45:9:45:11 | obj |
-| tst.js:45:9:45:11 | obj |
-| tst.js:48:9:48:11 | obj |
-| tst.js:48:9:48:11 | obj |
-| tst.js:77:9:77:38 | taint |
-| tst.js:77:17:77:38 | String( ... y.data) |
-| tst.js:77:24:77:37 | req.query.data |
-| tst.js:77:24:77:37 | req.query.data |
-| tst.js:80:5:80:17 | object[taint] |
-| tst.js:80:5:80:17 | object[taint] |
-| tst.js:80:12:80:16 | taint |
-| tst.js:82:5:82:22 | object["" + taint] |
-| tst.js:82:5:82:22 | object["" + taint] |
-| tst.js:82:12:82:21 | "" + taint |
-| tst.js:82:17:82:21 | taint |
-| tst.js:87:9:87:21 | object[taint] |
-| tst.js:87:9:87:21 | object[taint] |
-| tst.js:87:16:87:20 | taint |
-| tst.js:94:5:94:37 | obj[req ... ', '')] |
-| tst.js:94:5:94:37 | obj[req ... ', '')] |
-| tst.js:94:9:94:19 | req.query.x |
-| tst.js:94:9:94:19 | req.query.x |
-| tst.js:94:9:94:36 | req.que ... _', '') |
-| tst.js:97:5:97:46 | obj[req ... g, '')] |
-| tst.js:97:5:97:46 | obj[req ... g, '')] |
-| tst.js:97:9:97:19 | req.query.x |
-| tst.js:97:9:97:19 | req.query.x |
-| tst.js:97:9:97:45 | req.que ... /g, '') |
-| tst.js:102:9:102:38 | taint |
-| tst.js:102:17:102:38 | String( ... y.data) |
-| tst.js:102:24:102:37 | req.query.data |
-| tst.js:102:24:102:37 | req.query.data |
-| tst.js:105:5:105:17 | object[taint] |
-| tst.js:105:5:105:17 | object[taint] |
-| tst.js:105:12:105:16 | taint |
 edges
-| lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
-| lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
-| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path |
-| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path |
-| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path |
-| lib.js:1:43:1:46 | path | lib.js:11:35:11:38 | path |
-| lib.js:1:43:1:46 | path | lib.js:11:35:11:38 | path |
-| lib.js:1:43:1:46 | path | lib.js:11:35:11:38 | path |
-| lib.js:2:7:2:27 | currentPath | lib.js:11:21:11:31 | currentPath |
-| lib.js:2:7:2:27 | currentPath | lib.js:11:21:11:31 | currentPath |
-| lib.js:2:21:2:24 | path | lib.js:2:21:2:27 | path[0] |
-| lib.js:2:21:2:24 | path | lib.js:2:21:2:27 | path[0] |
-| lib.js:2:21:2:27 | path[0] | lib.js:2:7:2:27 | currentPath |
-| lib.js:2:21:2:27 | path[0] | lib.js:2:7:2:27 | currentPath |
-| lib.js:11:17:11:32 | obj[currentPath] | lib.js:1:38:1:40 | obj |
-| lib.js:11:17:11:32 | obj[currentPath] | lib.js:1:38:1:40 | obj |
-| lib.js:11:21:11:31 | currentPath | lib.js:11:17:11:32 | obj[currentPath] |
-| lib.js:11:21:11:31 | currentPath | lib.js:11:17:11:32 | obj[currentPath] |
-| lib.js:11:35:11:38 | path | lib.js:11:35:11:47 | path.slice(1) |
-| lib.js:11:35:11:38 | path | lib.js:11:35:11:47 | path.slice(1) |
-| lib.js:11:35:11:47 | path.slice(1) | lib.js:1:43:1:46 | path |
-| lib.js:11:35:11:47 | path.slice(1) | lib.js:1:43:1:46 | path |
-| lib.js:14:38:14:41 | path | lib.js:15:7:15:10 | path |
-| lib.js:14:38:14:41 | path | lib.js:15:7:15:10 | path |
-| lib.js:15:7:15:10 | path | lib.js:15:7:15:13 | path[0] |
-| lib.js:15:7:15:13 | path[0] | lib.js:15:3:15:14 | obj[path[0]] |
-| lib.js:15:7:15:13 | path[0] | lib.js:15:3:15:14 | obj[path[0]] |
-| lib.js:20:7:20:25 | path | lib.js:22:7:22:10 | path |
-| lib.js:20:14:20:22 | arguments | lib.js:20:14:20:25 | arguments[1] |
-| lib.js:20:14:20:22 | arguments | lib.js:20:14:20:25 | arguments[1] |
-| lib.js:20:14:20:25 | arguments[1] | lib.js:20:7:20:25 | path |
-| lib.js:22:7:22:10 | path | lib.js:22:7:22:13 | path[0] |
-| lib.js:22:7:22:13 | path[0] | lib.js:22:3:22:14 | obj[path[0]] |
-| lib.js:22:7:22:13 | path[0] | lib.js:22:3:22:14 | obj[path[0]] |
-| lib.js:25:44:25:47 | path | lib.js:26:14:26:17 | path |
-| lib.js:25:44:25:47 | path | lib.js:26:14:26:17 | path |
-| lib.js:26:14:26:17 | path | lib.js:26:14:26:20 | path[0] |
-| lib.js:26:14:26:20 | path[0] | lib.js:26:10:26:21 | obj[path[0]] |
-| lib.js:26:14:26:20 | path[0] | lib.js:26:10:26:21 | obj[path[0]] |
-| lib.js:30:9:30:52 | args | lib.js:32:14:32:17 | args |
-| lib.js:30:16:30:52 | Array.p ... uments) | lib.js:30:9:30:52 | args |
-| lib.js:30:43:30:51 | arguments | lib.js:30:16:30:52 | Array.p ... uments) |
-| lib.js:30:43:30:51 | arguments | lib.js:30:16:30:52 | Array.p ... uments) |
-| lib.js:32:7:32:20 | path | lib.js:34:7:34:10 | path |
-| lib.js:32:14:32:17 | args | lib.js:32:14:32:20 | args[1] |
-| lib.js:32:14:32:20 | args[1] | lib.js:32:7:32:20 | path |
-| lib.js:34:7:34:10 | path | lib.js:34:7:34:13 | path[0] |
-| lib.js:34:7:34:13 | path[0] | lib.js:34:3:34:14 | obj[path[0]] |
-| lib.js:34:7:34:13 | path[0] | lib.js:34:3:34:14 | obj[path[0]] |
-| lib.js:38:9:38:36 | args | lib.js:40:14:40:17 | args |
-| lib.js:38:16:38:36 | Array.f ... uments) | lib.js:38:9:38:36 | args |
-| lib.js:38:27:38:35 | arguments | lib.js:38:16:38:36 | Array.f ... uments) |
-| lib.js:38:27:38:35 | arguments | lib.js:38:16:38:36 | Array.f ... uments) |
-| lib.js:40:7:40:20 | path | lib.js:42:7:42:10 | path |
-| lib.js:40:14:40:17 | args | lib.js:40:14:40:20 | args[1] |
-| lib.js:40:14:40:20 | args[1] | lib.js:40:7:40:20 | path |
-| lib.js:42:7:42:10 | path | lib.js:42:7:42:13 | path[0] |
-| lib.js:42:7:42:13 | path[0] | lib.js:42:3:42:14 | obj[path[0]] |
-| lib.js:42:7:42:13 | path[0] | lib.js:42:3:42:14 | obj[path[0]] |
-| lib.js:45:13:45:13 | s | lib.js:46:10:46:10 | s |
-| lib.js:45:13:45:13 | s | lib.js:46:10:46:10 | s |
-| lib.js:46:10:46:10 | s | lib.js:52:16:52:22 | id("x") |
-| lib.js:52:9:52:22 | path | lib.js:55:15:55:18 | path |
-| lib.js:52:16:52:22 | id("x") | lib.js:52:9:52:22 | path |
-| lib.js:55:15:55:18 | path | lib.js:55:15:55:21 | path[0] |
-| lib.js:55:15:55:21 | path[0] | lib.js:55:11:55:22 | obj[path[0]] |
-| lib.js:55:15:55:21 | path[0] | lib.js:55:11:55:22 | obj[path[0]] |
-| lib.js:59:18:59:18 | s | lib.js:61:17:61:17 | s |
-| lib.js:59:18:59:18 | s | lib.js:61:17:61:17 | s |
-| lib.js:61:17:61:17 | s | lib.js:68:11:68:26 | path |
-| lib.js:61:17:61:17 | s | lib.js:68:18:68:26 | this.path |
-| lib.js:61:17:61:17 | s | lib.js:70:17:70:20 | path |
-| lib.js:68:11:68:26 | path | lib.js:70:17:70:20 | path |
-| lib.js:68:18:68:26 | this.path | lib.js:68:11:68:26 | path |
-| lib.js:70:17:70:20 | path | lib.js:70:17:70:23 | path[0] |
-| lib.js:70:17:70:23 | path[0] | lib.js:70:13:70:24 | obj[path[0]] |
-| lib.js:70:17:70:23 | path[0] | lib.js:70:13:70:24 | obj[path[0]] |
-| lib.js:83:7:83:25 | path | lib.js:86:19:86:22 | path |
-| lib.js:83:14:83:22 | arguments | lib.js:83:14:83:25 | arguments[1] |
-| lib.js:83:14:83:22 | arguments | lib.js:83:14:83:25 | arguments[1] |
-| lib.js:83:14:83:25 | arguments[1] | lib.js:83:7:83:25 | path |
-| lib.js:86:7:86:26 | proto | lib.js:87:10:87:14 | proto |
-| lib.js:86:7:86:26 | proto | lib.js:87:10:87:14 | proto |
-| lib.js:86:15:86:26 | obj[path[0]] | lib.js:86:7:86:26 | proto |
-| lib.js:86:19:86:22 | path | lib.js:86:19:86:25 | path[0] |
-| lib.js:86:19:86:25 | path[0] | lib.js:86:15:86:26 | obj[path[0]] |
-| lib.js:90:43:90:46 | path | lib.js:91:24:91:27 | path |
-| lib.js:90:43:90:46 | path | lib.js:91:24:91:27 | path |
-| lib.js:91:7:91:28 | maybeProto | lib.js:92:3:92:12 | maybeProto |
-| lib.js:91:7:91:28 | maybeProto | lib.js:92:3:92:12 | maybeProto |
-| lib.js:91:7:91:28 | maybeProto | lib.js:95:3:95:12 | maybeProto |
-| lib.js:91:7:91:28 | maybeProto | lib.js:95:3:95:12 | maybeProto |
-| lib.js:91:20:91:28 | obj[path] | lib.js:91:7:91:28 | maybeProto |
-| lib.js:91:24:91:27 | path | lib.js:91:20:91:28 | obj[path] |
-| lib.js:104:7:104:24 | one | lib.js:108:7:108:9 | one |
-| lib.js:104:13:104:21 | arguments | lib.js:104:13:104:24 | arguments[1] |
-| lib.js:104:13:104:21 | arguments | lib.js:104:13:104:24 | arguments[1] |
-| lib.js:104:13:104:24 | arguments[1] | lib.js:104:7:104:24 | one |
-| lib.js:108:7:108:9 | one | lib.js:108:3:108:10 | obj[one] |
-| lib.js:108:7:108:9 | one | lib.js:108:3:108:10 | obj[one] |
-| lib.js:118:29:118:32 | path | lib.js:119:17:119:20 | path |
-| lib.js:118:29:118:32 | path | lib.js:119:17:119:20 | path |
-| lib.js:119:17:119:20 | path | lib.js:119:17:119:23 | path[0] |
-| lib.js:119:17:119:23 | path[0] | lib.js:119:13:119:24 | obj[path[0]] |
-| lib.js:119:17:119:23 | path[0] | lib.js:119:13:119:24 | obj[path[0]] |
-| lib.js:127:14:127:17 | path | lib.js:128:13:128:16 | path |
-| lib.js:127:14:127:17 | path | lib.js:128:13:128:16 | path |
-| lib.js:128:13:128:16 | path | lib.js:128:13:128:19 | path[0] |
-| lib.js:128:13:128:19 | path[0] | lib.js:128:9:128:20 | obj[path[0]] |
-| lib.js:128:13:128:19 | path[0] | lib.js:128:9:128:20 | obj[path[0]] |
-| otherlib/src/otherlibimpl.js:1:37:1:40 | path | otherlib/src/otherlibimpl.js:2:7:2:10 | path |
-| otherlib/src/otherlibimpl.js:1:37:1:40 | path | otherlib/src/otherlibimpl.js:2:7:2:10 | path |
-| otherlib/src/otherlibimpl.js:2:7:2:10 | path | otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] |
-| otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] | otherlib/src/otherlibimpl.js:2:3:2:14 | obj[path[0]] |
-| otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] | otherlib/src/otherlibimpl.js:2:3:2:14 | obj[path[0]] |
-| sublib/other.js:5:28:5:31 | path | sublib/other.js:6:11:6:14 | path |
-| sublib/other.js:5:28:5:31 | path | sublib/other.js:6:11:6:14 | path |
-| sublib/other.js:6:11:6:14 | path | sublib/other.js:6:11:6:17 | path[0] |
-| sublib/other.js:6:11:6:17 | path[0] | sublib/other.js:6:7:6:18 | obj[path[0]] |
-| sublib/other.js:6:11:6:17 | path[0] | sublib/other.js:6:7:6:18 | obj[path[0]] |
-| sublib/sub.js:1:37:1:40 | path | sublib/sub.js:2:7:2:10 | path |
-| sublib/sub.js:1:37:1:40 | path | sublib/sub.js:2:7:2:10 | path |
-| sublib/sub.js:2:7:2:10 | path | sublib/sub.js:2:7:2:13 | path[0] |
-| sublib/sub.js:2:7:2:13 | path[0] | sublib/sub.js:2:3:2:14 | obj[path[0]] |
-| sublib/sub.js:2:7:2:13 | path[0] | sublib/sub.js:2:3:2:14 | obj[path[0]] |
-| tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint |
-| tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint |
-| tst.js:5:9:5:38 | taint | tst.js:12:25:12:29 | taint |
-| tst.js:5:9:5:38 | taint | tst.js:14:27:14:31 | taint |
-| tst.js:5:17:5:38 | String( ... y.data) | tst.js:5:9:5:38 | taint |
-| tst.js:5:24:5:37 | req.query.data | tst.js:5:17:5:38 | String( ... y.data) |
-| tst.js:5:24:5:37 | req.query.data | tst.js:5:17:5:38 | String( ... y.data) |
-| tst.js:8:12:8:16 | taint | tst.js:8:5:8:17 | object[taint] |
-| tst.js:8:12:8:16 | taint | tst.js:8:5:8:17 | object[taint] |
-| tst.js:9:12:9:16 | taint | tst.js:9:5:9:17 | object[taint] |
-| tst.js:9:12:9:16 | taint | tst.js:9:5:9:17 | object[taint] |
-| tst.js:12:18:12:30 | object[taint] | tst.js:33:23:33:25 | obj |
-| tst.js:12:25:12:29 | taint | tst.js:12:18:12:30 | object[taint] |
-| tst.js:14:27:14:31 | taint | tst.js:14:5:14:32 | unsafeG ...  taint) |
-| tst.js:14:27:14:31 | taint | tst.js:14:5:14:32 | unsafeG ...  taint) |
-| tst.js:33:23:33:25 | obj | tst.js:34:5:34:7 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:34:5:34:7 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:39:9:39:11 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:39:9:39:11 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
-| tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
-| tst.js:77:9:77:38 | taint | tst.js:80:12:80:16 | taint |
-| tst.js:77:9:77:38 | taint | tst.js:82:17:82:21 | taint |
-| tst.js:77:9:77:38 | taint | tst.js:87:16:87:20 | taint |
-| tst.js:77:17:77:38 | String( ... y.data) | tst.js:77:9:77:38 | taint |
-| tst.js:77:24:77:37 | req.query.data | tst.js:77:17:77:38 | String( ... y.data) |
-| tst.js:77:24:77:37 | req.query.data | tst.js:77:17:77:38 | String( ... y.data) |
-| tst.js:80:12:80:16 | taint | tst.js:80:5:80:17 | object[taint] |
-| tst.js:80:12:80:16 | taint | tst.js:80:5:80:17 | object[taint] |
-| tst.js:82:12:82:21 | "" + taint | tst.js:82:5:82:22 | object["" + taint] |
-| tst.js:82:12:82:21 | "" + taint | tst.js:82:5:82:22 | object["" + taint] |
-| tst.js:82:17:82:21 | taint | tst.js:82:12:82:21 | "" + taint |
-| tst.js:87:16:87:20 | taint | tst.js:87:9:87:21 | object[taint] |
-| tst.js:87:16:87:20 | taint | tst.js:87:9:87:21 | object[taint] |
-| tst.js:94:9:94:19 | req.query.x | tst.js:94:9:94:36 | req.que ... _', '') |
-| tst.js:94:9:94:19 | req.query.x | tst.js:94:9:94:36 | req.que ... _', '') |
-| tst.js:94:9:94:36 | req.que ... _', '') | tst.js:94:5:94:37 | obj[req ... ', '')] |
-| tst.js:94:9:94:36 | req.que ... _', '') | tst.js:94:5:94:37 | obj[req ... ', '')] |
-| tst.js:97:9:97:19 | req.query.x | tst.js:97:9:97:45 | req.que ... /g, '') |
-| tst.js:97:9:97:19 | req.query.x | tst.js:97:9:97:45 | req.que ... /g, '') |
-| tst.js:97:9:97:45 | req.que ... /g, '') | tst.js:97:5:97:46 | obj[req ... g, '')] |
-| tst.js:97:9:97:45 | req.que ... /g, '') | tst.js:97:5:97:46 | obj[req ... g, '')] |
-| tst.js:102:9:102:38 | taint | tst.js:105:12:105:16 | taint |
-| tst.js:102:17:102:38 | String( ... y.data) | tst.js:102:9:102:38 | taint |
-| tst.js:102:24:102:37 | req.query.data | tst.js:102:17:102:38 | String( ... y.data) |
-| tst.js:102:24:102:37 | req.query.data | tst.js:102:17:102:38 | String( ... y.data) |
-| tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] |
-| tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] |
+| lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj | provenance |  |
+| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path | provenance |  |
+| lib.js:2:7:2:27 | currentPath | lib.js:11:21:11:31 | currentPath | provenance |  |
+| lib.js:2:21:2:24 | path | lib.js:2:21:2:27 | path[0] | provenance | Config |
+| lib.js:2:21:2:27 | path[0] | lib.js:2:7:2:27 | currentPath | provenance |  |
+| lib.js:11:17:11:32 | obj[currentPath] | lib.js:1:38:1:40 | obj | provenance |  |
+| lib.js:11:21:11:31 | currentPath | lib.js:11:17:11:32 | obj[currentPath] | provenance | Config |
+| lib.js:14:38:14:41 | path | lib.js:15:7:15:10 | path | provenance |  |
+| lib.js:15:7:15:10 | path | lib.js:15:7:15:13 | path[0] | provenance | Config |
+| lib.js:15:7:15:13 | path[0] | lib.js:15:3:15:14 | obj[path[0]] | provenance | Config |
+| lib.js:20:7:20:25 | path | lib.js:22:7:22:10 | path | provenance |  |
+| lib.js:20:14:20:22 | arguments | lib.js:20:14:20:25 | arguments[1] | provenance | Config |
+| lib.js:20:14:20:25 | arguments[1] | lib.js:20:7:20:25 | path | provenance |  |
+| lib.js:22:7:22:10 | path | lib.js:22:7:22:13 | path[0] | provenance | Config |
+| lib.js:22:7:22:13 | path[0] | lib.js:22:3:22:14 | obj[path[0]] | provenance | Config |
+| lib.js:25:44:25:47 | path | lib.js:26:14:26:17 | path | provenance |  |
+| lib.js:26:14:26:17 | path | lib.js:26:14:26:20 | path[0] | provenance | Config |
+| lib.js:26:14:26:20 | path[0] | lib.js:26:10:26:21 | obj[path[0]] | provenance | Config |
+| lib.js:30:9:30:52 | args | lib.js:32:14:32:17 | args | provenance |  |
+| lib.js:30:9:30:52 | args [ArrayElement] | lib.js:32:14:32:17 | args [ArrayElement] | provenance |  |
+| lib.js:30:16:30:52 | Array.p ... uments) | lib.js:30:9:30:52 | args | provenance |  |
+| lib.js:30:16:30:52 | Array.p ... uments) [ArrayElement] | lib.js:30:9:30:52 | args [ArrayElement] | provenance |  |
+| lib.js:30:16:30:52 | reflective call | lib.js:30:16:30:52 | Array.p ... uments) | provenance |  |
+| lib.js:30:16:30:52 | reflective call [ArrayElement] | lib.js:30:16:30:52 | Array.p ... uments) [ArrayElement] | provenance |  |
+| lib.js:30:43:30:51 | arguments | lib.js:30:16:30:52 | reflective call | provenance | Config |
+| lib.js:30:43:30:51 | arguments | lib.js:30:16:30:52 | reflective call [ArrayElement] | provenance | Config |
+| lib.js:32:7:32:20 | path | lib.js:34:7:34:10 | path | provenance |  |
+| lib.js:32:14:32:17 | args | lib.js:32:14:32:20 | args[1] | provenance | Config |
+| lib.js:32:14:32:17 | args [ArrayElement] | lib.js:32:14:32:20 | args[1] | provenance |  |
+| lib.js:32:14:32:20 | args[1] | lib.js:32:7:32:20 | path | provenance |  |
+| lib.js:34:7:34:10 | path | lib.js:34:7:34:13 | path[0] | provenance | Config |
+| lib.js:34:7:34:13 | path[0] | lib.js:34:3:34:14 | obj[path[0]] | provenance | Config |
+| lib.js:38:9:38:36 | args | lib.js:40:14:40:17 | args | provenance |  |
+| lib.js:38:16:38:36 | Array.f ... uments) | lib.js:38:9:38:36 | args | provenance |  |
+| lib.js:38:27:38:35 | arguments | lib.js:38:16:38:36 | Array.f ... uments) | provenance | Config |
+| lib.js:40:7:40:20 | path | lib.js:42:7:42:10 | path | provenance |  |
+| lib.js:40:14:40:17 | args | lib.js:40:14:40:20 | args[1] | provenance | Config |
+| lib.js:40:14:40:20 | args[1] | lib.js:40:7:40:20 | path | provenance |  |
+| lib.js:42:7:42:10 | path | lib.js:42:7:42:13 | path[0] | provenance | Config |
+| lib.js:42:7:42:13 | path[0] | lib.js:42:3:42:14 | obj[path[0]] | provenance | Config |
+| lib.js:83:7:83:25 | path | lib.js:86:19:86:22 | path | provenance |  |
+| lib.js:83:14:83:22 | arguments | lib.js:83:14:83:25 | arguments[1] | provenance | Config |
+| lib.js:83:14:83:25 | arguments[1] | lib.js:83:7:83:25 | path | provenance |  |
+| lib.js:86:7:86:26 | proto | lib.js:87:10:87:14 | proto | provenance |  |
+| lib.js:86:15:86:26 | obj[path[0]] | lib.js:86:7:86:26 | proto | provenance |  |
+| lib.js:86:19:86:22 | path | lib.js:86:19:86:25 | path[0] | provenance | Config |
+| lib.js:86:19:86:25 | path[0] | lib.js:86:15:86:26 | obj[path[0]] | provenance | Config |
+| lib.js:90:43:90:46 | path | lib.js:91:24:91:27 | path | provenance |  |
+| lib.js:91:7:91:28 | maybeProto | lib.js:92:3:92:12 | maybeProto | provenance |  |
+| lib.js:91:7:91:28 | maybeProto | lib.js:95:3:95:12 | maybeProto | provenance |  |
+| lib.js:91:20:91:28 | obj[path] | lib.js:91:7:91:28 | maybeProto | provenance |  |
+| lib.js:91:24:91:27 | path | lib.js:91:20:91:28 | obj[path] | provenance | Config |
+| lib.js:104:7:104:24 | one | lib.js:108:7:108:9 | one | provenance |  |
+| lib.js:104:13:104:21 | arguments | lib.js:104:13:104:24 | arguments[1] | provenance | Config |
+| lib.js:104:13:104:24 | arguments[1] | lib.js:104:7:104:24 | one | provenance |  |
+| lib.js:108:7:108:9 | one | lib.js:108:3:108:10 | obj[one] | provenance | Config |
+| lib.js:118:29:118:32 | path | lib.js:119:17:119:20 | path | provenance |  |
+| lib.js:119:17:119:20 | path | lib.js:119:17:119:23 | path[0] | provenance | Config |
+| lib.js:119:17:119:23 | path[0] | lib.js:119:13:119:24 | obj[path[0]] | provenance | Config |
+| lib.js:127:14:127:17 | path | lib.js:128:13:128:16 | path | provenance |  |
+| lib.js:128:13:128:16 | path | lib.js:128:13:128:19 | path[0] | provenance | Config |
+| lib.js:128:13:128:19 | path[0] | lib.js:128:9:128:20 | obj[path[0]] | provenance | Config |
+| otherlib/src/otherlibimpl.js:1:37:1:40 | path | otherlib/src/otherlibimpl.js:2:7:2:10 | path | provenance |  |
+| otherlib/src/otherlibimpl.js:2:7:2:10 | path | otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] | provenance | Config |
+| otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] | otherlib/src/otherlibimpl.js:2:3:2:14 | obj[path[0]] | provenance | Config |
+| sublib/other.js:5:28:5:31 | path | sublib/other.js:6:11:6:14 | path | provenance |  |
+| sublib/other.js:6:11:6:14 | path | sublib/other.js:6:11:6:17 | path[0] | provenance | Config |
+| sublib/other.js:6:11:6:17 | path[0] | sublib/other.js:6:7:6:18 | obj[path[0]] | provenance | Config |
+| sublib/sub.js:1:37:1:40 | path | sublib/sub.js:2:7:2:10 | path | provenance |  |
+| sublib/sub.js:2:7:2:10 | path | sublib/sub.js:2:7:2:13 | path[0] | provenance | Config |
+| sublib/sub.js:2:7:2:13 | path[0] | sublib/sub.js:2:3:2:14 | obj[path[0]] | provenance | Config |
+| tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint | provenance |  |
+| tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint | provenance |  |
+| tst.js:5:9:5:38 | taint | tst.js:12:25:12:29 | taint | provenance |  |
+| tst.js:5:9:5:38 | taint | tst.js:14:27:14:31 | taint | provenance |  |
+| tst.js:5:17:5:38 | String( ... y.data) | tst.js:5:9:5:38 | taint | provenance |  |
+| tst.js:5:24:5:37 | req.query.data | tst.js:5:17:5:38 | String( ... y.data) | provenance | Config |
+| tst.js:8:12:8:16 | taint | tst.js:8:5:8:17 | object[taint] | provenance | Config |
+| tst.js:9:12:9:16 | taint | tst.js:9:5:9:17 | object[taint] | provenance | Config |
+| tst.js:12:18:12:30 | object[taint] | tst.js:33:23:33:25 | obj | provenance |  |
+| tst.js:12:25:12:29 | taint | tst.js:12:18:12:30 | object[taint] | provenance | Config |
+| tst.js:14:27:14:31 | taint | tst.js:14:5:14:32 | unsafeG ...  taint) | provenance | Config |
+| tst.js:14:27:14:31 | taint | tst.js:55:29:55:32 | prop | provenance |  |
+| tst.js:33:23:33:25 | obj | tst.js:34:5:34:7 | obj | provenance |  |
+| tst.js:33:23:33:25 | obj | tst.js:39:9:39:11 | obj | provenance |  |
+| tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj | provenance |  |
+| tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj | provenance |  |
+| tst.js:55:29:55:32 | prop | tst.js:56:22:56:25 | prop | provenance |  |
+| tst.js:56:18:56:26 | obj[prop] | tst.js:56:12:56:33 | obj ? o ...  : null | provenance |  |
+| tst.js:56:22:56:25 | prop | tst.js:56:18:56:26 | obj[prop] | provenance | Config |
+| tst.js:77:9:77:38 | taint | tst.js:80:12:80:16 | taint | provenance |  |
+| tst.js:77:9:77:38 | taint | tst.js:82:17:82:21 | taint | provenance |  |
+| tst.js:77:9:77:38 | taint | tst.js:87:16:87:20 | taint | provenance |  |
+| tst.js:77:17:77:38 | String( ... y.data) | tst.js:77:9:77:38 | taint | provenance |  |
+| tst.js:77:24:77:37 | req.query.data | tst.js:77:17:77:38 | String( ... y.data) | provenance | Config |
+| tst.js:80:12:80:16 | taint | tst.js:80:5:80:17 | object[taint] | provenance | Config |
+| tst.js:82:12:82:21 | "" + taint | tst.js:82:5:82:22 | object["" + taint] | provenance | Config |
+| tst.js:82:17:82:21 | taint | tst.js:82:12:82:21 | "" + taint | provenance | Config |
+| tst.js:87:16:87:20 | taint | tst.js:87:9:87:21 | object[taint] | provenance | Config |
+| tst.js:94:9:94:19 | req.query.x | tst.js:94:9:94:36 | req.que ... _', '') | provenance | Config |
+| tst.js:94:9:94:36 | req.que ... _', '') | tst.js:94:5:94:37 | obj[req ... ', '')] | provenance | Config |
+| tst.js:97:9:97:19 | req.query.x | tst.js:97:9:97:45 | req.que ... /g, '') | provenance | Config |
+| tst.js:97:9:97:45 | req.que ... /g, '') | tst.js:97:5:97:46 | obj[req ... g, '')] | provenance | Config |
+| tst.js:102:9:102:38 | taint | tst.js:105:12:105:16 | taint | provenance |  |
+| tst.js:102:17:102:38 | String( ... y.data) | tst.js:102:9:102:38 | taint | provenance |  |
+| tst.js:102:24:102:37 | req.query.data | tst.js:102:17:102:38 | String( ... y.data) | provenance | Config |
+| tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] | provenance | Config |
+| tst.js:130:9:130:19 | req.query.x | tst.js:130:9:130:52 | req.que ... '), '') | provenance | Config |
+| tst.js:130:9:130:52 | req.que ... '), '') | tst.js:130:5:130:53 | obj[req ... ), '')] | provenance | Config |
+nodes
+| lib.js:1:38:1:40 | obj | semmle.label | obj |
+| lib.js:1:43:1:46 | path | semmle.label | path |
+| lib.js:2:7:2:27 | currentPath | semmle.label | currentPath |
+| lib.js:2:21:2:24 | path | semmle.label | path |
+| lib.js:2:21:2:27 | path[0] | semmle.label | path[0] |
+| lib.js:6:7:6:9 | obj | semmle.label | obj |
+| lib.js:11:17:11:32 | obj[currentPath] | semmle.label | obj[currentPath] |
+| lib.js:11:21:11:31 | currentPath | semmle.label | currentPath |
+| lib.js:14:38:14:41 | path | semmle.label | path |
+| lib.js:15:3:15:14 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:15:7:15:10 | path | semmle.label | path |
+| lib.js:15:7:15:13 | path[0] | semmle.label | path[0] |
+| lib.js:20:7:20:25 | path | semmle.label | path |
+| lib.js:20:14:20:22 | arguments | semmle.label | arguments |
+| lib.js:20:14:20:25 | arguments[1] | semmle.label | arguments[1] |
+| lib.js:22:3:22:14 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:22:7:22:10 | path | semmle.label | path |
+| lib.js:22:7:22:13 | path[0] | semmle.label | path[0] |
+| lib.js:25:44:25:47 | path | semmle.label | path |
+| lib.js:26:10:26:21 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:26:14:26:17 | path | semmle.label | path |
+| lib.js:26:14:26:20 | path[0] | semmle.label | path[0] |
+| lib.js:30:9:30:52 | args | semmle.label | args |
+| lib.js:30:9:30:52 | args [ArrayElement] | semmle.label | args [ArrayElement] |
+| lib.js:30:16:30:52 | Array.p ... uments) | semmle.label | Array.p ... uments) |
+| lib.js:30:16:30:52 | Array.p ... uments) [ArrayElement] | semmle.label | Array.p ... uments) [ArrayElement] |
+| lib.js:30:16:30:52 | reflective call | semmle.label | reflective call |
+| lib.js:30:16:30:52 | reflective call [ArrayElement] | semmle.label | reflective call [ArrayElement] |
+| lib.js:30:43:30:51 | arguments | semmle.label | arguments |
+| lib.js:32:7:32:20 | path | semmle.label | path |
+| lib.js:32:14:32:17 | args | semmle.label | args |
+| lib.js:32:14:32:17 | args [ArrayElement] | semmle.label | args [ArrayElement] |
+| lib.js:32:14:32:20 | args[1] | semmle.label | args[1] |
+| lib.js:34:3:34:14 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:34:7:34:10 | path | semmle.label | path |
+| lib.js:34:7:34:13 | path[0] | semmle.label | path[0] |
+| lib.js:38:9:38:36 | args | semmle.label | args |
+| lib.js:38:16:38:36 | Array.f ... uments) | semmle.label | Array.f ... uments) |
+| lib.js:38:27:38:35 | arguments | semmle.label | arguments |
+| lib.js:40:7:40:20 | path | semmle.label | path |
+| lib.js:40:14:40:17 | args | semmle.label | args |
+| lib.js:40:14:40:20 | args[1] | semmle.label | args[1] |
+| lib.js:42:3:42:14 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:42:7:42:10 | path | semmle.label | path |
+| lib.js:42:7:42:13 | path[0] | semmle.label | path[0] |
+| lib.js:83:7:83:25 | path | semmle.label | path |
+| lib.js:83:14:83:22 | arguments | semmle.label | arguments |
+| lib.js:83:14:83:25 | arguments[1] | semmle.label | arguments[1] |
+| lib.js:86:7:86:26 | proto | semmle.label | proto |
+| lib.js:86:15:86:26 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:86:19:86:22 | path | semmle.label | path |
+| lib.js:86:19:86:25 | path[0] | semmle.label | path[0] |
+| lib.js:87:10:87:14 | proto | semmle.label | proto |
+| lib.js:90:43:90:46 | path | semmle.label | path |
+| lib.js:91:7:91:28 | maybeProto | semmle.label | maybeProto |
+| lib.js:91:20:91:28 | obj[path] | semmle.label | obj[path] |
+| lib.js:91:24:91:27 | path | semmle.label | path |
+| lib.js:92:3:92:12 | maybeProto | semmle.label | maybeProto |
+| lib.js:95:3:95:12 | maybeProto | semmle.label | maybeProto |
+| lib.js:104:7:104:24 | one | semmle.label | one |
+| lib.js:104:13:104:21 | arguments | semmle.label | arguments |
+| lib.js:104:13:104:24 | arguments[1] | semmle.label | arguments[1] |
+| lib.js:108:3:108:10 | obj[one] | semmle.label | obj[one] |
+| lib.js:108:7:108:9 | one | semmle.label | one |
+| lib.js:118:29:118:32 | path | semmle.label | path |
+| lib.js:119:13:119:24 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:119:17:119:20 | path | semmle.label | path |
+| lib.js:119:17:119:23 | path[0] | semmle.label | path[0] |
+| lib.js:127:14:127:17 | path | semmle.label | path |
+| lib.js:128:9:128:20 | obj[path[0]] | semmle.label | obj[path[0]] |
+| lib.js:128:13:128:16 | path | semmle.label | path |
+| lib.js:128:13:128:19 | path[0] | semmle.label | path[0] |
+| otherlib/src/otherlibimpl.js:1:37:1:40 | path | semmle.label | path |
+| otherlib/src/otherlibimpl.js:2:3:2:14 | obj[path[0]] | semmle.label | obj[path[0]] |
+| otherlib/src/otherlibimpl.js:2:7:2:10 | path | semmle.label | path |
+| otherlib/src/otherlibimpl.js:2:7:2:13 | path[0] | semmle.label | path[0] |
+| sublib/other.js:5:28:5:31 | path | semmle.label | path |
+| sublib/other.js:6:7:6:18 | obj[path[0]] | semmle.label | obj[path[0]] |
+| sublib/other.js:6:11:6:14 | path | semmle.label | path |
+| sublib/other.js:6:11:6:17 | path[0] | semmle.label | path[0] |
+| sublib/sub.js:1:37:1:40 | path | semmle.label | path |
+| sublib/sub.js:2:3:2:14 | obj[path[0]] | semmle.label | obj[path[0]] |
+| sublib/sub.js:2:7:2:10 | path | semmle.label | path |
+| sublib/sub.js:2:7:2:13 | path[0] | semmle.label | path[0] |
+| tst.js:5:9:5:38 | taint | semmle.label | taint |
+| tst.js:5:17:5:38 | String( ... y.data) | semmle.label | String( ... y.data) |
+| tst.js:5:24:5:37 | req.query.data | semmle.label | req.query.data |
+| tst.js:8:5:8:17 | object[taint] | semmle.label | object[taint] |
+| tst.js:8:12:8:16 | taint | semmle.label | taint |
+| tst.js:9:5:9:17 | object[taint] | semmle.label | object[taint] |
+| tst.js:9:12:9:16 | taint | semmle.label | taint |
+| tst.js:12:18:12:30 | object[taint] | semmle.label | object[taint] |
+| tst.js:12:25:12:29 | taint | semmle.label | taint |
+| tst.js:14:5:14:32 | unsafeG ...  taint) | semmle.label | unsafeG ...  taint) |
+| tst.js:14:27:14:31 | taint | semmle.label | taint |
+| tst.js:33:23:33:25 | obj | semmle.label | obj |
+| tst.js:34:5:34:7 | obj | semmle.label | obj |
+| tst.js:39:9:39:11 | obj | semmle.label | obj |
+| tst.js:45:9:45:11 | obj | semmle.label | obj |
+| tst.js:48:9:48:11 | obj | semmle.label | obj |
+| tst.js:55:29:55:32 | prop | semmle.label | prop |
+| tst.js:56:12:56:33 | obj ? o ...  : null | semmle.label | obj ? o ...  : null |
+| tst.js:56:18:56:26 | obj[prop] | semmle.label | obj[prop] |
+| tst.js:56:22:56:25 | prop | semmle.label | prop |
+| tst.js:77:9:77:38 | taint | semmle.label | taint |
+| tst.js:77:17:77:38 | String( ... y.data) | semmle.label | String( ... y.data) |
+| tst.js:77:24:77:37 | req.query.data | semmle.label | req.query.data |
+| tst.js:80:5:80:17 | object[taint] | semmle.label | object[taint] |
+| tst.js:80:12:80:16 | taint | semmle.label | taint |
+| tst.js:82:5:82:22 | object["" + taint] | semmle.label | object["" + taint] |
+| tst.js:82:12:82:21 | "" + taint | semmle.label | "" + taint |
+| tst.js:82:17:82:21 | taint | semmle.label | taint |
+| tst.js:87:9:87:21 | object[taint] | semmle.label | object[taint] |
+| tst.js:87:16:87:20 | taint | semmle.label | taint |
+| tst.js:94:5:94:37 | obj[req ... ', '')] | semmle.label | obj[req ... ', '')] |
+| tst.js:94:9:94:19 | req.query.x | semmle.label | req.query.x |
+| tst.js:94:9:94:36 | req.que ... _', '') | semmle.label | req.que ... _', '') |
+| tst.js:97:5:97:46 | obj[req ... g, '')] | semmle.label | obj[req ... g, '')] |
+| tst.js:97:9:97:19 | req.query.x | semmle.label | req.query.x |
+| tst.js:97:9:97:45 | req.que ... /g, '') | semmle.label | req.que ... /g, '') |
+| tst.js:102:9:102:38 | taint | semmle.label | taint |
+| tst.js:102:17:102:38 | String( ... y.data) | semmle.label | String( ... y.data) |
+| tst.js:102:24:102:37 | req.query.data | semmle.label | req.query.data |
+| tst.js:105:5:105:17 | object[taint] | semmle.label | object[taint] |
+| tst.js:105:12:105:16 | taint | semmle.label | taint |
+| tst.js:130:5:130:53 | obj[req ... ), '')] | semmle.label | obj[req ... ), '')] |
+| tst.js:130:9:130:19 | req.query.x | semmle.label | req.query.x |
+| tst.js:130:9:130:52 | req.que ... '), '') | semmle.label | req.que ... '), '') |
+subpaths
+| tst.js:14:27:14:31 | taint | tst.js:55:29:55:32 | prop | tst.js:56:12:56:33 | obj ? o ...  : null | tst.js:14:5:14:32 | unsafeG ...  taint) |
 #select
 | lib.js:6:7:6:9 | obj | lib.js:1:43:1:46 | path | lib.js:6:7:6:9 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:1:43:1:46 | path | library input |
 | lib.js:15:3:15:14 | obj[path[0]] | lib.js:14:38:14:41 | path | lib.js:15:3:15:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:14:38:14:41 | path | library input |
@@ -373,7 +246,6 @@ edges
 | lib.js:26:10:26:21 | obj[path[0]] | lib.js:25:44:25:47 | path | lib.js:26:10:26:21 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:25:44:25:47 | path | library input |
 | lib.js:34:3:34:14 | obj[path[0]] | lib.js:30:43:30:51 | arguments | lib.js:34:3:34:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:30:43:30:51 | arguments | library input |
 | lib.js:42:3:42:14 | obj[path[0]] | lib.js:38:27:38:35 | arguments | lib.js:42:3:42:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:38:27:38:35 | arguments | library input |
-| lib.js:70:13:70:24 | obj[path[0]] | lib.js:59:18:59:18 | s | lib.js:70:13:70:24 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:59:18:59:18 | s | library input |
 | lib.js:87:10:87:14 | proto | lib.js:83:14:83:22 | arguments | lib.js:87:10:87:14 | proto | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:83:14:83:22 | arguments | library input |
 | lib.js:108:3:108:10 | obj[one] | lib.js:104:13:104:21 | arguments | lib.js:108:3:108:10 | obj[one] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:104:13:104:21 | arguments | library input |
 | lib.js:119:13:119:24 | obj[path[0]] | lib.js:118:29:118:32 | path | lib.js:119:13:119:24 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:118:29:118:32 | path | library input |
@@ -394,3 +266,4 @@ edges
 | tst.js:94:5:94:37 | obj[req ... ', '')] | tst.js:94:9:94:19 | req.query.x | tst.js:94:5:94:37 | obj[req ... ', '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:94:9:94:19 | req.query.x | user controlled input |
 | tst.js:97:5:97:46 | obj[req ... g, '')] | tst.js:97:9:97:19 | req.query.x | tst.js:97:5:97:46 | obj[req ... g, '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:97:9:97:19 | req.query.x | user controlled input |
 | tst.js:105:5:105:17 | object[taint] | tst.js:102:24:102:37 | req.query.data | tst.js:105:5:105:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:102:24:102:37 | req.query.data | user controlled input |
+| tst.js:130:5:130:53 | obj[req ... ), '')] | tst.js:130:9:130:19 | req.query.x | tst.js:130:5:130:53 | obj[req ... ), '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:130:9:130:19 | req.query.x | user controlled input |

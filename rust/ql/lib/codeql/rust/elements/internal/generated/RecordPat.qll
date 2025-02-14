@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
-import codeql.rust.elements.Path
+import codeql.rust.elements.internal.PathAstNodeImpl::Impl as PathAstNodeImpl
 import codeql.rust.elements.RecordPatFieldList
 
 /**
@@ -26,24 +26,11 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::RecordPat` class directly.
    * Use the subclass `RecordPat`, where the following predicates are available.
    */
-  class RecordPat extends Synth::TRecordPat, PatImpl::Pat {
+  class RecordPat extends Synth::TRecordPat, PatImpl::Pat, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "RecordPat" }
 
     /**
-     * Gets the path of this record pat, if it exists.
-     */
-    Path getPath() {
-      result =
-        Synth::convertPathFromRaw(Synth::convertRecordPatToRaw(this).(Raw::RecordPat).getPath())
-    }
-
-    /**
-     * Holds if `getPath()` exists.
-     */
-    final predicate hasPath() { exists(this.getPath()) }
-
-    /**
-     * Gets the record pat field list of this record pat, if it exists.
+     * Gets the record pattern field list of this record pattern, if it exists.
      */
     RecordPatFieldList getRecordPatFieldList() {
       result =

@@ -1,0 +1,20 @@
+name: Test
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  test1:
+    runs-on: ubuntu-24.04
+    outputs:
+      job_output: ${{ steps.source.outputs.value }}
+    steps:
+      - id: source
+        uses: mad9000/actions-find-and-replace-string@3
+        with:
+          source: ${{ github.event['comment']['body'] }}
+          find: 'foo'
+          replace: ''
+      - run: ${{ steps.source.outputs.value }}
+      - run: ${{ needs.test1.outputs.job_output }}

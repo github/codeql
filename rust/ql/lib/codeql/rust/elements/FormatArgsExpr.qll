@@ -6,12 +6,17 @@
 private import internal.FormatArgsExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
 
 /**
  * A FormatArgsExpr. For example:
  * ```rust
- * todo!()
+ * format_args!("no args");
+ * format_args!("{} foo {:?}", 1, 2);
+ * format_args!("{b} foo {a:?}", a=1, b=2);
+ * let (x, y) = (1, 42);
+ * format_args!("{x}, {y}");
  * ```
  */
 final class FormatArgsExpr = Impl::FormatArgsExpr;

@@ -21,7 +21,7 @@ module GinCors {
   /**
    * A write to the value of Access-Control-Allow-Credentials header
    */
-  class AllowCredentialsWrite extends DataFlow::ExprNode {
+  class AllowCredentialsWrite extends UniversalAllowCredentialsWrite {
     DataFlow::Node base;
 
     AllowCredentialsWrite() {
@@ -35,12 +35,12 @@ module GinCors {
     /**
      * Get config struct holding header values
      */
-    DataFlow::Node getBase() { result = base }
+    override DataFlow::Node getBase() { result = base }
 
     /**
      * Get config variable holding header values
      */
-    GinConfig getConfig() {
+    override GinConfig getConfig() {
       exists(GinConfig gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
@@ -55,7 +55,7 @@ module GinCors {
   /**
    * A write to the value of Access-Control-Allow-Origins header
    */
-  class AllowOriginsWrite extends DataFlow::ExprNode {
+  class AllowOriginsWrite extends UniversalOriginWrite {
     DataFlow::Node base;
 
     AllowOriginsWrite() {
@@ -69,12 +69,12 @@ module GinCors {
     /**
      * Get config struct holding header values
      */
-    DataFlow::Node getBase() { result = base }
+    override DataFlow::Node getBase() { result = base }
 
     /**
      * Get config variable holding header values
      */
-    GinConfig getConfig() {
+    override GinConfig getConfig() {
       exists(GinConfig gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
@@ -89,7 +89,7 @@ module GinCors {
   /**
    * A write to the value of Access-Control-Allow-Origins of value "*", overriding AllowOrigins
    */
-  class AllowAllOriginsWrite extends DataFlow::ExprNode {
+  class AllowAllOriginsWrite extends UniversalAllowAllOriginsWrite {
     DataFlow::Node base;
 
     AllowAllOriginsWrite() {
@@ -103,12 +103,12 @@ module GinCors {
     /**
      * Get config struct holding header values
      */
-    DataFlow::Node getBase() { result = base }
+    override DataFlow::Node getBase() { result = base }
 
     /**
      * Get config variable holding header values
      */
-    GinConfig getConfig() {
+    override GinConfig getConfig() {
       exists(GinConfig gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
@@ -128,7 +128,7 @@ module GinCors {
 
     GinConfig() {
       this = v.getBaseVariable().getSourceVariable() and
-      exists(Type t | t.hasQualifiedName(packagePath(), "Config") | v.getType() = t)
+      v.getType().hasQualifiedName(packagePath(), "Config")
     }
 
     /**

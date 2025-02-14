@@ -1,5 +1,5 @@
 | Extraction failed in badimport.go with error invalid import path (invalid character U+007B '{') | 2 |
-| Extraction failed in type.go with error cannot use v (variable of type V) as T value in argument to takesT | 2 |
+| Extraction failed in type.go with error cannot use v (variable of int type V) as T value in argument to takesT | 2 |
 | Extraction failed with error expected ';', found wnvwun | 2 |
 | Extraction failed with error expected 'IDENT', found newline | 2 |
 | Extraction failed with error expected 'package', found avvu | 2 |

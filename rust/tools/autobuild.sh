@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
+
+set -eu
 
 export RUST_BACKTRACE=1
-exec "${CODEQL_DIST}/codeql" database index-files \
-  --working-dir=. --language=rust --include-extension=.rs \
-  "${CODEQL_EXTRACTOR_RUST_WIP_DATABASE}"
+exec "$CODEQL_EXTRACTOR_RUST_ROOT/tools/$CODEQL_PLATFORM/autobuild"

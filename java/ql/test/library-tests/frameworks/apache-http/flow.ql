@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 import semmle.code.java.security.UrlRedirect
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {

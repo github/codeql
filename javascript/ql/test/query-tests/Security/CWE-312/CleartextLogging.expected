@@ -1,300 +1,185 @@
-nodes
-| passwords.js:2:17:2:24 | password |
-| passwords.js:2:17:2:24 | password |
-| passwords.js:2:17:2:24 | password |
-| passwords.js:3:17:3:26 | o.password |
-| passwords.js:3:17:3:26 | o.password |
-| passwords.js:3:17:3:26 | o.password |
-| passwords.js:4:17:4:29 | getPassword() |
-| passwords.js:4:17:4:29 | getPassword() |
-| passwords.js:4:17:4:29 | getPassword() |
-| passwords.js:5:17:5:31 | o.getPassword() |
-| passwords.js:5:17:5:31 | o.getPassword() |
-| passwords.js:5:17:5:31 | o.getPassword() |
-| passwords.js:7:20:7:20 | x |
-| passwords.js:8:21:8:21 | x |
-| passwords.js:8:21:8:21 | x |
-| passwords.js:10:11:10:18 | password |
-| passwords.js:10:11:10:18 | password |
-| passwords.js:12:18:12:25 | password |
-| passwords.js:12:18:12:25 | password |
-| passwords.js:12:18:12:25 | password |
-| passwords.js:14:17:14:38 | name +  ... assword |
-| passwords.js:14:17:14:38 | name +  ... assword |
-| passwords.js:14:31:14:38 | password |
-| passwords.js:14:31:14:38 | password |
-| passwords.js:16:17:16:38 | `${name ... sword}` |
-| passwords.js:16:17:16:38 | `${name ... sword}` |
-| passwords.js:16:29:16:36 | password |
-| passwords.js:16:29:16:36 | password |
-| passwords.js:18:9:20:5 | obj1 |
-| passwords.js:18:16:20:5 | {\\n      ... x\\n    } |
-| passwords.js:18:16:20:5 | {\\n      ... x\\n    } |
-| passwords.js:21:17:21:20 | obj1 |
-| passwords.js:21:17:21:20 | obj1 |
-| passwords.js:23:9:25:5 | obj2 |
-| passwords.js:23:16:25:5 | {\\n      ... d\\n    } |
-| passwords.js:24:12:24:19 | password |
-| passwords.js:24:12:24:19 | password |
-| passwords.js:26:17:26:20 | obj2 |
-| passwords.js:26:17:26:20 | obj2 |
-| passwords.js:28:9:28:17 | obj3 |
-| passwords.js:28:16:28:17 | {} |
-| passwords.js:29:17:29:20 | obj3 |
-| passwords.js:29:17:29:20 | obj3 |
-| passwords.js:30:14:30:21 | password |
-| passwords.js:30:14:30:21 | password |
-| passwords.js:77:37:77:53 | req.body.password |
-| passwords.js:77:37:77:53 | req.body.password |
-| passwords.js:78:17:78:38 | temp.en ... assword |
-| passwords.js:78:17:78:38 | temp.en ... assword |
-| passwords.js:80:9:80:25 | secret |
-| passwords.js:80:18:80:25 | password |
-| passwords.js:80:18:80:25 | password |
-| passwords.js:81:17:81:31 | `pw: ${secret}` |
-| passwords.js:81:17:81:31 | `pw: ${secret}` |
-| passwords.js:81:24:81:29 | secret |
-| passwords.js:93:21:93:46 | "Passwo ... assword |
-| passwords.js:93:21:93:46 | "Passwo ... assword |
-| passwords.js:93:39:93:46 | password |
-| passwords.js:93:39:93:46 | password |
-| passwords.js:98:21:98:46 | "Passwo ... assword |
-| passwords.js:98:21:98:46 | "Passwo ... assword |
-| passwords.js:98:39:98:46 | password |
-| passwords.js:98:39:98:46 | password |
-| passwords.js:105:21:105:46 | "Passwo ... assword |
-| passwords.js:105:21:105:46 | "Passwo ... assword |
-| passwords.js:105:39:105:46 | password |
-| passwords.js:105:39:105:46 | password |
-| passwords.js:110:21:110:46 | "Passwo ... assword |
-| passwords.js:110:21:110:46 | "Passwo ... assword |
-| passwords.js:110:39:110:46 | password |
-| passwords.js:110:39:110:46 | password |
-| passwords.js:114:25:114:50 | "Passwo ... assword |
-| passwords.js:114:25:114:50 | "Passwo ... assword |
-| passwords.js:114:43:114:50 | password |
-| passwords.js:114:43:114:50 | password |
-| passwords.js:119:21:119:46 | "Passwo ... assword |
-| passwords.js:119:21:119:46 | "Passwo ... assword |
-| passwords.js:119:39:119:46 | password |
-| passwords.js:119:39:119:46 | password |
-| passwords.js:122:17:122:49 | name +  ... tring() |
-| passwords.js:122:17:122:49 | name +  ... tring() |
-| passwords.js:122:31:122:38 | password |
-| passwords.js:122:31:122:38 | password |
-| passwords.js:122:31:122:49 | password.toString() |
-| passwords.js:123:17:123:48 | name +  ... lueOf() |
-| passwords.js:123:17:123:48 | name +  ... lueOf() |
-| passwords.js:123:31:123:38 | password |
-| passwords.js:123:31:123:38 | password |
-| passwords.js:123:31:123:48 | password.valueOf() |
-| passwords.js:127:9:132:5 | config |
-| passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
-| passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
-| passwords.js:130:12:130:19 | password |
-| passwords.js:130:12:130:19 | password |
-| passwords.js:131:12:131:24 | getPassword() |
-| passwords.js:131:12:131:24 | getPassword() |
-| passwords.js:135:17:135:22 | config |
-| passwords.js:135:17:135:22 | config |
-| passwords.js:136:17:136:24 | config.x |
-| passwords.js:136:17:136:24 | config.x |
-| passwords.js:137:17:137:24 | config.y |
-| passwords.js:137:17:137:24 | config.y |
-| passwords.js:142:26:142:34 | arguments |
-| passwords.js:142:26:142:34 | arguments |
-| passwords.js:147:12:147:19 | password |
-| passwords.js:147:12:147:19 | password |
-| passwords.js:149:21:149:28 | config.x |
-| passwords.js:150:21:150:31 | process.env |
-| passwords.js:150:21:150:31 | process.env |
-| passwords.js:152:9:152:63 | procdesc |
-| passwords.js:152:20:152:44 | Util.in ... ss.env) |
-| passwords.js:152:20:152:63 | Util.in ... /g, '') |
-| passwords.js:152:33:152:43 | process.env |
-| passwords.js:152:33:152:43 | process.env |
-| passwords.js:154:21:154:28 | procdesc |
-| passwords.js:156:17:156:27 | process.env |
-| passwords.js:156:17:156:27 | process.env |
-| passwords.js:156:17:156:27 | process.env |
-| passwords.js:163:14:163:21 | password |
-| passwords.js:163:14:163:21 | password |
-| passwords.js:163:14:163:41 | passwor ... g, "*") |
-| passwords.js:163:14:163:41 | passwor ... g, "*") |
-| passwords.js:164:14:164:21 | password |
-| passwords.js:164:14:164:21 | password |
-| passwords.js:164:14:164:42 | passwor ... g, "*") |
-| passwords.js:164:14:164:42 | passwor ... g, "*") |
-| passwords.js:169:17:169:24 | password |
-| passwords.js:169:17:169:24 | password |
-| passwords.js:169:17:169:45 | passwor ... g, "*") |
-| passwords.js:169:17:169:45 | passwor ... g, "*") |
-| passwords.js:170:11:170:18 | password |
-| passwords.js:170:11:170:18 | password |
-| passwords.js:170:11:170:39 | passwor ... g, "*") |
-| passwords.js:170:11:170:39 | passwor ... g, "*") |
-| passwords.js:173:17:173:26 | myPassword |
-| passwords.js:173:17:173:26 | myPassword |
-| passwords.js:173:17:173:26 | myPassword |
-| passwords.js:176:17:176:26 | myPasscode |
-| passwords.js:176:17:176:26 | myPasscode |
-| passwords.js:176:17:176:26 | myPasscode |
-| passwords_in_browser1.js:2:13:2:20 | password |
-| passwords_in_browser1.js:2:13:2:20 | password |
-| passwords_in_browser1.js:2:13:2:20 | password |
-| passwords_in_browser2.js:2:13:2:20 | password |
-| passwords_in_browser2.js:2:13:2:20 | password |
-| passwords_in_browser2.js:2:13:2:20 | password |
-| passwords_in_server_1.js:6:13:6:20 | password |
-| passwords_in_server_1.js:6:13:6:20 | password |
-| passwords_in_server_1.js:6:13:6:20 | password |
-| passwords_in_server_2.js:3:13:3:20 | password |
-| passwords_in_server_2.js:3:13:3:20 | password |
-| passwords_in_server_2.js:3:13:3:20 | password |
-| passwords_in_server_3.js:2:13:2:20 | password |
-| passwords_in_server_3.js:2:13:2:20 | password |
-| passwords_in_server_3.js:2:13:2:20 | password |
-| passwords_in_server_4.js:2:13:2:20 | password |
-| passwords_in_server_4.js:2:13:2:20 | password |
-| passwords_in_server_4.js:2:13:2:20 | password |
-| passwords_in_server_5.js:4:7:4:24 | req.query.password |
-| passwords_in_server_5.js:4:7:4:24 | req.query.password |
-| passwords_in_server_5.js:7:12:7:12 | x |
-| passwords_in_server_5.js:8:17:8:17 | x |
-| passwords_in_server_5.js:8:17:8:17 | x |
 edges
-| passwords.js:2:17:2:24 | password | passwords.js:2:17:2:24 | password |
-| passwords.js:3:17:3:26 | o.password | passwords.js:3:17:3:26 | o.password |
-| passwords.js:4:17:4:29 | getPassword() | passwords.js:4:17:4:29 | getPassword() |
-| passwords.js:5:17:5:31 | o.getPassword() | passwords.js:5:17:5:31 | o.getPassword() |
-| passwords.js:7:20:7:20 | x | passwords.js:8:21:8:21 | x |
-| passwords.js:7:20:7:20 | x | passwords.js:8:21:8:21 | x |
-| passwords.js:10:11:10:18 | password | passwords.js:7:20:7:20 | x |
-| passwords.js:10:11:10:18 | password | passwords.js:7:20:7:20 | x |
-| passwords.js:12:18:12:25 | password | passwords.js:12:18:12:25 | password |
-| passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword |
-| passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword |
-| passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword |
-| passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword |
-| passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` |
-| passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` |
-| passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` |
-| passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` |
-| passwords.js:18:9:20:5 | obj1 | passwords.js:21:17:21:20 | obj1 |
-| passwords.js:18:9:20:5 | obj1 | passwords.js:21:17:21:20 | obj1 |
-| passwords.js:18:16:20:5 | {\\n      ... x\\n    } | passwords.js:18:9:20:5 | obj1 |
-| passwords.js:18:16:20:5 | {\\n      ... x\\n    } | passwords.js:18:9:20:5 | obj1 |
-| passwords.js:23:9:25:5 | obj2 | passwords.js:26:17:26:20 | obj2 |
-| passwords.js:23:9:25:5 | obj2 | passwords.js:26:17:26:20 | obj2 |
-| passwords.js:23:16:25:5 | {\\n      ... d\\n    } | passwords.js:23:9:25:5 | obj2 |
-| passwords.js:24:12:24:19 | password | passwords.js:23:16:25:5 | {\\n      ... d\\n    } |
-| passwords.js:24:12:24:19 | password | passwords.js:23:16:25:5 | {\\n      ... d\\n    } |
-| passwords.js:28:9:28:17 | obj3 | passwords.js:29:17:29:20 | obj3 |
-| passwords.js:28:9:28:17 | obj3 | passwords.js:29:17:29:20 | obj3 |
-| passwords.js:28:16:28:17 | {} | passwords.js:28:9:28:17 | obj3 |
-| passwords.js:30:14:30:21 | password | passwords.js:28:16:28:17 | {} |
-| passwords.js:30:14:30:21 | password | passwords.js:28:16:28:17 | {} |
-| passwords.js:77:37:77:53 | req.body.password | passwords.js:78:17:78:38 | temp.en ... assword |
-| passwords.js:77:37:77:53 | req.body.password | passwords.js:78:17:78:38 | temp.en ... assword |
-| passwords.js:77:37:77:53 | req.body.password | passwords.js:78:17:78:38 | temp.en ... assword |
-| passwords.js:77:37:77:53 | req.body.password | passwords.js:78:17:78:38 | temp.en ... assword |
-| passwords.js:80:9:80:25 | secret | passwords.js:81:24:81:29 | secret |
-| passwords.js:80:18:80:25 | password | passwords.js:80:9:80:25 | secret |
-| passwords.js:80:18:80:25 | password | passwords.js:80:9:80:25 | secret |
-| passwords.js:81:24:81:29 | secret | passwords.js:81:17:81:31 | `pw: ${secret}` |
-| passwords.js:81:24:81:29 | secret | passwords.js:81:17:81:31 | `pw: ${secret}` |
-| passwords.js:93:39:93:46 | password | passwords.js:93:21:93:46 | "Passwo ... assword |
-| passwords.js:93:39:93:46 | password | passwords.js:93:21:93:46 | "Passwo ... assword |
-| passwords.js:93:39:93:46 | password | passwords.js:93:21:93:46 | "Passwo ... assword |
-| passwords.js:93:39:93:46 | password | passwords.js:93:21:93:46 | "Passwo ... assword |
-| passwords.js:98:39:98:46 | password | passwords.js:98:21:98:46 | "Passwo ... assword |
-| passwords.js:98:39:98:46 | password | passwords.js:98:21:98:46 | "Passwo ... assword |
-| passwords.js:98:39:98:46 | password | passwords.js:98:21:98:46 | "Passwo ... assword |
-| passwords.js:98:39:98:46 | password | passwords.js:98:21:98:46 | "Passwo ... assword |
-| passwords.js:105:39:105:46 | password | passwords.js:105:21:105:46 | "Passwo ... assword |
-| passwords.js:105:39:105:46 | password | passwords.js:105:21:105:46 | "Passwo ... assword |
-| passwords.js:105:39:105:46 | password | passwords.js:105:21:105:46 | "Passwo ... assword |
-| passwords.js:105:39:105:46 | password | passwords.js:105:21:105:46 | "Passwo ... assword |
-| passwords.js:110:39:110:46 | password | passwords.js:110:21:110:46 | "Passwo ... assword |
-| passwords.js:110:39:110:46 | password | passwords.js:110:21:110:46 | "Passwo ... assword |
-| passwords.js:110:39:110:46 | password | passwords.js:110:21:110:46 | "Passwo ... assword |
-| passwords.js:110:39:110:46 | password | passwords.js:110:21:110:46 | "Passwo ... assword |
-| passwords.js:114:43:114:50 | password | passwords.js:114:25:114:50 | "Passwo ... assword |
-| passwords.js:114:43:114:50 | password | passwords.js:114:25:114:50 | "Passwo ... assword |
-| passwords.js:114:43:114:50 | password | passwords.js:114:25:114:50 | "Passwo ... assword |
-| passwords.js:114:43:114:50 | password | passwords.js:114:25:114:50 | "Passwo ... assword |
-| passwords.js:119:39:119:46 | password | passwords.js:119:21:119:46 | "Passwo ... assword |
-| passwords.js:119:39:119:46 | password | passwords.js:119:21:119:46 | "Passwo ... assword |
-| passwords.js:119:39:119:46 | password | passwords.js:119:21:119:46 | "Passwo ... assword |
-| passwords.js:119:39:119:46 | password | passwords.js:119:21:119:46 | "Passwo ... assword |
-| passwords.js:122:31:122:38 | password | passwords.js:122:31:122:49 | password.toString() |
-| passwords.js:122:31:122:38 | password | passwords.js:122:31:122:49 | password.toString() |
-| passwords.js:122:31:122:49 | password.toString() | passwords.js:122:17:122:49 | name +  ... tring() |
-| passwords.js:122:31:122:49 | password.toString() | passwords.js:122:17:122:49 | name +  ... tring() |
-| passwords.js:123:31:123:38 | password | passwords.js:123:31:123:48 | password.valueOf() |
-| passwords.js:123:31:123:38 | password | passwords.js:123:31:123:48 | password.valueOf() |
-| passwords.js:123:31:123:48 | password.valueOf() | passwords.js:123:17:123:48 | name +  ... lueOf() |
-| passwords.js:123:31:123:48 | password.valueOf() | passwords.js:123:17:123:48 | name +  ... lueOf() |
-| passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
-| passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
-| passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
-| passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
-| passwords.js:130:12:130:19 | password | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
-| passwords.js:130:12:130:19 | password | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
-| passwords.js:130:12:130:19 | password | passwords.js:136:17:136:24 | config.x |
-| passwords.js:130:12:130:19 | password | passwords.js:136:17:136:24 | config.x |
-| passwords.js:130:12:130:19 | password | passwords.js:136:17:136:24 | config.x |
-| passwords.js:130:12:130:19 | password | passwords.js:136:17:136:24 | config.x |
-| passwords.js:131:12:131:24 | getPassword() | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
-| passwords.js:131:12:131:24 | getPassword() | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
-| passwords.js:131:12:131:24 | getPassword() | passwords.js:137:17:137:24 | config.y |
-| passwords.js:131:12:131:24 | getPassword() | passwords.js:137:17:137:24 | config.y |
-| passwords.js:131:12:131:24 | getPassword() | passwords.js:137:17:137:24 | config.y |
-| passwords.js:131:12:131:24 | getPassword() | passwords.js:137:17:137:24 | config.y |
-| passwords.js:147:12:147:19 | password | passwords.js:149:21:149:28 | config.x |
-| passwords.js:147:12:147:19 | password | passwords.js:149:21:149:28 | config.x |
-| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments |
-| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments |
-| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments |
-| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments |
-| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments |
-| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments |
-| passwords.js:152:9:152:63 | procdesc | passwords.js:154:21:154:28 | procdesc |
-| passwords.js:152:20:152:44 | Util.in ... ss.env) | passwords.js:152:20:152:63 | Util.in ... /g, '') |
-| passwords.js:152:20:152:63 | Util.in ... /g, '') | passwords.js:152:9:152:63 | procdesc |
-| passwords.js:152:33:152:43 | process.env | passwords.js:152:20:152:44 | Util.in ... ss.env) |
-| passwords.js:152:33:152:43 | process.env | passwords.js:152:20:152:44 | Util.in ... ss.env) |
-| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments |
-| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments |
-| passwords.js:156:17:156:27 | process.env | passwords.js:156:17:156:27 | process.env |
-| passwords.js:163:14:163:21 | password | passwords.js:163:14:163:41 | passwor ... g, "*") |
-| passwords.js:163:14:163:21 | password | passwords.js:163:14:163:41 | passwor ... g, "*") |
-| passwords.js:163:14:163:21 | password | passwords.js:163:14:163:41 | passwor ... g, "*") |
-| passwords.js:163:14:163:21 | password | passwords.js:163:14:163:41 | passwor ... g, "*") |
-| passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
-| passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
-| passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
-| passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") |
-| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
-| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
-| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
-| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") |
-| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
-| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
-| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
-| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
-| passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword |
-| passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode |
-| passwords_in_browser1.js:2:13:2:20 | password | passwords_in_browser1.js:2:13:2:20 | password |
-| passwords_in_browser2.js:2:13:2:20 | password | passwords_in_browser2.js:2:13:2:20 | password |
-| passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password |
-| passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password |
-| passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password |
-| passwords_in_server_4.js:2:13:2:20 | password | passwords_in_server_4.js:2:13:2:20 | password |
-| passwords_in_server_5.js:4:7:4:24 | req.query.password | passwords_in_server_5.js:7:12:7:12 | x |
-| passwords_in_server_5.js:4:7:4:24 | req.query.password | passwords_in_server_5.js:7:12:7:12 | x |
-| passwords_in_server_5.js:7:12:7:12 | x | passwords_in_server_5.js:8:17:8:17 | x |
-| passwords_in_server_5.js:7:12:7:12 | x | passwords_in_server_5.js:8:17:8:17 | x |
+| passwords.js:7:20:7:20 | x | passwords.js:8:21:8:21 | x | provenance |  |
+| passwords.js:10:11:10:18 | password | passwords.js:7:20:7:20 | x | provenance |  |
+| passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword | provenance |  |
+| passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` | provenance |  |
+| passwords.js:18:9:20:5 | obj1 [password] | passwords.js:21:17:21:20 | obj1 | provenance |  |
+| passwords.js:18:16:20:5 | {\\n      ... x\\n    } [password] | passwords.js:18:9:20:5 | obj1 [password] | provenance |  |
+| passwords.js:19:19:19:19 | x | passwords.js:18:16:20:5 | {\\n      ... x\\n    } [password] | provenance |  |
+| passwords.js:23:9:25:5 | obj2 [x] | passwords.js:26:17:26:20 | obj2 | provenance |  |
+| passwords.js:23:16:25:5 | {\\n      ... d\\n    } [x] | passwords.js:23:9:25:5 | obj2 [x] | provenance |  |
+| passwords.js:24:12:24:19 | password | passwords.js:23:16:25:5 | {\\n      ... d\\n    } [x] | provenance |  |
+| passwords.js:77:9:77:55 | temp [encryptedPassword] | passwords.js:78:17:78:20 | temp [encryptedPassword] | provenance |  |
+| passwords.js:77:16:77:55 | { encry ... sword } [encryptedPassword] | passwords.js:77:9:77:55 | temp [encryptedPassword] | provenance |  |
+| passwords.js:77:37:77:53 | req.body.password | passwords.js:77:16:77:55 | { encry ... sword } [encryptedPassword] | provenance |  |
+| passwords.js:78:17:78:20 | temp [encryptedPassword] | passwords.js:78:17:78:38 | temp.en ... assword | provenance |  |
+| passwords.js:80:9:80:25 | secret | passwords.js:81:24:81:29 | secret | provenance |  |
+| passwords.js:80:18:80:25 | password | passwords.js:80:9:80:25 | secret | provenance |  |
+| passwords.js:81:24:81:29 | secret | passwords.js:81:17:81:31 | `pw: ${secret}` | provenance |  |
+| passwords.js:93:39:93:46 | password | passwords.js:93:21:93:46 | "Passwo ... assword | provenance |  |
+| passwords.js:98:39:98:46 | password | passwords.js:98:21:98:46 | "Passwo ... assword | provenance |  |
+| passwords.js:105:39:105:46 | password | passwords.js:105:21:105:46 | "Passwo ... assword | provenance |  |
+| passwords.js:110:39:110:46 | password | passwords.js:110:21:110:46 | "Passwo ... assword | provenance |  |
+| passwords.js:114:43:114:50 | password | passwords.js:114:25:114:50 | "Passwo ... assword | provenance |  |
+| passwords.js:119:39:119:46 | password | passwords.js:119:21:119:46 | "Passwo ... assword | provenance |  |
+| passwords.js:122:31:122:38 | password | passwords.js:122:31:122:49 | password.toString() | provenance |  |
+| passwords.js:122:31:122:49 | password.toString() | passwords.js:122:17:122:49 | name +  ... tring() | provenance |  |
+| passwords.js:123:31:123:38 | password | passwords.js:123:31:123:48 | password.valueOf() | provenance |  |
+| passwords.js:123:31:123:48 | password.valueOf() | passwords.js:123:17:123:48 | name +  ... lueOf() | provenance |  |
+| passwords.js:127:9:132:5 | config [password] | passwords.js:135:17:135:22 | config | provenance |  |
+| passwords.js:127:9:132:5 | config [x] | passwords.js:135:17:135:22 | config | provenance |  |
+| passwords.js:127:9:132:5 | config [x] | passwords.js:136:17:136:22 | config [x] | provenance |  |
+| passwords.js:127:9:132:5 | config [y] | passwords.js:135:17:135:22 | config | provenance |  |
+| passwords.js:127:9:132:5 | config [y] | passwords.js:137:17:137:22 | config [y] | provenance |  |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } [password] | passwords.js:127:9:132:5 | config [password] | provenance |  |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } [x] | passwords.js:127:9:132:5 | config [x] | provenance |  |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } [y] | passwords.js:127:9:132:5 | config [y] | provenance |  |
+| passwords.js:128:19:128:19 | x | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [password] | provenance |  |
+| passwords.js:130:12:130:19 | password | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [x] | provenance |  |
+| passwords.js:131:12:131:24 | getPassword() | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [y] | provenance |  |
+| passwords.js:136:17:136:22 | config [x] | passwords.js:136:17:136:24 | config.x | provenance |  |
+| passwords.js:137:17:137:22 | config [y] | passwords.js:137:17:137:24 | config.y | provenance |  |
+| passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments | provenance |  |
+| passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments | provenance |  |
+| passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments [ArrayElement] | provenance |  |
+| passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments [ArrayElement] | provenance |  |
+| passwords.js:142:26:142:34 | arguments | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
+| passwords.js:142:26:142:34 | arguments [0] | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
+| passwords.js:142:26:142:34 | arguments [ArrayElement] | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
+| passwords.js:142:26:142:34 | arguments [ArrayElement] | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
+| passwords.js:146:9:148:5 | config [x] | passwords.js:149:21:149:26 | config [x] | provenance |  |
+| passwords.js:146:18:148:5 | {\\n      ... d\\n    } [x] | passwords.js:146:9:148:5 | config [x] | provenance |  |
+| passwords.js:147:12:147:19 | password | passwords.js:146:18:148:5 | {\\n      ... d\\n    } [x] | provenance |  |
+| passwords.js:149:21:149:26 | config [x] | passwords.js:149:21:149:28 | config.x | provenance |  |
+| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments | provenance |  |
+| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments | provenance | Config |
+| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments | provenance | Config |
+| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments [0] | provenance |  |
+| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | provenance |  |
+| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | provenance | Config |
+| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | provenance | Config |
+| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments [0] | provenance |  |
+| passwords.js:152:9:152:63 | procdesc | passwords.js:154:21:154:28 | procdesc | provenance |  |
+| passwords.js:152:20:152:44 | Util.in ... ss.env) | passwords.js:152:20:152:63 | Util.in ... /g, '') | provenance |  |
+| passwords.js:152:20:152:63 | Util.in ... /g, '') | passwords.js:152:9:152:63 | procdesc | provenance |  |
+| passwords.js:152:33:152:43 | process.env | passwords.js:152:20:152:44 | Util.in ... ss.env) | provenance |  |
+| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments | provenance |  |
+| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments | provenance | Config |
+| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments | provenance | Config |
+| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments [0] | provenance |  |
+| passwords.js:163:14:163:21 | password | passwords.js:163:14:163:41 | passwor ... g, "*") | provenance |  |
+| passwords.js:164:14:164:21 | password | passwords.js:164:14:164:42 | passwor ... g, "*") | provenance |  |
+| passwords.js:169:17:169:24 | password | passwords.js:169:17:169:45 | passwor ... g, "*") | provenance |  |
+| passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") | provenance |  |
+| passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") | provenance |  |
+| passwords.js:188:30:188:40 | process.env | passwords.js:188:15:188:41 | JSON.st ... ss.env) | provenance |  |
+| passwords_in_server_5.js:4:7:4:24 | req.query.password | passwords_in_server_5.js:7:12:7:12 | x | provenance |  |
+| passwords_in_server_5.js:7:12:7:12 | x | passwords_in_server_5.js:8:17:8:17 | x | provenance |  |
+nodes
+| passwords.js:2:17:2:24 | password | semmle.label | password |
+| passwords.js:3:17:3:26 | o.password | semmle.label | o.password |
+| passwords.js:4:17:4:29 | getPassword() | semmle.label | getPassword() |
+| passwords.js:5:17:5:31 | o.getPassword() | semmle.label | o.getPassword() |
+| passwords.js:7:20:7:20 | x | semmle.label | x |
+| passwords.js:8:21:8:21 | x | semmle.label | x |
+| passwords.js:10:11:10:18 | password | semmle.label | password |
+| passwords.js:12:18:12:25 | password | semmle.label | password |
+| passwords.js:14:17:14:38 | name +  ... assword | semmle.label | name +  ... assword |
+| passwords.js:14:31:14:38 | password | semmle.label | password |
+| passwords.js:16:17:16:38 | `${name ... sword}` | semmle.label | `${name ... sword}` |
+| passwords.js:16:29:16:36 | password | semmle.label | password |
+| passwords.js:18:9:20:5 | obj1 [password] | semmle.label | obj1 [password] |
+| passwords.js:18:16:20:5 | {\\n      ... x\\n    } [password] | semmle.label | {\\n      ... x\\n    } [password] |
+| passwords.js:19:19:19:19 | x | semmle.label | x |
+| passwords.js:21:17:21:20 | obj1 | semmle.label | obj1 |
+| passwords.js:23:9:25:5 | obj2 [x] | semmle.label | obj2 [x] |
+| passwords.js:23:16:25:5 | {\\n      ... d\\n    } [x] | semmle.label | {\\n      ... d\\n    } [x] |
+| passwords.js:24:12:24:19 | password | semmle.label | password |
+| passwords.js:26:17:26:20 | obj2 | semmle.label | obj2 |
+| passwords.js:77:9:77:55 | temp [encryptedPassword] | semmle.label | temp [encryptedPassword] |
+| passwords.js:77:16:77:55 | { encry ... sword } [encryptedPassword] | semmle.label | { encry ... sword } [encryptedPassword] |
+| passwords.js:77:37:77:53 | req.body.password | semmle.label | req.body.password |
+| passwords.js:78:17:78:20 | temp [encryptedPassword] | semmle.label | temp [encryptedPassword] |
+| passwords.js:78:17:78:38 | temp.en ... assword | semmle.label | temp.en ... assword |
+| passwords.js:80:9:80:25 | secret | semmle.label | secret |
+| passwords.js:80:18:80:25 | password | semmle.label | password |
+| passwords.js:81:17:81:31 | `pw: ${secret}` | semmle.label | `pw: ${secret}` |
+| passwords.js:81:24:81:29 | secret | semmle.label | secret |
+| passwords.js:93:21:93:46 | "Passwo ... assword | semmle.label | "Passwo ... assword |
+| passwords.js:93:39:93:46 | password | semmle.label | password |
+| passwords.js:98:21:98:46 | "Passwo ... assword | semmle.label | "Passwo ... assword |
+| passwords.js:98:39:98:46 | password | semmle.label | password |
+| passwords.js:105:21:105:46 | "Passwo ... assword | semmle.label | "Passwo ... assword |
+| passwords.js:105:39:105:46 | password | semmle.label | password |
+| passwords.js:110:21:110:46 | "Passwo ... assword | semmle.label | "Passwo ... assword |
+| passwords.js:110:39:110:46 | password | semmle.label | password |
+| passwords.js:114:25:114:50 | "Passwo ... assword | semmle.label | "Passwo ... assword |
+| passwords.js:114:43:114:50 | password | semmle.label | password |
+| passwords.js:119:21:119:46 | "Passwo ... assword | semmle.label | "Passwo ... assword |
+| passwords.js:119:39:119:46 | password | semmle.label | password |
+| passwords.js:122:17:122:49 | name +  ... tring() | semmle.label | name +  ... tring() |
+| passwords.js:122:31:122:38 | password | semmle.label | password |
+| passwords.js:122:31:122:49 | password.toString() | semmle.label | password.toString() |
+| passwords.js:123:17:123:48 | name +  ... lueOf() | semmle.label | name +  ... lueOf() |
+| passwords.js:123:31:123:38 | password | semmle.label | password |
+| passwords.js:123:31:123:48 | password.valueOf() | semmle.label | password.valueOf() |
+| passwords.js:127:9:132:5 | config [password] | semmle.label | config [password] |
+| passwords.js:127:9:132:5 | config [x] | semmle.label | config [x] |
+| passwords.js:127:9:132:5 | config [y] | semmle.label | config [y] |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } [password] | semmle.label | {\\n      ... )\\n    } [password] |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } [x] | semmle.label | {\\n      ... )\\n    } [x] |
+| passwords.js:127:18:132:5 | {\\n      ... )\\n    } [y] | semmle.label | {\\n      ... )\\n    } [y] |
+| passwords.js:128:19:128:19 | x | semmle.label | x |
+| passwords.js:130:12:130:19 | password | semmle.label | password |
+| passwords.js:131:12:131:24 | getPassword() | semmle.label | getPassword() |
+| passwords.js:135:17:135:22 | config | semmle.label | config |
+| passwords.js:136:17:136:22 | config [x] | semmle.label | config [x] |
+| passwords.js:136:17:136:24 | config.x | semmle.label | config.x |
+| passwords.js:137:17:137:22 | config [y] | semmle.label | config [y] |
+| passwords.js:137:17:137:24 | config.y | semmle.label | config.y |
+| passwords.js:142:26:142:34 | [apply call taint node] | semmle.label | [apply call taint node] |
+| passwords.js:142:26:142:34 | [apply call taint node] | semmle.label | [apply call taint node] |
+| passwords.js:142:26:142:34 | arguments | semmle.label | arguments |
+| passwords.js:142:26:142:34 | arguments | semmle.label | arguments |
+| passwords.js:142:26:142:34 | arguments [0] | semmle.label | arguments [0] |
+| passwords.js:142:26:142:34 | arguments [ArrayElement] | semmle.label | arguments [ArrayElement] |
+| passwords.js:142:26:142:34 | arguments [ArrayElement] | semmle.label | arguments [ArrayElement] |
+| passwords.js:146:9:148:5 | config [x] | semmle.label | config [x] |
+| passwords.js:146:18:148:5 | {\\n      ... d\\n    } [x] | semmle.label | {\\n      ... d\\n    } [x] |
+| passwords.js:147:12:147:19 | password | semmle.label | password |
+| passwords.js:149:21:149:26 | config [x] | semmle.label | config [x] |
+| passwords.js:149:21:149:28 | config.x | semmle.label | config.x |
+| passwords.js:150:21:150:31 | process.env | semmle.label | process.env |
+| passwords.js:152:9:152:63 | procdesc | semmle.label | procdesc |
+| passwords.js:152:20:152:44 | Util.in ... ss.env) | semmle.label | Util.in ... ss.env) |
+| passwords.js:152:20:152:63 | Util.in ... /g, '') | semmle.label | Util.in ... /g, '') |
+| passwords.js:152:33:152:43 | process.env | semmle.label | process.env |
+| passwords.js:154:21:154:28 | procdesc | semmle.label | procdesc |
+| passwords.js:156:17:156:27 | process.env | semmle.label | process.env |
+| passwords.js:163:14:163:21 | password | semmle.label | password |
+| passwords.js:163:14:163:41 | passwor ... g, "*") | semmle.label | passwor ... g, "*") |
+| passwords.js:164:14:164:21 | password | semmle.label | password |
+| passwords.js:164:14:164:42 | passwor ... g, "*") | semmle.label | passwor ... g, "*") |
+| passwords.js:169:17:169:24 | password | semmle.label | password |
+| passwords.js:169:17:169:45 | passwor ... g, "*") | semmle.label | passwor ... g, "*") |
+| passwords.js:170:11:170:18 | password | semmle.label | password |
+| passwords.js:170:11:170:39 | passwor ... g, "*") | semmle.label | passwor ... g, "*") |
+| passwords.js:173:17:173:26 | myPassword | semmle.label | myPassword |
+| passwords.js:176:17:176:26 | myPasscode | semmle.label | myPasscode |
+| passwords.js:182:14:182:21 | password | semmle.label | password |
+| passwords.js:182:14:182:51 | passwor ... ), "*") | semmle.label | passwor ... ), "*") |
+| passwords.js:188:15:188:41 | JSON.st ... ss.env) | semmle.label | JSON.st ... ss.env) |
+| passwords.js:188:30:188:40 | process.env | semmle.label | process.env |
+| passwords_in_browser1.js:2:13:2:20 | password | semmle.label | password |
+| passwords_in_browser2.js:2:13:2:20 | password | semmle.label | password |
+| passwords_in_server_1.js:6:13:6:20 | password | semmle.label | password |
+| passwords_in_server_2.js:3:13:3:20 | password | semmle.label | password |
+| passwords_in_server_3.js:2:13:2:20 | password | semmle.label | password |
+| passwords_in_server_4.js:2:13:2:20 | password | semmle.label | password |
+| passwords_in_server_5.js:4:7:4:24 | req.query.password | semmle.label | req.query.password |
+| passwords_in_server_5.js:7:12:7:12 | x | semmle.label | x |
+| passwords_in_server_5.js:8:17:8:17 | x | semmle.label | x |
+subpaths
 #select
 | passwords.js:2:17:2:24 | password | passwords.js:2:17:2:24 | password | passwords.js:2:17:2:24 | password | This logs sensitive data returned by $@ as clear text. | passwords.js:2:17:2:24 | password | an access to password |
 | passwords.js:3:17:3:26 | o.password | passwords.js:3:17:3:26 | o.password | passwords.js:3:17:3:26 | o.password | This logs sensitive data returned by $@ as clear text. | passwords.js:3:17:3:26 | o.password | an access to password |
@@ -304,9 +189,8 @@ edges
 | passwords.js:12:18:12:25 | password | passwords.js:12:18:12:25 | password | passwords.js:12:18:12:25 | password | This logs sensitive data returned by $@ as clear text. | passwords.js:12:18:12:25 | password | an access to password |
 | passwords.js:14:17:14:38 | name +  ... assword | passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword | This logs sensitive data returned by $@ as clear text. | passwords.js:14:31:14:38 | password | an access to password |
 | passwords.js:16:17:16:38 | `${name ... sword}` | passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` | This logs sensitive data returned by $@ as clear text. | passwords.js:16:29:16:36 | password | an access to password |
-| passwords.js:21:17:21:20 | obj1 | passwords.js:18:16:20:5 | {\\n      ... x\\n    } | passwords.js:21:17:21:20 | obj1 | This logs sensitive data returned by $@ as clear text. | passwords.js:18:16:20:5 | {\\n      ... x\\n    } | an access to password |
+| passwords.js:21:17:21:20 | obj1 | passwords.js:19:19:19:19 | x | passwords.js:21:17:21:20 | obj1 | This logs sensitive data returned by $@ as clear text. | passwords.js:19:19:19:19 | x | an access to password |
 | passwords.js:26:17:26:20 | obj2 | passwords.js:24:12:24:19 | password | passwords.js:26:17:26:20 | obj2 | This logs sensitive data returned by $@ as clear text. | passwords.js:24:12:24:19 | password | an access to password |
-| passwords.js:29:17:29:20 | obj3 | passwords.js:30:14:30:21 | password | passwords.js:29:17:29:20 | obj3 | This logs sensitive data returned by $@ as clear text. | passwords.js:30:14:30:21 | password | an access to password |
 | passwords.js:78:17:78:38 | temp.en ... assword | passwords.js:77:37:77:53 | req.body.password | passwords.js:78:17:78:38 | temp.en ... assword | This logs sensitive data returned by $@ as clear text. | passwords.js:77:37:77:53 | req.body.password | an access to password |
 | passwords.js:81:17:81:31 | `pw: ${secret}` | passwords.js:80:18:80:25 | password | passwords.js:81:17:81:31 | `pw: ${secret}` | This logs sensitive data returned by $@ as clear text. | passwords.js:80:18:80:25 | password | an access to password |
 | passwords.js:93:21:93:46 | "Passwo ... assword | passwords.js:93:39:93:46 | password | passwords.js:93:21:93:46 | "Passwo ... assword | This logs sensitive data returned by $@ as clear text. | passwords.js:93:39:93:46 | password | an access to password |
@@ -317,7 +201,7 @@ edges
 | passwords.js:119:21:119:46 | "Passwo ... assword | passwords.js:119:39:119:46 | password | passwords.js:119:21:119:46 | "Passwo ... assword | This logs sensitive data returned by $@ as clear text. | passwords.js:119:39:119:46 | password | an access to password |
 | passwords.js:122:17:122:49 | name +  ... tring() | passwords.js:122:31:122:38 | password | passwords.js:122:17:122:49 | name +  ... tring() | This logs sensitive data returned by $@ as clear text. | passwords.js:122:31:122:38 | password | an access to password |
 | passwords.js:123:17:123:48 | name +  ... lueOf() | passwords.js:123:31:123:38 | password | passwords.js:123:17:123:48 | name +  ... lueOf() | This logs sensitive data returned by $@ as clear text. | passwords.js:123:31:123:38 | password | an access to password |
-| passwords.js:135:17:135:22 | config | passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:135:17:135:22 | config | This logs sensitive data returned by $@ as clear text. | passwords.js:127:18:132:5 | {\\n      ... )\\n    } | an access to password |
+| passwords.js:135:17:135:22 | config | passwords.js:128:19:128:19 | x | passwords.js:135:17:135:22 | config | This logs sensitive data returned by $@ as clear text. | passwords.js:128:19:128:19 | x | an access to password |
 | passwords.js:135:17:135:22 | config | passwords.js:130:12:130:19 | password | passwords.js:135:17:135:22 | config | This logs sensitive data returned by $@ as clear text. | passwords.js:130:12:130:19 | password | an access to password |
 | passwords.js:135:17:135:22 | config | passwords.js:131:12:131:24 | getPassword() | passwords.js:135:17:135:22 | config | This logs sensitive data returned by $@ as clear text. | passwords.js:131:12:131:24 | getPassword() | a call to getPassword |
 | passwords.js:136:17:136:24 | config.x | passwords.js:130:12:130:19 | password | passwords.js:136:17:136:24 | config.x | This logs sensitive data returned by $@ as clear text. | passwords.js:130:12:130:19 | password | an access to password |
@@ -332,6 +216,8 @@ edges
 | passwords.js:170:11:170:39 | passwor ... g, "*") | passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") | This logs sensitive data returned by $@ as clear text. | passwords.js:170:11:170:18 | password | an access to password |
 | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword | This logs sensitive data returned by $@ as clear text. | passwords.js:173:17:173:26 | myPassword | an access to myPassword |
 | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode | This logs sensitive data returned by $@ as clear text. | passwords.js:176:17:176:26 | myPasscode | an access to myPasscode |
+| passwords.js:182:14:182:51 | passwor ... ), "*") | passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") | This logs sensitive data returned by $@ as clear text. | passwords.js:182:14:182:21 | password | an access to password |
+| passwords.js:188:15:188:41 | JSON.st ... ss.env) | passwords.js:188:30:188:40 | process.env | passwords.js:188:15:188:41 | JSON.st ... ss.env) | This logs sensitive data returned by $@ as clear text. | passwords.js:188:30:188:40 | process.env | process environment |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_1.js:6:13:6:20 | password | an access to password |
 | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_2.js:3:13:3:20 | password | an access to password |
 | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_3.js:2:13:2:20 | password | an access to password |

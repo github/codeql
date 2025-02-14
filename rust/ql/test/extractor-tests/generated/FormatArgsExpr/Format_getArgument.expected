@@ -1,0 +1,13 @@
+| gen_format.rs:7:21:7:46 | {value:#width$.precision$} | 0 | gen_format.rs:7:22:7:26 | value |
+| gen_format.rs:7:21:7:46 | {value:#width$.precision$} | 1 | gen_format.rs:7:29:7:33 | width |
+| gen_format.rs:7:21:7:46 | {value:#width$.precision$} | 2 | gen_format.rs:7:36:7:44 | precision |
+| gen_format_args_expr.rs:7:19:7:21 | {b} | 0 | gen_format_args_expr.rs:7:20:7:20 | b |
+| gen_format_args_expr.rs:7:27:7:31 | {a:?} | 0 | gen_format_args_expr.rs:7:28:7:28 | a |
+| gen_format_args_expr.rs:9:19:9:21 | {x} | 0 | gen_format_args_expr.rs:9:20:9:20 | x |
+| gen_format_args_expr.rs:9:24:9:26 | {y} | 0 | gen_format_args_expr.rs:9:25:9:25 | y |
+| gen_format_argument.rs:5:21:5:46 | {value:#width$.precision$} | 0 | gen_format_argument.rs:5:22:5:26 | value |
+| gen_format_argument.rs:5:21:5:46 | {value:#width$.precision$} | 1 | gen_format_argument.rs:5:29:5:33 | width |
+| gen_format_argument.rs:5:21:5:46 | {value:#width$.precision$} | 2 | gen_format_argument.rs:5:36:5:44 | precision |
+| gen_format_argument.rs:7:21:7:30 | {0:#1$.2$} | 0 | gen_format_argument.rs:7:22:7:22 | 0 |
+| gen_format_argument.rs:7:21:7:30 | {0:#1$.2$} | 1 | gen_format_argument.rs:7:25:7:25 | 1 |
+| gen_format_argument.rs:7:21:7:30 | {0:#1$.2$} | 2 | gen_format_argument.rs:7:28:7:28 | 2 |

@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: immutableActionsDataModel
+    data:
+      - ["actions/checkout"]
+      - ["actions/cache"]
+      - ["actions/setup-node"]
+      - ["actions/upload-artifact"]
+      - ["actions/setup-python"]
+      - ["actions/download-artifact"]
+      - ["actions/github-script"]
+      - ["actions/setup-java"]
+      - ["actions/setup-go"]
+      - ["actions/upload-pages-artifact"]
+      - ["actions/deploy-pages"]
+      - ["actions/setup-dotnet"]
+      - ["actions/stale"]
+      - ["actions/labeler"]
+      - ["actions/create-github-app-token"]
+      - ["actions/configure-pages"]
+      - ["octokit/request-action"]

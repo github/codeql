@@ -53,6 +53,7 @@ def _get_class(cls: type) -> schema.Class:
                         bases=[b.__name__ for b in cls.__bases__ if b is not object],
                         derived=derived,
                         pragmas=pragmas,
+                        cfg=cls.__cfg__ if hasattr(cls, "__cfg__") else False,
                         # in the following we don't use `getattr` to avoid inheriting
                         properties=[
                             a | _PropertyNamer(n)
@@ -131,6 +132,7 @@ def _check_test_with(classes: typing.Dict[str, schema.Class]):
 def load(m: types.ModuleType) -> schema.Schema:
     includes = set()
     classes = {}
+    imported_classes = {}
     known = {"int", "string", "boolean"}
     known.update(n for n in m.__dict__ if not n.startswith("__"))
     import misc.codegen.lib.schemadefs as defs
@@ -144,6 +146,9 @@ def load(m: types.ModuleType) -> schema.Schema:
         if name.startswith("__") or name == "_":
             continue
         if isinstance(data, types.ModuleType):
+            continue
+        if isinstance(data, schema.ImportedClass):
+            imported_classes[name] = data
             continue
         cls = _get_class(data)
         if classes and not cls.bases:
@@ -161,7 +166,7 @@ def load(m: types.ModuleType) -> schema.Schema:
     _fill_hideable_information(classes)
     _check_test_with(classes)
 
-    return schema.Schema(includes=includes, classes=_toposort_classes_by_group(classes), null=null)
+    return schema.Schema(includes=includes, classes=imported_classes | _toposort_classes_by_group(classes), null=null)
 
 
 def load_file(path: pathlib.Path) -> schema.Schema:

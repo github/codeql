@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["chipsalliance/chisel", "*", "input.version", "code-injection", "generated"]
+     - ["chipsalliance/chisel", "*", "input.file-name", "code-injection", "generated"]

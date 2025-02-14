@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      # Fmt
+      - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # Hint
+      - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Iterator
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      # Option
+      - ["lang:core", "<crate::option::Option>::expect", "Argument[self].Field[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
+      # Result
+      - ["lang:core", "<crate::result::Result>::unwrap", "Argument[self].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[self].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or_default", "Argument[self].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or_else", "Argument[self].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_or_else", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_unchecked", "Argument[self].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_err", "Argument[self].Field[crate::result::Result::Err(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::unwrap_err_unchecked", "Argument[self].Field[crate::result::Result::Err(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::expect", "Argument[self].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
+      - ["lang:core", "<crate::result::Result>::expect_err", "Argument[self].Field[crate::result::Result::Err(0)]", "ReturnValue", "value", "manual"]
+      # String
+      - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:alloc", "<crate::string::String>::as_bytes", "Argument[self]", "ReturnValue", "taint", "manual"]

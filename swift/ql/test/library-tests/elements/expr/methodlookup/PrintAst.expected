@@ -187,6 +187,7 @@ methodlookup.swift:
 #   40|                 getBase(): [TypeExpr] Bar.Type
 #   40|                   getTypeRepr(): [TypeRepr] Bar
 #   40|                 getMethodRef(): [DeclRefExpr] staticMethod()
+#   33|         getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   33| [NilLiteralExpr] nil
 #   38| [Comment] // Bar.instanceMethod(bar2)() // error: actor-isolated instance method 'instanceMethod()' can not be referenced from a non-isolated context
 #   38| 
@@ -262,6 +263,7 @@ methodlookup.swift:
 #   51|                 getMethodRef(): [DeclRefExpr] staticMethod()
 #   51|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
 #   51|             getElement(5).getFullyConverted(): [AwaitExpr] await ...
+#   43|         getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   43| [NilLiteralExpr] nil
 #   47| [Comment] // DotSyntaxCallExpr
 #   47| 

@@ -2,11 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from LoopExpr x, int getNumberOfAttrs, string hasLabel, string hasLoopBody
+from LoopExpr x, string hasLabel, string hasLoopBody, int getNumberOfAttrs
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody
+  (if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs()
+select x, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody, "getNumberOfAttrs:", getNumberOfAttrs

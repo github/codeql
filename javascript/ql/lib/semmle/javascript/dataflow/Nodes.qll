@@ -8,6 +8,7 @@ private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * A data flow node corresponding to an expression.
@@ -995,6 +996,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
+    t.start() and
+    PreCallGraphStep::classObjectSource(this, result)
+    or
     result = this.getAClassReferenceRec(t)
   }
 
@@ -1044,6 +1048,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
     // Note that this also blocks flows into a property of the receiver,
     // but the `localFieldStep` rule will often compensate for this.
     not result = any(DataFlow::ClassNode cls).getAReceiverNode()
+    or
+    t.start() and
+    PreCallGraphStep::classInstanceSource(this, result)
   }
 
   pragma[noinline]
@@ -1611,7 +1618,12 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
    * Gets the AST of the regular expression created here, provided that the
    * first argument is a string literal.
    */
-  RegExpTerm getRoot() { result = this.getArgument(0).asExpr().(StringLiteral).asRegExp() }
+  RegExpTerm getRoot() {
+    result = this.getArgument(0).asExpr().(StringLiteral).asRegExp()
+    or
+    // In case someone writes `new RegExp(/foo/)` for some reason
+    result = this.getArgument(0).asExpr().(RegExpLiteral).getRoot()
+  }
 
   /**
    * Gets the flags provided in the second argument, or an empty string if no
@@ -1685,6 +1697,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   /** Holds if the constructed predicate has the `g` flag. */
   predicate isGlobal() { RegExp::isGlobal(this.getFlags()) }
 
+  /** Holds if the constructed predicate has the `g` flag or unknown flags. */
+  predicate maybeGlobal() { RegExp::maybeGlobal(this.tryGetFlags()) }
+
   /** Gets a data flow node referring to this regular expression. */
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {
     t.start() and
@@ -1698,5 +1713,20 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   DataFlow::SourceNode getAReference() {
     Stages::FlowSteps::ref() and
     result = this.getAReference(DataFlow::TypeTracker::end())
+  }
+}
+
+/**
+ * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+ * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
+ */
+class VarAccessBarrier extends DataFlow::Node {
+  VarAccessBarrier() {
+    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
+      this = DataFlow::ssaDefinitionNode(refinement) and
+      refinement.getGuard() = guard and
+      guard.getTest() instanceof VarAccess and
+      guard.getOutcome() = false
+    )
   }
 }

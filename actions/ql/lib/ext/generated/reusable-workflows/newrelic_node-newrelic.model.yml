@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["newrelic/node-newrelic/.github/workflows/release-creation.yml", "*", "input.changelog_file", "code-injection", "generated"]
+     - ["newrelic/node-newrelic/.github/workflows/release-creation.yml", "*", "input.workflows", "code-injection", "generated"]
+     - ["newrelic/node-newrelic/.github/workflows/prep-release.yml", "*", "input.changelog_file", "code-injection", "generated"]
+     - ["newrelic/node-newrelic/.github/workflows/prep-release.yml", "*", "input.release_type", "code-injection", "generated"]

@@ -1,0 +1,21 @@
+name: Test
+on: issue_comment
+permissions:
+  issues: write
+
+jobs:
+  test:
+    if: startsWith(github.event.comment.body, '/benchmark')
+    runs-on: benchmarks
+    steps:
+      - name: Check for Command
+        id: command
+        uses: xt0rted/slash-command-action@v2
+        with:
+          command: benchmark
+          reaction-type: "eyes"
+          repo-token: ${{ env.GH_TOKEN }}
+
+      - run: echo "${{ steps.command.outputs.command-arguments }}"
+
+

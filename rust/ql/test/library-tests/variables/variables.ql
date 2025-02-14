@@ -1,5 +1,6 @@
 import rust
-import utils.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
+import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 
 query predicate variable(Variable v) { any() }
 
@@ -15,11 +16,16 @@ query predicate capturedVariable(Variable v) { v.isCaptured() }
 
 query predicate capturedAccess(VariableAccess va) { va.isCapture() }
 
+query predicate nestedFunctionAccess(VariableImpl::NestedFunctionAccess nfa, Function f) {
+  f = nfa.getFunction()
+}
+
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = ["", "write_", "read_"] + "access" }
 
-  private predicate declAt(Variable v, string filepath, int line) {
-    v.getLocation().hasLocationInfo(filepath, _, _, line, _)
+  private predicate declAt(Variable v, string filepath, int line, boolean inMacro) {
+    v.getLocation().hasLocationInfo(filepath, _, _, line, _) and
+    if v.getPat().isInMacroExpansion() then inMacro = true else inMacro = false
   }
 
   private predicate commmentAt(string text, string filepath, int line) {
@@ -30,10 +36,10 @@ module VariableAccessTest implements TestSig {
   }
 
   private predicate decl(Variable v, string value) {
-    exists(string filepath, int line | declAt(v, filepath, line) |
-      commmentAt(value, filepath, line)
+    exists(string filepath, int line, boolean inMacro | declAt(v, filepath, line, inMacro) |
+      commmentAt(value, filepath, line) and inMacro = false
       or
-      not commmentAt(_, filepath, line) and
+      not (commmentAt(_, filepath, line) and inMacro = false) and
       value = v.getName()
     )
   }

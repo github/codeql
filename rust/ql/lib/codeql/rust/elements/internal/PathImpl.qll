@@ -15,14 +15,43 @@ module Impl {
   /**
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
   class Path extends Generated::Path {
-    override string toString() {
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
       if this.hasQualifier()
-      then result = this.getQualifier().toString() + "::" + this.getPart().toString()
-      else result = this.getPart().toString()
+      then result = "...::" + this.getPart().toAbbreviatedString()
+      else result = this.getPart().toAbbreviatedString()
     }
+
+    /**
+     * Gets the text of this path, if it exists.
+     */
+    pragma[nomagic]
+    string getText() { result = this.getPart().getNameRef().getText() }
+  }
+
+  /** A simple identifier path. */
+  class IdentPath extends Path {
+    private string name;
+
+    IdentPath() {
+      not this.hasQualifier() and
+      exists(PathSegment ps |
+        ps = this.getPart() and
+        not ps.hasGenericArgList() and
+        not ps.hasParenthesizedArgList() and
+        not ps.hasPathType() and
+        not ps.hasReturnTypeSyntax() and
+        name = ps.getNameRef().getText()
+      )
+    }
+
+    /** Gets the identifier name. */
+    string getName() { result = name }
   }
 }

@@ -1,5 +1,4 @@
 testFailures
-failures
 newStyleBarrierGuards
 | barrier-guards.rb:3:16:4:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:4:5:4:7 | foo |

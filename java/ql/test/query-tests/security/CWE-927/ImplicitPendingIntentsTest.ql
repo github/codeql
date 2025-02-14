@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.ImplicitPendingIntentsQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module ImplicitPendingIntentsTest implements TestSig {
   string getARelevantTag() { result = "hasImplicitPendingIntent" }

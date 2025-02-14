@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("source") }

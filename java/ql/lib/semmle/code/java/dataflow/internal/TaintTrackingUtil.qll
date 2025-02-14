@@ -161,6 +161,7 @@ private module Cached {
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
@@ -483,9 +484,6 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
-
-  /** DEPRECATED: Alias for `getAWriteObjectMethodCall`. */
-  deprecated MethodCall getAWriteObjectMethodAccess() { result = this.getAWriteObjectMethodCall() }
 }
 
 /** Flow through string formatting. */

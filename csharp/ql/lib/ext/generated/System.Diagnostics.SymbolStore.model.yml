@@ -2,6 +2,13 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Diagnostics.SymbolStore", "ISymbolDocumentWriter", True, "SetCheckSum", "(System.Guid,System.Byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Diagnostics.SymbolStore", "ISymbolDocumentWriter", True, "SetCheckSum", "(System.Guid,System.Byte[])", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
+      - ["System.Diagnostics.SymbolStore", "ISymbolDocumentWriter", True, "SetSource", "(System.Byte[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Diagnostics.SymbolStore", "ISymbolBinder1", "GetReader", "(System.IntPtr,System.String,System.String)", "summary", "df-generated"]
@@ -16,8 +23,6 @@ extensions:
       - ["System.Diagnostics.SymbolStore", "ISymbolDocument", "get_LanguageVendor", "()", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolDocument", "get_SourceLength", "()", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolDocument", "get_URL", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.SymbolStore", "ISymbolDocumentWriter", "SetCheckSum", "(System.Guid,System.Byte[])", "summary", "df-generated"]
-      - ["System.Diagnostics.SymbolStore", "ISymbolDocumentWriter", "SetSource", "(System.Byte[])", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolMethod", "GetNamespace", "()", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolMethod", "GetOffset", "(System.Diagnostics.SymbolStore.ISymbolDocument,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolMethod", "GetParameters", "()", "summary", "df-generated"]

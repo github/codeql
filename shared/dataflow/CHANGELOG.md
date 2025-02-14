@@ -1,3 +1,28 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `Make` and `MakeWithState` modules, use `Global` and `GlobalWithState` instead.
+* Deleted the deprecated `hasFlow`, `hasFlowPath`, `hasFlowTo`, and `hasFlowToExpr` predicates, use `flow`, `flowPath`, `flowTo`, and `flowToExpr` respectively instead.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+### Minor Analysis Improvements
+
+* Added a module `DataFlow::DeduplicatePathGraph` that can be used to avoid generating duplicate path explanations in queries that use flow state.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+No user-facing changes.
+
 ## 1.1.5
 
 No user-facing changes.

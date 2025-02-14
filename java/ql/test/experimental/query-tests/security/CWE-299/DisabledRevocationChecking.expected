@@ -15,6 +15,6 @@ nodes
 | DisabledRevocationChecking.java:25:15:25:22 | parameter this : DisabledRevocationChecking [flag] : Boolean | semmle.label | parameter this : DisabledRevocationChecking [flag] : Boolean |
 | DisabledRevocationChecking.java:28:33:28:36 | flag | semmle.label | flag |
 | DisabledRevocationChecking.java:28:33:28:36 | this <.field> : DisabledRevocationChecking [flag] : Boolean | semmle.label | this <.field> : DisabledRevocationChecking [flag] : Boolean |
-subpaths
-#select
+problems
 | DisabledRevocationChecking.java:17:12:17:16 | false | DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | DisabledRevocationChecking.java:28:33:28:36 | flag | This disables revocation checking. |
+subpaths

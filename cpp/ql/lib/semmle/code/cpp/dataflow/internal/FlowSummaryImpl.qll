@@ -12,7 +12,13 @@ private import semmle.code.cpp.dataflow.ExternalFlow
 private import semmle.code.cpp.ir.IR
 
 module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = Function;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
@@ -93,6 +99,10 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.getStaticCallTarget().getUnderlyingCallable() = sc
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements

@@ -67,9 +67,6 @@ signature module InputSig<LocationSig Location> {
   /** Holds if `bb` is a control-flow entry point. */
   default predicate entryBlock(BasicBlock bb) { not exists(getImmediateBasicBlockDominator(bb)) }
 
-  /** Holds if `bb` is a control-flow exit point. */
-  default predicate exitBlock(BasicBlock bb) { not exists(getABasicBlockSuccessor(bb)) }
-
   /** A variable that is captured in a closure. */
   class CapturedVariable {
     /** Gets a textual representation of this variable. */
@@ -697,10 +694,6 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
       result = Input::getABasicBlockSuccessor(bb)
-    }
-
-    class ExitBasicBlock extends BasicBlock {
-      ExitBasicBlock() { exitBlock(this) }
     }
 
     class SourceVariable = CaptureContainer;

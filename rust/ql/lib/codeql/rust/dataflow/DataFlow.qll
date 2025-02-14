@@ -13,11 +13,19 @@ private import DataFlowImpl::Node as Node
  * (inter-procedural) data flow analyses.
  */
 module DataFlow {
-  final class Node = Node::Node;
+  final class Node = Node::NodePublic;
 
-  final class ParameterNode = Node::ParameterNode;
+  /**
+   * The value of a parameter at function entry, viewed as a node in a data
+   * flow graph.
+   */
+  final class ParameterNode extends Node instanceof Node::SourceParameterNode { }
 
-  final class PostUpdateNode = Node::PostUpdateNode;
+  final class PostUpdateNode = Node::PostUpdateNodePublic;
+
+  final class Content = DataFlowImpl::Content;
+
+  final class ContentSet = DataFlowImpl::ContentSet;
 
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local

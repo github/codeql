@@ -1,3 +1,32 @@
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ArrayContent` class from the dataflow library, use `CollectionContent` instead.
+* Deleted the deprecated `getOptionsInput`, `getRegexInput`, and `getStringInput` predicates from the regexp library, use `getAnOptionsInput`, `getRegexInputNode`, and `getStringInputNode` instead.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+
+## 3.1.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.0.2.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+## 2.0.4
+
+No user-facing changes.
+
 ## 2.0.3
 
 No user-facing changes.

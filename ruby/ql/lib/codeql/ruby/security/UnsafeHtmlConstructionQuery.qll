@@ -12,25 +12,6 @@ import UnsafeHtmlConstructionCustomizations::UnsafeHtmlConstruction
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.dataflow.BarrierGuards
 
-/**
- * A taint-tracking configuration for detecting unsafe HTML construction.
- * DEPRECATED: Use `UnsafeHtmlConstructionFlow`
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeHtmlConstruction" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  // override to require the path doesn't have unmatched return steps
-  override DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureHasSourceCallContext
-  }
-}
-
 private module UnsafeHtmlConstructionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -40,6 +21,14 @@ private module UnsafeHtmlConstructionConfig implements DataFlow::ConfigSig {
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getXssSink().getLocation()
+  }
 }
 
 /**

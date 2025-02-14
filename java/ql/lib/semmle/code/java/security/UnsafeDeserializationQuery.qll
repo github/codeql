@@ -4,7 +4,6 @@
 
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.FlowSinks
-private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.frameworks.Kryo
 private import semmle.code.java.frameworks.XStream
@@ -241,9 +240,6 @@ class UnsafeDeserializationSink extends ApiSinkNode, DataFlow::ExprNode {
 
   /** Gets a call that triggers unsafe deserialization. */
   MethodCall getMethodCall() { unsafeDeserialization(result, this.getExpr()) }
-
-  /** DEPRECATED: Alias for `getMethodCall`. */
-  deprecated MethodCall getMethodAccess() { result = this.getMethodCall() }
 }
 
 /** Holds if `node` is a sanitizer for unsafe deserialization */

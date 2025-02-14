@@ -6,6 +6,7 @@ version = "0.1.0"
 authors = ["Taus Brock-Nannestad <tausbn@github.com>"]
 edition = "2021"
 
+# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
 [dependencies]
 anyhow = "1.0"
 regex = "1"

@@ -83,9 +83,10 @@ string getRmiResult(Expr e) {
       "RMI/JMX server initialized with insecure environment $@, which never restricts accepted client objects to 'java.lang.String'. This exposes to deserialization attacks against the RMI authentication method."
 }
 
-from Call c, Expr envArg
-where
+deprecated query predicate problems(Call c, string message1, Expr envArg, string message2) {
   (isRmiOrJmxServerCreateConstructor(c.getCallee()) or isRmiOrJmxServerCreateMethod(c.getCallee())) and
   envArg = c.getArgument(1) and
-  not SafeFlow::flowToExpr(envArg)
-select c, getRmiResult(envArg), envArg, envArg.toString()
+  not SafeFlow::flowToExpr(envArg) and
+  message1 = getRmiResult(envArg) and
+  message2 = envArg.toString()
+}

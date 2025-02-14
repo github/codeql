@@ -161,7 +161,15 @@ namespace Semmle.Extraction.CSharp
                 var allCompilationData = reader.ReadAllCompilationData(filter);
                 var allFailed = true;
 
-                logger.LogInfo($"  Found {allCompilationData.Count} compilations in binary log");
+                if (allCompilationData.Count == 0)
+                {
+                    logger.LogWarning("  No compilations found in binary log.");
+                    return ExitCode.Ok;
+                }
+                else
+                {
+                    logger.LogInfo($"  Found {allCompilationData.Count} compilations in binary log");
+                }
 
                 foreach (var compilationData in allCompilationData)
                 {
@@ -541,7 +549,6 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationOptions
                             .WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default)
                             .WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
-                            .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation, cwd, args),

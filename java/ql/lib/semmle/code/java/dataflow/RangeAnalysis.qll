@@ -75,7 +75,7 @@ private import semmle.code.java.Maps
 import Bound
 private import codeql.rangeanalysis.RangeAnalysis
 
-module Sem implements Semantic {
+module Sem implements Semantic<Location> {
   private import java as J
   private import SSA as SSA
   private import RangeUtils as RU
@@ -211,9 +211,11 @@ module Sem implements Semantic {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
 
-  private predicate id(BasicBlock x, BasicBlock y) { x = y }
+  private predicate id(ExprParent x, ExprParent y) { x = y }
 
-  private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOfAst(ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
+
+  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getAstNode(), y) }
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 
@@ -264,7 +266,7 @@ module Sem implements Semantic {
   predicate conversionCannotOverflow = safeCast/2;
 }
 
-module SignInp implements SignAnalysisSig<Sem> {
+module SignInp implements SignAnalysisSig<Location, Sem> {
   private import SignAnalysis
   private import internal.rangeanalysis.Sign
 
@@ -281,7 +283,7 @@ module SignInp implements SignAnalysisSig<Sem> {
   predicate semMayBeNegative(Sem::Expr e) { exprSign(e) = TNeg() }
 }
 
-module Modulus implements ModulusAnalysisSig<Sem> {
+module Modulus implements ModulusAnalysisSig<Location, Sem> {
   class ModBound = Bound;
 
   private import codeql.rangeanalysis.ModulusAnalysis as Mod
@@ -307,7 +309,7 @@ module IntDelta implements DeltaSig {
   Delta fromFloat(float f) { result = f }
 }
 
-module JavaLangImpl implements LangSig<Sem, IntDelta> {
+module JavaLangImpl implements LangSig<Location, Sem, IntDelta> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
@@ -379,7 +381,7 @@ module Bounds implements BoundSig<Location, Sem, IntDelta> {
   }
 }
 
-module Overflow implements OverflowSig<Sem, IntDelta> {
+module Overflow implements OverflowSig<Location, Sem, IntDelta> {
   predicate semExprDoesNotOverflow(boolean positively, Sem::Expr expr) {
     positively = [true, false] and exists(expr)
   }

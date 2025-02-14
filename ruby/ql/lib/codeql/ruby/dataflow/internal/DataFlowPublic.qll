@@ -727,6 +727,25 @@ class ContentSet extends TContentSet {
     this = TElementContentOfTypeContent(type, true)
   }
 
+  /**
+   * Holds if this content set represents an element in a collection (array or hash).
+   */
+  predicate isElement() {
+    this.isSingleton(any(Content::ElementContent c))
+    or
+    this.isAnyElement()
+    or
+    this.isKnownOrUnknownElement(any(Content::KnownElementContent c))
+    or
+    this.isElementLowerBound(_)
+    or
+    this.isElementLowerBoundOrUnknown(_)
+    or
+    this.isElementOfType(_)
+    or
+    this.isElementOfTypeOrUnknown(_)
+  }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -1264,13 +1283,6 @@ class LhsExprNode extends ExprNode {
 
   /** Gets the underlying AST node as a `LhsExpr`. */
   LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
-
-  /**
-   * DEPRECATED: use `getVariable` instead.
-   *
-   * Gets a variable used in (or introduced by) this LHS.
-   */
-  deprecated Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
 
   /** Gets the variable used in (or introduced by) this LHS. */
   Variable getVariable() { result = lhsExprCfgNode.getVariable() }
