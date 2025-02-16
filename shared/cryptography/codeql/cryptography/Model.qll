@@ -115,7 +115,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
     // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
-    TKemDemHybridCryptosystem(EncryptionAlgorithmInstance dem) or
+    TKemDemHybridCryptosystem(EncryptionAlgorithmInstance dem) or // TODO, change this relation and the below ones
     TKeyAgreementHybridCryptosystem(EncryptionAlgorithmInstance ka) or
     TAsymmetricEncryptionMacHybridCryptosystem(EncryptionAlgorithmInstance enc) or
     TPostQuantumHybridCryptosystem(EncryptionAlgorithmInstance enc)
@@ -130,6 +130,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Returns a string representation of this node, usually the name of the operation/algorithm/property.
      */
     abstract string toString();
+
+    /**
+     * Returns a string representation of the internal type of this node, usually the name of the class.
+     */
+    abstract string getInternalType();
 
     /**
      * Returns the location of this node in the code.
@@ -170,6 +175,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   class Artifact = NodeBase;
 
   /**
+   * An initialization vector
+   */
+  abstract class InitializationVector extends Asset, TInitializationVector {
+    final override string getInternalType() { result = "InitializationVector" }
+
+    final override string toString() { result = this.getInternalType() }
+  }
+
+  /**
    * A cryptographic operation, such as hashing or encryption.
    */
   abstract class Operation extends Asset {
@@ -185,6 +199,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     final override string toString() { result = this.getOperationType() }
 
+    final override string getInternalType() { result = this.getOperationType() }
+
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
@@ -195,6 +211,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class Algorithm extends Asset {
     final override string toString() { result = this.getAlgorithmType() }
+
+    final override string getInternalType() { result = this.getAlgorithmType() }
 
     /**
      * Gets the name of this algorithm, e.g., "AES" or "SHA".
@@ -294,7 +312,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract string getSHA2OrSHA3DigestSize(Location location);
 
     bindingset[type]
-    private string type_to_digest_size_fixed(THashType type) {
+    private string getTypeDigestSizeFixed(THashType type) {
       type instanceof MD2 and result = "128"
       or
       type instanceof MD4 and result = "128"
@@ -309,12 +327,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     bindingset[type]
-    private string getDigestSize(THashType type, Location location) {
-      result = this.type_to_digest_size_fixed(type) and location = this.getLocation()
+    private string getTypeDigestSize(THashType type, Location location) {
+      result = this.getTypeDigestSizeFixed(type) and location = this.getLocation()
       or
       type instanceof SHA2 and result = this.getSHA2OrSHA3DigestSize(location)
       or
       type instanceof SHA3 and result = this.getSHA2OrSHA3DigestSize(location)
+    }
+
+    string getDigestSize(Location location) {
+      result = this.getTypeDigestSize(this.getHashType(), location)
     }
 
     final override predicate properties(string key, string value, Location location) {
@@ -322,8 +344,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       key = "digest_size" and
-      if exists(this.getDigestSize(this.getHashType(), location))
-      then value = this.getDigestSize(this.getHashType(), location)
+      if exists(this.getDigestSize(location))
+      then value = this.getDigestSize(location)
       else (
         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
       )
@@ -619,27 +641,33 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   /**
    * An encryption operation that processes plaintext to generate a ciphertext.
-   * This operation takes an input message (plaintext) of arbitrary content and length and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
+   * This operation takes an input message (plaintext) of arbitrary content and length
+   * and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
    */
   abstract class EncryptionOperation extends Operation, TEncryptionOperation {
-    abstract override Algorithm getAlgorithm();
-
     override string getOperationType() { result = "EncryptionOperation" }
+
+    /**
+     * Gets the initialization vector associated with this encryption operation.
+     *
+     * This predicate does not need to hold for all encryption operations,
+     * as the initialization vector is not always required.
+     */
+    abstract InitializationVector getInitializationVector();
   }
 
   /**
    * Block cipher modes of operation algorithms
    */
   newtype TModeOperationType =
-    ECB() or
-    CBC() or
-    CFB() or
-    OFB() or
-    CTR() or
-    GCM() or
-    CCM() or
-    XTS() or
-    OAEP() or
+    ECB() or // Not secure, widely used
+    CBC() or // Vulnerable to padding oracle attacks
+    GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
+    CTR() or // Fast stream-like encryption (SSH, disk encryption)
+    XTS() or // Standard for full-disk encryption (BitLocker, LUKS, FileVault)
+    CCM() or // Used in lightweight cryptography (IoT, WPA2)
+    SIV() or // Misuse-resistant encryption, used in secure storage
+    OCB() or // Efficient AEAD mode
     OtherMode()
 
   abstract class ModeOfOperationAlgorithm extends Algorithm, TModeOfOperationAlgorithm {
@@ -655,27 +683,65 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract TModeOperationType getModeType();
 
     bindingset[type]
-    final predicate modeToNameMapping(TModeOperationType type, string name) {
+    final private predicate modeToNameMapping(TModeOperationType type, string name) {
       type instanceof ECB and name = "ECB"
       or
       type instanceof CBC and name = "CBC"
       or
-      type instanceof CFB and name = "CFB"
-      or
-      type instanceof OFB and name = "OFB"
+      type instanceof GCM and name = "GCM"
       or
       type instanceof CTR and name = "CTR"
       or
-      type instanceof GCM and name = "GCM"
+      type instanceof XTS and name = "XTS"
       or
       type instanceof CCM and name = "CCM"
       or
-      type instanceof XTS and name = "XTS"
+      type instanceof SIV and name = "SIV"
+      or
+      type instanceof OCB and name = "OCB"
       or
       type instanceof OtherMode and name = this.getRawAlgorithmName()
     }
 
     override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
+  }
+
+  newtype TPaddingType =
+    PKCS1_v1_5() or // RSA encryption/signing padding
+    PKCS7() or // Standard block cipher padding (PKCS5 for 8-byte blocks)
+    ANSI_X9_23() or // Zero-padding except last byte = padding length
+    NoPadding() or // Explicit no-padding
+    OAEP() or // RSA OAEP padding
+    OtherPadding()
+
+  abstract class PaddingAlgorithm extends Algorithm, TPaddingAlgorithm {
+    override string getAlgorithmType() { result = "PaddingAlgorithm" }
+
+    /**
+     * Gets the type of this padding algorithm, e.g., "PKCS7" or "OAEP".
+     *
+     * When modeling a new padding algorithm, use this predicate to specify the type of the padding.
+     *
+     * If a type cannot be determined, the result is `OtherPadding`.
+     */
+    abstract TPaddingType getPaddingType();
+
+    bindingset[type]
+    final private predicate paddingToNameMapping(TPaddingType type, string name) {
+      type instanceof PKCS1_v1_5 and name = "PKCS1_v1_5"
+      or
+      type instanceof PKCS7 and name = "PKCS7"
+      or
+      type instanceof ANSI_X9_23 and name = "ANSI_X9_23"
+      or
+      type instanceof NoPadding and name = "NoPadding"
+      or
+      type instanceof OAEP and name = "OAEP"
+      or
+      type instanceof OtherPadding and name = this.getRawAlgorithmName()
+    }
+
+    override string getAlgorithmName() { this.paddingToNameMapping(this.getPaddingType(), result) }
   }
 
   /**
@@ -684,12 +750,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   newtype TCipherStructureType =
     Block() or
     Stream() or
+    Asymmetric() or
     UnknownCipherStructureType()
 
   private string getCipherStructureTypeString(TCipherStructureType type) {
     type instanceof Block and result = "Block"
     or
     type instanceof Stream and result = "Stream"
+    or
+    type instanceof Asymmetric and result = "Asymmetric"
     or
     type instanceof UnknownCipherStructureType and result instanceof UnknownPropertyValue
   }
@@ -738,6 +807,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract ModeOfOperationAlgorithm getModeOfOperation();
 
+    /**
+     * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
+     */
+    abstract PaddingAlgorithm getPadding();
+
     bindingset[type]
     final private predicate cipherFamilyToNameAndStructure(
       TCipherType type, string name, TCipherStructureType s
@@ -760,7 +834,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type instanceof RC5 and name = "RC5" and s = Block()
       or
-      type instanceof RSA and name = "RSA" and s = Block()
+      type instanceof RSA and name = "RSA" and s = Asymmetric()
       or
       type instanceof OtherSymmetricCipherType and
       name = this.getRawAlgorithmName() and

@@ -54,6 +54,8 @@ module JCAModel {
     }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
+
+    Expr getProviderArg() { result = this.getArgument(1) }
   }
 
   /**
@@ -75,7 +77,7 @@ module JCAModel {
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
   class CipherGetInstanceAlgorithmArg extends Crypto::EncryptionAlgorithmInstance,
-    Crypto::ModeOfOperationAlgorithmInstance instanceof Expr
+    Crypto::ModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Expr
   {
     CipherGetInstanceAlgorithmArg() {
       exists(CipherGetInstanceCall call | this = call.getArgument(0))
@@ -114,14 +116,62 @@ module JCAModel {
 
     override Location getLocation() { result = instance.getLocation() }
 
-    override string getRawAlgorithmName() { result = instance.getOrigin().getValue() }
+    // In this case, the raw name is still only the /MODE/ part.
+    // TODO: handle defaults
+    override string getRawAlgorithmName() { result = instance.getOrigin().getMode() }
 
-    predicate modeToNameMapping(Crypto::TModeOperationType type, string name) {
-      super.modeToNameMapping(type, name)
+    private predicate modeToNameMappingKnown(Crypto::TModeOperationType type, string name) {
+      type instanceof Crypto::ECB and name = "ECB"
+      or
+      type instanceof Crypto::CBC and name = "CBC"
+      or
+      type instanceof Crypto::GCM and name = "GCM"
+      or
+      type instanceof Crypto::CTR and name = "CTR"
+      or
+      type instanceof Crypto::XTS and name = "XTS"
+      or
+      type instanceof Crypto::CCM and name = "CCM"
+      or
+      type instanceof Crypto::SIV and name = "SIV"
+      or
+      type instanceof Crypto::OCB and name = "OCB"
     }
 
     override Crypto::TModeOperationType getModeType() {
-      this.modeToNameMapping(result, instance.getOrigin().getMode())
+      if this.modeToNameMappingKnown(_, instance.getOrigin().getMode())
+      then this.modeToNameMappingKnown(result, instance.getOrigin().getMode())
+      else result instanceof Crypto::OtherMode
+    }
+
+    CipherStringLiteral getInstance() { result = instance }
+  }
+
+  class PaddingAlgorithm extends Crypto::PaddingAlgorithm {
+    CipherGetInstanceAlgorithmArg instance;
+
+    PaddingAlgorithm() {
+      this = Crypto::TPaddingAlgorithm(instance) and
+      exists(instance.getOrigin().getPadding())
+    }
+
+    override Location getLocation() { result = instance.getLocation() }
+
+    override string getRawAlgorithmName() { result = instance.getOrigin().getPadding() }
+
+    bindingset[name]
+    private predicate paddingToNameMappingKnown(Crypto::TPaddingType type, string name) {
+      type instanceof Crypto::NoPadding and name = "NOPADDING"
+      or
+      type instanceof Crypto::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
+      or
+      type instanceof Crypto::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+    }
+
+    override Crypto::TPaddingType getPaddingType() {
+      if this.paddingToNameMappingKnown(_, instance.getOrigin().getPadding())
+      then this.paddingToNameMappingKnown(result, instance.getOrigin().getPadding())
+      else result instanceof Crypto::OtherPadding
     }
 
     CipherStringLiteral getInstance() { result = instance }
@@ -142,6 +192,10 @@ module JCAModel {
       result.(ModeOfOperation).getInstance() = origin
     }
 
+    override Crypto::PaddingAlgorithm getPadding() {
+      result.(PaddingAlgorithm).getInstance() = origin
+    }
+
     override Crypto::LocatableElement getOrigin(string name) {
       result = origin and name = origin.toString()
     }
@@ -149,7 +203,9 @@ module JCAModel {
     override string getRawAlgorithmName() { result = origin.getValue() }
 
     override Crypto::TCipherType getCipherFamily() {
-      this.cipherNameMapping(result, origin.getAlgorithmName())
+      if this.cipherNameMappingKnown(_, origin.getAlgorithmName())
+      then this.cipherNameMappingKnown(result, origin.getAlgorithmName())
+      else result instanceof Crypto::OtherSymmetricCipherType
     }
 
     override string getKeySize(Location location) { none() }
@@ -159,18 +215,83 @@ module JCAModel {
       name = "AES" and
       type instanceof Crypto::AES
       or
+      name = "DES" and
+      type instanceof Crypto::DES
+      or
+      name = "TripleDES" and
+      type instanceof Crypto::TripleDES
+      or
+      name = "IDEA" and
+      type instanceof Crypto::IDEA
+      or
+      name = "CAST5" and
+      type instanceof Crypto::CAST5
+      or
+      name = "ChaCha20" and
+      type instanceof Crypto::ChaCha20
+      or
       name = "RC4" and
       type instanceof Crypto::RC4
-      // or
-      // TODO
+      or
+      name = "RC5" and
+      type instanceof Crypto::RC5
+      or
+      name = "RSA" and
+      type instanceof Crypto::RSA
+    }
+  }
+
+  /**
+   * Initialiation vectors
+   */
+  abstract class IVParameterInstantiation extends ClassInstanceExpr {
+    abstract Expr getIV();
+  }
+
+  class IvParameterSpecInstance extends IVParameterInstantiation {
+    IvParameterSpecInstance() {
+      this.getConstructedType().hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
     }
 
-    bindingset[name]
-    predicate cipherNameMapping(Crypto::TCipherType type, string name) {
-      this.cipherNameMappingKnown(type, name)
-      or
-      not this.cipherNameMappingKnown(_, name) and
-      type instanceof Crypto::OtherSymmetricCipherType
+    override Expr getIV() { result = super.getArgument(0) }
+  }
+
+  class GCMParameterSpecInstance extends IVParameterInstantiation {
+    GCMParameterSpecInstance() {
+      this.getConstructedType().hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
     }
+
+    override Expr getIV() { result = super.getArgument(1) }
+  }
+
+  class CipherInitCall extends MethodCall {
+    CipherInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "init") }
+
+    Expr getModeArg() { result = this.getArgument(0) }
+
+    Expr getKey() {
+      result = this.getArgument(1) and this.getMethod().getParameterType(1).hasName("Key")
+    }
+
+    Expr getIV() {
+      result = this.getArgument(2) and
+      this.getMethod().getParameterType(2).hasName("AlgorithmParameterSpec")
+    }
+  }
+
+  // TODO: cipher.getParameters().getParameterSpec(GCMParameterSpec.class);
+  class InitializationVectorExpr extends Crypto::InitializationVectorArtifactInstance instanceof Expr
+  {
+    CipherInitCall call; // TODO: add origin to known sources (e.g. RNG, etc.)
+
+    InitializationVectorExpr() { this = call.getIV() }
+  }
+
+  class InitializationVector extends Crypto::InitializationVector {
+    InitializationVectorExpr instance;
+
+    InitializationVector() { this = Crypto::TInitializationVector(instance) }
+
+    override Location getLocation() { result = instance.getLocation() }
   }
 }
