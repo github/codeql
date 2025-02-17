@@ -424,8 +424,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       rnk = ssaRefRank(bb, _, v, SsaActualRead())
     }
 
+    /**
+     * Holds if `v` is live at the end of basic block `bb` with the same value as at
+     * the end of the immediate dominator, `idom`, of `bb`.
+     */
     pragma[nomagic]
-    private predicate liveThrough(BasicBlock bb, SourceVariable v) {
+    private predicate liveThrough(BasicBlock idom, BasicBlock bb, SourceVariable v) {
+      idom = getImmediateBasicBlockDominator(bb) and
       liveAtExit(bb, v) and
       not ssaRef(bb, _, v, SsaDef())
     }
@@ -443,14 +448,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         liveAtExit(bb, v)
       )
       or
-      // The construction of SSA form ensures that each read of a variable is
-      // dominated by its definition. An SSA definition therefore reaches a
-      // control flow node if it is the _closest_ SSA definition that dominates
-      // the node. If two definitions dominate a node then one must dominate the
-      // other, so therefore the definition of _closest_ is given by the dominator
-      // tree. Thus, reaching definitions can be calculated in terms of dominance.
-      ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
-      liveThrough(bb, pragma[only_bind_into](v))
+      exists(BasicBlock idom |
+        // The construction of SSA form ensures that each read of a variable is
+        // dominated by its definition. An SSA definition therefore reaches a
+        // control flow node if it is the _closest_ SSA definition that dominates
+        // the node. If two definitions dominate a node then one must dominate the
+        // other, so therefore the definition of _closest_ is given by the dominator
+        // tree. Thus, reaching definitions can be calculated in terms of dominance.
+        ssaDefReachesEndOfBlock(idom, def, v) and
+        liveThrough(idom, bb, v)
+      )
     }
 
     /**
