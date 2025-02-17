@@ -376,7 +376,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       variableRead(bb, i, v, _) and
       k = SsaActualRead()
       or
-      any(DefinitionExt def).definesAt(v, bb, i, k)
+      any(Definition def).definesAt(v, bb, i) and
+      k = SsaDef()
+      or
+      synthPhiRead(bb, v) and i = -1 and k = SsaPhiRead()
     }
 
     /**
