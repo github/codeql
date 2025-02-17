@@ -359,11 +359,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * either a read (when `k` is `SsaActualRead()`) or an SSA definition (when
      * `k` is `SsaDef()`).
      *
-     * Unlike `Liveness::ref`, this includes `phi` nodes.
+     * Unlike `Liveness::ref`, this includes `phi` nodes and pseudo-reads
+     * associated with uncertain writes.
      */
     pragma[nomagic]
     predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
       variableRead(bb, i, v, _) and
+      k = SsaActualRead()
+      or
+      variableWrite(bb, i, v, false) and
       k = SsaActualRead()
       or
       any(Definition def).definesAt(v, bb, i) and
@@ -482,6 +486,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ssaRef(bb, i, v, SsaActualRead()) and
       ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, v) and
       not ssaDefReachesReadWithinBlock(v, _, bb, i)
+    }
+
+    predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
+      exists(SourceVariable v, BasicBlock bb, int i |
+        def.definesAt(v, bb, i) and
+        ssaDefReachesRead(v, inp, bb, i)
+      )
     }
   }
 
@@ -861,7 +872,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    *
    * Same as `ssaDefReachesReadExt`, but ignores phi-reads.
    */
-  predicate ssaDefReachesRead = SsaDefReachesNew::ssaDefReachesRead/4;
+  predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
+    SsaDefReachesNew::ssaDefReachesRead(v, def, bb, i) and
+    variableRead(bb, i, v, _)
+  }
 
   /**
    * NB: If this predicate is exposed, it should be cached.
@@ -994,10 +1008,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * `def`. Since `def` is uncertain, the value from the preceding definition might
    * still be valid.
    */
-  pragma[nomagic]
-  predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
-    lastRefRedef(inp, _, _, def)
-  }
+  predicate uncertainWriteDefinitionInput = SsaDefReachesNew::uncertainWriteDefinitionInput/2;
 
   /** Holds if `bb` is a control-flow exit point. */
   private predicate exitBlock(BasicBlock bb) { not exists(getABasicBlockSuccessor(bb)) }
