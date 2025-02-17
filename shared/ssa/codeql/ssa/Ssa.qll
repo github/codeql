@@ -328,6 +328,126 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   private class TDefinition = TWriteDef or TPhiNode;
 
+  private module SsaDefReachesNew {
+    newtype TSsaRefKind =
+      SsaActualRead() or
+      SsaPhiRead() or
+      SsaDef()
+
+    class SsaRead = SsaActualRead or SsaPhiRead;
+
+    class SsaDefExt = SsaDef or SsaPhiRead;
+
+    SsaDefExt ssaDefExt() { any() }
+
+    /**
+     * A classification of SSA variable references into reads and definitions.
+     */
+    class SsaRefKind extends TSsaRefKind {
+      string toString() {
+        this = SsaActualRead() and
+        result = "SsaActualRead"
+        or
+        this = SsaPhiRead() and
+        result = "SsaPhiRead"
+        or
+        this = SsaDef() and
+        result = "SsaDef"
+      }
+
+      int getOrder() {
+        this instanceof SsaRead and
+        result = 0
+        or
+        this = SsaDef() and
+        result = 1
+      }
+    }
+
+    /**
+     * Holds if the `i`th node of basic block `bb` is a reference to `v`,
+     * either a read (when `k` is `SsaActualRead()`), an SSA definition (when `k`
+     * is `SsaDef()`), or a phi-read (when `k` is `SsaPhiRead()`).
+     *
+     * Unlike `Liveness::ref`, this includes `phi` (read) nodes.
+     */
+    pragma[nomagic]
+    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
+      variableRead(bb, i, v, _) and
+      k = SsaActualRead()
+      or
+      any(Definition def).definesAt(v, bb, i) and
+      k = SsaDef()
+      or
+      synthPhiRead(bb, v) and i = -1 and k = SsaPhiRead()
+    }
+
+    private newtype OrderedSsaRefIndex =
+      MkOrderedSsaRefIndex(int i, SsaRefKind k) { ssaRef(_, i, _, k) }
+
+    private OrderedSsaRefIndex ssaRefOrd(
+      BasicBlock bb, int i, SourceVariable v, SsaRefKind k, int ord
+    ) {
+      ssaRef(bb, i, v, k) and
+      result = MkOrderedSsaRefIndex(i, k) and
+      ord = k.getOrder()
+    }
+
+    /**
+     * Gets the (1-based) rank of the reference to `v` at the `i`th node of basic
+     * block `bb`, which has the given reference kind `k`.
+     *
+     * For example, if `bb` is a basic block with a phi node for `v` (considered
+     * to be at index -1), reads `v` at node 2, and defines it at node 5, we have:
+     *
+     * ```ql
+     * ssaRefRank(bb, -1, v, SsaDef()) = 1    // phi node
+     * ssaRefRank(bb,  2, v, Read())   = 2    // read at node 2
+     * ssaRefRank(bb,  5, v, SsaDef()) = 3    // definition at node 5
+     * ```
+     *
+     * Reads are considered before writes when they happen at the same index.
+     */
+    int ssaRefRank(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
+      ssaRefOrd(bb, i, v, k, _) =
+        rank[result](int j, int ord, OrderedSsaRefIndex res |
+          res = ssaRefOrd(bb, j, v, _, ord)
+        |
+          res order by j, ord
+        )
+    }
+
+    int maxSsaRefRank(BasicBlock bb, SourceVariable v) {
+      result = ssaRefRank(bb, _, v, _) and
+      not result + 1 = ssaRefRank(bb, _, v, _)
+    }
+
+    /**
+     * Holds if the SSA definition `def` reaches rank index `rnk` in its own
+     * basic block `bb`.
+     */
+    predicate ssaDefReachesRank(BasicBlock bb, DefinitionExt def, int rnk, SourceVariable v) {
+      exists(int i |
+        rnk = ssaRefRank(bb, i, v, ssaDefExt()) and
+        def.definesAt(v, bb, i, _)
+      )
+      or
+      ssaDefReachesRank(bb, def, rnk - 1, v) and
+      rnk = ssaRefRank(bb, _, v, SsaActualRead())
+    }
+
+    /**
+     * Holds if the SSA definition of `v` at `def` reaches index `i` in the same
+     * basic block `bb`, without crossing another SSA definition of `v`.
+     */
+    predicate ssaDefReachesReadWithinBlock(SourceVariable v, DefinitionExt def, BasicBlock bb, int i) {
+      exists(int rnk |
+        ssaDefReachesRank(bb, def, rnk, v) and
+        rnk = ssaRefRank(bb, i, v, SsaActualRead())
+      )
+    }
+  }
+
   private module SsaDefReaches {
     newtype TSsaRefKind =
       SsaActualRead() or
