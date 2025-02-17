@@ -480,7 +480,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ssaDefReachesReadWithinBlock(v, def, bb, i)
       or
       ssaRef(bb, i, v, SsaActualRead()) and
-      ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
+      ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, v) and
       not ssaDefReachesReadWithinBlock(v, _, bb, i)
     }
   }
