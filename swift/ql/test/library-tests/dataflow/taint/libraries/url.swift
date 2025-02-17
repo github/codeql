@@ -292,7 +292,7 @@ func taintThroughURL() {
 	sink(arg: URL(fileURLWithFileSystemRepresentation: 0 as! UnsafePointer<Int8>, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
 	let _ = tainted.withCString({
 		ptrTainted in
-		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrTainted, isDirectory: false, relativeTo: nil)) // $ MISSING: tainted=210
+		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrTainted, isDirectory: false, relativeTo: nil)) // $ tainted=210
 	})
 
 	sink(arg: URL(fileReferenceLiteralResourceName: tainted)) // $ tainted=210
@@ -339,12 +339,12 @@ func taintThroughURL() {
 	sink(arg: urlTainted.appending(component: clean)) // $ tainted=210
 	sink(arg: urlClean.appending(component: tainted)) // $ tainted=210
 	sink(arg: urlTainted.appending(components: clean)) // $ tainted=210
-	sink(arg: urlClean.appending(components: tainted)) // $ MISSING: tainted=210
-	sink(arg: urlClean.appending(components: clean, tainted)) // $ MISSING: tainted=210
+	sink(arg: urlClean.appending(components: tainted)) // $ tainted=210
+	sink(arg: urlClean.appending(components: clean, tainted)) // $ tainted=210
 	sink(arg: urlTainted.appending(path: clean)) // $ tainted=210
 	sink(arg: urlClean.appending(path: tainted)) // $ tainted=210
 	sink(arg: urlTainted.appending(queryItems: [])) // $ tainted=210
-	sink(arg: urlClean.appending(queryItems: [source() as! URLQueryItem])) // $ MISSING: tainted=210
+	sink(arg: urlClean.appending(queryItems: [source() as! URLQueryItem])) // $ tainted=347
 
 	sink(arg: URL(filePath: tainted)) // $ tainted=210
 	sink(arg: URL(filePath: tainted, relativeTo: nil)) // $ tainted=210
@@ -403,11 +403,11 @@ func taintThroughURL() {
 
 	var url7 = URL(string: clean)!
 	url7.append(components: tainted)
-	sink(arg: url7) // $ MISSING: tainted=210
+	sink(arg: url7) // $ tainted=210
 
 	var url8 = URL(string: clean)!
 	url8.append(components: clean, tainted)
-	sink(arg: url8) // $ MISSING: tainted=210
+	sink(arg: url8) // $ tainted=210
 
 	var url9 = URL(string: clean)!
 	url9.append(path: tainted)
@@ -415,7 +415,7 @@ func taintThroughURL() {
 
 	var url10 = URL(string: clean)!
 	url10.append(queryItems: [source() as! URLQueryItem])
-	sink(arg: url10) // $ MISSING: tainted=210
+	sink(arg: url10) // $ tainted=417
 
 	sink(data: try! urlTainted.bookmarkData()) // $ tainted=210
 	sink(data: try! URL.bookmarkData(withContentsOf: urlTainted)) // $ tainted=210

@@ -125,7 +125,7 @@ func test_files(e1: Encoder) {
 	sink(filePath: FilePath(cString: sourceCString())) // $ tainted=125
 	sink(filePath: FilePath(root: FilePath.Root("/"), [FilePath.Component("my")!, FilePath.Component("path")!]))
 	sink(filePath: FilePath(root: FilePath.Root(sourceString()), [FilePath.Component("my")!, FilePath.Component("path")!])) // $ tainted=127
-	sink(filePath: FilePath(root: FilePath.Root("/"), [FilePath.Component("my")!, FilePath.Component(sourceString())!])) // $ MISSING: tainted=
+	sink(filePath: FilePath(root: FilePath.Root("/"), [FilePath.Component("my")!, FilePath.Component(sourceString())!])) // $ tainted=128
 
 	// --- FilePath methods ---
 

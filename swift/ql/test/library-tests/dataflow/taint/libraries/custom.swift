@@ -115,6 +115,6 @@ func testCustom() {
 	sink(arg: mc7)
 	sink(arg: mc7[0])
 	mc7.append(contentsOf: taintedArray)
-	sink(arg: mc7) // $ MISSING: tainted=data10
-	sink(arg: mc7[0]) // $ MISSING: tainted=data10
+	sink(arg: mc7) // $ tainted=data10
+	sink(arg: mc7[0]) // $ tainted=data10
 }
