@@ -42,4 +42,5 @@ function implicitToString() {
     sink(array.toString("utf8")); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
 
     sink(Array.prototype.toString.call(array)); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(Object.prototype.toString.call(array)); // OK - returns "[object Array]"
 }
