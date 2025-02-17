@@ -436,6 +436,37 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       rnk = ssaRefRank(bb, _, v, SsaActualRead())
     }
 
+    pragma[nomagic]
+    predicate liveThroughExt(BasicBlock bb, SourceVariable v) {
+      liveAtExit(bb, v) and
+      not ssaRef(bb, _, v, ssaDefExt())
+    }
+
+    /**
+     * NB: If this predicate is exposed, it should be cached.
+     *
+     * Holds if the SSA definition of `v` at `def` reaches the end of basic
+     * block `bb`, at which point it is still live, without crossing another
+     * SSA definition of `v`.
+     */
+    pragma[nomagic]
+    predicate ssaDefReachesEndOfBlockExt(BasicBlock bb, DefinitionExt def, SourceVariable v) {
+      exists(int last |
+        last = maxSsaRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
+        ssaDefReachesRank(bb, def, last, v) and
+        liveAtExit(bb, v)
+      )
+      or
+      // The construction of SSA form ensures that each read of a variable is
+      // dominated by its definition. An SSA definition therefore reaches a
+      // control flow node if it is the _closest_ SSA definition that dominates
+      // the node. If two definitions dominate a node then one must dominate the
+      // other, so therefore the definition of _closest_ is given by the dominator
+      // tree. Thus, reaching definitions can be calculated in terms of dominance.
+      ssaDefReachesEndOfBlockExt(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
+      liveThroughExt(bb, pragma[only_bind_into](v))
+    }
+
     /**
      * Holds if the SSA definition of `v` at `def` reaches index `i` in the same
      * basic block `bb`, without crossing another SSA definition of `v`.
@@ -445,6 +476,21 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         ssaDefReachesRank(bb, def, rnk, v) and
         rnk = ssaRefRank(bb, i, v, SsaActualRead())
       )
+    }
+
+    /**
+     * NB: If this predicate is exposed, it should be cached.
+     *
+     * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
+     * basic block `bb`, without crossing another SSA definition of `v`.
+     */
+    pragma[nomagic]
+    predicate ssaDefReachesReadExt(SourceVariable v, DefinitionExt def, BasicBlock bb, int i) {
+      ssaDefReachesReadWithinBlock(v, def, bb, i)
+      or
+      ssaRef(bb, i, v, SsaActualRead()) and
+      ssaDefReachesEndOfBlockExt(getABasicBlockPredecessor(bb), def, v) and
+      not ssaDefReachesReadWithinBlock(v, _, bb, i)
     }
   }
 
