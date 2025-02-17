@@ -388,7 +388,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate liveThrough(BasicBlock idom, BasicBlock bb, SourceVariable v) {
       idom = getImmediateBasicBlockDominator(bb) and
       liveAtExit(bb, v) and
-      not ssaRef(bb, _, v, Def())
+      not any(Definition def).definesAt(v, bb, _)
     }
 
     /**
