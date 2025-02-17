@@ -25,18 +25,18 @@ function implicitToString() {
     const array = [source('implicitToString.1')];
     array.push(source('implicitToString.2'))
 
-    sink(array + "foo"); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink("foo" + array); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink("" + array); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink(array + 1); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink(1 + array); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink(unknown() + array); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink(array + unknown()); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(array + "foo"); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink("foo" + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink("" + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(array + 1); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(1 + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(unknown() + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(array + unknown()); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
 
-    sink(`${array}`); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
-    sink(`${array} foo`); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(`${array}`); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(`${array} foo`); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
 
-    sink(String(array)); // $ MISSING: hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(String(array)); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
 
     sink(array.toString()); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
     sink(array.toString("utf8")); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
