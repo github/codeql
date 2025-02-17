@@ -4,6 +4,7 @@
 
 import go
 private import ControlFlowGraphImpl
+private import semmle.go.internal.Locations
 
 /**
  * Holds if `nd` starts a new basic block.
@@ -121,12 +122,14 @@ class BasicBlock extends TControlFlowNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getFirstNode().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-    this.getLastNode().hasLocationInfo(_, _, _, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Gets the location of this basic block. */
+  DbOrBasicBlockLocation getLocation() { result = getBasicBlockLocation(this) }
 }
 
 /**
