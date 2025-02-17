@@ -58,14 +58,14 @@ mod m2 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // `x.m1` missing type at path 0, instead at path ""
-        println!("{:?}", y.m1().a); // `y.m2` missing type at path 0, instead at path ""
+        println!("{:?}", x.m1()); // missing
+        println!("{:?}", y.m1().a); // missing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // `x.m2` missing type
-        println!("{:?}", y.m2()); // `y.m2` missing type
+        println!("{:?}", x.m2()); // missing
+        println!("{:?}", y.m2()); // missing
     }
 }
 
@@ -87,7 +87,7 @@ mod m3 {
         where
             Self: Sized,
         {
-            self // `self` missing type
+            self
         }
     }
 
@@ -111,8 +111,8 @@ mod m3 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // `x.m1` missing type at path 0, instead at path ""
-        println!("{:?}", y.m1().a); // `y.m1` missing type at path 0, instead at path ""
+        println!("{:?}", x.m1()); // missing
+        println!("{:?}", y.m1().a); // missing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -140,7 +140,7 @@ mod m4 {
         where
             Self: Sized,
         {
-            self // `self` missing type
+            self
         }
     }
 

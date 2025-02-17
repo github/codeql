@@ -144,7 +144,9 @@ class StructType extends Type, TStruct {
     // todo: assumes all `impl` blocks are in scope
     exists(ImplItemNode i |
       struct = i.resolveSelfTy() and
-      result = i.getASuccessor(name)
+      result = i.getASuccessor(name) and
+      // todo: generics are not supported
+      not i.getSelfPath().getPart().hasGenericArgList()
     )
   }
 
@@ -173,7 +175,9 @@ class EnumType extends Type, TEnum {
     // todo: assumes all `impl` blocks are in scope
     exists(ImplItemNode i |
       enum = i.resolveSelfTy() and
-      result = i.getASuccessor(name)
+      result = i.getASuccessor(name) and
+      // todo: generics are not supported
+      not i.getSelfPath().getPart().hasGenericArgList()
     )
   }
 
@@ -386,34 +390,6 @@ private module BaseTypes {
     )
   }
 
-  // pragma[nomagic]
-  // predicate arrayBaseTypeHasTypeParameterAt(Type base, TypePath path) {
-  //   exists(UnboundType::TsIListInterfaceType immediateBase |
-  //     base = immediateBase and
-  //     path = "0"
-  //     or
-  //     // transitive base class
-  //     exists(TypeRepr baseTypeMention |
-  //       baseTypeMentionHasTypeParameterAt(immediateBase, baseTypeMention, path, _) and
-  //       base = baseTypeMention.getType()
-  //     )
-  //   )
-  // }
-  // pragma[nomagic]
-  // predicate arrayBaseTypeHasNonTypeParameterAt(Type base, TypePath path, Type t) {
-  //   not t instanceof TypeParameter and
-  //   exists(UnboundType::TsIListInterfaceType immediateBase |
-  //     base = immediateBase and
-  //     t = base and
-  //     path = ""
-  //     or
-  //     // transitive base class
-  //     exists(TypeRepr baseTypeMention |
-  //       baseTypeMentionHasNonTypeParameterAt(immediateBase, baseTypeMention, path, t) and
-  //       base = baseTypeMention.getType()
-  //     )
-  //   )
-  // }
   /**
    * Holds if `base` is a (transitive) base type mention of `sub`, and
    * non-type-parameter `t` is mentioned (implicitly) at `path` inside `base`.
@@ -534,7 +510,10 @@ private signature module MatchingInputSig {
   }
 
   bindingset[this]
-  class Pos;
+  class Pos {
+    bindingset[this]
+    string toString();
+  }
 
   Pos getReturnPos();
 
@@ -614,13 +593,25 @@ private module Matching<MatchingInputSig Input> {
   }
 
   private module BaseTypeAtInput implements BaseTypeAtInputSig {
-    newtype Node =
-      additional MkNode(Access a, Pos pos) {
+    private newtype TNode =
+      MkNode(Access a, Pos pos) {
         exists(Decl target |
           argumentTypeAt(a, pos, target, _, _) and
           declType(target, _, _, any(TypeParameter tp))
         )
       }
+
+    additional Node mkNode(Access a, Pos pos) { result = MkNode(a, pos) }
+
+    class Node extends MkNode {
+      Access getAccess() { this = MkNode(result, _) }
+
+      Pos getPos() { this = MkNode(_, result) }
+
+      string toString() { result = this.getAccess().toString() + ", " + this.getPos().toString() }
+
+      Location getLocation() { result = this.getAccess().getLocation() }
+    }
 
     Type resolveType(Node n, TypePath path) {
       exists(Access a, Pos pos |
@@ -648,7 +639,7 @@ private module Matching<MatchingInputSig Input> {
   ) {
     exists(TypeRepr_ tm |
       target(a, target) and
-      NodeHasBaseTypeAt<BaseTypeAtInput>::hasBaseType(BaseTypeAtInput::MkNode(a, pos), tm, path, t) and
+      NodeHasBaseTypeAt<BaseTypeAtInput>::hasBaseType(BaseTypeAtInput::mkNode(a, pos), tm, path, t) and
       base = tm.resolveType()
     )
     // or
@@ -740,8 +731,19 @@ private Type resolveVariableType(AstNode n, TypePath path) {
 }
 
 pragma[nomagic]
-private Type resolveSelfType(Impl i, TypePath path) {
+private Type resolveImplSelfType(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeRepr_).resolveTypeAt(path)
+}
+
+pragma[nomagic]
+private Type resolveTraitSelfType(Trait t, TypePath path) {
+  result = TTrait(t) and
+  path.isEmpty()
+  or
+  exists(int i |
+    result = TTypeParameter(t.getGenericParamList().getTypeParam(i)) and
+    path = typePath(i)
+  )
 }
 
 pragma[nomagic]
@@ -753,9 +755,13 @@ private Type resolveTargetTyped(AstNode n, TypePath path) {
       result = resolveType(let.getInitializer(), path)
     )
     or
-    exists(ImplItemNode i, Function f, SelfParam p, TypePath suffix, Type res |
+    exists(ItemNode i, Function f, SelfParam p, TypePath suffix, Type res |
       n = p and
-      res = resolveSelfType(i, suffix) and
+      (
+        res = resolveImplSelfType(i, suffix)
+        or
+        res = resolveTraitSelfType(i, suffix)
+      ) and
       f = i.getASuccessor(_) and
       p = f.getParamList().getSelfParam()
     |
