@@ -189,7 +189,6 @@ subpaths
 | main.rs:161:13:161:13 | a [MyInt] | main.rs:142:12:142:15 | SelfParam [MyInt] | main.rs:142:42:145:5 | { ... } [MyInt] | main.rs:161:13:161:20 | a.add(...) [MyInt] |
 | main.rs:236:16:236:25 | source(...) | main.rs:227:25:227:30 | ...: i64 | main.rs:227:12:227:22 | ...: ... [Return] [&ref] | main.rs:236:13:236:13 | [post] m [&ref] |
 testFailures
-| main.rs:136:10:136:10 | m | Fixed missing result: hasValueFlow=34 |
 #select
 | main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) | source(...) |
 | main.rs:22:10:22:10 | n | main.rs:26:13:26:21 | source(...) | main.rs:22:10:22:10 | n | $@ | main.rs:26:13:26:21 | source(...) | source(...) |
