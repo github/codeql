@@ -133,7 +133,7 @@ impl MyInt {
 fn data_through_associated_function() {
     let n = MyInt::new(source(34));
     let MyInt { value: m } = n;
-    sink(m); // $ MISSING: hasValueFlow=34
+    sink(m); // $ hasValueFlow=34
 }
 
 impl Add for MyInt {
