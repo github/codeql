@@ -298,16 +298,13 @@ _NORMAL_DEPENDENCIES = {
             "anyhow": Label("@vendor_py__anyhow-1.0.95//:anyhow"),
             "clap": Label("@vendor_py__clap-4.5.29//:clap"),
             "regex": Label("@vendor_py__regex-1.11.1//:regex"),
-            "smallvec": Label("@vendor_py__smallvec-1.14.0//:smallvec"),
-            "string-interner": Label("@vendor_py__string-interner-0.19.0//:string_interner"),
-            "thiserror": Label("@vendor_py__thiserror-2.0.11//:thiserror"),
-            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.10//:tree_sitter"),
-            "tree-sitter-graph": Label("@vendor_py__tree-sitter-graph-0.7.0//:tree_sitter_graph"),
+            "tree-sitter": Label("@vendor_py__tree-sitter-0.24.7//:tree_sitter"),
+            "tree-sitter-graph": Label("@vendor_py__tree-sitter-graph-0.12.0//:tree_sitter_graph"),
         },
     },
     "python/extractor/tsg-python/tsp": {
         _COMMON_CONDITION: {
-            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.10//:tree_sitter"),
+            "tree-sitter": Label("@vendor_py__tree-sitter-0.24.7//:tree_sitter"),
         },
     },
 }
@@ -457,16 +454,6 @@ def crate_repositories():
     """
     maybe(
         http_archive,
-        name = "vendor_py__ahash-0.4.8",
-        sha256 = "0453232ace82dee0dd0b4c87a59bd90f7b53b314f3e0f61fe2ee7c8a16482289",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ahash/0.4.8/download"],
-        strip_prefix = "ahash-0.4.8",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.ahash-0.4.8.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_py__aho-corasick-1.1.3",
         sha256 = "8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916",
         type = "tar.gz",
@@ -547,16 +534,6 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__cfg-if-1.0.0",
-        sha256 = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/cfg-if/1.0.0/download"],
-        strip_prefix = "cfg-if-1.0.0",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.cfg-if-1.0.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_py__clap-4.5.29",
         sha256 = "8acebd8ad879283633b343856142139f2da2317c96b05b4dd6181c61e2480184",
         type = "tar.gz",
@@ -593,36 +570,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/colorchoice/1.0.3/download"],
         strip_prefix = "colorchoice-1.0.3",
         build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.colorchoice-1.0.3.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_py__foldhash-0.1.4",
-        sha256 = "a0d2fde1f7b3d48b8395d5f2de76c18a528bd6a9cdde438df747bfcba3e05d6f",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/foldhash/0.1.4/download"],
-        strip_prefix = "foldhash-0.1.4",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.foldhash-0.1.4.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_py__hashbrown-0.15.2",
-        sha256 = "bf151400ff0baff5465007dd2f3e717f3fe502074ca563069ce3a6629d07b289",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/hashbrown/0.15.2/download"],
-        strip_prefix = "hashbrown-0.15.2",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.hashbrown-0.15.2.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_py__hashbrown-0.9.1",
-        sha256 = "d7afe4a420e3fe79967a00898cc1f4db7c8a49a9333a29f8a4bd76a253d5cd04",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/hashbrown/0.9.1/download"],
-        strip_prefix = "hashbrown-0.9.1",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.hashbrown-0.9.1.bazel"),
     )
 
     maybe(
@@ -787,22 +734,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__string-interner-0.12.2",
-        sha256 = "383196d1876517ee6f9f0864d1fc1070331b803335d3c6daaa04bbcccd823c08",
+        name = "vendor_py__streaming-iterator-0.1.9",
+        sha256 = "2b2231b7c3057d5e4ad0156fb3dc807d900806020c5ffa3ee6ff2c8c76fb8520",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/string-interner/0.12.2/download"],
-        strip_prefix = "string-interner-0.12.2",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.string-interner-0.12.2.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_py__string-interner-0.19.0",
-        sha256 = "23de088478b31c349c9ba67816fa55d9355232d63c3afea8bf513e31f0f1d2c0",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/string-interner/0.19.0/download"],
-        strip_prefix = "string-interner-0.19.0",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.string-interner-0.19.0.bazel"),
+        urls = ["https://static.crates.io/crates/streaming-iterator/0.1.9/download"],
+        strip_prefix = "streaming-iterator-0.1.9",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.streaming-iterator-0.1.9.bazel"),
     )
 
     maybe(
@@ -837,16 +774,6 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__thiserror-2.0.11",
-        sha256 = "d452f284b73e6d76dd36758a0c8684b1d5be31f92b89d07fd5822175732206fc",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thiserror/2.0.11/download"],
-        strip_prefix = "thiserror-2.0.11",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.thiserror-2.0.11.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_py__thiserror-impl-1.0.69",
         sha256 = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1",
         type = "tar.gz",
@@ -857,32 +784,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__thiserror-impl-2.0.11",
-        sha256 = "26afc1baea8a989337eeb52b6e72a039780ce45c3edfcc9c5b9d112feeb173c2",
+        name = "vendor_py__tree-sitter-0.24.7",
+        sha256 = "a5387dffa7ffc7d2dae12b50c6f7aab8ff79d6210147c6613561fc3d474c6f75",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thiserror-impl/2.0.11/download"],
-        strip_prefix = "thiserror-impl-2.0.11",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.thiserror-impl-2.0.11.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter/0.24.7/download"],
+        strip_prefix = "tree-sitter-0.24.7",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-0.24.7.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_py__tree-sitter-0.20.10",
-        sha256 = "e747b1f9b7b931ed39a548c1fae149101497de3c1fc8d9e18c62c1a66c683d3d",
+        name = "vendor_py__tree-sitter-graph-0.12.0",
+        sha256 = "63f86eb73c7d891c4b9b6fe4d4e63dd94c506e4788af7c2296afdcfbeea626cc",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter/0.20.10/download"],
-        strip_prefix = "tree-sitter-0.20.10",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-0.20.10.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter-graph/0.12.0/download"],
+        strip_prefix = "tree-sitter-graph-0.12.0",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-graph-0.12.0.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_py__tree-sitter-graph-0.7.0",
-        sha256 = "639d21e886f581d293de5f5081f09af003c54607ff3fa85efa159b243ba1f97a",
+        name = "vendor_py__tree-sitter-language-0.1.4",
+        sha256 = "38eee4db33814de3d004de9d8d825627ed3320d0989cce0dea30efaf5be4736c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter-graph/0.7.0/download"],
-        strip_prefix = "tree-sitter-graph-0.7.0",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-graph-0.7.0.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter-language/0.1.4/download"],
+        strip_prefix = "tree-sitter-language-0.1.4",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-language-0.1.4.bazel"),
     )
 
     maybe(
@@ -1010,9 +937,6 @@ def crate_repositories():
         struct(repo = "vendor_py__cc-1.2.14", is_dev_dep = False),
         struct(repo = "vendor_py__clap-4.5.29", is_dev_dep = False),
         struct(repo = "vendor_py__regex-1.11.1", is_dev_dep = False),
-        struct(repo = "vendor_py__smallvec-1.14.0", is_dev_dep = False),
-        struct(repo = "vendor_py__string-interner-0.19.0", is_dev_dep = False),
-        struct(repo = "vendor_py__thiserror-2.0.11", is_dev_dep = False),
-        struct(repo = "vendor_py__tree-sitter-0.20.10", is_dev_dep = False),
-        struct(repo = "vendor_py__tree-sitter-graph-0.7.0", is_dev_dep = False),
+        struct(repo = "vendor_py__tree-sitter-0.24.7", is_dev_dep = False),
+        struct(repo = "vendor_py__tree-sitter-graph-0.12.0", is_dev_dep = False),
     ]
