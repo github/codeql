@@ -61,33 +61,36 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
-      exists(Addressable a, int pos |
-        // TODO: calculate in QL
-        arg = a.getExtendedCanonicalPath() + "(" + pos + ")"
-      |
-        result = "Struct" and
-        c.(TupleFieldContent).isStructField(a, pos)
-        or
-        result = "Variant" and
-        c.(TupleFieldContent).isVariantField(a, pos)
-      )
-      or
-      exists(Addressable a, string field |
-        // TODO: calculate in QL
-        arg = a.getExtendedCanonicalPath() + "::" + field
-      |
-        result = "Struct" and
-        c.(RecordFieldContent).isStructField(a, field)
-        or
-        result = "Variant" and
-        c.(RecordFieldContent).isVariantField(a, field)
-      )
-      or
-      result = "Variant" and
-      c =
-        any(VariantInLibTupleFieldContent v |
-          arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
+      result = "Field" and
+      (
+        exists(Addressable a, int pos |
+          // TODO: calculate in QL
+          arg = a.getExtendedCanonicalPath() + "(" + pos + ")"
+        |
+          c.(TupleFieldContent).isStructField(a, pos)
+          or
+          c.(TupleFieldContent).isVariantField(a, pos)
         )
+        or
+        exists(Addressable a, string field |
+          // TODO: calculate in QL
+          arg = a.getExtendedCanonicalPath() + "::" + field
+        |
+          c.(RecordFieldContent).isStructField(a, field)
+          or
+          c.(RecordFieldContent).isVariantField(a, field)
+        )
+        or
+        c =
+          any(VariantInLibTupleFieldContent v |
+            arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
+          )
+        or
+        exists(int pos |
+          c = TTuplePositionContent(pos) and
+          arg = pos.toString()
+        )
+      )
       or
       result = "Reference" and
       c = TReferenceContent() and
@@ -96,12 +99,6 @@ module Input implements InputSig<Location, RustDataFlow> {
       result = "Element" and
       c = TElementContent() and
       arg = ""
-      or
-      exists(int pos |
-        result = "Tuple" and
-        c = TTuplePositionContent(pos) and
-        arg = pos.toString()
-      )
       or
       result = "Future" and
       c = TFutureContent() and

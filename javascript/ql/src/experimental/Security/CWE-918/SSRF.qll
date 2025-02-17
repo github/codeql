@@ -29,6 +29,10 @@ module SsrfConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierOut(DataFlow::Node node) { strictSanitizingPrefixEdge(node, _) }
 
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // Does not select the source
+  }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 

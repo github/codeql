@@ -11,11 +11,11 @@
    Microsoft extensions (up to VS 2022),
 
    Arm Compiler 5 [4]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
-   C#,C# up to 12,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
+   C#,C# up to 13,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
    .NET Core up to 3.1
 
-   .NET 5, .NET 6, .NET 7, .NET 8","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.23", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 22 [5]_","javac (OpenJDK and Oracle JDK),
 

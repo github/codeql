@@ -1,7 +1,6 @@
 use crate::config::Config;
 use anyhow::Context;
 use chrono::{DateTime, Utc};
-use log::{debug, info};
 use ra_ap_project_model::ProjectManifest;
 use serde::ser::SerializeMap;
 use serde::Serialize;
@@ -10,6 +9,7 @@ use std::fmt::Display;
 use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::time::Instant;
+use tracing::{debug, info};
 
 #[derive(Default, Debug, Clone, Copy, Serialize)]
 #[serde(rename_all = "camelCase")]
