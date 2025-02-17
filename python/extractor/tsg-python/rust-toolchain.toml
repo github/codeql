@@ -2,6 +2,6 @@
 # extractor. It is set to the lowest version of Rust we want to support.
 
 [toolchain]
-channel = "1.74"
+channel = "1.82"
 profile = "minimal"
 components = [ "rustfmt" ]

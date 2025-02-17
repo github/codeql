@@ -29,11 +29,12 @@ rust_library(
         ],
     ),
     crate_features = [
-        "ahash",
+        "default-hasher",
         "inline-more",
+        "raw-entry",
     ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
@@ -83,8 +84,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.9.1",
+    version = "0.15.2",
     deps = [
-        "@vendor_py__ahash-0.4.8//:ahash",
+        "@vendor_py__foldhash-0.1.4//:foldhash",
     ],
 )

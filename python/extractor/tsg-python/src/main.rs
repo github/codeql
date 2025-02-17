@@ -10,8 +10,6 @@ use std::path::Path;
 use anyhow::anyhow;
 use anyhow::Context as _;
 use anyhow::Result;
-use clap::App;
-use clap::Arg;
 use tree_sitter::Parser;
 use tree_sitter_graph::ast::File;
 use tree_sitter_graph::functions::Functions;
@@ -482,33 +480,26 @@ pub mod extra_functions {
 }
 
 fn main() -> Result<()> {
-    let matches = App::new("tsg-python")
+    let matches = clap::Command::new("tsg-python")
         .version(BUILD_VERSION)
         .author("Taus Brock-Nannestad <tausbn@github.com>")
         .about("Extracts a Python AST from the parse tree given by tree-sitter-python")
-        .arg(
-            Arg::with_name("tsg")
-                .short("t")
-                .long("tsg")
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(Arg::with_name("source").index(1).required(true))
+        .args(&[
+            clap::arg!("-t --tsg [TSG]"),
+            clap::arg!("--source <SOURCE>"),
+        ])
         .get_matches();
 
-    let tsg_path = if matches.is_present("tsg") {
-        Path::new(matches.value_of("tsg").unwrap())
-            .display()
-            .to_string()
-    } else {
-        "bundled `python.tsg`".to_owned()
-    };
-    let source_path = Path::new(matches.value_of("source").unwrap());
+    let tsg_path = matches
+        .get_one::<String>("tsg")
+        .map(|s| Path::new(s).display().to_string())
+        .unwrap_or_else(|| "bundled `python.tsg`".to_owned());
+    let source_path = Path::new(matches.get_one::<String>("source").unwrap());
     let language = tsp::language();
     let mut parser = Parser::new();
-    parser.set_language(language)?;
+    parser.set_language(&language)?;
     // Statically include `python.tsg`:
-    let tsg = if matches.is_present("tsg") {
+    let tsg = if matches.contains_id("tsg") {
         std::fs::read(&tsg_path).with_context(|| format!("Error reading TSG file {}", tsg_path))?
     } else {
         include_bytes!("../python.tsg").to_vec()

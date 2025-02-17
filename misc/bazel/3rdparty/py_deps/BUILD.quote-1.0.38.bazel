@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "hashbrown",
+    name = "quote",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,8 +29,8 @@ rust_library(
         ],
     ),
     crate_features = [
-        "ahash",
-        "inline-more",
+        "default",
+        "proc-macro",
     ],
     crate_root = "src/lib.rs",
     edition = "2018",
@@ -39,7 +39,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=hashbrown",
+        "crate-name=quote",
         "manual",
         "noclippy",
         "norustfmt",
@@ -83,8 +83,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.9.1",
+    version = "1.0.38",
     deps = [
-        "@vendor_py__ahash-0.4.8//:ahash",
+        "@vendor_py__proc-macro2-1.0.93//:proc_macro2",
     ],
 )
