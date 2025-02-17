@@ -42,12 +42,8 @@
 | main.rs:59:30:59:31 | S2 |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:61:26:61:26 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:61:26:61:26 | x | 0 | main.rs:34:5:35:14 | struct S1 |
-| main.rs:61:26:61:31 | x.m1(...) |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:61:26:61:31 | x.m1(...) |  | main.rs:34:5:35:14 | struct S1 |
 | main.rs:62:26:62:26 | y |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:62:26:62:26 | y | 0 | main.rs:36:5:37:14 | struct S2 |
-| main.rs:62:26:62:31 | y.m1(...) |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:62:26:62:31 | y.m1(...) |  | main.rs:34:5:35:14 | struct S1 |
 | main.rs:64:13:64:13 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:64:13:64:13 | x | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:64:17:64:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
@@ -62,6 +58,12 @@
 | main.rs:67:26:67:26 | x | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:68:26:68:26 | y |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:68:26:68:26 | y | 0 | main.rs:36:5:37:14 | struct S2 |
+| main.rs:84:15:84:18 | SelfParam |  | main.rs:83:5:92:5 | trait MyTrait |
+| main.rs:84:15:84:18 | SelfParam | 0 | main.rs:83:19:83:19 | A |
+| main.rs:86:15:86:18 | SelfParam |  | main.rs:83:5:92:5 | trait MyTrait |
+| main.rs:86:15:86:18 | SelfParam | 0 | main.rs:83:19:83:19 | A |
+| main.rs:90:13:90:16 | self |  | main.rs:83:5:92:5 | trait MyTrait |
+| main.rs:90:13:90:16 | self | 0 | main.rs:83:19:83:19 | A |
 | main.rs:94:43:94:43 | x |  | main.rs:94:26:94:40 | T2 |
 | main.rs:95:9:95:9 | x |  | main.rs:94:26:94:40 | T2 |
 | main.rs:99:15:99:18 | SelfParam |  | main.rs:73:5:76:5 | struct MyThing |
@@ -88,12 +90,8 @@
 | main.rs:112:30:112:31 | S2 |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:114:26:114:26 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:114:26:114:26 | x | 0 | main.rs:78:5:79:14 | struct S1 |
-| main.rs:114:26:114:31 | x.m1(...) |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:114:26:114:31 | x.m1(...) |  | main.rs:78:5:79:14 | struct S1 |
 | main.rs:115:26:115:26 | y |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:115:26:115:26 | y | 0 | main.rs:80:5:81:14 | struct S2 |
-| main.rs:115:26:115:31 | y.m1(...) |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:115:26:115:31 | y.m1(...) |  | main.rs:78:5:79:14 | struct S1 |
 | main.rs:117:13:117:13 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:117:13:117:13 | x | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:117:17:117:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
@@ -108,6 +106,12 @@
 | main.rs:120:40:120:40 | x | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:121:40:121:40 | y |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:121:40:121:40 | y | 0 | main.rs:80:5:81:14 | struct S2 |
+| main.rs:137:15:137:18 | SelfParam |  | main.rs:136:5:145:5 | trait MyTrait |
+| main.rs:137:15:137:18 | SelfParam | 0 | main.rs:136:19:136:19 | A |
+| main.rs:139:15:139:18 | SelfParam |  | main.rs:136:5:145:5 | trait MyTrait |
+| main.rs:139:15:139:18 | SelfParam | 0 | main.rs:136:19:136:19 | A |
+| main.rs:143:13:143:16 | self |  | main.rs:136:5:145:5 | trait MyTrait |
+| main.rs:143:13:143:16 | self | 0 | main.rs:136:19:136:19 | A |
 | main.rs:147:43:147:43 | x |  | main.rs:147:26:147:40 | T2 |
 | main.rs:148:9:148:9 | x |  | main.rs:147:26:147:40 | T2 |
 | main.rs:152:15:152:18 | SelfParam |  | main.rs:126:5:129:5 | struct MyThing |
@@ -143,6 +147,8 @@
 | main.rs:167:40:167:40 | x | 0 | main.rs:131:5:132:14 | struct S1 |
 | main.rs:168:40:168:40 | y |  | main.rs:126:5:129:5 | struct MyThing |
 | main.rs:168:40:168:40 | y | 0 | main.rs:133:5:134:14 | struct S2 |
+| main.rs:176:15:176:18 | SelfParam |  | main.rs:173:5:185:5 | trait MyTrait |
+| main.rs:178:15:178:18 | SelfParam |  | main.rs:173:5:185:5 | trait MyTrait |
 | main.rs:193:15:193:18 | SelfParam |  | main.rs:187:5:188:13 | struct S |
 | main.rs:194:13:194:13 | S |  | main.rs:187:5:188:13 | struct S |
 | main.rs:199:13:199:13 | x |  | main.rs:187:5:188:13 | struct S |
