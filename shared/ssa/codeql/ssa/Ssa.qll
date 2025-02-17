@@ -448,6 +448,91 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  private module AdjacentSsaRefs {
+    /**
+     * Holds if the `i`th node of basic block `bb` is a reference to `v`,
+     * either a read (when `k` is `Read()`) or an SSA definition (when
+     * `k` is `Def()`).
+     *
+     * Unlike `Liveness::varRef`, this includes phi nodes, phi reads, and
+     * pseudo-reads associated with uncertain writes, but excludes uncertain
+     * reads.
+     */
+    pragma[nomagic]
+    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+      variableRead(bb, i, v, true) and
+      k = Read()
+      or
+      variableWrite(bb, i, v, false) and
+      k = Read()
+      or
+      any(Definition def).definesAt(v, bb, i) and
+      k = Def()
+      or
+      synthPhiRead(bb, v) and i = -1 and k = Def()
+    }
+
+    private import RankRefs<ssaRef/4>
+
+    /**
+     * Holds if `v` is live at the end of basic block `bb`, which contains no
+     * reference to `v`, and `idom` is the immediate dominator of `bb`.
+     */
+    pragma[nomagic]
+    private predicate liveThrough(BasicBlock idom, BasicBlock bb, SourceVariable v) {
+      idom = getImmediateBasicBlockDominator(bb) and
+      liveAtExit(bb, v) and
+      not ssaRef(bb, _, v, _)
+    }
+
+    pragma[nomagic]
+    private predicate refReachesEndOfBlock(BasicBlock bbRef, int i, BasicBlock bb, SourceVariable v) {
+      maxRefRank(bb, v) = refRank(bb, i, v, _) and
+      liveAtExit(bb, v) and
+      bbRef = bb
+      or
+      exists(BasicBlock idom |
+        refReachesEndOfBlock(bbRef, i, idom, v) and
+        liveThrough(idom, bb, v)
+      )
+    }
+
+    /**
+     * Holds if `v` has adjacent references at index `i1` in basic block `bb1`
+     * and index `i2` in basic block `bb2`, that is, there is a path between
+     * the first reference to the second without any other reference to `v` in
+     * between. References include certain reads, SSA definitions, and
+     * pseudo-reads in the form of phi-reads. The first reference can be any of
+     * these kinds while the second is restricted to certain reads and
+     * uncertain writes.
+     *
+     * Note that the placement of phi-reads ensures that the first reference is
+     * uniquely determined by the second and that the first reference dominates
+     * the second.
+     */
+    predicate adjacentRefRead(BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v) {
+      bb1 = bb2 and
+      refRank(bb1, i1, v, _) + 1 = refRank(bb2, i2, v, Read())
+      or
+      refReachesEndOfBlock(bb1, i1, getImmediateBasicBlockDominator(bb2), v) and
+      1 = refRank(bb2, i2, v, Read())
+    }
+
+    /**
+     * Holds if the phi node or phi-read for `v` in basic block `bbPhi` takes
+     * input from basic block `input`, and that the reference to `v` at index
+     * `i` in basic block `bb` reaches the end of `input` without going through
+     * any other reference to `v`.
+     */
+    predicate adjacentRefPhi(
+      BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, SourceVariable v
+    ) {
+      refReachesEndOfBlock(bb, i, input, v) and
+      input = getABasicBlockPredecessor(bbPhi) and
+      1 = refRank(bbPhi, -1, v, _)
+    }
+  }
+
   private module SsaDefReaches {
     newtype TSsaRefKind =
       SsaActualRead() or
