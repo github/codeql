@@ -5,8 +5,6 @@ extensions:
     data:
       # Fmt
       - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
-      # Hint
-      - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
       # Iterator
       - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]

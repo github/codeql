@@ -50,7 +50,7 @@ fn string_add_reference() {
 fn string_from() {
     let s1 = source_slice(36);
     let s2 = String::from(s1);
-    sink(s2); // $ MISSING: hasTaintFlow=36
+    sink(s2); // $ hasValueFlow=36
 }
 
 fn string_to_string() {
