@@ -443,8 +443,6 @@ nodes
 | main.rs:500:11:500:15 | c_ref [&ref] | semmle.label | c_ref [&ref] |
 subpaths
 testFailures
-| main.rs:460:14:460:33 | //... | Missing result: hasTaintFlow=90 |
-| main.rs:461:14:461:33 | //... | Missing result: hasTaintFlow=90 |
 #select
 | main.rs:18:10:18:18 | source(...) | main.rs:18:10:18:18 | source(...) | main.rs:18:10:18:18 | source(...) | $@ | main.rs:18:10:18:18 | source(...) | source(...) |
 | main.rs:23:10:23:10 | s | main.rs:22:13:22:21 | source(...) | main.rs:23:10:23:10 | s | $@ | main.rs:22:13:22:21 | source(...) | source(...) |
