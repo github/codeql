@@ -14,46 +14,47 @@ class Normal(object):
 
     # not ok
     @classmethod
-    def n_cmethod(self):
+    def n_cmethod(self): # $shouldBeCls
         pass
 
     # not ok
     @classmethod
-    def n_cmethod2():
+    def n_cmethod2(): # $shouldBeCls
         pass
 
-    # this is allowed because it has a decorator other than @classmethod
     @classmethod
     @id
-    def n_suppress(any_name):
+    def n_dec(any_name): # $shouldBeCls
         pass
 
 
+# Metaclass - normal methods should be named cls, though self is also accepted
 class Class(type):
 
     def __init__(cls):
         pass
 
-    def c_method(y):
+    def c_method(y):  # $shouldBeCls
         pass
 
     def c_ok(cls):
         pass
 
-    @id
-    def c_suppress(any_name):
+    # technically we could alert on mixing self for metaclasses with cls for metaclasses in the same codebase, 
+    # but it's probably not too significant.
+    def c_self_ok(self):
         pass
 
 
 class NonSelf(object):
 
-    def __init__(x):
+    def __init__(x): # $shouldBeSelf
         pass
 
-    def s_method(y):
+    def s_method(y): # $shouldBeSelf
         pass
 
-    def s_method2():
+    def s_method2(): # $shouldBeSelf
         pass
 
     def s_ok(self):
@@ -67,11 +68,12 @@ class NonSelf(object):
     def s_cmethod(cls):
         pass
 
-    def s_smethod2(ok):
+    # we allow methods that are used in class initialization, but only detect this case when they are called. 
+    def s_smethod2(ok): # $ SPURIOUS: shouldBeSelf
         pass
     s_smethod2 = staticmethod(s_smethod2)
 
-    def s_cmethod2(cls):
+    def s_cmethod2(cls): # $ SPURIOUS: shouldBeSelf
         pass
     s_cmethod2 = classmethod(s_cmethod2)
 
@@ -118,7 +120,15 @@ class Z(zope.interface.Interface):
 
 Z().meth(0)
 
+def weird_decorator(f):
+    def g(self):
+        return f()
+    return g 
 
+class B:
+    @weird_decorator
+    def f(): # allow no-arg functions with a decorator
+        pass
 
 # The `__init_subclass__` (introduced in Python 3.6)
 # and `__class_getitem__` (introduced in Python 3.7) methods are methods
@@ -139,3 +149,10 @@ class SpecialMethodNames(object):
 
     def __class_getitem__(cls):
         pass
+
+from dataclasses import dataclass, field
+
+@dataclass 
+class A:
+    # Lambdas used in initilisation aren't methods.
+    x: int = field(default_factory = lambda: 2)

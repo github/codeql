@@ -47,28 +47,31 @@ module GoMicro {
    * A Server Interface type.
    */
   class ServiceInterfaceType extends InterfaceType {
-    NamedType namedType;
+    DefinedType definedType;
 
     ServiceInterfaceType() {
-      this = namedType.getUnderlyingType() and
-      namedType.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this = definedType.getUnderlyingType() and
+      definedType.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
 
     /**
      * Gets the name of the interface.
      */
-    override string getName() { result = namedType.getName() }
+    override string getName() { result = definedType.getName() }
+
+    /** DEPRECATED: Use `getDefinedType` instead. */
+    deprecated DefinedType getNamedType() { result = definedType }
 
     /**
-     * Gets the named type on top of this interface type.
+     * Gets the defined type on top of this interface type.
      */
-    NamedType getNamedType() { result = namedType }
+    DefinedType getDefinedType() { result = definedType }
   }
 
   /**
    * A Service server handler type.
    */
-  class ServiceServerType extends NamedType {
+  class ServiceServerType extends DefinedType {
     ServiceServerType() {
       this.implements(any(ServiceInterfaceType i)) and
       this.getName().regexpMatch("(?i).*Handler") and
@@ -79,7 +82,7 @@ module GoMicro {
   /**
    * A Client server handler type.
    */
-  class ClientServiceType extends NamedType {
+  class ClientServiceType extends DefinedType {
     ClientServiceType() {
       this.implements(any(ServiceInterfaceType i)) and
       this.getName().regexpMatch("(?i).*Service") and
@@ -101,7 +104,7 @@ module GoMicro {
   bindingset[m]
   pragma[inline_late]
   private predicate implementsServiceType(Method m) {
-    m.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+    m.implements(any(ServiceInterfaceType i).getDefinedType().getMethod(_))
   }
 
   /**

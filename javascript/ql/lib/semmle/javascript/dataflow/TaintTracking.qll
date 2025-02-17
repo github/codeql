@@ -656,7 +656,7 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from URL parameter parsing.
    */
-  private class UrlSearchParamsTaintStep extends DataFlow::SharedFlowStep {
+  private class UrlSearchParamsTaintStep extends DataFlow::LegacyFlowStep {
     /**
      * Holds if `succ` is a `URLSearchParams` providing access to the
      * parameters encoded in `pred`.

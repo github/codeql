@@ -181,9 +181,9 @@ func findMethodWithGivenReceiver(object types.Object) *types.Func {
 
 // findMethodWithGivenReceiver finds a method on type `tp` with `object` as its receiver, if one exists
 func findMethodOnTypeWithGivenReceiver(tp types.Type, object types.Object) *types.Func {
-	if namedType, ok := tp.(*types.Named); ok {
-		for i := 0; i < namedType.NumMethods(); i++ {
-			meth := namedType.Method(i)
+	if definedType, ok := tp.(*types.Named); ok {
+		for i := 0; i < definedType.NumMethods(); i++ {
+			meth := definedType.Method(i)
 			if object == meth.Type().(*types.Signature).Recv() {
 				return meth
 			}

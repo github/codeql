@@ -23,7 +23,7 @@ impl<T> MyOption<T> {
     }
 
     // summary=repo::test;<crate::option::MyOption>::is_some_and;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::is_some_and;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::is_some_and;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
     pub fn is_some_and(self, f: impl FnOnce(T) -> bool) -> bool {
         match self {
             MyNone => false,
@@ -36,7 +36,7 @@ impl<T> MyOption<T> {
     }
 
     // summary=repo::test;<crate::option::MyOption>::is_none_or;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::is_none_or;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::is_none_or;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
     pub fn is_none_or(self, f: impl FnOnce(T) -> bool) -> bool {
         match self {
             MyNone => true,
@@ -44,7 +44,7 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::as_ref;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::as_ref;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
     pub fn as_ref(&self) -> MyOption<&T> {
         match *self {
             MySome(ref x) => MySome(x),
@@ -52,7 +52,7 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::as_mut;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::as_mut;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
     pub fn as_mut(&mut self) -> MyOption<&mut T> {
         match *self {
             MySome(ref mut x) => MySome(x),
@@ -84,7 +84,7 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::unwrap;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unwrap;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
     pub fn unwrap(self) -> T {
         match self {
             MySome(val) => val,
@@ -93,7 +93,7 @@ impl<T> MyOption<T> {
     }
 
     // summary=repo::test;<crate::option::MyOption>::unwrap_or;Argument[0];ReturnValue;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::unwrap_or;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unwrap_or;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
     pub fn unwrap_or(self, default: T) -> T {
         match self {
             MySome(x) => x,
@@ -101,7 +101,7 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::unwrap_or_else;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unwrap_or_else;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::unwrap_or_else;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
     pub fn unwrap_or_else<F>(self, f: F) -> T
     where
@@ -113,7 +113,7 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::unwrap_or_default;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unwrap_or_default;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
     pub fn unwrap_or_default(self) -> T
     where
         T: Default,
@@ -123,7 +123,7 @@ impl<T> MyOption<T> {
             MyNone => T::default(),
         }
     }
-    // summary=repo::test;<crate::option::MyOption>::unwrap_unchecked;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unwrap_unchecked;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
     #[track_caller]
     pub unsafe fn unwrap_unchecked(self) -> T {
         match self {
@@ -135,8 +135,8 @@ impl<T> MyOption<T> {
 
     // Transforming contained values
 
-    // summary=repo::test;<crate::option::MyOption>::map;Argument[0].ReturnValue;ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::map;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::map;Argument[0].ReturnValue;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::map;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
     pub fn map<U, F>(self, f: F) -> MyOption<U>
     where
         F: FnOnce(T) -> U,
@@ -159,7 +159,7 @@ impl<T> MyOption<T> {
 
     // summary=repo::test;<crate::option::MyOption>::map_or;Argument[0];ReturnValue;value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::map_or;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::map_or;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[1].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::map_or;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[1].Parameter[0];value;dfc-generated
     pub fn map_or<U, F>(self, default: U, f: F) -> U
     where
         F: FnOnce(T) -> U,
@@ -172,7 +172,7 @@ impl<T> MyOption<T> {
 
     // summary=repo::test;<crate::option::MyOption>::map_or_else;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::map_or_else;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::map_or_else;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[1].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::map_or_else;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[1].Parameter[0];value;dfc-generated
     pub fn map_or_else<U, D, F>(self, default: D, f: F) -> U
     where
         D: FnOnce() -> U,
@@ -184,8 +184,8 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::ok_or;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::result::Result::Ok(0)];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::ok_or;Argument[0];ReturnValue.Variant[crate::result::Result::Err(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::ok_or;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::result::Result::Ok(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::ok_or;Argument[0];ReturnValue.Field[crate::result::Result::Err(0)];value;dfc-generated
     pub fn ok_or<E>(self, err: E) -> Result<T, E> {
         match self {
             MySome(v) => Ok(v),
@@ -193,8 +193,8 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::ok_or_else;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::result::Result::Ok(0)];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::ok_or_else;Argument[0].ReturnValue;ReturnValue.Variant[crate::result::Result::Err(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::ok_or_else;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::result::Result::Ok(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::ok_or_else;Argument[0].ReturnValue;ReturnValue.Field[crate::result::Result::Err(0)];value;dfc-generated
     pub fn ok_or_else<E, F>(self, err: F) -> Result<T, E>
     where
         F: FnOnce() -> E,
@@ -230,7 +230,7 @@ impl<T> MyOption<T> {
     }
 
     // summary=repo::test;<crate::option::MyOption>::and_then;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::and_then;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::and_then;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
     pub fn and_then<U, F>(self, f: F) -> MyOption<U>
     where
         F: FnOnce(T) -> MyOption<U>,
@@ -285,10 +285,10 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::insert;Argument[0];Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::insert;Argument[0];Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::insert;Argument[0];ReturnValue.Reference;value;dfc-generated
     // The content of `self` is overwritten so it does not flow to the return value.
-    // SPURIOUS-summary=repo::test;<crate::option::MyOption>::insert;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
+    // SPURIOUS-summary=repo::test;<crate::option::MyOption>::insert;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
     pub fn insert(&mut self, value: T) -> &mut T {
         *self = MySome(value);
 
@@ -296,14 +296,14 @@ impl<T> MyOption<T> {
         unsafe { self.as_mut().unwrap_unchecked() }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::get_or_insert;Argument[0];Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::get_or_insert;Argument[0];Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::get_or_insert;Argument[0];ReturnValue.Reference;value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::get_or_insert;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::get_or_insert;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
     pub fn get_or_insert(&mut self, value: T) -> &mut T {
         self.get_or_insert_with(|| value)
     }
 
-    // summary=repo::test;<crate::option::MyOption>::get_or_insert_default;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::get_or_insert_default;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
     pub fn get_or_insert_default(&mut self) -> &mut T
     where
         T: Default,
@@ -311,7 +311,7 @@ impl<T> MyOption<T> {
         self.get_or_insert_with(T::default)
     }
 
-    // summary=repo::test;<crate::option::MyOption>::get_or_insert_with;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::get_or_insert_with;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
     // MISSING: Mutating `self` parameter.
     pub fn get_or_insert_with<F>(&mut self, f: F) -> &mut T
     where
@@ -332,13 +332,17 @@ impl<T> MyOption<T> {
         mem::replace(self, MyNone)
     }
 
-    // summary=repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference.Variant[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated
     // MISSING: Uses `take` which doesn't have flow
     pub fn take_if<P>(&mut self, predicate: P) -> MyOption<T>
     where
         P: FnOnce(&mut T) -> bool,
     {
-        if self.as_mut().map_or(false, predicate) { self.take() } else { MyNone }
+        if self.as_mut().map_or(false, predicate) {
+            self.take()
+        } else {
+            MyNone
+        }
     }
 
     // MISSING: Uses `mem::replace`
@@ -346,8 +350,8 @@ impl<T> MyOption<T> {
         mem::replace(self, MySome(value))
     }
 
-    // summary=repo::test;<crate::option::MyOption>::zip;Argument[0].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)].Tuple[1];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::zip;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)].Tuple[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::zip;Argument[0].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Field[1];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::zip;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Field[0];value;dfc-generated
     pub fn zip<U>(self, other: MyOption<U>) -> MyOption<(T, U)> {
         match (self, other) {
             (MySome(a), MySome(b)) => MySome((a, b)),
@@ -355,9 +359,9 @@ impl<T> MyOption<T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::zip_with;Argument[self].Variant[crate::option::MyOption::MySome(0)];Argument[1].Parameter[0];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::zip_with;Argument[0].Variant[crate::option::MyOption::MySome(0)];Argument[1].Parameter[1];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::zip_with;Argument[1].ReturnValue;ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::zip_with;Argument[self].Field[crate::option::MyOption::MySome(0)];Argument[1].Parameter[0];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::zip_with;Argument[0].Field[crate::option::MyOption::MySome(0)];Argument[1].Parameter[1];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::zip_with;Argument[1].ReturnValue;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn zip_with<U, F, R>(self, other: MyOption<U>, f: F) -> MyOption<R>
     where
         F: FnOnce(T, U) -> R,
@@ -370,8 +374,8 @@ impl<T> MyOption<T> {
 }
 
 impl<T, U> MyOption<(T, U)> {
-    // summary=repo::test;<crate::option::MyOption>::unzip;Argument[self].Variant[crate::option::MyOption::MySome(0)].Tuple[0];ReturnValue.Tuple[0].Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::unzip;Argument[self].Variant[crate::option::MyOption::MySome(0)].Tuple[1];ReturnValue.Tuple[1].Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unzip;Argument[self].Field[crate::option::MyOption::MySome(0)].Field[0];ReturnValue.Field[0].Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::unzip;Argument[self].Field[crate::option::MyOption::MySome(0)].Field[1];ReturnValue.Field[1].Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn unzip(self) -> (MyOption<T>, MyOption<U>) {
         match self {
             MySome((a, b)) => (MySome(a), MySome(b)),
@@ -381,7 +385,7 @@ impl<T, U> MyOption<(T, U)> {
 }
 
 impl<T> MyOption<&T> {
-    // summary=repo::test;<crate::option::MyOption>::copied;Argument[self].Variant[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::copied;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn copied(self) -> MyOption<T>
     where
         T: Copy,
@@ -394,7 +398,7 @@ impl<T> MyOption<&T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn cloned(self) -> MyOption<T>
     where
         T: Clone,
@@ -407,7 +411,7 @@ impl<T> MyOption<&T> {
 }
 
 impl<T> MyOption<&mut T> {
-    // summary=repo::test;<crate::option::MyOption>::copied;Argument[self].Variant[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::copied;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn copied(self) -> MyOption<T>
     where
         T: Copy,
@@ -418,7 +422,7 @@ impl<T> MyOption<&mut T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn cloned(self) -> MyOption<T>
     where
         T: Clone,
@@ -431,8 +435,8 @@ impl<T> MyOption<&mut T> {
 }
 
 impl<T, E> MyOption<Result<T, E>> {
-    // summary=repo::test;<crate::option::MyOption>::transpose;Argument[self].Variant[crate::option::MyOption::MySome(0)].Variant[crate::result::Result::Err(0)];ReturnValue.Variant[crate::result::Result::Err(0)];value;dfc-generated
-    // summary=repo::test;<crate::option::MyOption>::transpose;Argument[self].Variant[crate::option::MyOption::MySome(0)].Variant[crate::result::Result::Ok(0)];ReturnValue.Variant[crate::result::Result::Ok(0)].Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::transpose;Argument[self].Field[crate::option::MyOption::MySome(0)].Field[crate::result::Result::Err(0)];ReturnValue.Field[crate::result::Result::Err(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::transpose;Argument[self].Field[crate::option::MyOption::MySome(0)].Field[crate::result::Result::Ok(0)];ReturnValue.Field[crate::result::Result::Ok(0)].Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn transpose(self) -> Result<MyOption<T>, E> {
         match self {
             MySome(Ok(x)) => Ok(MySome(x)),
@@ -446,16 +450,16 @@ impl<T> Clone for MyOption<T>
 where
     T: Clone,
 {
-   // summary=repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
-   fn clone(&self) -> Self {
+    // summary=repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    fn clone(&self) -> Self {
         match self {
             MySome(x) => MySome(x.clone()),
             MyNone => MyNone,
         }
     }
 
-   // MISSING: Flow through `clone_from` trait method which is not modeled.
-   fn clone_from(&mut self, source: &Self) {
+    // MISSING: Flow through `clone_from` trait method which is not modeled.
+    fn clone_from(&mut self, source: &Self) {
         match (self, source) {
             (MySome(to), MySome(from)) => to.clone_from(from),
             (to, from) => *to = from.clone(),
@@ -470,21 +474,21 @@ impl<T> Default for MyOption<T> {
 }
 
 impl<T> From<T> for MyOption<T> {
-    // summary=repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0];ReturnValue.Variant[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     fn from(val: T) -> MyOption<T> {
         MySome(val)
     }
 }
 
 impl<'a, T> From<&'a MyOption<T>> for MyOption<&'a T> {
-    // summary=repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
     fn from(o: &'a MyOption<T>) -> MyOption<&'a T> {
         o.as_ref()
     }
 }
 
 impl<'a, T> From<&'a mut MyOption<T>> for MyOption<&'a mut T> {
-    // summary=repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0].Reference.Variant[crate::option::MyOption::MySome(0)];ReturnValue.Variant[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated
     fn from(o: &'a mut MyOption<T>) -> MyOption<&'a mut T> {
         o.as_mut()
     }
@@ -504,7 +508,7 @@ impl<T: PartialEq> PartialEq for MyOption<T> {
 }
 
 impl<T> MyOption<MyOption<T>> {
-    // summary=repo::test;<crate::option::MyOption>::flatten;Argument[self].Variant[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::flatten;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue;value;dfc-generated
     pub fn flatten(self) -> MyOption<T> {
         // FIXME(const-hack): could be written with `and_then`
         match self {
