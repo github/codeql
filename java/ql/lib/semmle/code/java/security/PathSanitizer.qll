@@ -347,16 +347,6 @@ private class FileGetNameSanitizer extends PathInjectionSanitizer {
   }
 }
 
-/** Holds if `expr` may be null. */
-private predicate maybeNull(Expr expr) {
-  exists(DataFlow::Node src, DataFlow::Node sink |
-    src.asExpr() = nullExpr() and
-    sink.asExpr() = expr
-  |
-    DataFlow::localFlow(src, sink)
-  )
-}
-
 /** Holds if `g` is a guard that checks for `..` components. */
 private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
   // Local taint-flow is used here to handle cases where the validated expression comes from the
@@ -383,14 +373,13 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
     exists(ConstructorCall constrCall |
       constrCall.getConstructedType() instanceof TypeFile and
       n1.asExpr() = constrCall.getArgument(1) and
-      n2.asExpr() = constrCall and
-      (
-        not n1 = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode() and
-        not n1 = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode() and
-        not TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), n1.asExpr())
-        or
-        maybeNull(constrCall.getArgument(0))
-      )
+      n2.asExpr() = constrCall
+    |
+      not n1 = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode() and
+      not n1 = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode() and
+      not TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), n1.asExpr())
+      or
+      DataFlow::localExprFlow(nullExpr(), constrCall.getArgument(0))
     )
   }
 }
