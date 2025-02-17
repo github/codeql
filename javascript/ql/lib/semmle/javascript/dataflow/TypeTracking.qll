@@ -325,7 +325,7 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StepSummary summary |
       StepSummary::smallstep(pred, succ, summary) and
-      this = result.prepend(summary)
+      this = pragma[only_bind_into](result).prepend(summary)
     )
     or
     pred = succ.getAPredecessor() and
