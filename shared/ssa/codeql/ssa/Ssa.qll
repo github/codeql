@@ -331,14 +331,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private module SsaDefReachesNew {
     newtype TSsaRefKind =
       SsaActualRead() or
-      SsaPhiRead() or
       SsaDef()
-
-    class SsaRead = SsaActualRead or SsaPhiRead;
-
-    class SsaDefExt = SsaDef or SsaPhiRead;
-
-    SsaDefExt ssaDefExt() { any() }
 
     /**
      * A classification of SSA variable references into reads and definitions.
@@ -348,15 +341,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this = SsaActualRead() and
         result = "SsaActualRead"
         or
-        this = SsaPhiRead() and
-        result = "SsaPhiRead"
-        or
         this = SsaDef() and
         result = "SsaDef"
       }
 
       int getOrder() {
-        this instanceof SsaRead and
+        this = SsaActualRead() and
         result = 0
         or
         this = SsaDef() and
@@ -366,10 +356,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /**
      * Holds if the `i`th node of basic block `bb` is a reference to `v`,
-     * either a read (when `k` is `SsaActualRead()`), an SSA definition (when `k`
-     * is `SsaDef()`), or a phi-read (when `k` is `SsaPhiRead()`).
+     * either a read (when `k` is `SsaActualRead()`) or an SSA definition (when
+     * `k` is `SsaDef()`).
      *
-     * Unlike `Liveness::ref`, this includes `phi` (read) nodes.
+     * Unlike `Liveness::ref`, this includes `phi` nodes.
      */
     pragma[nomagic]
     predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
@@ -378,8 +368,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       any(Definition def).definesAt(v, bb, i) and
       k = SsaDef()
-      or
-      synthPhiRead(bb, v) and i = -1 and k = SsaPhiRead()
     }
 
     private newtype OrderedSsaRefIndex =
@@ -426,10 +414,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if the SSA definition `def` reaches rank index `rnk` in its own
      * basic block `bb`.
      */
-    predicate ssaDefReachesRank(BasicBlock bb, DefinitionExt def, int rnk, SourceVariable v) {
+    predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rnk, SourceVariable v) {
       exists(int i |
-        rnk = ssaRefRank(bb, i, v, ssaDefExt()) and
-        def.definesAt(v, bb, i, _)
+        rnk = ssaRefRank(bb, i, v, SsaDef()) and
+        def.definesAt(v, bb, i)
       )
       or
       ssaDefReachesRank(bb, def, rnk - 1, v) and
@@ -437,20 +425,18 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     pragma[nomagic]
-    predicate liveThroughExt(BasicBlock bb, SourceVariable v) {
+    private predicate liveThrough(BasicBlock bb, SourceVariable v) {
       liveAtExit(bb, v) and
-      not ssaRef(bb, _, v, ssaDefExt())
+      not ssaRef(bb, _, v, SsaDef())
     }
 
     /**
-     * NB: If this predicate is exposed, it should be cached.
-     *
      * Holds if the SSA definition of `v` at `def` reaches the end of basic
      * block `bb`, at which point it is still live, without crossing another
      * SSA definition of `v`.
      */
     pragma[nomagic]
-    predicate ssaDefReachesEndOfBlockExt(BasicBlock bb, DefinitionExt def, SourceVariable v) {
+    predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
       exists(int last |
         last = maxSsaRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
         ssaDefReachesRank(bb, def, last, v) and
@@ -463,15 +449,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       // the node. If two definitions dominate a node then one must dominate the
       // other, so therefore the definition of _closest_ is given by the dominator
       // tree. Thus, reaching definitions can be calculated in terms of dominance.
-      ssaDefReachesEndOfBlockExt(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
-      liveThroughExt(bb, pragma[only_bind_into](v))
+      ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
+      liveThrough(bb, pragma[only_bind_into](v))
     }
 
     /**
-     * Holds if the SSA definition of `v` at `def` reaches index `i` in the same
+     * Holds if the SSA definition of `v` at `def` reaches index `i` in its own
      * basic block `bb`, without crossing another SSA definition of `v`.
      */
-    predicate ssaDefReachesReadWithinBlock(SourceVariable v, DefinitionExt def, BasicBlock bb, int i) {
+    predicate ssaDefReachesReadWithinBlock(SourceVariable v, Definition def, BasicBlock bb, int i) {
       exists(int rnk |
         ssaDefReachesRank(bb, def, rnk, v) and
         rnk = ssaRefRank(bb, i, v, SsaActualRead())
@@ -479,17 +465,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * NB: If this predicate is exposed, it should be cached.
-     *
      * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
      * basic block `bb`, without crossing another SSA definition of `v`.
      */
     pragma[nomagic]
-    predicate ssaDefReachesReadExt(SourceVariable v, DefinitionExt def, BasicBlock bb, int i) {
+    predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
       ssaDefReachesReadWithinBlock(v, def, bb, i)
       or
       ssaRef(bb, i, v, SsaActualRead()) and
-      ssaDefReachesEndOfBlockExt(getABasicBlockPredecessor(bb), def, v) and
+      ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
       not ssaDefReachesReadWithinBlock(v, _, bb, i)
     }
   }
