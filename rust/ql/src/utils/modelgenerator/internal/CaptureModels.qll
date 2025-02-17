@@ -107,6 +107,12 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
   predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
+  /**
+   * Holds if `source` is an API entrypoint, i.e., a source of input where data
+   * can flow in to a library. This is used for creating sink models, as we
+   * only want to mark functions as sinks if input to the function can reach
+   * (from an input source) a known sink.
+   */
   predicate apiSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
 
   bindingset[sourceEnclosing, api]
