@@ -96,7 +96,7 @@ module LodashUnderscore {
   /**
    * A data flow step propagating an exception thrown from a callback to a Lodash/Underscore function.
    */
-  private class ExceptionStep extends DataFlow::SharedFlowStep {
+  private class ExceptionStep extends DataFlow::LegacyFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string name |
         // Members ending with By, With, or While indicate that they are a variant of
