@@ -114,43 +114,41 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * Liveness analysis (based on source variables) to restrict the size of the
-   * SSA representation.
+   * A classification of variable references into reads and
+   * (certain or uncertain) writes / definitions.
    */
-  private module Liveness {
-    /**
-     * A classification of variable references into reads (of a given kind) and
-     * (certain or uncertain) writes.
-     */
-    private newtype TRefKind =
-      Read() or
-      Write(boolean certain) { certain in [false, true] }
+  private newtype TRefKind =
+    Read() or
+    Write(boolean certain) { certain in [false, true] } or
+    Def()
 
-    private class RefKind extends TRefKind {
-      string toString() {
-        this = Read() and result = "read"
-        or
-        exists(boolean certain | this = Write(certain) and result = "write (" + certain + ")")
-      }
-
-      int getOrder() {
-        this = Read() and
-        result = 0
-        or
-        this = Write(_) and
-        result = 1
-      }
-    }
-
-    /**
-     * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
-     */
-    predicate ref(BasicBlock bb, int i, SourceVariable v, RefKind k) {
-      variableRead(bb, i, v, _) and k = Read()
+  private class RefKind extends TRefKind {
+    string toString() {
+      this = Read() and result = "read"
       or
-      exists(boolean certain | variableWrite(bb, i, v, certain) | k = Write(certain))
+      exists(boolean certain | this = Write(certain) and result = "write (" + certain + ")")
+      or
+      this = Def() and result = "def"
     }
 
+    int getOrder() {
+      this = Read() and
+      result = 0
+      or
+      this = Write(_) and
+      result = 1
+      or
+      this = Def() and
+      result = 1
+    }
+  }
+
+  /**
+   * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
+   */
+  private signature predicate refSig(BasicBlock bb, int i, SourceVariable v, RefKind k);
+
+  private module RankRefs<refSig/4 ref> {
     private newtype OrderedRefIndex =
       MkOrderedRefIndex(int i, int tag) {
         exists(RefKind rk | ref(_, i, _, rk) | tag = rk.getOrder())
@@ -168,7 +166,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      *
      * Reads are considered before writes when they happen at the same index.
      */
-    private int refRank(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+    int refRank(BasicBlock bb, int i, SourceVariable v, RefKind k) {
       refOrd(bb, i, v, k, _) =
         rank[result](int j, int ord, OrderedRefIndex res |
           res = refOrd(bb, j, v, _, ord)
@@ -177,10 +175,27 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
     }
 
-    private int maxRefRank(BasicBlock bb, SourceVariable v) {
+    int maxRefRank(BasicBlock bb, SourceVariable v) {
       result = refRank(bb, _, v, _) and
       not result + 1 = refRank(bb, _, v, _)
     }
+  }
+
+  /**
+   * Liveness analysis (based on source variables) to restrict the size of the
+   * SSA representation.
+   */
+  private module Liveness {
+    /**
+     * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
+     */
+    predicate varRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+      variableRead(bb, i, v, _) and k = Read()
+      or
+      exists(boolean certain | variableWrite(bb, i, v, certain) | k = Write(certain))
+    }
+
+    private import RankRefs<varRef/4>
 
     /**
      * Gets the (1-based) rank of the first reference to `v` inside basic block `bb`
@@ -295,7 +310,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
-      not ref(readbb, _, v, _)
+      not varRef(readbb, _, v, _)
     )
   }
 
@@ -329,90 +344,27 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private class TDefinition = TWriteDef or TPhiNode;
 
   private module SsaDefReachesNew {
-    newtype TSsaRefKind =
-      SsaActualRead() or
-      SsaDef()
-
-    /**
-     * A classification of SSA variable references into reads and definitions.
-     */
-    class SsaRefKind extends TSsaRefKind {
-      string toString() {
-        this = SsaActualRead() and
-        result = "SsaActualRead"
-        or
-        this = SsaDef() and
-        result = "SsaDef"
-      }
-
-      int getOrder() {
-        this = SsaActualRead() and
-        result = 0
-        or
-        this = SsaDef() and
-        result = 1
-      }
-    }
-
     /**
      * Holds if the `i`th node of basic block `bb` is a reference to `v`,
-     * either a read (when `k` is `SsaActualRead()`) or an SSA definition (when
-     * `k` is `SsaDef()`).
+     * either a read (when `k` is `Read()`) or an SSA definition (when
+     * `k` is `Def()`).
      *
-     * Unlike `Liveness::ref`, this includes `phi` nodes and pseudo-reads
+     * Unlike `Liveness::varRef`, this includes `phi` nodes and pseudo-reads
      * associated with uncertain writes.
      */
     pragma[nomagic]
-    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
+    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
       variableRead(bb, i, v, _) and
-      k = SsaActualRead()
+      k = Read()
       or
       variableWrite(bb, i, v, false) and
-      k = SsaActualRead()
+      k = Read()
       or
       any(Definition def).definesAt(v, bb, i) and
-      k = SsaDef()
+      k = Def()
     }
 
-    private newtype OrderedSsaRefIndex =
-      MkOrderedSsaRefIndex(int i, SsaRefKind k) { ssaRef(_, i, _, k) }
-
-    private OrderedSsaRefIndex ssaRefOrd(
-      BasicBlock bb, int i, SourceVariable v, SsaRefKind k, int ord
-    ) {
-      ssaRef(bb, i, v, k) and
-      result = MkOrderedSsaRefIndex(i, k) and
-      ord = k.getOrder()
-    }
-
-    /**
-     * Gets the (1-based) rank of the reference to `v` at the `i`th node of basic
-     * block `bb`, which has the given reference kind `k`.
-     *
-     * For example, if `bb` is a basic block with a phi node for `v` (considered
-     * to be at index -1), reads `v` at node 2, and defines it at node 5, we have:
-     *
-     * ```ql
-     * ssaRefRank(bb, -1, v, SsaDef()) = 1    // phi node
-     * ssaRefRank(bb,  2, v, Read())   = 2    // read at node 2
-     * ssaRefRank(bb,  5, v, SsaDef()) = 3    // definition at node 5
-     * ```
-     *
-     * Reads are considered before writes when they happen at the same index.
-     */
-    int ssaRefRank(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-      ssaRefOrd(bb, i, v, k, _) =
-        rank[result](int j, int ord, OrderedSsaRefIndex res |
-          res = ssaRefOrd(bb, j, v, _, ord)
-        |
-          res order by j, ord
-        )
-    }
-
-    int maxSsaRefRank(BasicBlock bb, SourceVariable v) {
-      result = ssaRefRank(bb, _, v, _) and
-      not result + 1 = ssaRefRank(bb, _, v, _)
-    }
+    private import RankRefs<ssaRef/4>
 
     /**
      * Holds if the SSA definition `def` reaches rank index `rnk` in its own
@@ -420,12 +372,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rnk, SourceVariable v) {
       exists(int i |
-        rnk = ssaRefRank(bb, i, v, SsaDef()) and
+        rnk = refRank(bb, i, v, Def()) and
         def.definesAt(v, bb, i)
       )
       or
       ssaDefReachesRank(bb, def, rnk - 1, v) and
-      rnk = ssaRefRank(bb, _, v, SsaActualRead())
+      rnk = refRank(bb, _, v, Read())
     }
 
     /**
@@ -436,7 +388,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate liveThrough(BasicBlock idom, BasicBlock bb, SourceVariable v) {
       idom = getImmediateBasicBlockDominator(bb) and
       liveAtExit(bb, v) and
-      not ssaRef(bb, _, v, SsaDef())
+      not ssaRef(bb, _, v, Def())
     }
 
     /**
@@ -447,7 +399,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     pragma[nomagic]
     predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
       exists(int last |
-        last = maxSsaRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
+        last = maxRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
         ssaDefReachesRank(bb, def, last, v) and
         liveAtExit(bb, v)
       )
@@ -471,7 +423,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     predicate ssaDefReachesReadWithinBlock(SourceVariable v, Definition def, BasicBlock bb, int i) {
       exists(int rnk |
         ssaDefReachesRank(bb, def, rnk, v) and
-        rnk = ssaRefRank(bb, i, v, SsaActualRead())
+        rnk = refRank(bb, i, v, Read())
       )
     }
 
@@ -483,7 +435,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
       ssaDefReachesReadWithinBlock(v, def, bb, i)
       or
-      ssaRef(bb, i, v, SsaActualRead()) and
+      ssaRef(bb, i, v, Read()) and
       ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, v) and
       not ssaDefReachesReadWithinBlock(v, _, bb, i)
     }
@@ -537,7 +489,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * either a read (when `k` is `SsaActualRead()`), an SSA definition (when `k`
      * is `SsaDef()`), or a phi-read (when `k` is `SsaPhiRead()`).
      *
-     * Unlike `Liveness::ref`, this includes `phi` (read) nodes.
+     * Unlike `Liveness::varRef`, this includes `phi` (read) nodes.
      */
     pragma[nomagic]
     predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
@@ -697,7 +649,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(SourceVariable v |
         varBlockReachesExt(pragma[only_bind_into](def), v, bb1, pragma[only_bind_into](bb2)) and
         phi.definesAt(v, bb2, _, _) and
-        not ref(bb2, _, v, _)
+        not varRef(bb2, _, v, _)
       )
     }
 
