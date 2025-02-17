@@ -1,6 +1,84 @@
 models
 edges
+| Patterns.cs:3:41:3:44 | Prop : Object | Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:3:41:3:44 | Prop : Object | Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:11:13:11:13 | access to local variable o : Object | Patterns.cs:12:34:12:34 | access to local variable o : Object | provenance |  |
+| Patterns.cs:11:13:11:13 | access to local variable o : Object | Patterns.cs:12:34:12:34 | access to local variable o : Object | provenance |  |
+| Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | Patterns.cs:11:13:11:13 | access to local variable o : Object | provenance |  |
+| Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | Patterns.cs:11:13:11:13 | access to local variable o : Object | provenance |  |
+| Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:13:13:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:13:13:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | provenance |  |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | provenance |  |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:13:13:13:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:39:13:46 | Object p : Object | provenance |  |
+| Patterns.cs:13:13:13:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:39:13:46 | Object p : Object | provenance |  |
+| Patterns.cs:13:39:13:46 | Object p : Object | Patterns.cs:15:18:15:18 | access to local variable p | provenance |  |
+| Patterns.cs:13:39:13:46 | Object p : Object | Patterns.cs:15:18:15:18 | access to local variable p | provenance |  |
+| Patterns.cs:21:13:21:13 | access to local variable o : Object | Patterns.cs:22:34:22:34 | access to local variable o : Object | provenance |  |
+| Patterns.cs:21:13:21:13 | access to local variable o : Object | Patterns.cs:22:34:22:34 | access to local variable o : Object | provenance |  |
+| Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | Patterns.cs:21:13:21:13 | access to local variable o : Object | provenance |  |
+| Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | Patterns.cs:21:13:21:13 | access to local variable o : Object | provenance |  |
+| Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:23:17:23:17 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:23:17:23:17 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | provenance |  |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | provenance |  |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
+| Patterns.cs:23:17:23:17 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:25:39:25:46 | Object p : Object | provenance |  |
+| Patterns.cs:23:17:23:17 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:25:39:25:46 | Object p : Object | provenance |  |
+| Patterns.cs:25:39:25:46 | Object p : Object | Patterns.cs:26:22:26:22 | access to local variable p | provenance |  |
+| Patterns.cs:25:39:25:46 | Object p : Object | Patterns.cs:26:22:26:22 | access to local variable p | provenance |  |
 nodes
+| Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | semmle.label | this [Return] : RecordClass2 [property Prop] : Object |
+| Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | semmle.label | this [Return] : RecordClass2 [property Prop] : Object |
+| Patterns.cs:3:41:3:44 | Prop : Object | semmle.label | Prop : Object |
+| Patterns.cs:3:41:3:44 | Prop : Object | semmle.label | Prop : Object |
+| Patterns.cs:11:13:11:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:11:13:11:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | semmle.label | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | semmle.label | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:13:13:13:13 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:13:13:13:13 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:13:39:13:46 | Object p : Object | semmle.label | Object p : Object |
+| Patterns.cs:13:39:13:46 | Object p : Object | semmle.label | Object p : Object |
+| Patterns.cs:15:18:15:18 | access to local variable p | semmle.label | access to local variable p |
+| Patterns.cs:15:18:15:18 | access to local variable p | semmle.label | access to local variable p |
+| Patterns.cs:21:13:21:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:21:13:21:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | semmle.label | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | semmle.label | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Patterns.cs:23:17:23:17 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:23:17:23:17 | access to local variable r : RecordClass2 [property Prop] : Object | semmle.label | access to local variable r : RecordClass2 [property Prop] : Object |
+| Patterns.cs:25:39:25:46 | Object p : Object | semmle.label | Object p : Object |
+| Patterns.cs:25:39:25:46 | Object p : Object | semmle.label | Object p : Object |
+| Patterns.cs:26:22:26:22 | access to local variable p | semmle.label | access to local variable p |
+| Patterns.cs:26:22:26:22 | access to local variable p | semmle.label | access to local variable p |
 subpaths
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
+| Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | Patterns.cs:3:21:3:32 | this [Return] : RecordClass2 [property Prop] : Object | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object |
 testFailures
 #select
+| Patterns.cs:15:18:15:18 | access to local variable p | Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | Patterns.cs:15:18:15:18 | access to local variable p | $@ | Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Patterns.cs:15:18:15:18 | access to local variable p | Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | Patterns.cs:15:18:15:18 | access to local variable p | $@ | Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Patterns.cs:26:22:26:22 | access to local variable p | Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | Patterns.cs:26:22:26:22 | access to local variable p | $@ | Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Patterns.cs:26:22:26:22 | access to local variable p | Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | Patterns.cs:26:22:26:22 | access to local variable p | $@ | Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |

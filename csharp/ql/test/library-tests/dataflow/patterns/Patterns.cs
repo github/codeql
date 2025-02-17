@@ -12,7 +12,7 @@ public class RecordPatterns
         var r = new RecordClass2(o);
         if (r is RecordClass2 { Prop: object p })
         {
-            Sink(p); // $ MISSING: hasValueFlow=1
+            Sink(p); // $ hasValueFlow=1
         }
     }
 
@@ -23,7 +23,7 @@ public class RecordPatterns
         switch (r)
         {
             case RecordClass2 { Prop: object p }:
-                Sink(p); // $ MISSING: hasValueFlow=2
+                Sink(p); // $ hasValueFlow=2
                 break;
         }
     }
