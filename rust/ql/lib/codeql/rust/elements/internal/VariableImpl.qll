@@ -62,8 +62,8 @@ module Impl {
   }
 
   /**
-   * Holds if `p` declares a variable named `name` at `definingNode`. Normally,
-   * `definingNode = p`, except in cases like
+   * Holds if `name` declares a variable named `text` at `definingNode`.
+   * Normally, `definingNode = name`, except in cases like
    *
    * ```rust
    * match either {
