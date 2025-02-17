@@ -291,7 +291,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | inDominanceFrontier(readbb, bb) |
-      variableRead(readbb, _, v, _) and
+      ssaDefReachesRead(v, _, readbb, _) and
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
