@@ -62,8 +62,8 @@ use_repo(
     "vendor_py__cc-1.2.14",
     "vendor_py__clap-4.5.29",
     "vendor_py__regex-1.11.1",
-    "vendor_py__tree-sitter-0.24.7",
-    "vendor_py__tree-sitter-graph-0.12.0",
+    "vendor_py__tree-sitter-0.20.10",
+    "vendor_py__tree-sitter-graph-0.7.0",
 )
 
 # deps for ruby+rust

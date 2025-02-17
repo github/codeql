@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "tree_sitter_graph",
+    name = "ahash",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter-graph",
+        "crate-name=ahash",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,15 +79,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.12.0",
-    deps = [
-        "@vendor_py__log-0.4.25//:log",
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__serde-1.0.217//:serde",
-        "@vendor_py__serde_json-1.0.138//:serde_json",
-        "@vendor_py__smallvec-1.14.0//:smallvec",
-        "@vendor_py__streaming-iterator-0.1.9//:streaming_iterator",
-        "@vendor_py__thiserror-1.0.69//:thiserror",
-        "@vendor_py__tree-sitter-0.24.7//:tree_sitter",
-    ],
+    version = "0.4.8",
 )

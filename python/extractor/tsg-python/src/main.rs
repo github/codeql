@@ -10,6 +10,7 @@ use std::path::Path;
 use anyhow::anyhow;
 use anyhow::Context as _;
 use anyhow::Result;
+use clap::{Command, Arg, ArgAction};
 use tree_sitter::Parser;
 use tree_sitter_graph::ast::File;
 use tree_sitter_graph::functions::Functions;
@@ -480,14 +481,18 @@ pub mod extra_functions {
 }
 
 fn main() -> Result<()> {
-    let matches = clap::Command::new("tsg-python")
+    let matches = Command::new("tsg-python")
         .version(BUILD_VERSION)
         .author("Taus Brock-Nannestad <tausbn@github.com>")
         .about("Extracts a Python AST from the parse tree given by tree-sitter-python")
-        .args(&[
-            clap::arg!("-t --tsg [TSG]"),
-            clap::arg!("--source <SOURCE>"),
-        ])
+        .arg(
+            Arg::new("tsg")
+                .short('t')
+                .long("tsg")
+                .action(ArgAction::Set)
+                .required(false)
+        )
+        .arg(Arg::new("source").index(1).required(true))
         .get_matches();
 
     let tsg_path = matches
@@ -497,7 +502,7 @@ fn main() -> Result<()> {
     let source_path = Path::new(matches.get_one::<String>("source").unwrap());
     let language = tsp::language();
     let mut parser = Parser::new();
-    parser.set_language(&language)?;
+    parser.set_language(language)?;
     // Statically include `python.tsg`:
     let tsg = if matches.contains_id("tsg") {
         std::fs::read(&tsg_path).with_context(|| format!("Error reading TSG file {}", tsg_path))?

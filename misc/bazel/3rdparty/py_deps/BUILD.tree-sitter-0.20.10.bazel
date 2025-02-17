@@ -29,10 +29,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "default",
-        "std",
-    ],
     crate_root = "binding_rust/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -84,13 +80,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.24.7",
+    version = "0.20.10",
     deps = [
         "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__regex-syntax-0.8.5//:regex_syntax",
-        "@vendor_py__streaming-iterator-0.1.9//:streaming_iterator",
-        "@vendor_py__tree-sitter-0.24.7//:build_script_build",
-        "@vendor_py__tree-sitter-language-0.1.4//:tree_sitter_language",
+        "@vendor_py__tree-sitter-0.20.10//:build_script_build",
     ],
 )
 
@@ -113,10 +106,6 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "default",
-        "std",
-    ],
     crate_name = "build_script_build",
     crate_root = "binding_rust/build.rs",
     data = glob(
@@ -132,7 +121,6 @@ cargo_build_script(
         ],
     ),
     edition = "2021",
-    links = "tree-sitter",
     pkg_name = "tree-sitter",
     rustc_flags = [
         "--cap-lints=allow",
@@ -144,7 +132,7 @@ cargo_build_script(
         "noclippy",
         "norustfmt",
     ],
-    version = "0.24.7",
+    version = "0.20.10",
     visibility = ["//visibility:private"],
     deps = [
         "@vendor_py__cc-1.2.14//:cc",
