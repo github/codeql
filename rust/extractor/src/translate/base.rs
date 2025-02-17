@@ -4,7 +4,6 @@ use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
-use log::Level;
 use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
@@ -70,6 +69,18 @@ macro_rules! emit_detached {
         $self.extract_method_canonical_destination(&$node, $label);
     };
     ($($_:tt)*) => {};
+}
+
+// see https://github.com/tokio-rs/tracing/issues/2730
+macro_rules! dispatch_to_tracing {
+    ($lvl:ident, $($arg:tt)+) => {
+        match $lvl {
+            DiagnosticSeverity::Debug => ::tracing::debug!($($arg)+),
+            DiagnosticSeverity::Info => ::tracing::info!($($arg)+),
+            DiagnosticSeverity::Warning => ::tracing::warn!($($arg)+),
+            DiagnosticSeverity::Error => ::tracing::error!($($arg)+),
+        }
+    };
 }
 
 pub struct Translator<'a> {
@@ -176,20 +187,15 @@ impl<'a> Translator<'a> {
         location: (LineCol, LineCol),
     ) {
         let (start, end) = location;
-        let level = match severity {
-            DiagnosticSeverity::Debug => Level::Debug,
-            DiagnosticSeverity::Info => Level::Info,
-            DiagnosticSeverity::Warning => Level::Warn,
-            DiagnosticSeverity::Error => Level::Error,
-        };
-        log::log!(
-            level,
+        dispatch_to_tracing!(
+            severity,
             "{}:{}:{}: {}",
             self.path,
             start.line + 1,
             start.col + 1,
-            &full_message
+            &full_message,
         );
+
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);
             self.trap

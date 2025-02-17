@@ -1,3 +1,4 @@
+// GOOD: LDAP connection using LDAPS
 String ldapUrl = "ldaps://ad.your-server.com:636";
 Hashtable<String, String> environment = new Hashtable<String, String>();
 environment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
