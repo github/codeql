@@ -294,9 +294,24 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       variableRead(readbb, _, v, _) and
       not variableWrite(readbb, _, v, _)
       or
-      exists(TPhiReadNode(v, readbb)) and
+      synthPhiRead(readbb, v) and
       not ref(readbb, _, v, _)
     )
+  }
+
+  /**
+   * Holds if we should synthesize a pseudo-read of `v` at the beginning of `bb`.
+   *
+   * These reads are named phi-reads, since they are constructed in the same
+   * way as ordinary phi nodes except all all reads are treated as potential
+   * "definitions". This ensures that use-use flow has the same dominance
+   * properties as def-use flow.
+   */
+  private predicate synthPhiRead(BasicBlock bb, SourceVariable v) {
+    inReadDominanceFrontier(bb, v) and
+    liveAtEntry(bb, v) and
+    // no need to create a phi-read if there is already a normal phi
+    not any(PhiNode def).definesAt(v, bb, _)
   }
 
   cached
@@ -309,12 +324,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       inDefDominanceFrontier(bb, v) and
       liveAtEntry(bb, v)
     } or
-    TPhiReadNode(SourceVariable v, BasicBlock bb) {
-      inReadDominanceFrontier(bb, v) and
-      liveAtEntry(bb, v) and
-      // no need to create a phi-read if there is already a normal phi
-      not any(PhiNode def).definesAt(v, bb, _)
-    }
+    TPhiReadNode(SourceVariable v, BasicBlock bb) { synthPhiRead(bb, v) }
 
   private class TDefinition = TWriteDef or TPhiNode;
 
