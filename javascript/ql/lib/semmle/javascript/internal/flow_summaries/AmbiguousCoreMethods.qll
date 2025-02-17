@@ -157,7 +157,11 @@ class Values extends SummarizedCallable {
 class ToString extends SummarizedCallable {
   ToString() { this = "Object#toString / Array#toString" }
 
-  override DataFlow::MethodCallNode getACallSimple() { result.getMethodName() = "toString" }
+  override InstanceCall getACallSimple() {
+    result.(DataFlow::MethodCallNode).getMethodName() = "toString"
+    or
+    result = arrayConstructorRef().getAPropertyRead("prototype").getAMemberCall("toString")
+  }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
