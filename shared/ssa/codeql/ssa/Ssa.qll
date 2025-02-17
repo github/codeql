@@ -796,28 +796,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     liveThroughExt(bb, pragma[only_bind_into](v))
   }
 
-  pragma[nomagic]
-  private predicate phiReadReachesEndOfBlock(BasicBlock pred, BasicBlock bb, SourceVariable v) {
-    exists(PhiReadNode phi |
-      ssaDefReachesEndOfBlockExt(bb, phi, v) and
-      pred = getImmediateBasicBlockDominator(phi.getBasicBlock())
-    )
-  }
-
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
    * Same as `ssaDefReachesEndOfBlockExt`, but ignores phi-reads.
    */
-  pragma[nomagic]
-  predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
-    ssaDefReachesEndOfBlockExt(bb, def, v)
-    or
-    exists(BasicBlock mid |
-      ssaDefReachesEndOfBlock(mid, def, v) and
-      phiReadReachesEndOfBlock(mid, bb, v)
-    )
-  }
+  predicate ssaDefReachesEndOfBlock = SsaDefReachesNew::ssaDefReachesEndOfBlock/3;
 
   /**
    * NB: If this predicate is exposed, it should be cached.
@@ -870,14 +854,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    *
    * Same as `ssaDefReachesReadExt`, but ignores phi-reads.
    */
-  pragma[nomagic]
-  predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
-    ssaDefReachesReadWithinBlock(v, def, bb, i)
-    or
-    ssaRef(bb, i, v, SsaActualRead()) and
-    ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
-    not exists(Definition other | ssaDefReachesReadWithinBlock(v, other, bb, i))
-  }
+  predicate ssaDefReachesRead = SsaDefReachesNew::ssaDefReachesRead/4;
 
   /**
    * NB: If this predicate is exposed, it should be cached.
