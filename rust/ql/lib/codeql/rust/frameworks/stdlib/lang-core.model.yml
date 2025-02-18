@@ -8,8 +8,19 @@ extensions:
       # Hint
       - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
       # Iterator
+      - ["lang:core", "<[_]>::iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::iter_mut", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::into_iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::next", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
       # Option
       - ["lang:core", "<crate::option::Option>::expect", "Argument[self].Field[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
       # Result
