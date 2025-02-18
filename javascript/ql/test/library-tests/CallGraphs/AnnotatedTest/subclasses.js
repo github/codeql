@@ -8,8 +8,8 @@ class Base {
         /** calls:methodInSub1 calls:methodInSub2 */
         this.methodInSub();
 
-        /** calls:overridenInSub0 calls:overridenInSub1 calls:overridenInSub2 */
-        this.overridenInSub();
+        /** calls:overriddenInSub0 calls:overriddenInSub1 calls:overriddenInSub2 */
+        this.overriddenInSub();
     }
 
     /** name:methodInBase */
@@ -18,8 +18,8 @@ class Base {
         this.methodInSub();
     }
 
-    /** name:overridenInSub0 */
-    overridenInSub() {
+    /** name:overriddenInSub0 */
+    overriddenInSub() {
     }
 }
 
@@ -28,16 +28,16 @@ class Subclass1 extends Base {
         /** calls:methodInBase */
         this.methodInBase();
 
-        /** calls:overridenInSub1 */
-        this.overridenInSub();
+        /** calls:overriddenInSub1 */
+        this.overriddenInSub();
     }
 
     /** name:methodInSub1 */
     methodInSub() {
     }
 
-    /** name:overridenInSub1 */
-    overridenInSub() {
+    /** name:overriddenInSub1 */
+    overriddenInSub() {
     }
 }
 
@@ -46,15 +46,15 @@ class Subclass2 extends Base {
         /** calls:methodInBase */
         this.methodInBase();
 
-        /** calls:overridenInSub2 */
-        this.overridenInSub();
+        /** calls:overriddenInSub2 */
+        this.overriddenInSub();
     }
 
     /** name:methodInSub2 */
     methodInSub() {
     }
 
-    /** name:overridenInSub2 */
-    overridenInSub() {
+    /** name:overriddenInSub2 */
+    overriddenInSub() {
     }
 }
