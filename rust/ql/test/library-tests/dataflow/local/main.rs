@@ -486,6 +486,16 @@ fn iterators() {
     for v in vs.into_iter() {
         sink(v); // $ MISSING: hasValueFlow=91
     }
+
+    let mut vs_mut = [source(92), 2, 3, 4];
+
+    sink(vs_mut[0]); // $ MISSING: hasValueFlow=92
+    sink(*vs_mut.iter().next().unwrap()); // $ MISSING: hasValueFlow=92
+    sink(*vs_mut.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=92
+
+    for &mut v in vs_mut.iter_mut() {
+        sink(v); // $ MISSING: hasValueFlow=92
+    }
 }
 
 fn references() {
