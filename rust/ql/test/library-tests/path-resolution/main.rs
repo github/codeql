@@ -291,6 +291,62 @@ mod m13 {
     }
 }
 
+mod m15 {
+    trait Trait1 {
+        fn f(&self);
+
+        fn g(&self); // I80
+    } // I79
+
+    #[rustfmt::skip]
+    trait Trait2
+      : Trait1 { // $ item=I79
+        fn f(&self) {
+            println!("m15::Trait2::f");
+            Self::g(self); // $ MISSING: item=I80
+            self.g(); // $ MISSING: item=I80
+        }
+    } // I82
+
+    struct S; // I81
+
+    #[rustfmt::skip]
+    impl Trait1 // $ item=I79
+      for S { // $ item=I81
+        fn f(&self) {
+            println!("m15::<S as Trait1>::f");
+            Self::g(self); // $ item=I77
+            self.g(); // $ MISSING: item=I77
+        } // I76
+
+        fn g(&self) {
+            println!("m15::<S as Trait1>::g");
+        } // I77
+    }
+
+    #[rustfmt::skip]
+    impl Trait2 // $ item=I82
+      for S { // $ item=I81
+        fn f(&self) {
+            println!("m15::<S as Trait2>::f");
+        } // I78
+    }
+
+    #[rustfmt::skip]
+    pub fn f() {
+        println!("m15::f");
+        let x = S; // $ item=I81
+        <S // $ item=I81
+          as Trait1 // $ MISSING: item=I79
+        >::f(&x); // $ MISSING: item=I76
+        <S // $ item=I81
+          as Trait2 // MISSING: item=I82
+        >::f(&x); // $ MISSING: item=I78
+        S::g(&x); // $ MISSING: item=I77
+        x.g(); // $ MISSING: item=I77
+    } // I75
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -310,4 +366,5 @@ fn main() {
     m8::g(); // $ item=I55
     m9::f(); // $ item=I57
     m11::f(); // $ item=I63
+    m15::f(); // $ item=I75
 }
