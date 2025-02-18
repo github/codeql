@@ -1065,11 +1065,6 @@ module SsaCached {
   }
 
   cached
-  DefinitionExt phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
-    SsaImpl::phiHasInputFromBlockExt(phi, result, bb)
-  }
-
-  cached
   predicate ssaDefReachesReadExt(SourceVariable v, DefinitionExt def, IRBlock bb, int i) {
     SsaImpl::ssaDefReachesReadExt(v, def, bb, i)
   }
