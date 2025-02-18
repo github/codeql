@@ -3,6 +3,7 @@
 | ReflectedXss.js:22:12:22:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:22:12:22:19 | req.body | user-provided value |
 | ReflectedXss.js:23:12:23:27 | marked(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:23:19:23:26 | req.body | user-provided value |
 | ReflectedXss.js:29:12:29:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:29:12:29:19 | req.body | user-provided value |
+| ReflectedXss.js:34:12:34:18 | mytable | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:32:14:32:21 | req.body | user-provided value |
 | ReflectedXss.js:41:12:41:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:41:12:41:19 | req.body | user-provided value |
 | ReflectedXss.js:42:12:42:39 | convert ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:42:31:42:38 | req.body | user-provided value |
 | ReflectedXss.js:56:12:56:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:56:12:56:19 | req.body | user-provided value |

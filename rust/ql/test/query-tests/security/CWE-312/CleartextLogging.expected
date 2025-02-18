@@ -125,12 +125,18 @@ edges
 | test_logging.rs:86:20:86:43 | MacroExpr | test_logging.rs:86:5:86:44 | ...::log::<...> | provenance | MaD:9 Sink:MaD:9 |
 | test_logging.rs:86:36:86:43 | password | test_logging.rs:86:20:86:43 | MacroExpr | provenance |  |
 | test_logging.rs:93:9:93:10 | m1 | test_logging.rs:94:11:94:28 | MacroExpr | provenance |  |
+| test_logging.rs:93:9:93:10 | m1 [&ref] | test_logging.rs:94:27:94:28 | m1 [&ref] | provenance |  |
 | test_logging.rs:93:14:93:22 | &password | test_logging.rs:93:9:93:10 | m1 | provenance |  |
+| test_logging.rs:93:14:93:22 | &password [&ref] | test_logging.rs:93:9:93:10 | m1 [&ref] | provenance |  |
 | test_logging.rs:93:15:93:22 | password | test_logging.rs:93:14:93:22 | &password | provenance | Config |
+| test_logging.rs:93:15:93:22 | password | test_logging.rs:93:14:93:22 | &password [&ref] | provenance |  |
 | test_logging.rs:94:11:94:28 | MacroExpr | test_logging.rs:94:5:94:29 | ...::log | provenance | MaD:9 Sink:MaD:9 |
+| test_logging.rs:94:27:94:28 | m1 [&ref] | test_logging.rs:94:11:94:28 | MacroExpr | provenance |  |
 | test_logging.rs:96:9:96:10 | m2 | test_logging.rs:97:11:97:18 | MacroExpr | provenance |  |
 | test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:9:96:10 | m2 | provenance |  |
+| test_logging.rs:96:41:96:49 | &password [&ref] | test_logging.rs:96:9:96:10 | m2 | provenance |  |
 | test_logging.rs:96:42:96:49 | password | test_logging.rs:96:41:96:49 | &password | provenance | Config |
+| test_logging.rs:96:42:96:49 | password | test_logging.rs:96:41:96:49 | &password [&ref] | provenance |  |
 | test_logging.rs:97:11:97:18 | MacroExpr | test_logging.rs:97:5:97:19 | ...::log | provenance | MaD:9 Sink:MaD:9 |
 | test_logging.rs:99:9:99:10 | m3 | test_logging.rs:100:11:100:18 | MacroExpr | provenance |  |
 | test_logging.rs:99:14:99:46 | res | test_logging.rs:99:22:99:45 | { ... } | provenance |  |
@@ -329,12 +335,16 @@ nodes
 | test_logging.rs:86:20:86:43 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:86:36:86:43 | password | semmle.label | password |
 | test_logging.rs:93:9:93:10 | m1 | semmle.label | m1 |
+| test_logging.rs:93:9:93:10 | m1 [&ref] | semmle.label | m1 [&ref] |
 | test_logging.rs:93:14:93:22 | &password | semmle.label | &password |
+| test_logging.rs:93:14:93:22 | &password [&ref] | semmle.label | &password [&ref] |
 | test_logging.rs:93:15:93:22 | password | semmle.label | password |
 | test_logging.rs:94:5:94:29 | ...::log | semmle.label | ...::log |
 | test_logging.rs:94:11:94:28 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:94:27:94:28 | m1 [&ref] | semmle.label | m1 [&ref] |
 | test_logging.rs:96:9:96:10 | m2 | semmle.label | m2 |
 | test_logging.rs:96:41:96:49 | &password | semmle.label | &password |
+| test_logging.rs:96:41:96:49 | &password [&ref] | semmle.label | &password [&ref] |
 | test_logging.rs:96:42:96:49 | password | semmle.label | password |
 | test_logging.rs:97:5:97:19 | ...::log | semmle.label | ...::log |
 | test_logging.rs:97:11:97:18 | MacroExpr | semmle.label | MacroExpr |

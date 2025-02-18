@@ -50,6 +50,10 @@ nodes
 | tst2.js:2:14:2:33 | window.location.href | semmle.label | window.location.href |
 | tst2.js:4:21:4:24 | href | semmle.label | href |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | semmle.label | href.su ... '?')+1) |
+| tst5.js:2:19:2:33 | window.location | semmle.label | window.location |
+| tst5.js:2:19:2:44 | window. ... tring() | semmle.label | window. ... tring() |
+| tst5.js:2:19:2:55 | window. ... it('?') [1] | semmle.label | window. ... it('?') [1] |
+| tst5.js:2:19:2:78 | window. ... s.value | semmle.label | window. ... s.value |
 | tst6.js:2:7:2:45 | redirect | semmle.label | redirect |
 | tst6.js:2:18:2:45 | $locati ... irect') | semmle.label | $locati ... irect') |
 | tst6.js:4:21:4:28 | redirect | semmle.label | redirect |
@@ -74,6 +78,12 @@ nodes
 | tst10.js:14:17:14:69 | 'https: ... ring(1) | semmle.label | 'https: ... ring(1) |
 | tst10.js:14:33:14:56 | documen ... .search | semmle.label | documen ... .search |
 | tst10.js:14:33:14:69 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst12.js:2:9:2:50 | urlParts [1] | semmle.label | urlParts [1] |
+| tst12.js:2:20:2:39 | window.location.hash | semmle.label | window.location.hash |
+| tst12.js:2:20:2:50 | window. ... it('?') [1] | semmle.label | window. ... it('?') [1] |
+| tst12.js:3:9:3:45 | loc | semmle.label | loc |
+| tst12.js:3:15:3:22 | urlParts [1] | semmle.label | urlParts [1] |
+| tst12.js:4:23:4:25 | loc | semmle.label | loc |
 | tst13.js:2:9:2:52 | payload | semmle.label | payload |
 | tst13.js:2:19:2:42 | documen ... .search | semmle.label | documen ... .search |
 | tst13.js:2:19:2:52 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
@@ -233,6 +243,9 @@ edges
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href | provenance |  |
 | tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href | provenance |  |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) | provenance | Config |
+| tst5.js:2:19:2:33 | window.location | tst5.js:2:19:2:44 | window. ... tring() | provenance |  |
+| tst5.js:2:19:2:44 | window. ... tring() | tst5.js:2:19:2:55 | window. ... it('?') [1] | provenance | Config |
+| tst5.js:2:19:2:55 | window. ... it('?') [1] | tst5.js:2:19:2:78 | window. ... s.value | provenance |  |
 | tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect | provenance |  |
 | tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect | provenance |  |
 | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect | provenance |  |
@@ -248,6 +261,11 @@ edges
 | tst10.js:11:27:11:63 | documen ... ring(1) | tst10.js:11:17:11:63 | '//foo' ... ring(1) | provenance |  |
 | tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:33:14:69 | documen ... ring(1) | provenance | Config |
 | tst10.js:14:33:14:69 | documen ... ring(1) | tst10.js:14:17:14:69 | 'https: ... ring(1) | provenance |  |
+| tst12.js:2:9:2:50 | urlParts [1] | tst12.js:3:15:3:22 | urlParts [1] | provenance |  |
+| tst12.js:2:20:2:39 | window.location.hash | tst12.js:2:20:2:50 | window. ... it('?') [1] | provenance | Config |
+| tst12.js:2:20:2:50 | window. ... it('?') [1] | tst12.js:2:9:2:50 | urlParts [1] | provenance |  |
+| tst12.js:3:9:3:45 | loc | tst12.js:4:23:4:25 | loc | provenance |  |
+| tst12.js:3:15:3:22 | urlParts [1] | tst12.js:3:9:3:45 | loc | provenance |  |
 | tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload | provenance |  |
 | tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload | provenance |  |
 | tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload | provenance |  |
@@ -366,6 +384,7 @@ subpaths
 | sanitizer.js:31:27:31:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:31:27:31:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:37:27:37:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:37:27:37:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:33 | window.location.href | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection depends on a $@. | tst2.js:2:14:2:33 | window.location.href | user-provided value |
+| tst5.js:2:19:2:78 | window. ... s.value | tst5.js:2:19:2:33 | window.location | tst5.js:2:19:2:78 | window. ... s.value | Untrusted URL redirection depends on a $@. | tst5.js:2:19:2:33 | window.location | user-provided value |
 | tst6.js:4:21:4:28 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:4:21:4:28 | redirect | Untrusted URL redirection depends on a $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:6:17:6:24 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:6:17:6:24 | redirect | Untrusted URL redirection depends on a $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:8:21:8:56 | $locati ... + "foo" | tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" | Untrusted URL redirection depends on a $@. | tst6.js:8:21:8:48 | $locati ... irect') | user-provided value |
@@ -376,6 +395,7 @@ subpaths
 | tst10.js:8:17:8:60 | '//' +  ... ring(1) | tst10.js:8:24:8:47 | documen ... .search | tst10.js:8:17:8:60 | '//' +  ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:8:24:8:47 | documen ... .search | user-provided value |
 | tst10.js:11:17:11:63 | '//foo' ... ring(1) | tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:63 | '//foo' ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:11:27:11:50 | documen ... .search | user-provided value |
 | tst10.js:14:17:14:69 | 'https: ... ring(1) | tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:69 | 'https: ... ring(1) | Untrusted URL redirection depends on a $@. | tst10.js:14:33:14:56 | documen ... .search | user-provided value |
+| tst12.js:4:23:4:25 | loc | tst12.js:2:20:2:39 | window.location.hash | tst12.js:4:23:4:25 | loc | Untrusted URL redirection depends on a $@. | tst12.js:2:20:2:39 | window.location.hash | user-provided value |
 | tst13.js:4:15:4:21 | payload | tst13.js:2:19:2:42 | documen ... .search | tst13.js:4:15:4:21 | payload | Untrusted URL redirection depends on a $@. | tst13.js:2:19:2:42 | documen ... .search | user-provided value |
 | tst13.js:8:21:8:27 | payload | tst13.js:2:19:2:42 | documen ... .search | tst13.js:8:21:8:27 | payload | Untrusted URL redirection depends on a $@. | tst13.js:2:19:2:42 | documen ... .search | user-provided value |
 | tst13.js:12:14:12:20 | payload | tst13.js:2:19:2:42 | documen ... .search | tst13.js:12:14:12:20 | payload | Untrusted URL redirection depends on a $@. | tst13.js:2:19:2:42 | documen ... .search | user-provided value |

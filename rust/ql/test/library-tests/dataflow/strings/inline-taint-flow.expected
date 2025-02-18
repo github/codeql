@@ -11,6 +11,10 @@ edges
 | main.rs:32:9:32:10 | s1 | main.rs:35:9:35:10 | s4 | provenance |  |
 | main.rs:32:14:32:23 | source(...) | main.rs:32:9:32:10 | s1 | provenance |  |
 | main.rs:35:9:35:10 | s4 | main.rs:38:10:38:11 | s4 | provenance |  |
+| main.rs:43:9:43:10 | s1 | main.rs:46:34:46:35 | s1 | provenance |  |
+| main.rs:43:14:43:23 | source(...) | main.rs:43:9:43:10 | s1 | provenance |  |
+| main.rs:46:33:46:35 | &s1 [&ref] | main.rs:46:10:46:35 | ... + ... | provenance |  |
+| main.rs:46:34:46:35 | s1 | main.rs:46:33:46:35 | &s1 [&ref] | provenance |  |
 | main.rs:63:9:63:9 | s | main.rs:64:16:64:16 | s | provenance |  |
 | main.rs:63:13:63:22 | source(...) | main.rs:63:9:63:9 | s | provenance |  |
 | main.rs:64:16:64:16 | s | main.rs:64:16:64:25 | s.as_str(...) | provenance | MaD:1 |
@@ -52,6 +56,11 @@ nodes
 | main.rs:32:14:32:23 | source(...) | semmle.label | source(...) |
 | main.rs:35:9:35:10 | s4 | semmle.label | s4 |
 | main.rs:38:10:38:11 | s4 | semmle.label | s4 |
+| main.rs:43:9:43:10 | s1 | semmle.label | s1 |
+| main.rs:43:14:43:23 | source(...) | semmle.label | source(...) |
+| main.rs:46:10:46:35 | ... + ... | semmle.label | ... + ... |
+| main.rs:46:33:46:35 | &s1 [&ref] | semmle.label | &s1 [&ref] |
+| main.rs:46:34:46:35 | s1 | semmle.label | s1 |
 | main.rs:63:9:63:9 | s | semmle.label | s |
 | main.rs:63:13:63:22 | source(...) | semmle.label | source(...) |
 | main.rs:64:16:64:16 | s | semmle.label | s |
@@ -91,6 +100,7 @@ testFailures
 #select
 | main.rs:28:16:28:21 | sliced | main.rs:26:13:26:22 | source(...) | main.rs:28:16:28:21 | sliced | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
 | main.rs:38:10:38:11 | s4 | main.rs:32:14:32:23 | source(...) | main.rs:38:10:38:11 | s4 | $@ | main.rs:32:14:32:23 | source(...) | source(...) |
+| main.rs:46:10:46:35 | ... + ... | main.rs:43:14:43:23 | source(...) | main.rs:46:10:46:35 | ... + ... | $@ | main.rs:43:14:43:23 | source(...) | source(...) |
 | main.rs:64:16:64:25 | s.as_str(...) | main.rs:63:13:63:22 | source(...) | main.rs:64:16:64:25 | s.as_str(...) | $@ | main.rs:63:13:63:22 | source(...) | source(...) |
 | main.rs:71:10:71:19 | formatted1 | main.rs:68:13:68:22 | source(...) | main.rs:71:10:71:19 | formatted1 | $@ | main.rs:68:13:68:22 | source(...) | source(...) |
 | main.rs:74:10:74:19 | formatted2 | main.rs:68:13:68:22 | source(...) | main.rs:74:10:74:19 | formatted2 | $@ | main.rs:68:13:68:22 | source(...) | source(...) |

@@ -5,6 +5,7 @@ edges
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name | provenance |  |
 | lib/lib.js:32:32:32:40 | [apply call taint node] | lib/lib.js:32:32:32:40 | arguments [ArrayElement] | provenance |  |
 | lib/lib.js:32:32:32:40 | arguments | lib/lib.js:32:32:32:40 | [apply call taint node] | provenance |  |
+| lib/lib.js:32:32:32:40 | arguments [ArrayElement] | lib/lib.js:32:32:32:40 | [apply call taint node] | provenance |  |
 | lib/lib.js:32:32:32:40 | arguments [ArrayElement] | lib/lib.js:35:28:35:31 | name | provenance |  |
 | lib/lib.js:35:28:35:31 | name | lib/lib.js:36:13:36:16 | name | provenance |  |
 | lib/lib.js:41:32:41:35 | name | lib/lib.js:42:17:42:20 | name | provenance |  |
