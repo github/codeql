@@ -3,7 +3,6 @@
  *
  * Only import this directly from .ql files, to avoid the possibility of polluting the Configuration hierarchy accidentally.
  */
-overlay[local?]
 module;
 
 import semmle.code.java.dataflow.FlowSources
