@@ -92,7 +92,7 @@ mod m3 {
     }
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
-        x.m1() // `x.m1` missing type
+        x.m1() // missing
     }
 
     impl MyTrait<S1> for MyThing<S1> {
@@ -117,8 +117,8 @@ mod m3 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x)); // `call_trait_m1(x)` missing type
-        println!("{:?}", call_trait_m1(y).a); // `call_trait_m1(y)` missing type
+        println!("{:?}", call_trait_m1(x)); // missing
+        println!("{:?}", call_trait_m1(y).a); // missing
     }
 }
 
@@ -145,7 +145,7 @@ mod m4 {
     }
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
-        x.m1() // `x.m1` missing type
+        x.m1() // missing
     }
 
     impl<T> MyTrait<T> for MyThing<T> {
@@ -158,14 +158,14 @@ mod m4 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // `x.m1` missing type
-        println!("{:?}", y.m1()); // `y.m1` missing type
+        println!("{:?}", x.m1()); // missing
+        println!("{:?}", y.m1()); // missing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x)); // `call_trait_m1(x)` missing type
-        println!("{:?}", call_trait_m1(y)); // `call_trait_m1(y)` missing type
+        println!("{:?}", call_trait_m1(x)); // missing
+        println!("{:?}", call_trait_m1(y)); // missing
     }
 }
 
@@ -200,7 +200,7 @@ mod m5 {
         println!("{:?}", x.m1());
 
         let x = S;
-        println!("{:?}", x.m2()); // `x.m2` missing type
+        println!("{:?}", x.m2()); // missing
     }
 }
 
@@ -219,8 +219,8 @@ mod m6 {
     impl<T> MyEnum<T> {
         fn m1(self) -> T {
             match self {
-                MyEnum::C1(a) => a,    // `a` missing type
-                MyEnum::C2 { a } => a, // `a` missing type
+                MyEnum::C1(a) => a,    // missing
+                MyEnum::C2 { a } => a, // missing
             }
         }
     }
@@ -255,9 +255,9 @@ mod m7 {
             Self: Sized,
         {
             if 1 + 1 > 2 {
-                self.m1() // missing
+                self.m1()
             } else {
-                Self::m1(self) // missing
+                Self::m1(self)
             }
         }
     }
@@ -285,6 +285,55 @@ mod m7 {
     }
 }
 
+mod m8 {
+    use std::convert::From;
+    use std::fmt::Debug;
+
+    #[derive(Debug)]
+    struct S1;
+
+    #[derive(Debug)]
+    struct S2;
+
+    trait Trait: Debug {}
+
+    impl Trait for S1 {}
+
+    fn id<T: ?Sized>(x: &T) -> &T {
+        x
+    }
+
+    impl Into<S2> for S1 {
+        fn into(self) -> S2 {
+            S2
+        }
+    }
+
+    fn into<T1, T2>(x: T1) -> T2
+    where
+        T1: Into<T2>,
+    {
+        x.into() // missing
+    }
+
+    pub fn f() {
+        let x = S1;
+        println!("{:?}", id(&x));
+
+        let x = S1;
+        println!("{:?}", id::<S1>(&x));
+
+        let x = S1;
+        println!("{:?}", id::<dyn Trait>(&x)); // missing
+
+        let x = S1;
+        into::<S1, S2>(x);
+
+        let x = S1;
+        let y: S2 = into(x); // missing
+    }
+}
+
 fn main() {
     m1::f();
     m1::g(m1::Foo {}, m1::Foo {});
@@ -294,4 +343,5 @@ fn main() {
     m5::f();
     m6::f();
     m7::f();
+    m8::f();
 }
