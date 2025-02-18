@@ -640,20 +640,22 @@ module LocalFlow {
       def.getSource() = e and
       (
         scope = def.getExpr() and
-        isSuccessor = true
+        isSuccessor = true and
+        (
+          not def instanceof AssignableDefinitions::PatternDefinition or
+          def instanceof AssignableDefinitions::TopLevelPatternDefinition
+        )
         or
-        exists(AssignableDefinitions::PatternDefinition def0 | def = def0 and def0.isTopLevel() |
-          scope = def0.getMatch().(IsExpr) and
-          isSuccessor = false
+        scope = def.(AssignableDefinitions::TopLevelPatternDefinition).getMatch().(IsExpr) and
+        isSuccessor = false
+        or
+        exists(Switch s |
+          s.getACase() = def.(AssignableDefinitions::TopLevelPatternDefinition).getMatch() and
+          isSuccessor = true
+        |
+          scope = s.getExpr()
           or
-          exists(Switch s |
-            s.getACase() = def0.getMatch() and
-            isSuccessor = true
-          |
-            scope = s.getExpr()
-            or
-            scope = s.getACase()
-          )
+          scope = s.getACase()
         )
       )
       or
@@ -661,10 +663,7 @@ module LocalFlow {
       scope = def.getExpr() and
       exactScope = false and
       isSuccessor = false and
-      def =
-        any(AssignableDefinitions::PatternDefinition apd |
-          e = apd.getDeclaration() and not apd.isTopLevel()
-        )
+      e = def.(AssignableDefinitions::PropertyPatternDefinition).getDeclaration()
     }
   }
 
@@ -2508,7 +2507,7 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     or
     scope =
       any(TuplePatternExpr te |
-        te.getAnArgument() = defTo.(AssignableDefinitions::PatternDefinition).getDeclaration() and
+        te.getAnArgument() = defTo.(AssignableDefinitions::TuplePatternDefinition).getDeclaration() and
         e = te and
         exactScope = false and
         isSuccessor = false
@@ -2558,7 +2557,7 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
       or
       // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
       te = any(TuplePatternExpr pe).getAChildExpr*() and
-      exists(AssignableDefinitions::PatternDefinition lvd |
+      exists(AssignableDefinitions::TuplePatternDefinition lvd |
         node2.(AssignableDefinitionNode).getDefinition() = lvd and
         lvd.getDeclaration() = item and
         hasNodePath(x, node1, node2)
@@ -2990,10 +2989,8 @@ class CastNode extends Node {
   CastNode() {
     this.asExpr() instanceof Cast
     or
-    this.(AssignableDefinitionNode)
-        .getDefinition()
-        .(AssignableDefinitions::PatternDefinition)
-        .isTopLevel()
+    this.(AssignableDefinitionNode).getDefinition() instanceof
+      AssignableDefinitions::TopLevelPatternDefinition
   }
 }
 

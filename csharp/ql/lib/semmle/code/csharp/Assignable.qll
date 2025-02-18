@@ -286,6 +286,9 @@ module AssignableInternal {
     /** Holds if the local variable definition is at the top level of the pattern. */
     predicate isTopLevel() { this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr() }
 
+    /** Holds of this local variable definition is a part of a tuple pattern. */
+    predicate isInTuple() { this.getParent() instanceof TuplePatternExpr }
+
     /** Gets the pattern match that this local variable declaration (pattern) belongs to. */
     PatternMatch getMatch() { result = pm }
   }
@@ -720,12 +723,30 @@ module AssignableDefinitions {
     /** Gets the underlying local variable declaration. */
     LocalVariableDeclExpr getDeclaration() { result = lvpd }
 
-    override Expr getSource() { this.isTopLevel() and result = this.getMatch().getExpr() }
+    override Expr getSource() { result = this.getMatch().getExpr() }
 
     override string toString() { result = this.getDeclaration().toString() }
+  }
 
-    /** Holds if the local variable definition is at the top level of the pattern. */
-    predicate isTopLevel() { lvpd.isTopLevel() }
+  /**
+   * A local variable definition at the top level of a pattern.
+   */
+  class TopLevelPatternDefinition extends PatternDefinition {
+    TopLevelPatternDefinition() { lvpd.isTopLevel() }
+  }
+
+  /**
+   * A local variable definition in a tuple pattern.
+   */
+  class TuplePatternDefinition extends PatternDefinition {
+    TuplePatternDefinition() { lvpd.isInTuple() }
+  }
+
+  /**
+   * A local variable definition in a property pattern.
+   */
+  class PropertyPatternDefinition extends PatternDefinition {
+    PropertyPatternDefinition() { lvpd.getParent() instanceof PropertyPatternExpr }
   }
 
   /**
