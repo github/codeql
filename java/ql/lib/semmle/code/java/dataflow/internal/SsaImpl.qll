@@ -508,34 +508,15 @@ private module Cached {
     Impl::uncertainWriteDefinitionInput(redef, def)
   }
 
-  pragma[nomagic]
-  private predicate defReaches(Definition def, DataFlowIntegration::Node node) {
-    exists(DataFlowIntegration::SsaDefinitionExtNode nodeFrom |
-      nodeFrom.getDefinitionExt() = def and
-      DataFlowIntegrationImpl::localFlowStep(_, nodeFrom, node, false)
-    )
-    or
-    exists(DataFlowIntegration::Node mid |
-      defReaches(def, mid) and
-      DataFlowIntegrationImpl::localFlowStep(_, mid, node, _)
-    |
-      // flow into phi input node
-      mid instanceof DataFlowIntegration::SsaInputNode
-      or
-      // flow into definition
-      mid instanceof DataFlowIntegration::SsaDefinitionExtNode
-    )
-  }
-
   /**
    * Holds if the value defined at `def` can reach `use` without passing through
    * any other uses, but possibly through phi nodes and uncertain implicit updates.
    */
   cached
   predicate firstUse(Definition def, VarRead use) {
-    exists(DataFlowIntegration::ExprNode nodeTo |
-      nodeTo.getExpr() = use and
-      defReaches(def, nodeTo)
+    exists(BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, _) and
+      use.getControlFlowNode() = bb.getNode(i)
     )
   }
 
@@ -594,30 +575,6 @@ private module Cached {
 
   cached
   module SsaPublic {
-    pragma[nomagic]
-    private predicate useReaches(VarRead use, DataFlowIntegration::Node node, boolean sameVar) {
-      exists(DataFlowIntegration::ExprNode nodeFrom |
-        nodeFrom.getExpr() = use and
-        DataFlowIntegration::localFlowStep(_, nodeFrom, node, true) and
-        sameVar = true
-      )
-      or
-      exists(DataFlowIntegration::Node mid, boolean sameVarMid |
-        useReaches(use, mid, sameVarMid) and
-        DataFlowIntegration::localFlowStep(_, mid, node, _)
-      |
-        exists(Impl::DefinitionExt def |
-          // flow into definition
-          def = mid.(DataFlowIntegration::SsaDefinitionExtNode).getDefinitionExt()
-          or
-          // flow into phi input node
-          def = mid.(DataFlowIntegration::SsaInputNode).getDefinitionExt()
-        |
-          if def instanceof Impl::PhiReadNode then sameVar = sameVarMid else sameVar = false
-        )
-      )
-    }
-
     /**
      * Holds if `use1` and `use2` form an adjacent use-use-pair of the same SSA
      * variable, that is, the value read in `use1` can reach `use2` without passing
@@ -625,9 +582,10 @@ private module Cached {
      */
     cached
     predicate adjacentUseUseSameVar(VarRead use1, VarRead use2) {
-      exists(DataFlowIntegration::ExprNode nodeTo |
-        nodeTo.getExpr() = use2 and
-        useReaches(use1, nodeTo, true)
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        use1.getControlFlowNode() = bb1.getNode(i1) and
+        use2.getControlFlowNode() = bb2.getNode(i2) and
+        Impl::adjacentUseUse(bb1, i1, bb2, i2, _, true)
       )
     }
 
@@ -639,9 +597,10 @@ private module Cached {
      */
     cached
     predicate adjacentUseUse(VarRead use1, VarRead use2) {
-      exists(DataFlowIntegration::ExprNode nodeTo |
-        nodeTo.getExpr() = use2 and
-        useReaches(use1, nodeTo, _)
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        use1.getControlFlowNode() = bb1.getNode(i1) and
+        use2.getControlFlowNode() = bb2.getNode(i2) and
+        Impl::adjacentUseUse(bb1, i1, bb2, i2, _, _)
       )
     }
   }
