@@ -171,9 +171,50 @@
 | main.rs:230:33:230:34 | S2 |  | main.rs:216:5:217:14 | struct S2 |
 | main.rs:232:26:232:26 | x |  | main.rs:208:5:212:5 | enum MyEnum |
 | main.rs:233:26:233:26 | y | 0 | main.rs:216:5:217:14 | struct S2 |
-| main.rs:238:5:238:9 | ...::f |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:238:5:238:11 | ...::f(...) |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:239:5:239:9 | ...::g |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:239:5:239:33 | ...::g(...) |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:239:11:239:20 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:239:23:239:32 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:249:15:249:18 | SelfParam |  | main.rs:248:5:250:5 | trait MyTrait1 |
+| main.rs:249:15:249:18 | SelfParam | 0 | main.rs:248:20:248:20 | A |
+| main.rs:253:15:253:18 | SelfParam |  | main.rs:252:5:263:5 | trait MyTrait2 |
+| main.rs:253:15:253:18 | SelfParam | 0 | main.rs:252:20:252:20 | A |
+| main.rs:258:17:258:20 | self |  | main.rs:252:5:263:5 | trait MyTrait2 |
+| main.rs:258:17:258:20 | self | 0 | main.rs:252:20:252:20 | A |
+| main.rs:260:26:260:29 | self |  | main.rs:252:5:263:5 | trait MyTrait2 |
+| main.rs:260:26:260:29 | self | 0 | main.rs:252:20:252:20 | A |
+| main.rs:266:15:266:18 | SelfParam |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:266:15:266:18 | SelfParam | 0 | main.rs:265:10:265:10 | T |
+| main.rs:267:13:267:16 | self |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:267:13:267:16 | self | 0 | main.rs:265:10:265:10 | T |
+| main.rs:267:13:267:18 | self.a |  | main.rs:265:10:265:10 | T |
+| main.rs:274:13:274:13 | x |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:274:13:274:13 | x | 0 | main.rs:243:5:244:14 | struct S1 |
+| main.rs:274:17:274:33 | MyThing {...} |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:274:17:274:33 | MyThing {...} | 0 | main.rs:243:5:244:14 | struct S1 |
+| main.rs:274:30:274:31 | S1 |  | main.rs:243:5:244:14 | struct S1 |
+| main.rs:275:13:275:13 | y |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:275:13:275:13 | y | 0 | main.rs:245:5:246:14 | struct S2 |
+| main.rs:275:17:275:33 | MyThing {...} |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:275:17:275:33 | MyThing {...} | 0 | main.rs:245:5:246:14 | struct S2 |
+| main.rs:275:30:275:31 | S2 |  | main.rs:245:5:246:14 | struct S2 |
+| main.rs:277:26:277:26 | x |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:277:26:277:26 | x | 0 | main.rs:243:5:244:14 | struct S1 |
+| main.rs:278:26:278:26 | y |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:278:26:278:26 | y | 0 | main.rs:245:5:246:14 | struct S2 |
+| main.rs:280:13:280:13 | x |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:280:13:280:13 | x | 0 | main.rs:243:5:244:14 | struct S1 |
+| main.rs:280:17:280:33 | MyThing {...} |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:280:17:280:33 | MyThing {...} | 0 | main.rs:243:5:244:14 | struct S1 |
+| main.rs:280:30:280:31 | S1 |  | main.rs:243:5:244:14 | struct S1 |
+| main.rs:281:13:281:13 | y |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:281:13:281:13 | y | 0 | main.rs:245:5:246:14 | struct S2 |
+| main.rs:281:17:281:33 | MyThing {...} |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:281:17:281:33 | MyThing {...} | 0 | main.rs:245:5:246:14 | struct S2 |
+| main.rs:281:30:281:31 | S2 |  | main.rs:245:5:246:14 | struct S2 |
+| main.rs:283:26:283:26 | x |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:283:26:283:26 | x | 0 | main.rs:243:5:244:14 | struct S1 |
+| main.rs:284:26:284:26 | y |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:284:26:284:26 | y | 0 | main.rs:245:5:246:14 | struct S2 |
+| main.rs:289:5:289:9 | ...::f |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:289:5:289:11 | ...::f(...) |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:290:5:290:9 | ...::g |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:290:5:290:33 | ...::g(...) |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:290:11:290:20 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:290:23:290:32 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |

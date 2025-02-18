@@ -202,13 +202,22 @@ class TraitType extends Type, TTrait {
 
   TraitType() { this = TTrait(trait) }
 
-  override Function getMethod(string name) { result = trait.getASuccessor(name) }
+  override Function getMethod(string name) {
+    result = trait.getASuccessor(name)
+    or
+    result = this.getABound().resolveType().getMethod(name)
+  }
 
   override RecordField getRecordField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeRepr getABaseType() { none() }
+  pragma[nomagic]
+  private TypeRepr_ getABound() {
+    result = trait.(Trait).getTypeBoundList().getABound().getTypeRepr()
+  }
+
+  override TypeRepr getABaseType() { result = this.getABound() }
 
   override string toString() { result = trait.toString() }
 
@@ -267,7 +276,7 @@ class TypeParameter extends Type, TTypeParameter {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeRepr getABaseType() { result = this.getABound() }
+  override TypeRepr getABaseType() { none() }
 
   override string toString() { result = typeParam.toString() }
 
@@ -755,15 +764,15 @@ private Type resolveTargetTyped(AstNode n, TypePath path) {
       result = resolveType(let.getInitializer(), path)
     )
     or
-    exists(ItemNode i, Function f, SelfParam p, TypePath suffix, Type res |
+    exists(ItemNode i, FunctionItemNode f, SelfParam p, TypePath suffix, Type res |
       n = p and
       (
         res = resolveImplSelfType(i, suffix)
         or
         res = resolveTraitSelfType(i, suffix)
       ) and
-      f = i.getASuccessor(_) and
-      p = f.getParamList().getSelfParam()
+      f.getImmediateParent() = i and
+      p = f.(Function).getParamList().getSelfParam()
     |
       if p.isRef()
       then
@@ -917,13 +926,18 @@ private module FunctionMatchingInput implements MatchingInputSig {
   predicate target(Access a, Decl target) { target = a.getStaticTarget() }
 
   private AstNode getExplicitArgument(Access a, int pos) {
-    result = a.getArgList().getArg(pos)
+    exists(int offset, Decl target |
+      result = a.getArgList().getArg(pos + offset) and
+      target(a, target)
+    |
+      if target.getParamList().hasSelfParam() and not a instanceof MethodCallExpr
+      then offset = 1
+      else offset = 0
+    )
     or
-    (
-      result = a.(CallExpr).getFunction()
-      or
-      result = a.(MethodCallExpr).getReceiver()
-    ) and
+    // result = a.(CallExpr).getFunction()
+    // or
+    result = a.(MethodCallExpr).getReceiver() and
     pos = -1
   }
 
@@ -967,6 +981,12 @@ private module FunctionMatchingInput implements MatchingInputSig {
       pos = -1
     |
       t = tp.resolveTypeAt(path)
+    )
+    or
+    exists(SelfParam self |
+      self = decl.getParamList().getSelfParam() and
+      pos = -1 and
+      t = resolveTargetTyped(self, path)
     )
   }
 
