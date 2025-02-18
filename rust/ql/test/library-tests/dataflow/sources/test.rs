@@ -31,11 +31,13 @@ fn test_env_args() {
     let arg1 = &args[1];
     let arg2 = std::env::args().nth(2).unwrap(); // $ Alert[rust/summary/taint-sources]
     let arg3 = std::env::args_os().nth(3).unwrap(); // $ Alert[rust/summary/taint-sources]
+    let arg4 = std::env::args().nth(4).unwrap().parse::<usize>().unwrap(); // $ Alert[rust/summary/taint-sources]
 
     sink(my_path); // $ hasTaintFlow
     sink(arg1); // $ hasTaintFlow
     sink(arg2); // $ hasTaintFlow
     sink(arg3); // $ hasTaintFlow
+    sink(arg4); // $ hasTaintFlow
 
     for arg in std::env::args() { // $ Alert[rust/summary/taint-sources]
         sink(arg); // $ hasTaintFlow
