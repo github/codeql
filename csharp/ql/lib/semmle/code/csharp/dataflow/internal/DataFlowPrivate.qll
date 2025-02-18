@@ -610,6 +610,24 @@ module LocalFlow {
           or
           exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
         )
+        or
+        isSuccessor = true and
+        scope =
+          any(IsExpr ie |
+            e1 = ie.getExpr() and
+            e2 = ie.getPattern()
+          )
+        or
+        isSuccessor = true and
+        scope =
+          any(Switch e |
+            e1 = e.getExpr() and
+            e2 = e.getACase().getPattern()
+          )
+        or
+        isSuccessor = false and
+        e2 = e1.(RecursivePatternExpr).getPropertyPatterns() and
+        scope = e1
       )
     }
 
@@ -907,27 +925,28 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
   )
 }
 
-private predicate patternPropertyRead0(RecursivePatternExpr rpe, ContentSet c, VariablePatternExpr e) {
-  exists(TypeAccess ta, Property prop |
-    ta = rpe.getTypeAccess() and
-    e = rpe.getPropertyPatterns().getPattern(_) and
-    prop.getDeclaringType() = ta.getType() and
-    prop.getName() = e.(LabeledPatternExpr).getLabel() and
-    c.isProperty(prop)
+/**
+ * TODO: Should we consider to override getType on pattern expressions?
+ */
+private Type getPatternType(PatternExpr pe) {
+  result = pe.(RecursivePatternExpr).getTypeAccess().getType()
+  or
+  not pe instanceof LabeledPatternExpr and
+  result = getPatternType(pe.getParent())
+  or
+  exists(Property p |
+    result = p.getType() and
+    p.getDeclaringType() = getPatternType(pe.getParent()) and
+    p.getName() = pe.(LabeledPatternExpr).getLabel()
   )
 }
 
-private predicate patternPropertyRead(Expr e1, ContentSet c, VariablePatternExpr e2) {
-  exists(IsExpr ie, RecursivePatternExpr rpe |
-    e1 = ie.getExpr() and
-    rpe = ie.getPattern() and
-    patternPropertyRead0(rpe, c, e2)
-  )
-  or
-  exists(Switch sw, RecursivePatternExpr rpe |
-    e1 = sw.getExpr() and
-    rpe = sw.getACase().getPattern() and
-    patternPropertyRead0(rpe, c, e2)
+private predicate patternPropertyRead(PropertyPatternExpr pe, ContentSet c, LabeledPatternExpr e) {
+  exists(Property prop |
+    e = pe.getPattern(_) and
+    prop.getDeclaringType() = getPatternType(pe) and
+    prop.getName() = e.getLabel() and
+    c.isProperty(prop)
   )
 }
 
@@ -2454,7 +2473,7 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     isSuccessor = false
     or
     exactScope = false and
-    isSuccessor = true and
+    isSuccessor = false and
     patternPropertyRead(e1, _, e2) and
     scope = e1
   }
