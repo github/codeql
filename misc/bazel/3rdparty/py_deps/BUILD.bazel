@@ -44,14 +44,14 @@ alias(
 )
 
 alias(
-    name = "clap-4.5.29",
-    actual = "@vendor_py__clap-4.5.29//:clap",
+    name = "clap-4.5.30",
+    actual = "@vendor_py__clap-4.5.30//:clap",
     tags = ["manual"],
 )
 
 alias(
     name = "clap",
-    actual = "@vendor_py__clap-4.5.29//:clap",
+    actual = "@vendor_py__clap-4.5.30//:clap",
     tags = ["manual"],
 )
 
@@ -68,14 +68,14 @@ alias(
 )
 
 alias(
-    name = "tree-sitter-0.20.10",
-    actual = "@vendor_py__tree-sitter-0.20.10//:tree_sitter",
+    name = "tree-sitter-0.20.4",
+    actual = "@vendor_py__tree-sitter-0.20.4//:tree_sitter",
     tags = ["manual"],
 )
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor_py__tree-sitter-0.20.10//:tree_sitter",
+    actual = "@vendor_py__tree-sitter-0.20.4//:tree_sitter",
     tags = ["manual"],
 )
 

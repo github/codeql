@@ -88,8 +88,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.29",
+    version = "4.5.30",
     deps = [
-        "@vendor_py__clap_builder-4.5.29//:clap_builder",
+        "@vendor_py__clap_builder-4.5.30//:clap_builder",
     ],
 )

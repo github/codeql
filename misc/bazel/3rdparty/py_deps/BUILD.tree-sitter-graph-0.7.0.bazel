@@ -88,6 +88,6 @@ rust_library(
         "@vendor_py__smallvec-1.14.0//:smallvec",
         "@vendor_py__string-interner-0.12.2//:string_interner",
         "@vendor_py__thiserror-1.0.69//:thiserror",
-        "@vendor_py__tree-sitter-0.20.10//:tree_sitter",
+        "@vendor_py__tree-sitter-0.20.4//:tree_sitter",
     ],
 )

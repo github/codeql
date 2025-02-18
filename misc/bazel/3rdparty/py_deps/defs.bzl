@@ -296,15 +296,15 @@ _NORMAL_DEPENDENCIES = {
     "python/extractor/tsg-python": {
         _COMMON_CONDITION: {
             "anyhow": Label("@vendor_py__anyhow-1.0.95//:anyhow"),
-            "clap": Label("@vendor_py__clap-4.5.29//:clap"),
+            "clap": Label("@vendor_py__clap-4.5.30//:clap"),
             "regex": Label("@vendor_py__regex-1.11.1//:regex"),
-            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.10//:tree_sitter"),
+            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.4//:tree_sitter"),
             "tree-sitter-graph": Label("@vendor_py__tree-sitter-graph-0.7.0//:tree_sitter_graph"),
         },
     },
     "python/extractor/tsg-python/tsp": {
         _COMMON_CONDITION: {
-            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.10//:tree_sitter"),
+            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.4//:tree_sitter"),
         },
     },
 }
@@ -554,22 +554,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__clap-4.5.29",
-        sha256 = "8acebd8ad879283633b343856142139f2da2317c96b05b4dd6181c61e2480184",
+        name = "vendor_py__clap-4.5.30",
+        sha256 = "92b7b18d71fad5313a1e320fa9897994228ce274b60faa4d694fe0ea89cd9e6d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/clap/4.5.29/download"],
-        strip_prefix = "clap-4.5.29",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.clap-4.5.29.bazel"),
+        urls = ["https://static.crates.io/crates/clap/4.5.30/download"],
+        strip_prefix = "clap-4.5.30",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.clap-4.5.30.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_py__clap_builder-4.5.29",
-        sha256 = "f6ba32cbda51c7e1dfd49acc1457ba1a7dec5b64fe360e828acb13ca8dc9c2f9",
+        name = "vendor_py__clap_builder-4.5.30",
+        sha256 = "a35db2071778a7344791a4fb4f95308b5673d219dee3ae348b86642574ecc90c",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/clap_builder/4.5.29/download"],
-        strip_prefix = "clap_builder-4.5.29",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.clap_builder-4.5.29.bazel"),
+        urls = ["https://static.crates.io/crates/clap_builder/4.5.30/download"],
+        strip_prefix = "clap_builder-4.5.30",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.clap_builder-4.5.30.bazel"),
     )
 
     maybe(
@@ -814,12 +814,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__tree-sitter-0.20.10",
-        sha256 = "e747b1f9b7b931ed39a548c1fae149101497de3c1fc8d9e18c62c1a66c683d3d",
+        name = "vendor_py__tree-sitter-0.20.4",
+        sha256 = "4e34327f8eac545e3f037382471b2b19367725a242bba7bc45edb9efb49fe39a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter/0.20.10/download"],
-        strip_prefix = "tree-sitter-0.20.10",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-0.20.10.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter/0.20.4/download"],
+        strip_prefix = "tree-sitter-0.20.4",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-0.20.4.bazel"),
     )
 
     maybe(
@@ -955,8 +955,8 @@ def crate_repositories():
     return [
         struct(repo = "vendor_py__anyhow-1.0.95", is_dev_dep = False),
         struct(repo = "vendor_py__cc-1.2.14", is_dev_dep = False),
-        struct(repo = "vendor_py__clap-4.5.29", is_dev_dep = False),
+        struct(repo = "vendor_py__clap-4.5.30", is_dev_dep = False),
         struct(repo = "vendor_py__regex-1.11.1", is_dev_dep = False),
-        struct(repo = "vendor_py__tree-sitter-0.20.10", is_dev_dep = False),
+        struct(repo = "vendor_py__tree-sitter-0.20.4", is_dev_dep = False),
         struct(repo = "vendor_py__tree-sitter-graph-0.7.0", is_dev_dep = False),
     ]

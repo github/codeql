@@ -60,9 +60,9 @@ use_repo(
     py_deps,
     "vendor_py__anyhow-1.0.95",
     "vendor_py__cc-1.2.14",
-    "vendor_py__clap-4.5.29",
+    "vendor_py__clap-4.5.30",
     "vendor_py__regex-1.11.1",
-    "vendor_py__tree-sitter-0.20.10",
+    "vendor_py__tree-sitter-0.20.4",
     "vendor_py__tree-sitter-graph-0.7.0",
 )
 

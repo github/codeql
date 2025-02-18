@@ -87,7 +87,7 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.29",
+    version = "4.5.30",
     deps = [
         "@vendor_py__anstream-0.6.18//:anstream",
         "@vendor_py__anstyle-1.0.10//:anstyle",

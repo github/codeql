@@ -30,7 +30,7 @@ rust_library(
         ],
     ),
     crate_root = "binding_rust/lib.rs",
-    edition = "2021",
+    edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
@@ -80,10 +80,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.10",
+    version = "0.20.4",
     deps = [
         "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__tree-sitter-0.20.10//:build_script_build",
+        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
     ],
 )
 
@@ -120,7 +120,7 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
-    edition = "2021",
+    edition = "2018",
     pkg_name = "tree-sitter",
     rustc_flags = [
         "--cap-lints=allow",
@@ -132,7 +132,7 @@ cargo_build_script(
         "noclippy",
         "norustfmt",
     ],
-    version = "0.20.10",
+    version = "0.20.4",
     visibility = ["//visibility:private"],
     deps = [
         "@vendor_py__cc-1.2.14//:cc",
