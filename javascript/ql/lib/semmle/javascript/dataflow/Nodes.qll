@@ -1095,7 +1095,8 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
   /**
    * Gets a property read that accesses the property `name` on an instance of this class.
    *
-   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   * This includes accesses on subclasses (if the member is not overridden) and accesses in a base class
+   * (only if accessed on `this`).
    */
   pragma[nomagic]
   DataFlow::PropRead getAnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
