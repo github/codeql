@@ -874,6 +874,9 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
     t = TStruct(decl) and
     path.isEmpty()
     or
+    t = TEnum(decl.(VariantDecl).getEnum()) and
+    path.isEmpty()
+    or
     exists(int i |
       t = decl.getTypeParameter(i) and
       path = typePath(i)
@@ -885,6 +888,13 @@ private module RecordFieldMatching = Matching<RecordFieldMatchingInput>;
 
 private Type resolveRecordExprType(RecordExpr re, TypePath path) {
   result = re.getPath().(Path_).resolveTypeAt(path)
+  or
+  exists(Enum e, Variant v |
+    v = resolvePath(re.getPath()) and
+    v = e.getVariantList().getAVariant() and
+    result = TEnum(e) and
+    path.isEmpty()
+  )
   or
   // result = resolveFunctionReturnType(call.getStaticTarget(), path)
   result = RecordFieldMatching::resolveAccess(re, "(return)", path)
@@ -898,9 +908,87 @@ private module FunctionMatchingInput implements MatchingInputSig {
 
   Pos getReturnPos() { result = -2 }
 
-  class Decl extends Function {
-    TypeParameter getTypeParameter(int i) {
+  // class Decl extends Function {
+  //   TypeParameter getTypeParameter(int i) {
+  //     result.getTypeParam() = this.getGenericParamList().getTypeParam(i)
+  //   }
+  // }
+  abstract class Decl extends AstNode {
+    abstract TypeParameter getTypeParameter(int i);
+
+    abstract Type getParameterType(int pos, TypePath path);
+
+    abstract Type getReturnType(TypePath path);
+  }
+
+  private class StructDecl extends Decl, Struct {
+    override TypeParameter getTypeParameter(int i) {
       result.getTypeParam() = this.getGenericParamList().getTypeParam(i)
+    }
+
+    override Type getParameterType(int pos, TypePath path) {
+      result = this.getTupleField(pos).getTypeRepr().(TypeRepr_).resolveTypeAt(path)
+    }
+
+    override Type getReturnType(TypePath path) {
+      result = TStruct(this) and
+      path.isEmpty()
+      or
+      exists(int i |
+        result = TTypeParameter(this.getGenericParamList().getTypeParam(i)) and
+        path = typePath(i)
+      )
+    }
+  }
+
+  private class VariantDecl extends Decl, Variant {
+    Enum getEnum() { result.getVariantList().getAVariant() = this }
+
+    override TypeParameter getTypeParameter(int i) {
+      result.getTypeParam() = this.getEnum().getGenericParamList().getTypeParam(i)
+    }
+
+    override Type getParameterType(int pos, TypePath path) {
+      result = this.getTupleField(pos).getTypeRepr().(TypeRepr_).resolveTypeAt(path)
+    }
+
+    override Type getReturnType(TypePath path) {
+      exists(Enum enum | enum = this.getEnum() |
+        result = TEnum(enum) and
+        path.isEmpty()
+        or
+        exists(int i |
+          result = TTypeParameter(enum.getGenericParamList().getTypeParam(i)) and
+          path = typePath(i)
+        )
+      )
+    }
+  }
+
+  private class FunctionDecl extends Decl, Function {
+    override TypeParameter getTypeParameter(int i) {
+      result.getTypeParam() = this.getGenericParamList().getTypeParam(i)
+    }
+
+    override Type getParameterType(int pos, TypePath path) {
+      exists(TypeRepr_ tp |
+        paramTyped(this.getParamList().getParam(pos), _, tp)
+        or
+        selfParamTyped(this.getParamList().getSelfParam(), tp) and
+        pos = -1
+      |
+        result = tp.resolveTypeAt(path)
+      )
+      or
+      exists(SelfParam self |
+        self = this.getParamList().getSelfParam() and
+        pos = -1 and
+        result = resolveTargetTyped(self, path)
+      )
+    }
+
+    override Type getReturnType(TypePath path) {
+      result = this.getRetType().getTypeRepr().(TypeRepr_).resolveTypeAt(path)
     }
   }
 
@@ -923,14 +1011,20 @@ private module FunctionMatchingInput implements MatchingInputSig {
     predicate noExplicitTypeArguments() { not exists(this.getTypeArg(_)) }
   }
 
-  predicate target(Access a, Decl target) { target = a.getStaticTarget() }
+  predicate target(Access a, Decl target) {
+    target = a.getStaticTarget()
+    or
+    target = a.(CallExpr).getStruct()
+    or
+    target = a.(CallExpr).getVariant()
+  }
 
   private AstNode getExplicitArgument(Access a, int pos) {
     exists(int offset, Decl target |
       result = a.getArgList().getArg(pos + offset) and
       target(a, target)
     |
-      if target.getParamList().hasSelfParam() and not a instanceof MethodCallExpr
+      if target.(Function).getParamList().hasSelfParam() and not a instanceof MethodCallExpr
       then offset = 1
       else offset = 0
     )
@@ -974,26 +1068,11 @@ private module FunctionMatchingInput implements MatchingInputSig {
   }
 
   predicate parameterType(Decl decl, int pos, TypePath path, Type t) {
-    exists(TypeRepr_ tp |
-      paramTyped(decl.getParamList().getParam(pos), _, tp)
-      or
-      selfParamTyped(decl.getParamList().getSelfParam(), tp) and
-      pos = -1
-    |
-      t = tp.resolveTypeAt(path)
-    )
-    or
-    exists(SelfParam self |
-      self = decl.getParamList().getSelfParam() and
-      pos = -1 and
-      t = resolveTargetTyped(self, path)
-    )
+    t = decl.getParameterType(pos, path)
   }
 
   pragma[nomagic]
-  predicate declType(Decl decl, TypePath path, Type t) {
-    t = decl.getRetType().getTypeRepr().(TypeRepr_).resolveTypeAt(path)
-  }
+  predicate declType(Decl decl, TypePath path, Type t) { t = decl.getReturnType(path) }
 }
 
 private module FunctionMatching = Matching<FunctionMatchingInput>;
