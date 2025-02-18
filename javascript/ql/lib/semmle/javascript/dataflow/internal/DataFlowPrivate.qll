@@ -583,19 +583,14 @@ class DataFlowType extends TDataFlowType {
   DataFlow::ClassNode asInstanceOfClass() { this = TInstanceType(result) }
 }
 
-private predicate typeStrongerThan1(DataFlowType t1, DataFlowType t2) {
-  // 't1' is a subclass of 't2'
-  t1.asInstanceOfClass() = t2.asInstanceOfClass().getADirectSubClass()
-}
-
 /**
  * Holds if `t1` is strictly stronger than `t2`.
  */
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  typeStrongerThan1(t1, t2)
+  // 't1' is a subclass of 't2'
+  t1.asInstanceOfClass() = t2.asInstanceOfClass().getADirectSubClass+()
   or
-  // Ensure all types are transitively stronger than 'any'
-  not typeStrongerThan1(t1, _) and
+  // Ensure all types are stronger than 'any'
   not t1 = TAnyType() and
   t2 = TAnyType()
 }
