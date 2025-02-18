@@ -2,8 +2,8 @@ import 'dummy';
 
 function t1() {
     function target(...rest) {
-        sink(rest[0]); // $ hasValueFlow=t1.1
-        sink(rest[1]); // $ hasValueFlow=t1.2
+        sink(rest[0]); // $ hasValueFlow=t1.1 SPURIOUS: hasTaintFlow=t1.2
+        sink(rest[1]); // $ hasValueFlow=t1.2 SPURIOUS: hasTaintFlow=t1.1
         sink(rest.join(',')); // $ hasTaintFlow=t1.1 hasTaintFlow=t1.2
     }
     target(source('t1.1'), source('t1.2'));
@@ -19,9 +19,9 @@ function t2() {
 
 function t3() {
     function finalTarget(x, y, z) {
-        sink(x); // $ hasValueFlow=t3.1
-        sink(y); // $ hasValueFlow=t3.2
-        sink(z); // $ hasValueFlow=t3.3
+        sink(x); // $ hasValueFlow=t3.1 SPURIOUS: hasTaintFlow=t3.2 hasTaintFlow=t3.3
+        sink(y); // $ hasValueFlow=t3.2 SPURIOUS: hasTaintFlow=t3.1 hasTaintFlow=t3.3
+        sink(z); // $ hasValueFlow=t3.3 SPURIOUS: hasTaintFlow=t3.1 hasTaintFlow=t3.2
     }
     function target(...rest) {
         finalTarget(...rest);
@@ -31,10 +31,10 @@ function t3() {
 
 function t4() {
     function finalTarget(w, x, y, z) {
-        sink(w); // $ hasValueFlow=t4.0
-        sink(x); // $ hasValueFlow=t4.1
-        sink(y); // $ hasValueFlow=t4.2
-        sink(z); // $ hasValueFlow=t4.3
+        sink(w); // $ hasValueFlow=t4.0 SPURIOUS: hasTaintFlow=t4.1 hasTaintFlow=t4.2 hasTaintFlow=t4.3
+        sink(x); // $ hasValueFlow=t4.1 SPURIOUS: hasTaintFlow=t4.2 hasTaintFlow=t4.3
+        sink(y); // $ hasValueFlow=t4.2 SPURIOUS: hasTaintFlow=t4.1 hasTaintFlow=t4.3
+        sink(z); // $ hasValueFlow=t4.3 SPURIOUS: hasTaintFlow=t4.1 hasTaintFlow=t4.2
     }
     function target(...rest) {
         finalTarget(source('t4.0'), ...rest);
@@ -44,10 +44,10 @@ function t4() {
 
 function t5() {
     function finalTarget(w, x, y, z) {
-        sink(w); // $ hasValueFlow=t5.0
-        sink(x); // $ hasValueFlow=t5.1
-        sink(y); // $ hasValueFlow=t5.2
-        sink(z); // $ hasValueFlow=t5.3
+        sink(w); // $ hasValueFlow=t5.0 SPURIOUS: hasTaintFlow=t5.1 hasTaintFlow=t5.2 hasTaintFlow=t5.3
+        sink(x); // $ hasValueFlow=t5.1 SPURIOUS: hasTaintFlow=t5.2 hasTaintFlow=t5.3
+        sink(y); // $ hasValueFlow=t5.2 SPURIOUS: hasTaintFlow=t5.1 hasTaintFlow=t5.3
+        sink(z); // $ hasValueFlow=t5.3 SPURIOUS: hasTaintFlow=t5.1 hasTaintFlow=t5.2
     }
     function target(array) {
         finalTarget(source('t5.0'), ...array);
@@ -58,18 +58,18 @@ function t5() {
 function t6() {
     function target(x) {
         sink(x); // $ hasValueFlow=t6.1
-        sink(arguments[0]);// $ hasValueFlow=t6.1
-        sink(arguments[1]);// $ hasValueFlow=t6.2
-        sink(arguments[2]);// $ hasValueFlow=t6.3
+        sink(arguments[0]);// $ hasValueFlow=t6.1 SPURIOUS: hasTaintFlow=t6.2 hasTaintFlow=t6.3
+        sink(arguments[1]);// $ hasValueFlow=t6.2 SPURIOUS: hasTaintFlow=t6.1 hasTaintFlow=t6.3
+        sink(arguments[2]);// $ hasValueFlow=t6.3 SPURIOUS: hasTaintFlow=t6.1 hasTaintFlow=t6.2
     }
     target(source('t6.1'), source('t6.2'), source('t6.3'));
 }
 
 function t7() {
     function finalTarget(x, y, z) {
-        sink(x); // $ hasValueFlow=t7.1
-        sink(y); // $ hasValueFlow=t7.2
-        sink(z); // $ hasValueFlow=t7.3
+        sink(x); // $ hasValueFlow=t7.1 SPURIOUS: hasTaintFlow=t7.2 hasTaintFlow=t7.3
+        sink(y); // $ hasValueFlow=t7.2 SPURIOUS: hasTaintFlow=t7.1 hasTaintFlow=t7.3
+        sink(z); // $ hasValueFlow=t7.3 SPURIOUS: hasTaintFlow=t7.1 hasTaintFlow=t7.2
     }
     function target() {
         finalTarget(...arguments);
@@ -79,9 +79,9 @@ function t7() {
 
 function t8() {
     function finalTarget(x, y, z) {
-        sink(x); // $ hasValueFlow=t8.1 SPURIOUS: hasValueFlow=t8.3 hasValueFlow=t8.4
-        sink(y); // $ hasValueFlow=t8.2 SPURIOUS: hasValueFlow=t8.3 hasValueFlow=t8.4
-        sink(z); // $ hasValueFlow=t8.3 SPURIOUS: hasValueFlow=t8.3 hasValueFlow=t8.4
+        sink(x); // $ hasValueFlow=t8.1 SPURIOUS: hasTaintFlow=t8.2 hasValueFlow=t8.3 hasValueFlow=t8.4
+        sink(y); // $ hasValueFlow=t8.2 SPURIOUS: hasTaintFlow=t8.1 hasValueFlow=t8.3 hasValueFlow=t8.4
+        sink(z); // $ hasValueFlow=t8.3 SPURIOUS: hasTaintFlow=t8.1 hasTaintFlow=t8.2 hasValueFlow=t8.3 hasValueFlow=t8.4
     }
     function target(array1, array2) {
         finalTarget(...array1, ...array2);
@@ -91,9 +91,9 @@ function t8() {
 
 function t9() {
     function finalTarget(x, y, z) {
-        sink(x); // $ hasValueFlow=t9.1
-        sink(y); // $ hasValueFlow=t9.2
-        sink(z); // $ hasValueFlow=t9.3
+        sink(x); // $ hasValueFlow=t9.1 SPURIOUS: hasTaintFlow=t9.2 hasTaintFlow=t9.3
+        sink(y); // $ hasValueFlow=t9.2 SPURIOUS: hasTaintFlow=t9.1 hasTaintFlow=t9.3
+        sink(z); // $ hasValueFlow=t9.3 SPURIOUS: hasTaintFlow=t9.1 hasTaintFlow=t9.2
     }
     function target() {
         finalTarget.apply(undefined, arguments);
@@ -103,9 +103,9 @@ function t9() {
 
 function t10() {
     function finalTarget(x, y, z) {
-        sink(x); // $ hasValueFlow=t10.1
-        sink(y); // $ hasValueFlow=t10.2
-        sink(z); // $ hasValueFlow=t10.3
+        sink(x); // $ hasValueFlow=t10.1 SPURIOUS: hasTaintFlow=t10.2 hasTaintFlow=t10.3
+        sink(y); // $ hasValueFlow=t10.2 SPURIOUS: hasTaintFlow=t10.1 hasTaintFlow=t10.3
+        sink(z); // $ hasValueFlow=t10.3 SPURIOUS: hasTaintFlow=t10.1 hasTaintFlow=t10.2
     }
     function target(...rest) {
         finalTarget.apply(undefined, rest);

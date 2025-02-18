@@ -31,7 +31,7 @@ app.get('/user/:id', function(req, res) {
     ['Name', 'Content'],
     ['body', req.body]
   ]);
-  res.send(mytable); // NOT OK - FIXME: only works in OLD dataflow, add implicit reads before library-contributed taint steps
+  res.send(mytable); // NOT OK
 });
 
 var showdown  = require('showdown');
@@ -99,7 +99,7 @@ app.get('/user/:id', function (req, res) {
   res.send(markdownIt2.render(req.body)); // OK - no html
   res.send(markdownIt3.render(req.body)); // NOT OK
 
-  res.send(markdownIt.use(require('markdown-it-sanitizer')).render(req.body)); // OK - HTML is sanitized. 
+  res.send(markdownIt.use(require('markdown-it-sanitizer')).render(req.body)); // OK - HTML is sanitized.
   res.send(markdownIt.use(require('markdown-it-abbr')).use(unknown).render(req.body)); // NOT OK
 });
 

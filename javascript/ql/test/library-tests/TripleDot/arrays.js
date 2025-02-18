@@ -2,8 +2,8 @@ import 'dummy';
 
 function shiftKnown() {
     let array = [source('shift.1'), source('shift.2')];
-    sink(array.shift()); // $ hasValueFlow=shift.1
-    sink(array.shift()); // $ SPURIOUS: hasValueFlow=shift.1 MISSING: hasValueFlow=shift.2
+    sink(array.shift()); // $ hasValueFlow=shift.1 SPURIOUS: hasTaintFlow=shift.2
+    sink(array.shift()); // $ SPURIOUS: hasValueFlow=shift.1 hasTaintFlow=shift.2 MISSING: hasValueFlow=shift.2
 }
 
 function shiftUnknown() {
