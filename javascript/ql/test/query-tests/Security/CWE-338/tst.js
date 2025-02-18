@@ -87,12 +87,12 @@ function f17() {
 }
 
 function f18() {
-    var secret = (o.password = Math.random());
+    var secret = (o.password = Math.random()); // $ Alert
 }
 
 (function(){
     var crypto = require('crypto');
-    crypto.createHmac('sha256', Math.random());
+    crypto.createHmac('sha256', Math.random()); // $ Alert
 })();
 
 (function () {
@@ -118,7 +118,7 @@ function uid() {
     var my_nice_uid = Math.floor(Math.random() * 4_000_000_000); // $ Alert
     var liquid = Math.random();
     var UUID = Math.random(); // $ Alert
-    var MY_UID = Math.random(); // NOK OK
+    var MY_UID = Math.random(); // $ Alert
 }
 
 function buildPass(opts, length) {
