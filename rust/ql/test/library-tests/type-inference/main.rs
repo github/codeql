@@ -234,6 +234,57 @@ mod m6 {
     }
 }
 
+mod m7 {
+    #[derive(Debug)]
+    struct MyThing<A> {
+        a: A,
+    }
+
+    #[derive(Debug)]
+    struct S1;
+    #[derive(Debug)]
+    struct S2;
+
+    trait MyTrait1<A> {
+        fn m1(self) -> A;
+    }
+
+    trait MyTrait2<A>: MyTrait1<A> {
+        fn m2(self) -> A
+        where
+            Self: Sized,
+        {
+            if 1 + 1 > 2 {
+                self.m1() // missing
+            } else {
+                Self::m1(self) // missing
+            }
+        }
+    }
+
+    impl<T> MyTrait1<T> for MyThing<T> {
+        fn m1(self) -> T {
+            self.a
+        }
+    }
+
+    impl<T> MyTrait2<T> for MyThing<T> {}
+
+    pub fn f() {
+        let x = MyThing { a: S1 };
+        let y = MyThing { a: S2 };
+
+        println!("{:?}", x.m1()); // `x.m1` missing type
+        println!("{:?}", y.m1()); // `y.m1` missing type
+
+        let x = MyThing { a: S1 };
+        let y = MyThing { a: S2 };
+
+        println!("{:?}", x.m2()); // `x.m1` missing type
+        println!("{:?}", y.m2()); // `y.m1` missing type
+    }
+}
+
 fn main() {
     m1::f();
     m1::g(m1::Foo {}, m1::Foo {});
@@ -242,4 +293,5 @@ fn main() {
     m4::f();
     m5::f();
     m6::f();
+    m7::f();
 }
