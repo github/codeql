@@ -689,13 +689,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class EncryptionOperation extends Operation, TEncryptionOperation {
     override string getOperationType() { result = "EncryptionOperation" }
 
-    /**
-     * Gets the initialization vector associated with this encryption operation.
-     *
-     * This predicate does not need to hold for all encryption operations,
-     * as the initialization vector is not always required.
-     */
-    abstract InitializationVector getInitializationVector();
+    abstract override EncryptionAlgorithm getAlgorithm();
+    // /**
+    //  * Gets the initialization vector associated with this encryption operation.
+    //  *
+    //  * This predicate does not need to hold for all encryption operations,
+    //  * as the initialization vector is not always required.
+    //  */
+    // abstract InitializationVector getInitializationVector();
   }
 
   /**

@@ -58,6 +58,10 @@ module JCAModel {
     Expr getProviderArg() { result = this.getArgument(1) }
   }
 
+  class CipherDoFinalCall extends Call {
+    CipherDoFinalCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "doFinal") }
+  }
+
   /**
    * Data-flow configuration modelling flow from a cipher string literal to a `CipherGetInstanceCall` argument.
    */
@@ -89,6 +93,57 @@ module JCAModel {
     CipherStringLiteral getOrigin() {
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result),
         DataFlow::exprNode(this.(Expr).getAChildExpr*()))
+    }
+  }
+
+  // TODO: what if encrypt/decrypt mode isn't known
+  private module CipherGetInstanceToFinalizeConfig implements DataFlow::StateConfigSig {
+    class FlowState = string;
+
+    predicate isSource(DataFlow::Node src, FlowState state) {
+      state = "UNKNOWN" and
+      src.asExpr() instanceof CipherGetInstanceCall
+    }
+
+    predicate isSink(DataFlow::Node sink, FlowState state) {
+      state in ["ENCRYPT", "DECRYPT", "UNKNOWN"] and
+      exists(CipherDoFinalCall c | c.getQualifier() = sink.asExpr())
+    }
+
+    predicate isAdditionalFlowStep(
+      DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+    ) {
+      state1 in ["UNKNOWN", "ENCRYPT", "DECRYPT"] and
+      exists(CipherInitCall c |
+        c.getQualifier() = node1.asExpr() and
+        // TODO: not taking into consideration if the mode traces to this arg
+        exists(FieldAccess fa |
+          c.getModeArg() = fa and
+          (
+            fa.getField().getName() = "ENCRYPT_MODE" and
+            state2 = "ENCRYPT"
+            or
+            fa.getField().getName() = "DECRYPT_MODE" and
+            state2 = "DECRYPT"
+          )
+        )
+      ) and
+      node2 = node1
+    }
+  }
+
+  module CipherGetInstanceToFinalizeFlow =
+    DataFlow::GlobalWithState<CipherGetInstanceToFinalizeConfig>;
+
+  // TODO: what if the mode is UNKNOWN?
+  class CipherEncryptionOperation extends Crypto::EncryptionOperationInstance instanceof Call {
+    CipherEncryptionOperation() {
+      exists(CipherGetInstanceToFinalizeFlow::PathNode sink, CipherDoFinalCall c |
+        CipherGetInstanceToFinalizeFlow::flowPath(_, sink) and
+        sink.getNode().asExpr() = c.getQualifier() and
+        sink.getState() = "ENCRYPT" and
+        this = c
+      )
     }
   }
 
@@ -272,6 +327,8 @@ module JCAModel {
   class CipherInitCall extends MethodCall {
     CipherInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "init") }
 
+    // TODO: this doesn't account for tracing the mode to this arg if expending this arg to have
+    // the actual mode directly
     Expr getModeArg() { result = this.getArgument(0) }
 
     Expr getKey() {
