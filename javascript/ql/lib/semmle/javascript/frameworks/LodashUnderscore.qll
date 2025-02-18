@@ -278,7 +278,7 @@ module LodashUnderscore {
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0].ArrayElement" and
-      output = ["Argument[1].Parameter[1]", "ReturnValue.ArrayElement"] and
+      output = ["Argument[1].Parameter[0]", "ReturnValue.ArrayElement"] and
       preservesValue = true
     }
   }
