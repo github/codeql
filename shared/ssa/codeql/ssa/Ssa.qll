@@ -531,6 +531,79 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       input = getABasicBlockPredecessor(bbPhi) and
       1 = refRank(bbPhi, -1, v, _)
     }
+
+    private predicate adjacentRefs(BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v) {
+      adjacentRefRead(bb1, i1, bb2, i2, v)
+      or
+      adjacentRefPhi(bb1, i1, _, bb2, v) and i2 = -1
+    }
+
+    /**
+     * Holds if the reference to `v` at index `i1` in basic block `bb1` reaches
+     * the certain read at index `i2` in basic block `bb2` without going
+     * through any other certain read. The boolean `samevar` indicates whether
+     * the two references are to the same SSA variable.
+     *
+     * Note that since this relation skips over phi nodes and phi reads, it may
+     * be quadratic in the number of variable references for certain access
+     * patterns.
+     */
+    predicate firstUseAfterRef(
+      BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v, boolean samevar
+    ) {
+      adjacentRefs(bb1, i1, bb2, i2, v) and
+      variableRead(bb2, i2, v, _) and
+      samevar = true
+      or
+      exists(BasicBlock bb0, int i0, boolean samevar0 |
+        firstUseAfterRef(bb0, i0, bb2, i2, v, samevar0) and
+        adjacentRefs(bb1, i1, bb0, i0, v) and
+        not variableWrite(bb0, i0, v, true) and
+        if any(Definition def).definesAt(v, bb0, i0)
+        then samevar = false
+        else (
+          samevar = samevar0 and synthPhiRead(bb0, v) and i0 = -1
+        )
+      )
+    }
+  }
+
+  /**
+   * Holds if `def` reaches the certain read at index `i` in basic block `bb`
+   * without going through any other certain read. The boolean `samevar`
+   * indicates whether the read is a use of `def` or whether some number of phi
+   * nodes and/or uncertain reads occur between `def` and the read.
+   *
+   * Note that since this relation skips over phi nodes and phi reads, it may
+   * be quadratic in the number of variable references for certain access
+   * patterns.
+   */
+  predicate firstUse(Definition def, BasicBlock bb, int i, boolean samevar) {
+    exists(BasicBlock bb1, int i1, SourceVariable v |
+      def.definesAt(v, bb1, i1) and
+      AdjacentSsaRefs::firstUseAfterRef(bb1, i1, bb, i, v, samevar)
+    )
+  }
+
+  /**
+   * Holds if the certain read at index `i1` in basic block `bb1` reaches the
+   * certain read at index `i2` in basic block `bb2` without going through any
+   * other certain read. The boolean `samevar` indicates whether the two reads
+   * are of the same SSA variable.
+   *
+   * Note that since this relation skips over phi nodes and phi reads, it may
+   * be quadratic in the number of variable references for certain access
+   * patterns.
+   */
+  predicate adjacentUseUse(
+    BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v, boolean samevar
+  ) {
+    exists(boolean samevar0 |
+      variableRead(bb1, i1, v, true) and
+      not variableWrite(bb1, i1, v, true) and
+      AdjacentSsaRefs::firstUseAfterRef(bb1, i1, bb2, i2, v, samevar0) and
+      if any(Definition def).definesAt(v, bb1, i1) then samevar = false else samevar = samevar0
+    )
   }
 
   private module SsaDefReaches {
