@@ -244,24 +244,29 @@ module JCAModel {
   /**
    * Initialiation vectors
    */
-  abstract class IVParameterInstantiation extends ClassInstanceExpr {
-    abstract Expr getIV();
+  abstract class IVParameterInstantiation extends Crypto::InitializationVectorArtifactInstance instanceof ClassInstanceExpr
+  {
+    abstract Expr getInput();
   }
 
   class IvParameterSpecInstance extends IVParameterInstantiation {
     IvParameterSpecInstance() {
-      this.getConstructedType().hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
+      this.(ClassInstanceExpr)
+          .getConstructedType()
+          .hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
     }
 
-    override Expr getIV() { result = super.getArgument(0) }
+    override Expr getInput() { result = this.(ClassInstanceExpr).getArgument(0) }
   }
 
   class GCMParameterSpecInstance extends IVParameterInstantiation {
     GCMParameterSpecInstance() {
-      this.getConstructedType().hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
+      this.(ClassInstanceExpr)
+          .getConstructedType()
+          .hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
     }
 
-    override Expr getIV() { result = super.getArgument(1) }
+    override Expr getInput() { result = this.(ClassInstanceExpr).getArgument(1) }
   }
 
   class CipherInitCall extends MethodCall {
@@ -280,18 +285,24 @@ module JCAModel {
   }
 
   // TODO: cipher.getParameters().getParameterSpec(GCMParameterSpec.class);
-  class InitializationVectorExpr extends Crypto::InitializationVectorArtifactInstance instanceof Expr
-  {
-    CipherInitCall call; // TODO: add origin to known sources (e.g. RNG, etc.)
-
-    InitializationVectorExpr() { this = call.getIV() }
-  }
+  /*
+   *  class InitializationVectorArg extends Crypto::InitializationVectorArtifactInstance instanceof Expr
+   *  {
+   *    IVParameterInstantiation creation;
+   *
+   *    InitializationVectorArg() { this = creation.getInput() }
+   *  }
+   */
 
   class InitializationVector extends Crypto::InitializationVector {
-    InitializationVectorExpr instance;
+    IVParameterInstantiation instance;
 
     InitializationVector() { this = Crypto::TInitializationVector(instance) }
 
     override Location getLocation() { result = instance.getLocation() }
+
+    override Crypto::DataFlowNode asOutputData() { result.asExpr() = instance }
+
+    override Crypto::DataFlowNode getInputData() { result.asExpr() = instance.getInput() }
   }
 }

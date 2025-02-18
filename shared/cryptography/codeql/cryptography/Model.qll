@@ -12,13 +12,23 @@ signature module InputSig<LocationSig Location> {
     string toString();
   }
 
+  class DataFlowNode {
+    Location getLocation();
+
+    string toString();
+  }
+
   class UnknownLocation instanceof Location;
+
+  predicate rngToIvFlow(DataFlowNode rng, DataFlowNode iv);
 }
 
 module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final class LocatableElement = Input::LocatableElement;
 
   final class UnknownLocation = Input::UnknownLocation;
+
+  final class DataFlowNode = Input::DataFlowNode;
 
   final class UnknownPropertyValue extends string {
     UnknownPropertyValue() { this = "<unknown>" }
@@ -93,12 +103,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class NonceArtifactInstance extends LocatableElement { }
 
+  abstract class RandomNumberGenerationInstance extends LocatableElement { }
+
   newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
     TInitializationVector(InitializationVectorArtifactInstance e) or
     TNonce(NonceArtifactInstance e) or
+    TRandomNumberGeneration(RandomNumberGenerationInstance e) or
     // Operations (e.g., hashing, encryption)
     THashOperation(HashOperationInstance e) or
     TKeyDerivationOperation(KeyDerivationOperationInstance e) or
@@ -115,7 +128,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
     // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
-    TKemDemHybridCryptosystem(EncryptionAlgorithmInstance dem) or // TODO, change this relation and the below ones
+    TKemDemHybridCryptosystem(EncryptionAlgorithm dem) or // TODO, change this relation and the below ones
     TKeyAgreementHybridCryptosystem(EncryptionAlgorithmInstance ka) or
     TAsymmetricEncryptionMacHybridCryptosystem(EncryptionAlgorithmInstance enc) or
     TPostQuantumHybridCryptosystem(EncryptionAlgorithmInstance enc)
@@ -127,9 +140,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class NodeBase extends TNode {
     /**
-     * Returns a string representation of this node, usually the name of the operation/algorithm/property.
+     * Returns a string representation of this node.
      */
-    abstract string toString();
+    string toString() { result = this.getInternalType() }
 
     /**
      * Returns a string representation of the internal type of this node, usually the name of the class.
@@ -172,15 +185,48 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   class Asset = NodeBase;
 
-  class Artifact = NodeBase;
+  abstract class Artifact extends NodeBase {
+    abstract DataFlowNode asOutputData();
+
+    abstract DataFlowNode getInputData();
+  }
 
   /**
    * An initialization vector
    */
-  abstract class InitializationVector extends Asset, TInitializationVector {
+  abstract class InitializationVector extends Artifact, TInitializationVector {
     final override string getInternalType() { result = "InitializationVector" }
 
-    final override string toString() { result = this.getInternalType() }
+    RandomNumberGeneration getRNGSource() {
+      Input::rngToIvFlow(result.asOutputData(), this.getInputData())
+    }
+  }
+
+  newtype TRNGSourceSecurity =
+    RNGSourceSecure() or // Secure RNG source (unrelated to seed)
+    RNGSourceInsecure() // Insecure RNG source (unrelated to seed)
+
+  class RNGSourceSecurity extends TRNGSourceSecurity {
+    string toString() {
+      this instanceof RNGSourceSecure and result = "Secure RNG Source"
+      or
+      this instanceof RNGSourceInsecure and result = "Insecure RNG Source"
+    }
+  }
+
+  newtype TRNGSeedSecurity =
+    RNGSeedSecure() or
+    RNGSeedInsecure()
+
+  /**
+   * A source of random number generation
+   */
+  abstract class RandomNumberGeneration extends Artifact, TRandomNumberGeneration {
+    final override string getInternalType() { result = "RandomNumberGeneration" }
+
+    abstract RNGSourceSecurity getSourceSecurity();
+
+    abstract TRNGSeedSecurity getSeedSecurity(Location location);
   }
 
   /**
@@ -197,8 +243,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract string getOperationType();
 
-    final override string toString() { result = this.getOperationType() }
-
     final override string getInternalType() { result = this.getOperationType() }
 
     override NodeBase getChild(string edgeName) {
@@ -210,8 +254,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class Algorithm extends Asset {
-    final override string toString() { result = this.getAlgorithmType() }
-
     final override string getInternalType() { result = this.getAlgorithmType() }
 
     /**
