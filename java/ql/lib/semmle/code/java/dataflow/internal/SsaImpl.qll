@@ -490,26 +490,11 @@ private module Cached {
     )
   }
 
-  pragma[nomagic]
-  private predicate captureDefReaches(Definition def, SsaInput::BasicBlock bb2, int i2) {
-    variableCapture(def.getSourceVariable(), _, _, _) and
-    exists(SsaInput::BasicBlock bb1, int i1 |
-      Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
-      def.definesAt(_, bb1, i1)
-    )
-    or
-    exists(SsaInput::BasicBlock bb3, int i3 |
-      captureDefReaches(def, bb3, i3) and
-      SsaInput::variableRead(bb3, i3, _, _) and
-      Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-    )
-  }
-
   /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
   cached
   predicate captures(SsaImplicitInit init, SsaVariable capturedvar) {
     exists(BasicBlock bb, int i |
-      captureDefReaches(capturedvar, bb, i) and
+      Impl::ssaDefReachesRead(_, capturedvar, bb, i) and
       variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
     )
   }
