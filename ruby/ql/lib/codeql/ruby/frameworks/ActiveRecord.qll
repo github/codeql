@@ -254,9 +254,8 @@ private Expr getUltimateReceiver(MethodCall call) {
   )
 }
 
-// A call to `find`, `where`, etc. that may return active record model object(s)
-private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode
-{
+/** A call to `find`, `where`, etc. that may return active record model object(s) */
+class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode {
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelFinderCall() {

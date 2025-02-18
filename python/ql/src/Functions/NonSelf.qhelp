@@ -6,22 +6,18 @@
 
 <overview>
 <p> Normal methods should have at least one parameter and the first parameter should be called <code>self</code>.
-This makes the purpose of the parameter clear to other developers.
 </p>
 </overview>
 
 <recommendation>
-<p>If there is at least one parameter, then change the name of the first parameter to <code>self</code> as recommended by the style guidelines
+<p>Ensure that the first parameter of a normal method is named <code>self</code>, as recommended by the style guidelines
 in PEP 8.</p>
-<p>If there are no parameters, then it cannot be a normal method. It may need to be marked as a <code>staticmethod</code>
-or it could be moved out of the class as a normal function.
+<p>If a <code>self</code> parameter is unneeded, the method should be decorated with <code>staticmethod</code>, or moved out of the class as a regular function.
 </p>
 </recommendation>
 
 <example>
-<p>The following methods can both be used to assign values to variables in a <code>point</code> 
-object. The second method makes the association clearer because the <code>self</code> parameter is 
-used.</p>
+<p>In the following cases, the first argument of <code>Point.__init__</code> is named <code>val</code> instead; whereas in <code>Point2.__init__</code> it is correctly named <code>self</code>.</p>
 <sample src="NonSelf.py" />
 
 
@@ -31,7 +27,7 @@ used.</p>
 <li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#function-and-method-arguments">Function and 
 method arguments</a>.</li>
 <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
-
+<li>Python Docs: <a href="https://docs.python.org/3/library/functions.html#staticmethod">staticmethod</a>.</li>
 
 
 </references>

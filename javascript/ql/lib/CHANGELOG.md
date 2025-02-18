@@ -1,3 +1,9 @@
+## 2.4.1
+
+### Minor Analysis Improvements
+
+* Added support for regular expressions using the `v` flag.
+
 ## 2.4.0
 
 ### Major Analysis Improvements

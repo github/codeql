@@ -23,6 +23,14 @@ private predicate isTrustedOwner(string nwo) {
   trustedActionsOwnerDataModel(nwo.substring(0, nwo.indexOf("/")))
 }
 
+bindingset[version]
+private predicate isPinnedContainer(string version) {
+  version.regexpMatch("^sha256:[A-Fa-f0-9]{64}$")
+}
+
+bindingset[nwo]
+private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
+
 from UsesStep uses, string nwo, string version, Workflow workflow, string name
 where
   uses.getCallee() = nwo and
@@ -34,7 +42,7 @@ where
   ) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
-  not isPinnedCommit(version) and
+  not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
   not isImmutableAction(uses, nwo)
 select uses.getCalleeNode(),
   "Unpinned 3rd party Action '" + name + "' step $@ uses '" + nwo + "' with ref '" + version +

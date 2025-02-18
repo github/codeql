@@ -41,7 +41,8 @@ public class ExtractorConfig {
     ECMA2017(2017, 8),
     ECMA2018(2018, 9),
     ECMA2019(2019, 10),
-    ECMA2020(2020, 11);
+    ECMA2020(2020, 11),
+    ECMA2024(2024, 15);
 
     private final int version;
     public final int legacyVersion;
@@ -232,7 +233,7 @@ public class ExtractorConfig {
   private VirtualSourceRoot virtualSourceRoot;
 
   public ExtractorConfig(boolean experimental) {
-    this.ecmaVersion = experimental ? ECMAVersion.ECMA2020 : ECMAVersion.ECMA2019;
+    this.ecmaVersion = experimental ? ECMAVersion.ECMA2024 : ECMAVersion.ECMA2019;
     this.platform = Platform.AUTO;
     this.jsx = true;
     this.sourceType = SourceType.AUTO;

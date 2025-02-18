@@ -538,3 +538,4 @@
 | tst.js:407:128:407:129 |  * | Strings starting with '0/*' and with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s* |
 | tst.js:409:23:409:29 | [\\w.-]* | Strings starting with '//' and with many repetitions of '//' can start matching anywhere after the start of the preceeding (\\/(?:\\/[\\w.-]*)*){0,1}:([\\w.-]+) |
 | tst.js:411:15:411:19 | a{1,} | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a{1,})* |
+| tst.js:417:20:417:25 | (aa?)* | Strings with many repetitions of 'aa' can start matching anywhere after the start of the preceeding (aa?)*b |

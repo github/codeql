@@ -413,3 +413,5 @@ var bad99 = /(a{1,})*b/;
 var unicode = /^\n\u0000(\u0000|.)+$/;
 
 var largeUnicode = new RegExp("^\n\u{1F680}(\u{1F680}|.)+X$");
+
+var unicodeSets = /(aa?)*b/v;

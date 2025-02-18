@@ -9,6 +9,7 @@ private import codeql.dataflow.internal.DataFlowImpl
 private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
+private import codeql.rust.elements.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
@@ -120,12 +121,30 @@ final class ParameterPosition extends TParameterPosition {
   }
 }
 
+/** Holds if `call` invokes a qualified path that resolves to a method. */
+private predicate callToMethod(CallExpr call) {
+  exists(Path path |
+    path = call.getFunction().(PathExpr).getPath() and
+    path.hasQualifier() and
+    resolvePath(path).(Function).getParamList().hasSelfParam()
+  )
+}
+
 /** Holds if `arg` is an argument of `call` at the position `pos`. */
 private predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, ParameterPosition pos) {
-  arg = call.getArgument(pos.getPosition())
-  or
-  // The self argument in a method call.
-  arg = call.(MethodCallExprCfgNode).getReceiver() and pos.isSelf()
+  if callToMethod(call.(CallExprCfgNode).getCallExpr())
+  then (
+    // The first argument is for the `self` parameter
+    arg = call.getArgument(0) and pos.isSelf()
+    or
+    // Succeeding arguments are shifted left
+    arg = call.getArgument(pos.getPosition() + 1)
+  ) else (
+    // The self argument in a method call.
+    arg = call.(MethodCallExprCfgNode).getReceiver() and pos.isSelf()
+    or
+    arg = call.getArgument(pos.getPosition())
+  )
 }
 
 /**

@@ -788,6 +788,7 @@ public class Parser {
       String validFlags = "gim";
       if (this.options.ecmaVersion() >= 6) validFlags = "gimuy";
       if (this.options.ecmaVersion() >= 9) validFlags = "gimsuy";
+      if (this.options.ecmaVersion() >= 15) validFlags = "gimsuyv";
       if (!mods.matches("^[" + validFlags + "]*$"))
         this.raise(start, "Invalid regular expression flag");
       if (mods.indexOf('u') >= 0) {

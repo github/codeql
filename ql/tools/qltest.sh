@@ -15,6 +15,7 @@ set -eu
 exec "${CODEQL_DIST}/codeql" database index-files \
     --prune="**/*.testproj" \
     --include-extension=.yml \
+    --include-extension=.qlref \
     --size-limit=5m \
     --language=yaml \
     --working-dir=.\

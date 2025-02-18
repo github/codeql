@@ -1,3 +1,15 @@
+## 1.4.1
+
+### Bug Fixes
+
+* Fixed a recently-introduced bug that prevented taint tracking through `URLSearchParams` objects.
+  The original behaviour has been restored and taint should once again be tracked through such objects.
+* Fixed a rare issue that would occur when a function declaration inside a block statement was referenced before it was declared.
+  Such code is reliant on legacy web semantics, which is non-standard but nevertheless implemented by most engines.
+  CodeQL now takes legacy web semantics into account and resolves references to these functions correctly.
+* Fixed a bug that would cause parse errors in `.jsx` files in rare cases where the file
+  contained syntax that was misinterpreted as Flow syntax.
+
 ## 1.4.0
 
 ### Major Analysis Improvements
