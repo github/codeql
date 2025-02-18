@@ -998,12 +998,6 @@ private module FunctionMatchingInput implements MatchingInputSig {
 
 private module FunctionMatching = Matching<FunctionMatchingInput>;
 
-private Type resolveFunctionCall(CallExprBase call, TypePath path) {
-  result = resolveFunctionReturnType(call.getStaticTarget(), path)
-  or
-  result = FunctionMatching::resolveAccess(call, -2, path)
-}
-
 pragma[nomagic]
 private Type resolveFunctionReturnType(Function f, TypePath path) {
   result = f.getRetType().getTypeRepr().(TypeRepr_).resolveTypeAt(path) and
@@ -1022,12 +1016,15 @@ private Type resolvePathExprType(PathExpr pe, TypePath path) {
     )
   )
   or
-  result = pe.getPath().(Path_).resolveTypeAt(path)
+  result = pe.getPath().(Path_).resolveTypeAt(path) and
+  path.isEmpty()
 }
 
 pragma[nomagic]
 private Type resolveCallExprType(CallExpr ce, TypePath path) {
   result = resolvePathExprType(ce.getFunction(), path)
+  or
+  result = FunctionMatching::resolveAccess(ce, -2, path)
 }
 
 pragma[nomagic]
@@ -1049,6 +1046,8 @@ private Type resolveMethodCallExprType(MethodCallExpr mce, TypePath path) {
     f = resolveMethodCallExpr(mce) and
     result = resolveFunctionReturnType(f, path)
   )
+  or
+  result = FunctionMatching::resolveAccess(mce, -2, path)
 }
 
 private module FieldExprMatchingInput implements MatchingInputSig {
