@@ -298,7 +298,7 @@ module LodashUnderscore {
   private class LodashPartition extends DataFlow::SummarizedCallable {
     LodashPartition() { this = "_.partition" }
 
-    override DataFlow::CallNode getACall() { result = member(["partition"]).getACall() }
+    override DataFlow::CallNode getACall() { result = member("partition").getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0].ArrayElement" and
