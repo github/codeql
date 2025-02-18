@@ -95,11 +95,13 @@ resolvePath
 | main.rs:180:9:180:15 | MyTrait | main.rs:140:5:148:5 | trait MyTrait |
 | main.rs:180:9:180:18 | ...::f | main.rs:141:9:141:20 | fn f |
 | main.rs:181:9:181:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
+| main.rs:181:9:181:19 | ...::f | main.rs:157:33:162:9 | fn f |
 | main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:186:17:186:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:188:17:188:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:190:9:190:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
+| main.rs:190:9:190:19 | ...::h | main.rs:170:21:174:9 | fn h |
 | main.rs:199:19:199:22 | self | main.rs:195:1:203:1 | mod m9 |
 | main.rs:199:19:199:32 | ...::MyStruct | main.rs:196:5:196:26 | struct MyStruct |
 | main.rs:201:9:201:12 | self | main.rs:195:1:203:1 | mod m9 |
@@ -132,6 +134,7 @@ resolvePath
 | main.rs:289:13:289:13 | f | main.rs:280:5:280:17 | fn f |
 | main.rs:303:9:303:14 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
 | main.rs:306:13:306:16 | Self | main.rs:301:5:309:5 | trait Trait2 |
+| main.rs:306:13:306:19 | ...::g | main.rs:298:9:298:20 | fn g |
 | main.rs:314:10:314:15 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
 | main.rs:315:11:315:11 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:318:13:318:16 | Self | main.rs:313:5:325:5 | impl Trait1 for S { ... } |
@@ -144,6 +147,7 @@ resolvePath
 | main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:345:9:345:9 | S | main.rs:311:5:311:13 | struct S |
+| main.rs:345:9:345:12 | ...::g | main.rs:322:9:324:9 | fn g |
 | main.rs:351:5:351:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:351:5:351:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
 | main.rs:351:5:351:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |

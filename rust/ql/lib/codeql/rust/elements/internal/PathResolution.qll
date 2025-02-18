@@ -130,6 +130,16 @@ abstract class ItemNode extends AstNode {
       call = this.getASuccessorRec(_) and
       result = call.(ItemNode).getASuccessorRec(name)
     )
+    or
+    // an inherited function, either from a trait bound or from an `impl` block
+    exists(ItemNode node |
+      result = node.(ItemNode).getASuccessorRec(name) and
+      result instanceof Function
+    |
+      node = this.(TraitItemNode).resolveABound()
+      or
+      this = node.(ImplItemNode).resolveSelfTy()
+    )
   }
 
   /** Gets a successor named `name` of this item, if any. */
@@ -269,6 +279,13 @@ private class StructItemNode extends ItemNode instanceof Struct {
 }
 
 class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
+  pragma[nomagic]
+  Path getABoundPath() {
+    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
   override string getName() { result = Trait.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
