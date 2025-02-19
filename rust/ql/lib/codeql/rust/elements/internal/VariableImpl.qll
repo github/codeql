@@ -75,11 +75,11 @@ module Impl {
    * pattern.
    */
   private predicate variableDecl(AstNode definingNode, Name name, string text) {
-    text = name.getText() and
     (
       exists(SelfParam sp |
         name = sp.getName() and
         definingNode = name and
+        text = name.getText() and
         // exclude self parameters from functions without a body as these are
         // trait method declarations without implementations
         not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
@@ -92,6 +92,7 @@ module Impl {
           or
           not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
         ) and
+        text = name.getText() and
         // exclude for now anything starting with an uppercase character, which may be a reference to
         // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
         // which we don't appear to recognize yet anyway. This also assumes programmers follow the
