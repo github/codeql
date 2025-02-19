@@ -4,5 +4,3 @@ multiplePathResolutions
 multipleStaticCallTargets
 | main.rs:118:9:118:11 | f(...) | main.rs:104:5:106:5 | fn f |
 | main.rs:118:9:118:11 | f(...) | main.rs:110:5:112:5 | fn f |
-| main.rs:362:13:362:20 | self.g(...) | main.rs:357:9:358:9 | fn g |
-| main.rs:362:13:362:20 | self.g(...) | main.rs:397:9:400:9 | fn g |
