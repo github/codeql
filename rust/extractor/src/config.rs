@@ -57,6 +57,7 @@ pub struct Config {
     pub qltest: bool,
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
+    pub skip_path_resolution: bool,
 }
 
 impl Config {
