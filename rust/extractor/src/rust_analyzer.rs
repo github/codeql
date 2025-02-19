@@ -3,7 +3,7 @@ use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
-use ra_ap_paths::Utf8PathBuf;
+use ra_ap_paths::{AbsPath, Utf8PathBuf};
 use ra_ap_project_model::ProjectManifest;
 use ra_ap_project_model::{CargoConfig, ManifestPath};
 use ra_ap_span::Edition;
@@ -136,6 +136,8 @@ impl<'a> RustAnalyzer<'a> {
 struct CargoManifestMembersSlice {
     #[serde(default)]
     members: Vec<String>,
+    #[serde(default)]
+    exclude: Vec<String>,
 }
 
 #[derive(Deserialize)]
@@ -171,6 +173,12 @@ impl TomlReader {
     }
 }
 
+fn workspace_members_match(workspace_dir: &AbsPath, members: &[String], target: &AbsPath) -> bool {
+    members.iter().any(|p| {
+        glob::Pattern::new(workspace_dir.join(p).as_str()).is_ok_and(|p| p.matches(target.as_str()))
+    })
+}
+
 fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
         return None;
@@ -200,9 +208,12 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
                 if cargo.starts_with(other.parent())
                     && reader.read(other).is_ok_and(|it| {
                         it.workspace.as_ref().is_some_and(|w| {
-                            w.members
-                                .iter()
-                                .any(|m| other.parent().join(m) == cargo.parent())
+                            workspace_members_match(other.parent(), &w.members, cargo.parent())
+                                && !workspace_members_match(
+                                    other.parent(),
+                                    &w.exclude,
+                                    cargo.parent(),
+                                )
                         })
                     }) =>
             {
