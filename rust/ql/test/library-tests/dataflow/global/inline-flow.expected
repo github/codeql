@@ -42,6 +42,15 @@ edges
 | main.rs:103:13:103:30 | mn.data_through(...) | main.rs:103:9:103:9 | b | provenance |  |
 | main.rs:103:29:103:29 | a | main.rs:79:28:79:33 | ...: i64 | provenance |  |
 | main.rs:103:29:103:29 | a | main.rs:103:13:103:30 | mn.data_through(...) | provenance |  |
+| main.rs:109:9:109:9 | a | main.rs:110:26:110:26 | a | provenance |  |
+| main.rs:109:13:109:21 | source(...) | main.rs:109:9:109:9 | a | provenance |  |
+| main.rs:110:26:110:26 | a | main.rs:67:23:67:28 | ...: i64 | provenance |  |
+| main.rs:115:9:115:9 | a | main.rs:116:39:116:39 | a | provenance |  |
+| main.rs:115:13:115:22 | source(...) | main.rs:115:9:115:9 | a | provenance |  |
+| main.rs:116:9:116:9 | b | main.rs:117:10:117:10 | b | provenance |  |
+| main.rs:116:13:116:40 | ...::data_through(...) | main.rs:116:9:116:9 | b | provenance |  |
+| main.rs:116:39:116:39 | a | main.rs:79:28:79:33 | ...: i64 | provenance |  |
+| main.rs:116:39:116:39 | a | main.rs:116:13:116:40 | ...::data_through(...) | provenance |  |
 | main.rs:128:12:128:17 | ...: i64 | main.rs:129:24:129:24 | n | provenance |  |
 | main.rs:129:9:129:26 | MyInt {...} [MyInt] | main.rs:128:28:130:5 | { ... } [MyInt] | provenance |  |
 | main.rs:129:24:129:24 | n | main.rs:129:9:129:26 | MyInt {...} [MyInt] | provenance |  |
@@ -130,6 +139,15 @@ nodes
 | main.rs:103:13:103:30 | mn.data_through(...) | semmle.label | mn.data_through(...) |
 | main.rs:103:29:103:29 | a | semmle.label | a |
 | main.rs:104:10:104:10 | b | semmle.label | b |
+| main.rs:109:9:109:9 | a | semmle.label | a |
+| main.rs:109:13:109:21 | source(...) | semmle.label | source(...) |
+| main.rs:110:26:110:26 | a | semmle.label | a |
+| main.rs:115:9:115:9 | a | semmle.label | a |
+| main.rs:115:13:115:22 | source(...) | semmle.label | source(...) |
+| main.rs:116:9:116:9 | b | semmle.label | b |
+| main.rs:116:13:116:40 | ...::data_through(...) | semmle.label | ...::data_through(...) |
+| main.rs:116:39:116:39 | a | semmle.label | a |
+| main.rs:117:10:117:10 | b | semmle.label | b |
 | main.rs:128:12:128:17 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:128:28:130:5 | { ... } [MyInt] | semmle.label | { ... } [MyInt] |
 | main.rs:129:9:129:26 | MyInt {...} [MyInt] | semmle.label | MyInt {...} [MyInt] |
@@ -179,6 +197,7 @@ subpaths
 | main.rs:41:26:44:5 | { ... } | main.rs:30:17:30:22 | ...: i64 | main.rs:30:32:32:1 | { ... } | main.rs:41:13:44:6 | pass_through(...) |
 | main.rs:55:26:55:26 | a | main.rs:51:21:51:26 | ...: i64 | main.rs:51:36:53:5 | { ... } | main.rs:55:13:55:27 | pass_through(...) |
 | main.rs:103:29:103:29 | a | main.rs:79:28:79:33 | ...: i64 | main.rs:79:43:85:5 | { ... } | main.rs:103:13:103:30 | mn.data_through(...) |
+| main.rs:116:39:116:39 | a | main.rs:79:28:79:33 | ...: i64 | main.rs:79:43:85:5 | { ... } | main.rs:116:13:116:40 | ...::data_through(...) |
 | main.rs:134:24:134:33 | source(...) | main.rs:128:12:128:17 | ...: i64 | main.rs:128:28:130:5 | { ... } [MyInt] | main.rs:134:13:134:34 | ...::new(...) [MyInt] |
 | main.rs:187:49:187:49 | a [MyInt] | main.rs:175:18:175:21 | SelfParam [MyInt] | main.rs:175:48:177:5 | { ... } [MyInt] | main.rs:187:30:187:53 | ...::take_self(...) [MyInt] |
 | main.rs:192:54:192:54 | b [MyInt] | main.rs:179:26:179:37 | ...: MyInt [MyInt] | main.rs:179:49:181:5 | { ... } [MyInt] | main.rs:192:30:192:55 | ...::take_second(...) [MyInt] |
@@ -191,8 +210,10 @@ testFailures
 | main.rs:45:10:45:10 | a | main.rs:43:9:43:18 | source(...) | main.rs:45:10:45:10 | a | $@ | main.rs:43:9:43:18 | source(...) | source(...) |
 | main.rs:56:10:56:10 | b | main.rs:49:13:49:22 | source(...) | main.rs:56:10:56:10 | b | $@ | main.rs:49:13:49:22 | source(...) | source(...) |
 | main.rs:68:14:68:14 | n | main.rs:96:13:96:21 | source(...) | main.rs:68:14:68:14 | n | $@ | main.rs:96:13:96:21 | source(...) | source(...) |
+| main.rs:68:14:68:14 | n | main.rs:109:13:109:21 | source(...) | main.rs:68:14:68:14 | n | $@ | main.rs:109:13:109:21 | source(...) | source(...) |
 | main.rs:91:10:91:10 | a | main.rs:75:13:75:21 | source(...) | main.rs:91:10:91:10 | a | $@ | main.rs:75:13:75:21 | source(...) | source(...) |
 | main.rs:104:10:104:10 | b | main.rs:102:13:102:21 | source(...) | main.rs:104:10:104:10 | b | $@ | main.rs:102:13:102:21 | source(...) | source(...) |
+| main.rs:117:10:117:10 | b | main.rs:115:13:115:22 | source(...) | main.rs:117:10:117:10 | b | $@ | main.rs:115:13:115:22 | source(...) | source(...) |
 | main.rs:136:10:136:10 | m | main.rs:134:24:134:33 | source(...) | main.rs:136:10:136:10 | m | $@ | main.rs:134:24:134:33 | source(...) | source(...) |
 | main.rs:188:10:188:10 | c | main.rs:185:28:185:36 | source(...) | main.rs:188:10:188:10 | c | $@ | main.rs:185:28:185:36 | source(...) | source(...) |
 | main.rs:193:10:193:10 | c | main.rs:191:28:191:37 | source(...) | main.rs:193:10:193:10 | c | $@ | main.rs:191:28:191:37 | source(...) | source(...) |
