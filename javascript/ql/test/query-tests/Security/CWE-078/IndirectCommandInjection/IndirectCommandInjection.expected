@@ -27,7 +27,6 @@ edges
 | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:21 | args | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:21 | args | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | provenance |  |
-| command-line-parameter-command-injection.js:14:18:14:21 | args [ArrayElement] | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:21 | args [ArrayElement] | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | provenance |  |
