@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["Microsoft.Extensions.Compliance.Testing.FakeRedactionCollector", "Microsoft.Extensions.Compliance.Testing.FakeRedactor", "Property[EventCollector]"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Testing.RedactedData", "Property[Original]"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Testing.FakeRedactorOptions", "Property[RedactionFormat]"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Testing.RedactedData!", "Method[op_Inequality].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Classification.DataClassification", "Microsoft.Extensions.Compliance.Testing.FakeTaxonomy!", "Property[PublicData]"]
+    - ["Microsoft.Extensions.Compliance.Testing.FakeRedactionCollector", "Microsoft.Extensions.Compliance.Testing.FakeRedactorProvider", "Property[Collector]"]
+    - ["Microsoft.Extensions.Compliance.Testing.RedactorRequested", "Microsoft.Extensions.Compliance.Testing.FakeRedactionCollector", "Property[LastRedactorRequested]"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Testing.FakeRedactor", "Method[GetRedactedLength].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Testing.RedactedData!", "Method[op_Equality].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Testing.RedactedData", "Microsoft.Extensions.Compliance.Testing.FakeRedactionCollector", "Property[LastRedactedData]"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Testing.FakeRedactor", "Method[Redact].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Testing.FakeTaxonomy!", "Property[TaxonomyName]"]
+    - ["Microsoft.Extensions.Compliance.Classification.DataClassification", "Microsoft.Extensions.Compliance.Testing.FakeTaxonomy!", "Property[PrivateData]"]
+    - ["Microsoft.Extensions.Compliance.Testing.FakeRedactor", "Microsoft.Extensions.Compliance.Testing.FakeRedactor!", "Method[Create].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.Redactor", "Microsoft.Extensions.Compliance.Testing.FakeRedactorProvider", "Method[GetRedactor].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Testing.RedactedData", "Property[SequenceNumber]"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Testing.RedactorRequested", "Method[GetHashCode].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Classification.DataClassificationSet", "Microsoft.Extensions.Compliance.Testing.RedactorRequested", "Property[DataClassifications]"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Testing.RedactorRequested", "Method[Equals].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Testing.RedactedData", "Method[GetHashCode].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Testing.RedactedData", "Method[Equals].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Testing.RedactorRequested!", "Method[op_Equality].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Testing.RedactorRequested!", "Method[op_Inequality].ReturnValue"]
+    - ["System.Collections.Generic.IReadOnlyList<Microsoft.Extensions.Compliance.Testing.RedactorRequested>", "Microsoft.Extensions.Compliance.Testing.FakeRedactionCollector", "Property[AllRedactorRequests]"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Testing.RedactedData", "Property[Redacted]"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Testing.RedactorRequested", "Property[SequenceNumber]"]
+    - ["System.Collections.Generic.IReadOnlyList<Microsoft.Extensions.Compliance.Testing.RedactedData>", "Microsoft.Extensions.Compliance.Testing.FakeRedactionCollector", "Property[AllRedactedData]"]

@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Int32", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Timeout]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Field[_url]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Password]"]
+    - ["System.Object", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Cookies]"]
+    - ["System.Boolean", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[AllowAutoRedirect]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Path]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Username]"]
+    - ["System.Web.HttpServerUtility", "System.Runtime.Remoting.Services.RemotingService", "Property[Server]"]
+    - ["System.Object", "System.Runtime.Remoting.Services.EnterpriseServicesHelper!", "Method[WrapIUnknownWithComObject].ReturnValue"]
+    - ["System.Web.SessionState.HttpSessionState", "System.Runtime.Remoting.Services.RemotingService", "Property[Session]"]
+    - ["System.Security.Principal.IPrincipal", "System.Runtime.Remoting.Services.RemotingService", "Property[User]"]
+    - ["System.Runtime.Remoting.Services.ITrackingHandler[]", "System.Runtime.Remoting.Services.TrackingServices!", "Property[RegisteredHandlers]"]
+    - ["System.Boolean", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[EnableCookies]"]
+    - ["System.Int32", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[ProxyPort]"]
+    - ["System.Boolean", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[PreAuthenticate]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[ProxyName]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Url]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[UserAgent]"]
+    - ["System.Web.HttpApplicationState", "System.Runtime.Remoting.Services.RemotingService", "Property[Application]"]
+    - ["System.Web.HttpContext", "System.Runtime.Remoting.Services.RemotingService", "Property[Context]"]
+    - ["System.Object", "System.Runtime.Remoting.Services.RemotingClientProxy", "Field[_tp]"]
+    - ["System.Runtime.Remoting.Activation.IConstructionReturnMessage", "System.Runtime.Remoting.Services.EnterpriseServicesHelper!", "Method[CreateConstructionReturnMessage].ReturnValue"]
+    - ["System.Type", "System.Runtime.Remoting.Services.RemotingClientProxy", "Field[_type]"]
+    - ["System.String", "System.Runtime.Remoting.Services.RemotingClientProxy", "Property[Domain]"]

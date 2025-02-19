@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.Diagnostics.Metrics.Testing.CollectedMeasurement<T>>", "Microsoft.Extensions.Diagnostics.Metrics.Testing.MeasurementExtensions!", "Method[MatchesTags<T>].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.Diagnostics.Metrics.Testing.CollectedMeasurement<T>>", "Microsoft.Extensions.Diagnostics.Metrics.Testing.MeasurementExtensions!", "Method[ContainsTags<T>].ReturnValue"]
+    - ["T", "Microsoft.Extensions.Diagnostics.Metrics.Testing.MeasurementExtensions!", "Method[EvaluateAsCounter<T>].ReturnValue"]

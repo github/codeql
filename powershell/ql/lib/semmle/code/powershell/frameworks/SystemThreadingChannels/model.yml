@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Threading.Channels.BoundedChannelFullMode", "System.Threading.Channels.BoundedChannelFullMode!", "Field[Wait]"]
+    - ["System.Threading.Channels.BoundedChannelFullMode", "System.Threading.Channels.BoundedChannelFullMode!", "Field[DropOldest]"]
+    - ["System.Int32", "System.Threading.Channels.BoundedChannelOptions", "Property[Capacity]"]
+    - ["System.Threading.Channels.Channel<T>", "System.Threading.Channels.Channel!", "Method[CreateUnboundedPrioritized<T>].ReturnValue"]
+    - ["System.Boolean", "System.Threading.Channels.ChannelOptions", "Property[AllowSynchronousContinuations]"]
+    - ["System.Boolean", "System.Threading.Channels.ChannelOptions", "Property[SingleReader]"]
+    - ["System.Threading.Channels.Channel<T>", "System.Threading.Channels.Channel!", "Method[CreateUnbounded<T>].ReturnValue"]
+    - ["System.Boolean", "System.Threading.Channels.ChannelOptions", "Property[SingleWriter]"]
+    - ["System.Threading.Channels.Channel<T>", "System.Threading.Channels.Channel!", "Method[CreateBounded<T>].ReturnValue"]
+    - ["System.Threading.Channels.BoundedChannelFullMode", "System.Threading.Channels.BoundedChannelFullMode!", "Field[DropWrite]"]
+    - ["System.Threading.Channels.BoundedChannelFullMode", "System.Threading.Channels.BoundedChannelOptions", "Property[FullMode]"]
+    - ["System.Threading.Channels.BoundedChannelFullMode", "System.Threading.Channels.BoundedChannelFullMode!", "Field[DropNewest]"]

@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "Property[Properties]"]
+    - ["System.Int32", "System.Runtime.Caching.Configuration.MemoryCacheElement", "Property[PhysicalMemoryLimitPercentage]"]
+    - ["System.Int32", "System.Runtime.Caching.Configuration.MemoryCacheElement", "Property[CacheMemoryLimitMegabytes]"]
+    - ["System.Configuration.ConfigurationElement", "System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "Method[CreateNewElement].ReturnValue"]
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Runtime.Caching.Configuration.MemoryCacheElement", "Property[Properties]"]
+    - ["System.Runtime.Caching.Configuration.MemoryCacheElement", "System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "Property[Item]"]
+    - ["System.Object", "System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "Method[GetElementKey].ReturnValue"]
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Runtime.Caching.Configuration.MemoryCacheSection", "Property[Properties]"]
+    - ["System.Configuration.ConfigurationElementCollectionType", "System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "Property[CollectionType]"]
+    - ["System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "System.Runtime.Caching.Configuration.MemoryCacheSection", "Property[NamedCaches]"]
+    - ["System.TimeSpan", "System.Runtime.Caching.Configuration.MemoryCacheElement", "Property[PollingInterval]"]
+    - ["System.Runtime.Caching.Configuration.MemoryCacheSection", "System.Runtime.Caching.Configuration.CachingSectionGroup", "Property[MemoryCaches]"]
+    - ["System.String", "System.Runtime.Caching.Configuration.MemoryCacheElement", "Property[Name]"]
+    - ["System.Int32", "System.Runtime.Caching.Configuration.MemoryCacheSettingsCollection", "Method[IndexOf].ReturnValue"]

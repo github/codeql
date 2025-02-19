@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSCounterSetInstance", "Method[UpdateCounterByValue].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Method[SetCounterValue].ReturnValue"]
+    - ["System.Diagnostics.PerformanceData.CounterType", "System.Management.Automation.PerformanceData.CounterInfo", "Property[Type]"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSCounterSetInstance", "Method[SetCounterValue].ReturnValue"]
+    - ["System.Management.Automation.PerformanceData.CounterSetInstanceBase", "System.Management.Automation.PerformanceData.PSCounterSetRegistrar", "Method[CreateCounterSetInstance].ReturnValue"]
+    - ["System.String", "System.Management.Automation.PerformanceData.PSPerfCountersMgr", "Method[GetCounterSetInstanceName].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Method[GetCounterValue].ReturnValue"]
+    - ["System.Collections.Concurrent.ConcurrentDictionary<System.String,System.Int32>", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Field[_counterNameToIdMapping]"]
+    - ["System.Management.Automation.PerformanceData.CounterSetInstanceBase", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Property[CounterSetInstance]"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Method[RetrieveTargetCounterIdIfValid].ReturnValue"]
+    - ["System.String", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Property[CounterSetName]"]
+    - ["System.String", "System.Management.Automation.PerformanceData.CounterInfo", "Property[Name]"]
+    - ["System.Management.Automation.PerformanceData.CounterSetInstanceBase", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Field[_counterSetInstanceBase]"]
+    - ["System.Management.Automation.PerformanceData.PSPerfCountersMgr", "System.Management.Automation.PerformanceData.PSPerfCountersMgr!", "Property[Instance]"]
+    - ["System.Management.Automation.PerformanceData.CounterInfo[]", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Property[CounterInfoArray]"]
+    - ["System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Field[_counterSetRegistrarBase]"]
+    - ["System.Guid", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Property[CounterSetId]"]
+    - ["System.Guid", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Property[ProviderId]"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Method[UpdateCounterByValue].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSCounterSetInstance", "Method[GetCounterValue].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSPerfCountersMgr", "Method[UpdateCounterByValue].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSPerfCountersMgr", "Method[AddCounterSetInstance].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSPerfCountersMgr", "Method[IsCounterSetRegistered].ReturnValue"]
+    - ["System.Diagnostics.PerformanceData.CounterSetInstanceType", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Property[CounterSetInstType]"]
+    - ["System.Management.Automation.PerformanceData.CounterSetInstanceBase", "System.Management.Automation.PerformanceData.CounterSetRegistrarBase", "Method[CreateCounterSetInstance].ReturnValue"]
+    - ["System.Boolean", "System.Management.Automation.PerformanceData.PSPerfCountersMgr", "Method[SetCounterValue].ReturnValue"]
+    - ["System.Int32", "System.Management.Automation.PerformanceData.CounterInfo", "Property[Id]"]
+    - ["System.Collections.Concurrent.ConcurrentDictionary<System.Int32,System.Diagnostics.PerformanceData.CounterType>", "System.Management.Automation.PerformanceData.CounterSetInstanceBase", "Field[_counterIdToTypeMapping]"]

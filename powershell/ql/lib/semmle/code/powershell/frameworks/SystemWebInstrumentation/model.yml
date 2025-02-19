@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Int32", "System.Web.Instrumentation.PageExecutionContext", "Property[Length]"]
+    - ["System.Int32", "System.Web.Instrumentation.PageExecutionContext", "Property[StartPosition]"]
+    - ["System.Collections.Generic.IList<System.Web.Instrumentation.PageExecutionListener>", "System.Web.Instrumentation.PageInstrumentationService", "Property[ExecutionListeners]"]
+    - ["System.Boolean", "System.Web.Instrumentation.PageExecutionContext", "Property[IsLiteral]"]
+    - ["System.IO.TextWriter", "System.Web.Instrumentation.PageExecutionContext", "Property[TextWriter]"]
+    - ["System.Boolean", "System.Web.Instrumentation.PageInstrumentationService!", "Property[IsEnabled]"]
+    - ["System.String", "System.Web.Instrumentation.PageExecutionContext", "Property[VirtualPath]"]

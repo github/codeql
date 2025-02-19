@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.Logging.AzureAppServices.AzureBlobLoggerContext", "Property[AppName]"]
+    - ["System.String", "Microsoft.Extensions.Logging.AzureAppServices.AzureFileLoggerOptions", "Property[FileName]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerOptions", "Property[FlushPeriod]"]
+    - ["Microsoft.Extensions.Logging.ILogger", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerProvider", "Method[CreateLogger].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerOptions", "Property[IncludeScopes]"]
+    - ["System.Nullable<System.Int32>", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerOptions", "Property[BackgroundQueueSize]"]
+    - ["System.DateTimeOffset", "Microsoft.Extensions.Logging.AzureAppServices.AzureBlobLoggerContext", "Property[Timestamp]"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerProvider", "Method[IntervalAsync].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Logging.AzureAppServices.AzureBlobLoggerOptions", "Property[BlobName]"]
+    - ["System.Nullable<System.Int32>", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerOptions", "Property[BatchSize]"]
+    - ["System.String", "Microsoft.Extensions.Logging.AzureAppServices.AzureBlobLoggerContext", "Property[Identifier]"]
+    - ["System.Nullable<System.Int32>", "Microsoft.Extensions.Logging.AzureAppServices.AzureFileLoggerOptions", "Property[FileSizeLimit]"]
+    - ["System.Boolean", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerOptions", "Property[IsEnabled]"]
+    - ["System.Nullable<System.Int32>", "Microsoft.Extensions.Logging.AzureAppServices.AzureFileLoggerOptions", "Property[RetainedFileCountLimit]"]
+    - ["System.Boolean", "Microsoft.Extensions.Logging.AzureAppServices.BatchingLoggerProvider", "Property[IsEnabled]"]
+    - ["System.Func<Microsoft.Extensions.Logging.AzureAppServices.AzureBlobLoggerContext,System.String>", "Microsoft.Extensions.Logging.AzureAppServices.AzureBlobLoggerOptions", "Property[FileNameFormat]"]

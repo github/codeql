@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.LiteralPathSegment", "Property[Value]"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.LiteralPathSegment", "Method[Match].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.LiteralPathSegment", "Property[CanProduceStem]"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment", "Property[CanProduceStem]"]
+    - ["System.Collections.Generic.List<System.String>", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment", "Property[Contains]"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment", "Property[BeginsWith]"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.RecursiveWildcardSegment", "Method[Match].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.LiteralPathSegment", "Method[Equals].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.ParentPathSegment", "Method[Match].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.CurrentPathSegment", "Property[CanProduceStem]"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.ParentPathSegment", "Property[CanProduceStem]"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment!", "Field[MatchAll]"]
+    - ["System.Int32", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.LiteralPathSegment", "Method[GetHashCode].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment", "Property[EndsWith]"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.CurrentPathSegment", "Method[Match].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment", "Method[Match].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.RecursiveWildcardSegment", "Property[CanProduceStem]"]

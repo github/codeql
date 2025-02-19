@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.ServiceModel.Discovery.ResolveCriteria", "System.ServiceModel.Discovery.VersionCD1.ResolveCriteriaCD1", "Method[ToResolveCriteria].ReturnValue"]
+    - ["System.Xml.Schema.XmlSchema", "System.ServiceModel.Discovery.VersionCD1.DiscoveryMessageSequenceCD1", "Method[GetSchema].ReturnValue"]
+    - ["System.Xml.XmlQualifiedName", "System.ServiceModel.Discovery.VersionCD1.DiscoveryMessageSequenceCD1!", "Method[GetSchema].ReturnValue"]
+    - ["System.Xml.XmlQualifiedName", "System.ServiceModel.Discovery.VersionCD1.EndpointDiscoveryMetadataCD1!", "Method[GetSchema].ReturnValue"]
+    - ["System.Xml.XmlQualifiedName", "System.ServiceModel.Discovery.VersionCD1.FindCriteriaCD1!", "Method[GetSchema].ReturnValue"]
+    - ["System.ServiceModel.Discovery.VersionCD1.EndpointDiscoveryMetadataCD1", "System.ServiceModel.Discovery.VersionCD1.EndpointDiscoveryMetadataCD1!", "Method[FromEndpointDiscoveryMetadata].ReturnValue"]
+    - ["System.ServiceModel.Discovery.FindCriteria", "System.ServiceModel.Discovery.VersionCD1.FindCriteriaCD1", "Method[ToFindCriteria].ReturnValue"]
+    - ["System.ServiceModel.Discovery.VersionCD1.ResolveCriteriaCD1", "System.ServiceModel.Discovery.VersionCD1.ResolveCriteriaCD1!", "Method[FromResolveCriteria].ReturnValue"]
+    - ["System.ServiceModel.Discovery.VersionCD1.DiscoveryMessageSequenceCD1", "System.ServiceModel.Discovery.VersionCD1.DiscoveryMessageSequenceCD1!", "Method[FromDiscoveryMessageSequence].ReturnValue"]
+    - ["System.ServiceModel.Discovery.EndpointDiscoveryMetadata", "System.ServiceModel.Discovery.VersionCD1.EndpointDiscoveryMetadataCD1", "Method[ToEndpointDiscoveryMetadata].ReturnValue"]
+    - ["System.Xml.Schema.XmlSchema", "System.ServiceModel.Discovery.VersionCD1.EndpointDiscoveryMetadataCD1", "Method[GetSchema].ReturnValue"]
+    - ["System.Xml.Schema.XmlSchema", "System.ServiceModel.Discovery.VersionCD1.FindCriteriaCD1", "Method[GetSchema].ReturnValue"]
+    - ["System.ServiceModel.Discovery.VersionCD1.FindCriteriaCD1", "System.ServiceModel.Discovery.VersionCD1.FindCriteriaCD1!", "Method[FromFindCriteria].ReturnValue"]
+    - ["System.ServiceModel.Discovery.DiscoveryMessageSequence", "System.ServiceModel.Discovery.VersionCD1.DiscoveryMessageSequenceCD1", "Method[ToDiscoveryMessageSequence].ReturnValue"]
+    - ["System.Xml.Schema.XmlSchema", "System.ServiceModel.Discovery.VersionCD1.ResolveCriteriaCD1", "Method[GetSchema].ReturnValue"]
+    - ["System.Xml.XmlQualifiedName", "System.ServiceModel.Discovery.VersionCD1.ResolveCriteriaCD1!", "Method[GetSchema].ReturnValue"]

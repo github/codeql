@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Resources.Tools.ITargetAwareCodeDomProvider", "Method[SupportsProperty].ReturnValue"]
+    - ["System.String", "System.Resources.Tools.StronglyTypedResourceBuilder!", "Method[VerifyResourceName].ReturnValue"]
+    - ["System.CodeDom.CodeCompileUnit", "System.Resources.Tools.StronglyTypedResourceBuilder!", "Method[Create].ReturnValue"]

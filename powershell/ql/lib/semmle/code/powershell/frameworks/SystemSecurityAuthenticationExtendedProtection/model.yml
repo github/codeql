@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Security.Authentication.ExtendedProtection.TokenBindingType", "System.Security.Authentication.ExtendedProtection.TokenBinding", "Property[BindingType]"]
+    - ["System.Object", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicyTypeConverter", "Method[ConvertTo].ReturnValue"]
+    - ["System.Security.Authentication.ExtendedProtection.TokenBindingType", "System.Security.Authentication.ExtendedProtection.TokenBindingType!", "Field[Provided]"]
+    - ["System.Boolean", "System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "Method[Contains].ReturnValue"]
+    - ["System.Security.Authentication.ExtendedProtection.PolicyEnforcement", "System.Security.Authentication.ExtendedProtection.PolicyEnforcement!", "Field[Always]"]
+    - ["System.Object", "System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "Property[System.Collections.ICollection.SyncRoot]"]
+    - ["System.Int32", "System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "Property[Count]"]
+    - ["System.Boolean", "System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "Property[System.Collections.ICollection.IsSynchronized]"]
+    - ["System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy", "Property[CustomServiceNames]"]
+    - ["System.Security.Authentication.ExtendedProtection.ProtectionScenario", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy", "Property[ProtectionScenario]"]
+    - ["System.Security.Authentication.ExtendedProtection.ChannelBindingKind", "System.Security.Authentication.ExtendedProtection.ChannelBindingKind!", "Field[Unknown]"]
+    - ["System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "Method[Merge].ReturnValue"]
+    - ["System.Security.Authentication.ExtendedProtection.ChannelBinding", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy", "Property[CustomChannelBinding]"]
+    - ["System.Boolean", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy!", "Property[OSSupportsExtendedProtection]"]
+    - ["System.Security.Authentication.ExtendedProtection.ProtectionScenario", "System.Security.Authentication.ExtendedProtection.ProtectionScenario!", "Field[TransportSelected]"]
+    - ["System.Boolean", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicyTypeConverter", "Method[CanConvertTo].ReturnValue"]
+    - ["System.Security.Authentication.ExtendedProtection.PolicyEnforcement", "System.Security.Authentication.ExtendedProtection.PolicyEnforcement!", "Field[WhenSupported]"]
+    - ["System.Security.Authentication.ExtendedProtection.PolicyEnforcement", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy", "Property[PolicyEnforcement]"]
+    - ["System.Security.Authentication.ExtendedProtection.ChannelBindingKind", "System.Security.Authentication.ExtendedProtection.ChannelBindingKind!", "Field[Endpoint]"]
+    - ["System.Security.Authentication.ExtendedProtection.TokenBindingType", "System.Security.Authentication.ExtendedProtection.TokenBindingType!", "Field[Referred]"]
+    - ["System.Security.Authentication.ExtendedProtection.PolicyEnforcement", "System.Security.Authentication.ExtendedProtection.PolicyEnforcement!", "Field[Never]"]
+    - ["System.Int32", "System.Security.Authentication.ExtendedProtection.ChannelBinding", "Property[Size]"]
+    - ["System.Byte[]", "System.Security.Authentication.ExtendedProtection.TokenBinding", "Method[GetRawTokenBindingId].ReturnValue"]
+    - ["System.Security.Authentication.ExtendedProtection.ChannelBindingKind", "System.Security.Authentication.ExtendedProtection.ChannelBindingKind!", "Field[Unique]"]
+    - ["System.Security.Authentication.ExtendedProtection.ProtectionScenario", "System.Security.Authentication.ExtendedProtection.ProtectionScenario!", "Field[TrustedProxy]"]
+    - ["System.Collections.IEnumerator", "System.Security.Authentication.ExtendedProtection.ServiceNameCollection", "Method[GetEnumerator].ReturnValue"]
+    - ["System.String", "System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy", "Method[ToString].ReturnValue"]

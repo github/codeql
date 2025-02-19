@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.Web.Script.Services.ProxyGenerator!", "Method[GetClientProxyScript].ReturnValue"]
+    - ["System.Web.Script.Services.ResponseFormat", "System.Web.Script.Services.ScriptMethodAttribute", "Property[ResponseFormat]"]
+    - ["System.String", "System.Web.Script.Services.GenerateScriptTypeAttribute", "Property[ScriptTypeId]"]
+    - ["System.Boolean", "System.Web.Script.Services.ScriptMethodAttribute", "Property[XmlSerializeString]"]
+    - ["System.Boolean", "System.Web.Script.Services.ScriptMethodAttribute", "Property[UseHttpGet]"]
+    - ["System.Web.Script.Services.ResponseFormat", "System.Web.Script.Services.ResponseFormat!", "Field[Xml]"]
+    - ["System.Web.Script.Services.ResponseFormat", "System.Web.Script.Services.ResponseFormat!", "Field[Json]"]
+    - ["System.Type", "System.Web.Script.Services.GenerateScriptTypeAttribute", "Property[Type]"]

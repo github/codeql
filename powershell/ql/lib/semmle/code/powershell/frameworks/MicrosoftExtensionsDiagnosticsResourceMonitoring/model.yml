@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringOptions", "Property[CollectionWindow]"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.SystemResources", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceUtilization", "Property[SystemResources]"]
+    - ["System.Double", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceUtilization", "Property[CpuUsedPercentage]"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.Snapshot", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ISnapshotProvider", "Method[GetSnapshot].ReturnValue"]
+    - ["System.UInt64", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceUtilization", "Property[MemoryUsedInBytes]"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.IResourceMonitorBuilder", "Property[Services]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringOptions", "Property[SamplingInterval]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.Snapshot", "Property[KernelTimeSinceStart]"]
+    - ["System.Threading.Tasks.ValueTask", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.IResourceUtilizationPublisher", "Method[PublishAsync].ReturnValue"]
+    - ["System.Double", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.SystemResources", "Property[GuaranteedCpuUnits]"]
+    - ["System.UInt64", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.Snapshot", "Property[MemoryUsageInBytes]"]
+    - ["System.Double", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.SystemResources", "Property[MaximumCpuUnits]"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.IResourceMonitorBuilder", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringBuilderExtensions!", "Method[ConfigureMonitor].ReturnValue"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.SystemResources", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ISnapshotProvider", "Property[Resources]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.Snapshot", "Property[UserTimeSinceStart]"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceUtilization", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.IResourceMonitor", "Method[GetUtilization].ReturnValue"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringOptions", "Property[MemoryConsumptionRefreshInterval]"]
+    - ["System.Collections.Generic.ISet<System.String>", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringOptions", "Property[SourceIpAddresses]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.Snapshot", "Property[TotalTimeSinceStart]"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.IResourceMonitorBuilder", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.IResourceMonitorBuilder", "Method[AddPublisher<T>].ReturnValue"]
+    - ["System.Double", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceUtilization", "Property[MemoryUsedPercentage]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringOptions", "Property[PublishingWindow]"]
+    - ["System.UInt64", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.SystemResources", "Property[MaximumMemoryInBytes]"]
+    - ["System.UInt64", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.SystemResources", "Property[GuaranteedMemoryInBytes]"]
+    - ["Microsoft.Extensions.Diagnostics.ResourceMonitoring.Snapshot", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceUtilization", "Property[Snapshot]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.ResourceMonitoring.ResourceMonitoringOptions", "Property[CpuConsumptionRefreshInterval]"]

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.ServiceModel.XamlIntegration.ServiceXNameTypeConverter", "Method[CanConvertTo].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.ServiceXNameTypeConverter", "Method[ConvertFrom].ReturnValue"]
+    - ["System.String", "System.ServiceModel.XamlIntegration.SpnEndpointIdentityExtension", "Property[SpnName]"]
+    - ["System.Boolean", "System.ServiceModel.XamlIntegration.ServiceXNameTypeConverter", "Method[CanConvertFrom].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.SpnEndpointIdentityExtension", "Method[ProvideValue].ReturnValue"]
+    - ["System.Boolean", "System.ServiceModel.XamlIntegration.EndpointIdentityConverter", "Method[CanConvertTo].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.XPathMessageContextTypeConverter", "Method[ConvertTo].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.XPathMessageContextMarkupExtension", "Method[ProvideValue].ReturnValue"]
+    - ["System.Boolean", "System.ServiceModel.XamlIntegration.XPathMessageContextTypeConverter", "Method[CanConvertTo].ReturnValue"]
+    - ["System.String", "System.ServiceModel.XamlIntegration.UpnEndpointIdentityExtension", "Property[UpnName]"]
+    - ["System.Collections.Generic.Dictionary<System.String,System.String>", "System.ServiceModel.XamlIntegration.XPathMessageContextMarkupExtension", "Property[Namespaces]"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.EndpointIdentityConverter", "Method[ConvertTo].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.XPathMessageContextTypeConverter", "Method[ConvertFrom].ReturnValue"]
+    - ["System.Boolean", "System.ServiceModel.XamlIntegration.XPathMessageContextTypeConverter", "Method[CanConvertFrom].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.ServiceXNameTypeConverter", "Method[ConvertTo].ReturnValue"]
+    - ["System.Object", "System.ServiceModel.XamlIntegration.UpnEndpointIdentityExtension", "Method[ProvideValue].ReturnValue"]

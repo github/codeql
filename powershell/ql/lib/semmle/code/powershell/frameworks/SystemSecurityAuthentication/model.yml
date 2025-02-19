@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Aes]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Null]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Ssl2]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[None]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Ssl3]"]
+    - ["System.Security.Authentication.ExchangeAlgorithmType", "System.Security.Authentication.ExchangeAlgorithmType!", "Field[None]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Aes128]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Tls13]"]
+    - ["System.Security.Authentication.HashAlgorithmType", "System.Security.Authentication.HashAlgorithmType!", "Field[Sha384]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Rc2]"]
+    - ["System.Security.Authentication.ExchangeAlgorithmType", "System.Security.Authentication.ExchangeAlgorithmType!", "Field[RsaSign]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Des]"]
+    - ["System.Security.Authentication.HashAlgorithmType", "System.Security.Authentication.HashAlgorithmType!", "Field[Md5]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Aes256]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[TripleDes]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Tls12]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Default]"]
+    - ["System.Security.Authentication.HashAlgorithmType", "System.Security.Authentication.HashAlgorithmType!", "Field[Sha1]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Tls11]"]
+    - ["System.Security.Authentication.ExchangeAlgorithmType", "System.Security.Authentication.ExchangeAlgorithmType!", "Field[RsaKeyX]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[Tls]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Aes192]"]
+    - ["System.Security.Authentication.CipherAlgorithmType", "System.Security.Authentication.CipherAlgorithmType!", "Field[Rc4]"]
+    - ["System.Security.Authentication.SslProtocols", "System.Security.Authentication.SslProtocols!", "Field[None]"]
+    - ["System.Security.Authentication.HashAlgorithmType", "System.Security.Authentication.HashAlgorithmType!", "Field[Sha512]"]
+    - ["System.Security.Authentication.HashAlgorithmType", "System.Security.Authentication.HashAlgorithmType!", "Field[None]"]
+    - ["System.Security.Authentication.HashAlgorithmType", "System.Security.Authentication.HashAlgorithmType!", "Field[Sha256]"]
+    - ["System.Security.Authentication.ExchangeAlgorithmType", "System.Security.Authentication.ExchangeAlgorithmType!", "Field[DiffieHellman]"]

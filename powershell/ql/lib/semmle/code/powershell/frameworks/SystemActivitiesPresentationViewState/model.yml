@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Method[GetIdRef].ReturnValue"]
+    - ["System.Xaml.AttachableMemberIdentifier", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Field[ViewStateManagerProperty]"]
+    - ["System.Xaml.AttachableMemberIdentifier", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Field[IdRefProperty]"]
+    - ["System.String", "System.Activities.Presentation.ViewState.ViewStateData", "Property[Id]"]
+    - ["System.Activities.Presentation.ViewState.ViewStateManager", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Method[GetViewStateManager].ReturnValue"]
+    - ["System.Collections.ObjectModel.Collection<System.Activities.Presentation.ViewState.ViewStateData>", "System.Activities.Presentation.ViewState.ViewStateManager", "Property[ViewStateData]"]

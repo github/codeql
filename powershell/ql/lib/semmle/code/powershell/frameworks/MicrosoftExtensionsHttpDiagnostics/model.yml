@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.TelemetryConstants!", "Field[Unknown]"]
+    - ["System.Collections.Generic.ISet<System.String>", "Microsoft.Extensions.Http.Diagnostics.IDownstreamDependencyMetadata", "Property[UniqueHostNameSuffixes]"]
+    - ["Microsoft.Extensions.Http.Diagnostics.HttpRouteParameterRedactionMode", "Microsoft.Extensions.Http.Diagnostics.HttpRouteParameterRedactionMode!", "Field[None]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.TelemetryConstants!", "Field[Redacted]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.RequestMetadata", "Property[RequestName]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.RequestMetadata", "Property[MethodType]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.IDownstreamDependencyMetadata", "Property[DependencyName]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.TelemetryConstants!", "Field[RequestMetadataKey]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.RequestMetadata", "Property[DependencyName]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.RequestMetadata", "Property[RequestRoute]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.TelemetryConstants!", "Field[ServerApplicationNameHeader]"]
+    - ["Microsoft.Extensions.Http.Diagnostics.HttpRouteParameterRedactionMode", "Microsoft.Extensions.Http.Diagnostics.HttpRouteParameterRedactionMode!", "Field[Strict]"]
+    - ["System.Collections.Generic.ISet<Microsoft.Extensions.Http.Diagnostics.RequestMetadata>", "Microsoft.Extensions.Http.Diagnostics.IDownstreamDependencyMetadata", "Property[RequestMetadata]"]
+    - ["Microsoft.Extensions.Http.Diagnostics.HttpRouteParameterRedactionMode", "Microsoft.Extensions.Http.Diagnostics.HttpRouteParameterRedactionMode!", "Field[Loose]"]
+    - ["Microsoft.Extensions.Http.Diagnostics.RequestMetadata", "Microsoft.Extensions.Http.Diagnostics.IOutgoingRequestContext", "Property[RequestMetadata]"]
+    - ["System.String", "Microsoft.Extensions.Http.Diagnostics.TelemetryConstants!", "Field[ClientApplicationNameHeader]"]

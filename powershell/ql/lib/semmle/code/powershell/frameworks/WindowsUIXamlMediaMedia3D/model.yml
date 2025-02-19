@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Method[System.IFormattable.ToString].ReturnValue"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Media3D.Matrix3D!", "Method[op_Inequality].ReturnValue"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[HasInverse]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M24]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M12]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M11]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[OffsetX]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[OffsetY]"]
+    - ["System.Int32", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Method[GetHashCode].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M23]"]
+    - ["Windows.UI.Xaml.Media.Media3D.Matrix3D", "Windows.UI.Xaml.Media.Media3D.Matrix3D!", "Method[op_Multiply].ReturnValue"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Method[Equals].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M44]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M14]"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[IsIdentity]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M33]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[OffsetZ]"]
+    - ["Windows.UI.Xaml.Media.Media3D.Matrix3D", "Windows.UI.Xaml.Media.Media3D.Matrix3D!", "Property[Identity]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M32]"]
+    - ["System.String", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Method[ToString].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M31]"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Media3D.Matrix3D!", "Method[op_Equality].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M22]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M21]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M13]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Media3D.Matrix3D", "Property[M34]"]

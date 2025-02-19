@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Diagnostics.Contracts.Contract!", "Method[Exists<T>].ReturnValue"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailureKind!", "Field[PostconditionOnException]"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailureKind!", "Field[Assume]"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailureKind!", "Field[Assert]"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.ContractVerificationAttribute", "Property[Value]"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.Contract!", "Method[ForAll].ReturnValue"]
+    - ["System.String", "System.Diagnostics.Contracts.ContractFailedEventArgs", "Property[Message]"]
+    - ["System.String", "System.Diagnostics.Contracts.ContractOptionAttribute", "Property[Setting]"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailureKind!", "Field[Invariant]"]
+    - ["System.String", "System.Diagnostics.Contracts.ContractFailedEventArgs", "Property[Condition]"]
+    - ["System.String", "System.Diagnostics.Contracts.ContractOptionAttribute", "Property[Value]"]
+    - ["T", "System.Diagnostics.Contracts.Contract!", "Method[ValueAtReturn<T>].ReturnValue"]
+    - ["System.String", "System.Diagnostics.Contracts.ContractOptionAttribute", "Property[Category]"]
+    - ["System.Type", "System.Diagnostics.Contracts.ContractClassAttribute", "Property[TypeContainingContracts]"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.ContractFailedEventArgs", "Property[Unwind]"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailedEventArgs", "Property[FailureKind]"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailureKind!", "Field[Precondition]"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.ContractOptionAttribute", "Property[Enabled]"]
+    - ["System.Type", "System.Diagnostics.Contracts.ContractClassForAttribute", "Property[TypeContractsAreFor]"]
+    - ["T", "System.Diagnostics.Contracts.Contract!", "Method[Result<T>].ReturnValue"]
+    - ["System.Diagnostics.Contracts.ContractFailureKind", "System.Diagnostics.Contracts.ContractFailureKind!", "Field[Postcondition]"]
+    - ["System.Exception", "System.Diagnostics.Contracts.ContractFailedEventArgs", "Property[OriginalException]"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.Contract!", "Method[Exists].ReturnValue"]
+    - ["T", "System.Diagnostics.Contracts.Contract!", "Method[OldValue<T>].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.Contract!", "Method[ForAll<T>].ReturnValue"]
+    - ["System.String", "System.Diagnostics.Contracts.ContractPublicPropertyNameAttribute", "Property[Name]"]
+    - ["System.Boolean", "System.Diagnostics.Contracts.ContractFailedEventArgs", "Property[Handled]"]

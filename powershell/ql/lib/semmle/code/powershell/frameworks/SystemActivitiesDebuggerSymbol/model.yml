@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.Activities.Debugger.Symbol.ActivitySymbol", "Property[Id]"]
+    - ["System.Xaml.AttachableMemberIdentifier", "System.Activities.Debugger.Symbol.DebugSymbol!", "Field[SymbolName]"]
+    - ["System.Int32", "System.Activities.Debugger.Symbol.ActivitySymbol", "Property[StartColumn]"]
+    - ["System.Activities.Debugger.Symbol.WorkflowSymbol", "System.Activities.Debugger.Symbol.WorkflowSymbol!", "Method[Decode].ReturnValue"]
+    - ["System.String", "System.Activities.Debugger.Symbol.ActivitySymbol", "Method[ToString].ReturnValue"]
+    - ["System.Byte[]", "System.Activities.Debugger.Symbol.WorkflowSymbol", "Method[GetChecksum].ReturnValue"]
+    - ["System.Boolean", "System.Activities.Debugger.Symbol.WorkflowSymbol", "Method[CalculateChecksum].ReturnValue"]
+    - ["System.Object", "System.Activities.Debugger.Symbol.DebugSymbol!", "Method[GetSymbol].ReturnValue"]
+    - ["System.String", "System.Activities.Debugger.Symbol.WorkflowSymbol", "Method[Encode].ReturnValue"]
+    - ["System.String", "System.Activities.Debugger.Symbol.WorkflowSymbol", "Property[FileName]"]
+    - ["System.String", "System.Activities.Debugger.Symbol.WorkflowSymbol", "Method[ToString].ReturnValue"]
+    - ["System.Collections.Generic.ICollection<System.Activities.Debugger.Symbol.ActivitySymbol>", "System.Activities.Debugger.Symbol.WorkflowSymbol", "Property[Symbols]"]
+    - ["System.Int32", "System.Activities.Debugger.Symbol.ActivitySymbol", "Property[StartLine]"]
+    - ["System.Int32", "System.Activities.Debugger.Symbol.ActivitySymbol", "Property[EndColumn]"]
+    - ["System.Int32", "System.Activities.Debugger.Symbol.ActivitySymbol", "Property[EndLine]"]

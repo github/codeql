@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Int32", "System.Configuration.Install.IManagedInstaller", "Method[ManagedInstall].ReturnValue"]
+    - ["System.Boolean", "System.Configuration.Install.AssemblyInstaller", "Property[UseNewContext]"]
+    - ["System.Int32", "System.Configuration.Install.InstallerCollection", "Method[IndexOf].ReturnValue"]
+    - ["System.Configuration.Install.Installer", "System.Configuration.Install.InstallerCollection", "Property[Item]"]
+    - ["System.Collections.Specialized.StringDictionary", "System.Configuration.Install.InstallContext!", "Method[ParseCommandLine].ReturnValue"]
+    - ["System.Reflection.Assembly", "System.Configuration.Install.AssemblyInstaller", "Property[Assembly]"]
+    - ["System.Configuration.Install.InstallerCollection", "System.Configuration.Install.Installer", "Property[Installers]"]
+    - ["System.String[]", "System.Configuration.Install.AssemblyInstaller", "Property[CommandLine]"]
+    - ["System.Boolean", "System.Configuration.Install.InstallerCollection", "Method[Contains].ReturnValue"]
+    - ["System.Int32", "System.Configuration.Install.InstallerCollection", "Method[Add].ReturnValue"]
+    - ["System.Configuration.Install.Installer", "System.Configuration.Install.Installer", "Property[Parent]"]
+    - ["System.Boolean", "System.Configuration.Install.InstallContext", "Method[IsParameterTrue].ReturnValue"]
+    - ["System.Boolean", "System.Configuration.Install.ComponentInstaller", "Method[IsEquivalentInstaller].ReturnValue"]
+    - ["System.Configuration.Install.UninstallAction", "System.Configuration.Install.UninstallAction!", "Field[Remove]"]
+    - ["System.Configuration.Install.UninstallAction", "System.Configuration.Install.UninstallAction!", "Field[NoAction]"]
+    - ["System.Int32", "System.Configuration.Install.ManagedInstallerClass", "Method[System.Configuration.Install.IManagedInstaller.ManagedInstall].ReturnValue"]
+    - ["System.String", "System.Configuration.Install.Installer", "Property[HelpText]"]
+    - ["System.String", "System.Configuration.Install.AssemblyInstaller", "Property[Path]"]
+    - ["System.Collections.Specialized.StringDictionary", "System.Configuration.Install.InstallContext", "Property[Parameters]"]
+    - ["System.String", "System.Configuration.Install.AssemblyInstaller", "Property[HelpText]"]
+    - ["System.Collections.IDictionary", "System.Configuration.Install.InstallEventArgs", "Property[SavedState]"]
+    - ["System.Configuration.Install.InstallContext", "System.Configuration.Install.Installer", "Property[Context]"]

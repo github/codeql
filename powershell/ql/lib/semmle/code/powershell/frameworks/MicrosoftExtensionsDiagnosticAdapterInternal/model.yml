@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Tuple<System.Type,System.Type>", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Property[Key]"]
+    - ["T", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyBase", "Method[Upwrap<T>].ReturnValue"]
+    - ["System.Type", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Property[Type]"]
+    - ["TProxy", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyFactory", "Method[CreateProxy<TProxy>].ReturnValue"]
+    - ["System.Object", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyBase", "Property[UnderlyingInstanceAsObject]"]
+    - ["System.Type", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyBase", "Field[WrappedType]"]
+    - ["System.String", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Property[Error]"]
+    - ["Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult!", "Method[FromError].ReturnValue"]
+    - ["System.Reflection.ConstructorInfo", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Property[Constructor]"]
+    - ["System.Boolean", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Property[IsError]"]
+    - ["Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult", "Microsoft.Extensions.DiagnosticAdapter.Internal.ProxyTypeCacheResult!", "Method[FromType].ReturnValue"]

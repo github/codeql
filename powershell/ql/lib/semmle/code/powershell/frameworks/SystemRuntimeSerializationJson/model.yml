@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Int32", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[MaxItemsInObjectGraph]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[IgnoreExtensionDataObject]"]
+    - ["System.Runtime.Serialization.IDataContractSurrogate", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[DataContractSurrogate]"]
+    - ["System.Runtime.Serialization.IDataContractSurrogate", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[DataContractSurrogate]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[SerializeReadOnlyTypes]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[IgnoreExtensionDataObject]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[SerializeReadOnlyTypes]"]
+    - ["System.Collections.ObjectModel.ReadOnlyCollection<System.Type>", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[KnownTypes]"]
+    - ["System.Collections.Generic.IEnumerable<System.Type>", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[KnownTypes]"]
+    - ["System.Xml.XmlDictionaryWriter", "System.Runtime.Serialization.Json.JsonReaderWriterFactory!", "Method[CreateJsonWriter].ReturnValue"]
+    - ["System.Runtime.Serialization.ISerializationSurrogateProvider", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Method[GetSerializationSurrogateProvider].ReturnValue"]
+    - ["System.Object", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Method[ReadObject].ReturnValue"]
+    - ["System.Runtime.Serialization.EmitTypeInformation", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[EmitTypeInformation]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[UseSimpleDictionaryFormat]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[UseSimpleDictionaryFormat]"]
+    - ["System.String", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[RootName]"]
+    - ["System.Runtime.Serialization.DateTimeFormat", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[DateTimeFormat]"]
+    - ["System.Runtime.Serialization.EmitTypeInformation", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[EmitTypeInformation]"]
+    - ["System.Int32", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Property[MaxItemsInObjectGraph]"]
+    - ["System.Boolean", "System.Runtime.Serialization.Json.DataContractJsonSerializer", "Method[IsStartObject].ReturnValue"]
+    - ["System.Xml.XmlDictionaryReader", "System.Runtime.Serialization.Json.JsonReaderWriterFactory!", "Method[CreateJsonReader].ReturnValue"]
+    - ["System.Runtime.Serialization.DateTimeFormat", "System.Runtime.Serialization.Json.DataContractJsonSerializerSettings", "Property[DateTimeFormat]"]

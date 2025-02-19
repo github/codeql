@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.AddIn.Contract.Collections.IRemoteArgumentCollectionContract", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryContract", "Method[GetKeys].ReturnValue"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryEnumeratorContract", "Method[GetValue].ReturnValue"]
+    - ["System.Int32", "System.AddIn.Contract.Collections.IRemoteArgumentCollectionContract", "Method[GetCount].ReturnValue"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.RemoteArgumentDictionaryEntry", "Field[Value]"]
+    - ["System.AddIn.Contract.Collections.IRemoteArgumentEnumeratorContract", "System.AddIn.Contract.Collections.IRemoteArgumentEnumerableContract", "Method[GetEnumeratorContract].ReturnValue"]
+    - ["System.Int32", "System.AddIn.Contract.Collections.IRemoteArgumentArrayListContract", "Method[IndexOf].ReturnValue"]
+    - ["System.AddIn.Contract.Collections.IRemoteArgumentCollectionContract", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryContract", "Method[GetValues].ReturnValue"]
+    - ["System.Boolean", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryContract", "Method[ContainsKey].ReturnValue"]
+    - ["System.AddIn.Contract.Collections.IRemoteArgumentDictionaryEnumeratorContract", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryContract", "Method[GetEnumeratorContract].ReturnValue"]
+    - ["System.Boolean", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryContract", "Method[Remove].ReturnValue"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryEnumeratorContract", "Method[GetKey].ReturnValue"]
+    - ["System.AddIn.Contract.Collections.RemoteArgumentDictionaryEntry", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryEnumeratorContract", "Method[GetEntry].ReturnValue"]
+    - ["System.Boolean", "System.AddIn.Contract.Collections.IRemoteArgumentEnumeratorContract", "Method[MoveNext].ReturnValue"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.RemoteArgumentDictionaryEntry", "Field[Key]"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.IRemoteArgumentArrayContract", "Method[GetItem].ReturnValue"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.IRemoteArgumentEnumeratorContract", "Method[GetCurrent].ReturnValue"]
+    - ["System.Boolean", "System.AddIn.Contract.Collections.IRemoteArgumentArrayListContract", "Method[Contains].ReturnValue"]
+    - ["System.AddIn.Contract.RemoteArgument", "System.AddIn.Contract.Collections.IRemoteArgumentDictionaryContract", "Method[GetItem].ReturnValue"]

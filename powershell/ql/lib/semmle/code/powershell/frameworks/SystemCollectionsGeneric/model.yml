@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Collections.Generic.CollectionExtensions!", "Method[Remove<TKey,TValue>].ReturnValue"]
+    - ["System.Collections.Generic.KeyValuePair<TKey,TValue>", "System.Collections.Generic.KeyValuePair!", "Method[Create<TKey,TValue>].ReturnValue"]
+    - ["TValue", "System.Collections.Generic.CollectionExtensions!", "Method[GetValueOrDefault<TKey,TValue>].ReturnValue"]
+    - ["System.Boolean", "System.Collections.Generic.CollectionExtensions!", "Method[TryAdd<TKey,TValue>].ReturnValue"]
+    - ["System.Collections.ObjectModel.ReadOnlyDictionary<TKey,TValue>", "System.Collections.Generic.CollectionExtensions!", "Method[AsReadOnly<TKey,TValue>].ReturnValue"]
+    - ["System.Int32", "System.Collections.Generic.ReferenceEqualityComparer", "Method[GetHashCode].ReturnValue"]
+    - ["System.Boolean", "System.Collections.Generic.ReferenceEqualityComparer", "Method[Equals].ReturnValue"]
+    - ["System.Collections.ObjectModel.ReadOnlyCollection<T>", "System.Collections.Generic.CollectionExtensions!", "Method[AsReadOnly<T>].ReturnValue"]
+    - ["System.Collections.Generic.ReferenceEqualityComparer", "System.Collections.Generic.ReferenceEqualityComparer!", "Property[Instance]"]

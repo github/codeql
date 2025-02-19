@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.Extensions.Options.ValidateOptionsResult", "Property[Succeeded]"]
+    - ["System.String", "Microsoft.Extensions.Options.ValidateOptionsResult", "Property[FailureMessage]"]
+    - ["Microsoft.Extensions.Options.ValidateOptionsResult", "Microsoft.Extensions.Options.ValidateOptionsResult!", "Field[Skip]"]
+    - ["System.Boolean", "Microsoft.Extensions.Options.ValidateOptionsResult", "Property[Skipped]"]
+    - ["System.Boolean", "Microsoft.Extensions.Options.ValidateOptionsResult", "Property[Failed]"]
+    - ["System.String", "Microsoft.Extensions.Options.OptionsValidationException", "Property[Message]"]
+    - ["System.Collections.Generic.IEnumerable<System.String>", "Microsoft.Extensions.Options.OptionsValidationException", "Property[Failures]"]
+    - ["Microsoft.Extensions.Options.ValidateOptionsResult", "Microsoft.Extensions.Options.ValidateOptionsResultBuilder", "Method[Build].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Options.OptionsValidationException", "Property[OptionsName]"]
+    - ["System.Collections.Generic.IEnumerable<System.String>", "Microsoft.Extensions.Options.ValidateOptionsResult", "Property[Failures]"]
+    - ["System.String", "Microsoft.Extensions.Options.Options!", "Field[DefaultName]"]
+    - ["System.Type", "Microsoft.Extensions.Options.ValidateEnumeratedItemsAttribute", "Property[Validator]"]
+    - ["Microsoft.Extensions.Options.ValidateOptionsResult", "Microsoft.Extensions.Options.ValidateOptionsResult!", "Method[Fail].ReturnValue"]
+    - ["System.IDisposable", "Microsoft.Extensions.Options.OptionsMonitorExtensions!", "Method[OnChange<TOptions>].ReturnValue"]
+    - ["System.Type", "Microsoft.Extensions.Options.OptionsValidationException", "Property[OptionsType]"]
+    - ["Microsoft.Extensions.Options.IOptions<TOptions>", "Microsoft.Extensions.Options.Options!", "Method[Create<TOptions>].ReturnValue"]
+    - ["System.Type", "Microsoft.Extensions.Options.ValidateObjectMembersAttribute", "Property[Validator]"]
+    - ["Microsoft.Extensions.Options.ValidateOptionsResult", "Microsoft.Extensions.Options.ValidateOptionsResult!", "Field[Success]"]

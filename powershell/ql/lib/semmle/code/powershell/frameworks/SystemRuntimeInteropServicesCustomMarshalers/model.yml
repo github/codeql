@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Runtime.InteropServices.ICustomMarshaler", "System.Runtime.InteropServices.CustomMarshalers.TypeToTypeInfoMarshaler!", "Method[GetInstance].ReturnValue"]
+    - ["System.Runtime.InteropServices.ICustomMarshaler", "System.Runtime.InteropServices.CustomMarshalers.ExpandoToDispatchExMarshaler!", "Method[GetInstance].ReturnValue"]
+    - ["System.IntPtr", "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler", "Method[MarshalManagedToNative].ReturnValue"]
+    - ["System.Object", "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler", "Method[MarshalNativeToManaged].ReturnValue"]
+    - ["System.Int32", "System.Runtime.InteropServices.CustomMarshalers.TypeToTypeInfoMarshaler", "Method[GetNativeDataSize].ReturnValue"]
+    - ["System.IntPtr", "System.Runtime.InteropServices.CustomMarshalers.ExpandoToDispatchExMarshaler", "Method[MarshalManagedToNative].ReturnValue"]
+    - ["System.Int32", "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler", "Method[GetNativeDataSize].ReturnValue"]
+    - ["System.Int32", "System.Runtime.InteropServices.CustomMarshalers.EnumerableToDispatchMarshaler", "Method[GetNativeDataSize].ReturnValue"]
+    - ["System.IntPtr", "System.Runtime.InteropServices.CustomMarshalers.TypeToTypeInfoMarshaler", "Method[MarshalManagedToNative].ReturnValue"]
+    - ["System.Runtime.InteropServices.ICustomMarshaler", "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler!", "Method[GetInstance].ReturnValue"]
+    - ["System.Object", "System.Runtime.InteropServices.CustomMarshalers.EnumerableToDispatchMarshaler", "Method[MarshalNativeToManaged].ReturnValue"]
+    - ["System.Runtime.InteropServices.ICustomMarshaler", "System.Runtime.InteropServices.CustomMarshalers.EnumerableToDispatchMarshaler!", "Method[GetInstance].ReturnValue"]
+    - ["System.Object", "System.Runtime.InteropServices.CustomMarshalers.TypeToTypeInfoMarshaler", "Method[MarshalNativeToManaged].ReturnValue"]
+    - ["System.Object", "System.Runtime.InteropServices.CustomMarshalers.ExpandoToDispatchExMarshaler", "Method[MarshalNativeToManaged].ReturnValue"]
+    - ["System.Int32", "System.Runtime.InteropServices.CustomMarshalers.ExpandoToDispatchExMarshaler", "Method[GetNativeDataSize].ReturnValue"]
+    - ["System.IntPtr", "System.Runtime.InteropServices.CustomMarshalers.EnumerableToDispatchMarshaler", "Method[MarshalManagedToNative].ReturnValue"]

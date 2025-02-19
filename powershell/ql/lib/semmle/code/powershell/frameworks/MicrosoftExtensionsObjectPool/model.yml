@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["Microsoft.Extensions.ObjectPool.ObjectPool<T>", "Microsoft.Extensions.ObjectPool.LeakTrackingObjectPoolProvider", "Method[Create<T>].ReturnValue"]
+    - ["Microsoft.Extensions.ObjectPool.ObjectPool<T>", "Microsoft.Extensions.ObjectPool.ObjectPool!", "Method[Create<T>].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.ObjectPool.StringBuilderPooledObjectPolicy", "Method[Return].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.ObjectPool.DefaultObjectPoolProvider", "Property[MaximumRetained]"]
+    - ["System.Int32", "Microsoft.Extensions.ObjectPool.StringBuilderPooledObjectPolicy", "Property[MaximumRetainedCapacity]"]
+    - ["Microsoft.Extensions.ObjectPool.ObjectPool<T>", "Microsoft.Extensions.ObjectPool.DefaultObjectPoolProvider", "Method[Create<T>].ReturnValue"]
+    - ["Microsoft.Extensions.ObjectPool.ObjectPool<T>", "Microsoft.Extensions.ObjectPool.ObjectPoolProvider", "Method[Create<T>].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.ObjectPool.IResettable", "Method[TryReset].ReturnValue"]
+    - ["System.Text.StringBuilder", "Microsoft.Extensions.ObjectPool.StringBuilderPooledObjectPolicy", "Method[Create].ReturnValue"]
+    - ["Microsoft.Extensions.ObjectPool.ObjectPool<System.Text.StringBuilder>", "Microsoft.Extensions.ObjectPool.ObjectPoolProviderExtensions!", "Method[CreateStringBuilderPool].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.ObjectPool.DependencyInjectionPoolOptions", "Property[Capacity]"]
+    - ["System.Int32", "Microsoft.Extensions.ObjectPool.StringBuilderPooledObjectPolicy", "Property[InitialCapacity]"]

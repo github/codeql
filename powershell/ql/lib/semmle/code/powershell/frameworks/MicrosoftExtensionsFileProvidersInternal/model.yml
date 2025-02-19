@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.IEnumerator", "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents", "Method[System.Collections.IEnumerable.GetEnumerator].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents", "Property[Exists]"]
+    - ["System.Collections.Generic.IEnumerator<Microsoft.Extensions.FileProviders.IFileInfo>", "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents", "Method[GetEnumerator].ReturnValue"]

@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.IO.TextWriter", "System.CommandLine.IO.StandardStreamWriter!", "Method[CreateTextWriter].ReturnValue"]
+    - ["System.Boolean", "System.CommandLine.IO.IStandardIn", "Property[IsInputRedirected]"]
+    - ["System.Boolean", "System.CommandLine.IO.IStandardError", "Property[IsErrorRedirected]"]
+    - ["System.Boolean", "System.CommandLine.IO.TestConsole", "Property[IsErrorRedirected]"]
+    - ["System.Boolean", "System.CommandLine.IO.TestConsole", "Property[IsInputRedirected]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.TestConsole", "Property[Out]"]
+    - ["System.Boolean", "System.CommandLine.IO.SystemConsole", "Property[IsErrorRedirected]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.SystemConsole", "Property[Error]"]
+    - ["System.Boolean", "System.CommandLine.IO.IStandardOut", "Property[IsOutputRedirected]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.IStandardError", "Property[Error]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.IStandardOut", "Property[Out]"]
+    - ["System.Boolean", "System.CommandLine.IO.SystemConsole", "Property[IsOutputRedirected]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.TestConsole", "Property[Error]"]
+    - ["System.Boolean", "System.CommandLine.IO.TestConsole", "Property[IsOutputRedirected]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.SystemConsole", "Property[Out]"]
+    - ["System.CommandLine.IO.IStandardStreamWriter", "System.CommandLine.IO.StandardStreamWriter!", "Method[Create].ReturnValue"]
+    - ["System.Boolean", "System.CommandLine.IO.SystemConsole", "Property[IsInputRedirected]"]

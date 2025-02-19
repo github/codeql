@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Shell32.FolderItem2", "Property[Path]"]
+    - ["Shell32.FolderItemVerb", "Shell32.FolderItemVerbs", "Method[Item].ReturnValue"]
+    - ["System.Object", "Shell32.FolderItem2", "Method[ExtendedProperty].ReturnValue"]
+    - ["System.Collections.IEnumerator", "Shell32.FolderItemVerbs", "Method[GetEnumerator].ReturnValue"]
+    - ["Shell32.Folder", "Shell32.IShellDispatch4", "Method[NameSpace].ReturnValue"]
+    - ["System.Collections.IEnumerator", "Shell32.FolderItems3", "Method[GetEnumerator].ReturnValue"]
+    - ["System.String", "Shell32.FolderItemVerb", "Property[Name]"]
+    - ["Shell32.FolderItemVerbs", "Shell32.FolderItems3", "Property[Verbs]"]
+    - ["Shell32.FolderItems", "Shell32.Folder2", "Method[Items].ReturnValue"]
+    - ["System.String", "Shell32.Folder", "Property[Title]"]
+    - ["System.String", "Shell32.FolderItem", "Property[Name]"]
+    - ["Shell32.FolderItemVerbs", "Shell32.FolderItem2", "Method[Verbs].ReturnValue"]
+    - ["System.String", "Shell32.FolderItem2", "Property[Name]"]
+    - ["System.String", "Shell32.Folder2", "Property[Title]"]

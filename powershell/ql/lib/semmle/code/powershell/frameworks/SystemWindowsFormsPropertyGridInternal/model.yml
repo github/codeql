@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.ComponentModel.Design.CommandID", "System.Windows.Forms.PropertyGridInternal.PropertyGridCommands!", "Field[Reset]"]
+    - ["System.ComponentModel.AttributeCollection", "System.Windows.Forms.PropertyGridInternal.IRootGridEntry", "Property[BrowsableAttributes]"]
+    - ["System.ComponentModel.PropertyDescriptor", "System.Windows.Forms.PropertyGridInternal.PropertiesTab", "Method[GetDefaultProperty].ReturnValue"]
+    - ["System.Guid", "System.Windows.Forms.PropertyGridInternal.PropertyGridCommands!", "Field[wfcMenuCommand]"]
+    - ["System.String", "System.Windows.Forms.PropertyGridInternal.PropertiesTab", "Property[TabName]"]
+    - ["System.Guid", "System.Windows.Forms.PropertyGridInternal.PropertyGridCommands!", "Field[wfcMenuGroup]"]
+    - ["System.String", "System.Windows.Forms.PropertyGridInternal.PropertiesTab", "Property[HelpKeyword]"]
+    - ["System.ComponentModel.PropertyDescriptorCollection", "System.Windows.Forms.PropertyGridInternal.PropertiesTab", "Method[GetProperties].ReturnValue"]
+    - ["System.ComponentModel.Design.CommandID", "System.Windows.Forms.PropertyGridInternal.PropertyGridCommands!", "Field[Commands]"]
+    - ["System.ComponentModel.Design.CommandID", "System.Windows.Forms.PropertyGridInternal.PropertyGridCommands!", "Field[Hide]"]
+    - ["System.ComponentModel.Design.CommandID", "System.Windows.Forms.PropertyGridInternal.PropertyGridCommands!", "Field[Description]"]

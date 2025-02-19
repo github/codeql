@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.Frozen.FrozenDictionary<TKey,TSource>", "System.Collections.Frozen.FrozenDictionary!", "Method[ToFrozenDictionary<TSource,TKey>].ReturnValue"]
+    - ["System.Collections.Frozen.FrozenSet<T>", "System.Collections.Frozen.FrozenSet!", "Method[ToFrozenSet<T>].ReturnValue"]
+    - ["System.Collections.Frozen.FrozenSet<T>", "System.Collections.Frozen.FrozenSet!", "Method[Create<T>].ReturnValue"]
+    - ["System.Collections.Frozen.FrozenDictionary<TKey,TElement>", "System.Collections.Frozen.FrozenDictionary!", "Method[ToFrozenDictionary<TSource,TKey,TElement>].ReturnValue"]
+    - ["System.Collections.Frozen.FrozenDictionary<TKey,TValue>", "System.Collections.Frozen.FrozenDictionary!", "Method[ToFrozenDictionary<TKey,TValue>].ReturnValue"]

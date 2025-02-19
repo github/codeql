@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Method[Equals].ReturnValue"]
+    - ["System.Int32", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Method[GetHashCode].ReturnValue"]
+    - ["System.String", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Method[ToString].ReturnValue"]
+    - ["System.Int32", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Property[Index]"]
+    - ["System.Boolean", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition!", "Method[op_Equality].ReturnValue"]
+    - ["System.Int32", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Property[Offset]"]
+    - ["System.Boolean", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition!", "Method[op_Inequality].ReturnValue"]

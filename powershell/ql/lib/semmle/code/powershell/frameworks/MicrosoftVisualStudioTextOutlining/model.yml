@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Property[IsCollapsed]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsed>", "Microsoft.VisualStudio.Text.Outlining.RegionsCollapsedEventArgs", "Property[CollapsedRegions]"]
+    - ["Microsoft.VisualStudio.Text.ITrackingSpan", "Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Property[Extent]"]
+    - ["System.Boolean", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Property[Enabled]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsed>", "Microsoft.VisualStudio.Text.Outlining.ICollapsed", "Property[CollapsedChildren]"]
+    - ["Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Method[Expand].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsed>", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Method[GetCollapsedRegions].ReturnValue"]
+    - ["System.Object", "Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Property[CollapsedHintForm]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsible>", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Method[GetAllRegions].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsed>", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Method[CollapseAll].ReturnValue"]
+    - ["System.Object", "Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Property[CollapsedForm]"]
+    - ["System.Boolean", "Microsoft.VisualStudio.Text.Outlining.RegionsExpandedEventArgs", "Property[RemovalPending]"]
+    - ["Microsoft.VisualStudio.Text.Outlining.ICollapsed", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Method[TryCollapse].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsible>", "Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Method[ExpandAll].ReturnValue"]
+    - ["Microsoft.VisualStudio.Text.Outlining.IOutliningManager", "Microsoft.VisualStudio.Text.Outlining.IOutliningManagerService", "Method[GetOutliningManager].ReturnValue"]
+    - ["System.Boolean", "Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Property[IsCollapsible]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Text.Outlining.ICollapsible>", "Microsoft.VisualStudio.Text.Outlining.RegionsExpandedEventArgs", "Property[ExpandedRegions]"]
+    - ["Microsoft.VisualStudio.Text.Tagging.IOutliningRegionTag", "Microsoft.VisualStudio.Text.Outlining.ICollapsible", "Property[Tag]"]
+    - ["Microsoft.VisualStudio.Text.SnapshotSpan", "Microsoft.VisualStudio.Text.Outlining.RegionsChangedEventArgs", "Property[AffectedSpan]"]
+    - ["System.Boolean", "Microsoft.VisualStudio.Text.Outlining.OutliningEnabledEventArgs", "Property[Enabled]"]

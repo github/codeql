@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Object", "System.CommandLine.Binding.BindingContext", "Method[GetService].ReturnValue"]
+    - ["System.Boolean", "System.CommandLine.Binding.IValueDescriptor", "Property[HasDefaultValue]"]
+    - ["System.CommandLine.Binding.BoundValue", "System.CommandLine.Binding.BoundValue!", "Method[DefaultForValueDescriptor].ReturnValue"]
+    - ["System.String", "System.CommandLine.Binding.BoundValue", "Method[ToString].ReturnValue"]
+    - ["System.CommandLine.Binding.IValueDescriptor", "System.CommandLine.Binding.BoundValue", "Property[ValueDescriptor]"]
+    - ["System.CommandLine.Parsing.ParseResult", "System.CommandLine.Binding.BindingContext", "Property[ParseResult]"]
+    - ["System.CommandLine.IConsole", "System.CommandLine.Binding.BindingContext", "Property[Console]"]
+    - ["System.CommandLine.Binding.IValueSource", "System.CommandLine.Binding.BoundValue", "Property[ValueSource]"]
+    - ["System.Object", "System.CommandLine.Binding.IValueDescriptor", "Method[GetDefaultValue].ReturnValue"]
+    - ["System.Boolean", "System.CommandLine.Binding.IValueSource", "Method[TryGetValue].ReturnValue"]
+    - ["System.Type", "System.CommandLine.Binding.IValueDescriptor", "Property[ValueType]"]
+    - ["System.String", "System.CommandLine.Binding.IValueDescriptor", "Property[ValueName]"]
+    - ["System.Object", "System.CommandLine.Binding.BoundValue", "Property[Value]"]

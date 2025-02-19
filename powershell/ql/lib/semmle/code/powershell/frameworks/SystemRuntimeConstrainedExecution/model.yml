@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.Cer!", "Field[MayFail]"]
+    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.ReliabilityContractAttribute", "Property[Cer]"]
+    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.Cer!", "Field[Success]"]
+    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[MayCorruptProcess]"]
+    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[WillNotCorruptState]"]
+    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[MayCorruptInstance]"]
+    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.Cer!", "Field[None]"]
+    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.ReliabilityContractAttribute", "Property[ConsistencyGuarantee]"]
+    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[MayCorruptAppDomain]"]

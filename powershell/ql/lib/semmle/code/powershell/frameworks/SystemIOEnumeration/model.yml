@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.IO.Enumeration.FileSystemEntry", "Property[RootDirectory]"]
+    - ["System.IO.FileSystemInfo", "System.IO.Enumeration.FileSystemEntry", "Method[ToFileSystemInfo].ReturnValue"]
+    - ["System.Boolean", "System.IO.Enumeration.FileSystemEntry", "Property[IsDirectory]"]
+    - ["System.String", "System.IO.Enumeration.FileSystemEntry", "Property[OriginalRootDirectory]"]
+    - ["System.IO.FileAttributes", "System.IO.Enumeration.FileSystemEntry", "Property[Attributes]"]
+    - ["System.DateTimeOffset", "System.IO.Enumeration.FileSystemEntry", "Property[LastAccessTimeUtc]"]
+    - ["System.String", "System.IO.Enumeration.FileSystemName!", "Method[TranslateWin32Expression].ReturnValue"]
+    - ["System.Int64", "System.IO.Enumeration.FileSystemEntry", "Property[Length]"]
+    - ["System.String", "System.IO.Enumeration.FileSystemEntry", "Property[FileName]"]
+    - ["System.Boolean", "System.IO.Enumeration.FileSystemEntry", "Property[IsHidden]"]
+    - ["System.Boolean", "System.IO.Enumeration.FileSystemName!", "Method[MatchesWin32Expression].ReturnValue"]
+    - ["System.DateTimeOffset", "System.IO.Enumeration.FileSystemEntry", "Property[CreationTimeUtc]"]
+    - ["System.String", "System.IO.Enumeration.FileSystemEntry", "Method[ToSpecifiedFullPath].ReturnValue"]
+    - ["System.String", "System.IO.Enumeration.FileSystemEntry", "Property[Directory]"]
+    - ["System.Boolean", "System.IO.Enumeration.FileSystemName!", "Method[MatchesSimpleExpression].ReturnValue"]
+    - ["System.String", "System.IO.Enumeration.FileSystemEntry", "Method[ToFullPath].ReturnValue"]
+    - ["System.DateTimeOffset", "System.IO.Enumeration.FileSystemEntry", "Property[LastWriteTimeUtc]"]

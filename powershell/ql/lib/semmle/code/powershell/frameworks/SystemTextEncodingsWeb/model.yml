@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Text.Encodings.Web.JavaScriptEncoder", "System.Text.Encodings.Web.JavaScriptEncoder!", "Property[UnsafeRelaxedJsonEscaping]"]
+    - ["System.Text.Encodings.Web.UrlEncoder", "System.Text.Encodings.Web.UrlEncoder!", "Method[Create].ReturnValue"]
+    - ["System.Buffers.OperationStatus", "System.Text.Encodings.Web.TextEncoder", "Method[EncodeUtf8].ReturnValue"]
+    - ["System.Text.Encodings.Web.HtmlEncoder", "System.Text.Encodings.Web.HtmlEncoder!", "Property[Default]"]
+    - ["System.Collections.Generic.IEnumerable<System.Int32>", "System.Text.Encodings.Web.TextEncoderSettings", "Method[GetAllowedCodePoints].ReturnValue"]
+    - ["System.Int32", "System.Text.Encodings.Web.TextEncoder", "Property[MaxOutputCharactersPerInputCharacter]"]
+    - ["System.Boolean", "System.Text.Encodings.Web.TextEncoder", "Method[TryEncodeUnicodeScalar].ReturnValue"]
+    - ["System.Boolean", "System.Text.Encodings.Web.TextEncoder", "Method[WillEncode].ReturnValue"]
+    - ["System.String", "System.Text.Encodings.Web.TextEncoder", "Method[Encode].ReturnValue"]
+    - ["System.Text.Encodings.Web.UrlEncoder", "System.Text.Encodings.Web.UrlEncoder!", "Property[Default]"]
+    - ["System.Text.Encodings.Web.HtmlEncoder", "System.Text.Encodings.Web.HtmlEncoder!", "Method[Create].ReturnValue"]
+    - ["System.Text.Encodings.Web.JavaScriptEncoder", "System.Text.Encodings.Web.JavaScriptEncoder!", "Method[Create].ReturnValue"]
+    - ["System.Int32", "System.Text.Encodings.Web.TextEncoder", "Method[FindFirstCharacterToEncodeUtf8].ReturnValue"]
+    - ["System.Int32", "System.Text.Encodings.Web.TextEncoder", "Method[FindFirstCharacterToEncode].ReturnValue"]
+    - ["System.Text.Encodings.Web.JavaScriptEncoder", "System.Text.Encodings.Web.JavaScriptEncoder!", "Property[Default]"]
+    - ["System.Buffers.OperationStatus", "System.Text.Encodings.Web.TextEncoder", "Method[Encode].ReturnValue"]

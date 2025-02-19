@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterSetInfo", "Property[Name]"]
+    - ["System.Collections.Generic.ICollection<Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo>", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterSetInfo", "Property[Parameters]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[IsArray]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[IsMandatory]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[IsBoolean]"]
+    - ["Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[ElementType]"]
+    - ["System.Collections.ArrayList", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[EnumValues]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[IsScriptBlock]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[IsString]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[IsEnum]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[Name]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[FullName]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandCommandInfo", "Property[Name]"]
+    - ["Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandModuleInfo", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandCommandInfo", "Property[Module]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandModuleInfo", "Property[Name]"]
+    - ["System.Collections.Generic.ICollection<Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterSetInfo>", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandCommandInfo", "Property[ParameterSets]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[ValueFromPipeline]"]
+    - ["Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[ParameterType]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[IsSwitch]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[ImplementsDictionary]"]
+    - ["System.Management.Automation.CommandTypes", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandCommandInfo", "Property[CommandType]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterType", "Property[HasFlagAttribute]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterSetInfo", "Property[IsDefault]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[HasParameterSet]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandCommandInfo", "Property[ModuleName]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandCommandInfo", "Property[Definition]"]
+    - ["System.Collections.Generic.IList<System.String>", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[ValidParamSetValues]"]
+    - ["System.Int32", "Microsoft.PowerShell.Commands.ShowCommandExtension.ShowCommandParameterInfo", "Property[Position]"]

@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Xml.Serialization.Configuration.SchemaImporterExtensionElement", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElementCollection", "Property[Item]"]
+    - ["System.String", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElement", "Property[Name]"]
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElement", "Property[Properties]"]
+    - ["System.Boolean", "System.Xml.Serialization.Configuration.RootedPathValidator", "Method[CanValidate].ReturnValue"]
+    - ["System.Xml.Serialization.Configuration.DateTimeSerializationSection+DateTimeSerializationMode", "System.Xml.Serialization.Configuration.DateTimeSerializationSection", "Property[Mode]"]
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Xml.Serialization.Configuration.DateTimeSerializationSection", "Property[Properties]"]
+    - ["System.Boolean", "System.Xml.Serialization.Configuration.XmlSerializerSection", "Property[UseLegacySerializerGeneration]"]
+    - ["System.Xml.Serialization.Configuration.XmlSerializerSection", "System.Xml.Serialization.Configuration.SerializationSectionGroup", "Property[XmlSerializer]"]
+    - ["System.Configuration.ConfigurationElement", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElementCollection", "Method[CreateNewElement].ReturnValue"]
+    - ["System.Xml.Serialization.Configuration.SchemaImporterExtensionsSection", "System.Xml.Serialization.Configuration.SerializationSectionGroup", "Property[SchemaImporterExtensions]"]
+    - ["System.Object", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElementCollection", "Method[GetElementKey].ReturnValue"]
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Xml.Serialization.Configuration.XmlSerializerSection", "Property[Properties]"]
+    - ["System.String", "System.Xml.Serialization.Configuration.XmlSerializerSection", "Property[TempFilesLocation]"]
+    - ["System.Configuration.ConfigurationPropertyCollection", "System.Xml.Serialization.Configuration.SchemaImporterExtensionsSection", "Property[Properties]"]
+    - ["System.Type", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElement", "Property[Type]"]
+    - ["System.Xml.Serialization.Configuration.SchemaImporterExtensionElementCollection", "System.Xml.Serialization.Configuration.SchemaImporterExtensionsSection", "Property[SchemaImporterExtensions]"]
+    - ["System.Xml.Serialization.Configuration.DateTimeSerializationSection", "System.Xml.Serialization.Configuration.SerializationSectionGroup", "Property[DateTimeSerialization]"]
+    - ["System.Int32", "System.Xml.Serialization.Configuration.SchemaImporterExtensionElementCollection", "Method[IndexOf].ReturnValue"]
+    - ["System.Boolean", "System.Xml.Serialization.Configuration.XmlSerializerSection", "Property[CheckDeserializeAdvances]"]

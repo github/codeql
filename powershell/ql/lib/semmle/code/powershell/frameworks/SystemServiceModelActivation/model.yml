@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.ICollection", "System.ServiceModel.Activation.ServiceBuildProvider", "Property[VirtualPathDependencies]"]
+    - ["System.ServiceModel.ServiceHostBase", "System.ServiceModel.Activation.ServiceHostFactory", "Method[CreateServiceHost].ReturnValue"]
+    - ["System.CodeDom.CodeCompileUnit", "System.ServiceModel.Activation.ServiceBuildProvider", "Method[GetCodeCompileUnit].ReturnValue"]
+    - ["System.Web.Compilation.BuildProviderResultFlags", "System.ServiceModel.Activation.ServiceBuildProvider", "Method[GetResultFlags].ReturnValue"]
+    - ["System.Web.Compilation.CompilerType", "System.ServiceModel.Activation.ServiceBuildProvider", "Property[CodeCompilerType]"]
+    - ["System.ServiceModel.ServiceHostBase", "System.ServiceModel.Activation.WorkflowServiceHostFactory", "Method[CreateServiceHost].ReturnValue"]
+    - ["System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode", "System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode!", "Field[Required]"]
+    - ["System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode", "System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode!", "Field[Allowed]"]
+    - ["System.String", "System.ServiceModel.Activation.VirtualPathExtension", "Property[SiteName]"]
+    - ["System.ServiceModel.ServiceHostBase", "System.ServiceModel.Activation.ServiceHostFactoryBase", "Method[CreateServiceHost].ReturnValue"]
+    - ["System.Uri[]", "System.ServiceModel.Activation.HostedTransportConfiguration", "Method[GetBaseAddresses].ReturnValue"]
+    - ["System.String", "System.ServiceModel.Activation.ServiceBuildProvider", "Method[GetCustomString].ReturnValue"]
+    - ["System.ServiceModel.ServiceHost", "System.ServiceModel.Activation.WebServiceHostFactory", "Method[CreateServiceHost].ReturnValue"]
+    - ["System.ServiceModel.ServiceHost", "System.ServiceModel.Activation.WebScriptServiceHostFactory", "Method[CreateServiceHost].ReturnValue"]
+    - ["System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode", "System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode!", "Field[NotAllowed]"]
+    - ["System.ServiceModel.Activation.AspNetCompatibilityRequirementsMode", "System.ServiceModel.Activation.AspNetCompatibilityRequirementsAttribute", "Property[RequirementsMode]"]
+    - ["System.ServiceModel.ServiceHost", "System.ServiceModel.Activation.ServiceHostFactory", "Method[CreateServiceHost].ReturnValue"]
+    - ["System.String", "System.ServiceModel.Activation.VirtualPathExtension", "Property[ApplicationVirtualPath]"]
+    - ["System.String", "System.ServiceModel.Activation.VirtualPathExtension", "Property[VirtualPath]"]

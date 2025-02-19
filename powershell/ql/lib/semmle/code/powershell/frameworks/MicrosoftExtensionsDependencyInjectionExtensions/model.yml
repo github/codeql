@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions!", "Method[Add].ReturnValue"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions!", "Method[RemoveAllKeyed].ReturnValue"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions!", "Method[RemoveAllKeyed<T>].ReturnValue"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions!", "Method[RemoveAll<T>].ReturnValue"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions!", "Method[RemoveAll].ReturnValue"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions!", "Method[Replace].ReturnValue"]

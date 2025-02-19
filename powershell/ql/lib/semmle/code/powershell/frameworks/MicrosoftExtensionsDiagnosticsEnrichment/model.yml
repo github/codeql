@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationLogEnricherOptions", "Property[DeploymentRing]"]
+    - ["System.Boolean", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationLogEnricherOptions", "Property[EnvironmentName]"]
+    - ["System.Boolean", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationLogEnricherOptions", "Property[BuildVersion]"]
+    - ["System.Boolean", "Microsoft.Extensions.Diagnostics.Enrichment.ProcessLogEnricherOptions", "Property[ThreadId]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationEnricherTags!", "Field[DeploymentRing]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationEnricherTags!", "Field[BuildVersion]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Enrichment.ProcessEnricherTagNames!", "Field[ThreadId]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationEnricherTags!", "Field[ApplicationName]"]
+    - ["System.Collections.Generic.IReadOnlyList<System.String>", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationEnricherTags!", "Property[DimensionNames]"]
+    - ["System.Collections.Generic.IReadOnlyList<System.String>", "Microsoft.Extensions.Diagnostics.Enrichment.ProcessEnricherTagNames!", "Property[DimensionNames]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationEnricherTags!", "Field[EnvironmentName]"]
+    - ["System.Boolean", "Microsoft.Extensions.Diagnostics.Enrichment.ProcessLogEnricherOptions", "Property[ProcessId]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Enrichment.ProcessEnricherTagNames!", "Field[ProcessId]"]
+    - ["System.Boolean", "Microsoft.Extensions.Diagnostics.Enrichment.ApplicationLogEnricherOptions", "Property[ApplicationName]"]

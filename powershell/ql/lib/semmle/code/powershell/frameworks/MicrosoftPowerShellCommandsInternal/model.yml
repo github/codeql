@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Type", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Property[AccessRightType]"]
+    - ["System.Security.AccessControl.AuditRule", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Method[AuditRuleFactory].ReturnValue"]
+    - ["System.String", "Microsoft.PowerShell.Commands.Internal.RemotingErrorResources!", "Property[WinRMRestartWarning]"]
+    - ["Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[CreateSubKey].ReturnValue"]
+    - ["System.Security.AccessControl.AccessRule", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Method[AccessRuleFactory].ReturnValue"]
+    - ["System.Int32", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Property[SubKeyCount]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Property[Name]"]
+    - ["System.Security.AccessControl.RegistryRights", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryAccessRule", "Property[RegistryRights]"]
+    - ["System.Security.AccessControl.RegistryRights", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryAuditRule", "Property[RegistryRights]"]
+    - ["System.Type", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Property[AuditRuleType]"]
+    - ["Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[GetAccessControl].ReturnValue"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Method[RemoveAccessRule].ReturnValue"]
+    - ["Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[OpenSubKey].ReturnValue"]
+    - ["System.Int32", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Property[ValueCount]"]
+    - ["System.Type", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Property[AccessRuleType]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Commands.Internal.TransactedRegistrySecurity", "Method[RemoveAuditRule].ReturnValue"]
+    - ["System.Object", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[GetValue].ReturnValue"]
+    - ["System.String[]", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[GetValueNames].ReturnValue"]
+    - ["System.String[]", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[GetSubKeyNames].ReturnValue"]
+    - ["Microsoft.Win32.RegistryValueKind", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[GetValueKind].ReturnValue"]
+    - ["System.String", "Microsoft.PowerShell.Commands.Internal.TransactedRegistryKey", "Method[ToString].ReturnValue"]
+    - ["System.String", "Microsoft.PowerShell.Commands.Internal.RemotingErrorResources!", "Property[CouldNotResolveRoleDefinitionPrincipal]"]

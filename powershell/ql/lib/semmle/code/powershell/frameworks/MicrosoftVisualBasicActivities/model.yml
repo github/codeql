@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Int32", "Microsoft.VisualBasic.Activities.VisualBasicImportReference", "Method[GetHashCode].ReturnValue"]
+    - ["System.Activities.Activity", "Microsoft.VisualBasic.Activities.VisualBasicDesignerHelper!", "Method[RecompileVisualBasicReference].ReturnValue"]
+    - ["System.String", "Microsoft.VisualBasic.Activities.VisualBasicImportReference", "Property[Import]"]
+    - ["System.Activities.Activity", "Microsoft.VisualBasic.Activities.VisualBasicDesignerHelper!", "Method[RecompileVisualBasicValue].ReturnValue"]
+    - ["System.String", "Microsoft.VisualBasic.Activities.VisualBasicImportReference", "Property[Assembly]"]
+    - ["System.Activities.Activity", "Microsoft.VisualBasic.Activities.VisualBasicDesignerHelper!", "Method[CreatePrecompiledVisualBasicValue].ReturnValue"]
+    - ["System.Boolean", "Microsoft.VisualBasic.Activities.VisualBasicImportReference", "Method[Equals].ReturnValue"]
+    - ["System.Activities.Validation.Constraint", "Microsoft.VisualBasic.Activities.VisualBasicDesignerHelper!", "Property[NameShadowingConstraint]"]
+    - ["System.Boolean", "Microsoft.VisualBasic.Activities.VisualBasic!", "Method[ShouldSerializeSettings].ReturnValue"]
+    - ["Microsoft.VisualBasic.Activities.VisualBasicSettings", "Microsoft.VisualBasic.Activities.VisualBasic!", "Method[GetSettings].ReturnValue"]
+    - ["System.Activities.Activity", "Microsoft.VisualBasic.Activities.VisualBasicDesignerHelper!", "Method[CreatePrecompiledVisualBasicReference].ReturnValue"]
+    - ["System.Collections.Generic.ISet<Microsoft.VisualBasic.Activities.VisualBasicImportReference>", "Microsoft.VisualBasic.Activities.VisualBasicSettings", "Property[ImportReferences]"]
+    - ["Microsoft.VisualBasic.Activities.VisualBasicSettings", "Microsoft.VisualBasic.Activities.VisualBasicSettings!", "Property[Default]"]

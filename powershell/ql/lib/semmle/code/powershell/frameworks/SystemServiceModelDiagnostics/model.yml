@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[Off]"]
+    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[Default]"]
+    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[All]"]
+    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[ServiceOnly]"]

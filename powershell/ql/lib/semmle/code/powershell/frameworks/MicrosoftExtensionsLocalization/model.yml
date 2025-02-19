@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.Extensions.Localization.LocalizedString", "Property[ResourceNotFound]"]
+    - ["System.String", "Microsoft.Extensions.Localization.RootNamespaceAttribute", "Property[RootNamespace]"]
+    - ["Microsoft.Extensions.Localization.ResourceLocationAttribute", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizerFactory", "Method[GetResourceLocationAttribute].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.LocalizedString", "Method[ToString].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizerFactory", "Method[GetResourcePrefix].ReturnValue"]
+    - ["Microsoft.Extensions.Localization.ResourceManagerStringLocalizer", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizerFactory", "Method[CreateResourceManagerStringLocalizer].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.LocalizedString", "Property[Name]"]
+    - ["System.String", "Microsoft.Extensions.Localization.LocalizedString!", "Method[op_Implicit].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.ResourceLocationAttribute", "Property[ResourceLocation]"]
+    - ["System.String", "Microsoft.Extensions.Localization.LocalizedString", "Property[SearchedLocation]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString>", "Microsoft.Extensions.Localization.StringLocalizerExtensions!", "Method[GetAllStrings].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.LocalizationOptions", "Property[ResourcesPath]"]
+    - ["Microsoft.Extensions.Localization.RootNamespaceAttribute", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizerFactory", "Method[GetRootNamespaceAttribute].ReturnValue"]
+    - ["System.Collections.Generic.IList<System.String>", "Microsoft.Extensions.Localization.IResourceNamesCache", "Method[GetOrAdd].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString>", "Microsoft.Extensions.Localization.IStringLocalizer", "Method[GetAllStrings].ReturnValue"]
+    - ["System.Collections.Generic.IList<System.String>", "Microsoft.Extensions.Localization.ResourceNamesCache", "Method[GetOrAdd].ReturnValue"]
+    - ["Microsoft.Extensions.Localization.IStringLocalizer", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizerFactory", "Method[Create].ReturnValue"]
+    - ["Microsoft.Extensions.Localization.IStringLocalizer", "Microsoft.Extensions.Localization.IStringLocalizerFactory", "Method[Create].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.LocalizedString", "Property[Value]"]
+    - ["Microsoft.Extensions.Localization.LocalizedString", "Microsoft.Extensions.Localization.IStringLocalizer", "Property[Item]"]
+    - ["Microsoft.Extensions.Localization.LocalizedString", "Microsoft.Extensions.Localization.StringLocalizerExtensions!", "Method[GetString].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizer", "Method[GetStringSafely].ReturnValue"]
+    - ["Microsoft.Extensions.Localization.LocalizedString", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizer", "Property[Item]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString>", "Microsoft.Extensions.Localization.ResourceManagerStringLocalizer", "Method[GetAllStrings].ReturnValue"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Workflow.Activities.Rules.Design.RuleSetDialog", "Method[ProcessCmdKey].ReturnValue"]
+    - ["System.Workflow.Activities.Rules.RuleSet", "System.Workflow.Activities.Rules.Design.RuleSetDialog", "Property[RuleSet]"]
+    - ["System.CodeDom.CodeExpression", "System.Workflow.Activities.Rules.Design.RuleConditionDialog", "Property[Expression]"]

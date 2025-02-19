@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.PowerShell.Cmdletization.MethodParameter", "Property[IsValuePresent]"]
+    - ["Microsoft.PowerShell.Cmdletization.BehaviorOnNoMatch", "Microsoft.PowerShell.Cmdletization.BehaviorOnNoMatch!", "Field[SilentlyContinue]"]
+    - ["Microsoft.PowerShell.Cmdletization.MethodParameterBindings", "Microsoft.PowerShell.Cmdletization.MethodParameterBindings!", "Field[In]"]
+    - ["System.String", "Microsoft.PowerShell.Cmdletization.MethodParameter", "Property[Name]"]
+    - ["System.Type", "Microsoft.PowerShell.Cmdletization.MethodParameter", "Property[ParameterType]"]
+    - ["Microsoft.PowerShell.Cmdletization.MethodParameter", "Microsoft.PowerShell.Cmdletization.MethodInvocationInfo", "Property[ReturnValue]"]
+    - ["System.Collections.ObjectModel.KeyedCollection<System.String,Microsoft.PowerShell.Cmdletization.MethodParameter>", "Microsoft.PowerShell.Cmdletization.MethodInvocationInfo", "Property[Parameters]"]
+    - ["Microsoft.PowerShell.Cmdletization.MethodParameterBindings", "Microsoft.PowerShell.Cmdletization.MethodParameter", "Property[Bindings]"]
+    - ["Microsoft.PowerShell.Cmdletization.MethodParameterBindings", "Microsoft.PowerShell.Cmdletization.MethodParameterBindings!", "Field[Out]"]
+    - ["System.Object", "Microsoft.PowerShell.Cmdletization.MethodParameter", "Property[Value]"]
+    - ["Microsoft.PowerShell.Cmdletization.BehaviorOnNoMatch", "Microsoft.PowerShell.Cmdletization.BehaviorOnNoMatch!", "Field[Default]"]
+    - ["Microsoft.PowerShell.Cmdletization.MethodParameterBindings", "Microsoft.PowerShell.Cmdletization.MethodParameterBindings!", "Field[Error]"]
+    - ["System.String", "Microsoft.PowerShell.Cmdletization.MethodInvocationInfo", "Property[MethodName]"]
+    - ["System.String", "Microsoft.PowerShell.Cmdletization.MethodParameter", "Property[ParameterTypeName]"]
+    - ["Microsoft.PowerShell.Cmdletization.BehaviorOnNoMatch", "Microsoft.PowerShell.Cmdletization.BehaviorOnNoMatch!", "Field[ReportErrors]"]

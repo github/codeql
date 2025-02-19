@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Diagnostics.Metrics.ObservableUpDownCounter<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateObservableUpDownCounter<T>].ReturnValue"]
+    - ["System.Diagnostics.Metrics.Histogram<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateHistogram<T>].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>", "System.Diagnostics.Metrics.Meter", "Property[Tags]"]
+    - ["System.String", "System.Diagnostics.Metrics.Instrument", "Property[Unit]"]
+    - ["System.String", "System.Diagnostics.Metrics.MeterOptions", "Property[Version]"]
+    - ["System.Action<System.Diagnostics.Metrics.Instrument,System.Diagnostics.Metrics.MeterListener>", "System.Diagnostics.Metrics.MeterListener", "Property[InstrumentPublished]"]
+    - ["System.Object", "System.Diagnostics.Metrics.MeterListener", "Method[DisableMeasurementEvents].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Metrics.Instrument", "Property[IsObservable]"]
+    - ["System.Diagnostics.Metrics.Meter", "System.Diagnostics.Metrics.IMeterFactory", "Method[Create].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Metrics.Instrument", "Property[Enabled]"]
+    - ["System.Diagnostics.Metrics.Gauge<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateGauge<T>].ReturnValue"]
+    - ["System.Diagnostics.Metrics.Meter", "System.Diagnostics.Metrics.Instrument", "Property[Meter]"]
+    - ["System.String", "System.Diagnostics.Metrics.Meter", "Property[Name]"]
+    - ["System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>", "System.Diagnostics.Metrics.MeterOptions", "Property[Tags]"]
+    - ["System.String", "System.Diagnostics.Metrics.Instrument", "Property[Description]"]
+    - ["System.String", "System.Diagnostics.Metrics.Instrument", "Property[Name]"]
+    - ["System.Diagnostics.Metrics.Counter<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateCounter<T>].ReturnValue"]
+    - ["System.Diagnostics.Metrics.UpDownCounter<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateUpDownCounter<T>].ReturnValue"]
+    - ["System.Object", "System.Diagnostics.Metrics.MeterOptions", "Property[Scope]"]
+    - ["System.Object", "System.Diagnostics.Metrics.Meter", "Property[Scope]"]
+    - ["System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>", "System.Diagnostics.Metrics.Instrument", "Property[Tags]"]
+    - ["System.Diagnostics.Metrics.Meter", "System.Diagnostics.Metrics.MeterFactoryExtensions!", "Method[Create].ReturnValue"]
+    - ["System.Diagnostics.Metrics.ObservableCounter<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateObservableCounter<T>].ReturnValue"]
+    - ["System.String", "System.Diagnostics.Metrics.MeterOptions", "Property[Name]"]
+    - ["System.Diagnostics.Metrics.ObservableGauge<T>", "System.Diagnostics.Metrics.Meter", "Method[CreateObservableGauge<T>].ReturnValue"]
+    - ["System.Action<System.Diagnostics.Metrics.Instrument,System.Object>", "System.Diagnostics.Metrics.MeterListener", "Property[MeasurementsCompleted]"]
+    - ["System.String", "System.Diagnostics.Metrics.Meter", "Property[Version]"]

@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.Generic.List<System.CodeDom.CodeAttributeDeclaration>", "System.Data.Services.Design.PropertyGeneratedEventArgs", "Property[AdditionalAttributes]"]
+    - ["System.Collections.Generic.List<System.Type>", "System.Data.Services.Design.TypeGeneratedEventArgs", "Property[AdditionalInterfaces]"]
+    - ["System.Boolean", "System.Data.Services.Design.EdmToObjectNamespaceMap", "Method[Remove].ReturnValue"]
+    - ["System.Data.Services.Design.EdmToObjectNamespaceMap", "System.Data.Services.Design.EntityClassGenerator", "Property[EdmToObjectNamespaceMap]"]
+    - ["System.Boolean", "System.Data.Services.Design.EntityClassGenerator", "Property[UseDataServiceCollection]"]
+    - ["System.CodeDom.CodeTypeReference", "System.Data.Services.Design.TypeGeneratedEventArgs", "Property[BaseType]"]
+    - ["System.Data.Metadata.Edm.GlobalItem", "System.Data.Services.Design.TypeGeneratedEventArgs", "Property[TypeSource]"]
+    - ["System.Collections.Generic.List<System.CodeDom.CodeTypeMember>", "System.Data.Services.Design.TypeGeneratedEventArgs", "Property[AdditionalMembers]"]
+    - ["System.Collections.Generic.IList<System.Data.Metadata.Edm.EdmSchemaError>", "System.Data.Services.Design.EntityClassGenerator", "Method[GenerateCode].ReturnValue"]
+    - ["System.Data.Services.Design.LanguageOption", "System.Data.Services.Design.LanguageOption!", "Field[GenerateVBCode]"]
+    - ["System.Data.Services.Design.DataServiceCodeVersion", "System.Data.Services.Design.DataServiceCodeVersion!", "Field[V1]"]
+    - ["System.Int32", "System.Data.Services.Design.EdmToObjectNamespaceMap", "Property[Count]"]
+    - ["System.String", "System.Data.Services.Design.EdmToObjectNamespaceMap", "Property[Item]"]
+    - ["System.Data.Services.Design.LanguageOption", "System.Data.Services.Design.EntityClassGenerator", "Property[LanguageOption]"]
+    - ["System.Collections.Generic.List<System.CodeDom.CodeStatement>", "System.Data.Services.Design.PropertyGeneratedEventArgs", "Property[AdditionalGetStatements]"]
+    - ["System.Data.Metadata.Edm.MetadataItem", "System.Data.Services.Design.PropertyGeneratedEventArgs", "Property[PropertySource]"]
+    - ["System.String", "System.Data.Services.Design.PropertyGeneratedEventArgs", "Property[BackingFieldName]"]
+    - ["System.Data.Services.Design.LanguageOption", "System.Data.Services.Design.LanguageOption!", "Field[GenerateCSharpCode]"]
+    - ["System.Boolean", "System.Data.Services.Design.EdmToObjectNamespaceMap", "Method[Contains].ReturnValue"]
+    - ["System.Boolean", "System.Data.Services.Design.EdmToObjectNamespaceMap", "Method[TryGetObjectNamespace].ReturnValue"]
+    - ["System.Data.Services.Design.DataServiceCodeVersion", "System.Data.Services.Design.EntityClassGenerator", "Property[Version]"]
+    - ["System.Collections.Generic.List<System.CodeDom.CodeAttributeDeclaration>", "System.Data.Services.Design.TypeGeneratedEventArgs", "Property[AdditionalAttributes]"]
+    - ["System.Data.Services.Design.DataServiceCodeVersion", "System.Data.Services.Design.DataServiceCodeVersion!", "Field[V2]"]
+    - ["System.Collections.Generic.ICollection<System.String>", "System.Data.Services.Design.EdmToObjectNamespaceMap", "Property[EdmNamespaces]"]
+    - ["System.CodeDom.CodeTypeReference", "System.Data.Services.Design.PropertyGeneratedEventArgs", "Property[ReturnType]"]
+    - ["System.Collections.Generic.List<System.CodeDom.CodeStatement>", "System.Data.Services.Design.PropertyGeneratedEventArgs", "Property[AdditionalSetStatements]"]

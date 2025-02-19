@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Probes.ProbeTags!", "Field[Startup]"]
+    - ["Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Microsoft.Extensions.Diagnostics.Probes.KubernetesProbesOptions", "Property[ReadinessProbe]"]
+    - ["System.Int32", "Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Property[MaxPendingConnections]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Probes.ProbeTags!", "Field[Readiness]"]
+    - ["System.Func<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration,System.Boolean>", "Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Property[FilterChecks]"]
+    - ["System.Int32", "Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Property[TcpPort]"]
+    - ["Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Microsoft.Extensions.Diagnostics.Probes.KubernetesProbesOptions", "Property[StartupProbe]"]
+    - ["System.String", "Microsoft.Extensions.Diagnostics.Probes.ProbeTags!", "Field[Liveness]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Property[HealthAssessmentPeriod]"]
+    - ["Microsoft.Extensions.Diagnostics.Probes.TcpEndpointProbesOptions", "Microsoft.Extensions.Diagnostics.Probes.KubernetesProbesOptions", "Property[LivenessProbe]"]

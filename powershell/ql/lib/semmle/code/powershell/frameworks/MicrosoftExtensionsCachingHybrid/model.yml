@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableUnderlyingData]"]
+    - ["System.Nullable<System.TimeSpan>", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions", "Property[LocalCacheExpiration]"]
+    - ["System.Nullable<Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags>", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions", "Property[Flags]"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[None]"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableDistributedCacheRead]"]
+    - ["System.Threading.Tasks.ValueTask", "Microsoft.Extensions.Caching.Hybrid.HybridCache", "Method[RemoveByTagAsync].ReturnValue"]
+    - ["System.Threading.Tasks.ValueTask", "Microsoft.Extensions.Caching.Hybrid.HybridCache", "Method[SetAsync<T>].ReturnValue"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableDistributedCacheWrite]"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableLocalCacheWrite]"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.Caching.Hybrid.IHybridCacheBuilder", "Property[Services]"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableCompression]"]
+    - ["System.Threading.Tasks.ValueTask", "Microsoft.Extensions.Caching.Hybrid.HybridCache", "Method[RemoveAsync].ReturnValue"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableLocalCacheRead]"]
+    - ["System.Int64", "Microsoft.Extensions.Caching.Hybrid.HybridCacheOptions", "Property[MaximumPayloadBytes]"]
+    - ["System.Boolean", "Microsoft.Extensions.Caching.Hybrid.HybridCacheOptions", "Property[ReportTagMetrics]"]
+    - ["System.Nullable<System.TimeSpan>", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions", "Property[Expiration]"]
+    - ["System.Boolean", "Microsoft.Extensions.Caching.Hybrid.HybridCacheOptions", "Property[DisableCompression]"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions", "Microsoft.Extensions.Caching.Hybrid.HybridCacheOptions", "Property[DefaultEntryOptions]"]
+    - ["System.Boolean", "Microsoft.Extensions.Caching.Hybrid.IHybridCacheSerializerFactory", "Method[TryCreateSerializer<T>].ReturnValue"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableLocalCache]"]
+    - ["System.Threading.Tasks.ValueTask<T>", "Microsoft.Extensions.Caching.Hybrid.HybridCache", "Method[GetOrCreateAsync<T>].ReturnValue"]
+    - ["Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags", "Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags!", "Field[DisableDistributedCache]"]
+    - ["System.Threading.Tasks.ValueTask<T>", "Microsoft.Extensions.Caching.Hybrid.HybridCache", "Method[GetOrCreateAsync<TState,T>].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Caching.Hybrid.HybridCacheOptions", "Property[MaximumKeyLength]"]

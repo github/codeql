@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[PacketIntegrity]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[Default]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[Packet]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[PacketPrivacy]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[Call]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[Connect]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[Unchanged]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel", "Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel!", "Field[Identify]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel", "Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel!", "Field[Delegate]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel", "Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel!", "Field[Anonymous]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel", "Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel!", "Field[Impersonate]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel", "Microsoft.PowerShell.CoreClr.Stubs.ImpersonationLevel!", "Field[Default]"]
+    - ["Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel", "Microsoft.PowerShell.CoreClr.Stubs.AuthenticationLevel!", "Field[None]"]

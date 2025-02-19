@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.TimeSpan", "System.Runtime.JitInfo!", "Method[GetCompilationTime].ReturnValue"]
+    - ["System.Int64", "System.Runtime.JitInfo!", "Method[GetCompiledILBytes].ReturnValue"]
+    - ["System.Runtime.GCLatencyMode", "System.Runtime.GCLatencyMode!", "Field[Interactive]"]
+    - ["System.Int64", "System.Runtime.JitInfo!", "Method[GetCompiledMethodCount].ReturnValue"]
+    - ["System.Runtime.GCLargeObjectHeapCompactionMode", "System.Runtime.GCLargeObjectHeapCompactionMode!", "Field[CompactOnce]"]
+    - ["System.Boolean", "System.Runtime.DependentHandle", "Property[IsAllocated]"]
+    - ["System.Runtime.GCLatencyMode", "System.Runtime.GCSettings!", "Property[LatencyMode]"]
+    - ["System.String", "System.Runtime.AssemblyTargetedPatchBandAttribute", "Property[TargetedPatchBand]"]
+    - ["System.String", "System.Runtime.TargetedPatchingOptOutAttribute", "Property[Reason]"]
+    - ["System.ValueTuple<System.Object,System.Object>", "System.Runtime.DependentHandle", "Property[TargetAndDependent]"]
+    - ["System.Runtime.GCLargeObjectHeapCompactionMode", "System.Runtime.GCSettings!", "Property[LargeObjectHeapCompactionMode]"]
+    - ["System.Runtime.GCLatencyMode", "System.Runtime.GCLatencyMode!", "Field[SustainedLowLatency]"]
+    - ["System.Runtime.GCLatencyMode", "System.Runtime.GCLatencyMode!", "Field[NoGCRegion]"]
+    - ["System.Object", "System.Runtime.DependentHandle", "Property[Dependent]"]
+    - ["System.Object", "System.Runtime.DependentHandle", "Property[Target]"]
+    - ["System.Runtime.GCLatencyMode", "System.Runtime.GCLatencyMode!", "Field[LowLatency]"]
+    - ["System.Boolean", "System.Runtime.GCSettings!", "Property[IsServerGC]"]
+    - ["System.Runtime.GCLatencyMode", "System.Runtime.GCLatencyMode!", "Field[Batch]"]
+    - ["System.Runtime.GCLargeObjectHeapCompactionMode", "System.Runtime.GCLargeObjectHeapCompactionMode!", "Field[Default]"]

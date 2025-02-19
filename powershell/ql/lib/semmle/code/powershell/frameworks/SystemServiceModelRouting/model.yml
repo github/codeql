@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.ServiceModel.Channels.Message", "System.ServiceModel.Routing.IRequestReplyRouter", "Method[EndProcessRequest].ReturnValue"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.RoutingService", "Method[System.ServiceModel.Routing.ISimplexSessionRouter.BeginProcessMessage].ReturnValue"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.ISimplexSessionRouter", "Method[BeginProcessMessage].ReturnValue"]
+    - ["System.Boolean", "System.ServiceModel.Routing.SoapProcessingBehavior", "Property[ProcessMessages]"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.IRequestReplyRouter", "Method[BeginProcessRequest].ReturnValue"]
+    - ["System.ServiceModel.Channels.Message", "System.ServiceModel.Routing.RoutingService", "Method[System.ServiceModel.Routing.IRequestReplyRouter.EndProcessRequest].ReturnValue"]
+    - ["System.Boolean", "System.ServiceModel.Routing.RoutingConfiguration", "Property[SoapProcessingEnabled]"]
+    - ["System.Boolean", "System.ServiceModel.Routing.RoutingConfiguration", "Property[EnsureOrderedDispatch]"]
+    - ["System.ServiceModel.Dispatcher.MessageFilterTable<System.Collections.Generic.IEnumerable<System.ServiceModel.Description.ServiceEndpoint>>", "System.ServiceModel.Routing.RoutingConfiguration", "Property[FilterTable]"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.RoutingService", "Method[System.ServiceModel.Routing.IDuplexSessionRouter.BeginProcessMessage].ReturnValue"]
+    - ["System.Boolean", "System.ServiceModel.Routing.RoutingConfiguration", "Property[RouteOnHeadersOnly]"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.RoutingService", "Method[System.ServiceModel.Routing.ISimplexDatagramRouter.BeginProcessMessage].ReturnValue"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.ISimplexDatagramRouter", "Method[BeginProcessMessage].ReturnValue"]
+    - ["System.Type", "System.ServiceModel.Routing.RoutingBehavior!", "Method[GetContractForDescription].ReturnValue"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.RoutingService", "Method[System.ServiceModel.Routing.IRequestReplyRouter.BeginProcessRequest].ReturnValue"]
+    - ["System.IAsyncResult", "System.ServiceModel.Routing.IDuplexSessionRouter", "Method[BeginProcessMessage].ReturnValue"]

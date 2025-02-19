@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.DateTime", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSampleSet", "Property[Timestamp]"]
+    - ["System.UInt64", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[Timestamp100NSec]"]
+    - ["System.UInt32", "Microsoft.PowerShell.Commands.GetCounter.CounterFileInfo", "Property[SampleCount]"]
+    - ["System.Double", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[CookedValue]"]
+    - ["System.UInt64", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[RawValue]"]
+    - ["Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample[]", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSampleSet", "Property[CounterSamples]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.GetCounter.CounterSet", "Property[CounterSetName]"]
+    - ["System.DateTime", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[Timestamp]"]
+    - ["System.UInt64", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[TimeBase]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.GetCounter.CounterSet", "Property[Description]"]
+    - ["System.Collections.Specialized.StringCollection", "Microsoft.PowerShell.Commands.GetCounter.CounterSet", "Property[PathsWithInstances]"]
+    - ["System.UInt32", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[Status]"]
+    - ["System.Collections.Specialized.StringCollection", "Microsoft.PowerShell.Commands.GetCounter.CounterSet", "Property[Paths]"]
+    - ["System.Diagnostics.PerformanceCounterType", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[CounterType]"]
+    - ["System.UInt64", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[SecondValue]"]
+    - ["System.UInt32", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[DefaultScale]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[Path]"]
+    - ["System.DateTime", "Microsoft.PowerShell.Commands.GetCounter.CounterFileInfo", "Property[OldestRecord]"]
+    - ["System.Diagnostics.PerformanceCounterCategoryType", "Microsoft.PowerShell.Commands.GetCounter.CounterSet", "Property[CounterSetType]"]
+    - ["System.UInt32", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[MultipleCount]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.GetCounter.CounterSet", "Property[MachineName]"]
+    - ["System.DateTime", "Microsoft.PowerShell.Commands.GetCounter.CounterFileInfo", "Property[NewestRecord]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.GetCounter.PerformanceCounterSample", "Property[InstanceName]"]

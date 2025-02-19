@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.Extensions.Logging.Abstractions.NullLogger", "Method[IsEnabled].ReturnValue"]
+    - ["System.Nullable<System.Diagnostics.ActivitySpanId>", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[ActivitySpanId]"]
+    - ["Microsoft.Extensions.Logging.Abstractions.NullLoggerProvider", "Microsoft.Extensions.Logging.Abstractions.NullLoggerProvider!", "Property[Instance]"]
+    - ["System.Nullable<System.Int32>", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[ManagedThreadId]"]
+    - ["System.String", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[MessageTemplate]"]
+    - ["System.Nullable<System.Diagnostics.ActivityTraceId>", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[ActivityTraceId]"]
+    - ["Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory", "Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory!", "Field[Instance]"]
+    - ["Microsoft.Extensions.Logging.Abstractions.NullLogger", "Microsoft.Extensions.Logging.Abstractions.NullLogger!", "Property[Instance]"]
+    - ["System.IDisposable", "Microsoft.Extensions.Logging.Abstractions.NullLogger", "Method[BeginScope<TState>].ReturnValue"]
+    - ["Microsoft.Extensions.Logging.LogLevel", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[LogLevel]"]
+    - ["Microsoft.Extensions.Logging.ILogger", "Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory", "Method[CreateLogger].ReturnValue"]
+    - ["Microsoft.Extensions.Logging.ILogger", "Microsoft.Extensions.Logging.Abstractions.NullLoggerProvider", "Method[CreateLogger].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[FormattedMessage]"]
+    - ["System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<System.String,System.Object>>", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[Attributes]"]
+    - ["System.String", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[Exception]"]
+    - ["System.DateTimeOffset", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[Timestamp]"]
+    - ["Microsoft.Extensions.Logging.EventId", "Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord", "Property[EventId]"]
