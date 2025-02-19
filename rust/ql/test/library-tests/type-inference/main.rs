@@ -324,7 +324,7 @@ mod m8 {
         println!("{:?}", id::<S1>(&x));
 
         let x = S1;
-        println!("{:?}", id::<dyn Trait>(&x)); // missing
+        println!("{:?}", id::<dyn Trait>(&x)); // incorrectly has type `S1` instead of `Trait`
 
         let x = S1;
         into::<S1, S2>(x);

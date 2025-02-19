@@ -518,8 +518,6 @@ private signature module MatchingInputSig {
     Location getLocation();
 
     Type getTypeArgument(int i, TypePath path);
-
-    predicate noExplicitTypeArguments();
   }
 
   bindingset[this]
@@ -579,6 +577,15 @@ private module Matching<MatchingInputSig Input> {
     )
   }
 
+  bindingset[a, target, tp]
+  pragma[inline_late]
+  private predicate noExplicitTypeArgument(Access a, Decl target, TypeParameter tp) {
+    not exists(int i |
+      exists(a.getTypeArgument(pragma[only_bind_into](i), _)) and
+      tp = target.getTypeParameter(pragma[only_bind_into](i))
+    )
+  }
+
   /**
    * Holds if the type `t` at `path` of `a` at position `pos` matches the type parameter
    * of `target` at the same position, possibly except the types at `toMatch`.
@@ -590,10 +597,10 @@ private module Matching<MatchingInputSig Input> {
     Access a, ArgPos apos, Decl target, ParamPos ppos, TypePath path, Type t, TypeParameter tp,
     TypePath toMatch
   ) {
-    a.noExplicitTypeArguments() and
     exists(TypePath pathToTypeParam |
       argumentTypeAt(a, apos, target, pathToTypeParam.append(path), t) and
       parameterType(target, ppos, pathToTypeParam, tp) and
+      noExplicitTypeArgument(a, target, tp) and
       paramArgPosMatch(ppos, apos) and
       if pathToTypeParam.isEmpty()
       then toMatch.isEmpty()
@@ -692,10 +699,10 @@ private module Matching<MatchingInputSig Input> {
     Access a, ArgPos apos, Decl target, ParamPos ppos, Type base, TypePath path, Type t,
     TypeParameter tp, TypePath toMatch
   ) {
-    a.noExplicitTypeArguments() and
     exists(TypePath pathToTypeParam |
       argumentBaseTypeAt(a, apos, target, base, pathToTypeParam.append(path), t) and
       parameterBaseType(target, ppos, base, pathToTypeParam, tp) and
+      noExplicitTypeArgument(a, target, tp) and
       paramArgPosMatch(ppos, apos) and
       // do not allow `pathToTypeParam` to be empty in this case, as we will match
       // against the actual type and not one of the base types
@@ -843,8 +850,6 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
     }
 
     Type getTypeArgument(int i, TypePath path) { result = this.getTypeArg(i).resolveTypeAt(path) }
-
-    predicate noExplicitTypeArguments() { not exists(this.getTypeArg(_)) }
   }
 
   predicate target(Access a, Decl target) { target = resolvePath(a.getPath()) }
@@ -1119,8 +1124,6 @@ private module FunctionMatchingInput implements MatchingInputSig {
     }
 
     Type getTypeArgument(int i, TypePath path) { result = this.getTypeArg(i).resolveTypeAt(path) }
-
-    predicate noExplicitTypeArguments() { not exists(this.getTypeArg(_)) }
   }
 
   predicate target(Access a, Decl target) {
@@ -1241,8 +1244,6 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
   class Access extends FieldExpr {
     Type getTypeArgument(int i, TypePath path) { none() }
-
-    predicate noExplicitTypeArguments() { any() }
   }
 
   predicate target(Access a, Decl target) {
