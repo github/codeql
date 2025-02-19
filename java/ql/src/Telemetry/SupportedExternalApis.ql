@@ -2,7 +2,7 @@
  * @name Usage of supported APIs coming from external libraries
  * @description A list of supported 3rd party APIs used in the codebase. Excludes test and generated code.
  * @kind metric
- * @tags summary telemetry
+ * @tags summary telemetry non-incremental
  * @id java/telemetry/supported-external-api
  */
 

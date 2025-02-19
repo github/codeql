@@ -2,7 +2,7 @@
  * @name Supported sinks in external libraries
  * @description A list of 3rd party APIs detected as sinks. Excludes test and generated code.
  * @kind metric
- * @tags summary telemetry
+ * @tags summary telemetry non-incremental
  * @id java/telemetry/supported-external-api-sinks
  */
 
