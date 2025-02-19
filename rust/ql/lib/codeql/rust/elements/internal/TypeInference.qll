@@ -541,10 +541,6 @@ private signature module MatchingInputSig {
 
   predicate argumentType(Access a, ArgPos pos, TypePath path, Type t);
 
-  predicate argumentIsTargetTyped(Access a, ArgPos pos);
-
-  predicate argumentIsNotTargetTyped(Access a, ArgPos pos);
-
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t);
 
   predicate declType(Decl decl, TypePath path, Type t);
@@ -554,15 +550,9 @@ private module Matching<MatchingInputSig Input> {
   private import Input
 
   pragma[nomagic]
-  private predicate argumentType0(Access a, ArgPos pos, TypePath path, Type t) {
-    argumentType(a, pos, path, t) and
-    argumentIsNotTargetTyped(a, pos)
-  }
-
-  pragma[nomagic]
   private predicate argumentTypeAt(Access a, ArgPos pos, Decl target, TypePath path, Type t) {
     target(a, target) and
-    argumentType0(a, pos, path, t)
+    argumentType(a, pos, path, t)
   }
 
   pragma[nomagic]
@@ -746,13 +736,6 @@ private module Matching<MatchingInputSig Input> {
       declType(target, pragma[only_bind_into](at), prefix, tp) and
       typeMatch(a, target, suffix, result, tp) and
       path = prefix.append(suffix)
-    |
-      at = getReturnPos()
-      or
-      exists(ArgPos apos |
-        argumentIsTargetTyped(a, pragma[only_bind_into](apos)) and
-        paramArgPosMatch(at, apos)
-      )
     )
   }
 }
@@ -884,21 +867,6 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
     explicitArgumentType(a, pos, path, t)
     // or
     // implicitThis(a, pos, path, t)
-  }
-
-  pragma[nomagic]
-  predicate argumentIsTargetTyped(Access a, ArgPos pos) {
-    isTargetTyped(getExplicitArgument(a, pos))
-  }
-
-  pragma[nomagic]
-  predicate argumentIsNotTargetTyped(Access a, ArgPos pos) {
-    exists(AstNode arg |
-      arg = getExplicitArgument(a, pos) and
-      not isTargetTyped(arg)
-    )
-    // or
-    // implicitThis(a, pos, _, _)
   }
 
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t) {
@@ -1163,21 +1131,6 @@ private module FunctionMatchingInput implements MatchingInputSig {
     // implicitThis(a, pos, path, t)
   }
 
-  pragma[nomagic]
-  predicate argumentIsTargetTyped(Access a, ArgPos pos) {
-    isTargetTyped(getExplicitArgument(a, pos))
-  }
-
-  pragma[nomagic]
-  predicate argumentIsNotTargetTyped(Access a, ArgPos pos) {
-    exists(AstNode arg |
-      arg = getExplicitArgument(a, pos) and
-      not isTargetTyped(arg)
-    )
-    // or
-    // implicitThis(a, pos, _, _)
-  }
-
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t) {
     t = decl.getParameterType(pos, path)
   }
@@ -1294,21 +1247,6 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     explicitArgumentType(a, pos, path, t)
     // or
     // implicitThis(a, pos, path, t)
-  }
-
-  pragma[nomagic]
-  predicate argumentIsTargetTyped(Access a, ArgPos pos) {
-    isTargetTyped(getExplicitArgument(a, pos))
-  }
-
-  pragma[nomagic]
-  predicate argumentIsNotTargetTyped(Access a, ArgPos pos) {
-    exists(AstNode arg |
-      arg = getExplicitArgument(a, pos) and
-      not isTargetTyped(arg)
-    )
-    // or
-    // implicitThis(a, pos, _, _)
   }
 
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t) {
