@@ -6,13 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_py_deps
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "tree_sitter",
+    name = "windows_targets",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,14 +28,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "binding_rust/lib.rs",
-    edition = "2018",
+    crate_root = "src/lib.rs",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=windows-targets",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,67 +79,26 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.4",
-    deps = [
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
-    ],
-)
-
-cargo_build_script(
-    name = "_bs",
-    srcs = glob(
-        include = ["**/*.rs"],
-        allow_empty = True,
-    ),
-    compile_data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            "**/*.rs",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
+    version = "0.52.6",
+    deps = select({
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "@vendor_py__windows_aarch64_msvc-0.52.6//:windows_aarch64_msvc",  # cfg(all(target_arch = "aarch64", target_env = "msvc", not(windows_raw_dylib)))
         ],
-    ),
-    crate_name = "build_script_build",
-    crate_root = "binding_rust/build.rs",
-    data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "@vendor_py__windows_i686_msvc-0.52.6//:windows_i686_msvc",  # cfg(all(target_arch = "x86", target_env = "msvc", not(windows_raw_dylib)))
         ],
-    ),
-    edition = "2018",
-    pkg_name = "tree-sitter",
-    rustc_flags = [
-        "--cap-lints=allow",
-    ],
-    tags = [
-        "cargo-bazel",
-        "crate-name=tree-sitter",
-        "manual",
-        "noclippy",
-        "norustfmt",
-    ],
-    version = "0.20.4",
-    visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_py__cc-1.2.14//:cc",
-    ],
-)
-
-alias(
-    name = "build_script_build",
-    actual = ":_bs",
-    tags = ["manual"],
+        "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
+            "@vendor_py__windows_i686_gnu-0.52.6//:windows_i686_gnu",  # cfg(all(target_arch = "x86", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
+        ],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "@vendor_py__windows_x86_64_msvc-0.52.6//:windows_x86_64_msvc",  # cfg(all(any(target_arch = "x86_64", target_arch = "arm64ec"), target_env = "msvc", not(windows_raw_dylib)))
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
+            "@vendor_py__windows_x86_64_gnu-0.52.6//:windows_x86_64_gnu",  # cfg(all(target_arch = "x86_64", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
+            "@vendor_py__windows_x86_64_gnu-0.52.6//:windows_x86_64_gnu",  # cfg(all(target_arch = "x86_64", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
+        ],
+        "//conditions:default": [],
+    }),
 )

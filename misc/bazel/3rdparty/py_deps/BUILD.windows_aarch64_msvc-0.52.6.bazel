@@ -12,7 +12,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "tree_sitter",
+    name = "windows_aarch64_msvc",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,14 +29,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "binding_rust/lib.rs",
-    edition = "2018",
+    crate_root = "src/lib.rs",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=windows_aarch64_msvc",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,10 +80,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.4",
+    version = "0.52.6",
     deps = [
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
+        "@vendor_py__windows_aarch64_msvc-0.52.6//:build_script_build",
     ],
 )
 
@@ -107,7 +106,7 @@ cargo_build_script(
         ],
     ),
     crate_name = "build_script_build",
-    crate_root = "binding_rust/build.rs",
+    crate_root = "build.rs",
     data = glob(
         include = ["**"],
         allow_empty = True,
@@ -120,23 +119,20 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
-    edition = "2018",
-    pkg_name = "tree-sitter",
+    edition = "2021",
+    pkg_name = "windows_aarch64_msvc",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=windows_aarch64_msvc",
         "manual",
         "noclippy",
         "norustfmt",
     ],
-    version = "0.20.4",
+    version = "0.52.6",
     visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_py__cc-1.2.14//:cc",
-    ],
 )
 
 alias(

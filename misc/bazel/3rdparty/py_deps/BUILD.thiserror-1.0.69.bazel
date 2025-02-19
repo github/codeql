@@ -12,7 +12,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "tree_sitter",
+    name = "thiserror",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,14 +29,17 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "binding_rust/lib.rs",
-    edition = "2018",
+    crate_root = "src/lib.rs",
+    edition = "2021",
+    proc_macro_deps = [
+        "@vendor_py__thiserror-impl-1.0.69//:thiserror_impl",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=thiserror",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,10 +83,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.4",
+    version = "1.0.69",
     deps = [
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
+        "@vendor_py__thiserror-1.0.69//:build_script_build",
     ],
 )
 
@@ -107,7 +109,7 @@ cargo_build_script(
         ],
     ),
     crate_name = "build_script_build",
-    crate_root = "binding_rust/build.rs",
+    crate_root = "build.rs",
     data = glob(
         include = ["**"],
         allow_empty = True,
@@ -120,23 +122,20 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
-    edition = "2018",
-    pkg_name = "tree-sitter",
+    edition = "2021",
+    pkg_name = "thiserror",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=thiserror",
         "manual",
         "noclippy",
         "norustfmt",
     ],
-    version = "0.20.4",
+    version = "1.0.69",
     visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_py__cc-1.2.14//:cc",
-    ],
 )
 
 alias(

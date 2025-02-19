@@ -6,13 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_py_deps
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "tree_sitter",
+    name = "anstream",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,14 +28,19 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "binding_rust/lib.rs",
-    edition = "2018",
+    crate_features = [
+        "auto",
+        "default",
+        "wincon",
+    ],
+    crate_root = "src/lib.rs",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=anstream",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,67 +84,24 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.4",
+    version = "0.6.18",
     deps = [
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
-    ],
-)
-
-cargo_build_script(
-    name = "_bs",
-    srcs = glob(
-        include = ["**/*.rs"],
-        allow_empty = True,
-    ),
-    compile_data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            "**/*.rs",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
+        "@vendor_py__anstyle-1.0.10//:anstyle",
+        "@vendor_py__anstyle-parse-0.2.6//:anstyle_parse",
+        "@vendor_py__anstyle-query-1.1.2//:anstyle_query",
+        "@vendor_py__colorchoice-1.0.3//:colorchoice",
+        "@vendor_py__is_terminal_polyfill-1.70.1//:is_terminal_polyfill",
+        "@vendor_py__utf8parse-0.2.2//:utf8parse",
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "@vendor_py__anstyle-wincon-3.0.7//:anstyle_wincon",  # aarch64-pc-windows-msvc
         ],
-    ),
-    crate_name = "build_script_build",
-    crate_root = "binding_rust/build.rs",
-    data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "@vendor_py__anstyle-wincon-3.0.7//:anstyle_wincon",  # i686-pc-windows-msvc
         ],
-    ),
-    edition = "2018",
-    pkg_name = "tree-sitter",
-    rustc_flags = [
-        "--cap-lints=allow",
-    ],
-    tags = [
-        "cargo-bazel",
-        "crate-name=tree-sitter",
-        "manual",
-        "noclippy",
-        "norustfmt",
-    ],
-    version = "0.20.4",
-    visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_py__cc-1.2.14//:cc",
-    ],
-)
-
-alias(
-    name = "build_script_build",
-    actual = ":_bs",
-    tags = ["manual"],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "@vendor_py__anstyle-wincon-3.0.7//:anstyle_wincon",  # x86_64-pc-windows-msvc
+        ],
+        "//conditions:default": [],
+    }),
 )

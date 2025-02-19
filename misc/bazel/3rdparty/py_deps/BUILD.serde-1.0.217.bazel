@@ -12,7 +12,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "tree_sitter",
+    name = "serde",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,14 +29,18 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "binding_rust/lib.rs",
+    crate_features = [
+        "default",
+        "std",
+    ],
+    crate_root = "src/lib.rs",
     edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=serde",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,10 +84,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.4",
+    version = "1.0.217",
     deps = [
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
+        "@vendor_py__serde-1.0.217//:build_script_build",
     ],
 )
 
@@ -106,8 +109,12 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "std",
+    ],
     crate_name = "build_script_build",
-    crate_root = "binding_rust/build.rs",
+    crate_root = "build.rs",
     data = glob(
         include = ["**"],
         allow_empty = True,
@@ -121,22 +128,19 @@ cargo_build_script(
         ],
     ),
     edition = "2018",
-    pkg_name = "tree-sitter",
+    pkg_name = "serde",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter",
+        "crate-name=serde",
         "manual",
         "noclippy",
         "norustfmt",
     ],
-    version = "0.20.4",
+    version = "1.0.217",
     visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_py__cc-1.2.14//:cc",
-    ],
 )
 
 alias(
