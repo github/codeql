@@ -44,22 +44,25 @@ module Twirp {
 
   /** An interface type representing a Twirp service. */
   class ServiceInterfaceType extends InterfaceType {
-    NamedType namedType;
+    DefinedType definedType;
 
     ServiceInterfaceType() {
-      namedType.getUnderlyingType() = this and
-      namedType.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      definedType.getUnderlyingType() = this and
+      definedType.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
 
     /** Gets the name of the interface. */
-    override string getName() { result = namedType.getName() }
+    override string getName() { result = definedType.getName() }
 
-    /** Gets the named type on top of this interface type. */
-    NamedType getNamedType() { result = namedType }
+    /** DEPRECATED: Use `getDefinedType` instead. */
+    deprecated DefinedType getNamedType() { result = this.getDefinedType() }
+
+    /** Gets the defined type on top of this interface type. */
+    DefinedType getDefinedType() { result = definedType }
   }
 
   /** A Twirp client. */
-  class ServiceClientType extends NamedType {
+  class ServiceClientType extends DefinedType {
     ServiceClientType() {
       exists(ServiceInterfaceType i, PointerType p |
         p.implements(i) and
@@ -71,7 +74,7 @@ module Twirp {
   }
 
   /** A Twirp server. */
-  class ServiceServerType extends NamedType {
+  class ServiceServerType extends DefinedType {
     ServiceServerType() {
       exists(ServiceInterfaceType i |
         this.implements(i) and
@@ -99,7 +102,7 @@ module Twirp {
   class ServerConstructor extends Function {
     ServerConstructor() {
       this.getName().regexpMatch("(?i)new" + any(ServiceServerType c).getName()) and
-      this.getParameterType(0) = any(ServiceInterfaceType i).getNamedType() and
+      this.getParameterType(0) = any(ServiceInterfaceType i).getDefinedType() and
       this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
   }
@@ -121,7 +124,7 @@ module Twirp {
   bindingset[m]
   pragma[inline_late]
   private predicate implementsServiceType(Method m) {
-    m.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+    m.implements(any(ServiceInterfaceType i).getDefinedType().getMethod(_))
   }
 
   /** A service handler. */

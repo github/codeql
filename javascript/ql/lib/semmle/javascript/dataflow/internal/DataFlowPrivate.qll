@@ -1432,6 +1432,23 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = ContentSet::arrayElementLowerBound(pos.asPositionalLowerBound())
     )
   )
+  or
+  // Implicitly read array elements before stringification
+  stringifiedNode(node1) and
+  node2 = node1 and
+  c = ContentSet::arrayElement()
+}
+
+private predicate stringifiedNode(Node node) {
+  exists(Expr e | node = TValueNode(e) |
+    e = any(AddExpr add).getAnOperand() and
+    not e instanceof StringLiteral
+    or
+    e = any(TemplateLiteral t).getAnElement() and
+    not e instanceof TemplateElement
+  )
+  or
+  node = DataFlow::globalVarRef("String").getAnInvocation().getArgument(0)
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */

@@ -1,0 +1,2 @@
+query: queries/style/OmittableExists.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

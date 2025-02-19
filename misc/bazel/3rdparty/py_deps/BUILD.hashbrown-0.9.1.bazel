@@ -85,6 +85,6 @@ rust_library(
     }),
     version = "0.9.1",
     deps = [
-        "@vendor__ahash-0.4.7//:ahash",
+        "@vendor_py__ahash-0.4.8//:ahash",
     ],
 )

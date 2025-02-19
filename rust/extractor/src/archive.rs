@@ -1,7 +1,7 @@
 use codeql_extractor::file_paths;
-use log::{debug, warn};
 use std::fs;
 use std::path::{Path, PathBuf};
+use tracing::{debug, warn};
 
 pub struct Archiver {
     pub root: PathBuf,

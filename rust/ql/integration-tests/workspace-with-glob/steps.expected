@@ -1,0 +1,10 @@
+| Cargo.toml:0:0:0:0 | LoadManifest(Cargo.toml) |
+| exe/src/main.rs:0:0:0:0 | Extract(exe/src/main.rs) |
+| exe/src/main.rs:0:0:0:0 | Parse(exe/src/main.rs) |
+| file://:0:0:0:0 | FindManifests |
+| lib/src/lib.rs:0:0:0:0 | Extract(lib/src/lib.rs) |
+| lib/src/lib.rs:0:0:0:0 | Parse(lib/src/lib.rs) |
+| other/Cargo.toml:0:0:0:0 | LoadManifest(other/Cargo.toml) |
+| other/src/lib.rs:0:0:0:0 | Extract(other/src/lib.rs) |
+| other/src/lib.rs:0:0:0:0 | LoadSource(other/src/lib.rs) |
+| other/src/lib.rs:0:0:0:0 | Parse(other/src/lib.rs) |

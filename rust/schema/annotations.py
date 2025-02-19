@@ -1336,7 +1336,7 @@ class _:
     """
 
 
-@annotate(Name)
+@annotate(Name, cfg=True)
 class _:
     """
     A Name. For example:

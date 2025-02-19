@@ -29,7 +29,7 @@ crates_vendor(
         "//python/extractor/tsg-python/tsp:Cargo.toml",
     ],
     mode = "remote",
-    repository_name = "vendor",
+    repository_name = "vendor_py",
     tags = ["manual"],
     vendor_path = "py_deps",
 )

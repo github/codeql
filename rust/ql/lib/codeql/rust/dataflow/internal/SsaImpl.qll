@@ -7,24 +7,24 @@ private import Cfg
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ssa.Ssa as SsaImplCommon
 
-/** Holds if `v` is introduced like `let v : i64;`. */
-private predicate isUnitializedLet(IdentPat pat, Variable v) {
-  pat = v.getPat() and
+/**
+ * Holds if `name` occurs in the left-hand side of an uninitialized let
+ * statement such as in `let name : i64;`.
+ */
+private predicate isInUninitializedLet(Name name) {
   exists(LetStmt let |
-    let = v.getLetStmt() and
+    let.getPat().(IdentPat).getName() = name and
     not let.hasInitializer()
   )
 }
 
 /** Holds if `write` writes to variable `v`. */
 predicate variableWrite(AstNode write, Variable v) {
-  exists(IdentPat pat |
-    pat = write and
-    pat = v.getPat() and
-    not isUnitializedLet(pat, v)
+  exists(Name name |
+    name = write and
+    name = v.getName() and
+    not isInUninitializedLet(name)
   )
-  or
-  exists(SelfParam self | self = write and self = v.getSelfParam())
   or
   exists(VariableAccess access |
     access = write and
@@ -128,14 +128,6 @@ private predicate adjacentDefRead(
   v = def.getSourceVariable()
 }
 
-pragma[noinline]
-private predicate adjacentDefReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
   exists(VariableAccess read |
@@ -188,22 +180,6 @@ private predicate adjacentDefReachesRead(
     adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
     SsaInput::variableRead(bb3, i3, _, false) and
     Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1, _)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(BasicBlock bb3, int i3 |
-    adjacentDefReachesReadExt(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefReadExt(def, _, bb3, i3, bb2, i2)
   )
 }
 

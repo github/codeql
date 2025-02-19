@@ -3,7 +3,6 @@ use crate::rust_analyzer::path_to_file_id;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use log::{info, warn};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
@@ -17,6 +16,9 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use tracing::{error, info, warn};
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
@@ -86,7 +88,7 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(ast);
         translator.trap.commit().unwrap_or_else(|err| {
-            log::error!(
+            error!(
                 "Failed to write trap file for: {}: {}",
                 display_path,
                 err.to_string()
@@ -181,15 +183,27 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let start = Instant::now();
     let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    stderrlog::new()
-        .module(module_path!())
-        .verbosity(2 + cfg.verbose as usize)
-        .init()?;
     if cfg.qltest {
         qltest::prepare(&mut cfg)?;
     }
+    let start = Instant::now();
+    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
+        tracing_flame::FlameLayer::with_file(path)
+            .ok()
+            .map(|(a, b)| (Some(a), Some(b)))
+            .unwrap_or((None, None))
+    } else {
+        (None, None)
+    };
+
+    tracing_subscriber::registry()
+        .with(codeql_extractor::extractor::default_subscriber_with_level(
+            "single_arch",
+            &cfg.logging_verbosity,
+        ))
+        .with(flame_layer)
+        .init();
     info!("{cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
@@ -242,6 +256,5 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-
     extractor.emit_extraction_diagnostics(start, &cfg)
 }
