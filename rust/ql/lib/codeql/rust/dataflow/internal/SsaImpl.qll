@@ -330,7 +330,7 @@ private module Cached {
   predicate adjacentReadPair(Definition def, CfgNode read1, CfgNode read2) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
+      variableReadActual(bb1, i1, def.getSourceVariable()) and
       adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
     )

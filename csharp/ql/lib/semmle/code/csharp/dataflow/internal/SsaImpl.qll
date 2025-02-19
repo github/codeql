@@ -949,7 +949,7 @@ private module Cached {
   predicate adjacentReadPairSameVar(Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
     exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
       cfn1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
+      variableReadActual(bb1, i1, def.getSourceVariable()) and
       adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       cfn2 = bb2.getNode(i2)
     )
