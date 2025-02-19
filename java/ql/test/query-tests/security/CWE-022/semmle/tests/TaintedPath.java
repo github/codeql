@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.FileSystems;
 
 public class TaintedPath {
     public void sendUserFile(Socket sock, String user) throws IOException {
@@ -87,51 +86,4 @@ public class TaintedPath {
             fileLine = fileReader.readLine();
         }
     }
-
-    // TODO : New tests
-
-    public void sendUserFileGood5(Socket sock, String user) throws IOException {
-        BufferedReader filenameReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
-        // GOOD: remove all ".." sequences and path separators from the filename
-        String filename = filenameReader.readLine().replaceAll("\\.", "").replaceAll("/", "");
-        BufferedReader fileReader = new BufferedReader(new FileReader(filename)); // GOOD
-        String fileLine = fileReader.readLine();
-        while(fileLine != null) {
-            sock.getOutputStream().write(fileLine.getBytes());
-            fileLine = fileReader.readLine();
-        }
-    }
-
-    public void sendUserFileGood6(Socket sock, String user) throws IOException {
-        BufferedReader filenameReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
-        String filename = filenameReader.readLine();
-        // GOOD: remove all ".." sequences and path separators from the filename
-        filename = filename.replaceAll("\\.\\.|[/\\\\]", "");
-        BufferedReader fileReader = new BufferedReader(new FileReader(filename)); // GOOD
-        String fileLine = fileReader.readLine();
-        while(fileLine != null) {
-            sock.getOutputStream().write(fileLine.getBytes());
-            fileLine = fileReader.readLine();
-        }
-    }
-
-    public void sendUserFileGood7(Socket sock, String user) throws Exception {
-        BufferedReader filenameReader =
-                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
-        String filename = filenameReader.readLine();
-
-        // GOOD: ensure that that /, \ and .. cannot possibly be in the payload
-        if (filename.matches("[0-9a-fA-F]{20,}")) {
-            final Path pathObject = FileSystems.getDefault().getPath(filename); // summary now, see https://github.com/github/codeql/commit/19cb7adb6db17a3131b7db93482abc6a0d93ceff#diff-4b91db1bd2a19ab607f83fbe858f0ceffd942d1fb246739c731112367c865f88L8
-
-            BufferedReader fileReader = new BufferedReader(new FileReader(pathObject.toString())); // GOOD
-            String fileLine = fileReader.readLine();
-            while (fileLine != null) {
-                sock.getOutputStream().write(fileLine.getBytes());
-                fileLine = fileReader.readLine();
-            }
-        }
-
-    }
-
 }
