@@ -427,6 +427,7 @@ private class DirectoryCharactersGuard extends PathGuard {
       checkedExpr = mc.getQualifier() and
       this = mc
     |
+      // TODO: improve the below
       // Allow anything except `.`, '/', '\'
       (
         not target.getStringValue().matches("%[^%]%") and
@@ -439,8 +440,8 @@ private class DirectoryCharactersGuard extends PathGuard {
       // Disallow `.`, '/', '\'
       (
         not target.getStringValue().matches("%[^%" + ["\\.", "/", "\\\\"] + "%]%") and
-        // Assuming a regex containing line breaks is correctly matching line breaks in a string
-        target.getStringValue().matches("%" + ["\\.", "/", "\\\\"] + "%")
+        target.getStringValue().matches("%" + ["\\.", "/", "\\\\"] + "%") and
+        not isStringPartialMatch(mc) // ! temporary test case fix; remove
       ) and
       branch = false
     )
