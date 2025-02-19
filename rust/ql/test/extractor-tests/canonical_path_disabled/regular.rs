@@ -1,5 +1,5 @@
-// would prefer to write `include!("../regular.rs");`
-// but it seems `include!` does not work in rust-analyzer/our extractor
+// would prefer to write `include!("../canonical_path/regular.rs");
+// but `include!` does not work with out-of-dir files
 
 #[derive(Eq, PartialEq)]
 pub struct Struct;

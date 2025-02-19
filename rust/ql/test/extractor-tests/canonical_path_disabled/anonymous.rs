@@ -1,5 +1,5 @@
-// would prefer to write `include!("../anonymous.rs");`
-// but it seems `include!` does not work in rust-analyzer/our extractor
+// would prefer to write `include!("../canonical_paths/anonymous.rs");`
+// but `include!` does not work with out-of-dir files
 
 use super::regular::Trait;
 
