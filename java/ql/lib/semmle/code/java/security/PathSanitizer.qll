@@ -416,19 +416,39 @@ private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
  */
 private class DirectoryCharactersGuard extends PathGuard {
   Expr checkedExpr;
+  boolean branch;
 
   DirectoryCharactersGuard() {
-    exists(MethodCall mc, Method m | m = mc.getMethod() |
+    exists(MethodCall mc, Method m, CompileTimeConstantExpr target |
+      m = mc.getMethod() and
       m.getDeclaringType() instanceof TypeString and
       m.hasName("matches") and
-      // TODO: unhardcode to handle more valid matches
-      mc.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "[0-9a-fA-F]{20,}" and
+      target = mc.getAnArgument() and
       checkedExpr = mc.getQualifier() and
       this = mc
+    |
+      // Allow anything except `.`, '/', '\'
+      (
+        not target.getStringValue().matches("%[^%]%") and
+        not target.getStringValue().matches("%" + ["\\.", "/", "\\\\"] + "%")
+        or
+        target.getStringValue().matches("%[^%" + ["\\.", "/", "\\\\"] + "%]%")
+      ) and
+      branch = true
+      or
+      // Disallow `.`, '/', '\'
+      (
+        not target.getStringValue().matches("%[^%" + ["\\.", "/", "\\\\"] + "%]%") and
+        // Assuming a regex containing line breaks is correctly matching line breaks in a string
+        target.getStringValue().matches("%" + ["\\.", "/", "\\\\"] + "%")
+      ) and
+      branch = false
     )
   }
 
   override Expr getCheckedExpr() { result = checkedExpr }
+
+  boolean getBranch() { result = branch }
 }
 
 /**
@@ -436,8 +456,7 @@ private class DirectoryCharactersGuard extends PathGuard {
  * sure it does not contain any directory characters: '..', '/', and '\'.
  */
 private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
-  branch = true and
-  g instanceof DirectoryCharactersGuard and
+  branch = g.(DirectoryCharactersGuard).getBranch() and
   localTaintFlowToPathGuard(e, g)
 }
 
