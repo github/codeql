@@ -146,7 +146,9 @@ class StructType extends Type, TStruct {
       struct = i.resolveSelfTy() and
       result = i.getASuccessor(name) and
       // todo: generics are not supported
-      not i.getSelfPath().getPart().hasGenericArgList()
+      forall(TypeRepr_ t | t = i.getSelfPath().getPart().getGenericArgList().getTypeArgument(_) |
+        t.resolveType() instanceof TypeParameter
+      )
     )
   }
 
@@ -177,7 +179,9 @@ class EnumType extends Type, TEnum {
       enum = i.resolveSelfTy() and
       result = i.getASuccessor(name) and
       // todo: generics are not supported
-      not i.getSelfPath().getPart().hasGenericArgList()
+      forall(TypeRepr_ t | t = i.getSelfPath().getPart().getGenericArgList().getTypeArgument(_) |
+        t.resolveType() instanceof TypeParameter
+      )
     )
   }
 
@@ -1107,19 +1111,6 @@ private Type resolveCallExprType(CallExpr ce, TypePath path) {
 }
 
 pragma[nomagic]
-Function resolveMethodCallExpr(MethodCallExpr mce) {
-  exists(Type t, string name |
-    t = resolveType(mce.getReceiver()) and
-    name = mce.getNameRef().getText() and
-    if t = TRefType()
-    then
-      // for reference types, lookup the method in the type being referenced
-      result = resolveType(mce.getReceiver(), "0").getMethod(name)
-    else result = t.getMethod(name)
-  )
-}
-
-pragma[nomagic]
 private Type resolveMethodCallExprType(MethodCallExpr mce, TypePath path) {
   exists(Function f |
     f = resolveMethodCallExpr(mce) and
@@ -1224,32 +1215,6 @@ private Type resolveFieldExprType(FieldExpr fe, TypePath path) {
 }
 
 pragma[nomagic]
-RecordField resolveRecordFieldExpr(FieldExpr fe) {
-  exists(Type t, string name |
-    t = resolveType(fe.getExpr()) and
-    name = fe.getNameRef().getText() and
-    if t = TRefType()
-    then
-      // for reference types, lookup the method in the type being referenced
-      result = resolveType(fe.getExpr(), "0").getRecordField(name)
-    else result = t.getRecordField(name)
-  )
-}
-
-pragma[nomagic]
-TupleField resolveTupleFieldExpr(FieldExpr fe) {
-  exists(Type t, int i |
-    t = resolveType(fe.getExpr()) and
-    i = fe.getNameRef().getText().toInt() and
-    if t = TRefType()
-    then
-      // for reference types, lookup the method in the type being referenced
-      result = resolveType(fe.getExpr(), "0").getTupleField(i)
-    else result = t.getTupleField(i)
-  )
-}
-
-pragma[nomagic]
 private Type resolveFieldExprType0(FieldExpr fe, TypePath path) {
   exists(RecordField f |
     f = resolveRecordFieldExpr(fe) and
@@ -1276,22 +1241,67 @@ private Type resolveRefExprType(RefExpr re, TypePath path) {
   )
 }
 
-Type resolveType(AstNode n, TypePath path) {
-  result = resolveVariableType(n, path)
-  or
-  result = resolveTargetTyped(n, path)
-  or
-  result = resolveRecordExprType(n, path)
-  or
-  result = resolvePathExprType(n, path)
-  or
-  result = resolveCallExprType(n, path)
-  or
-  result = resolveMethodCallExprType(n, path)
-  or
-  result = resolveFieldExprType(n, path)
-  or
-  result = resolveRefExprType(n, path)
+cached
+private module Cached {
+  pragma[inline]
+  private Type getLookupType(AstNode n) {
+    exists(Type t |
+      t = resolveType(n) and
+      if t = TRefType()
+      then
+        // for reference types, lookup members in the type being referenced
+        result = resolveType(n, "0")
+      else result = t
+    )
+  }
+
+  cached
+  Function resolveMethodCallExpr(MethodCallExpr mce) {
+    exists(Type t, string name |
+      t = getLookupType(mce.getReceiver()) and
+      name = mce.getNameRef().getText() and
+      result = t.getMethod(name)
+    )
+  }
+
+  cached
+  RecordField resolveRecordFieldExpr(FieldExpr fe) {
+    exists(Type t, string name |
+      t = getLookupType(fe.getExpr()) and
+      name = fe.getNameRef().getText() and
+      result = t.getRecordField(name)
+    )
+  }
+
+  cached
+  TupleField resolveTupleFieldExpr(FieldExpr fe) {
+    exists(Type t, int i |
+      t = getLookupType(fe.getExpr()) and
+      i = fe.getNameRef().getText().toInt() and
+      result = t.getTupleField(i)
+    )
+  }
+
+  cached
+  Type resolveType(AstNode n, TypePath path) {
+    result = resolveVariableType(n, path)
+    or
+    result = resolveTargetTyped(n, path)
+    or
+    result = resolveRecordExprType(n, path)
+    or
+    result = resolvePathExprType(n, path)
+    or
+    result = resolveCallExprType(n, path)
+    or
+    result = resolveMethodCallExprType(n, path)
+    or
+    result = resolveFieldExprType(n, path)
+    or
+    result = resolveRefExprType(n, path)
+  }
 }
+
+import Cached
 
 Type resolveType(AstNode n) { result = resolveType(n, "") }
