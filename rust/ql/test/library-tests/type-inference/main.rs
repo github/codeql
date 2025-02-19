@@ -64,8 +64,8 @@ mod m2 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // missing
-        println!("{:?}", y.m2()); // missing
+        println!("{:?}", x.m2());
+        println!("{:?}", y.m2());
     }
 }
 
@@ -158,8 +158,8 @@ mod m4 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // missing
-        println!("{:?}", y.m1()); // missing
+        println!("{:?}", x.m1());
+        println!("{:?}", y.m1());
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -229,8 +229,8 @@ mod m6 {
         let x = MyEnum::C1(S1);
         let y = MyEnum::C2 { a: S2 };
 
-        println!("{:?}", x.m1()); // missing
-        println!("{:?}", y.m1()); // missing
+        println!("{:?}", x.m1());
+        println!("{:?}", y.m1());
     }
 }
 
@@ -274,8 +274,8 @@ mod m7 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // missing
-        println!("{:?}", y.m1()); // missing
+        println!("{:?}", x.m1());
+        println!("{:?}", y.m1());
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };

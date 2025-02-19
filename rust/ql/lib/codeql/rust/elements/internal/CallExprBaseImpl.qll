@@ -36,8 +36,8 @@ module Impl {
      * be statically resolved.
      */
     Callable getStaticTarget() {
-      getCallResolvable(this).resolvesAsItem(result)
-      or
+      // getCallResolvable(this).resolvesAsItem(result)
+      // or
       result = resolvePath(this.(CallExpr).getFunction().(PathExpr).getPath())
       or
       result = resolveMethodCallExpr(this)
