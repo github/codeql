@@ -120,14 +120,6 @@ module ExposedForTestingOnly {
   predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
 }
 
-pragma[noinline]
-private predicate adjacentDefRead(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
   exists(VariableAccess read |
@@ -165,31 +157,6 @@ private predicate hasVariableReadWithCapturedWrite(
 ) {
   hasCapturedWrite(v, scope) and
   variableReadActualInOuterScope(bb, i, v, scope)
-}
-
-private predicate adjacentDefReachesRead(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
 }
 
 private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
@@ -314,11 +281,7 @@ private module Cached {
    */
   cached
   predicate firstRead(Definition def, CfgNode read) {
-    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
+    exists(BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and read = bb.getNode(i))
   }
 
   /**
@@ -328,10 +291,10 @@ private module Cached {
    */
   cached
   predicate adjacentReadPair(Definition def, CfgNode read1, CfgNode read2) {
-    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, Variable v |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, def.getSourceVariable()) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
     )
   }
