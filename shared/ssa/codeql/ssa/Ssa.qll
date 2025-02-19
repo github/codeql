@@ -779,7 +779,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     pragma[noinline]
     predicate ssaDefReachesThroughBlock(DefinitionExt def, BasicBlock bb) {
       exists(SourceVariable v |
-        ssaDefReachesEndOfBlockExt(bb, def, v) and
+        ssaDefReachesEndOfBlockExt0(bb, def, v) and
         not defOccursInBlock(_, bb, v, _)
       )
     }
@@ -863,7 +863,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     predicate varBlockReachesExitExt(DefinitionExt def, BasicBlock bb) {
       exists(BasicBlock bb2 | varBlockReachesExt(def, _, bb, bb2) |
         not defOccursInBlock(def, bb2, _, _) and
-        not ssaDefReachesEndOfBlockExt(bb2, def, _)
+        not ssaDefReachesEndOfBlockExt0(bb2, def, _)
       )
     }
 
@@ -872,7 +872,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(BasicBlock bb2, SourceVariable v |
         varBlockReachesExt(def, v, bb, bb2) and
         not defOccursInBlock(def, bb2, _, _) and
-        not ssaDefReachesEndOfBlockExt(bb2, def, _) and
+        not ssaDefReachesEndOfBlockExt0(bb2, def, _) and
         not any(PhiReadNode phi).definesAt(v, bb2, _, _)
       )
       or
@@ -907,7 +907,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * SSA definition of `v`.
    */
   pragma[nomagic]
-  predicate ssaDefReachesEndOfBlockExt(BasicBlock bb, DefinitionExt def, SourceVariable v) {
+  private predicate ssaDefReachesEndOfBlockExt0(BasicBlock bb, DefinitionExt def, SourceVariable v) {
     exists(int last |
       last = maxSsaRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
       ssaDefReachesRank(bb, def, last, v) and
@@ -920,9 +920,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     // the node. If two definitions dominate a node then one must dominate the
     // other, so therefore the definition of _closest_ is given by the dominator
     // tree. Thus, reaching definitions can be calculated in terms of dominance.
-    ssaDefReachesEndOfBlockExt(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
+    ssaDefReachesEndOfBlockExt0(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
     liveThroughExt(bb, pragma[only_bind_into](v))
   }
+
+  deprecated predicate ssaDefReachesEndOfBlockExt = ssaDefReachesEndOfBlockExt0/3;
 
   /**
    * NB: If this predicate is exposed, it should be cached.
@@ -955,7 +957,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     exists(SourceVariable v, BasicBlock bbDef |
       phi.definesAt(v, bbDef, _, _) and
       getABasicBlockPredecessor(bbDef) = bb and
-      ssaDefReachesEndOfBlockExt(bb, inp, v)
+      ssaDefReachesEndOfBlockExt0(bb, inp, v)
     |
       phi instanceof PhiNode or
       phi instanceof PhiReadNode
@@ -973,7 +975,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     ssaDefReachesReadWithinBlock(v, def, bb, i)
     or
     ssaRef(bb, i, v, SsaActualRead()) and
-    ssaDefReachesEndOfBlockExt(getABasicBlockPredecessor(bb), def, v) and
+    ssaDefReachesEndOfBlockExt0(getABasicBlockPredecessor(bb), def, v) and
     not ssaDefReachesReadWithinBlock(v, _, bb, i)
   }
 
