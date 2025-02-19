@@ -306,5 +306,6 @@ func fileExists(path string) bool {
 // Decides if `dirPath` is a vendor directory by testing whether it is called `vendor`
 // and contains a `modules.txt` file.
 func IsGolangVendorDirectory(dirPath string) bool {
-	return filepath.Base(dirPath) == "vendor" && fileExists(filepath.Join(dirPath, "modules.txt"))
+	return filepath.Base(dirPath) == "vendor" &&
+		(fileExists(filepath.Join(dirPath, "modules.txt")) || fileExists(filepath.Join(dirPath, "../glide.yaml")))
 }
