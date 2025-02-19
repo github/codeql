@@ -14,7 +14,7 @@ extern void encodeShellString(char *shellStr, int maxChars, const char* cStr);
 
 int main(int argc, char** argv) {
   char *userName = argv[2];
-  
+
   {
     // BAD: a string from the user is injected directly into
     // a command.
@@ -23,10 +23,10 @@ int main(int argc, char** argv) {
     system(command1);
   }
 
-  {  
+  {
     // GOOD: the user string is encoded by a library routine.
     char userNameQuoted[1000] = {0};
-    encodeShellString(userNameQuoted, 1000, userName); 
+    encodeShellString(userNameQuoted, 1000, userName);
     char command2[1000] = {0};
     sprintf(command2, "userinfo -v %s", userNameQuoted);
     system(command2);
@@ -36,16 +36,16 @@ int main(int argc, char** argv) {
 void test2(char* arg2) {
   // GOOD?: the user string is the *first* part of the command, like $CC in many environments
   char *envCC = getenv("CC");
-  
+
   char command[1000];
-  sprintf("%s %s", envCC, arg2);
+  sprintf(command, "%s %s", envCC, arg2);
   system(command);
 }
 
 void test3(char* arg1) {
   // GOOD?: the user string is a `$CFLAGS` environment variable
   char *envCflags = getenv("CFLAGS");
-  
+
   char command[1000];
   sprintf(command, "%s %s", arg1, envCflags);
   system(command);
@@ -160,7 +160,7 @@ void test15(FILE *f) {
   fread(temp, 1, 10, f);
 
   int x = atoi(temp);
-  
+
   char temp2[10];
   sprintf(temp2, "%d", x);
     sprintf(command, "tail -n %s foo.log", temp2);
