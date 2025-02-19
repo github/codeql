@@ -54,6 +54,7 @@ void test3(char* arg1) {
 typedef unsigned long size_t;
 typedef void FILE;
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+char *strncpy(char *s1, const char *s2, size_t n);
 char *strncat(char *s1, const char *s2, size_t n);
 
 void test4(FILE *f) {
@@ -220,6 +221,44 @@ void test19(FILE *f) {
   CONCAT(command, filename)
 
   execl("/bin/sh", "sh", "-c", command);
+}
+
+void test20() {
+  // BAD: the user strings `var_b`, `var_c` are injected directly into a command
+  char buffer[1024 * 4];
+
+  strncpy(buffer, getenv("var_a"), 1024);
+  strncat(buffer, getenv("var_b"), 1024);
+  strncat(buffer, getenv("var_c"), 1024);
+  strncat(buffer, " ", 1024);
+  system(buffer);
+}
+
+void test21() {
+  // BAD: the user strings `var_b`, `var_c` are injected directly into a command
+  char buffer1[1024];
+  char buffer2[1024];
+
+  sprintf(buffer1, "%s %s",
+    getenv("var_a"),
+    getenv("var_b"));
+  sprintf(buffer2, "%s %s %s",
+    " ",
+    buffer1,
+    getenv("var_c"));
+  system(buffer2);
+}
+
+void test22() {
+  // BAD: the user strings `var_a` are injected directly into a command
+  char buffer[1024 * 11];
+  int i;
+
+  strncpy(buffer, "command ", 1024);
+  for (i = 0; i < 10; i++) {
+    strncat(buffer, getenv("var_a"), 1024);
+  }
+  system(buffer);
 }
 
 // open question: do we want to report certain sources even when they're the start of the string?
