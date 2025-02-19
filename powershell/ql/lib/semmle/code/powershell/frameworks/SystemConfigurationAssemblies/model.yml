@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Configuration.Assemblies.AssemblyVersionCompatibility", "System.Configuration.Assemblies.AssemblyVersionCompatibility!", "Field[SameProcess]"]
+    - ["System.Object", "System.Configuration.Assemblies.AssemblyHash", "Method[Clone].ReturnValue"]
+    - ["System.Configuration.Assemblies.AssemblyHash", "System.Configuration.Assemblies.AssemblyHash!", "Field[Empty]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHashAlgorithm!", "Field[SHA256]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHashAlgorithm!", "Field[MD5]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHashAlgorithm!", "Field[SHA512]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHashAlgorithm!", "Field[SHA384]"]
+    - ["System.Configuration.Assemblies.AssemblyVersionCompatibility", "System.Configuration.Assemblies.AssemblyVersionCompatibility!", "Field[SameDomain]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHash", "Property[Algorithm]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHashAlgorithm!", "Field[None]"]
+    - ["System.Configuration.Assemblies.AssemblyHashAlgorithm", "System.Configuration.Assemblies.AssemblyHashAlgorithm!", "Field[SHA1]"]
+    - ["System.Byte[]", "System.Configuration.Assemblies.AssemblyHash", "Method[GetValue].ReturnValue"]
+    - ["System.Configuration.Assemblies.AssemblyVersionCompatibility", "System.Configuration.Assemblies.AssemblyVersionCompatibility!", "Field[SameMachine]"]

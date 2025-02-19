@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Management.Automation.ErrorRecord", "System.Management.Automation.Subsystem.Feedback.FeedbackContext", "Property[LastError]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackDisplayLayout", "System.Management.Automation.Subsystem.Feedback.FeedbackItem", "Property[Layout]"]
+    - ["System.String", "System.Management.Automation.Subsystem.Feedback.FeedbackItem", "Property[Footer]"]
+    - ["System.Management.Automation.PathInfo", "System.Management.Automation.Subsystem.Feedback.FeedbackContext", "Property[CurrentLocation]"]
+    - ["System.Collections.Generic.List<System.Management.Automation.Subsystem.Feedback.FeedbackResult>", "System.Management.Automation.Subsystem.Feedback.FeedbackHub!", "Method[GetFeedback].ReturnValue"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackItem", "System.Management.Automation.Subsystem.Feedback.FeedbackResult", "Property[Item]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackTrigger", "System.Management.Automation.Subsystem.Feedback.FeedbackContext", "Property[Trigger]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackItem", "System.Management.Automation.Subsystem.Feedback.IFeedbackProvider", "Method[GetFeedback].ReturnValue"]
+    - ["System.Guid", "System.Management.Automation.Subsystem.Feedback.FeedbackResult", "Property[Id]"]
+    - ["System.Collections.Generic.Dictionary<System.String,System.String>", "System.Management.Automation.Subsystem.Feedback.IFeedbackProvider", "Property[System.Management.Automation.Subsystem.ISubsystem.FunctionsToDefine]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackDisplayLayout", "System.Management.Automation.Subsystem.Feedback.FeedbackDisplayLayout!", "Field[Landscape]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackTrigger", "System.Management.Automation.Subsystem.Feedback.FeedbackTrigger!", "Field[All]"]
+    - ["System.Collections.Generic.IReadOnlyList<System.Management.Automation.Language.Token>", "System.Management.Automation.Subsystem.Feedback.FeedbackContext", "Property[CommandLineTokens]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackTrigger", "System.Management.Automation.Subsystem.Feedback.IFeedbackProvider", "Property[Trigger]"]
+    - ["System.String", "System.Management.Automation.Subsystem.Feedback.FeedbackContext", "Property[CommandLine]"]
+    - ["System.String", "System.Management.Automation.Subsystem.Feedback.FeedbackResult", "Property[Name]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackTrigger", "System.Management.Automation.Subsystem.Feedback.FeedbackTrigger!", "Field[Error]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackTrigger", "System.Management.Automation.Subsystem.Feedback.FeedbackTrigger!", "Field[Success]"]
+    - ["System.String", "System.Management.Automation.Subsystem.Feedback.FeedbackItem", "Property[Header]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackDisplayLayout", "System.Management.Automation.Subsystem.Feedback.FeedbackDisplayLayout!", "Field[Portrait]"]
+    - ["System.Collections.Generic.List<System.String>", "System.Management.Automation.Subsystem.Feedback.FeedbackItem", "Property[RecommendedActions]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackTrigger", "System.Management.Automation.Subsystem.Feedback.FeedbackTrigger!", "Field[CommandNotFound]"]
+    - ["System.Management.Automation.Subsystem.Feedback.FeedbackItem", "System.Management.Automation.Subsystem.Feedback.FeedbackItem", "Property[Next]"]
+    - ["System.Management.Automation.Language.Ast", "System.Management.Automation.Subsystem.Feedback.FeedbackContext", "Property[CommandLineAst]"]

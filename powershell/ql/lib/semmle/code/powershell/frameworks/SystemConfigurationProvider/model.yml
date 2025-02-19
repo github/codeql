@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.IEnumerator", "System.Configuration.Provider.ProviderCollection", "Method[GetEnumerator].ReturnValue"]
+    - ["System.Configuration.Provider.ProviderBase", "System.Configuration.Provider.ProviderCollection", "Property[Item]"]
+    - ["System.String", "System.Configuration.Provider.ProviderBase", "Property[Description]"]
+    - ["System.Int32", "System.Configuration.Provider.ProviderCollection", "Property[Count]"]
+    - ["System.Object", "System.Configuration.Provider.ProviderCollection", "Property[SyncRoot]"]
+    - ["System.Boolean", "System.Configuration.Provider.ProviderCollection", "Property[IsSynchronized]"]
+    - ["System.String", "System.Configuration.Provider.ProviderBase", "Property[Name]"]

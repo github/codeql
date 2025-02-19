@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Management.Automation.PSObject", "Microsoft.PowerShell.Commands.Internal.Format.FrontEndCommandBase", "Method[InputObjectCall].ReturnValue"]
+    - ["System.Management.Automation.PSCmdlet", "Microsoft.PowerShell.Commands.Internal.Format.FrontEndCommandBase", "Method[OuterCmdletCall].ReturnValue"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[ShowError]"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[HideTableHeaders]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[Expand]"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[AutoSize]"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[Wrap]"]
+    - ["System.Management.Automation.PSObject", "Microsoft.PowerShell.Commands.Internal.Format.FrontEndCommandBase", "Property[InputObject]"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[Force]"]
+    - ["System.Object", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[GroupBy]"]
+    - ["System.Object[]", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableAndListBase", "Property[Property]"]
+    - ["System.String", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[View]"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[RepeatHeader]"]
+    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[DisplayError]"]

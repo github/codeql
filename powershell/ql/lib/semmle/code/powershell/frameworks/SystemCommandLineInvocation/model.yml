@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Threading.CancellationToken", "System.CommandLine.Invocation.InvocationContext", "Method[GetCancellationToken].ReturnValue"]
+    - ["System.Int32", "System.CommandLine.Invocation.InvocationContext", "Property[ExitCode]"]
+    - ["System.CommandLine.Invocation.MiddlewareOrder", "System.CommandLine.Invocation.MiddlewareOrder!", "Field[ErrorReporting]"]
+    - ["System.CommandLine.Help.HelpBuilder", "System.CommandLine.Invocation.InvocationContext", "Property[HelpBuilder]"]
+    - ["System.CommandLine.Invocation.MiddlewareOrder", "System.CommandLine.Invocation.MiddlewareOrder!", "Field[Default]"]
+    - ["System.CommandLine.LocalizationResources", "System.CommandLine.Invocation.InvocationContext", "Property[LocalizationResources]"]
+    - ["System.CommandLine.Invocation.MiddlewareOrder", "System.CommandLine.Invocation.MiddlewareOrder!", "Field[ExceptionHandler]"]
+    - ["System.CommandLine.Binding.BindingContext", "System.CommandLine.Invocation.InvocationContext", "Property[BindingContext]"]
+    - ["System.CommandLine.Invocation.IInvocationResult", "System.CommandLine.Invocation.InvocationContext", "Property[InvocationResult]"]
+    - ["System.CommandLine.Invocation.MiddlewareOrder", "System.CommandLine.Invocation.MiddlewareOrder!", "Field[Configuration]"]
+    - ["System.CommandLine.IConsole", "System.CommandLine.Invocation.InvocationContext", "Property[Console]"]
+    - ["System.CommandLine.Parsing.ParseResult", "System.CommandLine.Invocation.InvocationContext", "Property[ParseResult]"]
+    - ["System.Threading.Tasks.Task<System.Int32>", "System.CommandLine.Invocation.ICommandHandler", "Method[InvokeAsync].ReturnValue"]
+    - ["System.CommandLine.Parsing.Parser", "System.CommandLine.Invocation.InvocationContext", "Property[Parser]"]

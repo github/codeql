@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[TableName]"]
+    - ["System.Threading.Tasks.ValueTask<System.Boolean>", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[Microsoft.Extensions.Caching.Distributed.IBufferDistributedCache.TryGetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[RefreshAsync].ReturnValue"]
+    - ["System.Nullable<System.TimeSpan>", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[ExpiredItemsDeletionInterval]"]
+    - ["System.Threading.Tasks.ValueTask", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[Microsoft.Extensions.Caching.Distributed.IBufferDistributedCache.SetAsync].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[SchemaName]"]
+    - ["System.Boolean", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[Microsoft.Extensions.Caching.Distributed.IBufferDistributedCache.TryGet].ReturnValue"]
+    - ["System.Threading.Tasks.Task<System.Byte[]>", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[GetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[SetAsync].ReturnValue"]
+    - ["Microsoft.Extensions.Internal.ISystemClock", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[SystemClock]"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[RemoveAsync].ReturnValue"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[DefaultSlidingExpiration]"]
+    - ["System.Byte[]", "Microsoft.Extensions.Caching.SqlServer.SqlServerCache", "Method[Get].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[ConnectionString]"]
+    - ["Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions", "Property[Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.SqlServer.SqlServerCacheOptions>.Value]"]

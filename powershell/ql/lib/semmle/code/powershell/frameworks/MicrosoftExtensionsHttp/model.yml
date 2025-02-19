@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Net.Http.HttpMessageHandler", "Microsoft.Extensions.Http.HttpMessageHandlerBuilder!", "Method[CreateHandlerPipeline].ReturnValue"]
+    - ["System.Collections.Generic.IList<System.Action<System.Net.Http.HttpClient>>", "Microsoft.Extensions.Http.HttpClientFactoryOptions", "Property[HttpClientActions]"]
+    - ["System.Net.Http.HttpMessageHandler", "Microsoft.Extensions.Http.HttpMessageHandlerBuilder", "Property[PrimaryHandler]"]
+    - ["System.Func<System.String,System.Boolean>", "Microsoft.Extensions.Http.HttpClientFactoryOptions", "Property[ShouldRedactHeaderValue]"]
+    - ["System.IServiceProvider", "Microsoft.Extensions.Http.HttpMessageHandlerBuilder", "Property[Services]"]
+    - ["System.Boolean", "Microsoft.Extensions.Http.HttpClientFactoryOptions", "Property[SuppressHandlerScope]"]
+    - ["System.String", "Microsoft.Extensions.Http.HttpMessageHandlerBuilder", "Property[Name]"]
+    - ["System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage>", "Microsoft.Extensions.Http.PolicyHttpMessageHandler", "Method[SendAsync].ReturnValue"]
+    - ["System.Collections.Generic.IList<System.Net.Http.DelegatingHandler>", "Microsoft.Extensions.Http.HttpMessageHandlerBuilder", "Property[AdditionalHandlers]"]
+    - ["System.Collections.Generic.IList<System.Action<Microsoft.Extensions.Http.HttpMessageHandlerBuilder>>", "Microsoft.Extensions.Http.HttpClientFactoryOptions", "Property[HttpMessageHandlerBuilderActions]"]
+    - ["System.TimeSpan", "Microsoft.Extensions.Http.HttpClientFactoryOptions", "Property[HandlerLifetime]"]
+    - ["System.Action<Microsoft.Extensions.Http.HttpMessageHandlerBuilder>", "Microsoft.Extensions.Http.IHttpMessageHandlerBuilderFilter", "Method[Configure].ReturnValue"]
+    - ["System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage>", "Microsoft.Extensions.Http.PolicyHttpMessageHandler", "Method[SendCoreAsync].ReturnValue"]
+    - ["System.Net.Http.HttpMessageHandler", "Microsoft.Extensions.Http.HttpMessageHandlerBuilder", "Method[Build].ReturnValue"]

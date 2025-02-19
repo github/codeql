@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[Path]"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[Headers]"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[QueryString]"]
+    - ["System.Boolean", "System.Web.Util.RequestValidator", "Method[InvokeIsValidRequestString].ReturnValue"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[RawUrl]"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[Form]"]
+    - ["System.Web.Util.HttpEncoder", "System.Web.Util.HttpEncoder!", "Property[Default]"]
+    - ["System.String", "System.Web.Util.HttpEncoder", "Method[UrlPathEncode].ReturnValue"]
+    - ["System.Web.Util.RequestValidator", "System.Web.Util.RequestValidator!", "Property[Current]"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[PathInfo]"]
+    - ["System.Byte[]", "System.Web.Util.HttpEncoder", "Method[UrlEncode].ReturnValue"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[Files]"]
+    - ["System.Object", "System.Web.Util.IWebObjectFactory", "Method[CreateInstance].ReturnValue"]
+    - ["System.Web.Util.HttpEncoder", "System.Web.Util.HttpEncoder!", "Property[Current]"]
+    - ["System.String", "System.Web.Util.HttpEncoder", "Method[JavaScriptStringEncode].ReturnValue"]
+    - ["System.Boolean", "System.Web.Util.RequestValidator", "Method[IsValidRequestString].ReturnValue"]
+    - ["System.Web.Util.RequestValidationSource", "System.Web.Util.RequestValidationSource!", "Field[Cookies]"]
+    - ["System.Object", "System.Web.Util.IWebPropertyAccessor", "Method[GetProperty].ReturnValue"]

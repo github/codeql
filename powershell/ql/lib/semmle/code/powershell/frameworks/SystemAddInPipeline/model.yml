@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.AddIn.Pipeline.ContractBase", "Method[RemoteEquals].ReturnValue"]
+    - ["System.String", "System.AddIn.Pipeline.QualificationDataAttribute", "Property[Name]"]
+    - ["System.Type[]", "System.AddIn.Pipeline.AddInBaseAttribute", "Property[ActivatableAs]"]
+    - ["System.String", "System.AddIn.Pipeline.ContractBase", "Method[RemoteToString].ReturnValue"]
+    - ["System.Collections.Generic.IList<T>", "System.AddIn.Pipeline.CollectionAdapters!", "Method[ToIList<T>].ReturnValue"]
+    - ["System.Collections.Generic.IList<TView>", "System.AddIn.Pipeline.CollectionAdapters!", "Method[ToIList<TContract,TView>].ReturnValue"]
+    - ["System.String", "System.AddIn.Pipeline.QualificationDataAttribute", "Property[Value]"]
+    - ["System.TimeSpan", "System.AddIn.Pipeline.ContractBase", "Method[Renewal].ReturnValue"]
+    - ["System.Windows.FrameworkElement", "System.AddIn.Pipeline.FrameworkElementAdapters!", "Method[ContractToViewAdapter].ReturnValue"]
+    - ["System.Int32", "System.AddIn.Pipeline.ContractBase", "Method[AcquireLifetimeToken].ReturnValue"]
+    - ["System.AddIn.Contract.IListContract<T>", "System.AddIn.Pipeline.CollectionAdapters!", "Method[ToIListContract<T>].ReturnValue"]
+    - ["System.AddIn.Contract.IContract", "System.AddIn.Pipeline.ContractBase", "Method[QueryContract].ReturnValue"]
+    - ["TView", "System.AddIn.Pipeline.ContractAdapter!", "Method[ContractToViewAdapter<TView>].ReturnValue"]
+    - ["System.Int32", "System.AddIn.Pipeline.ContractBase", "Method[GetRemoteHashCode].ReturnValue"]
+    - ["System.Boolean", "System.AddIn.Pipeline.ContractHandle!", "Method[ContractOwnsAppDomain].ReturnValue"]
+    - ["System.AddIn.Contract.IContract", "System.AddIn.Pipeline.ContractHandle!", "Method[AppDomainOwner].ReturnValue"]
+    - ["System.AddIn.Contract.INativeHandleContract", "System.AddIn.Pipeline.FrameworkElementAdapters!", "Method[ViewToContractAdapter].ReturnValue"]
+    - ["System.AddIn.Pipeline.ContractHandle", "System.AddIn.Pipeline.ContractAdapter!", "Method[ViewToContractAdapter].ReturnValue"]
+    - ["System.AddIn.Contract.IContract", "System.AddIn.Pipeline.ContractHandle", "Property[Contract]"]
+    - ["System.AddIn.Contract.IListContract<TContract>", "System.AddIn.Pipeline.CollectionAdapters!", "Method[ToIListContract<TView,TContract>].ReturnValue"]

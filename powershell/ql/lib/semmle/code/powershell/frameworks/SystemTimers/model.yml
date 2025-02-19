@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Timers.Timer", "Property[AutoReset]"]
+    - ["System.String", "System.Timers.TimersDescriptionAttribute", "Property[Description]"]
+    - ["System.Boolean", "System.Timers.Timer", "Property[Enabled]"]
+    - ["System.ComponentModel.ISynchronizeInvoke", "System.Timers.Timer", "Property[SynchronizingObject]"]
+    - ["System.ComponentModel.ISite", "System.Timers.Timer", "Property[Site]"]
+    - ["System.DateTime", "System.Timers.ElapsedEventArgs", "Property[SignalTime]"]
+    - ["System.Double", "System.Timers.Timer", "Property[Interval]"]

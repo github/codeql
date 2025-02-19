@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.Web.Services.WebServiceAttribute", "Property[Description]"]
+    - ["System.Web.HttpApplicationState", "System.Web.Services.WebService", "Property[Application]"]
+    - ["System.String", "System.Web.Services.WebMethodAttribute", "Property[Description]"]
+    - ["System.Boolean", "System.Web.Services.WebMethodAttribute", "Property[BufferResponse]"]
+    - ["System.Web.HttpServerUtility", "System.Web.Services.WebService", "Property[Server]"]
+    - ["System.Security.Principal.IPrincipal", "System.Web.Services.WebService", "Property[User]"]
+    - ["System.String", "System.Web.Services.WebServiceBindingAttribute", "Property[Name]"]
+    - ["System.Boolean", "System.Web.Services.WebMethodAttribute", "Property[EnableSession]"]
+    - ["System.Boolean", "System.Web.Services.WebServiceBindingAttribute", "Property[EmitConformanceClaims]"]
+    - ["System.Int32", "System.Web.Services.WebMethodAttribute", "Property[CacheDuration]"]
+    - ["System.Web.Services.Protocols.SoapProtocolVersion", "System.Web.Services.WebService", "Property[SoapVersion]"]
+    - ["System.Web.HttpContext", "System.Web.Services.WebService", "Property[Context]"]
+    - ["System.Web.Services.WsiProfiles", "System.Web.Services.WsiProfiles!", "Field[None]"]
+    - ["System.EnterpriseServices.TransactionOption", "System.Web.Services.WebMethodAttribute", "Property[TransactionOption]"]
+    - ["System.Web.Services.WsiProfiles", "System.Web.Services.WebServiceBindingAttribute", "Property[ConformsTo]"]
+    - ["System.String", "System.Web.Services.WebServiceBindingAttribute", "Property[Location]"]
+    - ["System.String", "System.Web.Services.WebServiceAttribute!", "Field[DefaultNamespace]"]
+    - ["System.String", "System.Web.Services.WebServiceBindingAttribute", "Property[Namespace]"]
+    - ["System.Web.Services.WsiProfiles", "System.Web.Services.WsiProfiles!", "Field[BasicProfile1_1]"]
+    - ["System.String", "System.Web.Services.WebServiceAttribute", "Property[Namespace]"]
+    - ["System.String", "System.Web.Services.WebServiceAttribute", "Property[Name]"]
+    - ["System.String", "System.Web.Services.WebMethodAttribute", "Property[MessageName]"]
+    - ["System.Web.SessionState.HttpSessionState", "System.Web.Services.WebService", "Property[Session]"]

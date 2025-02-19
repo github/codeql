@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Web.Mail.MailPriority", "System.Web.Mail.MailPriority!", "Field[Normal]"]
+    - ["System.Web.Mail.MailPriority", "System.Web.Mail.MailPriority!", "Field[High]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[Cc]"]
+    - ["System.Text.Encoding", "System.Web.Mail.MailMessage", "Property[BodyEncoding]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[To]"]
+    - ["System.Web.Mail.MailFormat", "System.Web.Mail.MailFormat!", "Field[Html]"]
+    - ["System.Collections.IList", "System.Web.Mail.MailMessage", "Property[Attachments]"]
+    - ["System.Web.Mail.MailEncoding", "System.Web.Mail.MailEncoding!", "Field[Base64]"]
+    - ["System.Web.Mail.MailPriority", "System.Web.Mail.MailPriority!", "Field[Low]"]
+    - ["System.Collections.IDictionary", "System.Web.Mail.MailMessage", "Property[Fields]"]
+    - ["System.Web.Mail.MailFormat", "System.Web.Mail.MailMessage", "Property[BodyFormat]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[UrlContentLocation]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[UrlContentBase]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[From]"]
+    - ["System.Web.Mail.MailEncoding", "System.Web.Mail.MailEncoding!", "Field[UUEncode]"]
+    - ["System.Web.Mail.MailFormat", "System.Web.Mail.MailFormat!", "Field[Text]"]
+    - ["System.Web.Mail.MailEncoding", "System.Web.Mail.MailAttachment", "Property[Encoding]"]
+    - ["System.Collections.IDictionary", "System.Web.Mail.MailMessage", "Property[Headers]"]
+    - ["System.String", "System.Web.Mail.SmtpMail!", "Property[SmtpServer]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[Bcc]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[Subject]"]
+    - ["System.String", "System.Web.Mail.MailAttachment", "Property[Filename]"]
+    - ["System.String", "System.Web.Mail.MailMessage", "Property[Body]"]
+    - ["System.Web.Mail.MailPriority", "System.Web.Mail.MailMessage", "Property[Priority]"]

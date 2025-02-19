@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Windows.Forms.Layout.ArrangedElementCollection", "Property[System.Collections.ICollection.IsSynchronized]"]
+    - ["System.Object", "System.Windows.Forms.Layout.TableLayoutSettingsTypeConverter", "Method[ConvertFrom].ReturnValue"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.ArrangedElementCollection", "Method[Equals].ReturnValue"]
+    - ["System.Int32", "System.Windows.Forms.Layout.ArrangedElementCollection", "Method[System.Collections.IList.Add].ReturnValue"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.ArrangedElementCollection", "Method[System.Collections.IList.Contains].ReturnValue"]
+    - ["System.Object", "System.Windows.Forms.Layout.TableLayoutSettingsTypeConverter", "Method[ConvertTo].ReturnValue"]
+    - ["System.Int32", "System.Windows.Forms.Layout.ArrangedElementCollection", "Property[Count]"]
+    - ["System.Object", "System.Windows.Forms.Layout.ArrangedElementCollection", "Property[System.Collections.IList.Item]"]
+    - ["System.Int32", "System.Windows.Forms.Layout.ArrangedElementCollection", "Method[System.Collections.IList.IndexOf].ReturnValue"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.TableLayoutSettingsTypeConverter", "Method[CanConvertTo].ReturnValue"]
+    - ["System.Object", "System.Windows.Forms.Layout.ArrangedElementCollection", "Property[System.Collections.ICollection.SyncRoot]"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.LayoutEngine", "Method[Layout].ReturnValue"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.ArrangedElementCollection", "Property[System.Collections.IList.IsFixedSize]"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.TableLayoutSettingsTypeConverter", "Method[CanConvertFrom].ReturnValue"]
+    - ["System.Int32", "System.Windows.Forms.Layout.ArrangedElementCollection", "Method[GetHashCode].ReturnValue"]
+    - ["System.Boolean", "System.Windows.Forms.Layout.ArrangedElementCollection", "Property[IsReadOnly]"]
+    - ["System.Collections.IEnumerator", "System.Windows.Forms.Layout.ArrangedElementCollection", "Method[GetEnumerator].ReturnValue"]

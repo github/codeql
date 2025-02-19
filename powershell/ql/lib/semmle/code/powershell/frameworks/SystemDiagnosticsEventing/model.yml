@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Diagnostics.Eventing.EventProvider+WriteEventErrorCode", "System.Diagnostics.Eventing.EventProvider!", "Method[GetLastWriteEventError].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Eventing.EventProviderTraceListener", "Property[IsThreadSafe]"]
+    - ["System.String", "System.Diagnostics.Eventing.EventProviderTraceListener", "Property[Delimiter]"]
+    - ["System.Byte", "System.Diagnostics.Eventing.EventDescriptor", "Property[Level]"]
+    - ["System.Byte", "System.Diagnostics.Eventing.EventDescriptor", "Property[Opcode]"]
+    - ["System.String[]", "System.Diagnostics.Eventing.EventProviderTraceListener", "Method[GetSupportedAttributes].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Eventing.EventProvider", "Method[IsEnabled].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Eventing.EventProvider", "Method[WriteEvent].ReturnValue"]
+    - ["System.Guid", "System.Diagnostics.Eventing.EventProvider!", "Method[CreateActivityId].ReturnValue"]
+    - ["System.Byte", "System.Diagnostics.Eventing.EventDescriptor", "Property[Channel]"]
+    - ["System.Int32", "System.Diagnostics.Eventing.EventDescriptor", "Property[EventId]"]
+    - ["System.Int32", "System.Diagnostics.Eventing.EventDescriptor", "Property[Task]"]
+    - ["System.Int64", "System.Diagnostics.Eventing.EventDescriptor", "Property[Keywords]"]
+    - ["System.Boolean", "System.Diagnostics.Eventing.EventProvider", "Method[WriteTransferEvent].ReturnValue"]
+    - ["System.Boolean", "System.Diagnostics.Eventing.EventProvider", "Method[WriteMessageEvent].ReturnValue"]
+    - ["System.Byte", "System.Diagnostics.Eventing.EventDescriptor", "Property[Version]"]

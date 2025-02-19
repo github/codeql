@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.Activities.Presentation.Validation.ValidationErrorInfo", "Property[FileName]"]
+    - ["System.Activities.Presentation.Validation.ValidationState", "System.Activities.Presentation.Validation.ValidationState!", "Field[Valid]"]
+    - ["System.Activities.Validation.ValidationSettings", "System.Activities.Presentation.Validation.ValidationService", "Property[Settings]"]
+    - ["System.Activities.Presentation.Validation.ValidationState", "System.Activities.Presentation.Validation.ValidationState!", "Field[Warning]"]
+    - ["System.Guid", "System.Activities.Presentation.Validation.ValidationErrorInfo", "Property[SourceReferenceId]"]
+    - ["System.String", "System.Activities.Presentation.Validation.ValidationErrorInfo", "Property[Id]"]
+    - ["System.Activities.Presentation.Validation.ValidationState", "System.Activities.Presentation.Validation.ValidationState!", "Field[Error]"]
+    - ["System.String", "System.Activities.Presentation.Validation.ValidationErrorInfo", "Property[PropertyName]"]
+    - ["System.String", "System.Activities.Presentation.Validation.ValidationErrorInfo", "Property[Message]"]
+    - ["System.Activities.Presentation.Validation.ValidationState", "System.Activities.Presentation.Validation.ValidationState!", "Field[ChildInvalid]"]
+    - ["System.Boolean", "System.Activities.Presentation.Validation.ValidationErrorInfo", "Property[IsWarning]"]

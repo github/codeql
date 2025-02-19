@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.IList", "System.Runtime.Remoting.Activation.IConstructionCallMessage", "Property[ContextProperties]"]
+    - ["System.Runtime.Remoting.Activation.IActivator", "System.Runtime.Remoting.Activation.IConstructionCallMessage", "Property[Activator]"]
+    - ["System.String", "System.Runtime.Remoting.Activation.UrlAttribute", "Property[UrlValue]"]
+    - ["System.Runtime.Remoting.Activation.ActivatorLevel", "System.Runtime.Remoting.Activation.ActivatorLevel!", "Field[Context]"]
+    - ["System.Int32", "System.Runtime.Remoting.Activation.UrlAttribute", "Method[GetHashCode].ReturnValue"]
+    - ["System.String", "System.Runtime.Remoting.Activation.IConstructionCallMessage", "Property[ActivationTypeName]"]
+    - ["System.Runtime.Remoting.Activation.ActivatorLevel", "System.Runtime.Remoting.Activation.ActivatorLevel!", "Field[Machine]"]
+    - ["System.Runtime.Remoting.Activation.ActivatorLevel", "System.Runtime.Remoting.Activation.ActivatorLevel!", "Field[Process]"]
+    - ["System.Runtime.Remoting.Activation.IConstructionReturnMessage", "System.Runtime.Remoting.Activation.IActivator", "Method[Activate].ReturnValue"]
+    - ["System.Runtime.Remoting.Activation.IActivator", "System.Runtime.Remoting.Activation.IActivator", "Property[NextActivator]"]
+    - ["System.Runtime.Remoting.Activation.ActivatorLevel", "System.Runtime.Remoting.Activation.ActivatorLevel!", "Field[AppDomain]"]
+    - ["System.Boolean", "System.Runtime.Remoting.Activation.UrlAttribute", "Method[Equals].ReturnValue"]
+    - ["System.Runtime.Remoting.Activation.ActivatorLevel", "System.Runtime.Remoting.Activation.ActivatorLevel!", "Field[Construction]"]
+    - ["System.Boolean", "System.Runtime.Remoting.Activation.UrlAttribute", "Method[IsContextOK].ReturnValue"]
+    - ["System.Runtime.Remoting.Activation.ActivatorLevel", "System.Runtime.Remoting.Activation.IActivator", "Property[Level]"]
+    - ["System.Object[]", "System.Runtime.Remoting.Activation.IConstructionCallMessage", "Property[CallSiteActivationAttributes]"]
+    - ["System.Type", "System.Runtime.Remoting.Activation.IConstructionCallMessage", "Property[ActivationType]"]

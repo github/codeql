@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Runtime.Remoting.Activation.IConstructionReturnMessage", "System.Runtime.Remoting.Proxies.RealProxy", "Method[InitializeServerObject].ReturnValue"]
+    - ["System.Runtime.Remoting.ObjRef", "System.Runtime.Remoting.Proxies.RealProxy", "Method[CreateObjRef].ReturnValue"]
+    - ["System.MarshalByRefObject", "System.Runtime.Remoting.Proxies.RealProxy", "Method[DetachServer].ReturnValue"]
+    - ["System.Runtime.Remoting.Messaging.IMessage", "System.Runtime.Remoting.Proxies.RealProxy", "Method[Invoke].ReturnValue"]
+    - ["System.Object", "System.Runtime.Remoting.Proxies.RealProxy", "Method[GetTransparentProxy].ReturnValue"]
+    - ["System.Boolean", "System.Runtime.Remoting.Proxies.ProxyAttribute", "Method[IsContextOK].ReturnValue"]
+    - ["System.Runtime.Remoting.Proxies.RealProxy", "System.Runtime.Remoting.Proxies.ProxyAttribute", "Method[CreateProxy].ReturnValue"]
+    - ["System.MarshalByRefObject", "System.Runtime.Remoting.Proxies.ProxyAttribute", "Method[CreateInstance].ReturnValue"]
+    - ["System.Type", "System.Runtime.Remoting.Proxies.RealProxy", "Method[GetProxiedType].ReturnValue"]
+    - ["System.MarshalByRefObject", "System.Runtime.Remoting.Proxies.RealProxy", "Method[GetUnwrappedServer].ReturnValue"]
+    - ["System.IntPtr", "System.Runtime.Remoting.Proxies.RealProxy", "Method[GetCOMIUnknown].ReturnValue"]
+    - ["System.IntPtr", "System.Runtime.Remoting.Proxies.RealProxy", "Method[SupportsInterface].ReturnValue"]
+    - ["System.Object", "System.Runtime.Remoting.Proxies.RealProxy!", "Method[GetStubData].ReturnValue"]

@@ -1,0 +1,30 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.Redactor", "Method[Redact].ReturnValue"]
+    - ["System.Nullable<System.Int32>", "Microsoft.Extensions.Compliance.Redaction.HmacRedactorOptions", "Property[KeyId]"]
+    - ["System.Boolean", "Microsoft.Extensions.Compliance.Redaction.Redactor", "Method[TryRedact<T>].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.NullRedactor", "Method[Redact].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.HmacRedactor", "Method[GetRedactedLength].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.ErasingRedactor", "Microsoft.Extensions.Compliance.Redaction.ErasingRedactor!", "Property[Instance]"]
+    - ["Microsoft.Extensions.Compliance.Redaction.Redactor", "Microsoft.Extensions.Compliance.Redaction.IRedactorProvider", "Method[GetRedactor].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.HmacRedactor", "Method[Redact].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Method[SetRedactor<T>].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Method[SetFallbackRedactor<T>].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Redaction.Redactor", "Method[Redact].ReturnValue"]
+    - ["Microsoft.Extensions.DependencyInjection.IServiceCollection", "Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Property[Services]"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.NullRedactor", "Method[GetRedactedLength].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.NullRedactor", "Microsoft.Extensions.Compliance.Redaction.NullRedactor!", "Property[Instance]"]
+    - ["Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Microsoft.Extensions.Compliance.Redaction.RedactionExtensions!", "Method[SetHmacRedactor].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.Redactor", "Method[Redact<T>].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.ErasingRedactor", "Method[Redact].ReturnValue"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.Redactor", "Method[GetRedactedLength].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.NullRedactorProvider", "Microsoft.Extensions.Compliance.Redaction.NullRedactorProvider!", "Property[Instance]"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Redaction.Redactor", "Method[Redact<T>].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.IRedactionBuilder", "Microsoft.Extensions.Compliance.Redaction.FakeRedactionBuilderExtensions!", "Method[SetFakeRedactor].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Redaction.NullRedactor", "Method[Redact].ReturnValue"]
+    - ["Microsoft.Extensions.Compliance.Redaction.Redactor", "Microsoft.Extensions.Compliance.Redaction.NullRedactorProvider", "Method[GetRedactor].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Compliance.Redaction.HmacRedactorOptions", "Property[Key]"]
+    - ["System.Int32", "Microsoft.Extensions.Compliance.Redaction.ErasingRedactor", "Method[GetRedactedLength].ReturnValue"]

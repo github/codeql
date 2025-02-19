@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoWrapper", "Property[FullName]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileSystemInfoBase>", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Method[EnumerateFileSystemInfos].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoWrapper", "Property[FullName]"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoWrapper", "Property[ParentDirectory]"]
+    - ["System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileSystemInfoBase>", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoWrapper", "Method[EnumerateFileSystemInfos].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileSystemInfoBase", "Property[FullName]"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoWrapper", "Method[GetFile].ReturnValue"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileSystemInfoBase", "Property[ParentDirectory]"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoWrapper", "Method[GetDirectory].ReturnValue"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoWrapper", "Property[ParentDirectory]"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoWrapper", "Property[Name]"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Method[GetDirectory].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoWrapper", "Property[Name]"]
+    - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase", "Method[GetFile].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileSystemInfoBase", "Property[Name]"]

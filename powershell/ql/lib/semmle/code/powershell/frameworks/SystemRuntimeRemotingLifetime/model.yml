@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Object", "System.Runtime.Remoting.Lifetime.ClientSponsor", "Method[InitializeLifetimeService].ReturnValue"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ILease", "Property[SponsorshipTimeout]"]
+    - ["System.Runtime.Remoting.Lifetime.LeaseState", "System.Runtime.Remoting.Lifetime.ILease", "Property[CurrentState]"]
+    - ["System.Boolean", "System.Runtime.Remoting.Lifetime.ClientSponsor", "Method[Register].ReturnValue"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ClientSponsor", "Method[Renewal].ReturnValue"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ILease", "Property[CurrentLeaseTime]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.LifetimeServices!", "Property[SponsorshipTimeout]"]
+    - ["System.Runtime.Remoting.Lifetime.LeaseState", "System.Runtime.Remoting.Lifetime.LeaseState!", "Field[Null]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ILease", "Method[Renew].ReturnValue"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.LifetimeServices!", "Property[LeaseManagerPollTime]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ClientSponsor", "Property[RenewalTime]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.LifetimeServices!", "Property[LeaseTime]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ISponsor", "Method[Renewal].ReturnValue"]
+    - ["System.Runtime.Remoting.Lifetime.LeaseState", "System.Runtime.Remoting.Lifetime.LeaseState!", "Field[Expired]"]
+    - ["System.Runtime.Remoting.Lifetime.LeaseState", "System.Runtime.Remoting.Lifetime.LeaseState!", "Field[Active]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ILease", "Property[RenewOnCallTime]"]
+    - ["System.Runtime.Remoting.Lifetime.LeaseState", "System.Runtime.Remoting.Lifetime.LeaseState!", "Field[Initial]"]
+    - ["System.Runtime.Remoting.Lifetime.LeaseState", "System.Runtime.Remoting.Lifetime.LeaseState!", "Field[Renewing]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.ILease", "Property[InitialLeaseTime]"]
+    - ["System.TimeSpan", "System.Runtime.Remoting.Lifetime.LifetimeServices!", "Property[RenewOnCallTime]"]

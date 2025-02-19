@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfUnderline]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfClipPrecision]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfItalic]"]
+    - ["System.Int32", "System.Drawing.Interop.LOGFONT", "Field[lfEscapement]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfCharSet]"]
+    - ["System.Int32", "System.Drawing.Interop.LOGFONT", "Field[lfOrientation]"]
+    - ["System.Int32", "System.Drawing.Interop.LOGFONT", "Field[lfWeight]"]
+    - ["System.Int32", "System.Drawing.Interop.LOGFONT", "Field[lfHeight]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfOutPrecision]"]
+    - ["System.Span<System.Char>", "System.Drawing.Interop.LOGFONT", "Property[lfFaceName]"]
+    - ["System.Int32", "System.Drawing.Interop.LOGFONT", "Field[lfWidth]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfPitchAndFamily]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfQuality]"]
+    - ["System.Byte", "System.Drawing.Interop.LOGFONT", "Field[lfStrikeOut]"]

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.CSharp.CompilerError", "Field[SourceFile]"]
+    - ["Microsoft.CSharp.ErrorLevel", "Microsoft.CSharp.ErrorLevel!", "Field[None]"]
+    - ["Microsoft.CSharp.ErrorLevel", "Microsoft.CSharp.ErrorLevel!", "Field[Warning]"]
+    - ["System.String", "Microsoft.CSharp.CSharpCodeProvider", "Property[FileExtension]"]
+    - ["System.CodeDom.Compiler.ICodeCompiler", "Microsoft.CSharp.CSharpCodeProvider", "Method[CreateCompiler].ReturnValue"]
+    - ["System.ComponentModel.TypeConverter", "Microsoft.CSharp.CSharpCodeProvider", "Method[GetConverter].ReturnValue"]
+    - ["System.Int32", "Microsoft.CSharp.CompilerError", "Field[ErrorNumber]"]
+    - ["System.Int32", "Microsoft.CSharp.CompilerError", "Field[SourceLine]"]
+    - ["System.Int32", "Microsoft.CSharp.CompilerError", "Field[SourceColumn]"]
+    - ["Microsoft.CSharp.CompilerError[]", "Microsoft.CSharp.Compiler!", "Method[Compile].ReturnValue"]
+    - ["System.String", "Microsoft.CSharp.CompilerError", "Method[ToString].ReturnValue"]
+    - ["System.String", "Microsoft.CSharp.CompilerError", "Field[ErrorMessage]"]
+    - ["Microsoft.CSharp.ErrorLevel", "Microsoft.CSharp.ErrorLevel!", "Field[Error]"]
+    - ["Microsoft.CSharp.ErrorLevel", "Microsoft.CSharp.ErrorLevel!", "Field[FatalError]"]
+    - ["System.CodeDom.Compiler.ICodeGenerator", "Microsoft.CSharp.CSharpCodeProvider", "Method[CreateGenerator].ReturnValue"]
+    - ["Microsoft.CSharp.ErrorLevel", "Microsoft.CSharp.CompilerError", "Field[ErrorLevel]"]

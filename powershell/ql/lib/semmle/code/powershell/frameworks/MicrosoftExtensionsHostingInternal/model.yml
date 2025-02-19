@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[ContentRootPath]"]
+    - ["System.String", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[EnvironmentName]"]
+    - ["Microsoft.Extensions.FileProviders.IFileProvider", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[ContentRootFileProvider]"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Hosting.Internal.ConsoleLifetime", "Method[WaitForStartAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Hosting.Internal.ConsoleLifetime", "Method[StopAsync].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[ApplicationName]"]
+    - ["System.Threading.CancellationToken", "Microsoft.Extensions.Hosting.Internal.ApplicationLifetime", "Property[ApplicationStopping]"]
+    - ["System.Threading.CancellationToken", "Microsoft.Extensions.Hosting.Internal.ApplicationLifetime", "Property[ApplicationStarted]"]
+    - ["System.Threading.CancellationToken", "Microsoft.Extensions.Hosting.Internal.ApplicationLifetime", "Property[ApplicationStopped]"]

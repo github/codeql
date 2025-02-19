@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.String", "System.Xml.XmlConfiguration.XmlReaderSection", "Property[CollapseWhiteSpaceIntoEmptyStringString]"]
+    - ["System.String", "System.Xml.XmlConfiguration.XsltConfigSection", "Property[ProhibitDefaultResolverString]"]
+    - ["System.String", "System.Xml.XmlConfiguration.XmlReaderSection", "Property[ProhibitDefaultResolverString]"]

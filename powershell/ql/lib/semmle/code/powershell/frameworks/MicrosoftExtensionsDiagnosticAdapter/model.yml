@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Func<System.Object,System.Object,System.Boolean>", "Microsoft.Extensions.DiagnosticAdapter.IDiagnosticSourceMethodAdapter", "Method[Adapt].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.DiagnosticAdapter.DiagnosticSourceAdapter", "Method[IsEnabled].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.DiagnosticAdapter.DiagnosticNameAttribute", "Property[Name]"]
+    - ["System.Func<System.Object,System.Object,System.Boolean>", "Microsoft.Extensions.DiagnosticAdapter.ProxyDiagnosticSourceMethodAdapter", "Method[Adapt].ReturnValue"]

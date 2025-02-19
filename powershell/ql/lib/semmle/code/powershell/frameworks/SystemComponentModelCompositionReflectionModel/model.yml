@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo", "Method[Equals].ReturnValue"]
+    - ["System.Lazy<System.Type>", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[GetPartType].ReturnValue"]
+    - ["System.Reflection.MemberTypes", "System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo", "Property[MemberType]"]
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo!", "Method[op_Inequality].ReturnValue"]
+    - ["System.Lazy<System.Reflection.ParameterInfo>", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[GetImportingParameter].ReturnValue"]
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[TryMakeGenericPartDefinition].ReturnValue"]
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo!", "Method[op_Equality].ReturnValue"]
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[IsExportFactoryImportDefinition].ReturnValue"]
+    - ["System.ComponentModel.Composition.Primitives.ExportDefinition", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[CreateExportDefinition].ReturnValue"]
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[IsImportingParameter].ReturnValue"]
+    - ["System.ComponentModel.Composition.Primitives.ContractBasedImportDefinition", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[CreateImportDefinition].ReturnValue"]
+    - ["System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[GetExportingMember].ReturnValue"]
+    - ["System.ComponentModel.Composition.Primitives.ContractBasedImportDefinition", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[GetExportFactoryProductImportDefinition].ReturnValue"]
+    - ["System.Boolean", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[IsDisposalRequired].ReturnValue"]
+    - ["System.Reflection.MemberInfo[]", "System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo", "Method[GetAccessors].ReturnValue"]
+    - ["System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[GetImportingMember].ReturnValue"]
+    - ["System.ComponentModel.Composition.Primitives.ComposablePartDefinition", "System.ComponentModel.Composition.ReflectionModel.ReflectionModelServices!", "Method[CreatePartDefinition].ReturnValue"]
+    - ["System.Int32", "System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo", "Method[GetHashCode].ReturnValue"]

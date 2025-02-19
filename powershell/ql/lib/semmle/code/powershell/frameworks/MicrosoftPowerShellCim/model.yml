@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Object", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetPropertyValue].ReturnValue"]
+    - ["System.Collections.ObjectModel.Collection<System.Management.Automation.PSAdaptedProperty>", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetProperties].ReturnValue"]
+    - ["System.Collections.ObjectModel.Collection<System.String>", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetTypeNameHierarchy].ReturnValue"]
+    - ["System.Management.Automation.PSAdaptedProperty", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetFirstPropertyOrDefault].ReturnValue"]
+    - ["System.Management.Automation.PSAdaptedProperty", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetProperty].ReturnValue"]
+    - ["System.Boolean", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[IsGettable].ReturnValue"]
+    - ["System.Boolean", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[IsSettable].ReturnValue"]
+    - ["System.String", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetPropertyTypeName].ReturnValue"]

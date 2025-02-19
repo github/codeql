@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Byte[]", "Microsoft.Extensions.Caching.Distributed.MemoryDistributedCache", "Method[Get].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.Caching.Distributed.IBufferDistributedCache", "Method[TryGet].ReturnValue"]
+    - ["System.String", "Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions!", "Method[GetString].ReturnValue"]
+    - ["System.Threading.Tasks.Task<System.Byte[]>", "Microsoft.Extensions.Caching.Distributed.MemoryDistributedCache", "Method[GetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions!", "Method[SetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.IDistributedCache", "Method[RemoveAsync].ReturnValue"]
+    - ["System.Threading.Tasks.ValueTask<System.Boolean>", "Microsoft.Extensions.Caching.Distributed.IBufferDistributedCache", "Method[TryGetAsync].ReturnValue"]
+    - ["Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions", "Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryExtensions!", "Method[SetSlidingExpiration].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.IDistributedCache", "Method[RefreshAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.MemoryDistributedCache", "Method[RemoveAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions!", "Method[SetStringAsync].ReturnValue"]
+    - ["System.Nullable<System.TimeSpan>", "Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions", "Property[AbsoluteExpirationRelativeToNow]"]
+    - ["System.Nullable<System.DateTimeOffset>", "Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions", "Property[AbsoluteExpiration]"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.IDistributedCache", "Method[SetAsync].ReturnValue"]
+    - ["System.Nullable<System.TimeSpan>", "Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions", "Property[SlidingExpiration]"]
+    - ["Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions", "Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryExtensions!", "Method[SetAbsoluteExpiration].ReturnValue"]
+    - ["System.Byte[]", "Microsoft.Extensions.Caching.Distributed.IDistributedCache", "Method[Get].ReturnValue"]
+    - ["System.Threading.Tasks.Task<System.String>", "Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions!", "Method[GetStringAsync].ReturnValue"]
+    - ["System.Threading.Tasks.ValueTask", "Microsoft.Extensions.Caching.Distributed.IBufferDistributedCache", "Method[SetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.MemoryDistributedCache", "Method[SetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task<System.Byte[]>", "Microsoft.Extensions.Caching.Distributed.IDistributedCache", "Method[GetAsync].ReturnValue"]
+    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Distributed.MemoryDistributedCache", "Method[RefreshAsync].ReturnValue"]

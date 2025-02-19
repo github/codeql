@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.DateTimeOffset", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[LastModified]"]
+    - ["System.Int64", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[Length]"]
+    - ["System.String", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[PhysicalPath]"]
+    - ["System.String", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[Name]"]
+    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[IsDirectory]"]
+    - ["System.IO.Stream", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Method[CreateReadStream].ReturnValue"]
+    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[Exists]"]

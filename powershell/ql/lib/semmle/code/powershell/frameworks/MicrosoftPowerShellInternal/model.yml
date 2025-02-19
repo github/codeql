@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Microsoft.PowerShell.Internal.IConsole", "Property[KeyAvailable]"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[WindowWidth]"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[CursorSize]"]
+    - ["System.Text.Encoding", "Microsoft.PowerShell.Internal.IConsole", "Property[OutputEncoding]"]
+    - ["System.ConsoleColor", "Microsoft.PowerShell.Internal.IConsole", "Property[ForegroundColor]"]
+    - ["System.Boolean", "Microsoft.PowerShell.Internal.IPSConsoleReadLineMockableMethods", "Method[RunspaceIsRemote].ReturnValue"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[CursorLeft]"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[WindowTop]"]
+    - ["System.Management.Automation.CommandCompletion", "Microsoft.PowerShell.Internal.IPSConsoleReadLineMockableMethods", "Method[CompleteInput].ReturnValue"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[WindowHeight]"]
+    - ["System.ConsoleKeyInfo", "Microsoft.PowerShell.Internal.IConsole", "Method[ReadKey].ReturnValue"]
+    - ["System.Boolean", "Microsoft.PowerShell.Internal.IConsole", "Property[CursorVisible]"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[BufferWidth]"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[BufferHeight]"]
+    - ["System.ConsoleColor", "Microsoft.PowerShell.Internal.IConsole", "Property[BackgroundColor]"]
+    - ["System.Int32", "Microsoft.PowerShell.Internal.IConsole", "Property[CursorTop]"]

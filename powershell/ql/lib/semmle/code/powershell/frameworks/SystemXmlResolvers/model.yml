@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Object", "System.Xml.Resolvers.XmlPreloadedResolver", "Method[GetEntity].ReturnValue"]
+    - ["System.Boolean", "System.Xml.Resolvers.XmlPreloadedResolver", "Method[SupportsType].ReturnValue"]
+    - ["System.Xml.Resolvers.XmlKnownDtds", "System.Xml.Resolvers.XmlKnownDtds!", "Field[All]"]
+    - ["System.Threading.Tasks.Task<System.Object>", "System.Xml.Resolvers.XmlPreloadedResolver", "Method[GetEntityAsync].ReturnValue"]
+    - ["System.Net.ICredentials", "System.Xml.Resolvers.XmlPreloadedResolver", "Property[Credentials]"]
+    - ["System.Uri", "System.Xml.Resolvers.XmlPreloadedResolver", "Method[ResolveUri].ReturnValue"]
+    - ["System.Xml.Resolvers.XmlKnownDtds", "System.Xml.Resolvers.XmlKnownDtds!", "Field[None]"]
+    - ["System.Collections.Generic.IEnumerable<System.Uri>", "System.Xml.Resolvers.XmlPreloadedResolver", "Property[PreloadedUris]"]
+    - ["System.Xml.Resolvers.XmlKnownDtds", "System.Xml.Resolvers.XmlKnownDtds!", "Field[Xhtml10]"]
+    - ["System.Xml.Resolvers.XmlKnownDtds", "System.Xml.Resolvers.XmlKnownDtds!", "Field[Rss091]"]

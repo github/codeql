@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Matrix!", "Method[op_Equality].ReturnValue"]
+    - ["Windows.Foundation.Point", "Windows.UI.Xaml.Media.Matrix", "Method[Transform].ReturnValue"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Matrix!", "Method[op_Inequality].ReturnValue"]
+    - ["System.Int32", "Windows.UI.Xaml.Media.Matrix", "Method[GetHashCode].ReturnValue"]
+    - ["Windows.UI.Xaml.Media.Matrix", "Windows.UI.Xaml.Media.Matrix!", "Property[Identity]"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Matrix", "Property[IsIdentity]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Matrix", "Property[M21]"]
+    - ["System.String", "Windows.UI.Xaml.Media.Matrix", "Method[ToString].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Matrix", "Property[M22]"]
+    - ["System.String", "Windows.UI.Xaml.Media.Matrix", "Method[System.IFormattable.ToString].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Matrix", "Property[OffsetY]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Matrix", "Property[OffsetX]"]
+    - ["System.Boolean", "Windows.UI.Xaml.Media.Matrix", "Method[Equals].ReturnValue"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Matrix", "Property[M12]"]
+    - ["System.Double", "Windows.UI.Xaml.Media.Matrix", "Property[M11]"]

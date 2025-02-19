@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Media.SoundPlayer", "Property[IsLoadCompleted]"]
+    - ["System.String", "System.Media.SoundPlayer", "Property[SoundLocation]"]
+    - ["System.Int32", "System.Media.SoundPlayer", "Property[LoadTimeout]"]
+    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Beep]"]
+    - ["System.Object", "System.Media.SoundPlayer", "Property[Tag]"]
+    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Exclamation]"]
+    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Asterisk]"]
+    - ["System.IO.Stream", "System.Media.SoundPlayer", "Property[Stream]"]
+    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Hand]"]
+    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Question]"]

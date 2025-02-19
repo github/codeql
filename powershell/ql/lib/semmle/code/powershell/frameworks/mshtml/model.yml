@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Collections.IEnumerator", "mshtml.IHTMLElementCollection", "Method[GetEnumerator].ReturnValue"]
+    - ["System.String", "mshtml.IHTMLDocument2", "Property[readyState]"]
+    - ["System.String", "mshtml.IHTMLFormElement", "Property[action]"]
+    - ["System.String", "mshtml.IHTMLElement", "Property[innerHTML]"]
+    - ["System.Collections.IEnumerator", "mshtml.IHTMLFormElement", "Method[GetEnumerator].ReturnValue"]
+    - ["mshtml.IHTMLElement", "mshtml.IHTMLDocument2", "Property[body]"]
+    - ["mshtml.IHTMLElementCollection", "mshtml.IHTMLDocument2", "Property[all]"]
+    - ["System.String", "mshtml.IHTMLFormElement", "Property[method]"]
+    - ["System.String", "mshtml.IHTMLElement", "Property[id]"]
+    - ["mshtml.IHTMLElementCollection", "mshtml.IHTMLDocument2", "Property[forms]"]
+    - ["mshtml.IHTMLElementCollection", "mshtml.IHTMLDocument2", "Property[links]"]
+    - ["System.String", "mshtml.IHTMLElement", "Property[outerHTML]"]
+    - ["mshtml.IHTMLElementCollection", "mshtml.IHTMLDocument2", "Property[scripts]"]
+    - ["mshtml.IHTMLElementCollection", "mshtml.IHTMLDocument2", "Property[images]"]
+    - ["System.String", "mshtml.IHTMLInputElement", "Property[value]"]
+    - ["System.String", "mshtml.IHTMLElement", "Property[outerText]"]
+    - ["System.String", "mshtml.IHTMLInputElement", "Property[name]"]
+    - ["System.String", "mshtml.IHTMLElement", "Property[innerText]"]
+    - ["System.String", "mshtml.IHTMLFormElement", "Property[name]"]
+    - ["System.Object", "mshtml.IHTMLElementCollection", "Method[item].ReturnValue"]
+    - ["System.String", "mshtml.IHTMLElement", "Property[tagName]"]
+    - ["System.Object", "mshtml.IHTMLFormElement", "Method[item].ReturnValue"]

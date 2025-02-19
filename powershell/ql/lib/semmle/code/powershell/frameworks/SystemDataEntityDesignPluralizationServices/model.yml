@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Data.Entity.Design.PluralizationServices.PluralizationService", "System.Data.Entity.Design.PluralizationServices.PluralizationService!", "Method[CreateService].ReturnValue"]
+    - ["System.Boolean", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[IsSingular].ReturnValue"]
+    - ["System.Boolean", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[IsPlural].ReturnValue"]
+    - ["System.String", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[Pluralize].ReturnValue"]
+    - ["System.Globalization.CultureInfo", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Property[Culture]"]
+    - ["System.String", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[Singularize].ReturnValue"]

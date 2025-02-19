@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["System.Boolean", "System.Activities.Presentation.Services.ModelSearchService", "Method[NavigateTo].ReturnValue"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[CollectionItemRemoved]"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[None]"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[CollectionItemAdded]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelService", "Method[CreateStaticMemberItem].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<System.Activities.Presentation.Model.ModelItem>", "System.Activities.Presentation.Services.ModelChangedEventArgs", "Property[ItemsAdded]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelChangeInfo", "Property[OldValue]"]
+    - ["System.Collections.Generic.IEnumerable<System.Activities.Presentation.Model.ModelItem>", "System.Activities.Presentation.Services.ModelChangedEventArgs", "Property[ItemsRemoved]"]
+    - ["System.Collections.Generic.IEnumerable<System.Activities.Presentation.Model.ModelItem>", "System.Activities.Presentation.Services.ModelService", "Method[Find].ReturnValue"]
+    - ["System.Activities.Presentation.Services.ModelChangeInfo", "System.Activities.Presentation.Services.ModelChangedEventArgs", "Property[ModelChangeInfo]"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[DictionaryKeyValueAdded]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelService", "Property[Root]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ViewService", "Method[GetModel].ReturnValue"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[PropertyChanged]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelChangeInfo", "Property[Subject]"]
+    - ["System.Activities.Presentation.Model.TextImage", "System.Activities.Presentation.Services.ModelSearchService", "Method[GenerateTextImage].ReturnValue"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelService", "Method[CreateItem].ReturnValue"]
+    - ["System.Windows.DependencyObject", "System.Activities.Presentation.Services.ViewService", "Method[GetView].ReturnValue"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelChangeInfo", "Property[Key]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelService", "Method[FromName].ReturnValue"]
+    - ["System.Collections.Generic.IEnumerable<System.Activities.Presentation.Model.ModelProperty>", "System.Activities.Presentation.Services.ModelChangedEventArgs", "Property[PropertiesChanged]"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[DictionaryValueChanged]"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeInfo", "Property[ModelChangeType]"]
+    - ["System.Activities.Presentation.Model.ModelItem", "System.Activities.Presentation.Services.ModelChangeInfo", "Property[Value]"]
+    - ["System.String", "System.Activities.Presentation.Services.ModelChangeInfo", "Property[PropertyName]"]
+    - ["System.Activities.Presentation.Services.ModelChangeType", "System.Activities.Presentation.Services.ModelChangeType!", "Field[DictionaryKeyValueRemoved]"]
