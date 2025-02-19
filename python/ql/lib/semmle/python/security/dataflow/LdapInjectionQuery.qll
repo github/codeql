@@ -19,6 +19,8 @@ private module LdapInjectionDnConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof DnSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof DnSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "LDAP injection via the distinguished name (DN) parameter" vulnerabilities. */
@@ -30,6 +32,8 @@ private module LdapInjectionFilterConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof FilterSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof FilterSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "LDAP injection via the filter parameter" vulnerabilities. */

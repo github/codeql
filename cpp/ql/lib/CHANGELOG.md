@@ -1,3 +1,7 @@
+## 4.0.1
+
+No user-facing changes.
+
 ## 4.0.0
 
 ### Breaking Changes

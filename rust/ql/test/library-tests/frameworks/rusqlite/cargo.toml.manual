@@ -1,0 +1,13 @@
+[workspace]
+
+[package]
+name = "rusqlite-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rusqlite = { version = "0.33", features = ["bundled"] }
+
+[[bin]]
+name = "rusqlite"
+path = "./main.rs"

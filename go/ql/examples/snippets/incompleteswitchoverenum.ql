@@ -9,7 +9,7 @@
 
 import go
 
-from ExpressionSwitchStmt ss, DeclaredConstant c, NamedType t
+from ExpressionSwitchStmt ss, DeclaredConstant c, DefinedType t
 where
   t.getUnderlyingType() instanceof IntegerType and
   t = ss.getExpr().getType() and

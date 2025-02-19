@@ -16,6 +16,8 @@ private module HeaderInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof HttpHeaderInjection::Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof HttpHeaderInjection::Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "HTTP Header injection" vulnerabilities. */
