@@ -933,10 +933,8 @@ private module Cached {
    */
   cached
   predicate firstReadSameVar(Definition def, ControlFlow::Node cfn) {
-    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      cfn = bb2.getNode(i2)
+    exists(ControlFlow::BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i)
     )
   }
 
@@ -947,10 +945,13 @@ private module Cached {
    */
   cached
   predicate adjacentReadPairSameVar(Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
-    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
+    exists(
+      ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2,
+      Ssa::SourceVariable v
+    |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       cfn1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, def.getSourceVariable()) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       cfn2 = bb2.getNode(i2)
     )
   }
