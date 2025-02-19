@@ -88,6 +88,7 @@ class Declaration extends Locatable, @declaration {
    *
    * See the 3-argument `hasQualifiedName` for examples.
    */
+  pragma[noinline]
   predicate hasQualifiedName(string namespaceQualifier, string baseName) {
     this.hasQualifiedName(namespaceQualifier, "", baseName)
   }
