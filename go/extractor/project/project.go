@@ -315,6 +315,11 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 		goModFiles := findGoModFiles(".")
 
 		// Return a separate workspace for each `go.mod` file that we found.
+		if len(goModFiles) > 0 {
+			log.Printf("Found %d go.mod files in: %s.\n", len(goModFiles), strings.Join(goModFiles, ", "))
+		} else {
+			log.Println("Found no go.mod files in the workspace.")
+		}
 		results := make([]GoWorkspace, len(goModFiles))
 
 		for i, goModFile := range goModFiles {
