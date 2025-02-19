@@ -150,7 +150,6 @@
 | Tuples.cs:76:17:76:17 | access to local variable y | Tuples.cs:79:22:79:22 | access to local variable y |
 | Tuples.cs:78:19:78:23 | SSA def(a) | Tuples.cs:78:46:78:46 | access to local variable a |
 | Tuples.cs:78:19:78:23 | String a | Tuples.cs:78:19:78:23 | SSA def(a) |
-| Tuples.cs:78:19:78:23 | String a | Tuples.cs:78:19:78:23 | String a |
 | Tuples.cs:78:31:78:31 | Int32 b | Tuples.cs:78:31:78:31 | SSA def(b) |
 | Tuples.cs:78:31:78:31 | SSA def(b) | Tuples.cs:83:22:83:22 | access to local variable b |
 | Tuples.cs:78:34:78:34 | SSA def(c) | Tuples.cs:81:22:81:22 | access to local variable c |
