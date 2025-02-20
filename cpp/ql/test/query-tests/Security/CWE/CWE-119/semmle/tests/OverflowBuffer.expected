@@ -29,6 +29,9 @@
 | tests.cpp:363:2:363:16 | access to array | This array indexing operation accesses byte offset 219 but the $@ is only 200 bytes. | tests.cpp:344:11:344:21 | structArray | array |
 | tests.cpp:364:25:364:39 | access to array | This array indexing operation accesses byte offset 219 but the $@ is only 200 bytes. | tests.cpp:344:11:344:21 | structArray | array |
 | tests.cpp:367:23:367:34 | access to array | This array indexing operation accesses byte offset 43 but the $@ is only 40 bytes. | tests.cpp:343:6:343:13 | intArray | array |
+| tests.cpp:369:2:369:13 | access to array | This array indexing operation accesses a negative index -2 on the $@. | tests.cpp:342:7:342:15 | charArray | array |
+| tests.cpp:370:2:370:13 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:342:7:342:15 | charArray | array |
+| tests.cpp:374:2:374:13 | access to array | This array indexing operation accesses byte offset 10 but the $@ is only 10 bytes. | tests.cpp:342:7:342:15 | charArray | array |
 | tests.cpp:394:3:394:13 | access to array | This array indexing operation accesses byte offset 101 but the $@ is only 100 bytes. | tests.cpp:389:47:389:52 | call to malloc | array |
 | tests.cpp:397:3:397:13 | access to array | This array indexing operation accesses byte offset 101 but the $@ is only 101 bytes. | tests.cpp:390:47:390:52 | call to malloc | array |
 | tests.cpp:467:3:467:24 | access to array | This array indexing operation accesses a negative index -3 on the $@. | tests.cpp:465:7:465:14 | intArray | array |

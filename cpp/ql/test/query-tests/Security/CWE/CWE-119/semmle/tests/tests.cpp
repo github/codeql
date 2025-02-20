@@ -337,13 +337,13 @@ void test12()
 	}
 }
 
-void test13()
+void test13(char *argArray)
 {
 	char charArray[10];
 	int intArray[10];
 	myStruct structArray[10];
-
-
+	char *ptrArray = charArray;
+	char *ptrArrayOffset = charArray + 1;
 
 	charArray[-1] = 1; // BAD: underrun write
 	charArray[0] = 1; // GOOD
@@ -366,24 +366,24 @@ void test13()
 	charArray[9] = (char)intArray[9]; // GOOD
 	charArray[9] = (char)intArray[10]; // BAD: overrun read
 
+	ptrArray[-2] = 1; // BAD: underrun write
+	ptrArray[-1] = 1; // BAD: underrun write
+	ptrArray[0] = 1; // GOOD
+	ptrArray[8] = 1; // GOOD
+	ptrArray[9] = 1; // GOOD
+	ptrArray[10] = 1; // BAD: overrun write
 
+	ptrArrayOffset[-2] = 1; // BAD: underrun write [NOT DETECTED]
+	ptrArrayOffset[-1] = 1; // GOOD (there is room for this)
+	ptrArrayOffset[0] = 1; // GOOD
+	ptrArrayOffset[8] = 1; // GOOD
+	ptrArrayOffset[9] = 1; // BAD: overrun write [NOT DETECTED]
+	ptrArrayOffset[10] = 1; // BAD: overrun write [NOT DETECTED]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	argArray[-1] = 1; // BAD: underrun write [NOT DETECTED]
+	argArray[0] = 1; // GOOD
+	argArray[1] = 1; // GOOD (we can't tell the length of this array)
+	argArray[999] = 1; // GOOD (we can't tell the length of this array)
 
 	{
 		unsigned short *buffer1 = (unsigned short *)malloc(sizeof(short) * 50);
