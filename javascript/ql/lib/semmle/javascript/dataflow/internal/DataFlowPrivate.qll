@@ -558,14 +558,18 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
 
 newtype TDataFlowType =
   TFunctionType(Function f) or
+  TInstanceType(DataFlow::ClassNode cls) or
   TAnyType()
 
 class DataFlowType extends TDataFlowType {
   string toDebugString() {
-    this instanceof TFunctionType and
     result =
       "TFunctionType(" + this.asFunction().toString() + ") at line " +
         this.asFunction().getLocation().getStartLine()
+    or
+    result =
+      "TInstanceType(" + this.asInstanceOfClass().toString() + ") at line " +
+        this.asInstanceOfClass().getLocation().getStartLine()
     or
     this instanceof TAnyType and result = "TAnyType"
   }
@@ -575,13 +579,20 @@ class DataFlowType extends TDataFlowType {
   }
 
   Function asFunction() { this = TFunctionType(result) }
+
+  DataFlow::ClassNode asInstanceOfClass() { this = TInstanceType(result) }
 }
 
 /**
  * Holds if `t1` is strictly stronger than `t2`.
  */
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  t1 instanceof TFunctionType and t2 = TAnyType()
+  // 't1' is a subclass of 't2'
+  t1.asInstanceOfClass() = t2.asInstanceOfClass().getADirectSubClass+()
+  or
+  // Ensure all types are stronger than 'any'
+  not t1 = TAnyType() and
+  t2 = TAnyType()
 }
 
 private DataFlowType getPreciseType(Node node) {
@@ -589,6 +600,9 @@ private DataFlowType getPreciseType(Node node) {
     (node = TValueNode(f) or node = TFunctionSelfReferenceNode(f)) and
     result = TFunctionType(f)
   )
+  or
+  result.asInstanceOfClass() =
+    unique(DataFlow::ClassNode cls | cls.getAnInstanceReference().getALocalUse() = node)
   or
   result = getPreciseType(node.getImmediatePredecessor())
   or
@@ -683,18 +697,27 @@ predicate neverSkipInPathGraph(Node node) {
 string ppReprType(DataFlowType t) { none() }
 
 pragma[inline]
-private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
+private predicate compatibleTypesWithAny(DataFlowType t1, DataFlowType t2) {
   t1 != TAnyType() and
   t2 = TAnyType()
+}
+
+pragma[nomagic]
+private predicate compatibleTypes1(DataFlowType t1, DataFlowType t2) {
+  t1.asInstanceOfClass().getADirectSubClass+() = t2.asInstanceOfClass()
 }
 
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
   or
-  compatibleTypesNonSymRefl(t1, t2)
+  compatibleTypesWithAny(t1, t2)
   or
-  compatibleTypesNonSymRefl(t2, t1)
+  compatibleTypesWithAny(t2, t1)
+  or
+  compatibleTypes1(t1, t2)
+  or
+  compatibleTypes1(t2, t1)
 }
 
 predicate forceHighPrecision(Content c) { none() }
@@ -1061,17 +1084,54 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
 }
 
+private DataFlowCall getACallOnThis(DataFlow::ClassNode cls) {
+  result.asOrdinaryCall() = cls.getAReceiverNode().getAPropertyRead().getACall()
+  or
+  result.asAccessorCall() = cls.getAReceiverNode().getAPropertyRead()
+  or
+  result.asPartialCall().getACallbackNode() = cls.getAReceiverNode().getAPropertyRead()
+}
+
+private predicate downwardCall(DataFlowCall call) {
+  exists(DataFlow::ClassNode cls |
+    call = getACallOnThis(cls) and
+    viableCallable(call).asSourceCallable() =
+      cls.getADirectSubClass+().getAnInstanceMember().getFunction()
+  )
+}
+
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call) { downwardCall(call) }
+
+/** Gets the type of the receiver of `call`. */
+private DataFlowType getThisArgumentType(DataFlowCall call) {
+  exists(DataFlow::Node node |
+    isArgumentNodeImpl(node, call, MkThisParameter()) and
+    result = getNodeType(node)
+  )
+}
+
+/** Gets the type of the 'this' parameter of `call`. */
+private DataFlowType getThisParameterType(DataFlowCallable callable) {
+  exists(DataFlow::Node node |
+    isParameterNodeImpl(node, callable, MkThisParameter()) and
+    result = getNodeType(node)
+  )
+}
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  mayBenefitFromCallContext(call) and
+  result = viableCallable(call) and
+  viableCallable(ctx) = call.getEnclosingCallable() and
+  compatibleTypes(getThisArgumentType(ctx), getThisParameterType(result))
+}
 
 bindingset[node, fun]
 pragma[inline_late]
