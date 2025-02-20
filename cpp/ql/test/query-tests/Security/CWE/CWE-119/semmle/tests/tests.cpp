@@ -955,6 +955,26 @@ void test26() {
 	zs[1][2] = 0; // BAD: overrun write [NOT DETECTED]
 }
 
+struct Array10 {
+	int values[10];
+};
+
+void test27(size_t s) {
+	Array10 arr;
+
+	if (s < sizeof(arr.values[10])) { // GOOD (harmless)
+		// ...
+	}
+
+	if (s < offsetof(Array10, values[10])) { // GOOD (harmless) [FALSE POSITIVE]
+		// ...
+	}
+
+	if (s < &(arr.values[10]) - &(arr.values[0])) { // GOOD (harmless)
+		// ...
+	}
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -983,6 +1003,7 @@ int tests_main(int argc, char *argv[])
 	test24(argv[0]);
 	test25(argv[0]);
 	test26();
+	test27(argc);
 
 	return 0;
 }
