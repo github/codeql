@@ -110,8 +110,8 @@ module StringOps {
       DataFlow::EqualityTestNode eq, DataFlow::Node str, DataFlow::Node rhs
     ) {
       exists(DataFlow::ElementReadNode read |
-        eq.hasOperands(globalValueNumber(read).getANode(), rhs) and
-        str = read.getBase() and
+        eq.hasOperands(globalValueNumber(pragma[only_bind_out](read)).getANode(), rhs) and
+        str = pragma[only_bind_out](read).getBase() and
         str.getType().getUnderlyingType() instanceof StringType and
         read.getIndex().getIntValue() = 0
       )
