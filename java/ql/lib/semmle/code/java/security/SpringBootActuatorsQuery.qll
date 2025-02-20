@@ -40,7 +40,7 @@ private class RegistryRequestMatchersCall extends MethodCall {
   }
 }
 
-/** Holds if `permitAll` is called on request(s) mapped to actuator endpoint(s). */
+/** Holds if `permitAllCall` is called on request(s) mapped to actuator endpoint(s). */
 predicate permitsSpringBootActuators(PermitAllCall permitAllCall) {
   exists(AuthorizeRequestsCall authorizeRequestsCall |
     // .requestMatcher(EndpointRequest).authorizeRequests([...]).[...]
