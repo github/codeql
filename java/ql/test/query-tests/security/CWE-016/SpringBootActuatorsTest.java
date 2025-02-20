@@ -1,33 +1,33 @@
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-public class SpringBootActuators {
+public class SpringBootActuatorsTest {
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests(requests -> requests.anyRequest().permitAll());
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests(requests -> requests.anyRequest().permitAll()); // $ hasExposedSpringBootActuator
   }
 
   protected void configure2(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll();
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll(); // $ hasExposedSpringBootActuator
   }
 
   protected void configure3(HttpSecurity http) throws Exception {
-    http.requestMatchers(matcher -> EndpointRequest.toAnyEndpoint()).authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll();
+    http.requestMatchers(matcher -> EndpointRequest.toAnyEndpoint()).authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll(); // $ hasExposedSpringBootActuator
   }
 
   protected void configure4(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests().anyRequest().permitAll();
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests().anyRequest().permitAll(); // $ hasExposedSpringBootActuator
   }
 
   protected void configure5(HttpSecurity http) throws Exception {
-    http.authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll();
+    http.authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll(); // $ hasExposedSpringBootActuator
   }
 
   protected void configure6(HttpSecurity http) throws Exception {
-    http.authorizeRequests(requests -> requests.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll());
+    http.authorizeRequests(requests -> requests.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()); // $ hasExposedSpringBootActuator
   }
 
   protected void configure7(HttpSecurity http) throws Exception {
-    http.requestMatchers(matcher -> EndpointRequest.toAnyEndpoint()).authorizeRequests().anyRequest().permitAll();
+    http.requestMatchers(matcher -> EndpointRequest.toAnyEndpoint()).authorizeRequests().anyRequest().permitAll(); // $ hasExposedSpringBootActuator
   }
 
   protected void configureOk1(HttpSecurity http) throws Exception {

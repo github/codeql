@@ -12,7 +12,7 @@
  */
 
 import java
-import SpringBootActuators
+import semmle.code.java.security.SpringBootActuatorsQuery
 
 from PermitAllCall permitAllCall
 where permitAllCall.permitsSpringBootActuators()
