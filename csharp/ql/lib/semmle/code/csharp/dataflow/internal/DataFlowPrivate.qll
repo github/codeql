@@ -2597,10 +2597,17 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     or
     dynamicPropertyRead(node1.asExpr(), c, node2.asExpr())
     or
-    patternPropertyRead(node1.asExpr(), c, node2.asExpr())
-    or
     node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
     c = getResultContent()
+  )
+  or
+  exists(ReadStepConfiguration x, ControlFlow::Node cfn1, ControlFlow::Node cfn2 |
+    cfn1 = node1.getControlFlowNode() and
+    cfn2 = node2.getControlFlowNode() and
+    cfn1.getAMatchPredecessor() = cfn2 and
+    x.hasExprPath(_, cfn1, _, cfn2)
+  |
+    patternPropertyRead(node1.asExpr(), c, node2.asExpr())
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
