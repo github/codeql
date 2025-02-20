@@ -520,6 +520,16 @@ module SsaFlow {
 
 /** Provides predicates related to local data flow. */
 module LocalFlow {
+  /**
+   * Holds if the pattern `e` is a top level variable pattern expression or
+   * if the pattern doesn't contain any variable pattern expressions.
+   */
+  private predicate basicPattern(PatternExpr e) {
+    e instanceof VariablePatternExpr
+    or
+    not exists(VariablePatternExpr vpe | e.getAChild*() = vpe)
+  }
+
   class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
     LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
@@ -615,14 +625,16 @@ module LocalFlow {
         scope =
           any(IsExpr ie |
             e1 = ie.getExpr() and
-            e2 = ie.getPattern()
+            e2 = ie.getPattern() and
+            not basicPattern(e2)
           )
         or
         isSuccessor = true and
         scope =
           any(Switch e |
             e1 = e.getExpr() and
-            e2 = e.getACase().getPattern()
+            e2 = e.getACase().getPattern() and
+            not basicPattern(e2)
           )
         or
         isSuccessor = false and
