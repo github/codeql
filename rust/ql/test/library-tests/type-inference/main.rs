@@ -58,8 +58,8 @@ mod m2 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // missing
-        println!("{:?}", y.m1().a); // missing
+        println!("{:?}", x.m1()); // spurious `MyThing<S2>` type
+        println!("{:?}", y.m1().a); // spurious `S1` type for `y.m1()`
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -111,8 +111,8 @@ mod m3 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // missing
-        println!("{:?}", y.m1().a); // missing
+        println!("{:?}", x.m1()); // spurious `MyThing<S2>` type
+        println!("{:?}", y.m1().a); // spurious `S1` type for `y.m1()`
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -308,14 +308,14 @@ mod m7 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // missing
-        println!("{:?}", y.m2()); // missing
+        println!("{:?}", x.m2());
+        println!("{:?}", y.m2());
 
         let x = MyThing2 { a: S1 };
         let y = MyThing2 { a: S2 };
 
-        println!("{:?}", x.m3()); // missing
-        println!("{:?}", y.m3()); // missing
+        println!("{:?}", x.m3());
+        println!("{:?}", y.m3());
     }
 }
 
