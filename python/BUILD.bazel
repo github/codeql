@@ -31,8 +31,8 @@ pkg_filegroup(
 )
 
 pkg_files(
-    name = "codeql-extractor-yml",
-    srcs = ["codeql-extractor.yml"],
+    name = "resources",
+    srcs = ["codeql-extractor.yml", "//:LICENSE"],
     strip_prefix = None,
 )
 
@@ -47,7 +47,7 @@ codeql_pkg_files(
 codeql_pack(
     name = "python",
     srcs = [
-        ":codeql-extractor-yml",
+        ":resources",
         ":dbscheme-group",
         ":extractor-arch",
         "//python/downgrades",

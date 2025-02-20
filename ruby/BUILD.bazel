@@ -32,7 +32,7 @@ pkg_filegroup(
 
 codeql_pkg_files(
     name = "codeql-extractor-yml",
-    srcs = ["codeql-extractor.yml"],
+    srcs = ["codeql-extractor.yml", "//:LICENSE"],
     strip_prefix = None,
 )
 

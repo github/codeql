@@ -83,6 +83,7 @@ codeql_pkg_files(
         "codeql-extractor.yml",
         "ql/lib/swift.dbscheme.stats",
         "//swift/extractor/trap:generated_dbscheme",
+        "//:LICENSE",
     ],
 )
 
