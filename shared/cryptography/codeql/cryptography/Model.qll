@@ -706,7 +706,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = instance.getCipherOperationMode()
     }
 
-    final override EncryptionAlgorithm getAlgorithm() { result = instance.getAlgorithm() }
+    final override EncryptionAlgorithm getAlgorithm() { result.getInstance() = instance.getAlgorithm() }
 
     override string getInternalType() { result = "CipherOperation" }
     // /**
