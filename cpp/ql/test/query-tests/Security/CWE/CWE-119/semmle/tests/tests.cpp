@@ -890,6 +890,71 @@ struct S2 {
   }
 };
 
+typedef int MyArray[10];
+
+typedef struct _MyArrayArray {
+	struct {
+		int as[10];
+	} bs[10];
+
+	union {
+		int i;
+		char cs[4];
+	} ds[10];
+
+	struct {
+		MyArray xs;
+	} ys[10];
+} MyArrayArray;
+
+void test26() {
+	MyArrayArray maa;
+
+	maa.bs[0].as[-1] = 0; // BAD: underrun write [NOT DETECTED]
+	maa.bs[0].as[0] = 0; // GOOD
+	maa.bs[0].as[99] = 0; // GOOD (overflows into bs[9]) [FALSE POSITIVE]
+	maa.bs[0].as[100] = 0; // BAD: overrun write
+	maa.bs[1].as[-1] = 0; // GOOD (underflows into bs[0]) [FALSE POSITIVE]
+	maa.bs[1].as[0] = 0; // GOOD
+	maa.bs[1].as[99] = 0; // BAD: overrun write
+	maa.bs[1].as[100] = 0; // BAD: overrun write
+
+	maa.ds[0].i = 0; // GOOD
+	maa.ds[9].i = 0; // GOOD
+	maa.ds[10].i = 0; // BAD: overrun write
+	maa.ds[0].cs[0] = 0; // GOOD
+	maa.ds[0].cs[3] = 0; // GOOD
+	maa.ds[0].cs[4] = 0; // GOOD (overflows into vs[1] [FALSE POSITIVE]
+	maa.ds[0].cs[39] = 0; // GOOD (overflows into vs[9] [FALSE POSITIVE]
+	maa.ds[0].cs[40] = 0; // BAD: overrun write
+	maa.ds[9].cs[0] = 0; // GOOD
+	maa.ds[9].cs[3] = 0; // GOOD
+	maa.ds[9].cs[4] = 0; // BAD: overrun write
+
+	maa.ys[0].xs[-1] = 0; // BAD: underrun write
+	maa.ys[0].xs[0] = 0; // GOOD
+	maa.ys[0].xs[99] = 0; // GOOD (overflows into bs[9]) [FALSE POSITIVE]
+	maa.ys[0].xs[100] = 0; // BAD: overrun write
+	maa.ys[1].xs[-1] = 0; // GOOD (underflows into ys[0]) [FALSE POSITIVE]
+	maa.ys[1].xs[0] = 0; // GOOD
+	maa.ys[1].xs[99] = 0; // BAD: overrun write
+	maa.ys[1].xs[100] = 0; // BAD: overrun write
+
+	char zs[2][2];
+	zs[0][-1] = 0; // BAD: underrun write [NOT DETECTED]
+	zs[0][0] = 0; // GOOD
+	zs[0][1] = 0; // GOOD
+	zs[0][2] = 0; // GOOD
+	zs[0][3] = 0; // GOOD
+	zs[0][4] = 0; // BAD: overrun write [NOT DETECTED]
+	zs[1][-3] = 0; // BAD: underrun write [NOT DETECTED]
+	zs[1][-2] = 0; // GOOD
+	zs[1][-1] = 0; // GOOD
+	zs[1][0] = 0; // GOOD
+	zs[1][1] = 0; // GOOD
+	zs[1][2] = 0; // BAD: overrun write [NOT DETECTED]
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -917,6 +982,7 @@ int tests_main(int argc, char *argv[])
 	test23();
 	test24(argv[0]);
 	test25(argv[0]);
+	test26();
 
 	return 0;
 }
