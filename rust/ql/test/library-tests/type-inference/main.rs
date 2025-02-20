@@ -241,6 +241,11 @@ mod m7 {
     }
 
     #[derive(Debug)]
+    struct MyThing2<A> {
+        a: A,
+    }
+
+    #[derive(Debug)]
     struct S1;
     #[derive(Debug)]
     struct S2;
@@ -262,6 +267,19 @@ mod m7 {
         }
     }
 
+    trait MyTrait3<A>: MyTrait2<MyThing<A>> {
+        fn m3(self) -> A
+        where
+            Self: Sized,
+        {
+            if 1 + 1 > 2 {
+                self.m2().a
+            } else {
+                Self::m2(self).a
+            }
+        }
+    }
+
     impl<T> MyTrait1<T> for MyThing<T> {
         fn m1(self) -> T {
             self.a
@@ -269,6 +287,16 @@ mod m7 {
     }
 
     impl<T> MyTrait2<T> for MyThing<T> {}
+
+    impl<T> MyTrait1<MyThing<T>> for MyThing2<T> {
+        fn m1(self) -> MyThing<T> {
+            MyThing { a: self.a }
+        }
+    }
+
+    impl<T> MyTrait2<MyThing<T>> for MyThing2<T> {}
+
+    impl<T> MyTrait3<T> for MyThing2<T> {}
 
     pub fn f() {
         let x = MyThing { a: S1 };
@@ -282,6 +310,12 @@ mod m7 {
 
         println!("{:?}", x.m2()); // missing
         println!("{:?}", y.m2()); // missing
+
+        let x = MyThing2 { a: S1 };
+        let y = MyThing2 { a: S2 };
+
+        println!("{:?}", x.m3()); // missing
+        println!("{:?}", y.m3()); // missing
     }
 }
 
