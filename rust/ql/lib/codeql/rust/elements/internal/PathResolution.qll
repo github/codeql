@@ -551,14 +551,25 @@ private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePath0(RelevantPath path) {
-  exists(ItemNode encl, Namespace ns, string name, ItemNode res |
+ItemNode unqualifiedPathLookup(RelevantPath path) {
+  exists(ItemNode encl, Namespace ns, string name |
     unqualifiedPathLookup(path, name, ns, encl) and
-    res = getASuccessor(encl, name, ns)
-  |
+    result = getASuccessor(encl, name, ns)
+  )
+}
+
+pragma[nomagic]
+predicate isUnqualifiedSelfPath(RelevantPath path) {
+  not any(RelevantPath parent).getQualifier() = path and
+  path.isUnqualified("Self")
+}
+
+pragma[nomagic]
+private ItemNode resolvePath0(RelevantPath path) {
+  exists(ItemNode res |
+    res = unqualifiedPathLookup(path) and
     if
-      not any(RelevantPath parent).getQualifier() = path and
-      name = "Self" and
+      isUnqualifiedSelfPath(path) and
       res instanceof ImplItemNode
     then result = res.(ImplItemNode).resolveSelfTy()
     else result = res
