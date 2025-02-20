@@ -163,6 +163,9 @@ abstract class ItemNode extends AstNode {
     name = "crate" and
     result.(SourceFileItemNode).getFile() = this.getFile()
   }
+
+  /** Gets the location of this item. */
+  Location getLocation() { result = super.getLocation() }
 }
 
 /** A module or a source file. */
@@ -335,6 +338,8 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { none() }
+
+  override Location getLocation() { result = TypeParam.super.getName().getLocation() }
 }
 
 /** Holds if `item` has the name `name` and is a top-level item inside `f`. */
