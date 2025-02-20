@@ -1,6 +1,6 @@
 /**
  * Provides classes for working with Spring classes and interfaces from
- * `org.springframework.boot`.
+ * `org.springframework.boot.*`.
  */
 
 import java
