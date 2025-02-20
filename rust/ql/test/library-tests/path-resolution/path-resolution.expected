@@ -197,6 +197,7 @@ resolvePath
 | main.rs:461:7:461:13 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
 | main.rs:462:10:462:10 | T | main.rs:460:10:460:10 | T |
 | main.rs:464:9:464:9 | T | main.rs:460:10:460:10 | T |
+| main.rs:464:9:464:12 | ...::f | main.rs:446:9:446:20 | fn f |
 | main.rs:465:9:465:15 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
 | main.rs:465:9:465:18 | ...::f | main.rs:446:9:446:20 | fn f |
 | main.rs:470:9:470:9 | g | main.rs:459:5:466:5 | fn g |

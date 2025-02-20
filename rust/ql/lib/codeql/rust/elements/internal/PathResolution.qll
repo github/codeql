@@ -154,6 +154,13 @@ abstract class ItemNode extends AstNode {
       result.(AssocItemNode).hasImplementation() and
       not impl.declares(name)
     )
+    or
+    // type parameters have access to the associated items of its bounds
+    this =
+      any(TypeParamItemNode param |
+        result = param.resolveABound().getASuccessorRec(name) and
+        result instanceof AssocItemNode
+      )
   }
 
   /** Gets a successor named `name` of this item, if any. */
@@ -375,6 +382,13 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
 }
 
 private class TypeParamItemNode extends ItemNode instanceof TypeParam {
+  pragma[nomagic]
+  Path getABoundPath() {
+    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
   override string getName() { result = TypeParam.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }

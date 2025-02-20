@@ -461,7 +461,7 @@ mod m17 {
       MyTrait // $ item=I2
     >(x: T) { // $ item=I5
         x.f(); // $ MISSING: item=I1
-        T::f(&x); // $ MISSING: item=I1
+        T::f(&x); // $ item=I1
         MyTrait::f(&x); // $ item=I1
     } // I6
 
