@@ -346,6 +346,8 @@ module JCAModel {
     // the actual mode directly
     Expr getModeArg() { result = this.getArgument(0) }
 
+    // TODO: need a getModeOrigin
+
     Expr getKey() {
       result = this.getArgument(1) and this.getMethod().getParameterType(1).hasName("Key")
     }
