@@ -318,7 +318,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * Holds if we should synthesize a pseudo-read of `v` at the beginning of `bb`.
    *
    * These reads are named phi-reads, since they are constructed in the same
-   * way as ordinary phi nodes except all all reads are treated as potential
+   * way as ordinary phi nodes except all reads are treated as potential
    * "definitions". This ensures that use-use flow has the same dominance
    * properties as def-use flow.
    */
