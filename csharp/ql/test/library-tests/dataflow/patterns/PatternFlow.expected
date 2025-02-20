@@ -10,8 +10,6 @@ edges
 | Patterns.cs:11:17:11:33 | call to method Source<Object> : Object | Patterns.cs:11:13:11:13 | access to local variable o : Object | provenance |  |
 | Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:31:13:48 | [match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:31:13:48 | [match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
-| Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:31:13:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
-| Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:13:31:13:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:12:13:12:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | provenance |  |
@@ -20,8 +18,6 @@ edges
 | Patterns.cs:12:34:12:34 | access to local variable o : Object | Patterns.cs:12:17:12:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:13:31:13:48 | [match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:13:39:13:46 | Object p : Object | provenance |  |
 | Patterns.cs:13:31:13:48 | [match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:13:39:13:46 | Object p : Object | provenance |  |
-| Patterns.cs:13:31:13:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:13:39:13:46 | Object p : Object | provenance |  |
-| Patterns.cs:13:31:13:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:13:39:13:46 | Object p : Object | provenance |  |
 | Patterns.cs:13:39:13:46 | Object p : Object | Patterns.cs:15:18:15:18 | access to local variable p | provenance |  |
 | Patterns.cs:13:39:13:46 | Object p : Object | Patterns.cs:15:18:15:18 | access to local variable p | provenance |  |
 | Patterns.cs:21:13:21:13 | access to local variable o : Object | Patterns.cs:22:34:22:34 | access to local variable o : Object | provenance |  |
@@ -30,8 +26,6 @@ edges
 | Patterns.cs:21:17:21:33 | call to method Source<Object> : Object | Patterns.cs:21:13:21:13 | access to local variable o : Object | provenance |  |
 | Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:25:31:25:48 | [match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:25:31:25:48 | [match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
-| Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:25:31:25:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
-| Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | Patterns.cs:25:31:25:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:22:13:22:13 | access to local variable r : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:3:41:3:44 | Prop : Object | provenance |  |
@@ -40,8 +34,6 @@ edges
 | Patterns.cs:22:34:22:34 | access to local variable o : Object | Patterns.cs:22:17:22:35 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:25:31:25:48 | [match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:25:39:25:46 | Object p : Object | provenance |  |
 | Patterns.cs:25:31:25:48 | [match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:25:39:25:46 | Object p : Object | provenance |  |
-| Patterns.cs:25:31:25:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:25:39:25:46 | Object p : Object | provenance |  |
-| Patterns.cs:25:31:25:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | Patterns.cs:25:39:25:46 | Object p : Object | provenance |  |
 | Patterns.cs:25:39:25:46 | Object p : Object | Patterns.cs:26:22:26:22 | access to local variable p | provenance |  |
 | Patterns.cs:25:39:25:46 | Object p : Object | Patterns.cs:26:22:26:22 | access to local variable p | provenance |  |
 | Patterns.cs:33:13:33:13 | access to local variable o : Object | Patterns.cs:34:45:34:45 | access to local variable o : Object | provenance |  |
@@ -50,8 +42,6 @@ edges
 | Patterns.cs:33:17:33:33 | call to method Source<Object> : Object | Patterns.cs:33:13:33:13 | access to local variable o : Object | provenance |  |
 | Patterns.cs:34:13:34:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:35:25:35:54 | [match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:34:13:34:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:35:25:35:54 | [match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:34:13:34:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:35:25:35:54 | [no-match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:34:13:34:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:35:25:35:54 | [no-match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:34:17:34:47 | object creation of type Nested : Nested [property Record, property Prop] : Object | Patterns.cs:34:13:34:13 | access to local variable s : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:34:17:34:47 | object creation of type Nested : Nested [property Record, property Prop] : Object | Patterns.cs:34:13:34:13 | access to local variable s : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:34:28:34:46 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:5:41:5:46 | Record : RecordClass2 [property Prop] : Object | provenance |  |
@@ -64,16 +54,10 @@ edges
 | Patterns.cs:34:45:34:45 | access to local variable o : Object | Patterns.cs:34:28:34:46 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:35:25:35:54 | [match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | provenance |  |
 | Patterns.cs:35:25:35:54 | [match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:35:25:35:54 | [no-match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:35:25:35:54 | [no-match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | provenance |  |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | provenance |  |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | provenance |  |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | Patterns.cs:35:43:35:50 | Object p : Object | provenance |  |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | Patterns.cs:35:43:35:50 | Object p : Object | provenance |  |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | Patterns.cs:35:43:35:50 | Object p : Object | provenance |  |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | Patterns.cs:35:43:35:50 | Object p : Object | provenance |  |
 | Patterns.cs:35:43:35:50 | Object p : Object | Patterns.cs:37:18:37:18 | access to local variable p | provenance |  |
 | Patterns.cs:35:43:35:50 | Object p : Object | Patterns.cs:37:18:37:18 | access to local variable p | provenance |  |
 | Patterns.cs:43:13:43:13 | access to local variable o : Object | Patterns.cs:44:45:44:45 | access to local variable o : Object | provenance |  |
@@ -82,8 +66,6 @@ edges
 | Patterns.cs:43:17:43:33 | call to method Source<Object> : Object | Patterns.cs:43:13:43:13 | access to local variable o : Object | provenance |  |
 | Patterns.cs:44:13:44:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:45:25:45:49 | [match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:44:13:44:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:45:25:45:49 | [match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:44:13:44:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:45:25:45:49 | [no-match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
-| Patterns.cs:44:13:44:13 | access to local variable s : Nested [property Record, property Prop] : Object | Patterns.cs:45:25:45:49 | [no-match] { ... } : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:44:17:44:47 | object creation of type Nested : Nested [property Record, property Prop] : Object | Patterns.cs:44:13:44:13 | access to local variable s : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:44:17:44:47 | object creation of type Nested : Nested [property Record, property Prop] : Object | Patterns.cs:44:13:44:13 | access to local variable s : Nested [property Record, property Prop] : Object | provenance |  |
 | Patterns.cs:44:28:44:46 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | Patterns.cs:5:41:5:46 | Record : RecordClass2 [property Prop] : Object | provenance |  |
@@ -96,12 +78,8 @@ edges
 | Patterns.cs:44:45:44:45 | access to local variable o : Object | Patterns.cs:44:28:44:46 | object creation of type RecordClass2 : RecordClass2 [property Prop] : Object | provenance |  |
 | Patterns.cs:45:25:45:49 | [match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:45:27:45:32 | [match] { ... } : null [property Prop] : Object | provenance |  |
 | Patterns.cs:45:25:45:49 | [match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:45:27:45:32 | [match] { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:45:25:45:49 | [no-match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:45:27:45:32 | [no-match] { ... } : null [property Prop] : Object | provenance |  |
-| Patterns.cs:45:25:45:49 | [no-match] { ... } : Nested [property Record, property Prop] : Object | Patterns.cs:45:27:45:32 | [no-match] { ... } : null [property Prop] : Object | provenance |  |
 | Patterns.cs:45:27:45:32 | [match] { ... } : null [property Prop] : Object | Patterns.cs:45:40:45:47 | Object p : Object | provenance |  |
 | Patterns.cs:45:27:45:32 | [match] { ... } : null [property Prop] : Object | Patterns.cs:45:40:45:47 | Object p : Object | provenance |  |
-| Patterns.cs:45:27:45:32 | [no-match] { ... } : null [property Prop] : Object | Patterns.cs:45:40:45:47 | Object p : Object | provenance |  |
-| Patterns.cs:45:27:45:32 | [no-match] { ... } : null [property Prop] : Object | Patterns.cs:45:40:45:47 | Object p : Object | provenance |  |
 | Patterns.cs:45:40:45:47 | Object p : Object | Patterns.cs:47:18:47:18 | access to local variable p | provenance |  |
 | Patterns.cs:45:40:45:47 | Object p : Object | Patterns.cs:47:18:47:18 | access to local variable p | provenance |  |
 nodes
@@ -125,8 +103,6 @@ nodes
 | Patterns.cs:12:34:12:34 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Patterns.cs:13:31:13:48 | [match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [match] { ... } : RecordClass2 [property Prop] : Object |
 | Patterns.cs:13:31:13:48 | [match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [match] { ... } : RecordClass2 [property Prop] : Object |
-| Patterns.cs:13:31:13:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [no-match] { ... } : RecordClass2 [property Prop] : Object |
-| Patterns.cs:13:31:13:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [no-match] { ... } : RecordClass2 [property Prop] : Object |
 | Patterns.cs:13:39:13:46 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:13:39:13:46 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:15:18:15:18 | access to local variable p | semmle.label | access to local variable p |
@@ -143,8 +119,6 @@ nodes
 | Patterns.cs:22:34:22:34 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Patterns.cs:25:31:25:48 | [match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [match] { ... } : RecordClass2 [property Prop] : Object |
 | Patterns.cs:25:31:25:48 | [match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [match] { ... } : RecordClass2 [property Prop] : Object |
-| Patterns.cs:25:31:25:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [no-match] { ... } : RecordClass2 [property Prop] : Object |
-| Patterns.cs:25:31:25:48 | [no-match] { ... } : RecordClass2 [property Prop] : Object | semmle.label | [no-match] { ... } : RecordClass2 [property Prop] : Object |
 | Patterns.cs:25:39:25:46 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:25:39:25:46 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:26:22:26:22 | access to local variable p | semmle.label | access to local variable p |
@@ -163,16 +137,10 @@ nodes
 | Patterns.cs:34:45:34:45 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Patterns.cs:35:25:35:54 | [match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [match] { ... } : Nested [property Record, property Prop] : Object |
 | Patterns.cs:35:25:35:54 | [match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [match] { ... } : Nested [property Record, property Prop] : Object |
-| Patterns.cs:35:25:35:54 | [no-match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [no-match] { ... } : Nested [property Record, property Prop] : Object |
-| Patterns.cs:35:25:35:54 | [no-match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [no-match] { ... } : Nested [property Record, property Prop] : Object |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | semmle.label | [match] { ... } : null [property Prop] : Object |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | semmle.label | [match] { ... } : null [property Prop] : Object |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | semmle.label | [match] { ... } : null [property Prop] : Object |
 | Patterns.cs:35:35:35:52 | [match] { ... } : null [property Prop] : Object | semmle.label | [match] { ... } : null [property Prop] : Object |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | semmle.label | [no-match] { ... } : null [property Prop] : Object |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | semmle.label | [no-match] { ... } : null [property Prop] : Object |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | semmle.label | [no-match] { ... } : null [property Prop] : Object |
-| Patterns.cs:35:35:35:52 | [no-match] { ... } : null [property Prop] : Object | semmle.label | [no-match] { ... } : null [property Prop] : Object |
 | Patterns.cs:35:43:35:50 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:35:43:35:50 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:37:18:37:18 | access to local variable p | semmle.label | access to local variable p |
@@ -191,12 +159,8 @@ nodes
 | Patterns.cs:44:45:44:45 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Patterns.cs:45:25:45:49 | [match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [match] { ... } : Nested [property Record, property Prop] : Object |
 | Patterns.cs:45:25:45:49 | [match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [match] { ... } : Nested [property Record, property Prop] : Object |
-| Patterns.cs:45:25:45:49 | [no-match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [no-match] { ... } : Nested [property Record, property Prop] : Object |
-| Patterns.cs:45:25:45:49 | [no-match] { ... } : Nested [property Record, property Prop] : Object | semmle.label | [no-match] { ... } : Nested [property Record, property Prop] : Object |
 | Patterns.cs:45:27:45:32 | [match] { ... } : null [property Prop] : Object | semmle.label | [match] { ... } : null [property Prop] : Object |
 | Patterns.cs:45:27:45:32 | [match] { ... } : null [property Prop] : Object | semmle.label | [match] { ... } : null [property Prop] : Object |
-| Patterns.cs:45:27:45:32 | [no-match] { ... } : null [property Prop] : Object | semmle.label | [no-match] { ... } : null [property Prop] : Object |
-| Patterns.cs:45:27:45:32 | [no-match] { ... } : null [property Prop] : Object | semmle.label | [no-match] { ... } : null [property Prop] : Object |
 | Patterns.cs:45:40:45:47 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:45:40:45:47 | Object p : Object | semmle.label | Object p : Object |
 | Patterns.cs:47:18:47:18 | access to local variable p | semmle.label | access to local variable p |
