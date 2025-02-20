@@ -9,12 +9,21 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 
 public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<DefaultSecurityFilterChain, HttpSecurity>
 		implements SecurityBuilder<DefaultSecurityFilterChain>, HttpSecurityBuilder<HttpSecurity> {
 
 	public HttpSecurity requestMatcher(RequestMatcher requestMatcher) {
+		return this;
+	}
+
+	public HttpSecurity securityMatcher(RequestMatcher requestMatcher) {
+		return this;
+	}
+
+	public HttpSecurity securityMatcher(String... patterns) {
 		return this;
 	}
 
@@ -29,11 +38,30 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 		return null;
 	}
 
+	public HttpSecurity authorizeHttpRequests(
+			Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizeHttpRequestsCustomizer)
+			throws Exception {
+		return this;
+	}
+
+	public AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizeHttpRequests()
+			throws Exception {
+		return null;
+	}
+
 	public HttpSecurity requestMatchers(Customizer<RequestMatcherConfigurer> requestMatcherCustomizer) {
 		return this;
 	}
 
 	public RequestMatcherConfigurer requestMatchers() {
+		return null;
+	}
+
+	public HttpSecurity securityMatchers(Customizer<RequestMatcherConfigurer> requestMatcherCustomizer) {
+		return this;
+	}
+
+	public RequestMatcherConfigurer securityMatchers() {
 		return null;
 	}
 

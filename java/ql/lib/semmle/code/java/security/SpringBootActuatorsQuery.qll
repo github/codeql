@@ -6,7 +6,7 @@ private import semmle.code.java.frameworks.spring.SpringBoot
 
 /**
  * A call to `HttpSecurity.requestMatcher` method with argument
- * `RequestMatcher.toAnyEndpoint()`.
+ * `EndpointRequest.toAnyEndpoint()`.
  */
 private class RequestMatcherCall extends MethodCall {
   RequestMatcherCall() {
@@ -18,7 +18,7 @@ private class RequestMatcherCall extends MethodCall {
 
 /**
  * A call to `HttpSecurity.requestMatchers` method with lambda argument
- * `RequestMatcher.toAnyEndpoint()`.
+ * `EndpointRequest.toAnyEndpoint()`.
  */
 private class RequestMatchersCall extends MethodCall {
   RequestMatchersCall() {
@@ -40,18 +40,75 @@ private class RegistryRequestMatchersCall extends MethodCall {
   }
 }
 
+/**
+ * A call to `HttpSecurity.securityMatcher` method with argument
+ * `EndpointRequest.toAnyEndpoint()`.
+ */
+private class SecurityMatcherCall extends MethodCall {
+  SecurityMatcherCall() {
+    this.getMethod().hasName("securityMatcher") and
+    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity and
+    this.getArgument(0) instanceof ToAnyEndpointCall
+  }
+}
+
+/**
+ * A call to `HttpSecurity.securityMatchers` method with lambda argument
+ * `EndpointRequest.toAnyEndpoint()`.
+ */
+private class SecurityMatchersCall extends MethodCall {
+  SecurityMatchersCall() {
+    this.getMethod().hasName("securityMatchers") and
+    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity and
+    this.getArgument(0).(LambdaExpr).getExprBody() instanceof ToAnyEndpointCall
+  }
+}
+
+/**
+ * A call to a method that authorizes requests, e.g. `authorizeRequests` or
+ * `authorizeHttpRequests`.
+ */
+private class AuthorizeCall extends MethodCall {
+  AuthorizeCall() {
+    this instanceof AuthorizeRequestsCall or
+    this instanceof AuthorizeHttpRequestsCall
+  }
+}
+
+/**
+ * A call to a matcher method with argument
+ * `EndpointRequest.toAnyEndpoint()`.
+ */
+private class MatcherCall extends MethodCall {
+  MatcherCall() {
+    this instanceof RequestMatcherCall or
+    this instanceof SecurityMatcherCall
+  }
+}
+
+/**
+ * A call to a matchers method with argument
+ * `EndpointRequest.toAnyEndpoint()`.
+ */
+private class MatchersCall extends MethodCall {
+  MatchersCall() {
+    this instanceof RequestMatchersCall or
+    this instanceof SecurityMatchersCall
+  }
+}
+
 /** Holds if `permitAllCall` is called on request(s) mapped to actuator endpoint(s). */
 predicate permitsSpringBootActuators(PermitAllCall permitAllCall) {
-  exists(AuthorizeRequestsCall authorizeRequestsCall |
+  exists(AuthorizeCall authorizeCall |
     // .requestMatcher(EndpointRequest).authorizeRequests([...]).[...]
-    authorizeRequestsCall.getQualifier() instanceof RequestMatcherCall
+    authorizeCall.getQualifier() instanceof MatcherCall
     or
     // .requestMatchers(matcher -> EndpointRequest).authorizeRequests([...]).[...]
-    authorizeRequestsCall.getQualifier() instanceof RequestMatchersCall
+    authorizeCall.getQualifier() instanceof MatchersCall
   |
     // [...].authorizeRequests(r -> r.anyRequest().permitAll()) or
     // [...].authorizeRequests(r -> r.requestMatchers(EndpointRequest).permitAll())
-    authorizeRequestsCall.getArgument(0).(LambdaExpr).getExprBody() = permitAllCall and
+    authorizeCall.getArgument(0).(LambdaExpr).getExprBody() = permitAllCall and
     (
       permitAllCall.getQualifier() instanceof AnyRequestCall or
       permitAllCall.getQualifier() instanceof RegistryRequestMatchersCall
@@ -59,30 +116,30 @@ predicate permitsSpringBootActuators(PermitAllCall permitAllCall) {
     or
     // [...].authorizeRequests().requestMatchers(EndpointRequest).permitAll() or
     // [...].authorizeRequests().anyRequest().permitAll()
-    authorizeRequestsCall.getNumArgument() = 0 and
+    authorizeCall.getNumArgument() = 0 and
     exists(RegistryRequestMatchersCall registryRequestMatchersCall |
-      registryRequestMatchersCall.getQualifier() = authorizeRequestsCall and
+      registryRequestMatchersCall.getQualifier() = authorizeCall and
       permitAllCall.getQualifier() = registryRequestMatchersCall
     )
     or
     exists(AnyRequestCall anyRequestCall |
-      anyRequestCall.getQualifier() = authorizeRequestsCall and
+      anyRequestCall.getQualifier() = authorizeCall and
       permitAllCall.getQualifier() = anyRequestCall
     )
   )
   or
-  exists(AuthorizeRequestsCall authorizeRequestsCall |
+  exists(AuthorizeCall authorizeCall |
     // http.authorizeRequests([...]).[...]
-    authorizeRequestsCall.getQualifier() instanceof VarAccess
+    authorizeCall.getQualifier() instanceof VarAccess
   |
     // [...].authorizeRequests(r -> r.requestMatchers(EndpointRequest).permitAll())
-    authorizeRequestsCall.getArgument(0).(LambdaExpr).getExprBody() = permitAllCall and
+    authorizeCall.getArgument(0).(LambdaExpr).getExprBody() = permitAllCall and
     permitAllCall.getQualifier() instanceof RegistryRequestMatchersCall
     or
     // [...].authorizeRequests().requestMatchers(EndpointRequest).permitAll() or
-    authorizeRequestsCall.getNumArgument() = 0 and
+    authorizeCall.getNumArgument() = 0 and
     exists(RegistryRequestMatchersCall registryRequestMatchersCall |
-      registryRequestMatchersCall.getQualifier() = authorizeRequestsCall and
+      registryRequestMatchersCall.getQualifier() = authorizeCall and
       permitAllCall.getQualifier() = registryRequestMatchersCall
     )
   )
