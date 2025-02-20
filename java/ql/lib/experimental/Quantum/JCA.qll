@@ -83,9 +83,9 @@ module JCAModel {
   class CipherGetInstanceAlgorithmArg extends Crypto::EncryptionAlgorithmInstance,
     Crypto::ModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Expr
   {
-    CipherGetInstanceAlgorithmArg() {
-      exists(CipherGetInstanceCall call | this = call.getArgument(0))
-    }
+    CipherGetInstanceCall call;
+
+    CipherGetInstanceAlgorithmArg() { this = call.getAlgorithmArg() }
 
     /**
      * Returns the `StringLiteral` from which this argument is derived, if known.
@@ -94,26 +94,26 @@ module JCAModel {
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result),
         DataFlow::exprNode(this.(Expr).getAChildExpr*()))
     }
+
+    CipherGetInstanceCall getCall() { result = call }
   }
 
   // TODO: what if encrypt/decrypt mode isn't known
   private module CipherGetInstanceToFinalizeConfig implements DataFlow::StateConfigSig {
-    class FlowState = string;
+    class FlowState = Crypto::TCipherOperationMode;
 
     predicate isSource(DataFlow::Node src, FlowState state) {
-      state = "UNKNOWN" and
+      state = Crypto::UnknownCipherOperationMode() and
       src.asExpr() instanceof CipherGetInstanceCall
     }
 
     predicate isSink(DataFlow::Node sink, FlowState state) {
-      state in ["ENCRYPT", "DECRYPT", "UNKNOWN"] and
       exists(CipherDoFinalCall c | c.getQualifier() = sink.asExpr())
     }
 
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
-      state1 in ["UNKNOWN", "ENCRYPT", "DECRYPT"] and
       exists(CipherInitCall c |
         c.getQualifier() = node1.asExpr() and
         // TODO: not taking into consideration if the mode traces to this arg
@@ -121,10 +121,16 @@ module JCAModel {
           c.getModeArg() = fa and
           (
             fa.getField().getName() = "ENCRYPT_MODE" and
-            state2 = "ENCRYPT"
+            state2 = Crypto::EncryptionMode()
             or
             fa.getField().getName() = "DECRYPT_MODE" and
-            state2 = "DECRYPT"
+            state2 = Crypto::DecryptionMode()
+            or
+            fa.getField().getName() = "WRAP_MODE" and
+            state2 = Crypto::EncryptionMode()
+            or
+            fa.getField().getName() = "UNWRAP_MODE" and
+            state2 = Crypto::DecryptionMode()
           )
         )
       ) and
@@ -135,16 +141,29 @@ module JCAModel {
   module CipherGetInstanceToFinalizeFlow =
     DataFlow::GlobalWithState<CipherGetInstanceToFinalizeConfig>;
 
-  // TODO: what if the mode is UNKNOWN?
-  class CipherEncryptionOperation extends Crypto::EncryptionOperationInstance instanceof Call {
+  class CipherEncryptionOperation extends Crypto::CipherOperationInstance instanceof Call {
+    Crypto::TCipherOperationMode mode;
+    Crypto::EncryptionAlgorithmInstance algorithm;
+
     CipherEncryptionOperation() {
-      exists(CipherGetInstanceToFinalizeFlow::PathNode sink, CipherDoFinalCall c |
-        CipherGetInstanceToFinalizeFlow::flowPath(_, sink) and
-        sink.getNode().asExpr() = c.getQualifier() and
-        sink.getState() = "ENCRYPT" and
-        this = c
+      exists(
+        CipherGetInstanceToFinalizeFlow::PathNode sink,
+        CipherGetInstanceToFinalizeFlow::PathNode src, CipherGetInstanceCall getCipher,
+        CipherDoFinalCall doFinalize, CipherGetInstanceAlgorithmArg arg
+      |
+        CipherGetInstanceToFinalizeFlow::flowPath(src, sink) and
+        src.getNode().asExpr() = getCipher and
+        sink.getNode().asExpr() = doFinalize.getQualifier() and
+        sink.getState() = mode and
+        this = doFinalize and
+        arg.getCall() = getCipher and 
+        algorithm = arg
       )
     }
+
+    override Crypto::EncryptionAlgorithmInstance getAlgorithm() { result = algorithm }
+
+    override Crypto::TCipherOperationMode getCipherOperationMode() { result = mode }
   }
 
   /**

@@ -79,7 +79,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class KeyDerivationAlgorithmInstance extends LocatableElement { }
 
-  abstract class EncryptionOperationInstance extends LocatableElement { }
+  abstract class CipherOperationInstance extends LocatableElement {
+    abstract EncryptionAlgorithmInstance getAlgorithm();
+
+    abstract TCipherOperationMode getCipherOperationMode();
+  }
 
   abstract class EncryptionAlgorithmInstance extends LocatableElement { }
 
@@ -115,7 +119,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     // Operations (e.g., hashing, encryption)
     THashOperation(HashOperationInstance e) or
     TKeyDerivationOperation(KeyDerivationOperationInstance e) or
-    TEncryptionOperation(EncryptionOperationInstance e) or
+    TCipherOperation(CipherOperationInstance e) or
     TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
     // Algorithms (e.g., SHA-256, AES)
     TEncryptionAlgorithm(EncryptionAlgorithmInstance e) or
@@ -238,13 +242,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract Algorithm getAlgorithm();
 
-    /**
-     * Gets the name of this operation, e.g., "hash" or "encrypt".
-     */
-    abstract string getOperationType();
-
-    final override string getInternalType() { result = this.getOperationType() }
-
+    // TODO: I only removed this because I want the operation type to be non-string
+    // since for CipherOperations the user will have to pick the right type,
+    // and I want to force them to use a type that is restricted. In this case to a TCipherOperationType
+    // /**
+    //  * Gets the name of this operation, e.g., "hash" or "encrypt".
+    //  */
+    // abstract string getOperationType();
+    // final override string getInternalType() { result = this.getOperationType() }
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
@@ -290,8 +295,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class HashOperation extends Operation, THashOperation {
     abstract override HashAlgorithm getAlgorithm();
-
-    override string getOperationType() { result = "HashOperation" }
+    //override string getOperationType() { result = "HashOperation" }
   }
 
   newtype THashType =
@@ -401,8 +405,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override Location getLocation() {
       exists(LocatableElement le | this = TKeyDerivationOperation(le) and result = le.getLocation())
     }
-
-    override string getOperationType() { result = "KeyDerivationOperation" }
+    //override string getOperationType() { result = "KeyDerivationOperation" }
   }
 
   /**
@@ -681,15 +684,31 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract override string getRawAlgorithmName();
   }
 
+  newtype TCipherOperationMode =
+    EncryptionMode() or
+    DecryptionMode() or
+    UnknownCipherOperationMode()
+
   /**
    * An encryption operation that processes plaintext to generate a ciphertext.
    * This operation takes an input message (plaintext) of arbitrary content and length
    * and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
    */
-  abstract class EncryptionOperation extends Operation, TEncryptionOperation {
-    override string getOperationType() { result = "EncryptionOperation" }
+  // NOTE FOR NICK: making this concrete here as I don't think users need to worry about making/extending these operations, just instances
+  class CipherOperation extends Operation, TCipherOperation {
+    CipherOperationInstance instance;
 
-    abstract override EncryptionAlgorithm getAlgorithm();
+    CipherOperation() { this = TCipherOperation(instance) }
+
+    override Location getLocation() { result = instance.getLocation() }
+
+    final TCipherOperationMode getCipherOperationMode() {
+      result = instance.getCipherOperationMode()
+    }
+
+    final override EncryptionAlgorithm getAlgorithm() { result = instance.getAlgorithm() }
+
+    override string getInternalType() { result = "CipherOperation" }
     // /**
     //  * Gets the initialization vector associated with this encryption operation.
     //  *
