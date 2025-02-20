@@ -86,7 +86,7 @@ rust_library(
     }),
     version = "0.12.2",
     deps = [
-        "@vendor__cfg-if-1.0.0//:cfg_if",
-        "@vendor__hashbrown-0.9.1//:hashbrown",
+        "@vendor_py__cfg-if-1.0.0//:cfg_if",
+        "@vendor_py__hashbrown-0.9.1//:hashbrown",
     ],
 )

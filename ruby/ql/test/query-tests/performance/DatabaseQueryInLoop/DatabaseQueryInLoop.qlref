@@ -1,0 +1,2 @@
+query: queries/performance/DatabaseQueryInLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

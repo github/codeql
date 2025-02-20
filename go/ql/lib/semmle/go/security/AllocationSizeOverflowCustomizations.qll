@@ -157,7 +157,7 @@ module AllocationSizeOverflow {
     t instanceof BasicType and
     not t instanceof StringType
     or
-    isSmallType(t.(NamedType).getUnderlyingType())
+    isSmallType(t.(DefinedType).getUnderlyingType())
     or
     isSmallType(t.(PointerType).getBaseType())
     or

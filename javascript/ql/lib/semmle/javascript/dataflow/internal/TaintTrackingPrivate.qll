@@ -14,11 +14,8 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
   FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), false, _) // TODO: preserve 'model' parameter
   or
-  // Convert steps into and out of array elements to plain taint steps
+  // Convert steps out of array elements to plain taint steps
   FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
-    ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
-  or
-  FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
   or
   // If the spread argument itself is tainted (not inside a content), store it into the dynamic argument array.
