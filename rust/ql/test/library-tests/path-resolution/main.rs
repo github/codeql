@@ -430,7 +430,7 @@ mod m16 {
         >::f(&x); // $ MISSING: item=I93
         S::g(&x); // $ item=I92
         x.g(); // $ MISSING: item=I92
-        S::h(&x); // $ MISSING: item=I96
+        S::h(&x); // $ item=I96
         x.h(); // $ MISSING: item=I96
         S::c; // $ item=I95
         <S // $ item=I90

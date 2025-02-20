@@ -187,6 +187,7 @@ resolvePath
 | main.rs:431:9:431:9 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:431:9:431:12 | ...::g | main.rs:397:9:400:9 | fn g |
 | main.rs:433:9:433:9 | S | main.rs:384:5:384:13 | struct S |
+| main.rs:433:9:433:12 | ...::h | main.rs:360:9:363:9 | fn h |
 | main.rs:435:9:435:9 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:435:9:435:12 | ...::c | main.rs:402:9:403:9 | Const |
 | main.rs:436:10:436:10 | S | main.rs:384:5:384:13 | struct S |
