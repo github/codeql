@@ -120,17 +120,13 @@ module JCAModel {
         exists(FieldAccess fa |
           c.getModeArg() = fa and
           (
-            fa.getField().getName() = "ENCRYPT_MODE" and
-            state2 = Crypto::EncryptionMode()
-            or
-            fa.getField().getName() = "DECRYPT_MODE" and
-            state2 = Crypto::DecryptionMode()
-            or
-            fa.getField().getName() = "WRAP_MODE" and
-            state2 = Crypto::EncryptionMode()
-            or
-            fa.getField().getName() = "UNWRAP_MODE" and
-            state2 = Crypto::DecryptionMode()
+            if fa.getField().getName() in ["ENCRYPT_MODE", "WRAP_MODE"]
+            then state2 = Crypto::EncryptionMode()
+            else (
+              if fa.getField().getName() in ["DECRYPT_MODE", "UNWRAP_MODE"]
+              then state2 = Crypto::DecryptionMode()
+              else state2 = Crypto::UnknownCipherOperationMode()
+            )
           )
         )
       ) and
