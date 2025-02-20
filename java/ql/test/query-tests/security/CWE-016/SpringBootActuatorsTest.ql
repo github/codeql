@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.frameworks.spring.SpringSecurity
 import semmle.code.java.security.SpringBootActuatorsQuery
 import utils.test.InlineExpectationsTest
 
@@ -7,7 +8,7 @@ module SpringBootActuatorsTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasExposedSpringBootActuator" and
-    exists(PermitAllCall permitAllCall | permitAllCall.permitsSpringBootActuators() |
+    exists(PermitAllCall permitAllCall | permitsSpringBootActuators(permitAllCall) |
       permitAllCall.getLocation() = location and
       element = permitAllCall.toString() and
       value = ""
