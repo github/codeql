@@ -966,7 +966,7 @@ void test27(size_t s) {
 		// ...
 	}
 
-	if (s < offsetof(Array10, values[10])) { // GOOD (harmless) [FALSE POSITIVE]
+	if (s < offsetof(Array10, values[10])) { // GOOD (harmless)
 		// ...
 	}
 
