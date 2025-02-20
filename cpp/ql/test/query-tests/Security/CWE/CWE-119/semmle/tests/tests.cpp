@@ -18,7 +18,7 @@ void test1()
 {
 	char smallbuffer[10];
 	char bigbuffer[20];
-	
+
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
 	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
@@ -29,7 +29,7 @@ void test2()
 {
 	char *smallbuffer = (char *)malloc(sizeof(char) * 10);
 	char *bigbuffer = (char *)malloc(sizeof(char) * 20);
-	
+
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
 	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read [NOT DETECTED]
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
@@ -59,7 +59,7 @@ void test4(int unbounded)
 {
 	int bounded = 100;
 	char buffer1[100], buffer2[100];
-	
+
 	memmove(buffer1, buffer2, bounded); // GOOD
 	memmove(buffer1, buffer2, unbounded); // BAD: may over-write [NOT DETECTED]
 }
@@ -107,11 +107,11 @@ void test6(bool cond)
 	a = -1;
 	buffer[a] = 'x'; // BAD: under-write [NOT DETECTED]
 	ch = buffer[a]; // BAD: under-read [NOT DETECTED]
-	
+
 	b = 0;
 	buffer[b] = 'x'; // GOOD
 	ch = buffer[b]; // GOOD
-	
+
 	c = 100;
 	buffer[c] = 'x'; // BAD: over-write [NOT DETECTED]
 	ch = buffer[c]; // BAD: over-read [NOT DETECTED]
@@ -120,7 +120,7 @@ void test6(bool cond)
 	d = 1000;
 	buffer[d] = 'x'; // BAD: over-write [NOT DETECTED]
 	ch = buffer[d]; // BAD: over-read [NOT DETECTED]
-	
+
 	e = 1000;
 	e = 0;
 	buffer[e] = 'x'; // GOOD
@@ -130,12 +130,12 @@ void test6(bool cond)
 	if (cond) {f = 1000;}
 	buffer[f] = 'x'; // BAD: may over-write [NOT DETECTED]
 	ch = buffer[f]; // BAD: may over-read [NOT DETECTED]
-	
+
 	g = 1000;
 	if (cond) {g = 0;}
 	buffer[g] = 'x'; // BAD: may over-write [NOT DETECTED]
 	ch = buffer[g]; // BAD: may over-read [NOT DETECTED]
-	
+
 	h = 1000;
 	if (cond)
 	{
@@ -151,13 +151,13 @@ void test6(bool cond)
 		buffer[i] = 'x'; // GOOD
 		ch = buffer[i]; // GOOD
 	}
-	
+
 	for (j = -1; j < 100; j++)
 	{
 		buffer[j] = 'x'; // BAD: under-write [NOT DETECTED]
 		ch = buffer[j]; // BAD: under-read [NOT DETECTED]
 	}
-	
+
 	for (k = 0; k <= 100; k++)
 	{
 		buffer[k] = 'x'; // BAD: over-write
@@ -187,7 +187,7 @@ void test8(int unbounded)
 	{
 		buffer[i] = 0; // GOOD
 	}
-	
+
 	for (i = 0; i < v2; i++)
 	{
 		buffer[i] = 0; // BAD: over-write [NOT DETECTED]
@@ -226,7 +226,7 @@ void test9(int param)
 		memset(buffer3, 0, 33); // BAD: overrun write of buffer3
 		memset(buffer4, 0, 32); // GOOD
 		memset(buffer4, 0, 33); // BAD: overrun write of buffer4 (buffer3)
-		
+
 		memcmp(buffer1, buffer2, 32); // GOOD
 		memcmp(buffer1, buffer2, 33); // BAD: overrun read of buffer1, buffer2
 	}
@@ -274,7 +274,7 @@ void test11()
 		memset(string, 0, 14); // GOOD
 		memset(string, 0, 15); // BAD: overrun write of string
 	}
-	
+
 	{
 		char *buffer = new char[128];
 
@@ -284,7 +284,7 @@ void test11()
 
 		memset(buffer, 0, 128); // BAD: overrun write of buffer
 	}
-	
+
 	{
 		char array[10] = "123";
 
@@ -317,7 +317,7 @@ void test12()
 	memset(buf + 8, 0, 9); // BAD: overrun write of buf [NOT DETECTED]
 	memset(dbuf + 8, 0, 8); // GOOD
 	memset(dbuf + 8, 0, 9); // BAD: overrun write of dbuf [NOT DETECTED]
-	
+
 	{
 		myStruct *myPtr1 = &myVar;
 		myStruct *myPtr2;
@@ -331,7 +331,7 @@ void test12()
 
 	{
 		void *myPtr3 = (void *)(&myVar);
-		
+
 		memset(myPtr3, 0, sizeof(myStruct)); // GOOD
 		memset(myPtr3, 0, sizeof(myStruct) + 1); // BAD: overrun write of myVar
 	}
@@ -342,6 +342,8 @@ void test13()
 	char charArray[10];
 	int intArray[10];
 	myStruct structArray[10];
+
+
 
 	charArray[-1] = 1; // BAD: underrun write
 	charArray[0] = 1; // GOOD
@@ -363,7 +365,26 @@ void test13()
 
 	charArray[9] = (char)intArray[9]; // GOOD
 	charArray[9] = (char)intArray[10]; // BAD: overrun read
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	{
 		unsigned short *buffer1 = (unsigned short *)malloc(sizeof(short) * 50);
 		unsigned short *buffer2 = (unsigned short *)malloc(101); // 50.5 shorts
@@ -442,13 +463,13 @@ void test17(long long *longArray)
 
 	{
 		int intArray[5];
-	
+
 		((char *)intArray)[-3] = 0; // BAD: underrun write
 	}
 
 	{
 		int multi[10][10];
-	
+
 		multi[5][5] = 0; // GOOD
 
 		multi[-5][5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
@@ -511,7 +532,7 @@ void test19(bool b)
 		p2 = (char *)malloc(20);
 		p3 = (char *)malloc(20);
 	}
-	
+
 	// ...
 
 	if (b)
@@ -663,7 +684,7 @@ void test27(){
 	char buffer[MAX_SIZE];
 
 	strncpy(dest, src, 8); // GOOD, strncpy will not read past null terminator of source
-		
+
 	if(IND < MAX_SIZE){
 		buffer[IND] = 0; // GOOD: out of bounds, but inaccessible code
 	}
@@ -739,7 +760,7 @@ struct AnonUnionInStruct
       unsigned int a_2;
       unsigned int b_2;
     };
-  };  
+  };
   unsigned int d;
 
   void test37() {
