@@ -453,11 +453,11 @@ edges
 | main.rs:190:11:190:16 | either | main.rs:191:9:191:24 | ...::Left(...) |  |
 | main.rs:191:9:191:24 | ...::Left(...) | main.rs:191:22:191:23 | a3 | match |
 | main.rs:191:9:191:24 | ...::Left(...) | main.rs:191:28:191:44 | ...::Right(...) | no-match |
-| main.rs:191:9:191:44 | [match(true)] ... \| ... | main.rs:192:16:192:24 | print_i64 | match |
-| main.rs:191:22:191:23 | a3 | main.rs:191:9:191:44 | [match(true)] ... \| ... | match |
+| main.rs:191:9:191:44 | ... \| ... | main.rs:192:16:192:24 | print_i64 | match |
+| main.rs:191:22:191:23 | a3 | main.rs:191:9:191:44 | ... \| ... | match |
 | main.rs:191:22:191:23 | a3 | main.rs:191:22:191:23 | a3 |  |
 | main.rs:191:28:191:44 | ...::Right(...) | main.rs:191:42:191:43 | a3 | match |
-| main.rs:191:42:191:43 | a3 | main.rs:191:9:191:44 | [match(true)] ... \| ... | match |
+| main.rs:191:42:191:43 | a3 | main.rs:191:9:191:44 | ... \| ... | match |
 | main.rs:191:42:191:43 | a3 | main.rs:191:42:191:43 | a3 |  |
 | main.rs:192:16:192:24 | print_i64 | main.rs:192:26:192:27 | a3 |  |
 | main.rs:192:16:192:28 | print_i64(...) | main.rs:190:5:193:5 | match either { ... } |  |
@@ -476,15 +476,15 @@ edges
 | main.rs:204:11:204:12 | tv | main.rs:205:9:205:30 | ...::First(...) |  |
 | main.rs:205:9:205:30 | ...::First(...) | main.rs:205:28:205:29 | a4 | match |
 | main.rs:205:9:205:30 | ...::First(...) | main.rs:205:34:205:56 | ...::Second(...) | no-match |
-| main.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | main.rs:206:16:206:24 | print_i64 | match |
-| main.rs:205:28:205:29 | a4 | main.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | match |
+| main.rs:205:9:205:81 | ... \| ... \| ... | main.rs:206:16:206:24 | print_i64 | match |
+| main.rs:205:28:205:29 | a4 | main.rs:205:9:205:81 | ... \| ... \| ... | match |
 | main.rs:205:28:205:29 | a4 | main.rs:205:28:205:29 | a4 |  |
 | main.rs:205:34:205:56 | ...::Second(...) | main.rs:205:54:205:55 | a4 | match |
 | main.rs:205:34:205:56 | ...::Second(...) | main.rs:205:60:205:81 | ...::Third(...) | no-match |
-| main.rs:205:54:205:55 | a4 | main.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | match |
+| main.rs:205:54:205:55 | a4 | main.rs:205:9:205:81 | ... \| ... \| ... | match |
 | main.rs:205:54:205:55 | a4 | main.rs:205:54:205:55 | a4 |  |
 | main.rs:205:60:205:81 | ...::Third(...) | main.rs:205:79:205:80 | a4 | match |
-| main.rs:205:79:205:80 | a4 | main.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | match |
+| main.rs:205:79:205:80 | a4 | main.rs:205:9:205:81 | ... \| ... \| ... | match |
 | main.rs:205:79:205:80 | a4 | main.rs:205:79:205:80 | a4 |  |
 | main.rs:206:16:206:24 | print_i64 | main.rs:206:26:206:27 | a4 |  |
 | main.rs:206:16:206:28 | print_i64(...) | main.rs:204:5:207:5 | match tv { ... } |  |
@@ -492,11 +492,11 @@ edges
 | main.rs:208:5:211:5 | ExprStmt | main.rs:208:11:208:12 | tv |  |
 | main.rs:208:5:211:5 | match tv { ... } | main.rs:212:11:212:12 | tv |  |
 | main.rs:208:11:208:12 | tv | main.rs:209:10:209:31 | ...::First(...) |  |
-| main.rs:209:9:209:83 | [match(true)] ... \| ... | main.rs:210:16:210:24 | print_i64 | match |
+| main.rs:209:9:209:83 | ... \| ... | main.rs:210:16:210:24 | print_i64 | match |
 | main.rs:209:10:209:31 | ...::First(...) | main.rs:209:29:209:30 | a5 | match |
 | main.rs:209:10:209:31 | ...::First(...) | main.rs:209:35:209:57 | ...::Second(...) | no-match |
 | main.rs:209:10:209:57 | [match(false)] ... \| ... | main.rs:209:62:209:83 | ...::Third(...) | no-match |
-| main.rs:209:10:209:57 | [match(true)] ... \| ... | main.rs:209:9:209:83 | [match(true)] ... \| ... | match |
+| main.rs:209:10:209:57 | [match(true)] ... \| ... | main.rs:209:9:209:83 | ... \| ... | match |
 | main.rs:209:29:209:30 | a5 | main.rs:209:10:209:57 | [match(true)] ... \| ... | match |
 | main.rs:209:29:209:30 | a5 | main.rs:209:29:209:30 | a5 |  |
 | main.rs:209:35:209:57 | ...::Second(...) | main.rs:209:10:209:57 | [match(false)] ... \| ... | no-match |
@@ -504,7 +504,7 @@ edges
 | main.rs:209:55:209:56 | a5 | main.rs:209:10:209:57 | [match(true)] ... \| ... | match |
 | main.rs:209:55:209:56 | a5 | main.rs:209:55:209:56 | a5 |  |
 | main.rs:209:62:209:83 | ...::Third(...) | main.rs:209:81:209:82 | a5 | match |
-| main.rs:209:81:209:82 | a5 | main.rs:209:9:209:83 | [match(true)] ... \| ... | match |
+| main.rs:209:81:209:82 | a5 | main.rs:209:9:209:83 | ... \| ... | match |
 | main.rs:209:81:209:82 | a5 | main.rs:209:81:209:82 | a5 |  |
 | main.rs:210:16:210:24 | print_i64 | main.rs:210:26:210:27 | a5 |  |
 | main.rs:210:16:210:28 | print_i64(...) | main.rs:208:5:211:5 | match tv { ... } |  |
@@ -513,16 +513,16 @@ edges
 | main.rs:212:11:212:12 | tv | main.rs:213:9:213:30 | ...::First(...) |  |
 | main.rs:213:9:213:30 | ...::First(...) | main.rs:213:28:213:29 | a6 | match |
 | main.rs:213:9:213:30 | ...::First(...) | main.rs:213:35:213:57 | ...::Second(...) | no-match |
-| main.rs:213:9:213:83 | [match(true)] ... \| ... | main.rs:214:16:214:24 | print_i64 | match |
-| main.rs:213:28:213:29 | a6 | main.rs:213:9:213:83 | [match(true)] ... \| ... | match |
+| main.rs:213:9:213:83 | ... \| ... | main.rs:214:16:214:24 | print_i64 | match |
+| main.rs:213:28:213:29 | a6 | main.rs:213:9:213:83 | ... \| ... | match |
 | main.rs:213:28:213:29 | a6 | main.rs:213:28:213:29 | a6 |  |
 | main.rs:213:35:213:57 | ...::Second(...) | main.rs:213:55:213:56 | a6 | match |
 | main.rs:213:35:213:57 | ...::Second(...) | main.rs:213:61:213:82 | ...::Third(...) | no-match |
-| main.rs:213:35:213:82 | [match(true)] ... \| ... | main.rs:213:9:213:83 | [match(true)] ... \| ... | match |
-| main.rs:213:55:213:56 | a6 | main.rs:213:35:213:82 | [match(true)] ... \| ... | match |
+| main.rs:213:35:213:82 | ... \| ... | main.rs:213:9:213:83 | ... \| ... | match |
+| main.rs:213:55:213:56 | a6 | main.rs:213:35:213:82 | ... \| ... | match |
 | main.rs:213:55:213:56 | a6 | main.rs:213:55:213:56 | a6 |  |
 | main.rs:213:61:213:82 | ...::Third(...) | main.rs:213:80:213:81 | a6 | match |
-| main.rs:213:80:213:81 | a6 | main.rs:213:35:213:82 | [match(true)] ... \| ... | match |
+| main.rs:213:80:213:81 | a6 | main.rs:213:35:213:82 | ... \| ... | match |
 | main.rs:213:80:213:81 | a6 | main.rs:213:80:213:81 | a6 |  |
 | main.rs:214:16:214:24 | print_i64 | main.rs:214:26:214:27 | a6 |  |
 | main.rs:214:16:214:28 | print_i64(...) | main.rs:212:5:215:5 | match tv { ... } |  |
@@ -614,13 +614,13 @@ edges
 | main.rs:254:11:254:12 | fv | main.rs:255:9:255:30 | ...::First(...) |  |
 | main.rs:255:9:255:30 | ...::First(...) | main.rs:255:27:255:29 | a13 | match |
 | main.rs:255:9:255:30 | ...::First(...) | main.rs:255:35:255:57 | ...::Second(...) | no-match |
-| main.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | main.rs:256:16:256:24 | print_i64 | match |
-| main.rs:255:27:255:29 | a13 | main.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | match |
+| main.rs:255:9:255:109 | ... \| ... \| ... | main.rs:256:16:256:24 | print_i64 | match |
+| main.rs:255:27:255:29 | a13 | main.rs:255:9:255:109 | ... \| ... \| ... | match |
 | main.rs:255:27:255:29 | a13 | main.rs:255:27:255:29 | a13 |  |
 | main.rs:255:35:255:57 | ...::Second(...) | main.rs:255:54:255:56 | a13 | match |
 | main.rs:255:35:255:57 | ...::Second(...) | main.rs:255:61:255:82 | ...::Third(...) | no-match |
 | main.rs:255:35:255:82 | [match(false)] ... \| ... | main.rs:255:87:255:109 | ...::Fourth(...) | no-match |
-| main.rs:255:35:255:82 | [match(true)] ... \| ... | main.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | match |
+| main.rs:255:35:255:82 | [match(true)] ... \| ... | main.rs:255:9:255:109 | ... \| ... \| ... | match |
 | main.rs:255:54:255:56 | a13 | main.rs:255:35:255:82 | [match(true)] ... \| ... | match |
 | main.rs:255:54:255:56 | a13 | main.rs:255:54:255:56 | a13 |  |
 | main.rs:255:61:255:82 | ...::Third(...) | main.rs:255:35:255:82 | [match(false)] ... \| ... | no-match |
@@ -628,7 +628,7 @@ edges
 | main.rs:255:79:255:81 | a13 | main.rs:255:35:255:82 | [match(true)] ... \| ... | match |
 | main.rs:255:79:255:81 | a13 | main.rs:255:79:255:81 | a13 |  |
 | main.rs:255:87:255:109 | ...::Fourth(...) | main.rs:255:106:255:108 | a13 | match |
-| main.rs:255:106:255:108 | a13 | main.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | match |
+| main.rs:255:106:255:108 | a13 | main.rs:255:9:255:109 | ... \| ... \| ... | match |
 | main.rs:255:106:255:108 | a13 | main.rs:255:106:255:108 | a13 |  |
 | main.rs:256:16:256:24 | print_i64 | main.rs:256:26:256:28 | a13 |  |
 | main.rs:256:16:256:29 | print_i64(...) | main.rs:254:5:257:5 | match fv { ... } |  |
@@ -662,11 +662,11 @@ edges
 | main.rs:272:5:272:50 | ...: Either | main.rs:274:5:274:18 | ExprStmt |  |
 | main.rs:272:6:272:21 | ...::Left(...) | main.rs:272:19:272:20 | a9 | match |
 | main.rs:272:6:272:21 | ...::Left(...) | main.rs:272:25:272:41 | ...::Right(...) | no-match |
-| main.rs:272:6:272:41 | [match(true)] ... \| ... | main.rs:272:5:272:50 | ...: Either | match |
-| main.rs:272:19:272:20 | a9 | main.rs:272:6:272:41 | [match(true)] ... \| ... | match |
+| main.rs:272:6:272:41 | ... \| ... | main.rs:272:5:272:50 | ...: Either | match |
+| main.rs:272:19:272:20 | a9 | main.rs:272:6:272:41 | ... \| ... | match |
 | main.rs:272:19:272:20 | a9 | main.rs:272:19:272:20 | a9 |  |
 | main.rs:272:25:272:41 | ...::Right(...) | main.rs:272:39:272:40 | a9 | match |
-| main.rs:272:39:272:40 | a9 | main.rs:272:6:272:41 | [match(true)] ... \| ... | match |
+| main.rs:272:39:272:40 | a9 | main.rs:272:6:272:41 | ... \| ... | match |
 | main.rs:272:39:272:40 | a9 | main.rs:272:39:272:40 | a9 |  |
 | main.rs:273:9:275:1 | { ... } | main.rs:271:1:275:1 | exit fn param_pattern2 (normal) |  |
 | main.rs:274:5:274:13 | print_i64 | main.rs:274:15:274:16 | a9 |  |
