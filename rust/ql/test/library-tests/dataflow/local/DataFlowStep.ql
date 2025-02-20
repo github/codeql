@@ -8,11 +8,9 @@ private module Tm = TranslateModels<provenance/1>;
 
 query predicate models = Tm::models/2;
 
-query predicate localStep(Node nodeFrom, Node nodeTo, string model) {
-  exists(string madId |
-    RustDataFlow::simpleLocalFlowStep(nodeFrom, nodeTo, madId) and
-    Tm::translateModels(madId, model)
-  )
+query predicate localStep(Node nodeFrom, Node nodeTo) {
+  // Local flow steps that don't originate from a flow summary.
+  RustDataFlow::simpleLocalFlowStep(nodeFrom, nodeTo, "")
 }
 
 query predicate storeStep = RustDataFlow::storeStep/3;
