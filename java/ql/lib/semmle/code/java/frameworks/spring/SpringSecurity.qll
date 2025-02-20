@@ -15,12 +15,17 @@ class TypeHttpSecurity extends Class {
 
 /**
  * The class
- * `org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer`.
+ * `org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer$AuthorizedUrl`
+ * or the class
+ * `org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer$AuthorizedUrl`.
  */
 class TypeAuthorizedUrl extends Class {
   TypeAuthorizedUrl() {
     this.hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
-      "ExpressionUrlAuthorizationConfigurer<HttpSecurity>$AuthorizedUrl<>")
+      [
+        "ExpressionUrlAuthorizationConfigurer<HttpSecurity>$AuthorizedUrl<>",
+        "AuthorizeHttpRequestsConfigurer<HttpSecurity>$AuthorizedUrl<>"
+      ])
   }
 }
 
@@ -34,10 +39,28 @@ class TypeAbstractRequestMatcherRegistry extends Class {
   }
 }
 
-/** A call to `HttpSecurity.authorizeRequests` method. */
+/**
+ * A call to `HttpSecurity.authorizeRequests` method.
+ *
+ * Note: this API is deprecated and scheduled for removal
+ * in Spring Security 7.0.
+ */
 class AuthorizeRequestsCall extends MethodCall {
   AuthorizeRequestsCall() {
     this.getMethod().hasName("authorizeRequests") and
+    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+  }
+}
+
+/**
+ * A call to `HttpSecurity.authorizeHttpRequests` method.
+ *
+ * Note: the no-argument version of this API is deprecated
+ * and scheduled for removal in Spring Security 7.0.
+ */
+class AuthorizeHttpRequestsCall extends MethodCall {
+  AuthorizeHttpRequestsCall() {
+    this.getMethod().hasName("authorizeHttpRequests") and
     this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
   }
 }
