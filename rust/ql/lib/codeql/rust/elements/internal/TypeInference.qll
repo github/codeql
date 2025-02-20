@@ -140,17 +140,7 @@ class StructType extends Type, TStruct {
 
   StructType() { this = TStruct(struct) }
 
-  override Function getMethod(string name) {
-    // todo: assumes all `impl` blocks are in scope
-    exists(ImplItemNode i |
-      struct = i.resolveSelfTy() and
-      result = i.getASuccessor(name) and
-      // todo: generics are not supported
-      forall(TypeRepr_ t | t = i.getSelfPath().getPart().getGenericArgList().getTypeArgument(_) |
-        t.resolveType() instanceof TypeParameter
-      )
-    )
-  }
+  override Function getMethod(string name) { result = struct.(ItemNode).getASuccessor(name) }
 
   override RecordField getRecordField(string name) { result = struct.getRecordField(name) }
 
@@ -173,17 +163,7 @@ class EnumType extends Type, TEnum {
 
   EnumType() { this = TEnum(enum) }
 
-  override Function getMethod(string name) {
-    // todo: assumes all `impl` blocks are in scope
-    exists(ImplItemNode i |
-      enum = i.resolveSelfTy() and
-      result = i.getASuccessor(name) and
-      // todo: generics are not supported
-      forall(TypeRepr_ t | t = i.getSelfPath().getPart().getGenericArgList().getTypeArgument(_) |
-        t.resolveType() instanceof TypeParameter
-      )
-    )
-  }
+  override Function getMethod(string name) { result = enum.(ItemNode).getASuccessor(name) }
 
   override RecordField getRecordField(string name) { none() }
 
@@ -206,11 +186,7 @@ class TraitType extends Type, TTrait {
 
   TraitType() { this = TTrait(trait) }
 
-  override Function getMethod(string name) {
-    result = trait.getASuccessor(name)
-    or
-    result = this.getABound().resolveType().getMethod(name)
-  }
+  override Function getMethod(string name) { result = trait.getASuccessor(name) }
 
   override RecordField getRecordField(string name) { none() }
 
@@ -267,14 +243,9 @@ class TypeParameter extends Type, TTypeParameter {
 
   TypeParam getTypeParam() { result = typeParam }
 
-  pragma[nomagic]
-  private TypeRepr_ getABound() { result = typeParam.getTypeBoundList().getABound().getTypeRepr() }
-
   int getPosition() { typeParam = any(GenericParamList l).getTypeParam(result) }
 
-  override Function getMethod(string name) {
-    result = this.getABound().resolveTypeAt("").getMethod(name)
-  }
+  override Function getMethod(string name) { result = typeParam.(ItemNode).getASuccessor(name) }
 
   override RecordField getRecordField(string name) { none() }
 
@@ -290,7 +261,7 @@ class TypeParameter extends Type, TTypeParameter {
 /** A `TypeRepr` or a `Path`. */
 abstract private class TypeReprOrPath extends AstNode {
   /** Gets the `i`th type argument, if any. */
-  abstract TypeRepr_ getTypeReprArgument(int i);
+  abstract TypeReprOrPath getTypeReprArgument(int i);
 
   /** Gets the type that this node resolves to. */
   abstract Type resolveType();
@@ -334,8 +305,15 @@ private class TypeRepr_ extends TypeReprOrPath, TypeRepr {
 }
 
 private class Path_ extends TypeReprOrPath, Path {
-  override TypeRepr_ getTypeReprArgument(int i) {
+  override TypeReprOrPath getTypeReprArgument(int i) {
     result = this.getPart().getGenericArgList().getTypeArgument(i)
+    or
+    isUnqualifiedSelfPath(this) and
+    exists(ItemNode node | node = unqualifiedPathLookup(this) |
+      result = node.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
+      or
+      result = node.(Trait).getGenericParamList().getTypeParam(i)
+    )
   }
 
   override Type resolveType() {
@@ -351,6 +329,12 @@ private class Path_ extends TypeReprOrPath, Path {
       result = i.(TypeAlias).getTypeRepr().(TypeRepr_).resolveType()
     )
   }
+}
+
+private class TypeParam_ extends TypeReprOrPath, TypeParam {
+  override TypeRepr_ getTypeReprArgument(int i) { none() }
+
+  override Type resolveType() { result = TTypeParameter(this) }
 }
 
 /** Provides logic for computing base types. */
