@@ -1,3 +1,5 @@
+/** Provides classes and predicates to reason about exposed actuators in Spring Boot. */
+
 import java
 
 /** The class `org.springframework.security.config.annotation.web.builders.HttpSecurity`. */
