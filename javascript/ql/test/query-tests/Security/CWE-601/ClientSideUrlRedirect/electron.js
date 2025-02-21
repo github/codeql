@@ -4,4 +4,4 @@ function getTaint() {
     return window.name;
 }
 
-shell.openExternal(getTaint());
+shell.openExternal(getTaint()); // $ Alert
