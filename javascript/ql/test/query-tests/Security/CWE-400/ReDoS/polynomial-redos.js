@@ -14,7 +14,7 @@ app.use(function(req, res) {
 	tainted.replace(/^.*\./, '');
 	tainted.replace(/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/); // $ Alert[js/polynomial-redos]
 	tainted.replace(/^(`+)([\s\S]*?[^`])\1(?!`)/); // $ Alert[js/polynomial-redos]
-	/^(.*,)+(.+)?$/.test(tainted); // $ Alert[js/polynomial-redos]
+	/^(.*,)+(.+)?$/.test(tainted); // $ Alert[js/polynomial-redos] Alert[js/redos]
 	tainted.match(/[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i); // $ Alert[js/polynomial-redos]
 	tainted.match(/[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i); // $ Alert[js/polynomial-redos] - even though it is a proposed fix for the above
 	tainted.match(/^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/); // $ Alert[js/polynomial-redos]
@@ -38,12 +38,12 @@ app.use(function(req, res) {
 	tainted.match(/<.*href="([^"]+)".*>/); // $ Alert[js/polynomial-redos]
 
 	tainted.match(/^([^-]+)-([A-Za-z0-9+/]+(?:=?=?))([?\x21-\x7E]*)$/); // $ Alert[js/polynomial-redos]
-	tainted.match(/^([^-]+)-([A-Za-z0-9+/=]{44,88})(\?[\x21-\x7E]*)*$/); // $ Alert - it is a fix for the above, but it introduces exponential complexity elsewhere
+	tainted.match(/^([^-]+)-([A-Za-z0-9+/=]{44,88})(\?[\x21-\x7E]*)*$/); // $ Alert[js/redos] - it is a fix for the above, but it introduces exponential complexity elsewhere
 
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([\n \t]+([^\n]+))?$/); // $ Alert[js/polynomial-redos]
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([ \t]+([^ \t][^\n]*[\n]*)?)?$/);
 
-	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // $ Alert - also flagged by js/redos
+	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // $ Alert[js/redos] - also flagged by js/redos
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/);
 	tainted.replaceAll(/\s*\n\s*/g, ' '); // $ Alert[js/polynomial-redos]
 
