@@ -401,6 +401,7 @@ edges
 | main.rs:171:5:180:5 | match msg { ... } | main.rs:168:21:181:1 | { ... } |  |
 | main.rs:171:11:171:13 | msg | main.rs:172:9:174:9 | ...::Hello {...} |  |
 | main.rs:172:9:174:9 | ...::Hello {...} | main.rs:173:31:173:35 | RangePat | match |
+| main.rs:172:9:174:9 | ...::Hello {...} | main.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | main.rs:173:17:173:27 | id_variable | main.rs:173:17:173:35 | id_variable @ ... |  |
 | main.rs:173:17:173:35 | id_variable @ ... | main.rs:174:14:174:22 | print_i64 | match |
 | main.rs:173:31:173:31 | 3 | main.rs:173:31:173:31 | 3 |  |
@@ -414,6 +415,7 @@ edges
 | main.rs:174:14:174:35 | print_i64(...) | main.rs:171:5:180:5 | match msg { ... } |  |
 | main.rs:174:24:174:34 | id_variable | main.rs:174:14:174:35 | print_i64(...) |  |
 | main.rs:175:9:175:38 | ...::Hello {...} | main.rs:175:30:175:36 | RangePat | match |
+| main.rs:175:9:175:38 | ...::Hello {...} | main.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | main.rs:175:30:175:31 | 10 | main.rs:175:30:175:31 | 10 |  |
 | main.rs:175:30:175:31 | 10 | main.rs:175:35:175:36 | 12 | match |
 | main.rs:175:30:175:31 | 10 | main.rs:178:9:178:29 | ...::Hello {...} | no-match |

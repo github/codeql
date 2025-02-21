@@ -18,8 +18,7 @@ module Impl {
    */
   class Pat extends Generated::Pat {
     /**
-     * If this pattern is immediately nested within another pattern, then get the
-     * parent pattern.
+     * Gets the pattern under which this pattern is immediately nested, if any.
      */
     Pat getParentPat() {
       result = getImmediateParent(this)

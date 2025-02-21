@@ -969,6 +969,7 @@ edges
 | test.rs:394:9:397:9 | match st { ... } | test.rs:393:44:398:5 | { ... } |  |
 | test.rs:394:15:394:16 | st | test.rs:395:13:395:29 | MyStruct {...} |  |
 | test.rs:395:13:395:29 | MyStruct {...} | test.rs:395:27:395:27 | 1 | match |
+| test.rs:395:13:395:29 | MyStruct {...} | test.rs:396:13:396:26 | MyStruct {...} | no-match |
 | test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | 1 |  |
 | test.rs:395:27:395:27 | 1 | test.rs:395:34:395:34 | 0 | match |
 | test.rs:395:27:395:27 | 1 | test.rs:396:13:396:26 | MyStruct {...} | no-match |
@@ -1159,6 +1160,7 @@ edges
 | test.rs:462:15:462:15 | n | test.rs:462:18:462:34 | MyStruct {...} | match |
 | test.rs:462:15:462:15 | n | test.rs:463:13:463:13 | _ | no-match |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:32:462:32 | _ | match |
+| test.rs:462:18:462:34 | MyStruct {...} | test.rs:463:13:463:13 | _ | no-match |
 | test.rs:462:32:462:32 | _ | test.rs:462:40:462:40 | n | match |
 | test.rs:462:40:462:40 | n | test.rs:461:9:464:9 | match pair { ... } |  |
 | test.rs:463:13:463:13 | _ | test.rs:463:18:463:18 | 0 | match |
@@ -1172,8 +1174,16 @@ edges
 | test.rs:476:9:480:9 | match e { ... } | test.rs:475:39:481:5 | { ... } |  |
 | test.rs:476:15:476:15 | e | test.rs:477:13:477:34 | StructVariant {...} |  |
 | test.rs:477:13:477:34 | StructVariant {...} | test.rs:477:32:477:32 | _ | match |
+| test.rs:477:13:477:34 | StructVariant {...} | test.rs:478:13:478:27 | TupleVariant(...) | no-match |
 | test.rs:477:32:477:32 | _ | test.rs:477:39:477:39 | 0 | match |
 | test.rs:477:39:477:39 | 0 | test.rs:476:9:480:9 | match e { ... } |  |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:26:478:26 | _ | match |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:479:13:479:23 | UnitVariant | no-match |
+| test.rs:478:26:478:26 | _ | test.rs:478:32:478:32 | 1 | match |
+| test.rs:478:32:478:32 | 1 | test.rs:476:9:480:9 | match e { ... } |  |
+| test.rs:479:13:479:23 | UnitVariant | test.rs:479:13:479:23 | UnitVariant |  |
+| test.rs:479:13:479:23 | UnitVariant | test.rs:479:28:479:28 | 2 | match |
+| test.rs:479:28:479:28 | 2 | test.rs:476:9:480:9 | match e { ... } |  |
 | test.rs:485:5:490:5 | enter fn test_infinite_loop | test.rs:486:9:488:9 | ExprStmt |  |
 | test.rs:486:9:488:9 | ExprStmt | test.rs:487:13:487:14 | TupleExpr |  |
 | test.rs:486:14:488:9 | { ... } | test.rs:487:13:487:14 | TupleExpr |  |

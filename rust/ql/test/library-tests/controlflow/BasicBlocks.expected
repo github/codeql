@@ -612,9 +612,12 @@ dominates
 | test.rs:387:5:391:5 | enter fn empty_struct_pattern | test.rs:387:5:391:5 | enter fn empty_struct_pattern |
 | test.rs:393:5:398:5 | enter fn struct_pattern | test.rs:393:5:398:5 | enter fn struct_pattern |
 | test.rs:393:5:398:5 | enter fn struct_pattern | test.rs:394:9:397:9 | match st { ... } |
+| test.rs:393:5:398:5 | enter fn struct_pattern | test.rs:395:27:395:27 | 1 |
 | test.rs:393:5:398:5 | enter fn struct_pattern | test.rs:395:34:395:34 | 0 |
 | test.rs:393:5:398:5 | enter fn struct_pattern | test.rs:396:13:396:26 | MyStruct {...} |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:394:9:397:9 | match st { ... } |
+| test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | 1 |
+| test.rs:395:27:395:27 | 1 | test.rs:395:34:395:34 | 0 |
 | test.rs:395:34:395:34 | 0 | test.rs:395:34:395:34 | 0 |
 | test.rs:396:13:396:26 | MyStruct {...} | test.rs:396:13:396:26 | MyStruct {...} |
 | test.rs:400:5:407:5 | enter fn range_pattern | test.rs:400:5:407:5 | enter fn range_pattern |
@@ -727,11 +730,26 @@ dominates
 | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code |
 | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code | test.rs:461:9:464:9 | match pair { ... } |
 | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code | test.rs:462:18:462:34 | MyStruct {...} |
+| test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code | test.rs:462:32:462:32 | _ |
 | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code | test.rs:463:13:463:13 | _ |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:461:9:464:9 | match pair { ... } |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:18:462:34 | MyStruct {...} |
+| test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:32:462:32 | _ |
+| test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | _ |
 | test.rs:463:13:463:13 | _ | test.rs:463:13:463:13 | _ |
 | test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:475:5:481:5 | enter fn enum_pattern |
+| test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:476:9:480:9 | match e { ... } |
+| test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:477:32:477:32 | _ |
+| test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:478:13:478:27 | TupleVariant(...) |
+| test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:478:26:478:26 | _ |
+| test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:479:13:479:23 | UnitVariant |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:476:9:480:9 | match e { ... } |
+| test.rs:477:32:477:32 | _ | test.rs:477:32:477:32 | _ |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:13:478:27 | TupleVariant(...) |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:26:478:26 | _ |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:479:13:479:23 | UnitVariant |
+| test.rs:478:26:478:26 | _ | test.rs:478:26:478:26 | _ |
+| test.rs:479:13:479:23 | UnitVariant | test.rs:479:13:479:23 | UnitVariant |
 | test.rs:485:5:490:5 | enter fn test_infinite_loop | test.rs:485:5:490:5 | enter fn test_infinite_loop |
 | test.rs:485:5:490:5 | enter fn test_infinite_loop | test.rs:487:13:487:14 | TupleExpr |
 | test.rs:487:13:487:14 | TupleExpr | test.rs:487:13:487:14 | TupleExpr |
@@ -1319,8 +1337,10 @@ postDominance
 | test.rs:393:5:398:5 | enter fn struct_pattern | test.rs:393:5:398:5 | enter fn struct_pattern |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:393:5:398:5 | enter fn struct_pattern |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:394:9:397:9 | match st { ... } |
+| test.rs:394:9:397:9 | match st { ... } | test.rs:395:27:395:27 | 1 |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:395:34:395:34 | 0 |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:396:13:396:26 | MyStruct {...} |
+| test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | 1 |
 | test.rs:395:34:395:34 | 0 | test.rs:395:34:395:34 | 0 |
 | test.rs:396:13:396:26 | MyStruct {...} | test.rs:396:13:396:26 | MyStruct {...} |
 | test.rs:400:5:407:5 | enter fn range_pattern | test.rs:400:5:407:5 | enter fn range_pattern |
@@ -1416,10 +1436,22 @@ postDominance
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:461:9:464:9 | match pair { ... } |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:462:18:462:34 | MyStruct {...} |
+| test.rs:461:9:464:9 | match pair { ... } | test.rs:462:32:462:32 | _ |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:463:13:463:13 | _ |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:18:462:34 | MyStruct {...} |
+| test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | _ |
 | test.rs:463:13:463:13 | _ | test.rs:463:13:463:13 | _ |
 | test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:475:5:481:5 | enter fn enum_pattern |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:475:5:481:5 | enter fn enum_pattern |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:476:9:480:9 | match e { ... } |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:477:32:477:32 | _ |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:478:13:478:27 | TupleVariant(...) |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:478:26:478:26 | _ |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:479:13:479:23 | UnitVariant |
+| test.rs:477:32:477:32 | _ | test.rs:477:32:477:32 | _ |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:13:478:27 | TupleVariant(...) |
+| test.rs:478:26:478:26 | _ | test.rs:478:26:478:26 | _ |
+| test.rs:479:13:479:23 | UnitVariant | test.rs:479:13:479:23 | UnitVariant |
 | test.rs:485:5:490:5 | enter fn test_infinite_loop | test.rs:485:5:490:5 | enter fn test_infinite_loop |
 | test.rs:487:13:487:14 | TupleExpr | test.rs:487:13:487:14 | TupleExpr |
 | test.rs:494:5:496:5 | enter fn say_hello | test.rs:494:5:496:5 | enter fn say_hello |
@@ -1682,7 +1714,8 @@ immediateDominator
 | test.rs:369:26:369:28 | ret | test.rs:369:18:369:20 | ret |
 | test.rs:370:13:370:16 | None | test.rs:367:5:373:5 | enter fn test_let_with_return |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:393:5:398:5 | enter fn struct_pattern |
-| test.rs:395:34:395:34 | 0 | test.rs:393:5:398:5 | enter fn struct_pattern |
+| test.rs:395:27:395:27 | 1 | test.rs:393:5:398:5 | enter fn struct_pattern |
+| test.rs:395:34:395:34 | 0 | test.rs:395:27:395:27 | 1 |
 | test.rs:396:13:396:26 | MyStruct {...} | test.rs:393:5:398:5 | enter fn struct_pattern |
 | test.rs:401:9:406:9 | match 42 { ... } | test.rs:400:5:407:5 | enter fn range_pattern |
 | test.rs:402:20:402:20 | 1 | test.rs:400:5:407:5 | enter fn range_pattern |
@@ -1725,7 +1758,13 @@ immediateDominator
 | test.rs:456:13:456:13 | _ | test.rs:455:13:455:25 | [match(false)] 1 \| 2 |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code |
+| test.rs:462:32:462:32 | _ | test.rs:462:18:462:34 | MyStruct {...} |
 | test.rs:463:13:463:13 | _ | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:475:5:481:5 | enter fn enum_pattern |
+| test.rs:477:32:477:32 | _ | test.rs:475:5:481:5 | enter fn enum_pattern |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:475:5:481:5 | enter fn enum_pattern |
+| test.rs:478:26:478:26 | _ | test.rs:478:13:478:27 | TupleVariant(...) |
+| test.rs:479:13:479:23 | UnitVariant | test.rs:478:13:478:27 | TupleVariant(...) |
 | test.rs:487:13:487:14 | TupleExpr | test.rs:485:5:490:5 | enter fn test_infinite_loop |
 | test.rs:511:28:516:9 | exit { ... } (normal) | test.rs:511:28:516:9 | enter { ... } |
 | test.rs:512:13:514:13 | if b {...} | test.rs:511:28:516:9 | enter { ... } |
@@ -2236,6 +2275,8 @@ joinBlockPredecessor
 | test.rs:370:13:370:16 | None | test.rs:369:18:369:20 | ret | 0 |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:395:34:395:34 | 0 | 0 |
 | test.rs:394:9:397:9 | match st { ... } | test.rs:396:13:396:26 | MyStruct {...} | 1 |
+| test.rs:396:13:396:26 | MyStruct {...} | test.rs:393:5:398:5 | enter fn struct_pattern | 1 |
+| test.rs:396:13:396:26 | MyStruct {...} | test.rs:395:27:395:27 | 1 | 0 |
 | test.rs:401:9:406:9 | match 42 { ... } | test.rs:402:20:402:20 | 1 | 0 |
 | test.rs:401:9:406:9 | match 42 { ... } | test.rs:403:21:403:21 | 2 | 1 |
 | test.rs:401:9:406:9 | match 42 { ... } | test.rs:404:20:404:20 | 3 | 2 |
@@ -2270,8 +2311,13 @@ joinBlockPredecessor
 | test.rs:455:13:455:25 | [match(true)] 1 \| 2 | test.rs:455:13:455:25 | 2 | 0 |
 | test.rs:455:13:455:25 | one_or_two!... | test.rs:455:13:455:25 | [match(false)] 1 \| 2 | 0 |
 | test.rs:455:13:455:25 | one_or_two!... | test.rs:455:13:455:25 | [match(true)] 1 \| 2 | 1 |
-| test.rs:461:9:464:9 | match pair { ... } | test.rs:462:18:462:34 | MyStruct {...} | 0 |
+| test.rs:461:9:464:9 | match pair { ... } | test.rs:462:32:462:32 | _ | 0 |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:463:13:463:13 | _ | 1 |
+| test.rs:463:13:463:13 | _ | test.rs:460:5:465:5 | enter fn irrefutable_pattern_and_dead_code | 1 |
+| test.rs:463:13:463:13 | _ | test.rs:462:18:462:34 | MyStruct {...} | 0 |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:477:32:477:32 | _ | 0 |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:478:26:478:26 | _ | 1 |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:479:13:479:23 | UnitVariant | 2 |
 | test.rs:487:13:487:14 | TupleExpr | test.rs:485:5:490:5 | enter fn test_infinite_loop | 1 |
 | test.rs:487:13:487:14 | TupleExpr | test.rs:487:13:487:14 | TupleExpr | 0 |
 | test.rs:511:28:516:9 | exit { ... } (normal) | test.rs:512:13:514:13 | if b {...} | 1 |

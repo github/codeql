@@ -122,23 +122,17 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
  * does not mean that `pat` is irrefutable, as its children might be the cause
  * of a failure.
  */
-private predicate canCauseMatchFailure(Pat pat) {
-  pat instanceof LiteralPat
-  or
-  // NOTE: a `TupleStructPat` can cause a failure if it resolves to a an enum
-  // variant but not when it resolves to a tuple struct.
-  pat instanceof TupleStructPat
-  or
-  pat instanceof SlicePat
-  or
-  pat instanceof PathPat
-  or
-  pat instanceof OrPat
-  or
+private predicate cannotCauseMatchFailure(Pat pat) {
+  pat instanceof RangePat or
   // Identifier patterns that are in fact path patterns can cause failures. For
-  // instance `None`. Only if a `@ ...` part is present can we be sure that it's
-  // an actual identifier pattern.
-  pat = any(IdentPat p | not p.hasPat())
+  // instance `None`. Only if an `@ ...` part is present can we be sure that
+  // it's an actual identifier pattern.
+  pat = any(IdentPat p | p.hasPat()) or
+  pat instanceof WildcardPat or
+  pat instanceof RestPat or
+  pat instanceof RefPat or
+  pat instanceof TuplePat or
+  pat instanceof MacroPat
 }
 
 /**
@@ -168,7 +162,7 @@ private predicate guaranteedMatchPosition(Pat pat) {
 }
 
 private predicate guaranteedMatch(Pat pat) {
-  (not canCauseMatchFailure(pat) or guaranteedMatchPosition(pat)) and
+  (cannotCauseMatchFailure(pat) or guaranteedMatchPosition(pat)) and
   // In `for` loops we use a no-match edge from the pattern to terminate the
   // loop, hence we special case and always allow the no-match edge.
   not pat = any(ForExpr for).getPat()
