@@ -23,7 +23,7 @@ app.get('/some/other/path2', function(req, res) {
 
 app.get('/some/path', function(req, res) {
   var target = req.param("target");
-  if (isLocalURL(target))
+  if (target.startsWith("https://example.com/"))
     // OK - request parameter is sanitized before incorporating it into the redirect
     res.redirect(target);
   else
