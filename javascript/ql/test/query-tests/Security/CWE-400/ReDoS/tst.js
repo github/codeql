@@ -41,24 +41,22 @@ var good4 = /(\r\n|\r|\n)+/;
 // BAD - PoC: `node -e "/((?:[^\"\']|\".*?\"|\'.*?\')*?)([(,)]|$)/.test(\"'''''''''''''''''''''''''''''''''''''''''''''\\\"\");"`. It's complicated though, because the regexp still matches something, it just matches the empty-string after the attack string.
 var actuallyBad = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/;
 
-// NOT GOOD; attack: "a" + "[]".repeat(100) + ".b\n"
 // Adapted from Knockout (https://github.com/knockout/knockout), which is
 // licensed under the MIT license; see file knockout-LICENSE
-var bad6 = /^[\_$a-z][\_$a-z0-9]*(\[.*?\])*(\.[\_$a-z][\_$a-z0-9]*(\[.*?\])*)*$/i;
+var bad6 = /^[\_$a-z][\_$a-z0-9]*(\[.*?\])*(\.[\_$a-z][\_$a-z0-9]*(\[.*?\])*)*$/i; // $ Alert - attack: "a" + "[]".repeat(100) + ".b\n"
 
 
 var good6 = /(a|.)*/;
 
 // Testing the NFA - only some of the below are detected.
-var bad7 = /^([a-z]+)+$/;
-var bad8 = /^([a-z]*)*$/;
-var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
-var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/;
+var bad7 = /^([a-z]+)+$/; // $ Alert
+var bad8 = /^([a-z]*)*$/; // $ Alert
+var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/; // $ Alert
+var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/; // $ Alert
 
-// NOT GOOD; attack: "[" + "][".repeat(100) + "]!"
 // Adapted from Prototype.js (https://github.com/prototypejs/prototype), which
 // is licensed under the MIT license; see file Prototype.js-LICENSE.
-var bad11 = /(([\w#:.~>+()\s-]+|\*|\[.*?\])+)\s*(,|$)/;
+var bad11 = /(([\w#:.~>+()\s-]+|\*|\[.*?\])+)\s*(,|$)/; // $ Alert - attack: "[" + "][".repeat(100) + "]!"
 
 // Adapted from Prism (https://github.com/PrismJS/prism), which is licensed
 // under the MIT license; see file Prism-LICENSE.
@@ -279,11 +277,11 @@ var bad78 = /^(b+.)+$/; // $ Alert
 
 var good39 = /a*b/;
 
-// All 4 bad combinations of nested * and +
-var bad79 = /(a*)*b/;
-var bad80 = /(a+)*b/;
-var bad81 = /(a*)+b/;
-var bad82 = /(a+)+b/;
+// All 4 bad combinations of nested * and +)
+var bad79 = /(a*)*b/; // $ Alert
+var bad80 = /(a+)*b/; // $ Alert
+var bad81 = /(a*)+b/; // $ Alert
+var bad82 = /(a+)+b/; // $ Alert
 
 
 var good40 = /(a|b)+/;
@@ -300,45 +298,45 @@ var bad86AndAHalf = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/; // $ MISSING: Alert
 var good43 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)/g;
 
 var bad87 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)X/g; // $ Alert
-var bad88 = /("[^"]*?"|[^"\s]+)+(?=X)/g;
-var bad89 = /(x*)+(?=$)/
-var bad90 = /(x*)+(?=$|y)/
+var bad88 = /("[^"]*?"|[^"\s]+)+(?=X)/g; // $ Alert
+var bad89 = /(x*)+(?=$)/ // $ Alert
+var bad90 = /(x*)+(?=$|y)/ // $ Alert
 
 // OK - but we spuriously conclude that a rejecting suffix exists.
 var good44 = /([\s\S]*)+(?=$)/;
 var good45 = /([\s\S]*)+(?=$|y)/;
 
 var good46 = /(foo|FOO)*bar/;
-var bad91 = /(foo|FOO)*bar/i;
+var bad91 = /(foo|FOO)*bar/i; // $ Alert
 
 var good47 = /([AB]|[ab])*C/;
-var bad92 = /([DE]|[de])*F/i;
+var bad92 = /([DE]|[de])*F/i; // $ Alert
 
-var bad93 = /(?<=^v?|\sv?)(a|aa)*$/;
-var bad94 = /(a|aa)*$/;
+var bad93 = /(?<=^v?|\sv?)(a|aa)*$/; // $ Alert
+var bad94 = /(a|aa)*$/; // $ Alert
 
 var bad95 = new RegExp(
     "(a" +
     "|" +
     "aa)*" +
     "b$"
-);
+); // $ Alert
 
 var bad96 = new RegExp("(" +
     "(c|cc)*|" +
     "(d|dd)*|" +
     "(e|ee)*" +
-")f$");
+")f$"); // $ Alert
 
 var bad97 = new RegExp(
     "(g|gg" +
-    ")*h$");
+    ")*h$"); // $ Alert
 
-var bad98 = /^(?:\*\/\*|[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}\/(?:\*|[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126})(?:\s* *; *[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}(?:="?[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}"?)?\s*)*)$/;
+var bad98 = /^(?:\*\/\*|[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}\/(?:\*|[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126})(?:\s* *; *[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}(?:="?[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}"?)?\s*)*)$/; // $ Alert
 
 var good48 = /(\/(?:\/[\w.-]*)*){0,1}:([\w.-]+)/;
 
-var bad99 = /(a{1,})*b/;
+var bad99 = /(a{1,})*b/; // $ Alert
 
 var unicode = /^\n\u0000(\u0000|.)+$/;
 
