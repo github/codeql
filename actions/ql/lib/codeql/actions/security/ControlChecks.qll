@@ -41,16 +41,6 @@ string actor_not_attacker_event() {
     ]
 }
 
-string actor_not_attacker_issue_comment_event() {
-  result =
-    [
-      // actor and attacker can be different
-      // actor may be a collaborator, but the attacker is may be the author of the PR that gets commented
-      // therefore it may be vulnerable to TOCTOU races where the actor reviews one thing and the attacker changes it
-      "issue_comment",
-    ]
-}
-
 /** An If node that contains an actor, user or label check */
 abstract class ControlCheck extends AstNode {
   ControlCheck() {
