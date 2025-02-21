@@ -2,21 +2,21 @@ window.location = /.*redirect=([^&]*).*/.exec(document.location.href)[1]; // $ A
 
 (function(){
 	var indirect = /.*redirect=([^&]*).*/;
-	window.location = indirect.exec(document.location.href)[1];
+	window.location = indirect.exec(document.location.href)[1]; // $ Alert
 });
 
 window.location = new RegExp('.*redirect=([^&]*).*').exec(document.location.href)[1]; // $ Alert
 
 (function(){
 	var indirect = new RegExp('.*redirect=([^&]*).*')
-	window.location = indirect.exec(document.location.href)[1];
+	window.location = indirect.exec(document.location.href)[1]; // $ Alert
 });
 
 window.location = new RegExp(/.*redirect=([^&]*).*/).exec(document.location.href)[1]; // $ Alert
 
 (function(){
 	var indirect = new RegExp(/.*redirect=([^&]*).*/)
-	window.location = indirect.exec(document.location.href)[1];
+	window.location = indirect.exec(document.location.href)[1]; // $ Alert
 });
 
 function foo(win) {
