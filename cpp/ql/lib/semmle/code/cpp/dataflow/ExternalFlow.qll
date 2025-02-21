@@ -869,10 +869,8 @@ private predicate elementSpecMatchesSignature(
 bindingset[nameWithoutArgs]
 pragma[inline_late]
 private Class getClassAndNameImpl(Function method, string nameWithoutArgs) {
-  exists(string memberName |
-    result = method.getClassAndName(memberName) and
-    nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
-  )
+  result = method.getDeclaringType() and
+  nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
   or
   result = method.getClassAndName(nameWithoutArgs) and
   not method instanceof ConversionOperator
