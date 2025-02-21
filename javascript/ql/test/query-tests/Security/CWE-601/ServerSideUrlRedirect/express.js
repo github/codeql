@@ -110,7 +110,7 @@ app.get('/array/join', function(req, res) {
 });
 
 function sendUserToUrl(res, nextUrl) {
-  res.redrect(nextUrl); // $ Alert - value comes from query parameter
+  res.redirect(nextUrl); // $ Alert - value comes from query parameter
 }
 
 app.get('/call', function(req, res) {
