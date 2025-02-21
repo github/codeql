@@ -234,7 +234,7 @@ var good33 = /(a+)*([^]*|X)$/;
 
 var bad64 = /((a+)*$|[^]+)/; // $ Alert[js/redos]
 
-var good34 = /([^]+|(a+)*$)/; // $ SPURIOUS: Alert - The only change compared to the above is the order of alternatives, which we don't model.
+var good34 = /([^]+|(a+)*$)/; // $ SPURIOUS: Alert[js/redos] - The only change compared to the above is the order of alternatives, which we don't model.
 
 
 var good35 = /((;|^)a+)+$/;
