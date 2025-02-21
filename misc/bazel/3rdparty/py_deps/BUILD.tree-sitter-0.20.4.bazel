@@ -82,8 +82,8 @@ rust_library(
     }),
     version = "0.20.4",
     deps = [
-        "@vendor__regex-1.5.5//:regex",
-        "@vendor__tree-sitter-0.20.4//:build_script_build",
+        "@vendor_py__regex-1.11.1//:regex",
+        "@vendor_py__tree-sitter-0.20.4//:build_script_build",
     ],
 )
 
@@ -135,7 +135,7 @@ cargo_build_script(
     version = "0.20.4",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__cc-1.0.70//:cc",
+        "@vendor_py__cc-1.2.14//:cc",
     ],
 )
 

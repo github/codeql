@@ -2,6 +2,7 @@
 name = "codeql-rust"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
