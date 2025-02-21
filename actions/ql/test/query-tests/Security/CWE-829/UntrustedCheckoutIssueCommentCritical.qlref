@@ -1,1 +1,1 @@
-Security/CWE-829/UntrustedCheckoutTriggeredByIssueCommentCritical.ql
+Security/CWE-829/UntrustedCheckoutIssueCommentCritical.ql
