@@ -2,7 +2,7 @@ use itertools::Itertools;
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
+use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig};
 use ra_ap_paths::{AbsPath, Utf8PathBuf};
 use ra_ap_project_model::ProjectManifest;
 use ra_ap_project_model::{CargoConfig, ManifestPath};
@@ -50,16 +50,12 @@ impl<'a> RustAnalyzer<'a> {
     pub fn load_workspace(
         project: &ProjectManifest,
         config: &CargoConfig,
+        load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let progress = |t| (trace!("progress: {}", t));
-        let load_config = LoadCargoConfig {
-            load_out_dirs_from_check: true,
-            with_proc_macro_server: ProcMacroServerChoice::Sysroot,
-            prefill_caches: false,
-        };
         let manifest = project.manifest_path();
 
-        match load_workspace_at(manifest.as_ref(), config, &load_config, &progress) {
+        match load_workspace_at(manifest.as_ref(), config, load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
                 error!("failed to load workspace for {}: {}", manifest, err);
