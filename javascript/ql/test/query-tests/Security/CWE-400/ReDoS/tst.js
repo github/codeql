@@ -319,14 +319,14 @@ var bad95 = new RegExp(
     "(a" +
     "|" +
     "aa)*" +
-    "b$"
-); // $ Alert
+    "b$" // $ Alert[js/redos]
+);
 
 var bad96 = new RegExp("(" +
-    "(c|cc)*|" +
-    "(d|dd)*|" +
+    "(c|cc)*|" + // $ Alert[js/redos]
+    "(d|dd)*|" + // $ Alert[js/redos]
     "(e|ee)*" +
-")f$"); // $ Alert
+")f$"); // $ Alert[js/redos]
 
 var bad97 = new RegExp(
     "(g|gg" +
