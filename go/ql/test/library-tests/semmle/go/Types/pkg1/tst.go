@@ -1,6 +1,6 @@
 package pkg1
 
-import "github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2"
+import "codeql-go-types/pkg2"
 
 type T struct {
 	f int

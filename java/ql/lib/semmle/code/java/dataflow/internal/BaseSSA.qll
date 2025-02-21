@@ -57,7 +57,7 @@ class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
 }
 
 cached
-private module SsaImpl {
+private module BaseSsaImpl {
   /** Gets the destination variable of an update of a tracked variable. */
   cached
   BaseSsaSourceVariable getDestVar(VariableUpdate upd) {
@@ -440,7 +440,7 @@ private module SsaImpl {
   }
 }
 
-private import SsaImpl
+private import BaseSsaImpl
 private import SsaDefReaches
 import SsaPublic
 

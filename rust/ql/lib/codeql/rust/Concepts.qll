@@ -101,6 +101,32 @@ class ModeledEnvironmentSource extends EnvironmentSource::Range {
 }
 
 /**
+ * A data flow source corresponding to the program's database reads.
+ */
+final class DatabaseSource = DatabaseSource::Range;
+
+/**
+ * Provides a class for modeling new sources for the program's database reads.
+ */
+module DatabaseSource {
+  /**
+   * A data flow source corresponding to the program's database reads.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "database" }
+
+    override string getSourceType() { result = "DatabaseSource" }
+  }
+}
+
+/**
+ * An externally modeled source for data from the program's database.
+ */
+class ModeledDatabaseSource extends DatabaseSource::Range {
+  ModeledDatabaseSource() { sourceNode(this, "database") }
+}
+
+/**
  * A data flow source for remote (network) data.
  */
 final class RemoteSource = RemoteSource::Range;

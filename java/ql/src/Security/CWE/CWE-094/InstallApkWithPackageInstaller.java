@@ -1,3 +1,4 @@
+// GOOD: Package installed using PackageInstaller
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;

@@ -251,25 +251,19 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
 
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-  ) {
-    exists(state1) and
-    state2 = state1 and
-    (
-      // Step through `p -> x[p]`
-      exists(DataFlow::PropRead read |
-        node1 = read.getPropertyNameExpr().flow() and
-        not read.(DynamicPropRead).hasDominatingAssignment() and
-        node2 = read
-      )
-      or
-      // Step through `x -> x[p]`
-      exists(DynamicPropRead read |
-        not read.hasDominatingAssignment() and
-        node1 = read.getBase() and
-        node2 = read
-      )
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // Step through `p -> x[p]`
+    exists(DataFlow::PropRead read |
+      node1 = read.getPropertyNameExpr().flow() and
+      not read.(DynamicPropRead).hasDominatingAssignment() and
+      node2 = read
+    )
+    or
+    // Step through `x -> x[p]`
+    exists(DynamicPropRead read |
+      not read.hasDominatingAssignment() and
+      node1 = read.getBase() and
+      node2 = read
     )
   }
 

@@ -19,6 +19,8 @@ module XsltInjectionConfig implements DataFlow::ConfigSig {
     // opted for the more simple approach.
     nodeTo = elementTreeConstruction(nodeFrom)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module XsltInjectionFlow = TaintTracking::Global<XsltInjectionConfig>;

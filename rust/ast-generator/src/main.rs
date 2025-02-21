@@ -149,11 +149,7 @@ fn write_schema(
             .iter()
             .map(|node| node_src_to_schema_class(node, &super_types)),
     );
-    // the concat dance is currently required by bazel
-    let template = mustache::compile_str(include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/templates/schema.mustache"
-    )))?;
+    let template = mustache::compile_str(include_str!("templates/schema.mustache"))?;
     let res = template.render_to_string(&schema)?;
     Ok(fix_blank_lines(&res))
 }
@@ -557,11 +553,7 @@ fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
         enums: grammar.enums.iter().map(enum_to_extractor_info).collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
-    // the concat dance is currently required by bazel
-    let template = mustache::compile_str(include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/templates/extractor.mustache"
-    )))?;
+    let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;
     let res = template.render_to_string(&extractor_info)?;
     Ok(fix_blank_lines(&res))
 }

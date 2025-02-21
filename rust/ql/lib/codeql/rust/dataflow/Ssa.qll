@@ -83,35 +83,6 @@ module Ssa {
     final CfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control flow node that reads the value of this SSA definition.
-     * That is, a read that can reach the end of the enclosing CFG scope, or another
-     * SSA definition for the source variable, without passing through any other read.
-     *
-     * Example:
-     *
-     * ```rust
-     * fn phi(b : bool) {              // defines b_0
-     *      let mut x = 1;             // defines x_0
-     *      println!("{}", x);
-     *      println!("{}", x + 1);     // last read of x_0
-     *
-     *      if b {                     // last read of b_0
-     *          x = 2;                 // defines x_1
-     *          println!("{}", x);
-     *          println!("{}", x + 1); // last read of x_1
-     *      } else {
-     *          x = 3;                 // defines x_2
-     *          println!("{}", x);
-     *          println!("{}", x + 1); // last read of x_2
-     *      }
-     *                                 // defines x_3 = phi(x_1, x_2)
-     *      println!("{}", x);         // last read of x_3
-     * }
-     * ```
-     */
-    final CfgNode getALastRead() { SsaImpl::lastRead(this, result) }
-
-    /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
      * That is, `read2` can be reached from `read1` without passing through
      * another read.

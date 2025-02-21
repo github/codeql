@@ -3,9 +3,12 @@
 fn source(i: i64) -> i64 {
     1000 + i
 }
-
 fn sink(s: i64) {
     println!("{}", s);
+}
+
+fn sink_ref(sr: &i64) {
+    println!("{}", sr);
 }
 
 // -----------------------------------------------------------------------------
@@ -172,11 +175,9 @@ fn struct_nested_field() {
 }
 
 fn struct_nested_match() {
+    let y = source(93);
     let p = Point3D {
-        plane: Point {
-            x: 2,
-            y: source(93),
-        },
+        plane: Point { x: 2, y },
         z: 4,
     };
     match p {
@@ -185,8 +186,23 @@ fn struct_nested_match() {
             z,
         } => {
             sink(x);
-            sink(y); // MISSING: hasValueFlow=93
+            sink(y); // $ hasValueFlow=93
             sink(z);
+        }
+    }
+}
+
+struct MyTupleStruct(i64, i64);
+
+fn tuple_struct() {
+    let s = MyTupleStruct(source(94), 2);
+    sink(s.0); // $ MISSING: hasValueFlow=94
+    sink(s.1);
+
+    match s {
+        MyTupleStruct(x, y) => {
+            sink(x); // $ hasValueFlow=94
+            sink(y);
         }
     }
 }
@@ -429,6 +445,18 @@ fn macro_invocation() {
     sink(s); // $ hasValueFlow=37
 }
 
+fn references() {
+    let a = source(40);
+    let b = source(41);
+    let c = source(42);
+    let c_ref = &c;
+
+    sink(a); // $ hasValueFlow=40
+    sink_ref(&b); // $ hasTaintFlow=41
+    sink_ref(c_ref); // $ hasTaintFlow=42
+    sink(*c_ref); // $ hasValueFlow=42
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -442,6 +470,7 @@ fn main() {
     tuple_mutation();
     tuple_nested();
     struct_field();
+    tuple_struct();
     struct_mutation();
     struct_pattern_match();
     struct_nested_field();
@@ -465,4 +494,5 @@ fn main() {
     array_assignment();
     captured_variable_and_continue(vec![]);
     macro_invocation();
+    references();
 }

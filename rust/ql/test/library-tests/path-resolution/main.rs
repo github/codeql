@@ -127,7 +127,7 @@ mod m7 {
     } // I41
 
     #[rustfmt::skip]
-    pub fn f() -> MyEnum // $ item=I41 
+    pub fn f() -> MyEnum // $ item=I41
     {
         println!("main.rs::m7::f");
         let _ = MyEnum::A(0); // $ item=I42
@@ -167,9 +167,18 @@ mod m8 {
     } // I52
 
     #[rustfmt::skip]
+    impl MyStruct { // $ item=I50
+        fn h(&self) {
+            println!("main.rs::m8::MyStruct::h");
+            f(); // $ item=I51
+        } // I74
+    } // I73
+
+    #[rustfmt::skip]
     pub fn g() {
         let x = MyStruct {}; // $ item=I50
         MyTrait::f(&x); // $ item=I48
+        MyStruct::f(&x); // $ MISSING: item=I53
         <MyStruct as // $ item=I50
          MyTrait // $ MISSING: item=I47
         > // $ MISSING: item=52
@@ -178,6 +187,8 @@ mod m8 {
         x.f(); // $ MISSING: item=I53
         let x = MyStruct {}; // $ item=I50
         x.g(); // $ MISSING: item=I54
+        MyStruct::h(&x); // $ MISSING: item=I74
+        x.h(); // $ MISSING: item=I74
     } // I55
 } // I46
 
@@ -189,6 +200,95 @@ mod m9 {
         println!("main.rs::m9::f");
         self::MyStruct {} // $ item=I56
     } // I57
+}
+
+mod m10 {
+    #[rustfmt::skip]
+    pub struct MyStruct<
+      T // I58
+    >
+    {
+        x: T, // $ item=I58
+    } // I59
+
+    #[rustfmt::skip]
+    pub fn f<T>( // I60
+        x: T // $ item=I60
+    ) ->
+      MyStruct<
+        T // $ item=I60
+      > // $ item=I59
+    {
+        MyStruct { x } // $ item=I59
+    }
+}
+
+mod m11 {
+    pub struct Foo {} // I61
+
+    fn Foo() {} // I62
+
+    pub fn f() {
+        let _ = Foo {}; // $ item=I61
+        Foo(); // $ item=I62
+    } // I63
+
+    mod f {} // I66
+
+    pub enum Bar {
+        FooBar {}, // I64
+    } // I65
+
+    use Bar::FooBar; // $ item=I64
+
+    fn FooBar() {} // I65
+
+    #[rustfmt::skip]
+    fn g(x: Foo) { // $ item=I61
+        let _ = FooBar {}; // $ item=I64
+        let _ = FooBar(); // $ item=I65
+    }
+
+    struct S; // I67
+    enum E {
+        C, // I68
+    }
+
+    use E::C; // $ item=I68
+
+    fn h() {
+        let _ = S; // $ item=I67
+        let _ = C; // $ item=I68
+    }
+}
+
+mod m12 {
+    #[rustfmt::skip]
+    trait MyParamTrait<
+      T // I69
+    > {
+        type AssociatedType; // I70
+
+        fn f(
+            &self,
+            x: T // $ item=I69
+        ) -> Self::AssociatedType; // $ item=I70
+    }
+}
+
+mod m13 {
+    pub fn f() {} // I71
+    pub struct f {} // I72
+
+    mod m14 {
+        use crate::m13::f; // $ item=I71 item=I72
+
+        #[rustfmt::skip]
+        fn g(x: f) { // $ item=I72
+            let _ = f {}; // $ item=I72
+            f(); // $ item=I71
+        }
+    }
 }
 
 fn main() {
@@ -209,4 +309,5 @@ fn main() {
     m7::f(); // $ item=I45
     m8::g(); // $ item=I55
     m9::f(); // $ item=I57
+    m11::f(); // $ item=I63
 }
