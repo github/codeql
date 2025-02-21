@@ -3,6 +3,8 @@ private import rust
 private import rust as R
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.FlowSource as FlowSource
+private import codeql.rust.dataflow.FlowSink as FlowSink
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
@@ -105,14 +107,19 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
   predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
-  predicate apiSource(DataFlow::Node source) { none() }
+  /**
+   * Holds if `source` is an API entrypoint, i.e., a source of input where data
+   * can flow in to a library. This is used for creating sink models, as we
+   * only want to mark functions as sinks if input to the function can reach
+   * (from an input source) a known sink.
+   */
+  predicate apiSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
 
   bindingset[sourceEnclosing, api]
   predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) { none() }
 
   string getInputArgument(DataFlow::Node source) {
-    // TODO: Implement when we want to generate sources and sinks
-    result = "getInputArgument(" + source + ")"
+    result = "Argument[" + source.(Node::SourceParameterNode).getPosition().toString() + "]"
   }
 
   bindingset[kind]
@@ -174,11 +181,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
 
-  // TODO: Implement this when we want to generate sources.
-  predicate sourceNode(DataFlow::Node node, string kind) { none() }
+  predicate sourceNode(DataFlow::Node node, string kind) { FlowSource::sourceNode(node, kind) }
 
-  // TODO: Implement this when we want to generate sinks.
-  predicate sinkNode(DataFlow::Node node, string kind) { none() }
+  predicate sinkNode(DataFlow::Node node, string kind) { FlowSink::sinkNode(node, kind) }
 }
 
 import MakeModelGenerator<Location, RustDataFlow, RustTaintTracking, ModelGeneratorInput>

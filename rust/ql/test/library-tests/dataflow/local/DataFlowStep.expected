@@ -471,13 +471,13 @@ localStep
 | main.rs:304:11:304:12 | s1 | main.rs:305:9:305:45 | ... \| ... |  |
 | main.rs:305:9:305:45 | ... \| ... | main.rs:305:9:305:25 | ...::A(...) |  |
 | main.rs:305:9:305:45 | ... \| ... | main.rs:305:29:305:45 | ...::B(...) |  |
-| main.rs:305:9:305:45 | [SSA] [match(true)] phi | main.rs:305:55:305:55 | n |  |
-| main.rs:305:24:305:24 | [SSA] [input] [match(true)] phi | main.rs:305:9:305:45 | [SSA] [match(true)] phi |  |
-| main.rs:305:24:305:24 | [SSA] n | main.rs:305:24:305:24 | [SSA] [input] [match(true)] phi |  |
+| main.rs:305:9:305:45 | [SSA] phi | main.rs:305:55:305:55 | n |  |
+| main.rs:305:24:305:24 | [SSA] [input] phi | main.rs:305:9:305:45 | [SSA] phi |  |
+| main.rs:305:24:305:24 | [SSA] n | main.rs:305:24:305:24 | [SSA] [input] phi |  |
 | main.rs:305:24:305:24 | n | main.rs:305:24:305:24 | [SSA] n |  |
 | main.rs:305:24:305:24 | n | main.rs:305:24:305:24 | n |  |
-| main.rs:305:44:305:44 | [SSA] [input] [match(true)] phi | main.rs:305:9:305:45 | [SSA] [match(true)] phi |  |
-| main.rs:305:44:305:44 | [SSA] n | main.rs:305:44:305:44 | [SSA] [input] [match(true)] phi |  |
+| main.rs:305:44:305:44 | [SSA] [input] phi | main.rs:305:9:305:45 | [SSA] phi |  |
+| main.rs:305:44:305:44 | [SSA] n | main.rs:305:44:305:44 | [SSA] [input] phi |  |
 | main.rs:305:44:305:44 | n | main.rs:305:44:305:44 | [SSA] n |  |
 | main.rs:305:44:305:44 | n | main.rs:305:44:305:44 | n |  |
 | main.rs:305:50:305:56 | sink(...) | main.rs:304:5:306:5 | match s1 { ... } |  |
@@ -514,13 +514,13 @@ localStep
 | main.rs:322:11:322:12 | s1 | main.rs:323:9:323:19 | ... \| ... |  |
 | main.rs:323:9:323:19 | ... \| ... | main.rs:323:9:323:12 | A(...) |  |
 | main.rs:323:9:323:19 | ... \| ... | main.rs:323:16:323:19 | B(...) |  |
-| main.rs:323:9:323:19 | [SSA] [match(true)] phi | main.rs:323:29:323:29 | n |  |
-| main.rs:323:11:323:11 | [SSA] [input] [match(true)] phi | main.rs:323:9:323:19 | [SSA] [match(true)] phi |  |
-| main.rs:323:11:323:11 | [SSA] n | main.rs:323:11:323:11 | [SSA] [input] [match(true)] phi |  |
+| main.rs:323:9:323:19 | [SSA] phi | main.rs:323:29:323:29 | n |  |
+| main.rs:323:11:323:11 | [SSA] [input] phi | main.rs:323:9:323:19 | [SSA] phi |  |
+| main.rs:323:11:323:11 | [SSA] n | main.rs:323:11:323:11 | [SSA] [input] phi |  |
 | main.rs:323:11:323:11 | n | main.rs:323:11:323:11 | [SSA] n |  |
 | main.rs:323:11:323:11 | n | main.rs:323:11:323:11 | n |  |
-| main.rs:323:18:323:18 | [SSA] [input] [match(true)] phi | main.rs:323:9:323:19 | [SSA] [match(true)] phi |  |
-| main.rs:323:18:323:18 | [SSA] n | main.rs:323:18:323:18 | [SSA] [input] [match(true)] phi |  |
+| main.rs:323:18:323:18 | [SSA] [input] phi | main.rs:323:9:323:19 | [SSA] phi |  |
+| main.rs:323:18:323:18 | [SSA] n | main.rs:323:18:323:18 | [SSA] [input] phi |  |
 | main.rs:323:18:323:18 | n | main.rs:323:18:323:18 | [SSA] n |  |
 | main.rs:323:18:323:18 | n | main.rs:323:18:323:18 | n |  |
 | main.rs:323:24:323:30 | sink(...) | main.rs:322:5:324:5 | match s1 { ... } |  |
@@ -557,13 +557,13 @@ localStep
 | main.rs:345:11:345:12 | s1 | main.rs:346:9:346:71 | ... \| ... |  |
 | main.rs:346:9:346:71 | ... \| ... | main.rs:346:9:346:38 | ...::C {...} |  |
 | main.rs:346:9:346:71 | ... \| ... | main.rs:346:42:346:71 | ...::D {...} |  |
-| main.rs:346:9:346:71 | [SSA] [match(true)] phi | main.rs:346:81:346:81 | n |  |
-| main.rs:346:36:346:36 | [SSA] [input] [match(true)] phi | main.rs:346:9:346:71 | [SSA] [match(true)] phi |  |
-| main.rs:346:36:346:36 | [SSA] n | main.rs:346:36:346:36 | [SSA] [input] [match(true)] phi |  |
+| main.rs:346:9:346:71 | [SSA] phi | main.rs:346:81:346:81 | n |  |
+| main.rs:346:36:346:36 | [SSA] [input] phi | main.rs:346:9:346:71 | [SSA] phi |  |
+| main.rs:346:36:346:36 | [SSA] n | main.rs:346:36:346:36 | [SSA] [input] phi |  |
 | main.rs:346:36:346:36 | n | main.rs:346:36:346:36 | [SSA] n |  |
 | main.rs:346:36:346:36 | n | main.rs:346:36:346:36 | n |  |
-| main.rs:346:69:346:69 | [SSA] [input] [match(true)] phi | main.rs:346:9:346:71 | [SSA] [match(true)] phi |  |
-| main.rs:346:69:346:69 | [SSA] n | main.rs:346:69:346:69 | [SSA] [input] [match(true)] phi |  |
+| main.rs:346:69:346:69 | [SSA] [input] phi | main.rs:346:9:346:71 | [SSA] phi |  |
+| main.rs:346:69:346:69 | [SSA] n | main.rs:346:69:346:69 | [SSA] [input] phi |  |
 | main.rs:346:69:346:69 | n | main.rs:346:69:346:69 | [SSA] n |  |
 | main.rs:346:69:346:69 | n | main.rs:346:69:346:69 | n |  |
 | main.rs:346:76:346:82 | sink(...) | main.rs:345:5:347:5 | match s1 { ... } |  |
@@ -600,13 +600,13 @@ localStep
 | main.rs:365:11:365:12 | s1 | main.rs:366:9:366:43 | ... \| ... |  |
 | main.rs:366:9:366:43 | ... \| ... | main.rs:366:9:366:24 | C {...} |  |
 | main.rs:366:9:366:43 | ... \| ... | main.rs:366:28:366:43 | D {...} |  |
-| main.rs:366:9:366:43 | [SSA] [match(true)] phi | main.rs:366:53:366:53 | n |  |
-| main.rs:366:22:366:22 | [SSA] [input] [match(true)] phi | main.rs:366:9:366:43 | [SSA] [match(true)] phi |  |
-| main.rs:366:22:366:22 | [SSA] n | main.rs:366:22:366:22 | [SSA] [input] [match(true)] phi |  |
+| main.rs:366:9:366:43 | [SSA] phi | main.rs:366:53:366:53 | n |  |
+| main.rs:366:22:366:22 | [SSA] [input] phi | main.rs:366:9:366:43 | [SSA] phi |  |
+| main.rs:366:22:366:22 | [SSA] n | main.rs:366:22:366:22 | [SSA] [input] phi |  |
 | main.rs:366:22:366:22 | n | main.rs:366:22:366:22 | [SSA] n |  |
 | main.rs:366:22:366:22 | n | main.rs:366:22:366:22 | n |  |
-| main.rs:366:41:366:41 | [SSA] [input] [match(true)] phi | main.rs:366:9:366:43 | [SSA] [match(true)] phi |  |
-| main.rs:366:41:366:41 | [SSA] n | main.rs:366:41:366:41 | [SSA] [input] [match(true)] phi |  |
+| main.rs:366:41:366:41 | [SSA] [input] phi | main.rs:366:9:366:43 | [SSA] phi |  |
+| main.rs:366:41:366:41 | [SSA] n | main.rs:366:41:366:41 | [SSA] [input] phi |  |
 | main.rs:366:41:366:41 | n | main.rs:366:41:366:41 | [SSA] n |  |
 | main.rs:366:41:366:41 | n | main.rs:366:41:366:41 | n |  |
 | main.rs:366:48:366:54 | sink(...) | main.rs:365:5:367:5 | match s1 { ... } |  |

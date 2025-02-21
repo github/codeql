@@ -58,15 +58,12 @@ register_toolchains("@rust_toolchains//:all")
 py_deps = use_extension("//misc/bazel/3rdparty:py_deps_extension.bzl", "p")
 use_repo(
     py_deps,
-    "vendor__anyhow-1.0.44",
-    "vendor__cc-1.0.70",
-    "vendor__clap-2.33.3",
-    "vendor__regex-1.5.5",
-    "vendor__smallvec-1.6.1",
-    "vendor__string-interner-0.12.2",
-    "vendor__thiserror-1.0.29",
-    "vendor__tree-sitter-0.20.4",
-    "vendor__tree-sitter-graph-0.7.0",
+    "vendor_py__anyhow-1.0.95",
+    "vendor_py__cc-1.2.14",
+    "vendor_py__clap-4.5.30",
+    "vendor_py__regex-1.11.1",
+    "vendor_py__tree-sitter-0.20.4",
+    "vendor_py__tree-sitter-graph-0.7.0",
 )
 
 # deps for ruby+rust

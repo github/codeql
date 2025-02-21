@@ -1260,7 +1260,10 @@ module MakeWithSplitting<
             last(parent, succ, completion) and
             condPropagateExpr(parent, completion, child, c) and
             succ(pred, succ, c) and
-            last(child, pred, c)
+            last(child, pred, c) and
+            // no need to create split if `succ` can only complete with the
+            // recorded completion
+            not completion = unique(ConditionalCompletion c0 | last(parent, succ, c0))
           )
         }
 
