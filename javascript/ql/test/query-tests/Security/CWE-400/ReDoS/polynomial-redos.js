@@ -27,7 +27,7 @@ app.use(function(req, res) {
 	/[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted); // $ Alert - but not detected due to not supporting ranges
 	/[a-z][A-Z]|[A-Z]{2}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted);
 
-	tainted.replace(/[?]+.*$/g, ""); // OK - can not fail - but still flagged
+	tainted.replace(/[?]+.*$/g, ""); // $ SPURIOUS: Alert[js/polynomial-redos] - can not fail once a match has started
 	tainted.replace(/\-\-+/g, "-").replace(/-+$/, ""); // OK - indirectly sanitized
 	tainted.replace(/\n\n\n+/g, "\n").replace(/\n*$/g, "");  // OK - indirectly sanitized
 	tainted.match(/(.)*solve\/challenges\/server-side(.)*/); // $ Alert[js/polynomial-redos]
@@ -115,7 +115,7 @@ app.use(function(req, res) {
 
 	tainted.match(/\/\*[\d\D]*?\*\//g); // $ Alert[js/polynomial-redos]
 
-	tainted.match(/(#\d+)+/); // OK - but still flagged due to insufficient suffix-checking.
+	tainted.match(/(#\d+)+/); // $ SPURIOUS: Alert[js/polynomial-redos] - flagged due to insufficient suffix-checking.
 
 	(function foo() {
 		var replaced = tainted.replace(/[^\w\s\-\.\_~]/g, '');
