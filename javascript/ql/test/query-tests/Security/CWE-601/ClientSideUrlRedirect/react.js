@@ -7,7 +7,7 @@ class Application extends React.Component {
         <div className="application">
             <Helmet>
                 <title>My unsafe app</title>
-                <script type="application/javascript" src={document.location.hash.substr(1)}/> {/* NOT OK */}
+                <script type="application/javascript" src={document.location.hash.substr(1)}/> {/* $ Alert */}
             </Helmet>
         </div>
     );
@@ -20,7 +20,7 @@ import Link from 'next/link'
 export function NextLink() {
     return <>
       <Link href={document.location.hash}><a>safe</a></Link> {/* OK */}
-      <Link href={document.location.hash.substr(1)}><a>unsafe</a></Link> {/* NOT OK */}
+      <Link href={document.location.hash.substr(1)}><a>unsafe</a></Link> {/* $ Alert */}
     </>;
 }
 
