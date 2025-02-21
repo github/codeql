@@ -36,15 +36,9 @@ module Impl {
     ClosureBodyScope() { this = any(ClosureExpr ce).getBody() }
   }
 
-  private Pat getImmediatePatParent(AstNode n) {
-    result = getImmediateParent(n)
-    or
-    result.(RecordPat).getRecordPatFieldList().getAField().getPat() = n
-  }
-
   private Pat getAPatAncestor(Pat p) {
     (p instanceof IdentPat or p instanceof OrPat) and
-    exists(Pat p0 | result = getImmediatePatParent(p0) |
+    exists(Pat p0 | result = p0.getParentPat() |
       p0 = p
       or
       p0 = getAPatAncestor(p) and
@@ -222,7 +216,7 @@ module Impl {
     or
     exists(Pat mid |
       mid = getAVariablePatAncestor(v) and
-      result = getImmediatePatParent(mid)
+      result = mid.getParentPat()
     )
   }
 
