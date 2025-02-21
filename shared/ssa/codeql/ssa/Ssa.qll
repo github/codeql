@@ -1715,6 +1715,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     abstract private class SsaNodeImpl extends NodeImpl {
       /** Gets the underlying SSA definition. */
       abstract DefinitionExt getDefinitionExt();
+
+      /** Gets the SSA definition this node corresponds to, if any. */
+      Definition asDefinition() { this = TSsaDefinitionNode(result) }
+
+      /** Gets the basic block to which this node belongs. */
+      abstract BasicBlock getBasicBlock();
+
+      /** Gets the underlying source variable that this node tracks flow for. */
+      abstract SourceVariable getSourceVariable();
     }
 
     final class SsaNode = SsaNodeImpl;
@@ -1726,6 +1735,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       SsaDefinitionExtNodeImpl() { this = TSsaDefinitionNode(def) }
 
       override DefinitionExt getDefinitionExt() { result = def }
+
+      override BasicBlock getBasicBlock() { result = def.getBasicBlock() }
+
+      override SourceVariable getSourceVariable() { result = def.getSourceVariable() }
 
       override Location getLocation() { result = def.getLocation() }
 
@@ -1782,6 +1795,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
 
       override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
+
+      override BasicBlock getBasicBlock() { result = input_ }
+
+      override SourceVariable getSourceVariable() { result = def_.getSourceVariable() }
 
       override Location getLocation() { result = input_.getNode(input_.length() - 1).getLocation() }
 
