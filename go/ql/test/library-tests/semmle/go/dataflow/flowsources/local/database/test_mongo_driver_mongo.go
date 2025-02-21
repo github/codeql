@@ -1,5 +1,6 @@
-//go:generate depstubber -vendor go.mongodb.org/mongo-driver/mongo Client,Collection,Database
 package test
+
+//go:generate depstubber -vendor go.mongodb.org/mongo-driver/mongo Client,Collection,Database
 
 import (
 	"context"
