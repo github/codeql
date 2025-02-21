@@ -1,5 +1,6 @@
 import rust
 import codeql.rust.elements.internal.PathResolution
+import codeql.rust.elements.internal.TypeInference
 import utils.test.InlineExpectationsTest
 
 query predicate mod(Module m) { any() }
@@ -31,12 +32,15 @@ module ResolveTest implements TestSig {
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Path p |
-      not p = any(Path parent).getQualifier() and
-      location = p.getLocation() and
-      element = p.toString() and
-      item(resolvePath(p), value) and
+    exists(AstNode n |
+      not n = any(Path parent).getQualifier() and
+      location = n.getLocation() and
+      element = n.toString() and
       tag = "item"
+    |
+      item(resolvePath(n), value)
+      or
+      item(resolveMethodCallExpr(n), value)
     )
   }
 }
