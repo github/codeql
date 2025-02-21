@@ -25,7 +25,7 @@ app.get('/some/path', function(req, res) {
   var target = req.param("target");
   if (isLocalURL(target))
     // OK - request parameter is sanitized before incorporating it into the redirect
-    res.redirect(target);
+    res.redirect(target); // $ SPURIOUS: Alert
   else
     res.redirect(target); // $ Alert - sanitization doesn't apply here
   res.redirect(target); // $ Alert - sanitization doesn't apply here
