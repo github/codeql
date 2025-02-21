@@ -58,8 +58,12 @@ module JCAModel {
     Expr getProviderArg() { result = this.getArgument(1) }
   }
 
-  class CipherDoFinalCall extends Call {
-    CipherDoFinalCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "doFinal") }
+  private class JCACipherOperationCall extends Call {
+    JCACipherOperationCall() {
+      exists(string s | s in ["doFinal", "wrap", "unwrap"] |
+        this.getCallee().hasQualifiedName("javax.crypto", "Cipher", s)
+      )
+    }
   }
 
   /**
@@ -81,7 +85,7 @@ module JCAModel {
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
   class CipherGetInstanceAlgorithmArg extends Crypto::EncryptionAlgorithmInstance,
-    Crypto::ModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Expr
+    Crypto::BlockCipherModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Expr
   {
     CipherGetInstanceCall call;
 
@@ -98,68 +102,136 @@ module JCAModel {
     CipherGetInstanceCall getCall() { result = call }
   }
 
-  // TODO: what if encrypt/decrypt mode isn't known
-  private module CipherGetInstanceToFinalizeConfig implements DataFlow::StateConfigSig {
-    class FlowState = Crypto::TCipherOperationMode;
+  /**
+   * An access to the `javax.crypto.Cipher` class.
+   */
+  private class CipherAccess extends TypeAccess {
+    CipherAccess() { this.getType().(Class).hasQualifiedName("javax.crypto", "Cipher") }
+  }
+
+  /**
+   * An access to a cipher mode field of the `javax.crypto.Cipher` class,
+   * specifically `ENCRYPT_MODE`, `DECRYPT_MODE`, `WRAP_MODE`, or `UNWRAP_MODE`.
+   */
+  private class JavaxCryptoCipherOperationModeAccess extends FieldAccess {
+    JavaxCryptoCipherOperationModeAccess() {
+      this.getQualifier() instanceof CipherAccess and
+      this.getField().getName() in ["ENCRYPT_MODE", "DECRYPT_MODE", "WRAP_MODE", "UNWRAP_MODE"]
+    }
+  }
+
+  private newtype TCipherModeFlowState =
+    TUninitializedCipherModeFlowState() or
+    TInitializedCipherModeFlowState(CipherInitCall call)
+
+  abstract private class CipherModeFlowState extends TCipherModeFlowState {
+    string toString() {
+      this = TUninitializedCipherModeFlowState() and result = "uninitialized"
+      or
+      this = TInitializedCipherModeFlowState(_) and result = "initialized"
+    }
+
+    abstract Crypto::CipherOperationMode getCipherOperationMode();
+  }
+
+  private class UninitializedCipherModeFlowState extends CipherModeFlowState,
+    TUninitializedCipherModeFlowState
+  {
+    override Crypto::CipherOperationMode getCipherOperationMode() {
+      result instanceof Crypto::UnknownCipherOperationMode
+    }
+  }
+
+  private class InitializedCipherModeFlowState extends CipherModeFlowState,
+    TInitializedCipherModeFlowState
+  {
+    CipherInitCall call;
+    DataFlow::Node node1;
+    DataFlow::Node node2;
+    Crypto::CipherOperationMode mode;
+
+    InitializedCipherModeFlowState() {
+      this = TInitializedCipherModeFlowState(call) and
+      DataFlow::localFlowStep(node1, node2) and
+      node2.asExpr() = call.getQualifier() and
+      // I would imagine this would make this predicate horribly horribly inefficient
+      // it now binds with anything
+      not node1.asExpr() = call.getQualifier() and
+      mode = call.getCipherOperationModeType()
+    }
+
+    CipherInitCall getCall() { result = call }
+
+    DataFlow::Node getFstNode() { result = node1 }
+
+    /**
+     * Returns the node *to* which the state-changing step occurs
+     */
+    DataFlow::Node getSndNode() { result = node2 }
+
+    override Crypto::CipherOperationMode getCipherOperationMode() { result = mode }
+  }
+
+  /**
+   * Trace to a cryptographic operation,
+   * specifically `Cipher.doFinal()`, `Cipher.wrap()`, or `Cipher.unwrap()`.
+   */
+  private module CipherGetInstanceToCipherOperationConfig implements DataFlow::StateConfigSig {
+    class FlowState = TCipherModeFlowState;
 
     predicate isSource(DataFlow::Node src, FlowState state) {
-      state = Crypto::UnknownCipherOperationMode() and
+      state instanceof UninitializedCipherModeFlowState and
       src.asExpr() instanceof CipherGetInstanceCall
     }
 
-    predicate isSink(DataFlow::Node sink, FlowState state) {
-      exists(CipherDoFinalCall c | c.getQualifier() = sink.asExpr())
+    predicate isSink(DataFlow::Node sink, FlowState state) { none() }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(JCACipherOperationCall c | c.getQualifier() = sink.asExpr())
     }
 
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
-      exists(CipherInitCall c |
-        c.getQualifier() = node1.asExpr() and
-        // TODO: not taking into consideration if the mode traces to this arg
-        exists(FieldAccess fa |
-          c.getModeArg() = fa and
-          (
-            if fa.getField().getName() in ["ENCRYPT_MODE", "WRAP_MODE"]
-            then state2 = Crypto::EncryptionMode()
-            else (
-              if fa.getField().getName() in ["DECRYPT_MODE", "UNWRAP_MODE"]
-              then state2 = Crypto::DecryptionMode()
-              else state2 = Crypto::UnknownCipherOperationMode()
-            )
-          )
-        )
-      ) and
-      node2 = node1
+      node1 = state2.(InitializedCipherModeFlowState).getFstNode() and
+      node2 = state2.(InitializedCipherModeFlowState).getSndNode()
+    }
+
+    predicate isBarrier(DataFlow::Node node, FlowState state) {
+      exists(CipherInitCall call | node.asExpr() = call.getQualifier() |
+        state instanceof UninitializedCipherModeFlowState
+        or
+        state.(InitializedCipherModeFlowState).getCall() != call
+      )
     }
   }
 
-  module CipherGetInstanceToFinalizeFlow =
-    DataFlow::GlobalWithState<CipherGetInstanceToFinalizeConfig>;
+  module CipherGetInstanceToCipherOperationFlow =
+    DataFlow::GlobalWithState<CipherGetInstanceToCipherOperationConfig>;
 
   class CipherEncryptionOperation extends Crypto::CipherOperationInstance instanceof Call {
-    Crypto::TCipherOperationMode mode;
+    Crypto::CipherOperationMode mode;
     Crypto::EncryptionAlgorithmInstance algorithm;
 
     CipherEncryptionOperation() {
       exists(
-        CipherGetInstanceToFinalizeFlow::PathNode sink,
-        CipherGetInstanceToFinalizeFlow::PathNode src, CipherGetInstanceCall getCipher,
-        CipherDoFinalCall doFinalize, CipherGetInstanceAlgorithmArg arg
+        CipherGetInstanceToCipherOperationFlow::PathNode sink,
+        CipherGetInstanceToCipherOperationFlow::PathNode src, CipherGetInstanceCall getCipher,
+        JCACipherOperationCall doFinalize, CipherGetInstanceAlgorithmArg arg
       |
-        CipherGetInstanceToFinalizeFlow::flowPath(src, sink) and
+        CipherGetInstanceToCipherOperationFlow::flowPath(src, sink) and
         src.getNode().asExpr() = getCipher and
         sink.getNode().asExpr() = doFinalize.getQualifier() and
-        sink.getState() = mode and
+        sink.getState().(CipherModeFlowState).getCipherOperationMode() = mode and
         this = doFinalize and
-        arg.getCall() = getCipher and 
+        arg.getCall() = getCipher and
         algorithm = arg
       )
     }
 
     override Crypto::EncryptionAlgorithmInstance getAlgorithm() { result = algorithm }
 
-    override Crypto::TCipherOperationMode getCipherOperationMode() { result = mode }
+    override Crypto::CipherOperationMode getCipherOperationMode() { result = mode }
   }
 
   /**
@@ -177,7 +249,7 @@ module JCAModel {
     CipherGetInstanceAlgorithmArg instance;
 
     ModeOfOperation() {
-      this = Crypto::TModeOfOperationAlgorithm(instance) and
+      this = Crypto::TBlockCipherModeOfOperationAlgorithm(instance) and
       // TODO: this currently only holds for explicitly defined modes in a string literal.
       // Cases with defaults, e.g., "AES", are not yet modelled.
       // For these cases, in a CBOM, the AES node would have an unknown edge to its mode child.
@@ -190,7 +262,7 @@ module JCAModel {
     // TODO: handle defaults
     override string getRawAlgorithmName() { result = instance.getOrigin().getMode() }
 
-    private predicate modeToNameMappingKnown(Crypto::TModeOperationType type, string name) {
+    private predicate modeToNameMappingKnown(Crypto::TBlockCipherModeOperationType type, string name) {
       type instanceof Crypto::ECB and name = "ECB"
       or
       type instanceof Crypto::CBC and name = "CBC"
@@ -208,7 +280,7 @@ module JCAModel {
       type instanceof Crypto::OCB and name = "OCB"
     }
 
-    override Crypto::TModeOperationType getModeType() {
+    override Crypto::TBlockCipherModeOperationType getModeType() {
       if this.modeToNameMappingKnown(_, instance.getOrigin().getMode())
       then this.modeToNameMappingKnown(result, instance.getOrigin().getMode())
       else result instanceof Crypto::OtherMode
@@ -339,14 +411,51 @@ module JCAModel {
     override Expr getInput() { result = this.(ClassInstanceExpr).getArgument(1) }
   }
 
+  private module JavaxCipherModeAccessToInitConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      src.asExpr() instanceof JavaxCryptoCipherOperationModeAccess
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(CipherInitCall c | c.getModeArg() = sink.asExpr())
+    }
+  }
+
+  module JavaxCipherModeAccessToInitFlow = DataFlow::Global<JavaxCipherModeAccessToInitConfig>;
+
   class CipherInitCall extends MethodCall {
     CipherInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "init") }
 
-    // TODO: this doesn't account for tracing the mode to this arg if expending this arg to have
-    // the actual mode directly
+    /**
+     * Returns the mode argument to the `init` method
+     * that is used to determine the cipher operation mode.
+     * Note this is the raw expr and not necessarily a direct access
+     * of a mode. Use `getModeOrigin()` to get the field access origin
+     * flowing to this argument, if one exists (is known).
+     */
     Expr getModeArg() { result = this.getArgument(0) }
 
-    // TODO: need a getModeOrigin
+    JavaxCryptoCipherOperationModeAccess getModeOrigin() {
+      exists(DataFlow::Node src, DataFlow::Node sink |
+        JavaxCipherModeAccessToInitFlow::flow(src, sink) and
+        src.asExpr() = result and
+        this.getModeArg() = sink.asExpr()
+      )
+    }
+
+    Crypto::CipherOperationMode getCipherOperationModeType() {
+      if not exists(this.getModeOrigin())
+      then result instanceof Crypto::UnknownCipherOperationMode
+      else
+        if this.getModeOrigin().getField().getName() in ["ENCRYPT_MODE", "WRAP_MODE"]
+        then result instanceof Crypto::EncryptionMode
+        else
+          if this.getModeOrigin().getField().getName() in ["DECRYPT_MODE", "UNWRAP_MODE"]
+          then result instanceof Crypto::DecryptionMode
+          else
+            // TODO/Question: distinguish between unknown vs unspecified? (the field access is not recognized, vs no field access is found)
+            result instanceof Crypto::UnknownCipherOperationMode
+    }
 
     Expr getKey() {
       result = this.getArgument(1) and this.getMethod().getParameterType(1).hasName("Key")

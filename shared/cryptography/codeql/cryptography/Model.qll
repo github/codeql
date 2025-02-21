@@ -82,7 +82,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class CipherOperationInstance extends LocatableElement {
     abstract EncryptionAlgorithmInstance getAlgorithm();
 
-    abstract TCipherOperationMode getCipherOperationMode();
+    abstract CipherOperationMode getCipherOperationMode();
   }
 
   abstract class EncryptionAlgorithmInstance extends LocatableElement { }
@@ -94,7 +94,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class EllipticCurveAlgorithmInstance extends LocatableElement { }
 
   // Non-standalone algorithms
-  abstract class ModeOfOperationAlgorithmInstance extends LocatableElement { }
+  abstract class BlockCipherModeOfOperationAlgorithmInstance extends LocatableElement { }
 
   abstract class PaddingAlgorithmInstance extends LocatableElement { }
 
@@ -128,7 +128,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstance e) or
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
     // Non-standalone Algorithms (e.g., Mode, Padding)
-    TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
+    // TODO: need to rename this, as "mode" is getting reused in different contexts, be precise
+    TBlockCipherModeOfOperationAlgorithm(BlockCipherModeOfOperationAlgorithmInstance e) or
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
     // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
@@ -685,9 +686,25 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   newtype TCipherOperationMode =
-    EncryptionMode() or
-    DecryptionMode() or
-    UnknownCipherOperationMode()
+    TEncryptionMode() or
+    TDecryptionMode() or
+    TUnknownCipherOperationMode()
+
+  abstract class CipherOperationMode extends TCipherOperationMode {
+    abstract string toString();
+  }
+
+  class EncryptionMode extends CipherOperationMode, TEncryptionMode {
+    override string toString() { result = "Encryption" }
+  }
+
+  class DecryptionMode extends CipherOperationMode, TDecryptionMode {
+    override string toString() { result = "Decryption" }
+  }
+
+  class UnknownCipherOperationMode extends CipherOperationMode, TUnknownCipherOperationMode {
+    override string toString() { result = "Unknown" }
+  }
 
   /**
    * An encryption operation that processes plaintext to generate a ciphertext.
@@ -706,7 +723,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = instance.getCipherOperationMode()
     }
 
-    final override EncryptionAlgorithm getAlgorithm() { result.getInstance() = instance.getAlgorithm() }
+    final override EncryptionAlgorithm getAlgorithm() {
+      result.getInstance() = instance.getAlgorithm()
+    }
 
     override string getInternalType() { result = "CipherOperation" }
     // /**
@@ -721,7 +740,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Block cipher modes of operation algorithms
    */
-  newtype TModeOperationType =
+  newtype TBlockCipherModeOperationType =
     ECB() or // Not secure, widely used
     CBC() or // Vulnerable to padding oracle attacks
     GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
@@ -732,7 +751,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     OCB() or // Efficient AEAD mode
     OtherMode()
 
-  abstract class ModeOfOperationAlgorithm extends Algorithm, TModeOfOperationAlgorithm {
+  abstract class ModeOfOperationAlgorithm extends Algorithm, TBlockCipherModeOfOperationAlgorithm {
     override string getAlgorithmType() { result = "ModeOfOperation" }
 
     /**
@@ -742,10 +761,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * If a type cannot be determined, the result is `OtherMode`.
      */
-    abstract TModeOperationType getModeType();
+    abstract TBlockCipherModeOperationType getModeType();
 
     bindingset[type]
-    final private predicate modeToNameMapping(TModeOperationType type, string name) {
+    final private predicate modeToNameMapping(TBlockCipherModeOperationType type, string name) {
       type instanceof ECB and name = "ECB"
       or
       type instanceof CBC and name = "CBC"
