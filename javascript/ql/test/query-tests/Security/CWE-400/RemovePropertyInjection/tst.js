@@ -8,7 +8,7 @@ app.get('/user/:id', function(req, res) {
 	var prop = myCoolLocalFct(req.query.userControlled);
 	myObj[prop] = 23; // $ Alert
 	myObj.prop = 23;
-	var x = myObj[prop]; // $ Alert - but flagged by different query
+	var x = myObj[prop]; // OK - flagged by different query
 	x(23);
 	delete myObj[prop]; // $ Alert
 	Object.defineProperty(myObj, prop, {value: 24}); // $ Alert
