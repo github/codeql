@@ -20,7 +20,11 @@ module ServerSideUrlRedirectConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer
+    or
+    node = HostnameSanitizerGuard::getABarrierNode()
+  }
 
   predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }
 
@@ -69,10 +73,12 @@ deprecated class Configuration extends TaintTracking::Configuration {
 }
 
 /**
+ * DEPRECATED. This is no longer used as a sanitizer guard.
+ *
  * A call to a function called `isLocalUrl` or similar, which is
  * considered to sanitize a variable for purposes of URL redirection.
  */
-class LocalUrlSanitizingGuard extends DataFlow::CallNode {
+deprecated class LocalUrlSanitizingGuard extends DataFlow::CallNode {
   LocalUrlSanitizingGuard() { this.getCalleeName().regexpMatch("(?i)(is_?)?local_?url") }
 
   /** DEPRECATED. Use `blocksExpr` instead. */
