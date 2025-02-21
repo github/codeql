@@ -216,7 +216,7 @@ var good28 = /foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo/
 
 var good29 = /foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo/
 
-var bad62 = /a{2,3}(b+)+X/; // $ MISSING: Alert - cannot currently construct a prefix
+var bad62 = /a{2,3}(b+)+X/; // $ Alert[js/redos]
 
 var bad63 = /^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/; // $ Alert[js/redos] - and a good prefix test
 
