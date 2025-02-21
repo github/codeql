@@ -1,6 +1,6 @@
 function foo() {
     var url = document.location.toString();
-    window.location = url.substring(0).substring(1); // OK [INCONSISTENCY] - but not important
+    window.location = url.substring(0).substring(1); // $ SPURIOUS: Alert - but not important
     window.location = url.substring(0, 10).substring(1); // $ SPURIOUS: Alert
     window.location = url.substring(0, url.indexOf('/', 10)).substring(1); // $ SPURIOUS: Alert
 
