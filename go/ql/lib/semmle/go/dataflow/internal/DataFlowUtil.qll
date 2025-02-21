@@ -385,9 +385,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     Node nd, Node resNode
   ) {
     guardingFunction(g, f, inp, outp, p) and
-    c = f.getACall() and
+    c = pragma[only_bind_into](f).getACall() and
     nd = inp.getNode(c) and
-    localFlow(pragma[only_bind_out](outp.getNode(c)), resNode)
+    localFlow(outp.getNode(c), resNode)
   }
 
   private predicate onlyPossibleReturnSatisfyingProperty(
