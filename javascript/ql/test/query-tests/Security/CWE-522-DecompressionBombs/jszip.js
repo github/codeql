@@ -30,7 +30,7 @@ function zipBombSafe(zipFile) {
 }
 
 function zipBomb(zipFile) {
-    jszipp.loadAsync(zipFile.data).then(function (zip) {
+    jszipp.loadAsync(zipFile.data).then(function (zip) { // $ Alert
         zip.files["10GB"].async("uint8array").then(function (u8) {
             console.log(u8);
         });
