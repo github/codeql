@@ -38,6 +38,7 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         (_, "else_branch") => "else_",
         ("ArrayType", "ty") => "element_type_repr",
         ("SelfParam", "is_amp") => "is_ref",
+        ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
         _ => field_name,
     };
@@ -148,11 +149,7 @@ fn write_schema(
             .iter()
             .map(|node| node_src_to_schema_class(node, &super_types)),
     );
-    // the concat dance is currently required by bazel
-    let template = mustache::compile_str(include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/templates/schema.mustache"
-    )))?;
+    let template = mustache::compile_str(include_str!("templates/schema.mustache"))?;
     let res = template.render_to_string(&schema)?;
     Ok(fix_blank_lines(&res))
 }
@@ -363,6 +360,12 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
                 ty: FieldType::Predicate,
             });
         }
+        "UseTree" => {
+            result.push(FieldInfo {
+                name: "is_star".to_string(),
+                ty: FieldType::Predicate,
+            });
+        }
         _ => {}
     }
 
@@ -550,11 +553,7 @@ fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
         enums: grammar.enums.iter().map(enum_to_extractor_info).collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
-    // the concat dance is currently required by bazel
-    let template = mustache::compile_str(include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/templates/extractor.mustache"
-    )))?;
+    let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;
     let res = template.render_to_string(&extractor_info)?;
     Ok(fix_blank_lines(&res))
 }

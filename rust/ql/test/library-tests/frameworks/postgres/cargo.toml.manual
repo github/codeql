@@ -1,0 +1,13 @@
+[workspace]
+
+[package]
+name = "postgres-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+postgres = { version = "0.19" }
+
+[[bin]]
+name = "postgres"
+path = "./main.rs"

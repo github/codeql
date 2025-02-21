@@ -32,6 +32,8 @@ private module UrlRedirectConfig implements DataFlow::StateConfigSig {
   ) {
     any(UrlRedirect::AdditionalFlowStep a).step(nodeFrom, stateFrom, nodeTo, stateTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "URL redirection" vulnerabilities. */

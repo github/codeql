@@ -22,7 +22,25 @@ abstract class Sanitizer extends DataFlow::Node { }
 /**
  * A taint-tracking configuration for untrusted user input used in log entries.
  */
-class LogInjectionConfiguration extends TaintTracking::Configuration {
+module LogInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for untrusted user input used in log entries.
+ */
+module LogInjectionFlow = TaintTracking::Global<LogInjectionConfig>;
+
+/**
+ * DEPRECATED. Use the `LogInjectionFlow` module instead.
+ */
+deprecated class LogInjectionConfiguration extends TaintTracking::Configuration {
   LogInjectionConfiguration() { this = "LogInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -36,7 +54,7 @@ class LogInjectionConfiguration extends TaintTracking::Configuration {
  * A source of remote user controlled input.
  */
 class RemoteSource extends Source instanceof RemoteFlowSource {
-  RemoteSource() { not this instanceof ClientSideRemoteFlowSource }
+  RemoteSource() { not this.isClientSideSource() }
 }
 
 /**

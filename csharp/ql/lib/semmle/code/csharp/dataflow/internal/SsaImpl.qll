@@ -17,8 +17,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
-
   class SourceVariable = Ssa::SourceVariable;
 
   /**
@@ -736,7 +734,7 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
 }
 
 pragma[noinline]
-private predicate adjacentDefRead(
+deprecated private predicate adjacentDefRead(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
@@ -744,7 +742,7 @@ private predicate adjacentDefRead(
   v = def.getSourceVariable()
 }
 
-private predicate adjacentDefReachesRead(
+deprecated private predicate adjacentDefReachesRead(
   Definition def, SsaInput::SourceVariable v, SsaInput::BasicBlock bb1, int i1,
   SsaInput::BasicBlock bb2, int i2
 ) {
@@ -762,18 +760,7 @@ private predicate adjacentDefReachesRead(
   )
 }
 
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v |
-    adjacentDefReachesRead(def, v, bb1, i1, bb2, i2) and
-    SsaInput::variableRead(bb2, i2, v, true)
-  )
-}
-
-private predicate adjacentDefReachesUncertainRead(
+deprecated private predicate adjacentDefReachesUncertainRead(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v |
@@ -784,13 +771,24 @@ private predicate adjacentDefReachesUncertainRead(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReads(Definition def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReads(
+  Definition def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
+  )
+}
+
+pragma[nomagic]
+deprecated predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
+  exists(ControlFlow::BasicBlock bb, int i |
+    lastRefSkipUncertainReads(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    cfn = bb.getNode(i)
   )
 }
 
@@ -924,10 +922,8 @@ private module Cached {
    */
   cached
   predicate firstReadSameVar(Definition def, ControlFlow::Node cfn) {
-    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      cfn = bb2.getNode(i2)
+    exists(ControlFlow::BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i)
     )
   }
 
@@ -938,31 +934,14 @@ private module Cached {
    */
   cached
   predicate adjacentReadPairSameVar(Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
-    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
+    exists(
+      ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2,
+      Ssa::SourceVariable v
+    |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       cfn1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       cfn2 = bb2.getNode(i2)
-    )
-  }
-
-  cached
-  predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
-    Impl::lastRefRedef(def, bb, i, next) and
-    not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
-    or
-    exists(SsaInput::BasicBlock bb0, int i0 |
-      Impl::lastRefRedef(def, bb0, i0, next) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-    )
-  }
-
-  cached
-  predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
-    exists(ControlFlow::BasicBlock bb, int i |
-      lastRefSkipUncertainReads(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      cfn = bb.getNode(i)
     )
   }
 
@@ -1119,7 +1098,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and
-      conditionBlock.controls(bb, s)
+      conditionBlock.edgeDominates(bb, s)
     )
   }
 

@@ -1,3 +1,35 @@
+## 7.0.1
+
+No user-facing changes.
+
+## 7.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isLValue` and `isRValue` predicates from the `VarAccess` class, use `isVarWrite` and `isVarRead` respectively instead.
+* Deleted the deprecated `getRhs` predicate from the `VarWrite` class, use `getASource` instead.
+* Deleted the deprecated `LValue` and `RValue` classes, use `VarWrite` and `VarRead` respectively instead.
+* Deleted a lot of deprecated classes ending in "*Access", use the corresponding "*Call" classes instead.
+* Deleted a lot of deprecated predicates ending in "*Access", use the corresponding "*Call" predicates instead.
+* Deleted the deprecated `EnvInput` and `DatabaseInput` classes from `FlowSources.qll`, use the threat models feature instead.
+* Deleted some deprecated API predicates from `SensitiveApi.qll`, use the Sink classes from that file instead.
+
+### Minor Analysis Improvements
+
+* We now allow classes which don't have any JAX-RS annotations to inherit JAX-RS annotations from superclasses or interfaces. This is not allowed in the JAX-RS specification, but some implementations, like Apache CXF, allow it. This may lead to more alerts being found.
+
+## 6.1.0
+
+### New Features
+
+* The Java and Kotlin extractors now support `CODEQL_PATH_TRANSFORMER`. `SEMMLE_PATH_TRANSFORMER` is still supported, but deprecated.
+
+### Minor Analysis Improvements
+
+* `JavacTool`-based compiler interception no longer requires an `--add-opens` directive when `FileObject.toUri` is accessible.
+* `JavacTool`-based compiler interception no longer throws an exception visible to the program using `JavacTool` on failure to extract a file path from a passed `JavaFileObject`.
+* `JavacTool`-based compiler interception now supports files that don't simply wrap a `file://` URL, such as a source file inside a JAR, or an in-memory file, but which do implement `getCharContent`.
+
 ## 6.0.0
 
 ### Breaking Changes

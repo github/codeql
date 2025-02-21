@@ -117,49 +117,55 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
-/** Holds if `pat` is guaranteed to match at the point in the AST where it occurs. */
-pragma[nomagic]
-private predicate isExhaustiveMatch(Pat pat) {
-  (
-    pat instanceof WildcardPat
-    or
-    pat = any(IdentPat ip | not ip.hasPat() and ip = any(Variable v).getPat())
-    or
-    pat instanceof RestPat
-    or
-    // `let` statements without an `else` branch must be exhaustive
-    pat = any(LetStmt let | not let.hasLetElse()).getPat()
-    or
-    // `match` expressions must be exhaustive, so last arm cannot fail
-    pat = any(MatchExpr me).getLastArm().getPat()
-    or
-    // macro invocations are exhaustive if their expansion is
-    pat = any(MacroPat mp | isExhaustiveMatch(mp.getMacroCall().getExpanded()))
-    or
-    // parameter patterns must be exhaustive
-    pat = any(Param p).getPat()
-  ) and
-  not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
+/**
+ * Holds if `pat` can not _itself_ be the cause of a pattern match failure. This
+ * does not mean that `pat` is irrefutable, as its children might be the cause
+ * of a failure.
+ */
+private predicate cannotCauseMatchFailure(Pat pat) {
+  pat instanceof RangePat or
+  // Identifier patterns that are in fact path patterns can cause failures. For
+  // instance `None`. Only if an `@ ...` part is present can we be sure that
+  // it's an actual identifier pattern.
+  pat = any(IdentPat p | p.hasPat()) or
+  pat instanceof WildcardPat or
+  pat instanceof RestPat or
+  pat instanceof RefPat or
+  pat instanceof TuplePat or
+  pat instanceof MacroPat
+}
+
+/**
+ * Holds if `pat` is guaranteed to match at the point in the AST where it occurs
+ * due to Rust's exhaustiveness checks.
+ */
+private predicate guaranteedMatchPosition(Pat pat) {
+  // `let` statements without an `else` branch must match
+  pat = any(LetStmt let | not let.hasLetElse()).getPat()
   or
-  exists(Pat parent | isExhaustiveMatch(parent) |
-    pat = parent.(BoxPat).getPat()
+  // `match` expressions must be exhaustive, so last arm must match
+  pat = any(MatchExpr me).getLastArm().getPat()
+  or
+  // parameter patterns must match
+  pat = any(Param p).getPat()
+  or
+  exists(Pat parent | guaranteedMatchPosition(parent) |
+    // propagate to all children except for or patterns
+    parent = pat.getParentPat() and not parent instanceof OrPat
     or
-    pat = parent.(IdentPat).getPat()
+    // for or patterns only the last child inherits the property
+    parent.(OrPat).getLastPat() = pat
     or
-    pat = parent.(MacroPat).getMacroCall().getExpanded()
-    or
-    pat = parent.(ParenPat).getPat()
-    or
-    pat = parent.(RecordPat).getRecordPatFieldList().getField(_).getPat()
-    or
-    pat = parent.(RefPat).getPat()
-    or
-    pat = parent.(TuplePat).getAField()
-    or
-    pat = parent.(TupleStructPat).getAField()
-    or
-    pat = parent.(OrPat).getLastPat()
+    // for macro patterns we propagate to the expanded pattern
+    parent.(MacroPat).getMacroCall().getExpanded() = pat
   )
+}
+
+private predicate guaranteedMatch(Pat pat) {
+  (cannotCauseMatchFailure(pat) or guaranteedMatchPosition(pat)) and
+  // In `for` loops we use a no-match edge from the pattern to terminate the
+  // loop, hence we special case and always allow the no-match edge.
+  not pat = any(ForExpr for).getPat()
 }
 
 /**
@@ -170,7 +176,7 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 
   override predicate isValidForSpecific(AstNode e) {
     e instanceof Pat and
-    if isExhaustiveMatch(e) then value = true else any()
+    if guaranteedMatch(e) then value = true else any()
     or
     e instanceof TryExpr and value = true
   }

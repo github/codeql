@@ -3,6 +3,8 @@ import codeql.controlflow.Cfg
 import Completion
 private import Scope as Scope
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
+private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.elements.internal.generated.Synth
 
 private module CfgInput implements InputSig<Location> {
   private import codeql.rust.internal.CachedStages
@@ -48,6 +50,15 @@ private module CfgInput implements InputSig<Location> {
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
+
+  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
+
+  private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+
+  // TODO: does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
+  int idOfAstNode(AstNode node) { idOfDbAstNode(Synth::convertAstNodeToRaw(node), result) }
+
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
@@ -630,15 +641,19 @@ module PatternTrees {
       super.last(node, c)
       or
       c.(MatchCompletion).failed() and
-      completionIsValidFor(c, this) and
+      completionIsValidFor(c, node) and
       (node = this or last(this.getPatRanked(_), node, c))
     }
   }
 
   abstract class PostOrderPatTree extends StandardPatTree, StandardPostOrderTree { }
 
-  class IdentPatTree extends PostOrderPatTree, IdentPat {
-    override Pat getPat(int i) { i = 0 and result = this.getPat() }
+  class IdentPatTree extends PostOrderTree, IdentPat {
+    override predicate first(AstNode node) {
+      first(this.getPat(), node)
+      or
+      not this.hasPat() and node = this.getName()
+    }
 
     override predicate last(AstNode node, Completion c) {
       super.last(node, c)
@@ -647,8 +662,16 @@ module PatternTrees {
     }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      super.succ(pred, succ, c) and c.(MatchCompletion).succeeded()
+      // Edge from successful subpattern to name
+      last(this.getPat(), pred, c) and
+      first(this.getName(), succ) and
+      c.(MatchCompletion).succeeded()
+      or
+      // Edge from name to the identifier pattern itself
+      last(this.getName(), pred, c) and succ = this and completionIsNormal(c)
     }
+
+    override predicate propagatesAbnormal(AstNode child) { child = this.getPat() }
   }
 
   class BoxPatTree extends PreOrderPatTree, BoxPat {

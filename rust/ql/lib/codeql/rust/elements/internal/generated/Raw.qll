@@ -21,17 +21,17 @@ module Raw {
     /**
      * Gets the action of this extractor step.
      */
-    string getAction() { extractor_steps(this, result, _, _) }
+    string getAction() { extractor_steps(this, result, _) }
 
     /**
-     * Gets the file of this extractor step.
+     * Gets the file of this extractor step, if it exists.
      */
-    File getFile() { extractor_steps(this, _, result, _) }
+    File getFile() { extractor_step_files(this, result) }
 
     /**
      * Gets the duration ms of this extractor step.
      */
-    int getDurationMs() { extractor_steps(this, _, _, result) }
+    int getDurationMs() { extractor_steps(this, _, result) }
   }
 
   /**
@@ -1090,11 +1090,19 @@ module Raw {
    * INTERNAL: Do not use.
    * A UseTree. For example:
    * ```rust
-   * todo!()
+   * use std::collections::HashMap;
+   * use std::collections::*;
+   * use std::collections::HashMap as MyHashMap;
+   * use std::collections::{self, HashMap, HashSet};
    * ```
    */
   class UseTree extends @use_tree, AstNode {
     override string toString() { result = "UseTree" }
+
+    /**
+     * Holds if this use tree is glob.
+     */
+    predicate isGlob() { use_tree_is_glob(this) }
 
     /**
      * Gets the path of this use tree, if it exists.

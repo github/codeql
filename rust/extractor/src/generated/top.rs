@@ -26,7 +26,7 @@ impl trap::TrapClass for Element {
 pub struct ExtractorStep {
     pub id: trap::TrapId<ExtractorStep>,
     pub action: String,
-    pub file: trap::Label<File>,
+    pub file: Option<trap::Label<File>>,
     pub duration_ms: usize,
 }
 
@@ -36,7 +36,10 @@ impl trap::TrapEntry for ExtractorStep {
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("extractor_steps", vec![id.into(), self.action.into(), self.file.into(), self.duration_ms.into()]);
+        out.add_tuple("extractor_steps", vec![id.into(), self.action.into(), self.duration_ms.into()]);
+        if let Some(v) = self.file {
+            out.add_tuple("extractor_step_files", vec![id.into(), v.into()]);
+        }
     }
 }
 
@@ -3071,6 +3074,7 @@ impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<Locatable> {
 #[derive(Debug)]
 pub struct UseTree {
     pub id: trap::TrapId<UseTree>,
+    pub is_glob: bool,
     pub path: Option<trap::Label<Path>>,
     pub rename: Option<trap::Label<Rename>>,
     pub use_tree_list: Option<trap::Label<UseTreeList>>,
@@ -3083,6 +3087,9 @@ impl trap::TrapEntry for UseTree {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("use_trees", vec![id.into()]);
+        if self.is_glob {
+            out.add_tuple("use_tree_is_glob", vec![id.into()]);
+        }
         if let Some(v) = self.path {
             out.add_tuple("use_tree_paths", vec![id.into(), v.into()]);
         }

@@ -960,6 +960,23 @@ module Express {
     }
   }
 
+  /** A call to `response.download`, considered as a file system access. */
+  private class ResponseDownloadAsFileSystemAccess extends FileSystemReadAccess,
+    DataFlow::MethodCallNode
+  {
+    ResponseDownloadAsFileSystemAccess() {
+      exists(string name | name = "download" | this.calls(any(ResponseNode res), name))
+    }
+
+    override DataFlow::Node getADataNode() { none() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+
+    override DataFlow::Node getRootPathArgument() {
+      result = this.(DataFlow::CallNode).getOptionArgument([1, 2], "root")
+    }
+  }
+
   /**
    * A function that flows to a route setup.
    */

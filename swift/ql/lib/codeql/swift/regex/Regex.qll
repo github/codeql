@@ -73,11 +73,6 @@ abstract class RegexCreation extends DataFlow::Node {
    * such as parse mode flags (if any).
    */
   DataFlow::Node getAnOptionsInput() { none() }
-
-  /**
-   * DEPRECATED: Use `getAnOptionsInput()` instead.
-   */
-  deprecated DataFlow::Node getOptionsInput() { result = this.getAnOptionsInput() }
 }
 
 /**
@@ -310,19 +305,9 @@ abstract class RegexEval extends CallExpr {
   abstract DataFlow::Node getRegexInputNode();
 
   /**
-   * DEPRECATED: Use `getRegexInputNode()` instead.
-   */
-  deprecated Expr getRegexInput() { result = this.getRegexInputNode().asExpr() }
-
-  /**
    * Gets the input to this call that is the string the regular expression is evaluated on.
    */
   abstract DataFlow::Node getStringInputNode();
-
-  /**
-   * DEPRECATED: Use `getStringInputNode()` instead.
-   */
-  deprecated Expr getStringInput() { result = this.getStringInputNode().asExpr() }
 
   /**
    * Gets a dataflow node for an options input that might contain options such

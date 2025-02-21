@@ -1,5 +1,6 @@
 import rust
 import utils.test.InlineExpectationsTest
+import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 
 query predicate variable(Variable v) { any() }
 
@@ -14,6 +15,10 @@ query predicate variableInitializer(Variable v, Expr e) { e = v.getInitializer()
 query predicate capturedVariable(Variable v) { v.isCaptured() }
 
 query predicate capturedAccess(VariableAccess va) { va.isCapture() }
+
+query predicate nestedFunctionAccess(VariableImpl::NestedFunctionAccess nfa, Function f) {
+  f = nfa.getFunction()
+}
 
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = ["", "write_", "read_"] + "access" }
@@ -32,15 +37,10 @@ module VariableAccessTest implements TestSig {
 
   private predicate decl(Variable v, string value) {
     exists(string filepath, int line, boolean inMacro | declAt(v, filepath, line, inMacro) |
-      commmentAt(value, filepath, line) and
-      inMacro = false
+      commmentAt(value, filepath, line) and inMacro = false
       or
-      (
-        not commmentAt(_, filepath, line)
-        or
-        inMacro = true
-      ) and
-      value = v.getName()
+      not (commmentAt(_, filepath, line) and inMacro = false) and
+      value = v.getText()
     )
   }
 

@@ -1,7 +1,6 @@
 use crate::config::Config;
 use anyhow::Context;
 use chrono::{DateTime, Utc};
-use log::{debug, info};
 use ra_ap_project_model::ProjectManifest;
 use serde::ser::SerializeMap;
 use serde::Serialize;
@@ -10,6 +9,7 @@ use std::fmt::Display;
 use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::time::Instant;
+use tracing::{debug, info};
 
 #[derive(Default, Debug, Clone, Copy, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -79,6 +79,7 @@ pub struct Diagnostics<T> {
 pub enum ExtractionStepKind {
     #[default]
     LoadManifest,
+    FindManifests,
     LoadSource,
     Parse,
     Extract,
@@ -88,12 +89,12 @@ pub enum ExtractionStepKind {
 #[serde(rename_all = "camelCase")]
 pub struct ExtractionStep {
     pub action: ExtractionStepKind,
-    pub file: PathBuf,
+    pub file: Option<PathBuf>,
     pub ms: u128,
 }
 
 impl ExtractionStep {
-    fn new(start: Instant, action: ExtractionStepKind, file: PathBuf) -> Self {
+    fn new(start: Instant, action: ExtractionStepKind, file: Option<PathBuf>) -> Self {
         let ret = ExtractionStep {
             action,
             file,
@@ -107,20 +108,36 @@ impl ExtractionStep {
         Self::new(
             start,
             ExtractionStepKind::LoadManifest,
-            PathBuf::from(target.manifest_path()),
+            Some(PathBuf::from(target.manifest_path())),
         )
     }
 
     pub fn parse(start: Instant, target: &Path) -> Self {
-        Self::new(start, ExtractionStepKind::Parse, PathBuf::from(target))
+        Self::new(
+            start,
+            ExtractionStepKind::Parse,
+            Some(PathBuf::from(target)),
+        )
     }
 
     pub fn extract(start: Instant, target: &Path) -> Self {
-        Self::new(start, ExtractionStepKind::Extract, PathBuf::from(target))
+        Self::new(
+            start,
+            ExtractionStepKind::Extract,
+            Some(PathBuf::from(target)),
+        )
     }
 
     pub fn load_source(start: Instant, target: &Path) -> Self {
-        Self::new(start, ExtractionStepKind::LoadSource, PathBuf::from(target))
+        Self::new(
+            start,
+            ExtractionStepKind::LoadSource,
+            Some(PathBuf::from(target)),
+        )
+    }
+
+    pub fn find_manifests(start: Instant) -> Self {
+        Self::new(start, ExtractionStepKind::FindManifests, None)
     }
 }
 

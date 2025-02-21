@@ -26,6 +26,8 @@ private module StackTraceExposureConfig implements DataFlow::ConfigSig {
       nodeTo = attr
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "stack trace exposure" vulnerabilities. */

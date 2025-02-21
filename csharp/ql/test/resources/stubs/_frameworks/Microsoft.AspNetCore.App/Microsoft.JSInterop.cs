@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.JSInterop, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.JSInterop, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace JSInterop
@@ -42,20 +42,6 @@ namespace Microsoft
         {
             long Length { get; }
             System.Threading.Tasks.ValueTask<System.IO.Stream> OpenReadStreamAsync(long maxAllowedSize = default(long), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        }
-        public interface IJSUnmarshalledObjectReference : System.IAsyncDisposable, System.IDisposable, Microsoft.JSInterop.IJSInProcessObjectReference, Microsoft.JSInterop.IJSObjectReference
-        {
-            TResult InvokeUnmarshalled<TResult>(string identifier);
-            TResult InvokeUnmarshalled<T0, TResult>(string identifier, T0 arg0);
-            TResult InvokeUnmarshalled<T0, T1, TResult>(string identifier, T0 arg0, T1 arg1);
-            TResult InvokeUnmarshalled<T0, T1, T2, TResult>(string identifier, T0 arg0, T1 arg1, T2 arg2);
-        }
-        public interface IJSUnmarshalledRuntime
-        {
-            TResult InvokeUnmarshalled<TResult>(string identifier);
-            TResult InvokeUnmarshalled<T0, TResult>(string identifier, T0 arg0);
-            TResult InvokeUnmarshalled<T0, T1, TResult>(string identifier, T0 arg0, T1 arg1);
-            TResult InvokeUnmarshalled<T0, T1, T2, TResult>(string identifier, T0 arg0, T1 arg1, T2 arg2);
         }
         namespace Implementation
         {

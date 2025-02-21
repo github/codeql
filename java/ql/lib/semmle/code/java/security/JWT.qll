@@ -44,9 +44,6 @@ class JwtParserWithInsecureParseSink extends ApiSinkNode {
 
   /** Gets the method access that does the insecure parsing. */
   MethodCall getParseMethodCall() { result = insecureParseMa }
-
-  /** DEPRECATED: Alias for `getParseMethodCall`. */
-  deprecated MethodCall getParseMethodAccess() { result = this.getParseMethodCall() }
 }
 
 /**

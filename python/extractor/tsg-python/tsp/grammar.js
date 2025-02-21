@@ -929,11 +929,18 @@ module.exports = grammar({
       field('attribute', $.identifier)
     )),
 
+    _index_expression: $ => choice(
+      $.list_splat,
+      $.expression,
+      $.slice
+    ),
+
+    index_expression_list: $ => open_sequence(field('element', $._index_expression)),
+
     subscript: $ => prec(PREC.call, seq(
       field('value', $.primary_expression),
       '[',
-      commaSep1(field('subscript', choice($.list_splat, $.expression, $.slice))),
-      optional(','),
+      field('subscript', choice($._index_expression, $.index_expression_list)),
       ']'
     )),
 

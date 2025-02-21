@@ -5,13 +5,14 @@ signature module ModelPrintingLangSig {
   class Callable;
 
   /**
-   * Holds if `container`, `type`, `name`, and `parameters` contain the type signature of `api`
-   * and `extensible` is the string representation of a boolean that is true, if
-   * `api` can be overridden (otherwise false).
+   * Gets the string representation for the `i`th column in the MaD row for `api`.
    */
-  predicate partialModel(
-    Callable api, string container, string type, string extensible, string name, string parameters
-  );
+  string partialModelRow(Callable api, int i);
+
+  /**
+   * Gets the string representation for the `i`th column in the neutral MaD row for `api`.
+   */
+  string partialNeutralModelRow(Callable api, int i);
 }
 
 module ModelPrintingImpl<ModelPrintingLangSig Lang> {
@@ -33,33 +34,17 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
 
   module ModelPrinting<ModelPrintingSig Printing> {
     /**
-     * Computes the first 6 columns for MaD rows used for summaries, sources and sinks.
+     * Computes the first columns for MaD rows used for summaries, sources and sinks.
      */
     private string asPartialModel(Lang::Callable api) {
-      exists(string container, string type, string extensible, string name, string parameters |
-        Lang::partialModel(api, container, type, extensible, name, parameters) and
-        result =
-          container + ";" //
-            + type + ";" //
-            + extensible + ";" //
-            + name + ";" //
-            + parameters + ";" //
-            + /* ext + */ ";" //
-      )
+      result = strictconcat(int i | | Lang::partialModelRow(api, i), ";" order by i) + ";"
     }
 
     /**
-     * Computes the first 4 columns for neutral MaD rows.
+     * Computes the first columns for neutral MaD rows.
      */
     private string asPartialNeutralModel(Printing::SummaryApi api) {
-      exists(string container, string type, string name, string parameters |
-        Lang::partialModel(api, container, type, _, name, parameters) and
-        result =
-          container + ";" //
-            + type + ";" //
-            + name + ";" //
-            + parameters + ";" //
-      )
+      result = strictconcat(int i | | Lang::partialNeutralModelRow(api, i), ";" order by i) + ";"
     }
 
     /**

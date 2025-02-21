@@ -14,7 +14,7 @@ local_path_override(
 
 # see https://registry.bazel.build/ for a list of available packages
 
-bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_go", version = "0.50.1")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_nodejs", version = "6.2.0-codeql.1")
@@ -28,7 +28,7 @@ bazel_dep(name = "rules_kotlin", version = "2.0.0-codeql.1")
 bazel_dep(name = "gazelle", version = "0.40.0")
 bazel_dep(name = "rules_dotnet", version = "0.17.4")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
-bazel_dep(name = "rules_rust", version = "0.52.2")
+bazel_dep(name = "rules_rust", version = "0.57.1")
 bazel_dep(name = "zstd", version = "1.5.5.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
@@ -53,29 +53,17 @@ use_repo(rust, "rust_toolchains")
 
 register_toolchains("@rust_toolchains//:all")
 
-rust_host_tools = use_extension("@rules_rust//rust:extensions.bzl", "rust_host_tools")
-
-# Don't download a second toolchain as host toolchain, make sure this is the same version as above
-# The host toolchain is used for vendoring dependencies.
-rust_host_tools.host_tools(
-    edition = RUST_EDITION,
-    version = RUST_VERSION,
-)
-
 # deps for python extractor
 # keep in sync by running `misc/bazel/3rdparty/update_cargo_deps.sh`
 py_deps = use_extension("//misc/bazel/3rdparty:py_deps_extension.bzl", "p")
 use_repo(
     py_deps,
-    "vendor__anyhow-1.0.44",
-    "vendor__cc-1.0.70",
-    "vendor__clap-2.33.3",
-    "vendor__regex-1.5.5",
-    "vendor__smallvec-1.6.1",
-    "vendor__string-interner-0.12.2",
-    "vendor__thiserror-1.0.29",
-    "vendor__tree-sitter-0.20.4",
-    "vendor__tree-sitter-graph-0.7.0",
+    "vendor_py__anyhow-1.0.95",
+    "vendor_py__cc-1.2.14",
+    "vendor_py__clap-4.5.30",
+    "vendor_py__regex-1.11.1",
+    "vendor_py__tree-sitter-0.20.4",
+    "vendor_py__tree-sitter-graph-0.7.0",
 )
 
 # deps for ruby+rust
@@ -96,7 +84,6 @@ use_repo(
     "vendor__globset-0.4.15",
     "vendor__itertools-0.14.0",
     "vendor__lazy_static-1.5.0",
-    "vendor__log-0.4.22",
     "vendor__mustache-0.9.0",
     "vendor__num-traits-0.2.19",
     "vendor__num_cpus-1.16.0",
@@ -123,9 +110,10 @@ use_repo(
     "vendor__serde-1.0.217",
     "vendor__serde_json-1.0.135",
     "vendor__serde_with-3.12.0",
-    "vendor__stderrlog-0.6.0",
     "vendor__syn-2.0.96",
+    "vendor__toml-0.8.19",
     "vendor__tracing-0.1.41",
+    "vendor__tracing-flame-0.2.0",
     "vendor__tracing-subscriber-0.3.19",
     "vendor__tree-sitter-0.24.6",
     "vendor__tree-sitter-embedded-template-0.23.2",
@@ -217,6 +205,7 @@ use_repo(
     "kotlin-compiler-2.0.0-RC1",
     "kotlin-compiler-2.0.20-Beta2",
     "kotlin-compiler-2.1.0-Beta1",
+    "kotlin-compiler-2.1.20-Beta1",
     "kotlin-compiler-embeddable-1.5.0",
     "kotlin-compiler-embeddable-1.5.10",
     "kotlin-compiler-embeddable-1.5.20",
@@ -231,6 +220,7 @@ use_repo(
     "kotlin-compiler-embeddable-2.0.0-RC1",
     "kotlin-compiler-embeddable-2.0.20-Beta2",
     "kotlin-compiler-embeddable-2.1.0-Beta1",
+    "kotlin-compiler-embeddable-2.1.20-Beta1",
     "kotlin-stdlib-1.5.0",
     "kotlin-stdlib-1.5.10",
     "kotlin-stdlib-1.5.20",
@@ -245,10 +235,11 @@ use_repo(
     "kotlin-stdlib-2.0.0-RC1",
     "kotlin-stdlib-2.0.20-Beta2",
     "kotlin-stdlib-2.1.0-Beta1",
+    "kotlin-stdlib-2.1.20-Beta1",
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.23.1")
+go_sdk.download(version = "1.24.0")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")

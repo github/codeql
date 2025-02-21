@@ -18,4 +18,4 @@
 | main.rs:519:9:519:20 | var_in_macro | Variable $@ is assigned a value that is never used. | main.rs:519:9:519:20 | var_in_macro | var_in_macro |
 | more.rs:44:9:44:14 | a_ptr4 | Variable $@ is assigned a value that is never used. | more.rs:44:9:44:14 | a_ptr4 | a_ptr4 |
 | more.rs:59:9:59:13 | d_ptr | Variable $@ is assigned a value that is never used. | more.rs:59:9:59:13 | d_ptr | d_ptr |
-| more.rs:65:9:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |
+| more.rs:65:13:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |

@@ -6,6 +6,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.Concepts
 private import codeql.util.Unit
 
@@ -46,5 +47,10 @@ module SqlInjection {
    */
   class SqlExecutionAsSink extends Sink {
     SqlExecutionAsSink() { this = any(SqlExecution e).getSql() }
+  }
+
+  /** A sink for sql-injection from model data. */
+  private class ModelsAsDataSinks extends Sink {
+    ModelsAsDataSinks() { sinkNode(this, "sql-injection") }
   }
 }

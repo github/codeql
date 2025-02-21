@@ -29,7 +29,9 @@ fn write_and_read_through_borrow() {
     let b = &mut a;
     sink(*b);
     *b = source(37);
-    sink(*b); // $ MISSING: hasValueFlow=37
+    sink(*b); // $ hasValueFlow=37
+    *b = 0;
+    sink(*b); // now cleared
 }
 
 fn takes_borrowed_value(&n: &i64) {
@@ -41,24 +43,45 @@ fn pass_borrowed_value() {
     takes_borrowed_value(&val);
 }
 
+mod test_ref_pattern {
+    use super::{sink, source};
+
+    pub fn read_through_ref() {
+        let a = source(21);
+        let ref p = a;
+        sink(*p); // $ hasValueFlow=21
+    }
+
+    pub fn write_through_ref_mut() {
+        let ref mut a = source(78);
+        sink(*a); // $ hasValueFlow=78
+        *a = 0;
+        sink(*a); // now cleared
+    }
+
+    pub fn ref_pattern_in_match() {
+        let a = Some(source(17));
+        let b = match a {
+            Some(ref p) => sink(*p), // $ hasValueFlow=17
+            None => (),
+        };
+    }
+}
+
 enum MyNumber {
-    MyNumber(i64)
+    MyNumber(i64),
 }
 
 impl MyNumber {
     fn to_number(self) -> i64 {
         match self {
-            MyNumber::MyNumber(number) => {
-                number
-            }
+            MyNumber::MyNumber(number) => number,
         }
     }
 
     fn get_number(&self) -> i64 {
         match self {
-            &MyNumber::MyNumber(number) => {
-                number
-            }
+            &MyNumber::MyNumber(number) => number,
         }
     }
 }
@@ -81,22 +104,22 @@ fn through_self_in_method_explicit_borrow() {
 fn ref_nested_pattern_match() {
     let a = &(source(23), 1);
 
-    // Match "in order", ref then tuple
+    // Match "in order", reference pattern then tuple pattern
     let b = match a {
-        &(n, _) => n
+        &(n, _) => n,
     };
     sink(b); // $ hasValueFlow=23
 
-    // Match "out of order", tuple then ref
+    // Match "out of order", tuple pattern then deref pattern
     let c = match a {
-        (n, _) => {
-            match n {
-                &i => i
-            }
-        }
+        (n, _) => match n {
+            &i => i,
+        },
     };
     sink(c); // $ MISSING: hasValueFlow=23
 }
+
+use test_ref_pattern::*;
 
 fn main() {
     read_through_borrow();
@@ -107,4 +130,7 @@ fn main() {
     through_self_in_method_implicit_borrow();
     through_self_in_method_explicit_borrow();
     ref_nested_pattern_match();
+    read_through_ref();
+    write_through_ref_mut();
+    ref_pattern_in_match();
 }

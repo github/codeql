@@ -1,3 +1,5 @@
+deprecated module;
+
 import csharp
 
 module RequestForgery {

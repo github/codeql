@@ -7,24 +7,24 @@ private import Cfg
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ssa.Ssa as SsaImplCommon
 
-/** Holds if `v` is introduced like `let v : i64;`. */
-private predicate isUnitializedLet(IdentPat pat, Variable v) {
-  pat = v.getPat() and
+/**
+ * Holds if `name` occurs in the left-hand side of an uninitialized let
+ * statement such as in `let name : i64;`.
+ */
+private predicate isInUninitializedLet(Name name) {
   exists(LetStmt let |
-    let = v.getLetStmt() and
+    let.getPat().(IdentPat).getName() = name and
     not let.hasInitializer()
   )
 }
 
 /** Holds if `write` writes to variable `v`. */
 predicate variableWrite(AstNode write, Variable v) {
-  exists(IdentPat pat |
-    pat = write and
-    pat = v.getPat() and
-    not isUnitializedLet(pat, v)
+  exists(Name name |
+    name = write and
+    name = v.getName() and
+    not isInUninitializedLet(name)
   )
-  or
-  exists(SelfParam self | self = write and self = v.getSelfParam())
   or
   exists(VariableAccess access |
     access = write and
@@ -46,8 +46,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
 
   /**
    * A variable amenable to SSA construction.
@@ -122,22 +120,6 @@ module ExposedForTestingOnly {
   predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
 }
 
-pragma[noinline]
-private predicate adjacentDefRead(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
-pragma[noinline]
-private predicate adjacentDefReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
   exists(VariableAccess read |
@@ -175,66 +157,6 @@ private predicate hasVariableReadWithCapturedWrite(
 ) {
   hasCapturedWrite(v, scope) and
   variableReadActualInOuterScope(bb, i, v, scope)
-}
-
-private predicate adjacentDefReachesRead(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1, _)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(BasicBlock bb3, int i3 |
-    adjacentDefReachesReadExt(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefReadExt(def, _, bb3, i3, bb2, i2)
-  )
-}
-
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
-  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
-private predicate adjacentDefReachesUncertainReadExt(
-  DefinitionExt def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-) {
-  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, false)
-}
-
-/** Same as `lastRefRedef`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, BasicBlock bb, int i) {
-  Impl::lastRef(def, bb, i) and
-  not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
-  or
-  exists(BasicBlock bb0, int i0 |
-    Impl::lastRef(def, bb0, i0) and
-    adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
-  )
 }
 
 private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
@@ -284,7 +206,7 @@ private predicate isControlFlowJump(Expr e) { e instanceof CallExprBase or e ins
 private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) {
   isControlFlowJump(call) and
   exists(Cfg::CfgScope scope |
-    hasCapturedRead(v, scope) and
+    hasCapturedRead(pragma[only_bind_into](v), pragma[only_bind_into](scope)) and
     (
       variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
       variableWriteInOuterScope(bb.getAPredecessor+(), _, v, scope)
@@ -359,11 +281,7 @@ private module Cached {
    */
   cached
   predicate firstRead(Definition def, CfgNode read) {
-    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
+    exists(BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and read = bb.getNode(i))
   }
 
   /**
@@ -373,25 +291,11 @@ private module Cached {
    */
   cached
   predicate adjacentReadPair(Definition def, CfgNode read1, CfgNode read2) {
-    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, Variable v |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
-   * Holds if the read of `def` at `read` may be a last read. That is, `read`
-   * can either reach another definition of the underlying source variable or
-   * the end of the CFG scope, without passing through another non-pseudo read.
-   */
-  cached
-  predicate lastRead(Definition def, CfgNode read) {
-    exists(BasicBlock bb, int i |
-      lastRefSkipUncertainReadsExt(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      read = bb.getNode(i)
     )
   }
 
@@ -488,10 +392,10 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
-    exists(ConditionBlock conditionBlock, ConditionalSuccessor s |
+    exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
-      conditionBlock.controls(bb, s)
+      conditionBlock.edgeDominates(bb, s)
     )
   }
 

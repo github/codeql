@@ -11,5 +11,5 @@
 | IncompleteUrlSchemeCheck.js:87:7:87:40 | /^(java ... scheme) | This check does not consider vbscript:. |
 | IncompleteUrlSchemeCheck.js:94:10:94:15 | scheme | This check does not consider vbscript:. |
 | IncompleteUrlSchemeCheck.js:104:6:104:39 | /^(java ... scheme) | This check does not consider vbscript:. |
-| IncompleteUrlSchemeCheck.js:110:12:112:29 | url  // ... :/, "") | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:110:12:112:29 | url\\n    ... :/, "") | This check does not consider vbscript:. |
 | IncompleteUrlSchemeCheck.js:124:11:124:34 | url.rep ... :/, "") | This check does not consider vbscript:. |

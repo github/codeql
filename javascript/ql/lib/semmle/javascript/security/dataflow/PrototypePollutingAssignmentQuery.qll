@@ -11,24 +11,25 @@ private import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.InferredTypes
 import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
+private import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment as PrototypePollutingAssignment
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 
 // Materialize flow labels
-private class ConcreteObjectPrototype extends ObjectPrototype {
+deprecated private class ConcreteObjectPrototype extends ObjectPrototype {
   ConcreteObjectPrototype() { this = this }
 }
 
 /** A taint-tracking configuration for reasoning about prototype-polluting assignments. */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "PrototypePollutingAssignment" }
+module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
+  class FlowState = PrototypePollutingAssignment::FlowState;
 
-  override predicate isSource(DataFlow::Node node) { node instanceof Source }
-
-  override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    node.(Sink).getAFlowLabel() = lbl
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    node instanceof Source and state = FlowState::taint()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node, FlowState state) { node.(Sink).getAFlowState() = state }
+
+  predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer
     or
     // Concatenating with a string will in practice prevent the string `__proto__` from arising.
@@ -53,25 +54,29 @@ class Configuration extends TaintTracking::Configuration {
         not replace.getRawReplacement().getStringValue() = ""
       )
     )
+    or
+    node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
-  override predicate isSanitizerOut(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) {
     // Suppress the value-preserving step src -> dst in `extend(dst, src)`. This is modeled as a value-preserving
     // step because it preserves all properties, but the destination is not actually Object.prototype.
     node = any(ExtendCall call).getASourceOperand() and
-    lbl instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+  predicate isBarrierIn(DataFlow::Node node, FlowState state) { isSource(node, state) }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     // Step from x -> obj[x] while switching to the ObjectPrototype label
     // (If `x` can have the value `__proto__` then the result can be Object.prototype)
     exists(DynamicPropRead read |
-      pred = read.getPropertyNameNode() and
-      succ = read and
-      inlbl.isTaint() and
-      outlbl instanceof ObjectPrototype and
+      node1 = read.getPropertyNameNode() and
+      node2 = read and
+      state1 = FlowState::taint() and
+      state2 = FlowState::objectPrototype() and
       // Exclude cases where the property name came from a property enumeration.
       // If the property name is an own property of the base object, the read won't
       // return Object.prototype.
@@ -85,13 +90,84 @@ class Configuration extends TaintTracking::Configuration {
     // Same as above, but for property projection.
     exists(PropertyProjection proj |
       proj.isSingletonProjection() and
-      pred = proj.getASelector() and
-      succ = proj and
-      inlbl.isTaint() and
-      outlbl instanceof ObjectPrototype
+      node1 = proj.getASelector() and
+      node2 = proj and
+      state1 = FlowState::taint() and
+      state2 = FlowState::objectPrototype()
     )
     or
-    DataFlow::localFieldStep(pred, succ) and inlbl = outlbl
+    state1 = FlowState::taint() and
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1 = state2
+  }
+
+  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    state = FlowState::taint() and
+    TaintTracking::defaultSanitizer(node)
+    or
+    // Don't propagate into the receiver, as the method lookups will generally fail on Object.prototype.
+    node instanceof DataFlow::ThisNode and
+    state = FlowState::objectPrototype()
+    or
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/** Taint-tracking for reasoning about prototype-polluting assignments. */
+module PrototypePollutingAssignmentFlow =
+  DataFlow::GlobalWithState<PrototypePollutingAssignmentConfig>;
+
+/**
+ * Holds if the given `source, sink` pair should not be reported, as we don't have enough
+ * confidence in the alert given that source is a library input.
+ */
+bindingset[source, sink]
+predicate isIgnoredLibraryFlow(ExternalInputSource source, Sink sink) {
+  exists(source) and
+  // filter away paths that start with library inputs and end with a write to a fixed property.
+  exists(DataFlow::PropWrite write | sink = write.getBase() |
+    // fixed property name
+    exists(write.getPropertyName())
+    or
+    // non-string property name (likely number)
+    exists(Expr prop | prop = write.getPropertyNameExpr() |
+      not prop.analyze().getAType() = TTString()
+    )
+  )
+}
+
+/**
+ * DEPRECATED. Use the `PrototypePollutingAssignmentFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "PrototypePollutingAssignment" }
+
+  override predicate isSource(DataFlow::Node node) { node instanceof Source }
+
+  override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+    node.(Sink).getAFlowLabel() = lbl
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    PrototypePollutingAssignmentConfig::isBarrier(node)
+  }
+
+  override predicate isSanitizerOut(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+    // Suppress the value-preserving step src -> dst in `extend(dst, src)`. This is modeled as a value-preserving
+    // step because it preserves all properties, but the destination is not actually Object.prototype.
+    node = any(ExtendCall call).getASourceOperand() and
+    lbl instanceof ObjectPrototype
+  }
+
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+  ) {
+    PrototypePollutingAssignmentConfig::isAdditionalFlowStep(pred, FlowState::fromFlowLabel(inlbl),
+      succ, FlowState::fromFlowLabel(outlbl))
   }
 
   override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
@@ -174,9 +250,7 @@ private predicate isPropertyPresentOnObjectPrototype(string prop) {
 }
 
 /** A check of form `e.prop` where `prop` is not present on `Object.prototype`. */
-private class PropertyPresenceCheck extends TaintTracking::LabeledSanitizerGuardNode,
-  DataFlow::ValueNode
-{
+private class PropertyPresenceCheck extends BarrierGuard, DataFlow::ValueNode {
   override PropAccess astNode;
 
   PropertyPresenceCheck() {
@@ -184,41 +258,41 @@ private class PropertyPresenceCheck extends TaintTracking::LabeledSanitizerGuard
     not isPropertyPresentOnObjectPrototype(astNode.getPropertyName())
   }
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getBase() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
 /** A check of form `"prop" in e` where `prop` is not present on `Object.prototype`. */
-private class InExprCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+private class InExprCheck extends BarrierGuard, DataFlow::ValueNode {
   override InExpr astNode;
 
   InExprCheck() {
     not isPropertyPresentOnObjectPrototype(astNode.getLeftOperand().getStringValue())
   }
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getRightOperand() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
 /** A check of form `e instanceof X`, which is always false for `Object.prototype`. */
-private class InstanceofCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+private class InstanceofCheck extends BarrierGuard, DataFlow::ValueNode {
   override InstanceofExpr astNode;
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getLeftOperand() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
 /** A check of form `typeof e === "string"`. */
-private class TypeofCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+private class TypeofCheck extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
   Expr operand;
   boolean polarity;
@@ -231,43 +305,43 @@ private class TypeofCheck extends TaintTracking::LabeledSanitizerGuardNode, Data
     )
   }
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     polarity = outcome and
     e = operand and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
 /** A guard that checks whether `x` is a number. */
-class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
   Expr x;
   boolean polarity;
 
   NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
 
-  override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+  override predicate blocksExpr(boolean outcome, Expr e) { e = x and outcome = polarity }
 }
 
 /** A call to `Array.isArray`, which is false for `Object.prototype`. */
-private class IsArrayCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::CallNode {
+private class IsArrayCheck extends BarrierGuard, DataFlow::CallNode {
   IsArrayCheck() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = this.getArgument(0).asExpr() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
 /**
  * Sanitizer guard of form `x !== "__proto__"`.
  */
-private class EqualityCheck extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+private class EqualityCheck extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
 
   EqualityCheck() { astNode.getAnOperand().getStringValue() = "__proto__" }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     e = astNode.getAnOperand() and
     outcome = astNode.getPolarity().booleanNot()
   }
@@ -276,10 +350,10 @@ private class EqualityCheck extends TaintTracking::SanitizerGuardNode, DataFlow:
 /**
  * Sanitizer guard of the form `x.includes("__proto__")`.
  */
-private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, InclusionTest {
+private class IncludesCheck extends BarrierGuard, InclusionTest {
   IncludesCheck() { this.getContainedNode().mayHaveStringValue("__proto__") }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     e = this.getContainerNode().asExpr() and
     outcome = this.getPolarity().booleanNot()
   }
@@ -288,7 +362,7 @@ private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, In
 /**
  * A sanitizer guard that checks tests whether `x` is included in a list like `["__proto__"].includes(x)`.
  */
-private class DenyListInclusionGuard extends TaintTracking::SanitizerGuardNode, InclusionTest {
+private class DenyListInclusionGuard extends BarrierGuard, InclusionTest {
   DenyListInclusionGuard() {
     this.getContainerNode()
         .getALocalSource()
@@ -297,7 +371,7 @@ private class DenyListInclusionGuard extends TaintTracking::SanitizerGuardNode, 
         .mayHaveStringValue("__proto__")
   }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     e = this.getContainedNode().asExpr() and
     outcome = super.getPolarity().booleanNot()
   }

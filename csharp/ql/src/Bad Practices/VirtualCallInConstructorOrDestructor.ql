@@ -34,7 +34,9 @@ predicate overriddenSealed(RefType t, Virtualizable d) {
 }
 
 predicate virtualAccessWithThisQualifier(Expr e, Member d) {
-  exists(VirtualMethodCall c | c = e and c.getTarget() = d and c.hasThisQualifier())
+  exists(VirtualMethodCall c |
+    c = e and c.getTarget() = d and c.hasThisQualifier() and not c.isImplicit()
+  )
   or
   exists(VirtualMethodAccess c | c = e and c.getTarget() = d and c.hasThisQualifier())
   or

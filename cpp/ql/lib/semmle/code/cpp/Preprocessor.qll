@@ -42,7 +42,7 @@ private class TPreprocessorBranchDirective = @ppd_branch or @ppd_else or @ppd_en
 
 /**
  * A C/C++ preprocessor branch related directive: `#if`, `#ifdef`,
- * `#ifndef`, `#elif`, `#else` or `#endif`.
+ * `#ifndef`, `#elif`, `#elifdef`, `#elifndef`, `#else` or `#endif`.
  */
 class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBranchDirective {
   /**
@@ -74,8 +74,8 @@ class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBr
   }
 
   /**
-   * Gets the next `#elif`, `#else` or `#endif` matching this branching
-   * directive.
+   * Gets the next `#elif`, `#elifdef`, `#elifndef`, `#else` or `#endif` matching
+   * this branching directive.
    *
    * For example `somePreprocessorBranchDirective.getIf().getNext()` gets
    * the second directive in the same construct as
@@ -88,8 +88,8 @@ class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBr
   }
 
   /**
-   * Gets the index of this branching directive within the matching #if,
-   * #ifdef or #ifndef.
+   * Gets the index of this branching directive within the matching `#if`,
+   * `#ifdef` or `#ifndef`.
    */
   private int getIndexInBranch(PreprocessorBranch branch) {
     this =
@@ -102,8 +102,8 @@ class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBr
 }
 
 /**
- * A C/C++ preprocessor branching directive: `#if`, `#ifdef`, `#ifndef`, or
- * `#elif`.
+ * A C/C++ preprocessor branching directive: `#if`, `#ifdef`, `#ifndef`,
+ * `#elif`, `#elifdef`, or `#elifndef`.
  *
  * A branching directive has a condition and that condition may be evaluated
  * at compile-time.  As a result, the preprocessor will either take the
@@ -151,8 +151,8 @@ class PreprocessorBranch extends PreprocessorBranchDirective, @ppd_branch {
  * #endif
  * ```
  * For the related notion of a directive which causes branching (which
- * includes `#if`, plus also `#ifdef`, `#ifndef`, and `#elif`), see
- * `PreprocessorBranch`.
+ * includes `#if`, plus also `#ifdef`, `#ifndef`, `#elif`, `#elifdef`,
+ * and `#elifndef`), see `PreprocessorBranch`.
  */
 class PreprocessorIf extends PreprocessorBranch, @ppd_if {
   override string toString() { result = "#if " + this.getHead() }
@@ -220,6 +220,40 @@ class PreprocessorElse extends PreprocessorBranchDirective, @ppd_else {
  */
 class PreprocessorElif extends PreprocessorBranch, @ppd_elif {
   override string toString() { result = "#elif " + this.getHead() }
+}
+
+/**
+ * A C/C++ preprocessor `#elifdef` directive. For example there is a
+ * `PreprocessorElifdef` on the third line of the following code:
+ * ```
+ * #ifdef MYDEFINE1
+ * // ...
+ * #elifdef MYDEFINE2
+ * // ...
+ * #else
+ * // ...
+ * #endif
+ * ```
+ */
+class PreprocessorElifdef extends PreprocessorBranch, @ppd_elifdef {
+  override string toString() { result = "#elifdef " + this.getHead() }
+}
+
+/**
+ * A C/C++ preprocessor `#elifndef` directive. For example there is a
+ * `PreprocessorElifndef` on the third line of the following code:
+ * ```
+ * #ifdef MYDEFINE1
+ * // ...
+ * #elifndef MYDEFINE2
+ * // ...
+ * #else
+ * // ...
+ * #endif
+ * ```
+ */
+class PreprocessorElifndef extends PreprocessorBranch, @ppd_elifndef {
+  override string toString() { result = "#elifndef " + this.getHead() }
 }
 
 /**

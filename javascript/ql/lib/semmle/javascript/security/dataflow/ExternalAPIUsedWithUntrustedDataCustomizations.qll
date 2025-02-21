@@ -252,7 +252,6 @@ module ExternalApiUsedWithUntrustedData {
       |
         TaintTracking::sharedTaintStep(arg, _) or
         DataFlow::SharedFlowStep::step(arg, _) or
-        DataFlow::SharedFlowStep::step(arg, _, _, _) or
         DataFlow::SharedFlowStep::loadStep(arg, _, _) or
         DataFlow::SharedFlowStep::storeStep(arg, _, _) or
         DataFlow::SharedFlowStep::loadStoreStep(arg, _, _)
