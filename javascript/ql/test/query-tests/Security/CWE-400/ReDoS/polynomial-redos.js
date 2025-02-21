@@ -24,7 +24,7 @@ app.use(function(req, res) {
 
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/ \t\n]+[=]*)(.*)$/); // $ Alert[js/polynomial-redos]
 	tainted.match(/^([a-z0-9-]+)[ \t\n]+([a-zA-Z0-9+\/][a-zA-Z0-9+\/ \t\n=]*)([^a-zA-Z0-9+\/ \t\n=].*)?$/);
-	/[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted); // $ Alert - but not detected due to not supporting ranges
+	/[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted); // $ MISSING: Alert[js/polynomial-redos] - not detected due to not supporting ranges
 	/[a-z][A-Z]|[A-Z]{2}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/.test(tainted);
 
 	tainted.replace(/[?]+.*$/g, ""); // $ SPURIOUS: Alert[js/polynomial-redos] - can not fail once a match has started
@@ -75,7 +75,7 @@ app.use(function(req, res) {
 	tainted.match(/<.*class="([^"]+)".*>/); // $ Alert[js/polynomial-redos]
 
 	tainted.match(/Y.*X/); // $ Alert[js/polynomial-redos]
-	tatined.match(/B?(YH|K)(YH|J)*X/); // $ Alert - but not detected
+	tatined.match(/B?(YH|K)(YH|J)*X/); // $ MISSING: Alert[js/polynomial-redos]
 
 	tainted.match(/a*b/); // $ Alert[js/polynomial-redos] - the initial repetition can start matching anywhere.
 	tainted.match(/cc*D/); // $ Alert[js/polynomial-redos]
@@ -101,7 +101,7 @@ app.use(function(req, res) {
 	tainted.match(/a+X/); // $ Alert[js/polynomial-redos]
 	tainted.match(/^a+a+X/); // $ Alert[js/polynomial-redos]
 	tainted.match(/\wa+X/); // $ Alert[js/polynomial-redos]
-	tainted.match(/a+b+c+/); //NOT  OK
+	tainted.match(/a+b+c+/); // $ Alert[js/polynomial-redos]
 	tainted.match(/a+a+a+a+/);
 
 	tainted.match(/^([3-7]|A)+([2-5]|B)+X/); // $ Alert[js/polynomial-redos]
