@@ -1,4 +1,24 @@
 #select
+| test.jsx:25:29:25:32 | data | test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:25:29:25:32 | data | Cross-site scripting vulnerability due to $@. | test.jsx:5:28:5:63 | fetch(" ... ntent") | user-provided value |
 edges
+| test.jsx:5:11:5:63 | response | test.jsx:6:24:6:31 | response | provenance |  |
+| test.jsx:5:22:5:63 | await f ... ntent") | test.jsx:5:11:5:63 | response | provenance |  |
+| test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:5:22:5:63 | await f ... ntent") | provenance |  |
+| test.jsx:6:11:6:38 | data | test.jsx:7:12:7:15 | data | provenance |  |
+| test.jsx:6:18:6:38 | await r ... .json() | test.jsx:6:11:6:38 | data | provenance |  |
+| test.jsx:6:24:6:31 | response | test.jsx:6:24:6:38 | response.json() | provenance |  |
+| test.jsx:6:24:6:38 | response.json() | test.jsx:6:18:6:38 | await r ... .json() | provenance |  |
+| test.jsx:7:12:7:15 | data | test.jsx:11:11:15:5 | data | provenance |  |
+| test.jsx:11:11:15:5 | data | test.jsx:25:29:25:32 | data | provenance |  |
 nodes
+| test.jsx:5:11:5:63 | response | semmle.label | response |
+| test.jsx:5:22:5:63 | await f ... ntent") | semmle.label | await f ... ntent") |
+| test.jsx:5:28:5:63 | fetch(" ... ntent") | semmle.label | fetch(" ... ntent") |
+| test.jsx:6:11:6:38 | data | semmle.label | data |
+| test.jsx:6:18:6:38 | await r ... .json() | semmle.label | await r ... .json() |
+| test.jsx:6:24:6:31 | response | semmle.label | response |
+| test.jsx:6:24:6:38 | response.json() | semmle.label | response.json() |
+| test.jsx:7:12:7:15 | data | semmle.label | data |
+| test.jsx:11:11:15:5 | data | semmle.label | data |
+| test.jsx:25:29:25:32 | data | semmle.label | data |
 subpaths

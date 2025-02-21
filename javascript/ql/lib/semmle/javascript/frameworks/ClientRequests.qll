@@ -861,4 +861,23 @@ module ClientRequest {
       result = form.getMember("append").getACall().getParameter(1).asSink()
     }
   }
+
+  private class ClientRequestThreatModel extends ThreatModelSource::Range {
+    ClientRequestThreatModel() { this = any(ClientRequest r).getAResponseDataNode() }
+
+    override string getThreatModel() { result = "response" }
+
+    override string getSourceType() { result = "HTTP response data" }
+  }
+
+  class FetchResponseStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() in ["json", "text", "blob", "arrayBuffer"] and
+        node1 = call.getReceiver() and
+        node2 = call and
+        call.getNumArgument() = 0
+      )
+    }
+  }
 }

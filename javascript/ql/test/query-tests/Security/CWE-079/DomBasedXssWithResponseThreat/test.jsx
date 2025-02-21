@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchContent = async () => {
-    const response = await fetch("https://example.com/content"); // $ MISSING: Source[js/xss]
+    const response = await fetch("https://example.com/content"); // $ Source[js/xss]
     const data = await response.json();
     return data;
 };
@@ -22,7 +22,7 @@ const ContentWithDangerousHtml = () => {
             <h1>Content with Dangerous HTML</h1>
             <div
                 dangerouslySetInnerHTML={{
-                    __html: data, // $ MISSING: Alert[js/xss]
+                    __html: data, // $ Alert[js/xss]
                 }}
             />
         </div>
