@@ -49,3 +49,20 @@ extensions:
       - ["group:squirrel", "UpdateBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "UpdateBuilder", True, "Table", "", "", "Argument[0]", "sql-injection", "manual"]
       # UpdateBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:squirrel", "QueryRower", True, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "QueryRowerContext", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "Queryer", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "QueryerContext", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "StdSql", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "StdSql", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["group:squirrel", "StdSqlCtx", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "StdSqlCtx", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["group:squirrel", "RowScanner", True, "Scan", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
