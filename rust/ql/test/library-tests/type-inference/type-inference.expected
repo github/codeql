@@ -183,7 +183,6 @@ resolveType
 | main.rs:221:19:221:22 | self | 0 | main.rs:219:10:219:10 | T |
 | main.rs:229:13:229:13 | x |  | main.rs:208:5:212:5 | enum MyEnum |
 | main.rs:229:13:229:13 | x | 0 | main.rs:214:5:215:14 | struct S1 |
-| main.rs:229:17:229:26 | ...::C1 |  | main.rs:208:5:212:5 | enum MyEnum |
 | main.rs:229:17:229:30 | ...::C1(...) |  | main.rs:208:5:212:5 | enum MyEnum |
 | main.rs:229:17:229:30 | ...::C1(...) | 0 | main.rs:214:5:215:14 | struct S1 |
 | main.rs:229:28:229:29 | S1 |  | main.rs:214:5:215:14 | struct S1 |
@@ -290,7 +289,6 @@ resolveType
 | main.rs:350:9:350:9 | x |  | main.rs:346:13:346:14 | T1 |
 | main.rs:354:13:354:13 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:354:17:354:18 | S1 |  | main.rs:326:5:327:14 | struct S1 |
-| main.rs:355:26:355:27 | id |  | file://:0:0:0:0 | & |
 | main.rs:355:26:355:31 | id(...) |  | file://:0:0:0:0 | & |
 | main.rs:355:26:355:31 | id(...) | 0 | main.rs:326:5:327:14 | struct S1 |
 | main.rs:355:29:355:30 | &x |  | file://:0:0:0:0 | & |
@@ -298,7 +296,6 @@ resolveType
 | main.rs:355:30:355:30 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:357:13:357:13 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:357:17:357:18 | S1 |  | main.rs:326:5:327:14 | struct S1 |
-| main.rs:358:26:358:33 | id::<...> |  | file://:0:0:0:0 | & |
 | main.rs:358:26:358:37 | id::<...>(...) |  | file://:0:0:0:0 | & |
 | main.rs:358:26:358:37 | id::<...>(...) | 0 | main.rs:326:5:327:14 | struct S1 |
 | main.rs:358:35:358:36 | &x |  | file://:0:0:0:0 | & |
@@ -306,7 +303,6 @@ resolveType
 | main.rs:358:36:358:36 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:360:13:360:13 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:360:17:360:18 | S1 |  | main.rs:326:5:327:14 | struct S1 |
-| main.rs:361:26:361:40 | id::<...> |  | file://:0:0:0:0 | & |
 | main.rs:361:26:361:44 | id::<...>(...) |  | file://:0:0:0:0 | & |
 | main.rs:361:26:361:44 | id::<...>(...) | 0 | main.rs:326:5:327:14 | struct S1 |
 | main.rs:361:42:361:43 | &x |  | file://:0:0:0:0 | & |
@@ -320,9 +316,7 @@ resolveType
 | main.rs:366:17:366:18 | S1 |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:367:13:367:13 | y |  | main.rs:329:5:330:14 | struct S2 |
 | main.rs:367:26:367:26 | x |  | main.rs:326:5:327:14 | struct S1 |
-| main.rs:372:5:372:9 | ...::f |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:372:5:372:11 | ...::f(...) |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:373:5:373:9 | ...::g |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:373:5:373:33 | ...::g(...) |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:373:11:373:20 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:373:23:373:32 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
