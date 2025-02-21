@@ -417,7 +417,7 @@ class JaxRSConsumesAnnotation extends JaxRSAnnotation {
 }
 
 /** A default sink representing methods susceptible to XSS attacks. */
-private class JaxRSXssSink extends XssSink {
+private class JaxRSXssSink extends AbstractXssSink {
   JaxRSXssSink() {
     exists(JaxRsResourceMethod resourceMethod, ReturnStmt rs |
       resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod() and

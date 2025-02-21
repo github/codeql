@@ -14,8 +14,16 @@
  *       external/cwe/cwe-400
  */
 
+import semmle.code.java.regex.RegexDiffInformed
+import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as ExponentialBackTracking
+
+class ReDoSDiffInformed extends RegexDiffInformedConfig {
+  override predicate observeDiffInformedIncrementalMode() { any() }
+
+  override Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
+}
 
 from TreeView::RegExpTerm t, string pump, ExponentialBackTracking::State s, string prefixMsg
 where

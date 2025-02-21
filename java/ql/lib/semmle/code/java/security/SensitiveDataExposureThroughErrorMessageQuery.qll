@@ -20,7 +20,12 @@ private class GetMessageFlowSource extends ApiSourceNode {
 private module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof GetMessageFlowSource }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof
+      InformationLeakDiffInformed<GetMessageFlowSourceToHttpResponseSinkFlow::hasSourceInDiffRange/0>::InformationLeakSink
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module GetMessageFlowSourceToHttpResponseSinkFlow =
