@@ -1,5 +1,5 @@
 var express = require('express'),
-    app = express();
+    app = express(); // $ SPURIOUS: Alert
 
 app.get('/', [
     function (req, res){
