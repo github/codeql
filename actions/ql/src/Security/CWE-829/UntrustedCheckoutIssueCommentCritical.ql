@@ -7,7 +7,7 @@
  * @problem.severity warning
  * @precision high
  * @security-severity 7.5
- * @id actions/untrusted-checkout-triggered-by-issue-comment/critical
+ * @id actions/untrusted-checkout-issue-comment/critical
  * @tags actions
  *       security
  *       external/cwe/cwe-829
