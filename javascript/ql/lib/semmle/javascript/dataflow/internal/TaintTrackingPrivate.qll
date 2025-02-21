@@ -41,7 +41,7 @@ pragma[inline_late]
 private BasicBlock getBasicBlockFromSsa2(Ssa2::Node node) {
   result = node.(Ssa2::ExprNode).getExpr().getBasicBlock()
   or
-  node.(Ssa2::SsaInputNode).isInputInto(_, result)
+  result = node.(Ssa2::SsaInputNode).getBasicBlock()
 }
 
 /**
