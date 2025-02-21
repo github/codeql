@@ -1163,299 +1163,310 @@ edges
 | test.rs:462:40:462:40 | n | test.rs:461:9:464:9 | match pair { ... } |  |
 | test.rs:463:13:463:13 | _ | test.rs:463:18:463:18 | 0 | match |
 | test.rs:463:18:463:18 | 0 | test.rs:461:9:464:9 | match pair { ... } |  |
-| test.rs:469:5:474:5 | enter fn test_infinite_loop | test.rs:470:9:472:9 | ExprStmt |  |
-| test.rs:470:9:472:9 | ExprStmt | test.rs:471:13:471:14 | TupleExpr |  |
-| test.rs:470:14:472:9 | { ... } | test.rs:471:13:471:14 | TupleExpr |  |
-| test.rs:471:13:471:14 | TupleExpr | test.rs:470:14:472:9 | { ... } |  |
-| test.rs:478:5:480:5 | enter fn say_hello | test.rs:479:9:479:34 | ExprStmt |  |
-| test.rs:478:5:480:5 | exit fn say_hello (normal) | test.rs:478:5:480:5 | exit fn say_hello |  |
-| test.rs:478:26:480:5 | { ... } | test.rs:478:5:480:5 | exit fn say_hello (normal) |  |
-| test.rs:479:9:479:33 | ...::_print | test.rs:479:18:479:32 | "hello, world!\\n" |  |
-| test.rs:479:9:479:33 | MacroExpr | test.rs:478:26:480:5 | { ... } |  |
-| test.rs:479:9:479:33 | println!... | test.rs:479:9:479:33 | MacroExpr |  |
-| test.rs:479:9:479:34 | ExprStmt | test.rs:479:18:479:32 | MacroStmts |  |
-| test.rs:479:18:479:32 | "hello, world!\\n" | test.rs:479:18:479:32 | FormatArgsExpr |  |
-| test.rs:479:18:479:32 | ...::_print(...) | test.rs:479:18:479:32 | { ... } |  |
-| test.rs:479:18:479:32 | ...::format_args_nl!... | test.rs:479:18:479:32 | MacroExpr |  |
-| test.rs:479:18:479:32 | ExprStmt | test.rs:479:9:479:33 | ...::_print |  |
-| test.rs:479:18:479:32 | FormatArgsExpr | test.rs:479:18:479:32 | ...::format_args_nl!... |  |
-| test.rs:479:18:479:32 | MacroExpr | test.rs:479:18:479:32 | ...::_print(...) |  |
-| test.rs:479:18:479:32 | MacroStmts | test.rs:479:18:479:32 | ExprStmt |  |
-| test.rs:479:18:479:32 | { ... } | test.rs:479:9:479:33 | println!... |  |
-| test.rs:482:5:501:5 | enter fn async_block | test.rs:482:26:482:26 | b |  |
-| test.rs:482:5:501:5 | exit fn async_block (normal) | test.rs:482:5:501:5 | exit fn async_block |  |
-| test.rs:482:26:482:26 | b | test.rs:482:26:482:26 | b |  |
-| test.rs:482:26:482:26 | b | test.rs:482:26:482:32 | ...: bool | match |
-| test.rs:482:26:482:32 | ...: bool | test.rs:483:9:485:10 | let ... = ... |  |
-| test.rs:482:35:501:5 | { ... } | test.rs:482:5:501:5 | exit fn async_block (normal) |  |
-| test.rs:483:9:485:10 | let ... = ... | test.rs:483:26:485:9 | { ... } |  |
-| test.rs:483:13:483:22 | say_godbye | test.rs:483:13:483:22 | say_godbye |  |
-| test.rs:483:13:483:22 | say_godbye | test.rs:486:9:488:10 | let ... = ... | match |
-| test.rs:483:26:485:9 | enter { ... } | test.rs:484:13:484:42 | ExprStmt |  |
-| test.rs:483:26:485:9 | exit { ... } (normal) | test.rs:483:26:485:9 | exit { ... } |  |
-| test.rs:483:26:485:9 | { ... } | test.rs:483:13:483:22 | say_godbye |  |
-| test.rs:484:13:484:41 | ...::_print | test.rs:484:22:484:40 | "godbye, everyone!\\n" |  |
-| test.rs:484:13:484:41 | MacroExpr | test.rs:483:26:485:9 | exit { ... } (normal) |  |
-| test.rs:484:13:484:41 | println!... | test.rs:484:13:484:41 | MacroExpr |  |
-| test.rs:484:13:484:42 | ExprStmt | test.rs:484:22:484:40 | MacroStmts |  |
-| test.rs:484:22:484:40 | "godbye, everyone!\\n" | test.rs:484:22:484:40 | FormatArgsExpr |  |
-| test.rs:484:22:484:40 | ...::_print(...) | test.rs:484:22:484:40 | { ... } |  |
-| test.rs:484:22:484:40 | ...::format_args_nl!... | test.rs:484:22:484:40 | MacroExpr |  |
-| test.rs:484:22:484:40 | ExprStmt | test.rs:484:13:484:41 | ...::_print |  |
-| test.rs:484:22:484:40 | FormatArgsExpr | test.rs:484:22:484:40 | ...::format_args_nl!... |  |
-| test.rs:484:22:484:40 | MacroExpr | test.rs:484:22:484:40 | ...::_print(...) |  |
-| test.rs:484:22:484:40 | MacroStmts | test.rs:484:22:484:40 | ExprStmt |  |
-| test.rs:484:22:484:40 | { ... } | test.rs:484:13:484:41 | println!... |  |
-| test.rs:486:9:488:10 | let ... = ... | test.rs:486:31:488:9 | { ... } |  |
-| test.rs:486:13:486:27 | say_how_are_you | test.rs:486:13:486:27 | say_how_are_you |  |
-| test.rs:486:13:486:27 | say_how_are_you | test.rs:489:9:489:28 | let ... = ... | match |
-| test.rs:486:31:488:9 | enter { ... } | test.rs:487:13:487:37 | ExprStmt |  |
-| test.rs:486:31:488:9 | exit { ... } (normal) | test.rs:486:31:488:9 | exit { ... } |  |
-| test.rs:486:31:488:9 | { ... } | test.rs:486:13:486:27 | say_how_are_you |  |
-| test.rs:487:13:487:36 | ...::_print | test.rs:487:22:487:35 | "how are you?\\n" |  |
-| test.rs:487:13:487:36 | MacroExpr | test.rs:486:31:488:9 | exit { ... } (normal) |  |
-| test.rs:487:13:487:36 | println!... | test.rs:487:13:487:36 | MacroExpr |  |
-| test.rs:487:13:487:37 | ExprStmt | test.rs:487:22:487:35 | MacroStmts |  |
-| test.rs:487:22:487:35 | "how are you?\\n" | test.rs:487:22:487:35 | FormatArgsExpr |  |
-| test.rs:487:22:487:35 | ...::_print(...) | test.rs:487:22:487:35 | { ... } |  |
-| test.rs:487:22:487:35 | ...::format_args_nl!... | test.rs:487:22:487:35 | MacroExpr |  |
-| test.rs:487:22:487:35 | ExprStmt | test.rs:487:13:487:36 | ...::_print |  |
-| test.rs:487:22:487:35 | FormatArgsExpr | test.rs:487:22:487:35 | ...::format_args_nl!... |  |
-| test.rs:487:22:487:35 | MacroExpr | test.rs:487:22:487:35 | ...::_print(...) |  |
-| test.rs:487:22:487:35 | MacroStmts | test.rs:487:22:487:35 | ExprStmt |  |
-| test.rs:487:22:487:35 | { ... } | test.rs:487:13:487:36 | println!... |  |
-| test.rs:489:9:489:28 | let ... = ... | test.rs:489:20:489:27 | { ... } |  |
-| test.rs:489:13:489:16 | noop | test.rs:489:13:489:16 | noop |  |
-| test.rs:489:13:489:16 | noop | test.rs:490:9:490:26 | ExprStmt | match |
-| test.rs:489:20:489:27 | { ... } | test.rs:489:13:489:16 | noop |  |
-| test.rs:490:9:490:17 | say_hello | test.rs:490:9:490:19 | say_hello(...) |  |
-| test.rs:490:9:490:19 | say_hello(...) | test.rs:490:9:490:25 | await ... |  |
-| test.rs:490:9:490:25 | await ... | test.rs:491:9:491:30 | ExprStmt |  |
-| test.rs:490:9:490:26 | ExprStmt | test.rs:490:9:490:17 | say_hello |  |
-| test.rs:491:9:491:23 | say_how_are_you | test.rs:491:9:491:29 | await say_how_are_you |  |
-| test.rs:491:9:491:29 | await say_how_are_you | test.rs:492:9:492:25 | ExprStmt |  |
-| test.rs:491:9:491:30 | ExprStmt | test.rs:491:9:491:23 | say_how_are_you |  |
-| test.rs:492:9:492:18 | say_godbye | test.rs:492:9:492:24 | await say_godbye |  |
-| test.rs:492:9:492:24 | await say_godbye | test.rs:493:9:493:19 | ExprStmt |  |
-| test.rs:492:9:492:25 | ExprStmt | test.rs:492:9:492:18 | say_godbye |  |
-| test.rs:493:9:493:12 | noop | test.rs:493:9:493:18 | await noop |  |
-| test.rs:493:9:493:18 | await noop | test.rs:495:9:500:10 | let ... = ... |  |
-| test.rs:493:9:493:19 | ExprStmt | test.rs:493:9:493:12 | noop |  |
-| test.rs:495:9:500:10 | let ... = ... | test.rs:495:22:500:9 | \|...\| ... |  |
-| test.rs:495:13:495:18 | lambda | test.rs:482:35:501:5 | { ... } | match |
-| test.rs:495:13:495:18 | lambda | test.rs:495:13:495:18 | lambda |  |
-| test.rs:495:22:500:9 | \|...\| ... | test.rs:495:13:495:18 | lambda |  |
-| test.rs:495:22:500:9 | enter \|...\| ... | test.rs:495:23:495:25 | foo |  |
-| test.rs:495:22:500:9 | exit \|...\| ... (normal) | test.rs:495:22:500:9 | exit \|...\| ... |  |
-| test.rs:495:23:495:25 | ... | test.rs:495:28:500:9 | { ... } |  |
-| test.rs:495:23:495:25 | foo | test.rs:495:23:495:25 | ... | match |
-| test.rs:495:23:495:25 | foo | test.rs:495:23:495:25 | foo |  |
-| test.rs:495:28:500:9 | enter { ... } | test.rs:496:13:498:14 | ExprStmt |  |
-| test.rs:495:28:500:9 | exit { ... } (normal) | test.rs:495:28:500:9 | exit { ... } |  |
-| test.rs:495:28:500:9 | { ... } | test.rs:495:22:500:9 | exit \|...\| ... (normal) |  |
-| test.rs:496:13:498:13 | if b {...} | test.rs:499:13:499:15 | foo |  |
-| test.rs:496:13:498:14 | ExprStmt | test.rs:496:16:496:16 | b |  |
-| test.rs:496:16:496:16 | b | test.rs:496:13:498:13 | if b {...} | false |
-| test.rs:496:16:496:16 | b | test.rs:497:17:497:41 | ExprStmt | true |
-| test.rs:497:17:497:40 | return ... | test.rs:495:28:500:9 | exit { ... } (normal) | return |
-| test.rs:497:17:497:41 | ExprStmt | test.rs:497:24:497:34 | async_block |  |
-| test.rs:497:24:497:34 | async_block | test.rs:497:36:497:39 | true |  |
-| test.rs:497:24:497:40 | async_block(...) | test.rs:497:17:497:40 | return ... |  |
-| test.rs:497:36:497:39 | true | test.rs:497:24:497:40 | async_block(...) |  |
-| test.rs:499:13:499:15 | foo | test.rs:495:28:500:9 | exit { ... } (normal) |  |
-| test.rs:507:5:509:5 | enter fn add_two | test.rs:507:22:507:22 | n |  |
-| test.rs:507:5:509:5 | exit fn add_two (normal) | test.rs:507:5:509:5 | exit fn add_two |  |
-| test.rs:507:22:507:22 | n | test.rs:507:22:507:22 | n |  |
-| test.rs:507:22:507:22 | n | test.rs:507:22:507:27 | ...: i64 | match |
-| test.rs:507:22:507:27 | ...: i64 | test.rs:508:9:508:9 | n |  |
-| test.rs:507:37:509:5 | { ... } | test.rs:507:5:509:5 | exit fn add_two (normal) |  |
-| test.rs:508:9:508:9 | n | test.rs:508:13:508:13 | 2 |  |
-| test.rs:508:9:508:13 | ... + ... | test.rs:507:37:509:5 | { ... } |  |
-| test.rs:508:13:508:13 | 2 | test.rs:508:9:508:13 | ... + ... |  |
-| test.rs:513:5:521:5 | enter fn const_block_assert | test.rs:516:9:518:9 | ExprStmt |  |
-| test.rs:513:5:521:5 | exit fn const_block_assert (normal) | test.rs:513:5:521:5 | exit fn const_block_assert |  |
-| test.rs:513:41:521:5 | { ... } | test.rs:513:5:521:5 | exit fn const_block_assert (normal) |  |
-| test.rs:516:9:518:9 | ExprStmt | test.rs:517:13:517:50 | ExprStmt |  |
-| test.rs:516:9:518:9 | { ... } | test.rs:520:9:520:10 | 42 |  |
-| test.rs:517:13:517:49 | ...::panic_2021!... | test.rs:517:13:517:49 | MacroExpr |  |
-| test.rs:517:13:517:49 | ...::panic_explicit | test.rs:517:13:517:49 | ...::panic_explicit(...) |  |
-| test.rs:517:13:517:49 | ...::panic_explicit(...) | test.rs:517:13:517:49 | { ... } |  |
-| test.rs:517:13:517:49 | ExprStmt | test.rs:517:13:517:49 | MacroStmts |  |
-| test.rs:517:13:517:49 | ExprStmt | test.rs:517:13:517:49 | panic_cold_explicit |  |
-| test.rs:517:13:517:49 | MacroExpr | test.rs:516:9:518:9 | { ... } |  |
-| test.rs:517:13:517:49 | MacroExpr | test.rs:517:13:517:49 | { ... } |  |
-| test.rs:517:13:517:49 | MacroStmts | test.rs:517:13:517:49 | fn panic_cold_explicit |  |
-| test.rs:517:13:517:49 | assert!... | test.rs:517:13:517:49 | MacroExpr |  |
-| test.rs:517:13:517:49 | enter fn panic_cold_explicit | test.rs:517:13:517:49 | ...::panic_explicit |  |
-| test.rs:517:13:517:49 | exit fn panic_cold_explicit (normal) | test.rs:517:13:517:49 | exit fn panic_cold_explicit |  |
-| test.rs:517:13:517:49 | fn panic_cold_explicit | test.rs:517:13:517:49 | ExprStmt |  |
-| test.rs:517:13:517:49 | panic_cold_explicit | test.rs:517:13:517:49 | panic_cold_explicit(...) |  |
-| test.rs:517:13:517:49 | panic_cold_explicit(...) | test.rs:517:13:517:49 | { ... } |  |
-| test.rs:517:13:517:49 | { ... } | test.rs:517:13:517:49 | ...::panic_2021!... |  |
-| test.rs:517:13:517:49 | { ... } | test.rs:517:13:517:49 | exit fn panic_cold_explicit (normal) |  |
-| test.rs:517:13:517:49 | { ... } | test.rs:517:21:517:48 | if ... {...} |  |
-| test.rs:517:13:517:50 | ExprStmt | test.rs:517:21:517:48 | MacroStmts |  |
-| test.rs:517:21:517:42 | ...::size_of::<...> | test.rs:517:21:517:44 | ...::size_of::<...>(...) |  |
-| test.rs:517:21:517:44 | ...::size_of::<...>(...) | test.rs:517:48:517:48 | 0 |  |
-| test.rs:517:21:517:48 | ... > ... | test.rs:517:21:517:48 | [boolean(false)] ! ... | true |
-| test.rs:517:21:517:48 | ... > ... | test.rs:517:21:517:48 | [boolean(true)] ! ... | false |
-| test.rs:517:21:517:48 | MacroStmts | test.rs:517:21:517:42 | ...::size_of::<...> |  |
-| test.rs:517:21:517:48 | [boolean(false)] ! ... | test.rs:517:21:517:48 | if ... {...} | false |
-| test.rs:517:21:517:48 | [boolean(true)] ! ... | test.rs:517:13:517:49 | ExprStmt | true |
-| test.rs:517:21:517:48 | if ... {...} | test.rs:517:21:517:48 | { ... } |  |
-| test.rs:517:21:517:48 | { ... } | test.rs:517:13:517:49 | assert!... |  |
-| test.rs:517:48:517:48 | 0 | test.rs:517:21:517:48 | ... > ... |  |
-| test.rs:520:9:520:10 | 42 | test.rs:513:41:521:5 | { ... } |  |
-| test.rs:523:5:532:5 | enter fn const_block_panic | test.rs:524:9:524:30 | Const |  |
-| test.rs:523:5:532:5 | exit fn const_block_panic (normal) | test.rs:523:5:532:5 | exit fn const_block_panic |  |
-| test.rs:523:35:532:5 | { ... } | test.rs:523:5:532:5 | exit fn const_block_panic (normal) |  |
-| test.rs:524:9:524:30 | Const | test.rs:525:9:530:9 | ExprStmt |  |
-| test.rs:525:9:530:9 | ExprStmt | test.rs:525:12:525:16 | false |  |
-| test.rs:525:9:530:9 | if false {...} | test.rs:531:9:531:9 | N |  |
-| test.rs:525:12:525:16 | false | test.rs:525:9:530:9 | if false {...} | false |
-| test.rs:528:17:528:24 | ...::panic_explicit | test.rs:528:17:528:24 | ...::panic_explicit(...) |  |
-| test.rs:528:17:528:24 | ...::panic_explicit(...) | test.rs:528:17:528:24 | { ... } |  |
-| test.rs:528:17:528:24 | enter fn panic_cold_explicit | test.rs:528:17:528:24 | ...::panic_explicit |  |
-| test.rs:528:17:528:24 | exit fn panic_cold_explicit (normal) | test.rs:528:17:528:24 | exit fn panic_cold_explicit |  |
-| test.rs:528:17:528:24 | { ... } | test.rs:528:17:528:24 | exit fn panic_cold_explicit (normal) |  |
-| test.rs:531:9:531:9 | N | test.rs:523:35:532:5 | { ... } |  |
-| test.rs:535:1:540:1 | enter fn dead_code | test.rs:536:5:538:5 | ExprStmt |  |
-| test.rs:535:1:540:1 | exit fn dead_code (normal) | test.rs:535:1:540:1 | exit fn dead_code |  |
-| test.rs:536:5:538:5 | ExprStmt | test.rs:536:9:536:12 | true |  |
-| test.rs:536:9:536:12 | true | test.rs:537:9:537:17 | ExprStmt | true |
-| test.rs:537:9:537:16 | return 0 | test.rs:535:1:540:1 | exit fn dead_code (normal) | return |
-| test.rs:537:9:537:17 | ExprStmt | test.rs:537:16:537:16 | 0 |  |
-| test.rs:537:16:537:16 | 0 | test.rs:537:9:537:16 | return 0 |  |
-| test.rs:542:1:542:16 | enter fn do_thing | test.rs:542:15:542:16 | { ... } |  |
-| test.rs:542:1:542:16 | exit fn do_thing (normal) | test.rs:542:1:542:16 | exit fn do_thing |  |
-| test.rs:542:15:542:16 | { ... } | test.rs:542:1:542:16 | exit fn do_thing (normal) |  |
-| test.rs:544:1:546:1 | enter fn condition_not_met | test.rs:545:5:545:9 | false |  |
-| test.rs:544:1:546:1 | exit fn condition_not_met (normal) | test.rs:544:1:546:1 | exit fn condition_not_met |  |
-| test.rs:544:32:546:1 | { ... } | test.rs:544:1:546:1 | exit fn condition_not_met (normal) |  |
-| test.rs:545:5:545:9 | false | test.rs:544:32:546:1 | { ... } |  |
-| test.rs:548:1:548:21 | enter fn do_next_thing | test.rs:548:20:548:21 | { ... } |  |
-| test.rs:548:1:548:21 | exit fn do_next_thing (normal) | test.rs:548:1:548:21 | exit fn do_next_thing |  |
-| test.rs:548:20:548:21 | { ... } | test.rs:548:1:548:21 | exit fn do_next_thing (normal) |  |
-| test.rs:550:1:550:21 | enter fn do_last_thing | test.rs:550:20:550:21 | { ... } |  |
-| test.rs:550:1:550:21 | exit fn do_last_thing (normal) | test.rs:550:1:550:21 | exit fn do_last_thing |  |
-| test.rs:550:20:550:21 | { ... } | test.rs:550:1:550:21 | exit fn do_last_thing (normal) |  |
-| test.rs:552:1:566:1 | enter fn labelled_block1 | test.rs:553:5:564:6 | let ... = ... |  |
-| test.rs:552:1:566:1 | exit fn labelled_block1 (normal) | test.rs:552:1:566:1 | exit fn labelled_block1 |  |
-| test.rs:552:29:566:1 | { ... } | test.rs:552:1:566:1 | exit fn labelled_block1 (normal) |  |
-| test.rs:553:5:564:6 | let ... = ... | test.rs:554:9:554:19 | ExprStmt |  |
-| test.rs:553:9:553:14 | result | test.rs:553:9:553:14 | result |  |
-| test.rs:553:9:553:14 | result | test.rs:565:5:565:10 | result | match |
-| test.rs:553:18:564:5 | 'block: { ... } | test.rs:553:9:553:14 | result |  |
-| test.rs:554:9:554:16 | do_thing | test.rs:554:9:554:18 | do_thing(...) |  |
-| test.rs:554:9:554:18 | do_thing(...) | test.rs:555:9:557:9 | ExprStmt |  |
-| test.rs:554:9:554:19 | ExprStmt | test.rs:554:9:554:16 | do_thing |  |
-| test.rs:555:9:557:9 | ExprStmt | test.rs:555:12:555:28 | condition_not_met |  |
-| test.rs:555:9:557:9 | if ... {...} | test.rs:558:9:558:24 | ExprStmt |  |
-| test.rs:555:12:555:28 | condition_not_met | test.rs:555:12:555:30 | condition_not_met(...) |  |
-| test.rs:555:12:555:30 | condition_not_met(...) | test.rs:555:9:557:9 | if ... {...} | false |
-| test.rs:555:12:555:30 | condition_not_met(...) | test.rs:556:13:556:27 | ExprStmt | true |
-| test.rs:556:13:556:26 | break ''block 1 | test.rs:553:18:564:5 | 'block: { ... } | break |
-| test.rs:556:13:556:27 | ExprStmt | test.rs:556:26:556:26 | 1 |  |
-| test.rs:556:26:556:26 | 1 | test.rs:556:13:556:26 | break ''block 1 |  |
-| test.rs:558:9:558:21 | do_next_thing | test.rs:558:9:558:23 | do_next_thing(...) |  |
-| test.rs:558:9:558:23 | do_next_thing(...) | test.rs:559:9:561:9 | ExprStmt |  |
-| test.rs:558:9:558:24 | ExprStmt | test.rs:558:9:558:21 | do_next_thing |  |
-| test.rs:559:9:561:9 | ExprStmt | test.rs:559:12:559:28 | condition_not_met |  |
-| test.rs:559:9:561:9 | if ... {...} | test.rs:562:9:562:24 | ExprStmt |  |
-| test.rs:559:12:559:28 | condition_not_met | test.rs:559:12:559:30 | condition_not_met(...) |  |
-| test.rs:559:12:559:30 | condition_not_met(...) | test.rs:559:9:561:9 | if ... {...} | false |
-| test.rs:559:12:559:30 | condition_not_met(...) | test.rs:560:13:560:27 | ExprStmt | true |
-| test.rs:560:13:560:26 | break ''block 2 | test.rs:553:18:564:5 | 'block: { ... } | break |
-| test.rs:560:13:560:27 | ExprStmt | test.rs:560:26:560:26 | 2 |  |
-| test.rs:560:26:560:26 | 2 | test.rs:560:13:560:26 | break ''block 2 |  |
-| test.rs:562:9:562:21 | do_last_thing | test.rs:562:9:562:23 | do_last_thing(...) |  |
-| test.rs:562:9:562:23 | do_last_thing(...) | test.rs:563:9:563:9 | 3 |  |
-| test.rs:562:9:562:24 | ExprStmt | test.rs:562:9:562:21 | do_last_thing |  |
-| test.rs:563:9:563:9 | 3 | test.rs:553:18:564:5 | 'block: { ... } |  |
-| test.rs:565:5:565:10 | result | test.rs:552:29:566:1 | { ... } |  |
-| test.rs:568:1:576:1 | enter fn labelled_block2 | test.rs:569:5:575:6 | let ... = ... |  |
-| test.rs:568:1:576:1 | exit fn labelled_block2 (normal) | test.rs:568:1:576:1 | exit fn labelled_block2 |  |
-| test.rs:568:22:576:1 | { ... } | test.rs:568:1:576:1 | exit fn labelled_block2 (normal) |  |
-| test.rs:569:5:575:6 | let ... = ... | test.rs:570:9:570:34 | let ... = None |  |
-| test.rs:569:9:569:14 | result | test.rs:568:22:576:1 | { ... } | match |
+| test.rs:475:5:481:5 | enter fn enum_pattern | test.rs:475:21:475:21 | e |  |
+| test.rs:475:5:481:5 | exit fn enum_pattern (normal) | test.rs:475:5:481:5 | exit fn enum_pattern |  |
+| test.rs:475:21:475:21 | e | test.rs:475:21:475:21 | e |  |
+| test.rs:475:21:475:21 | e | test.rs:475:21:475:29 | ...: MyEnum | match |
+| test.rs:475:21:475:29 | ...: MyEnum | test.rs:476:15:476:15 | e |  |
+| test.rs:475:39:481:5 | { ... } | test.rs:475:5:481:5 | exit fn enum_pattern (normal) |  |
+| test.rs:476:9:480:9 | match e { ... } | test.rs:475:39:481:5 | { ... } |  |
+| test.rs:476:15:476:15 | e | test.rs:477:13:477:34 | StructVariant {...} |  |
+| test.rs:477:13:477:34 | StructVariant {...} | test.rs:477:32:477:32 | _ | match |
+| test.rs:477:32:477:32 | _ | test.rs:477:39:477:39 | 0 | match |
+| test.rs:477:39:477:39 | 0 | test.rs:476:9:480:9 | match e { ... } |  |
+| test.rs:485:5:490:5 | enter fn test_infinite_loop | test.rs:486:9:488:9 | ExprStmt |  |
+| test.rs:486:9:488:9 | ExprStmt | test.rs:487:13:487:14 | TupleExpr |  |
+| test.rs:486:14:488:9 | { ... } | test.rs:487:13:487:14 | TupleExpr |  |
+| test.rs:487:13:487:14 | TupleExpr | test.rs:486:14:488:9 | { ... } |  |
+| test.rs:494:5:496:5 | enter fn say_hello | test.rs:495:9:495:34 | ExprStmt |  |
+| test.rs:494:5:496:5 | exit fn say_hello (normal) | test.rs:494:5:496:5 | exit fn say_hello |  |
+| test.rs:494:26:496:5 | { ... } | test.rs:494:5:496:5 | exit fn say_hello (normal) |  |
+| test.rs:495:9:495:33 | ...::_print | test.rs:495:18:495:32 | "hello, world!\\n" |  |
+| test.rs:495:9:495:33 | MacroExpr | test.rs:494:26:496:5 | { ... } |  |
+| test.rs:495:9:495:33 | println!... | test.rs:495:9:495:33 | MacroExpr |  |
+| test.rs:495:9:495:34 | ExprStmt | test.rs:495:18:495:32 | MacroStmts |  |
+| test.rs:495:18:495:32 | "hello, world!\\n" | test.rs:495:18:495:32 | FormatArgsExpr |  |
+| test.rs:495:18:495:32 | ...::_print(...) | test.rs:495:18:495:32 | { ... } |  |
+| test.rs:495:18:495:32 | ...::format_args_nl!... | test.rs:495:18:495:32 | MacroExpr |  |
+| test.rs:495:18:495:32 | ExprStmt | test.rs:495:9:495:33 | ...::_print |  |
+| test.rs:495:18:495:32 | FormatArgsExpr | test.rs:495:18:495:32 | ...::format_args_nl!... |  |
+| test.rs:495:18:495:32 | MacroExpr | test.rs:495:18:495:32 | ...::_print(...) |  |
+| test.rs:495:18:495:32 | MacroStmts | test.rs:495:18:495:32 | ExprStmt |  |
+| test.rs:495:18:495:32 | { ... } | test.rs:495:9:495:33 | println!... |  |
+| test.rs:498:5:517:5 | enter fn async_block | test.rs:498:26:498:26 | b |  |
+| test.rs:498:5:517:5 | exit fn async_block (normal) | test.rs:498:5:517:5 | exit fn async_block |  |
+| test.rs:498:26:498:26 | b | test.rs:498:26:498:26 | b |  |
+| test.rs:498:26:498:26 | b | test.rs:498:26:498:32 | ...: bool | match |
+| test.rs:498:26:498:32 | ...: bool | test.rs:499:9:501:10 | let ... = ... |  |
+| test.rs:498:35:517:5 | { ... } | test.rs:498:5:517:5 | exit fn async_block (normal) |  |
+| test.rs:499:9:501:10 | let ... = ... | test.rs:499:26:501:9 | { ... } |  |
+| test.rs:499:13:499:22 | say_godbye | test.rs:499:13:499:22 | say_godbye |  |
+| test.rs:499:13:499:22 | say_godbye | test.rs:502:9:504:10 | let ... = ... | match |
+| test.rs:499:26:501:9 | enter { ... } | test.rs:500:13:500:42 | ExprStmt |  |
+| test.rs:499:26:501:9 | exit { ... } (normal) | test.rs:499:26:501:9 | exit { ... } |  |
+| test.rs:499:26:501:9 | { ... } | test.rs:499:13:499:22 | say_godbye |  |
+| test.rs:500:13:500:41 | ...::_print | test.rs:500:22:500:40 | "godbye, everyone!\\n" |  |
+| test.rs:500:13:500:41 | MacroExpr | test.rs:499:26:501:9 | exit { ... } (normal) |  |
+| test.rs:500:13:500:41 | println!... | test.rs:500:13:500:41 | MacroExpr |  |
+| test.rs:500:13:500:42 | ExprStmt | test.rs:500:22:500:40 | MacroStmts |  |
+| test.rs:500:22:500:40 | "godbye, everyone!\\n" | test.rs:500:22:500:40 | FormatArgsExpr |  |
+| test.rs:500:22:500:40 | ...::_print(...) | test.rs:500:22:500:40 | { ... } |  |
+| test.rs:500:22:500:40 | ...::format_args_nl!... | test.rs:500:22:500:40 | MacroExpr |  |
+| test.rs:500:22:500:40 | ExprStmt | test.rs:500:13:500:41 | ...::_print |  |
+| test.rs:500:22:500:40 | FormatArgsExpr | test.rs:500:22:500:40 | ...::format_args_nl!... |  |
+| test.rs:500:22:500:40 | MacroExpr | test.rs:500:22:500:40 | ...::_print(...) |  |
+| test.rs:500:22:500:40 | MacroStmts | test.rs:500:22:500:40 | ExprStmt |  |
+| test.rs:500:22:500:40 | { ... } | test.rs:500:13:500:41 | println!... |  |
+| test.rs:502:9:504:10 | let ... = ... | test.rs:502:31:504:9 | { ... } |  |
+| test.rs:502:13:502:27 | say_how_are_you | test.rs:502:13:502:27 | say_how_are_you |  |
+| test.rs:502:13:502:27 | say_how_are_you | test.rs:505:9:505:28 | let ... = ... | match |
+| test.rs:502:31:504:9 | enter { ... } | test.rs:503:13:503:37 | ExprStmt |  |
+| test.rs:502:31:504:9 | exit { ... } (normal) | test.rs:502:31:504:9 | exit { ... } |  |
+| test.rs:502:31:504:9 | { ... } | test.rs:502:13:502:27 | say_how_are_you |  |
+| test.rs:503:13:503:36 | ...::_print | test.rs:503:22:503:35 | "how are you?\\n" |  |
+| test.rs:503:13:503:36 | MacroExpr | test.rs:502:31:504:9 | exit { ... } (normal) |  |
+| test.rs:503:13:503:36 | println!... | test.rs:503:13:503:36 | MacroExpr |  |
+| test.rs:503:13:503:37 | ExprStmt | test.rs:503:22:503:35 | MacroStmts |  |
+| test.rs:503:22:503:35 | "how are you?\\n" | test.rs:503:22:503:35 | FormatArgsExpr |  |
+| test.rs:503:22:503:35 | ...::_print(...) | test.rs:503:22:503:35 | { ... } |  |
+| test.rs:503:22:503:35 | ...::format_args_nl!... | test.rs:503:22:503:35 | MacroExpr |  |
+| test.rs:503:22:503:35 | ExprStmt | test.rs:503:13:503:36 | ...::_print |  |
+| test.rs:503:22:503:35 | FormatArgsExpr | test.rs:503:22:503:35 | ...::format_args_nl!... |  |
+| test.rs:503:22:503:35 | MacroExpr | test.rs:503:22:503:35 | ...::_print(...) |  |
+| test.rs:503:22:503:35 | MacroStmts | test.rs:503:22:503:35 | ExprStmt |  |
+| test.rs:503:22:503:35 | { ... } | test.rs:503:13:503:36 | println!... |  |
+| test.rs:505:9:505:28 | let ... = ... | test.rs:505:20:505:27 | { ... } |  |
+| test.rs:505:13:505:16 | noop | test.rs:505:13:505:16 | noop |  |
+| test.rs:505:13:505:16 | noop | test.rs:506:9:506:26 | ExprStmt | match |
+| test.rs:505:20:505:27 | { ... } | test.rs:505:13:505:16 | noop |  |
+| test.rs:506:9:506:17 | say_hello | test.rs:506:9:506:19 | say_hello(...) |  |
+| test.rs:506:9:506:19 | say_hello(...) | test.rs:506:9:506:25 | await ... |  |
+| test.rs:506:9:506:25 | await ... | test.rs:507:9:507:30 | ExprStmt |  |
+| test.rs:506:9:506:26 | ExprStmt | test.rs:506:9:506:17 | say_hello |  |
+| test.rs:507:9:507:23 | say_how_are_you | test.rs:507:9:507:29 | await say_how_are_you |  |
+| test.rs:507:9:507:29 | await say_how_are_you | test.rs:508:9:508:25 | ExprStmt |  |
+| test.rs:507:9:507:30 | ExprStmt | test.rs:507:9:507:23 | say_how_are_you |  |
+| test.rs:508:9:508:18 | say_godbye | test.rs:508:9:508:24 | await say_godbye |  |
+| test.rs:508:9:508:24 | await say_godbye | test.rs:509:9:509:19 | ExprStmt |  |
+| test.rs:508:9:508:25 | ExprStmt | test.rs:508:9:508:18 | say_godbye |  |
+| test.rs:509:9:509:12 | noop | test.rs:509:9:509:18 | await noop |  |
+| test.rs:509:9:509:18 | await noop | test.rs:511:9:516:10 | let ... = ... |  |
+| test.rs:509:9:509:19 | ExprStmt | test.rs:509:9:509:12 | noop |  |
+| test.rs:511:9:516:10 | let ... = ... | test.rs:511:22:516:9 | \|...\| ... |  |
+| test.rs:511:13:511:18 | lambda | test.rs:498:35:517:5 | { ... } | match |
+| test.rs:511:13:511:18 | lambda | test.rs:511:13:511:18 | lambda |  |
+| test.rs:511:22:516:9 | \|...\| ... | test.rs:511:13:511:18 | lambda |  |
+| test.rs:511:22:516:9 | enter \|...\| ... | test.rs:511:23:511:25 | foo |  |
+| test.rs:511:22:516:9 | exit \|...\| ... (normal) | test.rs:511:22:516:9 | exit \|...\| ... |  |
+| test.rs:511:23:511:25 | ... | test.rs:511:28:516:9 | { ... } |  |
+| test.rs:511:23:511:25 | foo | test.rs:511:23:511:25 | ... | match |
+| test.rs:511:23:511:25 | foo | test.rs:511:23:511:25 | foo |  |
+| test.rs:511:28:516:9 | enter { ... } | test.rs:512:13:514:14 | ExprStmt |  |
+| test.rs:511:28:516:9 | exit { ... } (normal) | test.rs:511:28:516:9 | exit { ... } |  |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | exit \|...\| ... (normal) |  |
+| test.rs:512:13:514:13 | if b {...} | test.rs:515:13:515:15 | foo |  |
+| test.rs:512:13:514:14 | ExprStmt | test.rs:512:16:512:16 | b |  |
+| test.rs:512:16:512:16 | b | test.rs:512:13:514:13 | if b {...} | false |
+| test.rs:512:16:512:16 | b | test.rs:513:17:513:41 | ExprStmt | true |
+| test.rs:513:17:513:40 | return ... | test.rs:511:28:516:9 | exit { ... } (normal) | return |
+| test.rs:513:17:513:41 | ExprStmt | test.rs:513:24:513:34 | async_block |  |
+| test.rs:513:24:513:34 | async_block | test.rs:513:36:513:39 | true |  |
+| test.rs:513:24:513:40 | async_block(...) | test.rs:513:17:513:40 | return ... |  |
+| test.rs:513:36:513:39 | true | test.rs:513:24:513:40 | async_block(...) |  |
+| test.rs:515:13:515:15 | foo | test.rs:511:28:516:9 | exit { ... } (normal) |  |
+| test.rs:523:5:525:5 | enter fn add_two | test.rs:523:22:523:22 | n |  |
+| test.rs:523:5:525:5 | exit fn add_two (normal) | test.rs:523:5:525:5 | exit fn add_two |  |
+| test.rs:523:22:523:22 | n | test.rs:523:22:523:22 | n |  |
+| test.rs:523:22:523:22 | n | test.rs:523:22:523:27 | ...: i64 | match |
+| test.rs:523:22:523:27 | ...: i64 | test.rs:524:9:524:9 | n |  |
+| test.rs:523:37:525:5 | { ... } | test.rs:523:5:525:5 | exit fn add_two (normal) |  |
+| test.rs:524:9:524:9 | n | test.rs:524:13:524:13 | 2 |  |
+| test.rs:524:9:524:13 | ... + ... | test.rs:523:37:525:5 | { ... } |  |
+| test.rs:524:13:524:13 | 2 | test.rs:524:9:524:13 | ... + ... |  |
+| test.rs:529:5:537:5 | enter fn const_block_assert | test.rs:532:9:534:9 | ExprStmt |  |
+| test.rs:529:5:537:5 | exit fn const_block_assert (normal) | test.rs:529:5:537:5 | exit fn const_block_assert |  |
+| test.rs:529:41:537:5 | { ... } | test.rs:529:5:537:5 | exit fn const_block_assert (normal) |  |
+| test.rs:532:9:534:9 | ExprStmt | test.rs:533:13:533:50 | ExprStmt |  |
+| test.rs:532:9:534:9 | { ... } | test.rs:536:9:536:10 | 42 |  |
+| test.rs:533:13:533:49 | ...::panic_2021!... | test.rs:533:13:533:49 | MacroExpr |  |
+| test.rs:533:13:533:49 | ...::panic_explicit | test.rs:533:13:533:49 | ...::panic_explicit(...) |  |
+| test.rs:533:13:533:49 | ...::panic_explicit(...) | test.rs:533:13:533:49 | { ... } |  |
+| test.rs:533:13:533:49 | ExprStmt | test.rs:533:13:533:49 | MacroStmts |  |
+| test.rs:533:13:533:49 | ExprStmt | test.rs:533:13:533:49 | panic_cold_explicit |  |
+| test.rs:533:13:533:49 | MacroExpr | test.rs:532:9:534:9 | { ... } |  |
+| test.rs:533:13:533:49 | MacroExpr | test.rs:533:13:533:49 | { ... } |  |
+| test.rs:533:13:533:49 | MacroStmts | test.rs:533:13:533:49 | fn panic_cold_explicit |  |
+| test.rs:533:13:533:49 | assert!... | test.rs:533:13:533:49 | MacroExpr |  |
+| test.rs:533:13:533:49 | enter fn panic_cold_explicit | test.rs:533:13:533:49 | ...::panic_explicit |  |
+| test.rs:533:13:533:49 | exit fn panic_cold_explicit (normal) | test.rs:533:13:533:49 | exit fn panic_cold_explicit |  |
+| test.rs:533:13:533:49 | fn panic_cold_explicit | test.rs:533:13:533:49 | ExprStmt |  |
+| test.rs:533:13:533:49 | panic_cold_explicit | test.rs:533:13:533:49 | panic_cold_explicit(...) |  |
+| test.rs:533:13:533:49 | panic_cold_explicit(...) | test.rs:533:13:533:49 | { ... } |  |
+| test.rs:533:13:533:49 | { ... } | test.rs:533:13:533:49 | ...::panic_2021!... |  |
+| test.rs:533:13:533:49 | { ... } | test.rs:533:13:533:49 | exit fn panic_cold_explicit (normal) |  |
+| test.rs:533:13:533:49 | { ... } | test.rs:533:21:533:48 | if ... {...} |  |
+| test.rs:533:13:533:50 | ExprStmt | test.rs:533:21:533:48 | MacroStmts |  |
+| test.rs:533:21:533:42 | ...::size_of::<...> | test.rs:533:21:533:44 | ...::size_of::<...>(...) |  |
+| test.rs:533:21:533:44 | ...::size_of::<...>(...) | test.rs:533:48:533:48 | 0 |  |
+| test.rs:533:21:533:48 | ... > ... | test.rs:533:21:533:48 | [boolean(false)] ! ... | true |
+| test.rs:533:21:533:48 | ... > ... | test.rs:533:21:533:48 | [boolean(true)] ! ... | false |
+| test.rs:533:21:533:48 | MacroStmts | test.rs:533:21:533:42 | ...::size_of::<...> |  |
+| test.rs:533:21:533:48 | [boolean(false)] ! ... | test.rs:533:21:533:48 | if ... {...} | false |
+| test.rs:533:21:533:48 | [boolean(true)] ! ... | test.rs:533:13:533:49 | ExprStmt | true |
+| test.rs:533:21:533:48 | if ... {...} | test.rs:533:21:533:48 | { ... } |  |
+| test.rs:533:21:533:48 | { ... } | test.rs:533:13:533:49 | assert!... |  |
+| test.rs:533:48:533:48 | 0 | test.rs:533:21:533:48 | ... > ... |  |
+| test.rs:536:9:536:10 | 42 | test.rs:529:41:537:5 | { ... } |  |
+| test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:540:9:540:30 | Const |  |
+| test.rs:539:5:548:5 | exit fn const_block_panic (normal) | test.rs:539:5:548:5 | exit fn const_block_panic |  |
+| test.rs:539:35:548:5 | { ... } | test.rs:539:5:548:5 | exit fn const_block_panic (normal) |  |
+| test.rs:540:9:540:30 | Const | test.rs:541:9:546:9 | ExprStmt |  |
+| test.rs:541:9:546:9 | ExprStmt | test.rs:541:12:541:16 | false |  |
+| test.rs:541:9:546:9 | if false {...} | test.rs:547:9:547:9 | N |  |
+| test.rs:541:12:541:16 | false | test.rs:541:9:546:9 | if false {...} | false |
+| test.rs:544:17:544:24 | ...::panic_explicit | test.rs:544:17:544:24 | ...::panic_explicit(...) |  |
+| test.rs:544:17:544:24 | ...::panic_explicit(...) | test.rs:544:17:544:24 | { ... } |  |
+| test.rs:544:17:544:24 | enter fn panic_cold_explicit | test.rs:544:17:544:24 | ...::panic_explicit |  |
+| test.rs:544:17:544:24 | exit fn panic_cold_explicit (normal) | test.rs:544:17:544:24 | exit fn panic_cold_explicit |  |
+| test.rs:544:17:544:24 | { ... } | test.rs:544:17:544:24 | exit fn panic_cold_explicit (normal) |  |
+| test.rs:547:9:547:9 | N | test.rs:539:35:548:5 | { ... } |  |
+| test.rs:551:1:556:1 | enter fn dead_code | test.rs:552:5:554:5 | ExprStmt |  |
+| test.rs:551:1:556:1 | exit fn dead_code (normal) | test.rs:551:1:556:1 | exit fn dead_code |  |
+| test.rs:552:5:554:5 | ExprStmt | test.rs:552:9:552:12 | true |  |
+| test.rs:552:9:552:12 | true | test.rs:553:9:553:17 | ExprStmt | true |
+| test.rs:553:9:553:16 | return 0 | test.rs:551:1:556:1 | exit fn dead_code (normal) | return |
+| test.rs:553:9:553:17 | ExprStmt | test.rs:553:16:553:16 | 0 |  |
+| test.rs:553:16:553:16 | 0 | test.rs:553:9:553:16 | return 0 |  |
+| test.rs:558:1:558:16 | enter fn do_thing | test.rs:558:15:558:16 | { ... } |  |
+| test.rs:558:1:558:16 | exit fn do_thing (normal) | test.rs:558:1:558:16 | exit fn do_thing |  |
+| test.rs:558:15:558:16 | { ... } | test.rs:558:1:558:16 | exit fn do_thing (normal) |  |
+| test.rs:560:1:562:1 | enter fn condition_not_met | test.rs:561:5:561:9 | false |  |
+| test.rs:560:1:562:1 | exit fn condition_not_met (normal) | test.rs:560:1:562:1 | exit fn condition_not_met |  |
+| test.rs:560:32:562:1 | { ... } | test.rs:560:1:562:1 | exit fn condition_not_met (normal) |  |
+| test.rs:561:5:561:9 | false | test.rs:560:32:562:1 | { ... } |  |
+| test.rs:564:1:564:21 | enter fn do_next_thing | test.rs:564:20:564:21 | { ... } |  |
+| test.rs:564:1:564:21 | exit fn do_next_thing (normal) | test.rs:564:1:564:21 | exit fn do_next_thing |  |
+| test.rs:564:20:564:21 | { ... } | test.rs:564:1:564:21 | exit fn do_next_thing (normal) |  |
+| test.rs:566:1:566:21 | enter fn do_last_thing | test.rs:566:20:566:21 | { ... } |  |
+| test.rs:566:1:566:21 | exit fn do_last_thing (normal) | test.rs:566:1:566:21 | exit fn do_last_thing |  |
+| test.rs:566:20:566:21 | { ... } | test.rs:566:1:566:21 | exit fn do_last_thing (normal) |  |
+| test.rs:568:1:582:1 | enter fn labelled_block1 | test.rs:569:5:580:6 | let ... = ... |  |
+| test.rs:568:1:582:1 | exit fn labelled_block1 (normal) | test.rs:568:1:582:1 | exit fn labelled_block1 |  |
+| test.rs:568:29:582:1 | { ... } | test.rs:568:1:582:1 | exit fn labelled_block1 (normal) |  |
+| test.rs:569:5:580:6 | let ... = ... | test.rs:570:9:570:19 | ExprStmt |  |
 | test.rs:569:9:569:14 | result | test.rs:569:9:569:14 | result |  |
-| test.rs:569:18:575:5 | 'block: { ... } | test.rs:569:9:569:14 | result |  |
-| test.rs:570:9:570:34 | let ... = None | test.rs:570:30:570:33 | None |  |
-| test.rs:570:13:570:13 | x | test.rs:570:13:570:13 | x |  |
-| test.rs:570:13:570:13 | x | test.rs:571:9:573:10 | let ... = x else {...} | match |
-| test.rs:570:30:570:33 | None | test.rs:570:13:570:13 | x |  |
-| test.rs:571:9:573:10 | let ... = x else {...} | test.rs:571:23:571:23 | x |  |
-| test.rs:571:13:571:19 | Some(...) | test.rs:571:18:571:18 | y | match |
-| test.rs:571:13:571:19 | Some(...) | test.rs:572:13:572:27 | ExprStmt | no-match |
-| test.rs:571:18:571:18 | y | test.rs:571:18:571:18 | y |  |
-| test.rs:571:18:571:18 | y | test.rs:572:13:572:27 | ExprStmt | no-match |
-| test.rs:571:18:571:18 | y | test.rs:574:9:574:9 | 0 | match |
-| test.rs:571:23:571:23 | x | test.rs:571:13:571:19 | Some(...) |  |
-| test.rs:572:13:572:26 | break ''block 1 | test.rs:569:18:575:5 | 'block: { ... } | break |
+| test.rs:569:9:569:14 | result | test.rs:581:5:581:10 | result | match |
+| test.rs:569:18:580:5 | 'block: { ... } | test.rs:569:9:569:14 | result |  |
+| test.rs:570:9:570:16 | do_thing | test.rs:570:9:570:18 | do_thing(...) |  |
+| test.rs:570:9:570:18 | do_thing(...) | test.rs:571:9:573:9 | ExprStmt |  |
+| test.rs:570:9:570:19 | ExprStmt | test.rs:570:9:570:16 | do_thing |  |
+| test.rs:571:9:573:9 | ExprStmt | test.rs:571:12:571:28 | condition_not_met |  |
+| test.rs:571:9:573:9 | if ... {...} | test.rs:574:9:574:24 | ExprStmt |  |
+| test.rs:571:12:571:28 | condition_not_met | test.rs:571:12:571:30 | condition_not_met(...) |  |
+| test.rs:571:12:571:30 | condition_not_met(...) | test.rs:571:9:573:9 | if ... {...} | false |
+| test.rs:571:12:571:30 | condition_not_met(...) | test.rs:572:13:572:27 | ExprStmt | true |
+| test.rs:572:13:572:26 | break ''block 1 | test.rs:569:18:580:5 | 'block: { ... } | break |
 | test.rs:572:13:572:27 | ExprStmt | test.rs:572:26:572:26 | 1 |  |
 | test.rs:572:26:572:26 | 1 | test.rs:572:13:572:26 | break ''block 1 |  |
-| test.rs:574:9:574:9 | 0 | test.rs:569:18:575:5 | 'block: { ... } |  |
-| test.rs:578:1:584:1 | enter fn test_nested_function2 | test.rs:579:5:579:18 | let ... = 0 |  |
-| test.rs:578:1:584:1 | exit fn test_nested_function2 (normal) | test.rs:578:1:584:1 | exit fn test_nested_function2 |  |
-| test.rs:578:28:584:1 | { ... } | test.rs:578:1:584:1 | exit fn test_nested_function2 (normal) |  |
-| test.rs:579:5:579:18 | let ... = 0 | test.rs:579:17:579:17 | 0 |  |
-| test.rs:579:9:579:13 | mut x | test.rs:580:5:582:5 | fn nested | match |
-| test.rs:579:13:579:13 | x | test.rs:579:9:579:13 | mut x |  |
-| test.rs:579:17:579:17 | 0 | test.rs:579:13:579:13 | x |  |
-| test.rs:580:5:582:5 | enter fn nested | test.rs:580:15:580:15 | x |  |
-| test.rs:580:5:582:5 | exit fn nested (normal) | test.rs:580:5:582:5 | exit fn nested |  |
-| test.rs:580:5:582:5 | fn nested | test.rs:583:5:583:19 | ExprStmt |  |
-| test.rs:580:15:580:15 | x | test.rs:580:15:580:15 | x |  |
-| test.rs:580:15:580:15 | x | test.rs:580:15:580:25 | ...: ... | match |
-| test.rs:580:15:580:25 | ...: ... | test.rs:581:9:581:16 | ExprStmt |  |
-| test.rs:580:28:582:5 | { ... } | test.rs:580:5:582:5 | exit fn nested (normal) |  |
-| test.rs:581:9:581:10 | * ... | test.rs:581:15:581:15 | 1 |  |
-| test.rs:581:9:581:15 | ... += ... | test.rs:580:28:582:5 | { ... } |  |
-| test.rs:581:9:581:16 | ExprStmt | test.rs:581:10:581:10 | x |  |
-| test.rs:581:10:581:10 | x | test.rs:581:9:581:10 | * ... |  |
-| test.rs:581:15:581:15 | 1 | test.rs:581:9:581:15 | ... += ... |  |
-| test.rs:583:5:583:10 | nested | test.rs:583:17:583:17 | x |  |
-| test.rs:583:5:583:18 | nested(...) | test.rs:578:28:584:1 | { ... } |  |
-| test.rs:583:5:583:19 | ExprStmt | test.rs:583:5:583:10 | nested |  |
-| test.rs:583:12:583:17 | &mut x | test.rs:583:5:583:18 | nested(...) |  |
-| test.rs:583:17:583:17 | x | test.rs:583:12:583:17 | &mut x |  |
-| test.rs:595:5:597:5 | enter fn new | test.rs:595:12:595:12 | a |  |
-| test.rs:595:5:597:5 | exit fn new (normal) | test.rs:595:5:597:5 | exit fn new |  |
-| test.rs:595:12:595:12 | a | test.rs:595:12:595:12 | a |  |
-| test.rs:595:12:595:12 | a | test.rs:595:12:595:17 | ...: i64 | match |
-| test.rs:595:12:595:17 | ...: i64 | test.rs:596:23:596:23 | a |  |
-| test.rs:595:28:597:5 | { ... } | test.rs:595:5:597:5 | exit fn new (normal) |  |
-| test.rs:596:9:596:25 | MyNumber {...} | test.rs:595:28:597:5 | { ... } |  |
-| test.rs:596:23:596:23 | a | test.rs:596:9:596:25 | MyNumber {...} |  |
-| test.rs:599:5:601:5 | enter fn negated | test.rs:599:16:599:19 | self |  |
-| test.rs:599:5:601:5 | exit fn negated (normal) | test.rs:599:5:601:5 | exit fn negated |  |
-| test.rs:599:16:599:19 | SelfParam | test.rs:600:23:600:26 | self |  |
-| test.rs:599:16:599:19 | self | test.rs:599:16:599:19 | SelfParam |  |
-| test.rs:599:30:601:5 | { ... } | test.rs:599:5:601:5 | exit fn negated (normal) |  |
-| test.rs:600:9:600:30 | MyNumber {...} | test.rs:599:30:601:5 | { ... } |  |
-| test.rs:600:23:600:26 | self | test.rs:600:23:600:28 | self.n |  |
-| test.rs:600:23:600:28 | self.n | test.rs:600:9:600:30 | MyNumber {...} |  |
-| test.rs:603:5:605:5 | enter fn multifly_add | test.rs:603:26:603:29 | self |  |
-| test.rs:603:5:605:5 | exit fn multifly_add (normal) | test.rs:603:5:605:5 | exit fn multifly_add |  |
-| test.rs:603:21:603:29 | SelfParam | test.rs:603:32:603:32 | a |  |
-| test.rs:603:26:603:29 | self | test.rs:603:21:603:29 | SelfParam |  |
-| test.rs:603:32:603:32 | a | test.rs:603:32:603:32 | a |  |
-| test.rs:603:32:603:32 | a | test.rs:603:32:603:37 | ...: i64 | match |
-| test.rs:603:32:603:37 | ...: i64 | test.rs:603:40:603:40 | b |  |
-| test.rs:603:40:603:40 | b | test.rs:603:40:603:40 | b |  |
-| test.rs:603:40:603:40 | b | test.rs:603:40:603:45 | ...: i64 | match |
-| test.rs:603:40:603:45 | ...: i64 | test.rs:604:9:604:34 | ExprStmt |  |
-| test.rs:603:48:605:5 | { ... } | test.rs:603:5:605:5 | exit fn multifly_add (normal) |  |
-| test.rs:604:9:604:12 | self | test.rs:604:9:604:14 | self.n |  |
-| test.rs:604:9:604:14 | self.n | test.rs:604:19:604:22 | self |  |
-| test.rs:604:9:604:33 | ... = ... | test.rs:603:48:605:5 | { ... } |  |
-| test.rs:604:9:604:34 | ExprStmt | test.rs:604:9:604:12 | self |  |
-| test.rs:604:18:604:33 | ... + ... | test.rs:604:9:604:33 | ... = ... |  |
-| test.rs:604:19:604:22 | self | test.rs:604:19:604:24 | self.n |  |
-| test.rs:604:19:604:24 | self.n | test.rs:604:28:604:28 | a |  |
-| test.rs:604:19:604:28 | ... * ... | test.rs:604:33:604:33 | b |  |
-| test.rs:604:28:604:28 | a | test.rs:604:19:604:28 | ... * ... |  |
-| test.rs:604:33:604:33 | b | test.rs:604:18:604:33 | ... + ... |  |
+| test.rs:574:9:574:21 | do_next_thing | test.rs:574:9:574:23 | do_next_thing(...) |  |
+| test.rs:574:9:574:23 | do_next_thing(...) | test.rs:575:9:577:9 | ExprStmt |  |
+| test.rs:574:9:574:24 | ExprStmt | test.rs:574:9:574:21 | do_next_thing |  |
+| test.rs:575:9:577:9 | ExprStmt | test.rs:575:12:575:28 | condition_not_met |  |
+| test.rs:575:9:577:9 | if ... {...} | test.rs:578:9:578:24 | ExprStmt |  |
+| test.rs:575:12:575:28 | condition_not_met | test.rs:575:12:575:30 | condition_not_met(...) |  |
+| test.rs:575:12:575:30 | condition_not_met(...) | test.rs:575:9:577:9 | if ... {...} | false |
+| test.rs:575:12:575:30 | condition_not_met(...) | test.rs:576:13:576:27 | ExprStmt | true |
+| test.rs:576:13:576:26 | break ''block 2 | test.rs:569:18:580:5 | 'block: { ... } | break |
+| test.rs:576:13:576:27 | ExprStmt | test.rs:576:26:576:26 | 2 |  |
+| test.rs:576:26:576:26 | 2 | test.rs:576:13:576:26 | break ''block 2 |  |
+| test.rs:578:9:578:21 | do_last_thing | test.rs:578:9:578:23 | do_last_thing(...) |  |
+| test.rs:578:9:578:23 | do_last_thing(...) | test.rs:579:9:579:9 | 3 |  |
+| test.rs:578:9:578:24 | ExprStmt | test.rs:578:9:578:21 | do_last_thing |  |
+| test.rs:579:9:579:9 | 3 | test.rs:569:18:580:5 | 'block: { ... } |  |
+| test.rs:581:5:581:10 | result | test.rs:568:29:582:1 | { ... } |  |
+| test.rs:584:1:592:1 | enter fn labelled_block2 | test.rs:585:5:591:6 | let ... = ... |  |
+| test.rs:584:1:592:1 | exit fn labelled_block2 (normal) | test.rs:584:1:592:1 | exit fn labelled_block2 |  |
+| test.rs:584:22:592:1 | { ... } | test.rs:584:1:592:1 | exit fn labelled_block2 (normal) |  |
+| test.rs:585:5:591:6 | let ... = ... | test.rs:586:9:586:34 | let ... = None |  |
+| test.rs:585:9:585:14 | result | test.rs:584:22:592:1 | { ... } | match |
+| test.rs:585:9:585:14 | result | test.rs:585:9:585:14 | result |  |
+| test.rs:585:18:591:5 | 'block: { ... } | test.rs:585:9:585:14 | result |  |
+| test.rs:586:9:586:34 | let ... = None | test.rs:586:30:586:33 | None |  |
+| test.rs:586:13:586:13 | x | test.rs:586:13:586:13 | x |  |
+| test.rs:586:13:586:13 | x | test.rs:587:9:589:10 | let ... = x else {...} | match |
+| test.rs:586:30:586:33 | None | test.rs:586:13:586:13 | x |  |
+| test.rs:587:9:589:10 | let ... = x else {...} | test.rs:587:23:587:23 | x |  |
+| test.rs:587:13:587:19 | Some(...) | test.rs:587:18:587:18 | y | match |
+| test.rs:587:13:587:19 | Some(...) | test.rs:588:13:588:27 | ExprStmt | no-match |
+| test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | y |  |
+| test.rs:587:18:587:18 | y | test.rs:588:13:588:27 | ExprStmt | no-match |
+| test.rs:587:18:587:18 | y | test.rs:590:9:590:9 | 0 | match |
+| test.rs:587:23:587:23 | x | test.rs:587:13:587:19 | Some(...) |  |
+| test.rs:588:13:588:26 | break ''block 1 | test.rs:585:18:591:5 | 'block: { ... } | break |
+| test.rs:588:13:588:27 | ExprStmt | test.rs:588:26:588:26 | 1 |  |
+| test.rs:588:26:588:26 | 1 | test.rs:588:13:588:26 | break ''block 1 |  |
+| test.rs:590:9:590:9 | 0 | test.rs:585:18:591:5 | 'block: { ... } |  |
+| test.rs:594:1:600:1 | enter fn test_nested_function2 | test.rs:595:5:595:18 | let ... = 0 |  |
+| test.rs:594:1:600:1 | exit fn test_nested_function2 (normal) | test.rs:594:1:600:1 | exit fn test_nested_function2 |  |
+| test.rs:594:28:600:1 | { ... } | test.rs:594:1:600:1 | exit fn test_nested_function2 (normal) |  |
+| test.rs:595:5:595:18 | let ... = 0 | test.rs:595:17:595:17 | 0 |  |
+| test.rs:595:9:595:13 | mut x | test.rs:596:5:598:5 | fn nested | match |
+| test.rs:595:13:595:13 | x | test.rs:595:9:595:13 | mut x |  |
+| test.rs:595:17:595:17 | 0 | test.rs:595:13:595:13 | x |  |
+| test.rs:596:5:598:5 | enter fn nested | test.rs:596:15:596:15 | x |  |
+| test.rs:596:5:598:5 | exit fn nested (normal) | test.rs:596:5:598:5 | exit fn nested |  |
+| test.rs:596:5:598:5 | fn nested | test.rs:599:5:599:19 | ExprStmt |  |
+| test.rs:596:15:596:15 | x | test.rs:596:15:596:15 | x |  |
+| test.rs:596:15:596:15 | x | test.rs:596:15:596:25 | ...: ... | match |
+| test.rs:596:15:596:25 | ...: ... | test.rs:597:9:597:16 | ExprStmt |  |
+| test.rs:596:28:598:5 | { ... } | test.rs:596:5:598:5 | exit fn nested (normal) |  |
+| test.rs:597:9:597:10 | * ... | test.rs:597:15:597:15 | 1 |  |
+| test.rs:597:9:597:15 | ... += ... | test.rs:596:28:598:5 | { ... } |  |
+| test.rs:597:9:597:16 | ExprStmt | test.rs:597:10:597:10 | x |  |
+| test.rs:597:10:597:10 | x | test.rs:597:9:597:10 | * ... |  |
+| test.rs:597:15:597:15 | 1 | test.rs:597:9:597:15 | ... += ... |  |
+| test.rs:599:5:599:10 | nested | test.rs:599:17:599:17 | x |  |
+| test.rs:599:5:599:18 | nested(...) | test.rs:594:28:600:1 | { ... } |  |
+| test.rs:599:5:599:19 | ExprStmt | test.rs:599:5:599:10 | nested |  |
+| test.rs:599:12:599:17 | &mut x | test.rs:599:5:599:18 | nested(...) |  |
+| test.rs:599:17:599:17 | x | test.rs:599:12:599:17 | &mut x |  |
+| test.rs:611:5:613:5 | enter fn new | test.rs:611:12:611:12 | a |  |
+| test.rs:611:5:613:5 | exit fn new (normal) | test.rs:611:5:613:5 | exit fn new |  |
+| test.rs:611:12:611:12 | a | test.rs:611:12:611:12 | a |  |
+| test.rs:611:12:611:12 | a | test.rs:611:12:611:17 | ...: i64 | match |
+| test.rs:611:12:611:17 | ...: i64 | test.rs:612:23:612:23 | a |  |
+| test.rs:611:28:613:5 | { ... } | test.rs:611:5:613:5 | exit fn new (normal) |  |
+| test.rs:612:9:612:25 | MyNumber {...} | test.rs:611:28:613:5 | { ... } |  |
+| test.rs:612:23:612:23 | a | test.rs:612:9:612:25 | MyNumber {...} |  |
+| test.rs:615:5:617:5 | enter fn negated | test.rs:615:16:615:19 | self |  |
+| test.rs:615:5:617:5 | exit fn negated (normal) | test.rs:615:5:617:5 | exit fn negated |  |
+| test.rs:615:16:615:19 | SelfParam | test.rs:616:23:616:26 | self |  |
+| test.rs:615:16:615:19 | self | test.rs:615:16:615:19 | SelfParam |  |
+| test.rs:615:30:617:5 | { ... } | test.rs:615:5:617:5 | exit fn negated (normal) |  |
+| test.rs:616:9:616:30 | MyNumber {...} | test.rs:615:30:617:5 | { ... } |  |
+| test.rs:616:23:616:26 | self | test.rs:616:23:616:28 | self.n |  |
+| test.rs:616:23:616:28 | self.n | test.rs:616:9:616:30 | MyNumber {...} |  |
+| test.rs:619:5:621:5 | enter fn multifly_add | test.rs:619:26:619:29 | self |  |
+| test.rs:619:5:621:5 | exit fn multifly_add (normal) | test.rs:619:5:621:5 | exit fn multifly_add |  |
+| test.rs:619:21:619:29 | SelfParam | test.rs:619:32:619:32 | a |  |
+| test.rs:619:26:619:29 | self | test.rs:619:21:619:29 | SelfParam |  |
+| test.rs:619:32:619:32 | a | test.rs:619:32:619:32 | a |  |
+| test.rs:619:32:619:32 | a | test.rs:619:32:619:37 | ...: i64 | match |
+| test.rs:619:32:619:37 | ...: i64 | test.rs:619:40:619:40 | b |  |
+| test.rs:619:40:619:40 | b | test.rs:619:40:619:40 | b |  |
+| test.rs:619:40:619:40 | b | test.rs:619:40:619:45 | ...: i64 | match |
+| test.rs:619:40:619:45 | ...: i64 | test.rs:620:9:620:34 | ExprStmt |  |
+| test.rs:619:48:621:5 | { ... } | test.rs:619:5:621:5 | exit fn multifly_add (normal) |  |
+| test.rs:620:9:620:12 | self | test.rs:620:9:620:14 | self.n |  |
+| test.rs:620:9:620:14 | self.n | test.rs:620:19:620:22 | self |  |
+| test.rs:620:9:620:33 | ... = ... | test.rs:619:48:621:5 | { ... } |  |
+| test.rs:620:9:620:34 | ExprStmt | test.rs:620:9:620:12 | self |  |
+| test.rs:620:18:620:33 | ... + ... | test.rs:620:9:620:33 | ... = ... |  |
+| test.rs:620:19:620:22 | self | test.rs:620:19:620:24 | self.n |  |
+| test.rs:620:19:620:24 | self.n | test.rs:620:28:620:28 | a |  |
+| test.rs:620:19:620:28 | ... * ... | test.rs:620:33:620:33 | b |  |
+| test.rs:620:28:620:28 | a | test.rs:620:19:620:28 | ... * ... |  |
+| test.rs:620:33:620:33 | b | test.rs:620:18:620:33 | ... + ... |  |
 breakTarget
 | test.rs:34:17:34:21 | break | test.rs:28:9:40:9 | loop { ... } |
 | test.rs:48:21:48:25 | break | test.rs:46:13:53:13 | 'inner: loop { ... } |
@@ -1468,9 +1479,9 @@ breakTarget
 | test.rs:216:17:216:28 | break ... | test.rs:214:13:219:9 | loop { ... } |
 | test.rs:229:17:229:35 | break ''label ... | test.rs:227:13:232:9 | 'label: loop { ... } |
 | test.rs:241:13:241:30 | break ''block ... | test.rs:240:13:242:9 | 'block: { ... } |
-| test.rs:556:13:556:26 | break ''block 1 | test.rs:553:18:564:5 | 'block: { ... } |
-| test.rs:560:13:560:26 | break ''block 2 | test.rs:553:18:564:5 | 'block: { ... } |
-| test.rs:572:13:572:26 | break ''block 1 | test.rs:569:18:575:5 | 'block: { ... } |
+| test.rs:572:13:572:26 | break ''block 1 | test.rs:569:18:580:5 | 'block: { ... } |
+| test.rs:576:13:576:26 | break ''block 2 | test.rs:569:18:580:5 | 'block: { ... } |
+| test.rs:588:13:588:26 | break ''block 1 | test.rs:585:18:591:5 | 'block: { ... } |
 continueTarget
 | test.rs:37:17:37:24 | continue | test.rs:28:9:40:9 | loop { ... } |
 | test.rs:63:21:63:28 | continue | test.rs:61:13:68:13 | 'inner: loop { ... } |

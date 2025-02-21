@@ -463,6 +463,22 @@ mod patterns {
             _ => 0, // dead code
         }
     }
+
+    enum MyEnum {
+        StructVariant { n: i64 },
+        TupleVariant(i64),
+        UnitVariant,
+    }
+
+    use MyEnum::*;
+
+    fn enum_pattern(e: MyEnum) -> i64 {
+        match e {
+            StructVariant { n: _ } => 0,
+            TupleVariant(_) => 1,
+            UnitVariant => 2,
+        }
+    }
 }
 
 mod divergence {
