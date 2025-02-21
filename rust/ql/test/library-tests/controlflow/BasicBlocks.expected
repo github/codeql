@@ -696,16 +696,16 @@ dominates
 | test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:441:9:444:9 | match a { ... } |
 | test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:442:21:442:21 | 3 |
 | test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:443:13:443:22 | Some(...) |
-| test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:443:13:443:36 | [match(true)] ... \| ... |
+| test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:443:13:443:36 | ... \| ... |
 | test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:443:18:443:21 | true |
 | test.rs:440:5:445:5 | enter fn or_pattern_2 | test.rs:443:26:443:36 | Some(...) |
 | test.rs:441:9:444:9 | match a { ... } | test.rs:441:9:444:9 | match a { ... } |
 | test.rs:442:21:442:21 | 3 | test.rs:442:21:442:21 | 3 |
 | test.rs:443:13:443:22 | Some(...) | test.rs:443:13:443:22 | Some(...) |
-| test.rs:443:13:443:22 | Some(...) | test.rs:443:13:443:36 | [match(true)] ... \| ... |
+| test.rs:443:13:443:22 | Some(...) | test.rs:443:13:443:36 | ... \| ... |
 | test.rs:443:13:443:22 | Some(...) | test.rs:443:18:443:21 | true |
 | test.rs:443:13:443:22 | Some(...) | test.rs:443:26:443:36 | Some(...) |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:13:443:36 | [match(true)] ... \| ... |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:13:443:36 | ... \| ... |
 | test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | true |
 | test.rs:443:26:443:36 | Some(...) | test.rs:443:26:443:36 | Some(...) |
 | test.rs:453:5:458:5 | enter fn or_pattern_3 | test.rs:453:5:458:5 | enter fn or_pattern_3 |
@@ -1405,15 +1405,15 @@ postDominance
 | test.rs:441:9:444:9 | match a { ... } | test.rs:441:9:444:9 | match a { ... } |
 | test.rs:441:9:444:9 | match a { ... } | test.rs:442:21:442:21 | 3 |
 | test.rs:441:9:444:9 | match a { ... } | test.rs:443:13:443:22 | Some(...) |
-| test.rs:441:9:444:9 | match a { ... } | test.rs:443:13:443:36 | [match(true)] ... \| ... |
+| test.rs:441:9:444:9 | match a { ... } | test.rs:443:13:443:36 | ... \| ... |
 | test.rs:441:9:444:9 | match a { ... } | test.rs:443:18:443:21 | true |
 | test.rs:441:9:444:9 | match a { ... } | test.rs:443:26:443:36 | Some(...) |
 | test.rs:442:21:442:21 | 3 | test.rs:442:21:442:21 | 3 |
 | test.rs:443:13:443:22 | Some(...) | test.rs:443:13:443:22 | Some(...) |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:13:443:22 | Some(...) |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:13:443:36 | [match(true)] ... \| ... |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:18:443:21 | true |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:26:443:36 | Some(...) |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:13:443:22 | Some(...) |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:13:443:36 | ... \| ... |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:18:443:21 | true |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:26:443:36 | Some(...) |
 | test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | true |
 | test.rs:443:26:443:36 | Some(...) | test.rs:443:26:443:36 | Some(...) |
 | test.rs:453:5:458:5 | enter fn or_pattern_3 | test.rs:453:5:458:5 | enter fn or_pattern_3 |
@@ -1746,7 +1746,7 @@ immediateDominator
 | test.rs:441:9:444:9 | match a { ... } | test.rs:440:5:445:5 | enter fn or_pattern_2 |
 | test.rs:442:21:442:21 | 3 | test.rs:440:5:445:5 | enter fn or_pattern_2 |
 | test.rs:443:13:443:22 | Some(...) | test.rs:440:5:445:5 | enter fn or_pattern_2 |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:13:443:22 | Some(...) |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:13:443:22 | Some(...) |
 | test.rs:443:18:443:21 | true | test.rs:443:13:443:22 | Some(...) |
 | test.rs:443:26:443:36 | Some(...) | test.rs:443:13:443:22 | Some(...) |
 | test.rs:454:9:457:9 | match a { ... } | test.rs:453:5:458:5 | enter fn or_pattern_3 |
@@ -2300,9 +2300,9 @@ joinBlockPredecessor
 | test.rs:435:13:435:21 | [match(true)] 0 \| 1 \| 2 | test.rs:435:17:435:17 | 1 | 0 |
 | test.rs:435:13:435:21 | [match(true)] 0 \| 1 \| 2 | test.rs:435:21:435:21 | 2 | 1 |
 | test.rs:441:9:444:9 | match a { ... } | test.rs:442:21:442:21 | 3 | 0 |
-| test.rs:441:9:444:9 | match a { ... } | test.rs:443:13:443:36 | [match(true)] ... \| ... | 1 |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:18:443:21 | true | 0 |
-| test.rs:443:13:443:36 | [match(true)] ... \| ... | test.rs:443:26:443:36 | Some(...) | 1 |
+| test.rs:441:9:444:9 | match a { ... } | test.rs:443:13:443:36 | ... \| ... | 1 |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:18:443:21 | true | 0 |
+| test.rs:443:13:443:36 | ... \| ... | test.rs:443:26:443:36 | Some(...) | 1 |
 | test.rs:443:26:443:36 | Some(...) | test.rs:443:13:443:22 | Some(...) | 1 |
 | test.rs:443:26:443:36 | Some(...) | test.rs:443:18:443:21 | true | 0 |
 | test.rs:454:9:457:9 | match a { ... } | test.rs:455:30:455:30 | 3 | 0 |
