@@ -32,5 +32,8 @@ module Impl {
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
+
+    /** Gets the enum that this variant belongs to. */
+    Enum getEnum() { this = result.getVariantList().getAVariant() }
   }
 }
