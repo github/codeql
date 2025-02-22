@@ -379,15 +379,23 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
   }
 
+  bindingset[inp, c]
+  pragma[inline_late]
+  private Node getInputNode(FunctionInput inp, CallNode c) { result = inp.getNode(c) }
+
+  bindingset[outp, c]
+  pragma[inline_late]
+  private Node getOutputNode(FunctionOutput outp, CallNode c) { result = outp.getNode(c) }
+
   pragma[noinline]
   private predicate guardingCall(
     Node g, Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
     Node nd, Node resNode
   ) {
     guardingFunction(g, f, inp, outp, p) and
-    c = pragma[only_bind_into](f).getACall() and
-    nd = inp.getNode(c) and
-    localFlow(outp.getNode(c), resNode)
+    c = f.getACall() and
+    nd = getInputNode(inp, c) and
+    localFlow(getOutputNode(outp, c), resNode)
   }
 
   private predicate onlyPossibleReturnSatisfyingProperty(
