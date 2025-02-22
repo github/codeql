@@ -159,8 +159,7 @@ fn test_operator_overloading() {
     let a = MyInt { value: source(7) };
     let b = MyInt { value: 2 };
     let d = a.add(b);
-    sink(d.value); // $ MISSING: hasValueFlow=7
-
+    sink(d.value); // $ hasValueFlow=7
 }
 
 trait MyTrait {
@@ -185,12 +184,12 @@ fn data_through_trait_method_called_as_function() {
     let a = MyInt { value: source(8) };
     let b = MyInt { value: 2 };
     let MyInt { value: c } = MyTrait::take_self(a, b);
-    sink(c); // $ hasValueFlow=8
+    sink(c); // $ MISSING: hasValueFlow=8
 
     let a = MyInt { value: 0 };
     let b = MyInt { value: source(37) };
     let MyInt { value: c } = MyTrait::take_second(a, b);
-    sink(c); // $ hasValueFlow=37
+    sink(c); // $ MISSING: hasValueFlow=37
 
     let a = MyInt { value: 0 };
     let b = MyInt { value: source(38) };
