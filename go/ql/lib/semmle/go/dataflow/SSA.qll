@@ -219,7 +219,7 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   ) {
     endline = startline and
     endcolumn = startcolumn and
-    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    this.getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
 
@@ -298,7 +298,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   ) {
     endline = startline and
     endcolumn = startcolumn and
-    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    this.getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
 }
 

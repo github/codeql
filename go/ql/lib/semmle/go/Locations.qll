@@ -3,6 +3,21 @@
 import go
 private import internal.Locations
 
+private module DbLocationInput implements LocationClassInputSig {
+  class Base = TDbLocation;
+
+  predicate locationInfo(
+    Base b, string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(File f |
+      dbLocationInfo(b, f, startline, startcolumn, endline, endcolumn) and
+      filepath = f.getAbsolutePath()
+    )
+  }
+
+  File getFile(Base b) { dbLocationInfo(b, result, _, _, _, _) }
+}
+
 /**
  * A location as given by a file, a start line, a start column,
  * an end line, and an end column.
@@ -11,51 +26,63 @@ private import internal.Locations
  *
  * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
-class DbLocation extends TDbLocation {
-  /** Gets the file for this location. */
-  File getFile() { dbLocationInfo(this, result, _, _, _, _) }
+class DbLocation = LocationClass<DbLocationInput>::Location;
 
-  /** Gets the 1-based line number (inclusive) where this location starts. */
-  int getStartLine() { dbLocationInfo(this, _, result, _, _, _) }
+private module DbOrBasicBlockLocationInput implements LocationClassInputSig {
+  class Base = TDbLocation or TBasicBlockLocation;
 
-  /** Gets the 1-based column number (inclusive) where this location starts. */
-  int getStartColumn() { dbLocationInfo(this, _, _, result, _, _) }
-
-  /** Gets the 1-based line number (inclusive) where this location ends. */
-  int getEndLine() { dbLocationInfo(this, _, _, _, result, _) }
-
-  /** Gets the 1-based column number (inclusive) where this location ends. */
-  int getEndColumn() { dbLocationInfo(this, _, _, _, _, result) }
-
-  /** Gets the number of lines covered by this location. */
-  int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
-
-  /** Gets a textual representation of this element. */
-  string toString() {
-    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      result = filepath + "@" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
-    )
+  predicate locationInfo(
+    Base b, string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    DbLocationInput::locationInfo(b, filepath, startline, startcolumn, endline, endcolumn)
+    or
+    basicBlockLocationInfo(b, filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    exists(File f |
-      dbLocationInfo(this, f, startline, startcolumn, endline, endcolumn) and
-      filepath = f.getAbsolutePath()
-    )
+  File getFile(Base b) {
+    result = DbLocationInput::getFile(b)
+    or
+    basicBlockLocationInfo(b, result.getAbsolutePath(), _, _, _, _)
   }
 }
 
-final class Location = LocationImpl;
+/**
+ * A location as given by a file, a start line, a start column,
+ * an end line, and an end column.
+ *
+ * This class is restricted to locations created by the extractor or
+ * synthesized for basic blocks.
+ *
+ * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+class DbOrBasicBlockLocation = LocationClass<DbOrBasicBlockLocationInput>::Location;
+
+private module LocationInput implements LocationClassInputSig {
+  class Base = TLocation;
+
+  predicate locationInfo(
+    Base b, string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    DbOrBasicBlockLocationInput::locationInfo(b, filepath, startline, startcolumn, endline,
+      endcolumn)
+    or
+    dataFlowNodeLocationInfo(b, filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  File getFile(Base b) {
+    result = DbOrBasicBlockLocationInput::getFile(b)
+    or
+    dataFlowNodeLocationInfo(b, result.getAbsolutePath(), _, _, _, _)
+  }
+}
+
+/**
+ * A location as given by a file, a start line, a start column,
+ * an end line, and an end column.
+ *
+ * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+class Location = LocationClass<LocationInput>::Location;
 
 /** A program element with a location. */
 class Locatable extends @locatable {
