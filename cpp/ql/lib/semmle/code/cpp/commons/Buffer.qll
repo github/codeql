@@ -108,6 +108,7 @@ private int isSource(Expr bufferExpr, Element why) {
     result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
     why = bufferVar and
     not memberMayBeVarSize(_, bufferVar) and
+    not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild*() = bufferExpr) and
     // zero sized arrays are likely to have special usage, for example
     // behaving a bit like a 'union' overlapping other fields.
     not result = 0
