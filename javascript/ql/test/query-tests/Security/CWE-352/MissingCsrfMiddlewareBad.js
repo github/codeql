@@ -4,17 +4,17 @@ var passport = require('passport');
 
 var app = express();
 
-app.use(cookieParser());
+app.use(cookieParser()); // $ Alert
 app.use(passport.authorize({ session: true }));
 
 app.post('/changeEmail', function (req, res) {
     let newEmail = req.cookies["newEmail"];
-});
+}); // $ RelatedLocation
 
 (function () {
     var app = express();
 
-    app.use(cookieParser());
+    app.use(cookieParser()); // $ Alert
     app.use(passport.authorize({ session: true }));
 
     const errorCatch = (fn) =>
@@ -24,13 +24,13 @@ app.post('/changeEmail', function (req, res) {
 
     app.post('/changeEmail', errorCatch(async function (req, res) {
         let newEmail = req.cookies["newEmail"];
-    }));
+    })); // $ RelatedLocation
 })
 
 (function () {
     var app = express();
 
-    app.use(cookieParser());
+    app.use(cookieParser()); // $ Alert
     app.use(passport.authorize({ session: true }));
 
     const errorCatch = (fn) =>
@@ -40,9 +40,9 @@ app.post('/changeEmail', function (req, res) {
 
     app.post('/changeEmail', errorCatch(async function (req, res) {
         let newEmail = req.cookies["newEmail"];
-    }));
+    })); // $ RelatedLocation
 
     app.post('/doLoginStuff', errorCatch(async function (req, res) {
         req.session.user = loginStuff(req);
-    }));
+    })); // $ RelatedLocation
 })

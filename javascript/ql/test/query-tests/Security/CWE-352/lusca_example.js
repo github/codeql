@@ -6,7 +6,7 @@ var parseForm = bodyParser.urlencoded({ extended: false })
 var lusca = require('lusca');
 
 var app = express()
-app.use(cookieParser())
+app.use(cookieParser()) // $ Alert
 
 app.post('/process', parseForm, lusca.csrf(), function (req, res) { // OK
   let newEmail = req.cookies["newEmail"];
@@ -23,12 +23,12 @@ app.post('/process', parseForm, lusca({csrf:{}}), function (req, res) { // OK
   res.send('data is being processed')
 })
 
-app.post('/process', parseForm, lusca(), function (req, res) { // NOT OK - missing csrf option
+app.post('/process', parseForm, lusca(), function (req, res) { // missing csrf option
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
-})
+}) // $ RelatedLocation
 
-app.post('/process_unsafe', parseForm, function (req, res) { // NOT OK
+app.post('/process_unsafe', parseForm, function (req, res) {
   let newEmail = req.cookies["newEmail"];
   res.send('data is being processed')
-})
+}) // $ RelatedLocation
