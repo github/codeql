@@ -787,6 +787,11 @@ module Raw {
     Attr getAttr(int index) { record_field_attrs(this, index, result) }
 
     /**
+     * Gets the expression of this record field, if it exists.
+     */
+    Expr getExpr() { record_field_exprs(this, result) }
+
+    /**
      * Gets the name of this record field, if it exists.
      */
     Name getName() { record_field_names(this, result) }

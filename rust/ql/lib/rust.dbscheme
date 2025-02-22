@@ -837,6 +837,12 @@ record_field_attrs(
 );
 
 #keyset[id]
+record_field_exprs(
+  int id: @record_field ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
 record_field_names(
   int id: @record_field ref,
   int name: @name ref
