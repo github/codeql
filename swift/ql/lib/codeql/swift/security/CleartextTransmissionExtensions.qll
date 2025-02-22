@@ -73,6 +73,12 @@ private module ExcludeUrlConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node node) { urlInit(_, node.asExpr()) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/swift/security/CleartextTransmissionExtensions.qll:90: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module ExcludeUrlFlow = TaintTracking::Global<ExcludeUrlConfig>;
