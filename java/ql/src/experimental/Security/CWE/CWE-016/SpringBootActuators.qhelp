@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Spring Boot includes a number of additional features called actuators that let you monitor
+<p>Spring Boot includes a number of additional features called actuators that let you monitor 
 and interact with your web application. Exposing unprotected actuator endpoints via JXM or HTTP
 can, however, lead to information disclosure or even to remote code execution vulnerability.</p>
 </overview>
