@@ -188,6 +188,12 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
       mc.getArgument(0) = node.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/CWE-759/HashWithoutSalt.ql:201: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module HashWithoutSalt = TaintTracking::Global<HashWithoutSaltConfig>;

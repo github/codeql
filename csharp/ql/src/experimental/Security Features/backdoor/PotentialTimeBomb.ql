@@ -84,6 +84,12 @@ private module FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallableConfig
       call = dateTime.getATimeSpanArithmeticCallable().getACall()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/backdoor/PotentialTimeBomb.ql:162: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -110,6 +116,12 @@ private module FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig impleme
       call = dateTime.getAComparisonCallable().getACall()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/backdoor/PotentialTimeBomb.ql:166: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -132,6 +144,12 @@ private module FlowsFromTimeComparisonCallableToSelectionStatementConditionConfi
 
   predicate isSink(DataFlow::Node sink) {
     exists(SelectionStmt sel | sel.getCondition().getAChild*() = sink.asExpr())
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/backdoor/PotentialTimeBomb.ql:170: Flow call outside 'select' clause
+    none()
   }
 }
 
