@@ -234,6 +234,12 @@ module StringOps {
           call.getTarget().hasQualifiedName("strings", "Replacer", ["Replace", "WriteString"])
         )
       }
+
+      predicate observeDiffInformedIncrementalMode() {
+        // TODO(diff-informed): Manually verify if config can be diff-informed.
+        // ql/lib/semmle/go/StringOps.qll:250: Flow call outside 'select' clause
+        none()
+      }
     }
 
     /**
