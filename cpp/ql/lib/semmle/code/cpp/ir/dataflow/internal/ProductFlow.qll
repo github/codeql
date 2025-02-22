@@ -387,6 +387,13 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn1(node) }
 
       int fieldFlowBranchLimit() { result = Config::fieldFlowBranchLimit1() }
+
+      predicate observeDiffInformedIncrementalMode() {
+        // TODO(diff-informed): Manually verify if config can be diff-informed.
+        // ql/lib/semmle/code/cpp/ir/dataflow/internal/ProductFlow.qll:400: Flow call outside 'select' clause
+        // ql/lib/semmle/code/cpp/ir/dataflow/internal/ProductFlow.qll:407: Flow call outside 'select' clause
+        none()
+      }
     }
 
     private module Flow1 = DataFlow::GlobalWithState<Config1>;

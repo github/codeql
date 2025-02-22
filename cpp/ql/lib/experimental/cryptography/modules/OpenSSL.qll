@@ -127,6 +127,12 @@ module LiteralAlgorithmTracerConfig implements DataFlow::ConfigSig {
       c.(DataFlow::FieldContent).getField().getName() in ["nid", "sn", "ln"]
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/experimental/cryptography/modules/OpenSSL.qll:141: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module LiteralAlgorithmTracer = DataFlow::Global<LiteralAlgorithmTracerConfig>;
@@ -535,6 +541,12 @@ module KeyGeneration {
         c.getArgument(sizeInd) = node.asExpr()
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/experimental/cryptography/modules/OpenSSL.qll:557: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module AsymExplicitAlgKeyLengthFlow = DataFlow::Global<AsymExplicitAlgKeyLengthFlowConfig>;
@@ -573,6 +585,12 @@ module KeyGeneration {
         isPossibleOpenSSLFunction(c.getTarget()) and
         c.getArgument(3) = node.asExpr()
       )
+    }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/experimental/cryptography/modules/OpenSSL.qll:598: Flow call outside 'select' clause
+      none()
     }
   }
 
@@ -622,6 +640,12 @@ module KeyGeneration {
         isKeyGenOperationWithNoSize(c.getTarget()) and c.getAnArgument() = node.asExpr()
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/experimental/cryptography/modules/OpenSSL.qll:689: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module KeyGenKeySizeInitToKeyGenFlow = DataFlow::Global<KeyGenKeySizeInitToKeyGenConfig>;
@@ -656,6 +680,12 @@ module KeyGeneration {
     predicate isSource(DataFlow::Node source) { isEVP_PKEY_CTX_Source(source, _) }
 
     predicate isSink(DataFlow::Node sink) { isKeyGen_EVP_PKEY_CTX_Sink(sink, _) }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/experimental/cryptography/modules/OpenSSL.qll:706: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize_Flow =
