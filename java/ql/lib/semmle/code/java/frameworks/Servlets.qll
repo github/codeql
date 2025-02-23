@@ -316,6 +316,16 @@ class ResponseSetHeaderMethod extends Method {
 }
 
 /**
+ * The method `setContentType` declared in `javax.servlet.http.HttpServletResponse`.
+ */
+class ResponseSetContentTypeMethod extends Method {
+  ResponseSetContentTypeMethod() {
+    this.getDeclaringType() instanceof ServletResponse and
+    this.hasName("setContentType")
+  }
+}
+
+/**
  * A class that has `javax.servlet.Servlet` as an ancestor.
  */
 class ServletClass extends Class {

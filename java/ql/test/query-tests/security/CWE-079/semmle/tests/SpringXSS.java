@@ -17,13 +17,13 @@ public class SpringXSS {
 
     ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
 
-    if(safeContentType) {
+    if(!safeContentType) {
       if(chainDirectly) {
-        return builder.contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
+        return builder.contentType(MediaType.TEXT_HTML).body(userControlled); // $ xss
       }
       else {
         ResponseEntity.BodyBuilder builder2 = builder.contentType(MediaType.TEXT_HTML);
-        return builder2.body(userControlled); // $xss
+        return builder2.body(userControlled); // $ xss
       }
     }
     else {
@@ -60,22 +60,22 @@ public class SpringXSS {
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
   public static ResponseEntity<String> methodContentTypeUnsafe(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $xss
+    return ResponseEntity.ok(userControlled); // $ xss
   }
 
   @GetMapping(value = "/xyz", produces = "text/html")
   public static ResponseEntity<String> methodContentTypeUnsafeStringLiteral(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $xss
+    return ResponseEntity.ok(userControlled); // $ xss
   }
 
   @GetMapping(value = "/xyz", produces = {MediaType.TEXT_HTML_VALUE, MediaType.APPLICATION_JSON_VALUE})
   public static ResponseEntity<String> methodContentTypeMaybeSafe(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $xss
+    return ResponseEntity.ok(userControlled); // $ xss
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.APPLICATION_JSON_VALUE)
   public static ResponseEntity<String> methodContentTypeSafeOverriddenWithUnsafe(String userControlled) {
-    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
+    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $ xss
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
@@ -88,13 +88,13 @@ public class SpringXSS {
     // Also try out some alternative constructors for the ResponseEntity:
     switch(constructionMethod) {
       case 0:
-      return ResponseEntity.ok(userControlled); // $xss
+      return ResponseEntity.ok(userControlled); // $ xss
       case 1:
-      return ResponseEntity.of(Optional.of(userControlled)); // $xss
+      return ResponseEntity.of(Optional.of(userControlled)); // $ xss
       case 2:
-      return ResponseEntity.ok().body(userControlled); // $xss
+      return ResponseEntity.ok().body(userControlled); // $ xss
       case 3:
-      return new ResponseEntity<String>(userControlled, HttpStatus.OK); // $xss
+      return new ResponseEntity<String>(userControlled, HttpStatus.OK); // $ xss
       default:
       return null;
     }
@@ -115,12 +115,12 @@ public class SpringXSS {
 
     @GetMapping(value = "/xyz", produces = {"text/html"})
     public ResponseEntity<String> overridesWithUnsafe(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $xss
+      return ResponseEntity.ok(userControlled); // $ xss
     }
 
     @GetMapping(value = "/abc")
     public ResponseEntity<String> overridesWithUnsafe2(String userControlled) {
-      return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
+      return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $ xss
     }
   }
 
@@ -129,12 +129,12 @@ public class SpringXSS {
   private static class ClassContentTypeUnsafe {
     @GetMapping(value = "/abc")
     public ResponseEntity<String> test(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $xss
+      return ResponseEntity.ok(userControlled); // $ xss
     }
 
     @GetMapping(value = "/abc")
     public String testDirectReturn(String userControlled) {
-      return userControlled; // $xss
+      return userControlled; // $ xss
     }
 
     @GetMapping(value = "/xyz", produces = {"application/json"})
@@ -150,12 +150,12 @@ public class SpringXSS {
 
   @GetMapping(value = "/abc")
   public static ResponseEntity<String> entityWithNoMediaType(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $xss
+    return ResponseEntity.ok(userControlled); // $ xss
   }
 
   @GetMapping(value = "/abc")
   public static String stringWithNoMediaType(String userControlled) {
-    return userControlled; // $xss
+    return userControlled; // $ xss
   }
 
   @GetMapping(value = "/abc")
