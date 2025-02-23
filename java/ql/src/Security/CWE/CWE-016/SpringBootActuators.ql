@@ -12,9 +12,9 @@
  */
 
 import java
-deprecated import SpringBootActuators
+import semmle.code.java.frameworks.spring.SpringSecurity
+import semmle.code.java.security.SpringBootActuatorsQuery
 
-deprecated query predicate problems(PermitAllCall permitAllCall, string message) {
-  permitAllCall.permitsSpringBootActuators() and
-  message = "Unauthenticated access to Spring Boot actuator is allowed."
-}
+from PermitAllCall permitAllCall
+where permitsSpringBootActuators(permitAllCall)
+select permitAllCall, "Unauthenticated access to Spring Boot actuator is allowed."
