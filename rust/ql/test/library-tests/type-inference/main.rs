@@ -368,6 +368,40 @@ mod m8 {
     }
 }
 
+mod m9 {
+    #[derive(Debug)]
+    enum MyOption<T> {
+        MyNone(),
+        MySome(T),
+    }
+
+    impl<T> MyOption<T> {
+        fn new() -> Self {
+            MyOption::MyNone() // missing `T`
+        }
+
+        fn set(&mut self, value: T) {
+            *self = MyOption::MySome(value);
+        }
+    }
+
+    #[derive(Debug)]
+    struct S;
+
+    pub fn f() {
+        let x1 = MyOption::<S>::new();
+        println!("{:?}", x1);
+
+        let mut x2 = MyOption::new(); // `::new` missing type `S`
+        x2.set(S);
+        println!("{:?}", x2);
+
+        let mut x3 = MyOption::new(); // `::new` missing type `S`
+        MyOption::set(&mut x3, S);
+        println!("{:?}", x3);
+    }
+}
+
 fn main() {
     m1::f();
     m1::g(m1::Foo {}, m1::Foo {});
@@ -378,4 +412,5 @@ fn main() {
     m6::f();
     m7::f();
     m8::f();
+    m9::f();
 }
