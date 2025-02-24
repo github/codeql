@@ -1508,53 +1508,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   module DataFlowIntegration<DataFlowIntegrationInputSig DfInput> {
     private import codeql.util.Boolean
 
-    pragma[nomagic]
-    private predicate adjacentDefReachesReadExt(
-      DefinitionExt def, SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-    ) {
-      adjacentDefReadExt(def, v, bb1, i1, bb2, i2) and
-      (
-        def.definesAt(v, bb1, i1, _)
-        or
-        variableRead(bb1, i1, v, true)
-      )
-      or
-      exists(BasicBlock bb3, int i3 |
-        adjacentDefReachesReadExt(def, v, bb1, i1, bb3, i3) and
-        variableRead(bb3, i3, v, false) and
-        adjacentDefReadExt(def, v, bb3, i3, bb2, i2)
-      )
-    }
-
-    pragma[nomagic]
-    private predicate adjacentDefReachesUncertainReadExt(
-      DefinitionExt def, SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-    ) {
-      adjacentDefReachesReadExt(def, v, bb1, i1, bb2, i2) and
-      variableRead(bb2, i2, v, false)
-    }
-
-    /**
-     * Holds if the reference to `def` at index `i` in basic block `bb` can reach
-     * another definition `next` of the same underlying source variable, without
-     * passing through another write or non-pseudo read.
-     *
-     * The reference is either a read of `def` or `def` itself.
-     */
-    pragma[nomagic]
-    private predicate lastRefBeforeRedefExt(
-      DefinitionExt def, SourceVariable v, BasicBlock bb, int i, BasicBlock input,
-      DefinitionExt next
-    ) {
-      lastRefRedefExt(def, v, bb, i, input, next) and
-      not variableRead(bb, i, v, false)
-      or
-      exists(BasicBlock bb0, int i0 |
-        lastRefRedefExt(def, v, bb0, i0, input, next) and
-        adjacentDefReachesUncertainReadExt(def, v, bb, i, bb0, i0)
-      )
-    }
-
     final private class DefinitionExtFinal = DefinitionExt;
 
     /** An SSA definition into which another SSA definition may flow. */
@@ -1563,13 +1516,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this instanceof PhiNode
         or
         this instanceof PhiReadNode
-      }
-
-      /** Holds if `def` may flow into this definition via basic block `input`. */
-      predicate hasInputFromBlock(
-        DefinitionExt def, SourceVariable v, BasicBlock bb, int i, BasicBlock input
-      ) {
-        lastRefBeforeRedefExt(def, v, bb, i, input, this)
       }
     }
 
