@@ -522,13 +522,21 @@ private signature module MatchingInputSig {
 
   predicate target(Access a, Decl target);
 
-  predicate argumentType(Access a, ArgPos pos, TypePath path, Type t);
+  AstNode getArg(Access a, ArgPos pos);
 
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t);
 }
 
 private module Matching<MatchingInputSig Input> {
   private import Input
+
+  pragma[nomagic]
+  predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
+    exists(AstNode arg |
+      arg = getArg(a, pos) and
+      t = resolveType(arg, path)
+    )
+  }
 
   pragma[nomagic]
   private predicate argumentTypeAt(Access a, ArgPos pos, Decl target, TypePath path, Type t) {
@@ -680,33 +688,50 @@ private module Matching<MatchingInputSig Input> {
   }
 
   pragma[nomagic]
-  private predicate implicitTypeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
-    typeMatch(a, _, target, _, path, t, tp, "")
+  private predicate implicitTypeMatch(
+    Access a, Decl target, TypePath path, Type t, TypeParameter tp, boolean isBase
+  ) {
+    typeMatch(a, _, target, _, path, t, tp, "") and
+    isBase = false
     or
-    baseTypeMatch(a, _, target, _, _, path, t, tp, "")
+    baseTypeMatch(a, _, target, _, _, path, t, tp, "") and
+    isBase = true
   }
 
   pragma[inline]
-  private predicate typeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
-    explicitTypeMatch(a, target, path, t, tp)
+  private predicate typeMatch(
+    Access a, Decl target, TypePath path, Type t, TypeParameter tp, boolean isBase
+  ) {
+    explicitTypeMatch(a, target, path, t, tp) and
+    isBase = false
     or
-    implicitTypeMatch(a, target, path, t, tp)
+    implicitTypeMatch(a, target, path, t, tp, isBase)
   }
 
   pragma[nomagic]
-  Type resolveAccess(Access a, ArgPos apos, TypePath path) {
-    exists(ParamPos ppos | paramArgPosMatch(ppos, apos) |
+  private Type resolveAccess(Access a, ArgPos apos, ParamPos ppos, TypePath path, boolean isBase) {
+    paramArgPosMatch(ppos, apos) and
+    (
       exists(Decl target, TypePath prefix, TypeParameter tp, TypePath suffix |
         declType(target, pragma[only_bind_into](ppos), prefix, tp) and
-        typeMatch(a, target, suffix, result, tp) and
+        typeMatch(a, target, suffix, result, tp, isBase) and
         path = prefix.append(suffix)
       )
       or
       exists(Decl target |
         declType(target, pragma[only_bind_into](ppos), path, result) and
         target(a, target) and
+        isBase = false and
         not result instanceof TypeParameter
       )
+    )
+  }
+
+  pragma[nomagic]
+  Type resolveArgType(AstNode arg, ParamPos ppos, TypePath path, boolean isBase) {
+    exists(Access a, ArgPos apos |
+      arg = getArg(a, apos) and
+      result = resolveAccess(a, apos, ppos, path, isBase)
     )
   }
 }
@@ -822,22 +847,15 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
     }
   }
 
-  additional ArgPos declPos() { result = TDeclPos() }
-
   class ParamPos = ArgPos;
 
   predicate paramArgPosMatch(ParamPos ppos, ArgPos apos) { apos = ppos }
 
-  private AstNode getExplicitArgument(Access a, ArgPos pos) {
+  AstNode getArg(Access a, ArgPos pos) {
     result = a.getFieldExpr(pos.asFieldPos()).getExpr()
-  }
-
-  private predicate explicitArgumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    t = resolveType(getExplicitArgument(a, pos), path)
-  }
-
-  predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    explicitArgumentType(a, pos, path, t)
+    or
+    result = a and
+    pos = TDeclPos()
   }
 
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t) {
@@ -863,8 +881,8 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
 
 private module RecordFieldMatching = Matching<RecordFieldMatchingInput>;
 
-private Type resolveRecordExprType(RecordExpr re, TypePath path) {
-  result = RecordFieldMatching::resolveAccess(re, RecordFieldMatchingInput::declPos(), path)
+private Type resolveRecordExprType(AstNode n, TypePath path) {
+  result = RecordFieldMatching::resolveArgType(n, _, path, _)
 }
 
 pragma[nomagic]
@@ -892,6 +910,10 @@ private module FunctionMatchingInput implements MatchingInputSig {
     TReturnParamPos()
 
   class ParamPos extends TParamPos {
+    predicate isSelf() { this = TSelfParamPos() }
+
+    predicate isReturn() { this = TReturnParamPos() }
+
     string toString() {
       this = TSelfParamPos() and
       result = "self"
@@ -933,8 +955,6 @@ private module FunctionMatchingInput implements MatchingInputSig {
       result = "(return)"
     }
   }
-
-  additional ArgPos returnArgPos() { result = TReturnArgPos() }
 
   predicate paramArgPosMatch(ParamPos ppos, ArgPos apos) {
     ppos = TSelfParamPos() and
@@ -1072,7 +1092,7 @@ private module FunctionMatchingInput implements MatchingInputSig {
     target = a.(CallExpr).getVariant()
   }
 
-  private AstNode getExplicitArgument(Access a, ArgPos pos) {
+  AstNode getArg(Access a, ArgPos pos) {
     exists(int p, boolean inMethod |
       argPos(a, result, p, inMethod) and
       pos = TPositionalArgPos(p, inMethod)
@@ -1080,14 +1100,9 @@ private module FunctionMatchingInput implements MatchingInputSig {
     or
     result = a.(MethodCallExpr).getReceiver() and
     pos = TSelfArgPos()
-  }
-
-  private predicate explicitArgumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    t = resolveType(getExplicitArgument(a, pos), path)
-  }
-
-  predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    explicitArgumentType(a, pos, path, t)
+    or
+    result = a and
+    pos = TReturnArgPos()
   }
 
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t) {
@@ -1101,8 +1116,11 @@ private module FunctionMatchingInput implements MatchingInputSig {
 private module FunctionMatching = Matching<FunctionMatchingInput>;
 
 pragma[nomagic]
-private Type resolveCallExprBaseType(CallExprBase ce, TypePath path) {
-  result = FunctionMatching::resolveAccess(ce, FunctionMatchingInput::returnArgPos(), path)
+private Type resolveCallExprBaseType(AstNode n, TypePath path) {
+  exists(FunctionMatchingInput::ParamPos ppos, boolean isBase |
+    result = FunctionMatching::resolveArgType(n, ppos, path, isBase) and
+    not ppos.isSelf()
+  )
 }
 
 private module FieldExprMatchingInput implements MatchingInputSig {
@@ -1125,26 +1143,20 @@ private module FieldExprMatchingInput implements MatchingInputSig {
   }
 
   predicate target(Access a, Decl target) {
-    exists(Type t, Type lookupType, string name |
-      t = resolveType(a.getExpr()) and
-      name = a.getNameRef().getText() and
-      if t = TRefType()
-      then
-        // for reference types, lookup the field in the type being referenced
-        lookupType = resolveType(a.getExpr(), "0")
-      else lookupType = t
-    |
-      target = lookupType.getRecordField(name)
-      or
-      target = lookupType.getTupleField(name.toInt())
-    )
+    target = resolveRecordFieldExpr(a)
+    or
+    target = resolveTupleFieldExpr(a)
   }
 
-  additional newtype TParamPos =
-    additional TSelfParamPos() or
-    additional TReturnPos()
+  private newtype TParamPos =
+    TSelfParamPos() or
+    TReturnPos()
 
   class ParamPos extends TParamPos {
+    predicate isSelf() { this = TSelfParamPos() }
+
+    predicate isReturn() { this = TReturnPos() }
+
     string toString() {
       this = TSelfParamPos() and
       result = "self"
@@ -1158,16 +1170,11 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
   predicate paramArgPosMatch(ParamPos ppos, ArgPos apos) { apos = ppos }
 
-  private AstNode getExplicitArgument(Access a, ArgPos pos) {
+  AstNode getArg(Access a, ArgPos pos) {
     result = a.getExpr() and pos = TSelfParamPos()
-  }
-
-  private predicate explicitArgumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    t = resolveType(getExplicitArgument(a, pos), path)
-  }
-
-  predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    explicitArgumentType(a, pos, path, t)
+    or
+    result = a and
+    pos = TReturnPos()
   }
 
   predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t) {
@@ -1189,11 +1196,15 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
 private module FieldExprMatching = Matching<FieldExprMatchingInput>;
 
-private Type resolveFieldExprType(FieldExpr fe, TypePath path) {
-  result = resolveFieldExprType0(fe, path)
-  or
+private Type resolveFieldExprType(AstNode n, TypePath path) {
+  // result = resolveFieldExprType0(fe, path)
+  // or
   // result = resolveFunctionReturnType(call.getStaticTarget(), path)
-  result = FieldExprMatching::resolveAccess(fe, FieldExprMatchingInput::TReturnPos(), path)
+  // result = FieldExprMatching::resolveArgType(n, path)
+  exists(FieldExprMatchingInput::ArgPos apos |
+    result = FieldExprMatching::resolveArgType(n, apos, path, _) and
+    apos.isReturn()
+  )
 }
 
 pragma[nomagic]
