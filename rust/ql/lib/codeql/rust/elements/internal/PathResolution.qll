@@ -132,8 +132,12 @@ abstract class ItemNode extends AstNode {
     )
     or
     // a trait has access to the associated items of its supertraits
-    result = this.(TraitItemNode).resolveABound().getASuccessorRec(name) and
-    result instanceof AssocItemNode
+    this =
+      any(TraitItemNode trait |
+        result = trait.resolveABound().getASuccessorRec(name) and
+        result instanceof AssocItemNode and
+        not trait.hasAssocItem(name)
+      )
     or
     // items made available by an implementation where `this` is the implementing type
     exists(ItemNode node |
@@ -141,6 +145,18 @@ abstract class ItemNode extends AstNode {
       result = node.getASuccessorRec(name) and
       result instanceof AssocItemNode
     )
+    or
+    // trait items with default implementations made available in an implementation
+    exists(ImplItemNode impl, ItemNode trait |
+      this = impl and
+      trait = impl.resolveTraitTy() and
+      result = trait.getASuccessorRec(name) and
+      result.(AssocItemNode).hasImplementation() and
+      not impl.hasAssocItem(name)
+    )
+    or
+    // type parameters have access to the associated items of its bounds
+    result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
   }
 
   /** Gets a successor named `name` of this item, if any. */
@@ -163,6 +179,9 @@ abstract class ItemNode extends AstNode {
     name = "crate" and
     result.(SourceFileItemNode).getFile() = this.getFile()
   }
+
+  /** Gets the location of this item. */
+  Location getLocation() { result = super.getLocation() }
 }
 
 /** A module or a source file. */
@@ -191,10 +210,15 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
 }
 
 /** An item that can occur in a trait or an `impl` block. */
-abstract private class AssocItemNode extends ItemNode { }
+abstract private class AssocItemNode extends ItemNode, AssocItem {
+  /** Holds if this associated item has an implementation. */
+  abstract predicate hasImplementation();
+}
 
 private class ConstItemNode extends AssocItemNode instanceof Const {
   override string getName() { result = Const.super.getName().getText() }
+
+  override predicate hasImplementation() { super.hasBody() }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -219,8 +243,10 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   override Visibility getVisibility() { result = Variant.super.getVisibility() }
 }
 
-private class FunctionItemNode extends AssocItemNode instanceof Function {
+class FunctionItemNode extends AssocItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
+
+  override predicate hasImplementation() { super.hasBody() }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -242,7 +268,19 @@ abstract private class ImplOrTraitItemNode extends ItemNode {
 }
 
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
-  ItemNode resolveSelfTy() { result = resolvePath(super.getSelfTy().(PathTypeRepr).getPath()) }
+  Path getSelfPath() { result = super.getSelfTy().(PathTypeRepr).getPath() }
+
+  Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
+
+  ItemNode resolveSelfTy() { result = resolvePath(this.getSelfPath()) }
+
+  TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
+
+  /** Holds if this `impl` block declares an associated item named `name`. */
+  pragma[nomagic]
+  predicate hasAssocItem(string name) {
+    name = super.getAssocItemList().getAnAssocItem().(AssocItemNode).getName()
+  }
 
   override string getName() { result = "(impl)" }
 
@@ -255,6 +293,8 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
 private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
   override string getName() { result = "(macro call)" }
+
+  override predicate hasImplementation() { none() }
 
   override Namespace getNamespace() { none() }
 
@@ -290,6 +330,12 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
 
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
+  /** Holds if this trait declares an associated item named `name`. */
+  pragma[nomagic]
+  predicate hasAssocItem(string name) {
+    name = super.getAssocItemList().getAnAssocItem().(AssocItemNode).getName()
+  }
+
   override string getName() { result = Trait.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
@@ -299,6 +345,8 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
 
 class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
   override string getName() { result = TypeAlias.super.getName().getText() }
+
+  override predicate hasImplementation() { super.hasTypeRepr() }
 
   override Namespace getNamespace() { result.isType() }
 
@@ -330,11 +378,20 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
 }
 
 private class TypeParamItemNode extends ItemNode instanceof TypeParam {
+  pragma[nomagic]
+  Path getABoundPath() {
+    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
   override string getName() { result = TypeParam.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { none() }
+
+  override Location getLocation() { result = TypeParam.super.getName().getLocation() }
 }
 
 /** Holds if `item` has the name `name` and is a top-level item inside `f`. */

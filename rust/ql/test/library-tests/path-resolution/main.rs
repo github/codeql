@@ -357,6 +357,11 @@ mod m16 {
         fn g(&self) -> T // $ item=I84
         ; // I85
 
+        fn h(&self) -> T { // $ item=I84
+            Self::g(&self); // $ item=I85
+            self.g() // $ MISSING: item=I85
+        } // I96
+
         const c: T // $ item=I84
         ; // I94
     } // I86
@@ -425,6 +430,8 @@ mod m16 {
         >::f(&x); // $ MISSING: item=I93
         S::g(&x); // $ item=I92
         x.g(); // $ MISSING: item=I92
+        S::h(&x); // $ item=I96
+        x.h(); // $ MISSING: item=I96
         S::c; // $ item=I95
         <S // $ item=I90
           as Trait1<
@@ -432,6 +439,38 @@ mod m16 {
           > // $ MISSING: item=I86
         >::c; // $ MISSING: item=I95
     } // I83
+}
+
+mod m17 {
+    trait MyTrait {
+        fn f(&self); // I1
+    } // I2
+
+    struct S; // I3
+
+    #[rustfmt::skip]
+    impl MyTrait // $ item=I2
+    for S { // $ item=I3
+        fn f(&self) {
+            println!("M17::MyTrait::f");
+        } // I4
+    }
+
+    #[rustfmt::skip]
+    fn g<T: // I5
+      MyTrait // $ item=I2
+    >(x: T) { // $ item=I5
+        x.f(); // $ MISSING: item=I1
+        T::f(&x); // $ item=I1
+        MyTrait::f(&x); // $ item=I1
+    } // I6
+
+    #[rustfmt::skip]
+    pub fn f() {
+        g( // $ item=I6
+          S // $ item=I3
+        );
+    } // I99
 }
 
 fn main() {
@@ -455,4 +494,5 @@ fn main() {
     m11::f(); // $ item=I63
     m15::f(); // $ item=I75
     m16::f(); // $ item=I83
+    m17::f(); // $ item=I99
 }
