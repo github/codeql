@@ -995,9 +995,9 @@
 /test/extractor-tests/generated/Path/PathSegment_getGenericArgList.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getNameRef.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getParenthesizedArgList.ql linguist-generated
-/test/extractor-tests/generated/Path/PathSegment_getPathType.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getRetType.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getReturnTypeSyntax.ql linguist-generated
+/test/extractor-tests/generated/Path/PathSegment_getTraitTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr_getPath.ql linguist-generated

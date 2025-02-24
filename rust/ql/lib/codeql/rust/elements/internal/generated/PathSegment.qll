@@ -74,21 +74,6 @@ module Generated {
     final predicate hasParenthesizedArgList() { exists(this.getParenthesizedArgList()) }
 
     /**
-     * Gets the path type of this path segment, if it exists.
-     */
-    PathTypeRepr getPathType() {
-      result =
-        Synth::convertPathTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
-              .(Raw::PathSegment)
-              .getPathType())
-    }
-
-    /**
-     * Holds if `getPathType()` exists.
-     */
-    final predicate hasPathType() { exists(this.getPathType()) }
-
-    /**
      * Gets the ret type of this path segment, if it exists.
      */
     RetTypeRepr getRetType() {
@@ -132,5 +117,20 @@ module Generated {
      * Holds if `getTypeRepr()` exists.
      */
     final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
+
+    /**
+     * Gets the trait type representation of this path segment, if it exists.
+     */
+    PathTypeRepr getTraitTypeRepr() {
+      result =
+        Synth::convertPathTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
+              .(Raw::PathSegment)
+              .getTraitTypeRepr())
+    }
+
+    /**
+     * Holds if `getTraitTypeRepr()` exists.
+     */
+    final predicate hasTraitTypeRepr() { exists(this.getTraitTypeRepr()) }
   }
 }

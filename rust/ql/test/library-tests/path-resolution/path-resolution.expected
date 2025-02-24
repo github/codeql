@@ -1,4 +1,10 @@
 testFailures
+| main.rs:183:10:183:16 | MyTrait | Fixed missing result: item=I47 |
+| main.rs:340:14:340:19 | Trait1 | Fixed missing result: item=I79 |
+| main.rs:343:14:343:19 | Trait2 | Unexpected result: item=I82 |
+| main.rs:422:14:424:11 | Trait1::<...> | Fixed missing result: item=I86 |
+| main.rs:427:14:429:11 | Trait2::<...> | Unexpected result: item=I89 |
+| main.rs:437:14:439:11 | Trait1::<...> | Fixed missing result: item=I86 |
 mod
 | lib.rs:1:1:1:7 | mod my |
 | main.rs:1:1:1:7 | mod my |
@@ -99,7 +105,7 @@ resolvePath
 | main.rs:181:9:181:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:181:9:181:19 | ...::f | main.rs:157:33:162:9 | fn f |
 | main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
+| main.rs:183:10:183:16 | MyTrait | main.rs:140:5:148:5 | trait MyTrait |
 | main.rs:186:17:186:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:188:17:188:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:190:9:190:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
@@ -145,9 +151,9 @@ resolvePath
 | main.rs:329:11:329:11 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:338:17:338:17 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:339:10:339:10 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:339:10:339:10 | S | main.rs:311:5:311:13 | struct S |
+| main.rs:340:14:340:19 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
 | main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
+| main.rs:343:14:343:19 | Trait2 | main.rs:301:5:309:5 | trait Trait2 |
 | main.rs:345:9:345:9 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:345:9:345:12 | ...::g | main.rs:322:9:324:9 | fn g |
 | main.rs:355:24:355:24 | T | main.rs:353:7:353:7 | T |
@@ -181,9 +187,11 @@ resolvePath
 | main.rs:413:13:413:16 | Self | main.rs:406:5:415:5 | impl Trait2::<...> for S { ... } |
 | main.rs:420:17:420:17 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:421:10:421:10 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:421:10:421:10 | S | main.rs:384:5:384:13 | struct S |
+| main.rs:422:14:424:11 | Trait1::<...> | main.rs:351:5:367:5 | trait Trait1 |
+| main.rs:423:13:423:13 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:426:10:426:10 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:426:10:426:10 | S | main.rs:384:5:384:13 | struct S |
+| main.rs:427:14:429:11 | Trait2::<...> | main.rs:369:5:382:5 | trait Trait2 |
+| main.rs:428:13:428:13 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:431:9:431:9 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:431:9:431:12 | ...::g | main.rs:397:9:400:9 | fn g |
 | main.rs:433:9:433:9 | S | main.rs:384:5:384:13 | struct S |
@@ -191,7 +199,8 @@ resolvePath
 | main.rs:435:9:435:9 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:435:9:435:12 | ...::c | main.rs:402:9:403:9 | Const |
 | main.rs:436:10:436:10 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:436:10:436:10 | S | main.rs:384:5:384:13 | struct S |
+| main.rs:437:14:439:11 | Trait1::<...> | main.rs:351:5:367:5 | trait Trait1 |
+| main.rs:438:13:438:13 | S | main.rs:384:5:384:13 | struct S |
 | main.rs:452:10:452:16 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
 | main.rs:453:9:453:9 | S | main.rs:449:5:449:13 | struct S |
 | main.rs:461:7:461:13 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
