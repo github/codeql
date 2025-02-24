@@ -28,7 +28,7 @@ Go framework & library support
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
    `Logrus <https://github.com/sirupsen/logrus>`_,"``github.com/Sirupsen/logrus*``, ``github.com/sirupsen/logrus*``",,,290
    `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,12,1,1
-   `MongoDB Go Driver <https://www.mongodb.com/docs/drivers/go/current/>`_,``go.mongodb.org/mongo-driver*``,,,14
+   `MongoDB Go Driver <https://www.mongodb.com/docs/drivers/go/current/>`_,``go.mongodb.org/mongo-driver*``,11,5,14
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",46,20,4
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_,``github.com/sendgrid/sendgrid-go*``,,1,
    `Squirrel <https://github.com/Masterminds/squirrel>`_,"``github.com/Masterminds/squirrel*``, ``github.com/lann/squirrel*``, ``gopkg.in/Masterminds/squirrel``",,,96
@@ -73,5 +73,5 @@ Go framework & library support
    `xpathparser <https://github.com/santhosh-tekuri/xpathparser>`_,``github.com/santhosh-tekuri/xpathparser*``,,,2
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
-   Totals,,459,947,1532
+   Totals,,470,952,1532
 
