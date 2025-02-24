@@ -271,4 +271,11 @@ public class SpringBootActuatorsTest {
 		http.securityMatcher(EndpointRequest.toAnyEndpoint());
 		http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()); // $ hasExposedSpringBootActuator
 	}
+
+  // QHelp Good example
+  protected void configureQhelpGood(HttpSecurity http) throws Exception {
+    // GOOD: only users with ENDPOINT_ADMIN role are allowed to access the actuator endpoints
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests((requests) ->
+        requests.anyRequest().hasRole("ENDPOINT_ADMIN"));
+  }
 }

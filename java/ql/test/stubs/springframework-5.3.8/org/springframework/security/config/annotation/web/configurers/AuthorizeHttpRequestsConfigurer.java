@@ -14,5 +14,9 @@ public final class AuthorizeHttpRequestsConfigurer<H extends HttpSecurityBuilder
 		public AuthorizationManagerRequestMatcherRegistry permitAll() {
 			return null;
 		}
+
+		public AuthorizationManagerRequestMatcherRegistry hasRole(String role) {
+			return null;
+		}
 	}
 }
