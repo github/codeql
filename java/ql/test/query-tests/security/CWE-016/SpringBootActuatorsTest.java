@@ -264,4 +264,11 @@ public class SpringBootActuatorsTest {
   protected void configureOkNoPermitAll7_securityMatchers(HttpSecurity http) throws Exception {
     http.securityMatchers(matcher -> EndpointRequest.toAnyEndpoint()).authorizeHttpRequests().anyRequest();
   }
+
+  // Spring doc example
+  // https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.security
+  public void securityFilterChain(HttpSecurity http) throws Exception {
+		http.securityMatcher(EndpointRequest.toAnyEndpoint());
+		http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()); // $ hasExposedSpringBootActuator
+	}
 }

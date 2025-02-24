@@ -142,5 +142,14 @@ predicate permitsSpringBootActuators(PermitAllCall permitAllCall) {
       registryRequestMatchersCall.getQualifier() = authorizeCall and
       permitAllCall.getQualifier() = registryRequestMatchersCall
     )
+    or
+    exists(Variable v, MatcherCall matcherCall |
+      // http.securityMatcher(EndpointRequest.toAnyEndpoint());
+      // http.authorizeRequests([...].permitAll())
+      v.getAnAccess() = authorizeCall.getQualifier() and
+      v.getAnAccess() = matcherCall.getQualifier() and
+      authorizeCall.getArgument(0).(LambdaExpr).getExprBody() = permitAllCall and
+      permitAllCall.getQualifier() instanceof AnyRequestCall
+    )
   )
 }
