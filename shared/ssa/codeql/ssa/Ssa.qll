@@ -1555,24 +1555,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    /** Same as `adjacentDefReadExt`, but skips uncertain reads. */
-    pragma[nomagic]
-    private predicate adjacentDefSkipUncertainReadsExt(
-      DefinitionExt def, SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-    ) {
-      adjacentDefReachesReadExt(def, v, bb1, i1, bb2, i2) and
-      variableRead(bb2, i2, v, true)
-    }
-
-    pragma[nomagic]
-    private predicate adjacentReadPairExt(DefinitionExt def, ReadNode read1, ReadNode read2) {
-      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        read1.readsAt(bb1, i1, v) and
-        adjacentDefSkipUncertainReadsExt(def, v, bb1, i1, bb2, i2) and
-        read2.readsAt(bb2, i2, v)
-      )
-    }
-
     final private class DefinitionExtFinal = DefinitionExt;
 
     /** An SSA definition into which another SSA definition may flow. */
@@ -1808,41 +1790,22 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     final class SsaInputNode = SsaInputNodeImpl;
 
     /**
-     * Holds if `nodeFrom` is a node for SSA definition `def`, which can input
-     * node `nodeTo`.
+     * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
+     * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
+     * read. If it is false then `nodeFrom` may be any of the following: an
+     * uncertain write, a certain write, a phi, or a phi read. `def` is the SSA
+     * definition that is read/defined at `nodeFrom`.
      */
-    pragma[nomagic]
-    private predicate inputFromDef(
-      DefinitionExt def, SsaDefinitionExtNode nodeFrom, SsaInputNode nodeTo
+    private predicate flowOutOf(
+      DefinitionExt def, Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
     ) {
-      exists(SourceVariable v, BasicBlock bb, int i, BasicBlock input, SsaInputDefinitionExt next |
-        next.hasInputFromBlock(def, v, bb, i, input) and
-        def = nodeFrom.getDefinitionExt() and
-        def.definesAt(v, bb, i, _) and
-        nodeTo = TSsaInputNode(next, input)
-      )
-    }
-
-    /**
-     * Holds if `nodeFrom` is a last read of SSA definition `def`, which
-     * can reach input node `nodeTo`.
-     */
-    pragma[nomagic]
-    private predicate inputFromRead(DefinitionExt def, ReadNode nodeFrom, SsaInputNode nodeTo) {
-      exists(SourceVariable v, BasicBlock bb, int i, BasicBlock input, SsaInputDefinitionExt next |
-        next.hasInputFromBlock(def, v, bb, i, input) and
-        nodeFrom.readsAt(bb, i, v) and
-        nodeTo = TSsaInputNode(next, input)
-      )
-    }
-
-    pragma[nomagic]
-    private predicate firstReadExt(DefinitionExt def, ReadNode read) {
-      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        def.definesAt(v, bb1, i1, _) and
-        adjacentDefSkipUncertainReadsExt(def, v, bb1, i1, bb2, i2) and
-        read.readsAt(bb2, i2, v)
-      )
+      nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      def.definesAt(v, bb, i, _) and
+      isUseStep = false
+      or
+      ssaDefReachesReadExt(v, def, bb, i) and
+      [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
+      isUseStep = true
     }
 
     /**
@@ -1862,23 +1825,34 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
       isUseStep = false
       or
-      // Flow from SSA definition to first read
-      def = nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() and
-      firstReadExt(def, nodeTo) and
-      isUseStep = false
+      // Flow from definition/read to next read
+      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        flowOutOf(def, nodeFrom, v, bb1, i1, isUseStep) and
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        nodeTo.(ReadNode).readsAt(bb2, i2, v)
+      )
       or
-      // Flow from (post-update) read to next read
-      adjacentReadPairExt(def, [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()], nodeTo) and
-      nodeFrom != nodeTo and
-      isUseStep = true
+      // Flow from definition/read to next uncertain write
+      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        flowOutOf(def, nodeFrom, v, bb1, i1, isUseStep) and
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        exists(UncertainWriteDefinition def2 |
+          DfInput::allowFlowIntoUncertainDef(def2) and
+          nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def2 and
+          def2.definesAt(v, bb2, i2)
+        )
+      )
       or
-      // Flow into phi (read) SSA definition node from def
-      inputFromDef(def, nodeFrom, nodeTo) and
-      isUseStep = false
-      or
-      // Flow into phi (read) SSA definition node from (post-update) read
-      inputFromRead(def, [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()], nodeTo) and
-      isUseStep = true
+      // Flow from definition/read to phi input
+      exists(
+        SourceVariable v, BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi,
+        DefinitionExt phi
+      |
+        flowOutOf(def, nodeFrom, v, bb, i, isUseStep) and
+        AdjacentSsaRefs::adjacentRefPhi(bb, i, input, bbPhi, v) and
+        nodeTo = TSsaInputNode(phi, input) and
+        phi.definesAt(v, bbPhi, -1, _)
+      )
       or
       // Flow from input node to def
       nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
