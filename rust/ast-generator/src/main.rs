@@ -166,6 +166,162 @@ struct FieldInfo {
     name: String,
     ty: FieldType,
 }
+
+fn get_additional_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
+    match node.name.as_str() {
+        "Name" | "NameRef" | "Lifetime" => vec![FieldInfo {
+            name: "text".to_string(),
+            ty: FieldType::String,
+        }],
+        "Abi" => vec![FieldInfo {
+            name: "abi_string".to_string(),
+            ty: FieldType::String,
+        }],
+        "Literal" => vec![FieldInfo {
+            name: "text_value".to_string(),
+            ty: FieldType::String,
+        }],
+        "PrefixExpr" => vec![FieldInfo {
+            name: "operator_name".to_string(),
+            ty: FieldType::String,
+        }],
+        "BinExpr" => vec![
+            FieldInfo {
+                name: "lhs".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "rhs".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "operator_name".to_string(),
+                ty: FieldType::String,
+            },
+        ],
+        "IfExpr" => vec![
+            FieldInfo {
+                name: "then_branch".to_string(),
+                ty: FieldType::Optional("BlockExpr".to_string()),
+            },
+            FieldInfo {
+                name: "else_branch".to_string(),
+                ty: FieldType::Optional("ElseBranch".to_string()),
+            },
+            FieldInfo {
+                name: "condition".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+        ],
+        "RangeExpr" => vec![
+            FieldInfo {
+                name: "start".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "end".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "operator_name".to_string(),
+                ty: FieldType::String,
+            },
+        ],
+        "RangePat" => vec![
+            FieldInfo {
+                name: "start".to_string(),
+                ty: FieldType::Optional("Pat".to_string()),
+            },
+            FieldInfo {
+                name: "end".to_string(),
+                ty: FieldType::Optional("Pat".to_string()),
+            },
+            FieldInfo {
+                name: "operator_name".to_string(),
+                ty: FieldType::String,
+            },
+        ],
+        "IndexExpr" => vec![
+            FieldInfo {
+                name: "index".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "base".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+        ],
+        "Impl" => vec![
+            FieldInfo {
+                name: "trait_".to_string(),
+                ty: FieldType::Optional("Type".to_string()),
+            },
+            FieldInfo {
+                name: "self_ty".to_string(),
+                ty: FieldType::Optional("Type".to_string()),
+            },
+        ],
+        "ForExpr" => vec![FieldInfo {
+            name: "iterable".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "WhileExpr" => vec![FieldInfo {
+            name: "condition".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "MatchGuard" => vec![FieldInfo {
+            name: "condition".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "MacroDef" => vec![
+            FieldInfo {
+                name: "args".to_string(),
+                ty: FieldType::Optional("TokenTree".to_string()),
+            },
+            FieldInfo {
+                name: "body".to_string(),
+                ty: FieldType::Optional("TokenTree".to_string()),
+            },
+        ],
+        "FormatArgsExpr" => vec![FieldInfo {
+            name: "args".to_string(),
+            ty: FieldType::List("FormatArgsArg".to_string()),
+        }],
+        "ArgList" => vec![FieldInfo {
+            name: "args".to_string(),
+            ty: FieldType::List("Expr".to_string()),
+        }],
+        "Fn" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("BlockExpr".to_string()),
+        }],
+        "Const" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "Static" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "ClosureExpr" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "ArrayExpr" => vec![FieldInfo {
+            name: "is_semicolon".to_string(),
+            ty: FieldType::Predicate,
+        }],
+        "SelfParam" => vec![FieldInfo {
+            name: "is_amp".to_string(),
+            ty: FieldType::Predicate,
+        }],
+        "UseTree" => vec![FieldInfo {
+            name: "is_star".to_string(),
+            ty: FieldType::Predicate,
+        }],
+        _ => vec![],
+    }
+}
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
     let predicates = [
@@ -183,196 +339,14 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         }
     }
 
-    match node.name.as_str() {
-        "Name" | "NameRef" | "Lifetime" => {
-            result.push(FieldInfo {
-                name: "text".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "Abi" => {
-            result.push(FieldInfo {
-                name: "abi_string".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "Literal" => {
-            result.push(FieldInfo {
-                name: "text_value".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "PrefixExpr" => {
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "BinExpr" => {
-            result.push(FieldInfo {
-                name: "lhs".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "rhs".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "IfExpr" => {
-            result.push(FieldInfo {
-                name: "then_branch".to_string(),
-                ty: FieldType::Optional("BlockExpr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "else_branch".to_string(),
-                ty: FieldType::Optional("ElseBranch".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "RangeExpr" => {
-            result.push(FieldInfo {
-                name: "start".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "end".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "RangePat" => {
-            result.push(FieldInfo {
-                name: "start".to_string(),
-                ty: FieldType::Optional("Pat".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "end".to_string(),
-                ty: FieldType::Optional("Pat".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "IndexExpr" => {
-            result.push(FieldInfo {
-                name: "index".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "base".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "Impl" => {
-            result.push(FieldInfo {
-                name: "trait_".to_string(),
-                ty: FieldType::Optional("Type".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "self_ty".to_string(),
-                ty: FieldType::Optional("Type".to_string()),
-            });
-        }
-        "ForExpr" => {
-            result.push(FieldInfo {
-                name: "iterable".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "WhileExpr" => {
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "MatchGuard" => {
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "MacroDef" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                ty: FieldType::Optional("TokenTree".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("TokenTree".to_string()),
-            });
-        }
-        "FormatArgsExpr" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                ty: FieldType::List("FormatArgsArg".to_string()),
-            });
-        }
-        "ArgList" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                ty: FieldType::List("Expr".to_string()),
-            });
-        }
-        "Fn" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("BlockExpr".to_string()),
-            });
-        }
-        "Const" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "Static" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "ClosureExpr" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "ArrayExpr" => {
-            result.push(FieldInfo {
-                name: "is_semicolon".to_string(),
-                ty: FieldType::Predicate,
-            });
-        }
-        "SelfParam" => {
-            result.push(FieldInfo {
-                name: "is_amp".to_string(),
-                ty: FieldType::Predicate,
-            });
-        }
-        "UseTree" => {
-            result.push(FieldInfo {
-                name: "is_star".to_string(),
-                ty: FieldType::Predicate,
-            });
-        }
-        _ => {}
-    }
+    result.extend(get_additional_fields(node));
 
     for field in &node.fields {
-        // The ArrayExpr type also has an 'exprs' field
-        if node.name == "ArrayExpr" && field.method_name() == "expr" {
-            continue;
+        match (node.name.as_str(), field.method_name().as_str()) {
+            ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
+            | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            => continue,
+            _ => {}
         }
         let ty = match field {
             Field::Token(_) => continue,
