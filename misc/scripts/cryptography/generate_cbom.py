@@ -56,6 +56,9 @@ def convert_dgml_to_dot(dgml_file, dot_file):
             else:
                 label_parts.append(f"{key}={value}")
         label = "\\n".join(label_parts)
+        # Escape forward slashes and double quotes
+        label = label.replace("/", "\\/")
+        label = label.replace("\"", "\\\"")
         prop_l = [f'label="{label}"']
         node_s = f'nd_{node_id} [{", ".join(prop_l)}];'
         body_l.append(node_s)
@@ -63,8 +66,11 @@ def convert_dgml_to_dot(dgml_file, dot_file):
     # Process edges
     for edge in root.find("{http://schemas.microsoft.com/vs/2009/dgml}Links"):
         att = edge.attrib
+        edge_label = att.get("Label", "")
+        edge_label = edge_label.replace("/", "\\/")
+        edge_label = edge_label.replace("\"", "\\\"")
         edge_s = 'nd_{} -> nd_{} [label="{}"];'.format(
-            att["Source"], att["Target"], att.get("Label", ""))
+            att["Source"], att["Target"], edge_label)
         body_l.append(edge_s)
 
     body_l.append("}")
@@ -89,7 +95,7 @@ def main():
     run_codeql_analysis(args.codeql, args.database, args.query, args.output)
 
     # Locate DGML file
-    dgml_file = os.path.join(args.output, "cbomgraph.dgml")
+    dgml_file = os.path.join(args.output, "java", "print-cbom-graph.dgml")
     dot_file = dgml_file.replace(".dgml", ".dot")
 
     if os.path.exists(dgml_file):

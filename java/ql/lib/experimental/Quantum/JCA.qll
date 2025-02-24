@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.controlflow.Dominance
 
 module JCAModel {
   import Language
@@ -64,6 +65,8 @@ module JCAModel {
         this.getCallee().hasQualifiedName("javax.crypto", "Cipher", s)
       )
     }
+
+    DataFlow::Node getInputData() { result.asExpr() = this.getArgument(0) }
   }
 
   /**
@@ -84,7 +87,7 @@ module JCAModel {
    *
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
-  class CipherGetInstanceAlgorithmArg extends Crypto::EncryptionAlgorithmInstance,
+  class CipherGetInstanceAlgorithmArg extends Crypto::CipherAlgorithmInstance,
     Crypto::BlockCipherModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Expr
   {
     CipherGetInstanceCall call;
@@ -116,13 +119,22 @@ module JCAModel {
   private class JavaxCryptoCipherOperationModeAccess extends FieldAccess {
     JavaxCryptoCipherOperationModeAccess() {
       this.getQualifier() instanceof CipherAccess and
-      this.getField().getName() in ["ENCRYPT_MODE", "DECRYPT_MODE", "WRAP_MODE", "UNWRAP_MODE"]
+      this.getField().getName().toUpperCase() in [
+          "ENCRYPT_MODE", "DECRYPT_MODE", "WRAP_MODE", "UNWRAP_MODE"
+        ]
     }
+  }
+
+  class CipherUpdateCall extends MethodCall {
+    CipherUpdateCall() { this.getMethod().hasQualifiedName("javax.crypto", "Cipher", "update") }
+
+    DataFlow::Node getInputData() { result.asExpr() = this.getArgument(0) }
   }
 
   private newtype TCipherModeFlowState =
     TUninitializedCipherModeFlowState() or
-    TInitializedCipherModeFlowState(CipherInitCall call)
+    TInitializedCipherModeFlowState(CipherInitCall call) or
+    TUsedCipherModeFlowState(CipherInitCall init, CipherUpdateCall update)
 
   abstract private class CipherModeFlowState extends TCipherModeFlowState {
     string toString() {
@@ -131,13 +143,13 @@ module JCAModel {
       this = TInitializedCipherModeFlowState(_) and result = "initialized"
     }
 
-    abstract Crypto::CipherOperationMode getCipherOperationMode();
+    abstract Crypto::CipherOperationSubtype getCipherOperationMode();
   }
 
   private class UninitializedCipherModeFlowState extends CipherModeFlowState,
     TUninitializedCipherModeFlowState
   {
-    override Crypto::CipherOperationMode getCipherOperationMode() {
+    override Crypto::CipherOperationSubtype getCipherOperationMode() {
       result instanceof Crypto::UnknownCipherOperationMode
     }
   }
@@ -148,19 +160,18 @@ module JCAModel {
     CipherInitCall call;
     DataFlow::Node node1;
     DataFlow::Node node2;
-    Crypto::CipherOperationMode mode;
+    Crypto::CipherOperationSubtype mode;
 
     InitializedCipherModeFlowState() {
       this = TInitializedCipherModeFlowState(call) and
       DataFlow::localFlowStep(node1, node2) and
       node2.asExpr() = call.getQualifier() and
-      // I would imagine this would make this predicate horribly horribly inefficient
-      // it now binds with anything
+      // TODO: does this make this predicate inefficient as it binds with anything?
       not node1.asExpr() = call.getQualifier() and
       mode = call.getCipherOperationModeType()
     }
 
-    CipherInitCall getCall() { result = call }
+    CipherInitCall getInitCall() { result = call }
 
     DataFlow::Node getFstNode() { result = node1 }
 
@@ -169,12 +180,14 @@ module JCAModel {
      */
     DataFlow::Node getSndNode() { result = node2 }
 
-    override Crypto::CipherOperationMode getCipherOperationMode() { result = mode }
+    override Crypto::CipherOperationSubtype getCipherOperationMode() { result = mode }
   }
 
   /**
-   * Trace to a cryptographic operation,
+   * Trace from cipher initialization to a cryptographic operation,
    * specifically `Cipher.doFinal()`, `Cipher.wrap()`, or `Cipher.unwrap()`.
+   *
+   * TODO: handle `Cipher.update()`
    */
   private module CipherGetInstanceToCipherOperationConfig implements DataFlow::StateConfigSig {
     class FlowState = TCipherModeFlowState;
@@ -201,7 +214,7 @@ module JCAModel {
       exists(CipherInitCall call | node.asExpr() = call.getQualifier() |
         state instanceof UninitializedCipherModeFlowState
         or
-        state.(InitializedCipherModeFlowState).getCall() != call
+        state.(InitializedCipherModeFlowState).getInitCall() != call
       )
     }
   }
@@ -209,15 +222,16 @@ module JCAModel {
   module CipherGetInstanceToCipherOperationFlow =
     DataFlow::GlobalWithState<CipherGetInstanceToCipherOperationConfig>;
 
-  class CipherEncryptionOperation extends Crypto::CipherOperationInstance instanceof Call {
-    Crypto::CipherOperationMode mode;
-    Crypto::EncryptionAlgorithmInstance algorithm;
+  class CipherOperationInstance extends Crypto::CipherOperationInstance instanceof Call {
+    Crypto::CipherOperationSubtype mode;
+    Crypto::CipherAlgorithmInstance algorithm;
+    CipherGetInstanceToCipherOperationFlow::PathNode sink;
+    JCACipherOperationCall doFinalize;
 
-    CipherEncryptionOperation() {
+    CipherOperationInstance() {
       exists(
-        CipherGetInstanceToCipherOperationFlow::PathNode sink,
         CipherGetInstanceToCipherOperationFlow::PathNode src, CipherGetInstanceCall getCipher,
-        JCACipherOperationCall doFinalize, CipherGetInstanceAlgorithmArg arg
+        CipherGetInstanceAlgorithmArg arg
       |
         CipherGetInstanceToCipherOperationFlow::flowPath(src, sink) and
         src.getNode().asExpr() = getCipher and
@@ -229,9 +243,19 @@ module JCAModel {
       )
     }
 
-    override Crypto::EncryptionAlgorithmInstance getAlgorithm() { result = algorithm }
+    override Crypto::CipherAlgorithmInstance getAlgorithm() { result = algorithm }
 
-    override Crypto::CipherOperationMode getCipherOperationMode() { result = mode }
+    override Crypto::CipherOperationSubtype getCipherOperationSubtype() { result = mode }
+
+    override Crypto::NonceArtifactInstance getNonce() {
+      NonceArtifactToCipherInitCallFlow::flow(result.asOutputData(),
+        DataFlow::exprNode(sink.getState()
+              .(InitializedCipherModeFlowState)
+              .getInitCall()
+              .getNonceArg()))
+    }
+
+    override DataFlow::Node getInputData() { result = doFinalize.getInputData() }
   }
 
   /**
@@ -319,12 +343,12 @@ module JCAModel {
     CipherStringLiteral getInstance() { result = instance }
   }
 
-  class EncryptionAlgorithm extends Crypto::EncryptionAlgorithm {
+  class EncryptionAlgorithm extends Crypto::CipherAlgorithm {
     CipherStringLiteral origin;
     CipherGetInstanceAlgorithmArg instance;
 
     EncryptionAlgorithm() {
-      this = Crypto::TEncryptionAlgorithm(instance) and
+      this = Crypto::TCipherAlgorithm(instance) and
       instance.getOrigin() = origin
     }
 
@@ -347,7 +371,7 @@ module JCAModel {
     override Crypto::TCipherType getCipherFamily() {
       if this.cipherNameMappingKnown(_, origin.getAlgorithmName())
       then this.cipherNameMappingKnown(result, origin.getAlgorithmName())
-      else result instanceof Crypto::OtherSymmetricCipherType
+      else result instanceof Crypto::OtherCipherType
     }
 
     override string getKeySize(Location location) { none() }
@@ -384,33 +408,71 @@ module JCAModel {
   }
 
   /**
-   * Initialiation vectors
+   * Initialization vectors and other nonce artifacts
    */
-  abstract class IVParameterInstantiation extends Crypto::InitializationVectorArtifactInstance instanceof ClassInstanceExpr
+  abstract class NonceParameterInstantiation extends Crypto::NonceArtifactInstance instanceof ClassInstanceExpr
   {
-    abstract Expr getInput();
+    override DataFlow::Node asOutputData() { result.asExpr() = this }
   }
 
-  class IvParameterSpecInstance extends IVParameterInstantiation {
+  class IvParameterSpecInstance extends NonceParameterInstantiation {
     IvParameterSpecInstance() {
       this.(ClassInstanceExpr)
           .getConstructedType()
           .hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
     }
 
-    override Expr getInput() { result = this.(ClassInstanceExpr).getArgument(0) }
+    override DataFlow::Node getInput() { result.asExpr() = this.(ClassInstanceExpr).getArgument(0) }
   }
 
-  class GCMParameterSpecInstance extends IVParameterInstantiation {
+  // TODO: this also specifies the tag length for GCM
+  class GCMParameterSpecInstance extends NonceParameterInstantiation {
     GCMParameterSpecInstance() {
       this.(ClassInstanceExpr)
           .getConstructedType()
           .hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
     }
 
-    override Expr getInput() { result = this.(ClassInstanceExpr).getArgument(1) }
+    override DataFlow::Node getInput() { result.asExpr() = this.(ClassInstanceExpr).getArgument(1) }
   }
 
+  class IvParameterSpecGetIvCall extends MethodCall {
+    IvParameterSpecGetIvCall() {
+      this.getMethod().hasQualifiedName("javax.crypto.spec", "IvParameterSpec", "getIV")
+    }
+  }
+
+  module NonceArtifactToCipherInitCallConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      exists(NonceParameterInstantiation n |
+        src = n.asOutputData() and
+        not exists(IvParameterSpecGetIvCall m | n.getInput().asExpr() = m)
+      )
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(CipherInitCall c | c.getNonceArg() = sink.asExpr())
+    }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(IvParameterSpecGetIvCall m |
+        node1.asExpr() = m.getQualifier() and
+        node2.asExpr() = m
+      )
+      or
+      exists(NonceParameterInstantiation n |
+        node1 = n.getInput() and
+        node2.asExpr() = n
+      )
+    }
+  }
+
+  module NonceArtifactToCipherInitCallFlow = DataFlow::Global<NonceArtifactToCipherInitCallConfig>;
+
+  /**
+   * A data-flow configuration to track flow from a mode field access to
+   * the mode argument of the `init` method of the `javax.crypto.Cipher` class.
+   */
   private module JavaxCipherModeAccessToInitConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) {
       src.asExpr() instanceof JavaxCryptoCipherOperationModeAccess
@@ -422,6 +484,18 @@ module JCAModel {
   }
 
   module JavaxCipherModeAccessToInitFlow = DataFlow::Global<JavaxCipherModeAccessToInitConfig>;
+
+  private predicate cipher_mode_str_to_cipher_mode_known(
+    string mode, Crypto::CipherOperationSubtype cipher_mode
+  ) {
+    mode = "ENCRYPT_MODE" and cipher_mode instanceof Crypto::EncryptionMode
+    or
+    mode = "WRAP_MODE" and cipher_mode instanceof Crypto::WrapMode
+    or
+    mode = "DECRYPT_MODE" and cipher_mode instanceof Crypto::DecryptionMode
+    or
+    mode = "UNWRAP_MODE" and cipher_mode instanceof Crypto::UnwrapMode
+  }
 
   class CipherInitCall extends MethodCall {
     CipherInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "init") }
@@ -443,49 +517,19 @@ module JCAModel {
       )
     }
 
-    Crypto::CipherOperationMode getCipherOperationModeType() {
-      if not exists(this.getModeOrigin())
-      then result instanceof Crypto::UnknownCipherOperationMode
-      else
-        if this.getModeOrigin().getField().getName() in ["ENCRYPT_MODE", "WRAP_MODE"]
-        then result instanceof Crypto::EncryptionMode
-        else
-          if this.getModeOrigin().getField().getName() in ["DECRYPT_MODE", "UNWRAP_MODE"]
-          then result instanceof Crypto::DecryptionMode
-          else
-            // TODO/Question: distinguish between unknown vs unspecified? (the field access is not recognized, vs no field access is found)
-            result instanceof Crypto::UnknownCipherOperationMode
+    Crypto::CipherOperationSubtype getCipherOperationModeType() {
+      if cipher_mode_str_to_cipher_mode_known(this.getModeOrigin().getField().getName(), _)
+      then cipher_mode_str_to_cipher_mode_known(this.getModeOrigin().getField().getName(), result)
+      else result instanceof Crypto::UnknownCipherOperationMode
     }
 
-    Expr getKey() {
+    Expr getKeyArg() {
       result = this.getArgument(1) and this.getMethod().getParameterType(1).hasName("Key")
     }
 
-    Expr getIV() {
+    Expr getNonceArg() {
       result = this.getArgument(2) and
       this.getMethod().getParameterType(2).hasName("AlgorithmParameterSpec")
     }
-  }
-
-  // TODO: cipher.getParameters().getParameterSpec(GCMParameterSpec.class);
-  /*
-   *  class InitializationVectorArg extends Crypto::InitializationVectorArtifactInstance instanceof Expr
-   *  {
-   *    IVParameterInstantiation creation;
-   *
-   *    InitializationVectorArg() { this = creation.getInput() }
-   *  }
-   */
-
-  class InitializationVector extends Crypto::InitializationVector {
-    IVParameterInstantiation instance;
-
-    InitializationVector() { this = Crypto::TInitializationVector(instance) }
-
-    override Location getLocation() { result = instance.getLocation() }
-
-    override Crypto::DataFlowNode asOutputData() { result.asExpr() = instance }
-
-    override Crypto::DataFlowNode getInputData() { result.asExpr() = instance.getInput() }
   }
 }

@@ -19,8 +19,6 @@ signature module InputSig<LocationSig Location> {
   }
 
   class UnknownLocation instanceof Location;
-
-  predicate rngToIvFlow(DataFlowNode rng, DataFlowNode iv);
 }
 
 module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
@@ -34,11 +32,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     UnknownPropertyValue() { this = "<unknown>" }
   }
 
-  private string getPropertyAsGraphString(NodeBase node, string key) {
+  private string getPropertyAsGraphString(NodeBase node, string key, Location root) {
     result =
       strictconcat(any(string value, Location location, string parsed |
             node.properties(key, value, location) and
-            parsed = "(" + value + "," + location.toString() + ")"
+            if location = root or location instanceof UnknownLocation
+            then parsed = value
+            else parsed = "(" + value + "," + location.toString() + ")"
           |
             parsed
           ), ","
@@ -46,19 +46,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
-    key = "semmle.label" and
-    value = node.toString()
-    or
-    // CodeQL's DGML output does not include a location
-    key = "Location" and
-    value = node.getLocation().toString()
-    or
-    // Known unknown edges should be reported as properties rather than edges
-    node = node.getChild(key) and
-    value = "<unknown>"
-    or
-    // Report properties
-    value = getPropertyAsGraphString(node, key)
+    not (
+      // exclude Artifact nodes with no edges to or from them
+      node instanceof Artifact and
+      not (edges_graph_impl(node, _, _, _) or edges_graph_impl(_, node, _, _))
+    ) and
+    (
+      key = "semmle.label" and
+      value = node.toString()
+      or
+      // CodeQL's DGML output does not include a location
+      key = "Location" and
+      value = node.getLocation().toString()
+      or
+      // Known unknown edges should be reported as properties rather than edges
+      node = node.getChild(key) and
+      value = "<unknown>"
+      or
+      // Report properties
+      value = getPropertyAsGraphString(node, key, node.getLocation())
+    )
   }
 
   predicate edges_graph_impl(NodeBase source, NodeBase target, string key, string value) {
@@ -80,12 +87,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class KeyDerivationAlgorithmInstance extends LocatableElement { }
 
   abstract class CipherOperationInstance extends LocatableElement {
-    abstract EncryptionAlgorithmInstance getAlgorithm();
+    abstract CipherAlgorithmInstance getAlgorithm();
 
-    abstract CipherOperationMode getCipherOperationMode();
+    abstract CipherOperationSubtype getCipherOperationSubtype();
+
+    abstract NonceArtifactInstance getNonce();
+
+    abstract DataFlowNode getInputData();
   }
 
-  abstract class EncryptionAlgorithmInstance extends LocatableElement { }
+  abstract class CipherAlgorithmInstance extends LocatableElement { }
 
   abstract class KeyEncapsulationOperationInstance extends LocatableElement { }
 
@@ -99,21 +110,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class PaddingAlgorithmInstance extends LocatableElement { }
 
   // Artifacts
-  abstract class DigestArtifactInstance extends LocatableElement { }
+  abstract private class ArtifactLocatableElement extends LocatableElement {
+    abstract DataFlowNode asOutputData();
 
-  abstract class KeyArtifactInstance extends LocatableElement { }
+    abstract DataFlowNode getInput();
+  }
 
-  abstract class InitializationVectorArtifactInstance extends LocatableElement { }
+  abstract class DigestArtifactInstance extends ArtifactLocatableElement { }
 
-  abstract class NonceArtifactInstance extends LocatableElement { }
+  abstract class KeyArtifactInstance extends ArtifactLocatableElement { }
 
-  abstract class RandomNumberGenerationInstance extends LocatableElement { }
+  abstract class NonceArtifactInstance extends ArtifactLocatableElement { }
+
+  abstract class RandomNumberGenerationInstance extends ArtifactLocatableElement {
+    final override DataFlowNode getInput() { none() }
+  }
 
   newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
-    TInitializationVector(InitializationVectorArtifactInstance e) or
     TNonce(NonceArtifactInstance e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) or
     // Operations (e.g., hashing, encryption)
@@ -122,7 +138,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TCipherOperation(CipherOperationInstance e) or
     TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
     // Algorithms (e.g., SHA-256, AES)
-    TEncryptionAlgorithm(EncryptionAlgorithmInstance e) or
+    TCipherAlgorithm(CipherAlgorithmInstance e) or
     TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstance e) or
     THashAlgorithm(HashAlgorithmInstance e) or
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstance e) or
@@ -133,10 +149,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
     // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
-    TKemDemHybridCryptosystem(EncryptionAlgorithm dem) or // TODO, change this relation and the below ones
-    TKeyAgreementHybridCryptosystem(EncryptionAlgorithmInstance ka) or
-    TAsymmetricEncryptionMacHybridCryptosystem(EncryptionAlgorithmInstance enc) or
-    TPostQuantumHybridCryptosystem(EncryptionAlgorithmInstance enc)
+    TKemDemHybridCryptosystem(CipherAlgorithm dem) or // TODO, change this relation and the below ones
+    TKeyAgreementHybridCryptosystem(CipherAlgorithmInstance ka) or
+    TAsymmetricEncryptionMacHybridCryptosystem(CipherAlgorithmInstance enc) or
+    TPostQuantumHybridCryptosystem(CipherAlgorithmInstance enc)
 
   /**
    * The base class for all cryptographic assets, such as operations and algorithms.
@@ -183,7 +199,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Returns the parent of this node.
+     * Returns a parent of this node.
      */
     final NodeBase getAParent() { result.getChild(_) = this }
   }
@@ -197,42 +213,42 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * An initialization vector
+   * A nonce or initialization vector
    */
-  abstract class InitializationVector extends Artifact, TInitializationVector {
-    final override string getInternalType() { result = "InitializationVector" }
+  private class NonceImpl extends Artifact, TNonce {
+    NonceArtifactInstance instance;
 
-    RandomNumberGeneration getRNGSource() {
-      Input::rngToIvFlow(result.asOutputData(), this.getInputData())
-    }
+    NonceImpl() { this = TNonce(instance) }
+
+    final override string getInternalType() { result = "Nonce" }
+
+    override Location getLocation() { result = instance.getLocation() }
+
+    override DataFlowNode asOutputData() { result = instance.asOutputData() }
+
+    override DataFlowNode getInputData() { result = instance.getInput() }
   }
 
-  newtype TRNGSourceSecurity =
-    RNGSourceSecure() or // Secure RNG source (unrelated to seed)
-    RNGSourceInsecure() // Insecure RNG source (unrelated to seed)
-
-  class RNGSourceSecurity extends TRNGSourceSecurity {
-    string toString() {
-      this instanceof RNGSourceSecure and result = "Secure RNG Source"
-      or
-      this instanceof RNGSourceInsecure and result = "Insecure RNG Source"
-    }
-  }
-
-  newtype TRNGSeedSecurity =
-    RNGSeedSecure() or
-    RNGSeedInsecure()
+  final class Nonce = NonceImpl;
 
   /**
    * A source of random number generation
    */
-  abstract class RandomNumberGeneration extends Artifact, TRandomNumberGeneration {
+  final private class RandomNumberGenerationImpl extends Artifact, TRandomNumberGeneration {
+    RandomNumberGenerationInstance instance;
+
+    RandomNumberGenerationImpl() { this = TRandomNumberGeneration(instance) }
+
     final override string getInternalType() { result = "RandomNumberGeneration" }
 
-    abstract RNGSourceSecurity getSourceSecurity();
+    override Location getLocation() { result = instance.getLocation() }
 
-    abstract TRNGSeedSecurity getSeedSecurity(Location location);
+    override DataFlowNode asOutputData() { result = instance.asOutputData() }
+
+    override DataFlowNode getInputData() { result = instance.getInput() }
   }
+
+  final class RandomNumberGeneration = RandomNumberGenerationImpl;
 
   /**
    * A cryptographic operation, such as hashing or encryption.
@@ -243,14 +259,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract Algorithm getAlgorithm();
 
-    // TODO: I only removed this because I want the operation type to be non-string
-    // since for CipherOperations the user will have to pick the right type,
-    // and I want to force them to use a type that is restricted. In this case to a TCipherOperationType
-    // /**
-    //  * Gets the name of this operation, e.g., "hash" or "encrypt".
-    //  */
-    // abstract string getOperationType();
-    // final override string getInternalType() { result = this.getOperationType() }
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
@@ -685,24 +693,34 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract override string getRawAlgorithmName();
   }
 
-  newtype TCipherOperationMode =
+  newtype TCipherOperationSubtype =
     TEncryptionMode() or
     TDecryptionMode() or
+    TWrapMode() or
+    TUnwrapMode() or
     TUnknownCipherOperationMode()
 
-  abstract class CipherOperationMode extends TCipherOperationMode {
+  abstract class CipherOperationSubtype extends TCipherOperationSubtype {
     abstract string toString();
   }
 
-  class EncryptionMode extends CipherOperationMode, TEncryptionMode {
-    override string toString() { result = "Encryption" }
+  class EncryptionMode extends CipherOperationSubtype, TEncryptionMode {
+    override string toString() { result = "Encrypt" }
   }
 
-  class DecryptionMode extends CipherOperationMode, TDecryptionMode {
-    override string toString() { result = "Decryption" }
+  class DecryptionMode extends CipherOperationSubtype, TDecryptionMode {
+    override string toString() { result = "Decrypt" }
   }
 
-  class UnknownCipherOperationMode extends CipherOperationMode, TUnknownCipherOperationMode {
+  class WrapMode extends CipherOperationSubtype, TWrapMode {
+    override string toString() { result = "Wrap" }
+  }
+
+  class UnwrapMode extends CipherOperationSubtype, TUnwrapMode {
+    override string toString() { result = "Unwrap" }
+  }
+
+  class UnknownCipherOperationMode extends CipherOperationSubtype, TUnknownCipherOperationMode {
     override string toString() { result = "Unknown" }
   }
 
@@ -711,31 +729,50 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * This operation takes an input message (plaintext) of arbitrary content and length
    * and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
    */
-  // NOTE FOR NICK: making this concrete here as I don't think users need to worry about making/extending these operations, just instances
-  class CipherOperation extends Operation, TCipherOperation {
+  class CipherOperationImpl extends Operation, TCipherOperation {
     CipherOperationInstance instance;
 
-    CipherOperation() { this = TCipherOperation(instance) }
+    CipherOperationImpl() { this = TCipherOperation(instance) }
+
+    override string getInternalType() { result = "CipherOperation" }
 
     override Location getLocation() { result = instance.getLocation() }
 
-    final TCipherOperationMode getCipherOperationMode() {
-      result = instance.getCipherOperationMode()
+    CipherOperationSubtype getCipherOperationMode() {
+      result = instance.getCipherOperationSubtype()
     }
 
-    final override EncryptionAlgorithm getAlgorithm() {
-      result.getInstance() = instance.getAlgorithm()
+    final override CipherAlgorithm getAlgorithm() { result.getInstance() = instance.getAlgorithm() }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "nonce" and
+      if exists(this.getNonce()) then result = this.getNonce() else result = this
     }
 
-    override string getInternalType() { result = "CipherOperation" }
-    // /**
-    //  * Gets the initialization vector associated with this encryption operation.
-    //  *
-    //  * This predicate does not need to hold for all encryption operations,
-    //  * as the initialization vector is not always required.
-    //  */
-    // abstract InitializationVector getInitializationVector();
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ALWAYS_KNOWN] - Unknown is handled in getCipherOperationMode()
+      key = "operation" and
+      value = this.getCipherOperationMode().toString() and
+      location = this.getLocation()
+    }
+
+    /**
+     * Gets the initialization vector associated with this encryption operation.
+     *
+     * This predicate does not need to hold for all encryption operations,
+     * as the initialization vector is not always required.
+     */
+    Nonce getNonce() { result = TNonce(instance.getNonce()) }
+
+    DataFlowNode getInputData() { result = instance.getInputData() }
   }
+
+  final class CipherOperation = CipherOperationImpl;
 
   /**
    * Block cipher modes of operation algorithms
@@ -858,10 +895,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     RC4() or
     RC5() or
     RSA() or
-    OtherSymmetricCipherType()
+    OtherCipherType()
 
-  abstract class EncryptionAlgorithm extends Algorithm, TEncryptionAlgorithm {
-    final LocatableElement getInstance() { this = TEncryptionAlgorithm(result) }
+  abstract class CipherAlgorithm extends Algorithm, TCipherAlgorithm {
+    final LocatableElement getInstance() { this = TCipherAlgorithm(result) }
 
     final TCipherStructureType getCipherStructure() {
       this.cipherFamilyToNameAndStructure(this.getCipherFamily(), _, result)
@@ -871,7 +908,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
     }
 
-    final override string getAlgorithmType() { result = "EncryptionAlgorithm" }
+    override string getAlgorithmType() { result = "CipherAlgorithm" }
 
     /**
      * Gets the key size of this cipher, e.g., "128" or "256".
@@ -917,7 +954,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type instanceof RSA and name = "RSA" and s = Asymmetric()
       or
-      type instanceof OtherSymmetricCipherType and
+      type instanceof OtherCipherType and
       name = this.getRawAlgorithmName() and
       s = UnknownCipherStructureType()
     }
@@ -929,19 +966,21 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        edgeName = "mode" and
-        if exists(this.getModeOfOperation())
-        then result = this.getModeOfOperation()
-        else result = this
-      )
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "mode" and
+      if exists(this.getModeOfOperation())
+      then result = this.getModeOfOperation()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "padding" and
+      if exists(this.getPadding()) then result = this.getPadding() else result = this
     }
 
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
-      // [ALWAYS_KNOWN]: unknown case is handled in `getCipherStructureTypeString`
+      // [ALWAYS_KNOWN] - unknown case is handled in `getCipherStructureTypeString`
       key = "structure" and
       getCipherStructureTypeString(this.getCipherStructure()) = value and
       location instanceof UnknownLocation
