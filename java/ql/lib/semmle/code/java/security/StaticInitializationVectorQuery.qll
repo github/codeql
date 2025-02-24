@@ -81,7 +81,7 @@ private class ArrayUpdate extends Expr {
 }
 
 private predicate arrayUpdateSrc(DataFlow::Node source) {
-  source.asExpr() instanceof StaticByteArrayCreation
+  StaticInitializationVectorFlow::flow(source, _)
 }
 
 private predicate arrayUpdateSink(DataFlow::Node sink) {
@@ -92,7 +92,7 @@ private module ArrayUpdateFlowFwd = DataFlow::SimpleGlobal<arrayUpdateSrc/1>;
 
 private module ArrayUpdateFlow = ArrayUpdateFlowFwd::Graph<arrayUpdateSink/1>;
 
-private predicate arrayReachesUpdate(StaticByteArrayCreation array) {
+predicate arrayReachesUpdate(StaticByteArrayCreation array) {
   exists(ArrayUpdateFlow::PathNode src | src.isSource() and src.getNode().asExpr() = array)
 }
 
@@ -102,7 +102,6 @@ private predicate arrayReachesUpdate(StaticByteArrayCreation array) {
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not arrayReachesUpdate(array) and
       // Reduce FPs from utility methods that return an empty array in an exceptional case
       not exists(ReturnStmt ret |
         array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and

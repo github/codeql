@@ -11,7 +11,9 @@ private import semmle.code.java.security.XSS
 deprecated module XssLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof XssDiffInformed<XssLocalFlow::hasSourceInDiffRange/0>::XssSink
+  }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof XssSanitizer }
 
