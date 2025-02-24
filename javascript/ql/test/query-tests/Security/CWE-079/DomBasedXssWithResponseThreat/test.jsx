@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "./wrapper";
 
 const fetchContent = async () => {
     const response = await fetch("https://example.com/content"); // $ Source[js/xss]
@@ -7,11 +7,13 @@ const fetchContent = async () => {
     return data;
 };
 
+const getQueryOptions = () => {
+    return {queryFn: fetchContent};
+}
+
 const ContentWithDangerousHtml = () => {
     const { data, error, isLoading } = useQuery(
-        {
-            queryFn: fetchContent
-        }   
+        getQueryOptions()
     );
 
     if (isLoading) return <div>Loading...</div>;
