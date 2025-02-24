@@ -1574,8 +1574,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     cached
-    private DefinitionExt getAPhiInputDef(SsaInputDefinitionExt phi, BasicBlock bb) {
-      phi.hasInputFromBlock(result, _, _, _, bb)
+    private Definition getAPhiInputDef(SsaInputDefinitionExt phi, BasicBlock bb) {
+      exists(SourceVariable v, BasicBlock bbDef |
+        phi.definesAt(v, bbDef, _, _) and
+        getABasicBlockPredecessor(bbDef) = bb and
+        ssaDefReachesEndOfBlock(bb, result, v)
+      )
     }
 
     private newtype TNode =
