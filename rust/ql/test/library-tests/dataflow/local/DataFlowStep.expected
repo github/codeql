@@ -737,7 +737,103 @@ localStep
 | main.rs:444:9:444:9 | s | main.rs:444:9:444:9 | s |  |
 | main.rs:444:13:444:27 | MacroExpr | main.rs:444:9:444:9 | s |  |
 | main.rs:444:25:444:26 | source(...) | main.rs:444:13:444:27 | MacroExpr |  |
-?
+| main.rs:448:16:448:16 | [SSA] s | main.rs:449:20:449:20 | s |  |
+| main.rs:448:16:448:16 | s | main.rs:448:16:448:16 | [SSA] s |  |
+| main.rs:448:16:448:16 | s | main.rs:448:16:448:16 | s |  |
+| main.rs:448:16:448:24 | ...: String | main.rs:448:16:448:16 | s |  |
+| main.rs:449:14:449:20 | FormatArgsExpr | main.rs:449:14:449:20 | MacroExpr |  |
+| main.rs:449:14:449:20 | MacroExpr | main.rs:449:5:449:21 | ...::_print | MaD:1 |
+| main.rs:453:9:453:9 | [SSA] a | main.rs:454:13:454:13 | a |  |
+| main.rs:453:9:453:9 | a | main.rs:453:9:453:9 | [SSA] a |  |
+| main.rs:453:9:453:9 | a | main.rs:453:9:453:9 | a |  |
+| main.rs:453:13:453:22 | source(...) | main.rs:453:9:453:9 | a |  |
+| main.rs:454:9:454:9 | [SSA] b | main.rs:455:13:455:13 | b |  |
+| main.rs:454:9:454:9 | b | main.rs:454:9:454:9 | [SSA] b |  |
+| main.rs:454:9:454:9 | b | main.rs:454:9:454:9 | b |  |
+| main.rs:454:13:454:13 | [post] a | main.rs:458:10:458:10 | a |  |
+| main.rs:454:13:454:13 | a | main.rs:458:10:458:10 | a |  |
+| main.rs:454:13:454:25 | a.to_string(...) | main.rs:454:9:454:9 | b |  |
+| main.rs:455:9:455:9 | [SSA] c | main.rs:460:10:460:10 | c |  |
+| main.rs:455:9:455:9 | c | main.rs:455:9:455:9 | [SSA] c |  |
+| main.rs:455:9:455:9 | c | main.rs:455:9:455:9 | c |  |
+| main.rs:455:13:455:13 | [post] b | main.rs:456:19:456:19 | b |  |
+| main.rs:455:13:455:13 | b | main.rs:456:19:456:19 | b |  |
+| main.rs:455:13:455:37 | ... .unwrap(...) | main.rs:455:9:455:9 | c |  |
+| main.rs:456:9:456:9 | [SSA] d | main.rs:461:10:461:10 | d |  |
+| main.rs:456:9:456:9 | d | main.rs:456:9:456:9 | [SSA] d |  |
+| main.rs:456:9:456:9 | d | main.rs:456:9:456:9 | d |  |
+| main.rs:456:19:456:19 | [post] b | main.rs:459:17:459:17 | b |  |
+| main.rs:456:19:456:19 | b | main.rs:459:17:459:17 | b |  |
+| main.rs:456:19:456:36 | ... .unwrap(...) | main.rs:456:9:456:9 | d |  |
+| main.rs:465:9:465:10 | [SSA] vs | main.rs:467:10:467:11 | vs |  |
+| main.rs:465:9:465:10 | vs | main.rs:465:9:465:10 | [SSA] vs |  |
+| main.rs:465:9:465:10 | vs | main.rs:465:9:465:10 | vs |  |
+| main.rs:465:14:465:34 | [...] | main.rs:465:9:465:10 | vs |  |
+| main.rs:467:10:467:11 | [post] vs | main.rs:468:11:468:12 | vs |  |
+| main.rs:467:10:467:11 | vs | main.rs:468:11:468:12 | vs |  |
+| main.rs:468:11:468:12 | [post] vs | main.rs:469:11:469:12 | vs |  |
+| main.rs:468:11:468:12 | vs | main.rs:469:11:469:12 | vs |  |
+| main.rs:469:11:469:12 | [post] vs | main.rs:471:14:471:15 | vs |  |
+| main.rs:469:11:469:12 | vs | main.rs:471:14:471:15 | vs |  |
+| main.rs:471:9:471:9 | [SSA] v | main.rs:472:14:472:14 | v |  |
+| main.rs:471:9:471:9 | v | main.rs:471:9:471:9 | [SSA] v |  |
+| main.rs:471:9:471:9 | v | main.rs:471:9:471:9 | v |  |
+| main.rs:471:14:471:15 | vs | main.rs:474:15:474:16 | vs |  |
+| main.rs:474:10:474:10 | [SSA] v | main.rs:475:14:475:14 | v |  |
+| main.rs:474:10:474:10 | v | main.rs:474:10:474:10 | [SSA] v |  |
+| main.rs:474:10:474:10 | v | main.rs:474:10:474:10 | v |  |
+| main.rs:474:15:474:16 | [post] vs | main.rs:478:27:478:28 | vs |  |
+| main.rs:474:15:474:16 | vs | main.rs:478:27:478:28 | vs |  |
+| main.rs:478:9:478:11 | [SSA] vs2 | main.rs:479:15:479:17 | vs2 |  |
+| main.rs:478:9:478:11 | vs2 | main.rs:478:9:478:11 | [SSA] vs2 |  |
+| main.rs:478:9:478:11 | vs2 | main.rs:478:9:478:11 | vs2 |  |
+| main.rs:478:27:478:28 | [post] vs | main.rs:483:5:483:6 | vs |  |
+| main.rs:478:27:478:28 | vs | main.rs:483:5:483:6 | vs |  |
+| main.rs:478:27:478:45 | ... .collect(...) | main.rs:478:9:478:11 | vs2 |  |
+| main.rs:479:10:479:10 | [SSA] v | main.rs:480:14:480:14 | v |  |
+| main.rs:479:10:479:10 | v | main.rs:479:10:479:10 | [SSA] v |  |
+| main.rs:479:10:479:10 | v | main.rs:479:10:479:10 | v |  |
+| main.rs:483:5:483:6 | [post] vs | main.rs:484:5:484:6 | vs |  |
+| main.rs:483:5:483:6 | vs | main.rs:484:5:484:6 | vs |  |
+| main.rs:483:20:483:20 | ... | main.rs:483:20:483:20 | x |  |
+| main.rs:483:20:483:20 | [SSA] x | main.rs:483:29:483:29 | x |  |
+| main.rs:483:20:483:20 | x | main.rs:483:20:483:20 | [SSA] x |  |
+| main.rs:483:20:483:20 | x | main.rs:483:20:483:20 | x |  |
+| main.rs:484:5:484:6 | [post] vs | main.rs:486:14:486:15 | vs |  |
+| main.rs:484:5:484:6 | vs | main.rs:486:14:486:15 | vs |  |
+| main.rs:484:25:484:25 | ... | main.rs:484:25:484:25 | x |  |
+| main.rs:484:25:484:25 | [SSA] x | main.rs:484:34:484:34 | x |  |
+| main.rs:484:25:484:25 | x | main.rs:484:25:484:25 | [SSA] x |  |
+| main.rs:484:25:484:25 | x | main.rs:484:25:484:25 | x |  |
+| main.rs:486:9:486:9 | [SSA] v | main.rs:487:14:487:14 | v |  |
+| main.rs:486:9:486:9 | v | main.rs:486:9:486:9 | [SSA] v |  |
+| main.rs:486:9:486:9 | v | main.rs:486:9:486:9 | v |  |
+| main.rs:490:9:490:18 | mut vs_mut | main.rs:490:13:490:18 | vs_mut |  |
+| main.rs:490:22:490:42 | [...] | main.rs:490:9:490:18 | mut vs_mut |  |
+| main.rs:496:5:498:5 | for ... in ... { ... } | main.rs:464:16:499:1 | { ... } |  |
+| main.rs:496:14:496:14 | [SSA] v | main.rs:497:14:497:14 | v |  |
+| main.rs:496:14:496:14 | v | main.rs:496:14:496:14 | [SSA] v |  |
+| main.rs:496:14:496:14 | v | main.rs:496:14:496:14 | v |  |
+| main.rs:502:9:502:9 | [SSA] a | main.rs:507:10:507:10 | a |  |
+| main.rs:502:9:502:9 | a | main.rs:502:9:502:9 | [SSA] a |  |
+| main.rs:502:9:502:9 | a | main.rs:502:9:502:9 | a |  |
+| main.rs:502:13:502:22 | source(...) | main.rs:502:9:502:9 | a |  |
+| main.rs:503:9:503:9 | [SSA] b | main.rs:508:15:508:15 | b |  |
+| main.rs:503:9:503:9 | b | main.rs:503:9:503:9 | [SSA] b |  |
+| main.rs:503:9:503:9 | b | main.rs:503:9:503:9 | b |  |
+| main.rs:503:13:503:22 | source(...) | main.rs:503:9:503:9 | b |  |
+| main.rs:504:9:504:9 | [SSA] c | main.rs:505:18:505:18 | c |  |
+| main.rs:504:9:504:9 | c | main.rs:504:9:504:9 | [SSA] c |  |
+| main.rs:504:9:504:9 | c | main.rs:504:9:504:9 | c |  |
+| main.rs:504:13:504:22 | source(...) | main.rs:504:9:504:9 | c |  |
+| main.rs:505:9:505:13 | [SSA] c_ref | main.rs:509:14:509:18 | c_ref |  |
+| main.rs:505:9:505:13 | c_ref | main.rs:505:9:505:13 | [SSA] c_ref |  |
+| main.rs:505:9:505:13 | c_ref | main.rs:505:9:505:13 | c_ref |  |
+| main.rs:505:17:505:18 | &c | main.rs:505:9:505:13 | c_ref |  |
+| main.rs:509:14:509:18 | [post] c_ref | main.rs:510:11:510:15 | c_ref |  |
+| main.rs:509:14:509:18 | c_ref | main.rs:510:11:510:15 | c_ref |  |
+| main.rs:536:13:536:33 | result_questionmark(...) | main.rs:536:9:536:9 | _ |  |
+| main.rs:548:36:548:41 | ...::new(...) | main.rs:548:36:548:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:core; <crate::option::Option as crate::clone::Clone>::clone; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
