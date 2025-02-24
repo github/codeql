@@ -265,17 +265,17 @@ public class SpringBootActuatorsTest {
     http.securityMatchers(matcher -> EndpointRequest.toAnyEndpoint()).authorizeHttpRequests().anyRequest();
   }
 
-  // Spring doc example
-  // https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.security
-  public void securityFilterChain(HttpSecurity http) throws Exception {
-		http.securityMatcher(EndpointRequest.toAnyEndpoint());
-		http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()); // $ hasExposedSpringBootActuator
-	}
+  // QHelp Bad example
+  public void securityFilterChain1(HttpSecurity http) throws Exception {
+    // BAD: Unauthenticated access to Spring Boot actuator endpoints is allowed
+    http.securityMatcher(EndpointRequest.toAnyEndpoint());
+    http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()); // $ hasExposedSpringBootActuator
+  }
 
   // QHelp Good example
-  protected void configureQhelpGood(HttpSecurity http) throws Exception {
+  public void securityFilterChain2(HttpSecurity http) throws Exception {
     // GOOD: only users with ENDPOINT_ADMIN role are allowed to access the actuator endpoints
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests((requests) ->
-        requests.anyRequest().hasRole("ENDPOINT_ADMIN"));
+    http.securityMatcher(EndpointRequest.toAnyEndpoint());
+    http.authorizeHttpRequests((requests) -> requests.anyRequest().hasRole("ENDPOINT_ADMIN"));
   }
 }
