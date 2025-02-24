@@ -641,7 +641,7 @@ module PatternTrees {
       super.last(node, c)
       or
       c.(MatchCompletion).failed() and
-      completionIsValidFor(c, this) and
+      completionIsValidFor(c, node) and
       (node = this or last(this.getPatRanked(_), node, c))
     }
   }

@@ -527,7 +527,6 @@ adjacentReads
 | nested_scopes.rb:8:5:35:7 | self (N) | nested_scopes.rb:8:5:35:7 | self | nested_scopes.rb:30:16:30:19 | self | nested_scopes.rb:34:7:34:12 | self |
 | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:13:11:13:11 | a | nested_scopes.rb:14:16:14:16 | a | nested_scopes.rb:15:11:15:11 | a |
 | nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self | nested_scopes.rb:28:16:28:16 | self |
-| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:30:16:30:19 | self | nested_scopes.rb:32:11:32:16 | self |
 | parameters.rb:1:9:5:3 | <captured entry> self | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self | parameters.rb:4:4:4:9 | self |
 | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
 | parameters.rb:25:1:28:3 | self (opt_param) | parameters.rb:25:1:28:3 | self | parameters.rb:26:3:26:11 | self | parameters.rb:27:3:27:11 | self |
