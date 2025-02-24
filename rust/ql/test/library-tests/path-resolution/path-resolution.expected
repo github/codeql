@@ -1,4 +1,10 @@
 testFailures
+| main.rs:183:10:183:16 | MyTrait | Fixed missing result: item=I47 |
+| main.rs:340:14:340:19 | Trait1 | Fixed missing result: item=I79 |
+| main.rs:343:14:343:19 | Trait2 | Unexpected result: item=I82 |
+| main.rs:417:14:419:11 | Trait1::<...> | Fixed missing result: item=I86 |
+| main.rs:422:14:424:11 | Trait2::<...> | Unexpected result: item=I89 |
+| main.rs:430:14:432:11 | Trait1::<...> | Fixed missing result: item=I86 |
 mod
 | lib.rs:1:1:1:7 | mod my |
 | main.rs:1:1:1:7 | mod my |
@@ -98,7 +104,7 @@ resolvePath
 | main.rs:181:9:181:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:181:9:181:19 | ...::f | main.rs:157:33:162:9 | fn f |
 | main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
+| main.rs:183:10:183:16 | MyTrait | main.rs:140:5:148:5 | trait MyTrait |
 | main.rs:186:17:186:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:188:17:188:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
 | main.rs:190:9:190:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
@@ -144,9 +150,9 @@ resolvePath
 | main.rs:329:11:329:11 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:338:17:338:17 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:339:10:339:10 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:339:10:339:10 | S | main.rs:311:5:311:13 | struct S |
+| main.rs:340:14:340:19 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
 | main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
+| main.rs:343:14:343:19 | Trait2 | main.rs:301:5:309:5 | trait Trait2 |
 | main.rs:345:9:345:9 | S | main.rs:311:5:311:13 | struct S |
 | main.rs:345:9:345:12 | ...::g | main.rs:322:9:324:9 | fn g |
 | main.rs:355:24:355:24 | T | main.rs:353:7:353:7 | T |
@@ -177,15 +183,18 @@ resolvePath
 | main.rs:408:13:408:16 | Self | main.rs:401:5:410:5 | impl Trait2::<...> for S { ... } |
 | main.rs:415:17:415:17 | S | main.rs:379:5:379:13 | struct S |
 | main.rs:416:10:416:10 | S | main.rs:379:5:379:13 | struct S |
-| main.rs:416:10:416:10 | S | main.rs:379:5:379:13 | struct S |
+| main.rs:417:14:419:11 | Trait1::<...> | main.rs:351:5:362:5 | trait Trait1 |
+| main.rs:418:13:418:13 | S | main.rs:379:5:379:13 | struct S |
 | main.rs:421:10:421:10 | S | main.rs:379:5:379:13 | struct S |
-| main.rs:421:10:421:10 | S | main.rs:379:5:379:13 | struct S |
+| main.rs:422:14:424:11 | Trait2::<...> | main.rs:364:5:377:5 | trait Trait2 |
+| main.rs:423:13:423:13 | S | main.rs:379:5:379:13 | struct S |
 | main.rs:426:9:426:9 | S | main.rs:379:5:379:13 | struct S |
 | main.rs:426:9:426:12 | ...::g | main.rs:392:9:395:9 | fn g |
 | main.rs:428:9:428:9 | S | main.rs:379:5:379:13 | struct S |
 | main.rs:428:9:428:12 | ...::c | main.rs:397:9:398:9 | Const |
 | main.rs:429:10:429:10 | S | main.rs:379:5:379:13 | struct S |
-| main.rs:429:10:429:10 | S | main.rs:379:5:379:13 | struct S |
+| main.rs:430:14:432:11 | Trait1::<...> | main.rs:351:5:362:5 | trait Trait1 |
+| main.rs:431:13:431:13 | S | main.rs:379:5:379:13 | struct S |
 | main.rs:438:5:438:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:438:5:438:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
 | main.rs:438:5:438:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
