@@ -4,4 +4,4 @@ import TestUtils
 
 from PathSegment x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getPathType()
+select x, x.getTraitTypeRepr()
