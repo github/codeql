@@ -118,6 +118,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class DigestArtifactInstance extends ArtifactLocatableElement { }
 
+  abstract class KeyMaterialInstance extends ArtifactLocatableElement { }
+
   abstract class KeyArtifactInstance extends ArtifactLocatableElement { }
 
   abstract class NonceArtifactInstance extends ArtifactLocatableElement { }
@@ -130,6 +132,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
+    TKeyMaterial(KeyMaterialInstance e) or
     TNonce(NonceArtifactInstance e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) or
     // Operations (e.g., hashing, encryption)
@@ -1000,4 +1003,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, Algorithm {
     final override string getAlgorithmType() { result = "KeyEncapsulationAlgorithm" }
   }
+
+  /**
+   * A Key Material Object
+   */
+  private class KeyMaterialImpl extends Artifact, TKeyMaterial {
+    KeyMaterialInstance instance;
+
+    KeyMaterialImpl() { this = TKeyMaterial(instance) }
+
+    final override string getInternalType() { result = "KeyMaterial" }
+
+    override Location getLocation() { result = instance.getLocation() }
+
+    override DataFlowNode asOutputData() { result = instance.asOutputData() }
+
+    override DataFlowNode getInputData() { result = instance.getInput() }
+  }
+
+  final class KeyMaterial = KeyMaterialImpl;
 }

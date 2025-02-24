@@ -532,4 +532,31 @@ module JCAModel {
       this.getMethod().getParameterType(2).hasName("AlgorithmParameterSpec")
     }
   }
+
+  /**
+   * Key Material Concept
+   * any class that implements `java.security.spec.KeySpec`
+   */
+  class KeyMaterialObject extends Class {
+    KeyMaterialObject() {
+      exists(RefType t |
+        this.extendsOrImplements*(t) and
+        t.hasQualifiedName("java.security.spec", "KeySpec")
+      )
+    }
+  }
+
+  /**
+   * KeyMaterial
+   * ie some plain material that gets used to generate a Key
+   */
+  class KeyMaterialInstantiation extends Crypto::KeyMaterialInstance instanceof ClassInstanceExpr {
+    KeyMaterialInstantiation() {
+      this.(ClassInstanceExpr).getConstructedType() instanceof KeyMaterialObject
+    }
+
+    override DataFlow::Node asOutputData() { result.asExpr() = this }
+
+    override DataFlow::Node getInput() { result.asExpr() = this.(ClassInstanceExpr).getArgument(0) }
+  }
 }
