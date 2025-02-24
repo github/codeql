@@ -19,11 +19,17 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         .fields
         .iter()
         .map(|f| {
+            let ty_tip = get_type_tip(&f.ty);
             if f.ident.as_ref().is_some_and(|i| i != "inputs")
-                && get_type_tip(&f.ty).is_some_and(|i| i == "Vec")
+                && ty_tip.is_some_and(|i| i == "Vec")
             {
                 quote! {
-                    #[serde(deserialize_with="deserialize_newline_or_comma_separated")]
+                    #[serde(deserialize_with="deserialize::deserialize_newline_or_comma_separated_vec")]
+                    #f
+                }
+            } else if ty_tip.is_some_and(|i| i == "FxHashMap" || i == "HashMap") {
+                quote! {
+                    #[serde(deserialize_with="deserialize::deserialize_newline_or_comma_separated_map")]
                     #f
                 }
             } else {
@@ -60,7 +66,7 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
                 quote! {
                     #f
                 }
-            } else if type_tip.is_some_and(|i| i == "Vec") {
+            } else if type_tip.is_some_and(|i| i == "Vec" || i == "FxHashMap" || i == "HashMap") {
                 quote! {
                     #[arg(long)]
                     #id: Option<String>
