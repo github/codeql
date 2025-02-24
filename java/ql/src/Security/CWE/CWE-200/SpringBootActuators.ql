@@ -4,11 +4,11 @@
  *              or even to remote code execution.
  * @kind problem
  * @problem.severity error
+ * @security-severity 6.5
  * @precision high
  * @id java/spring-boot-exposed-actuators
  * @tags security
- *       experimental
- *       external/cwe/cwe-16
+ *       external/cwe/cwe-200
  */
 
 import java
