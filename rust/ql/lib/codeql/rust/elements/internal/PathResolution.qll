@@ -130,6 +130,17 @@ abstract class ItemNode extends AstNode {
       call = this.getASuccessorRec(_) and
       result = call.(ItemNode).getASuccessorRec(name)
     )
+    or
+    // a trait has access to the associated items of its supertraits
+    result = this.(TraitItemNode).resolveABound().getASuccessorRec(name) and
+    result instanceof AssocItemNode
+    or
+    // items made available by an implementation where `this` is the implementing type
+    exists(ItemNode node |
+      this = node.(ImplItemNode).resolveSelfTy() and
+      result = node.getASuccessorRec(name) and
+      result instanceof AssocItemNode
+    )
   }
 
   /** Gets a successor named `name` of this item, if any. */
@@ -179,7 +190,10 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   override Visibility getVisibility() { none() }
 }
 
-private class ConstItemNode extends ItemNode instanceof Const {
+/** An item that can occur in a trait or an `impl` block. */
+abstract private class AssocItemNode extends ItemNode { }
+
+private class ConstItemNode extends AssocItemNode instanceof Const {
   override string getName() { result = Const.super.getName().getText() }
 
   override Namespace getNamespace() { result.isValue() }
@@ -205,7 +219,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   override Visibility getVisibility() { result = Variant.super.getVisibility() }
 }
 
-private class FunctionItemNode extends ItemNode instanceof Function {
+private class FunctionItemNode extends AssocItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
   override Namespace getNamespace() { result.isValue() }
@@ -239,7 +253,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
 }
 
-private class MacroCallItemNode extends ItemNode instanceof MacroCall {
+private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
   override string getName() { result = "(macro call)" }
 
   override Namespace getNamespace() { none() }
@@ -269,6 +283,13 @@ private class StructItemNode extends ItemNode instanceof Struct {
 }
 
 class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
+  pragma[nomagic]
+  Path getABoundPath() {
+    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
   override string getName() { result = Trait.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
@@ -276,7 +297,7 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   override Visibility getVisibility() { result = Trait.super.getVisibility() }
 }
 
-class TypeAliasItemNode extends ItemNode instanceof TypeAlias {
+class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
   override string getName() { result = TypeAlias.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }

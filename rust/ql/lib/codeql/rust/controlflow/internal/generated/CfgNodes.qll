@@ -1026,6 +1026,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
         none()
         or
         child = this.getExpr()
+        or
+        child = this.getName()
       }
     }
 
@@ -1058,7 +1060,9 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the name of this format arguments argument, if it exists.
        */
-      Name getName() { result = node.getName() }
+      NameCfgNode getName() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getName(), this, result)
+      }
 
       /**
        * Holds if `getName()` exists.
@@ -1175,6 +1179,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
+        child = this.getName()
+        or
         child = this.getPat()
       }
     }
@@ -1230,7 +1236,9 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the name of this ident pattern, if it exists.
        */
-      Name getName() { result = node.getName() }
+      NameCfgNode getName() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getName(), this, result)
+      }
 
       /**
        * Holds if `getName()` exists.
@@ -2017,6 +2025,35 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasReceiver() { exists(this.getReceiver()) }
     }
 
+    final private class ParentName extends ParentAstNode, Name {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * A Name. For example:
+     * ```rust
+     * todo!()
+     * ```
+     */
+    final class NameCfgNode extends CfgNodeFinal {
+      private Name node;
+
+      NameCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `Name`. */
+      Name getName() { result = node }
+
+      /**
+       * Gets the text of this name, if it exists.
+       */
+      string getText() { result = node.getText() }
+
+      /**
+       * Holds if `getText()` exists.
+       */
+      predicate hasText() { exists(this.getText()) }
+    }
+
     final private class ParentOffsetOfExpr extends ParentAstNode, OffsetOfExpr {
       override predicate relevantChild(AstNode child) { none() }
     }
@@ -2758,7 +2795,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     final private class ParentSelfParam extends ParentAstNode, SelfParam {
-      override predicate relevantChild(AstNode child) { none() }
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getName()
+      }
     }
 
     /**
@@ -2805,7 +2846,9 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the name of this self parameter, if it exists.
        */
-      Name getName() { result = node.getName() }
+      NameCfgNode getName() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getName(), this, result)
+      }
 
       /**
        * Holds if `getName()` exists.
@@ -3465,6 +3508,18 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
+      pred = "getName" and
+      parent =
+        any(Nodes::FormatArgsArgCfgNode cfgNode, FormatArgsArg astNode |
+          astNode = cfgNode.getFormatArgsArg() and
+          child = getDesugared(astNode.getName()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getName().getAstNode()
+        |
+          cfgNode
+        )
+      or
       pred = "getArg" and
       parent =
         any(Nodes::FormatArgsExprCfgNode cfgNode, FormatArgsExpr astNode |
@@ -3484,6 +3539,18 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getTemplate().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getName" and
+      parent =
+        any(Nodes::IdentPatCfgNode cfgNode, IdentPat astNode |
+          astNode = cfgNode.getIdentPat() and
+          child = getDesugared(astNode.getName()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getName().getAstNode()
         |
           cfgNode
         )
@@ -3795,6 +3862,18 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getExpr().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getName" and
+      parent =
+        any(Nodes::SelfParamCfgNode cfgNode, SelfParam astNode |
+          astNode = cfgNode.getSelfParam() and
+          child = getDesugared(astNode.getName()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getName().getAstNode()
         |
           cfgNode
         )
