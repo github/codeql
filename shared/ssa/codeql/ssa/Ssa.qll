@@ -1563,8 +1563,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this instanceof PhiNode
         or
         this instanceof PhiReadNode
-        or
-        DfInput::allowFlowIntoUncertainDef(this)
       }
 
       /** Holds if `def` may flow into this definition via basic block `input`. */
