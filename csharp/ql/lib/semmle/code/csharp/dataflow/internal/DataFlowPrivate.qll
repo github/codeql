@@ -664,7 +664,7 @@ module LocalFlow {
       ssaDef.getADefinition() = def and
       ssaDef.getControlFlowNode() = cfn and
       nodeFrom = TAssignableDefinitionNode(def, cfn) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = ssaDef
+      nodeTo.(SsaDefinitionNode).getDefinition() = ssaDef
     )
   }
 
@@ -1269,78 +1269,33 @@ predicate nodeIsHidden(Node n) {
 }
 
 /** An SSA node. */
-abstract class SsaNode extends NodeImpl, TSsaNode {
+class SsaNode extends NodeImpl, TSsaNode {
   SsaImpl::DataFlowIntegration::SsaNode node;
-  SsaImpl::DefinitionExt def;
 
-  SsaNode() {
-    this = TSsaNode(node) and
-    def = node.getDefinitionExt()
-  }
-
-  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+  SsaNode() { this = TSsaNode(node) }
 
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.getAControlFlowNode().getBasicBlock() = def.getBasicBlock()
+    result.getAControlFlowNode().getBasicBlock() = node.getBasicBlock()
   }
 
-  override Type getTypeImpl() { result = def.getSourceVariable().getType() }
+  override Type getTypeImpl() { result = node.getSourceVariable().getType() }
 
-  override ControlFlow::Node getControlFlowNodeImpl() {
-    result = def.(Ssa::Definition).getControlFlowNode()
-  }
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
   override Location getLocationImpl() { result = node.getLocation() }
 
   override string toStringImpl() { result = node.toString() }
 }
 
-/** An (extended) SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionExtNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaDefinitionExtNode node;
-}
+/** An SSA definition, viewed as a node in a data flow graph. */
+class SsaDefinitionNode extends SsaNode {
+  override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-/**
- * A node that represents an input to an SSA phi (read) definition.
- *
- * This allows for barrier guards to filter input to phi nodes. For example, in
- *
- * ```csharp
- * var x = taint;
- * if (x != "safe")
- * {
- *     x = "safe";
- * }
- * sink(x);
- * ```
- *
- * the `false` edge out of `x != "safe"` guards the input from `x = taint` into the
- * `phi` node after the condition.
- *
- * It is also relevant to filter input into phi read nodes:
- *
- * ```csharp
- * var x = taint;
- * if (b)
- * {
- *     if (x != "safe1")
- *     {
- *         return;
- *     }
- * } else {
- *     if (x != "safe2")
- *     {
- *         return;
- *     }
- * }
- *
- * sink(x);
- * ```
- *
- * both inputs into the phi read node after the outer condition are guarded.
- */
-class SsaInputNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaInputNode node;
+  SsaImpl::Definition getDefinition() { result = node.getDefinition() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() {
+    result = this.getDefinition().(Ssa::Definition).getControlFlowNode()
+  }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
@@ -1728,12 +1683,12 @@ private module ReturnNodes {
    * A data-flow node that represents an assignment to an `out` or a `ref`
    * parameter.
    */
-  class OutRefReturnNode extends ReturnNode, SsaDefinitionExtNode {
+  class OutRefReturnNode extends ReturnNode, SsaDefinitionNode {
     OutRefReturnKind kind;
 
     OutRefReturnNode() {
       exists(Parameter p |
-        this.getDefinitionExt().(Ssa::Definition).isLiveOutRefParameterDefinition(p) and
+        this.getDefinition().(Ssa::Definition).isLiveOutRefParameterDefinition(p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind
@@ -2464,7 +2419,7 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
     exists(ForeachStmt fs, Ssa::ExplicitDefinition def |
       x.hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
         def.getControlFlowNode()) and
-      node2.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      node2.(SsaDefinitionNode).getDefinition() = def and
       c instanceof ElementContent
     )
     or

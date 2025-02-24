@@ -1677,6 +1677,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     final class SsaDefinitionExtNode = SsaDefinitionExtNodeImpl;
 
+    /** An SSA definition, viewed as a node in a data flow graph. */
+    private class SsaDefinitionNodeImpl extends SsaDefinitionExtNodeImpl {
+      private Definition def;
+
+      SsaDefinitionNodeImpl() { this = TSsaDefinitionNode(def) }
+
+      Definition getDefinition() { result = def }
+    }
+
+    final class SsaDefinitionNode = SsaDefinitionNodeImpl;
+
     /**
      * A node that represents an input to an SSA phi (read) definition.
      *
