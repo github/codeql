@@ -102,6 +102,13 @@ module StringOps {
       override boolean getPolarity() { result = expr.getPolarity() }
     }
 
+    pragma[noinline]
+    private DataFlow::ElementReadNode getReadOfFirstChar(DataFlow::Node str) {
+      pragma[only_bind_into](result).getIndex().getIntValue() = 0 and
+      str = result.getBase() and
+      str.getType().getUnderlyingType() instanceof StringType
+    }
+
     /**
      * Holds if `eq` is of the form `str[0] == rhs` or `str[0] != rhs`.
      */
@@ -109,12 +116,8 @@ module StringOps {
     private predicate comparesFirstCharacter(
       DataFlow::EqualityTestNode eq, DataFlow::Node str, DataFlow::Node rhs
     ) {
-      exists(DataFlow::ElementReadNode read |
-        eq.hasOperands(globalValueNumber(read).getANode(), rhs) and
-        str = read.getBase() and
-        str.getType().getUnderlyingType() instanceof StringType and
-        read.getIndex().getIntValue() = 0
-      )
+      eq.hasOperands(globalValueNumber(pragma[only_bind_out](getReadOfFirstChar(str))).getANode(),
+        rhs)
     }
 
     /**

@@ -4,3 +4,6 @@ gorm.io/gorm
 # github.com/jmoiron/sqlx v1.4.0
 ## explicit
 github.com/jmoiron/sqlx
+# go.mongodb.org/mongo-driver/mongo v1.17.2
+## explicit
+go.mongodb.org/mongo-driver/mongo

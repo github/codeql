@@ -152,7 +152,16 @@ func FindGoFiles(root string) bool {
 	return found
 }
 
-func FindAllFilesWithName(root string, name string, dirsToSkip ...string) []string {
+// The type of check function used by `FindAllFilesWithName` to decide whether to skip the directory named by `path`.
+type FindAllFilesWithNameSkipCheck func(path string) bool
+
+// Commonly we only want to skip `vendor` directories in `FindAllFilesWithName`. This array is a suitable
+// argument for `dirsToSkip` which skips `vendor` directories.
+var SkipVendorChecks = []FindAllFilesWithNameSkipCheck{IsGolangVendorDirectory}
+
+// Returns an array of all files matching `name` within the path at `root`.
+// The `dirsToSkip` array contains check functions used to decide which directories to skip.
+func FindAllFilesWithName(root string, name string, dirsToSkip ...FindAllFilesWithNameSkipCheck) []string {
 	paths := make([]string, 0, 1)
 	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -160,7 +169,7 @@ func FindAllFilesWithName(root string, name string, dirsToSkip ...string) []stri
 		}
 		if d.IsDir() {
 			for _, dirToSkip := range dirsToSkip {
-				if path == dirToSkip {
+				if dirToSkip(path) {
 					return filepath.SkipDir
 				}
 			}
@@ -286,4 +295,17 @@ func getImportPathFromRepoURL(repourl string) string {
 	// strip off leading slashes and trailing `.git` if present
 	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
 	return host + "/" + path
+}
+
+// Decides if `path` refers to a file that exists.
+func fileExists(path string) bool {
+	stat, err := os.Stat(path)
+	return err == nil && stat.Mode().IsRegular()
+}
+
+// Decides if `dirPath` is a vendor directory by testing whether it is called `vendor`
+// and contains a `modules.txt` file.
+func IsGolangVendorDirectory(dirPath string) bool {
+	return filepath.Base(dirPath) == "vendor" &&
+		(fileExists(filepath.Join(dirPath, "modules.txt")) || fileExists(filepath.Join(dirPath, "../glide.yaml")))
 }

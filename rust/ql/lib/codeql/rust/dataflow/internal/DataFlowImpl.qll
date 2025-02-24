@@ -319,6 +319,9 @@ module Node {
       n.getAstNode() = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
     }
 
+    /** Get the parameter position of this parameter. */
+    ParameterPosition getPosition() { this.isParameterOf(_, result) }
+
     /** Gets the parameter in the CFG that this node corresponds to. */
     ParamBaseCfgNode getParameter() { result = n }
   }
