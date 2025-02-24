@@ -136,7 +136,7 @@ abstract class ItemNode extends AstNode {
       any(TraitItemNode trait |
         result = trait.resolveABound().getASuccessorRec(name) and
         result instanceof AssocItemNode and
-        not trait.declares(name)
+        not trait.hasAssocItem(name)
       )
     or
     // items made available by an implementation where `this` is the implementing type
@@ -152,15 +152,11 @@ abstract class ItemNode extends AstNode {
       trait = impl.resolveTraitTy() and
       result = trait.getASuccessorRec(name) and
       result.(AssocItemNode).hasImplementation() and
-      not impl.declares(name)
+      not impl.hasAssocItem(name)
     )
     or
     // type parameters have access to the associated items of its bounds
-    this =
-      any(TypeParamItemNode param |
-        result = param.resolveABound().getASuccessorRec(name) and
-        result instanceof AssocItemNode
-      )
+    result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
   }
 
   /** Gets a successor named `name` of this item, if any. */
@@ -282,7 +278,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   /** Holds if this `impl` block declares an associated item named `name`. */
   pragma[nomagic]
-  predicate declares(string name) {
+  predicate hasAssocItem(string name) {
     name = super.getAssocItemList().getAnAssocItem().(AssocItemNode).getName()
   }
 
@@ -336,7 +332,7 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
 
   /** Holds if this trait declares an associated item named `name`. */
   pragma[nomagic]
-  predicate declares(string name) {
+  predicate hasAssocItem(string name) {
     name = super.getAssocItemList().getAnAssocItem().(AssocItemNode).getName()
   }
 
