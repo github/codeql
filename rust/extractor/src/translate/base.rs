@@ -83,6 +83,12 @@ macro_rules! dispatch_to_tracing {
     };
 }
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum ResolvePaths {
+    Yes,
+    No,
+}
+
 pub struct Translator<'a> {
     pub trap: TrapFile,
     path: &'a str,
@@ -90,6 +96,7 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
+    resolve_paths: ResolvePaths,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -102,6 +109,7 @@ impl<'a> Translator<'a> {
         label: Label<generated::File>,
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
+        resolve_paths: ResolvePaths,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -110,6 +118,7 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
+            resolve_paths,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -497,6 +506,9 @@ impl<'a> Translator<'a> {
         item: &T,
         label: Label<generated::Addressable>,
     ) {
+        if self.resolve_paths == ResolvePaths::No {
+            return;
+        }
         (|| {
             let sema = self.semantics.as_ref()?;
             let def = T::Hir::try_from_source(item, sema)?;
@@ -517,6 +529,9 @@ impl<'a> Translator<'a> {
         item: &ast::Variant,
         label: Label<generated::Variant>,
     ) {
+        if self.resolve_paths == ResolvePaths::No {
+            return;
+        }
         (|| {
             let sema = self.semantics.as_ref()?;
             let def = sema.to_enum_variant_def(item)?;
@@ -537,6 +552,9 @@ impl<'a> Translator<'a> {
         item: &impl PathAst,
         label: Label<generated::Resolvable>,
     ) {
+        if self.resolve_paths == ResolvePaths::No {
+            return;
+        }
         (|| {
             let path = item.path()?;
             let sema = self.semantics.as_ref()?;
@@ -557,6 +575,9 @@ impl<'a> Translator<'a> {
         item: &ast::MethodCallExpr,
         label: Label<generated::MethodCallExpr>,
     ) {
+        if self.resolve_paths == ResolvePaths::No {
+            return;
+        }
         (|| {
             let sema = self.semantics.as_ref()?;
             let resolved = sema.resolve_method_call_fallback(item)?;
