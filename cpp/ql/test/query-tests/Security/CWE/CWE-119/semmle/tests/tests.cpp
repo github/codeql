@@ -975,6 +975,45 @@ void test27(size_t s) {
 	}
 }
 
+bool cond();
+
+void test28() {
+	int arr[10];
+
+	int *ptr1 = arr;
+	ptr1[-1] = 0; // BAD: underrun write
+	ptr1++;
+	ptr1[-1] = 0; // GOOD
+
+	int *ptr2 = arr;
+	ptr2[-1] = 0; // BAD: underrun write
+	*ptr2++;
+	ptr2[-1] = 0; // GOOD
+
+	int *ptr3 = arr;
+	ptr3[-1] = 0; // BAD: underrun write
+	if (cond()) {
+		ptr3++;
+	}
+	ptr3[-1] = 0; // GOOD (depending what cond() does)
+
+	int *ptr4 = arr;
+	ptr4[-1] = 0; // BAD: underrun write
+	while (true) {
+		ptr4++;
+		if (cond()) break;
+	}
+	ptr4[-1] = 0; // GOOD
+
+	int *ptr5 = arr;
+	ptr5[-1] = 0; // BAD: underrun write
+	while (true) {
+		if (cond()) ptr5++;
+		if (cond()) break;
+	}
+	ptr5[-1] = 0; // GOOD (depending what cond() does)
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -1004,6 +1043,7 @@ int tests_main(int argc, char *argv[])
 	test25(argv[0]);
 	test26();
 	test27(argc);
+	test28();
 
 	return 0;
 }

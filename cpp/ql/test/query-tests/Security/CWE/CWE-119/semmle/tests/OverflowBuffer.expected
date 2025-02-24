@@ -100,6 +100,11 @@
 | tests.cpp:938:2:938:17 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:906:11:906:12 | xs | array |
 | tests.cpp:940:2:940:17 | access to array | This array indexing operation accesses byte offset 399 but the $@ is only 40 bytes. | tests.cpp:906:11:906:12 | xs | array |
 | tests.cpp:941:2:941:18 | access to array | This array indexing operation accesses byte offset 403 but the $@ is only 40 bytes. | tests.cpp:906:11:906:12 | xs | array |
+| tests.cpp:984:2:984:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
+| tests.cpp:989:2:989:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
+| tests.cpp:994:2:994:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
+| tests.cpp:1001:2:1001:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
+| tests.cpp:1009:2:1009:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
 | tests_restrict.c:12:2:12:7 | call to memcpy | This 'memcpy' operation accesses 2 bytes but the $@ is only 1 byte. | tests_restrict.c:7:6:7:13 | smallbuf | source buffer |
 | unions.cpp:26:2:26:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:21:10:21:11 | mu | destination buffer |
 | unions.cpp:30:2:30:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |
