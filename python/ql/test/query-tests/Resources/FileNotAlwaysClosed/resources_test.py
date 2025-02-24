@@ -3,10 +3,10 @@
 def not_close1():
     f1 = open("filename")
     f1.write("Error could occur")
-    f1.close()
+    f1.close() # $ notAlwaysClosed
 
 def not_close2():
-    f2 = open("filename")
+    f2 = open("filename") # $ notAlwaysClosed
 
 def closed3():
     f3 = open("filename")
@@ -46,7 +46,7 @@ def closed7():
 def not_closed8():
     f8 = None
     try:
-        f8 = open("filename")
+        f8 = open("filename") # $ notAlwaysClosed
         f8.write("Error could occur")
     finally:
         if f8 is None:
@@ -55,7 +55,7 @@ def not_closed8():
 def not_closed9():
     f9 = None
     try:
-        f9 = open("filename")
+        f9 = open("filename") # $ notAlwaysClosed
         f9.write("Error could occur")
     finally:
         if not f9:
@@ -76,7 +76,7 @@ def closed10():
 
 #Not closed by handling the wrong exception
 def not_closed11():
-    f11 = open("filename")
+    f11 = open("filename") # $ notAlwaysClosed
     try:
         f11.write("IOError could occur")
         f11.write("IOError could occur")
@@ -84,11 +84,11 @@ def not_closed11():
     except AttributeError:
         f11.close()
 
-def doesnt_raise():
+def doesnt_raise(*args):
     pass
 
 def mostly_closed12():
-    f12 = open("filename")
+    f12 = open("filename") # $ SPURIOUS:notAlwaysClosed
     try:
         f12.write("IOError could occur")
         f12.write("IOError could occur")
@@ -105,11 +105,11 @@ def opener_func2(name):
     return t1
 
 def not_closed13(name):
-    f13 = open(name)
+    f13 = open(name) # $ notAlwaysClosed
     f13.write("Hello")
 
 def may_not_be_closed14(name):
-    f14 = opener_func2(name)
+    f14 = opener_func2(name) # $ notAlwaysClosed
     f14.write("Hello")
     f14.close()
 
@@ -126,7 +126,7 @@ def closed15():
 
 def may_not_be_closed16(name):
     try:
-        f16 = open(name)
+        f16 = open(name) # $ notAlwaysClosed
         f16.write("Hello")
         f16.close()
     except IOError:
@@ -138,7 +138,7 @@ def may_raise():
 
 #Not handling all exceptions, but we'll tolerate the false negative
 def not_closed17():
-    f17 = open("filename")
+    f17 = open("filename") # $ notAlwaysClosed
     try:
         f17.write("IOError could occur")
         f17.write("IOError could occur")
@@ -234,7 +234,7 @@ def closed21(path):
 
 
 def not_closed22(path):
-    f22 = open(path, "wb")
+    f22 = open(path, "wb") # $ notAlwaysClosed
     try:
         f22.write(b"foo")
         may_raise()
