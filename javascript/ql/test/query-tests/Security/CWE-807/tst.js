@@ -58,17 +58,17 @@ app.get('/user/:id', function(req, res) {
         login()
     }
 
-    if (req.cookies.cookieId === req.params.requestId) { // $ Alert - depends on user input
+    if (req.cookies.cookieId === req.params.requestId) { // $ Alert[js/different-kinds-comparison-bypass]
         process.exit();
     }
 
-    var v1 = req.cookies.cookieId === req.params.requestId; // $ Alert - depends on user input
+    var v1 = req.cookies.cookieId === req.params.requestId; // $ Alert[js/different-kinds-comparison-bypass]
     if (v1) {
         process.exit();
     }
 
     function cmp(p, q) {
-        return p === q;
+        return p === q; // $ Alert[js/different-kinds-comparison-bypass]
     }
     var v2 = cmp(req.cookies.cookieId, req.params.requestId); // $ MISSING: Alert - not detected due to flow limitations
     if (v2) {
