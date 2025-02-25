@@ -2,6 +2,7 @@ private import codeql.cryptography.Model
 private import java as Language
 private import semmle.code.java.security.InsecureRandomnessQuery
 private import semmle.code.java.security.RandomQuery
+private import semmle.code.java.dataflow.DataFlow
 
 private class UnknownLocation extends Language::Location {
   UnknownLocation() { this.getFile().getAbsolutePath() = "" }
@@ -36,6 +37,10 @@ module Crypto = CryptographyBase<Language::Location, CryptoInput>;
  */
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {
   override DataFlow::Node asOutputData() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::ArtifactLocatableElement other) {
+    RNGToArtifactFlow::flow(this.asOutputData(), other.getInput())
+  }
 }
 
 class SecureRandomnessInstance extends RandomnessInstance {
@@ -49,6 +54,21 @@ class SecureRandomnessInstance extends RandomnessInstance {
 class InsecureRandomnessInstance extends RandomnessInstance {
   InsecureRandomnessInstance() { exists(InsecureRandomnessSource node | this = node.asExpr()) }
 }
+
+/**
+ * Random number generation artifact to other artifact flow configuration
+ */
+module RNGToArtifactFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source = any(Crypto::RandomNumberGenerationInstance rng).asOutputData()
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink = any(Crypto::ArtifactLocatableElement other).getInput()
+  }
+}
+
+module RNGToArtifactFlow = DataFlow::Global<RNGToArtifactFlowConfig>;
 
 // Import library-specific modeling
 import JCA

@@ -47,8 +47,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
     not (
-      // exclude Artifact nodes with no edges to or from them
-      node instanceof Artifact and
+      // exclude certain Artifact nodes with no edges to or from them
+      node instanceof RandomNumberGeneration and
+      // TODO: performance?
       not (edges_graph_impl(node, _, _, _) or edges_graph_impl(_, node, _, _))
     ) and
     (
@@ -110,17 +111,47 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class PaddingAlgorithmInstance extends LocatableElement { }
 
   // Artifacts
-  abstract private class ArtifactLocatableElement extends LocatableElement {
+  abstract class ArtifactLocatableElement extends LocatableElement {
+    /**
+     * Gets the output node for this artifact, which should usually be the same as `this`.
+     */
     abstract DataFlowNode asOutputData();
 
+    /**
+     * Gets the input node for this artifact.
+     *
+     * If `getInput` is implemented as `none()`, the artifact will not have inbound flow analysis.
+     */
     abstract DataFlowNode getInput();
+
+    /**
+     * Holds if this artifact flows to `other`.
+     *
+     * This predicate should be defined generically per-language with library-specific extension support.
+     * The expected implementation is to perform flow analysis from this artifact's output to another artifact's input.
+     * The `other` argument should be one or more `ArtifactLocatableElement` that are sinks of the flow.
+     *
+     * If `flowsTo` is implemented as `none()`, the artifact will not have outbound flow analysis.
+     */
+    abstract predicate flowsTo(ArtifactLocatableElement other);
   }
+
+  newtype TGenericDataSourceType =
+    FilesystemDataSource() or
+    ExternalLibraryDataSource() or
+    MemoryAllocationDataSource() or
+    ConstantDataSource()
+
+  abstract class GenericDataSourceInstance extends ArtifactLocatableElement { }
 
   abstract class DigestArtifactInstance extends ArtifactLocatableElement { }
 
   abstract class KeyArtifactInstance extends ArtifactLocatableElement { }
 
-  abstract class NonceArtifactInstance extends ArtifactLocatableElement { }
+  abstract class NonceArtifactInstance extends ArtifactLocatableElement {
+    // no implicit outbound data-flow (only modelled in cipher operations)
+    override predicate flowsTo(ArtifactLocatableElement other) { none() }
+  }
 
   abstract class RandomNumberGenerationInstance extends ArtifactLocatableElement {
     final override DataFlowNode getInput() { none() }
@@ -206,10 +237,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   class Asset = NodeBase;
 
+  /**
+   * An artifact is an instance of data that is used in a cryptographic operation or produced by one.
+   */
   abstract class Artifact extends NodeBase {
-    abstract DataFlowNode asOutputData();
+    /**
+     * Gets the artifact locatable element associated with this artifact.
+     *
+     * *Implementation note*: to avoid cross-products, the result *must* only bind to the
+     * `ArtifactLocatableElement` that is already associated with the node instance.
+     */
+    abstract ArtifactLocatableElement asArtifactLocatableElement();
 
-    abstract DataFlowNode getInputData();
+    final Artifact getSourceArtifact() {
+      not result = this and
+      result.asArtifactLocatableElement().flowsTo(this.asArtifactLocatableElement())
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [ONLY_KNOWN] - TODO: unknown case handled by reporting a generic source type or unknown as a property
+      edgeName = "source" and
+      result = this.getSourceArtifact()
+    }
   }
 
   /**
@@ -224,9 +275,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override Location getLocation() { result = instance.getLocation() }
 
-    override DataFlowNode asOutputData() { result = instance.asOutputData() }
-
-    override DataFlowNode getInputData() { result = instance.getInput() }
+    override ArtifactLocatableElement asArtifactLocatableElement() { result = instance }
   }
 
   final class Nonce = NonceImpl;
@@ -243,9 +292,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override Location getLocation() { result = instance.getLocation() }
 
-    override DataFlowNode asOutputData() { result = instance.asOutputData() }
-
-    override DataFlowNode getInputData() { result = instance.getInput() }
+    override ArtifactLocatableElement asArtifactLocatableElement() { result = instance }
   }
 
   final class RandomNumberGeneration = RandomNumberGenerationImpl;
