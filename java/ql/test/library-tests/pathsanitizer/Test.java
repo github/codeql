@@ -613,9 +613,9 @@ public class Test {
 
     public void directoryCharsSanitizer() throws Exception {
         // DirectoryCharactersGuard
+        // Ensures that directory characters (/, \ and ..) cannot possibly be in the payload
         {
             String source = (String) source();
-            // Ensures that directory characters (/, \ and ..) cannot possibly be in the payload
             if (source.matches("[0-9a-fA-F]{20,}")) {
                 sink(source); // Safe
             } else {
@@ -629,22 +629,21 @@ public class Test {
             sink(source); // Safe
         }
         // ReplaceDirectoryCharactersSanitizer
+        // Removes all ".." sequences and path separators from the payload
         {
             String source = (String) source();
-            // Removes all ".." sequences and path separators from the payload
             source = source.replaceAll("\\.\\.|[/\\\\]", "");
             sink(source); // Safe
         }
         {
             String source = (String) source();
-            // Removes all ".." sequences and path separators from the payload
             source = source.replaceAll("\\.", "").replaceAll("/", "");
             sink(source); // Safe
         }
         {
             String source = (String) source();
             // Bypassable with ".../...//"
-            source = source.replace("../", "");
+            source = source.replaceAll("../", "");
             sink(source); // $ hasTaintFlow
         }
         {
