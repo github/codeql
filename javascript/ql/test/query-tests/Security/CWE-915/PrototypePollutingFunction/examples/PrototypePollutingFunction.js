@@ -4,7 +4,7 @@ function merge(dst, src) {
         if (isObject(dst[key])) {
             merge(dst[key], src[key]);
         } else {
-            dst[key] = src[key];
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
