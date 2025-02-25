@@ -606,10 +606,13 @@ public class Test {
     }
 
     private void directoryCharsValidation(String path) throws Exception {
-        // TODO
+        if (!path.matches("[0-9a-fA-F]{20,}")) {
+            throw new Exception();
+        }
     }
 
     public void directoryCharsSanitizer() throws Exception {
+        // DirectoryCharactersGuard
         {
             String source = (String) source();
             // Ensures that directory characters (/, \ and ..) cannot possibly be in the payload
@@ -619,6 +622,13 @@ public class Test {
                 sink(source); // $ hasTaintFlow
             }
         }
+        // validation method
+        {
+            String source = (String) source();
+            directoryCharsValidation(source);
+            sink(source); // Safe
+        }
+        // ReplaceDirectoryCharactersSanitizer
         {
             String source = (String) source();
             // Removes all ".." sequences and path separators from the payload
