@@ -9,9 +9,9 @@ license = "MIT"
 ungrammar = "1.16.1"
 proc-macro2 = "1.0.93"
 quote = "1.0.38"
-either = "1.13.0"
-stdx = {package = "ra_ap_stdx", version = "0.0.258"}
+either = "1.14.0"
+stdx = {package = "ra_ap_stdx", version = "0.0.266"}
 itertools = "0.14.0"
 mustache = "0.9.0"
-serde = { version = "1.0.217", features = ["derive"] }
-anyhow = "1.0.95"
+serde = { version = "1.0.218", features = ["derive"] }
+anyhow = "1.0.96"
