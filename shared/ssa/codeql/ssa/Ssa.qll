@@ -1675,7 +1675,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       override string toString() { result = def.toString() }
     }
 
-    final class SsaDefinitionExtNode = SsaDefinitionExtNodeImpl;
+    deprecated final class SsaDefinitionExtNode = SsaDefinitionExtNodeImpl;
 
     /** An SSA definition, viewed as a node in a data flow graph. */
     private class SsaDefinitionNodeImpl extends SsaDefinitionExtNodeImpl {
@@ -1753,7 +1753,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       override string toString() { result = "[input] " + def_.toString() }
     }
 
-    final class SsaInputNode = SsaInputNodeImpl;
+    deprecated final class SsaInputNode = SsaInputNodeImpl;
 
     /**
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
@@ -1765,7 +1765,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate flowOutOf(
       DefinitionExt def, Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
     ) {
-      nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      nodeFrom.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
       def.definesAt(v, bb, i, _) and
       isUseStep = false
       or
@@ -1788,7 +1788,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       ) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
       isUseStep = false
       or
       // Flow from definition/read to next read
@@ -1804,7 +1804,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         exists(UncertainWriteDefinition def2 |
           DfInput::allowFlowIntoUncertainDef(def2) and
-          nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def2 and
+          nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def2 and
           def2.definesAt(v, bb2, i2)
         )
       )
@@ -1821,8 +1821,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
       or
       // Flow from input node to def
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
-      def = nodeFrom.(SsaInputNode).getDefinitionExt() and
+      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
+      def = nodeFrom.(SsaInputNodeImpl).getDefinitionExt() and
       isUseStep = false
     }
 
@@ -1835,10 +1835,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       ) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
+      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def
       or
       // Flow from SSA definition to read
-      nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      nodeFrom.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
       nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
     }
 
@@ -1852,7 +1852,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, boolean branch);
 
     pragma[nomagic]
-    private Definition getAPhiInputDef(SsaInputNode n) {
+    private Definition getAPhiInputDef(SsaInputNodeImpl n) {
       exists(SsaInputDefinitionExt phi, BasicBlock bb |
         result = getAPhiInputDef(phi, bb) and
         n.isInputInto(phi, bb)
@@ -1927,7 +1927,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           // guard controls input block to a phi node
           exists(SsaInputDefinitionExt phi |
             def = getAPhiInputDef(result) and
-            result.(SsaInputNode).isInputInto(phi, bb)
+            result.(SsaInputNodeImpl).isInputInto(phi, bb)
           |
             DfInput::guardControlsBlock(g, bb, branch)
             or
