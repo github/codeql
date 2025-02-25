@@ -187,14 +187,23 @@ edges
 | main.rs:421:10:421:16 | mut_arr [element] | main.rs:421:10:421:19 | mut_arr[0] | provenance |  |
 | main.rs:444:9:444:9 | s | main.rs:445:10:445:10 | s | provenance |  |
 | main.rs:444:25:444:26 | source(...) | main.rs:444:9:444:9 | s | provenance |  |
-| main.rs:449:9:449:9 | a | main.rs:454:10:454:10 | a | provenance |  |
-| main.rs:449:13:449:22 | source(...) | main.rs:449:9:449:9 | a | provenance |  |
-| main.rs:451:9:451:9 | c | main.rs:452:18:452:18 | c | provenance |  |
-| main.rs:451:13:451:22 | source(...) | main.rs:451:9:451:9 | c | provenance |  |
-| main.rs:452:9:452:13 | c_ref [&ref] | main.rs:457:11:457:15 | c_ref [&ref] | provenance |  |
-| main.rs:452:17:452:18 | &c [&ref] | main.rs:452:9:452:13 | c_ref [&ref] | provenance |  |
-| main.rs:452:18:452:18 | c | main.rs:452:17:452:18 | &c [&ref] | provenance |  |
-| main.rs:457:11:457:15 | c_ref [&ref] | main.rs:457:10:457:15 | * ... | provenance |  |
+| main.rs:453:9:453:9 | a | main.rs:458:10:458:10 | a | provenance |  |
+| main.rs:453:13:453:22 | source(...) | main.rs:453:9:453:9 | a | provenance |  |
+| main.rs:465:9:465:10 | vs [element] | main.rs:467:10:467:11 | vs [element] | provenance |  |
+| main.rs:465:9:465:10 | vs [element] | main.rs:471:14:471:15 | vs [element] | provenance |  |
+| main.rs:465:14:465:34 | [...] [element] | main.rs:465:9:465:10 | vs [element] | provenance |  |
+| main.rs:465:15:465:24 | source(...) | main.rs:465:14:465:34 | [...] [element] | provenance |  |
+| main.rs:467:10:467:11 | vs [element] | main.rs:467:10:467:14 | vs[0] | provenance |  |
+| main.rs:471:9:471:9 | v | main.rs:472:14:472:14 | v | provenance |  |
+| main.rs:471:14:471:15 | vs [element] | main.rs:471:9:471:9 | v | provenance |  |
+| main.rs:502:9:502:9 | a | main.rs:507:10:507:10 | a | provenance |  |
+| main.rs:502:13:502:22 | source(...) | main.rs:502:9:502:9 | a | provenance |  |
+| main.rs:504:9:504:9 | c | main.rs:505:18:505:18 | c | provenance |  |
+| main.rs:504:13:504:22 | source(...) | main.rs:504:9:504:9 | c | provenance |  |
+| main.rs:505:9:505:13 | c_ref [&ref] | main.rs:510:11:510:15 | c_ref [&ref] | provenance |  |
+| main.rs:505:17:505:18 | &c [&ref] | main.rs:505:9:505:13 | c_ref [&ref] | provenance |  |
+| main.rs:505:18:505:18 | c | main.rs:505:17:505:18 | &c [&ref] | provenance |  |
+| main.rs:510:11:510:15 | c_ref [&ref] | main.rs:510:10:510:15 | * ... | provenance |  |
 nodes
 | main.rs:18:10:18:18 | source(...) | semmle.label | source(...) |
 | main.rs:22:9:22:9 | s | semmle.label | s |
@@ -411,16 +420,27 @@ nodes
 | main.rs:444:9:444:9 | s | semmle.label | s |
 | main.rs:444:25:444:26 | source(...) | semmle.label | source(...) |
 | main.rs:445:10:445:10 | s | semmle.label | s |
-| main.rs:449:9:449:9 | a | semmle.label | a |
-| main.rs:449:13:449:22 | source(...) | semmle.label | source(...) |
-| main.rs:451:9:451:9 | c | semmle.label | c |
-| main.rs:451:13:451:22 | source(...) | semmle.label | source(...) |
-| main.rs:452:9:452:13 | c_ref [&ref] | semmle.label | c_ref [&ref] |
-| main.rs:452:17:452:18 | &c [&ref] | semmle.label | &c [&ref] |
-| main.rs:452:18:452:18 | c | semmle.label | c |
-| main.rs:454:10:454:10 | a | semmle.label | a |
-| main.rs:457:10:457:15 | * ... | semmle.label | * ... |
-| main.rs:457:11:457:15 | c_ref [&ref] | semmle.label | c_ref [&ref] |
+| main.rs:453:9:453:9 | a | semmle.label | a |
+| main.rs:453:13:453:22 | source(...) | semmle.label | source(...) |
+| main.rs:458:10:458:10 | a | semmle.label | a |
+| main.rs:465:9:465:10 | vs [element] | semmle.label | vs [element] |
+| main.rs:465:14:465:34 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:465:15:465:24 | source(...) | semmle.label | source(...) |
+| main.rs:467:10:467:11 | vs [element] | semmle.label | vs [element] |
+| main.rs:467:10:467:14 | vs[0] | semmle.label | vs[0] |
+| main.rs:471:9:471:9 | v | semmle.label | v |
+| main.rs:471:14:471:15 | vs [element] | semmle.label | vs [element] |
+| main.rs:472:14:472:14 | v | semmle.label | v |
+| main.rs:502:9:502:9 | a | semmle.label | a |
+| main.rs:502:13:502:22 | source(...) | semmle.label | source(...) |
+| main.rs:504:9:504:9 | c | semmle.label | c |
+| main.rs:504:13:504:22 | source(...) | semmle.label | source(...) |
+| main.rs:505:9:505:13 | c_ref [&ref] | semmle.label | c_ref [&ref] |
+| main.rs:505:17:505:18 | &c [&ref] | semmle.label | &c [&ref] |
+| main.rs:505:18:505:18 | c | semmle.label | c |
+| main.rs:507:10:507:10 | a | semmle.label | a |
+| main.rs:510:10:510:15 | * ... | semmle.label | * ... |
+| main.rs:510:11:510:15 | c_ref [&ref] | semmle.label | c_ref [&ref] |
 subpaths
 testFailures
 #select
@@ -466,5 +486,8 @@ testFailures
 | main.rs:420:10:420:10 | d | main.rs:418:18:418:27 | source(...) | main.rs:420:10:420:10 | d | $@ | main.rs:418:18:418:27 | source(...) | source(...) |
 | main.rs:421:10:421:19 | mut_arr[0] | main.rs:418:18:418:27 | source(...) | main.rs:421:10:421:19 | mut_arr[0] | $@ | main.rs:418:18:418:27 | source(...) | source(...) |
 | main.rs:445:10:445:10 | s | main.rs:444:25:444:26 | source(...) | main.rs:445:10:445:10 | s | $@ | main.rs:444:25:444:26 | source(...) | source(...) |
-| main.rs:454:10:454:10 | a | main.rs:449:13:449:22 | source(...) | main.rs:454:10:454:10 | a | $@ | main.rs:449:13:449:22 | source(...) | source(...) |
-| main.rs:457:10:457:15 | * ... | main.rs:451:13:451:22 | source(...) | main.rs:457:10:457:15 | * ... | $@ | main.rs:451:13:451:22 | source(...) | source(...) |
+| main.rs:458:10:458:10 | a | main.rs:453:13:453:22 | source(...) | main.rs:458:10:458:10 | a | $@ | main.rs:453:13:453:22 | source(...) | source(...) |
+| main.rs:467:10:467:14 | vs[0] | main.rs:465:15:465:24 | source(...) | main.rs:467:10:467:14 | vs[0] | $@ | main.rs:465:15:465:24 | source(...) | source(...) |
+| main.rs:472:14:472:14 | v | main.rs:465:15:465:24 | source(...) | main.rs:472:14:472:14 | v | $@ | main.rs:465:15:465:24 | source(...) | source(...) |
+| main.rs:507:10:507:10 | a | main.rs:502:13:502:22 | source(...) | main.rs:507:10:507:10 | a | $@ | main.rs:502:13:502:22 | source(...) | source(...) |
+| main.rs:510:10:510:15 | * ... | main.rs:504:13:504:22 | source(...) | main.rs:510:10:510:15 | * ... | $@ | main.rs:504:13:504:22 | source(...) | source(...) |

@@ -615,26 +615,102 @@ localStep
 | main.rs:444:9:444:9 | s | main.rs:444:9:444:9 | s |
 | main.rs:444:13:444:27 | MacroExpr | main.rs:444:9:444:9 | s |
 | main.rs:444:25:444:26 | source(...) | main.rs:444:13:444:27 | MacroExpr |
-| main.rs:449:9:449:9 | [SSA] a | main.rs:454:10:454:10 | a |
-| main.rs:449:9:449:9 | a | main.rs:449:9:449:9 | [SSA] a |
-| main.rs:449:9:449:9 | a | main.rs:449:9:449:9 | a |
-| main.rs:449:13:449:22 | source(...) | main.rs:449:9:449:9 | a |
-| main.rs:450:9:450:9 | [SSA] b | main.rs:455:15:455:15 | b |
-| main.rs:450:9:450:9 | b | main.rs:450:9:450:9 | [SSA] b |
-| main.rs:450:9:450:9 | b | main.rs:450:9:450:9 | b |
-| main.rs:450:13:450:22 | source(...) | main.rs:450:9:450:9 | b |
-| main.rs:451:9:451:9 | [SSA] c | main.rs:452:18:452:18 | c |
-| main.rs:451:9:451:9 | c | main.rs:451:9:451:9 | [SSA] c |
-| main.rs:451:9:451:9 | c | main.rs:451:9:451:9 | c |
-| main.rs:451:13:451:22 | source(...) | main.rs:451:9:451:9 | c |
-| main.rs:452:9:452:13 | [SSA] c_ref | main.rs:456:14:456:18 | c_ref |
-| main.rs:452:9:452:13 | c_ref | main.rs:452:9:452:13 | [SSA] c_ref |
-| main.rs:452:9:452:13 | c_ref | main.rs:452:9:452:13 | c_ref |
-| main.rs:452:17:452:18 | &c | main.rs:452:9:452:13 | c_ref |
-| main.rs:456:14:456:18 | [post] c_ref | main.rs:457:11:457:15 | c_ref |
-| main.rs:456:14:456:18 | c_ref | main.rs:457:11:457:15 | c_ref |
-| main.rs:483:13:483:33 | result_questionmark(...) | main.rs:483:9:483:9 | _ |
-| main.rs:495:36:495:41 | ...::new(...) | main.rs:495:36:495:41 | MacroExpr |
+| main.rs:448:16:448:16 | [SSA] s | main.rs:449:20:449:20 | s |
+| main.rs:448:16:448:16 | s | main.rs:448:16:448:16 | [SSA] s |
+| main.rs:448:16:448:16 | s | main.rs:448:16:448:16 | s |
+| main.rs:448:16:448:24 | ...: String | main.rs:448:16:448:16 | s |
+| main.rs:449:14:449:20 | FormatArgsExpr | main.rs:449:14:449:20 | MacroExpr |
+| main.rs:453:9:453:9 | [SSA] a | main.rs:454:13:454:13 | a |
+| main.rs:453:9:453:9 | a | main.rs:453:9:453:9 | [SSA] a |
+| main.rs:453:9:453:9 | a | main.rs:453:9:453:9 | a |
+| main.rs:453:13:453:22 | source(...) | main.rs:453:9:453:9 | a |
+| main.rs:454:9:454:9 | [SSA] b | main.rs:455:13:455:13 | b |
+| main.rs:454:9:454:9 | b | main.rs:454:9:454:9 | [SSA] b |
+| main.rs:454:9:454:9 | b | main.rs:454:9:454:9 | b |
+| main.rs:454:13:454:13 | [post] a | main.rs:458:10:458:10 | a |
+| main.rs:454:13:454:13 | a | main.rs:458:10:458:10 | a |
+| main.rs:454:13:454:25 | a.to_string(...) | main.rs:454:9:454:9 | b |
+| main.rs:455:9:455:9 | [SSA] c | main.rs:460:10:460:10 | c |
+| main.rs:455:9:455:9 | c | main.rs:455:9:455:9 | [SSA] c |
+| main.rs:455:9:455:9 | c | main.rs:455:9:455:9 | c |
+| main.rs:455:13:455:13 | [post] b | main.rs:456:19:456:19 | b |
+| main.rs:455:13:455:13 | b | main.rs:456:19:456:19 | b |
+| main.rs:455:13:455:37 | ... .unwrap(...) | main.rs:455:9:455:9 | c |
+| main.rs:456:9:456:9 | [SSA] d | main.rs:461:10:461:10 | d |
+| main.rs:456:9:456:9 | d | main.rs:456:9:456:9 | [SSA] d |
+| main.rs:456:9:456:9 | d | main.rs:456:9:456:9 | d |
+| main.rs:456:19:456:19 | [post] b | main.rs:459:17:459:17 | b |
+| main.rs:456:19:456:19 | b | main.rs:459:17:459:17 | b |
+| main.rs:456:19:456:36 | ... .unwrap(...) | main.rs:456:9:456:9 | d |
+| main.rs:465:9:465:10 | [SSA] vs | main.rs:467:10:467:11 | vs |
+| main.rs:465:9:465:10 | vs | main.rs:465:9:465:10 | [SSA] vs |
+| main.rs:465:9:465:10 | vs | main.rs:465:9:465:10 | vs |
+| main.rs:465:14:465:34 | [...] | main.rs:465:9:465:10 | vs |
+| main.rs:467:10:467:11 | [post] vs | main.rs:468:11:468:12 | vs |
+| main.rs:467:10:467:11 | vs | main.rs:468:11:468:12 | vs |
+| main.rs:468:11:468:12 | [post] vs | main.rs:469:11:469:12 | vs |
+| main.rs:468:11:468:12 | vs | main.rs:469:11:469:12 | vs |
+| main.rs:469:11:469:12 | [post] vs | main.rs:471:14:471:15 | vs |
+| main.rs:469:11:469:12 | vs | main.rs:471:14:471:15 | vs |
+| main.rs:471:9:471:9 | [SSA] v | main.rs:472:14:472:14 | v |
+| main.rs:471:9:471:9 | v | main.rs:471:9:471:9 | [SSA] v |
+| main.rs:471:9:471:9 | v | main.rs:471:9:471:9 | v |
+| main.rs:471:14:471:15 | vs | main.rs:474:15:474:16 | vs |
+| main.rs:474:10:474:10 | [SSA] v | main.rs:475:14:475:14 | v |
+| main.rs:474:10:474:10 | v | main.rs:474:10:474:10 | [SSA] v |
+| main.rs:474:10:474:10 | v | main.rs:474:10:474:10 | v |
+| main.rs:474:15:474:16 | [post] vs | main.rs:478:27:478:28 | vs |
+| main.rs:474:15:474:16 | vs | main.rs:478:27:478:28 | vs |
+| main.rs:478:9:478:11 | [SSA] vs2 | main.rs:479:15:479:17 | vs2 |
+| main.rs:478:9:478:11 | vs2 | main.rs:478:9:478:11 | [SSA] vs2 |
+| main.rs:478:9:478:11 | vs2 | main.rs:478:9:478:11 | vs2 |
+| main.rs:478:27:478:28 | [post] vs | main.rs:483:5:483:6 | vs |
+| main.rs:478:27:478:28 | vs | main.rs:483:5:483:6 | vs |
+| main.rs:478:27:478:45 | ... .collect(...) | main.rs:478:9:478:11 | vs2 |
+| main.rs:479:10:479:10 | [SSA] v | main.rs:480:14:480:14 | v |
+| main.rs:479:10:479:10 | v | main.rs:479:10:479:10 | [SSA] v |
+| main.rs:479:10:479:10 | v | main.rs:479:10:479:10 | v |
+| main.rs:483:5:483:6 | [post] vs | main.rs:484:5:484:6 | vs |
+| main.rs:483:5:483:6 | vs | main.rs:484:5:484:6 | vs |
+| main.rs:483:20:483:20 | ... | main.rs:483:20:483:20 | x |
+| main.rs:483:20:483:20 | [SSA] x | main.rs:483:29:483:29 | x |
+| main.rs:483:20:483:20 | x | main.rs:483:20:483:20 | [SSA] x |
+| main.rs:483:20:483:20 | x | main.rs:483:20:483:20 | x |
+| main.rs:484:5:484:6 | [post] vs | main.rs:486:14:486:15 | vs |
+| main.rs:484:5:484:6 | vs | main.rs:486:14:486:15 | vs |
+| main.rs:484:25:484:25 | ... | main.rs:484:25:484:25 | x |
+| main.rs:484:25:484:25 | [SSA] x | main.rs:484:34:484:34 | x |
+| main.rs:484:25:484:25 | x | main.rs:484:25:484:25 | [SSA] x |
+| main.rs:484:25:484:25 | x | main.rs:484:25:484:25 | x |
+| main.rs:486:9:486:9 | [SSA] v | main.rs:487:14:487:14 | v |
+| main.rs:486:9:486:9 | v | main.rs:486:9:486:9 | [SSA] v |
+| main.rs:486:9:486:9 | v | main.rs:486:9:486:9 | v |
+| main.rs:490:9:490:18 | mut vs_mut | main.rs:490:13:490:18 | vs_mut |
+| main.rs:490:22:490:42 | [...] | main.rs:490:9:490:18 | mut vs_mut |
+| main.rs:496:5:498:5 | for ... in ... { ... } | main.rs:464:16:499:1 | { ... } |
+| main.rs:496:14:496:14 | [SSA] v | main.rs:497:14:497:14 | v |
+| main.rs:496:14:496:14 | v | main.rs:496:14:496:14 | [SSA] v |
+| main.rs:496:14:496:14 | v | main.rs:496:14:496:14 | v |
+| main.rs:502:9:502:9 | [SSA] a | main.rs:507:10:507:10 | a |
+| main.rs:502:9:502:9 | a | main.rs:502:9:502:9 | [SSA] a |
+| main.rs:502:9:502:9 | a | main.rs:502:9:502:9 | a |
+| main.rs:502:13:502:22 | source(...) | main.rs:502:9:502:9 | a |
+| main.rs:503:9:503:9 | [SSA] b | main.rs:508:15:508:15 | b |
+| main.rs:503:9:503:9 | b | main.rs:503:9:503:9 | [SSA] b |
+| main.rs:503:9:503:9 | b | main.rs:503:9:503:9 | b |
+| main.rs:503:13:503:22 | source(...) | main.rs:503:9:503:9 | b |
+| main.rs:504:9:504:9 | [SSA] c | main.rs:505:18:505:18 | c |
+| main.rs:504:9:504:9 | c | main.rs:504:9:504:9 | [SSA] c |
+| main.rs:504:9:504:9 | c | main.rs:504:9:504:9 | c |
+| main.rs:504:13:504:22 | source(...) | main.rs:504:9:504:9 | c |
+| main.rs:505:9:505:13 | [SSA] c_ref | main.rs:509:14:509:18 | c_ref |
+| main.rs:505:9:505:13 | c_ref | main.rs:505:9:505:13 | [SSA] c_ref |
+| main.rs:505:9:505:13 | c_ref | main.rs:505:9:505:13 | c_ref |
+| main.rs:505:17:505:18 | &c | main.rs:505:9:505:13 | c_ref |
+| main.rs:509:14:509:18 | [post] c_ref | main.rs:510:11:510:15 | c_ref |
+| main.rs:509:14:509:18 | c_ref | main.rs:510:11:510:15 | c_ref |
+| main.rs:536:13:536:33 | result_questionmark(...) | main.rs:536:9:536:9 | _ |
+| main.rs:548:36:548:41 | ...::new(...) | main.rs:548:36:548:41 | MacroExpr |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:alloc; <&&str as crate::string::SpecToString>::spec_to_string; Argument[self].Reference.Reference; ReturnValue; value |
@@ -1238,430 +1314,438 @@ models
 | 600 | Summary: lang:core; <crate::result::Result>::unwrap_unchecked; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
 | 601 | Summary: lang:core; <crate::slice::ascii::EscapeAscii as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
 | 602 | Summary: lang:core; <crate::slice::ascii::EscapeAscii as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
-| 603 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 604 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; Argument[1].Parameter[0]; value |
-| 605 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
-| 606 | Summary: lang:core; <crate::slice::iter::IterMut as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 607 | Summary: lang:core; <crate::slice::iter::IterMut as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; Argument[1].Parameter[0]; value |
-| 608 | Summary: lang:core; <crate::slice::iter::IterMut as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
-| 609 | Summary: lang:core; <crate::str::LinesMap as crate::ops::function::Fn>::call; Argument[0].Field[0]; ReturnValue; value |
-| 610 | Summary: lang:core; <crate::str::iter::EscapeDebug as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 611 | Summary: lang:core; <crate::str::iter::EscapeDebug as crate::iter::traits::iterator::Iterator>::try_fold; Argument[0]; ReturnValue; value |
-| 612 | Summary: lang:core; <crate::str::iter::EscapeDefault as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 613 | Summary: lang:core; <crate::str::iter::EscapeDefault as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
-| 614 | Summary: lang:core; <crate::str::iter::EscapeUnicode as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 615 | Summary: lang:core; <crate::str::iter::EscapeUnicode as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
-| 616 | Summary: lang:core; <crate::str::pattern::MatchOnly as crate::str::pattern::TwoWayStrategy>::matching; Argument[0]; ReturnValue.Field[crate::option::Option::Some(0)].Field[0]; value |
-| 617 | Summary: lang:core; <crate::str::pattern::MatchOnly as crate::str::pattern::TwoWayStrategy>::matching; Argument[1]; ReturnValue.Field[crate::option::Option::Some(0)].Field[1]; value |
-| 618 | Summary: lang:core; <crate::task::wake::LocalWaker as crate::clone::Clone>::clone_from; Argument[0]; Argument[self].Reference; value |
-| 619 | Summary: lang:core; <crate::task::wake::Waker as crate::clone::Clone>::clone_from; Argument[0]; Argument[self].Reference; value |
-| 620 | Summary: lang:core; <f128 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 621 | Summary: lang:core; <f128>::clamp; Argument[0]; ReturnValue; value |
-| 622 | Summary: lang:core; <f128>::clamp; Argument[1]; ReturnValue; value |
-| 623 | Summary: lang:core; <f128>::clamp; Argument[self]; ReturnValue; value |
-| 624 | Summary: lang:core; <f128>::maximum; Argument[0]; ReturnValue; value |
-| 625 | Summary: lang:core; <f128>::maximum; Argument[self]; ReturnValue; value |
-| 626 | Summary: lang:core; <f128>::minimum; Argument[0]; ReturnValue; value |
-| 627 | Summary: lang:core; <f128>::minimum; Argument[self]; ReturnValue; value |
-| 628 | Summary: lang:core; <f128>::next_down; Argument[self]; ReturnValue; value |
-| 629 | Summary: lang:core; <f128>::next_up; Argument[self]; ReturnValue; value |
-| 630 | Summary: lang:core; <f16 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 631 | Summary: lang:core; <f16>::clamp; Argument[0]; ReturnValue; value |
-| 632 | Summary: lang:core; <f16>::clamp; Argument[1]; ReturnValue; value |
-| 633 | Summary: lang:core; <f16>::clamp; Argument[self]; ReturnValue; value |
-| 634 | Summary: lang:core; <f16>::maximum; Argument[0]; ReturnValue; value |
-| 635 | Summary: lang:core; <f16>::maximum; Argument[self]; ReturnValue; value |
-| 636 | Summary: lang:core; <f16>::minimum; Argument[0]; ReturnValue; value |
-| 637 | Summary: lang:core; <f16>::minimum; Argument[self]; ReturnValue; value |
-| 638 | Summary: lang:core; <f16>::next_down; Argument[self]; ReturnValue; value |
-| 639 | Summary: lang:core; <f16>::next_up; Argument[self]; ReturnValue; value |
-| 640 | Summary: lang:core; <f32 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 641 | Summary: lang:core; <f32>::clamp; Argument[0]; ReturnValue; value |
-| 642 | Summary: lang:core; <f32>::clamp; Argument[1]; ReturnValue; value |
-| 643 | Summary: lang:core; <f32>::clamp; Argument[self]; ReturnValue; value |
-| 644 | Summary: lang:core; <f32>::maximum; Argument[0]; ReturnValue; value |
-| 645 | Summary: lang:core; <f32>::maximum; Argument[self]; ReturnValue; value |
-| 646 | Summary: lang:core; <f32>::minimum; Argument[0]; ReturnValue; value |
-| 647 | Summary: lang:core; <f32>::minimum; Argument[self]; ReturnValue; value |
-| 648 | Summary: lang:core; <f32>::next_down; Argument[self]; ReturnValue; value |
-| 649 | Summary: lang:core; <f32>::next_up; Argument[self]; ReturnValue; value |
-| 650 | Summary: lang:core; <f64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 651 | Summary: lang:core; <f64>::clamp; Argument[0]; ReturnValue; value |
-| 652 | Summary: lang:core; <f64>::clamp; Argument[1]; ReturnValue; value |
-| 653 | Summary: lang:core; <f64>::clamp; Argument[self]; ReturnValue; value |
-| 654 | Summary: lang:core; <f64>::maximum; Argument[0]; ReturnValue; value |
-| 655 | Summary: lang:core; <f64>::maximum; Argument[self]; ReturnValue; value |
-| 656 | Summary: lang:core; <f64>::minimum; Argument[0]; ReturnValue; value |
-| 657 | Summary: lang:core; <f64>::minimum; Argument[self]; ReturnValue; value |
-| 658 | Summary: lang:core; <f64>::next_down; Argument[self]; ReturnValue; value |
-| 659 | Summary: lang:core; <f64>::next_up; Argument[self]; ReturnValue; value |
-| 660 | Summary: lang:core; <i128 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 661 | Summary: lang:core; <i128>::abs; Argument[self]; ReturnValue; value |
-| 662 | Summary: lang:core; <i128>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 663 | Summary: lang:core; <i128>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 664 | Summary: lang:core; <i128>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 665 | Summary: lang:core; <i128>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
-| 666 | Summary: lang:core; <i128>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
-| 667 | Summary: lang:core; <i128>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
-| 668 | Summary: lang:core; <i128>::saturating_abs; Argument[self]; ReturnValue; value |
-| 669 | Summary: lang:core; <i128>::saturating_div; Argument[self]; ReturnValue; value |
-| 670 | Summary: lang:core; <i128>::strict_abs; Argument[self]; ReturnValue; value |
-| 671 | Summary: lang:core; <i128>::strict_div; Argument[self]; ReturnValue; value |
-| 672 | Summary: lang:core; <i128>::strict_div_euclid; Argument[self]; ReturnValue; value |
-| 673 | Summary: lang:core; <i128>::wrapping_abs; Argument[self]; ReturnValue; value |
-| 674 | Summary: lang:core; <i128>::wrapping_div; Argument[self]; ReturnValue; value |
-| 675 | Summary: lang:core; <i128>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
-| 676 | Summary: lang:core; <i16 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 677 | Summary: lang:core; <i16>::abs; Argument[self]; ReturnValue; value |
-| 678 | Summary: lang:core; <i16>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 679 | Summary: lang:core; <i16>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 680 | Summary: lang:core; <i16>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 681 | Summary: lang:core; <i16>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
-| 682 | Summary: lang:core; <i16>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
-| 683 | Summary: lang:core; <i16>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
-| 684 | Summary: lang:core; <i16>::saturating_abs; Argument[self]; ReturnValue; value |
-| 685 | Summary: lang:core; <i16>::saturating_div; Argument[self]; ReturnValue; value |
-| 686 | Summary: lang:core; <i16>::strict_abs; Argument[self]; ReturnValue; value |
-| 687 | Summary: lang:core; <i16>::strict_div; Argument[self]; ReturnValue; value |
-| 688 | Summary: lang:core; <i16>::strict_div_euclid; Argument[self]; ReturnValue; value |
-| 689 | Summary: lang:core; <i16>::wrapping_abs; Argument[self]; ReturnValue; value |
-| 690 | Summary: lang:core; <i16>::wrapping_div; Argument[self]; ReturnValue; value |
-| 691 | Summary: lang:core; <i16>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
-| 692 | Summary: lang:core; <i32 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 693 | Summary: lang:core; <i32>::abs; Argument[self]; ReturnValue; value |
-| 694 | Summary: lang:core; <i32>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 695 | Summary: lang:core; <i32>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 696 | Summary: lang:core; <i32>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 697 | Summary: lang:core; <i32>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
-| 698 | Summary: lang:core; <i32>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
-| 699 | Summary: lang:core; <i32>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
-| 700 | Summary: lang:core; <i32>::saturating_abs; Argument[self]; ReturnValue; value |
-| 701 | Summary: lang:core; <i32>::saturating_div; Argument[self]; ReturnValue; value |
-| 702 | Summary: lang:core; <i32>::strict_abs; Argument[self]; ReturnValue; value |
-| 703 | Summary: lang:core; <i32>::strict_div; Argument[self]; ReturnValue; value |
-| 704 | Summary: lang:core; <i32>::strict_div_euclid; Argument[self]; ReturnValue; value |
-| 705 | Summary: lang:core; <i32>::wrapping_abs; Argument[self]; ReturnValue; value |
-| 706 | Summary: lang:core; <i32>::wrapping_div; Argument[self]; ReturnValue; value |
-| 707 | Summary: lang:core; <i32>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
-| 708 | Summary: lang:core; <i64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 709 | Summary: lang:core; <i64>::abs; Argument[self]; ReturnValue; value |
-| 710 | Summary: lang:core; <i64>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 711 | Summary: lang:core; <i64>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 712 | Summary: lang:core; <i64>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 713 | Summary: lang:core; <i64>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
-| 714 | Summary: lang:core; <i64>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
-| 715 | Summary: lang:core; <i64>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
-| 716 | Summary: lang:core; <i64>::saturating_abs; Argument[self]; ReturnValue; value |
-| 717 | Summary: lang:core; <i64>::saturating_div; Argument[self]; ReturnValue; value |
-| 718 | Summary: lang:core; <i64>::strict_abs; Argument[self]; ReturnValue; value |
-| 719 | Summary: lang:core; <i64>::strict_div; Argument[self]; ReturnValue; value |
-| 720 | Summary: lang:core; <i64>::strict_div_euclid; Argument[self]; ReturnValue; value |
-| 721 | Summary: lang:core; <i64>::wrapping_abs; Argument[self]; ReturnValue; value |
-| 722 | Summary: lang:core; <i64>::wrapping_div; Argument[self]; ReturnValue; value |
-| 723 | Summary: lang:core; <i64>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
-| 724 | Summary: lang:core; <i8 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 725 | Summary: lang:core; <i8>::abs; Argument[self]; ReturnValue; value |
-| 726 | Summary: lang:core; <i8>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 727 | Summary: lang:core; <i8>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 728 | Summary: lang:core; <i8>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 729 | Summary: lang:core; <i8>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
-| 730 | Summary: lang:core; <i8>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
-| 731 | Summary: lang:core; <i8>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
-| 732 | Summary: lang:core; <i8>::saturating_abs; Argument[self]; ReturnValue; value |
-| 733 | Summary: lang:core; <i8>::saturating_div; Argument[self]; ReturnValue; value |
-| 734 | Summary: lang:core; <i8>::strict_abs; Argument[self]; ReturnValue; value |
-| 735 | Summary: lang:core; <i8>::strict_div; Argument[self]; ReturnValue; value |
-| 736 | Summary: lang:core; <i8>::strict_div_euclid; Argument[self]; ReturnValue; value |
-| 737 | Summary: lang:core; <i8>::wrapping_abs; Argument[self]; ReturnValue; value |
-| 738 | Summary: lang:core; <i8>::wrapping_div; Argument[self]; ReturnValue; value |
-| 739 | Summary: lang:core; <i8>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
-| 740 | Summary: lang:core; <isize as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 741 | Summary: lang:core; <isize>::abs; Argument[self]; ReturnValue; value |
-| 742 | Summary: lang:core; <isize>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 743 | Summary: lang:core; <isize>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 744 | Summary: lang:core; <isize>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 745 | Summary: lang:core; <isize>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
-| 746 | Summary: lang:core; <isize>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
-| 747 | Summary: lang:core; <isize>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
-| 748 | Summary: lang:core; <isize>::saturating_abs; Argument[self]; ReturnValue; value |
-| 749 | Summary: lang:core; <isize>::saturating_div; Argument[self]; ReturnValue; value |
-| 750 | Summary: lang:core; <isize>::strict_abs; Argument[self]; ReturnValue; value |
-| 751 | Summary: lang:core; <isize>::strict_div; Argument[self]; ReturnValue; value |
-| 752 | Summary: lang:core; <isize>::strict_div_euclid; Argument[self]; ReturnValue; value |
-| 753 | Summary: lang:core; <isize>::wrapping_abs; Argument[self]; ReturnValue; value |
-| 754 | Summary: lang:core; <isize>::wrapping_div; Argument[self]; ReturnValue; value |
-| 755 | Summary: lang:core; <isize>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
-| 756 | Summary: lang:core; <str as crate::convert::AsMut>::as_mut; Argument[self]; ReturnValue; value |
-| 757 | Summary: lang:core; <str as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 758 | Summary: lang:core; <str>::as_str; Argument[self]; ReturnValue; value |
-| 759 | Summary: lang:core; <u128 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 760 | Summary: lang:core; <u128>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 761 | Summary: lang:core; <u128>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 762 | Summary: lang:core; <u16 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 763 | Summary: lang:core; <u16>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 764 | Summary: lang:core; <u16>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 765 | Summary: lang:core; <u32 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 766 | Summary: lang:core; <u32>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 767 | Summary: lang:core; <u32>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 768 | Summary: lang:core; <u64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 769 | Summary: lang:core; <u64>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 770 | Summary: lang:core; <u64>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 771 | Summary: lang:core; <u8 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 772 | Summary: lang:core; <u8>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 773 | Summary: lang:core; <u8>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 774 | Summary: lang:core; <usize as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 775 | Summary: lang:core; <usize as crate::slice::index::SliceIndex>::index; Argument[0].Reference.Element; ReturnValue.Reference; value |
-| 776 | Summary: lang:core; <usize as crate::slice::index::SliceIndex>::index_mut; Argument[0].Reference.Element; ReturnValue.Reference; value |
-| 777 | Summary: lang:core; <usize>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 778 | Summary: lang:core; <usize>::next_multiple_of; Argument[self]; ReturnValue; value |
-| 779 | Summary: lang:core; crate::array::drain::drain_array_with; Argument[1].ReturnValue; ReturnValue; value |
-| 780 | Summary: lang:core; crate::cmp::max; Argument[0]; ReturnValue; value |
-| 781 | Summary: lang:core; crate::cmp::max; Argument[1]; ReturnValue; value |
-| 782 | Summary: lang:core; crate::cmp::max_by; Argument[0]; Argument[2].Parameter[1].Reference; value |
-| 783 | Summary: lang:core; crate::cmp::max_by; Argument[0]; ReturnValue; value |
-| 784 | Summary: lang:core; crate::cmp::max_by; Argument[1]; Argument[2].Parameter[0].Reference; value |
-| 785 | Summary: lang:core; crate::cmp::max_by; Argument[1]; ReturnValue; value |
-| 786 | Summary: lang:core; crate::cmp::max_by_key; Argument[0]; Argument[2].Parameter[0].Reference; value |
-| 787 | Summary: lang:core; crate::cmp::max_by_key; Argument[0]; ReturnValue; value |
-| 788 | Summary: lang:core; crate::cmp::max_by_key; Argument[1]; Argument[2].Parameter[0].Reference; value |
-| 789 | Summary: lang:core; crate::cmp::max_by_key; Argument[1]; ReturnValue; value |
-| 790 | Summary: lang:core; crate::cmp::min; Argument[0]; ReturnValue; value |
-| 791 | Summary: lang:core; crate::cmp::min; Argument[1]; ReturnValue; value |
-| 792 | Summary: lang:core; crate::cmp::min_by; Argument[0]; Argument[2].Parameter[1].Reference; value |
-| 793 | Summary: lang:core; crate::cmp::min_by; Argument[0]; ReturnValue; value |
-| 794 | Summary: lang:core; crate::cmp::min_by; Argument[1]; Argument[2].Parameter[0].Reference; value |
-| 795 | Summary: lang:core; crate::cmp::min_by; Argument[1]; ReturnValue; value |
-| 796 | Summary: lang:core; crate::cmp::min_by_key; Argument[0]; Argument[2].Parameter[0].Reference; value |
-| 797 | Summary: lang:core; crate::cmp::min_by_key; Argument[0]; ReturnValue; value |
-| 798 | Summary: lang:core; crate::cmp::min_by_key; Argument[1]; Argument[2].Parameter[0].Reference; value |
-| 799 | Summary: lang:core; crate::cmp::min_by_key; Argument[1]; ReturnValue; value |
-| 800 | Summary: lang:core; crate::cmp::minmax; Argument[0]; ReturnValue.Element; value |
-| 801 | Summary: lang:core; crate::cmp::minmax; Argument[1]; ReturnValue.Element; value |
-| 802 | Summary: lang:core; crate::cmp::minmax_by; Argument[0]; Argument[2].Parameter[1].Reference; value |
-| 803 | Summary: lang:core; crate::cmp::minmax_by; Argument[0]; ReturnValue.Element; value |
-| 804 | Summary: lang:core; crate::cmp::minmax_by; Argument[1]; Argument[2].Parameter[0].Reference; value |
-| 805 | Summary: lang:core; crate::cmp::minmax_by; Argument[1]; ReturnValue.Element; value |
-| 806 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[0]; Argument[2].Parameter[0].Reference; value |
-| 807 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[0]; ReturnValue.Element; value |
-| 808 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[1]; Argument[2].Parameter[0].Reference; value |
-| 809 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[1]; ReturnValue.Element; value |
-| 810 | Summary: lang:core; crate::contracts::build_check_ensures; Argument[0]; ReturnValue; value |
-| 811 | Summary: lang:core; crate::convert::identity; Argument[0]; ReturnValue; value |
-| 812 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
-| 813 | Summary: lang:core; crate::intrinsics::contract_check_ensures; Argument[0]; Argument[1].Parameter[0]; value |
-| 814 | Summary: lang:core; crate::intrinsics::select_unpredictable; Argument[1]; ReturnValue; value |
-| 815 | Summary: lang:core; crate::intrinsics::select_unpredictable; Argument[2]; ReturnValue; value |
-| 816 | Summary: lang:core; crate::iter::traits::iterator::Iterator::collect; Argument[self].Element; ReturnValue.Element; value |
-| 817 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 818 | Summary: lang:core; crate::mem::copy; Argument[0].Reference; ReturnValue; value |
-| 819 | Summary: lang:core; crate::num::flt2dec::strategy::dragon::mul_pow10; Argument[0]; ReturnValue; value |
-| 820 | Summary: lang:core; crate::num::flt2dec::to_exact_exp_str; Argument[5].Element; Argument[0].Parameter[1].Reference; value |
-| 821 | Summary: lang:core; crate::num::flt2dec::to_exact_fixed_str; Argument[4].Element; Argument[0].Parameter[1].Reference; value |
-| 822 | Summary: lang:core; crate::num::flt2dec::to_shortest_exp_str; Argument[5]; Argument[0].Parameter[1]; value |
-| 823 | Summary: lang:core; crate::num::flt2dec::to_shortest_str; Argument[4]; Argument[0].Parameter[1]; value |
-| 824 | Summary: lang:core; crate::panic::abort_unwind; Argument[0].ReturnValue; ReturnValue; value |
-| 825 | Summary: lang:core; crate::ptr::from_mut; Argument[0]; ReturnValue; value |
-| 826 | Summary: lang:core; crate::ptr::from_ref; Argument[0]; ReturnValue; value |
-| 827 | Summary: lang:core; crate::slice::sort::shared::find_existing_run; Argument[1].ReturnValue; ReturnValue.Field[1]; value |
-| 828 | Summary: lang:core; crate::slice::sort::shared::smallsort::sort4_stable; Argument[0].Reference; Argument[2].Parameter[1].Reference; value |
-| 829 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_lower; Argument[0]; ReturnValue.Element; value |
-| 830 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_upper; Argument[0]; ReturnValue.Element; value |
-| 831 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 832 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 833 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 834 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue.Reference; value |
-| 835 | Summary: lang:proc_macro; <&str as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 836 | Summary: lang:proc_macro; <&str as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 837 | Summary: lang:proc_macro; <bool as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 838 | Summary: lang:proc_macro; <bool as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 839 | Summary: lang:proc_macro; <char as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 840 | Summary: lang:proc_macro; <char as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 841 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 842 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 843 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 844 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 845 | Summary: lang:proc_macro; <crate::TokenStream as crate::to_tokens::ToTokens>::into_token_stream; Argument[self]; ReturnValue; value |
-| 846 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 847 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 848 | Summary: lang:proc_macro; <crate::bridge::client::Client as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 849 | Summary: lang:proc_macro; <crate::bridge::client::SourceFile as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
-| 850 | Summary: lang:proc_macro; <crate::bridge::client::TokenStream as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
-| 851 | Summary: lang:proc_macro; <crate::bridge::server::MaybeCrossThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
-| 852 | Summary: lang:proc_macro; <crate::bridge::server::SameThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
-| 853 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::error; Argument[self]; ReturnValue; value |
-| 854 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::help; Argument[self]; ReturnValue; value |
-| 855 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::note; Argument[self]; ReturnValue; value |
-| 856 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_error; Argument[self]; ReturnValue; value |
-| 857 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_help; Argument[self]; ReturnValue; value |
-| 858 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_note; Argument[self]; ReturnValue; value |
-| 859 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_warning; Argument[self]; ReturnValue; value |
-| 860 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::warning; Argument[self]; ReturnValue; value |
-| 861 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 862 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 863 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 864 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 865 | Summary: lang:proc_macro; <crate::vec::Vec as crate::diagnostic::MultiSpan>::into_spans; Argument[self]; ReturnValue; value |
-| 866 | Summary: lang:proc_macro; <u32 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 867 | Summary: lang:proc_macro; <u8 as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 868 | Summary: lang:proc_macro; <u8 as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 869 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 870 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue; value |
-| 871 | Summary: lang:proc_macro; <usize as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 872 | Summary: lang:proc_macro; <usize as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 873 | Summary: lang:proc_macro; <usize as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 874 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1].ReturnValue; ReturnValue; value |
-| 875 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1]; Argument[1].Parameter[0]; value |
-| 876 | Summary: lang:proc_macro; crate::bridge::client::state::with; Argument[0].ReturnValue; ReturnValue; value |
-| 877 | Summary: lang:std; <&[u8] as crate::io::BufRead>::consume; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 878 | Summary: lang:std; <&[u8] as crate::io::BufRead>::fill_buf; Argument[self].Reference; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 879 | Summary: lang:std; <&[u8] as crate::io::Read>::read_buf_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 880 | Summary: lang:std; <&[u8] as crate::io::Read>::read_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 881 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_end; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 882 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_string; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 883 | Summary: lang:std; <&[u8] as crate::io::copy::BufferedReaderSpec>::copy_to; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 884 | Summary: lang:std; <crate::collections::hash::set::SymmetricDifference as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 885 | Summary: lang:std; <crate::collections::hash::set::Union as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 886 | Summary: lang:std; <crate::error::Report>::pretty; Argument[self]; ReturnValue; value |
-| 887 | Summary: lang:std; <crate::error::Report>::show_backtrace; Argument[self]; ReturnValue; value |
-| 888 | Summary: lang:std; <crate::ffi::os_str::OsStr as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 889 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::borrow::Borrow>::borrow; Argument[self].Element; ReturnValue.Reference; value |
-| 890 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 891 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::Deref>::deref; Argument[self].Element; ReturnValue.Reference; value |
-| 892 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::DerefMut>::deref_mut; Argument[self].Element; ReturnValue.Reference; value |
-| 893 | Summary: lang:std; <crate::ffi::os_str::OsString>::as_os_str; Argument[self]; ReturnValue; value |
-| 894 | Summary: lang:std; <crate::fs::DirBuilder as crate::os::unix::fs::DirBuilderExt>::mode; Argument[self]; ReturnValue; value |
-| 895 | Summary: lang:std; <crate::fs::DirBuilder>::recursive; Argument[self]; ReturnValue; value |
-| 896 | Summary: lang:std; <crate::fs::DirEntry as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 897 | Summary: lang:std; <crate::fs::FileTimes as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 898 | Summary: lang:std; <crate::fs::FileTimes>::set_accessed; Argument[self]; ReturnValue; value |
-| 899 | Summary: lang:std; <crate::fs::FileTimes>::set_modified; Argument[self]; ReturnValue; value |
-| 900 | Summary: lang:std; <crate::fs::FileType as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 901 | Summary: lang:std; <crate::fs::Metadata as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 902 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::custom_flags; Argument[self]; ReturnValue; value |
-| 903 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::mode; Argument[self]; ReturnValue; value |
-| 904 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 905 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 906 | Summary: lang:std; <crate::fs::OpenOptions>::append; Argument[self]; ReturnValue; value |
-| 907 | Summary: lang:std; <crate::fs::OpenOptions>::create; Argument[self]; ReturnValue; value |
-| 908 | Summary: lang:std; <crate::fs::OpenOptions>::create_new; Argument[self]; ReturnValue; value |
-| 909 | Summary: lang:std; <crate::fs::OpenOptions>::read; Argument[self]; ReturnValue; value |
-| 910 | Summary: lang:std; <crate::fs::OpenOptions>::truncate; Argument[self]; ReturnValue; value |
-| 911 | Summary: lang:std; <crate::fs::OpenOptions>::write; Argument[self]; ReturnValue; value |
-| 912 | Summary: lang:std; <crate::fs::Permissions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 913 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::error; Argument[self].Field[1]; ReturnValue.Reference; value |
-| 914 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_error; Argument[self].Field[1]; ReturnValue; value |
-| 915 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 916 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[0]; ReturnValue.Field[1]; value |
-| 917 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[1]; ReturnValue.Field[0]; value |
-| 918 | Summary: lang:std; <crate::io::error::Error as crate::convert::From>::from; Argument[0].Field[1]; ReturnValue; value |
-| 919 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 920 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 921 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 922 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 923 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 924 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 925 | Summary: lang:std; <crate::os::fd::owned::BorrowedFd as crate::os::fd::owned::AsFd>::as_fd; Argument[self].Reference; ReturnValue; value |
-| 926 | Summary: lang:std; <crate::os::unix::net::addr::SocketAddr>::new; Argument[0].ReturnValue; ReturnValue; value |
-| 927 | Summary: lang:std; <crate::os::unix::net::datagram::UnixDatagram as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 928 | Summary: lang:std; <crate::os::unix::net::stream::UnixStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 929 | Summary: lang:std; <crate::path::Path as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 930 | Summary: lang:std; <crate::path::PathBuf as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 931 | Summary: lang:std; <crate::path::PathBuf>::as_path; Argument[self]; ReturnValue; value |
-| 932 | Summary: lang:std; <crate::process::Child as crate::os::linux::process::ChildExt>::into_pidfd; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 933 | Summary: lang:std; <crate::process::Command as crate::os::linux::process::CommandExt>::create_pidfd; Argument[self]; ReturnValue; value |
-| 934 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::arg0; Argument[self]; ReturnValue; value |
-| 935 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::gid; Argument[self]; ReturnValue; value |
-| 936 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::groups; Argument[self]; ReturnValue; value |
-| 937 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::pre_exec; Argument[self]; ReturnValue; value |
-| 938 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::process_group; Argument[self]; ReturnValue; value |
-| 939 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::uid; Argument[self]; ReturnValue; value |
-| 940 | Summary: lang:std; <crate::process::Command>::arg; Argument[self]; ReturnValue; value |
-| 941 | Summary: lang:std; <crate::process::Command>::args; Argument[self]; ReturnValue; value |
-| 942 | Summary: lang:std; <crate::process::Command>::current_dir; Argument[self]; ReturnValue; value |
-| 943 | Summary: lang:std; <crate::process::Command>::env; Argument[self]; ReturnValue; value |
-| 944 | Summary: lang:std; <crate::process::Command>::env_clear; Argument[self]; ReturnValue; value |
-| 945 | Summary: lang:std; <crate::process::Command>::env_remove; Argument[self]; ReturnValue; value |
-| 946 | Summary: lang:std; <crate::process::Command>::envs; Argument[self]; ReturnValue; value |
-| 947 | Summary: lang:std; <crate::process::Command>::stderr; Argument[self]; ReturnValue; value |
-| 948 | Summary: lang:std; <crate::process::Command>::stdin; Argument[self]; ReturnValue; value |
-| 949 | Summary: lang:std; <crate::process::Command>::stdout; Argument[self]; ReturnValue; value |
-| 950 | Summary: lang:std; <crate::process::ExitCode as crate::process::Termination>::report; Argument[self]; ReturnValue; value |
-| 951 | Summary: lang:std; <crate::process::ExitCode as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 952 | Summary: lang:std; <crate::process::ExitStatus as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 953 | Summary: lang:std; <crate::sync::barrier::BarrierWaitResult>::is_leader; Argument[self].Field[0]; ReturnValue; value |
-| 954 | Summary: lang:std; <crate::sync::mpmc::array::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 955 | Summary: lang:std; <crate::sync::mpmc::list::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 956 | Summary: lang:std; <crate::sync::mpmc::zero::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 957 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::set; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 958 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::try_insert; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)].Field[1]; value |
-| 959 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 960 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
-| 961 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_ms; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
-| 962 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0].Reference; Argument[2].Parameter[0].Reference; value |
-| 963 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
-| 964 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0].Reference; Argument[1].Parameter[0].Reference; value |
-| 965 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 966 | Summary: lang:std; <crate::sync::poison::condvar::WaitTimeoutResult>::timed_out; Argument[self].Field[0]; ReturnValue; value |
-| 967 | Summary: lang:std; <crate::sync::poison::mutex::MappedMutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 968 | Summary: lang:std; <crate::sync::poison::mutex::MutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 969 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 970 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 971 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 972 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 973 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 974 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 975 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 976 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 977 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 978 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 979 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 980 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 981 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 982 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 983 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 984 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 985 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 986 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 987 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 988 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 989 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 990 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 991 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe>::as_file_desc; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 992 | Summary: lang:std; <crate::sys::pal::unix::process::process_inner::ExitStatus>::into_raw; Argument[self].Field[0]; ReturnValue; value |
-| 993 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8 as crate::ops::index::Index>::index; Argument[self]; ReturnValue; value |
-| 994 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8Buf>::into_string; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 995 | Summary: lang:std; <crate::thread::Builder>::name; Argument[self]; ReturnValue; value |
-| 996 | Summary: lang:std; <crate::thread::Builder>::no_hooks; Argument[self]; ReturnValue; value |
-| 997 | Summary: lang:std; <crate::thread::Builder>::stack_size; Argument[self]; ReturnValue; value |
-| 998 | Summary: lang:std; <crate::thread::ThreadId>::as_u64; Argument[self].Field[0]; ReturnValue; value |
-| 999 | Summary: lang:std; <crate::thread::local::LocalKey>::try_with; Argument[0].ReturnValue; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 1000 | Summary: lang:std; <crate::thread::local::LocalKey>::with; Argument[0].ReturnValue; ReturnValue; value |
-| 1001 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow; Argument[0].ReturnValue; ReturnValue; value |
-| 1002 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow_mut; Argument[0].ReturnValue; ReturnValue; value |
-| 1003 | Summary: lang:std; <crate::time::SystemTime as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 1004 | Summary: lang:std; <crate::time::SystemTimeError>::duration; Argument[self].Field[0]; ReturnValue; value |
-| 1005 | Summary: lang:std; <i32 as crate::os::fd::raw::AsRawFd>::as_raw_fd; Argument[self].Reference; ReturnValue; value |
-| 1006 | Summary: lang:std; <i32 as crate::os::fd::raw::FromRawFd>::from_raw_fd; Argument[0]; ReturnValue; value |
-| 1007 | Summary: lang:std; <i32 as crate::os::fd::raw::IntoRawFd>::into_raw_fd; Argument[self]; ReturnValue; value |
-| 1008 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::as_str; Argument[self].Field[0]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 1009 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::get; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 1010 | Summary: lang:std; <{292}::RewrapBox as crate::panic::PanicPayload>::get; Argument[self].Field[0].Reference; ReturnValue.Reference; value |
-| 1011 | Summary: lang:std; crate::backtrace::helper::lazy_resolve; Argument[0]; ReturnValue; value |
-| 1012 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue.Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1013 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue; ReturnValue; value |
-| 1014 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 1015 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 1016 | Summary: lang:std; crate::io::default_read_vectored; Argument[0].ReturnValue; ReturnValue; value |
-| 1017 | Summary: lang:std; crate::io::default_write_vectored; Argument[0].ReturnValue; ReturnValue; value |
-| 1018 | Summary: lang:std; crate::sys::backtrace::__rust_begin_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
-| 1019 | Summary: lang:std; crate::sys::backtrace::__rust_end_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
-| 1020 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_path_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
-| 1021 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
-| 1022 | Summary: lang:std; crate::sys::pal::unix::cvt; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 1023 | Summary: lang:std; crate::sys_common::ignore_notfound; Argument[0].Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1024 | Summary: lang:std; crate::thread::current::set_current; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1025 | Summary: lang:std; crate::thread::current::try_with_current; Argument[0].ReturnValue; ReturnValue; value |
-| 1026 | Summary: lang:std; crate::thread::with_current_name; Argument[0].ReturnValue; ReturnValue; value |
+| 603 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect; Argument[self].Element; ReturnValue.Element; value |
+| 604 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 605 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; Argument[1].Parameter[0]; value |
+| 606 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
+| 607 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 608 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 609 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 610 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 611 | Summary: lang:core; <crate::slice::iter::IterMut as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 612 | Summary: lang:core; <crate::slice::iter::IterMut as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; Argument[1].Parameter[0]; value |
+| 613 | Summary: lang:core; <crate::slice::iter::IterMut as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
+| 614 | Summary: lang:core; <crate::str::LinesMap as crate::ops::function::Fn>::call; Argument[0].Field[0]; ReturnValue; value |
+| 615 | Summary: lang:core; <crate::str::iter::EscapeDebug as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 616 | Summary: lang:core; <crate::str::iter::EscapeDebug as crate::iter::traits::iterator::Iterator>::try_fold; Argument[0]; ReturnValue; value |
+| 617 | Summary: lang:core; <crate::str::iter::EscapeDefault as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 618 | Summary: lang:core; <crate::str::iter::EscapeDefault as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
+| 619 | Summary: lang:core; <crate::str::iter::EscapeUnicode as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 620 | Summary: lang:core; <crate::str::iter::EscapeUnicode as crate::iter::traits::iterator::Iterator>::fold; Argument[1].ReturnValue; ReturnValue; value |
+| 621 | Summary: lang:core; <crate::str::pattern::MatchOnly as crate::str::pattern::TwoWayStrategy>::matching; Argument[0]; ReturnValue.Field[crate::option::Option::Some(0)].Field[0]; value |
+| 622 | Summary: lang:core; <crate::str::pattern::MatchOnly as crate::str::pattern::TwoWayStrategy>::matching; Argument[1]; ReturnValue.Field[crate::option::Option::Some(0)].Field[1]; value |
+| 623 | Summary: lang:core; <crate::task::wake::LocalWaker as crate::clone::Clone>::clone_from; Argument[0]; Argument[self].Reference; value |
+| 624 | Summary: lang:core; <crate::task::wake::Waker as crate::clone::Clone>::clone_from; Argument[0]; Argument[self].Reference; value |
+| 625 | Summary: lang:core; <f128 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 626 | Summary: lang:core; <f128>::clamp; Argument[0]; ReturnValue; value |
+| 627 | Summary: lang:core; <f128>::clamp; Argument[1]; ReturnValue; value |
+| 628 | Summary: lang:core; <f128>::clamp; Argument[self]; ReturnValue; value |
+| 629 | Summary: lang:core; <f128>::maximum; Argument[0]; ReturnValue; value |
+| 630 | Summary: lang:core; <f128>::maximum; Argument[self]; ReturnValue; value |
+| 631 | Summary: lang:core; <f128>::minimum; Argument[0]; ReturnValue; value |
+| 632 | Summary: lang:core; <f128>::minimum; Argument[self]; ReturnValue; value |
+| 633 | Summary: lang:core; <f128>::next_down; Argument[self]; ReturnValue; value |
+| 634 | Summary: lang:core; <f128>::next_up; Argument[self]; ReturnValue; value |
+| 635 | Summary: lang:core; <f16 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 636 | Summary: lang:core; <f16>::clamp; Argument[0]; ReturnValue; value |
+| 637 | Summary: lang:core; <f16>::clamp; Argument[1]; ReturnValue; value |
+| 638 | Summary: lang:core; <f16>::clamp; Argument[self]; ReturnValue; value |
+| 639 | Summary: lang:core; <f16>::maximum; Argument[0]; ReturnValue; value |
+| 640 | Summary: lang:core; <f16>::maximum; Argument[self]; ReturnValue; value |
+| 641 | Summary: lang:core; <f16>::minimum; Argument[0]; ReturnValue; value |
+| 642 | Summary: lang:core; <f16>::minimum; Argument[self]; ReturnValue; value |
+| 643 | Summary: lang:core; <f16>::next_down; Argument[self]; ReturnValue; value |
+| 644 | Summary: lang:core; <f16>::next_up; Argument[self]; ReturnValue; value |
+| 645 | Summary: lang:core; <f32 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 646 | Summary: lang:core; <f32>::clamp; Argument[0]; ReturnValue; value |
+| 647 | Summary: lang:core; <f32>::clamp; Argument[1]; ReturnValue; value |
+| 648 | Summary: lang:core; <f32>::clamp; Argument[self]; ReturnValue; value |
+| 649 | Summary: lang:core; <f32>::maximum; Argument[0]; ReturnValue; value |
+| 650 | Summary: lang:core; <f32>::maximum; Argument[self]; ReturnValue; value |
+| 651 | Summary: lang:core; <f32>::minimum; Argument[0]; ReturnValue; value |
+| 652 | Summary: lang:core; <f32>::minimum; Argument[self]; ReturnValue; value |
+| 653 | Summary: lang:core; <f32>::next_down; Argument[self]; ReturnValue; value |
+| 654 | Summary: lang:core; <f32>::next_up; Argument[self]; ReturnValue; value |
+| 655 | Summary: lang:core; <f64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 656 | Summary: lang:core; <f64>::clamp; Argument[0]; ReturnValue; value |
+| 657 | Summary: lang:core; <f64>::clamp; Argument[1]; ReturnValue; value |
+| 658 | Summary: lang:core; <f64>::clamp; Argument[self]; ReturnValue; value |
+| 659 | Summary: lang:core; <f64>::maximum; Argument[0]; ReturnValue; value |
+| 660 | Summary: lang:core; <f64>::maximum; Argument[self]; ReturnValue; value |
+| 661 | Summary: lang:core; <f64>::minimum; Argument[0]; ReturnValue; value |
+| 662 | Summary: lang:core; <f64>::minimum; Argument[self]; ReturnValue; value |
+| 663 | Summary: lang:core; <f64>::next_down; Argument[self]; ReturnValue; value |
+| 664 | Summary: lang:core; <f64>::next_up; Argument[self]; ReturnValue; value |
+| 665 | Summary: lang:core; <i128 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 666 | Summary: lang:core; <i128>::abs; Argument[self]; ReturnValue; value |
+| 667 | Summary: lang:core; <i128>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 668 | Summary: lang:core; <i128>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 669 | Summary: lang:core; <i128>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 670 | Summary: lang:core; <i128>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
+| 671 | Summary: lang:core; <i128>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
+| 672 | Summary: lang:core; <i128>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
+| 673 | Summary: lang:core; <i128>::saturating_abs; Argument[self]; ReturnValue; value |
+| 674 | Summary: lang:core; <i128>::saturating_div; Argument[self]; ReturnValue; value |
+| 675 | Summary: lang:core; <i128>::strict_abs; Argument[self]; ReturnValue; value |
+| 676 | Summary: lang:core; <i128>::strict_div; Argument[self]; ReturnValue; value |
+| 677 | Summary: lang:core; <i128>::strict_div_euclid; Argument[self]; ReturnValue; value |
+| 678 | Summary: lang:core; <i128>::wrapping_abs; Argument[self]; ReturnValue; value |
+| 679 | Summary: lang:core; <i128>::wrapping_div; Argument[self]; ReturnValue; value |
+| 680 | Summary: lang:core; <i128>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
+| 681 | Summary: lang:core; <i16 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 682 | Summary: lang:core; <i16>::abs; Argument[self]; ReturnValue; value |
+| 683 | Summary: lang:core; <i16>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 684 | Summary: lang:core; <i16>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 685 | Summary: lang:core; <i16>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 686 | Summary: lang:core; <i16>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
+| 687 | Summary: lang:core; <i16>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
+| 688 | Summary: lang:core; <i16>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
+| 689 | Summary: lang:core; <i16>::saturating_abs; Argument[self]; ReturnValue; value |
+| 690 | Summary: lang:core; <i16>::saturating_div; Argument[self]; ReturnValue; value |
+| 691 | Summary: lang:core; <i16>::strict_abs; Argument[self]; ReturnValue; value |
+| 692 | Summary: lang:core; <i16>::strict_div; Argument[self]; ReturnValue; value |
+| 693 | Summary: lang:core; <i16>::strict_div_euclid; Argument[self]; ReturnValue; value |
+| 694 | Summary: lang:core; <i16>::wrapping_abs; Argument[self]; ReturnValue; value |
+| 695 | Summary: lang:core; <i16>::wrapping_div; Argument[self]; ReturnValue; value |
+| 696 | Summary: lang:core; <i16>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
+| 697 | Summary: lang:core; <i32 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 698 | Summary: lang:core; <i32>::abs; Argument[self]; ReturnValue; value |
+| 699 | Summary: lang:core; <i32>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 700 | Summary: lang:core; <i32>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 701 | Summary: lang:core; <i32>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 702 | Summary: lang:core; <i32>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
+| 703 | Summary: lang:core; <i32>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
+| 704 | Summary: lang:core; <i32>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
+| 705 | Summary: lang:core; <i32>::saturating_abs; Argument[self]; ReturnValue; value |
+| 706 | Summary: lang:core; <i32>::saturating_div; Argument[self]; ReturnValue; value |
+| 707 | Summary: lang:core; <i32>::strict_abs; Argument[self]; ReturnValue; value |
+| 708 | Summary: lang:core; <i32>::strict_div; Argument[self]; ReturnValue; value |
+| 709 | Summary: lang:core; <i32>::strict_div_euclid; Argument[self]; ReturnValue; value |
+| 710 | Summary: lang:core; <i32>::wrapping_abs; Argument[self]; ReturnValue; value |
+| 711 | Summary: lang:core; <i32>::wrapping_div; Argument[self]; ReturnValue; value |
+| 712 | Summary: lang:core; <i32>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
+| 713 | Summary: lang:core; <i64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 714 | Summary: lang:core; <i64>::abs; Argument[self]; ReturnValue; value |
+| 715 | Summary: lang:core; <i64>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 716 | Summary: lang:core; <i64>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 717 | Summary: lang:core; <i64>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 718 | Summary: lang:core; <i64>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
+| 719 | Summary: lang:core; <i64>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
+| 720 | Summary: lang:core; <i64>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
+| 721 | Summary: lang:core; <i64>::saturating_abs; Argument[self]; ReturnValue; value |
+| 722 | Summary: lang:core; <i64>::saturating_div; Argument[self]; ReturnValue; value |
+| 723 | Summary: lang:core; <i64>::strict_abs; Argument[self]; ReturnValue; value |
+| 724 | Summary: lang:core; <i64>::strict_div; Argument[self]; ReturnValue; value |
+| 725 | Summary: lang:core; <i64>::strict_div_euclid; Argument[self]; ReturnValue; value |
+| 726 | Summary: lang:core; <i64>::wrapping_abs; Argument[self]; ReturnValue; value |
+| 727 | Summary: lang:core; <i64>::wrapping_div; Argument[self]; ReturnValue; value |
+| 728 | Summary: lang:core; <i64>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
+| 729 | Summary: lang:core; <i8 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 730 | Summary: lang:core; <i8>::abs; Argument[self]; ReturnValue; value |
+| 731 | Summary: lang:core; <i8>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 732 | Summary: lang:core; <i8>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 733 | Summary: lang:core; <i8>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 734 | Summary: lang:core; <i8>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
+| 735 | Summary: lang:core; <i8>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
+| 736 | Summary: lang:core; <i8>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
+| 737 | Summary: lang:core; <i8>::saturating_abs; Argument[self]; ReturnValue; value |
+| 738 | Summary: lang:core; <i8>::saturating_div; Argument[self]; ReturnValue; value |
+| 739 | Summary: lang:core; <i8>::strict_abs; Argument[self]; ReturnValue; value |
+| 740 | Summary: lang:core; <i8>::strict_div; Argument[self]; ReturnValue; value |
+| 741 | Summary: lang:core; <i8>::strict_div_euclid; Argument[self]; ReturnValue; value |
+| 742 | Summary: lang:core; <i8>::wrapping_abs; Argument[self]; ReturnValue; value |
+| 743 | Summary: lang:core; <i8>::wrapping_div; Argument[self]; ReturnValue; value |
+| 744 | Summary: lang:core; <i8>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
+| 745 | Summary: lang:core; <isize as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 746 | Summary: lang:core; <isize>::abs; Argument[self]; ReturnValue; value |
+| 747 | Summary: lang:core; <isize>::checked_abs; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 748 | Summary: lang:core; <isize>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 749 | Summary: lang:core; <isize>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 750 | Summary: lang:core; <isize>::overflowing_abs; Argument[self]; ReturnValue.Field[0]; value |
+| 751 | Summary: lang:core; <isize>::overflowing_div; Argument[self]; ReturnValue.Field[0]; value |
+| 752 | Summary: lang:core; <isize>::overflowing_div_euclid; Argument[self]; ReturnValue.Field[0]; value |
+| 753 | Summary: lang:core; <isize>::saturating_abs; Argument[self]; ReturnValue; value |
+| 754 | Summary: lang:core; <isize>::saturating_div; Argument[self]; ReturnValue; value |
+| 755 | Summary: lang:core; <isize>::strict_abs; Argument[self]; ReturnValue; value |
+| 756 | Summary: lang:core; <isize>::strict_div; Argument[self]; ReturnValue; value |
+| 757 | Summary: lang:core; <isize>::strict_div_euclid; Argument[self]; ReturnValue; value |
+| 758 | Summary: lang:core; <isize>::wrapping_abs; Argument[self]; ReturnValue; value |
+| 759 | Summary: lang:core; <isize>::wrapping_div; Argument[self]; ReturnValue; value |
+| 760 | Summary: lang:core; <isize>::wrapping_div_euclid; Argument[self]; ReturnValue; value |
+| 761 | Summary: lang:core; <str as crate::convert::AsMut>::as_mut; Argument[self]; ReturnValue; value |
+| 762 | Summary: lang:core; <str as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 763 | Summary: lang:core; <str>::as_str; Argument[self]; ReturnValue; value |
+| 764 | Summary: lang:core; <u128 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 765 | Summary: lang:core; <u128>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 766 | Summary: lang:core; <u128>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 767 | Summary: lang:core; <u16 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 768 | Summary: lang:core; <u16>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 769 | Summary: lang:core; <u16>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 770 | Summary: lang:core; <u32 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 771 | Summary: lang:core; <u32>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 772 | Summary: lang:core; <u32>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 773 | Summary: lang:core; <u64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 774 | Summary: lang:core; <u64>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 775 | Summary: lang:core; <u64>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 776 | Summary: lang:core; <u8 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 777 | Summary: lang:core; <u8>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 778 | Summary: lang:core; <u8>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 779 | Summary: lang:core; <usize as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 780 | Summary: lang:core; <usize as crate::slice::index::SliceIndex>::index; Argument[0].Reference.Element; ReturnValue.Reference; value |
+| 781 | Summary: lang:core; <usize as crate::slice::index::SliceIndex>::index_mut; Argument[0].Reference.Element; ReturnValue.Reference; value |
+| 782 | Summary: lang:core; <usize>::checked_next_multiple_of; Argument[self]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 783 | Summary: lang:core; <usize>::next_multiple_of; Argument[self]; ReturnValue; value |
+| 784 | Summary: lang:core; crate::array::drain::drain_array_with; Argument[1].ReturnValue; ReturnValue; value |
+| 785 | Summary: lang:core; crate::cmp::max; Argument[0]; ReturnValue; value |
+| 786 | Summary: lang:core; crate::cmp::max; Argument[1]; ReturnValue; value |
+| 787 | Summary: lang:core; crate::cmp::max_by; Argument[0]; Argument[2].Parameter[1].Reference; value |
+| 788 | Summary: lang:core; crate::cmp::max_by; Argument[0]; ReturnValue; value |
+| 789 | Summary: lang:core; crate::cmp::max_by; Argument[1]; Argument[2].Parameter[0].Reference; value |
+| 790 | Summary: lang:core; crate::cmp::max_by; Argument[1]; ReturnValue; value |
+| 791 | Summary: lang:core; crate::cmp::max_by_key; Argument[0]; Argument[2].Parameter[0].Reference; value |
+| 792 | Summary: lang:core; crate::cmp::max_by_key; Argument[0]; ReturnValue; value |
+| 793 | Summary: lang:core; crate::cmp::max_by_key; Argument[1]; Argument[2].Parameter[0].Reference; value |
+| 794 | Summary: lang:core; crate::cmp::max_by_key; Argument[1]; ReturnValue; value |
+| 795 | Summary: lang:core; crate::cmp::min; Argument[0]; ReturnValue; value |
+| 796 | Summary: lang:core; crate::cmp::min; Argument[1]; ReturnValue; value |
+| 797 | Summary: lang:core; crate::cmp::min_by; Argument[0]; Argument[2].Parameter[1].Reference; value |
+| 798 | Summary: lang:core; crate::cmp::min_by; Argument[0]; ReturnValue; value |
+| 799 | Summary: lang:core; crate::cmp::min_by; Argument[1]; Argument[2].Parameter[0].Reference; value |
+| 800 | Summary: lang:core; crate::cmp::min_by; Argument[1]; ReturnValue; value |
+| 801 | Summary: lang:core; crate::cmp::min_by_key; Argument[0]; Argument[2].Parameter[0].Reference; value |
+| 802 | Summary: lang:core; crate::cmp::min_by_key; Argument[0]; ReturnValue; value |
+| 803 | Summary: lang:core; crate::cmp::min_by_key; Argument[1]; Argument[2].Parameter[0].Reference; value |
+| 804 | Summary: lang:core; crate::cmp::min_by_key; Argument[1]; ReturnValue; value |
+| 805 | Summary: lang:core; crate::cmp::minmax; Argument[0]; ReturnValue.Element; value |
+| 806 | Summary: lang:core; crate::cmp::minmax; Argument[1]; ReturnValue.Element; value |
+| 807 | Summary: lang:core; crate::cmp::minmax_by; Argument[0]; Argument[2].Parameter[1].Reference; value |
+| 808 | Summary: lang:core; crate::cmp::minmax_by; Argument[0]; ReturnValue.Element; value |
+| 809 | Summary: lang:core; crate::cmp::minmax_by; Argument[1]; Argument[2].Parameter[0].Reference; value |
+| 810 | Summary: lang:core; crate::cmp::minmax_by; Argument[1]; ReturnValue.Element; value |
+| 811 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[0]; Argument[2].Parameter[0].Reference; value |
+| 812 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[0]; ReturnValue.Element; value |
+| 813 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[1]; Argument[2].Parameter[0].Reference; value |
+| 814 | Summary: lang:core; crate::cmp::minmax_by_key; Argument[1]; ReturnValue.Element; value |
+| 815 | Summary: lang:core; crate::contracts::build_check_ensures; Argument[0]; ReturnValue; value |
+| 816 | Summary: lang:core; crate::convert::identity; Argument[0]; ReturnValue; value |
+| 817 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
+| 818 | Summary: lang:core; crate::intrinsics::contract_check_ensures; Argument[0]; Argument[1].Parameter[0]; value |
+| 819 | Summary: lang:core; crate::intrinsics::select_unpredictable; Argument[1]; ReturnValue; value |
+| 820 | Summary: lang:core; crate::intrinsics::select_unpredictable; Argument[2]; ReturnValue; value |
+| 821 | Summary: lang:core; crate::iter::traits::iterator::Iterator::collect; Argument[self].Element; ReturnValue.Element; value |
+| 822 | Summary: lang:core; crate::iter::traits::iterator::Iterator::for_each; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 823 | Summary: lang:core; crate::iter::traits::iterator::Iterator::map; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 824 | Summary: lang:core; crate::iter::traits::iterator::Iterator::next; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 825 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 826 | Summary: lang:core; crate::mem::copy; Argument[0].Reference; ReturnValue; value |
+| 827 | Summary: lang:core; crate::num::flt2dec::strategy::dragon::mul_pow10; Argument[0]; ReturnValue; value |
+| 828 | Summary: lang:core; crate::num::flt2dec::to_exact_exp_str; Argument[5].Element; Argument[0].Parameter[1].Reference; value |
+| 829 | Summary: lang:core; crate::num::flt2dec::to_exact_fixed_str; Argument[4].Element; Argument[0].Parameter[1].Reference; value |
+| 830 | Summary: lang:core; crate::num::flt2dec::to_shortest_exp_str; Argument[5]; Argument[0].Parameter[1]; value |
+| 831 | Summary: lang:core; crate::num::flt2dec::to_shortest_str; Argument[4]; Argument[0].Parameter[1]; value |
+| 832 | Summary: lang:core; crate::panic::abort_unwind; Argument[0].ReturnValue; ReturnValue; value |
+| 833 | Summary: lang:core; crate::ptr::from_mut; Argument[0]; ReturnValue; value |
+| 834 | Summary: lang:core; crate::ptr::from_ref; Argument[0]; ReturnValue; value |
+| 835 | Summary: lang:core; crate::slice::sort::shared::find_existing_run; Argument[1].ReturnValue; ReturnValue.Field[1]; value |
+| 836 | Summary: lang:core; crate::slice::sort::shared::smallsort::sort4_stable; Argument[0].Reference; Argument[2].Parameter[1].Reference; value |
+| 837 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_lower; Argument[0]; ReturnValue.Element; value |
+| 838 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_upper; Argument[0]; ReturnValue.Element; value |
+| 839 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 840 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 841 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 842 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue.Reference; value |
+| 843 | Summary: lang:proc_macro; <&str as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 844 | Summary: lang:proc_macro; <&str as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 845 | Summary: lang:proc_macro; <bool as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 846 | Summary: lang:proc_macro; <bool as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 847 | Summary: lang:proc_macro; <char as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 848 | Summary: lang:proc_macro; <char as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 849 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 850 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 851 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 852 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 853 | Summary: lang:proc_macro; <crate::TokenStream as crate::to_tokens::ToTokens>::into_token_stream; Argument[self]; ReturnValue; value |
+| 854 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 855 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 856 | Summary: lang:proc_macro; <crate::bridge::client::Client as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 857 | Summary: lang:proc_macro; <crate::bridge::client::SourceFile as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
+| 858 | Summary: lang:proc_macro; <crate::bridge::client::TokenStream as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
+| 859 | Summary: lang:proc_macro; <crate::bridge::server::MaybeCrossThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
+| 860 | Summary: lang:proc_macro; <crate::bridge::server::SameThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
+| 861 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::error; Argument[self]; ReturnValue; value |
+| 862 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::help; Argument[self]; ReturnValue; value |
+| 863 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::note; Argument[self]; ReturnValue; value |
+| 864 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_error; Argument[self]; ReturnValue; value |
+| 865 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_help; Argument[self]; ReturnValue; value |
+| 866 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_note; Argument[self]; ReturnValue; value |
+| 867 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_warning; Argument[self]; ReturnValue; value |
+| 868 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::warning; Argument[self]; ReturnValue; value |
+| 869 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 870 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 871 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 872 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 873 | Summary: lang:proc_macro; <crate::vec::Vec as crate::diagnostic::MultiSpan>::into_spans; Argument[self]; ReturnValue; value |
+| 874 | Summary: lang:proc_macro; <u32 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 875 | Summary: lang:proc_macro; <u8 as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 876 | Summary: lang:proc_macro; <u8 as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 877 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 878 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue; value |
+| 879 | Summary: lang:proc_macro; <usize as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 880 | Summary: lang:proc_macro; <usize as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 881 | Summary: lang:proc_macro; <usize as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 882 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1].ReturnValue; ReturnValue; value |
+| 883 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1]; Argument[1].Parameter[0]; value |
+| 884 | Summary: lang:proc_macro; crate::bridge::client::state::with; Argument[0].ReturnValue; ReturnValue; value |
+| 885 | Summary: lang:std; <&[u8] as crate::io::BufRead>::consume; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 886 | Summary: lang:std; <&[u8] as crate::io::BufRead>::fill_buf; Argument[self].Reference; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 887 | Summary: lang:std; <&[u8] as crate::io::Read>::read_buf_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 888 | Summary: lang:std; <&[u8] as crate::io::Read>::read_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 889 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_end; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 890 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_string; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 891 | Summary: lang:std; <&[u8] as crate::io::copy::BufferedReaderSpec>::copy_to; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 892 | Summary: lang:std; <crate::collections::hash::set::SymmetricDifference as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 893 | Summary: lang:std; <crate::collections::hash::set::Union as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 894 | Summary: lang:std; <crate::error::Report>::pretty; Argument[self]; ReturnValue; value |
+| 895 | Summary: lang:std; <crate::error::Report>::show_backtrace; Argument[self]; ReturnValue; value |
+| 896 | Summary: lang:std; <crate::ffi::os_str::OsStr as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 897 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::borrow::Borrow>::borrow; Argument[self].Element; ReturnValue.Reference; value |
+| 898 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 899 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::Deref>::deref; Argument[self].Element; ReturnValue.Reference; value |
+| 900 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::DerefMut>::deref_mut; Argument[self].Element; ReturnValue.Reference; value |
+| 901 | Summary: lang:std; <crate::ffi::os_str::OsString>::as_os_str; Argument[self]; ReturnValue; value |
+| 902 | Summary: lang:std; <crate::fs::DirBuilder as crate::os::unix::fs::DirBuilderExt>::mode; Argument[self]; ReturnValue; value |
+| 903 | Summary: lang:std; <crate::fs::DirBuilder>::recursive; Argument[self]; ReturnValue; value |
+| 904 | Summary: lang:std; <crate::fs::DirEntry as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 905 | Summary: lang:std; <crate::fs::FileTimes as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 906 | Summary: lang:std; <crate::fs::FileTimes>::set_accessed; Argument[self]; ReturnValue; value |
+| 907 | Summary: lang:std; <crate::fs::FileTimes>::set_modified; Argument[self]; ReturnValue; value |
+| 908 | Summary: lang:std; <crate::fs::FileType as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 909 | Summary: lang:std; <crate::fs::Metadata as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 910 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::custom_flags; Argument[self]; ReturnValue; value |
+| 911 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::mode; Argument[self]; ReturnValue; value |
+| 912 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 913 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 914 | Summary: lang:std; <crate::fs::OpenOptions>::append; Argument[self]; ReturnValue; value |
+| 915 | Summary: lang:std; <crate::fs::OpenOptions>::create; Argument[self]; ReturnValue; value |
+| 916 | Summary: lang:std; <crate::fs::OpenOptions>::create_new; Argument[self]; ReturnValue; value |
+| 917 | Summary: lang:std; <crate::fs::OpenOptions>::read; Argument[self]; ReturnValue; value |
+| 918 | Summary: lang:std; <crate::fs::OpenOptions>::truncate; Argument[self]; ReturnValue; value |
+| 919 | Summary: lang:std; <crate::fs::OpenOptions>::write; Argument[self]; ReturnValue; value |
+| 920 | Summary: lang:std; <crate::fs::Permissions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 921 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::error; Argument[self].Field[1]; ReturnValue.Reference; value |
+| 922 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_error; Argument[self].Field[1]; ReturnValue; value |
+| 923 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 924 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[0]; ReturnValue.Field[1]; value |
+| 925 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[1]; ReturnValue.Field[0]; value |
+| 926 | Summary: lang:std; <crate::io::error::Error as crate::convert::From>::from; Argument[0].Field[1]; ReturnValue; value |
+| 927 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 928 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 929 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 930 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 931 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 932 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 933 | Summary: lang:std; <crate::os::fd::owned::BorrowedFd as crate::os::fd::owned::AsFd>::as_fd; Argument[self].Reference; ReturnValue; value |
+| 934 | Summary: lang:std; <crate::os::unix::net::addr::SocketAddr>::new; Argument[0].ReturnValue; ReturnValue; value |
+| 935 | Summary: lang:std; <crate::os::unix::net::datagram::UnixDatagram as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 936 | Summary: lang:std; <crate::os::unix::net::stream::UnixStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 937 | Summary: lang:std; <crate::path::Path as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 938 | Summary: lang:std; <crate::path::PathBuf as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 939 | Summary: lang:std; <crate::path::PathBuf>::as_path; Argument[self]; ReturnValue; value |
+| 940 | Summary: lang:std; <crate::process::Child as crate::os::linux::process::ChildExt>::into_pidfd; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 941 | Summary: lang:std; <crate::process::Command as crate::os::linux::process::CommandExt>::create_pidfd; Argument[self]; ReturnValue; value |
+| 942 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::arg0; Argument[self]; ReturnValue; value |
+| 943 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::gid; Argument[self]; ReturnValue; value |
+| 944 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::groups; Argument[self]; ReturnValue; value |
+| 945 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::pre_exec; Argument[self]; ReturnValue; value |
+| 946 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::process_group; Argument[self]; ReturnValue; value |
+| 947 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::uid; Argument[self]; ReturnValue; value |
+| 948 | Summary: lang:std; <crate::process::Command>::arg; Argument[self]; ReturnValue; value |
+| 949 | Summary: lang:std; <crate::process::Command>::args; Argument[self]; ReturnValue; value |
+| 950 | Summary: lang:std; <crate::process::Command>::current_dir; Argument[self]; ReturnValue; value |
+| 951 | Summary: lang:std; <crate::process::Command>::env; Argument[self]; ReturnValue; value |
+| 952 | Summary: lang:std; <crate::process::Command>::env_clear; Argument[self]; ReturnValue; value |
+| 953 | Summary: lang:std; <crate::process::Command>::env_remove; Argument[self]; ReturnValue; value |
+| 954 | Summary: lang:std; <crate::process::Command>::envs; Argument[self]; ReturnValue; value |
+| 955 | Summary: lang:std; <crate::process::Command>::stderr; Argument[self]; ReturnValue; value |
+| 956 | Summary: lang:std; <crate::process::Command>::stdin; Argument[self]; ReturnValue; value |
+| 957 | Summary: lang:std; <crate::process::Command>::stdout; Argument[self]; ReturnValue; value |
+| 958 | Summary: lang:std; <crate::process::ExitCode as crate::process::Termination>::report; Argument[self]; ReturnValue; value |
+| 959 | Summary: lang:std; <crate::process::ExitCode as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 960 | Summary: lang:std; <crate::process::ExitStatus as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 961 | Summary: lang:std; <crate::sync::barrier::BarrierWaitResult>::is_leader; Argument[self].Field[0]; ReturnValue; value |
+| 962 | Summary: lang:std; <crate::sync::mpmc::array::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 963 | Summary: lang:std; <crate::sync::mpmc::list::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 964 | Summary: lang:std; <crate::sync::mpmc::zero::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 965 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::set; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 966 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::try_insert; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)].Field[1]; value |
+| 967 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 968 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
+| 969 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_ms; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
+| 970 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0].Reference; Argument[2].Parameter[0].Reference; value |
+| 971 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
+| 972 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0].Reference; Argument[1].Parameter[0].Reference; value |
+| 973 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 974 | Summary: lang:std; <crate::sync::poison::condvar::WaitTimeoutResult>::timed_out; Argument[self].Field[0]; ReturnValue; value |
+| 975 | Summary: lang:std; <crate::sync::poison::mutex::MappedMutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 976 | Summary: lang:std; <crate::sync::poison::mutex::MutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 977 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 978 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 979 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 980 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 981 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 982 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 983 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 984 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 985 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 986 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 987 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 988 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 989 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 990 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 991 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 992 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 993 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 994 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 995 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 996 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 997 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 998 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 999 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe>::as_file_desc; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1000 | Summary: lang:std; <crate::sys::pal::unix::process::process_inner::ExitStatus>::into_raw; Argument[self].Field[0]; ReturnValue; value |
+| 1001 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8 as crate::ops::index::Index>::index; Argument[self]; ReturnValue; value |
+| 1002 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8Buf>::into_string; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1003 | Summary: lang:std; <crate::thread::Builder>::name; Argument[self]; ReturnValue; value |
+| 1004 | Summary: lang:std; <crate::thread::Builder>::no_hooks; Argument[self]; ReturnValue; value |
+| 1005 | Summary: lang:std; <crate::thread::Builder>::stack_size; Argument[self]; ReturnValue; value |
+| 1006 | Summary: lang:std; <crate::thread::ThreadId>::as_u64; Argument[self].Field[0]; ReturnValue; value |
+| 1007 | Summary: lang:std; <crate::thread::local::LocalKey>::try_with; Argument[0].ReturnValue; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 1008 | Summary: lang:std; <crate::thread::local::LocalKey>::with; Argument[0].ReturnValue; ReturnValue; value |
+| 1009 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow; Argument[0].ReturnValue; ReturnValue; value |
+| 1010 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow_mut; Argument[0].ReturnValue; ReturnValue; value |
+| 1011 | Summary: lang:std; <crate::time::SystemTime as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 1012 | Summary: lang:std; <crate::time::SystemTimeError>::duration; Argument[self].Field[0]; ReturnValue; value |
+| 1013 | Summary: lang:std; <i32 as crate::os::fd::raw::AsRawFd>::as_raw_fd; Argument[self].Reference; ReturnValue; value |
+| 1014 | Summary: lang:std; <i32 as crate::os::fd::raw::FromRawFd>::from_raw_fd; Argument[0]; ReturnValue; value |
+| 1015 | Summary: lang:std; <i32 as crate::os::fd::raw::IntoRawFd>::into_raw_fd; Argument[self]; ReturnValue; value |
+| 1016 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::as_str; Argument[self].Field[0]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 1017 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::get; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1018 | Summary: lang:std; <{292}::RewrapBox as crate::panic::PanicPayload>::get; Argument[self].Field[0].Reference; ReturnValue.Reference; value |
+| 1019 | Summary: lang:std; crate::backtrace::helper::lazy_resolve; Argument[0]; ReturnValue; value |
+| 1020 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue.Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1021 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue; ReturnValue; value |
+| 1022 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 1023 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 1024 | Summary: lang:std; crate::io::default_read_vectored; Argument[0].ReturnValue; ReturnValue; value |
+| 1025 | Summary: lang:std; crate::io::default_write_vectored; Argument[0].ReturnValue; ReturnValue; value |
+| 1026 | Summary: lang:std; crate::sys::backtrace::__rust_begin_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
+| 1027 | Summary: lang:std; crate::sys::backtrace::__rust_end_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
+| 1028 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_path_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
+| 1029 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
+| 1030 | Summary: lang:std; crate::sys::pal::unix::cvt; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 1031 | Summary: lang:std; crate::sys_common::ignore_notfound; Argument[0].Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1032 | Summary: lang:std; crate::thread::current::set_current; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1033 | Summary: lang:std; crate::thread::current::try_with_current; Argument[0].ReturnValue; ReturnValue; value |
+| 1034 | Summary: lang:std; crate::thread::with_current_name; Argument[0].ReturnValue; ReturnValue; value |
 storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[0].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | Some | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::<crate::option::Option>::zip_with |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0].Reference in lang:alloc::_::<crate::collections::vec_deque::VecDeque>::retain | &ref | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:alloc::_::<crate::collections::vec_deque::VecDeque>::retain |
@@ -1696,6 +1780,10 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[2].Parameter[1].Reference in lang:core::_::crate::cmp::min_by | &ref | file://:0:0:0:0 | [summary] to write: Argument[2].Parameter[1] in lang:core::_::crate::cmp::min_by |
 | file://:0:0:0:0 | [summary] to write: Argument[2].Parameter[1].Reference in lang:core::_::crate::cmp::minmax_by | &ref | file://:0:0:0:0 | [summary] to write: Argument[2].Parameter[1] in lang:core::_::crate::cmp::minmax_by |
 | file://:0:0:0:0 | [summary] to write: Argument[2].Parameter[1].Reference in lang:core::_::crate::slice::sort::shared::smallsort::sort4_stable | &ref | file://:0:0:0:0 | [summary] to write: Argument[2].Parameter[1] in lang:core::_::crate::slice::sort::shared::smallsort::sort4_stable |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::for_each |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::map | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::map |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::and_then | Some | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::option::Option>::and_then |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::is_none_or | Some | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::option::Option>::is_none_or |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::is_some_and | Some | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::option::Option>::is_some_and |
@@ -1734,6 +1822,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Reference in lang:std::_::<&[u8] as crate::io::Read>::read_to_end | &ref | file://:0:0:0:0 | [summary] to write: Argument[self].Reference in lang:std::_::<&[u8] as crate::io::Read>::read_to_end |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Reference in lang:std::_::<&[u8] as crate::io::Read>::read_to_string | &ref | file://:0:0:0:0 | [summary] to write: Argument[self].Reference in lang:std::_::<&[u8] as crate::io::Read>::read_to_string |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Reference in lang:std::_::<&[u8] as crate::io::copy::BufferedReaderSpec>::copy_to | &ref | file://:0:0:0:0 | [summary] to write: Argument[self].Reference in lang:std::_::<&[u8] as crate::io::copy::BufferedReaderSpec>::copy_to |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::cmp::minmax | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::cmp::minmax |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::cmp::minmax_by | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::cmp::minmax_by |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::cmp::minmax_by_key | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::cmp::minmax_by_key |
@@ -1794,6 +1883,8 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::result::Result>::err | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::err |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::result::Result>::ok | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::ok |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::result::Result>::transpose | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::transpose |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::str::pattern::MatchOnly as crate::str::pattern::TwoWayStrategy>::matching | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::str::pattern::MatchOnly as crate::str::pattern::TwoWayStrategy>::matching |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<i8>::checked_abs | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<i8>::checked_abs |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<i8>::checked_next_multiple_of | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<i8>::checked_next_multiple_of |
@@ -1813,6 +1904,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<u64>::checked_next_multiple_of | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<u64>::checked_next_multiple_of |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<u128>::checked_next_multiple_of | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<u128>::checked_next_multiple_of |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<usize>::checked_next_multiple_of | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<usize>::checked_next_multiple_of |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::next | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::next |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::nth | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::nth |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:std::_::<{287}::StaticStrPayload as crate::panic::PanicPayload>::as_str | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<{287}::StaticStrPayload as crate::panic::PanicPayload>::as_str |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)].Field[0] in lang:core::_::<crate::option::Option>::map | tuple.0 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::map |
@@ -1888,6 +1980,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::map_err | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::map_err |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::or | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::or |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::or_else | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::or_else |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<str>::parse | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<str>::parse |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<&[u8] as crate::io::BufRead>::fill_buf | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<&[u8] as crate::io::BufRead>::fill_buf |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout |
@@ -2060,9 +2153,17 @@ storeStep
 | main.rs:415:30:415:30 | 3 | element | main.rs:415:23:415:31 | [...] |
 | main.rs:418:18:418:27 | source(...) | element | main.rs:418:5:418:11 | [post] mut_arr |
 | main.rs:430:41:430:67 | default_name | captured default_name | main.rs:430:41:430:67 | \|...\| ... |
-| main.rs:452:18:452:18 | c | &ref | main.rs:452:17:452:18 | &c |
-| main.rs:455:15:455:15 | b | &ref | main.rs:455:14:455:15 | &b |
-| main.rs:464:27:464:27 | 0 | Some | main.rs:464:22:464:28 | Some(...) |
+| main.rs:465:15:465:24 | source(...) | element | main.rs:465:14:465:34 | [...] |
+| main.rs:465:27:465:27 | 2 | element | main.rs:465:14:465:34 | [...] |
+| main.rs:465:30:465:30 | 3 | element | main.rs:465:14:465:34 | [...] |
+| main.rs:465:33:465:33 | 4 | element | main.rs:465:14:465:34 | [...] |
+| main.rs:490:23:490:32 | source(...) | element | main.rs:490:22:490:42 | [...] |
+| main.rs:490:35:490:35 | 2 | element | main.rs:490:22:490:42 | [...] |
+| main.rs:490:38:490:38 | 3 | element | main.rs:490:22:490:42 | [...] |
+| main.rs:490:41:490:41 | 4 | element | main.rs:490:22:490:42 | [...] |
+| main.rs:505:18:505:18 | c | &ref | main.rs:505:17:505:18 | &c |
+| main.rs:508:15:508:15 | b | &ref | main.rs:508:14:508:15 | &b |
+| main.rs:517:27:517:27 | 0 | Some | main.rs:517:22:517:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::<crate::boxed::Box>::allocator | tuple.1 | file://:0:0:0:0 | [summary] read: Argument[0].Field[1] in lang:alloc::_::<crate::boxed::Box>::allocator |
 | file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::<crate::boxed::Box>::as_mut_ptr | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:alloc::_::<crate::boxed::Box>::as_mut_ptr |
@@ -2395,6 +2496,11 @@ readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_else | Err | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::result::Result::Err(0)] in lang:core::_::<crate::result::Result>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_else | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_unchecked | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_unchecked |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<f16 as crate::clone::Clone>::clone | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Reference in lang:core::_::<f16 as crate::clone::Clone>::clone |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<f32 as crate::clone::Clone>::clone | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Reference in lang:core::_::<f32 as crate::clone::Clone>::clone |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<f64 as crate::clone::Clone>::clone | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Reference in lang:core::_::<f64 as crate::clone::Clone>::clone |
@@ -2412,6 +2518,9 @@ readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<u128 as crate::clone::Clone>::clone | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Reference in lang:core::_::<u128 as crate::clone::Clone>::clone |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<usize as crate::clone::Clone>::clone | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Reference in lang:core::_::<usize as crate::clone::Clone>::clone |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::collect | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::for_each |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::map | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::map |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::next | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::next |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::nth | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth |
 | file://:0:0:0:0 | [summary param] self in lang:proc_macro::_::<crate::bridge::client::Client as crate::clone::Clone>::clone | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Reference in lang:proc_macro::_::<crate::bridge::client::Client as crate::clone::Clone>::clone |
 | file://:0:0:0:0 | [summary param] self in lang:std::_::<&[u8] as crate::io::BufRead>::consume | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:std::_::<&[u8] as crate::io::BufRead>::consume |
@@ -2668,4 +2777,20 @@ readStep
 | main.rs:428:25:428:29 | names | element | main.rs:428:9:428:20 | TuplePat |
 | main.rs:430:41:430:67 | [post] \|...\| ... | captured default_name | main.rs:430:41:430:67 | [post] default_name |
 | main.rs:430:44:430:55 | this | captured default_name | main.rs:430:44:430:55 | default_name |
-| main.rs:457:11:457:15 | c_ref | &ref | main.rs:457:10:457:15 | * ... |
+| main.rs:467:10:467:11 | vs | element | main.rs:467:10:467:14 | vs[0] |
+| main.rs:468:11:468:35 | ... .unwrap(...) | &ref | main.rs:468:10:468:35 | * ... |
+| main.rs:469:11:469:35 | ... .unwrap(...) | &ref | main.rs:469:10:469:35 | * ... |
+| main.rs:471:14:471:15 | vs | element | main.rs:471:9:471:9 | v |
+| main.rs:474:9:474:10 | &... | &ref | main.rs:474:10:474:10 | v |
+| main.rs:474:15:474:23 | vs.iter(...) | element | main.rs:474:9:474:10 | &... |
+| main.rs:479:9:479:10 | &... | &ref | main.rs:479:10:479:10 | v |
+| main.rs:479:15:479:17 | vs2 | element | main.rs:479:9:479:10 | &... |
+| main.rs:483:29:483:29 | x | &ref | main.rs:483:28:483:29 | * ... |
+| main.rs:484:34:484:34 | x | &ref | main.rs:484:33:484:34 | * ... |
+| main.rs:486:14:486:27 | vs.into_iter(...) | element | main.rs:486:9:486:9 | v |
+| main.rs:492:10:492:15 | vs_mut | element | main.rs:492:10:492:18 | vs_mut[0] |
+| main.rs:493:11:493:39 | ... .unwrap(...) | &ref | main.rs:493:10:493:39 | * ... |
+| main.rs:494:11:494:39 | ... .unwrap(...) | &ref | main.rs:494:10:494:39 | * ... |
+| main.rs:496:9:496:14 | &mut ... | &ref | main.rs:496:14:496:14 | v |
+| main.rs:496:19:496:35 | vs_mut.iter_mut(...) | element | main.rs:496:9:496:14 | &mut ... |
+| main.rs:510:11:510:15 | c_ref | &ref | main.rs:510:10:510:15 | * ... |
