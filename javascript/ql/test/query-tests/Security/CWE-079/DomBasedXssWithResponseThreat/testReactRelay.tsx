@@ -10,13 +10,13 @@ const CommentComponent = ({ commentRef }) => {
       }
     `,
     commentRef
-  ); // $ MISSING: Source=[js/xss]
+  ); // $ Source=[js/xss]
 
   return (
     <div>
       <h3>Comment:</h3>
       {/* Directly rendering user input without sanitation */}
-      <p dangerouslySetInnerHTML = {{ __html: commentData.text}}> {commentData.text}</p> // $ MISSING: Alert=[js/xss]
+      <p dangerouslySetInnerHTML = {{ __html: commentData.text}}> {commentData.text}</p> // $ Alert=[js/xss]
     </div> 
   );
 };
