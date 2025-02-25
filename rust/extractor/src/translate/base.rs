@@ -417,7 +417,7 @@ impl<'a> Translator<'a> {
                 }
             }
             ItemContainer::Module(it) => self.canonical_path_from_hir_module(it),
-            ItemContainer::ExternBlock() | ItemContainer::Crate(_) => Some("".to_owned()),
+            ItemContainer::ExternBlock(..) | ItemContainer::Crate(..) => Some("".to_owned()),
         }?;
         Some(format!("{prefix}::{name}"))
     }

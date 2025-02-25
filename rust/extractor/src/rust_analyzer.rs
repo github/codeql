@@ -297,4 +297,5 @@ pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
         .and_then(|x| AbsPathBuf::try_from(x).ok())
         .map(VfsPath::from)
         .and_then(|x| vfs.file_id(&x))
+        .map(|(id, _excluded)| id)
 }
