@@ -21,7 +21,7 @@
 
     var a = Math.random() > 0.5 ? returnsValue() : onlySideEffects(); // OK - A is never used.
     
-    var b = onlySideEffects();
+    var b = onlySideEffects(); // $ Alert
     console.log(b);
 
 	var c = 42 + (onlySideEffects(), 42); // OK - value is thrown away.
@@ -42,7 +42,7 @@
 		onlySideEffects: onlySideEffects
 	}
 	
-	var e = myObj.onlySideEffects.apply(this, arguments); // $ Alert
+	var e = myObj.onlySideEffects.apply(this, arguments); // $ MISSING: Alert
 	console.log(e);
 	
 	function onlySideEffects2() {
