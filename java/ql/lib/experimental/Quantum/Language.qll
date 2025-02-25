@@ -3,6 +3,7 @@ private import java as Language
 private import semmle.code.java.security.InsecureRandomnessQuery
 private import semmle.code.java.security.RandomQuery
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSources
 
 private class UnknownLocation extends Language::Location {
   UnknownLocation() { this.getFile().getAbsolutePath() = "" }
@@ -30,6 +31,25 @@ module CryptoInput implements InputSig<Language::Location> {
  * Instantiate the model
  */
 module Crypto = CryptographyBase<Language::Location, CryptoInput>;
+
+/**
+ * Definitions of various generic data sources
+ */
+final class DefaultFlowSource = SourceNode;
+
+final class DefaultRemoteFlowSource = RemoteFlowSource;
+
+class GenericLocalDataSource extends Crypto::GenericRemoteDataSource {
+  GenericLocalDataSource() {
+    any(DefaultFlowSource src | not src instanceof DefaultRemoteFlowSource).asExpr() = this
+  }
+
+  override DataFlow::Node asOutputData() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::ArtifactLocatableElement other) {
+    DataSourceToArtifactFlow::flow(this.asOutputData(), other.getInput())
+  }
+}
 
 /**
  * Random number generation, where each instance is modelled as the expression
@@ -69,6 +89,21 @@ module RNGToArtifactFlowConfig implements DataFlow::ConfigSig {
 }
 
 module RNGToArtifactFlow = DataFlow::Global<RNGToArtifactFlowConfig>;
+
+/**
+ * Generic data source to artifact flow configuration
+ */
+module DataSourceToArtifactFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source = any(Crypto::GenericDataSourceInstance i).asOutputData()
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink = any(Crypto::ArtifactLocatableElement other).getInput()
+  }
+}
+
+module DataSourceToArtifactFlow = DataFlow::Global<DataSourceToArtifactFlowConfig>;
 
 // Import library-specific modeling
 import JCA

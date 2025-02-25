@@ -136,13 +136,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract predicate flowsTo(ArtifactLocatableElement other);
   }
 
-  newtype TGenericDataSourceType =
-    FilesystemDataSource() or
-    ExternalLibraryDataSource() or
-    MemoryAllocationDataSource() or
-    ConstantDataSource()
+  // TODO: WARNING:
+  // If this overlaps with any other LocatableElement, there will be a cross-product
+  // This is never to be used for unknowns
+  abstract class GenericDataSourceInstance extends ArtifactLocatableElement {
+    final override DataFlowNode getInput() { none() }
 
-  abstract class GenericDataSourceInstance extends ArtifactLocatableElement { }
+    abstract string getLabel();
+  }
+
+  abstract class GenericConstantOrAllocationSource extends GenericDataSourceInstance {
+    final override string getLabel() { result = "ConstantData" } // TODO: toString of source?
+  }
+
+  abstract class GenericExternalCallSource extends GenericDataSourceInstance {
+    final override string getLabel() { result = "ExternalCall" } // TODO: call target name or toString of source?
+  }
+
+  abstract class GenericRemoteDataSource extends GenericDataSourceInstance {
+    final override string getLabel() { result = "RemoteData" } // TODO: toString of source?
+  }
+
+  abstract class GenericLocalDataSource extends GenericDataSourceInstance {
+    final override string getLabel() { result = "LocalData" } // TODO: toString of source?
+  }
 
   abstract class DigestArtifactInstance extends ArtifactLocatableElement { }
 
@@ -224,7 +241,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * This predicate is overriden by derived classes to construct the graph of cryptographic operations.
      */
     predicate properties(string key, string value, Location location) {
-      key = "origin" and
+      key = "Origin" and
       location = this.getOrigin(value).getLocation() and
       not location = this.getLocation()
     }
@@ -249,17 +266,64 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract ArtifactLocatableElement asArtifactLocatableElement();
 
+    /**
+     * Gets the `Artifact` node that is the data source for this artifact.
+     */
     final Artifact getSourceArtifact() {
-      not result = this and
-      result.asArtifactLocatableElement().flowsTo(this.asArtifactLocatableElement())
+      result.asArtifactLocatableElement() = this.getSourceArtifactElement()
+    }
+
+    /**
+     * Gets the `ArtifactLocatableElement` that is the data source for this artifact.
+     *
+     * This predicate is equivalent to `getSourceArtifact().asArtifactLocatableElement()`.
+     */
+    final ArtifactLocatableElement getSourceArtifactElement() {
+      not result = this.asArtifactLocatableElement() and
+      result.flowsTo(this.asArtifactLocatableElement())
     }
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      // [ONLY_KNOWN] - TODO: unknown case handled by reporting a generic source type or unknown as a property
-      edgeName = "source" and
+      // [ONLY_KNOWN] - TODO: known-unknown case handled by reporting a generic source type or unknown as a property
+      edgeName = "Source" and
       result = this.getSourceArtifact()
+    }
+
+    // TODO: document the below
+    final private predicate src_generic_data_source_to_label_and_loc(string label, Location location) {
+      exists(GenericDataSourceInstance instance |
+        this.getSourceArtifactElement() = instance and
+        instance.getLabel() = label and
+        instance.getLocation() = location
+      )
+    }
+
+    final private predicate src_artifact_to_label_and_loc(string label, Location location) {
+      exists(Artifact a |
+        this.getSourceArtifact() = a and
+        a.getInternalType() = label and
+        a.getLocation() = location
+      )
+    }
+
+    final private predicate source_type_property(string key, string value, Location location) {
+      key = "SourceType" and
+      if this.src_artifact_to_label_and_loc(_, _)
+      then this.src_artifact_to_label_and_loc(value, location)
+      else
+        if
+          exists(this.asArtifactLocatableElement().getInput()) and
+          not this.src_generic_data_source_to_label_and_loc(_, _)
+        then value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        else this.src_generic_data_source_to_label_and_loc(value, location)
+    }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      this.source_type_property(key, value, location)
     }
   }
 
@@ -309,7 +373,25 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      edgeName = "uses" and
+      /*
+       * TODO: Consider a case with getProperty, where an unknown value is loaded from the filesystem,
+       * but a default is specified as such:
+       * String value = getProperty("property", "default_algorithm")
+       * In this case, getAlgorithm *could* be resolved to default_algorithm, but in that case, the known
+       * unknown case, i.e., what is loaded from `property`, would not be reported at all as a known unknown.
+       *
+       * Implementation brainstorming:
+       * We have two cases, and we only considered one before: the case where we can't point to the known unknown.
+       * The new case is pointing to a known unknown, e.g., "property" loaded via getProperty.
+       * A potential solution is to create a known unknown node for each node type (particularly algorithms)
+       * and model those elements in the database to associate with that known unknown type??
+       *
+       * - Idea: use the generic data source concept as the definition of potential known unknowns.
+       *         flow should be tracked from them to anything that could be a "sink" that specifies the relation.
+       *         in this case, the sink would be an instantiaition of an algorithm where the value is not resolvable.
+       */
+
+      edgeName = "Uses" and
       if exists(this.getAlgorithm()) then result = this.getAlgorithm() else result = this
     }
   }
@@ -336,10 +418,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       super.properties(key, value, location)
       or
       // [ONLY_KNOWN]
-      key = "name" and value = this.getAlgorithmName() and location = this.getLocation()
+      key = "Name" and value = this.getAlgorithmName() and location = this.getLocation()
       or
       // [ONLY_KNOWN]
-      key = "raw_name" and value = this.getRawAlgorithmName() and location = this.getLocation()
+      key = "RawName" and value = this.getRawAlgorithmName() and location = this.getLocation()
     }
   }
 
@@ -445,7 +527,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       super.properties(key, value, location)
       or
       // [KNOWN_OR_UNKNOWN]
-      key = "digest_size" and
+      key = "DigestSize" and
       if exists(this.getDigestSize(location))
       then value = this.getDigestSize(location)
       else (
@@ -492,7 +574,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        edgeName = "uses" and
+        edgeName = "Uses" and
         if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this
       )
     }
@@ -526,7 +608,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        key = "iterations" and
+        key = "Iterations" and
         if exists(this.getIterationCount(location))
         then value = this.getIterationCount(location)
         else (
@@ -536,7 +618,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        key = "key_len" and
+        key = "KeyLength" and
         if exists(this.getKeyLength(location))
         then value = this.getKeyLength(location)
         else (
@@ -580,7 +662,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        key = "iterations" and
+        key = "Iterations" and
         if exists(this.getIterationCount(location))
         then value = this.getIterationCount(location)
         else (
@@ -590,7 +672,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        key = "id_byte" and
+        key = "IdByte" and
         if exists(this.getIDByte(location))
         then value = this.getIDByte(location)
         else (
@@ -661,7 +743,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        key = "key_len" and
+        key = "KeyLength" and
         if exists(this.getDerivedKeyLength(location))
         then value = this.getDerivedKeyLength(location)
         else (
@@ -714,7 +796,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       super.properties(key, value, location)
       or
       // [KNOWN_OR_UNKNOWN]
-      key = "key_size" and
+      key = "KeySize" and
       if exists(this.getKeySize(location))
       then value = this.getKeySize(location)
       else (
@@ -795,7 +877,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = super.getChild(key)
       or
       // [KNOWN_OR_UNKNOWN]
-      key = "nonce" and
+      key = "Nonce" and
       if exists(this.getNonce()) then result = this.getNonce() else result = this
     }
 
@@ -803,7 +885,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       super.properties(key, value, location)
       or
       // [ALWAYS_KNOWN] - Unknown is handled in getCipherOperationMode()
-      key = "operation" and
+      key = "Operation" and
       value = this.getCipherOperationMode().toString() and
       location = this.getLocation()
     }
@@ -1014,13 +1096,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = super.getChild(edgeName)
       or
       // [KNOWN_OR_UNKNOWN]
-      edgeName = "mode" and
+      edgeName = "Mode" and
       if exists(this.getModeOfOperation())
       then result = this.getModeOfOperation()
       else result = this
       or
       // [KNOWN_OR_UNKNOWN]
-      edgeName = "padding" and
+      edgeName = "Padding" and
       if exists(this.getPadding()) then result = this.getPadding() else result = this
     }
 
@@ -1028,13 +1110,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       super.properties(key, value, location)
       or
       // [ALWAYS_KNOWN] - unknown case is handled in `getCipherStructureTypeString`
-      key = "structure" and
+      key = "Structure" and
       getCipherStructureTypeString(this.getCipherStructure()) = value and
       location instanceof UnknownLocation
       or
       (
         // [KNOWN_OR_UNKNOWN]
-        key = "key_size" and
+        key = "KeySize" and
         if exists(this.getKeySize(location))
         then value = this.getKeySize(location)
         else (

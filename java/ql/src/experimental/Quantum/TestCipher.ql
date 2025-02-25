@@ -13,4 +13,4 @@ where
   p = a.getPadding() and
   nonce = op.getNonce()
 select op, op.getCipherOperationMode(), a, a.getRawAlgorithmName(), m, m.getRawAlgorithmName(), p,
-  p.getRawAlgorithmName(), nonce, nonce.getInputData()
+  p.getRawAlgorithmName(), nonce

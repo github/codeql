@@ -125,16 +125,10 @@ module JCAModel {
     }
   }
 
-  class CipherUpdateCall extends MethodCall {
-    CipherUpdateCall() { this.getMethod().hasQualifiedName("javax.crypto", "Cipher", "update") }
-
-    DataFlow::Node getInputData() { result.asExpr() = this.getArgument(0) }
-  }
-
   private newtype TCipherModeFlowState =
     TUninitializedCipherModeFlowState() or
     TInitializedCipherModeFlowState(CipherInitCall call) or
-    TUsedCipherModeFlowState(CipherInitCall init, CipherUpdateCall update)
+    TUsedCipherModeFlowState(CipherInitCall init)
 
   abstract private class CipherModeFlowState extends TCipherModeFlowState {
     string toString() {
