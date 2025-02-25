@@ -1,3 +1,38 @@
+## 4.1.0
+
+### Deprecated APIs
+
+* The class `NamedType` has been deprecated. Use the new class `DefinedType` instead. This better matches the terminology used in the Go language specification, which was changed in Go 1.9.
+* The member predicate `getNamedType` on `GoMicro::ServiceInterfaceType` has been deprecated. Use the new member predicate `getDefinedType` instead.
+* The member predicate `getNamedType` on `Twirp::ServiceInterfaceType` has been deprecated. Use the new member predicate `getDefinedType` instead.
+
+### Minor Analysis Improvements
+
+* Taint models have been added for the `weak` package, which was added in Go 1.24.
+* Taint models have been added for the interfaces `TextAppender` and `BinaryAppender` in the `encoding` package, which were added in Go 1.24.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `describeBitSize` predicate from `IncorrectIntegerConversionLib.qll`
+
+### Minor Analysis Improvements
+
+* Models-as-data models using "Parameter", "Parameter[n]" or "Parameter[n1..n2]" as the output now work correctly.
+* By implementing `ImplicitFieldReadNode` it is now possible to declare a dataflow node that reads any content (fields, array members, map keys and values). For example, this is appropriate for modelling a serialization method that flattens a potentially deep data structure into a string or byte array.
+* The `Template.Execute[Template]` methods of the `text/template` package now correctly convey taint from any nested fields to their result. This may produce more results from any taint-tracking query when the `text/template` package is in use.
+* Added the [rs cors](https://github.com/rs/cors) library to the CorsMisconfiguration.ql query
+
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* `database` local source models have been added for the Beego ORM package.
+* `database` local source models have been added for the `github.com/jmoiron/sqlx` package.
+* Added `database` source models for database methods from the `gorm.io/gorm` package.
+* `database` local source models have been added for the `database/sql` and `database/sql/driver` packages.
+
 ## 3.0.1
 
 ### Minor Analysis Improvements

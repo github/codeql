@@ -1,0 +1,7 @@
+deadEnd
+| test.rs:455:13:455:25 | one_or_two!... |
+multipleSuccessors
+| test.rs:455:13:455:25 | [match(false)] 1 \| 2 | no-match | test.rs:455:13:455:25 | one_or_two!... |
+| test.rs:455:13:455:25 | [match(false)] 1 \| 2 | no-match | test.rs:456:13:456:13 | _ |
+| test.rs:455:13:455:25 | [match(true)] 1 \| 2 | match | test.rs:455:13:455:25 | one_or_two!... |
+| test.rs:455:13:455:25 | [match(true)] 1 \| 2 | match | test.rs:455:30:455:30 | 3 |

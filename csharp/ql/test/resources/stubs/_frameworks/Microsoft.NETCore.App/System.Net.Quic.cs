@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Quic, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Quic, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -39,9 +39,13 @@ namespace System
             {
                 public long DefaultCloseErrorCode { get => throw null; set { } }
                 public long DefaultStreamErrorCode { get => throw null; set { } }
+                public System.TimeSpan HandshakeTimeout { get => throw null; set { } }
                 public System.TimeSpan IdleTimeout { get => throw null; set { } }
+                public System.Net.Quic.QuicReceiveWindowSizes InitialReceiveWindowSizes { get => throw null; set { } }
+                public System.TimeSpan KeepAliveInterval { get => throw null; set { } }
                 public int MaxInboundBidirectionalStreams { get => throw null; set { } }
                 public int MaxInboundUnidirectionalStreams { get => throw null; set { } }
+                public System.Action<System.Net.Quic.QuicConnection, System.Net.Quic.QuicStreamCapacityChangedArgs> StreamCapacityCallback { get => throw null; set { } }
             }
             public enum QuicError
             {
@@ -81,6 +85,14 @@ namespace System
                 public QuicListenerOptions() => throw null;
                 public int ListenBacklog { get => throw null; set { } }
                 public System.Net.IPEndPoint ListenEndPoint { get => throw null; set { } }
+            }
+            public sealed class QuicReceiveWindowSizes
+            {
+                public int Connection { get => throw null; set { } }
+                public QuicReceiveWindowSizes() => throw null;
+                public int LocallyInitiatedBidirectionalStream { get => throw null; set { } }
+                public int RemotelyInitiatedBidirectionalStream { get => throw null; set { } }
+                public int UnidirectionalStream { get => throw null; set { } }
             }
             public sealed class QuicServerConnectionOptions : System.Net.Quic.QuicConnectionOptions
             {
@@ -125,6 +137,11 @@ namespace System
                 public override void WriteByte(byte value) => throw null;
                 public System.Threading.Tasks.Task WritesClosed { get => throw null; }
                 public override int WriteTimeout { get => throw null; set { } }
+            }
+            public struct QuicStreamCapacityChangedArgs
+            {
+                public int BidirectionalIncrement { get => throw null; set { } }
+                public int UnidirectionalIncrement { get => throw null; set { } }
             }
             public enum QuicStreamType
             {

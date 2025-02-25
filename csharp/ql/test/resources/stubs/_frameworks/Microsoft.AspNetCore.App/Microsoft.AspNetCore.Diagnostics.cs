@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Diagnostics, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Diagnostics, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -32,6 +32,7 @@ namespace Microsoft
                 public ExceptionHandlerOptions() => throw null;
                 public Microsoft.AspNetCore.Http.RequestDelegate ExceptionHandler { get => throw null; set { } }
                 public Microsoft.AspNetCore.Http.PathString ExceptionHandlingPath { get => throw null; set { } }
+                public System.Func<System.Exception, int> StatusCodeSelector { get => throw null; set { } }
             }
             public static partial class StatusCodePagesExtensions
             {

@@ -26,7 +26,7 @@
     console.log(obj2); // NOT OK
 
     var obj3 = {};
-    console.log(obj3); // OK - but still flagged due to flow-insensitive field-analysis. [INCONSISTENCY]
+    console.log(obj3); // OK
     obj3.x = password;
 
     var fixed_password = "123";
@@ -183,3 +183,8 @@ const debug = require('debug')('test');
 	console.log(password.replace(new RegExp(".", unknownFlags()), "*")); // OK -- Most likely not a problem.
     console.log(password.replace(new RegExp("pre_._suf", "g"), "*")); // OK
 })();
+
+(function () {
+  console.log(JSON.stringify(process.env)); // NOT OK
+  console.log(process.env.PATH); // OK.
+});

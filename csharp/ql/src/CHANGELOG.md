@@ -1,3 +1,17 @@
+## 1.0.17
+
+No user-facing changes.
+
+## 1.0.16
+
+### Minor Analysis Improvements
+
+* All *experimental* queries have been deprecated. The queries are instead available as part of the *default* query suite in [CodeQL-Community-Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs).
+
+## 1.0.15
+
+No user-facing changes.
+
 ## 1.0.14
 
 ### Minor Analysis Improvements

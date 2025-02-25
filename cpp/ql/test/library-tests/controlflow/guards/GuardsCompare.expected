@@ -1,7 +1,9 @@
 | 7 | 0 < x+0 when ... > ... is true |
 | 7 | 0 >= x+0 when ... > ... is false |
 | 7 | ... > ... != 0 when ... > ... is true |
+| 7 | ... > ... != 1 when ... > ... is false |
 | 7 | ... > ... == 0 when ... > ... is false |
+| 7 | ... > ... == 1 when ... > ... is true |
 | 7 | x < 0+1 when ... > ... is false |
 | 7 | x < 1 when ... > ... is false |
 | 7 | x >= 0+1 when ... > ... is true |
@@ -14,10 +16,16 @@
 | 17 | 1 >= y+0 when ... > ... is false |
 | 17 | ... < ... != 0 when ... && ... is true |
 | 17 | ... < ... != 0 when ... < ... is true |
+| 17 | ... < ... != 1 when ... < ... is false |
 | 17 | ... < ... == 0 when ... < ... is false |
+| 17 | ... < ... == 1 when ... && ... is true |
+| 17 | ... < ... == 1 when ... < ... is true |
 | 17 | ... > ... != 0 when ... && ... is true |
 | 17 | ... > ... != 0 when ... > ... is true |
+| 17 | ... > ... != 1 when ... > ... is false |
 | 17 | ... > ... == 0 when ... > ... is false |
+| 17 | ... > ... == 1 when ... && ... is true |
+| 17 | ... > ... == 1 when ... > ... is true |
 | 17 | x < 0 when ... && ... is true |
 | 17 | x < 0 when ... < ... is true |
 | 17 | x < 0+0 when ... && ... is true |
@@ -31,11 +39,15 @@
 | 17 | y >= 2 when ... && ... is true |
 | 17 | y >= 2 when ... > ... is true |
 | 18 | call to get != 0 when call to get is true |
+| 18 | call to get != 1 when call to get is false |
 | 18 | call to get == 0 when call to get is false |
+| 18 | call to get == 1 when call to get is true |
 | 26 | 0 < x+0 when ... > ... is true |
 | 26 | 0 >= x+0 when ... > ... is false |
 | 26 | ... > ... != 0 when ... > ... is true |
+| 26 | ... > ... != 1 when ... > ... is false |
 | 26 | ... > ... == 0 when ... > ... is false |
+| 26 | ... > ... == 1 when ... > ... is true |
 | 26 | x < 0+1 when ... > ... is false |
 | 26 | x < 1 when ... > ... is false |
 | 26 | x >= 0+1 when ... > ... is true |
@@ -43,7 +55,9 @@
 | 31 | - ... != x+0 when ... == ... is false |
 | 31 | - ... == x+0 when ... == ... is true |
 | 31 | ... == ... != 0 when ... == ... is true |
+| 31 | ... == ... != 1 when ... == ... is false |
 | 31 | ... == ... == 0 when ... == ... is false |
+| 31 | ... == ... == 1 when ... == ... is true |
 | 31 | x != -1 when ... == ... is false |
 | 31 | x != - ...+0 when ... == ... is false |
 | 31 | x == -1 when ... == ... is true |
@@ -51,7 +65,9 @@
 | 34 | 10 < j+1 when ... < ... is false |
 | 34 | 10 >= j+1 when ... < ... is true |
 | 34 | ... < ... != 0 when ... < ... is true |
+| 34 | ... < ... != 1 when ... < ... is false |
 | 34 | ... < ... == 0 when ... < ... is false |
+| 34 | ... < ... == 1 when ... < ... is true |
 | 34 | j < 10 when ... < ... is true |
 | 34 | j < 10+0 when ... < ... is true |
 | 34 | j >= 10 when ... < ... is false |
@@ -59,9 +75,13 @@
 | 42 | 10 < j+1 when ... < ... is false |
 | 42 | 10 >= j+1 when ... < ... is true |
 | 42 | ... < ... != 0 when ... < ... is true |
+| 42 | ... < ... != 1 when ... < ... is false |
 | 42 | ... < ... == 0 when ... < ... is false |
+| 42 | ... < ... == 1 when ... < ... is true |
 | 42 | call to getABool != 0 when call to getABool is true |
+| 42 | call to getABool != 1 when call to getABool is false |
 | 42 | call to getABool == 0 when call to getABool is false |
+| 42 | call to getABool == 1 when call to getABool is true |
 | 42 | j < 10 when ... < ... is true |
 | 42 | j < 10+0 when ... < ... is true |
 | 42 | j >= 10 when ... < ... is false |
@@ -69,7 +89,9 @@
 | 44 | 0 < z+0 when ... > ... is true |
 | 44 | 0 >= z+0 when ... > ... is false |
 | 44 | ... > ... != 0 when ... > ... is true |
+| 44 | ... > ... != 1 when ... > ... is false |
 | 44 | ... > ... == 0 when ... > ... is false |
+| 44 | ... > ... == 1 when ... > ... is true |
 | 44 | z < 0+1 when ... > ... is false |
 | 44 | z < 1 when ... > ... is false |
 | 44 | z >= 0+1 when ... > ... is true |
@@ -77,7 +99,9 @@
 | 45 | 0 < y+0 when ... > ... is true |
 | 45 | 0 >= y+0 when ... > ... is false |
 | 45 | ... > ... != 0 when ... > ... is true |
+| 45 | ... > ... != 1 when ... > ... is false |
 | 45 | ... > ... == 0 when ... > ... is false |
+| 45 | ... > ... == 1 when ... > ... is true |
 | 45 | y < 0+1 when ... > ... is false |
 | 45 | y < 1 when ... > ... is false |
 | 45 | y >= 0+1 when ... > ... is true |
@@ -89,11 +113,17 @@
 | 58 | 0 == x+0 when ... == ... is true |
 | 58 | 0 >= y+1 when ... < ... is true |
 | 58 | ... < ... != 0 when ... < ... is true |
+| 58 | ... < ... != 1 when ... < ... is false |
+| 58 | ... < ... != 1 when ... \|\| ... is false |
 | 58 | ... < ... == 0 when ... < ... is false |
 | 58 | ... < ... == 0 when ... \|\| ... is false |
+| 58 | ... < ... == 1 when ... < ... is true |
 | 58 | ... == ... != 0 when ... == ... is true |
+| 58 | ... == ... != 1 when ... == ... is false |
+| 58 | ... == ... != 1 when ... \|\| ... is false |
 | 58 | ... == ... == 0 when ... == ... is false |
 | 58 | ... == ... == 0 when ... \|\| ... is false |
+| 58 | ... == ... == 1 when ... == ... is true |
 | 58 | x != 0 when ... == ... is false |
 | 58 | x != 0 when ... \|\| ... is false |
 | 58 | x != 0+0 when ... == ... is false |
@@ -116,7 +146,9 @@
 | 75 | 0 != x+0 when ... == ... is false |
 | 75 | 0 == x+0 when ... == ... is true |
 | 75 | ... == ... != 0 when ... == ... is true |
+| 75 | ... == ... != 1 when ... == ... is false |
 | 75 | ... == ... == 0 when ... == ... is false |
+| 75 | ... == ... == 1 when ... == ... is true |
 | 75 | x != 0 when ... == ... is false |
 | 75 | x != 0+0 when ... == ... is false |
 | 75 | x == 0 when ... == ... is true |
@@ -129,10 +161,16 @@
 | 85 | 0 == y+0 when ... != ... is false |
 | 85 | ... != ... != 0 when ... != ... is true |
 | 85 | ... != ... != 0 when ... && ... is true |
+| 85 | ... != ... != 1 when ... != ... is false |
 | 85 | ... != ... == 0 when ... != ... is false |
+| 85 | ... != ... == 1 when ... != ... is true |
+| 85 | ... != ... == 1 when ... && ... is true |
 | 85 | ... == ... != 0 when ... && ... is true |
 | 85 | ... == ... != 0 when ... == ... is true |
+| 85 | ... == ... != 1 when ... == ... is false |
 | 85 | ... == ... == 0 when ... == ... is false |
+| 85 | ... == ... == 1 when ... && ... is true |
+| 85 | ... == ... == 1 when ... == ... is true |
 | 85 | x != 0 when ... == ... is false |
 | 85 | x != 0+0 when ... == ... is false |
 | 85 | x == 0 when ... && ... is true |
@@ -146,21 +184,29 @@
 | 85 | y == 0 when ... != ... is false |
 | 85 | y == 0+0 when ... != ... is false |
 | 93 | c != 0 when c is true |
+| 93 | c != 1 when c is false |
 | 93 | c == 0 when c is false |
+| 93 | c == 1 when c is true |
 | 94 | 0 != x+0 when ... != ... is true |
 | 94 | 0 == x+0 when ... != ... is false |
 | 94 | ... != ... != 0 when ... != ... is true |
+| 94 | ... != ... != 1 when ... != ... is false |
 | 94 | ... != ... == 0 when ... != ... is false |
+| 94 | ... != ... == 1 when ... != ... is true |
 | 94 | x != 0 when ... != ... is true |
 | 94 | x != 0+0 when ... != ... is true |
 | 94 | x == 0 when ... != ... is false |
 | 94 | x == 0+0 when ... != ... is false |
 | 99 | f != 0 when f is true |
+| 99 | f != 1 when f is false |
 | 99 | f == 0 when f is false |
+| 99 | f == 1 when f is true |
 | 102 | 10 < j+1 when ... < ... is false |
 | 102 | 10 >= j+1 when ... < ... is true |
 | 102 | ... < ... != 0 when ... < ... is true |
+| 102 | ... < ... != 1 when ... < ... is false |
 | 102 | ... < ... == 0 when ... < ... is false |
+| 102 | ... < ... == 1 when ... < ... is true |
 | 102 | j < 10 when ... < ... is true |
 | 102 | j < 10+0 when ... < ... is true |
 | 102 | j >= 10 when ... < ... is false |
@@ -168,7 +214,9 @@
 | 105 | 0.0 != f+0 when ... != ... is true |
 | 105 | 0.0 == f+0 when ... != ... is false |
 | 105 | ... != ... != 0 when ... != ... is true |
+| 105 | ... != ... != 1 when ... != ... is false |
 | 105 | ... != ... == 0 when ... != ... is false |
+| 105 | ... != ... == 1 when ... != ... is true |
 | 105 | f != 0.0+0 when ... != ... is true |
 | 105 | f == 0.0+0 when ... != ... is false |
 | 109 | 0 != x+0 when ... == ... is false |
@@ -178,11 +226,17 @@
 | 109 | 0 == x+0 when ... == ... is true |
 | 109 | 0 >= y+1 when ... < ... is true |
 | 109 | ... < ... != 0 when ... < ... is true |
+| 109 | ... < ... != 1 when ... < ... is false |
+| 109 | ... < ... != 1 when ... \|\| ... is false |
 | 109 | ... < ... == 0 when ... < ... is false |
 | 109 | ... < ... == 0 when ... \|\| ... is false |
+| 109 | ... < ... == 1 when ... < ... is true |
 | 109 | ... == ... != 0 when ... == ... is true |
+| 109 | ... == ... != 1 when ... == ... is false |
+| 109 | ... == ... != 1 when ... \|\| ... is false |
 | 109 | ... == ... == 0 when ... == ... is false |
 | 109 | ... == ... == 0 when ... \|\| ... is false |
+| 109 | ... == ... == 1 when ... == ... is true |
 | 109 | x != 0 when ... == ... is false |
 | 109 | x != 0 when ... \|\| ... is false |
 | 109 | x != 0+0 when ... == ... is false |
@@ -198,38 +252,59 @@
 | 111 | 0.0 != i+0 when ... != ... is true |
 | 111 | 0.0 == i+0 when ... != ... is false |
 | 111 | ... != ... != 0 when ... != ... is true |
+| 111 | ... != ... != 1 when ... != ... is false |
 | 111 | ... != ... == 0 when ... != ... is false |
+| 111 | ... != ... == 1 when ... != ... is true |
 | 111 | i != 0.0+0 when ... != ... is true |
 | 111 | i == 0.0+0 when ... != ... is false |
 | 122 | b != 0 when b is true |
+| 122 | b != 1 when b is false |
 | 122 | b == 0 when b is false |
+| 122 | b == 1 when b is true |
 | 125 | ! ... != 0 when ! ... is true |
+| 125 | ! ... != 0 when call to safe is false |
+| 125 | ! ... != 1 when ! ... is false |
+| 125 | ! ... != 1 when call to safe is true |
 | 125 | ! ... == 0 when ! ... is false |
+| 125 | ! ... == 0 when call to safe is true |
+| 125 | ! ... == 1 when ! ... is true |
+| 125 | ! ... == 1 when call to safe is false |
 | 125 | call to safe != 0 when ! ... is false |
 | 125 | call to safe != 0 when call to safe is true |
+| 125 | call to safe != 1 when ! ... is true |
+| 125 | call to safe != 1 when call to safe is false |
+| 125 | call to safe == 0 when ! ... is true |
 | 125 | call to safe == 0 when call to safe is false |
+| 125 | call to safe == 1 when ! ... is false |
+| 125 | call to safe == 1 when call to safe is true |
 | 126 | 1 != 0 when 1 is true |
 | 126 | 1 != 0 when ... && ... is true |
+| 126 | 1 != 1 when 1 is false |
 | 126 | 1 == 0 when 1 is false |
+| 126 | 1 == 1 when 1 is true |
+| 126 | 1 == 1 when ... && ... is true |
 | 126 | call to test3_condition != 0 when ... && ... is true |
 | 126 | call to test3_condition != 0 when call to test3_condition is true |
+| 126 | call to test3_condition != 1 when call to test3_condition is false |
 | 126 | call to test3_condition == 0 when call to test3_condition is false |
+| 126 | call to test3_condition == 1 when ... && ... is true |
+| 126 | call to test3_condition == 1 when call to test3_condition is true |
 | 131 | ... + ... != a+0 when call to __builtin_expect is false |
 | 131 | ... + ... == a+0 when call to __builtin_expect is true |
-| 131 | ... == ... != 0 when call to __builtin_expect is true |
-| 131 | ... == ... == 0 when call to __builtin_expect is false |
 | 131 | a != ... + ...+0 when call to __builtin_expect is false |
 | 131 | a != b+42 when call to __builtin_expect is false |
 | 131 | a == ... + ...+0 when call to __builtin_expect is true |
 | 131 | a == b+42 when call to __builtin_expect is true |
 | 131 | b != 0 when b is true |
+| 131 | b != 1 when b is false |
 | 131 | b != a+-42 when call to __builtin_expect is false |
 | 131 | b == 0 when b is false |
+| 131 | b == 1 when b is true |
 | 131 | b == a+-42 when call to __builtin_expect is true |
 | 131 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 131 | call to __builtin_expect != 1 when call to __builtin_expect is false |
 | 131 | call to __builtin_expect == 0 when call to __builtin_expect is false |
-| 135 | ... != ... != 0 when call to __builtin_expect is true |
-| 135 | ... != ... == 0 when call to __builtin_expect is false |
+| 131 | call to __builtin_expect == 1 when call to __builtin_expect is true |
 | 135 | ... + ... != a+0 when call to __builtin_expect is true |
 | 135 | ... + ... == a+0 when call to __builtin_expect is false |
 | 135 | a != ... + ...+0 when call to __builtin_expect is true |
@@ -239,45 +314,455 @@
 | 135 | b != a+-42 when call to __builtin_expect is true |
 | 135 | b == a+-42 when call to __builtin_expect is false |
 | 135 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 135 | call to __builtin_expect != 1 when call to __builtin_expect is false |
 | 135 | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| 135 | call to __builtin_expect == 1 when call to __builtin_expect is true |
 | 137 | 0 != 0 when 0 is true |
+| 137 | 0 != 1 when 0 is false |
 | 137 | 0 == 0 when 0 is false |
+| 137 | 0 == 1 when 0 is true |
 | 141 | 42 != a+0 when call to __builtin_expect is false |
 | 141 | 42 == a+0 when call to __builtin_expect is true |
-| 141 | ... == ... != 0 when call to __builtin_expect is true |
-| 141 | ... == ... == 0 when call to __builtin_expect is false |
 | 141 | a != 42 when call to __builtin_expect is false |
 | 141 | a != 42+0 when call to __builtin_expect is false |
 | 141 | a == 42 when call to __builtin_expect is true |
 | 141 | a == 42+0 when call to __builtin_expect is true |
 | 141 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 141 | call to __builtin_expect != 1 when call to __builtin_expect is false |
 | 141 | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| 141 | call to __builtin_expect == 1 when call to __builtin_expect is true |
 | 145 | 42 != a+0 when call to __builtin_expect is true |
 | 145 | 42 == a+0 when call to __builtin_expect is false |
-| 145 | ... != ... != 0 when call to __builtin_expect is true |
-| 145 | ... != ... == 0 when call to __builtin_expect is false |
 | 145 | a != 42 when call to __builtin_expect is true |
 | 145 | a != 42+0 when call to __builtin_expect is true |
 | 145 | a == 42 when call to __builtin_expect is false |
 | 145 | a == 42+0 when call to __builtin_expect is false |
 | 145 | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| 145 | call to __builtin_expect != 1 when call to __builtin_expect is false |
 | 145 | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| 145 | call to __builtin_expect == 1 when call to __builtin_expect is true |
 | 146 | ! ... != 0 when ! ... is true |
+| 146 | ! ... != 0 when x is false |
+| 146 | ! ... != 1 when ! ... is false |
+| 146 | ! ... != 1 when x is true |
 | 146 | ! ... == 0 when ! ... is false |
+| 146 | ! ... == 0 when x is true |
+| 146 | ! ... == 1 when ! ... is true |
+| 146 | ! ... == 1 when x is false |
 | 146 | x != 0 when ! ... is false |
 | 146 | x != 0 when x is true |
+| 146 | x == 0 when ! ... is true |
 | 146 | x == 0 when x is false |
+| 152 | 10 < a+1 when ! ... is true |
+| 152 | 10 < a+1 when b is false |
+| 152 | 10 >= a+1 when ! ... is false |
+| 152 | 10 >= a+1 when b is true |
+| 152 | ! ... != 0 when ! ... is true |
+| 152 | ! ... != 0 when b is false |
+| 152 | ! ... != 1 when ! ... is false |
+| 152 | ! ... != 1 when b is true |
+| 152 | ! ... == 0 when ! ... is false |
+| 152 | ! ... == 0 when b is true |
+| 152 | ! ... == 1 when ! ... is true |
+| 152 | ! ... == 1 when b is false |
+| 152 | ... < ... != 0 when ! ... is false |
+| 152 | ... < ... != 0 when b is true |
+| 152 | ... < ... != 1 when ! ... is true |
+| 152 | ... < ... != 1 when b is false |
+| 152 | ... < ... == 0 when ! ... is true |
+| 152 | ... < ... == 0 when b is false |
+| 152 | ... < ... == 1 when ! ... is false |
+| 152 | ... < ... == 1 when b is true |
+| 152 | a < 10 when ! ... is false |
+| 152 | a < 10 when b is true |
+| 152 | a < 10+0 when ! ... is false |
+| 152 | a < 10+0 when b is true |
+| 152 | a >= 10 when ! ... is true |
+| 152 | a >= 10 when b is false |
+| 152 | a >= 10+0 when ! ... is true |
+| 152 | a >= 10+0 when b is false |
+| 152 | b != 0 when ! ... is false |
+| 152 | b != 0 when b is true |
+| 152 | b != 1 when ! ... is true |
+| 152 | b != 1 when b is false |
+| 152 | b == 0 when ! ... is true |
+| 152 | b == 0 when b is false |
+| 152 | b == 1 when ! ... is false |
+| 152 | b == 1 when b is true |
 | 152 | p != 0 when p is true |
+| 152 | p != 1 when p is false |
 | 152 | p == 0 when p is false |
+| 152 | p == 1 when p is true |
 | 158 | ! ... != 0 when ! ... is true |
+| 158 | ! ... != 0 when p is false |
+| 158 | ! ... != 1 when ! ... is false |
+| 158 | ! ... != 1 when p is true |
 | 158 | ! ... == 0 when ! ... is false |
+| 158 | ! ... == 0 when p is true |
+| 158 | ! ... == 1 when ! ... is true |
+| 158 | ! ... == 1 when p is false |
 | 158 | p != 0 when ! ... is false |
 | 158 | p != 0 when p is true |
+| 158 | p == 0 when ! ... is true |
 | 158 | p == 0 when p is false |
+| 160 | ! ... != 0 when ! ... is true |
+| 160 | ! ... != 0 when c is false |
+| 160 | ! ... != 1 when ! ... is false |
+| 160 | ! ... != 1 when c is true |
+| 160 | ! ... == 0 when ! ... is false |
+| 160 | ! ... == 0 when c is true |
+| 160 | ! ... == 1 when ! ... is true |
+| 160 | ! ... == 1 when c is false |
+| 160 | ... != ... != 0 when ! ... is false |
+| 160 | ... != ... != 0 when c is true |
+| 160 | ... != ... != 1 when ! ... is true |
+| 160 | ... != ... != 1 when c is false |
+| 160 | ... != ... == 0 when ! ... is true |
+| 160 | ... != ... == 0 when c is false |
+| 160 | ... != ... == 1 when ! ... is false |
+| 160 | ... != ... == 1 when c is true |
+| 160 | a != b+0 when ! ... is false |
+| 160 | a != b+0 when c is true |
+| 160 | a == b+0 when ! ... is true |
+| 160 | a == b+0 when c is false |
+| 160 | b != a+0 when ! ... is false |
+| 160 | b != a+0 when c is true |
+| 160 | b == a+0 when ! ... is true |
+| 160 | b == a+0 when c is false |
+| 160 | c != 0 when ! ... is false |
+| 160 | c != 0 when c is true |
+| 160 | c != 1 when ! ... is true |
+| 160 | c != 1 when c is false |
+| 160 | c == 0 when ! ... is true |
+| 160 | c == 0 when c is false |
+| 160 | c == 1 when ! ... is false |
+| 160 | c == 1 when c is true |
 | 164 | s != 0 when s is true |
+| 164 | s != 1 when s is false |
 | 164 | s == 0 when s is false |
+| 164 | s == 1 when s is true |
+| 168 | 10 < a+0 when ! ... is false |
+| 168 | 10 < a+0 when b is true |
+| 168 | 10 >= a+0 when ! ... is true |
+| 168 | 10 >= a+0 when b is false |
+| 168 | ! ... != 0 when ! ... is true |
+| 168 | ! ... != 0 when b is false |
+| 168 | ! ... != 1 when ! ... is false |
+| 168 | ! ... != 1 when b is true |
+| 168 | ! ... == 0 when ! ... is false |
+| 168 | ! ... == 0 when b is true |
+| 168 | ! ... == 1 when ! ... is true |
+| 168 | ! ... == 1 when b is false |
+| 168 | ... > ... != 0 when ! ... is false |
+| 168 | ... > ... != 0 when b is true |
+| 168 | ... > ... != 1 when ! ... is true |
+| 168 | ... > ... != 1 when b is false |
+| 168 | ... > ... == 0 when ! ... is true |
+| 168 | ... > ... == 0 when b is false |
+| 168 | ... > ... == 1 when ! ... is false |
+| 168 | ... > ... == 1 when b is true |
+| 168 | a < 10+1 when ! ... is true |
+| 168 | a < 10+1 when b is false |
+| 168 | a < 11 when ! ... is true |
+| 168 | a < 11 when b is false |
+| 168 | a >= 10+1 when ! ... is false |
+| 168 | a >= 10+1 when b is true |
+| 168 | a >= 11 when ! ... is false |
+| 168 | a >= 11 when b is true |
+| 168 | b != 0 when ! ... is false |
+| 168 | b != 0 when b is true |
+| 168 | b != 1 when ! ... is true |
+| 168 | b != 1 when b is false |
+| 168 | b == 0 when ! ... is true |
+| 168 | b == 0 when b is false |
+| 168 | b == 1 when ! ... is false |
+| 168 | b == 1 when b is true |
 | 170 | ! ... != 0 when ! ... is true |
+| 170 | ! ... != 0 when s is false |
+| 170 | ! ... != 1 when ! ... is false |
+| 170 | ! ... != 1 when s is true |
 | 170 | ! ... == 0 when ! ... is false |
+| 170 | ! ... == 0 when s is true |
+| 170 | ! ... == 1 when ! ... is true |
+| 170 | ! ... == 1 when s is false |
 | 170 | s != 0 when ! ... is false |
 | 170 | s != 0 when s is true |
+| 170 | s == 0 when ! ... is true |
 | 170 | s == 0 when s is false |
+| 176 | ! ... != 0 when ! ... is true |
+| 176 | ! ... != 0 when ... < ... is false |
+| 176 | ! ... != 0 when c is false |
+| 176 | ! ... != 1 when ! ... is false |
+| 176 | ! ... != 1 when ... < ... is true |
+| 176 | ! ... != 1 when c is true |
+| 176 | ! ... == 0 when ! ... is false |
+| 176 | ! ... == 0 when ... < ... is true |
+| 176 | ! ... == 0 when c is true |
+| 176 | ! ... == 1 when ! ... is true |
+| 176 | ! ... == 1 when ... < ... is false |
+| 176 | ! ... == 1 when c is false |
+| 176 | ... < ... != 0 when ! ... is false |
+| 176 | ... < ... != 0 when ... < ... is true |
+| 176 | ... < ... == 0 when ! ... is true |
+| 176 | ... < ... == 0 when ... < ... is false |
+| 176 | ... > ... != 0 when ! ... is false |
+| 176 | ... > ... != 0 when c is true |
+| 176 | ... > ... != 1 when ! ... is true |
+| 176 | ... > ... != 1 when c is false |
+| 176 | ... > ... == 0 when ! ... is true |
+| 176 | ... > ... == 0 when c is false |
+| 176 | ... > ... == 1 when ! ... is false |
+| 176 | ... > ... == 1 when c is true |
+| 176 | a < b+1 when ! ... is true |
+| 176 | a < b+1 when c is false |
+| 176 | a >= b+1 when ! ... is false |
+| 176 | a >= b+1 when c is true |
+| 176 | b < a+0 when ! ... is false |
+| 176 | b < a+0 when c is true |
+| 176 | b >= a+0 when ! ... is true |
+| 176 | b >= a+0 when c is false |
+| 176 | c != 0 when ! ... is false |
+| 176 | c != 0 when c is true |
+| 176 | c != 1 when ! ... is true |
+| 176 | c != 1 when c is false |
+| 176 | c == 0 when ! ... is true |
+| 176 | c == 0 when c is false |
+| 176 | c == 1 when ! ... is false |
+| 176 | c == 1 when c is true |
+| 182 | 1.0 < foo+1 when ... < ... is false |
+| 182 | 1.0 >= foo+1 when ... && ... is true |
+| 182 | 1.0 >= foo+1 when ... < ... is true |
+| 182 | 9.999999999999999547e-07 < foo+1 when ... && ... is true |
+| 182 | 9.999999999999999547e-07 < foo+1 when ... >= ... is true |
+| 182 | 9.999999999999999547e-07 >= foo+1 when ... >= ... is false |
+| 182 | ! ... != 0 when ! ... is true |
+| 182 | ! ... != 0 when ... && ... is false |
+| 182 | ! ... != 1 when ! ... is false |
+| 182 | ! ... != 1 when ... && ... is true |
+| 182 | ! ... == 0 when ! ... is false |
+| 182 | ! ... == 0 when ... && ... is true |
+| 182 | ! ... == 1 when ! ... is true |
+| 182 | ! ... == 1 when ... && ... is false |
+| 182 | ... && ... != 0 when ! ... is false |
+| 182 | ... && ... != 0 when ... && ... is true |
+| 182 | ... && ... != 1 when ! ... is true |
+| 182 | ... && ... != 1 when ... && ... is false |
+| 182 | ... && ... == 0 when ! ... is true |
+| 182 | ... && ... == 0 when ... && ... is false |
+| 182 | ... && ... == 1 when ! ... is false |
+| 182 | ... && ... == 1 when ... && ... is true |
+| 182 | ... < ... != 0 when ... && ... is true |
+| 182 | ... < ... != 0 when ... < ... is true |
+| 182 | ... < ... != 1 when ... < ... is false |
+| 182 | ... < ... == 0 when ... < ... is false |
+| 182 | ... < ... == 1 when ... && ... is true |
+| 182 | ... < ... == 1 when ... < ... is true |
+| 182 | ... >= ... != 0 when ... && ... is true |
+| 182 | ... >= ... != 0 when ... >= ... is true |
+| 182 | ... >= ... != 1 when ... >= ... is false |
+| 182 | ... >= ... == 0 when ... >= ... is false |
+| 182 | ... >= ... == 1 when ... && ... is true |
+| 182 | ... >= ... == 1 when ... >= ... is true |
+| 182 | b1 != 0 when ! ... is false |
+| 182 | b1 != 0 when ... && ... is true |
+| 182 | b1 != 0 when b1 is true |
+| 182 | b1 != 1 when b1 is false |
+| 182 | b1 == 0 when b1 is false |
+| 182 | b1 == 1 when ! ... is false |
+| 182 | b1 == 1 when ... && ... is true |
+| 182 | b1 == 1 when b1 is true |
+| 182 | b2 != 0 when ! ... is false |
+| 182 | b2 != 0 when ... && ... is true |
+| 182 | b2 != 0 when b2 is true |
+| 182 | b2 != 1 when b2 is false |
+| 182 | b2 == 0 when b2 is false |
+| 182 | b2 == 1 when ! ... is false |
+| 182 | b2 == 1 when ... && ... is true |
+| 182 | b2 == 1 when b2 is true |
+| 182 | foo < 1.0+0 when ... && ... is true |
+| 182 | foo < 1.0+0 when ... < ... is true |
+| 182 | foo < 9.999999999999999547e-07+0 when ... >= ... is false |
+| 182 | foo >= 1.0+0 when ... < ... is false |
+| 182 | foo >= 9.999999999999999547e-07+0 when ... && ... is true |
+| 182 | foo >= 9.999999999999999547e-07+0 when ... >= ... is true |
+| 190 | ! ... != 0 when ! ... is true |
+| 190 | ! ... != 0 when c is false |
+| 190 | ! ... != 1 when ! ... is false |
+| 190 | ! ... != 1 when c is true |
+| 190 | ! ... == 0 when ! ... is false |
+| 190 | ! ... == 0 when c is true |
+| 190 | ! ... == 1 when ! ... is true |
+| 190 | ! ... == 1 when c is false |
+| 190 | c != 0 when ! ... is false |
+| 190 | c != 0 when c is true |
+| 190 | c == 0 when ! ... is true |
+| 190 | c == 0 when c is false |
+| 193 | ! ... != 0 when ! ... is true |
+| 193 | ! ... != 0 when ... \|\| ... is false |
+| 193 | ! ... != 1 when ! ... is false |
+| 193 | ! ... != 1 when ... \|\| ... is true |
+| 193 | ! ... == 0 when ! ... is false |
+| 193 | ! ... == 0 when ... \|\| ... is true |
+| 193 | ! ... == 1 when ! ... is true |
+| 193 | ! ... == 1 when ... \|\| ... is false |
+| 193 | ... \|\| ... != 0 when ! ... is false |
+| 193 | ... \|\| ... != 0 when ... \|\| ... is true |
+| 193 | ... \|\| ... != 1 when ! ... is true |
+| 193 | ... \|\| ... != 1 when ... \|\| ... is false |
+| 193 | ... \|\| ... == 0 when ! ... is true |
+| 193 | ... \|\| ... == 0 when ... \|\| ... is false |
+| 193 | ... \|\| ... == 1 when ! ... is false |
+| 193 | ... \|\| ... == 1 when ... \|\| ... is true |
+| 193 | b1 != 0 when b1 is true |
+| 193 | b1 != 1 when ! ... is true |
+| 193 | b1 != 1 when ... \|\| ... is false |
+| 193 | b1 != 1 when b1 is false |
+| 193 | b1 == 0 when ! ... is true |
+| 193 | b1 == 0 when ... \|\| ... is false |
+| 193 | b1 == 0 when b1 is false |
+| 193 | b1 == 1 when b1 is true |
+| 193 | b2 != 0 when b2 is true |
+| 193 | b2 != 1 when ! ... is true |
+| 193 | b2 != 1 when ... \|\| ... is false |
+| 193 | b2 != 1 when b2 is false |
+| 193 | b2 == 0 when ! ... is true |
+| 193 | b2 == 0 when ... \|\| ... is false |
+| 193 | b2 == 0 when b2 is false |
+| 193 | b2 == 1 when b2 is true |
+| 198 | ! ... != 0 when ! ... is true |
+| 198 | ! ... != 0 when b is false |
+| 198 | ! ... != 1 when ! ... is false |
+| 198 | ! ... != 1 when b is true |
+| 198 | ! ... == 0 when ! ... is false |
+| 198 | ! ... == 0 when b is true |
+| 198 | ! ... == 1 when ! ... is true |
+| 198 | ! ... == 1 when b is false |
+| 198 | b != 0 when ! ... is false |
+| 198 | b != 0 when b is true |
+| 198 | b == 0 when ! ... is true |
+| 198 | b == 0 when b is false |
+| 206 | ! ... != 0 when ! ... is true |
+| 206 | ! ... != 0 when c is false |
+| 206 | ! ... != 1 when ! ... is false |
+| 206 | ! ... != 1 when c is true |
+| 206 | ! ... == 0 when ! ... is false |
+| 206 | ! ... == 0 when c is true |
+| 206 | ! ... == 1 when ! ... is true |
+| 206 | ! ... == 1 when c is false |
+| 206 | c != 0 when ! ... is false |
+| 206 | c != 0 when c is true |
+| 206 | c == 0 when ! ... is true |
+| 206 | c == 0 when c is false |
+| 211 | 0 != sc+0 when ... == ... is false |
+| 211 | 0 == sc+0 when ... == ... is true |
+| 211 | ... == ... != 0 when ... == ... is true |
+| 211 | ... == ... != 1 when ... == ... is false |
+| 211 | ... == ... == 0 when ... == ... is false |
+| 211 | ... == ... == 1 when ... == ... is true |
+| 211 | sc != 0 when ... == ... is false |
+| 211 | sc != 0+0 when ... == ... is false |
+| 211 | sc == 0 when ... == ... is true |
+| 211 | sc == 0+0 when ... == ... is true |
+| 214 | 0 != sc+0 when ... == ... is false |
+| 214 | 0 == sc+0 when ... == ... is true |
+| 214 | ... == ... != 0 when ... == ... is true |
+| 214 | ... == ... != 1 when ... == ... is false |
+| 214 | ... == ... == 0 when ... == ... is false |
+| 214 | ... == ... == 1 when ... == ... is true |
+| 214 | sc != 0 when ... == ... is false |
+| 214 | sc != 0+0 when ... == ... is false |
+| 214 | sc == 0 when ... == ... is true |
+| 214 | sc == 0+0 when ... == ... is true |
+| 217 | 0 != ul+0 when ... == ... is false |
+| 217 | 0 == ul+0 when ... == ... is true |
+| 217 | ... == ... != 0 when ... == ... is true |
+| 217 | ... == ... != 1 when ... == ... is false |
+| 217 | ... == ... == 0 when ... == ... is false |
+| 217 | ... == ... == 1 when ... == ... is true |
+| 217 | ul != 0 when ... == ... is false |
+| 217 | ul != 0+0 when ... == ... is false |
+| 217 | ul == 0 when ... == ... is true |
+| 217 | ul == 0+0 when ... == ... is true |
+| 220 | 0 != f+0 when ... == ... is false |
+| 220 | 0 == f+0 when ... == ... is true |
+| 220 | ... == ... != 0 when ... == ... is true |
+| 220 | ... == ... != 1 when ... == ... is false |
+| 220 | ... == ... == 0 when ... == ... is false |
+| 220 | ... == ... == 1 when ... == ... is true |
+| 220 | f != 0+0 when ... == ... is false |
+| 220 | f == 0+0 when ... == ... is true |
+| 223 | 0.0 != f+0 when ... == ... is false |
+| 223 | 0.0 == f+0 when ... == ... is true |
+| 223 | ... == ... != 0 when ... == ... is true |
+| 223 | ... == ... != 1 when ... == ... is false |
+| 223 | ... == ... == 0 when ... == ... is false |
+| 223 | ... == ... == 1 when ... == ... is true |
+| 223 | f != 0.0+0 when ... == ... is false |
+| 223 | f == 0.0+0 when ... == ... is true |
+| 226 | 0 != d+0 when ... == ... is false |
+| 226 | 0 == d+0 when ... == ... is true |
+| 226 | ... == ... != 0 when ... == ... is true |
+| 226 | ... == ... != 1 when ... == ... is false |
+| 226 | ... == ... == 0 when ... == ... is false |
+| 226 | ... == ... == 1 when ... == ... is true |
+| 226 | d != 0+0 when ... == ... is false |
+| 226 | d == 0+0 when ... == ... is true |
+| 229 | 0 != b+0 when ... == ... is false |
+| 229 | 0 == b+0 when ... == ... is true |
+| 229 | ... == ... != 0 when ... == ... is true |
+| 229 | ... == ... != 1 when ... == ... is false |
+| 229 | ... == ... == 0 when ... == ... is false |
+| 229 | ... == ... == 1 when ... == ... is true |
+| 229 | b != 0 when ... == ... is false |
+| 229 | b != 0+0 when ... == ... is false |
+| 229 | b == 0 when ... == ... is true |
+| 229 | b == 0+0 when ... == ... is true |
+| 232 | 0 != b+0 when ... == ... is false |
+| 232 | 0 == b+0 when ... == ... is true |
+| 232 | ... == ... != 0 when ... == ... is true |
+| 232 | ... == ... != 1 when ... == ... is false |
+| 232 | ... == ... == 0 when ... == ... is false |
+| 232 | ... == ... == 1 when ... == ... is true |
+| 232 | b != 0 when ... == ... is false |
+| 232 | b != 0+0 when ... == ... is false |
+| 232 | b == 0 when ... == ... is true |
+| 232 | b == 0+0 when ... == ... is true |
+| 235 | 0 != i+0 when ... == ... is false |
+| 235 | 0 == i+0 when ... == ... is true |
+| 235 | ... == ... != 0 when ... == ... is true |
+| 235 | ... == ... != 1 when ... == ... is false |
+| 235 | ... == ... == 0 when ... == ... is false |
+| 235 | ... == ... == 1 when ... == ... is true |
+| 235 | i != 0 when ... == ... is false |
+| 235 | i != 0+0 when ... == ... is false |
+| 235 | i == 0 when ... == ... is true |
+| 235 | i == 0+0 when ... == ... is true |
+| 238 | 0 != f+0 when ... == ... is false |
+| 238 | 0 == f+0 when ... == ... is true |
+| 238 | ... == ... != 0 when ... == ... is true |
+| 238 | ... == ... != 1 when ... == ... is false |
+| 238 | ... == ... == 0 when ... == ... is false |
+| 238 | ... == ... == 1 when ... == ... is true |
+| 238 | f != 0+0 when ... == ... is false |
+| 238 | f == 0+0 when ... == ... is true |
+| 241 | 0 != f+0 when ... == ... is false |
+| 241 | 0 != i+0 when ... == ... is false |
+| 241 | 0 == f+0 when ... && ... is true |
+| 241 | 0 == f+0 when ... == ... is true |
+| 241 | 0 == i+0 when ... && ... is true |
+| 241 | 0 == i+0 when ... == ... is true |
+| 241 | ... == ... != 0 when ... && ... is true |
+| 241 | ... == ... != 0 when ... == ... is true |
+| 241 | ... == ... != 1 when ... == ... is false |
+| 241 | ... == ... == 0 when ... == ... is false |
+| 241 | ... == ... == 1 when ... && ... is true |
+| 241 | ... == ... == 1 when ... == ... is true |
+| 241 | f != 0+0 when ... == ... is false |
+| 241 | f == 0+0 when ... && ... is true |
+| 241 | f == 0+0 when ... == ... is true |
+| 241 | i != 0 when ... == ... is false |
+| 241 | i != 0+0 when ... == ... is false |
+| 241 | i == 0 when ... && ... is true |
+| 241 | i == 0 when ... == ... is true |
+| 241 | i == 0+0 when ... && ... is true |
+| 241 | i == 0+0 when ... == ... is true |

@@ -3,7 +3,6 @@ use crate::rust_analyzer::path_to_file_id;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use log::{info, warn};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
@@ -16,6 +15,9 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use tracing::{error, info, warn};
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
@@ -85,7 +87,7 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(ast);
         translator.trap.commit().unwrap_or_else(|err| {
-            log::error!(
+            error!(
                 "Failed to write trap file for: {}: {}",
                 display_path,
                 err.to_string()
@@ -145,7 +147,7 @@ impl<'a> Extractor<'a> {
         emit_extraction_diagnostics(start, cfg, &self.steps)?;
         let mut trap = self.traps.create("diagnostics", "extraction");
         for step in self.steps {
-            let file = trap.emit_file(&step.file);
+            let file = step.file.as_ref().map(|f| trap.emit_file(f));
             let duration_ms = usize::try_from(step.ms).unwrap_or_else(|_e| {
                 warn!("extraction step duration overflowed ({step:?})");
                 i32::MAX as usize
@@ -160,6 +162,13 @@ impl<'a> Extractor<'a> {
         trap.commit()?;
         Ok(())
     }
+
+    pub fn find_manifests(&mut self, files: &[PathBuf]) -> anyhow::Result<Vec<ProjectManifest>> {
+        let before = Instant::now();
+        let ret = rust_analyzer::find_project_manifests(files);
+        self.steps.push(ExtractionStep::find_manifests(before));
+        ret
+    }
 }
 
 fn cwd() -> anyhow::Result<AbsPathBuf> {
@@ -172,15 +181,27 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let start = Instant::now();
     let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    stderrlog::new()
-        .module(module_path!())
-        .verbosity(2 + cfg.verbose as usize)
-        .init()?;
     if cfg.qltest {
         qltest::prepare(&mut cfg)?;
     }
+    let start = Instant::now();
+    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
+        tracing_flame::FlameLayer::with_file(path)
+            .ok()
+            .map(|(a, b)| (Some(a), Some(b)))
+            .unwrap_or((None, None))
+    } else {
+        (None, None)
+    };
+
+    tracing_subscriber::registry()
+        .with(codeql_extractor::extractor::default_subscriber_with_level(
+            "single_arch",
+            &cfg.logging_verbosity,
+        ))
+        .with(flame_layer)
+        .init();
     info!("{cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
@@ -199,7 +220,7 @@ fn main() -> anyhow::Result<()> {
             dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect();
-    let manifests = rust_analyzer::find_project_manifests(&files)?;
+    let manifests = extractor.find_manifests(&files)?;
     let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
         .iter()
         .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
@@ -230,6 +251,5 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-
     extractor.emit_extraction_diagnostics(start, &cfg)
 }

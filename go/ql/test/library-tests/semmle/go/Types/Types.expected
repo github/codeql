@@ -1,4 +1,5 @@
 | aliases.go:19:6:19:7 | S3 | S3 |
+| aliases.go:29:6:29:11 | MyType | MyType |
 | cyclic.go:3:6:3:6 | s | s |
 | cyclic.go:7:6:7:6 | t | t |
 | cyclic.go:12:6:12:6 | u | u |
@@ -24,7 +25,7 @@
 | generic.go:40:6:40:16 | GenericMap2 | GenericMap2 |
 | generic.go:41:6:41:19 | GenericChannel | GenericChannel |
 | generic.go:42:6:42:14 | MyMapType | MyMapType |
-| generic.go:43:6:43:17 | GenericNamed | GenericNamed |
+| generic.go:43:6:43:19 | GenericDefined | GenericDefined |
 | generic.go:44:6:44:16 | MyFuncType1 | MyFuncType1 |
 | generic.go:45:6:45:16 | MyFuncType2 | MyFuncType2 |
 | generic.go:47:6:47:16 | MyInterface | MyInterface |

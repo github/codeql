@@ -12,9 +12,9 @@
 
 import java
 import semmle.code.java.controlflow.Guards
-import AndroidFileIntentSink
-import AndroidFileIntentSource
-import AndroidFileLeakFlow::PathGraph
+deprecated import AndroidFileIntentSink
+deprecated import AndroidFileIntentSource
+deprecated import AndroidFileLeakFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
   exists(MethodCall ma |
@@ -25,7 +25,7 @@ private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
   )
 }
 
-module AndroidFileLeakConfig implements DataFlow::ConfigSig {
+deprecated module AndroidFileLeakConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `src` is a read of some Intent-typed variable guarded by a check like
    * `requestCode == someCode`, where `requestCode` is the first
@@ -75,9 +75,15 @@ module AndroidFileLeakConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AndroidFileLeakFlow = TaintTracking::Global<AndroidFileLeakConfig>;
+deprecated module AndroidFileLeakFlow = TaintTracking::Global<AndroidFileLeakConfig>;
 
-from AndroidFileLeakFlow::PathNode source, AndroidFileLeakFlow::PathNode sink
-where AndroidFileLeakFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Leaking arbitrary Android file from $@.", source.getNode(),
-  "this user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, AndroidFileLeakFlow::PathNode source, AndroidFileLeakFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  AndroidFileLeakFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Leaking arbitrary Android file from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

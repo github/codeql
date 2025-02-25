@@ -44,3 +44,4 @@ invalidModelRow
 | test.go:199:23:199:26 | arg2 | qltest |
 | test.go:199:29:199:32 | arg3 | qltest |
 | test.go:202:22:202:25 | temp | qltest |
+| test.go:206:10:206:12 | src | qltest |

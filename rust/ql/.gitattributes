@@ -351,7 +351,6 @@
 /lib/codeql/rust/elements/internal/ParenTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenthesizedArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenthesizedArgListImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/PatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathAstNodeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprBaseImpl.qll linguist-generated
@@ -370,12 +369,10 @@
 /lib/codeql/rust/elements/internal/RecordExprFieldListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordExprFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordFieldConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/RecordFieldImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordFieldListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordPatFieldConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/RecordPatFieldImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordPatFieldListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RecordPatFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RefExprConstructor.qll linguist-generated
@@ -415,7 +412,6 @@
 /lib/codeql/rust/elements/internal/TupleExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleFieldConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TupleFieldImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleFieldListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TuplePatConstructor.qll linguist-generated
@@ -432,7 +428,6 @@
 /lib/codeql/rust/elements/internal/TypeBoundListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeParamConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnderscoreExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnextractedImpl.qll linguist-generated

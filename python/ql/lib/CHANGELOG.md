@@ -1,3 +1,29 @@
+## 4.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the extractor where a comment inside a subscript could sometimes cause the AST to be missing nodes.
+- Using the `break` and `continue` keywords outside of a loop, which is a syntax error but is accepted by our parser, would cause the control-flow construction to fail. This is now no longer the case.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated TypeTracking library.
+* Deleted the deprecated `classRef` predicate from the `FieldStorage` module, use `subclassRef` instead.
+* Deleted a lot of deprecated modules and predicates from `Stdlib.qll`, use API-graphs directly instead.
+
+### Minor Analysis Improvements
+
+* Additional data flow models for the builtin functions `map`, `filter`, `zip`, and `enumerate` have been added.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+
 ## 3.1.0
 
 ### New Features

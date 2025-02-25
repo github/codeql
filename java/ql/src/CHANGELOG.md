@@ -1,3 +1,22 @@
+## 1.2.0
+
+### New Queries
+
+* Added a new query, `java/csrf-unprotected-request-type`, to detect Cross-Site Request Forgery (CSRF) vulnerabilities due to using HTTP request types that are not default-protected from CSRF.
+
+## 1.1.13
+
+### Minor Analysis Improvements
+
+* All *experimental* queries have been deprecated. The queries are instead available as part of the *default* query suite in [CodeQL-Community-Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs).
+
+## 1.1.12
+
+### Bug Fixes
+
+* Classes that define a `writeReplace` method are no longer flagged by the `java/missing-no-arg-constructor-on-serializable` query on the assumption they are unlikely to be deserialized using the default algorithm.
+* The query "Use of a broken or risky cryptographic algorithm" (`java/weak-cryptographic-algorithm`) now gives the reason why the cryptographic algorithm is considered weak.
+
 ## 1.1.11
 
 No user-facing changes.

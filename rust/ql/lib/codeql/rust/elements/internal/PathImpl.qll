@@ -27,5 +27,31 @@ module Impl {
       then result = "...::" + this.getPart().toAbbreviatedString()
       else result = this.getPart().toAbbreviatedString()
     }
+
+    /**
+     * Gets the text of this path, if it exists.
+     */
+    pragma[nomagic]
+    string getText() { result = this.getPart().getNameRef().getText() }
+  }
+
+  /** A simple identifier path. */
+  class IdentPath extends Path {
+    private string name;
+
+    IdentPath() {
+      not this.hasQualifier() and
+      exists(PathSegment ps |
+        ps = this.getPart() and
+        not ps.hasGenericArgList() and
+        not ps.hasParenthesizedArgList() and
+        not ps.hasPathType() and
+        not ps.hasReturnTypeSyntax() and
+        name = ps.getNameRef().getText()
+      )
+    }
+
+    /** Gets the identifier name. */
+    string getName() { result = name }
   }
 }

@@ -1,3 +1,46 @@
+## 1.4.1
+
+### Bug Fixes
+
+* Fixed a recently-introduced bug that prevented taint tracking through `URLSearchParams` objects.
+  The original behaviour has been restored and taint should once again be tracked through such objects.
+* Fixed a rare issue that would occur when a function declaration inside a block statement was referenced before it was declared.
+  Such code is reliant on legacy web semantics, which is non-standard but nevertheless implemented by most engines.
+  CodeQL now takes legacy web semantics into account and resolves references to these functions correctly.
+* Fixed a bug that would cause parse errors in `.jsx` files in rare cases where the file
+  contained syntax that was misinterpreted as Flow syntax.
+
+## 1.4.0
+
+### Major Analysis Improvements
+
+* Improved support for NestJS applications that make use of dependency injection with custom providers.
+  Calls to methods on an injected service should now be resolved properly.
+* TypeScript extraction is now better at analyzing projects where the main `tsconfig.json` file does not include any
+  source files, but references other `tsconfig.json`-like files that do include source files.
+* The `js/incorrect-suffix-check` query now recognises some good patterns of the form `origin.indexOf("." + allowedOrigin)` that were previously falsely flagged.
+* Added a new threat model kind called `view-component-input`, which can enabled with [advanced setup](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+  When enabled, all React props, Vue props, and input fields in an Angular component are seen as taint sources, even if none of the corresponding instantiation sites appear to pass in a tainted value.
+  Some users may prefer this as a "defense in depth" option but note that it may result in false positives.
+  Regardless of whether the threat model is enabled, CodeQL will propagate taint from the instantiation sites of such components into the components themselves.
+
+### Bug Fixes
+
+* Fixed a bug that would occur when TypeScript code was found in an HTML-like file, such as a `.vue` file,
+  but where it could not be associated with any `tsconfig.json` file. Previously the embedded code was not
+  extracted in this case, but should now be extracted properly.
+
+## 1.3.0
+
+### Major Analysis Improvements
+
+* The `js/xss-through-dom` query now recognises sources of DOM input originating from Angular templates.
+
+### Bug Fixes
+
+* Fixed a TypeScript extractor crash that would occur when encountering an export specifier
+  whose local specifier was a string literal.
+
 ## 1.2.6
 
 No user-facing changes.

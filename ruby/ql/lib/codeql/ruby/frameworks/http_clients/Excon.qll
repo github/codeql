@@ -118,6 +118,10 @@ private module ExconDisablesCertificateValidationConfig implements DataFlow::Con
   predicate isSink(DataFlow::Node sink) {
     sink = any(ExconHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
 
 private module ExconDisablesCertificateValidationFlow =

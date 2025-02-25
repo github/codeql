@@ -9,6 +9,7 @@ and the CodeQL library pack ``codeql/cpp-all`` (`changelog <https://github.com/g
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, Network communicator
@@ -26,6 +27,7 @@ and the CodeQL library pack ``codeql/csharp-all`` (`changelog <https://github.co
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    ASP.NET, Web application framework
@@ -49,6 +51,7 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    `AWS Lambda <https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html>`_, Serverless framework
@@ -105,6 +108,7 @@ and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    Apache Commons Collections, Data structure utility library
@@ -139,6 +143,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    angular (modern version), HTML framework
@@ -189,6 +194,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    AWS Lambda, Serverless framework
@@ -267,6 +273,7 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    excon, HTTP client
@@ -293,6 +300,7 @@ and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
+   :align: left
 
    Name, Category
    `AEXML <https://github.com/tadija/AEXML>`__, XML processing library

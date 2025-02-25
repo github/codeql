@@ -63,18 +63,62 @@ numberOfTypeParameters
 | internal/bytealg.HashStrRev | 0 | T | interface { string \| []uint8 } |
 | internal/bytealg.IndexRabinKarp | 0 | T | interface { string \| []uint8 } |
 | internal/bytealg.LastIndexRabinKarp | 0 | T | interface { string \| []uint8 } |
+| internal/poll.ignoringEINTR2 | 0 | T | interface { } |
 | internal/runtime/atomic.Pointer.CompareAndSwap | 0 | T | interface { } |
 | internal/runtime/atomic.Pointer.CompareAndSwapNoWB | 0 | T | interface { } |
 | internal/runtime/atomic.Pointer.Load | 0 | T | interface { } |
 | internal/runtime/atomic.Pointer.Store | 0 | T | interface { } |
 | internal/runtime/atomic.Pointer.StoreNoWB | 0 | T | interface { } |
+| internal/sync.HashTrieMap.All | 0 | K | comparable |
+| internal/sync.HashTrieMap.All | 1 | V | interface { } |
+| internal/sync.HashTrieMap.CompareAndDelete | 0 | K | comparable |
+| internal/sync.HashTrieMap.CompareAndDelete | 1 | V | interface { } |
+| internal/sync.HashTrieMap.CompareAndSwap | 0 | K | comparable |
+| internal/sync.HashTrieMap.CompareAndSwap | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Delete | 0 | K | comparable |
+| internal/sync.HashTrieMap.Load | 0 | K | comparable |
+| internal/sync.HashTrieMap.Load | 1 | V | interface { } |
+| internal/sync.HashTrieMap.LoadAndDelete | 0 | K | comparable |
+| internal/sync.HashTrieMap.LoadAndDelete | 1 | V | interface { } |
+| internal/sync.HashTrieMap.LoadOrStore | 0 | K | comparable |
+| internal/sync.HashTrieMap.LoadOrStore | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Range | 0 | K | comparable |
+| internal/sync.HashTrieMap.Range | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Store | 0 | K | comparable |
+| internal/sync.HashTrieMap.Store | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Swap | 0 | K | comparable |
+| internal/sync.HashTrieMap.Swap | 1 | V | interface { } |
+| internal/sync.HashTrieMap.find | 0 | K | comparable |
+| internal/sync.HashTrieMap.find | 1 | V | interface { } |
+| internal/sync.HashTrieMap.iter | 0 | K | comparable |
+| internal/sync.HashTrieMap.iter | 1 | V | interface { } |
+| internal/sync.entry | 0 | K | comparable |
+| internal/sync.entry | 1 | V | interface { } |
+| internal/sync.entry.compareAndDelete | 0 | K | comparable |
+| internal/sync.entry.compareAndDelete | 1 | V | interface { } |
+| internal/sync.entry.compareAndSwap | 0 | K | comparable |
+| internal/sync.entry.compareAndSwap | 1 | V | interface { } |
+| internal/sync.entry.loadAndDelete | 0 | K | comparable |
+| internal/sync.entry.loadAndDelete | 1 | V | interface { } |
+| internal/sync.entry.lookup | 0 | K | comparable |
+| internal/sync.entry.lookup | 1 | V | interface { } |
+| internal/sync.entry.lookupWithValue | 0 | K | comparable |
+| internal/sync.entry.lookupWithValue | 1 | V | interface { } |
+| internal/sync.entry.swap | 0 | K | comparable |
+| internal/sync.entry.swap | 1 | V | interface { } |
+| internal/sync.newEntryNode | 0 | K | comparable |
+| internal/sync.newEntryNode | 1 | V | interface { } |
 | iter.Pull | 0 | V | interface { } |
 | iter.Pull2 | 0 | K | interface { } |
 | iter.Pull2 | 1 | V | interface { } |
 | iter.Seq | 0 | V | interface { } |
 | iter.Seq2 | 0 | K | interface { } |
 | iter.Seq2 | 1 | V | interface { } |
+| os.doInRoot | 0 | T | interface { } |
+| os.ignoringEINTR2 | 0 | T | interface { } |
 | reflect.rangeNum | 1 | N | interface { int64 \| uint64 } |
+| runtime.AddCleanup | 0 | T | interface { } |
+| runtime.AddCleanup | 1 | S | interface { } |
 | runtime.fandbits | 0 | F | floaty |
 | runtime.fmax | 0 | F | floaty |
 | runtime.fmin | 0 | F | floaty |

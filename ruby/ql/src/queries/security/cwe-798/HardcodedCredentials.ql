@@ -147,6 +147,8 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
       binop.getExpr() instanceof AddExpr
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module HardcodedCredentialsFlow = DataFlow::Global<HardcodedCredentialsConfig>;

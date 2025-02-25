@@ -88,7 +88,10 @@ extensions:
       - ["java.io", "DataInput", True, "readUTF", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInputStream", False, "DataInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "File", False, "File", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.io", "File", False, "File", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      # We model this taint step in QL as `FileConstructorChildArgumentStep` in the `PathSanitizer` library
+      # since we need to sanitize the use of this argument but not later uses of the same SSA variable,
+      # which is not currently possible in Java with a standard sanitizer due to use-use flow.
+      # - ["java.io", "File", False, "File", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
       - ["java.io", "File", True, "getAbsoluteFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getAbsolutePath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

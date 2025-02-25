@@ -134,6 +134,14 @@ mod if_expression {
         }
     }
 
+    fn test_if_without_else(b: bool) -> i64 {
+        let mut i = 3;
+        if b {
+            i += 1;
+        }
+        i
+    }
+
     fn test_if_let_else(a: Option<i64>) -> i64 {
         if let Some(n) = a {
             n
@@ -155,6 +163,17 @@ mod if_expression {
         } else {
             0
         }
+    }
+
+    fn test_nested_if_2(cond1: bool, cond2: bool) -> () {
+        if cond1 {
+            if cond2 {
+                println!("1");
+            } else {
+                println!("2");
+            }
+            println!("3");
+        };
     }
 
     fn test_nested_if_match(a: i64) -> i64 {
@@ -361,11 +380,20 @@ mod patterns {
         return;
     }
 
-    struct MyStruct {}
+    struct MyStruct {
+        x: i64
+    }
 
     fn empty_struct_pattern(st: MyStruct) -> i64 {
         match st {
             MyStruct { .. } => 1,
+        }
+    }
+
+    fn struct_pattern(st: MyStruct) -> i64 {
+        match st {
+            MyStruct { x: 1 } => 0,
+            MyStruct { x } => 3,
         }
     }
 
@@ -375,6 +403,80 @@ mod patterns {
             1..2 => 2,
             5.. => 3,
             _ => 4,
+        }
+    }
+
+    fn identifier_pattern_with_subpattern() -> i64 {
+        match 43 {
+            n @ 1..10 => 2 * n,
+            _ => 0,
+        }
+    }
+
+    fn identifier_pattern_with_ref() -> i64 {
+        let mut a = 10;
+        match a {
+            ref mut n @ 1..10 => *n += 10,
+            ref mut n => *n = 0,
+        };
+        a
+    }
+
+    fn tuple_pattern(a: i64, b: i64) -> i64 {
+        match (a, b) {
+            (1, _) => 2,
+            (.., 2) => 3,
+            (..) => 4,
+        }
+    }
+
+    fn or_pattern(a: i64) -> i64 {
+        match a {
+            0 | 1 | 2 => 3,
+            _ => 4,
+        }
+    }
+
+    fn or_pattern_2(a: Option<bool>) -> i64 {
+        match a {
+            None => 3,
+            Some(true) | Some(false) => 4,
+        }
+    }
+
+    macro_rules! one_or_two {
+        () => {
+            1 | 2
+        };
+    }
+
+    fn or_pattern_3(a: i64) -> i64 {
+        match a {
+            one_or_two!() => 3,
+            _ => 4,
+        }
+    }
+
+    fn irrefutable_pattern_and_dead_code(pair: &(i64, MyStruct)) -> i64 {
+        match pair {
+            &(n, MyStruct { x: _ }) => n,
+            _ => 0, // dead code
+        }
+    }
+
+    enum MyEnum {
+        StructVariant { n: i64 },
+        TupleVariant(i64),
+        UnitVariant,
+    }
+
+    use MyEnum::*;
+
+    fn enum_pattern(e: MyEnum) -> i64 {
+        match e {
+            StructVariant { n: _ } => 0,
+            TupleVariant(_) => 1,
+            UnitVariant => 2,
         }
     }
 }

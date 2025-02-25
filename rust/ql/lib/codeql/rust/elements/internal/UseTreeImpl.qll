@@ -15,7 +15,10 @@ module Impl {
   /**
    * A UseTree. For example:
    * ```rust
-   * todo!()
+   * use std::collections::HashMap;
+   * use std::collections::*;
+   * use std::collections::HashMap as MyHashMap;
+   * use std::collections::{self, HashMap, HashSet};
    * ```
    */
   class UseTree extends Generated::UseTree { }

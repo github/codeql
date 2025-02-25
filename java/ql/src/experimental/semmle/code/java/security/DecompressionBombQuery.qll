@@ -1,3 +1,5 @@
+deprecated module;
+
 import experimental.semmle.code.java.security.FileAndFormRemoteSource
 import experimental.semmle.code.java.security.DecompressionBomb::DecompressionBomb
 

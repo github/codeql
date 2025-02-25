@@ -25,7 +25,7 @@ extensions:
       - ["System.Xml.XPath", "XPathItem", True, "get_TypedValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.XPath", "XPathItem", True, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.XPath", "XPathItem", True, "get_XmlType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Xml.XPath", "XPathNavigator", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Xml.XPath", "XPathNavigator", False, "ToString", "()", "", "Argument[this].Property[System.Xml.XPath.XPathItem.Value]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Xml.XPath", "XPathNavigator", True, "AppendChild", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.XPath", "XPathNavigator", True, "Clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Xml.XPath", "XPathNavigator", True, "Compile", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]

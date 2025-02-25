@@ -18,8 +18,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
-
   class SourceVariable = LocalVariable;
 
   /**
@@ -225,16 +223,7 @@ private predicate hasVariableReadWithCapturedWrite(
 }
 
 pragma[noinline]
-private predicate adjacentDefRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
-pragma[noinline]
-private predicate adjacentDefReadExt(
+deprecated private predicate adjacentDefReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
@@ -242,23 +231,7 @@ private predicate adjacentDefReadExt(
   v = def.getSourceVariable()
 }
 
-private predicate adjacentDefReachesRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-private predicate adjacentDefReachesReadExt(
+deprecated private predicate adjacentDefReachesReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
@@ -274,16 +247,7 @@ private predicate adjacentDefReachesReadExt(
   )
 }
 
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
-private predicate adjacentDefReachesUncertainReadExt(
+deprecated private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
@@ -292,13 +256,29 @@ private predicate adjacentDefReachesUncertainReadExt(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReadsExt(
+  DefinitionExt def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
+  )
+}
+
+/**
+ * Holds if the read of `def` at `read` may be a last read. That is, `read`
+ * can either reach another definition of the underlying source variable or
+ * the end of the CFG scope, without passing through another non-pseudo read.
+ */
+pragma[nomagic]
+deprecated predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
+  exists(Cfg::BasicBlock bb, int i |
+    lastRefSkipUncertainReadsExt(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    read = bb.getNode(i)
   )
 }
 
@@ -377,11 +357,7 @@ private module Cached {
    */
   cached
   predicate firstRead(Definition def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
+    exists(Cfg::BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and read = bb.getNode(i))
   }
 
   /**
@@ -393,25 +369,11 @@ private module Cached {
   predicate adjacentReadPair(
     Definition def, VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
   ) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
+    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2, LocalVariable v |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
-   * Holds if the read of `def` at `read` may be a last read. That is, `read`
-   * can either reach another definition of the underlying source variable or
-   * the end of the CFG scope, without passing through another non-pseudo read.
-   */
-  cached
-  predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb, int i |
-      lastRefSkipUncertainReadsExt(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      read = bb.getNode(i)
     )
   }
 

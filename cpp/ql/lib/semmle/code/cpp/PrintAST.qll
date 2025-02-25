@@ -912,6 +912,10 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ConstexprIfStmt).getElse() = e and pred = "getElse()"
     or
+    s.(ConstevalIfStmt).getThen() = e and pred = "getThen()"
+    or
+    s.(ConstevalIfStmt).getElse() = e and pred = "getElse()"
+    or
     s.(Handler).getParameter() = e and pred = "getParameter()"
     or
     s.(IfStmt).getInitialization() = e and pred = "getInitialization()"

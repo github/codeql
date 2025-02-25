@@ -5,7 +5,9 @@ private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
 private module ModelPrintingLang implements ModelPrintingLangSig {
   class Callable = J::Callable;
 
-  predicate partialModel = ModelGeneratorInput::partialModel/6;
+  predicate partialModelRow = ModelGeneratorInput::partialModelRow/2;
+
+  predicate partialNeutralModelRow = ModelGeneratorInput::partialNeutralModelRow/2;
 }
 
 import ModelPrintingImpl<ModelPrintingLang>

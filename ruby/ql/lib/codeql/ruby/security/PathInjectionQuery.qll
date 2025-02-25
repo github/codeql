@@ -20,6 +20,8 @@ private module PathInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Path::PathSanitization or node instanceof PathInjection::Sanitizer
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

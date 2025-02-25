@@ -11,7 +11,7 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private module GeneratorDataFlow {
   private import DataFlow::PseudoProperties
 
-  private class ArrayIteration extends PreCallGraphStep {
+  private class ArrayIteration extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::FunctionNode f | f.getFunction().isGenerator() |
         prop = iteratorElement() and

@@ -14,10 +14,16 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import MatchRegexFlow::PathGraph
-import PermissiveDotRegexQuery
+deprecated import MatchRegexFlow::PathGraph
+deprecated import PermissiveDotRegexQuery
 
-from MatchRegexFlow::PathNode source, MatchRegexFlow::PathNode sink
-where MatchRegexFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Potentially authentication bypass due to $@.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, MatchRegexFlow::PathNode source, MatchRegexFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  MatchRegexFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potentially authentication bypass due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

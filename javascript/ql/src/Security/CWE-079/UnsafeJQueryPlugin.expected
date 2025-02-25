@@ -1,0 +1,10 @@
+edges
+| examples/UnsafeJQueryPlugin.js:1:31:1:37 | options | examples/UnsafeJQueryPlugin.js:3:22:3:28 | options | provenance |  |
+| examples/UnsafeJQueryPlugin.js:3:22:3:28 | options | examples/UnsafeJQueryPlugin.js:3:22:3:43 | options ... elector | provenance |  |
+nodes
+| examples/UnsafeJQueryPlugin.js:1:31:1:37 | options | semmle.label | options |
+| examples/UnsafeJQueryPlugin.js:3:22:3:28 | options | semmle.label | options |
+| examples/UnsafeJQueryPlugin.js:3:22:3:43 | options ... elector | semmle.label | options ... elector |
+subpaths
+#select
+| examples/UnsafeJQueryPlugin.js:3:22:3:43 | options ... elector | examples/UnsafeJQueryPlugin.js:1:31:1:37 | options | examples/UnsafeJQueryPlugin.js:3:22:3:43 | options ... elector | Potential XSS vulnerability in the $@. | examples/UnsafeJQueryPlugin.js:1:22:6:1 | functio ... ext);\\n} | '$.fn.copyText' plugin |

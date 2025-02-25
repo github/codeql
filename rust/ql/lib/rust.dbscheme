@@ -128,8 +128,13 @@ locatable_locations(
 extractor_steps(
   unique int id: @extractor_step,
   string action: string ref,
-  int file: @file ref,
   int duration_ms: int ref
+);
+
+#keyset[id]
+extractor_step_files(
+  int id: @extractor_step ref,
+  int file: @file ref
 );
 
 @locatable =
@@ -1087,6 +1092,11 @@ use_bound_generic_args_use_bound_generic_args(
 
 use_trees(
   unique int id: @use_tree
+);
+
+#keyset[id]
+use_tree_is_glob(
+  int id: @use_tree ref
 );
 
 #keyset[id]

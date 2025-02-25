@@ -1,4 +1,5 @@
 /** Provides classes related to security-centered regular expression matching. */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
