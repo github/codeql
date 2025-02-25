@@ -20,8 +20,8 @@ var server = http.createServer(function(req, res) {
     request.get(tainted); // $ Alert[js/request-forgery]
 
     var options = {};
-    options.url = tainted; // $ Alert
-    request(options);
+    options.url = tainted;
+    request(options); // $ Alert[js/request-forgery]
 
     request("http://" + tainted); // $ Alert[js/request-forgery]
 
@@ -124,8 +124,8 @@ var server2 = http.createServer(function(req, res) {
 
     axios({
         method: 'get',
-        url: tainted // $ Alert
-    })
+        url: tainted
+    }) // $ Alert[js/request-forgery]
 
     var myUrl = `${something}/bla/${tainted}`; 
     axios.get(myUrl); // $ Alert[js/request-forgery]
