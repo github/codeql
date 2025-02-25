@@ -783,43 +783,9 @@ class SsaDefinitionNodeImpl extends SsaNode {
   }
 }
 
-/**
- * A node that represents an input to an SSA phi (read) definition.
- *
- * This allows for barrier guards to filter input to phi nodes. For example, in
- *
- * ```rb
- * x = taint
- * if x != "safe" then
- *     x = "safe"
- * end
- * sink x
- * ```
- *
- * the `false` edge out of `x != "safe"` guards the input from `x = taint` into the
- * `phi` node after the condition.
- *
- * It is also relevant to filter input into phi read nodes:
- *
- * ```rb
- * x = taint
- * if b then
- *     if x != "safe1" then
- *         return
- *     end
- * else
- *     if x != "safe2" then
- *         return
- *     end
- * end
- *
- * sink x
- * ```
- *
- * both inputs into the phi read node after the outer condition are guarded.
- */
-class SsaInputNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaInputNode node;
+/** A synthesized SSA read. */
+class SsaSynthReadNode extends SsaNode {
+  override SsaImpl::DataFlowIntegration::SsaSynthReadNode node;
 }
 
 /** An SSA definition for a `self` variable. */
