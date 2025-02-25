@@ -146,4 +146,4 @@ for (const [key, key2, key3, value] of array) {
 }
 
 for (const [key, key2, key3, value] of array) {} // $ Alert
-for (let i of [1, 2]) {}
+for (let i of [1, 2]) {} // $ Alert
