@@ -4,16 +4,6 @@ private import rust
 private import PathResolution
 private import TypeInferenceShared
 
-private newtype TType =
-  TStruct(Struct s) or
-  TEnum(Enum e) or
-  TTrait(Trait t) or
-  TImpl(Impl i) or
-  TArrayType() or // todo: add size?
-  TRefType() or // todo: add mut, lifetime?
-  TTypeParamTypeParameter(TypeParam t) or
-  TRefTypeParameter()
-
 private module Types {
   /** A type without type arguments. */
   abstract class Type extends TType {
@@ -258,7 +248,7 @@ private module Input1 implements InputSig1<Location> {
 import Make1<Location, Input1>
 
 private module Input2 implements InputSig2 {
-  /** A `TypeRepr` or a `Path`. */
+  /** An AST node that may mention a type. */
   abstract class TypeMention extends AstNode {
     /** Gets the `i`th type argument, if any. */
     abstract TypeMention getTypeReprArgument(int i);
@@ -268,20 +258,20 @@ private module Input2 implements InputSig2 {
 
     /** Gets the node at `path`. */
     pragma[nomagic]
-    private TypeMention getTypeReprAt(TypePath path) {
+    private TypeMention getMentionAt(TypePath path) {
       path.isEmpty() and
       result = this
       or
       exists(int i, TypeParameter tp, TypeMention arg, TypePath suffix |
         arg = this.getTypeReprArgument(pragma[only_bind_into](i)) and
-        result = arg.getTypeReprAt(suffix) and
+        result = arg.getMentionAt(suffix) and
         path = typePath(tp).append(suffix) and
         tp = this.resolveType().getTypeParameter(pragma[only_bind_into](i))
       )
     }
 
-    /** Gets the type that the sub node at `path` resolves to. */
-    Type resolveTypeAt(TypePath path) { result = this.getTypeReprAt(path).resolveType() }
+    /** Gets the type that the sub mention at `path` resolves to. */
+    Type resolveTypeAt(TypePath path) { result = this.getMentionAt(path).resolveType() }
   }
 
   additional class TypeRepr_ extends TypeMention, TypeRepr {
@@ -334,44 +324,10 @@ private module Input2 implements InputSig2 {
         or
         result = TTrait(i)
         or
-        result = TTypeParamTypeParameter(i) //and
+        result = TTypeParamTypeParameter(i)
         or
-        // not this.isImplTypeParam(_, _, _) // todo: no effect?
         result = i.(TypeAlias).getTypeRepr().(TypeRepr_).resolveType()
-        // or
-        // exists(ImplItemNode impl, int j, Struct selfType |
-        //   i = impl.(Impl).getGenericParamList().getTypeParam(_) and
-        //   selfType = impl.resolveSelfTy() and
-        //   this =
-        //     impl.getSelfPath()
-        //         .getPart()
-        //         .getGenericArgList()
-        //         .getTypeArgument(j)
-        //         .(PathTypeRepr)
-        //         .getPath() and
-        //   result = TTypeParamTypeParameter(selfType.getGenericParamList().getTypeParam(j))
-        // )
       )
-      // or
-      // exists(ImplItemNode impl, Path_ selfPath | selfPath = impl.getSelfPath() |
-      //   result = TImpl(impl) and
-      //   this = selfPath
-      //   or
-      //   exists(int i |
-      //     this.isImplTypeParam(impl, selfPath, i) and
-      //     result = selfPath.resolveType().getTypeParameter(i)
-      //     // result =
-      //     //   TTypeParamTypeParameter(resolvePath(selfPath)
-      //     //         .(Struct)
-      //     //         .getGenericParamList()
-      //     //         .getTypeParam(i))
-      //   )
-      // )
-      // or
-      // exists(ImplItemNode i |
-      //   result = TImpl(i) and
-      //   this = i.getSelfPath()
-      // )
     }
   }
 
@@ -382,10 +338,7 @@ private module Input2 implements InputSig2 {
   }
 
   private class Impl_ extends TypeMention, Impl {
-    override TypeRepr_ getTypeReprArgument(int i) {
-      none()
-      // result = this.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
-    }
+    override TypeRepr_ getTypeReprArgument(int i) { none() }
 
     override Type resolveType() { result = TImpl(this) }
 
@@ -398,11 +351,6 @@ private module Input2 implements InputSig2 {
           p.isImplTypeParam(this, selfPath, i) and
           result = selfPath.resolveType().getTypeParameter(i) and
           path = typePath(p.resolveType())
-          // result =
-          //   TTypeParamTypeParameter(resolvePath(selfPath)
-          //         .(Struct)
-          //         .getGenericParamList()
-          //         .getTypeParam(i))
         )
       )
     }
@@ -971,65 +919,80 @@ private Type resolveRefExprTypeInv(Expr e, TypePath path) {
 
 cached
 private module Cached {
-  pragma[inline]
-  private Type getLookupType(AstNode n) {
-    exists(Type t |
-      t = resolveType(n) and
-      if t = TRefType()
-      then
-        // for reference types, lookup members in the type being referenced
-        result = resolveType(n, "0")
-      else result = t
-    )
-  }
+  cached
+  newtype TType =
+    TStruct(Struct s) or
+    TEnum(Enum e) or
+    TTrait(Trait t) or
+    TImpl(Impl i) or
+    TArrayType() or // todo: add size?
+    TRefType() or // todo: add mut, lifetime?
+    TTypeParamTypeParameter(TypeParam t) or
+    TRefTypeParameter()
 
   cached
-  Function resolveMethodCallExpr(MethodCallExpr mce) {
-    exists(Type t, string name |
-      t = getLookupType(mce.getReceiver()) and
-      name = mce.getNameRef().getText() and
-      result = t.getMethod(name)
-    )
-  }
+  module Public {
+    pragma[inline]
+    private Type getLookupType(AstNode n) {
+      exists(Type t |
+        t = resolveType(n) and
+        if t = TRefType()
+        then
+          // for reference types, lookup members in the type being referenced
+          result = resolveType(n, "0")
+        else result = t
+      )
+    }
 
-  cached
-  RecordField resolveRecordFieldExpr(FieldExpr fe) {
-    exists(Type t, string name |
-      t = getLookupType(fe.getExpr()) and
-      name = fe.getNameRef().getText() and
-      result = t.getRecordField(name)
-    )
-  }
+    cached
+    Function resolveMethodCallExpr(MethodCallExpr mce) {
+      exists(Type t, string name |
+        t = getLookupType(mce.getReceiver()) and
+        name = mce.getNameRef().getText() and
+        result = t.getMethod(name)
+      )
+    }
 
-  cached
-  TupleField resolveTupleFieldExpr(FieldExpr fe) {
-    exists(Type t, int i |
-      t = getLookupType(fe.getExpr()) and
-      i = fe.getNameRef().getText().toInt() and
-      result = t.getTupleField(i)
-    )
-  }
+    cached
+    RecordField resolveRecordFieldExpr(FieldExpr fe) {
+      exists(Type t, string name |
+        t = getLookupType(fe.getExpr()) and
+        name = fe.getNameRef().getText() and
+        result = t.getRecordField(name)
+      )
+    }
 
-  cached
-  Type resolveType(AstNode n, TypePath path) {
-    result = resolveVariableType(n, path)
-    or
-    result = resolveTargetTyped(n, path)
-    or
-    result = resolveRecordExprType(n, path)
-    or
-    result = resolvePathExprType(n, path)
-    or
-    result = resolveCallExprBaseType(n, path)
-    or
-    result = resolveFieldExprType(n, path)
-    or
-    result = resolveRefExprType(n, path)
-    or
-    result = resolveRefExprTypeInv(n, path)
+    cached
+    TupleField resolveTupleFieldExpr(FieldExpr fe) {
+      exists(Type t, int i |
+        t = getLookupType(fe.getExpr()) and
+        i = fe.getNameRef().getText().toInt() and
+        result = t.getTupleField(i)
+      )
+    }
+
+    cached
+    Type resolveType(AstNode n, TypePath path) {
+      result = resolveVariableType(n, path)
+      or
+      result = resolveTargetTyped(n, path)
+      or
+      result = resolveRecordExprType(n, path)
+      or
+      result = resolvePathExprType(n, path)
+      or
+      result = resolveCallExprBaseType(n, path)
+      or
+      result = resolveFieldExprType(n, path)
+      or
+      result = resolveRefExprType(n, path)
+      or
+      result = resolveRefExprTypeInv(n, path)
+    }
   }
 }
 
-import Cached
+private import Cached
+import Cached::Public
 
 Type resolveType(AstNode n) { result = resolveType(n, "") }
