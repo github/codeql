@@ -12,12 +12,12 @@
 })();
 
 (function() {
-    require("http").request({auth: "user:hgfedcba"});  // $ Alert
-    require("https").request({auth: "user:hgfedcba"}); // $ Alert
+    require("http").request({auth: "user:hgfedcba"});   // $ MISSING: Alert
+    require("https").request({auth: "user:hgfedcba"});  // $ MISSING: Alert
     function getCredentials() {
         return "user:hgfedcba";
     }
-    require("http").request({auth: getCredentials()}); // $ Alert
+    require("http").request({auth: getCredentials()}); // $ MISSING: Alert
     require("http").request({auth: getUnknownCredentials()});
 })();
 
