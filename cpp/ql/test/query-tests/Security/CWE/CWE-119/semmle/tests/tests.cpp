@@ -1014,6 +1014,23 @@ void test28() {
 	ptr5[-1] = 0; // GOOD (depending what cond() does)
 }
 
+typedef int myInt29;
+typedef myInt29 myArray29[10];
+struct _myStruct29 {
+	myArray29 arr1;
+	myInt29 arr2[20];
+};
+typedef _myStruct29 myStruct29;
+
+void test29() {
+	myStruct29 *ptr;
+
+	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2) [FALSE POSITIVE]
+	memset(&(ptr->arr1[0]), 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
+
+	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2) + 10); // BAD
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -1044,6 +1061,7 @@ int tests_main(int argc, char *argv[])
 	test26();
 	test27(argc);
 	test28();
+	test29();
 
 	return 0;
 }
