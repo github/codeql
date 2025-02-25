@@ -85,6 +85,6 @@ rust_library(
     }),
     version = "1.4.2",
     deps = [
-        "@vendor__cfg-if-1.0.0//:cfg_if",
+        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
     ],
 )

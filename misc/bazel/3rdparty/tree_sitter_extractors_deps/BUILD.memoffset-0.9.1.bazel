@@ -85,7 +85,7 @@ rust_library(
     }),
     version = "0.9.1",
     deps = [
-        "@vendor__memoffset-0.9.1//:build_script_build",
+        "@vendor_ts__memoffset-0.9.1//:build_script_build",
     ],
 )
 
@@ -140,7 +140,7 @@ cargo_build_script(
     version = "0.9.1",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__autocfg-1.4.0//:autocfg",
+        "@vendor_ts__autocfg-1.4.0//:autocfg",
     ],
 )
 

@@ -82,7 +82,7 @@ rust_library(
     }),
     version = "0.4.0",
     deps = [
-        "@vendor__winapi-x86_64-pc-windows-gnu-0.4.0//:build_script_build",
+        "@vendor_ts__winapi-x86_64-pc-windows-gnu-0.4.0//:build_script_build",
     ],
 )
 

@@ -82,22 +82,22 @@ rust_library(
     version = "0.48.5",
     deps = select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor__windows_aarch64_msvc-0.48.5//:windows_aarch64_msvc",  # cfg(all(target_arch = "aarch64", target_env = "msvc", not(windows_raw_dylib)))
+            "@vendor_ts__windows_aarch64_msvc-0.48.5//:windows_aarch64_msvc",  # cfg(all(target_arch = "aarch64", target_env = "msvc", not(windows_raw_dylib)))
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor__windows_i686_msvc-0.48.5//:windows_i686_msvc",  # cfg(all(target_arch = "x86", target_env = "msvc", not(windows_raw_dylib)))
+            "@vendor_ts__windows_i686_msvc-0.48.5//:windows_i686_msvc",  # cfg(all(target_arch = "x86", target_env = "msvc", not(windows_raw_dylib)))
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor__windows_i686_gnu-0.48.5//:windows_i686_gnu",  # cfg(all(target_arch = "x86", target_env = "gnu", not(windows_raw_dylib)))
+            "@vendor_ts__windows_i686_gnu-0.48.5//:windows_i686_gnu",  # cfg(all(target_arch = "x86", target_env = "gnu", not(windows_raw_dylib)))
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor__windows_x86_64_msvc-0.48.5//:windows_x86_64_msvc",  # cfg(all(target_arch = "x86_64", target_env = "msvc", not(windows_raw_dylib)))
+            "@vendor_ts__windows_x86_64_msvc-0.48.5//:windows_x86_64_msvc",  # cfg(all(target_arch = "x86_64", target_env = "msvc", not(windows_raw_dylib)))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor__windows_x86_64_gnu-0.48.5//:windows_x86_64_gnu",  # cfg(all(target_arch = "x86_64", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
+            "@vendor_ts__windows_x86_64_gnu-0.48.5//:windows_x86_64_gnu",  # cfg(all(target_arch = "x86_64", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor__windows_x86_64_gnu-0.48.5//:windows_x86_64_gnu",  # cfg(all(target_arch = "x86_64", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
+            "@vendor_ts__windows_x86_64_gnu-0.48.5//:windows_x86_64_gnu",  # cfg(all(target_arch = "x86_64", target_env = "gnu", not(target_abi = "llvm"), not(windows_raw_dylib)))
         ],
         "//conditions:default": [],
     }),

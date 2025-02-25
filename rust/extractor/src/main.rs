@@ -1,11 +1,11 @@
-use crate::diagnostics::{emit_extraction_diagnostics, ExtractionStep};
+use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::path_to_file_id;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
 use ra_ap_hir::Semantics;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_load_cargo::LoadCargoConfig;
 use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};

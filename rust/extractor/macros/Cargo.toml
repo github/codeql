@@ -1,7 +1,7 @@
 [package]
 name = "rust-extractor-macros"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 license = "MIT"
 
 [lib]
@@ -10,4 +10,4 @@ proc-macro = true
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 quote = "1.0.38"
-syn = { version = "2.0.96", features = ["full"] }
+syn = { version = "2.0.98", features = ["full"] }

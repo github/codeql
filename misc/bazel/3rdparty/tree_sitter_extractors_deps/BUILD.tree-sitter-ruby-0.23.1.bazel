@@ -82,8 +82,8 @@ rust_library(
     }),
     version = "0.23.1",
     deps = [
-        "@vendor__tree-sitter-language-0.1.3//:tree_sitter_language",
-        "@vendor__tree-sitter-ruby-0.23.1//:build_script_build",
+        "@vendor_ts__tree-sitter-language-0.1.3//:tree_sitter_language",
+        "@vendor_ts__tree-sitter-ruby-0.23.1//:build_script_build",
     ],
 )
 
@@ -135,7 +135,7 @@ cargo_build_script(
     version = "0.23.1",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__cc-1.2.7//:cc",
+        "@vendor_ts__cc-1.2.7//:cc",
     ],
 )
 

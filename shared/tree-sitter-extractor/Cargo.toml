@@ -1,12 +1,12 @@
 [package]
 name = "codeql-extractor"
 version = "0.2.0"
-edition = "2021"
+edition = "2024"
 authors = ["GitHub"]
 
 # When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
 [dependencies]
-flate2 = "1.0"
+flate2 = "1.1"
 globset = "0.4"
 tree-sitter = ">= 0.23.0"
 tracing = "0.1"
@@ -23,4 +23,4 @@ num_cpus = "1.16.0"
 [dev-dependencies]
 tree-sitter-ql = "0.23.1"
 tree-sitter-json = "0.24.8"
-rand = "0.8.5"
+rand = "0.9.0"

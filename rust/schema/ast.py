@@ -535,6 +535,7 @@ class RecordExprFieldList(AstNode, ):
 
 class RecordField(AstNode, ):
     attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child

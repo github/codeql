@@ -1,6 +1,6 @@
 use ra_ap_hir::{Enum, Function, HasContainer, Module, Semantics, Struct, Trait, Union};
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_syntax::{ast, ast::RangeItem, AstNode};
+use ra_ap_syntax::{AstNode, ast, ast::RangeItem};
 
 pub(crate) trait TextValue {
     fn try_get_text(&self) -> Option<String>;

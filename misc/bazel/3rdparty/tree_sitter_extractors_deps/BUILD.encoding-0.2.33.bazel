@@ -81,10 +81,10 @@ rust_library(
     }),
     version = "0.2.33",
     deps = [
-        "@vendor__encoding-index-japanese-1.20141219.5//:encoding_index_japanese",
-        "@vendor__encoding-index-korean-1.20141219.5//:encoding_index_korean",
-        "@vendor__encoding-index-simpchinese-1.20141219.5//:encoding_index_simpchinese",
-        "@vendor__encoding-index-singlebyte-1.20141219.5//:encoding_index_singlebyte",
-        "@vendor__encoding-index-tradchinese-1.20141219.5//:encoding_index_tradchinese",
+        "@vendor_ts__encoding-index-japanese-1.20141219.5//:encoding_index_japanese",
+        "@vendor_ts__encoding-index-korean-1.20141219.5//:encoding_index_korean",
+        "@vendor_ts__encoding-index-simpchinese-1.20141219.5//:encoding_index_simpchinese",
+        "@vendor_ts__encoding-index-singlebyte-1.20141219.5//:encoding_index_singlebyte",
+        "@vendor_ts__encoding-index-tradchinese-1.20141219.5//:encoding_index_tradchinese",
     ],
 )

@@ -1,5 +1,5 @@
-use serde::de::{Error, Unexpected, Visitor};
 use serde::Deserializer;
+use serde::de::{Error, Unexpected, Visitor};
 use std::collections::HashMap;
 use std::fmt::Formatter;
 use std::hash::BuildHasher;

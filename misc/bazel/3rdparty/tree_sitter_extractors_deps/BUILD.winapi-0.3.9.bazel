@@ -89,7 +89,7 @@ rust_library(
     }),
     version = "0.3.9",
     deps = [
-        "@vendor__winapi-0.3.9//:build_script_build",
+        "@vendor_ts__winapi-0.3.9//:build_script_build",
     ],
 )
 

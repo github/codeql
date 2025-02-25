@@ -81,6 +81,6 @@ rust_library(
     }),
     version = "0.1.7",
     deps = [
-        "@vendor__lazy_static-1.5.0//:lazy_static",
+        "@vendor_ts__lazy_static-1.5.0//:lazy_static",
     ],
 )

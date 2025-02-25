@@ -234,7 +234,7 @@ fn add_field_for_column_storage<'a>(
 /// 1. A vector of dbscheme entries.
 /// 2. A set of names of the members of the `<lang>_ast_node` union.
 /// 3. A map where the keys are the dbscheme names for token kinds, and the
-/// values are their integer representations.
+///    values are their integer representations.
 fn convert_nodes(
     nodes: &node_types::NodeTypeMap,
 ) -> (Vec<dbscheme::Entry>, Set<&str>, Map<&str, usize>) {
