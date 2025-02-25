@@ -28,6 +28,8 @@ private module Types {
 
     abstract TypeParameter getTypeParameter(int i);
 
+    TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
+
     abstract TypeMention getABaseType();
 
     abstract string toString();

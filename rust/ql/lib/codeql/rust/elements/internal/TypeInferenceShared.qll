@@ -4,7 +4,7 @@ private import codeql.util.Location
 
 signature module InputSig1<LocationSig Location> {
   class Type {
-    TypeParameter getTypeParameter(int i);
+    TypeParameter getATypeParameter();
 
     string toString();
 
@@ -139,8 +139,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     class TypeMention {
       Type resolveTypeAt(TypePath path);
 
-      Type resolveType(); // todo: redundant
-
       string toString();
 
       Location getLocation();
@@ -154,11 +152,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   module Make2<InputSig2 Input2> {
     private import Input2
 
+    pragma[nomagic]
+    private Type resolveTypeMentionRoot(TypeMention tm) {
+      result = tm.resolveTypeAt(any(TypePath empty | empty.isEmpty()))
+    }
+
     /** Provides logic for computing base types. */
     private module BaseTypes {
       /**
-       * Holds if `base` is a (transitive) base type mention of `sub`, and `tp`
-       * (belonging to `sub`) is mentioned (implicitly) at `path` inside `base`.
+       * Holds if `baseMention` is a (transitive) base type mention of `sub`,
+       * and type parameter `tp` (belonging to `sub`) is mentioned (implicitly)
+       * at `path` inside the type that `baseMention` resolves to.
+       *
        * For example, in
        *
        * ```csharp
@@ -177,28 +182,40 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate baseTypeMentionHasTypeParameterAt(
-        Type sub, TypeMention base, TypePath path, TypeParameter tp
+        Type sub, TypeMention baseMention, TypePath path, TypeParameter tp
       ) {
-        exists(TypeMention immediateBase, TypePath pathToTypeParam |
-          tp = sub.getTypeParameter(_) and // todo?
-          immediateBase = getABaseTypeMention(sub) and
-          tp = immediateBase.resolveTypeAt(pathToTypeParam)
+        exists(TypeMention immediateBaseMention, TypePath pathToTypeParam |
+          tp = sub.getATypeParameter() and
+          immediateBaseMention = getABaseTypeMention(sub) and
+          tp = immediateBaseMention.resolveTypeAt(pathToTypeParam)
         |
           // immediate base class
-          base = immediateBase and
+          baseMention = immediateBaseMention and
           path = pathToTypeParam
           or
           // transitive base class
-          exists(TypePath prefix, TypePath suffix, TypeParameter i |
-            baseTypeMentionHasTypeParameterAt(immediateBase.resolveType(), base, prefix, i) and
-            pathToTypeParam.startsWith(i, suffix) and
+          exists(Type immediateBase, TypePath prefix, TypePath suffix, TypeParameter mid |
+            // Example (using the classes defined in the QL doc):
+            // - `sub = Sub`,
+            // - `immmediateBaseMention = Mid<C<T4>>`
+            // - `immmediateBase = Mid`,
+            // - `baseMention = Base<C<T3>>`,
+            // - `prefix = "0.0"`,
+            // - `mid = T3`,
+            // - `pathToTypeParam = "0.0"`,
+            // - `suffix = "0"`,
+            // - `path = "0.0.0"`,
+            // - `tp = T4`.
+            immediateBase = resolveTypeMentionRoot(immediateBaseMention) and
+            baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, mid) and
+            pathToTypeParam.startsWith(mid, suffix) and
             path = prefix.append(suffix)
           )
         )
       }
 
       /**
-       * Holds if `base` is a (transitive) base type mention of `sub`, and
+       * Holds if `baseMention` is a (transitive) base type mention of `sub`, and
        * non-type-parameter `t` is mentioned (implicitly) at `path` inside `base`.
        * For example, in
        *
@@ -218,22 +235,38 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate baseTypeMentionHasNonTypeParameterAt(
-        Type sub, TypeMention base, TypePath path, Type t
+        Type sub, TypeMention baseMention, TypePath path, Type t
       ) {
         not t instanceof TypeParameter and
-        exists(TypeMention immediateBase |
-          pragma[only_bind_into](immediateBase) = getABaseTypeMention(pragma[only_bind_into](sub))
+        exists(TypeMention immediateBaseMention |
+          pragma[only_bind_into](immediateBaseMention) =
+            getABaseTypeMention(pragma[only_bind_into](sub))
         |
-          base = immediateBase and
-          t = base.resolveTypeAt(path)
+          // immediate base class
+          baseMention = immediateBaseMention and
+          t = immediateBaseMention.resolveTypeAt(path)
           or
-          baseTypeMentionHasNonTypeParameterAt(immediateBase.resolveType(), base, path, t)
-          or
-          exists(TypePath path0, TypePath prefix, TypePath suffix, TypeParameter i |
-            baseTypeMentionHasTypeParameterAt(immediateBase.resolveType(), base, prefix, i) and
-            t = immediateBase.resolveTypeAt(path0) and
-            path0.startsWith(i, suffix) and
-            path = prefix.append(suffix)
+          // transitive base class
+          exists(Type immediateBase | immediateBase = resolveTypeMentionRoot(immediateBaseMention) |
+            baseTypeMentionHasNonTypeParameterAt(immediateBase, baseMention, path, t)
+            or
+            exists(TypePath path0, TypePath prefix, TypePath suffix, TypeParameter tp |
+              // Example (using the classes defined in the QL doc):
+              // - `sub = Sub`,
+              // - `immmediateBaseMention = Mid<C<T4>>`
+              // - `immmediateBase = Mid`,
+              // - `baseMention = Base<C<T3>>`,
+              // - `prefix = "0.0"`,
+              // - `tp = T3`,
+              // - `path0 = "0"`,
+              // - `t = C`,
+              // - `suffix = ""`,
+              // - `path = "0.0"`.
+              baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, tp) and
+              t = immediateBaseMention.resolveTypeAt(path0) and
+              path0.startsWith(tp, suffix) and
+              path = prefix.append(suffix)
+            )
           )
         )
       }
@@ -249,17 +282,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private Type resolveRootType(Input::Node n) { result = Input::resolveType(n, "") }
 
         pragma[nomagic]
-        private Type resolveTypeAt(Input::Node n, TypeParameter i, TypePath suffix) {
-          exists(TypePath path0, TypeParameter tp |
+        private Type resolveTypeAt(Input::Node n, TypeParameter tp, TypePath suffix) {
+          exists(TypePath path0 |
             result = Input::resolveType(n, path0) and
-            i = tp and // .getPosition() and
-            path0.startsWith(i, suffix)
+            path0.startsWith(tp, suffix)
           )
         }
 
         /**
-         * Holds if `base` is a (transitive) base type mention of the type of `n`, and
-         * `t` is mentioned (implicitly) at `path` inside `base`. For example, in
+         * Holds if `baseMention` is a (transitive) base type mention of the type of
+         * `n`, and `t` is mentioned (implicitly) at `path` inside `base`. For example,
+         * in
          *
          * ```csharp
          * class C<T1> { }
@@ -281,12 +314,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * - `int` is mentioned at `0.0.1` for transitive base type `Base`.
          */
         pragma[nomagic]
-        predicate hasBaseType(Input::Node n, TypeMention base, TypePath path, Type t) {
+        predicate hasBaseType(Input::Node n, TypeMention baseMention, TypePath path, Type t) {
           exists(Type sub | sub = resolveRootType(n) |
-            baseTypeMentionHasNonTypeParameterAt(sub, base, path, t)
+            baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
             or
             exists(TypePath prefix, TypePath suffix, TypeParameter i |
-              baseTypeMentionHasTypeParameterAt(sub, base, prefix, i) and
+              baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, i) and
               t = resolveTypeAt(n, i, suffix) and
               path = prefix.append(suffix)
             )
@@ -422,7 +455,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           target(a, target) and
           NodeHasBaseTypeAt<BaseTypeAtInput>::hasBaseType(BaseTypeAtInput::mkNode(a, pos), tm, path,
             t) and
-          base = tm.resolveType()
+          base = resolveTypeMentionRoot(tm)
         )
       }
 
