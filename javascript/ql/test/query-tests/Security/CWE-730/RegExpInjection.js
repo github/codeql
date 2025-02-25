@@ -4,7 +4,7 @@ var URI = require("urijs");
 app.get('/findKey', function(req, res) {
   var key = req.param("key"), input = req.param("input");
 
-  var re = new RegExp("\\b" + key + "=(.*)\n"); // $ Alert - Unsanitized user input is used to construct a regular expression
+  var re = new RegExp("\\b" + key + "=(.*)\n"); // $ Alert[js/regex-injection] - Unsanitized user input is used to construct a regular expression
 
   function wrap(s) {
     return "\\b" + wrap2(s);
@@ -14,16 +14,16 @@ app.get('/findKey', function(req, res) {
     return s + "=(.*)\n";
   }
 
-  new RegExp(wrap(key)); // $ Alert
-  new RegExp(wrap(key)); // $ Alert - duplicated to test precision of flow tracking
+  new RegExp(wrap(key)); // $ Alert[js/regex-injection]
+  new RegExp(wrap(key)); // $ Alert[js/regex-injection] - duplicated to test precision of flow tracking
 
   function getKey() {
     return req.param("key");
   }
-  new RegExp(getKey()); // $ Alert
+  new RegExp(getKey()); // $ Alert[js/regex-injection]
 
   function mkRegExp(s) {
-    return new RegExp(s); // $ Alert
+    return new RegExp(s); // $ Alert[js/regex-injection]
   }
   mkRegExp(key);
   mkRegExp(getKey());
@@ -93,7 +93,7 @@ app.get("argv", function(req, res) {
 
   var sanitized = input.replace(new RegExp("[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]"), "\\$&");
   new RegExp(sanitized); // $ Alert[js/regex-injection]
-  
+
   var sanitized = input.replace(new RegExp("[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]", "g"), "\\$&");
   new RegExp(sanitized);
 
