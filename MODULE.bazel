@@ -35,9 +35,9 @@ bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True
 
 # Keep edition and version approximately in sync with internal repo.
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
-RUST_EDITION = "2021"
+RUST_EDITION = "2024"
 
-RUST_VERSION = "1.82.0"
+RUST_VERSION = "1.85.0"
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(

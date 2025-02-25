@@ -1,7 +1,7 @@
 [package]
 name = "codeql-extractor"
 version = "0.2.0"
-edition = "2021"
+edition = "2024"
 authors = ["GitHub"]
 
 # When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
