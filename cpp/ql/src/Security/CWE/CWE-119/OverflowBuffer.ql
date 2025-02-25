@@ -5,8 +5,9 @@
  *              buffer.
  * @kind problem
  * @id cpp/overflow-buffer
- * @problem.severity recommendation
+ * @problem.severity warning
  * @security-severity 9.3
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-119
  *       external/cwe/cwe-121
