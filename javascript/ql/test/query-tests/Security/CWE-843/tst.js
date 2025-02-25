@@ -27,6 +27,8 @@ express().get('/some/path', function (req, res) {
     foo.indexOf(prefix) == 1; // $ Alert
     foo.slice(1) === 'x'; // $ Alert
 
+    foo.length; // $ Alert
+
     if (typeof foo === "string") {
         foo.indexOf();
     } else {
@@ -38,7 +40,7 @@ express().get('/some/path', function (req, res) {
 
     (foo + f()).indexOf();
 
-    foo.length; // $ Alert
+    foo.length; // $ MISSING: Alert - missed due to guards sanitising both branches
 });
 
 new Koa().use(function handler(ctx) {
