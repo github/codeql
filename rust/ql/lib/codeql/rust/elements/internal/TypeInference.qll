@@ -67,13 +67,11 @@ class TypePath extends String {
 
   bindingset[this]
   string toString() {
-    // result = super.toString()
     result =
       concat(int i, TypeParameter tp |
         tp = this.getTypeParameter(i)
       |
         tp.getPosition().toString(), "." order by i
-        // tp.toString(), "." order by i
       )
   }
 
@@ -713,18 +711,6 @@ private module Matching<MatchingInputSig Input> {
     argumentType(a, pos, path, t)
   }
 
-  pragma[nomagic]
-  private predicate argumentTypeMatchAt(
-    Access a, ArgPos apos, Decl target, ParamPos ppos, TypePath path, TypePath end
-  ) {
-    exists(Type match |
-      argumentTypeAt(a, apos, target, path, match) and
-      path.endsWith(end, _) and
-      parameterType(target, ppos, path, match) and
-      paramArgPosMatch(ppos, apos)
-    )
-  }
-
   bindingset[a, target, tp]
   pragma[inline_late]
   private predicate noExplicitTypeArgument(Access a, Decl target, TypeParameter tp) {
@@ -736,34 +722,17 @@ private module Matching<MatchingInputSig Input> {
 
   /**
    * Holds if the type `t` at `path` of `a` at position `pos` matches the type parameter
-   * of `target` at the same position, possibly except the types at `toMatch`.
-   *
-   * There is an actual match when `toMatch` is empty.
+   * of `target` at the same position.
    */
   pragma[nomagic]
   private predicate typeMatch(
-    Access a, ArgPos apos, Decl target, ParamPos ppos, TypePath path, Type t, TypeParameter tp,
-    TypePath toMatch
+    Access a, ArgPos apos, Decl target, ParamPos ppos, TypePath path, Type t, TypeParameter tp
   ) {
     exists(TypePath pathToTypeParam |
       argumentTypeAt(a, apos, target, pathToTypeParam.append(path), t) and
       parameterType(target, ppos, pathToTypeParam, tp) and
       noExplicitTypeArgument(a, target, tp) and
-      paramArgPosMatch(ppos, apos) and
-      if pathToTypeParam.isEmpty()
-      then toMatch.isEmpty()
-      else (
-        pathToTypeParam.endsWith(toMatch, _) and
-        exists(Type match |
-          argumentTypeAt(a, apos, target, "", match) and
-          parameterType(target, ppos, "", match)
-        )
-      )
-    )
-    or
-    exists(TypePath toMatch0 |
-      typeMatch(a, apos, target, ppos, path, t, tp, toMatch0) and
-      argumentTypeMatchAt(a, apos, target, ppos, toMatch0, toMatch)
+      paramArgPosMatch(ppos, apos)
     )
   }
 
@@ -819,15 +788,12 @@ private module Matching<MatchingInputSig Input> {
 
   /**
    * Holds if the (transitive) base type `t` at `path` (which is somewhere inside `base`)
-   * of `a` at position `pos` matches the type parameter of `target` at the same position,
-   * possibly except the types at `toMatch`.
-   *
-   * There is an actual match when `toMatch` is empty.
+   * of `a` at position `pos` matches the type parameter of `target` at the same position.
    */
   pragma[nomagic]
   private predicate baseTypeMatch(
     Access a, ArgPos apos, Decl target, ParamPos ppos, Type base, TypePath path, Type t,
-    TypeParameter tp, TypePath toMatch
+    TypeParameter tp
   ) {
     exists(TypePath pathToTypeParam |
       argumentBaseTypeAt(a, apos, target, base, pathToTypeParam.append(path), t) and
@@ -836,14 +802,7 @@ private module Matching<MatchingInputSig Input> {
       paramArgPosMatch(ppos, apos) and
       // do not allow `pathToTypeParam` to be empty in this case, as we will match
       // against the actual type and not one of the base types
-      pathToTypeParam.endsWith(toMatch, _)
-    )
-    or
-    exists(TypePath toMatch0, Type match |
-      baseTypeMatch(a, apos, target, ppos, base, path, t, tp, toMatch0) and
-      toMatch0.endsWith(toMatch, _) and
-      argumentBaseTypeAt(a, apos, target, base, toMatch0, match) and
-      parameterBaseType(target, ppos, base, toMatch0, match)
+      not pathToTypeParam.isEmpty()
     )
   }
 
@@ -858,9 +817,9 @@ private module Matching<MatchingInputSig Input> {
 
   pragma[nomagic]
   private predicate implicitTypeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
-    typeMatch(a, _, target, _, path, t, tp, "")
+    typeMatch(a, _, target, _, path, t, tp)
     or
-    baseTypeMatch(a, _, target, _, _, path, t, tp, "")
+    baseTypeMatch(a, _, target, _, _, path, t, tp)
   }
 
   pragma[inline]
