@@ -124,7 +124,6 @@ impl LogWriter {
                 match std::fs::OpenOptions::new()
                     .create(true)
                     .append(true)
-                    
                     .open(path)
                 {
                     Err(e) => {
