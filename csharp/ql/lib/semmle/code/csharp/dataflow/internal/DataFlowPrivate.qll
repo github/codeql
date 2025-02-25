@@ -1291,10 +1291,10 @@ class SsaNode extends NodeImpl, TSsaNode {
 class SsaDefinitionNode extends SsaNode {
   override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-  SsaImpl::Definition getDefinition() { result = node.getDefinition() }
+  Ssa::Definition getDefinition() { result = node.getDefinition() }
 
   override ControlFlow::Node getControlFlowNodeImpl() {
-    result = this.getDefinition().(Ssa::Definition).getControlFlowNode()
+    result = this.getDefinition().getControlFlowNode()
   }
 }
 
@@ -1688,7 +1688,7 @@ private module ReturnNodes {
 
     OutRefReturnNode() {
       exists(Parameter p |
-        this.getDefinition().(Ssa::Definition).isLiveOutRefParameterDefinition(p) and
+        this.getDefinition().isLiveOutRefParameterDefinition(p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind
