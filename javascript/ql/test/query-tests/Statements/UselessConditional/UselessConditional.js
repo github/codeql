@@ -2,32 +2,32 @@ function getLastLine(input) {
   var lines = [], nextLine;
   while ((nextLine = readNextLine(input)))
     lines.push(nextLine);
-  if (!lines)
+  if (!lines) // $ Alert
     throw new Error("No lines!");
   return lines[lines.length-1];
 }
 
 function lookup(cache, k) {
   var v;
-  return k in cache ? cache[k] : (v = new Entry(recompute())) && (cache[k] = v);
+  return k in cache ? cache[k] : (v = new Entry(recompute())) && (cache[k] = v); // $ Alert
 }
 
 function test(a, b) {
   if (!a && !b) {
-    if (a);
-    if (b);
+    if (a); // $ Alert
+    if (b); // $ Alert
   }
   if (!(a || b)) {
-    if (a);
-    if (b);
+    if (a); // $ Alert
+    if (b); // $ Alert
   }
 
   var x = new X();
-  if(x){}
-  if (new X()){}
-  if((x)){}
-  if(((x))){}
-  if ((new X())){}
+  if(x){} // $ Alert
+  if (new X()){} // $ Alert
+  if((x)){} // $ Alert
+  if(((x))){} // $ Alert
+  if ((new X())){} // $ Alert
 
   x = 0n;
   if (x) // $ Alert
@@ -51,7 +51,7 @@ async function awaitFlow(){
     var known = knownF();
     if (known)
         return;
-    if (known)
+    if (known) // $ Alert
         return;
 
     var unknown = unknownF();
@@ -86,7 +86,7 @@ async function awaitFlow(){
 });
 
 (function() {
-    if ((x, true));
+    if ((x, true)); // $ Alert
 });
 
 (function (x, y) {
