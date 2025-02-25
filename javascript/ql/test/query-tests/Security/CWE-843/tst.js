@@ -33,7 +33,7 @@ express().get('/some/path', function (req, res) {
         foo.indexOf();
     }
     if (foo instanceof Array) {
-        foo.indexOf(); // $ SPURIOUS: Alert
+        foo.indexOf();
     }
 
     (foo + f()).indexOf();
