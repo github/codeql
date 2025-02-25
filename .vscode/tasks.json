@@ -50,6 +50,11 @@
                 "${input:name}",
                 "${input:categoryQuery}"
             ],
+            "options": {
+                "env": {
+                    "EDITOR": "code -r",
+                }
+            },
             "presentation": {
                 "reveal": "never",
                 "close": true
@@ -67,6 +72,11 @@
                 "${input:name}",
                 "${input:categoryLibrary}"
             ],
+            "options": {
+                "env": {
+                    "EDITOR": "code -r"
+                }
+            },
             "presentation": {
                 "reveal": "never",
                 "close": true
