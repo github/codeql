@@ -8,7 +8,7 @@ private import javascript
  * An additional flow step that propagates data from the return value of the query function,
  * defined in a useQuery call from the '@tanstack/react-query' module, to the 'data' property.
  */
-class TanstackStep extends DataFlow::AdditionalFlowStep {
+private class TanstackStep extends DataFlow::AdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(API::CallNode useQuery |
       useQuery = useQueryCall() and
@@ -21,6 +21,6 @@ class TanstackStep extends DataFlow::AdditionalFlowStep {
 /**
  * Retrieves a call node representing a useQuery invocation from the '@tanstack/react-query' module.
  */
-API::CallNode useQueryCall() {
+private API::CallNode useQueryCall() {
   result = API::moduleImport("@tanstack/react-query").getMember("useQuery").getACall()
 }

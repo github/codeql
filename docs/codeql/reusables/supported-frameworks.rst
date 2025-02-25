@@ -181,7 +181,6 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    swig, templating language
    underscore, Utility library
    vue, HTML framework
-   tanstack, Utility library
 
 
 Python built-in support
