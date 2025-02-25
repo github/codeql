@@ -6,8 +6,8 @@ app.get('/a', function (req, res, next) {
         {
             maxAge: 9000000000,
             httpOnly: true,
-            secure: false // $ Alert
-        });
+            secure: false
+        }); // $ Alert
     res.end('ok')
 })
 
@@ -15,9 +15,9 @@ app.get('/b', function (req, res, next) {
     let options = {
         maxAge: 9000000000,
         httpOnly: true,
-        secure: false // $ Alert
+        secure: false
     }
-    res.cookie('authKey', 'value', options);
+    res.cookie('authKey', 'value', options); // $ Alert
     res.end('ok')
 })
 
@@ -106,8 +106,8 @@ const session = require('express-session')
 
 app.use(session({
     secret: 'secret',
-    cookie: { secure: false } // $ Alert
-}))
+    cookie: { secure: false }
+})) // $ Alert
 
 app.use(session({
     secret: 'secret'
@@ -115,15 +115,15 @@ app.use(session({
 
 app.use(session({
     secret: 'secret',
-    cookie: {} // $ Alert
-}))
+    cookie: {}
+})) // $ Alert
 
 const sess = {
     secret: 'secret',
-    cookie: { secure: false } // $ Alert
+    cookie: { secure: false }
 }
 
-app.use(session(sess))
+app.use(session(sess)) // $ Alert
 
 
 app.set('trust proxy', 1)
@@ -150,12 +150,12 @@ app.use(session({
 app.use(session({
     name: 'session',
     keys: ['key1', 'key2'],
-    secure: false, // $ Alert
+    secure: false,
     httpOnly: true,
     domain: 'example.com',
     path: 'foo/bar',
     expires: expiryDate
-}))
+})) // $ Alert
 
 http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');
