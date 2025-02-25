@@ -604,4 +604,32 @@ public class Test {
             sink(normalized); // $ hasTaintFlow
         }
     }
+
+    private void directoryCharsValidation(String path) throws Exception {
+        // TODO
+    }
+
+    public void directoryCharsSanitizer() throws Exception {
+        {
+            String source = (String) source();
+            // Ensures that directory characters (/, \ and ..) cannot possibly be in the payload
+            if (source.matches("[0-9a-fA-F]{20,}")) {
+                sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            // Removes all ".." sequences and path separators from the payload
+            source = source.replaceAll("\\.\\.|[/\\\\]", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // Removes all ".." sequences and path separators from the payload
+            source = source.replaceAll("\\.", "").replaceAll("/", "");
+            sink(source); // Safe
+        }
+    }
 }
