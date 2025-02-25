@@ -16,6 +16,22 @@ methodWithDuplicate
 | AbstractCollection<E> | removeAll | Collection<?> |
 | AbstractCollection<E> | retainAll | Collection<?> |
 | AbstractCollection<E> | toArray | T[] |
+| AbstractCollection<Entry<K,V>> | add | Entry<K,V> |
+| AbstractCollection<Entry<K,V>> | addAll | Collection<? extends Entry<K,V>> |
+| AbstractCollection<Entry<K,V>> | contains | Object |
+| AbstractCollection<Entry<K,V>> | containsAll | Collection<?> |
+| AbstractCollection<Entry<K,V>> | remove | Object |
+| AbstractCollection<Entry<K,V>> | removeAll | Collection<?> |
+| AbstractCollection<Entry<K,V>> | retainAll | Collection<?> |
+| AbstractCollection<Entry<K,V>> | toArray | T[] |
+| AbstractCollection<K> | add | K |
+| AbstractCollection<K> | addAll | Collection<? extends K> |
+| AbstractCollection<K> | contains | Object |
+| AbstractCollection<K> | containsAll | Collection<?> |
+| AbstractCollection<K> | remove | Object |
+| AbstractCollection<K> | removeAll | Collection<?> |
+| AbstractCollection<K> | retainAll | Collection<?> |
+| AbstractCollection<K> | toArray | T[] |
 | AbstractCollection<Runnable> | add | Runnable |
 | AbstractCollection<Runnable> | addAll | Collection<? extends Runnable> |
 | AbstractCollection<Runnable> | contains | Object |
@@ -40,6 +56,14 @@ methodWithDuplicate
 | AbstractCollection<T> | removeAll | Collection<?> |
 | AbstractCollection<T> | retainAll | Collection<?> |
 | AbstractCollection<T> | toArray | T[] |
+| AbstractCollection<V> | add | V |
+| AbstractCollection<V> | addAll | Collection<? extends V> |
+| AbstractCollection<V> | contains | Object |
+| AbstractCollection<V> | containsAll | Collection<?> |
+| AbstractCollection<V> | remove | Object |
+| AbstractCollection<V> | removeAll | Collection<?> |
+| AbstractCollection<V> | retainAll | Collection<?> |
+| AbstractCollection<V> | toArray | T[] |
 | AbstractList | add | E |
 | AbstractList | add | int |
 | AbstractList | addAll | Collection<? extends E> |
