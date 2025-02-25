@@ -1,10 +1,4 @@
 testFailures
-| main.rs:183:10:183:16 | MyTrait | Fixed missing result: item=I47 |
-| main.rs:340:14:340:19 | Trait1 | Fixed missing result: item=I79 |
-| main.rs:343:14:343:19 | Trait2 | Unexpected result: item=I82 |
-| main.rs:422:14:424:11 | Trait1::<...> | Fixed missing result: item=I86 |
-| main.rs:427:14:429:11 | Trait2::<...> | Unexpected result: item=I89 |
-| main.rs:437:14:439:11 | Trait1::<...> | Fixed missing result: item=I86 |
 mod
 | lib.rs:1:1:1:7 | mod my |
 | main.rs:1:1:1:7 | mod my |
