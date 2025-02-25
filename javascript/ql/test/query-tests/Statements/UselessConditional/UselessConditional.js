@@ -67,7 +67,7 @@ async function awaitFlow(){
 
 (function() {
     function f1(x) {
-        x || y // $ Alert - but whitelisted
+        x || y // OK
     }
     f1(true);
 
@@ -79,7 +79,7 @@ async function awaitFlow(){
 
     function f3(x) {
         (function(){
-            x || y // $ Alert - but whitelisted
+            x || y // OK
         });
     }
     f3(true);
@@ -150,7 +150,7 @@ async function awaitFlow(){
 	var v = p();
 	if (v) { // $ Alert
 	}
-	if (v) { // $ Alert - but not detected due to SSA limitations
+	if (v) { // $ MISSING: Alert - due to SSA limitations
 	}
 });
 
@@ -165,7 +165,7 @@ async function awaitFlow(){
 	var v = findOrThrow();
 	if (v) { // $ Alert
 	}
-	if (v) { // $ Alert - but not detected due to SSA limitations
+	if (v) { // $ MISSING: Alert - due to SSA limitations
 	}
 });
 
@@ -180,7 +180,7 @@ async function awaitFlow(){
 (function() {
     function outer(x) {
         addEventListener("click", () => {
-            if (!x && something()) { // $ Alert - but whitelisted
+            if (!x && something()) { // OK
                 something();
             }
         });
