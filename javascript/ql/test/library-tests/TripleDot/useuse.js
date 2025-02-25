@@ -163,9 +163,7 @@ function t9() { // same as t8 but with a SanitizerGuard that isn't just a variab
         }
 
         if (typeof obj === "undefined" || typeof obj === "undefined") {
-            // The shared SSA library expects short-circuiting operators be pre-order in the CFG,
-            // but in JS they are post-order (as per evaluation order).
-            sink(obj.field); // $ SPURIOUS: hasTaintFlow=t9.1
+            sink(obj.field);
         } else {
             sink(obj.field); // $ hasTaintFlow=t9.1
         }
