@@ -1688,6 +1688,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     final class SsaDefinitionNode = SsaDefinitionNodeImpl;
 
+    final class SsaSynthReadNode extends SsaNode {
+      SsaSynthReadNode() {
+        this.(SsaDefinitionExtNodeImpl).getDefinitionExt() instanceof PhiReadNode or
+        this instanceof SsaInputNodeImpl
+      }
+    }
+
     /**
      * A node that represents an input to an SSA phi (read) definition.
      *
