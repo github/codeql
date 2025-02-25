@@ -248,7 +248,11 @@ module API {
      * Gets a node representing a subscript of this node.
      * For example `obj[x]` is a subscript of `obj`.
      */
-    Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
+    Node getASubscript() {
+      result = this.getASuccessor(Label::subscript())
+      or
+      result = this.getASuccessor(Label::intSubscript(_))
+    }
 
     /**
      * Gets a node representing an index of a subscript of this node.
@@ -272,6 +276,25 @@ module API {
       exists(API::Node index | result = this.getSubscriptAt(index) |
         key = index.getAValueReachingSink().asExpr().(PY::StringLiteral).getText()
       )
+    }
+
+    /**
+     * Gets a node representing a subscript of this node at (int) index `i`.
+     * This requires that the index can be statically determined.
+     *
+     * For example, the string `value` can be found as subscripts of
+     * both `a` and `b` below using the index `1`:
+     * ```py
+     * a[1] = 'value'
+     * b = ['list', 'value']
+     * ```
+     */
+    Node getIntSubscript(int i) {
+      exists(API::Node index | result = this.getSubscriptAt(index) |
+        i = index.getAValueReachingSink().asExpr().(PY::IntegerLiteral).getValue()
+      )
+      or
+      result = this.getASuccessor(Label::intSubscript(i))
     }
 
     /**
@@ -774,9 +797,9 @@ module API {
         // TODO: once convenient, this should be done at a higher level than the AST,
         // at least at the CFG layer, to take splitting into account.
         // Also consider `SequenceNode for generality.
-        exists(PY::List list | list = pred.(DataFlow::ExprNode).getNode().getNode() |
-          rhs.(DataFlow::ExprNode).getNode().getNode() = list.getAnElt() and
-          lbl = Label::subscript()
+        exists(PY::List list, int index | list = pred.(DataFlow::ExprNode).getNode().getNode() |
+          rhs.(DataFlow::ExprNode).getNode().getNode() = list.getElt(index) and
+          lbl = Label::intSubscript(index)
         )
         or
         exists(PY::CallableExpr fn | fn = pred.(DataFlow::ExprNode).getNode().getNode() |
@@ -1096,6 +1119,7 @@ module API {
         MkLabelAwait() or
         MkLabelSubscript() or
         MkLabelIndex() or
+        MkLabelIntSubscript(int index) { exists(PY::List l | exists(l.getElt(index))) } or
         MkLabelEntryPoint(EntryPoint ep)
 
       /** A label for a module. */
@@ -1181,6 +1205,17 @@ module API {
         override string toString() { result = "getASubscript()" }
       }
 
+      /** A label that gets the integer subscript of a sequence/mapping. */
+      class LabelIntSubscript extends ApiLabel, MkLabelIntSubscript {
+        int index;
+
+        LabelIntSubscript() { this = MkLabelIntSubscript(index) }
+
+        override string toString() { result = "getIntSubscript(" + index.toString() + ")" }
+
+        int getIndex() { result = index }
+      }
+
       /** A label that gets the index of a subscript. */
       class LabelIndex extends ApiLabel, MkLabelIndex {
         override string toString() { result = "getIndex()" }
@@ -1236,6 +1271,9 @@ module API {
 
     /** Gets the `subscript` edge label. */
     LabelSubscript subscript() { any() }
+
+    /** Gets the `intSubscript` edge label. */
+    LabelIntSubscript intSubscript(int index) { result.getIndex() = index }
 
     /** Gets the `subscript` edge label. */
     LabelIndex index() { any() }
