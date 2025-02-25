@@ -790,8 +790,11 @@ module TestPostProcessing {
         queryResults(mainResultSet(), row, column + 1, element)
       |
         getQueryKind() = "path-problem" and
-        n = exactDivide(column - 8, 3)
+        // Skip over `alert, source, sink, message`, counting entities as two columns (7 columns in total).
+        // Then pick the first column from each related location, which each is an `entity, message` pair (3 columns).
+        n = exactDivide(column - 7, 3)
         or
+        // Like above, but only skip over `alert, message` initially (3 columns in total).
         getQueryKind() = "problem" and
         n = exactDivide(column - 3, 3)
       )
