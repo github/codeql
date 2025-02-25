@@ -1765,17 +1765,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
      * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
      * read. If it is false then `nodeFrom` may be any of the following: an
-     * uncertain write, a certain write, a phi, or a phi read. `def` is the SSA
-     * definition that is read/defined at `nodeFrom`.
+     * uncertain write, a certain write, a phi, or a phi read.
      */
     private predicate flowOutOf(
-      DefinitionExt def, Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
+      Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
     ) {
-      nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-      def.definesAt(v, bb, i, _) and
-      isUseStep = false
+      exists(DefinitionExt def |
+        nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+        def.definesAt(v, bb, i, _) and
+        isUseStep = false
+      )
       or
-      ssaDefReachesReadExt(v, def, bb, i) and
       [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
       isUseStep = true
     }
@@ -1786,27 +1786,29 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * `isUseStep` is `true` when `nodeFrom` is a (post-update) read node and
      * `nodeTo` is a read node or phi (read) node.
      */
-    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-      (
+    predicate localFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      exists(Definition def |
         // Flow from assignment into SSA definition
         DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
         or
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
-      ) and
-      nodeTo.(SsaDefinitionNode).getDefinition() = def and
-      isUseStep = false
+      |
+        nodeTo.(SsaDefinitionNode).getDefinition() = def and
+        v = def.getSourceVariable() and
+        isUseStep = false
+      )
       or
       // Flow from definition/read to next read
-      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        flowOutOf(def, nodeFrom, v, bb1, i1, isUseStep) and
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         nodeTo.(ReadNode).readsAt(bb2, i2, v)
       )
       or
       // Flow from definition/read to next uncertain write
-      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        flowOutOf(def, nodeFrom, v, bb1, i1, isUseStep) and
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         exists(UncertainWriteDefinition def2 |
           DfInput::allowFlowIntoUncertainDef(def2) and
@@ -1816,36 +1818,41 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
       or
       // Flow from definition/read to phi input
-      exists(
-        SourceVariable v, BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi,
-        DefinitionExt phi
-      |
-        flowOutOf(def, nodeFrom, v, bb, i, isUseStep) and
+      exists(BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
+        flowOutOf(nodeFrom, v, bb, i, isUseStep) and
         AdjacentSsaRefs::adjacentRefPhi(bb, i, input, bbPhi, v) and
         nodeTo = TSsaInputNode(phi, input) and
         phi.definesAt(v, bbPhi, -1, _)
       )
       or
       // Flow from input node to def
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-      def = nodeFrom.(SsaInputNodeImpl).getPhi() and
-      isUseStep = false
+      exists(DefinitionExt def |
+        nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+        def = nodeFrom.(SsaInputNodeImpl).getPhi() and
+        v = def.getSourceVariable() and
+        isUseStep = false
+      )
     }
 
     /** Holds if the value of `nodeTo` is given by `nodeFrom`. */
-    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
-      (
+    predicate localMustFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo) {
+      exists(Definition def |
         // Flow from assignment into SSA definition
         DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
         or
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
-      ) and
-      nodeTo.(SsaDefinitionNode).getDefinition() = def
+      |
+        nodeTo.(SsaDefinitionNode).getDefinition() = def and
+        v = def.getSourceVariable()
+      )
       or
       // Flow from SSA definition to read
-      nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-      nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
+      exists(DefinitionExt def |
+        nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+        nodeTo.(ExprNode).getExpr() = DfInput::getARead(def) and
+        v = def.getSourceVariable()
+      )
     }
 
     /**
