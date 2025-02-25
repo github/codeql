@@ -1683,11 +1683,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       SsaDefinitionNodeImpl() { this = TSsaDefinitionNode(def) }
 
+      /** Gets the underlying SSA definition. */
       Definition getDefinition() { result = def }
     }
 
     final class SsaDefinitionNode = SsaDefinitionNodeImpl;
 
+    /** A node that represents a synthetic read of a source variable. */
     final class SsaSynthReadNode extends SsaNode {
       SsaSynthReadNode() {
         this.(SsaDefinitionExtNodeImpl).getDefinitionExt() instanceof PhiReadNode or
