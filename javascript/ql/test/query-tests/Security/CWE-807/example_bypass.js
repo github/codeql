@@ -3,8 +3,8 @@ var app = express();
 // ...
 app.get('/full-profile/:userId', function(req, res) {
 
-    if (req.cookies.loggedInUserId !== req.params.userId) { // $ Alert
-        requireLogin(); // $ Alert - login decision made based on user controlled data
+    if (req.cookies.loggedInUserId !== req.params.userId) { // $ Alert[js/different-kinds-comparison-bypass]
+        requireLogin(); // $ MISSING: Alert - login decision made based on user controlled data
     } else {
         // ... show private information
     }
