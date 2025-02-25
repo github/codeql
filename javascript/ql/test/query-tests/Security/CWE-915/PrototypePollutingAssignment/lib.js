@@ -67,7 +67,7 @@ class Foo {
     const obj = this.obj;
     const path = this.path;
     const value = this.value;
-    return (obj[path[0]][path[1]] = value); // $ Alert
+    return (obj[path[0]][path[1]] = value); // $ MISSING: Alert - lacking local field step
   }
 
   safe() {
