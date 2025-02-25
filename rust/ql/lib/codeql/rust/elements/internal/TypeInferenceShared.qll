@@ -28,6 +28,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   private import Input1
   private import codeql.util.DenseRank
 
+  final private class ExprFinal = Expr;
+
   private module DenseRankInput implements DenseRankInputSig {
     class Ranked = TypeParameter;
 
@@ -157,7 +159,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       result = tm.resolveTypeAt(any(TypePath empty | empty.isEmpty()))
     }
 
-    /** Provides logic for computing base types. */
+    /**
+     * Provides the parameterized module `ArgBaseType` for computing base types
+     * of arguments.
+     */
     private module BaseTypes {
       /**
        * Holds if `baseMention` is a (transitive) base type mention of `sub`,
@@ -271,27 +276,25 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      signature module BaseTypeAtInputSig {
-        class Node;
-
-        Type resolveType(Node n, TypePath path);
+      signature module ArgBaseTypeInputSig {
+        class Arg extends ExprFinal;
       }
 
-      module NodeHasBaseTypeAt<BaseTypeAtInputSig Input> {
+      module ArgBaseType<ArgBaseTypeInputSig Input> {
         pragma[nomagic]
-        private Type resolveRootType(Input::Node n) { result = Input::resolveType(n, "") }
+        private Type resolveRootType(Input::Arg arg) { result = resolveExprType(arg, "") }
 
         pragma[nomagic]
-        private Type resolveTypeAt(Input::Node n, TypeParameter tp, TypePath suffix) {
+        private Type resolveTypeAt(Input::Arg arg, TypeParameter tp, TypePath suffix) {
           exists(TypePath path0 |
-            result = Input::resolveType(n, path0) and
+            result = resolveExprType(arg, path0) and
             path0.startsWith(tp, suffix)
           )
         }
 
         /**
          * Holds if `baseMention` is a (transitive) base type mention of the type of
-         * `n`, and `t` is mentioned (implicitly) at `path` inside `base`. For example,
+         * `arg`, and `t` is mentioned (implicitly) at `path` inside `base`. For example,
          * in
          *
          * ```csharp
@@ -314,13 +317,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * - `int` is mentioned at `0.0.1` for transitive base type `Base`.
          */
         pragma[nomagic]
-        predicate hasBaseType(Input::Node n, TypeMention baseMention, TypePath path, Type t) {
-          exists(Type sub | sub = resolveRootType(n) |
+        predicate hasBaseType(Input::Arg arg, TypeMention baseMention, TypePath path, Type t) {
+          exists(Type sub | sub = resolveRootType(arg) |
             baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
             or
             exists(TypePath prefix, TypePath suffix, TypeParameter i |
               baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, i) and
-              t = resolveTypeAt(n, i, suffix) and
+              t = resolveTypeAt(arg, i, suffix) and
               path = prefix.append(suffix)
             )
           )
@@ -374,7 +377,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private import Input
 
       pragma[nomagic]
-      predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
+      private predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
         exists(Expr arg |
           arg = getArg(a, pos) and
           t = resolveExprType(arg, path)
@@ -416,34 +419,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         parameterType(decl, at, path, t)
       }
 
-      private module BaseTypeAtInput implements BaseTypeAtInputSig {
-        private newtype TNode =
-          MkNode(Access a, ArgPos pos) {
-            exists(Decl target |
-              argumentTypeAt(a, pos, target, _, _) and
+      private module ArgBaseTypeInput implements ArgBaseTypeInputSig {
+        class Arg extends ExprFinal {
+          Arg() {
+            exists(Access a, ArgPos apos, Decl target |
+              this = getArg(a, apos) and
+              argumentTypeAt(a, apos, target, _, _) and
               declType(target, _, _, any(TypeParameter tp))
             )
           }
-
-        additional Node mkNode(Access a, ArgPos pos) { result = MkNode(a, pos) }
-
-        class Node extends MkNode {
-          Access getAccess() { this = MkNode(result, _) }
-
-          ArgPos getPos() { this = MkNode(_, result) }
-
-          string toString() {
-            result = this.getAccess().toString() + ", " + this.getPos().toString()
-          }
-
-          Location getLocation() { result = this.getAccess().getLocation() }
-        }
-
-        Type resolveType(Node n, TypePath path) {
-          exists(Access a, ArgPos pos |
-            n = MkNode(a, pos) and
-            argumentType(a, pos, path, result)
-          )
         }
       }
 
@@ -453,8 +437,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         exists(TypeMention tm |
           target(a, target) and
-          NodeHasBaseTypeAt<BaseTypeAtInput>::hasBaseType(BaseTypeAtInput::mkNode(a, pos), tm, path,
-            t) and
+          ArgBaseType<ArgBaseTypeInput>::hasBaseType(getArg(a, pos), tm, path, t) and
           base = resolveTypeMentionRoot(tm)
         )
       }
@@ -462,7 +445,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       pragma[nomagic]
       private predicate parameterBaseType(Decl decl, ParamPos pos, Type base, TypePath path, Type t) {
         parameterType(decl, pos, path, t) and
-        parameterType(decl, pos, "", base)
+        path.startsWith(base.getATypeParameter(), _)
       }
 
       /**
