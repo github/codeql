@@ -11,7 +11,7 @@ export function MyComponent() {
     const query = window.location.search.substring(1);
     request('https://example.com/api/' + query + '/id'); // $ Alert[js/client-side-request-forgery]
     request('https://example.com/api?q=' + query);
-    request('https://example.com/api/' + window.location.search); // likely OK - but currently flagged anyway
+    request('https://example.com/api/' + window.location.search); // $ Alert[js/client-side-request-forgery] - likely OK - but currently flagged anyway
 
     const fragment = window.location.hash.substring(1);
     request('https://example.com/api/' + fragment + '/id'); // $ Alert[js/client-side-request-forgery]
