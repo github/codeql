@@ -127,12 +127,12 @@
 })();
 
 (function(){
-    require('crypto').createHmac('sha256', 'hgfedcba');
-    require("crypto-js/aes").encrypt('my message', 'hgfedcba');
+    require('crypto').createHmac('sha256', 'hgfedcba'); // $ Alert
+    require("crypto-js/aes").encrypt('my message', 'hgfedcba'); // $ Alert
 })()
 
 (function(){
-    require("cookie-session")({ secret: "hgfedcba" });
+    require("cookie-session")({ secret: "hgfedcba" }); // $ Alert
 })()
 
 (function(){
