@@ -6,6 +6,18 @@ edges
 | barrier_flow.rb:8:9:8:17 | call to source | barrier_flow.rb:8:5:8:5 | x | provenance |  |
 | barrier_flow.rb:24:5:24:5 | x | barrier_flow.rb:26:10:26:10 | x | provenance |  |
 | barrier_flow.rb:24:9:24:17 | call to source | barrier_flow.rb:24:5:24:5 | x | provenance |  |
+| barrier_flow.rb:82:5:82:5 | x | barrier_flow.rb:87:14:87:14 | x | provenance |  |
+| barrier_flow.rb:82:5:82:5 | x | barrier_flow.rb:93:14:93:14 | x | provenance |  |
+| barrier_flow.rb:82:5:82:5 | x | barrier_flow.rb:99:14:99:14 | x | provenance |  |
+| barrier_flow.rb:82:5:82:5 | x | barrier_flow.rb:103:14:103:14 | x | provenance |  |
+| barrier_flow.rb:82:5:82:5 | x | barrier_flow.rb:109:14:109:14 | x | provenance |  |
+| barrier_flow.rb:82:9:82:18 | call to source | barrier_flow.rb:82:5:82:5 | x | provenance |  |
+| barrier_flow.rb:116:5:116:5 | x | barrier_flow.rb:121:14:121:14 | x | provenance |  |
+| barrier_flow.rb:116:5:116:5 | x | barrier_flow.rb:125:14:125:14 | x | provenance |  |
+| barrier_flow.rb:116:5:116:5 | x | barrier_flow.rb:131:14:131:14 | x | provenance |  |
+| barrier_flow.rb:116:5:116:5 | x | barrier_flow.rb:137:14:137:14 | x | provenance |  |
+| barrier_flow.rb:116:5:116:5 | x | barrier_flow.rb:143:14:143:14 | x | provenance |  |
+| barrier_flow.rb:116:9:116:18 | call to source | barrier_flow.rb:116:5:116:5 | x | provenance |  |
 nodes
 | barrier_flow.rb:2:5:2:5 | x | semmle.label | x |
 | barrier_flow.rb:2:9:2:17 | call to source | semmle.label | call to source |
@@ -16,9 +28,33 @@ nodes
 | barrier_flow.rb:24:5:24:5 | x | semmle.label | x |
 | barrier_flow.rb:24:9:24:17 | call to source | semmle.label | call to source |
 | barrier_flow.rb:26:10:26:10 | x | semmle.label | x |
+| barrier_flow.rb:82:5:82:5 | x | semmle.label | x |
+| barrier_flow.rb:82:9:82:18 | call to source | semmle.label | call to source |
+| barrier_flow.rb:87:14:87:14 | x | semmle.label | x |
+| barrier_flow.rb:93:14:93:14 | x | semmle.label | x |
+| barrier_flow.rb:99:14:99:14 | x | semmle.label | x |
+| barrier_flow.rb:103:14:103:14 | x | semmle.label | x |
+| barrier_flow.rb:109:14:109:14 | x | semmle.label | x |
+| barrier_flow.rb:116:5:116:5 | x | semmle.label | x |
+| barrier_flow.rb:116:9:116:18 | call to source | semmle.label | call to source |
+| barrier_flow.rb:121:14:121:14 | x | semmle.label | x |
+| barrier_flow.rb:125:14:125:14 | x | semmle.label | x |
+| barrier_flow.rb:131:14:131:14 | x | semmle.label | x |
+| barrier_flow.rb:137:14:137:14 | x | semmle.label | x |
+| barrier_flow.rb:143:14:143:14 | x | semmle.label | x |
 subpaths
 testFailures
 #select
 | barrier_flow.rb:4:10:4:10 | x | barrier_flow.rb:2:9:2:17 | call to source | barrier_flow.rb:4:10:4:10 | x | $@ | barrier_flow.rb:2:9:2:17 | call to source | call to source |
 | barrier_flow.rb:11:14:11:14 | x | barrier_flow.rb:8:9:8:17 | call to source | barrier_flow.rb:11:14:11:14 | x | $@ | barrier_flow.rb:8:9:8:17 | call to source | call to source |
 | barrier_flow.rb:26:10:26:10 | x | barrier_flow.rb:24:9:24:17 | call to source | barrier_flow.rb:26:10:26:10 | x | $@ | barrier_flow.rb:24:9:24:17 | call to source | call to source |
+| barrier_flow.rb:87:14:87:14 | x | barrier_flow.rb:82:9:82:18 | call to source | barrier_flow.rb:87:14:87:14 | x | $@ | barrier_flow.rb:82:9:82:18 | call to source | call to source |
+| barrier_flow.rb:93:14:93:14 | x | barrier_flow.rb:82:9:82:18 | call to source | barrier_flow.rb:93:14:93:14 | x | $@ | barrier_flow.rb:82:9:82:18 | call to source | call to source |
+| barrier_flow.rb:99:14:99:14 | x | barrier_flow.rb:82:9:82:18 | call to source | barrier_flow.rb:99:14:99:14 | x | $@ | barrier_flow.rb:82:9:82:18 | call to source | call to source |
+| barrier_flow.rb:103:14:103:14 | x | barrier_flow.rb:82:9:82:18 | call to source | barrier_flow.rb:103:14:103:14 | x | $@ | barrier_flow.rb:82:9:82:18 | call to source | call to source |
+| barrier_flow.rb:109:14:109:14 | x | barrier_flow.rb:82:9:82:18 | call to source | barrier_flow.rb:109:14:109:14 | x | $@ | barrier_flow.rb:82:9:82:18 | call to source | call to source |
+| barrier_flow.rb:121:14:121:14 | x | barrier_flow.rb:116:9:116:18 | call to source | barrier_flow.rb:121:14:121:14 | x | $@ | barrier_flow.rb:116:9:116:18 | call to source | call to source |
+| barrier_flow.rb:125:14:125:14 | x | barrier_flow.rb:116:9:116:18 | call to source | barrier_flow.rb:125:14:125:14 | x | $@ | barrier_flow.rb:116:9:116:18 | call to source | call to source |
+| barrier_flow.rb:131:14:131:14 | x | barrier_flow.rb:116:9:116:18 | call to source | barrier_flow.rb:131:14:131:14 | x | $@ | barrier_flow.rb:116:9:116:18 | call to source | call to source |
+| barrier_flow.rb:137:14:137:14 | x | barrier_flow.rb:116:9:116:18 | call to source | barrier_flow.rb:137:14:137:14 | x | $@ | barrier_flow.rb:116:9:116:18 | call to source | call to source |
+| barrier_flow.rb:143:14:143:14 | x | barrier_flow.rb:116:9:116:18 | call to source | barrier_flow.rb:143:14:143:14 | x | $@ | barrier_flow.rb:116:9:116:18 | call to source | call to source |
