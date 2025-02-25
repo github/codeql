@@ -1794,7 +1794,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       ) and
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+      nodeTo.(SsaDefinitionNode).getDefinition() = def and
       isUseStep = false
       or
       // Flow from definition/read to next read
@@ -1810,7 +1810,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         exists(UncertainWriteDefinition def2 |
           DfInput::allowFlowIntoUncertainDef(def2) and
-          nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def2 and
+          nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
           def2.definesAt(v, bb2, i2)
         )
       )
@@ -1841,7 +1841,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       ) and
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def
+      nodeTo.(SsaDefinitionNode).getDefinition() = def
       or
       // Flow from SSA definition to read
       nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
