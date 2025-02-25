@@ -2,120 +2,417 @@
 
 private import rust
 private import PathResolution
+private import TypeInferenceShared
 
-private int getTypeParameterRank(TypeParameter tp) {
-  tp =
-    rank[result + 1](TypeParameter tp0, int kind, string filepath, int startline, int startcolumn,
-      int endline, int endcolumn |
-      tp0.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      (
+private newtype TType =
+  TStruct(Struct s) or
+  TEnum(Enum e) or
+  TTrait(Trait t) or
+  TImpl(Impl i) or
+  TArrayType() or // todo: add size?
+  TRefType() or // todo: add mut, lifetime?
+  TTypeParamTypeParameter(TypeParam t) or
+  TRefTypeParameter()
+
+private module Types {
+  /** A type without type arguments. */
+  abstract class Type extends TType {
+    pragma[nomagic]
+    abstract Function getMethod(string name);
+
+    pragma[nomagic]
+    abstract RecordField getRecordField(string name);
+
+    pragma[nomagic]
+    abstract TupleField getTupleField(int i);
+
+    abstract TypeParameter getTypeParameter(int i);
+
+    abstract TypeMention getABaseType();
+
+    abstract string toString();
+
+    abstract Location getLocation();
+  }
+
+  class StructType extends Type, TStruct {
+    private Struct struct;
+
+    StructType() { this = TStruct(struct) }
+
+    override Function getMethod(string name) { result = struct.(ItemNode).getASuccessor(name) }
+
+    override RecordField getRecordField(string name) { result = struct.getRecordField(name) }
+
+    override TupleField getTupleField(int i) { result = struct.getTupleField(i) }
+
+    override TypeParameter getTypeParameter(int i) {
+      result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
+    }
+
+    override TypeMention getABaseType() {
+      exists(ImplItemNode i |
+        struct = i.resolveSelfTy() and
+        result = i
+        // result = i.(Impl).getTrait()
+      )
+    }
+
+    override string toString() { result = struct.toString() }
+
+    override Location getLocation() { result = struct.getLocation() }
+  }
+
+  class EnumType extends Type, TEnum {
+    private Enum enum;
+
+    EnumType() { this = TEnum(enum) }
+
+    override Function getMethod(string name) { result = enum.(ItemNode).getASuccessor(name) }
+
+    override RecordField getRecordField(string name) { none() }
+
+    override TupleField getTupleField(int i) { none() }
+
+    override TypeParameter getTypeParameter(int i) {
+      result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
+    }
+
+    override TypeMention getABaseType() {
+      exists(ImplItemNode i |
+        enum = i.resolveSelfTy() and
+        result = i
+      )
+    }
+
+    override string toString() { result = enum.toString() }
+
+    override Location getLocation() { result = enum.getLocation() }
+  }
+
+  class TraitType extends Type, TTrait {
+    private Trait trait;
+
+    TraitType() { this = TTrait(trait) }
+
+    override Function getMethod(string name) { result = trait.(ItemNode).getASuccessor(name) }
+
+    override RecordField getRecordField(string name) { none() }
+
+    override TupleField getTupleField(int i) { none() }
+
+    override TypeParameter getTypeParameter(int i) {
+      result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
+    }
+
+    pragma[nomagic]
+    private TypeRepr_ getABound() {
+      result = trait.(Trait).getTypeBoundList().getABound().getTypeRepr()
+    }
+
+    override TypeMention getABaseType() { result = this.getABound() }
+
+    override string toString() { result = trait.toString() }
+
+    override Location getLocation() { result = trait.getLocation() }
+  }
+
+  class ImplType extends Type, TImpl {
+    private Impl impl;
+
+    ImplType() { this = TImpl(impl) }
+
+    override Function getMethod(string name) { result = impl.(ItemNode).getASuccessor(name) }
+
+    override RecordField getRecordField(string name) { none() }
+
+    override TupleField getTupleField(int i) { none() }
+
+    override TypeParameter getTypeParameter(int i) {
+      result = TTypeParamTypeParameter(impl.getGenericParamList().getTypeParam(i))
+    }
+
+    override TypeMention getABaseType() { result = impl.getTrait() }
+
+    override string toString() { result = impl.toString() }
+
+    override Location getLocation() { result = impl.getLocation() }
+  }
+
+  class ArrayType extends Type, TArrayType {
+    ArrayType() { this = TArrayType() }
+
+    override Function getMethod(string name) { none() }
+
+    override RecordField getRecordField(string name) { none() }
+
+    override TupleField getTupleField(int i) { none() }
+
+    override TypeParameter getTypeParameter(int i) {
+      none() // todo
+    }
+
+    override TypeMention getABaseType() { none() }
+
+    override string toString() { result = "[]" }
+
+    override Location getLocation() { result instanceof EmptyLocation }
+  }
+
+  class RefType extends Type, TRefType {
+    RefType() { this = TRefType() }
+
+    override Function getMethod(string name) { none() }
+
+    override RecordField getRecordField(string name) { none() }
+
+    override TupleField getTupleField(int i) { none() }
+
+    override TypeParameter getTypeParameter(int i) {
+      result = TRefTypeParameter() and
+      i = 0
+    }
+
+    override TypeMention getABaseType() { none() }
+
+    override string toString() { result = "&" }
+
+    override Location getLocation() { result instanceof EmptyLocation }
+  }
+
+  abstract class TypeParameter extends Type {
+    abstract int getPosition();
+
+    override TypeMention getABaseType() { none() }
+
+    override RecordField getRecordField(string name) { none() }
+
+    override TupleField getTupleField(int i) { none() }
+
+    override TypeParameter getTypeParameter(int i) { none() }
+  }
+
+  class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
+    private TypeParam typeParam;
+
+    TypeParamTypeParameter() { this = TTypeParamTypeParameter(typeParam) }
+
+    TypeParam getTypeParam() { result = typeParam }
+
+    override int getPosition() { typeParam = any(GenericParamList l).getTypeParam(result) }
+
+    override Function getMethod(string name) { result = typeParam.(ItemNode).getASuccessor(name) }
+
+    override string toString() { result = typeParam.toString() }
+
+    override Location getLocation() { result = typeParam.getLocation() }
+  }
+
+  class RefTypeParameter extends TypeParameter, TRefTypeParameter {
+    override int getPosition() { result = 0 }
+
+    override Function getMethod(string name) { none() }
+
+    override string toString() { result = "&T" }
+
+    override Location getLocation() { result instanceof EmptyLocation }
+  }
+}
+
+import Types
+
+private module Input1 implements InputSig1<Location> {
+  private import rust as Rust
+  private import codeql.rust.elements.internal.generated.Raw
+  private import codeql.rust.elements.internal.generated.Synth
+
+  class Type = Types::Type;
+
+  class TypeParameter = Types::TypeParameter;
+
+  private predicate id(Raw::TypeParam x, Raw::TypeParam y) { x = y }
+
+  private predicate idOfRaw(Raw::TypeParam x, int y) = equivalenceRelation(id/2)(x, y)
+
+  private int idOf(TypeParam node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
+
+  int getTypeParameterId(TypeParameter tp) {
+    tp =
+      rank[result](TypeParameter tp0, int kind, int id |
         tp0 instanceof RefTypeParameter and
-        kind = 0
+        kind = 0 and
+        id = 0
         or
-        tp0 instanceof TypeParamTypeParameter and
+        id = idOf(tp0.(TypeParamTypeParameter).getTypeParam()) and
         kind = 1
-      )
-    |
-      tp0 order by kind, filepath, startline, startcolumn, endline, endcolumn
-    )
-}
-
-/** Gets the singleton type path `i`. */
-bindingset[tp]
-private TypePath typePath(TypeParameter tp) { result = getTypeParameterRank(tp).toString() }
-
-bindingset[s]
-private predicate decodeTypePathComponent(string s, TypeParameter tp) {
-  getTypeParameterRank(tp) = s.toInt()
-}
-
-final private class String = string;
-
-/**
- * A path into a type.
- *
- * Paths are represented in left-to-right order, for example, a path `0.1` into the
- * type `C1<C2<A,B>,C3<C,D>>` points at the type `B`.
- *
- * Type paths are used to represent constructed types without using a `newtype`, which
- * makes it practically feasible to do type inference in mutual recursion with call
- * resolution.
- *
- * As an example, the type above can be represented by the following set of tuples
- *
- * `TypePath` | `Type`
- * ---------- | ------
- * `""`       | ``C1``
- * `"0"`      | ``C2``
- * `"0.0"`    | `A`
- * `"0.1"`    | `B`
- * `"1"`      | ``C3``
- * `"1.0"`    | `C`
- * `"1.1"`    | `D`
- */
-class TypePath extends String {
-  bindingset[this]
-  TypePath() { exists(this) }
-
-  bindingset[this]
-  private TypeParameter getTypeParameter(int i) {
-    exists(string s |
-      s = this.splitAt(".", i) and
-      decodeTypePathComponent(s, result)
-    )
-  }
-
-  bindingset[this]
-  string toString() {
-    result =
-      concat(int i, TypeParameter tp |
-        tp = this.getTypeParameter(i)
       |
-        tp.getPosition().toString(), "." order by i
+        tp0 order by kind, id
       )
   }
 
-  predicate isEmpty() { this = "" }
-
-  /** Gets the path obtained by appending `suffix` onto this path. */
-  bindingset[suffix, result]
-  bindingset[this, result]
-  bindingset[this, suffix]
-  TypePath append(TypePath suffix) {
-    if this.isEmpty()
-    then result = suffix
-    else
-      if suffix.isEmpty()
-      then result = this
-      else result = this + "." + suffix
-  }
-
-  /** Holds if this path starts with `prefix`, followed by `i`. */
-  bindingset[this]
-  predicate endsWith(TypePath prefix, TypeParameter i) {
-    decodeTypePathComponent(this, i) and
-    prefix.isEmpty()
-    or
-    exists(int last |
-      last = max(this.indexOf(".")) and
-      prefix = this.prefix(last) and
-      decodeTypePathComponent(this.suffix(last + 1), i)
-    )
-  }
-
-  /** Holds if this path starts with `i`, followed by `suffix`. */
-  bindingset[this]
-  predicate startsWith(TypeParameter i, TypePath suffix) {
-    decodeTypePathComponent(this, i) and
-    suffix.isEmpty()
-    or
-    exists(int first |
-      first = min(this.indexOf(".")) and
-      suffix = this.suffix(first + 1) and
-      decodeTypePathComponent(this.prefix(first), i)
-    )
-  }
+  class Expr = Rust::Expr;
 }
+
+import Make1<Location, Input1>
+
+private module Input2 implements InputSig2 {
+  /** A `TypeRepr` or a `Path`. */
+  abstract class TypeMention extends AstNode {
+    /** Gets the `i`th type argument, if any. */
+    abstract TypeMention getTypeReprArgument(int i);
+
+    /** Gets the type that this node resolves to. */
+    abstract Type resolveType();
+
+    /** Gets the node at `path`. */
+    pragma[nomagic]
+    private TypeMention getTypeReprAt(TypePath path) {
+      path.isEmpty() and
+      result = this
+      or
+      exists(int i, TypeParameter tp, TypeMention arg, TypePath suffix |
+        arg = this.getTypeReprArgument(pragma[only_bind_into](i)) and
+        result = arg.getTypeReprAt(suffix) and
+        path = typePath(tp).append(suffix) and
+        tp = this.resolveType().getTypeParameter(pragma[only_bind_into](i))
+      )
+    }
+
+    /** Gets the type that the sub node at `path` resolves to. */
+    Type resolveTypeAt(TypePath path) { result = this.getTypeReprAt(path).resolveType() }
+  }
+
+  additional class TypeRepr_ extends TypeMention, TypeRepr {
+    override TypeRepr_ getTypeReprArgument(int i) {
+      result = this.(ArrayTypeRepr).getElementTypeRepr() and
+      i = 0
+      or
+      result = this.(RefTypeRepr).getTypeRepr() and
+      i = 0
+      or
+      result = this.(PathTypeRepr).getPath().(Path_).getTypeReprArgument(i)
+    }
+
+    override Type resolveType() {
+      this instanceof ArrayTypeRepr and
+      result = TArrayType()
+      or
+      this instanceof RefTypeRepr and
+      result = TRefType()
+      or
+      result = this.(PathTypeRepr).getPath().(Path_).resolveType()
+    }
+  }
+
+  private class Path_ extends TypeMention, Path {
+    override TypeMention getTypeReprArgument(int i) {
+      result = this.getPart().getGenericArgList().getTypeArgument(i)
+      or
+      // todo
+      isUnqualifiedSelfPath(this) and
+      exists(ItemNode node | node = unqualifiedPathLookup(this) |
+        result = node.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
+        or
+        result = node.(Trait).getGenericParamList().getTypeParam(i)
+      )
+    }
+
+    pragma[nomagic]
+    predicate isImplTypeParam(ImplItemNode impl, Path_ selfPath, int i) {
+      selfPath = impl.getSelfPath() and
+      this = selfPath.getPart().getGenericArgList().getTypeArgument(i).(PathTypeRepr).getPath() and
+      resolvePath(this) instanceof TypeParam
+    }
+
+    override Type resolveType() {
+      exists(ItemNode i | i = resolvePath(this) |
+        result = TStruct(i)
+        or
+        result = TEnum(i)
+        or
+        result = TTrait(i)
+        or
+        result = TTypeParamTypeParameter(i) //and
+        or
+        // not this.isImplTypeParam(_, _, _) // todo: no effect?
+        result = i.(TypeAlias).getTypeRepr().(TypeRepr_).resolveType()
+        // or
+        // exists(ImplItemNode impl, int j, Struct selfType |
+        //   i = impl.(Impl).getGenericParamList().getTypeParam(_) and
+        //   selfType = impl.resolveSelfTy() and
+        //   this =
+        //     impl.getSelfPath()
+        //         .getPart()
+        //         .getGenericArgList()
+        //         .getTypeArgument(j)
+        //         .(PathTypeRepr)
+        //         .getPath() and
+        //   result = TTypeParamTypeParameter(selfType.getGenericParamList().getTypeParam(j))
+        // )
+      )
+      // or
+      // exists(ImplItemNode impl, Path_ selfPath | selfPath = impl.getSelfPath() |
+      //   result = TImpl(impl) and
+      //   this = selfPath
+      //   or
+      //   exists(int i |
+      //     this.isImplTypeParam(impl, selfPath, i) and
+      //     result = selfPath.resolveType().getTypeParameter(i)
+      //     // result =
+      //     //   TTypeParamTypeParameter(resolvePath(selfPath)
+      //     //         .(Struct)
+      //     //         .getGenericParamList()
+      //     //         .getTypeParam(i))
+      //   )
+      // )
+      // or
+      // exists(ImplItemNode i |
+      //   result = TImpl(i) and
+      //   this = i.getSelfPath()
+      // )
+    }
+  }
+
+  private class TypeParam_ extends TypeMention, TypeParam {
+    override TypeRepr_ getTypeReprArgument(int i) { none() }
+
+    override Type resolveType() { result = TTypeParamTypeParameter(this) }
+  }
+
+  private class Impl_ extends TypeMention, Impl {
+    override TypeRepr_ getTypeReprArgument(int i) {
+      none()
+      // result = this.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
+    }
+
+    override Type resolveType() { result = TImpl(this) }
+
+    override Type resolveTypeAt(TypePath path) {
+      result = TImpl(this) and
+      path.isEmpty()
+      or
+      exists(Path_ selfPath, Path_ p | selfPath = this.(ImplItemNode).getSelfPath() |
+        exists(int i |
+          p.isImplTypeParam(this, selfPath, i) and
+          result = selfPath.resolveType().getTypeParameter(i) and
+          path = typePath(p.resolveType())
+          // result =
+          //   TTypeParamTypeParameter(resolvePath(selfPath)
+          //         .(Struct)
+          //         .getGenericParamList()
+          //         .getTypeParam(i))
+        )
+      )
+    }
+  }
+
+  TypeMention getABaseTypeMention(Type t) { result = t.getABaseType() }
+
+  Type resolveExprType(Expr e, TypePath path) { result = resolveType(e, path) }
+}
+
+private import Input2
+import Make2<Input2>
 
 private predicate letStmtTyped(LetStmt let, Pat pat, TypeRepr t) {
   pat = let.getPat() and
@@ -145,715 +442,6 @@ private predicate isTargetTyped(AstNode n) {
   or
   exists(n) and
   1 = 2 // todo
-}
-
-// todo: add more cases
-private newtype TType =
-  TStruct(Struct s) or
-  TEnum(Enum e) or
-  TTrait(Trait t) or
-  TImpl(Impl i) or
-  TArrayType() or // todo: add size?
-  TRefType() or // todo: add mut, lifetime?
-  TTypeParamTypeParameter(TypeParam t) or
-  TRefTypeParameter()
-
-/** A type without type arguments. */
-abstract class Type extends TType {
-  pragma[nomagic]
-  abstract Function getMethod(string name);
-
-  pragma[nomagic]
-  abstract RecordField getRecordField(string name);
-
-  pragma[nomagic]
-  abstract TupleField getTupleField(int i);
-
-  abstract TypeParameter getTypeParameter(int i);
-
-  abstract TypeReprOrPath getABaseType();
-
-  abstract string toString();
-
-  abstract Location getLocation();
-}
-
-class StructType extends Type, TStruct {
-  private Struct struct;
-
-  StructType() { this = TStruct(struct) }
-
-  override Function getMethod(string name) { result = struct.(ItemNode).getASuccessor(name) }
-
-  override RecordField getRecordField(string name) { result = struct.getRecordField(name) }
-
-  override TupleField getTupleField(int i) { result = struct.getTupleField(i) }
-
-  override TypeParameter getTypeParameter(int i) {
-    result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
-  }
-
-  override TypeReprOrPath getABaseType() {
-    exists(ImplItemNode i |
-      struct = i.resolveSelfTy() and
-      result = i
-      // result = i.(Impl).getTrait()
-    )
-  }
-
-  override string toString() { result = struct.toString() }
-
-  override Location getLocation() { result = struct.getLocation() }
-}
-
-class EnumType extends Type, TEnum {
-  private Enum enum;
-
-  EnumType() { this = TEnum(enum) }
-
-  override Function getMethod(string name) { result = enum.(ItemNode).getASuccessor(name) }
-
-  override RecordField getRecordField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) {
-    result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
-  }
-
-  override TypeReprOrPath getABaseType() {
-    exists(ImplItemNode i |
-      enum = i.resolveSelfTy() and
-      result = i
-    )
-  }
-
-  override string toString() { result = enum.toString() }
-
-  override Location getLocation() { result = enum.getLocation() }
-}
-
-class TraitType extends Type, TTrait {
-  private Trait trait;
-
-  TraitType() { this = TTrait(trait) }
-
-  override Function getMethod(string name) { result = trait.(ItemNode).getASuccessor(name) }
-
-  override RecordField getRecordField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) {
-    result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
-  }
-
-  pragma[nomagic]
-  private TypeRepr_ getABound() {
-    result = trait.(Trait).getTypeBoundList().getABound().getTypeRepr()
-  }
-
-  override TypeReprOrPath getABaseType() { result = this.getABound() }
-
-  override string toString() { result = trait.toString() }
-
-  override Location getLocation() { result = trait.getLocation() }
-}
-
-class ImplType extends Type, TImpl {
-  private Impl impl;
-
-  ImplType() { this = TImpl(impl) }
-
-  override Function getMethod(string name) { result = impl.(ItemNode).getASuccessor(name) }
-
-  override RecordField getRecordField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) {
-    result = TTypeParamTypeParameter(impl.getGenericParamList().getTypeParam(i))
-  }
-
-  override TypeReprOrPath getABaseType() { result = impl.getTrait() }
-
-  override string toString() { result = impl.toString() }
-
-  override Location getLocation() { result = impl.getLocation() }
-}
-
-class ArrayType extends Type, TArrayType {
-  ArrayType() { this = TArrayType() }
-
-  override Function getMethod(string name) { none() }
-
-  override RecordField getRecordField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) {
-    none() // todo
-  }
-
-  override TypeReprOrPath getABaseType() { none() }
-
-  override string toString() { result = "[]" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-}
-
-class RefType extends Type, TRefType {
-  RefType() { this = TRefType() }
-
-  override Function getMethod(string name) { none() }
-
-  override RecordField getRecordField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) {
-    result = TRefTypeParameter() and
-    i = 0
-  }
-
-  override TypeReprOrPath getABaseType() { none() }
-
-  override string toString() { result = "&" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-}
-
-abstract class TypeParameter extends Type {
-  abstract int getPosition();
-
-  override TypeReprOrPath getABaseType() { none() }
-
-  override RecordField getRecordField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) { none() }
-}
-
-private class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
-  private TypeParam typeParam;
-
-  TypeParamTypeParameter() { this = TTypeParamTypeParameter(typeParam) }
-
-  TypeParam getTypeParam() { result = typeParam }
-
-  override int getPosition() { typeParam = any(GenericParamList l).getTypeParam(result) }
-
-  override Function getMethod(string name) { result = typeParam.(ItemNode).getASuccessor(name) }
-
-  override string toString() { result = typeParam.toString() }
-
-  override Location getLocation() { result = typeParam.getLocation() }
-}
-
-private class RefTypeParameter extends TypeParameter, TRefTypeParameter {
-  override int getPosition() { result = 0 }
-
-  override Function getMethod(string name) { none() }
-
-  override string toString() { result = "&T" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-}
-
-/** A `TypeRepr` or a `Path`. */
-abstract private class TypeReprOrPath extends AstNode {
-  /** Gets the `i`th type argument, if any. */
-  abstract TypeReprOrPath getTypeReprArgument(int i);
-
-  /** Gets the type that this node resolves to. */
-  abstract Type resolveType();
-
-  /** Gets the node at `path`. */
-  pragma[nomagic]
-  private TypeReprOrPath getTypeReprAt(TypePath path) {
-    path.isEmpty() and
-    result = this
-    or
-    exists(int i, TypeParameter tp, TypeReprOrPath arg, TypePath suffix |
-      arg = this.getTypeReprArgument(pragma[only_bind_into](i)) and
-      result = arg.getTypeReprAt(suffix) and
-      path = typePath(tp).append(suffix) and
-      tp = this.resolveType().getTypeParameter(pragma[only_bind_into](i))
-    )
-  }
-
-  /** Gets the type that the sub node at `path` resolves to. */
-  Type resolveTypeAt(TypePath path) { result = this.getTypeReprAt(path).resolveType() }
-}
-
-private class TypeRepr_ extends TypeReprOrPath, TypeRepr {
-  override TypeRepr_ getTypeReprArgument(int i) {
-    result = this.(ArrayTypeRepr).getElementTypeRepr() and
-    i = 0
-    or
-    result = this.(RefTypeRepr).getTypeRepr() and
-    i = 0
-    or
-    result = this.(PathTypeRepr).getPath().(Path_).getTypeReprArgument(i)
-  }
-
-  override Type resolveType() {
-    this instanceof ArrayTypeRepr and
-    result = TArrayType()
-    or
-    this instanceof RefTypeRepr and
-    result = TRefType()
-    or
-    result = this.(PathTypeRepr).getPath().(Path_).resolveType()
-  }
-}
-
-private class Path_ extends TypeReprOrPath, Path {
-  override TypeReprOrPath getTypeReprArgument(int i) {
-    result = this.getPart().getGenericArgList().getTypeArgument(i)
-    or
-    // todo
-    isUnqualifiedSelfPath(this) and
-    exists(ItemNode node | node = unqualifiedPathLookup(this) |
-      result = node.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
-      or
-      result = node.(Trait).getGenericParamList().getTypeParam(i)
-    )
-  }
-
-  pragma[nomagic]
-  predicate isImplTypeParam(ImplItemNode impl, Path_ selfPath, int i) {
-    selfPath = impl.getSelfPath() and
-    this = selfPath.getPart().getGenericArgList().getTypeArgument(i).(PathTypeRepr).getPath() and
-    resolvePath(this) instanceof TypeParam
-  }
-
-  override Type resolveType() {
-    exists(ItemNode i | i = resolvePath(this) |
-      result = TStruct(i)
-      or
-      result = TEnum(i)
-      or
-      result = TTrait(i)
-      or
-      result = TTypeParamTypeParameter(i) //and
-      or
-      // not this.isImplTypeParam(_, _, _) // todo: no effect?
-      result = i.(TypeAlias).getTypeRepr().(TypeRepr_).resolveType()
-      // or
-      // exists(ImplItemNode impl, int j, Struct selfType |
-      //   i = impl.(Impl).getGenericParamList().getTypeParam(_) and
-      //   selfType = impl.resolveSelfTy() and
-      //   this =
-      //     impl.getSelfPath()
-      //         .getPart()
-      //         .getGenericArgList()
-      //         .getTypeArgument(j)
-      //         .(PathTypeRepr)
-      //         .getPath() and
-      //   result = TTypeParamTypeParameter(selfType.getGenericParamList().getTypeParam(j))
-      // )
-    )
-    // or
-    // exists(ImplItemNode impl, Path_ selfPath | selfPath = impl.getSelfPath() |
-    //   result = TImpl(impl) and
-    //   this = selfPath
-    //   or
-    //   exists(int i |
-    //     this.isImplTypeParam(impl, selfPath, i) and
-    //     result = selfPath.resolveType().getTypeParameter(i)
-    //     // result =
-    //     //   TTypeParamTypeParameter(resolvePath(selfPath)
-    //     //         .(Struct)
-    //     //         .getGenericParamList()
-    //     //         .getTypeParam(i))
-    //   )
-    // )
-    // or
-    // exists(ImplItemNode i |
-    //   result = TImpl(i) and
-    //   this = i.getSelfPath()
-    // )
-  }
-}
-
-private class TypeParam_ extends TypeReprOrPath, TypeParam {
-  override TypeRepr_ getTypeReprArgument(int i) { none() }
-
-  override Type resolveType() { result = TTypeParamTypeParameter(this) }
-}
-
-private class Impl_ extends TypeReprOrPath, Impl {
-  override TypeRepr_ getTypeReprArgument(int i) {
-    none()
-    // result = this.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
-  }
-
-  override Type resolveType() { result = TImpl(this) }
-
-  override Type resolveTypeAt(TypePath path) {
-    result = TImpl(this) and
-    path.isEmpty()
-    or
-    exists(Path_ selfPath, Path_ p | selfPath = this.(ImplItemNode).getSelfPath() |
-      exists(int i |
-        p.isImplTypeParam(this, selfPath, i) and
-        result = selfPath.resolveType().getTypeParameter(i) and
-        path = typePath(p.resolveType())
-        // result =
-        //   TTypeParamTypeParameter(resolvePath(selfPath)
-        //         .(Struct)
-        //         .getGenericParamList()
-        //         .getTypeParam(i))
-      )
-    )
-  }
-}
-
-/** Provides logic for computing base types. */
-private module BaseTypes {
-  /**
-   * Holds if `base` is a (transitive) base type mention of `sub`, and `tp`
-   * (belonging to `sub`) is mentioned (implicitly) at `path` inside `base`.
-   * For example, in
-   *
-   * ```csharp
-   * class C<T1> { }
-   *
-   * class Base<T2> { }
-   *
-   * class Mid<T3> : Base<C<T3>> { }
-   *
-   * class Sub<T4> : Mid<C<T4>> { }
-   * ```
-   *
-   * - `T3` is mentioned at `0.0` for immediate base type `Base` of `Mid`,
-   * - `T4` is mentioned at `0.0` for immediate base type `Mid` of `Sub`, and
-   * - `T4` is mentioned at `0.0.0` for transitive base type `Base` of `Sub`.
-   */
-  pragma[nomagic]
-  private predicate baseTypeMentionHasTypeParameterAt(
-    Type sub, TypeReprOrPath base, TypePath path, TypeParameter tp
-  ) {
-    exists(TypeReprOrPath immediateBase, TypePath pathToTypeParam |
-      tp = sub.getTypeParameter(_) and // todo?
-      immediateBase = sub.getABaseType() and
-      tp = immediateBase.resolveTypeAt(pathToTypeParam)
-    |
-      // immediate base class
-      base = immediateBase and
-      path = pathToTypeParam
-      or
-      // transitive base class
-      exists(TypePath prefix, TypePath suffix, TypeParameter i |
-        baseTypeMentionHasTypeParameterAt(immediateBase.resolveType(), base, prefix, i) and
-        pathToTypeParam.startsWith(i, suffix) and
-        path = prefix.append(suffix)
-      )
-    )
-  }
-
-  /**
-   * Holds if `base` is a (transitive) base type mention of `sub`, and
-   * non-type-parameter `t` is mentioned (implicitly) at `path` inside `base`.
-   * For example, in
-   *
-   * ```csharp
-   * class C<T1> { }
-   *
-   * class Base<T2> { }
-   *
-   * class Mid<T3> : Base<C<T3>> { }
-   *
-   * class Sub<T4> : Mid<C<T4>> { }
-   * ```
-   *
-   * - `C` is mentioned at `0` for immediate base type `Base` of `Mid`,
-   * - `C` is mentioned at `0` for immediate base type `Mid` of `Sub`, and
-   * - `C` is mentioned at `0` and `0.0` for transitive base type `Base` of `Sub`.
-   */
-  pragma[nomagic]
-  private predicate baseTypeMentionHasNonTypeParameterAt(
-    Type sub, TypeReprOrPath base, TypePath path, Type t
-  ) {
-    not t instanceof TypeParameter and
-    exists(TypeReprOrPath immediateBase |
-      pragma[only_bind_into](immediateBase) = pragma[only_bind_into](sub).getABaseType()
-    |
-      base = immediateBase and
-      t = base.resolveTypeAt(path)
-      or
-      baseTypeMentionHasNonTypeParameterAt(immediateBase.resolveType(), base, path, t)
-      or
-      exists(TypePath path0, TypePath prefix, TypePath suffix, TypeParameter i |
-        baseTypeMentionHasTypeParameterAt(immediateBase.resolveType(), base, prefix, i) and
-        t = immediateBase.resolveTypeAt(path0) and
-        path0.startsWith(i, suffix) and
-        path = prefix.append(suffix)
-      )
-    )
-  }
-
-  signature module BaseTypeAtInputSig {
-    class Node;
-
-    Type resolveType(Node n, TypePath path);
-  }
-
-  module NodeHasBaseTypeAt<BaseTypeAtInputSig Input> {
-    pragma[nomagic]
-    private Type resolveRootType(Input::Node n) { result = Input::resolveType(n, "") }
-
-    pragma[nomagic]
-    private Type resolveTypeAt(Input::Node n, TypeParameter i, TypePath suffix) {
-      exists(TypePath path0, TypeParameter tp |
-        result = Input::resolveType(n, path0) and
-        i = tp and // .getPosition() and
-        path0.startsWith(i, suffix)
-      )
-    }
-
-    /**
-     * Holds if `base` is a (transitive) base type mention of the type of `n`, and
-     * `t` is mentioned (implicitly) at `path` inside `base`. For example, in
-     *
-     * ```csharp
-     * class C<T1> { }
-     *
-     * class Base<T2> { }
-     *
-     * class Mid<T3> : Base<C<T3>> { }
-     *
-     * class Sub<T4> : Mid<C<T4>> { }
-     *
-     * new Sub<int>();
-     * ```
-     *
-     * for the node `new Sub<int>()`:
-     *
-     * - `C` is mentioned at `0` for immediate base type `Mid`,
-     * - `int` is mentioned at `0.1` for immediate base type `Mid`,
-     * - `C` is mentioned at `0` and `0.0` for transitive base type `Base`, and
-     * - `int` is mentioned at `0.0.1` for transitive base type `Base`.
-     */
-    pragma[nomagic]
-    predicate hasBaseType(Input::Node n, TypeReprOrPath base, TypePath path, Type t) {
-      exists(Type sub | sub = resolveRootType(n) |
-        baseTypeMentionHasNonTypeParameterAt(sub, base, path, t)
-        or
-        exists(TypePath prefix, TypePath suffix, TypeParameter i |
-          baseTypeMentionHasTypeParameterAt(sub, base, prefix, i) and
-          t = resolveTypeAt(n, i, suffix) and
-          path = prefix.append(suffix)
-        )
-      )
-    }
-  }
-}
-
-private import BaseTypes
-
-private signature module MatchingInputSig {
-  class Decl {
-    string toString();
-
-    Location getLocation();
-
-    TypeParameter getTypeParameter(int i);
-  }
-
-  class Access {
-    string toString();
-
-    Location getLocation();
-
-    Type getTypeArgument(int i, TypePath path);
-  }
-
-  bindingset[this]
-  class ArgPos {
-    bindingset[this]
-    string toString();
-  }
-
-  bindingset[this]
-  class ParamPos {
-    bindingset[this]
-    string toString();
-  }
-
-  bindingset[apos]
-  bindingset[ppos]
-  predicate paramArgPosMatch(ParamPos ppos, ArgPos apos);
-
-  predicate target(Access a, Decl target);
-
-  AstNode getArg(Access a, ArgPos pos);
-
-  predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t);
-}
-
-private module Matching<MatchingInputSig Input> {
-  private import Input
-
-  pragma[nomagic]
-  predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
-    exists(AstNode arg |
-      arg = getArg(a, pos) and
-      t = resolveType(arg, path)
-    )
-  }
-
-  pragma[nomagic]
-  private predicate argumentTypeAt(Access a, ArgPos pos, Decl target, TypePath path, Type t) {
-    target(a, target) and
-    argumentType(a, pos, path, t)
-  }
-
-  bindingset[a, target, tp]
-  pragma[inline_late]
-  private predicate noExplicitTypeArgument(Access a, Decl target, TypeParameter tp) {
-    not exists(int i |
-      exists(a.getTypeArgument(pragma[only_bind_into](i), _)) and
-      tp = target.getTypeParameter(pragma[only_bind_into](i))
-    )
-  }
-
-  /**
-   * Holds if the type `t` at `path` of `a` at position `pos` matches the type parameter
-   * of `target` at the same position.
-   */
-  pragma[nomagic]
-  private predicate typeMatch(
-    Access a, ArgPos apos, Decl target, ParamPos ppos, TypePath path, Type t, TypeParameter tp
-  ) {
-    exists(TypePath pathToTypeParam |
-      argumentTypeAt(a, apos, target, pathToTypeParam.append(path), t) and
-      parameterType(target, ppos, pathToTypeParam, tp) and
-      noExplicitTypeArgument(a, target, tp) and
-      paramArgPosMatch(ppos, apos)
-    )
-  }
-
-  predicate declType(Decl decl, ParamPos at, TypePath path, Type t) {
-    parameterType(decl, at, path, t)
-  }
-
-  private module BaseTypeAtInput implements BaseTypeAtInputSig {
-    private newtype TNode =
-      MkNode(Access a, ArgPos pos) {
-        exists(Decl target |
-          argumentTypeAt(a, pos, target, _, _) and
-          declType(target, _, _, any(TypeParameter tp))
-        )
-      }
-
-    additional Node mkNode(Access a, ArgPos pos) { result = MkNode(a, pos) }
-
-    class Node extends MkNode {
-      Access getAccess() { this = MkNode(result, _) }
-
-      ArgPos getPos() { this = MkNode(_, result) }
-
-      string toString() { result = this.getAccess().toString() + ", " + this.getPos().toString() }
-
-      Location getLocation() { result = this.getAccess().getLocation() }
-    }
-
-    Type resolveType(Node n, TypePath path) {
-      exists(Access a, ArgPos pos |
-        n = MkNode(a, pos) and
-        argumentType(a, pos, path, result)
-      )
-    }
-  }
-
-  pragma[nomagic]
-  private predicate argumentBaseTypeAt(
-    Access a, ArgPos pos, Decl target, Type base, TypePath path, Type t
-  ) {
-    exists(TypeReprOrPath tm |
-      target(a, target) and
-      NodeHasBaseTypeAt<BaseTypeAtInput>::hasBaseType(BaseTypeAtInput::mkNode(a, pos), tm, path, t) and
-      base = tm.resolveType()
-    )
-  }
-
-  pragma[nomagic]
-  private predicate parameterBaseType(Decl decl, ParamPos pos, Type base, TypePath path, Type t) {
-    parameterType(decl, pos, path, t) and
-    parameterType(decl, pos, "", base)
-  }
-
-  /**
-   * Holds if the (transitive) base type `t` at `path` (which is somewhere inside `base`)
-   * of `a` at position `pos` matches the type parameter of `target` at the same position.
-   */
-  pragma[nomagic]
-  private predicate baseTypeMatch(
-    Access a, ArgPos apos, Decl target, ParamPos ppos, Type base, TypePath path, Type t,
-    TypeParameter tp
-  ) {
-    exists(TypePath pathToTypeParam |
-      argumentBaseTypeAt(a, apos, target, base, pathToTypeParam.append(path), t) and
-      parameterBaseType(target, ppos, base, pathToTypeParam, tp) and
-      noExplicitTypeArgument(a, target, tp) and
-      paramArgPosMatch(ppos, apos) and
-      // do not allow `pathToTypeParam` to be empty in this case, as we will match
-      // against the actual type and not one of the base types
-      not pathToTypeParam.isEmpty()
-    )
-  }
-
-  pragma[nomagic]
-  private predicate explicitTypeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
-    exists(int i |
-      t = a.getTypeArgument(pragma[only_bind_into](i), path) and
-      target(a, target) and
-      tp = target.getTypeParameter(pragma[only_bind_into](i))
-    )
-  }
-
-  pragma[nomagic]
-  private predicate implicitTypeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
-    typeMatch(a, _, target, _, path, t, tp)
-    or
-    baseTypeMatch(a, _, target, _, _, path, t, tp)
-  }
-
-  pragma[inline]
-  private predicate typeMatch(Access a, Decl target, TypePath path, Type t, TypeParameter tp) {
-    explicitTypeMatch(a, target, path, t, tp)
-    or
-    implicitTypeMatch(a, target, path, t, tp)
-  }
-
-  pragma[nomagic]
-  private Type resolveAccess(Access a, ArgPos apos, ParamPos ppos, TypePath path) {
-    paramArgPosMatch(ppos, apos) and
-    (
-      exists(Decl target, TypePath prefix, TypeParameter tp, TypePath suffix |
-        declType(target, pragma[only_bind_into](ppos), prefix, tp) and
-        typeMatch(a, target, suffix, result, tp) and
-        path = prefix.append(suffix)
-      )
-      or
-      exists(Decl target |
-        declType(target, pragma[only_bind_into](ppos), path, result) and
-        target(a, target) and
-        not result instanceof TypeParameter
-      )
-    )
-  }
-
-  pragma[nomagic]
-  Type resolveArgType(AstNode arg, ArgPos apos, ParamPos ppos, TypePath path) {
-    exists(Access a |
-      arg = getArg(a, apos) and
-      result = resolveAccess(a, apos, ppos, path)
-    )
-  }
 }
 
 private Type resolveVariableType(AstNode n, TypePath path) {
@@ -980,7 +568,7 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
 
   predicate paramArgPosMatch(ParamPos ppos, ArgPos apos) { apos = ppos }
 
-  AstNode getArg(Access a, ArgPos pos) {
+  Expr getArg(Access a, ArgPos pos) {
     result = a.getFieldExpr(pos.asFieldPos()).getExpr()
     or
     result = a and
@@ -1223,7 +811,7 @@ private module FunctionMatchingInput implements MatchingInputSig {
     target = a.(CallExpr).getVariant()
   }
 
-  AstNode getArg(Access a, ArgPos pos) {
+  Expr getArg(Access a, ArgPos pos) {
     exists(int p, boolean inMethod |
       argPos(a, result, p, inMethod) and
       pos = TPositionalArgPos(p, inMethod)
@@ -1326,7 +914,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
   predicate paramArgPosMatch(ParamPos ppos, ArgPos apos) { apos = ppos }
 
-  AstNode getArg(Access a, ArgPos pos) {
+  Expr getArg(Access a, ArgPos pos) {
     result = a.getExpr() and pos = TSelfParamPos()
     or
     result = a and
