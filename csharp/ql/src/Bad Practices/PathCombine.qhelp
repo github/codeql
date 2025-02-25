@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p><code>Path.Combine</code> may silently drop its earlier arguments if its later arguments are absolute paths. E.g. <code>Path.Combine("C:\\Users\\Me\\Documents", "C:\\Program Files\\") == "C:\\Program Files"</code>.</p>
+
+</overview>
+<recommendation>
+<p>Use <code>Path.Join</code> instead.</p>
+</recommendation>
+<references>
+
+
+</references>
+</qhelp>
