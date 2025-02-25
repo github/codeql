@@ -1,6 +1,6 @@
 /**
  * @kind problem
- * @id problem-query-with-related-locs
+ * @id problem-query-with-related-loc
  */
 
 import csharp
