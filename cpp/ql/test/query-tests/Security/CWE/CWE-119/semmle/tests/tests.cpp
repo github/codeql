@@ -309,7 +309,7 @@ void test12()
 	memset(&myVar, 0, sizeof(myVar)); // GOOD
 	memset(&myVar, 0, sizeof(myVar) + 1); // BAD: overrun write of myVar
 	memset(myVar.buffer, 0, 16); // GOOD
-	memset(myVar.buffer, 0, 17); // BAD: overrun write of myVar.buffer
+	memset(myVar.buffer, 0, 17); // DUBIOUS: overrun write of myVar.buffer, but not out of myVar itself [NOT DETECTED]
 	memset(&(myVar.field), 0, sizeof(int)); // GOOD
 	memset(&(myVar.field), 0, sizeof(int) * 2); // BAD: overrun write of myVar.field
 
@@ -912,33 +912,33 @@ void test26() {
 
 	maa.bs[0].as[-1] = 0; // BAD: underrun write [NOT DETECTED]
 	maa.bs[0].as[0] = 0; // GOOD
-	maa.bs[0].as[99] = 0; // GOOD (overflows into bs[9]) [FALSE POSITIVE]
-	maa.bs[0].as[100] = 0; // BAD: overrun write
-	maa.bs[1].as[-1] = 0; // GOOD (underflows into bs[0]) [FALSE POSITIVE]
+	maa.bs[0].as[99] = 0; // GOOD (overflows into bs[9])
+	maa.bs[0].as[100] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.bs[1].as[-1] = 0; // GOOD (underflows into bs[0])
 	maa.bs[1].as[0] = 0; // GOOD
-	maa.bs[1].as[99] = 0; // BAD: overrun write
-	maa.bs[1].as[100] = 0; // BAD: overrun write
+	maa.bs[1].as[99] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.bs[1].as[100] = 0; // BAD: overrun write[ NOT DETECTED]
 
 	maa.ds[0].i = 0; // GOOD
 	maa.ds[9].i = 0; // GOOD
-	maa.ds[10].i = 0; // BAD: overrun write
+	maa.ds[10].i = 0; // BAD: overrun write [NOT DETECTED]
 	maa.ds[0].cs[0] = 0; // GOOD
 	maa.ds[0].cs[3] = 0; // GOOD
-	maa.ds[0].cs[4] = 0; // GOOD (overflows into vs[1] [FALSE POSITIVE]
-	maa.ds[0].cs[39] = 0; // GOOD (overflows into vs[9] [FALSE POSITIVE]
-	maa.ds[0].cs[40] = 0; // BAD: overrun write
+	maa.ds[0].cs[4] = 0; // GOOD (overflows into vs[1])
+	maa.ds[0].cs[39] = 0; // GOOD (overflows into vs[9])
+	maa.ds[0].cs[40] = 0; // BAD: overrun write [NOT DETECTED]
 	maa.ds[9].cs[0] = 0; // GOOD
 	maa.ds[9].cs[3] = 0; // GOOD
-	maa.ds[9].cs[4] = 0; // BAD: overrun write
+	maa.ds[9].cs[4] = 0; // BAD: overrun write [NOT DETECTED]
 
-	maa.ys[0].xs[-1] = 0; // BAD: underrun write
+	maa.ys[0].xs[-1] = 0; // BAD: underrun write [NOT DETECTED]
 	maa.ys[0].xs[0] = 0; // GOOD
-	maa.ys[0].xs[99] = 0; // GOOD (overflows into bs[9]) [FALSE POSITIVE]
-	maa.ys[0].xs[100] = 0; // BAD: overrun write
-	maa.ys[1].xs[-1] = 0; // GOOD (underflows into ys[0]) [FALSE POSITIVE]
+	maa.ys[0].xs[99] = 0; // GOOD (overflows into bs[9])
+	maa.ys[0].xs[100] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.ys[1].xs[-1] = 0; // GOOD (underflows into ys[0])
 	maa.ys[1].xs[0] = 0; // GOOD
-	maa.ys[1].xs[99] = 0; // BAD: overrun write
-	maa.ys[1].xs[100] = 0; // BAD: overrun write
+	maa.ys[1].xs[99] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.ys[1].xs[100] = 0; // BAD: overrun write [NOT DETECTED]
 
 	char zs[2][2];
 	zs[0][-1] = 0; // BAD: underrun write [NOT DETECTED]
@@ -1025,7 +1025,7 @@ typedef _myStruct29 myStruct29;
 void test29() {
 	myStruct29 *ptr;
 
-	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2) [FALSE POSITIVE]
+	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
 	memset(&(ptr->arr1[0]), 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
 
 	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2) + 10); // BAD

@@ -105,7 +105,8 @@ private int getSize(VariableAccess va) {
 private int isSource(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     // buffer is a fixed size array
-    result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
+    exists(bufferVar.getUnspecifiedType().(ArrayType).getSize()) and
+    result = getSize(bufferExpr) and // more generous than .getSize() itself, when the array is a class field or similar.
     why = bufferVar and
     not memberMayBeVarSize(_, bufferVar) and
     not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild*() = bufferExpr) and
