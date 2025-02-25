@@ -1644,7 +1644,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** A synthesized SSA data flow node. */
     abstract private class SsaNodeImpl extends NodeImpl {
       /** Gets the underlying SSA definition. */
-      abstract DefinitionExt getDefinitionExt();
+      abstract deprecated DefinitionExt getDefinitionExt();
 
       /** Gets the SSA definition this node corresponds to, if any. */
       Definition asDefinition() { this = TSsaDefinitionNode(result) }
@@ -1664,7 +1664,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       SsaDefinitionExtNodeImpl() { this = TSsaDefinitionNode(def) }
 
-      override DefinitionExt getDefinitionExt() { result = def }
+      DefinitionExt getDefExt() { result = def }
+
+      deprecated override DefinitionExt getDefinitionExt() { result = def }
 
       override BasicBlock getBasicBlock() { result = def.getBasicBlock() }
 
@@ -1692,7 +1694,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** A node that represents a synthetic read of a source variable. */
     final class SsaSynthReadNode extends SsaNode {
       SsaSynthReadNode() {
-        this.(SsaDefinitionExtNodeImpl).getDefinitionExt() instanceof PhiReadNode or
+        this.(SsaDefinitionExtNodeImpl).getDefExt() instanceof PhiReadNode or
         this instanceof SsaInputNodeImpl
       }
     }
@@ -1744,7 +1746,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         input = input_
       }
 
-      override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
+      SsaInputDefinitionExt getPhi() { result = def_ }
+
+      deprecated override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
 
@@ -1767,7 +1771,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate flowOutOf(
       DefinitionExt def, Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
     ) {
-      nodeFrom.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
+      nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
       def.definesAt(v, bb, i, _) and
       isUseStep = false
       or
@@ -1790,7 +1794,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       ) and
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
+      nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
       isUseStep = false
       or
       // Flow from definition/read to next read
@@ -1806,7 +1810,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         exists(UncertainWriteDefinition def2 |
           DfInput::allowFlowIntoUncertainDef(def2) and
-          nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def2 and
+          nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def2 and
           def2.definesAt(v, bb2, i2)
         )
       )
@@ -1823,8 +1827,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
       or
       // Flow from input node to def
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
-      def = nodeFrom.(SsaInputNodeImpl).getDefinitionExt() and
+      nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+      def = nodeFrom.(SsaInputNodeImpl).getPhi() and
       isUseStep = false
     }
 
@@ -1837,10 +1841,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       ) and
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def
+      nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def
       or
       // Flow from SSA definition to read
-      nodeFrom.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
+      nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
       nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
     }
 
