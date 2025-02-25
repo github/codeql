@@ -13,25 +13,25 @@
               scrpt2.src = 'http://www.cdn.local/ga.js';
               scrpt2.integrity = 'sha256-h0UuK3mE9taiYlB5u9vT9A0s/XDgkfVd+F4VhN/sky=';
 
-              var scrpt3 = document.createElement('script'); // $ Alert - http + ternary
+              var scrpt3 = document.createElement('script');
               scrpt3.type = 'text/javascript';
-              scrpt3.src = ('https:' == document.location.protocol ? 'http://unsafe' : 'http://also-unsafe') + '.cdn.local/ga.js';
+              scrpt3.src = ('https:' == document.location.protocol ? 'http://unsafe' : 'http://also-unsafe') + '.cdn.local/ga.js'; // $ Alert[js/functionality-from-untrusted-source] -  http + ternary
 
-              var ifrm = document.createElement('iframe'); // $ Alert - http URL
-              ifrm.src = 'http://www.example.com/';
+              var ifrm = document.createElement('iframe');
+              ifrm.src = 'http://www.example.com/'; // $ Alert[js/functionality-from-untrusted-source] - http URL
 
               // OK - https URL
               var ifrm2 = document.createElement('iframe');
               ifrm2.src = 'https://www.example.com/';
 
-              function getUrl(version) { // $ Alert - http URL tracked through calls
+              function getUrl(version) {
                 return 'http://www.cdn.local/'+version+'/ga.js';
               }
               var ifrm3 = document.createElement('iframe');
-              ifrm3.src = getUrl('v123');
+              ifrm3.src = getUrl('v123'); // $ Alert[js/functionality-from-untrusted-source] - http URL tracked through calls
 
-              var ifrm4 = document.createElement('iframe'); // $ Alert - assignment of bad URL using setAttribute
-              ifrm4.setAttribute('src', 'http://www.example.local/page.html');
+              var ifrm4 = document.createElement('iframe');
+              ifrm4.setAttribute('src', 'http://www.example.local/page.html'); // $ Alert[js/functionality-from-untrusted-source] - assignment of bad URL using setAttribute
 
               // OK - bad URL, but the attribute is not `src`
               var ifrm5 = document.createElement('iframe');
