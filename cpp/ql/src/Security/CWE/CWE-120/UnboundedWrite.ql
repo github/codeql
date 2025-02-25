@@ -124,6 +124,12 @@ module Config implements DataFlow::ConfigSig {
     // Block flow if the node is guarded by any <, <= or = operations.
     node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-120/UnboundedWrite.ql:121: Column 1 does not select a source or sink originating from the flow call on line 118
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

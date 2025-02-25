@@ -28,6 +28,12 @@ module ExistsAnyFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Likely Bugs/Protocols/TlsSettingsMisconfiguration.ql:43: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module ExistsAnyFlow = DataFlow::Global<ExistsAnyFlowConfig>;

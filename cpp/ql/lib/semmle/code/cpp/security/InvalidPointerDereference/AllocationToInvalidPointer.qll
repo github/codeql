@@ -142,6 +142,14 @@ private module SizeBarrier {
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/code/cpp/security/InvalidPointerDereference/AllocationToInvalidPointer.qll:151: Flow call outside 'select' clause
+      // ql/lib/semmle/code/cpp/security/InvalidPointerDereference/AllocationToInvalidPointer.qll:162: Flow call outside 'select' clause
+      // ql/lib/semmle/code/cpp/security/InvalidPointerDereference/AllocationToInvalidPointer.qll:211: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module SizeBarrierFlow = DataFlow::Global<SizeBarrierConfig>;
@@ -329,6 +337,12 @@ private module Config implements ProductFlow::StateConfigSig {
 
   predicate isBarrierOut2(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/cpp/security/InvalidPointerDereference/AllocationToInvalidPointer.qll:377: Flow call outside 'select' clause
+    none()
   }
 }
 

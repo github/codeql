@@ -37,6 +37,12 @@ module NullDaclConfig implements DataFlow::ConfigSig {
       val = call.getArgument(2)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql:94: Column 1 does not select a source or sink originating from the flow call on line 91
+    none()
+  }
 }
 
 module NullDaclFlow = DataFlow::Global<NullDaclConfig>;
@@ -67,6 +73,12 @@ module NonNullDaclConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(SetSecurityDescriptorDaclFunctionCall call | sink.asExpr() = call.getArgument(2))
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql:94: Column 1 does not select a source or sink originating from the flow call on line 92
+    none()
   }
 }
 
