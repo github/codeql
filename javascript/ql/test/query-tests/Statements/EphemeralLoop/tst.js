@@ -7,8 +7,8 @@ while(c){ // $ Alert
   break;
 }
 
-function f() { // $ Alert
-  for (; k < numprecincts;) {
+function f() {
+  for (; k < numprecincts;) { // $ Alert
     var packet = createPacket(resolution, k, l);
     k++;
     return packet;

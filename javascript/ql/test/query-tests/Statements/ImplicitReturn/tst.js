@@ -1,5 +1,5 @@
-function f() { // $ Alert
-	if (foo())
+function f() {
+	if (foo()) // $ Alert
 		return true;
 }
 
@@ -95,12 +95,12 @@ function t(n) {
 	} while("true");
 }
 
-var u = function() { // $ Alert
-	if (foo())
+var u = function() {
+	if (foo()) // $ Alert
 		return true;
 };
 
-function v(b) { // $ Alert
-	if (b)
+function v(b) {
+	if (b) // $ Alert
 		return 1;
 }
