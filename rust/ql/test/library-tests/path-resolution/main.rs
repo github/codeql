@@ -180,7 +180,7 @@ mod m8 {
         MyTrait::f(&x); // $ item=I48
         MyStruct::f(&x); // $ item=I53
         <MyStruct as // $ item=I50
-         MyTrait // $ MISSING: item=I47
+         MyTrait // $ item=I47
         > // $ MISSING: item=52
         ::f(&x); // $ MISSING: item=I53
         let x = MyStruct {}; // $ item=I50
@@ -337,10 +337,10 @@ mod m15 {
         println!("m15::f");
         let x = S; // $ item=I81
         <S // $ item=I81
-          as Trait1 // $ MISSING: item=I79
+          as Trait1 // $ item=I79
         >::f(&x); // $ MISSING: item=I76
         <S // $ item=I81
-          as Trait2 // MISSING: item=I82
+          as Trait2 // $ item=I82
         >::f(&x); // $ MISSING: item=I78
         S::g(&x); // $ item=I77
         x.g(); // $ MISSING: item=I77
@@ -421,12 +421,12 @@ mod m16 {
         <S // $ item=I90
           as Trait1<
             S // $ item=I90
-          > // $ MISSING: item=I86
+          > // $ item=I86
         >::f(&x); // $ MISSING: item=I91
         <S // $ item=I90
           as Trait2<
             S // $ item=I90
-          > // MISSING: item=I89
+          > // $ item=I89
         >::f(&x); // $ MISSING: item=I93
         S::g(&x); // $ item=I92
         x.g(); // $ MISSING: item=I92
@@ -436,7 +436,7 @@ mod m16 {
         <S // $ item=I90
           as Trait1<
             S // $ item=I90
-          > // $ MISSING: item=I86
+          > // $ item=I86
         >::c; // $ MISSING: item=I95
     } // I83
 }
