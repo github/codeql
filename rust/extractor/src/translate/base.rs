@@ -4,23 +4,23 @@ use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
-use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
+use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{
     Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
 };
-use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_def::ModuleId;
+use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_expand::ExpandTo;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::{EditionedFileId, TextSize};
 use ra_ap_syntax::ast::HasName;
 use ra_ap_syntax::{
-    ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken,
-    TextRange,
+    AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
+    ast,
 };
 
 #[macro_export]

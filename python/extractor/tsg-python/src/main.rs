@@ -7,17 +7,17 @@
 
 use std::path::Path;
 
-use anyhow::anyhow;
 use anyhow::Context as _;
 use anyhow::Result;
-use clap::{Command, Arg, ArgAction};
+use anyhow::anyhow;
+use clap::{Arg, ArgAction, Command};
 use tree_sitter::Parser;
-use tree_sitter_graph::ast::File;
-use tree_sitter_graph::functions::Functions;
 use tree_sitter_graph::ExecutionConfig;
 use tree_sitter_graph::Identifier;
 use tree_sitter_graph::NoCancellation;
 use tree_sitter_graph::Variables;
+use tree_sitter_graph::ast::File;
+use tree_sitter_graph::functions::Functions;
 
 const BUILD_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
@@ -332,7 +332,7 @@ pub mod extra_functions {
                     return Err(ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
                         format!("Cannot call child-index on the root node"),
-                    ))
+                    ));
                 }
             };
             let mut tree_cursor = parent.walk();
@@ -490,7 +490,7 @@ fn main() -> Result<()> {
                 .short('t')
                 .long("tsg")
                 .action(ArgAction::Set)
-                .required(false)
+                .required(false),
         )
         .arg(Arg::new("source").index(1).required(true))
         .get_matches();

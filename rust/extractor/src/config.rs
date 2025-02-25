@@ -4,9 +4,9 @@ use anyhow::Context;
 use clap::Parser;
 use codeql_extractor::trap;
 use figment::{
+    Figment,
     providers::{Env, Format, Serialized, Yaml},
     value::Value,
-    Figment,
 };
 use itertools::Itertools;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
