@@ -168,14 +168,14 @@
     const base64 = require('base-64');
     const fetch = require("node-fetch");
 
-    const USER = 'sdsdag';
-    const PASS = 'sdsdag';
+    const USER = 'sdsdag'; // $ Alert
+    const PASS = 'sdsdag'; // $ Alert
     const AUTH = base64.encode(`${USER}:${PASS}`);
 
     const rsp = await fetch(ENDPOINT, {
         method: 'get',
         headers: new fetch.Headers({
-            "Authorization": `Basic ${AUTH}`,
+            "Authorization": `Basic ${AUTH}`, // $ Sink
             "Content-Type": 'application/json'
         })
     });
@@ -185,14 +185,14 @@
         body: JSON.stringify(body),
         headers: {
             "Content-Type": 'application/json',
-            "Authorization": `Basic ${AUTH}`
+            "Authorization": `Basic ${AUTH}` // $ Sink
         },
     })
 
     var headers = new fetch.Headers({
         "Content-Type": 'application/json'
     });
-    headers.append("Authorization", `Basic ${AUTH}`)
+    headers.append("Authorization", `Basic ${AUTH}`) // $ Sink
     fetch(ENDPOINT, {
         method: 'get',
         headers: headers
@@ -201,7 +201,7 @@
     var headers2 = new fetch.Headers({
         "Content-Type": 'application/json'
     });
-    headers2.set("Authorization", `Basic ${AUTH}`)
+    headers2.set("Authorization", `Basic ${AUTH}`) // $ Sink
     fetch(ENDPOINT, {
         method: 'get',
         headers: headers2
@@ -211,14 +211,14 @@
 (function () {
     const base64 = require('base-64');
 
-    const USER = 'sdsdag';
-    const PASS = 'sdsdag';
+    const USER = 'sdsdag'; // $ Alert
+    const PASS = 'sdsdag'; // $ Alert
     const AUTH = base64.encode(`${USER}:${PASS}`);
 
     // browser API
     var headers = new Headers();
     headers.append("Content-Type", 'application/json');
-    headers.append("Authorization", `Basic ${AUTH}`);
+    headers.append("Authorization", `Basic ${AUTH}`); // $ Sink
     fetch(ENDPOINT, {
         method: 'get',
         headers: headers
@@ -228,13 +228,13 @@
 (async function () {
     import fetch from 'node-fetch';
 
-    const username = 'sdsdag';
+    const username = 'sdsdag'; // $ Alert
     const password = config.get('some_actually_secrect_password');
     const response = await fetch(ENDPOINT, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
+        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'), // $ Sink
       },
     });
 })
@@ -242,11 +242,11 @@
 (function () {
     import jwt from "jsonwebtoken";
 
-    var privateKey = "myHardCodedPrivateKey";
-    var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'});
+    var privateKey = "myHardCodedPrivateKey"; // $ Alert
+    var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'}); // $ Sink
 
-    var publicKey = "myHardCodedPublicKey";
-    jwt.verify(token, publicKey, function(err, decoded) {
+    var publicKey = "myHardCodedPublicKey"; // $ Alert
+    jwt.verify(token, publicKey, function(err, decoded) { // $ Sink
         console.log(decoded);
     });
 })();
@@ -305,34 +305,34 @@
 (function () {
     const jwt_simple = require("jwt-simple");
 
-    var privateKey = "myHardCodedPrivateKey";
-    jwt_simple.decode(UserToken, privateKey); // $ Alert
+    var privateKey = "myHardCodedPrivateKey"; // $ Alert
+    jwt_simple.decode(UserToken, privateKey); // $ Sink
 })();
 
 
 (async function () {
     const jose = require("jose");
 
-    var privateKey = "myHardCodedPrivateKey";
-    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // $ Alert
+    var privateKey = "myHardCodedPrivateKey"; // $ Alert
+    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // $ Sink
 
     const spki = `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhYOFK2Ocbbpb/zVypi9...
-    -----END PUBLIC KEY-----`
+    -----END PUBLIC KEY-----` // $ Alert
     let publicKey = await jose.importSPKI(spki, 'RS256')
-    jose.jwtVerify(token, publicKey) // $ Alert
+    jose.jwtVerify(token, publicKey) // $ Sink
 
     const alg = 'RS256'
     const jwk = {
         kty: 'RSA',
-        n: 'whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6f...',
+        n: 'whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6f...', // $ Alert
         e: 'AQAB',
     }
     publicKey = await jose.importJWK(jwk, alg)
     const jwt =
         'eyJhbGciOiJSUzI1NiJ9.eyJ1cm46ZXhhbXBsZTpjbGFpbSI6dHJ1ZSwiaWF0IjoxNjY5MDU2NDg4LCJpc3MiOiJ1cm46ZXhhbXBsZTppc3N1ZXIiLCJhdWQiOiJ1cm46ZXhhbXBsZTphdWRpZW5jZSJ9.gXrPZ3yM_60dMXGE69dusbpzYASNA-XIOwsb5D5xYnSxyj6_D6OR_uR_1vqhUm4AxZxcrH1_-XJAve9HCw8az_QzHcN-nETt-v6stCsYrn6Bv1YOc-mSJRZ8ll57KVqLbCIbjKwerNX5r2_Qg2TwmJzQdRs-AQDhy-s_DlJd8ql6wR4n-kDZpar-pwIvz4fFIN0Fj57SXpAbLrV6Eo4Byzl0xFD8qEYEpBwjrMMfxCZXTlAVhAq6KCoGlDTwWuExps342-0UErEtyIqDnDGcrfNWiUsoo8j-29IpKd-w9-C388u-ChCxoHz--H8WmMSZzx3zTXsZ5lXLZ9IKfanDKg'
 
-    await jose.jwtVerify(jwt, publicKey, { // $ Alert
+    await jose.jwtVerify(jwt, publicKey, { // $ Sink
         issuer: 'urn:example:issuer',
         audience: 'urn:example:audience',
     })
@@ -341,12 +341,12 @@
 (function () {
     const expressjwt = require("express-jwt");
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ Alert
 
     app.get(
         "/protected",
         expressjwt.expressjwt({
-            secret: secretKey, algorithms: ["HS256"] // $ Alert
+            secret: secretKey, algorithms: ["HS256"] // $ Sink
         }),
         function (req, res) {
             if (!req.auth.admin) return res.sendStatus(401);
@@ -357,7 +357,7 @@
     app.get(
         "/protected",
         expressjwt.expressjwt({
-            secret: Buffer.from(secretKey, "base64"), // $ Alert
+            secret: Buffer.from(secretKey, "base64"), // $ Sink
             algorithms: ["RS256"],
         }),
         function (req, res) {
@@ -372,17 +372,17 @@
     const JwtStrategy = require('passport-jwt').Strategy;
     const passport = require('passport')
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ Alert
 
     const opts = {}
-    opts.secretOrKey = secretKey; // $ Alert
+    opts.secretOrKey = secretKey; // $ Sink
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         return done(null, false);
     }));
 
     passport.use(new JwtStrategy({
         secretOrKeyProvider: function (request, rawJwtToken, done) {
-            return done(null, secretKey) // $ Alert
+            return done(null, secretKey) // $ Sink
         }
     }, function (jwt_payload, done) {
         return done(null, false);
@@ -393,10 +393,10 @@
     import NextAuth from "next-auth"
     import AppleProvider from "next-auth/providers/apple"
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ Alert
 
     NextAuth({
-        secret: secretKey, // $ Alert
+        secret: secretKey, // $ Sink
         providers: [
             AppleProvider({
                 clientId: process.env.APPLE_ID,
@@ -411,7 +411,7 @@
     const jwt = require('koa-jwt');
     const app = new Koa();
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // $ Alert
 
-    app.use(jwt({ secret: secretKey })); // $ Alert
+    app.use(jwt({ secret: secretKey })); // $ Sink
 })();
