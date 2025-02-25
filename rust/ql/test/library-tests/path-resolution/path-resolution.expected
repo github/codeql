@@ -1,4 +1,5 @@
 testFailures
+| main.rs:432:9:432:13 | x.g(...) | Unexpected result: item=I85 |
 mod
 | lib.rs:1:1:1:7 | mod my |
 | main.rs:1:1:1:7 | mod my |
