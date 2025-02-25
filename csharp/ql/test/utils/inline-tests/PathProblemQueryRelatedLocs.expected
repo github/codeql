@@ -11,4 +11,4 @@ testFailures
 | InlineTests.cs:37:28:37:38 | // ... | Missing result: Source |
 | InlineTests.cs:38:24:38:32 | // ... | Missing result: Sink |
 | InlineTests.cs:39:33:39:42 | // ... | Missing result: Alert |
-| InlineTests.cs:93:34:93:90 | // ... | Missing result: RelatedLocation[path-problem-query-with-related-loc] |
+| InlineTests.cs:99:19:99:27 | "Related" | Unexpected result: RelatedLocation |

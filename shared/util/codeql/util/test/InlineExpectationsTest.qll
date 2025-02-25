@@ -892,12 +892,19 @@ module TestPostProcessing {
         not hasPathProblemSink(row, location, _, _)
       }
 
+      private predicate shouldReportRelatedLocations() {
+        exists(string tag |
+          hasExpectationWithValue(tag, _) and
+          PathProblemSourceTestInput::tagMatches(tag, "RelatedLocation")
+        )
+      }
+
       private predicate hasRelatedLocation(
         int row, TestLocation location, string element, string tag
       ) {
         getQueryKind() = ["problem", "path-problem"] and
         location = getRelatedLocation(row, _, element) and
-        hasExpectationWithValue("RelatedLocation", _) and
+        shouldReportRelatedLocations() and
         tag = "RelatedLocation" and
         not hasAlert(row, location, _, _) and
         not hasPathProblemSource(row, location, _, _, _) and
