@@ -1,3 +1,4 @@
+#select
 | tst2.ts:6:13:6:25 | returnsVoid() | the $@ does not return anything, yet the return value is used. | tst2.ts:1:1:1:38 | declare ... : void; | function returnsVoid |
 | tst.html:19:31:19:43 | addHandlers() | the $@ does not return anything, yet the return value is used. | tst.html:5:7:12:7 | functio ...       } | function addHandlers |
 | tst.js:20:17:20:33 | onlySideEffects() | the $@ does not return anything, yet the return value is used. | tst.js:11:5:13:5 | functio ... )\\n    } | function onlySideEffects |
@@ -9,3 +10,6 @@
 | tst.js:80:12:80:50 | filter( ...  3) } ) | the $@ does not return anything, yet the return value from the call to filter is used. | tst.js:80:28:80:48 | x => {  ... x, 3) } | callback function |
 | tst.js:114:12:114:56 | [1,2,3] ...  3); }) | the $@ does not return anything, yet the return value from the call to findLastIndex is used. | tst.js:114:34:114:55 | n => {  ... , 3); } | callback function |
 | tst.js:117:12:117:51 | [1,2,3] ...  3); }) | the $@ does not return anything, yet the return value from the call to findLast is used. | tst.js:117:29:117:50 | n => {  ... , 3); } | callback function |
+testFailures
+| tst.js:24:13:24:29 | the $@ does not return anything, yet the return value is used. | Unexpected result: Alert |
+| tst.js:45:56:45:65 | // $ Alert | Missing result: Alert |

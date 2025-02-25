@@ -7,5 +7,5 @@ var Mod1;
     var Mod2;
     (function (Mod2) {
         Mod2.p = 42;
-    })(Mod2 || (Mod2 = {})); // NOT OK
+    })(Mod2 || (Mod2 = {}));
 });

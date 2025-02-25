@@ -29,9 +29,8 @@ fs.exists(fileName, function (exists) {
             res.setEncoding('utf8');
           });
 
-          // BAD: write data from file to request body
-          req.write(postData);
           req.end(); 
+          req.write(postData); // $ Alert[js/file-access-to-http] - write data from file to request body
           });
 
           fs.close(fd);

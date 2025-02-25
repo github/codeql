@@ -1,1 +1,2 @@
-Security/CWE-295/DisablingCertificateValidation.ql
+query: Security/CWE-295/DisablingCertificateValidation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

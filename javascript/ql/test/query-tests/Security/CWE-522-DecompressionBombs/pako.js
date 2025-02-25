@@ -18,7 +18,7 @@ function zipBomb1(zipFile) {
     const myArray = Buffer.from(new Uint8Array(zipFile.data.buffer));
     let output;
     try {
-        output = pako.inflate(myArray);
+        output = pako.inflate(myArray); // $ Alert
         console.log(output);
     } catch (err) {
         console.log(err);
@@ -29,7 +29,7 @@ function zipBomb2(zipFile) {
     const myArray = new Uint8Array(zipFile.data.buffer).buffer;
     let output;
     try {
-        output = pako.inflate(myArray);
+        output = pako.inflate(myArray); // $ Alert
         console.log(output);
     } catch (err) {
         console.log(err);

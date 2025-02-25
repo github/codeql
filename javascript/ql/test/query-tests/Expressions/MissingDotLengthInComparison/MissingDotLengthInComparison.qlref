@@ -1,1 +1,2 @@
-Expressions/MissingDotLengthInComparison.ql
+query: Expressions/MissingDotLengthInComparison.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

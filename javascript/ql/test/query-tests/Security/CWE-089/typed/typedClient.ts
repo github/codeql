@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 app.post("/find", (req, res) => {
   let v = JSON.parse(req.body.x);
-  getCollection().find({ id: v }); // NOT OK
+  getCollection().find({ id: v }); // $ Alert
 });
 
 import * as mongoose from "mongoose";
@@ -19,6 +19,6 @@ declare function getMongooseModel(): mongoose.Model;
 declare function getMongooseQuery(): mongoose.Query;
 app.post("/find", (req, res) => {
   let v = JSON.parse(req.body.x);
-  getMongooseModel().find({ id: v }); // NOT OK
-  getMongooseQuery().find({ id: v }); // NOT OK
+  getMongooseModel().find({ id: v }); // $ Alert
+  getMongooseQuery().find({ id: v }); // $ Alert
 });

@@ -4,5 +4,5 @@ const parseTorrent = require('parse-torrent'),
 function getTorrentData(dir, torrent){
 	let name = parseTorrent(torrent).name,
 	    loc = dir + "/" + name + ".torrent.data";
-	return fs.readFileSync(loc); // NOT OK
+	return fs.readFileSync(loc); // $ Alert
 }

@@ -1,7 +1,7 @@
 (function (i) {
 	if (i <= 1)
 		return 1;
-	return i*arguments.callee(i-1);
+	return i*arguments.callee(i-1); // $ Alert
 }(3));
 
 function f() {
@@ -9,7 +9,7 @@ function f() {
 }
 
 function g() {
-	return arguments.caller.length;
+	return arguments.caller.length; // $ Alert
 }
 
 function h(arguments) {

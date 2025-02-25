@@ -6,10 +6,10 @@ function getDate() {
 		return null;
 	}
 	console.log(date);
-	return date && date.getTime(); // NOT OK
+	return date && date.getTime();
 }
 
 function isNotNullOrString(obj) {
-  return obj != null && obj != undefined && // NOT OK
-      typeof obj != 'string'; 
+  return obj != null && obj != undefined &&
+      typeof obj != 'string';
 }

@@ -1,2 +1,9 @@
+#select
 | m.js:1:8:1:22 | functio ...  = x;\\n} | Function A is sometimes invoked as a constructor (for example $@), and sometimes as a normal function (for example $@). | c1.js:2:1:2:9 | new A(42) | here | c2.js:2:1:2:5 | A(23) | here |
 | tst.js:1:1:1:22 | functio ...  = y;\\n} | Function Point is sometimes invoked as a constructor (for example $@), and sometimes as a normal function (for example $@). | tst.js:6:1:6:17 | new Point(23, 42) | here | tst.js:7:1:7:13 | Point(56, 72) | here |
+testFailures
+| m.js:1:8:1:22 | Function A is sometimes invoked as a constructor (for example $@), and sometimes as a normal function (for example $@). | Unexpected result: Alert |
+| tst.js:1:1:1:22 | Function Point is sometimes invoked as a constructor (for example $@), and sometimes as a normal function (for example $@). | Unexpected result: Alert |
+| tst.js:57:6:57:50 | // $ Al ... ocation | Missing result: Alert |
+| tst.js:67:20:67:86 | // $ Al ... flagged | Missing result: Alert |
+| tst.js:68:20:68:86 | // $ Al ... flagged | Missing result: Alert |

@@ -134,9 +134,9 @@ function escapeHtml4(s) {
 app.get('/user/:id', function (req, res) {
   const url = req.params.id;
 
-  res.send(escapeHtml1(url)); // OK
-  res.send(escapeHtml2(url)); // OK
-  res.send(escapeHtml3(url)); // OK - but FP [INCONSISTENCY]
-  res.send(escapeHtml4(url)); // OK
+  res.send(escapeHtml1(url));
+  res.send(escapeHtml2(url));
+  res.send(escapeHtml3(url)); // $ SPURIOUS: Alert - FP
+  res.send(escapeHtml4(url));
 });
 

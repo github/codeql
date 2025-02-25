@@ -26,8 +26,7 @@ fs.exists(fileName, function (exists) {
           res.setEncoding('utf8');
         });
         
-        // BAD: write data from file to request body
-        req.write(chunk);
+        req.write(chunk); // $ Alert[js/file-access-to-http] - write data from file to request body
 
         req.end(); 
       });

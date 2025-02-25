@@ -1,17 +1,17 @@
 export function unsafeDeserialize(data) {
-  return eval("(" + data + ")"); // NOT OK
+  return eval("(" + data + ")"); // $ Alert[js/unsafe-code-construction]
 }
 
 export function unsafeGetter(obj, name) {
-    return eval("obj." + name); // NOT OK
+    return eval("obj." + name); // $ Alert[js/unsafe-code-construction]
 }
 
 export function safeAssignment(obj, value) {
-    eval("obj.foo = " + JSON.stringify(value)); // OK
+    eval("obj.foo = " + JSON.stringify(value));
 }
 
 global.unsafeDeserialize = function (data) {
-  return eval("(" + data + ")"); // NOT OK
+  return eval("(" + data + ")"); // $ Alert[js/unsafe-code-construction]
 }
 
 const matter = require("gray-matter");
@@ -19,13 +19,13 @@ const matter = require("gray-matter");
 export function greySink(data) {
     const str = `
     ---js
-    ${data}
+    ${data /* $ Alert[js/unsafe-code-construction] */}
     ---
     `
     const res = matter(str);
     console.log(res);
 
-    matter(str, { // OK
+    matter(str, {
         engines: {
             js: function (data) {
                 console.log("NOPE");
@@ -48,7 +48,7 @@ export function Template(text, opts) {
 Template.prototype = {
   compile: function () {
     var opts = this.opts;
-    eval("  var " + opts.varName + " = something();"); // NOT OK
+    eval("  var " + opts.varName + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
   },
   // The below are justs tests that ensure the global-access-path computations terminate.
   pathsTerminate1: function (node, prev) {
@@ -100,10 +100,10 @@ export class AccessPathClass {
   }
 
   doesTaint() {
-    eval("  var " + this.options1.taintedOption + " = something();"); // NOT OK
-    eval("  var " + this.options2.taintedOption + " = something();"); // NOT OK
-    eval("  var " + this.options3.taintedOption + " = something();"); // NOT OK
-    eval("  var " + this.taint + " = something();"); // NOT OK
+    eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
   }
 }
 
@@ -111,17 +111,17 @@ export class AccessPathClass {
 export class AccessPathClassBB {
     constructor(taint) {
       this.taint = taint;
-  
+
       var options1 = {taintedOption: taint};
       if (Math.random() < 0.5) { console.log("foo"); }
       this.options1 = options1;
-  
+
       var options2;
       if (Math.random() < 0.5) { console.log("foo"); }
       options2 = {taintedOption: taint};
       if (Math.random() < 0.5) { console.log("foo"); }
       this.options2 = options2;
-  
+
       var options3;
       if (Math.random() < 0.5) { console.log("foo"); }
       options3 = {};
@@ -130,12 +130,11 @@ export class AccessPathClassBB {
       if (Math.random() < 0.5) { console.log("foo"); }
       this.options3 = options3;
     }
-  
+
     doesTaint() {
-      eval("  var " + this.options1.taintedOption + " = something();"); // NOT OK
-      eval("  var " + this.options2.taintedOption + " = something();"); // NOT OK
-      eval("  var " + this.options3.taintedOption + " = something();"); // NOT OK
-      eval("  var " + this.taint + " = something();"); // NOT OK
+      eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
     }
   }
-  

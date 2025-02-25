@@ -10,5 +10,5 @@ rootRoute.post(function(req, res) {
 });
 
 function problem(val) {
-    _.chunk(val, 2); // NOT OK!
+    _.chunk(val, 2); // $ Alert
 }

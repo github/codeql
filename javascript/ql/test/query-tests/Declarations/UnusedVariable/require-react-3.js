@@ -1,2 +1,2 @@
-var { React } = require("probably-react"); // OK
+var { React } = require("probably-react");
 (<e/>);

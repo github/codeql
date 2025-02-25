@@ -1,83 +1,82 @@
-'use strict'; // OK
-'use struct'; // OK (flagged by UnknownDirective.ql)
-23; // NOT OK
-void(23); // OK
-23, foo(); // NOT OK
-foo(23, 42); // OK
-foo((23, bar())); // NOT OK
-foo((bar(), 23)); // OK
-1,f(); // NOT OK
+'use strict';
+'use struct'; // OK - flagged by UnknownDirective.ql
+23; // $ Alert
+void(23);
+23, foo(); // $ Alert
+foo(23, 42);
+foo((23, bar())); // $ Alert
+foo((bar(), 23));
+1,f(); // $ Alert
 
-// OK
+
 /**
  * @type {function(int) : string}
  */
 String.prototype.slice;
 
-// OK
+
 /** @typedef {(string|number)} */
 goog.NumberLike;
 
-// NOT OK
 /** Useless */
-x;
+x; // $ Alert
 
-// OK (magic DOM property)
+// OK - magic DOM property
 elt.clientTop;
 
-// OK (xUnit fixture)
+// OK - xUnit fixture
 [Fixture]
 function tst() {}
 
-// OK: bad style, but most likely intentional
+// OK - bad style, but most likely intentional
 (0, o.m)();
 (0, o["m"])();
 
 function tst() {
-  // OK: bad style, but most likely intentional
+  // OK - bad style, but most likely intentional
   (0, eval)("42");
 }
 
 function f() {
     var x;
-    "foo"; // NOT OK
+    "foo"; // $ Alert
 }
 
 try {
   doSomethingDangerous();
 } catch(e) {
-  new Error("Told you so"); // NOT OK
-  new SyntaxError("Why didn't you listen to me?"); // NOT OK
-  new Error(computeSnarkyMessage(e)); // NOT OK
-  new UnknownError(); // OK
+  new Error("Told you so"); // $ Alert
+  new SyntaxError("Why didn't you listen to me?"); // $ Alert
+  new Error(computeSnarkyMessage(e)); // $ Alert
+  new UnknownError();
 }
 
 function g() {
 	var o = {};
 
 	Object.defineProperty(o, "trivialGetter1", { get: function(){} });
-	o.trivialGetter1; // OK
+	o.trivialGetter1;
 
 	Object.defineProperty(o, "trivialNonGetter1", "foo");
-	o.trivialNonGetter1; // NOT OK
+	o.trivialNonGetter1; // $ Alert
 
 	var getterDef1 = { get: function(){} };
 	Object.defineProperty(o, "nonTrivialGetter1", getterDef1);
-	o.nonTrivialGetter1; // OK
+	o.nonTrivialGetter1;
 
 	var getterDef2 = { };
 	unknownPrepareGetter(getterDef2);
 	Object.defineProperty(o, "nonTrivialNonGetter1", getterDef2);
-	o.nonTrivialNonGetter1; // OK
+	o.nonTrivialNonGetter1;
 
 	Object.defineProperty(o, "nonTrivialGetter2", unknownGetterDef());
-	o.nonTrivialGetter2; // OK
+	o.nonTrivialGetter2;
 	
-	(o: empty); // OK
+	(o: empty);
 
-	testSomeCondition() ? o : // NOT OK
+	testSomeCondition() ? o : // $ Alert
 		doSomethingDangerous();
 
-	consume(testSomeCondition() ? o : // OK
+	consume(testSomeCondition() ? o :
 		doSomethingDangerous());
 };
