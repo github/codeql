@@ -1,6 +1,5 @@
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
-use tree_sitter_ql;
 
 mod common;
 use common::{SourceArchive, create_source_dir, expect_trap_file};

@@ -19,7 +19,7 @@ use tree_sitter_graph::Variables;
 use tree_sitter_graph::ast::File;
 use tree_sitter_graph::functions::Functions;
 
-const BUILD_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const BUILD_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub mod extra_functions {
     use tree_sitter_graph::functions::{Function, Parameters};
@@ -331,7 +331,7 @@ pub mod extra_functions {
                 None => {
                     return Err(ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
-                        format!("Cannot call child-index on the root node"),
+                        "Cannot call child-index on the root node".to_string(),
                     ));
                 }
             };
@@ -342,7 +342,7 @@ pub mod extra_functions {
                 .ok_or_else(|| {
                     ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
-                        format!("Called child-index on a non-named child"),
+                        "Called child-index on a non-named child".to_string(),
                     )
                 })?;
             Ok(Value::Integer(index as u32))
@@ -400,7 +400,7 @@ pub mod extra_functions {
             let parent = node.parent().ok_or_else(|| {
                 ExecutionError::FunctionFailed(
                     "get-parent".into(),
-                    format!("Cannot call get-parent on the root node"),
+                    "Cannot call get-parent on the root node".to_string(),
                 )
             })?;
             Ok(Value::SyntaxNode(graph.add_syntax_node(parent)))
