@@ -641,7 +641,7 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
     // type being checked against
     localFlowStep(nodeFrom, nodeTo, summary) and
     not hasAdjacentTypeCheckedRead(nodeTo) and
-    not TypeInference::asModulePattern(nodeTo.(SsaDefinitionExtNode).getDefinitionExt(), _)
+    not TypeInference::asModulePattern(nodeTo.(SsaDefinitionNodeImpl).getDefinition(), _)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {

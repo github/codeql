@@ -167,7 +167,7 @@ module Public {
       or
       result instanceof TypeObject and this instanceof AdditionalNode
       or
-      result = this.(SsaNode).getDefinitionExt().getSourceVariable().getType()
+      result = this.(SsaNode).getTypeImpl()
     }
 
     /** Gets the callable in which this node occurs. */
@@ -394,7 +394,9 @@ class SsaNode extends Node, TSsaNode {
 
   SsaNode() { this = TSsaNode(node) }
 
-  SsaImpl::Impl::DefinitionExt getDefinitionExt() { result = node.getDefinitionExt() }
+  BasicBlock getBasicBlock() { result = node.getBasicBlock() }
+
+  Type getTypeImpl() { result = node.getSourceVariable().getType() }
 
   override Location getLocation() { result = node.getLocation() }
 
@@ -442,7 +444,7 @@ module Private {
     result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField() or
     result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable() or
-    result.asCallable() = n.(SsaNode).getDefinitionExt().getBasicBlock().getEnclosingCallable()
+    result.asCallable() = n.(SsaNode).getBasicBlock().getEnclosingCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */

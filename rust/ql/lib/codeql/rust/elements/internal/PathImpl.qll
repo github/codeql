@@ -45,7 +45,7 @@ module Impl {
         ps = this.getPart() and
         not ps.hasGenericArgList() and
         not ps.hasParenthesizedArgList() and
-        not ps.hasPathType() and
+        not ps.hasTypeRepr() and
         not ps.hasReturnTypeSyntax() and
         name = ps.getNameRef().getText()
       )

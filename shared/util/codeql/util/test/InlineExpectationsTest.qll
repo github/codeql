@@ -779,21 +779,35 @@ module TestPostProcessing {
       )
     }
 
-    private string getTagRegex() {
-      exists(string sourceSinkTags |
-        (
-          getQueryKind() = "problem"
-          or
-          not exists(getSourceTag(_)) and
-          not exists(getSinkTag(_))
-        ) and
-        sourceSinkTags = ""
-        or
-        sourceSinkTags = "|" + getSourceTag(_) + "|" + getSinkTag(_)
+    bindingset[x, y]
+    private int exactDivide(int x, int y) { x % y = 0 and result = x / y }
+
+    /** Gets the `n`th related location selected in `row`. */
+    private TestLocation getRelatedLocation(int row, int n, string element) {
+      n >= 0 and
+      exists(int column |
+        mainQueryResult(row, column, result) and
+        queryResults(mainResultSet(), row, column + 1, element)
       |
-        result = "(Alert" + sourceSinkTags + ")(\\[(.*)\\])?"
+        getQueryKind() = "path-problem" and
+        // Skip over `alert, source, sink, message`, counting entities as two columns (7 columns in total).
+        // Then pick the first column from each related location, which each is an `entity, message` pair (3 columns).
+        n = exactDivide(column - 7, 3)
+        or
+        // Like above, but only skip over `alert, message` initially (3 columns in total).
+        getQueryKind() = "problem" and
+        n = exactDivide(column - 3, 3)
       )
     }
+
+    private string getAnActiveTag() {
+      result = ["Alert", "RelatedLocation"]
+      or
+      getQueryKind() = "path-problem" and
+      result = ["Source", "Sink"]
+    }
+
+    private string getTagRegex() { result = "(" + concat(getAnActiveTag(), "|") + ")(\\[(.*)\\])?" }
 
     /**
      * A configuration for matching `// $ Source=foo` comments against actual
@@ -878,6 +892,25 @@ module TestPostProcessing {
         not hasPathProblemSink(row, location, _, _)
       }
 
+      private predicate shouldReportRelatedLocations() {
+        exists(string tag |
+          hasExpectationWithValue(tag, _) and
+          PathProblemSourceTestInput::tagMatches(tag, "RelatedLocation")
+        )
+      }
+
+      private predicate hasRelatedLocation(
+        int row, TestLocation location, string element, string tag
+      ) {
+        getQueryKind() = ["problem", "path-problem"] and
+        location = getRelatedLocation(row, _, element) and
+        shouldReportRelatedLocations() and
+        tag = "RelatedLocation" and
+        not hasAlert(row, location, _, _) and
+        not hasPathProblemSource(row, location, _, _, _) and
+        not hasPathProblemSink(row, location, _, _)
+      }
+
       /**
        * Gets the expected value for result row `row`, if any. This value must
        * match the value at the corresponding path-problem source (if it is
@@ -899,6 +932,8 @@ module TestPostProcessing {
           hasPathProblemSink(row, location, element, tag)
           or
           hasAlert(row, location, element, tag)
+          or
+          hasRelatedLocation(row, location, element, tag)
         |
           not exists(getValue(row)) and value = ""
           or

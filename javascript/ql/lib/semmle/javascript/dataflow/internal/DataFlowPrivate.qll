@@ -35,38 +35,21 @@ class SsaUseNode extends DataFlow::Node, TSsaUseNode {
   override Location getLocation() { result = expr.getLocation() }
 }
 
-class SsaPhiReadNode extends DataFlow::Node, TSsaPhiReadNode {
-  private Ssa2::PhiReadNode phi;
+class SsaSynthReadNode extends DataFlow::Node, TSsaSynthReadNode {
+  private Ssa2::SsaSynthReadNode read;
 
-  SsaPhiReadNode() { this = TSsaPhiReadNode(phi) }
-
-  cached
-  override string toString() { result = "[ssa-phi-read] " + phi.getSourceVariable().getName() }
+  SsaSynthReadNode() { this = TSsaSynthReadNode(read) }
 
   cached
-  override StmtContainer getContainer() { result = phi.getSourceVariable().getDeclaringContainer() }
-
-  cached
-  override Location getLocation() { result = phi.getLocation() }
-}
-
-class SsaInputNode extends DataFlow::Node, TSsaInputNode {
-  private Ssa2::SsaInputNode input;
-
-  SsaInputNode() { this = TSsaInputNode(input) }
-
-  cached
-  override string toString() {
-    result = "[ssa-input] " + input.getDefinitionExt().getSourceVariable().getName()
-  }
+  override string toString() { result = "[ssa-synth-read] " + read.getSourceVariable().getName() }
 
   cached
   override StmtContainer getContainer() {
-    result = input.getDefinitionExt().getSourceVariable().getDeclaringContainer()
+    result = read.getSourceVariable().getDeclaringContainer()
   }
 
   cached
-  override Location getLocation() { result = input.getLocation() }
+  override Location getLocation() { result = read.getLocation() }
 }
 
 class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
@@ -675,9 +658,7 @@ predicate nodeIsHidden(Node node) {
   or
   node instanceof SsaUseNode
   or
-  node instanceof SsaPhiReadNode
-  or
-  node instanceof SsaInputNode
+  node instanceof SsaSynthReadNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
@@ -1258,20 +1239,18 @@ Node getNodeFromSsa2(Ssa2::Node node) {
     result = TImplicitThisUse(use, true)
   )
   or
-  result = TSsaPhiReadNode(node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt())
-  or
-  result = TSsaInputNode(node.(Ssa2::SsaInputNode))
+  result = TSsaSynthReadNode(node)
   or
   exists(SsaPhiNode legacyPhi, Ssa2::PhiNode ssaPhi |
-    node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt() = ssaPhi and
+    node.(Ssa2::SsaDefinitionNode).getDefinition() = ssaPhi and
     samePhi(legacyPhi, ssaPhi) and
     result = TSsaDefNode(legacyPhi)
   )
 }
 
 private predicate useUseFlow(Node node1, Node node2) {
-  exists(Ssa2::DefinitionExt def, Ssa2::Node ssa1, Ssa2::Node ssa2 |
-    Ssa2::localFlowStep(def, ssa1, ssa2, _) and
+  exists(Ssa2::Node ssa1, Ssa2::Node ssa2 |
+    Ssa2::localFlowStep(_, ssa1, ssa2, _) and
     node1 = getNodeFromSsa2(ssa1) and
     node2 = getNodeFromSsa2(ssa2) and
     not node1.getTopLevel().isExterns()

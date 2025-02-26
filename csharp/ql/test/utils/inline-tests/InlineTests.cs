@@ -16,6 +16,14 @@ class C
 
         // correct expectation comment
         x = "Alert"; // $ Alert[problem-query]
+
+        // correct expectation comments with a related location
+        var related = "Related"; // $ RelatedLocation[problem-query-with-related-loc]
+        x = "Alert:1"; // $ Alert[problem-query-with-related-loc]
+
+        // expectation comments missing the related location
+        related = "Related";
+        x = "Alert:1"; // $ Alert[problem-query-with-related-loc]
     }
 
     void PathProblems()
@@ -78,5 +86,17 @@ class C
         // incorrect expectation comments, using an identifier tag; the alert location coincides with the source location
         sink = "Sink"; // $ Sink[path-problem-query]=sink2
         x = "Alert:0:1"; // $ Alert[path-problem-query]=sink1
+
+        // correct expectation comments with a related location
+        source = "Source"; // $ Source[path-problem-query-with-related-loc]
+        sink = "Sink"; // $ Sink[path-problem-query-with-related-loc]
+        var related = "Related"; // $ RelatedLocation[path-problem-query-with-related-loc]
+        x = "Alert:3:2:1"; // $ Alert[path-problem-query-with-related-loc]
+
+        // expectation comments missing the related location
+        source = "Source"; // $ Source[path-problem-query-with-related-loc]
+        sink = "Sink"; // $ Sink[path-problem-query-with-related-loc]
+        related = "Related";
+        x = "Alert:3:2:1"; // $ Alert[path-problem-query-with-related-loc]
     }
 }
