@@ -100,12 +100,6 @@ class PhiDefinition = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
-module ExposedForTestingOnly {
-  predicate ssaDefReachesReadExt = Impl::ssaDefReachesReadExt/4;
-
-  predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
-}
-
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
   exists(VariableAccess read |

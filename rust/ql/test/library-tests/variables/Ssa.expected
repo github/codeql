@@ -535,14 +535,15 @@ phi
 phiReadNode
 | main.rs:104:11:105:12 | SSA phi read(s1) | main.rs:102:9:102:10 | s1 |
 | main.rs:493:5:497:5 | SSA phi read(x) | main.rs:492:9:492:9 | x |
-phiReadNodeRead
+phiReadNodeFirstRead
 | main.rs:104:11:105:12 | SSA phi read(s1) | main.rs:102:9:102:10 | s1 | main.rs:105:11:105:12 | s1 |
 | main.rs:493:5:497:5 | SSA phi read(x) | main.rs:492:9:492:9 | x | main.rs:500:19:500:19 | x |
 | main.rs:493:5:497:5 | SSA phi read(x) | main.rs:492:9:492:9 | x | main.rs:502:19:502:19 | x |
 phiReadInput
 | main.rs:104:11:105:12 | SSA phi read(s1) | main.rs:102:9:102:10 | s1 |
-| main.rs:104:11:105:12 | SSA phi read(s1) | main.rs:104:11:105:12 | SSA phi read(s1) |
-| main.rs:493:5:497:5 | SSA phi read(x) | main.rs:492:9:492:9 | x |
+| main.rs:104:11:105:12 | SSA phi read(s1) | main.rs:105:11:105:12 | SSA read(s1) |
+| main.rs:493:5:497:5 | SSA phi read(x) | main.rs:494:19:494:19 | SSA read(x) |
+| main.rs:493:5:497:5 | SSA phi read(x) | main.rs:496:19:496:19 | SSA read(x) |
 ultimateDef
 | main.rs:191:9:191:44 | phi | main.rs:191:22:191:23 | a3 |
 | main.rs:191:9:191:44 | phi | main.rs:191:42:191:43 | a3 |
