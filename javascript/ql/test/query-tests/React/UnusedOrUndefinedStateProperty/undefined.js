@@ -61,7 +61,7 @@ new C5({writtenInUnknownInitializerObject: 42});
 React.createClass({ // $ Alert
     render: function() {
         this.state.writtenInKnownInitializerObject;
-        this.state.notWrittenInKnownInitializerObject;
+        this.state.notWrittenInKnownInitializerObject; // $ RelatedLocation
         return <div/>;
   },
   getInitialState: function() {
