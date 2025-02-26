@@ -1,10 +1,11 @@
 import rust
 import codeql.rust.elements.internal.PathResolution
 import utils.test.InlineExpectationsTest
+import TestUtils
 
-query predicate mod(Module m) { any() }
+query predicate mod(Module m) { toBeTested(m) }
 
-query predicate resolvePath(Path p, ItemNode i) { i = resolvePath(p) }
+query predicate resolvePath(Path p, ItemNode i) { toBeTested(p) and i = resolvePath(p) }
 
 module ResolveTest implements TestSig {
   string getARelevantTag() { result = "item" }
