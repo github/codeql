@@ -54,19 +54,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
    * those that are not borrowed (either explicitly using `& mut`, or
    * (potentially) implicit as borrowed receivers in a method call).
    */
-  class SourceVariable extends Variable {
-    SourceVariable() {
-      this.isMutable()
-      implies
-      not exists(VariableAccess va | va = this.getAnAccess() |
-        va = any(RefExpr re | re.isMut()).getExpr()
-        or
-        // receivers can be borrowed implicitly, cf.
-        // https://doc.rust-lang.org/reference/expressions/method-call-expr.html
-        va = any(MethodCallExpr mce).getReceiver()
-      )
-    }
-  }
+  class SourceVariable = Variable;
 
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     (
@@ -76,7 +64,12 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
     ) and
     certain = true
     or
-    capturedCallWrite(_, bb, i, v) and certain = false
+    (
+      capturedCallWrite(_, bb, i, v)
+      or
+      mutablyBorrows(bb.getNode(i).getAstNode(), v)
+    ) and
+    certain = false
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -229,6 +222,14 @@ predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
   )
 }
 
+/** Holds if `v` may be mutably borrowed in `e`. */
+private predicate mutablyBorrows(Expr e, Variable v) {
+  e = any(MethodCallExpr mc).getReceiver() and
+  e.(VariableAccess).getVariable() = v
+  or
+  exists(RefExpr re | re = e and re.isMut() and re.getExpr().(VariableAccess).getVariable() = v)
+}
+
 /**
  * Holds if a pseudo read of captured variable `v` should be inserted
  * at index `i` in exit block `bb`.
@@ -377,6 +378,12 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
   predicate ssaDefAssigns(WriteDefinition def, Expr value) {
     none() // handled in `DataFlowImpl.qll` instead
+  }
+
+  predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
+    exists(Variable v, BasicBlock bb, int i |
+      def.definesAt(v, bb, i) and mutablyBorrows(bb.getNode(i).getAstNode(), v)
+    )
   }
 
   class Parameter = CfgNodes::ParamBaseCfgNode;

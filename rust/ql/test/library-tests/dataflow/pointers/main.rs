@@ -88,14 +88,14 @@ mod intraprocedural_mutable_borrows {
         let mut a = 1;
         sink(a);
         *(&mut a) = source(87);
-        sink(a); // $ MISSING: hasValueFlow=87
+        sink(a); // $ hasValueFlow=87
     }
 
     pub fn clear_through_borrow() {
         let mut to_be_cleared = source(34);
         let p = &mut to_be_cleared;
         *p = 0;
-        sink(to_be_cleared); // variable is cleared
+        sink(to_be_cleared); // $ SPURIOUS: hasValueFlow=34
     }
 
     pub fn write_through_borrow_in_match(cond: bool) {
@@ -183,13 +183,13 @@ mod interprocedural_immutable_borrows {
     pub fn through_self_in_method_implicit_borrow() {
         let my_number = MyNumber::MyNumber(source(85));
         // Implicit borrow
-        sink(my_number.get()); // $ MISSING: hasValueFlow=85
+        sink(my_number.get()); // $ hasValueFlow=85
     }
 
     pub fn through_self_in_method_implicit_deref() {
         let my_number = &MyNumber::MyNumber(source(58));
         // Implicit dereference
-        sink(my_number.to_number()); // $ MISSING: hasValueFlow=58
+        sink(my_number.to_number()); // $ hasValueFlow=58
     }
 }
 
@@ -216,7 +216,7 @@ mod interprocedural_mutable_borrows {
         let mut n = 0;
         sink(n);
         set_int(&mut n, source(55));
-        sink(n); // $ MISSING: hasValueFlow=55
+        sink(n); // $ hasValueFlow=55
     }
 
     impl MyNumber {
@@ -232,27 +232,27 @@ mod interprocedural_mutable_borrows {
     pub fn mutate_enum_through_function() {
         let mut my_number = MyNumber::MyNumber(0);
         set_number(&mut my_number, source(64));
-        sink(my_number.get()); // $ MISSING: hasValueFlow=64
+        sink(my_number.get()); // $ hasValueFlow=64
         set_number(&mut my_number, 0);
-        sink(my_number.get()); // now cleared
+        sink(my_number.get()); // $ SPURIOUS: hasValueFlow=64
     }
 
     pub fn mutate_enum_through_method_implicit_borrow() {
         let mut my_number = MyNumber::MyNumber(0);
         // Implicit borrow.
         my_number.set(source(45));
-        sink(to_number(my_number)); // $ MISSING: hasValueFlow=45
+        sink(to_number(my_number)); // $ hasValueFlow=45
         my_number.set(0);
-        sink(to_number(my_number)); // now cleared
+        sink(to_number(my_number)); // $ SPURIOUS: hasValueFlow=45
     }
 
     pub fn mutate_enum_through_method_explicit_borrow() {
         let mut my_number = MyNumber::MyNumber(0);
         // Explicit borrow.
         (&mut my_number).set(source(99));
-        sink(to_number(my_number)); // $ MISSING: hasValueFlow=99
+        sink(to_number(my_number)); // $ hasValueFlow=99
         (&mut my_number).set(0);
-        sink(to_number(my_number)); // now cleared
+        sink(to_number(my_number)); // SPURIOUS: hasValueFlow=99
     }
 }
 

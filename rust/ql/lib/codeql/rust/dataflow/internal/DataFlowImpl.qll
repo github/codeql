@@ -4,6 +4,7 @@
 
 private import codeql.util.Void
 private import codeql.util.Unit
+private import codeql.util.Boolean
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
@@ -95,6 +96,8 @@ final class DataFlowCall extends TDataFlowCall {
 final class ParameterPosition extends TParameterPosition {
   /** Gets the underlying integer position, if any. */
   int getPosition() { this = TPositionalParameterPosition(result) }
+
+  predicate hasPosition() { exists(this.getPosition()) }
 
   /** Holds if this position represents the `self` position. */
   predicate isSelf() { this = TSelfParameterPosition() }
@@ -367,11 +370,39 @@ module Node {
     private CallExprBaseCfgNode call_;
     private RustDataFlow::ArgumentPosition pos_;
 
-    ExprArgumentNode() { isArgumentForCall(n, call_, pos_) }
+    ExprArgumentNode() {
+      isArgumentForCall(n, call_, pos_) and
+      // For receivers in method calls the `ReceiverNode` is the argument.
+      not call_.(MethodCallExprCfgNode).getReceiver() = n
+    }
 
     override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
       call.asCallBaseExprCfgNode() = call_ and pos = pos_
     }
+  }
+
+  /**
+   * The receiver of a method call _after_ any implicit borrow or dereferences
+   * has taken place.
+   */
+  final class ReceiverNode extends ArgumentNode, TReceiverNode {
+    private MethodCallExprCfgNode n;
+
+    ReceiverNode() { this = TReceiverNode(n, false) }
+
+    ExprCfgNode getReceiver() { result = n.getReceiver() }
+
+    MethodCallExprCfgNode getMethodCall() { result = n }
+
+    override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+      call.asMethodCallExprCfgNode() = n and pos = TSelfParameterPosition()
+    }
+
+    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    override Location getLocation() { result = n.getLocation() }
+
+    override string toString() { result = "receiver for " + this.getReceiver() }
   }
 
   final class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
@@ -519,6 +550,18 @@ module Node {
     override Location getLocation() { result = n.getLocation() }
   }
 
+  final class ReceiverPostUpdateNode extends PostUpdateNode, TReceiverNode {
+    private MethodCallExprCfgNode n;
+
+    ReceiverPostUpdateNode() { this = TReceiverNode(n, true) }
+
+    override Node getPreUpdateNode() { result = TReceiverNode(n, false) }
+
+    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    override Location getLocation() { result = n.getLocation() }
+  }
+
   final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
     private FlowSummaryNode pre;
 
@@ -648,6 +691,14 @@ module LocalFlow {
     )
     or
     nodeFrom.asPat().(OrPatCfgNode).getAPat() = nodeTo.asPat()
+    or
+    // Simple value step from receiver expression to receiver node, in case
+    // there is no implicit deref or borrow operation.
+    nodeFrom.asExpr() = nodeTo.(Node::ReceiverNode).getReceiver()
+    or
+    // The dual step of the above, for the post-update nodes.
+    nodeFrom.(Node::PostUpdateNode).getPreUpdateNode().(Node::ReceiverNode).getReceiver() =
+      nodeTo.(Node::PostUpdateNode).getPreUpdateNode().asExpr()
   }
 }
 
@@ -998,6 +1049,23 @@ predicate lambdaCallExpr(CallExprCfgNode call, LambdaCallKind kind, ExprCfgNode 
   exists(kind)
 }
 
+/** Holds if `mc` implicitly borrows its receiver. */
+predicate implicitBorrow(MethodCallExpr mc) {
+  // Determining whether an implicit borrow happens depends on the type of the
+  // receiever as well as the target. As a heuristic we simply check if the
+  // target takes `self` as a borrow and limit the approximation to cases where
+  // the receiver is a simple variable.
+  mc.getReceiver() instanceof VariableAccess and
+  mc.getStaticTarget().getParamList().getSelfParam().isRef()
+}
+
+/** Holds if `mc` implicitly dereferences its receiver. */
+predicate implicitDeref(MethodCallExpr mc) {
+  // Similarly to `implicitBorrow` this is an approximation.
+  mc.getReceiver() instanceof VariableAccess and
+  not mc.getStaticTarget().getParamList().getSelfParam().isRef()
+}
+
 // Defines a set of aliases needed for the `RustDataFlow` module
 private module Aliases {
   class DataFlowCallableAlias = DataFlowCallable;
@@ -1054,13 +1122,12 @@ module RustDataFlow implements InputSig<Location> {
   DataFlowType getNodeType(Node node) { any() }
 
   predicate nodeIsHidden(Node node) {
-    node instanceof Node::SsaNode
-    or
-    node.(Node::FlowSummaryNode).getSummaryNode().isHidden()
-    or
-    node instanceof Node::CaptureNode
-    or
-    node instanceof Node::ClosureParameterNode
+    node instanceof Node::SsaNode or
+    node.(Node::FlowSummaryNode).getSummaryNode().isHidden() or
+    node instanceof Node::CaptureNode or
+    node instanceof Node::ClosureParameterNode or
+    node instanceof Node::ReceiverNode or
+    node instanceof Node::ReceiverPostUpdateNode
   }
 
   predicate neverSkipInPathGraph(Node node) {
@@ -1169,6 +1236,28 @@ module RustDataFlow implements InputSig<Location> {
       node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
+  pragma[nomagic]
+  private predicate implicitDerefToReceiver(Node node1, Node::ReceiverNode node2, ReferenceContent c) {
+    node1.asExpr() = node2.getReceiver() and
+    implicitDeref(node2.getMethodCall().getMethodCallExpr()) and
+    exists(c)
+  }
+
+  pragma[nomagic]
+  private predicate implicitBorrowToReceiver(
+    Node node1, Node::ReceiverNode node2, ReferenceContent c
+  ) {
+    node1.asExpr() = node2.getReceiver() and
+    implicitBorrow(node2.getMethodCall().getMethodCallExpr()) and
+    exists(c)
+  }
+
+  pragma[nomagic]
+  private predicate referenceExprToExpr(Node node1, Node node2, ReferenceContent c) {
+    node1.asExpr() = node2.asExpr().(RefExprCfgNode).getExpr() and
+    exists(c)
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
    * `node1` references an object with a content `c.getAReadContent()` whose
@@ -1251,6 +1340,17 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = await
       )
       or
+      referenceExprToExpr(node2.(PostUpdateNode).getPreUpdateNode(),
+        node1.(PostUpdateNode).getPreUpdateNode(), c)
+      or
+      // Step from receiver expression to receiver node, in case of an implicit
+      // dereference.
+      implicitDerefToReceiver(node1, node2, c)
+      or
+      // A read step dual to the store step for implicit borrows.
+      implicitBorrowToReceiver(node2.(PostUpdateNode).getPreUpdateNode(),
+        node1.(PostUpdateNode).getPreUpdateNode(), c)
+      or
       VariableCapture::readStep(node1, c, node2)
     )
     or
@@ -1327,11 +1427,7 @@ module RustDataFlow implements InputSig<Location> {
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
     )
     or
-    exists(RefExprCfgNode ref |
-      c instanceof ReferenceContent and
-      node1.asExpr() = ref.getExpr() and
-      node2.asExpr() = ref
-    )
+    referenceExprToExpr(node1, node2, c)
     or
     // Store in function argument
     exists(DataFlowCall call, int i |
@@ -1341,6 +1437,10 @@ module RustDataFlow implements InputSig<Location> {
     )
     or
     VariableCapture::storeStep(node1, c, node2)
+    or
+    // Step from receiver expression to receiver node, in case of an implicit
+    // borrow.
+    implicitBorrowToReceiver(node1, node2, c)
   }
 
   /**
@@ -1612,9 +1712,16 @@ private module Cached {
     TPatNode(PatCfgNode p) or
     TNameNode(NameCfgNode n) { n.getName() = any(Variable v).getName() } or
     TExprPostUpdateNode(ExprCfgNode e) {
-      isArgumentForCall(e, _, _) or
-      lambdaCallExpr(_, _, e) or
-      lambdaCreationExpr(e.getExpr(), _) or
+      isArgumentForCall(e, _, _)
+      or
+      lambdaCallExpr(_, _, e)
+      or
+      lambdaCreationExpr(e.getExpr(), _)
+      or
+      // Whenever `&mut e` has a post-update node we also create one for `e`.
+      // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
+      e = any(RefExprCfgNode ref | ref.isMut() and exists(TExprPostUpdateNode(ref))).getExpr()
+      or
       e =
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
@@ -1623,6 +1730,7 @@ private module Cached {
           any(AwaitExprCfgNode a).getExpr()
         ]
     } or
+    TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
