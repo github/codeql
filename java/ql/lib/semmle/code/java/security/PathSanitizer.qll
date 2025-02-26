@@ -423,7 +423,7 @@ private class DirectoryCharactersGuard extends PathGuard {
       m = mc.getMethod() and
       m.getDeclaringType() instanceof TypeString and
       m.hasName("matches") and
-      target = mc.getAnArgument() and
+      target = mc.getArgument(0) and
       checkedExpr = mc.getQualifier() and
       this = mc
     |
