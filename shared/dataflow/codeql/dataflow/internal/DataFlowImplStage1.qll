@@ -5,6 +5,9 @@
  * (interprocedural) data flow reachability (Stage 1).
  */
 
+overlay[local?]
+module;
+
 private import codeql.util.Unit
 private import codeql.util.Location
 private import codeql.dataflow.DataFlow

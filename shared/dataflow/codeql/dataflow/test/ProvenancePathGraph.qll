@@ -6,6 +6,9 @@
  * list the contents of the referenced MaD rows.
  */
 
+overlay[local?]
+module;
+
 private import codeql.dataflow.DataFlow as DF
 
 signature predicate interpretModelForTestSig(QlBuiltins::ExtensionId madId, string model);

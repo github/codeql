@@ -6,6 +6,9 @@
  * notice.
  */
 
+overlay[local?]
+module;
+
 private import codeql.util.Location
 
 /** Provides the language-specific input specification. */
