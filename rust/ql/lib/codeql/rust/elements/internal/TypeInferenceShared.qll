@@ -17,6 +17,22 @@ signature module InputSig1<LocationSig Location> {
 
   int getTypeParameterId(TypeParameter tp);
 
+  bindingset[this]
+  class TypeArgPos {
+    bindingset[this]
+    string toString();
+  }
+
+  bindingset[this]
+  class TypeParamPos {
+    bindingset[this]
+    string toString();
+  }
+
+  bindingset[apos]
+  bindingset[ppos]
+  predicate typeParamArgPosMatch(TypeParamPos ppos, TypeArgPos apos);
+
   class Expr {
     string toString();
 
@@ -333,21 +349,24 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
     private import BaseTypes
 
+    /** Provides the input to `Matching`. */
     signature module MatchingInputSig {
+      /** A declaration, for example a method. */
       class Decl {
         string toString();
 
         Location getLocation();
 
-        TypeParameter getTypeParameter(int i);
+        TypeParameter getTypeParameter(TypeParamPos ppos);
       }
 
+      /** An access that targets a declaration, for example a method call. */
       class Access {
         string toString();
 
         Location getLocation();
 
-        Type getTypeArgument(int i, TypePath path);
+        Type getExplicitTypeArgument(TypeArgPos apos, TypePath path);
       }
 
       bindingset[this]
@@ -368,34 +387,30 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       predicate target(Access a, Decl target);
 
-      Expr getArg(Access a, ArgPos pos);
+      Expr getArg(Access a, ArgPos apos);
 
-      predicate parameterType(Decl decl, ParamPos pos, TypePath path, Type t);
+      predicate parameterType(Decl decl, ParamPos ppos, TypePath path, Type t);
     }
 
     module Matching<MatchingInputSig Input> {
       private import Input
 
       pragma[nomagic]
-      private predicate argumentType(Access a, ArgPos pos, TypePath path, Type t) {
+      private predicate argumentType(Access a, ArgPos apos, Decl target, TypePath path, Type t) {
+        target(a, target) and
         exists(Expr arg |
-          arg = getArg(a, pos) and
+          arg = getArg(a, apos) and
           t = resolveExprType(arg, path)
         )
       }
 
-      pragma[nomagic]
-      private predicate argumentTypeAt(Access a, ArgPos pos, Decl target, TypePath path, Type t) {
-        target(a, target) and
-        argumentType(a, pos, path, t)
-      }
-
-      bindingset[a, target, tp]
+      bindingset[a, target]
       pragma[inline_late]
-      private predicate noExplicitTypeArgument(Access a, Decl target, TypeParameter tp) {
-        not exists(int i |
-          exists(a.getTypeArgument(pragma[only_bind_into](i), _)) and
-          tp = target.getTypeParameter(pragma[only_bind_into](i))
+      private Type explicitTypeArgument(Access a, Decl target, TypeParameter tp, TypePath path) {
+        exists(TypeArgPos apos, TypeParamPos ppos |
+          result = a.getExplicitTypeArgument(apos, path) and
+          tp = target.getTypeParameter(ppos) and
+          typeParamArgPosMatch(ppos, apos)
         )
       }
 
@@ -408,9 +423,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, ArgPos apos, Decl target, ParamPos ppos, TypePath path, Type t, TypeParameter tp
       ) {
         exists(TypePath pathToTypeParam |
-          argumentTypeAt(a, apos, target, pathToTypeParam.append(path), t) and
+          argumentType(a, apos, target, pathToTypeParam.append(path), t) and
           parameterType(target, ppos, pathToTypeParam, tp) and
-          noExplicitTypeArgument(a, target, tp) and
+          not exists(explicitTypeArgument(a, target, tp, _)) and
           paramArgPosMatch(ppos, apos)
         )
       }
@@ -424,7 +439,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Arg() {
             exists(Access a, ArgPos apos, Decl target |
               this = getArg(a, apos) and
-              argumentTypeAt(a, apos, target, _, _) and
+              argumentType(a, apos, target, _, _) and
               declType(target, _, _, any(TypeParameter tp))
             )
           }
@@ -433,18 +448,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate argumentBaseTypeAt(
-        Access a, ArgPos pos, Decl target, Type base, TypePath path, Type t
+        Access a, ArgPos apos, Decl target, Type base, TypePath path, Type t
       ) {
         exists(TypeMention tm |
           target(a, target) and
-          ArgBaseType<ArgBaseTypeInput>::hasBaseType(getArg(a, pos), tm, path, t) and
+          ArgBaseType<ArgBaseTypeInput>::hasBaseType(getArg(a, apos), tm, path, t) and
           base = resolveTypeMentionRoot(tm)
         )
       }
 
       pragma[nomagic]
-      private predicate parameterBaseType(Decl decl, ParamPos pos, Type base, TypePath path, Type t) {
-        parameterType(decl, pos, path, t) and
+      private predicate parameterBaseType(Decl decl, ParamPos ppos, Type base, TypePath path, Type t) {
+        parameterType(decl, ppos, path, t) and
         path.startsWith(base.getATypeParameter(), _)
       }
 
@@ -460,7 +475,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(TypePath pathToTypeParam |
           argumentBaseTypeAt(a, apos, target, base, pathToTypeParam.append(path), t) and
           parameterBaseType(target, ppos, base, pathToTypeParam, tp) and
-          noExplicitTypeArgument(a, target, tp) and
+          not exists(explicitTypeArgument(a, target, tp, _)) and
           paramArgPosMatch(ppos, apos) and
           // do not allow `pathToTypeParam` to be empty in this case, as we will match
           // against the actual type and not one of the base types
@@ -472,11 +487,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate explicitTypeMatch(
         Access a, Decl target, TypePath path, Type t, TypeParameter tp
       ) {
-        exists(int i |
-          t = a.getTypeArgument(pragma[only_bind_into](i), path) and
-          target(a, target) and
-          tp = target.getTypeParameter(pragma[only_bind_into](i))
-        )
+        target(a, target) and
+        t = explicitTypeArgument(a, target, tp, path)
+        // exists(int i |
+        //   t = a.getExplicitTypeArgument(pragma[only_bind_into](i), path) and
+        //   target(a, target) and
+        //   tp = target.getTypeParameter(pragma[only_bind_into](i))
+        // )
       }
 
       pragma[nomagic]

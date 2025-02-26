@@ -222,6 +222,14 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeParameter = Types::TypeParameter;
 
+  class TypeArgPos = int;
+
+  class TypeParamPos = int;
+
+  bindingset[apos]
+  bindingset[ppos]
+  predicate typeParamArgPosMatch(TypeParamPos ppos, TypeArgPos apos) { apos = ppos }
+
   private predicate id(Raw::TypeParam x, Raw::TypeParam y) { x = y }
 
   private predicate idOfRaw(Raw::TypeParam x, int y) = equivalenceRelation(id/2)(x, y)
@@ -494,7 +502,9 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
       result = this.getPath().getPart().getGenericArgList().getTypeArgument(i)
     }
 
-    Type getTypeArgument(int i, TypePath path) { result = this.getTypeArg(i).resolveTypeAt(path) }
+    Type getExplicitTypeArgument(int i, TypePath path) {
+      result = this.getTypeArg(i).resolveTypeAt(path)
+    }
   }
 
   predicate target(Access a, Decl target) { target = resolvePath(a.getPath()) }
@@ -750,7 +760,9 @@ private module FunctionMatchingInput implements MatchingInputSig {
       result = this.(MethodCallExpr).getGenericArgList().getTypeArgument(i)
     }
 
-    Type getTypeArgument(int i, TypePath path) { result = this.getTypeArg(i).resolveTypeAt(path) }
+    Type getExplicitTypeArgument(int i, TypePath path) {
+      result = this.getTypeArg(i).resolveTypeAt(path)
+    }
   }
 
   predicate target(Access a, Decl target) {
@@ -833,7 +845,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
   }
 
   class Access extends FieldExpr {
-    Type getTypeArgument(int i, TypePath path) { none() }
+    Type getExplicitTypeArgument(int i, TypePath path) { none() }
   }
 
   predicate target(Access a, Decl target) {
