@@ -842,18 +842,11 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
     result.asSourceCallable() = this.getFunction()
   }
 
-  override Declaration getFunction() { result = globalDef.getIRFunction().getFunction() }
+  override Declaration getFunction() { result = globalDef.getFunction() }
 
   final override predicate isGLValue() { globalDef.getIndirectionIndex() = 0 }
 
-  override DataFlowType getType() {
-    exists(DataFlowType type |
-      type = globalDef.getUnderlyingType() and
-      if this.isGLValue()
-      then result = type
-      else result = getTypeImpl(type, globalDef.getIndirectionIndex() - 1)
-    )
-  }
+  override DataFlowType getType() { result = globalDef.getUnderlyingType() }
 
   final override Location getLocationImpl() { result = globalDef.getLocation() }
 
@@ -1312,7 +1305,7 @@ class UninitializedNode extends Node {
   LocalVariable v;
 
   UninitializedNode() {
-    exists(Ssa::Def def, Ssa::SourceVariable sv |
+    exists(Ssa::DefinitionExt def, Ssa::SourceVariable sv |
       def.getIndirectionIndex() = 0 and
       def.getValue().asInstruction() instanceof UninitializedInstruction and
       Ssa::defToNode(this, def, sv, _, _, _) and
@@ -2299,7 +2292,7 @@ class ContentSet instanceof Content {
 
 pragma[nomagic]
 private predicate guardControlsPhiInput(
-  IRGuardCondition g, boolean branch, Ssa::Definition def, IRBlock input, Ssa::PhiNode phi
+  IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
 ) {
   phi.hasInputFromBlock(def, _, _, _, input) and
   (

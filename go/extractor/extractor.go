@@ -475,8 +475,14 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 				populateTypeParamParents(funcObj.Type().(*types.Signature).TypeParams(), obj)
 				populateTypeParamParents(funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
 			}
-			// Populate type parameter parents for named types.
+			// Populate type parameter parents for defined types and alias types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
+				// `types.TypeName` represents a type with a name: a defined
+				// type, an alias type, a type parameter, or a predeclared
+				// type such as `int` or `error`. We can distinguish these
+				// using `typeNameObj.Type()`, except that we need to be
+				// careful with alias types because before Go 1.24 they would
+				// return the underlying type.
 				if tp, ok := typeNameObj.Type().(*types.Named); ok && !typeNameObj.IsAlias() {
 					populateTypeParamParents(tp.TypeParams(), obj)
 				} else if tp, ok := typeNameObj.Type().(*types.Alias); ok {
@@ -568,7 +574,7 @@ func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 // For more information on objects, see:
 // https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjectTypes(tw *trap.Writer) {
-	// calling `extractType` on a named type will extract all methods defined
+	// calling `extractType` on a defined type will extract all methods defined
 	// on it, which will add new objects. Therefore we need to do this first
 	// before we loop over all objects and emit them.
 	changed := true
@@ -1689,7 +1695,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			extractElementType(tw, lbl, tp.Elem())
 		case *types.Named:
 			origintp := tp.Origin()
-			kind = dbscheme.NamedType.Index()
+			kind = dbscheme.DefinedType.Index()
 			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
 			underlying := origintp.Underlying()
 			extractUnderlyingType(tw, lbl, underlying)
@@ -1761,9 +1767,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 // Type labels refer to global keys to ensure that if the same type is
 // encountered during the extraction of different files it is still ultimately
 // mapped to the same entity. In particular, this means that keys for compound
-// types refer to the labels of their component types. For named types, the key
+// types refer to the labels of their component types. For defined types, the key
 // is constructed from their globally unique ID. This prevents cyclic type keys
-// since type recursion in Go always goes through named types.
+// since type recursion in Go always goes through defined types.
 func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 	tp = resolveTypeAlias(tp)
 	lbl, exists := tw.Labeler.TypeLabels[tp]
@@ -1868,12 +1874,12 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			origintp := tp.Origin()
 			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
-				panic(fmt.Sprintf("Cannot construct label for named type %v (underlying object is %v).\n", origintp, origintp.Obj()))
+				panic(fmt.Sprintf("Cannot construct label for defined type %v (underlying object is %v).\n", origintp, origintp.Obj()))
 			}
 			if !exists {
 				extractObject(tw, origintp.Obj(), entitylbl)
 			}
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};definedtype", entitylbl))
 		case *types.TypeParam:
 			parentlbl := getTypeParamParentLabel(tw, tp)
 			idx := tp.Index()
@@ -1915,9 +1921,9 @@ func extractBaseType(tw *trap.Writer, ptr trap.Label, base types.Type) {
 }
 
 // extractUnderlyingType extracts `underlying` as the underlying type of the
-// named type `named`
-func extractUnderlyingType(tw *trap.Writer, named trap.Label, underlying types.Type) {
-	dbscheme.UnderlyingTypeTable.Emit(tw, named, extractType(tw, underlying))
+// defined type `defined`
+func extractUnderlyingType(tw *trap.Writer, defined trap.Label, underlying types.Type) {
+	dbscheme.UnderlyingTypeTable.Emit(tw, defined, extractType(tw, underlying))
 }
 
 // extractComponentType extracts `component` as the `idx`th component type of `parent` with name `name`
@@ -2167,8 +2173,8 @@ func checkObjectNotSpecialized(obj types.Object) {
 		log.Fatalf("Encountered unexpected specialization %s of generic variable object %s", varObj.String(), varObj.Origin().String())
 	}
 	if typeNameObj, ok := obj.(*types.TypeName); ok {
-		if namedType, ok := typeNameObj.Type().(*types.Named); ok && namedType != namedType.Origin() {
-			log.Fatalf("Encountered type object for specialization %s of named type %s", namedType.String(), namedType.Origin().String())
+		if definedType, ok := typeNameObj.Type().(*types.Named); ok && definedType != definedType.Origin() {
+			log.Fatalf("Encountered type object for specialization %s of defined type %s", definedType.String(), definedType.Origin().String())
 		}
 	}
 }

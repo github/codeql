@@ -4,6 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Net.Quic", "QuicConnection", False, "ConnectAsync", "(System.Net.Quic.QuicClientConnectionOptions,System.Threading.CancellationToken)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", False, "OpenOutboundStreamAsync", "(System.Net.Quic.QuicStreamType,System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_LocalEndPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_NegotiatedApplicationProtocol", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_RemoteCertificate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -15,10 +17,10 @@ extensions:
     data:
       - ["System.Net.Quic", "QuicConnection", "AcceptInboundStreamAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", "CloseAsync", "(System.Int64,System.Threading.CancellationToken)", "summary", "df-generated"]
-      - ["System.Net.Quic", "QuicConnection", "ConnectAsync", "(System.Net.Quic.QuicClientConnectionOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
-      - ["System.Net.Quic", "QuicConnection", "OpenOutboundStreamAsync", "(System.Net.Quic.QuicStreamType,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", "ToString", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", "get_IsSupported", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "get_NegotiatedCipherSuite", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "get_SslProtocol", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicException", "QuicException", "(System.Net.Quic.QuicError,System.Nullable<System.Int64>,System.String)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicException", "get_ApplicationErrorCode", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicException", "get_QuicError", "()", "summary", "df-generated"]
@@ -38,7 +40,6 @@ extensions:
       - ["System.Net.Quic", "QuicStream", "Seek", "(System.Int64,System.IO.SeekOrigin)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicStream", "SetLength", "(System.Int64)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicStream", "ToString", "()", "summary", "df-generated"]
-      - ["System.Net.Quic", "QuicStream", "Write", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicStream", "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicStream", "WriteByte", "(System.Byte)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicStream", "get_CanRead", "()", "summary", "df-generated"]

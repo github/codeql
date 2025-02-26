@@ -51,7 +51,7 @@ module Input implements InputSig<Location, RustDataFlow> {
     override MethodCallExpr getCall() { result = call }
   }
 
-  RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { none() }
+  RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { result.isClosureSelf() }
 
   ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() }
 
@@ -61,33 +61,48 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
-      exists(VariantCanonicalPath v | result = "Variant" |
-        exists(int pos |
-          c = TVariantPositionContent(v, pos) and
-          arg = v.getExtendedCanonicalPath() + "(" + pos + ")"
+      result = "Field" and
+      (
+        exists(Addressable a, int pos |
+          // TODO: calculate in QL
+          arg = a.getExtendedCanonicalPath() + "(" + pos + ")"
+        |
+          c.(TupleFieldContent).isStructField(a, pos)
+          or
+          c.(TupleFieldContent).isVariantField(a, pos)
         )
         or
-        exists(string field |
-          c = TVariantFieldContent(v, field) and
-          arg = v.getExtendedCanonicalPath() + "::" + field
+        exists(Addressable a, string field |
+          // TODO: calculate in QL
+          arg = a.getExtendedCanonicalPath() + "::" + field
+        |
+          c.(RecordFieldContent).isStructField(a, field)
+          or
+          c.(RecordFieldContent).isVariantField(a, field)
+        )
+        or
+        c =
+          any(VariantInLibTupleFieldContent v |
+            arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
+          )
+        or
+        exists(int pos |
+          c = TTuplePositionContent(pos) and
+          arg = pos.toString()
         )
       )
       or
-      exists(StructCanonicalPath s, string field |
-        result = "Struct" and
-        c = TStructFieldContent(s, field) and
-        arg = s.getExtendedCanonicalPath() + "::" + field
-      )
+      result = "Reference" and
+      c = TReferenceContent() and
+      arg = ""
       or
       result = "Element" and
       c = TElementContent() and
       arg = ""
       or
-      exists(int pos |
-        result = "Tuple" and
-        c = TTuplePositionContent(pos) and
-        arg = pos.toString()
-      )
+      result = "Future" and
+      c = TFutureContent() and
+      arg = ""
     )
   }
 
@@ -127,12 +142,12 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     result.asCallBaseExprCfgNode().getCallExprBase() = sc.(LibraryCallable).getACall()
   }
 
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+  RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
     sc = Impl::Private::SummaryComponent::return(_) and
     result.asExpr().getExpr() = source.getCall()
   }
 
-  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
+  RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
     exists(CallExprBase call, Expr arg, ParameterPosition pos |
       result.asExpr().getExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and

@@ -2387,7 +2387,7 @@ module TypeInference {
     |
       m = resolveConstantReadAccess(pattern.getExpr()) and
       cb.getLastNode() = pattern and
-      cb.controls(read.getBasicBlock(),
+      cb.edgeDominates(read.getBasicBlock(),
         any(SuccessorTypes::MatchingSuccessor match | match.getValue() = true)) and
       caseRead = def.getARead() and
       read = def.getARead() and

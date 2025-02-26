@@ -75,6 +75,8 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
     ) and
     state instanceof PostValidation
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "Unicode transformation mishandling" vulnerabilities. */

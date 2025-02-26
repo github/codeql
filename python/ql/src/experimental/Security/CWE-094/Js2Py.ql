@@ -24,6 +24,8 @@ module Js2PyFlowConfig implements DataFlow::ConfigSig {
     API::moduleImport("js2py").getMember(["eval_js", "eval_js6", "EvalJs"]).getACall().getArg(_) =
       node
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Js2PyFlow = TaintTracking::Global<Js2PyFlowConfig>;

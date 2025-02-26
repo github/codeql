@@ -194,19 +194,22 @@ class BuiltinEntity extends Entity, @builtinobject { }
 /** An imported package. */
 class PackageEntity extends Entity, @pkgobject { }
 
-/** A built-in or declared named type. */
+/**
+ * A named type: predeclared types, defined types, type parameters, and type
+ * aliases.
+ */
 class TypeEntity extends Entity, @typeobject { }
 
 /** The parent of a type parameter type, either a declared type or a declared function. */
 class TypeParamParentEntity extends Entity, @typeparamparentobject { }
 
-/** A declared named type. */
+/** A named type which has a declaration. */
 class DeclaredType extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
 
-/** A built-in named type. */
+/** A built-in type. */
 class BuiltinType extends TypeEntity, BuiltinEntity, @builtintypeobject { }
 
 /** A built-in or declared constant, variable, field, method or function. */
@@ -522,7 +525,7 @@ class Method extends Function {
   Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
-  private predicate isIn(NamedType tp, string m) {
+  private predicate isIn(DefinedType tp, string m) {
     this = tp.getMethod(m) or
     this = tp.getPointerType().getMethod(m)
   }
@@ -536,7 +539,7 @@ class Method extends Function {
    * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
   override predicate hasQualifiedName(string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       tp = t.getQualifiedName()
     )
@@ -552,7 +555,7 @@ class Method extends Function {
    */
   pragma[nomagic]
   predicate hasQualifiedName(string pkg, string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       t.hasQualifiedName(pkg, tp)
     )

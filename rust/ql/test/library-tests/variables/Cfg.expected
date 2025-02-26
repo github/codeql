@@ -58,8 +58,8 @@ edges
 | main.rs:20:1:25:1 | exit fn mutable_variable (normal) | main.rs:20:1:25:1 | exit fn mutable_variable |  |
 | main.rs:20:23:25:1 | { ... } | main.rs:20:1:25:1 | exit fn mutable_variable (normal) |  |
 | main.rs:21:5:21:19 | let ... = 4 | main.rs:21:18:21:18 | 4 |  |
-| main.rs:21:9:21:14 | x2 | main.rs:22:5:22:18 | ExprStmt | match |
-| main.rs:21:18:21:18 | 4 | main.rs:21:9:21:14 | x2 |  |
+| main.rs:21:9:21:14 | mut x2 | main.rs:22:5:22:18 | ExprStmt | match |
+| main.rs:21:18:21:18 | 4 | main.rs:21:9:21:14 | mut x2 |  |
 | main.rs:22:5:22:13 | print_i64 | main.rs:22:15:22:16 | x2 |  |
 | main.rs:22:5:22:17 | print_i64(...) | main.rs:23:5:23:11 | ExprStmt |  |
 | main.rs:22:5:22:18 | ExprStmt | main.rs:22:5:22:13 | print_i64 |  |
@@ -76,8 +76,8 @@ edges
 | main.rs:27:1:32:1 | exit fn mutable_variable_immutable_borrow (normal) | main.rs:27:1:32:1 | exit fn mutable_variable_immutable_borrow |  |
 | main.rs:27:40:32:1 | { ... } | main.rs:27:1:32:1 | exit fn mutable_variable_immutable_borrow (normal) |  |
 | main.rs:28:5:28:18 | let ... = 1 | main.rs:28:17:28:17 | 1 |  |
-| main.rs:28:9:28:13 | x | main.rs:29:5:29:22 | ExprStmt | match |
-| main.rs:28:17:28:17 | 1 | main.rs:28:9:28:13 | x |  |
+| main.rs:28:9:28:13 | mut x | main.rs:29:5:29:22 | ExprStmt | match |
+| main.rs:28:17:28:17 | 1 | main.rs:28:9:28:13 | mut x |  |
 | main.rs:29:5:29:17 | print_i64_ref | main.rs:29:20:29:20 | x |  |
 | main.rs:29:5:29:21 | print_i64_ref(...) | main.rs:30:5:30:10 | ExprStmt |  |
 | main.rs:29:5:29:22 | ExprStmt | main.rs:29:5:29:17 | print_i64_ref |  |
@@ -202,8 +202,8 @@ edges
 | main.rs:87:5:90:5 | if ... {...} | main.rs:84:19:91:1 | { ... } |  |
 | main.rs:87:8:88:12 | let ... = s1 | main.rs:88:11:88:12 | s1 |  |
 | main.rs:87:12:87:23 | Some(...) | main.rs:87:5:90:5 | if ... {...} | no-match |
-| main.rs:87:12:87:23 | Some(...) | main.rs:87:17:87:22 | s2 | match |
-| main.rs:87:17:87:22 | s2 | main.rs:89:9:89:22 | ExprStmt | match |
+| main.rs:87:12:87:23 | Some(...) | main.rs:87:17:87:22 | ref s2 | match |
+| main.rs:87:17:87:22 | ref s2 | main.rs:89:9:89:22 | ExprStmt | match |
 | main.rs:88:11:88:12 | s1 | main.rs:87:12:87:23 | Some(...) |  |
 | main.rs:88:14:90:5 | { ... } | main.rs:87:5:90:5 | if ... {...} |  |
 | main.rs:89:9:89:17 | print_str | main.rs:89:19:89:20 | s2 |  |
@@ -243,8 +243,8 @@ edges
 | main.rs:104:5:107:5 | while ... { ... } | main.rs:101:19:108:1 | { ... } |  |
 | main.rs:104:11:105:12 | let ... = s1 | main.rs:105:11:105:12 | s1 |  |
 | main.rs:104:15:104:26 | Some(...) | main.rs:104:5:107:5 | while ... { ... } | no-match |
-| main.rs:104:15:104:26 | Some(...) | main.rs:104:20:104:25 | s2 | match |
-| main.rs:104:20:104:25 | s2 | main.rs:106:9:106:22 | ExprStmt | match |
+| main.rs:104:15:104:26 | Some(...) | main.rs:104:20:104:25 | ref s2 | match |
+| main.rs:104:20:104:25 | ref s2 | main.rs:106:9:106:22 | ExprStmt | match |
 | main.rs:105:11:105:12 | s1 | main.rs:104:15:104:26 | Some(...) |  |
 | main.rs:105:14:107:5 | { ... } | main.rs:104:11:105:12 | let ... = s1 |  |
 | main.rs:106:9:106:17 | print_str | main.rs:106:19:106:20 | s2 |  |
@@ -363,13 +363,13 @@ edges
 | main.rs:171:11:171:13 | msg | main.rs:172:9:174:9 | ...::Hello {...} |  |
 | main.rs:172:9:174:9 | ...::Hello {...} | main.rs:173:31:173:35 | RangePat | match |
 | main.rs:172:9:174:9 | ...::Hello {...} | main.rs:175:9:175:38 | ...::Hello {...} | no-match |
-| main.rs:173:17:173:35 | [match(true)] id_variable | main.rs:174:14:174:22 | print_i64 | match |
+| main.rs:173:17:173:35 | [match(true)] id_variable @ ... | main.rs:174:14:174:22 | print_i64 | match |
 | main.rs:173:31:173:31 | 3 | main.rs:173:31:173:31 | 3 |  |
 | main.rs:173:31:173:31 | 3 | main.rs:173:35:173:35 | 7 | match |
 | main.rs:173:31:173:31 | 3 | main.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | main.rs:173:31:173:35 | RangePat | main.rs:173:31:173:31 | 3 | match |
 | main.rs:173:31:173:35 | RangePat | main.rs:175:9:175:38 | ...::Hello {...} | no-match |
-| main.rs:173:35:173:35 | 7 | main.rs:173:17:173:35 | [match(true)] id_variable | match |
+| main.rs:173:35:173:35 | 7 | main.rs:173:17:173:35 | [match(true)] id_variable @ ... | match |
 | main.rs:173:35:173:35 | 7 | main.rs:173:35:173:35 | 7 |  |
 | main.rs:173:35:173:35 | 7 | main.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | main.rs:174:14:174:22 | print_i64 | main.rs:174:24:174:34 | id_variable |  |
@@ -513,11 +513,11 @@ edges
 | main.rs:229:31:229:32 | 32 | main.rs:229:18:229:33 | ...::Left(...) |  |
 | main.rs:231:5:242:5 | match either { ... } | main.rs:228:21:243:1 | { ... } |  |
 | main.rs:231:11:231:16 | either | main.rs:233:14:233:30 | ...::Left(...) |  |
-| main.rs:232:9:233:52 | [match(true)] e | main.rs:235:13:235:27 | ExprStmt | match |
+| main.rs:232:9:233:52 | [match(true)] ref e @ ... | main.rs:235:13:235:27 | ExprStmt | match |
 | main.rs:233:14:233:30 | ...::Left(...) | main.rs:233:27:233:29 | a11 | match |
 | main.rs:233:14:233:30 | ...::Left(...) | main.rs:233:34:233:51 | ...::Right(...) | no-match |
 | main.rs:233:14:233:51 | [match(false)] ... \| ... | main.rs:241:9:241:9 | _ | no-match |
-| main.rs:233:14:233:51 | [match(true)] ... \| ... | main.rs:232:9:233:52 | [match(true)] e | match |
+| main.rs:233:14:233:51 | [match(true)] ... \| ... | main.rs:232:9:233:52 | [match(true)] ref e @ ... | match |
 | main.rs:233:27:233:29 | a11 | main.rs:233:14:233:51 | [match(true)] ... \| ... | match |
 | main.rs:233:34:233:51 | ...::Right(...) | main.rs:233:14:233:51 | [match(false)] ... \| ... | no-match |
 | main.rs:233:34:233:51 | ...::Right(...) | main.rs:233:48:233:50 | a11 | match |
@@ -607,10 +607,10 @@ edges
 | main.rs:277:1:312:1 | exit fn destruct_assignment (normal) | main.rs:277:1:312:1 | exit fn destruct_assignment |  |
 | main.rs:277:26:312:1 | { ... } | main.rs:277:1:312:1 | exit fn destruct_assignment (normal) |  |
 | main.rs:278:5:282:18 | let ... = ... | main.rs:282:10:282:10 | 1 |  |
-| main.rs:278:9:282:5 | TuplePat | main.rs:279:9:279:15 | a10 | match |
-| main.rs:279:9:279:15 | a10 | main.rs:280:9:280:14 | b4 | match |
-| main.rs:280:9:280:14 | b4 | main.rs:281:9:281:14 | c2 | match |
-| main.rs:281:9:281:14 | c2 | main.rs:283:5:283:19 | ExprStmt | match |
+| main.rs:278:9:282:5 | TuplePat | main.rs:279:9:279:15 | mut a10 | match |
+| main.rs:279:9:279:15 | mut a10 | main.rs:280:9:280:14 | mut b4 | match |
+| main.rs:280:9:280:14 | mut b4 | main.rs:281:9:281:14 | mut c2 | match |
+| main.rs:281:9:281:14 | mut c2 | main.rs:283:5:283:19 | ExprStmt | match |
 | main.rs:282:9:282:17 | TupleExpr | main.rs:278:9:282:5 | TuplePat |  |
 | main.rs:282:10:282:10 | 1 | main.rs:282:13:282:13 | 2 |  |
 | main.rs:282:13:282:13 | 2 | main.rs:282:16:282:16 | 3 |  |
@@ -807,8 +807,8 @@ edges
 | main.rs:370:1:376:1 | exit fn add_assign (normal) | main.rs:370:1:376:1 | exit fn add_assign |  |
 | main.rs:370:17:376:1 | { ... } | main.rs:370:1:376:1 | exit fn add_assign (normal) |  |
 | main.rs:371:5:371:18 | let ... = 0 | main.rs:371:17:371:17 | 0 |  |
-| main.rs:371:9:371:13 | a | main.rs:372:5:372:11 | ExprStmt | match |
-| main.rs:371:17:371:17 | 0 | main.rs:371:9:371:13 | a |  |
+| main.rs:371:9:371:13 | mut a | main.rs:372:5:372:11 | ExprStmt | match |
+| main.rs:371:17:371:17 | 0 | main.rs:371:9:371:13 | mut a |  |
 | main.rs:372:5:372:5 | a | main.rs:372:10:372:10 | 1 |  |
 | main.rs:372:5:372:10 | ... += ... | main.rs:373:5:373:17 | ExprStmt |  |
 | main.rs:372:5:372:11 | ExprStmt | main.rs:372:5:372:5 | a |  |
@@ -830,8 +830,8 @@ edges
 | main.rs:378:1:384:1 | exit fn mutate (normal) | main.rs:378:1:384:1 | exit fn mutate |  |
 | main.rs:378:13:384:1 | { ... } | main.rs:378:1:384:1 | exit fn mutate (normal) |  |
 | main.rs:379:5:379:18 | let ... = 1 | main.rs:379:17:379:17 | 1 |  |
-| main.rs:379:9:379:13 | i | main.rs:380:5:381:15 | let ... = ... | match |
-| main.rs:379:17:379:17 | 1 | main.rs:379:9:379:13 | i |  |
+| main.rs:379:9:379:13 | mut i | main.rs:380:5:381:15 | let ... = ... | match |
+| main.rs:379:17:379:17 | 1 | main.rs:379:9:379:13 | mut i |  |
 | main.rs:380:5:381:15 | let ... = ... | main.rs:381:14:381:14 | i |  |
 | main.rs:380:9:380:13 | ref_i | main.rs:382:5:382:15 | ExprStmt | match |
 | main.rs:381:9:381:14 | &mut i | main.rs:380:9:380:13 | ref_i |  |
@@ -886,8 +886,8 @@ edges
 | main.rs:401:1:419:1 | exit fn mutate_arg (normal) | main.rs:401:1:419:1 | exit fn mutate_arg |  |
 | main.rs:401:17:419:1 | { ... } | main.rs:401:1:419:1 | exit fn mutate_arg (normal) |  |
 | main.rs:402:5:402:18 | let ... = 2 | main.rs:402:17:402:17 | 2 |  |
-| main.rs:402:9:402:13 | x | main.rs:403:5:404:29 | let ... = ... | match |
-| main.rs:402:17:402:17 | 2 | main.rs:402:9:402:13 | x |  |
+| main.rs:402:9:402:13 | mut x | main.rs:403:5:404:29 | let ... = ... | match |
+| main.rs:402:17:402:17 | 2 | main.rs:402:9:402:13 | mut x |  |
 | main.rs:403:5:404:29 | let ... = ... | main.rs:404:9:404:20 | mutate_param |  |
 | main.rs:403:9:403:9 | y | main.rs:405:5:405:12 | ExprStmt | match |
 | main.rs:404:9:404:20 | mutate_param | main.rs:404:27:404:27 | x |  |
@@ -904,8 +904,8 @@ edges
 | main.rs:407:5:407:17 | ExprStmt | main.rs:407:5:407:13 | print_i64 |  |
 | main.rs:407:15:407:15 | x | main.rs:407:5:407:16 | print_i64(...) |  |
 | main.rs:409:5:409:18 | let ... = 4 | main.rs:409:17:409:17 | 4 |  |
-| main.rs:409:9:409:13 | z | main.rs:410:5:411:20 | let ... = ... | match |
-| main.rs:409:17:409:17 | 4 | main.rs:409:9:409:13 | z |  |
+| main.rs:409:9:409:13 | mut z | main.rs:410:5:411:20 | let ... = ... | match |
+| main.rs:409:17:409:17 | 4 | main.rs:409:9:409:13 | mut z |  |
 | main.rs:410:5:411:20 | let ... = ... | main.rs:411:19:411:19 | x |  |
 | main.rs:410:9:410:9 | w | main.rs:412:5:415:6 | ExprStmt | match |
 | main.rs:411:9:411:19 | &mut ... | main.rs:410:9:410:9 | w |  |
@@ -931,8 +931,8 @@ edges
 | main.rs:421:1:427:1 | exit fn alias (normal) | main.rs:421:1:427:1 | exit fn alias |  |
 | main.rs:421:12:427:1 | { ... } | main.rs:421:1:427:1 | exit fn alias (normal) |  |
 | main.rs:422:5:422:18 | let ... = 1 | main.rs:422:17:422:17 | 1 |  |
-| main.rs:422:9:422:13 | x | main.rs:423:5:424:15 | let ... = ... | match |
-| main.rs:422:17:422:17 | 1 | main.rs:422:9:422:13 | x |  |
+| main.rs:422:9:422:13 | mut x | main.rs:423:5:424:15 | let ... = ... | match |
+| main.rs:422:17:422:17 | 1 | main.rs:422:9:422:13 | mut x |  |
 | main.rs:423:5:424:15 | let ... = ... | main.rs:424:14:424:14 | x |  |
 | main.rs:423:9:423:9 | y | main.rs:425:5:425:11 | ExprStmt | match |
 | main.rs:424:9:424:14 | &mut x | main.rs:423:9:423:9 | y |  |
@@ -973,8 +973,8 @@ edges
 | main.rs:439:1:463:1 | exit fn capture_mut (normal) | main.rs:439:1:463:1 | exit fn capture_mut |  |
 | main.rs:439:18:463:1 | { ... } | main.rs:439:1:463:1 | exit fn capture_mut (normal) |  |
 | main.rs:440:5:440:18 | let ... = 1 | main.rs:440:17:440:17 | 1 |  |
-| main.rs:440:9:440:13 | x | main.rs:442:5:444:6 | let ... = ... | match |
-| main.rs:440:17:440:17 | 1 | main.rs:440:9:440:13 | x |  |
+| main.rs:440:9:440:13 | mut x | main.rs:442:5:444:6 | let ... = ... | match |
+| main.rs:440:17:440:17 | 1 | main.rs:440:9:440:13 | mut x |  |
 | main.rs:442:5:444:6 | let ... = ... | main.rs:442:20:444:5 | \|...\| ... |  |
 | main.rs:442:9:442:16 | closure1 | main.rs:445:5:445:15 | ExprStmt | match |
 | main.rs:442:20:444:5 | \|...\| ... | main.rs:442:9:442:16 | closure1 |  |
@@ -993,11 +993,11 @@ edges
 | main.rs:446:5:446:17 | ExprStmt | main.rs:446:5:446:13 | print_i64 |  |
 | main.rs:446:15:446:15 | x | main.rs:446:5:446:16 | print_i64(...) |  |
 | main.rs:448:5:448:18 | let ... = 2 | main.rs:448:17:448:17 | 2 |  |
-| main.rs:448:9:448:13 | y | main.rs:450:5:452:6 | let ... = ... | match |
-| main.rs:448:17:448:17 | 2 | main.rs:448:9:448:13 | y |  |
+| main.rs:448:9:448:13 | mut y | main.rs:450:5:452:6 | let ... = ... | match |
+| main.rs:448:17:448:17 | 2 | main.rs:448:9:448:13 | mut y |  |
 | main.rs:450:5:452:6 | let ... = ... | main.rs:450:24:452:5 | \|...\| ... |  |
-| main.rs:450:9:450:20 | closure2 | main.rs:453:5:453:15 | ExprStmt | match |
-| main.rs:450:24:452:5 | \|...\| ... | main.rs:450:9:450:20 | closure2 |  |
+| main.rs:450:9:450:20 | mut closure2 | main.rs:453:5:453:15 | ExprStmt | match |
+| main.rs:450:24:452:5 | \|...\| ... | main.rs:450:9:450:20 | mut closure2 |  |
 | main.rs:450:24:452:5 | enter \|...\| ... | main.rs:451:9:451:14 | ExprStmt |  |
 | main.rs:450:24:452:5 | exit \|...\| ... (normal) | main.rs:450:24:452:5 | exit \|...\| ... |  |
 | main.rs:450:27:452:5 | { ... } | main.rs:450:24:452:5 | exit \|...\| ... (normal) |  |
@@ -1013,11 +1013,11 @@ edges
 | main.rs:454:5:454:17 | ExprStmt | main.rs:454:5:454:13 | print_i64 |  |
 | main.rs:454:15:454:15 | y | main.rs:454:5:454:16 | print_i64(...) |  |
 | main.rs:456:5:456:18 | let ... = 2 | main.rs:456:17:456:17 | 2 |  |
-| main.rs:456:9:456:13 | z | main.rs:458:5:460:6 | let ... = ... | match |
-| main.rs:456:17:456:17 | 2 | main.rs:456:9:456:13 | z |  |
+| main.rs:456:9:456:13 | mut z | main.rs:458:5:460:6 | let ... = ... | match |
+| main.rs:456:17:456:17 | 2 | main.rs:456:9:456:13 | mut z |  |
 | main.rs:458:5:460:6 | let ... = ... | main.rs:458:24:460:5 | \|...\| ... |  |
-| main.rs:458:9:458:20 | closure3 | main.rs:461:5:461:15 | ExprStmt | match |
-| main.rs:458:24:460:5 | \|...\| ... | main.rs:458:9:458:20 | closure3 |  |
+| main.rs:458:9:458:20 | mut closure3 | main.rs:461:5:461:15 | ExprStmt | match |
+| main.rs:458:24:460:5 | \|...\| ... | main.rs:458:9:458:20 | mut closure3 |  |
 | main.rs:458:24:460:5 | enter \|...\| ... | main.rs:459:9:459:24 | ExprStmt |  |
 | main.rs:458:24:460:5 | exit \|...\| ... (normal) | main.rs:458:24:460:5 | exit \|...\| ... |  |
 | main.rs:458:27:460:5 | { ... } | main.rs:458:24:460:5 | exit \|...\| ... (normal) |  |
@@ -1036,8 +1036,8 @@ edges
 | main.rs:465:1:473:1 | exit fn async_block_capture (normal) | main.rs:465:1:473:1 | exit fn async_block_capture |  |
 | main.rs:465:32:473:1 | { ... } | main.rs:465:1:473:1 | exit fn async_block_capture (normal) |  |
 | main.rs:466:5:466:23 | let ... = 0 | main.rs:466:22:466:22 | 0 |  |
-| main.rs:466:9:466:13 | i | main.rs:467:5:469:6 | let ... = ... | match |
-| main.rs:466:22:466:22 | 0 | main.rs:466:9:466:13 | i |  |
+| main.rs:466:9:466:13 | mut i | main.rs:467:5:469:6 | let ... = ... | match |
+| main.rs:466:22:466:22 | 0 | main.rs:466:9:466:13 | mut i |  |
 | main.rs:467:5:469:6 | let ... = ... | main.rs:467:17:469:5 | { ... } |  |
 | main.rs:467:9:467:13 | block | main.rs:471:5:471:16 | ExprStmt | match |
 | main.rs:467:17:469:5 | enter { ... } | main.rs:468:9:468:14 | ExprStmt |  |
@@ -1060,8 +1060,8 @@ edges
 | main.rs:475:8:475:15 | ...: bool | main.rs:476:5:476:18 | let ... = 1 |  |
 | main.rs:475:18:489:1 | { ... } | main.rs:475:1:489:1 | exit fn phi (normal) |  |
 | main.rs:476:5:476:18 | let ... = 1 | main.rs:476:17:476:17 | 1 |  |
-| main.rs:476:9:476:13 | x | main.rs:477:5:477:17 | ExprStmt | match |
-| main.rs:476:17:476:17 | 1 | main.rs:476:9:476:13 | x |  |
+| main.rs:476:9:476:13 | mut x | main.rs:477:5:477:17 | ExprStmt | match |
+| main.rs:476:17:476:17 | 1 | main.rs:476:9:476:13 | mut x |  |
 | main.rs:477:5:477:13 | print_i64 | main.rs:477:15:477:15 | x |  |
 | main.rs:477:5:477:16 | print_i64(...) | main.rs:478:5:478:21 | ExprStmt |  |
 | main.rs:477:5:477:17 | ExprStmt | main.rs:477:5:477:13 | print_i64 |  |
@@ -1167,8 +1167,8 @@ edges
 | main.rs:520:23:520:26 | self | main.rs:520:18:520:26 | SelfParam |  |
 | main.rs:520:29:527:5 | { ... } | main.rs:520:5:527:5 | exit fn my_method (normal) |  |
 | main.rs:521:9:524:10 | let ... = ... | main.rs:521:21:524:9 | \|...\| ... |  |
-| main.rs:521:13:521:17 | f | main.rs:525:9:525:13 | ExprStmt | match |
-| main.rs:521:21:524:9 | \|...\| ... | main.rs:521:13:521:17 | f |  |
+| main.rs:521:13:521:17 | mut f | main.rs:525:9:525:13 | ExprStmt | match |
+| main.rs:521:21:524:9 | \|...\| ... | main.rs:521:13:521:17 | mut f |  |
 | main.rs:521:21:524:9 | enter \|...\| ... | main.rs:521:22:521:22 | n |  |
 | main.rs:521:21:524:9 | exit \|...\| ... (normal) | main.rs:521:21:524:9 | exit \|...\| ... |  |
 | main.rs:521:22:521:22 | ... | main.rs:523:13:523:26 | ExprStmt |  |
@@ -1191,8 +1191,8 @@ edges
 | main.rs:530:1:537:1 | exit fn structs (normal) | main.rs:530:1:537:1 | exit fn structs |  |
 | main.rs:530:14:537:1 | { ... } | main.rs:530:1:537:1 | exit fn structs (normal) |  |
 | main.rs:531:5:531:36 | let ... = ... | main.rs:531:33:531:33 | 1 |  |
-| main.rs:531:9:531:13 | a | main.rs:532:5:532:26 | ExprStmt | match |
-| main.rs:531:17:531:35 | MyStruct {...} | main.rs:531:9:531:13 | a |  |
+| main.rs:531:9:531:13 | mut a | main.rs:532:5:532:26 | ExprStmt | match |
+| main.rs:531:17:531:35 | MyStruct {...} | main.rs:531:9:531:13 | mut a |  |
 | main.rs:531:33:531:33 | 1 | main.rs:531:17:531:35 | MyStruct {...} |  |
 | main.rs:532:5:532:13 | print_i64 | main.rs:532:15:532:15 | a |  |
 | main.rs:532:5:532:25 | print_i64(...) | main.rs:533:5:533:14 | ExprStmt |  |
@@ -1223,8 +1223,8 @@ edges
 | main.rs:539:1:546:1 | exit fn arrays (normal) | main.rs:539:1:546:1 | exit fn arrays |  |
 | main.rs:539:13:546:1 | { ... } | main.rs:539:1:546:1 | exit fn arrays (normal) |  |
 | main.rs:540:5:540:26 | let ... = ... | main.rs:540:18:540:18 | 1 |  |
-| main.rs:540:9:540:13 | a | main.rs:541:5:541:20 | ExprStmt | match |
-| main.rs:540:17:540:25 | [...] | main.rs:540:9:540:13 | a |  |
+| main.rs:540:9:540:13 | mut a | main.rs:541:5:541:20 | ExprStmt | match |
+| main.rs:540:17:540:25 | [...] | main.rs:540:9:540:13 | mut a |  |
 | main.rs:540:18:540:18 | 1 | main.rs:540:21:540:21 | 2 |  |
 | main.rs:540:21:540:21 | 2 | main.rs:540:24:540:24 | 3 |  |
 | main.rs:540:24:540:24 | 3 | main.rs:540:17:540:25 | [...] |  |
@@ -1297,8 +1297,8 @@ edges
 | main.rs:567:1:572:1 | exit fn ref_methodcall_receiver (normal) | main.rs:567:1:572:1 | exit fn ref_methodcall_receiver |  |
 | main.rs:567:30:572:1 | { ... } | main.rs:567:1:572:1 | exit fn ref_methodcall_receiver (normal) |  |
 | main.rs:568:3:568:34 | let ... = ... | main.rs:568:31:568:31 | 1 |  |
-| main.rs:568:7:568:11 | a | main.rs:569:3:569:10 | ExprStmt | match |
-| main.rs:568:15:568:33 | MyStruct {...} | main.rs:568:7:568:11 | a |  |
+| main.rs:568:7:568:11 | mut a | main.rs:569:3:569:10 | ExprStmt | match |
+| main.rs:568:15:568:33 | MyStruct {...} | main.rs:568:7:568:11 | mut a |  |
 | main.rs:568:31:568:31 | 1 | main.rs:568:15:568:33 | MyStruct {...} |  |
 | main.rs:569:3:569:3 | a | main.rs:569:3:569:9 | a.bar(...) |  |
 | main.rs:569:3:569:9 | a.bar(...) | main.rs:571:3:571:19 | ExprStmt |  |

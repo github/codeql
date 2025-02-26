@@ -11,7 +11,7 @@ query predicate immediateDominator(BasicBlock bb1, BasicBlock bb2) {
 }
 
 query predicate controls(ConditionBasicBlock bb1, BasicBlock bb2, SuccessorType t) {
-  bb1.controls(bb2, t)
+  bb1.edgeDominates(bb2, t)
 }
 
 query predicate successor(ConditionBasicBlock bb1, BasicBlock bb2, SuccessorType t) {

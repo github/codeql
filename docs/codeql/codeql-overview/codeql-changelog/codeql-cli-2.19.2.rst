@@ -74,6 +74,7 @@ Golang
 
 *   Added member predicates :code:`StructTag.hasOwnFieldWithTag` and :code:`Field.getTag`, which enable CodeQL queries to examine struct field tags.
 *   Added member predicate :code:`InterfaceType.hasPrivateMethodWithQualifiedName`, which enables CodeQL queries to distinguish interfaces with matching non-exported method names that are declared in different packages, and are therefore incompatible.
+*   Local source models with the :code:`stdin` source kind have been added for the variable :code:`os.Stdin` and the functions :code:`fmt.Scan`, :code:`fmt.Scanf` and :code:`fmt.Scanln`. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see `Analyzing your code with CodeQL queries <https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data%3E>`__ and `Customizing your advanced setup for code scanning <https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models>`__.
 
 Python
 """"""

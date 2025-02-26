@@ -3,16 +3,16 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::get", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "remote", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::blocking::get", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "remote", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::get", "ReturnValue.Field[crate::result::Result::Ok(0)]", "remote", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::blocking::get", "ReturnValue.Field[crate::result::Result::Ok(0)]", "remote", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::text", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "taint", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::text_with_charset", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "taint", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::bytes", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "taint", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::chunk", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)].Variant[crate::option::Option::Some(0)]", "taint", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::response::Response>::text", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "taint", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::response::Response>::text_with_charset", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "taint", "manual"]
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::response::Response>::bytes", "Argument[self]", "ReturnValue.Variant[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::text", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::text_with_charset", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::bytes", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::chunk", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[crate::option::Option::Some(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::response::Response>::text", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::response::Response>::text_with_charset", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::response::Response>::bytes", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
