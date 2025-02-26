@@ -217,7 +217,12 @@ private module Types {
     override Location getLocation() { result instanceof EmptyLocation }
   }
 
-  /** A reference type. */
+  /**
+   * A reference type.
+   *
+   * Reference types like `& i64` are modeled as normal generic types
+   * with a single type argument.
+   */
   class RefType extends Type, TRefType {
     RefType() { this = TRefType() }
 
@@ -252,6 +257,7 @@ private module Types {
     override TypeParameter getTypeParameter(int i) { none() }
   }
 
+  /** A type parameter from source code. */
   class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
     private TypeParam typeParam;
 
@@ -268,6 +274,7 @@ private module Types {
     override Location getLocation() { result = typeParam.getLocation() }
   }
 
+  /** A reference type parameter. */
   class RefTypeParameter extends TypeParameter, TRefTypeParameter {
     override int getPosition() { result = 0 }
 
@@ -350,10 +357,10 @@ private module TypeMentions {
     /** Gets the `i`th type argument, if any. */
     abstract TypeMention getTypeReprArgument(int i);
 
-    /** Gets the type that this node resolves to. */
+    /** Gets the type that this node resolves to, if any. */
     abstract Type resolveType();
 
-    /** Gets the node at `path`. */
+    /** Gets the sub mention at `path`. */
     pragma[nomagic]
     private TypeMention getMentionAt(TypePath path) {
       path.isEmpty() and
@@ -367,11 +374,13 @@ private module TypeMentions {
       )
     }
 
-    /** Gets the type that the sub mention at `path` resolves to. */
+    /** Gets the type that the sub mention at `path` resolves to, if any. */
     Type resolveTypeAt(TypePath path) { result = this.getMentionAt(path).resolveType() }
   }
 
   class TypeReprMention extends TypeMention, TypeRepr {
+    TypeReprMention() { not this instanceof InferTypeRepr }
+
     override TypeReprMention getTypeReprArgument(int i) {
       result = this.(ArrayTypeRepr).getElementTypeRepr() and
       i = 0
@@ -417,13 +426,6 @@ private module TypeMentions {
       )
     }
 
-    pragma[nomagic]
-    predicate isImplTypeParam(ImplItemNode impl, PathMention selfPath, int i) {
-      selfPath = impl.getSelfPath() and
-      this = selfPath.getPart().getGenericArgList().getTypeArgument(i).(PathTypeRepr).getPath() and
-      resolvePath(this) instanceof TypeParam
-    }
-
     override Type resolveType() {
       exists(ItemNode i | i = resolvePath(this) |
         result = TStruct(i)
@@ -445,6 +447,28 @@ private module TypeMentions {
     override Type resolveType() { result = TTypeParamTypeParameter(this) }
   }
 
+  /**
+   * Holds if `path` resolves to type parameter `tp`, and it is the `i`th type
+   * argument of `selfPath` belonging to `impl`.
+   *
+   * Example:
+   *
+   * ```rust
+   * impl<T> Foo<T> for Bar<T> { ... }
+   * //          ^  path
+   * //      ^^^^^^ selfPath
+   * //   ^         tp
+   * ```
+   */
+  pragma[nomagic]
+  private predicate isImplSelfTypeParam(
+    PathMention path, ImplItemNode impl, PathMention selfPath, int i, TypeParameter tp
+  ) {
+    selfPath = impl.getSelfPath() and
+    path = selfPath.getPart().getGenericArgList().getTypeArgument(i).(PathTypeRepr).getPath() and
+    tp = path.resolveType()
+  }
+
   private class ImplMention extends TypeMention, Impl {
     override TypeReprMention getTypeReprArgument(int i) { none() }
 
@@ -454,12 +478,20 @@ private module TypeMentions {
       result = TImpl(this) and
       path.isEmpty()
       or
-      exists(PathMention selfPath, PathMention p | selfPath = this.(ImplItemNode).getSelfPath() |
-        exists(int i |
-          p.isImplTypeParam(this, selfPath, i) and
-          result = selfPath.resolveType().getTypeParameter(i) and
-          path = typePath(p.resolveType())
-        )
+      // For example, in
+      //
+      // ```rust
+      // struct S<T1>(T1);
+      //
+      // impl<T2> S<T2> { ... }
+      // ```
+      //
+      // We get that the type path "0" resolves to `T1` for the `impl` block,
+      // which is considered a base type mention of `S`.
+      exists(PathMention selfPath, PathMention p, TypeParameter tp, int i |
+        isImplSelfTypeParam(p, this, selfPath, pragma[only_bind_into](i), tp) and
+        result = selfPath.resolveType().getTypeParameter(pragma[only_bind_into](i)) and
+        path = typePath(tp)
       )
     }
   }
@@ -474,14 +506,14 @@ private module Input2 implements InputSig2 {
 
   Type resolveExprType(Expr e, TypePath path) { result = resolveType(e, path) }
 
-  additional TypeReprMention getExplicitTypeArg(Path path, TypeParam tp) {
+  additional TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
     exists(int i |
       result = path.getPart().getGenericArgList().getTypeArgument(i) and
       tp = resolvePath(path).getTypeParam(i)
     )
     or
     exists(ImplItemNode i, Function f, TypeParam mid |
-      result = getExplicitTypeArg(path.getQualifier(), mid) and
+      result = getExplicitTypeArgMention(path.getQualifier(), mid) and
       f = resolvePath(path) and
       f = i.getAnAssocItem()
     )
@@ -491,21 +523,16 @@ private module Input2 implements InputSig2 {
 private import Input2
 import Make2<Input2>
 
-private predicate letStmtTyped(LetStmt let, Pat pat, TypeRepr t) {
+private predicate letStmtTyped(LetStmt let, Pat pat, TypeMention tm) {
   pat = let.getPat() and
-  t = let.getTypeRepr() and
-  not t instanceof InferTypeRepr
+  tm = let.getTypeRepr()
 }
 
-private predicate selfParamTyped(SelfParam p, TypeRepr t) {
-  t = p.getTypeRepr() and
-  not t instanceof InferTypeRepr
-}
+private predicate selfParamTyped(SelfParam p, TypeMention tm) { tm = p.getTypeRepr() }
 
-private predicate paramTyped(Param p, Pat pat, TypeRepr t) {
+private predicate paramTyped(Param p, Pat pat, TypeMention tm) {
   pat = p.getPat() and
-  t = p.getTypeRepr() and
-  not t instanceof InferTypeRepr
+  tm = p.getTypeRepr()
 }
 
 private predicate isTargetTyped(AstNode n) {
@@ -621,7 +648,7 @@ private module RecordFieldMatchingInput implements MatchingInputSig {
 
   class Access extends RecordExpr {
     Type getExplicitTypeArgument(TypeArgPos apos, TypePath path) {
-      result = getExplicitTypeArg(this.getPath(), apos.asTypeParam()).resolveTypeAt(path)
+      result = getExplicitTypeArgMention(this.getPath(), apos.asTypeParam()).resolveTypeAt(path)
     }
   }
 
@@ -873,8 +900,8 @@ private module FunctionMatchingInput implements MatchingInputSig {
     }
 
     Type getExplicitTypeArgument(TypeArgPos apos, TypePath path) {
-      exists(TypeReprMention arg | result = arg.resolveTypeAt(path) |
-        arg = getExplicitTypeArg(this.getPath(), apos.asTypeParam())
+      exists(TypeMention arg | result = arg.resolveTypeAt(path) |
+        arg = getExplicitTypeArgMention(this.getPath(), apos.asTypeParam())
         or
         arg = this.getMethodTypeArg(apos.asMethodTypeArgPos())
       )
@@ -1070,7 +1097,7 @@ private module Cached {
         if t = TRefType()
         then
           // for reference types, lookup members in the type being referenced
-          result = resolveType(n, "0")
+          result = resolveType(n, typePath(TRefTypeParameter()))
         else result = t
       )
     }

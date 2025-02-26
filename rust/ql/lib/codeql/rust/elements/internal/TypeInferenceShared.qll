@@ -12,6 +12,7 @@ signature module InputSig1<LocationSig Location> {
   }
 
   class TypeParameter extends Type {
+    // only used in the `toString` representation of `TypePath`s
     int getPosition();
   }
 
