@@ -664,13 +664,18 @@ public class Test {
         }
         {
             String source = (String) source();
+            source = source.replaceAll("[\\./\\\\]", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
             source = source.replaceAll("\\.", "").replaceAll("/", "");
             sink(source); // Safe
         }
         {
             String source = (String) source();
             // Bypassable with ".../...//"
-            source = source.replaceAll("../", "");
+            source = source.replaceAll("\\.\\./", "");
             sink(source); // $ hasTaintFlow
         }
         {

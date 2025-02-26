@@ -390,22 +390,40 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
  */
 private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
   ReplaceDirectoryCharactersSanitizer() {
-    exists(MethodCall mc |
-      // TODO: "java.lang.String.replace" as well
-      mc.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
-      // TODO: unhardcode all of the below to handle more valid replacements and several calls
-      (
-        mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "\\.\\.|[/\\\\]"
-        or
-        exists(MethodCall mc2 |
-          mc2.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
-          mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "\\." and
-          mc2.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "/"
-        )
-      ) and
-      // TODO: accept more replacement characters?
-      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_"] and
+    exists(
+      MethodCall mc, Method m, CompileTimeConstantExpr target, CompileTimeConstantExpr replacement
+    |
+      m = mc.getMethod() and
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName(["replaceAll", "replace"]) and
+      // TODO: make sure handling each arg 0 correctly, only replaceAll is a regex, replace is char or CharSequence
+      // TODO: add tests for replace
+      target = mc.getArgument(0) and
+      replacement = mc.getArgument(1) and
       this = mc
+    |
+      (
+        // replace with single call
+        target.getStringValue().matches("[%]") and
+        target.getStringValue().matches("[%\\.%]%") and
+        target.getStringValue().matches("[%/%]%") and
+        target.getStringValue().matches("[%\\\\%]%")
+        or
+        target.getStringValue().matches("%|%") and
+        target.getStringValue().matches("%" + ["\\.\\.", "[\\.][\\.]", "\\."] + "%") and
+        target.getStringValue().matches("%/%") and
+        target.getStringValue().matches("%\\\\%")
+        or
+        // replace with multiple calls
+        // TODO: handle both as call chain and as separate line? (presumably a max of three calls?)
+        target.getStringValue() = ["\\.", "/", "\\\\"] and
+        mc.getQualifier() =
+          any(MethodCall mc2 |
+            mc2.getMethod().hasQualifiedName("java.lang", "String", ["replaceAll", "replace"]) and
+            mc2.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\\.", "/", "\\\\"]
+          )
+      ) and
+      replacement.getStringValue() = ["", "_", "-"]
     )
   }
 }
