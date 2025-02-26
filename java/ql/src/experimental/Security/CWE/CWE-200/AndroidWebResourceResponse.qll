@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.frameworks.android.WebView
 
+overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "android-web-resource-response" }
 }
