@@ -994,9 +994,9 @@ private module Cached {
 
 import Cached
 
-private string getSplitString(DefinitionExt def) {
+private string getSplitString(Definition def) {
   exists(ControlFlow::BasicBlock bb, int i, ControlFlow::Node cfn |
-    def.definesAt(_, bb, i, _) and
+    def.definesAt(_, bb, i) and
     result = cfn.(ControlFlow::Nodes::ElementNode).getSplitsString()
   |
     cfn = bb.getNode(i)
@@ -1006,46 +1006,11 @@ private string getSplitString(DefinitionExt def) {
   )
 }
 
-string getToStringPrefix(DefinitionExt def) {
+string getToStringPrefix(Definition def) {
   result = "[" + getSplitString(def) + "] "
   or
   not exists(getSplitString(def)) and
   result = ""
-}
-
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-class DefinitionExt extends Impl::DefinitionExt {
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  /** Gets the location of this definition. */
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-
-  /** Gets the enclosing callable of this definition. */
-  Callable getEnclosingCallable() { result = this.(Ssa::Definition).getEnclosingCallable() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() {
-    result = getToStringPrefix(this) + "SSA phi read(" + this.getSourceVariable() + ")"
-  }
-
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
-
-  override Callable getEnclosingCallable() {
-    result = this.getSourceVariable().getEnclosingCallable()
-  }
 }
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
