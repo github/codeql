@@ -60,12 +60,6 @@ class PhiNode = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
-module ExposedForTestingOnly {
-  predicate ssaDefReachesReadExt = Impl::ssaDefReachesReadExt/4;
-
-  predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
-}
-
 /**
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
