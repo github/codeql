@@ -75,12 +75,6 @@ class PhiNode = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
-module ExposedForTestingOnly {
-  predicate ssaDefReachesReadExt = Impl::ssaDefReachesReadExt/4;
-
-  predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
-}
-
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
   v.getDeclaringScope() = bb.getScope() and
@@ -387,7 +381,9 @@ private module Cached {
     import DataFlowIntegrationImpl
 
     cached
-    predicate localFlowStep(SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    predicate localFlowStep(
+      SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
+    ) {
       DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
     }
 

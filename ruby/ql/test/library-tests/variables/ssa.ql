@@ -2,7 +2,7 @@ import codeql.ruby.AST
 import codeql.ruby.CFG
 import codeql.ruby.dataflow.SSA
 import codeql.ruby.dataflow.internal.SsaImpl
-import ExposedForTestingOnly
+import Impl::TestAdjacentRefs as RefTest
 
 query predicate definition(Ssa::Definition def, Variable v) { def.getSourceVariable() = v }
 
@@ -23,16 +23,20 @@ query predicate phi(Ssa::PhiNode phi, Variable v, Ssa::Definition input) {
   phi.getSourceVariable() = v and input = phi.getAnInput()
 }
 
-query predicate phiReadNode(PhiReadNode phi, Variable v) { phi.getSourceVariable() = v }
+query predicate phiReadNode(RefTest::Ref phi, Variable v) {
+  phi.isPhiRead() and phi.getSourceVariable() = v
+}
 
-query predicate phiReadNodeRead(PhiReadNode phi, Variable v, CfgNode read) {
-  phi.getSourceVariable() = v and
-  exists(BasicBlock bb, int i |
-    ssaDefReachesReadExt(v, phi, bb, i) and
+query predicate phiReadNodeFirstRead(RefTest::Ref phi, Variable v, CfgNode read) {
+  exists(RefTest::Ref r, BasicBlock bb, int i |
+    phi.isPhiRead() and
+    RefTest::adjacentRefRead(phi, r) and
+    r.accessAt(bb, i, v) and
     read = bb.getNode(i)
   )
 }
 
-query predicate phiReadInput(PhiReadNode phi, DefinitionExt inp) {
-  phiHasInputFromBlockExt(phi, inp, _)
+query predicate phiReadInput(RefTest::Ref phi, RefTest::Ref inp) {
+  phi.isPhiRead() and
+  RefTest::adjacentRefPhi(inp, phi)
 }
