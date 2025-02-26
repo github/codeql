@@ -1,1 +1,1 @@
-| PathCombine.cs:7:9:7:55 | catch (...) {...} | Path.Combine may silently discard its initial arguments if the latter are absolute paths. Use Path.Join to consistently join them. |
+| PathCombine.cs:7:9:7:54 | call to method Combine | Path.Combine may silently discard its initial arguments if the latter are absolute paths. Use Path.Join to consistently join them. |
