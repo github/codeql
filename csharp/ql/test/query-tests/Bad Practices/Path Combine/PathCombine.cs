@@ -1,6 +1,6 @@
 using System.IO;
 
-class EmptyCatchBlock
+class PathCombine
 {
     void bad()
     {
