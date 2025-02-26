@@ -36,12 +36,16 @@ resolveType
 | main.rs:58:13:58:13 | x | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:58:17:58:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:58:17:58:33 | MyThing {...} | 0 | main.rs:34:5:35:14 | struct S1 |
+| main.rs:58:17:58:33 | MyThing {...} | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:58:30:58:31 | S1 |  | main.rs:34:5:35:14 | struct S1 |
+| main.rs:58:30:58:31 | S1 |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:59:13:59:13 | y |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:59:13:59:13 | y | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:59:13:59:13 | y | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:59:17:59:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
+| main.rs:59:17:59:33 | MyThing {...} | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:59:17:59:33 | MyThing {...} | 0 | main.rs:36:5:37:14 | struct S2 |
+| main.rs:59:30:59:31 | S2 |  | main.rs:34:5:35:14 | struct S1 |
 | main.rs:59:30:59:31 | S2 |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:61:26:61:26 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:61:26:61:26 | x | 0 | main.rs:34:5:35:14 | struct S1 |
@@ -99,12 +103,16 @@ resolveType
 | main.rs:111:13:111:13 | x | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:111:17:111:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:111:17:111:33 | MyThing {...} | 0 | main.rs:78:5:79:14 | struct S1 |
+| main.rs:111:17:111:33 | MyThing {...} | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:111:30:111:31 | S1 |  | main.rs:78:5:79:14 | struct S1 |
+| main.rs:111:30:111:31 | S1 |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:112:13:112:13 | y |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:112:13:112:13 | y | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:112:13:112:13 | y | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:112:17:112:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
+| main.rs:112:17:112:33 | MyThing {...} | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:112:17:112:33 | MyThing {...} | 0 | main.rs:80:5:81:14 | struct S2 |
+| main.rs:112:30:112:31 | S2 |  | main.rs:78:5:79:14 | struct S1 |
 | main.rs:112:30:112:31 | S2 |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:114:26:114:26 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:114:26:114:26 | x | 0 | main.rs:78:5:79:14 | struct S1 |
@@ -188,6 +196,7 @@ resolveType
 | main.rs:200:26:200:31 | x.m1(...) |  | main.rs:187:5:188:13 | struct S |
 | main.rs:202:13:202:13 | x |  | main.rs:173:5:185:5 | trait MyTrait |
 | main.rs:202:13:202:13 | x |  | main.rs:187:5:188:13 | struct S |
+| main.rs:202:17:202:17 | S |  | main.rs:173:5:185:5 | trait MyTrait |
 | main.rs:202:17:202:17 | S |  | main.rs:187:5:188:13 | struct S |
 | main.rs:203:26:203:26 | x |  | main.rs:173:5:185:5 | trait MyTrait |
 | main.rs:203:26:203:26 | x |  | main.rs:187:5:188:13 | struct S |
@@ -281,6 +290,8 @@ resolveType
 | main.rs:308:13:308:13 | x | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:308:13:308:13 | x | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:308:17:308:33 | MyThing {...} |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:308:17:308:33 | MyThing {...} |  | main.rs:257:5:268:5 | trait MyTrait2 |
+| main.rs:308:17:308:33 | MyThing {...} | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:308:17:308:33 | MyThing {...} | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:308:30:308:31 | S1 |  | main.rs:248:5:249:14 | struct S1 |
 | main.rs:309:13:309:13 | y |  | main.rs:238:5:241:5 | struct MyThing |
@@ -288,6 +299,8 @@ resolveType
 | main.rs:309:13:309:13 | y | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:309:13:309:13 | y | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:309:17:309:33 | MyThing {...} |  | main.rs:238:5:241:5 | struct MyThing |
+| main.rs:309:17:309:33 | MyThing {...} |  | main.rs:257:5:268:5 | trait MyTrait2 |
+| main.rs:309:17:309:33 | MyThing {...} | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:309:17:309:33 | MyThing {...} | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:309:30:309:31 | S2 |  | main.rs:250:5:251:14 | struct S2 |
 | main.rs:311:26:311:26 | x |  | main.rs:238:5:241:5 | struct MyThing |
@@ -305,6 +318,8 @@ resolveType
 | main.rs:314:13:314:13 | x | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:314:13:314:13 | x | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:314:17:314:34 | MyThing2 {...} |  | main.rs:243:5:246:5 | struct MyThing2 |
+| main.rs:314:17:314:34 | MyThing2 {...} |  | main.rs:270:5:281:5 | trait MyTrait3 |
+| main.rs:314:17:314:34 | MyThing2 {...} | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:314:17:314:34 | MyThing2 {...} | 0 | main.rs:248:5:249:14 | struct S1 |
 | main.rs:314:31:314:32 | S1 |  | main.rs:248:5:249:14 | struct S1 |
 | main.rs:315:13:315:13 | y |  | main.rs:243:5:246:5 | struct MyThing2 |
@@ -312,6 +327,8 @@ resolveType
 | main.rs:315:13:315:13 | y | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:315:13:315:13 | y | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:315:17:315:34 | MyThing2 {...} |  | main.rs:243:5:246:5 | struct MyThing2 |
+| main.rs:315:17:315:34 | MyThing2 {...} |  | main.rs:270:5:281:5 | trait MyTrait3 |
+| main.rs:315:17:315:34 | MyThing2 {...} | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:315:17:315:34 | MyThing2 {...} | 0 | main.rs:250:5:251:14 | struct S2 |
 | main.rs:315:31:315:32 | S2 |  | main.rs:250:5:251:14 | struct S2 |
 | main.rs:317:26:317:26 | x |  | main.rs:243:5:246:5 | struct MyThing2 |
@@ -360,6 +377,7 @@ resolveType
 | main.rs:366:13:366:13 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:366:17:366:18 | S1 |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:367:13:367:13 | y |  | main.rs:329:5:330:14 | struct S2 |
+| main.rs:367:21:367:27 | into(...) |  | main.rs:329:5:330:14 | struct S2 |
 | main.rs:367:26:367:26 | x |  | main.rs:326:5:327:14 | struct S1 |
 | main.rs:380:13:380:30 | ...::MyNone(...) |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:383:16:383:24 | SelfParam |  | file://:0:0:0:0 | & |
@@ -385,6 +403,7 @@ resolveType
 | main.rs:404:13:404:18 | mut x2 |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:404:13:404:18 | mut x2 | 0 | main.rs:397:5:398:13 | struct S |
 | main.rs:404:22:404:36 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:404:22:404:36 | ...::new(...) | 0 | main.rs:397:5:398:13 | struct S |
 | main.rs:405:9:405:10 | x2 |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:405:9:405:10 | x2 | 0 | main.rs:397:5:398:13 | struct S |
 | main.rs:405:16:405:16 | S |  | main.rs:397:5:398:13 | struct S |
@@ -393,6 +412,7 @@ resolveType
 | main.rs:408:13:408:18 | mut x3 |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:408:13:408:18 | mut x3 | 0 | main.rs:397:5:398:13 | struct S |
 | main.rs:408:22:408:36 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:408:22:408:36 | ...::new(...) | 0 | main.rs:397:5:398:13 | struct S |
 | main.rs:409:23:409:29 | &mut x3 |  | file://:0:0:0:0 | & |
 | main.rs:409:23:409:29 | &mut x3 | 0 | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:409:23:409:29 | &mut x3 | 0.0 | main.rs:397:5:398:13 | struct S |

@@ -55,8 +55,8 @@ mod m2 {
     }
 
     pub fn f() {
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        let x = MyThing { a: S1 }; // spurious `MyThing<S2>` type (from the `m1` call below)
+        let y = MyThing { a: S2 }; // spurious `MyThing<S1>` type (from the `m1` call below)
 
         println!("{:?}", x.m1()); // spurious `MyThing<S2>` type
         println!("{:?}", y.m1().a); // spurious `S1` type for `y.m1()`
@@ -108,8 +108,8 @@ mod m3 {
     }
 
     pub fn f() {
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        let x = MyThing { a: S1 }; // spurious `MyThing<S2>` type (from the `m1` call below)
+        let y = MyThing { a: S2 }; // spurious `MyThing<S1>` type (from the `m1` call below)
 
         println!("{:?}", x.m1()); // spurious `MyThing<S2>` type
         println!("{:?}", y.m1().a); // spurious `S1` type for `y.m1()`
@@ -364,7 +364,7 @@ mod m8 {
         into::<S1, S2>(x);
 
         let x = S1;
-        let y: S2 = into(x); // missing
+        let y: S2 = into(x);
     }
 }
 
@@ -401,11 +401,11 @@ mod m9 {
         let x1 = MyOption::<S>::new(); // `::new` missing type `S`
         println!("{:?}", x1);
 
-        let mut x2 = MyOption::new(); // `::new` missing type `S`
+        let mut x2 = MyOption::new();
         x2.set(S);
         println!("{:?}", x2);
 
-        let mut x3 = MyOption::new(); // `::new` missing type `S`
+        let mut x3 = MyOption::new();
         MyOption::set(&mut x3, S);
         println!("{:?}", x3);
 

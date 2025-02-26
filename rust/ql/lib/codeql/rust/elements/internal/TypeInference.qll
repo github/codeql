@@ -523,53 +523,63 @@ private module Input2 implements InputSig2 {
 private import Input2
 import Make2<Input2>
 
-private predicate letStmtTyped(LetStmt let, Pat pat, TypeMention tm) {
-  pat = let.getPat() and
-  tm = let.getTypeRepr()
+private TypeMention getTypeAnnotation(AstNode n) {
+  exists(LetStmt let |
+    n = let.getPat() and
+    result = let.getTypeRepr()
+  )
+  or
+  result = n.(SelfParam).getTypeRepr()
+  or
+  exists(Param p |
+    n = p.getPat() and
+    result = p.getTypeRepr()
+  )
 }
 
-private predicate selfParamTyped(SelfParam p, TypeMention tm) { tm = p.getTypeRepr() }
-
-private predicate paramTyped(Param p, Pat pat, TypeMention tm) {
-  pat = p.getPat() and
-  tm = p.getTypeRepr()
+/** Gets the type of `n`, which has an explicit type annotation. */
+pragma[nomagic]
+private Type resolveAnnotatedType(AstNode n, TypePath path) {
+  result = getTypeAnnotation(n).resolveTypeAt(path)
 }
 
-private predicate isTargetTyped(AstNode n) {
+/**
+ * Holds if the type of `n1` at `path1` is the same as the type of `n2` at `path2`.
+ */
+bindingset[path1]
+bindingset[path2]
+private predicate typeSymRule(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
   exists(Variable v |
-    n = v.getPat() and
-    not letStmtTyped(_, n, _) and
-    not paramTyped(_, n, _)
+    path1 = path2 and
+    n1 = v.getAnAccess()
+  |
+    n2 = v.getPat()
+    or
+    n2 = v.getParameter().(SelfParam)
   )
   or
-  n = any(SelfParam self | not selfParamTyped(self, _))
+  exists(LetStmt let |
+    let.getPat() = n1 and
+    let.getInitializer() = n2 and
+    path1 = path2
+  )
   or
-  exists(n) and
-  1 = 2 // todo
+  n2 = n1.(RefExpr).getExpr() and
+  path1 = typePath(TRefTypeParameter()).append(path2)
 }
 
-private Type resolveVariableType(AstNode n, TypePath path) {
-  exists(TypeReprMention t | letStmtTyped(_, n, t) or selfParamTyped(n, t) or paramTyped(_, n, t) |
-    result = t.resolveTypeAt(path)
-  )
-  or
-  // todo: use `Name` node instead of `pat`
-  exists(Variable v, AstNode pat, VariableAccess va |
-    pat = [v.getPat().(AstNode), v.getSelfParam()] and
-    va = v.getAnAccess()
-  |
-    result = resolveType(pat, path) and
-    n = va
+pragma[nomagic]
+private Type resolveTypeSym(AstNode n, TypePath path) {
+  exists(AstNode n2, TypePath path2 | result = resolveType(n2, path2) |
+    typeSymRule(n, path, n2, path2)
     or
-    result = resolveType(va, path) and
-    n = pat
+    typeSymRule(n2, path2, n, path)
   )
 }
 
 pragma[nomagic]
 private Type resolveImplSelfType(Impl i, TypePath path) {
-  result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path) and
-  not result instanceof ImplType
+  result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
 }
 
 pragma[nomagic]
@@ -577,47 +587,39 @@ private Type resolveTraitSelfType(Trait t, TypePath path) {
   result = TTrait(t) and
   path.isEmpty()
   or
-  exists(TypeParameter tp |
-    tp = TTypeParamTypeParameter(t.getGenericParamList().getATypeParam()) and
-    path = typePath(tp) and
-    result = tp
-  )
+  result = TTypeParamTypeParameter(t.getGenericParamList().getATypeParam()) and
+  path = typePath(result)
 }
 
 pragma[nomagic]
-private Type resolveTargetTyped(AstNode n, TypePath path) {
-  isTargetTyped(n) and
-  (
-    exists(LetStmt let |
-      let.getPat() = n and
-      result = resolveType(let.getInitializer(), path)
-    )
-    or
-    exists(ItemNode i, FunctionItemNode f, SelfParam p, TypePath suffix, Type res |
-      n = p and
-      (
-        res = resolveImplSelfType(i, suffix)
-        or
-        res = resolveTraitSelfType(i, suffix)
-      ) and
-      f.getImmediateParent() = i and
-      p = f.(Function).getParamList().getSelfParam()
-    |
-      if p.isRef()
-      then
-        path.isEmpty() and
-        result = TRefType()
-        or
-        path = typePath(TRefTypeParameter()).append(suffix) and
-        result = res
-      else (
-        path = suffix and
-        result = res
-      )
+private Type resolveImplicitSelfType(SelfParam self, TypePath path) {
+  exists(ImplOrTraitItemNode i, Function f, TypePath suffix, Type res |
+    (
+      res = resolveImplSelfType(i, suffix)
+      or
+      res = resolveTraitSelfType(i, suffix)
+    ) and
+    f = i.getAnAssocItem() and
+    self = f.getParamList().getSelfParam()
+  |
+    if self.isRef()
+    then
+      path.isEmpty() and
+      result = TRefType()
+      or
+      path = typePath(TRefTypeParameter()).append(suffix) and
+      result = res
+    else (
+      path = suffix and
+      result = res
     )
   )
 }
 
+/**
+ * A matching configuration for resolving types of record expressions
+ * like `Foo { bar = baz }`.
+ */
 private module RecordFieldMatchingInput implements MatchingInputSig {
   abstract class Decl extends AstNode {
     abstract TypeParam getATypeParam();
@@ -716,6 +718,10 @@ private Type resolvePathExprType(PathExpr pe, TypePath path) {
   )
 }
 
+/**
+ * A matching configuration for resolving types of call expressions
+ * like `foo::bar(baz)` and `foo.bar(baz)`.
+ */
 private module FunctionMatchingInput implements MatchingInputSig {
   private import codeql.util.Boolean
 
@@ -865,23 +871,19 @@ private module FunctionMatchingInput implements MatchingInputSig {
     override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
 
     override Type getParameterType(ParamPos pos, TypePath path) {
-      exists(TypeReprMention tp, Param p, int i, boolean inMethod |
+      exists(Param p, int i, boolean inMethod |
         positionalParamPos(this.getParamList(), p, i, inMethod) and
         pos = TPositionalParamPos(i, inMethod) and
-        paramTyped(p, _, tp) and
-        result = tp.resolveTypeAt(path)
+        result = resolveAnnotatedType(p.getPat(), path)
       )
       or
       exists(SelfParam self |
         self = this.getParamList().getSelfParam() and
         pos = TSelfParamPos()
       |
-        result = resolveTargetTyped(self, path)
+        result = resolveAnnotatedType(self, path)
         or
-        exists(TypeReprMention tp |
-          selfParamTyped(this.getParamList().getSelfParam(), tp) and
-          result = tp.resolveTypeAt(path)
-        )
+        result = resolveImplicitSelfType(self, path)
       )
     }
 
@@ -905,14 +907,13 @@ private module FunctionMatchingInput implements MatchingInputSig {
         or
         arg = this.getMethodTypeArg(apos.asMethodTypeArgPos())
       )
-      // result = this.getTypeArg(i).resolveTypeAt(path)
     }
   }
 
   predicate target(Access a, Decl target) {
     target = a.getResolvedFunction()
     or
-    target = resolveMethodCallExpr(a) // a.getStaticTarget()
+    target = resolveMethodCallExpr(a)
     or
     target = a.(CallExpr).getStruct()
     or
@@ -1060,19 +1061,6 @@ private Type resolveRefExprType(RefExpr re, TypePath path) {
   exists(re) and
   path.isEmpty() and
   result = TRefType()
-  or
-  exists(TypePath suffix |
-    result = resolveType(re.getExpr(), suffix) and
-    path = typePath(TRefTypeParameter()).append(suffix)
-  )
-}
-
-pragma[nomagic]
-private Type resolveRefExprTypeInv(Expr e, TypePath path) {
-  exists(RefExpr re |
-    result = resolveType(re, typePath(TRefTypeParameter()).append(path)) and
-    e = re.getExpr()
-  )
 }
 
 cached
@@ -1102,38 +1090,48 @@ private module Cached {
       )
     }
 
+    pragma[nomagic]
+    private Type getMethodCallExprLookupType(MethodCallExpr mce, string name) {
+      result = getLookupType(mce.getReceiver()) and
+      name = mce.getNameRef().getText()
+    }
+
     cached
     Function resolveMethodCallExpr(MethodCallExpr mce) {
-      exists(Type t, string name |
-        t = getLookupType(mce.getReceiver()) and
-        name = mce.getNameRef().getText() and
-        result = t.getMethod(name)
-      )
+      exists(string name | result = getMethodCallExprLookupType(mce, name).getMethod(name))
+    }
+
+    pragma[nomagic]
+    private Type getFieldExprLookupType(FieldExpr fe, string name) {
+      result = getLookupType(fe.getExpr()) and
+      name = fe.getNameRef().getText()
     }
 
     cached
     RecordField resolveRecordFieldExpr(FieldExpr fe) {
-      exists(Type t, string name |
-        t = getLookupType(fe.getExpr()) and
-        name = fe.getNameRef().getText() and
-        result = t.getRecordField(name)
+      exists(string name | result = getFieldExprLookupType(fe, name).getRecordField(name))
+    }
+
+    pragma[nomagic]
+    private Type getTupleFieldExprLookupType(FieldExpr fe, int pos) {
+      exists(string name |
+        result = getFieldExprLookupType(fe, name) and
+        pos = name.toInt()
       )
     }
 
     cached
     TupleField resolveTupleFieldExpr(FieldExpr fe) {
-      exists(Type t, int i |
-        t = getLookupType(fe.getExpr()) and
-        i = fe.getNameRef().getText().toInt() and
-        result = t.getTupleField(i)
-      )
+      exists(int i | result = getTupleFieldExprLookupType(fe, i).getTupleField(i))
     }
 
     cached
     Type resolveType(AstNode n, TypePath path) {
-      result = resolveVariableType(n, path)
+      result = resolveAnnotatedType(n, path)
       or
-      result = resolveTargetTyped(n, path)
+      result = resolveTypeSym(n, path)
+      or
+      result = resolveImplicitSelfType(n, path)
       or
       result = resolveRecordExprType(n, path)
       or
@@ -1144,8 +1142,6 @@ private module Cached {
       result = resolveFieldExprType(n, path)
       or
       result = resolveRefExprType(n, path)
-      or
-      result = resolveRefExprTypeInv(n, path)
     }
   }
 }
