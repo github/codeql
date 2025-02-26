@@ -163,6 +163,18 @@ class Function extends Function_, Scope, AstNode {
       ret.getValue() = result.getNode()
     )
   }
+
+  /** Gets the minimum number of positional arguments that can be correctly passed to this function. */
+  int getMinArguments() {
+    result = count(this.getAnArg()) - count(this.getDefinition().getArgs().getADefault())
+  }
+
+  /** Gets the maximum number of positional arguments that can be correctly passed to this function. */
+  int getMaxArguments() {
+    if exists(this.getVararg())
+    then result = 2147483647 // INT_MAX
+    else result = count(this.getAnArg())
+  }
 }
 
 /** A def statement. Note that FunctionDef extends Assign as a function definition binds the newly created function */
