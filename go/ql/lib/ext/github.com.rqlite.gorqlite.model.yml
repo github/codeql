@@ -3,8 +3,21 @@ extensions:
       pack: codeql/go-all
       extensible: packageGrouping
     data:
+      - ["gorqlite", "github.com/kanikanema/gorqlite"]
       - ["gorqlite", "github.com/rqlite/gorqlite"]
       - ["gorqlite", "github.com/raindog308/gorqlite"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:gorqlite", "Connection", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryOne", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryOneContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryOneParameterized", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryOneParameterizedContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryParameterized", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorqlite", "Connection", True, "QueryParameterizedContext", "", "", "ReturnValue[0]", "database", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel
@@ -33,3 +46,9 @@ extensions:
       - ["group:gorqlite", "Connection", True, "WriteOneParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"]
       - ["group:gorqlite", "Connection", True, "WriteParameterized", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:gorqlite", "Connection", True, "WriteParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["group:gorqlite", "QueryResult", True, "Map", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:gorqlite", "QueryResult", True, "Slice", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
