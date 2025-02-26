@@ -161,10 +161,10 @@
 | tainted-sendFile.js:15:43:15:58 | req.param("dir") | tainted-sendFile.js:15:43:15:58 | req.param("dir") | tainted-sendFile.js:15:43:15:58 | req.param("dir") | This path depends on a $@. | tainted-sendFile.js:15:43:15:58 | req.param("dir") | user-provided value |
 | tainted-sendFile.js:21:16:21:49 | path.re ... rams.x) | tainted-sendFile.js:21:37:21:48 | req.params.x | tainted-sendFile.js:21:16:21:49 | path.re ... rams.x) | This path depends on a $@. | tainted-sendFile.js:21:37:21:48 | req.params.x | user-provided value |
 | tainted-sendFile.js:22:16:22:46 | path.jo ... rams.x) | tainted-sendFile.js:22:34:22:45 | req.params.x | tainted-sendFile.js:22:16:22:46 | path.jo ... rams.x) | This path depends on a $@. | tainted-sendFile.js:22:34:22:45 | req.params.x | user-provided value |
-| tainted-sendFile.js:27:16:27:33 | req.param("gimme") | tainted-sendFile.js:27:16:27:33 | req.param("gimme") | tainted-sendFile.js:27:16:27:33 | req.param("gimme") | This path depends on a $@. | tainted-sendFile.js:27:16:27:33 | req.param("gimme") | user-provided value |
-| tainted-sendFile.js:30:16:30:48 | homeDir ... arams.x | tainted-sendFile.js:30:37:30:48 | req.params.x | tainted-sendFile.js:30:16:30:48 | homeDir ... arams.x | This path depends on a $@. | tainted-sendFile.js:30:37:30:48 | req.params.x | user-provided value |
-| tainted-sendFile.js:32:16:32:46 | path.jo ... rams.x) | tainted-sendFile.js:32:34:32:45 | req.params.x | tainted-sendFile.js:32:16:32:46 | path.jo ... rams.x) | This path depends on a $@. | tainted-sendFile.js:32:34:32:45 | req.params.x | user-provided value |
-| tainted-sendFile.js:35:43:35:58 | req.param("dir") | tainted-sendFile.js:35:43:35:58 | req.param("dir") | tainted-sendFile.js:35:43:35:58 | req.param("dir") | This path depends on a $@. | tainted-sendFile.js:35:43:35:58 | req.param("dir") | user-provided value |
+| tainted-sendFile.js:26:16:26:33 | req.param("gimme") | tainted-sendFile.js:26:16:26:33 | req.param("gimme") | tainted-sendFile.js:26:16:26:33 | req.param("gimme") | This path depends on a $@. | tainted-sendFile.js:26:16:26:33 | req.param("gimme") | user-provided value |
+| tainted-sendFile.js:28:16:28:48 | homeDir ... arams.x | tainted-sendFile.js:28:37:28:48 | req.params.x | tainted-sendFile.js:28:16:28:48 | homeDir ... arams.x | This path depends on a $@. | tainted-sendFile.js:28:37:28:48 | req.params.x | user-provided value |
+| tainted-sendFile.js:30:16:30:46 | path.jo ... rams.x) | tainted-sendFile.js:30:34:30:45 | req.params.x | tainted-sendFile.js:30:16:30:46 | path.jo ... rams.x) | This path depends on a $@. | tainted-sendFile.js:30:34:30:45 | req.params.x | user-provided value |
+| tainted-sendFile.js:32:43:32:58 | req.param("dir") | tainted-sendFile.js:32:43:32:58 | req.param("dir") | tainted-sendFile.js:32:43:32:58 | req.param("dir") | This path depends on a $@. | tainted-sendFile.js:32:43:32:58 | req.param("dir") | user-provided value |
 | tainted-string-steps.js:8:18:8:34 | path.substring(4) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:8:18:8:34 | path.substring(4) | This path depends on a $@. | tainted-string-steps.js:6:24:6:30 | req.url | user-provided value |
 | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) | This path depends on a $@. | tainted-string-steps.js:6:24:6:30 | req.url | user-provided value |
 | tainted-string-steps.js:10:18:10:31 | path.substr(4) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:10:18:10:31 | path.substr(4) | This path depends on a $@. | tainted-string-steps.js:6:24:6:30 | req.url | user-provided value |
@@ -571,8 +571,8 @@ edges
 | tainted-promise-steps.js:12:20:12:23 | path | tainted-promise-steps.js:12:44:12:47 | path | provenance |  |
 | tainted-sendFile.js:21:37:21:48 | req.params.x | tainted-sendFile.js:21:16:21:49 | path.re ... rams.x) | provenance | Config |
 | tainted-sendFile.js:22:34:22:45 | req.params.x | tainted-sendFile.js:22:16:22:46 | path.jo ... rams.x) | provenance | Config |
-| tainted-sendFile.js:30:37:30:48 | req.params.x | tainted-sendFile.js:30:16:30:48 | homeDir ... arams.x | provenance | Config |
-| tainted-sendFile.js:32:34:32:45 | req.params.x | tainted-sendFile.js:32:16:32:46 | path.jo ... rams.x) | provenance | Config |
+| tainted-sendFile.js:28:37:28:48 | req.params.x | tainted-sendFile.js:28:16:28:48 | homeDir ... arams.x | provenance | Config |
+| tainted-sendFile.js:30:34:30:45 | req.params.x | tainted-sendFile.js:30:16:30:46 | path.jo ... rams.x) | provenance | Config |
 | tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path | provenance |  |
 | tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path | provenance |  |
 | tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path | provenance |  |
@@ -1080,12 +1080,12 @@ nodes
 | tainted-sendFile.js:21:37:21:48 | req.params.x | semmle.label | req.params.x |
 | tainted-sendFile.js:22:16:22:46 | path.jo ... rams.x) | semmle.label | path.jo ... rams.x) |
 | tainted-sendFile.js:22:34:22:45 | req.params.x | semmle.label | req.params.x |
-| tainted-sendFile.js:27:16:27:33 | req.param("gimme") | semmle.label | req.param("gimme") |
-| tainted-sendFile.js:30:16:30:48 | homeDir ... arams.x | semmle.label | homeDir ... arams.x |
-| tainted-sendFile.js:30:37:30:48 | req.params.x | semmle.label | req.params.x |
-| tainted-sendFile.js:32:16:32:46 | path.jo ... rams.x) | semmle.label | path.jo ... rams.x) |
-| tainted-sendFile.js:32:34:32:45 | req.params.x | semmle.label | req.params.x |
-| tainted-sendFile.js:35:43:35:58 | req.param("dir") | semmle.label | req.param("dir") |
+| tainted-sendFile.js:26:16:26:33 | req.param("gimme") | semmle.label | req.param("gimme") |
+| tainted-sendFile.js:28:16:28:48 | homeDir ... arams.x | semmle.label | homeDir ... arams.x |
+| tainted-sendFile.js:28:37:28:48 | req.params.x | semmle.label | req.params.x |
+| tainted-sendFile.js:30:16:30:46 | path.jo ... rams.x) | semmle.label | path.jo ... rams.x) |
+| tainted-sendFile.js:30:34:30:45 | req.params.x | semmle.label | req.params.x |
+| tainted-sendFile.js:32:43:32:58 | req.param("dir") | semmle.label | req.param("dir") |
 | tainted-string-steps.js:6:7:6:48 | path | semmle.label | path |
 | tainted-string-steps.js:6:14:6:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | tainted-string-steps.js:6:14:6:43 | url.par ... ).query | semmle.label | url.par ... ).query |

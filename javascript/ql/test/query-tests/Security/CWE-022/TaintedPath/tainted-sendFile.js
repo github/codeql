@@ -23,17 +23,14 @@ app.get('/some/path/:x', function(req, res) {
 
   res.sendFile(homeDir + path.join('data', req.params.x)); // kinda OK - can only escape from 'data/'
 
-  // BAD: downloading a file based on un-sanitized query parameters
-  res.download(req.param("gimme"));
+  res.download(req.param("gimme")); // $ Alert
 
-  // BAD: download allows ../
-  res.download(homeDir + '/data/' + req.params.x);
+  res.download(homeDir + '/data/' + req.params.x); // $ Alert
 
-  res.download(path.join('data', req.params.x)); // NOT OK
+  res.download(path.join('data', req.params.x)); // $ Alert
 
-  // BAD: doesn't help if user controls root
-  res.download(req.param("file"), { root: req.param("dir") });
+  res.download(req.param("file"), { root: req.param("dir") }); // $ Alert
 
-  // GOOD: ensures files cannot be accessed outside of root folder
+  // OK - ensures files cannot be accessed outside of root folder
   res.download(req.param("gimme"), { root: process.cwd() });
 });
