@@ -124,8 +124,7 @@ class BasicBlock extends TControlFlowNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getFirstNode().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-    this.getLastNode().hasLocationInfo(_, _, _, endline, endcolumn)
+    this.getFirstNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
