@@ -34,7 +34,7 @@ function test() {
             minHeight: 300
     };
 
-    var safe_used = { // $ Alert - explicitly disabled
+    var safe_used = { // explicitly disabled
         webPreferences: {
             nodeIntegration: false,			
             plugins: true,
