@@ -372,32 +372,55 @@ resolveType
 | main.rs:384:21:384:43 | ...::MySome(...) |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:384:21:384:43 | ...::MySome(...) | 0 | main.rs:378:10:378:10 | T |
 | main.rs:384:38:384:42 | value |  | main.rs:378:10:378:10 | T |
-| main.rs:392:13:392:14 | x1 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:392:18:392:37 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:393:26:393:27 | x1 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:395:13:395:18 | mut x2 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:395:13:395:18 | mut x2 | 0 | main.rs:388:5:389:13 | struct S |
-| main.rs:395:22:395:36 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:396:9:396:10 | x2 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:396:9:396:10 | x2 | 0 | main.rs:388:5:389:13 | struct S |
-| main.rs:396:16:396:16 | S |  | main.rs:388:5:389:13 | struct S |
-| main.rs:397:26:397:27 | x2 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:397:26:397:27 | x2 | 0 | main.rs:388:5:389:13 | struct S |
-| main.rs:399:13:399:18 | mut x3 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:399:13:399:18 | mut x3 | 0 | main.rs:388:5:389:13 | struct S |
-| main.rs:399:22:399:36 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:400:23:400:29 | &mut x3 |  | file://:0:0:0:0 | & |
-| main.rs:400:23:400:29 | &mut x3 | 0 | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:400:23:400:29 | &mut x3 | 0.0 | main.rs:388:5:389:13 | struct S |
-| main.rs:400:28:400:29 | x3 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:400:28:400:29 | x3 | 0 | main.rs:388:5:389:13 | struct S |
-| main.rs:400:32:400:32 | S |  | main.rs:388:5:389:13 | struct S |
-| main.rs:401:26:401:27 | x3 |  | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:401:26:401:27 | x3 | 0 | main.rs:388:5:389:13 | struct S |
-| main.rs:406:5:406:11 | ...::f(...) |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:407:5:407:33 | ...::g(...) |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:407:11:407:20 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
-| main.rs:407:23:407:32 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:389:20:389:23 | SelfParam |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:389:20:389:23 | SelfParam | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:389:20:389:23 | SelfParam | 0.0 | main.rs:388:10:388:10 | T |
+| main.rs:390:19:390:22 | self |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:390:19:390:22 | self | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:390:19:390:22 | self | 0.0 | main.rs:388:10:388:10 | T |
+| main.rs:391:39:391:56 | ...::MyNone(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:401:13:401:14 | x1 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:401:18:401:37 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:402:26:402:27 | x1 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:404:13:404:18 | mut x2 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:404:13:404:18 | mut x2 | 0 | main.rs:397:5:398:13 | struct S |
+| main.rs:404:22:404:36 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:405:9:405:10 | x2 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:405:9:405:10 | x2 | 0 | main.rs:397:5:398:13 | struct S |
+| main.rs:405:16:405:16 | S |  | main.rs:397:5:398:13 | struct S |
+| main.rs:406:26:406:27 | x2 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:406:26:406:27 | x2 | 0 | main.rs:397:5:398:13 | struct S |
+| main.rs:408:13:408:18 | mut x3 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:408:13:408:18 | mut x3 | 0 | main.rs:397:5:398:13 | struct S |
+| main.rs:408:22:408:36 | ...::new(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:409:23:409:29 | &mut x3 |  | file://:0:0:0:0 | & |
+| main.rs:409:23:409:29 | &mut x3 | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:409:23:409:29 | &mut x3 | 0.0 | main.rs:397:5:398:13 | struct S |
+| main.rs:409:28:409:29 | x3 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:409:28:409:29 | x3 | 0 | main.rs:397:5:398:13 | struct S |
+| main.rs:409:32:409:32 | S |  | main.rs:397:5:398:13 | struct S |
+| main.rs:410:26:410:27 | x3 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:410:26:410:27 | x3 | 0 | main.rs:397:5:398:13 | struct S |
+| main.rs:412:13:412:14 | x4 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:412:13:412:14 | x4 | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:412:18:412:58 | ...::MySome(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:412:18:412:58 | ...::MySome(...) | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:412:35:412:57 | ...::MyNone(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:413:26:413:27 | x4 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:413:26:413:27 | x4 | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:413:26:413:37 | x4.flatten(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:415:13:415:14 | x5 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:415:13:415:14 | x5 | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:415:18:415:58 | ...::MySome(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:415:18:415:58 | ...::MySome(...) | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:415:35:415:57 | ...::MyNone(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:416:26:416:61 | ...::flatten(...) |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:416:59:416:60 | x5 |  | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:416:59:416:60 | x5 | 0 | main.rs:372:5:376:5 | enum MyOption |
+| main.rs:421:5:421:11 | ...::f(...) |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:422:5:422:33 | ...::g(...) |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:422:11:422:20 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
+| main.rs:422:23:422:32 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
 resolveMethodCallExpr
 | main.rs:23:9:23:14 | x.m1(...) | main.rs:5:9:7:9 | fn m1 |
 | main.rs:24:9:24:14 | y.m2(...) | main.rs:9:9:11:9 | fn m2 |
@@ -427,7 +450,8 @@ resolveMethodCallExpr
 | main.rs:312:26:312:31 | y.m2(...) | main.rs:258:9:267:9 | fn m2 |
 | main.rs:317:26:317:31 | x.m3(...) | main.rs:271:9:280:9 | fn m3 |
 | main.rs:318:26:318:31 | y.m3(...) | main.rs:271:9:280:9 | fn m3 |
-| main.rs:396:9:396:17 | x2.set(...) | main.rs:383:9:385:9 | fn set |
+| main.rs:405:9:405:17 | x2.set(...) | main.rs:383:9:385:9 | fn set |
+| main.rs:413:26:413:37 | x4.flatten(...) | main.rs:389:9:394:9 | fn flatten |
 resolveFieldExpr
 | main.rs:41:13:41:18 | self.a | main.rs:31:9:31:12 | RecordField |
 | main.rs:47:23:47:28 | self.a | main.rs:31:9:31:12 | RecordField |

@@ -29,5 +29,8 @@ module Impl {
     TypeParam getTypeParam(int i) {
       result = rank[i + 1](TypeParam res, int j | res = this.getGenericParam(j) | res order by j)
     }
+
+    /** Gets a type parameter. */
+    TypeParam getATypeParam() { result = this.getTypeParam(_) }
   }
 }

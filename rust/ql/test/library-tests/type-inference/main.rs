@@ -385,11 +385,20 @@ mod m9 {
         }
     }
 
+    impl<T> MyOption<MyOption<T>> {
+        fn flatten(self) -> MyOption<T> {
+            match self {
+                MyOption::MyNone() => MyOption::MyNone(), // missing inner type `Option<T>`
+                MyOption::MySome(x) => x,                 // missing type `T`
+            }
+        }
+    }
+
     #[derive(Debug)]
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new();
+        let x1 = MyOption::<S>::new(); // `::new` missing type `S`
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new(); // `::new` missing type `S`
@@ -399,6 +408,12 @@ mod m9 {
         let mut x3 = MyOption::new(); // `::new` missing type `S`
         MyOption::set(&mut x3, S);
         println!("{:?}", x3);
+
+        let x4 = MyOption::MySome(MyOption::<S>::MyNone()); // missing type `S`
+        println!("{:?}", x4.flatten()); // missing type `S`
+
+        let x5 = MyOption::MySome(MyOption::<S>::MyNone()); // missing type `S`
+        println!("{:?}", MyOption::<MyOption<S>>::flatten(x5)); // missing type `S`
     }
 }
 

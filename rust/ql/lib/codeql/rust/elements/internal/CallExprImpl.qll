@@ -39,8 +39,10 @@ module Impl {
       exists(this.getArgList().getArg(pos))
     }
 
+    /** Gets the struct that this call resolves to, if any. */
     Struct getStruct() { result = this.getResolvedFunction() }
 
+    /** Gets the variant that this call resolves to, if any. */
     Variant getVariant() { result = this.getResolvedFunction() }
 
     /**

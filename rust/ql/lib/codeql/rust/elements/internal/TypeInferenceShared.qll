@@ -430,17 +430,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      predicate declType(Decl decl, ParamPos at, TypePath path, Type t) {
-        parameterType(decl, at, path, t)
-      }
-
       private module ArgBaseTypeInput implements ArgBaseTypeInputSig {
         class Arg extends ExprFinal {
           Arg() {
             exists(Access a, ArgPos apos, Decl target |
               this = getArg(a, apos) and
               argumentType(a, apos, target, _, _) and
-              declType(target, _, _, any(TypeParameter tp))
+              parameterType(target, _, _, any(TypeParameter tp))
             )
           }
         }
@@ -489,11 +485,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         target(a, target) and
         t = explicitTypeArgument(a, target, tp, path)
-        // exists(int i |
-        //   t = a.getExplicitTypeArgument(pragma[only_bind_into](i), path) and
-        //   target(a, target) and
-        //   tp = target.getTypeParameter(pragma[only_bind_into](i))
-        // )
       }
 
       pragma[nomagic]
@@ -517,13 +508,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         paramArgPosMatch(ppos, apos) and
         (
           exists(Decl target, TypePath prefix, TypeParameter tp, TypePath suffix |
-            declType(target, pragma[only_bind_into](ppos), prefix, tp) and
+            parameterType(target, pragma[only_bind_into](ppos), prefix, tp) and
             typeMatch(a, target, suffix, result, tp) and
             path = prefix.append(suffix)
           )
           or
           exists(Decl target |
-            declType(target, pragma[only_bind_into](ppos), path, result) and
+            parameterType(target, pragma[only_bind_into](ppos), path, result) and
             target(a, target) and
             not result instanceof TypeParameter
           )
