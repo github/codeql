@@ -3,8 +3,8 @@
 | DuplicateSwitchCase.go:3:1:12:1 | function declaration | DuplicateSwitchCase.go:14:6:14:10 | skip |
 | DuplicateSwitchCase.go:3:6:3:15 | skip | DuplicateSwitchCase.go:3:1:12:1 | function declaration |
 | DuplicateSwitchCase.go:3:17:3:19 | argument corresponding to msg | DuplicateSwitchCase.go:3:17:3:19 | initialization of msg |
-| DuplicateSwitchCase.go:3:17:3:19 | initialization of msg | DuplicateSwitchCase.go:4:2:4:2 | true |
-| DuplicateSwitchCase.go:4:2:4:2 | true | DuplicateSwitchCase.go:5:7:5:9 | msg |
+| DuplicateSwitchCase.go:3:17:3:19 | initialization of msg | DuplicateSwitchCase.go:4:2:11:2 | true |
+| DuplicateSwitchCase.go:4:2:11:2 | true | DuplicateSwitchCase.go:5:7:5:9 | msg |
 | DuplicateSwitchCase.go:5:7:5:9 | msg | DuplicateSwitchCase.go:5:14:5:20 | "start" |
 | DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | case ...==... |
 | DuplicateSwitchCase.go:5:7:5:20 | ...==... is false | DuplicateSwitchCase.go:7:7:7:9 | msg |
@@ -1356,13 +1356,13 @@
 | stmts.go:95:3:95:7 | test5 | stmts.go:95:9:95:12 | true |
 | stmts.go:95:9:95:12 | true | stmts.go:95:3:95:13 | call to test5 |
 | stmts.go:98:9:98:9 | x | stmts.go:100:7:100:7 | 2 |
-| stmts.go:99:2:99:9 | skip | stmts.go:104:2:104:2 | true |
+| stmts.go:99:2:99:9 | skip | stmts.go:104:2:108:2 | true |
 | stmts.go:100:7:100:7 | 2 | stmts.go:100:7:100:7 | case 2 |
 | stmts.go:100:7:100:7 | case 2 | stmts.go:99:2:99:9 | skip |
 | stmts.go:100:7:100:7 | case 2 | stmts.go:101:3:101:7 | test5 |
 | stmts.go:101:3:101:7 | test5 | stmts.go:101:9:101:12 | true |
 | stmts.go:101:9:101:12 | true | stmts.go:101:3:101:13 | call to test5 |
-| stmts.go:104:2:104:2 | true | stmts.go:107:7:107:10 | true |
+| stmts.go:104:2:108:2 | true | stmts.go:107:7:107:10 | true |
 | stmts.go:107:7:107:10 | case true | stmts.go:107:7:107:10 | true is false |
 | stmts.go:107:7:107:10 | case true | stmts.go:107:7:107:10 | true is true |
 | stmts.go:107:7:107:10 | true | stmts.go:107:7:107:10 | case true |
@@ -1479,8 +1479,8 @@
 | tst.go:3:1:12:1 | function declaration | tst.go:14:6:14:11 | skip |
 | tst.go:3:6:3:10 | skip | tst.go:3:1:12:1 | function declaration |
 | tst.go:3:12:3:12 | argument corresponding to x | tst.go:3:12:3:12 | initialization of x |
-| tst.go:3:12:3:12 | initialization of x | tst.go:4:2:4:2 | true |
-| tst.go:4:2:4:2 | true | tst.go:5:7:5:7 | x |
+| tst.go:3:12:3:12 | initialization of x | tst.go:4:2:11:2 | true |
+| tst.go:4:2:11:2 | true | tst.go:5:7:5:7 | x |
 | tst.go:5:2:5:13 | skip | tst.go:3:1:12:1 | exit |
 | tst.go:5:7:5:7 | x | tst.go:5:11:5:12 | 23 |
 | tst.go:5:7:5:12 | ...<... | tst.go:5:7:5:12 | case ...<... |
@@ -1509,8 +1509,8 @@
 | tst.go:14:1:21:1 | function declaration | tst.go:23:6:23:11 | skip |
 | tst.go:14:6:14:11 | skip | tst.go:14:1:21:1 | function declaration |
 | tst.go:14:13:14:17 | argument corresponding to value | tst.go:14:13:14:17 | initialization of value |
-| tst.go:14:13:14:17 | initialization of value | tst.go:15:2:15:2 | true |
-| tst.go:15:2:15:2 | true | tst.go:16:7:16:11 | value |
+| tst.go:14:13:14:17 | initialization of value | tst.go:15:2:20:2 | true |
+| tst.go:15:2:20:2 | true | tst.go:16:7:16:11 | value |
 | tst.go:16:2:16:34 | skip | tst.go:14:1:21:1 | exit |
 | tst.go:16:7:16:11 | value | tst.go:16:15:16:33 | ...*... |
 | tst.go:16:7:16:33 | ...<... | tst.go:16:7:16:33 | case ...<... |
@@ -1527,12 +1527,12 @@
 | tst.go:18:7:18:38 | case ...<... | tst.go:18:7:18:38 | ...<... is false |
 | tst.go:18:7:18:38 | case ...<... | tst.go:18:7:18:38 | ...<... is true |
 | tst.go:18:15:18:38 | ...*... | tst.go:18:7:18:38 | ...<... |
-| tst.go:23:1:26:1 | entry | tst.go:24:2:24:2 | true |
+| tst.go:23:1:26:1 | entry | tst.go:24:2:25:2 | true |
 | tst.go:23:1:26:1 | function declaration | tst.go:28:6:28:11 | skip |
 | tst.go:23:6:23:11 | skip | tst.go:23:1:26:1 | function declaration |
-| tst.go:24:2:24:2 | true | tst.go:23:1:26:1 | exit |
-| tst.go:28:1:32:1 | entry | tst.go:29:2:29:2 | true |
+| tst.go:24:2:25:2 | true | tst.go:23:1:26:1 | exit |
+| tst.go:28:1:32:1 | entry | tst.go:29:2:31:2 | true |
 | tst.go:28:1:32:1 | function declaration | tst.go:0:0:0:0 | exit |
 | tst.go:28:6:28:11 | skip | tst.go:28:1:32:1 | function declaration |
-| tst.go:29:2:29:2 | true | tst.go:30:2:30:9 | skip |
+| tst.go:29:2:31:2 | true | tst.go:30:2:30:9 | skip |
 | tst.go:30:2:30:9 | skip | tst.go:28:1:32:1 | exit |

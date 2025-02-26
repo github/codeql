@@ -1229,9 +1229,7 @@ module IR {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      stmt.hasLocationInfo(filepath, startline, startcolumn, _, _) and
-      endline = startline and
-      endcolumn = startcolumn
+      stmt.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
