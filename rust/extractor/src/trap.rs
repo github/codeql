@@ -1,12 +1,12 @@
 use crate::config::Compression;
 use crate::{config, generated};
 use codeql_extractor::{extractor, file_paths, trap};
-use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;
 use std::path::{Path, PathBuf};
+use tracing::debug;
 
 pub use trap::Label as UntypedLabel;
 pub use trap::Writer;

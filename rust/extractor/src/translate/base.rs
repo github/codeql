@@ -4,7 +4,6 @@ use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
-use log::Level;
 use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
@@ -69,7 +68,22 @@ macro_rules! emit_detached {
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
         $self.extract_method_canonical_destination(&$node, $label);
     };
+    (PathSegment, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_types_from_path_segment(&$node, $label.into());
+    };
     ($($_:tt)*) => {};
+}
+
+// see https://github.com/tokio-rs/tracing/issues/2730
+macro_rules! dispatch_to_tracing {
+    ($lvl:ident, $($arg:tt)+) => {
+        match $lvl {
+            DiagnosticSeverity::Debug => ::tracing::debug!($($arg)+),
+            DiagnosticSeverity::Info => ::tracing::info!($($arg)+),
+            DiagnosticSeverity::Warning => ::tracing::warn!($($arg)+),
+            DiagnosticSeverity::Error => ::tracing::error!($($arg)+),
+        }
+    };
 }
 
 pub struct Translator<'a> {
@@ -176,20 +190,15 @@ impl<'a> Translator<'a> {
         location: (LineCol, LineCol),
     ) {
         let (start, end) = location;
-        let level = match severity {
-            DiagnosticSeverity::Debug => Level::Debug,
-            DiagnosticSeverity::Info => Level::Info,
-            DiagnosticSeverity::Warning => Level::Warn,
-            DiagnosticSeverity::Error => Level::Error,
-        };
-        log::log!(
-            level,
+        dispatch_to_tracing!(
+            severity,
             "{}:{}:{}: {}",
             self.path,
             start.line + 1,
             start.col + 1,
-            &full_message
+            &full_message,
         );
+
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);
             self.trap
@@ -577,5 +586,37 @@ impl<'a> Translator<'a> {
                 })
             })
         })
+    }
+
+    pub(crate) fn extract_types_from_path_segment(
+        &mut self,
+        item: &ast::PathSegment,
+        label: Label<generated::PathSegment>,
+    ) {
+        // work around a bug in rust-analyzer AST generation machinery
+        // this code was inspired by rust-analyzer's own workaround for this:
+        // https://github.com/rust-lang/rust-analyzer/blob/1f86729f29ea50e8491a1516422df4fd3d1277b0/crates/syntax/src/ast/node_ext.rs#L268-L277
+        if item.l_angle_token().is_some() {
+            // <T> or <T as Trait>
+            // T is any TypeRef, Trait has to be a PathType
+            let mut type_refs = item
+                .syntax()
+                .children()
+                .filter(|node| ast::Type::can_cast(node.kind()));
+            if let Some(t) = type_refs
+                .next()
+                .and_then(ast::Type::cast)
+                .and_then(|t| self.emit_type(t))
+            {
+                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
+            }
+            if let Some(t) = type_refs
+                .next()
+                .and_then(ast::PathType::cast)
+                .and_then(|t| self.emit_path_type(t))
+            {
+                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
+            }
+        }
     }
 }

@@ -341,10 +341,15 @@ nodes
 | translate.js:6:7:6:39 | target | semmle.label | target |
 | translate.js:6:16:6:39 | documen ... .search | semmle.label | documen ... .search |
 | translate.js:7:7:7:61 | searchParams | semmle.label | searchParams |
+| translate.js:7:7:7:61 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
 | translate.js:7:22:7:61 | new URL ... ing(1)) | semmle.label | new URL ... ing(1)) |
+| translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | semmle.label | new URL ... ing(1)) [MapValue] |
 | translate.js:7:42:7:47 | target | semmle.label | target |
 | translate.js:7:42:7:60 | target.substring(1) | semmle.label | target.substring(1) |
+| translate.js:7:42:7:60 | target.substring(1) | semmle.label | target.substring(1) |
+| translate.js:7:42:7:60 | target.substring(1) | semmle.label | target.substring(1) |
 | translate.js:9:27:9:38 | searchParams | semmle.label | searchParams |
+| translate.js:9:27:9:38 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
 | translate.js:9:27:9:50 | searchP ... 'term') | semmle.label | searchP ... 'term') |
 | trusted-types-lib.js:1:28:1:28 | x | semmle.label | x |
 | trusted-types-lib.js:2:12:2:12 | x | semmle.label | x |
@@ -376,17 +381,27 @@ nodes
 | tst.js:12:5:12:42 | '<div s ...  'px">' | semmle.label | '<div s ...  'px">' |
 | tst.js:12:28:12:33 | target | semmle.label | target |
 | tst.js:17:7:17:56 | params | semmle.label | params |
+| tst.js:17:7:17:56 | params [MapValue] | semmle.label | params [MapValue] |
+| tst.js:17:16:17:43 | (new UR ... ation)) [searchParams, MapValue] | semmle.label | (new UR ... ation)) [searchParams, MapValue] |
 | tst.js:17:16:17:43 | (new UR ... ation)) [searchParams] | semmle.label | (new UR ... ation)) [searchParams] |
 | tst.js:17:16:17:56 | (new UR ... hParams | semmle.label | (new UR ... hParams |
+| tst.js:17:16:17:56 | (new UR ... hParams [MapValue] | semmle.label | (new UR ... hParams [MapValue] |
+| tst.js:17:17:17:42 | new URL ... cation) [searchParams, MapValue] | semmle.label | new URL ... cation) [searchParams, MapValue] |
 | tst.js:17:17:17:42 | new URL ... cation) [searchParams] | semmle.label | new URL ... cation) [searchParams] |
 | tst.js:17:25:17:41 | document.location | semmle.label | document.location |
 | tst.js:18:18:18:23 | params | semmle.label | params |
+| tst.js:18:18:18:23 | params [MapValue] | semmle.label | params [MapValue] |
 | tst.js:18:18:18:35 | params.get('name') | semmle.label | params.get('name') |
 | tst.js:20:7:20:61 | searchParams | semmle.label | searchParams |
+| tst.js:20:7:20:61 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
 | tst.js:20:22:20:61 | new URL ... ing(1)) | semmle.label | new URL ... ing(1)) |
+| tst.js:20:22:20:61 | new URL ... ing(1)) [MapValue] | semmle.label | new URL ... ing(1)) [MapValue] |
 | tst.js:20:42:20:47 | target | semmle.label | target |
 | tst.js:20:42:20:60 | target.substring(1) | semmle.label | target.substring(1) |
+| tst.js:20:42:20:60 | target.substring(1) | semmle.label | target.substring(1) |
+| tst.js:20:42:20:60 | target.substring(1) | semmle.label | target.substring(1) |
 | tst.js:21:18:21:29 | searchParams | semmle.label | searchParams |
+| tst.js:21:18:21:29 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
 | tst.js:21:18:21:41 | searchP ... 'name') | semmle.label | searchP ... 'name') |
 | tst.js:24:14:24:19 | target | semmle.label | target |
 | tst.js:26:18:26:23 | target | semmle.label | target |
@@ -492,12 +507,17 @@ nodes
 | tst.js:310:10:310:10 | e | semmle.label | e |
 | tst.js:311:20:311:20 | e | semmle.label | e |
 | tst.js:316:35:316:42 | location | semmle.label | location |
+| tst.js:327:10:327:35 | new URL ... cation) [searchParams, MapValue] | semmle.label | new URL ... cation) [searchParams, MapValue] |
 | tst.js:327:10:327:35 | new URL ... cation) [searchParams] | semmle.label | new URL ... cation) [searchParams] |
 | tst.js:327:18:327:34 | document.location | semmle.label | document.location |
 | tst.js:331:7:331:43 | params | semmle.label | params |
+| tst.js:331:7:331:43 | params [MapValue] | semmle.label | params [MapValue] |
+| tst.js:331:16:331:30 | getTaintedUrl() [searchParams, MapValue] | semmle.label | getTaintedUrl() [searchParams, MapValue] |
 | tst.js:331:16:331:30 | getTaintedUrl() [searchParams] | semmle.label | getTaintedUrl() [searchParams] |
 | tst.js:331:16:331:43 | getTain ... hParams | semmle.label | getTain ... hParams |
+| tst.js:331:16:331:43 | getTain ... hParams [MapValue] | semmle.label | getTain ... hParams [MapValue] |
 | tst.js:332:18:332:23 | params | semmle.label | params |
+| tst.js:332:18:332:23 | params [MapValue] | semmle.label | params [MapValue] |
 | tst.js:332:18:332:35 | params.get('name') | semmle.label | params.get('name') |
 | tst.js:341:12:341:37 | new URL ... cation) [hash] | semmle.label | new URL ... cation) [hash] |
 | tst.js:341:20:341:36 | document.location | semmle.label | document.location |
@@ -924,10 +944,18 @@ edges
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target | provenance |  |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target | provenance |  |
 | translate.js:7:7:7:61 | searchParams | translate.js:9:27:9:38 | searchParams | provenance |  |
+| translate.js:7:7:7:61 | searchParams [MapValue] | translate.js:9:27:9:38 | searchParams [MapValue] | provenance |  |
 | translate.js:7:22:7:61 | new URL ... ing(1)) | translate.js:7:7:7:61 | searchParams | provenance |  |
+| translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | translate.js:7:7:7:61 | searchParams [MapValue] | provenance |  |
 | translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) | provenance |  |
+| translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) | provenance | Config |
+| translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) | provenance | Config |
 | translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) | provenance |  |
+| translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | provenance |  |
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') | provenance | Config |
+| translate.js:9:27:9:38 | searchParams [MapValue] | translate.js:9:27:9:50 | searchP ... 'term') | provenance |  |
 | trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x | provenance |  |
 | trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x | provenance |  |
 | trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x | provenance |  |
@@ -956,16 +984,30 @@ edges
 | tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | provenance | Config |
 | tst.js:12:28:12:33 | target | tst.js:12:5:12:42 | '<div s ...  'px">' | provenance | Config |
 | tst.js:17:7:17:56 | params | tst.js:18:18:18:23 | params | provenance |  |
+| tst.js:17:7:17:56 | params [MapValue] | tst.js:18:18:18:23 | params [MapValue] | provenance |  |
+| tst.js:17:16:17:43 | (new UR ... ation)) [searchParams, MapValue] | tst.js:17:16:17:56 | (new UR ... hParams [MapValue] | provenance |  |
 | tst.js:17:16:17:43 | (new UR ... ation)) [searchParams] | tst.js:17:16:17:56 | (new UR ... hParams | provenance |  |
 | tst.js:17:16:17:56 | (new UR ... hParams | tst.js:17:7:17:56 | params | provenance |  |
+| tst.js:17:16:17:56 | (new UR ... hParams [MapValue] | tst.js:17:7:17:56 | params [MapValue] | provenance |  |
+| tst.js:17:17:17:42 | new URL ... cation) [searchParams, MapValue] | tst.js:17:16:17:43 | (new UR ... ation)) [searchParams, MapValue] | provenance |  |
 | tst.js:17:17:17:42 | new URL ... cation) [searchParams] | tst.js:17:16:17:43 | (new UR ... ation)) [searchParams] | provenance |  |
+| tst.js:17:25:17:41 | document.location | tst.js:17:17:17:42 | new URL ... cation) [searchParams, MapValue] | provenance |  |
 | tst.js:17:25:17:41 | document.location | tst.js:17:17:17:42 | new URL ... cation) [searchParams] | provenance |  |
 | tst.js:18:18:18:23 | params | tst.js:18:18:18:35 | params.get('name') | provenance | Config |
+| tst.js:18:18:18:23 | params [MapValue] | tst.js:18:18:18:35 | params.get('name') | provenance |  |
 | tst.js:20:7:20:61 | searchParams | tst.js:21:18:21:29 | searchParams | provenance |  |
+| tst.js:20:7:20:61 | searchParams [MapValue] | tst.js:21:18:21:29 | searchParams [MapValue] | provenance |  |
 | tst.js:20:22:20:61 | new URL ... ing(1)) | tst.js:20:7:20:61 | searchParams | provenance |  |
+| tst.js:20:22:20:61 | new URL ... ing(1)) [MapValue] | tst.js:20:7:20:61 | searchParams [MapValue] | provenance |  |
 | tst.js:20:42:20:47 | target | tst.js:20:42:20:60 | target.substring(1) | provenance |  |
+| tst.js:20:42:20:47 | target | tst.js:20:42:20:60 | target.substring(1) | provenance | Config |
+| tst.js:20:42:20:47 | target | tst.js:20:42:20:60 | target.substring(1) | provenance | Config |
 | tst.js:20:42:20:60 | target.substring(1) | tst.js:20:22:20:61 | new URL ... ing(1)) | provenance |  |
+| tst.js:20:42:20:60 | target.substring(1) | tst.js:20:22:20:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| tst.js:20:42:20:60 | target.substring(1) | tst.js:20:22:20:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| tst.js:20:42:20:60 | target.substring(1) | tst.js:20:22:20:61 | new URL ... ing(1)) [MapValue] | provenance |  |
 | tst.js:21:18:21:29 | searchParams | tst.js:21:18:21:41 | searchP ... 'name') | provenance | Config |
+| tst.js:21:18:21:29 | searchParams [MapValue] | tst.js:21:18:21:41 | searchP ... 'name') | provenance |  |
 | tst.js:24:14:24:19 | target | tst.js:26:18:26:23 | target | provenance |  |
 | tst.js:28:5:28:28 | documen ... .search | tst.js:24:14:24:19 | target | provenance |  |
 | tst.js:31:10:31:33 | documen ... .search | tst.js:34:16:34:20 | bar() | provenance |  |
@@ -1057,12 +1099,18 @@ edges
 | tst.js:302:10:302:10 | e | tst.js:303:20:303:20 | e | provenance |  |
 | tst.js:308:10:308:17 | location | tst.js:310:10:310:10 | e | provenance |  |
 | tst.js:310:10:310:10 | e | tst.js:311:20:311:20 | e | provenance |  |
+| tst.js:327:10:327:35 | new URL ... cation) [searchParams, MapValue] | tst.js:331:16:331:30 | getTaintedUrl() [searchParams, MapValue] | provenance |  |
 | tst.js:327:10:327:35 | new URL ... cation) [searchParams] | tst.js:331:16:331:30 | getTaintedUrl() [searchParams] | provenance |  |
+| tst.js:327:18:327:34 | document.location | tst.js:327:10:327:35 | new URL ... cation) [searchParams, MapValue] | provenance |  |
 | tst.js:327:18:327:34 | document.location | tst.js:327:10:327:35 | new URL ... cation) [searchParams] | provenance |  |
 | tst.js:331:7:331:43 | params | tst.js:332:18:332:23 | params | provenance |  |
+| tst.js:331:7:331:43 | params [MapValue] | tst.js:332:18:332:23 | params [MapValue] | provenance |  |
+| tst.js:331:16:331:30 | getTaintedUrl() [searchParams, MapValue] | tst.js:331:16:331:43 | getTain ... hParams [MapValue] | provenance |  |
 | tst.js:331:16:331:30 | getTaintedUrl() [searchParams] | tst.js:331:16:331:43 | getTain ... hParams | provenance |  |
 | tst.js:331:16:331:43 | getTain ... hParams | tst.js:331:7:331:43 | params | provenance |  |
+| tst.js:331:16:331:43 | getTain ... hParams [MapValue] | tst.js:331:7:331:43 | params [MapValue] | provenance |  |
 | tst.js:332:18:332:23 | params | tst.js:332:18:332:35 | params.get('name') | provenance | Config |
+| tst.js:332:18:332:23 | params [MapValue] | tst.js:332:18:332:35 | params.get('name') | provenance |  |
 | tst.js:341:12:341:37 | new URL ... cation) [hash] | tst.js:343:5:343:12 | getUrl() [hash] | provenance |  |
 | tst.js:341:20:341:36 | document.location | tst.js:341:12:341:37 | new URL ... cation) [hash] | provenance |  |
 | tst.js:343:5:343:12 | getUrl() [hash] | tst.js:343:5:343:17 | getUrl().hash | provenance |  |
@@ -1170,7 +1218,6 @@ edges
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
-| various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:32:18:36 | attrs | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | provenance |  |
 | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | provenance | Config |

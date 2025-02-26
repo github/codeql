@@ -58,15 +58,12 @@ register_toolchains("@rust_toolchains//:all")
 py_deps = use_extension("//misc/bazel/3rdparty:py_deps_extension.bzl", "p")
 use_repo(
     py_deps,
-    "vendor__anyhow-1.0.44",
-    "vendor__cc-1.0.70",
-    "vendor__clap-2.33.3",
-    "vendor__regex-1.5.5",
-    "vendor__smallvec-1.6.1",
-    "vendor__string-interner-0.12.2",
-    "vendor__thiserror-1.0.29",
-    "vendor__tree-sitter-0.20.4",
-    "vendor__tree-sitter-graph-0.7.0",
+    "vendor_py__anyhow-1.0.95",
+    "vendor_py__cc-1.2.14",
+    "vendor_py__clap-4.5.30",
+    "vendor_py__regex-1.11.1",
+    "vendor_py__tree-sitter-0.20.4",
+    "vendor_py__tree-sitter-graph-0.7.0",
 )
 
 # deps for ruby+rust
@@ -87,7 +84,6 @@ use_repo(
     "vendor__globset-0.4.15",
     "vendor__itertools-0.14.0",
     "vendor__lazy_static-1.5.0",
-    "vendor__log-0.4.22",
     "vendor__mustache-0.9.0",
     "vendor__num-traits-0.2.19",
     "vendor__num_cpus-1.16.0",
@@ -114,10 +110,10 @@ use_repo(
     "vendor__serde-1.0.217",
     "vendor__serde_json-1.0.135",
     "vendor__serde_with-3.12.0",
-    "vendor__stderrlog-0.6.0",
     "vendor__syn-2.0.96",
     "vendor__toml-0.8.19",
     "vendor__tracing-0.1.41",
+    "vendor__tracing-flame-0.2.0",
     "vendor__tracing-subscriber-0.3.19",
     "vendor__tree-sitter-0.24.6",
     "vendor__tree-sitter-embedded-template-0.23.2",

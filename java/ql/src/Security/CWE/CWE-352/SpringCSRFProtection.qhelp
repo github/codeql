@@ -2,11 +2,21 @@
 <qhelp>
 
 <overview>
-<p>When you set up a web server to receive a request from a client without any mechanism
-for verifying that it was intentionally sent, then it is vulnerable to attack. An attacker can
-trick a client into making an unintended request to the web server that will be treated as
-an authentic request. This can be done via a URL, image load, XMLHttpRequest, etc. and can
-result in exposure of data or unintended code execution.</p>
+    <p>
+      Cross-site request forgery (CSRF) is a type of vulnerability in which an
+      attacker is able to force a user to carry out an action that the user did
+      not intend.
+    </p>
+
+    <p>
+      The attacker tricks an authenticated user into submitting a request to the
+      web application. Typically, this request will result in a state change on
+      the server, such as changing the user's password. The request can be
+      initiated when the user visits a site controlled by the attacker. If the
+      web application relies only on cookies for authentication, or on other
+      credentials that are automatically included in the request, then this
+      request will appear as legitimate to the server.
+    </p>
 </overview>
 
 <recommendation>
@@ -26,7 +36,7 @@ by non-browser clients.</p>
 <references>
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery (CSRF)</a>.
+<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross Site Request Forgery (CSRF)</a>.
 </li>
 <li>
 Spring Security Reference:

@@ -11,32 +11,32 @@ fn test_hash_algorithms(
 
     // MD5
     _ = md5::Md5::digest(harmless);
-    _ = md5::Md5::digest(credit_card_no); // $ Source Alert[rust/weak-sensitive-data-hashing]
-    _ = md5::Md5::digest(password); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(credit_card_no); // $ Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(password); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = md5::Md5::digest(encrypted_password);
 
     // MD5 (alternative / older library)
     _ = md5_alt::compute(harmless);
-    _ = md5_alt::compute(credit_card_no); // $ Source Alert[rust/weak-sensitive-data-hashing]
-    _ = md5_alt::compute(password); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5_alt::compute(credit_card_no); // $ Alert[rust/weak-sensitive-data-hashing]
+    _ = md5_alt::compute(password); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = md5_alt::compute(encrypted_password);
 
     // SHA-1
     _ = sha1::Sha1::digest(harmless);
-    _ = sha1::Sha1::digest(credit_card_no); // $ Source Alert[rust/weak-sensitive-data-hashing]
-    _ = sha1::Sha1::digest(password); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = sha1::Sha1::digest(credit_card_no); // $ Alert[rust/weak-sensitive-data-hashing]
+    _ = sha1::Sha1::digest(password); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = sha1::Sha1::digest(encrypted_password);
 
     // SHA-1 checked
     _ = sha1_checked::Sha1::digest(harmless);
-    _ = sha1_checked::Sha1::digest(credit_card_no); // $ Source Alert[rust/weak-sensitive-data-hashing]
-    _ = sha1_checked::Sha1::digest(password); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = sha1_checked::Sha1::digest(credit_card_no); // $ Alert[rust/weak-sensitive-data-hashing]
+    _ = sha1_checked::Sha1::digest(password); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = sha1_checked::Sha1::digest(encrypted_password);
 
     // SHA-256 (appropriate for sensitive data hashing)
     _ = sha3::Sha3_256::digest(harmless);
     _ = sha3::Sha3_256::digest(credit_card_no);
-    _ = sha3::Sha3_256::digest(password); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = sha3::Sha3_256::digest(password); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = sha3::Sha3_256::digest(encrypted_password);
 
     // Argon2 (appropriate for password hashing)
@@ -57,11 +57,11 @@ fn test_hash_code_patterns(
 
     // hash different types of data
     _ = md5::Md5::digest(harmless_str);
-    _ = md5::Md5::digest(password_str); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(password_str); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = md5::Md5::digest(harmless_arr);
-    _ = md5::Md5::digest(password_arr); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(password_arr); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = md5::Md5::digest(harmless_vec);
-    _ = md5::Md5::digest(password_vec); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(password_vec); // $ Alert[rust/weak-sensitive-data-hashing]
 
     // hash through a hasher object
     let mut md5_hasher = md5::Md5::new();
@@ -74,7 +74,7 @@ fn test_hash_code_patterns(
     _ = md5::Md5::new().chain_update(harmless).chain_update(password).chain_update(harmless).finalize(); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
 
     _ = md5::Md5::new_with_prefix(harmless).finalize();
-    _ = md5::Md5::new_with_prefix(password).finalize(); // $ Source Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::new_with_prefix(password).finalize(); // $ Alert[rust/weak-sensitive-data-hashing]
 
     // hash transformed data
     _ = md5::Md5::digest(harmless.trim());

@@ -459,6 +459,59 @@ fn macro_invocation() {
     sink(s); // $ hasValueFlow=37
 }
 
+fn sink_string(s: String) {
+    println!("{}", s);
+}
+
+fn parse() {
+    let a = source(90);
+    let b = a.to_string();
+    let c = b.parse::<i64>().unwrap();
+    let d : i64 = b.parse().unwrap();
+
+    sink(a); // $ hasValueFlow=90
+    sink_string(b); // $ hasTaintFlow=90
+    sink(c); // $ hasTaintFlow=90
+    sink(d); // $ hasTaintFlow=90
+}
+
+fn iterators() {
+    let vs = [source(91), 2, 3, 4];
+
+    sink(vs[0]); // $ hasValueFlow=91
+    sink(*vs.iter().next().unwrap()); // $ MISSING: hasValueFlow=91
+    sink(*vs.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=91
+
+    for v in vs {
+        sink(v); // $ hasValueFlow=91
+    }
+    for &v in vs.iter() {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    let vs2 : Vec<&i64> = vs.iter().collect();
+    for &v in vs2 {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    vs.iter().map(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+    vs.iter().for_each(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+
+    for v in vs.into_iter() {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    let mut vs_mut = [source(92), 2, 3, 4];
+
+    sink(vs_mut[0]); // $ MISSING: hasValueFlow=92
+    sink(*vs_mut.iter().next().unwrap()); // $ MISSING: hasValueFlow=92
+    sink(*vs_mut.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=92
+
+    for &mut v in vs_mut.iter_mut() {
+        sink(v); // $ MISSING: hasValueFlow=92
+    }
+}
+
 fn references() {
     let a = source(40);
     let b = source(41);
@@ -509,5 +562,7 @@ fn main() {
     array_assignment();
     captured_variable_and_continue(vec![]);
     macro_invocation();
+    parse();
+    iterators();
     references();
 }
