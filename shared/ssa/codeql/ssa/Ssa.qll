@@ -1350,34 +1350,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   /** Provides a set of consistency queries. */
   module Consistency {
-    /** A definition that is relevant for the consistency queries. */
-    abstract class RelevantDefinition extends Definition {
-      /** Override this predicate to ensure locations in consistency results. */
-      abstract predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      );
-    }
-
-    /** A definition that is relevant for the consistency queries. */
-    abstract class RelevantDefinitionExt extends DefinitionExt {
-      /** Override this predicate to ensure locations in consistency results. */
-      abstract predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      );
-    }
-
     /** Holds if a read can be reached from multiple definitions. */
-    query predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    query predicate nonUniqueDef(Definition def, SourceVariable v, BasicBlock bb, int i) {
       ssaDefReachesRead(v, def, bb, i) and
       not exists(unique(Definition def0 | ssaDefReachesRead(v, def0, bb, i)))
-    }
-
-    /** Holds if a read can be reached from multiple definitions. */
-    query predicate nonUniqueDefExt(
-      RelevantDefinitionExt def, SourceVariable v, BasicBlock bb, int i
-    ) {
-      ssaDefReachesReadExt(v, def, bb, i) and
-      not exists(unique(DefinitionExt def0 | ssaDefReachesReadExt(v, def0, bb, i)))
     }
 
     /** Holds if a read cannot be reached from a definition. */
@@ -1386,30 +1362,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       not ssaDefReachesRead(v, _, bb, i)
     }
 
-    /** Holds if a read cannot be reached from a definition. */
-    query predicate readWithoutDefExt(SourceVariable v, BasicBlock bb, int i) {
-      variableRead(bb, i, v, _) and
-      not ssaDefReachesReadExt(v, _, bb, i)
-    }
-
     /** Holds if a definition cannot reach a read. */
-    query predicate deadDef(RelevantDefinition def, SourceVariable v) {
+    query predicate deadDef(Definition def, SourceVariable v) {
       v = def.getSourceVariable() and
       not ssaDefReachesRead(_, def, _, _) and
       not phiHasInputFromBlock(_, def, _) and
       not uncertainWriteDefinitionInput(_, def)
     }
 
-    /** Holds if a definition cannot reach a read. */
-    query predicate deadDefExt(RelevantDefinitionExt def, SourceVariable v) {
-      v = def.getSourceVariable() and
-      not ssaDefReachesReadExt(_, def, _, _) and
-      not phiHasInputFromBlockExt(_, def, _) and
-      not uncertainWriteDefinitionInput(_, def)
-    }
-
     /** Holds if a read is not dominated by a definition. */
-    query predicate notDominatedByDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    query predicate notDominatedByDef(Definition def, SourceVariable v, BasicBlock bb, int i) {
       exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
         ssaDefReachesReadWithinBlock(v, def, bb, i) and
         (bb != bbDef or i < iDef)
@@ -1417,20 +1379,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         ssaDefReachesRead(v, def, bb, i) and
         not ssaDefReachesReadWithinBlock(v, def, bb, i) and
         not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _)
-      )
-    }
-
-    /** Holds if a read is not dominated by a definition. */
-    query predicate notDominatedByDefExt(
-      RelevantDefinitionExt def, SourceVariable v, BasicBlock bb, int i
-    ) {
-      exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef, _) |
-        ssaDefReachesReadWithinBlock(v, def, bb, i) and
-        (bb != bbDef or i < iDef)
-        or
-        ssaDefReachesReadExt(v, def, bb, i) and
-        not ssaDefReachesReadWithinBlock(v, def, bb, i) and
-        not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _, _)
       )
     }
   }
