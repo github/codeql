@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: packageGrouping
     data:
+      - ["gorqlite", "github.com/kanikanema/gorqlite"]
       - ["gorqlite", "github.com/rqlite/gorqlite"]
       - ["gorqlite", "github.com/raindog308/gorqlite"]
   - addsTo:
