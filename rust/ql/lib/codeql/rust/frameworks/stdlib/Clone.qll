@@ -15,7 +15,12 @@ final class CloneCallable extends SummarizedCallable::Range {
     )
   }
 
-  final override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[self]" and output = "ReturnValue" and preservesValue = true
+  final override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    input = "Argument[self]" and
+    output = "ReturnValue" and
+    preservesValue = true and
+    model = "generated"
   }
 }
