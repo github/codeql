@@ -18,6 +18,7 @@ import semmle.code.java.security.CommandLineQuery
 import InputToArgumentToExecFlow::PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
 
+overlay[local?]
 deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "jsch-os-injection" }
 }
