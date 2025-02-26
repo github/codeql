@@ -18,7 +18,7 @@ function f(s){
 }
 class C2 extends React.Component {
     constructor() {
-        this.state.readWhenEscaped = 42; // $ MISSING: Alert
+        this.state.readWhenEscaped = 42;
         f(this.state);
     }
 }
