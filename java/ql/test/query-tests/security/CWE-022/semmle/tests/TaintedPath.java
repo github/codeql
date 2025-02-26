@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.FileSystems;
 
 public class TaintedPath {
     public void sendUserFile(Socket sock, String user) throws IOException {
