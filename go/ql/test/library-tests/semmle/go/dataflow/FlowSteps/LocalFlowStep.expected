@@ -69,7 +69,7 @@
 | main.go:14:6:14:10 | function test2 | main.go:34:8:34:12 | test2 |
 | main.go:14:6:14:10 | function test2 | main.go:34:19:34:23 | test2 |
 | main.go:15:9:15:9 | 0 | main.go:15:2:15:4 | definition of acc |
-| main.go:16:9:16:9 | capture variable acc | main.go:17:3:17:5 | acc |
+| main.go:16:9:19:2 | capture variable acc | main.go:17:3:17:5 | acc |
 | main.go:17:3:17:7 | definition of acc | main.go:18:10:18:12 | acc |
 | main.go:17:3:17:7 | rhs of increment statement | main.go:17:3:17:7 | definition of acc |
 | main.go:22:12:22:12 | argument corresponding to b | main.go:22:12:22:12 | definition of b |
