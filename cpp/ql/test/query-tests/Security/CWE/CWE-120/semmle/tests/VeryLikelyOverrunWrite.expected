@@ -23,10 +23,9 @@
 | varbuffer.c:16:5:16:10 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 1 bytes. |
 | varbuffer.c:23:5:23:10 | call to strcpy | This 'call to strcpy' operation requires 12 bytes but the destination is only 11 bytes. |
 | varbuffer.c:24:5:24:10 | call to strcpy | This 'call to strcpy' operation requires 17 bytes but the destination is only 11 bytes. |
-| varbuffer.c:39:5:39:10 | call to strcpy | This 'call to strcpy' operation requires 3 bytes but the destination is only 2 bytes. |
-| varbuffer.c:40:5:40:10 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 2 bytes. |
-| varbuffer.c:45:5:45:10 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 2 bytes. |
-| varbuffer.c:46:5:46:10 | call to strcpy | This 'call to strcpy' operation requires 17 bytes but the destination is only 2 bytes. |
+| varbuffer.c:40:5:40:10 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 4 bytes. |
+| varbuffer.c:45:5:45:10 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 4 bytes. |
+| varbuffer.c:46:5:46:10 | call to strcpy | This 'call to strcpy' operation requires 17 bytes but the destination is only 4 bytes. |
 | varbuffer.c:60:5:60:10 | call to strcpy | This 'call to strcpy' operation requires 2 bytes but the destination is only 1 bytes. |
 | varbuffer.c:61:5:61:10 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 1 bytes. |
 | varbuffer.c:67:5:67:10 | call to strcpy | This 'call to strcpy' operation requires 17 bytes but the destination is only 11 bytes. |

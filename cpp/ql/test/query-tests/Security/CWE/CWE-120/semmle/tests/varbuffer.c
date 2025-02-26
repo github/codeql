@@ -36,7 +36,7 @@ void testMyFixedStruct()
     ptr1->len = 1;
     strcpy(ptr1->buffer, ""); // GOOD
     strcpy(ptr1->buffer, "1"); // GOOD
-    strcpy(ptr1->buffer, "12"); // BAD: length 3, but destination only has length 2
+    strcpy(ptr1->buffer, "12"); // BAD: length 3, but destination only has length 2 [NOT DETECTED]
     strcpy(ptr1->buffer, "123456789"); // BAD: length 10, but destination only has length 2
     // ...
 
