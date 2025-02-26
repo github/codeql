@@ -614,10 +614,37 @@ public class Test {
     public void directoryCharsSanitizer() throws Exception {
         // DirectoryCharactersGuard
         // Ensures that directory characters (/, \ and ..) cannot possibly be in the payload
+        // branch = true
         {
             String source = (String) source();
             if (source.matches("[0-9a-fA-F]{20,}")) {
                 sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F\\.]{20,}")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        // branch = false
+        {
+            String source = (String) source();
+            if (source.matches("[\\./\\\\]+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ Safe
+            }
+        }
+        {
+            String source = (String) source();
+            // not a complete sanitizer since it doesn't protect against absolute path injection
+            if (source.matches("[\\.]+")) {
+                sink(source); // $ hasTaintFlow
             } else {
                 sink(source); // $ hasTaintFlow
             }

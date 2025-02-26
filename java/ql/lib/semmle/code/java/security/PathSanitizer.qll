@@ -427,23 +427,19 @@ private class DirectoryCharactersGuard extends PathGuard {
       checkedExpr = mc.getQualifier() and
       this = mc
     |
-      // TODO: improve the below
-      // Allow anything except `.`, '/', '\'
+      target.getStringValue().matches(["[%]*", "[%]+", "[%]{%}"]) and
       (
-        not target.getStringValue().matches("%[^%]%") and
-        not target.getStringValue().matches("%" + ["\\.", "/", "\\\\"] + "%")
+        // Allow anything except `.`, '/', '\'
+        // Note: we do not account for when '.', '/', '\' are inside a character range
+        not target.getStringValue().matches("[%" + ["\\.", "/", "\\\\"] + "%]%") and
+        branch = true
         or
-        target.getStringValue().matches("%[^%" + ["\\.", "/", "\\\\"] + "%]%")
-      ) and
-      branch = true
-      or
-      // Disallow `.`, '/', '\'
-      (
-        not target.getStringValue().matches("%[^%" + ["\\.", "/", "\\\\"] + "%]%") and
-        target.getStringValue().matches("%" + ["\\.", "/", "\\\\"] + "%") and
-        not isStringPartialMatch(mc) // ! temporary test case fix; remove
-      ) and
-      branch = false
+        // Disallow `.`, '/', '\'
+        target.getStringValue().matches("[%\\.%]%") and
+        target.getStringValue().matches("[%/%]%") and
+        target.getStringValue().matches("[%\\\\%]%") and
+        branch = false
+      )
     )
   }
 
