@@ -1,5 +1,3 @@
-// (the lines of this file are not annotated with alert expectations)
-
 // no backslashes
 RegExp("abcdefghijklmnopqrstuvxyz");
 RegExp("ABCDEFGHIJKLMNOPQRSTUVXYZ");
