@@ -89,5 +89,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Contains the certificate used by the Dependabot proxy.
         /// </summary>
         public const string ProxyCertificate = "CODEQL_PROXY_CA_CERTIFICATE";
+
+        /// <summary>
+        /// Contains the URLs of private nuget registries as a JSON array.
+        /// </summary>
+        public const string ProxyURLs = "CODEQL_PROXY_URLS";
     }
 }
