@@ -459,9 +459,7 @@ class ExitNode extends ControlFlow::Node, MkExitNode {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    root.hasLocationInfo(filepath, _, _, endline, endcolumn) and
-    endline = startline and
-    endcolumn = startcolumn
+    root.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
