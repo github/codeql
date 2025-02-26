@@ -26,7 +26,7 @@ function test() {
             sandbox: true     
         }; // $ Alert
 	
-    var options_2 = {  // $ Alert - implicitly enabled
+    var options_2 = {
             webPreferences: pref,
             show: true,
             frame: true,
