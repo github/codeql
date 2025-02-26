@@ -9,6 +9,6 @@ function test(e) {
     exec(e['GITHUB_ACTION']);
 }
 
-test(process.env);
+test(process.env); // $ Source
 
 exec(getInput('data')); // $ Alert

@@ -16,7 +16,7 @@ const my_logger = {
 const another_logger = console.log
 
 const server = http.createServer((req, res) => {
-    let q = url.parse(req.url, true);
+    let q = url.parse(req.url, true); // $ Source
     let username = q.query.username;
 
     console.info(`[INFO] User: ${username}`); // $ Alert
@@ -43,7 +43,7 @@ const chalk = require('chalk');
 import stripAnsi from 'strip-ansi';
 
 const server2 = http.createServer((req, res) => {
-    let q = url.parse(req.url, true);
+    let q = url.parse(req.url, true); // $ Source
     let username = q.query.username;
 
     console.info(ansiColors.yellow.underline(username)); // $ Alert
@@ -60,7 +60,7 @@ const server2 = http.createServer((req, res) => {
 
 var prettyjson = require('prettyjson');
 const server3 = http.createServer((req, res) => {
-    let q = url.parse(req.url, true);
+    let q = url.parse(req.url, true); // $ Source
     let username = q.query.username;
 
     console.log(prettyjson.render(username)); // $ Alert
@@ -69,7 +69,7 @@ const server3 = http.createServer((req, res) => {
 
 const pino = require('pino')()
 const server4 = http.createServer((req, res) => {
-    let q = url.parse(req.url, true);
+    let q = url.parse(req.url, true); // $ Source
     let username = q.query.username;
 
     pino.info(username); // $ Alert
@@ -119,12 +119,12 @@ const server4 = http.createServer((req, res) => {
 });
 
 const serverMatchAll = http.createServer((req, res) => {
-    let username = url.parse(req.url, true).query.username;
+    let username = url.parse(req.url, true).query.username; // $ Source
     let otherStr = username.matchAll(/.*/g)[0];
     console.log(otherStr); // $ Alert
 });
 
 const serverMatchAl2l = http.createServer((req, res) => {
-    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g);
+    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g); // $ Source
     console.log("First captured group:", RegExp.$1); // $ Alert
 });

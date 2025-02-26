@@ -3,14 +3,14 @@ const app = express();
 const { execFile } = require("child_process");
 
 app.get("/", (req, res) => {
-  const remote = req.query.remote;
+  const remote = req.query.remote; // $ Source
   execFile("git", ["ls-remote", remote]); // $ Alert
 
   execFile("git", ["fetch", remote]); // $ Alert
 
   indirect("git", ["ls-remote", remote]); // $ Alert
 
-  const myArgs = req.query.args;
+  const myArgs = req.query.args; // $ Source
 
   execFile("git", myArgs); // $ Alert
 

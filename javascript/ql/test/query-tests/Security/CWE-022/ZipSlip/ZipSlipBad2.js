@@ -3,6 +3,6 @@ var unzip = require('unzip');
 fs.readFile('path/to/archive.zip', function (err, zipContents) {
   unzip.Parse(zipContents).on('entry', function (entry) {
     var fileName = 'output/path/' + entry.path; // $ Alert
-    fs.writeFileSync(fileName, entry.contents);
+    fs.writeFileSync(fileName, entry.contents); // $ Sink
   });
 });

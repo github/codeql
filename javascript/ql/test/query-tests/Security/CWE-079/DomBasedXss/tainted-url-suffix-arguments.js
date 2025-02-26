@@ -8,6 +8,6 @@ function foo(x, y, z) {
 }
 
 function bar() {
-    const url = window.location.href;
+    const url = window.location.href; // $ Source
     foo('safe', url, 'safe');
 }

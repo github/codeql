@@ -1,7 +1,7 @@
 const d3 = require('d3');
 
 function getTaint() {
-    return window.name;
+    return window.name; // $ Source
 }
 
 function doSomething() {

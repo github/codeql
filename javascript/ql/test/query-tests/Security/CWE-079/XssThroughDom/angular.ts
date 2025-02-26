@@ -9,7 +9,7 @@ import { NgForm } from "@angular/forms";
     `
 })
 export class Foo {
-    field: string = "";
+    field: string = ""; // $ Source
     safeField: string = "";
 
     setInput1(event) {

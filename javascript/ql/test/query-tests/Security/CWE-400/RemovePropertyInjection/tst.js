@@ -5,7 +5,7 @@ var myObj = {}
 
 app.get('/user/:id', function(req, res) {
 	myCoolLocalFct(req.query.userControlled);
-	var prop = myCoolLocalFct(req.query.userControlled);
+	var prop = myCoolLocalFct(req.query.userControlled); // $ Source
 	myObj[prop] = 23; // $ Alert
 	myObj.prop = 23;
 	var x = myObj[prop]; // OK - flagged by different query

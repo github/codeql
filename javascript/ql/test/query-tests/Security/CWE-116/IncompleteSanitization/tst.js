@@ -271,7 +271,7 @@ function moreIncompleteHtmlAttributeSanitization() {
 	'="' + s().replace(/[<>]/g,'').replace(/[^\w ]+/g, '') + '"';
 	'="' + encodeURIComponent(s().replace(/[<>]/g,'')) + '"';
 
-	var arr = s().val().trim().replace(/^,|,$/g , '').replace(/^;|;$/g , '').replace(/<|>/g , '');
+	var arr = s().val().trim().replace(/^,|,$/g , '').replace(/^;|;$/g , '').replace(/<|>/g , ''); // $ Source[js/incomplete-html-attribute-sanitization]
 	'="' + arr.join(" ") + '"'; // $ Alert[js/incomplete-html-attribute-sanitization]
 	var arr2 = s().val().trim().replace(/^,|,$/g , '').replace(/^;|;$/g , '').replace(/<|>/g , '')
 	arr2 = arr2.replace(/"/g,"");

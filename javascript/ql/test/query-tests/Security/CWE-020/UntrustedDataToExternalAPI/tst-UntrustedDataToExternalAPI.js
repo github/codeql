@@ -1,6 +1,6 @@
 let externalLib = require('external-lib');
 
-let untrusted = window.name;
+let untrusted = window.name; // $ Source
 
 externalLib(untrusted); // $ Alert
 externalLib({x: untrusted}); // $ Alert

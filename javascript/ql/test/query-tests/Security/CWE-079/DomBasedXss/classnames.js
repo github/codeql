@@ -7,7 +7,7 @@ function main() {
     document.body.innerHTML = `<span class="${classNames(window.name)}">Hello<span>`; // $ Alert
     document.body.innerHTML = `<span class="${classNamesD(window.name)}">Hello<span>`; // $ Alert
     document.body.innerHTML = `<span class="${classNamesB(window.name)}">Hello<span>`; // $ Alert
-    let unsafeStyle = classNames.bind({foo: window.name});
+    let unsafeStyle = classNames.bind({foo: window.name}); // $ Source
     document.body.innerHTML = `<span class="${unsafeStyle('foo')}">Hello<span>`; // $ Alert
     let safeStyle = classNames.bind({});
     document.body.innerHTML = `<span class="${safeStyle(window.name)}">Hello<span>`; // $ Alert

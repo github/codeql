@@ -22,7 +22,7 @@ app.post('/documents/find', (req, res) => {
     MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
         let doc = db.collection('doc');
 
-        const query = JSON.parse(req.query.data);
+        const query = JSON.parse(req.query.data); // $ Source
         if (checkSchema(query)) {
             doc.find(query);
         }
@@ -47,7 +47,7 @@ app.post('/documents/insert', (req, res) => {
     MongoClient.connect('mongodb://localhost:27017/test', async (err, db) => {
         let doc = db.collection('doc');
 
-        const query = JSON.parse(req.query.data);
+        const query = JSON.parse(req.query.data); // $ Source
         const validate = joiSchema.validate(query);
         if (!validate.error) {
             doc.find(query);

@@ -1,9 +1,9 @@
-export function trivialXss(s: string) {
+export function trivialXss(s: string) { // $ Source
   const html = "<span>" + s + "</span>"; // $ Alert - this file is recognized as a main file.
   document.querySelector("#html").innerHTML = html;
 }
 
-export function objectStuff(settings: any, i: number) {
+export function objectStuff(settings: any, i: number) { // $ Source
   document.querySelector("#html").innerHTML = "<span>" + settings + "</span>"; // $ Alert
   var name;
 

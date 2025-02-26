@@ -8,7 +8,7 @@ var fs = require('fs'),
 let app = express();
 
 app.get('/basic', (req, res) => {
-  let path = req.query.path;
+  let path = req.query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
   fs.readFileSync('./' + path); // $ Alert
@@ -18,7 +18,7 @@ app.get('/basic', (req, res) => {
 });
 
 app.get('/normalize', (req, res) => {
-  let path = pathModule.normalize(req.query.path);
+  let path = pathModule.normalize(req.query.path); // $ Source
 
   fs.readFileSync(path); // $ Alert
   fs.readFileSync('./' + path); // $ Alert
@@ -28,7 +28,7 @@ app.get('/normalize', (req, res) => {
 });
 
 app.get('/normalize-notAbsolute', (req, res) => {
-  let path = pathModule.normalize(req.query.path);
+  let path = pathModule.normalize(req.query.path); // $ Source
 
   if (pathModule.isAbsolute(path))
     return;
@@ -51,7 +51,7 @@ app.get('/normalize-notAbsolute', (req, res) => {
 });
 
 app.get('/normalize-noInitialDotDot', (req, res) => {
-  let path = pathModule.normalize(req.query.path);
+  let path = pathModule.normalize(req.query.path); // $ Source
 
   if (path.startsWith(".."))
     return;
@@ -70,7 +70,7 @@ app.get('/normalize-noInitialDotDot', (req, res) => {
 
 app.get('/prepend-normalize', (req, res) => {
   // Coerce to relative prior to normalization
-  let path = pathModule.normalize('./' + req.query.path);
+  let path = pathModule.normalize('./' + req.query.path); // $ Source
 
   if (!path.startsWith(".."))
     fs.readFileSync(path);
@@ -79,7 +79,7 @@ app.get('/prepend-normalize', (req, res) => {
 });
 
 app.get('/absolute', (req, res) => {
-  let path = req.query.path;
+  let path = req.query.path; // $ Source
 
   if (!pathModule.isAbsolute(path))
     return;
@@ -91,7 +91,7 @@ app.get('/absolute', (req, res) => {
 });
 
 app.get('/normalized-absolute', (req, res) => {
-  let path = pathModule.normalize(req.query.path);
+  let path = pathModule.normalize(req.query.path); // $ Source
 
   if (!pathModule.isAbsolute(path))
     return;
@@ -114,7 +114,7 @@ app.get('/combined-check', (req, res) => {
 });
 
 app.get('/realpath', (req, res) => {
-  let path = fs.realpathSync(req.query.path);
+  let path = fs.realpathSync(req.query.path); // $ Source
 
   fs.readFileSync(path); // $ Alert
   fs.readFileSync(pathModule.join(path, 'index.html')); // $ Alert
@@ -127,7 +127,7 @@ app.get('/realpath', (req, res) => {
 });
 
 app.get('/coerce-relative', (req, res) => {
-  let path = pathModule.join('.', req.query.path);
+  let path = pathModule.join('.', req.query.path); // $ Source
 
   if (!path.startsWith('..'))
     fs.readFileSync(path);
@@ -136,7 +136,7 @@ app.get('/coerce-relative', (req, res) => {
 });
 
 app.get('/coerce-absolute', (req, res) => {
-  let path = pathModule.join('/home/user/www', req.query.path);
+  let path = pathModule.join('/home/user/www', req.query.path); // $ Source
 
   if (path.startsWith('/home/user/www'))
     fs.readFileSync(path);
@@ -145,7 +145,7 @@ app.get('/coerce-absolute', (req, res) => {
 });
 
 app.get('/concat-after-normalization', (req, res) => {
-  let path = 'foo/' + pathModule.normalize(req.query.path);
+  let path = 'foo/' + pathModule.normalize(req.query.path); // $ Source
 
   if (!path.startsWith('..'))
     fs.readFileSync(path); // $ Alert - prefixing foo/ invalidates check
@@ -157,7 +157,7 @@ app.get('/concat-after-normalization', (req, res) => {
 });
 
 app.get('/noDotDot', (req, res) => {
-  let path = pathModule.normalize(req.query.path);
+  let path = pathModule.normalize(req.query.path); // $ Source
 
   if (path.includes('..'))
     return;
@@ -171,7 +171,7 @@ app.get('/noDotDot', (req, res) => {
 });
 
 app.get('/join-regression', (req, res) => {
-  let path = req.query.path;
+  let path = req.query.path; // $ Source
 
   // Regression test for a specific corner case:
   // Some guard nodes sanitize both branches, but for a different set of flow labels.
@@ -211,7 +211,7 @@ app.get('/join-regression', (req, res) => {
 });
 
 app.get('/decode-after-normalization', (req, res) => {
-  let path = pathModule.normalize(req.query.path);
+  let path = pathModule.normalize(req.query.path); // $ Source
 
   if (!pathModule.isAbsolute(path) && !path.startsWith('..'))
     fs.readFileSync(path);
@@ -223,7 +223,7 @@ app.get('/decode-after-normalization', (req, res) => {
 });
 
 app.get('/replace', (req, res) => {
-  let path = pathModule.normalize(req.query.path).replace(/%20/g, ' ');
+  let path = pathModule.normalize(req.query.path).replace(/%20/g, ' '); // $ Source
   if (!pathModule.isAbsolute(path)) {
     fs.readFileSync(path); // $ Alert
 
@@ -233,7 +233,7 @@ app.get('/replace', (req, res) => {
 });
 
 app.get('/resolve-path', (req, res) => {
-  let path = pathModule.resolve(req.query.path);
+  let path = pathModule.resolve(req.query.path); // $ Source
 
   fs.readFileSync(path); // $ Alert
 
@@ -251,7 +251,7 @@ app.get('/resolve-path', (req, res) => {
 });
 
 app.get('/relative-startswith', (req, res) => {
-  let path = pathModule.resolve(req.query.path);
+  let path = pathModule.resolve(req.query.path); // $ Source
 
   fs.readFileSync(path); // $ Alert
 
@@ -300,7 +300,7 @@ app.get('/relative-startswith', (req, res) => {
 var isPathInside = require("is-path-inside"),
     pathIsInside = require("path-is-inside");
 app.get('/pseudo-normalizations', (req, res) => {
-	let path = req.query.path;
+	let path = req.query.path; // $ Source
 	fs.readFileSync(path); // $ Alert
 	if (isPathInside(path, SAFE)) {
 		fs.readFileSync(path);
@@ -336,7 +336,7 @@ app.get('/pseudo-normalizations', (req, res) => {
 });
 
 app.get('/yet-another-prefix', (req, res) => {
-	let path = pathModule.resolve(req.query.path);
+	let path = pathModule.resolve(req.query.path); // $ Source
 
 	fs.readFileSync(path); // $ Alert
 
@@ -351,7 +351,7 @@ app.get('/yet-another-prefix', (req, res) => {
 
 var rootPath = process.cwd();
 app.get('/yet-another-prefix2', (req, res) => {
-  let path = req.query.path;
+  let path = req.query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
 
@@ -374,7 +374,7 @@ app.get('/yet-another-prefix2', (req, res) => {
 
 import slash from 'slash';
 app.get('/slash-stuff', (req, res) => {
-  let path = req.query.path;
+  let path = req.query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
 
@@ -382,7 +382,7 @@ app.get('/slash-stuff', (req, res) => {
 });
 
 app.get('/dotdot-regexp', (req, res) => {
-  let path = pathModule.normalize(req.query.x);
+  let path = pathModule.normalize(req.query.x); // $ Source
   if (pathModule.isAbsolute(path))
     return;
   fs.readFileSync(path); // $ Alert
@@ -409,7 +409,7 @@ app.get('/join-spread', (req, res) => {
 });
 
 app.get('/dotdot-matchAll-regexp', (req, res) => {
-  let path = pathModule.normalize(req.query.x);
+  let path = pathModule.normalize(req.query.x); // $ Source
   if (pathModule.isAbsolute(path))
     return;
   fs.readFileSync(path); // $ Alert

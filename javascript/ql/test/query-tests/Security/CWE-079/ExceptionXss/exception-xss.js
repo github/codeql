@@ -1,5 +1,5 @@
 (function () {
-	var foo = document.location;
+	var foo = document.location; // $ Source
 
 	function inner(x) {
 		unknown(x);
@@ -114,7 +114,7 @@ var app = express();
 
 app.get('/user/:id', function (req, res) {
 	try {
-		unknown(req.params.id);
+		unknown(req.params.id); // $ Source
 	} catch (e) {
 		res.send("Exception: " + e); // $ Alert
 	}
@@ -122,7 +122,7 @@ app.get('/user/:id', function (req, res) {
 
 
 (function () {
-	sessionStorage.setItem('exceptionSession', document.location.search);
+	sessionStorage.setItem('exceptionSession', document.location.search); // $ Source
 
 	try {
 		unknown(sessionStorage.getItem('exceptionSession'));
@@ -133,7 +133,7 @@ app.get('/user/:id', function (req, res) {
 
 
 app.get('/user/:id', function (req, res) {
-	unknown(req.params.id, (error, res) => {
+	unknown(req.params.id, (error, res) => { // $ Source
 		if (error) {
 			$('myId').html(error); // $ Alert
 			return;
@@ -143,7 +143,7 @@ app.get('/user/:id', function (req, res) {
 });
 
 (function () {
-	var foo = document.location.search;
+	var foo = document.location.search; // $ Source
 
 	new Promise(resolve => unknown(foo, resolve)).catch((e) => {
 		$('myId').html(e); // $ Alert
@@ -177,7 +177,7 @@ app.get('/user/:id', function (req, res) {
 })();
 
 app.get('/user/:id', function (req, res) {
-	unknown(req.params.id, (error, res) => {
+	unknown(req.params.id, (error, res) => { // $ Source
 		if (error) {
 			$('myId').html(error); // $ Alert
 		}

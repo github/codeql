@@ -2,7 +2,7 @@ const webpack = require("webpack");
 
 
 var plugin = new webpack.DefinePlugin({
-    "process.env": JSON.stringify(process.env)
+    "process.env": JSON.stringify(process.env) // $ Source[js/build-artifact-leak]
 }); // $ Alert[js/build-artifact-leak]
 
 
@@ -12,7 +12,7 @@ new webpack.DefinePlugin({ 'process.env': JSON.stringify({ DEBUG: process.env.DE
 function getEnv(env) {
     const raw = Object.keys(process.env)
         .reduce((env, key) => {
-            env[key] = process.env[key]
+            env[key] = process.env[key] // $ Source[js/build-artifact-leak]
             return env
         }, {
             NODE_ENV: process.env.NODE_ENV || env || 'development'
@@ -37,7 +37,7 @@ var https = require('https');
 var url = require('url');
 
 var server = https.createServer(function (req, res) {
-    let pw = url.parse(req.url, true).query.current_password;
+    let pw = url.parse(req.url, true).query.current_password; // $ Source[js/build-artifact-leak]
     var plugin = new webpack.DefinePlugin({ "process.env.secret": JSON.stringify(pw) }); // $ Alert[js/build-artifact-leak]
 });
 

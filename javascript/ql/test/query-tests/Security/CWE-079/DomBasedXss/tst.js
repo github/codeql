@@ -1,5 +1,5 @@
 function test() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
 
   $('myId').html(target) // $ Alert
 
@@ -11,7 +11,7 @@ function test() {
   $('<div style="width:' + +target + 'px">');
   $('<div style="width:' + parseInt(target) + 'px">');
 
-  let params = (new URL(document.location)).searchParams;
+  let params = (new URL(document.location)).searchParams; // $ Source
   $('name').html(params.get('name'));  // $ Alert
 
   var searchParams = new URLSearchParams(target.substring(1));
@@ -21,10 +21,10 @@ function test() {
 function foo(target) {
   $('myId').html(target); // $ Alert
 }
-foo(document.location.search);
+foo(document.location.search); // $ Source
 
 function bar() {
-  return document.location.search;
+  return document.location.search; // $ Source
 }
 $('myId').html(bar()); // $ Alert
 
@@ -50,12 +50,12 @@ $('myId').html(wrap(chop(bar()))); // $ Alert
 function dangerouslySetInnerHtml(s) {
   $('myId').html(s); // $ Alert
 }
-dangerouslySetInnerHtml(document.location.search);
-dangerouslySetInnerHtml(document.location.search);
+dangerouslySetInnerHtml(document.location.search); // $ Source
+dangerouslySetInnerHtml(document.location.search); // $ Source
 
 $('myId').html(bar()); // $ Alert
 
-[,document.location.search].forEach(function(x) {
+[,document.location.search].forEach(function(x) { // $ Source
   if (x)
     $('myId').html(x); // $ Alert
 });
@@ -90,7 +90,7 @@ angular.module('myApp', [])
     })
 
 function tst() {
-  var v = document.location.search.substr(1);
+  var v = document.location.search.substr(1); // $ Source
 
   document.write(v); // $ Alert
 
@@ -129,7 +129,7 @@ function tst() {
 function angularJSServices() {
     angular.module('myApp', [])
         .factory("xssSource_to_service", ["xssSinkService1", function(xssSinkService1) {
-            xssSinkService1(window.location.search);
+            xssSinkService1(window.location.search); // $ Source
         }])
         .factory("xssSinkService1", function(){
             return function(v){ $("<div>").html(v); } // $ Alert
@@ -139,7 +139,7 @@ function angularJSServices() {
             $("<div>").html(xssSourceService()); // $ Alert
         }])
         .factory("xssSourceService", function(){
-            return function() { return window.location.search };
+            return function() { return window.location.search }; // $ Source
         })
 
         .factory("innocentSource_to_service", ["xssSinkService2", function(xssSinkService2) {
@@ -158,14 +158,14 @@ function angularJSServices() {
 }
 
 function testDOMParser() {
-    var target = document.location.search
+    var target = document.location.search // $ Source
 
     var parser = new DOMParser();
     parser.parseFromString(target, "application/xml"); // $ Alert
 }
 
 function references() {
-    var tainted = document.location.search;
+    var tainted = document.location.search; // $ Source
 
     document.body.innerHTML = tainted; // $ Alert
 
@@ -178,7 +178,7 @@ function references() {
 }
 
 function react(){
-    var tainted = document.location.search;
+    var tainted = document.location.search; // $ Source
 
     React.createElement("div", {dangerouslySetInnerHTML: {__html: tainted}}); // $ Alert
     React.createFactory("div")({dangerouslySetInnerHTML: {__html: tainted}}); // $ Alert
@@ -266,7 +266,7 @@ function jqueryLocation() {
 
 
 function testCreateContextualFragment() {
-    var tainted = window.name;
+    var tainted = window.name; // $ Source
     var range = document.createRange();
     range.selectNode(document.getElementsByTagName("div").item(0));
     var documentFragment = range.createContextualFragment(tainted); // $ Alert
@@ -282,14 +282,14 @@ function flowThroughPropertyNames() {
 
 function basicExceptions() {
 	try {
-		throw location;
+		throw location; // $ Source
 	} catch(e) {
 		$("body").append(e); // $ Alert
 	}
 
 	try {
 		try {
-			throw location
+			throw location // $ Source
 		} finally {}
 	} catch(e) {
 		$("body").append(e); // $ Alert
@@ -308,7 +308,7 @@ function test2() {
 }
 
 function getTaintedUrl() {
-  return new URL(document.location);
+  return new URL(document.location); // $ Source
 }
 
 function URLPseudoProperties() {
@@ -322,21 +322,21 @@ function URLPseudoProperties() {
 
 function hash() {
   function getUrl() {
-    return new URL(document.location);
+    return new URL(document.location); // $ Source
   }
   $(getUrl().hash.substring(1)); // $ Alert
 
 }
 
 function growl() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
   $.jGrowl(target); // $ Alert
 }
 
 function thisNodes() {
 	var pluginName = "myFancyJQueryPlugin";
 	var myPlugin = function () {
-	    var target = document.location.search
+	    var target = document.location.search // $ Source
 	    this.html(target); // $ Alert - this is a jQuery object
 		this.innerHTML = target // OK - this is a jQuery object
 
@@ -352,7 +352,7 @@ function thisNodes() {
 }
 
 function test() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
 
   $('myId').html(target) // $ Alert
 
@@ -361,7 +361,7 @@ function test() {
 }
 
 function test() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
 
 
   $('myId').html(target); // $ Alert
@@ -371,7 +371,7 @@ function test() {
   target.taint2 = 2;
   $('myId').html(target.taint2);
 
-  target.taint3 = document.location.search;
+  target.taint3 = document.location.search; // $ Source
   $('myId').html(target.taint3); // $ Alert
 
   target.sub.taint4 = 2
@@ -396,10 +396,10 @@ function test() {
 }
 
 function hash2() {
-  var payload = window.location.hash.substr(1);
+  var payload = window.location.hash.substr(1); // $ Source
   document.write(payload); // $ Alert
 
-  let match = window.location.hash.match(/hello (\w+)/);
+  let match = window.location.hash.match(/hello (\w+)/); // $ Source
   if (match) {
     document.write(match[1]); // $ Alert
   }
@@ -408,7 +408,7 @@ function hash2() {
 }
 
 function nonGlobalSanitizer() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
 
   $("#foo").html(target.replace(/<metadata>[\s\S]*<\/metadata>/, '<metadata></metadata>')); // $ Alert
 
@@ -416,7 +416,7 @@ function nonGlobalSanitizer() {
 }
 
 function mootools(){
-	var source = document.location.search;
+	var source = document.location.search; // $ Source
 
 	new Element("div");
 	new Element("div", {text: source});
@@ -433,14 +433,14 @@ const Convert = require('ansi-to-html');
 const ansiToHtml = new Convert();
 
 function ansiToHTML() {
-  var source = document.location.search;
+  var source = document.location.search; // $ Source
 
   $("#foo").html(source); // $ Alert
   $("#foo").html(ansiToHtml.toHtml(source)); // $ Alert
 }
 
 function domMethods() {
-	var source = document.location.search;
+	var source = document.location.search; // $ Source
 
   let table = document.getElementById('mytable');
   table.innerHTML = source; // $ Alert
@@ -451,7 +451,7 @@ function domMethods() {
 }
 
 function urlStuff() {
-  var url = document.location.search.substr(1);
+  var url = document.location.search.substr(1); // $ Source
 
   $("<a>", {href: url}).appendTo("body"); // $ Alert
   $("#foo").attr("href", url); // $ Alert
@@ -488,7 +488,7 @@ function Foo() {
 }
 
 function nonGlobalSanitizer() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
   $("#foo").html(target.replace(new RegExp("<|>"), '')); // $ Alert
   $("#foo").html(target.replace(new RegExp("<|>", unknownFlags()), '')); // OK - most likely good. We don't know what the flags are.
   $("#foo").html(target.replace(new RegExp("<|>", "g"), ''));

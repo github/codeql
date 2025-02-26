@@ -5,7 +5,7 @@ import { Octokit } from "@octokit/core";
 const kit = new Octokit();
 
 app.get('/post/:id', function(req, res) {
-    const id = req.params.id;
+    const id = req.params.id; // $ Source
     const response = kit.graphql(`
       query {
         repository(owner: "github", name: "${id}") {
@@ -22,7 +22,7 @@ app.get('/post/:id', function(req, res) {
 import { graphql, withCustomRequest } from "@octokit/graphql";
 
 app.get('/user/:id/', function(req, res) {
-    const id = req.params.id;
+    const id = req.params.id; // $ Source
     const response = graphql(`foo ${id}`); // $ Alert
 
     const myGraphql = withCustomRequest(request);
@@ -35,7 +35,7 @@ app.get('/user/:id/', function(req, res) {
 const { request } = require("@octokit/request");
 
 app.get('/article/:id/', async function(req, res) {
-    const id = req.params.id;
+    const id = req.params.id; // $ Source
     const result = await request("POST /graphql", {
       headers: {
         authorization: "token 0000000000000000000000000000000000000001",
@@ -51,7 +51,7 @@ import { Octokit as Core } from "@octokit/rest";
 const kit2 = new Core();
 
 app.get('/event/:id/', async function(req, res) {
-    const id = req.params.id;
+    const id = req.params.id; // $ Source
     const result = await kit2.graphql(`foo ${id}`); // $ Alert
 
     const result2 = await kit2.request("POST /graphql", { query: `foo ${id}` }); // $ Alert
@@ -70,7 +70,7 @@ var root = {
 };
 
 app.get('/thing/:id', async function(req, res) {
-  const id = req.query.id;
+  const id = req.query.id; // $ Source
   const result = await nativeGraphql(schema, "{ foo" + id + " }", root); // $ Alert
 
   fetch("https://my-grpahql-server.com/graphql", {
@@ -114,6 +114,6 @@ const github = require('@actions/github');
 app.get('/event/:id/', async function(req, res) {
     const kit = github.getOctokit("foo")
 
-    const id = req.params.id;
+    const id = req.params.id; // $ Source
     const result = await kit.graphql(`foo ${id}`); // $ Alert
 });

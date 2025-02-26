@@ -22,7 +22,7 @@ app.get('/some/other/path2', function(req, res) {
 });
 
 app.get('/some/path', function(req, res) {
-  var target = req.param("target");
+  var target = req.param("target"); // $ Source
   if (target.startsWith("http://example.com/"))
     // OK - request parameter is sanitized before incorporating it into the redirect
     res.redirect(target);
@@ -74,7 +74,7 @@ app.get('/hopefully/the/final/path', function(req, res) {
 });
 
 app.get('/some/path', function(req, res) {
-  let target = req.param("target");
+  let target = req.param("target"); // $ Source
 
   // OK - request parameter is checked against whitelist
   if (SAFE_TARGETS.hasOwnProperty(target))
@@ -114,7 +114,7 @@ function sendUserToUrl(res, nextUrl) {
 }
 
 app.get('/call', function(req, res) {
-  sendUserToUrl(res, req.query.nextUrl);
+  sendUserToUrl(res, req.query.nextUrl); // $ Source
 });
 
 app.get('/redirect/:user', function(req, res) {
@@ -137,7 +137,7 @@ app.get("bar", ({query}, res) => {
 })
 
 app.get('/some/path', function(req, res) {
-  let target = req.param("target");
+  let target = req.param("target"); // $ Source
   
   if (SAFE_TARGETS.hasOwnProperty(target))
     res.redirect(target); // OK - request parameter is checked against whitelist
@@ -151,6 +151,6 @@ app.get('/some/path', function(req, res) {
 });
 
 app.get("/foo/:bar/:baz", (req, res) => {
-  let myThing = JSON.stringify(req.query).slice(1, -1);
+  let myThing = JSON.stringify(req.query).slice(1, -1); // $ Source
   res.redirect(myThing); // $ Alert
 });

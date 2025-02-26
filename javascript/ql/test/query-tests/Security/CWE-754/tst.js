@@ -3,7 +3,7 @@
     foo() {}
   };
 
-  window.addEventListener('message', (ev) => {
+  window.addEventListener('message', (ev) => { // $ Source
     let name = JSON.parse(ev.data).name;
 
     obj[ev.data](); // $ Alert - might not be a function
@@ -44,7 +44,7 @@
   let obj2 = Object.create(null);
   obj2.foo = function() {};
 
-  window.addEventListener('message', (ev) => {
+  window.addEventListener('message', (ev) => { // $ Source
     let name = JSON.parse(ev.data).name;
     let fn = obj2[name];
     fn();           // $ Alert - might not be a function

@@ -17,7 +17,7 @@ const sanitizeInput = function (input) {
 };
 
 const server = http.createServer((req, res) => {
-  let q = url.parse(req.url, true);
+  let q = url.parse(req.url, true); // $ Source
 
   let username = q.query.username;
 

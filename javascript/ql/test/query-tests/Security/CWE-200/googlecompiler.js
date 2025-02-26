@@ -40,7 +40,7 @@ function PostCode(codestring) {
 }
 
 // This is an async file read
-fs.readFile('LinkedList.js', 'utf-8', function (err, data) {
+fs.readFile('LinkedList.js', 'utf-8', function (err, data) { // $ Source[js/file-access-to-http]
   if (err) {
     // If this were just a small part of the application, you would
     // want to handle this differently, maybe throwing an exception

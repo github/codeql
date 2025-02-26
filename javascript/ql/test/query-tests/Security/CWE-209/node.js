@@ -5,7 +5,7 @@ http.createServer(function onRequest(req, res) {
   try {
     body = handleRequest(req);
   }
-  catch (err) {
+  catch (err) { // $ Source
     res.statusCode = 500;
     res.setHeader("Content-Type", "text/plain");
     res.end(err.stack); // $ Alert

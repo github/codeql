@@ -24,7 +24,7 @@ app.get('/user/:id', function(req, res) {
     function id(v) {
         return v;
     }
-    var v3 = id(req.cookies.cookieId);
+    var v3 = id(req.cookies.cookieId); // $ Source[js/user-controlled-bypass]
     if (v3) { // $ Alert[js/user-controlled-bypass] - depends on user input
         process.exit();
     }

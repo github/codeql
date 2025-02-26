@@ -9,7 +9,7 @@ app.use(require('body-parser').json());
 app.post('/documents/find', (req, res) => {
     client.set(req.body.key, "value"); // $ Alert
 
-    var key = req.body.key;
+    var key = req.body.key; // $ Source
     if (typeof key === "string") {
         client.set(key, "value");
         client.set(["key", "value"]);
@@ -35,7 +35,7 @@ app.post('/documents/find', (req, res) => {
 
 import { promisify } from 'util';
 app.post('/documents/find', (req, res) => {
-    const key = req.body.key;
+    const key = req.body.key; // $ Source
     client.set(key, "value"); // $ Alert
 
     const setAsync = promisify(client.set).bind(client);

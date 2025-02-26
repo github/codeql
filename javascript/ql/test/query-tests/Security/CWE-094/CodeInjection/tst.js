@@ -19,7 +19,7 @@ eval(atob(document.location.hash.substring(1))); // $ Alert[js/code-injection]
 $('<a>').attr("onclick", location.search.substring(1)); // $ Alert[js/code-injection]
 
 (function test() {
-    var source = document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"); 
+    var source = document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1");  // $ Source[js/code-injection]
 
     new Function(source); // $ Alert[js/code-injection]
 

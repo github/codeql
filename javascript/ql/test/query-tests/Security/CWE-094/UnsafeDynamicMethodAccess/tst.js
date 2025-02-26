@@ -1,6 +1,6 @@
 let obj = {};
 
-window.addEventListener('message', (ev) => {
+window.addEventListener('message', (ev) => { // $ Source
     let message = JSON.parse(ev.data);
     window[message.name](message.payload); // $ Alert - may invoke eval
     new window[message.name](message.payload); // $ Alert - may invoke jQuery $ function or similar

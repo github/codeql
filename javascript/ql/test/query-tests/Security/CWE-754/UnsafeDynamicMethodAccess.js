@@ -2,7 +2,7 @@
 
 let obj = {};
 
-window.addEventListener('message', (ev) => {
+window.addEventListener('message', (ev) => { // $ Source
     let message = JSON.parse(ev.data);
     window[message.name](message.payload); // $ MISSING: Alert - reported by UnsafeDynamicMethodAccess.ql
     new window[message.name](message.payload); // $ MISSING: Alert - reported by UnsafeDynamicMethodAccess.ql

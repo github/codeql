@@ -6,7 +6,7 @@ var http = require("http"),
   originalFs = require("original-fs");
 
 var server = http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
   gracefulFs.readFileSync(path); // $ Alert
@@ -35,7 +35,7 @@ function getFsModule(special) {
 var util = require("util");
 
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
   util.promisify(fs.readFileSync)(path); // $ Alert
   require("bluebird").promisify(fs.readFileSync)(path); // $ Alert
@@ -46,7 +46,7 @@ http.createServer(function(req, res) {
 const asyncFS = require("./my-async-fs-module");
 
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
   asyncFS.readFileSync(path); // $ Alert
@@ -65,7 +65,7 @@ http.createServer(function(req, res) {
 
 const mkdirp = require("mkdirp");
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
   fs.readFileSync(path); // $ Alert
   mkdirp(path); // $ Alert
@@ -78,7 +78,7 @@ function func(x) {
 
 const fsp = require("fs/promises");
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
   fsp.readFile(path); // $ Alert
 });

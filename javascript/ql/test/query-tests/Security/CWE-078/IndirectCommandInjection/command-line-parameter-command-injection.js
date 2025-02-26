@@ -7,7 +7,7 @@ var cp = require("child_process");
 	cp.exec("cmd.sh " + process.argv[1]);
 	cp.exec("cmd.sh " + process.argv[2]); // $ Alert
 
-	var args = process.argv.slice(2);
+	var args = process.argv.slice(2); // $ Source
 	cp.execSync(args[0]); // $ Alert
 	cp.execSync("cmd.sh " + args[0]); // $ Alert
 
@@ -21,7 +21,7 @@ var cp = require("child_process");
 });
 
 (function() {
-	const args = process.argv.slice(2);
+	const args = process.argv.slice(2); // $ Source
 	const script = path.join(packageDir, 'app', 'index.js');
 	cp.execSync(`node ${script} ${args[0]} --option"`); // $ Alert
 	cp.execSync(`node ${script} ${args.join(' ')} --option"`); // $ Alert
@@ -36,7 +36,7 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 	var args = require('yargs') // eslint-disable-line
 		.command('serve [port]', 'start the server', (yargs) => { })
 		.option('verbose', { foo: "bar" })
-		.argv
+		.argv // $ Source
 
 	cp.exec("cmd.sh " + args); // $ Alert
 
@@ -47,15 +47,15 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 	const {
 		argv: {
 			...args
-		},
+		}, // $ Source
 	} = require('yargs')
 		.usage('Usage: foo bar')
 		.command();
 
 	cp.exec("cmd.sh " + args); // $ Alert
 
-	var tainted1 = require('yargs').argv;
-	var tainted2 = require('yargs').parse()
+	var tainted1 = require('yargs').argv; // $ Source
+	var tainted2 = require('yargs').parse() // $ Source
 	
 	const {taint1: {...taint1rest},taint2: {...taint2rest}} = {
 		taint1: tainted1,
@@ -65,15 +65,15 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 	cp.exec("cmd.sh " + taint1rest); // $ Alert - has flow from tainted1
 	cp.exec("cmd.sh " + taint2rest); // $ Alert - has flow from tianted2
 	
-	var {...taint3} = require('yargs').argv;
+	var {...taint3} = require('yargs').argv; // $ Source
 	cp.exec("cmd.sh " + taint3); // $ Alert
 
-	var [...taint4] = require('yargs').argv;
+	var [...taint4] = require('yargs').argv; // $ Source
 	cp.exec("cmd.sh " + taint4); // $ Alert
 });
 
 (function () {
-	const argv = process.argv.slice(2);
+	const argv = process.argv.slice(2); // $ Source
 
 	var minimist = require("minimist");
 	cp.exec("cmd.sh " + minimist(argv).foo); // $ Alert
@@ -85,10 +85,10 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 	cp.exec("cmd.sh " + yargsParser(process.argv.slice(2)).foo); // $ Alert
 
 	import args from 'args'
-	var flags = args.parse(process.argv);
+	var flags = args.parse(process.argv); // $ Source
 	cp.exec("cmd.sh " + flags.foo); // $ Alert
 
-	var flags = require('arg')({...spec});
+	var flags = require('arg')({...spec}); // $ Source
 	cp.exec("cmd.sh " + flags.foo); // $ Alert
 })
 
@@ -104,14 +104,14 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 
 (function () {
 	const commandLineArgs = require('command-line-args');
-	const options = commandLineArgs(optionDefinitions);
+	const options = commandLineArgs(optionDefinitions); // $ Source
 	cp.exec("cmd.sh " + options.foo); // $ Alert
 });
 
 (function () {
 	const meow = require('meow');
 	 
-	const cli = meow(`helpstring`, {flags: {...flags}});
+	const cli = meow(`helpstring`, {flags: {...flags}}); // $ Source
 
 	cp.exec("cmd.sh " + cli.input[0]); // $ Alert
 });
@@ -119,18 +119,18 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 (function () {
 	var dashdash = require('dashdash');
  
-	var opts = dashdash.parse({options: options});
+	var opts = dashdash.parse({options: options}); // $ Source
 	
 	cp.exec("cmd.sh " + opts.foo); // $ Alert
 
 	var parser = dashdash.createParser({options: options});
-	var opts = parser.parse();
+	var opts = parser.parse(); // $ Source
 	
 	cp.exec("cmd.sh " + opts.foo); // $ Alert
 });
 
 (function () {
-	const { program } = require('commander');
+	const { program } = require('commander'); // $ Source
 	program.version('0.0.1');
 
 	cp.exec("cmd.sh " + program.opts().pizzaType); // $ Alert

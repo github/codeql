@@ -4,7 +4,7 @@ var fs = require('fs');
 var express = require('express');
 
 express().get('/', function(req, res) {
-    fs.readdir("/myDir", function (error, files1) {
+    fs.readdir("/myDir", function (error, files1) { // $ Source
         res.send(files1); // $ Alert
     });
 });
@@ -22,7 +22,7 @@ http.createServer(function (req, res) {
         return files3.join('');
     }
 
-    fs.readdir("/myDir", function (error, files1) {
+    fs.readdir("/myDir", function (error, files1) { // $ Source
         res.write(files1); // $ Alert
 
         var dirs = [];

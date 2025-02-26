@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 
 app.get("/some/path", function (req, res) {
-  const locale = req.param("locale");
+  const locale = req.param("locale"); // $ Source
   const breadcrumbList = [
     {
       "@type": "ListItem",

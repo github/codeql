@@ -10,7 +10,7 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    const RemoteStream = Readable.from(req.files.ZipFile.data);
+    const RemoteStream = Readable.from(req.files.ZipFile.data); // $ Source
 
     // Unsafe
     RemoteStream.pipe(unzipper.Extract({ path: 'output/path' })); // $ Alert

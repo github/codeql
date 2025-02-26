@@ -2,7 +2,7 @@ window.parent.postMessage(password, '*'); // $ Alert
 
 (function() {
   var data = {};
-  data.foo = password;
+  data.foo = password; // $ Source
   data.bar = "unproblematic";
 
   window.parent.postMessage(data, '*');     // $ Alert

@@ -17,7 +17,7 @@
     {
       name: 'dashboards',
       source: function (query, cb) {
-        var target = document.location.search
+        var target = document.location.search // $ Source
         cb(target);
       },
       templates: {

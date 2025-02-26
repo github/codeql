@@ -1,5 +1,5 @@
 function f() {
-    let url = window.name;
+    let url = window.name; // $ Source
     if (url.startsWith('https://example.com')) {
         window.location = url; // $ Alert - can be example.com.evil.com
     }

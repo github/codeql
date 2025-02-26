@@ -2,7 +2,7 @@ var http = require("http"),
     url = require("url");
 
 var server = http.createServer(function (req, res) {
-    let cmd = url.parse(req.url, true).query.path;
+    let cmd = url.parse(req.url, true).query.path; // $ Source
 
     require("cross-spawn").sync(cmd); // $ Alert
     require("execa").shell(cmd); // $ Alert

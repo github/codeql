@@ -7,7 +7,7 @@ try {
     content = fs.readFileSync(npmrc, { encoding: "utf8" });
     fs.open(npmrc, "r", function (error, fd) {
       var buffer = new Buffer(stats.size);
-      fs.read(fd, buffer, 0, buffer.length, null, function (error, bytesRead, buffer) {
+      fs.read(fd, buffer, 0, buffer.length, null, function (error, bytesRead, buffer) { // $ Source[js/file-access-to-http]
         var content = buffer.toString("utf8", 0, bytesRead);
         content = content.replace("//registry.npmjs.org/:_authToken=", "").trim();
         var https1 = require("https");

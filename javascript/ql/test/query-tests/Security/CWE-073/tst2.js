@@ -3,7 +3,7 @@ var app = require('express')();
 app.engine( '.hbs', handlebars({ defaultLayout: 'main', extname: '.hbs' }) ); 
 app.set('view engine', '.hbs')
 app.post('/path', require('body-parser').json(), function(req, res) {
-    var bodyParameter = req.body.bodyParameter;
+    var bodyParameter = req.body.bodyParameter; // $ Source
     res.render('template', bodyParameter); // $ Alert
 }); 
 
@@ -23,7 +23,7 @@ app3.post('/path', require('body-parser').json(), function(req, res) {
 var app4 = require('express')();
 app4.set('view engine', 'ejs');
 app4.post('/path', require('body-parser').json(), function(req, res) {
-    var bodyParameter = req.body.bodyParameter;
+    var bodyParameter = req.body.bodyParameter; // $ Source
     res.render('template', bodyParameter); // $ Alert
 }); 
 
@@ -31,7 +31,7 @@ var app5 = require('express')();
 app5.engine("foobar", require("consolidate").whiskers);
 app5.set('view engine', 'foobar');
 app5.post('/path', require('body-parser').json(), function(req, res) {
-    var bodyParameter = req.body.bodyParameter;
+    var bodyParameter = req.body.bodyParameter; // $ Source
     res.render('template', bodyParameter); // $ Alert
 }); 
 
@@ -39,7 +39,7 @@ var app6 = require('express')();
 app6.register(".html", require("consolidate").whiskers);
 app6.set('view engine', 'html');
 app6.post('/path', require('body-parser').json(), function(req, res) {
-    var bodyParameter = req.body.bodyParameter;
+    var bodyParameter = req.body.bodyParameter; // $ Source
     res.render('template', bodyParameter); // $ Alert
 }); 
 
@@ -48,7 +48,7 @@ var router = express.Router();
 var app7 = express();
 app7.set('view engine', 'ejs');
 router.post('/path', require('body-parser').json(), function(req, res) {
-    var bodyParameter = req.body.bodyParameter;
+    var bodyParameter = req.body.bodyParameter; // $ Source
     res.render('template', bodyParameter); // $ Alert
 });
 app7.use("/router", router);

@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/documents/find', (req, res) => {
     const query = {};
-    query.title = req.body.title;
+    query.title = req.body.title; // $ Source
     MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
       let doc = db.collection('doc');
 
@@ -22,7 +22,7 @@ app.post('/documents/find', (req, res) => {
       // OK - throws unless user-data is a string
       doc.find({ title: query.body.title.substr(1) });
 
-      let title = req.body.title;
+      let title = req.body.title; // $ Source
       if (typeof title === "string") {
         // OK - input checked to be a string
         doc.find({ title: title });
@@ -44,7 +44,7 @@ app.get('/:id', (req, res) => {
 
 app.post('/documents/find', (req, res) => {
     const query = {};
-    query.title = req.query.title;
+    query.title = req.query.title; // $ Source
     MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
       let doc = db.collection('doc');
 
@@ -54,7 +54,7 @@ app.post('/documents/find', (req, res) => {
 
 app.post('/documents/find', (req, res) => {
 	const query = {};
-	query.title = req.query.title;
+	query.title = req.query.title; // $ Source
 	MongoClient.connect('mongodb://localhost:27017/test', (err, client) => {
 		let doc = client.db("MASTER").collection('doc');
 
@@ -63,7 +63,7 @@ app.post('/documents/find', (req, res) => {
 });
 
 app.post("/logs/count-by-tag", (req, res) => {
-  let tag = req.query.tag;
+  let tag = req.query.tag; // $ Source
 
   MongoClient.connect(process.env.DB_URL, {}, (err, client) => {
     client
@@ -98,7 +98,7 @@ app.post('/documents/find', (req, res) => {
 });
 function useQuery(queries) {
   const query = {};
-  query.title = queries.title;
+  query.title = queries.title; // $ Source
   MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
     let doc = db.collection('doc');
 

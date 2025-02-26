@@ -6,7 +6,7 @@ var fs = require('fs'),
     ;
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
 
   res.write(fs.readFileSync(path)); // $ Alert - This could read any file on the file system
 

@@ -4,7 +4,7 @@ require('express')().get('/foo', (req, res) => {
   const db = pgp(process.env['DB_CONNECTION_STRING']);
 
   var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-             + req.params.category + "' ORDER BY PRICE";
+             + req.params.category + "' ORDER BY PRICE"; // $ Source
 
   db.any(query); // $ Alert
   db.many(query); // $ Alert

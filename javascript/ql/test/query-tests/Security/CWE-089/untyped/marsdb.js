@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/documents/find", (req, res) => {
   const query = {};
-  query.title = req.body.title;
+  query.title = req.body.title; // $ Source
 
   doc.find(query, (err, data) => {}); // $ Alert - query is tainted by user-provided object value
 });

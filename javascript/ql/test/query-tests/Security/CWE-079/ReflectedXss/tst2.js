@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 
 app.get('/user/:id', function(req, res) {
-  let { p, q: r } = req.params;
+  let { p, q: r } = req.params; // $ Source
   res.send(p); // $ Alert
   res.send(r); // $ Alert
 });
@@ -11,7 +11,7 @@ app.get('/user/:id', function(req, res) {
 const aKnownValue = "foo";
 
 app.get('/bar', function(req, res) {
-  let { p } = req.params;
+  let { p } = req.params; // $ Source
 
   if (p == aKnownValue)
     res.send(p);
@@ -27,7 +27,7 @@ app.get('/bar', function(req, res) {
 const clone = require('clone');
 
 app.get('/baz', function(req, res) {
-  let { p } = req.params;
+  let { p } = req.params; // $ Source
 
   var obj = {};
   obj.p = p;
@@ -40,7 +40,7 @@ app.get('/baz', function(req, res) {
 const serializeJavaScript = require('serialize-javascript');
 
 app.get('/baz', function(req, res) {
-  let { p } = req.params;
+  let { p } = req.params; // $ Source
 
   var serialized = serializeJavaScript(p);
 
@@ -54,7 +54,7 @@ app.get('/baz', function(req, res) {
 const fclone = require('fclone');
 
 app.get('/baz', function(req, res) {
-  let { p } = req.params;
+  let { p } = req.params; // $ Source
 
   var obj = {};
   obj.p = p;
@@ -66,7 +66,7 @@ app.get('/baz', function(req, res) {
 
 const jc = require('json-cycle');
 app.get('/baz', function(req, res) {
-  let { p } = req.params;
+  let { p } = req.params; // $ Source
 
   var obj = {};
   obj.p = p;
@@ -79,7 +79,7 @@ app.get('/baz', function(req, res) {
 const sortKeys = require('sort-keys');
 
 app.get('/baz', function(req, res) {
-  let { p } = req.params;
+  let { p } = req.params; // $ Source
 
   var obj = {};
   obj.p = p;

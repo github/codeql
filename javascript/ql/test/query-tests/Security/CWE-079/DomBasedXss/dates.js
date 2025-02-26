@@ -6,7 +6,7 @@ import dateformat from 'dateformat';
 
 function main() {
     let time = new Date();
-    let taint = decodeURIComponent(window.location.hash.substring(1));
+    let taint = decodeURIComponent(window.location.hash.substring(1)); // $ Source
 
     document.body.innerHTML = `Time is ${dateFns.format(time, taint)}`; // $ Alert
     document.body.innerHTML = `Time is ${dateFnsEsm.format(time, taint)}`; // $ Alert
@@ -27,7 +27,7 @@ import MomentAdapter from "@date-io/moment";
 import DayJSAdapter from "@date-io/dayjs"
 
 function dateio() {
-    let taint = decodeURIComponent(window.location.hash.substring(1));
+    let taint = decodeURIComponent(window.location.hash.substring(1)); // $ Source
 
     const dateFns = new DateFnsAdapter();
     const luxon = new LuxonAdapter();
@@ -43,7 +43,7 @@ function dateio() {
 import { DateTime } from "luxon";
 
 function luxon() {
-    let taint = decodeURIComponent(window.location.hash.substring(1));
+    let taint = decodeURIComponent(window.location.hash.substring(1)); // $ Source
 
     document.body.innerHTML = `Time is ${DateTime.now().plus({years: 1}).toFormat(taint)}`; // $ Alert
     document.body.innerHTML = `Time is ${new DateTime().setLocale('fr').toFormat(taint)}`; // $ Alert
@@ -51,7 +51,7 @@ function luxon() {
 }
 
 function dateio2() {
-    let taint = decodeURIComponent(window.location.hash.substring(1));
+    let taint = decodeURIComponent(window.location.hash.substring(1)); // $ Source
 
     const moment = new MomentAdapter();
     document.body.innerHTML = `Time is ${moment.addDays(moment.date("2020-06-21"), 1).format(taint)}`; // $ Alert

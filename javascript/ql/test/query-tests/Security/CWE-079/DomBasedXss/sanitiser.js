@@ -13,7 +13,7 @@ function escapeAttr(s) {
 }
 
 function test() {
-  var tainted = window.name;
+  var tainted = window.name; // $ Source
   var elt = document.createElement();
   elt.innerHTML = "<a href=\"" + escapeAttr(tainted) + "\">" + escapeHtml(tainted) + "</a>";
   elt.innerHTML = "<div>" + escapeAttr(tainted) + "</div>"; // $ MISSING: Alert - not flagged -

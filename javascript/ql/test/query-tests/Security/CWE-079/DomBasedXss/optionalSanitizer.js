@@ -1,5 +1,5 @@
 function test() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
 
   $('myId').html(sanitize ? DOMPurify.sanitize(target) : target);
 
@@ -23,7 +23,7 @@ function test() {
 }
 
 function badSanitizer() {
-  var target = document.location.search
+  var target = document.location.search // $ Source
 
   function sanitizeBad(x) {
     return x; // No sanitization;

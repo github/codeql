@@ -7,7 +7,7 @@
     function myLog(x) {
         console.log(x); // $ Alert[js/clear-text-logging]
     }
-    myLog(password);
+    myLog(password); // $ Source[js/clear-text-logging]
 
     console.info(password); // $ Alert[js/clear-text-logging]
 
@@ -16,12 +16,12 @@
     console.log(`${name}, ${password}`); // $ Alert[js/clear-text-logging]
 
     var obj1 = {
-        password: x
+        password: x // $ Source[js/clear-text-logging]
     };
     console.log(obj1); // $ Alert[js/clear-text-logging]
 
     var obj2 = {
-        x: password
+        x: password // $ Source[js/clear-text-logging]
     };
     console.log(obj2); // $ Alert[js/clear-text-logging]
 
@@ -74,10 +74,10 @@
     };
     console.log(config);
 
-    var temp = { encryptedPassword: req.body.password };
+    var temp = { encryptedPassword: req.body.password }; // $ Source[js/clear-text-logging]
     console.log(temp.encryptedPassword); // $ SPURIOUS: Alert[js/clear-text-logging]
 
-    var secret = password;
+    var secret = password; // $ Source[js/clear-text-logging]
     console.log(`pw: ${secret}`); // $ Alert[js/clear-text-logging]
 
     function redact(kind, value) {
@@ -125,10 +125,10 @@
 
 (function() {
     var config = {
-        password: x,
+        password: x, // $ Source[js/clear-text-logging]
         hostname: "tarski",
-        x: password,
-        y: getPassword()
+        x: password, // $ Source[js/clear-text-logging]
+        y: getPassword() // $ Source[js/clear-text-logging]
     };
     var cfg = x? config: config;
     console.log(config.hostname);
@@ -144,12 +144,12 @@ function indirectLogCall() {
 var Util = require('util');
 (function() {
     var config = {
-        x: password
+        x: password // $ Source[js/clear-text-logging]
     };
     indirectLogCall(config.x);
-    indirectLogCall(process.env);
+    indirectLogCall(process.env); // $ Source[js/clear-text-logging]
 
-    var procdesc = Util.inspect(process.env).replace(/\n/g, '')
+    var procdesc = Util.inspect(process.env).replace(/\n/g, '') // $ Source[js/clear-text-logging]
 
     indirectLogCall(procdesc);
 

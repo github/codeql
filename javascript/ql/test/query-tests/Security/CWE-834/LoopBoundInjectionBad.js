@@ -5,13 +5,13 @@ var router = new express.Router();
 var rootRoute = router.route('foobar');
 
 rootRoute.post(function(req, res) {
-    problem(req.body);
+    problem(req.body); // $ Source
 
-    whileLoop(req.body);
+    whileLoop(req.body); // $ Source
 
-    useLengthIndirectly(req.body);
+    useLengthIndirectly(req.body); // $ Source
 
-    noNullPointer(req.body);
+    noNullPointer(req.body); // $ Source
 });
 
 function problem(val) {

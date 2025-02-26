@@ -2,7 +2,7 @@
   function Foobar() {}
 
   Foobar.prototype = {
-    method: function (obj, path, value) {
+    method: function (obj, path, value) { // $ Source
       obj[path[0]][path[1]] = value; // $ Alert
     },
   };

@@ -15,7 +15,7 @@ import * as webix from "webix";
 var app = express();
 
 app.get('/some/path', function (req, res) {
-    let tainted = req.query.foo;
+    let tainted = req.query.foo; // $ Source[js/code-injection]
 
     pug.compile(tainted); // $ Alert[js/code-injection]
     pug.render(tainted); // $ Alert[js/code-injection]

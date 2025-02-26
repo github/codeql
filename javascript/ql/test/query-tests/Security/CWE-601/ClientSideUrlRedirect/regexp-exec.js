@@ -1,12 +1,12 @@
 import 'dummy';
 
 function extractFromHash() {
-    const [, group1] = /#(.*)/.exec(window.location.href);
+    const [, group1] = /#(.*)/.exec(window.location.href); // $ Source
     window.location.href = group1; // $ Alert
 }
 
 function extractFromQuery() {
-    const [, group1] = /\?(.*)/.exec(window.location.href);
+    const [, group1] = /\?(.*)/.exec(window.location.href); // $ Source
     window.location.href = group1; // $ Alert
 }
 
@@ -26,16 +26,16 @@ function extractNothing() {
 }
 
 function extractWithMatch() {
-    const [, group1] = window.location.href.match(/#(.*)/);
+    const [, group1] = window.location.href.match(/#(.*)/); // $ Source
     window.location.href = group1; // $ Alert
 }
 
 function extractWithMatchAll() {
-    const [, group1] = window.location.href.matchAll(/#(.*)/)[0];
+    const [, group1] = window.location.href.matchAll(/#(.*)/)[0]; // $ Source
     window.location.href = group1; // $ Alert
 }
 
 function extractFromUnknownRegExp() {
-    const [, group1] = new RegExp(unknown()).exec(window.location.href);
+    const [, group1] = new RegExp(unknown()).exec(window.location.href); // $ Source
     window.location.href = group1; // $ Alert
 }

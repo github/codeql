@@ -5,7 +5,7 @@ function paste(e) {
     if (!clipboardData) return;
 
     const text = clipboardData.getData('text/plain');
-    const html = clipboardData.getData('text/html');
+    const html = clipboardData.getData('text/html'); // $ Source
     if (!text && !html) return;
 
     e.preventDefault();
@@ -40,7 +40,7 @@ $("#foo").bind('paste', (e) => {
         if (!clipboardData) return;
 
         const text = clipboardData.getData('text/plain');
-        const html = clipboardData.getData('text/html');
+        const html = clipboardData.getData('text/html'); // $ Source
         if (!text && !html) return;
 
         e.preventDefault();
@@ -68,7 +68,7 @@ async function getClipboardData(e: ClipboardEvent): Promise<Array<File | string>
     }
   
     if (e.clipboardData.types.includes('text/html')) {
-      const droppedHtml = e.clipboardData.getData('text/html');
+      const droppedHtml = e.clipboardData.getData('text/html'); // $ Source
       const container = document.createElement('html');
       container.innerHTML = droppedHtml; // $ Alert
       const imgs = container.getElementsByTagName('img');
@@ -95,7 +95,7 @@ async function getClipboardData(e: ClipboardEvent): Promise<Array<File | string>
         const { data, inputType, isComposing, dataTransfer } = e;
         if (!dataTransfer) return;
 
-        const html = dataTransfer.getData('text/html');
+        const html = dataTransfer.getData('text/html'); // $ Source
         $("#id").html(html); // $ Alert
     });
 })();

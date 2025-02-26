@@ -1,8 +1,8 @@
-export function unsafeDeserialize(data) {
+export function unsafeDeserialize(data) { // $ Source[js/unsafe-code-construction]
   return eval("(" + data + ")"); // $ Alert[js/unsafe-code-construction]
 }
 
-export function unsafeGetter(obj, name) {
+export function unsafeGetter(obj, name) { // $ Source[js/unsafe-code-construction]
     return eval("obj." + name); // $ Alert[js/unsafe-code-construction]
 }
 
@@ -10,13 +10,13 @@ export function safeAssignment(obj, value) {
     eval("obj.foo = " + JSON.stringify(value));
 }
 
-global.unsafeDeserialize = function (data) {
+global.unsafeDeserialize = function (data) { // $ Source[js/unsafe-code-construction]
   return eval("(" + data + ")"); // $ Alert[js/unsafe-code-construction]
 }
 
 const matter = require("gray-matter");
 
-export function greySink(data) {
+export function greySink(data) { // $ Source[js/unsafe-code-construction]
     const str = `
     ---js
     ${data /* $ Alert[js/unsafe-code-construction] */}

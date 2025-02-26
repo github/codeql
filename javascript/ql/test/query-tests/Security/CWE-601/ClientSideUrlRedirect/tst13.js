@@ -1,5 +1,5 @@
 function foo() {
-    var payload = document.location.search.substr(1);
+    var payload = document.location.search.substr(1); // $ Source
     var el = document.createElement("a");
     el.href = payload; // $ Alert
     document.body.appendChild(el);
@@ -46,36 +46,36 @@ function foo() {
 }
 
 (function () {
-    self.onmessage = function (e) {
+    self.onmessage = function (e) { // $ Source
         importScripts(e); // $ Alert
     }
-    window.onmessage = function (e) {
+    window.onmessage = function (e) { // $ Source
         self.importScripts(e); // $ Alert
     }
 })();
 
 function bar() {
     const history = require('history').createBrowserHistory();
-    var payload = document.location.search.substr(1);
+    var payload = document.location.search.substr(1); // $ Source
 
     history.push(payload); // $ Alert
 }
 function baz() {
     const history = require('history').createBrowserHistory();
-    var payload = history.location.hash.substr(1);
+    var payload = history.location.hash.substr(1); // $ Source
 
     history.replace(payload); // $ Alert
 }
 
 function quz() {
     const history = HistoryLibrary.createBrowserHistory();
-    var payload = history.location.hash.substr(1);
+    var payload = history.location.hash.substr(1); // $ Source
 
     history.replace(payload); // $ Alert
 }
 
 function bar() {
-    var url = document.location.search.substr(1);
+    var url = document.location.search.substr(1); // $ Source
 
     $("<a>", {href: url}).appendTo("body"); // $ Alert
     $("#foo").attr("href", url); // $ Alert

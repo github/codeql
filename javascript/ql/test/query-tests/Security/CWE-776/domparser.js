@@ -1,5 +1,5 @@
 function test() {
-  var src = document.location.search;
+  var src = document.location.search; // $ Source
 
   if (window.DOMParser) {
     new DOMParser().parseFromString(src, 'text/xml'); // $ Alert - DOMParser expands internal entities by default

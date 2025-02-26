@@ -16,7 +16,7 @@ function f3() {
 }
 
 function f4() {
-    var suffix = Math.random() % 255;
+    var suffix = Math.random() % 255; // $ Source
     var password = "prefix" + suffix; // $ Alert
 }
 
@@ -25,7 +25,7 @@ function f5() {
 }
 
 function f6() {
-    var pw = Math.random();
+    var pw = Math.random(); // $ Source
     var password = pw; // $ Alert
 }
 
@@ -68,7 +68,7 @@ function f14() {
 
 function f15() {
     var ts = new Date().getTime();
-    var rand = Math.floor(Math.random()*9999999);
+    var rand = Math.floor(Math.random()*9999999); // $ Source
     var concat = ts.toString() + rand.toString();
     res.send({secret: concat}); // $ Alert
 }
@@ -77,7 +77,7 @@ function f16() {
     function f(secret) { // $ Alert
         secret++;
     }
-    f(Math.random());
+    f(Math.random()); // $ Source
 }
 
 function f17() {

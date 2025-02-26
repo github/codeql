@@ -18,7 +18,7 @@ const Document = Mongoose.model('Document', {
 
 app.post('/documents/find', (req, res) => {
 	const query = {};
-	query.title = req.body.title;
+	query.title = req.body.title; // $ Source
 
 	Document.aggregate([query]); // $ Alert - query is tainted by user-provided object value
 
@@ -98,7 +98,7 @@ app.post('/documents/find', (req, res) => {
 
 	Document.findOneAndUpdate(X, query, function () { }); // $ Alert
 
-	let id = req.query.id, cond = req.query.cond;
+	let id = req.query.id, cond = req.query.cond; // $ Source
 	Document.deleteMany(cond); // $ Alert
 	Document.deleteOne(cond); // $ Alert
 	Document.geoSearch(cond); // $ Alert

@@ -1,5 +1,5 @@
 (function(){
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		$(options); // $ Alert - or is it?
 
 		$(options.target); // $ Alert
@@ -62,18 +62,18 @@
 
 	};
 
-	$.fn.my_plugin = function my_plugin(element, options) {
+	$.fn.my_plugin = function my_plugin(element, options) { // $ Source
 		this.$element      = $(element);
 		this.options       = $.extend({}, options);
 		if (this.options.parent) this.$parent = $(this.options.parent) // $ Alert
 	};
 
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		$(options.foo.bar.baz); // $ Alert
 		$(options.html);
 	};
 
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		$(x).appendTo(options.foo.bar.baz); // $ Alert
 	};
 
@@ -81,7 +81,7 @@
 		$("#" + options.target);
 	};
 
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		function f(o) {
 			this.o = $.extend({}, o);
 			var t = this.o.target;
@@ -98,7 +98,7 @@
 			$(target);
 	};
 
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		options = $.extend({
 			menu: '<div></div>',
 			target: '.my_plugin'
@@ -111,28 +111,28 @@
 		menu: '<div></div>',
 		target: '.my_plugin'
 	};
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		options = $.extend({}, $.fn.my_plugin.defaults, options);
 		$(options.menu);
 		$(options.target); // $ Alert
 	};
 
 	var pluginName = "my_plugin";
-	$.fn[pluginName] = function my_plugin(options) {
+	$.fn[pluginName] = function my_plugin(options) { // $ Source
 		$(options.target); // $ Alert
 	};
 
 	$.extend($.fn, {
-		my_plugin: function my_plugin(options) {
+		my_plugin: function my_plugin(options) { // $ Source
 			$(options.target); // $ Alert
 		}
 	});
 
-	$.fn.affix = function my_plugin(options) {
+	$.fn.affix = function my_plugin(options) { // $ Source
 		$(options.target); // $ Alert
 	};
 
-	$.fn.tooltip = function my_plugin(options) {
+	$.fn.tooltip = function my_plugin(options) { // $ Source
 		$(options.viewport.selector); // $ Alert
 	};
 
@@ -150,14 +150,14 @@
 		$(unintentional); // OK - but should be flagged by another query
 	}
 
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		let target = options.target;
 		target === DEFAULTS.target? $(target): $(document).find(target);
 		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target);
 		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // $ SPURIOUS: Alert - should be sanitized by `MembershipTestSanitizer` - but still flagged because `AccessPath` can't handle these deeply nested properties
 	}
 
-	$.fn.my_plugin = function my_plugin(options) {
+	$.fn.my_plugin = function my_plugin(options) { // $ Source
 		$(anyPrefix + options.target); // OK - unlikely to be a html/css prefix confusion
 
 		$(something.replace("%PLACEHOLDER%", options.target)); // OK - (unlikely to be a html/css prefix confusion);
@@ -175,14 +175,14 @@
 	function setupPlugin(o) {
 		$.fn.my_plugin = o.f
 	}
-	setupPlugin({f: function(options) {
+	setupPlugin({f: function(options) { // $ Source
 		$(options.target); // $ Alert
 	}});
 	setupPlugin({f:function(options) {
 		$(document).find(options.target);
 	}});
 
-	$.fn.position = function( options ) {
+	$.fn.position = function( options ) { // $ Source
 		if ( !options || !options.of ) {
 			return doSomethingElse( this, arguments );
 		}

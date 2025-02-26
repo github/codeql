@@ -6,7 +6,7 @@ var router = new express.Router();
 var rootRoute = router.route('foobar');
 
 rootRoute.post(function(req, res) {
-    problem(req.body);
+    problem(req.body); // $ Source
 });
 
 function problem(val) {

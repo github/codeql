@@ -3,7 +3,7 @@ var cp = require("child_process"),
     url = require('url');
 
 var server = http.createServer(function(req, res) {
-    let cmd = url.parse(req.url, true).query.path;
+    let cmd = url.parse(req.url, true).query.path; // $ Sink Source
 
     cp.exec("foo");
     cp.execSync("foo");
@@ -36,25 +36,25 @@ var server = http.createServer(function(req, res) {
       sh = 'cmd.exe', flag = '/c';
     else
       sh = '/bin/sh', flag = '-c';
-    cp.spawn(sh, [ flag, cmd ]); // $ Alert
+    cp.spawn(sh, [ flag, cmd ]); // $ Alert Sink
 
     let args = [];
     args[0] = "-c";
-    args[1] = cmd;
+    args[1] = cmd; // $ Sink
     cp.execFile("/bin/bash", args); // $ Alert
 
     args = [];
     args[0] = "-c";
-    args[1] = cmd;
+    args[1] = cmd; // $ Sink
     run("sh", args);
 
     args = [];
     args[0] = `-` + "c";
-    args[1] = cmd;
+    args[1] = cmd; // $ Sink
     cp.execFile(`/bin` + "/bash", args); // $ Alert
 
-    cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert
-    cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert Sink
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert Sink
 
     let myArgs = [];
     myArgs.push(`-` + "c");
@@ -63,14 +63,14 @@ var server = http.createServer(function(req, res) {
 
 });
 
-function run(cmd, args) {
+function run(cmd, args) { // $ Sink
   cp.spawn(cmd, args); // $ Alert - but note that the sink is where `args` is build.
 }
 
 var util = require("util")
 
 http.createServer(function(req, res) {
-    let cmd = url.parse(req.url, true).query.path;
+    let cmd = url.parse(req.url, true).query.path; // $ Source
 
     util.promisify(cp.exec)(cmd); // $ Alert
 });

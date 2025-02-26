@@ -2,7 +2,7 @@
 
 var fs = require("fs");
 var http = require("http");
-let data = fs.readFileSync("input.txt");
+let data = fs.readFileSync("input.txt"); // $ Source[js/file-access-to-http]
 try {
   let s = data.toString();
   // An object of options to indicate where to post to

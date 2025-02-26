@@ -10,7 +10,7 @@ app.listen(port, () => {
 });
 
 app.post('/upload', (req, res) => {
-    zipBomb(req.files.zipBombFile)
+    zipBomb(req.files.zipBombFile) // $ Source
     res.send('Hello World!')
 });
 

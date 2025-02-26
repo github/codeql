@@ -12,13 +12,13 @@ app.listen(port, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    zlibBombAsync(req.files.zipBombFile.data)
+    zlibBombAsync(req.files.zipBombFile.data) // $ Source
     zlibBombAsyncSafe(req.files.zipBombFile.data);
-    zlibBombSync(req.files.zipBombFile.data)
+    zlibBombSync(req.files.zipBombFile.data) // $ Source
     zlibBombSyncSafe(req.files.zipBombFile.data)
-    zlibBombPipeStream(req.files.zipBombFile.data)
+    zlibBombPipeStream(req.files.zipBombFile.data) // $ Source
     zlibBombPipeStreamSafe(req.files.zipBombFile.data)
-    zlibBombPipeStreamPromises(req.files.zipBombFile.data).then(r =>
+    zlibBombPipeStreamPromises(req.files.zipBombFile.data).then(r => // $ Source
         console.log("sone"));
     res.send('Hello World!')
 });

@@ -25,7 +25,7 @@ function PostXML(xmlData)
   });
 }
 
-fs.readFile('MyFile.json', 'utf-8', function (err, data) { // source
+fs.readFile('MyFile.json', 'utf-8', function (err, data) { // $ Source[js/file-access-to-http] - source
   if (err) {
     console.log("FATAL An error occurred trying to read in the file: " + err);
     process.exit(-2);
@@ -40,7 +40,7 @@ fs.readFile('MyFile.json', 'utf-8', function (err, data) { // source
   }
 });
 
-fs.readFile('MyFile.xml', 'utf-8', function (err, data) {           // source
+fs.readFile('MyFile.xml', 'utf-8', function (err, data) {           // $ Source[js/file-access-to-http] - source
   if (err) {
     console.log("FATAL An error occurred trying to read in the file: " + err);
     process.exit(-2);

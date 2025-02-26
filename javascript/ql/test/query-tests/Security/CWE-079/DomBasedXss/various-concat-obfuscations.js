@@ -1,5 +1,5 @@
 function test() {
-	let tainted = document.location.search;
+	let tainted = document.location.search; // $ Source
 
 	$("<div>" + tainted + "</div>"); // $ Alert
 	$(`<div>${tainted}</div>`); // $ Alert

@@ -3,7 +3,7 @@ var http = require('http');
 http.createServer(function onRequest(req, res) {
   try {
     throw new Error();
-  } catch (e) {
+  } catch (e) { // $ Source
     res.end(e);                        // $ Alert
     fail(res, e);
     res.end(e.message);

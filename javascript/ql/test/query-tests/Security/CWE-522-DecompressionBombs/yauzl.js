@@ -34,7 +34,7 @@ app.post('/upload', (req, res) => {
         });
     });
     // Unsafe
-    yauzl.open(req.query.filePath, { lazyEntries: true }, function (err, zipfile) {
+    yauzl.open(req.query.filePath, { lazyEntries: true }, function (err, zipfile) { // $ Source
         if (err) throw err;
         zipfile.readEntry(); // $ Alert
         zipfile.on("entry", function (entry) {

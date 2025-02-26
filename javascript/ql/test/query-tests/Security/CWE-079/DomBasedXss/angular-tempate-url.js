@@ -10,6 +10,6 @@ angular.module('myApp', [])
         }
     });
 
-addEventListener('message', (ev) => {
+addEventListener('message', (ev) => { // $ Source
     Cookie.set("unsafe", ev.data);
 });

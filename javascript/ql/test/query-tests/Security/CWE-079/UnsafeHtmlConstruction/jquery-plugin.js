@@ -8,7 +8,7 @@
     $("<span>" + $.trim("foo") + "</span>");
 }));
 
-$.fn.myPlugin = function (stuff, options) {
+$.fn.myPlugin = function (stuff, options) { // $ Source
     $("#foo").html("<span>" + options.foo + "</span>"); // $ Alert
 
     $("#foo").html("<span>" + stuff + "</span>"); // $ Alert

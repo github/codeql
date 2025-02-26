@@ -11,7 +11,7 @@ actions.put("pause", function pause(data) {
 
 app.get('/perform/:action/:payload', function(req, res) {
     if (typeof actions.get(req.params.action) === 'function') {
-        let action = actions.get(req.params.action);
+        let action = actions.get(req.params.action); // $ Source
         res.end(action(req.params.payload));  // $ SPURIOUS: Alert - `action` is either the `play` or the `pause` function from above
     } else {
         res.end("Unsupported action.");

@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const {Sequelize} = require("sequelize");
 
 new Router().get("/hello", (ctx) => {
-    const { version } = ctx.query;
+    const { version } = ctx.query; // $ Source
 
     if (version && validVersion(version) === false) {
         throw new Error(`invalid version ${version}`);

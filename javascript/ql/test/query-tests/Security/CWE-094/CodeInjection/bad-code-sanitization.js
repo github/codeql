@@ -1,5 +1,5 @@
 function safeProp(key) {
-    return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key) ? `.${key}` : `[${JSON.stringify(key)}]`;
+    return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key) ? `.${key}` : `[${JSON.stringify(key)}]`; // $ Source[js/bad-code-sanitization]
 }
 
 function test1() {
@@ -60,7 +60,7 @@ app.get('/some/path', function(req, res) {
 
 // Bad documentation example: 
 function createObjectWrite() {
-    const assignment = `obj[${JSON.stringify(key)}]=42`;
+    const assignment = `obj[${JSON.stringify(key)}]=42`; // $ Source[js/bad-code-sanitization]
     return `(function(){${assignment}})` // $ Alert[js/bad-code-sanitization]
 }
 

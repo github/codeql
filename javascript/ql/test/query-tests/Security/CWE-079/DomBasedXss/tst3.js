@@ -1,5 +1,5 @@
 var foo = document.getElementById("foo");
-var data = JSON.parse(decodeURIComponent(window.location.search.substr(1)));
+var data = JSON.parse(decodeURIComponent(window.location.search.substr(1))); // $ Source
 
 foo.setAttribute("src", data.src); // $ Alert
 foo.setAttribute("HREF", data.p);  // $ Alert

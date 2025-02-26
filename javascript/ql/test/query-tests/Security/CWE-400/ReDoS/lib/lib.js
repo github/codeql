@@ -1,11 +1,11 @@
 var regexp = /a*b/;
 
-module.exports = function (name) {
-	regexp.test(name); // $ Alert[js/polynomial-redos]
+module.exports = function (name) { // $ Source[js/polynomial-redos]
+	regexp.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 };
 
-function bar(reg, name) {
-	/f*g/.test(name); // $ Alert[js/polynomial-redos]
+function bar(reg, name) { // $ Source[js/polynomial-redos]
+	/f*g/.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 }
 
 if (typeof define !== 'undefined' && define.amd) { // AMD
@@ -29,27 +29,27 @@ module.exports.safe = function (x) {
 }
 
 module.exports.useArguments = function () {
-	usedWithArguments.apply(this, arguments);
+	usedWithArguments.apply(this, arguments); // $ Source[js/polynomial-redos]
 }
 
 function usedWithArguments(name) {
-	/f*g/.test(name); // $ Alert[js/polynomial-redos]
+	/f*g/.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 }
 
 module.exports.snapdragon = require("./snapdragon")
 
-module.exports.foo = function (name) {
-    var data1 = name.match(/f*g/); // $ Alert[js/polynomial-redos]
+module.exports.foo = function (name) { // $ Source[js/polynomial-redos]
+    var data1 = name.match(/f*g/); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 
     name = name.substr(1);
-    var data2 = name.match(/f*g/); // $ Alert[js/polynomial-redos]
+    var data2 = name.match(/f*g/); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 }
 
 var indirectAssign = {};
 module.exports.indirectAssign = indirectAssign;
 
 Object.assign(indirectAssign, {
-  myThing: function (name) {
-    /f*g/.test(name); // $ Alert[js/polynomial-redos]
+  myThing: function (name) { // $ Source[js/polynomial-redos]
+    /f*g/.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
   },
 });

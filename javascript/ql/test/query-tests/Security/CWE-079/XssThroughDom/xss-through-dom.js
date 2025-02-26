@@ -70,7 +70,7 @@
 	
 	$.jGrowl($("input").get(0).name); // $ Alert
 	
-    let selector = $("input").get(0).name;
+    let selector = $("input").get(0).name; // $ Source
     if (something()) {
         selector = $("textarea").val || ''
     }
@@ -81,7 +81,7 @@
 	$("#id").html( $('#foo').prop('innerText') ); // $ Alert
 
 	const anser = require("anser");
-	const text = $("text").text();
+	const text = $("text").text(); // $ Source
 
 	$("#id").html(anser.ansiToHtml(text)); // $ Alert
 	$("#id").html(new anser().process(text)); // $ Alert
@@ -111,7 +111,7 @@ class Sub extends Super {
 }
 
 (function () {
-    const src = document.getElementById("#link").src;
+    const src = document.getElementById("#link").src; // $ Source
 	$("#id").html(src); // $ Alert
 
     $("#id").attr("src", src);
@@ -127,7 +127,7 @@ class Sub extends Super {
 	let elem = document.createElement('a');
 	const wSelection = getSelection();
 	const dSelection = document.getSelection();
-	let linkText = wSelection.toString() || dSelection.toString() || '';
+	let linkText = wSelection.toString() || dSelection.toString() || ''; // $ Source
 	elem.innerHTML = linkText; // $ Alert
 	$("#id").html(linkText); // $ Alert
 	elem.innerText = linkText;
@@ -136,7 +136,7 @@ class Sub extends Super {
 const cashDom = require("cash-dom");
 
 (function () {
-    const src = document.getElementById("#link").src;
+    const src = document.getElementById("#link").src; // $ Source
 	cash("#id").html(src); // $ Alert
     cashDom("#id").html(src); // $ Alert
 
@@ -156,7 +156,7 @@ const cashDom = require("cash-dom");
         },
       };
     
-      VeryUniqueXssTestName.send($("textarea").val());
+      VeryUniqueXssTestName.send($("textarea").val()); // $ Source
     }
     foo()
 })();

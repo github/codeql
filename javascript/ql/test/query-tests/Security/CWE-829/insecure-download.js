@@ -33,7 +33,7 @@ function bar() {
 var cp = require("child_process")
 
 function baz() {
-    var url = "http://example.org/unsafe.APK";
+    var url = "http://example.org/unsafe.APK"; // $ Source
     cp.exec("curl " + url, function () {}); // $ Alert
 
     cp.execFile("curl", [url], function () {}); // $ Alert

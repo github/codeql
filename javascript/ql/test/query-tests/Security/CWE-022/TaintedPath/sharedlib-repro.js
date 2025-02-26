@@ -10,7 +10,7 @@ function getTree(req, res, options) {
     var workspaceId = req.params.workspaceId;
     var realfileRootPath = workspaceId; // getfileRoot(workspaceId);
     var filePath = workspaceId; // path.join(options.workspaceDir,realfileRootPath, req.params["0"]);
-    withStatsAndETag(req.params.workspaceId, function (err, stats, etag) {});
+    withStatsAndETag(req.params.workspaceId, function (err, stats, etag) {}); // $ Source
 }
 
 function getfileRoot(workspaceId) {

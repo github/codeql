@@ -3,7 +3,7 @@ const xpath = require('xpath');
 const app = express();
 
 app.get('/some/route', function(req, res) {
-  let tainted = req.param("userName");
+  let tainted = req.param("userName"); // $ Source
   xpath.parse(tainted); // $ Alert
   xpath.select(tainted); // $ Alert
   xpath.select1(tainted); // $ Alert

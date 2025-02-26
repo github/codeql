@@ -21,7 +21,7 @@ app.post('/documents/find', (req, res) => {
 
 app.post('/documents/find', (req, res) => {
     const query = {};
-    query.title = req.query.title;
+    query.title = req.query.title; // $ Source
     MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
       let doc = db.collection('doc');
 

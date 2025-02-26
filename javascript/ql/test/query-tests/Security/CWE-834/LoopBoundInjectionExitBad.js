@@ -5,13 +5,13 @@ var rootRoute = router.route('foobar');
 var _ = require("lodash");
 
 rootRoute.post(function (req, res) {
-	breaks(req.body);
+	breaks(req.body); // $ Source
 	
-	throws(req.body);
+	throws(req.body); // $ Source
 	
-	returns(req.body);
+	returns(req.body); // $ Source
 	
-	lodashThrow(req.body);
+	lodashThrow(req.body); // $ Source
 });
 
 function breaks(val) {

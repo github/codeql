@@ -2,7 +2,7 @@ var http = require("http"),
     url = require("url");
 
 var server = http.createServer(function(req, res) {
-  let s = url.parse(req.url, true).query.s;
+  let s = url.parse(req.url, true).query.s; // $ Source
   let n = parseInt(s);
 
   Buffer.from(s);

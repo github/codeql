@@ -1,6 +1,6 @@
 (function() {
-    sessionStorage.setItem('session', document.location.search);
-    localStorage.setItem('local', document.location.search);
+    sessionStorage.setItem('session', document.location.search); // $ Source
+    localStorage.setItem('local', document.location.search); // $ Source
 
     $('myId').html(sessionStorage.getItem('session')); // $ Alert
     $('myId').html(localStorage.getItem('session'));

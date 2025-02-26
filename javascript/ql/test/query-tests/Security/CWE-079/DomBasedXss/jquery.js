@@ -1,5 +1,5 @@
 function test() {
-  var tainted = document.location.search
+  var tainted = document.location.search // $ Source
 
   $(tainted);                        // OK - location.search starts with '?'
   $("body", tainted);
@@ -15,7 +15,7 @@ function test() {
   elm.innerHTML = decodeURIComponent(window.location.search); // $ Alert
   elm.innerHTML = decodeURIComponent(window.location.toString()); // $ Alert
 
-  let hash = window.location.hash;
+  let hash = window.location.hash; // $ Source
   $(hash); // OK - start with '#'
 
   $(hash.substring(1)); // $ Alert

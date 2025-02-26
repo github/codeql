@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-var secretText = trusted; // sensitive according to SensitiveActions.qll
+var secretText = trusted; // $ Source[js/weak-cryptographic-algorithm] - sensitive according to SensitiveActions.qll
 
 const desCipher = crypto.createCipher('des', key);
 const aesCipher = crypto.createCipher('aes-128', key);

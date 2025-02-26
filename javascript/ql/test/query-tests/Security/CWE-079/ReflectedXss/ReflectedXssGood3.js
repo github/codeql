@@ -132,7 +132,7 @@ function escapeHtml4(s) {
 }
 
 app.get('/user/:id', function (req, res) {
-  const url = req.params.id;
+  const url = req.params.id; // $ Source
 
   res.send(escapeHtml1(url));
   res.send(escapeHtml2(url));

@@ -1,44 +1,44 @@
 var cp = require("child_process")
 
-module.exports.blah = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.blah = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	cp.execFile(name, [name]);
 	cp.execFile(name, name);
 };
 
-module.exports.foo = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.foo = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 }
 
-module.exports.foo.bar = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.foo.bar = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 }
 
 function cla() { }
-cla.prototype.method = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+cla.prototype.method = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 }
 module.exports.cla = new cla();
 
 
 function cla2() { }
-cla2.prototype.method = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+cla2.prototype.method = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 }
 module.exports.bla = new cla2();
 
 module.exports.lib2 = require("./lib2.js")
 
 class Cla3 {
-	constructor(name) {
-		cp.exec("rm -rf " + name); // $ Alert
+	constructor(name) { // $ Source
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	}
-	static foo(name) {
-		cp.exec("rm -rf " + name); // $ Alert
+	static foo(name) { // $ Source
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	}
-	bar(name) {
-		cp.exec("rm -rf " + name); // $ Alert
+	bar(name) { // $ Source
+		cp.exec("rm -rf " + name); // $ Alert Sink
 
 		cp.exec("rm -rf " + notASource);
 	}
@@ -46,41 +46,41 @@ class Cla3 {
 
 module.exports.cla3 = Cla3;
 
-module.exports.mz = function (name) {
-	require("mz/child_process").exec("rm -rf " + name); // $ Alert
+module.exports.mz = function (name) { // $ Source
+	require("mz/child_process").exec("rm -rf " + name); // $ Alert Sink
 }
 
-module.exports.flow = function (name) {
-	var cmd1 = "rm -rf " + name; // $ Alert
+module.exports.flow = function (name) { // $ Source
+	var cmd1 = "rm -rf " + name; // $ Alert Sink
 	cp.exec(cmd1); 
 
-	var cmd2 = "rm -rf " + name;  // $ Alert
+	var cmd2 = "rm -rf " + name;  // $ Alert Sink
 	function myExec(cmd) {
 		cp.exec(cmd);
 	}
 	myExec(cmd2);
 }
 
-module.exports.stringConcat = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.stringConcat = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	cp.exec(name);
 
-	cp.exec("for foo in (" + name + ") do bla end"); // $ Alert
+	cp.exec("for foo in (" + name + ") do bla end"); // $ Alert Sink
 
-	cp.exec("cat /foO/BAR/" + name) // $ Alert
+	cp.exec("cat /foO/BAR/" + name) // $ Alert Sink
 
-	cp.exec("cat \"" + name + "\"") // $ Alert
+	cp.exec("cat \"" + name + "\"") // $ Alert Sink
 
-	cp.exec("cat '" + name + "'") // $ Alert
+	cp.exec("cat '" + name + "'") // $ Alert Sink
 
-	cp.exec("cat '/foo/bar" + name + "'") // $ Alert
+	cp.exec("cat '/foo/bar" + name + "'") // $ Alert Sink
 
 	cp.exec(name + " some file")
 }
 
-module.exports.arrays = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.arrays = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	var args1 = ["node"];
 	args1.push(name); // $ Alert
@@ -94,7 +94,7 @@ module.exports.arrays = function (name) {
 }
 
 var util = require("util");
-module.exports.format = function (name) {
+module.exports.format = function (name) { // $ Source
 	cp.exec(util.format("rm -rf %s", name)); // $ Alert
 
 	cp.exec(util.format("rm -rf '%s'", name)); // $ Alert
@@ -108,8 +108,8 @@ module.exports.format = function (name) {
 	cp.exec(require("printf")('rm -rf %s', name)); // $ Alert
 }
 
-module.exports.valid = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.valid = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (!isValidName(name)) {
 		return;
@@ -117,8 +117,8 @@ module.exports.valid = function (name) {
 	cp.exec("rm -rf " + name);
 }
 
-module.exports.safe = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.safe = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (!isSafeName(name)) {
 		return;
@@ -127,8 +127,8 @@ module.exports.safe = function (name) {
 }
 
 class Cla4 {
-	wha(name) {
-		cp.exec("rm -rf " + name); // $ Alert
+	wha(name) { // $ Source
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	}
 
 	static bla(name) {
@@ -145,20 +145,20 @@ function Cla5(name) {
 }
 module.exports.cla5 = new Cla5();
 
-module.exports.indirect = function (name) {
-	let cmd = "rm -rf " + name; // $ Alert
+module.exports.indirect = function (name) { // $ Source
+	let cmd = "rm -rf " + name; // $ Alert Sink
 	let sh = "sh";
 	let args = ["-c", cmd];
 	cp.spawn(sh, args, cb);
 }
 
-module.exports.indirect2 = function (name) {
+module.exports.indirect2 = function (name) { // $ Source
 	let cmd = name;
 	let sh = "sh";
 	let args = ["-c", cmd];
 	cp.spawn(sh, args, cb);
 
-	let cmd2 = "rm -rf " + name; // $ Alert
+	let cmd2 = "rm -rf " + name; // $ Alert Sink
 	var args2 = [cmd2];
 	cp.spawn(
 		'cmd.exe',
@@ -167,65 +167,65 @@ module.exports.indirect2 = function (name) {
 	);
 }
 
-module.exports.cmd = function (command, name) {
+module.exports.cmd = function (command, name) { // $ Source
 	cp.exec("fo | " + command);
 
-	cp.exec("fo | " + name); // $ Alert
+	cp.exec("fo | " + name); // $ Alert Sink
 
 }
 
-module.exports.sanitizer = function (name) {
+module.exports.sanitizer = function (name) { // $ Source
 	var sanitized = "'" + name.replace(/'/g, "'\\''") + "'"
 	cp.exec("rm -rf " + sanitized);
 
-	var broken = "'" + name.replace(/'/g, "'\''") + "'" // $ Alert
-	cp.exec("rm -rf " + broken); // $ Alert
+	var broken = "'" + name.replace(/'/g, "'\''") + "'" // $ Alert Sink
+	cp.exec("rm -rf " + broken); // $ Alert Sink
 }
 
 var path = require("path");
-module.exports.guard = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.guard = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (!path.exist(name)) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 		return;
 	}
 	cp.exec("rm -rf " + name);
 }
 
-module.exports.blacklistOfChars = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.blacklistOfChars = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (/[^A-Za-z0-9_\/:=-]/.test(name)) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
 		cp.exec("rm -rf " + name);
 	}
 }
 
-module.exports.whitelistOfChars = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.whitelistOfChars = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (/^[A-Za-z0-9_\/:=-]$/.test(name)) {
 		cp.exec("rm -rf " + name);
 	} else {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	}
 }
 
-module.exports.blackList2 = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.blackList2 = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (!/^([a-zA-Z0-9]+))?$/.test(name)) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 		process.exit(-1);
 	}
 
-	cp.exec("rm -rf " + name); // $ SPURIOUS: Alert - FP due to tracking flow through `process.exit()`.
+	cp.exec("rm -rf " + name); // $ Sink SPURIOUS: Alert - FP due to tracking flow through `process.exit()`.
 }
 
-module.exports.accessSync = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.accessSync = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	try {
 		path.accessSync(name);
@@ -233,7 +233,7 @@ module.exports.accessSync = function (name) {
 		return;
 	}
 
-	cp.exec("rm -rf " + name); // $ SPURIOUS: Alert - FP due to `path.accessSync` not being recognized as a sanitizer.
+	cp.exec("rm -rf " + name); // $ Sink SPURIOUS: Alert - FP due to `path.accessSync` not being recognized as a sanitizer.
 }
 
 var cleanInput = function (s) {
@@ -245,27 +245,27 @@ var cleanInput = function (s) {
 	return s;
 }
 
-module.exports.goodSanitizer = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.goodSanitizer = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	var cleaned = cleanInput(name);
 
-	cp.exec("rm -rf " + cleaned); // $ SPURIOUS: Alert - SanitizingRegExpTest is not able to generate a barrier edge for an edge into a phi node.
+	cp.exec("rm -rf " + cleaned); // $ Sink SPURIOUS: Alert - SanitizingRegExpTest is not able to generate a barrier edge for an edge into a phi node.
 }
 
 var fs = require("fs");
-module.exports.guard2 = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.guard2 = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (!fs.existsSync("prefix/" + name)) {
-		cp.exec("rm -rf prefix/" + name); // $ Alert
+		cp.exec("rm -rf prefix/" + name); // $ Alert Sink
 		return;
 	}
 	cp.exec("rm -rf prefix/" + name);
 }
 
-module.exports.sanitizerProperty = function (obj) {
-	cp.exec("rm -rf " + obj.version); // $ Alert
+module.exports.sanitizerProperty = function (obj) { // $ Source
+	cp.exec("rm -rf " + obj.version); // $ Alert Sink
 
 	obj.version = "";
 
@@ -273,12 +273,12 @@ module.exports.sanitizerProperty = function (obj) {
 }
 
 module.exports.Foo = class Foo {
-	start(opts) {
-		cp.exec("rm -rf " + opts.bla); // $ Alert
+	start(opts) { // $ Source
+		cp.exec("rm -rf " + opts.bla); // $ Alert Sink
 		this.opts = {};
 		this.opts.bla = opts.bla
 
-		cp.exec("rm -rf " + this.opts.bla); // $ Alert
+		cp.exec("rm -rf " + this.opts.bla); // $ Alert Sink
 	}
 }
 
@@ -304,25 +304,25 @@ function sanitizeShellString(str) {
   return result
 }
 
-module.exports.sanitizer2 = function (name) {
-  cp.exec("rm -rf " + name); // $ Alert
+module.exports.sanitizer2 = function (name) { // $ Source
+  cp.exec("rm -rf " + name); // $ Alert Sink
 
   var sanitized = sanitizeShellString(name);
   cp.exec("rm -rf " + sanitized);
 }
 
-module.exports.typeofcheck = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.typeofcheck = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 	
 	if (typeof name === "undefined") {
 		cp.exec("rm -rf " + name);
 	} else {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	}
 }
 
-module.exports.typeofcheck = function (arg) {
-	var cmd = "MyWindowCommand | findstr /i /c:" + arg; // $ Alert
+module.exports.typeofcheck = function (arg) { // $ Source
+	var cmd = "MyWindowCommand | findstr /i /c:" + arg; // $ Alert Sink
 	cp.exec(cmd); 
 }
 
@@ -336,8 +336,8 @@ module.exports.unproblematic = function() {
 	cp.exec("rm -rf " + id("test"));
 };
 
-module.exports.problematic = function(n) {
-	cp.exec("rm -rf " + id(n)); // $ Alert
+module.exports.problematic = function(n) { // $ Source
+	cp.exec("rm -rf " + id(n)); // $ Alert Sink
 };
 
 module.exports.typeofNumber = function(n) {
@@ -346,9 +346,9 @@ module.exports.typeofNumber = function(n) {
 	}
 };
 
-function boundProblem(safe, unsafe) {
+function boundProblem(safe, unsafe) { // $ Source
 	cp.exec("rm -rf " + safe);
-	cp.exec("rm -rf " + unsafe); // $ Alert
+	cp.exec("rm -rf " + unsafe); // $ Alert Sink
 }
 
 Object.defineProperty(module.exports, "boundProblem", {
@@ -402,8 +402,8 @@ function yetAnohterSanitizer(str) {
 	return result;
 }
 
-module.exports.sanitizer3 = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.sanitizer3 = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	var sanitized = yetAnohterSanitizer(name);
 	cp.exec("rm -rf " + sanitized);
@@ -411,8 +411,8 @@ module.exports.sanitizer3 = function (name) {
 
 const cp = require("child_process");
 const spawn = cp.spawn;
-module.exports.shellOption = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.shellOption = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	cp.execFile("rm", ["-rf", name], {shell: true}, (err, out) => {}); // $ Alert
 	cp.spawn("rm", ["-rf", name], {shell: true}); // $ Alert
@@ -438,13 +438,13 @@ function build(first, last) {
 };
 
 var asyncExec = require("async-execute");
-module.exports.asyncStuff = function (name) {
-	asyncExec("rm -rf " + name); // $ Alert
+module.exports.asyncStuff = function (name) { // $ Source
+	asyncExec("rm -rf " + name); // $ Alert Sink
 }
 
 const myFuncs = {
-	myFunc: function (name) {
-		asyncExec("rm -rf " + name); // $ Alert
+	myFunc: function (name) { // $ Source
+		asyncExec("rm -rf " + name); // $ Alert Sink
 	}
 };
 
@@ -474,13 +474,13 @@ const {promisify} = require('util');
 
 const exec = promisify(require('child_process').exec);
 
-module.exports.check = function check(config) {
+module.exports.check = function check(config) { // $ Source
     const cmd = path.join(config.installedPath, 'myBinary -v'); // $ Alert
     return exec(cmd);
 }
 
-module.exports.splitConcat = function (name) {
-	let args = ' my name is ' + name; // $ Alert
+module.exports.splitConcat = function (name) { // $ Source
+	let args = ' my name is ' + name; // $ Alert Sink
 	let cmd = 'echo';
 	cp.exec(cmd + args);
 }
@@ -495,8 +495,8 @@ module.exports.myCommand = function (myCommand) {
 		cp: require('child_process')
 	};
 
-	module.exports.myIndirectThing = function (name) {
-		MyThing.cp.exec("rm -rf " + name); // $ Alert
+	module.exports.myIndirectThing = function (name) { // $ Source
+		MyThing.cp.exec("rm -rf " + name); // $ Alert Sink
 	}
 });
   
@@ -506,48 +506,48 @@ for (var name in imp){
   module.exports[name] = imp[name];
 }
 
-module.exports.sanitizer4 = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.sanitizer4 = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (isNaN(name)) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
 		cp.exec("rm -rf " + name);
 	}
 
 	if (isNaN(parseInt(name))) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
 		cp.exec("rm -rf " + name);
 	}
 
 	if (isNaN(+name)) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
 		cp.exec("rm -rf " + name);
 	}
 
 	if (isNaN(parseInt(name, 10))) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
 		cp.exec("rm -rf " + name);
 	}
 
 	if (isNaN(name - 0)) {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
 		cp.exec("rm -rf " + name);
 	}
 
 	if (isNaN(name | 0)) { // <- not a sanitizer
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	} else {
-		cp.exec("rm -rf " + name); // $ Alert
+		cp.exec("rm -rf " + name); // $ Alert Sink
 	}
 }
 
 
-module.exports.shellThing = function (name) {
+module.exports.shellThing = function (name) { // $ Source
     function indirectShell(cmd, args, spawnOpts) {
         cp.spawn(cmd, args, spawnOpts); // $ Alert
     }
@@ -555,28 +555,28 @@ module.exports.shellThing = function (name) {
     indirectShell("rm", ["-rf", name], {shell: true}); // $ Alert
 }
 
-module.exports.badSanitizer = function (name) {
+module.exports.badSanitizer = function (name) { // $ Source
     if (!name.match(/^(.|\.){1,64}$/)) { // <- bad sanitizer
-        exec("rm -rf " + name); // $ Alert
+        exec("rm -rf " + name); // $ Alert Sink
     } else {
-        exec("rm -rf " + name); // $ Alert
+        exec("rm -rf " + name); // $ Alert Sink
     }
 
     if (!name.match(/^\w{1,64}$/)) { // <- good sanitizer
-        exec("rm -rf " + name); // $ Alert
+        exec("rm -rf " + name); // $ Alert Sink
     } else {
         exec("rm -rf " + name);
     }
 }
 
-module.exports.safeWithBool = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.safeWithBool = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (isSafeName(name)) {
 		cp.exec("rm -rf " + name);
 	}
 
-    cp.exec("rm -rf " + name); // $ Alert
+    cp.exec("rm -rf " + name); // $ Alert Sink
 
     if (isSafeName(name) === true) {
         cp.exec("rm -rf " + name);
@@ -587,10 +587,10 @@ module.exports.safeWithBool = function (name) {
     }
 
     if (isSafeName(name) == false) {
-        cp.exec("rm -rf " + name); // $ Alert
+        cp.exec("rm -rf " + name); // $ Alert Sink
     }
 
-    cp.exec("rm -rf " + name); // $ Alert
+    cp.exec("rm -rf " + name); // $ Alert Sink
 }
 
 function indirectThing(name) {
@@ -605,8 +605,8 @@ function moreIndirect(name) {
     return indirectThing2(name) !== false;
 }
 
-module.exports.veryIndeirect = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.veryIndeirect = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 
 	if (indirectThing(name)) {
         cp.exec("rm -rf " + name);
@@ -623,15 +623,15 @@ module.exports.veryIndeirect = function (name) {
     if (moreIndirect(name) !== false) {
         cp.exec("rm -rf " + name);
     } else {
-        cp.exec("rm -rf " + name); // $ Alert
+        cp.exec("rm -rf " + name); // $ Alert Sink
     }
 
-    cp.exec("rm -rf " + name); // $ Alert
+    cp.exec("rm -rf " + name); // $ Alert Sink
 }
 
-module.exports.sanitizer = function (name) {
-	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'" // $ Alert
-	cp.exec("rm -rf " + sanitized); // $ Alert
+module.exports.sanitizer = function (name) { // $ Source
+	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'" // $ Alert Sink
+	cp.exec("rm -rf " + sanitized); // $ Alert Sink
 
 	var sanitized = "'" + name.replace(new RegExp("\'", 'g'), "'\\''") + "'"
 	cp.exec("rm -rf " + sanitized);

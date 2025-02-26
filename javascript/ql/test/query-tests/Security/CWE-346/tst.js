@@ -9,7 +9,7 @@ server.on('request', function(req, res) {
 });
 
 server.on('request', function(req, res) {
-    let origin = url.parse(req.url, true).query.origin;
+    let origin = url.parse(req.url, true).query.origin; // $ Source
     res.setHeader("Access-Control-Allow-Origin", origin); // $ Alert - tainted origin
     res.setHeader("Access-Control-Allow-Credentials", true);
 });

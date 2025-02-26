@@ -5,7 +5,7 @@ function drop(e) {
     if (!dataTransfer) return;
 
     const text = dataTransfer.getData('text/plain');
-    const html = dataTransfer.getData('text/html');
+    const html = dataTransfer.getData('text/html'); // $ Source
     if (!text && !html) return;
 
     e.preventDefault();
@@ -40,7 +40,7 @@ $("#foo").bind('drop', (e) => {
         if (!dataTransfer) return;
 
         const text = dataTransfer.getData('text/plain');
-        const html = dataTransfer.getData('text/html');
+        const html = dataTransfer.getData('text/html'); // $ Source
         if (!text && !html) return;
 
         e.preventDefault();
@@ -68,7 +68,7 @@ async function getDropData(e: DragEvent): Promise<Array<File | string>> {
     }
   
     if (e.dataTransfer.types.includes('text/html')) {
-      const droppedHtml = e.dataTransfer.getData('text/html');
+      const droppedHtml = e.dataTransfer.getData('text/html'); // $ Source
       const container = document.createElement('html');
       container.innerHTML = droppedHtml; // $ Alert
       const imgs = container.getElementsByTagName('img');

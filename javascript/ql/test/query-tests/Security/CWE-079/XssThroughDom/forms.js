@@ -5,10 +5,10 @@ const FormikBasic = () => (
     <div>
         <Formik
             initialValues={{ email: '', password: '' }}
-            validate={values => {
+            validate={values => { // $ Source
                 $("#id").html(values.foo); // $ Alert
             }}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit={(values, { setSubmitting }) => { // $ Source
                 $("#id").html(values.bar); // $ Alert
             }}
         >
@@ -21,17 +21,17 @@ const FormikBasic = () => (
 
 const FormikEnhanced = withFormik({
     mapPropsToValues: () => ({ name: '' }),
-    validate: values => {
+    validate: values => { // $ Source
         $("#id").html(values.email); // $ Alert
     },
 
-    handleSubmit: (values, { setSubmitting }) => {
+    handleSubmit: (values, { setSubmitting }) => { // $ Source
         $("#id").html(values.email); // $ Alert
     }
 })(MyForm);
 
 (function () {
-    const { values, submitForm } = useFormikContext();
+    const { values, submitForm } = useFormikContext(); // $ Source
     $("#id").html(values.email); // $ Alert
 
     $("#id").html(submitForm.email);
@@ -41,7 +41,7 @@ import { Form } from 'react-final-form'
 
 const App = () => (
   <Form
-    onSubmit={async values => {
+    onSubmit={async values => { // $ Source
       $("#id").html(values.stooge); // $ Alert
     }}
     initialValues={{ stooge: 'larry', employed: false }}
@@ -68,7 +68,7 @@ import { useForm } from 'react-hook-form';
 
 function HookForm() {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const onSubmit = (data) => {
+  const onSubmit = (data) => { // $ Source
     $("#id").html(data.name); // $ Alert
   };
 
@@ -89,7 +89,7 @@ function HookForm2() {
       <button
         type="button"
         onClick={() => {
-          const values = getValues(); // { test: "test-input", test1: "test1-input" }
+          const values = getValues(); // $ Source - { test: "test-input", test1: "test1-input" }
           $("#id").html(values.name); // $ Alert
         }}
       >

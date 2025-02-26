@@ -1,14 +1,14 @@
-module.exports.xssThroughHTMLConstruction = function (s) {
+module.exports.xssThroughHTMLConstruction = function (s) { // $ Source
     const html = "<span>" + s + "</span>";// $ Alert
     document.querySelector("#html").innerHTML = html;
 }
  
-module.exports.xssThroughXMLParsing = function (s) {
+module.exports.xssThroughXMLParsing = function (s) { // $ Source
     const doc = new DOMParser().parseFromString(s, "text/xml"); // $ Alert
     document.querySelector("#xml").appendChild(doc.documentElement);
 }
 
-module.exports.xssThroughMoreComplexXMLParsing = function (s) {
+module.exports.xssThroughMoreComplexXMLParsing = function (s) { // $ Source
     const doc = new DOMParser().parseFromString(s, "text/xml"); // $ Alert
     const xml = doc.documentElement;
     
@@ -18,7 +18,7 @@ module.exports.xssThroughMoreComplexXMLParsing = function (s) {
 }
 
 const markdown = require('markdown-it')({html: true});
-module.exports.xssThroughMarkdown = function (s) {
+module.exports.xssThroughMarkdown = function (s) { // $ Source
     const html = markdown.render(s); // $ Alert
     document.querySelector("#markdown").innerHTML = html;
 }
@@ -53,7 +53,7 @@ module.exports.createsClass = function (s) {
     return new Foo(s);
 }
 
-$.fn.xssPlugin = function (options) {
+$.fn.xssPlugin = function (options) { // $ Source
     const defaults = {
         name: "name"
     };
@@ -63,7 +63,7 @@ $.fn.xssPlugin = function (options) {
     });
 }
 
-module.exports.guards = function (attrVal) {
+module.exports.guards = function (attrVal) { // $ Source
     document.querySelector("#id").innerHTML = "<img alt=\"" + attrVal + "\"/>"; // $ Alert
     document.querySelector("#id").innerHTML = "<img alt=\"" + attrVal.replace(/"|'/g, "") + "\"/>";
     if (attrVal.indexOf("\"") === -1 && attrVal.indexOf("'") === -1) {
@@ -76,7 +76,7 @@ module.exports.intentionalTemplate = function (obj) {
     document.querySelector("#template").innerHTML = html;
 }
 
-module.exports.types = function (val) {
+module.exports.types = function (val) { // $ Source
     if (typeof val === "string") {
         $("#foo").html("<span>" + val + "</span>"); // $ Alert
     } else if (typeof val === "number") {
@@ -90,12 +90,12 @@ function createHTML(x) {
     return "<span>" + x + "</span>"; // $ Alert
 }
 
-module.exports.usesCreateHTML = function (x) {
+module.exports.usesCreateHTML = function (x) { // $ Source
     $("#foo").html(createHTML(x));
 }
 
 const myMermaid = require('mermaid');
-module.exports.usesCreateHTML = function (x) {
+module.exports.usesCreateHTML = function (x) { // $ Source
     myMermaid.render("id", x, function (svg) { // $ Alert
         $("#foo").html(svg);
     });
@@ -113,7 +113,7 @@ module.exports.usesCreateHTML = function (x) {
     });
 }
 
-module.exports.xssThroughMarkdown = function (s) {
+module.exports.xssThroughMarkdown = function (s) { // $ Source
     const html = markdown.render(s); // $ Alert
     document.querySelector("#markdown").innerHTML = html;
 }

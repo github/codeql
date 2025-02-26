@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTooltip from 'react-tooltip';
 
 function tooltips() {
-    const source = window.name;
+    const source = window.name; // $ Source
     return <span>
         <span data-tip={source}/>
         <span data-tip={source} data-html={false} />
@@ -19,6 +19,6 @@ function MyElement(props) {
 }
 
 function useMyElement() {
-    const source = window.name;
+    const source = window.name; // $ Source
     return <MyElement provide={() => source} />;
 }

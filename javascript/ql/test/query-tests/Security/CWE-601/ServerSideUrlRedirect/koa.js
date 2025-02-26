@@ -3,7 +3,7 @@ const urlLib = require('url');
 const app = new Koa();
 
 app.use(async ctx => {
-	var url = ctx.query.target;
+	var url = ctx.query.target; // $ Source
 	ctx.redirect(url); // $ Alert
 	ctx.redirect(`${url}${x}`); // $ Alert
 

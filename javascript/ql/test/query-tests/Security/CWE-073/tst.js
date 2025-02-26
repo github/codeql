@@ -4,8 +4,8 @@ app.set('view engine', 'hbs');
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: false }));
 app.post('/path', function(req, res) {
-    var bodyParameter = req.body.bodyParameter;
-    var queryParameter = req.query.queryParameter;
+    var bodyParameter = req.body.bodyParameter; // $ Source
+    var queryParameter = req.query.queryParameter; // $ Source
 
     res.render('template', bodyParameter); // $ Alert
     res.render('template', queryParameter); // $ Alert

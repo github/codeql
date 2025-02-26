@@ -12,7 +12,7 @@ try {
   },
   (response) => {
     response.setEncoding('utf8');
-    response.on('data', (c) => {
+    response.on('data', (c) => { // $ Source
       fs.writeFile("/tmp/test", c, (err) => {}); // $ Alert - data from response 'on' event flows to file
 
       let writeStream = fs.createWriteStream('/usr/evil/evil.cmd');

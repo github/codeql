@@ -2,6 +2,6 @@
 
 const cp = require("child_process");
 
-module.exports.thisMethodIsImported = function (name) {
-	cp.exec("rm -rf " + name); // $ Alert
+module.exports.thisMethodIsImported = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert Sink
 }

@@ -16,7 +16,7 @@ app.get('/some/path', function(req, res) {
 
 const cp = require('child_process');
 app.get('/other/path', function(req, res) {
-  const taint = req.param("wobble");
+  const taint = req.param("wobble"); // $ Source[js/code-injection]
   cp.execFileSync('node', ['-e', taint]); // $ Alert[js/code-injection]
 
   cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]);
@@ -24,7 +24,7 @@ app.get('/other/path', function(req, res) {
 
 const pty = require('node-pty');
 app.get('/terminal', function(req, res) {
-  const taint = req.param("wobble");
+  const taint = req.param("wobble"); // $ Source[js/code-injection]
   const shell = pty.spawn('bash', [], {
     name: 'xterm-color',
     cols: 80,
@@ -39,7 +39,7 @@ app.get('/terminal', function(req, res) {
 require("express-ws")(app);
 
 app.ws("/socket-thing/", function (ws, req) {
-  ws.on("message", function (msg) {
+  ws.on("message", function (msg) { // $ Source[js/code-injection]
     eval(msg); // $ Alert[js/code-injection]
   });
 });

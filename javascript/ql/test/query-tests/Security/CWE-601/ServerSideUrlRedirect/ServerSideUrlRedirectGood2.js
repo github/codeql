@@ -13,7 +13,7 @@ function isLocalUrl(path) {
 
 app.get("/redirect", function (req, res) {
   // OK - check that we don't redirect to a different host
-  let target = req.query["target"];
+  let target = req.query["target"]; // $ Source
   if (isLocalUrl(target)) {
     res.redirect(target); // $ SPURIOUS: Alert - sanitiser not recognised
   } else {

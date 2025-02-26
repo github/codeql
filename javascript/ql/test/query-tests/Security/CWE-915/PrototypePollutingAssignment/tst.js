@@ -2,7 +2,7 @@ let express = require('express');
 let app = express();
 
 app.get('/', (req, res) => {
-    let taint = String(req.query.data);
+    let taint = String(req.query.data); // $ Source
 
     let object = {};
     object[taint][taint] = taint; // $ Alert
@@ -74,7 +74,7 @@ class Box {
 
 
 app.get('/', (req, res) => {
-    let taint = String(req.query.data);
+    let taint = String(req.query.data); // $ Source
 
     let object = {};
     object[taint][taint] = taint; // $ Alert
@@ -99,7 +99,7 @@ app.get('/foo', (req, res) => {
 });
 
 app.get('/bar', (req, res) => {
-    let taint = String(req.query.data);
+    let taint = String(req.query.data); // $ Source
 
     let object = {};
     object[taint][taint] = taint; // $ Alert

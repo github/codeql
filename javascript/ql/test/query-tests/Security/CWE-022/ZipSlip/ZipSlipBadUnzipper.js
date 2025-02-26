@@ -5,5 +5,5 @@ fs.createReadStream('path/to/archive.zip')
   .pipe(unzipper.Parse())
   .on('entry', function (entry) {
     var fileName = entry.path; // $ Alert
-    entry.pipe(fs.createWriteStream(fileName));
+    entry.pipe(fs.createWriteStream(fileName)); // $ Sink
   });

@@ -5,7 +5,7 @@ const pool = new pg.Pool(config);
 
 function handler(req, res) {
   var query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-             + req.params.category + "' ORDER BY PRICE";
+             + req.params.category + "' ORDER BY PRICE"; // $ Source
   pool.query(query1, [], function(err, results) { // $ Alert - the category might have SQL special characters in it
     // process results
   });

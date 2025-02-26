@@ -2,7 +2,7 @@ var express = require('express');
 var Koa = require('koa');
 
 express().get('/some/path', function (req, res) {
-    var foo = req.query.foo;
+    var foo = req.query.foo; // $ Source
     foo.indexOf(); // $ Alert
 
     foo.concat(); // $ Alert
@@ -44,7 +44,7 @@ express().get('/some/path', function (req, res) {
 });
 
 new Koa().use(function handler(ctx) {
-    var foo = ctx.request.query.foo;
+    var foo = ctx.request.query.foo; // $ Source
     foo.indexOf(); // $ Alert
 });
 
@@ -76,7 +76,7 @@ express().get('/some/path/:foo', function (req, res) {
 
 express().get('/some/path/:foo', function (req, res) {
     let someObject = {};
-    safeGet(someObject, req.query.path).bar = 'baz'; // prototype pollution here - but flagged in `safeGet`
+    safeGet(someObject, req.query.path).bar = 'baz'; // $ Source - prototype pollution here - but flagged in `safeGet`
 });
 
 function safeGet(obj, p) {
@@ -102,7 +102,7 @@ express().get('/foo', function (req, res) {
 });
 
 express().get('/foo', function (req, res) {
-    let data = req.query.data;
+    let data = req.query.data; // $ Source
     data.indexOf(); // $ Alert
     if (Array.isArray(data)) {
         data.indexOf();

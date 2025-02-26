@@ -13,7 +13,7 @@ let server = app.listen(port, () =>
 function indirection1() {
   fs.readFile("/foo", (err, x) => {
     throw err; // $ Alert[js/server-crash]
-  });
+  }); // $ Sink[js/server-crash]
 }
 function indirection2() {
   throw 42; // $ Alert[js/server-crash]
@@ -22,7 +22,7 @@ function indirection3() {
   try {
     fs.readFile("/foo", (err, x) => {
       throw err; // $ Alert[js/server-crash]
-    });
+    }); // $ Sink[js/server-crash]
   } catch (e) {}
 }
 function indirection4() {
@@ -34,12 +34,12 @@ function indirection5() {
 function indirection6() {
   fs.readFile("/foo", (err, x) => {
     throw err; // $ Alert[js/server-crash]
-  });
+  }); // $ Sink[js/server-crash]
 }
 app.get("/async-throw", (req, res) => {
   fs.readFile("/foo", (err, x) => {
     throw err; // $ Alert[js/server-crash]
-  });
+  }); // $ Sink[js/server-crash]
   fs.readFile("/foo", (err, x) => {
     try {
       throw err; // OK - guarded throw
@@ -57,7 +57,7 @@ app.get("/async-throw", (req, res) => {
   indirection1();
   fs.readFile("/foo", (err, x) => {
     indirection2();
-  });
+  }); // $ Sink[js/server-crash]
 
   indirection3();
   try {
@@ -86,13 +86,13 @@ app.get("/async-throw", (req, res) => {
 function indirection7() {
   fs.readFile("/foo", (err, x) => {
     throw err; // $ Alert[js/server-crash]
-  });
+  }); // $ Sink[js/server-crash]
 }
 
 app.get("/async-throw-again", (req, res) => {
   fs.readFile("foo", () => {
     throw "e"; // $ Alert[js/server-crash]
-  });
+  }); // $ Sink[js/server-crash]
   fs.readFileSync("foo", () => {
     throw "e"; // OK - does not take callbacks at all
   });
@@ -100,14 +100,14 @@ app.get("/async-throw-again", (req, res) => {
   fs.readFile("foo", () => {
     fs.readFile("bar", () => {
       throw "e"; // $ Alert[js/server-crash]
-    });
+    }); // $ Sink[js/server-crash]
   });
   fs.readFile("foo", () => {
     // can not catch async exceptions
     try {
       fs.readFile("bar", () => {
         throw "e"; // $ Alert[js/server-crash]
-      });
+      }); // $ Sink[js/server-crash]
     } catch (e) {}
   });
   // can mix sync/async calls
@@ -115,7 +115,7 @@ app.get("/async-throw-again", (req, res) => {
     (() =>
       fs.readFile("bar", () => {
         throw "e"; // $ Alert[js/server-crash]
-      }))();
+      }))(); // $ Sink[js/server-crash]
   });
 });
 
@@ -129,7 +129,7 @@ app.get("/throw-in-promise-2", async (req, res) => {
   async function fun() {
     fs.readFile("/foo", (err, x) => {
       throw err; // $ Alert[js/server-crash]
-    });
+    }); // $ Sink[js/server-crash]
   }
   await fun();
 });
@@ -155,7 +155,7 @@ app.get("/throw-with-ambiguous-paths", (req, res) => {
 
   function cb() {
     throwError(); // on path
-  }
+  } // $ Sink[js/server-crash]
   function withAsync() {
     throwError(); // not on path
     fs.stat(X, cb);

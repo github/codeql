@@ -10,7 +10,7 @@ app.get("/some/path", (req, res) => {
     res.send(x + y); // $ Alert
   }
   
-  let callback = sendResponse.bind(null, req.url);
+  let callback = sendResponse.bind(null, req.url); // $ Source
   [1, 2, 3].forEach(callback);
 });
 
@@ -19,7 +19,7 @@ app.get("/underscore", (req, res) => {
     res.send(x + y); // $ Alert
   }
   
-  let callback = underscore.partial(sendResponse, req.url);
+  let callback = underscore.partial(sendResponse, req.url); // $ Source
   [1, 2, 3].forEach(callback);
 });
 
@@ -28,7 +28,7 @@ app.get("/lodash", (req, res) => {
     res.send(x + y); // $ Alert
   }
   
-  let callback = lodash.partial(sendResponse, req.url);
+  let callback = lodash.partial(sendResponse, req.url); // $ Source
   [1, 2, 3].forEach(callback);
 });
 
@@ -37,7 +37,7 @@ app.get("/ramda", (req, res) => {
     res.send(x + y); // $ Alert
   }
   
-  let callback = R.partial(sendResponse, [req.url]);
+  let callback = R.partial(sendResponse, [req.url]); // $ Source
   [1, 2, 3].forEach(callback);
 });
 
