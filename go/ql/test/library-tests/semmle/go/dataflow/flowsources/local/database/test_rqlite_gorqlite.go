@@ -55,7 +55,11 @@ func test_rqlite_gorqlite(conn *gorqlite.Connection, ctx context.Context, query 
 		return
 	}
 
-	sink(v5) // $ hasTaintFlow="v5"
+	r5, err := v5.Map()
+
+	r5Name := r5["name"]
+
+	sink(r5Name) // $ hasTaintFlow="r5Name"
 
 	v6, err := conn.QueryOneParameterizedContext(ctx, parameterize(query[0])) // $ source
 	if err != nil {
