@@ -66,7 +66,9 @@ write_file(
         'DST_DIR="$(dirname "$(rlocation "$1")")"',
         'mkdir -p "$DST_DIR/src/codegen/grammar"',
     ] + [
-        'cp -f --no-preserve=mode "$(rlocation "$%s")" "$DST_DIR/%s"' % item
+        # using cat instead of cp to honor default umask
+        # (also, macOS does not support `cp --no-preserve=mode`)
+        'cat "$(rlocation "$%s")" > "$DST_DIR/%s"' % item
         for item in enumerate(_codegen_outs, 2)
     ],
     is_executable = True,

@@ -9,11 +9,10 @@
 | gen_path_expr.rs:7:13:7:15 | <...> | hasQualifier: | no | hasPart: | yes |
 | gen_path_expr.rs:7:13:7:20 | ...::foo | hasQualifier: | yes | hasPart: | yes |
 | gen_path_expr.rs:7:14:7:14 | T | hasQualifier: | no | hasPart: | yes |
-| gen_path_expr.rs:7:14:7:14 | T | hasQualifier: | no | hasPart: | yes |
 | gen_path_expr.rs:8:13:8:31 | <...> | hasQualifier: | no | hasPart: | yes |
 | gen_path_expr.rs:8:13:8:36 | ...::foo | hasQualifier: | yes | hasPart: | yes |
 | gen_path_expr.rs:8:14:8:21 | TypeRepr | hasQualifier: | no | hasPart: | yes |
-| gen_path_expr.rs:8:14:8:21 | TypeRepr | hasQualifier: | no | hasPart: | yes |
+| gen_path_expr.rs:8:26:8:30 | Trait | hasQualifier: | no | hasPart: | yes |
 | gen_path_pat.rs:5:11:5:11 | x | hasQualifier: | no | hasPart: | yes |
 | gen_path_pat.rs:6:9:6:11 | Foo | hasQualifier: | no | hasPart: | yes |
 | gen_path_pat.rs:6:9:6:16 | ...::Bar | hasQualifier: | yes | hasPart: | yes |

@@ -405,16 +405,15 @@ module Node {
   /** An SSA node. */
   class SsaNode extends Node, TSsaNode {
     SsaImpl::DataFlowIntegration::SsaNode node;
-    SsaImpl::DefinitionExt def;
 
-    SsaNode() {
-      this = TSsaNode(node) and
-      def = node.getDefinitionExt()
+    SsaNode() { this = TSsaNode(node) }
+
+    override CfgScope getCfgScope() { result = node.getBasicBlock().getScope() }
+
+    /** Gets the definition this node corresponds to, if any. */
+    SsaImpl::Definition asDefinition() {
+      result = node.(SsaImpl::DataFlowIntegration::SsaDefinitionNode).getDefinition()
     }
-
-    override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
-
-    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
     override Location getLocation() { result = node.getLocation() }
 
@@ -634,7 +633,7 @@ module LocalFlow {
     or
     // An edge from a pattern/expression to its corresponding SSA definition.
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
-      nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
+      nodeTo.(Node::SsaNode).asDefinition().(Ssa::WriteDefinition).getControlFlowNode()
     or
     nodeFrom.(Node::SourceParameterNode).getParameter().(ParamCfgNode).getPat() = nodeTo.asPat()
     or

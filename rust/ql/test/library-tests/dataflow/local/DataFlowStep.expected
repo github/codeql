@@ -4,6 +4,10 @@ localStep
 | file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::option::Option>::is_some_and | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::is_some_and | MaD:26 |
 | file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::option::Option>::map | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::map | MaD:28 |
 | file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::option::Option>::take_if | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::take_if | MaD:43 |
+| file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | MaD:74 |
+| file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | MaD:75 |
+| file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | MaD:80 |
+| file://:0:0:0:0 | [post] [summary] to write: Argument[0].Parameter[0] in lang:core::_::crate::iter::traits::iterator::Iterator::map | file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::map | MaD:81 |
 | file://:0:0:0:0 | [post] [summary] to write: Argument[1].Parameter[0] in lang:core::_::<crate::option::Option>::map_or | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::map_or | MaD:31 |
 | file://:0:0:0:0 | [post] [summary] to write: Argument[1].Parameter[0] in lang:core::_::<crate::option::Option>::map_or_else | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::map_or_else | MaD:34 |
 | file://:0:0:0:0 | [post] [summary] to write: Argument[1].Parameter[0] in lang:core::_::<crate::option::Option>::zip_with | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | MaD:61 |
@@ -34,7 +38,11 @@ localStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::xor | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::xor | MaD:55 |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::unwrap_or | MaD:67 |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::result::Result>::unwrap_or_else | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[closure self] in lang:core::_::<crate::result::Result>::unwrap_or_else | MaD:70 |
-| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::hint::must_use | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::hint::must_use | MaD:73 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[closure self] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | MaD:74 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[closure self] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | MaD:75 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::hint::must_use | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::hint::must_use | MaD:78 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[closure self] in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | MaD:80 |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::iter::traits::iterator::Iterator::map | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[closure self] in lang:core::_::crate::iter::traits::iterator::Iterator::map | MaD:81 |
 | file://:0:0:0:0 | [summary param] 1 in lang:core::_::<crate::option::Option>::map_or | file://:0:0:0:0 | [summary] to write: Argument[1].Parameter[closure self] in lang:core::_::<crate::option::Option>::map_or | MaD:30 |
 | file://:0:0:0:0 | [summary param] 1 in lang:core::_::<crate::option::Option>::map_or | file://:0:0:0:0 | [summary] to write: Argument[1].Parameter[closure self] in lang:core::_::<crate::option::Option>::map_or | MaD:31 |
 | file://:0:0:0:0 | [summary param] 1 in lang:core::_::<crate::option::Option>::map_or_else | file://:0:0:0:0 | [summary] to write: Argument[1].Parameter[closure self] in lang:core::_::<crate::option::Option>::map_or_else | MaD:33 |
@@ -61,8 +69,16 @@ localStep
 | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:core::_::<crate::option::Option>::map_or | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::map_or | MaD:30 |
 | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:core::_::<crate::option::Option>::map_or_else | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::map_or_else | MaD:33 |
 | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:core::_::<crate::option::Option>::zip_with | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | MaD:60 |
-| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | MaD:74 |
-| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::nth | MaD:75 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect | MaD:73 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | MaD:74 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | MaD:75 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next | MaD:76 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth | MaD:77 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | MaD:79 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | MaD:80 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::map | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:core::_::crate::iter::traits::iterator::Iterator::map | MaD:81 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::next | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::next | MaD:82 |
+| file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::nth | MaD:83 |
 | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option as crate::clone::Clone>::clone | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option as crate::clone::Clone>::clone | MaD:2 |
 | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::and_then | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:core::_::<crate::option::Option>::and_then | MaD:7 |
 | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::cloned | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::cloned | MaD:10 |
@@ -721,26 +737,103 @@ localStep
 | main.rs:444:9:444:9 | s | main.rs:444:9:444:9 | s |  |
 | main.rs:444:13:444:27 | MacroExpr | main.rs:444:9:444:9 | s |  |
 | main.rs:444:25:444:26 | source(...) | main.rs:444:13:444:27 | MacroExpr |  |
-| main.rs:449:9:449:9 | [SSA] a | main.rs:454:10:454:10 | a |  |
-| main.rs:449:9:449:9 | a | main.rs:449:9:449:9 | [SSA] a |  |
-| main.rs:449:9:449:9 | a | main.rs:449:9:449:9 | a |  |
-| main.rs:449:13:449:22 | source(...) | main.rs:449:9:449:9 | a |  |
-| main.rs:450:9:450:9 | [SSA] b | main.rs:455:15:455:15 | b |  |
-| main.rs:450:9:450:9 | b | main.rs:450:9:450:9 | [SSA] b |  |
-| main.rs:450:9:450:9 | b | main.rs:450:9:450:9 | b |  |
-| main.rs:450:13:450:22 | source(...) | main.rs:450:9:450:9 | b |  |
-| main.rs:451:9:451:9 | [SSA] c | main.rs:452:18:452:18 | c |  |
-| main.rs:451:9:451:9 | c | main.rs:451:9:451:9 | [SSA] c |  |
-| main.rs:451:9:451:9 | c | main.rs:451:9:451:9 | c |  |
-| main.rs:451:13:451:22 | source(...) | main.rs:451:9:451:9 | c |  |
-| main.rs:452:9:452:13 | [SSA] c_ref | main.rs:456:14:456:18 | c_ref |  |
-| main.rs:452:9:452:13 | c_ref | main.rs:452:9:452:13 | [SSA] c_ref |  |
-| main.rs:452:9:452:13 | c_ref | main.rs:452:9:452:13 | c_ref |  |
-| main.rs:452:17:452:18 | &c | main.rs:452:9:452:13 | c_ref |  |
-| main.rs:456:14:456:18 | [post] c_ref | main.rs:457:11:457:15 | c_ref |  |
-| main.rs:456:14:456:18 | c_ref | main.rs:457:11:457:15 | c_ref |  |
-| main.rs:483:13:483:33 | result_questionmark(...) | main.rs:483:9:483:9 | _ |  |
-| main.rs:495:36:495:41 | ...::new(...) | main.rs:495:36:495:41 | MacroExpr |  |
+| main.rs:448:16:448:16 | [SSA] s | main.rs:449:20:449:20 | s |  |
+| main.rs:448:16:448:16 | s | main.rs:448:16:448:16 | [SSA] s |  |
+| main.rs:448:16:448:16 | s | main.rs:448:16:448:16 | s |  |
+| main.rs:448:16:448:24 | ...: String | main.rs:448:16:448:16 | s |  |
+| main.rs:449:14:449:20 | FormatArgsExpr | main.rs:449:14:449:20 | MacroExpr |  |
+| main.rs:449:14:449:20 | MacroExpr | main.rs:449:5:449:21 | ...::_print | MaD:1 |
+| main.rs:453:9:453:9 | [SSA] a | main.rs:454:13:454:13 | a |  |
+| main.rs:453:9:453:9 | a | main.rs:453:9:453:9 | [SSA] a |  |
+| main.rs:453:9:453:9 | a | main.rs:453:9:453:9 | a |  |
+| main.rs:453:13:453:22 | source(...) | main.rs:453:9:453:9 | a |  |
+| main.rs:454:9:454:9 | [SSA] b | main.rs:455:13:455:13 | b |  |
+| main.rs:454:9:454:9 | b | main.rs:454:9:454:9 | [SSA] b |  |
+| main.rs:454:9:454:9 | b | main.rs:454:9:454:9 | b |  |
+| main.rs:454:13:454:13 | [post] a | main.rs:458:10:458:10 | a |  |
+| main.rs:454:13:454:13 | a | main.rs:458:10:458:10 | a |  |
+| main.rs:454:13:454:25 | a.to_string(...) | main.rs:454:9:454:9 | b |  |
+| main.rs:455:9:455:9 | [SSA] c | main.rs:460:10:460:10 | c |  |
+| main.rs:455:9:455:9 | c | main.rs:455:9:455:9 | [SSA] c |  |
+| main.rs:455:9:455:9 | c | main.rs:455:9:455:9 | c |  |
+| main.rs:455:13:455:13 | [post] b | main.rs:456:19:456:19 | b |  |
+| main.rs:455:13:455:13 | b | main.rs:456:19:456:19 | b |  |
+| main.rs:455:13:455:37 | ... .unwrap(...) | main.rs:455:9:455:9 | c |  |
+| main.rs:456:9:456:9 | [SSA] d | main.rs:461:10:461:10 | d |  |
+| main.rs:456:9:456:9 | d | main.rs:456:9:456:9 | [SSA] d |  |
+| main.rs:456:9:456:9 | d | main.rs:456:9:456:9 | d |  |
+| main.rs:456:19:456:19 | [post] b | main.rs:459:17:459:17 | b |  |
+| main.rs:456:19:456:19 | b | main.rs:459:17:459:17 | b |  |
+| main.rs:456:19:456:36 | ... .unwrap(...) | main.rs:456:9:456:9 | d |  |
+| main.rs:465:9:465:10 | [SSA] vs | main.rs:467:10:467:11 | vs |  |
+| main.rs:465:9:465:10 | vs | main.rs:465:9:465:10 | [SSA] vs |  |
+| main.rs:465:9:465:10 | vs | main.rs:465:9:465:10 | vs |  |
+| main.rs:465:14:465:34 | [...] | main.rs:465:9:465:10 | vs |  |
+| main.rs:467:10:467:11 | [post] vs | main.rs:468:11:468:12 | vs |  |
+| main.rs:467:10:467:11 | vs | main.rs:468:11:468:12 | vs |  |
+| main.rs:468:11:468:12 | [post] vs | main.rs:469:11:469:12 | vs |  |
+| main.rs:468:11:468:12 | vs | main.rs:469:11:469:12 | vs |  |
+| main.rs:469:11:469:12 | [post] vs | main.rs:471:14:471:15 | vs |  |
+| main.rs:469:11:469:12 | vs | main.rs:471:14:471:15 | vs |  |
+| main.rs:471:9:471:9 | [SSA] v | main.rs:472:14:472:14 | v |  |
+| main.rs:471:9:471:9 | v | main.rs:471:9:471:9 | [SSA] v |  |
+| main.rs:471:9:471:9 | v | main.rs:471:9:471:9 | v |  |
+| main.rs:471:14:471:15 | vs | main.rs:474:15:474:16 | vs |  |
+| main.rs:474:10:474:10 | [SSA] v | main.rs:475:14:475:14 | v |  |
+| main.rs:474:10:474:10 | v | main.rs:474:10:474:10 | [SSA] v |  |
+| main.rs:474:10:474:10 | v | main.rs:474:10:474:10 | v |  |
+| main.rs:474:15:474:16 | [post] vs | main.rs:478:27:478:28 | vs |  |
+| main.rs:474:15:474:16 | vs | main.rs:478:27:478:28 | vs |  |
+| main.rs:478:9:478:11 | [SSA] vs2 | main.rs:479:15:479:17 | vs2 |  |
+| main.rs:478:9:478:11 | vs2 | main.rs:478:9:478:11 | [SSA] vs2 |  |
+| main.rs:478:9:478:11 | vs2 | main.rs:478:9:478:11 | vs2 |  |
+| main.rs:478:27:478:28 | [post] vs | main.rs:483:5:483:6 | vs |  |
+| main.rs:478:27:478:28 | vs | main.rs:483:5:483:6 | vs |  |
+| main.rs:478:27:478:45 | ... .collect(...) | main.rs:478:9:478:11 | vs2 |  |
+| main.rs:479:10:479:10 | [SSA] v | main.rs:480:14:480:14 | v |  |
+| main.rs:479:10:479:10 | v | main.rs:479:10:479:10 | [SSA] v |  |
+| main.rs:479:10:479:10 | v | main.rs:479:10:479:10 | v |  |
+| main.rs:483:5:483:6 | [post] vs | main.rs:484:5:484:6 | vs |  |
+| main.rs:483:5:483:6 | vs | main.rs:484:5:484:6 | vs |  |
+| main.rs:483:20:483:20 | ... | main.rs:483:20:483:20 | x |  |
+| main.rs:483:20:483:20 | [SSA] x | main.rs:483:29:483:29 | x |  |
+| main.rs:483:20:483:20 | x | main.rs:483:20:483:20 | [SSA] x |  |
+| main.rs:483:20:483:20 | x | main.rs:483:20:483:20 | x |  |
+| main.rs:484:5:484:6 | [post] vs | main.rs:486:14:486:15 | vs |  |
+| main.rs:484:5:484:6 | vs | main.rs:486:14:486:15 | vs |  |
+| main.rs:484:25:484:25 | ... | main.rs:484:25:484:25 | x |  |
+| main.rs:484:25:484:25 | [SSA] x | main.rs:484:34:484:34 | x |  |
+| main.rs:484:25:484:25 | x | main.rs:484:25:484:25 | [SSA] x |  |
+| main.rs:484:25:484:25 | x | main.rs:484:25:484:25 | x |  |
+| main.rs:486:9:486:9 | [SSA] v | main.rs:487:14:487:14 | v |  |
+| main.rs:486:9:486:9 | v | main.rs:486:9:486:9 | [SSA] v |  |
+| main.rs:486:9:486:9 | v | main.rs:486:9:486:9 | v |  |
+| main.rs:490:9:490:18 | mut vs_mut | main.rs:490:13:490:18 | vs_mut |  |
+| main.rs:490:22:490:42 | [...] | main.rs:490:9:490:18 | mut vs_mut |  |
+| main.rs:496:5:498:5 | for ... in ... { ... } | main.rs:464:16:499:1 | { ... } |  |
+| main.rs:496:14:496:14 | [SSA] v | main.rs:497:14:497:14 | v |  |
+| main.rs:496:14:496:14 | v | main.rs:496:14:496:14 | [SSA] v |  |
+| main.rs:496:14:496:14 | v | main.rs:496:14:496:14 | v |  |
+| main.rs:502:9:502:9 | [SSA] a | main.rs:507:10:507:10 | a |  |
+| main.rs:502:9:502:9 | a | main.rs:502:9:502:9 | [SSA] a |  |
+| main.rs:502:9:502:9 | a | main.rs:502:9:502:9 | a |  |
+| main.rs:502:13:502:22 | source(...) | main.rs:502:9:502:9 | a |  |
+| main.rs:503:9:503:9 | [SSA] b | main.rs:508:15:508:15 | b |  |
+| main.rs:503:9:503:9 | b | main.rs:503:9:503:9 | [SSA] b |  |
+| main.rs:503:9:503:9 | b | main.rs:503:9:503:9 | b |  |
+| main.rs:503:13:503:22 | source(...) | main.rs:503:9:503:9 | b |  |
+| main.rs:504:9:504:9 | [SSA] c | main.rs:505:18:505:18 | c |  |
+| main.rs:504:9:504:9 | c | main.rs:504:9:504:9 | [SSA] c |  |
+| main.rs:504:9:504:9 | c | main.rs:504:9:504:9 | c |  |
+| main.rs:504:13:504:22 | source(...) | main.rs:504:9:504:9 | c |  |
+| main.rs:505:9:505:13 | [SSA] c_ref | main.rs:509:14:509:18 | c_ref |  |
+| main.rs:505:9:505:13 | c_ref | main.rs:505:9:505:13 | [SSA] c_ref |  |
+| main.rs:505:9:505:13 | c_ref | main.rs:505:9:505:13 | c_ref |  |
+| main.rs:505:17:505:18 | &c | main.rs:505:9:505:13 | c_ref |  |
+| main.rs:509:14:509:18 | [post] c_ref | main.rs:510:11:510:15 | c_ref |  |
+| main.rs:509:14:509:18 | c_ref | main.rs:510:11:510:15 | c_ref |  |
+| main.rs:536:13:536:33 | result_questionmark(...) | main.rs:536:9:536:9 | _ |  |
+| main.rs:548:36:548:41 | ...::new(...) | main.rs:548:36:548:41 | MacroExpr |  |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:core; <crate::option::Option as crate::clone::Clone>::clone; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
@@ -814,11 +907,23 @@ models
 | 70 | Summary: lang:core; <crate::result::Result>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
 | 71 | Summary: lang:core; <crate::result::Result>::unwrap_or_else; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
 | 72 | Summary: lang:core; <crate::result::Result>::unwrap_unchecked; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 73 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
-| 74 | Summary: lang:core; crate::iter::traits::iterator::Iterator::collect; Argument[self].Element; ReturnValue.Element; value |
-| 75 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 73 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect; Argument[self].Element; ReturnValue.Element; value |
+| 74 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 75 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 76 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 77 | Summary: lang:core; <crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 78 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
+| 79 | Summary: lang:core; crate::iter::traits::iterator::Iterator::collect; Argument[self].Element; ReturnValue.Element; value |
+| 80 | Summary: lang:core; crate::iter::traits::iterator::Iterator::for_each; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 81 | Summary: lang:core; crate::iter::traits::iterator::Iterator::map; Argument[self].Element; Argument[0].Parameter[0]; value |
+| 82 | Summary: lang:core; crate::iter::traits::iterator::Iterator::next; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 83 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
 storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[0].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | Some | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::<crate::option::Option>::zip_with |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::for_each |
+| file://:0:0:0:0 | [summary] to write: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::map | element | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::map |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::and_then | Some | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::option::Option>::and_then |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::is_none_or | Some | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::option::Option>::is_none_or |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::is_some_and | Some | file://:0:0:0:0 | [post] [summary param] self in lang:core::_::<crate::option::Option>::is_some_and |
@@ -832,6 +937,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::get_or_insert | Some | file://:0:0:0:0 | [summary] to write: Argument[self].Reference in lang:core::_::<crate::option::Option>::get_or_insert |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::insert | Some | file://:0:0:0:0 | [summary] to write: Argument[self].Reference in lang:core::_::<crate::option::Option>::insert |
 | file://:0:0:0:0 | [summary] to write: Argument[self].Reference.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::take_if | Some | file://:0:0:0:0 | [summary] to write: Argument[self].Reference in lang:core::_::<crate::option::Option>::take_if |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect | element | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::collect |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[0] in lang:core::_::<crate::option::Option>::unzip | tuple.0 | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::unzip |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[0].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unzip | Some | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[0] in lang:core::_::<crate::option::Option>::unzip |
@@ -846,6 +952,9 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::map | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::map |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::zip |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::zip_with |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::next | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::next |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::crate::iter::traits::iterator::Iterator::nth | Some | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::crate::iter::traits::iterator::Iterator::nth |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)].Field[0] in lang:core::_::<crate::option::Option>::zip | tuple.0 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)].Field[1] in lang:core::_::<crate::option::Option>::zip | tuple.1 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip |
@@ -855,6 +964,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::option::Option>::ok_or | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::ok_or |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::option::Option>::ok_or_else | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::ok_or_else |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::option::Option>::transpose | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::option::Option>::transpose |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<str>::parse | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<str>::parse |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text_with_charset | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text_with_charset |
@@ -939,9 +1049,17 @@ storeStep
 | main.rs:415:30:415:30 | 3 | element | main.rs:415:23:415:31 | [...] |
 | main.rs:418:18:418:27 | source(...) | element | main.rs:418:5:418:11 | [post] mut_arr |
 | main.rs:430:41:430:67 | default_name | captured default_name | main.rs:430:41:430:67 | \|...\| ... |
-| main.rs:452:18:452:18 | c | &ref | main.rs:452:17:452:18 | &c |
-| main.rs:455:15:455:15 | b | &ref | main.rs:455:14:455:15 | &b |
-| main.rs:464:27:464:27 | 0 | Some | main.rs:464:22:464:28 | Some(...) |
+| main.rs:465:15:465:24 | source(...) | element | main.rs:465:14:465:34 | [...] |
+| main.rs:465:27:465:27 | 2 | element | main.rs:465:14:465:34 | [...] |
+| main.rs:465:30:465:30 | 3 | element | main.rs:465:14:465:34 | [...] |
+| main.rs:465:33:465:33 | 4 | element | main.rs:465:14:465:34 | [...] |
+| main.rs:490:23:490:32 | source(...) | element | main.rs:490:22:490:42 | [...] |
+| main.rs:490:35:490:35 | 2 | element | main.rs:490:22:490:42 | [...] |
+| main.rs:490:38:490:38 | 3 | element | main.rs:490:22:490:42 | [...] |
+| main.rs:490:41:490:41 | 4 | element | main.rs:490:22:490:42 | [...] |
+| main.rs:505:18:505:18 | c | &ref | main.rs:505:17:505:18 | &c |
+| main.rs:508:15:508:15 | b | &ref | main.rs:508:14:508:15 | &b |
+| main.rs:517:27:517:27 | 0 | Some | main.rs:517:22:517:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option as crate::convert::From>::from | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::<crate::option::Option as crate::convert::From>::from |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<crate::option::Option>::and_then | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::<crate::option::Option>::and_then |
@@ -996,7 +1114,15 @@ readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_default | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_default |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or_else | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or_else |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_unchecked | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_unchecked |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::collect | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::for_each | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::for_each |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::map | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::map |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::next | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::next |
 | file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::nth | element | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth |
 | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::<crate::option::Option as crate::convert::From>::from | Some | file://:0:0:0:0 | [summary] read: Argument[0].Reference.Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option as crate::convert::From>::from |
 | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::copied | &ref | file://:0:0:0:0 | [summary] read: Argument[self].Field[crate::option::Option::Some(0)].Reference in lang:core::_::<crate::option::Option>::copied |
@@ -1094,4 +1220,20 @@ readStep
 | main.rs:428:25:428:29 | names | element | main.rs:428:9:428:20 | TuplePat |
 | main.rs:430:41:430:67 | [post] \|...\| ... | captured default_name | main.rs:430:41:430:67 | [post] default_name |
 | main.rs:430:44:430:55 | this | captured default_name | main.rs:430:44:430:55 | default_name |
-| main.rs:457:11:457:15 | c_ref | &ref | main.rs:457:10:457:15 | * ... |
+| main.rs:467:10:467:11 | vs | element | main.rs:467:10:467:14 | vs[0] |
+| main.rs:468:11:468:35 | ... .unwrap(...) | &ref | main.rs:468:10:468:35 | * ... |
+| main.rs:469:11:469:35 | ... .unwrap(...) | &ref | main.rs:469:10:469:35 | * ... |
+| main.rs:471:14:471:15 | vs | element | main.rs:471:9:471:9 | v |
+| main.rs:474:9:474:10 | &... | &ref | main.rs:474:10:474:10 | v |
+| main.rs:474:15:474:23 | vs.iter(...) | element | main.rs:474:9:474:10 | &... |
+| main.rs:479:9:479:10 | &... | &ref | main.rs:479:10:479:10 | v |
+| main.rs:479:15:479:17 | vs2 | element | main.rs:479:9:479:10 | &... |
+| main.rs:483:29:483:29 | x | &ref | main.rs:483:28:483:29 | * ... |
+| main.rs:484:34:484:34 | x | &ref | main.rs:484:33:484:34 | * ... |
+| main.rs:486:14:486:27 | vs.into_iter(...) | element | main.rs:486:9:486:9 | v |
+| main.rs:492:10:492:15 | vs_mut | element | main.rs:492:10:492:18 | vs_mut[0] |
+| main.rs:493:11:493:39 | ... .unwrap(...) | &ref | main.rs:493:10:493:39 | * ... |
+| main.rs:494:11:494:39 | ... .unwrap(...) | &ref | main.rs:494:10:494:39 | * ... |
+| main.rs:496:9:496:14 | &mut ... | &ref | main.rs:496:14:496:14 | v |
+| main.rs:496:19:496:35 | vs_mut.iter_mut(...) | element | main.rs:496:9:496:14 | &mut ... |
+| main.rs:510:11:510:15 | c_ref | &ref | main.rs:510:10:510:15 | * ... |
