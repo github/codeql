@@ -24,9 +24,9 @@ class Component1 extends React.Component {
     render() {
         var unbound3 = this.unbound3;
         return <div>
-            <div onClick={this.unbound1}/> // $ Alert
-            <div onClick={this.unbound2}/> // $ Alert
-            <div onClick={unbound3}/> // $ Alert
+            <div onClick={this.unbound1}/> { /* $ Alert */ }
+            <div onClick={this.unbound2}/> { /* $ Alert */ }
+            <div onClick={unbound3}/> { /* $ Alert */ }
             <div onClick={this.bound_throughBindInConstructor}/>
             <div onClick={this.bound_throughDeclaration}/>
             <div onClick={this.unbound_butNoThis}/>
