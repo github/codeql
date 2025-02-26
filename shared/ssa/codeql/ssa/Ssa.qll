@@ -1954,4 +1954,85 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
   }
+
+  /**
+   * Provides query predicates for testing adjacent SSA references and
+   * insertion of phi reads.
+   */
+  module TestAdjacentRefs {
+    private newtype TRef =
+      TRefRead(BasicBlock bb, int i, SourceVariable v) { variableRead(bb, i, v, true) } or
+      TRefDef(Definition def) or
+      TRefPhiRead(BasicBlock bb, SourceVariable v) { synthPhiRead(bb, v) }
+
+    /**
+     * An SSA reference. This is either a certain read, a definition, or a
+     * synthesized phi read.
+     */
+    class Ref extends TRef {
+      /** Gets the source variable referenced by this reference. */
+      SourceVariable getSourceVariable() {
+        this = TRefRead(_, _, result)
+        or
+        exists(Definition def | this = TRefDef(def) and def.getSourceVariable() = result)
+        or
+        this = TRefPhiRead(_, result)
+      }
+
+      predicate isPhiRead() { this = TRefPhiRead(_, _) }
+
+      /** Gets a textual representation of this SSA reference. */
+      string toString() {
+        this = TRefRead(_, _, _) and result = "SSA read(" + this.getSourceVariable() + ")"
+        or
+        exists(Definition def | this = TRefDef(def) and result = def.toString())
+        or
+        this = TRefPhiRead(_, _) and result = "SSA phi read(" + this.getSourceVariable() + ")"
+      }
+
+      /** Gets the location of this SSA reference. */
+      Location getLocation() {
+        exists(BasicBlock bb, int i |
+          this = TRefRead(bb, i, _) and bb.getNode(i).getLocation() = result
+        )
+        or
+        exists(Definition def | this = TRefDef(def) and def.getLocation() = result)
+        or
+        exists(BasicBlock bb | this = TRefPhiRead(bb, _) and bb.getLocation() = result)
+      }
+
+      /** Holds if this reference of `v` occurs in `bb` at index `i`. */
+      predicate accessAt(BasicBlock bb, int i, SourceVariable v) {
+        this = TRefRead(bb, i, v)
+        or
+        exists(Definition def | this = TRefDef(def) and def.definesAt(v, bb, i))
+        or
+        this = TRefPhiRead(bb, v) and i = -1
+      }
+    }
+
+    /**
+     * Holds if `r2` is a certain read or uncertain write, and `r1` is the
+     * unique prior reference.
+     */
+    query predicate adjacentRefRead(Ref r1, Ref r2) {
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v |
+        r1.accessAt(bb1, i1, v) and
+        r2.accessAt(bb2, i2, v) and
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v)
+      )
+    }
+
+    /**
+     * Holds if `phi` is a phi definition or phi read and `input` is one its
+     * inputs without any other reference in-between.
+     */
+    query predicate adjacentRefPhi(Ref input, Ref phi) {
+      exists(BasicBlock bb, int i, BasicBlock bbPhi, SourceVariable v |
+        input.accessAt(bb, i, v) and
+        phi.accessAt(bbPhi, -1, v) and
+        AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)
+      )
+    }
+  }
 }
