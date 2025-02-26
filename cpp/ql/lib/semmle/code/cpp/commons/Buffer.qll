@@ -71,7 +71,7 @@ private int getSize(VariableAccess va) {
       result = t.getSize()
     )
     or
-    exists(Class c |
+    exists(Class c, int trueSize |
       // Otherwise, we find the "outermost" object and compute the size
       // as the difference between the size of the type of the "outermost
       // object" and the offset of the field relative to that type.
@@ -91,7 +91,9 @@ private int getSize(VariableAccess va) {
       // of `y` relative to the type `S2` (i.e., `4`). So the size of the
       // buffer is `12 - 4 = 8`.
       c = getRootType(va) and
-      result = c.getSize() - v.(Field).getOffsetInClass(c)
+      // we calculate the size based on the last field, to avoid including any padding after it
+      trueSize = max(Field f | f = c.getAField() | f.getOffsetInClass(c) + f.getUnspecifiedType().getSize()) and
+      result = trueSize - v.(Field).getOffsetInClass(c)
     )
   )
 }
