@@ -22,3 +22,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["group:gorqlite", "QueryResult", True, "Map", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:gorqlite", "QueryResult", True, "Slice", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
