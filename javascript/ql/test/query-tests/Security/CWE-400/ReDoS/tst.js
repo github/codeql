@@ -342,4 +342,4 @@ var unicode = /^\n\u0000(\u0000|.)+$/; // $ Alert[js/redos]
 
 var largeUnicode = new RegExp("^\n\u{1F680}(\u{1F680}|.)+X$"); // $ Alert[js/redos]
 
-var unicodeSets = /(aa?)*b/v;
+var unicodeSets = /(aa?)*b/v; // $ Alert[js/redos]
