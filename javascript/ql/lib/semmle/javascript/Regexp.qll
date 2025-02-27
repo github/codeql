@@ -302,6 +302,29 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
 }
 
 /**
+ * An intersection term, that is, a term of the form `a&&b`.
+ *
+ * Example:
+ *
+ * ```
+ * /\p{Script_Extensions=Greek}&&\p{Letter}/v
+ * ```
+ */
+class RegExpIntersection extends RegExpTerm, @regexp_intersection {
+  /** Gets an intersected term of this term. */
+  RegExpTerm getIntersectedTerm() { result = this.getAChild() }
+
+  /** Gets the number of intersected terms of this term. */
+  int getNumIntersectedTerm() { result = this.getNumChild() }
+
+  override predicate isNullable() { this.getIntersectedTerm().isNullable() }
+
+  override string getAMatchedString() { result = this.getIntersectedTerm().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpIntersection" }
+}
+
+/**
  * A sequence term.
  *
  * Example:
