@@ -258,7 +258,6 @@
 /lib/codeql/rust/elements/internal/ConstParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ContinueExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CrateConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/CrateImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/EnumConstructor.qll linguist-generated
