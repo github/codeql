@@ -217,9 +217,7 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -296,9 +294,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
