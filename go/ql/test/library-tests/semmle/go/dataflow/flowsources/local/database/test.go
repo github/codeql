@@ -10,18 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func mongoDB(ctx context.Context, userCollection mongo.Collection) {
-	type User struct {
-	}
-
-	var u1 User
-
-	result := userCollection.FindOne(ctx, nil) // $source
-	result.Decode(&u1)
-
-	fmt.Println(u1)
-}
-
 func gogf(g gdb.DB) {
 	u1, err := g.GetOne("SELECT user from users") // $source
 
@@ -48,15 +36,4 @@ func couchbase(coll *gocb.Collection) {
 	result.Content(&user)
 
 	fmt.Println(user)
-}
-
-func GoRqlite(conn *gorqlite.Connection) {
-	var id int64
-	var name string
-
-	rows, err := conn.QueryOne("select id, name from foo where id = 1") // $source
-	if err != nil {
-		return
-	}
-	rows.Scan(&id, &name)
 }
