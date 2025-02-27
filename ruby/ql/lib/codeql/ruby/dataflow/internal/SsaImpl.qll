@@ -421,7 +421,7 @@ import Cached
  *
  * Only intended for internal use.
  */
-class DefinitionExt extends Impl::DefinitionExt {
+deprecated class DefinitionExt extends Impl::DefinitionExt {
   VariableReadAccessCfgNode getARead() { result = getARead(this) }
 
   override string toString() { result = this.(Ssa::Definition).toString() }
@@ -434,7 +434,7 @@ class DefinitionExt extends Impl::DefinitionExt {
  *
  * Only intended for internal use.
  */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
+deprecated class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
 
   override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
@@ -453,10 +453,10 @@ class NormalParameter extends Parameter {
 
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
-DefinitionExt getParameterDef(NamedParameter p) {
+Definition getParameterDef(NamedParameter p) {
   exists(Cfg::BasicBlock bb, int i |
     bb.getNode(i).getAstNode() = p.getDefiningAccess() and
-    result.definesAt(_, bb, i, _)
+    result.definesAt(_, bb, i)
   )
 }
 
