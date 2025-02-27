@@ -170,17 +170,29 @@ class Content extends TContent {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
+  /** Gets the location of this element. */
+  Location getLocation() { none() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    not exists(this.getLocation()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
   }
 
   /**
@@ -202,9 +214,7 @@ class FieldContent extends Content, TFieldContent {
 
   override string toString() { result = f.toString() }
 
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getDeclaration().hasLocationInfo(path, sl, sc, el, ec)
-  }
+  override Location getLocation() { result = f.getDeclaration().getLocation() }
 }
 
 /** A reference through the contents of some collection-like container. */
@@ -277,26 +287,31 @@ class ContentSet instanceof TContentSet {
 
   /** Gets a textual representation of this content set. */
   string toString() {
-    exists(Content c | this = TOneContent(c) | result = c.toString())
+    result = this.asOneContent().toString()
     or
     this = TAllContent() and result = "all content"
   }
 
   /**
+   * Gets the location of this content set, if it contains only one `Content`.
+   */
+  Location getLocation() { result = this.asOneContent().getLocation() }
+
+  /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(Content c | this = TOneContent(c) |
-      c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or
-    this = TAllContent() and
+    not exists(this.getLocation()) and
     filepath = "" and
     startline = 0 and
     startcolumn = 0 and

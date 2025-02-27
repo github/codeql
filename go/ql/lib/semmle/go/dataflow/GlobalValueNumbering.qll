@@ -300,7 +300,9 @@ class GVN extends GvnBase {
     // just an arbitrary way to pick an expression with this `GVN`.
     result =
       min(DataFlow::Node e, string f, int l, int c, string k |
-        e = this.getANode() and e.hasLocationInfo(f, l, c, _, _) and k = e.getNodeKind()
+        e = this.getANode() and
+        e.getLocation().hasLocationInfo(f, l, c, _, _) and
+        k = e.getNodeKind()
       |
         e order by f, l, c, k
       )
@@ -309,17 +311,22 @@ class GVN extends GvnBase {
   /** Gets a textual representation of this element. */
   string toString() { result = this.exampleNode().toString() }
 
+  /** Gets the location of this element. */
+  Location getLocation() { result = this.exampleNode().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.exampleNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

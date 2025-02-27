@@ -12,10 +12,9 @@ query predicate entities(string fp, Entity e, int c, Type ty) {
   )
 }
 
-from string fp, FuncDecl decl, SignatureType sig
+from FuncDecl decl, SignatureType sig
 where
-  decl.hasLocationInfo(fp, _, _, _, _) and
+  decl.getFile().getAbsolutePath().matches("%aliases.go%") and
   decl.getName() = ["F", "G", "H"] and
-  sig = decl.getType() and
-  fp.matches("%aliases.go%")
+  sig = decl.getType()
 select decl.getName(), sig.pp()
