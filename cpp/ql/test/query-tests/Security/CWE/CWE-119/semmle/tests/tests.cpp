@@ -1031,6 +1031,32 @@ void test29() {
 	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2) + 10); // BAD
 }
 
+struct UnionStruct {
+	int a;
+	union {
+		char buffer1[64];
+		int b;
+	};
+	union {
+		char buffer2[64];
+		int c;
+	};
+};
+
+void test30() {
+	UnionStruct us;
+
+	memset(us.buffer1, 0, sizeof(us.buffer1)); // GOOD
+	memset(us.buffer1, 0, sizeof(us)); // BAD [NOT DETECTED]
+	memset(us.buffer2, 0, sizeof(us.buffer2)); // GOOD [FALSE POSITIVE]
+	memset(us.buffer2, 0, sizeof(us)); // BAD
+
+	strncpy(us.buffer1, "", sizeof(us.buffer1) - 1); // GOOD
+	strncpy(us.buffer1, "", sizeof(us) - 1); // BAD [NOT DETECTED]
+	strncpy(us.buffer2, "", sizeof(us.buffer2) - 1); // GOOD [FALSE POSITIVE]
+	strncpy(us.buffer2, "", sizeof(us) - 1); // BAD
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -1062,6 +1088,7 @@ int tests_main(int argc, char *argv[])
 	test27(argc);
 	test28();
 	test29();
+	test30();
 
 	return 0;
 }
