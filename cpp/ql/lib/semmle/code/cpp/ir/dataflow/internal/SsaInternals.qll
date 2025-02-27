@@ -1075,14 +1075,14 @@ module SsaCached {
 }
 
 /** Gets the `DefImpl` corresponding to `def`. */
-private DefImpl getDefImpl(SsaImpl::DefinitionExt def) {
+private DefImpl getDefImpl(SsaImpl::Definition def) {
   exists(SourceVariable sv, IRBlock bb, int i |
-    def.definesAt(sv, bb, i, _) and
+    def.definesAt(sv, bb, i) and
     result.hasIndexInBlock(bb, i, sv)
   )
 }
 
-class GlobalDef extends DefinitionExt {
+class GlobalDef extends Definition {
   GlobalDefImpl impl;
 
   GlobalDef() { impl = getDefImpl(this) }
@@ -1150,6 +1150,20 @@ class Definition extends SsaImpl::Definition {
    * being written to.
    */
   predicate isCertain() { getDefImpl(this).isCertain() }
+
+  /**
+   * Gets the enclosing declaration of this definition.
+   *
+   * Note that this may be a variable when this definition defines a global, or
+   * a static local, variable.
+   */
+  Declaration getFunction() { result = getDefImpl(this).getBlock().getEnclosingFunction() }
+
+  /** Gets the underlying type of the variable being defined by this definition. */
+  Type getUnderlyingType() { result = this.getSourceVariable().getType() }
+
+  /** Gets the unspecified type of the variable being defined by this definition. */
+  Type getUnspecifiedType() { result = this.getUnderlyingType().getUnspecifiedType() }
 }
 
 /** An static single assignment (SSA) definition. */
