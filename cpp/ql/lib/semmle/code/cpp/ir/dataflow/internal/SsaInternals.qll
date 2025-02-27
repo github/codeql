@@ -1174,7 +1174,7 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
    * Gets a definition that ultimately defines this SSA definition and is
    * not itself a phi node.
    */
-  final DefinitionExt getAnUltimateDefinition() {
+  final Definition getAnUltimateDefinition() {
     result = this.getAPhiInputOrPriorDefinition*() and
     not result instanceof PhiNode
   }
