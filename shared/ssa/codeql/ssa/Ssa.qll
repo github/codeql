@@ -307,6 +307,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | inDominanceFrontier(readbb, bb) |
       ssaDefReachesRead(v, _, readbb, _) and
+      variableRead(readbb, _, v, true) and
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
