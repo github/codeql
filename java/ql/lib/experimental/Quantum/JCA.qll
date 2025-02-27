@@ -346,7 +346,7 @@ module JCAModel {
 
     override Crypto::CipherOperationSubtype getCipherOperationSubtype() { result = mode }
 
-    override Crypto::ArtifactConsumer getNonceConsumer() {
+    override Crypto::NonceArtifactConsumer getNonceConsumer() {
       result = sink.getState().(InitializedCipherModeFlowState).getInitCall().getNonceArg()
     }
 
@@ -360,9 +360,10 @@ module JCAModel {
   /**
    * Initialization vectors and other nonce artifacts
    */
-  abstract class NonceParameterInstantiation extends NonceArtifactInstance instanceof ClassInstanceExpr
-  {
-    override DataFlow::Node getOutputNode() { result.asExpr() = this }
+  abstract class NonceParameterInstantiation extends ClassInstanceExpr {
+    DataFlow::Node getOutputNode() { result.asExpr() = this }
+
+    abstract DataFlow::Node getInputNode();
   }
 
   class IvParameterSpecInstance extends NonceParameterInstantiation {
@@ -396,32 +397,25 @@ module JCAModel {
     }
   }
 
-  module NonceArtifactToCipherInitCallConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node src) {
-      exists(NonceParameterInstantiation n |
-        src = n.getOutputNode() and
-        not exists(IvParameterSpecGetIvCall m | n.getInputNode().asExpr() = m)
-      )
-    }
-
-    predicate isSink(DataFlow::Node sink) {
-      exists(CipherInitCall c | c.getNonceArg() = sink.asExpr())
-    }
-
-    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-      exists(IvParameterSpecGetIvCall m |
-        node1.asExpr() = m.getQualifier() and
-        node2.asExpr() = m
-      )
-      or
-      exists(NonceParameterInstantiation n |
-        node1 = n.getInputNode() and
-        node2.asExpr() = n
-      )
-    }
+  predicate additionalFlowSteps(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(IvParameterSpecGetIvCall m |
+      node1.asExpr() = m.getQualifier() and
+      node2.asExpr() = m
+    )
+    or
+    exists(NonceParameterInstantiation n |
+      node1 = n.getInputNode() and
+      node2 = n.getOutputNode()
+    )
   }
 
-  module NonceArtifactToCipherInitCallFlow = DataFlow::Global<NonceArtifactToCipherInitCallConfig>;
+  class NonceAdditionalFlowInputStep extends AdditionalFlowInputStep {
+    DataFlow::Node output;
+
+    NonceAdditionalFlowInputStep() { additionalFlowSteps(this, output) }
+
+    override DataFlow::Node getOutput() { result = output }
+  }
 
   /**
    * A data-flow configuration to track flow from a mode field access to
@@ -487,7 +481,7 @@ module JCAModel {
     }
   }
 
-  class CipherInitCallNonceArgConsumer extends Crypto::ArtifactConsumer instanceof Expr {
+  class CipherInitCallNonceArgConsumer extends Crypto::NonceArtifactConsumer instanceof Expr {
     CipherInitCallNonceArgConsumer() { this = any(CipherInitCall call).getNonceArg() }
 
     override DataFlow::Node getInputNode() { result.asExpr() = this }

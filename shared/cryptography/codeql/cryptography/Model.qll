@@ -205,10 +205,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract AlgorithmElement getAKnownAlgorithmSource();
   }
 
-  abstract class ArtifactConsumer extends ConsumerElement {
+  abstract class ArtifactConsumer extends ConsumerElement, ArtifactElement {
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
 
     final ArtifactElement getAKnownArtifactSource() { result.flowsTo(this) }
+  }
+
+  abstract class NonceArtifactConsumer extends ArtifactConsumer {
+    NonceArtifactInstance asNonce() { result = this }
   }
 
   abstract class CipherOperationInstance extends OperationElement {
@@ -220,7 +224,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the consumer of nonces/IVs associated with this cipher operation.
      */
-    abstract ArtifactConsumer getNonceConsumer();
+    abstract NonceArtifactConsumer getNonceConsumer();
 
     /**
      * Gets the consumer of plaintext or ciphertext input associated with this cipher operation.
@@ -586,13 +590,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = instance.getCipherOperationSubtype()
     }
 
-    NodeBase getANonceOrUnknown() {
-      result =
-        this.asElement().(CipherOperationInstance).getNonceConsumer().getAKnownOrUnknownSourceNode()
-    }
-
     NonceNode getANonce() {
-      result = this.asElement().(CipherOperationInstance).getNonceConsumer().getAKnownSourceNode()
+      result.asElement() = this.asElement().(CipherOperationInstance).getNonceConsumer().asNonce()
     }
 
     NodeBase getAMessageOrUnknown() {
@@ -614,9 +613,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       key = "Nonce" and
-      if exists(this.getANonceOrUnknown())
-      then result = this.getANonceOrUnknown()
-      else result = this
+      if exists(this.getANonce()) then result = this.getANonce() else result = this
       or
       // [KNOWN_OR_UNKNOWN]
       key = "Message" and
