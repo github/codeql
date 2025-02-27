@@ -92,7 +92,12 @@ private int getSize(VariableAccess va) {
       // buffer is `12 - 4 = 8`.
       c = getRootType(va) and
       // we calculate the size based on the last field, to avoid including any padding after it
-      trueSize = max(Field f | f = c.getAField() | f.getOffsetInClass(c) + f.getUnspecifiedType().getSize()) and
+      trueSize =
+        max(Field f |
+          f.getDeclaringType*() = c
+        |
+          f.getOffsetInClass(c) + f.getUnspecifiedType().getSize()
+        ) and
       result = trueSize - v.(Field).getOffsetInClass(c)
     )
   )

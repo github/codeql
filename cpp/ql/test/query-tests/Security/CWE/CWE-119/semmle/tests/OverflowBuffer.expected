@@ -88,10 +88,10 @@
 | tests.cpp:1001:2:1001:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
 | tests.cpp:1009:2:1009:9 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:981:6:981:8 | arr | array |
 | tests.cpp:1031:2:1031:7 | call to memset | This 'memset' operation accesses 130 bytes but the $@ is only 120 bytes. | tests.cpp:1020:12:1020:15 | arr1 | destination buffer |
-| tests.cpp:1051:2:1051:7 | call to memset | This 'memset' operation accesses 64 bytes but the $@ is only -64 bytes. | tests.cpp:1041:8:1041:14 | buffer2 | destination buffer |
-| tests.cpp:1052:2:1052:7 | call to memset | This 'memset' operation accesses 132 bytes but the $@ is only -64 bytes. | tests.cpp:1041:8:1041:14 | buffer2 | destination buffer |
-| tests.cpp:1056:2:1056:8 | call to strncpy | This 'strncpy' operation may access 63 bytes but the $@ is only -64 bytes. | tests.cpp:1041:8:1041:14 | buffer2 | destination buffer |
-| tests.cpp:1057:2:1057:8 | call to strncpy | This 'strncpy' operation may access 131 bytes but the $@ is only -64 bytes. | tests.cpp:1041:8:1041:14 | buffer2 | destination buffer |
+| tests.cpp:1050:2:1050:7 | call to memset | This 'memset' operation accesses 132 bytes but the $@ is only 128 bytes. | tests.cpp:1037:8:1037:14 | buffer1 | destination buffer |
+| tests.cpp:1052:2:1052:7 | call to memset | This 'memset' operation accesses 132 bytes but the $@ is only 64 bytes. | tests.cpp:1041:8:1041:14 | buffer2 | destination buffer |
+| tests.cpp:1055:2:1055:8 | call to strncpy | This 'strncpy' operation may access 131 bytes but the $@ is only 128 bytes. | tests.cpp:1037:8:1037:14 | buffer1 | destination buffer |
+| tests.cpp:1057:2:1057:8 | call to strncpy | This 'strncpy' operation may access 131 bytes but the $@ is only 64 bytes. | tests.cpp:1041:8:1041:14 | buffer2 | destination buffer |
 | tests_restrict.c:12:2:12:7 | call to memcpy | This 'memcpy' operation accesses 2 bytes but the $@ is only 1 byte. | tests_restrict.c:7:6:7:13 | smallbuf | source buffer |
 | unions.cpp:26:2:26:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:21:10:21:11 | mu | destination buffer |
 | unions.cpp:30:2:30:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |

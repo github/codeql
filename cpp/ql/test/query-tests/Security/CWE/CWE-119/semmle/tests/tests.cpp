@@ -1047,13 +1047,13 @@ void test30() {
 	UnionStruct us;
 
 	memset(us.buffer1, 0, sizeof(us.buffer1)); // GOOD
-	memset(us.buffer1, 0, sizeof(us)); // BAD [NOT DETECTED]
-	memset(us.buffer2, 0, sizeof(us.buffer2)); // GOOD [FALSE POSITIVE]
+	memset(us.buffer1, 0, sizeof(us)); // BAD
+	memset(us.buffer2, 0, sizeof(us.buffer2)); // GOOD
 	memset(us.buffer2, 0, sizeof(us)); // BAD
 
 	strncpy(us.buffer1, "", sizeof(us.buffer1) - 1); // GOOD
-	strncpy(us.buffer1, "", sizeof(us) - 1); // BAD [NOT DETECTED]
-	strncpy(us.buffer2, "", sizeof(us.buffer2) - 1); // GOOD [FALSE POSITIVE]
+	strncpy(us.buffer1, "", sizeof(us) - 1); // BAD
+	strncpy(us.buffer2, "", sizeof(us.buffer2) - 1); // GOOD
 	strncpy(us.buffer2, "", sizeof(us) - 1); // BAD
 }
 
