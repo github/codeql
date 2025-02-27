@@ -535,6 +535,7 @@ private TypeMention getTypeAnnotation(AstNode n) {
     n = p.getPat() and
     result = p.getTypeRepr()
   )
+  // todo: add return type annotations
 }
 
 /** Gets the type of `n`, which has an explicit type annotation. */
@@ -566,6 +567,16 @@ private predicate typeSymRule(AstNode n1, TypePath path1, AstNode n2, TypePath p
   or
   n2 = n1.(RefExpr).getExpr() and
   path1 = typePath(TRefTypeParameter()).append(path2)
+  or
+  n2 =
+    any(PrefixExpr pe |
+      pe.getOperatorName() = "*" and
+      pe.getExpr() = n1 and
+      path1 = typePath(TRefTypeParameter()).append(path2)
+    )
+  or
+  n1 = n2.(ParenExpr).getExpr() and
+  path1 = path2
 }
 
 pragma[nomagic]
@@ -920,6 +931,51 @@ private module FunctionMatchingInput implements MatchingInputSig {
     target = a.(CallExpr).getVariant()
   }
 
+  bindingset[a, apos, target, path, t]
+  pragma[inline_late]
+  predicate adjustArgType(
+    Access a, ArgPos apos, Decl target, TypePath path, Type t, TypePath pathAdj, Type tAdj
+  ) {
+    exists(a) and
+    if apos.isSelf() and target.getParameterType(TSelfParamPos(), "") = TRefType()
+    then
+      // implicit borrow
+      if t != TRefType() and path.isEmpty()
+      then
+        tAdj = TRefType() and
+        pathAdj = ""
+        or
+        tAdj = t and
+        pathAdj = typePath(TRefTypeParameter())
+      else
+        if path.startsWith(TRefTypeParameter(), _)
+        then
+          pathAdj = path and
+          tAdj = t
+        else (
+          tAdj = t and
+          pathAdj = typePath(TRefTypeParameter()).append(path)
+        )
+    else
+      if apos.isSelf() and target.getParameterType(TSelfParamPos(), "") != TRefType()
+      then
+        // implicit deref
+        if t = TRefType() and path.isEmpty()
+        then none()
+        else (
+          path.startsWith(TRefTypeParameter(), pathAdj) and
+          tAdj = t
+          or
+          not path.startsWith(TRefTypeParameter(), _) and
+          pathAdj = path and
+          tAdj = t
+        )
+      else (
+        pathAdj = path and
+        tAdj = t
+      )
+  }
+
   Expr getArg(Access a, ArgPos pos) {
     exists(int p, boolean inMethod |
       argPos(a, result, p, inMethod) and
@@ -956,23 +1012,41 @@ pragma[nomagic]
 private Type resolveCallExprBaseType(AstNode n, TypePath path) {
   exists(FunctionMatchingInput::ArgPos apos, FunctionMatchingInput::ParamPos ppos |
     result = FunctionMatching::resolveArgType(n, apos, ppos, path) and
-    (
-      not ppos.isSelf()
-      or
-      not apos.isSelf()
-      or
-      ppos.isSelf() and
-      not (result = TRefType() and path.isEmpty()) and
-      not path.startsWith(TRefTypeParameter(), _)
-      or
-      resolveReceiverType(n) = TRefType()
-    )
+    not apos.isSelf()
     or
-    // method call with implicit borrow
-    ppos.isSelf() and
-    result =
-      FunctionMatching::resolveArgType(n, apos, ppos, typePath(TRefTypeParameter()).append(path)) and
-    resolveReceiverType(n) != TRefType()
+    apos.isSelf() and
+    exists(Type receiverType, Type res, TypePath path0 |
+      receiverType = resolveReceiverType(n) and
+      res = FunctionMatching::resolveArgType(n, apos, ppos, path0)
+    |
+      if receiverType = TRefType()
+      then
+        result = res and
+        path = path0 and
+        path0.startsWith(TRefTypeParameter(), _)
+        or
+        // implicit deref
+        result = res and
+        not path0.startsWith(TRefTypeParameter(), _) and
+        not (
+          path0.isEmpty() and
+          res = TRefType()
+        ) and
+        path = typePath(TRefTypeParameter()).append(path0)
+      else (
+        result = res and
+        path = path0 and
+        not path0.startsWith(TRefTypeParameter(), _) and
+        not (
+          path0.isEmpty() and
+          res = TRefType()
+        )
+        or
+        // implicit borrow
+        result = res and
+        path0.startsWith(TRefTypeParameter(), path)
+      )
+    )
   )
 }
 
@@ -999,6 +1073,32 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     target = resolveRecordFieldExpr(a)
     or
     target = resolveTupleFieldExpr(a)
+  }
+
+  bindingset[a, apos, target, path, t]
+  pragma[inline_late]
+  predicate adjustArgType(
+    Access a, ArgPos apos, Decl target, TypePath path, Type t, TypePath pathAdj, Type tAdj
+  ) {
+    exists(a) and
+    exists(target) and
+    if apos.isSelf()
+    then
+      // implicit deref
+      if t = TRefType() and path.isEmpty()
+      then none()
+      else (
+        path.startsWith(TRefTypeParameter(), pathAdj) and
+        tAdj = t
+        or
+        not path.startsWith(TRefTypeParameter(), _) and
+        pathAdj = path and
+        tAdj = t
+      )
+    else (
+      pathAdj = path and
+      tAdj = t
+    )
   }
 
   private newtype TParamPos =
@@ -1150,3 +1250,7 @@ private import Cached
 import Cached::Public
 
 Type resolveType(AstNode n) { result = resolveType(n, "") }
+// private Type dbgresolveType(AstNode n, TypePath path, int cnt) {
+//   result = resolveType(n, path) and
+//   cnt = strictcount(Type t, TypePath p | t = resolveType(n, p))
+// }

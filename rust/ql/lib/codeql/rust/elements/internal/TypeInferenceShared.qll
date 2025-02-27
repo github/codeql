@@ -388,6 +388,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       predicate target(Access a, Decl target);
 
+      bindingset[a, apos, target, path, t]
+      default predicate adjustArgType(
+        Access a, ArgPos apos, Decl target, TypePath path, Type t, TypePath pathAdj, Type tAdj
+      ) {
+        pathAdj = path and
+        tAdj = t
+      }
+
       Expr getArg(Access a, ArgPos apos);
 
       predicate parameterType(Decl decl, ParamPos ppos, TypePath path, Type t);
@@ -397,11 +405,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private import Input
 
       pragma[nomagic]
-      private predicate argumentType(Access a, ArgPos apos, Decl target, TypePath path, Type t) {
+      private predicate argumentType0(Access a, ArgPos apos, Decl target, TypePath path, Type t) {
         target(a, target) and
         exists(Expr arg |
           arg = getArg(a, apos) and
           t = resolveExprType(arg, path)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate argumentType(Access a, ArgPos apos, Decl target, TypePath path, Type t) {
+        exists(TypePath path0, Type t0 |
+          argumentType0(a, apos, target, path0, t0) and
+          adjustArgType(a, apos, target, path0, t0, path, t)
         )
       }
 

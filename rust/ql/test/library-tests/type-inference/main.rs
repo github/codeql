@@ -417,6 +417,58 @@ mod m9 {
     }
 }
 
+mod m10 {
+
+    #[derive(Debug, Copy, Clone)]
+    struct S<T>(T);
+
+    #[derive(Debug, Copy, Clone)]
+    struct S2;
+
+    impl<T> S<T> {
+        fn m1(self) -> T {
+            self.0
+        }
+
+        fn m2(&self) -> &T {
+            &self.0
+        }
+
+        fn m3(self: &S<T>) -> &T {
+            &self.0
+        }
+    }
+
+    pub fn f() {
+        let x1 = S(S2);
+        println!("{:?}", x1.m1());
+
+        let x2 = S(S2);
+        // implicit borrow
+        println!("{:?}", x2.m2());
+        println!("{:?}", x2.m3());
+
+        let x3 = S(S2);
+        // explicit borrow
+        println!("{:?}", S::<S2>::m2(&x3));
+        println!("{:?}", S::<S2>::m3(&x3));
+
+        let x4 = &S(S2);
+        // explicit borrow
+        println!("{:?}", x4.m2());
+        println!("{:?}", x4.m3());
+
+        let x5 = &S(S2);
+        // implicit dereference
+        println!("{:?}", x5.m1());
+        println!("{:?}", x5.0);
+
+        let x6 = &S(S2);
+        // explicit dereference
+        println!("{:?}", (*x6).m1());
+    }
+}
+
 fn main() {
     m1::f();
     m1::g(m1::Foo {}, m1::Foo {});
@@ -428,4 +480,5 @@ fn main() {
     m7::f();
     m8::f();
     m9::f();
+    m10::f();
 }
