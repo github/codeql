@@ -1,23 +1,23 @@
-#-----| Crate(allocator_api2@0.2.21)
+#-----| Crate(allocator_api2@0.2.18)
 
 #-----| Crate(core@0.0.0)
 #-----|  -> Crate(rand@0.8.5)
 #-----|  -> Crate(rand_xorshift@0.3.0)
 
-#-----| Crate(compiler_builtins@0.1.140)
+#-----| Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(core@0.0.0)
 
 #-----| Crate(cfg_if@1.0.0)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 
 #-----| Crate(std@0.0.0)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(cfg_if@1.0.0)
 #-----|  -> Crate(alloc@0.0.0)
-#-----|  -> Crate(hashbrown@0.15.2)
-#-----|  -> Crate(libc@0.2.169)
+#-----|  -> Crate(hashbrown@0.15.0)
+#-----|  -> Crate(libc@0.2.162)
 #-----|  -> Crate(rand@0.8.5)
 #-----|  -> Crate(rand_xorshift@0.3.0)
 #-----|  -> Crate(rustc_demangle@0.1.24)
@@ -28,7 +28,7 @@
 
 #-----| Crate(unicode_width@0.1.14)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(std@0.0.0)
 
 #-----| Crate(getopts@0.2.21)
@@ -38,17 +38,17 @@
 
 #-----| Crate(alloc@0.0.0)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(rand@0.8.5)
 #-----|  -> Crate(rand_xorshift@0.3.0)
 
-#-----| Crate(hashbrown@0.15.2)
-#-----|  -> Crate(allocator_api2@0.2.21)
+#-----| Crate(hashbrown@0.15.0)
+#-----|  -> Crate(allocator_api2@0.2.18)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(alloc@0.0.0)
 
-#-----| Crate(libc@0.2.169)
+#-----| Crate(libc@0.2.162)
 #-----|  -> Crate(core@0.0.0)
 
 #-----| Crate(rand_core@0.6.4)
@@ -61,27 +61,27 @@
 
 #-----| Crate(rustc_demangle@0.1.24)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 
 #-----| Crate(panic_abort@0.0.0)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(cfg_if@1.0.0)
 #-----|  -> Crate(alloc@0.0.0)
-#-----|  -> Crate(libc@0.2.169)
+#-----|  -> Crate(libc@0.2.162)
 
 #-----| Crate(unwind@0.0.0)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(cfg_if@1.0.0)
-#-----|  -> Crate(libc@0.2.169)
+#-----|  -> Crate(libc@0.2.162)
 
 #-----| Crate(panic_unwind@0.0.0)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(cfg_if@1.0.0)
 #-----|  -> Crate(alloc@0.0.0)
-#-----|  -> Crate(libc@0.2.169)
+#-----|  -> Crate(libc@0.2.162)
 #-----|  -> Crate(unwind@0.0.0)
 
 #-----| Crate(proc_macro@0.0.0)
@@ -90,16 +90,16 @@
 
 #-----| Crate(std_detect@0.1.5)
 #-----|  -> Crate(core@0.0.0)
-#-----|  -> Crate(compiler_builtins@0.1.140)
+#-----|  -> Crate(compiler_builtins@0.1.138)
 #-----|  -> Crate(cfg_if@1.0.0)
 #-----|  -> Crate(alloc@0.0.0)
-#-----|  -> Crate(libc@0.2.169)
+#-----|  -> Crate(libc@0.2.162)
 
 #-----| Crate(test@0.0.0)
 #-----|  -> Crate(core@0.0.0)
 #-----|  -> Crate(std@0.0.0)
 #-----|  -> Crate(getopts@0.2.21)
-#-----|  -> Crate(libc@0.2.169)
+#-----|  -> Crate(libc@0.2.162)
 
 #-----| Crate(test@0.0.1)
 #-----|  -> Crate(core@0.0.0)
