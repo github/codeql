@@ -1,0 +1,40 @@
+#-----| fn as_string
+
+#-----| fn length
+
+#-----| fn write
+
+#-----| fn as_string
+
+#-----| fn fmt
+
+#-----| struct X_List
+
+#-----| Static
+
+#-----| mod module
+#-----|  -> fn length
+#-----|  -> fn write
+#-----|  -> struct X_List
+#-----|  -> Static
+#-----|  -> trait AsString
+#-----|  -> Const
+#-----|  -> impl AsString for ...::X { ... }
+#-----|  -> impl ...::Display for ...::X { ... }
+#-----|  -> enum X
+
+#-----| mod crate
+#-----|  -> mod module
+
+#-----| trait AsString
+#-----|  -> fn as_string
+
+#-----| Const
+
+#-----| impl AsString for ...::X { ... }
+#-----|  -> fn as_string
+
+#-----| impl ...::Display for ...::X { ... }
+#-----|  -> fn fmt
+
+#-----| enum X
