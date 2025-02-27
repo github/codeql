@@ -1256,11 +1256,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     string toString() { result = this.(Definition).toString() }
 
     /** Gets the location of this SSA definition. */
-    Location getLocation() {
-      exists(BasicBlock bb, int i | this.definesAt(_, bb, i, _) |
-        if i = -1 then result = bb.getLocation() else result = bb.getNode(i).getLocation()
-      )
-    }
+    Location getLocation() { result = this.(Definition).getLocation() }
   }
 
   /**
@@ -1346,6 +1342,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    */
   class PhiReadNode extends DefinitionExt, TPhiReadNode {
     override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
+
+    override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
 
   /** Provides a set of consistency queries. */
