@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учёт продаж</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        input, button, select { margin: 5px 0; padding: 8px; width: 100%; box-sizing: border-box; }
+        
+        /* Блоки с полями */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Стиль для блока с кнопками */
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px; /* Интервал между кнопками */
+        }
+
+        /* Стиль для кнопок */
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Стиль при наведении на кнопку */
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h2>Учёт продаж</h2>
+    <div class="form-group">
+        <label for="dateTime">Дата и время проводки:</label>
+        <input type="datetime-local" id="dateTime">
+    </div>
+    <div class="form-group">
+        <label for="client">Клиент:</label>
+        <select id="client"></select>
+    </div>
+    <div class="form-group">
+        <label for="product">Товар:</label>
+        <select id="product"></select>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Кол-во:</label>
+        <input type="number" id="quantity">
+    </div>
+    <div class="form-group">
+        <label for="price">Цена:</label>
+        <input type="number" id="price">
+    </div>
+    <div class="form-group">
+        <label for="docType">Вид документа:</label>
+        <select id="docType">
+            <option value="sale">Продажа</option>
+            <option value="return">Возврат</option>
+        </select>
+    </div>
+    
+    <!-- Блок с кнопками -->
+    <div class="button-container">
+        <button onclick="addSale()">Добавить продажу</button>
+        <button onclick="clearAndSave()">Очистить и сохранить</button>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Дата добавления</th>
+                <th>Клиент</th>
+                <th>Товар</th>
+                <th>Кол-во</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+                <th>Вид документа</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody id="salesTable"></tbody>
+    </table>
+
+    <script>
+        const clients = ['Клиент 1', 'Клиент 2', 'Клиент 3'];  
+        const products = [
+            ['Товар 1', 100],
+            ['Товар 2', 200],
+            ['Товар 3', 150]
+        ];  
+
+        function loadData() {
+            let clientSelect = document.getElementById("client");
+            let productSelect = document.getElementById("product");
+
+            clientSelect.innerHTML = `<option value="">Выберите контрагента</option>`;
+            productSelect.innerHTML = `<option value="">Выберите товар</option>`;
+
+            clients.forEach(c => {
+                let option = document.createElement("option");
+                option.value = c;
+                option.textContent = c;
+                clientSelect.appendChild(option);
+            });
+
+            products.forEach(p => {
+                let option = document.createElement("option");
+                option.value = p[0];
+                option.textContent = p[0];
+                option.setAttribute("data-price", p[1]);
+                productSelect.appendChild(option);
+            });
+
+            loadSalesData();
+        }
+
+        function addSale() {
+            const dateTime = document.getElementById("dateTime").value;
+            const client = document.getElementById("client").value;
+            const product = document.getElementById("product").value;
+            const quantity = document.getElementById("quantity").value;
+            const price = document.getElementById("price").value;
+            const docType = document.getElementById("docType").value;
+            
+            if (!dateTime || !client || !product || !quantity || !price || !docType) {
+                alert("Пожалуйста, заполните все поля.");
+                return;
+            }
+
+            let total = (quantity * price).toFixed(2);
+            let quantityToSave = quantity;
+            if (docType === "return") {
+                total = (-Math.abs(total)).toFixed(2); 
+                quantityToSave = -Math.abs(quantity); 
+            }
+
+            const realDate = new Date().toLocaleString();
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${dateTime}</td>
+                <td>${realDate}</td>
+                <td>${client}</td>
+                <td>${product}</td>
+                <td>${quantityToSave}</td>
+                <td>${price}</td>
+                <td>${total}</td>
+                <td>${docType === "sale" ? "Продажа" : "Возврат"}</td>
+                <td><button onclick="deleteSale(this)">Удалить</button></td>
+            `;
+            
+            document.getElementById("salesTable").appendChild(row);
+            
+            document.getElementById("product").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("docType").value = "sale";
+
+            saveSalesData();
+        }
+
+        function deleteSale(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+            saveSalesData();
+        }
+
+        function exportToExcel() {
+            const table = document.getElementById("salesTable");
+            const rows = table.getElementsByTagName("tr");
+
+            const headers = ['Дата и время проводки', 'Дата добавления', 'Клиент', 'Товар', 'Кол-во', 'Цена', 'Сумма', 'Вид документа'];
+            const data = [];
+            data.push(headers);
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i].getElementsByTagName("td");
+                const rowData = [];
+                for (let j = 0; j < row.length - 1; j++) {
+                    rowData.push(row[j].innerText);
+                }
+                data.push(rowData);
+            }
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Продажи");
+            XLSX.writeFile(wb, "Sales_Account.xlsx");
+        }
+
+        function clearAndSave() {
+            exportToExcel();
+            document.getElementById("salesTable").innerHTML = "";
+            saveSalesData();
+        }
+
+        function saveSalesData() {
+            const sales = [];
+            const rows = document.getElementById("salesTable").getElementsByTagName("tr");
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i].getElementsByTagName("td");
+                const saleData = [
+                    row[0].innerText, 
+                    row[1].innerText, 
+                    row[2].innerText, 
+                    row[3].innerText, 
+                    row[4].innerText, 
+                    row[5].innerText, 
+                    row[6].innerText, 
+                    row[7].innerText  
+                ];
+                sales.push(saleData);
+            }
+            localStorage.setItem("salesData", JSON.stringify(sales));
+        }
+
+        function loadSalesData() {
+            const savedSales = JSON.parse(localStorage.getItem("salesData"));
+            if (savedSales) {
+                savedSales.forEach(sale => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${sale[0]}</td>
+                        <td>${sale[1]}</td>
+                        <td>${sale[2]}</td>
+                        <td>${sale[3]}</td>
+                        <td>${sale[4]}</td>
+                        <td>${sale[5]}</td>
+                        <td>${sale[6]}</td>
+                        <td>${sale[7]}</td>
+                        <td><button onclick="deleteSale(this)">Удалить</button></td>
+                    `;
+                    document.getElementById("salesTable").appendChild(row);
+                });
+            }
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
