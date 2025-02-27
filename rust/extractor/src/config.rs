@@ -19,7 +19,6 @@ use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fmt::Debug;
-use std::ops::Not;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
@@ -29,24 +28,6 @@ pub enum Compression {
     #[default] // TODO make gzip default
     None,
     Gzip,
-}
-
-#[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
-#[serde(rename_all = "lowercase")]
-#[clap(rename_all = "lowercase")]
-pub enum Color {
-    #[default]
-    Yes,
-    No,
-}
-
-impl Color {
-    pub fn yes(&self) -> bool {
-        match self {
-            Color::Yes => true,
-            Color::No => false,
-        }
-    }
 }
 
 impl From<Compression> for trap::Compression {
@@ -73,7 +54,8 @@ pub struct Config {
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
-    pub logging_color: Color,
+    #[default_true]
+    pub logging_color: bool,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,

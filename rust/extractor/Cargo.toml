@@ -25,7 +25,6 @@ ra_ap_span = "0.0.258"
 ra_ap_cfg = "0.0.258"
 ra_ap_intern = "0.0.258"
 serde = "1.0.217"
-serde_with = "3.12.0"
 triomphe = "0.1.14"
 argfile = "0.2.1"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

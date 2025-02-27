@@ -202,7 +202,7 @@ fn main() -> anyhow::Result<()> {
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
             &cfg.logging_verbosity,
-            Color::from(cfg.logging_color.yes()),
+            Color::from(cfg.logging_color),
         ))
         .with(flame_layer)
         .init();

@@ -7,7 +7,7 @@ QLTEST_LOG="$CODEQL_EXTRACTOR_RUST_LOG_DIR"/qltest.log
 EXTRACTOR_OPTS=(
   --qltest
   --logging-verbosity=progress+
-  --logging-color=no
+  --no-logging-color
 )
 if ! "$CODEQL_EXTRACTOR_RUST_ROOT/tools/$CODEQL_PLATFORM/extractor" "${EXTRACTOR_OPTS[@]}" >> "$QLTEST_LOG" 2>&1; then
   cat "$QLTEST_LOG"

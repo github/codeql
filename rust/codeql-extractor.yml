@@ -83,4 +83,4 @@ options:
         description: >
           Enable or disable colored output in the extractor log. Currently the default is to enable it.
         type: string
-        pattern: "^(yes|no)$"
+        pattern: "^(true|false)$"
