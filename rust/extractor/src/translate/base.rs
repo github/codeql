@@ -68,6 +68,9 @@ macro_rules! emit_detached {
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
         $self.extract_method_canonical_destination(&$node, $label);
     };
+    (PathSegment, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_types_from_path_segment(&$node, $label.into());
+    };
     ($($_:tt)*) => {};
 }
 
@@ -604,5 +607,37 @@ impl<'a> Translator<'a> {
                 })
             })
         })
+    }
+
+    pub(crate) fn extract_types_from_path_segment(
+        &mut self,
+        item: &ast::PathSegment,
+        label: Label<generated::PathSegment>,
+    ) {
+        // work around a bug in rust-analyzer AST generation machinery
+        // this code was inspired by rust-analyzer's own workaround for this:
+        // https://github.com/rust-lang/rust-analyzer/blob/1f86729f29ea50e8491a1516422df4fd3d1277b0/crates/syntax/src/ast/node_ext.rs#L268-L277
+        if item.l_angle_token().is_some() {
+            // <T> or <T as Trait>
+            // T is any TypeRef, Trait has to be a PathType
+            let mut type_refs = item
+                .syntax()
+                .children()
+                .filter(|node| ast::Type::can_cast(node.kind()));
+            if let Some(t) = type_refs
+                .next()
+                .and_then(ast::Type::cast)
+                .and_then(|t| self.emit_type(t))
+            {
+                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
+            }
+            if let Some(t) = type_refs
+                .next()
+                .and_then(ast::PathType::cast)
+                .and_then(|t| self.emit_path_type(t))
+            {
+                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
+            }
+        }
     }
 }

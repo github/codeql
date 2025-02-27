@@ -7,6 +7,7 @@ use archive::Archiver;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_load_cargo::LoadCargoConfig;
 use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
@@ -121,9 +122,10 @@ impl<'a> Extractor<'a> {
         &mut self,
         project: &ProjectManifest,
         config: &CargoConfig,
+        load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let before = Instant::now();
-        let ret = RustAnalyzer::load_workspace(project, config);
+        let ret = RustAnalyzer::load_workspace(project, config, load_config);
         self.steps
             .push(ExtractionStep::load_manifest(before, project));
         ret
@@ -242,14 +244,17 @@ fn main() -> anyhow::Result<()> {
         }
         extractor.extract_without_semantics(file, "no manifest found");
     }
-    let cargo_config = cfg.to_cargo_config(&cwd()?);
+    let cwd = cwd()?;
+    let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
     let resolve_paths = if cfg.skip_path_resolution {
         ResolvePaths::No
     } else {
         ResolvePaths::Yes
     };
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
-        if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
+        if let Some((ref db, ref vfs)) =
+            extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
+        {
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {

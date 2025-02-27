@@ -4151,15 +4151,15 @@ dominance
 | cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:187:13:187:13 | 1 |
 | cflow.cs:187:13:187:13 | 1 | cflow.cs:187:18:187:18 | 2 |
 | cflow.cs:187:13:187:18 | ... == ... | cflow.cs:187:23:187:23 | 2 |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:190:13:190:52 | ...; |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:34:187:34 | 1 |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:190:13:190:52 | ...; |
 | cflow.cs:187:18:187:18 | 2 | cflow.cs:187:13:187:18 | ... == ... |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:28:187:28 | 3 |
-| cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
+| cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:13:187:28 | ... \|\| ... |
 | cflow.cs:187:28:187:28 | 3 | cflow.cs:187:23:187:28 | ... == ... |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:187:39:187:39 | 3 |
-| cflow.cs:187:34:187:39 | ... == ... | cflow.cs:187:34:187:49 | [false] ... && ... |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
+| cflow.cs:187:34:187:39 | ... == ... | cflow.cs:187:34:187:49 | ... && ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:13:187:50 | ... \|\| ... |
 | cflow.cs:187:39:187:39 | 3 | cflow.cs:187:34:187:39 | ... == ... |
 | cflow.cs:190:13:190:51 | call to method WriteLine | cflow.cs:185:10:185:18 | exit LogicalOr (normal) |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:190:31:190:50 | "This should happen" |
@@ -8307,18 +8307,18 @@ postDominance
 | cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:186:5:191:5 | {...} |
 | cflow.cs:187:13:187:13 | 1 | cflow.cs:187:9:190:52 | if (...) ... |
 | cflow.cs:187:13:187:18 | ... == ... | cflow.cs:187:18:187:18 | 2 |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:23:187:28 | ... == ... |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:23:187:28 | ... == ... |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:187:18:187:18 | 2 | cflow.cs:187:13:187:13 | 1 |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:13:187:18 | ... == ... |
 | cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:28:187:28 | 3 |
 | cflow.cs:187:28:187:28 | 3 | cflow.cs:187:23:187:23 | 2 |
-| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
+| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:13:187:28 | ... \|\| ... |
 | cflow.cs:187:34:187:39 | ... == ... | cflow.cs:187:39:187:39 | 3 |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:34:187:39 | ... == ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:39 | ... == ... |
 | cflow.cs:187:39:187:39 | 3 | cflow.cs:187:34:187:34 | 1 |
 | cflow.cs:190:13:190:51 | call to method WriteLine | cflow.cs:190:31:190:50 | "This should happen" |
-| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
+| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:13:187:50 | ... \|\| ... |
 | cflow.cs:190:31:190:50 | "This should happen" | cflow.cs:190:13:190:52 | ...; |
 | cflow.cs:193:10:193:17 | exit Booleans (abnormal) | cflow.cs:203:17:203:38 | throw ...; |
 | cflow.cs:193:10:193:17 | exit Booleans (normal) | cflow.cs:200:13:200:62 | [false] ... \|\| ... |
@@ -12909,32 +12909,32 @@ blockDominance
 | cflow.cs:181:28:181:37 | enter (...) => ... | cflow.cs:181:28:181:37 | enter (...) => ... |
 | cflow.cs:182:28:182:61 | enter delegate(...) { ... } | cflow.cs:182:28:182:61 | enter delegate(...) { ... } |
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
+| cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:13:187:50 | ... \|\| ... |
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:190:13:190:52 | ...; |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:34:187:49 | [false] ... && ... |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:190:13:190:52 | ...; |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:190:13:190:52 | ...; |
-| cflow.cs:187:23:187:23 | 2 | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:187:23:187:23 | 2 | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:13:187:50 | ... \|\| ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:34:187:34 | 1 |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:34:187:49 | ... && ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:190:13:190:52 | ...; |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:13:187:50 | ... \|\| ... |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:190:13:190:52 | ...; |
+| cflow.cs:187:23:187:23 | 2 | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:187:23:187:23 | 2 | cflow.cs:187:13:187:50 | ... \|\| ... |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:23:187:23 | 2 | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:187:23:187:23 | 2 | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:190:13:190:52 | ...; |
-| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
+| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:13:187:50 | ... \|\| ... |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:190:13:190:52 | ...; |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:34:187:49 | [false] ... && ... |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:190:13:190:52 | ...; |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:13:187:50 | ... \|\| ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:49 | ... && ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:190:13:190:52 | ...; |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:190:13:190:52 | ...; |
 | cflow.cs:193:10:193:17 | enter Booleans | cflow.cs:193:10:193:17 | enter Booleans |
 | cflow.cs:193:10:193:17 | enter Booleans | cflow.cs:193:10:193:17 | exit Booleans |
@@ -16126,32 +16126,32 @@ postBlockDominance
 | cflow.cs:181:28:181:37 | enter (...) => ... | cflow.cs:181:28:181:37 | enter (...) => ... |
 | cflow.cs:182:28:182:61 | enter delegate(...) { ... } | cflow.cs:182:28:182:61 | enter delegate(...) { ... } |
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:23:187:23 | 2 |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:23:187:23 | 2 |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:185:10:185:18 | enter LogicalOr |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:23:187:23 | 2 |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:185:10:185:18 | enter LogicalOr |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:13:187:50 | ... \|\| ... |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:23:187:23 | 2 |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:34:187:34 | 1 |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:185:10:185:18 | enter LogicalOr |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
+| cflow.cs:187:34:187:34 | 1 | cflow.cs:187:13:187:28 | ... \|\| ... |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:23:187:23 | 2 |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:185:10:185:18 | enter LogicalOr |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:23:187:23 | 2 |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:34 | 1 |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:185:10:185:18 | enter LogicalOr |
-| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:13:187:28 | [false] ... \|\| ... |
-| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:13:187:50 | [false] ... \|\| ... |
+| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:13:187:28 | ... \|\| ... |
+| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:13:187:50 | ... \|\| ... |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:34:187:49 | [false] ... && ... |
+| cflow.cs:190:13:190:52 | ...; | cflow.cs:187:34:187:49 | ... && ... |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:190:13:190:52 | ...; |
 | cflow.cs:193:10:193:17 | enter Booleans | cflow.cs:193:10:193:17 | enter Booleans |
 | cflow.cs:193:10:193:17 | exit Booleans | cflow.cs:193:10:193:17 | exit Booleans |

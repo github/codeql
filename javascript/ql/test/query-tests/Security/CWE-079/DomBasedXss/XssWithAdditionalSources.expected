@@ -1218,7 +1218,6 @@ edges
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
-| various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:32:18:36 | attrs | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | provenance |  |
 | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | provenance | Config |

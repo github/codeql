@@ -56,6 +56,7 @@ test_getAFunctionValue
 | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
 | classes.js:7:6:9:5 | () {\\n   ... ;\\n    } | classes.js:7:6:9:5 | () {\\n   ... ;\\n    } |
 | classes.js:8:7:8:16 | this.hello | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
+| classes.js:8:7:8:16 | this.hello | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
 | classes.js:12:3:16:3 | B | classes.js:12:21:12:20 | (...arg ... rgs); } |
 | classes.js:12:3:16:3 | class B ...   }\\n  } | classes.js:12:21:12:20 | (...arg ... rgs); } |
 | classes.js:12:19:12:19 | A | classes.js:2:11:2:10 | () {} |
@@ -447,6 +448,7 @@ test_getACallee
 | a.js:3:1:3:5 | bar() | b.js:2:8:2:24 | function bar() {} |
 | a.js:4:1:4:5 | qux() | c.js:2:8:2:24 | function bar() {} |
 | classes.js:8:7:8:18 | this.hello() | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
+| classes.js:8:7:8:18 | this.hello() | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
 | classes.js:12:21:12:20 | super(...args) | classes.js:2:11:2:10 | () {} |
 | classes.js:18:3:18:9 | new B() | classes.js:12:21:12:20 | (...arg ... rgs); } |
 | classes.js:18:3:18:17 | new B().hello() | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |

@@ -65,7 +65,7 @@ struct MyFlag {
 
 impl MyFlag {
     fn data_in(&self, n: i64) {
-        sink(n); // $ hasValueFlow=1 MISSING: hasValueFlow=8
+        sink(n); // $ hasValueFlow=1 hasValueFlow=8
     }
 
     fn get_data(&self) -> i64 {
@@ -114,7 +114,7 @@ fn data_through_method_called_as_function() {
     let mn = MyFlag { flag: true };
     let a = source(12);
     let b = MyFlag::data_through(&mn, a);
-    sink(b); // $ MISSING: hasValueFlow=12
+    sink(b); // $ hasValueFlow=12
 }
 
 use std::ops::Add;

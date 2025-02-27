@@ -292,6 +292,15 @@ module Node {
     override PatCfgNode asPat() { result = n }
   }
 
+  /** A data flow node that corresponds to a name node in the CFG. */
+  final class NameNode extends AstCfgFlowNode, TNameNode {
+    override NameCfgNode n;
+
+    NameNode() { this = TNameNode(n) }
+
+    NameCfgNode asName() { result = n }
+  }
+
   /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
@@ -309,6 +318,9 @@ module Node {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       n.getAstNode() = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
     }
+
+    /** Get the parameter position of this parameter. */
+    ParameterPosition getPosition() { this.isParameterOf(_, result) }
 
     /** Gets the parameter in the CFG that this node corresponds to. */
     ParamBaseCfgNode getParameter() { result = n }
@@ -393,16 +405,15 @@ module Node {
   /** An SSA node. */
   class SsaNode extends Node, TSsaNode {
     SsaImpl::DataFlowIntegration::SsaNode node;
-    SsaImpl::DefinitionExt def;
 
-    SsaNode() {
-      this = TSsaNode(node) and
-      def = node.getDefinitionExt()
+    SsaNode() { this = TSsaNode(node) }
+
+    override CfgScope getCfgScope() { result = node.getBasicBlock().getScope() }
+
+    /** Gets the definition this node corresponds to, if any. */
+    SsaImpl::Definition asDefinition() {
+      result = node.(SsaImpl::DataFlowIntegration::SsaDefinitionNode).getDefinition()
     }
-
-    override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
-
-    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
     override Location getLocation() { result = node.getLocation() }
 
@@ -603,14 +614,26 @@ module LocalFlow {
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     nodeFrom.getCfgNode() = getALastEvalNode(nodeTo.getCfgNode())
     or
+    // An edge from the right-hand side of a let statement to the left-hand side.
     exists(LetStmtCfgNode s |
       nodeFrom.getCfgNode() = s.getInitializer() and
       nodeTo.getCfgNode() = s.getPat()
     )
     or
+    exists(IdentPatCfgNode p |
+      not p.isRef() and
+      nodeFrom.getCfgNode() = p and
+      nodeTo.getCfgNode() = p.getName()
+    )
+    or
+    exists(SelfParamCfgNode self |
+      nodeFrom.getCfgNode() = self and
+      nodeTo.getCfgNode() = self.getName()
+    )
+    or
     // An edge from a pattern/expression to its corresponding SSA definition.
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
-      nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
+      nodeTo.(Node::SsaNode).asDefinition().(Ssa::WriteDefinition).getControlFlowNode()
     or
     nodeFrom.(Node::SourceParameterNode).getParameter().(ParamCfgNode).getPat() = nodeTo.asPat()
     or
@@ -1285,6 +1308,14 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr().(ArrayListExprCfgNode).getAnExpr()
       ]
     or
+    // Store from a `ref` identifier pattern into the contained name.
+    exists(IdentPatCfgNode p |
+      c instanceof ReferenceContent and
+      p.isRef() and
+      node1.asPat() = p and
+      node2.(Node::NameNode).asName() = p.getName()
+    )
+    or
     fieldAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
     referenceAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
@@ -1579,6 +1610,7 @@ private module Cached {
     TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
+    TNameNode(NameCfgNode n) { n.getName() = any(Variable v).getName() } or
     TExprPostUpdateNode(ExprCfgNode e) {
       isArgumentForCall(e, _, _) or
       lambdaCallExpr(_, _, e) or

@@ -247,9 +247,7 @@ module ControlFlow {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      cond.hasLocationInfo(filepath, _, _, startline, startcolumn) and
-      endline = startline and
-      endcolumn = startcolumn
+      cond.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
