@@ -655,6 +655,7 @@ public class Test {
             directoryCharsValidation(source);
             sink(source); // Safe
         }
+
         // ReplaceDirectoryCharactersSanitizer
         // Removes all ".." sequences and path separators from the payload
         {
@@ -667,6 +668,7 @@ public class Test {
             source = source.replaceAll("[\\./\\\\]", "");
             sink(source); // Safe
         }
+        // `replaceAll` with regex
         {
             String source = (String) source();
             source = source.replaceAll("\\.", "").replaceAll("/", "");
@@ -699,6 +701,41 @@ public class Test {
             String source = (String) source();
             // Bypassable with ".....///"
             source = source.replaceAll("\\.\\./", "").replaceAll("\\./", "");
+            sink(source); // $ hasTaintFlow
+        }
+        // `replace` with char/CharSequence
+        {
+            String source = (String) source();
+            source = source.replace(".", "").replace("/", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            source = source.replace(".", "").replace("/", "").replace("\\", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // '/' or '\' are not replaced
+            source = source.replace(".", "").replace(".", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // '.' is not replaced
+            source = source.replace("/", "").replace("\\", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // Bypassable with ".../...//"
+            source = source.replace("../", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // Bypassable with ".....///"
+            source = source.replace("../", "").replace("./", "");
             sink(source); // $ hasTaintFlow
         }
     }

@@ -407,20 +407,17 @@ private class ReplaceCall extends MethodCall {
  * by replacing all directory characters ('..', '/', and '\') with safe characters.
  */
 private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
+  // TODO: check performance, then refactor
   ReplaceDirectoryCharactersSanitizer() {
+    // replaceAll with regex
     exists(MethodCall mc, CompileTimeConstantExpr target |
-      (
-        mc instanceof ReplaceAllCall or
-        mc instanceof ReplaceCall
-      ) and
-      // TODO: make sure handling each arg 0 correctly, only replaceAll is a regex, replace is char or CharSequence
-      // TODO: add tests for replace
+      mc instanceof ReplaceAllCall and
       target = mc.getArgument(0) and
       this = mc
     |
       mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
       (
-        // replace with single call
+        // replaceAll with single call
         target.getStringValue().matches("[%]") and
         target.getStringValue().matches("[%\\.%]%") and
         target.getStringValue().matches("[%/%]%") and
@@ -431,7 +428,7 @@ private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
         target.getStringValue().matches("%/%") and
         target.getStringValue().matches("%\\\\%")
         or
-        // replace with multiple calls
+        // replaceAll with multiple calls
         exists(ReplaceAllCall rc, CompileTimeConstantExpr rcTarget |
           // look for another replace call as the qualifier of `mc`
           rc.getQualifier() = mc and
@@ -446,6 +443,30 @@ private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
           // then the other call must replace one of '/' or '\' if they are not equal
           (rcTarget.getStringValue() = "\\." or target.getStringValue() = "\\.")
         )
+      )
+    )
+    or
+    // replace with char/CharSequence
+    exists(MethodCall mc, CompileTimeConstantExpr target |
+      mc instanceof ReplaceCall and
+      target = mc.getArgument(0) and
+      this = mc
+    |
+      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+      // replace with multiple calls
+      exists(ReplaceCall rc, CompileTimeConstantExpr rcTarget |
+        // look for another replace call as the qualifier of `mc`
+        rc.getQualifier() = mc and
+        target = mc.getArgument(0) and
+        target.getStringValue() = [".", "/", "\\"] and
+        rcTarget = rc.getArgument(0) and
+        rcTarget.getStringValue() = [".", "/", "\\"] and
+        rc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+        // make sure the calls replace different characters
+        rcTarget.getStringValue() != target.getStringValue() and
+        // make sure one of the calls replaces '.'
+        // then the other call must replace one of '/' or '\' if they are not equal
+        (rcTarget.getStringValue() = "." or target.getStringValue() = ".")
       )
     )
   }
