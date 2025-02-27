@@ -698,9 +698,9 @@ predicate outNodeHasAddressAndIndex(
  * Holds if `node` is the node that corresponds to the definition of `def`.
  */
 predicate defToNode(
-  Node node, DefinitionExt def, SourceVariable sv, IRBlock bb, int i, boolean uncertain
+  Node node, Definition def, SourceVariable sv, IRBlock bb, int i, boolean uncertain
 ) {
-  def.definesAt(sv, bb, i, _) and
+  def.definesAt(sv, bb, i) and
   (
     nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
     or
@@ -1130,6 +1130,26 @@ class PhiNode extends SsaImpl::DefinitionExt {
 
   /** Gets a definition that is an input to this phi node. */
   final DefinitionExt getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
+}
+
+/** An static single assignment (SSA) definition. */
+class Definition extends SsaImpl::Definition {
+  /**
+   * INTERNAL: Do not use.
+   */
+  Node0Impl getValue() { result = getDefImpl(this).getValue() }
+
+  /** Gets the indirection index of this definition. */
+  int getIndirectionIndex() { result = getDefImpl(this).getIndirectionIndex() }
+
+  /** Gets the indirection of this definition. */
+  int getIndirection() { result = getDefImpl(this).getIndirection() }
+
+  /**
+   * Holds if this definition is guaranteed to totally overwrite the buffer
+   * being written to.
+   */
+  predicate isCertain() { getDefImpl(this).isCertain() }
 }
 
 /** An static single assignment (SSA) definition. */
