@@ -26,5 +26,5 @@ where
   inPrivilegedContext(checkout, event) and
   event.getName() = issueCommentTriggers() and
   not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
-select checkout, "Potential execution of untrusted code on a privileged workflow ($@)", event,
+select checkout, "Potential execution of untrusted code on a privileged workflow ($@).", event,
   event.getName()
