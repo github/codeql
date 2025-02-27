@@ -7,8 +7,8 @@ function tooltips() {
     return <span>
         <span data-tip={source}/>
         <span data-tip={source} data-html={false} />
-        <span data-tip={source} data-html="true" /> // $ Alert
-        <span data-tip={source} data-html={true} /> // $ Alert
+        <span data-tip={source} data-html="true" /> { /* $ Alert */ }
+        <span data-tip={source} data-html={true} /> { /* $ Alert */ }
         <ReactTooltip />
     </span>
 }
