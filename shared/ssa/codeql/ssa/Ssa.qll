@@ -1610,6 +1610,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       SsaDefinitionExtNodeImpl() { this = TSsaDefinitionNode(def) }
 
+      /** Gets the corresponding `DefinitionExt`. */
       DefinitionExt getDefExt() { result = def }
 
       deprecated override DefinitionExt getDefinitionExt() { result = def }
@@ -1925,6 +1926,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this = TRefPhiRead(_, result)
       }
 
+      /** Holds if this reference is a synthesized phi read. */
       predicate isPhiRead() { this = TRefPhiRead(_, _) }
 
       /** Gets a textual representation of this SSA reference. */
