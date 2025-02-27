@@ -1,5 +1,5 @@
 #select
-| graphql.js:9:34:19:5 | ` // $  ... }\\n    ` | graphql.js:8:16:8:28 | req.params.id | graphql.js:9:34:19:5 | ` // $  ... }\\n    ` | This query string depends on a $@. | graphql.js:8:16:8:28 | req.params.id | user-provided value |
+| graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | graphql.js:8:16:8:28 | req.params.id | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | This query string depends on a $@. | graphql.js:8:16:8:28 | req.params.id | user-provided value |
 | graphql.js:26:30:26:40 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:26:30:26:40 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
 | graphql.js:29:32:29:42 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:29:32:29:42 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
 | graphql.js:32:18:32:28 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:32:18:32:28 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
@@ -8,7 +8,7 @@
 | graphql.js:55:39:55:49 | `foo ${id}` | graphql.js:54:16:54:28 | req.params.id | graphql.js:55:39:55:49 | `foo ${id}` | This query string depends on a $@. | graphql.js:54:16:54:28 | req.params.id | user-provided value |
 | graphql.js:57:66:57:76 | `foo ${id}` | graphql.js:54:16:54:28 | req.params.id | graphql.js:57:66:57:76 | `foo ${id}` | This query string depends on a $@. | graphql.js:54:16:54:28 | req.params.id | user-provided value |
 | graphql.js:74:46:74:64 | "{ foo" + id + " }" | graphql.js:73:14:73:25 | req.query.id | graphql.js:74:46:74:64 | "{ foo" + id + " }" | This query string depends on a $@. | graphql.js:73:14:73:25 | req.query.id | user-provided value |
-| graphql.js:82:14:88:8 | `{ // $ ...      }` | graphql.js:73:14:73:25 | req.query.id | graphql.js:82:14:88:8 | `{ // $ ...      }` | This query string depends on a $@. | graphql.js:73:14:73:25 | req.query.id | user-provided value |
+| graphql.js:82:14:88:8 | `{\\n     ...      }` | graphql.js:73:14:73:25 | req.query.id | graphql.js:82:14:88:8 | `{\\n     ...      }` | This query string depends on a $@. | graphql.js:73:14:73:25 | req.query.id | user-provided value |
 | graphql.js:118:38:118:48 | `foo ${id}` | graphql.js:117:16:117:28 | req.params.id | graphql.js:118:38:118:48 | `foo ${id}` | This query string depends on a $@. | graphql.js:117:16:117:28 | req.params.id | user-provided value |
 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 | html-sanitizer.js:13:39:13:44 | param1 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 | This query string depends on a $@. | html-sanitizer.js:13:39:13:44 | param1 | user-provided value |
 | json-schema-validator.js:33:22:33:26 | query | json-schema-validator.js:25:34:25:47 | req.query.data | json-schema-validator.js:33:22:33:26 | query | This query object depends on a $@. | json-schema-validator.js:25:34:25:47 | req.query.data | user-provided value |
@@ -101,9 +101,6 @@
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:22:11:22:15 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:30:13:30:25 | req.params.id | pg-promise.js:30:13:30:25 | req.params.id | pg-promise.js:30:13:30:25 | req.params.id | This query string depends on a $@. | pg-promise.js:30:13:30:25 | req.params.id | user-provided value |
 | pg-promise.js:34:13:34:25 | req.params.id | pg-promise.js:34:13:34:25 | req.params.id | pg-promise.js:34:13:34:25 | req.params.id | This query string depends on a $@. | pg-promise.js:34:13:34:25 | req.params.id | user-provided value |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | This query string depends on a $@. | pg-promise.js:39:7:39:19 | req.params.id | user-provided value |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | This query string depends on a $@. | pg-promise.js:40:7:40:21 | req.params.name | user-provided value |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | This query string depends on a $@. | pg-promise.js:41:7:41:20 | req.params.foo | user-provided value |
 | pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:39:7:39:19 | req.params.id | This query string depends on a $@. | pg-promise.js:39:7:39:19 | req.params.id | user-provided value |
 | pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:40:7:40:21 | req.params.name | This query string depends on a $@. | pg-promise.js:40:7:40:21 | req.params.name | user-provided value |
 | pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id | pg-promise.js:47:11:47:23 | req.params.id | This query string depends on a $@. | pg-promise.js:47:11:47:23 | req.params.id | user-provided value |
@@ -129,7 +126,7 @@
 edges
 | graphql.js:8:11:8:28 | id | graphql.js:11:46:11:47 | id | provenance |  |
 | graphql.js:8:16:8:28 | req.params.id | graphql.js:8:11:8:28 | id | provenance |  |
-| graphql.js:11:46:11:47 | id | graphql.js:9:34:19:5 | ` // $  ... }\\n    ` | provenance |  |
+| graphql.js:11:46:11:47 | id | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | provenance |  |
 | graphql.js:25:11:25:28 | id | graphql.js:26:37:26:38 | id | provenance |  |
 | graphql.js:25:11:25:28 | id | graphql.js:29:39:29:40 | id | provenance |  |
 | graphql.js:25:11:25:28 | id | graphql.js:32:25:32:26 | id | provenance |  |
@@ -151,7 +148,7 @@ edges
 | graphql.js:73:9:73:25 | id | graphql.js:86:13:86:14 | id | provenance |  |
 | graphql.js:73:14:73:25 | req.query.id | graphql.js:73:9:73:25 | id | provenance |  |
 | graphql.js:74:56:74:57 | id | graphql.js:74:46:74:64 | "{ foo" + id + " }" | provenance |  |
-| graphql.js:86:13:86:14 | id | graphql.js:82:14:88:8 | `{ // $ ...      }` | provenance |  |
+| graphql.js:86:13:86:14 | id | graphql.js:82:14:88:8 | `{\\n     ...      }` | provenance |  |
 | graphql.js:117:11:117:28 | id | graphql.js:118:45:118:46 | id | provenance |  |
 | graphql.js:117:16:117:28 | req.params.id | graphql.js:117:11:117:28 | id | provenance |  |
 | graphql.js:118:45:118:46 | id | graphql.js:118:38:118:48 | `foo ${id}` | provenance |  |
@@ -445,9 +442,6 @@ edges
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:60:20:60:24 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:63:23:63:27 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:64:16:64:20 | query | provenance |  |
-| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
-| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
-| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | provenance | Config |
 | redis.js:12:9:12:26 | key | redis.js:13:16:13:18 | key | provenance |  |
 | redis.js:12:9:12:26 | key | redis.js:18:16:18:18 | key | provenance |  |
@@ -478,7 +472,7 @@ edges
 nodes
 | graphql.js:8:11:8:28 | id | semmle.label | id |
 | graphql.js:8:16:8:28 | req.params.id | semmle.label | req.params.id |
-| graphql.js:9:34:19:5 | ` // $  ... }\\n    ` | semmle.label | ` // $  ... }\\n    ` |
+| graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | semmle.label | `\\n      ... }\\n    ` |
 | graphql.js:11:46:11:47 | id | semmle.label | id |
 | graphql.js:25:11:25:28 | id | semmle.label | id |
 | graphql.js:25:16:25:28 | req.params.id | semmle.label | req.params.id |
@@ -504,7 +498,7 @@ nodes
 | graphql.js:73:14:73:25 | req.query.id | semmle.label | req.query.id |
 | graphql.js:74:46:74:64 | "{ foo" + id + " }" | semmle.label | "{ foo" + id + " }" |
 | graphql.js:74:56:74:57 | id | semmle.label | id |
-| graphql.js:82:14:88:8 | `{ // $ ...      }` | semmle.label | `{ // $ ...      }` |
+| graphql.js:82:14:88:8 | `{\\n     ...      }` | semmle.label | `{\\n     ...      }` |
 | graphql.js:86:13:86:14 | id | semmle.label | id |
 | graphql.js:117:11:117:28 | id | semmle.label | id |
 | graphql.js:117:16:117:28 | req.params.id | semmle.label | req.params.id |
@@ -714,10 +708,8 @@ nodes
 | pg-promise.js:22:11:22:15 | query | semmle.label | query |
 | pg-promise.js:30:13:30:25 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:34:13:34:25 | req.params.id | semmle.label | req.params.id |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | semmle.label | [\\n      ... n\\n    ] |
 | pg-promise.js:39:7:39:19 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:40:7:40:21 | req.params.name | semmle.label | req.params.name |
-| pg-promise.js:41:7:41:20 | req.params.foo | semmle.label | req.params.foo |
 | pg-promise.js:47:11:47:23 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:54:11:54:23 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:56:14:56:29 | req.params.title | semmle.label | req.params.title |
@@ -755,49 +747,3 @@ nodes
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | semmle.label | 'SELECT ... d + '"' |
 | tst.js:10:46:10:58 | req.params.id | semmle.label | req.params.id |
 subpaths
-testFailures
-| graphql.js:8:16:8:28 | req.params.id | Unexpected result: Source |
-| graphql.js:9:34:19:5 | ` // $  ... }\\n    ` | Unexpected result: Alert |
-| graphql.js:25:16:25:28 | req.params.id | Unexpected result: Source |
-| graphql.js:38:16:38:28 | req.params.id | Unexpected result: Source |
-| graphql.js:54:16:54:28 | req.params.id | Unexpected result: Source |
-| graphql.js:73:14:73:25 | req.query.id | Unexpected result: Source |
-| graphql.js:82:14:88:8 | `{ // $ ...      }` | Unexpected result: Alert |
-| graphql.js:117:16:117:28 | req.params.id | Unexpected result: Source |
-| html-sanitizer.js:13:39:13:44 | param1 | Unexpected result: Source |
-| json-schema-validator.js:25:34:25:47 | req.query.data | Unexpected result: Source |
-| json-schema-validator.js:50:34:50:47 | req.query.data | Unexpected result: Source |
-| koarouter.js:5:13:5:19 | version | Unexpected result: Source |
-| koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | Unexpected result: Alert |
-| ldap.js:20:21:20:27 | req.url | Unexpected result: Source |
-| marsdb-flow-to.js:11:17:11:24 | req.body | Unexpected result: Source |
-| marsdb.js:13:17:13:24 | req.body | Unexpected result: Source |
-| minimongo.js:15:17:15:24 | req.body | Unexpected result: Source |
-| mongodb.js:13:19:13:26 | req.body | Unexpected result: Source |
-| mongodb.js:25:19:25:26 | req.body | Unexpected result: Source |
-| mongodb.js:47:19:47:33 | req.query.title | Unexpected result: Source |
-| mongodb.js:57:16:57:30 | req.query.title | Unexpected result: Source |
-| mongodb.js:66:13:66:25 | req.query.tag | Unexpected result: Source |
-| mongodb.js:101:17:101:29 | queries.title | Unexpected result: Source |
-| mongodb_bodySafe.js:24:19:24:33 | req.query.title | Unexpected result: Source |
-| mongoose.js:21:16:21:23 | req.body | Unexpected result: Source |
-| mongoose.js:101:11:101:22 | req.query.id | Unexpected result: Source |
-| mongoose.js:101:32:101:45 | req.query.cond | Unexpected result: Source |
-| mongooseJsonParse.js:20:30:20:43 | req.query.data | Unexpected result: Source |
-| mongooseModelClient.js:10:22:10:29 | req.body | Unexpected result: Source |
-| mysql.js:6:16:6:31 | req.params.value | Unexpected result: Source |
-| pg-promise-types.ts:7:17:7:28 | req.params.x | Unexpected result: Source |
-| pg-promise.js:7:16:7:34 | req.params.category | Unexpected result: Source |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | Unexpected result: Alert |
-| pg-promise.js:39:7:39:19 | req.params.id | Unexpected result: Source |
-| pg-promise.js:40:7:40:21 | req.params.name | Unexpected result: Source |
-| pg-promise.js:41:7:41:20 | req.params.foo | Unexpected result: Source |
-| redis.js:12:15:12:22 | req.body | Unexpected result: Source |
-| redis.js:38:17:38:24 | req.body | Unexpected result: Source |
-| socketio.js:10:25:10:30 | handle | Unexpected result: Source |
-| socketio.js:11:12:11:53 | `INSERT ... andle}` | Unexpected result: Alert |
-| tst.js:10:10:10:64 | 'SELECT ... d + '"' | Unexpected result: Alert |
-| tst.js:10:46:10:58 | req.params.id | Unexpected result: Alert |
-| tst3.js:8:16:8:34 | req.params.category | Unexpected result: Source |
-| tst4.js:8:10:8:66 | 'SELECT ... d + '"' | Unexpected result: Alert |
-| tst4.js:8:46:8:60 | $routeParams.id | Unexpected result: Alert |

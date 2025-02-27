@@ -127,11 +127,3 @@ subpaths
 | RegExpInjection.js:10:26:10:26 | s | RegExpInjection.js:13:18:13:18 | s | RegExpInjection.js:14:12:14:24 | s + "=(.*)\\n" | RegExpInjection.js:10:20:10:27 | wrap2(s) |
 | RegExpInjection.js:17:19:17:21 | key | RegExpInjection.js:9:17:9:17 | s | RegExpInjection.js:10:12:10:27 | "\\\\b" + wrap2(s) | RegExpInjection.js:17:14:17:22 | wrap(key) |
 | RegExpInjection.js:18:19:18:21 | key | RegExpInjection.js:9:17:9:17 | s | RegExpInjection.js:10:12:10:27 | "\\\\b" + wrap2(s) | RegExpInjection.js:18:14:18:22 | wrap(key) |
-testFailures
-| RegExpInjection.js:5:13:5:28 | req.param("key") | Unexpected result: Source |
-| RegExpInjection.js:5:39:5:56 | req.param("input") | Unexpected result: Source |
-| RegExpInjection.js:21:12:21:27 | req.param("key") | Unexpected result: Source |
-| RegExpInjection.js:55:39:55:56 | req.param("input") | Unexpected result: Source |
-| RegExpInjection.js:77:15:77:32 | req.param("input") | Unexpected result: Source |
-| RegExpInjection.js:92:15:92:32 | req.param("input") | Unexpected result: Source |
-| tst.js:5:16:5:29 | req.query.data | Unexpected result: Source |

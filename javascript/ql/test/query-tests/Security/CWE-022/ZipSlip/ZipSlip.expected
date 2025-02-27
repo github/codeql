@@ -48,21 +48,3 @@ nodes
 | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | semmle.label | entry.path |
 | ZipSlipBadUnzipper.js:8:37:8:44 | fileName | semmle.label | fileName |
 subpaths
-testFailures
-| AdmZipBad.js:6:24:6:41 | zipEntry.entryName | Unexpected result: Alert |
-| TarSlipBad.js:6:36:6:46 | header.name | Unexpected result: Alert |
-| TarSlipBad.js:9:17:9:31 | header.linkname | Unexpected result: Alert |
-| ZipSlipBad.js:7:22:7:31 | entry.path | Unexpected result: Alert |
-| ZipSlipBad.js:8:37:8:44 | fileName | Unexpected result: Sink |
-| ZipSlipBad.js:15:22:15:31 | entry.path | Unexpected result: Alert |
-| ZipSlipBad.js:16:30:16:37 | fileName | Unexpected result: Sink |
-| ZipSlipBad.js:22:22:22:31 | entry.path | Unexpected result: Alert |
-| ZipSlipBad.js:23:28:23:35 | fileName | Unexpected result: Sink |
-| ZipSlipBad.js:30:14:30:17 | name | Unexpected result: Alert |
-| ZipSlipBad.js:31:26:31:29 | name | Unexpected result: Sink |
-| ZipSlipBad.js:34:16:34:19 | name | Unexpected result: Alert |
-| ZipSlipBad.js:35:26:35:29 | name | Unexpected result: Sink |
-| ZipSlipBad2.js:5:37:5:46 | entry.path | Unexpected result: Alert |
-| ZipSlipBad2.js:6:22:6:29 | fileName | Unexpected result: Sink |
-| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | Unexpected result: Alert |
-| ZipSlipBadUnzipper.js:8:37:8:44 | fileName | Unexpected result: Sink |

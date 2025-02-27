@@ -1,4 +1,3 @@
-#select
 | es2015.js:4:16:4:17 | 23 | Superfluous argument passed to $@. | es2015.js:2:14:2:32 | (x) { this.x = x; } | constructor of class Class1 |
 | es2015.js:17:11:17:12 | 42 | Superfluous argument passed to $@. | es2015.js:15:13:15:12 | () {} | default constructor of class Other |
 | es2015.js:21:3:21:4 | 42 | Superfluous argument passed to $@. | tst.js:1:1:4:1 | functio ... x+19;\\n} | function f |
@@ -23,10 +22,3 @@
 | tst.js:113:20:113:21 | 42 | Superfluous argument passed to $@. | tst.js:88:2:91:2 | functio ... .");\\n\\t} | function notAPlainThrower3 |
 | tst.js:117:23:117:24 | 87 | Superfluous argument passed to $@. | tst.js:99:2:101:2 | functio ... (p);\\n\\t} | function throwerWithParam |
 | tst.js:118:18:118:19 | 42 | Superfluous argument passed to $@. | tst.js:102:2:110:2 | functio ... )();\\n\\t} | function throwerIndirect |
-testFailures
-| globals.js:17:31:17:40 | // $ Alert | Missing result: Alert |
-| reflection.js:6:15:6:15 | Superfluous argument passed to $@. | Unexpected result: Alert |
-| reflection.js:12:18:12:18 | Superfluous argument passed to $@. | Unexpected result: Alert |
-| tst.js:31:22:31:31 | // $ Alert | Missing result: Alert |
-| tst.js:43:19:43:20 | Superfluous argument passed to $@. | Unexpected result: Alert |
-| tst.js:118:18:118:19 | Superfluous argument passed to $@. | Unexpected result: Alert |

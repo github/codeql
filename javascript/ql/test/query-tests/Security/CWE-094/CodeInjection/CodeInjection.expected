@@ -193,20 +193,3 @@ nodes
 | webix/webix.js:4:22:4:43 | documen ... on.hash | semmle.label | documen ... on.hash |
 | webix/webix.js:5:43:5:64 | documen ... on.hash | semmle.label | documen ... on.hash |
 subpaths
-testFailures
-| express.js:19:17:19:35 | req.param("wobble") | Unexpected result: Source |
-| express.js:27:17:27:35 | req.param("wobble") | Unexpected result: Source |
-| express.js:42:30:42:32 | msg | Unexpected result: Source |
-| lib/index.js:51:56:51:65 | // $ Alert | Missing result: Alert |
-| lib/index.js:103:71:103:80 | // $ Alert | Missing result: Alert |
-| lib/index.js:104:71:104:80 | // $ Alert | Missing result: Alert |
-| lib/index.js:105:71:105:80 | // $ Alert | Missing result: Alert |
-| lib/index.js:106:54:106:63 | // $ Alert | Missing result: Alert |
-| lib/index.js:135:73:135:82 | // $ Alert | Missing result: Alert |
-| lib/index.js:136:73:136:82 | // $ Alert | Missing result: Alert |
-| lib/index.js:137:73:137:82 | // $ Alert | Missing result: Alert |
-| lib/index.js:138:56:138:65 | // $ Alert | Missing result: Alert |
-| react-native.js:7:17:7:33 | req.param("code") | Unexpected result: Source |
-| react.js:10:56:10:77 | documen ... on.hash | Unexpected result: Alert |
-| template-sinks.js:18:19:18:31 | req.query.foo | Unexpected result: Source |
-| tst.js:22:18:22:41 | documen ... .search | Unexpected result: Source |

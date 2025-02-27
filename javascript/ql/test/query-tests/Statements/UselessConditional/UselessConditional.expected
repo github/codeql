@@ -1,4 +1,3 @@
-#select
 | UselessConditional.js:5:7:5:12 | !lines | This negation always evaluates to false. |
 | UselessConditional.js:12:34:12:79 | (v = ne ... k] = v) | This logical 'and' expression can be replaced with a comma expression. |
 | UselessConditional.js:17:9:17:9 | a | This use of variable 'a' always evaluates to false. |
@@ -34,22 +33,3 @@
 | UselessConditionalGood.js:69:12:69:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:85:12:85:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:97:12:97:13 | xy | This use of variable 'xy' always evaluates to false. |
-testFailures
-| UselessConditional.js:5:7:5:12 | This negation always evaluates to false. | Unexpected result: Alert |
-| UselessConditional.js:12:34:12:79 | This logical 'and' expression can be replaced with a comma expression. | Unexpected result: Alert |
-| UselessConditional.js:17:9:17:9 | This use of variable 'a' always evaluates to false. | Unexpected result: Alert |
-| UselessConditional.js:18:9:18:9 | This use of variable 'b' always evaluates to false. | Unexpected result: Alert |
-| UselessConditional.js:21:9:21:9 | This use of variable 'a' always evaluates to false. | Unexpected result: Alert |
-| UselessConditional.js:22:9:22:9 | This use of variable 'b' always evaluates to false. | Unexpected result: Alert |
-| UselessConditional.js:26:6:26:6 | This use of variable 'x' always evaluates to true. | Unexpected result: Alert |
-| UselessConditional.js:27:7:27:13 | This constructor call to X always evaluates to true. | Unexpected result: Alert |
-| UselessConditional.js:28:7:28:7 | This use of variable 'x' always evaluates to true. | Unexpected result: Alert |
-| UselessConditional.js:29:8:29:8 | This use of variable 'x' always evaluates to true. | Unexpected result: Alert |
-| UselessConditional.js:30:8:30:14 | This constructor call to X always evaluates to true. | Unexpected result: Alert |
-| UselessConditional.js:54:9:54:13 | This use of variable 'known' always evaluates to false. | Unexpected result: Alert |
-| UselessConditional.js:70:16:70:43 | // $ Al ... elisted | Missing result: Alert |
-| UselessConditional.js:82:20:82:47 | // $ Al ... elisted | Missing result: Alert |
-| UselessConditional.js:89:10:89:16 | This expression always evaluates to true. | Unexpected result: Alert |
-| UselessConditional.js:153:11:153:62 | // $ Al ... tations | Missing result: Alert |
-| UselessConditional.js:168:11:168:62 | // $ Al ... tations | Missing result: Alert |
-| UselessConditional.js:183:38:183:65 | // $ Al ... elisted | Missing result: Alert |

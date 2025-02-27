@@ -1,6 +1,2 @@
-#select
 | tst.js:2:1:2:1 | x | This parameter has the same name as $@ of the same function. | tst.js:4:1:4:6 | \\u0078 | another parameter |
 | tst.js:3:1:3:1 | x | This parameter has the same name as $@ of the same function. | tst.js:4:1:4:6 | \\u0078 | another parameter |
-testFailures
-| tst.js:2:1:2:1 | This parameter has the same name as $@ of the same function. | Unexpected result: Alert |
-| tst.js:4:8:4:17 | // $ Alert | Missing result: Alert |

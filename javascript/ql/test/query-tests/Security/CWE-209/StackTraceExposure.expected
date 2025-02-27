@@ -21,6 +21,3 @@ nodes
 | tst.js:17:11:17:11 | e | semmle.label | e |
 | tst.js:17:11:17:17 | e.stack | semmle.label | e.stack |
 subpaths
-testFailures
-| node.js:8:10:8:12 | err | Unexpected result: Source |
-| tst.js:6:12:6:12 | e | Unexpected result: Source |

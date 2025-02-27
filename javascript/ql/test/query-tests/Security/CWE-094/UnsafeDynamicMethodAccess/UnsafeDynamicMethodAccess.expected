@@ -62,6 +62,3 @@ nodes
 | tst.js:21:17:21:23 | message | semmle.label | message |
 | tst.js:21:17:21:28 | message.name | semmle.label | message.name |
 subpaths
-testFailures
-| example.js:9:37:9:38 | ev | Unexpected result: Source |
-| tst.js:3:37:3:38 | ev | Unexpected result: Source |

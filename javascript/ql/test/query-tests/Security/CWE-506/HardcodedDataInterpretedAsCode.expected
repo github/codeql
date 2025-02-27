@@ -46,10 +46,3 @@ nodes
 subpaths
 | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:93:16:93:16 | r | event-stream-orig.js:94:14:94:45 | Buffer. ... tring() | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
 | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:5:12:5:12 | r | event-stream.js:6:10:6:41 | Buffer. ... tring() | event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
-testFailures
-| event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | Unexpected result: Alert |
-| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | Unexpected result: Alert |
-| event-stream.js:9:11:9:37 | e("2e2f ... 17461") | Unexpected result: Alert |
-| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | Unexpected result: Alert |
-| tst.js:1:29:1:88 | '636f6e ... 6e2729' | Unexpected result: Source |
-| tst.js:5:12:5:23 | "0123456789" | Unexpected result: Source |

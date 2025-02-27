@@ -1,4 +1,3 @@
-#select
 | connect-bad.js:4:11:4:19 | connect() | This server never sets the 'X-Frame-Options' HTTP header. |
 | express-bad.js:2:11:2:19 | express() | This server never sets the 'X-Frame-Options' HTTP header. |
 | express-good-array-routers.js:2:11:2:19 | express() | This server never sets the 'X-Frame-Options' HTTP header. |
@@ -6,11 +5,3 @@
 | koa-bad.js:2:11:2:19 | new Koa() | This server never sets the 'X-Frame-Options' HTTP header. |
 | node-bad.js:3:1:4:4 | http.cr ...  {\\n  }) | This server never sets the 'X-Frame-Options' HTTP header. |
 | restify-bad.js:2:14:2:35 | restify ... erver() | This server never sets the 'X-Frame-Options' HTTP header. |
-testFailures
-| connect-bad.js:4:11:4:19 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |
-| express-bad.js:2:11:2:19 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |
-| express-good-array-routers.js:2:11:2:19 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |
-| hapi-bad.js:2:14:2:30 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |
-| koa-bad.js:2:11:2:19 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |
-| node-bad.js:3:1:4:4 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |
-| restify-bad.js:2:14:2:35 | This server never sets the 'X-Frame-Options' HTTP header. | Unexpected result: Alert |

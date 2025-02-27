@@ -1,4 +1,3 @@
-#select
 | invalid.js:5:35:5:52 | () { this.c = 0; } | The super constructor must be called before using $@. | invalid.js:5:40:5:43 | this | this |
 | invalid.js:6:35:6:50 | () { this.c(); } | The super constructor must be called before using $@. | invalid.js:6:40:6:43 | this | this |
 | invalid.js:7:35:7:51 | () { super.c(); } | The super constructor must be called before using $@. | invalid.js:7:40:7:46 | super.c | super |
@@ -11,19 +10,5 @@
 | invalid.js:14:35:14:118 | () { cl ... er(); } | The super constructor must be called before using $@. | invalid.js:14:99:14:102 | this | this |
 | invalid.js:15:71:15:95 | () { th ... er(); } | The super constructor must be called before using $@. | invalid.js:15:76:15:79 | this | this |
 | invalid.js:16:35:16:66 | () { if ... .a(); } | The super constructor must be called before using $@. | invalid.js:16:56:16:59 | this | this |
-| invalid.js:26:16:26:19 | () {\\n   ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:27:9:27:12 | this | this |
-| invalid.js:26:16:26:19 | () {\\n   ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:28:9:28:12 | this | this |
-testFailures
-| invalid.js:5:35:5:52 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:6:35:6:50 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:7:35:7:51 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:8:35:8:61 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:9:35:9:59 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:10:35:10:60 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:11:35:11:55 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:12:35:12:57 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:13:35:13:58 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:14:35:14:118 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:15:71:15:95 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:16:35:16:66 | The super constructor must be called before using $@. | Unexpected result: Alert |
-| invalid.js:26:16:26:19 | The super constructor must be called before using $@. | Unexpected result: Alert |
+| invalid.js:26:16:26:30 | () { // ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:27:9:27:12 | this | this |
+| invalid.js:26:16:26:30 | () { // ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:28:9:28:12 | this | this |

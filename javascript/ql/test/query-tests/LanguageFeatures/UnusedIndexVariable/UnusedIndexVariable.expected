@@ -1,6 +1,2 @@
-#select
 | UnusedIndexVariable2.js:3:8:3:20 | i++<xs.length | Index variable i is never used to access elements of xs. |
 | UnusedIndexVariable.js:3:16:3:26 | i<xs.length | Index variable i is never used to access elements of xs. |
-testFailures
-| UnusedIndexVariable.js:3:16:3:26 | Index variable i is never used to access elements of xs. | Unexpected result: Alert |
-| UnusedIndexVariable2.js:3:8:3:20 | Index variable i is never used to access elements of xs. | Unexpected result: Alert |

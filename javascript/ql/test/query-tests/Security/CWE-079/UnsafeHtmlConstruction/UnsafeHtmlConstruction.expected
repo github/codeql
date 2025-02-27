@@ -131,23 +131,3 @@ nodes
 | typed.ts:6:43:6:43 | s | semmle.label | s |
 | typed.ts:8:40:8:40 | s | semmle.label | s |
 subpaths
-testFailures
-| jquery-plugin.js:11:27:11:31 | stuff | Unexpected result: Source |
-| jquery-plugin.js:11:34:11:40 | options | Unexpected result: Source |
-| lib/src/MyNode.ts:1:28:1:28 | s | Unexpected result: Source |
-| lib2/index.ts:1:28:1:28 | s | Unexpected result: Source |
-| lib2/index.ts:6:29:6:36 | settings | Unexpected result: Source |
-| lib2/src/MyNode.ts:1:28:1:28 | s | Unexpected result: Source |
-| main.js:1:55:1:55 | s | Unexpected result: Source |
-| main.js:6:49:6:49 | s | Unexpected result: Source |
-| main.js:11:60:11:60 | s | Unexpected result: Source |
-| main.js:21:47:21:47 | s | Unexpected result: Source |
-| main.js:47:88:47:97 | // $ Alert | Missing result: Alert |
-| main.js:56:28:56:34 | options | Unexpected result: Source |
-| main.js:66:35:66:41 | attrVal | Unexpected result: Source |
-| main.js:79:34:79:36 | val | Unexpected result: Source |
-| main.js:93:43:93:43 | x | Unexpected result: Source |
-| main.js:98:43:98:43 | x | Unexpected result: Source |
-| main.js:116:47:116:47 | s | Unexpected result: Source |
-| typed.ts:1:39:1:39 | s | Unexpected result: Source |
-| typed.ts:6:43:6:43 | s | Unexpected result: Source |

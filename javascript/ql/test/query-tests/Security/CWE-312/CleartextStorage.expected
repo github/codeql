@@ -32,15 +32,3 @@ nodes
 | tst-webstorage.js:3:20:3:32 | data.password | semmle.label | data.password |
 | tst-webstorage.js:4:29:4:41 | data.password | semmle.label | data.password |
 subpaths
-testFailures
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") | Unexpected result: Source |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword | Unexpected result: Source |
-| CleartextStorage2.js:7:19:7:34 | 'password=' + pw | Unexpected result: Alert |
-| build-leaks.js:4:41:4:50 | // $ Alert | Missing result: Alert |
-| passwords.js:149:32:149:41 | // $ Alert | Missing result: Alert |
-| passwords.js:150:35:150:44 | // $ Alert | Missing result: Alert |
-| passwords.js:154:32:154:41 | // $ Alert | Missing result: Alert |
-| tst-webstorage.js:1:18:1:30 | data.password | Unexpected result: Alert |
-| tst-webstorage.js:2:27:2:39 | data.password | Unexpected result: Alert |
-| tst-webstorage.js:3:20:3:32 | data.password | Unexpected result: Alert |
-| tst-webstorage.js:4:29:4:41 | data.password | Unexpected result: Alert |

@@ -439,12 +439,12 @@ edges
 | pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } | provenance |  |
 | pages/[id].jsx:13:44:13:49 | params [id] | pages/[id].jsx:13:44:13:52 | params.id | provenance |  |
 | pages/[id].jsx:16:44:16:49 | params [q] | pages/[id].jsx:16:44:16:51 | params.q | provenance |  |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | pages/[id].jsx:3:30:3:35 | params [id] | provenance |  |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | pages/[id].jsx:3:30:3:35 | params [q] | provenance |  |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | pages/[id].jsx:3:30:3:35 | params [id] | provenance |  |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | pages/[id].jsx:3:30:3:35 | params [q] | provenance |  |
 | pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | provenance |  |
-| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | provenance |  |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | provenance |  |
 | pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | provenance |  |
-| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | provenance |  |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
@@ -1040,8 +1040,8 @@ nodes
 | pages/[id].jsx:13:44:13:52 | params.id | semmle.label | params.id |
 | pages/[id].jsx:16:44:16:49 | params [q] | semmle.label | params [q] |
 | pages/[id].jsx:16:44:16:51 | params.q | semmle.label | params.q |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | semmle.label | {\\n      ... ,\\n    } [id] |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | semmle.label | {\\n      ... ,\\n    } [q] |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | semmle.label | {\\n      ... e\\n    } [id] |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | semmle.label | {\\n      ... e\\n    } [q] |
 | pages/[id].jsx:25:11:25:24 | context.params | semmle.label | context.params |
 | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | semmle.label | context ... d \|\| "" |
 | pages/[id].jsx:26:10:26:22 | context.query | semmle.label | context.query |
@@ -1465,87 +1465,3 @@ subpaths
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:14:24:14:28 | attrs | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
-testFailures
-| addEventListener.js:1:43:1:47 | event | Unexpected result: Source |
-| addEventListener.js:5:43:5:48 | {data} | Unexpected result: Source |
-| addEventListener.js:10:21:10:25 | event | Unexpected result: Source |
-| angular-tempate-url.js:13:30:13:31 | ev | Unexpected result: Source |
-| classnames.js:10:45:10:55 | window.name | Unexpected result: Source |
-| clipboard.ts:8:18:8:51 | clipboa ... /html') | Unexpected result: Source |
-| clipboard.ts:43:22:43:55 | clipboa ... /html') | Unexpected result: Source |
-| clipboard.ts:71:27:71:62 | e.clipb ... /html') | Unexpected result: Source |
-| clipboard.ts:73:29:73:39 | droppedHtml | Unexpected result: Alert |
-| clipboard.ts:98:22:98:54 | dataTra ... /html') | Unexpected result: Source |
-| d3.js:4:12:4:22 | window.name | Unexpected result: Source |
-| dates.js:9:36:9:55 | window.location.hash | Unexpected result: Source |
-| dates.js:30:36:30:55 | window.location.hash | Unexpected result: Source |
-| dates.js:46:36:46:55 | window.location.hash | Unexpected result: Source |
-| dates.js:54:36:54:55 | window.location.hash | Unexpected result: Source |
-| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | Unexpected result: Source |
-| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | Unexpected result: Source |
-| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | Unexpected result: Source |
-| dragAndDrop.ts:73:29:73:39 | droppedHtml | Unexpected result: Alert |
-| jquery.js:2:17:2:40 | documen ... .search | Unexpected result: Source |
-| jquery.js:18:14:18:33 | window.location.hash | Unexpected result: Source |
-| json-stringify.jsx:5:18:5:36 | req.param("locale") | Unexpected result: Source |
-| jwt-server.js:7:17:7:35 | req.param("wobble") | Unexpected result: Source |
-| optionalSanitizer.js:2:16:2:39 | documen ... .search | Unexpected result: Source |
-| optionalSanitizer.js:26:16:26:39 | documen ... .search | Unexpected result: Source |
-| pages/[id].jsx:5:18:5:29 | router.query | Unexpected result: Source |
-| pages/[id].jsx:25:11:25:24 | context.params | Unexpected result: Source |
-| pages/[id].jsx:26:10:26:22 | context.query | Unexpected result: Source |
-| react-native.js:7:17:7:33 | req.param("code") | Unexpected result: Source |
-| react-use-state.js:4:38:4:48 | window.name | Unexpected result: Source |
-| react-use-state.js:10:14:10:24 | window.name | Unexpected result: Source |
-| react-use-state.js:16:20:16:30 | window.name | Unexpected result: Source |
-| react-use-state.js:25:20:25:30 | window.name | Unexpected result: Source |
-| sanitiser.js:16:17:16:27 | window.name | Unexpected result: Source |
-| stored-xss.js:2:39:2:62 | documen ... .search | Unexpected result: Source |
-| stored-xss.js:3:35:3:58 | documen ... .search | Unexpected result: Source |
-| tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | Unexpected result: Source |
-| tooltip.jsx:6:20:6:30 | window.name | Unexpected result: Source |
-| tooltip.jsx:10:25:10:30 | source | Unexpected result: Alert |
-| tooltip.jsx:11:25:11:30 | source | Unexpected result: Alert |
-| tooltip.jsx:22:20:22:30 | window.name | Unexpected result: Source |
-| translate.js:6:16:6:39 | documen ... .search | Unexpected result: Source |
-| trusted-types-lib.js:2:12:2:12 | x | Unexpected result: Alert |
-| trusted-types.js:4:20:4:30 | window.name | Unexpected result: Source |
-| trusted-types.js:13:20:13:30 | window.name | Unexpected result: Source |
-| tst.js:2:16:2:39 | documen ... .search | Unexpected result: Source |
-| tst.js:14:25:14:41 | document.location | Unexpected result: Source |
-| tst.js:24:5:24:28 | documen ... .search | Unexpected result: Source |
-| tst.js:27:10:27:33 | documen ... .search | Unexpected result: Source |
-| tst.js:53:25:53:48 | documen ... .search | Unexpected result: Source |
-| tst.js:54:25:54:48 | documen ... .search | Unexpected result: Source |
-| tst.js:58:3:58:26 | documen ... .search | Unexpected result: Source |
-| tst.js:93:11:93:34 | documen ... .search | Unexpected result: Source |
-| tst.js:132:29:132:50 | window. ... .search | Unexpected result: Source |
-| tst.js:142:40:142:61 | window. ... .search | Unexpected result: Source |
-| tst.js:161:18:161:41 | documen ... .search | Unexpected result: Source |
-| tst.js:168:19:168:42 | documen ... .search | Unexpected result: Source |
-| tst.js:181:19:181:42 | documen ... .search | Unexpected result: Source |
-| tst.js:235:60:235:82 | this.st ... Tainted | Unexpected result: Alert |
-| tst.js:269:19:269:29 | window.name | Unexpected result: Source |
-| tst.js:285:9:285:16 | location | Unexpected result: Source |
-| tst.js:292:10:292:17 | location | Unexpected result: Source |
-| tst.js:311:18:311:34 | document.location | Unexpected result: Source |
-| tst.js:325:20:325:36 | document.location | Unexpected result: Source |
-| tst.js:332:16:332:39 | documen ... .search | Unexpected result: Source |
-| tst.js:339:19:339:42 | documen ... .search | Unexpected result: Source |
-| tst.js:355:16:355:39 | documen ... .search | Unexpected result: Source |
-| tst.js:364:16:364:39 | documen ... .search | Unexpected result: Source |
-| tst.js:374:19:374:42 | documen ... .search | Unexpected result: Source |
-| tst.js:399:17:399:36 | window.location.hash | Unexpected result: Source |
-| tst.js:402:15:402:34 | window.location.hash | Unexpected result: Source |
-| tst.js:411:16:411:39 | documen ... .search | Unexpected result: Source |
-| tst.js:419:15:419:38 | documen ... .search | Unexpected result: Source |
-| tst.js:436:16:436:39 | documen ... .search | Unexpected result: Source |
-| tst.js:443:15:443:38 | documen ... .search | Unexpected result: Source |
-| tst.js:454:13:454:36 | documen ... .search | Unexpected result: Source |
-| tst.js:491:16:491:39 | documen ... .search | Unexpected result: Source |
-| tst3.js:2:42:2:63 | window. ... .search | Unexpected result: Source |
-| typeahead.js:20:22:20:45 | documen ... .search | Unexpected result: Source |
-| various-concat-obfuscations.js:2:16:2:39 | documen ... .search | Unexpected result: Source |
-| winjs.js:2:17:2:40 | documen ... .search | Unexpected result: Source |
-| winjs.js:3:43:3:49 | tainted | Unexpected result: Alert |
-| winjs.js:4:43:4:49 | tainted | Unexpected result: Alert |

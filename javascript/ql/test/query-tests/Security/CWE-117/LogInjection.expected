@@ -178,14 +178,3 @@ nodes
 | logInjectionBad.js:129:42:129:50 | RegExp.$1 | semmle.label | RegExp.$1 |
 subpaths
 | logInjectionBad.js:28:24:28:31 | username | logInjectionBad.js:7:25:7:32 | username | logInjectionBad.js:8:38:8:45 | username | logInjectionBad.js:28:9:28:32 | exceptional return of check_u ... ername) |
-testFailures
-| logInjectionBad.js:19:23:19:29 | req.url | Unexpected result: Source |
-| logInjectionBad.js:46:23:46:29 | req.url | Unexpected result: Source |
-| logInjectionBad.js:63:23:63:29 | req.url | Unexpected result: Source |
-| logInjectionBad.js:72:23:72:29 | req.url | Unexpected result: Source |
-| logInjectionBad.js:122:30:122:36 | req.url | Unexpected result: Source |
-| logInjectionBad.js:123:49:123:58 | // $ Alert | Missing result: Alert |
-| logInjectionBad.js:124:17:124:24 | otherStr | Unexpected result: Alert |
-| logInjectionBad.js:128:30:128:36 | req.url | Unexpected result: Source |
-| logInjectionBad.js:128:80:128:89 | // $ Alert | Missing result: Alert |
-| logInjectionBad.js:129:42:129:50 | RegExp.$1 | Unexpected result: Alert |

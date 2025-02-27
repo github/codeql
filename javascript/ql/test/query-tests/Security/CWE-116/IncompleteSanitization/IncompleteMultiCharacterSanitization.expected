@@ -1,4 +1,3 @@
-problems
 | tst-multi-character-sanitization.js:3:13:3:57 | content ... gi, "") | This string may still contain $@, which may cause an HTML element injection vulnerability. | tst-multi-character-sanitization.js:3:30:3:30 | < | <script |
 | tst-multi-character-sanitization.js:4:13:4:47 | content ... /g, "") | This string may still contain $@, which may cause an HTML attribute injection vulnerability. | tst-multi-character-sanitization.js:4:30:4:40 |  on\\w+=".*" | on |
 | tst-multi-character-sanitization.js:5:13:5:49 | content ... /g, "") | This string may still contain $@, which may cause an HTML attribute injection vulnerability. | tst-multi-character-sanitization.js:5:30:5:42 |  on\\w+=\\'.*\\' | on |
@@ -41,58 +40,3 @@ problems
 | tst-multi-character-sanitization.js:147:3:147:99 | n.clone ... gi, '') | This string may still contain $@, which may cause an HTML element injection vulnerability. | tst-multi-character-sanitization.js:147:41:147:41 | < | <script |
 | tst-multi-character-sanitization.js:151:3:151:99 | n.clone ... gi, '') | This string may still contain $@, which may cause an HTML element injection vulnerability. | tst-multi-character-sanitization.js:151:41:151:41 | < | <script |
 | tst.js:341:9:341:44 | p.repla ... "), "") | This string may still contain $@, which may cause a path injection vulnerability. | tst.js:341:31:341:33 | \\. | ../ |
-testFailures
-| UnsafeHtmlExpansion.js:9:5:9:14 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:10:71:10:80 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:16:5:16:14 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:17:51:17:60 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:23:5:23:14 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:24:52:24:61 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:26:42:26:51 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:30:40:30:49 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:35:47:35:96 | // $ Al ...  string | Missing result: Alert |
-| tst-multi-character-sanitization.js:91:7:95:4 | This string may still contain $@, which may cause an HTML element injection vulnerability. | Unexpected result: Alert |
-| tst-multi-character-sanitization.js:91:81:91:90 | // $ Alert | Missing result: Alert |
-| tst.js:5:30:5:39 | // $ Alert | Missing result: Alert |
-| tst.js:9:30:9:39 | // $ Alert | Missing result: Alert |
-| tst.js:13:34:13:43 | // $ Alert | Missing result: Alert |
-| tst.js:17:35:17:44 | // $ Alert | Missing result: Alert |
-| tst.js:21:38:21:47 | // $ Alert | Missing result: Alert |
-| tst.js:25:40:25:49 | // $ Alert | Missing result: Alert |
-| tst.js:29:39:29:48 | // $ Alert | Missing result: Alert |
-| tst.js:33:31:33:40 | // $ Alert | Missing result: Alert |
-| tst.js:37:36:37:45 | // $ Alert | Missing result: Alert |
-| tst.js:41:33:41:42 | // $ Alert | Missing result: Alert |
-| tst.js:45:33:45:42 | // $ Alert | Missing result: Alert |
-| tst.js:49:30:49:39 | // $ Alert | Missing result: Alert |
-| tst.js:53:30:53:39 | // $ Alert | Missing result: Alert |
-| tst.js:57:30:57:39 | // $ Alert | Missing result: Alert |
-| tst.js:61:35:61:44 | // $ Alert | Missing result: Alert |
-| tst.js:65:35:65:44 | // $ Alert | Missing result: Alert |
-| tst.js:69:40:69:49 | // $ Alert | Missing result: Alert |
-| tst.js:133:39:133:85 | // $ Al ... nitizer | Missing result: Alert |
-| tst.js:135:45:135:54 | // $ Alert | Missing result: Alert |
-| tst.js:136:45:136:54 | // $ Alert | Missing result: Alert |
-| tst.js:140:39:140:121 | // $ Al ... ntended | Missing result: Alert |
-| tst.js:148:37:148:46 | // $ Alert | Missing result: Alert |
-| tst.js:149:37:149:46 | // $ Alert | Missing result: Alert |
-| tst.js:193:34:193:43 | // $ Alert | Missing result: Alert |
-| tst.js:202:33:202:42 | // $ Alert | Missing result: Alert |
-| tst.js:206:27:206:36 | // $ Alert | Missing result: Alert |
-| tst.js:207:29:207:38 | // $ Alert | Missing result: Alert |
-| tst.js:208:29:208:38 | // $ Alert | Missing result: Alert |
-| tst.js:209:43:209:52 | // $ Alert | Missing result: Alert |
-| tst.js:210:61:210:70 | // $ Alert | Missing result: Alert |
-| tst.js:211:61:211:70 | // $ Alert | Missing result: Alert |
-| tst.js:212:61:212:70 | // $ Alert | Missing result: Alert |
-| tst.js:215:28:215:37 | // $ Alert | Missing result: Alert |
-| tst.js:283:25:283:98 | // $ Al ... d below | Missing result: Alert |
-| tst.js:292:25:292:98 | // $ Al ... d below | Missing result: Alert |
-| tst.js:309:51:309:60 | // $ Alert | Missing result: Alert |
-| tst.js:333:43:333:52 | // $ Alert | Missing result: Alert |
-| tst.js:337:49:337:58 | // $ Alert | Missing result: Alert |
-| tst.js:345:50:345:59 | // $ Alert | Missing result: Alert |
-| tst.js:349:46:349:55 | // $ Alert | Missing result: Alert |
-| tst.js:353:62:353:71 | // $ Alert | Missing result: Alert |
-| tst.js:362:49:362:58 | // $ Alert | Missing result: Alert |
-| tst.js:363:49:363:58 | // $ Alert | Missing result: Alert |

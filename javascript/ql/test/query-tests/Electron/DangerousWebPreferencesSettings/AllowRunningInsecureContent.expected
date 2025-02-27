@@ -1,4 +1,1 @@
-#select
 | DangerousWebPreferences.js:7:13:7:45 | allowRu ... t: true | Enabling allowRunningInsecureContent is strongly discouraged. |
-testFailures
-| DangerousWebPreferences.js:7:13:7:45 | Enabling allowRunningInsecureContent is strongly discouraged. | Unexpected result: Alert |

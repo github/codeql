@@ -36,7 +36,3 @@ nodes
 | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
 | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
 subpaths
-testFailures
-| closure.js:2:13:2:36 | documen ... .search | Unexpected result: Source |
-| domparser.js:2:13:2:36 | documen ... .search | Unexpected result: Source |
-| jquery.js:2:13:2:36 | documen ... .search | Unexpected result: Source |

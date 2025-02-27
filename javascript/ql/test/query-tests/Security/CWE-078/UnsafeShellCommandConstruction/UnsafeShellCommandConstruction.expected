@@ -2,7 +2,7 @@
 | lib/isImported.js:6:10:6:25 | "rm -rf " + name | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/isImported.js:5:49:5:52 | name | library input | lib/isImported.js:6:2:6:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib2.js:3:28:3:31 | name | library input | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib2.js:7:32:7:35 | name | library input | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
-| lib/lib.js:4:10:4:25 | "rm -rf " + name | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:3:28:3:31 | name | library input | lib/lib.js:4:2:4:26 | cp.exec ... + name) | shell command |
+| lib/lib.js:4:10:4:25 | "rm -rf " + name | lib/lib.js:3:33:3:36 | name | lib/lib.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:3:33:3:36 | name | library input | lib/lib.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:11:10:11:25 | "rm -rf " + name | lib/lib.js:10:32:10:35 | name | lib/lib.js:11:22:11:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:10:32:10:35 | name | library input | lib/lib.js:11:2:11:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:15:10:15:25 | "rm -rf " + name | lib/lib.js:14:36:14:39 | name | lib/lib.js:15:22:15:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:14:36:14:39 | name | library input | lib/lib.js:15:2:15:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:20:10:20:25 | "rm -rf " + name | lib/lib.js:19:34:19:37 | name | lib/lib.js:20:22:20:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:19:34:19:37 | name | library input | lib/lib.js:20:2:20:26 | cp.exec ... + name) | shell command |
@@ -72,7 +72,7 @@
 | lib/lib.js:436:19:436:22 | last | lib/lib.js:414:40:414:43 | name | lib/lib.js:436:19:436:22 | last | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:442:12:442:27 | "rm -rf " + name | lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:441:39:441:42 | name | library input | lib/lib.js:442:2:442:28 | asyncEx ... + name) | shell command |
 | lib/lib.js:447:13:447:28 | "rm -rf " + name | lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:446:20:446:23 | name | library input | lib/lib.js:447:3:447:29 | asyncEx ... + name) | shell command |
-| lib/lib.js:478:27:478:46 | config.installedPath | lib/lib.js:477:33:477:38 | config | lib/lib.js:478:27:478:46 | config.installedPath | This path concatenation which depends on $@ is later used in a $@. | lib/lib.js:477:33:477:38 | config | library input | lib/lib.js:479:12:479:20 | exec(cmd) | shell command |
+| lib/lib.js:478:27:478:46 | config.installedPath | lib/lib.js:477:39:477:44 | config | lib/lib.js:478:27:478:46 | config.installedPath | This path concatenation which depends on $@ is later used in a $@. | lib/lib.js:477:39:477:44 | config | library input | lib/lib.js:479:12:479:20 | exec(cmd) | shell command |
 | lib/lib.js:483:13:483:33 | ' my na ...  + name | lib/lib.js:482:40:482:43 | name | lib/lib.js:483:30:483:33 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:482:40:482:43 | name | library input | lib/lib.js:485:2:485:20 | cp.exec(cmd + args) | shell command |
 | lib/lib.js:499:19:499:34 | "rm -rf " + name | lib/lib.js:498:45:498:48 | name | lib/lib.js:499:31:499:34 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:498:45:498:48 | name | library input | lib/lib.js:499:3:499:35 | MyThing ... + name) | shell command |
 | lib/lib.js:510:10:510:25 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:510:22:510:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:510:2:510:26 | cp.exec ... + name) | shell command |
@@ -109,7 +109,7 @@ edges
 | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name | provenance |  |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | provenance |  |
 | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | provenance |  |
-| lib/lib.js:3:28:3:31 | name | lib/lib.js:4:22:4:25 | name | provenance |  |
+| lib/lib.js:3:33:3:36 | name | lib/lib.js:4:22:4:25 | name | provenance |  |
 | lib/lib.js:10:32:10:35 | name | lib/lib.js:11:22:11:25 | name | provenance |  |
 | lib/lib.js:14:36:14:39 | name | lib/lib.js:15:22:15:25 | name | provenance |  |
 | lib/lib.js:19:34:19:37 | name | lib/lib.js:20:22:20:25 | name | provenance |  |
@@ -207,7 +207,7 @@ edges
 | lib/lib.js:436:19:436:22 | last | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | provenance |  |
 | lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name | provenance |  |
 | lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name | provenance |  |
-| lib/lib.js:477:33:477:38 | config | lib/lib.js:478:27:478:32 | config | provenance |  |
+| lib/lib.js:477:39:477:44 | config | lib/lib.js:478:27:478:32 | config | provenance |  |
 | lib/lib.js:478:27:478:32 | config | lib/lib.js:478:27:478:46 | config.installedPath | provenance |  |
 | lib/lib.js:482:40:482:43 | name | lib/lib.js:483:30:483:33 | name | provenance |  |
 | lib/lib.js:498:45:498:48 | name | lib/lib.js:499:31:499:34 | name | provenance |  |
@@ -256,7 +256,7 @@ nodes
 | lib/lib2.js:4:22:4:25 | name | semmle.label | name |
 | lib/lib2.js:7:32:7:35 | name | semmle.label | name |
 | lib/lib2.js:8:22:8:25 | name | semmle.label | name |
-| lib/lib.js:3:28:3:31 | name | semmle.label | name |
+| lib/lib.js:3:33:3:36 | name | semmle.label | name |
 | lib/lib.js:4:22:4:25 | name | semmle.label | name |
 | lib/lib.js:10:32:10:35 | name | semmle.label | name |
 | lib/lib.js:11:22:11:25 | name | semmle.label | name |
@@ -392,7 +392,7 @@ nodes
 | lib/lib.js:442:24:442:27 | name | semmle.label | name |
 | lib/lib.js:446:20:446:23 | name | semmle.label | name |
 | lib/lib.js:447:25:447:28 | name | semmle.label | name |
-| lib/lib.js:477:33:477:38 | config | semmle.label | config |
+| lib/lib.js:477:39:477:44 | config | semmle.label | config |
 | lib/lib.js:478:27:478:32 | config | semmle.label | config |
 | lib/lib.js:478:27:478:46 | config.installedPath | semmle.label | config.installedPath |
 | lib/lib.js:482:40:482:43 | name | semmle.label | name |
@@ -455,156 +455,3 @@ subpaths
 | lib/lib.js:251:27:251:30 | name | lib/lib.js:239:28:239:28 | s | lib/lib.js:245:9:245:9 | s | lib/lib.js:251:16:251:31 | cleanInput(name) |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:329:13:329:13 | x | lib/lib.js:330:9:330:9 | x | lib/lib.js:340:22:340:26 | id(n) |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr [ArrayElement] | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
-testFailures
-| lib/isImported.js:5:49:5:52 | name | Unexpected result: Source |
-| lib/isImported.js:6:22:6:25 | name | Unexpected result: Sink |
-| lib/lib.js:3:28:3:31 | name | Unexpected result: Source |
-| lib/lib.js:4:22:4:25 | name | Unexpected result: Sink |
-| lib/lib.js:10:32:10:35 | name | Unexpected result: Source |
-| lib/lib.js:11:22:11:25 | name | Unexpected result: Sink |
-| lib/lib.js:14:36:14:39 | name | Unexpected result: Source |
-| lib/lib.js:15:22:15:25 | name | Unexpected result: Sink |
-| lib/lib.js:19:34:19:37 | name | Unexpected result: Source |
-| lib/lib.js:20:22:20:25 | name | Unexpected result: Sink |
-| lib/lib.js:26:35:26:38 | name | Unexpected result: Source |
-| lib/lib.js:27:22:27:25 | name | Unexpected result: Sink |
-| lib/lib.js:34:14:34:17 | name | Unexpected result: Source |
-| lib/lib.js:35:23:35:26 | name | Unexpected result: Sink |
-| lib/lib.js:37:13:37:16 | name | Unexpected result: Source |
-| lib/lib.js:38:23:38:26 | name | Unexpected result: Sink |
-| lib/lib.js:40:6:40:9 | name | Unexpected result: Source |
-| lib/lib.js:41:23:41:26 | name | Unexpected result: Sink |
-| lib/lib.js:49:31:49:34 | name | Unexpected result: Source |
-| lib/lib.js:50:47:50:50 | name | Unexpected result: Sink |
-| lib/lib.js:53:33:53:36 | name | Unexpected result: Source |
-| lib/lib.js:54:25:54:28 | name | Unexpected result: Sink |
-| lib/lib.js:57:25:57:28 | name | Unexpected result: Sink |
-| lib/lib.js:64:41:64:44 | name | Unexpected result: Source |
-| lib/lib.js:65:22:65:25 | name | Unexpected result: Sink |
-| lib/lib.js:69:27:69:30 | name | Unexpected result: Sink |
-| lib/lib.js:71:28:71:31 | name | Unexpected result: Sink |
-| lib/lib.js:73:21:73:24 | name | Unexpected result: Sink |
-| lib/lib.js:75:20:75:23 | name | Unexpected result: Sink |
-| lib/lib.js:77:28:77:31 | name | Unexpected result: Sink |
-| lib/lib.js:82:35:82:38 | name | Unexpected result: Source |
-| lib/lib.js:83:22:83:25 | name | Unexpected result: Sink |
-| lib/lib.js:97:35:97:38 | name | Unexpected result: Source |
-| lib/lib.js:111:34:111:37 | name | Unexpected result: Source |
-| lib/lib.js:112:22:112:25 | name | Unexpected result: Sink |
-| lib/lib.js:120:33:120:36 | name | Unexpected result: Source |
-| lib/lib.js:121:22:121:25 | name | Unexpected result: Sink |
-| lib/lib.js:130:6:130:9 | name | Unexpected result: Source |
-| lib/lib.js:131:23:131:26 | name | Unexpected result: Sink |
-| lib/lib.js:148:37:148:40 | name | Unexpected result: Source |
-| lib/lib.js:149:24:149:27 | name | Unexpected result: Sink |
-| lib/lib.js:155:38:155:41 | name | Unexpected result: Source |
-| lib/lib.js:161:13:161:28 | lib/lib.js:155:38:155:41 | Unexpected result: Alert |
-| lib/lib.js:161:25:161:28 | name | Unexpected result: Sink |
-| lib/lib.js:170:41:170:44 | name | Unexpected result: Source |
-| lib/lib.js:173:20:173:23 | name | Unexpected result: Sink |
-| lib/lib.js:177:38:177:41 | name | Unexpected result: Source |
-| lib/lib.js:181:15:181:52 | lib/lib.js:177:38:177:41 | Unexpected result: Alert |
-| lib/lib.js:181:21:181:46 | name.re ... "'\\''") | Unexpected result: Sink |
-| lib/lib.js:182:22:182:27 | broken | Unexpected result: Sink |
-| lib/lib.js:186:34:186:37 | name | Unexpected result: Source |
-| lib/lib.js:187:22:187:25 | name | Unexpected result: Sink |
-| lib/lib.js:190:23:190:26 | name | Unexpected result: Sink |
-| lib/lib.js:196:45:196:48 | name | Unexpected result: Source |
-| lib/lib.js:197:22:197:25 | name | Unexpected result: Sink |
-| lib/lib.js:200:23:200:26 | name | Unexpected result: Sink |
-| lib/lib.js:206:45:206:48 | name | Unexpected result: Source |
-| lib/lib.js:207:22:207:25 | name | Unexpected result: Sink |
-| lib/lib.js:212:23:212:26 | name | Unexpected result: Sink |
-| lib/lib.js:216:39:216:42 | name | Unexpected result: Source |
-| lib/lib.js:217:22:217:25 | name | Unexpected result: Sink |
-| lib/lib.js:220:23:220:26 | name | Unexpected result: Sink |
-| lib/lib.js:224:22:224:25 | name | Unexpected result: Sink |
-| lib/lib.js:227:39:227:42 | name | Unexpected result: Source |
-| lib/lib.js:228:22:228:25 | name | Unexpected result: Sink |
-| lib/lib.js:236:22:236:25 | name | Unexpected result: Sink |
-| lib/lib.js:248:42:248:45 | name | Unexpected result: Source |
-| lib/lib.js:249:22:249:25 | name | Unexpected result: Sink |
-| lib/lib.js:253:10:253:28 | lib/lib.js:248:42:248:45 | Unexpected result: Alert |
-| lib/lib.js:253:22:253:28 | cleaned | Unexpected result: Sink |
-| lib/lib.js:257:35:257:38 | name | Unexpected result: Source |
-| lib/lib.js:258:22:258:25 | name | Unexpected result: Sink |
-| lib/lib.js:261:30:261:33 | name | Unexpected result: Sink |
-| lib/lib.js:267:46:267:48 | obj | Unexpected result: Source |
-| lib/lib.js:268:22:268:32 | obj.version | Unexpected result: Sink |
-| lib/lib.js:276:8:276:11 | opts | Unexpected result: Source |
-| lib/lib.js:277:23:277:30 | opts.bla | Unexpected result: Sink |
-| lib/lib.js:281:23:281:35 | this.opts.bla | Unexpected result: Sink |
-| lib/lib.js:307:39:307:42 | name | Unexpected result: Source |
-| lib/lib.js:308:23:308:26 | name | Unexpected result: Sink |
-| lib/lib.js:314:40:314:43 | name | Unexpected result: Source |
-| lib/lib.js:315:22:315:25 | name | Unexpected result: Sink |
-| lib/lib.js:320:23:320:26 | name | Unexpected result: Sink |
-| lib/lib.js:324:40:324:42 | arg | Unexpected result: Source |
-| lib/lib.js:325:49:325:51 | arg | Unexpected result: Sink |
-| lib/lib.js:339:39:339:39 | n | Unexpected result: Source |
-| lib/lib.js:340:22:340:26 | id(n) | Unexpected result: Sink |
-| lib/lib.js:349:29:349:34 | unsafe | Unexpected result: Source |
-| lib/lib.js:351:22:351:27 | unsafe | Unexpected result: Sink |
-| lib/lib.js:366:59:366:68 | // $ Alert | Missing result: Alert |
-| lib/lib.js:405:39:405:42 | name | Unexpected result: Source |
-| lib/lib.js:406:22:406:25 | name | Unexpected result: Sink |
-| lib/lib.js:414:40:414:43 | name | Unexpected result: Source |
-| lib/lib.js:415:22:415:25 | name | Unexpected result: Sink |
-| lib/lib.js:427:14:427:16 | arr | Unexpected result: Alert |
-| lib/lib.js:428:14:428:58 | build(" ...  + '-') | Unexpected result: Alert |
-| lib/lib.js:441:39:441:42 | name | Unexpected result: Source |
-| lib/lib.js:442:24:442:27 | name | Unexpected result: Sink |
-| lib/lib.js:446:20:446:23 | name | Unexpected result: Source |
-| lib/lib.js:447:25:447:28 | name | Unexpected result: Sink |
-| lib/lib.js:477:33:477:38 | config | Unexpected result: Source |
-| lib/lib.js:482:40:482:43 | name | Unexpected result: Source |
-| lib/lib.js:483:30:483:33 | name | Unexpected result: Sink |
-| lib/lib.js:498:45:498:48 | name | Unexpected result: Source |
-| lib/lib.js:499:31:499:34 | name | Unexpected result: Sink |
-| lib/lib.js:509:39:509:42 | name | Unexpected result: Source |
-| lib/lib.js:510:22:510:25 | name | Unexpected result: Sink |
-| lib/lib.js:513:23:513:26 | name | Unexpected result: Sink |
-| lib/lib.js:519:23:519:26 | name | Unexpected result: Sink |
-| lib/lib.js:525:23:525:26 | name | Unexpected result: Sink |
-| lib/lib.js:531:23:531:26 | name | Unexpected result: Sink |
-| lib/lib.js:537:23:537:26 | name | Unexpected result: Sink |
-| lib/lib.js:543:23:543:26 | name | Unexpected result: Sink |
-| lib/lib.js:545:23:545:26 | name | Unexpected result: Sink |
-| lib/lib.js:550:39:550:42 | name | Unexpected result: Source |
-| lib/lib.js:555:33:555:36 | name | Unexpected result: Alert |
-| lib/lib.js:558:41:558:44 | name | Unexpected result: Source |
-| lib/lib.js:560:26:560:29 | name | Unexpected result: Sink |
-| lib/lib.js:562:26:562:29 | name | Unexpected result: Sink |
-| lib/lib.js:566:26:566:29 | name | Unexpected result: Sink |
-| lib/lib.js:572:41:572:44 | name | Unexpected result: Source |
-| lib/lib.js:573:22:573:25 | name | Unexpected result: Sink |
-| lib/lib.js:579:25:579:28 | name | Unexpected result: Sink |
-| lib/lib.js:590:29:590:32 | name | Unexpected result: Sink |
-| lib/lib.js:593:25:593:28 | name | Unexpected result: Sink |
-| lib/lib.js:608:42:608:45 | name | Unexpected result: Source |
-| lib/lib.js:609:22:609:25 | name | Unexpected result: Sink |
-| lib/lib.js:626:29:626:32 | name | Unexpected result: Sink |
-| lib/lib.js:629:25:629:28 | name | Unexpected result: Sink |
-| lib/lib.js:632:38:632:41 | name | Unexpected result: Source |
-| lib/lib.js:633:18:633:68 | lib/lib.js:632:38:632:41 | Unexpected result: Alert |
-| lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | Unexpected result: Sink |
-| lib/lib.js:634:22:634:30 | sanitized | Unexpected result: Sink |
-| lib/lib2.js:3:28:3:31 | name | Unexpected result: Source |
-| lib/lib2.js:4:22:4:25 | name | Unexpected result: Sink |
-| lib/lib2.js:7:32:7:35 | name | Unexpected result: Source |
-| lib/lib2.js:8:22:8:25 | name | Unexpected result: Sink |
-| lib/subLib/amdSub.js:3:28:3:31 | name | Unexpected result: Source |
-| lib/subLib/amdSub.js:4:22:4:25 | name | Unexpected result: Sink |
-| lib/subLib/index.js:3:28:3:31 | name | Unexpected result: Source |
-| lib/subLib/index.js:4:22:4:25 | name | Unexpected result: Sink |
-| lib/subLib/index.js:7:32:7:35 | name | Unexpected result: Source |
-| lib/subLib/index.js:8:22:8:25 | name | Unexpected result: Sink |
-| lib/subLib/index.js:13:44:13:46 | arr | Unexpected result: Source |
-| lib/subLib2/compiled-file.ts:3:26:3:29 | name | Unexpected result: Source |
-| lib/subLib2/compiled-file.ts:4:25:4:28 | name | Unexpected result: Sink |
-| lib/subLib2/special-file.js:3:28:3:31 | name | Unexpected result: Source |
-| lib/subLib2/special-file.js:4:22:4:25 | name | Unexpected result: Sink |
-| lib/subLib3/my-file.ts:3:28:3:31 | name | Unexpected result: Source |
-| lib/subLib3/my-file.ts:4:22:4:25 | name | Unexpected result: Sink |
-| lib/subLib4/index.js:6:32:6:35 | name | Unexpected result: Source |
-| lib/subLib4/subsub.js:4:22:4:25 | name | Unexpected result: Sink |

@@ -131,12 +131,3 @@ nodes
 | tst.js:49:19:49:22 | name | semmle.label | name |
 | tst.js:50:5:50:6 | fn | semmle.label | fn |
 subpaths
-testFailures
-| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | Unexpected result: Source |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | Unexpected result: Source |
-| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | Unexpected result: Alert |
-| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | Unexpected result: Source |
-| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | Unexpected result: Source |
-| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action | Unexpected result: Alert |
-| tst.js:6:39:6:40 | ev | Unexpected result: Source |
-| tst.js:47:39:47:40 | ev | Unexpected result: Source |

@@ -60,7 +60,3 @@ subpaths
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 |
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] |
 | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | xss-through-filenames.js:22:16:22:30 | files3.join('') | xss-through-filenames.js:35:22:35:35 | format(files2) |
-testFailures
-| xss-through-filenames.js:7:43:7:48 | files1 | Unexpected result: Source |
-| xss-through-filenames.js:25:43:25:48 | files1 | Unexpected result: Source |
-| xss-through-torrent.js:6:13:6:24 | torrent.name | Unexpected result: Source |

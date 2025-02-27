@@ -267,21 +267,3 @@ nodes
 | tst.js:130:9:130:52 | req.que ... '), '') | semmle.label | req.que ... '), '') |
 subpaths
 | tst.js:14:27:14:31 | taint | tst.js:55:29:55:32 | prop | tst.js:56:12:56:33 | obj ? o ...  : null | tst.js:14:5:14:32 | unsafeG ...  taint) |
-testFailures
-| lib.js:1:43:1:46 | path | Unexpected result: Source |
-| lib.js:14:38:14:41 | path | Unexpected result: Source |
-| lib.js:20:14:20:22 | arguments | Unexpected result: Source |
-| lib.js:25:44:25:47 | path | Unexpected result: Source |
-| lib.js:30:43:30:51 | arguments | Unexpected result: Source |
-| lib.js:38:27:38:35 | arguments | Unexpected result: Source |
-| lib.js:70:45:70:54 | // $ Alert | Missing result: Alert |
-| lib.js:83:14:83:22 | arguments | Unexpected result: Source |
-| lib.js:104:13:104:21 | arguments | Unexpected result: Source |
-| lib.js:118:29:118:32 | path | Unexpected result: Source |
-| lib.js:127:14:127:17 | path | Unexpected result: Source |
-| otherlib/src/otherlibimpl.js:1:37:1:40 | path | Unexpected result: Source |
-| sublib/other.js:5:28:5:31 | path | Unexpected result: Source |
-| sublib/sub.js:1:37:1:40 | path | Unexpected result: Source |
-| tst.js:5:24:5:37 | req.query.data | Unexpected result: Source |
-| tst.js:77:24:77:37 | req.query.data | Unexpected result: Source |
-| tst.js:102:24:102:37 | req.query.data | Unexpected result: Source |

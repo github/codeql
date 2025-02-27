@@ -1,4 +1,3 @@
-#select
 | NonLinearPatternTS.ts:1:34:1:39 | number | The pattern variable 'number' appears to be a type, but is a variable $@. | NonLinearPatternTS.ts:1:23:1:28 | number | previously bound |
 | ts-test.ts:2:13:2:13 | x | Repeated binding of pattern variable 'x' $@. | ts-test.ts:2:10:2:10 | x | previously bound |
 | ts-test.ts:6:16:6:16 | x | Repeated binding of pattern variable 'x' $@. | ts-test.ts:6:10:6:10 | x | previously bound |
@@ -10,5 +9,3 @@
 | tst.js:2:13:2:13 | x | Repeated binding of pattern variable 'x' $@. | tst.js:2:10:2:10 | x | previously bound |
 | tst.js:6:16:6:16 | x | Repeated binding of pattern variable 'x' $@. | tst.js:6:10:6:10 | x | previously bound |
 | tst.js:8:10:8:10 | x | Repeated binding of pattern variable 'x' $@. | tst.js:8:7:8:7 | x | previously bound |
-testFailures
-| NonLinearPatternTS.ts:1:34:1:39 | The pattern variable 'number' appears to be a type, but is a variable $@. | Unexpected result: Alert |

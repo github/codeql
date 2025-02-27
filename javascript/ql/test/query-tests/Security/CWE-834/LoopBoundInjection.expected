@@ -56,13 +56,3 @@ nodes
 | LoopBoundInjectionLodash.js:12:18:12:20 | val | semmle.label | val |
 | LoopBoundInjectionLodash.js:13:13:13:15 | val | semmle.label | val |
 subpaths
-testFailures
-| LoopBoundInjectionBad.js:8:13:8:20 | req.body | Unexpected result: Source |
-| LoopBoundInjectionBad.js:10:15:10:22 | req.body | Unexpected result: Source |
-| LoopBoundInjectionBad.js:12:25:12:32 | req.body | Unexpected result: Source |
-| LoopBoundInjectionBad.js:14:19:14:26 | req.body | Unexpected result: Source |
-| LoopBoundInjectionExitBad.js:8:9:8:16 | req.body | Unexpected result: Source |
-| LoopBoundInjectionExitBad.js:10:9:10:16 | req.body | Unexpected result: Source |
-| LoopBoundInjectionExitBad.js:12:10:12:17 | req.body | Unexpected result: Source |
-| LoopBoundInjectionExitBad.js:14:14:14:21 | req.body | Unexpected result: Source |
-| LoopBoundInjectionLodash.js:9:13:9:20 | req.body | Unexpected result: Source |

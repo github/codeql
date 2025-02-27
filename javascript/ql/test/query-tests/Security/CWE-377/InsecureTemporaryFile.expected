@@ -34,7 +34,3 @@ nodes
 | insecure-temporary-file.js:26:22:26:29 | tmpPath2 | semmle.label | tmpPath2 |
 | insecure-temporary-file.js:28:17:28:24 | tmpPath2 | semmle.label | tmpPath2 |
 subpaths
-testFailures
-| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | Unexpected result: Source |
-| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | Unexpected result: Source |
-| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() | Unexpected result: Source |

@@ -181,10 +181,3 @@ subpaths
 | exception-xss.js:75:10:75:10 | x | exception-xss.js:4:17:4:17 | x | exception-xss.js:5:11:5:11 | x | exception-xss.js:75:4:75:11 | exceptional return of inner(x) |
 | exception-xss.js:81:16:81:18 | foo | exception-xss.js:74:28:74:28 | x | exception-xss.js:75:4:75:11 | exceptional return of inner(x) | exception-xss.js:81:3:81:19 | exceptional return of myWeirdInner(foo) |
 | exception-xss.js:174:31:174:33 | foo | exception-xss.js:170:17:170:23 | tainted | exception-xss.js:171:11:171:17 | tainted | exception-xss.js:174:25:174:43 | exceptional return of inner(foo, resolve) |
-testFailures
-| exception-xss.js:2:12:2:28 | document.location | Unexpected result: Source |
-| exception-xss.js:117:11:117:23 | req.params.id | Unexpected result: Source |
-| exception-xss.js:125:45:125:68 | documen ... .search | Unexpected result: Source |
-| exception-xss.js:136:10:136:22 | req.params.id | Unexpected result: Source |
-| exception-xss.js:146:12:146:35 | documen ... .search | Unexpected result: Source |
-| exception-xss.js:180:10:180:22 | req.params.id | Unexpected result: Source |

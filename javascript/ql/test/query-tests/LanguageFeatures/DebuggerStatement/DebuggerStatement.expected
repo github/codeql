@@ -1,4 +1,1 @@
-#select
 | debuggerStatement.js:2:3:2:11 | debugger; | Do not use 'debugger'. |
-testFailures
-| debuggerStatement.js:2:3:2:11 | Do not use 'debugger'. | Unexpected result: Alert |

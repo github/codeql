@@ -1,6 +1,2 @@
-#select
 | tst.js:4:29:4:29 | unexpected character | Malformed regular expression: unexpected character. |
 | tst.js:4:43:4:43 | unexpected character | Malformed regular expression: unexpected character. |
-testFailures
-| tst.js:4:29:4:29 | Malformed regular expression: unexpected character. | Unexpected result: Alert |
-| tst.js:4:43:4:43 | Malformed regular expression: unexpected character. | Unexpected result: Alert |

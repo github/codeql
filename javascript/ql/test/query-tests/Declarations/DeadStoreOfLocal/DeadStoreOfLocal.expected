@@ -1,4 +1,3 @@
-#select
 | overload.ts:10:12:10:14 | baz | The value assigned to baz here is unused. |
 | tst2.js:25:9:25:14 | x = 23 | The initial value of x is unused, since it is always overwritten. |
 | tst2.js:27:9:27:14 | x = 42 | The value assigned to x here is unused. |
@@ -12,10 +11,3 @@
 | tst.js:130:7:130:13 | {x} = o | The initial value of x is unused, since it is always overwritten. |
 | tst.js:160:6:160:14 | [x] = [0] | The initial value of x is unused, since it is always overwritten. |
 | tst.js:170:7:170:17 | nSign = foo | The value assigned to nSign here is unused. |
-testFailures
-| tst.js:43:6:43:11 | The initial value of x is unused, since it is always overwritten. | Unexpected result: Alert |
-| tst.js:49:6:49:11 | The initial value of x is unused, since it is always overwritten. | Unexpected result: Alert |
-| tst.js:130:7:130:13 | The initial value of x is unused, since it is always overwritten. | Unexpected result: Alert |
-| tst.js:160:6:160:14 | The initial value of x is unused, since it is always overwritten. | Unexpected result: Alert |
-| tst.js:170:7:170:17 | The value assigned to nSign here is unused. | Unexpected result: Alert |
-| tst2.js:27:9:27:14 | The value assigned to x here is unused. | Unexpected result: Alert |

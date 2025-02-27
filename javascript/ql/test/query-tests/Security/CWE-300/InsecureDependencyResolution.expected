@@ -1,10 +1,4 @@
-#select
 | package.json:6:17:6:40 | "http:/ ... rg/foo" | Dependency downloaded using unencrypted communication channel. |
 | package.json:7:17:7:39 | "ftp:// ... rg/foo" | Dependency downloaded using unencrypted communication channel. |
 | package.json:12:17:12:40 | "http:/ ... rg/foo" | Dependency downloaded using unencrypted communication channel. |
 | package.json:13:17:13:39 | "ftp:// ... rg/foo" | Dependency downloaded using unencrypted communication channel. |
-testFailures
-| package.json:6:17:6:40 | Dependency downloaded using unencrypted communication channel. | Unexpected result: Alert |
-| package.json:7:17:7:39 | Dependency downloaded using unencrypted communication channel. | Unexpected result: Alert |
-| package.json:12:17:12:40 | Dependency downloaded using unencrypted communication channel. | Unexpected result: Alert |
-| package.json:13:17:13:39 | Dependency downloaded using unencrypted communication channel. | Unexpected result: Alert |

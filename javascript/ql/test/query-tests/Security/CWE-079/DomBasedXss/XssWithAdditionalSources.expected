@@ -252,8 +252,8 @@ nodes
 | pages/[id].jsx:13:44:13:52 | params.id | semmle.label | params.id |
 | pages/[id].jsx:16:44:16:49 | params [q] | semmle.label | params [q] |
 | pages/[id].jsx:16:44:16:51 | params.q | semmle.label | params.q |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | semmle.label | {\\n      ... ,\\n    } [id] |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | semmle.label | {\\n      ... ,\\n    } [q] |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | semmle.label | {\\n      ... e\\n    } [id] |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | semmle.label | {\\n      ... e\\n    } [q] |
 | pages/[id].jsx:25:11:25:24 | context.params | semmle.label | context.params |
 | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | semmle.label | context ... d \|\| "" |
 | pages/[id].jsx:26:10:26:22 | context.query | semmle.label | context.query |
@@ -879,12 +879,12 @@ edges
 | pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } | provenance |  |
 | pages/[id].jsx:13:44:13:49 | params [id] | pages/[id].jsx:13:44:13:52 | params.id | provenance |  |
 | pages/[id].jsx:16:44:16:49 | params [q] | pages/[id].jsx:16:44:16:51 | params.q | provenance |  |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | pages/[id].jsx:3:30:3:35 | params [id] | provenance |  |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | pages/[id].jsx:3:30:3:35 | params [q] | provenance |  |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | pages/[id].jsx:3:30:3:35 | params [id] | provenance |  |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | pages/[id].jsx:3:30:3:35 | params [q] | provenance |  |
 | pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | provenance |  |
-| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | provenance |  |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | provenance |  |
 | pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | provenance |  |
-| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | provenance |  |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |

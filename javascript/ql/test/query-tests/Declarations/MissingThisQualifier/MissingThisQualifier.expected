@@ -1,4 +1,3 @@
-#select
 | abstract-missing.ts:3:5:3:24 | setAudioProperties() | This call refers to a global function, and not the local method $@. | abstract-missing.ts:6:3:6:32 | abstrac ... ties(); | setAudioProperties |
 | indirection.js:7:9:7:20 | m("default") | This call refers to a global function, and not the local method $@. | indirection.js:2:5:4:5 | m() {\\n  ... ;\\n    } | m |
 | missing1.js:3:5:3:24 | setAudioProperties() | This call refers to a global function, and not the local method $@. | missing1.js:6:3:7:3 | setAudi ... (){\\n  } | setAudioProperties |
@@ -9,5 +8,3 @@
 | namespaces-uses.ts:16:7:16:22 | globalFunction() | This call refers to a global function, and not the local method $@. | namespaces-uses.ts:15:5:17:5 | globalF ... t\\n    } | globalFunction |
 | namespaces-uses.ts:30:7:30:22 | globalFunction() | This call refers to a global function, and not the local method $@. | namespaces-uses.ts:29:5:31:5 | globalF ... t\\n    } | globalFunction |
 | not-ignored-by-jslint.js:4:5:4:24 | setAudioProperties() | This call refers to a global function, and not the local method $@. | not-ignored-by-jslint.js:7:3:8:3 | setAudi ... (){\\n  } | setAudioProperties |
-testFailures
-| namespaces-uses.ts:22:34:22:103 | // $ Al ... ignored | Missing result: Alert |

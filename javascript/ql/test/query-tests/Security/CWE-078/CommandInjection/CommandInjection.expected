@@ -16,7 +16,6 @@
 | child_process-test.js:56:5:56:59 | cp.spaw ...  cmd])) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:56:54:56:56 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:49 | url.par ... ry.path | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
-| child_process-test.js:62:5:62:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:15:53:17 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:48:15:48:17 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:66:19:66:22 | args | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command line depends on a $@. | child_process-test.js:73:25:73:31 | req.url | user-provided value |
@@ -262,38 +261,3 @@ nodes
 | third-party-command-injection.js:5:20:5:26 | command | semmle.label | command |
 | third-party-command-injection.js:6:21:6:27 | command | semmle.label | command |
 subpaths
-testFailures
-| actions.js:8:17:8:57 | github. ... t.title | Unexpected result: Source |
-| actions.js:18:20:18:63 | github. ... ead.ref | Unexpected result: Source |
-| child_process-test.js:6:15:6:49 | url.par ... ry.path | Unexpected result: Sink |
-| child_process-test.js:6:25:6:31 | req.url | Unexpected result: Source |
-| child_process-test.js:39:26:39:28 | cmd | Unexpected result: Sink |
-| child_process-test.js:43:15:43:17 | cmd | Unexpected result: Sink |
-| child_process-test.js:43:21:43:30 | // $ Alert | Missing result: Alert |
-| child_process-test.js:44:5:44:34 | child_process-test.js:6:25:6:31 | Unexpected result: Alert |
-| child_process-test.js:48:15:48:17 | cmd | Unexpected result: Sink |
-| child_process-test.js:48:21:48:30 | // $ Alert | Missing result: Alert |
-| child_process-test.js:53:15:53:17 | cmd | Unexpected result: Sink |
-| child_process-test.js:53:20:53:29 | // $ Alert | Missing result: Alert |
-| child_process-test.js:54:5:54:39 | child_process-test.js:6:25:6:31 | Unexpected result: Alert |
-| child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | Unexpected result: Sink |
-| child_process-test.js:56:54:56:56 | cmd | Unexpected result: Sink |
-| child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | Unexpected result: Sink |
-| child_process-test.js:62:5:62:39 | child_process-test.js:6:25:6:31 | Unexpected result: Alert |
-| child_process-test.js:66:19:66:22 | args | Unexpected result: Sink |
-| child_process-test.js:67:3:67:21 | child_process-test.js:6:25:6:31 | Unexpected result: Alert |
-| child_process-test.js:73:25:73:31 | req.url | Unexpected result: Source |
-| exec-sh.js:15:44:15:50 | command | Unexpected result: Sink |
-| exec-sh.js:19:25:19:31 | req.url | Unexpected result: Source |
-| exec-sh2.js:10:40:10:46 | command | Unexpected result: Sink |
-| exec-sh2.js:14:25:14:31 | req.url | Unexpected result: Source |
-| execSeries.js:18:34:18:40 | req.url | Unexpected result: Source |
-| form-parsers.js:13:3:13:11 | req.files | Unexpected result: Source |
-| form-parsers.js:24:48:24:55 | filename | Unexpected result: Source |
-| form-parsers.js:35:25:35:30 | fields | Unexpected result: Source |
-| form-parsers.js:40:26:40:31 | fields | Unexpected result: Source |
-| form-parsers.js:52:34:52:39 | fields | Unexpected result: Source |
-| form-parsers.js:58:30:58:33 | part | Unexpected result: Source |
-| other.js:5:25:5:31 | req.url | Unexpected result: Source |
-| third-party-command-injection.js:5:20:5:26 | command | Unexpected result: Source |
-| third-party-command-injection.js:6:21:6:27 | command | Unexpected result: Alert |

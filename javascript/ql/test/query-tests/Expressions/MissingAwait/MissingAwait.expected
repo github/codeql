@@ -1,4 +1,3 @@
-#select
 | tst.js:8:9:8:13 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:10:9:10:13 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:12:15:12:19 | thing | Missing await. The value 'thing' is always a promise. |
@@ -9,5 +8,3 @@
 | tst.js:25:13:25:17 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:48:12:48:16 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:71:16:71:25 | getThing() | Missing await. The call to 'getThing' always returns a promise. |
-testFailures
-| tst.js:62:27:62:59 | // $ Al ... flag it | Missing result: Alert |

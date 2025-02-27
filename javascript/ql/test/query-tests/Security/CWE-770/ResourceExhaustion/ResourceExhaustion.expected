@@ -82,6 +82,3 @@ nodes
 | resource-exhaustion.js:88:16:88:16 | n | semmle.label | n |
 | resource-exhaustion.js:92:18:92:18 | n | semmle.label | n |
 subpaths
-testFailures
-| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | Unexpected result: Source |
-| resource-exhaustion.js:5:21:5:27 | req.url | Unexpected result: Source |

@@ -10,5 +10,3 @@ nodes
 | test.js:7:14:7:61 | 'SELECT ...  + temp | semmle.label | 'SELECT ...  + temp |
 | test.js:7:58:7:61 | temp | semmle.label | temp |
 subpaths
-testFailures
-| test.js:4:12:4:22 | process.env | Unexpected result: Source |

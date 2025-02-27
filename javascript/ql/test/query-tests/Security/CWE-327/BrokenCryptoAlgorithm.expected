@@ -16,17 +16,3 @@ nodes
 | tst.js:19:17:19:24 | password | semmle.label | password |
 | tst.js:22:21:22:30 | secretText | semmle.label | secretText |
 subpaths
-testFailures
-| bad-random.js:3:64:3:73 | // $ Alert | Missing result: Alert |
-| bad-random.js:4:64:4:73 | // $ Alert | Missing result: Alert |
-| bad-random.js:9:48:9:57 | // $ Alert | Missing result: Alert |
-| bad-random.js:11:35:11:44 | // $ Alert | Missing result: Alert |
-| bad-random.js:14:66:14:75 | // $ Alert | Missing result: Alert |
-| bad-random.js:73:47:73:56 | // $ Alert | Missing result: Alert |
-| bad-random.js:75:34:75:43 | // $ Alert | Missing result: Alert |
-| bad-random.js:81:54:81:63 | // $ Alert | Missing result: Alert |
-| bad-random.js:85:38:85:47 | // $ Alert | Missing result: Alert |
-| bad-random.js:90:59:90:169 | // $ Al ... hmetic. | Missing result: Alert |
-| bad-random.js:96:63:96:165 | // $ Al ... hmetic. | Missing result: Alert |
-| bad-random.js:118:49:118:58 | // $ Alert | Missing result: Alert |
-| tst.js:3:18:3:24 | trusted | Unexpected result: Source |

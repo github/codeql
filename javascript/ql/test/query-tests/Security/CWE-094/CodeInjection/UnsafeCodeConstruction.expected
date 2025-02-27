@@ -18,32 +18,3 @@ nodes
 | lib/index.js:19:26:19:29 | data | semmle.label | data |
 | lib/index.js:22:7:22:10 | data | semmle.label | data |
 subpaths
-testFailures
-| express.js:6:73:6:82 | // $ Alert | Missing result: Alert |
-| express.js:7:83:7:92 | // $ Alert | Missing result: Alert |
-| express.js:9:57:9:66 | // $ Alert | Missing result: Alert |
-| express.js:11:58:11:67 | // $ Alert | Missing result: Alert |
-| express.js:12:57:12:66 | // $ Alert | Missing result: Alert |
-| express.js:13:74:13:83 | // $ Alert | Missing result: Alert |
-| express.js:14:72:14:81 | // $ Alert | Missing result: Alert |
-| lib/index.js:1:35:1:38 | data | Unexpected result: Source |
-| lib/index.js:5:35:5:38 | name | Unexpected result: Source |
-| lib/index.js:13:38:13:41 | data | Unexpected result: Source |
-| lib/index.js:19:26:19:29 | data | Unexpected result: Source |
-| lib/index.js:22:7:22:10 | data | Unexpected result: Alert |
-| lib/index.js:51:56:51:65 | // $ Alert | Missing result: Alert |
-| lib/index.js:103:71:103:80 | // $ Alert | Missing result: Alert |
-| lib/index.js:104:71:104:80 | // $ Alert | Missing result: Alert |
-| lib/index.js:105:71:105:80 | // $ Alert | Missing result: Alert |
-| lib/index.js:106:54:106:63 | // $ Alert | Missing result: Alert |
-| lib/index.js:135:73:135:82 | // $ Alert | Missing result: Alert |
-| lib/index.js:136:73:136:82 | // $ Alert | Missing result: Alert |
-| lib/index.js:137:73:137:82 | // $ Alert | Missing result: Alert |
-| lib/index.js:138:56:138:65 | // $ Alert | Missing result: Alert |
-| tst.js:1:86:1:95 | // $ Alert | Missing result: Alert |
-| tst.js:3:37:3:46 | // $ Alert | Missing result: Alert |
-| tst.js:11:78:11:87 | // $ Alert | Missing result: Alert |
-| tst.js:13:46:13:55 | // $ Alert | Missing result: Alert |
-| tst.js:15:55:15:64 | // $ Alert | Missing result: Alert |
-| tst.js:17:50:17:59 | // $ Alert | Missing result: Alert |
-| tst.js:19:57:19:66 | // $ Alert | Missing result: Alert |

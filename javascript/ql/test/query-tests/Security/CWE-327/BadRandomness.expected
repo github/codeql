@@ -1,4 +1,3 @@
-#select
 | bad-random.js:3:11:3:61 | crypto. ... s(1)[0] | Using addition on a $@ produces biased results. | bad-random.js:3:11:3:31 | crypto. ... ytes(1) | cryptographically secure random number |
 | bad-random.js:3:11:3:61 | crypto. ... s(1)[0] | Using addition on a $@ produces biased results. | bad-random.js:3:38:3:58 | crypto. ... ytes(1) | cryptographically secure random number |
 | bad-random.js:4:11:4:61 | crypto. ... s(1)[0] | Using multiplication on a $@ produces biased results. | bad-random.js:4:11:4:31 | crypto. ... ytes(1) | cryptographically secure random number |
@@ -17,5 +16,3 @@
 | bad-random.js:90:29:90:54 | secureR ...  / 25.6 | Using division and rounding the result on a $@ produces biased results. | bad-random.js:90:29:90:44 | secureRandom(10) | cryptographically secure random number |
 | bad-random.js:96:29:96:58 | crypto. ... ] / 100 | Using division and rounding the result on a $@ produces biased results. | bad-random.js:96:29:96:49 | crypto. ... ytes(1) | cryptographically secure random number |
 | bad-random.js:118:17:118:45 | crypto. ... 0] % 10 | Using modulo on a $@ produces biased results. | bad-random.js:118:17:118:37 | crypto. ... ytes(1) | cryptographically secure random number |
-testFailures
-| bad-random.js:87:16:87:24 | Using addition on a $@ produces biased results. | Unexpected result: Alert |

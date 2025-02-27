@@ -1,4 +1,3 @@
-#select
 | UnknownDirective.html:3:64:3:86 | 'some-f ... tring'; | Unknown directive: 'some-function-string'. |
 | UnknownDirective.html:5:1:5:20 | 'some-script-string' | Unknown directive: 'some-script-string'. |
 | UnknownDirective.js:1:1:1:10 | "use foo"; | Unknown directive: 'use foo'. |
@@ -16,5 +15,3 @@
 | UnknownDirective.js:41:5:41:65 | "[0, 0, ... , 0];"; | Unknown directive: '[0, 0, 0, 0, 0, 0, 0 ... (truncated)'. |
 | UnknownDirective.js:47:5:47:15 | ":nomunge"; | Unknown directive: ':nomunge'. |
 | UnknownDirective.js:48:5:48:30 | "foo(), ... munge"; | Unknown directive: 'foo(), bar, baz:nomu ... (truncated)'. |
-testFailures
-| UnknownDirective.js:2:15:2:24 | // $ Alert | Missing result: Alert |

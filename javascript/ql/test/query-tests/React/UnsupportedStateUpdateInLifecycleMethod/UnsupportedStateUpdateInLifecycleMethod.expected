@@ -1,4 +1,3 @@
-#select
 | tst.js:4:9:4:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:4:9:4:25 | this.setState({}) |  .setState |
 | tst.js:5:9:5:29 | this.re ... ate({}) | Call to state update method $@ is not allowed from within this method. | tst.js:5:9:5:29 | this.re ... ate({}) |  .replaceState |
 | tst.js:6:9:6:28 | this.forceUpdate({}) | Call to state update method $@ is not allowed from within this method. | tst.js:6:9:6:28 | this.forceUpdate({}) |  .forceUpdate |
@@ -21,9 +20,3 @@
 | tst.js:187:9:187:19 | doUpdate1() | Call to state update method $@ is not allowed from within this method. | tst.js:181:31:181:47 | this.setState({}) |  .setState |
 | tst.js:188:9:188:19 | doUpdate2() | Call to state update method $@ is not allowed from within this method. | tst.js:178:9:178:23 | this.setState() |  .setState |
 | tst.js:189:9:189:19 | doUpdate3() | Call to state update method $@ is not allowed from within this method. | tst.js:178:9:178:23 | this.setState() |  .setState |
-testFailures
-| tst.js:100:9:100:29 | Call to state update method $@ is not allowed from within this method. | Unexpected result: Alert |
-| tst.js:108:6:110:8 | Unconditional call to state update method $@ is not allowed from within this method. | Unexpected result: Alert |
-| tst.js:108:22:108:31 | // $ Alert | Missing result: Alert |
-| tst.js:118:6:120:8 | Unconditional call to state update method $@ is not allowed from within this method. | Unexpected result: Alert |
-| tst.js:118:22:118:31 | // $ Alert | Missing result: Alert |

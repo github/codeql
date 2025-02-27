@@ -1,4 +1,1 @@
-#select
 | tst1.js:1:1:3:1 | {\\n  "x": 42\\n} | JSON data in file with extension 'js'. |
-testFailures
-| tst1.js:1:1:3:1 | JSON data in file with extension 'js'. | Unexpected result: Alert |

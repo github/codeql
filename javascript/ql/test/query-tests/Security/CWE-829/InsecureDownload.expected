@@ -19,7 +19,3 @@ nodes
 | insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | semmle.label | "http:/ ... unsafe" |
 | insecure-download.js:52:11:52:45 | "http:/ ... nknown" | semmle.label | "http:/ ... nknown" |
 subpaths
-testFailures
-| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | Unexpected result: Source |
-| insecure-download.js:52:11:52:45 | "http:/ ... nknown" | Unexpected result: Alert |
-| insecure-download.js:53:69:53:78 | // $ Alert | Missing result: Alert |

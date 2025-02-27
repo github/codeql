@@ -34,7 +34,3 @@ nodes
 | tst.js:9:17:9:23 | tainted | semmle.label | tainted |
 | tst.js:11:8:11:14 | tainted | semmle.label | tainted |
 subpaths
-testFailures
-| XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | Unexpected result: Source |
-| tst.js:6:17:6:37 | req.par ... rName") | Unexpected result: Source |
-| tst2.js:1:13:1:34 | documen ... on.hash | Unexpected result: Source |

@@ -1,4 +1,3 @@
-#select
 | tst.js:3:5:3:28 | "".repl ... i", "") | String argument $@ looks like a regular expression, but it will be interpreted as a string. | tst.js:3:16:3:23 | "/foo/i" | /foo/i |
 | tst.js:4:5:4:28 | "".repl ... /", "") | String argument $@ looks like a regular expression, but it will be interpreted as a string. | tst.js:4:16:4:23 | "/^foo/" | /^foo/ |
 | tst.js:5:5:5:28 | "".repl ... /", "") | String argument $@ looks like a regular expression, but it will be interpreted as a string. | tst.js:5:16:5:23 | "/foo$/" | /foo$/ |
@@ -33,38 +32,3 @@
 | tst.js:39:5:39:36 | "".repl ... +", "") | String argument $@ looks like a regular expression, but it will be interpreted as a string. | tst.js:39:16:39:31 | "[^a-zA-Z0-9 ]+" | [^a-zA-Z0-9 ]+ |
 | tst.js:42:5:42:22 | "".split("/foo/i") | String argument $@ looks like a regular expression, but it will be interpreted as a string. | tst.js:42:14:42:21 | "/foo/i" | /foo/i |
 | tst.js:43:5:43:25 | "".spli ... /i", x) | String argument $@ looks like a regular expression, but it will be interpreted as a string. | tst.js:43:14:43:21 | "/foo/i" | /foo/i |
-testFailures
-| tst.js:3:5:3:28 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:4:5:4:28 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:5:5:5:28 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:6:5:6:27 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:7:5:7:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:8:5:8:30 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:9:5:9:27 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:10:5:10:27 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:11:5:11:30 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:12:5:12:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:13:5:13:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:14:5:14:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:15:5:15:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:16:5:16:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:17:5:17:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:18:5:18:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:19:5:19:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:20:5:20:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:21:5:21:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:22:5:22:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:23:5:23:24 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:24:5:24:34 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:25:5:25:28 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:26:5:26:28 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:27:5:27:30 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:28:5:28:29 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:29:5:29:35 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:32:5:32:28 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:34:5:34:22 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:35:5:35:30 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:38:5:38:31 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:39:5:39:36 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:42:5:42:22 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |
-| tst.js:43:5:43:25 | String argument $@ looks like a regular expression, but it will be interpreted as a string. | Unexpected result: Alert |

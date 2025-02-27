@@ -112,11 +112,3 @@ nodes
 | tst.js:136:38:136:50 | Math.random() | semmle.label | Math.random() |
 | tst.js:136:38:136:65 | Math.ra ... .length | semmle.label | Math.ra ... .length |
 subpaths
-testFailures
-| tst.js:19:18:19:30 | Math.random() | Unexpected result: Source |
-| tst.js:28:14:28:26 | Math.random() | Unexpected result: Source |
-| tst.js:71:27:71:39 | Math.random() | Unexpected result: Source |
-| tst.js:80:7:80:19 | Math.random() | Unexpected result: Source |
-| tst.js:90:32:90:44 | Math.random() | Unexpected result: Alert |
-| tst.js:95:33:95:45 | Math.random() | Unexpected result: Alert |
-| tst.js:121:18:121:30 | Math.random() | Unexpected result: Alert |

@@ -390,34 +390,3 @@ nodes
 | tst3.js:12:12:12:15 | code | semmle.label | code |
 subpaths
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:68:22:68:26 | value | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |
-testFailures
-| ReflectedXss.js:33:22:33:126 | // $ Al ... t steps | Missing result: Alert |
-| ReflectedXss.js:63:14:63:21 | req.body | Unexpected result: Source |
-| ReflectedXss.js:73:20:73:27 | req.body | Unexpected result: Source |
-| ReflectedXss.js:113:13:113:27 | keys: queryKeys | Unexpected result: Source |
-| ReflectedXss.js:115:31:115:45 | paramKeys?.keys | Unexpected result: Source |
-| ReflectedXss.js:121:30:121:73 | `${inva ... telist` | Unexpected result: Alert |
-| ReflectedXssGood3.js:135:15:135:27 | req.params.id | Unexpected result: Source |
-| etherpad.js:9:16:9:30 | req.query.jsonp | Unexpected result: Source |
-| etherpad.js:11:12:11:19 | response | Unexpected result: Alert |
-| formatting.js:4:16:4:29 | req.query.evil | Unexpected result: Source |
-| live-server.js:4:21:4:27 | req.url | Unexpected result: Source |
-| live-server.js:10:21:10:27 | req.url | Unexpected result: Source |
-| pages/Next.jsx:8:13:8:19 | req.url | Unexpected result: Alert |
-| pages/Next.jsx:15:13:15:19 | req.url | Unexpected result: Alert |
-| pages/api/myapi.js:2:14:2:20 | req.url | Unexpected result: Alert |
-| partial.js:13:42:13:48 | req.url | Unexpected result: Source |
-| partial.js:22:51:22:57 | req.url | Unexpected result: Source |
-| partial.js:31:47:31:53 | req.url | Unexpected result: Source |
-| partial.js:40:43:40:49 | req.url | Unexpected result: Source |
-| promises.js:5:44:5:57 | req.query.data | Unexpected result: Source |
-| tst2.js:6:9:6:9 | p | Unexpected result: Source |
-| tst2.js:6:12:6:15 | q: r | Unexpected result: Source |
-| tst2.js:14:9:14:9 | p | Unexpected result: Source |
-| tst2.js:30:9:30:9 | p | Unexpected result: Source |
-| tst2.js:43:9:43:9 | p | Unexpected result: Source |
-| tst2.js:57:9:57:9 | p | Unexpected result: Source |
-| tst2.js:69:9:69:9 | p | Unexpected result: Source |
-| tst2.js:82:9:82:9 | p | Unexpected result: Source |
-| tst3.js:5:9:5:9 | p | Unexpected result: Source |
-| tst3.js:11:32:11:39 | reg.body | Unexpected result: Source |

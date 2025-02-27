@@ -1,4 +1,3 @@
-#select
 | Babelrc/importPragma.jsx:2:1:2:27 | import  ... react'; | Unused import q. |
 | eval.js:10:9:10:24 | not_used_by_eval | Unused variable not_used_by_eval. |
 | eval.js:19:9:19:24 | not_used_by_eval | Unused variable not_used_by_eval. |
@@ -14,12 +13,3 @@
 | underscore.js:7:7:7:7 | f | Unused variable f. |
 | unusedShadowed.ts:1:1:1:26 | import  ... where'; | Unused import T. |
 | unusedShadowed.ts:2:1:2:31 | import  ... where'; | Unused import object. |
-testFailures
-| UnusedIndexVariable.js:3:24:3:75 | // $ Al ... ariable | Missing result: Alert |
-| decorated.ts:1:1:1:126 | Unused import actionHandler. | Unexpected result: Alert |
-| decorated.ts:4:10:4:12 | Unused function fun. | Unexpected result: Alert |
-| eval.js:10:9:10:24 | Unused variable not_used_by_eval. | Unexpected result: Alert |
-| eval.js:19:9:19:24 | Unused variable not_used_by_eval. | Unexpected result: Alert |
-| interTypes.ts:1:1:1:37 | Unused import Bar. | Unexpected result: Alert |
-| multi-imports.js:1:1:1:29 | Unused imports a, b, d. | Unexpected result: Alert |
-| multi-imports.js:2:1:2:42 | Unused imports alphabetically, ordered. | Unexpected result: Alert |

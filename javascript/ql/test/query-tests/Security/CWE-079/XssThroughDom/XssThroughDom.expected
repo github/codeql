@@ -180,20 +180,3 @@ nodes
 | xss-through-dom.js:155:27:155:29 | msg | semmle.label | msg |
 | xss-through-dom.js:159:34:159:52 | $("textarea").val() | semmle.label | $("textarea").val() |
 subpaths
-testFailures
-| angular.ts:12:5:12:23 | field: string = ""; | Unexpected result: Source |
-| forms.js:8:23:8:28 | values | Unexpected result: Source |
-| forms.js:11:24:11:29 | values | Unexpected result: Source |
-| forms.js:24:15:24:20 | values | Unexpected result: Source |
-| forms.js:28:20:28:25 | values | Unexpected result: Source |
-| forms.js:34:13:34:18 | values | Unexpected result: Source |
-| forms.js:44:21:44:26 | values | Unexpected result: Source |
-| forms.js:71:21:71:24 | data | Unexpected result: Source |
-| forms.js:92:26:92:36 | getValues() | Unexpected result: Source |
-| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | Unexpected result: Source |
-| xss-through-dom.js:84:15:84:30 | $("text").text() | Unexpected result: Source |
-| xss-through-dom.js:114:17:114:52 | documen ... k").src | Unexpected result: Source |
-| xss-through-dom.js:130:17:130:37 | wSelect ... tring() | Unexpected result: Source |
-| xss-through-dom.js:130:42:130:62 | dSelect ... tring() | Unexpected result: Source |
-| xss-through-dom.js:139:17:139:52 | documen ... k").src | Unexpected result: Source |
-| xss-through-dom.js:159:34:159:52 | $("textarea").val() | Unexpected result: Source |

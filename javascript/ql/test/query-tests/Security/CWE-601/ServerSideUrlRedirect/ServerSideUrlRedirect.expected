@@ -3,7 +3,6 @@
 | ServerSideUrlRedirectGood2.js:18:18:18:23 | target | ServerSideUrlRedirectGood2.js:16:16:16:34 | req.query["target"] | ServerSideUrlRedirectGood2.js:18:18:18:23 | target | Untrusted URL redirection depends on a $@. | ServerSideUrlRedirectGood2.js:16:16:16:34 | req.query["target"] | user-provided value |
 | express.js:6:16:6:34 | req.param("target") | express.js:6:16:6:34 | req.param("target") | express.js:6:16:6:34 | req.param("target") | Untrusted URL redirection depends on a $@. | express.js:6:16:6:34 | req.param("target") | user-provided value |
 | express.js:10:26:10:44 | req.param("target") | express.js:10:26:10:44 | req.param("target") | express.js:10:26:10:44 | req.param("target") | Untrusted URL redirection depends on a $@. | express.js:10:26:10:44 | req.param("target") | user-provided value |
-| express.js:28:18:28:23 | target | express.js:25:16:25:34 | req.param("target") | express.js:28:18:28:23 | target | Untrusted URL redirection depends on a $@. | express.js:25:16:25:34 | req.param("target") | user-provided value |
 | express.js:30:18:30:23 | target | express.js:25:16:25:34 | req.param("target") | express.js:30:18:30:23 | target | Untrusted URL redirection depends on a $@. | express.js:25:16:25:34 | req.param("target") | user-provided value |
 | express.js:31:16:31:21 | target | express.js:25:16:25:34 | req.param("target") | express.js:31:16:31:21 | target | Untrusted URL redirection depends on a $@. | express.js:25:16:25:34 | req.param("target") | user-provided value |
 | express.js:35:16:35:108 | (req.pa ... ntacts" | express.js:35:69:35:87 | req.param('action') | express.js:35:16:35:108 | (req.pa ... ntacts" | Untrusted URL redirection depends on a $@. | express.js:35:69:35:87 | req.param('action') | user-provided value |
@@ -11,6 +10,7 @@
 | express.js:83:18:83:23 | target | express.js:77:16:77:34 | req.param("target") | express.js:83:18:83:23 | target | Untrusted URL redirection depends on a $@. | express.js:77:16:77:34 | req.param("target") | user-provided value |
 | express.js:89:16:89:21 | target | express.js:77:16:77:34 | req.param("target") | express.js:89:16:89:21 | target | Untrusted URL redirection depends on a $@. | express.js:77:16:77:34 | req.param("target") | user-provided value |
 | express.js:109:16:109:72 | [req.qu ... oin('') | express.js:109:17:109:30 | req.query.page | express.js:109:16:109:72 | [req.qu ... oin('') | Untrusted URL redirection depends on a $@. | express.js:109:17:109:30 | req.query.page | user-provided value |
+| express.js:113:16:113:22 | nextUrl | express.js:117:22:117:38 | req.query.nextUrl | express.js:113:16:113:22 | nextUrl | Untrusted URL redirection depends on a $@. | express.js:117:22:117:38 | req.query.nextUrl | user-provided value |
 | express.js:124:16:124:36 | '/' + r ... ms.user | express.js:124:22:124:36 | req.params.user | express.js:124:16:124:36 | '/' + r ... ms.user | Untrusted URL redirection depends on a $@. | express.js:124:22:124:36 | req.params.user | user-provided value |
 | express.js:125:16:125:37 | '//' +  ... ms.user | express.js:125:23:125:37 | req.params.user | express.js:125:16:125:37 | '//' +  ... ms.user | Untrusted URL redirection depends on a $@. | express.js:125:23:125:37 | req.params.user | user-provided value |
 | express.js:126:16:126:36 | 'u' + r ... ms.user | express.js:126:22:126:36 | req.params.user | express.js:126:16:126:36 | 'u' + r ... ms.user | Untrusted URL redirection depends on a $@. | express.js:126:22:126:36 | req.params.user | user-provided value |
@@ -32,7 +32,6 @@
 edges
 | ServerSideUrlRedirectGood2.js:16:7:16:34 | target | ServerSideUrlRedirectGood2.js:18:18:18:23 | target | provenance |  |
 | ServerSideUrlRedirectGood2.js:16:16:16:34 | req.query["target"] | ServerSideUrlRedirectGood2.js:16:7:16:34 | target | provenance |  |
-| express.js:25:7:25:34 | target | express.js:28:18:28:23 | target | provenance |  |
 | express.js:25:7:25:34 | target | express.js:30:18:30:23 | target | provenance |  |
 | express.js:25:7:25:34 | target | express.js:31:16:31:21 | target | provenance |  |
 | express.js:25:16:25:34 | req.param("target") | express.js:25:7:25:34 | target | provenance |  |
@@ -46,6 +45,8 @@ edges
 | express.js:109:17:109:30 | req.query.page | express.js:109:16:109:63 | [req.qu ... ection] | provenance |  |
 | express.js:109:17:109:30 | req.query.page | express.js:109:16:109:63 | [req.qu ... ection] [0] | provenance |  |
 | express.js:109:17:109:30 | req.query.page | express.js:109:16:109:72 | [req.qu ... oin('') | provenance |  |
+| express.js:112:29:112:35 | nextUrl | express.js:113:16:113:22 | nextUrl | provenance |  |
+| express.js:117:22:117:38 | req.query.nextUrl | express.js:112:29:112:35 | nextUrl | provenance |  |
 | express.js:124:22:124:36 | req.params.user | express.js:124:16:124:36 | '/' + r ... ms.user | provenance |  |
 | express.js:125:23:125:37 | req.params.user | express.js:125:16:125:37 | '//' +  ... ms.user | provenance |  |
 | express.js:126:22:126:36 | req.params.user | express.js:126:16:126:36 | 'u' + r ... ms.user | provenance |  |
@@ -89,7 +90,6 @@ nodes
 | express.js:10:26:10:44 | req.param("target") | semmle.label | req.param("target") |
 | express.js:25:7:25:34 | target | semmle.label | target |
 | express.js:25:16:25:34 | req.param("target") | semmle.label | req.param("target") |
-| express.js:28:18:28:23 | target | semmle.label | target |
 | express.js:30:18:30:23 | target | semmle.label | target |
 | express.js:31:16:31:21 | target | semmle.label | target |
 | express.js:35:16:35:108 | (req.pa ... ntacts" | semmle.label | (req.pa ... ntacts" |
@@ -104,6 +104,9 @@ nodes
 | express.js:109:16:109:63 | [req.qu ... ection] [0] | semmle.label | [req.qu ... ection] [0] |
 | express.js:109:16:109:72 | [req.qu ... oin('') | semmle.label | [req.qu ... oin('') |
 | express.js:109:17:109:30 | req.query.page | semmle.label | req.query.page |
+| express.js:112:29:112:35 | nextUrl | semmle.label | nextUrl |
+| express.js:113:16:113:22 | nextUrl | semmle.label | nextUrl |
+| express.js:117:22:117:38 | req.query.nextUrl | semmle.label | req.query.nextUrl |
 | express.js:124:16:124:36 | '/' + r ... ms.user | semmle.label | '/' + r ... ms.user |
 | express.js:124:22:124:36 | req.params.user | semmle.label | req.params.user |
 | express.js:125:16:125:37 | '//' +  ... ms.user | semmle.label | '//' +  ... ms.user |
@@ -151,18 +154,3 @@ nodes
 | react-native.js:8:17:8:23 | tainted | semmle.label | tainted |
 | react-native.js:9:26:9:32 | tainted | semmle.label | tainted |
 subpaths
-testFailures
-| ServerSideUrlRedirectGood2.js:16:16:16:34 | req.query["target"] | Unexpected result: Source |
-| ServerSideUrlRedirectGood2.js:18:18:18:23 | target | Unexpected result: Alert |
-| express.js:25:16:25:34 | req.param("target") | Unexpected result: Source |
-| express.js:28:18:28:23 | target | Unexpected result: Alert |
-| express.js:77:16:77:34 | req.param("target") | Unexpected result: Source |
-| express.js:113:25:113:69 | // $ Al ... rameter | Missing result: Alert |
-| express.js:140:16:140:34 | req.param("target") | Unexpected result: Source |
-| express.js:154:32:154:40 | req.query | Unexpected result: Source |
-| koa.js:6:12:6:27 | ctx.query.target | Unexpected result: Source |
-| koa.js:20:16:20:18 | url | Unexpected result: Alert |
-| node.js:5:26:5:32 | req.url | Unexpected result: Source |
-| node.js:10:26:10:32 | req.url | Unexpected result: Source |
-| node.js:27:26:27:32 | req.url | Unexpected result: Source |
-| react-native.js:7:17:7:33 | req.param("code") | Unexpected result: Source |

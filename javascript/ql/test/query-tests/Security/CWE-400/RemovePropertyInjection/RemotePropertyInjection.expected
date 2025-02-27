@@ -36,7 +36,3 @@ nodes
 | tstNonExpr.js:8:17:8:23 | userVal | semmle.label | userVal |
 subpaths
 | tst.js:8:28:8:51 | req.que ... trolled | tst.js:21:25:21:25 | x | tst.js:23:9:23:42 | result. ... length) | tst.js:8:13:8:52 | myCoolL ... rolled) |
-testFailures
-| tst.js:8:28:8:51 | req.que ... trolled | Unexpected result: Source |
-| tst.js:11:23:11:65 | // $ Al ... t query | Missing result: Alert |
-| tstNonExpr.js:5:17:5:23 | req.url | Unexpected result: Source |

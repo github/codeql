@@ -76,11 +76,3 @@ nodes
 | tst.js:29:28:29:42 | JSON.parse(str) | semmle.label | JSON.parse(str) |
 | tst.js:29:39:29:41 | str | semmle.label | str |
 subpaths
-testFailures
-| tst.js:7:25:7:32 | req.body | Unexpected result: Source |
-| tst.js:8:26:8:49 | req.que ... rameter | Unexpected result: Source |
-| tst2.js:6:25:6:32 | req.body | Unexpected result: Source |
-| tst2.js:26:25:26:32 | req.body | Unexpected result: Source |
-| tst2.js:34:25:34:32 | req.body | Unexpected result: Source |
-| tst2.js:42:25:42:32 | req.body | Unexpected result: Source |
-| tst2.js:51:25:51:32 | req.body | Unexpected result: Source |

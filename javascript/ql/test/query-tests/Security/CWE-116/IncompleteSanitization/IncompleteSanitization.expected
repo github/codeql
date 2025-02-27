@@ -1,4 +1,3 @@
-#select
 | tst.js:5:10:5:18 | s.replace | This replaces only the first occurrence of "'". |
 | tst.js:9:10:9:18 | s.replace | This replaces only the first occurrence of /'/. |
 | tst.js:13:10:13:18 | s.replace | This does not escape backslash characters in the input. |
@@ -36,67 +35,3 @@
 | tst.js:353:9:353:17 | s.replace | This does not escape backslash characters in the input. |
 | tst.js:362:2:362:10 | x.replace | This replaces only the first occurrence of /\n/. |
 | tst.js:363:2:363:24 | x.repla ... replace | This replaces only the first occurrence of /\n/. |
-testFailures
-| UnsafeHtmlExpansion.js:9:5:9:14 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:10:71:10:80 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:16:5:16:14 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:17:51:17:60 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:23:5:23:14 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:24:52:24:61 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:26:42:26:51 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:30:40:30:49 | // $ Alert | Missing result: Alert |
-| UnsafeHtmlExpansion.js:35:47:35:96 | // $ Al ...  string | Missing result: Alert |
-| tst-multi-character-sanitization.js:3:60:3:69 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:4:50:4:59 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:5:52:5:61 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:9:50:9:59 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:10:52:10:61 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:11:54:11:63 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:19:38:19:47 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:25:43:25:52 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:49:46:49:55 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:64:76:64:85 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:66:59:66:68 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:75:40:75:49 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:76:38:76:47 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:77:39:77:64 | // $ Al ... ributes | Missing result: Alert |
-| tst-multi-character-sanitization.js:81:61:81:80 | // $ SPURIOUS: Alert | Fixed spurious result: Alert |
-| tst-multi-character-sanitization.js:83:66:83:75 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:85:51:85:79 | // $ Al ... ../../" | Missing result: Alert |
-| tst-multi-character-sanitization.js:87:50:87:59 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:91:81:91:90 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:100:33:100:42 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:101:33:101:42 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:103:61:103:70 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:105:67:105:76 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:106:65:106:74 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:107:78:107:87 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:108:61:108:70 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:109:53:109:62 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:110:35:110:44 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:128:37:128:46 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:134:47:134:56 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:135:49:135:58 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:136:51:136:60 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:137:51:137:60 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:141:65:141:74 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:142:66:142:75 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:143:93:143:102 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:144:92:144:101 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:147:137:147:146 | // $ Alert | Missing result: Alert |
-| tst-multi-character-sanitization.js:151:137:151:146 | // $ Alert | Missing result: Alert |
-| tst.js:141:2:141:10 | This replaces only the first occurrence of ']'. | Unexpected result: Alert |
-| tst.js:141:2:141:27 | This replaces only the first occurrence of '['. | Unexpected result: Alert |
-| tst.js:206:27:206:36 | // $ Alert | Missing result: Alert |
-| tst.js:207:29:207:38 | // $ Alert | Missing result: Alert |
-| tst.js:208:29:208:38 | // $ Alert | Missing result: Alert |
-| tst.js:209:43:209:52 | // $ Alert | Missing result: Alert |
-| tst.js:210:61:210:70 | // $ Alert | Missing result: Alert |
-| tst.js:211:61:211:70 | // $ Alert | Missing result: Alert |
-| tst.js:212:61:212:70 | // $ Alert | Missing result: Alert |
-| tst.js:215:28:215:37 | // $ Alert | Missing result: Alert |
-| tst.js:283:25:283:98 | // $ Al ... d below | Missing result: Alert |
-| tst.js:292:25:292:98 | // $ Al ... d below | Missing result: Alert |
-| tst.js:309:51:309:60 | // $ Alert | Missing result: Alert |
-| tst.js:333:43:333:52 | // $ Alert | Missing result: Alert |
-| tst.js:337:49:337:58 | // $ Alert | Missing result: Alert |

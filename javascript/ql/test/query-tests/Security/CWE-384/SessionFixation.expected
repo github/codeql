@@ -1,5 +1,1 @@
-#select
 | tst.js:9:1:14:2 | app.get ... n');\\n}) | Route handler does not invalidate session following login. |
-testFailures
-| tst.js:9:1:14:2 | Route handler does not invalidate session following login. | Unexpected result: Alert |
-| tst.js:9:41:9:66 | // $ Al ... enerate | Missing result: Alert |

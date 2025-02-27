@@ -1,4 +1,3 @@
-#select
 | interprocedural.js:11:9:11:13 | known | Variable 'known' is of type string, but it is compared to $@ of type number. | interprocedural.js:11:19:11:20 | 42 | an expression |
 | interprocedural.js:15:9:15:18 | getKnown() | This expression is of type string, but it is compared to $@ of type number. | interprocedural.js:15:24:15:25 | 42 | an expression |
 | interprocedural.js:17:9:17:27 | getKnown_indirect() | This expression is of type string, but it is compared to $@ of type number. | interprocedural.js:17:33:17:34 | 42 | an expression |
@@ -52,12 +51,3 @@
 | tst.js:201:5:201:6 | t5 | Variable 't5' is of type boolean, null, number, string or undefined, but it is compared to $@ of type function, object or regular expression. | tst.js:201:12:201:13 | t3 | variable 't3' |
 | tst.js:216:13:216:14 | xy | Variable 'xy' is of type undefined, but it is compared to $@ of type string. | tst.js:216:20:216:24 | "foo" | an expression |
 | tst.js:224:5:224:5 | x | Variable 'x' is of type object, but it is compared to $@ of type number. | tst.js:224:11:224:12 | 42 | an expression |
-testFailures
-| interprocedural.js:11:9:11:13 | Variable 'known' is of type string, but it is compared to $@ of type number. | Unexpected result: Alert |
-| interprocedural.js:15:9:15:18 | This expression is of type string, but it is compared to $@ of type number. | Unexpected result: Alert |
-| interprocedural.js:17:9:17:27 | This expression is of type string, but it is compared to $@ of type number. | Unexpected result: Alert |
-| tst.js:19:17:19:26 | // $ Alert | Missing result: Alert |
-| tst.js:20:6:20:7 | This expression is of type number, but it is compared to $@ of type string. | Unexpected result: Alert |
-| tst.js:41:3:41:8 | Variable 'number' is of type number, but it is compared to $@ of type string. | Unexpected result: Alert |
-| tst.js:139:5:139:9 | This expression is of type string, but it is compared to $@ of type undefined. | Unexpected result: Alert |
-| tst.js:224:5:224:5 | Variable 'x' is of type object, but it is compared to $@ of type number. | Unexpected result: Alert |
