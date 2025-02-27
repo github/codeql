@@ -384,24 +384,41 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
   }
 }
 
+private class ReplaceAllCall extends MethodCall {
+  ReplaceAllCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replaceAll")
+    )
+  }
+}
+
+private class ReplaceCall extends MethodCall {
+  ReplaceCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replace")
+    )
+  }
+}
+
 /**
  * A complementary sanitizer that protects against path injection vulnerabilities
  * by replacing all directory characters ('..', '/', and '\') with safe characters.
  */
 private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
   ReplaceDirectoryCharactersSanitizer() {
-    exists(
-      MethodCall mc, Method m, CompileTimeConstantExpr target, CompileTimeConstantExpr replacement
-    |
-      m = mc.getMethod() and
-      m.getDeclaringType() instanceof TypeString and
-      m.hasName(["replaceAll", "replace"]) and
+    exists(MethodCall mc, CompileTimeConstantExpr target |
+      (
+        mc instanceof ReplaceAllCall or
+        mc instanceof ReplaceCall
+      ) and
       // TODO: make sure handling each arg 0 correctly, only replaceAll is a regex, replace is char or CharSequence
       // TODO: add tests for replace
       target = mc.getArgument(0) and
-      replacement = mc.getArgument(1) and
       this = mc
     |
+      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
       (
         // replace with single call
         target.getStringValue().matches("[%]") and
@@ -415,15 +432,21 @@ private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
         target.getStringValue().matches("%\\\\%")
         or
         // replace with multiple calls
-        // TODO: handle both as call chain and as separate line? (presumably a max of three calls?)
-        target.getStringValue() = ["\\.", "/", "\\\\"] and
-        mc.getQualifier() =
-          any(MethodCall mc2 |
-            mc2.getMethod().hasQualifiedName("java.lang", "String", ["replaceAll", "replace"]) and
-            mc2.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\\.", "/", "\\\\"]
-          )
-      ) and
-      replacement.getStringValue() = ["", "_", "-"]
+        exists(ReplaceAllCall rc, CompileTimeConstantExpr rcTarget |
+          // look for another replace call as the qualifier of `mc`
+          rc.getQualifier() = mc and
+          target = mc.getArgument(0) and
+          target.getStringValue() = ["\\.", "/", "\\\\"] and
+          rcTarget = rc.getArgument(0) and
+          rcTarget.getStringValue() = ["\\.", "/", "\\\\"] and
+          rc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+          // make sure the calls replace different characters
+          rcTarget.getStringValue() != target.getStringValue() and
+          // make sure one of the calls replaces '.'
+          // then the other call must replace one of '/' or '\' if they are not equal
+          (rcTarget.getStringValue() = "\\." or target.getStringValue() = "\\.")
+        )
+      )
     )
   }
 }

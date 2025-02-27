@@ -674,6 +674,23 @@ public class Test {
         }
         {
             String source = (String) source();
+            source = source.replaceAll("\\.", "").replaceAll("/", "").replaceAll("\\\\", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // '/' or '\' are not replaced
+            source = source.replaceAll("\\.", "").replaceAll("\\.", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // '.' is not replaced
+            source = source.replaceAll("/", "").replaceAll("\\\\", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
             // Bypassable with ".../...//"
             source = source.replaceAll("\\.\\./", "");
             sink(source); // $ hasTaintFlow
