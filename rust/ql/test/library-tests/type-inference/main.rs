@@ -377,7 +377,7 @@ mod m9 {
 
     impl<T> MyOption<T> {
         fn new() -> Self {
-            MyOption::MyNone() // missing `T`
+            MyOption::MyNone()
         }
 
         fn set(&mut self, value: T) {

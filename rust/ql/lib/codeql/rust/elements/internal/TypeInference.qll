@@ -535,7 +535,11 @@ private TypeMention getTypeAnnotation(AstNode n) {
     n = p.getPat() and
     result = p.getTypeRepr()
   )
-  // todo: add return type annotations
+  or
+  exists(Function f |
+    result = f.getRetType().getTypeRepr() and
+    n = f.getBody()
+  )
 }
 
 /** Gets the type of `n`, which has an explicit type annotation. */
@@ -576,6 +580,9 @@ private predicate typeSymRule(AstNode n1, TypePath path1, AstNode n2, TypePath p
     )
   or
   n1 = n2.(ParenExpr).getExpr() and
+  path1 = path2
+  or
+  n1 = n2.(BlockExpr).getStmtList().getTailExpr() and
   path1 = path2
 }
 
