@@ -68,6 +68,7 @@ public class RegExpParser {
   private List<Error> errors;
   private List<BackReference> backrefs;
   private int maxbackref;
+  private boolean vFlag = true;
 
   /** Parse the given string as a regular expression. */
   public Result parse(String src) {
@@ -507,9 +508,9 @@ public class RegExpParser {
   }
 
   private RegExpTerm parseCharacterClass() {
+    if (vFlag) return parseNestedCharacterClass();
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> elements = new ArrayList<>();
-
     this.match("[");
     boolean inverted = this.match("^");
     while (!this.match("]")) {
@@ -518,6 +519,27 @@ public class RegExpParser {
         break;
       }
       elements.add(this.parseCharacterClassElement());
+    }
+    return this.finishTerm(new CharacterClass(loc, elements, inverted));
+  }
+
+  // New method to support nested character classes.
+  private RegExpTerm parseNestedCharacterClass() {
+    SourceLocation loc = new SourceLocation(pos());
+    this.match("["); // consume '['
+    boolean inverted = this.match("^");
+    List<RegExpTerm> elements = new ArrayList<>();
+    while (!this.match("]")) {
+      if (this.atEOS()) {
+        this.error(Error.EXPECTED_RBRACKET);
+        break;
+      }
+      // If nested '[' is found, recursively parse it.
+      if (vFlag && lookahead("[")) {
+        elements.add(parseNestedCharacterClass());
+      } else {
+        elements.add(this.parseCharacterClassElement());
+      }
     }
     return this.finishTerm(new CharacterClass(loc, elements, inverted));
   }
@@ -540,6 +562,9 @@ public class RegExpParser {
 
   private RegExpTerm parseCharacterClassAtom() {
     SourceLocation loc = new SourceLocation(pos());
+    if (vFlag && peekChar(true) == '[') {
+      return parseNestedCharacterClass();
+    }
     char c = this.nextChar();
     if (c == '\\') {
       if (this.match("b")) return this.finishTerm(new ControlEscape(loc, "\b", 8, "\\b"));
