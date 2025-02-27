@@ -1,0 +1,117 @@
+nodes
+| intersection.js:1:1:1:17 | [RegExpLiteral] /[[abc]&&[bcd]]/v | semmle.label | [RegExpLiteral] /[[abc]&&[bcd]]/v |
+| intersection.js:1:1:1:18 | [ExprStmt] /[[abc]&&[bcd]]/v; | semmle.label | [ExprStmt] /[[abc]&&[bcd]]/v; |
+| intersection.js:1:1:1:18 | [ExprStmt] /[[abc]&&[bcd]]/v; | semmle.order | 1 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | semmle.label | [RegExpCharacterClass] [[abc] |
+| intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | semmle.label | [???] [[abc]&&[bcd]] |
+| intersection.js:1:3:1:3 | [RegExpNormalConstant] [ | semmle.label | [RegExpNormalConstant] [ |
+| intersection.js:1:4:1:4 | [RegExpNormalConstant] a | semmle.label | [RegExpNormalConstant] a |
+| intersection.js:1:5:1:5 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| intersection.js:1:6:1:6 | [RegExpNormalConstant] c | semmle.label | [RegExpNormalConstant] c |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | semmle.label | [RegExpCharacterClass] [bcd] |
+| intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | semmle.label | [RegExpSequence] [bcd]] |
+| intersection.js:1:11:1:11 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| intersection.js:1:12:1:12 | [RegExpNormalConstant] c | semmle.label | [RegExpNormalConstant] c |
+| intersection.js:1:13:1:13 | [RegExpNormalConstant] d | semmle.label | [RegExpNormalConstant] d |
+| intersection.js:1:15:1:15 | [RegExpNormalConstant] ] | semmle.label | [RegExpNormalConstant] ] |
+| intersection.js:2:1:2:11 | [RegExpLiteral] /abc&&bcd/v | semmle.label | [RegExpLiteral] /abc&&bcd/v |
+| intersection.js:2:1:2:12 | [ExprStmt] /abc&&bcd/v; | semmle.label | [ExprStmt] /abc&&bcd/v; |
+| intersection.js:2:1:2:12 | [ExprStmt] /abc&&bcd/v; | semmle.order | 2 |
+| intersection.js:2:2:2:9 | [RegExpNormalConstant] abc&&bcd | semmle.label | [RegExpNormalConstant] abc&&bcd |
+| intersection.js:3:1:3:15 | [RegExpLiteral] /[abc]&&[bcd]/v | semmle.label | [RegExpLiteral] /[abc]&&[bcd]/v |
+| intersection.js:3:1:3:16 | [ExprStmt] /[abc]&&[bcd]/v; | semmle.label | [ExprStmt] /[abc]&&[bcd]/v; |
+| intersection.js:3:1:3:16 | [ExprStmt] /[abc]&&[bcd]/v; | semmle.order | 3 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | semmle.label | [RegExpCharacterClass] [abc] |
+| intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | semmle.label | [???] [abc]&&[bcd] |
+| intersection.js:3:3:3:3 | [RegExpNormalConstant] a | semmle.label | [RegExpNormalConstant] a |
+| intersection.js:3:4:3:4 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| intersection.js:3:5:3:5 | [RegExpNormalConstant] c | semmle.label | [RegExpNormalConstant] c |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | semmle.label | [RegExpCharacterClass] [bcd] |
+| intersection.js:3:10:3:10 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| intersection.js:3:11:3:11 | [RegExpNormalConstant] c | semmle.label | [RegExpNormalConstant] c |
+| intersection.js:3:12:3:12 | [RegExpNormalConstant] d | semmle.label | [RegExpNormalConstant] d |
+| intersection.js:7:1:7:13 | [RegExpLiteral] /[abc&&bcd]/v | semmle.label | [RegExpLiteral] /[abc&&bcd]/v |
+| intersection.js:7:1:7:14 | [ExprStmt] /[abc&&bcd]/v; | semmle.label | [ExprStmt] /[abc&&bcd]/v; |
+| intersection.js:7:1:7:14 | [ExprStmt] /[abc&&bcd]/v; | semmle.order | 4 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | semmle.label | [RegExpCharacterClass] [abc&&bcd] |
+| intersection.js:7:3:7:3 | [RegExpNormalConstant] a | semmle.label | [RegExpNormalConstant] a |
+| intersection.js:7:4:7:4 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| intersection.js:7:5:7:5 | [RegExpNormalConstant] c | semmle.label | [RegExpNormalConstant] c |
+| intersection.js:7:6:7:6 | [RegExpNormalConstant] & | semmle.label | [RegExpNormalConstant] & |
+| intersection.js:7:7:7:7 | [RegExpNormalConstant] & | semmle.label | [RegExpNormalConstant] & |
+| intersection.js:7:8:7:8 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| intersection.js:7:9:7:9 | [RegExpNormalConstant] c | semmle.label | [RegExpNormalConstant] c |
+| intersection.js:7:10:7:10 | [RegExpNormalConstant] d | semmle.label | [RegExpNormalConstant] d |
+edges
+| intersection.js:1:1:1:17 | [RegExpLiteral] /[[abc]&&[bcd]]/v | intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | semmle.label | 0 |
+| intersection.js:1:1:1:17 | [RegExpLiteral] /[[abc]&&[bcd]]/v | intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | semmle.order | 0 |
+| intersection.js:1:1:1:18 | [ExprStmt] /[[abc]&&[bcd]]/v; | intersection.js:1:1:1:17 | [RegExpLiteral] /[[abc]&&[bcd]]/v | semmle.label | 1 |
+| intersection.js:1:1:1:18 | [ExprStmt] /[[abc]&&[bcd]]/v; | intersection.js:1:1:1:17 | [RegExpLiteral] /[[abc]&&[bcd]]/v | semmle.order | 1 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:3:1:3 | [RegExpNormalConstant] [ | semmle.label | 0 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:3:1:3 | [RegExpNormalConstant] [ | semmle.order | 0 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:4:1:4 | [RegExpNormalConstant] a | semmle.label | 1 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:4:1:4 | [RegExpNormalConstant] a | semmle.order | 1 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:5:1:5 | [RegExpNormalConstant] b | semmle.label | 2 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:5:1:5 | [RegExpNormalConstant] b | semmle.order | 2 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:6:1:6 | [RegExpNormalConstant] c | semmle.label | 3 |
+| intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | intersection.js:1:6:1:6 | [RegExpNormalConstant] c | semmle.order | 3 |
+| intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | semmle.label | 0 |
+| intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | intersection.js:1:2:1:7 | [RegExpCharacterClass] [[abc] | semmle.order | 0 |
+| intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | semmle.label | 1 |
+| intersection.js:1:2:1:15 | [???] [[abc]&&[bcd]] | intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | semmle.order | 1 |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | intersection.js:1:11:1:11 | [RegExpNormalConstant] b | semmle.label | 0 |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | intersection.js:1:11:1:11 | [RegExpNormalConstant] b | semmle.order | 0 |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | intersection.js:1:12:1:12 | [RegExpNormalConstant] c | semmle.label | 1 |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | intersection.js:1:12:1:12 | [RegExpNormalConstant] c | semmle.order | 1 |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | intersection.js:1:13:1:13 | [RegExpNormalConstant] d | semmle.label | 2 |
+| intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | intersection.js:1:13:1:13 | [RegExpNormalConstant] d | semmle.order | 2 |
+| intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | semmle.label | 0 |
+| intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | intersection.js:1:10:1:14 | [RegExpCharacterClass] [bcd] | semmle.order | 0 |
+| intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | intersection.js:1:15:1:15 | [RegExpNormalConstant] ] | semmle.label | 1 |
+| intersection.js:1:10:1:15 | [RegExpSequence] [bcd]] | intersection.js:1:15:1:15 | [RegExpNormalConstant] ] | semmle.order | 1 |
+| intersection.js:2:1:2:11 | [RegExpLiteral] /abc&&bcd/v | intersection.js:2:2:2:9 | [RegExpNormalConstant] abc&&bcd | semmle.label | 0 |
+| intersection.js:2:1:2:11 | [RegExpLiteral] /abc&&bcd/v | intersection.js:2:2:2:9 | [RegExpNormalConstant] abc&&bcd | semmle.order | 0 |
+| intersection.js:2:1:2:12 | [ExprStmt] /abc&&bcd/v; | intersection.js:2:1:2:11 | [RegExpLiteral] /abc&&bcd/v | semmle.label | 1 |
+| intersection.js:2:1:2:12 | [ExprStmt] /abc&&bcd/v; | intersection.js:2:1:2:11 | [RegExpLiteral] /abc&&bcd/v | semmle.order | 1 |
+| intersection.js:3:1:3:15 | [RegExpLiteral] /[abc]&&[bcd]/v | intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | semmle.label | 0 |
+| intersection.js:3:1:3:15 | [RegExpLiteral] /[abc]&&[bcd]/v | intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | semmle.order | 0 |
+| intersection.js:3:1:3:16 | [ExprStmt] /[abc]&&[bcd]/v; | intersection.js:3:1:3:15 | [RegExpLiteral] /[abc]&&[bcd]/v | semmle.label | 1 |
+| intersection.js:3:1:3:16 | [ExprStmt] /[abc]&&[bcd]/v; | intersection.js:3:1:3:15 | [RegExpLiteral] /[abc]&&[bcd]/v | semmle.order | 1 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | intersection.js:3:3:3:3 | [RegExpNormalConstant] a | semmle.label | 0 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | intersection.js:3:3:3:3 | [RegExpNormalConstant] a | semmle.order | 0 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | intersection.js:3:4:3:4 | [RegExpNormalConstant] b | semmle.label | 1 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | intersection.js:3:4:3:4 | [RegExpNormalConstant] b | semmle.order | 1 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | intersection.js:3:5:3:5 | [RegExpNormalConstant] c | semmle.label | 2 |
+| intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | intersection.js:3:5:3:5 | [RegExpNormalConstant] c | semmle.order | 2 |
+| intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | semmle.label | 0 |
+| intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | intersection.js:3:2:3:6 | [RegExpCharacterClass] [abc] | semmle.order | 0 |
+| intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | semmle.label | 1 |
+| intersection.js:3:2:3:13 | [???] [abc]&&[bcd] | intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | semmle.order | 1 |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | intersection.js:3:10:3:10 | [RegExpNormalConstant] b | semmle.label | 0 |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | intersection.js:3:10:3:10 | [RegExpNormalConstant] b | semmle.order | 0 |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | intersection.js:3:11:3:11 | [RegExpNormalConstant] c | semmle.label | 1 |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | intersection.js:3:11:3:11 | [RegExpNormalConstant] c | semmle.order | 1 |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | intersection.js:3:12:3:12 | [RegExpNormalConstant] d | semmle.label | 2 |
+| intersection.js:3:9:3:13 | [RegExpCharacterClass] [bcd] | intersection.js:3:12:3:12 | [RegExpNormalConstant] d | semmle.order | 2 |
+| intersection.js:7:1:7:13 | [RegExpLiteral] /[abc&&bcd]/v | intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | semmle.label | 0 |
+| intersection.js:7:1:7:13 | [RegExpLiteral] /[abc&&bcd]/v | intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | semmle.order | 0 |
+| intersection.js:7:1:7:14 | [ExprStmt] /[abc&&bcd]/v; | intersection.js:7:1:7:13 | [RegExpLiteral] /[abc&&bcd]/v | semmle.label | 1 |
+| intersection.js:7:1:7:14 | [ExprStmt] /[abc&&bcd]/v; | intersection.js:7:1:7:13 | [RegExpLiteral] /[abc&&bcd]/v | semmle.order | 1 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:3:7:3 | [RegExpNormalConstant] a | semmle.label | 0 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:3:7:3 | [RegExpNormalConstant] a | semmle.order | 0 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:4:7:4 | [RegExpNormalConstant] b | semmle.label | 1 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:4:7:4 | [RegExpNormalConstant] b | semmle.order | 1 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:5:7:5 | [RegExpNormalConstant] c | semmle.label | 2 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:5:7:5 | [RegExpNormalConstant] c | semmle.order | 2 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:6:7:6 | [RegExpNormalConstant] & | semmle.label | 3 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:6:7:6 | [RegExpNormalConstant] & | semmle.order | 3 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:7:7:7 | [RegExpNormalConstant] & | semmle.label | 4 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:7:7:7 | [RegExpNormalConstant] & | semmle.order | 4 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:8:7:8 | [RegExpNormalConstant] b | semmle.label | 5 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:8:7:8 | [RegExpNormalConstant] b | semmle.order | 5 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:9:7:9 | [RegExpNormalConstant] c | semmle.label | 6 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:9:7:9 | [RegExpNormalConstant] c | semmle.order | 6 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:10:7:10 | [RegExpNormalConstant] d | semmle.label | 7 |
+| intersection.js:7:2:7:11 | [RegExpCharacterClass] [abc&&bcd] | intersection.js:7:10:7:10 | [RegExpNormalConstant] d | semmle.order | 7 |
+graphProperties
+| semmle.graphKind | tree |
