@@ -6,3 +6,4 @@ extensions:
       - ["actions"]
       - ["github"]
       - ["advanced-security"]
+      - ["octokit"]
