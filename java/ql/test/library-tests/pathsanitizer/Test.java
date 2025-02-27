@@ -631,6 +631,24 @@ public class Test {
                 sink(source); // $ hasTaintFlow
             }
         }
+        {
+            String source = (String) source();
+            // exclude '.', '/', '\'
+            if (source.matches("[^0-9./\\\\a-f]{20,}")) {
+                sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            // '.' is not excluded
+            if (source.matches("[^0-9/\\\\a-f]{20,}")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
         // branch = false
         {
             String source = (String) source();
