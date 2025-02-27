@@ -78,3 +78,9 @@ options:
           Collect flame graph data using the `tracing-flame` crate. To render a flame graph
           or chart, run the `inferno-flamegraph` command. See also: https://crates.io/crates/tracing-flame
         type: string
+      color:
+        title: Enable or disable colored output
+        description: >
+          Enable or disable colored output in the extractor log. Currently the default is to enable it.
+        type: string
+        pattern: "^(yes|no)$"

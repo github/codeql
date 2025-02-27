@@ -31,6 +31,24 @@ pub enum Compression {
     Gzip,
 }
 
+#[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
+#[serde(rename_all = "lowercase")]
+#[clap(rename_all = "lowercase")]
+pub enum Color {
+    #[default]
+    Yes,
+    No,
+}
+
+impl Color {
+    pub fn yes(&self) -> bool {
+        match self {
+            Color::Yes => true,
+            Color::No => false,
+        }
+    }
+}
+
 impl From<Compression> for trap::Compression {
     fn from(val: Compression) -> Self {
         match val {
@@ -55,6 +73,7 @@ pub struct Config {
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
+    pub logging_color: Color,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,

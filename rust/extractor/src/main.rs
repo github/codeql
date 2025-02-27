@@ -3,6 +3,7 @@ use crate::rust_analyzer::path_to_file_id;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
+use codeql_extractor::extractor::Color;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
@@ -201,6 +202,7 @@ fn main() -> anyhow::Result<()> {
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
             &cfg.logging_verbosity,
+            Color::from(cfg.logging_color.yes()),
         ))
         .with(flame_layer)
         .init();
