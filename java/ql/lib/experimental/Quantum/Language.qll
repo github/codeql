@@ -39,16 +39,30 @@ final class DefaultFlowSource = SourceNode;
 
 final class DefaultRemoteFlowSource = RemoteFlowSource;
 
-class GenericLocalDataSource extends Crypto::GenericRemoteDataSource {
+class GenericLocalDataSource extends Crypto::GenericLocalDataSource {
   GenericLocalDataSource() {
     any(DefaultFlowSource src | not src instanceof DefaultRemoteFlowSource).asExpr() = this
   }
 
-  override DataFlow::Node asOutputData() { result.asExpr() = this }
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
-  override predicate flowsTo(Crypto::ArtifactLocatableElement other) {
-    DataSourceToArtifactFlow::flow(this.asOutputData(), other.getInput())
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
   }
+
+  override string getAdditionalDescription() { result = this.toString() }
+}
+
+class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
+  GenericRemoteDataSource() { any(DefaultRemoteFlowSource src).asExpr() = this }
+
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override string getAdditionalDescription() { result = this.toString() }
 }
 
 /**
@@ -56,10 +70,12 @@ class GenericLocalDataSource extends Crypto::GenericRemoteDataSource {
  * tied to an output node (i.e., the result of the source of randomness)
  */
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {
-  override DataFlow::Node asOutputData() { result.asExpr() = this }
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
-  override predicate flowsTo(Crypto::ArtifactLocatableElement other) {
-    RNGToArtifactFlow::flow(this.asOutputData(), other.getInput())
+  override DataFlow::Node getInputNode() { none() } // TODO: add seed
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
   }
 }
 
@@ -76,34 +92,48 @@ class InsecureRandomnessInstance extends RandomnessInstance {
 }
 
 /**
- * Random number generation artifact to other artifact flow configuration
+ * Artifact output to node input configuration
  */
-module RNGToArtifactFlowConfig implements DataFlow::ConfigSig {
+module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source = any(Crypto::RandomNumberGenerationInstance rng).asOutputData()
+    source = any(Crypto::ArtifactElement artifact).getOutputNode()
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(Crypto::ArtifactLocatableElement other).getInput()
+    sink = any(Crypto::FlowAwareElement other).getInputNode()
+  }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getOutputNode()
   }
 }
 
-module RNGToArtifactFlow = DataFlow::Global<RNGToArtifactFlowConfig>;
+module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
+
+abstract class NonceArtifactInstance extends Crypto::NonceArtifactInstance {
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+}
 
 /**
- * Generic data source to artifact flow configuration
+ * Generic data source to node input configuration
  */
-module DataSourceToArtifactFlowConfig implements DataFlow::ConfigSig {
+module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source = any(Crypto::GenericDataSourceInstance i).asOutputData()
+    source = any(Crypto::GenericDataSourceInstance i).getOutputNode()
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(Crypto::ArtifactLocatableElement other).getInput()
+    sink = any(Crypto::FlowAwareElement other).getInputNode()
+  }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getOutputNode()
   }
 }
 
-module DataSourceToArtifactFlow = DataFlow::Global<DataSourceToArtifactFlowConfig>;
+module GenericDataSourceUniversalFlow = DataFlow::Global<GenericDataSourceUniversalFlowConfig>;
 
 // Import library-specific modeling
 import JCA

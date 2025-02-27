@@ -5,12 +5,12 @@
 import experimental.Quantum.Language
 
 from
-  Crypto::CipherOperation op, Crypto::CipherAlgorithm a, Crypto::ModeOfOperationAlgorithm m,
-  Crypto::PaddingAlgorithm p, Crypto::Nonce nonce
+  Crypto::CipherOperationNode op, Crypto::CipherAlgorithmNode a,
+  Crypto::ModeOfOperationAlgorithmNode m, Crypto::PaddingAlgorithmNode p, Crypto::NonceNode nonce
 where
-  a = op.getAlgorithm() and
+  a = op.getAKnownCipherAlgorithm() and
   m = a.getModeOfOperation() and
-  p = a.getPadding() and
-  nonce = op.getNonce()
-select op, op.getCipherOperationMode(), a, a.getRawAlgorithmName(), m, m.getRawAlgorithmName(), p,
-  p.getRawAlgorithmName(), nonce
+  p = a.getPaddingAlgorithm() and
+  nonce = op.getANonce()
+select op, op.getCipherOperationSubtype(), a, a.getRawAlgorithmName(), m, m.getRawAlgorithmName(),
+  p, p.getRawAlgorithmName(), nonce

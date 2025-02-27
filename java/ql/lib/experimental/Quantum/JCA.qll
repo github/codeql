@@ -66,7 +66,7 @@ module JCAModel {
       )
     }
 
-    DataFlow::Node getInputData() { result.asExpr() = this.getArgument(0) }
+    DataFlow::Node getMessageArg() { result.asExpr() = this.getArgument(0) }
   }
 
   /**
@@ -83,26 +83,136 @@ module JCAModel {
   module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
 
   /**
+   * Note: padding and a mode of operation will only exist when the padding / mode (*and its type*) are determinable.
+   * This is because the mode will always be specified alongside the algorithm and never independently.
+   * Therefore, we can always assume that a determinable algorithm will have a determinable mode.
+   *
+   * In the case that only an algorithm is specified, e.g., "AES", the provider provides a default mode.
+   *
+   * TODO: Model the case of relying on a provider default, but alert on it as a bad practice.
+   */
+  class CipherStringLiteralAlgorithmInstance extends Crypto::CipherAlgorithmInstance,
+    Crypto::ModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof CipherStringLiteral
+  {
+    CipherGetInstanceAlgorithmArg consumer;
+
+    CipherStringLiteralAlgorithmInstance() {
+      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(consumer))
+    }
+
+    CipherGetInstanceAlgorithmArg getConsumer() { result = consumer }
+
+    override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
+      result = this and exists(this.getRawModeAlgorithmName()) // TODO: provider defaults
+    }
+
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() {
+      result = this and exists(this.getRawPaddingAlgorithmName()) // TODO: provider defaults
+    }
+
+    override string getRawAlgorithmName() { result = super.getValue() }
+
+    override Crypto::TCipherType getCipherFamily() {
+      if this.cipherNameMappingKnown(_, super.getAlgorithmName())
+      then this.cipherNameMappingKnown(result, super.getAlgorithmName())
+      else result instanceof Crypto::OtherCipherType
+    }
+
+    bindingset[name]
+    private predicate cipherNameMappingKnown(Crypto::TCipherType type, string name) {
+      name = "AES" and
+      type instanceof Crypto::AES
+      or
+      name = "DES" and
+      type instanceof Crypto::DES
+      or
+      name = "TripleDES" and
+      type instanceof Crypto::TripleDES
+      or
+      name = "IDEA" and
+      type instanceof Crypto::IDEA
+      or
+      name = "CAST5" and
+      type instanceof Crypto::CAST5
+      or
+      name = "ChaCha20" and
+      type instanceof Crypto::ChaCha20
+      or
+      name = "RC4" and
+      type instanceof Crypto::RC4
+      or
+      name = "RC5" and
+      type instanceof Crypto::RC5
+      or
+      name = "RSA" and
+      type instanceof Crypto::RSA
+    }
+
+    private predicate modeToNameMappingKnown(Crypto::TBlockCipherModeOperationType type, string name) {
+      type instanceof Crypto::ECB and name = "ECB"
+      or
+      type instanceof Crypto::CBC and name = "CBC"
+      or
+      type instanceof Crypto::GCM and name = "GCM"
+      or
+      type instanceof Crypto::CTR and name = "CTR"
+      or
+      type instanceof Crypto::XTS and name = "XTS"
+      or
+      type instanceof Crypto::CCM and name = "CCM"
+      or
+      type instanceof Crypto::SIV and name = "SIV"
+      or
+      type instanceof Crypto::OCB and name = "OCB"
+    }
+
+    override Crypto::TBlockCipherModeOperationType getModeType() {
+      if this.modeToNameMappingKnown(_, super.getMode())
+      then this.modeToNameMappingKnown(result, super.getMode())
+      else result instanceof Crypto::OtherMode
+    }
+
+    override string getRawModeAlgorithmName() { result = super.getMode() }
+
+    override string getRawPaddingAlgorithmName() { result = super.getPadding() }
+
+    bindingset[name]
+    private predicate paddingToNameMappingKnown(Crypto::TPaddingType type, string name) {
+      type instanceof Crypto::NoPadding and name = "NOPADDING"
+      or
+      type instanceof Crypto::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
+      or
+      type instanceof Crypto::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+    }
+
+    override Crypto::TPaddingType getPaddingType() {
+      if this.paddingToNameMappingKnown(_, super.getPadding())
+      then this.paddingToNameMappingKnown(result, super.getPadding())
+      else result instanceof Crypto::OtherPadding
+    }
+  }
+
+  /**
    * The cipher algorithm argument to a `CipherGetInstanceCall`.
    *
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
-  class CipherGetInstanceAlgorithmArg extends Crypto::CipherAlgorithmInstance,
-    Crypto::BlockCipherModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Expr
-  {
+  class CipherGetInstanceAlgorithmArg extends Crypto::AlgorithmConsumer instanceof Expr {
     CipherGetInstanceCall call;
 
     CipherGetInstanceAlgorithmArg() { this = call.getAlgorithmArg() }
 
-    /**
-     * Returns the `StringLiteral` from which this argument is derived, if known.
-     */
-    CipherStringLiteral getOrigin() {
+    override DataFlow::Node getInputNode() { result.asExpr() = this }
+
+    CipherStringLiteral getOrigin(string value) {
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result),
-        DataFlow::exprNode(this.(Expr).getAChildExpr*()))
+        DataFlow::exprNode(this.(Expr).getAChildExpr*())) and
+      value = result.getValue()
     }
 
-    CipherGetInstanceCall getCall() { result = call }
+    override Crypto::AlgorithmElement getAKnownAlgorithmSource() {
+      result.(CipherStringLiteralAlgorithmInstance).getConsumer() = this
+    }
   }
 
   /**
@@ -144,7 +254,7 @@ module JCAModel {
     TUninitializedCipherModeFlowState
   {
     override Crypto::CipherOperationSubtype getCipherOperationMode() {
-      result instanceof Crypto::UnknownCipherOperationMode
+      result instanceof Crypto::UnknownCipherOperationSubtype
     }
   }
 
@@ -200,6 +310,7 @@ module JCAModel {
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
+      state1 = state1 and
       node1 = state2.(InitializedCipherModeFlowState).getFstNode() and
       node2 = state2.(InitializedCipherModeFlowState).getSndNode()
     }
@@ -218,195 +329,40 @@ module JCAModel {
 
   class CipherOperationInstance extends Crypto::CipherOperationInstance instanceof Call {
     Crypto::CipherOperationSubtype mode;
-    Crypto::CipherAlgorithmInstance algorithm;
     CipherGetInstanceToCipherOperationFlow::PathNode sink;
     JCACipherOperationCall doFinalize;
+    CipherGetInstanceAlgorithmArg consumer;
 
     CipherOperationInstance() {
-      exists(
-        CipherGetInstanceToCipherOperationFlow::PathNode src, CipherGetInstanceCall getCipher,
-        CipherGetInstanceAlgorithmArg arg
-      |
+      exists(CipherGetInstanceToCipherOperationFlow::PathNode src, CipherGetInstanceCall getCipher |
         CipherGetInstanceToCipherOperationFlow::flowPath(src, sink) and
         src.getNode().asExpr() = getCipher and
         sink.getNode().asExpr() = doFinalize.getQualifier() and
         sink.getState().(CipherModeFlowState).getCipherOperationMode() = mode and
         this = doFinalize and
-        arg.getCall() = getCipher and
-        algorithm = arg
+        consumer = getCipher.getAlgorithmArg()
       )
     }
 
-    override Crypto::CipherAlgorithmInstance getAlgorithm() { result = algorithm }
-
     override Crypto::CipherOperationSubtype getCipherOperationSubtype() { result = mode }
 
-    override Crypto::NonceArtifactInstance getNonce() {
-      NonceArtifactToCipherInitCallFlow::flow(result.asOutputData(),
-        DataFlow::exprNode(sink.getState()
-              .(InitializedCipherModeFlowState)
-              .getInitCall()
-              .getNonceArg()))
+    override Crypto::ArtifactConsumer getNonceConsumer() {
+      result = sink.getState().(InitializedCipherModeFlowState).getInitCall().getNonceArg()
     }
 
-    override DataFlow::Node getInputData() { result = doFinalize.getInputData() }
-  }
-
-  /**
-   * A block cipher mode of operation, where the mode is specified in the ALG or ALG/MODE/PADDING format.
-   *
-   * This class will only exist when the mode (*and its type*) is determinable.
-   * This is because the mode will always be specified alongside the algorithm and never independently.
-   * Therefore, we can always assume that a determinable algorithm will have a determinable mode.
-   *
-   * In the case that only an algorithm is specified, e.g., "AES", the provider provides a default mode.
-   *
-   * TODO: Model the case of relying on a provider default, but alert on it as a bad practice.
-   */
-  class ModeOfOperation extends Crypto::ModeOfOperationAlgorithm {
-    CipherGetInstanceAlgorithmArg instance;
-
-    ModeOfOperation() {
-      this = Crypto::TBlockCipherModeOfOperationAlgorithm(instance) and
-      // TODO: this currently only holds for explicitly defined modes in a string literal.
-      // Cases with defaults, e.g., "AES", are not yet modelled.
-      // For these cases, in a CBOM, the AES node would have an unknown edge to its mode child.
-      exists(instance.getOrigin().getMode())
+    override Crypto::ArtifactConsumer getMessageConsumer() {
+      result = doFinalize.getMessageArg().asExpr()
     }
 
-    override Location getLocation() { result = instance.getLocation() }
-
-    // In this case, the raw name is still only the /MODE/ part.
-    // TODO: handle defaults
-    override string getRawAlgorithmName() { result = instance.getOrigin().getMode() }
-
-    private predicate modeToNameMappingKnown(Crypto::TBlockCipherModeOperationType type, string name) {
-      type instanceof Crypto::ECB and name = "ECB"
-      or
-      type instanceof Crypto::CBC and name = "CBC"
-      or
-      type instanceof Crypto::GCM and name = "GCM"
-      or
-      type instanceof Crypto::CTR and name = "CTR"
-      or
-      type instanceof Crypto::XTS and name = "XTS"
-      or
-      type instanceof Crypto::CCM and name = "CCM"
-      or
-      type instanceof Crypto::SIV and name = "SIV"
-      or
-      type instanceof Crypto::OCB and name = "OCB"
-    }
-
-    override Crypto::TBlockCipherModeOperationType getModeType() {
-      if this.modeToNameMappingKnown(_, instance.getOrigin().getMode())
-      then this.modeToNameMappingKnown(result, instance.getOrigin().getMode())
-      else result instanceof Crypto::OtherMode
-    }
-
-    CipherStringLiteral getInstance() { result = instance }
-  }
-
-  class PaddingAlgorithm extends Crypto::PaddingAlgorithm {
-    CipherGetInstanceAlgorithmArg instance;
-
-    PaddingAlgorithm() {
-      this = Crypto::TPaddingAlgorithm(instance) and
-      exists(instance.getOrigin().getPadding())
-    }
-
-    override Location getLocation() { result = instance.getLocation() }
-
-    override string getRawAlgorithmName() { result = instance.getOrigin().getPadding() }
-
-    bindingset[name]
-    private predicate paddingToNameMappingKnown(Crypto::TPaddingType type, string name) {
-      type instanceof Crypto::NoPadding and name = "NOPADDING"
-      or
-      type instanceof Crypto::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
-      or
-      type instanceof Crypto::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
-    }
-
-    override Crypto::TPaddingType getPaddingType() {
-      if this.paddingToNameMappingKnown(_, instance.getOrigin().getPadding())
-      then this.paddingToNameMappingKnown(result, instance.getOrigin().getPadding())
-      else result instanceof Crypto::OtherPadding
-    }
-
-    CipherStringLiteral getInstance() { result = instance }
-  }
-
-  class EncryptionAlgorithm extends Crypto::CipherAlgorithm {
-    CipherStringLiteral origin;
-    CipherGetInstanceAlgorithmArg instance;
-
-    EncryptionAlgorithm() {
-      this = Crypto::TCipherAlgorithm(instance) and
-      instance.getOrigin() = origin
-    }
-
-    override Location getLocation() { result = instance.getLocation() }
-
-    override Crypto::ModeOfOperationAlgorithm getModeOfOperation() {
-      result.(ModeOfOperation).getInstance() = origin
-    }
-
-    override Crypto::PaddingAlgorithm getPadding() {
-      result.(PaddingAlgorithm).getInstance() = origin
-    }
-
-    override Crypto::LocatableElement getOrigin(string name) {
-      result = origin and name = origin.toString()
-    }
-
-    override string getRawAlgorithmName() { result = origin.getValue() }
-
-    override Crypto::TCipherType getCipherFamily() {
-      if this.cipherNameMappingKnown(_, origin.getAlgorithmName())
-      then this.cipherNameMappingKnown(result, origin.getAlgorithmName())
-      else result instanceof Crypto::OtherCipherType
-    }
-
-    override string getKeySize(Location location) { none() }
-
-    bindingset[name]
-    private predicate cipherNameMappingKnown(Crypto::TCipherType type, string name) {
-      name = "AES" and
-      type instanceof Crypto::AES
-      or
-      name = "DES" and
-      type instanceof Crypto::DES
-      or
-      name = "TripleDES" and
-      type instanceof Crypto::TripleDES
-      or
-      name = "IDEA" and
-      type instanceof Crypto::IDEA
-      or
-      name = "CAST5" and
-      type instanceof Crypto::CAST5
-      or
-      name = "ChaCha20" and
-      type instanceof Crypto::ChaCha20
-      or
-      name = "RC4" and
-      type instanceof Crypto::RC4
-      or
-      name = "RC5" and
-      type instanceof Crypto::RC5
-      or
-      name = "RSA" and
-      type instanceof Crypto::RSA
-    }
+    override Crypto::AlgorithmConsumer getAlgorithmConsumer() { result = consumer }
   }
 
   /**
    * Initialization vectors and other nonce artifacts
    */
-  abstract class NonceParameterInstantiation extends Crypto::NonceArtifactInstance instanceof ClassInstanceExpr
+  abstract class NonceParameterInstantiation extends NonceArtifactInstance instanceof ClassInstanceExpr
   {
-    override DataFlow::Node asOutputData() { result.asExpr() = this }
+    override DataFlow::Node getOutputNode() { result.asExpr() = this }
   }
 
   class IvParameterSpecInstance extends NonceParameterInstantiation {
@@ -416,7 +372,9 @@ module JCAModel {
           .hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
     }
 
-    override DataFlow::Node getInput() { result.asExpr() = this.(ClassInstanceExpr).getArgument(0) }
+    override DataFlow::Node getInputNode() {
+      result.asExpr() = this.(ClassInstanceExpr).getArgument(0)
+    }
   }
 
   // TODO: this also specifies the tag length for GCM
@@ -427,7 +385,9 @@ module JCAModel {
           .hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
     }
 
-    override DataFlow::Node getInput() { result.asExpr() = this.(ClassInstanceExpr).getArgument(1) }
+    override DataFlow::Node getInputNode() {
+      result.asExpr() = this.(ClassInstanceExpr).getArgument(1)
+    }
   }
 
   class IvParameterSpecGetIvCall extends MethodCall {
@@ -439,8 +399,8 @@ module JCAModel {
   module NonceArtifactToCipherInitCallConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) {
       exists(NonceParameterInstantiation n |
-        src = n.asOutputData() and
-        not exists(IvParameterSpecGetIvCall m | n.getInput().asExpr() = m)
+        src = n.getOutputNode() and
+        not exists(IvParameterSpecGetIvCall m | n.getInputNode().asExpr() = m)
       )
     }
 
@@ -455,7 +415,7 @@ module JCAModel {
       )
       or
       exists(NonceParameterInstantiation n |
-        node1 = n.getInput() and
+        node1 = n.getInputNode() and
         node2.asExpr() = n
       )
     }
@@ -482,13 +442,13 @@ module JCAModel {
   private predicate cipher_mode_str_to_cipher_mode_known(
     string mode, Crypto::CipherOperationSubtype cipher_mode
   ) {
-    mode = "ENCRYPT_MODE" and cipher_mode instanceof Crypto::EncryptionMode
+    mode = "ENCRYPT_MODE" and cipher_mode instanceof Crypto::EncryptionSubtype
     or
-    mode = "WRAP_MODE" and cipher_mode instanceof Crypto::WrapMode
+    mode = "WRAP_MODE" and cipher_mode instanceof Crypto::WrapSubtype
     or
-    mode = "DECRYPT_MODE" and cipher_mode instanceof Crypto::DecryptionMode
+    mode = "DECRYPT_MODE" and cipher_mode instanceof Crypto::DecryptionSubtype
     or
-    mode = "UNWRAP_MODE" and cipher_mode instanceof Crypto::UnwrapMode
+    mode = "UNWRAP_MODE" and cipher_mode instanceof Crypto::UnwrapSubtype
   }
 
   class CipherInitCall extends MethodCall {
@@ -514,7 +474,7 @@ module JCAModel {
     Crypto::CipherOperationSubtype getCipherOperationModeType() {
       if cipher_mode_str_to_cipher_mode_known(this.getModeOrigin().getField().getName(), _)
       then cipher_mode_str_to_cipher_mode_known(this.getModeOrigin().getField().getName(), result)
-      else result instanceof Crypto::UnknownCipherOperationMode
+      else result instanceof Crypto::UnknownCipherOperationSubtype
     }
 
     Expr getKeyArg() {
@@ -525,5 +485,17 @@ module JCAModel {
       result = this.getArgument(2) and
       this.getMethod().getParameterType(2).hasName("AlgorithmParameterSpec")
     }
+  }
+
+  class CipherInitCallNonceArgConsumer extends Crypto::ArtifactConsumer instanceof Expr {
+    CipherInitCallNonceArgConsumer() { this = any(CipherInitCall call).getNonceArg() }
+
+    override DataFlow::Node getInputNode() { result.asExpr() = this }
+  }
+
+  class CipherInitCallKeyConsumer extends Crypto::ArtifactConsumer instanceof Expr {
+    CipherInitCallKeyConsumer() { this = any(CipherInitCall call).getKeyArg() }
+
+    override DataFlow::Node getInputNode() { result.asExpr() = this }
   }
 }

@@ -48,7 +48,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
     not (
       // exclude certain Artifact nodes with no edges to or from them
-      node instanceof RandomNumberGeneration and
+      node instanceof RandomNumberGenerationNode and
       // TODO: performance?
       not (edges_graph_impl(node, _, _, _) or edges_graph_impl(_, node, _, _))
     ) and
@@ -58,7 +58,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // CodeQL's DGML output does not include a location
       key = "Location" and
-      value = node.getLocation().toString()
+      value = "<demo>" // node.getLocation().toString()
       or
       // Known unknown edges should be reported as properties rather than edges
       node = node.getChild(key) and
@@ -77,52 +77,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * All elements in the database that are mapped to nodes must extend the following classes
+   * An element that is flow-aware, i.e., it has an input and output node implicitly used for data flow analysis.
    */
-  abstract class HashOperationInstance extends LocatableElement { }
-
-  abstract class HashAlgorithmInstance extends LocatableElement { }
-
-  abstract class KeyDerivationOperationInstance extends LocatableElement { }
-
-  abstract class KeyDerivationAlgorithmInstance extends LocatableElement { }
-
-  abstract class CipherOperationInstance extends LocatableElement {
-    abstract CipherAlgorithmInstance getAlgorithm();
-
-    abstract CipherOperationSubtype getCipherOperationSubtype();
-
-    abstract NonceArtifactInstance getNonce();
-
-    abstract DataFlowNode getInputData();
-  }
-
-  abstract class CipherAlgorithmInstance extends LocatableElement { }
-
-  abstract class KeyEncapsulationOperationInstance extends LocatableElement { }
-
-  abstract class KeyEncapsulationAlgorithmInstance extends LocatableElement { }
-
-  abstract class EllipticCurveAlgorithmInstance extends LocatableElement { }
-
-  // Non-standalone algorithms
-  abstract class BlockCipherModeOfOperationAlgorithmInstance extends LocatableElement { }
-
-  abstract class PaddingAlgorithmInstance extends LocatableElement { }
-
-  // Artifacts
-  abstract class ArtifactLocatableElement extends LocatableElement {
+  abstract class FlowAwareElement extends LocatableElement {
     /**
      * Gets the output node for this artifact, which should usually be the same as `this`.
      */
-    abstract DataFlowNode asOutputData();
+    abstract DataFlowNode getOutputNode();
 
     /**
      * Gets the input node for this artifact.
      *
      * If `getInput` is implemented as `none()`, the artifact will not have inbound flow analysis.
      */
-    abstract DataFlowNode getInput();
+    abstract DataFlowNode getInputNode();
 
     /**
      * Holds if this artifact flows to `other`.
@@ -133,53 +101,227 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * If `flowsTo` is implemented as `none()`, the artifact will not have outbound flow analysis.
      */
-    abstract predicate flowsTo(ArtifactLocatableElement other);
+    abstract predicate flowsTo(FlowAwareElement other);
   }
 
-  // TODO: WARNING:
-  // If this overlaps with any other LocatableElement, there will be a cross-product
-  // This is never to be used for unknowns
-  abstract class GenericDataSourceInstance extends ArtifactLocatableElement {
-    final override DataFlowNode getInput() { none() }
+  /**
+   * An element that represents a _known_ cryptographic asset.
+   */
+  abstract class KnownElement extends LocatableElement {
+    final ConsumerElement getAConsumer() { result.getAKnownSource() = this }
+  }
 
-    abstract string getLabel();
+  /**
+   * An element that represents a _known_ cryptographic operation.
+   */
+  abstract class OperationElement extends KnownElement {
+    /**
+     * Gets the consumer of algorithms associated with this operation.
+     */
+    abstract AlgorithmConsumer getAlgorithmConsumer();
+  }
+
+  /**
+   * An element that represents a _known_ cryptographic algorithm.
+   */
+  abstract class AlgorithmElement extends KnownElement { }
+
+  /**
+   * An element that represents a _known_ cryptographic artifact.
+   */
+  abstract class ArtifactElement extends KnownElement, FlowAwareElement { }
+
+  /**
+   * An element that represents an _unknown_ data-source with a non-statically determinable value.
+   */
+  abstract class GenericDataSourceInstance extends FlowAwareElement {
+    final override DataFlowNode getInputNode() { none() }
+
+    abstract string getInternalType();
+
+    string getAdditionalDescription() { none() }
   }
 
   abstract class GenericConstantOrAllocationSource extends GenericDataSourceInstance {
-    final override string getLabel() { result = "ConstantData" } // TODO: toString of source?
+    final override string getInternalType() { result = "ConstantData" } // TODO: toString of source?
   }
 
   abstract class GenericExternalCallSource extends GenericDataSourceInstance {
-    final override string getLabel() { result = "ExternalCall" } // TODO: call target name or toString of source?
+    final override string getInternalType() { result = "ExternalCall" } // TODO: call target name or toString of source?
   }
 
   abstract class GenericRemoteDataSource extends GenericDataSourceInstance {
-    final override string getLabel() { result = "RemoteData" } // TODO: toString of source?
+    final override string getInternalType() { result = "RemoteData" } // TODO: toString of source?
   }
 
   abstract class GenericLocalDataSource extends GenericDataSourceInstance {
-    final override string getLabel() { result = "LocalData" } // TODO: toString of source?
+    final override string getInternalType() { result = "LocalData" } // TODO: toString of source?
   }
 
-  abstract class DigestArtifactInstance extends ArtifactLocatableElement { }
+  /**
+   * An element that consumes _known_ or _unknown_ cryptographic assets.
+   *
+   * Note that known assets are to be modeled explicitly with the `getAKnownSource` predicate, whereas
+   * unknown assets are modeled implicitly via flow analysis from any `GenericDataSourceInstance` to this element.
+   *
+   * A consumer can consume multiple instances and types of assets at once, e.g., both a `PaddingAlgorithm` and `CipherAlgorithm`.
+   */
+  abstract private class ConsumerElement extends FlowAwareElement {
+    override predicate flowsTo(FlowAwareElement other) { none() }
 
-  abstract class KeyArtifactInstance extends ArtifactLocatableElement { }
+    override DataFlowNode getOutputNode() { none() }
 
-  abstract class NonceArtifactInstance extends ArtifactLocatableElement {
-    // no implicit outbound data-flow (only modelled in cipher operations)
-    override predicate flowsTo(ArtifactLocatableElement other) { none() }
+    GenericDataSourceInstance getAnUnknownSource() { result.flowsTo(this) }
+
+    GenericSourceNode getAnUnknownSourceNode() { result.asElement() = this.getAnUnknownSource() }
+
+    abstract KnownElement getAKnownSource();
+
+    final NodeBase getAKnownSourceNode() { result.asElement() = this.getAKnownSource() }
+
+    final LocatableElement getAKnownOrUnknownSource() {
+      result = this.getAKnownSource()
+      or
+      result = this.getAnUnknownSource()
+    }
+
+    NodeBase getAKnownOrUnknownSourceNode() { result.asElement() = this.getAKnownOrUnknownSource() }
   }
 
-  abstract class RandomNumberGenerationInstance extends ArtifactLocatableElement {
-    final override DataFlowNode getInput() { none() }
+  /**
+   * An element that consumes _known_ and _unknown_ values.
+   *
+   * A value consumer can consume multiple values and multiple value sources at once.
+   */
+  abstract class ValueConsumer extends ConsumerElement {
+    final override KnownElement getAKnownSource() { none() }
+
+    abstract string getAKnownValue(Location location);
   }
+
+  abstract class AlgorithmConsumer extends ConsumerElement {
+    final override KnownElement getAKnownSource() { result = this.getAKnownAlgorithmSource() }
+
+    abstract AlgorithmElement getAKnownAlgorithmSource();
+  }
+
+  abstract class ArtifactConsumer extends ConsumerElement {
+    final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
+
+    final ArtifactElement getAKnownArtifactSource() { result.flowsTo(this) }
+  }
+
+  abstract class CipherOperationInstance extends OperationElement {
+    /**
+     * Gets the subtype of this cipher operation, distinguishing encryption, decryption, key wrapping, and key unwrapping.
+     */
+    abstract CipherOperationSubtype getCipherOperationSubtype();
+
+    /**
+     * Gets the consumer of nonces/IVs associated with this cipher operation.
+     */
+    abstract ArtifactConsumer getNonceConsumer();
+
+    /**
+     * Gets the consumer of plaintext or ciphertext input associated with this cipher operation.
+     */
+    abstract ArtifactConsumer getMessageConsumer();
+  }
+
+  abstract class CipherAlgorithmInstance extends AlgorithmElement {
+    /**
+     * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
+     * This name is not parsed or formatted.
+     */
+    abstract string getRawAlgorithmName();
+
+    /**
+     * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
+     */
+    abstract TCipherType getCipherFamily();
+
+    /**
+     * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
+     *
+     * IMPLEMENTATION NOTE: as a trade-off, this is not a consumer but always either an instance or unknown.
+     * A mode of operation is therefore assumed to always be part of the cipher algorithm itself.
+     */
+    abstract ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm();
+
+    /**
+     * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
+     *
+     * IMPLEMENTATION NOTE: as a trade-off, this is not a consumer but always either an instance or unknown.
+     * A padding algorithm is therefore assumed to always be defined as part of the cipher algorithm itself.
+     */
+    abstract PaddingAlgorithmInstance getPaddingAlgorithm();
+  }
+
+  abstract class ModeOfOperationAlgorithmInstance extends AlgorithmElement {
+    /**
+     * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
+     *
+     * When modeling a new mode of operation, use this predicate to specify the type of the mode.
+     *
+     * If a type cannot be determined, the result is `OtherMode`.
+     */
+    abstract TBlockCipherModeOperationType getModeType();
+
+    /**
+     * Gets the isolated name as it appears in source, e.g., "CBC" in "AES/CBC/PKCS7Padding".
+     *
+     * This name should not be parsed or formatted beyond isolating the raw mode name if necessary.
+     */
+    abstract string getRawModeAlgorithmName();
+  }
+
+  abstract class PaddingAlgorithmInstance extends AlgorithmElement {
+    /**
+     * Gets the isolated name as it appears in source, e.g., "PKCS7Padding" in "AES/CBC/PKCS7Padding".
+     *
+     * This name should not be parsed or formatted beyond isolating the raw padding name if necessary.
+     */
+    abstract string getRawPaddingAlgorithmName();
+
+    /**
+     * Gets the type of this padding algorithm, e.g., "PKCS7" or "OAEP".
+     *
+     * When modeling a new padding algorithm, use this predicate to specify the type of the padding.
+     *
+     * If a type cannot be determined, the result is `OtherPadding`.
+     */
+    abstract TPaddingType getPaddingType();
+  }
+
+  abstract class KeyEncapsulationOperationInstance extends LocatableElement { }
+
+  abstract class KeyEncapsulationAlgorithmInstance extends LocatableElement { }
+
+  abstract class EllipticCurveAlgorithmInstance extends LocatableElement { }
+
+  abstract class HashOperationInstance extends KnownElement { }
+
+  abstract class HashAlgorithmInstance extends KnownElement { }
+
+  abstract class KeyDerivationOperationInstance extends KnownElement { }
+
+  abstract class KeyDerivationAlgorithmInstance extends KnownElement { }
+
+  // Artifacts
+  abstract class DigestArtifactInstance extends ArtifactElement { }
+
+  abstract class KeyArtifactInstance extends ArtifactElement { }
+
+  abstract class NonceArtifactInstance extends ArtifactElement { }
+
+  abstract class RandomNumberGenerationInstance extends ArtifactElement { }
 
   newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
     TNonce(NonceArtifactInstance e) or
-    TRandomNumberGeneration(RandomNumberGenerationInstance e) or
+    TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Operations (e.g., hashing, encryption)
     THashOperation(HashOperationInstance e) or
     TKeyDerivationOperation(KeyDerivationOperationInstance e) or
@@ -193,19 +335,40 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
     // Non-standalone Algorithms (e.g., Mode, Padding)
     // TODO: need to rename this, as "mode" is getting reused in different contexts, be precise
-    TBlockCipherModeOfOperationAlgorithm(BlockCipherModeOfOperationAlgorithmInstance e) or
+    TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
     // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
-    TKemDemHybridCryptosystem(CipherAlgorithm dem) or // TODO, change this relation and the below ones
+    TKemDemHybridCryptosystem(CipherAlgorithmNode dem) or // TODO, change this relation and the below ones
     TKeyAgreementHybridCryptosystem(CipherAlgorithmInstance ka) or
     TAsymmetricEncryptionMacHybridCryptosystem(CipherAlgorithmInstance enc) or
-    TPostQuantumHybridCryptosystem(CipherAlgorithmInstance enc)
+    TPostQuantumHybridCryptosystem(CipherAlgorithmInstance enc) or
+    // Unknown source node
+    TGenericSourceNode(GenericDataSourceInstance e) { e.flowsTo(_) }
 
   /**
    * The base class for all cryptographic assets, such as operations and algorithms.
    *
    * Each `NodeBase` is a node in a graph of cryptographic operations, where the edges are the relationships between the nodes.
+   *
+   * A node, as opposed to a property, is a construct that can reference or be referenced by more than one node.
+   * For example: a key size is a single value configuring a cipher algorithm, but a single mode of operation algorithm
+   * can be referenced by multiple disjoint cipher algorithms. For example, even if the same key size value is reused
+   * for multiple cipher algorithms, the key size holds no information when devolved to that simple value, and it is
+   * therefore not a "construct" or "element" being reused by multiple nodes.
+   *
+   * As a rule of thumb, a node is an algorithm or the use of an algorithm (an operation), as well as structured data
+   * consumed by or produced by an operation or algorithm (an artifact) that represents a construct beyond its data.
+   *
+   * _Example 1_: A seed of a random number generation algorithm has meaning beyond its value, as its reuse in multiple
+   * random number generation algorithms is more relevant than its underlying value. In contrast, a key size is only
+   * relevant to analysis in terms of its underlying value. Therefore, an RNG seed is a node; a key size is not.
+   *
+   * _Example 2_: A salt for a key derivation function *is* an `ArtifactNode`.
+   *
+   * _Example 3_: The iteration count of a key derivation function is *not* a node.
+   *
+   * _Example 4_: A nonce for a cipher operation *is* an `ArtifactNode`.
    */
   abstract class NodeBase extends TNode {
     /**
@@ -221,12 +384,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Returns the location of this node in the code.
      */
-    abstract Location getLocation();
-
-    /**
-     * Gets the origin of this node, e.g., a string literal in source describing it.
-     */
-    LocatableElement getOrigin(string value) { none() }
+    Location getLocation() { result = this.asElement().getLocation() }
 
     /**
      * Returns the child of this node with the given edge name.
@@ -240,165 +398,109 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * This predicate is overriden by derived classes to construct the graph of cryptographic operations.
      */
-    predicate properties(string key, string value, Location location) {
-      key = "Origin" and
-      location = this.getOrigin(value).getLocation() and
-      not location = this.getLocation()
-    }
+    predicate properties(string key, string value, Location location) { none() }
 
     /**
      * Returns a parent of this node.
      */
     final NodeBase getAParent() { result.getChild(_) = this }
+
+    /**
+     * Gets the element associated with this node.
+     */
+    abstract LocatableElement asElement();
   }
 
-  class Asset = NodeBase;
+  /**
+   * A generic source node is a source of data that is not resolvable to a specific value or type.
+   */
+  private class GenericSourceNode extends NodeBase, TGenericSourceNode {
+    GenericDataSourceInstance instance;
+
+    GenericSourceNode() { this = TGenericSourceNode(instance) }
+
+    final override string getInternalType() { result = instance.getInternalType() }
+
+    override LocatableElement asElement() { result = instance }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ONLY_KNOWN]
+      key = "Description" and
+      value = instance.getAdditionalDescription() and
+      location = this.getLocation()
+    }
+  }
+
+  class AssetNode = NodeBase;
 
   /**
    * An artifact is an instance of data that is used in a cryptographic operation or produced by one.
    */
-  abstract class Artifact extends NodeBase {
-    /**
-     * Gets the artifact locatable element associated with this artifact.
-     *
-     * *Implementation note*: to avoid cross-products, the result *must* only bind to the
-     * `ArtifactLocatableElement` that is already associated with the node instance.
-     */
-    abstract ArtifactLocatableElement asArtifactLocatableElement();
-
+  abstract class ArtifactNode extends NodeBase {
     /**
      * Gets the `Artifact` node that is the data source for this artifact.
      */
-    final Artifact getSourceArtifact() {
-      result.asArtifactLocatableElement() = this.getSourceArtifactElement()
-    }
+    final NodeBase getSourceNode() { result.asElement() = this.getSourceElement() }
 
     /**
      * Gets the `ArtifactLocatableElement` that is the data source for this artifact.
      *
      * This predicate is equivalent to `getSourceArtifact().asArtifactLocatableElement()`.
      */
-    final ArtifactLocatableElement getSourceArtifactElement() {
-      not result = this.asArtifactLocatableElement() and
-      result.flowsTo(this.asArtifactLocatableElement())
+    final FlowAwareElement getSourceElement() {
+      not result = this.asElement() and result.flowsTo(this.asElement())
     }
+
+    /**
+     * Gets a string describing the relationship between this artifact and its source.
+     *
+     * If a child class defines this predicate as `none()`, no relationship will be reported.
+     */
+    string getSourceNodeRelationship() { result = "Source" }
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      // [ONLY_KNOWN] - TODO: known-unknown case handled by reporting a generic source type or unknown as a property
-      edgeName = "Source" and
-      result = this.getSourceArtifact()
-    }
-
-    // TODO: document the below
-    final private predicate src_generic_data_source_to_label_and_loc(string label, Location location) {
-      exists(GenericDataSourceInstance instance |
-        this.getSourceArtifactElement() = instance and
-        instance.getLabel() = label and
-        instance.getLocation() = location
-      )
-    }
-
-    final private predicate src_artifact_to_label_and_loc(string label, Location location) {
-      exists(Artifact a |
-        this.getSourceArtifact() = a and
-        a.getInternalType() = label and
-        a.getLocation() = location
-      )
-    }
-
-    final private predicate source_type_property(string key, string value, Location location) {
-      key = "SourceType" and
-      if this.src_artifact_to_label_and_loc(_, _)
-      then this.src_artifact_to_label_and_loc(value, location)
-      else
-        if
-          exists(this.asArtifactLocatableElement().getInput()) and
-          not this.src_generic_data_source_to_label_and_loc(_, _)
-        then value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        else this.src_generic_data_source_to_label_and_loc(value, location)
-    }
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      this.source_type_property(key, value, location)
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = this.getSourceNodeRelationship() and // only holds if not set to none()
+      if exists(this.getSourceNode()) then result = this.getSourceNode() else result = this
     }
   }
 
   /**
    * A nonce or initialization vector
    */
-  private class NonceImpl extends Artifact, TNonce {
+  final class NonceNode extends ArtifactNode, TNonce {
     NonceArtifactInstance instance;
 
-    NonceImpl() { this = TNonce(instance) }
+    NonceNode() { this = TNonce(instance) }
 
     final override string getInternalType() { result = "Nonce" }
 
-    override Location getLocation() { result = instance.getLocation() }
-
-    override ArtifactLocatableElement asArtifactLocatableElement() { result = instance }
+    override LocatableElement asElement() { result = instance }
   }
-
-  final class Nonce = NonceImpl;
 
   /**
    * A source of random number generation
    */
-  final private class RandomNumberGenerationImpl extends Artifact, TRandomNumberGeneration {
+  final class RandomNumberGenerationNode extends ArtifactNode, TRandomNumberGeneration {
     RandomNumberGenerationInstance instance;
 
-    RandomNumberGenerationImpl() { this = TRandomNumberGeneration(instance) }
+    RandomNumberGenerationNode() { this = TRandomNumberGeneration(instance) }
 
     final override string getInternalType() { result = "RandomNumberGeneration" }
 
-    override Location getLocation() { result = instance.getLocation() }
-
-    override ArtifactLocatableElement asArtifactLocatableElement() { result = instance }
+    override LocatableElement asElement() { result = instance }
   }
-
-  final class RandomNumberGeneration = RandomNumberGenerationImpl;
 
   /**
    * A cryptographic operation, such as hashing or encryption.
    */
-  abstract class Operation extends Asset {
-    /**
-     * Gets the algorithm associated with this operation.
-     */
-    abstract Algorithm getAlgorithm();
+  abstract class OperationNode extends AssetNode { }
 
-    override NodeBase getChild(string edgeName) {
-      result = super.getChild(edgeName)
-      or
-      /*
-       * TODO: Consider a case with getProperty, where an unknown value is loaded from the filesystem,
-       * but a default is specified as such:
-       * String value = getProperty("property", "default_algorithm")
-       * In this case, getAlgorithm *could* be resolved to default_algorithm, but in that case, the known
-       * unknown case, i.e., what is loaded from `property`, would not be reported at all as a known unknown.
-       *
-       * Implementation brainstorming:
-       * We have two cases, and we only considered one before: the case where we can't point to the known unknown.
-       * The new case is pointing to a known unknown, e.g., "property" loaded via getProperty.
-       * A potential solution is to create a known unknown node for each node type (particularly algorithms)
-       * and model those elements in the database to associate with that known unknown type??
-       *
-       * - Idea: use the generic data source concept as the definition of potential known unknowns.
-       *         flow should be tracked from them to anything that could be a "sink" that specifies the relation.
-       *         in this case, the sink would be an instantiaition of an algorithm where the value is not resolvable.
-       */
-
-      edgeName = "Uses" and
-      if exists(this.getAlgorithm()) then result = this.getAlgorithm() else result = this
-    }
-  }
-
-  abstract class Algorithm extends Asset {
-    final override string getInternalType() { result = this.getAlgorithmType() }
-
+  abstract class AlgorithmNode extends AssetNode {
     /**
      * Gets the name of this algorithm, e.g., "AES" or "SHA".
      */
@@ -408,11 +510,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Gets the raw name of this algorithm from source (no parsing or formatting)
      */
     abstract string getRawAlgorithmName();
-
-    /**
-     * Gets the type of this algorithm, e.g., "hash" or "key derivation".
-     */
-    abstract string getAlgorithmType();
 
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
@@ -425,15 +522,367 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  newtype TCipherOperationSubtype =
+    TEncryptionMode() or
+    TDecryptionMode() or
+    TWrapMode() or
+    TUnwrapMode() or
+    TUnknownCipherOperationMode()
+
+  abstract class CipherOperationSubtype extends TCipherOperationSubtype {
+    abstract string toString();
+  }
+
+  class EncryptionSubtype extends CipherOperationSubtype, TEncryptionMode {
+    override string toString() { result = "Encrypt" }
+  }
+
+  class DecryptionSubtype extends CipherOperationSubtype, TDecryptionMode {
+    override string toString() { result = "Decrypt" }
+  }
+
+  class WrapSubtype extends CipherOperationSubtype, TWrapMode {
+    override string toString() { result = "Wrap" }
+  }
+
+  class UnwrapSubtype extends CipherOperationSubtype, TUnwrapMode {
+    override string toString() { result = "Unwrap" }
+  }
+
+  class UnknownCipherOperationSubtype extends CipherOperationSubtype, TUnknownCipherOperationMode {
+    override string toString() { result = "Unknown" }
+  }
+
+  /**
+   * An encryption operation that processes plaintext to generate a ciphertext.
+   * This operation takes an input message (plaintext) of arbitrary content and length
+   * and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
+   */
+  final class CipherOperationNode extends OperationNode, TCipherOperation {
+    CipherOperationInstance instance;
+
+    CipherOperationNode() { this = TCipherOperation(instance) }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getInternalType() { result = "CipherOperation" }
+
+    /**
+     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
+     */
+    NodeBase getACipherAlgorithmOrUnknown() {
+      result = this.getAKnownCipherAlgorithm() or
+      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAnUnknownSourceNode()
+    }
+
+    /**
+     * Gets a known algorithm associated with this operation
+     */
+    CipherAlgorithmNode getAKnownCipherAlgorithm() {
+      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAKnownSourceNode()
+    }
+
+    CipherOperationSubtype getCipherOperationSubtype() {
+      result = instance.getCipherOperationSubtype()
+    }
+
+    NodeBase getANonceOrUnknown() {
+      result =
+        this.asElement().(CipherOperationInstance).getNonceConsumer().getAKnownOrUnknownSourceNode()
+    }
+
+    NonceNode getANonce() {
+      result = this.asElement().(CipherOperationInstance).getNonceConsumer().getAKnownSourceNode()
+    }
+
+    NodeBase getAMessageOrUnknown() {
+      result =
+        this.asElement()
+            .(CipherOperationInstance)
+            .getMessageConsumer()
+            .getAKnownOrUnknownSourceNode()
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Algorithm" and
+      if exists(this.getACipherAlgorithmOrUnknown())
+      then result = this.getACipherAlgorithmOrUnknown()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Nonce" and
+      if exists(this.getANonceOrUnknown())
+      then result = this.getANonceOrUnknown()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Message" and
+      if exists(this.getAMessageOrUnknown())
+      then result = this.getAMessageOrUnknown()
+      else result = this
+    }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ALWAYS_KNOWN] - Unknown is handled in getCipherOperationMode()
+      key = "Operation" and
+      value = this.getCipherOperationSubtype().toString() and
+      location = this.getLocation()
+    }
+  }
+
+  /**
+   * Block cipher modes of operation algorithms
+   */
+  newtype TBlockCipherModeOperationType =
+    ECB() or // Not secure, widely used
+    CBC() or // Vulnerable to padding oracle attacks
+    GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
+    CTR() or // Fast stream-like encryption (SSH, disk encryption)
+    XTS() or // Standard for full-disk encryption (BitLocker, LUKS, FileVault)
+    CCM() or // Used in lightweight cryptography (IoT, WPA2)
+    SIV() or // Misuse-resistant encryption, used in secure storage
+    OCB() or // Efficient AEAD mode
+    OtherMode()
+
+  class ModeOfOperationAlgorithmNode extends AlgorithmNode, TModeOfOperationAlgorithm {
+    ModeOfOperationAlgorithmInstance instance;
+
+    ModeOfOperationAlgorithmNode() { this = TModeOfOperationAlgorithm(instance) }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getInternalType() { result = "ModeOfOperation" }
+
+    override string getRawAlgorithmName() { result = instance.getRawModeAlgorithmName() }
+
+    /**
+     * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
+     *
+     * When modeling a new mode of operation, use this predicate to specify the type of the mode.
+     *
+     * If a type cannot be determined, the result is `OtherMode`.
+     */
+    TBlockCipherModeOperationType getModeType() { result = instance.getModeType() }
+
+    bindingset[type]
+    final private predicate modeToNameMapping(TBlockCipherModeOperationType type, string name) {
+      type instanceof ECB and name = "ECB"
+      or
+      type instanceof CBC and name = "CBC"
+      or
+      type instanceof GCM and name = "GCM"
+      or
+      type instanceof CTR and name = "CTR"
+      or
+      type instanceof XTS and name = "XTS"
+      or
+      type instanceof CCM and name = "CCM"
+      or
+      type instanceof SIV and name = "SIV"
+      or
+      type instanceof OCB and name = "OCB"
+      or
+      type instanceof OtherMode and name = this.getRawAlgorithmName()
+    }
+
+    override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
+  }
+
+  newtype TPaddingType =
+    PKCS1_v1_5() or // RSA encryption/signing padding
+    PKCS7() or // Standard block cipher padding (PKCS5 for 8-byte blocks)
+    ANSI_X9_23() or // Zero-padding except last byte = padding length
+    NoPadding() or // Explicit no-padding
+    OAEP() or // RSA OAEP padding
+    OtherPadding()
+
+  class PaddingAlgorithmNode extends AlgorithmNode, TPaddingAlgorithm {
+    PaddingAlgorithmInstance instance;
+
+    PaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
+
+    override string getInternalType() { result = "PaddingAlgorithm" }
+
+    override LocatableElement asElement() { result = instance }
+
+    TPaddingType getPaddingType() { result = instance.getPaddingType() }
+
+    bindingset[type]
+    final private predicate paddingToNameMapping(TPaddingType type, string name) {
+      type instanceof PKCS1_v1_5 and name = "PKCS1_v1_5"
+      or
+      type instanceof PKCS7 and name = "PKCS7"
+      or
+      type instanceof ANSI_X9_23 and name = "ANSI_X9_23"
+      or
+      type instanceof NoPadding and name = "NoPadding"
+      or
+      type instanceof OAEP and name = "OAEP"
+      or
+      type instanceof OtherPadding and name = this.getRawAlgorithmName()
+    }
+
+    override string getAlgorithmName() { this.paddingToNameMapping(this.getPaddingType(), result) }
+
+    override string getRawAlgorithmName() { result = instance.getRawPaddingAlgorithmName() }
+  }
+
+  /**
+   * A helper type for distinguishing between block and stream ciphers.
+   */
+  newtype TCipherStructureType =
+    Block() or
+    Stream() or
+    Asymmetric() or
+    UnknownCipherStructureType()
+
+  private string getCipherStructureTypeString(TCipherStructureType type) {
+    type instanceof Block and result = "Block"
+    or
+    type instanceof Stream and result = "Stream"
+    or
+    type instanceof Asymmetric and result = "Asymmetric"
+    or
+    type instanceof UnknownCipherStructureType and result instanceof UnknownPropertyValue
+  }
+
+  /**
+   * Symmetric algorithms
+   */
+  newtype TCipherType =
+    AES() or
+    Camellia() or
+    DES() or
+    TripleDES() or
+    IDEA() or
+    CAST5() or
+    ChaCha20() or
+    RC4() or
+    RC5() or
+    RSA() or
+    OtherCipherType()
+
+  final class CipherAlgorithmNode extends AlgorithmNode, TCipherAlgorithm {
+    CipherAlgorithmInstance instance;
+
+    CipherAlgorithmNode() { this = TCipherAlgorithm(instance) }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getInternalType() { result = "CipherAlgorithm" }
+
+    final TCipherStructureType getCipherStructure() {
+      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), _, result)
+    }
+
+    final override string getAlgorithmName() {
+      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
+    }
+
+    final override string getRawAlgorithmName() { result = instance.getRawAlgorithmName() }
+
+    /**
+     * Gets the key size of this cipher, e.g., "128" or "256".
+     */
+    string getKeySize(Location location) { none() } // TODO
+
+    /**
+     * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
+     */
+    TCipherType getCipherFamily() { result = instance.getCipherFamily() }
+
+    /**
+     * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
+     */
+    ModeOfOperationAlgorithmNode getModeOfOperation() {
+      result.asElement() = instance.getModeOfOperationAlgorithm()
+    }
+
+    /**
+     * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
+     */
+    PaddingAlgorithmNode getPaddingAlgorithm() {
+      result.asElement() = instance.getPaddingAlgorithm()
+    }
+
+    bindingset[type]
+    final private predicate cipherFamilyToNameAndStructure(
+      TCipherType type, string name, TCipherStructureType s
+    ) {
+      type instanceof AES and name = "AES" and s = Block()
+      or
+      type instanceof Camellia and name = "Camellia" and s = Block()
+      or
+      type instanceof DES and name = "DES" and s = Block()
+      or
+      type instanceof TripleDES and name = "TripleDES" and s = Block()
+      or
+      type instanceof IDEA and name = "IDEA" and s = Block()
+      or
+      type instanceof CAST5 and name = "CAST5" and s = Block()
+      or
+      type instanceof ChaCha20 and name = "ChaCha20" and s = Stream()
+      or
+      type instanceof RC4 and name = "RC4" and s = Stream()
+      or
+      type instanceof RC5 and name = "RC5" and s = Block()
+      or
+      type instanceof RSA and name = "RSA" and s = Asymmetric()
+      or
+      type instanceof OtherCipherType and
+      name = this.getRawAlgorithmName() and
+      s = UnknownCipherStructureType()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Mode" and
+      if exists(this.getModeOfOperation())
+      then result = this.getModeOfOperation()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Padding" and
+      if exists(this.getPaddingAlgorithm())
+      then result = this.getPaddingAlgorithm()
+      else result = this
+    }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ALWAYS_KNOWN] - unknown case is handled in `getCipherStructureTypeString`
+      key = "Structure" and
+      getCipherStructureTypeString(this.getCipherStructure()) = value and
+      location instanceof UnknownLocation
+      or
+      (
+        // [KNOWN_OR_UNKNOWN]
+        key = "KeySize" and
+        if exists(this.getKeySize(location))
+        then value = this.getKeySize(location)
+        else (
+          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+        )
+      )
+    }
+  }
+
   /**
    * A hashing operation that processes data to generate a hash value.
    *
    * This operation takes an input message of arbitrary content and length and produces a fixed-size
    * hash value as the output using a specified hashing algorithm.
    */
-  abstract class HashOperation extends Operation, THashOperation {
-    abstract override HashAlgorithm getAlgorithm();
-    //override string getOperationType() { result = "HashOperation" }
+  abstract class HashOperationNode extends OperationNode, THashOperation {
+    abstract HashAlgorithmNode getAlgorithm();
   }
 
   newtype THashType =
@@ -450,8 +899,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A hashing algorithm that transforms variable-length input into a fixed-size hash value.
    */
-  abstract class HashAlgorithm extends Algorithm, THashAlgorithm {
-    override string getAlgorithmType() { result = "HashAlgorithm" }
+  abstract class HashAlgorithmNode extends AlgorithmNode, THashAlgorithm {
+    override string getInternalType() { result = "HashAlgorithm" }
 
     final predicate hashTypeToNameMapping(THashType type, string name) {
       type instanceof MD2 and name = "MD2"
@@ -539,11 +988,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An operation that derives one or more keys from an input value.
    */
-  abstract class KeyDerivationOperation extends Operation, TKeyDerivationOperation {
+  abstract class KeyDerivationOperationNode extends OperationNode, TKeyDerivationOperation {
     final override Location getLocation() {
       exists(LocatableElement le | this = TKeyDerivationOperation(le) and result = le.getLocation())
     }
-    //override string getOperationType() { result = "KeyDerivationOperation" }
+
+    override string getInternalType() { result = "KeyDerivationOperation" }
   }
 
   /**
@@ -553,12 +1003,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *
    * For known algorithms, use the specialized classes, e.g., `HKDF` and `PKCS12KDF`.
    */
-  abstract class KeyDerivationAlgorithm extends Algorithm, TKeyDerivationAlgorithm {
+  abstract class KeyDerivationAlgorithmNode extends AlgorithmNode, TKeyDerivationAlgorithm {
     final override Location getLocation() {
       exists(LocatableElement le | this = TKeyDerivationAlgorithm(le) and result = le.getLocation())
     }
 
-    override string getAlgorithmType() { result = "KeyDerivationAlgorithm" }
+    override string getInternalType() { result = "KeyDerivationAlgorithm" }
 
     override string getAlgorithmName() { result = this.getRawAlgorithmName() }
   }
@@ -566,8 +1016,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An algorithm that derives one or more keys from an input value, using a configurable digest algorithm.
    */
-  abstract private class KeyDerivationWithDigestParameter extends KeyDerivationAlgorithm {
-    abstract HashAlgorithm getHashAlgorithm();
+  abstract private class KeyDerivationWithDigestParameterNode extends KeyDerivationAlgorithmNode {
+    abstract HashAlgorithmNode getHashAlgorithm();
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
@@ -583,14 +1033,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * HKDF key derivation function
    */
-  abstract class HKDF extends KeyDerivationWithDigestParameter {
+  abstract class HKDFNode extends KeyDerivationWithDigestParameterNode {
     final override string getAlgorithmName() { result = "HKDF" }
   }
 
   /**
    * PBKDF2 key derivation function
    */
-  abstract class PBKDF2 extends KeyDerivationWithDigestParameter {
+  abstract class PBKDF2Node extends KeyDerivationWithDigestParameterNode {
     final override string getAlgorithmName() { result = "PBKDF2" }
 
     /**
@@ -631,7 +1081,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * PKCS12KDF key derivation function
    */
-  abstract class PKCS12KDF extends KeyDerivationWithDigestParameter {
+  abstract class PKCS12KDF extends KeyDerivationWithDigestParameterNode {
     override string getAlgorithmName() { result = "PKCS12KDF" }
 
     /**
@@ -685,7 +1135,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * scrypt key derivation function
    */
-  abstract class SCRYPT extends KeyDerivationAlgorithm {
+  abstract class SCRYPT extends KeyDerivationAlgorithmNode {
     final override string getAlgorithmName() { result = "scrypt" }
 
     /**
@@ -787,7 +1237,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     ES() or
     OtherEllipticCurveType()
 
-  abstract class EllipticCurve extends Algorithm, TEllipticCurveAlgorithm {
+  abstract class EllipticCurve extends AlgorithmNode, TEllipticCurveAlgorithm {
     abstract string getKeySize(Location location);
 
     abstract TEllipticCurveType getCurveFamily();
@@ -822,311 +1272,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract override string getRawAlgorithmName();
   }
 
-  newtype TCipherOperationSubtype =
-    TEncryptionMode() or
-    TDecryptionMode() or
-    TWrapMode() or
-    TUnwrapMode() or
-    TUnknownCipherOperationMode()
-
-  abstract class CipherOperationSubtype extends TCipherOperationSubtype {
-    abstract string toString();
-  }
-
-  class EncryptionMode extends CipherOperationSubtype, TEncryptionMode {
-    override string toString() { result = "Encrypt" }
-  }
-
-  class DecryptionMode extends CipherOperationSubtype, TDecryptionMode {
-    override string toString() { result = "Decrypt" }
-  }
-
-  class WrapMode extends CipherOperationSubtype, TWrapMode {
-    override string toString() { result = "Wrap" }
-  }
-
-  class UnwrapMode extends CipherOperationSubtype, TUnwrapMode {
-    override string toString() { result = "Unwrap" }
-  }
-
-  class UnknownCipherOperationMode extends CipherOperationSubtype, TUnknownCipherOperationMode {
-    override string toString() { result = "Unknown" }
-  }
-
-  /**
-   * An encryption operation that processes plaintext to generate a ciphertext.
-   * This operation takes an input message (plaintext) of arbitrary content and length
-   * and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
-   */
-  class CipherOperationImpl extends Operation, TCipherOperation {
-    CipherOperationInstance instance;
-
-    CipherOperationImpl() { this = TCipherOperation(instance) }
-
-    override string getInternalType() { result = "CipherOperation" }
-
-    override Location getLocation() { result = instance.getLocation() }
-
-    CipherOperationSubtype getCipherOperationMode() {
-      result = instance.getCipherOperationSubtype()
-    }
-
-    final override CipherAlgorithm getAlgorithm() { result.getInstance() = instance.getAlgorithm() }
-
-    override NodeBase getChild(string key) {
-      result = super.getChild(key)
-      or
-      // [KNOWN_OR_UNKNOWN]
-      key = "Nonce" and
-      if exists(this.getNonce()) then result = this.getNonce() else result = this
-    }
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      // [ALWAYS_KNOWN] - Unknown is handled in getCipherOperationMode()
-      key = "Operation" and
-      value = this.getCipherOperationMode().toString() and
-      location = this.getLocation()
-    }
-
-    /**
-     * Gets the initialization vector associated with this encryption operation.
-     *
-     * This predicate does not need to hold for all encryption operations,
-     * as the initialization vector is not always required.
-     */
-    Nonce getNonce() { result = TNonce(instance.getNonce()) }
-
-    DataFlowNode getInputData() { result = instance.getInputData() }
-  }
-
-  final class CipherOperation = CipherOperationImpl;
-
-  /**
-   * Block cipher modes of operation algorithms
-   */
-  newtype TBlockCipherModeOperationType =
-    ECB() or // Not secure, widely used
-    CBC() or // Vulnerable to padding oracle attacks
-    GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
-    CTR() or // Fast stream-like encryption (SSH, disk encryption)
-    XTS() or // Standard for full-disk encryption (BitLocker, LUKS, FileVault)
-    CCM() or // Used in lightweight cryptography (IoT, WPA2)
-    SIV() or // Misuse-resistant encryption, used in secure storage
-    OCB() or // Efficient AEAD mode
-    OtherMode()
-
-  abstract class ModeOfOperationAlgorithm extends Algorithm, TBlockCipherModeOfOperationAlgorithm {
-    override string getAlgorithmType() { result = "ModeOfOperation" }
-
-    /**
-     * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
-     *
-     * When modeling a new mode of operation, use this predicate to specify the type of the mode.
-     *
-     * If a type cannot be determined, the result is `OtherMode`.
-     */
-    abstract TBlockCipherModeOperationType getModeType();
-
-    bindingset[type]
-    final private predicate modeToNameMapping(TBlockCipherModeOperationType type, string name) {
-      type instanceof ECB and name = "ECB"
-      or
-      type instanceof CBC and name = "CBC"
-      or
-      type instanceof GCM and name = "GCM"
-      or
-      type instanceof CTR and name = "CTR"
-      or
-      type instanceof XTS and name = "XTS"
-      or
-      type instanceof CCM and name = "CCM"
-      or
-      type instanceof SIV and name = "SIV"
-      or
-      type instanceof OCB and name = "OCB"
-      or
-      type instanceof OtherMode and name = this.getRawAlgorithmName()
-    }
-
-    override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
-  }
-
-  newtype TPaddingType =
-    PKCS1_v1_5() or // RSA encryption/signing padding
-    PKCS7() or // Standard block cipher padding (PKCS5 for 8-byte blocks)
-    ANSI_X9_23() or // Zero-padding except last byte = padding length
-    NoPadding() or // Explicit no-padding
-    OAEP() or // RSA OAEP padding
-    OtherPadding()
-
-  abstract class PaddingAlgorithm extends Algorithm, TPaddingAlgorithm {
-    override string getAlgorithmType() { result = "PaddingAlgorithm" }
-
-    /**
-     * Gets the type of this padding algorithm, e.g., "PKCS7" or "OAEP".
-     *
-     * When modeling a new padding algorithm, use this predicate to specify the type of the padding.
-     *
-     * If a type cannot be determined, the result is `OtherPadding`.
-     */
-    abstract TPaddingType getPaddingType();
-
-    bindingset[type]
-    final private predicate paddingToNameMapping(TPaddingType type, string name) {
-      type instanceof PKCS1_v1_5 and name = "PKCS1_v1_5"
-      or
-      type instanceof PKCS7 and name = "PKCS7"
-      or
-      type instanceof ANSI_X9_23 and name = "ANSI_X9_23"
-      or
-      type instanceof NoPadding and name = "NoPadding"
-      or
-      type instanceof OAEP and name = "OAEP"
-      or
-      type instanceof OtherPadding and name = this.getRawAlgorithmName()
-    }
-
-    override string getAlgorithmName() { this.paddingToNameMapping(this.getPaddingType(), result) }
-  }
-
-  /**
-   * A helper type for distinguishing between block and stream ciphers.
-   */
-  newtype TCipherStructureType =
-    Block() or
-    Stream() or
-    Asymmetric() or
-    UnknownCipherStructureType()
-
-  private string getCipherStructureTypeString(TCipherStructureType type) {
-    type instanceof Block and result = "Block"
-    or
-    type instanceof Stream and result = "Stream"
-    or
-    type instanceof Asymmetric and result = "Asymmetric"
-    or
-    type instanceof UnknownCipherStructureType and result instanceof UnknownPropertyValue
-  }
-
-  /**
-   * Symmetric algorithms
-   */
-  newtype TCipherType =
-    AES() or
-    Camellia() or
-    DES() or
-    TripleDES() or
-    IDEA() or
-    CAST5() or
-    ChaCha20() or
-    RC4() or
-    RC5() or
-    RSA() or
-    OtherCipherType()
-
-  abstract class CipherAlgorithm extends Algorithm, TCipherAlgorithm {
-    final LocatableElement getInstance() { this = TCipherAlgorithm(result) }
-
-    final TCipherStructureType getCipherStructure() {
-      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), _, result)
-    }
-
-    final override string getAlgorithmName() {
-      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
-    }
-
-    override string getAlgorithmType() { result = "CipherAlgorithm" }
-
-    /**
-     * Gets the key size of this cipher, e.g., "128" or "256".
-     */
-    abstract string getKeySize(Location location);
-
-    /**
-     * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
-     */
-    abstract TCipherType getCipherFamily();
-
-    /**
-     * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
-     */
-    abstract ModeOfOperationAlgorithm getModeOfOperation();
-
-    /**
-     * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
-     */
-    abstract PaddingAlgorithm getPadding();
-
-    bindingset[type]
-    final private predicate cipherFamilyToNameAndStructure(
-      TCipherType type, string name, TCipherStructureType s
-    ) {
-      type instanceof AES and name = "AES" and s = Block()
-      or
-      type instanceof Camellia and name = "Camellia" and s = Block()
-      or
-      type instanceof DES and name = "DES" and s = Block()
-      or
-      type instanceof TripleDES and name = "TripleDES" and s = Block()
-      or
-      type instanceof IDEA and name = "IDEA" and s = Block()
-      or
-      type instanceof CAST5 and name = "CAST5" and s = Block()
-      or
-      type instanceof ChaCha20 and name = "ChaCha20" and s = Stream()
-      or
-      type instanceof RC4 and name = "RC4" and s = Stream()
-      or
-      type instanceof RC5 and name = "RC5" and s = Block()
-      or
-      type instanceof RSA and name = "RSA" and s = Asymmetric()
-      or
-      type instanceof OtherCipherType and
-      name = this.getRawAlgorithmName() and
-      s = UnknownCipherStructureType()
-    }
-
-    //mode, padding scheme, keysize, block/stream, auth'd
-    //nodes = mode, padding scheme
-    //properties = keysize, block/stream, auth'd
-    //leave authd to lang specific
-    override NodeBase getChild(string edgeName) {
-      result = super.getChild(edgeName)
-      or
-      // [KNOWN_OR_UNKNOWN]
-      edgeName = "Mode" and
-      if exists(this.getModeOfOperation())
-      then result = this.getModeOfOperation()
-      else result = this
-      or
-      // [KNOWN_OR_UNKNOWN]
-      edgeName = "Padding" and
-      if exists(this.getPadding()) then result = this.getPadding() else result = this
-    }
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      // [ALWAYS_KNOWN] - unknown case is handled in `getCipherStructureTypeString`
-      key = "Structure" and
-      getCipherStructureTypeString(this.getCipherStructure()) = value and
-      location instanceof UnknownLocation
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "KeySize" and
-        if exists(this.getKeySize(location))
-        then value = this.getKeySize(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-    }
-  }
-
-  abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, Algorithm {
-    final override string getAlgorithmType() { result = "KeyEncapsulationAlgorithm" }
+  abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, AlgorithmNode {
+    final override string getInternalType() { result = "KeyEncapsulationAlgorithm" }
   }
 }
