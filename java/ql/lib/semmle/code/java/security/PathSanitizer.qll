@@ -418,13 +418,13 @@ private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
       mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
       (
         // replaceAll with single call
-        target.getStringValue().matches("[%]") and
-        target.getStringValue().matches("[%\\.%]%") and
-        target.getStringValue().matches("[%/%]%") and
-        target.getStringValue().matches("[%\\\\%]%")
+        not target.getStringValue().matches("%[^%]%") and
+        target.getStringValue().matches("[%.%]") and
+        target.getStringValue().matches("[%/%]") and
+        target.getStringValue().matches("[%\\\\%]")
         or
         target.getStringValue().matches("%|%") and
-        target.getStringValue().matches("%" + ["\\.\\.", "[\\.][\\.]", "\\."] + "%") and
+        target.getStringValue().matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
         target.getStringValue().matches("%/%") and
         target.getStringValue().matches("%\\\\%")
         or

@@ -686,6 +686,11 @@ public class Test {
             source = source.replaceAll("[\\./\\\\]", "");
             sink(source); // Safe
         }
+        {
+            String source = (String) source();
+            source = source.replaceAll("[^\\.\\\\/]", "");
+            sink(source); // $ hasTaintFlow
+        }
         // `replaceAll` with regex
         {
             String source = (String) source();
