@@ -111,6 +111,12 @@ private module LocalFileOutputStreamConfig implements DataFlow::ConfigSig {
       oc.getObjectType() instanceof SystemIOStreamWriterClass
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/flowsinks/ExternalLocationSink.qll:124: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module LocalFileOutputStreamFlow = DataFlow::Global<LocalFileOutputStreamConfig>;
