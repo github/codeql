@@ -12,8 +12,7 @@ module SqlInjectionTest implements TestSig {
     exists(DataFlow::Node sink | SqlInjection::Flow::flowTo(sink) |
       element = sink.toString() and
       value = sink.toString() and
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      sink.getLocation() = location
     )
   }
 }

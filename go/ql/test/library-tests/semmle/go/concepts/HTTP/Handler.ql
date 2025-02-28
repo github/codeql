@@ -9,8 +9,7 @@ module HttpHandler implements TestSig {
     exists(Http::RequestHandler h, DataFlow::Node check |
       element = h.toString() and value = check.toString()
     |
-      h.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      h.getLocation() = location and
       h.guardedBy(check)
     )
   }

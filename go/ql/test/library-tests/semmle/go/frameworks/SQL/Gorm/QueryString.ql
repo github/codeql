@@ -9,8 +9,7 @@ module SqlTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "query" and
     exists(SQL::Query q, SQL::QueryString qs | qs = q.getAQueryString() |
-      q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      q.getLocation() = location and
       element = q.toString() and
       value = qs.toString()
     )
@@ -24,8 +23,7 @@ module QueryString implements TestSig {
     tag = "querystring" and
     element = "" and
     exists(SQL::QueryString qs | not exists(SQL::Query q | qs = q.getAQueryString()) |
-      qs.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      qs.getLocation() = location and
       value = qs.toString()
     )
   }
@@ -48,9 +46,7 @@ module TaintFlow implements TestSig {
     tag = "flowfrom" and
     element = "" and
     exists(DataFlow::Node fromNode, DataFlow::Node toNode |
-      toNode
-          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      toNode.getLocation() = location and
       Flow::flow(fromNode, toNode) and
       value = fromNode.asExpr().(StringLit).getValue()
     )
