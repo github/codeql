@@ -238,6 +238,7 @@ flow
 | promise.js:18:22:18:29 | source() | promise.js:24:10:24:10 | e |
 | promise.js:33:21:33:28 | source() | promise.js:38:10:38:10 | e |
 | promise.js:43:20:43:27 | source() | promise.js:43:8:43:28 | Promise ... urce()) |
+| regexp-sanitiser.js:2:19:2:26 | source() | regexp-sanitiser.js:4:14:4:18 | taint |
 | rxjs.js:3:1:3:8 | source() | rxjs.js:10:14:10:17 | data |
 | rxjs.js:13:1:13:8 | source() | rxjs.js:17:23:17:23 | x |
 | rxjs.js:13:1:13:8 | source() | rxjs.js:18:23:18:23 | x |
