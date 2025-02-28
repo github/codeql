@@ -5,7 +5,8 @@ codeql_pkg_files(
     srcs = [
         "codeql-extractor.yml",
         "//:LICENSE",
-    ] + glob(["tools/**"]),
+    ],
+    exes = glob(["tools/**"]),
     strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//actions:__pkg__"],
 )
