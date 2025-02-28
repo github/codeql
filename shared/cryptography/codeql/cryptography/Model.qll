@@ -46,12 +46,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
-    not (
-      // exclude certain Artifact nodes with no edges to or from them
-      node instanceof RandomNumberGenerationNode and
-      // TODO: performance?
-      not (edges_graph_impl(node, _, _, _) or edges_graph_impl(_, node, _, _))
-    ) and
+    not node.isExcludedFromGraph() and
     (
       key = "semmle.label" and
       value = node.toString()
@@ -106,6 +101,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   /**
    * An element that represents a _known_ cryptographic asset.
+   *
+   * CROSS PRODUCT WARNING: Do not model any *other* element that is a `FlowAwareElement` to the same
+   * instance in the database, as every other `KnownElement` will share that output artifact's flow.
    */
   abstract class KnownElement extends LocatableElement {
     final ConsumerElement getAConsumer() { result.getAKnownSource() = this }
@@ -167,25 +165,21 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * A consumer can consume multiple instances and types of assets at once, e.g., both a `PaddingAlgorithm` and `CipherAlgorithm`.
    */
   abstract private class ConsumerElement extends FlowAwareElement {
+    abstract KnownElement getAKnownSource();
+
     override predicate flowsTo(FlowAwareElement other) { none() }
 
     override DataFlowNode getOutputNode() { none() }
 
-    GenericDataSourceInstance getAnUnknownSource() { result.flowsTo(this) }
-
-    GenericSourceNode getAnUnknownSourceNode() { result.asElement() = this.getAnUnknownSource() }
-
-    abstract KnownElement getAKnownSource();
-
-    final NodeBase getAKnownSourceNode() { result.asElement() = this.getAKnownSource() }
-
-    final LocatableElement getAKnownOrUnknownSource() {
-      result = this.getAKnownSource()
-      or
-      result = this.getAnUnknownSource()
+    final GenericDataSourceInstance getAnUnknownSource() {
+      result.flowsTo(this) and not result = this.getAKnownSource()
     }
 
-    NodeBase getAKnownOrUnknownSourceNode() { result.asElement() = this.getAKnownOrUnknownSource() }
+    final GenericSourceNode getAnUnknownSourceNode() {
+      result.asElement() = this.getAnUnknownSource()
+    }
+
+    final NodeBase getAKnownSourceNode() { result.asElement() = this.getAKnownSource() }
   }
 
   /**
@@ -205,15 +199,46 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract AlgorithmElement getAKnownAlgorithmSource();
   }
 
-  abstract class ArtifactConsumer extends ConsumerElement, ArtifactElement {
+  /**
+   * An `ArtifactConsumer` represents an element in code that consumes an artifact.
+   *
+   * The concept of "`ArtifactConsumer` = `ArtifactNode`" should be used for inputs, as a consumer can be directly tied
+   * to the artifact it receives, thereby becoming the definitive contextual source for that artifact.
+   *
+   * For example, consider a nonce artifact consumer:
+   *
+   * A `NonceArtifactConsumer` is always the `NonceArtifactInstance` itself, since data only becomes (i.e., is determined to be)
+   * a `NonceArtifactInstance` when it is consumed in a context that expects a nonce (e.g., an argument expecting nonce data).
+   * In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
+   * that identity without the need for additional differentiation. Without the context a consumer provides, that data could
+   * otherwise be any other type of artifact or even simply random data.
+   *
+   *
+   * Architectural Implications:
+   *   * By directly coupling a consumer with the node that receives an artifact,
+   *     the data flow is fully transparent with the consumer itself serving only as a transparent node.
+   *   * An artifact's properties (such as being a nonce) are not necessarily inherent; they are determined by the context in which the artifact is consumed.
+   *     The consumer node is therefore essential in defining these properties for inputs.
+   *   * This approach reduces ambiguity by avoiding separate notions of "artifact source" and "consumer", as the node itself encapsulates both roles.
+   *   * Instances of nodes do not necessarily have to come from a consumer, allowing additional modelling of an artifact to occur outside of the consumer.
+   */
+  abstract class ArtifactConsumer extends ConsumerElement {
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
 
     final ArtifactElement getAKnownArtifactSource() { result.flowsTo(this) }
   }
 
-  abstract class NonceArtifactConsumer extends ArtifactConsumer {
+  abstract class NonceArtifactConsumer extends ArtifactConsumer, NonceArtifactInstance {
     NonceArtifactInstance asNonce() { result = this }
   }
+
+  abstract class CipherInputArtifactInstance extends ArtifactElement { }
+
+  abstract class CipherInputConsumer extends ArtifactConsumer, CipherInputArtifactInstance {
+    CipherInputArtifactInstance asCipherInput() { result = this }
+  }
+
+  abstract class CipherOutputArtifactInstance extends ArtifactElement { }
 
   abstract class CipherOperationInstance extends OperationElement {
     /**
@@ -229,7 +254,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the consumer of plaintext or ciphertext input associated with this cipher operation.
      */
-    abstract ArtifactConsumer getMessageConsumer();
+    abstract CipherInputConsumer getInputConsumer();
+
+    /**
+     * Gets the output artifact of this cipher operation.
+     *
+     * Implementation guidelines:
+     * 1. Each unique output target should have an artifact.
+     * 1. Discarded outputs from intermittent calls should not be artifacts.
+     */
+    abstract CipherOutputArtifactInstance getOutputArtifact();
   }
 
   abstract class CipherAlgorithmInstance extends AlgorithmElement {
@@ -325,6 +359,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
     TNonce(NonceArtifactInstance e) or
+    TCipherInput(CipherInputArtifactInstance e) or
+    TCipherOutput(CipherOutputArtifactInstance e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Operations (e.g., hashing, encryption)
     THashOperation(HashOperationInstance e) or
@@ -413,6 +449,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Gets the element associated with this node.
      */
     abstract LocatableElement asElement();
+
+    /**
+     * If this predicate holds, this node should be excluded from the graph.
+     */
+    predicate isExcludedFromGraph() { none() }
   }
 
   /**
@@ -435,6 +476,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       value = instance.getAdditionalDescription() and
       location = this.getLocation()
     }
+
+    override predicate isExcludedFromGraph() {
+      not exists(NodeBase other | not other = this and other.getChild(_) = this)
+    }
   }
 
   class AssetNode = NodeBase;
@@ -444,9 +489,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class ArtifactNode extends NodeBase {
     /**
-     * Gets the `Artifact` node that is the data source for this artifact.
+     * Gets the `ArtifactNode` or `GenericSourceNode` node that is the data source for this artifact.
      */
-    final NodeBase getSourceNode() { result.asElement() = this.getSourceElement() }
+    final NodeBase getSourceNode() {
+      result.asElement() = this.getSourceElement() and
+      (result instanceof ArtifactNode or result instanceof GenericSourceNode)
+    }
 
     /**
      * Gets the `ArtifactLocatableElement` that is the data source for this artifact.
@@ -482,6 +530,32 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     NonceNode() { this = TNonce(instance) }
 
     final override string getInternalType() { result = "Nonce" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
+   * Output text from a cipher operation
+   */
+  final class CipherOutputNode extends ArtifactNode, TCipherOutput {
+    CipherOutputArtifactInstance instance;
+
+    CipherOutputNode() { this = TCipherOutput(instance) }
+
+    final override string getInternalType() { result = "CipherOutput" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
+   * Input text to a cipher operation
+   */
+  final class CipherMessageNode extends ArtifactNode, TCipherInput {
+    CipherInputArtifactInstance instance;
+
+    CipherMessageNode() { this = TCipherInput(instance) }
+
+    final override string getInternalType() { result = "CipherMessage" }
 
     override LocatableElement asElement() { result = instance }
   }
@@ -594,12 +668,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = this.asElement().(CipherOperationInstance).getNonceConsumer().asNonce()
     }
 
-    NodeBase getAMessageOrUnknown() {
-      result =
-        this.asElement()
-            .(CipherOperationInstance)
-            .getMessageConsumer()
-            .getAKnownOrUnknownSourceNode()
+    CipherMessageNode getAnInputArtifact() {
+      result.asElement() =
+        this.asElement().(CipherOperationInstance).getInputConsumer().asCipherInput()
+    }
+
+    CipherOutputNode getAnOutputArtifact() {
+      result.asElement() = this.asElement().(CipherOperationInstance).getOutputArtifact()
     }
 
     override NodeBase getChild(string key) {
@@ -616,9 +691,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       if exists(this.getANonce()) then result = this.getANonce() else result = this
       or
       // [KNOWN_OR_UNKNOWN]
-      key = "Message" and
-      if exists(this.getAMessageOrUnknown())
-      then result = this.getAMessageOrUnknown()
+      key = "InputText" and
+      if exists(this.getAnInputArtifact())
+      then result = this.getAnInputArtifact()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "OutputText" and
+      if exists(this.getAnOutputArtifact())
+      then result = this.getAnOutputArtifact()
       else result = this
     }
 

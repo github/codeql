@@ -59,14 +59,22 @@ module JCAModel {
     Expr getProviderArg() { result = this.getArgument(1) }
   }
 
-  private class JCACipherOperationCall extends Call {
-    JCACipherOperationCall() {
+  private class CipherOperationCall extends MethodCall {
+    CipherOperationCall() {
       exists(string s | s in ["doFinal", "wrap", "unwrap"] |
-        this.getCallee().hasQualifiedName("javax.crypto", "Cipher", s)
+        this.getMethod().hasQualifiedName("javax.crypto", "Cipher", s)
       )
     }
 
-    DataFlow::Node getMessageArg() { result.asExpr() = this.getArgument(0) }
+    Expr getInput() { result = this.getArgument(0) }
+
+    Expr getOutput() {
+      result = this.getArgument(3)
+      or
+      this.getMethod().getReturnType().hasName("byte[]") and result = this
+    }
+
+    DataFlow::Node getMessageArg() { result.asExpr() = this.getInput() }
   }
 
   /**
@@ -304,7 +312,7 @@ module JCAModel {
     predicate isSink(DataFlow::Node sink, FlowState state) { none() }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(JCACipherOperationCall c | c.getQualifier() = sink.asExpr())
+      exists(CipherOperationCall c | c.getQualifier() = sink.asExpr())
     }
 
     predicate isAdditionalFlowStep(
@@ -330,7 +338,7 @@ module JCAModel {
   class CipherOperationInstance extends Crypto::CipherOperationInstance instanceof Call {
     Crypto::CipherOperationSubtype mode;
     CipherGetInstanceToCipherOperationFlow::PathNode sink;
-    JCACipherOperationCall doFinalize;
+    CipherOperationCall doFinalize;
     CipherGetInstanceAlgorithmArg consumer;
 
     CipherOperationInstance() {
@@ -350,11 +358,15 @@ module JCAModel {
       result = sink.getState().(InitializedCipherModeFlowState).getInitCall().getNonceArg()
     }
 
-    override Crypto::ArtifactConsumer getMessageConsumer() {
+    override Crypto::CipherInputConsumer getInputConsumer() {
       result = doFinalize.getMessageArg().asExpr()
     }
 
     override Crypto::AlgorithmConsumer getAlgorithmConsumer() { result = consumer }
+
+    override Crypto::CipherOutputArtifactInstance getOutputArtifact() {
+      result = doFinalize.getOutput()
+    }
   }
 
   /**
@@ -481,15 +493,27 @@ module JCAModel {
     }
   }
 
-  class CipherInitCallNonceArgConsumer extends Crypto::NonceArtifactConsumer instanceof Expr {
+  class CipherInitCallNonceArgConsumer extends NonceArtifactConsumer instanceof Expr {
     CipherInitCallNonceArgConsumer() { this = any(CipherInitCall call).getNonceArg() }
 
     override DataFlow::Node getInputNode() { result.asExpr() = this }
   }
 
-  class CipherInitCallKeyConsumer extends Crypto::ArtifactConsumer instanceof Expr {
+  class CipherInitCallKeyConsumer extends Crypto::ArtifactConsumer {
     CipherInitCallKeyConsumer() { this = any(CipherInitCall call).getKeyArg() }
 
     override DataFlow::Node getInputNode() { result.asExpr() = this }
+  }
+
+  class CipherMessageInputConsumer extends Crypto::CipherInputConsumer {
+    CipherMessageInputConsumer() { this = any(CipherOperationCall call).getMessageArg().asExpr() }
+
+    override DataFlow::Node getInputNode() { result.asExpr() = this }
+  }
+
+  class CipherOperationCallOutput extends CipherOutputArtifact {
+    CipherOperationCallOutput() { this = any(CipherOperationCall call).getOutput() }
+
+    override DataFlow::Node getOutputNode() { result.asExpr() = this }
   }
 }
