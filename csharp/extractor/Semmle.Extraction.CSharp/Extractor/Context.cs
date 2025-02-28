@@ -267,7 +267,7 @@ namespace Semmle.Extraction.CSharp
 
             bool duplicationGuard, deferred;
 
-            if (ExtractionContext.Mode is ExtractorMode.Standalone)
+            if (ExtractionContext.IsStandalone)
             {
                 duplicationGuard = false;
                 deferred = false;
