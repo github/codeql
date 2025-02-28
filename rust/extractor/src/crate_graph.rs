@@ -175,7 +175,7 @@ fn emit_module_items(
     let mut items = Vec::new();
     let item_scope = &module.scope;
     for (name, item) in item_scope.entries() {
-        let def = item.with_visibility(ra_ap_hir::Visibility::Public);
+        let def = item.filter_visibility(|x| matches!(x, ra_ap_hir::Visibility::Public));
         if let Some(ra_ap_hir_def::per_ns::Item {
             def: value,
             vis,
