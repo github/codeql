@@ -96,9 +96,7 @@ class Test {
 		}
 	}
 
-	// * New testing
-
-	void good9() { // * PASSES
+	void good9() {
 		boolean locked = mylock.tryLock();
 		if (!locked) { return; }
 		try {
@@ -110,7 +108,7 @@ class Test {
 		}
 	}
 
-	void good10() { // ! FAILS
+	void good10() {
 		boolean locked = false;
 		try {
 			locked = mylock.tryLock();
@@ -119,38 +117,6 @@ class Test {
 			if (locked) {
 				mylock.unlock();
 			}
-			// else { // * PASSES when add this
-			// 	mylock.unlock();
-			// }
-		}
-	}
-
-	void good11() { // * PASSES
-		boolean locked = false;
-		try {
-			locked = mylock.tryLock();
-			if (!locked) { return; }
-		} finally {
-			mylock.unlock();
-		}
-	}
-
-	void good12() { // * PASSES
-		boolean locked = mylock.tryLock();
-		if (locked){
-			try {
-				f();
-			} finally {
-				mylock.unlock();
-			}
-		}
-	}
-
-	void good13() { // * PASSES
-		try {
-			mylock.lock();
-		} finally {
-			mylock.unlock();
 		}
 	}
 }

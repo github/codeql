@@ -112,11 +112,26 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
 predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock falsesucc) {
   exists(ConditionBlock conditionBlock |
     conditionBlock.getCondition() = t.getIsHeldByCurrentThreadAccess()
-    or
-    // Assume that a boolean variable condition check that controls an unlock call
-    // is checking the lock state similar to `isHeldByCurrentThread`.
-    conditionBlock.getCondition() = any(VarAccess v | v.getType() instanceof BooleanType) and
-    conditionBlock.controls(t.getUnlockAccess().getBasicBlock(), true)
+  |
+    conditionBlock.getBasicBlock() = checkblock and
+    conditionBlock.getTestSuccessor(false) = falsesucc
+  )
+}
+
+/**
+ * A variable access in `checkblock` that has `falsesucc` as the false successor.
+ *
+ * The variable access must have an assigned value that is a lock access on `t`, and
+ * the true successor of `checkblock` must contain an unlock access.
+ */
+predicate variableLockCheck(LockType t, BasicBlock checkblock, BasicBlock falsesucc) {
+  exists(ConditionBlock conditionBlock, VarAccess v |
+    v.getType() instanceof BooleanType and
+    // Ensure that a lock access is assigned to the variable
+    v.getVariable().getAnAssignedValue() = t.getLockAccess() and
+    // Ensure that the `true` successor of the condition block contains an unlock access
+    conditionBlock.getTestSuccessor(true) = t.getUnlockAccess().getBasicBlock() and
+    conditionBlock.getCondition() = v
   |
     conditionBlock.getBasicBlock() = checkblock and
     conditionBlock.getTestSuccessor(false) = falsesucc
@@ -136,8 +151,9 @@ predicate blockIsLocked(LockType t, BasicBlock src, BasicBlock b, int locks) {
     // The number of net locks from the `src` block to the predecessor block `pred` is `predlocks`.
     blockIsLocked(t, src, pred, predlocks) and
     // The recursive call ensures that at least one lock is held, so do not consider the false
-    // successor of the `isHeldByCurrentThread()` check.
+    // successor of the `isHeldByCurrentThread()` check and of `variableLockCheck`.
     not heldByCurrentThreadCheck(t, pred, b) and
+    not variableLockCheck(t, pred, b) and
     // Count a failed lock as an unlock so the net is zero.
     (if failedLock(t, pred, b) then failedlock = 1 else failedlock = 0) and
     (
