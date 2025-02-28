@@ -71,7 +71,7 @@ private int getSize(VariableAccess va) {
       result = t.getSize()
     )
     or
-    exists(Class c |
+    exists(Class c, int trueSize |
       // Otherwise, we find the "outermost" object and compute the size
       // as the difference between the size of the type of the "outermost
       // object" and the offset of the field relative to that type.
@@ -91,7 +91,9 @@ private int getSize(VariableAccess va) {
       // of `y` relative to the type `S2` (i.e., `4`). So the size of the
       // buffer is `12 - 4 = 8`.
       c = getRootType(va) and
-      result = c.getSize() - v.(Field).getOffsetInClass(c)
+      // we calculate the size based on the last field, to avoid including any padding after it
+      trueSize = max(Field f | | f.getOffsetInClass(c) + f.getUnspecifiedType().getSize()) and
+      result = trueSize - v.(Field).getOffsetInClass(c)
     )
   )
 }
@@ -105,9 +107,16 @@ private int getSize(VariableAccess va) {
 private int isSource(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     // buffer is a fixed size array
-    result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
+    exists(bufferVar.getUnspecifiedType().(ArrayType).getSize()) and
+    result =
+      unique(int size | // more generous than .getSize() itself, when the array is a class field or similar.
+        size = getSize(bufferExpr)
+      |
+        size
+      ) and
     why = bufferVar and
     not memberMayBeVarSize(_, bufferVar) and
+    not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild*() = bufferExpr) and
     // zero sized arrays are likely to have special usage, for example
     // behaving a bit like a 'union' overlapping other fields.
     not result = 0

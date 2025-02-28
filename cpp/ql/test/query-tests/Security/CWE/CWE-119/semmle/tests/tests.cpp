@@ -18,7 +18,7 @@ void test1()
 {
 	char smallbuffer[10];
 	char bigbuffer[20];
-	
+
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
 	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
@@ -29,7 +29,7 @@ void test2()
 {
 	char *smallbuffer = (char *)malloc(sizeof(char) * 10);
 	char *bigbuffer = (char *)malloc(sizeof(char) * 20);
-	
+
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
 	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read [NOT DETECTED]
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
@@ -59,7 +59,7 @@ void test4(int unbounded)
 {
 	int bounded = 100;
 	char buffer1[100], buffer2[100];
-	
+
 	memmove(buffer1, buffer2, bounded); // GOOD
 	memmove(buffer1, buffer2, unbounded); // BAD: may over-write [NOT DETECTED]
 }
@@ -107,11 +107,11 @@ void test6(bool cond)
 	a = -1;
 	buffer[a] = 'x'; // BAD: under-write [NOT DETECTED]
 	ch = buffer[a]; // BAD: under-read [NOT DETECTED]
-	
+
 	b = 0;
 	buffer[b] = 'x'; // GOOD
 	ch = buffer[b]; // GOOD
-	
+
 	c = 100;
 	buffer[c] = 'x'; // BAD: over-write [NOT DETECTED]
 	ch = buffer[c]; // BAD: over-read [NOT DETECTED]
@@ -120,7 +120,7 @@ void test6(bool cond)
 	d = 1000;
 	buffer[d] = 'x'; // BAD: over-write [NOT DETECTED]
 	ch = buffer[d]; // BAD: over-read [NOT DETECTED]
-	
+
 	e = 1000;
 	e = 0;
 	buffer[e] = 'x'; // GOOD
@@ -130,12 +130,12 @@ void test6(bool cond)
 	if (cond) {f = 1000;}
 	buffer[f] = 'x'; // BAD: may over-write [NOT DETECTED]
 	ch = buffer[f]; // BAD: may over-read [NOT DETECTED]
-	
+
 	g = 1000;
 	if (cond) {g = 0;}
 	buffer[g] = 'x'; // BAD: may over-write [NOT DETECTED]
 	ch = buffer[g]; // BAD: may over-read [NOT DETECTED]
-	
+
 	h = 1000;
 	if (cond)
 	{
@@ -151,13 +151,13 @@ void test6(bool cond)
 		buffer[i] = 'x'; // GOOD
 		ch = buffer[i]; // GOOD
 	}
-	
+
 	for (j = -1; j < 100; j++)
 	{
 		buffer[j] = 'x'; // BAD: under-write [NOT DETECTED]
 		ch = buffer[j]; // BAD: under-read [NOT DETECTED]
 	}
-	
+
 	for (k = 0; k <= 100; k++)
 	{
 		buffer[k] = 'x'; // BAD: over-write
@@ -187,7 +187,7 @@ void test8(int unbounded)
 	{
 		buffer[i] = 0; // GOOD
 	}
-	
+
 	for (i = 0; i < v2; i++)
 	{
 		buffer[i] = 0; // BAD: over-write [NOT DETECTED]
@@ -226,7 +226,7 @@ void test9(int param)
 		memset(buffer3, 0, 33); // BAD: overrun write of buffer3
 		memset(buffer4, 0, 32); // GOOD
 		memset(buffer4, 0, 33); // BAD: overrun write of buffer4 (buffer3)
-		
+
 		memcmp(buffer1, buffer2, 32); // GOOD
 		memcmp(buffer1, buffer2, 33); // BAD: overrun read of buffer1, buffer2
 	}
@@ -274,7 +274,7 @@ void test11()
 		memset(string, 0, 14); // GOOD
 		memset(string, 0, 15); // BAD: overrun write of string
 	}
-	
+
 	{
 		char *buffer = new char[128];
 
@@ -284,7 +284,7 @@ void test11()
 
 		memset(buffer, 0, 128); // BAD: overrun write of buffer
 	}
-	
+
 	{
 		char array[10] = "123";
 
@@ -309,7 +309,7 @@ void test12()
 	memset(&myVar, 0, sizeof(myVar)); // GOOD
 	memset(&myVar, 0, sizeof(myVar) + 1); // BAD: overrun write of myVar
 	memset(myVar.buffer, 0, 16); // GOOD
-	memset(myVar.buffer, 0, 17); // BAD: overrun write of myVar.buffer
+	memset(myVar.buffer, 0, 17); // DUBIOUS: overrun write of myVar.buffer, but not out of myVar itself [NOT DETECTED]
 	memset(&(myVar.field), 0, sizeof(int)); // GOOD
 	memset(&(myVar.field), 0, sizeof(int) * 2); // BAD: overrun write of myVar.field
 
@@ -317,7 +317,7 @@ void test12()
 	memset(buf + 8, 0, 9); // BAD: overrun write of buf [NOT DETECTED]
 	memset(dbuf + 8, 0, 8); // GOOD
 	memset(dbuf + 8, 0, 9); // BAD: overrun write of dbuf [NOT DETECTED]
-	
+
 	{
 		myStruct *myPtr1 = &myVar;
 		myStruct *myPtr2;
@@ -331,17 +331,19 @@ void test12()
 
 	{
 		void *myPtr3 = (void *)(&myVar);
-		
+
 		memset(myPtr3, 0, sizeof(myStruct)); // GOOD
 		memset(myPtr3, 0, sizeof(myStruct) + 1); // BAD: overrun write of myVar
 	}
 }
 
-void test13()
+void test13(char *argArray)
 {
 	char charArray[10];
 	int intArray[10];
 	myStruct structArray[10];
+	char *ptrArray = charArray;
+	char *ptrArrayOffset = charArray + 1;
 
 	charArray[-1] = 1; // BAD: underrun write
 	charArray[0] = 1; // GOOD
@@ -363,7 +365,26 @@ void test13()
 
 	charArray[9] = (char)intArray[9]; // GOOD
 	charArray[9] = (char)intArray[10]; // BAD: overrun read
-	
+
+	ptrArray[-2] = 1; // BAD: underrun write
+	ptrArray[-1] = 1; // BAD: underrun write
+	ptrArray[0] = 1; // GOOD
+	ptrArray[8] = 1; // GOOD
+	ptrArray[9] = 1; // GOOD
+	ptrArray[10] = 1; // BAD: overrun write
+
+	ptrArrayOffset[-2] = 1; // BAD: underrun write [NOT DETECTED]
+	ptrArrayOffset[-1] = 1; // GOOD (there is room for this)
+	ptrArrayOffset[0] = 1; // GOOD
+	ptrArrayOffset[8] = 1; // GOOD
+	ptrArrayOffset[9] = 1; // BAD: overrun write [NOT DETECTED]
+	ptrArrayOffset[10] = 1; // BAD: overrun write [NOT DETECTED]
+
+	argArray[-1] = 1; // BAD: underrun write [NOT DETECTED]
+	argArray[0] = 1; // GOOD
+	argArray[1] = 1; // GOOD (we can't tell the length of this array)
+	argArray[999] = 1; // GOOD (we can't tell the length of this array)
+
 	{
 		unsigned short *buffer1 = (unsigned short *)malloc(sizeof(short) * 50);
 		unsigned short *buffer2 = (unsigned short *)malloc(101); // 50.5 shorts
@@ -442,13 +463,13 @@ void test17(long long *longArray)
 
 	{
 		int intArray[5];
-	
+
 		((char *)intArray)[-3] = 0; // BAD: underrun write
 	}
 
 	{
 		int multi[10][10];
-	
+
 		multi[5][5] = 0; // GOOD
 
 		multi[-5][5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
@@ -511,7 +532,7 @@ void test19(bool b)
 		p2 = (char *)malloc(20);
 		p3 = (char *)malloc(20);
 	}
-	
+
 	// ...
 
 	if (b)
@@ -663,7 +684,7 @@ void test27(){
 	char buffer[MAX_SIZE];
 
 	strncpy(dest, src, 8); // GOOD, strncpy will not read past null terminator of source
-		
+
 	if(IND < MAX_SIZE){
 		buffer[IND] = 0; // GOOD: out of bounds, but inaccessible code
 	}
@@ -739,7 +760,7 @@ struct AnonUnionInStruct
       unsigned int a_2;
       unsigned int b_2;
     };
-  };  
+  };
   unsigned int d;
 
   void test37() {
@@ -869,6 +890,173 @@ struct S2 {
   }
 };
 
+typedef int MyArray[10];
+
+typedef struct _MyArrayArray {
+	struct {
+		int as[10];
+	} bs[10];
+
+	union {
+		int i;
+		char cs[4];
+	} ds[10];
+
+	struct {
+		MyArray xs;
+	} ys[10];
+} MyArrayArray;
+
+void test26() {
+	MyArrayArray maa;
+
+	maa.bs[0].as[-1] = 0; // BAD: underrun write [NOT DETECTED]
+	maa.bs[0].as[0] = 0; // GOOD
+	maa.bs[0].as[99] = 0; // GOOD (overflows into bs[9])
+	maa.bs[0].as[100] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.bs[1].as[-1] = 0; // GOOD (underflows into bs[0])
+	maa.bs[1].as[0] = 0; // GOOD
+	maa.bs[1].as[99] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.bs[1].as[100] = 0; // BAD: overrun write[ NOT DETECTED]
+
+	maa.ds[0].i = 0; // GOOD
+	maa.ds[9].i = 0; // GOOD
+	maa.ds[10].i = 0; // BAD: overrun write [NOT DETECTED]
+	maa.ds[0].cs[0] = 0; // GOOD
+	maa.ds[0].cs[3] = 0; // GOOD
+	maa.ds[0].cs[4] = 0; // GOOD (overflows into vs[1])
+	maa.ds[0].cs[39] = 0; // GOOD (overflows into vs[9])
+	maa.ds[0].cs[40] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.ds[9].cs[0] = 0; // GOOD
+	maa.ds[9].cs[3] = 0; // GOOD
+	maa.ds[9].cs[4] = 0; // BAD: overrun write [NOT DETECTED]
+
+	maa.ys[0].xs[-1] = 0; // BAD: underrun write [NOT DETECTED]
+	maa.ys[0].xs[0] = 0; // GOOD
+	maa.ys[0].xs[99] = 0; // GOOD (overflows into bs[9])
+	maa.ys[0].xs[100] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.ys[1].xs[-1] = 0; // GOOD (underflows into ys[0])
+	maa.ys[1].xs[0] = 0; // GOOD
+	maa.ys[1].xs[99] = 0; // BAD: overrun write [NOT DETECTED]
+	maa.ys[1].xs[100] = 0; // BAD: overrun write [NOT DETECTED]
+
+	char zs[2][2];
+	zs[0][-1] = 0; // BAD: underrun write [NOT DETECTED]
+	zs[0][0] = 0; // GOOD
+	zs[0][1] = 0; // GOOD
+	zs[0][2] = 0; // GOOD
+	zs[0][3] = 0; // GOOD
+	zs[0][4] = 0; // BAD: overrun write [NOT DETECTED]
+	zs[1][-3] = 0; // BAD: underrun write [NOT DETECTED]
+	zs[1][-2] = 0; // GOOD
+	zs[1][-1] = 0; // GOOD
+	zs[1][0] = 0; // GOOD
+	zs[1][1] = 0; // GOOD
+	zs[1][2] = 0; // BAD: overrun write [NOT DETECTED]
+}
+
+struct Array10 {
+	int values[10];
+};
+
+void test27(size_t s) {
+	Array10 arr;
+
+	if (s < sizeof(arr.values[10])) { // GOOD (harmless)
+		// ...
+	}
+
+	if (s < offsetof(Array10, values[10])) { // GOOD (harmless)
+		// ...
+	}
+
+	if (s < &(arr.values[10]) - &(arr.values[0])) { // GOOD (harmless)
+		// ...
+	}
+}
+
+bool cond();
+
+void test28() {
+	int arr[10];
+
+	int *ptr1 = arr;
+	ptr1[-1] = 0; // BAD: underrun write
+	ptr1++;
+	ptr1[-1] = 0; // GOOD
+
+	int *ptr2 = arr;
+	ptr2[-1] = 0; // BAD: underrun write
+	*ptr2++;
+	ptr2[-1] = 0; // GOOD
+
+	int *ptr3 = arr;
+	ptr3[-1] = 0; // BAD: underrun write
+	if (cond()) {
+		ptr3++;
+	}
+	ptr3[-1] = 0; // GOOD (depending what cond() does)
+
+	int *ptr4 = arr;
+	ptr4[-1] = 0; // BAD: underrun write
+	while (true) {
+		ptr4++;
+		if (cond()) break;
+	}
+	ptr4[-1] = 0; // GOOD
+
+	int *ptr5 = arr;
+	ptr5[-1] = 0; // BAD: underrun write
+	while (true) {
+		if (cond()) ptr5++;
+		if (cond()) break;
+	}
+	ptr5[-1] = 0; // GOOD (depending what cond() does)
+}
+
+typedef int myInt29;
+typedef myInt29 myArray29[10];
+struct _myStruct29 {
+	myArray29 arr1;
+	myInt29 arr2[20];
+};
+typedef _myStruct29 myStruct29;
+
+void test29() {
+	myStruct29 *ptr;
+
+	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
+	memset(&(ptr->arr1[0]), 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
+
+	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2) + 10); // BAD
+}
+
+struct UnionStruct {
+	int a;
+	union {
+		char buffer1[64];
+		int b;
+	};
+	union {
+		char buffer2[64];
+		int c;
+	};
+};
+
+void test30() {
+	UnionStruct us;
+
+	memset(us.buffer1, 0, sizeof(us.buffer1)); // GOOD
+	memset(us.buffer1, 0, sizeof(us)); // BAD
+	memset(us.buffer2, 0, sizeof(us.buffer2)); // GOOD
+	memset(us.buffer2, 0, sizeof(us)); // BAD
+
+	strncpy(us.buffer1, "", sizeof(us.buffer1) - 1); // GOOD
+	strncpy(us.buffer1, "", sizeof(us) - 1); // BAD
+	strncpy(us.buffer2, "", sizeof(us.buffer2) - 1); // GOOD
+	strncpy(us.buffer2, "", sizeof(us) - 1); // BAD
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -896,6 +1084,11 @@ int tests_main(int argc, char *argv[])
 	test23();
 	test24(argv[0]);
 	test25(argv[0]);
+	test26();
+	test27(argc);
+	test28();
+	test29();
+	test30();
 
 	return 0;
 }
