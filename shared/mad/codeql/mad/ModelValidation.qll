@@ -125,7 +125,7 @@ module KindValidation<KindValidationConfigSig Config> {
           // C#
           "file-write", "windows-registry",
           // JavaScript
-          "database-access-result"
+          "database-access-result", "response", "request"
         ]
       or
       this.matches([
