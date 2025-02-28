@@ -1,0 +1,14 @@
+# Model pack containing the list of known immutable actions. The Immutable Actions feature is not
+# yet released, so this pack will only be used within GitHub. Once the feature is available to
+# customers, we will move the contents of this pack back into the standard library pack.
+name: codeql/immutable-actions-list
+version: 0.0.1-dev
+library: true
+warnOnImplicitThis: true
+extensionTargets:
+  # We expect to need this model pack even after GA of Actions analysis, so make it compatible with
+  # all future prereleases plus 1.x.x. We should be able to remove this back before we need to
+  # bump the major version to 2.
+  codeql/actions-all: ">=0.4.3 <2.0.0"
+dataExtensions:
+- ext/**/*.yml

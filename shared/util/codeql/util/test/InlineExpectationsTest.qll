@@ -954,7 +954,7 @@ module TestPostProcessing {
           f0 = MkTestFailure(fl, message) and
           fl.getLocation().hasLocationInfo(filename, startLine, startColumn, endLine, endColumn)
         |
-          f0 order by filename, startLine, startColumn, endLine, endColumn, message
+          f0 order by filename, startLine, startColumn, endLine, endColumn, message, fl.toString()
         )
     }
 

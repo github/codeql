@@ -37,9 +37,7 @@ module Twirp {
 
   /** A type representing a protobuf message. */
   class ProtobufMessageType extends Type {
-    ProtobufMessageType() {
-      this.hasLocationInfo(any(ProtobufGeneratedFile f).getAbsolutePath(), _, _, _, _)
-    }
+    ProtobufMessageType() { this.getLocation().getFile() instanceof ProtobufGeneratedFile }
   }
 
   /** An interface type representing a Twirp service. */
@@ -48,7 +46,7 @@ module Twirp {
 
     ServiceInterfaceType() {
       definedType.getUnderlyingType() = this and
-      definedType.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      definedType.getLocation().getFile() instanceof ServicesGeneratedFile
     }
 
     /** Gets the name of the interface. */
@@ -68,7 +66,7 @@ module Twirp {
         p.implements(i) and
         this = p.getBaseType() and
         this.getName().regexpMatch("(?i)" + i.getName() + "(protobuf|json)client") and
-        this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+        this.getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
@@ -79,7 +77,7 @@ module Twirp {
       exists(ServiceInterfaceType i |
         this.implements(i) and
         this.getName().regexpMatch("(?i)" + i.getName() + "server") and
-        this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+        this.getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
@@ -90,7 +88,7 @@ module Twirp {
       this.getName().regexpMatch("(?i)new" + any(ServiceClientType c).getName()) and
       this.getParameterType(0) instanceof StringType and
       this.getParameterType(1).getName() = "HTTPClient" and
-      this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ServicesGeneratedFile
     }
   }
 
@@ -103,7 +101,7 @@ module Twirp {
     ServerConstructor() {
       this.getName().regexpMatch("(?i)new" + any(ServiceServerType c).getName()) and
       this.getParameterType(0) = any(ServiceInterfaceType i).getDefinedType() and
-      this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ServicesGeneratedFile
     }
   }
 
