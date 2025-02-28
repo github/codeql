@@ -61,4 +61,6 @@ public interface Visitor {
   public void visit(ZeroWidthNegativeLookbehind nd);
 
   public void visit(UnicodePropertyEscape nd);
+
+  public void visit(CharacterClassQuotedString nd);
 }

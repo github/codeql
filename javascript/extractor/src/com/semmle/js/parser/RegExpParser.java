@@ -6,6 +6,7 @@ import com.semmle.js.ast.regexp.BackReference;
 import com.semmle.js.ast.regexp.Caret;
 import com.semmle.js.ast.regexp.CharacterClass;
 import com.semmle.js.ast.regexp.CharacterClassEscape;
+import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
@@ -283,6 +284,45 @@ public class RegExpParser {
     return this.finishTerm(this.parseQuantifierOpt(loc, this.parseAtom()));
   }
 
+  private RegExpTerm parseDisjunctionInsideQuotedString() {
+    SourceLocation loc = new SourceLocation(pos());
+    List<RegExpTerm> disjuncts = new ArrayList<>();
+    disjuncts.add(this.parseAlternativeInsideQuotedString());
+    while (this.match("|")) {
+        disjuncts.add(this.parseAlternativeInsideQuotedString());
+    }
+    if (disjuncts.size() == 1) return disjuncts.get(0);
+        return this.finishTerm(new Disjunction(loc, disjuncts));
+  }
+
+  private RegExpTerm parseAlternativeInsideQuotedString() {
+    SourceLocation loc = new SourceLocation(pos());
+    StringBuilder sb = new StringBuilder();
+    boolean escaped = false;
+    while (true) {
+      // If we're at the end of the string, something went wrong.
+      if (this.atEOS()) {
+        this.error(Error.UNEXPECTED_EOS);
+        break;
+      }
+      // We can end parsing if we're not escaped and we see a `|` which would mean Alternation
+      // or `}` which would mean the end of the Quoted String.
+      if(!escaped && this.lookahead(null, "|", "}")){
+        break;
+      }
+      char c = this.nextChar();
+      // Track whether the character is an escape character. 
+      escaped = !escaped && (c == '\\');
+      sb.append(c);
+    }
+    
+    String literal = sb.toString();
+    loc.setEnd(pos());
+    loc.setSource(literal);
+    
+    return new Constant(loc, literal);
+  }
+
   private RegExpTerm parseQuantifierOpt(SourceLocation loc, RegExpTerm atom) {
     if (this.match("*")) return this.finishTerm(new Star(loc, atom, !this.match("?")));
     if (this.match("+")) return this.finishTerm(new Plus(loc, atom, !this.match("?")));
@@ -425,6 +465,12 @@ public class RegExpParser {
       String name = this.readIdentifier();
       this.expectRAngle();
       return this.finishTerm(new NamedBackReference(loc, name, "\\k<" + name + ">"));
+    }
+
+    if (this.match("q{")) {
+      RegExpTerm term = parseDisjunctionInsideQuotedString();
+      this.expectRBrace();
+      return this.finishTerm(new CharacterClassQuotedString(loc, term));
     }
 
     if (this.match("p{", "P{")) {
