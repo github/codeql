@@ -1256,11 +1256,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     string toString() { result = this.(Definition).toString() }
 
     /** Gets the location of this SSA definition. */
-    Location getLocation() {
-      exists(BasicBlock bb, int i | this.definesAt(_, bb, i, _) |
-        if i = -1 then result = bb.getLocation() else result = bb.getNode(i).getLocation()
-      )
-    }
+    Location getLocation() { result = this.(Definition).getLocation() }
   }
 
   /**
@@ -1346,38 +1342,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    */
   class PhiReadNode extends DefinitionExt, TPhiReadNode {
     override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
+
+    override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
 
   /** Provides a set of consistency queries. */
   module Consistency {
-    /** A definition that is relevant for the consistency queries. */
-    abstract class RelevantDefinition extends Definition {
-      /** Override this predicate to ensure locations in consistency results. */
-      abstract predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      );
-    }
-
-    /** A definition that is relevant for the consistency queries. */
-    abstract class RelevantDefinitionExt extends DefinitionExt {
-      /** Override this predicate to ensure locations in consistency results. */
-      abstract predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      );
-    }
-
     /** Holds if a read can be reached from multiple definitions. */
-    query predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    query predicate nonUniqueDef(Definition def, SourceVariable v, BasicBlock bb, int i) {
       ssaDefReachesRead(v, def, bb, i) and
       not exists(unique(Definition def0 | ssaDefReachesRead(v, def0, bb, i)))
-    }
-
-    /** Holds if a read can be reached from multiple definitions. */
-    query predicate nonUniqueDefExt(
-      RelevantDefinitionExt def, SourceVariable v, BasicBlock bb, int i
-    ) {
-      ssaDefReachesReadExt(v, def, bb, i) and
-      not exists(unique(DefinitionExt def0 | ssaDefReachesReadExt(v, def0, bb, i)))
     }
 
     /** Holds if a read cannot be reached from a definition. */
@@ -1386,30 +1360,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       not ssaDefReachesRead(v, _, bb, i)
     }
 
-    /** Holds if a read cannot be reached from a definition. */
-    query predicate readWithoutDefExt(SourceVariable v, BasicBlock bb, int i) {
-      variableRead(bb, i, v, _) and
-      not ssaDefReachesReadExt(v, _, bb, i)
-    }
-
     /** Holds if a definition cannot reach a read. */
-    query predicate deadDef(RelevantDefinition def, SourceVariable v) {
+    query predicate deadDef(Definition def, SourceVariable v) {
       v = def.getSourceVariable() and
       not ssaDefReachesRead(_, def, _, _) and
       not phiHasInputFromBlock(_, def, _) and
       not uncertainWriteDefinitionInput(_, def)
     }
 
-    /** Holds if a definition cannot reach a read. */
-    query predicate deadDefExt(RelevantDefinitionExt def, SourceVariable v) {
-      v = def.getSourceVariable() and
-      not ssaDefReachesReadExt(_, def, _, _) and
-      not phiHasInputFromBlockExt(_, def, _) and
-      not uncertainWriteDefinitionInput(_, def)
-    }
-
     /** Holds if a read is not dominated by a definition. */
-    query predicate notDominatedByDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
+    query predicate notDominatedByDef(Definition def, SourceVariable v, BasicBlock bb, int i) {
       exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
         ssaDefReachesReadWithinBlock(v, def, bb, i) and
         (bb != bbDef or i < iDef)
@@ -1417,20 +1377,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         ssaDefReachesRead(v, def, bb, i) and
         not ssaDefReachesReadWithinBlock(v, def, bb, i) and
         not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _)
-      )
-    }
-
-    /** Holds if a read is not dominated by a definition. */
-    query predicate notDominatedByDefExt(
-      RelevantDefinitionExt def, SourceVariable v, BasicBlock bb, int i
-    ) {
-      exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef, _) |
-        ssaDefReachesReadWithinBlock(v, def, bb, i) and
-        (bb != bbDef or i < iDef)
-        or
-        ssaDefReachesReadExt(v, def, bb, i) and
-        not ssaDefReachesReadWithinBlock(v, def, bb, i) and
-        not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _, _)
       )
     }
   }
@@ -1644,7 +1590,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** A synthesized SSA data flow node. */
     abstract private class SsaNodeImpl extends NodeImpl {
       /** Gets the underlying SSA definition. */
-      abstract DefinitionExt getDefinitionExt();
+      abstract deprecated DefinitionExt getDefinitionExt();
 
       /** Gets the SSA definition this node corresponds to, if any. */
       Definition asDefinition() { this = TSsaDefinitionNode(result) }
@@ -1664,7 +1610,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       SsaDefinitionExtNodeImpl() { this = TSsaDefinitionNode(def) }
 
-      override DefinitionExt getDefinitionExt() { result = def }
+      /** Gets the corresponding `DefinitionExt`. */
+      DefinitionExt getDefExt() { result = def }
+
+      deprecated override DefinitionExt getDefinitionExt() { result = def }
 
       override BasicBlock getBasicBlock() { result = def.getBasicBlock() }
 
@@ -1692,7 +1641,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** A node that represents a synthetic read of a source variable. */
     final class SsaSynthReadNode extends SsaNode {
       SsaSynthReadNode() {
-        this.(SsaDefinitionExtNodeImpl).getDefinitionExt() instanceof PhiReadNode or
+        this.(SsaDefinitionExtNodeImpl).getDefExt() instanceof PhiReadNode or
         this instanceof SsaInputNodeImpl
       }
     }
@@ -1744,7 +1693,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         input = input_
       }
 
-      override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
+      SsaInputDefinitionExt getPhi() { result = def_ }
+
+      deprecated override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
 
@@ -1761,17 +1712,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
      * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
      * read. If it is false then `nodeFrom` may be any of the following: an
-     * uncertain write, a certain write, a phi, or a phi read. `def` is the SSA
-     * definition that is read/defined at `nodeFrom`.
+     * uncertain write, a certain write, a phi, or a phi read.
      */
     private predicate flowOutOf(
-      DefinitionExt def, Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
+      Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
     ) {
-      nodeFrom.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
-      def.definesAt(v, bb, i, _) and
-      isUseStep = false
+      exists(DefinitionExt def |
+        nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+        def.definesAt(v, bb, i, _) and
+        isUseStep = false
+      )
       or
-      ssaDefReachesReadExt(v, def, bb, i) and
       [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
       isUseStep = true
     }
@@ -1782,66 +1733,73 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * `isUseStep` is `true` when `nodeFrom` is a (post-update) read node and
      * `nodeTo` is a read node or phi (read) node.
      */
-    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-      (
+    predicate localFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      exists(Definition def |
         // Flow from assignment into SSA definition
         DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
         or
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
-      ) and
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
-      isUseStep = false
+      |
+        nodeTo.(SsaDefinitionNode).getDefinition() = def and
+        v = def.getSourceVariable() and
+        isUseStep = false
+      )
       or
       // Flow from definition/read to next read
-      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        flowOutOf(def, nodeFrom, v, bb1, i1, isUseStep) and
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         nodeTo.(ReadNode).readsAt(bb2, i2, v)
       )
       or
       // Flow from definition/read to next uncertain write
-      exists(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        flowOutOf(def, nodeFrom, v, bb1, i1, isUseStep) and
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
         exists(UncertainWriteDefinition def2 |
           DfInput::allowFlowIntoUncertainDef(def2) and
-          nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def2 and
+          nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
           def2.definesAt(v, bb2, i2)
         )
       )
       or
       // Flow from definition/read to phi input
-      exists(
-        SourceVariable v, BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi,
-        DefinitionExt phi
-      |
-        flowOutOf(def, nodeFrom, v, bb, i, isUseStep) and
+      exists(BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
+        flowOutOf(nodeFrom, v, bb, i, isUseStep) and
         AdjacentSsaRefs::adjacentRefPhi(bb, i, input, bbPhi, v) and
         nodeTo = TSsaInputNode(phi, input) and
         phi.definesAt(v, bbPhi, -1, _)
       )
       or
       // Flow from input node to def
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
-      def = nodeFrom.(SsaInputNodeImpl).getDefinitionExt() and
-      isUseStep = false
+      exists(DefinitionExt def |
+        nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+        def = nodeFrom.(SsaInputNodeImpl).getPhi() and
+        v = def.getSourceVariable() and
+        isUseStep = false
+      )
     }
 
     /** Holds if the value of `nodeTo` is given by `nodeFrom`. */
-    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
-      (
+    predicate localMustFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo) {
+      exists(Definition def |
         // Flow from assignment into SSA definition
         DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
         or
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
-      ) and
-      nodeTo.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def
+      |
+        nodeTo.(SsaDefinitionNode).getDefinition() = def and
+        v = def.getSourceVariable()
+      )
       or
       // Flow from SSA definition to read
-      nodeFrom.(SsaDefinitionExtNodeImpl).getDefinitionExt() = def and
-      nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
+      exists(DefinitionExt def |
+        nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
+        nodeTo.(ExprNode).getExpr() = DfInput::getARead(def) and
+        v = def.getSourceVariable()
+      )
     }
 
     /**
@@ -1941,6 +1899,88 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           )
         )
       }
+    }
+  }
+
+  /**
+   * Provides query predicates for testing adjacent SSA references and
+   * insertion of phi reads.
+   */
+  module TestAdjacentRefs {
+    private newtype TRef =
+      TRefRead(BasicBlock bb, int i, SourceVariable v) { variableRead(bb, i, v, true) } or
+      TRefDef(Definition def) or
+      TRefPhiRead(BasicBlock bb, SourceVariable v) { synthPhiRead(bb, v) }
+
+    /**
+     * An SSA reference. This is either a certain read, a definition, or a
+     * synthesized phi read.
+     */
+    class Ref extends TRef {
+      /** Gets the source variable referenced by this reference. */
+      SourceVariable getSourceVariable() {
+        this = TRefRead(_, _, result)
+        or
+        exists(Definition def | this = TRefDef(def) and def.getSourceVariable() = result)
+        or
+        this = TRefPhiRead(_, result)
+      }
+
+      /** Holds if this reference is a synthesized phi read. */
+      predicate isPhiRead() { this = TRefPhiRead(_, _) }
+
+      /** Gets a textual representation of this SSA reference. */
+      string toString() {
+        this = TRefRead(_, _, _) and result = "SSA read(" + this.getSourceVariable() + ")"
+        or
+        exists(Definition def | this = TRefDef(def) and result = def.toString())
+        or
+        this = TRefPhiRead(_, _) and result = "SSA phi read(" + this.getSourceVariable() + ")"
+      }
+
+      /** Gets the location of this SSA reference. */
+      Location getLocation() {
+        exists(BasicBlock bb, int i |
+          this = TRefRead(bb, i, _) and bb.getNode(i).getLocation() = result
+        )
+        or
+        exists(Definition def | this = TRefDef(def) and def.getLocation() = result)
+        or
+        exists(BasicBlock bb | this = TRefPhiRead(bb, _) and bb.getLocation() = result)
+      }
+
+      /** Holds if this reference of `v` occurs in `bb` at index `i`. */
+      predicate accessAt(BasicBlock bb, int i, SourceVariable v) {
+        this = TRefRead(bb, i, v)
+        or
+        exists(Definition def | this = TRefDef(def) and def.definesAt(v, bb, i))
+        or
+        this = TRefPhiRead(bb, v) and i = -1
+      }
+    }
+
+    /**
+     * Holds if `r2` is a certain read or uncertain write, and `r1` is the
+     * unique prior reference.
+     */
+    query predicate adjacentRefRead(Ref r1, Ref r2) {
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v |
+        r1.accessAt(bb1, i1, v) and
+        r2.accessAt(bb2, i2, v) and
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v)
+      )
+    }
+
+    /**
+     * Holds if `phi` is a phi definition or phi read and `input` is one its
+     * inputs without any other reference in-between.
+     */
+    query predicate adjacentRefPhi(Ref input, Ref phi) {
+      exists(BasicBlock bb, int i, BasicBlock bbPhi, SourceVariable v |
+        input.accessAt(bb, i, v) and
+        phi.accessAt(bbPhi, -1, v) and
+        AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)
+      )
     }
   }
 }
