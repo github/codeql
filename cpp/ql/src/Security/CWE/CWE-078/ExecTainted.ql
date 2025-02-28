@@ -114,6 +114,12 @@ module ExecStateConfig implements DataFlow::ConfigSig {
   predicate isBarrierOut(DataFlow::Node node) {
     isSink(node) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-078/ExecTainted.ql:78: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module ExecState = TaintTracking::Global<ExecStateConfig>;
@@ -149,6 +155,13 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrierOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-078/ExecTainted.ql:151: Column 1 does not select a source or sink originating from the flow call on line 147
+    // ql/src/Security/CWE/CWE-078/ExecTainted.ql:153: Column 7 does not select a source or sink originating from the flow call on line 147
+    none()
   }
 }
 
