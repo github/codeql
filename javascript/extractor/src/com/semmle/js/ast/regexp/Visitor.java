@@ -63,4 +63,10 @@ public interface Visitor {
   public void visit(UnicodePropertyEscape nd);
 
   public void visit(Intersection nd);
+
+  public void visit(Subtraction nd);
+
+  public void visit(Union nd);
+
+  public void visit(StringDisjunction nd);
 }

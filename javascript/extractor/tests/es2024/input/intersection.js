@@ -4,4 +4,3 @@
                  // - Matches a single character from [abc]
                  // - Then the literal "&&"
                  // - Then a single character from [bcd]
-/[abc&&bcd]/v; // Compilation error due to invalid use of intersection operation

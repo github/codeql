@@ -23,6 +23,8 @@ import com.semmle.js.ast.regexp.Group;
 import com.semmle.js.ast.regexp.HexEscapeSequence;
 import com.semmle.js.ast.regexp.IdentityEscape;
 import com.semmle.js.ast.regexp.Intersection;
+import com.semmle.js.ast.regexp.Subtraction;
+import com.semmle.js.ast.regexp.Union;
 import com.semmle.js.ast.regexp.Literal;
 import com.semmle.js.ast.regexp.NamedBackReference;
 import com.semmle.js.ast.regexp.NonWordBoundary;
@@ -34,6 +36,7 @@ import com.semmle.js.ast.regexp.Range;
 import com.semmle.js.ast.regexp.RegExpTerm;
 import com.semmle.js.ast.regexp.Sequence;
 import com.semmle.js.ast.regexp.Star;
+import com.semmle.js.ast.regexp.StringDisjunction;
 import com.semmle.js.ast.regexp.UnicodeEscapeSequence;
 import com.semmle.js.ast.regexp.UnicodePropertyEscape;
 import com.semmle.js.ast.regexp.Visitor;
@@ -94,6 +97,9 @@ public class RegExpExtractor {
     termkinds.put("ZeroWidthNegativeLookbehind", 26);
     termkinds.put("UnicodePropertyEscape", 27);
     termkinds.put("Intersection", 28);
+    termkinds.put("Subtraction", 29);
+    termkinds.put("Union", 30);
+    termkinds.put("StringDisjunction", 31); // Add StringDisjunction to the kind map
   }
 
   private static final String[] errmsgs =
@@ -293,6 +299,12 @@ public class RegExpExtractor {
     }
 
     @Override
+    public void visit(StringDisjunction nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      visit(nd.getTerm(), lbl, 0);
+    }
+
+    @Override
     public void visit(DecimalEscape nd) {
       visit((Literal) nd);
     }
@@ -352,6 +364,22 @@ public class RegExpExtractor {
       Label lbl = extractTerm(nd, parent, idx);
       int i = 0;
       for (RegExpTerm element : nd.getIntersections())
+        visit(element, lbl, i++);
+    }
+
+    @Override
+    public void visit(Subtraction nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      int i = 0;
+      for (RegExpTerm element : nd.getSubtraction())
+        visit(element, lbl, i++);
+    }
+
+    @Override
+    public void visit(Union nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      int i = 0;
+      for (RegExpTerm element : nd.getUnion())
         visit(element, lbl, i++);
     }
   }
