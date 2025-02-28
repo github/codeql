@@ -92,6 +92,25 @@ newStyleBarrierGuards
 | barrier_flow.rb:58:5:59:34 | [input] SSA phi read(x) |
 | barrier_flow.rb:68:10:71:11 | [input] SSA phi read(x) |
 | barrier_flow.rb:72:5:75:11 | [input] SSA phi read(x) |
+| barrier_flow.rb:84:24:84:24 | x |
+| barrier_flow.rb:84:24:84:34 | [input] SSA phi read(x) |
+| barrier_flow.rb:84:36:85:26 | [input] SSA phi read(x) |
+| barrier_flow.rb:85:14:85:14 | x |
+| barrier_flow.rb:91:14:91:14 | x |
+| barrier_flow.rb:96:24:96:24 | x |
+| barrier_flow.rb:97:14:97:14 | x |
+| barrier_flow.rb:105:14:105:14 | x |
+| barrier_flow.rb:111:14:111:14 | x |
+| barrier_flow.rb:118:8:118:19 | [input] SSA phi read(x) |
+| barrier_flow.rb:118:24:118:35 | [input] SSA phi read(x) |
+| barrier_flow.rb:119:14:119:14 | x |
+| barrier_flow.rb:124:23:124:23 | x |
+| barrier_flow.rb:127:14:127:14 | x |
+| barrier_flow.rb:133:14:133:14 | x |
+| barrier_flow.rb:136:23:136:23 | x |
+| barrier_flow.rb:139:14:139:14 | x |
+| barrier_flow.rb:142:29:142:29 | x |
+| barrier_flow.rb:145:14:145:14 | x |
 controls
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | true |
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:6:5:6:7 | foo | false |
@@ -413,3 +432,97 @@ controls
 | barrier_flow.rb:69:12:69:23 | ... != ... | barrier_flow.rb:70:13:70:18 | return | true |
 | barrier_flow.rb:73:12:73:23 | ... != ... | barrier_flow.rb:73:9:75:11 | if ... | false |
 | barrier_flow.rb:73:12:73:23 | ... != ... | barrier_flow.rb:74:13:74:18 | return | true |
+| barrier_flow.rb:84:8:84:18 | ... == ... | barrier_flow.rb:84:8:84:34 | [true] ... and ... | true |
+| barrier_flow.rb:84:8:84:18 | ... == ... | barrier_flow.rb:84:24:84:24 | x | true |
+| barrier_flow.rb:84:8:84:18 | ... == ... | barrier_flow.rb:85:9:85:14 | self | true |
+| barrier_flow.rb:84:8:84:34 | [false] ... and ... | barrier_flow.rb:87:9:87:14 | self | false |
+| barrier_flow.rb:84:8:84:34 | [true] ... and ... | barrier_flow.rb:85:9:85:14 | self | true |
+| barrier_flow.rb:84:24:84:34 | ... == ... | barrier_flow.rb:84:8:84:34 | [true] ... and ... | true |
+| barrier_flow.rb:84:24:84:34 | ... == ... | barrier_flow.rb:85:9:85:14 | self | true |
+| barrier_flow.rb:90:8:90:18 | ... != ... | barrier_flow.rb:90:8:90:35 | [true] ... and ... | true |
+| barrier_flow.rb:90:8:90:18 | ... != ... | barrier_flow.rb:90:24:90:24 | x | true |
+| barrier_flow.rb:90:8:90:18 | ... != ... | barrier_flow.rb:91:9:91:14 | self | true |
+| barrier_flow.rb:90:8:90:35 | [false] ... and ... | barrier_flow.rb:93:9:93:14 | self | false |
+| barrier_flow.rb:90:8:90:35 | [true] ... and ... | barrier_flow.rb:91:9:91:14 | self | true |
+| barrier_flow.rb:90:24:90:35 | ... == ... | barrier_flow.rb:90:8:90:35 | [true] ... and ... | true |
+| barrier_flow.rb:90:24:90:35 | ... == ... | barrier_flow.rb:91:9:91:14 | self | true |
+| barrier_flow.rb:96:8:96:18 | ... == ... | barrier_flow.rb:96:8:96:35 | [true] ... and ... | true |
+| barrier_flow.rb:96:8:96:18 | ... == ... | barrier_flow.rb:96:24:96:24 | x | true |
+| barrier_flow.rb:96:8:96:18 | ... == ... | barrier_flow.rb:97:9:97:14 | self | true |
+| barrier_flow.rb:96:8:96:35 | [false] ... and ... | barrier_flow.rb:99:9:99:14 | self | false |
+| barrier_flow.rb:96:8:96:35 | [true] ... and ... | barrier_flow.rb:97:9:97:14 | self | true |
+| barrier_flow.rb:96:24:96:35 | ... != ... | barrier_flow.rb:96:8:96:35 | [true] ... and ... | true |
+| barrier_flow.rb:96:24:96:35 | ... != ... | barrier_flow.rb:97:9:97:14 | self | true |
+| barrier_flow.rb:102:8:102:19 | ... != ... | barrier_flow.rb:102:8:102:36 | [true] ... and ... | true |
+| barrier_flow.rb:102:8:102:19 | ... != ... | barrier_flow.rb:102:25:102:25 | x | true |
+| barrier_flow.rb:102:8:102:19 | ... != ... | barrier_flow.rb:103:9:103:14 | self | true |
+| barrier_flow.rb:102:8:102:36 | [false] ... and ... | barrier_flow.rb:105:9:105:14 | self | false |
+| barrier_flow.rb:102:8:102:36 | [true] ... and ... | barrier_flow.rb:103:9:103:14 | self | true |
+| barrier_flow.rb:102:25:102:36 | ... != ... | barrier_flow.rb:102:8:102:36 | [true] ... and ... | true |
+| barrier_flow.rb:102:25:102:36 | ... != ... | barrier_flow.rb:103:9:103:14 | self | true |
+| barrier_flow.rb:108:8:108:25 | [true] not ... | barrier_flow.rb:108:8:108:42 | [true] ... and ... | true |
+| barrier_flow.rb:108:8:108:25 | [true] not ... | barrier_flow.rb:108:31:108:31 | x | true |
+| barrier_flow.rb:108:8:108:25 | [true] not ... | barrier_flow.rb:109:9:109:14 | self | true |
+| barrier_flow.rb:108:8:108:42 | [false] ... and ... | barrier_flow.rb:111:9:111:14 | self | false |
+| barrier_flow.rb:108:8:108:42 | [true] ... and ... | barrier_flow.rb:109:9:109:14 | self | true |
+| barrier_flow.rb:108:12:108:25 | [false] ( ... ) | barrier_flow.rb:108:8:108:25 | [true] not ... | false |
+| barrier_flow.rb:108:12:108:25 | [false] ( ... ) | barrier_flow.rb:108:8:108:42 | [true] ... and ... | false |
+| barrier_flow.rb:108:12:108:25 | [false] ( ... ) | barrier_flow.rb:108:31:108:31 | x | false |
+| barrier_flow.rb:108:12:108:25 | [false] ( ... ) | barrier_flow.rb:109:9:109:14 | self | false |
+| barrier_flow.rb:108:12:108:25 | [true] ( ... ) | barrier_flow.rb:108:8:108:25 | [false] not ... | true |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:108:8:108:25 | [false] not ... | true |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:108:8:108:25 | [true] not ... | false |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:108:8:108:42 | [true] ... and ... | false |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:108:12:108:25 | [false] ( ... ) | false |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:108:12:108:25 | [true] ( ... ) | true |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:108:31:108:31 | x | false |
+| barrier_flow.rb:108:13:108:24 | ... == ... | barrier_flow.rb:109:9:109:14 | self | false |
+| barrier_flow.rb:108:31:108:42 | ... != ... | barrier_flow.rb:108:8:108:42 | [true] ... and ... | true |
+| barrier_flow.rb:108:31:108:42 | ... != ... | barrier_flow.rb:109:9:109:14 | self | true |
+| barrier_flow.rb:118:8:118:19 | ... == ... | barrier_flow.rb:118:8:118:35 | [false] ... or ... | false |
+| barrier_flow.rb:118:8:118:19 | ... == ... | barrier_flow.rb:118:24:118:24 | x | false |
+| barrier_flow.rb:118:8:118:19 | ... == ... | barrier_flow.rb:121:9:121:14 | self | false |
+| barrier_flow.rb:118:8:118:35 | [false] ... or ... | barrier_flow.rb:121:9:121:14 | self | false |
+| barrier_flow.rb:118:8:118:35 | [true] ... or ... | barrier_flow.rb:119:9:119:14 | self | true |
+| barrier_flow.rb:118:24:118:35 | ... == ... | barrier_flow.rb:118:8:118:35 | [false] ... or ... | false |
+| barrier_flow.rb:118:24:118:35 | ... == ... | barrier_flow.rb:121:9:121:14 | self | false |
+| barrier_flow.rb:124:8:124:18 | ... != ... | barrier_flow.rb:124:8:124:34 | [false] ... or ... | false |
+| barrier_flow.rb:124:8:124:18 | ... != ... | barrier_flow.rb:124:23:124:23 | x | false |
+| barrier_flow.rb:124:8:124:18 | ... != ... | barrier_flow.rb:127:9:127:14 | self | false |
+| barrier_flow.rb:124:8:124:34 | [false] ... or ... | barrier_flow.rb:127:9:127:14 | self | false |
+| barrier_flow.rb:124:8:124:34 | [true] ... or ... | barrier_flow.rb:125:9:125:14 | self | true |
+| barrier_flow.rb:124:23:124:34 | ... == ... | barrier_flow.rb:124:8:124:34 | [false] ... or ... | false |
+| barrier_flow.rb:124:23:124:34 | ... == ... | barrier_flow.rb:127:9:127:14 | self | false |
+| barrier_flow.rb:130:8:130:18 | ... == ... | barrier_flow.rb:130:8:130:34 | [false] ... or ... | false |
+| barrier_flow.rb:130:8:130:18 | ... == ... | barrier_flow.rb:130:23:130:23 | x | false |
+| barrier_flow.rb:130:8:130:18 | ... == ... | barrier_flow.rb:133:9:133:14 | self | false |
+| barrier_flow.rb:130:8:130:34 | [false] ... or ... | barrier_flow.rb:133:9:133:14 | self | false |
+| barrier_flow.rb:130:8:130:34 | [true] ... or ... | barrier_flow.rb:131:9:131:14 | self | true |
+| barrier_flow.rb:130:23:130:34 | ... != ... | barrier_flow.rb:130:8:130:34 | [false] ... or ... | false |
+| barrier_flow.rb:130:23:130:34 | ... != ... | barrier_flow.rb:133:9:133:14 | self | false |
+| barrier_flow.rb:136:8:136:18 | ... != ... | barrier_flow.rb:136:8:136:33 | [false] ... or ... | false |
+| barrier_flow.rb:136:8:136:18 | ... != ... | barrier_flow.rb:136:23:136:23 | x | false |
+| barrier_flow.rb:136:8:136:18 | ... != ... | barrier_flow.rb:139:9:139:14 | self | false |
+| barrier_flow.rb:136:8:136:33 | [false] ... or ... | barrier_flow.rb:139:9:139:14 | self | false |
+| barrier_flow.rb:136:8:136:33 | [true] ... or ... | barrier_flow.rb:137:9:137:14 | self | true |
+| barrier_flow.rb:136:23:136:33 | ... != ... | barrier_flow.rb:136:8:136:33 | [false] ... or ... | false |
+| barrier_flow.rb:136:23:136:33 | ... != ... | barrier_flow.rb:139:9:139:14 | self | false |
+| barrier_flow.rb:142:8:142:24 | [false] not ... | barrier_flow.rb:142:8:142:39 | [false] ... or ... | false |
+| barrier_flow.rb:142:8:142:24 | [false] not ... | barrier_flow.rb:142:29:142:29 | x | false |
+| barrier_flow.rb:142:8:142:24 | [false] not ... | barrier_flow.rb:145:9:145:14 | self | false |
+| barrier_flow.rb:142:8:142:39 | [false] ... or ... | barrier_flow.rb:145:9:145:14 | self | false |
+| barrier_flow.rb:142:8:142:39 | [true] ... or ... | barrier_flow.rb:143:9:143:14 | self | true |
+| barrier_flow.rb:142:12:142:24 | [false] ( ... ) | barrier_flow.rb:142:8:142:24 | [true] not ... | false |
+| barrier_flow.rb:142:12:142:24 | [true] ( ... ) | barrier_flow.rb:142:8:142:24 | [false] not ... | true |
+| barrier_flow.rb:142:12:142:24 | [true] ( ... ) | barrier_flow.rb:142:8:142:39 | [false] ... or ... | true |
+| barrier_flow.rb:142:12:142:24 | [true] ( ... ) | barrier_flow.rb:142:29:142:29 | x | true |
+| barrier_flow.rb:142:12:142:24 | [true] ( ... ) | barrier_flow.rb:145:9:145:14 | self | true |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:142:8:142:24 | [false] not ... | true |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:142:8:142:24 | [true] not ... | false |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:142:8:142:39 | [false] ... or ... | true |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:142:12:142:24 | [false] ( ... ) | false |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:142:12:142:24 | [true] ( ... ) | true |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:142:29:142:29 | x | true |
+| barrier_flow.rb:142:13:142:23 | ... == ... | barrier_flow.rb:145:9:145:14 | self | true |
+| barrier_flow.rb:142:29:142:39 | ... != ... | barrier_flow.rb:142:8:142:39 | [false] ... or ... | false |
+| barrier_flow.rb:142:29:142:39 | ... != ... | barrier_flow.rb:145:9:145:14 | self | false |
