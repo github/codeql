@@ -112,6 +112,11 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
 predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock falsesucc) {
   exists(ConditionBlock conditionBlock |
     conditionBlock.getCondition() = t.getIsHeldByCurrentThreadAccess()
+    or
+    // Assume that a boolean variable condition check that controls an unlock call
+    // is checking the lock state similar to `isHeldByCurrentThread`.
+    conditionBlock.getCondition() = any(VarAccess v | v.getType() instanceof BooleanType) and
+    conditionBlock.controls(t.getUnlockAccess().getBasicBlock(), true)
   |
     conditionBlock.getBasicBlock() = checkblock and
     conditionBlock.getTestSuccessor(false) = falsesucc
