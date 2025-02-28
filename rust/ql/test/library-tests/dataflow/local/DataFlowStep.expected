@@ -1574,206 +1574,212 @@ models
 | 832 | Summary: lang:core; crate::panic::abort_unwind; Argument[0].ReturnValue; ReturnValue; value |
 | 833 | Summary: lang:core; crate::ptr::from_mut; Argument[0]; ReturnValue; value |
 | 834 | Summary: lang:core; crate::ptr::from_ref; Argument[0]; ReturnValue; value |
-| 835 | Summary: lang:core; crate::slice::sort::shared::find_existing_run; Argument[1].ReturnValue; ReturnValue.Field[1]; value |
-| 836 | Summary: lang:core; crate::slice::sort::shared::smallsort::sort4_stable; Argument[0].Reference; Argument[2].Parameter[1].Reference; value |
-| 837 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_lower; Argument[0]; ReturnValue.Element; value |
-| 838 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_upper; Argument[0]; ReturnValue.Element; value |
-| 839 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 840 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 841 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 842 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue.Reference; value |
-| 843 | Summary: lang:proc_macro; <&str as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 844 | Summary: lang:proc_macro; <&str as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 845 | Summary: lang:proc_macro; <bool as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 846 | Summary: lang:proc_macro; <bool as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 847 | Summary: lang:proc_macro; <char as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 848 | Summary: lang:proc_macro; <char as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 849 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 850 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 851 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 852 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 853 | Summary: lang:proc_macro; <crate::TokenStream as crate::to_tokens::ToTokens>::into_token_stream; Argument[self]; ReturnValue; value |
-| 854 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 855 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 856 | Summary: lang:proc_macro; <crate::bridge::client::Client as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 857 | Summary: lang:proc_macro; <crate::bridge::client::SourceFile as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
-| 858 | Summary: lang:proc_macro; <crate::bridge::client::TokenStream as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
-| 859 | Summary: lang:proc_macro; <crate::bridge::server::MaybeCrossThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
-| 860 | Summary: lang:proc_macro; <crate::bridge::server::SameThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
-| 861 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::error; Argument[self]; ReturnValue; value |
-| 862 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::help; Argument[self]; ReturnValue; value |
-| 863 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::note; Argument[self]; ReturnValue; value |
-| 864 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_error; Argument[self]; ReturnValue; value |
-| 865 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_help; Argument[self]; ReturnValue; value |
-| 866 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_note; Argument[self]; ReturnValue; value |
-| 867 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_warning; Argument[self]; ReturnValue; value |
-| 868 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::warning; Argument[self]; ReturnValue; value |
-| 869 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 870 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 871 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 872 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 873 | Summary: lang:proc_macro; <crate::vec::Vec as crate::diagnostic::MultiSpan>::into_spans; Argument[self]; ReturnValue; value |
-| 874 | Summary: lang:proc_macro; <u32 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 875 | Summary: lang:proc_macro; <u8 as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 876 | Summary: lang:proc_macro; <u8 as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 877 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 878 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue; value |
-| 879 | Summary: lang:proc_macro; <usize as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
-| 880 | Summary: lang:proc_macro; <usize as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
-| 881 | Summary: lang:proc_macro; <usize as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
-| 882 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1].ReturnValue; ReturnValue; value |
-| 883 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1]; Argument[1].Parameter[0]; value |
-| 884 | Summary: lang:proc_macro; crate::bridge::client::state::with; Argument[0].ReturnValue; ReturnValue; value |
-| 885 | Summary: lang:std; <&[u8] as crate::io::BufRead>::consume; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 886 | Summary: lang:std; <&[u8] as crate::io::BufRead>::fill_buf; Argument[self].Reference; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 887 | Summary: lang:std; <&[u8] as crate::io::Read>::read_buf_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 888 | Summary: lang:std; <&[u8] as crate::io::Read>::read_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 889 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_end; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 890 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_string; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 891 | Summary: lang:std; <&[u8] as crate::io::copy::BufferedReaderSpec>::copy_to; Argument[self].Element; Argument[self].Reference.Reference; value |
-| 892 | Summary: lang:std; <crate::collections::hash::set::SymmetricDifference as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 893 | Summary: lang:std; <crate::collections::hash::set::Union as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
-| 894 | Summary: lang:std; <crate::error::Report>::pretty; Argument[self]; ReturnValue; value |
-| 895 | Summary: lang:std; <crate::error::Report>::show_backtrace; Argument[self]; ReturnValue; value |
-| 896 | Summary: lang:std; <crate::ffi::os_str::OsStr as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 897 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::borrow::Borrow>::borrow; Argument[self].Element; ReturnValue.Reference; value |
-| 898 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 899 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::Deref>::deref; Argument[self].Element; ReturnValue.Reference; value |
-| 900 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::DerefMut>::deref_mut; Argument[self].Element; ReturnValue.Reference; value |
-| 901 | Summary: lang:std; <crate::ffi::os_str::OsString>::as_os_str; Argument[self]; ReturnValue; value |
-| 902 | Summary: lang:std; <crate::fs::DirBuilder as crate::os::unix::fs::DirBuilderExt>::mode; Argument[self]; ReturnValue; value |
-| 903 | Summary: lang:std; <crate::fs::DirBuilder>::recursive; Argument[self]; ReturnValue; value |
-| 904 | Summary: lang:std; <crate::fs::DirEntry as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 905 | Summary: lang:std; <crate::fs::FileTimes as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 906 | Summary: lang:std; <crate::fs::FileTimes>::set_accessed; Argument[self]; ReturnValue; value |
-| 907 | Summary: lang:std; <crate::fs::FileTimes>::set_modified; Argument[self]; ReturnValue; value |
-| 908 | Summary: lang:std; <crate::fs::FileType as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 909 | Summary: lang:std; <crate::fs::Metadata as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 910 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::custom_flags; Argument[self]; ReturnValue; value |
-| 911 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::mode; Argument[self]; ReturnValue; value |
-| 912 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 913 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 914 | Summary: lang:std; <crate::fs::OpenOptions>::append; Argument[self]; ReturnValue; value |
-| 915 | Summary: lang:std; <crate::fs::OpenOptions>::create; Argument[self]; ReturnValue; value |
-| 916 | Summary: lang:std; <crate::fs::OpenOptions>::create_new; Argument[self]; ReturnValue; value |
-| 917 | Summary: lang:std; <crate::fs::OpenOptions>::read; Argument[self]; ReturnValue; value |
-| 918 | Summary: lang:std; <crate::fs::OpenOptions>::truncate; Argument[self]; ReturnValue; value |
-| 919 | Summary: lang:std; <crate::fs::OpenOptions>::write; Argument[self]; ReturnValue; value |
-| 920 | Summary: lang:std; <crate::fs::Permissions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 921 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::error; Argument[self].Field[1]; ReturnValue.Reference; value |
-| 922 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_error; Argument[self].Field[1]; ReturnValue; value |
-| 923 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 924 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[0]; ReturnValue.Field[1]; value |
-| 925 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[1]; ReturnValue.Field[0]; value |
-| 926 | Summary: lang:std; <crate::io::error::Error as crate::convert::From>::from; Argument[0].Field[1]; ReturnValue; value |
-| 927 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 928 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 929 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 930 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 931 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 932 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 933 | Summary: lang:std; <crate::os::fd::owned::BorrowedFd as crate::os::fd::owned::AsFd>::as_fd; Argument[self].Reference; ReturnValue; value |
-| 934 | Summary: lang:std; <crate::os::unix::net::addr::SocketAddr>::new; Argument[0].ReturnValue; ReturnValue; value |
-| 935 | Summary: lang:std; <crate::os::unix::net::datagram::UnixDatagram as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 936 | Summary: lang:std; <crate::os::unix::net::stream::UnixStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 937 | Summary: lang:std; <crate::path::Path as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 938 | Summary: lang:std; <crate::path::PathBuf as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 939 | Summary: lang:std; <crate::path::PathBuf>::as_path; Argument[self]; ReturnValue; value |
-| 940 | Summary: lang:std; <crate::process::Child as crate::os::linux::process::ChildExt>::into_pidfd; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 941 | Summary: lang:std; <crate::process::Command as crate::os::linux::process::CommandExt>::create_pidfd; Argument[self]; ReturnValue; value |
-| 942 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::arg0; Argument[self]; ReturnValue; value |
-| 943 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::gid; Argument[self]; ReturnValue; value |
-| 944 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::groups; Argument[self]; ReturnValue; value |
-| 945 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::pre_exec; Argument[self]; ReturnValue; value |
-| 946 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::process_group; Argument[self]; ReturnValue; value |
-| 947 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::uid; Argument[self]; ReturnValue; value |
-| 948 | Summary: lang:std; <crate::process::Command>::arg; Argument[self]; ReturnValue; value |
-| 949 | Summary: lang:std; <crate::process::Command>::args; Argument[self]; ReturnValue; value |
-| 950 | Summary: lang:std; <crate::process::Command>::current_dir; Argument[self]; ReturnValue; value |
-| 951 | Summary: lang:std; <crate::process::Command>::env; Argument[self]; ReturnValue; value |
-| 952 | Summary: lang:std; <crate::process::Command>::env_clear; Argument[self]; ReturnValue; value |
-| 953 | Summary: lang:std; <crate::process::Command>::env_remove; Argument[self]; ReturnValue; value |
-| 954 | Summary: lang:std; <crate::process::Command>::envs; Argument[self]; ReturnValue; value |
-| 955 | Summary: lang:std; <crate::process::Command>::stderr; Argument[self]; ReturnValue; value |
-| 956 | Summary: lang:std; <crate::process::Command>::stdin; Argument[self]; ReturnValue; value |
-| 957 | Summary: lang:std; <crate::process::Command>::stdout; Argument[self]; ReturnValue; value |
-| 958 | Summary: lang:std; <crate::process::ExitCode as crate::process::Termination>::report; Argument[self]; ReturnValue; value |
-| 959 | Summary: lang:std; <crate::process::ExitCode as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 960 | Summary: lang:std; <crate::process::ExitStatus as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 961 | Summary: lang:std; <crate::sync::barrier::BarrierWaitResult>::is_leader; Argument[self].Field[0]; ReturnValue; value |
-| 962 | Summary: lang:std; <crate::sync::mpmc::array::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 963 | Summary: lang:std; <crate::sync::mpmc::list::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 964 | Summary: lang:std; <crate::sync::mpmc::zero::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 965 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::set; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 966 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::try_insert; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)].Field[1]; value |
-| 967 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 968 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
-| 969 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_ms; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
-| 970 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0].Reference; Argument[2].Parameter[0].Reference; value |
-| 971 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
-| 972 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0].Reference; Argument[1].Parameter[0].Reference; value |
-| 973 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 974 | Summary: lang:std; <crate::sync::poison::condvar::WaitTimeoutResult>::timed_out; Argument[self].Field[0]; ReturnValue; value |
-| 975 | Summary: lang:std; <crate::sync::poison::mutex::MappedMutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 976 | Summary: lang:std; <crate::sync::poison::mutex::MutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 977 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 978 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 979 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 980 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 981 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 982 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 983 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 984 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 985 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 986 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 987 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 988 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 989 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 990 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 991 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 992 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 993 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 994 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 995 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 996 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 997 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 998 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 999 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe>::as_file_desc; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 1000 | Summary: lang:std; <crate::sys::pal::unix::process::process_inner::ExitStatus>::into_raw; Argument[self].Field[0]; ReturnValue; value |
-| 1001 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8 as crate::ops::index::Index>::index; Argument[self]; ReturnValue; value |
-| 1002 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8Buf>::into_string; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1003 | Summary: lang:std; <crate::thread::Builder>::name; Argument[self]; ReturnValue; value |
-| 1004 | Summary: lang:std; <crate::thread::Builder>::no_hooks; Argument[self]; ReturnValue; value |
-| 1005 | Summary: lang:std; <crate::thread::Builder>::stack_size; Argument[self]; ReturnValue; value |
-| 1006 | Summary: lang:std; <crate::thread::ThreadId>::as_u64; Argument[self].Field[0]; ReturnValue; value |
-| 1007 | Summary: lang:std; <crate::thread::local::LocalKey>::try_with; Argument[0].ReturnValue; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 1008 | Summary: lang:std; <crate::thread::local::LocalKey>::with; Argument[0].ReturnValue; ReturnValue; value |
-| 1009 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow; Argument[0].ReturnValue; ReturnValue; value |
-| 1010 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow_mut; Argument[0].ReturnValue; ReturnValue; value |
-| 1011 | Summary: lang:std; <crate::time::SystemTime as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
-| 1012 | Summary: lang:std; <crate::time::SystemTimeError>::duration; Argument[self].Field[0]; ReturnValue; value |
-| 1013 | Summary: lang:std; <i32 as crate::os::fd::raw::AsRawFd>::as_raw_fd; Argument[self].Reference; ReturnValue; value |
-| 1014 | Summary: lang:std; <i32 as crate::os::fd::raw::FromRawFd>::from_raw_fd; Argument[0]; ReturnValue; value |
-| 1015 | Summary: lang:std; <i32 as crate::os::fd::raw::IntoRawFd>::into_raw_fd; Argument[self]; ReturnValue; value |
-| 1016 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::as_str; Argument[self].Field[0]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 1017 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::get; Argument[self].Field[0]; ReturnValue.Reference; value |
-| 1018 | Summary: lang:std; <{292}::RewrapBox as crate::panic::PanicPayload>::get; Argument[self].Field[0].Reference; ReturnValue.Reference; value |
-| 1019 | Summary: lang:std; crate::backtrace::helper::lazy_resolve; Argument[0]; ReturnValue; value |
-| 1020 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue.Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1021 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue; ReturnValue; value |
-| 1022 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 1023 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 1024 | Summary: lang:std; crate::io::default_read_vectored; Argument[0].ReturnValue; ReturnValue; value |
-| 1025 | Summary: lang:std; crate::io::default_write_vectored; Argument[0].ReturnValue; ReturnValue; value |
-| 1026 | Summary: lang:std; crate::sys::backtrace::__rust_begin_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
-| 1027 | Summary: lang:std; crate::sys::backtrace::__rust_end_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
-| 1028 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_path_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
-| 1029 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
-| 1030 | Summary: lang:std; crate::sys::pal::unix::cvt; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 1031 | Summary: lang:std; crate::sys_common::ignore_notfound; Argument[0].Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1032 | Summary: lang:std; crate::thread::current::set_current; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
-| 1033 | Summary: lang:std; crate::thread::current::try_with_current; Argument[0].ReturnValue; ReturnValue; value |
-| 1034 | Summary: lang:std; crate::thread::with_current_name; Argument[0].ReturnValue; ReturnValue; value |
+| 835 | Summary: lang:core; crate::ptr::read; Argument[0].Reference; ReturnValue; value |
+| 836 | Summary: lang:core; crate::ptr::read_unaligned; Argument[0].Reference; ReturnValue; value |
+| 837 | Summary: lang:core; crate::ptr::read_volatile; Argument[0].Reference; ReturnValue; value |
+| 838 | Summary: lang:core; crate::ptr::write; Argument[1]; Argument[0].Reference; value |
+| 839 | Summary: lang:core; crate::ptr::write_unaligned; Argument[1]; Argument[0].Reference; value |
+| 840 | Summary: lang:core; crate::ptr::write_volatile; Argument[1]; Argument[0].Reference; value |
+| 841 | Summary: lang:core; crate::slice::sort::shared::find_existing_run; Argument[1].ReturnValue; ReturnValue.Field[1]; value |
+| 842 | Summary: lang:core; crate::slice::sort::shared::smallsort::sort4_stable; Argument[0].Reference; Argument[2].Parameter[1].Reference; value |
+| 843 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_lower; Argument[0]; ReturnValue.Element; value |
+| 844 | Summary: lang:core; crate::unicode::unicode_data::conversions::to_upper; Argument[0]; ReturnValue.Element; value |
+| 845 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 846 | Summary: lang:proc_macro; <&[u8] as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 847 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 848 | Summary: lang:proc_macro; <&[u8] as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue.Reference; value |
+| 849 | Summary: lang:proc_macro; <&str as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 850 | Summary: lang:proc_macro; <&str as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 851 | Summary: lang:proc_macro; <bool as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 852 | Summary: lang:proc_macro; <bool as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 853 | Summary: lang:proc_macro; <char as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 854 | Summary: lang:proc_macro; <char as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 855 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 856 | Summary: lang:proc_macro; <crate::Delimiter as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 857 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 858 | Summary: lang:proc_macro; <crate::Spacing as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 859 | Summary: lang:proc_macro; <crate::TokenStream as crate::to_tokens::ToTokens>::into_token_stream; Argument[self]; ReturnValue; value |
+| 860 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 861 | Summary: lang:proc_macro; <crate::bridge::LitKind as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 862 | Summary: lang:proc_macro; <crate::bridge::client::Client as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 863 | Summary: lang:proc_macro; <crate::bridge::client::SourceFile as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
+| 864 | Summary: lang:proc_macro; <crate::bridge::client::TokenStream as crate::clone::Clone>::clone; Argument[self]; ReturnValue; value |
+| 865 | Summary: lang:proc_macro; <crate::bridge::server::MaybeCrossThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
+| 866 | Summary: lang:proc_macro; <crate::bridge::server::SameThread as crate::bridge::server::ExecutionStrategy>::run_bridge_and_client; Argument[2].ReturnValue; ReturnValue; value |
+| 867 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::error; Argument[self]; ReturnValue; value |
+| 868 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::help; Argument[self]; ReturnValue; value |
+| 869 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::note; Argument[self]; ReturnValue; value |
+| 870 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_error; Argument[self]; ReturnValue; value |
+| 871 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_help; Argument[self]; ReturnValue; value |
+| 872 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_note; Argument[self]; ReturnValue; value |
+| 873 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::span_warning; Argument[self]; ReturnValue; value |
+| 874 | Summary: lang:proc_macro; <crate::diagnostic::Diagnostic>::warning; Argument[self]; ReturnValue; value |
+| 875 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 876 | Summary: lang:proc_macro; <crate::diagnostic::Level as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 877 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 878 | Summary: lang:proc_macro; <crate::string::String as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 879 | Summary: lang:proc_macro; <crate::vec::Vec as crate::diagnostic::MultiSpan>::into_spans; Argument[self]; ReturnValue; value |
+| 880 | Summary: lang:proc_macro; <u32 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 881 | Summary: lang:proc_macro; <u8 as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 882 | Summary: lang:proc_macro; <u8 as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 883 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 884 | Summary: lang:proc_macro; <u8 as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; ReturnValue; value |
+| 885 | Summary: lang:proc_macro; <usize as crate::bridge::Mark>::mark; Argument[0]; ReturnValue; value |
+| 886 | Summary: lang:proc_macro; <usize as crate::bridge::Unmark>::unmark; Argument[self]; ReturnValue; value |
+| 887 | Summary: lang:proc_macro; <usize as crate::bridge::rpc::DecodeMut>::decode; Argument[0].Element; Argument[0].Reference.Reference; value |
+| 888 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1].ReturnValue; ReturnValue; value |
+| 889 | Summary: lang:proc_macro; crate::bridge::client::state::set; Argument[1]; Argument[1].Parameter[0]; value |
+| 890 | Summary: lang:proc_macro; crate::bridge::client::state::with; Argument[0].ReturnValue; ReturnValue; value |
+| 891 | Summary: lang:std; <&[u8] as crate::io::BufRead>::consume; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 892 | Summary: lang:std; <&[u8] as crate::io::BufRead>::fill_buf; Argument[self].Reference; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 893 | Summary: lang:std; <&[u8] as crate::io::Read>::read_buf_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 894 | Summary: lang:std; <&[u8] as crate::io::Read>::read_exact; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 895 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_end; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 896 | Summary: lang:std; <&[u8] as crate::io::Read>::read_to_string; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 897 | Summary: lang:std; <&[u8] as crate::io::copy::BufferedReaderSpec>::copy_to; Argument[self].Element; Argument[self].Reference.Reference; value |
+| 898 | Summary: lang:std; <crate::collections::hash::set::SymmetricDifference as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 899 | Summary: lang:std; <crate::collections::hash::set::Union as crate::iter::traits::iterator::Iterator>::fold; Argument[0]; ReturnValue; value |
+| 900 | Summary: lang:std; <crate::error::Report>::pretty; Argument[self]; ReturnValue; value |
+| 901 | Summary: lang:std; <crate::error::Report>::show_backtrace; Argument[self]; ReturnValue; value |
+| 902 | Summary: lang:std; <crate::ffi::os_str::OsStr as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 903 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::borrow::Borrow>::borrow; Argument[self].Element; ReturnValue.Reference; value |
+| 904 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 905 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::Deref>::deref; Argument[self].Element; ReturnValue.Reference; value |
+| 906 | Summary: lang:std; <crate::ffi::os_str::OsString as crate::ops::deref::DerefMut>::deref_mut; Argument[self].Element; ReturnValue.Reference; value |
+| 907 | Summary: lang:std; <crate::ffi::os_str::OsString>::as_os_str; Argument[self]; ReturnValue; value |
+| 908 | Summary: lang:std; <crate::fs::DirBuilder as crate::os::unix::fs::DirBuilderExt>::mode; Argument[self]; ReturnValue; value |
+| 909 | Summary: lang:std; <crate::fs::DirBuilder>::recursive; Argument[self]; ReturnValue; value |
+| 910 | Summary: lang:std; <crate::fs::DirEntry as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 911 | Summary: lang:std; <crate::fs::FileTimes as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 912 | Summary: lang:std; <crate::fs::FileTimes>::set_accessed; Argument[self]; ReturnValue; value |
+| 913 | Summary: lang:std; <crate::fs::FileTimes>::set_modified; Argument[self]; ReturnValue; value |
+| 914 | Summary: lang:std; <crate::fs::FileType as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 915 | Summary: lang:std; <crate::fs::Metadata as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 916 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::custom_flags; Argument[self]; ReturnValue; value |
+| 917 | Summary: lang:std; <crate::fs::OpenOptions as crate::os::unix::fs::OpenOptionsExt>::mode; Argument[self]; ReturnValue; value |
+| 918 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 919 | Summary: lang:std; <crate::fs::OpenOptions as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 920 | Summary: lang:std; <crate::fs::OpenOptions>::append; Argument[self]; ReturnValue; value |
+| 921 | Summary: lang:std; <crate::fs::OpenOptions>::create; Argument[self]; ReturnValue; value |
+| 922 | Summary: lang:std; <crate::fs::OpenOptions>::create_new; Argument[self]; ReturnValue; value |
+| 923 | Summary: lang:std; <crate::fs::OpenOptions>::read; Argument[self]; ReturnValue; value |
+| 924 | Summary: lang:std; <crate::fs::OpenOptions>::truncate; Argument[self]; ReturnValue; value |
+| 925 | Summary: lang:std; <crate::fs::OpenOptions>::write; Argument[self]; ReturnValue; value |
+| 926 | Summary: lang:std; <crate::fs::Permissions as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 927 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::error; Argument[self].Field[1]; ReturnValue.Reference; value |
+| 928 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_error; Argument[self].Field[1]; ReturnValue; value |
+| 929 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 930 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[0]; ReturnValue.Field[1]; value |
+| 931 | Summary: lang:std; <crate::io::buffered::IntoInnerError>::into_parts; Argument[self].Field[1]; ReturnValue.Field[0]; value |
+| 932 | Summary: lang:std; <crate::io::error::Error as crate::convert::From>::from; Argument[0].Field[1]; ReturnValue; value |
+| 933 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 934 | Summary: lang:std; <crate::net::tcp::TcpListener as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 935 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 936 | Summary: lang:std; <crate::net::tcp::TcpStream as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 937 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 938 | Summary: lang:std; <crate::net::udp::UdpSocket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 939 | Summary: lang:std; <crate::os::fd::owned::BorrowedFd as crate::os::fd::owned::AsFd>::as_fd; Argument[self].Reference; ReturnValue; value |
+| 940 | Summary: lang:std; <crate::os::unix::net::addr::SocketAddr>::new; Argument[0].ReturnValue; ReturnValue; value |
+| 941 | Summary: lang:std; <crate::os::unix::net::datagram::UnixDatagram as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 942 | Summary: lang:std; <crate::os::unix::net::stream::UnixStream as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 943 | Summary: lang:std; <crate::path::Path as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 944 | Summary: lang:std; <crate::path::PathBuf as crate::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 945 | Summary: lang:std; <crate::path::PathBuf>::as_path; Argument[self]; ReturnValue; value |
+| 946 | Summary: lang:std; <crate::process::Child as crate::os::linux::process::ChildExt>::into_pidfd; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 947 | Summary: lang:std; <crate::process::Command as crate::os::linux::process::CommandExt>::create_pidfd; Argument[self]; ReturnValue; value |
+| 948 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::arg0; Argument[self]; ReturnValue; value |
+| 949 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::gid; Argument[self]; ReturnValue; value |
+| 950 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::groups; Argument[self]; ReturnValue; value |
+| 951 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::pre_exec; Argument[self]; ReturnValue; value |
+| 952 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::process_group; Argument[self]; ReturnValue; value |
+| 953 | Summary: lang:std; <crate::process::Command as crate::os::unix::process::CommandExt>::uid; Argument[self]; ReturnValue; value |
+| 954 | Summary: lang:std; <crate::process::Command>::arg; Argument[self]; ReturnValue; value |
+| 955 | Summary: lang:std; <crate::process::Command>::args; Argument[self]; ReturnValue; value |
+| 956 | Summary: lang:std; <crate::process::Command>::current_dir; Argument[self]; ReturnValue; value |
+| 957 | Summary: lang:std; <crate::process::Command>::env; Argument[self]; ReturnValue; value |
+| 958 | Summary: lang:std; <crate::process::Command>::env_clear; Argument[self]; ReturnValue; value |
+| 959 | Summary: lang:std; <crate::process::Command>::env_remove; Argument[self]; ReturnValue; value |
+| 960 | Summary: lang:std; <crate::process::Command>::envs; Argument[self]; ReturnValue; value |
+| 961 | Summary: lang:std; <crate::process::Command>::stderr; Argument[self]; ReturnValue; value |
+| 962 | Summary: lang:std; <crate::process::Command>::stdin; Argument[self]; ReturnValue; value |
+| 963 | Summary: lang:std; <crate::process::Command>::stdout; Argument[self]; ReturnValue; value |
+| 964 | Summary: lang:std; <crate::process::ExitCode as crate::process::Termination>::report; Argument[self]; ReturnValue; value |
+| 965 | Summary: lang:std; <crate::process::ExitCode as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 966 | Summary: lang:std; <crate::process::ExitStatus as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 967 | Summary: lang:std; <crate::sync::barrier::BarrierWaitResult>::is_leader; Argument[self].Field[0]; ReturnValue; value |
+| 968 | Summary: lang:std; <crate::sync::mpmc::array::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 969 | Summary: lang:std; <crate::sync::mpmc::list::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 970 | Summary: lang:std; <crate::sync::mpmc::zero::Channel>::write; Argument[1]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 971 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::set; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 972 | Summary: lang:std; <crate::sync::once_lock::OnceLock>::try_insert; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)].Field[1]; value |
+| 973 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 974 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
+| 975 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_ms; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
+| 976 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0].Reference; Argument[2].Parameter[0].Reference; value |
+| 977 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_timeout_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; value |
+| 978 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0].Reference; Argument[1].Parameter[0].Reference; value |
+| 979 | Summary: lang:std; <crate::sync::poison::condvar::Condvar>::wait_while; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 980 | Summary: lang:std; <crate::sync::poison::condvar::WaitTimeoutResult>::timed_out; Argument[self].Field[0]; ReturnValue; value |
+| 981 | Summary: lang:std; <crate::sync::poison::mutex::MappedMutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 982 | Summary: lang:std; <crate::sync::poison::mutex::MutexGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 983 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 984 | Summary: lang:std; <crate::sync::poison::rwlock::MappedRwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 985 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockReadGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 986 | Summary: lang:std; <crate::sync::poison::rwlock::RwLockWriteGuard>::try_map; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 987 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 988 | Summary: lang:std; <crate::sys::net::connection::socket::TcpListener>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 989 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 990 | Summary: lang:std; <crate::sys::net::connection::socket::TcpStream>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 991 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 992 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::bind; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 993 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 994 | Summary: lang:std; <crate::sys::net::connection::socket::UdpSocket>::connect; Argument[0].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 995 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 996 | Summary: lang:std; <crate::sys::net::connection::socket::unix::Socket as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 997 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 998 | Summary: lang:std; <crate::sys::pal::unix::fd::FileDesc as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 999 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1000 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::AsInnerMut>::as_inner_mut; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1001 | Summary: lang:std; <crate::sys::pal::unix::fs::File as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 1002 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::AsInner>::as_inner; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1003 | Summary: lang:std; <crate::sys::pal::unix::linux::pidfd::PidFd as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 1004 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 1005 | Summary: lang:std; <crate::sys::pal::unix::pipe::AnonPipe>::as_file_desc; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1006 | Summary: lang:std; <crate::sys::pal::unix::process::process_inner::ExitStatus>::into_raw; Argument[self].Field[0]; ReturnValue; value |
+| 1007 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8 as crate::ops::index::Index>::index; Argument[self]; ReturnValue; value |
+| 1008 | Summary: lang:std; <crate::sys_common::wtf8::Wtf8Buf>::into_string; Argument[self]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1009 | Summary: lang:std; <crate::thread::Builder>::name; Argument[self]; ReturnValue; value |
+| 1010 | Summary: lang:std; <crate::thread::Builder>::no_hooks; Argument[self]; ReturnValue; value |
+| 1011 | Summary: lang:std; <crate::thread::Builder>::stack_size; Argument[self]; ReturnValue; value |
+| 1012 | Summary: lang:std; <crate::thread::ThreadId>::as_u64; Argument[self].Field[0]; ReturnValue; value |
+| 1013 | Summary: lang:std; <crate::thread::local::LocalKey>::try_with; Argument[0].ReturnValue; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 1014 | Summary: lang:std; <crate::thread::local::LocalKey>::with; Argument[0].ReturnValue; ReturnValue; value |
+| 1015 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow; Argument[0].ReturnValue; ReturnValue; value |
+| 1016 | Summary: lang:std; <crate::thread::local::LocalKey>::with_borrow_mut; Argument[0].ReturnValue; ReturnValue; value |
+| 1017 | Summary: lang:std; <crate::time::SystemTime as crate::sys_common::IntoInner>::into_inner; Argument[self].Field[0]; ReturnValue; value |
+| 1018 | Summary: lang:std; <crate::time::SystemTimeError>::duration; Argument[self].Field[0]; ReturnValue; value |
+| 1019 | Summary: lang:std; <i32 as crate::os::fd::raw::AsRawFd>::as_raw_fd; Argument[self].Reference; ReturnValue; value |
+| 1020 | Summary: lang:std; <i32 as crate::os::fd::raw::FromRawFd>::from_raw_fd; Argument[0]; ReturnValue; value |
+| 1021 | Summary: lang:std; <i32 as crate::os::fd::raw::IntoRawFd>::into_raw_fd; Argument[self]; ReturnValue; value |
+| 1022 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::as_str; Argument[self].Field[0]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 1023 | Summary: lang:std; <{287}::StaticStrPayload as crate::panic::PanicPayload>::get; Argument[self].Field[0]; ReturnValue.Reference; value |
+| 1024 | Summary: lang:std; <{292}::RewrapBox as crate::panic::PanicPayload>::get; Argument[self].Field[0].Reference; ReturnValue.Reference; value |
+| 1025 | Summary: lang:std; crate::backtrace::helper::lazy_resolve; Argument[0]; ReturnValue; value |
+| 1026 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue.Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1027 | Summary: lang:std; crate::io::append_to_string; Argument[1].ReturnValue; ReturnValue; value |
+| 1028 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 1029 | Summary: lang:std; crate::io::default_read_buf; Argument[0].ReturnValue.Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 1030 | Summary: lang:std; crate::io::default_read_vectored; Argument[0].ReturnValue; ReturnValue; value |
+| 1031 | Summary: lang:std; crate::io::default_write_vectored; Argument[0].ReturnValue; ReturnValue; value |
+| 1032 | Summary: lang:std; crate::sys::backtrace::__rust_begin_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
+| 1033 | Summary: lang:std; crate::sys::backtrace::__rust_end_short_backtrace; Argument[0].ReturnValue; ReturnValue; value |
+| 1034 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_path_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
+| 1035 | Summary: lang:std; crate::sys::pal::common::small_c_string::run_with_cstr; Argument[1].ReturnValue; ReturnValue; value |
+| 1036 | Summary: lang:std; crate::sys::pal::unix::cvt; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
+| 1037 | Summary: lang:std; crate::sys_common::ignore_notfound; Argument[0].Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1038 | Summary: lang:std; crate::thread::current::set_current; Argument[0]; ReturnValue.Field[crate::result::Result::Err(0)]; value |
+| 1039 | Summary: lang:std; crate::thread::current::try_with_current; Argument[0].ReturnValue; ReturnValue; value |
+| 1040 | Summary: lang:std; crate::thread::with_current_name; Argument[0].ReturnValue; ReturnValue; value |
 storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[0].Field[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::zip_with | Some | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::<crate::option::Option>::zip_with |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0].Reference in lang:alloc::_::<crate::collections::vec_deque::VecDeque>::retain | &ref | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[0] in lang:alloc::_::<crate::collections::vec_deque::VecDeque>::retain |
@@ -1781,6 +1787,9 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[1].Reference in lang:core::_::crate::num::flt2dec::to_exact_exp_str | &ref | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[1] in lang:core::_::crate::num::flt2dec::to_exact_exp_str |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[1].Reference in lang:core::_::crate::num::flt2dec::to_exact_fixed_str | &ref | file://:0:0:0:0 | [summary] to write: Argument[0].Parameter[1] in lang:core::_::crate::num::flt2dec::to_exact_fixed_str |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:alloc::_::<_ as crate::borrow::ToOwned>::clone_into | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:alloc::_::<_ as crate::borrow::ToOwned>::clone_into |
+| file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:core::_::crate::ptr::write | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::crate::ptr::write |
+| file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:core::_::crate::ptr::write_unaligned | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::crate::ptr::write_unaligned |
+| file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:core::_::crate::ptr::write_volatile | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:core::_::crate::ptr::write_volatile |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:proc_macro::_::<&[u8] as crate::bridge::rpc::DecodeMut>::decode | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:proc_macro::_::<&[u8] as crate::bridge::rpc::DecodeMut>::decode |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:proc_macro::_::<u8 as crate::bridge::rpc::DecodeMut>::decode | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:proc_macro::_::<u8 as crate::bridge::rpc::DecodeMut>::decode |
 | file://:0:0:0:0 | [summary] to write: Argument[0].Reference in lang:proc_macro::_::<u32 as crate::bridge::rpc::DecodeMut>::decode | &ref | file://:0:0:0:0 | [post] [summary param] 0 in lang:proc_macro::_::<u32 as crate::bridge::rpc::DecodeMut>::decode |
@@ -2258,6 +2267,9 @@ readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::<usize as crate::slice::index::SliceIndex>::index_mut | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::<usize as crate::slice::index::SliceIndex>::index_mut |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::mem::copy | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::crate::mem::copy |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::panic::abort_unwind | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:core::_::crate::panic::abort_unwind |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::ptr::read | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::crate::ptr::read |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::ptr::read_unaligned | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::crate::ptr::read_unaligned |
+| file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::ptr::read_volatile | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::crate::ptr::read_volatile |
 | file://:0:0:0:0 | [summary param] 0 in lang:core::_::crate::slice::sort::shared::smallsort::sort4_stable | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:core::_::crate::slice::sort::shared::smallsort::sort4_stable |
 | file://:0:0:0:0 | [summary param] 0 in lang:proc_macro::_::<&[u8] as crate::bridge::rpc::DecodeMut>::decode | element | file://:0:0:0:0 | [summary] read: Argument[0].Element in lang:proc_macro::_::<&[u8] as crate::bridge::rpc::DecodeMut>::decode |
 | file://:0:0:0:0 | [summary param] 0 in lang:proc_macro::_::<u8 as crate::bridge::rpc::DecodeMut>::decode | element | file://:0:0:0:0 | [summary] read: Argument[0].Element in lang:proc_macro::_::<u8 as crate::bridge::rpc::DecodeMut>::decode |

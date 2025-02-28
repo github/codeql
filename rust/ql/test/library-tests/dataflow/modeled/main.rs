@@ -82,7 +82,7 @@ mod ptr {
         unsafe {
             sink(std::ptr::read(y));
             std::ptr::write(y, source(30));
-            sink(std::ptr::read(y)); // $ MISSING: hasValueFlow=30
+            sink(std::ptr::read(y)); // $ hasValueFlow=30
         }
     }
 }
