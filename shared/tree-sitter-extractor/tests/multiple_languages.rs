@@ -1,9 +1,8 @@
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
-use tree_sitter_ql;
 
 mod common;
-use common::{create_source_dir, expect_trap_file, SourceArchive};
+use common::{SourceArchive, create_source_dir, expect_trap_file};
 
 /// Like the `simple_extractor` test but with multiple languages.
 /// This is in a separate crate because the simple extractor API sets up a

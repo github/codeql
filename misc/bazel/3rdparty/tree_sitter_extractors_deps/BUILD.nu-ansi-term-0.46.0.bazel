@@ -81,16 +81,16 @@ rust_library(
     }),
     version = "0.46.0",
     deps = [
-        "@vendor__overload-0.1.1//:overload",
+        "@vendor_ts__overload-0.1.1//:overload",
     ] + select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor__winapi-0.3.9//:winapi",  # cfg(target_os = "windows")
+            "@vendor_ts__winapi-0.3.9//:winapi",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor__winapi-0.3.9//:winapi",  # cfg(target_os = "windows")
+            "@vendor_ts__winapi-0.3.9//:winapi",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor__winapi-0.3.9//:winapi",  # cfg(target_os = "windows")
+            "@vendor_ts__winapi-0.3.9//:winapi",  # cfg(target_os = "windows")
         ],
         "//conditions:default": [],
     }),

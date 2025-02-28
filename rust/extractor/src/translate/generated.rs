@@ -1849,12 +1849,14 @@ impl Translator<'_> {
     pub(crate) fn emit_record_field(&mut self, node: ast::RecordField) -> Option<Label<generated::RecordField>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let expr = node.expr().and_then(|x| self.emit_expr(x));
         let name = node.name().and_then(|x| self.emit_name(x));
         let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::RecordField {
             id: TrapId::Star,
             attrs,
+            expr,
             name,
             type_repr,
             visibility,

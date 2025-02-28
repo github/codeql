@@ -25,6 +25,12 @@ pub struct Writer {
     location_labels: std::collections::HashMap<Location, Label>,
 }
 
+impl Default for Writer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Writer {
     pub fn new() -> Writer {
         Writer {
@@ -306,9 +312,9 @@ impl Compression {
 
 #[test]
 fn limit_string_test() {
-    assert_eq!("hello", limit_string(&"hello world".to_owned(), 5));
-    assert_eq!("hi ☹", limit_string(&"hi ☹☹".to_owned(), 6));
-    assert_eq!("hi ", limit_string(&"hi ☹☹".to_owned(), 5));
+    assert_eq!("hello", limit_string("hello world", 5));
+    assert_eq!("hi ☹", limit_string("hi ☹☹", 6));
+    assert_eq!("hi ", limit_string("hi ☹☹", 5));
 }
 
 #[test]

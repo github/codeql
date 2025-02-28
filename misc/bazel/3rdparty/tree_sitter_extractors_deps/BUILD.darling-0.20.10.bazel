@@ -35,7 +35,7 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2021",
     proc_macro_deps = [
-        "@vendor__darling_macro-0.20.10//:darling_macro",
+        "@vendor_ts__darling_macro-0.20.10//:darling_macro",
     ],
     rustc_flags = [
         "--cap-lints=allow",
@@ -88,6 +88,6 @@ rust_library(
     }),
     version = "0.20.10",
     deps = [
-        "@vendor__darling_core-0.20.10//:darling_core",
+        "@vendor_ts__darling_core-0.20.10//:darling_core",
     ],
 )

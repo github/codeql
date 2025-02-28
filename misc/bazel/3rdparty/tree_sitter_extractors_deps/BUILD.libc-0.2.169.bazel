@@ -86,7 +86,7 @@ rust_library(
     }),
     version = "0.2.169",
     deps = [
-        "@vendor__libc-0.2.169//:build_script_build",
+        "@vendor_ts__libc-0.2.169//:build_script_build",
     ],
 )
 
