@@ -10,6 +10,7 @@ import com.semmle.js.ast.regexp.BackReference;
 import com.semmle.js.ast.regexp.Caret;
 import com.semmle.js.ast.regexp.CharacterClass;
 import com.semmle.js.ast.regexp.CharacterClassEscape;
+import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
@@ -92,6 +93,7 @@ public class RegExpExtractor {
     termkinds.put("ZeroWidthPositiveLookbehind", 25);
     termkinds.put("ZeroWidthNegativeLookbehind", 26);
     termkinds.put("UnicodePropertyEscape", 27);
+    termkinds.put("CharacterClassQuotedString", 28);
   }
 
   private static final String[] errmsgs =
@@ -343,6 +345,12 @@ public class RegExpExtractor {
       Label lbl = extractTerm(nd, parent, idx);
       visit(nd.getLeft(), lbl, 0);
       visit(nd.getRight(), lbl, 1);
+    }
+
+    @Override
+    public void visit(CharacterClassQuotedString nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      visit(nd.getTerm(), lbl, 0);
     }
   }
 

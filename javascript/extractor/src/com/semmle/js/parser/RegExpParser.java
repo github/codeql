@@ -6,6 +6,7 @@ import com.semmle.js.ast.regexp.BackReference;
 import com.semmle.js.ast.regexp.Caret;
 import com.semmle.js.ast.regexp.CharacterClass;
 import com.semmle.js.ast.regexp.CharacterClassEscape;
+import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
@@ -67,6 +68,7 @@ public class RegExpParser {
   private List<Error> errors;
   private List<BackReference> backrefs;
   private int maxbackref;
+  private boolean vFlag = false;
 
   /** Parse the given string as a regular expression. */
   public Result parse(String src) {
@@ -80,6 +82,11 @@ public class RegExpParser {
       if (backref.getValue() > maxbackref)
         errors.add(new Error(backref.getLoc(), Error.INVALID_BACKREF));
     return new Result(root, errors);
+  }
+
+  public Result parse(String src, boolean vFlag) {
+    this.vFlag = vFlag;
+    return parse(src);
   }
 
   private static String fromCodePoint(int codepoint) {
@@ -277,6 +284,45 @@ public class RegExpParser {
     return this.finishTerm(this.parseQuantifierOpt(loc, this.parseAtom()));
   }
 
+  private RegExpTerm parseDisjunctionInsideQuoatedString() {
+    SourceLocation loc = new SourceLocation(pos());
+    List<RegExpTerm> disjuncts = new ArrayList<>();
+    disjuncts.add(this.parseAlternativeInsideQuoatedString());
+    while (this.match("|")) {
+        disjuncts.add(this.parseAlternativeInsideQuoatedString());
+    }
+    if (disjuncts.size() == 1) return disjuncts.get(0);
+        return this.finishTerm(new Disjunction(loc, disjuncts));
+  }
+
+  private RegExpTerm parseAlternativeInsideQuoatedString() {
+    SourceLocation loc = new SourceLocation(pos());
+    StringBuilder sb = new StringBuilder();
+    boolean escaped = false;
+    while (true) {
+      // If we're at the end of the string, something went wrong.
+      if (this.atEOS()) {
+        this.error(Error.UNEXPECTED_EOS);
+        break;
+      }
+      // We can end parsing if we're not escaped and we see a `|` which would mean Alternation
+      // or `}` which would mean the end of the Quoted String.
+      if(!escaped && this.lookahead(null, "|", "}")){
+        break;
+      }
+      char c = this.nextChar();
+      // Track whether the character is an escape character. 
+      escaped = !escaped && (c == '\\');
+      sb.append(c);
+    }
+    
+    String literal = sb.toString();
+    loc.setEnd(pos());
+    loc.setSource(literal);
+    
+    return new Constant(loc, literal);
+  }
+
   private RegExpTerm parseQuantifierOpt(SourceLocation loc, RegExpTerm atom) {
     if (this.match("*")) return this.finishTerm(new Star(loc, atom, !this.match("?")));
     if (this.match("+")) return this.finishTerm(new Plus(loc, atom, !this.match("?")));
@@ -419,6 +465,14 @@ public class RegExpParser {
       String name = this.readIdentifier();
       this.expectRAngle();
       return this.finishTerm(new NamedBackReference(loc, name, "\\k<" + name + ">"));
+    }
+
+    if (this.match("q{")) {
+      System.out.println("Parsing string disjunction at position " + pos);
+      RegExpTerm term = parseDisjunctionInsideQuoatedString();
+      this.expectRBrace();
+      System.out.println("Finished Parsing string disjunction at position " + pos);
+      return this.finishTerm(new CharacterClassQuotedString(loc, term));
     }
 
     if (this.match("p{", "P{")) {
