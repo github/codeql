@@ -25,6 +25,22 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
+        /// <summary>
+        /// Returns true in case we suspect this is broken type.
+        /// </summary>
+        /// <param name="symbol">Type symbol</param>
+        private bool IsBrokenType(ITypeSymbol symbol)
+        {
+            if (!Context.ExtractionContext.IsStandalone || !symbol.FromSource())
+            {
+                return false;
+            }
+            // (1) public class { ... } is a broken type and doesn't have a name.
+            // (2) public class var { ... } is a an allowed type, but it overrides the var keyword for all uses.
+            //     It is probably a better heuristic to treat it as a broken type.
+            return string.IsNullOrEmpty(symbol.Name) || symbol.Name == "var";
+        }
+
         public Kinds.TypeKind GetTypeKind(Context cx, bool constructUnderlyingTupleType)
         {
             switch (Symbol.SpecialType)
@@ -47,6 +63,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 default:
                     if (Symbol.IsBoundNullable())
                         return Kinds.TypeKind.NULLABLE;
+
+                    if (IsBrokenType(Symbol))
+                        return Kinds.TypeKind.UNKNOWN;
 
                     switch (Symbol.TypeKind)
                     {
