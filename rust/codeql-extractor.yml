@@ -82,3 +82,5 @@ options:
     title: Skip path resolution
     description: >
       Skip path resolution. This is experimental, while we move path resolution from the extractor to the QL library.
+extra_env_vars:
+  CODEQL_EXTRACTOR_RUST_SKIP_PATH_RESOLUTION: "true"
