@@ -1318,7 +1318,7 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof InitialGlobalValue
   or
-  n instanceof SsaPhiInputNode
+  n instanceof SsaSynthNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1632,9 +1632,7 @@ private Instruction getAnInstruction(Node n) {
   not n instanceof InstructionNode and
   result = n.asOperand().getUse()
   or
-  result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
-  or
-  result = n.(SsaPhiInputNode).getBasicBlock().getFirstInstruction()
+  result = n.(SsaSynthNode).getBasicBlock().getFirstInstruction()
   or
   n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
   or
