@@ -133,21 +133,21 @@ private predicate callToMethod(CallExpr call) {
   )
 }
 
-/** Holds if `arg` is an argument of `call` at the position `pos`. */
+/**
+ * Holds if `arg` is an argument of `call` at the position `pos`.
+ *
+ * Note that this does not hold for the receiever expression of a method call
+ * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
+ */
 private predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, ParameterPosition pos) {
   if callToMethod(call.(CallExprCfgNode).getCallExpr())
-  then (
+  then
     // The first argument is for the `self` parameter
     arg = call.getArgument(0) and pos.isSelf()
     or
     // Succeeding arguments are shifted left
     arg = call.getArgument(pos.getPosition() + 1)
-  ) else (
-    // The self argument in a method call.
-    arg = call.(MethodCallExprCfgNode).getReceiver() and pos.isSelf()
-    or
-    arg = call.getArgument(pos.getPosition())
-  )
+  else arg = call.getArgument(pos.getPosition())
 }
 
 /**
@@ -370,11 +370,7 @@ module Node {
     private CallExprBaseCfgNode call_;
     private RustDataFlow::ArgumentPosition pos_;
 
-    ExprArgumentNode() {
-      isArgumentForCall(n, call_, pos_) and
-      // For receivers in method calls the `ReceiverNode` is the argument.
-      not call_.(MethodCallExprCfgNode).getReceiver() = n
-    }
+    ExprArgumentNode() { isArgumentForCall(n, call_, pos_) }
 
     override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
       call.asCallBaseExprCfgNode() = call_ and pos = pos_
@@ -382,7 +378,7 @@ module Node {
   }
 
   /**
-   * The receiver of a method call _after_ any implicit borrow or dereferences
+   * The receiver of a method call _after_ any implicit borrow or dereferencing
    * has taken place.
    */
   final class ReceiverNode extends ArgumentNode, TReceiverNode {
@@ -400,7 +396,7 @@ module Node {
 
     override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
 
-    override Location getLocation() { result = n.getLocation() }
+    override Location getLocation() { result = this.getReceiver().getLocation() }
 
     override string toString() { result = "receiver for " + this.getReceiver() }
   }
@@ -559,7 +555,7 @@ module Node {
 
     override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
 
-    override Location getLocation() { result = n.getLocation() }
+    override Location getLocation() { result = n.getReceiver().getLocation() }
   }
 
   final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
@@ -1050,7 +1046,7 @@ predicate lambdaCallExpr(CallExprCfgNode call, LambdaCallKind kind, ExprCfgNode 
 }
 
 /** Holds if `mc` implicitly borrows its receiver. */
-predicate implicitBorrow(MethodCallExpr mc) {
+private predicate implicitBorrow(MethodCallExpr mc) {
   // Determining whether an implicit borrow happens depends on the type of the
   // receiever as well as the target. As a heuristic we simply check if the
   // target takes `self` as a borrow and limit the approximation to cases where
@@ -1060,7 +1056,7 @@ predicate implicitBorrow(MethodCallExpr mc) {
 }
 
 /** Holds if `mc` implicitly dereferences its receiver. */
-predicate implicitDeref(MethodCallExpr mc) {
+private predicate implicitDeref(MethodCallExpr mc) {
   // Similarly to `implicitBorrow` this is an approximation.
   mc.getReceiver() instanceof VariableAccess and
   not mc.getStaticTarget().getParamList().getSelfParam().isRef()
@@ -1727,7 +1723,7 @@ private module Cached {
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
           any(TryExprCfgNode try).getExpr(),
           any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
-          any(AwaitExprCfgNode a).getExpr()
+          any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver()
         ]
     } or
     TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or

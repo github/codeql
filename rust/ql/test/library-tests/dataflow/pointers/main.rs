@@ -88,14 +88,14 @@ mod intraprocedural_mutable_borrows {
         let mut a = 1;
         sink(a);
         *(&mut a) = source(87);
-        sink(a); // $ hasValueFlow=87
+        sink(a); // $ MISSING: hasValueFlow=87
     }
 
     pub fn clear_through_borrow() {
         let mut to_be_cleared = source(34);
         let p = &mut to_be_cleared;
         *p = 0;
-        sink(to_be_cleared); // $ SPURIOUS: hasValueFlow=34
+        sink(to_be_cleared); // variable is cleared
     }
 
     pub fn write_through_borrow_in_match(cond: bool) {
@@ -252,7 +252,7 @@ mod interprocedural_mutable_borrows {
         (&mut my_number).set(source(99));
         sink(to_number(my_number)); // $ hasValueFlow=99
         (&mut my_number).set(0);
-        sink(to_number(my_number)); // SPURIOUS: hasValueFlow=99
+        sink(to_number(my_number)); // $ SPURIOUS: hasValueFlow=99
     }
 }
 

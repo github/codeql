@@ -47,13 +47,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  /**
-   * A variable amenable to SSA construction.
-   *
-   * All immutable variables are amenable. Mutable variables are restricted to
-   * those that are not borrowed (either explicitly using `& mut`, or
-   * (potentially) implicit as borrowed receivers in a method call).
-   */
   class SourceVariable = Variable;
 
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -381,8 +374,13 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    exists(Variable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and mutablyBorrows(bb.getNode(i).getAstNode(), v)
+    exists(CfgNodes::CallExprBaseCfgNode call, Variable v, BasicBlock bb, int i |
+      def.definesAt(v, bb, i) and
+      mutablyBorrows(bb.getNode(i).getAstNode(), v)
+    |
+      call.getArgument(_) = bb.getNode(i)
+      or
+      call.(CfgNodes::MethodCallExprCfgNode).getReceiver() = bb.getNode(i)
     )
   }
 
