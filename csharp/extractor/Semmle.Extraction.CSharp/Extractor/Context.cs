@@ -376,7 +376,7 @@ namespace Semmle.Extraction.CSharp
 
         private void ReportError(InternalError error)
         {
-            if (!ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone))
+            if (!ExtractionContext.IsStandalone)
                 throw error;
 
             ExtractionError(error);
