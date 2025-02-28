@@ -383,3 +383,158 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
     )
   }
 }
+
+private class ReplaceAllCall extends MethodCall {
+  ReplaceAllCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replaceAll")
+    )
+  }
+}
+
+private class ReplaceCall extends MethodCall {
+  ReplaceCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replace")
+    )
+  }
+}
+
+/**
+ * A complementary sanitizer that protects against path injection vulnerabilities
+ * by replacing all directory characters ('..', '/', and '\') with safe characters.
+ */
+private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
+  // TODO: check performance, then refactor
+  ReplaceDirectoryCharactersSanitizer() {
+    // replaceAll with regex
+    exists(MethodCall mc, CompileTimeConstantExpr target |
+      mc instanceof ReplaceAllCall and
+      target = mc.getArgument(0) and
+      this = mc
+    |
+      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+      (
+        // replaceAll with single call
+        not target.getStringValue().matches("%[^%]%") and
+        target.getStringValue().matches("[%.%]") and
+        target.getStringValue().matches("[%/%]") and
+        target.getStringValue().matches("[%\\\\%]")
+        or
+        target.getStringValue().matches("%|%") and
+        target.getStringValue().matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
+        target.getStringValue().matches("%/%") and
+        target.getStringValue().matches("%\\\\%")
+        or
+        // replaceAll with multiple calls
+        exists(ReplaceAllCall rc, CompileTimeConstantExpr rcTarget |
+          // look for another replace call as the qualifier of `mc`
+          rc.getQualifier() = mc and
+          target = mc.getArgument(0) and
+          target.getStringValue() = ["\\.", "/", "\\\\"] and
+          rcTarget = rc.getArgument(0) and
+          rcTarget.getStringValue() = ["\\.", "/", "\\\\"] and
+          rc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+          // make sure the calls replace different characters
+          rcTarget.getStringValue() != target.getStringValue() and
+          // make sure one of the calls replaces '.'
+          // then the other call must replace one of '/' or '\' if they are not equal
+          (rcTarget.getStringValue() = "\\." or target.getStringValue() = "\\.")
+        )
+      )
+    )
+    or
+    // replace with char/CharSequence
+    exists(MethodCall mc, CompileTimeConstantExpr target |
+      mc instanceof ReplaceCall and
+      target = mc.getArgument(0) and
+      this = mc
+    |
+      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+      // replace with multiple calls
+      exists(ReplaceCall rc, CompileTimeConstantExpr rcTarget |
+        // look for another replace call as the qualifier of `mc`
+        rc.getQualifier() = mc and
+        target = mc.getArgument(0) and
+        target.getStringValue() = [".", "/", "\\"] and
+        rcTarget = rc.getArgument(0) and
+        rcTarget.getStringValue() = [".", "/", "\\"] and
+        rc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = ["", "_", "-"] and
+        // make sure the calls replace different characters
+        rcTarget.getStringValue() != target.getStringValue() and
+        // make sure one of the calls replaces '.'
+        // then the other call must replace one of '/' or '\' if they are not equal
+        (rcTarget.getStringValue() = "." or target.getStringValue() = ".")
+      )
+    )
+  }
+}
+
+/**
+ * A complementary guard that protects against path traversal by looking
+ * for patterns that exclude directory characters: `..`, '/', and '\'.
+ */
+private class DirectoryCharactersGuard extends PathGuard {
+  Expr checkedExpr;
+  boolean branch;
+
+  DirectoryCharactersGuard() {
+    exists(MethodCall mc, Method m, CompileTimeConstantExpr target |
+      m = mc.getMethod() and
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("matches") and
+      target = mc.getArgument(0) and
+      checkedExpr = mc.getQualifier() and
+      this = mc
+    |
+      target.getStringValue().matches(["[%]*", "[%]+", "[%]{%}"]) and
+      (
+        // Allow anything except `.`, '/', '\'
+        // Note: we do not account for when '.', '/', '\' are inside a character range
+        (
+          not target.getStringValue().matches("[%" + [".", "/", "\\\\"] + "%]%") and
+          not target.getStringValue().matches("%[^%]%")
+          or
+          target.getStringValue().matches("[^%.%]%") and
+          target.getStringValue().matches("[^%/%]%") and
+          target.getStringValue().matches("[^%\\\\%]%")
+        ) and
+        branch = true
+        or
+        target.getStringValue().matches("[%.%]%") and
+        target.getStringValue().matches("[%/%]%") and
+        target.getStringValue().matches("[%\\\\%]%") and
+        not target.getStringValue().matches("%[^%]%") and
+        branch = false
+      )
+    )
+  }
+
+  override Expr getCheckedExpr() { result = checkedExpr }
+
+  boolean getBranch() { result = branch }
+}
+
+/**
+ * Holds if `g` is a guard that considers a path safe because it is checked to make
+ * sure it does not contain any directory characters: '..', '/', and '\'.
+ */
+private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
+  branch = g.(DirectoryCharactersGuard).getBranch() and
+  localTaintFlowToPathGuard(e, g)
+}
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by ensuring that the path does not contain any directory characters:
+ *  '..', '/', and '\'.
+ */
+private class DirectoryCharactersSanitizer extends PathInjectionSanitizer {
+  DirectoryCharactersSanitizer() {
+    this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer or
+    this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode() or
+    this = ValidationMethod<directoryCharactersGuard/3>::getAValidatedNode()
+  }
+}
