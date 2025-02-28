@@ -12,13 +12,13 @@ app.listen(port, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    zlibBombAsync(req.files.zipBombFile.data)
+    zlibBombAsync(req.files.zipBombFile.data) // $ Source
     zlibBombAsyncSafe(req.files.zipBombFile.data);
-    zlibBombSync(req.files.zipBombFile.data)
+    zlibBombSync(req.files.zipBombFile.data) // $ Source
     zlibBombSyncSafe(req.files.zipBombFile.data)
-    zlibBombPipeStream(req.files.zipBombFile.data)
+    zlibBombPipeStream(req.files.zipBombFile.data) // $ Source
     zlibBombPipeStreamSafe(req.files.zipBombFile.data)
-    zlibBombPipeStreamPromises(req.files.zipBombFile.data).then(r =>
+    zlibBombPipeStreamPromises(req.files.zipBombFile.data).then(r => // $ Source
         console.log("sone"));
     res.send('Hello World!')
 });
@@ -26,16 +26,16 @@ app.post('/upload', async (req, res) => {
 
 function zlibBombAsync(zipFile) {
     zlib.gunzip(
-        zipFile.data,
+        zipFile.data, // $ Alert
         (err, buffer) => {
         });
     zlib.unzip(
-        zipFile.data,
+        zipFile.data, // $ Alert
         (err, buffer) => {
         });
 
     zlib.brotliDecompress(
-        zipFile.data,
+        zipFile.data, // $ Alert
         (err, buffer) => {
         });
 }
@@ -60,9 +60,9 @@ function zlibBombAsyncSafe(zipFile) {
 }
 
 function zlibBombSync(zipFile) {
-    zlib.gunzipSync(zipFile.data, { finishFlush: zlib.constants.Z_SYNC_FLUSH });
-    zlib.unzipSync(zipFile.data);
-    zlib.brotliDecompressSync(zipFile.data);
+    zlib.gunzipSync(zipFile.data, { finishFlush: zlib.constants.Z_SYNC_FLUSH }); // $ Alert
+    zlib.unzipSync(zipFile.data); // $ Alert
+    zlib.brotliDecompressSync(zipFile.data); // $ Alert
 }
 
 function zlibBombSyncSafe(zipFile) {
@@ -74,9 +74,9 @@ function zlibBombSyncSafe(zipFile) {
 function zlibBombPipeStream(zipFile) {
     const inputStream = Readable.from(zipFile.data);
     const outputFile = fs.createWriteStream('unzip.txt');
-    inputStream.pipe(zlib.createGunzip()).pipe(outputFile);
-    inputStream.pipe(zlib.createUnzip()).pipe(outputFile);
-    inputStream.pipe(zlib.createBrotliDecompress()).pipe(outputFile);
+    inputStream.pipe(zlib.createGunzip()).pipe(outputFile); // $ Alert
+    inputStream.pipe(zlib.createUnzip()).pipe(outputFile); // $ Alert
+    inputStream.pipe(zlib.createBrotliDecompress()).pipe(outputFile); // $ Alert
 }
 
 async function zlibBombPipeStreamPromises(zipFile) {
@@ -84,7 +84,7 @@ async function zlibBombPipeStreamPromises(zipFile) {
     const outputFile = fs.createWriteStream('unzip.txt');
     await stream.pipeline(
         inputStream,
-        zlib.createGunzip(),
+        zlib.createGunzip(), // $ Alert
         outputFile
     )
 }

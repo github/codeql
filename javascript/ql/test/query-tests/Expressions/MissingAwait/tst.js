@@ -5,24 +5,24 @@ async function getThing() {
 function useThing() {
     let thing = getThing();
 
-    if (thing === undefined) {} // NOT OK
+    if (thing === undefined) {} // $ Alert
 
-    if (thing == null) {} // NOT OK
+    if (thing == null) {} // $ Alert
 
-    something(thing ? 1 : 2); // NOT OK
+    something(thing ? 1 : 2); // $ Alert
 
-    for (let x in thing) { // NOT OK
+    for (let x in thing) { // $ Alert
         something(x);
     }
 
     let obj = something();
-    something(obj[thing]); // NOT OK
-    obj[thing] = 5; // NOT OK
+    something(obj[thing]); // $ Alert
+    obj[thing] = 5; // $ Alert
 
-    something(thing + "bar"); // NOT OK
+    something(thing + "bar"); // $ Alert
 
     if (something()) {
-        if (thing) { // NOT OK
+        if (thing) { // $ Alert
             something(3);
         }
     }
@@ -31,21 +31,21 @@ function useThing() {
 async function useThingCorrectly() {
     let thing = await getThing();
 
-    if (thing === undefined) {} // OK
+    if (thing === undefined) {}
 
-    if (thing == null) {} // OK
+    if (thing == null) {}
 
-    return thing + "bar"; // OK
+    return thing + "bar";
 }
 
 async function useThingCorrectly2() {
     let thing = getThing();
 
-    if (await thing === undefined) {} // OK
+    if (await thing === undefined) {}
 
-    if (await thing == null) {} // OK
+    if (await thing == null) {}
 
-    return thing + "bar"; // NOT OK
+    return thing + "bar"; // $ Alert
 }
 
 function getThingSync() {
@@ -55,21 +55,21 @@ function getThingSync() {
 function useThingPossiblySync(b) {
     let thing = b ? getThing() : getThingSync();
 
-    if (thing === undefined) {} // OK
+    if (thing === undefined) {}
 
-    if (thing == null) {} // OK
+    if (thing == null) {}
 
-    return thing + "bar"; // NOT OK - but we don't flag it
+    return thing + "bar"; // $ MISSING: Alert
 }
 
 function useThingInVoid() {
-    void getThing(); // OK
+    void getThing();
 }
 
 function useThing() {
     if (random()) {
-        return getThing() ?? null; // NOT OK
+        return getThing() ?? null; // $ Alert
     } else {
-        return getThing?.() ?? null; // OK
+        return getThing?.() ?? null;
     }
 }

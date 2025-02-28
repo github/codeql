@@ -6,22 +6,22 @@ var http = require("http"),
   originalFs = require("original-fs");
 
 var server = http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
-  fs.readFileSync(path); // NOT OK
-  gracefulFs.readFileSync(path); // NOT OK
-  fsExtra.readFileSync(path); // NOT OK
-  originalFs.readFileSync(path); // NOT OK
+  fs.readFileSync(path); // $ Alert
+  gracefulFs.readFileSync(path); // $ Alert
+  fsExtra.readFileSync(path); // $ Alert
+  originalFs.readFileSync(path); // $ Alert
 
-  getFsModule(true).readFileSync(path); // NOT OK
-  getFsModule(false).readFileSync(path); // NOT OK
+  getFsModule(true).readFileSync(path); // $ Alert
+  getFsModule(false).readFileSync(path); // $ Alert
 
-  require("./my-fs-module").require(true).readFileSync(path); // NOT OK
+  require("./my-fs-module").require(true).readFileSync(path); // $ Alert
 
   let flexibleModuleName = require(process.versions["electron"]
     ? "original-fs"
     : "fs");
-  flexibleModuleName.readFileSync(path); // NOT OK
+  flexibleModuleName.readFileSync(path); // $ Alert
 });
 
 function getFsModule(special) {
@@ -35,50 +35,50 @@ function getFsModule(special) {
 var util = require("util");
 
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
-  util.promisify(fs.readFileSync)(path); // NOT OK
-  require("bluebird").promisify(fs.readFileSync)(path); // NOT OK
-  require("bluebird").promisifyAll(fs).readFileSync(path); // NOT OK
+  util.promisify(fs.readFileSync)(path); // $ Alert
+  require("bluebird").promisify(fs.readFileSync)(path); // $ Alert
+  require("bluebird").promisifyAll(fs).readFileSync(path); // $ Alert
 });
 
 
 const asyncFS = require("./my-async-fs-module");
 
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
-  fs.readFileSync(path); // NOT OK
-  asyncFS.readFileSync(path); // NOT OK
+  fs.readFileSync(path); // $ Alert
+  asyncFS.readFileSync(path); // $ Alert
 
-  require("pify")(fs.readFileSync)(path); // NOT OK
-  require("pify")(fs).readFileSync(path); // NOT OK
+  require("pify")(fs.readFileSync)(path); // $ Alert
+  require("pify")(fs).readFileSync(path); // $ Alert
 
-  require('util.promisify')(fs.readFileSync)(path); // NOT OK
+  require('util.promisify')(fs.readFileSync)(path); // $ Alert
 
-  require("thenify")(fs.readFileSync)(path); // NOT OK
+  require("thenify")(fs.readFileSync)(path); // $ Alert
 
   const readPkg = require('read-pkg');
-  var pkg = readPkg.readPackageSync({cwd: path}); // NOT OK
-  var pkgPromise = readPkg.readPackageAsync({cwd: path}); // NOT OK
+  var pkg = readPkg.readPackageSync({cwd: path}); // $ Alert
+  var pkgPromise = readPkg.readPackageAsync({cwd: path}); // $ Alert
 });
 
 const mkdirp = require("mkdirp");
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
-  fs.readFileSync(path); // NOT OK
-  mkdirp(path); // NOT OK
-  mkdirp.sync(path); // NOT OK
+  fs.readFileSync(path); // $ Alert
+  mkdirp(path); // $ Alert
+  mkdirp.sync(path); // $ Alert
   func(path);
 });
 function func(x) {
-  fs.readFileSync(x); // NOT OK
+  fs.readFileSync(x); // $ Alert
 }
 
 const fsp = require("fs/promises");
 http.createServer(function(req, res) {
-  var path = url.parse(req.url, true).query.path;
+  var path = url.parse(req.url, true).query.path; // $ Source
 
-  fsp.readFile(path); // NOT OK
+  fsp.readFile(path); // $ Alert
 });

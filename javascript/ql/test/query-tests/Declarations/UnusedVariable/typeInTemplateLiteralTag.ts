@@ -1,6 +1,6 @@
-import { SomeInterface } from 'somwhere1'; // OK
-import { AnotherInterface } from 'somwhere2'; // OK
-import { foo } from 'somewhere3'; // OK
+import { SomeInterface } from 'somwhere1';
+import { AnotherInterface } from 'somwhere2';
+import { foo } from 'somewhere3';
 
 let x = "world";
 

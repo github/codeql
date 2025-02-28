@@ -1,1 +1,2 @@
-Security/CWE-770/MissingRateLimiting.ql
+query: Security/CWE-770/MissingRateLimiting.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

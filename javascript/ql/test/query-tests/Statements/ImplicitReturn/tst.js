@@ -1,17 +1,16 @@
-// NOT OK
 function f() {
-	if (foo())
+	if (foo()) // $ Alert
 		return true;
 }
 
-// OK
+
 function g() {
 	if (foo())
 		return true;
 	return false;
 }
 
-// OK
+
 function h() {
 	open();
 	try {
@@ -21,7 +20,7 @@ function h() {
 	}
 }
 
-// OK
+
 function k(x) {
 	switch (x) {
 	case 1:
@@ -31,20 +30,20 @@ function k(x) {
 	}
 }
 
-// OK
+
 function l() {
 	return 23;
 	alert("Hi");
 }
 
-// OK
+
 function m() {
 	if (foo())
 		return true;
 	throw new Error("not foo!");
 }
 
-// OK
+
 function n() {
 	if (foo())
 		return true;
@@ -60,7 +59,7 @@ function foo() {
 }
 
 // 
-// OK: dual-use constructor
+// OK - dual-use constructor
 function Point(x, y) {
 	if (!(this instanceof Point))
 		return new Point(x, y);
@@ -68,7 +67,7 @@ function Point(x, y) {
 	this.y = y;
 }
 
-// OK: infinite loops
+// OK - infinite loops
 function q(n) {
 	for (var i=0;;++i)
 		if (i>2*n)
@@ -96,14 +95,12 @@ function t(n) {
 	} while("true");
 }
 
-// NOT OK
 var u = function() {
-	if (foo())
+	if (foo()) // $ Alert
 		return true;
 };
 
-// NOT OK
 function v(b) {
-	if (b)
+	if (b) // $ Alert
 		return 1;
 }

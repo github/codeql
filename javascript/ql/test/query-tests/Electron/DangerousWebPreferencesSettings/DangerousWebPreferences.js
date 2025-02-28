@@ -3,8 +3,8 @@ const {BrowserWindow} = require('electron')
 function test() {
     var unsafe_used = {
         webPreferences: {
-            webSecurity: false,
-            allowRunningInsecureContent: true,
+            webSecurity: false, // $ Alert[js/disabling-electron-websecurity]
+            allowRunningInsecureContent: true, // $ Alert[js/enabling-electron-insecure-content]
             experimentalFeatures: true,
             enableBlinkFeatures: ['ExecCommandInJavaScript'],
             blinkFeatures: 'CSSVariables'

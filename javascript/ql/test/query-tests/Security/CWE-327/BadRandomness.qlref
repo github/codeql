@@ -1,1 +1,2 @@
-Security/CWE-327/BadRandomness.ql
+query: Security/CWE-327/BadRandomness.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

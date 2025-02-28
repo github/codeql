@@ -1,1 +1,2 @@
-Security/CWE-770/ResourceExhaustion.ql
+query: Security/CWE-770/ResourceExhaustion.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

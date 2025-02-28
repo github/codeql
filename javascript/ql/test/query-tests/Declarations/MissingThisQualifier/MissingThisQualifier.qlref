@@ -1,1 +1,2 @@
-Declarations/MissingThisQualifier.ql
+query: Declarations/MissingThisQualifier.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -4,35 +4,35 @@ const unzip = require('unzip');
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
-    const fileName = entry.path;
-    entry.pipe(fs.createWriteStream(fileName));
+    const fileName = entry.path; // $ Alert
+    entry.pipe(fs.createWriteStream(fileName)); // $ Sink
   });
 
 var Writer = require('fstream').Writer;
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
-    const fileName = entry.path;
-    entry.pipe(Writer({path: fileName}));
+    const fileName = entry.path; // $ Alert
+    entry.pipe(Writer({path: fileName})); // $ Sink
   });
 
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
-    const fileName = entry.path;
-    var file = fs.openSync(fileName, "w");
+    const fileName = entry.path; // $ Alert
+    var file = fs.openSync(fileName, "w"); // $ Sink
   });
 
 const JSZip = require('jszip');
 const zip = new JSZip();
 const path = require('path');
 function doZipSlip() {
-  for (const name in zip.files) {
-    fs.createWriteStream(name);
+  for (const name in zip.files) { // $ Alert
+    fs.createWriteStream(name); // $ Sink
   }
 
-  zip.forEach((name, file) => {
-    fs.createWriteStream(name);
+  zip.forEach((name, file) => { // $ Alert
+    fs.createWriteStream(name); // $ Sink
   });
 
   const extractTo = path.resolve("/some/path/to/extract/to");
@@ -50,6 +50,6 @@ function doZipSlip() {
     files.push(name);
   }
   for (const file of files) {
-    fs.createWriteStream(path.join(extractTo, file)); // OK
+    fs.createWriteStream(path.join(extractTo, file));
   }
 }

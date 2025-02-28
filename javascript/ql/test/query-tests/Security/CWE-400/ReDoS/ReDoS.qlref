@@ -1,1 +1,2 @@
-Performance/ReDoS.ql
+query: Performance/ReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

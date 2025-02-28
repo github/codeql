@@ -1,3 +1,7 @@
+#select
+| node.js:11:13:11:21 | err.stack | node.js:8:10:8:12 | err | node.js:11:13:11:21 | err.stack | This information exposed to the user depends on $@. | node.js:8:10:8:12 | err | stack trace information |
+| tst.js:7:13:7:13 | e | tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e | This information exposed to the user depends on $@. | tst.js:6:12:6:12 | e | stack trace information |
+| tst.js:17:11:17:17 | e.stack | tst.js:6:12:6:12 | e | tst.js:17:11:17:17 | e.stack | This information exposed to the user depends on $@. | tst.js:6:12:6:12 | e | stack trace information |
 edges
 | node.js:8:10:8:12 | err | node.js:11:13:11:15 | err | provenance |  |
 | node.js:11:13:11:15 | err | node.js:11:13:11:21 | err.stack | provenance |  |
@@ -17,7 +21,3 @@ nodes
 | tst.js:17:11:17:11 | e | semmle.label | e |
 | tst.js:17:11:17:17 | e.stack | semmle.label | e.stack |
 subpaths
-#select
-| node.js:11:13:11:21 | err.stack | node.js:8:10:8:12 | err | node.js:11:13:11:21 | err.stack | This information exposed to the user depends on $@. | node.js:8:10:8:12 | err | stack trace information |
-| tst.js:7:13:7:13 | e | tst.js:6:12:6:12 | e | tst.js:7:13:7:13 | e | This information exposed to the user depends on $@. | tst.js:6:12:6:12 | e | stack trace information |
-| tst.js:17:11:17:17 | e.stack | tst.js:6:12:6:12 | e | tst.js:17:11:17:17 | e.stack | This information exposed to the user depends on $@. | tst.js:6:12:6:12 | e | stack trace information |
