@@ -11,11 +11,7 @@ class EntityWithDeclInfo extends TEntityWithDeclInfo {
     result = e.toString() + " (" + count(e.getDeclaration()) + " declaration sites)"
   }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  Location getLocation() { result = e.getLocation() }
 }
 
 query predicate lowLevelDefs(Ident i, EntityWithDeclInfo ewrapped) {
