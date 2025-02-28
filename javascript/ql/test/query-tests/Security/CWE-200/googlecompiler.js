@@ -11,7 +11,7 @@ function PostCode(codestring) {
       'output_format': 'json',
       'output_info': 'compiled_code',
         'warning_level' : 'QUIET',
-        'js_code' : codestring // $ MISSING: Alert - passing data from file to the request json body
+        'js_code' : codestring // passing data from file to the request json body
   });
 
   // An object of options to indicate where to post to
