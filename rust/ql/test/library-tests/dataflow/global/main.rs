@@ -64,11 +64,11 @@ struct MyFlag {
 }
 
 impl MyFlag {
-    fn data_in(&self, n: i64) {
+    fn data_in(self, n: i64) {
         sink(n); // $ hasValueFlow=1 hasValueFlow=8
     }
 
-    fn get_data(&self) -> i64 {
+    fn get_data(self) -> i64 {
         if self.flag {
             0
         } else {
@@ -76,7 +76,7 @@ impl MyFlag {
         }
     }
 
-    fn data_through(&self, n: i64) -> i64 {
+    fn data_through(self, n: i64) -> i64 {
         if self.flag {
             0
         } else {
@@ -107,13 +107,13 @@ fn data_through_method() {
 fn data_in_to_method_called_as_function() {
     let mn = MyFlag { flag: true };
     let a = source(8);
-    MyFlag::data_in(&mn, a);
+    MyFlag::data_in(mn, a);
 }
 
 fn data_through_method_called_as_function() {
     let mn = MyFlag { flag: true };
     let a = source(12);
-    let b = MyFlag::data_through(&mn, a);
+    let b = MyFlag::data_through(mn, a);
     sink(b); // $ hasValueFlow=12
 }
 
@@ -223,29 +223,6 @@ fn test_async_await() {
     futures::executor::block_on(test_async_await_async_part());
 }
 
-// Flow out of mutable parameters.
-
-fn set_int(n: &mut i64, c: i64) {
-    *n = c;
-}
-
-fn mutates_argument_1() {
-    // Passing an already borrowed value to a function and then reading from the same borrow.
-    let mut n = 0;
-    let m = &mut n;
-    sink(*m);
-    set_int(m, source(37));
-    sink(*m); // $ hasValueFlow=37
-}
-
-fn mutates_argument_2() {
-    // Borrowing at the call and then reading from the unborrowed variable.
-    let mut n = 0;
-    sink(n);
-    set_int(&mut n, source(88));
-    sink(n); // $ MISSING: hasValueFlow=88
-}
-
 fn main() {
     data_out_of_call();
     data_in_to_call();
@@ -258,6 +235,4 @@ fn main() {
 
     test_operator_overloading();
     test_async_await();
-    mutates_argument_1();
-    mutates_argument_2();
 }

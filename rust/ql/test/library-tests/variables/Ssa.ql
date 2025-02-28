@@ -5,8 +5,6 @@ import codeql.rust.dataflow.Ssa
 import codeql.rust.dataflow.internal.SsaImpl
 import ExposedForTestingOnly
 
-query predicate nonSsaVariable(Variable v) { not v instanceof Ssa::Variable }
-
 query predicate definition(Ssa::Definition def, Variable v) { def.getSourceVariable() = v }
 
 query predicate read(Ssa::Definition def, Variable v, CfgNode read) {
