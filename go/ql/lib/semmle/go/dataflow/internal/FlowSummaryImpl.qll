@@ -222,16 +222,17 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the location of this element. */
     Location getLocation() {
-      exists(string fp, int sl, int sc, int el, int ec |
-        this.hasLocationInfo(fp, sl, sc, el, ec) and
-        result.hasLocationInfo(fp, sl, sc, el, ec)
-      )
+      result = this.asEntity().getLocation() or
+      result = this.asAstNode().getLocation()
     }
 
-    /** Holds if this element is at the specified location. */
-    predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.asEntity().hasLocationInfo(fp, sl, sc, el, ec) or
-      this.asAstNode().hasLocationInfo(fp, sl, sc, el, ec)
+    /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
+     * Holds if this element is at the specified location.
+     */
+    deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
     }
   }
 
@@ -280,17 +281,18 @@ module SourceSinkInterpretationInput implements
     }
 
     /** Gets the location of this node. */
-    predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.asElement().hasLocationInfo(fp, sl, sc, el, ec)
-      or
-      this.asNode().hasLocationInfo(fp, sl, sc, el, ec)
+    Location getLocation() {
+      result = this.asElement().getLocation() or
+      result = this.asNode().getLocation()
     }
 
-    Location getLocation() {
-      exists(string fp, int sl, int sc, int el, int ec |
-        this.hasLocationInfo(fp, sl, sc, el, ec) and
-        result.hasLocationInfo(fp, sl, sc, el, ec)
-      )
+    /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
+     * Gets the location of this node.
+     */
+    deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
     }
   }
 

@@ -7,8 +7,7 @@ module FunctionIsVariadicTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(CallExpr ce |
       ce.getTarget().isVariadic() and
-      ce.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      ce.getLocation() = location and
       element = ce.toString() and
       value = "" and
       tag = "isVariadic"

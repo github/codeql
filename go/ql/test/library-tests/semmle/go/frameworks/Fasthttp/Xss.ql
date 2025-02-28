@@ -6,9 +6,7 @@ module FasthttpTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SharedXss::Sink xssSink |
-      xssSink
-          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      xssSink.getLocation() = location and
       element = xssSink.toString() and
       value = xssSink.toString() and
       tag = "XssSink"
