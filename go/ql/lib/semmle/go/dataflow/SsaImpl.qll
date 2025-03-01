@@ -5,6 +5,7 @@
  */
 
 import go
+private import codeql.ssa.Ssa as SsaImplCommon
 
 cached
 private module Internal {
@@ -460,6 +461,54 @@ private module Internal {
       firstUse(def, use2)
     )
   }
+
+  private module SsaInput implements SsaImplCommon::InputSig<Location> {
+    private import go as G
+
+    class BasicBlock = G::BasicBlock;
+
+    class ControlFlowNode = G::ControlFlow::Node;
+
+    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
+      result = bb.getImmediateDominator()
+    }
+
+    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+    class SourceVariable = SsaSourceVariable;
+
+    /**
+     * Holds if the `i`th node of basic block `bb` is a (potential) write to source
+     * variable `v`. The Boolean `certain` indicates whether the write is certain.
+     *
+     * This includes implicit writes via calls.
+     */
+    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      defAt(bb, i, v) and
+      certain = true
+    }
+
+    /**
+     * Holds if the `i`th of basic block `bb` reads source variable `v`.
+     *
+     * This includes implicit reads via calls.
+     */
+    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      useAt(bb, i, v) and certain = true
+      or
+      mayCapture(bb, i, v) and certain = false
+    }
+  }
+
+  import SsaImplCommon::Make<Location, SsaInput> as Impl
+
+  final class SsaInputDefinition = Impl::Definition;
+
+  final class SsaInputWriteDefinition = Impl::WriteDefinition;
+
+  final class SsaInputUncertainWriteDefinition = Impl::UncertainWriteDefinition;
+
+  final class SsaInputPhiNode = Impl::PhiNode;
 }
 
 import Internal
