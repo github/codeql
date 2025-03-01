@@ -19,7 +19,6 @@ use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fmt::Debug;
-use std::ops::Not;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
@@ -55,6 +54,8 @@ pub struct Config {
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
+    #[default_true]
+    pub logging_color: bool,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,

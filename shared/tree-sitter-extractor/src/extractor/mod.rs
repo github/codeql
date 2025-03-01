@@ -2,6 +2,7 @@ use crate::diagnostics;
 use crate::file_paths;
 use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use crate::trap;
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::env;
@@ -18,13 +19,33 @@ use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Serialize, Deserialize)]
+pub enum Color {
+    Yes,
+    No,
+}
+
+impl Color {
+    pub fn from(condition: bool) -> Self {
+        if condition {
+            Color::Yes
+        } else {
+            Color::No
+        }
+    }
+}
+
 /// Sets the tracing level based on the environment variables
 /// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
 /// falling back to `warn` if neither is set.
 pub fn set_tracing_level(language: &str) {
     let verbosity = env::var("CODEQL_VERBOSITY").ok();
     tracing_subscriber::registry()
-        .with(default_subscriber_with_level(language, &verbosity))
+        .with(default_subscriber_with_level(
+            language,
+            &verbosity,
+            Color::Yes,
+        ))
         .init();
 }
 
@@ -33,6 +54,7 @@ pub fn set_tracing_level(language: &str) {
 pub fn default_subscriber_with_level(
     language: &str,
     verbosity: &Option<String>,
+    color: Color,
 ) -> Filtered<
     tracing_subscriber::fmt::Layer<
         tracing_subscriber::Registry,
@@ -46,6 +68,7 @@ pub fn default_subscriber_with_level(
         .with_target(false)
         .without_time()
         .with_level(true)
+        .with_ansi(color == Color::Yes)
         .with_filter(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
                 |_| -> tracing_subscriber::EnvFilter {
