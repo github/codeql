@@ -298,6 +298,29 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
 
+  pragma[nomagic]
+  private TypeRepr getASelfTyArg() {
+    result =
+      this.getSelfPath().getPart().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
+  }
+
+  pragma[nomagic]
+  private TypeParamItemNode getASelfTyTypeParamArg(TypeRepr arg) {
+    arg = this.getASelfTyArg() and
+    result = resolvePath(arg.(PathTypeRepr).getPath())
+  }
+
+  pragma[nomagic]
+  predicate isConstrained() {
+    exists(TypeRepr arg | arg = this.getASelfTyArg() |
+      not exists(this.getASelfTyTypeParamArg(arg))
+      or
+      this.getASelfTyTypeParamArg(arg).isConstrained()
+    )
+  }
+
+  predicate isUnconstrained() { not this.isConstrained() }
+
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
   override string getName() { result = "(impl)" }
@@ -416,6 +439,20 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
   }
 
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
+  pragma[nomagic]
+  predicate isConstrained() {
+    exists(this.getABoundPath())
+    or
+    exists(ItemNode declaringItem, WherePred wp |
+      this = resolvePath(wp.getTypeRepr().(PathTypeRepr).getPath()) and
+      wp = declaringItem.getADescendant() and
+      this = declaringItem.getADescendant()
+    )
+  }
+
+  pragma[nomagic]
+  predicate isUnconstrained() { not this.isConstrained() }
 
   override string getName() { result = TypeParam.super.getName().getText() }
 

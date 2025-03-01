@@ -55,11 +55,11 @@ mod m2 {
     }
 
     pub fn f() {
-        let x = MyThing { a: S1 }; // spurious `MyThing<S2>` type (from the `m1` call below)
-        let y = MyThing { a: S2 }; // spurious `MyThing<S1>` type (from the `m1` call below)
+        let x = MyThing { a: S1 };
+        let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // spurious `MyThing<S2>` type
-        println!("{:?}", y.m1().a); // spurious `S1` type for `y.m1()`
+        println!("{:?}", x.m1()); // missing call target
+        println!("{:?}", y.m1().a); // missing call target
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -108,11 +108,11 @@ mod m3 {
     }
 
     pub fn f() {
-        let x = MyThing { a: S1 }; // spurious `MyThing<S2>` type (from the `m1` call below)
-        let y = MyThing { a: S2 }; // spurious `MyThing<S1>` type (from the `m1` call below)
+        let x = MyThing { a: S1 };
+        let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // spurious `MyThing<S2>` type
-        println!("{:?}", y.m1().a); // spurious `S1` type for `y.m1()`
+        println!("{:?}", x.m1()); // missing call target
+        println!("{:?}", y.m1().a); // missing call target
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -410,7 +410,7 @@ mod m9 {
         println!("{:?}", x3);
 
         let x4 = MyOption::MySome(MyOption::<S>::MyNone()); // missing type `S`
-        println!("{:?}", x4.flatten()); // missing type `S`
+        println!("{:?}", x4.flatten()); // missing call target
 
         let x5 = MyOption::MySome(MyOption::<S>::MyNone()); // missing type `S`
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x5)); // missing type `S`

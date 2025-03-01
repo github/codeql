@@ -49,13 +49,34 @@ private module Types {
     abstract Location getLocation();
   }
 
+  abstract class StructOrEnumType extends Type {
+    abstract ItemNode asItemNode();
+
+    final override Function getMethod(string name) {
+      result = this.asItemNode().getASuccessor(name) and
+      exists(ImplOrTraitItemNode impl | result = impl.getAnAssocItem() |
+        impl instanceof Trait
+        or
+        impl.(ImplItemNode).isUnconstrained()
+      )
+    }
+
+    final override TypeMention getABaseTypeMention() {
+      result =
+        any(ImplItemNode impl |
+          this.asItemNode() = impl.resolveSelfTy() and
+          impl.isUnconstrained()
+        )
+    }
+  }
+
   /** A struct type. */
-  class StructType extends Type, TStruct {
+  class StructType extends StructOrEnumType, TStruct {
     private Struct struct;
 
     StructType() { this = TStruct(struct) }
 
-    override Function getMethod(string name) { result = struct.(ItemNode).getASuccessor(name) }
+    override ItemNode asItemNode() { result = struct }
 
     override RecordField getRecordField(string name) { result = struct.getRecordField(name) }
 
@@ -65,20 +86,18 @@ private module Types {
       result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
     }
 
-    override TypeMention getABaseTypeMention() { struct = result.(ImplItemNode).resolveSelfTy() }
-
     override string toString() { result = struct.toString() }
 
     override Location getLocation() { result = struct.getLocation() }
   }
 
   /** An enum type. */
-  class EnumType extends Type, TEnum {
+  class EnumType extends StructOrEnumType, TEnum {
     private Enum enum;
 
     EnumType() { this = TEnum(enum) }
 
-    override Function getMethod(string name) { result = enum.(ItemNode).getASuccessor(name) }
+    override ItemNode asItemNode() { result = enum }
 
     override RecordField getRecordField(string name) { none() }
 
@@ -87,8 +106,6 @@ private module Types {
     override TypeParameter getTypeParameter(int i) {
       result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
     }
-
-    override TypeMention getABaseTypeMention() { enum = result.(ImplItemNode).resolveSelfTy() }
 
     override string toString() { result = enum.toString() }
 

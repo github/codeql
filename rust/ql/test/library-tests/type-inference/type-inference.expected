@@ -41,33 +41,18 @@ resolveType
 | main.rs:53:13:53:18 | self.a |  | main.rs:51:10:51:10 | T |
 | main.rs:58:13:58:13 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:58:13:58:13 | x | 0 | main.rs:34:5:35:14 | struct S1 |
-| main.rs:58:13:58:13 | x | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:58:17:58:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:58:17:58:33 | MyThing {...} | 0 | main.rs:34:5:35:14 | struct S1 |
-| main.rs:58:17:58:33 | MyThing {...} | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:58:30:58:31 | S1 |  | main.rs:34:5:35:14 | struct S1 |
-| main.rs:58:30:58:31 | S1 |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:59:13:59:13 | y |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:59:13:59:13 | y | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:59:13:59:13 | y | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:59:17:59:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:59:17:59:33 | MyThing {...} | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:59:17:59:33 | MyThing {...} | 0 | main.rs:36:5:37:14 | struct S2 |
-| main.rs:59:30:59:31 | S2 |  | main.rs:34:5:35:14 | struct S1 |
 | main.rs:59:30:59:31 | S2 |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:61:26:61:26 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:61:26:61:26 | x | 0 | main.rs:34:5:35:14 | struct S1 |
-| main.rs:61:26:61:26 | x | 0 | main.rs:36:5:37:14 | struct S2 |
-| main.rs:61:26:61:31 | x.m1(...) |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:61:26:61:31 | x.m1(...) |  | main.rs:34:5:35:14 | struct S1 |
-| main.rs:61:26:61:31 | x.m1(...) | 0 | main.rs:36:5:37:14 | struct S2 |
 | main.rs:62:26:62:26 | y |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:62:26:62:26 | y | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:62:26:62:26 | y | 0 | main.rs:36:5:37:14 | struct S2 |
-| main.rs:62:26:62:31 | y.m1(...) |  | main.rs:29:5:32:5 | struct MyThing |
-| main.rs:62:26:62:31 | y.m1(...) |  | main.rs:34:5:35:14 | struct S1 |
-| main.rs:62:26:62:31 | y.m1(...) | 0 | main.rs:36:5:37:14 | struct S2 |
-| main.rs:62:26:62:33 | ... .a |  | main.rs:36:5:37:14 | struct S2 |
 | main.rs:64:13:64:13 | x |  | main.rs:29:5:32:5 | struct MyThing |
 | main.rs:64:13:64:13 | x | 0 | main.rs:34:5:35:14 | struct S1 |
 | main.rs:64:17:64:33 | MyThing {...} |  | main.rs:29:5:32:5 | struct MyThing |
@@ -117,33 +102,18 @@ resolveType
 | main.rs:106:23:106:28 | self.a |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:111:13:111:13 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:111:13:111:13 | x | 0 | main.rs:78:5:79:14 | struct S1 |
-| main.rs:111:13:111:13 | x | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:111:17:111:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:111:17:111:33 | MyThing {...} | 0 | main.rs:78:5:79:14 | struct S1 |
-| main.rs:111:17:111:33 | MyThing {...} | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:111:30:111:31 | S1 |  | main.rs:78:5:79:14 | struct S1 |
-| main.rs:111:30:111:31 | S1 |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:112:13:112:13 | y |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:112:13:112:13 | y | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:112:13:112:13 | y | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:112:17:112:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:112:17:112:33 | MyThing {...} | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:112:17:112:33 | MyThing {...} | 0 | main.rs:80:5:81:14 | struct S2 |
-| main.rs:112:30:112:31 | S2 |  | main.rs:78:5:79:14 | struct S1 |
 | main.rs:112:30:112:31 | S2 |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:114:26:114:26 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:114:26:114:26 | x | 0 | main.rs:78:5:79:14 | struct S1 |
-| main.rs:114:26:114:26 | x | 0 | main.rs:80:5:81:14 | struct S2 |
-| main.rs:114:26:114:31 | x.m1(...) |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:114:26:114:31 | x.m1(...) |  | main.rs:78:5:79:14 | struct S1 |
-| main.rs:114:26:114:31 | x.m1(...) | 0 | main.rs:80:5:81:14 | struct S2 |
 | main.rs:115:26:115:26 | y |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:115:26:115:26 | y | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:115:26:115:26 | y | 0 | main.rs:80:5:81:14 | struct S2 |
-| main.rs:115:26:115:31 | y.m1(...) |  | main.rs:73:5:76:5 | struct MyThing |
-| main.rs:115:26:115:31 | y.m1(...) |  | main.rs:78:5:79:14 | struct S1 |
-| main.rs:115:26:115:31 | y.m1(...) | 0 | main.rs:80:5:81:14 | struct S2 |
-| main.rs:115:26:115:33 | ... .a |  | main.rs:80:5:81:14 | struct S2 |
 | main.rs:117:13:117:13 | x |  | main.rs:73:5:76:5 | struct MyThing |
 | main.rs:117:13:117:13 | x | 0 | main.rs:78:5:79:14 | struct S1 |
 | main.rs:117:17:117:33 | MyThing {...} |  | main.rs:73:5:76:5 | struct MyThing |
@@ -480,7 +450,6 @@ resolveType
 | main.rs:412:35:412:57 | ...::MyNone(...) |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:413:26:413:27 | x4 |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:413:26:413:27 | x4 | 0 | main.rs:372:5:376:5 | enum MyOption |
-| main.rs:413:26:413:37 | x4.flatten(...) |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:415:13:415:14 | x5 |  | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:415:13:415:14 | x5 | 0 | main.rs:372:5:376:5 | enum MyOption |
 | main.rs:415:18:415:58 | ...::MySome(...) |  | main.rs:372:5:376:5 | enum MyOption |
@@ -623,17 +592,9 @@ resolveType
 resolveMethodCallExpr
 | main.rs:23:9:23:14 | x.m1(...) | main.rs:5:9:7:9 | fn m1 |
 | main.rs:24:9:24:14 | y.m2(...) | main.rs:9:9:11:9 | fn m2 |
-| main.rs:61:26:61:31 | x.m1(...) | main.rs:40:9:42:9 | fn m1 |
-| main.rs:61:26:61:31 | x.m1(...) | main.rs:46:9:48:9 | fn m1 |
-| main.rs:62:26:62:31 | y.m1(...) | main.rs:40:9:42:9 | fn m1 |
-| main.rs:62:26:62:31 | y.m1(...) | main.rs:46:9:48:9 | fn m1 |
 | main.rs:67:26:67:31 | x.m2(...) | main.rs:52:9:54:9 | fn m2 |
 | main.rs:68:26:68:31 | y.m2(...) | main.rs:52:9:54:9 | fn m2 |
 | main.rs:95:9:95:14 | x.m1(...) | main.rs:84:9:84:25 | fn m1 |
-| main.rs:114:26:114:31 | x.m1(...) | main.rs:99:9:101:9 | fn m1 |
-| main.rs:114:26:114:31 | x.m1(...) | main.rs:105:9:107:9 | fn m1 |
-| main.rs:115:26:115:31 | y.m1(...) | main.rs:99:9:101:9 | fn m1 |
-| main.rs:115:26:115:31 | y.m1(...) | main.rs:105:9:107:9 | fn m1 |
 | main.rs:148:9:148:14 | x.m1(...) | main.rs:137:9:137:25 | fn m1 |
 | main.rs:161:26:161:31 | x.m1(...) | main.rs:152:9:154:9 | fn m1 |
 | main.rs:162:26:162:31 | y.m1(...) | main.rs:152:9:154:9 | fn m1 |
@@ -650,7 +611,6 @@ resolveMethodCallExpr
 | main.rs:317:26:317:31 | x.m3(...) | main.rs:271:9:280:9 | fn m3 |
 | main.rs:318:26:318:31 | y.m3(...) | main.rs:271:9:280:9 | fn m3 |
 | main.rs:405:9:405:17 | x2.set(...) | main.rs:383:9:385:9 | fn set |
-| main.rs:413:26:413:37 | x4.flatten(...) | main.rs:389:9:394:9 | fn flatten |
 | main.rs:444:26:444:32 | x1.m1(...) | main.rs:429:9:431:9 | fn m1 |
 | main.rs:448:26:448:32 | x2.m2(...) | main.rs:433:9:435:9 | fn m2 |
 | main.rs:449:26:449:32 | x2.m3(...) | main.rs:437:9:439:9 | fn m3 |
@@ -662,10 +622,8 @@ resolveFieldExpr
 | main.rs:41:13:41:18 | self.a | main.rs:31:9:31:12 | RecordField |
 | main.rs:47:23:47:28 | self.a | main.rs:31:9:31:12 | RecordField |
 | main.rs:53:13:53:18 | self.a | main.rs:31:9:31:12 | RecordField |
-| main.rs:62:26:62:33 | ... .a | main.rs:31:9:31:12 | RecordField |
 | main.rs:100:13:100:18 | self.a | main.rs:75:9:75:12 | RecordField |
 | main.rs:106:23:106:28 | self.a | main.rs:75:9:75:12 | RecordField |
-| main.rs:115:26:115:33 | ... .a | main.rs:75:9:75:12 | RecordField |
 | main.rs:153:13:153:18 | self.a | main.rs:128:9:128:12 | RecordField |
 | main.rs:276:17:276:27 | ... .a | main.rs:240:9:240:12 | RecordField |
 | main.rs:278:17:278:32 | ... .a | main.rs:240:9:240:12 | RecordField |
