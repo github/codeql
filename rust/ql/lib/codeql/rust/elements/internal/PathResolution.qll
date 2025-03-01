@@ -83,6 +83,9 @@ abstract class ItemNode extends AstNode {
   /** Gets the visibility of this item, if any. */
   abstract Visibility getVisibility();
 
+  /** Gets the `i`th type parameter of this item, if any. */
+  abstract TypeParam getTypeParam(int i);
+
   /** Holds if this item is declared as `pub`. */
   bindingset[this]
   pragma[inline_late]
@@ -207,6 +210,8 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   }
 
   override Visibility getVisibility() { none() }
+
+  override TypeParam getTypeParam(int i) { none() }
 }
 
 /** An item that can occur in a trait or an `impl` block. */
@@ -223,6 +228,8 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override Namespace getNamespace() { result.isValue() }
 
   override Visibility getVisibility() { result = Const.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { none() }
 }
 
 private class EnumItemNode extends ItemNode instanceof Enum {
@@ -231,6 +238,8 @@ private class EnumItemNode extends ItemNode instanceof Enum {
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { result = Enum.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 }
 
 private class VariantItemNode extends ItemNode instanceof Variant {
@@ -238,6 +247,10 @@ private class VariantItemNode extends ItemNode instanceof Variant {
 
   override Namespace getNamespace() {
     if super.getFieldList() instanceof RecordFieldList then result.isType() else result.isValue()
+  }
+
+  override TypeParam getTypeParam(int i) {
+    result = super.getEnum().getGenericParamList().getTypeParam(i)
   }
 
   override Visibility getVisibility() { result = Variant.super.getVisibility() }
@@ -250,10 +263,12 @@ class FunctionItemNode extends AssocItemNode instanceof Function {
 
   override Namespace getNamespace() { result.isValue() }
 
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
+
   override Visibility getVisibility() { result = Function.super.getVisibility() }
 }
 
-abstract private class ImplOrTraitItemNode extends ItemNode {
+abstract class ImplOrTraitItemNode extends ItemNode {
   /** Gets an item that may refer to this node using `Self`. */
   pragma[nomagic]
   ItemNode getAnItemInSelfScope() {
@@ -265,6 +280,13 @@ abstract private class ImplOrTraitItemNode extends ItemNode {
       not mid instanceof ImplOrTraitItemNode
     )
   }
+
+  /** Gets an associated item belonging to this trait or `impl` block. */
+  abstract AssocItemNode getAnAssocItem();
+
+  /** Holds if this trait declares an associated item named `name`. */
+  pragma[nomagic]
+  predicate hasAssocItem(string name) { name = this.getAnAssocItem().getName() }
 }
 
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
@@ -276,17 +298,38 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
 
-  /** Holds if this `impl` block declares an associated item named `name`. */
   pragma[nomagic]
-  predicate hasAssocItem(string name) {
-    name = super.getAssocItemList().getAnAssocItem().(AssocItemNode).getName()
+  private TypeRepr getASelfTyArg() {
+    result =
+      this.getSelfPath().getPart().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
   }
+
+  pragma[nomagic]
+  private TypeParamItemNode getASelfTyTypeParamArg(TypeRepr arg) {
+    arg = this.getASelfTyArg() and
+    result = resolvePath(arg.(PathTypeRepr).getPath())
+  }
+
+  pragma[nomagic]
+  predicate isConstrained() {
+    exists(TypeRepr arg | arg = this.getASelfTyArg() |
+      not exists(this.getASelfTyTypeParamArg(arg))
+      or
+      this.getASelfTyTypeParamArg(arg).isConstrained()
+    )
+  }
+
+  predicate isUnconstrained() { not this.isConstrained() }
+
+  override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
   override string getName() { result = "(impl)" }
 
   override Namespace getNamespace() {
     result.isType() // can be referenced with `Self`
   }
+
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
 }
@@ -298,6 +341,8 @@ private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
 
   override Namespace getNamespace() { none() }
 
+  override TypeParam getTypeParam(int i) { none() }
+
   override Visibility getVisibility() { none() }
 }
 
@@ -307,6 +352,8 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { result = Module.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { none() }
 }
 
 private class StructItemNode extends ItemNode instanceof Struct {
@@ -320,6 +367,8 @@ private class StructItemNode extends ItemNode instanceof Struct {
   }
 
   override Visibility getVisibility() { result = Struct.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 }
 
 class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
@@ -330,17 +379,15 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
 
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
-  /** Holds if this trait declares an associated item named `name`. */
-  pragma[nomagic]
-  predicate hasAssocItem(string name) {
-    name = super.getAssocItemList().getAnAssocItem().(AssocItemNode).getName()
-  }
+  override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
   override string getName() { result = Trait.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { result = Trait.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 }
 
 class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
@@ -351,6 +398,8 @@ class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { result = TypeAlias.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 }
 
 private class UnionItemNode extends ItemNode instanceof Union {
@@ -359,6 +408,8 @@ private class UnionItemNode extends ItemNode instanceof Union {
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { result = Union.super.getVisibility() }
+
+  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 }
 
 private class UseItemNode extends ItemNode instanceof Use {
@@ -367,6 +418,8 @@ private class UseItemNode extends ItemNode instanceof Use {
   override Namespace getNamespace() { none() }
 
   override Visibility getVisibility() { none() }
+
+  override TypeParam getTypeParam(int i) { none() }
 }
 
 private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
@@ -375,6 +428,8 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override Namespace getNamespace() { none() }
 
   override Visibility getVisibility() { none() }
+
+  override TypeParam getTypeParam(int i) { none() }
 }
 
 private class TypeParamItemNode extends ItemNode instanceof TypeParam {
@@ -385,11 +440,27 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
 
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
+  pragma[nomagic]
+  predicate isConstrained() {
+    exists(this.getABoundPath())
+    or
+    exists(ItemNode declaringItem, WherePred wp |
+      this = resolvePath(wp.getTypeRepr().(PathTypeRepr).getPath()) and
+      wp = declaringItem.getADescendant() and
+      this = declaringItem.getADescendant()
+    )
+  }
+
+  pragma[nomagic]
+  predicate isUnconstrained() { not this.isConstrained() }
+
   override string getName() { result = TypeParam.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { none() }
+
+  override TypeParam getTypeParam(int i) { none() }
 
   override Location getLocation() { result = TypeParam.super.getName().getLocation() }
 }
@@ -547,14 +618,25 @@ private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePath0(RelevantPath path) {
-  exists(ItemNode encl, Namespace ns, string name, ItemNode res |
+ItemNode unqualifiedPathLookup(RelevantPath path) {
+  exists(ItemNode encl, Namespace ns, string name |
     unqualifiedPathLookup(path, name, ns, encl) and
-    res = getASuccessor(encl, name, ns)
-  |
+    result = getASuccessor(encl, name, ns)
+  )
+}
+
+pragma[nomagic]
+predicate isUnqualifiedSelfPath(RelevantPath path) {
+  not any(RelevantPath parent).getQualifier() = path and
+  path.isUnqualified("Self")
+}
+
+pragma[nomagic]
+private ItemNode resolvePath0(RelevantPath path) {
+  exists(ItemNode res |
+    res = unqualifiedPathLookup(path) and
     if
-      not any(RelevantPath parent).getQualifier() = path and
-      name = "Self" and
+      isUnqualifiedSelfPath(path) and
       res instanceof ImplItemNode
     then result = res.(ImplItemNode).resolveSelfTy()
     else result = res

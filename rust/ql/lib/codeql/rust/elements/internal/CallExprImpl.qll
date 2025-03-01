@@ -29,10 +29,21 @@ module Impl {
     override string toString() { result = this.getFunction().toAbbreviatedString() + "(...)" }
 
     pragma[nomagic]
+    private PathResolution::ItemNode getResolvedFunction() {
+      result = PathResolution::resolvePath(this.getFunction().(PathExpr).getPath())
+    }
+
+    pragma[nomagic]
     private PathResolution::ItemNode getResolvedFunction(int pos) {
-      result = PathResolution::resolvePath(this.getFunction().(PathExpr).getPath()) and
+      result = this.getResolvedFunction() and
       exists(this.getArgList().getArg(pos))
     }
+
+    /** Gets the struct that this call resolves to, if any. */
+    Struct getStruct() { result = this.getResolvedFunction() }
+
+    /** Gets the variant that this call resolves to, if any. */
+    Variant getVariant() { result = this.getResolvedFunction() }
 
     /**
      * Gets the tuple field that matches the `pos`th argument of this call, if any.
