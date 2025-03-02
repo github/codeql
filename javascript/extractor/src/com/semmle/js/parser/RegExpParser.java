@@ -8,6 +8,7 @@ import com.semmle.js.ast.regexp.CharacterClass;
 import com.semmle.js.ast.regexp.CharacterClassEscape;
 import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
+import com.semmle.js.ast.regexp.CharacterClassSubtraction;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
 import com.semmle.js.ast.regexp.ControlLetter;
@@ -566,6 +567,7 @@ public class RegExpParser {
   private enum CharacterClassType {
     STANDARD,
     INTERSECTION,
+    SUBTRACTION,
   }
 
   // ECMA 2024 `v` flag allows nested character classes.
@@ -588,6 +590,10 @@ public class RegExpParser {
         this.match("&&");
         classType = CharacterClassType.INTERSECTION;
       }
+      else if (lookahead("--")) {
+        this.match("--");
+        classType = CharacterClassType.SUBTRACTION;
+      }
       else {
         elements.add(this.parseCharacterClassElement());
       }
@@ -597,6 +603,8 @@ public class RegExpParser {
     switch (classType) {
       case INTERSECTION:
         return this.finishTerm(new CharacterClass(loc, Collections.singletonList(new CharacterClassIntersection(loc, elements)), inverted));
+      case SUBTRACTION:
+        return this.finishTerm(new CharacterClass(loc, Collections.singletonList(new CharacterClassSubtraction(loc, elements)), inverted));
       case STANDARD:
       default:
         return this.finishTerm(new CharacterClass(loc, elements, inverted));
@@ -614,7 +622,7 @@ public class RegExpParser {
           return atom;
       }
     }
-    if (!this.lookahead("-]") && this.match("-") && !(atom instanceof CharacterClassEscape))
+    if (!this.lookahead("-]") && !this.lookahead("--") && this.match("-") && !(atom instanceof CharacterClassEscape))
       return this.finishTerm(new CharacterClassRange(loc, atom, this.parseCharacterClassAtom()));
     return atom;
   }

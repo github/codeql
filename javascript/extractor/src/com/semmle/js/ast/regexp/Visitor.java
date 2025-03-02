@@ -65,4 +65,6 @@ public interface Visitor {
   public void visit(CharacterClassQuotedString nd);
 
   public void visit(CharacterClassIntersection nd);
+
+  public void visit(CharacterClassSubtraction nd);
 }
