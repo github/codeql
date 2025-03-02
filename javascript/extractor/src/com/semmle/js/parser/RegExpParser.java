@@ -19,6 +19,7 @@ import com.semmle.js.ast.regexp.Error;
 import com.semmle.js.ast.regexp.Group;
 import com.semmle.js.ast.regexp.HexEscapeSequence;
 import com.semmle.js.ast.regexp.IdentityEscape;
+import com.semmle.js.ast.regexp.CharacterClassIntersection;
 import com.semmle.js.ast.regexp.NamedBackReference;
 import com.semmle.js.ast.regexp.NonWordBoundary;
 import com.semmle.js.ast.regexp.OctalEscape;
@@ -37,6 +38,7 @@ import com.semmle.js.ast.regexp.ZeroWidthPositiveLookahead;
 import com.semmle.js.ast.regexp.ZeroWidthPositiveLookbehind;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /** A parser for ECMAScript 2018 regular expressions. */
@@ -561,10 +563,16 @@ public class RegExpParser {
     return this.finishTerm(new CharacterClass(loc, elements, inverted));
   }
 
+  private enum CharacterClassType {
+    STANDARD,
+    INTERSECTION,
+  }
+
   // ECMA 2024 `v` flag allows nested character classes.
   private RegExpTerm parseNestedCharacterClass() {
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> elements = new ArrayList<>();
+    CharacterClassType classType = CharacterClassType.STANDARD;
 
     this.match("[");
     boolean inverted = this.match("^");
@@ -576,11 +584,23 @@ public class RegExpParser {
       if (lookahead("[")) {
         elements.add(parseNestedCharacterClass());
       } 
+      else if (lookahead("&&")) {
+        this.match("&&");
+        classType = CharacterClassType.INTERSECTION;
+      }
       else {
         elements.add(this.parseCharacterClassElement());
       }
     }
-    return this.finishTerm(new CharacterClass(loc, elements, inverted));
+
+    // Create appropriate RegExpTerm based on the detected class type
+    switch (classType) {
+      case INTERSECTION:
+        return this.finishTerm(new CharacterClass(loc, Collections.singletonList(new CharacterClassIntersection(loc, elements)), inverted));
+      case STANDARD:
+      default:
+        return this.finishTerm(new CharacterClass(loc, elements, inverted));
+    }
   }
 
   private static final List<String> escapeClasses = Arrays.asList("d", "D", "s", "S", "w", "W");

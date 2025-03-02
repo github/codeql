@@ -63,4 +63,6 @@ public interface Visitor {
   public void visit(UnicodePropertyEscape nd);
 
   public void visit(CharacterClassQuotedString nd);
+
+  public void visit(CharacterClassIntersection nd);
 }
