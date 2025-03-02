@@ -545,6 +545,7 @@ public class RegExpParser {
   }
 
   private RegExpTerm parseCharacterClass() {
+    if (flags != null && flags.contains("v")) return parseNestedCharacterClass();
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> elements = new ArrayList<>();
 
@@ -556,6 +557,28 @@ public class RegExpParser {
         break;
       }
       elements.add(this.parseCharacterClassElement());
+    }
+    return this.finishTerm(new CharacterClass(loc, elements, inverted));
+  }
+
+  // ECMA 2024 `v` flag allows nested character classes.
+  private RegExpTerm parseNestedCharacterClass() {
+    SourceLocation loc = new SourceLocation(pos());
+    List<RegExpTerm> elements = new ArrayList<>();
+
+    this.match("[");
+    boolean inverted = this.match("^");
+    while (!this.match("]")) {
+      if (this.atEOS()) {
+        this.error(Error.EXPECTED_RBRACKET);
+        break;
+      }
+      if (lookahead("[")) {
+        elements.add(parseNestedCharacterClass());
+      } 
+      else {
+        elements.add(this.parseCharacterClassElement());
+      }
     }
     return this.finishTerm(new CharacterClass(loc, elements, inverted));
   }
