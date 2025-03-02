@@ -600,7 +600,7 @@ public class ASTExtractor {
         SourceMap sourceMap =
             SourceMap.legacyWithStartPos(
                 SourceMap.fromString(nd.getRaw()).offsetBy(0, offsets), startPos);
-        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), sourceMap, nd, false);
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), sourceMap, nd, false, source.substring(source.lastIndexOf('/'), source.length()));
       } else if (nd.isStringLiteral()
           && !c.isInsideType()
           && nd.getRaw().length() < 1000

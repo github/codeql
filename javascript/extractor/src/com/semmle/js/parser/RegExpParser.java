@@ -67,6 +67,7 @@ public class RegExpParser {
   private List<Error> errors;
   private List<BackReference> backrefs;
   private int maxbackref;
+  private String flags;
 
   /** Parse the given string as a regular expression. */
   public Result parse(String src) {
@@ -80,6 +81,11 @@ public class RegExpParser {
       if (backref.getValue() > maxbackref)
         errors.add(new Error(backref.getLoc(), Error.INVALID_BACKREF));
     return new Result(root, errors);
+  }
+
+  public Result parse(String src, String flags) {
+    this.flags = flags;
+    return parse(src);
   }
 
   private static String fromCodePoint(int codepoint) {

@@ -346,8 +346,8 @@ public class RegExpExtractor {
     }
   }
 
-  public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing) {
-    Result res = parser.parse(src);
+  public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing, String flags) {
+    Result res = parser.parse(src, flags);
     if (isSpeculativeParsing && res.getErrors().size() > 0) {
       return;
     }
@@ -364,4 +364,8 @@ public class RegExpExtractor {
       this.emitLocation(err, lbl);
     }
   }
+
+    public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing) {
+      extract(src, sourceMap, parent, isSpeculativeParsing, "");
+    }
 }
