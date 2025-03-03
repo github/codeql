@@ -83,8 +83,6 @@ class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource insta
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
-  override DataFlow::Node getInputNode() { none() } // TODO: add seed
-
   override predicate flowsTo(Crypto::FlowAwareElement other) {
     ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
   }
@@ -113,40 +111,10 @@ abstract class AdditionalFlowInputStep extends DataFlow::Node {
 
 module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
 
-class NonceArtifactConsumer extends Crypto::NonceArtifactInstance instanceof Crypto::NonceArtifactConsumer
-{
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
-
-  override DataFlow::Node getOutputNode() {
-    result = this.(Crypto::NonceArtifactConsumer).getOutputNode()
-  }
-
-  override DataFlow::Node getInputNode() {
-    result = this.(Crypto::NonceArtifactConsumer).getInputNode()
-  }
-}
-
-class CipherInputConsumer extends Crypto::CipherInputArtifactInstance instanceof Crypto::CipherInputConsumer
-{
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
-
-  override DataFlow::Node getOutputNode() { none() }
-
-  override DataFlow::Node getInputNode() {
-    result = this.(Crypto::CipherInputArtifactInstance).getInputNode()
-  }
-}
-
 abstract class CipherOutputArtifact extends Crypto::CipherOutputArtifactInstance {
   override predicate flowsTo(Crypto::FlowAwareElement other) {
     ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
   }
-
-  override DataFlow::Node getInputNode() { none() }
 }
 
 /**

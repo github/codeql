@@ -45,15 +45,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       )
   }
 
+  NodeBase getPassthroughNodeChild(NodeBase node) {
+    result = node.(CipherInputNode).getChild(_) or
+    result = node.(NonceNode).getChild(_)
+  }
+
+  predicate isPassthroughNode(NodeBase node) {
+    node instanceof CipherInputNode or
+    node instanceof NonceNode
+  }
+
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
     not node.isExcludedFromGraph() and
+    not isPassthroughNode(node) and
     (
       key = "semmle.label" and
       value = node.toString()
       or
       // CodeQL's DGML output does not include a location
       key = "Location" and
-      value = node.getLocation().toString()
+      value = "<demo>" // node.getLocation().toString()
       or
       // Known unknown edges should be reported as properties rather than edges
       node = node.getChild(key) and
@@ -66,7 +77,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   predicate edges_graph_impl(NodeBase source, NodeBase target, string key, string value) {
     key = "semmle.label" and
-    target = source.getChild(value) and
+    exists(NodeBase directTarget |
+      directTarget = source.getChild(value) and
+      // [NodeA] ---Input--> [Passthrough] ---Source---> [NodeB]
+      // should get reported as [NodeA] ---Input--> [NodeB]
+      if isPassthroughNode(directTarget)
+      then target = getPassthroughNodeChild(directTarget)
+      else target = directTarget
+    ) and
     // Known unknowns are reported as properties rather than edges
     not source = target
   }
@@ -223,22 +241,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *   * Instances of nodes do not necessarily have to come from a consumer, allowing additional modelling of an artifact to occur outside of the consumer.
    */
   abstract class ArtifactConsumer extends ConsumerElement {
+    /**
+     * Use `getAKnownArtifactSource() instead. The behaviour of these two predicates is equivalent.
+     */
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
 
     final ArtifactElement getAKnownArtifactSource() { result.flowsTo(this) }
   }
 
-  abstract class NonceArtifactConsumer extends ArtifactConsumer, NonceArtifactInstance {
-    NonceArtifactInstance asNonce() { result = this }
+  abstract class ArtifactConsumerAndInstance extends ArtifactConsumer {
+    final override DataFlowNode getOutputNode() { none() }
+
+    final override predicate flowsTo(FlowAwareElement other) { none() }
   }
 
-  abstract class CipherInputArtifactInstance extends ArtifactElement { }
-
-  abstract class CipherInputConsumer extends ArtifactConsumer, CipherInputArtifactInstance {
-    CipherInputArtifactInstance asCipherInput() { result = this }
+  abstract class CipherOutputArtifactInstance extends ArtifactElement {
+    final override DataFlowNode getInputNode() { none() }
   }
-
-  abstract class CipherOutputArtifactInstance extends ArtifactElement { }
 
   abstract class CipherOperationInstance extends OperationElement {
     /**
@@ -345,21 +364,33 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class KeyDerivationAlgorithmInstance extends KnownElement { }
 
-  // Artifacts
-  abstract class DigestArtifactInstance extends ArtifactElement { }
+  // Artifacts determined solely by the element that produces them
+  // Implementation guidance: these *do* need to be defined generically at the language-level
+  // in order for a flowsTo to be defined. At the per-modeling-instance level, extend that language-level class!
+  abstract class OutputArtifactElement extends ArtifactElement {
+    final override DataFlowNode getInputNode() { none() }
+  }
 
-  abstract class KeyArtifactInstance extends ArtifactElement { }
+  abstract class DigestArtifactInstance extends OutputArtifactElement { }
 
-  abstract class NonceArtifactInstance extends ArtifactElement { }
+  abstract class RandomNumberGenerationInstance extends OutputArtifactElement { } // TODO: is this an OutputArtifactElement if it takes a seed?
 
-  abstract class RandomNumberGenerationInstance extends ArtifactElement { }
+  // Artifacts determined solely by the consumer that consumes them are defined as consumers
+  // Implementation guidance: these do not need to be defined generically at the language-level
+  // Only the sink node needs to be defined per-modeling-instance (e.g., in JCA.qll)
+  abstract class NonceArtifactConsumer extends ArtifactConsumerAndInstance { }
+
+  abstract class CipherInputConsumer extends ArtifactConsumerAndInstance { }
+
+  // Other artifacts
+  abstract class KeyArtifactInstance extends ArtifactElement { } // TODO: implement and categorize
 
   newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
-    TNonce(NonceArtifactInstance e) or
-    TCipherInput(CipherInputArtifactInstance e) or
+    TNonce(NonceArtifactConsumer e) or
+    TCipherInput(CipherInputConsumer e) or
     TCipherOutput(CipherOutputArtifactInstance e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Operations (e.g., hashing, encryption)
@@ -525,7 +556,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * A nonce or initialization vector
    */
   final class NonceNode extends ArtifactNode, TNonce {
-    NonceArtifactInstance instance;
+    NonceArtifactConsumer instance;
 
     NonceNode() { this = TNonce(instance) }
 
@@ -550,12 +581,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Input text to a cipher operation
    */
-  final class CipherMessageNode extends ArtifactNode, TCipherInput {
-    CipherInputArtifactInstance instance;
+  final class CipherInputNode extends ArtifactNode, TCipherInput {
+    CipherInputConsumer instance;
 
-    CipherMessageNode() { this = TCipherInput(instance) }
+    CipherInputNode() { this = TCipherInput(instance) }
 
-    final override string getInternalType() { result = "CipherMessage" }
+    final override string getInternalType() { result = "CipherInput" }
 
     override LocatableElement asElement() { result = instance }
   }
@@ -665,12 +696,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     NonceNode getANonce() {
-      result.asElement() = this.asElement().(CipherOperationInstance).getNonceConsumer().asNonce()
+      result.asElement() = this.asElement().(CipherOperationInstance).getNonceConsumer()
     }
 
-    CipherMessageNode getAnInputArtifact() {
-      result.asElement() =
-        this.asElement().(CipherOperationInstance).getInputConsumer().asCipherInput()
+    CipherInputNode getAnInputArtifact() {
+      result.asElement() = this.asElement().(CipherOperationInstance).getInputConsumer()
     }
 
     CipherOutputNode getAnOutputArtifact() {

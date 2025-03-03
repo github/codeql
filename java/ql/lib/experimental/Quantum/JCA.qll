@@ -493,7 +493,7 @@ module JCAModel {
     }
   }
 
-  class CipherInitCallNonceArgConsumer extends NonceArtifactConsumer instanceof Expr {
+  class CipherInitCallNonceArgConsumer extends Crypto::NonceArtifactConsumer instanceof Expr {
     CipherInitCallNonceArgConsumer() { this = any(CipherInitCall call).getNonceArg() }
 
     override DataFlow::Node getInputNode() { result.asExpr() = this }
