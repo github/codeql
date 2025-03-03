@@ -11,7 +11,7 @@ module NextJS {
   /**
    * Gets a `package.json` that depends on the `Next.js` library.
    */
-  PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
+  PackageJson getANextPackage() { exists(result.getDependencies().getADependency("next")) }
 
   /**
    * Gets a "pages" folder in a `Next.js` application.
