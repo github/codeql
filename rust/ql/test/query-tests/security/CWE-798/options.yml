@@ -1,0 +1,6 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - cipher = { version = "0.4.4" }
+    - rabbit = { version = "0.4.1" }
+    - aes = { version = "0.8.4" }
+    - cfb-mode = { version = "0.8.2" }
