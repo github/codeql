@@ -18,11 +18,10 @@ private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import modeling.ModelEditor
 
 module ModelGeneratorInput implements ModelGeneratorInputSig<P::Location, PythonDataFlow> {
-  class Type = Unit; // P::Type ?
+  class Type = Unit;
 
   class Parameter = DataFlow::ParameterNode;
 
-  // class Callable = Callable;
   class Callable instanceof DataFlowCallable {
     string toString() { result = super.toString() }
   }
@@ -33,16 +32,6 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<P::Location, Python
     Type getType() { any() }
 
     override Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
-
-    // override Callable getEnclosingCallable() {
-    //   result = this.(DataFlow::Node).getEnclosingCallable().(DataFlowFunction).getScope()
-    //   // result = this.(DataFlow::Node).getEnclosingCallable().(DataFlowFunction).getScope()
-    //   // exists(P::Function func |
-    //   //   func.getScope() = this.(DataFlow::Node).getEnclosingCallable().getScope()
-    //   // | 
-    //   //   result = func
-    //   // )
-    // }
 
     Parameter asParameter() { result = this }
   }
@@ -74,13 +63,6 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<P::Location, Python
     predicate isRelevant() { relevant(this) }
   }
 
-  // /**
-  //  * `
-  //  */
-  // private predicate qualifiedName(Callable c, string package, string type) {
-  //   result = c.
-  // }
-
   predicate isRelevantType(Type t) { any() }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) { result = any(Type t) and exists(c) }
@@ -88,9 +70,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<P::Location, Python
   string qualifierString() { result = "Argument[this]" }
 
   string parameterAccess(Parameter p) {
-    // TODO: Implement this to support named parameters
-    result = "Argument[" + p.getPosition().toString() + "]"
-    // result = "param[]"
+    result = "Argument[" + p.getParameter().getName() + "]"
+    or
+    not exists(p.getParameter().getName()) and
+    result = "Argument[" + p.getParameter().getPosition().toString() + "]"
   }
 
   string parameterContentAccess(Parameter p) { result = "Argument[]" }
@@ -112,7 +95,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<P::Location, Python
   }
 
   Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
-    // TODO
+    // TODO: Check if we need the complexity of the Java implementation.
     result = DataFlowImplCommon::getNodeEnclosingCallable(ret)
   }
 
@@ -149,44 +132,14 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<P::Location, Python
 
   string getSyntheticName(DataFlow::ContentSet c) { none() }
 
-  string printContent(DataFlow::ContentSet c) {
-    // TODO
-    result = "Memeber[]"
-    // exists(Parameter param |
-    //   param = c.(Public::ParameterNode).getParameter()
-    //   |
-    //   result = "Member[" + param.getName() + "]"
-    //   )
-    // exists(string name, string arg |
-    //   name = "Member" and
-    //   if arg = "" then result = name else result = "Memeber[" + arg + "]"
-    // )
-  }
+  string printContent(DataFlow::ContentSet c) { result = c.toString() }
 
-  /**
-   * - ["argparse.ArgumentParser", "Member[_parse_known_args,_read_args_from_files]", "Argument[0,arg_strings:]", "ReturnValue", "taint"]
-   */
   string partialModelRow(Callable api, int i) {
-    exists(Endpoint e | e = api.(DataFlowFunction).getScope() | 
-      i = 0 and result = e.getNamespace()
+    exists(Endpoint e | e = api.(DataFlowFunction).getScope() |
+      i = 0 and result = e.getNamespace() + "." + e.getClass()
       or
-      i = 1 and result = e.getClass()
-      or
-      i = 2 and result = e.getFunctionName()
-      or
-      i = 3 and result = e.getParameters()
-    
+      i = 1 and result = "Member[" + e.getFunctionName() + "]"
     )
-    //  and
-    // // i = 0 and qualifiedName(api, result, _) // package[.Class]
-    // i = 0 and result = api.(DataFlowCallable)
-    // or
-    // i = 1 and result = "1" // name
-    // or
-    // i = 2 and
-    // result = "2"
-    // TODO
-    // exists(Parameter p | p = api.getArg(_) | result = "Member[" + p.getName() + "]") // parameters
   }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
