@@ -17,13 +17,29 @@ include:**/action.yaml
 END
 )
 
-if [ -n "${LGTM_INDEX_INCLUDE:-}" ] || [ -n "${LGTM_INDEX_EXCLUDE:-}" ] || [ -n "${LGTM_INDEX_FILTERS:-}" ] ; then
-    echo "Path filters set. Passing them through to the JavaScript extractor."
+echo "Initial 'LGTM_INDEX_INCLUDE':"
+echo ${LGTM_INDEX_INCLUDE:-}
+echo "Initial 'LGTM_INDEX_EXCLUDE':"
+echo ${LGTM_INDEX_EXCLUDE:-}
+echo "Initial 'LGTM_INDEX_FILTERS':"
+echo ${LGTM_INDEX_FILTERS:-}
+
+# If the user has specified any paths to include, we will scan those paths as-is.
+# If the user has only specified paths to exclude, or has not specified any paths at all,
+# we will scan the default paths, but apply the user-specified exclusions to them.
+newline=$'\n'
+if [ -n "${LGTM_INDEX_INCLUDE:-}" ] ; then
+    echo "'LGTM_INDEX_INCLUDE' set. Passing all path inclusions, exclusions, and filters through to the JavaScript extractor."
+elif [[ "${LGTM_INDEX_FILTERS}" =~ (^|$newline)include: ]]; then
+    echo "'LGTM_INDEX_FILTERS' contains at least one 'include:' filter. Passing all path inclusions, exclusions, and filters through to the JavaScript extractor."
 else
-    echo "No path filters set. Using the default filters."
-    LGTM_INDEX_FILTERS="${DEFAULT_PATH_FILTERS}"
+    echo "'LGTM_INDEX_FILTERS' contains no 'include:' filters. Using the default path filters, with any user-specified exclusions applied."
+    LGTM_INDEX_FILTERS="${DEFAULT_PATH_FILTERS}${newline}${LGTM_INDEX_FILTERS}"
     export LGTM_INDEX_FILTERS
 fi
+
+echo "Final 'LGTM_INDEX_FILTERS':"
+echo ${LGTM_INDEX_FILTERS}
 
 # Find the JavaScript extractor directory via `codeql resolve extractor`.
 CODEQL_EXTRACTOR_JAVASCRIPT_ROOT="$($CODEQL_DIST/codeql resolve extractor --language javascript)"
