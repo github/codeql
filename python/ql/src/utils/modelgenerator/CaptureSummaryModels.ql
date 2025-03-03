@@ -2,7 +2,7 @@
  * @name Capture summary models.
  * @description Finds applicable summary models to be used by other queries.
  * @kind diagnostic
- * @id python/utils/modelgenerator/summary-models
+ * @id py/utils/modelgenerator/summary-models
  * @tags modelgenerator
  */
 
