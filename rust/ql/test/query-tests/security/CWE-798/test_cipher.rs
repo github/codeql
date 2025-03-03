@@ -70,8 +70,8 @@ fn test_block_cipher_aes(
     let aes_cipher3 = Aes256::new_from_slice(key256).unwrap();
     aes_cipher3.encrypt_block(block128.into());
 
-    let const2 = &[0u8;32]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let aes_cipher4 = Aes256::new_from_slice(const2).unwrap();
+    let const2 = &[0u8;32]; // $ Alert[rust/hardcoded-crytographic-value]
+    let aes_cipher4 = Aes256::new_from_slice(const2).unwrap(); // $ Sink
     aes_cipher4.encrypt_block(block128.into());
 
     let aes_cipher5 = cfb_mode::Encryptor::<aes::Aes256>::new(key.into(), iv.into());

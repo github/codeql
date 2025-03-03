@@ -1,0 +1,16 @@
+#select
+| test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:74:23:74:44 | ...::new_from_slice | This hard-coded value is used as $@. | test_cipher.rs:74:23:74:44 | ...::new_from_slice | key |
+edges
+| test_cipher.rs:73:9:73:14 | const2 [&ref, element] | test_cipher.rs:74:46:74:51 | const2 [&ref, element] | provenance |  |
+| test_cipher.rs:73:18:73:26 | &... [&ref, element] | test_cipher.rs:73:9:73:14 | const2 [&ref, element] | provenance |  |
+| test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | test_cipher.rs:73:18:73:26 | &... [&ref, element] | provenance |  |
+| test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | provenance |  |
+| test_cipher.rs:74:46:74:51 | const2 [&ref, element] | test_cipher.rs:74:23:74:44 | ...::new_from_slice | provenance | MaD:54 Sink:MaD:54 Sink:MaD:54 |
+nodes
+| test_cipher.rs:73:9:73:14 | const2 [&ref, element] | semmle.label | const2 [&ref, element] |
+| test_cipher.rs:73:18:73:26 | &... [&ref, element] | semmle.label | &... [&ref, element] |
+| test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | semmle.label | [0u8; 32] [element] |
+| test_cipher.rs:73:20:73:22 | 0u8 | semmle.label | 0u8 |
+| test_cipher.rs:74:23:74:44 | ...::new_from_slice | semmle.label | ...::new_from_slice |
+| test_cipher.rs:74:46:74:51 | const2 [&ref, element] | semmle.label | const2 [&ref, element] |
+subpaths
