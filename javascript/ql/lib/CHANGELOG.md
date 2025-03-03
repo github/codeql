@@ -2,7 +2,6 @@
 
 ### Major Analysis Improvements
 
----
 * Added support for the `response` threat model kind, which can enabled with [advanced setup](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models). When enabled, the response data coming back from an outgoing HTTP request is considered a source of taint.
 * Added support for the `useQuery` hook from `@tanstack/react-query`.
 
