@@ -31,10 +31,13 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="symbol">Type symbol</param>
         private bool IsBrokenType(ITypeSymbol symbol)
         {
-            if (!Context.ExtractionContext.IsStandalone || !symbol.FromSource())
+            if (!Context.ExtractionContext.IsStandalone ||
+                !symbol.FromSource() ||
+                symbol.IsAnonymousType)
             {
                 return false;
             }
+
             // (1) public class { ... } is a broken type and doesn't have a name.
             // (2) public class var { ... } is a an allowed type, but it overrides the var keyword for all uses.
             //     It is probably a better heuristic to treat it as a broken type.
