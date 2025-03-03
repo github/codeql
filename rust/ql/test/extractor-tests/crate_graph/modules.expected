@@ -18,7 +18,8 @@
 #-----| impl AsString for ...::X { ... }
 #-----|  -> fn as_string
 
-#-----| mod crate
+lib.rs:
+#    1| mod crate
 #-----|  -> mod module
 
 #-----| mod module
