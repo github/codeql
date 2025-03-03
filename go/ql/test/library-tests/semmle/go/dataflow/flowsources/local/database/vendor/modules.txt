@@ -7,3 +7,6 @@ github.com/jmoiron/sqlx
 # go.mongodb.org/mongo-driver/mongo v1.17.2
 ## explicit
 go.mongodb.org/mongo-driver/mongo
+# github.com/nonexistent/sources v0.0.0-20250300000000-000000000000
+## explicit
+github.com/nonexistent/sources
