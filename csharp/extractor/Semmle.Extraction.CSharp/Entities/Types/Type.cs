@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Returns true in case we suspect this is broken type.
+        /// Returns true in case we suspect this is a broken type.
         /// </summary>
         /// <param name="symbol">Type symbol</param>
         private bool IsBrokenType(ITypeSymbol symbol)
@@ -38,8 +38,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 return false;
             }
 
-            // (1) public class { ... } is a broken type and doesn't have a name.
-            // (2) public class var { ... } is a an allowed type, but it overrides the var keyword for all uses.
+            // (1) public class { ... } is a broken type as it doesn't have a name.
+            // (2) public class var { ... } is an allowed type, but it overrides the `var` keyword for all uses.
             //     It is probably a better heuristic to treat it as a broken type.
             return string.IsNullOrEmpty(symbol.Name) || symbol.Name == "var";
         }

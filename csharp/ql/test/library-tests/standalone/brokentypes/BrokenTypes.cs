@@ -18,7 +18,7 @@ public class Program
         string y1 = x1.Prop;
 
         var x2 = new C(); // Has type `var` as this overrides the implicitly typed keyword `var`.
-        var y2 = x2.Prop; // Unknown type as `x2` har type `var`.
+        var y2 = x2.Prop; // Unknown type as `x2` has type `var`.
 
         C2 x3 = new C2(); // Unknown type.
         var y3 = x3.Prop; // Unknown property of unknown type.
