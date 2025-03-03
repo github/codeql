@@ -67,6 +67,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
             }
 
+            // Add package sources. If any are present, they override all sources specified in
+            // the configuration file(s).
+            if (restoreSettings.Sources != null)
+            {
+                foreach (string source in restoreSettings.Sources)
+                {
+                    args += $" -s {source}";
+                }
+            }
+
             if (restoreSettings.ForceReevaluation)
             {
                 args += " --force";
