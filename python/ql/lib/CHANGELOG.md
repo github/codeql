@@ -1,3 +1,7 @@
+## 4.0.2
+
+No user-facing changes.
+
 ## 4.0.1
 
 ### Bug Fixes
