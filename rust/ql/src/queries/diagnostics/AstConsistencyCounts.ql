@@ -6,7 +6,7 @@
  */
 
 import rust
-import codeql.rust.AstConsistency as Consistency
+import codeql.rust.internal.AstConsistency as Consistency
 
 // see also `rust/diagnostics/ast-consistency`, which lists the
 // individual inconsistency results.
