@@ -4,6 +4,3 @@
 | variables_test.py:86:3:86:3 | b | The global variable 'b' is not used. |
 | variables_test.py:86:5:86:5 | c | The global variable 'c' is not used. |
 | variables_test.py:100:1:100:8 | glob_var | The global variable 'glob_var' is not used. |
-| variables_test.py:147:5:147:26 | ForwardParamAnnotation | The global variable 'ForwardParamAnnotation' is not used. |
-| variables_test.py:148:5:148:27 | ForwardReturnAnnotation | The global variable 'ForwardReturnAnnotation' is not used. |
-| variables_test.py:149:5:149:31 | ForwardAssignmentAnnotation | The global variable 'ForwardAssignmentAnnotation' is not used. |
