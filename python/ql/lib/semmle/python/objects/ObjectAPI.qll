@@ -738,9 +738,9 @@ class PythonFunctionValue extends FunctionValue {
     else result = "function " + this.getQualifiedName()
   }
 
-  override int minParameters() { result = this.getScope().getMinArguments() }
+  override int minParameters() { result = this.getScope().getMinPositionalArguments() }
 
-  override int maxParameters() { result = this.getScope().getMaxArguments() }
+  override int maxParameters() { result = this.getScope().getMaxPositionalArguments() }
 
   /** Gets a control flow node corresponding to a return statement in this function */
   ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
