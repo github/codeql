@@ -5,7 +5,8 @@ set -o pipefail
 
 export RUST_BACKTRACE=full
 QLTEST_LOG="$CODEQL_EXTRACTOR_RUST_LOG_DIR"/qltest.log
-TMP_OUT="$(mktemp)"
+mkdir -p "$CODEQL_EXTRACTOR_RUST_SCRATCH_DIR"
+TMP_OUT="$(mktemp --tmpdir="$CODEQL_EXTRACTOR_RUST_SCRATCH_DIR" qltest-XXXXXX.log))"
 trap 'rm -f "$TMP_OUT"' EXIT
 # put full-color output on the side, but remove the color codes from the log file
 # also, print (colored) output only in case of failure
