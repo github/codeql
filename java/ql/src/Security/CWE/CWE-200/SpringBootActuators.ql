@@ -15,6 +15,6 @@ import java
 import semmle.code.java.frameworks.spring.SpringSecurity
 import semmle.code.java.security.SpringBootActuatorsQuery
 
-from PermitAllCall permitAllCall
+from SpringPermitAllCall permitAllCall
 where permitsSpringBootActuators(permitAllCall)
 select permitAllCall, "Unauthenticated access to Spring Boot actuator is allowed."

@@ -6,8 +6,8 @@
 import java
 
 /** The class `org.springframework.security.config.annotation.web.builders.HttpSecurity`. */
-class TypeHttpSecurity extends Class {
-  TypeHttpSecurity() {
+class SpringHttpSecurity extends Class {
+  SpringHttpSecurity() {
     this.hasQualifiedName("org.springframework.security.config.annotation.web.builders",
       "HttpSecurity")
   }
@@ -19,8 +19,8 @@ class TypeHttpSecurity extends Class {
  * or the class
  * `org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer$AuthorizedUrl`.
  */
-class TypeAuthorizedUrl extends Class {
-  TypeAuthorizedUrl() {
+class SpringAuthorizedUrl extends Class {
+  SpringAuthorizedUrl() {
     this.hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
       [
         "ExpressionUrlAuthorizationConfigurer<HttpSecurity>$AuthorizedUrl<>",
@@ -32,8 +32,8 @@ class TypeAuthorizedUrl extends Class {
 /**
  * The class `org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry`.
  */
-class TypeAbstractRequestMatcherRegistry extends Class {
-  TypeAbstractRequestMatcherRegistry() {
+class SpringAbstractRequestMatcherRegistry extends Class {
+  SpringAbstractRequestMatcherRegistry() {
     this.hasQualifiedName("org.springframework.security.config.annotation.web",
       "AbstractRequestMatcherRegistry<AuthorizedUrl<>>")
   }
@@ -45,10 +45,10 @@ class TypeAbstractRequestMatcherRegistry extends Class {
  * Note: this method is deprecated and scheduled for removal
  * in Spring Security 7.0.
  */
-class AuthorizeRequestsCall extends MethodCall {
-  AuthorizeRequestsCall() {
+class SpringAuthorizeRequestsCall extends MethodCall {
+  SpringAuthorizeRequestsCall() {
     this.getMethod().hasName("authorizeRequests") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    this.getMethod().getDeclaringType() instanceof SpringHttpSecurity
   }
 }
 
@@ -58,10 +58,10 @@ class AuthorizeRequestsCall extends MethodCall {
  * Note: the no-argument version of this method is deprecated
  * and scheduled for removal in Spring Security 7.0.
  */
-class AuthorizeHttpRequestsCall extends MethodCall {
-  AuthorizeHttpRequestsCall() {
+class SpringAuthorizeHttpRequestsCall extends MethodCall {
+  SpringAuthorizeHttpRequestsCall() {
     this.getMethod().hasName("authorizeHttpRequests") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    this.getMethod().getDeclaringType() instanceof SpringHttpSecurity
   }
 }
 
@@ -71,10 +71,10 @@ class AuthorizeHttpRequestsCall extends MethodCall {
  * Note: this method was removed in Spring Security 6.0.
  * It was replaced by `securityMatcher`.
  */
-class RequestMatcherCall extends MethodCall {
-  RequestMatcherCall() {
+class SpringRequestMatcherCall extends MethodCall {
+  SpringRequestMatcherCall() {
     this.getMethod().hasName("requestMatcher") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    this.getMethod().getDeclaringType() instanceof SpringHttpSecurity
   }
 }
 
@@ -84,41 +84,41 @@ class RequestMatcherCall extends MethodCall {
  * Note: this method was removed in Spring Security 6.0.
  * It was replaced by `securityMatchers`.
  */
-class RequestMatchersCall extends MethodCall {
-  RequestMatchersCall() {
+class SpringRequestMatchersCall extends MethodCall {
+  SpringRequestMatchersCall() {
     this.getMethod().hasName("requestMatchers") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    this.getMethod().getDeclaringType() instanceof SpringHttpSecurity
   }
 }
 
 /** A call to the `HttpSecurity.securityMatcher` method. */
-class SecurityMatcherCall extends MethodCall {
-  SecurityMatcherCall() {
+class SpringSecurityMatcherCall extends MethodCall {
+  SpringSecurityMatcherCall() {
     this.getMethod().hasName("securityMatcher") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    this.getMethod().getDeclaringType() instanceof SpringHttpSecurity
   }
 }
 
 /** A call to the `HttpSecurity.securityMatchers` method. */
-class SecurityMatchersCall extends MethodCall {
-  SecurityMatchersCall() {
+class SpringSecurityMatchersCall extends MethodCall {
+  SpringSecurityMatchersCall() {
     this.getMethod().hasName("securityMatchers") and
-    this.getMethod().getDeclaringType() instanceof TypeHttpSecurity
+    this.getMethod().getDeclaringType() instanceof SpringHttpSecurity
   }
 }
 
 /** A call to the `AuthorizedUrl.permitAll` method. */
-class PermitAllCall extends MethodCall {
-  PermitAllCall() {
+class SpringPermitAllCall extends MethodCall {
+  SpringPermitAllCall() {
     this.getMethod().hasName("permitAll") and
-    this.getMethod().getDeclaringType() instanceof TypeAuthorizedUrl
+    this.getMethod().getDeclaringType() instanceof SpringAuthorizedUrl
   }
 }
 
 /** A call to the `AbstractRequestMatcherRegistry.anyRequest` method. */
-class AnyRequestCall extends MethodCall {
-  AnyRequestCall() {
+class SpringAnyRequestCall extends MethodCall {
+  SpringAnyRequestCall() {
     this.getMethod().hasName("anyRequest") and
-    this.getMethod().getDeclaringType() instanceof TypeAbstractRequestMatcherRegistry
+    this.getMethod().getDeclaringType() instanceof SpringAbstractRequestMatcherRegistry
   }
 }

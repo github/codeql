@@ -8,17 +8,17 @@ import java
 /**
  * The class `org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest`.
  */
-class TypeEndpointRequest extends Class {
-  TypeEndpointRequest() {
+class SpringEndpointRequest extends Class {
+  SpringEndpointRequest() {
     this.hasQualifiedName("org.springframework.boot.actuate.autoconfigure.security.servlet",
       "EndpointRequest")
   }
 }
 
 /** A call to `EndpointRequest.toAnyEndpoint` method. */
-class ToAnyEndpointCall extends MethodCall {
-  ToAnyEndpointCall() {
+class SpringToAnyEndpointCall extends MethodCall {
+  SpringToAnyEndpointCall() {
     this.getMethod().hasName("toAnyEndpoint") and
-    this.getMethod().getDeclaringType() instanceof TypeEndpointRequest
+    this.getMethod().getDeclaringType() instanceof SpringEndpointRequest
   }
 }
