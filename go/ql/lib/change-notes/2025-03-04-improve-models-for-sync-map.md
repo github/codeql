@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* We no longer track taint into a `sync.Map` via the key of a key-value pair, since there is no way of reading the keys stored in the `sync.Map` back.
+* We no longer track taint into a `sync.Map` via the key of a key-value pair, since we do not model any way in which keys can be read from a `sync.Map`.
