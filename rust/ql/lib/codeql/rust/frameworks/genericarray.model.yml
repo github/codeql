@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo:https://github.com/fizyk20/generic-array.git:generic-array", "<crate::GenericArray>::from_slice", "Argument[0].Reference", "ReturnValue.Reference", "value", "manual"]
+      - ["repo:https://github.com/fizyk20/generic-array.git:generic-array", "<crate::GenericArray>::from_mut_slice", "Argument[0].Reference", "ReturnValue.Reference", "value", "manual"]
+      - ["repo:https://github.com/fizyk20/generic-array.git:generic-array", "<crate::GenericArray>::try_from_slice", "Argument[0].Reference", "ReturnValue.Field[crate::result::Result::Ok(0)].Reference", "value", "manual"]
+      - ["repo:https://github.com/fizyk20/generic-array.git:generic-array", "<crate::GenericArray>::try_from_mut_slice", "Argument[0].Reference", "ReturnValue.Field[crate::result::Result::Ok(0)].Reference", "value", "manual"]

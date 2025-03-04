@@ -15,31 +15,31 @@ fn test_stream_cipher_rabbit(
     let mut rabbit_cipher1 = RabbitKeyOnly::new(rabbit::Key::from_slice(key));
     rabbit_cipher1.apply_keystream(&mut data);
 
-    let const1: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let mut rabbit_cipher2 = RabbitKeyOnly::new(rabbit::Key::from_slice(const1));
+    let const1: &[u8;16] = &[0u8;16]; // $ Alert[rust/hardcoded-crytographic-value]
+    let mut rabbit_cipher2 = RabbitKeyOnly::new(rabbit::Key::from_slice(const1)); // $ Sink
     rabbit_cipher2.apply_keystream(&mut data);
 
     let mut rabbit_cipher3 = Rabbit::new(rabbit::Key::from_slice(key), rabbit::Iv::from_slice(iv));
     rabbit_cipher3.apply_keystream(&mut data);
 
-    let const4: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let mut rabbit_cipher4 = Rabbit::new(rabbit::Key::from_slice(const4), rabbit::Iv::from_slice(iv));
+    let const4: &[u8;16] = &[0u8;16]; // $ Alert[rust/hardcoded-crytographic-value]
+    let mut rabbit_cipher4 = Rabbit::new(rabbit::Key::from_slice(const4), rabbit::Iv::from_slice(iv)); // $ Sink
     rabbit_cipher4.apply_keystream(&mut data);
 
-    let const5: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let mut rabbit_cipher5 = Rabbit::new(rabbit::Key::from_slice(key), rabbit::Iv::from_slice(const5));
+    let const5: &[u8;16] = &[0u8;16]; // $ Alert[rust/hardcoded-crytographic-value]
+    let mut rabbit_cipher5 = Rabbit::new(rabbit::Key::from_slice(key), rabbit::Iv::from_slice(const5)); // $ Sink
     rabbit_cipher5.apply_keystream(&mut data);
 
     // various expressions of constant arrays
 
     let const6: &[u8;16] = &[0u8;16]; // (unused, so good)
 
-    let const7: [u8;16] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let mut rabbit_cipher7 = RabbitKeyOnly::new(rabbit::Key::from_slice(&const7));
+    let const7: [u8;16] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // $ Alert[rust/hardcoded-crytographic-value]
+    let mut rabbit_cipher7 = RabbitKeyOnly::new(rabbit::Key::from_slice(&const7)); // $ Sink
     rabbit_cipher7.apply_keystream(&mut data);
 
-    let const8: &[u8;16] = &[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let mut rabbit_cipher8 = RabbitKeyOnly::new(rabbit::Key::from_slice(const8));
+    let const8: &[u8;16] = &[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // $ Alert[rust/hardcoded-crytographic-value]
+    let mut rabbit_cipher8 = RabbitKeyOnly::new(rabbit::Key::from_slice(const8)); // $ Sink
     rabbit_cipher8.apply_keystream(&mut data);
 
     let const9: [u16;8] = [0, 0, 0, 0, 0, 0, 0, 0]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
