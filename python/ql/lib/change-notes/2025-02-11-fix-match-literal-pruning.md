@@ -2,4 +2,4 @@
 category: fix
 ---
 
-- `MatchLiteralPattern`s are now never pruned, as this could lead to code being wrongly identified as unreachable.
+- `MatchLiteralPattern`s such as `case None: ...` are now never pruned from the extracted source code. This fixes some situations where code was wrongly identified as unreachable.
