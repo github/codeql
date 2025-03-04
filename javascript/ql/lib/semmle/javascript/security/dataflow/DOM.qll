@@ -56,8 +56,6 @@ class DomMethodCallNode extends DataFlow::MethodCallNode {
       name = "insertBefore" and argPos = 0
       or
       name = "createElement" and argPos = 0
-      or
-      name = "appendChild" and argPos = 0
     )
   }
 
