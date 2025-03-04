@@ -8,7 +8,7 @@ module SpringBootActuatorsTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasExposedSpringBootActuator" and
-    exists(PermitAllCall permitAllCall | permitsSpringBootActuators(permitAllCall) |
+    exists(SpringPermitAllCall permitAllCall | permitsSpringBootActuators(permitAllCall) |
       permitAllCall.getLocation() = location and
       element = permitAllCall.toString() and
       value = ""
