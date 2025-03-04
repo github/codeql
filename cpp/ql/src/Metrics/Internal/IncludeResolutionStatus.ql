@@ -1,7 +1,7 @@
 /**
  * @name Include file resolution status
- * @description A count of successful includes and includes that failed to resolve.
- *                This query is for internal use only and may change without notice.
+ * @description Counts unresolved and resolved #includes.
+ *              This query is for internal use only and may change without notice.
  * @kind table
  * @id cpp/include-resolution-status
  */
