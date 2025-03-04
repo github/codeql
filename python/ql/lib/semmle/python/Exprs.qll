@@ -751,7 +751,7 @@ class Annotation extends Expr {
   Annotation() {
     this = any(AnnAssign a).getAnnotation()
     or
-    exists(Arguments args | args = any(FunctionExpr f).getArgs() |
+    exists(Arguments args |
       this in [
           args.getAnAnnotation(),
           args.getAKwAnnotation(),
