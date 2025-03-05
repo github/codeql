@@ -31,30 +31,6 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedN
   )
   or
   stringConstCaseCompare(guard, testedNode, branch)
-  or
-  exists(CfgNodes::ExprNodes::BinaryOperationCfgNode g |
-    g = guard and
-    stringConstCompareOr(guard, branch) and
-    stringConstCompare(g.getLeftOperand(), testedNode, _)
-  )
-}
-
-/**
- * Holds if `guard` is an `or` expression whose operands are string comparison guards.
- * For example:
- *
- * ```rb
- * x == "foo" or x == "bar"
- * ```
- */
-private predicate stringConstCompareOr(
-  CfgNodes::ExprNodes::BinaryOperationCfgNode guard, boolean branch
-) {
-  guard.getExpr() instanceof LogicalOrExpr and
-  branch = true and
-  forall(CfgNode innerGuard | innerGuard = guard.getAnOperand() |
-    stringConstCompare(innerGuard, any(Ssa::Definition def).getARead(), branch)
-  )
 }
 
 /**

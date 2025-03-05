@@ -1436,6 +1436,139 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       /** Holds if the `i`th node of basic block `bb` evaluates this guard. */
       predicate hasCfgNode(BasicBlock bb, int i);
+
+      /** Gets the location of this guard. */
+      Location getLocation();
+    }
+
+    /**
+     * A logical operation guard.
+     *
+     * Guards are automatically lifted to logical operations, as dictacted
+     * by the `lift` predicate. For example, logical conjunctions can be
+     * lifted as follows:
+     *
+     * ```csharp
+     * // Example 1
+     * if (x == "safe" && x == "safe")
+     * {
+     *     sink(x); // guarded
+     * }
+     * else
+     * {
+     *     sink(x); // unguarded
+     * }
+     *
+     * // Example 2
+     * if (x == "safe" && x != "safe2")
+     * {
+     *     sink(x); // guarded
+     * }
+     * else
+     * {
+     *     sink(x); // unguarded
+     * }
+     *
+     * // Example 3
+     * if (x != "safe" && x == "safe2")
+     * {
+     *     sink(x); // guarded
+     * }
+     * else
+     * {
+     *     sink(x); // unguarded
+     * }
+     *
+     * // Example 4
+     * if (x != "safe1" && x != "safe2")
+     * {
+     *     sink(x); // unguarded
+     * }
+     * else
+     * {
+     *     sink(x); // guarded
+     * }
+     * ```
+     *
+     * Examples 1--3 should normally be handled via the control-flow graph (CFG)
+     * implementation, but they are included for completeness.
+     *
+     * Example 4, which does not come for free just from the CFG, requires that
+     * logical conjunctions be modeled post-order in the CFG, as they will
+     * otherwise not dominate their `else` branch.
+     *
+     * Similarly, logical disjunctions can be lifted as follows:
+     *
+     * ```csharp
+     * // Example 1
+     * if (x == "safe1" || x == "safe2")
+     * {
+     *     sink(x); // guarded
+     * }
+     * else
+     * {
+     *     sink(x); // unguarded
+     * }
+     *
+     * // Example 2
+     * if (x == "safe" || x != "safe2")
+     * {
+     *     sink(x); // unguarded
+     * }
+     * else
+     * {
+     *     sink(x); // guarded
+     * }
+     *
+     * // Example 3
+     * if (x != "safe" || x == "safe2")
+     * {
+     *     sink(x); // unguarded
+     * }
+     * else
+     * {
+     *     sink(x); // guarded
+     * }
+     *
+     * // Example 4
+     * if (x != "safe" || x != "safe")
+     * {
+     *     sink(x); // unguarded
+     * }
+     * else
+     * {
+     *     sink(x); // guarded
+     * }
+     * ```
+     *
+     * Again, Examples 1--3 should normally be handled via the control-flow graph
+     * (CFG) implementation, while Example 4 requires that logical disjunctions be
+     * modeled post-order in the CFG.
+     */
+    class LogicalOperationGuard extends Guard {
+      /** Gets the `i`th operand of this logical operation. */
+      Guard getOperand(int i);
+
+      /**
+       * Holds if this logical operation guards `branch`, provided that the `i`th
+       * operand guards its `operandBranch`. The string `id` is used to encode
+       * the bit-pattern of the operands.
+       *
+       * Example: If this operand is a Boolean conjunction, then the following lift
+       * table should be used:
+       *
+       * | id            | i | operandBranch | branch |
+       * |---------------|---|---------------|--------|
+       * | "false,false" | 0 | false         | false  |
+       * | "false,false" | 1 | false         | false  |
+       * | "false,true"  | 0 | false         | true   |
+       * | "false,true"  | 1 | true          | true   |
+       * | "true,false"  | 0 | true          | true   |
+       * | "true,false"  | 1 | false         | true   |
+       * | "true,true"   | 0 | true          | true   |
+       * | "true,true"   | 1 | true          | true   |
+       */
+      predicate lift(string id, int i, boolean operandBranch, boolean branch);
     }
 
     /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
@@ -1868,6 +2001,26 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         DfInput::Guard g, Definition def, boolean branch, State state
       ) {
         guardChecks(g, DfInput::getARead(def), branch, state)
+        or
+        exists(int last |
+          logicalOperationGuardChecksSsaDef(g, _, last, def, branch, state) and
+          last = strictcount(int i | exists(g.(DfInput::LogicalOperationGuard).getOperand(i))) - 1
+        )
+      }
+
+      pragma[nomagic]
+      private predicate logicalOperationGuardChecksSsaDef(
+        DfInput::LogicalOperationGuard op, string id, int i, Definition def, boolean branch,
+        State state
+      ) {
+        exists(boolean operandBranch |
+          op.lift(id, i, operandBranch, branch) and
+          guardChecksSsaDef(op.getOperand(i), def, operandBranch, state)
+        |
+          i = 0
+          or
+          logicalOperationGuardChecksSsaDef(op, id, i - 1, def, branch, state)
+        )
       }
 
       /** Gets a node that is safely guarded by the given guard check. */

@@ -77,3 +77,71 @@ def m9(b)
 
     sink x
 end
+
+def m10
+    x = source(10)
+
+    if x == "safe" and x == "safe" then # $ guarded
+        sink x # $ guarded
+    else
+        sink x # $ hasValueFlow=10
+    end
+
+    if x != "safe" and x == "safe2" then
+        sink x # $ guarded
+    else
+        sink x # $ hasValueFlow=10
+    end
+
+    if x == "safe" and x != "safe2" then # $ guarded
+        sink x # $ guarded
+    else
+        sink x # $ hasValueFlow=10
+    end
+
+    if x != "safe1" and x != "safe2" then
+        sink x # $ hasValueFlow=10
+    else
+        sink x # $ guarded
+    end
+
+    if not (x == "safe1") and x != "safe2" then
+        sink x # $ hasValueFlow=10
+    else
+        sink x # $ guarded
+    end
+end
+
+def m11
+    x = source(11)
+
+    if x == "safe1" or x == "safe2" then
+        sink x # $ guarded
+    else
+        sink x # $ hasValueFlow=11
+    end
+
+    if x != "safe" or x == "safe2" then # $ guarded
+        sink x # $ hasValueFlow=11
+    else
+        sink x # $ guarded
+    end
+
+    if x == "safe" or x != "safe2" then
+        sink x # $ hasValueFlow=11
+    else
+        sink x # $ guarded
+    end
+
+    if x != "safe" or x != "safe" then # $ guarded
+        sink x # $ hasValueFlow=11
+    else
+        sink x # $ guarded
+    end
+
+    if not (x == "safe") or x != "safe" then # $ guarded
+        sink x # $ hasValueFlow=11
+    else
+        sink x # $ guarded
+    end
+end

@@ -499,6 +499,7 @@ class ParameterExt extends TParameterExt {
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.ruby.controlflow.internal.Guards as Guards
+  private import codeql.util.Boolean
 
   class Parameter = ParameterExt;
 
@@ -516,6 +517,79 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   class Guard extends Cfg::CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  abstract class LogicalOperationGuard extends Guard {
+    abstract Guard getOperand(int i);
+
+    abstract predicate lift(string id, int i, boolean operandBranch, boolean branch);
+  }
+
+  private class NotGuard extends LogicalOperationGuard,
+    Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode
+  {
+    NotGuard() { this.getExpr() instanceof NotExpr }
+
+    override Guard getOperand(int i) { i = 0 and result = this.getOperand() }
+
+    override predicate lift(string id, int i, boolean operandBranch, boolean branch) {
+      operandBranch instanceof Boolean and
+      id = operandBranch.toString() and
+      i = 0 and
+      branch = operandBranch.booleanNot()
+    }
+  }
+
+  private class StmtSequenceGuard extends LogicalOperationGuard,
+    Cfg::CfgNodes::ExprNodes::StmtSequenceCfgNode
+  {
+    override Guard getOperand(int i) { i = 0 and result = this.getLastStmt() }
+
+    override predicate lift(string id, int i, boolean operandBranch, boolean branch) {
+      operandBranch instanceof Boolean and
+      id = operandBranch.toString() and
+      i = 0 and
+      branch = operandBranch
+    }
+  }
+
+  abstract private class BinaryLogicalOperationGuard extends LogicalOperationGuard,
+    Cfg::CfgNodes::ExprNodes::BinaryOperationCfgNode
+  {
+    final override Guard getOperand(int i) {
+      i = 0 and result = this.getLeftOperand()
+      or
+      i = 1 and result = this.getRightOperand()
+    }
+
+    abstract predicate lift(Boolean branchLeft, Boolean branchRight, boolean branch);
+
+    final override predicate lift(string id, int i, boolean operandBranch, boolean branch) {
+      exists(Boolean branchLeft, Boolean branchRight |
+        this.lift(branchLeft, branchRight, branch) and
+        id = branchLeft + "," + branchRight
+      |
+        i = 0 and operandBranch = branchLeft
+        or
+        i = 1 and operandBranch = branchRight
+      )
+    }
+  }
+
+  private class AndGuard extends BinaryLogicalOperationGuard {
+    AndGuard() { this.getExpr() instanceof LogicalAndExpr }
+
+    override predicate lift(Boolean branchLeft, Boolean branchRight, boolean branch) {
+      branch = branchLeft.booleanOr(branchRight) // yes, should not be `booleanAnd`
+    }
+  }
+
+  private class OrGuard extends BinaryLogicalOperationGuard {
+    OrGuard() { this.getExpr() instanceof LogicalOrExpr }
+
+    override predicate lift(Boolean branchLeft, Boolean branchRight, boolean branch) {
+      branch = branchLeft.booleanAnd(branchRight) // yes, should not be `booleanOr`
+    }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */

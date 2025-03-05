@@ -1016,6 +1016,7 @@ string getToStringPrefix(Definition def) {
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import csharp as Cs
   private import semmle.code.csharp.controlflow.BasicBlocks
+  private import codeql.util.Boolean
 
   class Expr extends ControlFlow::Node {
     predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) { this = bb.getNode(i) }
@@ -1049,6 +1050,58 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   class Guard extends Guards::Guard {
     predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) {
       this.getAControlFlowNode() = bb.getNode(i)
+    }
+  }
+
+  abstract class LogicalOperationGuard extends Guard {
+    abstract Guard getOperand(int i);
+
+    abstract predicate lift(string id, int i, boolean operandBranch, boolean branch);
+  }
+
+  private class NotGuard extends LogicalOperationGuard, LogicalNotExpr {
+    override Guard getOperand(int i) { i = 0 and result = this.getOperand() }
+
+    override predicate lift(string id, int i, boolean operandBranch, boolean branch) {
+      operandBranch instanceof Boolean and
+      id = operandBranch.toString() and
+      i = 0 and
+      branch = operandBranch.booleanNot()
+    }
+  }
+
+  abstract private class BinaryLogicalOperationGuard extends LogicalOperationGuard,
+    BinaryLogicalOperation
+  {
+    final override Guard getOperand(int i) {
+      i = 0 and result = this.getLeftOperand()
+      or
+      i = 1 and result = this.getRightOperand()
+    }
+
+    abstract predicate lift(Boolean branchLeft, Boolean branchRight, boolean branch);
+
+    final override predicate lift(string id, int i, boolean operandBranch, boolean branch) {
+      exists(Boolean branchLeft, Boolean branchRight |
+        this.lift(branchLeft, branchRight, branch) and
+        id = branchLeft + "," + branchRight
+      |
+        i = 0 and operandBranch = branchLeft
+        or
+        i = 1 and operandBranch = branchRight
+      )
+    }
+  }
+
+  private class AndGuard extends BinaryLogicalOperationGuard, LogicalAndExpr {
+    override predicate lift(Boolean branchLeft, Boolean branchRight, boolean branch) {
+      branch = branchLeft.booleanOr(branchRight) // yes, should not be `booleanAnd`
+    }
+  }
+
+  private class OrGuard extends BinaryLogicalOperationGuard, LogicalOrExpr {
+    override predicate lift(Boolean branchLeft, Boolean branchRight, boolean branch) {
+      branch = branchLeft.booleanAnd(branchRight) // yes, should not be `booleanOr`
     }
   }
 
