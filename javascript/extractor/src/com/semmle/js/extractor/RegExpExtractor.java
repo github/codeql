@@ -13,7 +13,6 @@ import com.semmle.js.ast.regexp.CharacterClassEscape;
 import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
 import com.semmle.js.ast.regexp.CharacterClassSubtraction;
-import com.semmle.js.ast.regexp.CharacterClassUnion;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
 import com.semmle.js.ast.regexp.ControlLetter;
@@ -99,7 +98,6 @@ public class RegExpExtractor {
     termkinds.put("CharacterClassQuotedString", 28);
     termkinds.put("CharacterClassIntersection", 29);
     termkinds.put("CharacterClassSubtraction", 30);
-    termkinds.put("CharacterClassUnion", 31);
   }
 
   private static final String[] errmsgs =
@@ -369,14 +367,6 @@ public class RegExpExtractor {
 
     @Override
     public void visit(CharacterClassSubtraction nd) {
-      Label lbl = extractTerm(nd, parent, idx);
-      int i = 0;
-      for (RegExpTerm element : nd.getElements())
-        visit(element, lbl, i++);
-    }
-
-    @Override
-    public void visit(CharacterClassUnion nd) {
       Label lbl = extractTerm(nd, parent, idx);
       int i = 0;
       for (RegExpTerm element : nd.getElements())

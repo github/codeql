@@ -67,6 +67,4 @@ public interface Visitor {
   public void visit(CharacterClassIntersection nd);
 
   public void visit(CharacterClassSubtraction nd);
-
-  public void visit(CharacterClassUnion nd);
 }

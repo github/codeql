@@ -137,81 +137,75 @@ regexpterm(#20042,23,#20041,0,"[ [] [ [] [] ] ]")
 locations_default(#20043,#10000,3,2,3,17)
 hasLocation(#20042,#20043)
 #20044=*
-regexpterm(#20044,31,#20042,0,"[ [] [ [] [] ] ]")
-hasLocation(#20044,#20043)
-#20045=*
-regexpterm(#20045,14,#20044,0," ")
-#20046=@"loc,{#10000},3,3,3,3"
-locations_default(#20046,#10000,3,3,3,3)
-hasLocation(#20045,#20046)
-regexp_const_value(#20045," ")
-#20047=*
-regexpterm(#20047,23,#20044,1,"[]")
-#20048=@"loc,{#10000},3,4,3,5"
-locations_default(#20048,#10000,3,4,3,5)
-hasLocation(#20047,#20048)
-#20049=*
-regexpterm(#20049,14,#20044,2," ")
-#20050=@"loc,{#10000},3,6,3,6"
-locations_default(#20050,#10000,3,6,3,6)
-hasLocation(#20049,#20050)
-regexp_const_value(#20049," ")
-#20051=*
-regexpterm(#20051,23,#20044,3,"[ [] [] ]")
-#20052=@"loc,{#10000},3,7,3,15"
-locations_default(#20052,#10000,3,7,3,15)
-hasLocation(#20051,#20052)
-#20053=*
-regexpterm(#20053,31,#20051,0,"[ [] [] ]")
-hasLocation(#20053,#20052)
+regexpterm(#20044,14,#20042,0," ")
+#20045=@"loc,{#10000},3,3,3,3"
+locations_default(#20045,#10000,3,3,3,3)
+hasLocation(#20044,#20045)
+regexp_const_value(#20044," ")
+#20046=*
+regexpterm(#20046,23,#20042,1,"[]")
+#20047=@"loc,{#10000},3,4,3,5"
+locations_default(#20047,#10000,3,4,3,5)
+hasLocation(#20046,#20047)
+#20048=*
+regexpterm(#20048,14,#20042,2," ")
+#20049=@"loc,{#10000},3,6,3,6"
+locations_default(#20049,#10000,3,6,3,6)
+hasLocation(#20048,#20049)
+regexp_const_value(#20048," ")
+#20050=*
+regexpterm(#20050,23,#20042,3,"[ [] [] ]")
+#20051=@"loc,{#10000},3,7,3,15"
+locations_default(#20051,#10000,3,7,3,15)
+hasLocation(#20050,#20051)
+#20052=*
+regexpterm(#20052,14,#20050,0," ")
+#20053=@"loc,{#10000},3,8,3,8"
+locations_default(#20053,#10000,3,8,3,8)
+hasLocation(#20052,#20053)
+regexp_const_value(#20052," ")
 #20054=*
-regexpterm(#20054,14,#20053,0," ")
-#20055=@"loc,{#10000},3,8,3,8"
-locations_default(#20055,#10000,3,8,3,8)
+regexpterm(#20054,23,#20050,1,"[]")
+#20055=@"loc,{#10000},3,9,3,10"
+locations_default(#20055,#10000,3,9,3,10)
 hasLocation(#20054,#20055)
-regexp_const_value(#20054," ")
 #20056=*
-regexpterm(#20056,23,#20053,1,"[]")
-#20057=@"loc,{#10000},3,9,3,10"
-locations_default(#20057,#10000,3,9,3,10)
+regexpterm(#20056,14,#20050,2," ")
+#20057=@"loc,{#10000},3,11,3,11"
+locations_default(#20057,#10000,3,11,3,11)
 hasLocation(#20056,#20057)
+regexp_const_value(#20056," ")
 #20058=*
-regexpterm(#20058,14,#20053,2," ")
-#20059=@"loc,{#10000},3,11,3,11"
-locations_default(#20059,#10000,3,11,3,11)
+regexpterm(#20058,23,#20050,3,"[]")
+#20059=@"loc,{#10000},3,12,3,13"
+locations_default(#20059,#10000,3,12,3,13)
 hasLocation(#20058,#20059)
-regexp_const_value(#20058," ")
 #20060=*
-regexpterm(#20060,23,#20053,3,"[]")
-#20061=@"loc,{#10000},3,12,3,13"
-locations_default(#20061,#10000,3,12,3,13)
+regexpterm(#20060,14,#20050,4," ")
+#20061=@"loc,{#10000},3,14,3,14"
+locations_default(#20061,#10000,3,14,3,14)
 hasLocation(#20060,#20061)
+regexp_const_value(#20060," ")
 #20062=*
-regexpterm(#20062,14,#20053,4," ")
-#20063=@"loc,{#10000},3,14,3,14"
-locations_default(#20063,#10000,3,14,3,14)
+regexpterm(#20062,14,#20042,4," ")
+#20063=@"loc,{#10000},3,16,3,16"
+locations_default(#20063,#10000,3,16,3,16)
 hasLocation(#20062,#20063)
 regexp_const_value(#20062," ")
 #20064=*
-regexpterm(#20064,14,#20044,4," ")
-#20065=@"loc,{#10000},3,16,3,16"
-locations_default(#20065,#10000,3,16,3,16)
+entry_cfg_node(#20064,#20001)
+#20065=@"loc,{#10000},1,1,1,0"
+locations_default(#20065,#10000,1,1,1,0)
 hasLocation(#20064,#20065)
-regexp_const_value(#20064," ")
 #20066=*
-entry_cfg_node(#20066,#20001)
-#20067=@"loc,{#10000},1,1,1,0"
-locations_default(#20067,#10000,1,1,1,0)
-hasLocation(#20066,#20067)
-#20068=*
-exit_cfg_node(#20068,#20001)
-hasLocation(#20068,#20023)
+exit_cfg_node(#20066,#20001)
+hasLocation(#20066,#20023)
 successor(#20040,#20041)
-successor(#20041,#20068)
+successor(#20041,#20066)
 successor(#20032,#20033)
 successor(#20033,#20040)
 successor(#20025,#20027)
 successor(#20027,#20032)
-successor(#20066,#20025)
+successor(#20064,#20025)
 numlines(#10000,3,3,1)
 filetype(#10000,"javascript")

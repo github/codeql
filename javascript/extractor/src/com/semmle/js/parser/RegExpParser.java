@@ -9,7 +9,6 @@ import com.semmle.js.ast.regexp.CharacterClassEscape;
 import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
 import com.semmle.js.ast.regexp.CharacterClassSubtraction;
-import com.semmle.js.ast.regexp.CharacterClassUnion;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
 import com.semmle.js.ast.regexp.ControlLetter;
@@ -568,8 +567,7 @@ public class RegExpParser {
   private enum CharacterClassType {
     STANDARD,
     INTERSECTION,
-    SUBTRACTION,
-    UNION
+    SUBTRACTION
   }
 
   // ECMA 2024 `v` flag allows nested character classes.
@@ -601,26 +599,12 @@ public class RegExpParser {
       }
     }
 
-    boolean containsComplex = elements.stream().anyMatch(term -> term instanceof UnicodePropertyEscape ||
-                                                        term instanceof CharacterClassQuotedString ||
-                                                        term instanceof CharacterClass);
-
-    // Set type to UNION only if:
-    // 1. We haven't already determined a specific type (intersection/subtraction)
-    // 2. We have more than one element
-    // 3. We have at least one complex element (i.e. a nested character class or a UnicodePropertyEscape)
-    if (containsComplex && classType == CharacterClassType.STANDARD && elements.size() > 1) {
-      classType = CharacterClassType.UNION;
-    }
-
     // Create appropriate RegExpTerm based on the detected class type
     switch (classType) {
       case INTERSECTION:
         return this.finishTerm(new CharacterClass(loc, Collections.singletonList(new CharacterClassIntersection(loc, elements)), inverted));
       case SUBTRACTION:
         return this.finishTerm(new CharacterClass(loc, Collections.singletonList(new CharacterClassSubtraction(loc, elements)), inverted));
-      case UNION:
-        return this.finishTerm(new CharacterClass(loc, Collections.singletonList(new CharacterClassUnion(loc, elements)), inverted));
       case STANDARD:
       default:
         return this.finishTerm(new CharacterClass(loc, elements, inverted));
