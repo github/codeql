@@ -1,2 +1,4 @@
 query: InconsistentCode/UnhandledCloseWritableHandle.ql
-postprocess: utils/test/PrettyPrintModels.ql
+postprocess:
+- utils/test/PrettyPrintModels.ql
+- utils/test/InlineExpectationsTestQuery.ql
