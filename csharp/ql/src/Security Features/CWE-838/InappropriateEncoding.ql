@@ -50,6 +50,13 @@ module RequiresEncodingConfig<EncodingConfigSig EncodingConfig> implements DataF
   }
 
   int fieldFlowBranchLimit() { result = 0 }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-838/InappropriateEncoding.ql:146: Flow call outside 'select' clause
+    // ql/src/Security Features/CWE-838/InappropriateEncoding.ql:149: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /** An encoded value, for example through a call to `HttpServerUtility.HtmlEncode`. */
@@ -104,6 +111,12 @@ module EncodingConfigurations {
     predicate isBarrier = Super::isBarrier/1;
 
     int fieldFlowBranchLimit() { result = Super::fieldFlowBranchLimit() }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security Features/CWE-838/InappropriateEncoding.ql:143: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module SqlExpr = TaintTracking::Global<SqlExprConfig>;

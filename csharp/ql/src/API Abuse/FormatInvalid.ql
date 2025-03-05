@@ -18,6 +18,14 @@ module FormatInvalidConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLiteral }
 
   predicate isSink(DataFlow::Node n) { exists(FormatCall c | n.asExpr() = c.getFormatExpr()) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/API Abuse/FormatInvalid.ql:31: Flow call outside 'select' clause
+    // ql/src/API Abuse/FormatInvalid.ql:44: Flow call outside 'select' clause
+    // ql/src/API Abuse/FormatInvalid.ql:62: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module FormatInvalid = DataFlow::Global<FormatInvalidConfig>;
