@@ -76,6 +76,12 @@ private module NameToNetHttpCookieTrackingConfig implements DataFlow::ConfigSig 
       sl = succ.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:46: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /** Tracks taint flow from sensitive names to `net/http.SetCookie`. */
@@ -94,6 +100,13 @@ private module BoolToNetHttpCookieTrackingConfig implements DataFlow::ConfigSig 
       getValueForFieldWrite(sl, "HttpOnly") = pred and
       sl = succ.asExpr()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:48: Flow call outside 'select' clause
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:52: Flow call outside 'select' clause
+    none()
   }
 }
 
@@ -116,6 +129,12 @@ private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:99: Column 1 does not select a source or sink originating from the flow call on line 97
+    none()
+  }
 }
 
 /**
@@ -132,6 +151,12 @@ private module NameToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
       mcn.getTarget() instanceof GinContextSetCookieMethod and
       mcn.getArgument(0) = sink
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/AuthCookie.qll:114: Flow call outside 'select' clause
+    none()
   }
 }
 
@@ -184,6 +209,12 @@ private module GorillaCookieStoreSaveTrackingConfig implements DataFlow::ConfigS
       succ = cn.getResult(0)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:70: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -207,6 +238,13 @@ private module GorillaSessionOptionsTrackingConfig implements DataFlow::ConfigSi
       w.writesField(base, f, pred) and
       succ = base
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:72: Flow call outside 'select' clause
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:77: Flow call outside 'select' clause
+    none()
   }
 }
 
@@ -234,6 +272,13 @@ private module BoolToGorillaSessionOptionsTrackingConfig implements DataFlow::Co
       w.writesField(base, f, pred) and
       succ = base
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:80: Flow call outside 'select' clause
+    // ql/src/experimental/CWE-1004/CookieWithoutHttpOnly.ql:85: Flow call outside 'select' clause
+    none()
   }
 }
 
