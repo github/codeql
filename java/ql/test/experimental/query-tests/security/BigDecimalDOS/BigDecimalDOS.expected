@@ -1,0 +1,8 @@
+edges
+| BigDecimalDOS.java:12:28:12:69 | num : BigDecimal | BigDecimalDOS.java:14:30:14:32 | num |
+nodes
+| BigDecimalDOS.java:12:28:12:69 | num : BigDecimal | semmle.label | num : BigDecimal |
+| BigDecimalDOS.java:14:30:14:32 | num | semmle.label | num |
+subpaths
+#select
+| BigDecimalDOS.java:12:28:12:69 | num | BigDecimalDOS.java:12:28:12:69 | num : BigDecimal | BigDecimalDOS.java:14:30:14:32 | num | Potential Java BigDecimal DOS Issue due to $@. | BigDecimalDOS.java:12:28:12:69 | num | a user-provided value |
