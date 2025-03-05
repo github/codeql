@@ -3,4 +3,6 @@ qltest_dependencies:
     - cipher = { version = "0.4.4" }
     - rabbit = { version = "0.4.1" }
     - aes = { version = "0.8.4" }
+    - aes-gcm = { version = "0.10.3" }
     - cfb-mode = { version = "0.8.2" }
+    - base64 = { version = "0.22.1" }
