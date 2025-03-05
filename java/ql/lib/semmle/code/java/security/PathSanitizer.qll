@@ -526,6 +526,7 @@ private predicate isMultipleReplaceOrReplaceAll(ReplaceOrReplaceAllCall mc1) {
     targetValue1 = getADirChar() and
     targetValue2 = getADirChar()
   |
+    mc2.getQualifier() = mc1 and
     target1.getStringValue() = targetValue1 and
     target2.getStringValue() = targetValue2 and
     mc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
