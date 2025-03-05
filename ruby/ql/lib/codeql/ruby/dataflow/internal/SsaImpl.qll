@@ -421,7 +421,7 @@ import Cached
  *
  * Only intended for internal use.
  */
-class DefinitionExt extends Impl::DefinitionExt {
+deprecated class DefinitionExt extends Impl::DefinitionExt {
   VariableReadAccessCfgNode getARead() { result = getARead(this) }
 
   override string toString() { result = this.(Ssa::Definition).toString() }
@@ -434,7 +434,7 @@ class DefinitionExt extends Impl::DefinitionExt {
  *
  * Only intended for internal use.
  */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
+deprecated class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
 
   override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
@@ -453,10 +453,10 @@ class NormalParameter extends Parameter {
 
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
-DefinitionExt getParameterDef(NamedParameter p) {
+Definition getParameterDef(NamedParameter p) {
   exists(Cfg::BasicBlock bb, int i |
     bb.getNode(i).getAstNode() = p.getDefiningAccess() and
-    result.definesAt(_, bb, i, _)
+    result.definesAt(_, bb, i)
   )
 }
 
@@ -515,20 +515,23 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { p.isInitializedBy(def) }
 
   class Guard extends Cfg::CfgNodes::AstCfgNode {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+        this.getBasicBlock() = bb1 and
+        bb2 = bb1.getASuccessor(s) and
+        s.getValue() = branch
+      )
+    }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     Guards::guardControlsBlock(guard, bb, branch)
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
-    exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
-      result = bb.getASuccessor(s) and
-      s.getValue() = branch
-    )
   }
 }
 
