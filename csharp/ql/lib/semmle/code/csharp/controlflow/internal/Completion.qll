@@ -293,6 +293,8 @@ private predicate isMatchingConstant(PatternExpr pe, boolean value) {
   value = true
   or
   exists(Type t, Type strippedType |
+    not t instanceof UnknownType and
+    not strippedType instanceof UnknownType and
     typePatternMustHaveMatchingCompletion(pe, t, strippedType) and
     not typePatternCommonSubType(t, strippedType) and
     value = false
