@@ -2,7 +2,7 @@
 
 private import rust
 private import PathResolution
-private import TypeInferenceShared
+private import codeql.typeinference.internal.TypeInference
 
 /** Provides classes representing types without type arguments. */
 private module Types {
