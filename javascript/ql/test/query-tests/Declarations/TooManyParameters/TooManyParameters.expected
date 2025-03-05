@@ -1,1 +1,1 @@
-| excessiveParameterList.js:4:1:4:48 | functio ... p8) {\\n} | Function func2 has too many parameters (8). |
+| excessiveParameterList.js:4:1:4:59 | functio ... Alert\\n} | Function func2 has too many parameters (8). |

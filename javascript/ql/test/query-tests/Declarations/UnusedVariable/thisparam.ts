@@ -1,4 +1,4 @@
-import { Foo, Bar, Baz } from "somewhere"; // OK
+import { Foo, Bar, Baz } from "somewhere";
 
 export function f(this: Foo) {}
 

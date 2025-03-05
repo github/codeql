@@ -8,7 +8,7 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    decompress(req.query.filePath, 'dist').then(files => {
+    decompress(req.query.filePath, 'dist').then(files => { // $ Alert
         console.log('done!');
     });
 

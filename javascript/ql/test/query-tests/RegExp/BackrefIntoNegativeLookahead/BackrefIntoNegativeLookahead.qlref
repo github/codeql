@@ -1,1 +1,2 @@
-RegExp/BackrefIntoNegativeLookahead.ql
+query: RegExp/BackrefIntoNegativeLookahead.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

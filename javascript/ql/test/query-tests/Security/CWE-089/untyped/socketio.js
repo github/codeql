@@ -7,7 +7,7 @@ var db = new sqlite3.Database(':memory:');
 
 var io = require('socket.io')();
 io.on('connection', (socket) => {
-  socket.on('newuser', (handle) => {
-    db.run(`INSERT INTO users(name) VALUES ${handle}`);
+  socket.on('newuser', (handle) => { // $ Source
+    db.run(`INSERT INTO users(name) VALUES ${handle}`); // $ Alert
   });
 });

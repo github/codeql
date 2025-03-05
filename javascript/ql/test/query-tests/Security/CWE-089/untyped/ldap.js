@@ -17,7 +17,7 @@ const sanitizeInput = function (input) {
 };
 
 const server = http.createServer((req, res) => {
-  let q = url.parse(req.url, true);
+  let q = url.parse(req.url, true); // $ Source
 
   let username = q.query.username;
 
@@ -25,18 +25,18 @@ const server = http.createServer((req, res) => {
     filter: `(|(name=${username})(username=${username}))`,
   };
 
-  client.search("o=example", opts1, function (err, res) {}); // NOT OK
+  client.search("o=example", opts1, function (err, res) {}); // $ Alert
 
   client.search(
     "o=example",
-    { filter: `(|(name=${username})(username=${username}))` }, // NOT OK
+    { filter: `(|(name=${username})(username=${username}))` }, // $ Alert
     function (err, res) {}
   );
 
-  // GOOD
+
   client.search(
     "o=example",
-    { // OK
+    {
       filter: `(|(name=${sanitizeInput(username)})(username=${sanitizeInput(
         username
       )}))`,
@@ -44,7 +44,7 @@ const server = http.createServer((req, res) => {
     function (err, res) {}
   );
 
-  // GOOD (https://github.com/ldapjs/node-ldapjs/issues/181)
+  // OK - https://github.com/ldapjs/node-ldapjs/issues/181
   let f = new OrFilter({
     filters: [
       new EqualityFilter({
@@ -63,9 +63,9 @@ const server = http.createServer((req, res) => {
   const parsedFilter = ldap.parseFilter(
     `(|(name=${username})(username=${username}))`
   );
-  client.search("o=example", { filter: parsedFilter }, function (err, res) {}); // NOT OK
+  client.search("o=example", { filter: parsedFilter }, function (err, res) {}); // $ Alert
 
-  const dn = ldap.parseDN(`cn=${username}`, function (err, dn) {}); // NOT OK
+  const dn = ldap.parseDN(`cn=${username}`, function (err, dn) {}); // $ Alert
 });
 
 server.listen(389, () => {});

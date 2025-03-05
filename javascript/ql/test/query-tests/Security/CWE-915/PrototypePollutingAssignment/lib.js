@@ -1,9 +1,9 @@
-module.exports.set = function recSet(obj, path, value) {
+module.exports.set = function recSet(obj, path, value) { // $ Source
   var currentPath = path[0];
   var currentValue = obj[currentPath];
   if (path.length === 1) {
     if (currentValue === void 0) {
-      obj[currentPath] = value; // NOT OK
+      obj[currentPath] = value; // $ Alert
     }
     return currentValue;
   }
@@ -11,35 +11,35 @@ module.exports.set = function recSet(obj, path, value) {
   return recSet(obj[currentPath], path.slice(1), value);
 }
 
-module.exports.set2 = function (obj, path, value) {
-  obj[path[0]][path[1]] = value; // NOT OK
+module.exports.set2 = function (obj, path, value) { // $ Source
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.setWithArgs = function() {
   var obj = arguments[0];
-  var path = arguments[1];
+  var path = arguments[1]; // $ Source
   var value = arguments[2];
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
-module.exports.usedInTest = function (obj, path, value) {
-  return obj[path[0]][path[1]] = value; // NOT OK
+module.exports.usedInTest = function (obj, path, value) { // $ Source
+  return obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.setWithArgs2 = function() {
-  const args = Array.prototype.slice.call(arguments);
+  const args = Array.prototype.slice.call(arguments); // $ Source
   var obj = args[0];
   var path = args[1];
   var value = args[2];
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 module.exports.setWithArgs3 = function() {
-  const args = Array.from(arguments);
+  const args = Array.from(arguments); // $ Source
   var obj = args[0];
   var path = args[1];
   var value = args[2];
-  obj[path[0]][path[1]] = value; // NOT OK
+  obj[path[0]][path[1]] = value; // $ Alert
 }
 
 function id(s) {
@@ -52,7 +52,7 @@ module.exports.notVulnerable = function () {
   const path = id("x");
   const value = id("y");
   const obj = id("z");
-  return (obj[path[0]][path[1]] = value); // OK
+  return (obj[path[0]][path[1]] = value);
 }
 
 class Foo {
@@ -67,12 +67,12 @@ class Foo {
     const obj = this.obj;
     const path = this.path;
     const value = this.value;
-    return (obj[path[0]][path[1]] = value); // NOT OK
+    return (obj[path[0]][path[1]] = value); // $ MISSING: Alert - lacking local field step
   }
 
   safe() {
     const obj = this.obj;
-    obj[path[0]] = this.value; // OK
+    obj[path[0]] = this.value;
   }
 }
 
@@ -80,11 +80,11 @@ module.exports.Foo = Foo;
 
 module.exports.delete = function() {
   var obj = arguments[0];
-  var path = arguments[1];
-  delete obj[path[0]]; // OK
+  var path = arguments[1]; // $ Source
+  delete obj[path[0]];
   var prop = arguments[2];
   var proto = obj[path[0]];
-  delete proto[prop]; // NOT OK
+  delete proto[prop]; // $ Alert
 }
 
 module.exports.fixedProp = function (obj, path, value) {
@@ -101,22 +101,22 @@ function isPossibilityOfPrototypePollution(key) {
 
 module.exports.sanWithFcuntion = function() {
   var obj = arguments[0];
-  var one = arguments[1];
+  var one = arguments[1]; // $ Source
   var two = arguments[2];
   var value = arguments[3];
   
-  obj[one][two] = value; // NOT OK
+  obj[one][two] = value; // $ Alert
 
   if (isPossibilityOfPrototypePollution(one) || isPossibilityOfPrototypePollution(two)) {
     throw new Error('Prototype pollution is not allowed');
   }
-  obj[one][two] = value; // OK
+  obj[one][two] = value;
 }
 
 module.exports.returnsObj = function () {
     return {
-        set: function (obj, path, value) {
-            obj[path[0]][path[1]] = value; // NOT OK
+        set: function (obj, path, value) { // $ Source
+            obj[path[0]][path[1]] = value; // $ Alert
         }
     }
 }
@@ -124,8 +124,8 @@ module.exports.returnsObj = function () {
 class MyClass {
     constructor() {}
 
-    set(obj, path, value) {
-        obj[path[0]][path[1]] = value; // NOT OK
+    set(obj, path, value) { // $ Source
+        obj[path[0]][path[1]] = value; // $ Alert
     }
 
     static staticSet(obj, path, value) {

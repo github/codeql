@@ -1,43 +1,40 @@
 // use of .length to prime the query
 a.length;
 
-// NOT OK
-for (var i=0; i<a.lenght; ++i);
+for (var i=0; i<a.lenght; ++i); // $ Alert
 
-// OK: 'correct' spelling 'eels' is not used anywhere
+// OK - 'correct' spelling 'eels' is not used anywhere
 var eles = [];
 
-// OK: very short identifier
+// OK - very short identifier
 var can, cna;
 
-// OK: only case differs
+// OK - only case differs
 var NASA, nasa;
 
-// OK: whitelisted
+// OK - whitelisted
 var through, thru, inbetween;
 
-// OK
+
 var realY;
 
 // some more priming
 between, really, available, value;
 
-// NOT OK
-var lenght123, Lenght;
+var lenght123, Lenght; // $ Alert
 
-// OK
+
 var LENght, JKLenght;
 
-// NOT OK
-Mandreel_HttpRequest_BytesAvalable;
+Mandreel_HttpRequest_BytesAvalable; // $ Alert
 
-// OK
+
 EValue;
 
-// OK
+
 ReactDOMOther;
 there;
 
-// NO OK
-var throught, through, throughout; // NB: we don't suggest "thought", since it isn't used anywhere
-var sheat, cheat, sheath, sheet;
+
+var throught, through, throughout; // $ Alert - NB: we don't suggest "thought", since it isn't used anywhere
+var sheat, cheat, sheath, sheet; // $ Alert
