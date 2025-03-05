@@ -4,11 +4,11 @@ import com.semmle.js.ast.SourceLocation;
 import java.util.List;
 
 public class CharacterClassSubtraction extends RegExpTerm {
-    private final List<RegExpTerm> subtraction;
+    private final List<RegExpTerm> elements;
 
-    public CharacterClassSubtraction(SourceLocation loc, List<RegExpTerm> subtraction) {
+    public CharacterClassSubtraction(SourceLocation loc, List<RegExpTerm> elements) {
         super(loc, "CharacterClassSubtraction");
-        this.subtraction = subtraction;
+        this.elements = elements;
     }
 
     @Override
@@ -16,7 +16,7 @@ public class CharacterClassSubtraction extends RegExpTerm {
         v.visit(this);
     }
 
-    public List<RegExpTerm> getSubtraction() {
-        return subtraction;
+    public List<RegExpTerm> getElements() {
+        return elements;
     }
 }

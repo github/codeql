@@ -363,7 +363,7 @@ public class RegExpExtractor {
     public void visit(CharacterClassIntersection nd) {
       Label lbl = extractTerm(nd, parent, idx);
       int i = 0;
-      for (RegExpTerm element : nd.getIntersections())
+      for (RegExpTerm element : nd.getElements())
         visit(element, lbl, i++);
     }
 
@@ -371,7 +371,7 @@ public class RegExpExtractor {
     public void visit(CharacterClassSubtraction nd) {
       Label lbl = extractTerm(nd, parent, idx);
       int i = 0;
-      for (RegExpTerm element : nd.getSubtraction())
+      for (RegExpTerm element : nd.getElements())
         visit(element, lbl, i++);
     }
 
@@ -379,7 +379,7 @@ public class RegExpExtractor {
     public void visit(CharacterClassUnion nd) {
       Label lbl = extractTerm(nd, parent, idx);
       int i = 0;
-      for (RegExpTerm element : nd.getUnion())
+      for (RegExpTerm element : nd.getElements())
         visit(element, lbl, i++);
     }
   }

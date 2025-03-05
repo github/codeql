@@ -4,11 +4,11 @@ import com.semmle.js.ast.SourceLocation;
 import java.util.List;
 
 public class CharacterClassUnion extends RegExpTerm {
-    private final List<RegExpTerm> union;
+    private final List<RegExpTerm> elements;
 
-    public CharacterClassUnion(SourceLocation loc, List<RegExpTerm> union) {
+    public CharacterClassUnion(SourceLocation loc, List<RegExpTerm> elements) {
         super(loc, "CharacterClassUnion");
-        this.union = union;
+        this.elements = elements;
     }
 
     @Override
@@ -16,7 +16,7 @@ public class CharacterClassUnion extends RegExpTerm {
         v.visit(this);
     }
 
-    public List<RegExpTerm> getUnion() {
-        return union;
+    public List<RegExpTerm> getElements() {
+        return elements;
     }
 }
