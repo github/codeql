@@ -176,7 +176,6 @@ private module JumpNodes {
 
     ComponentParameterJump() {
       prop = call.getParameterProperty() and
-      // this.(DataFlowPrivate::PostUpdateNode).getPreUpdateNode().asExpr() = call.getParameterValue()
       this.asExpr() = call.getParameterValue()
     }
 
