@@ -2,6 +2,19 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import LibraryDetector
 import OpenSSLKnownAlgorithmConstants
+import experimental.Quantum.Language
+
+module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(OpenSSLAlgorithmGetterCall c | c.getResultNode() = source)
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Crypto::AlgorithmConsumer c | c.getInputNode() = sink)
+  }
+}
+
+module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
 
 abstract class AlgorithmPassthroughCall extends Call {
   abstract DataFlow::Node getInNode();
@@ -116,14 +129,7 @@ abstract class OpenSSLAlgorithmGetterCall extends Call {
 }
 
 module KnownAlgorithmLiteralToAlgorithmGetterConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    (
-      source.asExpr() instanceof Literal and
-      // 0 sources, for nid are unknown, and 0 otherwise represents a null assignment (ignore as unknown)
-      exists(source.asExpr().(Literal).getValue().toInt()) implies source.asExpr().(Literal).getValue().toInt() != 0
-      //resolveAlgorithmFromLiteral(source.asExpr(),_,_)
-    )
-  }
+  predicate isSource(DataFlow::Node source) { resolveAlgorithmFromLiteral(source.asExpr(), _, _) }
 
   predicate isSink(DataFlow::Node sink) {
     exists(OpenSSLAlgorithmGetterCall c | c.getValueArgNode() = sink)

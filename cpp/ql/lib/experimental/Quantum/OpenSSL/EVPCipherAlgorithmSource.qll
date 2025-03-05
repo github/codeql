@@ -52,11 +52,13 @@ predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
   )
 }
 
+
 class CipherKnownAlgorithmLiteralAlgorithmInstance extends Crypto::CipherAlgorithmInstance instanceof Literal
 {
+  OpenSSLAlgorithmGetterCall cipherGetterCall;
   CipherKnownAlgorithmLiteralAlgorithmInstance() {
-    exists(EVPCipherGetterCall c, DataFlow::Node src, DataFlow::Node sink |
-      sink = c.getValueArgNode() and
+    exists(DataFlow::Node src, DataFlow::Node sink |
+      sink = cipherGetterCall.getValueArgNode() and
       src.asExpr() = this and
       KnownAlgorithmLiteralToAlgorithmGetterFlow::flow(src, sink) and
       // Not just any known value, but specifically a known cipher operation
@@ -67,7 +69,9 @@ class CipherKnownAlgorithmLiteralAlgorithmInstance extends Crypto::CipherAlgorit
     )
   }
 
-  Crypto::AlgorithmConsumer getConsumer() { none() } //result = consumer }
+  Crypto::AlgorithmConsumer getConsumer() { 
+    AlgGetterToAlgConsumerFlow::flow(cipherGetterCall.getResultNode(), DataFlow::exprNode(result))
+  } 
 
   override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
     none() // TODO: provider defaults
