@@ -9,6 +9,26 @@ private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.security.SensitiveData
 
 /**
+ * A kind of cryptographic value.
+ */
+class CryptographicValueKind extends string {
+  CryptographicValueKind() { this = ["password", "key", "iv", "salt"] }
+
+  /**
+   * Gets a description of this value kind for user-facing messages.
+   */
+  string getDescription() {
+    this = "password" and result = "a password"
+    or
+    this = "key" and result = "a key"
+    or
+    this = "iv" and result = "an initialization vector"
+    or
+    this = "salt" and result = "a salt"
+  }
+}
+
+/**
  * Provides default sources, sinks and barriers for detecting hardcoded cryptographic
  * value vulnerabilities, as well as extension points for adding your own.
  */
@@ -23,10 +43,9 @@ module HardcodedCryptographicValue {
    */
   abstract class Sink extends DataFlow::Node {
     /**
-     * Gets the kind of credential this sink is interpreted as,
-     * for example "password", "key", "iv", "salt".
+     * Gets the kind of credential this sink is interpreted as.
      */
-    abstract string getKind();
+    abstract CryptographicValueKind getKind();
   }
 
   /**
@@ -45,13 +64,10 @@ module HardcodedCryptographicValue {
    * A sink for hardcoded cryptographic value from model data.
    */
   private class ModelsAsDataSinks extends Sink {
-    string kind;
+    CryptographicValueKind kind;
 
-    ModelsAsDataSinks() {
-      kind = ["password", "key", "iv", "salt"] and
-      sinkNode(this, "credentials-" + kind)
-    }
+    ModelsAsDataSinks() { sinkNode(this, "credentials-" + kind) }
 
-    override string getKind() { result = kind }
+    override CryptographicValueKind getKind() { result = kind }
   }
 }

@@ -47,4 +47,4 @@ from
   HardcodedCryptographicValueFlow::PathNode source, HardcodedCryptographicValueFlow::PathNode sink
 where HardcodedCryptographicValueFlow::flowPath(source, sink)
 select source.getNode(), source, sink, "This hard-coded value is used as $@.", sink,
-  sink.getNode().(HardcodedCryptographicValueConfig::Sink).getKind()
+  sink.getNode().(HardcodedCryptographicValueConfig::Sink).getKind().getDescription()
