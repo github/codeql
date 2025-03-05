@@ -859,10 +859,7 @@ case @regexpterm.kind of
 | 24 = @regexp_char_range
 | 25 = @regexp_positive_lookbehind
 | 26 = @regexp_negative_lookbehind
-| 27 = @regexp_unicode_property_escape
-| 28 = @regexp_quoted_string
-| 29 = @regexp_intersection
-| 30 = @regexp_subtraction;
+| 27 = @regexp_unicode_property_escape;
 
 regexp_parse_errors (unique int id: @regexp_parse_error,
     int regexp: @regexpterm ref,
