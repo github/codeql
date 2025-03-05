@@ -864,16 +864,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   newtype TCipherType =
     AES() or
-    Camellia() or
-    DES() or
-    TripleDES() or
-    IDEA() or
+    ARIA() or
+    BLOWFISH() or
+    CAMELLIA() or
     CAST5() or
-    ChaCha20() or
+    CHACHA20() or
+    DES() or
+    DESX() or
+    GOST() or
+    IDEA() or
+    KUZNYECHIK() or
+    MAGMA() or
+    TRIPLEDES() or
+    DOUBLEDES() or
+    RC2() or
     RC4() or
     RC5() or
     RSA() or
-    OtherCipherType()
+    SEED() or
+    SM4() or
+    OTHERCIPHERTYPE()
 
   final class CipherAlgorithmNode extends AlgorithmNode, TCipherAlgorithm {
     CipherAlgorithmInstance instance;
@@ -922,27 +932,27 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final private predicate cipherFamilyToNameAndStructure(
       TCipherType type, string name, TCipherStructureType s
     ) {
-      type instanceof AES and name = "AES" and s = Block()
-      or
-      type instanceof Camellia and name = "Camellia" and s = Block()
-      or
-      type instanceof DES and name = "DES" and s = Block()
-      or
-      type instanceof TripleDES and name = "TripleDES" and s = Block()
-      or
-      type instanceof IDEA and name = "IDEA" and s = Block()
-      or
-      type instanceof CAST5 and name = "CAST5" and s = Block()
-      or
-      type instanceof ChaCha20 and name = "ChaCha20" and s = Stream()
-      or
-      type instanceof RC4 and name = "RC4" and s = Stream()
-      or
-      type instanceof RC5 and name = "RC5" and s = Block()
-      or
-      type instanceof RSA and name = "RSA" and s = Asymmetric()
-      or
-      type instanceof OtherCipherType and
+      type instanceof AES and name = "AES" and s = Block() or
+      type instanceof ARIA and name = "ARIA" and s = Block() or
+      type instanceof BLOWFISH and name = "Blowfish" and s = Block() or
+      type instanceof CAMELLIA and name = "Camellia" and s = Block() or
+      type instanceof CAST5 and name = "CAST5" and s = Block() or
+      type instanceof CHACHA20 and name = "ChaCha20" and s = Stream() or
+      type instanceof DES and name = "DES" and s = Block() or
+      type instanceof DESX and name = "DESX" and s = Block() or
+      type instanceof GOST and name = "GOST" and s = Block() or
+      type instanceof IDEA and name = "IDEA" and s = Block() or
+      type instanceof KUZNYECHIK and name = "Kuznyechik" and s = Block() or
+      type instanceof MAGMA and name = "Magma" and s = Block() or
+      type instanceof TRIPLEDES and name = "TripleDES" and s = Block() or
+      type instanceof DOUBLEDES and name = "DoubleDES" and s = Block() or
+      type instanceof RC2 and name = "RC2" and s = Block() or
+      type instanceof RC4 and name = "RC4" and s = Stream() or
+      type instanceof RC5 and name = "RC5" and s = Block() or
+      type instanceof RSA and name = "RSA" and s = Asymmetric() or
+      type instanceof SEED and name = "SEED" and s = Block() or
+      type instanceof SM4 and name = "SM4" and s = Block() or
+      type instanceof OTHERCIPHERTYPE and
       name = this.getRawAlgorithmName() and
       s = UnknownCipherStructureType()
     }

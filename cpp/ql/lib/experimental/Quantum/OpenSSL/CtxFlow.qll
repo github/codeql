@@ -8,17 +8,14 @@ class CTXType extends Type {
 }
 
 class CTXPointerExpr extends Expr {
-    CTXPointerExpr() {
-        this.getType() instanceof CTXType and
-        this.getType() instanceof PointerType
+  CTXPointerExpr() {
+    this.getType() instanceof CTXType and
+    this.getType() instanceof PointerType
   }
 }
 
 class CTXPointerArgument extends CTXPointerExpr {
-  CTXPointerArgument() {
-    
-    exists(Call c | c.getAnArgument() = this)
-  }
+  CTXPointerArgument() { exists(Call c | c.getAnArgument() = this) }
 
   Call getCall() { result.getAnArgument() = this }
 }
@@ -31,14 +28,14 @@ class CTXClearCall extends Call {
 }
 
 class CTXCopyOutArgCall extends Call {
-    CTXCopyOutArgCall() {
+  CTXCopyOutArgCall() {
     this.getTarget().getName().toLowerCase().matches(["%copy%"]) and
     this.getAnArgument() instanceof CTXPointerArgument
   }
 }
 
 class CTXCopyReturnCall extends Call {
-    CTXCopyReturnCall() {
+  CTXCopyReturnCall() {
     this.getTarget().getName().toLowerCase().matches(["%dup%"]) and
     this.getAnArgument() instanceof CTXPointerArgument and
     this instanceof CTXPointerExpr

@@ -1,6 +1,6 @@
 import EVPCipherInitializer
 import EVPCipherOperation
-import AlgorithmSource
+import EVPCipherAlgorithmSource
 
 
 class EVP_Cipher_Initializer_Algorithm_Consumer extends Crypto::AlgorithmConsumer instanceof EVPCipherInitializerAlgorithmArgument
@@ -8,7 +8,7 @@ class EVP_Cipher_Initializer_Algorithm_Consumer extends Crypto::AlgorithmConsume
     override DataFlow::Node getInputNode() { result.asExpr() = this }
 
     override Crypto::AlgorithmElement getAKnownAlgorithmSource() {
-        result.(CipherLiteralAlgorithmInstance).getConsumer() = this
+        result.(CipherKnownAlgorithmLiteralAlgorithmInstance).getConsumer() = this
       }
 }
 // //TODO: need a key consumer

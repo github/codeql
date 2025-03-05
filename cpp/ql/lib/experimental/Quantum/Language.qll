@@ -49,19 +49,19 @@ module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
 
 
 
-// TODO: I think this will be inefficient, no?
-class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
-  override DataFlow::Node getOutputNode() { 
-    result.asExpr() = this 
-  }
+// // TODO: I think this will be inefficient, no?
+// class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
+//   override DataFlow::Node getOutputNode() { 
+//     result.asExpr() = this 
+//   }
 
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    // TODO: separate config to avoid blowing up data-flow analysis
-    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
+//   override predicate flowsTo(Crypto::FlowAwareElement other) {
+//     // TODO: separate config to avoid blowing up data-flow analysis
+//     GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+//   }
 
-  override string getAdditionalDescription() { result = this.toString() }
-}
+//   override string getAdditionalDescription() { result = this.toString() }
+// }
 
 /**
  * Definitions of various generic data sources

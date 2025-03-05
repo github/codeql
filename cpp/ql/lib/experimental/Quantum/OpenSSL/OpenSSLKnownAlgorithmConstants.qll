@@ -1,104 +1,5 @@
 import cpp
-import experimental.Quantum.Language
-import EVPCipherConsumers
 
-/**
- * Note: padding and a mode of operation will only exist when the padding / mode (*and its type*) are determinable.
- * This is because the mode will always be specified alongside the algorithm and never independently.
- * Therefore, we can always assume that a determinable algorithm will have a determinable mode.
- *
- * In the case that only an algorithm is specified, e.g., "AES", the provider provides a default mode.
- *
- * TODO: Model the case of relying on a provider default, but alert on it as a bad practice.
- */
-class CipherLiteralAlgorithmInstance extends Crypto::CipherAlgorithmInstance instanceof ConstantDataSource
-{
-  Crypto::AlgorithmConsumer consumer; // TODO: I need to make this an open SSL algorithm consumer specifically
-
-  CipherLiteralAlgorithmInstance() {
-    GenericDataSourceUniversalFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(consumer))
-  }
-
-  Crypto::AlgorithmConsumer getConsumer() { result = consumer }
-
-  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
-    none() // TODO: provider defaults
-  }
-
-  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
-
-  override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
-
-  override Crypto::TCipherType getCipherFamily() { none() }
-}
-
-//     override Crypto::TCipherType getCipherFamily() {
-//       if this.cipherNameMappingKnown(_, super.getAlgorithmName())
-//       then this.cipherNameMappingKnown(result, super.getAlgorithmName())
-//       else result instanceof Crypto::OtherCipherType
-//     }
-//     bindingset[name]
-//     private predicate cipherNameMappingKnown(Crypto::TCipherType type, string name) {
-//       name = "AES" and
-//       type instanceof Crypto::AES
-//       or
-//       name = "DES" and
-//       type instanceof Crypto::DES
-//       or
-//       name = "TripleDES" and
-//       type instanceof Crypto::TripleDES
-//       or
-//       name = "IDEA" and
-//       type instanceof Crypto::IDEA
-//       or
-//       name = "CAST5" and
-//       type instanceof Crypto::CAST5
-//       or
-//       name = "ChaCha20" and
-//       type instanceof Crypto::ChaCha20
-//       or
-//       name = "RC4" and
-//       type instanceof Crypto::RC4
-//       or
-//       name = "RC5" and
-//       type instanceof Crypto::RC5
-//       or
-//       name = "RSA" and
-//       type instanceof Crypto::RSA
-//     }
-//     private predicate modeToNameMappingKnown(Crypto::TBlockCipherModeOperationType type, string name) {
-//       type instanceof Crypto::ECB and name = "ECB"
-//       or
-//       type instanceof Crypto::CBC and name = "CBC"
-//       or
-//       type instanceof Crypto::GCM and name = "GCM"
-//       or
-//       type instanceof Crypto::CTR and name = "CTR"
-//       or
-//       type instanceof Crypto::XTS and name = "XTS"
-//       or
-//       type instanceof Crypto::CCM and name = "CCM"
-//       or
-//       type instanceof Crypto::SIV and name = "SIV"
-//       or
-//       type instanceof Crypto::OCB and name = "OCB"
-//     }
-//     override Crypto::TBlockCipherModeOperationType getModeType() {
-//       if this.modeToNameMappingKnown(_, super.getMode())
-//       then this.modeToNameMappingKnown(result, super.getMode())
-//       else result instanceof Crypto::OtherMode
-//     }
-//     override string getRawModeAlgorithmName() { result = super.getMode() }
-//     override string getRawPaddingAlgorithmName() { result = super.getPadding() }
-//     bindingset[name]
-//     private predicate paddingToNameMappingKnown(Crypto::TPaddingType type, string name) {
-//       type instanceof Crypto::NoPadding and name = "NOPADDING"
-//       or
-//       type instanceof Crypto::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
-//       or
-//       type instanceof Crypto::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
-//     }
-//   }
 /**
  * Resolves literal `e` to a known algorithm name, nid, normalized name, and algType
  * if `e` resolves to a known algorithm.
@@ -992,7 +893,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "hmac-sha1" and nid = 781 and normalized = "SHA1" and algType = "HASH"
   or
-  name = "md_gost94" and nid = 809 and normalized = "GOST94" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "md_gost94" and nid = 809 and normalized = "GOST94" and algType = "HASH"
   or
   name = "gost94" and nid = 812 and normalized = "GOST94" and algType = "SYMMETRIC_ENCRYPTION"
   or
@@ -2432,7 +2333,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "pbe-md2-des" and nid = 9 and normalized = "MD2" and algType = "HASH"
   or
-  name = "pbe-md2-des" and nid = 9 and normalized = "2DES" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "pbe-md2-des" and nid = 9 and normalized = "DES" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbe-md2-rc2-64" and nid = 168 and normalized = "RC2" and algType = "SYMMETRIC_ENCRYPTION"
   or
