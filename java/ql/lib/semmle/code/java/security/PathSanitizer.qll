@@ -402,72 +402,249 @@ private class ReplaceCall extends MethodCall {
   }
 }
 
+private class ReplaceOrReplaceAllCall extends MethodCall {
+  ReplaceOrReplaceAllCall() {
+    this instanceof ReplaceCall or
+    this instanceof ReplaceAllCall
+  }
+}
+
 private string getAReplacementChar() { result = ["", "_", "-"] }
 
 private string getADirRegexChar() { result = ["\\.", "/", "\\\\"] }
 
 private string getADirChar() { result = [".", "/", "\\"] }
 
-private predicate isSingleReplaceAll(CompileTimeConstantExpr target) {
-  not target.getStringValue().matches("%[^%]%") and
-  target.getStringValue().matches("[%.%]") and
-  target.getStringValue().matches("[%/%]") and
-  // ! eight slashes since need to avoid escaping the '%'
-  target.getStringValue().matches("[%\\\\\\\\%]")
-  or
-  target.getStringValue().matches("%|%") and
-  //target.getStringValue().matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
-  target.getStringValue().regexpMatch(".*(\\\\\\.\\\\\\.|\\[.\\]\\[.\\]|\\\\\\.).*") and
-  target.getStringValue().matches("%/%") and
-  target.getStringValue().matches("%\\\\\\\\%")
+// private predicate isSingleReplaceAll(CompileTimeConstantExpr target) {
+//   not target.getStringValue().matches("%[^%]%") and
+//   target.getStringValue().matches("[%.%]") and
+//   target.getStringValue().matches("[%/%]") and
+//   // ! eight slashes since need to avoid escaping the '%'
+//   target.getStringValue().matches("[%\\\\\\\\%]")
+//   or
+//   target.getStringValue().matches("%|%") and
+//   //target.getStringValue().matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
+//   target.getStringValue().regexpMatch(".*(\\\\\\.\\\\\\.|\\[.\\]\\[.\\]|\\\\\\.).*") and
+//   target.getStringValue().matches("%/%") and
+//   target.getStringValue().matches("%\\\\\\\\%")
+// }
+// private predicate isMultipleReplaces(
+//   MethodCall mc1, CompileTimeConstantExpr target1, string targetValue1, MethodCall mc2,
+//   CompileTimeConstantExpr target2, string targetValue2
+// ) {
+//   mc2.getQualifier() = mc1 and
+//   target1 = mc1.getArgument(0) and
+//   target1.getStringValue() = targetValue1 and
+//   target2 = mc2.getArgument(0) and
+//   target2.getStringValue() = targetValue2 and
+//   mc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+//   // make sure the calls replace different characters
+//   targetValue2 != targetValue1 and
+//   // make sure one of the calls replaces '.'
+//   // then the other call must replace one of '/' or '\' if they are not equal
+//   (targetValue2.matches("%.%") or targetValue1.matches("%.%"))
+// }
+private predicate replaceAll(ReplaceAllCall mc, CompileTimeConstantExpr target) {
+  target = mc.getArgument(0)
 }
 
-private predicate isMultipleReplaces(
-  MethodCall mc1, CompileTimeConstantExpr target1, string targetValue1, MethodCall mc2,
-  CompileTimeConstantExpr target2, string targetValue2
-) {
-  mc2.getQualifier() = mc1 and
-  target1 = mc1.getArgument(0) and
-  target1.getStringValue() = targetValue1 and
-  target2 = mc2.getArgument(0) and
-  target2.getStringValue() = targetValue2 and
-  mc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
-  // make sure the calls replace different characters
-  target2.getStringValue() != target1.getStringValue() and
-  // make sure one of the calls replaces '.'
-  // then the other call must replace one of '/' or '\' if they are not equal
-  (target2.getStringValue().matches("%.%") or target1.getStringValue().matches("%.%"))
+private predicate isSingleReplaceAll(ReplaceAllCall mc) {
+  exists(CompileTimeConstantExpr target, string targetValue |
+    replaceAll(mc, target) and
+    target.getStringValue() = targetValue
+  |
+    not targetValue.matches("%[^%]%") and
+    targetValue.matches("[%.%]") and
+    targetValue.matches("[%/%]") and
+    // ! eight slashes since need to avoid escaping the '%'
+    targetValue.matches("[%\\\\\\\\%]")
+    or
+    targetValue.matches("%|%") and
+    //target.getStringValue().matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
+    targetValue.regexpMatch(".*(\\\\\\.\\\\\\.|\\[.\\]\\[.\\]|\\\\\\.).*") and
+    targetValue.matches("%/%") and
+    targetValue.matches("%\\\\\\\\%")
+  )
+}
+
+// private predicate isMultipleReplaceAll(ReplaceAllCall mc1) {
+//   exists(
+//     CompileTimeConstantExpr target1, string targetValue1, ReplaceAllCall mc2,
+//     CompileTimeConstantExpr target2, string targetValue2
+//   |
+//     replaceAll(mc1, target1) and
+//     replaceAll(mc2, target2) and
+//     target1.getStringValue() = targetValue1 and
+//     target2.getStringValue() = targetValue2 and
+//     targetValue1 = getADirRegexChar() and
+//     targetValue2 = getADirRegexChar() and
+//     mc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+//     // make sure the calls replace different characters
+//     targetValue2 != targetValue1 and
+//     // make sure one of the calls replaces '.'
+//     // then the other call must replace one of '/' or '\' if they are not equal
+//     (targetValue2.matches("%.%") or targetValue1.matches("%.%"))
+//   )
+// }
+private predicate replace(ReplaceCall mc, CompileTimeConstantExpr target) {
+  target = mc.getArgument(0)
+}
+
+// private predicate isMultipleReplace(ReplaceCall mc1) {
+//   exists(
+//     CompileTimeConstantExpr target1, string targetValue1, ReplaceCall mc2,
+//     CompileTimeConstantExpr target2, string targetValue2
+//   |
+//     replace(mc1, target1) and
+//     replace(mc2, target2) and
+//     target1.getStringValue() = targetValue1 and
+//     target2.getStringValue() = targetValue2 and
+//     targetValue1 = getADirChar() and
+//     targetValue2 = getADirChar() and
+//     mc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+//     // make sure the calls replace different characters
+//     targetValue2 != targetValue1 and
+//     // make sure one of the calls replaces '.'
+//     // then the other call must replace one of '/' or '\' if they are not equal
+//     (targetValue2.matches("%.%") or targetValue1.matches("%.%"))
+//   )
+// }
+private predicate isMultipleReplaceOrReplaceAll(ReplaceOrReplaceAllCall mc1) {
+  exists(
+    CompileTimeConstantExpr target1, string targetValue1, ReplaceOrReplaceAllCall mc2,
+    CompileTimeConstantExpr target2, string targetValue2
+  |
+    mc1 instanceof ReplaceAllCall and
+    replaceAll(mc1, target1) and
+    replaceAll(mc2, target2) and
+    targetValue1 = getADirRegexChar() and
+    targetValue2 = getADirRegexChar()
+    or
+    mc1 instanceof ReplaceCall and
+    replace(mc1, target1) and
+    replace(mc2, target2) and
+    targetValue1 = getADirChar() and
+    targetValue2 = getADirChar()
+  |
+    target1.getStringValue() = targetValue1 and
+    target2.getStringValue() = targetValue2 and
+    mc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+    // make sure the calls replace different characters
+    targetValue2 != targetValue1 and
+    // make sure one of the calls replaces '.'
+    // then the other call must replace one of '/' or '\' if they are not equal
+    (targetValue2.matches("%.%") or targetValue1.matches("%.%"))
+  )
 }
 
 /**
  * A complementary sanitizer that protects against path injection vulnerabilities
  * by replacing directory characters ('..', '/', and '\') with safe characters.
  */
-private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
+private class ReplaceDirectoryCharactersSanitizer extends ReplaceOrReplaceAllCall {
   ReplaceDirectoryCharactersSanitizer() {
-    exists(MethodCall mc, CompileTimeConstantExpr target |
-      this = mc and
-      target = mc.getArgument(0) and
-      mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
-      (
-        // `replaceAll` with regex
-        mc instanceof ReplaceAllCall and
-        (
-          isSingleReplaceAll(target)
-          or
-          exists(ReplaceAllCall rac, CompileTimeConstantExpr racTarget |
-            isMultipleReplaces(mc, target, getADirRegexChar(), rac, racTarget, getADirRegexChar())
-          )
-        )
-        or
-        // `replace` with char/CharSequence
-        mc instanceof ReplaceCall and
-        exists(ReplaceCall rc, CompileTimeConstantExpr rcTarget |
-          isMultipleReplaces(mc, target, getADirChar(), rc, rcTarget, getADirChar())
-        )
-      )
+    isSingleReplaceAll(this)
+    or
+    // isMultipleReplaceAll(this) or
+    // isMultipleReplace(this)
+    isMultipleReplaceOrReplaceAll(this)
+    // exists(MethodCall mc, CompileTimeConstantExpr target |
+    //   this = mc and
+    //   target = mc.getArgument(0) and
+    //   mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+    //   (
+    //     // `replaceAll` with regex
+    //     mc instanceof ReplaceAllCall and
+    //     (
+    //       isSingleReplaceAll(target)
+    //       or
+    //       exists(ReplaceAllCall rac, CompileTimeConstantExpr racTarget |
+    //         isMultipleReplaces(mc, target, getADirRegexChar(), rac, racTarget, getADirRegexChar())
+    //       )
+    //     )
+    //     or
+    //     // `replace` with char/CharSequence
+    //     mc instanceof ReplaceCall and
+    //     exists(ReplaceCall rc, CompileTimeConstantExpr rcTarget |
+    //       isMultipleReplaces(mc, target, getADirChar(), rc, rcTarget, getADirChar())
+    //     )
+    //   )
+    // )
+  }
+}
+
+// /**
+//  * A complementary sanitizer that protects against path injection vulnerabilities
+//  * by replacing directory characters ('..', '/', and '\') with safe characters.
+//  */
+// private class ReplaceDirectoryCharactersSanitizer extends MethodCall {
+//   ReplaceDirectoryCharactersSanitizer() {
+//     exists(MethodCall mc, CompileTimeConstantExpr target |
+//       this = mc and
+//       target = mc.getArgument(0) and
+//       mc.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+//       (
+//         // `replaceAll` with regex
+//         mc instanceof ReplaceAllCall and
+//         (
+//           isSingleReplaceAll(target)
+//           or
+//           exists(ReplaceAllCall rac, CompileTimeConstantExpr racTarget |
+//             isMultipleReplaces(mc, target, getADirRegexChar(), rac, racTarget, getADirRegexChar())
+//           )
+//         )
+//         or
+//         // `replace` with char/CharSequence
+//         mc instanceof ReplaceCall and
+//         exists(ReplaceCall rc, CompileTimeConstantExpr rcTarget |
+//           isMultipleReplaces(mc, target, getADirChar(), rc, rcTarget, getADirChar())
+//         )
+//       )
+//     )
+//   }
+// }
+private class MatchesCall extends MethodCall {
+  MatchesCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("matches")
     )
   }
+}
+
+private predicate matches(MatchesCall mc, CompileTimeConstantExpr target) {
+  target = mc.getArgument(0)
+}
+
+private predicate isMatchesTarget(MatchesCall mc, Expr checkedExpr, boolean branch) {
+  exists(CompileTimeConstantExpr target, string targetValue |
+    matches(mc, target) and
+    target.getStringValue() = targetValue and
+    checkedExpr = mc.getQualifier()
+  |
+    targetValue.regexpMatch("\\[(.*)\\]([*+]|\\{.*\\})") and
+    (
+      // Allow anything except `.`, '/', '\'
+      (
+        // Note: we do not account for when '.', '/', '\' are inside a character range
+        // not targetValue.matches("[%" + [".", "/", "\\\\"] + "%]%") and
+        not targetValue.regexpMatch("\\[.*(\\.|\\\\|/).*\\].*") and
+        not targetValue.matches("%[^%]%")
+        or
+        targetValue.matches("[^%.%]%") and
+        targetValue.matches("[^%/%]%") and
+        targetValue.matches("[^%\\\\\\\\%]%")
+      ) and
+      branch = true
+      or
+      // Disallow `.`, '/', '\'
+      targetValue.matches("[%.%]%") and
+      targetValue.matches("[%/%]%") and
+      targetValue.matches("[%\\\\\\\\%]%") and
+      not targetValue.matches("%[^%]%") and
+      branch = false
+    )
+  )
 }
 
 /**
@@ -479,38 +656,37 @@ private class DirectoryCharactersGuard extends PathGuard {
   boolean branch;
 
   DirectoryCharactersGuard() {
-    exists(MethodCall mc, Method m, CompileTimeConstantExpr target |
-      m = mc.getMethod() and
-      m.getDeclaringType() instanceof TypeString and
-      m.hasName("matches") and
-      target = mc.getArgument(0) and
-      checkedExpr = mc.getQualifier() and
-      this = mc
-    |
-      //target.getStringValue().matches(["[%]*", "[%]+", "[%]{%}"]) and
-      target.getStringValue().regexpMatch("\\[(.*)\\]([*+]|\\{.*\\})") and
-      (
-        // Allow anything except `.`, '/', '\'
-        (
-          // Note: we do not account for when '.', '/', '\' are inside a character range
-          // not target.getStringValue().matches("[%" + [".", "/", "\\\\"] + "%]%") and
-          not target.getStringValue().regexpMatch("\\[.*(\\.|\\\\|/).*\\].*") and
-          not target.getStringValue().matches("%[^%]%")
-          or
-          target.getStringValue().matches("[^%.%]%") and
-          target.getStringValue().matches("[^%/%]%") and
-          target.getStringValue().matches("[^%\\\\\\\\%]%")
-        ) and
-        branch = true
-        or
-        // Disallow `.`, '/', '\'
-        target.getStringValue().matches("[%.%]%") and
-        target.getStringValue().matches("[%/%]%") and
-        target.getStringValue().matches("[%\\\\\\\\%]%") and
-        not target.getStringValue().matches("%[^%]%") and
-        branch = false
-      )
-    )
+    isMatchesTarget(this, checkedExpr, branch)
+    // exists(MatchesCall mc, CompileTimeConstantExpr target, string targetValue |
+    //   target = mc.getArgument(0) and
+    //   target.getStringValue() = targetValue and
+    //   checkedExpr = mc.getQualifier() and
+    //   this = mc
+    // |
+    //   //targetValue.matches(["[%]*", "[%]+", "[%]{%}"]) and
+    //   targetValue.regexpMatch("\\[(.*)\\]([*+]|\\{.*\\})") and
+    //   (
+    //     // Allow anything except `.`, '/', '\'
+    //     (
+    //       // Note: we do not account for when '.', '/', '\' are inside a character range
+    //       // not targetValue.matches("[%" + [".", "/", "\\\\"] + "%]%") and
+    //       not targetValue.regexpMatch("\\[.*(\\.|\\\\|/).*\\].*") and
+    //       not targetValue.matches("%[^%]%")
+    //       or
+    //       targetValue.matches("[^%.%]%") and
+    //       targetValue.matches("[^%/%]%") and
+    //       targetValue.matches("[^%\\\\\\\\%]%")
+    //     ) and
+    //     branch = true
+    //     or
+    //     // Disallow `.`, '/', '\'
+    //     targetValue.matches("[%.%]%") and
+    //     targetValue.matches("[%/%]%") and
+    //     targetValue.matches("[%\\\\\\\\%]%") and
+    //     not targetValue.matches("%[^%]%") and
+    //     branch = false
+    //   )
+    // )
   }
 
   override Expr getCheckedExpr() { result = checkedExpr }
