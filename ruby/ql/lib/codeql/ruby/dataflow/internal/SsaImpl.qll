@@ -515,20 +515,23 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { p.isInitializedBy(def) }
 
   class Guard extends Cfg::CfgNodes::AstCfgNode {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+        this.getBasicBlock() = bb1 and
+        bb2 = bb1.getASuccessor(s) and
+        s.getValue() = branch
+      )
+    }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     Guards::guardControlsBlock(guard, bb, branch)
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
-    exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
-      result = bb.getASuccessor(s) and
-      s.getValue() = branch
-    )
   }
 }
 
