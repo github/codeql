@@ -1,0 +1,12 @@
+edges
+| NameList.cs:31:99:31:102 | access to property Name : String | Name.cs:13:53:13:59 | access to property TheName | provenance | Sink:MaD:149 |
+nodes
+| Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | semmle.label | access to property UrlParam |
+| Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | semmle.label | access to property QueryParam |
+| Name.cs:13:53:13:59 | access to property TheName | semmle.label | access to property TheName |
+| NameList.cs:31:99:31:102 | access to property Name : String | semmle.label | access to property Name : String |
+subpaths
+#select
+| Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | $@ flows to here and is written to HTML or JavaScript. | Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | User-provided value |
+| Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | $@ flows to here and is written to HTML or JavaScript. | Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | User-provided value |
+| Name.cs:13:53:13:59 | access to property TheName | NameList.cs:31:99:31:102 | access to property Name : String | Name.cs:13:53:13:59 | access to property TheName | $@ flows to here and is written to HTML or JavaScript. | NameList.cs:31:99:31:102 | access to property Name : String | User-provided value |
