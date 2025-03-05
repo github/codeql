@@ -71,7 +71,8 @@ public class RegExpParser {
   private List<Error> errors;
   private List<BackReference> backrefs;
   private int maxbackref;
-  private String flags;
+  private Boolean vFlagEnabled = false;
+  private Boolean uFlagEnabled = false;
 
   /** Parse the given string as a regular expression. */
   public Result parse(String src) {
@@ -88,7 +89,8 @@ public class RegExpParser {
   }
 
   public Result parse(String src, String flags) {
-    this.flags = flags;
+    vFlagEnabled = flags != null && flags.contains("v");
+    uFlagEnabled = flags != null && flags.contains("u");
     return parse(src);
   }
 
@@ -300,7 +302,7 @@ public class RegExpParser {
 
   private RegExpTerm parseAlternativeInsideQuotedString() {
     SourceLocation loc = new SourceLocation(pos());
-    StringBuilder sb = new StringBuilder();
+    int startPos = this.pos;
     boolean escaped = false;
     while (true) {
       // If we're at the end of the string, something went wrong.
@@ -316,13 +318,11 @@ public class RegExpParser {
       char c = this.nextChar();
       // Track whether the character is an escape character. 
       escaped = !escaped && (c == '\\');
-      sb.append(c);
     }
-    
-    String literal = sb.toString();
+    String literal = src.substring(startPos, pos);
     loc.setEnd(pos());
     loc.setSource(literal);
-    
+
     return new Constant(loc, literal);
   }
 
@@ -470,13 +470,13 @@ public class RegExpParser {
       return this.finishTerm(new NamedBackReference(loc, name, "\\k<" + name + ">"));
     }
 
-    if (this.match("q{")) {
+    if (vFlagEnabled && this.match("q{")) {
       RegExpTerm term = parseDisjunctionInsideQuotedString();
       this.expectRBrace();
       return this.finishTerm(new CharacterClassQuotedString(loc, term));
     }
 
-    if (this.match("p{", "P{")) {
+    if ((vFlagEnabled || uFlagEnabled) && this.match("p{", "P{")) {
       String name = this.readIdentifier();
       if (this.match("=")) {
         value = this.readIdentifier();
@@ -548,7 +548,7 @@ public class RegExpParser {
   }
 
   private RegExpTerm parseCharacterClass() {
-    if (flags != null && flags.contains("v")) return parseNestedCharacterClass();
+    if (vFlagEnabled) return parseNestedCharacterClass();
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> elements = new ArrayList<>();
 
@@ -583,20 +583,10 @@ public class RegExpParser {
         this.error(Error.EXPECTED_RBRACKET);
         break;
       }
-      if (lookahead("[")) {
-        elements.add(parseNestedCharacterClass());
-      } 
-      else if (lookahead("&&")) {
-        this.match("&&");
-        classType = CharacterClassType.INTERSECTION;
-      }
-      else if (lookahead("--")) {
-        this.match("--");
-        classType = CharacterClassType.SUBTRACTION;
-      }
-      else {
-        elements.add(this.parseCharacterClassElement());
-      }
+      if (lookahead("[")) elements.add(parseNestedCharacterClass());
+      else if (this.match("&&")) classType = CharacterClassType.INTERSECTION;
+      else if (this.match("--")) classType = CharacterClassType.SUBTRACTION;
+      else elements.add(this.parseCharacterClassElement());
     }
 
     // Create appropriate RegExpTerm based on the detected class type
