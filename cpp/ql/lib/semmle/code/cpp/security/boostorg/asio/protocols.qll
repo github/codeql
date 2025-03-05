@@ -503,6 +503,12 @@ module BoostorgAsio {
         not sink.getLocation().getFile().toString().matches("%/boost/asio/%")
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Likely Bugs/Protocols/TlsSettingsMisconfiguration.ql:48: Flow call outside 'select' clause
+      none()
+    }
   }
 
   module SslOptionFlow = DataFlow::Global<SslOptionConfig>;

@@ -91,6 +91,12 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
     // to duplicate results)
     any(HeuristicAllocationFunction f).getAParameter() = node.asParameter()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-190/TaintedAllocationSize.ql:99: Column 1 does not select a source or sink originating from the flow call on line 97
+    none()
+  }
 }
 
 module TaintedAllocationSize = TaintTracking::Global<TaintedAllocationSizeConfig>;
