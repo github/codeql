@@ -86,6 +86,6 @@ rust_library(
     }),
     version = "0.1.10",
     deps = [
-        "@vendor__regex-syntax-0.6.29//:regex_syntax",
+        "@vendor_ts__regex-syntax-0.6.29//:regex_syntax",
     ],
 )

@@ -81,7 +81,7 @@ rust_library(
     }),
     version = "0.1.2",
     deps = [
-        "@vendor__nohash-hasher-0.2.0//:nohash_hasher",
-        "@vendor__text-size-1.1.1//:text_size",
+        "@vendor_ts__nohash-hasher-0.2.0//:nohash_hasher",
+        "@vendor_ts__text-size-1.1.1//:text_size",
     ],
 )

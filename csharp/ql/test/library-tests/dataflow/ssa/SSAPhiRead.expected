@@ -6,7 +6,7 @@ phiReadNode
 | Test.cs:25:16:25:16 | SSA phi read(x) | Test.cs:8:13:8:13 | x |
 | Test.cs:90:9:97:9 | SSA phi read(x) | Test.cs:78:13:78:13 | x |
 | Test.cs:99:9:99:15 | SSA phi read(x) | Test.cs:78:13:78:13 | x |
-phiReadNodeRead
+phiReadNodeFirstRead
 | DefUse.cs:80:30:80:31 | SSA phi read(this.Field2) | DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:80:37:80:42 | access to field Field2 |
 | Fields.cs:63:16:63:28 | SSA phi read(this.LoopField) | Fields.cs:65:24:65:32 | this.LoopField | Fields.cs:65:24:65:32 | access to field LoopField |
 | Patterns.cs:20:9:38:9 | SSA phi read(o) | Patterns.cs:7:16:7:16 | o | Patterns.cs:20:17:20:17 | access to local variable o |
@@ -15,16 +15,21 @@ phiReadNodeRead
 | Test.cs:90:9:97:9 | SSA phi read(x) | Test.cs:78:13:78:13 | x | Test.cs:92:17:92:17 | access to local variable x |
 | Test.cs:90:9:97:9 | SSA phi read(x) | Test.cs:78:13:78:13 | x | Test.cs:96:17:96:17 | access to local variable x |
 | Test.cs:99:9:99:15 | SSA phi read(x) | Test.cs:78:13:78:13 | x | Test.cs:99:13:99:13 | access to local variable x |
-| Test.cs:99:9:99:15 | SSA phi read(x) | Test.cs:78:13:78:13 | x | Test.cs:104:17:104:17 | access to local variable x |
 phiReadInput
-| DefUse.cs:80:30:80:31 | SSA phi read(this.Field2) | DefUse.cs:63:9:63:18 | SSA def(this.Field2) |
-| DefUse.cs:80:30:80:31 | SSA phi read(this.Field2) | DefUse.cs:80:30:80:31 | SSA phi read(this.Field2) |
+| DefUse.cs:80:30:80:31 | SSA phi read(this.Field2) | DefUse.cs:64:13:64:18 | SSA read(this.Field2) |
+| DefUse.cs:80:30:80:31 | SSA phi read(this.Field2) | DefUse.cs:80:37:80:42 | SSA read(this.Field2) |
 | Fields.cs:63:16:63:28 | SSA phi read(this.LoopField) | Fields.cs:61:17:61:17 | SSA entry def(this.LoopField) |
-| Fields.cs:63:16:63:28 | SSA phi read(this.LoopField) | Fields.cs:63:16:63:28 | SSA phi read(this.LoopField) |
-| Patterns.cs:20:9:38:9 | SSA phi read(o) | Patterns.cs:7:16:7:23 | SSA def(o) |
+| Fields.cs:63:16:63:28 | SSA phi read(this.LoopField) | Fields.cs:65:24:65:32 | SSA read(this.LoopField) |
+| Patterns.cs:20:9:38:9 | SSA phi read(o) | Patterns.cs:8:13:8:13 | SSA read(o) |
+| Patterns.cs:20:9:38:9 | SSA phi read(o) | Patterns.cs:12:18:12:18 | SSA read(o) |
+| Patterns.cs:20:9:38:9 | SSA phi read(o) | Patterns.cs:16:18:16:18 | SSA read(o) |
 | Properties.cs:63:16:63:16 | SSA phi read(this.LoopProp) | Properties.cs:61:17:61:17 | SSA entry def(this.LoopProp) |
-| Properties.cs:63:16:63:16 | SSA phi read(this.LoopProp) | Properties.cs:63:16:63:16 | SSA phi read(this.LoopProp) |
+| Properties.cs:63:16:63:16 | SSA phi read(this.LoopProp) | Properties.cs:65:24:65:31 | SSA read(this.LoopProp) |
 | Test.cs:25:16:25:16 | SSA phi read(x) | Test.cs:24:9:24:15 | SSA phi(x) |
-| Test.cs:25:16:25:16 | SSA phi read(x) | Test.cs:25:16:25:16 | SSA phi read(x) |
+| Test.cs:25:16:25:16 | SSA phi read(x) | Test.cs:25:16:25:16 | SSA read(x) |
 | Test.cs:90:9:97:9 | SSA phi read(x) | Test.cs:78:13:78:17 | SSA def(x) |
+| Test.cs:90:9:97:9 | SSA phi read(x) | Test.cs:82:17:82:17 | SSA read(x) |
+| Test.cs:90:9:97:9 | SSA phi read(x) | Test.cs:86:17:86:17 | SSA read(x) |
 | Test.cs:99:9:99:15 | SSA phi read(x) | Test.cs:90:9:97:9 | SSA phi read(x) |
+| Test.cs:99:9:99:15 | SSA phi read(x) | Test.cs:92:17:92:17 | SSA read(x) |
+| Test.cs:99:9:99:15 | SSA phi read(x) | Test.cs:96:17:96:17 | SSA read(x) |

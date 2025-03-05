@@ -82,7 +82,7 @@ rust_library(
     }),
     version = "0.2.99",
     deps = [
-        "@vendor__wasm-bindgen-shared-0.2.99//:build_script_build",
+        "@vendor_ts__wasm-bindgen-shared-0.2.99//:build_script_build",
     ],
 )
 

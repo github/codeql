@@ -96,7 +96,7 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         })
         .collect::<Vec<_>>();
 
-    let gen = quote! {
+    let ret = quote! {
         #[serde_with::apply(_ => #[serde(default)])]
         #[derive(Deserialize, Default)]
         pub struct #name {
@@ -118,5 +118,5 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
             #(#cli_fields),*
         }
     };
-    gen.into()
+    ret.into()
 }

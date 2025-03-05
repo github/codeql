@@ -28,14 +28,19 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   }
 
   private predicate relevant(Function api) {
-    // This excludes closures (these are not exported API endpoints) and
-    // functions without a `pub` visiblity. A function can be `pub` without
-    // ultimately being exported by a crate, so this is an overapproximation.
-    api.hasVisibility()
-    or
-    // If a method implements a public trait it is exposed through the trait.
-    // We overapproximate this by including all trait method implementations.
-    exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+    // Only include functions that have a resolved path.
+    api.hasCrateOrigin() and
+    api.hasExtendedCanonicalPath() and
+    (
+      // This excludes closures (these are not exported API endpoints) and
+      // functions without a `pub` visiblity. A function can be `pub` without
+      // ultimately being exported by a crate, so this is an overapproximation.
+      api.hasVisibility()
+      or
+      // If a method implements a public trait it is exposed through the trait.
+      // We overapproximate this by including all trait method implementations.
+      exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+    )
   }
 
   predicate isUninterestingForDataFlowModels(Callable api) { none() }
@@ -169,12 +174,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   }
 
   string partialModelRow(Callable api, int i) {
-    i = 0 and
-    (
-      result = api.(Function).getCrateOrigin()
-      or
-      not api.(Function).hasCrateOrigin() and result = ""
-    ) // crate
+    i = 0 and result = api.(Function).getCrateOrigin() // crate
     or
     i = 1 and result = api.(Function).getExtendedCanonicalPath() // name
   }

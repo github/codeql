@@ -84,10 +84,10 @@ rust_library(
     }),
     version = "5.5.3",
     deps = [
-        "@vendor__cfg-if-1.0.0//:cfg_if",
-        "@vendor__hashbrown-0.14.5//:hashbrown",
-        "@vendor__lock_api-0.4.12//:lock_api",
-        "@vendor__once_cell-1.20.2//:once_cell",
-        "@vendor__parking_lot_core-0.9.10//:parking_lot_core",
+        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
+        "@vendor_ts__hashbrown-0.14.5//:hashbrown",
+        "@vendor_ts__lock_api-0.4.12//:lock_api",
+        "@vendor_ts__once_cell-1.20.3//:once_cell",
+        "@vendor_ts__parking_lot_core-0.9.10//:parking_lot_core",
     ],
 )
