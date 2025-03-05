@@ -172,11 +172,16 @@ private module JumpNodes {
 
   private class ComponentParameterJump extends DataFlow::NonLocalJumpNode {
     ParameterPassingCall call;
+    Property prop;
 
-    ComponentParameterJump() { this.asExpr() = call.getParameterValue() }
+    ComponentParameterJump() {
+      prop = call.getParameterProperty() and
+      // this.(DataFlowPrivate::PostUpdateNode).getPreUpdateNode().asExpr() = call.getParameterValue()
+      this.asExpr() = call.getParameterValue()
+    }
 
     override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
-      preservesValue = false and
+      preservesValue = true and
       result.asExpr() = call.getParameterProperty().getAnAccess()
     }
   }
