@@ -182,7 +182,7 @@ private module JumpNodes {
 
     override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
       preservesValue = true and
-      result.asExpr() = call.getParameterProperty().getAnAccess()
+      result.asExpr() = prop.getAnAccess()
     }
   }
 }
