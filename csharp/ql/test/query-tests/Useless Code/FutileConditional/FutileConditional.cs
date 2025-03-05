@@ -25,5 +25,10 @@ class FutileConditionalTest
         else
         {
         } // $ Alert
+
+        if (s.Length > 4)
+        {
+            // GOOD: Because of the comment.
+        }
     }
 }
