@@ -1,6 +1,6 @@
 #select
 | test.jsx:27:29:27:32 | data | test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:27:29:27:32 | data | Cross-site scripting vulnerability due to $@. | test.jsx:5:28:5:63 | fetch(" ... ntent") | user-provided value |
-| testReactRelay.tsx:19:47:19:62 | commentData.text | testReactRelay.tsx:5:23:13:3 | useFrag ... Ref\\n  ) | testReactRelay.tsx:19:47:19:62 | commentData.text | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:5:23:13:3 | useFrag ... Ref\\n  ) | user-provided value |
+| testReactRelay.tsx:7:43:7:58 | commentData.text | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | testReactRelay.tsx:7:43:7:58 | commentData.text | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | user-provided value |
 edges
 | test.jsx:5:11:5:63 | response | test.jsx:6:24:6:31 | response | provenance |  |
 | test.jsx:5:22:5:63 | await f ... ntent") | test.jsx:5:11:5:63 | response | provenance |  |
@@ -11,9 +11,9 @@ edges
 | test.jsx:6:24:6:38 | response.json() | test.jsx:6:18:6:38 | await r ... .json() | provenance |  |
 | test.jsx:7:12:7:15 | data | test.jsx:15:11:17:5 | data | provenance |  |
 | test.jsx:15:11:17:5 | data | test.jsx:27:29:27:32 | data | provenance |  |
-| testReactRelay.tsx:5:9:13:3 | commentData | testReactRelay.tsx:19:47:19:57 | commentData | provenance |  |
-| testReactRelay.tsx:5:23:13:3 | useFrag ... Ref\\n  ) | testReactRelay.tsx:5:9:13:3 | commentData | provenance |  |
-| testReactRelay.tsx:19:47:19:57 | commentData | testReactRelay.tsx:19:47:19:62 | commentData.text | provenance |  |
+| testReactRelay.tsx:5:9:5:52 | commentData | testReactRelay.tsx:7:43:7:53 | commentData | provenance |  |
+| testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | testReactRelay.tsx:5:9:5:52 | commentData | provenance |  |
+| testReactRelay.tsx:7:43:7:53 | commentData | testReactRelay.tsx:7:43:7:58 | commentData.text | provenance |  |
 nodes
 | test.jsx:5:11:5:63 | response | semmle.label | response |
 | test.jsx:5:22:5:63 | await f ... ntent") | semmle.label | await f ... ntent") |
@@ -25,8 +25,26 @@ nodes
 | test.jsx:7:12:7:15 | data | semmle.label | data |
 | test.jsx:15:11:17:5 | data | semmle.label | data |
 | test.jsx:27:29:27:32 | data | semmle.label | data |
-| testReactRelay.tsx:5:9:13:3 | commentData | semmle.label | commentData |
-| testReactRelay.tsx:5:23:13:3 | useFrag ... Ref\\n  ) | semmle.label | useFrag ... Ref\\n  ) |
-| testReactRelay.tsx:19:47:19:57 | commentData | semmle.label | commentData |
-| testReactRelay.tsx:19:47:19:62 | commentData.text | semmle.label | commentData.text |
+| testReactRelay.tsx:5:9:5:52 | commentData | semmle.label | commentData |
+| testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | semmle.label | useFrag ... entRef) |
+| testReactRelay.tsx:7:43:7:53 | commentData | semmle.label | commentData |
+| testReactRelay.tsx:7:43:7:58 | commentData.text | semmle.label | commentData.text |
 subpaths
+testFailures
+| testReactRelay.tsx:17:45:17:64 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:18:77:18:95 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:28:70:28:88 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:37:43:37:62 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:38:61:38:79 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:44:73:44:92 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:47:57:47:75 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:69:41:69:60 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:70:61:70:79 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:82:25:82:44 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:87:71:87:89 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:99:24:99:43 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:112:68:112:86 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:123:23:123:42 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:126:46:126:64 | // $ Missing: Alert | Missing result: Alert |
+| testReactRelay.tsx:135:42:135:61 | // $ Missing: Source | Missing result: Source |
+| testReactRelay.tsx:136:63:136:81 | // $ Missing: Alert | Missing result: Alert |
