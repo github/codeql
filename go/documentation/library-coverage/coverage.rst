@@ -28,7 +28,7 @@ Go framework & library support
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
    `Logrus <https://github.com/sirupsen/logrus>`_,"``github.com/Sirupsen/logrus*``, ``github.com/sirupsen/logrus*``",,,290
    `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,12,1,1
-   `MongoDB Go Driver <https://www.mongodb.com/docs/drivers/go/current/>`_,``go.mongodb.org/mongo-driver*``,,,14
+   `MongoDB Go Driver <https://www.mongodb.com/docs/drivers/go/current/>`_,``go.mongodb.org/mongo-driver*``,11,5,14
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",46,20,4
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_,``github.com/sendgrid/sendgrid-go*``,,1,
    `Squirrel <https://github.com/Masterminds/squirrel>`_,"``github.com/Masterminds/squirrel*``, ``github.com/lann/squirrel*``, ``gopkg.in/Masterminds/squirrel``",,,96
@@ -53,7 +53,7 @@ Go framework & library support
    `goproxy <https://github.com/elazarl/goproxy>`_,``github.com/elazarl/goproxy*``,2,2,2
    `gorilla/mux <https://github.com/gorilla/mux>`_,``github.com/gorilla/mux*``,1,,
    `gorilla/websocket <https://github.com/gorilla/websocket>`_,``github.com/gorilla/websocket*``,3,,
-   `gorqlite <https://github.com/rqlite/gorqlite>`_,"``github.com/raindog308/gorqlite*``, ``github.com/rqlite/gorqlite*``",,,48
+   `gorqlite <https://github.com/rqlite/gorqlite>`_,"``github.com/raindog308/gorqlite*``, ``github.com/rqlite/gorqlite*``",16,4,48
    `goxpath <https://github.com/ChrisTrenkamp/goxpath/wiki>`_,``github.com/ChrisTrenkamp/goxpath*``,,,3
    `htmlquery <https://github.com/antchfx/htmlquery>`_,``github.com/antchfx/htmlquery*``,,,4
    `json-iterator <https://github.com/json-iterator/go>`_,``github.com/json-iterator/go*``,,4,
@@ -73,5 +73,6 @@ Go framework & library support
    `xpathparser <https://github.com/santhosh-tekuri/xpathparser>`_,``github.com/santhosh-tekuri/xpathparser*``,,,2
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
-   Totals,,459,947,1532
+   Others,``github.com/kanikanema/gorqlite``,8,2,24
+   Totals,,494,958,1556
 

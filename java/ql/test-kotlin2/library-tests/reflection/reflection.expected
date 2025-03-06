@@ -333,6 +333,7 @@ compGenerated
 | file://<external>/TextStyle.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Thread$State.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/TimeUnit.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/TypeKind.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/VarHandle$AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/VarHandle$AccessType.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Wrapper.class:0:0:0:0 | getEntries | Default property accessor |

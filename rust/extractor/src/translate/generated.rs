@@ -1702,19 +1702,15 @@ impl Translator<'_> {
         let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
         let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let parenthesized_arg_list = node.parenthesized_arg_list().and_then(|x| self.emit_parenthesized_arg_list(x));
-        let path_type = node.path_type().and_then(|x| self.emit_path_type(x));
         let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
         let return_type_syntax = node.return_type_syntax().and_then(|x| self.emit_return_type_syntax(x));
-        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::PathSegment {
             id: TrapId::Star,
             generic_arg_list,
             name_ref,
             parenthesized_arg_list,
-            path_type,
             ret_type,
             return_type_syntax,
-            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(PathSegment, self, node, label);

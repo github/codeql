@@ -102,6 +102,13 @@ module StringOps {
       override boolean getPolarity() { result = expr.getPolarity() }
     }
 
+    pragma[noinline]
+    private DataFlow::ElementReadNode getReadOfFirstChar(DataFlow::Node str) {
+      pragma[only_bind_into](result).getIndex().getIntValue() = 0 and
+      str = result.getBase() and
+      str.getType().getUnderlyingType() instanceof StringType
+    }
+
     /**
      * Holds if `eq` is of the form `str[0] == rhs` or `str[0] != rhs`.
      */
@@ -109,12 +116,8 @@ module StringOps {
     private predicate comparesFirstCharacter(
       DataFlow::EqualityTestNode eq, DataFlow::Node str, DataFlow::Node rhs
     ) {
-      exists(DataFlow::ElementReadNode read |
-        eq.hasOperands(globalValueNumber(read).getANode(), rhs) and
-        str = read.getBase() and
-        str.getType().getUnderlyingType() instanceof StringType and
-        read.getIndex().getIntValue() = 0
-      )
+      eq.hasOperands(globalValueNumber(pragma[only_bind_out](getReadOfFirstChar(str))).getANode(),
+        rhs)
     }
 
     /**
@@ -545,20 +548,25 @@ module StringOps {
         else result = "concatenation element"
     }
 
+    /** Gets the location of this element. */
+    Location getLocation() { result = this.asNode().getLocation() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this.asNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
       // use dummy location for elements that don't have a corresponding node
-      not exists(this.asNode()) and
+      not exists(this.getLocation()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and

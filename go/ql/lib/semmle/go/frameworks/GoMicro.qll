@@ -35,7 +35,7 @@ module GoMicro {
    */
   class ProtocMessageType extends Type {
     ProtocMessageType() {
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _) and
+      this.getLocation().getFile() instanceof ProtocGeneratedFile and
       exists(MethodDecl md |
         md.getName() = "ProtoMessage" and
         this = md.getReceiverDecl().getTypeExpr().getAChild().(TypeName).getType()
@@ -51,7 +51,7 @@ module GoMicro {
 
     ServiceInterfaceType() {
       this = definedType.getUnderlyingType() and
-      definedType.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      definedType.getLocation().getFile() instanceof ProtocGeneratedFile
     }
 
     /**
@@ -75,7 +75,7 @@ module GoMicro {
     ServiceServerType() {
       this.implements(any(ServiceInterfaceType i)) and
       this.getName().regexpMatch("(?i).*Handler") and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 
@@ -86,7 +86,7 @@ module GoMicro {
     ClientServiceType() {
       this.implements(any(ServiceInterfaceType i)) and
       this.getName().regexpMatch("(?i).*Service") and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 
@@ -97,7 +97,7 @@ module GoMicro {
     ServiceRegisterHandler() {
       this.getName().regexpMatch("(?i)register" + any(ServiceServerType c).getName()) and
       this.getParameterType(0) instanceof GoMicroServerType and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 
@@ -128,7 +128,7 @@ module GoMicro {
       this.getName().regexpMatch("(?i)new" + any(ClientServiceType c).getName()) and
       this.getParameterType(0) instanceof StringType and
       this.getParameterType(1) instanceof GoMicroClientType and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 

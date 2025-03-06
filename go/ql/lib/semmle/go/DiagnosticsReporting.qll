@@ -1,7 +1,6 @@
 /** Provides classes for working with errors and warnings recorded during extraction. */
 
 import go
-private import semmle.go.internal.Locations
 
 /** Gets the SARIF severity level that indicates an error. */
 private int getErrorSeverity() { result = 2 }
@@ -20,18 +19,10 @@ private class Diagnostic extends @diagnostic {
   string getMessage() { diagnostics(this, _, _, result, _, _) }
 
   /** Gets the file that this error is associated with, if any. */
-  File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+  File getFile() { result = this.getLocation().getFile() }
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getDiagnosticLocation(this).hasLocationInfo(path, sl, sc, el, ec)
-  }
+  /** Gets the location for this error. */
+  Location getLocation() { diagnostics(this, _, _, _, _, result) }
 
   string toString() { result = this.getMessage() }
 }
@@ -68,7 +59,7 @@ predicate reportableDiagnostics(Diagnostic d, string msg, int sev) {
     exists(File f | f = d.getFile() |
       exists(f.getAChild()) and
       msg =
-        "Extraction failed in " + d.getFile().getRelativePath() + " with error " +
+        "Extraction failed in " + f.getRelativePath() + " with error " +
           removeAbsolutePaths(d.getMessage())
     )
     or

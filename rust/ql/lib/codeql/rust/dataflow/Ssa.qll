@@ -195,7 +195,7 @@ module Ssa {
       )
       or
       exists(LetStmtCfgNode ls |
-        ls.getPat() = write and
+        ls.getPat().(IdentPatCfgNode).getName() = write and
         ls.getInitializer() = value
       )
     }

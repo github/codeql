@@ -12,6 +12,9 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
+# print test output, like sembuild does.
+# Set to `errors` if this is too verbose.
+test --test_output all
 # we use transitions that break builds of `...`, so for `test` to work with that we need the following
 test --build_tests_only
 

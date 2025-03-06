@@ -14,11 +14,8 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
   FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), false, _) // TODO: preserve 'model' parameter
   or
-  // Convert steps into and out of array elements to plain taint steps
+  // Convert steps out of array elements to plain taint steps
   FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
-    ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
-  or
-  FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
   or
   // If the spread argument itself is tainted (not inside a content), store it into the dynamic argument array.
@@ -39,12 +36,16 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2,
   defaultAdditionalTaintStep(node1, node2) and model = "" // TODO: set model
 }
 
-bindingset[node]
-pragma[inline_late]
-private BasicBlock getBasicBlockFromSsa2(Ssa2::Node node) {
-  result = node.(Ssa2::ExprNode).getExpr().getBasicBlock()
-  or
-  node.(Ssa2::SsaInputNode).isInputInto(_, result)
+private predicate guardChecksFalsy(
+  Ssa2::SsaDataflowInput::Guard g, Ssa2::SsaDataflowInput::Expr e, boolean outcome
+) {
+  exists(ConditionGuardNode guard |
+    guard.getTest() = g and
+    guard.getOutcome() = outcome and
+    e = g and
+    e instanceof VarAccess and
+    outcome = false
+  )
 }
 
 /**
@@ -67,13 +68,7 @@ private BasicBlock getBasicBlockFromSsa2(Ssa2::Node node) {
  * ```
  */
 private predicate varAccessBarrier(DataFlow::Node node) {
-  exists(ConditionGuardNode guard, Ssa2::ExprNode nodeFrom, Ssa2::Node nodeTo |
-    guard.getOutcome() = false and
-    guard.getTest().(VarAccess) = nodeFrom.getExpr() and
-    Ssa2::localFlowStep(_, nodeFrom, nodeTo, true) and
-    guard.dominates(getBasicBlockFromSsa2(nodeTo)) and
-    node = getNodeFromSsa2(nodeTo)
-  )
+  getNodeFromSsa2(Ssa2::BarrierGuard<guardChecksFalsy/3>::getABarrierNode()) = node
 }
 
 /**

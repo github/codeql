@@ -1,3 +1,7 @@
+## 5.1.1
+
+No user-facing changes.
+
 ## 5.1.0
 
 ### Deprecated APIs
@@ -68,7 +72,6 @@
 
 ### Minor Analysis Improvements
 
-* .NET 9 is now required to build the C# extractor.
 * The Models as Data models for .NET 8 Runtime now include generated models for higher order methods.
 
 ## 3.1.0

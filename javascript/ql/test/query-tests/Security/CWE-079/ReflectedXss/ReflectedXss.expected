@@ -49,10 +49,8 @@ edges
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:7:77:37 | parts | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
-| ReflectedXssGood3.js:105:7:105:11 | [post update] parts | ReflectedXssGood3.js:108:10:108:14 | parts | provenance |  |
 | ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | ReflectedXssGood3.js:108:10:108:14 | parts [ArrayElement] | provenance |  |
 | ReflectedXssGood3.js:105:18:105:22 | value | ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | provenance |  |
-| ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | ReflectedXssGood3.js:105:7:105:11 | [post update] parts | provenance |  |
 | ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | provenance |  |
 | ReflectedXssGood3.js:108:10:108:14 | parts | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
 | ReflectedXssGood3.js:108:10:108:14 | parts [0] | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
@@ -217,7 +215,6 @@ nodes
 | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | semmle.label | [value. ... (0, i)] [0] |
 | ReflectedXssGood3.js:77:16:77:20 | value | semmle.label | value |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | semmle.label | value.s ... g(0, i) |
-| ReflectedXssGood3.js:105:7:105:11 | [post update] parts | semmle.label | [post update] parts |
 | ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | semmle.label | [post update] parts [ArrayElement] |
 | ReflectedXssGood3.js:105:18:105:22 | value | semmle.label | value |
 | ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | semmle.label | value.s ... g(j, i) |

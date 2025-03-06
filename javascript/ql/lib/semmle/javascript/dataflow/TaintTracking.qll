@@ -409,7 +409,7 @@ module TaintTracking {
         not assgn.getWriteNode() instanceof Property and // not a write inside an object literal
         pred = assgn.getRhs() and
         assgn = obj.getAPropertyWrite() and
-        succ = obj
+        succ = assgn.getBase().getPostUpdateNode()
       |
         obj instanceof DataFlow::ObjectLiteralNode
         or
