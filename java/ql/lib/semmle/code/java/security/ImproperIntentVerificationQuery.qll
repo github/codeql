@@ -51,7 +51,9 @@ private module VerifiedIntentFlow = DataFlow::Global<VerifiedIntentConfig>;
 /** An `onReceive` method that doesn't verify the action of the intent it receives. */
 private class UnverifiedOnReceiveMethod extends OnReceiveMethod {
   UnverifiedOnReceiveMethod() {
-    not VerifiedIntentFlow::flow(DataFlow::parameterNode(this.getIntentParameter()), _)
+    not VerifiedIntentFlow::flow(DataFlow::parameterNode(this.getIntentParameter()), _) and
+    // Empty methods do not need to be verified since they do not perform any actions.
+    this.getBody().getNumStmt() > 0
   }
 }
 
