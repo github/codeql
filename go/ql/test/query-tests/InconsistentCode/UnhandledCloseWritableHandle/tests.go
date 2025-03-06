@@ -1,6 +1,7 @@
 package test
 
 import (
+	"io"
 	"log"
 	"os"
 )
@@ -128,4 +129,30 @@ func unhandledSync() {
 		f.Sync()
 		f.Close() // $ Alert
 	}
+}
+
+func returnedSync() error {
+	// open file for writing
+	f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
+	if err != nil {
+		// we have a call to `Sync` which precedes the call to `Close`, but there is no check
+		// to see if `Sync` may have failed
+		return err
+	}
+	defer f.Close()
+	return f.Sync()
+}
+
+func copyFile(destFile string, mode os.FileMode, src io.Reader) error {
+	f, err := os.OpenFile(destFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, mode) // $ Source
+	if err != nil {
+		return err
+	}
+	defer f.Close() // $ SPURIOUS: Alert
+
+	_, err = io.Copy(f, src)
+	if err != nil {
+		return err
+	}
+	return f.Sync()
 }
