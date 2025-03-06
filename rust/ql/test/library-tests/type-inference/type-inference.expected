@@ -424,19 +424,14 @@ resolveType
 | main.rs:385:16:385:24 | SelfParam | &T | main.rs:384:5:390:5 | trait MyTrait |
 | main.rs:385:16:385:24 | SelfParam | &T.S | main.rs:384:19:384:19 | S |
 | main.rs:385:27:385:31 | value |  | main.rs:384:19:384:19 | S |
-| main.rs:385:27:385:31 | value |  | main.rs:411:5:412:13 | struct S |
 | main.rs:387:21:387:29 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:387:21:387:29 | SelfParam | &T | main.rs:384:5:390:5 | trait MyTrait |
 | main.rs:387:21:387:29 | SelfParam | &T.S | main.rs:384:19:384:19 | S |
-| main.rs:387:21:387:29 | SelfParam | &T.S | main.rs:411:5:412:13 | struct S |
 | main.rs:387:32:387:36 | value |  | main.rs:384:19:384:19 | S |
-| main.rs:387:32:387:36 | value |  | main.rs:411:5:412:13 | struct S |
 | main.rs:388:13:388:16 | self |  | file://:0:0:0:0 | & |
 | main.rs:388:13:388:16 | self | &T | main.rs:384:5:390:5 | trait MyTrait |
 | main.rs:388:13:388:16 | self | &T.S | main.rs:384:19:384:19 | S |
-| main.rs:388:13:388:16 | self | &T.S | main.rs:411:5:412:13 | struct S |
 | main.rs:388:22:388:26 | value |  | main.rs:384:19:384:19 | S |
-| main.rs:388:22:388:26 | value |  | main.rs:411:5:412:13 | struct S |
 | main.rs:393:16:393:24 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:393:16:393:24 | SelfParam | &T | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:393:16:393:24 | SelfParam | &T.T | main.rs:392:10:392:10 | T |
