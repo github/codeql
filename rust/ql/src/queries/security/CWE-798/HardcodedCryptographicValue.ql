@@ -4,7 +4,7 @@
  *              vectors is not secure.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity TODO
+ * @security-severity 9.8
  * @precision high
  * @id rust/hardcoded-crytographic-value
  * @tags security
