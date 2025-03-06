@@ -25,6 +25,20 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
+
+        /// <summary>
+        /// A hashset containing the C# contextual keywords that could be confused with types (and typing).
+        ///
+        /// For the list of all contextual keywords, see
+        /// https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/#contextual-keywords
+        /// </summary>
+        private readonly HashSet<string> ContextualKeywordTypes = [
+            "dynamic",
+            "nint",
+            "nuint",
+            "var"
+            ];
+
         /// <summary>
         /// Returns true in case we suspect this is a broken type.
         /// </summary>
@@ -40,8 +54,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
             // (1) public class { ... } is a broken type as it doesn't have a name.
             // (2) public class var { ... } is an allowed type, but it overrides the `var` keyword for all uses.
-            //     It is probably a better heuristic to treat it as a broken type.
-            return string.IsNullOrEmpty(symbol.Name) || symbol.Name == "var";
+            //     The same goes for other contextual keywords that could be used as type names.
+            //     It is probably a better heuristic to treat these as broken types.
+            return string.IsNullOrEmpty(symbol.Name) || ContextualKeywordTypes.Contains(symbol.Name);
         }
 
         public Kinds.TypeKind GetTypeKind(Context cx, bool constructUnderlyingTupleType)
