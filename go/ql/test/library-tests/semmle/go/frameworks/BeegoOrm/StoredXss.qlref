@@ -1,1 +1,2 @@
-Security/CWE-079/StoredXss.ql
+query: Security/CWE-079/StoredXss.ql
+postprocess: utils/test/PrettyPrintModels.ql

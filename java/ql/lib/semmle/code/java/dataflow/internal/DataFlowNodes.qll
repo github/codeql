@@ -36,14 +36,12 @@ module SsaFlow {
     TExplicitParameterNode(result.(Impl::ParameterNode).getParameter()) = n
   }
 
-  predicate localFlowStep(
-    SsaImpl::Impl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep
-  ) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  predicate localFlowStep(SsaSourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    Impl::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
-  predicate localMustFlowStep(SsaImpl::Impl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(_, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -167,7 +165,7 @@ module Public {
       or
       result instanceof TypeObject and this instanceof AdditionalNode
       or
-      result = this.(SsaNode).getDefinitionExt().getSourceVariable().getType()
+      result = this.(SsaNode).getTypeImpl()
     }
 
     /** Gets the callable in which this node occurs. */
@@ -394,7 +392,9 @@ class SsaNode extends Node, TSsaNode {
 
   SsaNode() { this = TSsaNode(node) }
 
-  SsaImpl::Impl::DefinitionExt getDefinitionExt() { result = node.getDefinitionExt() }
+  BasicBlock getBasicBlock() { result = node.getBasicBlock() }
+
+  Type getTypeImpl() { result = node.getSourceVariable().getType() }
 
   override Location getLocation() { result = node.getLocation() }
 
@@ -442,7 +442,7 @@ module Private {
     result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField() or
     result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable() or
-    result.asCallable() = n.(SsaNode).getDefinitionExt().getBasicBlock().getEnclosingCallable()
+    result.asCallable() = n.(SsaNode).getBasicBlock().getEnclosingCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */

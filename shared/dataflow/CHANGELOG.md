@@ -1,3 +1,7 @@
+## 2.0.1
+
+No user-facing changes.
+
 ## 2.0.0
 
 ### Breaking Changes

@@ -96,9 +96,9 @@ void testNotVarStruct1() {
   notVarStruct1 *nvs1 = (notVarStruct1 *)malloc(sizeof(notVarStruct1) * 2);
 
   memset(nvs1->str, 0, 128); // GOOD
-  memset(nvs1->str, 0, 129); // BAD: buffer overflow
+  memset(nvs1->str, 0, 129); // DUBIOUS: buffer overflow (overflows nvs1->str but not nvs1 overall)
   memset(nvs1[1].str, 0, 128); // GOOD
-  memset(nvs1[1].str, 0, 129); // BAD: buffer overflow
+  memset(nvs1[1].str, 0, 129); // BAD: buffer overflow [NOT DETECTED]
   strncpy(nvs1->str, "Hello, world!", 128); // GOOD
   strncpy(nvs1->str, "Hello, world!", 129); // BAD
 }

@@ -441,7 +441,7 @@ module MakeConsistency<
     result =
       count(DataFlowCall call, Node receiver | lambdaCallEnclosingCallableMismatch(call, receiver))
     or
-    type = "Speculative step already hasM Model" and
+    type = "Speculative step already has Model" and
     result = count(Node n1, Node n2 | speculativeStepAlreadyHasModel(n1, n2, _))
   }
 }

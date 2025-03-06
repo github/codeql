@@ -1260,7 +1260,10 @@ module MakeWithSplitting<
             last(parent, succ, completion) and
             condPropagateExpr(parent, completion, child, c) and
             succ(pred, succ, c) and
-            last(child, pred, c)
+            last(child, pred, c) and
+            // no need to create split if `succ` can only complete with the
+            // recorded completion
+            not completion = unique(ConditionalCompletion c0 | last(parent, succ, c0))
           )
         }
 
@@ -1593,6 +1596,8 @@ module MakeWithSplitting<
     private module BasicBlockImpl = BB::Make<Location, BasicBlockInputSig>;
 
     final class BasicBlock = BasicBlockImpl::BasicBlock;
+
+    predicate dominatingEdge = BasicBlockImpl::dominatingEdge/2;
 
     /**
      * An entry basic block, that is, a basic block whose first node is

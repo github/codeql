@@ -7,6 +7,13 @@ use std::collections::BTreeSet as Set;
 use std::env;
 use std::path::Path;
 
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::Layer;
+use tracing_subscriber::filter::Filtered;
+use tracing_subscriber::fmt::format::DefaultFields;
+use tracing_subscriber::fmt::format::Format;
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
@@ -15,14 +22,35 @@ pub mod simple;
 /// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
 /// falling back to `warn` if neither is set.
 pub fn set_tracing_level(language: &str) {
-    tracing_subscriber::fmt()
+    let verbosity = env::var("CODEQL_VERBOSITY").ok();
+    tracing_subscriber::registry()
+        .with(default_subscriber_with_level(language, &verbosity))
+        .init();
+}
+
+/// Create a `Subscriber` configured with the tracing level based on the environment variables
+/// `RUST_LOG` and `verbosity` (prioritized in that order), falling back to `warn` if neither is set.
+pub fn default_subscriber_with_level(
+    language: &str,
+    verbosity: &Option<String>,
+) -> Filtered<
+    tracing_subscriber::fmt::Layer<
+        tracing_subscriber::Registry,
+        DefaultFields,
+        Format<tracing_subscriber::fmt::format::Full, ()>,
+    >,
+    EnvFilter,
+    tracing_subscriber::Registry,
+> {
+    tracing_subscriber::fmt::layer()
         .with_target(false)
         .without_time()
         .with_level(true)
-        .with_env_filter(
+        .with_filter(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
                 |_| -> tracing_subscriber::EnvFilter {
-                    let verbosity = env::var("CODEQL_VERBOSITY")
+                    let verbosity = verbosity
+                        .as_ref()
                         .map(|v| match v.to_lowercase().as_str() {
                             "off" | "errors" => "error",
                             "warnings" => "warn",
@@ -31,16 +59,14 @@ pub fn set_tracing_level(language: &str) {
                             "trace" | "progress++" | "progress+++" => "trace",
                             _ => "warn",
                         })
-                        .unwrap_or_else(|_| "warn");
+                        .unwrap_or_else(|| "warn");
                     tracing_subscriber::EnvFilter::new(format!(
                         "{language}_extractor={verbosity},codeql_extractor={verbosity}"
                     ))
                 },
             ),
         )
-        .init();
 }
-
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
         &file_paths::normalize_path(absolute_path),
@@ -192,7 +218,7 @@ pub fn extract(
 
     let _enter = span.enter();
 
-    tracing::info!("extracting: {}", path_str);
+    tracing::debug!("extracting: {}", path_str);
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
@@ -565,11 +591,7 @@ impl<'a> Visitor<'a> {
                 }
             }
         }
-        if is_valid {
-            Some(args)
-        } else {
-            None
-        }
+        if is_valid { Some(args) } else { None }
     }
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
@@ -589,7 +611,7 @@ impl<'a> Visitor<'a> {
             }
 
             node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
-                return !tp.named && int_mapping.contains_key(&tp.kind)
+                return !tp.named && int_mapping.contains_key(&tp.kind);
             }
         }
         false

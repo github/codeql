@@ -184,16 +184,16 @@ func RemoveTemporaryExtractorFiles() {
 
 // Find all go.work files in the working directory and its subdirectories
 func findGoWorkFiles() []string {
-	return util.FindAllFilesWithName(".", "go.work", "vendor")
+	return util.FindAllFilesWithName(".", "go.work", util.SkipVendorChecks...)
 }
 
 // Find all go.mod files in the specified directory and its subdirectories
 func findGoModFiles(root string) []string {
-	return util.FindAllFilesWithName(root, "go.mod", "vendor")
+	return util.FindAllFilesWithName(root, "go.mod", util.SkipVendorChecks...)
 }
 
 // A regular expression for the Go toolchain version syntax.
-var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+\.[0-9]+)$`)
+var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+(\.[0-9]+|rc[0-9]+))$`)
 
 // Returns true if the `go.mod` file specifies a Go language version, that version is `1.21` or greater, and
 // there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
@@ -315,6 +315,11 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 		goModFiles := findGoModFiles(".")
 
 		// Return a separate workspace for each `go.mod` file that we found.
+		if len(goModFiles) > 0 {
+			log.Printf("Found %d go.mod files in: %s.\n", len(goModFiles), strings.Join(goModFiles, ", "))
+		} else {
+			log.Println("Found no go.mod files in the workspace.")
+		}
 		results := make([]GoWorkspace, len(goModFiles))
 
 		for i, goModFile := range goModFiles {
@@ -547,8 +552,8 @@ func startsWithAnyOf(str string, prefixes []string) bool {
 // Finds Go workspaces in the current working directory.
 func GetWorkspaceInfo(emitDiagnostics bool) []GoWorkspace {
 	bazelPaths := slices.Concat(
-		util.FindAllFilesWithName(".", "BUILD", "vendor"),
-		util.FindAllFilesWithName(".", "BUILD.bazel", "vendor"),
+		util.FindAllFilesWithName(".", "BUILD", util.SkipVendorChecks...),
+		util.FindAllFilesWithName(".", "BUILD.bazel", util.SkipVendorChecks...),
 	)
 	if len(bazelPaths) > 0 {
 		// currently not supported

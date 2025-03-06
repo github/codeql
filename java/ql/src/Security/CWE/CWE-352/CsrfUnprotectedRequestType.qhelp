@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+
+<overview>
+    <p>
+      Cross-site request forgery (CSRF) is a type of vulnerability in which an
+      attacker is able to force a user to carry out an action that the user did
+      not intend.
+    </p>
+
+    <p>
+      The attacker tricks an authenticated user into submitting a request to the
+      web application. Typically, this request will result in a state change on
+      the server, such as changing the user's password. The request can be
+      initiated when the user visits a site controlled by the attacker. If the
+      web application relies only on cookies for authentication, or on other
+      credentials that are automatically included in the request, then this
+      request will appear as legitimate to the server.
+    </p>
+</overview>
+
+<recommendation>
+<p>Make sure any requests that change application state are protected from CSRF. Some application
+frameworks provide default CSRF protection for unsafe HTTP request methods (such as <code>POST</code>)
+which may change the state of the application. Safe HTTP request methods (such as <code>GET</code>)
+should only perform read-only operations and should not be used for actions that change application
+state.</p>
+
+<p>This query currently supports the Spring and Stapler web frameworks. Spring provides default CSRF protection
+for all unsafe HTTP methods whereas Stapler provides default CSRF protection for the <code>POST</code> method.</p>
+</recommendation>
+
+<example>
+<p> The following examples show Spring request handlers allowing safe HTTP request methods for state-changing actions.
+Since safe HTTP request methods do not have default CSRF protection in Spring, they should not be used when modifying
+application state. Instead, use one of the unsafe HTTP methods which Spring default-protects from CSRF.</p>
+
+<sample src="CsrfUnprotectedRequestTypeBadSpring.java" />
+
+<sample src="CsrfUnprotectedRequestTypeGoodSpring.java" />
+
+<p> The following examples show Stapler web methods allowing safe HTTP request methods for state-changing actions.
+Since safe HTTP request methods do not have default CSRF protection in Stapler, they should not be used when modifying
+application state. Instead, use the <code>POST</code> method which Stapler default-protects from CSRF.</p>
+
+<sample src="CsrfUnprotectedRequestTypeBadStapler.java" />
+
+<sample src="CsrfUnprotectedRequestTypeGoodStapler.java" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross Site Request Forgery (CSRF)</a>.
+</li>
+<li>
+Spring Security Reference:
+<a href="https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html">
+  Cross Site Request Forgery (CSRF)</a>.
+</li>
+<li>
+Jenkins Developer Documentation:
+<a href="https://www.jenkins.io/doc/developer/security/form-validation/#protecting-from-csrf">
+  Protecting from CSRF</a>.
+</li>
+<li>
+MDN web docs:
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">
+  HTTP request methods</a>.
+</li>
+</references>
+</qhelp>

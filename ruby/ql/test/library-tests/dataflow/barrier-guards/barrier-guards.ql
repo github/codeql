@@ -14,7 +14,7 @@ query predicate newStyleBarrierGuards(DataFlow::Node n) {
 
 query predicate controls(CfgNode condition, BasicBlock bb, SuccessorTypes::ConditionalSuccessor s) {
   exists(ConditionBlock cb |
-    cb.controls(bb, s) and
+    cb.edgeDominates(bb, s) and
     condition = cb.getLastNode()
   )
 }
@@ -26,7 +26,7 @@ module BarrierGuardTest implements TestSig {
     tag = "guarded" and
     exists(DataFlow::Node n |
       newStyleBarrierGuards(n) and
-      not n instanceof SsaInputNode and
+      not n instanceof SsaSynthReadNode and
       location = n.getLocation() and
       element = n.toString() and
       value = ""

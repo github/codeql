@@ -4,24 +4,23 @@ use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
-use log::Level;
-use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
+use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{
     Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
 };
-use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_def::ModuleId;
+use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_expand::ExpandTo;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::{EditionedFileId, TextSize};
 use ra_ap_syntax::ast::HasName;
 use ra_ap_syntax::{
-    ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken,
-    TextRange,
+    AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
+    ast,
 };
 
 #[macro_export]
@@ -69,7 +68,22 @@ macro_rules! emit_detached {
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
         $self.extract_method_canonical_destination(&$node, $label);
     };
+    (PathSegment, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_types_from_path_segment(&$node, $label.into());
+    };
     ($($_:tt)*) => {};
+}
+
+// see https://github.com/tokio-rs/tracing/issues/2730
+macro_rules! dispatch_to_tracing {
+    ($lvl:ident, $($arg:tt)+) => {
+        match $lvl {
+            DiagnosticSeverity::Debug => ::tracing::debug!($($arg)+),
+            DiagnosticSeverity::Info => ::tracing::info!($($arg)+),
+            DiagnosticSeverity::Warning => ::tracing::warn!($($arg)+),
+            DiagnosticSeverity::Error => ::tracing::error!($($arg)+),
+        }
+    };
 }
 
 pub struct Translator<'a> {
@@ -80,6 +94,9 @@ pub struct Translator<'a> {
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
 }
+
+const UNKNOWN_LOCATION: (LineCol, LineCol) =
+    (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
 
 impl<'a> Translator<'a> {
     pub fn new(
@@ -98,8 +115,8 @@ impl<'a> Translator<'a> {
             semantics: semantic_info.map(|i| i.semantics),
         }
     }
-    fn location(&self, range: TextRange) -> (LineCol, LineCol) {
-        let start = self.line_index.line_col(range.start());
+    fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
+        let start = self.line_index.try_line_col(range.start())?;
         let range_end = range.end();
         // QL end positions are inclusive, while TextRange offsets are exclusive and point at the position
         // right after the last character of the range. We need to shift the end offset one character to the left to
@@ -111,11 +128,11 @@ impl<'a> Translator<'a> {
                 .checked_sub(i.into())
                 .and_then(|x| self.line_index.try_line_col(x))
             {
-                return (start, end);
+                return Some((start, end));
             }
         }
-        let end = self.line_index.line_col(range_end);
-        (start, end)
+        let end = self.line_index.try_line_col(range_end)?;
+        Some((start, end))
     }
 
     pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
@@ -132,8 +149,10 @@ impl<'a> Translator<'a> {
         }
     }
     pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        if let Some(range) = self.text_range_for_node(node) {
-            let (start, end) = self.location(range);
+        if let Some((start, end)) = self
+            .text_range_for_node(node)
+            .and_then(|r| self.location(r))
+        {
             self.trap.emit_location(self.label, label, start, end)
         } else {
             self.emit_diagnostic(
@@ -141,7 +160,7 @@ impl<'a> Translator<'a> {
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
-                (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 }),
+                UNKNOWN_LOCATION,
             );
         }
     }
@@ -156,8 +175,9 @@ impl<'a> Translator<'a> {
         if let Some(clipped_range) = token_range.intersect(parent_range) {
             if let Some(parent_range2) = self.text_range_for_node(parent) {
                 let token_range = clipped_range + parent_range2.start() - parent_range.start();
-                let (start, end) = self.location(token_range);
-                self.trap.emit_location(self.label, label, start, end)
+                if let Some((start, end)) = self.location(token_range) {
+                    self.trap.emit_location(self.label, label, start, end)
+                }
             }
         }
     }
@@ -170,20 +190,15 @@ impl<'a> Translator<'a> {
         location: (LineCol, LineCol),
     ) {
         let (start, end) = location;
-        let level = match severity {
-            DiagnosticSeverity::Debug => Level::Debug,
-            DiagnosticSeverity::Info => Level::Info,
-            DiagnosticSeverity::Warning => Level::Warn,
-            DiagnosticSeverity::Error => Level::Error,
-        };
-        log::log!(
-            level,
+        dispatch_to_tracing!(
+            severity,
             "{}:{}:{}: {}",
             self.path,
             start.line + 1,
             start.col + 1,
-            &full_message
+            &full_message,
         );
+
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);
             self.trap
@@ -206,7 +221,7 @@ impl<'a> Translator<'a> {
                 "parse_error".to_owned(),
                 message.clone(),
                 message,
-                location,
+                location.unwrap_or(UNKNOWN_LOCATION),
             );
         }
     }
@@ -402,7 +417,7 @@ impl<'a> Translator<'a> {
                 }
             }
             ItemContainer::Module(it) => self.canonical_path_from_hir_module(it),
-            ItemContainer::ExternBlock() | ItemContainer::Crate(_) => Some("".to_owned()),
+            ItemContainer::ExternBlock(..) | ItemContainer::Crate(..) => Some("".to_owned()),
         }?;
         Some(format!("{prefix}::{name}"))
     }
@@ -571,5 +586,37 @@ impl<'a> Translator<'a> {
                 })
             })
         })
+    }
+
+    pub(crate) fn extract_types_from_path_segment(
+        &mut self,
+        item: &ast::PathSegment,
+        label: Label<generated::PathSegment>,
+    ) {
+        // work around a bug in rust-analyzer AST generation machinery
+        // this code was inspired by rust-analyzer's own workaround for this:
+        // https://github.com/rust-lang/rust-analyzer/blob/1f86729f29ea50e8491a1516422df4fd3d1277b0/crates/syntax/src/ast/node_ext.rs#L268-L277
+        if item.l_angle_token().is_some() {
+            // <T> or <T as Trait>
+            // T is any TypeRef, Trait has to be a PathType
+            let mut type_refs = item
+                .syntax()
+                .children()
+                .filter(|node| ast::Type::can_cast(node.kind()));
+            if let Some(t) = type_refs
+                .next()
+                .and_then(ast::Type::cast)
+                .and_then(|t| self.emit_type(t))
+            {
+                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
+            }
+            if let Some(t) = type_refs
+                .next()
+                .and_then(ast::PathType::cast)
+                .and_then(|t| self.emit_path_type(t))
+            {
+                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
+            }
+        }
     }
 }

@@ -89,18 +89,14 @@ edges
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name | provenance |  |
-| lib/lib.js:426:2:426:4 | [post update] arr | lib/lib.js:427:14:427:16 | arr | provenance |  |
 | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | lib/lib.js:427:14:427:16 | arr | provenance |  |
-| lib/lib.js:426:11:426:14 | name | lib/lib.js:426:2:426:4 | [post update] arr | provenance |  |
 | lib/lib.js:426:11:426:14 | name | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | provenance |  |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:428:14:428:58 | build(" ...  + '-') | provenance |  |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | provenance |  |
 | lib/lib.js:428:36:428:39 | name | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | provenance |  |
 | lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last | provenance |  |
 | lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last | provenance |  |
-| lib/lib.js:436:10:436:12 | [post update] arr | lib/lib.js:437:9:437:11 | arr | provenance |  |
 | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | lib/lib.js:437:9:437:11 | arr [ArrayElement] | provenance |  |
-| lib/lib.js:436:19:436:22 | last | lib/lib.js:436:10:436:12 | [post update] arr | provenance |  |
 | lib/lib.js:436:19:436:22 | last | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | provenance |  |
 | lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name | provenance |  |
 | lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name | provenance |  |
@@ -273,7 +269,6 @@ nodes
 | lib/lib.js:419:32:419:35 | name | semmle.label | name |
 | lib/lib.js:420:29:420:32 | name | semmle.label | name |
 | lib/lib.js:424:24:424:27 | name | semmle.label | name |
-| lib/lib.js:426:2:426:4 | [post update] arr | semmle.label | [post update] arr |
 | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | semmle.label | [post update] arr [ArrayElement] |
 | lib/lib.js:426:11:426:14 | name | semmle.label | name |
 | lib/lib.js:426:11:426:14 | name | semmle.label | name |
@@ -282,11 +277,9 @@ nodes
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | semmle.label | (name ? ... ) + '-' |
 | lib/lib.js:428:36:428:39 | name | semmle.label | name |
 | lib/lib.js:431:23:431:26 | last | semmle.label | last |
-| lib/lib.js:436:10:436:12 | [post update] arr | semmle.label | [post update] arr |
 | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | semmle.label | [post update] arr [ArrayElement] |
 | lib/lib.js:436:19:436:22 | last | semmle.label | last |
 | lib/lib.js:436:19:436:22 | last | semmle.label | last |
-| lib/lib.js:437:9:437:11 | arr | semmle.label | arr |
 | lib/lib.js:437:9:437:11 | arr [ArrayElement] | semmle.label | arr [ArrayElement] |
 | lib/lib.js:441:39:441:42 | name | semmle.label | name |
 | lib/lib.js:442:24:442:27 | name | semmle.label | name |
@@ -354,7 +347,6 @@ nodes
 subpaths
 | lib/lib.js:251:27:251:30 | name | lib/lib.js:239:28:239:28 | s | lib/lib.js:245:9:245:9 | s | lib/lib.js:251:16:251:31 | cleanInput(name) |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:329:13:329:13 | x | lib/lib.js:330:9:330:9 | x | lib/lib.js:340:22:340:26 | id(n) |
-| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr [ArrayElement] | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
 #select
 | lib/isImported.js:6:10:6:25 | "rm -rf " + name | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/isImported.js:5:49:5:52 | name | library input | lib/isImported.js:6:2:6:26 | cp.exec ... + name) | shell command |

@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "go/**"
+      - "!go/documentation/**"
       - "!go/ql/**" # don't run other-os if only ql/ files changed
       - .github/workflows/go-tests-other-os.yml
       - .github/actions/**

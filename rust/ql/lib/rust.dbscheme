@@ -755,12 +755,6 @@ path_segment_parenthesized_arg_lists(
 );
 
 #keyset[id]
-path_segment_path_types(
-  int id: @path_segment ref,
-  int path_type: @path_type_repr ref
-);
-
-#keyset[id]
 path_segment_ret_types(
   int id: @path_segment ref,
   int ret_type: @ret_type_repr ref
@@ -776,6 +770,12 @@ path_segment_return_type_syntaxes(
 path_segment_type_reprs(
   int id: @path_segment ref,
   int type_repr: @type_repr ref
+);
+
+#keyset[id]
+path_segment_trait_type_reprs(
+  int id: @path_segment ref,
+  int trait_type_repr: @path_type_repr ref
 );
 
 record_expr_fields(
@@ -834,6 +834,12 @@ record_field_attrs(
   int id: @record_field ref,
   int index: int ref,
   int attr: @attr ref
+);
+
+#keyset[id]
+record_field_exprs(
+  int id: @record_field ref,
+  int expr: @expr ref
 );
 
 #keyset[id]

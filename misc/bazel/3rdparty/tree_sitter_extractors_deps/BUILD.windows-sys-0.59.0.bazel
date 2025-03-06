@@ -31,12 +31,17 @@ rust_library(
     crate_features = [
         "Win32",
         "Win32_Foundation",
+        "Win32_Security",
         "Win32_Storage",
         "Win32_Storage_FileSystem",
         "Win32_System",
         "Win32_System_Com",
         "Win32_System_Console",
+        "Win32_System_IO",
+        "Win32_System_ProcessStatus",
         "Win32_System_SystemInformation",
+        "Win32_System_Threading",
+        "Win32_System_WindowsProgramming",
         "Win32_UI",
         "Win32_UI_Shell",
         "default",
@@ -94,6 +99,6 @@ rust_library(
     }),
     version = "0.59.0",
     deps = [
-        "@vendor__windows-targets-0.52.6//:windows_targets",
+        "@vendor_ts__windows-targets-0.52.6//:windows_targets",
     ],
 )

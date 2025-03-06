@@ -1996,10 +1996,8 @@ pub struct PathSegment {
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
     pub name_ref: Option<trap::Label<NameRef>>,
     pub parenthesized_arg_list: Option<trap::Label<ParenthesizedArgList>>,
-    pub path_type: Option<trap::Label<PathTypeRepr>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
-    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for PathSegment {
@@ -2018,18 +2016,21 @@ impl trap::TrapEntry for PathSegment {
         if let Some(v) = self.parenthesized_arg_list {
             out.add_tuple("path_segment_parenthesized_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.path_type {
-            out.add_tuple("path_segment_path_types", vec![id.into(), v.into()]);
-        }
         if let Some(v) = self.ret_type {
             out.add_tuple("path_segment_ret_types", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.return_type_syntax {
             out.add_tuple("path_segment_return_type_syntaxes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.type_repr {
-            out.add_tuple("path_segment_type_reprs", vec![id.into(), v.into()]);
-        }
+    }
+}
+
+impl PathSegment {
+    pub fn emit_type_repr(id: trap::Label<Self>, value: trap::Label<TypeRepr>, out: &mut trap::Writer) {
+        out.add_tuple("path_segment_type_reprs", vec![id.into(), value.into()]);
+    }
+    pub fn emit_trait_type_repr(id: trap::Label<Self>, value: trap::Label<PathTypeRepr>, out: &mut trap::Writer) {
+        out.add_tuple("path_segment_trait_type_reprs", vec![id.into(), value.into()]);
     }
 }
 
@@ -2184,6 +2185,7 @@ impl From<trap::Label<RecordExprFieldList>> for trap::Label<Locatable> {
 pub struct RecordField {
     pub id: trap::TrapId<RecordField>,
     pub attrs: Vec<trap::Label<Attr>>,
+    pub expr: Option<trap::Label<Expr>>,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -2198,6 +2200,9 @@ impl trap::TrapEntry for RecordField {
         out.add_tuple("record_fields", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("record_field_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.expr {
+            out.add_tuple("record_field_exprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("record_field_names", vec![id.into(), v.into()]);

@@ -35,7 +35,7 @@ module GoMicro {
    */
   class ProtocMessageType extends Type {
     ProtocMessageType() {
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _) and
+      this.getLocation().getFile() instanceof ProtocGeneratedFile and
       exists(MethodDecl md |
         md.getName() = "ProtoMessage" and
         this = md.getReceiverDecl().getTypeExpr().getAChild().(TypeName).getType()
@@ -47,43 +47,46 @@ module GoMicro {
    * A Server Interface type.
    */
   class ServiceInterfaceType extends InterfaceType {
-    NamedType namedType;
+    DefinedType definedType;
 
     ServiceInterfaceType() {
-      this = namedType.getUnderlyingType() and
-      namedType.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this = definedType.getUnderlyingType() and
+      definedType.getLocation().getFile() instanceof ProtocGeneratedFile
     }
 
     /**
      * Gets the name of the interface.
      */
-    override string getName() { result = namedType.getName() }
+    override string getName() { result = definedType.getName() }
+
+    /** DEPRECATED: Use `getDefinedType` instead. */
+    deprecated DefinedType getNamedType() { result = definedType }
 
     /**
-     * Gets the named type on top of this interface type.
+     * Gets the defined type on top of this interface type.
      */
-    NamedType getNamedType() { result = namedType }
+    DefinedType getDefinedType() { result = definedType }
   }
 
   /**
    * A Service server handler type.
    */
-  class ServiceServerType extends NamedType {
+  class ServiceServerType extends DefinedType {
     ServiceServerType() {
       this.implements(any(ServiceInterfaceType i)) and
       this.getName().regexpMatch("(?i).*Handler") and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 
   /**
    * A Client server handler type.
    */
-  class ClientServiceType extends NamedType {
+  class ClientServiceType extends DefinedType {
     ClientServiceType() {
       this.implements(any(ServiceInterfaceType i)) and
       this.getName().regexpMatch("(?i).*Service") and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 
@@ -94,14 +97,14 @@ module GoMicro {
     ServiceRegisterHandler() {
       this.getName().regexpMatch("(?i)register" + any(ServiceServerType c).getName()) and
       this.getParameterType(0) instanceof GoMicroServerType and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 
   bindingset[m]
   pragma[inline_late]
   private predicate implementsServiceType(Method m) {
-    m.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+    m.implements(any(ServiceInterfaceType i).getDefinedType().getMethod(_))
   }
 
   /**
@@ -125,7 +128,7 @@ module GoMicro {
       this.getName().regexpMatch("(?i)new" + any(ClientServiceType c).getName()) and
       this.getParameterType(0) instanceof StringType and
       this.getParameterType(1) instanceof GoMicroClientType and
-      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ProtocGeneratedFile
     }
   }
 

@@ -7,8 +7,7 @@ module SignatureTypeIsVariadicTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FuncDef fd |
       fd.isVariadic() and
-      fd.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      fd.getLocation() = location and
       element = fd.toString() and
       value = "" and
       tag = "isVariadic"

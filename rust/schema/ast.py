@@ -492,10 +492,8 @@ class PathSegment(AstNode, ):
     generic_arg_list: optional["GenericArgList"] | child
     name_ref: optional["NameRef"] | child
     parenthesized_arg_list: optional["ParenthesizedArgList"] | child
-    path_type: optional["PathTypeRepr"] | child
     ret_type: optional["RetTypeRepr"] | child
     return_type_syntax: optional["ReturnTypeSyntax"] | child
-    type_repr: optional["TypeRepr"] | child
 
 class PathTypeRepr(TypeRepr, ):
     path: optional["Path"] | child
@@ -537,6 +535,7 @@ class RecordExprFieldList(AstNode, ):
 
 class RecordField(AstNode, ):
     attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child

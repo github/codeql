@@ -14,7 +14,7 @@ extern void encodeShellString(char *shellStr, int maxChars, const char* cStr);
 
 int main(int argc, char** argv) {
   char *userName = argv[2];
-  
+
   {
     // BAD: a string from the user is injected directly into
     // a command.
@@ -23,10 +23,10 @@ int main(int argc, char** argv) {
     system(command1);
   }
 
-  {  
+  {
     // GOOD: the user string is encoded by a library routine.
     char userNameQuoted[1000] = {0};
-    encodeShellString(userNameQuoted, 1000, userName); 
+    encodeShellString(userNameQuoted, 1000, userName);
     char command2[1000] = {0};
     sprintf(command2, "userinfo -v %s", userNameQuoted);
     system(command2);
@@ -36,16 +36,16 @@ int main(int argc, char** argv) {
 void test2(char* arg2) {
   // GOOD?: the user string is the *first* part of the command, like $CC in many environments
   char *envCC = getenv("CC");
-  
+
   char command[1000];
-  sprintf("%s %s", envCC, arg2);
+  sprintf(command, "%s %s", envCC, arg2);
   system(command);
 }
 
 void test3(char* arg1) {
   // GOOD?: the user string is a `$CFLAGS` environment variable
   char *envCflags = getenv("CFLAGS");
-  
+
   char command[1000];
   sprintf(command, "%s %s", arg1, envCflags);
   system(command);
@@ -54,6 +54,7 @@ void test3(char* arg1) {
 typedef unsigned long size_t;
 typedef void FILE;
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+char *strncpy(char *s1, const char *s2, size_t n);
 char *strncat(char *s1, const char *s2, size_t n);
 
 void test4(FILE *f) {
@@ -160,7 +161,7 @@ void test15(FILE *f) {
   fread(temp, 1, 10, f);
 
   int x = atoi(temp);
-  
+
   char temp2[10];
   sprintf(temp2, "%d", x);
     sprintf(command, "tail -n %s foo.log", temp2);
@@ -220,6 +221,44 @@ void test19(FILE *f) {
   CONCAT(command, filename)
 
   execl("/bin/sh", "sh", "-c", command);
+}
+
+void test20() {
+  // BAD: the user strings `var_b`, `var_c` are injected directly into a command
+  char buffer[1024 * 4];
+
+  strncpy(buffer, getenv("var_a"), 1024);
+  strncat(buffer, getenv("var_b"), 1024);
+  strncat(buffer, getenv("var_c"), 1024);
+  strncat(buffer, " ", 1024);
+  system(buffer);
+}
+
+void test21() {
+  // BAD: the user strings `var_b`, `var_c` are injected directly into a command
+  char buffer1[1024];
+  char buffer2[1024];
+
+  sprintf(buffer1, "%s %s",
+    getenv("var_a"),
+    getenv("var_b"));
+  sprintf(buffer2, "%s %s %s",
+    " ",
+    buffer1,
+    getenv("var_c"));
+  system(buffer2);
+}
+
+void test22() {
+  // BAD: the user strings `var_a` are injected directly into a command
+  char buffer[1024 * 11];
+  int i;
+
+  strncpy(buffer, "command ", 1024);
+  for (i = 0; i < 10; i++) {
+    strncat(buffer, getenv("var_a"), 1024);
+  }
+  system(buffer);
 }
 
 // open question: do we want to report certain sources even when they're the start of the string?

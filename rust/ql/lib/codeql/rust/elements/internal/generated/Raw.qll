@@ -699,11 +699,6 @@ module Raw {
     }
 
     /**
-     * Gets the path type of this path segment, if it exists.
-     */
-    PathTypeRepr getPathType() { path_segment_path_types(this, result) }
-
-    /**
      * Gets the ret type of this path segment, if it exists.
      */
     RetTypeRepr getRetType() { path_segment_ret_types(this, result) }
@@ -717,6 +712,11 @@ module Raw {
      * Gets the type representation of this path segment, if it exists.
      */
     TypeRepr getTypeRepr() { path_segment_type_reprs(this, result) }
+
+    /**
+     * Gets the trait type representation of this path segment, if it exists.
+     */
+    PathTypeRepr getTraitTypeRepr() { path_segment_trait_type_reprs(this, result) }
   }
 
   /**
@@ -785,6 +785,11 @@ module Raw {
      * Gets the `index`th attr of this record field (0-based).
      */
     Attr getAttr(int index) { record_field_attrs(this, index, result) }
+
+    /**
+     * Gets the expression of this record field, if it exists.
+     */
+    Expr getExpr() { record_field_exprs(this, result) }
 
     /**
      * Gets the name of this record field, if it exists.

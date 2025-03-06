@@ -28,6 +28,18 @@ module Impl {
    * ```
    */
   class IdentPat extends Generated::IdentPat {
-    override string toString() { result = this.getName().getText() }
+    override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
+
+    private string toStringPart(int index) {
+      index = 0 and this.isRef() and result = "ref"
+      or
+      index = 1 and this.isMut() and result = "mut"
+      or
+      index = 2 and result = this.getName().getText()
+      or
+      index = 3 and this.hasPat() and result = "@ ..."
+    }
   }
 }

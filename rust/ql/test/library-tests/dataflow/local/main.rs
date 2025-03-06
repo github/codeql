@@ -3,9 +3,12 @@
 fn source(i: i64) -> i64 {
     1000 + i
 }
-
 fn sink(s: i64) {
     println!("{}", s);
+}
+
+fn sink_ref(sr: &i64) {
+    println!("{}", sr);
 }
 
 // -----------------------------------------------------------------------------
@@ -263,6 +266,20 @@ fn option_questionmark() -> Option<i64> {
     Some(0)
 }
 
+fn option_ok() {
+    let r1 : Result<i64, i64> = Ok(source(21));
+    let o1a : Option<i64> = r1.ok();
+    let o1b : Option<i64> = r1.err();
+    sink(o1a.unwrap()); // $ hasValueFlow=21
+    sink(o1b.unwrap());
+
+    let r2 : Result<i64, i64> = Err(source(22));
+    let o2a : Option<i64> = r2.ok();
+    let o2b : Option<i64> = r2.err();
+    sink(o2a.unwrap());
+    sink(o2b.unwrap()); // $ hasValueFlow=22
+}
+
 fn result_questionmark() -> Result<i64, i64> {
     let s1: Result<i64, i64> = Ok(source(20));
     let s2: Result<i64, i64> = Ok(2);
@@ -442,6 +459,71 @@ fn macro_invocation() {
     sink(s); // $ hasValueFlow=37
 }
 
+fn sink_string(s: String) {
+    println!("{}", s);
+}
+
+fn parse() {
+    let a = source(90);
+    let b = a.to_string();
+    let c = b.parse::<i64>().unwrap();
+    let d : i64 = b.parse().unwrap();
+
+    sink(a); // $ hasValueFlow=90
+    sink_string(b); // $ hasTaintFlow=90
+    sink(c); // $ hasTaintFlow=90
+    sink(d); // $ hasTaintFlow=90
+}
+
+fn iterators() {
+    let vs = [source(91), 2, 3, 4];
+
+    sink(vs[0]); // $ hasValueFlow=91
+    sink(*vs.iter().next().unwrap()); // $ MISSING: hasValueFlow=91
+    sink(*vs.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=91
+
+    for v in vs {
+        sink(v); // $ hasValueFlow=91
+    }
+    for &v in vs.iter() {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    let vs2 : Vec<&i64> = vs.iter().collect();
+    for &v in vs2 {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    vs.iter().map(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+    vs.iter().for_each(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+
+    for v in vs.into_iter() {
+        sink(v); // $ MISSING: hasValueFlow=91
+    }
+
+    let mut vs_mut = [source(92), 2, 3, 4];
+
+    sink(vs_mut[0]); // $ hasValueFlow=92
+    sink(*vs_mut.iter().next().unwrap()); // $ MISSING: hasValueFlow=92
+    sink(*vs_mut.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=92
+
+    for &mut v in vs_mut.iter_mut() {
+        sink(v); // $ MISSING: hasValueFlow=92
+    }
+}
+
+fn references() {
+    let a = source(40);
+    let b = source(41);
+    let c = source(42);
+    let c_ref = &c;
+
+    sink(a); // $ hasValueFlow=40
+    sink_ref(&b); // $ hasTaintFlow=41
+    sink_ref(c_ref); // $ hasTaintFlow=42
+    sink(*c_ref); // $ hasValueFlow=42
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -465,6 +547,7 @@ fn main() {
     option_unwrap();
     option_unwrap_or();
     option_questionmark();
+    option_ok();
     let _ = result_questionmark();
     custom_tuple_enum_pattern_match_qualified();
     custom_tuple_enum_pattern_match_unqualified();
@@ -479,4 +562,7 @@ fn main() {
     array_assignment();
     captured_variable_and_continue(vec![]);
     macro_invocation();
+    parse();
+    iterators();
+    references();
 }

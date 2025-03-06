@@ -26,7 +26,7 @@ class Type extends @type {
   /**
    * Gets the qualified name of this type, if any.
    *
-   * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
+   * Only defined types like `io.Writer` have a qualified name. Basic types like `int`,
    * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
   string getQualifiedName() { result = this.getEntity().getQualifiedName() }
@@ -34,7 +34,7 @@ class Type extends @type {
   /**
    * Holds if this type is declared in a package with path `pkg` and has name `name`.
    *
-   * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
+   * Only defined types like `io.Writer` have a qualified name. Basic types like `int`,
    * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
   predicate hasQualifiedName(string pkg, string name) {
@@ -50,7 +50,7 @@ class Type extends @type {
    * Gets the method `m` belonging to the method set of this type, if any.
    *
    * Note that this predicate never has a result for struct types. Methods are associated
-   * with the corresponding named type instead.
+   * with the corresponding defined type instead.
    */
   Method getMethod(string m) {
     result.getReceiverType() = this and
@@ -144,19 +144,24 @@ class Type extends @type {
    */
   string toString() { result = this.getName() }
 
+  /** Gets the location of this type. */
+  Location getLocation() { result = this.getEntity().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getEntity().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or
-    not exists(this.getEntity()) and
+    not exists(this.getLocation()) and
     filepath = "" and
     startline = 0 and
     startcolumn = 0 and
@@ -446,7 +451,7 @@ class StructType extends @structtype, CompositeType {
       if n = ""
       then (
         isEmbedded = true and
-        name = lookThroughPointerType(tp).(NamedType).getName()
+        name = lookThroughPointerType(tp).(DefinedType).getName()
       ) else (
         isEmbedded = false and
         name = n
@@ -497,7 +502,7 @@ class StructType extends @structtype, CompositeType {
     // embeddedParent is a field of 'this' at depth 'depth - 1'
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
     // embeddedParent's type has the result field. Note that it is invalid Go
-    // to have an embedded field with a named type whose underlying type is a
+    // to have an embedded field with a defined type whose underlying type is a
     // pointer, so we don't have to have
     // `lookThroughPointerType(embeddedParent.getType().getUnderlyingType())`.
     result =
@@ -613,7 +618,7 @@ class PointerType extends @pointertype, CompositeType {
     or
     // promoted methods from embedded types
     exists(StructType s, Type embedded |
-      s = this.getBaseType().(NamedType).getUnderlyingType() and
+      s = this.getBaseType().(DefinedType).getUnderlyingType() and
       s.hasOwnField(_, _, embedded, true) and
       // ensure that `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
@@ -918,7 +923,7 @@ class EmptyInterfaceType extends BasicInterfaceType {
 /**
  * The predeclared `comparable` type.
  */
-class ComparableType extends NamedType {
+class ComparableType extends DefinedType {
   ComparableType() { this.getName() = "comparable" }
 }
 
@@ -1028,8 +1033,11 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
   override string toString() { result = "send-receive-channel type" }
 }
 
-/** A named type. */
-class NamedType extends @namedtype, CompositeType {
+/** DEPRECATED: Use `DefinedType` instead. */
+deprecated class NamedType = DefinedType;
+
+/** A defined type. */
+class DefinedType extends @definedtype, CompositeType {
   /** Gets the type which this type is defined to be. */
   Type getBaseType() { underlying_type(this, result) }
 
