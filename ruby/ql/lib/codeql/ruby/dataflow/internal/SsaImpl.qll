@@ -218,7 +218,7 @@ private predicate hasVariableReadWithCapturedWrite(
 
 pragma[noinline]
 deprecated private predicate adjacentDefReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
   Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
@@ -226,10 +226,10 @@ deprecated private predicate adjacentDefReadExt(
 }
 
 deprecated private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1, _)
+    def.definesAt(v, bb1, i1)
     or
     SsaInput::variableRead(bb1, i1, v, true)
   )
@@ -242,7 +242,7 @@ deprecated private predicate adjacentDefReachesReadExt(
 }
 
 deprecated private predicate adjacentDefReachesUncertainReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
   SsaInput::variableRead(bb2, i2, _, false)
@@ -251,7 +251,7 @@ deprecated private predicate adjacentDefReachesUncertainReadExt(
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
 deprecated private predicate lastRefSkipUncertainReadsExt(
-  DefinitionExt def, SsaInput::BasicBlock bb, int i
+  Definition def, SsaInput::BasicBlock bb, int i
 ) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
@@ -412,33 +412,6 @@ private module Cached {
 }
 
 import Cached
-
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-deprecated class DefinitionExt extends Impl::DefinitionExt {
-  VariableReadAccessCfgNode getARead() { result = getARead(this) }
-
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-deprecated class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
-
-  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
-}
 
 class NormalParameter extends Parameter {
   NormalParameter() {
