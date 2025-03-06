@@ -14,8 +14,8 @@ const func1 = ({ commentRef, query }) => {
 import { useLazyLoadQuery } from "react-relay";
 
 function func2({ query }) {
-  const data = useLazyLoadQuery(query, {}); // $ Missing: Source
-  return <p dangerouslySetInnerHTML={{ __html: data.comments[0].text }} />; // $ Missing: Alert
+  const data = useLazyLoadQuery(query, {}); // $ Source
+  return <p dangerouslySetInnerHTML={{ __html: data.comments[0].text }} />; // $ Alert
 }
 
 import { useQueryLoader, usePreloadedQuery } from "react-relay";
@@ -25,7 +25,7 @@ function func3({ initialQueryRef, query }) {
   return (
     <h1
       dangerouslySetInnerHTML={{
-        __html: usePreloadedQuery(query, queryReference).user?.name, // $ Missing: Alert
+        __html: usePreloadedQuery(query, queryReference).user?.name, // $ Alert
       }}
     />
   ); 
@@ -34,17 +34,17 @@ function func3({ initialQueryRef, query }) {
 import { useClientQuery } from "react-relay";
 
 function func4({ query }) {
-  const data = useClientQuery(query, {}); // $ Missing: Source
-  return <h1 dangerouslySetInnerHTML={{ __html: data }} />; // $ Missing: Alert
+  const data = useClientQuery(query, {}); // $ Source
+  return <h1 dangerouslySetInnerHTML={{ __html: data }} />; // $ Alert
 }
 
 import { useRefetchableFragment } from "react-relay";
 
 function func5({ query, props }) {
-  const [data, refetch] = useRefetchableFragment(query, props.comment); // $ Missing: Source
+  const [data, refetch] = useRefetchableFragment(query, props.comment); // $ Source
   return (
     <>
-      <h1 dangerouslySetInnerHTML={{ __html: data }} /> // $ Missing: Alert
+      <h1 dangerouslySetInnerHTML={{ __html: data }} /> // $ Alert
       <Button
         onClick={() => {
           refetch({ lang: "SPANISH" }, { fetchPolicy: "store-or-network" });
@@ -66,8 +66,8 @@ function func6({ query }) {
     isLoadingNext,
     isLoadingPrevious,
     refetch,
-  } = usePaginationFragment(query, {}); // $ Missing: Source
-  return <h1 dangerouslySetInnerHTML={{ __html: data }} />; // $ Missing: Alert
+  } = usePaginationFragment(query, {}); // $ Source
+  return <h1 dangerouslySetInnerHTML={{ __html: data }} />; // $ Alert
 }
 
 
@@ -79,12 +79,12 @@ function func7(query) {
   const [feedbackText, setFeedbackText] = useState('');
   
   commit({
-    onCompleted(data) { // $ Missing: Source
+    onCompleted(data) { // $ Source
       setFeedbackText(data);
     },
   });
 
-  return (<div dangerouslySetInnerHTML={{__html: feedbackText, }}/>); // $ Missing: Alert
+  return (<div dangerouslySetInnerHTML={{__html: feedbackText, }}/>); // $ Alert
 }
 
 import { useSubscription } from 'react-relay';
@@ -96,7 +96,7 @@ function func8({GroupLessonsSubscription}) {
   const groupLessonConfig = useMemo(() => ({
     subscription: GroupLessonsSubscription,
     variables: {},
-    onNext: (res) => { // $ Missing: Source
+    onNext: (res) => { // $ Source
       setFragmentRef(res);
     },
     onError: (err) => {
@@ -109,7 +109,7 @@ function func8({GroupLessonsSubscription}) {
 
   useSubscription(groupLessonConfig);
 
-return (<div dangerouslySetInnerHTML={{__html: fragmentRef, }}/>); // $ Missing: Alert
+return (<div dangerouslySetInnerHTML={{__html: fragmentRef, }}/>); // $ Alert
 }
 
 
@@ -120,10 +120,10 @@ function func9({query, environment}) {
     start: () => {},
     complete: () => {},
     error: (error) => {},
-    next: (data) => { // $ Missing: Source
+    next: (data) => { // $ Source
       const outputElement = document.getElementById('output');
       if (outputElement) {
-        outputElement.innerHTML = data.user; // $ Missing: Alert
+        outputElement.innerHTML = data.user; // $ Alert
       }
     }
   });
@@ -132,6 +132,6 @@ function func9({query, environment}) {
 import { readFragment } from "relay-runtime";
 
 function func10({ query, key }) {
-  const data = readFragment(query, key); // $ Missing: Source
-  return (<h1 dangerouslySetInnerHTML={{ __html: data }} />); // $ Missing: Alert
+  const data = readFragment(query, key); // $ Source
+  return (<h1 dangerouslySetInnerHTML={{ __html: data }} />); // $ Alert
 }
