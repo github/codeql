@@ -1834,43 +1834,15 @@ module IteratorFlow {
 
   private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
 
-  cached
-  private newtype TSsaDef = TDef(IteratorSsa::DefinitionExt def)
-
-  abstract private class SsaDef extends TSsaDef {
-    /** Gets a textual representation of this element. */
-    string toString() { none() }
-
-    /** Gets the underlying non-phi definition or use. */
-    IteratorSsa::DefinitionExt asDef() { none() }
-
-    /** Gets the underlying phi node. */
-    PhiNode asPhi() { none() }
-
-    /** Gets the location of this element. */
-    abstract Location getLocation();
-  }
-
-  private class Def extends TDef, SsaDef {
-    IteratorSsa::DefinitionExt def;
-
-    Def() { this = TDef(def) }
-
-    final override IteratorSsa::DefinitionExt asDef() { result = def }
-
+  private class Def extends IteratorSsa::DefinitionExt {
     final override Location getLocation() { result = this.getImpl().getLocation() }
-
-    /** Gets the variable written to by this definition. */
-    final SourceVariable getSourceVariable() { result = def.getSourceVariable() }
-
-    override string toString() { result = def.toString() }
 
     /**
      * Holds if this definition (or use) has index `index` in block `block`,
      * and is a definition (or use) of the variable `sv`.
      */
     predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-      def.definesAt(sv, block, index, _)
+      super.definesAt(sv, block, index, _)
     }
 
     private Ssa::DefImpl getImpl() {
