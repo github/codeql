@@ -1835,9 +1835,7 @@ module IteratorFlow {
   private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
 
   cached
-  private newtype TSsaDef =
-    TDef(IteratorSsa::DefinitionExt def) or
-    TPhi(PhiNode phi)
+  private newtype TSsaDef = TDef(IteratorSsa::DefinitionExt def)
 
   abstract private class SsaDef extends TSsaDef {
     /** Gets a textual representation of this element. */
@@ -1887,20 +1885,6 @@ module IteratorFlow {
 
     /** Gets the indirection index of this definition. */
     int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
-  }
-
-  private class Phi extends TPhi, SsaDef {
-    PhiNode phi;
-
-    Phi() { this = TPhi(phi) }
-
-    final override PhiNode asPhi() { result = phi }
-
-    final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
-
-    override string toString() { result = phi.toString() }
-
-    SsaIteratorNode getNode() { result.getIteratorFlowNode() = phi }
   }
 
   private class PhiNode extends IteratorSsa::DefinitionExt {
