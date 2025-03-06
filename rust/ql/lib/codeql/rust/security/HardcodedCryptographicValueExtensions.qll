@@ -80,7 +80,7 @@ module HardcodedCryptographicValue {
   }
 
   /**
-   * A sink for hardcoded cryptographic value from model data.
+   * An externally modeled sink for hardcoded cryptographic value vulnerabilities.
    */
   private class ModelsAsDataSinks extends Sink {
     CryptographicValueKind kind;

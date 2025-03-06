@@ -12,10 +12,10 @@ Hardcoded passwords, keys, initialization vectors and salts should not be used f
     Attackers can easily recover hardcoded values if they have access to the source code or compiled executable.
   </li>
   <li>
-    Some hardcoded values may be easily guessable.
+    Some hardcoded values are easily guessable.
   </li>
   <li>
-    Hardcoded values may leave cryptographic operations vulnerable to dictionary attacks, rainbow tables, and other forms of cryptanalysis.
+    Use of hardcoded values may leave cryptographic operations vulnerable to dictionary attacks, rainbow tables, and other forms of cryptanalysis.
   </li>
 </ul>
 
@@ -23,7 +23,7 @@ Hardcoded passwords, keys, initialization vectors and salts should not be used f
 <recommendation>
 
 <p>
-Use randomly generated key material, initialization vectors and salts. Use strong passwords that are not hardcoded in source code.
+Use randomly generated key material, initialization vectors and salts. Use strong passwords that are not hardcoded.
 </p>
 
 </recommendation>
