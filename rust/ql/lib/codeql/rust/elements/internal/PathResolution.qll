@@ -284,7 +284,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   /** Gets a `Self` path that refers to this item. */
   Path getASelfPath() {
     isUnqualifiedSelfPath(result) and
-    this = unqualifiedPathLookup(result)
+    this = unqualifiedPathLookup(result, _)
   }
 
   /** Gets an associated item belonging to this trait or `impl` block. */
@@ -680,8 +680,8 @@ private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
 }
 
 pragma[nomagic]
-private ItemNode unqualifiedPathLookup(RelevantPath path) {
-  exists(ItemNode encl, Namespace ns, string name |
+private ItemNode unqualifiedPathLookup(RelevantPath path, Namespace ns) {
+  exists(ItemNode encl, string name |
     unqualifiedPathLookup(path, name, ns, encl) and
     result = getASuccessor(encl, name, ns)
   )
@@ -691,9 +691,9 @@ pragma[nomagic]
 private predicate isUnqualifiedSelfPath(RelevantPath path) { path.isUnqualified("Self") }
 
 pragma[nomagic]
-private ItemNode resolvePath0(RelevantPath path) {
+private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   exists(ItemNode res |
-    res = unqualifiedPathLookup(path) and
+    res = unqualifiedPathLookup(path, ns) and
     if
       not any(RelevantPath parent).getQualifier() = path and
       isUnqualifiedSelfPath(path) and
@@ -704,10 +704,12 @@ private ItemNode resolvePath0(RelevantPath path) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = q.getASuccessor(name)
+    result = q.getASuccessor(name) and
+    ns = result.getNamespace()
   )
   or
-  result = resolveUseTreeListItem(_, _, path)
+  result = resolveUseTreeListItem(_, _, path) and
+  ns = result.getNamespace()
 }
 
 /** Holds if path `p` must be looked up in namespace `n`. */
@@ -743,9 +745,8 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
 /** Gets the item that `path` resolves to, if any. */
 cached
 ItemNode resolvePath(RelevantPath path) {
-  result = resolvePath0(path) and
-  (
-    pathUsesNamespace(path, result.getNamespace())
+  exists(Namespace ns | result = resolvePath0(path, ns) |
+    pathUsesNamespace(path, ns)
     or
     not pathUsesNamespace(path, _)
   )
