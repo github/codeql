@@ -12,11 +12,7 @@ private import codeql.rust.elements.Resolvable
  * be referenced directly.
  */
 module Impl {
-  private import codeql.rust.elements.internal.CallableImpl::Impl
-  private import codeql.rust.elements.internal.MethodCallExprImpl::Impl
-  private import codeql.rust.elements.internal.CallExprImpl::Impl
-  private import codeql.rust.elements.internal.PathExprImpl::Impl
-  private import codeql.rust.elements.internal.PathResolution
+  private import rust
 
   pragma[nomagic]
   Resolvable getCallResolvable(CallExprBase call) {
@@ -30,14 +26,7 @@ module Impl {
    * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
    */
   class CallExprBase extends Generated::CallExprBase {
-    /**
-     * Gets the target callable of this call, if a unique such target can
-     * be statically resolved.
-     */
-    Callable getStaticTarget() {
-      getCallResolvable(this).resolvesAsItem(result)
-      or
-      result = resolvePath(this.(CallExpr).getFunction().(PathExpr).getPath())
-    }
+    /** Gets the static target of this call, if any. */
+    Callable getStaticTarget() { none() }
   }
 }

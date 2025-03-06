@@ -36,6 +36,8 @@ module Impl {
   class CallExpr extends Generated::CallExpr {
     override string toString() { result = this.getFunction().toAbbreviatedString() + "(...)" }
 
+    override Callable getStaticTarget() { result = getResolvedFunction(this) }
+
     /** Gets the struct that this call resolves to, if any. */
     Struct getStruct() { result = getResolvedFunction(this) }
 
