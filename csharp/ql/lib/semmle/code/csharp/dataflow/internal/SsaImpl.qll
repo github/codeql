@@ -1047,8 +1047,17 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   class Guard extends Guards::Guard {
-    predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) {
-      this.getAControlFlowNode() = bb.getNode(i)
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+      exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+        this.getAControlFlowNode() = bb1.getLastNode() and
+        bb2 = bb1.getASuccessorByType(s) and
+        s.getValue() = branch
+      )
     }
   }
 
@@ -1058,16 +1067,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.edgeDominates(bb, s)
-    )
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  ControlFlow::BasicBlock getAConditionalBasicBlockSuccessor(
-    ControlFlow::BasicBlock bb, boolean branch
-  ) {
-    exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
-      result = bb.getASuccessorByType(s) and
-      s.getValue() = branch
     )
   }
 }

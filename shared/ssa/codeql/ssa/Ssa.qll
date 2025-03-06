@@ -1434,15 +1434,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /** Gets a textual representation of this guard. */
       string toString();
 
-      /** Holds if the `i`th node of basic block `bb` evaluates this guard. */
-      predicate hasCfgNode(BasicBlock bb, int i);
+      /**
+       * Holds if the control flow branching from `bb1` is dependent on this guard,
+       * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+       * guard to `branch`.
+       */
+      predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
     }
 
     /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
     predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch);
-
-    /** Gets an immediate conditional successor of basic block `bb`, if any. */
-    BasicBlock getAConditionalBasicBlockSuccessor(BasicBlock bb, boolean branch);
   }
 
   /**
@@ -1891,11 +1892,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           |
             DfInput::guardControlsBlock(g, bb, branch)
             or
-            exists(int last |
-              last = bb.length() - 1 and
-              g.hasCfgNode(bb, last) and
-              DfInput::getAConditionalBasicBlockSuccessor(bb, branch) = phi.getBasicBlock()
-            )
+            g.controlsBranchEdge(bb, phi.getBasicBlock(), branch)
           )
         )
       }
