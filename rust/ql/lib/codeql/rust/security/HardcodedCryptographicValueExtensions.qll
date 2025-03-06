@@ -69,9 +69,14 @@ module HardcodedCryptographicValue {
    * ```
    */
   private class ArrayListSource extends Source {
-    ArrayListSource() {
-      this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr
-    }
+    ArrayListSource() { this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr }
+  }
+
+  /**
+   * An externally modeled source for constant values.
+   */
+  private class ModeledSource extends Source {
+    ModeledSource() { sourceNode(this, "constant-source") }
   }
 
   /**

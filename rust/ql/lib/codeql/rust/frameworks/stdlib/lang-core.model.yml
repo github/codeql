@@ -1,6 +1,11 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["lang:core", "crate::mem::zeroed", "ReturnValue.Element", "constant-source", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: summaryModel
     data:
       # Conversions

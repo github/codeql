@@ -47,8 +47,8 @@ fn test_stream_cipher_rabbit(
     let mut rabbit_cipher9 = RabbitKeyOnly::new(rabbit::Key::from_slice(const9_conv)); // $ Sink
     rabbit_cipher9.apply_keystream(&mut data);
 
-    let const10: [u8;16] = unsafe { std::mem::zeroed() }; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let mut rabbit_cipher10 = RabbitKeyOnly::new(rabbit::Key::from_slice(&const10));
+    let const10: [u8;16] = unsafe { std::mem::zeroed() }; // $ Alert[rust/hardcoded-crytographic-value]
+    let mut rabbit_cipher10 = RabbitKeyOnly::new(rabbit::Key::from_slice(&const10)); // $ Sink
     rabbit_cipher10.apply_keystream(&mut data);
 }
 
