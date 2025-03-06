@@ -6,7 +6,7 @@
  * @problem.severity warning
  * @security-severity 9.8
  * @precision high
- * @id rust/hardcoded-crytographic-value
+ * @id rust/hardcoded-cryptographic-value
  * @tags security
  *       external/cwe/cwe-259
  *       external/cwe/cwe-321
