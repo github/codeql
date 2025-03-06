@@ -32,6 +32,13 @@ module HardcodedCryptographicValueConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
 
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    // (this combined with sources for `ArrayListExpr` means we only get one source in
+    //  case like `[0, 0, 0, 0]`)
+    isSource(node)
+  }
+
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // flow out from reference content at sinks.
     isSink(node) and

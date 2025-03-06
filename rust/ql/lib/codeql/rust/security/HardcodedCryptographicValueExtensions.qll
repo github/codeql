@@ -61,6 +61,18 @@ module HardcodedCryptographicValue {
   }
 
   /**
+   * An array initialized from a list of literals, considered as a single flow source. For example:
+   * ```
+   * `[0, 0, 0, 0]`
+   * ```
+   */
+  private class ArrayListSource extends Source {
+    ArrayListSource() {
+      this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr
+    }
+  }
+
+  /**
    * A sink for hardcoded cryptographic value from model data.
    */
   private class ModelsAsDataSinks extends Sink {
