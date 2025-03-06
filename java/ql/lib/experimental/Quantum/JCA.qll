@@ -123,7 +123,7 @@ module JCAModel {
     override Crypto::TCipherType getCipherFamily() {
       if this.cipherNameMappingKnown(_, super.getAlgorithmName())
       then this.cipherNameMappingKnown(result, super.getAlgorithmName())
-      else result instanceof Crypto::OtherCipherType
+      else result instanceof Crypto::OTHERCIPHERTYPE
     }
 
     bindingset[name]
@@ -135,7 +135,7 @@ module JCAModel {
       type instanceof Crypto::DES
       or
       name = "TripleDES" and
-      type instanceof Crypto::TripleDES
+      type instanceof Crypto::TRIPLEDES
       or
       name = "IDEA" and
       type instanceof Crypto::IDEA
@@ -144,7 +144,7 @@ module JCAModel {
       type instanceof Crypto::CAST5
       or
       name = "ChaCha20" and
-      type instanceof Crypto::ChaCha20
+      type instanceof Crypto::CHACHA20
       or
       name = "RC4" and
       type instanceof Crypto::RC4
