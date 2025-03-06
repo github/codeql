@@ -3,6 +3,10 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
+      # Conversions
+      - ["lang:core", "<_ as crate::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
+      - ["lang:core", "<_ as crate::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
+      - ["lang:core", "<[_]>::align_to", "Argument[self].Element", "ReturnValue.Field[0,1,2].Reference.Element", "taint", "manual"]
       # Fmt
       - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Iterator

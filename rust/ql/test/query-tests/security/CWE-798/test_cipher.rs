@@ -42,9 +42,9 @@ fn test_stream_cipher_rabbit(
     let mut rabbit_cipher8 = RabbitKeyOnly::new(rabbit::Key::from_slice(const8)); // $ Sink
     rabbit_cipher8.apply_keystream(&mut data);
 
-    let const9: [u16;8] = [0, 0, 0, 0, 0, 0, 0, 0]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
+    let const9: [u16;8] = [0, 0, 0, 0, 0, 0, 0, 0]; // $ Alert[rust/hardcoded-crytographic-value]
     let const9_conv = unsafe { const9.align_to::<u8>().1 }; // convert [u16;8] -> [u8;8]
-    let mut rabbit_cipher9 = RabbitKeyOnly::new(rabbit::Key::from_slice(const9_conv));
+    let mut rabbit_cipher9 = RabbitKeyOnly::new(rabbit::Key::from_slice(const9_conv)); // $ Sink
     rabbit_cipher9.apply_keystream(&mut data);
 
     let const10: [u8;16] = unsafe { std::mem::zeroed() }; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
@@ -63,8 +63,8 @@ fn test_block_cipher_aes(
     let aes_cipher1 = Aes256::new(key256.into());
     aes_cipher1.encrypt_block(block128.into());
 
-    let const2 = &[0u8;32]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let aes_cipher2 = Aes256::new(const2.into());
+    let const2 = &[0u8;32]; // $ Alert[rust/hardcoded-crytographic-value]
+    let aes_cipher2 = Aes256::new(const2.into()); // $ Sink
     aes_cipher2.encrypt_block(block128.into());
 
     let aes_cipher3 = Aes256::new_from_slice(key256).unwrap();
@@ -77,12 +77,12 @@ fn test_block_cipher_aes(
     let aes_cipher5 = cfb_mode::Encryptor::<aes::Aes256>::new(key.into(), iv.into());
     _ = aes_cipher5.encrypt_b2b(input, output).unwrap();
 
-    let const6 = &[0u8;32]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let aes_cipher6 = cfb_mode::Encryptor::<aes::Aes256>::new(const6.into(), iv.into());
+    let const6 = &[0u8;32]; // $ Alert[rust/hardcoded-crytographic-value]
+    let aes_cipher6 = cfb_mode::Encryptor::<aes::Aes256>::new(const6.into(), iv.into()); // $ Sink
     _ = aes_cipher6.encrypt_b2b(input, output).unwrap();
 
-    let const7 = &[0u8; 16]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let aes_cipher7 = cfb_mode::Encryptor::<aes::Aes256>::new(key.into(), const7.into());
+    let const7 = &[0u8; 16]; // $ Alert[rust/hardcoded-crytographic-value]
+    let aes_cipher7 = cfb_mode::Encryptor::<aes::Aes256>::new(key.into(), const7.into()); // $ Sink
     _ = aes_cipher7.encrypt_b2b(input, output).unwrap();
 
     // various string conversions
@@ -121,14 +121,14 @@ fn test_aes_gcm(
     let cipher1 = Aes256Gcm::new(&key1);
     let _ = cipher1.encrypt(&nonce1, b"plaintext".as_ref()).unwrap();
 
-    let key2: [u8;32] = [0;32]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let nonce2 = [0;12]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let cipher2 = Aes256Gcm::new(&key2.into());
-    let _ = cipher2.encrypt(&nonce2.into(), b"plaintext".as_ref()).unwrap();
+    let key2: [u8;32] = [0;32]; // $ Alert[rust/hardcoded-crytographic-value]
+    let nonce2 = [0;12]; // $ Alert[rust/hardcoded-crytographic-value]
+    let cipher2 = Aes256Gcm::new(&key2.into()); // $ Sink
+    let _ = cipher2.encrypt(&nonce2.into(), b"plaintext".as_ref()).unwrap(); // $ Sink
 
-    let key3_array: &[u8;32] = &[0xff;32]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
+    let key3_array: &[u8;32] = &[0xff;32]; // $ Alert[rust/hardcoded-crytographic-value]
     let key3 = Key::<Aes256Gcm>::from_slice(key3_array);
-    let nonce3: [u8;12] = [0xff;12]; // $ MISSING: Alert[rust/hardcoded-crytographic-value]
-    let cipher3 = Aes256Gcm::new(&key3);
-    let _ = cipher3.encrypt(&nonce3.into(), b"plaintext".as_ref()).unwrap();
+    let nonce3: [u8;12] = [0xff;12]; // $ Alert[rust/hardcoded-crytographic-value]
+    let cipher3 = Aes256Gcm::new(&key3); // $ Sink
+    let _ = cipher3.encrypt(&nonce3.into(), b"plaintext".as_ref()).unwrap(); // $ Sink
 }

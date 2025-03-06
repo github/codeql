@@ -40,3 +40,5 @@ extensions:
       - ["repo:https://github.com/RustCrypto/traits:crypto-common", "<_ as crate::KeyIvInit>::new", "Argument[1]", "credentials-iv", "manual"]
       - ["repo:https://github.com/RustCrypto/traits:crypto-common", "<_ as crate::KeyIvInit>::new_from_slices", "Argument[0]", "credentials-key", "manual"]
       - ["repo:https://github.com/RustCrypto/traits:crypto-common", "<_ as crate::KeyIvInit>::new_from_slices", "Argument[1]", "credentials-iv", "manual"]
+      - ["repo:https://github.com/RustCrypto/AEADs:aes-gcm", "<crate::AesGcm as crate::KeyInit>::new", "Argument[0]", "credentials-key", "manual"]
+      - ["repo:https://github.com/RustCrypto/traits:aead", "<_ as crate::Aead>::encrypt", "Argument[0]", "credentials-nonce", "manual"]

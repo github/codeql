@@ -12,7 +12,7 @@ private import codeql.rust.security.SensitiveData
  * A kind of cryptographic value.
  */
 class CryptographicValueKind extends string {
-  CryptographicValueKind() { this = ["password", "key", "iv", "salt"] }
+  CryptographicValueKind() { this = ["password", "key", "iv", "nonce", "salt"] }
 
   /**
    * Gets a description of this value kind for user-facing messages.
@@ -23,6 +23,8 @@ class CryptographicValueKind extends string {
     this = "key" and result = "a key"
     or
     this = "iv" and result = "an initialization vector"
+    or
+    this = "nonce" and result = "a nonce"
     or
     this = "salt" and result = "a salt"
   }
