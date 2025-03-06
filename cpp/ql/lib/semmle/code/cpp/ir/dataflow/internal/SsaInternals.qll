@@ -926,30 +926,14 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
  */
 cached
 module SsaCached {
-  /**
-   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
-   * `def`. The reference is last because it can reach another write `next`,
-   * without passing through another read or write.
-   *
-   * The path from node `i` in `bb` to `next` goes via basic block `input`,
-   * which is either a predecessor of the basic block of `next`, or `input` =
-   * `bb` in case `next` occurs in basic block `bb`.
-   */
-  cached
-  predicate lastRefRedefExt(
-    DefinitionExt def, SourceVariable sv, IRBlock bb, int i, IRBlock input, DefinitionExt next
-  ) {
-    SsaImpl::lastRefRedefExt(def, sv, bb, i, input, next)
-  }
-
-  cached
-  predicate ssaDefReachesReadExt(SourceVariable v, DefinitionExt def, IRBlock bb, int i) {
-    SsaImpl::ssaDefReachesReadExt(v, def, bb, i)
-  }
-
   cached
   predicate ssaDefReachesRead(SourceVariable v, Definition def, IRBlock bb, int i) {
     SsaImpl::ssaDefReachesRead(v, def, bb, i)
+  }
+
+  cached
+  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, IRBlock bb) {
+    SsaImpl::phiHasInputFromBlock(phi, inp, bb)
   }
 
   predicate variableRead = SsaInput::variableRead/4;
@@ -1102,77 +1086,17 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
 
 /**
  * An static single assignment (SSA) phi node.
- *
- * This is either a normal phi node or a phi-read node.
  */
-class PhiNode extends SsaImpl::DefinitionExt {
-  PhiNode() {
-    this instanceof SsaImpl::PhiNode or
-    this instanceof SsaImpl::PhiReadNode
-  }
-
-  /**
-   * Holds if this phi node is a phi-read node.
-   *
-   * Phi-read nodes are like normal phi nodes, but they are inserted based
-   * on reads instead of writes.
-   */
-  predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
-
-  /**
-   * Holds if the node at index `i` in `bb` is a last reference to SSA
-   * definition `def` of `sv`. The reference is last because it can reach
-   * this phi node, without passing through another read or write.
-   *
-   * The path from node `i` in `bb` to this phi node goes via basic block
-   * `input`, which is either a predecessor of the basic block of this phi
-   * node, or `input` = `bb` in case this phi node occurs in basic block `bb`.
-   */
-  predicate hasInputFromBlock(DefinitionExt def, SourceVariable sv, IRBlock bb, int i, IRBlock input) {
-    SsaCached::lastRefRedefExt(def, sv, bb, i, input, this)
-  }
-
+class PhiNode extends Definition instanceof SsaImpl::PhiNode {
   /** Gets a definition that is an input to this phi node. */
-  final DefinitionExt getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
+  final Definition getAnInput() { phiHasInputFromBlock(this, result, _) }
 }
 
 /** An static single assignment (SSA) definition. */
 class Definition extends SsaImpl::Definition {
-  /**
-   * INTERNAL: Do not use.
-   */
-  Node0Impl getValue() { result = getDefImpl(this).getValue() }
-
-  /** Gets the indirection index of this definition. */
-  int getIndirectionIndex() { result = getDefImpl(this).getIndirectionIndex() }
-
-  /** Gets the indirection of this definition. */
-  int getIndirection() { result = getDefImpl(this).getIndirection() }
-
-  /**
-   * Holds if this definition is guaranteed to totally overwrite the buffer
-   * being written to.
-   */
-  predicate isCertain() { getDefImpl(this).isCertain() }
-
-  /**
-   * Gets the enclosing declaration of this definition.
-   *
-   * Note that this may be a variable when this definition defines a global, or
-   * a static local, variable.
-   */
-  Declaration getFunction() { result = getDefImpl(this).getBlock().getEnclosingFunction() }
-
-  /** Gets the underlying type of the variable being defined by this definition. */
-  Type getUnderlyingType() { result = this.getSourceVariable().getType() }
-
-  /** Gets the unspecified type of the variable being defined by this definition. */
-  Type getUnspecifiedType() { result = this.getUnderlyingType().getUnspecifiedType() }
-}
-
-/** An static single assignment (SSA) definition. */
-class DefinitionExt extends SsaImpl::DefinitionExt {
-  private DefinitionExt getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
+  // TODO: Include prior definitions of uncertain writes or rename predicate
+  // i.e. the disjunct `SsaImpl::uncertainWriteDefinitionInput(this, result)`
+  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is

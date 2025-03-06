@@ -1764,14 +1764,14 @@ module IteratorFlow {
      * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
      * traverses back through iterator increment and decrement operations.
      */
-    private Ssa::DefinitionExt getAnUltimateDefinition(Ssa::DefinitionExt def) {
+    private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
       result = def.getAnUltimateDefinition()
       or
       exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesReadExt(sv, result, bb, i)
+        Ssa::ssaDefReachesRead(sv, result, bb, i)
       )
     }
 
@@ -1799,13 +1799,13 @@ module IteratorFlow {
       GetsIteratorCall beginCall, Instruction writeToDeref
     ) {
       exists(
-        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::DefinitionExt def,
-        IteratorPointerDereferenceCall starCall, Ssa::DefinitionExt ultimate, Operand address
+        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Definition def,
+        IteratorPointerDereferenceCall starCall, Ssa::Definition ultimate, Operand address
       |
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesReadExt(_, def, bbStar, iStar) and
+        Ssa::ssaDefReachesRead(_, def, bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
