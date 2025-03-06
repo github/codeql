@@ -1,138 +1,72 @@
 edges
-| test.go:153:17:153:24 | definition of password | test.go:154:14:154:21 | password |
-| test.go:153:17:153:24 | definition of password | test.go:154:14:154:21 | password |
-| test.go:154:14:154:21 | password | test.go:155:17:155:24 | password |
-| test.go:154:14:154:21 | password | test.go:155:17:155:24 | password |
-| test.go:155:17:155:24 | password | test.go:156:14:156:21 | password |
-| test.go:155:17:155:24 | password | test.go:156:14:156:21 | password |
-| test.go:156:14:156:21 | password | test.go:157:18:157:25 | password |
-| test.go:156:14:156:21 | password | test.go:157:18:157:25 | password |
-| test.go:157:18:157:25 | password | test.go:158:14:158:21 | password |
-| test.go:157:18:157:25 | password | test.go:158:14:158:21 | password |
-| test.go:158:14:158:21 | password | test.go:159:13:159:20 | password |
-| test.go:158:14:158:21 | password | test.go:159:13:159:20 | password |
-| test.go:159:13:159:20 | password | test.go:160:22:160:29 | password |
-| test.go:159:13:159:20 | password | test.go:160:22:160:29 | password |
-| test.go:160:22:160:29 | password | test.go:161:15:161:22 | password |
-| test.go:160:22:160:29 | password | test.go:161:15:161:22 | password |
-| test.go:161:15:161:22 | password | test.go:162:14:162:21 | password |
-| test.go:161:15:161:22 | password | test.go:162:14:162:21 | password |
-| test.go:162:14:162:21 | password | test.go:163:13:163:20 | password |
-| test.go:162:14:162:21 | password | test.go:163:13:163:20 | password |
-| test.go:163:13:163:20 | password | test.go:164:16:164:23 | password |
-| test.go:163:13:163:20 | password | test.go:164:16:164:23 | password |
-| test.go:164:16:164:23 | password | test.go:165:13:165:20 | password |
-| test.go:164:16:164:23 | password | test.go:165:13:165:20 | password |
-| test.go:165:13:165:20 | password | test.go:166:16:166:23 | password |
-| test.go:165:13:165:20 | password | test.go:166:16:166:23 | password |
-| test.go:166:16:166:23 | password | test.go:167:13:167:20 | password |
-| test.go:166:16:166:23 | password | test.go:167:13:167:20 | password |
-| test.go:167:13:167:20 | password | test.go:168:17:168:24 | password |
-| test.go:167:13:167:20 | password | test.go:168:17:168:24 | password |
-| test.go:168:17:168:24 | password | test.go:169:13:169:20 | password |
-| test.go:168:17:168:24 | password | test.go:169:13:169:20 | password |
-| test.go:169:13:169:20 | password | test.go:170:12:170:19 | password |
-| test.go:169:13:169:20 | password | test.go:170:12:170:19 | password |
-| test.go:170:12:170:19 | password | test.go:171:21:171:28 | password |
-| test.go:170:12:170:19 | password | test.go:171:21:171:28 | password |
-| test.go:171:21:171:28 | password | test.go:172:14:172:21 | password |
-| test.go:171:21:171:28 | password | test.go:172:14:172:21 | password |
-| test.go:172:14:172:21 | password | test.go:173:13:173:20 | password |
-| test.go:172:14:172:21 | password | test.go:173:13:173:20 | password |
-| test.go:173:13:173:20 | password | test.go:174:12:174:19 | password |
-| test.go:173:13:173:20 | password | test.go:174:12:174:19 | password |
-| test.go:174:12:174:19 | password | test.go:175:15:175:22 | password |
-| test.go:174:12:174:19 | password | test.go:175:15:175:22 | password |
-| test.go:175:15:175:22 | password | test.go:176:15:176:22 | password |
-| test.go:175:15:175:22 | password | test.go:176:15:176:22 | password |
-| test.go:176:15:176:22 | password | test.go:177:18:177:25 | password |
-| test.go:176:15:176:22 | password | test.go:177:18:177:25 | password |
-| test.go:177:18:177:25 | password | test.go:178:15:178:22 | password |
-| test.go:177:18:177:25 | password | test.go:178:15:178:22 | password |
-| test.go:178:15:178:22 | password | test.go:179:19:179:26 | password |
-| test.go:178:15:178:22 | password | test.go:179:19:179:26 | password |
-| test.go:179:19:179:26 | password | test.go:180:15:180:22 | password |
-| test.go:179:19:179:26 | password | test.go:180:15:180:22 | password |
-| test.go:180:15:180:22 | password | test.go:181:14:181:21 | password |
-| test.go:180:15:180:22 | password | test.go:181:14:181:21 | password |
-| test.go:181:14:181:21 | password | test.go:182:23:182:30 | password |
-| test.go:181:14:181:21 | password | test.go:182:23:182:30 | password |
-| test.go:182:23:182:30 | password | test.go:183:16:183:23 | password |
-| test.go:182:23:182:30 | password | test.go:183:16:183:23 | password |
-| test.go:183:16:183:23 | password | test.go:184:15:184:22 | password |
-| test.go:183:16:183:23 | password | test.go:184:15:184:22 | password |
-| test.go:184:15:184:22 | password | test.go:185:14:185:21 | password |
-| test.go:184:15:184:22 | password | test.go:185:14:185:21 | password |
-| test.go:185:14:185:21 | password | test.go:186:17:186:24 | password |
-| test.go:185:14:185:21 | password | test.go:186:17:186:24 | password |
-| test.go:186:17:186:24 | password | test.go:187:16:187:23 | password |
+| test.go:153:17:153:24 | definition of password | test.go:154:14:154:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:155:17:155:24 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:156:14:156:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:157:18:157:25 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:158:14:158:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:159:13:159:20 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:160:22:160:29 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:161:15:161:22 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:162:14:162:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:163:13:163:20 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:164:16:164:23 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:165:13:165:20 | password | provenance | Sink:MaD:379 |
+| test.go:153:17:153:24 | definition of password | test.go:166:16:166:23 | password | provenance | Sink:MaD:380 |
+| test.go:153:17:153:24 | definition of password | test.go:167:13:167:20 | password | provenance | Sink:MaD:381 |
+| test.go:153:17:153:24 | definition of password | test.go:168:17:168:24 | password | provenance | Sink:MaD:382 |
+| test.go:153:17:153:24 | definition of password | test.go:169:13:169:20 | password | provenance | Sink:MaD:383 |
+| test.go:153:17:153:24 | definition of password | test.go:170:12:170:19 | password | provenance | Sink:MaD:384 |
+| test.go:153:17:153:24 | definition of password | test.go:171:21:171:28 | password | provenance | Sink:MaD:385 |
+| test.go:153:17:153:24 | definition of password | test.go:172:14:172:21 | password | provenance | Sink:MaD:386 |
+| test.go:153:17:153:24 | definition of password | test.go:173:13:173:20 | password | provenance | Sink:MaD:387 |
+| test.go:153:17:153:24 | definition of password | test.go:174:12:174:19 | password | provenance | Sink:MaD:388 |
+| test.go:153:17:153:24 | definition of password | test.go:175:15:175:22 | password | provenance | Sink:MaD:389 |
+| test.go:153:17:153:24 | definition of password | test.go:176:15:176:22 | password | provenance | Sink:MaD:390 |
+| test.go:153:17:153:24 | definition of password | test.go:177:18:177:25 | password | provenance | Sink:MaD:391 |
+| test.go:153:17:153:24 | definition of password | test.go:178:15:178:22 | password | provenance | Sink:MaD:392 |
+| test.go:153:17:153:24 | definition of password | test.go:179:19:179:26 | password | provenance | Sink:MaD:393 |
+| test.go:153:17:153:24 | definition of password | test.go:180:15:180:22 | password | provenance | Sink:MaD:394 |
+| test.go:153:17:153:24 | definition of password | test.go:181:14:181:21 | password | provenance | Sink:MaD:395 |
+| test.go:153:17:153:24 | definition of password | test.go:182:23:182:30 | password | provenance | Sink:MaD:396 |
+| test.go:153:17:153:24 | definition of password | test.go:183:16:183:23 | password | provenance | Sink:MaD:397 |
+| test.go:153:17:153:24 | definition of password | test.go:184:15:184:22 | password | provenance | Sink:MaD:398 |
+| test.go:153:17:153:24 | definition of password | test.go:185:14:185:21 | password | provenance | Sink:MaD:399 |
+| test.go:153:17:153:24 | definition of password | test.go:186:17:186:24 | password | provenance | Sink:MaD:400 |
+| test.go:153:17:153:24 | definition of password | test.go:187:16:187:23 | password | provenance |  |
 nodes
 | test.go:153:17:153:24 | definition of password | semmle.label | definition of password |
 | test.go:154:14:154:21 | password | semmle.label | password |
-| test.go:154:14:154:21 | password | semmle.label | password |
-| test.go:155:17:155:24 | password | semmle.label | password |
 | test.go:155:17:155:24 | password | semmle.label | password |
 | test.go:156:14:156:21 | password | semmle.label | password |
-| test.go:156:14:156:21 | password | semmle.label | password |
-| test.go:157:18:157:25 | password | semmle.label | password |
 | test.go:157:18:157:25 | password | semmle.label | password |
 | test.go:158:14:158:21 | password | semmle.label | password |
-| test.go:158:14:158:21 | password | semmle.label | password |
-| test.go:159:13:159:20 | password | semmle.label | password |
 | test.go:159:13:159:20 | password | semmle.label | password |
 | test.go:160:22:160:29 | password | semmle.label | password |
-| test.go:160:22:160:29 | password | semmle.label | password |
-| test.go:161:15:161:22 | password | semmle.label | password |
 | test.go:161:15:161:22 | password | semmle.label | password |
 | test.go:162:14:162:21 | password | semmle.label | password |
-| test.go:162:14:162:21 | password | semmle.label | password |
-| test.go:163:13:163:20 | password | semmle.label | password |
 | test.go:163:13:163:20 | password | semmle.label | password |
 | test.go:164:16:164:23 | password | semmle.label | password |
-| test.go:164:16:164:23 | password | semmle.label | password |
-| test.go:165:13:165:20 | password | semmle.label | password |
 | test.go:165:13:165:20 | password | semmle.label | password |
 | test.go:166:16:166:23 | password | semmle.label | password |
-| test.go:166:16:166:23 | password | semmle.label | password |
-| test.go:167:13:167:20 | password | semmle.label | password |
 | test.go:167:13:167:20 | password | semmle.label | password |
 | test.go:168:17:168:24 | password | semmle.label | password |
-| test.go:168:17:168:24 | password | semmle.label | password |
-| test.go:169:13:169:20 | password | semmle.label | password |
 | test.go:169:13:169:20 | password | semmle.label | password |
 | test.go:170:12:170:19 | password | semmle.label | password |
-| test.go:170:12:170:19 | password | semmle.label | password |
-| test.go:171:21:171:28 | password | semmle.label | password |
 | test.go:171:21:171:28 | password | semmle.label | password |
 | test.go:172:14:172:21 | password | semmle.label | password |
-| test.go:172:14:172:21 | password | semmle.label | password |
-| test.go:173:13:173:20 | password | semmle.label | password |
 | test.go:173:13:173:20 | password | semmle.label | password |
 | test.go:174:12:174:19 | password | semmle.label | password |
-| test.go:174:12:174:19 | password | semmle.label | password |
-| test.go:175:15:175:22 | password | semmle.label | password |
 | test.go:175:15:175:22 | password | semmle.label | password |
 | test.go:176:15:176:22 | password | semmle.label | password |
-| test.go:176:15:176:22 | password | semmle.label | password |
-| test.go:177:18:177:25 | password | semmle.label | password |
 | test.go:177:18:177:25 | password | semmle.label | password |
 | test.go:178:15:178:22 | password | semmle.label | password |
-| test.go:178:15:178:22 | password | semmle.label | password |
-| test.go:179:19:179:26 | password | semmle.label | password |
 | test.go:179:19:179:26 | password | semmle.label | password |
 | test.go:180:15:180:22 | password | semmle.label | password |
-| test.go:180:15:180:22 | password | semmle.label | password |
-| test.go:181:14:181:21 | password | semmle.label | password |
 | test.go:181:14:181:21 | password | semmle.label | password |
 | test.go:182:23:182:30 | password | semmle.label | password |
-| test.go:182:23:182:30 | password | semmle.label | password |
-| test.go:183:16:183:23 | password | semmle.label | password |
 | test.go:183:16:183:23 | password | semmle.label | password |
 | test.go:184:15:184:22 | password | semmle.label | password |
-| test.go:184:15:184:22 | password | semmle.label | password |
 | test.go:185:14:185:21 | password | semmle.label | password |
-| test.go:185:14:185:21 | password | semmle.label | password |
-| test.go:186:17:186:24 | password | semmle.label | password |
 | test.go:186:17:186:24 | password | semmle.label | password |
 | test.go:187:16:187:23 | password | semmle.label | password |
 subpaths
