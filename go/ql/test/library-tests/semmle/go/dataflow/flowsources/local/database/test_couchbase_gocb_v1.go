@@ -50,5 +50,6 @@ func test_couchbase_gocb_v1_Cluster(cluster *gocb.Cluster, aq *gocb.AnalyticsQue
 		return
 	}
 
-	sink(r3) // $ hasTaintFlow="r3"
+	hit := r3.Hits()[0]
+	sink(hit) // $ hasTaintFlow="hit"
 }

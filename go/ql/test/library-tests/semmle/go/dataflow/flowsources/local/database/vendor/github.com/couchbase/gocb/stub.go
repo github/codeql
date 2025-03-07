@@ -12,7 +12,7 @@ func (c *Cluster) ExecuteN1qlQuery(q *N1qlQuery, params interface{}) (QueryResul
 	return nil, nil
 }
 
-func (c *Cluster) ExecuteSearchQuery(q *SearchQuery) (SearchResult, error) {
+func (c *Cluster) ExecuteSearchQuery(q *SearchQuery) (SearchResults, error) {
 	return nil, nil
 }
 
@@ -38,7 +38,7 @@ type QueryResults interface {
 
 type SearchQuery struct{}
 
-type SearchResult interface {
+type SearchResults interface {
 	Status() SearchResultStatus
 	Errors() []string
 	TotalHits() int

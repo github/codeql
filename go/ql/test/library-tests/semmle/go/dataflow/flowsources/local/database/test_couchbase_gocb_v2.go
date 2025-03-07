@@ -47,7 +47,7 @@ func test_couchbase_gocb_v2_Cluster(cluster *gocb.Cluster) {
 }
 
 func test_couchbase_gocb_v2_Scope(scope *gocb.Scope) {
-	r1, err := scope.Query("SELECT * FROM `travel-sample`", nil) // $ source
+	r1, err := scope.AnalyticsQuery("SELECT * FROM `travel-sample`", nil) // $ source
 
 	if err != nil {
 		return
