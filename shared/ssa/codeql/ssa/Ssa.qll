@@ -307,6 +307,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | inDominanceFrontier(readbb, bb) |
       ssaDefReachesRead(v, _, readbb, _) and
+      variableRead(readbb, _, v, true) and
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
@@ -1378,6 +1379,56 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         not ssaDefReachesReadWithinBlock(v, def, bb, i) and
         not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _)
       )
+    }
+
+    /** Holds if the end of a basic block can be reached by multiple definitions. */
+    query predicate nonUniqueDefReachesEndOfBlock(Definition def, SourceVariable v, BasicBlock bb) {
+      ssaDefReachesEndOfBlock(bb, def, v) and
+      not exists(unique(Definition def0 | ssaDefReachesEndOfBlock(bb, def0, v)))
+    }
+
+    /** Holds if a phi node has less than two inputs. */
+    query predicate uselessPhiNode(PhiNode phi, int inputs) {
+      inputs = count(Definition inp | phiHasInputFromBlock(phi, inp, _)) and
+      inputs < 2
+    }
+
+    /** Holds if a certain read does not have a prior reference. */
+    query predicate readWithoutPriorRef(SourceVariable v, BasicBlock bb, int i) {
+      variableRead(bb, i, v, true) and
+      not AdjacentSsaRefs::adjacentRefRead(_, _, bb, i, v)
+    }
+
+    /**
+     * Holds if a certain read has multiple prior references. The introduction
+     * of phi reads should make the prior reference unique.
+     */
+    query predicate readWithMultiplePriorRefs(
+      SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2
+    ) {
+      AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+      2 <=
+        strictcount(BasicBlock bb0, int i0 | AdjacentSsaRefs::adjacentRefRead(bb0, i0, bb1, i1, v))
+    }
+
+    /** Holds if `phi` has less than 2 immediately prior references. */
+    query predicate phiWithoutTwoPriorRefs(PhiNode phi, int inputRefs) {
+      exists(BasicBlock bbPhi, SourceVariable v |
+        phi.definesAt(v, bbPhi, _) and
+        inputRefs =
+          count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
+        inputRefs < 2
+      )
+    }
+
+    /**
+     * Holds if the phi read for `v` at `bb` has less than 2 immediately prior
+     * references.
+     */
+    query predicate phiReadWithoutTwoPriorRefs(BasicBlock bbPhi, SourceVariable v, int inputRefs) {
+      synthPhiRead(bbPhi, v) and
+      inputRefs = count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
+      inputRefs < 2
     }
   }
 

@@ -204,12 +204,15 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    * This includes implicit reads via calls.
    */
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    exists(VarRead use |
-      v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
+    hasDominanceInformation(bb) and
+    (
+      exists(VarRead use |
+        v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
+      )
+      or
+      variableCapture(v, _, bb, i) and
+      certain = false
     )
-    or
-    variableCapture(v, _, bb, i) and
-    certain = false
   }
 }
 
