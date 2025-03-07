@@ -2,28 +2,23 @@ import org.aspectj.lang.annotation.Pointcut;
 
 public class Test {
 
-    // COMPLIANT
-    public void f() {
-        int i = 0;
-    }
+  public void f() {
+    int i = 0;
+  }
 
-    // COMPLIANT
-    public void f1() {
-        // intentionally empty
-    }
+  public void f1() {
+    // intentionally empty
+  }
 
-    // NON_COMPLIANT
-    public void f2() {}
+  public void f2() { } // $ Alert
 
-    // COMPLIANT - exception
-    @Pointcut()
-    public void f4() {}
+  @Pointcut()
+  public void f4() {
+  }
 
-    public abstract class TestInner {
+  public abstract class TestInner {
 
-        public abstract void f(); // COMPLIANT - intentionally empty
-    }
+    public abstract void f();
+  }
 
 }
-
-
