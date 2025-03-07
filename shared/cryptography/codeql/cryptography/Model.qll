@@ -359,13 +359,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class EllipticCurveAlgorithmInstance extends LocatableElement { }
 
-  abstract class HashOperationInstance extends KnownElement { }
+  abstract class HashOperationInstance extends OperationElement {
+    // TODO: need input and outputs, but this should be universal to all Operations
+  }
 
   abstract class HashAlgorithmInstance extends AlgorithmElement {
     /**
      * Gets the type of this digest algorithm, e.g., "SHA1", "SHA2", "MD5" etc.
      */
     abstract THashType getHashFamily();
+
+    abstract int getHashSize();
   }
 
   abstract class KeyDerivationOperationInstance extends KnownElement { }
@@ -1034,7 +1038,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   newtype THashType =
     BLAKE2B() or
     BLAKE2S() or
-    RIPEMD160() or
     MD2() or
     MD4() or
     MD5() or
@@ -1044,6 +1047,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     SHA3() or
     SHAKE() or
     SM3() or
+    RIPEMD160() or
     WHIRLPOOL() or
     OtherHashType()
 

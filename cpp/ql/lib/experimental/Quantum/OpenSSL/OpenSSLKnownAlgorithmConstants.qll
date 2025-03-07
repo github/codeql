@@ -212,13 +212,13 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "sha512-256" and nid = 1095 and normalized = "SHA512256" and algType = "HASH"
   or
-  name = "sha3-224" and nid = 1096 and normalized = "SHA3224" and algType = "HASH"
+  name = "sha3-224" and nid = 1096 and normalized = "SHA3-224" and algType = "HASH"
   or
-  name = "sha3-256" and nid = 1097 and normalized = "SHA3256" and algType = "HASH"
+  name = "sha3-256" and nid = 1097 and normalized = "SHA3-256" and algType = "HASH"
   or
-  name = "sha3-384" and nid = 1098 and normalized = "SHA3384" and algType = "HASH"
+  name = "sha3-384" and nid = 1098 and normalized = "SHA3-384" and algType = "HASH"
   or
-  name = "sha3-512" and nid = 1099 and normalized = "SHA3512" and algType = "HASH"
+  name = "sha3-512" and nid = 1099 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "shake128" and nid = 1100 and normalized = "SHAKE128" and algType = "HASH"
   or
@@ -1232,13 +1232,13 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "poly1305" and nid = 1061 and normalized = "POLY1305" and algType = "HASH"
   or
-  name = "hmac-sha3-224" and nid = 1102 and normalized = "SHA3224" and algType = "HASH"
+  name = "hmac-sha3-224" and nid = 1102 and normalized = "SHA3-224" and algType = "HASH"
   or
-  name = "hmac-sha3-256" and nid = 1103 and normalized = "SHA3256" and algType = "HASH"
+  name = "hmac-sha3-256" and nid = 1103 and normalized = "SHA3-256" and algType = "HASH"
   or
-  name = "hmac-sha3-384" and nid = 1104 and normalized = "SHA3384" and algType = "HASH"
+  name = "hmac-sha3-384" and nid = 1104 and normalized = "SHA3-384" and algType = "HASH"
   or
-  name = "hmac-sha3-512" and nid = 1105 and normalized = "SHA3512" and algType = "HASH"
+  name = "hmac-sha3-512" and nid = 1105 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "id-dsa-with-sha384" and nid = 1106 and normalized = "DSA" and algType = "SIGNATURE"
   or
@@ -1250,35 +1250,35 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "id-dsa-with-sha3-224" and nid = 1108 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "id-dsa-with-sha3-224" and nid = 1108 and normalized = "SHA3224" and algType = "HASH"
+  name = "id-dsa-with-sha3-224" and nid = 1108 and normalized = "SHA3-224" and algType = "HASH"
   or
   name = "id-dsa-with-sha3-256" and nid = 1109 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "id-dsa-with-sha3-256" and nid = 1109 and normalized = "SHA3256" and algType = "HASH"
+  name = "id-dsa-with-sha3-256" and nid = 1109 and normalized = "SHA3-256" and algType = "HASH"
   or
   name = "id-dsa-with-sha3-384" and nid = 1110 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "id-dsa-with-sha3-384" and nid = 1110 and normalized = "SHA3384" and algType = "HASH"
+  name = "id-dsa-with-sha3-384" and nid = 1110 and normalized = "SHA3-384" and algType = "HASH"
   or
   name = "id-dsa-with-sha3-512" and nid = 1111 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "id-dsa-with-sha3-512" and nid = 1111 and normalized = "SHA3512" and algType = "HASH"
+  name = "id-dsa-with-sha3-512" and nid = 1111 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "id-ecdsa-with-sha3-224" and nid = 1112 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "id-ecdsa-with-sha3-224" and nid = 1112 and normalized = "SHA3224" and algType = "HASH"
+  name = "id-ecdsa-with-sha3-224" and nid = 1112 and normalized = "SHA3-224" and algType = "HASH"
   or
   name = "id-ecdsa-with-sha3-256" and nid = 1113 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "id-ecdsa-with-sha3-256" and nid = 1113 and normalized = "SHA3256" and algType = "HASH"
+  name = "id-ecdsa-with-sha3-256" and nid = 1113 and normalized = "SHA3-256" and algType = "HASH"
   or
   name = "id-ecdsa-with-sha3-384" and nid = 1114 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "id-ecdsa-with-sha3-384" and nid = 1114 and normalized = "SHA3384" and algType = "HASH"
+  name = "id-ecdsa-with-sha3-384" and nid = 1114 and normalized = "SHA3-384" and algType = "HASH"
   or
   name = "id-ecdsa-with-sha3-512" and nid = 1115 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "id-ecdsa-with-sha3-512" and nid = 1115 and normalized = "SHA3512" and algType = "HASH"
+  name = "id-ecdsa-with-sha3-512" and nid = 1115 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-224" and
   nid = 1116 and
@@ -1292,7 +1292,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-224" and
   nid = 1116 and
-  normalized = "SHA3224" and
+  normalized = "SHA3-224" and
   algType = "HASH"
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-256" and
@@ -1307,7 +1307,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-256" and
   nid = 1117 and
-  normalized = "SHA3256" and
+  normalized = "SHA3-256" and
   algType = "HASH"
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-384" and
@@ -1322,7 +1322,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-384" and
   nid = 1118 and
-  normalized = "SHA3384" and
+  normalized = "SHA3-384" and
   algType = "HASH"
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-512" and
@@ -1337,7 +1337,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "id-rsassa-pkcs1-v1_5-with-sha3-512" and
   nid = 1119 and
-  normalized = "SHA3512" and
+  normalized = "SHA3-512" and
   algType = "HASH"
   or
   name = "aria-128-ccm" and nid = 1120 and normalized = "CCM" and algType = "BLOCK_MODE"
@@ -1666,19 +1666,19 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "dsa_with_sha3-224" and nid = 1108 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "dsa_with_sha3-224" and nid = 1108 and normalized = "SHA3224" and algType = "HASH"
+  name = "dsa_with_sha3-224" and nid = 1108 and normalized = "SHA3-224" and algType = "HASH"
   or
   name = "dsa_with_sha3-256" and nid = 1109 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "dsa_with_sha3-256" and nid = 1109 and normalized = "SHA3256" and algType = "HASH"
+  name = "dsa_with_sha3-256" and nid = 1109 and normalized = "SHA3-256" and algType = "HASH"
   or
   name = "dsa_with_sha3-384" and nid = 1110 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "dsa_with_sha3-384" and nid = 1110 and normalized = "SHA3384" and algType = "HASH"
+  name = "dsa_with_sha3-384" and nid = 1110 and normalized = "SHA3-384" and algType = "HASH"
   or
   name = "dsa_with_sha3-512" and nid = 1111 and normalized = "DSA" and algType = "SIGNATURE"
   or
-  name = "dsa_with_sha3-512" and nid = 1111 and normalized = "SHA3512" and algType = "HASH"
+  name = "dsa_with_sha3-512" and nid = 1111 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "dsa_with_sha384" and nid = 1106 and normalized = "DSA" and algType = "SIGNATURE"
   or
@@ -1752,19 +1752,19 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "ecdsa_with_sha3-224" and nid = 1112 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "ecdsa_with_sha3-224" and nid = 1112 and normalized = "SHA3224" and algType = "HASH"
+  name = "ecdsa_with_sha3-224" and nid = 1112 and normalized = "SHA3-224" and algType = "HASH"
   or
   name = "ecdsa_with_sha3-256" and nid = 1113 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "ecdsa_with_sha3-256" and nid = 1113 and normalized = "SHA3256" and algType = "HASH"
+  name = "ecdsa_with_sha3-256" and nid = 1113 and normalized = "SHA3-256" and algType = "HASH"
   or
   name = "ecdsa_with_sha3-384" and nid = 1114 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "ecdsa_with_sha3-384" and nid = 1114 and normalized = "SHA3384" and algType = "HASH"
+  name = "ecdsa_with_sha3-384" and nid = 1114 and normalized = "SHA3-384" and algType = "HASH"
   or
   name = "ecdsa_with_sha3-512" and nid = 1115 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
-  name = "ecdsa_with_sha3-512" and nid = 1115 and normalized = "SHA3512" and algType = "HASH"
+  name = "ecdsa_with_sha3-512" and nid = 1115 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "gost 28147-89" and
   nid = 813 and
@@ -2201,13 +2201,13 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   normalized = "GOSTR341194" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "id-hmacwithsha3-224" and nid = 1102 and normalized = "SHA3224" and algType = "HASH"
+  name = "id-hmacwithsha3-224" and nid = 1102 and normalized = "SHA3-224" and algType = "HASH"
   or
-  name = "id-hmacwithsha3-256" and nid = 1103 and normalized = "SHA3256" and algType = "HASH"
+  name = "id-hmacwithsha3-256" and nid = 1103 and normalized = "SHA3-256" and algType = "HASH"
   or
-  name = "id-hmacwithsha3-384" and nid = 1104 and normalized = "SHA3384" and algType = "HASH"
+  name = "id-hmacwithsha3-384" and nid = 1104 and normalized = "SHA3-384" and algType = "HASH"
   or
-  name = "id-hmacwithsha3-512" and nid = 1105 and normalized = "SHA3512" and algType = "HASH"
+  name = "id-hmacwithsha3-512" and nid = 1105 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "id-regctrl" and nid = 313 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
@@ -2590,19 +2590,19 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "rsa-sha3-224" and nid = 1116 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
-  name = "rsa-sha3-224" and nid = 1116 and normalized = "SHA3224" and algType = "HASH"
+  name = "rsa-sha3-224" and nid = 1116 and normalized = "SHA3-224" and algType = "HASH"
   or
   name = "rsa-sha3-256" and nid = 1117 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
-  name = "rsa-sha3-256" and nid = 1117 and normalized = "SHA3256" and algType = "HASH"
+  name = "rsa-sha3-256" and nid = 1117 and normalized = "SHA3-256" and algType = "HASH"
   or
   name = "rsa-sha3-384" and nid = 1118 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
-  name = "rsa-sha3-384" and nid = 1118 and normalized = "SHA3384" and algType = "HASH"
+  name = "rsa-sha3-384" and nid = 1118 and normalized = "SHA3-384" and algType = "HASH"
   or
   name = "rsa-sha3-512" and nid = 1119 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
-  name = "rsa-sha3-512" and nid = 1119 and normalized = "SHA3512" and algType = "HASH"
+  name = "rsa-sha3-512" and nid = 1119 and normalized = "SHA3-512" and algType = "HASH"
   or
   name = "rsa-sha384" and nid = 669 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or

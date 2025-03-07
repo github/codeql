@@ -1,17 +1,15 @@
 import cpp
 import experimental.Quantum.Language
-import EVPCipherConsumers
+import EVPHashConsumers
 import OpenSSLAlgorithmGetter
 
 predicate literalToHashFamilyType(Literal e, Crypto::THashType type) {
-  exists(string name, string algType | algType.toLowerCase().matches("%hash") |
+  exists(string name, string algType | algType.toLowerCase().matches("hash") |
     resolveAlgorithmFromLiteral(e, name, algType) and
     (
       name.matches("BLAKE2B") and type instanceof Crypto::BLAKE2B
       or
       name.matches("BLAKE2S") and type instanceof Crypto::BLAKE2S
-      or
-      name.matches("RIPEMD160") and type instanceof Crypto::RIPEMD160
       or
       name.matches("MD2") and type instanceof Crypto::MD2
       or
@@ -21,29 +19,33 @@ predicate literalToHashFamilyType(Literal e, Crypto::THashType type) {
       or
       name.matches("POLY1305") and type instanceof Crypto::POLY1305
       or
-      name.matches(["SHA1", "SHA"]) and type instanceof Crypto::SHA1
+      name.matches(["SHA", "SHA1"]) and type instanceof Crypto::SHA1
       or
-      name.matches("SHA2") and type instanceof Crypto::SHA2
+      name.matches("SHA+%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
       or
-      name.matches("SHA3") and type instanceof Crypto::SHA3
+      name.matches("SHA3-%") and type instanceof Crypto::SHA3
       or
-      name.matches("SHAKE") and type instanceof Crypto::SHAKE
+      name.matches(["SHAKE"]) and type instanceof Crypto::SHAKE
       or
       name.matches("SM3") and type instanceof Crypto::SM3
       or
+      name.matches("RIPEMD160") and type instanceof Crypto::RIPEMD160
+      or
+      //or
+      //TODO: need to handle MACs differently, including md_GOST94
+      //   name.matches("%GOST%") and type instanceof Crypto::GOST
       name.matches("WHIRLPOOL") and type instanceof Crypto::WHIRLPOOL
-      // TODO: what about MD_GOST?
     )
   )
 }
 
 class HashKnownAlgorithmLiteralAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof Literal
 {
-  OpenSSLAlgorithmGetterCall getterCall;
+  OpenSSLAlgorithmGetterCall cipherGetterCall;
 
   HashKnownAlgorithmLiteralAlgorithmInstance() {
     exists(DataFlow::Node src, DataFlow::Node sink |
-      sink = getterCall.getValueArgNode() and
+      sink = cipherGetterCall.getValueArgNode() and
       src.asExpr() = this and
       KnownAlgorithmLiteralToAlgorithmGetterFlow::flow(src, sink) and
       // Not just any known value, but specifically a known cipher operation
@@ -54,14 +56,15 @@ class HashKnownAlgorithmLiteralAlgorithmInstance extends Crypto::HashAlgorithmIn
     )
   }
 
-  // TODO: should this not be part of the abstract algorithm definition?
   Crypto::AlgorithmConsumer getConsumer() {
-    AlgGetterToAlgConsumerFlow::flow(getterCall.getResultNode(), DataFlow::exprNode(result))
+    AlgGetterToAlgConsumerFlow::flow(cipherGetterCall.getResultNode(), DataFlow::exprNode(result))
   }
 
-  override Crypto::THashType getHashFamily() { literalToHashFamilyType(this, result) }
-
-  override int getHashSize() { none() } //TODO
+  override Crypto::THashType getHashFamily() {
+    literalToHashFamilyType(this, result)
+  }
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
+
+  override int getHashSize() {none() }//TODO
 }
