@@ -1170,6 +1170,28 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
 }
 
+/**
+ * A quoted string escape in a regular expression, using the `\q` syntax.
+ * The only operation supported inside a quoted string is alternation, using `|`.
+ *
+ * Example:
+ *
+ * ```
+ * \q{foo}
+ * \q{a|b|c}
+ * ```
+ */
+class RegExpQuotedString extends RegExpTerm, @regexp_quoted_string {
+  /** Gets the term representing the contents of this quoted string. */
+  RegExpTerm getQuotedString() { result = this.getAChild() }
+
+  override predicate isNullable() { none() }
+
+  override string getAMatchedString() { result = this.getQuotedString().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpQuotedString" }
+}
+
 module RegExp {
   /** Gets the string `"?"` used to represent a regular expression whose flags are unknown. */
   string unknownFlag() { result = "?" }
