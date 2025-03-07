@@ -1,3 +1,75 @@
+#select
+| jquery-plugin.js:12:31:12:41 | options.foo | jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:41 | options.foo | This HTML construction which depends on $@ might later allow $@. | jquery-plugin.js:11:34:11:40 | options | library input | jquery-plugin.js:12:20:12:53 | "<span> ... /span>" | cross-site scripting |
+| jquery-plugin.js:14:31:14:35 | stuff | jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | This HTML construction which depends on $@ might later allow $@. | jquery-plugin.js:11:27:11:31 | stuff | library input | jquery-plugin.js:14:20:14:47 | "<span> ... /span>" | cross-site scripting |
+| lib2/index.ts:2:27:2:27 | s | lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:1:28:1:28 | s | library input | lib2/index.ts:3:47:3:50 | html | cross-site scripting |
+| lib2/index.ts:7:58:7:65 | settings | lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:6:29:6:36 | settings | library input | lib2/index.ts:7:47:7:77 | "<span> ... /span>" | cross-site scripting |
+| lib2/index.ts:18:62:18:65 | name | lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:18:62:18:65 | name | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:6:29:6:36 | settings | library input | lib2/index.ts:18:51:18:77 | "<span> ... /span>" | cross-site scripting |
+| lib2/src/MyNode.ts:2:29:2:29 | s | lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | lib2/src/MyNode.ts:1:28:1:28 | s | library input | lib2/src/MyNode.ts:3:49:3:52 | html | cross-site scripting |
+| lib/src/MyNode.ts:2:29:2:29 | s | lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | lib/src/MyNode.ts:1:28:1:28 | s | library input | lib/src/MyNode.ts:3:49:3:52 | html | cross-site scripting |
+| main.js:2:29:2:29 | s | main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | main.js:1:55:1:55 | s | library input | main.js:3:49:3:52 | html | cross-site scripting |
+| main.js:7:49:7:49 | s | main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:6:49:6:49 | s | library input | main.js:8:48:8:66 | doc.documentElement | cross-site scripting |
+| main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:16:21:16:35 | xml.cloneNode() | cross-site scripting |
+| main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:17:48:17:50 | tmp | cross-site scripting |
+| main.js:22:34:22:34 | s | main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:21:47:21:47 | s | library input | main.js:23:53:23:56 | html | cross-site scripting |
+| main.js:62:19:62:31 | settings.name | main.js:56:28:56:34 | options | main.js:62:19:62:31 | settings.name | This HTML construction which depends on $@ might later allow $@. | main.js:56:28:56:34 | options | library input | main.js:62:11:62:40 | "<b>" + ...  "</b>" | cross-site scripting |
+| main.js:67:63:67:69 | attrVal | main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | This HTML construction which depends on $@ might later allow $@. | main.js:66:35:66:41 | attrVal | library input | main.js:67:47:67:78 | "<img a ...  "\\"/>" | cross-site scripting |
+| main.js:81:35:81:37 | val | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | This HTML construction which depends on $@ might later allow $@. | main.js:79:34:79:36 | val | library input | main.js:81:24:81:49 | "<span> ... /span>" | cross-site scripting |
+| main.js:90:23:90:23 | x | main.js:93:43:93:43 | x | main.js:90:23:90:23 | x | This HTML construction which depends on $@ might later allow $@. | main.js:93:43:93:43 | x | library input | main.js:94:20:94:32 | createHTML(x) | cross-site scripting |
+| main.js:99:28:99:28 | x | main.js:98:43:98:43 | x | main.js:99:28:99:28 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:100:24:100:26 | svg | cross-site scripting |
+| main.js:103:43:103:43 | x | main.js:98:43:98:43 | x | main.js:103:43:103:43 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:103:20:103:44 | myMerma ... id", x) | cross-site scripting |
+| main.js:105:26:105:26 | x | main.js:98:43:98:43 | x | main.js:105:26:105:26 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:106:24:106:26 | svg | cross-site scripting |
+| main.js:109:41:109:41 | x | main.js:98:43:98:43 | x | main.js:109:41:109:41 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:109:20:109:42 | mermaid ... id", x) | cross-site scripting |
+| main.js:111:37:111:37 | x | main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:112:24:112:26 | svg | cross-site scripting |
+| main.js:117:34:117:34 | s | main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:116:47:116:47 | s | library input | main.js:118:53:118:56 | html | cross-site scripting |
+| typed.ts:2:29:2:29 | s | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:1:39:1:39 | s | library input | typed.ts:3:31:3:34 | html | cross-site scripting |
+| typed.ts:8:40:8:40 | s | typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:6:43:6:43 | s | library input | typed.ts:8:29:8:52 | "<span> ... /span>" | cross-site scripting |
+edges
+| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | provenance |  |
+| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options | provenance |  |
+| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo | provenance | Config |
+| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s | provenance |  |
+| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings | provenance |  |
+| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:13:16:13:23 | settings | provenance |  |
+| lib2/index.ts:13:9:13:41 | name | lib2/index.ts:18:62:18:65 | name | provenance |  |
+| lib2/index.ts:13:16:13:23 | settings | lib2/index.ts:13:16:13:33 | settings.mySetting | provenance | Config |
+| lib2/index.ts:13:16:13:33 | settings.mySetting | lib2/index.ts:13:16:13:36 | setting ... ting[i] | provenance | Config |
+| lib2/index.ts:13:16:13:36 | setting ... ting[i] | lib2/index.ts:13:16:13:41 | setting ... i].name | provenance | Config |
+| lib2/index.ts:13:16:13:41 | setting ... i].name | lib2/index.ts:13:9:13:41 | name | provenance |  |
+| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s | provenance |  |
+| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s | provenance |  |
+| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | provenance |  |
+| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | provenance |  |
+| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | provenance |  |
+| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | provenance |  |
+| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options | provenance |  |
+| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults | provenance |  |
+| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults | provenance |  |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults | provenance |  |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults | provenance |  |
+| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings | provenance |  |
+| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings | provenance |  |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance | Config |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance |  |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance |  |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance | Config |
+| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
+| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) | provenance | Config |
+| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name | provenance | Config |
+| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | provenance |  |
+| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | provenance |  |
+| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x | provenance |  |
+| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x | provenance |  |
+| main.js:94:31:94:31 | x | main.js:89:21:89:21 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | provenance |  |
+| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | provenance |  |
+| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | provenance |  |
+| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | provenance |  |
 nodes
 | jquery-plugin.js:11:27:11:31 | stuff | semmle.label | stuff |
 | jquery-plugin.js:11:34:11:40 | options | semmle.label | options |
@@ -58,76 +130,4 @@ nodes
 | typed.ts:2:29:2:29 | s | semmle.label | s |
 | typed.ts:6:43:6:43 | s | semmle.label | s |
 | typed.ts:8:40:8:40 | s | semmle.label | s |
-edges
-| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | provenance |  |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options | provenance |  |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo | provenance | Config |
-| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s | provenance |  |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings | provenance |  |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:13:16:13:23 | settings | provenance |  |
-| lib2/index.ts:13:9:13:41 | name | lib2/index.ts:18:62:18:65 | name | provenance |  |
-| lib2/index.ts:13:16:13:23 | settings | lib2/index.ts:13:16:13:33 | settings.mySetting | provenance | Config |
-| lib2/index.ts:13:16:13:33 | settings.mySetting | lib2/index.ts:13:16:13:36 | setting ... ting[i] | provenance | Config |
-| lib2/index.ts:13:16:13:36 | setting ... ting[i] | lib2/index.ts:13:16:13:41 | setting ... i].name | provenance | Config |
-| lib2/index.ts:13:16:13:41 | setting ... i].name | lib2/index.ts:13:9:13:41 | name | provenance |  |
-| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s | provenance |  |
-| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s | provenance |  |
-| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | provenance |  |
-| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | provenance |  |
-| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | provenance |  |
-| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | provenance |  |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options | provenance |  |
-| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults | provenance |  |
-| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults | provenance |  |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults | provenance |  |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults | provenance |  |
-| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings | provenance |  |
-| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings | provenance |  |
-| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
-| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
-| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance | Config |
-| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance |  |
-| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance |  |
-| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance | Config |
-| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
-| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) | provenance | Config |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name | provenance | Config |
-| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | provenance |  |
-| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | provenance |  |
-| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x | provenance |  |
-| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x | provenance |  |
-| main.js:94:31:94:31 | x | main.js:89:21:89:21 | x | provenance |  |
-| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x | provenance |  |
-| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x | provenance |  |
-| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x | provenance |  |
-| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x | provenance |  |
-| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | provenance |  |
-| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | provenance |  |
-| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | provenance |  |
-| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | provenance |  |
 subpaths
-#select
-| jquery-plugin.js:12:31:12:41 | options.foo | jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:41 | options.foo | This HTML construction which depends on $@ might later allow $@. | jquery-plugin.js:11:34:11:40 | options | library input | jquery-plugin.js:12:20:12:53 | "<span> ... /span>" | cross-site scripting |
-| jquery-plugin.js:14:31:14:35 | stuff | jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | This HTML construction which depends on $@ might later allow $@. | jquery-plugin.js:11:27:11:31 | stuff | library input | jquery-plugin.js:14:20:14:47 | "<span> ... /span>" | cross-site scripting |
-| lib2/index.ts:2:27:2:27 | s | lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:1:28:1:28 | s | library input | lib2/index.ts:3:47:3:50 | html | cross-site scripting |
-| lib2/index.ts:7:58:7:65 | settings | lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:6:29:6:36 | settings | library input | lib2/index.ts:7:47:7:77 | "<span> ... /span>" | cross-site scripting |
-| lib2/index.ts:18:62:18:65 | name | lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:18:62:18:65 | name | This HTML construction which depends on $@ might later allow $@. | lib2/index.ts:6:29:6:36 | settings | library input | lib2/index.ts:18:51:18:77 | "<span> ... /span>" | cross-site scripting |
-| lib2/src/MyNode.ts:2:29:2:29 | s | lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | lib2/src/MyNode.ts:1:28:1:28 | s | library input | lib2/src/MyNode.ts:3:49:3:52 | html | cross-site scripting |
-| lib/src/MyNode.ts:2:29:2:29 | s | lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | lib/src/MyNode.ts:1:28:1:28 | s | library input | lib/src/MyNode.ts:3:49:3:52 | html | cross-site scripting |
-| main.js:2:29:2:29 | s | main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | main.js:1:55:1:55 | s | library input | main.js:3:49:3:52 | html | cross-site scripting |
-| main.js:7:49:7:49 | s | main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:6:49:6:49 | s | library input | main.js:8:48:8:66 | doc.documentElement | cross-site scripting |
-| main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:16:21:16:35 | xml.cloneNode() | cross-site scripting |
-| main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:17:48:17:50 | tmp | cross-site scripting |
-| main.js:22:34:22:34 | s | main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:21:47:21:47 | s | library input | main.js:23:53:23:56 | html | cross-site scripting |
-| main.js:62:19:62:31 | settings.name | main.js:56:28:56:34 | options | main.js:62:19:62:31 | settings.name | This HTML construction which depends on $@ might later allow $@. | main.js:56:28:56:34 | options | library input | main.js:62:11:62:40 | "<b>" + ...  "</b>" | cross-site scripting |
-| main.js:67:63:67:69 | attrVal | main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | This HTML construction which depends on $@ might later allow $@. | main.js:66:35:66:41 | attrVal | library input | main.js:67:47:67:78 | "<img a ...  "\\"/>" | cross-site scripting |
-| main.js:81:35:81:37 | val | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | This HTML construction which depends on $@ might later allow $@. | main.js:79:34:79:36 | val | library input | main.js:81:24:81:49 | "<span> ... /span>" | cross-site scripting |
-| main.js:90:23:90:23 | x | main.js:93:43:93:43 | x | main.js:90:23:90:23 | x | This HTML construction which depends on $@ might later allow $@. | main.js:93:43:93:43 | x | library input | main.js:94:20:94:32 | createHTML(x) | cross-site scripting |
-| main.js:99:28:99:28 | x | main.js:98:43:98:43 | x | main.js:99:28:99:28 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:100:24:100:26 | svg | cross-site scripting |
-| main.js:103:43:103:43 | x | main.js:98:43:98:43 | x | main.js:103:43:103:43 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:103:20:103:44 | myMerma ... id", x) | cross-site scripting |
-| main.js:105:26:105:26 | x | main.js:98:43:98:43 | x | main.js:105:26:105:26 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:106:24:106:26 | svg | cross-site scripting |
-| main.js:109:41:109:41 | x | main.js:98:43:98:43 | x | main.js:109:41:109:41 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:109:20:109:42 | mermaid ... id", x) | cross-site scripting |
-| main.js:111:37:111:37 | x | main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:112:24:112:26 | svg | cross-site scripting |
-| main.js:117:34:117:34 | s | main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:116:47:116:47 | s | library input | main.js:118:53:118:56 | html | cross-site scripting |
-| typed.ts:2:29:2:29 | s | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:1:39:1:39 | s | library input | typed.ts:3:31:3:34 | html | cross-site scripting |
-| typed.ts:8:40:8:40 | s | typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:6:43:6:43 | s | library input | typed.ts:8:29:8:52 | "<span> ... /span>" | cross-site scripting |

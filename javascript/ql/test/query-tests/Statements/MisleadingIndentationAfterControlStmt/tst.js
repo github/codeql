@@ -1,7 +1,7 @@
 function bad1() {
 	if (cond())
 		f();
-		g();
+		g(); // $ Alert
 }
 
 function good1() {
@@ -22,7 +22,7 @@ function bad2() {
 		f();
 	else
 		g();
-		h();
+		h(); // $ Alert
 }
 
 function good3() {
@@ -34,7 +34,7 @@ function good3() {
 function wbad1() {
 	while (cond())
 		f();
-		g();
+		g(); // $ Alert
 }
 
 function wgood1() {

@@ -1,8 +1,7 @@
 function Rectangle(x, y, width, height) {
 	this.x = x;
 	this.y = y;
-	// NOT OK
-	width = width;
+	width = width; // $ Alert
 	this.height = height;
 }
 
@@ -15,18 +14,16 @@ Rectangle.prototype = {
 		this.width = a/this.height;
 	},
 	foo: function() {
-		// OK
+		
 		this.area = this.area;
 	}
 };
 
-// NOT OK
-array[1] = array[1];
+array[1] = array[1]; // $ Alert
 
-// NOT OK
-o.x = o.x;
+o.x = o.x; // $ Alert
 
-// OK
+
 document.innerHTML = document.innerHTML;
 
 class Point {
@@ -43,7 +40,7 @@ class Point {
 		this.y = 0;
 	}
 	foo() {
-		// OK
+		
 		this.dist = this.dist;
 	}
 }

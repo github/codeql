@@ -1,28 +1,28 @@
 import dummy from 'somewhere';
 
 function copyUsingForIn(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (dst[key]) {
             copyUsingForIn(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
 
 function copyUsingKeys(dst, src) {
-    Object.keys(src).forEach(key => {
+    Object.keys(src).forEach(key => { // $ Source
         if (dst[key]) {
             copyUsingKeys(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     });
 }
 
 function copyRest(dst, ...sources) {
     for (let source of sources) {
-        for (let key in source) {
+        for (let key in source) { // $ Source
             copyRestAux(dst, source[key], key);
         }
     }
@@ -33,28 +33,28 @@ function copyRestAux(dst, value, key) {
     if (dstValue) {
         copyRest(dstValue, value);
     } else {
-        dst[key] = value; // NOT OK
+        dst[key] = value; // $ Alert
     }
 }
 
 function copyProtoGuarded(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (key === "__proto__") continue;
         if (dst[key]) {
             copyProtoGuarded(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
 
 function copyCtorGuarded(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (key === "constructor") continue;
         if (dst[key]) {
             copyCtorGuarded(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -65,7 +65,7 @@ function copyDoubleGuarded(dst, src) {
         if (dst[key]) {
             copyDoubleGuarded(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -80,7 +80,7 @@ function copyComplex(dst, src) {
             if (dst[key]) {
                 copyComplex(dst[key], src[key]);
             } else {
-                dst[key] = src[key]; // OK
+                dst[key] = src[key];
             }
         }
     }
@@ -93,20 +93,20 @@ function copyHasOwnProperty(dst, src) {
         if (dst.hasOwnProperty(key)) {
             copyHasOwnProperty(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
 
 function copyHasOwnPropertyBad(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         // Guarding using src.hasOwnProperty is *not* effective,
         // since '__proto__' and 'constructor' are own properties in the payload.
         if (!src.hasOwnProperty(key)) continue; // Not safe
         if (dst[key]) {
             copyHasOwnPropertyBad(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -118,21 +118,21 @@ function copyHasOwnPropertyTearOff(dst, src) {
         if (_hasOwnProp.call(dst, key)) {
             copyHasOwnPropertyTearOff(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
 
 function shallowExtend(dst, src) {
     for (let key in src) {
-        dst[key] = src[key]; // OK
+        dst[key] = src[key];
     }
 }
 
 function transform(src, fn) {
     if (typeof src !== 'object') return fn(src);
     for (let key in src) {
-        src[key] = transform(src[key], fn); // OK
+        src[key] = transform(src[key], fn);
     }
     return src;
 }
@@ -141,17 +141,17 @@ function clone(src) {
     if (typeof src !== 'object') return src;
     let result = {};
     for (let key in src) {
-        result[key] = clone(src[key]); // OK
+        result[key] = clone(src[key]);
     }
     return result;
 }
 
 function higherOrderRecursion(dst, src, callback) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (dst[key]) {
             callback(dst, src, key);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -168,7 +168,7 @@ function instanceofObjectGuard(dst, src) {
         if (typeof dstValue === 'object' && dstValue instanceof Object) {
             instanceofObjectGuard(dstValue, src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -181,7 +181,7 @@ function copyWithBlacklist(dst, src) {
         if (dst[key]) {
             copyWithBlacklist(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -189,11 +189,11 @@ function copyWithBlacklist(dst, src) {
 function copyUsingPlainForLoop(dst, src) {
     let keys = Object.keys(src);
     for (let i = 0; i < keys.length; ++i) {
-        let key = keys[i];
+        let key = keys[i]; // $ Source
         if (dst[key]) {
             copyUsingPlainForLoop(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -205,7 +205,7 @@ function copyUsingPlainForLoopNoAlias(dst, src) {
         if (dst[key]) {
             copyUsingPlainForLoopNoAlias(dst[keys[i]], src[keys[i]]);
         } else {
-            dst[keys[i]] = src[keys[i]]; // NOT OK - but not flagged
+            dst[keys[i]] = src[keys[i]]; // $ MISSING: Alert
         }
     }
 }
@@ -214,7 +214,7 @@ function deepSet(map, key1, key2, value) {
     if (!map[key1]) {
         map[key1] = Object.create(null);
     }
-    map[key1][key2] = value; // OK
+    map[key1][key2] = value;
 }
 
 function deepSetCaller(data) {
@@ -230,12 +230,12 @@ function deepSetBad(map, key1, key2, value) {
     if (!map[key1]) {
         map[key1] = Object.create(null);
     }
-    map[key1][key2] = value; // NOT OK - object literal can flow here
+    map[key1][key2] = value; // $ Alert - object literal can flow here
 }
 
 function deepSetCallerBad(data) {
     let map1 = Object.create(null);
-    for (let key in data) {
+    for (let key in data) { // $ Source
         deepSetBad({}, key, 'x', data[key]); // oops
         deepSetBad(map1, 'x', key, data[key]);
     }
@@ -254,7 +254,7 @@ function mergeWithCopy(dst, src) {
     let result = maybeCopy(dst);
     for (let key in src) {
         if (src.hasOwnProperty(key)) {
-            result[key] = mergeWithCopy(dst[key], src[key]); // OK
+            result[key] = mergeWithCopy(dst[key], src[key]);
         }
     }
     return result;
@@ -262,22 +262,22 @@ function mergeWithCopy(dst, src) {
 
 function copyUsingEntries(dst, src) {
     Object.entries(src).forEach(entry => {
-        let key = entry[0];
+        let key = entry[0]; // $ Source
         let value = entry[1];
         if (dst[key]) {
             copyUsingEntries(dst[key], value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
 
 function copyUsingReflect(dst, src) {
-    Reflect.ownKeys(src).forEach(key => {
+    Reflect.ownKeys(src).forEach(key => { // $ Source
         if (dst[key]) {
             copyUsingReflect(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     });
 }
@@ -290,7 +290,7 @@ function copyWithPath(dst, src, path) {
             } else {
                 let target = {};
                 target[path] = {};
-                target[path][key] = src[key]; // OK
+                target[path][key] = src[key];
                 doSomething(target);
             }
         }
@@ -299,34 +299,34 @@ function copyWithPath(dst, src, path) {
 }
 
 function typeofObjectTest(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (src.hasOwnProperty(key)) {
             let value = src[key];
             if (dst[key] && typeof value === 'object') {
                 typeofObjectTest(dst[key], value);
             } else {
-                dst[key] = value; // NOT OK
+                dst[key] = value; // $ Alert
             }
         }
     }
 }
 
 function mergeRephinementNode(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (src.hasOwnProperty(key)) {
             if (key === key && key === key) continue; // Create a phi-node of refinement nodes
             let value = src[key];
             if (dst[key] && typeof value === 'object') {
                 mergeRephinementNode(dst[key], value);
             } else {
-                dst[key] = value; // NOT OK
+                dst[key] = value; // $ Alert
             }
         }
     }
 }
 
 function mergeSelective(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (src.hasOwnProperty(key)) {
             // Only 'prefs' is merged recursively
             if (key in dst && key !== 'prefs') {
@@ -335,7 +335,7 @@ function mergeSelective(dst, src) {
             if (dst[key]) {
                 mergeSelective(dst[key], src[key]);
             } else {
-                dst[key] = src[key]; // OK
+                dst[key] = src[key]; // $ Alert
             }
         }
     }
@@ -347,14 +347,14 @@ function isNonArrayObject(item) {
 
 function mergePlainObjectsOnly(target, source) {
     if (isNonArrayObject(target) && isNonArrayObject(source)) {
-        Object.keys(source).forEach(key => {
+        Object.keys(source).forEach(key => { // $ Source
             if (key === '__proto__') {
                 return;
             }
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnly(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK - but flagged anyway due to imprecise barrier for captured variable
+                target[key] = source[key]; // $ SPURIOUS: Alert - due to imprecise barrier for captured variable
             }
         });
     }
@@ -370,7 +370,7 @@ function mergePlainObjectsOnlyNoClosure(target, source) {
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnlyNoClosure(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK
+                target[key] = source[key];
             }
         }
     }
@@ -378,7 +378,7 @@ function mergePlainObjectsOnlyNoClosure(target, source) {
 }
 
 function forEachProp(obj, callback) {
-    for (let key in obj) {
+    for (let key in obj) { // $ Source
         if (obj.hasOwnProperty(key)) {
             callback(key, obj[key]);
         }
@@ -390,7 +390,7 @@ function mergeUsingCallback(dst, src) {
         if (dst[key]) {
             mergeUsingCallback(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK - but not currently flagged
+            dst[key] = src[key]; // $ MISSING: Alert
         }
     });
 }
@@ -400,7 +400,7 @@ function mergeUsingCallback2(dst, src) {
         if (dst[key]) {
             mergeUsingCallback2(dst[key], value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
@@ -410,13 +410,13 @@ function wrappedRead(obj, key) {
 }
 
 function copyUsingWrappedRead(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         let value = wrappedRead(src, key);
         let target = wrappedRead(dst, key);
         if (target) {
             copyUsingWrappedRead(target, value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     }
 }
@@ -427,13 +427,13 @@ function almostSafeRead(obj, key) {
 }
 
 function copyUsingAlmostSafeRead(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         let value = almostSafeRead(src, key);
         let target = almostSafeRead(dst, key);
         if (target) {
             copyUsingAlmostSafeRead(target, value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     }
 }
@@ -450,43 +450,43 @@ function copyUsingSafeRead(dst, src) {
         if (target) {
             copyUsingSafeRead(target, value);
         } else {
-            dst[key] = value; // OK
+            dst[key] = value;
         }
     }
 }
 
 function copyUsingForOwn(dst, src) {
     let forOwn = import('for-own');
-    forOwn(src, (value, key, o) => {
+    forOwn(src, (value, key, o) => { // $ Source
         if (dst[key]) {
             copyUsingForOwn(dst[key], src[key]);
         } else {
             // Handle a few different ways to access src[key]
-            if (something()) dst[key] = src[key]; // NOT OK
-            if (something()) dst[key] = o[key]; // NOT OK
-            if (something()) dst[key] = value; // NOT OK
+            if (something()) dst[key] = src[key]; // $ Alert
+            if (something()) dst[key] = o[key]; // $ Alert
+            if (something()) dst[key] = value; // $ Alert
         }
     });
 }
 
 function copyUsingUnderscoreOrLodash(dst, src) {
-    _.each(src, (value, key, o) => {
+    _.each(src, (value, key, o) => { // $ Source
         if (dst[key]) {
             copyUsingUnderscoreOrLodash(dst[key], src[key]);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
 
 let isPlainObject = require('is-plain-object');
 function copyPlainObject(dst, src) {
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (key === '__proto__') continue;
         if (dst[key] && isPlainObject(src)) {
             copyPlainObject(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK - but flagged anyway
+            dst[key] = src[key]; // $ SPURIOUS: Alert
         }
     }
 }
@@ -499,7 +499,7 @@ function copyPlainObject2(dst, src) {
         if (isPlainObject(target) && isPlainObject(value)) {
             copyPlainObject2(target, value);
         } else {
-            dst[key] = value; // OK
+            dst[key] = value;
         }
     }
 }
@@ -508,13 +508,13 @@ function copyPlainObject2(dst, src) {
 function usingDefineProperty(dst, src) {
     let keys = Object.keys(src);
     for (let i = 0; i < keys.length; ++i) {
-        let key = keys[i];
+        let key = keys[i]; // $ Source
         if (dst[key]) {
             usingDefineProperty(dst[key], src[key]);
         } else {
             var descriptor = {};
             descriptor.value = src[key];
-            Object.defineProperty(dst, key, descriptor);  // NOT OK
+            Object.defineProperty(dst, key, descriptor);  // $ Alert
         }
     }
 }
@@ -522,11 +522,11 @@ function usingDefineProperty(dst, src) {
 function copyUsingForInAndRest(...args) {
     const dst = args[0];
     const src = args[1];
-    for (let key in src) {
+    for (let key in src) { // $ Source
         if (dst[key]) {
             copyUsingForInAndRest(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // NOT OK
+            dst[key] = src[key]; // $ Alert
         }
     }
 }
@@ -535,7 +535,7 @@ function forEachPropNoTempVar(obj, callback) {
     const keys = Object.keys(obj)
     const len = keys.length
     for (let i = 0; i < len; i++) {
-        callback(keys[i], obj[keys[i]])
+        callback(keys[i], obj[keys[i]]) // $ Source
     }
 }
 
@@ -544,7 +544,7 @@ function mergeUsingCallback3(dst, src) {
         if (dst[key]) {
             mergeUsingCallback3(dst[key], value);
         } else {
-            dst[key] = value; // NOT OK
+            dst[key] = value; // $ Alert
         }
     });
 }
@@ -556,7 +556,7 @@ function copyHasOwnProperty2(dst, src) {
         if (Object.hasOwn(dst, key)) {
             copyHasOwnProperty2(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -568,7 +568,7 @@ function copyHasOwnProperty3(dst, src) {
         if (_.has(dst, key)) {
             copyHasOwnProperty3(dst[key], src[key]);
         } else {
-            dst[key] = src[key]; // OK
+            dst[key] = src[key];
         }
     }
 }
@@ -598,11 +598,11 @@ function captureBarrier(obj) {
 }
 
 function merge_captureBarrier(dest, source) {
-    for (const key of Object.keys(source)) {
+    for (const key of Object.keys(source)) { // $ Source
         if (dest[key]) {
             merge_captureBarrier(dest[key], source[key]);
         } else {
-            dest[key] = captureBarrier(source[key]); // OK - but currently flagged anyway
+            dest[key] = captureBarrier(source[key]); // $ SPURIOUS: Alert
         }
     }
 }

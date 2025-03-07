@@ -2,7 +2,7 @@ function connectAndLog(id) {
     log.info(`Connecting to ${id}`)
     let connection = openConnection(id)
     if (!connection) {
-      log.error('Could not connect to ${id}')
+      log.error('Could not connect to ${id}') // $ Alert
     }
 }
 
@@ -14,9 +14,9 @@ function emitTemplate(name, date) {
 var globalVar = "global";
 
 function foo() {
-    log.error('globalVar = ${globalVar}');
+    log.error('globalVar = ${globalVar}'); // $ Alert
 }
-log.error('globalVar = ${globalVar}');
+log.error('globalVar = ${globalVar}'); // $ Alert
 
 function bar() {
     log.error('Something ${notInScope}');
@@ -25,7 +25,7 @@ function bar() {
 function baz(x){
     log.error("${x}");
     log.error("${y}");
-    log.error("${x} ");
+    log.error("${x} "); // $ Alert
     log.error("${y} ");
 }
 
@@ -37,7 +37,7 @@ function foo1() {
     const foobar = 4;
 
     const data = {name: name, date: date};
-    writer.emit("Name: ${name}, Date: ${date}.", data); // OK 
+    writer.emit("Name: ${name}, Date: ${date}.", data);
 
-    writer.emit("Name: ${name}, Date: ${date}, ${foobar}", data); // NOT OK - `foobar` is not in `data`.     
+    writer.emit("Name: ${name}, Date: ${date}, ${foobar}", data); // $ Alert - `foobar` is not in `data`.
 }

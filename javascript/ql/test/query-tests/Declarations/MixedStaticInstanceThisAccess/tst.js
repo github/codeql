@@ -1,7 +1,7 @@
 class C1 {
     test() {
         this.f = x;
-        this.f; // OK
+        this.f;
     }
 
     static f() {
@@ -12,7 +12,7 @@ class C1 {
 class C2 {
     static test() {
         this.f = x;
-        this.f; // OK
+        this.f;
     }
 
     f() {
@@ -22,7 +22,7 @@ class C2 {
 
 class C3 {
     test() {
-        this.f; // OK
+        this.f;
     }
 
     static f() {
@@ -33,7 +33,7 @@ new C3().f = x;
 
 class C4 {
     static test() {
-        this.f; // OK
+        this.f;
     }
 
     f() {
@@ -52,7 +52,7 @@ class C5 extends C5_super{
 
     }
     test() {
-        this.f; // OK
+        this.f;
     }
 }
 
@@ -63,6 +63,6 @@ class C6_super {
 }
 class C6 extends C6_super{
     static test() {
-        this.f; // NOT OK
+        this.f; // $ Alert
     }
 }

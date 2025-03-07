@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const {Sequelize} = require("sequelize");
 
 new Router().get("/hello", (ctx) => {
-    const { version } = ctx.query;
+    const { version } = ctx.query; // $ Source
 
     if (version && validVersion(version) === false) {
         throw new Error(`invalid version ${version}`);
@@ -14,7 +14,7 @@ new Router().get("/hello", (ctx) => {
         conditions.push(`version = ${version}`)
     }
 
-    new Sequelize().query(`SELECT * FROM t WHERE ${conditions.join(' and ')}`, null); // OK
+    new Sequelize().query(`SELECT * FROM t WHERE ${conditions.join(' and ')}`, null); // $ Alert
 });
 
 function validVersion(version) {

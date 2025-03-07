@@ -17,17 +17,17 @@
     console.log(returnsValue())
     console.log(stub())
 
-    console.log(onlySideEffects()); // Not OK!
+    console.log(onlySideEffects()); // $ Alert
 
-    var a = Math.random() > 0.5 ? returnsValue() : onlySideEffects(); // OK! A is never used.
+    var a = Math.random() > 0.5 ? returnsValue() : onlySideEffects(); // OK - A is never used.
     
-    var b = onlySideEffects();
+    var b = onlySideEffects(); // $ Alert
     console.log(b);
 
-	var c = 42 + (onlySideEffects(), 42); // OK, value is thrown away. 
+	var c = 42 + (onlySideEffects(), 42); // OK - value is thrown away.
 	console.log(c);
 	
-	var d = 42 + (42, onlySideEffects()); // NOT OK! 
+	var d = 42 + (42, onlySideEffects()); // $ Alert
 	console.log(d);
 	
 	if (onlySideEffects()) { 
@@ -42,7 +42,7 @@
 		onlySideEffects: onlySideEffects
 	}
 	
-	var e = myObj.onlySideEffects.apply(this, arguments); // NOT OK!
+	var e = myObj.onlySideEffects.apply(this, arguments); // $ MISSING: Alert
 	console.log(e);
 	
 	function onlySideEffects2() {
@@ -50,11 +50,11 @@
     }
 
 	var bothOnlyHaveSideEffects = Math.random() > 0.5 ? onlySideEffects : onlySideEffects2;
-	var f = bothOnlyHaveSideEffects(); // NOT OK!
+	var f = bothOnlyHaveSideEffects(); // $ Alert
 	console.log(f);
 	
 	var oneOfEach = Math.random() > 0.5 ? onlySideEffects : returnsValue;
-	var g = oneOfEach(); // OK
+	var g = oneOfEach();
 	console.log(g);
 	
 	function alwaysThrows() {
@@ -66,28 +66,28 @@
 		throw new Error("Important error!")
 	} 
 	
-	var h = returnsValue() || alwaysThrows(); // OK!
+	var h = returnsValue() || alwaysThrows();
 	console.log(h);
 	
 	function equals(x, y) {
 		return x === y;
 	}
 	
-	var foo = [1,2,3].filter(n => {equals(n, 3)}) // NOT OK!
+	var foo = [1,2,3].filter(n => {equals(n, 3)}) // $ Alert
 	console.log(foo);
 	
 	import { filter } from 'lodash'
-	var bar = filter([1,2,4], x => { equals(x, 3) } ) // NOT OK!
+	var bar = filter([1,2,4], x => { equals(x, 3) } ) // $ Alert
 	console.log(bar);
 	
-	var baz = [1,2,3].filter(n => {n === 3}) // OK
+	var baz = [1,2,3].filter(n => {n === 3})
 	console.log(baz);
 	
 	class Deferred {
 	
 	}
 	
-	new Deferred().resolve(onlySideEffects()); // OK
+	new Deferred().resolve(onlySideEffects());
 	
 	Promise.all([onlySideEffects(), onlySideEffects()])
 })();
@@ -104,16 +104,16 @@ class Foo {
 
 class Bar extends Foo {
 	constructor() {
-		console.log(super()); // OK.
+		console.log(super());
 	}
 }
 
 () => {
 	let equals = (x, y) => { return x === y; };
 
-	var foo = [1,2,3].findLastIndex(n => { equals(n, 3); }) // NOT OK
+	var foo = [1,2,3].findLastIndex(n => { equals(n, 3); }) // $ Alert
 	console.log(foo);
 
-	var foo = [1,2,3].findLast(n => { equals(n, 3); }) // NOT OK
+	var foo = [1,2,3].findLast(n => { equals(n, 3); }) // $ Alert
 	console.log(foo);
 }

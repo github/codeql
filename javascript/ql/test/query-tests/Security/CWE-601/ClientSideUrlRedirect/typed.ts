@@ -1,11 +1,11 @@
 export class MyComponent {
     componentDidMount() {
         const { location }: { location: Location } = (this as any).props;
-        var params = location.search.substring(1);
+        var params = location.search.substring(1); // $ Source
         this.doRedirect(params);
     }
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 }
 
@@ -22,11 +22,11 @@ export class MyTrackingComponent {
     }
 
     private myIndirectRedirect(loc) { // type-tracking step 2 - also not the source
-        this.doRedirect(loc.search.substring(1));
+        this.doRedirect(loc.search.substring(1)); // $ Source
     }
 
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 }
 
@@ -44,15 +44,15 @@ export class WeirdTracking {
 
     private myIndirectRedirect(loc) { // type-tracking step 2 - also not the source
         const loc2: Location = (loc as any).componentDidMount;
-        this.doRedirect(loc.search.substring(1));
-        this.doRedirect2(loc2.search.substring(1));
+        this.doRedirect(loc.search.substring(1)); // $ Source
+        this.doRedirect2(loc2.search.substring(1)); // $ Source
     }
 
     private doRedirect(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 
     private doRedirect2(redirectUri: string) {
-        window.location.replace(redirectUri); // NOT OK
+        window.location.replace(redirectUri); // $ Alert
     }
 }

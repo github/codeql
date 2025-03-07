@@ -10,6 +10,6 @@ var server = http.createServer(function(req, res) {
 		return;
 	}
 
-	setTimeout(f, delay); // GOOD
+	setTimeout(f, delay);
 
 });

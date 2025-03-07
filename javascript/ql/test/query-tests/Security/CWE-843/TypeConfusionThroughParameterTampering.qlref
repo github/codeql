@@ -1,1 +1,2 @@
-Security/CWE-843/TypeConfusionThroughParameterTampering.ql
+query: Security/CWE-843/TypeConfusionThroughParameterTampering.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
