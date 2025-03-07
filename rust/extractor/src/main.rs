@@ -1,5 +1,6 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::path_to_file_id;
+use crate::translate::ResolvePaths;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
@@ -44,7 +45,7 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &rust_analyzer::RustAnalyzer, file: &std::path::Path) {
+    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, resolve_paths: ResolvePaths) {
         self.archiver.archive(file);
 
         let before_parse = Instant::now();
@@ -67,6 +68,7 @@ impl<'a> Extractor<'a> {
             label,
             line_index,
             semantics_info.as_ref().ok(),
+            resolve_paths,
         );
 
         for err in errors {
@@ -103,12 +105,17 @@ impl<'a> Extractor<'a> {
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
+        resolve_paths: ResolvePaths,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file);
+        self.extract(&RustAnalyzer::new(vfs, semantics), file, resolve_paths);
     }
 
     pub fn extract_without_semantics(&mut self, file: &Path, reason: &str) {
-        self.extract(&RustAnalyzer::WithoutSemantics { reason }, file);
+        self.extract(
+            &RustAnalyzer::WithoutSemantics { reason },
+            file,
+            ResolvePaths::No,
+        );
     }
 
     pub fn load_manifest(
@@ -239,6 +246,11 @@ fn main() -> anyhow::Result<()> {
     }
     let cwd = cwd()?;
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
+    let resolve_paths = if cfg.skip_path_resolution {
+        ResolvePaths::No
+    } else {
+        ResolvePaths::Yes
+    };
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
@@ -246,7 +258,9 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs),
+                    Ok(()) => {
+                        extractor.extract_with_semantics(file, &semantics, vfs, resolve_paths)
+                    }
                     Err(reason) => extractor.extract_without_semantics(file, &reason),
                 };
             }
