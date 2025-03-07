@@ -302,6 +302,34 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
 }
 
 /**
+ * An intersection term, that is, a term of the form `[[a]&&[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]&&[bcd]]/v - which matches 'b' and 'c' only.
+ * ```
+ */
+class RegExpIntersection extends RegExpTerm, @regexp_intersection {
+  /** Gets an intersected term of this term. */
+  RegExpTerm getIntersectedTerm() { result = this.getAChild() }
+
+  /** Gets the number of intersected terms of this term. */
+  int getNumIntersectedTerm() { result = this.getNumChild() }
+
+  override predicate isNullable() { this.getIntersectedTerm().isNullable() }
+
+  override string getAMatchedString() {
+    exists(string s | s = this.getChild(0).getAMatchedString() |
+      forall(int i | i in [1 .. this.getNumChild() - 1] | s = this.getChild(i).getAMatchedString()) and
+      result = s
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "RegExpIntersection" }
+}
+
+/**
  * A sequence term.
  *
  * Example:
