@@ -1,0 +1,4 @@
+extractionWarning
+| main.rs:512:5:512:28 | macro expansion failed: could not resolve macro 'undefined_macro_call' |
+| main.rs:516:5:516:28 | macro expansion failed: could not resolve macro 'undefined_macro_call' |
+| main.rs:522:13:522:36 | macro expansion failed: could not resolve macro 'undefined_macro_call' |
