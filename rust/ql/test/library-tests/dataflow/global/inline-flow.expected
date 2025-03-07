@@ -27,30 +27,30 @@ edges
 | main.rs:55:13:55:27 | pass_through(...) | main.rs:55:9:55:9 | b | provenance |  |
 | main.rs:55:26:55:26 | a | main.rs:51:21:51:26 | ...: i64 | provenance |  |
 | main.rs:55:26:55:26 | a | main.rs:55:13:55:27 | pass_through(...) | provenance |  |
-| main.rs:67:23:67:28 | ...: i64 | main.rs:68:14:68:14 | n | provenance |  |
-| main.rs:71:31:77:5 | { ... } | main.rs:90:13:90:25 | mn.get_data(...) | provenance |  |
-| main.rs:75:13:75:21 | source(...) | main.rs:71:31:77:5 | { ... } | provenance |  |
-| main.rs:79:28:79:33 | ...: i64 | main.rs:79:43:85:5 | { ... } | provenance |  |
+| main.rs:67:22:67:27 | ...: i64 | main.rs:68:14:68:14 | n | provenance |  |
+| main.rs:71:30:77:5 | { ... } | main.rs:90:13:90:25 | mn.get_data(...) | provenance |  |
+| main.rs:75:13:75:21 | source(...) | main.rs:71:30:77:5 | { ... } | provenance |  |
+| main.rs:79:27:79:32 | ...: i64 | main.rs:79:42:85:5 | { ... } | provenance |  |
 | main.rs:90:9:90:9 | a | main.rs:91:10:91:10 | a | provenance |  |
 | main.rs:90:13:90:25 | mn.get_data(...) | main.rs:90:9:90:9 | a | provenance |  |
 | main.rs:96:9:96:9 | a | main.rs:97:16:97:16 | a | provenance |  |
 | main.rs:96:13:96:21 | source(...) | main.rs:96:9:96:9 | a | provenance |  |
-| main.rs:97:16:97:16 | a | main.rs:67:23:67:28 | ...: i64 | provenance |  |
+| main.rs:97:16:97:16 | a | main.rs:67:22:67:27 | ...: i64 | provenance |  |
 | main.rs:102:9:102:9 | a | main.rs:103:29:103:29 | a | provenance |  |
 | main.rs:102:13:102:21 | source(...) | main.rs:102:9:102:9 | a | provenance |  |
 | main.rs:103:9:103:9 | b | main.rs:104:10:104:10 | b | provenance |  |
 | main.rs:103:13:103:30 | mn.data_through(...) | main.rs:103:9:103:9 | b | provenance |  |
-| main.rs:103:29:103:29 | a | main.rs:79:28:79:33 | ...: i64 | provenance |  |
+| main.rs:103:29:103:29 | a | main.rs:79:27:79:32 | ...: i64 | provenance |  |
 | main.rs:103:29:103:29 | a | main.rs:103:13:103:30 | mn.data_through(...) | provenance |  |
-| main.rs:109:9:109:9 | a | main.rs:110:26:110:26 | a | provenance |  |
+| main.rs:109:9:109:9 | a | main.rs:110:25:110:25 | a | provenance |  |
 | main.rs:109:13:109:21 | source(...) | main.rs:109:9:109:9 | a | provenance |  |
-| main.rs:110:26:110:26 | a | main.rs:67:23:67:28 | ...: i64 | provenance |  |
-| main.rs:115:9:115:9 | a | main.rs:116:39:116:39 | a | provenance |  |
+| main.rs:110:25:110:25 | a | main.rs:67:22:67:27 | ...: i64 | provenance |  |
+| main.rs:115:9:115:9 | a | main.rs:116:38:116:38 | a | provenance |  |
 | main.rs:115:13:115:22 | source(...) | main.rs:115:9:115:9 | a | provenance |  |
 | main.rs:116:9:116:9 | b | main.rs:117:10:117:10 | b | provenance |  |
-| main.rs:116:13:116:40 | ...::data_through(...) | main.rs:116:9:116:9 | b | provenance |  |
-| main.rs:116:39:116:39 | a | main.rs:79:28:79:33 | ...: i64 | provenance |  |
-| main.rs:116:39:116:39 | a | main.rs:116:13:116:40 | ...::data_through(...) | provenance |  |
+| main.rs:116:13:116:39 | ...::data_through(...) | main.rs:116:9:116:9 | b | provenance |  |
+| main.rs:116:38:116:38 | a | main.rs:79:27:79:32 | ...: i64 | provenance |  |
+| main.rs:116:38:116:38 | a | main.rs:116:13:116:39 | ...::data_through(...) | provenance |  |
 | main.rs:128:12:128:17 | ...: i64 | main.rs:129:24:129:24 | n | provenance |  |
 | main.rs:129:9:129:26 | MyInt {...} [MyInt] | main.rs:128:28:130:5 | { ... } [MyInt] | provenance |  |
 | main.rs:129:24:129:24 | n | main.rs:129:9:129:26 | MyInt {...} [MyInt] | provenance |  |
@@ -82,13 +82,6 @@ edges
 | main.rs:202:13:202:21 | source(...) | main.rs:202:9:202:9 | a | provenance |  |
 | main.rs:212:13:212:13 | c | main.rs:213:14:213:14 | c | provenance |  |
 | main.rs:212:17:212:25 | source(...) | main.rs:212:13:212:13 | c | provenance |  |
-| main.rs:228:25:228:30 | ...: i64 | main.rs:229:10:229:10 | c | provenance |  |
-| main.rs:229:6:229:6 | [post] n [&ref] | main.rs:228:12:228:22 | ...: ... [Return] [&ref] | provenance |  |
-| main.rs:229:10:229:10 | c | main.rs:229:6:229:6 | [post] n [&ref] | provenance |  |
-| main.rs:237:13:237:13 | [post] m [&ref] | main.rs:238:11:238:11 | m [&ref] | provenance |  |
-| main.rs:237:16:237:25 | source(...) | main.rs:228:25:228:30 | ...: i64 | provenance |  |
-| main.rs:237:16:237:25 | source(...) | main.rs:237:13:237:13 | [post] m [&ref] | provenance |  |
-| main.rs:238:11:238:11 | m [&ref] | main.rs:238:10:238:11 | * ... | provenance |  |
 nodes
 | main.rs:12:28:14:1 | { ... } | semmle.label | { ... } |
 | main.rs:13:5:13:13 | source(...) | semmle.label | source(...) |
@@ -121,12 +114,12 @@ nodes
 | main.rs:55:13:55:27 | pass_through(...) | semmle.label | pass_through(...) |
 | main.rs:55:26:55:26 | a | semmle.label | a |
 | main.rs:56:10:56:10 | b | semmle.label | b |
-| main.rs:67:23:67:28 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:67:22:67:27 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:68:14:68:14 | n | semmle.label | n |
-| main.rs:71:31:77:5 | { ... } | semmle.label | { ... } |
+| main.rs:71:30:77:5 | { ... } | semmle.label | { ... } |
 | main.rs:75:13:75:21 | source(...) | semmle.label | source(...) |
-| main.rs:79:28:79:33 | ...: i64 | semmle.label | ...: i64 |
-| main.rs:79:43:85:5 | { ... } | semmle.label | { ... } |
+| main.rs:79:27:79:32 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:79:42:85:5 | { ... } | semmle.label | { ... } |
 | main.rs:90:9:90:9 | a | semmle.label | a |
 | main.rs:90:13:90:25 | mn.get_data(...) | semmle.label | mn.get_data(...) |
 | main.rs:91:10:91:10 | a | semmle.label | a |
@@ -141,12 +134,12 @@ nodes
 | main.rs:104:10:104:10 | b | semmle.label | b |
 | main.rs:109:9:109:9 | a | semmle.label | a |
 | main.rs:109:13:109:21 | source(...) | semmle.label | source(...) |
-| main.rs:110:26:110:26 | a | semmle.label | a |
+| main.rs:110:25:110:25 | a | semmle.label | a |
 | main.rs:115:9:115:9 | a | semmle.label | a |
 | main.rs:115:13:115:22 | source(...) | semmle.label | source(...) |
 | main.rs:116:9:116:9 | b | semmle.label | b |
-| main.rs:116:13:116:40 | ...::data_through(...) | semmle.label | ...::data_through(...) |
-| main.rs:116:39:116:39 | a | semmle.label | a |
+| main.rs:116:13:116:39 | ...::data_through(...) | semmle.label | ...::data_through(...) |
+| main.rs:116:38:116:38 | a | semmle.label | a |
 | main.rs:117:10:117:10 | b | semmle.label | b |
 | main.rs:128:12:128:17 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:128:28:130:5 | { ... } [MyInt] | semmle.label | { ... } [MyInt] |
@@ -184,24 +177,15 @@ nodes
 | main.rs:212:13:212:13 | c | semmle.label | c |
 | main.rs:212:17:212:25 | source(...) | semmle.label | source(...) |
 | main.rs:213:14:213:14 | c | semmle.label | c |
-| main.rs:228:12:228:22 | ...: ... [Return] [&ref] | semmle.label | ...: ... [Return] [&ref] |
-| main.rs:228:25:228:30 | ...: i64 | semmle.label | ...: i64 |
-| main.rs:229:6:229:6 | [post] n [&ref] | semmle.label | [post] n [&ref] |
-| main.rs:229:10:229:10 | c | semmle.label | c |
-| main.rs:237:13:237:13 | [post] m [&ref] | semmle.label | [post] m [&ref] |
-| main.rs:237:16:237:25 | source(...) | semmle.label | source(...) |
-| main.rs:238:10:238:11 | * ... | semmle.label | * ... |
-| main.rs:238:11:238:11 | m [&ref] | semmle.label | m [&ref] |
 subpaths
 | main.rs:36:26:36:26 | a | main.rs:30:17:30:22 | ...: i64 | main.rs:30:32:32:1 | { ... } | main.rs:36:13:36:27 | pass_through(...) |
 | main.rs:41:26:44:5 | { ... } | main.rs:30:17:30:22 | ...: i64 | main.rs:30:32:32:1 | { ... } | main.rs:41:13:44:6 | pass_through(...) |
 | main.rs:55:26:55:26 | a | main.rs:51:21:51:26 | ...: i64 | main.rs:51:36:53:5 | { ... } | main.rs:55:13:55:27 | pass_through(...) |
-| main.rs:103:29:103:29 | a | main.rs:79:28:79:33 | ...: i64 | main.rs:79:43:85:5 | { ... } | main.rs:103:13:103:30 | mn.data_through(...) |
-| main.rs:116:39:116:39 | a | main.rs:79:28:79:33 | ...: i64 | main.rs:79:43:85:5 | { ... } | main.rs:116:13:116:40 | ...::data_through(...) |
+| main.rs:103:29:103:29 | a | main.rs:79:27:79:32 | ...: i64 | main.rs:79:42:85:5 | { ... } | main.rs:103:13:103:30 | mn.data_through(...) |
+| main.rs:116:38:116:38 | a | main.rs:79:27:79:32 | ...: i64 | main.rs:79:42:85:5 | { ... } | main.rs:116:13:116:39 | ...::data_through(...) |
 | main.rs:134:24:134:33 | source(...) | main.rs:128:12:128:17 | ...: i64 | main.rs:128:28:130:5 | { ... } [MyInt] | main.rs:134:13:134:34 | ...::new(...) [MyInt] |
 | main.rs:187:49:187:49 | a [MyInt] | main.rs:175:18:175:21 | SelfParam [MyInt] | main.rs:175:48:177:5 | { ... } [MyInt] | main.rs:187:30:187:53 | ...::take_self(...) [MyInt] |
 | main.rs:192:54:192:54 | b [MyInt] | main.rs:179:26:179:37 | ...: MyInt [MyInt] | main.rs:179:49:181:5 | { ... } [MyInt] | main.rs:192:30:192:55 | ...::take_second(...) [MyInt] |
-| main.rs:237:16:237:25 | source(...) | main.rs:228:25:228:30 | ...: i64 | main.rs:228:12:228:22 | ...: ... [Return] [&ref] | main.rs:237:13:237:13 | [post] m [&ref] |
 testFailures
 #select
 | main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) | source(...) |
@@ -219,4 +203,3 @@ testFailures
 | main.rs:193:10:193:10 | c | main.rs:191:28:191:37 | source(...) | main.rs:193:10:193:10 | c | $@ | main.rs:191:28:191:37 | source(...) | source(...) |
 | main.rs:203:10:203:10 | a | main.rs:202:13:202:21 | source(...) | main.rs:203:10:203:10 | a | $@ | main.rs:202:13:202:21 | source(...) | source(...) |
 | main.rs:213:14:213:14 | c | main.rs:212:17:212:25 | source(...) | main.rs:213:14:213:14 | c | $@ | main.rs:212:17:212:25 | source(...) | source(...) |
-| main.rs:238:10:238:11 | * ... | main.rs:237:16:237:25 | source(...) | main.rs:238:10:238:11 | * ... | $@ | main.rs:237:16:237:25 | source(...) | source(...) |

@@ -1,0 +1,8 @@
+# This file specifies the Rust version used to develop and test the rust
+# extractor. It is set to the lowest version of Rust we want to support.
+# IMPORTANT: this can also have an impact on QL test results
+
+[toolchain]
+channel = "1.85"
+profile = "minimal"
+components = [ "clippy", "rustfmt", "rust-src" ]

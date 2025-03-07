@@ -82,7 +82,7 @@ rust_library(
     }),
     version = "1.5.3",
     deps = [
-        "@vendor__borsh-1.5.3//:build_script_build",
+        "@vendor_ts__borsh-1.5.3//:build_script_build",
     ],
 )
 
@@ -134,7 +134,7 @@ cargo_build_script(
     version = "1.5.3",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__cfg_aliases-0.2.1//:cfg_aliases",
+        "@vendor_ts__cfg_aliases-0.2.1//:cfg_aliases",
     ],
 )
 

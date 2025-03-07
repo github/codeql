@@ -38,7 +38,7 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2018",
     proc_macro_deps = [
-        "@vendor__zerocopy-derive-0.7.35//:zerocopy_derive",
+        "@vendor_ts__zerocopy-derive-0.7.35//:zerocopy_derive",
     ],
     rustc_flags = [
         "--cap-lints=allow",
@@ -91,6 +91,6 @@ rust_library(
     }),
     version = "0.7.35",
     deps = [
-        "@vendor__byteorder-1.5.0//:byteorder",
+        "@vendor_ts__byteorder-1.5.0//:byteorder",
     ],
 )

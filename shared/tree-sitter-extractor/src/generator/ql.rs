@@ -8,7 +8,7 @@ pub enum TopLevel<'a> {
     Module(Module<'a>),
 }
 
-impl<'a> fmt::Display for TopLevel<'a> {
+impl fmt::Display for TopLevel<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             TopLevel::Import(imp) => write!(f, "{}", imp),
@@ -24,7 +24,7 @@ pub struct Import<'a> {
     pub alias: Option<&'a str>,
 }
 
-impl<'a> fmt::Display for Import<'a> {
+impl fmt::Display for Import<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "import {}", &self.module)?;
         if let Some(name) = &self.alias {
@@ -43,7 +43,7 @@ pub struct Class<'a> {
     pub predicates: Vec<Predicate<'a>>,
 }
 
-impl<'a> fmt::Display for Class<'a> {
+impl fmt::Display for Class<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
@@ -93,7 +93,7 @@ pub struct Module<'a> {
     pub body: Vec<TopLevel<'a>>,
 }
 
-impl<'a> fmt::Display for Module<'a> {
+impl fmt::Display for Module<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
@@ -122,7 +122,7 @@ pub enum Type<'a> {
     Normal(&'a str),
 }
 
-impl<'a> fmt::Display for Type<'a> {
+impl fmt::Display for Type<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Type::Int => write!(f, "int"),
@@ -152,7 +152,7 @@ pub enum Expression<'a> {
     },
 }
 
-impl<'a> fmt::Display for Expression<'a> {
+impl fmt::Display for Expression<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Expression::Var(x) => write!(f, "{}", x),
@@ -246,7 +246,7 @@ pub struct Predicate<'a> {
     pub body: Expression<'a>,
 }
 
-impl<'a> fmt::Display for Predicate<'a> {
+impl fmt::Display for Predicate<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
@@ -280,7 +280,7 @@ pub struct FormalParameter<'a> {
     pub param_type: Type<'a>,
 }
 
-impl<'a> fmt::Display for FormalParameter<'a> {
+impl fmt::Display for FormalParameter<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{} {}", self.param_type, self.name)
     }
