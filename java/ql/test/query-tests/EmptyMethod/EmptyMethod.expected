@@ -1,1 +1,3 @@
 | Test.java:13:15:13:16 | f2 | Empty method found. |
+| Test.java:27:17:27:17 | f | Empty method found. |
+| Test.java:32:18:32:23 | method | Empty method found. |
