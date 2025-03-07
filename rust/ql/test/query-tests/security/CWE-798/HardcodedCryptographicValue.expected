@@ -19,78 +19,78 @@ edges
 | test_cipher.rs:18:28:18:36 | &... [&ref, element] | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | provenance |  |
 | test_cipher.rs:18:29:18:36 | [0u8; 16] [element] | test_cipher.rs:18:28:18:36 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:18:30:18:32 | 0u8 | test_cipher.rs:18:29:18:36 | [0u8; 16] [element] | provenance |  |
-| test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref, element] | test_cipher.rs:19:30:19:47 | ...::new | provenance | MaD:60 Sink:MaD:60 Sink:MaD:60 |
+| test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref, element] | test_cipher.rs:19:30:19:47 | ...::new | provenance | MaD:61 Sink:MaD:61 Sink:MaD:61 |
 | test_cipher.rs:19:73:19:78 | const1 [&ref, element] | test_cipher.rs:19:49:19:79 | ...::from_slice(...) [&ref, element] | provenance | MaD:0 |
 | test_cipher.rs:25:9:25:14 | const4 [&ref, element] | test_cipher.rs:26:66:26:71 | const4 [&ref, element] | provenance |  |
 | test_cipher.rs:25:28:25:36 | &... [&ref, element] | test_cipher.rs:25:9:25:14 | const4 [&ref, element] | provenance |  |
 | test_cipher.rs:25:29:25:36 | [0u8; 16] [element] | test_cipher.rs:25:28:25:36 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:25:30:25:32 | 0u8 | test_cipher.rs:25:29:25:36 | [0u8; 16] [element] | provenance |  |
-| test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref, element] | test_cipher.rs:26:30:26:40 | ...::new | provenance | MaD:60 Sink:MaD:60 Sink:MaD:60 |
+| test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref, element] | test_cipher.rs:26:30:26:40 | ...::new | provenance | MaD:61 Sink:MaD:61 Sink:MaD:61 |
 | test_cipher.rs:26:66:26:71 | const4 [&ref, element] | test_cipher.rs:26:42:26:72 | ...::from_slice(...) [&ref, element] | provenance | MaD:0 |
 | test_cipher.rs:29:9:29:14 | const5 [&ref, element] | test_cipher.rs:30:95:30:100 | const5 [&ref, element] | provenance |  |
 | test_cipher.rs:29:28:29:36 | &... [&ref, element] | test_cipher.rs:29:9:29:14 | const5 [&ref, element] | provenance |  |
 | test_cipher.rs:29:29:29:36 | [0u8; 16] [element] | test_cipher.rs:29:28:29:36 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:29:30:29:32 | 0u8 | test_cipher.rs:29:29:29:36 | [0u8; 16] [element] | provenance |  |
-| test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref, element] | test_cipher.rs:30:30:30:40 | ...::new | provenance | MaD:61 Sink:MaD:61 Sink:MaD:61 |
+| test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref, element] | test_cipher.rs:30:30:30:40 | ...::new | provenance | MaD:62 Sink:MaD:62 Sink:MaD:62 |
 | test_cipher.rs:30:95:30:100 | const5 [&ref, element] | test_cipher.rs:30:72:30:101 | ...::from_slice(...) [&ref, element] | provenance | MaD:0 |
 | test_cipher.rs:37:9:37:14 | const7 | test_cipher.rs:38:74:38:79 | const7 | provenance |  |
 | test_cipher.rs:37:27:37:74 | [...] | test_cipher.rs:37:9:37:14 | const7 | provenance |  |
-| test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | test_cipher.rs:38:30:38:47 | ...::new | provenance | MaD:60 Sink:MaD:60 |
+| test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | test_cipher.rs:38:30:38:47 | ...::new | provenance | MaD:61 Sink:MaD:61 |
 | test_cipher.rs:38:73:38:79 | &const7 [&ref] | test_cipher.rs:38:49:38:80 | ...::from_slice(...) [&ref] | provenance | MaD:0 |
 | test_cipher.rs:38:74:38:79 | const7 | test_cipher.rs:38:73:38:79 | &const7 [&ref] | provenance |  |
 | test_cipher.rs:41:9:41:14 | const8 [&ref] | test_cipher.rs:42:73:42:78 | const8 [&ref] | provenance |  |
 | test_cipher.rs:41:28:41:76 | &... [&ref] | test_cipher.rs:41:9:41:14 | const8 [&ref] | provenance |  |
 | test_cipher.rs:41:29:41:76 | [...] | test_cipher.rs:41:28:41:76 | &... [&ref] | provenance |  |
-| test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | test_cipher.rs:42:30:42:47 | ...::new | provenance | MaD:60 Sink:MaD:60 |
+| test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | test_cipher.rs:42:30:42:47 | ...::new | provenance | MaD:61 Sink:MaD:61 |
 | test_cipher.rs:42:73:42:78 | const8 [&ref] | test_cipher.rs:42:49:42:79 | ...::from_slice(...) [&ref] | provenance | MaD:0 |
-| test_cipher.rs:45:9:45:14 | const9 | test_cipher.rs:46:32:46:54 | const9.align_to(...) [tuple.1, &ref, element] | provenance | MaD:104 |
+| test_cipher.rs:45:9:45:14 | const9 | test_cipher.rs:46:32:46:54 | const9.align_to(...) [tuple.1, &ref, element] | provenance | MaD:107 |
 | test_cipher.rs:45:27:45:50 | [...] | test_cipher.rs:45:9:45:14 | const9 | provenance |  |
 | test_cipher.rs:46:9:46:19 | const9_conv [&ref, element] | test_cipher.rs:47:73:47:83 | const9_conv [&ref, element] | provenance |  |
 | test_cipher.rs:46:32:46:54 | const9.align_to(...) [tuple.1, &ref, element] | test_cipher.rs:46:32:46:56 | ... .1 [&ref, element] | provenance |  |
 | test_cipher.rs:46:32:46:56 | ... .1 [&ref, element] | test_cipher.rs:46:9:46:19 | const9_conv [&ref, element] | provenance |  |
-| test_cipher.rs:47:49:47:84 | ...::from_slice(...) [&ref, element] | test_cipher.rs:47:30:47:47 | ...::new | provenance | MaD:60 Sink:MaD:60 Sink:MaD:60 |
+| test_cipher.rs:47:49:47:84 | ...::from_slice(...) [&ref, element] | test_cipher.rs:47:30:47:47 | ...::new | provenance | MaD:61 Sink:MaD:61 Sink:MaD:61 |
 | test_cipher.rs:47:73:47:83 | const9_conv [&ref, element] | test_cipher.rs:47:49:47:84 | ...::from_slice(...) [&ref, element] | provenance | MaD:0 |
 | test_cipher.rs:50:9:50:15 | const10 [element] | test_cipher.rs:51:75:51:81 | const10 [element] | provenance |  |
-| test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:50:37:50:54 | ...::zeroed(...) [element] | provenance | Src:MaD:101  |
+| test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:50:37:50:54 | ...::zeroed(...) [element] | provenance | Src:MaD:104  |
 | test_cipher.rs:50:37:50:54 | ...::zeroed(...) [element] | test_cipher.rs:50:9:50:15 | const10 [element] | provenance |  |
-| test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | test_cipher.rs:51:31:51:48 | ...::new | provenance | MaD:60 Sink:MaD:60 Sink:MaD:60 |
+| test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | test_cipher.rs:51:31:51:48 | ...::new | provenance | MaD:61 Sink:MaD:61 Sink:MaD:61 |
 | test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | test_cipher.rs:51:50:51:82 | ...::from_slice(...) [&ref, element] | provenance | MaD:0 |
 | test_cipher.rs:51:75:51:81 | const10 [element] | test_cipher.rs:51:74:51:81 | &const10 [&ref, element] | provenance |  |
 | test_cipher.rs:66:9:66:14 | const2 [&ref, element] | test_cipher.rs:67:35:67:40 | const2 [&ref, element] | provenance |  |
-| test_cipher.rs:66:9:66:14 | const2 [&ref, element] | test_cipher.rs:67:35:67:47 | const2.into(...) [element] | provenance | MaD:103 |
+| test_cipher.rs:66:9:66:14 | const2 [&ref, element] | test_cipher.rs:67:35:67:47 | const2.into(...) [element] | provenance | MaD:106 |
 | test_cipher.rs:66:18:66:26 | &... [&ref, element] | test_cipher.rs:66:9:66:14 | const2 [&ref, element] | provenance |  |
 | test_cipher.rs:66:19:66:26 | [0u8; 32] [element] | test_cipher.rs:66:18:66:26 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:66:20:66:22 | 0u8 | test_cipher.rs:66:19:66:26 | [0u8; 32] [element] | provenance |  |
-| test_cipher.rs:67:35:67:40 | const2 [&ref, element] | test_cipher.rs:67:35:67:47 | const2.into(...) [element] | provenance | MaD:102 |
-| test_cipher.rs:67:35:67:47 | const2.into(...) [element] | test_cipher.rs:67:23:67:33 | ...::new | provenance | MaD:76 Sink:MaD:76 |
+| test_cipher.rs:67:35:67:40 | const2 [&ref, element] | test_cipher.rs:67:35:67:47 | const2.into(...) [element] | provenance | MaD:105 |
+| test_cipher.rs:67:35:67:47 | const2.into(...) [element] | test_cipher.rs:67:23:67:33 | ...::new | provenance | MaD:77 Sink:MaD:77 |
 | test_cipher.rs:73:9:73:14 | const2 [&ref, element] | test_cipher.rs:74:46:74:51 | const2 [&ref, element] | provenance |  |
 | test_cipher.rs:73:18:73:26 | &... [&ref, element] | test_cipher.rs:73:9:73:14 | const2 [&ref, element] | provenance |  |
 | test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | test_cipher.rs:73:18:73:26 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | provenance |  |
-| test_cipher.rs:74:46:74:51 | const2 [&ref, element] | test_cipher.rs:74:23:74:44 | ...::new_from_slice | provenance | MaD:84 Sink:MaD:84 Sink:MaD:84 |
+| test_cipher.rs:74:46:74:51 | const2 [&ref, element] | test_cipher.rs:74:23:74:44 | ...::new_from_slice | provenance | MaD:87 Sink:MaD:87 Sink:MaD:87 |
 | test_cipher.rs:80:9:80:14 | const6 [&ref, element] | test_cipher.rs:81:63:81:68 | const6 [&ref, element] | provenance |  |
-| test_cipher.rs:80:9:80:14 | const6 [&ref, element] | test_cipher.rs:81:63:81:75 | const6.into(...) [element] | provenance | MaD:103 |
+| test_cipher.rs:80:9:80:14 | const6 [&ref, element] | test_cipher.rs:81:63:81:75 | const6.into(...) [element] | provenance | MaD:106 |
 | test_cipher.rs:80:18:80:26 | &... [&ref, element] | test_cipher.rs:80:9:80:14 | const6 [&ref, element] | provenance |  |
 | test_cipher.rs:80:19:80:26 | [0u8; 32] [element] | test_cipher.rs:80:18:80:26 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:80:20:80:22 | 0u8 | test_cipher.rs:80:19:80:26 | [0u8; 32] [element] | provenance |  |
-| test_cipher.rs:81:63:81:68 | const6 [&ref, element] | test_cipher.rs:81:63:81:75 | const6.into(...) [element] | provenance | MaD:102 |
-| test_cipher.rs:81:63:81:75 | const6.into(...) [element] | test_cipher.rs:81:23:81:61 | ...::new | provenance | MaD:86 Sink:MaD:86 |
+| test_cipher.rs:81:63:81:68 | const6 [&ref, element] | test_cipher.rs:81:63:81:75 | const6.into(...) [element] | provenance | MaD:105 |
+| test_cipher.rs:81:63:81:75 | const6.into(...) [element] | test_cipher.rs:81:23:81:61 | ...::new | provenance | MaD:89 Sink:MaD:89 |
 | test_cipher.rs:84:9:84:14 | const7 [&ref, element] | test_cipher.rs:85:75:85:80 | const7 [&ref, element] | provenance |  |
-| test_cipher.rs:84:9:84:14 | const7 [&ref, element] | test_cipher.rs:85:75:85:87 | const7.into(...) [element] | provenance | MaD:103 |
+| test_cipher.rs:84:9:84:14 | const7 [&ref, element] | test_cipher.rs:85:75:85:87 | const7.into(...) [element] | provenance | MaD:106 |
 | test_cipher.rs:84:18:84:27 | &... [&ref, element] | test_cipher.rs:84:9:84:14 | const7 [&ref, element] | provenance |  |
 | test_cipher.rs:84:19:84:27 | [0u8; 16] [element] | test_cipher.rs:84:18:84:27 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:84:20:84:22 | 0u8 | test_cipher.rs:84:19:84:27 | [0u8; 16] [element] | provenance |  |
-| test_cipher.rs:85:75:85:80 | const7 [&ref, element] | test_cipher.rs:85:75:85:87 | const7.into(...) [element] | provenance | MaD:102 |
-| test_cipher.rs:85:75:85:87 | const7.into(...) [element] | test_cipher.rs:85:23:85:61 | ...::new | provenance | MaD:87 Sink:MaD:87 |
-| test_cipher.rs:124:9:124:12 | key2 [element] | test_cipher.rs:126:35:126:45 | key2.into(...) [element] | provenance | MaD:102 |
+| test_cipher.rs:85:75:85:80 | const7 [&ref, element] | test_cipher.rs:85:75:85:87 | const7.into(...) [element] | provenance | MaD:105 |
+| test_cipher.rs:85:75:85:87 | const7.into(...) [element] | test_cipher.rs:85:23:85:61 | ...::new | provenance | MaD:90 Sink:MaD:90 |
+| test_cipher.rs:124:9:124:12 | key2 [element] | test_cipher.rs:126:35:126:45 | key2.into(...) [element] | provenance | MaD:105 |
 | test_cipher.rs:124:25:124:30 | [0; 32] [element] | test_cipher.rs:124:9:124:12 | key2 [element] | provenance |  |
 | test_cipher.rs:124:26:124:26 | 0 | test_cipher.rs:124:25:124:30 | [0; 32] [element] | provenance |  |
-| test_cipher.rs:125:9:125:14 | nonce2 [element] | test_cipher.rs:127:30:127:42 | nonce2.into(...) [element] | provenance | MaD:102 |
+| test_cipher.rs:125:9:125:14 | nonce2 [element] | test_cipher.rs:127:30:127:42 | nonce2.into(...) [element] | provenance | MaD:105 |
 | test_cipher.rs:125:18:125:23 | [0; 12] [element] | test_cipher.rs:125:9:125:14 | nonce2 [element] | provenance |  |
 | test_cipher.rs:125:19:125:19 | 0 | test_cipher.rs:125:18:125:23 | [0; 12] [element] | provenance |  |
-| test_cipher.rs:126:34:126:45 | &... [&ref, element] | test_cipher.rs:126:19:126:32 | ...::new | provenance | MaD:90 Sink:MaD:90 Sink:MaD:90 |
+| test_cipher.rs:126:34:126:45 | &... [&ref, element] | test_cipher.rs:126:19:126:32 | ...::new | provenance | MaD:93 Sink:MaD:93 Sink:MaD:93 |
 | test_cipher.rs:126:35:126:45 | key2.into(...) [element] | test_cipher.rs:126:34:126:45 | &... [&ref, element] | provenance |  |
-| test_cipher.rs:127:29:127:42 | &... [&ref, element] | test_cipher.rs:127:21:127:27 | encrypt | provenance | MaD:91 Sink:MaD:91 Sink:MaD:91 |
+| test_cipher.rs:127:29:127:42 | &... [&ref, element] | test_cipher.rs:127:21:127:27 | encrypt | provenance | MaD:94 Sink:MaD:94 Sink:MaD:94 |
 | test_cipher.rs:127:30:127:42 | nonce2.into(...) [element] | test_cipher.rs:127:29:127:42 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:129:9:129:18 | key3_array [&ref, element] | test_cipher.rs:130:45:130:54 | key3_array [&ref, element] | provenance |  |
 | test_cipher.rs:129:32:129:41 | &... [&ref, element] | test_cipher.rs:129:9:129:18 | key3_array [&ref, element] | provenance |  |
@@ -99,13 +99,13 @@ edges
 | test_cipher.rs:130:9:130:12 | key3 [&ref, element] | test_cipher.rs:132:35:132:38 | key3 [&ref, element] | provenance |  |
 | test_cipher.rs:130:16:130:55 | ...::from_slice(...) [&ref, element] | test_cipher.rs:130:9:130:12 | key3 [&ref, element] | provenance |  |
 | test_cipher.rs:130:45:130:54 | key3_array [&ref, element] | test_cipher.rs:130:16:130:55 | ...::from_slice(...) [&ref, element] | provenance | MaD:0 |
-| test_cipher.rs:131:9:131:14 | nonce3 [element] | test_cipher.rs:133:30:133:42 | nonce3.into(...) [element] | provenance | MaD:102 |
+| test_cipher.rs:131:9:131:14 | nonce3 [element] | test_cipher.rs:133:30:133:42 | nonce3.into(...) [element] | provenance | MaD:105 |
 | test_cipher.rs:131:27:131:35 | [0xff; 12] [element] | test_cipher.rs:131:9:131:14 | nonce3 [element] | provenance |  |
 | test_cipher.rs:131:28:131:31 | 0xff | test_cipher.rs:131:27:131:35 | [0xff; 12] [element] | provenance |  |
-| test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref, element] | test_cipher.rs:132:19:132:32 | ...::new | provenance | MaD:90 Sink:MaD:90 Sink:MaD:90 |
-| test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref, element] | test_cipher.rs:132:19:132:32 | ...::new | provenance | MaD:90 Sink:MaD:90 Sink:MaD:90 Sink:MaD:90 |
+| test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref, element] | test_cipher.rs:132:19:132:32 | ...::new | provenance | MaD:93 Sink:MaD:93 Sink:MaD:93 |
+| test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref, element] | test_cipher.rs:132:19:132:32 | ...::new | provenance | MaD:93 Sink:MaD:93 Sink:MaD:93 Sink:MaD:93 |
 | test_cipher.rs:132:35:132:38 | key3 [&ref, element] | test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref, element] | provenance |  |
-| test_cipher.rs:133:29:133:42 | &... [&ref, element] | test_cipher.rs:133:21:133:27 | encrypt | provenance | MaD:91 Sink:MaD:91 Sink:MaD:91 |
+| test_cipher.rs:133:29:133:42 | &... [&ref, element] | test_cipher.rs:133:21:133:27 | encrypt | provenance | MaD:94 Sink:MaD:94 Sink:MaD:94 |
 | test_cipher.rs:133:30:133:42 | nonce3.into(...) [element] | test_cipher.rs:133:29:133:42 | &... [&ref, element] | provenance |  |
 nodes
 | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | semmle.label | const1 [&ref, element] |
