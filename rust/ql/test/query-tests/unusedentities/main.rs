@@ -468,7 +468,64 @@ fn traits() {
 
 // --- macros ---
 
-fn macros() {
+macro_rules! set_value {
+    ($x:expr,$y:expr) => {
+        $x = $y
+    };
+}
+
+macro_rules! use_value {
+    ($x:expr) => {
+        println!("{}", $x)
+    };
+}
+
+fn macros1() {
+    let a: u16;
+    let b: u16 = 2;
+    set_value!(a, 1);
+    use_value!(b);
+
+    match std::env::args().nth(1).unwrap().parse::<u16>() {
+        Ok(n) => {
+            use_value!(n);
+        }
+        _ => {}
+    }
+}
+
+fn macros2() {
+    let a: u16 = 3;
+    println!("{}", a);
+
+    match std::env::args().nth(1).unwrap().parse::<u16>() {
+        Ok(n) => {
+            println!("{}", n);
+        }
+        _ => {}
+    }
+}
+
+fn macros3() {
+    let d: u16 = 4; // $ SPURIOUS: Alert[rust/unused-value]
+
+    undefined_macro_call!(d);
+}
+
+fn macros4() {
+    undefined_macro_call!(5);
+}
+
+fn macros5() {
+    match std::env::args().nth(1).unwrap().parse::<u16>() {
+        Ok(n) => { // $ SPURIOUS: Alert[rust/unused-variable]
+            undefined_macro_call!(n);
+        }
+        _ => {}
+    }
+}
+
+fn macros6() {
     let x;
     println!(
         "The value of x is {}",
@@ -476,7 +533,7 @@ fn macros() {
             x = 10; // $ MISSING: Alert[rust/unused-value]
             10
         })
-    )
+    );
 }
 
 macro_rules! let_in_macro {
@@ -535,7 +592,12 @@ fn main() {
     shadowing();
     func_ptrs();
     folds_and_closures();
-    macros();
+    macros1();
+    macros2();
+    macros3();
+    macros4();
+    macros5();
+    macros6();
     hygiene_mismatch();
     references();
 
