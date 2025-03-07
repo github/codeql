@@ -89,6 +89,26 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
   strictcount(resolvePath(p)) > 1
 }
 
+/** Holds if `call` has multiple static call targets including `target`. */
+query predicate multipleStaticCallTargets(CallExprBase call, Callable target) {
+  target = call.getStaticTarget() and
+  strictcount(call.getStaticTarget()) > 1
+}
+
+/** Holds if `fe` resolves to multiple record fields including `field`. */
+query predicate multipleRecordFields(FieldExpr fe, RecordField field) {
+  field = fe.getRecordField() and
+  strictcount(fe.getRecordField()) > 1
+}
+
+/** Holds if `fe` resolves to multiple tuple fields including `field`. */
+query predicate multipleTupleFields(FieldExpr fe, TupleField field) {
+  field = fe.getTupleField() and
+  strictcount(fe.getTupleField()) > 1
+}
+
+import codeql.rust.elements.internal.TypeInference::Consistency
+
 /**
  * Gets counts of abstract syntax tree inconsistencies of each type.
  */
@@ -117,4 +137,13 @@ int getAstInconsistencyCounts(string type) {
   or
   type = "Multiple path resolutions" and
   result = count(Path p | multiplePathResolutions(p, _) | p)
+  or
+  type = "Multiple static call targets" and
+  result = count(CallExprBase call | multipleStaticCallTargets(call, _) | call)
+  or
+  type = "Multiple record fields" and
+  result = count(FieldExpr fe | multipleRecordFields(fe, _) | fe)
+  or
+  type = "Multiple tuple fields" and
+  result = count(FieldExpr fe | multipleTupleFields(fe, _) | fe)
 }
