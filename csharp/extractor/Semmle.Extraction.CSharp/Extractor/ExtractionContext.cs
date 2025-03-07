@@ -15,6 +15,8 @@ namespace Semmle.Extraction.CSharp
         public ExtractorMode Mode { get; }
         public string OutputPath { get; }
         public IEnumerable<CompilationInfo> CompilationInfos { get; }
+        public bool IsStandalone => Mode.HasFlag(ExtractorMode.Standalone);
+        public bool IsBinaryLog => Mode.HasFlag(ExtractorMode.BinaryLog);
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.

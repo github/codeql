@@ -267,7 +267,7 @@ namespace Semmle.Extraction.CSharp
 
             bool duplicationGuard, deferred;
 
-            if (ExtractionContext.Mode is ExtractorMode.Standalone)
+            if (ExtractionContext.IsStandalone)
             {
                 duplicationGuard = false;
                 deferred = false;
@@ -376,7 +376,7 @@ namespace Semmle.Extraction.CSharp
 
         private void ReportError(InternalError error)
         {
-            if (!ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone))
+            if (!ExtractionContext.IsStandalone)
                 throw error;
 
             ExtractionError(error);

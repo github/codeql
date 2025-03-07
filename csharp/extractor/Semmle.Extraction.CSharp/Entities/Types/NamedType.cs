@@ -166,7 +166,9 @@ namespace Semmle.Extraction.CSharp.Entities
         // Create typerefs for constructed error types in case they are fully defined elsewhere.
         // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
         // the assembly that was being extracted at the time.
-        private bool UsesTypeRef => Symbol.TypeKind == TypeKind.Error || SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
+        private bool UsesTypeRef =>
+            Symbol.TypeKind == TypeKind.Error ||
+            SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
 
         public override Type TypeRef => UsesTypeRef ? (Type)NamedTypeRef.Create(Context, Symbol) : this;
     }

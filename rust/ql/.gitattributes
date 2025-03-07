@@ -1033,6 +1033,7 @@
 /test/extractor-tests/generated/RecordExprFieldList/RecordExprFieldList_getSpread.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getAttr.ql linguist-generated
+/test/extractor-tests/generated/RecordField/RecordField_getExpr.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getName.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getVisibility.ql linguist-generated

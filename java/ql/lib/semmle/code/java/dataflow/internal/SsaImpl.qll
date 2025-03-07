@@ -544,15 +544,13 @@ private module Cached {
     import DataFlowIntegrationImpl
 
     cached
-    predicate localFlowStep(Impl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-      not def instanceof UntrackedDef and
-      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    predicate localFlowStep(TrackedVar v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
     }
 
     cached
-    predicate localMustFlowStep(Impl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-      not def instanceof UntrackedDef and
-      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    predicate localMustFlowStep(TrackedVar v, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
     signature predicate guardChecksSig(Guards::Guard g, Expr e, boolean branch);
@@ -669,21 +667,19 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   class Guard extends Guards::Guard {
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      this = bb.getNode(i).asExpr()
-      or
-      this = bb.getNode(i).asStmt()
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+      super.hasBranchEdge(bb1, bb2, branch)
     }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
     guard.controls(bb, branch)
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  BasicBlock getAConditionalBasicBlockSuccessor(BasicBlock bb, boolean branch) {
-    result = bb.(Guards::ConditionBlock).getTestSuccessor(branch)
   }
 }
 

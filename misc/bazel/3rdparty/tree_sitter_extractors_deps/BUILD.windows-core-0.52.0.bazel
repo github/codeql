@@ -81,6 +81,6 @@ rust_library(
     }),
     version = "0.52.0",
     deps = [
-        "@vendor__windows-targets-0.52.6//:windows_targets",
+        "@vendor_ts__windows-targets-0.52.6//:windows_targets",
     ],
 )

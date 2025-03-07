@@ -25,6 +25,40 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
+
+        /// <summary>
+        /// A hashset containing the C# contextual keywords that could be confused with types (and typing).
+        ///
+        /// For the list of all contextual keywords, see
+        /// https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/#contextual-keywords
+        /// </summary>
+        private readonly HashSet<string> ContextualKeywordTypes = [
+            "dynamic",
+            "nint",
+            "nuint",
+            "var"
+            ];
+
+        /// <summary>
+        /// Returns true in case we suspect this is a broken type.
+        /// </summary>
+        /// <param name="symbol">Type symbol</param>
+        private bool IsBrokenType(ITypeSymbol symbol)
+        {
+            if (!Context.ExtractionContext.IsStandalone ||
+                !symbol.FromSource() ||
+                symbol.IsAnonymousType)
+            {
+                return false;
+            }
+
+            // (1) public class { ... } is a broken type as it doesn't have a name.
+            // (2) public class var { ... } is an allowed type, but it overrides the `var` keyword for all uses.
+            //     The same goes for other contextual keywords that could be used as type names.
+            //     It is probably a better heuristic to treat these as broken types.
+            return string.IsNullOrEmpty(symbol.Name) || ContextualKeywordTypes.Contains(symbol.Name);
+        }
+
         public Kinds.TypeKind GetTypeKind(Context cx, bool constructUnderlyingTupleType)
         {
             switch (Symbol.SpecialType)
@@ -47,6 +81,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 default:
                     if (Symbol.IsBoundNullable())
                         return Kinds.TypeKind.NULLABLE;
+
+                    if (IsBrokenType(Symbol))
+                        return Kinds.TypeKind.UNKNOWN;
 
                     switch (Symbol.TypeKind)
                     {

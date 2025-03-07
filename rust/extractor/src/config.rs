@@ -4,9 +4,9 @@ use anyhow::Context;
 use clap::Parser;
 use codeql_extractor::trap;
 use figment::{
+    Figment,
     providers::{Env, Format, Serialized, Yaml},
     value::Value,
-    Figment,
 };
 use itertools::Itertools;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
@@ -106,7 +106,7 @@ impl Config {
         let sysroot_src_input = self.sysroot_src.as_ref().map(|p| join_path_buf(dir, p));
         match (sysroot_input, sysroot_src_input) {
             (None, None) => Sysroot::discover(dir, &self.cargo_extra_env),
-            (Some(sysroot), None) => Sysroot::discover_sysroot_src_dir(sysroot),
+            (Some(sysroot), None) => Sysroot::discover_rust_lib_src_dir(sysroot),
             (None, Some(sysroot_src)) => {
                 Sysroot::discover_with_src_override(dir, &self.cargo_extra_env, sysroot_src)
             }
@@ -130,7 +130,7 @@ impl Config {
         (
             CargoConfig {
                 all_targets: self.cargo_all_targets,
-                sysroot_src: sysroot.src_root().map(ToOwned::to_owned),
+                sysroot_src: sysroot.rust_lib_src_root().map(ToOwned::to_owned),
                 rustc_source: self
                     .rustc_src
                     .as_ref()
