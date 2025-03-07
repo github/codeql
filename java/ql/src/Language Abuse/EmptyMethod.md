@@ -1,10 +1,6 @@
-# J-D-002: An empty method serves no purpose and may indicate programmer error
-
-An empty method serves no purpose and may indicate programmer error.
-
 ## Overview
 
-An empty method may indicate that an implmentation was intended to be provided but was accidentally omitted. When using the method, it will not be clear that it does not provide an implentation and with dynamic dispatch, resolving to a blank method may result in unexpected program behaviour.
+An empty method may indicate that an implementation was intended to be provided but was accidentally omitted. When using the method, it will not be clear that it does not provide an implentation and with dynamic dispatch, resolving to a blank method may result in unexpected program behaviour.
 
 ## Recommendation
 
@@ -32,7 +28,7 @@ public class Test {
 
 ## Implementation Notes
 
-The rule excludes reporting methods annotated with `org.springframework.aop.Pointcut` or `org.aspectj.lang.annotation.Pointcut`. Such annotations are commonly paired with empty methods and are considered an acceptable use case for an empty method.
+The rule excludes reporting methods that are annotated or marked as `default`.
 
 ## References
 - [java.util.Collections.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))
