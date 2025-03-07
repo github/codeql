@@ -90,4 +90,4 @@ where
   not m.isDefault() and
   //native methods have no body
   not m.isNative()
-select m, "Empty method found."
+select m, "This empty method should be completed."
