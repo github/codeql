@@ -11,9 +11,24 @@
 import rust
 import UnusedVariable
 
+/**
+ * A callable for which we have incomplete information, for example because an unexpanded
+ * macro call is present. These callables are prone to false positive results from unused
+ * entities queries, unless they are excluded from results.
+ */
+class IncompleteCallable extends Callable {
+  IncompleteCallable() {
+    exists(MacroExpr me |
+      me.getEnclosingCallable() = this and
+      not me.getMacroCall().hasExpanded()
+    )
+  }
+}
+
 from Variable v
 where
   isUnused(v) and
   not isAllowableUnused(v) and
-  not v instanceof DiscardVariable
+  not v instanceof DiscardVariable and
+  not v.getEnclosingCfgScope() instanceof IncompleteCallable
 select v, "Variable '" + v + "' is not used."

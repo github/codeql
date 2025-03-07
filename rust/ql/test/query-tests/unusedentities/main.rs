@@ -518,7 +518,7 @@ fn macros4() {
 
 fn macros5() {
     match std::env::args().nth(1).unwrap().parse::<u16>() {
-        Ok(n) => { // $ SPURIOUS: Alert[rust/unused-variable]
+        Ok(n) => {
             undefined_macro_call!(n);
         }
         _ => {}
