@@ -32,13 +32,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     UnknownPropertyValue() { this = "<unknown>" }
   }
 
+  bindingset[root]
   private string getPropertyAsGraphString(NodeBase node, string key, Location root) {
     result =
       strictconcat(any(string value, Location location, string parsed |
             node.properties(key, value, location) and
-            if location = root or location instanceof UnknownLocation
-            then parsed = value
-            else parsed = "(" + value + "," + location.toString() + ")"
+            (
+              if location = root or location instanceof UnknownLocation
+              then parsed = value
+              else parsed = "(" + value + "," + location.toString() + ")"
+            )
           |
             parsed
           ), ","
