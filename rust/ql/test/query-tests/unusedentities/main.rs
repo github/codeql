@@ -507,7 +507,7 @@ fn macros2() {
 }
 
 fn macros3() {
-    let d: u16 = 4; // $ SPURIOUS: Alert[rust/unused-value]
+    let d: u16 = 4;
 
     undefined_macro_call!(d);
 }
