@@ -93,6 +93,12 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
     // make sinks barriers so that we only report the closest instance
     isSink(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-022/TaintedPath.ql:108: Column 1 selects sink.asIndirectArgument
+    none()
+  }
 }
 
 module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
