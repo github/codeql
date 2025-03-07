@@ -12,6 +12,19 @@ private module Impl {
     none()
   }
 
+  private Element getImmediateChildOfCrate(Crate e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfExtractorStep(
     ExtractorStep e, int index, string partialPredicateCall
   ) {
@@ -4049,6 +4062,8 @@ private module Impl {
     // why does this look more complicated than it should?
     // * none() simplifies generation, as we can append `or ...` without a special case for the first item
     none()
+    or
+    result = getImmediateChildOfCrate(e, index, partialAccessor)
     or
     result = getImmediateChildOfExtractorStep(e, index, partialAccessor)
     or
