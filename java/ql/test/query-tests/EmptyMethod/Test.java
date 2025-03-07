@@ -21,4 +21,15 @@ public class Test {
     public abstract void f();
   }
 
+  public class Derived extends TestInner {
+
+    @Override
+    public void f() { } // $ Alert
+  }
+
+  public interface TestInterface {
+
+    default void method() { } // $ Alert
+  }
+
 }
