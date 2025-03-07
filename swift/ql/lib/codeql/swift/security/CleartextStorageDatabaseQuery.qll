@@ -48,6 +48,12 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
     c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/Security/CWE-311/CleartextStorageDatabase.ql:35: Column 1 does not select a source or sink originating from the flow call on line 33
+    none()
+  }
 }
 
 /**
