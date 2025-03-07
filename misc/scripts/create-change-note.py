@@ -52,6 +52,6 @@ category: {change_category}
 with open(change_note_file, "w") as f:
     f.write(change_note)
 
-editor = os.environ.get('EDITOR', 'code')
+editor = os.environ.get('EDITOR', 'code -r')
 
 os.system(f"{editor} {change_note_file}")
