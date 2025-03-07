@@ -19,7 +19,7 @@ class ConstantMatching
         // Should not be considered a constant condition as
         // we don't know anything about D.
         var d = new D();
-        if (d.Prop is C2) // $ Alert
+        if (d.Prop is C2)
         {
         }
     }
