@@ -66,16 +66,6 @@ class SurefireTest extends Class {
 }
 
 /**
- * Frameworks that provide `PointCuts`
- * which commonly intentionally annotate empty methods
- */
-class PointCutAnnotation extends Annotation {
-  PointCutAnnotation() {
-    this.getType().hasQualifiedName("org.aspectj.lang.annotation", "Pointcut")
-  }
-}
-
-/**
  * A `Method` from source that is not abstract
  */
 class NonAbstractSource extends Method {
@@ -94,6 +84,10 @@ where
   m.getNumberOfCommentLines() = 0 and
   //permit a javadoc above as well as sufficient reason to leave empty
   not exists(Javadoc jd | m.getDoc().getJavadoc() = jd) and
-  //methods annotated this way are usually intentionally empty
-  not exists(PointCutAnnotation a | a = m.getAnAnnotation())
+  //annotated methods are considered compliant
+  not exists(m.getAnAnnotation()) and
+  //default methods are not abstract, but are considered compliant
+  not m.isDefault() and
+  //native methods have no body
+  not m.isNative()
 select m, "Empty method found."
