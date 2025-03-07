@@ -34,7 +34,7 @@ func encrypt(data []byte, password string) []byte {
 	random := rand.New(rand.NewSource(999))
 	io.ReadFull(random, nonce)
 
-	ciphertext := gcm.Seal(nonce, nonce, data, nil) // BAD: use of an insecure rng to generate a nonce
+	ciphertext := gcm.Seal(data[:0], nonce, data, nil) // BAD: use of an insecure rng to generate a nonce
 	return ciphertext
 }
 

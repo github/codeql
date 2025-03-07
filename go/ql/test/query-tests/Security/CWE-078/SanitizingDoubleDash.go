@@ -93,62 +93,62 @@ func testDoubleDashIrrelevant(req *http.Request) {
 
 	{
 		arrayLit := [1]string{tainted}
-		exec.Command("sudo", arrayLit[:]...)
+		exec.Command("sudo", arrayLit[:]...) // BAD
 	}
 
 	{
 		arrayLit := [2]string{"--", tainted}
-		exec.Command("sudo", arrayLit[:]...)
+		exec.Command("sudo", arrayLit[:]...) // BAD
 	}
 
 	{
 		arrayLit := []string{"--", tainted}
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
 		arrayLit := []string{}
 		arrayLit = append(arrayLit, "--", tainted)
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
 		arrayLit := []string{}
 		arrayLit = append(arrayLit, tainted, "--")
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
 		arrayLit := []string{"--"}
 		arrayLit = append(arrayLit, tainted)
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
 		arrayLit := []string{tainted}
 		arrayLit = append(arrayLit, "--")
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
 		arrayLit := []string{"--"}
 		arrayLit = append(arrayLit, "something else")
 		arrayLit = append(arrayLit, tainted)
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
 		arrayLit := []string{"something else"}
 		arrayLit = append(arrayLit, tainted)
 		arrayLit = append(arrayLit, "--")
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // BAD
 	}
 
 	{
-		exec.Command("sudo", "--", tainted)
+		exec.Command("sudo", "--", tainted) // BAD
 	}
 
 	{
-		exec.Command("sudo", tainted, "--")
+		exec.Command("sudo", tainted, "--") // BAD
 	}
 }

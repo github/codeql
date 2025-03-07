@@ -72,6 +72,16 @@ predicate checksValue(IR::Instruction instruction, DataFlow::SsaNode value) {
   )
 }
 
+// Now that we have use-use flow, phi nodes aren't directly involved in the flow graph. TODO: change this?
+DataFlow::SsaNode phiDefinedFrom(DataFlow::SsaNode node) {
+  result.getDefinition().(SsaPseudoDefinition).getAnInput() = node.getDefinition().getVariable()
+}
+
+DataFlow::SsaNode definedFrom(DataFlow::SsaNode node) {
+  DataFlow::localFlow(node, result) or
+  result = phiDefinedFrom*(node)
+}
+
 /**
  * Matches if `call` is a function returning (`ptr`, `err`) where `ptr` may be nil, and neither
  * `ptr` not `err` has been checked for validity as of `node`.
@@ -98,7 +108,7 @@ predicate returnUncheckedAtNode(
     // localFlow is used to permit checks via either an SSA phi node or ordinary assignment.
     returnUncheckedAtNode(call, node.getAPredecessor(), ptr, err) and
     not exists(DataFlow::SsaNode checked |
-      DataFlow::localFlow(ptr, checked) or DataFlow::localFlow(err, checked)
+      checked = definedFrom(ptr) or checked = definedFrom(err)
     |
       checksValue(node, checked)
     )
