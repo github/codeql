@@ -478,6 +478,22 @@ fn macros() {
         })
     )
 }
+
+macro_rules! let_in_macro {
+    ($e:expr) => {{
+        let var_in_macro = 0;
+        $e
+    }};
+}
+
+// Our analysis does not currently respect the hygiene rules of Rust macros
+// (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
+// all we have access to is the expanded AST
+fn hygiene_mismatch() {
+    let var_in_macro = 0; // $ SPURIOUS: Alert[rust/unused-value]
+    let_in_macro!(var_in_macro);
+}
+
 // --- references ---
 
 fn references() {
@@ -505,21 +521,6 @@ trait MyTrait {
     fn my_func2(&self, x: i32) -> i32;
 }
 
-macro_rules! let_in_macro {
-    ($e:expr) => {{
-        let var_in_macro = 0;
-        $e
-    }};
-}
-
-// Our analysis does not currently respect the hygiene rules of Rust macros
-// (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
-// all we have access to is the expanded AST
-fn hygiene_mismatch() {
-    let var_in_macro = 0; // $ SPURIOUS: Alert[rust/unused-value]
-    let_in_macro!(var_in_macro);
-}
-
 // --- main ---
 
 fn main() {
@@ -535,6 +536,7 @@ fn main() {
     func_ptrs();
     folds_and_closures();
     macros();
+    hygiene_mismatch();
     references();
 
     generics();
