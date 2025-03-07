@@ -18,6 +18,9 @@ import com.semmle.js.ast.regexp.Error;
 import com.semmle.js.ast.regexp.Group;
 import com.semmle.js.ast.regexp.HexEscapeSequence;
 import com.semmle.js.ast.regexp.IdentityEscape;
+import com.semmle.js.ast.regexp.Intersection;
+import com.semmle.js.ast.regexp.Subtraction;
+import com.semmle.js.ast.regexp.Union;
 import com.semmle.js.ast.regexp.NamedBackReference;
 import com.semmle.js.ast.regexp.NonWordBoundary;
 import com.semmle.js.ast.regexp.OctalEscape;
@@ -27,6 +30,7 @@ import com.semmle.js.ast.regexp.Range;
 import com.semmle.js.ast.regexp.RegExpTerm;
 import com.semmle.js.ast.regexp.Sequence;
 import com.semmle.js.ast.regexp.Star;
+import com.semmle.js.ast.regexp.StringDisjunction;
 import com.semmle.js.ast.regexp.UnicodeEscapeSequence;
 import com.semmle.js.ast.regexp.UnicodePropertyEscape;
 import com.semmle.js.ast.regexp.WordBoundary;
@@ -36,6 +40,7 @@ import com.semmle.js.ast.regexp.ZeroWidthPositiveLookahead;
 import com.semmle.js.ast.regexp.ZeroWidthPositiveLookbehind;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /** A parser for ECMAScript 2018 regular expressions. */
@@ -67,9 +72,11 @@ public class RegExpParser {
   private List<Error> errors;
   private List<BackReference> backrefs;
   private int maxbackref;
+  private boolean vFlag = true;
 
   /** Parse the given string as a regular expression. */
   public Result parse(String src) {
+    System.out.println("Parsing regex pattern: '" + src + "'");
     this.src = src;
     this.pos = 0;
     this.errors = new ArrayList<>();
@@ -79,6 +86,7 @@ public class RegExpParser {
     for (BackReference backref : backrefs)
       if (backref.getValue() > maxbackref)
         errors.add(new Error(backref.getLoc(), Error.INVALID_BACKREF));
+    System.out.println("Parse completed with " + errors.size() + " errors");
     return new Result(root, errors);
   }
 
@@ -226,9 +234,50 @@ public class RegExpParser {
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> disjuncts = new ArrayList<>();
     disjuncts.add(this.parseAlternative());
-    while (this.match("|")) disjuncts.add(this.parseAlternative());
+    while (this.match("|")) {
+        disjuncts.add(this.parseAlternative());
+    }
     if (disjuncts.size() == 1) return disjuncts.get(0);
-    return this.finishTerm(new Disjunction(loc, disjuncts));
+        return this.finishTerm(new Disjunction(loc, disjuncts));
+  }
+
+  private RegExpTerm parseDisjunctionInsideQuoatedString() {
+    SourceLocation loc = new SourceLocation(pos());
+    List<RegExpTerm> disjuncts = new ArrayList<>();
+    disjuncts.add(this.parseAlternativeInsideQuoatedString());
+    while (this.match("|")) {
+        disjuncts.add(this.parseAlternativeInsideQuoatedString());
+    }
+    if (disjuncts.size() == 1) return disjuncts.get(0);
+        return this.finishTerm(new Disjunction(loc, disjuncts));
+  }
+
+  private RegExpTerm parseAlternativeInsideQuoatedString() {
+    SourceLocation loc = new SourceLocation(pos());
+    StringBuilder sb = new StringBuilder();
+    boolean escaped = false;
+    while (true) {
+      // If we're at the end of the string, something went wrong.
+      if (this.atEOS()) {
+        this.error(Error.UNEXPECTED_EOS);
+        break;
+      }
+      // We can end parsing if we're not escaped and we see a `|` which would mean Alternation
+      // or `}` which would mean the end of the Quoted String.
+      if(!escaped && this.lookahead(null, "|", "}")){
+        break;
+      }
+      char c = this.nextChar();
+      // Track whether the character is an escape character. 
+      escaped = !escaped && (c == '\\');
+      sb.append(c);
+    }
+    
+    String literal = sb.toString();
+    loc.setEnd(pos());
+    loc.setSource(literal);
+    
+    return new Constant(loc, literal);
   }
 
   private RegExpTerm parseAlternative() {
@@ -236,9 +285,10 @@ public class RegExpParser {
     List<RegExpTerm> elements = new ArrayList<>();
     while (!this.lookahead(null, "|", ")")) elements.add(this.parseTerm());
     if (elements.size() == 1) return elements.get(0);
-    return this.finishTerm(new Sequence(loc, elements));
+        return this.finishTerm(new Sequence(loc, elements));
   }
 
+  
   private RegExpTerm parseTerm() {
     SourceLocation loc = new SourceLocation(pos());
 
@@ -421,6 +471,14 @@ public class RegExpParser {
       return this.finishTerm(new NamedBackReference(loc, name, "\\k<" + name + ">"));
     }
 
+    if (this.match("q{")) {
+      System.out.println("Parsing string disjunction at position " + pos);
+      RegExpTerm term = parseDisjunctionInsideQuoatedString();
+      this.expectRBrace();
+      System.out.println("Finished Parsing string disjunction at position " + pos);
+      return this.finishTerm(new StringDisjunction(loc, term));
+    }
+
     if (this.match("p{", "P{")) {
       String name = this.readIdentifier();
       if (this.match("=")) {
@@ -493,11 +551,12 @@ public class RegExpParser {
   }
 
   private RegExpTerm parseCharacterClass() {
+    if (vFlag) return parseNestedCharacterClass();
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> elements = new ArrayList<>();
-
     this.match("[");
     boolean inverted = this.match("^");
+    System.out.println("Parsing simple character class (inverted: " + inverted + ") at position " + pos);
     while (!this.match("]")) {
       if (this.atEOS()) {
         this.error(Error.EXPECTED_RBRACKET);
@@ -505,6 +564,88 @@ public class RegExpParser {
       }
       elements.add(this.parseCharacterClassElement());
     }
+    System.out.println("Created character class with " + elements.size() + " elements");
+    return this.finishTerm(new CharacterClass(loc, elements, inverted));
+  }
+
+  /**
+   * Enum representing the types of character class structures.
+   */
+  private enum CharacterClassType {
+    STANDARD,
+    INTERSECTION,
+    SUBTRACTION,
+    UNION
+  }
+
+  // New method to support nested character classes.
+  private RegExpTerm parseNestedCharacterClass() {
+    SourceLocation loc = new SourceLocation(pos());
+    this.match("["); // consume '['
+    boolean inverted = this.match("^");
+    List<RegExpTerm> elements = new ArrayList<>();
+    CharacterClassType classType = CharacterClassType.STANDARD;
+
+    while (!this.match("]")) {
+      if (this.atEOS()) {
+        this.error(Error.EXPECTED_RBRACKET);
+        break;
+      }
+      
+      // If nested '[' is found, recursively parse it.
+      if (vFlag && lookahead("[")) {
+        System.out.println("Found nested character class at position " + pos);
+        elements.add(parseNestedCharacterClass());
+      } 
+      else if (vFlag && lookahead("&&")) {
+        this.match("&&");
+        classType = CharacterClassType.INTERSECTION;
+        System.out.println("Found intersection operator at position " + pos);
+      } 
+      else if (vFlag && lookahead("--")) {
+        this.match("--");
+        classType = CharacterClassType.SUBTRACTION;
+        System.out.println("Found subtraction operator at position " + pos);
+      }
+      else {
+        RegExpTerm element = this.parseCharacterClassElement();
+        elements.add(element);
+        System.out.println("Added character class element: " + element.getClass().getSimpleName() + " at position " + pos);
+      }
+    }
+    boolean containsComplex = elements.stream()
+                                   .anyMatch(term -> term instanceof UnicodePropertyEscape ||
+                                    term instanceof StringDisjunction ||
+                                    term instanceof CharacterClass);
+    // Set type to UNION only if:
+    // 1. We haven't already determined a specific type (intersection/subtraction)
+    // 2. We have more than one element
+    // 3. We have at least one complex element (i.e. a nested character class or a UnicodePropertyEscape)
+    if (containsComplex && classType == CharacterClassType.STANDARD && elements.size() > 1) {
+      classType = CharacterClassType.UNION;
+      
+      System.out.println("Converting to UNION due to complex element composition");
+    }
+    
+    // Create appropriate RegExpTerm based on the detected class type
+    switch (classType) {
+      case INTERSECTION:
+        elements = Collections.singletonList(new Intersection(loc, elements));
+        System.out.println("Completed INTERSECTION class with " + elements.size() + " elements");
+        break;
+      case SUBTRACTION:
+        elements = Collections.singletonList(new Subtraction(loc, elements));
+        System.out.println("Completed SUBTRACTION class with " + elements.size() + " elements");
+        break;
+      case UNION:
+        elements = Collections.singletonList(new Union(loc, elements));
+        System.out.println("Completed UNION class with " + elements.size() + " elements");
+        break;
+      case STANDARD:
+      default:
+        System.out.println("Completed STANDARD class with " + elements.size() + " elements");
+    }
+
     return this.finishTerm(new CharacterClass(loc, elements, inverted));
   }
 
@@ -519,22 +660,40 @@ public class RegExpParser {
           return atom;
       }
     }
-    if (!this.lookahead("-]") && this.match("-") && !(atom instanceof CharacterClassEscape))
-      return this.finishTerm(new CharacterClassRange(loc, atom, this.parseCharacterClassAtom()));
+    if (!this.lookahead("-]") && !this.lookahead("--") && this.match("-") && !(atom instanceof CharacterClassEscape)) {
+      RegExpTerm rangeEnd = this.parseCharacterClassAtom();
+      System.out.println("Created character class range from " + 
+                         (atom instanceof Constant ? ((Constant)atom).getValue() : atom.getClass().getSimpleName()) + 
+                         " to " + 
+                         (rangeEnd instanceof Constant ? ((Constant)rangeEnd).getValue() : rangeEnd.getClass().getSimpleName()));
+      return this.finishTerm(new CharacterClassRange(loc, atom, rangeEnd));
+    }
     return atom;
   }
 
   private RegExpTerm parseCharacterClassAtom() {
     SourceLocation loc = new SourceLocation(pos());
+    if (vFlag && peekChar(true) == '[') {
+      System.out.println("Found nested character class atom at position " + pos);
+      return parseNestedCharacterClass();
+    }
     char c = this.nextChar();
+    System.err.println("Parsing character class atom: '" + c + "' at position " + pos);
     if (c == '\\') {
-      if (this.match("b")) return this.finishTerm(new ControlEscape(loc, "\b", 8, "\\b"));
+      if (this.match("b")) {
+        System.out.println("Parsed backspace escape at position " + pos);
+        return this.finishTerm(new ControlEscape(loc, "\b", 8, "\\b"));
+      }
+      System.out.println("Parsing atom escape at position " + pos);
       return this.finishTerm(this.parseAtomEscape(loc, true));
     }
     String value = String.valueOf(c);
     // Extract a surrogate pair as a single constant.
     if (Character.isHighSurrogate(c) && Character.isLowSurrogate(peekChar(true))) {
       value += this.nextChar();
+      System.out.println("Parsed surrogate pair: " + value + " at position " + pos);
+    } else {
+      System.out.println("Parsed character: '" + value + "' at position " + pos);
     }
     return this.finishTerm(new Constant(loc, value));
   }
