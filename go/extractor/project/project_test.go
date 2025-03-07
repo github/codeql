@@ -39,18 +39,20 @@ func parseModFile(t *testing.T, contents string) *modfile.File {
 	return modFile
 }
 
-func testHasInvalidToolchainVersion(t *testing.T, contents string) bool {
-	return hasInvalidToolchainVersion(parseModFile(t, contents))
+func testHasInvalidToolchainVersion(t *testing.T, installedToolchainVersion util.SemVer, contents string) bool {
+	return hasInvalidToolchainVersion(installedToolchainVersion, parseModFile(t, contents))
 }
 
 func TestHasInvalidToolchainVersion(t *testing.T) {
+	installedToolchainVersion := util.NewSemVer("1.21")
+
 	invalid := []string{
 		"go 1.21\n",
 		"go 1.22\n",
 	}
 
 	for _, v := range invalid {
-		if !testHasInvalidToolchainVersion(t, v) {
+		if !testHasInvalidToolchainVersion(t, installedToolchainVersion, v) {
 			t.Errorf("Expected testHasInvalidToolchainVersion(\"%s\") to be true, but got false", v)
 		}
 	}
@@ -62,7 +64,7 @@ func TestHasInvalidToolchainVersion(t *testing.T) {
 	}
 
 	for _, v := range valid {
-		if testHasInvalidToolchainVersion(t, v) {
+		if testHasInvalidToolchainVersion(t, installedToolchainVersion, v) {
 			t.Errorf("Expected testHasInvalidToolchainVersion(\"%s\") to be false, but got true", v)
 		}
 	}

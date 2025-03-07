@@ -195,11 +195,24 @@ func findGoModFiles(root string) []string {
 // A regular expression for the Go toolchain version syntax.
 var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+(\.[0-9]+|rc[0-9]+))$`)
 
-// Returns true if the `go.mod` file specifies a Go language version, that version is `1.21` or greater, and
-// there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
-func hasInvalidToolchainVersion(modFile *modfile.File) bool {
-	return modFile.Toolchain == nil && modFile.Go != nil &&
-		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_21)
+// Returns true if the `go.mod` file specifies a Go language version which is not of the format that
+// is expected by the Go 1.21 and Go 1.22 toolchains for toolchain versions, and there is no
+// explicit toolchain version declared.
+func hasInvalidToolchainVersion(installedToolchainVersion util.SemVer, modFile *modfile.File) bool {
+	if modFile.Toolchain != nil {
+		// There is an explicit toolchain directive, so it doesn't matter what format the
+		// Go language version is in, since it will not be used as a fallback toolchain version.
+		return false
+	} else if modFile.Go != nil && !toolchainVersionRe.Match([]byte(modFile.Go.Version)) {
+		// There's no explicit toolchain directive, but we have a language version which
+		// does not match the toolchain version format in Go 1.21 and Go 1.22.
+		// This is a problem if the installed Go toolchain is within that version range
+		// as it will try to use the language version as the toolchain version.
+		return util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_21) &&
+			installedToolchainVersion.IsAtLeast(toolchain.V1_21) &&
+			installedToolchainVersion.IsOlderThan(toolchain.V1_23)
+	}
+	return false
 }
 
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
@@ -232,7 +245,7 @@ func LoadGoModules(emitDiagnostics bool, goModFilePaths []string) []*GoModule {
 		// there is no `toolchain` directive, check that it is a valid Go toolchain version. Otherwise,
 		// `go` commands which try to download the right version of the Go toolchain will fail. We detect
 		// this situation and emit a diagnostic.
-		if hasInvalidToolchainVersion(modFile) {
+		if hasInvalidToolchainVersion(util.NewSemVer(toolchain.GetEnvGoVersion()), modFile) {
 			diagnostics.EmitInvalidToolchainVersion(goModFilePath, modFile.Go.Version)
 		}
 	}
