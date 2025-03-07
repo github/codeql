@@ -82,7 +82,6 @@ extensions:
       - ["group:gocb2", "AnalyticsResultRaw", True, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb2", "GetResult", True, "Content", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["group:gocb2", "LookupInResult", True, "ContentAt", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"]
-      - ["group:gocb2", "LookupInAllReplicasResult", True, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb2", "MutateInResult", True, "ContentAt", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"]
       - ["group:gocb2", "QueryResult", True, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["group:gocb2", "QueryResult", True, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

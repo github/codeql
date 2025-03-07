@@ -1261,7 +1261,7 @@ type ExistsOptions struct {
 }
 
 type ExistsResult struct {
-	Result Result
+	Result
 }
 
 func (_ *ExistsResult) Cas() Cas {
@@ -1512,7 +1512,7 @@ func (_ *GetReplicaResult) IsReplica() bool {
 }
 
 type GetResult struct {
-	Result Result
+	Result
 }
 
 func (_ *GetResult) Cas() Cas {
@@ -1664,15 +1664,11 @@ type LookupInOptions struct {
 }
 
 type LookupInReplicaResult struct {
-	LookupInResult *LookupInResult
+	*LookupInResult
 }
 
 func (_ LookupInReplicaResult) Cas() Cas {
 	return 0
-}
-
-func (_ LookupInReplicaResult) ContentAt(_ uint, _ interface{}) error {
-	return nil
 }
 
 func (_ LookupInReplicaResult) Exists(_ uint) bool {
@@ -1684,7 +1680,7 @@ func (_ *LookupInReplicaResult) IsReplica() bool {
 }
 
 type LookupInResult struct {
-	Result Result
+	Result
 }
 
 func (_ *LookupInResult) Cas() Cas {
@@ -1738,7 +1734,7 @@ func (_ *MutateInResult) Cas() Cas {
 type MutateInSpec struct{}
 
 type MutationResult struct {
-	Result Result
+	Result
 }
 
 func (_ MutationResult) MutationToken() *MutationToken {
@@ -2175,7 +2171,7 @@ func (_ *ScanResult) Next() *ScanResultItem {
 }
 
 type ScanResultItem struct {
-	Result Result
+	Result
 }
 
 func (_ *ScanResultItem) Cas() Cas {
