@@ -58,7 +58,7 @@ def test_global_attribute_read():
 
 def test_local_attribute_assignment():
     # Same as `test_global_attribute_assignment`, but the assigned variable is not global
-    # In this case, we don't want flow going to the `ModuleVariableNode` for `local_var` 
+    # In this case, we don't want flow going to the `ModuleVariableNode` for `local_var`
     # (which is referenced in `test_local_attribute_read`).
     local_var = object() # $ tracked=foo
     local_var.foo = tracked # $ tracked tracked=foo
@@ -76,7 +76,7 @@ class MyClass: # $tracked=field
 
 lookup = MyClass.field # $tracked tracked=field
 instance = MyClass() # $tracked=field
-lookup2 = instance.field # MISSING: tracked
+lookup2 = instance.field # $ tracked tracked=field
 
 # ------------------------------------------------------------------------------
 # Dynamic attribute access
@@ -143,22 +143,22 @@ def dunder_dict_indirect_read():
 # Tracking of attribute on class instance
 # ------------------------------------------------------------------------------
 
-# attribute set in method
+# attribute set in constructor (so is always called)
 # inspired by https://github.com/github/codeql/pull/6023
 
 class MyClass2(object):
     def __init__(self): # $ tracked=foo
         self.foo = tracked # $ tracked=foo tracked
 
-    def print_foo(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def print_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
-    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+    def possibly_uncalled_method(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
 
-instance = MyClass2()
-print(instance.foo) # $ MISSING: tracked=foo tracked
-instance.print_foo() # $ MISSING: tracked=foo
+instance = MyClass2() # $ tracked=foo
+print(instance.foo) # $ tracked=foo tracked
+instance.print_foo() # $ tracked=foo
 
 
 # attribute set from outside of class
@@ -177,3 +177,95 @@ instance = MyClass3() # $ tracked=foo
 instance.print_self() # $ tracked=foo
 instance.foo = tracked # $ tracked=foo tracked
 instance.print_foo() # $ tracked=foo
+
+
+# attribute set from method on class (which may or may not be called for a specific instance)
+
+class MyClass4(object):
+    def set_foo(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+    def print_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
+
+    def possibly_uncalled_method(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
+
+instance = MyClass4() # $ tracked=foo
+instance.set_foo() # $ tracked=foo
+instance.print_foo() # $ tracked=foo
+print(instance.foo) # $ tracked=foo tracked
+
+
+# class-level attributes
+
+class MyClass5(object): # $ tracked=foo tracked=bar
+    foo = tracked # $ tracked
+    # bar is set from a classmethod
+    bar = None
+
+    def on_self(self): # $ tracked=bar tracked=foo
+        print(self.foo) # $ tracked=foo tracked tracked=bar
+        print(self.bar) # $ tracked=bar tracked tracked=foo
+
+    @staticmethod
+    def on_classref():
+        print(MyClass5.foo) # $ tracked=foo tracked tracked=bar
+        print(MyClass5.bar) # $ tracked=foo tracked=bar tracked
+
+    @classmethod
+    def on_cls(cls): # $ tracked=bar tracked=foo
+        print(cls.foo) # $ tracked=foo tracked tracked=bar
+        print(cls.bar) # $ tracked=bar tracked tracked=foo
+
+    @classmethod
+    def set_bar(cls): # $ tracked=bar tracked=foo
+        cls.bar = tracked # $ tracked=bar tracked tracked=foo
+
+instance = MyClass5() # $ tracked=foo tracked=bar
+print(instance.foo) # $ tracked=foo tracked tracked=bar
+print(instance.bar) # $ tracked=bar tracked tracked=foo
+
+
+# shadowing of class-level attribute by instance attribute
+
+class MyClass6(object): # $ int=foo
+    foo = int() # $ int
+
+    def set_instance_foo(self): # $ str=foo int=foo
+        self.foo = str() # $ str str=foo int=foo
+
+    def use_im(self): # $ int=foo str=foo
+        print(self.foo) # $ int int=foo str str=foo
+
+    @classmethod
+    def use_cls(cls): # $ int=foo
+        print(cls.foo) # $ int int=foo
+
+
+print(MyClass6.foo) # $ int int=foo
+
+instance = MyClass6() # $ int=foo str=foo
+print(instance.foo) # $ int int=foo str str=foo
+instance.set_instance_foo() # $ int=foo str=foo
+print(instance.foo) # $ int int=foo str str=foo
+
+
+# attributes flowing between subclass and base class
+
+class BaseClass(object):
+    def set_foo(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+    def use_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
+
+    def use_bar(self): # $ tracked=foo MISSING: tracked=bar
+        print(self.bar) # $ tracked=foo MISSING: tracked tracked=bar
+
+class SubClass(BaseClass): # $ MISSING: tracked=foo
+    def also_use_foo(self): # $ tracked=bar
+        print(self.foo) # $ tracked=bar MISSING: tracked=foo tracked
+
+    def set_bar(self): # $ tracked=bar
+        self.bar = tracked # $ tracked=bar tracked
