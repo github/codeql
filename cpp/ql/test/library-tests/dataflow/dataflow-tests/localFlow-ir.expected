@@ -53,11 +53,9 @@
 | example.c:26:18:26:24 | *& ... | example.c:26:2:26:7 | *coords |
 | example.c:26:18:26:24 | getX output argument | example.c:26:2:26:7 | *coords |
 | example.c:26:18:26:24 | pointer to getX output argument | example.c:26:2:26:7 | coords |
-| example.c:26:19:26:24 | *coords | example.c:26:18:26:24 | *& ... |
 | example.c:26:19:26:24 | coords | example.c:26:18:26:24 | & ... |
 | example.c:28:22:28:25 | & ... | example.c:28:14:28:25 | & ... |
 | example.c:28:22:28:25 | *& ... | example.c:28:14:28:25 | *& ... |
-| example.c:28:23:28:25 | *pos | example.c:28:22:28:25 | *& ... |
 | example.c:28:23:28:25 | pos | example.c:28:22:28:25 | & ... |
 | test.cpp:6:12:6:17 | call to source | test.cpp:6:12:6:17 | call to source |
 | test.cpp:6:12:6:17 | call to source | test.cpp:7:8:7:9 | t1 |
@@ -134,7 +132,6 @@
 | test.cpp:384:10:384:13 | *& ... | test.cpp:384:10:384:13 | *& ... |
 | test.cpp:384:10:384:13 | memcpy output argument | test.cpp:385:8:385:10 | tmp |
 | test.cpp:384:10:384:13 | pointer to memcpy output argument | test.cpp:385:8:385:10 | tmp |
-| test.cpp:384:11:384:13 | *tmp | test.cpp:384:10:384:13 | *& ... |
 | test.cpp:384:11:384:13 | tmp | test.cpp:384:10:384:13 | & ... |
 | test.cpp:384:16:384:23 | & ... | test.cpp:384:16:384:23 | & ... |
 | test.cpp:384:16:384:23 | *& ... | test.cpp:384:3:384:8 | **call to memcpy |
@@ -143,7 +140,6 @@
 | test.cpp:384:16:384:23 | *& ... | test.cpp:384:16:384:23 | *& ... |
 | test.cpp:384:16:384:23 | **& ... | test.cpp:384:3:384:8 | **call to memcpy |
 | test.cpp:384:16:384:23 | **& ... | test.cpp:384:10:384:13 | memcpy output argument |
-| test.cpp:384:17:384:23 | *source1 | test.cpp:384:16:384:23 | *& ... |
 | test.cpp:384:17:384:23 | source1 | test.cpp:384:16:384:23 | & ... |
 | test.cpp:388:53:388:59 | source1 | test.cpp:391:16:391:23 | *& ... |
 | test.cpp:388:66:388:66 | b | test.cpp:393:7:393:7 | b |
@@ -153,7 +149,6 @@
 | test.cpp:390:18:390:21 | & ... | test.cpp:391:10:391:13 | & ... |
 | test.cpp:390:18:390:21 | *& ... | test.cpp:390:18:390:21 | *& ... |
 | test.cpp:390:18:390:21 | *& ... | test.cpp:391:10:391:13 | *& ... |
-| test.cpp:390:19:390:21 | *tmp | test.cpp:390:18:390:21 | *& ... |
 | test.cpp:390:19:390:21 | tmp | test.cpp:390:18:390:21 | & ... |
 | test.cpp:391:10:391:13 | & ... | test.cpp:391:3:391:8 | call to memcpy |
 | test.cpp:391:10:391:13 | & ... | test.cpp:391:10:391:13 | & ... |
@@ -161,7 +156,6 @@
 | test.cpp:391:10:391:13 | *& ... | test.cpp:391:10:391:13 | *& ... |
 | test.cpp:391:10:391:13 | memcpy output argument | test.cpp:392:8:392:10 | tmp |
 | test.cpp:391:10:391:13 | pointer to memcpy output argument | test.cpp:392:8:392:10 | tmp |
-| test.cpp:391:11:391:13 | *tmp | test.cpp:391:10:391:13 | *& ... |
 | test.cpp:391:11:391:13 | tmp | test.cpp:391:10:391:13 | & ... |
 | test.cpp:391:16:391:23 | & ... | test.cpp:391:16:391:23 | & ... |
 | test.cpp:391:16:391:23 | *& ... | test.cpp:391:3:391:8 | **call to memcpy |
@@ -170,7 +164,6 @@
 | test.cpp:391:16:391:23 | *& ... | test.cpp:391:16:391:23 | *& ... |
 | test.cpp:391:16:391:23 | **& ... | test.cpp:391:3:391:8 | **call to memcpy |
 | test.cpp:391:16:391:23 | **& ... | test.cpp:391:10:391:13 | memcpy output argument |
-| test.cpp:391:17:391:23 | *source1 | test.cpp:391:16:391:23 | *& ... |
 | test.cpp:391:17:391:23 | source1 | test.cpp:391:16:391:23 | & ... |
 | test.cpp:392:8:392:10 | tmp | test.cpp:394:10:394:12 | tmp |
 | test.cpp:392:8:392:10 | tmp | test.cpp:394:10:394:12 | tmp |
@@ -209,5 +202,4 @@
 | test.cpp:1087:3:1087:3 | a [post update] | test.cpp:1088:8:1088:9 | & ... |
 | test.cpp:1087:15:1087:21 | 0 | test.cpp:1087:3:1087:21 | ... = ... |
 | test.cpp:1087:15:1087:21 | *0 | test.cpp:1087:3:1087:21 | *... = ... |
-| test.cpp:1088:9:1088:9 | *a | test.cpp:1088:8:1088:9 | *& ... |
 | test.cpp:1088:9:1088:9 | a | test.cpp:1088:8:1088:9 | & ... |
