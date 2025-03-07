@@ -12,11 +12,11 @@ use ra_ap_base_db::CrateGraph;
 use ra_ap_base_db::CrateId;
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_cfg::CfgAtom;
-use ra_ap_hir::{db::DefDatabase, VariantId, Visibility};
-use ra_ap_hir::{db::HirDatabase, DefMap, ModuleDefId};
-use ra_ap_hir_def::{data::adt::VariantData, nameres::ModuleData, AssocItemId, LocalModuleId};
-use ra_ap_hir_def::{resolver::HasResolver, ModuleId};
-use ra_ap_hir_def::{visibility::VisibilityExplicitness, HasModule};
+use ra_ap_hir::{DefMap, ModuleDefId, db::HirDatabase};
+use ra_ap_hir::{VariantId, Visibility, db::DefDatabase};
+use ra_ap_hir_def::{AssocItemId, LocalModuleId, data::adt::VariantData, nameres::ModuleData};
+use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
+use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
 use ra_ap_hir_ty::TraitRefExt;
 use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
@@ -603,9 +603,8 @@ fn emit_module_impls(
             .items
             .iter()
             .flat_map(|item| {
-                if let AssocItemId::FunctionId(function) = item {
+                if let (name, AssocItemId::FunctionId(function)) = item {
                     let sig = db.callable_item_signature((*function).into());
-                    let data = db.function_data(*function);
                     let sig = sig.skip_binders();
                     let params = sig
                         .params()
@@ -635,8 +634,9 @@ fn emit_module_impls(
                     });
                     let name = Some(trap.emit(generated::Name {
                         id: trap::TrapId::Star,
-                        text: Some(data.name.as_str().to_owned()),
+                        text: Some(name.as_str().to_owned()),
                     }));
+                    let data = db.function_data(*function);
                     let visibility = emit_visibility(
                         crate_graph,
                         db,
@@ -1265,6 +1265,7 @@ fn emit_variant_data(
                         name,
                         type_repr,
                         visibility,
+                        expr: None,
                     })
                 })
                 .collect();
