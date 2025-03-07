@@ -40,79 +40,73 @@ predicate is_ternary_op(string name) {
 
 predicate is_quad_op(string name) { name = "__setslice__" or name = "__exit__" }
 
-int argument_count(PythonFunctionValue f, string name, ClassValue cls) {
-  cls.declaredAttribute(name) = f and
-  (
-    is_unary_op(name) and result = 1
-    or
-    is_binary_op(name) and result = 2
-    or
-    is_ternary_op(name) and result = 3
-    or
-    is_quad_op(name) and result = 4
-  )
+int argument_count(string name) {
+  is_unary_op(name) and result = 1
+  or
+  is_binary_op(name) and result = 2
+  or
+  is_ternary_op(name) and result = 3
+  or
+  is_quad_op(name) and result = 4
 }
 
 predicate incorrect_special_method_defn(
-  PythonFunctionValue func, string message, boolean show_counts, string name, ClassValue owner
+  Function func, string message, boolean show_counts, string name
 ) {
-  exists(int required | required = argument_count(func, name, owner) |
+  exists(int required | required = argument_count(name) |
     /* actual_non_default <= actual */
-    if required > func.maxParameters()
+    if required > func.getMaxPositionalArguments()
     then message = "Too few parameters" and show_counts = true
     else
-      if required < func.minParameters()
+      if required < func.getMinPositionalArguments()
       then message = "Too many parameters" and show_counts = true
       else (
-        func.minParameters() < required and
-        not func.getScope().hasVarArg() and
-        message = (required - func.minParameters()) + " default values(s) will never be used" and
+        func.getMinPositionalArguments() < required and
+        not func.hasVarArg() and
+        message =
+          (required - func.getMinPositionalArguments()) + " default values(s) will never be used" and
         show_counts = false
       )
   )
 }
 
-predicate incorrect_pow(FunctionValue func, string message, boolean show_counts, ClassValue owner) {
-  owner.declaredAttribute("__pow__") = func and
+predicate incorrect_pow(Function func, string message, boolean show_counts) {
   (
-    func.maxParameters() < 2 and message = "Too few parameters" and show_counts = true
+    func.getMaxPositionalArguments() < 2 and message = "Too few parameters" and show_counts = true
     or
-    func.minParameters() > 3 and message = "Too many parameters" and show_counts = true
+    func.getMinPositionalArguments() > 3 and message = "Too many parameters" and show_counts = true
     or
-    func.minParameters() < 2 and
-    message = (2 - func.minParameters()) + " default value(s) will never be used" and
+    func.getMinPositionalArguments() < 2 and
+    message = (2 - func.getMinPositionalArguments()) + " default value(s) will never be used" and
     show_counts = false
     or
-    func.minParameters() = 3 and
+    func.getMinPositionalArguments() = 3 and
     message = "Third parameter to __pow__ should have a default value" and
     show_counts = false
   )
 }
 
-predicate incorrect_get(FunctionValue func, string message, boolean show_counts, ClassValue owner) {
-  owner.declaredAttribute("__get__") = func and
+predicate incorrect_get(Function func, string message, boolean show_counts) {
   (
-    func.maxParameters() < 3 and message = "Too few parameters" and show_counts = true
+    func.getMaxPositionalArguments() < 3 and message = "Too few parameters" and show_counts = true
     or
-    func.minParameters() > 3 and message = "Too many parameters" and show_counts = true
+    func.getMinPositionalArguments() > 3 and message = "Too many parameters" and show_counts = true
     or
-    func.minParameters() < 2 and
-    not func.getScope().hasVarArg() and
-    message = (2 - func.minParameters()) + " default value(s) will never be used" and
+    func.getMinPositionalArguments() < 2 and
+    not func.hasVarArg() and
+    message = (2 - func.getMinPositionalArguments()) + " default value(s) will never be used" and
     show_counts = false
   )
 }
 
-string should_have_parameters(PythonFunctionValue f, string name, ClassValue owner) {
-  exists(int i | i = argument_count(f, name, owner) | result = i.toString())
-  or
-  owner.declaredAttribute(name) = f and
-  (name = "__get__" or name = "__pow__") and
-  result = "2 or 3"
+string should_have_parameters(string name) {
+  if name in ["__pow__", "__get__"]
+  then result = "2 or 3"
+  else result = argument_count(name).toString()
 }
 
-string has_parameters(PythonFunctionValue f) {
-  exists(int i | i = f.minParameters() |
+string has_parameters(Function f) {
+  exists(int i | i = f.getMinPositionalArguments() |
     i = 0 and result = "no parameters"
     or
     i = 1 and result = "1 parameter"
@@ -125,19 +119,20 @@ from
   PythonFunctionValue f, string message, string sizes, boolean show_counts, string name,
   ClassValue owner
 where
+  owner.declaredAttribute(name) = f and
   (
-    incorrect_special_method_defn(f, message, show_counts, name, owner)
+    incorrect_special_method_defn(f.getScope(), message, show_counts, name)
     or
-    incorrect_pow(f, message, show_counts, owner) and name = "__pow__"
+    incorrect_pow(f.getScope(), message, show_counts) and name = "__pow__"
     or
-    incorrect_get(f, message, show_counts, owner) and name = "__get__"
+    incorrect_get(f.getScope(), message, show_counts) and name = "__get__"
   ) and
   (
     show_counts = false and sizes = ""
     or
     show_counts = true and
     sizes =
-      ", which has " + has_parameters(f) + ", but should have " +
-        should_have_parameters(f, name, owner)
+      ", which has " + has_parameters(f.getScope()) + ", but should have " +
+        should_have_parameters(name)
   )
 select f, message + " for special method " + name + sizes + ", in class $@.", owner, owner.getName()
