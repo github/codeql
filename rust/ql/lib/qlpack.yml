@@ -12,6 +12,7 @@ dependencies:
   codeql/mad: ${workspace}
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
+  codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
   - /**/*.model.yml

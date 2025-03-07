@@ -1,0 +1,5 @@
+multiplePathResolutions
+| main.rs:385:34:385:34 | S | main.rs:384:19:384:19 | S |
+| main.rs:385:34:385:34 | S | main.rs:411:5:412:13 | struct S |
+| main.rs:387:39:387:39 | S | main.rs:384:19:384:19 | S |
+| main.rs:387:39:387:39 | S | main.rs:411:5:412:13 | struct S |
