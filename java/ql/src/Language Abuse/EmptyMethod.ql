@@ -1,6 +1,6 @@
 /**
  * @id java/empty-method
- * @name J-D-002: An empty method serves no purpose and may indicate programmer error
+ * @name Empty method
  * @description An empty method serves no purpose and makes code less readable. An empty method may
  *              indicate an error on the part of the developer.
  * @kind problem
