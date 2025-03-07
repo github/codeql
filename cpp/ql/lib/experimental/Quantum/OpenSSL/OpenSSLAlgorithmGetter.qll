@@ -162,9 +162,9 @@ class EVPCipherGetterCall extends OpenSSLAlgorithmGetterCall {
   Expr resultExpr;
 
   EVPCipherGetterCall() {
-    // Flow out through the return pointer itself (trace the pointer, not what it is pointing to)
     resultExpr = this and
     resultNode.asExpr() = this and
+    isPossibleOpenSSLFunction(this.getTarget()) and
     (
       this.getTarget().getName() in ["EVP_get_cipherbyname", "EVP_get_cipherbyobj"] and
       valueArgExpr = this.getArgument(0) and
@@ -176,6 +176,38 @@ class EVPCipherGetterCall extends OpenSSLAlgorithmGetterCall {
       or
       this.getTarget().getName() = "EVP_get_cipherbynid" and
       valueArgExpr = this.getArgument(0) and
+      valueArgNode.asExpr() = valueArgExpr
+    )
+  }
+
+  override DataFlow::Node getValueArgNode() { result = valueArgNode }
+
+  override DataFlow::Node getResultNode() { result = resultNode }
+
+  override Expr getValueArgExpr() { result = valueArgExpr }
+
+  override Expr getResultExpr() { result = resultExpr }
+}
+
+class EVPDigestGetterCall extends OpenSSLAlgorithmGetterCall {
+  DataFlow::Node valueArgNode;
+  DataFlow::Node resultNode;
+  Expr valueArgExpr;
+  Expr resultExpr;
+
+  EVPDigestGetterCall() {
+    resultExpr = this and
+    resultNode.asExpr() = this and
+    isPossibleOpenSSLFunction(this.getTarget()) and
+    (
+      this.getTarget().getName() in [
+          "EVP_get_digestbyname", "EVP_get_digestbyobj", "EVP_get_digestbynid"
+        ] and
+      valueArgExpr = this.getArgument(0) and
+      valueArgNode.asExpr() = valueArgExpr
+      or
+      this.getTarget().getName() = "EVP_MD_fetch" and
+      valueArgExpr = this.getArgument(1) and
       valueArgNode.asExpr() = valueArgExpr
     )
   }

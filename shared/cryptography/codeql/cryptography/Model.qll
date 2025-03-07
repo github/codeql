@@ -140,7 +140,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element that represents a _known_ cryptographic algorithm.
    */
-  abstract class AlgorithmElement extends KnownElement { }
+  abstract class AlgorithmElement extends KnownElement {
+    /**
+     * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
+     * This name is not parsed or formatted.
+     */
+    abstract string getRawAlgorithmName();
+  }
 
   /**
    * An element that represents a _known_ cryptographic artifact.
@@ -287,12 +293,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class CipherAlgorithmInstance extends AlgorithmElement {
     /**
-     * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
-     * This name is not parsed or formatted.
-     */
-    abstract string getRawAlgorithmName();
-
-    /**
      * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
      */
     abstract TCipherType getCipherFamily();
@@ -358,7 +358,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class HashOperationInstance extends KnownElement { }
 
-  abstract class HashAlgorithmInstance extends KnownElement { }
+  abstract class HashAlgorithmInstance extends AlgorithmElement {
+    /**
+     * Gets the type of this digest algorithm, e.g., "SHA1", "SHA2", "MD5" etc.
+     */
+    abstract THashType getHashFamily();
+  }
 
   abstract class KeyDerivationOperationInstance extends KnownElement { }
 
@@ -875,15 +880,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     IDEA() or
     KUZNYECHIK() or
     MAGMA() or
-    TRIPLEDES() or
-    DOUBLEDES() or
+    TripleDES() or
+    DoubleDES() or
     RC2() or
     RC4() or
     RC5() or
     RSA() or
     SEED() or
     SM4() or
-    OTHERCIPHERTYPE()
+    OtherCipherType()
 
   final class CipherAlgorithmNode extends AlgorithmNode, TCipherAlgorithm {
     CipherAlgorithmInstance instance;
@@ -932,27 +937,47 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final private predicate cipherFamilyToNameAndStructure(
       TCipherType type, string name, TCipherStructureType s
     ) {
-      type instanceof AES and name = "AES" and s = Block() or
-      type instanceof ARIA and name = "ARIA" and s = Block() or
-      type instanceof BLOWFISH and name = "Blowfish" and s = Block() or
-      type instanceof CAMELLIA and name = "Camellia" and s = Block() or
-      type instanceof CAST5 and name = "CAST5" and s = Block() or
-      type instanceof CHACHA20 and name = "ChaCha20" and s = Stream() or
-      type instanceof DES and name = "DES" and s = Block() or
-      type instanceof DESX and name = "DESX" and s = Block() or
-      type instanceof GOST and name = "GOST" and s = Block() or
-      type instanceof IDEA and name = "IDEA" and s = Block() or
-      type instanceof KUZNYECHIK and name = "Kuznyechik" and s = Block() or
-      type instanceof MAGMA and name = "Magma" and s = Block() or
-      type instanceof TRIPLEDES and name = "TripleDES" and s = Block() or
-      type instanceof DOUBLEDES and name = "DoubleDES" and s = Block() or
-      type instanceof RC2 and name = "RC2" and s = Block() or
-      type instanceof RC4 and name = "RC4" and s = Stream() or
-      type instanceof RC5 and name = "RC5" and s = Block() or
-      type instanceof RSA and name = "RSA" and s = Asymmetric() or
-      type instanceof SEED and name = "SEED" and s = Block() or
-      type instanceof SM4 and name = "SM4" and s = Block() or
-      type instanceof OTHERCIPHERTYPE and
+      type instanceof AES and name = "AES" and s = Block()
+      or
+      type instanceof ARIA and name = "ARIA" and s = Block()
+      or
+      type instanceof BLOWFISH and name = "Blowfish" and s = Block()
+      or
+      type instanceof CAMELLIA and name = "Camellia" and s = Block()
+      or
+      type instanceof CAST5 and name = "CAST5" and s = Block()
+      or
+      type instanceof CHACHA20 and name = "ChaCha20" and s = Stream()
+      or
+      type instanceof DES and name = "DES" and s = Block()
+      or
+      type instanceof DESX and name = "DESX" and s = Block()
+      or
+      type instanceof GOST and name = "GOST" and s = Block()
+      or
+      type instanceof IDEA and name = "IDEA" and s = Block()
+      or
+      type instanceof KUZNYECHIK and name = "Kuznyechik" and s = Block()
+      or
+      type instanceof MAGMA and name = "Magma" and s = Block()
+      or
+      type instanceof TripleDES and name = "TripleDES" and s = Block()
+      or
+      type instanceof DoubleDES and name = "DoubleDES" and s = Block()
+      or
+      type instanceof RC2 and name = "RC2" and s = Block()
+      or
+      type instanceof RC4 and name = "RC4" and s = Stream()
+      or
+      type instanceof RC5 and name = "RC5" and s = Block()
+      or
+      type instanceof RSA and name = "RSA" and s = Asymmetric()
+      or
+      type instanceof SEED and name = "SEED" and s = Block()
+      or
+      type instanceof SM4 and name = "SM4" and s = Block()
+      or
+      type instanceof OtherCipherType and
       name = this.getRawAlgorithmName() and
       s = UnknownCipherStructureType()
     }
@@ -1004,13 +1029,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   newtype THashType =
+    BLAKE2B() or
+    BLAKE2S() or
+    RIPEMD160() or
     MD2() or
     MD4() or
     MD5() or
+    POLY1305() or
     SHA1() or
     SHA2() or
     SHA3() or
-    RIPEMD160() or
+    SHAKE() or
+    SM3() or
     WHIRLPOOL() or
     OtherHashType()
 
@@ -1021,11 +1051,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getInternalType() { result = "HashAlgorithm" }
 
     final predicate hashTypeToNameMapping(THashType type, string name) {
+      type instanceof BLAKE2B and name = "BLAKE2B"
+      or
+      type instanceof BLAKE2S and name = "BLAKE2S"
+      or
+      type instanceof RIPEMD160 and name = "RIPEMD160"
+      or
       type instanceof MD2 and name = "MD2"
       or
       type instanceof MD4 and name = "MD4"
       or
       type instanceof MD5 and name = "MD5"
+      or
+      type instanceof POLY1305 and name = "POLY1305"
       or
       type instanceof SHA1 and name = "SHA1"
       or
@@ -1033,7 +1071,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type instanceof SHA3 and name = "SHA3"
       or
-      type instanceof RIPEMD160 and name = "RIPEMD160"
+      type instanceof SHAKE and name = "SHAKE"
+      or
+      type instanceof SM3 and name = "SM3"
       or
       type instanceof WHIRLPOOL and name = "WHIRLPOOL"
       or

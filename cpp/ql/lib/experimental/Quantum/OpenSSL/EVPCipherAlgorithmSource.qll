@@ -3,7 +3,7 @@ import experimental.Quantum.Language
 import EVPCipherConsumers
 import OpenSSLAlgorithmGetter
 
-predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
+predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) { 
   exists(string name, string algType | algType.toLowerCase().matches("%encryption") |
     resolveAlgorithmFromLiteral(e, name, algType) and
     (
@@ -21,9 +21,9 @@ predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
       or
       name.matches("CAST5") and type instanceof Crypto::CAST5
       or
-      name.matches("2DES") and type instanceof Crypto::DOUBLEDES
+      name.matches("2DES") and type instanceof Crypto::DoubleDES
       or
-      name.matches(["3DES", "TRIPLEDES"]) and type instanceof Crypto::TRIPLEDES
+      name.matches(["3DES", "TRIPLEDES"]) and type instanceof Crypto::TripleDES
       or
       name.matches("DES") and type instanceof Crypto::DES
       or
@@ -51,7 +51,6 @@ predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
     )
   )
 }
-
 
 class CipherKnownAlgorithmLiteralAlgorithmInstance extends Crypto::CipherAlgorithmInstance instanceof Literal
 {
@@ -81,7 +80,9 @@ class CipherKnownAlgorithmLiteralAlgorithmInstance extends Crypto::CipherAlgorit
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
-  override Crypto::TCipherType getCipherFamily() { literalToCipherFamilyType(this, result) }
+  override Crypto::TCipherType getCipherFamily() { 
+    literalToCipherFamilyType(this, result)
+  }
 }
 //     override Crypto::TCipherType getCipherFamily() {
 //       if this.cipherNameMappingKnown(_, super.getAlgorithmName())
