@@ -67,7 +67,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // CodeQL's DGML output does not include a location
       key = "Location" and
-      value = "<demo>" // node.getLocation().toString()
+      value = node.getLocation().toString()
       or
       // Known unknown edges should be reported as properties rather than edges
       node = node.getChild(key) and
