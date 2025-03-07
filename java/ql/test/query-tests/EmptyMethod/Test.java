@@ -24,12 +24,16 @@ public class Test {
   public class Derived extends TestInner {
 
     @Override
-    public void f() { } // $ Alert
+    public void f() {
+    }
+
+    public native int nativeMethod();
   }
 
   public interface TestInterface {
 
-    default void method() { } // $ Alert
+    default void method() {
+    }
   }
 
 }
