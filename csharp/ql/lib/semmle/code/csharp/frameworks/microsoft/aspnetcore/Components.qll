@@ -159,7 +159,13 @@ private module JumpNodes {
      */
     Property getParameterProperty() {
       result.getAnAttribute() instanceof MicrosoftAspNetCoreComponentsParameterAttribute and
-      exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
+      (
+        exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
+        or
+        exists(string propertyName | propertyName = this.getArgument(1).(StringLiteral).getValue() |
+          result.hasName(propertyName)
+        )
+      )
     }
 
     /**
