@@ -71,7 +71,7 @@ private module Internal {
   pragma[noinline]
   private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
     exists(ReachableBasicBlock defbb, SsaDefinition def |
-      def.definesAt(defbb, _, v) and
+      def.definesAt(v, defbb, _) and
       bb.inDominanceFrontierOf(defbb)
     )
   }
@@ -206,7 +206,7 @@ private module Internal {
   private predicate ssaRef(ReachableBasicBlock bb, int i, SsaSourceVariable v, RefKind k) {
     useAt(bb, i, v) and k = ReadRef()
     or
-    any(SsaDefinition def).definesAt(bb, i, v) and k = WriteRef()
+    any(SsaDefinition def).definesAt(v, bb, i) and k = WriteRef()
   }
 
   /**
@@ -248,7 +248,7 @@ private module Internal {
    */
   private SsaDefinition getLocalDefinition(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
     exists(int r | r = rewindReads(bb, i, v) |
-      exists(int j | result.definesAt(bb, j, v) and ssaRefRank(bb, j, v, _) = r - 1)
+      exists(int j | result.definesAt(v, bb, j) and ssaRefRank(bb, j, v, _) = r - 1)
     )
   }
 
@@ -270,7 +270,7 @@ private module Internal {
     exists(int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
       result = getLocalDefinition(bb, lastRef, v)
       or
-      result.definesAt(bb, lastRef, v) and
+      result.definesAt(v, bb, lastRef) and
       liveAtSuccEntry(bb, v)
     )
     or
@@ -279,7 +279,7 @@ private module Internal {
     // then one must dominate the other, so we can find the reaching definition
     // by following the idominance relation backwards.
     result = getDefReachingEndOfImmediateDominator(bb, v) and
-    not exists(SsaDefinition ssa | ssa.definesAt(bb, _, v)) and
+    not exists(SsaDefinition ssa | ssa.definesAt(v, bb, _)) and
     liveAtSuccEntry(bb, v)
   }
 
@@ -412,7 +412,7 @@ private module Internal {
   predicate firstUse(SsaDefinition def, IR::Instruction use) {
     exists(SsaSourceVariable v, ReachableBasicBlock b1, int i1, ReachableBasicBlock b2, int i2 |
       adjacentVarRefs(v, b1, i1, b2, i2) and
-      def.definesAt(b1, i1, v) and
+      def.definesAt(v, b1, i1) and
       variableUse(v, use, b2, i2)
     )
     or
@@ -421,8 +421,8 @@ private module Internal {
       int i2
     |
       adjacentVarRefs(v, b1, i1, b2, i2) and
-      def.definesAt(b1, i1, v) and
-      redef.definesAt(b2, i2, v) and
+      def.definesAt(v, b1, i1) and
+      redef.definesAt(v, b2, i2) and
       firstUse(redef, use)
     )
   }
@@ -457,7 +457,7 @@ private module Internal {
     |
       adjacentVarRefs(v, b1, i1, b2, i2) and
       variableUse(v, use1, b1, i1) and
-      def.definesAt(b2, i2, v) and
+      def.definesAt(v, b2, i2) and
       firstUse(def, use2)
     )
   }

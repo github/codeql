@@ -127,7 +127,7 @@ class SsaDefinition extends TSsaDefinition {
    * Phi nodes are considered to be at index `-1`, all other definitions at the index of
    * the control flow node they correspond to.
    */
-  abstract predicate definesAt(ReachableBasicBlock bb, int idx, SsaSourceVariable v);
+  abstract predicate definesAt(SsaSourceVariable v, ReachableBasicBlock bb, int idx);
 
   /**
    * INTERNAL: Use `toString()` instead.
@@ -187,13 +187,13 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   /** Gets the right-hand side of the definition. */
   IR::Instruction getRhs() { this.getInstruction().writes(_, result) }
 
-  override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+  override predicate definesAt(SsaSourceVariable v, ReachableBasicBlock bb, int i) {
     this = TExplicitDef(bb, i, v)
   }
 
-  override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
+  override ReachableBasicBlock getBasicBlock() { this.definesAt(_, result, _) }
 
-  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, result) }
+  override SsaSourceVariable getSourceVariable() { this.definesAt(result, _, _) }
 
   override string prettyPrintRef() {
     exists(Location loc | loc = this.getLocation() |
@@ -242,20 +242,20 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
  * at any function call that may affect the value of the variable.
  */
 class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
-  override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+  override predicate definesAt(SsaSourceVariable v, ReachableBasicBlock bb, int i) {
     this = TCapture(bb, i, v)
   }
 
-  override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
+  override ReachableBasicBlock getBasicBlock() { this.definesAt(_, result, _) }
 
-  override SsaSourceVariable getSourceVariable() { this.definesAt(_, _, result) }
+  override SsaSourceVariable getSourceVariable() { this.definesAt(result, _, _) }
 
   override string getKind() { result = "capture" }
 
   override string prettyPrintDef() { result = "capture variable " + this.getSourceVariable() }
 
   override Location getLocation() {
-    exists(ReachableBasicBlock bb, int i | this.definesAt(bb, i, _) |
+    exists(ReachableBasicBlock bb, int i | this.definesAt(_, bb, i) |
       result = bb.getNode(i).getLocation()
     )
   }
@@ -288,7 +288,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
     result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(), this.getSourceVariable())
   }
 
-  override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+  override predicate definesAt(SsaSourceVariable v, ReachableBasicBlock bb, int i) {
     bb = this.getBasicBlock() and v = this.getSourceVariable() and i = -1
   }
 
