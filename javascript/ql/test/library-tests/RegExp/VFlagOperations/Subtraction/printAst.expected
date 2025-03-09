@@ -2,15 +2,15 @@ nodes
 | tst.js:1:1:1:44 | [RegExpLiteral] /[\\p{Script_Extensions=Greek}--\\p{Letter}]/v | semmle.label | [RegExpLiteral] /[\\p{Script_Extensions=Greek}--\\p{Letter}]/v |
 | tst.js:1:1:1:45 | [ExprStmt] /[\\p{Sc ... er}]/v; | semmle.label | [ExprStmt] /[\\p{Sc ... er}]/v; |
 | tst.js:1:1:1:45 | [ExprStmt] /[\\p{Sc ... er}]/v; | semmle.order | 1 |
-| tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.label | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] |
 | tst.js:1:2:1:42 | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.label | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.label | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] |
 | tst.js:1:3:1:29 | [RegExpUnicodePropertyEscape] \\p{Script_Extensions=Greek} | semmle.label | [RegExpUnicodePropertyEscape] \\p{Script_Extensions=Greek} |
 | tst.js:1:32:1:41 | [RegExpUnicodePropertyEscape] \\p{Letter} | semmle.label | [RegExpUnicodePropertyEscape] \\p{Letter} |
 | tst.js:2:1:2:17 | [RegExpLiteral] /[[abc]--[cbd]]/v | semmle.label | [RegExpLiteral] /[[abc]--[cbd]]/v |
 | tst.js:2:1:2:18 | [ExprStmt] /[[abc]--[cbd]]/v; | semmle.label | [ExprStmt] /[[abc]--[cbd]]/v; |
 | tst.js:2:1:2:18 | [ExprStmt] /[[abc]--[cbd]]/v; | semmle.order | 2 |
-| tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | semmle.label | [???] [[abc]--[cbd]] |
 | tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | semmle.label | [RegExpCharacterClass] [[abc]--[cbd]] |
+| tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | semmle.label | [RegExpSubtraction] [[abc]--[cbd]] |
 | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | semmle.label | [RegExpCharacterClass] [abc] |
 | tst.js:2:4:2:4 | [RegExpNormalConstant] a | semmle.label | [RegExpNormalConstant] a |
 | tst.js:2:5:2:5 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
@@ -22,8 +22,8 @@ nodes
 | tst.js:3:1:3:24 | [RegExpLiteral] /[[abc]--[cbd]--[bde]]/v | semmle.label | [RegExpLiteral] /[[abc]--[cbd]--[bde]]/v |
 | tst.js:3:1:3:25 | [ExprStmt] /[[abc] ... de]]/v; | semmle.label | [ExprStmt] /[[abc] ... de]]/v; |
 | tst.js:3:1:3:25 | [ExprStmt] /[[abc] ... de]]/v; | semmle.order | 3 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | semmle.label | [???] [[abc]--[cbd]--[bde]] |
 | tst.js:3:2:3:22 | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] | semmle.label | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | semmle.label | [RegExpSubtraction] [[abc]--[cbd]--[bde]] |
 | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | semmle.label | [RegExpCharacterClass] [abc] |
 | tst.js:3:4:3:4 | [RegExpNormalConstant] a | semmle.label | [RegExpNormalConstant] a |
 | tst.js:3:5:3:5 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
@@ -41,22 +41,22 @@ edges
 | tst.js:1:1:1:44 | [RegExpLiteral] /[\\p{Script_Extensions=Greek}--\\p{Letter}]/v | tst.js:1:2:1:42 | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.order | 0 |
 | tst.js:1:1:1:45 | [ExprStmt] /[\\p{Sc ... er}]/v; | tst.js:1:1:1:44 | [RegExpLiteral] /[\\p{Script_Extensions=Greek}--\\p{Letter}]/v | semmle.label | 1 |
 | tst.js:1:1:1:45 | [ExprStmt] /[\\p{Sc ... er}]/v; | tst.js:1:1:1:44 | [RegExpLiteral] /[\\p{Script_Extensions=Greek}--\\p{Letter}]/v | semmle.order | 1 |
-| tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:3:1:29 | [RegExpUnicodePropertyEscape] \\p{Script_Extensions=Greek} | semmle.label | 0 |
-| tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:3:1:29 | [RegExpUnicodePropertyEscape] \\p{Script_Extensions=Greek} | semmle.order | 0 |
-| tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:32:1:41 | [RegExpUnicodePropertyEscape] \\p{Letter} | semmle.label | 1 |
-| tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:32:1:41 | [RegExpUnicodePropertyEscape] \\p{Letter} | semmle.order | 1 |
-| tst.js:1:2:1:42 | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.label | 0 |
-| tst.js:1:2:1:42 | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:2:1:42 | [???] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.order | 0 |
+| tst.js:1:2:1:42 | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.label | 0 |
+| tst.js:1:2:1:42 | [RegExpCharacterClass] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | semmle.order | 0 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:3:1:29 | [RegExpUnicodePropertyEscape] \\p{Script_Extensions=Greek} | semmle.label | 0 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:3:1:29 | [RegExpUnicodePropertyEscape] \\p{Script_Extensions=Greek} | semmle.order | 0 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:32:1:41 | [RegExpUnicodePropertyEscape] \\p{Letter} | semmle.label | 1 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [\\p{Script_Extensions=Greek}--\\p{Letter}] | tst.js:1:32:1:41 | [RegExpUnicodePropertyEscape] \\p{Letter} | semmle.order | 1 |
 | tst.js:2:1:2:17 | [RegExpLiteral] /[[abc]--[cbd]]/v | tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | semmle.label | 0 |
 | tst.js:2:1:2:17 | [RegExpLiteral] /[[abc]--[cbd]]/v | tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | semmle.order | 0 |
 | tst.js:2:1:2:18 | [ExprStmt] /[[abc]--[cbd]]/v; | tst.js:2:1:2:17 | [RegExpLiteral] /[[abc]--[cbd]]/v | semmle.label | 1 |
 | tst.js:2:1:2:18 | [ExprStmt] /[[abc]--[cbd]]/v; | tst.js:2:1:2:17 | [RegExpLiteral] /[[abc]--[cbd]]/v | semmle.order | 1 |
-| tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | semmle.label | 0 |
-| tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | semmle.order | 0 |
-| tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | tst.js:2:10:2:14 | [RegExpCharacterClass] [cbd] | semmle.label | 1 |
-| tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | tst.js:2:10:2:14 | [RegExpCharacterClass] [cbd] | semmle.order | 1 |
-| tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | semmle.label | 0 |
-| tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | tst.js:2:2:2:15 | [???] [[abc]--[cbd]] | semmle.order | 0 |
+| tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | semmle.label | 0 |
+| tst.js:2:2:2:15 | [RegExpCharacterClass] [[abc]--[cbd]] | tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | semmle.order | 0 |
+| tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | semmle.label | 0 |
+| tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | semmle.order | 0 |
+| tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | tst.js:2:10:2:14 | [RegExpCharacterClass] [cbd] | semmle.label | 1 |
+| tst.js:2:2:2:15 | [RegExpSubtraction] [[abc]--[cbd]] | tst.js:2:10:2:14 | [RegExpCharacterClass] [cbd] | semmle.order | 1 |
 | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | tst.js:2:4:2:4 | [RegExpNormalConstant] a | semmle.label | 0 |
 | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | tst.js:2:4:2:4 | [RegExpNormalConstant] a | semmle.order | 0 |
 | tst.js:2:3:2:7 | [RegExpCharacterClass] [abc] | tst.js:2:5:2:5 | [RegExpNormalConstant] b | semmle.label | 1 |
@@ -73,14 +73,14 @@ edges
 | tst.js:3:1:3:24 | [RegExpLiteral] /[[abc]--[cbd]--[bde]]/v | tst.js:3:2:3:22 | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] | semmle.order | 0 |
 | tst.js:3:1:3:25 | [ExprStmt] /[[abc] ... de]]/v; | tst.js:3:1:3:24 | [RegExpLiteral] /[[abc]--[cbd]--[bde]]/v | semmle.label | 1 |
 | tst.js:3:1:3:25 | [ExprStmt] /[[abc] ... de]]/v; | tst.js:3:1:3:24 | [RegExpLiteral] /[[abc]--[cbd]--[bde]]/v | semmle.order | 1 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | semmle.label | 0 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | semmle.order | 0 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | tst.js:3:10:3:14 | [RegExpCharacterClass] [cbd] | semmle.label | 1 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | tst.js:3:10:3:14 | [RegExpCharacterClass] [cbd] | semmle.order | 1 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | tst.js:3:17:3:21 | [RegExpCharacterClass] [bde] | semmle.label | 2 |
-| tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | tst.js:3:17:3:21 | [RegExpCharacterClass] [bde] | semmle.order | 2 |
-| tst.js:3:2:3:22 | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] | tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | semmle.label | 0 |
-| tst.js:3:2:3:22 | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] | tst.js:3:2:3:22 | [???] [[abc]--[cbd]--[bde]] | semmle.order | 0 |
+| tst.js:3:2:3:22 | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] | tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | semmle.label | 0 |
+| tst.js:3:2:3:22 | [RegExpCharacterClass] [[abc]--[cbd]--[bde]] | tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | semmle.order | 0 |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | semmle.label | 0 |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | semmle.order | 0 |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | tst.js:3:10:3:14 | [RegExpCharacterClass] [cbd] | semmle.label | 1 |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | tst.js:3:10:3:14 | [RegExpCharacterClass] [cbd] | semmle.order | 1 |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | tst.js:3:17:3:21 | [RegExpCharacterClass] [bde] | semmle.label | 2 |
+| tst.js:3:2:3:22 | [RegExpSubtraction] [[abc]--[cbd]--[bde]] | tst.js:3:17:3:21 | [RegExpCharacterClass] [bde] | semmle.order | 2 |
 | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | tst.js:3:4:3:4 | [RegExpNormalConstant] a | semmle.label | 0 |
 | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | tst.js:3:4:3:4 | [RegExpNormalConstant] a | semmle.order | 0 |
 | tst.js:3:3:3:7 | [RegExpCharacterClass] [abc] | tst.js:3:5:3:5 | [RegExpNormalConstant] b | semmle.label | 1 |

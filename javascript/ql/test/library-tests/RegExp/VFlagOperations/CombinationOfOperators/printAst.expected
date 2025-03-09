@@ -2,8 +2,8 @@ nodes
 | tst.js:1:1:1:44 | [RegExpLiteral] /[[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]]/v | semmle.label | [RegExpLiteral] /[[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]]/v |
 | tst.js:1:1:1:45 | [ExprStmt] /[[[ab1 ... a}]]/v; | semmle.label | [ExprStmt] /[[[ab1 ... a}]]/v; |
 | tst.js:1:1:1:45 | [ExprStmt] /[[[ab1 ... a}]]/v; | semmle.order | 1 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.label | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] |
 | tst.js:1:2:1:42 | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.label | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.label | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] |
 | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | semmle.label | [RegExpCharacterClass] [[ab1]&&[b1]] |
 | tst.js:1:3:1:15 | [RegExpIntersection] [[ab1]&&[b1]] | semmle.label | [RegExpIntersection] [[ab1]&&[b1]] |
 | tst.js:1:4:1:8 | [RegExpCharacterClass] [ab1] | semmle.label | [RegExpCharacterClass] [ab1] |
@@ -26,14 +26,14 @@ edges
 | tst.js:1:1:1:44 | [RegExpLiteral] /[[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]]/v | tst.js:1:2:1:42 | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.order | 0 |
 | tst.js:1:1:1:45 | [ExprStmt] /[[[ab1 ... a}]]/v; | tst.js:1:1:1:44 | [RegExpLiteral] /[[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]]/v | semmle.label | 1 |
 | tst.js:1:1:1:45 | [ExprStmt] /[[[ab1 ... a}]]/v; | tst.js:1:1:1:44 | [RegExpLiteral] /[[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]]/v | semmle.order | 1 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | semmle.label | 0 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | semmle.order | 0 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:18:1:20 | [RegExpCharacterClass] [a] | semmle.label | 1 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:18:1:20 | [RegExpCharacterClass] [a] | semmle.order | 1 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:23:1:41 | [RegExpCharacterClass] [\\p{Number}\\q{z\|a}] | semmle.label | 2 |
-| tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:23:1:41 | [RegExpCharacterClass] [\\p{Number}\\q{z\|a}] | semmle.order | 2 |
-| tst.js:1:2:1:42 | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.label | 0 |
-| tst.js:1:2:1:42 | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:2:1:42 | [???] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.order | 0 |
+| tst.js:1:2:1:42 | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.label | 0 |
+| tst.js:1:2:1:42 | [RegExpCharacterClass] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | semmle.order | 0 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | semmle.label | 0 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | semmle.order | 0 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:18:1:20 | [RegExpCharacterClass] [a] | semmle.label | 1 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:18:1:20 | [RegExpCharacterClass] [a] | semmle.order | 1 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:23:1:41 | [RegExpCharacterClass] [\\p{Number}\\q{z\|a}] | semmle.label | 2 |
+| tst.js:1:2:1:42 | [RegExpSubtraction] [[[ab1]&&[b1]]--[a]--[\\p{Number}\\q{z\|a}]] | tst.js:1:23:1:41 | [RegExpCharacterClass] [\\p{Number}\\q{z\|a}] | semmle.order | 2 |
 | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | tst.js:1:3:1:15 | [RegExpIntersection] [[ab1]&&[b1]] | semmle.label | 0 |
 | tst.js:1:3:1:15 | [RegExpCharacterClass] [[ab1]&&[b1]] | tst.js:1:3:1:15 | [RegExpIntersection] [[ab1]&&[b1]] | semmle.order | 0 |
 | tst.js:1:3:1:15 | [RegExpIntersection] [[ab1]&&[b1]] | tst.js:1:4:1:8 | [RegExpCharacterClass] [ab1] | semmle.label | 0 |

@@ -330,6 +330,30 @@ class RegExpIntersection extends RegExpTerm, @regexp_intersection {
 }
 
 /**
+ * A subtraction term, that is, a term of the form `[[a]--[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]--[bc]]/v - which matches 'a' only.
+ * ```
+ */
+class RegExpSubtraction extends RegExpTerm, @regexp_subtraction {
+  /** Gets the minuend (the left operand) of this subtraction. */
+  RegExpTerm getFirstTerm() { result = this.getChild(0) }
+
+  /** Gets the number of subtractions terms of this term. */
+  int getNumSubtractedTerm() { result = this.getNumChild() - 1 }
+
+  /** Gets the subtrahend (the right operand) of this subtraction. */
+  RegExpTerm getASubtractedTerm() { exists(int i | i > 0 and result = this.getChild(i)) }
+
+  override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpSubtraction" }
+}
+
+/**
  * A sequence term.
  *
  * Example:
