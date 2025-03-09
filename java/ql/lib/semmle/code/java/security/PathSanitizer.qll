@@ -427,7 +427,6 @@ private predicate isSingleReplaceAll(StringReplaceAllCall replaceAllCall) {
     or
     targetValue.matches("%|%") and
     target.getStringValue().matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
-    //targetValue.regexpMatch(".*(\\\\\\.\\\\\\.|\\[.\\]\\[.\\]|\\\\\\.).*") and
     targetValue.matches("%/%") and
     targetValue.matches("%\\\\\\\\%")
   )
@@ -492,13 +491,12 @@ private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr,
     target.getStringValue() = targetValue and
     checkedExpr = matchesCall.getQualifier()
   |
-    targetValue.regexpMatch("\\[(.*)\\]([*+]|\\{.*\\})") and
+    target.getStringValue().matches(["[%]*", "[%]+", "[%]{%}"]) and
     (
       // Allow anything except `.`, '/', '\'
       (
         // Note: we do not account for when '.', '/', '\' are inside a character range
-        // not targetValue.matches("[%" + [".", "/", "\\\\"] + "%]%") and
-        not targetValue.regexpMatch("\\[.*(\\.|\\\\|/).*\\].*") and
+        not targetValue.matches("[%" + [".", "/", "\\\\"] + "%]%") and
         not targetValue.matches("%[^%]%")
         or
         targetValue.matches("[^%.%]%") and
