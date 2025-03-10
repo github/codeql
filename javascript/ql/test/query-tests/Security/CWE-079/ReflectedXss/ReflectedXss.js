@@ -31,7 +31,7 @@ app.get('/user/:id', function(req, res) {
     ['Name', 'Content'],
     ['body', req.body]
   ]);
-  res.send(mytable); // NOT OK - FIXME: only works in OLD dataflow, add implicit reads before library-contributed taint steps
+  res.send(mytable); // NOT OK
 });
 
 var showdown  = require('showdown');

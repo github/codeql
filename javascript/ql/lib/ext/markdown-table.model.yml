@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["markdown-table", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue", "taint"]
