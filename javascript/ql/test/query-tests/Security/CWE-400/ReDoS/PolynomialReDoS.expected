@@ -181,7 +181,7 @@ edges
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:43:2:43:8 | tainted | provenance |  |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:43:2:43:8 | tainted | provenance |  |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:44:2:44:8 | tainted | provenance |  |
-| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:46:2:46:8 | tainted | provenance |  |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:46:9:46:15 | tainted | provenance |  |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:47:2:47:8 | tainted | provenance |  |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:48:2:48:8 | tainted | provenance |  |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:48:2:48:8 | tainted | provenance |  |
@@ -333,8 +333,8 @@ edges
 | polynomial-redos.js:41:2:41:8 | tainted | polynomial-redos.js:43:2:43:8 | tainted | provenance |  |
 | polynomial-redos.js:41:2:41:8 | tainted | polynomial-redos.js:43:2:43:8 | tainted | provenance |  |
 | polynomial-redos.js:43:2:43:8 | tainted | polynomial-redos.js:44:2:44:8 | tainted | provenance |  |
-| polynomial-redos.js:44:2:44:8 | tainted | polynomial-redos.js:46:2:46:8 | tainted | provenance |  |
-| polynomial-redos.js:46:2:46:8 | tainted | polynomial-redos.js:47:2:47:8 | tainted | provenance |  |
+| polynomial-redos.js:44:2:44:8 | tainted | polynomial-redos.js:46:9:46:15 | tainted | provenance |  |
+| polynomial-redos.js:46:9:46:15 | tainted | polynomial-redos.js:47:2:47:8 | tainted | provenance |  |
 | polynomial-redos.js:47:2:47:8 | tainted | polynomial-redos.js:48:2:48:8 | tainted | provenance |  |
 | polynomial-redos.js:47:2:47:8 | tainted | polynomial-redos.js:48:2:48:8 | tainted | provenance |  |
 | polynomial-redos.js:48:2:48:8 | tainted | polynomial-redos.js:50:14:50:20 | tainted | provenance |  |
@@ -557,7 +557,7 @@ nodes
 | polynomial-redos.js:43:2:43:8 | tainted | semmle.label | tainted |
 | polynomial-redos.js:43:2:43:8 | tainted | semmle.label | tainted |
 | polynomial-redos.js:44:2:44:8 | tainted | semmle.label | tainted |
-| polynomial-redos.js:46:2:46:8 | tainted | semmle.label | tainted |
+| polynomial-redos.js:46:9:46:15 | tainted | semmle.label | tainted |
 | polynomial-redos.js:47:2:47:8 | tainted | semmle.label | tainted |
 | polynomial-redos.js:48:2:48:8 | tainted | semmle.label | tainted |
 | polynomial-redos.js:48:2:48:8 | tainted | semmle.label | tainted |
