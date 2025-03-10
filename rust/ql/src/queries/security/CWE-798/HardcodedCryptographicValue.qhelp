@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Hardcoded passwords, keys, initialization vectors and salts should not be used for cryptographic operations.
+Hardcoded passwords, keys, initialization vectors, and salts should not be used for cryptographic operations.
 </p>
 <ul>
   <li>
@@ -23,7 +23,7 @@ Hardcoded passwords, keys, initialization vectors and salts should not be used f
 <recommendation>
 
 <p>
-Use randomly generated key material, initialization vectors and salts. Use strong passwords that are not hardcoded.
+Use randomly generated key material, initialization vectors, and salts. Use strong passwords that are not hardcoded.
 </p>
 
 </recommendation>
