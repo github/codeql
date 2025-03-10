@@ -773,6 +773,17 @@ class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, Lexica
    */
   LocalTypeName getLocalTypeName() { result.getAnAccess() = this }
 
+  private TypeAliasDeclaration getAlias() {
+    this.getLocalTypeName().getADeclaration() = result.getIdentifier()
+  }
+
+  override TypeExpr getAnUnderlyingType() {
+    result = this.getAlias().getDefinition().getAnUnderlyingType()
+    or
+    not exists(this.getAlias()) and
+    result = this
+  }
+
   override string getAPrimaryQlClass() { result = "LocalTypeAccess" }
 }
 
