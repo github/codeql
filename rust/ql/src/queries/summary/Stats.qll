@@ -4,7 +4,6 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
