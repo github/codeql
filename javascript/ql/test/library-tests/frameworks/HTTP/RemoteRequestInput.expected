@@ -1,6 +1,7 @@
 | connect.js:6:5:6:11 | req.url | url |
 | connect.js:7:5:7:21 | req.cookies.get() | cookie |
 | express-typed.ts:4:5:4:12 | req.body | body |
+| express-typed.ts:10:5:10:12 | req.body | body |
 | express.js:12:5:12:19 | req.param("p1") | parameter |
 | express.js:13:5:13:17 | req.params.p2 | parameter |
 | express.js:14:5:14:16 | req.query.p3 | parameter |
