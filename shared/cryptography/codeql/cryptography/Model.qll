@@ -1038,6 +1038,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   newtype THashType =
     BLAKE2B() or
     BLAKE2S() or
+    GOSTHash() or
     MD2() or
     MD4() or
     MD5() or
