@@ -22,61 +22,6 @@ private module Internal {
   }
 
   /**
-   * A data type representing SSA definitions.
-   *
-   * We distinguish three kinds of SSA definitions:
-   *
-   *   1. Variable definitions, including declarations, assignments and increments/decrements.
-   *   2. Pseudo-definitions for captured variables at the beginning of the capturing function
-   *      as well as after calls.
-   *   3. Phi nodes.
-   *
-   * SSA definitions are only introduced where necessary. In particular,
-   * unreachable code has no SSA definitions associated with it, and neither
-   * have dead assignments (that is, assignments whose value is never read).
-   */
-  cached
-  newtype TSsaDefinition =
-    /**
-     * An SSA definition that corresponds to an explicit assignment or other variable definition.
-     */
-    TExplicitDef(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-      defAt(bb, i, v) and
-      (liveAfterDef(bb, i, v) or v.isCaptured())
-    } or
-    /**
-     * An SSA definition representing the capturing of an SSA-convertible variable
-     * in the closure of a nested function.
-     *
-     * Capturing definitions appear at the beginning of such functions, as well as
-     * at any function call that may affect the value of the variable.
-     */
-    TCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-      mayCapture(bb, i, v) and
-      liveAfterDef(bb, i, v)
-    } or
-    /**
-     * An SSA phi node, that is, a pseudo-definition for a variable at a point
-     * in the flow graph where otherwise two or more definitions for the variable
-     * would be visible.
-     */
-    TPhi(ReachableJoinBlock bb, SsaSourceVariable v) {
-      liveAtEntry(bb, v) and
-      inDefDominanceFrontier(bb, v)
-    }
-
-  /**
-   * Holds if `bb` is in the dominance frontier of a block containing a definition of `v`.
-   */
-  pragma[noinline]
-  private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
-    exists(ReachableBasicBlock defbb, SsaDefinition def |
-      def.definesAt(v, defbb, _) and
-      bb.inDominanceFrontierOf(defbb)
-    )
-  }
-
-  /**
    * Holds if `v` is a captured variable which is declared in `declFun` and read in `useFun`.
    */
   private predicate readsCapturedVar(FuncDef useFun, SsaSourceVariable v, FuncDef declFun) {
@@ -104,7 +49,8 @@ private module Internal {
    * modeling updates to captured variable `v`. Whether the definition is actually
    * introduced depends on whether `v` is live at this point in the program.
    */
-  private predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+  cached
+  predicate mayCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
     exists(FuncDef capturingContainer, FuncDef declContainer |
       // capture initial value of variable declared in enclosing scope
       readsCapturedVar(capturingContainer, v, declContainer) and
@@ -141,31 +87,6 @@ private module Internal {
   private int refRank(ReachableBasicBlock bb, int i, SsaSourceVariable v, RefKind tp) {
     i = rank[result](int j | ref(bb, j, v, _)) and
     ref(bb, i, v, tp)
-  }
-
-  /**
-   * Gets the maximum rank among all references to `v` in basic block `bb`.
-   */
-  private int maxRefRank(ReachableBasicBlock bb, SsaSourceVariable v) {
-    result = max(refRank(bb, _, v, _))
-  }
-
-  /**
-   * Holds if variable `v` is live after the `i`th node of basic block `bb`, where
-   * `i` is the index of a node that may assign or capture `v`.
-   *
-   * For the purposes of this predicate, function calls are considered as writes of captured variables.
-   */
-  private predicate liveAfterDef(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    exists(int r | r = refRank(bb, i, v, WriteRef()) |
-      // the next reference to `v` inside `bb` is a read
-      r + 1 = refRank(bb, _, v, ReadRef())
-      or
-      // this is the last reference to `v` inside `bb`, but `v` is live at entry
-      // to a successor basic block of `bb`
-      r = maxRefRank(bb, v) and
-      liveAtSuccEntry(bb, v)
-    )
   }
 
   /**
@@ -486,6 +407,8 @@ private module Internal {
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       defAt(bb, i, v) and
       certain = true
+      or
+      mayCapture(bb, i, v) and certain = true
     }
 
     /**
@@ -496,19 +419,21 @@ private module Internal {
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       useAt(bb, i, v) and certain = true
       or
-      mayCapture(bb, i, v) and certain = false
+      mayCapture(bb, i, v) and certain = true
     }
   }
 
   import SsaImplCommon::Make<Location, SsaInput> as Impl
 
-  final class SsaInputDefinition = Impl::Definition;
+  final class ZZZDefinition = Impl::Definition;
 
-  final class SsaInputWriteDefinition = Impl::WriteDefinition;
+  final class ZZZWriteDefinition = Impl::WriteDefinition;
 
-  final class SsaInputUncertainWriteDefinition = Impl::UncertainWriteDefinition;
+  final class ZZZUncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
-  final class SsaInputPhiNode = Impl::PhiNode;
+  final class ZZZPhiNode = Impl::PhiNode;
 }
 
 import Internal
+
+predicate captures = Internal::mayCapture/3;
