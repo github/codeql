@@ -21,7 +21,7 @@ private import codeql.rust.security.regex.RegexInjectionExtensions
  * A taint configuration for detecting regular expression injection vulnerabilities.
  */
 module RegexInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }
 
