@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Spring Boot includes features called actuators that let you monitor and interact with your
+web application. Exposing unprotected actuator endpoints can lead to information disclosure or
+even to remote code execution.</p>
+</overview>
+
+<recommendation>
+<p>Since actuator endpoints may contain sensitive information, carefully consider when to expose them,
+and secure them as you would any sensitive URL. Actuators are secured by default when using Spring
+Security without a custom configuration. If you wish to define a custom security configuration,
+consider only allowing users with certain roles to access these endpoints.
+</p>
+
+</recommendation>
+
+<example>
+<p>In the first example, the custom security configuration allows unauthenticated access to all
+actuator endpoints. This may lead to sensitive information disclosure and should be avoided.</p>
+
+<p>In the second example, only users with <code>ENDPOINT_ADMIN</code> role are allowed to access
+the actuator endpoints.</p>
+
+<sample src="SpringBootActuators.java" />
+</example>
+
+<references>
+<li>
+Spring Boot Reference Documentation:
+<a href="https://docs.spring.io/spring-boot/reference/actuator/endpoints.html">Endpoints</a>.
+</li>
+</references>
+</qhelp>
