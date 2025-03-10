@@ -1,0 +1,46 @@
+#select
+| src/main.rs:10:5:10:22 | ...::read_to_string | src/main.rs:6:11:6:19 | file_name | src/main.rs:10:5:10:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:6:11:6:19 | file_name | user-provided value |
+| src/main.rs:22:5:22:22 | ...::read_to_string | src/main.rs:15:11:15:19 | file_name | src/main.rs:22:5:22:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:15:11:15:19 | file_name | user-provided value |
+| src/main.rs:35:5:35:22 | ...::read_to_string | src/main.rs:27:11:27:19 | file_path | src/main.rs:35:5:35:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:27:11:27:19 | file_path | user-provided value |
+edges
+| src/main.rs:6:11:6:19 | file_name | src/main.rs:8:35:8:43 | file_name | provenance |  |
+| src/main.rs:8:9:8:17 | file_path | src/main.rs:10:24:10:32 | file_path | provenance |  |
+| src/main.rs:8:21:8:44 | ...::from(...) | src/main.rs:8:9:8:17 | file_path | provenance |  |
+| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:3 |
+| src/main.rs:10:24:10:32 | file_path | src/main.rs:10:5:10:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
+| src/main.rs:15:11:15:19 | file_name | src/main.rs:21:35:21:43 | file_name | provenance |  |
+| src/main.rs:21:9:21:17 | file_path | src/main.rs:22:24:22:32 | file_path | provenance |  |
+| src/main.rs:21:21:21:44 | ...::from(...) | src/main.rs:21:9:21:17 | file_path | provenance |  |
+| src/main.rs:21:35:21:43 | file_name | src/main.rs:21:21:21:44 | ...::from(...) | provenance | MaD:3 |
+| src/main.rs:22:24:22:32 | file_path | src/main.rs:22:5:22:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
+| src/main.rs:27:11:27:19 | file_path | src/main.rs:30:52:30:60 | file_path | provenance |  |
+| src/main.rs:30:9:30:17 | file_path | src/main.rs:35:24:35:32 | file_path | provenance |  |
+| src/main.rs:30:21:30:62 | public_path.join(...) | src/main.rs:30:9:30:17 | file_path | provenance |  |
+| src/main.rs:30:38:30:61 | ...::from(...) | src/main.rs:30:21:30:62 | public_path.join(...) | provenance | MaD:2 |
+| src/main.rs:30:52:30:60 | file_path | src/main.rs:30:38:30:61 | ...::from(...) | provenance | MaD:3 |
+| src/main.rs:35:24:35:32 | file_path | src/main.rs:35:5:35:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
+models
+| 1 | Sink: lang:std; crate::fs::read_to_string; path-injection; Argument[0] |
+| 2 | Summary: lang:std; <crate::path::Path>::join; Argument[0]; ReturnValue; taint |
+| 3 | Summary: lang:std; <crate::path::PathBuf as crate::convert::From>::from; Argument[0]; ReturnValue; taint |
+nodes
+| src/main.rs:6:11:6:19 | file_name | semmle.label | file_name |
+| src/main.rs:8:9:8:17 | file_path | semmle.label | file_path |
+| src/main.rs:8:21:8:44 | ...::from(...) | semmle.label | ...::from(...) |
+| src/main.rs:8:35:8:43 | file_name | semmle.label | file_name |
+| src/main.rs:10:5:10:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:10:24:10:32 | file_path | semmle.label | file_path |
+| src/main.rs:15:11:15:19 | file_name | semmle.label | file_name |
+| src/main.rs:21:9:21:17 | file_path | semmle.label | file_path |
+| src/main.rs:21:21:21:44 | ...::from(...) | semmle.label | ...::from(...) |
+| src/main.rs:21:35:21:43 | file_name | semmle.label | file_name |
+| src/main.rs:22:5:22:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:22:24:22:32 | file_path | semmle.label | file_path |
+| src/main.rs:27:11:27:19 | file_path | semmle.label | file_path |
+| src/main.rs:30:9:30:17 | file_path | semmle.label | file_path |
+| src/main.rs:30:21:30:62 | public_path.join(...) | semmle.label | public_path.join(...) |
+| src/main.rs:30:38:30:61 | ...::from(...) | semmle.label | ...::from(...) |
+| src/main.rs:30:52:30:60 | file_path | semmle.label | file_path |
+| src/main.rs:35:5:35:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:35:24:35:32 | file_path | semmle.label | file_path |
+subpaths
