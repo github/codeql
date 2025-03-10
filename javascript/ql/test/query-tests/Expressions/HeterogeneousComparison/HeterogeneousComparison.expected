@@ -10,44 +10,44 @@
 | tst.js:27:5:27:19 | !Module['load'] | This expression is of type boolean, but it is compared to $@ of type string. | tst.js:27:24:27:34 | 'undefined' | an expression |
 | tst.js:41:3:41:8 | number | Variable 'number' is of type number, but it is compared to $@ of type string. | tst.js:41:13:41:18 | "zero" | an expression |
 | tst.js:44:1:44:1 | 0 | This expression is of type number, but it is compared to $@ of type object or undefined. | tst.js:44:5:44:43 | (Math.r ... [1, 2]) | an expression |
-| tst.js:79:31:79:32 | x2 | Variable 'x2' is of type date, object or regular expression, but it is compared to $@ of type null. | tst.js:79:38:79:41 | null | an expression |
-| tst.js:82:35:82:36 | x3 | Variable 'x3' is of type date, object or regular expression, but it is compared to $@ of type null. | tst.js:82:42:82:45 | null | an expression |
-| tst.js:92:5:92:6 | x5 | Variable 'x5' cannot be of type null, but it is compared to $@ of type null. | tst.js:92:12:92:15 | null | an expression |
-| tst.js:95:9:95:10 | x6 | Variable 'x6' cannot be of type null, but it is compared to $@ of type null. | tst.js:95:16:95:19 | null | an expression |
-| tst.js:101:5:101:5 | o | Variable 'o' is of type object, but it is compared to $@ of type string. | tst.js:101:9:101:13 | "def" | an expression |
-| tst.js:108:5:108:5 | a | Variable 'a' is of type object, but it is compared to $@ of type string. | tst.js:108:9:108:13 | "def" | an expression |
-| tst.js:122:5:122:8 | null | This expression is of type null, but it is compared to $@ of type number. | tst.js:122:13:122:14 | 42 | an expression |
-| tst.js:125:5:125:8 | true | This expression is of type boolean, but it is compared to $@ of type string. | tst.js:125:13:125:17 | "bar" | an expression |
-| tst.js:133:5:133:5 | a | Variable 'a' is of type number, but it is compared to $@ of type string. | tst.js:133:11:133:14 | "42" | an expression |
-| tst.js:134:5:134:6 | 42 | This expression is of type number, but it is compared to $@ of type string. | tst.js:134:12:134:12 | b | variable 'b' |
-| tst.js:135:5:135:5 | a | Variable 'a' is of type number, but it is compared to $@ of type string. | tst.js:135:11:135:11 | b | variable 'b' |
-| tst.js:139:5:139:9 | "foo" | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:139:15:139:23 | undefined | 'undefined' |
-| tst.js:140:5:140:13 | undefined | 'undefined' is of type undefined, but it is compared to $@ of type string. | tst.js:140:19:140:23 | "foo" | an expression |
-| tst.js:142:5:142:7 | NaN | 'NaN' is of type number, but it is compared to $@ of type string. | tst.js:142:13:142:17 | "foo" | an expression |
-| tst.js:144:5:144:12 | Infinity | 'Infinity' is of type number, but it is compared to $@ of type string. | tst.js:144:18:144:22 | "foo" | an expression |
-| tst.js:151:5:151:6 | t1 | Variable 't1' is of type number, but it is compared to $@ of type null. | tst.js:151:12:151:15 | null | an expression |
-| tst.js:152:5:152:8 | null | This expression is of type null, but it is compared to $@ of type number. | tst.js:152:14:152:15 | t1 | variable 't1' |
-| tst.js:155:5:155:6 | t2 | Variable 't2' is of type number or string, but it is compared to $@ of type null. | tst.js:155:12:155:15 | null | an expression |
-| tst.js:156:5:156:8 | null | This expression is of type null, but it is compared to $@ of type number or string. | tst.js:156:14:156:15 | t2 | variable 't2' |
-| tst.js:159:5:159:6 | t3 | Variable 't3' is of type number, string or undefined, but it is compared to $@ of type null. | tst.js:159:12:159:15 | null | an expression |
-| tst.js:160:5:160:8 | null | This expression is of type null, but it is compared to $@ of type number, string or undefined. | tst.js:160:14:160:15 | t3 | variable 't3' |
-| tst.js:163:5:163:6 | t4 | Variable 't4' is of type boolean, number, string or undefined, but it is compared to $@ of type null. | tst.js:163:12:163:15 | null | an expression |
-| tst.js:164:5:164:8 | null | This expression is of type null, but it is compared to $@ of type boolean, number, string or undefined. | tst.js:164:14:164:15 | t4 | variable 't4' |
-| tst.js:167:5:167:6 | t5 | Variable 't5' cannot be of type null, but it is compared to $@ of type null. | tst.js:167:12:167:15 | null | an expression |
-| tst.js:168:5:168:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:168:14:168:15 | t5 | variable 't5' |
-| tst.js:171:5:171:6 | t6 | Variable 't6' cannot be of type null, but it is compared to $@ of type null. | tst.js:171:12:171:15 | null | an expression |
-| tst.js:172:5:172:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:172:14:172:15 | t6 | variable 't6' |
-| tst.js:175:5:175:6 | t7 | Variable 't7' cannot be of type null, but it is compared to $@ of type null. | tst.js:175:12:175:15 | null | an expression |
-| tst.js:176:5:176:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:176:14:176:15 | t7 | variable 't7' |
-| tst.js:179:5:179:6 | t8 | Variable 't8' cannot be of type null, but it is compared to $@ of type null. | tst.js:179:12:179:15 | null | an expression |
-| tst.js:180:5:180:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:180:14:180:15 | t8 | variable 't8' |
-| tst.js:193:5:193:6 | t2 | Variable 't2' is of type function or regular expression, but it is compared to $@ of type boolean, number, string or undefined. | tst.js:193:12:193:13 | t4 | variable 't4' |
-| tst.js:194:5:194:6 | t4 | Variable 't4' is of type boolean, number, string or undefined, but it is compared to $@ of type function or regular expression. | tst.js:194:12:194:13 | t2 | variable 't2' |
-| tst.js:195:5:195:6 | t3 | Variable 't3' is of type function, object or regular expression, but it is compared to $@ of type boolean, number, string or undefined. | tst.js:195:12:195:13 | t4 | variable 't4' |
-| tst.js:196:5:196:6 | t4 | Variable 't4' is of type boolean, number, string or undefined, but it is compared to $@ of type function, object or regular expression. | tst.js:196:12:196:13 | t3 | variable 't3' |
-| tst.js:198:5:198:6 | t2 | Variable 't2' is of type function or regular expression, but it is compared to $@ , which cannot be of type function or regular expression. | tst.js:198:12:198:13 | t5 | variable 't5' |
-| tst.js:199:5:199:6 | t5 | Variable 't5' cannot be of type function or regular expression, but it is compared to $@ of type function or regular expression. | tst.js:199:12:199:13 | t2 | variable 't2' |
-| tst.js:200:5:200:6 | t3 | Variable 't3' is of type function, object or regular expression, but it is compared to $@ of type boolean, null, number, string or undefined. | tst.js:200:12:200:13 | t5 | variable 't5' |
-| tst.js:201:5:201:6 | t5 | Variable 't5' is of type boolean, null, number, string or undefined, but it is compared to $@ of type function, object or regular expression. | tst.js:201:12:201:13 | t3 | variable 't3' |
-| tst.js:216:13:216:14 | xy | Variable 'xy' is of type undefined, but it is compared to $@ of type string. | tst.js:216:20:216:24 | "foo" | an expression |
-| tst.js:224:5:224:5 | x | Variable 'x' is of type object, but it is compared to $@ of type number. | tst.js:224:11:224:12 | 42 | an expression |
+| tst.js:78:31:78:32 | x2 | Variable 'x2' is of type date, object or regular expression, but it is compared to $@ of type null. | tst.js:78:38:78:41 | null | an expression |
+| tst.js:81:35:81:36 | x3 | Variable 'x3' is of type date, object or regular expression, but it is compared to $@ of type null. | tst.js:81:42:81:45 | null | an expression |
+| tst.js:91:5:91:6 | x5 | Variable 'x5' cannot be of type null, but it is compared to $@ of type null. | tst.js:91:12:91:15 | null | an expression |
+| tst.js:94:9:94:10 | x6 | Variable 'x6' cannot be of type null, but it is compared to $@ of type null. | tst.js:94:16:94:19 | null | an expression |
+| tst.js:100:5:100:5 | o | Variable 'o' is of type object, but it is compared to $@ of type string. | tst.js:100:9:100:13 | "def" | an expression |
+| tst.js:107:5:107:5 | a | Variable 'a' is of type object, but it is compared to $@ of type string. | tst.js:107:9:107:13 | "def" | an expression |
+| tst.js:121:5:121:8 | null | This expression is of type null, but it is compared to $@ of type number. | tst.js:121:13:121:14 | 42 | an expression |
+| tst.js:124:5:124:8 | true | This expression is of type boolean, but it is compared to $@ of type string. | tst.js:124:13:124:17 | "bar" | an expression |
+| tst.js:132:5:132:5 | a | Variable 'a' is of type number, but it is compared to $@ of type string. | tst.js:132:11:132:14 | "42" | an expression |
+| tst.js:133:5:133:6 | 42 | This expression is of type number, but it is compared to $@ of type string. | tst.js:133:12:133:12 | b | variable 'b' |
+| tst.js:134:5:134:5 | a | Variable 'a' is of type number, but it is compared to $@ of type string. | tst.js:134:11:134:11 | b | variable 'b' |
+| tst.js:138:5:138:9 | "foo" | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:138:15:138:23 | undefined | 'undefined' |
+| tst.js:139:5:139:13 | undefined | 'undefined' is of type undefined, but it is compared to $@ of type string. | tst.js:139:19:139:23 | "foo" | an expression |
+| tst.js:141:5:141:7 | NaN | 'NaN' is of type number, but it is compared to $@ of type string. | tst.js:141:13:141:17 | "foo" | an expression |
+| tst.js:143:5:143:12 | Infinity | 'Infinity' is of type number, but it is compared to $@ of type string. | tst.js:143:18:143:22 | "foo" | an expression |
+| tst.js:150:5:150:6 | t1 | Variable 't1' is of type number, but it is compared to $@ of type null. | tst.js:150:12:150:15 | null | an expression |
+| tst.js:151:5:151:8 | null | This expression is of type null, but it is compared to $@ of type number. | tst.js:151:14:151:15 | t1 | variable 't1' |
+| tst.js:154:5:154:6 | t2 | Variable 't2' is of type number or string, but it is compared to $@ of type null. | tst.js:154:12:154:15 | null | an expression |
+| tst.js:155:5:155:8 | null | This expression is of type null, but it is compared to $@ of type number or string. | tst.js:155:14:155:15 | t2 | variable 't2' |
+| tst.js:158:5:158:6 | t3 | Variable 't3' is of type number, string or undefined, but it is compared to $@ of type null. | tst.js:158:12:158:15 | null | an expression |
+| tst.js:159:5:159:8 | null | This expression is of type null, but it is compared to $@ of type number, string or undefined. | tst.js:159:14:159:15 | t3 | variable 't3' |
+| tst.js:162:5:162:6 | t4 | Variable 't4' is of type boolean, number, string or undefined, but it is compared to $@ of type null. | tst.js:162:12:162:15 | null | an expression |
+| tst.js:163:5:163:8 | null | This expression is of type null, but it is compared to $@ of type boolean, number, string or undefined. | tst.js:163:14:163:15 | t4 | variable 't4' |
+| tst.js:166:5:166:6 | t5 | Variable 't5' cannot be of type null, but it is compared to $@ of type null. | tst.js:166:12:166:15 | null | an expression |
+| tst.js:167:5:167:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:167:14:167:15 | t5 | variable 't5' |
+| tst.js:170:5:170:6 | t6 | Variable 't6' cannot be of type null, but it is compared to $@ of type null. | tst.js:170:12:170:15 | null | an expression |
+| tst.js:171:5:171:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:171:14:171:15 | t6 | variable 't6' |
+| tst.js:174:5:174:6 | t7 | Variable 't7' cannot be of type null, but it is compared to $@ of type null. | tst.js:174:12:174:15 | null | an expression |
+| tst.js:175:5:175:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:175:14:175:15 | t7 | variable 't7' |
+| tst.js:178:5:178:6 | t8 | Variable 't8' cannot be of type null, but it is compared to $@ of type null. | tst.js:178:12:178:15 | null | an expression |
+| tst.js:179:5:179:8 | null | This expression is of type null, but it is compared to $@ , which cannot be of type null. | tst.js:179:14:179:15 | t8 | variable 't8' |
+| tst.js:192:5:192:6 | t2 | Variable 't2' is of type function or regular expression, but it is compared to $@ of type boolean, number, string or undefined. | tst.js:192:12:192:13 | t4 | variable 't4' |
+| tst.js:193:5:193:6 | t4 | Variable 't4' is of type boolean, number, string or undefined, but it is compared to $@ of type function or regular expression. | tst.js:193:12:193:13 | t2 | variable 't2' |
+| tst.js:194:5:194:6 | t3 | Variable 't3' is of type function, object or regular expression, but it is compared to $@ of type boolean, number, string or undefined. | tst.js:194:12:194:13 | t4 | variable 't4' |
+| tst.js:195:5:195:6 | t4 | Variable 't4' is of type boolean, number, string or undefined, but it is compared to $@ of type function, object or regular expression. | tst.js:195:12:195:13 | t3 | variable 't3' |
+| tst.js:197:5:197:6 | t2 | Variable 't2' is of type function or regular expression, but it is compared to $@ , which cannot be of type function or regular expression. | tst.js:197:12:197:13 | t5 | variable 't5' |
+| tst.js:198:5:198:6 | t5 | Variable 't5' cannot be of type function or regular expression, but it is compared to $@ of type function or regular expression. | tst.js:198:12:198:13 | t2 | variable 't2' |
+| tst.js:199:5:199:6 | t3 | Variable 't3' is of type function, object or regular expression, but it is compared to $@ of type boolean, null, number, string or undefined. | tst.js:199:12:199:13 | t5 | variable 't5' |
+| tst.js:200:5:200:6 | t5 | Variable 't5' is of type boolean, null, number, string or undefined, but it is compared to $@ of type function, object or regular expression. | tst.js:200:12:200:13 | t3 | variable 't3' |
+| tst.js:215:13:215:14 | xy | Variable 'xy' is of type undefined, but it is compared to $@ of type string. | tst.js:215:20:215:24 | "foo" | an expression |
+| tst.js:223:5:223:5 | x | Variable 'x' is of type object, but it is compared to $@ of type number. | tst.js:223:11:223:12 | 42 | an expression |

@@ -67,8 +67,7 @@ new String('bar') == 'bar';
 
 ({ valueOf: () => null } == null);
 
-// assume that `new Date(123)` could return any object, not necessarily a Date // $ Alert - but not currently flagged since we conservatively
-new Date(123) == 123
+new Date(123) == 123; // $ MISSING: Alert - we conservatively assume that `new Date(123)` could return any object, not necessarily a Date
 
 function f(x1, x2, x3, x4, x5, x6){
     typeof x1 === 'object' && x1 !== null;
