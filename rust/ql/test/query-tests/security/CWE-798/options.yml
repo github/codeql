@@ -6,3 +6,5 @@ qltest_dependencies:
     - aes-gcm = { version = "0.10.3" }
     - cfb-mode = { version = "0.8.2" }
     - base64 = { version = "0.22.1" }
+    - getrandom = { version = "0.3.1" }
+    - getrandom2 = { package = "getrandom", version = "0.2.15" }

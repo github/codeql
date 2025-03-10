@@ -131,4 +131,13 @@ fn test_aes_gcm(
     let nonce3: [u8;12] = [0xff;12]; // $ Alert[rust/hardcoded-cryptographic-value]
     let cipher3 = Aes256Gcm::new(&key3); // $ Sink
     let _ = cipher3.encrypt(&nonce3.into(), b"plaintext".as_ref()).unwrap(); // $ Sink
+
+    // with barrier
+
+    let mut key4 = [0u8;32]; // $ SPURIOUS: Alert[rust/hardcoded-cryptographic-value]
+    let mut nonce4 = [0u8;12]; // $ SPURIOUS: Alert[rust/hardcoded-cryptographic-value]
+    _ = getrandom::fill(&mut key4).unwrap();
+    _ = getrandom2::getrandom(&mut nonce4).unwrap();
+    let cipher4 = Aes256Gcm::new(&key4.into()); // $ Sink
+    let _ = cipher2.encrypt(&nonce4.into(), b"plaintext".as_ref()).unwrap(); // $ Sink
 }
