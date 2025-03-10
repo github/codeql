@@ -1,7 +1,7 @@
-| NoDisposeCallOnLocalIDisposable.cs:50:19:50:38 | object creation of type Timer | Disposable 'Timer' is created but not disposed. |
-| NoDisposeCallOnLocalIDisposable.cs:51:18:51:73 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
-| NoDisposeCallOnLocalIDisposable.cs:52:9:52:64 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
-| NoDisposeCallOnLocalIDisposable.cs:74:25:74:71 | call to method Create | Disposable 'XmlReader' is created but not disposed. |
-| NoDisposeCallOnLocalIDisposable.cs:74:42:74:64 | object creation of type StringReader | Disposable 'StringReader' is created but not disposed. |
-| NoDisposeCallOnLocalIDisposable.cs:79:38:79:67 | object creation of type StreamWriter | Disposable 'StreamWriter' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:51:19:51:38 | object creation of type Timer | Disposable 'Timer' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:52:18:52:73 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:53:9:53:64 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:75:25:75:71 | call to method Create | Disposable 'XmlReader' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:75:42:75:64 | object creation of type StringReader | Disposable 'StringReader' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:80:38:80:67 | object creation of type StreamWriter | Disposable 'StreamWriter' is created but not disposed. |
 | NoDisposeCallOnLocalIDisposableBad.cs:8:22:8:56 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
