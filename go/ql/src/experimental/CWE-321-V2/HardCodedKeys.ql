@@ -33,6 +33,8 @@ module JwtParseWithConstantKeyConfig implements DataFlow::ConfigSig {
     // second part is the JWT Parsing Functions that get a string or byte as an argument
     sink = any(JwtParse jp).getKeyArg()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module GolangJwtKeyFuncConfig implements DataFlow::ConfigSig {
@@ -44,6 +46,12 @@ module GolangJwtKeyFuncConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     sink = any(JwtParseWithKeyFunction parseJwt).getKeyFuncArg()
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-321-V2/HardCodedKeys.ql:27: Flow call outside 'select' clause
+    none()
   }
 }
 
