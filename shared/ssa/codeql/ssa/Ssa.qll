@@ -1650,6 +1650,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /** Gets the basic block to which this node belongs. */
       abstract BasicBlock getBasicBlock();
 
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Gets the basic block index of this node.
+       */
+      abstract int getIndex();
+
       /** Gets the underlying source variable that this node tracks flow for. */
       abstract SourceVariable getSourceVariable();
     }
@@ -1668,6 +1675,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       deprecated override DefinitionExt getDefinitionExt() { result = def }
 
       override BasicBlock getBasicBlock() { result = def.getBasicBlock() }
+
+      override int getIndex() { def.definesAt(_, _, result, _) }
 
       override SourceVariable getSourceVariable() { result = def.getSourceVariable() }
 
@@ -1750,6 +1759,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       deprecated override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
+
+      override int getIndex() { result = input_.length() }
 
       override SourceVariable getSourceVariable() { result = def_.getSourceVariable() }
 

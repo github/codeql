@@ -203,9 +203,7 @@ private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
 
   predicate isSink(DataFlow::Node sink, FlowState pai) { none() }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node = any(DataFlow::SsaPhiNode phi | not phi.isPhiRead()).getAnInput(true)
-  }
+  predicate isBarrier(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
 
   predicate isBarrier(DataFlow::Node node, FlowState pai) {
     // `node = getABarrierNode(pai)` ensures that node < pai, so this node is safe to dereference.
