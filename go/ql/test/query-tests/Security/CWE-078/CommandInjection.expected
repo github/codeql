@@ -48,14 +48,14 @@ edges
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:17:36:17:42 | tainted | provenance |  |
 | GitSubcommands.go:33:13:33:19 | selection of URL | GitSubcommands.go:33:13:33:27 | call to Query | provenance | Src:MaD:2 MaD:7 |
 | GitSubcommands.go:33:13:33:27 | call to Query | GitSubcommands.go:38:32:38:38 | tainted | provenance |  |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | SanitizingDoubleDash.go:13:25:13:31 | tainted | provenance |  |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | SanitizingDoubleDash.go:14:23:14:33 | slice expression | provenance |  |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | SanitizingDoubleDash.go:39:31:39:37 | tainted | provenance | Config |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | SanitizingDoubleDash.go:52:24:52:30 | tainted | provenance | Config |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | SanitizingDoubleDash.go:68:31:68:37 | tainted | provenance | Config |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | SanitizingDoubleDash.go:80:23:80:29 | tainted | provenance | Config |
 | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:9:13:9:27 | call to Query | provenance | Src:MaD:2 MaD:7 |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:13:25:13:31 | tainted | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:14:23:14:33 | slice expression | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:39:31:39:37 | tainted | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:52:24:52:30 | tainted | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:53:21:53:28 | arrayLit | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:68:31:68:37 | tainted | provenance |  |
-| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:80:23:80:29 | tainted | provenance |  |
+| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | provenance |  |
 | SanitizingDoubleDash.go:13:15:13:32 | array literal [array] | SanitizingDoubleDash.go:14:23:14:30 | arrayLit [array] | provenance |  |
 | SanitizingDoubleDash.go:13:25:13:31 | tainted | SanitizingDoubleDash.go:13:15:13:32 | array literal [array] | provenance |  |
 | SanitizingDoubleDash.go:14:23:14:30 | arrayLit [array] | SanitizingDoubleDash.go:14:23:14:33 | slice element node | provenance |  |
@@ -67,6 +67,7 @@ edges
 | SanitizingDoubleDash.go:39:31:39:37 | tainted | SanitizingDoubleDash.go:39:14:39:44 | []type{args} [array] | provenance |  |
 | SanitizingDoubleDash.go:52:15:52:31 | slice literal [array] | SanitizingDoubleDash.go:53:21:53:28 | arrayLit [array] | provenance |  |
 | SanitizingDoubleDash.go:52:24:52:30 | tainted | SanitizingDoubleDash.go:52:15:52:31 | slice literal [array] | provenance |  |
+| SanitizingDoubleDash.go:52:24:52:30 | tainted | SanitizingDoubleDash.go:53:21:53:28 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:53:14:53:35 | call to append | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:53:14:53:35 | call to append [array] | SanitizingDoubleDash.go:54:23:54:30 | arrayLit | provenance |  |
 | SanitizingDoubleDash.go:53:21:53:28 | arrayLit | SanitizingDoubleDash.go:53:14:53:35 | call to append | provenance | MaD:4 |
@@ -180,6 +181,7 @@ nodes
 | GitSubcommands.go:33:13:33:19 | selection of URL | semmle.label | selection of URL |
 | GitSubcommands.go:33:13:33:27 | call to Query | semmle.label | call to Query |
 | GitSubcommands.go:38:32:38:38 | tainted | semmle.label | tainted |
+| SanitizingDoubleDash.go:9:2:9:8 | definition of tainted | semmle.label | definition of tainted |
 | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | semmle.label | call to Query |
 | SanitizingDoubleDash.go:13:15:13:32 | array literal [array] | semmle.label | array literal [array] |
