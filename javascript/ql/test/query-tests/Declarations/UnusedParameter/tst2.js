@@ -21,7 +21,7 @@ function K(x, y) {
     return y;
 }
 
-/** // $ Alert
+/**
  * @param {*} x the first argument
  * @param {*} y the second argument
  */
