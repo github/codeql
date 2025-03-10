@@ -1,4 +1,42 @@
 import cpp
+import LibraryDetector
+
+class KnownOpenSSLAlgorithmConstant extends Expr {
+  string normalizedName;
+  string algType;
+
+  KnownOpenSSLAlgorithmConstant() {
+    resolveAlgorithmFromCall(this, normalizedName, algType)
+    or
+    resolveAlgorithmFromLiteral(this, normalizedName, algType)
+  }
+
+  string getNormalizedName() { result = normalizedName }
+
+  string getAlgType() { result = algType }
+}
+
+/**
+ * Resolves a call to a 'direct algorithm getter', e.g., EVP_MD5()
+ * This approach to fetching algorithms was used in OpenSSL 1.0.2.
+ * The strategy for resolving these calls is to parse the target name
+ * and resolve the name as though it were a known literal.
+ * There are a few exceptions where the name doesn't directly match the
+ * known literal set. If that occurs, users must add the name to the
+ * set of aliases. E.g., EVP_dss() and EVP_dss1() needed such mappings
+ *   alias = "dss" and target = "dsa"
+ *   or
+ *  alias = "dss1" and target = "dsaWithSHA1"
+ */
+predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
+  isPossibleOpenSSLFunction(c.getTarget()) and
+  exists(string name, string parsedTargetName |
+    parsedTargetName =
+      c.getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and
+    name = resolveAlgorithmAlias(parsedTargetName) and
+    knownOpenSSLAlgorithmLiteral(name, _, normalized, algType)
+  )
+}
 
 /**
  * Resolves literal `e` to a known algorithm name, nid, normalized name, and algType
@@ -7,21 +45,23 @@ import cpp
  */
 predicate resolveAlgorithmFromLiteral(Literal e, string normalized, string algType) {
   exists(int nid |
-    nid = getPossibleNidFromLiteral(e) and knownOpenSSLAlgorithm(_, nid, normalized, algType)
+    nid = getPossibleNidFromLiteral(e) and knownOpenSSLAlgorithmLiteral(_, nid, normalized, algType)
   )
   or
   exists(string name |
-    name = resolveAlgorithmAlias(e) and knownOpenSSLAlgorithm(name, _, normalized, algType)
+    name = resolveAlgorithmAlias(e.getValue()) and
+    knownOpenSSLAlgorithmLiteral(name, _, normalized, algType)
   )
 }
 
-string resolveAlgorithmAlias(StringLiteral name) {
-  exists(string lower | lower = name.getValue().toLowerCase() |
+bindingset[name]
+string resolveAlgorithmAlias(string name) {
+  exists(string lower | lower = name.toLowerCase() |
     // The result is an alias algorithm name if known
     result = getAlgorithmAlias(lower)
     or
     // or the name is itself a known algorithm
-    knownOpenSSLAlgorithm(lower, _, _, _) and result = lower
+    knownOpenSSLAlgorithmLiteral(lower, _, _, _) and result = lower
   )
 }
 
@@ -133,6 +173,10 @@ predicate defaultAliases(string target, string alias) {
   or
   alias = "desx" and target = "desx-cbc"
   or
+  alias = "dss" and target = "dsa"
+  or
+  alias = "dss1" and target = "dsaWithSHA1"
+  or
   alias = "idea" and target = "idea-cbc"
   or
   alias = "rc2" and target = "rc2-cbc"
@@ -165,7 +209,7 @@ predicate defaultAliases(string target, string alias) {
  * `normalized` is the normalized name of the algorithm (e.g., "AES128" for "aes-128-cbc")
  * `algType` is the type of algorithm (e.g., "SYMMETRIC_ENCRYPTION")
  */
-predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string algType) {
+predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, string algType) {
   name = "rsa" and nid = 19 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
   name = "prime192v1" and nid = 409 and normalized = "PRIME192V1" and algType = "ELLIPTIC_CURVE"
@@ -895,7 +939,7 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "md_gost94" and nid = 809 and normalized = "GOST94" and algType = "HASH"
   or
-  name = "gost94" and nid = 812 and normalized = "GOST94" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "gost94" and nid = 812 and normalized = "GOST94" and algType = "HASH"
   or
   name = "gost89" and nid = 813 and normalized = "GOST89" and algType = "SYMMETRIC_ENCRYPTION"
   or
@@ -1114,9 +1158,9 @@ predicate knownOpenSSLAlgorithm(string name, int nid, string normalized, string 
   or
   name = "gost-mac-12" and nid = 976 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "md_gost12_256" and nid = 982 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "md_gost12_256" and nid = 982 and normalized = "GOST" and algType = "HASH"
   or
-  name = "md_gost12_512" and nid = 983 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "md_gost12_512" and nid = 983 and normalized = "GOST" and algType = "HASH"
   or
   name = "id-tc26-signwithdigest-gost3410-2012-256" and
   nid = 985 and
