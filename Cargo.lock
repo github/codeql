@@ -409,6 +409,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "argfile",
+ "chalk-ir",
  "chrono",
  "clap",
  "codeql-extractor",
@@ -422,6 +423,7 @@ dependencies = [
  "ra_ap_hir",
  "ra_ap_hir_def",
  "ra_ap_hir_expand",
+ "ra_ap_hir_ty",
  "ra_ap_ide_db",
  "ra_ap_intern",
  "ra_ap_load-cargo",
