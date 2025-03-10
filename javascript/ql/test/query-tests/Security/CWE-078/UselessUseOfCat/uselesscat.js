@@ -41,7 +41,7 @@ execSync(`cat ${newpath} > ${destpath}`).toString();
 
 execSync(`cat ${files.join(' ')} > ${outFile}`);
 
-execSync(`cat ${files.join(' ')}`); // $ SPURIOUS: Alert - - but flagged - not just a simple file read
+execSync(`cat ${files.join(' ')}`); // $ SPURIOUS: Alert - not just a simple file read
 
 exec("cat /proc/cpuinfo | grep name"); // OK - pipes
 
