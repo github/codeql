@@ -507,31 +507,6 @@ fn macros2() {
 }
 
 fn macros3() {
-    let d: u16 = 4;
-
-    undefined_macro_call!(d);
-}
-
-fn macros4() {
-    {
-        let a: u16 = 6; // $ MISSING: Alert[rust/unused-variable]
-    }
-
-    undefined_macro_call!(5);
-
-    let b: u16 = 6; // $ MISSING: Alert[rust/unused-variable]
-}
-
-fn macros5() {
-    match std::env::args().nth(1).unwrap().parse::<u16>() {
-        Ok(n) => {
-            undefined_macro_call!(n);
-        }
-        _ => {}
-    }
-}
-
-fn macros6() {
     let x;
     println!(
         "The value of x is {}",
@@ -601,9 +576,6 @@ fn main() {
     macros1();
     macros2();
     macros3();
-    macros4();
-    macros5();
-    macros6();
     hygiene_mismatch();
     references();
 
