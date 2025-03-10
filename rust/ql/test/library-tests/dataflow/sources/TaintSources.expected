@@ -1,18 +1,18 @@
-| test.rs:8:10:8:22 | ...::var | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:9:10:9:25 | ...::var_os | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:11:16:11:28 | ...::var | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:12:16:12:31 | ...::var_os | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:17:25:17:38 | ...::vars | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:22:25:22:41 | ...::vars_os | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:29:29:29:42 | ...::args | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:32:16:32:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:33:16:33:32 | ...::args_os | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:34:16:34:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:42:16:42:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:46:16:46:32 | ...::args_os | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:52:15:52:35 | ...::current_dir | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:53:15:53:35 | ...::current_exe | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:54:16:54:33 | ...::home_dir | Flow source 'CommandLineArgs' of type commandargs. |
+| test.rs:8:10:8:22 | ...::var | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:9:10:9:25 | ...::var_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:11:16:11:28 | ...::var | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:12:16:12:31 | ...::var_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:17:25:17:38 | ...::vars | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:22:25:22:41 | ...::vars_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:29:29:29:42 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:32:16:32:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:33:16:33:32 | ...::args_os | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:34:16:34:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:42:16:42:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:46:16:46:32 | ...::args_os | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:52:15:52:35 | ...::current_dir | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:53:15:53:35 | ...::current_exe | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:54:16:54:33 | ...::home_dir | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
 | test.rs:62:26:62:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:65:26:65:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:68:26:68:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
@@ -22,4 +22,4 @@
 | test.rs:80:24:80:35 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:112:35:112:46 | send_request | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:119:31:119:42 | send_request | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:203:16:203:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs. |
+| test.rs:203:16:203:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
