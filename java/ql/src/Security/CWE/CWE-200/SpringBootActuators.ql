@@ -1,6 +1,6 @@
 /**
  * @name Exposed Spring Boot actuators
- * @description Exposing Spring Boot actuators may lead to internal application's information leak
+ * @description Exposing Spring Boot actuators may lead to information leak from the internal application,
  *              or even to remote code execution.
  * @kind problem
  * @problem.severity error

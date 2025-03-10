@@ -12,7 +12,7 @@ even to remote code execution.</p>
 <p>Since actuator endpoints may contain sensitive information, carefully consider when to expose them,
 and secure them as you would any sensitive URL. Actuators are secured by default when using Spring
 Security without a custom configuration. If you wish to define a custom security configuration,
-consider only allowing users with certain roles access to the endpoints.
+consider only allowing users with certain roles to access these endpoints.
 </p>
 
 </recommendation>
