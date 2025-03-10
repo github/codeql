@@ -4,13 +4,13 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
+private import codeql.rust.security.HardcodedCryptographicValueExtensions
 
 /**
  * Gets a count of the total number of lines of code in the database.
@@ -62,6 +62,8 @@ string getAQuerySinkKind(DataFlow::Node n) {
   n instanceof SqlInjection::Sink and result = "SqlInjection"
   or
   n instanceof CleartextLogging::Sink and result = "CleartextLogging"
+  or
+  n instanceof HardcodedCryptographicValue::Sink and result = "HardcodedCryptographicValue"
 }
 
 /**
