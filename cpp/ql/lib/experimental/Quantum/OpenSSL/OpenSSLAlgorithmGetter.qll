@@ -31,7 +31,7 @@ class CopyAndDupAlgorithmPassthroughCall extends AlgorithmPassthroughCall {
     // Assume flow in and out is asIndirectExpr or asDefinitingArgument since a pointer is assumed
     // to be involved
     // NOTE: not attempting to detect openssl specific copy/dup functions, but anything suspected to be copy/dup
-    this.getTarget().getName().toLowerCase().matches(["%_dup", "%_copy"]) and
+    this.getTarget().getName().toLowerCase().matches(["%_dup%", "%_copy%"]) and
     exists(Expr inArg, Type t |
       inArg = this.getAnArgument() and t = inArg.getUnspecifiedType().stripType()
     |
