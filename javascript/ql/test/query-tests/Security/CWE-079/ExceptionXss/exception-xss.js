@@ -26,7 +26,7 @@
 	try {
 		unknown({ prop: foo });
 	} catch (e) {
-		$('myId').html(e); // $ MISSING: Alert - - but not detected due to not tainting object that have a tainted propety.
+		$('myId').html(e); // $ MISSING: Alert - but not detected due to not tainting object that have a tainted propety.
 	}
 
 	try {
