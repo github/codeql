@@ -71,8 +71,8 @@ public class RegExpParser {
   private List<Error> errors;
   private List<BackReference> backrefs;
   private int maxbackref;
-  private Boolean vFlagEnabled = false;
-  private Boolean uFlagEnabled = false;
+  private boolean vFlagEnabled = false;
+  private boolean uFlagEnabled = false;
 
   /** Parse the given string as a regular expression. */
   public Result parse(String src) {

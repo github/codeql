@@ -312,19 +312,12 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
  */
 class RegExpIntersection extends RegExpTerm, @regexp_intersection {
   /** Gets an intersected term of this term. */
-  RegExpTerm getIntersectedTerm() { result = this.getAChild() }
+  RegExpTerm getAnElement() { result = this.getAChild() }
 
   /** Gets the number of intersected terms of this term. */
   int getNumIntersectedTerm() { result = this.getNumChild() }
 
-  override predicate isNullable() { this.getIntersectedTerm().isNullable() }
-
-  override string getAMatchedString() {
-    exists(string s | s = this.getChild(0).getAMatchedString() |
-      forall(int i | i in [1 .. this.getNumChild() - 1] | s = this.getChild(i).getAMatchedString()) and
-      result = s
-    )
-  }
+  override predicate isNullable() { this.getAnElement().isNullable() }
 
   override string getAPrimaryQlClass() { result = "RegExpIntersection" }
 }
@@ -339,13 +332,13 @@ class RegExpIntersection extends RegExpTerm, @regexp_intersection {
  * ```
  */
 class RegExpSubtraction extends RegExpTerm, @regexp_subtraction {
-  /** Gets the minuend (the left operand) of this subtraction. */
+  /** Gets the minuend (left operand) of this subtraction. */
   RegExpTerm getFirstTerm() { result = this.getChild(0) }
 
   /** Gets the number of subtractions terms of this term. */
   int getNumSubtractedTerm() { result = this.getNumChild() - 1 }
 
-  /** Gets the subtrahend (the right operand) of this subtraction. */
+  /** Gets a subtrahend (right operand) of this subtraction. */
   RegExpTerm getASubtractedTerm() { exists(int i | i > 0 and result = this.getChild(i)) }
 
   override predicate isNullable() { none() }
@@ -1207,11 +1200,11 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
  */
 class RegExpQuotedString extends RegExpTerm, @regexp_quoted_string {
   /** Gets the term representing the contents of this quoted string. */
-  RegExpTerm getQuotedString() { result = this.getAChild() }
+  RegExpTerm getTerm() { result = this.getAChild() }
 
   override predicate isNullable() { none() }
 
-  override string getAMatchedString() { result = this.getQuotedString().getAMatchedString() }
+  override string getAMatchedString() { result = this.getTerm().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpQuotedString" }
 }
