@@ -10,10 +10,8 @@ query predicate comprehensionExpr(ComprehensionExpr ce, int numBlock, int numFil
   body = ce.getBody()
 }
 
-query predicate getBlock(ComprehensionExpr ce, int i, ComprehensionBlock block) {
-  ce.getBlock(i) = block
-}
+query ComprehensionBlock getBlock(ComprehensionExpr ce, int i) { result = ce.getBlock(i) }
 
-query predicate getFilter(ComprehensionExpr ce, int i, Expr filter) { ce.getFilter(i) = filter }
+query Expr getFilter(ComprehensionExpr ce, int i) { result = ce.getFilter(i) }
 
 query predicate varDecls(VarAccess va, VarDecl decl) { decl = va.getVariable().getADeclaration() }
