@@ -476,6 +476,12 @@ private module NSStringCompareOptionsFlagConfig implements DataFlow::ConfigSig {
     isSink(node) and
     c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/swift/regex/Regex.qll:507: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module NSStringCompareOptionsFlagFlow = DataFlow::Global<NSStringCompareOptionsFlagConfig>;
