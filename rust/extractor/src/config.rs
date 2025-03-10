@@ -66,6 +66,7 @@ pub struct Config {
     pub build_script_command: Vec<String>,
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
+    pub skip_path_resolution: bool,
 }
 
 impl Config {
