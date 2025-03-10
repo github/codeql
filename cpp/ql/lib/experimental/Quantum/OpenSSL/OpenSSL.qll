@@ -7,6 +7,7 @@ module OpenSSLModel {
   import experimental.Quantum.OpenSSL.EVPHashOperation
   import experimental.Quantum.OpenSSL.EVPCipherAlgorithmSource
   import experimental.Quantum.OpenSSL.EVPHashAlgorithmSource
+  import experimental.Quantum.OpenSSL.Random
 
 
 //   // TODO: trace CTX from init variants to the context arg of EVP update calls
