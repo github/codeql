@@ -2,19 +2,19 @@
 // --- undefined macro calls ---
 
 fn undefined_macros1() {
-    let d: u16 = 4;
+    let a: u16;
 
     undefined_macro_call!(d);
 }
 
 fn undefined_macros2() {
     {
-        let a: u16 = 6; // $ MISSING: Alert[rust/unused-variable]
+        let a: u16 = 1; // $ MISSING: Alert[rust/unused-value]
     }
 
     undefined_macro_call!(5);
 
-    let b: u16 = 6; // $ MISSING: Alert[rust/unused-variable]
+    let b: u16; // $ MISSING: Alert[rust/unused-variable]
 }
 
 fn undefined_macros3() {
