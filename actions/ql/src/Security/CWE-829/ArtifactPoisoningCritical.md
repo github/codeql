@@ -43,7 +43,7 @@ jobs:
 The following example, correctly creates a temporary directory and extracts the contents of the artifact there before calling `cmd.sh`.
 
 ```yaml
-name: Insecure Workflow
+name: Secure Workflow
 
 on:
   workflow_run:
