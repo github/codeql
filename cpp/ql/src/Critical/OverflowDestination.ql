@@ -82,6 +82,12 @@ module OverflowDestinationConfig implements DataFlow::ConfigSig {
       nodeIsBarrierEqualityCandidate(node, access, checkedVar)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Critical/OverflowDestination.ql:93: Column 1 does not select a source or sink originating from the flow call on line 91
+    none()
+  }
 }
 
 module OverflowDestination = TaintTracking::Global<OverflowDestinationConfig>;

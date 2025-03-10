@@ -245,6 +245,14 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
     // sources to not get path duplication.
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-311/CleartextTransmission.ql:256: Flow call outside 'select' clause
+    // ql/src/Security/CWE/CWE-311/CleartextTransmission.ql:279: Flow call outside 'select' clause
+    // ql/src/Security/CWE/CWE-311/CleartextTransmission.ql:308: Column 1 does not select a source or sink originating from the flow call on line 293
+    none()
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
@@ -266,6 +274,12 @@ module ToEncryptionConfig implements DataFlow::ConfigSig {
     // sources to not get path duplication.
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-311/CleartextTransmission.ql:308: Column 1 does not select a source or sink originating from the flow call on line 296
+    none()
+  }
 }
 
 module ToEncryptionFlow = TaintTracking::Global<ToEncryptionConfig>;
@@ -280,6 +294,13 @@ module FromEncryptionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-311/CleartextTransmission.ql:308: Column 1 does not select a source or sink originating from the flow call on line 297
+    // ql/src/Security/CWE/CWE-311/CleartextTransmission.ql:308: Column 5 does not select a source or sink originating from the flow call on line 297
+    none()
   }
 }
 

@@ -110,6 +110,12 @@ private module InvalidPointerToDerefBarrier {
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
 
     int fieldFlowBranchLimit() { result = invalidPointerToDereferenceFieldFlowBranchLimit() }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/code/cpp/security/InvalidPointerDereference/InvalidPointerToDereference.qll:129: Flow call outside 'select' clause
+      none()
+    }
   }
 
   private module BarrierFlow = DataFlow::Global<BarrierConfig>;

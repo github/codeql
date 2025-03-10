@@ -225,6 +225,14 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
       state1 = state2 + delta
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql:251: Flow call outside 'select' clause
+    // ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql:271: Column 1 does not select a source or sink originating from the flow call on line 265
+    // ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql:272: Column 5 does not select a source or sink originating from the flow call on line 265
+    none()
+  }
 }
 
 module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
