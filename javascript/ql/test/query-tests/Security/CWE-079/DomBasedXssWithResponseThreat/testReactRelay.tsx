@@ -45,6 +45,7 @@ function func5({ query, props }) {
   return (
     <>
       <h1 dangerouslySetInnerHTML={{ __html: data }} /> // $ Alert
+      <h1 dangerouslySetInnerHTML={{ __html: refetch }} />
       <Button
         onClick={() => {
           refetch({ lang: "SPANISH" }, { fetchPolicy: "store-or-network" });
@@ -58,7 +59,7 @@ import { usePaginationFragment } from "react-relay";
 
 function func6({ query }) {
   const {
-    data,
+    data, // $ Source
     loadNext,
     loadPrevious,
     hasNext,
@@ -66,7 +67,7 @@ function func6({ query }) {
     isLoadingNext,
     isLoadingPrevious,
     refetch,
-  } = usePaginationFragment(query, {}); // $ Source
+  } = usePaginationFragment(query, {}); 
   return <h1 dangerouslySetInnerHTML={{ __html: data }} />; // $ Alert
 }
 
