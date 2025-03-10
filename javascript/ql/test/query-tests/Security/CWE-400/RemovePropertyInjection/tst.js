@@ -5,15 +5,15 @@ var myObj = {}
 
 app.get('/user/:id', function(req, res) {
 	myCoolLocalFct(req.query.userControlled);
-	var prop = myCoolLocalFct(req.query.userControlled);
-	myObj[prop] = 23; // NOT OK
-	myObj.prop = 23; // OK
-	var x = myObj[prop]; // NOT OK, but flagged by different query
+	var prop = myCoolLocalFct(req.query.userControlled); // $ Source
+	myObj[prop] = 23; // $ Alert
+	myObj.prop = 23;
+	var x = myObj[prop]; // OK - flagged by different query
 	x(23);
-	delete myObj[prop]; // NOT OK
-	Object.defineProperty(myObj, prop, {value: 24}); // NOT OK
+	delete myObj[prop]; // $ Alert
+	Object.defineProperty(myObj, prop, {value: 24}); // $ Alert
 	var headers = {};
-	headers[prop] = 42; // NOT OK
+	headers[prop] = 42; // $ Alert
 	res.set(headers);
 	myCoolLocalFct[req.query.x](); // OK - flagged by method name injection
 });

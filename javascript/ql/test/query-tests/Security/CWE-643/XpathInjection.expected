@@ -1,7 +1,15 @@
+#select
+| XpathInjectionBad.js:8:34:8:96 | "//user ... text()" | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | XpathInjectionBad.js:8:34:8:96 | "//user ... text()" | XPath expression depends on a $@. | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | user-provided value |
+| tst2.js:2:27:2:31 | query | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:2:27:2:31 | query | XPath expression depends on a $@. | tst2.js:1:13:1:34 | documen ... on.hash | user-provided value |
+| tst2.js:3:19:3:23 | query | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:3:19:3:23 | query | XPath expression depends on a $@. | tst2.js:1:13:1:34 | documen ... on.hash | user-provided value |
+| tst.js:7:15:7:21 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:7:15:7:21 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
+| tst.js:8:16:8:22 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:8:16:8:22 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
+| tst.js:9:17:9:23 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:9:17:9:23 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
+| tst.js:11:8:11:14 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:11:8:11:14 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
 edges
-| XpathInjectionBad.js:6:7:6:38 | userName | XpathInjectionBad.js:9:66:9:73 | userName | provenance |  |
+| XpathInjectionBad.js:6:7:6:38 | userName | XpathInjectionBad.js:8:66:8:73 | userName | provenance |  |
 | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | XpathInjectionBad.js:6:7:6:38 | userName | provenance |  |
-| XpathInjectionBad.js:9:66:9:73 | userName | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" | provenance |  |
+| XpathInjectionBad.js:8:66:8:73 | userName | XpathInjectionBad.js:8:34:8:96 | "//user ... text()" | provenance |  |
 | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:1:13:1:47 | documen ... ring(1) | provenance |  |
 | tst2.js:1:13:1:47 | documen ... ring(1) | tst2.js:2:27:2:31 | query | provenance |  |
 | tst2.js:1:13:1:47 | documen ... ring(1) | tst2.js:3:19:3:23 | query | provenance |  |
@@ -13,8 +21,8 @@ edges
 nodes
 | XpathInjectionBad.js:6:7:6:38 | userName | semmle.label | userName |
 | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | semmle.label | req.par ... rName") |
-| XpathInjectionBad.js:9:34:9:96 | "//user ... text()" | semmle.label | "//user ... text()" |
-| XpathInjectionBad.js:9:66:9:73 | userName | semmle.label | userName |
+| XpathInjectionBad.js:8:34:8:96 | "//user ... text()" | semmle.label | "//user ... text()" |
+| XpathInjectionBad.js:8:66:8:73 | userName | semmle.label | userName |
 | tst2.js:1:13:1:34 | documen ... on.hash | semmle.label | documen ... on.hash |
 | tst2.js:1:13:1:47 | documen ... ring(1) | semmle.label | documen ... ring(1) |
 | tst2.js:2:27:2:31 | query | semmle.label | query |
@@ -26,11 +34,3 @@ nodes
 | tst.js:9:17:9:23 | tainted | semmle.label | tainted |
 | tst.js:11:8:11:14 | tainted | semmle.label | tainted |
 subpaths
-#select
-| XpathInjectionBad.js:9:34:9:96 | "//user ... text()" | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" | XPath expression depends on a $@. | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | user-provided value |
-| tst2.js:2:27:2:31 | query | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:2:27:2:31 | query | XPath expression depends on a $@. | tst2.js:1:13:1:34 | documen ... on.hash | user-provided value |
-| tst2.js:3:19:3:23 | query | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:3:19:3:23 | query | XPath expression depends on a $@. | tst2.js:1:13:1:34 | documen ... on.hash | user-provided value |
-| tst.js:7:15:7:21 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:7:15:7:21 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
-| tst.js:8:16:8:22 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:8:16:8:22 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
-| tst.js:9:17:9:23 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:9:17:9:23 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |
-| tst.js:11:8:11:14 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:11:8:11:14 | tainted | XPath expression depends on a $@. | tst.js:6:17:6:37 | req.par ... rName") | user-provided value |

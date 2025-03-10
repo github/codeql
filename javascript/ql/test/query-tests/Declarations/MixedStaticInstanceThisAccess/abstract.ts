@@ -3,6 +3,6 @@ abstract class Q {
     static test() {}
 
     method() {
-        this.test(); // OK
+        this.test();
     }
 }

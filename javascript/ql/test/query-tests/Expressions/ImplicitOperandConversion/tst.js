@@ -1,41 +1,36 @@
-// NOT OK
-!method in obj;
+!method in obj; // $ Alert
 
-// OK
+
 !(method in obj);
 
-// OK
+
 '__proto__' in obj;
 
-// OK
+
 0 in obj;
 
-// OK
+
 ('$' + key) in obj;
 
-// NOT OK
-p in null;
+p in null; // $ Alert
 
-// NOT OK
-0 in 'string';
+0 in 'string'; // $ Alert
 
-// OK
+
 p in {};
 
-// NOT OK
-console.log("Setting device's bluetooth name to '%s'" % device_name);
+console.log("Setting device's bluetooth name to '%s'" % device_name); // $ Alert
 
-// NOT OK
-if (!callback || !callback instanceof Function) {
+if (!callback || !callback instanceof Function) { // $ Alert
     ;
 }
 
-// OK
+
 function cmp(x, y) {
     return (x > y) - (x < y);
 }
 
-// OK
+
 function cmp(x, y) {
     if (x > y)
         return 1;
@@ -44,48 +39,42 @@ function cmp(x, y) {
     return 0;
 }
 
-// OK
+
 function cmp(x, y) {
     return (x > y) - (x < y);
 }
 
-// NOT OK
-1 + void 0
+1 + void 0 // $ Alert
 
-// OK
+
 o[true] = 42;
 
 function f() {
   var x;
-  // NOT OK
-  x -= 2;
+  x -= 2; // $ Alert
 }
 
 function g() {
   var x = 19, y;
-  // NOT OK
-  x %= y;
+  x %= y; // $ Alert
 }
 
 function h() {
   var x;
-  // NOT OK
-  ++x;
+  ++x; // $ Alert
 }
 
 function k() {
   var name;
-  // NOT OK
-  return `Hello ${name}!`;
+  return `Hello ${name}!`; // $ Alert
 }
 
 function l() {
   var x;
-  // NOT OK
-  x ** 2;
+  x ** 2; // $ Alert
 }
 
-1n + 1; // NOT OK, but not currently flagged
+1n + 1; // $ MISSING: Alert
 
 (function(){
     let sum = 0;
@@ -97,27 +86,27 @@ function l() {
 (function(){
     function f() {
     }
-    f()|0;
+    f()|0; // $ Alert
 
     unknown()|0;
 
     function g() {
     }
-    g()|0;
+    g()|0; // $ Alert
     g();
 
-    var a = g() + 2;
-    var b = g() + "str";
+    var a = g() + 2; // $ Alert
+    var b = g() + "str"; // $ Alert
 });
 
 
 function m() {
   var x = 19, y = "string";
   
-  x %= y; // NOT OK
-  x += y; // OK 
-  x ||= y; // OK
-  x &&= y; // OK
-  x ??= y; // OK
-  x >>>= y; // NOT OK
+  x %= y; // $ Alert
+  x += y;
+  x ||= y;
+  x &&= y;
+  x ??= y;
+  x >>>= y; // $ Alert
 }

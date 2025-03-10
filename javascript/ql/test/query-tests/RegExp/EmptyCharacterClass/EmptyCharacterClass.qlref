@@ -1,1 +1,2 @@
-RegExp/EmptyCharacterClass.ql
+query: RegExp/EmptyCharacterClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

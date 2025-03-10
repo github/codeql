@@ -1,13 +1,13 @@
 export function foo() {
-  function bar(x: number): number; // OK
-  function bar(x: string): string; // OK
-  function bar(x: any) { // OK
+  function bar(x: number): number;
+  function bar(x: string): string;
+  function bar(x: any) {
     return x;
   }
   
-  function baz(x: number): number; // OK
-  function baz(x: string): string; // OK
-  function baz(x: any) { // NOT OK, overwritten before use
+  function baz(x: number): number;
+  function baz(x: string): string;
+  function baz(x: any) { // $ Alert - overwritten before use
     return x;
   }
   baz = (x) => x;

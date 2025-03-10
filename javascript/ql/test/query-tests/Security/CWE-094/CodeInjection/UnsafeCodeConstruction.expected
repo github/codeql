@@ -1,3 +1,8 @@
+#select
+| lib/index.js:2:21:2:24 | data | lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:1:35:1:38 | data | library input | lib/index.js:2:15:2:30 | "(" + data + ")" | interpreted as code |
+| lib/index.js:6:26:6:29 | name | lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name | This string concatenation which depends on $@ is later $@. | lib/index.js:5:35:5:38 | name | library input | lib/index.js:6:17:6:29 | "obj." + name | interpreted as code |
+| lib/index.js:14:21:14:24 | data | lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:13:38:13:41 | data | library input | lib/index.js:14:15:14:30 | "(" + data + ")" | interpreted as code |
+| lib/index.js:22:7:22:10 | data | lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:19:26:19:29 | data | library input | lib/index.js:25:24:25:26 | str | interpreted as code |
 edges
 | lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data | provenance |  |
 | lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name | provenance |  |
@@ -13,8 +18,3 @@ nodes
 | lib/index.js:19:26:19:29 | data | semmle.label | data |
 | lib/index.js:22:7:22:10 | data | semmle.label | data |
 subpaths
-#select
-| lib/index.js:2:21:2:24 | data | lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:1:35:1:38 | data | library input | lib/index.js:2:15:2:30 | "(" + data + ")" | interpreted as code |
-| lib/index.js:6:26:6:29 | name | lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name | This string concatenation which depends on $@ is later $@. | lib/index.js:5:35:5:38 | name | library input | lib/index.js:6:17:6:29 | "obj." + name | interpreted as code |
-| lib/index.js:14:21:14:24 | data | lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:13:38:13:41 | data | library input | lib/index.js:14:15:14:30 | "(" + data + ")" | interpreted as code |
-| lib/index.js:22:7:22:10 | data | lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:19:26:19:29 | data | library input | lib/index.js:25:24:25:26 | str | interpreted as code |

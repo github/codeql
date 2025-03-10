@@ -5,6 +5,6 @@
 });
 
 (function(){
-	(function (i) { if (i == 100000) return; })(1);
-	(function f(i) { if (i == 100000) return; f(i+1); })(1);
+	(function (i) { if (i == 100000) return; })(1); // $ Alert
+	(function f(i) { if (i == 100000) return; f(i+1); })(1); // $ Alert
 });

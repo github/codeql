@@ -8,7 +8,7 @@ app.register(require('fastify-csrf'));
 app.route({
   method: 'GET',
   path: '/getter',
-  handler: async (req, reply) => { // OK
+  handler: async (req, reply) => {
     return 'hello';
   }
 })

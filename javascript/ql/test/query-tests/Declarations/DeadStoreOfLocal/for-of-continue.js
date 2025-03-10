@@ -2,7 +2,7 @@ function f() {
   let y = false;
   for (const x of [1, 2, 3]) {
     if (x > 0) {
-        y = true; // OK
+        y = true;
         continue;
     }
     return;

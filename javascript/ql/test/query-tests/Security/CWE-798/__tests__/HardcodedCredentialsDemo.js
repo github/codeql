@@ -2,10 +2,10 @@
     const pg = require('pg');
 
     const client = new pg.Client({
-        user: 'dbuser',  // OK
+        user: 'dbuser', // $ Alert
         host: 'database.server.com',
         database: 'mydb',
-        password: 'hgfedcba',  // OK
+        password: 'hgfedcba', // $ Alert
         port: 3211,
     });
     client.connect();
@@ -15,17 +15,17 @@
     const JwtStrategy = require('passport-jwt').Strategy;
     const passport = require('passport')
 
-    var secretKey = "myHardCodedPrivateKey";
+    var secretKey = "myHardCodedPrivateKey"; // OK - JWT keys in tests are not flagged
 
     const opts = {}
-    opts.secretOrKey = secretKey; // NOT OK
+    opts.secretOrKey = secretKey;
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         return done(null, false);
     }));
 
     passport.use(new JwtStrategy({
         secretOrKeyProvider: function (request, rawJwtToken, done) {
-            return done(null, secretKey) // NOT OK
+            return done(null, secretKey)
         }
     }, function (jwt_payload, done) {
         return done(null, false);

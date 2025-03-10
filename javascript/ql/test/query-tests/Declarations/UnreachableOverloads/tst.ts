@@ -1,30 +1,30 @@
 declare class Foobar {
   method(foo: number): string;
-  method(foo: number): number; // NOT OK.
+  method(foo: number): number; // $ Alert
 
   types1<T>(): T[]
-  types1(): any[] // NOT OK.
+  types1(): any[] // $ Alert
 
   types2(): any[]
-  types2<T>(): T[] // OK!
+  types2<T>(): T[]
 
   types3<T extends Array<T>>(t: T): number;
-  types3<T extends string>(t: T): number // OK!
+  types3<T extends string>(t: T): number
 
   on(event: string, fn?: (event?: any, ...args: any[]) => void): Function;
-  on(event: string, fn?: (event?: any, ...args: any[]) => void): Function; // NOT OK.
+  on(event: string, fn?: (event?: any, ...args: any[]) => void): Function; // $ Alert
 
   foo(this: string): string;
-  foo(this: number): number; // OK
+  foo(this: number): number;
 
   bar(this: number): string;
-  bar(this: number): number; // NOT OK
+  bar(this: number): number; // $ Alert
 
 }
 
 declare class Base {
   method(foo: number): string;
-  method(foo: number): number; // NOT OK.
+  method(foo: number): number; // $ Alert
 
   overRiddenInSub(): string;
   overRiddenInSub(): number;
@@ -49,13 +49,13 @@ interface Base2 {
     method(): "bar";
 }
 
-// OK.
+
 interface MultiInheritanceI extends Base1, Base2 {
     method(): "foo";
     method(): "bar";
 }
 
-// OK.
+
 declare class MultiInheritanceC implements Base1, Base2 {
     method(): "foo";
     method(): "bar";

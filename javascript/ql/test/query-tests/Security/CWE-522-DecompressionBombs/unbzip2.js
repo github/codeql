@@ -9,5 +9,5 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    fs.createReadStream(req.query.FilePath).pipe(bz2()).pipe(process.stdout);
+    fs.createReadStream(req.query.FilePath).pipe(bz2()).pipe(process.stdout); // $ Alert
 });
