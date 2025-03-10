@@ -513,7 +513,13 @@ fn macros3() {
 }
 
 fn macros4() {
+    {
+        let a: u16 = 6; // $ MISSING: Alert[rust/unused-variable]
+    }
+
     undefined_macro_call!(5);
+
+    let b: u16 = 6; // $ MISSING: Alert[rust/unused-variable]
 }
 
 fn macros5() {
