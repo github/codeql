@@ -1,3 +1,21 @@
+/**
+ * In OpenSSL, flow between 'context' parameters is often used to
+ * store state/config of how an operation will eventually be performed.
+ * Tracing algorithms and configurations to operations therefore
+ * requires tracing context parameters for many OpenSSL apis. 
+ * 
+ * This library provides a dataflow analysis to track context parameters
+ * between any two functions accepting openssl context parameters.
+ * The dataflow takes into consideration flowing through duplication and copy calls
+ * as well as flow through flow killers (free/reset calls).
+ *
+ * TODO: we may need to revisit 'free' as a dataflow killer, depending on how
+ * we want to model use after frees.
+ *
+ * This library also provides classes to represent context Types and relevant
+ * arguments/expressions.
+ */
+
 import semmle.code.cpp.dataflow.new.DataFlow
 
 class CTXType extends Type {
