@@ -47,7 +47,7 @@ class LikelyJunitTest extends Method {
     (
       this.getName().matches("JUnit%") or
       this.getName().matches("test%") or
-      this.getAnAnnotation().toString().matches("%Test")
+      this.getAnAnnotation().getType().getName().matches("%Test")
     )
   }
 }
@@ -83,7 +83,7 @@ where
   //permit comment lines explaining why this is empty
   m.getNumberOfCommentLines() = 0 and
   //permit a javadoc above as well as sufficient reason to leave empty
-  not exists(Javadoc jd | m.getDoc().getJavadoc() = jd) and
+  not exists(m.getDoc().getJavadoc()) and
   //annotated methods are considered compliant
   not exists(m.getAnAnnotation()) and
   //default methods are not abstract, but are considered compliant
