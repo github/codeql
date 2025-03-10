@@ -10,7 +10,9 @@ import com.semmle.js.ast.regexp.BackReference;
 import com.semmle.js.ast.regexp.Caret;
 import com.semmle.js.ast.regexp.CharacterClass;
 import com.semmle.js.ast.regexp.CharacterClassEscape;
+import com.semmle.js.ast.regexp.CharacterClassQuotedString;
 import com.semmle.js.ast.regexp.CharacterClassRange;
+import com.semmle.js.ast.regexp.CharacterClassSubtraction;
 import com.semmle.js.ast.regexp.Constant;
 import com.semmle.js.ast.regexp.ControlEscape;
 import com.semmle.js.ast.regexp.ControlLetter;
@@ -22,6 +24,7 @@ import com.semmle.js.ast.regexp.Error;
 import com.semmle.js.ast.regexp.Group;
 import com.semmle.js.ast.regexp.HexEscapeSequence;
 import com.semmle.js.ast.regexp.IdentityEscape;
+import com.semmle.js.ast.regexp.CharacterClassIntersection;
 import com.semmle.js.ast.regexp.Literal;
 import com.semmle.js.ast.regexp.NamedBackReference;
 import com.semmle.js.ast.regexp.NonWordBoundary;
@@ -92,6 +95,9 @@ public class RegExpExtractor {
     termkinds.put("ZeroWidthPositiveLookbehind", 25);
     termkinds.put("ZeroWidthNegativeLookbehind", 26);
     termkinds.put("UnicodePropertyEscape", 27);
+    termkinds.put("CharacterClassQuotedString", 28);
+    termkinds.put("CharacterClassIntersection", 29);
+    termkinds.put("CharacterClassSubtraction", 30);
   }
 
   private static final String[] errmsgs =
@@ -344,10 +350,32 @@ public class RegExpExtractor {
       visit(nd.getLeft(), lbl, 0);
       visit(nd.getRight(), lbl, 1);
     }
+
+    @Override
+    public void visit(CharacterClassQuotedString nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      visit(nd.getTerm(), lbl, 0);
+    }
+
+    @Override
+    public void visit(CharacterClassIntersection nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      int i = 0;
+      for (RegExpTerm element : nd.getElements())
+        visit(element, lbl, i++);
+    }
+
+    @Override
+    public void visit(CharacterClassSubtraction nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      int i = 0;
+      for (RegExpTerm element : nd.getElements())
+        visit(element, lbl, i++);
+    }
   }
 
-  public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing) {
-    Result res = parser.parse(src);
+  public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing, String flags) {
+    Result res = parser.parse(src, flags);
     if (isSpeculativeParsing && res.getErrors().size() > 0) {
       return;
     }
@@ -364,4 +392,8 @@ public class RegExpExtractor {
       this.emitLocation(err, lbl);
     }
   }
+
+    public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing) {
+      extract(src, sourceMap, parent, isSpeculativeParsing, "");
+    }
 }
