@@ -11,7 +11,6 @@ var div2 = <div id="theDiff"></div>;
 
 <a href="http://semmle.com" href={someValue()}>Semmle</a>; // $ Alert[js/conflicting-html-attribute]
 
-
 <div id={someOtherValue()}></div>;
 
 var div3 = <div><div id="theDiff"></div><div id="theDiff"></div></div>; // $ Alert[js/duplicate-html-id]
