@@ -341,8 +341,8 @@ function thisNodes() {
 		this.innerHTML = target // OK - this is a jQuery object
 
 		this.each(function (i, e) {
-			this.innerHTML = target; // $ Alert - (this is a DOM-node);
-			this.html(target); // OK - (this is a DOM-node);
+			this.innerHTML = target; // $ Alert - this is a DOM-node
+			this.html(target); // OK - this is a DOM-node
 
 			e.innerHTML = target; // $ Alert
 		});
