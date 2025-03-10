@@ -171,6 +171,26 @@ impl TrapFile {
         );
     }
 
+    pub fn emit_file_only_location<E: TrapClass>(
+        &mut self,
+        file_label: Label<generated::File>,
+        entity_label: Label<E>,
+    ) {
+        let location_label = extractor::location_label(
+            &mut self.writer,
+            trap::Location {
+                file_label: file_label.as_untyped(),
+                start_line: 0,
+                start_column: 0,
+                end_line: 0,
+                end_column: 0,
+            },
+        );
+        self.writer.add_tuple(
+            "locatable_locations",
+            vec![entity_label.into(), location_label.into()],
+        );
+    }
     pub fn emit_diagnostic(
         &mut self,
         severity: DiagnosticSeverity,

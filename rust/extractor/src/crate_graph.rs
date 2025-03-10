@@ -6,7 +6,6 @@ use chalk_ir::IntTy;
 use chalk_ir::Scalar;
 use chalk_ir::UintTy;
 use chalk_ir::{FloatTy, Safety};
-use codeql_extractor::trap::Location;
 use itertools::Itertools;
 use ra_ap_base_db::CrateGraph;
 use ra_ap_base_db::CrateId;
@@ -78,7 +77,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                 continue;
             }
             let krate = &crate_graph[krate_id];
-            let module = emit_module(
+            let root_module = emit_module(
                 &crate_graph,
                 db,
                 db.crate_def_map(krate_id).as_ref(),
@@ -86,21 +85,8 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                 DefMap::ROOT,
                 &mut trap,
             );
-            let file_label = trap.emit_file(root_module_file).as_untyped();
-            let location_label = codeql_extractor::extractor::location_label(
-                &mut trap.writer,
-                Location {
-                    file_label,
-                    start_line: 0,
-                    start_column: 0,
-                    end_line: 0,
-                    end_column: 0,
-                },
-            );
-            trap.writer.add_tuple(
-                "locatable_locations",
-                vec![module.into(), location_label.into()],
-            );
+            let file_label = trap.emit_file(root_module_file);
+            trap.emit_file_only_location(file_label, root_module);
 
             let element = generated::Crate {
                 id: trap::TrapId::Key(format!("{}:{hash}", root_module_file.display())),
@@ -109,7 +95,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     .as_ref()
                     .map(|x| x.canonical_name().to_string()),
                 version: krate.version.to_owned(),
-                module: Some(module),
+                module: Some(root_module),
                 cfg_options: krate
                     .cfg_options
                     .as_ref()
