@@ -4,6 +4,14 @@ import LibraryDetector
 import OpenSSLKnownAlgorithmConstants
 import experimental.Quantum.Language
 
+class OpenSSLAlgorithmAdditionalFlowStep extends AdditionalFlowInputStep {
+  OpenSSLAlgorithmAdditionalFlowStep() { exists(AlgorithmPassthroughCall c | c.getInNode() = this) }
+
+  override DataFlow::Node getOutput() {
+    exists(AlgorithmPassthroughCall c | c.getInNode() = this and c.getOutNode() = result)
+  }
+}
+
 module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(OpenSSLAlgorithmGetterCall c | c.getResultNode() = source)
