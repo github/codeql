@@ -4,6 +4,10 @@ import semmle.code.cpp.dataflow.new.DataFlow
 module OpenSSLModel {
   import experimental.Quantum.Language
   import experimental.Quantum.OpenSSL.EVPCipherOperation
+  import experimental.Quantum.OpenSSL.EVPHashOperation
+  import experimental.Quantum.OpenSSL.EVPCipherAlgorithmSource
+  import experimental.Quantum.OpenSSL.EVPHashAlgorithmSource
+
 
 //   // TODO: trace CTX from init variants to the context arg of EVP update calls
 // //https://docs.openssl.org/master/man3/EVP_EncryptInit/#synopsis
