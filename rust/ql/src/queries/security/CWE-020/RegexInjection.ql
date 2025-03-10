@@ -1,6 +1,9 @@
 /**
  * @name Regular expression injection
- * @description
+ * @description User input should not be used in regular expressions without first being
+ *              escaped, otherwise a malicious user may be able to inject an expression that
+ *              could modify the meaning of the expression, causing it to match unexpected
+ *              strings.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
