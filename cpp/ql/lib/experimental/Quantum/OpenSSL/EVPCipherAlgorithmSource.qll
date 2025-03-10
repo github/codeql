@@ -3,7 +3,13 @@ import experimental.Quantum.Language
 import EVPCipherConsumers
 import OpenSSLAlgorithmGetter
 
-predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) { 
+/**
+ * Given a literal `e`, converts this to a cipher family type.
+ * The literal must be a known literal representing a cipher algorithm.
+ * If the literal does not represent any known cipher algorithm,
+ * this predicate will not hold (i.e., it will not bind an unknown to an unknown cipher type)
+ */
+predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
   exists(string name, string algType | algType.toLowerCase().matches("%encryption") |
     resolveAlgorithmFromLiteral(e, name, algType) and
     (
@@ -52,25 +58,36 @@ predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
   )
 }
 
-class CipherKnownAlgorithmLiteralAlgorithmInstance extends Crypto::CipherAlgorithmInstance instanceof Literal
+class KnownOpenSSLCipherConstantAlgorithmInstance extends Crypto::CipherAlgorithmInstance instanceof KnownOpenSSLAlgorithmConstant
 {
-  OpenSSLAlgorithmGetterCall cipherGetterCall;
-  CipherKnownAlgorithmLiteralAlgorithmInstance() {
-    exists(DataFlow::Node src, DataFlow::Node sink |
-      sink = cipherGetterCall.getValueArgNode() and
-      src.asExpr() = this and
-      KnownAlgorithmLiteralToAlgorithmGetterFlow::flow(src, sink) and
-      // Not just any known value, but specifically a known cipher operation
-      exists(string algType |
-        resolveAlgorithmFromLiteral(src.asExpr(), _, algType) and
-        algType.toLowerCase().matches("%encryption")
+  OpenSSLAlgorithmGetterCall getterCall;
+
+  KnownOpenSSLCipherConstantAlgorithmInstance() {
+    // Not just any known value, but specifically a known cipher operation
+    this.(KnownOpenSSLAlgorithmConstant).getAlgType().toLowerCase().matches("%encryption") and
+    (
+      // Two possibilities:
+      // 1) The source is a literal and flows to a getter, then we know we have an instance
+      // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+      // Possibility 1:
+      this instanceof Literal and
+      exists(DataFlow::Node src, DataFlow::Node sink |
+        // Sink is an argument to a CipherGetterCall
+        sink = getterCall.(OpenSSLAlgorithmGetterCall).getValueArgNode() and
+        // Source is `this`
+        src.asExpr() = this and
+        // This traces to a getter
+        KnownOpenSSLAlgorithmToAlgorithmGetterFlow::flow(src, sink)
       )
+      or
+      // Possibility 2:
+      this instanceof DirectGetterCall and getterCall = this
     )
   }
 
-  Crypto::AlgorithmConsumer getConsumer() { 
-    AlgGetterToAlgConsumerFlow::flow(cipherGetterCall.getResultNode(), DataFlow::exprNode(result))
-  } 
+  Crypto::AlgorithmConsumer getConsumer() {
+    AlgGetterToAlgConsumerFlow::flow(getterCall.getResultNode(), DataFlow::exprNode(result))
+  }
 
   override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
     none() // TODO: provider defaults

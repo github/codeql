@@ -128,8 +128,10 @@ abstract class OpenSSLAlgorithmGetterCall extends Call {
   abstract Expr getResultExpr();
 }
 
-module KnownAlgorithmLiteralToAlgorithmGetterConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { resolveAlgorithmFromLiteral(source.asExpr(), _, _) }
+module KnownOpenSSLAlgorithmToAlgorithmGetterConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof KnownOpenSSLAlgorithmConstant
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(OpenSSLAlgorithmGetterCall c | c.getValueArgNode() = sink)
@@ -151,8 +153,33 @@ module KnownAlgorithmLiteralToAlgorithmGetterConfig implements DataFlow::ConfigS
   }
 }
 
-module KnownAlgorithmLiteralToAlgorithmGetterFlow =
-  DataFlow::Global<KnownAlgorithmLiteralToAlgorithmGetterConfig>;
+module KnownOpenSSLAlgorithmToAlgorithmGetterFlow =
+  DataFlow::Global<KnownOpenSSLAlgorithmToAlgorithmGetterConfig>;
+
+/**
+ * Cases like EVP_MD5(),
+ * there is no input, rather it directly gets an algorithm
+ * and returns it.
+ */
+class DirectGetterCall extends OpenSSLAlgorithmGetterCall {
+  DataFlow::Node resultNode;
+  Expr resultExpr;
+
+  DirectGetterCall() {
+    this instanceof KnownOpenSSLAlgorithmConstant and
+    this instanceof Call and
+    resultExpr = this and
+    resultNode.asExpr() = resultExpr
+  }
+
+  override DataFlow::Node getValueArgNode() { none() }
+
+  override DataFlow::Node getResultNode() { result = resultNode }
+
+  override Expr getValueArgExpr() { none() }
+
+  override Expr getResultExpr() { result = resultExpr }
+}
 
 // https://www.openssl.org/docs/manmaster/man3/EVP_CIPHER_fetch.html
 class EVPCipherGetterCall extends OpenSSLAlgorithmGetterCall {

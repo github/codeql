@@ -1042,6 +1042,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     MD2() or
     MD4() or
     MD5() or
+    MDC2() or
     POLY1305() or
     SHA1() or
     SHA2() or

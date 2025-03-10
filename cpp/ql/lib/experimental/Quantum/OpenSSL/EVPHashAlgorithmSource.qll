@@ -1,6 +1,5 @@
 import cpp
 import experimental.Quantum.Language
-import EVPHashConsumers
 import OpenSSLAlgorithmGetter
 
 predicate literalToHashFamilyType(Literal e, Crypto::THashType type) {
@@ -11,11 +10,15 @@ predicate literalToHashFamilyType(Literal e, Crypto::THashType type) {
       or
       name.matches("BLAKE2S") and type instanceof Crypto::BLAKE2S
       or
+      name.matches("GOST%") and type instanceof Crypto::GOSTHash
+      or
       name.matches("MD2") and type instanceof Crypto::MD2
       or
       name.matches("MD4") and type instanceof Crypto::MD4
       or
       name.matches("MD5") and type instanceof Crypto::MD5
+      or
+      name.matches("MDC2") and type instanceof Crypto::MDC2
       or
       name.matches("POLY1305") and type instanceof Crypto::POLY1305
       or
@@ -31,40 +34,45 @@ predicate literalToHashFamilyType(Literal e, Crypto::THashType type) {
       or
       name.matches("RIPEMD160") and type instanceof Crypto::RIPEMD160
       or
-      //or
-      //TODO: need to handle MACs differently, including md_GOST94
-      //   name.matches("%GOST%") and type instanceof Crypto::GOST
       name.matches("WHIRLPOOL") and type instanceof Crypto::WHIRLPOOL
     )
   )
 }
 
-class HashKnownAlgorithmLiteralAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof Literal
+class KnownOpenSSLHashConstantAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof KnownOpenSSLAlgorithmConstant
 {
-  OpenSSLAlgorithmGetterCall cipherGetterCall;
+  OpenSSLAlgorithmGetterCall getterCall;
 
-  HashKnownAlgorithmLiteralAlgorithmInstance() {
-    exists(DataFlow::Node src, DataFlow::Node sink |
-      sink = cipherGetterCall.getValueArgNode() and
-      src.asExpr() = this and
-      KnownAlgorithmLiteralToAlgorithmGetterFlow::flow(src, sink) and
-      // Not just any known value, but specifically a known cipher operation
-      exists(string algType |
-        resolveAlgorithmFromLiteral(src.asExpr(), _, algType) and
-        algType.toLowerCase().matches("hash")
+  KnownOpenSSLHashConstantAlgorithmInstance() {
+    // Not just any known value, but specifically a known hash
+    this.(KnownOpenSSLAlgorithmConstant).getAlgType().toLowerCase().matches("hash") and
+    (
+      // Two possibilities:
+      // 1) The source is a literal and flows to a getter, then we know we have an instance
+      // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+      // Possibility 1:
+      this instanceof Literal and
+      exists(DataFlow::Node src, DataFlow::Node sink |
+        // Sink is an argument to a CipherGetterCall
+        sink = getterCall.(OpenSSLAlgorithmGetterCall).getValueArgNode() and
+        // Source is `this`
+        src.asExpr() = this and
+        // This traces to a getter
+        KnownOpenSSLAlgorithmToAlgorithmGetterFlow::flow(src, sink)
       )
+      or
+      // Possibility 2:
+      this instanceof DirectGetterCall and getterCall = this
     )
   }
 
   Crypto::AlgorithmConsumer getConsumer() {
-    AlgGetterToAlgConsumerFlow::flow(cipherGetterCall.getResultNode(), DataFlow::exprNode(result))
+    AlgGetterToAlgConsumerFlow::flow(getterCall.getResultNode(), DataFlow::exprNode(result))
   }
 
-  override Crypto::THashType getHashFamily() {
-    literalToHashFamilyType(this, result)
-  }
+  override Crypto::THashType getHashFamily() { literalToHashFamilyType(this, result) }
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
-  override int getHashSize() {none() }//TODO
+  override int getHashSize() { none() } //TODO
 }
