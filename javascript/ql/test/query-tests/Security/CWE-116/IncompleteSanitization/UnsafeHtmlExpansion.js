@@ -32,7 +32,7 @@
 	function getExpanded() {
 		return expanded;
 	}
-	html.replace(defaultPattern, getExpanded()); // MISSING: Alert - not tracking the expansion string
+	html.replace(defaultPattern, getExpanded()); // $ MISSING: Alert - not tracking the expansion string
 	html.replace(defaultPattern, something); // OK - possibly
 	defaultPattern.match(something); // OK - possibly
 	getPattern().match(something); // OK - possibly
