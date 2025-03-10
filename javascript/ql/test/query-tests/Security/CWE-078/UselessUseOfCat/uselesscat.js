@@ -61,7 +61,7 @@ execFile('/bin/cat', [ 'pom.xml' ], function(error, stdout, stderr ) { // $ Aler
   console.log(stdout);
 });
 
-execFile('/bin/cat', [ 'pom.xml' ], function(error, stdout, stderr ) { // OK - - stderr is used.
+execFile('/bin/cat', [ 'pom.xml' ], function(error, stdout, stderr ) { // OK - stderr is used.
   console.log(stderr); 
 });
 
