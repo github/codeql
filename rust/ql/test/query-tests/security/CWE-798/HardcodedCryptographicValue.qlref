@@ -1,2 +1,4 @@
 query: queries/security/CWE-798/HardcodedCryptographicValue.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+postprocess:
+ - utils/test/PrettyPrintModels.ql
+ - utils/test/InlineExpectationsTestQuery.ql
