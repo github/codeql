@@ -1031,8 +1031,29 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * This operation takes an input message of arbitrary content and length and produces a fixed-size
    * hash value as the output using a specified hashing algorithm.
    */
-  abstract class HashOperationNode extends OperationNode, THashOperation {
-    abstract HashAlgorithmNode getAlgorithm();
+  class HashOperationNode extends OperationNode, THashOperation {
+    HashAlgorithmInstance instance;
+
+    HashOperationNode() { this = THashOperation(instance) }
+
+    override string getInternalType() { result = "HashOperation" }
+
+    override LocatableElement asElement() { result = instance }
+
+    /**
+     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
+     */
+    NodeBase getACipherAlgorithmOrUnknown() {
+      result = this.getAKnownCipherAlgorithm() or
+      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAnUnknownSourceNode()
+    }
+
+    /**
+     * Gets a known algorithm associated with this operation
+     */
+    HashAlgorithmNode getAKnownCipherAlgorithm() {
+      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAKnownSourceNode()
+    }
   }
 
   newtype THashType =
