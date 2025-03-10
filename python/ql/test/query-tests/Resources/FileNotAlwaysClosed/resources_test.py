@@ -1,12 +1,12 @@
 #File not always closed
 
 def not_close1():
-    f1 = open("filename")
+    f1 = open("filename") # $ notClosedOnException
     f1.write("Error could occur")
-    f1.close() # $ notAlwaysClosed
+    f1.close() 
 
 def not_close2():
-    f2 = open("filename") # $ notAlwaysClosed
+    f2 = open("filename") # $ notClosed
 
 def closed3():
     f3 = open("filename")
@@ -46,7 +46,7 @@ def closed7():
 def not_closed8():
     f8 = None
     try:
-        f8 = open("filename") # $ notAlwaysClosed
+        f8 = open("filename") # $ MISSING:notClosedOnException
         f8.write("Error could occur")
     finally:
         if f8 is None:
@@ -55,7 +55,7 @@ def not_closed8():
 def not_closed9():
     f9 = None
     try:
-        f9 = open("filename") # $ notAlwaysClosed
+        f9 = open("filename") # $ MISSING:notAlwaysClosed
         f9.write("Error could occur")
     finally:
         if not f9:
@@ -76,7 +76,7 @@ def closed10():
 
 #Not closed by handling the wrong exception
 def not_closed11():
-    f11 = open("filename") # $ notAlwaysClosed
+    f11 = open("filename") # $ MISSING:notAlwaysClosed
     try:
         f11.write("IOError could occur")
         f11.write("IOError could occur")
@@ -88,7 +88,7 @@ def doesnt_raise(*args):
     pass
 
 def mostly_closed12():
-    f12 = open("filename") # $ SPURIOUS:notAlwaysClosed
+    f12 = open("filename") 
     try:
         f12.write("IOError could occur")
         f12.write("IOError could occur")
@@ -105,11 +105,11 @@ def opener_func2(name):
     return t1
 
 def not_closed13(name):
-    f13 = open(name) # $ notAlwaysClosed
+    f13 = open(name) # $ notClosed
     f13.write("Hello")
 
 def may_not_be_closed14(name):
-    f14 = opener_func2(name) # $ notAlwaysClosed
+    f14 = opener_func2(name) # $ notClosedOnException
     f14.write("Hello")
     f14.close()
 
@@ -120,13 +120,13 @@ def closer2(t3):
     closer1(t3)
 
 def closed15():
-    f15 = opener_func2()
+    f15 = opener_func2() # $ SPURIOUS:notClosed
     closer2(f15)
 
 
 def may_not_be_closed16(name):
     try:
-        f16 = open(name) # $ notAlwaysClosed
+        f16 = open(name) # $ notClosedOnException
         f16.write("Hello")
         f16.close()
     except IOError:
@@ -138,7 +138,7 @@ def may_raise():
 
 #Not handling all exceptions, but we'll tolerate the false negative
 def not_closed17():
-    f17 = open("filename") # $ notAlwaysClosed
+    f17 = open("filename") # $ MISSING:notClosedOnException
     try:
         f17.write("IOError could occur")
         f17.write("IOError could occur")
@@ -234,7 +234,7 @@ def closed21(path):
 
 
 def not_closed22(path):
-    f22 = open(path, "wb") # $ notAlwaysClosed
+    f22 = open(path, "wb") # $ MISSING:notClosedOnException
     try:
         f22.write(b"foo")
         may_raise()
@@ -244,3 +244,6 @@ def not_closed22(path):
         if f22.closed: # Wrong sense
             f22.close()
 
+def not_closed23(path):
+    f23 = open(path, "w") # $ notClosed
+    wr = FileWrapper(f23)

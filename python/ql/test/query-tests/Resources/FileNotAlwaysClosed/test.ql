@@ -1,18 +1,22 @@
-import python 
+import python
 import Resources.FileNotAlwaysClosedQuery
 import utils.test.InlineExpectationsTest
 
 module MethodArgTest implements TestSig {
-  string getARelevantTag() { result = "notAlwaysClosed" }
+  string getARelevantTag() { result = ["notClosed", "notClosedOnException"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::CfgNode f |
-      element = f.toString() and
-      location = f.getLocation() and
+    exists(DataFlow::CfgNode el, FileOpen fo |
+      el = fo.getLocalSource() and
+      element = el.toString() and
+      location = el.getLocation() and
       value = "" and
       (
-        fileNotAlwaysClosed(f) and
-        tag = "notAlwaysClosed"
+        fileNotClosed(fo) and
+        tag = "notClosed"
+        or
+        fileMayNotBeClosedOnException(fo, _) and
+        tag = "notClosedOnException"
       )
     )
   }
