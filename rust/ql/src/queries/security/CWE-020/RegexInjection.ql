@@ -3,12 +3,12 @@
  * @description
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.5
+ * @security-severity 7.8
  * @precision high
  * @id rust/regex-injection
  * @tags security
- *       external/cwe/cwe-730
- *       external/cwe/cwe-400
+ *       external/cwe/cwe-020
+ *       external/cwe/cwe-074
  */
 
 private import rust
