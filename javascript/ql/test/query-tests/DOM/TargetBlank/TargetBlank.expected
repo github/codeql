@@ -2,8 +2,8 @@
 | tst.html:24:1:24:48 | <a>...</> | External links without noopener/noreferrer are a potential security risk. |
 | tst.html:25:1:25:54 | <a>...</> | External links without noopener/noreferrer are a potential security risk. |
 | tst.html:30:1:30:61 | <a>...</> | External links without noopener/noreferrer are a potential security risk. |
-| tst.js:17:1:17:43 | <a href ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
-| tst.js:18:1:18:58 | <a href ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
-| tst.js:19:1:19:51 | <a data ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
-| tst.js:31:12:31:39 | $("<a/> ... X}}" }) | External links without noopener/noreferrer are a potential security risk. |
-| tst.js:39:12:39:20 | $("<a/>") | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:16:1:16:43 | <a href ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:17:1:17:58 | <a href ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:18:1:18:51 | <a data ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:29:12:29:39 | $("<a/> ... X}}" }) | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:36:12:36:20 | $("<a/>") | External links without noopener/noreferrer are a potential security risk. |

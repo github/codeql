@@ -1,7 +1,6 @@
 function foo() { return "noopener noreferrer"; }
 var o = { rel: "noopener noreferrer "};
 
-
 <a href="http://example.com" target="_blank" rel="noopener noreferrer">Example</a>;
 <a href="http://example.com" target="_blank" rel="noreferrer">Example</a>;
 <a href="http://example.com" target="_blank" rel="noopener">Example</a>;
@@ -23,14 +22,12 @@ function f() {
   var a1 = $("<a/>", { href: "http://example.com" });
   a1.attr("target", "_blank");
 
-
   var a2 = $("<a/>", { href: "http://example.com" });
   a2.attr("target", "_blank");
   a2.attr(computedName(), "noopener");
 
   var a3 = $("<a/>", { href: "{{X}}" }); // $ Alert
   a3.attr("target", "_blank");
-
 
   var a4 = $("<a/>");
   a4[f()] = g();
