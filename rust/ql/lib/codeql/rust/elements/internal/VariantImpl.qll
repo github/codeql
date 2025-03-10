@@ -32,5 +32,20 @@ module Impl {
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
+
+    /** Holds if this variant uses tuple fields. */
+    pragma[nomagic]
+    predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
+
+    /**
+     * Holds if this variant uses record fields.
+     *
+     * Empty variants are considered to use record fields.
+     */
+    pragma[nomagic]
+    predicate isRecord() { not this.isTuple() }
+
+    /** Gets the enum that this variant belongs to. */
+    Enum getEnum() { this = result.getVariantList().getAVariant() }
   }
 }

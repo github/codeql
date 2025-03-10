@@ -27,13 +27,16 @@ module Impl {
   class RecordPat extends Generated::RecordPat {
     override string toString() { result = this.getPath().toAbbreviatedString() + " {...}" }
 
+    pragma[nomagic]
+    private PathResolution::ItemNode getResolvedPath(string name) {
+      result = PathResolution::resolvePath(this.getPath()) and
+      name = this.getRecordPatFieldList().getAField().getFieldName()
+    }
+
     /** Gets the record field that matches the `name` pattern of this pattern. */
     pragma[nomagic]
     RecordField getRecordField(string name) {
-      exists(PathResolution::ItemNode i |
-        i = PathResolution::resolvePath(this.getPath()) and
-        name = this.getRecordPatFieldList().getAField().getFieldName()
-      |
+      exists(PathResolution::ItemNode i | i = this.getResolvedPath(name) |
         result.isStructField(i, name) or
         result.isVariantField(i, name)
       )
