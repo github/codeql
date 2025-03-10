@@ -19,7 +19,7 @@
 #-----|  -> fn as_string
 
 lib.rs:
-#    1| mod crate
+#    0| mod crate
 #-----|  -> mod module
 
 #-----| mod module
