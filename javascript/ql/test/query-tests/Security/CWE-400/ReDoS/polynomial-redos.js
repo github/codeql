@@ -43,7 +43,7 @@ app.use(function(req, res) {
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([\n \t]+([^\n]+))?$/); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([ \t]+([^ \t][^\n]*[\n]*)?)?$/);
 
-	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // $ Alert[js/redos] - also flagged by js/redos
+        tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // $ Alert[js/redos]
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/);
 	tainted.replaceAll(/\s*\n\s*/g, ' '); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
 
