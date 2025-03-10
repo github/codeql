@@ -14,8 +14,6 @@
 | test_cipher.rs:125:19:125:19 | 0 | test_cipher.rs:125:19:125:19 | 0 | test_cipher.rs:127:21:127:27 | encrypt | This hard-coded value is used as $@. | test_cipher.rs:127:21:127:27 | encrypt | a nonce |
 | test_cipher.rs:129:34:129:37 | 0xff | test_cipher.rs:129:34:129:37 | 0xff | test_cipher.rs:132:19:132:32 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:132:19:132:32 | ...::new | a key |
 | test_cipher.rs:131:28:131:31 | 0xff | test_cipher.rs:131:28:131:31 | 0xff | test_cipher.rs:133:21:133:27 | encrypt | This hard-coded value is used as $@. | test_cipher.rs:133:21:133:27 | encrypt | a nonce |
-| test_cipher.rs:137:21:137:23 | 0u8 | test_cipher.rs:137:21:137:23 | 0u8 | test_cipher.rs:141:19:141:32 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:141:19:141:32 | ...::new | a key |
-| test_cipher.rs:138:23:138:25 | 0u8 | test_cipher.rs:138:23:138:25 | 0u8 | test_cipher.rs:142:21:142:27 | encrypt | This hard-coded value is used as $@. | test_cipher.rs:142:21:142:27 | encrypt | a nonce |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | test_cipher.rs:19:73:19:78 | const1 [&ref, element] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref, element] | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | provenance |  |
@@ -109,16 +107,6 @@ edges
 | test_cipher.rs:132:35:132:38 | key3 [&ref, element] | test_cipher.rs:132:34:132:38 | &key3 [&ref, &ref, element] | provenance |  |
 | test_cipher.rs:133:29:133:42 | &... [&ref, element] | test_cipher.rs:133:21:133:27 | encrypt | provenance | MaD:94 Sink:MaD:94 Sink:MaD:94 |
 | test_cipher.rs:133:30:133:42 | nonce3.into(...) [element] | test_cipher.rs:133:29:133:42 | &... [&ref, element] | provenance |  |
-| test_cipher.rs:137:9:137:16 | mut key4 [element] | test_cipher.rs:141:35:141:45 | key4.into(...) [element] | provenance | MaD:105 |
-| test_cipher.rs:137:20:137:27 | [0u8; 32] [element] | test_cipher.rs:137:9:137:16 | mut key4 [element] | provenance |  |
-| test_cipher.rs:137:21:137:23 | 0u8 | test_cipher.rs:137:20:137:27 | [0u8; 32] [element] | provenance |  |
-| test_cipher.rs:138:9:138:18 | mut nonce4 [element] | test_cipher.rs:142:30:142:42 | nonce4.into(...) [element] | provenance | MaD:105 |
-| test_cipher.rs:138:22:138:29 | [0u8; 12] [element] | test_cipher.rs:138:9:138:18 | mut nonce4 [element] | provenance |  |
-| test_cipher.rs:138:23:138:25 | 0u8 | test_cipher.rs:138:22:138:29 | [0u8; 12] [element] | provenance |  |
-| test_cipher.rs:141:34:141:45 | &... [&ref, element] | test_cipher.rs:141:19:141:32 | ...::new | provenance | MaD:93 Sink:MaD:93 Sink:MaD:93 |
-| test_cipher.rs:141:35:141:45 | key4.into(...) [element] | test_cipher.rs:141:34:141:45 | &... [&ref, element] | provenance |  |
-| test_cipher.rs:142:29:142:42 | &... [&ref, element] | test_cipher.rs:142:21:142:27 | encrypt | provenance | MaD:94 Sink:MaD:94 Sink:MaD:94 |
-| test_cipher.rs:142:30:142:42 | nonce4.into(...) [element] | test_cipher.rs:142:29:142:42 | &... [&ref, element] | provenance |  |
 nodes
 | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | semmle.label | const1 [&ref, element] |
 | test_cipher.rs:18:28:18:36 | &... [&ref, element] | semmle.label | &... [&ref, element] |
@@ -223,16 +211,4 @@ nodes
 | test_cipher.rs:133:21:133:27 | encrypt | semmle.label | encrypt |
 | test_cipher.rs:133:29:133:42 | &... [&ref, element] | semmle.label | &... [&ref, element] |
 | test_cipher.rs:133:30:133:42 | nonce3.into(...) [element] | semmle.label | nonce3.into(...) [element] |
-| test_cipher.rs:137:9:137:16 | mut key4 [element] | semmle.label | mut key4 [element] |
-| test_cipher.rs:137:20:137:27 | [0u8; 32] [element] | semmle.label | [0u8; 32] [element] |
-| test_cipher.rs:137:21:137:23 | 0u8 | semmle.label | 0u8 |
-| test_cipher.rs:138:9:138:18 | mut nonce4 [element] | semmle.label | mut nonce4 [element] |
-| test_cipher.rs:138:22:138:29 | [0u8; 12] [element] | semmle.label | [0u8; 12] [element] |
-| test_cipher.rs:138:23:138:25 | 0u8 | semmle.label | 0u8 |
-| test_cipher.rs:141:19:141:32 | ...::new | semmle.label | ...::new |
-| test_cipher.rs:141:34:141:45 | &... [&ref, element] | semmle.label | &... [&ref, element] |
-| test_cipher.rs:141:35:141:45 | key4.into(...) [element] | semmle.label | key4.into(...) [element] |
-| test_cipher.rs:142:21:142:27 | encrypt | semmle.label | encrypt |
-| test_cipher.rs:142:29:142:42 | &... [&ref, element] | semmle.label | &... [&ref, element] |
-| test_cipher.rs:142:30:142:42 | nonce4.into(...) [element] | semmle.label | nonce4.into(...) [element] |
 subpaths

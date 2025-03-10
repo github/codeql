@@ -89,4 +89,18 @@ module HardcodedCryptographicValue {
 
     override CryptographicValueKind getKind() { result = kind }
   }
+
+  /**
+   * A call to `getrandom` that is a barrier.
+   */
+  private class GetRandomBarrier extends Barrier {
+    GetRandomBarrier() {
+      exists(CallExpr ce |
+        ce.getFunction().(PathExpr).getResolvedCrateOrigin() =
+          "repo:https://github.com/rust-random/getrandom:getrandom" and
+        ce.getFunction().(PathExpr).getResolvedPath() = ["crate::fill", "crate::getrandom"] and
+        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0)
+      )
+    }
+  }
 }
