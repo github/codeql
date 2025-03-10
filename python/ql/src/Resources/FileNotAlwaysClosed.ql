@@ -1,6 +1,6 @@
 /**
  * @name File is not always closed
- * @description Opening a file without ensuring that it is always closed may cause resource leaks.
+ * @description Opening a file without ensuring that it is always closed may cause data loss or resource leaks.
  * @kind problem
  * @tags efficiency
  *       correctness
@@ -8,7 +8,7 @@
  *       external/cwe/cwe-772
  * @problem.severity warning
  * @sub-severity high
- * @precision medium
+ * @precision high
  * @id py/file-not-closed
  */
 
@@ -21,5 +21,5 @@ where
   msg = "File is opened but is not closed."
   or
   fileMayNotBeClosedOnException(fo, _) and
-  msg = "File may not be closed if an exception is raised"
+  msg = "File may not be closed if an exception is raised."
 select fo.getLocalSource(), msg
