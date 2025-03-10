@@ -87,7 +87,7 @@ class Test
         using (XmlReader.Create(source ?? new StringReader("xml"), null))
             ;
 
-        // GOOD: Flagging these generates to much noise and there is a general
+        // GOOD: Flagging these generates too much noise and there is a general
         // acceptance that Tasks are not disposed.
         // https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/
         Task t = new Task(() => { });
