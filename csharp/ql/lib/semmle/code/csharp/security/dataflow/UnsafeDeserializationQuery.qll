@@ -59,6 +59,13 @@ private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig 
   predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:59: Column 1 does not select a source or sink originating from the flow call on line 33
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:60: Column 5 does not select a source or sink originating from the flow call on line 33
+    none()
+  }
 }
 
 /**
@@ -77,6 +84,13 @@ private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:59: Column 1 does not select a source or sink originating from the flow call on line 55
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:60: Column 5 does not select a source or sink originating from the flow call on line 55
+    none()
+  }
 }
 
 /**
@@ -133,6 +147,13 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:59: Column 1 does not select a source or sink originating from the flow call on line 56
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:60: Column 5 does not select a source or sink originating from the flow call on line 56
+    none()
+  }
 }
 
 /**
@@ -149,6 +170,13 @@ private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlo
   predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:59: Column 1 does not select a source or sink originating from the flow call on line 50
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:60: Column 5 does not select a source or sink originating from the flow call on line 50
+    none()
+  }
 }
 
 /**
@@ -186,6 +214,13 @@ private module TaintToObjectTypeTrackingConfig implements DataFlow::ConfigSig {
       oc.getObjectType() instanceof StrongTypeDeserializer
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:59: Column 1 does not select a source or sink originating from the flow call on line 43
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:60: Column 5 does not select a source or sink originating from the flow call on line 43
+    none()
+  }
 }
 
 /**
@@ -209,6 +244,13 @@ private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::Config
       mc.getTarget() instanceof UnsafeDeserializer and
       sink.asExpr() = mc.getQualifier()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:59: Column 1 does not select a source or sink originating from the flow call on line 37
+    // ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql:60: Column 5 does not select a source or sink originating from the flow call on line 37
+    none()
   }
 }
 
@@ -342,6 +384,12 @@ private module DataContractJsonSafeConstructorTrackingConfig implements DataFlow
       mc.getQualifier() = sink.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/UnsafeDeserializationQuery.qll:28: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module DataContractJsonSafeConstructorTracking =
@@ -389,6 +437,12 @@ private module JavaScriptSerializerSafeConstructorTrackingConfig implements Data
       mc.getQualifier() = sink.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/UnsafeDeserializationQuery.qll:29: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module JavaScriptSerializerSafeConstructorTracking =
@@ -434,6 +488,12 @@ private module XmlObjectSerializerDerivedConstructorTrackingConfig implements Da
       mc.getQualifier() = sink.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/UnsafeDeserializationQuery.qll:30: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module XmlObjectSerializerDerivedConstructorTracking =
@@ -475,6 +535,12 @@ private module XmlSerializerSafeConstructorTrackingConfig implements DataFlow::C
       isXmlSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/UnsafeDeserializationQuery.qll:31: Flow call outside 'select' clause
+    none()
   }
 }
 
@@ -522,6 +588,12 @@ private module DataContractSerializerSafeConstructorTrackingConfig implements Da
       mc.getQualifier() = sink.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/UnsafeDeserializationQuery.qll:32: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module DataContractSerializerSafeConstructorTracking =
@@ -563,6 +635,12 @@ private module XmlMessageFormatterSafeConstructorTrackingConfig implements DataF
       isXmlMessageFormatterCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/security/dataflow/UnsafeDeserializationQuery.qll:33: Flow call outside 'select' clause
+    none()
   }
 }
 

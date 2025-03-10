@@ -40,6 +40,8 @@ module InsecureSqlConnectionConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
