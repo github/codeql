@@ -11,8 +11,9 @@ private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.Concepts
 // import all query extensions files, so that all extensions of `QuerySink` are found
-private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
+private import codeql.rust.security.SqlInjectionExtensions
+private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 
 /**
  * Gets a count of the total number of lines of code in the database.
