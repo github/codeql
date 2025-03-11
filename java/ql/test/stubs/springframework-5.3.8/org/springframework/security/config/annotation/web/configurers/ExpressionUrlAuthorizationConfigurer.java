@@ -12,5 +12,9 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 		public ExpressionInterceptUrlRegistry permitAll() {
 			return null;
 		}
+
+		public ExpressionInterceptUrlRegistry hasRole(String role) {
+			return null;
+		}
 	}
 }
