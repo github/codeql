@@ -35,18 +35,18 @@ class ConstantNullness
 {
     void M1(int i)
     {
-        var j = ((string)null)?.Length; // BAD
-        var s = ((int?)i)?.ToString(); // BAD
+        var j = ((string)null)?.Length; // $ Alert
+        var s = ((int?)i)?.ToString(); // $ Alert
         var k = s?.Length; // GOOD
         k = s?.ToLower()?.Length; // GOOD
     }
 
     void M2(int i)
     {
-        var j = (int?)null ?? 0; // BAD
-        var s = "" ?? "a"; // BAD
-        j = (int?)i ?? 1; // BAD
-        s = ""?.CommaJoinWith(s); // BAD
+        var j = (int?)null ?? 0; // $ Alert
+        var s = "" ?? "a"; // $ Alert
+        j = (int?)i ?? 1; // $ Alert
+        s = ""?.CommaJoinWith(s); // $ Alert
         s = s ?? ""; // GOOD
         s = (i == 0 ? s : null) ?? s; // GOOD
         var k = (i == 0 ? s : null)?.Length; // GOOD
@@ -59,9 +59,9 @@ class ConstantMatching
     {
         switch (1 + 2)
         {
-            case 2: // BAD
+            case 2: // $ Alert
                 break;
-            case 3: // BAD
+            case 3: // $ Alert
                 break;
             case int _: // GOOD
                 break;
@@ -72,7 +72,7 @@ class ConstantMatching
     {
         switch ((object)s)
         {
-            case int _: // BAD
+            case int _: // $ Alert
                 break;
             case "": // GOOD
                 break;
@@ -92,7 +92,7 @@ class ConstantMatching
     {
         return o switch
         {
-            _ => o.ToString() // BAD
+            _ => o.ToString() // $ Alert
         };
     }
 
@@ -111,7 +111,7 @@ class ConstantMatching
             return;
         if (!b2)
             return;
-        if (b1 && b2) // BAD
+        if (b1 && b2) // $ Alert
             return;
     }
 
