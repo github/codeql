@@ -296,11 +296,6 @@ abstract class UseImpl extends TUseImpl {
     )
   }
 
-  final predicate hasNodeAndSourceVariable(Node n, SourceVariable sv) {
-    sv = this.getSourceVariable() and
-    n = this.getNode()
-  }
-
   /**
    * Holds if this use is guaranteed to read the
    * associated variable.
@@ -966,17 +961,22 @@ private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Void
 
-  final private class UseImplFinal = UseImpl;
+  class Expr extends Instruction {
+    Expr() {
+      exists(IRBlock bb, int i |
+        variableRead(bb, i, _, true) and
+        this = bb.getInstruction(i)
+      )
+    }
 
-  class Expr extends UseImplFinal {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this.hasIndexInBlock(bb, i) }
+    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { bb.getInstruction(i) = this }
   }
 
   Expr getARead(SsaImpl::Definition def) {
     exists(SourceVariable v, IRBlock bb, int i |
       ssaDefReachesRead(v, def, bb, i) and
       variableRead(bb, i, v, true) and
-      result.hasIndexInBlock(bb, i, v)
+      result.hasCfgNode(bb, i)
     )
   }
 
@@ -1028,21 +1028,38 @@ signature predicate guardChecksNodeSig(
 );
 
 module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
+  private predicate ssaDefReachesCertainUse(Definition def, UseImpl use) {
+    exists(SourceVariable v, IRBlock bb, int i |
+      use.hasIndexInBlock(bb, i, v) and
+      variableRead(bb, i, v, true) and
+      ssaDefReachesRead(v, def, bb, i)
+    )
+  }
+
   private predicate guardChecks(
-    DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch,
-    int indirectionIndex
+    DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, boolean branch, int indirectionIndex
   ) {
-    guardChecksNode(g, e.getNode(), branch, indirectionIndex)
+    exists(UseImpl use |
+      guardChecksNode(g, use.getNode(), branch, indirectionIndex) and
+      ssaDefReachesCertainUse(def, use)
+    )
   }
 
   Node getABarrierNode(int indirectionIndex) {
-    exists(DataFlowIntegrationImpl::Node n |
-      n =
-        DataFlowIntegrationImpl::BarrierGuardWithState<int, guardChecks/4>::getABarrierNode(indirectionIndex)
-    |
-      n = result.(SsaSynthNode).getSynthNode()
-      or
-      n.(DataFlowIntegrationImpl::ExprNode).getExpr().getNode() = result
+    // Only get the SynthNodes from the shared implementation, as the ExprNodes cannot
+    // be matched on SourceVariable.
+    result.(SsaSynthNode).getSynthNode() =
+      DataFlowIntegrationImpl::BarrierGuardDefWithState<int, guardChecks/4>::getABarrierNode(indirectionIndex)
+    or
+    // Calculate the guarded UseImpls corresponding to ExprNodes directly.
+    exists(DataFlowIntegrationInput::Guard g, boolean branch, Definition def, IRBlock bb |
+      guardChecks(g, def, branch, indirectionIndex) and
+      exists(UseImpl use |
+        ssaDefReachesCertainUse(def, use) and
+        use.getBlock() = bb and
+        DataFlowIntegrationInput::guardControlsBlock(g, bb, branch) and
+        result = use.getNode()
+      )
     )
   }
 }
@@ -1064,7 +1081,12 @@ pragma[inline_late]
 DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
   result = n.(SsaSynthNode).getSynthNode()
   or
-  result.(DataFlowIntegrationImpl::ExprNode).getExpr().hasNodeAndSourceVariable(n, v)
+  exists(UseImpl use, IRBlock bb, int i |
+    result.(DataFlowIntegrationImpl::ExprNode).getExpr().hasCfgNode(bb, i) and
+    use.hasIndexInBlock(bb, i, v) and
+    use.isCertain() and
+    use.getNode() = n
+  )
   or
   defToNode(n, result.(DataFlowIntegrationImpl::SsaDefinitionNode).getDefinition())
 }
