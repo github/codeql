@@ -92,3 +92,7 @@ nodes
 | testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | semmle.label | readFra ... y, key) |
 | testReactRelay.tsx:137:50:137:53 | data | semmle.label | data |
 subpaths
+testFailures
+| test.ts:8:82:8:92 | // $ Source | Missing result: Source |
+| test.ts:21:79:21:88 | // $ Alert | Missing result: Alert |
+| test.ts:24:94:24:103 | // $ Alert | Missing result: Alert |
