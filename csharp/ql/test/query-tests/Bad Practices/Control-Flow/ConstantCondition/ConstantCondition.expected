@@ -1,4 +1,3 @@
-#select
 | ConstantCondition.cs:38:18:38:29 | (...) ... | Expression is always 'null'. |
 | ConstantCondition.cs:39:18:39:24 | (...) ... | Expression is never 'null'. |
 | ConstantCondition.cs:46:17:46:26 | (...) ... | Expression is always 'null'. |
@@ -11,10 +10,7 @@
 | ConstantCondition.cs:95:13:95:13 | _ | Pattern always matches. |
 | ConstantCondition.cs:114:13:114:14 | access to parameter b1 | Condition always evaluates to 'true'. |
 | ConstantCondition.cs:114:19:114:20 | access to parameter b2 | Condition always evaluates to 'true'. |
-| ConstantCondition.cs:132:13:132:13 | _ | Pattern always matches. |
 | ConstantCondition.cs:141:22:141:22 | _ | Pattern always matches. |
-| ConstantCondition.cs:150:22:150:22 | _ | Pattern always matches. |
-| ConstantCondition.cs:152:22:152:22 | _ | Pattern always matches. |
 | ConstantConditionBad.cs:5:16:5:20 | ... > ... | Condition always evaluates to 'false'. |
 | ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | Condition always evaluates to 'true'. |
 | ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | Condition always evaluates to 'false'. |
@@ -33,7 +29,3 @@
 | ConstantWhileCondition.cs:12:20:12:32 | ... == ... | Condition always evaluates to 'true'. |
 | ConstantWhileCondition.cs:16:20:16:24 | false | Condition always evaluates to 'false'. |
 | ConstantWhileCondition.cs:24:20:24:29 | ... == ... | Condition always evaluates to 'true'. |
-testFailures
-| ConstantCondition.cs:132:13:132:13 | Pattern always matches. | Unexpected result: Alert |
-| ConstantCondition.cs:150:22:150:22 | Pattern always matches. | Unexpected result: Alert |
-| ConstantCondition.cs:152:22:152:22 | Pattern always matches. | Unexpected result: Alert |
