@@ -908,11 +908,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
     exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
     )
-    or
-    exists(GlobalUse global |
-      global.hasIndexInBlock(bb, i, v) and
-      certain = true
-    )
   }
 }
 
