@@ -25,7 +25,7 @@ module Impl {
    * ```
    */
   class RecordExpr extends Generated::RecordExpr {
-    override string toString() { result = this.getPath().toString() + " {...}" }
+    override string toStringImpl() { result = this.getPath().toStringImpl() + " {...}" }
 
     /** Gets the record expression for the field `name`. */
     pragma[nomagic]
