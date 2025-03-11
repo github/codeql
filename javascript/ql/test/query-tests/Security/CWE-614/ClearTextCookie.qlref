@@ -1,1 +1,2 @@
-Security/CWE-614/ClearTextCookie.ql
+query: Security/CWE-614/ClearTextCookie.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

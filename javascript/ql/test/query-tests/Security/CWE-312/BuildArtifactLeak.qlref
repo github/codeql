@@ -1,1 +1,1 @@
-Security/CWE-312/BuildArtifactLeak.ql
+query: Security/CWE-312/BuildArtifactLeak.ql

@@ -7,8 +7,7 @@ function g() {
 	return 23;
 }
 
-// NOT OK
-f(g());
+f(g()); // $ Alert
 
 function sum() {
 	var result = 0;
@@ -17,33 +16,31 @@ function sum() {
 	return result;
 }
 
-// OK
+
 sum(1, 2, 3);
 
 function h(k) {
 	k = k || function() {};
-	// OK
+	
 	k(42);
 }
 
-// OK
+
 new Array(1, 2, 3);
 
-// NOT OK
-new String(1, 2, 3);
+new String(1, 2, 3); // $ Alert
 
 (function(f) {
-	// NOT OK
-	f(42);
+	f(42); // $ Alert
 })(function() {return;});
 
 (function h(f) {
-	// OK
+	
 	f(42);
 	h(function(x) { return x; });
 })(function() {});
 
-parseFloat("123", 10);
+parseFloat("123", 10); // $ Alert - unlike parseInt this does not take a radix
 
 (function testWhitelistEmptyFunctions(){
 	function nonEmpty(){
@@ -67,15 +64,15 @@ parseFloat("123", 10);
 		constructor(){
 		}
 	}
-	nonEmpty(42); // NOT OK
-	empty(42); // OK
-	emptyWithParam(42, 87);	// OK
-	commentedEmpty(42); // OK
-	commentedEmptyWithSpreadParam(42, 87); // OK
-	emptyArrow(42); // NOT OK
-	new ImplicitEmptyConstructor(42); // NOT OK
-	new ExplicitEmptyConstructor(42); // NOT OK
-	parseFloat("123", 10); // NOT OK
+	nonEmpty(42); // $ Alert
+	empty(42);
+	emptyWithParam(42, 87);	
+	commentedEmpty(42);
+	commentedEmptyWithSpreadParam(42, 87);
+	emptyArrow(42); // $ Alert
+	new ImplicitEmptyConstructor(42); // $ Alert
+	new ExplicitEmptyConstructor(42); // $ Alert
+	parseFloat("123", 10); // $ Alert
 });
 
 (function testWhitelistThrowingFunctions() {
@@ -111,14 +108,14 @@ parseFloat("123", 10);
 			}
 		})();
 	}
-	notAPlainThrower1(42); // NOT OK
-	notAPlainThrower2(42); // NOT OK
-	notAPlainThrower3(42); // NOT OK
-	thrower(42); // OK
-	throwerArrow(42); // OK
-	throwerCustom(42); // OK
-	throwerWithParam(42, 87); // NOT OK
-	throwerIndirect(42); // OK, but still flagged due to complexity
+	notAPlainThrower1(42); // $ Alert
+	notAPlainThrower2(42); // $ Alert
+	notAPlainThrower3(42); // $ Alert
+	thrower(42);
+	throwerArrow(42);
+	throwerCustom(42);
+	throwerWithParam(42, 87); // $ Alert
+	throwerIndirect(42); // $ SPURIOUS: Alert - flagged due to complexity
 });
 
 function sum2() {
@@ -128,14 +125,14 @@ function sum2() {
 	return result;
 }
 
-// OK
+
 sum2(1, 2, 3);
 
 const $ = function (x, arr) {
   console.log(x, arr);
 };
 
-// OK
+
 async function tagThing(repoUrl, directory) {
   await $`git clone ${repoUrl} ${directory}`;
 }

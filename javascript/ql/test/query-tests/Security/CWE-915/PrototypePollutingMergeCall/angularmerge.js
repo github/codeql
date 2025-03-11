@@ -1,3 +1,3 @@
-addEventListener("message", (event) => {
-  angular.merge({}, JSON.parse(event.data)); // NOT OK
+addEventListener("message", (event) => { // $ Source
+  angular.merge({}, JSON.parse(event.data)); // $ Alert
 });

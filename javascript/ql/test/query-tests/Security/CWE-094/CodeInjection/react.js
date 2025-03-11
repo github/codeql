@@ -7,7 +7,7 @@ class Application extends React.Component {
         <div className="application">
             <Helmet>
                 <title>My unsafe</title>
-                <script type="application/javascript">{document.location.hash}</script>
+                <script type="application/javascript">{document.location.hash}</script> {/* $ Alert[js/code-injection] */}
             </Helmet>
         </div>
     );

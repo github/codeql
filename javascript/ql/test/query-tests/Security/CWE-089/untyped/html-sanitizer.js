@@ -10,9 +10,9 @@ const connection = mysql.createConnection({
     database: 'test'
 });
 
-app.use(route.get('/test1', (context, param1) => {
+app.use(route.get('/test1', (context, param1) => { // $ Source
     param1 = xss(param1)
     connection.query(
-        `SELECT * FROM \`table\` WHERE \`name\` =` + param1, // NOT OK
+        `SELECT * FROM \`table\` WHERE \`name\` =` + param1, // $ Alert
     );
 }));
