@@ -12,7 +12,8 @@
 import cpp
 
 predicate allowedTypedefs(TypedefType t) {
-  t.getName() = ["I64", "U64", "I32", "U32", "I16", "U16", "I8", "U8", "F64", "F32"]
+  t.getName() = ["I64", "U64", "I32", "U32", "I16", "U16", "I8", "U8", "F64", "F32",
+                 "int64_t", "uint64_t", "int32_t", "uint32_t", "int16_t", "uint16_t", "int8_t", "uint8_t"]
 }
 
 /**
@@ -38,8 +39,8 @@ Type getAUsedType(Type t) {
 }
 
 predicate problematic(IntegralType t) {
-  // List any exceptions that should be allowed.
-  any()
+  // 'bool' is allowed as it represents a 'true' or 'false' value
+  t.getName() != ["bool"]
 }
 
 from Declaration d, Type usedType
