@@ -70,6 +70,17 @@ class EVP_Encrypt_Decrypt_or_Cipher_Final_Call extends EVP_Final_Call {
   }
 }
 
+class EVP_PKEY_Operation extends EVP_Cipher_Operation {
+  EVP_PKEY_Operation() {
+    this.(Call).getTarget().getName() in ["EVP_PKEY_decrypt", "EVP_PKEY_encrypt"]
+  }
+
+  override Expr getInputArg() { result = this.(Call).getArgument(3) }
+  // TODO: how PKEY is initialized is different that symmetric cipher
+  // Consider making an entirely new class for this and specializing
+  // the get init call
+}
+
 class EVPCipherOutput extends CipherOutputArtifact {
   EVPCipherOutput() { exists(EVP_Cipher_Operation op | op.getOutputArg() = this) }
 
