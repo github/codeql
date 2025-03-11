@@ -42,7 +42,7 @@ unexpectedly cause strings such as <code>"key=secret"</code> to match.
 </p>
 <p>
 If user input is used to construct a regular expression, it should be escaped
-first. This ensures that the malicious users cannot insert characters that have special
+first. This ensures that malicious users cannot insert characters that have special
 meanings in regular expressions.
 </p>
 <sample src="RegexInjectionGood.rs" />
