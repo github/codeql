@@ -46,14 +46,12 @@ abstract class EVP_Final_Call extends EVP_Cipher_Operation {
 }
 
 class EVP_Cipher_Call extends EVP_Cipher_Operation {
-  // TODO/QUESTION: what is the better way to do this?
   EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
 }
 
 class EVP_Encrypt_Decrypt_or_Cipher_Update_Call extends EVP_Update_Call {
-  // TODO/QUESTION: what is the better way to do this?
   EVP_Encrypt_Decrypt_or_Cipher_Update_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptUpdate", "EVP_DecryptUpdate", "EVP_CipherUpdate"
@@ -64,10 +62,8 @@ class EVP_Encrypt_Decrypt_or_Cipher_Update_Call extends EVP_Update_Call {
 }
 
 class EVP_Encrypt_Decrypt_or_Cipher_Final_Call extends EVP_Final_Call {
-  // TODO/QUESTION: what is the better way to do this?
   EVP_Encrypt_Decrypt_or_Cipher_Final_Call() {
-    this.(Call).getTarget().getName() in
-      [
+    this.(Call).getTarget().getName() in [
         "EVP_EncryptFinal_ex", "EVP_DecryptFinal_ex", "EVP_CipherFinal_ex", "EVP_EncryptFinal",
         "EVP_DecryptFinal", "EVP_CipherFinal"
       ]
@@ -77,9 +73,7 @@ class EVP_Encrypt_Decrypt_or_Cipher_Final_Call extends EVP_Final_Call {
 class EVPCipherOutput extends CipherOutputArtifact {
   EVPCipherOutput() { exists(EVP_Cipher_Operation op | op.getOutputArg() = this) }
 
-  override DataFlow::Node getOutputNode(){
-    result.asExpr() = this
-  }
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
 }
 
 class EVPCipherInputArgument extends Expr {
