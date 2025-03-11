@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["lang:std", "crate::fs::read_to_string", "Argument[0]", "path-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["lang:std", "<crate::path::PathBuf as crate::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::join", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
