@@ -1,12 +1,12 @@
 /**
  * @name Hard-coded cryptographic value
- * @description Using hardcoded keys, passwords, salts or initialization
+ * @description Using hard-coded keys, passwords, salts or initialization
  *              vectors is not secure.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 9.8
  * @precision high
- * @id rust/hardcoded-cryptographic-value
+ * @id rust/hard-coded-cryptographic-value
  * @tags security
  *       external/cwe/cwe-259
  *       external/cwe/cwe-321
@@ -21,7 +21,7 @@ import codeql.rust.dataflow.TaintTracking
 import codeql.rust.dataflow.internal.DataFlowImpl
 
 /**
- * A taint-tracking configuration for hardcoded cryptographic value vulnerabilities.
+ * A taint-tracking configuration for hard-coded cryptographic value vulnerabilities.
  */
 module HardcodedCryptographicValueConfig implements DataFlow::ConfigSig {
   import HardcodedCryptographicValue

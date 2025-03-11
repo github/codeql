@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates for reasoning about hardcoded cryptographic value
+ * Provides classes and predicates for reasoning about hard-coded cryptographic value
  * vulnerabilities.
  */
 
@@ -32,17 +32,17 @@ class CryptographicValueKind extends string {
 }
 
 /**
- * Provides default sources, sinks and barriers for detecting hardcoded cryptographic
+ * Provides default sources, sinks and barriers for detecting hard-coded cryptographic
  * value vulnerabilities, as well as extension points for adding your own.
  */
 module HardcodedCryptographicValue {
   /**
-   * A data flow source for hardcoded cryptographic value vulnerabilities.
+   * A data flow source for hard-coded cryptographic value vulnerabilities.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for hardcoded cryptographic value vulnerabilities.
+   * A data flow sink for hard-coded cryptographic value vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
     /**
@@ -52,7 +52,7 @@ module HardcodedCryptographicValue {
   }
 
   /**
-   * A barrier for hardcoded cryptographic value vulnerabilities.
+   * A barrier for hard-coded cryptographic value vulnerabilities.
    */
   abstract class Barrier extends DataFlow::Node { }
 
@@ -81,7 +81,7 @@ module HardcodedCryptographicValue {
   }
 
   /**
-   * An externally modeled sink for hardcoded cryptographic value vulnerabilities.
+   * An externally modeled sink for hard-coded cryptographic value vulnerabilities.
    */
   private class ModelsAsDataSinks extends Sink {
     CryptographicValueKind kind;

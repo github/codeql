@@ -5,17 +5,17 @@
 
 <overview>
 <p>
-Hardcoded passwords, keys, initialization vectors, and salts should not be used for cryptographic operations.
+Hard-coded passwords, keys, initialization vectors, and salts should not be used for cryptographic operations.
 </p>
 <ul>
   <li>
-    Attackers can easily recover hardcoded values if they have access to the source code or compiled executable.
+    Attackers can easily recover hard-coded values if they have access to the source code or compiled executable.
   </li>
   <li>
-    Some hardcoded values are easily guessable.
+    Some hard-coded values are easily guessable.
   </li>
   <li>
-    Use of hardcoded values may leave cryptographic operations vulnerable to dictionary attacks, rainbow tables, and other forms of cryptanalysis.
+    Use of hard-coded values may leave cryptographic operations vulnerable to dictionary attacks, rainbow tables, and other forms of cryptanalysis.
   </li>
 </ul>
 
@@ -23,20 +23,20 @@ Hardcoded passwords, keys, initialization vectors, and salts should not be used 
 <recommendation>
 
 <p>
-Use randomly generated key material, initialization vectors, and salts. Use strong passwords that are not hardcoded.
+Use randomly generated key material, initialization vectors, and salts. Use strong passwords that are not hard-coded.
 </p>
 
 </recommendation>
 <example>
 
 <p>
-The following example shows instantiating a cipher with hardcoded key material, making the encrypted data vulnerable to recovery.
+The following example shows instantiating a cipher with hard-coded key material, making the encrypted data vulnerable to recovery.
 </p>
 
 <sample src="HardcodedCryptographicValueBad.rs" />
 
 <p>
-In the fixed code below, the key material is randomly generated and not hardcoded, which protects the encrypted data against recovery. A real application would also need a strategy for secure key management after the key has been generated.
+In the fixed code below, the key material is randomly generated and not hard-coded, which protects the encrypted data against recovery. A real application would also need a strategy for secure key management after the key has been generated.
 </p>
 
 <sample src="HardcodedCryptographicValueGood.rs" />
