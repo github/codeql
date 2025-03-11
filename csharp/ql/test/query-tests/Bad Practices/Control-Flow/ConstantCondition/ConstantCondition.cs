@@ -124,6 +124,35 @@ class ConstantMatching
             _ => "" // GOOD
         };
     }
+
+    string M8(int i)
+    {
+        return i switch
+        {
+            _ when i % 2 == 0 => "even", // GOOD
+            _ => "odd" // GOOD
+        };
+    }
+
+    string M9(int i)
+    {
+        switch (i)
+        {
+            case var _: // $ Alert
+                return "even";
+        }
+    }
+
+    string M10(int i)
+    {
+        switch (i)
+        {
+            case var _ when i % 2 == 0: // GOOD
+                return "even";
+            case var _: // GOOD
+                return "odd";
+        }
+    }
 }
 
 class Assertions
