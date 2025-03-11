@@ -1078,6 +1078,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * A hashing algorithm that transforms variable-length input into a fixed-size hash value.
    */
   abstract class HashAlgorithmNode extends AlgorithmNode, THashAlgorithm {
+    HashAlgorithmInstance instance;
+    HashAlgorithmNode() { this = THashAlgorithm(instance) }
     override string getInternalType() { result = "HashAlgorithm" }
 
     final predicate hashTypeToNameMapping(THashType type, string name) {
