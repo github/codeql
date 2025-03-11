@@ -297,8 +297,8 @@ public class RegExpParser {
         disjuncts.add(this.parseAlternativeInsideQuotedString());
     }
     if (disjuncts.size() == 1) return disjuncts.get(0);
-        return this.finishTerm(new Disjunction(loc, disjuncts));
-  }
+    return this.finishTerm(new Disjunction(loc, disjuncts));
+    }
 
   private RegExpTerm parseAlternativeInsideQuotedString() {
     SourceLocation loc = new SourceLocation(pos());

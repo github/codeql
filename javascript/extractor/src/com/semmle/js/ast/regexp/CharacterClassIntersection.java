@@ -3,6 +3,10 @@ package com.semmle.js.ast.regexp;
 import com.semmle.js.ast.SourceLocation;
 import java.util.List;
 
+/**
+ * A character class intersection in a regular expression available only with the `v` flag.
+ * Example: [[abc]&&[ab]&&[b]] matches character `b` only.
+ */
 public class CharacterClassIntersection extends RegExpTerm {
     private final List<RegExpTerm> elements;
 
