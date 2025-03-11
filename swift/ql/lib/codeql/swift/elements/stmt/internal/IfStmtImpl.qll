@@ -15,7 +15,7 @@ module Impl {
       result = this.getElse()
     }
 
-    override string toString() {
+    override string toStringImpl() {
       if this.hasElse()
       then result = "if ... then { ... } else { ... }"
       else result = "if ... then { ... }"
