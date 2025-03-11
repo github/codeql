@@ -224,6 +224,30 @@ class EVPCipherGetterCall extends OpenSSLAlgorithmGetterCall {
   override Expr getResultExpr() { result = resultExpr }
 }
 
+class EVPAsymCipherGetterCall extends OpenSSLAlgorithmGetterCall {
+  DataFlow::Node valueArgNode;
+  DataFlow::Node resultNode;
+  Expr valueArgExpr;
+  Expr resultExpr;
+
+  EVPAsymCipherGetterCall() {
+    isPossibleOpenSSLFunction(this.getTarget()) and
+    resultExpr = this and
+    resultNode.asExpr() = this and
+    this.getTarget().getName() = "EVP_ASYM_CIPHER_fetch" and
+    valueArgExpr = this.getArgument(1) and
+    valueArgNode.asExpr() = valueArgExpr
+  }
+
+  override DataFlow::Node getValueArgNode() { result = valueArgNode }
+
+  override DataFlow::Node getResultNode() { result = resultNode }
+
+  override Expr getValueArgExpr() { result = valueArgExpr }
+
+  override Expr getResultExpr() { result = resultExpr }
+}
+
 class EVPDigestGetterCall extends OpenSSLAlgorithmGetterCall {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
