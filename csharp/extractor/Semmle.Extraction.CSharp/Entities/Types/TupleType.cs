@@ -45,10 +45,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.tuple_underlying_type(this, underlyingType);
 
             var index = 0;
-            foreach (var element in TupleElements)
+            foreach (var element in TupleElements.Where(e => e is not null))
             {
-                if (element is not null)
-                    trapFile.tuple_element(this, index++, element);
+                trapFile.tuple_element(this, index++, element);
             }
 
             // Note: symbol.Locations seems to be very inconsistent
