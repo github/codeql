@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-# Creates a change note and opens it in VSCode for editing.
+# Creates a change note and opens it in $EDITOR (or VSCode if the environment
+# variable is not set) for editing.
 
 # Expects to receive the following arguments:
 # - What language the change note is for
@@ -51,5 +52,6 @@ category: {change_category}
 with open(change_note_file, "w") as f:
     f.write(change_note)
 
-# Open the change note file in VSCode, reusing the existing window if possible
-os.system(f"code -r {change_note_file}")
+editor = os.environ.get('EDITOR', 'code -r')
+
+os.system(f"{editor} {change_note_file}")

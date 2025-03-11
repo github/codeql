@@ -107,8 +107,8 @@ rust_library(
     }),
     version = "0.4.9",
     deps = [
-        "@vendor__aho-corasick-1.1.3//:aho_corasick",
-        "@vendor__memchr-2.7.4//:memchr",
-        "@vendor__regex-syntax-0.8.5//:regex_syntax",
+        "@vendor_ts__aho-corasick-1.1.3//:aho_corasick",
+        "@vendor_ts__memchr-2.7.4//:memchr",
+        "@vendor_ts__regex-syntax-0.8.5//:regex_syntax",
     ],
 )

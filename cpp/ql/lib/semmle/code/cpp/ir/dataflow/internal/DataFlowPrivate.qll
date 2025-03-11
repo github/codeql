@@ -1520,16 +1520,17 @@ private EdgeKind caseOrDefaultEdge() {
 private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, ParameterNode p) {
   exists(Ssa::SourceVariable sv |
     parameterNodeHasSourceVariable(p, sv) and
-    // Count the number of cases that use the parameter. We do this by finding the phi node
-    // that merges the uses/defs of the parameter. There might be multiple such phi nodes, so
-    // we pick the one with the highest edge count.
+    // Count the number of cases that use the parameter.
     result =
-      max(SsaPhiNode phi |
-        switch.getSuccessor(caseOrDefaultEdge()).getBlock().dominanceFrontier() =
-          phi.getBasicBlock() and
-        phi.getSourceVariable() = sv
-      |
-        strictcount(phi.getAnInput())
+      strictcount(IRBlock caseblock |
+        exists(IRBlock useblock |
+          switch.getSuccessor(caseOrDefaultEdge()).getBlock() = caseblock and
+          caseblock.dominates(useblock)
+        |
+          exists(Ssa::UseImpl use | use.hasIndexInBlock(useblock, _, sv))
+          or
+          exists(Ssa::DefImpl def | def.hasIndexInBlock(useblock, _, sv))
+        )
       )
   )
 }

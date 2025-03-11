@@ -2185,6 +2185,7 @@ impl From<trap::Label<RecordExprFieldList>> for trap::Label<Locatable> {
 pub struct RecordField {
     pub id: trap::TrapId<RecordField>,
     pub attrs: Vec<trap::Label<Attr>>,
+    pub expr: Option<trap::Label<Expr>>,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -2199,6 +2200,9 @@ impl trap::TrapEntry for RecordField {
         out.add_tuple("record_fields", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("record_field_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.expr {
+            out.add_tuple("record_field_exprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("record_field_names", vec![id.into(), v.into()]);

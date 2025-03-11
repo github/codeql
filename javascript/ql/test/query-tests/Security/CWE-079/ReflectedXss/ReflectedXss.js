@@ -28,9 +28,9 @@ app.get('/user/:id', function(req, res) {
   res.send(req.body); // $ Alert
   var mytable = table([
     ['Name', 'Content'],
-    ['body', req.body]
+    ['body', req.body] // $ Source
   ]);
-  res.send(mytable); // $ MISSING: Alert - the 'markdown-table' model needs to be converted to a flow summary
+  res.send(mytable); // $ Alert
 });
 
 var showdown  = require('showdown');

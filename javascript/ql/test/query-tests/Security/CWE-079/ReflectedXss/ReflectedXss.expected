@@ -4,6 +4,7 @@
 | ReflectedXss.js:21:12:21:19 | req.body | ReflectedXss.js:21:12:21:19 | req.body | ReflectedXss.js:21:12:21:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:21:12:21:19 | req.body | user-provided value |
 | ReflectedXss.js:22:12:22:27 | marked(req.body) | ReflectedXss.js:22:19:22:26 | req.body | ReflectedXss.js:22:12:22:27 | marked(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:22:19:22:26 | req.body | user-provided value |
 | ReflectedXss.js:28:12:28:19 | req.body | ReflectedXss.js:28:12:28:19 | req.body | ReflectedXss.js:28:12:28:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:28:12:28:19 | req.body | user-provided value |
+| ReflectedXss.js:33:12:33:18 | mytable | ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:33:12:33:18 | mytable | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:31:14:31:21 | req.body | user-provided value |
 | ReflectedXss.js:40:12:40:19 | req.body | ReflectedXss.js:40:12:40:19 | req.body | ReflectedXss.js:40:12:40:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:40:12:40:19 | req.body | user-provided value |
 | ReflectedXss.js:41:12:41:39 | convert ... q.body) | ReflectedXss.js:41:31:41:38 | req.body | ReflectedXss.js:41:12:41:39 | convert ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:41:31:41:38 | req.body | user-provided value |
 | ReflectedXss.js:55:12:55:19 | req.body | ReflectedXss.js:55:12:55:19 | req.body | ReflectedXss.js:55:12:55:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:55:12:55:19 | req.body | user-provided value |
@@ -58,6 +59,9 @@ edges
 | ReflectedXss.js:7:33:7:45 | req.params.id | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | provenance |  |
 | ReflectedXss.js:16:31:16:39 | params.id | ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | provenance |  |
 | ReflectedXss.js:22:19:22:26 | req.body | ReflectedXss.js:22:12:22:27 | marked(req.body) | provenance |  |
+| ReflectedXss.js:29:7:32:4 | mytable | ReflectedXss.js:33:12:33:18 | mytable | provenance |  |
+| ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | ReflectedXss.js:29:7:32:4 | mytable | provenance |  |
+| ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | provenance |  |
 | ReflectedXss.js:41:31:41:38 | req.body | ReflectedXss.js:41:12:41:39 | convert ... q.body) | provenance |  |
 | ReflectedXss.js:63:14:63:21 | req.body | ReflectedXss.js:63:39:63:42 | file | provenance |  |
 | ReflectedXss.js:63:39:63:42 | file | ReflectedXss.js:64:16:64:19 | file | provenance |  |
@@ -208,6 +212,10 @@ nodes
 | ReflectedXss.js:22:12:22:27 | marked(req.body) | semmle.label | marked(req.body) |
 | ReflectedXss.js:22:19:22:26 | req.body | semmle.label | req.body |
 | ReflectedXss.js:28:12:28:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:29:7:32:4 | mytable | semmle.label | mytable |
+| ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | semmle.label | table([ ... ce\\n  ]) |
+| ReflectedXss.js:31:14:31:21 | req.body | semmle.label | req.body |
+| ReflectedXss.js:33:12:33:18 | mytable | semmle.label | mytable |
 | ReflectedXss.js:40:12:40:19 | req.body | semmle.label | req.body |
 | ReflectedXss.js:41:12:41:39 | convert ... q.body) | semmle.label | convert ... q.body) |
 | ReflectedXss.js:41:31:41:38 | req.body | semmle.label | req.body |

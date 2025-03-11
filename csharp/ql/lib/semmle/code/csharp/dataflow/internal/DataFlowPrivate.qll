@@ -456,9 +456,9 @@ module VariableCapture {
     Flow::clearsContent(asClosureNode(node), getCapturedVariableContent(c))
   }
 
-  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
-    CapturedSsaDefinitionExt() {
-      this.getSourceVariable().getAssignable() = any(CapturedVariable v).asLocalScopeVariable()
+  class CapturedSsaSourceVariable extends Ssa::SourceVariable {
+    CapturedSsaSourceVariable() {
+      this.getAssignable() = any(CapturedVariable v).asLocalScopeVariable()
     }
   }
 
@@ -509,12 +509,12 @@ module SsaFlow {
     result.(Impl::ParameterNode).getParameter() = n.(ExplicitParameterNode).getSsaDefinition()
   }
 
-  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  predicate localFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    Impl::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
-  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  predicate localMustFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(v, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -644,12 +644,10 @@ module LocalFlow {
   }
 
   /**
-   * Holds if the source variable of SSA definition `def` is an instance field.
+   * Holds if the source variable `v` is an instance field.
    */
-  predicate usesInstanceField(SsaImpl::DefinitionExt def) {
-    exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
-      not fp.getAssignable().(Modifiable).isStatic()
-    )
+  predicate isInstanceField(Ssa::SourceVariables::FieldOrPropSourceVariable v) {
+    not v.getAssignable().(Modifiable).isStatic()
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -749,10 +747,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
   (
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    exists(SsaImpl::DefinitionExt def, boolean isUseStep |
-      SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep) and
-      not LocalFlow::usesInstanceField(def) and
-      not def instanceof VariableCapture::CapturedSsaDefinitionExt
+    exists(Ssa::SourceVariable v, boolean isUseStep |
+      SsaFlow::localFlowStep(v, nodeFrom, nodeTo, isUseStep) and
+      not LocalFlow::isInstanceField(v) and
+      not v instanceof VariableCapture::CapturedSsaSourceVariable
     |
       isUseStep = false
       or
@@ -3007,13 +3005,13 @@ private predicate delegateCreationStep(Node nodeFrom, Node nodeTo) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
-  exists(SsaImpl::DefinitionExt def |
-    SsaFlow::localFlowStep(def, nodeFrom, nodeTo, _) and
+  exists(Ssa::SourceVariable v |
+    SsaFlow::localFlowStep(v, nodeFrom, nodeTo, _) and
     preservesValue = true
   |
-    LocalFlow::usesInstanceField(def)
+    LocalFlow::isInstanceField(v)
     or
-    def instanceof VariableCapture::CapturedSsaDefinitionExt
+    v instanceof VariableCapture::CapturedSsaSourceVariable
   )
   or
   delegateCreationStep(nodeFrom, nodeTo) and

@@ -5,7 +5,18 @@
 
 use core::ops::{Deref, DerefMut};
 use core::pin::Pin;
+use core::ptr;
 use core::{hint, mem};
+
+// summary=repo::test;crate::option::replace;Argument[0].Reference;ReturnValue;value;dfc-generated
+// summary=repo::test;crate::option::replace;Argument[1];Argument[0].Reference;value;dfc-generated
+pub fn replace<T>(dest: &mut T, src: T) -> T {
+    unsafe {
+        let result = ptr::read(dest);
+        ptr::write(dest, src);
+        result
+    }
+}
 
 #[derive(Copy, Eq, Debug, Hash)]
 pub enum MyOption<T> {
@@ -326,14 +337,14 @@ impl<T> MyOption<T> {
         unsafe { self.as_mut().unwrap_unchecked() }
     }
 
-    // MISSING: Uses `mem::replace`
+    // summary=repo::test;<crate::option::MyOption>::take;Argument[self].Reference;ReturnValue;value;dfc-generated
     pub fn take(&mut self) -> MyOption<T> {
         // FIXME(const-hack) replace `mem::replace` by `mem::take` when the latter is const ready
-        mem::replace(self, MyNone)
+        replace(self, MyNone)
     }
 
     // summary=repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated
-    // MISSING: Uses `take` which doesn't have flow
+    // summary=repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference;ReturnValue;value;dfc-generated
     pub fn take_if<P>(&mut self, predicate: P) -> MyOption<T>
     where
         P: FnOnce(&mut T) -> bool,
@@ -345,9 +356,10 @@ impl<T> MyOption<T> {
         }
     }
 
-    // MISSING: Uses `mem::replace`
+    // summary=repo::test;<crate::option::MyOption>::replace;Argument[0];Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::replace;Argument[self].Reference;ReturnValue;value;dfc-generated
     pub fn replace(&mut self, value: T) -> MyOption<T> {
-        mem::replace(self, MySome(value))
+        replace(self, MySome(value))
     }
 
     // summary=repo::test;<crate::option::MyOption>::zip;Argument[0].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Field[1];value;dfc-generated

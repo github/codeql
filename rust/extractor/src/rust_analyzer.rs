@@ -2,7 +2,7 @@ use itertools::Itertools;
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig};
+use ra_ap_load_cargo::{LoadCargoConfig, load_workspace_at};
 use ra_ap_paths::{AbsPath, Utf8PathBuf};
 use ra_ap_project_model::ProjectManifest;
 use ra_ap_project_model::{CargoConfig, ManifestPath};
@@ -297,4 +297,5 @@ pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
         .and_then(|x| AbsPathBuf::try_from(x).ok())
         .map(VfsPath::from)
         .and_then(|x| vfs.file_id(&x))
+        .map(|(id, _excluded)| id)
 }

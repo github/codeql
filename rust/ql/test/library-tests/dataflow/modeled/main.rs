@@ -1,4 +1,3 @@
-
 fn source(i: i64) -> i64 {
     1000 + i
 }
@@ -31,27 +30,27 @@ fn i64_clone() {
 }
 
 mod my_clone {
-    use super::{source, sink};
+    use super::{sink, source};
 
     #[derive(Clone)]
     struct Wrapper {
-        n: i64
+        n: i64,
     }
 
     pub fn wrapper_clone() {
         let w = Wrapper { n: source(73) };
         match w {
-            Wrapper { n: n } => sink(n) // $ hasValueFlow=73
+            Wrapper { n: n } => sink(n), // $ hasValueFlow=73
         }
         let u = w.clone();
         match u {
-            Wrapper { n: n } => sink(n) // $ hasValueFlow=73
+            Wrapper { n: n } => sink(n), // $ hasValueFlow=73
         }
     }
 }
 
 mod flow_through_option {
-    use super::{source, sink};
+    use super::{sink, source};
     // Test the auto generated flow summaries for `Option`
 
     fn zip_flow() {
@@ -62,8 +61,8 @@ mod flow_through_option {
             Some((n, m)) => {
                 sink(n);
                 sink(m); // $ hasValueFlow=38
-            },
-            None => ()
+            }
+            None => (),
         }
     }
 
@@ -71,6 +70,20 @@ mod flow_through_option {
         let a = Some(0);
         let b = a.map_or(3, |n| n + source(63));
         sink(b); // $ hasTaintFlow=63
+    }
+}
+
+mod ptr {
+    use super::{sink, source};
+
+    fn read_write() {
+        let mut x: i64 = 0;
+        let y = &mut x as *mut i64;
+        unsafe {
+            sink(std::ptr::read(y));
+            std::ptr::write(y, source(30));
+            sink(std::ptr::read(y)); // $ hasValueFlow=30
+        }
     }
 }
 
