@@ -255,6 +255,30 @@ class EVPDigestGetterCall extends OpenSSLAlgorithmGetterCall {
 
   override Expr getResultExpr() { result = resultExpr }
 }
+
+class EVPKDFFetch extends OpenSSLAlgorithmGetterCall {
+  DataFlow::Node valueArgNode;
+  DataFlow::Node resultNode;
+  Expr valueArgExpr;
+  Expr resultExpr;
+
+  EVPKDFFetch() {
+    resultExpr = this and
+    resultNode.asExpr() = this and
+    isPossibleOpenSSLFunction(this.getTarget()) and
+    this.getTarget().getName() in ["EVP_KDF_fetch"] and
+    valueArgExpr = this.getArgument(1) and
+    valueArgNode.asExpr() = valueArgExpr
+  }
+
+  override DataFlow::Node getValueArgNode() { result = valueArgNode }
+
+  override DataFlow::Node getResultNode() { result = resultNode }
+
+  override Expr getValueArgExpr() { result = valueArgExpr }
+
+  override Expr getResultExpr() { result = resultExpr }
+}
 // /**
 //  * Predicates/classes for identifying algorithm sinks.
 //  * An Algorithm Sink is a function that takes an algorithm as an argument.
