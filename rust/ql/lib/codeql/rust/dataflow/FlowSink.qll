@@ -1,4 +1,20 @@
-/** Provides classes and predicates for defining flow sinks. */
+/**
+ * Provides classes and predicates for defining flow sinks.
+ *
+ * Flow sinks defined here feed into data flow configurations as follows:
+ *
+ *   data from `*.model.yml` | QL extensions of `FlowSink::Range`
+ *    v                         v
+ *   `FlowSink` (associated with a models-as-data `kind` string)
+ *    v
+ *   `sinkNode` predicate | other QL defined sinks, for example using concepts
+ *    v                      v
+ *   various `Sink` classes for specific data flow configurations
+ *
+ * New sinks should be defined using models-as-data, QL extensions of
+ * `FlowSink::Range`, or concepts. Data flow configurations should use the
+ * `sinkNode` predicate and/or concepts to define their sinks.
+ */
 
 private import rust
 private import internal.FlowSummaryImpl as Impl
@@ -12,7 +28,7 @@ private module Sinks {
 
 /** Provides the `Range` class used to define the extent of `FlowSink`. */
 module FlowSink {
-  /** A flow source. */
+  /** A flow sink. */
   abstract class Range extends Impl::Public::SinkElement {
     bindingset[this]
     Range() { any() }
