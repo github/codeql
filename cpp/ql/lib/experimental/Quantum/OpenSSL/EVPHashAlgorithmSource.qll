@@ -77,5 +77,5 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends Crypto::HashAlgorithmIns
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
-  override int getHashSize() { none() } //TODO
+  // override int getHashSize() { none() } //TODO
 }

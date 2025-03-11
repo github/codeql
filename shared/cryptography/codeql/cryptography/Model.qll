@@ -369,7 +369,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract THashType getHashFamily();
 
-    abstract int getHashSize();
+    // abstract int getHashSize();
   }
 
   abstract class KeyDerivationOperationInstance extends KnownElement { }
