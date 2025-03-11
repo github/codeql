@@ -761,12 +761,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   newtype TBlockCipherModeOperationType =
     ECB() or // Not secure, widely used
     CBC() or // Vulnerable to padding oracle attacks
+    CFB() or
     GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
     CTR() or // Fast stream-like encryption (SSH, disk encryption)
     XTS() or // Standard for full-disk encryption (BitLocker, LUKS, FileVault)
     CCM() or // Used in lightweight cryptography (IoT, WPA2)
     SIV() or // Misuse-resistant encryption, used in secure storage
     OCB() or // Efficient AEAD mode
+    OFB() or
     OtherMode()
 
   class ModeOfOperationAlgorithmNode extends AlgorithmNode, TModeOfOperationAlgorithm {
@@ -806,6 +808,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof SIV and name = "SIV"
       or
       type instanceof OCB and name = "OCB"
+      or
+      type instanceof CFB and name = "CFB"
+      or
+      type instanceof OFB and name = "OFB"
       or
       type instanceof OtherMode and name = this.getRawAlgorithmName()
     }
