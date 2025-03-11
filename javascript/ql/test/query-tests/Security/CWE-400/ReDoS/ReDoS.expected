@@ -201,3 +201,4 @@
 | tst.js:411:15:411:19 | a{1,} | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:413:25:413:35 | (\\u0000\|.)+ | This part of the regular expression may cause exponential backtracking on strings starting with '\\n\\u0000' and containing many repetitions of '\\u0000'. |
 | tst.js:415:44:415:57 | (\ud83d\ude80\|.)+ | This part of the regular expression may cause exponential backtracking on strings starting with '\\n\\u{1f680}' and containing many repetitions of '\\u{1f680}'. |
+| tst.js:417:22:417:23 | a? | This part of the regular expression may cause exponential backtracking on strings starting with 'a' and containing many repetitions of 'aa'. |

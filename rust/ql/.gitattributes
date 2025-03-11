@@ -351,7 +351,6 @@
 /lib/codeql/rust/elements/internal/ParenTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenthesizedArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenthesizedArgListImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/PatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathAstNodeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprBaseImpl.qll linguist-generated
@@ -429,7 +428,6 @@
 /lib/codeql/rust/elements/internal/TypeBoundListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeParamConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnderscoreExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnextractedImpl.qll linguist-generated
@@ -997,9 +995,9 @@
 /test/extractor-tests/generated/Path/PathSegment_getGenericArgList.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getNameRef.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getParenthesizedArgList.ql linguist-generated
-/test/extractor-tests/generated/Path/PathSegment_getPathType.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getRetType.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getReturnTypeSyntax.ql linguist-generated
+/test/extractor-tests/generated/Path/PathSegment_getTraitTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr_getPath.ql linguist-generated
@@ -1035,6 +1033,7 @@
 /test/extractor-tests/generated/RecordExprFieldList/RecordExprFieldList_getSpread.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getAttr.ql linguist-generated
+/test/extractor-tests/generated/RecordField/RecordField_getExpr.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getName.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/RecordField/RecordField_getVisibility.ql linguist-generated

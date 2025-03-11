@@ -1,1 +1,10 @@
-[]
+- queries: .
+- include:
+    id:
+      - cs/index-out-of-bounds
+      - cs/test-for-negative-container-size
+      - cs/unchecked-cast-in-equals
+      - cs/reference-equality-on-valuetypes
+      - cs/self-assignment
+      - cs/inefficient-containskey
+      - cs/call-to-object-tostring

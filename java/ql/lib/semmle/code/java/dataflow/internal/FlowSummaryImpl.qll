@@ -301,7 +301,7 @@ module SourceSinkInterpretationInput implements
       ast = mid.asElement()
     |
       (c = "Parameter" or c = "") and
-      node.asNode().asParameter() = mid.asElement()
+      n.asParameter() = ast
       or
       c = "" and
       n.asExpr().(FieldRead).getField() = ast

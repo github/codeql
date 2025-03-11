@@ -1,3 +1,9 @@
+## 1.2.0
+
+### New Queries
+
+* Added a new query, `java/csrf-unprotected-request-type`, to detect Cross-Site Request Forgery (CSRF) vulnerabilities due to using HTTP request types that are not default-protected from CSRF.
+
 ## 1.1.13
 
 ### Minor Analysis Improvements

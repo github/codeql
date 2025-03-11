@@ -14,6 +14,14 @@ entities
 | aliases.go | aliases.go:22:6:22:6 | T | 1 | aliases.go:19:6:19:7 | S3 |
 | aliases.go | aliases.go:25:6:25:6 | H | 1 | file://:0:0:0:0 | signature type |
 | aliases.go | aliases.go:25:8:25:11 | Afs3 | 1 | aliases.go:19:6:19:7 | S3 |
+| aliases.go | aliases.go:29:6:29:11 | MyType | 1 | aliases.go:29:6:29:11 | MyType |
+| aliases.go | aliases.go:29:13:29:19 | MyTypeT | 1 | file://:0:0:0:0 | type parameter type |
+| aliases.go | aliases.go:29:34:29:34 | x | 1 | file://:0:0:0:0 | type parameter type |
+| aliases.go | aliases.go:32:6:32:16 | MyTypeAlias | 1 | aliases.go:29:6:29:11 | MyType |
+| aliases.go | aliases.go:32:18:32:29 | MyTypeAliasT | 1 | file://:0:0:0:0 | type parameter type |
+| aliases.go | aliases.go:34:6:34:19 | useMyTypeAlias | 1 | file://:0:0:0:0 | signature type |
+| aliases.go | aliases.go:34:21:34:21 | a | 1 | aliases.go:29:6:29:11 | MyType |
+| aliases.go | aliases.go:35:2:35:2 | b | 1 | aliases.go:29:6:29:11 | MyType |
 #select
 | F | func(struct { x int }) int |
 | G | func(struct { x int }) int |

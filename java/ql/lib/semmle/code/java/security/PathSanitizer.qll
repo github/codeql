@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.frameworks.kotlin.IO
 private import semmle.code.java.frameworks.kotlin.Text
+private import semmle.code.java.dataflow.Nullness
 
 /** A sanitizer that protects against path injection vulnerabilities. */
 abstract class PathInjectionSanitizer extends DataFlow::Node { }
@@ -137,14 +138,7 @@ private class AllowedPrefixSanitizer extends PathInjectionSanitizer {
  * been checked for a trusted prefix.
  */
 private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
-  // Local taint-flow is used here to handle cases where the validated expression comes from the
-  // expression reaching the sink, but it's not the same one, e.g.:
-  //  Path path = source();
-  //  String strPath = path.toString();
-  //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
-  //    sink(path);
-  branch = g.(PathTraversalGuard).getBranch() and
-  localTaintFlowToPathGuard(e, g) and
+  pathTraversalGuard(g, e, branch) and
   exists(Guard previousGuard |
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
@@ -349,6 +343,43 @@ private class FileGetNameSanitizer extends PathInjectionSanitizer {
     exists(MethodCall mc |
       mc.getMethod().hasQualifiedName("java.io", "File", "getName") and
       this.asExpr() = mc
+    )
+  }
+}
+
+/** Holds if `g` is a guard that checks for `..` components. */
+private predicate pathTraversalGuard(Guard g, Expr e, boolean branch) {
+  // Local taint-flow is used here to handle cases where the validated expression comes from the
+  // expression reaching the sink, but it's not the same one, e.g.:
+  //  Path path = source();
+  //  String strPath = path.toString();
+  //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
+  //    sink(path);
+  branch = g.(PathTraversalGuard).getBranch() and
+  localTaintFlowToPathGuard(e, g)
+}
+
+/**
+ * A taint step from a child argument of a `java.io.File` constructor to the
+ * constructor call.
+ *
+ * This step only applies if the argument is not guarded by a check for `..`
+ * components (`PathTraversalGuard`), or it does not have any internal `..`
+ * components removed from it (`PathNormalizeSanitizer`), or if the parent
+ * argument of the constructor may be null.
+ */
+private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(ConstructorCall constrCall |
+      constrCall.getConstructedType() instanceof TypeFile and
+      n1.asExpr() = constrCall.getArgument(1) and
+      n2.asExpr() = constrCall
+    |
+      not n1 = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode() and
+      not n1 = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode() and
+      not TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), n1.asExpr())
+      or
+      DataFlow::localExprFlow(nullExpr(), constrCall.getArgument(0))
     )
   }
 }

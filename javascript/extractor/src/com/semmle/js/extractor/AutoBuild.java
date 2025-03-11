@@ -1087,6 +1087,12 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           remainingTypeScriptFiles.add(f);
         }
       }
+      for (Map.Entry<Path, FileSnippet> entry : state.getSnippets().entrySet()) {
+        if (!extractedFiles.contains(entry.getKey())
+            && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+            remainingTypeScriptFiles.add(entry.getKey());
+        }
+      }
       if (!remainingTypeScriptFiles.isEmpty()) {
         extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors);
       }

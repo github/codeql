@@ -2,10 +2,10 @@ use crate::config::Config;
 use anyhow::Context;
 use glob::glob;
 use itertools::Itertools;
-use log::info;
 use std::ffi::OsStr;
 use std::fs;
 use std::process::Command;
+use tracing::info;
 
 fn dump_lib() -> anyhow::Result<()> {
     let path_iterator = glob("*.rs").context("globbing test sources")?;

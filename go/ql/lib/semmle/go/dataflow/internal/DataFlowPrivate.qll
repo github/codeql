@@ -301,35 +301,27 @@ class DataFlowCallable extends TDataFlowCallable {
     result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asCallable().getLocation() or
+    result = this.asFileScope().getLocation() or
+    result = this.asSummarizedCallable().getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this callable is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asSummarizedCallable()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /** Gets the location of this callable. */
-  Location getLocation() {
-    result = getCallableLocation(this.asCallable()) or
-    result = this.asFileScope().getLocation() or
-    result = getCallableLocation(this.asSummarizedCallable())
-  }
-}
-
-private Location getCallableLocation(Callable c) {
-  exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-    c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-    result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  )
 }
 
 /** A function call relevant for data flow. */

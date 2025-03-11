@@ -7,10 +7,9 @@
 | gen_path_expr.rs:6:13:6:15 | foo | gen_path_expr.rs:6:13:6:15 | foo |
 | gen_path_expr.rs:6:18:6:20 | bar | gen_path_expr.rs:6:18:6:20 | bar |
 | gen_path_expr.rs:7:14:7:14 | T | gen_path_expr.rs:7:14:7:14 | T |
-| gen_path_expr.rs:7:14:7:14 | T | gen_path_expr.rs:7:14:7:14 | T |
 | gen_path_expr.rs:7:18:7:20 | foo | gen_path_expr.rs:7:18:7:20 | foo |
 | gen_path_expr.rs:8:14:8:21 | TypeRepr | gen_path_expr.rs:8:14:8:21 | TypeRepr |
-| gen_path_expr.rs:8:14:8:21 | TypeRepr | gen_path_expr.rs:8:14:8:21 | TypeRepr |
+| gen_path_expr.rs:8:26:8:30 | Trait | gen_path_expr.rs:8:26:8:30 | Trait |
 | gen_path_expr.rs:8:34:8:36 | foo | gen_path_expr.rs:8:34:8:36 | foo |
 | gen_path_pat.rs:5:11:5:11 | x | gen_path_pat.rs:5:11:5:11 | x |
 | gen_path_pat.rs:6:9:6:11 | Foo | gen_path_pat.rs:6:9:6:11 | Foo |

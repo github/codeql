@@ -122,3 +122,40 @@ private class PostConstructDataBoundMethod extends Method {
     this.getAnAnnotation() instanceof PostConstructAnnotation
   }
 }
+
+/**
+ * A method intended for Stapler request routing.
+ *
+ * From: https://www.jenkins.io/doc/developer/handling-requests/actions/
+ *   Web methods need to provide some indication that they are intended for Stapler routing:
+ *    - Any applicable annotation recognized by Stapler, e.g., @RequirePOST.
+ *    - Any inferable parameter type, e.g., StaplerRequest.
+ *    - Any applicable parameter annotation, recognized by Stapler, e.g., @AncestorInPath.
+ *    - Any declared exception type implementing HttpResponse, e.g., HttpResponseException.
+ *    - A return type implementing HttpResponse.
+ */
+class StaplerWebMethod extends Method {
+  StaplerWebMethod() {
+    // Any applicable annotation recognized by Stapler, e.g., @RequirePOST.
+    this.hasAnnotation("org.kohsuke.stapler", "WebMethod")
+    or
+    this.hasAnnotation("org.kohsuke.stapler.interceptor", ["RequirePOST", "RespondSuccess"])
+    or
+    this.hasAnnotation("org.kohsuke.stapler.verb", ["DELETE", "GET", "POST", "PUT"])
+    or
+    // Any inferable parameter type, e.g., StaplerRequest.
+    this.getAParamType()
+        .(RefType)
+        .hasQualifiedName("org.kohsuke.stapler", ["StaplerRequest", "StaplerRequest2"])
+    or
+    // Any applicable parameter annotation, recognized by Stapler, e.g., @AncestorInPath
+    this.getAParameter()
+        .hasAnnotation("org.kohsuke.stapler", ["AncestorInPath", "QueryParameter", "Header"])
+    or
+    // A return type implementing HttpResponse
+    this.getReturnType().(RefType).getASourceSupertype*() instanceof HttpResponse
+    or
+    // Any declared exception type implementing HttpResponse, e.g., HttpResponseException
+    this.getAThrownExceptionType().getASourceSupertype*() instanceof HttpResponse
+  }
+}

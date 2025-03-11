@@ -24,6 +24,7 @@
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode
 private import semmle.javascript.dataflow.FlowSummary
+private import Arrays
 private import FlowSummaryUtil
 
 class At extends SummarizedCallable {
@@ -41,15 +42,18 @@ class At extends SummarizedCallable {
 }
 
 class Concat extends SummarizedCallable {
-  Concat() { this = "Array#concat / String#concat" }
+  Concat() { this = "Array#concat / String#concat / Buffer.concat" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "concat" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    // Array#concat.
+    // Also models Buffer.concat as this happens to out work well with our toString() model.
     preservesValue = true and
     input = "Argument[this,0..].ArrayElement" and
     output = "ReturnValue.ArrayElement"
     or
+    // String#concat
     preservesValue = false and
     input = "Argument[this,0..]" and
     output = "ReturnValue"
@@ -147,5 +151,22 @@ class Values extends SummarizedCallable {
     preservesValue = true and
     input = "Argument[this]." + ["ArrayElement", "SetElement", "MapValue"] and
     output = "ReturnValue.IteratorElement"
+  }
+}
+
+class ToString extends SummarizedCallable {
+  ToString() { this = "Object#toString / Array#toString" }
+
+  override InstanceCall getACallSimple() {
+    result.(DataFlow::MethodCallNode).getMethodName() = "toString"
+    or
+    result = arrayConstructorRef().getAPropertyRead("prototype").getAMemberCall("toString")
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = false and
+    // Arrays stringify their contents and joins by ","
+    input = "Argument[this].ArrayElementDeep" and
+    output = "ReturnValue"
   }
 }

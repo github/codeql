@@ -8,6 +8,7 @@ import shlex
 import subprocess
 import sys
 import tempfile
+import re
 
 def quote_if_needed(row):
     if row != "true" and row != "false":
@@ -52,8 +53,8 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
     --with-neutrals
-    --with-mixed-summaries (Experimental). May not be used in conjunction with --with-summaries.
-    --with-mixed-neutrals (Experimental). Should only be used in conjunction with --with-mixed-summaries.
+    --with-mixed-summaries. May not be used in conjunction with --with-summaries.
+    --with-mixed-neutrals. Should only be used in conjunction with --with-mixed-summaries.
     --with-typebased-summaries (Experimental)
 If none of these flags are specified, all models are generated except for the type based models.
 
@@ -65,7 +66,7 @@ $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks my_directory
 
 
-Requirements: `codeql` should both appear on your path.
+Requirements: `codeql` should appear on your path.
     """)
 
 
@@ -211,7 +212,9 @@ Requirements: `codeql` should both appear on your path.
 extensions:
 {0}"""
         for entry in extensions:
-            target = os.path.join(self.generatedFrameworks, entry + extension)
+            # Replace problematic characters with dashes, and collapse multiple dashes.
+            sanitizedEntry = re.sub(r'-+', '-', entry.replace('/', '-').replace(':', '-'))
+            target = os.path.join(self.generatedFrameworks, sanitizedEntry + extension)
             with open(target, "w") as f:
                 f.write(extensionTemplate.format(extensions[entry]))
             print("Models as data extensions written to " + target)

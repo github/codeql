@@ -54,3 +54,31 @@ options:
       Comma-separated list of cfg settings to enable, or disable if prefixed with `-`.
       Can be repeated.
     type: array
+  logging:
+    title: Options pertaining to logging.
+    type: object
+    properties:
+      verbosity:
+        title: Extractor logging verbosity level.
+        description: >
+          Controls the level of verbosity of the extractor.
+          The supported levels are (in order of increasing verbosity):
+            - off
+            - errors
+            - warnings
+            - info or progress
+            - debug or progress+
+            - trace or progress++
+            - progress+++
+        type: string
+        pattern: "^(off|errors|warnings|(info|progress)|(debug|progress\\+)|(trace|progress\\+\\+)|progress\\+\\+\\+)$"
+      flamegraph:
+        title: "[Experimental] File path for write flame graph log"
+        description: >
+          Collect flame graph data using the `tracing-flame` crate. To render a flame graph
+          or chart, run the `inferno-flamegraph` command. See also: https://crates.io/crates/tracing-flame
+        type: string
+  skip_path_resolution:
+    title: Skip path resolution
+    description: >
+      Skip path resolution. This is experimental, while we move path resolution from the extractor to the QL library.

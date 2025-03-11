@@ -13,5 +13,5 @@ extensions:
       - ["lang:std", "<crate::io::stdio::StderrLock as crate::io::Write>::write", "Argument[0]", "log-injection", "manual"]
       - ["lang:std", "<crate::io::stdio::StderrLock as crate::io::Write>::write_all", "Argument[0]", "log-injection", "manual"]
       - ["lang:core", "crate::panicking::panic_fmt", "Argument[0]", "log-injection", "manual"]
-      - ["lang:core", "crate::panicking::assert_failed", "Argument[3].Variant[crate::option::Option::Some(0)]", "log-injection", "manual"]
+      - ["lang:core", "crate::panicking::assert_failed", "Argument[3].Field[crate::option::Option::Some(0)]", "log-injection", "manual"]
       - ["lang:core", "<crate::option::Option>::expect", "Argument[0]", "log-injection", "manual"]

@@ -456,9 +456,9 @@ module VariableCapture {
     Flow::clearsContent(asClosureNode(node), getCapturedVariableContent(c))
   }
 
-  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
-    CapturedSsaDefinitionExt() {
-      this.getSourceVariable().getAssignable() = any(CapturedVariable v).asLocalScopeVariable()
+  class CapturedSsaSourceVariable extends Ssa::SourceVariable {
+    CapturedSsaSourceVariable() {
+      this.getAssignable() = any(CapturedVariable v).asLocalScopeVariable()
     }
   }
 
@@ -509,12 +509,12 @@ module SsaFlow {
     result.(Impl::ParameterNode).getParameter() = n.(ExplicitParameterNode).getSsaDefinition()
   }
 
-  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  predicate localFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    Impl::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
-  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  predicate localMustFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(v, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -644,12 +644,10 @@ module LocalFlow {
   }
 
   /**
-   * Holds if the source variable of SSA definition `def` is an instance field.
+   * Holds if the source variable `v` is an instance field.
    */
-  predicate usesInstanceField(SsaImpl::DefinitionExt def) {
-    exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
-      not fp.getAssignable().(Modifiable).isStatic()
-    )
+  predicate isInstanceField(Ssa::SourceVariables::FieldOrPropSourceVariable v) {
+    not v.getAssignable().(Modifiable).isStatic()
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -664,7 +662,7 @@ module LocalFlow {
       ssaDef.getADefinition() = def and
       ssaDef.getControlFlowNode() = cfn and
       nodeFrom = TAssignableDefinitionNode(def, cfn) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = ssaDef
+      nodeTo.(SsaDefinitionNode).getDefinition() = ssaDef
     )
   }
 
@@ -749,10 +747,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
   (
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    exists(SsaImpl::DefinitionExt def, boolean isUseStep |
-      SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep) and
-      not LocalFlow::usesInstanceField(def) and
-      not def instanceof VariableCapture::CapturedSsaDefinitionExt
+    exists(Ssa::SourceVariable v, boolean isUseStep |
+      SsaFlow::localFlowStep(v, nodeFrom, nodeTo, isUseStep) and
+      not LocalFlow::isInstanceField(v) and
+      not v instanceof VariableCapture::CapturedSsaSourceVariable
     |
       isUseStep = false
       or
@@ -1269,78 +1267,33 @@ predicate nodeIsHidden(Node n) {
 }
 
 /** An SSA node. */
-abstract class SsaNode extends NodeImpl, TSsaNode {
+class SsaNode extends NodeImpl, TSsaNode {
   SsaImpl::DataFlowIntegration::SsaNode node;
-  SsaImpl::DefinitionExt def;
 
-  SsaNode() {
-    this = TSsaNode(node) and
-    def = node.getDefinitionExt()
-  }
-
-  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+  SsaNode() { this = TSsaNode(node) }
 
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.getAControlFlowNode().getBasicBlock() = def.getBasicBlock()
+    result.getAControlFlowNode().getBasicBlock() = node.getBasicBlock()
   }
 
-  override Type getTypeImpl() { result = def.getSourceVariable().getType() }
+  override Type getTypeImpl() { result = node.getSourceVariable().getType() }
 
-  override ControlFlow::Node getControlFlowNodeImpl() {
-    result = def.(Ssa::Definition).getControlFlowNode()
-  }
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
   override Location getLocationImpl() { result = node.getLocation() }
 
   override string toStringImpl() { result = node.toString() }
 }
 
-/** An (extended) SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionExtNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaDefinitionExtNode node;
-}
+/** An SSA definition, viewed as a node in a data flow graph. */
+class SsaDefinitionNode extends SsaNode {
+  override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-/**
- * A node that represents an input to an SSA phi (read) definition.
- *
- * This allows for barrier guards to filter input to phi nodes. For example, in
- *
- * ```csharp
- * var x = taint;
- * if (x != "safe")
- * {
- *     x = "safe";
- * }
- * sink(x);
- * ```
- *
- * the `false` edge out of `x != "safe"` guards the input from `x = taint` into the
- * `phi` node after the condition.
- *
- * It is also relevant to filter input into phi read nodes:
- *
- * ```csharp
- * var x = taint;
- * if (b)
- * {
- *     if (x != "safe1")
- *     {
- *         return;
- *     }
- * } else {
- *     if (x != "safe2")
- *     {
- *         return;
- *     }
- * }
- *
- * sink(x);
- * ```
- *
- * both inputs into the phi read node after the outer condition are guarded.
- */
-class SsaInputNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaInputNode node;
+  Ssa::Definition getDefinition() { result = node.getDefinition() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() {
+    result = this.getDefinition().getControlFlowNode()
+  }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
@@ -1728,12 +1681,12 @@ private module ReturnNodes {
    * A data-flow node that represents an assignment to an `out` or a `ref`
    * parameter.
    */
-  class OutRefReturnNode extends ReturnNode, SsaDefinitionExtNode {
+  class OutRefReturnNode extends ReturnNode, SsaDefinitionNode {
     OutRefReturnKind kind;
 
     OutRefReturnNode() {
       exists(Parameter p |
-        this.getDefinitionExt().(Ssa::Definition).isLiveOutRefParameterDefinition(p) and
+        this.getDefinition().isLiveOutRefParameterDefinition(p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind
@@ -2080,6 +2033,18 @@ class CaptureNode extends NodeImpl, TCaptureNode {
   override string toStringImpl() { result = cn.toString() }
 }
 
+/**
+ * Holds if a property has accessors declared in multiple locations, and where
+ * all accessors have at least one declaration without a body.
+ * This can happen if both a "real" and a "stub" implementation is included in the
+ * same database (which is the case for .NET Runtime).
+ */
+private predicate hasAutoImplementation(Property p) {
+  forex(Accessor a | a = p.getAnAccessor() |
+    strictcount(getASourceLocation(a)) > count(a.getBody())
+  )
+}
+
 /** A field or a property. */
 class FieldOrProperty extends Assignable, Modifiable {
   FieldOrProperty() {
@@ -2100,6 +2065,8 @@ class FieldOrProperty extends Assignable, Modifiable {
           p.isAutoImplementedReadOnly()
           or
           p.getDeclaringType() instanceof AnonymousClass
+          or
+          hasAutoImplementation(p)
         )
         or
         p.fromLibrary()
@@ -2450,7 +2417,7 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
     exists(ForeachStmt fs, Ssa::ExplicitDefinition def |
       x.hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
         def.getControlFlowNode()) and
-      node2.(SsaDefinitionExtNode).getDefinitionExt() = def and
+      node2.(SsaDefinitionNode).getDefinition() = def and
       c instanceof ElementContent
     )
     or
@@ -3038,13 +3005,13 @@ private predicate delegateCreationStep(Node nodeFrom, Node nodeTo) {
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
-  exists(SsaImpl::DefinitionExt def |
-    SsaFlow::localFlowStep(def, nodeFrom, nodeTo, _) and
+  exists(Ssa::SourceVariable v |
+    SsaFlow::localFlowStep(v, nodeFrom, nodeTo, _) and
     preservesValue = true
   |
-    LocalFlow::usesInstanceField(def)
+    LocalFlow::isInstanceField(v)
     or
-    def instanceof VariableCapture::CapturedSsaDefinitionExt
+    v instanceof VariableCapture::CapturedSsaSourceVariable
   )
   or
   delegateCreationStep(nodeFrom, nodeTo) and

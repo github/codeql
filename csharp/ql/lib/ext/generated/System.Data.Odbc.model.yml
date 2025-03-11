@@ -123,6 +123,7 @@ extensions:
       - ["System.Data.Odbc", "OdbcConnection", "add_InfoMessage", "(System.Data.Odbc.OdbcInfoMessageEventHandler)", "summary", "df-generated"]
       - ["System.Data.Odbc", "OdbcConnection", "get_DataSource", "()", "summary", "df-generated"]
       - ["System.Data.Odbc", "OdbcConnection", "get_Database", "()", "summary", "df-generated"]
+      - ["System.Data.Odbc", "OdbcConnection", "get_DbProviderFactory", "()", "summary", "df-generated"]
       - ["System.Data.Odbc", "OdbcConnection", "get_Driver", "()", "summary", "df-generated"]
       - ["System.Data.Odbc", "OdbcConnection", "get_State", "()", "summary", "df-generated"]
       - ["System.Data.Odbc", "OdbcConnection", "remove_InfoMessage", "(System.Data.Odbc.OdbcInfoMessageEventHandler)", "summary", "df-generated"]

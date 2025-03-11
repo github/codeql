@@ -1336,7 +1336,7 @@ class _:
     """
 
 
-@annotate(Name)
+@annotate(Name, cfg=True)
 class _:
     """
     A Name. For example:
@@ -1439,7 +1439,8 @@ class _:
     """
     A path segment, which is one part of a whole path.
     """
-
+    type_repr: optional["TypeRepr"] | child | rust.detach
+    trait_type_repr: optional["PathTypeRepr"] | child | rust.detach
 
 @annotate(PathTypeRepr)
 @qltest.test_with(Path)

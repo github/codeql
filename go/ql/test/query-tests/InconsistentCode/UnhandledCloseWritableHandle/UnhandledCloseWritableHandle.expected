@@ -9,8 +9,8 @@
 | tests.go:129:3:129:3 | f | tests.go:125:5:125:78 | ... := ...[0] | tests.go:129:3:129:3 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:125:15:125:78 | call to OpenFile | call to OpenFile |
 edges
 | tests.go:8:24:8:24 | definition of f | tests.go:9:8:9:8 | f | provenance |  |
-| tests.go:12:32:12:32 | definition of f | tests.go:13:13:13:13 | capture variable f | provenance |  |
-| tests.go:13:13:13:13 | capture variable f | tests.go:14:3:14:3 | f | provenance |  |
+| tests.go:12:32:12:32 | definition of f | tests.go:13:13:15:2 | capture variable f | provenance |  |
+| tests.go:13:13:15:2 | capture variable f | tests.go:14:3:14:3 | f | provenance |  |
 | tests.go:31:5:31:78 | ... := ...[0] | tests.go:32:21:32:21 | f | provenance | Src:MaD:1  |
 | tests.go:31:5:31:78 | ... := ...[0] | tests.go:33:29:33:29 | f | provenance | Src:MaD:1  |
 | tests.go:32:21:32:21 | f | tests.go:8:24:8:24 | definition of f | provenance |  |
@@ -29,7 +29,7 @@ nodes
 | tests.go:8:24:8:24 | definition of f | semmle.label | definition of f |
 | tests.go:9:8:9:8 | f | semmle.label | f |
 | tests.go:12:32:12:32 | definition of f | semmle.label | definition of f |
-| tests.go:13:13:13:13 | capture variable f | semmle.label | capture variable f |
+| tests.go:13:13:15:2 | capture variable f | semmle.label | capture variable f |
 | tests.go:14:3:14:3 | f | semmle.label | f |
 | tests.go:31:5:31:78 | ... := ...[0] | semmle.label | ... := ...[0] |
 | tests.go:32:21:32:21 | f | semmle.label | f |

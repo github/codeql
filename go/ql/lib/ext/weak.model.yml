@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["weak", "", False, "Make", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["weak", "Pointer", False, "Value", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

@@ -364,7 +364,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   DispatchCall getDispatchCall() { result = dc }
 
   pragma[nomagic]
-  private predicate hasSourceTarget() { dc.getADynamicTarget().fromSource() }
+  private predicate hasSourceTarget() { dc.getAStaticTarget().fromSource() }
 
   pragma[nomagic]
   private FlowSummary::SummarizedCallable getASummarizedCallableTarget() {

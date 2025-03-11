@@ -39,10 +39,10 @@ function createApiRouter () {
     res.send('no csrf to get here')
   })
 
-  router.post('/getProfile_unsafe', cookieParser(), function (req, res) { // NOT OK - may use cookies
+  router.post('/getProfile_unsafe', cookieParser(), function (req, res) { // $ Alert - may use cookies
     let newEmail = req.cookies["newEmail"];
     res.send('no csrf to get here')
-  })
+  }) // $ RelatedLocation
 
   return router
 }

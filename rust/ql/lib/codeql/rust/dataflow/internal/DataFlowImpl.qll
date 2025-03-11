@@ -4,11 +4,13 @@
 
 private import codeql.util.Void
 private import codeql.util.Unit
+private import codeql.util.Boolean
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
+private import codeql.rust.elements.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
@@ -95,6 +97,8 @@ final class ParameterPosition extends TParameterPosition {
   /** Gets the underlying integer position, if any. */
   int getPosition() { this = TPositionalParameterPosition(result) }
 
+  predicate hasPosition() { exists(this.getPosition()) }
+
   /** Holds if this position represents the `self` position. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
@@ -120,12 +124,30 @@ final class ParameterPosition extends TParameterPosition {
   }
 }
 
-/** Holds if `arg` is an argument of `call` at the position `pos`. */
+/** Holds if `call` invokes a qualified path that resolves to a method. */
+private predicate callToMethod(CallExpr call) {
+  exists(Path path |
+    path = call.getFunction().(PathExpr).getPath() and
+    path.hasQualifier() and
+    resolvePath(path).(Function).getParamList().hasSelfParam()
+  )
+}
+
+/**
+ * Holds if `arg` is an argument of `call` at the position `pos`.
+ *
+ * Note that this does not hold for the receiever expression of a method call
+ * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
+ */
 private predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, ParameterPosition pos) {
-  arg = call.getArgument(pos.getPosition())
-  or
-  // The self argument in a method call.
-  arg = call.(MethodCallExprCfgNode).getReceiver() and pos.isSelf()
+  if callToMethod(call.(CallExprCfgNode).getCallExpr())
+  then
+    // The first argument is for the `self` parameter
+    arg = call.getArgument(0) and pos.isSelf()
+    or
+    // Succeeding arguments are shifted left
+    arg = call.getArgument(pos.getPosition() + 1)
+  else arg = call.getArgument(pos.getPosition())
 }
 
 /**
@@ -273,6 +295,15 @@ module Node {
     override PatCfgNode asPat() { result = n }
   }
 
+  /** A data flow node that corresponds to a name node in the CFG. */
+  final class NameNode extends AstCfgFlowNode, TNameNode {
+    override NameCfgNode n;
+
+    NameNode() { this = TNameNode(n) }
+
+    NameCfgNode asName() { result = n }
+  }
+
   /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
@@ -290,6 +321,9 @@ module Node {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       n.getAstNode() = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
     }
+
+    /** Get the parameter position of this parameter. */
+    ParameterPosition getPosition() { this.isParameterOf(_, result) }
 
     /** Gets the parameter in the CFG that this node corresponds to. */
     ParamBaseCfgNode getParameter() { result = n }
@@ -343,6 +377,30 @@ module Node {
     }
   }
 
+  /**
+   * The receiver of a method call _after_ any implicit borrow or dereferencing
+   * has taken place.
+   */
+  final class ReceiverNode extends ArgumentNode, TReceiverNode {
+    private MethodCallExprCfgNode n;
+
+    ReceiverNode() { this = TReceiverNode(n, false) }
+
+    ExprCfgNode getReceiver() { result = n.getReceiver() }
+
+    MethodCallExprCfgNode getMethodCall() { result = n }
+
+    override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+      call.asMethodCallExprCfgNode() = n and pos = TSelfParameterPosition()
+    }
+
+    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    override Location getLocation() { result = this.getReceiver().getLocation() }
+
+    override string toString() { result = "receiver for " + this.getReceiver() }
+  }
+
   final class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
     private FlowSummaryImpl::Private::SummaryNode receiver;
     private RustDataFlow::ArgumentPosition pos_;
@@ -374,16 +432,15 @@ module Node {
   /** An SSA node. */
   class SsaNode extends Node, TSsaNode {
     SsaImpl::DataFlowIntegration::SsaNode node;
-    SsaImpl::DefinitionExt def;
 
-    SsaNode() {
-      this = TSsaNode(node) and
-      def = node.getDefinitionExt()
+    SsaNode() { this = TSsaNode(node) }
+
+    override CfgScope getCfgScope() { result = node.getBasicBlock().getScope() }
+
+    /** Gets the definition this node corresponds to, if any. */
+    SsaImpl::Definition asDefinition() {
+      result = node.(SsaImpl::DataFlowIntegration::SsaDefinitionNode).getDefinition()
     }
-
-    override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
-
-    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
     override Location getLocation() { result = node.getLocation() }
 
@@ -489,6 +546,18 @@ module Node {
     override Location getLocation() { result = n.getLocation() }
   }
 
+  final class ReceiverPostUpdateNode extends PostUpdateNode, TReceiverNode {
+    private MethodCallExprCfgNode n;
+
+    ReceiverPostUpdateNode() { this = TReceiverNode(n, true) }
+
+    override Node getPreUpdateNode() { result = TReceiverNode(n, false) }
+
+    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    override Location getLocation() { result = n.getReceiver().getLocation() }
+  }
+
   final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
     private FlowSummaryNode pre;
 
@@ -539,12 +608,14 @@ module SsaFlow {
     n = toParameterNode(result.(SsaFlow::ParameterNode).getParameter())
   }
 
-  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    SsaFlow::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  predicate localFlowStep(
+    SsaImpl::SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
+  ) {
+    SsaFlow::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
-  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    SsaFlow::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    SsaFlow::localMustFlowStep(_, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -584,14 +655,26 @@ module LocalFlow {
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     nodeFrom.getCfgNode() = getALastEvalNode(nodeTo.getCfgNode())
     or
+    // An edge from the right-hand side of a let statement to the left-hand side.
     exists(LetStmtCfgNode s |
       nodeFrom.getCfgNode() = s.getInitializer() and
       nodeTo.getCfgNode() = s.getPat()
     )
     or
+    exists(IdentPatCfgNode p |
+      not p.isRef() and
+      nodeFrom.getCfgNode() = p and
+      nodeTo.getCfgNode() = p.getName()
+    )
+    or
+    exists(SelfParamCfgNode self |
+      nodeFrom.getCfgNode() = self and
+      nodeTo.getCfgNode() = self.getName()
+    )
+    or
     // An edge from a pattern/expression to its corresponding SSA definition.
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
-      nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
+      nodeTo.(Node::SsaNode).asDefinition().(Ssa::WriteDefinition).getControlFlowNode()
     or
     nodeFrom.(Node::SourceParameterNode).getParameter().(ParamCfgNode).getPat() = nodeTo.asPat()
     or
@@ -606,6 +689,14 @@ module LocalFlow {
     )
     or
     nodeFrom.asPat().(OrPatCfgNode).getAPat() = nodeTo.asPat()
+    or
+    // Simple value step from receiver expression to receiver node, in case
+    // there is no implicit deref or borrow operation.
+    nodeFrom.asExpr() = nodeTo.(Node::ReceiverNode).getReceiver()
+    or
+    // The dual step of the above, for the post-update nodes.
+    nodeFrom.(Node::PostUpdateNode).getPreUpdateNode().(Node::ReceiverNode).getReceiver() =
+      nodeTo.(Node::PostUpdateNode).getPreUpdateNode().asExpr()
   }
 }
 
@@ -956,6 +1047,23 @@ predicate lambdaCallExpr(CallExprCfgNode call, LambdaCallKind kind, ExprCfgNode 
   exists(kind)
 }
 
+/** Holds if `mc` implicitly borrows its receiver. */
+private predicate implicitBorrow(MethodCallExpr mc) {
+  // Determining whether an implicit borrow happens depends on the type of the
+  // receiever as well as the target. As a heuristic we simply check if the
+  // target takes `self` as a borrow and limit the approximation to cases where
+  // the receiver is a simple variable.
+  mc.getReceiver() instanceof VariableAccess and
+  mc.getStaticTarget().getParamList().getSelfParam().isRef()
+}
+
+/** Holds if `mc` implicitly dereferences its receiver. */
+private predicate implicitDeref(MethodCallExpr mc) {
+  // Similarly to `implicitBorrow` this is an approximation.
+  mc.getReceiver() instanceof VariableAccess and
+  not mc.getStaticTarget().getParamList().getSelfParam().isRef()
+}
+
 // Defines a set of aliases needed for the `RustDataFlow` module
 private module Aliases {
   class DataFlowCallableAlias = DataFlowCallable;
@@ -1012,13 +1120,12 @@ module RustDataFlow implements InputSig<Location> {
   DataFlowType getNodeType(Node node) { any() }
 
   predicate nodeIsHidden(Node node) {
-    node instanceof Node::SsaNode
-    or
-    node.(Node::FlowSummaryNode).getSummaryNode().isHidden()
-    or
-    node instanceof Node::CaptureNode
-    or
-    node instanceof Node::ClosureParameterNode
+    node instanceof Node::SsaNode or
+    node.(Node::FlowSummaryNode).getSummaryNode().isHidden() or
+    node instanceof Node::CaptureNode or
+    node instanceof Node::ClosureParameterNode or
+    node instanceof Node::ReceiverNode or
+    node instanceof Node::ReceiverPostUpdateNode
   }
 
   predicate neverSkipInPathGraph(Node node) {
@@ -1100,9 +1207,9 @@ module RustDataFlow implements InputSig<Location> {
     (
       LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      exists(SsaImpl::DefinitionExt def, boolean isUseStep |
-        SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep) and
-        not def instanceof VariableCapture::CapturedSsaDefinitionExt
+      exists(SsaImpl::SsaInput::SourceVariable v, boolean isUseStep |
+        SsaFlow::localFlowStep(v, nodeFrom, nodeTo, isUseStep) and
+        not v instanceof VariableCapture::CapturedVariable
       |
         isUseStep = false
         or
@@ -1125,6 +1232,28 @@ module RustDataFlow implements InputSig<Location> {
   predicate jumpStep(Node node1, Node node2) {
     FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
       node2.(Node::FlowSummaryNode).getSummaryNode())
+  }
+
+  pragma[nomagic]
+  private predicate implicitDerefToReceiver(Node node1, Node::ReceiverNode node2, ReferenceContent c) {
+    node1.asExpr() = node2.getReceiver() and
+    implicitDeref(node2.getMethodCall().getMethodCallExpr()) and
+    exists(c)
+  }
+
+  pragma[nomagic]
+  private predicate implicitBorrowToReceiver(
+    Node node1, Node::ReceiverNode node2, ReferenceContent c
+  ) {
+    node1.asExpr() = node2.getReceiver() and
+    implicitBorrow(node2.getMethodCall().getMethodCallExpr()) and
+    exists(c)
+  }
+
+  pragma[nomagic]
+  private predicate referenceExprToExpr(Node node1, Node node2, ReferenceContent c) {
+    node1.asExpr() = node2.asExpr().(RefExprCfgNode).getExpr() and
+    exists(c)
   }
 
   /**
@@ -1209,6 +1338,17 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = await
       )
       or
+      referenceExprToExpr(node2.(PostUpdateNode).getPreUpdateNode(),
+        node1.(PostUpdateNode).getPreUpdateNode(), c)
+      or
+      // Step from receiver expression to receiver node, in case of an implicit
+      // dereference.
+      implicitDerefToReceiver(node1, node2, c)
+      or
+      // A read step dual to the store step for implicit borrows.
+      implicitBorrowToReceiver(node2.(PostUpdateNode).getPreUpdateNode(),
+        node1.(PostUpdateNode).getPreUpdateNode(), c)
+      or
       VariableCapture::readStep(node1, c, node2)
     )
     or
@@ -1266,6 +1406,14 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr().(ArrayListExprCfgNode).getAnExpr()
       ]
     or
+    // Store from a `ref` identifier pattern into the contained name.
+    exists(IdentPatCfgNode p |
+      c instanceof ReferenceContent and
+      p.isRef() and
+      node1.asPat() = p and
+      node2.(Node::NameNode).asName() = p.getName()
+    )
+    or
     fieldAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
     referenceAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
@@ -1277,11 +1425,7 @@ module RustDataFlow implements InputSig<Location> {
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
     )
     or
-    exists(RefExprCfgNode ref |
-      c instanceof ReferenceContent and
-      node1.asExpr() = ref.getExpr() and
-      node2.asExpr() = ref
-    )
+    referenceExprToExpr(node1, node2, c)
     or
     // Store in function argument
     exists(DataFlowCall call, int i |
@@ -1291,6 +1435,10 @@ module RustDataFlow implements InputSig<Location> {
     )
     or
     VariableCapture::storeStep(node1, c, node2)
+    or
+    // Step from receiver expression to receiver node, in case of an implicit
+    // borrow.
+    implicitBorrowToReceiver(node1, node2, c)
   }
 
   /**
@@ -1368,7 +1516,7 @@ module RustDataFlow implements InputSig<Location> {
    * must also apply to `node1`.
    */
   predicate localMustFlowStep(Node node1, Node node2) {
-    SsaFlow::localMustFlowStep(_, node1, node2)
+    SsaFlow::localMustFlowStep(node1, node2)
     or
     FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1
           .(Node::FlowSummaryNode)
@@ -1542,10 +1690,6 @@ module VariableCapture {
   predicate clearsContent(Node node, CapturedVariableContent c) {
     Flow::clearsContent(asClosureNode(node), c.getVariable())
   }
-
-  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
-    CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
-  }
 }
 
 import MakeImpl<Location, RustDataFlow>
@@ -1560,18 +1704,27 @@ private module Cached {
     TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
+    TNameNode(NameCfgNode n) { n.getName() = any(Variable v).getName() } or
     TExprPostUpdateNode(ExprCfgNode e) {
-      isArgumentForCall(e, _, _) or
-      lambdaCallExpr(_, _, e) or
-      lambdaCreationExpr(e.getExpr(), _) or
+      isArgumentForCall(e, _, _)
+      or
+      lambdaCallExpr(_, _, e)
+      or
+      lambdaCreationExpr(e.getExpr(), _)
+      or
+      // Whenever `&mut e` has a post-update node we also create one for `e`.
+      // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
+      e = any(RefExprCfgNode ref | ref.isMut() and exists(TExprPostUpdateNode(ref))).getExpr()
+      or
       e =
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
           any(TryExprCfgNode try).getExpr(),
           any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
-          any(AwaitExprCfgNode a).getExpr()
+          any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver()
         ]
     } or
+    TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or

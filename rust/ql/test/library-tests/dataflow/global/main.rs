@@ -64,17 +64,19 @@ struct MyFlag {
 }
 
 impl MyFlag {
-    fn data_in(&self, n: i64) {
-        sink(n); // $ hasValueFlow=1
+    fn data_in(self, n: i64) {
+        sink(n); // $ hasValueFlow=1 hasValueFlow=8
     }
-    fn get_data(&self) -> i64 {
+
+    fn get_data(self) -> i64 {
         if self.flag {
             0
         } else {
             source(2)
         }
     }
-    fn data_through(&self, n: i64) -> i64 {
+
+    fn data_through(self, n: i64) -> i64 {
         if self.flag {
             0
         } else {
@@ -102,10 +104,36 @@ fn data_through_method() {
     sink(b); // $ hasValueFlow=4
 }
 
+fn data_in_to_method_called_as_function() {
+    let mn = MyFlag { flag: true };
+    let a = source(8);
+    MyFlag::data_in(mn, a);
+}
+
+fn data_through_method_called_as_function() {
+    let mn = MyFlag { flag: true };
+    let a = source(12);
+    let b = MyFlag::data_through(mn, a);
+    sink(b); // $ hasValueFlow=12
+}
+
 use std::ops::Add;
 
 struct MyInt {
     value: i64,
+}
+
+impl MyInt {
+    // Associated function
+    fn new(n: i64) -> Self {
+        MyInt { value: n }
+    }
+}
+
+fn data_through_associated_function() {
+    let n = MyInt::new(source(34));
+    let MyInt { value: m } = n;
+    sink(m); // $ hasValueFlow=34
 }
 
 impl Add for MyInt {
@@ -117,7 +145,7 @@ impl Add for MyInt {
     }
 }
 
-pub fn test_operator_overloading() {
+fn test_operator_overloading() {
     let a = MyInt { value: source(5) };
     let b = MyInt { value: 2 };
     let c = a + b;
@@ -132,29 +160,67 @@ pub fn test_operator_overloading() {
     let b = MyInt { value: 2 };
     let d = a.add(b);
     sink(d.value); // $ MISSING: hasValueFlow=7
+
 }
 
-// Flow out of mutable parameters.
-
-fn set_int(n: &mut i64, c: i64) {
-    *n = c;
+trait MyTrait {
+    type Output;
+    fn take_self(self, _other: Self::Output) -> Self::Output;
+    fn take_second(self, other: Self::Output) -> Self::Output;
 }
 
-fn mutates_argument_1() {
-    // Passing an already borrowed value to a function and then reading from the same borrow.
-    let mut n = 0;
-    let m = &mut n;
-    sink(*m);
-    set_int(m, source(37));
-    sink(*m); // $ hasValueFlow=37
+impl MyTrait for MyInt {
+    type Output = MyInt;
+
+    fn take_self(self, _other: MyInt) -> MyInt {
+        self
+    }
+
+    fn take_second(self, other: MyInt) -> MyInt {
+        other
+    }
 }
 
-fn mutates_argument_2() {
-    // Borrowing at the call and then reading from the unborrowed variable.
-    let mut n = 0;
-    sink(n);
-    set_int(&mut n, source(88));
-    sink(n); // $ MISSING: hasValueFlow=88
+fn data_through_trait_method_called_as_function() {
+    let a = MyInt { value: source(8) };
+    let b = MyInt { value: 2 };
+    let MyInt { value: c } = MyTrait::take_self(a, b);
+    sink(c); // $ hasValueFlow=8
+
+    let a = MyInt { value: 0 };
+    let b = MyInt { value: source(37) };
+    let MyInt { value: c } = MyTrait::take_second(a, b);
+    sink(c); // $ hasValueFlow=37
+
+    let a = MyInt { value: 0 };
+    let b = MyInt { value: source(38) };
+    let MyInt { value: c } = MyTrait::take_self(a, b);
+    sink(c);
+}
+
+async fn async_source() -> i64 {
+    let a = source(1);
+    sink(a); // $ hasValueFlow=1
+    a
+}
+
+async fn test_async_await_async_part() {
+    let a = async_source().await;
+    sink(a); // $ MISSING: hasValueFlow=1
+
+    let b = async {
+        let c = source(2);
+        sink(c); // $ hasValueFlow=2
+        c
+    };
+    sink(b.await); // $ MISSING: hasValueFlow=2
+}
+
+fn test_async_await() {
+    let a = futures::executor::block_on(async_source());
+    sink(a); // $ MISSING: hasValueFlow=1
+
+    futures::executor::block_on(test_async_await_async_part());
 }
 
 fn main() {
@@ -168,6 +234,5 @@ fn main() {
     data_through_method();
 
     test_operator_overloading();
-    mutates_argument_1();
-    mutates_argument_2();
+    test_async_await();
 }

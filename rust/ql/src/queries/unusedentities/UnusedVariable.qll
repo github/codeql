@@ -4,7 +4,7 @@ import rust
  * A deliberately unused variable, for example `_` or `_x`.
  */
 class DiscardVariable extends Variable {
-  DiscardVariable() { this.getName().charAt(0) = "_" }
+  DiscardVariable() { this.getText().charAt(0) = "_" }
 }
 
 /**
@@ -25,5 +25,5 @@ predicate isAllowableUnused(Variable v) {
   v.getPat().isInMacroExpansion()
   or
   // a 'self' variable
-  v.getName() = "self"
+  v.getText() = "self"
 }

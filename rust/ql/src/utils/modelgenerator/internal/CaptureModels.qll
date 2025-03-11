@@ -3,6 +3,8 @@ private import rust
 private import rust as R
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.FlowSource as FlowSource
+private import codeql.rust.dataflow.FlowSink as FlowSink
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
@@ -26,14 +28,19 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   }
 
   private predicate relevant(Function api) {
-    // This excludes closures (these are not exported API endpoints) and
-    // functions without a `pub` visiblity. A function can be `pub` without
-    // ultimately being exported by a crate, so this is an overapproximation.
-    api.hasVisibility()
-    or
-    // If a method implements a public trait it is exposed through the trait.
-    // We overapproximate this by including all trait method implementations.
-    exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+    // Only include functions that have a resolved path.
+    api.hasCrateOrigin() and
+    api.hasExtendedCanonicalPath() and
+    (
+      // This excludes closures (these are not exported API endpoints) and
+      // functions without a `pub` visiblity. A function can be `pub` without
+      // ultimately being exported by a crate, so this is an overapproximation.
+      api.hasVisibility()
+      or
+      // If a method implements a public trait it is exposed through the trait.
+      // We overapproximate this by including all trait method implementations.
+      exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+    )
   }
 
   predicate isUninterestingForDataFlowModels(Callable api) { none() }
@@ -105,14 +112,19 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
   predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
-  predicate apiSource(DataFlow::Node source) { none() }
+  /**
+   * Holds if `source` is an API entrypoint, i.e., a source of input where data
+   * can flow in to a library. This is used for creating sink models, as we
+   * only want to mark functions as sinks if input to the function can reach
+   * (from an input source) a known sink.
+   */
+  predicate apiSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
 
   bindingset[sourceEnclosing, api]
   predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) { none() }
 
   string getInputArgument(DataFlow::Node source) {
-    // TODO: Implement when we want to generate sources and sinks
-    result = "getInputArgument(" + source + ")"
+    result = "Argument[" + source.(Node::SourceParameterNode).getPosition().toString() + "]"
   }
 
   bindingset[kind]
@@ -162,23 +174,16 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   }
 
   string partialModelRow(Callable api, int i) {
-    i = 0 and
-    (
-      result = api.(Function).getCrateOrigin()
-      or
-      not api.(Function).hasCrateOrigin() and result = ""
-    ) // crate
+    i = 0 and result = api.(Function).getCrateOrigin() // crate
     or
     i = 1 and result = api.(Function).getExtendedCanonicalPath() // name
   }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
 
-  // TODO: Implement this when we want to generate sources.
-  predicate sourceNode(DataFlow::Node node, string kind) { none() }
+  predicate sourceNode(DataFlow::Node node, string kind) { FlowSource::sourceNode(node, kind) }
 
-  // TODO: Implement this when we want to generate sinks.
-  predicate sinkNode(DataFlow::Node node, string kind) { none() }
+  predicate sinkNode(DataFlow::Node node, string kind) { FlowSink::sinkNode(node, kind) }
 }
 
 import MakeModelGenerator<Location, RustDataFlow, RustTaintTracking, ModelGeneratorInput>

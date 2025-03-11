@@ -36,15 +36,9 @@ module Impl {
     ClosureBodyScope() { this = any(ClosureExpr ce).getBody() }
   }
 
-  private Pat getImmediatePatParent(AstNode n) {
-    result = getImmediateParent(n)
-    or
-    result.(RecordPat).getRecordPatFieldList().getAField().getPat() = n
-  }
-
   private Pat getAPatAncestor(Pat p) {
     (p instanceof IdentPat or p instanceof OrPat) and
-    exists(Pat p0 | result = getImmediatePatParent(p0) |
+    exists(Pat p0 | result = p0.getParentPat() |
       p0 = p
       or
       p0 = getAPatAncestor(p) and
@@ -62,8 +56,8 @@ module Impl {
   }
 
   /**
-   * Holds if `p` declares a variable named `name` at `definingNode`. Normally,
-   * `definingNode = p`, except in cases like
+   * Holds if `name` declares a variable named `text` at `definingNode`.
+   * Normally, `definingNode = name`, except in cases like
    *
    * ```rust
    * match either {
@@ -74,58 +68,67 @@ module Impl {
    * where `definingNode` is the entire `Either::Left(x) | Either::Right(x)`
    * pattern.
    */
-  private predicate variableDecl(AstNode definingNode, AstNode p, string name) {
-    p =
-      any(SelfParam sp |
-        definingNode = sp.getName() and
-        name = sp.getName().getText() and
+  private predicate variableDecl(AstNode definingNode, Name name, string text) {
+    (
+      exists(SelfParam sp |
+        name = sp.getName() and
+        definingNode = name and
+        text = name.getText() and
         // exclude self parameters from functions without a body as these are
         // trait method declarations without implementations
         not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
       )
-    or
-    p =
-      any(IdentPat pat |
+      or
+      exists(IdentPat pat |
+        name = pat.getName() and
         (
           definingNode = getOutermostEnclosingOrPat(pat)
           or
-          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = pat.getName()
+          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
         ) and
-        name = pat.getName().getText() and
+        text = name.getText() and
         // exclude for now anything starting with an uppercase character, which may be a reference to
         // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
         // which we don't appear to recognize yet anyway. This also assumes programmers follow the
         // naming guidelines, which they generally do, but they're not enforced.
-        not name.charAt(0).isUppercase() and
+        not text.charAt(0).isUppercase() and
         // exclude parameters from functions without a body as these are trait method declarations
         // without implementations
         not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
         // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
         not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
       )
+    )
   }
 
   /** A variable. */
   class Variable extends MkVariable {
     private AstNode definingNode;
-    private string name;
+    private string text;
 
-    Variable() { this = MkVariable(definingNode, name) }
+    Variable() { this = MkVariable(definingNode, text) }
 
-    /** Gets the name of this variable. */
-    string getName() { result = name }
+    /** Gets the name of this variable as a string. */
+    string getText() { result = text }
 
     /** Gets the location of this variable. */
     Location getLocation() { result = definingNode.getLocation() }
 
     /** Gets a textual representation of this variable. */
-    string toString() { result = this.getName() }
+    string toString() { result = this.getText() }
 
     /** Gets an access to this variable. */
     VariableAccess getAnAccess() { result.getVariable() = this }
 
-    /** Gets the `self` parameter that declares this variable, if one exists. */
-    SelfParam getSelfParam() { variableDecl(definingNode, result, name) }
+    /**
+     * Get the name of this variable.
+     *
+     * Normally, the name is unique, except when introduced in an or pattern.
+     */
+    Name getName() { variableDecl(definingNode, result, text) }
+
+    /** Gets the `self` parameter that declares this variable, if any. */
+    SelfParam getSelfParam() { result.getName() = this.getName() }
 
     /**
      * Gets the pattern that declares this variable, if any.
@@ -138,7 +141,7 @@ module Impl {
      * }
      * ```
      */
-    IdentPat getPat() { variableDecl(definingNode, result, name) }
+    IdentPat getPat() { result.getName() = this.getName() }
 
     /** Gets the enclosing CFG scope for this variable declaration. */
     CfgScope getEnclosingCfgScope() { result = definingNode.getEnclosingCfgScope() }
@@ -204,12 +207,16 @@ module Impl {
   /** Gets the immediately enclosing variable scope of `n`. */
   private VariableScope getEnclosingScope(AstNode n) { result = getAnAncestorInVariableScope(n) }
 
+  /**
+   * Get all the pattern ancestors of this variable up to an including the
+   * root of the pattern.
+   */
   private Pat getAVariablePatAncestor(Variable v) {
     result = v.getPat()
     or
     exists(Pat mid |
       mid = getAVariablePatAncestor(v) and
-      result = getImmediatePatParent(mid)
+      result = mid.getParentPat()
     )
   }
 
@@ -322,7 +329,7 @@ module Impl {
    * all nodes nester under `scope`, is `ord`.
    */
   private predicate variableDeclInScope(Variable v, VariableScope scope, string name, int ord) {
-    name = v.getName() and
+    name = v.getText() and
     (
       parameterDeclInScope(v, scope) and
       ord = getPreOrderNumbering(scope, scope)

@@ -15,6 +15,8 @@ extensions:
     data:
       - ["System.Text.Unicode", "UnicodeRange", "Create", "(System.Char,System.Char)", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRange", "UnicodeRange", "(System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["System.Text.Unicode", "UnicodeRange", "get_FirstCodePoint", "()", "summary", "df-generated"]
+      - ["System.Text.Unicode", "UnicodeRange", "get_Length", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_All", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_AlphabeticPresentationForms", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_Arabic", "()", "summary", "df-generated"]

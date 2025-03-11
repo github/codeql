@@ -1520,16 +1520,17 @@ private EdgeKind caseOrDefaultEdge() {
 private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, ParameterNode p) {
   exists(Ssa::SourceVariable sv |
     parameterNodeHasSourceVariable(p, sv) and
-    // Count the number of cases that use the parameter. We do this by finding the phi node
-    // that merges the uses/defs of the parameter. There might be multiple such phi nodes, so
-    // we pick the one with the highest edge count.
+    // Count the number of cases that use the parameter.
     result =
-      max(SsaPhiNode phi |
-        switch.getSuccessor(caseOrDefaultEdge()).getBlock().dominanceFrontier() =
-          phi.getBasicBlock() and
-        phi.getSourceVariable() = sv
-      |
-        strictcount(phi.getAnInput())
+      strictcount(IRBlock caseblock |
+        exists(IRBlock useblock |
+          switch.getSuccessor(caseOrDefaultEdge()).getBlock() = caseblock and
+          caseblock.dominates(useblock)
+        |
+          exists(Ssa::UseImpl use | use.hasIndexInBlock(useblock, _, sv))
+          or
+          exists(Ssa::DefImpl def | def.hasIndexInBlock(useblock, _, sv))
+        )
       )
   )
 }
@@ -1765,14 +1766,14 @@ module IteratorFlow {
      * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
      * traverses back through iterator increment and decrement operations.
      */
-    private Ssa::Def getAnUltimateDefinition(Ssa::Def def) {
+    private Ssa::DefinitionExt getAnUltimateDefinition(Ssa::DefinitionExt def) {
       result = def.getAnUltimateDefinition()
       or
       exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesReadExt(sv, result.asDef(), bb, i)
+        Ssa::ssaDefReachesReadExt(sv, result, bb, i)
       )
     }
 
@@ -1800,13 +1801,13 @@ module IteratorFlow {
       GetsIteratorCall beginCall, Instruction writeToDeref
     ) {
       exists(
-        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Def def,
-        IteratorPointerDereferenceCall starCall, Ssa::Def ultimate, Operand address
+        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::DefinitionExt def,
+        IteratorPointerDereferenceCall starCall, Ssa::DefinitionExt ultimate, Operand address
       |
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesReadExt(_, def.asDef(), bbStar, iStar) and
+        Ssa::ssaDefReachesReadExt(_, def, bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)

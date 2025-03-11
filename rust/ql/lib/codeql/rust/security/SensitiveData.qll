@@ -60,7 +60,7 @@ private class SensitiveDataVariable extends Variable {
   SensitiveDataClassification classification;
 
   SensitiveDataVariable() {
-    HeuristicNames::nameIndicatesSensitiveData(this.getName(), classification)
+    HeuristicNames::nameIndicatesSensitiveData(this.getText(), classification)
   }
 
   SensitiveDataClassification getClassification() { result = classification }

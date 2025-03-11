@@ -1,6 +1,7 @@
 | aliases.go:19:6:19:7 | S3 | aliases.go:6:18:6:37 | struct type | x | int |
 | aliases.go:19:6:19:7 | S3 | aliases.go:8:18:8:37 | struct type | x | int |
 | aliases.go:19:6:19:7 | S3 | aliases.go:19:9:19:23 | struct type | x | int |
+| aliases.go:29:6:29:11 | MyType | aliases.go:29:26:29:44 | struct type | x | MyTypeT |
 | cyclic.go:3:6:3:6 | s | cyclic.go:3:8:5:1 | struct type | s | * s |
 | cyclic.go:7:6:7:6 | t | cyclic.go:7:8:10:1 | struct type | f | int |
 | cyclic.go:7:6:7:6 | t | cyclic.go:7:8:10:1 | struct type | t | t |

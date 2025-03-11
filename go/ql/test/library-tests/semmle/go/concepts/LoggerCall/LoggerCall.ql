@@ -8,8 +8,7 @@ module LoggerTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(LoggerCall log |
-      log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      log.getLocation() = location and
       element = log.toString() and
       value = log.getAMessageComponent().toString() and
       tag = "logger"

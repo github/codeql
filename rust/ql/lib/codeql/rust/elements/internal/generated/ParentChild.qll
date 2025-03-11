@@ -805,7 +805,7 @@ private module Impl {
   ) {
     exists(
       int b, int bAstNode, int n, int nGenericArgList, int nNameRef, int nParenthesizedArgList,
-      int nPathType, int nRetType, int nReturnTypeSyntax, int nTypeRepr
+      int nRetType, int nReturnTypeSyntax, int nTypeRepr, int nTraitTypeRepr
     |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
@@ -813,10 +813,10 @@ private module Impl {
       nGenericArgList = n + 1 and
       nNameRef = nGenericArgList + 1 and
       nParenthesizedArgList = nNameRef + 1 and
-      nPathType = nParenthesizedArgList + 1 and
-      nRetType = nPathType + 1 and
+      nRetType = nParenthesizedArgList + 1 and
       nReturnTypeSyntax = nRetType + 1 and
       nTypeRepr = nReturnTypeSyntax + 1 and
+      nTraitTypeRepr = nTypeRepr + 1 and
       (
         none()
         or
@@ -831,10 +831,8 @@ private module Impl {
         partialPredicateCall = "ParenthesizedArgList()"
         or
         index = nParenthesizedArgList and
-        result = e.getPathType() and
-        partialPredicateCall = "PathType()"
-        or
-        index = nPathType and result = e.getRetType() and partialPredicateCall = "RetType()"
+        result = e.getRetType() and
+        partialPredicateCall = "RetType()"
         or
         index = nRetType and
         result = e.getReturnTypeSyntax() and
@@ -843,6 +841,10 @@ private module Impl {
         index = nReturnTypeSyntax and
         result = e.getTypeRepr() and
         partialPredicateCall = "TypeRepr()"
+        or
+        index = nTypeRepr and
+        result = e.getTraitTypeRepr() and
+        partialPredicateCall = "TraitTypeRepr()"
       )
     )
   }
@@ -901,12 +903,15 @@ private module Impl {
   private Element getImmediateChildOfRecordField(
     RecordField e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bAstNode, int n, int nAttr, int nName, int nTypeRepr, int nVisibility |
+    exists(
+      int b, int bAstNode, int n, int nAttr, int nExpr, int nName, int nTypeRepr, int nVisibility
+    |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nName = nAttr + 1 and
+      nExpr = nAttr + 1 and
+      nName = nExpr + 1 and
       nTypeRepr = nName + 1 and
       nVisibility = nTypeRepr + 1 and
       (
@@ -917,7 +922,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getName() and partialPredicateCall = "Name()"
+        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        or
+        index = nExpr and result = e.getName() and partialPredicateCall = "Name()"
         or
         index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or

@@ -24,6 +24,6 @@
 | PostUpdateNode should not be the target of local flow | 0 |
 | PostUpdateNode should not equal its pre-update node | 0 |
 | Read step does not preserve enclosing callable | 0 |
-| Speculative step already hasM Model | 0 |
+| Speculative step already has Model | 0 |
 | Store step does not preserve enclosing callable | 0 |
 | Type compatibility predicate is not reflexive | 0 |

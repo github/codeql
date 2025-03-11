@@ -141,6 +141,18 @@ module TaintedUrlSuffix {
         // If the regexp is unknown, assume it will extract the URL suffix
         not exists(re.getRoot())
       )
+      or
+      // Query-string parsers that strip off a leading '#' or '?'.
+      state1.isTaintedUrlSuffix() and
+      state2.isTaint() and
+      exists(DataFlow::CallNode call |
+        node1 = call.getArgument(0) and
+        node2 = call
+      |
+        call = API::moduleImport("query-string").getMember(["parse", "extract"]).getACall()
+        or
+        call = API::moduleImport("querystringify").getMember("parse").getACall()
+      )
     )
   }
 

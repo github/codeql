@@ -861,4 +861,31 @@ module ClientRequest {
       result = form.getMember("append").getACall().getParameter(1).asSink()
     }
   }
+
+  /**
+   * Threat model source representing HTTP response data.
+   * Marks nodes originating from a client request's response data as tainted.
+   */
+  private class ClientRequestThreatModel extends ThreatModelSource::Range {
+    ClientRequestThreatModel() { this = any(ClientRequest r).getAResponseDataNode() }
+
+    override string getThreatModel() { result = "response" }
+
+    override string getSourceType() { result = "HTTP response data" }
+  }
+
+  /**
+   * An additional taint step that captures taint propagation from the receiver of fetch response methods
+   * (such as "json", "text", "blob", and "arrayBuffer") to the call result.
+   */
+  private class FetchResponseStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() in ["json", "text", "blob", "arrayBuffer"] and
+        node1 = call.getReceiver() and
+        node2 = call and
+        call.getNumArgument() = 0
+      )
+    }
+  }
 }

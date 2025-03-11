@@ -225,10 +225,16 @@ abstract class DefImpl extends TDefImpl {
     )
   }
 
+  /**
+   * Holds if this definition is guaranteed to totally overwrite the
+   * destination buffer.
+   */
   abstract predicate isCertain();
 
+  /** Gets the value written to the destination variable by this definition. */
   abstract Node0Impl getValue();
 
+  /** Gets the operand that represents the address of this definition, if any. */
   Operand getAddressOperand() { none() }
 }
 
@@ -691,8 +697,10 @@ predicate outNodeHasAddressAndIndex(
  *
  * Holds if `node` is the node that corresponds to the definition of `def`.
  */
-predicate defToNode(Node node, Def def, SourceVariable sv, IRBlock bb, int i, boolean uncertain) {
-  def.hasIndexInBlock(bb, i, sv) and
+predicate defToNode(
+  Node node, DefinitionExt def, SourceVariable sv, IRBlock bb, int i, boolean uncertain
+) {
+  def.definesAt(sv, bb, i, _) and
   (
     nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
     or
@@ -1057,7 +1065,7 @@ module SsaCached {
   }
 
   cached
-  Definition phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
+  DefinitionExt phiHasInputFromBlockExt(PhiNode phi, IRBlock bb) {
     SsaImpl::phiHasInputFromBlockExt(phi, result, bb)
   }
 
@@ -1071,157 +1079,24 @@ module SsaCached {
   predicate variableWrite = SsaInput::variableWrite/4;
 }
 
-cached
-private newtype TSsaDef =
-  TDef(DefinitionExt def) or
-  TPhi(PhiNode phi)
-
-abstract private class SsaDef extends TSsaDef {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-
-  /** Gets the underlying non-phi definition or use. */
-  DefinitionExt asDef() { none() }
-
-  /** Gets the underlying phi node. */
-  PhiNode asPhi() { none() }
-
-  /** Gets the location of this element. */
-  abstract Location getLocation();
-}
-
-abstract class Def extends SsaDef, TDef {
-  DefinitionExt def;
-
-  Def() { this = TDef(def) }
-
-  final override DefinitionExt asDef() { result = def }
-
-  /** Gets the source variable underlying this SSA definition. */
-  final SourceVariable getSourceVariable() { result = def.getSourceVariable() }
-
-  override string toString() { result = def.toString() }
-
-  /**
-   * Holds if this definition (or use) has index `index` in block `block`,
-   * and is a definition (or use) of the variable `sv`.
-   */
-  predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-    def.definesAt(sv, block, index, _)
-  }
-
-  /** Gets the value written by this definition, if any. */
-  Node0Impl getValue() { none() }
-
-  /**
-   * Holds if this definition is guaranteed to overwrite the entire
-   * destination's allocation.
-   */
-  abstract predicate isCertain();
-
-  /** Gets the address operand written to by this definition. */
-  Operand getAddressOperand() { none() }
-
-  /** Gets the address written to by this definition. */
-  final Instruction getAddress() { result = this.getAddressOperand().getDef() }
-
-  /** Gets the indirection index of this definition. */
-  abstract int getIndirectionIndex();
-
-  /**
-   * Gets the indirection level that this definition is writing to.
-   * For instance, `x = y` is a definition of `x` at indirection level 1 and
-   * `*x = y` is a definition of `x` at indirection level 2.
-   */
-  abstract int getIndirection();
-
-  /**
-   * Gets a definition that ultimately defines this SSA definition and is not
-   * itself a phi node.
-   */
-  Def getAnUltimateDefinition() { result.asDef() = def.getAnUltimateDefinition() }
-}
-
-private predicate isGlobal(DefinitionExt def, GlobalDefImpl global) {
+/** Gets the `DefImpl` corresponding to `def`. */
+private DefImpl getDefImpl(SsaImpl::DefinitionExt def) {
   exists(SourceVariable sv, IRBlock bb, int i |
     def.definesAt(sv, bb, i, _) and
-    global.hasIndexInBlock(bb, i, sv)
+    result.hasIndexInBlock(bb, i, sv)
   )
 }
 
-private class NonGlobalDef extends Def {
-  NonGlobalDef() { not isGlobal(def, _) }
+class GlobalDef extends DefinitionExt {
+  GlobalDefImpl impl;
 
-  final override Location getLocation() { result = this.getImpl().getLocation() }
-
-  private DefImpl getImpl() {
-    exists(SourceVariable sv, IRBlock bb, int i |
-      this.hasIndexInBlock(bb, i, sv) and
-      result.hasIndexInBlock(bb, i, sv)
-    )
-  }
-
-  override Node0Impl getValue() { result = this.getImpl().getValue() }
-
-  override predicate isCertain() { this.getImpl().isCertain() }
-
-  override Operand getAddressOperand() { result = this.getImpl().getAddressOperand() }
-
-  override int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
-
-  override int getIndirection() { result = this.getImpl().getIndirection() }
-}
-
-class GlobalDef extends Def {
-  GlobalDefImpl global;
-
-  GlobalDef() { isGlobal(def, global) }
-
-  /** Gets a textual representation of this definition. */
-  override string toString() { result = global.toString() }
-
-  final override Location getLocation() { result = global.getLocation() }
+  GlobalDef() { impl = getDefImpl(this) }
 
   /**
-   * Gets the type of this definition after specifiers have been deeply stripped
-   * and typedefs have been resolved.
+   * Gets the global (or `static` local) variable written to by this SSA
+   * definition.
    */
-  DataFlowType getUnspecifiedType() { result = global.getUnspecifiedType() }
-
-  /**
-   * Gets the type of this definition, after typedefs have been resolved.
-   */
-  DataFlowType getUnderlyingType() { result = global.getUnderlyingType() }
-
-  /** Gets the `IRFunction` whose body is evaluated after this definition. */
-  IRFunction getIRFunction() { result = global.getIRFunction() }
-
-  /** Gets the global variable associated with this definition. */
-  GlobalLikeVariable getVariable() { result = global.getVariable() }
-
-  override predicate isCertain() { any() }
-
-  final override int getIndirectionIndex() { result = global.getIndirectionIndex() }
-
-  final override int getIndirection() { result = global.getIndirection() }
-}
-
-class Phi extends TPhi, SsaDef {
-  PhiNode phi;
-
-  Phi() { this = TPhi(phi) }
-
-  final override PhiNode asPhi() { result = phi }
-
-  final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
-
-  override string toString() { result = phi.toString() }
-
-  SsaPhiInputNode getNode(IRBlock block) { result.getPhiNode() = phi and result.getBlock() = block }
-
-  predicate hasInputFromBlock(Definition inp, IRBlock bb) { inp = phiHasInputFromBlockExt(phi, bb) }
-
-  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
+  GlobalLikeVariable getVariable() { result = impl.getVariable() }
 }
 
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
@@ -1259,12 +1134,12 @@ class PhiNode extends SsaImpl::DefinitionExt {
   }
 
   /** Gets a definition that is an input to this phi node. */
-  final Definition getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
+  final DefinitionExt getAnInput() { this.hasInputFromBlock(result, _, _, _, _) }
 }
 
 /** An static single assignment (SSA) definition. */
 class DefinitionExt extends SsaImpl::DefinitionExt {
-  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
+  private DefinitionExt getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is
@@ -1274,6 +1149,37 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
     result = this.getAPhiInputOrPriorDefinition*() and
     not result instanceof PhiNode
   }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  Node0Impl getValue() { result = getDefImpl(this).getValue() }
+
+  /** Gets the indirection index of this definition. */
+  int getIndirectionIndex() { result = getDefImpl(this).getIndirectionIndex() }
+
+  /** Gets the indirection of this definition. */
+  int getIndirection() { result = getDefImpl(this).getIndirection() }
+
+  /**
+   * Holds if this definition is guaranteed to totally overwrite the buffer
+   * being written to.
+   */
+  predicate isCertain() { getDefImpl(this).isCertain() }
+
+  /**
+   * Gets the enclosing declaration of this definition.
+   *
+   * Note that this may be a variable when this definition defines a global, or
+   * a static local, variable.
+   */
+  Declaration getFunction() { result = getDefImpl(this).getBlock().getEnclosingFunction() }
+
+  /** Gets the underlying type of the variable being defined by this definition. */
+  Type getUnderlyingType() { result = this.getSourceVariable().getType() }
+
+  /** Gets the unspecified type of the variable being defined by this definition. */
+  Type getUnspecifiedType() { result = this.getUnderlyingType().getUnspecifiedType() }
 
   /** Gets a node that represents a read of this SSA definition. */
   pragma[nomagic]
@@ -1285,7 +1191,5 @@ class DefinitionExt extends SsaImpl::DefinitionExt {
     )
   }
 }
-
-class Definition = SsaImpl::Definition;
 
 import SsaCached

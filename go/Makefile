@@ -61,7 +61,7 @@ test: all build/testdb/check-upgrade-path
 .PHONY: build/testdb/check-upgrade-path
 build/testdb/check-upgrade-path : build/testdb/go.dbscheme ql/lib/go.dbscheme
 	codeql dataset upgrade build/testdb --search-path ql/lib
-	diff -q build/testdb/go.dbscheme ql/lib/go.dbscheme
+	diff -u build/testdb/go.dbscheme ql/lib/go.dbscheme
 
 .PHONY: build/testdb/go.dbscheme
 build/testdb/go.dbscheme: ql/lib/upgrades/initial/go.dbscheme

@@ -1,7 +1,7 @@
 import go
 
 query predicate numberOfTypeParameters(TypeParamParentEntity parent, int n) {
-  exists(string file | file != "" | parent.hasLocationInfo(file, _, _, _, _)) and
+  exists(parent.getLocation().getFile()) and
   n = strictcount(TypeParamType tpt | tpt.getParent() = parent)
 }
 

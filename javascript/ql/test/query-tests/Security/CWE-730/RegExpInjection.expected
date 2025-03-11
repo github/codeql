@@ -28,11 +28,8 @@ edges
 | RegExpInjection.js:29:21:29:21 | s | RegExpInjection.js:31:23:31:23 | s | provenance |  |
 | RegExpInjection.js:33:12:33:14 | key | RegExpInjection.js:29:21:29:21 | s | provenance |  |
 | RegExpInjection.js:34:12:34:19 | getKey() | RegExpInjection.js:29:21:29:21 | s | provenance |  |
-| RegExpInjection.js:54:14:54:16 | key | RegExpInjection.js:54:14:54:27 | key.split(".") | provenance |  |
 | RegExpInjection.js:54:14:54:16 | key | RegExpInjection.js:54:14:54:27 | key.split(".") [ArrayElement] | provenance |  |
-| RegExpInjection.js:54:14:54:27 | key.split(".") | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | provenance |  |
 | RegExpInjection.js:54:14:54:27 | key.split(".") [ArrayElement] | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) [ArrayElement] | provenance |  |
-| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | provenance |  |
 | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) [ArrayElement] | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | provenance |  |
 | RegExpInjection.js:60:31:60:56 | input | RegExpInjection.js:64:14:64:18 | input | provenance |  |
 | RegExpInjection.js:60:39:60:56 | req.param("input") | RegExpInjection.js:60:31:60:56 | input | provenance |  |
@@ -81,9 +78,7 @@ nodes
 | RegExpInjection.js:46:27:46:31 | input | semmle.label | input |
 | RegExpInjection.js:47:26:47:30 | input | semmle.label | input |
 | RegExpInjection.js:54:14:54:16 | key | semmle.label | key |
-| RegExpInjection.js:54:14:54:27 | key.split(".") | semmle.label | key.split(".") |
 | RegExpInjection.js:54:14:54:27 | key.split(".") [ArrayElement] | semmle.label | key.split(".") [ArrayElement] |
-| RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | semmle.label | key.spl ... x => x) |
 | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) [ArrayElement] | semmle.label | key.spl ... x => x) [ArrayElement] |
 | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | semmle.label | key.spl ... in("-") |
 | RegExpInjection.js:60:31:60:56 | input | semmle.label | input |

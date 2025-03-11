@@ -1,22 +1,30 @@
 Framework name,URL,Package prefixes
-Standard library,https://pkg.go.dev/std, archive/* bufio bytes cmp compress/* container/* context crypto crypto/* database/* debug/* embed encoding encoding/* errors expvar flag fmt go/* hash hash/* html html/* image image/* index/* io io/* log log/* maps math math/* mime mime/* net net/* os os/* path path/* plugin reflect reflect/* regexp regexp/* slices sort strconv strings sync sync/* syscall syscall/* testing testing/* text/* time time/* unicode unicode/* unsafe
+Standard library,https://pkg.go.dev/std, archive/* bufio bytes cmp compress/* container/* context crypto crypto/* database/* debug/* embed encoding encoding/* errors expvar flag fmt go/* hash hash/* html html/* image image/* index/* io io/* log log/* maps math math/* mime mime/* net net/* os os/* path path/* plugin reflect reflect/* regexp regexp/* slices sort strconv strings sync sync/* syscall syscall/* testing testing/* text/* time time/* unicode unicode/* unsafe weak
 appleboy/gin-jwt,https://github.com/appleboy/gin-jwt,github.com/appleboy/gin-jwt*
 Afero,https://github.com/spf13/afero,github.com/spf13/afero*
 beego,https://beego.me/,github.com/astaxie/beego* github.com/beego/beego*
+Bun,https://bun.uptrace.dev/,github.com/uptrace/bun*
 CleverGo,https://github.com/clevergo/clevergo,clevergo.tech/clevergo* github.com/clevergo/clevergo*
 Couchbase official client(gocb),https://github.com/couchbase/gocb,github.com/couchbase/gocb* gopkg.in/couchbase/gocb*
 chi,https://go-chi.io/,github.com/go-chi/chi*
 Couchbase unofficial client,http://www.github.com/couchbase/go-couchbase,github.com/couchbaselabs/gocb*
 cristalhq/jwt,https://github.com/cristalhq/jwt,github.com/cristalhq/jwt*
 Echo,https://echo.labstack.com/,github.com/labstack/echo*
+env,https://github.com/caarlos0/env,github.com/caarlos0/env*
+envconfig,https://github.com/kelseyhightower/envconfig,github.com/kelseyhightower/envconfig*
+envy,https://github.com/gobuffalo/envy,github.com/gobuffalo/envy*
 fasthttp,https://github.com/valyala/fasthttp,github.com/valyala/fasthttp*
 Fiber,https://github.com/gofiber/fiber,github.com/gofiber/fiber*
 Fosite,https://github.com/ory/fosite,github.com/ory/fosite*
 gf-jwt,https://github.com/gogf/gf-jwt,github.com/gogf/gf-jwt*
 Gin,https://github.com/gin-gonic/gin,github.com/gin-gonic/gin*
 Glog,https://github.com/golang/glog,github.com/golang/glog* gopkg.in/glog* k8s.io/klog*
+GoDotEnv,https://github.com/joho/godotenv,github.com/joho/godotenv*
+GoFrame,https://goframe.org/en/,github.com/gogf/gf*
+GORM,https://gorm.io,github.com/go-gorm/gorm* github.com/jinzhu/gorm* gorm.io/gorm*
 Go JOSE,https://github.com/go-jose/go-jose,github.com/go-jose/go-jose* github.com/square/go-jose* gopkg.in/square/go-jose* gopkg.in/go-jose/go-jose*
 Go kit,https://gokit.io/,github.com/go-kit/kit*
+go-envparse,https://github.com/hashicorp/go-envparse,github.com/hashicorp/go-envparse*
 go-pg,https://pg.uptrace.dev/,github.com/go-pg/pg*
 go-restful,https://github.com/emicklei/go-restful,github.com/emicklei/go-restful*
 go-sh,https://github.com/codeskyblue/go-sh,github.com/codeskyblue/go-sh*
@@ -27,6 +35,7 @@ golang.org/x/net,https://pkg.go.dev/golang.org/x/net,golang.org/x/net*
 goproxy,https://github.com/elazarl/goproxy,github.com/elazarl/goproxy*
 gorilla/mux,https://github.com/gorilla/mux,github.com/gorilla/mux*
 gorilla/websocket,https://github.com/gorilla/websocket,github.com/gorilla/websocket*
+gorqlite,https://github.com/rqlite/gorqlite,github.com/raindog308/gorqlite* github.com/rqlite/gorqlite*
 goxpath,https://github.com/ChrisTrenkamp/goxpath/wiki,github.com/ChrisTrenkamp/goxpath*
 htmlquery,https://github.com/antchfx/htmlquery,github.com/antchfx/htmlquery*
 Iris,https://www.iris-go.com/,github.com/kataras/iris*
@@ -41,13 +50,17 @@ lestrrat-go/jwx,https://github.com/lestrrat-go/jwx,github.com/lestrrat-go/jwx* g
 lestrrat-go/libxml2,https://github.com/lestrrat-go/libxml2,github.com/lestrrat-go/libxml2*
 Logrus,https://github.com/sirupsen/logrus,github.com/Sirupsen/logrus* github.com/sirupsen/logrus*
 Macaron,https://gopkg.in/macaron.v1,gopkg.in/macaron*
+MongoDB Go Driver,https://www.mongodb.com/docs/drivers/go/current/,go.mongodb.org/mongo-driver*
 nhooyr.io/websocket,https://nhooyr.io/websocket,nhooyr.io/websocket*
 protobuf,https://pkg.go.dev/google.golang.org/protobuf,github.com/golang/protobuf* google.golang.org/protobuf*
 Revel,http://revel.github.io/,github.com/revel/revel* github.com/robfig/revel*
 SendGrid,https://github.com/sendgrid/sendgrid-go,github.com/sendgrid/sendgrid-go*
+sqlx,http://jmoiron.github.io/sqlx/,github.com/jmoiron/sqlx*
+Squirrel,https://github.com/Masterminds/squirrel,github.com/Masterminds/squirrel* github.com/lann/squirrel* gopkg.in/Masterminds/squirrel
 ws,https://github.com/gobwas/ws,github.com/gobwas/ws*
 xmlpath,https://gopkg.in/xmlpath.v2,gopkg.in/xmlpath* github.com/go-xmlpath/xmlpath* github.com/crankycoder/xmlpath* launchpad.net/xmlpath* github.com/masterzen/xmlpath* github.com/going/toolkit/xmlpath* gopkg.in/go-xmlpath/xmlpath*
 xmlquery,https://github.com/antchfx/xmlquery,github.com/antchfx/xmlquery*
+XORM,https://xorm.io,github.com/go-xorm/xorm* xorm.io/xorm*
 XPath,https://github.com/antchfx/xpath,github.com/antchfx/xpath*
 xpathparser,https://github.com/santhosh-tekuri/xpathparser,github.com/santhosh-tekuri/xpathparser*
 yaml,https://gopkg.in/yaml.v3,gopkg.in/yaml*

@@ -12,7 +12,7 @@ import (
 )
 
 var minGoVersion = util.NewSemVer("1.11")
-var maxGoVersion = util.NewSemVer("1.23")
+var maxGoVersion = util.NewSemVer("1.24")
 
 type versionInfo struct {
 	goModVersion util.SemVer // The version of Go found in the go directive in the `go.mod` file.

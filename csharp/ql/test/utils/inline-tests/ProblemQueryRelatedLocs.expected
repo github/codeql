@@ -1,0 +1,9 @@
+#select
+| InlineTests.cs:22:13:22:21 | "Alert:1" | This is a problem with $@ | InlineTests.cs:21:23:21:31 | "Related" | a related location |
+| InlineTests.cs:26:13:26:21 | "Alert:1" | This is a problem with $@ | InlineTests.cs:25:19:25:27 | "Related" | a related location |
+testFailures
+| InlineTests.cs:6:26:6:35 | // ... | Missing result: Alert |
+| InlineTests.cs:12:34:12:43 | // ... | Missing result: Alert |
+| InlineTests.cs:25:19:25:27 | "Related" | Unexpected result: RelatedLocation |
+| InlineTests.cs:34:30:34:39 | // ... | Missing result: Alert |
+| InlineTests.cs:39:33:39:42 | // ... | Missing result: Alert |

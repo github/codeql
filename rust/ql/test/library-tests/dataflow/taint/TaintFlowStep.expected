@@ -1,40 +1,16 @@
-additionalTaintStep
-| file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::crate::fmt::format | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::crate::fmt::format | MaD:3 |
-| file://:0:0:0:0 | [summary param] self in lang:alloc::_::<crate::string::String>::as_bytes | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::<crate::string::String>::as_bytes | MaD:1 |
-| file://:0:0:0:0 | [summary param] self in lang:alloc::_::<crate::string::String>::as_str | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::<crate::string::String>::as_str | MaD:2 |
-| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::collect | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::collect |  |
-| file://:0:0:0:0 | [summary param] self in lang:core::_::crate::iter::traits::iterator::Iterator::nth | file://:0:0:0:0 | [summary] read: Argument[self].Element in lang:core::_::crate::iter::traits::iterator::Iterator::nth |  |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::bytes | MaD:4 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | MaD:5 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text_with_charset | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text_with_charset | MaD:6 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::bytes | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::bytes | MaD:7 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::chunk | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)].Variant[crate::option::Option::Some(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::chunk | MaD:8 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text | MaD:9 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text_with_charset | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text_with_charset | MaD:10 |
-| main.rs:4:5:4:8 | 1000 | main.rs:4:5:4:12 | ... + ... |  |
-| main.rs:4:12:4:12 | i | main.rs:4:5:4:12 | ... + ... |  |
-| main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |  |
-| main.rs:13:10:13:10 | a | main.rs:13:10:13:14 | ... + ... |  |
-| main.rs:13:14:13:14 | 1 | main.rs:13:10:13:14 | ... + ... |  |
-| main.rs:18:11:18:11 | a | main.rs:18:10:18:11 | - ... |  |
-| main.rs:23:13:23:13 | a | main.rs:23:13:23:19 | a as u8 |  |
-| main.rs:24:10:24:10 | b | main.rs:24:10:24:17 | b as i64 |  |
-| main.rs:29:23:29:23 | i | main.rs:29:17:29:23 | FormatArgsExpr |  |
-| main.rs:33:24:33:24 | s | main.rs:33:18:33:24 | FormatArgsExpr |  |
-| main.rs:38:23:38:23 | s | main.rs:38:23:38:29 | s[...] |  |
-| main.rs:49:24:49:24 | i | main.rs:49:18:49:24 | FormatArgsExpr |  |
-| main.rs:54:14:54:16 | arr | main.rs:54:14:54:19 | arr[1] |  |
-| main.rs:64:24:64:24 | s | main.rs:64:24:64:27 | s[1] |  |
-| main.rs:64:24:64:27 | s[1] | main.rs:64:18:64:27 | FormatArgsExpr |  |
-| main.rs:69:9:69:12 | arr2 | main.rs:69:9:69:15 | arr2[1] |  |
-models
-| 1 | Summary: lang:alloc; <crate::string::String>::as_bytes; Argument[self]; ReturnValue; taint |
-| 2 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
-| 3 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
-| 4 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::bytes; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
-| 5 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::text; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
-| 6 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::text_with_charset; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
-| 7 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::response::Response>::bytes; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
-| 8 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::response::Response>::chunk; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)].Variant[crate::option::Option::Some(0)]; taint |
-| 9 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::response::Response>::text; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
-| 10 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::response::Response>::text_with_charset; Argument[self]; ReturnValue.Variant[crate::result::Result::Ok(0)]; taint |
+| main.rs:4:5:4:8 | 1000 | main.rs:4:5:4:12 | ... + ... |
+| main.rs:4:12:4:12 | i | main.rs:4:5:4:12 | ... + ... |
+| main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |
+| main.rs:13:10:13:10 | a | main.rs:13:10:13:14 | ... + ... |
+| main.rs:13:14:13:14 | 1 | main.rs:13:10:13:14 | ... + ... |
+| main.rs:18:11:18:11 | a | main.rs:18:10:18:11 | - ... |
+| main.rs:23:13:23:13 | a | main.rs:23:13:23:19 | a as u8 |
+| main.rs:24:10:24:10 | b | main.rs:24:10:24:17 | b as i64 |
+| main.rs:29:23:29:23 | i | main.rs:29:17:29:23 | FormatArgsExpr |
+| main.rs:33:24:33:24 | s | main.rs:33:18:33:24 | FormatArgsExpr |
+| main.rs:38:23:38:23 | s | main.rs:38:23:38:29 | s[...] |
+| main.rs:49:24:49:24 | i | main.rs:49:18:49:24 | FormatArgsExpr |
+| main.rs:54:14:54:16 | arr | main.rs:54:14:54:19 | arr[1] |
+| main.rs:64:24:64:24 | s | main.rs:64:24:64:27 | s[1] |
+| main.rs:64:24:64:27 | s[1] | main.rs:64:18:64:27 | FormatArgsExpr |
+| main.rs:69:9:69:12 | arr2 | main.rs:69:9:69:15 | arr2[1] |

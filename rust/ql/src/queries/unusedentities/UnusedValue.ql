@@ -22,4 +22,4 @@ where
   not isUnused(v) and
   not v instanceof DiscardVariable and
   not write.isInMacroExpansion()
-select write, "Variable $@ is assigned a value that is never used.", v, v.getName()
+select write, "Variable $@ is assigned a value that is never used.", v, v.getText()

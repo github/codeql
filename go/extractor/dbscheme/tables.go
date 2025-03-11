@@ -694,13 +694,13 @@ var BuiltinObjectType = NewUnionType("@builtinobject")
 // PkgObjectType is the type of imported packages
 var PkgObjectType = ObjectKind.NewBranch("@pkgobject")
 
-// TypeObjectType is the type of declared or built-in named types
+// TypeObjectType is the type of named types (predeclared types, defined types, type parameters and aliases which refer to those things)
 var TypeObjectType = NewUnionType("@typeobject")
 
-// DeclTypeObjectType is the type of declared named types
+// DeclTypeObjectType is the type of defined types, type parameters and aliases which refer to named types
 var DeclTypeObjectType = ObjectKind.NewBranch("@decltypeobject", TypeObjectType, DeclObjectType, TypeParamParentObjectType)
 
-// BuiltinTypeObjectType is the type of built-in named types
+// BuiltinTypeObjectType is the type of built-in types (predeclared types)
 var BuiltinTypeObjectType = ObjectKind.NewBranch("@builtintypeobject", TypeObjectType, BuiltinObjectType)
 
 // ValueObjectType is the type of declared or built-in variables or constants
@@ -855,8 +855,8 @@ var ChanTypes = map[gotypes.ChanDir]*BranchType{
 	gotypes.SendRecv: TypeKind.NewBranch("@sendrcvchantype", ChanType),
 }
 
-// NamedType is the type of named types
-var NamedType = TypeKind.NewBranch("@namedtype", CompositeType)
+// DefinedType is the type of defined types
+var DefinedType = TypeKind.NewBranch("@definedtype", CompositeType)
 
 // TypeSetLiteral is the type of type set literals
 var TypeSetLiteral = TypeKind.NewBranch("@typesetliteraltype", CompositeType)
@@ -1080,10 +1080,10 @@ var FieldStructsTable = NewTable("fieldstructs",
 	EntityColumn(StructType, "struct"),
 )
 
-// MethodHostsTable maps interface methods to the named type they belong to
+// MethodHostsTable maps interface methods to the defined type they belong to
 var MethodHostsTable = NewTable("methodhosts",
 	EntityColumn(ObjectType, "method"),
-	EntityColumn(NamedType, "host"),
+	EntityColumn(DefinedType, "host"),
 )
 
 // DefsTable maps identifiers to the objects they define
@@ -1110,7 +1110,7 @@ var TypeOfTable = NewTable("type_of",
 	EntityColumn(TypeType, "tp"),
 )
 
-// TypeNameTable is the table associating named types with their names
+// TypeNameTable is the table associating defined types with their names
 var TypeNameTable = NewTable("typename",
 	EntityColumn(TypeType, "tp").Unique(),
 	StringColumn("name"),
@@ -1135,10 +1135,10 @@ var BaseTypeTable = NewTable("base_type",
 	EntityColumn(TypeType, "tp"),
 )
 
-// UnderlyingTypeTable is the table associating named types with their
+// UnderlyingTypeTable is the table associating defined types with their
 // underlying type
 var UnderlyingTypeTable = NewTable("underlying_type",
-	EntityColumn(NamedType, "named").Unique(),
+	EntityColumn(DefinedType, "defined").Unique(),
 	EntityColumn(TypeType, "tp"),
 )
 

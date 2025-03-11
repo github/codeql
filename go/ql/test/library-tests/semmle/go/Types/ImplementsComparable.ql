@@ -11,8 +11,7 @@ module ImplementsComparableTest implements TestSig {
       ts.getName().matches("testComparable%") and
       ts.getATypeParameterDecl().getTypeConstraint().implementsComparable()
     |
-      ts.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      ts.getLocation() = location and
       element = ts.getName() and
       value = ""
     )

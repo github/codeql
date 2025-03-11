@@ -1,12 +1,13 @@
-use crate::diagnostics::{emit_extraction_diagnostics, ExtractionStep};
+use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::path_to_file_id;
+use crate::translate::ResolvePaths;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use log::{info, warn};
 use ra_ap_hir::Semantics;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_load_cargo::LoadCargoConfig;
 use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
@@ -16,6 +17,9 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use tracing::{error, info, warn};
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
@@ -41,7 +45,7 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &rust_analyzer::RustAnalyzer, file: &std::path::Path) {
+    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, resolve_paths: ResolvePaths) {
         self.archiver.archive(file);
 
         let before_parse = Instant::now();
@@ -64,6 +68,7 @@ impl<'a> Extractor<'a> {
             label,
             line_index,
             semantics_info.as_ref().ok(),
+            resolve_paths,
         );
 
         for err in errors {
@@ -85,7 +90,7 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(ast);
         translator.trap.commit().unwrap_or_else(|err| {
-            log::error!(
+            error!(
                 "Failed to write trap file for: {}: {}",
                 display_path,
                 err.to_string()
@@ -100,21 +105,27 @@ impl<'a> Extractor<'a> {
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
+        resolve_paths: ResolvePaths,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file);
+        self.extract(&RustAnalyzer::new(vfs, semantics), file, resolve_paths);
     }
 
     pub fn extract_without_semantics(&mut self, file: &Path, reason: &str) {
-        self.extract(&RustAnalyzer::WithoutSemantics { reason }, file);
+        self.extract(
+            &RustAnalyzer::WithoutSemantics { reason },
+            file,
+            ResolvePaths::No,
+        );
     }
 
     pub fn load_manifest(
         &mut self,
         project: &ProjectManifest,
         config: &CargoConfig,
+        load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let before = Instant::now();
-        let ret = RustAnalyzer::load_workspace(project, config);
+        let ret = RustAnalyzer::load_workspace(project, config, load_config);
         self.steps
             .push(ExtractionStep::load_manifest(before, project));
         ret
@@ -179,15 +190,27 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let start = Instant::now();
     let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    stderrlog::new()
-        .module(module_path!())
-        .verbosity(2 + cfg.verbose as usize)
-        .init()?;
     if cfg.qltest {
         qltest::prepare(&mut cfg)?;
     }
+    let start = Instant::now();
+    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
+        tracing_flame::FlameLayer::with_file(path)
+            .ok()
+            .map(|(a, b)| (Some(a), Some(b)))
+            .unwrap_or((None, None))
+    } else {
+        (None, None)
+    };
+
+    tracing_subscriber::registry()
+        .with(codeql_extractor::extractor::default_subscriber_with_level(
+            "single_arch",
+            &cfg.logging_verbosity,
+        ))
+        .with(flame_layer)
+        .init();
     info!("{cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
@@ -221,13 +244,23 @@ fn main() -> anyhow::Result<()> {
         }
         extractor.extract_without_semantics(file, "no manifest found");
     }
-    let cargo_config = cfg.to_cargo_config(&cwd()?);
+    let cwd = cwd()?;
+    let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
+    let resolve_paths = if cfg.skip_path_resolution {
+        ResolvePaths::No
+    } else {
+        ResolvePaths::Yes
+    };
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
-        if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
+        if let Some((ref db, ref vfs)) =
+            extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
+        {
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs),
+                    Ok(()) => {
+                        extractor.extract_with_semantics(file, &semantics, vfs, resolve_paths)
+                    }
                     Err(reason) => extractor.extract_without_semantics(file, &reason),
                 };
             }
@@ -237,6 +270,5 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
-
     extractor.emit_extraction_diagnostics(start, &cfg)
 }

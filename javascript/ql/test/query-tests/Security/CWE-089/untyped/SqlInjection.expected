@@ -52,12 +52,10 @@ nodes
 | json-schema-validator.js:61:22:61:26 | query | semmle.label | query |
 | koarouter.js:5:11:5:33 | version | semmle.label | version |
 | koarouter.js:5:13:5:19 | version | semmle.label | version |
-| koarouter.js:14:9:14:18 | [post update] conditions | semmle.label | [post update] conditions |
 | koarouter.js:14:9:14:18 | [post update] conditions [ArrayElement] | semmle.label | [post update] conditions [ArrayElement] |
 | koarouter.js:14:25:14:46 | `versio ... rsion}` | semmle.label | `versio ... rsion}` |
 | koarouter.js:14:38:14:44 | version | semmle.label | version |
 | koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | semmle.label | `SELECT ... nd ')}` |
-| koarouter.js:17:52:17:61 | conditions | semmle.label | conditions |
 | koarouter.js:17:52:17:61 | conditions [ArrayElement] | semmle.label | conditions [ArrayElement] |
 | koarouter.js:17:52:17:75 | conditi ...  and ') | semmle.label | conditi ...  and ') |
 | ldap.js:20:7:20:34 | q | semmle.label | q |
@@ -324,12 +322,9 @@ edges
 | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:50:23:50:48 | JSON.pa ... y.data) | provenance | Config |
 | koarouter.js:5:11:5:33 | version | koarouter.js:14:38:14:44 | version | provenance |  |
 | koarouter.js:5:13:5:19 | version | koarouter.js:5:11:5:33 | version | provenance |  |
-| koarouter.js:14:9:14:18 | [post update] conditions | koarouter.js:17:52:17:61 | conditions | provenance |  |
 | koarouter.js:14:9:14:18 | [post update] conditions [ArrayElement] | koarouter.js:17:52:17:61 | conditions [ArrayElement] | provenance |  |
-| koarouter.js:14:25:14:46 | `versio ... rsion}` | koarouter.js:14:9:14:18 | [post update] conditions | provenance |  |
 | koarouter.js:14:25:14:46 | `versio ... rsion}` | koarouter.js:14:9:14:18 | [post update] conditions [ArrayElement] | provenance |  |
 | koarouter.js:14:38:14:44 | version | koarouter.js:14:25:14:46 | `versio ... rsion}` | provenance |  |
-| koarouter.js:17:52:17:61 | conditions | koarouter.js:17:52:17:75 | conditi ...  and ') | provenance |  |
 | koarouter.js:17:52:17:61 | conditions [ArrayElement] | koarouter.js:17:52:17:75 | conditi ...  and ') | provenance |  |
 | koarouter.js:17:52:17:75 | conditi ...  and ') | koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | provenance |  |
 | ldap.js:20:7:20:34 | q | ldap.js:22:18:22:18 | q | provenance |  |

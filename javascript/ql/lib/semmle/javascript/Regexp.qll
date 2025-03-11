@@ -1162,6 +1162,10 @@ module RegExp {
   bindingset[flags]
   predicate isDotAll(string flags) { flags.matches("%s%") }
 
+  /** Holds if `flags` includes the `v` flag. */
+  bindingset[flags]
+  predicate isUnicodeSets(string flags) { flags.matches("%v%") }
+
   /** Holds if `flags` includes the `m` flag or is the unknown flag `?`. */
   bindingset[flags]
   predicate maybeMultiline(string flags) { flags = unknownFlag() or isMultiline(flags) }
