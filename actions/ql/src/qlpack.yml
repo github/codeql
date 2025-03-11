@@ -8,3 +8,4 @@ extractor: actions
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
   codeql/actions-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
