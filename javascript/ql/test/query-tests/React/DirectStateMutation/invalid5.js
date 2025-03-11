@@ -3,7 +3,7 @@
 var Hello = React.createClass({
   render: function() {
     var that = this;
-    that.state.person.name.first = "bar"
+    that.state.person.name.first = "bar" // $ Alert
     return <div>Hello</div>;
   }
 });

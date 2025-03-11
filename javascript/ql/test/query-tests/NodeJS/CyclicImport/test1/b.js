@@ -1,1 +1,1 @@
-require('../test2/inner/a');
+require('../test2/inner/a'); // $ Alert

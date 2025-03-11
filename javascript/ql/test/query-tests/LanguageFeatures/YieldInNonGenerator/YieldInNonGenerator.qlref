@@ -1,1 +1,2 @@
-LanguageFeatures/YieldInNonGenerator.ql
+query: LanguageFeatures/YieldInNonGenerator.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -8,7 +8,7 @@ window.onmessage = event => { // OK - good origin check
     eval(event.data);
 }
 
-window.onmessage = event => { // NOT OK - no origin check
+window.onmessage = event => { // $ Alert - no origin check
     let origin = event.origin.toLowerCase();
 
     console.log(origin);
@@ -21,7 +21,7 @@ window.onmessage = event => { // OK - there is an origin check
     }
 }
 
-self.onmessage = function(e) { // NOT OK
+self.onmessage = function(e) { // $ Alert
     Commands[e.data.cmd].apply(null, e.data.args);
 };
 
@@ -37,7 +37,7 @@ window.onmessage = event => { // OK - there is an origin check
     }
 }
 
-self.onmessage = function(e) { // NOT OK
+self.onmessage = function(e) { // $ Alert
     Commands[e.data.cmd].apply(null, e.data.args);
 };
 

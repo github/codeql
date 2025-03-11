@@ -1,1 +1,1 @@
-window.parent.postMessage(userName, '*');
+window.parent.postMessage(userName, '*'); // $ Alert

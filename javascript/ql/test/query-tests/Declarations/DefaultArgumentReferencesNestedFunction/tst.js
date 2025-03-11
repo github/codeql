@@ -1,4 +1,4 @@
-function f(x, y = defaultVal(x)) {
+function f(x, y = defaultVal(x)) { // $ Alert
     function defaultVal(x) {
         return x+19;
     }

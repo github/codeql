@@ -1,1 +1,2 @@
-Security/CWE-094/ImproperCodeSanitization.ql
+query: Security/CWE-094/ImproperCodeSanitization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
