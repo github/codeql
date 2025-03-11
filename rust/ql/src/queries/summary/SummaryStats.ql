@@ -9,7 +9,6 @@
 import rust
 import codeql.rust.Concepts
 import codeql.rust.security.SensitiveData
-import codeql.rust.security.WeakSensitiveDataHashingExtensions
 import codeql.rust.Diagnostics
 import Stats
 import TaintReach
@@ -22,13 +21,14 @@ class CrateElement extends Element {
   }
 }
 
-from string key, int value
-where
+predicate elementStats(string key, int value) {
   key = "Elements extracted" and
   value = count(Element e | not e instanceof Unextracted and not e instanceof CrateElement)
   or
   key = "Elements unextracted" and value = count(Unextracted e)
-  or
+}
+
+predicate extractionStats(string key, int value) {
   key = "Extraction errors" and value = count(ExtractionError e)
   or
   key = "Extraction warnings" and value = count(ExtractionWarning w)
@@ -53,6 +53,14 @@ where
   or
   key = "Lines of user code extracted" and value = getLinesOfUserCode()
   or
+  key = "Macro calls - total" and value = count(MacroCall mc)
+  or
+  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
+  or
+  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
+}
+
+predicate inconsistencyStats(string key, int value) {
   key = "Inconsistencies - AST" and value = getTotalAstInconsistencies()
   or
   key = "Inconsistencies - Path resolution" and value = getTotalPathResolutionInconsistencies()
@@ -60,13 +68,9 @@ where
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
-  or
-  key = "Macro calls - total" and value = count(MacroCall mc)
-  or
-  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
-  or
-  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
-  or
+}
+
+predicate taintStats(string key, int value) {
   key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
   or
   key = "Taint sources - disabled" and
@@ -84,4 +88,15 @@ where
   or
   key = "Taint sinks - cryptographic operations" and
   value = count(Cryptography::CryptographicOperation o)
+}
+
+from string key, int value
+where
+  elementStats(key, value)
+  or
+  extractionStats(key, value)
+  or
+  inconsistencyStats(key, value)
+  or
+  taintStats(key, value)
 select key, value order by key
