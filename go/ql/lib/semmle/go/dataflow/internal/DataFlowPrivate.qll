@@ -65,23 +65,34 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     else nodeTo.asInstruction() = evalAssert
   )
   or
-  // Instruction -> SSA
+  // Instruction -> SSA defn
   exists(IR::Instruction pred, SsaExplicitDefinition succ |
     succ.getRhs() = pred and
     nodeFrom = instructionNode(pred) and
-    nodeTo = ssaNode(succ)
+    nodeTo = ssaNode(succ.getVariable())
   )
   or
-  // SSA -> SSA
-  exists(SsaDefinition pred, SsaPseudoDefinition succ | succ.getAnInput() = pred |
-    nodeFrom = ssaNode(pred) and
-    nodeTo = ssaNode(succ)
+  // SSA defn -> SSA capture
+  exists(SsaExplicitDefinition pred, SsaVariableCapture succ |
+    // Check: should these flow from PHIs as well? Perhaps they should be included
+    // in the use-use graph?
+    succ.getSourceVariable() = pred.getSourceVariable()
+  |
+    nodeFrom = ssaNode(pred.getVariable()) and
+    nodeTo = ssaNode(succ.getVariable())
   )
   or
-  // SSA -> Instruction
-  exists(SsaDefinition pred, IR::Instruction succ |
-    succ = pred.getVariable().getAUse() and
-    nodeFrom = ssaNode(pred) and
+  // SSA defn -> first SSA use
+  exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
+    (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
+    nodeFrom = ssaNode(pred.getVariable()) and
+    nodeTo = instructionNode(succ)
+  )
+  or
+  // SSA use -> successive SSA use
+  // Note this case includes Phi node traversal
+  exists(IR::Instruction pred, IR::Instruction succ | succ = getAnAdjacentUse(pred) |
+    nodeFrom = instructionNode(pred) and
     nodeTo = instructionNode(succ)
   )
   or
