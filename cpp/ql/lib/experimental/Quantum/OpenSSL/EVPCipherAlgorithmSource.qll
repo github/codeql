@@ -9,9 +9,9 @@ import OpenSSLAlgorithmGetter
  * If the literal does not represent any known cipher algorithm,
  * this predicate will not hold (i.e., it will not bind an unknown to an unknown cipher type)
  */
-predicate literalToCipherFamilyType(Literal e, Crypto::TCipherType type) {
-  exists(string name, string algType | algType.toLowerCase().matches("%encryption") |
-    resolveAlgorithmFromLiteral(e, name, algType) and
+predicate knownOpenSSLConstantToCipherFamilyType(KnownOpenSSLAlgorithmConstant e, Crypto::TCipherType type) {
+  exists(string name | e.getAlgType().toLowerCase().matches("%encryption") |
+    name = e.getNormalizedName() and
     (
       name.matches("AES%") and type instanceof Crypto::AES
       or
@@ -97,5 +97,9 @@ class KnownOpenSSLCipherConstantAlgorithmInstance extends Crypto::CipherAlgorith
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
-  override Crypto::TCipherType getCipherFamily() { literalToCipherFamilyType(this, result) }
+  override Crypto::TCipherType getCipherFamily() { 
+    knownOpenSSLConstantToCipherFamilyType(this, result) 
+    or
+    not knownOpenSSLConstantToCipherFamilyType(this, _) and result = Crypto::OtherCipherType()
+  }
 }

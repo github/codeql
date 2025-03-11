@@ -2,9 +2,9 @@ import cpp
 import experimental.Quantum.Language
 import OpenSSLAlgorithmGetter
 
-predicate literalToHashFamilyType(Literal e, Crypto::THashType type) {
-  exists(string name, string algType | algType.toLowerCase().matches("hash") |
-    resolveAlgorithmFromLiteral(e, name, algType) and
+predicate knownOpenSSLConstantToHashFamilyType(KnownOpenSSLAlgorithmConstant e, Crypto::THashType type) {
+  exists(string name | e.getAlgType().toLowerCase().matches("hash") |
+    name = e.getNormalizedName() and
     (
       name.matches("BLAKE2B") and type instanceof Crypto::BLAKE2B
       or
@@ -70,7 +70,10 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends Crypto::HashAlgorithmIns
     AlgGetterToAlgConsumerFlow::flow(getterCall.getResultNode(), DataFlow::exprNode(result))
   }
 
-  override Crypto::THashType getHashFamily() { literalToHashFamilyType(this, result) }
+  override Crypto::THashType getHashFamily() { 
+    knownOpenSSLConstantToHashFamilyType(this, result) or
+    not knownOpenSSLConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
+  }
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
