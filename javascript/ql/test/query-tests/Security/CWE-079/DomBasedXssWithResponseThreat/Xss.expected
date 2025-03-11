@@ -1,5 +1,7 @@
 #select
 | test.jsx:27:29:27:32 | data | test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:27:29:27:32 | data | Cross-site scripting vulnerability due to $@. | test.jsx:5:28:5:63 | fetch(" ... ntent") | user-provided value |
+| test.ts:21:57:21:76 | response.description | test.ts:8:9:8:79 | this.#h ... query') | test.ts:21:57:21:76 | response.description | Cross-site scripting vulnerability due to $@. | test.ts:8:9:8:79 | this.#h ... query') | user-provided value |
+| test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | test.ts:8:9:8:79 | this.#h ... query') | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | Cross-site scripting vulnerability due to $@. | test.ts:8:9:8:79 | this.#h ... query') | user-provided value |
 | testReactRelay.tsx:7:43:7:58 | commentData.text | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | testReactRelay.tsx:7:43:7:58 | commentData.text | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | user-provided value |
 | testReactRelay.tsx:18:48:18:68 | data.co ... 0].text | testReactRelay.tsx:17:16:17:42 | useLazy ... ry, {}) | testReactRelay.tsx:18:48:18:68 | data.co ... 0].text | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:17:16:17:42 | useLazy ... ry, {}) | user-provided value |
 | testReactRelay.tsx:28:17:28:67 | usePrel ... r?.name | testReactRelay.tsx:28:17:28:56 | usePrel ... erence) | testReactRelay.tsx:28:17:28:67 | usePrel ... r?.name | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:28:17:28:56 | usePrel ... erence) | user-provided value |
@@ -20,6 +22,15 @@ edges
 | test.jsx:6:24:6:38 | response.json() | test.jsx:6:18:6:38 | await r ... .json() | provenance |  |
 | test.jsx:7:12:7:15 | data | test.jsx:15:11:17:5 | data | provenance |  |
 | test.jsx:15:11:17:5 | data | test.jsx:27:29:27:32 | data | provenance |  |
+| test.ts:8:9:8:79 | this.#h ... query') | test.ts:20:28:20:35 | response | provenance |  |
+| test.ts:20:28:20:35 | response | test.ts:21:57:21:64 | response | provenance |  |
+| test.ts:20:28:20:35 | response | test.ts:24:43:24:50 | response | provenance |  |
+| test.ts:20:28:20:35 | response | test.ts:24:67:24:74 | response | provenance |  |
+| test.ts:21:57:21:64 | response | test.ts:21:57:21:76 | response.description | provenance |  |
+| test.ts:24:43:24:50 | response | test.ts:24:43:24:55 | response.name | provenance |  |
+| test.ts:24:43:24:55 | response.name | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | provenance |  |
+| test.ts:24:67:24:74 | response | test.ts:24:67:24:84 | response.owner.bio | provenance |  |
+| test.ts:24:67:24:84 | response.owner.bio | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | provenance |  |
 | testReactRelay.tsx:5:9:5:52 | commentData | testReactRelay.tsx:7:43:7:53 | commentData | provenance |  |
 | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | testReactRelay.tsx:5:9:5:52 | commentData | provenance |  |
 | testReactRelay.tsx:7:43:7:53 | commentData | testReactRelay.tsx:7:43:7:58 | commentData.text | provenance |  |
@@ -56,6 +67,15 @@ nodes
 | test.jsx:7:12:7:15 | data | semmle.label | data |
 | test.jsx:15:11:17:5 | data | semmle.label | data |
 | test.jsx:27:29:27:32 | data | semmle.label | data |
+| test.ts:8:9:8:79 | this.#h ... query') | semmle.label | this.#h ... query') |
+| test.ts:20:28:20:35 | response | semmle.label | response |
+| test.ts:21:57:21:64 | response | semmle.label | response |
+| test.ts:21:57:21:76 | response.description | semmle.label | response.description |
+| test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | semmle.label | `<h2>${ ... o}</p>` |
+| test.ts:24:43:24:50 | response | semmle.label | response |
+| test.ts:24:43:24:55 | response.name | semmle.label | response.name |
+| test.ts:24:67:24:74 | response | semmle.label | response |
+| test.ts:24:67:24:84 | response.owner.bio | semmle.label | response.owner.bio |
 | testReactRelay.tsx:5:9:5:52 | commentData | semmle.label | commentData |
 | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | semmle.label | useFrag ... entRef) |
 | testReactRelay.tsx:7:43:7:53 | commentData | semmle.label | commentData |
@@ -92,7 +112,3 @@ nodes
 | testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | semmle.label | readFra ... y, key) |
 | testReactRelay.tsx:137:50:137:53 | data | semmle.label | data |
 subpaths
-testFailures
-| test.ts:8:82:8:92 | // $ Source | Missing result: Source |
-| test.ts:21:79:21:88 | // $ Alert | Missing result: Alert |
-| test.ts:24:94:24:103 | // $ Alert | Missing result: Alert |
