@@ -9,7 +9,7 @@
  *    v
  *   `sinkNode` predicate | other QL defined sinks, for example using concepts
  *    v                      v
- *   various `Sink` classes for specific data flow configurations
+ *   various `Sink` classes for specific data flow configurations <- extending `QuerySink`
  *
  * New sinks should be defined using models-as-data, QL extensions of
  * `FlowSink::Range`, or concepts. Data flow configurations should use the

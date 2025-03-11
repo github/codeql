@@ -9,6 +9,8 @@ private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
+private import codeql.rust.Concepts
+// import all query extensions files, so that all extensions of `QuerySink` are found
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
 
@@ -56,15 +58,6 @@ int getTaintEdgesCount() {
 }
 
 /**
- * Gets a kind of query for which `n` is a sink (if any).
- */
-string getAQuerySinkKind(DataFlow::Node n) {
-  n instanceof SqlInjection::Sink and result = "SqlInjection"
-  or
-  n instanceof CleartextLogging::Sink and result = "CleartextLogging"
-}
-
-/**
  * Gets a count of the total number of query sinks in the database.
  */
-int getQuerySinksCount() { result = count(DataFlow::Node n | exists(getAQuerySinkKind(n))) }
+int getQuerySinksCount() { result = count(QuerySink s) }
