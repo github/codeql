@@ -190,13 +190,16 @@ module Angular2 {
     result.hasUnderlyingType("@angular/common/http", "HttpClient")
   }
 
+  /** Gets a reference to an `HttpClient` object using the API graph. */
+  API::Node httpClientApiNode() { result = API::Node::ofType("@angular/common/http", "HttpClient") }
+
   private class AngularClientRequest extends ClientRequest::Range, DataFlow::MethodCallNode {
     int argumentOffset;
 
     AngularClientRequest() {
-      this = httpClient().getAMethodCall("request") and argumentOffset = 1
+      this = httpClientApiNode().getMember("request").getACall() and argumentOffset = 1
       or
-      this = httpClient().getAMethodCall() and
+      this = httpClientApiNode().getAMember().getACall() and
       not this.getMethodName() = "request" and
       argumentOffset = 0
     }
