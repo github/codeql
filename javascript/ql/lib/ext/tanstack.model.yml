@@ -4,3 +4,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["@tanstack/angular-query-experimental", "Member[injectQuery]", "Argument[0].ReturnValue.Member[queryFn].ReturnValue", "ReturnValue.Member[data].Awaited", "taint"]
+      - ["@tanstack/angular-query", "Member[injectQuery]", "Argument[0].ReturnValue.Member[queryFn].ReturnValue", "ReturnValue.Member[data].Awaited", "taint"]
