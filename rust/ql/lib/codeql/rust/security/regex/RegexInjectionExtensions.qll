@@ -15,7 +15,7 @@ private import codeql.rust.Concepts
  */
 abstract class RegexInjectionSink extends QuerySink::Range {
   override string getSinkType() { result = "RegexInjection" }
- }
+}
 
 /**
  * A barrier for regular expression injection vulnerabilities.

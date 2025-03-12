@@ -17,7 +17,7 @@
  *  v
  * various Source classes for specific data flow configurations
  * ```
-
+ *
  * New sources should be defined using models-as-data or QL extensions of
  * `FlowSource::Range`. Data flow configurations on the other hand should use
  * `ActiveThreatModelSource` to match sources enabled in the user
