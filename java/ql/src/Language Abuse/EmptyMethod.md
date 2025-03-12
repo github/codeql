@@ -1,6 +1,6 @@
 ## Overview
 
-An empty method may indicate that an implementation was intended to be provided but was accidentally omitted. When using the method, it will not be clear that it does not provide an implentation and with dynamic dispatch, resolving to a blank method may result in unexpected program behaviour.
+An empty method may indicate that an implementation was intended to be provided but was accidentally omitted. When using the method, it will not be clear that it does not provide an implementation and with dynamic dispatch, resolving to a blank method may result in unexpected program behaviour.
 
 ## Recommendation
 
