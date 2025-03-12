@@ -5,14 +5,14 @@ function paste(e) {
     if (!clipboardData) return;
 
     const text = clipboardData.getData('text/plain');
-    const html = clipboardData.getData('text/html');
+    const html = clipboardData.getData('text/html'); // $ Source
     if (!text && !html) return;
 
     e.preventDefault();
 
     const div = document.createElement('div');
     if (html) {
-        div.innerHTML = html; // NOT OK
+        div.innerHTML = html; // $ Alert
     } else {
         div.textContent = text;
     }
@@ -21,16 +21,16 @@ function paste(e) {
 
 export function install(el: HTMLElement): void {
     el.addEventListener('paste', (e) => {
-        $("#id").html(e.clipboardData.getData('text/html')); // NOT OK    
+        $("#id").html(e.clipboardData.getData('text/html')); // $ Alert
     })
 }
 
 document.addEventListener('paste', (e) => {
-    $("#id").html(e.clipboardData.getData('text/html')); // NOT OK
+    $("#id").html(e.clipboardData.getData('text/html')); // $ Alert
 });
 
 $("#foo").bind('paste', (e) => {
-    $("#id").html(e.originalEvent.clipboardData.getData('text/html')); // NOT OK
+    $("#id").html(e.originalEvent.clipboardData.getData('text/html')); // $ Alert
 });
 
 (function () {
@@ -40,14 +40,14 @@ $("#foo").bind('paste', (e) => {
         if (!clipboardData) return;
 
         const text = clipboardData.getData('text/plain');
-        const html = clipboardData.getData('text/html');
+        const html = clipboardData.getData('text/html'); // $ Source
         if (!text && !html) return;
 
         e.preventDefault();
 
         const div = document.createElement('div');
         if (html) {
-            div.innerHTML = html; // NOT OK
+            div.innerHTML = html; // $ Alert
         } else {
             div.textContent = text;
         }
@@ -68,9 +68,9 @@ async function getClipboardData(e: ClipboardEvent): Promise<Array<File | string>
     }
   
     if (e.clipboardData.types.includes('text/html')) {
-      const droppedHtml = e.clipboardData.getData('text/html');
+      const droppedHtml = e.clipboardData.getData('text/html'); // $ Source
       const container = document.createElement('html');
-      container.innerHTML = droppedHtml;
+      container.innerHTML = droppedHtml; // $ Alert
       const imgs = container.getElementsByTagName('img');
       if (imgs.length === 1) {
         const src = imgs[0].src;
@@ -95,7 +95,7 @@ async function getClipboardData(e: ClipboardEvent): Promise<Array<File | string>
         const { data, inputType, isComposing, dataTransfer } = e;
         if (!dataTransfer) return;
 
-        const html = dataTransfer.getData('text/html');
-        $("#id").html(html); // NOT OK
+        const html = dataTransfer.getData('text/html'); // $ Source
+        $("#id").html(html); // $ Alert
     });
 })();

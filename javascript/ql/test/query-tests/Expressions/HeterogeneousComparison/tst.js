@@ -1,137 +1,127 @@
-// NOT OK
-if (typeof window !== undefined)
+if (typeof window !== undefined) // $ Alert
   console.log("browser");
 
-// OK
+
 if (typeof window === "undefined")
   console.log("not a browser");
 
-// NOT OK
-if ("Hello, world".indexOf("Hello" >= 0))
+if ("Hello, world".indexOf("Hello" >= 0)) // $ Alert
   console.log("It's in there.");
 
-// OK
+
 true < 1;
 
-// OK
+
 undefined == null;
 
-// NOT OK
-null == 0;
+null == 0; // $ Alert
 
-// NOT OK
 switch ("hi") {
-case 42:
+case 42: // $ Alert
 }
 
-// NOT OK
-Object.toString() + "!" == undefined;
+Object.toString() + "!" == undefined; // $ Alert
 
-// NOT OK
-(+f() || !g() || (h() + k())) == undefined;
+(+f() || !g() || (h() + k())) == undefined; // $ Alert
 
-// NOT OK
-if (!Module['load'] == 'undefined') {
+if (!Module['load'] == 'undefined') { // $ Alert
 }
 
 function f(x) {
   return true;
-  // OK
+
   return x === 42;
 }
 
 function g() {
   var number = 0; // number
-  // OK
+
   number == "0";
-  // NO OK
-  number == "zero";
+
+  number == "zero"; // $ Alert
 }
 
-// NOT OK
-0 < (Math.random() > 0.5 ? void 0 : [1, 2]);
+0 < (Math.random() > 0.5 ? void 0 : [1, 2]); // $ Alert
 
-// OK
+
 '100' < 1000;
 
-// OK (fvsvo "OK")
+// OK - fvsvo "OK"
 100 > '';
 
-// OK
+
 new Date('foo') == 'Invalid Date';
 
-// OK
+
 new String('bar') == 'bar';
 
-// OK
+
 ({ valueOf: () => true } == true);
 
-// OK
+
 ({ valueOf: () => 42 } == 42);
 
-// OK
+
 ({ valueOf: () => 'hi' } == 'hi');
 
-// OK
+
 ({ valueOf: () => null } == null);
 
-// NOT OK, but not currently flagged since we conservatively
-// assume that `new Date(123)` could return any object, not necessarily a Date
-new Date(123) == 123
+new Date(123) == 123; // $ MISSING: Alert - we conservatively assume that `new Date(123)` could return any object, not necessarily a Date
 
 function f(x1, x2, x3, x4, x5, x6){
-    typeof x1 === 'object' && x1 !== null; // OK
+    typeof x1 === 'object' && x1 !== null;
 
     if (!x2) {
         x2 = new Error();
     }
-    typeof x2 === 'object' && x2 !== null; // NOT OK: x2 cannot be null here
+    typeof x2 === 'object' && x2 !== null; // $ Alert - x2 cannot be null here
 
     if (x3) {
-        typeof x3 === 'object' && x3 !== null; // NOT OK: x3 cannot be null here
+        typeof x3 === 'object' && x3 !== null; // $ Alert - x3 cannot be null here
     }
 
     if (!x4) {
-        typeof x4 === 'object' && x4 !== null; // OK
+        typeof x4 === 'object' && x4 !== null;
     }
 
     if (!x5) {
         x5 = new Error();
     }
-    x5 !== null; // NOT OK: x2 cannot be null here
+    x5 !== null; // $ Alert - x2 cannot be null here
 
     if (x6) {
-        x6 !== null; // NOT OK: x3 cannot be null here
+        x6 !== null; // $ Alert - x3 cannot be null here
     }
 }
 
 function g() {
     var o = {};
-    o < "def"; // NOT OK
+    o < "def"; // $ Alert
 
     var p = { toString() { return "abc"; } };
-    p < "def"; // OK
+    p < "def";
 
     function A() {}
     var a = new A();
-    a < "def"; // NOT OK
+    a < "def"; // $ Alert
 
     function B() {};
     B.prototype = p;
     var b = new B();
-    b < "def"; // OK
+    b < "def";
 
     function C() {
       this.valueOf = function() { return 42; };
     }
     var c = new C();
-    c != 23; // OK
+    c != 23;
 
     null.valueOf = function() { return 42; };
-    null == 42; // NOT OK
+    null == 42; // $ Alert
 
     true.valueOf = function() { return "foo" };
-    true != "bar"; // NOT OK
+    true != "bar"; // $ Alert
 }
 
 
@@ -139,54 +129,54 @@ function h() {
     var a = 42;
     var b = "42";
 
-    a === "42"; // NOT OK
-    42 === b // NOT OK
-    a === b; // NOT OK
+    a === "42"; // $ Alert
+    42 === b // $ Alert
+    a === b; // $ Alert
 }
 
 function i() {
-    "foo" === undefined
-    undefined === "foo" // NOT OK
+    "foo" === undefined // $ Alert
+    undefined === "foo" // $ Alert
     var NaN = 0; // trick analysis to consider warning about NaN, for the purpose of testing pretty printing
-    NaN === "foo" // NOT OK
+    NaN === "foo" // $ Alert
     var Infinity = 0; // trick analysis to consider warning about Infinity, for the purpose of testing pretty printing
-    Infinity === "foo" // NOT OK
+    Infinity === "foo" // $ Alert
 }
 
 function k() {
     // tests for pretty printing of many types
 
     var t1 = 42;
-    t1 !== null; // NOT OK
-    null !== t1; // NOT OK
+    t1 !== null; // $ Alert
+    null !== t1; // $ Alert
 
     var t2 = unknown? t1: "foo";
-    t2 !== null; // NOT OK
-    null !== t2; // NOT OK
+    t2 !== null; // $ Alert
+    null !== t2; // $ Alert
 
     var t3 = unknown? t2: undefined;
-    t3 !== null; // NOT OK
-    null !== t3; // NOT OK
+    t3 !== null; // $ Alert
+    null !== t3; // $ Alert
 
     var t4 = unknown? t3: true;
-    t4 !== null; // NOT OK
-    null !== t4; // NOT OK
+    t4 !== null; // $ Alert
+    null !== t4; // $ Alert
 
     var t5 = unknown? t4: function(){};
-    t5 !== null; // NOT OK
-    null !== t5; // NOT OK
+    t5 !== null; // $ Alert
+    null !== t5; // $ Alert
 
     var t6 = unknown? t5: /t/;
-    t6 !== null; // NOT OK
-    null !== t6; // NOT OK
+    t6 !== null; // $ Alert
+    null !== t6; // $ Alert
 
     var t7 = unknown? t6: {};
-    t7 !== null; // NOT OK
-    null !== t7; // NOT OK
+    t7 !== null; // $ Alert
+    null !== t7; // $ Alert
 
     var t8 = unknown? t8: new Symbol();
-    t8 !== null; // NOT OK
-    null !== t8; // NOT OK
+    t8 !== null; // $ Alert
+    null !== t8; // $ Alert
 
 }
 
@@ -199,22 +189,22 @@ function l() {
     var t4 = unknown? 42: unknown? "foo": unknown? undefined: true;
     var t5 = unknown? t4: null
 
-    t2 !== t4; // NOT OK
-    t4 !== t2; // NOT OK
-    t3 !== t4; // NOT OK
-    t4 !== t3; // NOT OK
+    t2 !== t4; // $ Alert
+    t4 !== t2; // $ Alert
+    t3 !== t4; // $ Alert
+    t4 !== t3; // $ Alert
 
-    t2 !== t5; // NOT OK
-    t5 !== t2; // NOT OK
-    t3 !== t5; // NOT OK
-    t5 !== t3; // NOT OK
+    t2 !== t5; // $ Alert
+    t5 !== t2; // $ Alert
+    t3 !== t5; // $ Alert
+    t5 !== t3; // $ Alert
 }
 
-1n == 1; // OK
+1n == 1;
 
 (function tooGeneralLocalFunctions(){
     function f1(x) {
-        if (x === "foo") { // OK, whitelisted
+        if (x === "foo") { // OK - whitelisted
 
         }
     }
@@ -222,7 +212,7 @@ function l() {
 
     function f2(x, y) {
         var xy = o.q? x: y;
-        if (xy === "foo") { // NOT OK (not whitelisted like above)
+        if (xy === "foo") { // $ Alert - not whitelisted like above
 
         }
     }
@@ -230,5 +220,5 @@ function l() {
 })();
 
 function f(...x) {
-    x === 42
+    x === 42 // $ Alert
 };

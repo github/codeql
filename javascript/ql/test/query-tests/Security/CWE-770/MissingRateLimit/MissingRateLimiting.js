@@ -5,7 +5,7 @@ app.get('/:path', function(req, res) {
   let path = req.params.path;
   if (isValidPath(path))
     res.sendFile(path);
-});
+}); // $ Alert
 
 function f1(req, res) {
   let path = req.params.path;
@@ -22,4 +22,4 @@ function f3(req, res) {
     res.sendFile(path);
 }
 
-app.get('/:path', f1, f2, f3);
+app.get('/:path', f1, f2, f3); // $ Alert

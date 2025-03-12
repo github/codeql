@@ -1,1 +1,2 @@
-Security/CWE-400/RemotePropertyInjection.ql
+query: Security/CWE-400/RemotePropertyInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

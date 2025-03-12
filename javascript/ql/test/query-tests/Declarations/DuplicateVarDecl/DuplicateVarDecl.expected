@@ -1,1 +1,1 @@
-| tst.js:2:11:2:16 | a = 42 | Variable a has already $@. | tst.js:2:5:2:5 | a | been previously declared |
+| tst.js:1:11:1:16 | a = 42 | Variable a has already $@. | tst.js:1:5:1:5 | a | been previously declared |
