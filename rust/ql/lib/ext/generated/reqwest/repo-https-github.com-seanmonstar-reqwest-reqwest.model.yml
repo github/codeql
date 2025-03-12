@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::delete", "Argument[0]", "transmission", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::get", "Argument[0]", "transmission", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::head", "Argument[0]", "transmission", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::patch", "Argument[0]", "transmission", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::post", "Argument[0]", "transmission", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::put", "Argument[0]", "transmission", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::connect::Connector as crate::Service>::call", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::connect::ConnectorService as crate::Service>::call", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::get", "Argument[0]", "transmission", "df-generated"]
