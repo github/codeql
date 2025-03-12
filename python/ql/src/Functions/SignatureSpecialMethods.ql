@@ -51,51 +51,71 @@ int argument_count(string name) {
 }
 
 predicate incorrect_special_method_defn(
-  Function func, string message, boolean show_counts, string name
+  Function func, string message, boolean show_counts, string name, boolean is_unused_default
 ) {
   exists(int required | required = argument_count(name) |
     /* actual_non_default <= actual */
     if required > func.getMaxPositionalArguments()
-    then message = "Too few parameters" and show_counts = true
+    then message = "Too few parameters" and show_counts = true and is_unused_default = false
     else
       if required < func.getMinPositionalArguments()
-      then message = "Too many parameters" and show_counts = true
+      then message = "Too many parameters" and show_counts = true and is_unused_default = false
       else (
         func.getMinPositionalArguments() < required and
         not func.hasVarArg() and
         message =
           (required - func.getMinPositionalArguments()) + " default values(s) will never be used" and
-        show_counts = false
+        show_counts = false and
+        is_unused_default = true
       )
   )
 }
 
-predicate incorrect_pow(Function func, string message, boolean show_counts) {
+predicate incorrect_pow(
+  Function func, string message, boolean show_counts, boolean is_unused_default
+) {
   (
-    func.getMaxPositionalArguments() < 2 and message = "Too few parameters" and show_counts = true
+    func.getMaxPositionalArguments() < 2 and
+    message = "Too few parameters" and
+    show_counts = true and
+    is_unused_default = false
     or
-    func.getMinPositionalArguments() > 3 and message = "Too many parameters" and show_counts = true
+    func.getMinPositionalArguments() > 3 and
+    message = "Too many parameters" and
+    show_counts = true and
+    is_unused_default = false
     or
     func.getMinPositionalArguments() < 2 and
     message = (2 - func.getMinPositionalArguments()) + " default value(s) will never be used" and
-    show_counts = false
+    show_counts = false and
+    is_unused_default = true
     or
     func.getMinPositionalArguments() = 3 and
     message = "Third parameter to __pow__ should have a default value" and
-    show_counts = false
+    show_counts = false and
+    is_unused_default = false
   )
 }
 
-predicate incorrect_get(Function func, string message, boolean show_counts) {
+predicate incorrect_get(
+  Function func, string message, boolean show_counts, boolean is_unused_default
+) {
   (
-    func.getMaxPositionalArguments() < 3 and message = "Too few parameters" and show_counts = true
+    func.getMaxPositionalArguments() < 3 and
+    message = "Too few parameters" and
+    show_counts = true and
+    is_unused_default = false
     or
-    func.getMinPositionalArguments() > 3 and message = "Too many parameters" and show_counts = true
+    func.getMinPositionalArguments() > 3 and
+    message = "Too many parameters" and
+    show_counts = true and
+    is_unused_default = false
     or
     func.getMinPositionalArguments() < 2 and
     not func.hasVarArg() and
     message = (2 - func.getMinPositionalArguments()) + " default value(s) will never be used" and
-    show_counts = false
+    show_counts = false and
+    is_unused_default = true
   )
 }
 
@@ -117,16 +137,18 @@ string has_parameters(Function f) {
 
 from
   PythonFunctionValue f, string message, string sizes, boolean show_counts, string name,
-  ClassValue owner
+  ClassValue owner, boolean show_unused_defaults
 where
   owner.declaredAttribute(name) = f and
   (
-    incorrect_special_method_defn(f.getScope(), message, show_counts, name)
+    incorrect_special_method_defn(f.getScope(), message, show_counts, name, show_unused_defaults)
     or
-    incorrect_pow(f.getScope(), message, show_counts) and name = "__pow__"
+    incorrect_pow(f.getScope(), message, show_counts, show_unused_defaults) and name = "__pow__"
     or
-    incorrect_get(f.getScope(), message, show_counts) and name = "__get__"
+    incorrect_get(f.getScope(), message, show_counts, show_unused_defaults) and name = "__get__"
+    or
   ) and
+  show_unused_defaults = false and
   (
     show_counts = false and sizes = ""
     or
