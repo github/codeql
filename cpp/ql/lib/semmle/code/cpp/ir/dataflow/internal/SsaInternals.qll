@@ -465,6 +465,17 @@ private predicate finalParameterNodeHasParameterAndIndex(
   n.getIndirectionIndex() = indirectionIndex
 }
 
+pragma[nomagic]
+private predicate hasReturnPosition(IRFunction f, IRBlock block, int index) {
+  exists(Instruction return |
+    return instanceof ReturnInstruction or
+    return instanceof UnreachedInstruction
+  |
+    block.getInstruction(index) = return and
+    return.getEnclosingIRFunction() = f
+  )
+}
+
 class FinalParameterUse extends UseImpl, TFinalParameterUse {
   Parameter p;
 
@@ -493,12 +504,9 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
     // `UnreachedInstruction`. If that's the case this predicate will
     // return multiple results. I don't think this is detrimental to
     // performance, however.
-    exists(Instruction return |
-      return instanceof ReturnInstruction or
-      return instanceof UnreachedInstruction
-    |
-      block.getInstruction(index) = return and
-      return.getEnclosingFunction() = p.getFunction()
+    exists(IRFunction f |
+      hasReturnPosition(f, block, index) and
+      f.getFunction() = p.getFunction()
     )
   }
 
@@ -588,13 +596,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
     // globals at any exit so that we can flow out of non-returning functions.
     // Obviously this isn't correct as we can't actually flow but the global flow
     // requires this if we want to flow into children.
-    exists(Instruction return |
-      return instanceof ReturnInstruction or
-      return instanceof UnreachedInstruction
-    |
-      block.getInstruction(index) = return and
-      return.getEnclosingIRFunction() = f
-    )
+    hasReturnPosition(f, block, index)
   }
 
   override BaseSourceVariable getBaseSourceVariable() {
