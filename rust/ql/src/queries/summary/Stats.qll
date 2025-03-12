@@ -14,6 +14,7 @@ private import codeql.rust.Concepts
 private import codeql.rust.security.CleartextLoggingExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
+private import codeql.rust.security.regex.RegexInjectionExtensions
 
 /**
  * Gets a count of the total number of lines of code in the database.
