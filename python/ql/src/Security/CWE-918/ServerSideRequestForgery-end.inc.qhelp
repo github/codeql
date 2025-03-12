@@ -5,8 +5,11 @@
   <recommendation>
 
     <p>To guard against SSRF attacks you should avoid putting user-provided input directly
-      into a request URL. Instead, either maintain a list of authorized URLs on the server and choose
-      from that list based on the input provided, or perform proper validation of the input.
+      into a request URL. On the application level, maintain a list of authorized URLs on the server and choose
+      from that list based on the input provided. If that is not possible, one should verify the IP address for all user-controlled 
+      requests to ensure they are not private. This requires saving the verified IP address of each domain,
+      then utilizing a custom HTTP adapter to ensure that future requests to that domain use the verified IP address. 
+      On the network level, you can segment the vulnerable application into its own LAN or block access to specific devices.
     </p>
 
   </recommendation>
