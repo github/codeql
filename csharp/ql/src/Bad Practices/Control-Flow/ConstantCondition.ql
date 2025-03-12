@@ -119,14 +119,14 @@ class ConstantMatchingCondition extends ConstantCondition {
   }
 
   override predicate isWhiteListed() {
-    exists(Switch se, Case c, int i | c = se.getCase(i) |
-      c.getPattern() = this.(DiscardExpr) and
-      (
-        i > 0
-        or
-        i = 0 and
-        exists(Expr cond | c.getCondition() = cond and not isConstantCondition(cond, true))
-      )
+    exists(Switch se, Case c, int i |
+      c = se.getCase(i) and
+      c.getPattern() = this.(DiscardExpr)
+    |
+      i > 0
+      or
+      i = 0 and
+      exists(Expr cond | c.getCondition() = cond and not isConstantCondition(cond, true))
     )
     or
     this = any(PositionalPatternExpr ppe).getPattern(_)
