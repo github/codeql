@@ -28,7 +28,7 @@ public class Test {
 
 ## Implementation Notes
 
-The rule excludes reporting methods that are annotated or marked as `default`.
+The rule excludes reporting methods that are annotated.
 
 ## References
 - [java.util.Collections.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))

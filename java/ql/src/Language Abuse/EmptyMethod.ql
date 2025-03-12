@@ -86,8 +86,6 @@ where
   not exists(m.getDoc().getJavadoc()) and
   //annotated methods are considered compliant
   not exists(m.getAnAnnotation()) and
-  //default methods are not abstract, but are considered compliant
-  not m.isDefault() and
   //native methods have no body
   not m.isNative()
 select m, "This empty method should be completed."

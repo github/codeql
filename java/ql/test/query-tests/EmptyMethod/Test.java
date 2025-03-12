@@ -32,8 +32,7 @@ public class Test {
 
   public interface TestInterface {
 
-    default void method() {
-    }
+    default void method() { } // $ Alert
   }
 
 }
