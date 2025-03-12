@@ -2,10 +2,11 @@
 
 A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. For example, one codebase may only consider remote HTTP requests to be tainted, whereas another may also consider data from local files to be unsafe. You can use threat models to ensure that the relevant taint sources are used in a CodeQL analysis.
 
-The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are two main categories:
+The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are three main categories:
 
 - ``remote`` which represents requests and responses from the network.
 - ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), environment variables(``environment``), standard input (``stdin``) and Windows registry values ("windows-registry"). Currently, Windows registry values are used by C# only.
+- ``response`` which represents the response data coming back from an outgoing HTTP request is considered a source of taint.
 
 Note that subcategories can be turned included or excluded separately, so you can specify ``local`` without ``database``, or just ``commandargs`` and ``environment`` without the rest of ``local``.
 
