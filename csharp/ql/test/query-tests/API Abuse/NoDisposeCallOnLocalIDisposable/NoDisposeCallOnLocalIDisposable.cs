@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml;
 using System.Threading;
+using System.Threading.Tasks;
 
 class Test
 {
@@ -85,6 +86,13 @@ class Test
         StringReader source = null;
         using (XmlReader.Create(source ?? new StringReader("xml"), null))
             ;
+
+        // GOOD: Flagging these generates too much noise and there is a general
+        // acceptance that Tasks are not disposed.
+        // https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/
+        Task t = new Task(() => { });
+        t.Start();
+        t.Wait();
 
         return null;
     }
