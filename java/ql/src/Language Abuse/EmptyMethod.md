@@ -31,5 +31,5 @@ public class Test {
 The rule excludes reporting methods that are annotated.
 
 ## References
-- [java.util.Collections.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))
-- [Template pattern is a valid empty method use](https://en.wikipedia.org/wiki/Template_method_pattern)
+- Java SE Documentation: [java.util.Collections.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))
+- Wikipedia: [Template pattern is a valid empty method use](https://en.wikipedia.org/wiki/Template_method_pattern)
