@@ -4,18 +4,20 @@
  * Flow sources defined here feed into the `ActiveThreatModelSource` class and
  * ultimately reach data flow configurations as follows:
  *
- *   data from `*.model.yml` | QL extensions of `FlowSource::Range`
- *    v                         v
- *   `FlowSource` (associated with a models-as-data `kind` string)
- *    v
- *   `sourceNode` predicate | (theoretically other QL defined sources)
- *    v                        v
- *   `ThreatModelSource` (associated with a threat model source type)
- *    v
- *   `ActiveThreatModelSource` (just the enabled sources)
- *    v
- *   various `Source` classes for specific data flow configurations
- *
+ * ```text
+ * data from *.model.yml | QL extensions of FlowSource::Range
+ *  v                       v
+ * FlowSource (associated with a models-as-data kind string)
+ *  v
+ * sourceNode predicate | (theoretically other QL defined sources)
+ *  v                      v
+ * ThreatModelSource (associated with a threat model source type)
+ *  v
+ * ActiveThreatModelSource (just the enabled sources)
+ *  v
+ * various Source classes for specific data flow configurations
+ * ```
+
  * New sources should be defined using models-as-data or QL extensions of
  * `FlowSource::Range`. Data flow configurations on the other hand should use
  * `ActiveThreatModelSource` to match sources enabled in the user

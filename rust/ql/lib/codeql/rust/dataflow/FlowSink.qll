@@ -3,13 +3,15 @@
  *
  * Flow sinks defined here feed into data flow configurations as follows:
  *
- *   data from `*.model.yml` | QL extensions of `FlowSink::Range`
- *    v                         v
- *   `FlowSink` (associated with a models-as-data `kind` string)
- *    v
- *   `sinkNode` predicate | other QL defined sinks, for example using concepts
- *    v                      v
- *   various `Sink` classes for specific data flow configurations <- extending `QuerySink`
+ * ```text
+ * data from *.model.yml | QL extensions of FlowSink::Range
+ *  v                       v
+ * FlowSink (associated with a models-as-data kind string)
+ *  v
+ * sinkNode predicate | other QL defined sinks, for example using concepts
+ *  v                    v
+ * various Sink classes for specific data flow configurations <- extending QuerySink
+ * ```
  *
  * New sinks should be defined using models-as-data, QL extensions of
  * `FlowSink::Range`, or concepts. Data flow configurations should use the
