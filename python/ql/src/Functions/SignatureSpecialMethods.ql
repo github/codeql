@@ -135,6 +135,19 @@ string has_parameters(Function f) {
   )
 }
 
+/** Holds if `f` is likely to be a placeholder, and hence not interesting enough to report. */
+predicate isLikelyPlaceholderFunction(Function f) {
+  // Body has only a single statement.
+  f.getBody().getItem(0) = f.getBody().getLastItem() and
+  (
+    // Body is a string literal. This is a common pattern for Zope interfaces.
+    f.getBody().getLastItem().(ExprStmt).getValue() instanceof StringLiteral
+    or
+    // Body just raises an exception.
+    f.getBody().getLastItem() instanceof Raise
+  )
+}
+
 from
   PythonFunctionValue f, string message, string sizes, boolean show_counts, string name,
   ClassValue owner, boolean show_unused_defaults
@@ -148,6 +161,7 @@ where
     incorrect_get(f.getScope(), message, show_counts, show_unused_defaults) and name = "__get__"
     or
   ) and
+  not isLikelyPlaceholderFunction(f.getScope()) and
   show_unused_defaults = false and
   (
     show_counts = false and sizes = ""
