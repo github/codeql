@@ -9,6 +9,8 @@
  * @tags correctness
  *       maintainability
  *       readability
+ *       quality
+ *       external/cwe/cwe-1071
  */
 
 import java
