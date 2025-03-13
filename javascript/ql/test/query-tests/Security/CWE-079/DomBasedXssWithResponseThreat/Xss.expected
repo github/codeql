@@ -130,3 +130,6 @@ nodes
 | testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | semmle.label | readFra ... y, key) |
 | testReactRelay.tsx:137:50:137:53 | data | semmle.label | data |
 subpaths
+testFailures
+| testUseQueries2.vue:6:66:6:76 | // $ Source | Missing result: Source |
+| testUseQueries2.vue:35:32:35:46 | <!--$ Alert --> | Missing result: Alert |
