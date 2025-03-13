@@ -713,21 +713,6 @@ class SsaSynthNode extends Node, TSsaSynthNode {
 }
 
 /**
- * Holds if `n` has a local flow step that goes through a back-edge.
- */
-cached
-predicate flowsToBackEdge(Node n) {
-  exists(Node succ, IRBlock bb1, IRBlock bb2 |
-    Ssa::ssaFlow(n, succ) and
-    bb1 = n.getBasicBlock() and
-    bb2 = succ.getBasicBlock() and
-    bb1 != bb2 and
-    bb2.dominates(bb1) and
-    bb1.getASuccessor+() = bb2
-  )
-}
-
-/**
  * INTERNAL: do not use.
  *
  * Dataflow nodes necessary for iterator flow
@@ -1727,6 +1712,21 @@ predicate hasInstructionAndIndex(
 
 cached
 private module Cached {
+  /**
+   * Holds if `n` has a local flow step that goes through a back-edge.
+   */
+  cached
+  predicate flowsToBackEdge(Node n) {
+    exists(Node succ, IRBlock bb1, IRBlock bb2 |
+      Ssa::ssaFlow(n, succ) and
+      bb1 = n.getBasicBlock() and
+      bb2 = succ.getBasicBlock() and
+      bb1 != bb2 and
+      bb2.dominates(bb1) and
+      bb1.getASuccessor+() = bb2
+    )
+  }
+
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step. This relation is only used for local dataflow
