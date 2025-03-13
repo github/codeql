@@ -295,6 +295,11 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   predicate hasAssocItem(string name) { name = this.getAnAssocItem().getName() }
 }
 
+pragma[nomagic]
+private TypeParamItemNode resolveTypeParamPathTypeRepr(PathTypeRepr ptr) {
+  result = resolvePath(ptr.getPath())
+}
+
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   Path getSelfPath() { result = super.getSelfTy().(PathTypeRepr).getPath() }
 
@@ -308,12 +313,6 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   private TypeRepr getASelfTyArg() {
     result =
       this.getSelfPath().getPart().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
-  }
-
-  pragma[nomagic]
-  private TypeParamItemNode getASelfTyTypeParamArg(TypeRepr arg) {
-    arg = this.getASelfTyArg() and
-    result = resolvePath(arg.(PathTypeRepr).getPath())
   }
 
   /**
@@ -340,9 +339,9 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   pragma[nomagic]
   predicate isNotFullyParametric() {
     exists(TypeRepr arg | arg = this.getASelfTyArg() |
-      not exists(this.getASelfTyTypeParamArg(arg))
+      not exists(resolveTypeParamPathTypeRepr(arg))
       or
-      this.getASelfTyTypeParamArg(arg).hasTraitBound()
+      resolveTypeParamPathTypeRepr(arg).hasTraitBound()
     )
   }
 
@@ -500,7 +499,7 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
     exists(this.getABoundPath())
     or
     exists(ItemNode declaringItem, WherePred wp |
-      this = resolvePath(wp.getTypeRepr().(PathTypeRepr).getPath()) and
+      this = resolveTypeParamPathTypeRepr(wp.getTypeRepr()) and
       wp = declaringItem.getADescendant() and
       this = declaringItem.getADescendant()
     )
