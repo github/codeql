@@ -6,3 +6,4 @@ extensions:
       - ["@tanstack/angular-query-experimental", "Member[injectQuery]", "Argument[0].ReturnValue.Member[queryFn].ReturnValue", "ReturnValue.Member[data].Awaited", "taint"]
       - ["@tanstack/angular-query", "Member[injectQuery]", "Argument[0].ReturnValue.Member[queryFn].ReturnValue", "ReturnValue.Member[data].Awaited", "taint"]
       - ["@tanstack/vue-query", "Member[useQuery]", "Argument[0].Member[queryFn].ReturnValue.Awaited", "ReturnValue.Member[data]", "taint"]
+      - ["@tanstack/vue-query", "Member[useQueries]", "Argument[0].Member[queries].ArrayElement.Member[queryFn].ReturnValue.Awaited", "ReturnValue.AnyMember.Member[data]", "taint"]

@@ -8,6 +8,11 @@ const fetchContent = async () => {
     return data;
 };
 
+async function fetchPost() {
+    const response = await fetch("${id}"); // $ MISSING: Source
+    return response.json();
+}
+
 export default {
   data() {
     const results = useQueries({
@@ -19,7 +24,7 @@ export default {
         },
         {
           queryKey: ["post", 2],
-          queryFn: () => fetchPost(2),
+          queryFn: () => fetchPost(),
           staleTime: Infinity,
         },
       ],
