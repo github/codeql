@@ -3,14 +3,14 @@
 edges
 | main.rs:4:9:4:16 | username | main.rs:5:25:5:44 | MacroExpr | provenance |  |
 | main.rs:4:20:4:32 | ...::var | main.rs:4:20:4:40 | ...::var(...) [Ok] | provenance | Src:MaD:62  |
-| main.rs:4:20:4:40 | ...::var(...) [Ok] | main.rs:4:20:4:66 | ... .unwrap_or(...) | provenance | MaD:1597 |
+| main.rs:4:20:4:40 | ...::var(...) [Ok] | main.rs:4:20:4:66 | ... .unwrap_or(...) | provenance | MaD:1599 |
 | main.rs:4:20:4:66 | ... .unwrap_or(...) | main.rs:4:9:4:16 | username | provenance |  |
 | main.rs:5:9:5:13 | regex | main.rs:6:26:6:30 | regex | provenance |  |
 | main.rs:5:17:5:45 | res | main.rs:5:25:5:44 | { ... } | provenance |  |
 | main.rs:5:25:5:44 | ...::format(...) | main.rs:5:17:5:45 | res | provenance |  |
 | main.rs:5:25:5:44 | ...::must_use(...) | main.rs:5:9:5:13 | regex | provenance |  |
-| main.rs:5:25:5:44 | MacroExpr | main.rs:5:25:5:44 | ...::format(...) | provenance | MaD:70 |
-| main.rs:5:25:5:44 | { ... } | main.rs:5:25:5:44 | ...::must_use(...) | provenance | MaD:3020 |
+| main.rs:5:25:5:44 | MacroExpr | main.rs:5:25:5:44 | ...::format(...) | provenance | MaD:71 |
+| main.rs:5:25:5:44 | { ... } | main.rs:5:25:5:44 | ...::must_use(...) | provenance | MaD:3022 |
 | main.rs:6:26:6:30 | regex | main.rs:6:25:6:30 | &regex | provenance |  |
 nodes
 | main.rs:4:9:4:16 | username | semmle.label | username |
