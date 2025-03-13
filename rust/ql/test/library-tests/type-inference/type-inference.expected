@@ -1,4 +1,4 @@
-resolveType
+inferType
 | main.rs:5:19:5:22 | SelfParam |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:5:33:7:9 | { ... } |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:6:13:6:16 | self |  | main.rs:2:5:2:21 | struct Foo |

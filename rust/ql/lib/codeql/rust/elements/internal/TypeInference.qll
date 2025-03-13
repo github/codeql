@@ -119,7 +119,7 @@ private TypeMention getTypeAnnotation(AstNode n) {
 
 /** Gets the type of `n`, which has an explicit type annotation. */
 pragma[nomagic]
-private Type resolveAnnotatedType(AstNode n, TypePath path) {
+private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
 }
 
@@ -159,8 +159,8 @@ private predicate typeSymmetry(AstNode n1, TypePath path1, AstNode n2, TypePath 
 }
 
 pragma[nomagic]
-private Type resolveTypeSymmetry(AstNode n, TypePath path) {
-  exists(AstNode n2, TypePath path2 | result = resolveType(n2, path2) |
+private Type inferTypeSymmetry(AstNode n, TypePath path) {
+  exists(AstNode n2, TypePath path2 | result = inferType(n2, path2) |
     typeSymmetry(n, path, n2, path2)
     or
     typeSymmetry(n2, path2, n, path)
@@ -193,12 +193,12 @@ private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type 
 }
 
 pragma[nomagic]
-private Type resolveImplSelfType(Impl i, TypePath path) {
+private Type inferImplSelfType(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
 }
 
 pragma[nomagic]
-private Type resolveTraitSelfType(Trait t, TypePath path) {
+private Type inferTraitSelfType(Trait t, TypePath path) {
   result = TTrait(t) and
   path.isEmpty()
   or
@@ -208,15 +208,15 @@ private Type resolveTraitSelfType(Trait t, TypePath path) {
 
 /** Gets the type at `path` of the implicitly typed `self` parameter. */
 pragma[nomagic]
-private Type resolveImplicitSelfType(SelfParam self, TypePath path) {
+private Type inferImplicitSelfType(SelfParam self, TypePath path) {
   exists(ImplOrTraitItemNode i, Function f, TypePath suffix, Type t |
     f = i.getAnAssocItem() and
     self = f.getParamList().getSelfParam() and
     result = getRefAdjustImplicitSelfType(self, suffix, t, path)
   |
-    t = resolveImplSelfType(i, suffix)
+    t = inferImplSelfType(i, suffix)
     or
-    t = resolveTraitSelfType(i, suffix)
+    t = inferTraitSelfType(i, suffix)
   )
 }
 
@@ -327,8 +327,8 @@ private module RecordExprMatchingInput implements MatchingInputSig {
       apos.isRecordPos()
     }
 
-    Type getResolvedType(AccessPosition apos, TypePath path) {
-      result = resolveType(this.getNodeAt(apos), path)
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -346,15 +346,15 @@ private module RecordExprMatching = Matching<RecordExprMatchingInput>;
  * a field expression of a record expression.
  */
 pragma[nomagic]
-private Type resolveRecordExprType(AstNode n, TypePath path) {
+private Type inferRecordExprType(AstNode n, TypePath path) {
   exists(RecordExprMatchingInput::Access a, RecordExprMatchingInput::AccessPosition apos |
     n = a.getNodeAt(apos) and
-    result = RecordExprMatching::resolveAccessType(a, apos, path)
+    result = RecordExprMatching::inferAccessType(a, apos, path)
   )
 }
 
 pragma[nomagic]
-private Type resolvePathExprType(PathExpr pe, TypePath path) {
+private Type inferPathExprType(PathExpr pe, TypePath path) {
   // nullary struct/variant constructors
   not exists(CallExpr ce | pe = ce.getFunction()) and
   path.isEmpty() and
@@ -466,7 +466,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   pragma[nomagic]
-  private Type resolveAnnotatedTypeInclSelf(AstNode n, TypePath path) {
+  private Type inferAnnotatedTypeInclSelf(AstNode n, TypePath path) {
     result = getTypeAnnotation(n).resolveTypeAtInclSelf(path)
   }
 
@@ -477,7 +477,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       exists(Param p, int i, boolean inMethod |
         paramPos(this.getParamList(), p, i, inMethod) and
         dpos = TPositionalDeclarationPosition(i, inMethod) and
-        result = resolveAnnotatedTypeInclSelf(p.getPat(), path)
+        result = inferAnnotatedTypeInclSelf(p.getPat(), path)
       )
       or
       exists(SelfParam self |
@@ -485,10 +485,10 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
         dpos.isSelf()
       |
         // `self` parameter with type annotation
-        result = resolveAnnotatedTypeInclSelf(self, path)
+        result = inferAnnotatedTypeInclSelf(self, path)
         or
         // `self` parameter without type annotation
-        result = resolveImplicitSelfType(self, path)
+        result = inferImplicitSelfType(self, path)
         or
         // `self` parameter without type annotation should also have the special `Self` type
         result = getRefAdjustImplicitSelfType(self, TypePath::nil(), TSelfTypeParameter(), path)
@@ -559,8 +559,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       apos = TReturnAccessPosition()
     }
 
-    Type getResolvedType(AccessPosition apos, TypePath path) {
-      result = resolveType(this.getNodeAt(apos), path)
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
     }
 
     Declaration getTarget() {
@@ -644,9 +644,9 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   pragma[nomagic]
-  additional Type resolveReceiverType(AstNode n) {
+  additional Type inferReceiverType(AstNode n) {
     exists(Access a, AccessPosition apos |
-      result = resolveType(n) and
+      result = inferType(n) and
       n = a.getNodeAt(apos) and
       apos.isSelf()
     )
@@ -660,17 +660,17 @@ private module CallExprBaseMatching = Matching<CallExprBaseMatchingInput>;
  * argument/receiver of a call.
  */
 pragma[nomagic]
-private Type resolveCallExprBaseType(AstNode n, TypePath path) {
+private Type inferCallExprBaseType(AstNode n, TypePath path) {
   exists(
     CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos,
     TypePath path0
   |
     n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::resolveAccessType(a, apos, path0)
+    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
   |
     if apos.isSelf()
     then
-      exists(Type receiverType | receiverType = CallExprBaseMatchingInput::resolveReceiverType(n) |
+      exists(Type receiverType | receiverType = CallExprBaseMatchingInput::inferReceiverType(n) |
         if receiverType = TRefType()
         then
           path = path0 and
@@ -758,8 +758,8 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       apos.isField()
     }
 
-    Type getResolvedType(AccessPosition apos, TypePath path) {
-      result = resolveType(this.getNodeAt(apos), path)
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
     }
 
     Declaration getTarget() {
@@ -795,9 +795,9 @@ private module FieldExprMatchingInput implements MatchingInputSig {
   }
 
   pragma[nomagic]
-  additional Type resolveReceiverType(AstNode n) {
+  additional Type inferReceiverType(AstNode n) {
     exists(Access a, AccessPosition apos |
-      result = resolveType(n) and
+      result = inferType(n) and
       n = a.getNodeAt(apos) and
       apos.isSelf()
     )
@@ -811,16 +811,16 @@ private module FieldExprMatching = Matching<FieldExprMatchingInput>;
  * the receiver of field expression call.
  */
 pragma[nomagic]
-private Type resolveFieldExprType(AstNode n, TypePath path) {
+private Type inferFieldExprType(AstNode n, TypePath path) {
   exists(
     FieldExprMatchingInput::Access a, FieldExprMatchingInput::AccessPosition apos, TypePath path0
   |
     n = a.getNodeAt(apos) and
-    result = FieldExprMatching::resolveAccessType(a, apos, path0)
+    result = FieldExprMatching::inferAccessType(a, apos, path0)
   |
     if apos.isSelf()
     then
-      exists(Type receiverType | receiverType = FieldExprMatchingInput::resolveReceiverType(n) |
+      exists(Type receiverType | receiverType = FieldExprMatchingInput::inferReceiverType(n) |
         if receiverType = TRefType()
         then
           // adjust for implicit deref
@@ -838,14 +838,14 @@ private Type resolveFieldExprType(AstNode n, TypePath path) {
  * `& x` or an expression `x` inside a reference expression `& x`.
  */
 pragma[nomagic]
-private Type resolveRefExprType(Expr e, TypePath path) {
+private Type inferRefExprType(Expr e, TypePath path) {
   exists(RefExpr re |
     e = re and
     path.isEmpty() and
     result = TRefType()
     or
     e = re and
-    exists(TypePath exprPath | result = resolveType(re.getExpr(), exprPath) |
+    exists(TypePath exprPath | result = inferType(re.getExpr(), exprPath) |
       if exprPath.startsWith(TRefTypeParameter(), _)
       then
         // `&x` simply means `x` when `x` already has reference type
@@ -858,9 +858,9 @@ private Type resolveRefExprType(Expr e, TypePath path) {
     or
     e = re.getExpr() and
     exists(TypePath exprPath, TypePath refPath, Type exprType |
-      result = resolveType(re, exprPath) and
+      result = inferType(re, exprPath) and
       exprPath = TypePath::cons(TRefTypeParameter(), refPath) and
-      exprType = resolveType(e)
+      exprType = inferType(e)
     |
       if exprType = TRefType()
       then
@@ -878,11 +878,11 @@ private module Cached {
   pragma[inline]
   private Type getLookupType(AstNode n) {
     exists(Type t |
-      t = resolveType(n) and
+      t = inferType(n) and
       if t = TRefType()
       then
         // for reference types, lookup members in the type being referenced
-        result = resolveType(n, TypePath::singleton(TRefTypeParameter()))
+        result = inferType(n, TypePath::singleton(TRefTypeParameter()))
       else result = t
     )
   }
@@ -894,7 +894,7 @@ private module Cached {
   }
 
   /**
-   * Gets a method that the method call `mce` resolves to, if any.
+   * Gets a method that the method call `mce` infers to, if any.
    */
   cached
   Function resolveMethodCallExpr(MethodCallExpr mce) {
@@ -908,7 +908,7 @@ private module Cached {
   }
 
   /**
-   * Gets the record field that the field expression `fe` resolves to, if any.
+   * Gets the record field that the field expression `fe` infers to, if any.
    */
   cached
   RecordField resolveRecordFieldExpr(FieldExpr fe) {
@@ -924,7 +924,7 @@ private module Cached {
   }
 
   /**
-   * Gets the tuple field that the field expression `fe` resolves to, if any.
+   * Gets the tuple field that the field expression `fe` infers to, if any.
    */
   cached
   TupleField resolveTupleFieldExpr(FieldExpr fe) {
@@ -932,7 +932,7 @@ private module Cached {
   }
 
   /**
-   * Gets a type at `path` that `n` resolves to, if any.
+   * Gets a type at `path` that `n` infers to, if any.
    *
    * The type inference implementation works by computing all possible types, so
    * the result is not necessarily unique. For example, in
@@ -971,29 +971,29 @@ private module Cached {
    * 5. `x.bar()` has type `&MyTrait` (via 2 and 4).
    */
   cached
-  Type resolveType(AstNode n, TypePath path) {
+  Type inferType(AstNode n, TypePath path) {
     Stages::TypeInference::backref() and
-    result = resolveAnnotatedType(n, path)
+    result = inferAnnotatedType(n, path)
     or
-    result = resolveTypeSymmetry(n, path)
+    result = inferTypeSymmetry(n, path)
     or
-    result = resolveImplicitSelfType(n, path)
+    result = inferImplicitSelfType(n, path)
     or
-    result = resolveRecordExprType(n, path)
+    result = inferRecordExprType(n, path)
     or
-    result = resolvePathExprType(n, path)
+    result = inferPathExprType(n, path)
     or
-    result = resolveCallExprBaseType(n, path)
+    result = inferCallExprBaseType(n, path)
     or
-    result = resolveFieldExprType(n, path)
+    result = inferFieldExprType(n, path)
     or
-    result = resolveRefExprType(n, path)
+    result = inferRefExprType(n, path)
   }
 }
 
 import Cached
 
 /**
- * Gets a type that `n` resolves to, if any.
+ * Gets a type that `n` infers to, if any.
  */
-Type resolveType(AstNode n) { result = resolveType(n, TypePath::nil()) }
+Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }

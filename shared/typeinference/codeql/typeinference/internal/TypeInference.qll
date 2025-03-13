@@ -465,12 +465,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Type getExplicitTypeArgument(TypeArgumentPosition tapos, TypePath path);
 
         /**
-         * Gets the resolved type at `path` for the position `apos` of this access.
+         * Gets the inferred type at `path` for the position `apos` of this access.
          *
-         * For example, if this access is the method call `M(42)`, then the resolved
+         * For example, if this access is the method call `M(42)`, then the inferred
          * type at argument position `0` is `int`.
          */
-        Type getResolvedType(AccessPosition apos, TypePath path);
+        Type getInferredType(AccessPosition apos, TypePath path);
 
         /** Gets the declaration that this access targets. */
         Declaration getTarget();
@@ -482,7 +482,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos);
 
       /**
-       * Holds if matching a resolved type `t` at `path` inside an access at `apos`
+       * Holds if matching an inferred type `t` at `path` inside an access at `apos`
        * against the declaration `target` means that the type should be adjusted to
        * `tAdj` at `pathAdj`.
        *
@@ -493,7 +493,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * M(42);
        * ```
        *
-       * the resolved type of `42` is `int`, but it should be adjusted to `int?`
+       * the inferred type of `42` is `int`, but it should be adjusted to `int?`
        * when matching against `M`.
        */
       bindingset[apos, target, path, t]
@@ -520,7 +520,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         target = a.getTarget() and
         exists(TypePath path0, Type t0 |
-          t0 = a.getResolvedType(apos, path0) and
+          t0 = a.getInferredType(apos, path0) and
           adjustAccessType(apos, target, path0, t0, path, t)
         )
       }
@@ -562,16 +562,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         pragma[nomagic]
-        private Type resolveRootType(Access a, AccessPosition apos) {
+        private Type inferRootType(Access a, AccessPosition apos) {
           relevantAccess(a, apos) and
-          result = a.getResolvedType(apos, TypePath::nil())
+          result = a.getInferredType(apos, TypePath::nil())
         }
 
         pragma[nomagic]
-        private Type resolveTypeAt(Access a, AccessPosition apos, TypeParameter tp, TypePath suffix) {
+        private Type inferTypeAt(Access a, AccessPosition apos, TypeParameter tp, TypePath suffix) {
           relevantAccess(a, apos) and
           exists(TypePath path0 |
-            result = a.getResolvedType(apos, path0) and
+            result = a.getInferredType(apos, path0) and
             path0.startsWith(tp, suffix)
           )
         }
@@ -608,12 +608,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate hasBaseTypeMention(
           Access a, AccessPosition apos, TypeMention baseMention, TypePath path, Type t
         ) {
-          exists(Type sub | sub = resolveRootType(a, apos) |
+          exists(Type sub | sub = inferRootType(a, apos) |
             baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
             or
             exists(TypePath prefix, TypePath suffix, TypeParameter i |
               baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, i) and
-              t = resolveTypeAt(a, apos, i, suffix) and
+              t = inferTypeAt(a, apos, i, suffix) and
               path = prefix.append(suffix)
             )
           )
@@ -709,7 +709,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Gets the resolved type of `a` at `path` for position `apos`.
+       * Gets the inferred type of `a` at `path` for position `apos`.
        *
        * For example, in
        *
@@ -728,7 +728,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * // ^^^^^^^^^^^^^^^^^^^^^^^ `a`
        * ```
        *
-       * we resolve the following types for the return position:
+       * we infer the following types for the return position:
        *
        * `path`      | `t`
        * ----------- | -------
@@ -737,7 +737,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `"0.0.0"`   | ``C`1``
        * `"0.0.0.1"` | `int`
        *
-       * We also resolve the following types for the receiver position:
+       * We also infer the following types for the receiver position:
        *
        * `path`      | `t`
        * ----------- | -------
@@ -747,7 +747,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `"0.0.0.1"` | `int`
        */
       pragma[nomagic]
-      Type resolveAccessType(Access a, AccessPosition apos, TypePath path) {
+      Type inferAccessType(Access a, AccessPosition apos, TypePath path) {
         exists(DeclarationPosition dpos | accessDeclarationPositionMatch(apos, dpos) |
           exists(Declaration target, TypePath prefix, TypeParameter tp, TypePath suffix |
             tp = target.getDeclaredType(pragma[only_bind_into](dpos), prefix) and

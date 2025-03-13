@@ -3,8 +3,8 @@ import codeql.rust.elements.internal.TypeInference as TypeInference
 import TypeInference
 import utils.test.InlineExpectationsTest
 
-query predicate resolveType(AstNode n, TypePath path, Type t) {
-  t = TypeInference::resolveType(n, path)
+query predicate inferType(AstNode n, TypePath path, Type t) {
+  t = TypeInference::inferType(n, path)
 }
 
 query predicate resolveMethodCallExpr(MethodCallExpr mce, Function f) {

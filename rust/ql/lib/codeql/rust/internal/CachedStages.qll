@@ -121,7 +121,7 @@ module Stages {
       or
       exists(Type t)
       or
-      exists(resolveType(_))
+      exists(inferType(_))
     }
   }
 
