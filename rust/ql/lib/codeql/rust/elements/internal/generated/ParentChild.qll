@@ -4404,6 +4404,11 @@ Element getImmediateParent(Element e) {
 }
 
 /**
+ * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+ */
+Element getImmediateChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _) }
+
+/**
  * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
@@ -4422,3 +4427,8 @@ Element getChildAndAccessor(Element e, int index, string accessor) {
     accessor = "get" + partialAccessor
   )
 }
+
+/**
+ * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
+ */
+Element getChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _).resolve() }

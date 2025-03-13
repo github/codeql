@@ -40,7 +40,7 @@ query predicate multiplePrimaryQlClasses(Element e, string s) {
   s = strictconcat(e.getPrimaryQlClasses(), ", ")
 }
 
-private Element getParent(Element child) { child = getChildAndAccessor(result, _, _) }
+private Element getParent(Element child) { child = getChild(result, _) }
 
 private predicate multipleParents(Element child) { strictcount(getParent(child)) > 1 }
 
@@ -56,8 +56,8 @@ query predicate multipleParents(Element child, string childClass, Element parent
 
 /** Holds if `parent` has multiple children at the same index. */
 query predicate multipleChildren(Element parent, int index, Element child1, Element child2) {
-  child1 = getChildAndAccessor(parent, index, _) and
-  child2 = getChildAndAccessor(parent, index, _) and
+  child1 = getChild(parent, index) and
+  child2 = getChild(parent, index) and
   child1 != child2
 }
 
