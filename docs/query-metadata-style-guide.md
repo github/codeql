@@ -121,9 +121,9 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
 
 ## Query tags `@tags`
 
-The `@tags` property is used to define categories that the query relates to. As we prepare for the release of a dedicated code quality product, we will use tagging to prepare a stronger delineation between queries that are part of our existing "code security" product offering and those that are better suited as part of a "quality" product offering. Each alert query should belong to one of the following two top-level categories, with additional sub-categories:
+The `@tags` property is used to define the high level category of problem that the query relates to. Each alert query should belong to one of the following two top-level categories, with additional sub-categories:
 
-#### High level category `@tags`
+### High level category `@tags`
 * `@tags security`–for queries that detect security weaknesses. See below for further information.
 * `@tags quality`–for queries that detect code quality issues. See below for further information.
 
@@ -149,18 +149,19 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](https:
 
 Software quality doesn't have as universally-agreed categorization method as security issues like CWE, so we will do our own categorization instead of using tags like CWE. 
 
-We'll have two "top-level" categories of quality queries, with sub-categories beneath:
+We'll use two "top-level" categories of quality queries, with sub-categories beneath:
 
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
   * `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
-  * 
-
+  * `@tags unused-code`-for queries that detect functions that are never used and other instances of unused code
+  * `@tags complexity`-for queries that detect patterns in the code that lead to unnecesary complexity such as unclear control flow, or high cyclomatic complexity
+  
 
 * `@tags reliability`–for queries that detect issues that affect whether the code will perform as expected during execution.
-  * `@tags correctness`–for queries that detect incorrect program behavior.
-
-
-
+  * `@tags correctness`–for queries that detect incorrect program behavior or couse result in unintended outcomes.
+  * `@tags performance`-for queries that detect code that could impact performance through inefficient algorithms, unnecessary computation, etc
+  * `@tags concurrency`-for queries that detect concurrency related issues such as race conditions, deadlocks, thread safety, etc
+  * `@tags error-handling`-for queries that detect issues related to unsafe error handling such as uncaught exceptions, etc
 
 
 There are also more specific `@tags` that can be added. See, the following pages for examples of the low-level tags:
@@ -172,22 +173,27 @@ There are also more specific `@tags` that can be added. See, the following pages
 * [JavaScript queries](https://codeql.github.com/codeql-query-help/javascript/)
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
 
+
+### Severities
+
+Maintainers are expected to add a `@security-severity` tag to security relevant queries that will be run on Code Scanning.  There is a documented internal process for generating these `@security-severity` values.
+
+TODO: should we have a severity value for quality queries?
+
+### Metric/summary `@tags`
+
+Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single number column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is interpreted by Code Scanning as the lines of code under the source root present in the database. Each language should have exactly one query of this form.
+
 Metric queries (`@kind metric`) may have the `summary` tag. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
 
-If necessary, you can also define your own low-level tags to categorize the queries specific to your project or organization. When creating your own tags, you should:
+
+### Customizing tags
+
+If necessary, you can also define your own low-level tags to categorize the queries specific to your project or organization, but if possible, please try to follow the above standards (or propose changes to this style guide). When creating your own tags, you should:
 
 * Use all lower-case letters, including for acronyms and proper nouns, with no spaces. All characters apart from * and @ are accepted.
 * Use a forward slash / to indicate a hierarchical relationship between tags if necessary. For example, a query with tag `foo/bar` is also interpreted as also having tag `foo`, but not `bar`.
 * Use a single-word `@tags` name. Multiple words, separated with hyphens, can be used for clarity if necessary.
-
-
-
-#### Metric/summary `@tags`
-
-Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single number column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is interpreted by Code Scanning as the lines of code under the source root present in the database. Each language should have exactly one query of this form.
-
-
-Maintainers are expected to add a `@security-severity` tag to security relevant queries that will be run on Code Scanning.  There is a documented internal process for generating these `@security-severity` values.
 
 ## QL area
 
