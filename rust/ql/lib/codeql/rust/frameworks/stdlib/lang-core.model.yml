@@ -26,3 +26,11 @@ extensions:
       - ["lang:core", "crate::ptr::write_volatile", "Argument[1]", "Argument[0].Reference", "value", "manual"]
       # Str
       - ["lang:core", "<str>::parse", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Alloc
+      - ["lang:core", "crate::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["lang:core", "crate::ptr::dangling_mut", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["lang:core", "crate::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]

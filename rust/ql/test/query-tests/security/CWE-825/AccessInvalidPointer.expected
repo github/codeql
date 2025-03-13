@@ -1,0 +1,32 @@
+#select
+| deallocation.rs:96:14:96:15 | p1 | deallocation.rs:89:23:89:40 | ...::dangling | deallocation.rs:96:14:96:15 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:89:23:89:40 | ...::dangling | invalid |
+| deallocation.rs:97:14:97:15 | p2 | deallocation.rs:90:21:90:42 | ...::dangling_mut | deallocation.rs:97:14:97:15 | p2 | This operation dereferences a pointer that may be $@. | deallocation.rs:90:21:90:42 | ...::dangling_mut | invalid |
+| deallocation.rs:98:14:98:15 | p3 | deallocation.rs:91:23:91:36 | ...::null | deallocation.rs:98:14:98:15 | p3 | This operation dereferences a pointer that may be $@. | deallocation.rs:91:23:91:36 | ...::null | invalid |
+edges
+| deallocation.rs:89:6:89:7 | p1 | deallocation.rs:96:14:96:15 | p1 | provenance |  |
+| deallocation.rs:89:23:89:40 | ...::dangling | deallocation.rs:89:23:89:42 | ...::dangling(...) | provenance | Src:MaD:1 MaD:1 |
+| deallocation.rs:89:23:89:42 | ...::dangling(...) | deallocation.rs:89:6:89:7 | p1 | provenance |  |
+| deallocation.rs:90:6:90:7 | p2 | deallocation.rs:97:14:97:15 | p2 | provenance |  |
+| deallocation.rs:90:21:90:42 | ...::dangling_mut | deallocation.rs:90:21:90:44 | ...::dangling_mut(...) | provenance | Src:MaD:2 MaD:2 |
+| deallocation.rs:90:21:90:44 | ...::dangling_mut(...) | deallocation.rs:90:6:90:7 | p2 | provenance |  |
+| deallocation.rs:91:6:91:7 | p3 | deallocation.rs:98:14:98:15 | p3 | provenance |  |
+| deallocation.rs:91:23:91:36 | ...::null | deallocation.rs:91:23:91:38 | ...::null(...) | provenance | Src:MaD:3 MaD:3 |
+| deallocation.rs:91:23:91:38 | ...::null(...) | deallocation.rs:91:6:91:7 | p3 | provenance |  |
+models
+| 1 | Source: lang:core; crate::ptr::dangling; pointer-invalidate; ReturnValue |
+| 2 | Source: lang:core; crate::ptr::dangling_mut; pointer-invalidate; ReturnValue |
+| 3 | Source: lang:core; crate::ptr::null; pointer-invalidate; ReturnValue |
+nodes
+| deallocation.rs:89:6:89:7 | p1 | semmle.label | p1 |
+| deallocation.rs:89:23:89:40 | ...::dangling | semmle.label | ...::dangling |
+| deallocation.rs:89:23:89:42 | ...::dangling(...) | semmle.label | ...::dangling(...) |
+| deallocation.rs:90:6:90:7 | p2 | semmle.label | p2 |
+| deallocation.rs:90:21:90:42 | ...::dangling_mut | semmle.label | ...::dangling_mut |
+| deallocation.rs:90:21:90:44 | ...::dangling_mut(...) | semmle.label | ...::dangling_mut(...) |
+| deallocation.rs:91:6:91:7 | p3 | semmle.label | p3 |
+| deallocation.rs:91:23:91:36 | ...::null | semmle.label | ...::null |
+| deallocation.rs:91:23:91:38 | ...::null(...) | semmle.label | ...::null(...) |
+| deallocation.rs:96:14:96:15 | p1 | semmle.label | p1 |
+| deallocation.rs:97:14:97:15 | p2 | semmle.label | p2 |
+| deallocation.rs:98:14:98:15 | p3 | semmle.label | p3 |
+subpaths

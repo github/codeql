@@ -86,16 +86,16 @@ pub fn test_libc() {
 // --- std::ptr ---
 
 pub fn test_ptr_invalid(do_dangerous_accesses: bool) {
-	let p1: *const i64 = std::ptr::dangling();
-	let p2: *mut i64 = std::ptr::dangling_mut();
-	let p3: *const i64 = std::ptr::null();
+	let p1: *const i64 = std::ptr::dangling(); // $ Source=dangling
+	let p2: *mut i64 = std::ptr::dangling_mut(); // $ Source=dangling_mut
+	let p3: *const i64 = std::ptr::null(); // $ Source=null
 
 	if do_dangerous_accesses {
 		unsafe {
 			// (a segmentation fault occurs in the code below)
-			let v1 = *p1; // $ MISSING: Alert
-			let v2 = *p2; // $ MISSING: Alert
-			let v3 = *p3; // $ MISSING: Alert
+			let v1 = *p1; // $ Alert[rust/access-invalid-pointer]=dangling
+			let v2 = *p2; // $ Alert[rust/access-invalid-pointer]=dangling_mut
+			let v3 = *p3; // $ Alert[rust/access-invalid-pointer]=null
 			println!("	v1 = {v1} (!)");
 			println!("	v2 = {v2} (!)");
 			println!("	v3 = {v3} (!)");
