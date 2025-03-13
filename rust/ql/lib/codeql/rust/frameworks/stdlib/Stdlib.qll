@@ -1,3 +1,7 @@
+/**
+ * Provides classes modeling security-relevant aspects of the standard libraries.
+ */
+
 private import rust
 private import codeql.rust.Concepts
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg

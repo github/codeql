@@ -30,6 +30,9 @@ module TaintedPath {
    */
   abstract class Barrier extends DataFlow::Node { }
 
+  /**
+   * A sanitizer guard for path-traversal vulnerabilities.
+   */
   class SanitizerGuard extends DataFlow::Node {
     SanitizerGuard() { this = DataFlow::BarrierGuard<sanitizerGuard/3>::getABarrierNode() }
   }

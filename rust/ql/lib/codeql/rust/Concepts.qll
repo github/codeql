@@ -290,6 +290,7 @@ module Path {
     }
   }
 
+  /** A data-flow node that checks that a path is safe to access. */
   class SafeAccessCheck extends DataFlow::ExprNode {
     SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
   }
