@@ -1,10 +1,11 @@
 using System;
-using System.Text;
 using System.IO;
 using System.IO.Compression;
-using System.Xml;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 class Test
 {
@@ -92,6 +93,15 @@ class Test
         t.Wait();
 
         return null;
+    }
+
+    public void M(IHttpClientFactory factory)
+    {
+        // GOOD: Factory tracks and disposes.
+        HttpClient client1 = factory.CreateClient();
+
+        // BAD: No Dispose call
+        var client2 = new HttpClient(); // $ Alert
     }
 
     // GOOD: Escapes
