@@ -26,7 +26,7 @@ module Impl {
     override string toAbbreviatedString() { result = "<...>" }
 
     /** Gets the `i`th type argument of this list. */
-    TypeRepr getTypeArgument(int i) {
+    TypeRepr getTypeArg(int i) {
       result =
         rank[i + 1](TypeRepr res, int j |
           res = this.getGenericArg(j).(TypeArg).getTypeRepr()
@@ -36,6 +36,6 @@ module Impl {
     }
 
     /** Gets a type argument of this list. */
-    TypeRepr getATypeArgument() { result = this.getTypeArgument(_) }
+    TypeRepr getATypeArg() { result = this.getTypeArg(_) }
   }
 }

@@ -156,22 +156,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         else result = this + "." + suffix
     }
 
-    /** Holds if this path starts with `prefix`, followed by `tp`. */
-    bindingset[this]
-    predicate endsWith(TypePath prefix, TypeParameter tp) {
-      decodeTypePathComponent(this, tp) and
-      prefix.isEmpty()
-      or
-      exists(int last |
-        last = max(this.indexOf(".")) and
-        prefix = this.prefix(last) and
-        decodeTypePathComponent(this.suffix(last + 1), tp)
-      )
-    }
-
     /** Holds if this path starts with `tp`, followed by `suffix`. */
     bindingset[this]
-    predicate startsWith(TypeParameter tp, TypePath suffix) {
+    predicate isCons(TypeParameter tp, TypePath suffix) {
       decodeTypePathComponent(this, tp) and
       suffix.isEmpty()
       or
@@ -319,7 +306,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
             immediateBase = resolveTypeMentionRoot(immediateBaseMention) and
             baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, mid) and
-            pathToTypeParam.startsWith(mid, suffix) and
+            pathToTypeParam.isCons(mid, suffix) and
             path = prefix.append(suffix)
           )
         )
@@ -392,7 +379,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
               baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, tp) and
               t = immediateBaseMention.resolveTypeAt(path0) and
-              path0.startsWith(tp, suffix) and
+              path0.isCons(tp, suffix) and
               path = prefix.append(suffix)
             )
           )
@@ -456,13 +443,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Location getLocation();
 
         /**
-         * Gets the type at `path` for the explicit type argument at position
-         * `tapos` of this access, if any.
+         * Gets the type at `path` for the type argument at position `tapos` of
+         * this access, if any.
          *
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getExplicitTypeArgument(TypeArgumentPosition tapos, TypePath path);
+        Type getTypeArgument(TypeArgumentPosition tapos, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` of this access.
@@ -514,8 +501,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     module Matching<MatchingInputSig Input> {
       private import Input
 
+      /**
+       * Holds if `a` targets `target` and the type for `apos` at `path` in `a`
+       * is `t` after adjustment by `target`.
+       */
       pragma[nomagic]
-      private predicate accessType(
+      private predicate adjustedAccessType(
         Access a, AccessPosition apos, Declaration target, TypePath path, Type t
       ) {
         target = a.getTarget() and
@@ -525,13 +516,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      /**
+       * Gets the type of the type argument at `path` in `a` that corresponds to
+       * the type parameter `tp` in `target`.
+       */
       bindingset[a, target]
       pragma[inline_late]
-      private Type explicitTypeArgument(
-        Access a, Declaration target, TypeParameter tp, TypePath path
-      ) {
+      private Type getTypeArgument(Access a, Declaration target, TypeParameter tp, TypePath path) {
         exists(TypeArgumentPosition tapos, TypeParameterPosition tppos |
-          result = a.getExplicitTypeArgument(tapos, path) and
+          result = a.getTypeArgument(tapos, path) and
           tp = target.getTypeParameter(tppos) and
           typeArgumentParameterPositionMatch(tapos, tppos)
         )
@@ -546,9 +539,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          accessType(a, apos, target, pathToTypeParam.append(path), t) and
+          adjustedAccessType(a, apos, target, pathToTypeParam.append(path), t) and
           tp = target.getDeclaredType(dpos, pathToTypeParam) and
-          not exists(explicitTypeArgument(a, target, tp, _)) and
+          not exists(getTypeArgument(a, target, tp, _)) and
           accessDeclarationPositionMatch(apos, dpos)
         )
       }
@@ -556,7 +549,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module AccessBaseType {
         private predicate relevantAccess(Access a, AccessPosition apos) {
           exists(Declaration target |
-            accessType(a, apos, target, _, _) and
+            adjustedAccessType(a, apos, target, _, _) and
             target.getDeclaredType(_, _) instanceof TypeParameter
           )
         }
@@ -572,7 +565,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           relevantAccess(a, apos) and
           exists(TypePath path0 |
             result = a.getInferredType(apos, path0) and
-            path0.startsWith(tp, suffix)
+            path0.isCons(tp, suffix)
           )
         }
 
@@ -611,9 +604,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           exists(Type sub | sub = inferRootType(a, apos) |
             baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
             or
-            exists(TypePath prefix, TypePath suffix, TypeParameter i |
-              baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, i) and
-              t = inferTypeAt(a, apos, i, suffix) and
+            exists(TypePath prefix, TypePath suffix, TypeParameter tp |
+              baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, tp) and
+              t = inferTypeAt(a, apos, tp, suffix) and
               path = prefix.append(suffix)
             )
           )
@@ -636,7 +629,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Declaration decl, DeclarationPosition dpos, Type base, TypePath path, Type t
       ) {
         t = decl.getDeclaredType(dpos, path) and
-        path.startsWith(base.getATypeParameter(), _)
+        path.isCons(base.getATypeParameter(), _)
       }
 
       /**
@@ -677,7 +670,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(AccessPosition apos, DeclarationPosition dpos, Type base, TypePath pathToTypeParam |
           accessBaseType(a, apos, target, base, pathToTypeParam.append(path), t) and
           declarationBaseType(target, dpos, base, pathToTypeParam, tp) and
-          not exists(explicitTypeArgument(a, target, tp, _)) and
+          not exists(getTypeArgument(a, target, tp, _)) and
           accessDeclarationPositionMatch(apos, dpos)
         )
       }
@@ -687,7 +680,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         target = a.getTarget() and
-        t = explicitTypeArgument(a, target, tp, path)
+        t = getTypeArgument(a, target, tp, path)
       }
 
       pragma[nomagic]

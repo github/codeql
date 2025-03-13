@@ -549,7 +549,7 @@ mod m13 {
     }
 
     pub fn f() {
-        let x = S;
+        let x = S {};
         x.f1();
         x.f2();
         S::f3(&x);

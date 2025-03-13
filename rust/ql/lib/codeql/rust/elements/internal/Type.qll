@@ -18,7 +18,12 @@ newtype TType =
   TRefTypeParameter() or
   TSelfTypeParameter()
 
-/** A type without type arguments. */
+/**
+ * A type without type arguments.
+ *
+ * Note that this type includes things that, strictly speaking, are not Rust
+ * types, such as traits and implementation blocks.
+ */
 abstract class Type extends TType {
   /** Gets the method `name` belonging to this type, if any. */
   pragma[nomagic]
@@ -72,13 +77,13 @@ abstract private class StructOrEnumType extends Type {
     exists(ImplOrTraitItemNode impl | result = impl.getAnAssocItem() |
       impl instanceof Trait
       or
-      impl.(ImplItemNode).isUnconstrained()
+      impl.(ImplItemNode).isFullyParametric()
     )
   }
 
   final override ImplMention getABaseTypeMention() {
     this.asItemNode() = result.resolveSelfTy() and
-    result.isUnconstrained()
+    result.isFullyParametric()
   }
 }
 

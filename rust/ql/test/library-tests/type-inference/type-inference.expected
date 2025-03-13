@@ -720,7 +720,7 @@ inferType
 | main.rs:547:16:547:16 | x |  | file://:0:0:0:0 | & |
 | main.rs:547:16:547:16 | x | &T | main.rs:531:5:531:13 | struct S |
 | main.rs:552:13:552:13 | x |  | main.rs:531:5:531:13 | struct S |
-| main.rs:552:17:552:17 | S |  | main.rs:531:5:531:13 | struct S |
+| main.rs:552:17:552:20 | S {...} |  | main.rs:531:5:531:13 | struct S |
 | main.rs:553:9:553:9 | x |  | main.rs:531:5:531:13 | struct S |
 | main.rs:553:9:553:14 | x.f1(...) |  | file://:0:0:0:0 | & |
 | main.rs:553:9:553:14 | x.f1(...) | &T | main.rs:531:5:531:13 | struct S |

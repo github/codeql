@@ -317,49 +317,53 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   }
 
   /**
-   * Holds if this `impl` block is constrained. Examples:
+   * Holds if this `impl` block is not fully parametric. That is, the implementing
+   * type is generic and the implementation is not parametrically polymorphic in all
+   * the implementing type's arguments.
+   *
+   * Examples:
    *
    * ```rust
-   * impl Foo { ... } // unconstrained
+   * impl Foo { ... } // fully parametric
    *
-   * impl<T> Foo<T> { ... } // unconstrained
+   * impl<T> Foo<T> { ... } // fully parametric
    *
-   * impl Foo<i64> { ... } // constrained
+   * impl Foo<i64> { ... } // not fully parametric
    *
-   * impl<T> Foo<Foo<T>> { ... } // constrained
+   * impl<T> Foo<Foo<T>> { ... } // not fully parametric
    *
-   * impl<T: Trait> Foo<T> { ... } // constrained
+   * impl<T: Trait> Foo<T> { ... } // not fully parametric
    *
-   * impl<T> Foo<T> where T: Trait { ... } // constrained
+   * impl<T> Foo<T> where T: Trait { ... } // not fully parametric
    * ```
    */
   pragma[nomagic]
-  predicate isConstrained() {
+  predicate isNotFullyParametric() {
     exists(TypeRepr arg | arg = this.getASelfTyArg() |
       not exists(this.getASelfTyTypeParamArg(arg))
       or
-      this.getASelfTyTypeParamArg(arg).isConstrained()
+      this.getASelfTyTypeParamArg(arg).hasTraitBound()
     )
   }
 
   /**
-   * Holds if this `impl` block is unconstrained. Examples:
+   * Holds if this `impl` block is fully parametric. Examples:
    *
    * ```rust
-   * impl Foo { ... } // unconstrained
+   * impl Foo { ... } // fully parametric
    *
-   * impl<T> Foo<T> { ... } // unconstrained
+   * impl<T> Foo<T> { ... } // fully parametric
    *
-   * impl Foo<i64> { ... } // constrained
+   * impl Foo<i64> { ... } // not fully parametric
    *
-   * impl<T> Foo<Foo<T>> { ... } // constrained
+   * impl<T> Foo<Foo<T>> { ... } // not fully parametric
    *
-   * impl<T: Trait> Foo<T> { ... } // constrained
+   * impl<T: Trait> Foo<T> { ... } // not fully parametric
    *
-   * impl<T> Foo<T> where T: Trait { ... } // constrained
+   * impl<T> Foo<T> where T: Trait { ... } // not fully parametric
    * ```
    */
-  predicate isUnconstrained() { not this.isConstrained() }
+  predicate isFullyParametric() { not this.isNotFullyParametric() }
 
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
@@ -481,18 +485,18 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   /**
-   * Holds if this type parameter is constrained. Examples:
+   * Holds if this type parameter has a trait bound. Examples:
    *
    * ```rust
-   * impl<T> Foo<T> { ... } // unconstrained
+   * impl<T> Foo<T> { ... } // has no trait bound
    *
-   * impl<T: Trait> Foo<T> { ... } // constrained
+   * impl<T: Trait> Foo<T> { ... } // has trait bound
    *
-   * impl<T> Foo<T> where T: Trait { ... } // constrained
+   * impl<T> Foo<T> where T: Trait { ... } // has trait bound
    * ```
    */
   pragma[nomagic]
-  predicate isConstrained() {
+  predicate hasTraitBound() {
     exists(this.getABoundPath())
     or
     exists(ItemNode declaringItem, WherePred wp |
@@ -503,18 +507,18 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
   }
 
   /**
-   * Holds if this type parameter is unconstrained. Examples:
+   * Holds if this type parameter has no trait bound. Examples:
    *
    * ```rust
-   * impl<T> Foo<T> { ... } // unconstrained
+   * impl<T> Foo<T> { ... } // has no trait bound
    *
-   * impl<T: Trait> Foo<T> { ... } // constrained
+   * impl<T: Trait> Foo<T> { ... } // has trait bound
    *
-   * impl<T> Foo<T> where T: Trait { ... } // constrained
+   * impl<T> Foo<T> where T: Trait { ... } // has trait bound
    * ```
    */
   pragma[nomagic]
-  predicate isUnconstrained() { not this.isConstrained() }
+  predicate hasNoTraitBound() { not this.hasTraitBound() }
 
   override string getName() { result = TypeParam.super.getName().getText() }
 

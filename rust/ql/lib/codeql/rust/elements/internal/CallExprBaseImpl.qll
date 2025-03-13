@@ -27,6 +27,6 @@ module Impl {
    */
   class CallExprBase extends Generated::CallExprBase {
     /** Gets the static target of this call, if any. */
-    Callable getStaticTarget() { none() }
+    Callable getStaticTarget() { none() } // overridden by subclasses
   }
 }

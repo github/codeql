@@ -22,7 +22,7 @@ private module Input1 implements InputSig1<Location> {
     // method type parameters are matched by position instead of by type
     // parameter entity, to avoid extra recursion through method call resolution
     TMethodTypeArgumentPosition(int pos) {
-      exists(any(MethodCallExpr mce).getGenericArgList().getTypeArgument(pos))
+      exists(any(MethodCallExpr mce).getGenericArgList().getTypeArg(pos))
     } or
     TTypeParamTypeArgumentPosition(TypeParam tp)
 
@@ -124,11 +124,13 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
 }
 
 /**
- * Holds if the type of `n1` at `path1` is the same as the type of `n2` at `path2`.
+ * Holds if the type of `n1` at `path1` is the same as the type of `n2` at
+ * `path2` and type information should propagate in both directions through the
+ * type equality.
  */
 bindingset[path1]
 bindingset[path2]
-private predicate typeSymmetry(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
   exists(Variable v |
     path1 = path2 and
     n1 = v.getAnAccess()
@@ -159,11 +161,11 @@ private predicate typeSymmetry(AstNode n1, TypePath path1, AstNode n2, TypePath 
 }
 
 pragma[nomagic]
-private Type inferTypeSymmetry(AstNode n, TypePath path) {
+private Type inferTypeEquality(AstNode n, TypePath path) {
   exists(AstNode n2, TypePath path2 | result = inferType(n2, path2) |
-    typeSymmetry(n, path, n2, path2)
+    typeEquality(n, path, n2, path2)
     or
-    typeSymmetry(n2, path2, n, path)
+    typeEquality(n2, path2, n, path)
   )
 }
 
@@ -222,7 +224,7 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
 
 private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
   exists(int i |
-    result = path.getPart().getGenericArgList().getTypeArgument(pragma[only_bind_into](i)) and
+    result = path.getPart().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
     tp = resolvePath(path).getTypeParam(pragma[only_bind_into](i))
   )
   or
@@ -316,7 +318,7 @@ private module RecordExprMatchingInput implements MatchingInputSig {
   class AccessPosition = DeclarationPosition;
 
   class Access extends RecordExpr {
-    Type getExplicitTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       result = getExplicitTypeArgMention(this.getPath(), apos.asTypeParam()).resolveTypeAt(path)
     }
 
@@ -535,10 +537,10 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
   class Access extends CallExprBase {
     private TypeReprMention getMethodTypeArg(int i) {
-      result = this.(MethodCallExpr).getGenericArgList().getTypeArgument(i)
+      result = this.(MethodCallExpr).getGenericArgList().getTypeArg(i)
     }
 
-    Type getExplicitTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
         arg = getExplicitTypeArgMention(CallExprImpl::getFunctionPath(this), apos.asTypeParam())
         or
@@ -616,7 +618,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
             pathAdj = TypePath::singleton(TRefTypeParameter()) and
             tAdj = t
           else
-            if path.startsWith(TRefTypeParameter(), _)
+            if path.isCons(TRefTypeParameter(), _)
             then
               pathAdj = path and
               tAdj = t
@@ -628,10 +630,10 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
             )
         else (
           // adjust for implicit deref
-          path.startsWith(TRefTypeParameter(), pathAdj) and
+          path.isCons(TRefTypeParameter(), pathAdj) and
           tAdj = t
           or
-          not path.startsWith(TRefTypeParameter(), _) and
+          not path.isCons(TRefTypeParameter(), _) and
           not (t = TRefType() and path.isEmpty()) and
           pathAdj = path and
           tAdj = t
@@ -674,19 +676,19 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
         if receiverType = TRefType()
         then
           path = path0 and
-          path0.startsWith(TRefTypeParameter(), _)
+          path0.isCons(TRefTypeParameter(), _)
           or
           // adjust for implicit deref
-          not path0.startsWith(TRefTypeParameter(), _) and
+          not path0.isCons(TRefTypeParameter(), _) and
           not (path0.isEmpty() and result = TRefType()) and
           path = TypePath::cons(TRefTypeParameter(), path0)
         else (
-          not path0.startsWith(TRefTypeParameter(), _) and
+          not path0.isCons(TRefTypeParameter(), _) and
           not (path0.isEmpty() and result = TRefType()) and
           path = path0
           or
           // adjust for implicit borrow
-          path0.startsWith(TRefTypeParameter(), path)
+          path0.isCons(TRefTypeParameter(), path)
         )
       )
     else path = path0
@@ -748,7 +750,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
   class AccessPosition = DeclarationPosition;
 
   class Access extends FieldExpr {
-    Type getExplicitTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
 
     AstNode getNodeAt(AccessPosition apos) {
       result = this.getExpr() and
@@ -781,10 +783,10 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     if apos.isSelf()
     then
       // adjust for implicit deref
-      path.startsWith(TRefTypeParameter(), pathAdj) and
+      path.isCons(TRefTypeParameter(), pathAdj) and
       tAdj = t
       or
-      not path.startsWith(TRefTypeParameter(), _) and
+      not path.isCons(TRefTypeParameter(), _) and
       not (t = TRefType() and path.isEmpty()) and
       pathAdj = path and
       tAdj = t
@@ -824,7 +826,7 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
         if receiverType = TRefType()
         then
           // adjust for implicit deref
-          not path0.startsWith(TRefTypeParameter(), _) and
+          not path0.isCons(TRefTypeParameter(), _) and
           not (path0.isEmpty() and result = TRefType()) and
           path = TypePath::cons(TRefTypeParameter(), path0)
         else path = path0
@@ -846,7 +848,7 @@ private Type inferRefExprType(Expr e, TypePath path) {
     or
     e = re and
     exists(TypePath exprPath | result = inferType(re.getExpr(), exprPath) |
-      if exprPath.startsWith(TRefTypeParameter(), _)
+      if exprPath.isCons(TRefTypeParameter(), _)
       then
         // `&x` simply means `x` when `x` already has reference type
         path = exprPath
@@ -975,7 +977,7 @@ private module Cached {
     Stages::TypeInference::backref() and
     result = inferAnnotatedType(n, path)
     or
-    result = inferTypeSymmetry(n, path)
+    result = inferTypeEquality(n, path)
     or
     result = inferImplicitSelfType(n, path)
     or

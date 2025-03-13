@@ -78,7 +78,7 @@ class TypeReprMention extends TypeMention, TypeRepr {
 
 class PathMention extends TypeMention, Path {
   override TypeMention getTypeArgument(int i) {
-    result = this.getPart().getGenericArgList().getTypeArgument(i)
+    result = this.getPart().getGenericArgList().getTypeArg(i)
     or
     // `Self` paths inside traits and `impl` blocks have implicit type arguments
     // that are the type parameters of the trait or impl. For example, in
@@ -93,7 +93,7 @@ class PathMention extends TypeMention, Path {
     //
     // the `Self` return type is shorthand for `Foo<T>`.
     exists(ImplOrTraitItemNode node | this = node.getASelfPath() |
-      result = node.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArgument(i)
+      result = node.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArg(i)
       or
       result = node.(Trait).getGenericParamList().getTypeParam(i)
     )
@@ -140,7 +140,7 @@ private predicate isImplSelfTypeParam(
 ) {
   exists(PathMention path |
     selfPath = impl.getSelfPath() and
-    path = selfPath.getPart().getGenericArgList().getTypeArgument(i).(PathTypeRepr).getPath() and
+    path = selfPath.getPart().getGenericArgList().getTypeArg(i).(PathTypeRepr).getPath() and
     tp = path.resolveType()
   )
 }
