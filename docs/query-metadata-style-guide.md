@@ -121,12 +121,47 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
 
 ## Query tags `@tags`
 
-The `@tags` property is used to define categories that the query relates to. Each alert query should belong to one (or more, if necessary) of the following four top-level categories:
+The `@tags` property is used to define categories that the query relates to. As we prepare for the release of a dedicated code quality product, we will use tagging to prepare a stronger delineation between queries that are part of our existing "code security" product offering and those that are better suited as part of a "quality" product offering. Each alert query should belong to one of the following two top-level categories, with additional sub-categories:
 
-* `@tags correctness`–for queries that detect incorrect program behavior.
-* `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
-* `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
+#### High level category `@tags`
 * `@tags security`–for queries that detect security weaknesses. See below for further information.
+* `@tags quality`–for queries that detect code quality issues. See below for further information.
+
+#### Security query `@tags`
+
+If your query is a security query, use one or more `@tags` to associate it with the relevant CWEs. Add `@tags` for the most specific Base Weakness or Class Weakness in [View 1000](https://cwe.mitre.org/data/definitions/1000.html), using the parent/child relationship. For example:
+
+| `@tags security` | `external/cwe/cwe-022`|
+|-|-|
+||`external/cwe/cwe-023` |
+||`external/cwe/cwe-036` |
+||`external/cwe/cwe-073` |
+
+When you tag a query like this, the associated CWE pages from [MITRE.org](https://cwe.mitre.org/index.html) will automatically appear in the references section of its associated qhelp file.
+
+> [!NOTE]
+> The automatic addition of CWE reference links works only if the qhelp file already contains a `<references>` section.
+
+#### Quality query sub-category `@tags`
+
+* `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
+* `@tags reliability`–for queries that detect issues that affect whether the code will perform as expected during execution.
+
+Software quality doesn't have as universally-agreed categorization method as security issues like CWE, so we will do our own categorization instead of using tags like CWE. 
+
+We'll have two "top-level" categories of quality queries, with sub-categories beneath:
+
+* `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
+  * `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
+  * 
+
+
+* `@tags reliability`–for queries that detect issues that affect whether the code will perform as expected during execution.
+  * `@tags correctness`–for queries that detect incorrect program behavior.
+
+
+
+
 
 There are also more specific `@tags` that can be added. See, the following pages for examples of the low-level tags:
 
@@ -145,20 +180,7 @@ If necessary, you can also define your own low-level tags to categorize the quer
 * Use a forward slash / to indicate a hierarchical relationship between tags if necessary. For example, a query with tag `foo/bar` is also interpreted as also having tag `foo`, but not `bar`.
 * Use a single-word `@tags` name. Multiple words, separated with hyphens, can be used for clarity if necessary.
 
-#### Security query `@tags`
 
-If your query is a security query, use one or more `@tags` to associate it with the relevant CWEs. Add `@tags` for the most specific Base Weakness or Class Weakness in [View 1000](https://cwe.mitre.org/data/definitions/1000.html), using the parent/child relationship. For example:
-
-| `@tags security` | `external/cwe/cwe-022`|
-|-|-|
-||`external/cwe/cwe-023` |
-||`external/cwe/cwe-036` |
-||`external/cwe/cwe-073` |
-
-When you tag a query like this, the associated CWE pages from [MITRE.org](https://cwe.mitre.org/index.html) will automatically appear in the references section of its associated qhelp file.
-
-> [!NOTE]
-> The automatic addition of CWE reference links works only if the qhelp file already contains a `<references>` section.
 
 #### Metric/summary `@tags`
 
