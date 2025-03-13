@@ -3,7 +3,7 @@
  */
 
 private import rust
-private import codeql.rust.elements.internal.PathResolution
+private import PathResolution
 
 /** Holds if `p` may resolve to multiple items including `i`. */
 query predicate multiplePathResolutions(Path p, ItemNode i) {

@@ -13,7 +13,7 @@ private import codeql.rust.elements.PathExpr
  */
 module Impl {
   private import rust
-  private import PathResolution as PathResolution
+  private import codeql.rust.internal.PathResolution as PathResolution
 
   pragma[nomagic]
   Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }

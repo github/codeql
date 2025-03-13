@@ -6,8 +6,8 @@
 
 private import rust
 private import codeql.rust.elements.internal.generated.MethodCallExpr
-private import codeql.rust.elements.internal.PathResolution
-private import codeql.rust.elements.internal.TypeInference
+private import codeql.rust.internal.PathResolution
+private import codeql.rust.internal.TypeInference
 
 /**
  * INTERNAL: This module contains the customizable definition of `MethodCallExpr` and should not

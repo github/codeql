@@ -1,6 +1,6 @@
 import rust
-import codeql.rust.elements.internal.PathResolution
-import codeql.rust.elements.internal.TypeInference
+import codeql.rust.internal.PathResolution
+import codeql.rust.internal.TypeInference
 import utils.test.InlineExpectationsTest
 import TestUtils
 

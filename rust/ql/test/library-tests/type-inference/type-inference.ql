@@ -1,5 +1,5 @@
 import rust
-import codeql.rust.elements.internal.TypeInference as TypeInference
+import codeql.rust.internal.TypeInference as TypeInference
 import TypeInference
 import utils.test.InlineExpectationsTest
 

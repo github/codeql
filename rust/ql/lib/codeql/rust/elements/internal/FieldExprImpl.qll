@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.FieldExpr
  */
 module Impl {
   private import rust
-  private import TypeInference as TypeInference
+  private import codeql.rust.internal.TypeInference as TypeInference
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**

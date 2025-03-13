@@ -100,8 +100,8 @@ module Stages {
    */
   cached
   module TypeInference {
-    private import codeql.rust.elements.internal.Type
-    private import codeql.rust.elements.internal.TypeInference
+    private import codeql.rust.internal.Type
+    private import codeql.rust.internal.TypeInference
 
     /**
      * Always holds.
