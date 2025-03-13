@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
 
 const fetchRepoData = async () => {
-  const response = await fetch('https://example.com'); // $ MISSING: Source
+  const response = await fetch('https://example.com'); // $ Source
   return response.json();
 };
 
@@ -34,7 +34,7 @@ export default function UseQueriesComponent() {
         <h1>Content with Dangerous HTML</h1>
         <div
             dangerouslySetInnerHTML={{
-                __html: repoQuery.data, // $ MISSING: Alert
+                __html: repoQuery.data, // $ Alert
             }}
         />
     </div>
