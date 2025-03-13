@@ -364,10 +364,10 @@ class Node extends TIRDataFlowNode {
    * pointed to by `p`.
    */
   Expr asDefinition(boolean uncertain) {
-    exists(StoreInstruction store, Ssa::DefinitionExt def |
+    exists(StoreInstruction store, Ssa::Definition def |
       store = this.asInstruction() and
       result = asDefinitionImpl(store) and
-      Ssa::defToNode(this, def, _, _, _, _) and
+      Ssa::defToNode(this, def, _) and
       if def.isCertain() then uncertain = false else uncertain = true
     )
   }
