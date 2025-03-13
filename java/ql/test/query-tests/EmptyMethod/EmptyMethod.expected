@@ -1,2 +1,2 @@
-| Test.java:16:15:16:16 | f2 | This empty method should be completed. |
-| Test.java:43:18:43:23 | method | This empty method should be completed. |
+| Test.java:16:15:16:16 | f2 | Empty method found. |
+| Test.java:43:18:43:23 | method | Empty method found. |

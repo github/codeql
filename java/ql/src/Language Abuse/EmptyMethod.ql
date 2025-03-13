@@ -90,4 +90,4 @@ where
   not exists(m.getAnAnnotation()) and
   //native methods have no body
   not m.isNative()
-select m, "This empty method should be completed."
+select m, "Empty method found."
