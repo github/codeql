@@ -101,6 +101,8 @@ module Stages {
   cached
   module DataFlowStage {
     private import codeql.rust.dataflow.internal.DataFlowImpl
+    private import codeql.rust.dataflow.internal.Node
+    private import codeql.rust.dataflow.internal.Content
     private import codeql.rust.dataflow.internal.TaintTrackingImpl
 
     /**
@@ -122,6 +124,10 @@ module Stages {
       exists(Node n)
       or
       RustTaintTracking::defaultAdditionalTaintStep(_, _, _)
+      or
+      exists(DataFlowCall call)
+      or
+      exists(Content content)
     }
   }
 }

@@ -14,7 +14,7 @@ private import codeql.rust.security.SensitiveData
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.Node as Node
 
 /**
  * Provides default sources, sinks and sanitizers for detecting "use of a broken or weak
