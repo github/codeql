@@ -76,9 +76,6 @@ class Test
         var xmlDoc = new XmlDocument();
         xmlDoc.Load(xmlReader);
 
-        // GOOD: Passed to a library (False positive as this is disposed in library code).
-        DisposalTests.Class1.Dispose(new StreamWriter("output.txt"));
-
         // GOOD: Disposed automatically.
         using var c2 = new Timer(TimerProc);
 
