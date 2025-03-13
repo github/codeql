@@ -223,6 +223,7 @@
 | tst.js:477:18:477:40 | locatio ... bstr(1) | tst.js:477:18:477:30 | location.hash | tst.js:477:18:477:40 | locatio ... bstr(1) | Cross-site scripting vulnerability due to $@. | tst.js:477:18:477:30 | location.hash | user-provided value |
 | tst.js:484:33:484:63 | decodeU ... n.hash) | tst.js:484:43:484:62 | window.location.hash | tst.js:484:33:484:63 | decodeU ... n.hash) | Cross-site scripting vulnerability due to $@. | tst.js:484:43:484:62 | window.location.hash | user-provided value |
 | tst.js:492:18:492:54 | target. ... "), '') | tst.js:491:16:491:39 | documen ... .search | tst.js:492:18:492:54 | target. ... "), '') | Cross-site scripting vulnerability due to $@. | tst.js:491:16:491:39 | documen ... .search | user-provided value |
+| tst.js:499:18:499:33 | unescape(source) | tst.js:498:16:498:26 | window.name | tst.js:499:18:499:33 | unescape(source) | Cross-site scripting vulnerability due to $@. | tst.js:498:16:498:26 | window.name | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:45 | documen ... .search | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | Cross-site scripting vulnerability due to $@. | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | user-provided value |
@@ -745,6 +746,9 @@ edges
 | tst.js:491:7:491:39 | target | tst.js:492:18:492:23 | target | provenance |  |
 | tst.js:491:16:491:39 | documen ... .search | tst.js:491:7:491:39 | target | provenance |  |
 | tst.js:492:18:492:23 | target | tst.js:492:18:492:54 | target. ... "), '') | provenance |  |
+| tst.js:498:7:498:26 | source | tst.js:499:27:499:32 | source | provenance |  |
+| tst.js:498:16:498:26 | window.name | tst.js:498:7:498:26 | source | provenance |  |
+| tst.js:499:27:499:32 | source | tst.js:499:18:499:33 | unescape(source) | provenance |  |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target | provenance |  |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target | provenance |  |
 | typeahead.js:21:12:21:17 | target | typeahead.js:24:30:24:32 | val | provenance |  |
@@ -1397,6 +1401,10 @@ nodes
 | tst.js:491:16:491:39 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:492:18:492:23 | target | semmle.label | target |
 | tst.js:492:18:492:54 | target. ... "), '') | semmle.label | target. ... "), '') |
+| tst.js:498:7:498:26 | source | semmle.label | source |
+| tst.js:498:16:498:26 | window.name | semmle.label | window.name |
+| tst.js:499:18:499:33 | unescape(source) | semmle.label | unescape(source) |
+| tst.js:499:27:499:32 | source | semmle.label | source |
 | typeahead.js:20:13:20:45 | target | semmle.label | target |
 | typeahead.js:20:22:20:45 | documen ... .search | semmle.label | documen ... .search |
 | typeahead.js:21:12:21:17 | target | semmle.label | target |

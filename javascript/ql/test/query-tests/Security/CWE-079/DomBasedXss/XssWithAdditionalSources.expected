@@ -607,6 +607,10 @@ nodes
 | tst.js:491:16:491:39 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:492:18:492:23 | target | semmle.label | target |
 | tst.js:492:18:492:54 | target. ... "), '') | semmle.label | target. ... "), '') |
+| tst.js:498:7:498:26 | source | semmle.label | source |
+| tst.js:498:16:498:26 | window.name | semmle.label | window.name |
+| tst.js:499:18:499:33 | unescape(source) | semmle.label | unescape(source) |
+| tst.js:499:27:499:32 | source | semmle.label | source |
 | typeahead.js:9:28:9:30 | loc | semmle.label | loc |
 | typeahead.js:10:16:10:18 | loc | semmle.label | loc |
 | typeahead.js:20:13:20:45 | target | semmle.label | target |
@@ -1186,6 +1190,9 @@ edges
 | tst.js:491:7:491:39 | target | tst.js:492:18:492:23 | target | provenance |  |
 | tst.js:491:16:491:39 | documen ... .search | tst.js:491:7:491:39 | target | provenance |  |
 | tst.js:492:18:492:23 | target | tst.js:492:18:492:54 | target. ... "), '') | provenance |  |
+| tst.js:498:7:498:26 | source | tst.js:499:27:499:32 | source | provenance |  |
+| tst.js:498:16:498:26 | window.name | tst.js:498:7:498:26 | source | provenance |  |
+| tst.js:499:27:499:32 | source | tst.js:499:18:499:33 | unescape(source) | provenance |  |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | provenance |  |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target | provenance |  |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target | provenance |  |
