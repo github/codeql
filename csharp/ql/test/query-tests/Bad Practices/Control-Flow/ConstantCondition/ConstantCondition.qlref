@@ -1,1 +1,2 @@
-Bad Practices/Control-Flow/ConstantCondition.ql
+query: Bad Practices/Control-Flow/ConstantCondition.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

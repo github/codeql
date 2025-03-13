@@ -48,6 +48,7 @@ import codeql.rust.elements.ConstArg
 import codeql.rust.elements.ConstBlockPat
 import codeql.rust.elements.ConstParam
 import codeql.rust.elements.ContinueExpr
+import codeql.rust.elements.Crate
 import codeql.rust.elements.DynTraitTypeRepr
 import codeql.rust.elements.Element
 import codeql.rust.elements.Enum

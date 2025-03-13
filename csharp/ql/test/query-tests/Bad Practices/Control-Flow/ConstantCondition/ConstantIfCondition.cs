@@ -8,21 +8,26 @@ namespace ConstantIfCondition
 
         public void Foo()
         {
-            if (ZERO == 1 - 1)
-            { // BAD
+            if (ZERO == 1 - 1) // $ Alert
+            {
             }
-            if (false)
-            { // BAD
+            if (false) // $ Alert
+            {
             }
-            if (" " == " ")
-            { // BAD
+            if (" " == " ") // $ Alert
+            {
             }
-            if (" "[0] == ' ')
-            { // BAD: but not flagged
+            if (" "[0] == ' ') // Missing Alert
+            {
             }
-            if (Bar() == 0)
-            { // GOOD
+            if (Bar() == 0) // GOOD
+            {
             }
+        }
+
+        public int Max(int a, int b)
+        {
+            return a > a ? a : b; // $ Alert
         }
 
         public int Bar()

@@ -120,10 +120,47 @@ locatable_locations(
 // from schema
 
 @element =
-  @extractor_step
+  @crate
+| @extractor_step
 | @locatable
 | @unextracted
 ;
+
+crates(
+  unique int id: @crate
+);
+
+#keyset[id]
+crate_names(
+  int id: @crate ref,
+  string name: string ref
+);
+
+#keyset[id]
+crate_versions(
+  int id: @crate ref,
+  string version: string ref
+);
+
+#keyset[id]
+crate_modules(
+  int id: @crate ref,
+  int module: @module ref
+);
+
+#keyset[id, index]
+crate_cfg_options(
+  int id: @crate ref,
+  int index: int ref,
+  string cfg_option: string ref
+);
+
+#keyset[id, index]
+crate_dependencies(
+  int id: @crate ref,
+  int index: int ref,
+  int dependency: @crate ref
+);
 
 extractor_steps(
   unique int id: @extractor_step,
