@@ -48,9 +48,9 @@ class Test
         }
 
         // BAD: No Dispose call
-        var c1d = new Timer(TimerProc);
-        var fs = new FileStream("", FileMode.CreateNew, FileAccess.Write);
-        new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent();
+        var c1d = new Timer(TimerProc); // $ Alert
+        var fs = new FileStream("", FileMode.CreateNew, FileAccess.Write); // $ Alert
+        new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent(); // $ Alert
 
         // GOOD: Disposed via wrapper
         fs = new FileStream("", FileMode.CreateNew, FileAccess.Write);
@@ -72,7 +72,7 @@ class Test
             ;
 
         // GOOD: XmlDocument.Load disposes incoming XmlReader (False positive as this is disposed in library code)
-        var xmlReader = XmlReader.Create(new StringReader("xml"), null);
+        var xmlReader = XmlReader.Create(new StringReader("xml"), null); // $ Alert
         var xmlDoc = new XmlDocument();
         xmlDoc.Load(xmlReader);
 
@@ -102,6 +102,15 @@ class Test
     }
 
     public void Dispose() { }
+}
+
+class Bad
+{
+    long GetLength(string file)
+    {
+        var stream = new FileStream(file, FileMode.Open); // $ Alert
+        return stream.Length;
+    }
 }
 
 static class Extensions
