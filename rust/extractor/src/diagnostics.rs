@@ -83,6 +83,7 @@ pub enum ExtractionStepKind {
     LoadSource,
     Parse,
     Extract,
+    CrateGraph,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -126,6 +127,10 @@ impl ExtractionStep {
             ExtractionStepKind::Extract,
             Some(PathBuf::from(target)),
         )
+    }
+
+    pub fn crate_graph(start: Instant) -> Self {
+        Self::new(start, ExtractionStepKind::CrateGraph, None)
     }
 
     pub fn load_source(start: Instant, target: &Path) -> Self {
