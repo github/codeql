@@ -2,14 +2,14 @@ func getData() {
 	// ...
 
 	// GOOD: not sensitive information
-	let body = reqwest::get("https://example.com/data").await?.text().await?;
+	let body = reqwest::get("https://example.com/song/{faveSong}").await?.text().await?;
 
-	// BAD: sensitive information sent in cleartext
-	let body = reqwest::get(format!("https://example.com/data?password={password}")).await?.text().await?;
+	// BAD: sensitive information sent in cleartext in the URL
+	let body = reqwest::get(format!("https://example.com/card/{creditCardNo}")).await?.text().await?;
 
-	// GOOD: encrypted sensitive information sent
+	// GOOD: encrypted sensitive information sent in the URL
 	let encryptedPassword = encrypt(password, encryptionKey);
-	let body = reqwest::get(format!("https://example.com/data?password={encryptedPassword}")).await?.text().await?;
+	let body = reqwest::get(format!("https://example.com/card/{creditCardNo}")).await?.text().await?;
 
 	// ...
 }

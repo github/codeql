@@ -9,7 +9,6 @@ extensions:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
-      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::blocking::get", "Argument[0]", "transmission", "manual"]
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::request", "Argument[1]", "transmission", "manual"]
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::client::Client>::request", "Argument[1]", "transmission", "manual"]
   - addsTo:
