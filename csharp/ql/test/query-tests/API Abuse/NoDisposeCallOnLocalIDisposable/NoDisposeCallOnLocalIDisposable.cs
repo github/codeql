@@ -1,10 +1,11 @@
 using System;
-using System.Text;
 using System.IO;
 using System.IO.Compression;
-using System.Xml;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 class Test
 {
@@ -48,9 +49,9 @@ class Test
         }
 
         // BAD: No Dispose call
-        var c1d = new Timer(TimerProc);
-        var fs = new FileStream("", FileMode.CreateNew, FileAccess.Write);
-        new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent();
+        var c1d = new Timer(TimerProc); // $ Alert
+        var fs = new FileStream("", FileMode.CreateNew, FileAccess.Write); // $ Alert
+        new FileStream("", FileMode.CreateNew, FileAccess.Write).Fluent(); // $ Alert
 
         // GOOD: Disposed via wrapper
         fs = new FileStream("", FileMode.CreateNew, FileAccess.Write);
@@ -72,12 +73,9 @@ class Test
             ;
 
         // GOOD: XmlDocument.Load disposes incoming XmlReader (False positive as this is disposed in library code)
-        var xmlReader = XmlReader.Create(new StringReader("xml"), null);
+        var xmlReader = XmlReader.Create(new StringReader("xml"), null); // $ Alert
         var xmlDoc = new XmlDocument();
         xmlDoc.Load(xmlReader);
-
-        // GOOD: Passed to a library (False positive as this is disposed in library code).
-        DisposalTests.Class1.Dispose(new StreamWriter("output.txt"));
 
         // GOOD: Disposed automatically.
         using var c2 = new Timer(TimerProc);
@@ -97,6 +95,15 @@ class Test
         return null;
     }
 
+    public void M(IHttpClientFactory factory)
+    {
+        // GOOD: Factory tracks and disposes.
+        HttpClient client1 = factory.CreateClient();
+
+        // BAD: No Dispose call
+        var client2 = new HttpClient(); // $ Alert
+    }
+
     // GOOD: Escapes
     IDisposable Create() => new Timer(TimerProc);
 
@@ -105,6 +112,15 @@ class Test
     }
 
     public void Dispose() { }
+}
+
+class Bad
+{
+    long GetLength(string file)
+    {
+        var stream = new FileStream(file, FileMode.Open); // $ Alert
+        return stream.Length;
+    }
 }
 
 static class Extensions
