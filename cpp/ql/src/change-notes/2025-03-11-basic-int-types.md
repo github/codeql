@@ -1,4 +1,4 @@
 ---
-category: majorAnalysis
+category: minorAnalysis
 ---
-* The query "Basic Integral Types" in JPL_C has been updated to allow C standard integer types (uint8_t etc.) and 'bool'.
+* The query "Use of basic integral type" (`cpp/jpl-c/basic-int-types`) no longer produces alerts for the standard fixed width integer types (`int8_t`, `uint8_t`, etc.), and the `_Bool` and `bool` types.

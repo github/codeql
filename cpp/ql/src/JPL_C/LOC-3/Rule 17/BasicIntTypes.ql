@@ -12,8 +12,11 @@
 import cpp
 
 predicate allowedTypedefs(TypedefType t) {
-  t.getName() = ["I64", "U64", "I32", "U32", "I16", "U16", "I8", "U8", "F64", "F32",
-                 "int64_t", "uint64_t", "int32_t", "uint32_t", "int16_t", "uint16_t", "int8_t", "uint8_t"]
+  t.getName() =
+    [
+      "I64", "U64", "I32", "U32", "I16", "U16", "I8", "U8", "F64", "F32", "int64_t", "uint64_t",
+      "int32_t", "uint32_t", "int16_t", "uint16_t", "int8_t", "uint8_t"
+    ]
 }
 
 /**
@@ -39,14 +42,16 @@ Type getAUsedType(Type t) {
 }
 
 predicate problematic(IntegralType t) {
-  // 'bool' is allowed as it represents a 'true' or 'false' value
-  t.getName() != ["bool"]
+  // List any exceptions that should be allowed.
+  any()
 }
 
 from Declaration d, Type usedType
 where
   usedType = getAUsedType*(getAnImmediateUsedType(d)) and
   problematic(usedType) and
+  // Allow uses of boolean types where defined by the language.
+  not usedType instanceof BoolType and
   // Ignore violations for which we do not have a valid location.
   not d.getLocation() instanceof UnknownLocation
 select d,
