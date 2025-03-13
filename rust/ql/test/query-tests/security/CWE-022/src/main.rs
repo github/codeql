@@ -22,7 +22,7 @@ fn tainted_path_handler_good(Query(file_name): Query<String>) -> Result<String> 
 
 //#[handler]
 fn tainted_path_handler_folder_good(Query(file_path): Query<String>) -> Result<String> {
-    let public_path = home_dir().unwrap().join("public");
+    let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
     let file_path = file_path.canonicalize().unwrap();
     // GOOD: ensure that the path stays within the public folder
@@ -36,7 +36,7 @@ fn tainted_path_handler_folder_good(Query(file_path): Query<String>) -> Result<S
 fn tainted_path_handler_folder_almost_good1(
     Query(file_path): Query<String>, // $ Source=remote4
 ) -> Result<String> {
-    let public_path = home_dir().unwrap().join("public");
+    let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
     // BAD: the path could still contain `..` and escape the public folder
     if !file_path.starts_with(public_path) {
@@ -49,7 +49,7 @@ fn tainted_path_handler_folder_almost_good1(
 fn tainted_path_handler_folder_almost_good2(
     Query(file_path): Query<String>, // $ Source=remote5
 ) -> Result<String> {
-    let public_path = home_dir().unwrap().join("public");
+    let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
     let file_path = file_path.canonicalize().unwrap();
     // BAD: thecheck to ensure that the path stays within the public folder is wrong
