@@ -14,10 +14,10 @@ class FieldAlwaysLocked {
         protected synchronized void checkOut() {
                 Object o;
                 if (field.size() > 0) {
-                        Enumeration e = field.keys(); // $ SPURIOUS: Alert
+                        Enumeration e = field.keys();
                         while (e.hasMoreElements()) {
                                 o = e.nextElement();
-                                field.remove(o); // $ SPURIOUS: Alert
+                                field.remove(o);
                         }
                 }
         }

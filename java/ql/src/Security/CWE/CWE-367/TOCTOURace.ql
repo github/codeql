@@ -68,7 +68,9 @@ predicate alwaysLocked(Field f) {
   or
   exists(RefType thisType |
     forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
+      access = f.getAnAccess() and
+      not access.getEnclosingCallable() instanceof Constructor and
+      not access.getEnclosingCallable() instanceof InitializerMethod
     |
       locallySynchronizedOnThis(access, thisType)
     )
