@@ -339,7 +339,7 @@ class Node extends TIRDataFlowNode {
    *
    * For assignments, `node.asDefinition(_)` and `node.asExpr()` will both exist
    * for the same dataflow node. However, for expression such as `x++` that
-   * both write to `x` and read the current value of `x`, `node.asDefinition()`
+   * both write to `x` and read the current value of `x`, `node.asDefinition(_)`
    * will give the node corresponding to the value after the increment, and
    * `node.asExpr()` will give the node corresponding to the value before the
    * increment. For an example of this, consider the following:
