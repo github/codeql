@@ -4,7 +4,7 @@ An empty method may indicate that an implementation was intended to be provided 
 
 ## Recommendation
 
-If a method is intended to be left empty, do one of the following to indicate that it is intentionally empty: 1) mark it abstract in an abstract class, 2) place it in an interface (then it can be implicitly abstract), 3) place a comment in that method that lets others know that the implementation was intentionally omitted, or 4) throw an `UnsupportedOperationException` in the method (like is done in `java.util.Collections.add`).
+If a method is intended to be left empty, do one of the following to indicate that it is intentionally empty: 1) mark it abstract in an abstract class, 2) place it in an interface (then it can be implicitly abstract), 3) place a comment in that method that lets others know that the implementation was intentionally omitted, or 4) throw an `UnsupportedOperationException` in the method (like is done in `java.util.Collection.add`).
 
 ## Example
 
@@ -31,5 +31,5 @@ public class Test {
 The rule excludes reporting methods that are annotated.
 
 ## References
-- Java SE Documentation: [java.util.Collections.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))
-- Wikipedia: [Template pattern is a valid empty method use](https://en.wikipedia.org/wiki/Template_method_pattern)
+- Java SE Documentation: [java.util.Collection.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))
+- Wikipedia: [Template method pattern](https://en.wikipedia.org/wiki/Template_method_pattern)
