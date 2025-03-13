@@ -11,21 +11,17 @@ fn tainted_path_handler_bad(
 }
 
 //#[handler]
-fn tainted_path_handler_good(
-    Query(file_name): Query<String>, // $ Source=remote2
-) -> Result<String> {
+fn tainted_path_handler_good(Query(file_name): Query<String>) -> Result<String> {
     // GOOD: ensure that the filename has no path separators or parent directory references
     if file_name.contains("..") || file_name.contains("/") || file_name.contains("\\") {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
     let file_path = PathBuf::from(file_name);
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink SPURIOUS: Alert[rust/path-injection]=remote2
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink
 }
 
 //#[handler]
-fn tainted_path_handler_folder_good(
-    Query(file_path): Query<String>, // $ Source=remote3
-) -> Result<String> {
+fn tainted_path_handler_folder_good(Query(file_path): Query<String>) -> Result<String> {
     let public_path = home_dir().unwrap().join("public");
     let file_path = public_path.join(PathBuf::from(file_path));
     let file_path = file_path.canonicalize().unwrap();
@@ -33,7 +29,34 @@ fn tainted_path_handler_folder_good(
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink SPURIOUS: Alert[rust/path-injection]=remote3
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink
+}
+
+//#[handler]
+fn tainted_path_handler_folder_almost_good1(
+    Query(file_path): Query<String>, // $ Source=remote4
+) -> Result<String> {
+    let public_path = home_dir().unwrap().join("public");
+    let file_path = public_path.join(PathBuf::from(file_path));
+    // BAD: the path could still contain `..` and escape the public folder
+    if !file_path.starts_with(public_path) {
+        return Err(Error::from_status(StatusCode::BAD_REQUEST));
+    }
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote4
+}
+
+//#[handler]
+fn tainted_path_handler_folder_almost_good2(
+    Query(file_path): Query<String>, // $ Source=remote5
+) -> Result<String> {
+    let public_path = home_dir().unwrap().join("public");
+    let file_path = public_path.join(PathBuf::from(file_path));
+    let file_path = file_path.canonicalize().unwrap();
+    // BAD: thecheck to ensure that the path stays within the public folder is wrong
+    if file_path.starts_with(public_path) {
+        return Err(Error::from_status(StatusCode::BAD_REQUEST));
+    }
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote5
 }
 
 fn main() {}

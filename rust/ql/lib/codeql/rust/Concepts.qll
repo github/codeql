@@ -8,6 +8,8 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.threatmodels.ThreatModels
 private import codeql.rust.Frameworks
 private import codeql.rust.dataflow.FlowSource
+private import codeql.rust.controlflow.ControlFlowGraph as Cfg
+private import codeql.rust.controlflow.CfgNodes as CfgNodes
 
 /**
  * A data flow source for a specific threat-model.
@@ -263,4 +265,45 @@ module Cryptography {
   class BlockMode = SC::BlockMode;
 
   class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+}
+
+/** Provides classes for modeling path-related APIs. */
+module Path {
+  /**
+   * A data-flow node that performs path normalization. This is often needed in order
+   * to safely access paths.
+   */
+  class PathNormalization extends DataFlow::Node instanceof PathNormalization::Range {
+    /** Gets an argument to this path normalization that is interpreted as a path. */
+    DataFlow::Node getPathArg() { result = super.getPathArg() }
+  }
+
+  /** Provides a class for modeling new path normalization APIs. */
+  module PathNormalization {
+    /**
+     * A data-flow node that performs path normalization. This is often needed in order
+     * to safely access paths.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets an argument to this path normalization that is interpreted as a path. */
+      abstract DataFlow::Node getPathArg();
+    }
+  }
+
+  class SafeAccessCheck extends DataFlow::ExprNode {
+    SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
+  }
+
+  private predicate safeAccessCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
+    g.(SafeAccessCheck::Range).checks(node, branch)
+  }
+
+  /** Provides a class for modeling new path safety checks. */
+  module SafeAccessCheck {
+    /** A data-flow node that checks that a path is safe to access. */
+    abstract class Range extends CfgNodes::AstCfgNode {
+      /** Holds if this guard validates `node` upon evaluating to `branch`. */
+      abstract predicate checks(Cfg::CfgNode node, boolean branch);
+    }
+  }
 }

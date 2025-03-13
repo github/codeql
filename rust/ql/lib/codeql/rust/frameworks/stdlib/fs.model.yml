@@ -16,3 +16,4 @@ extensions:
       - ["lang:std", "<crate::path::PathBuf as crate::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["lang:std", "<crate::path::Path>::join", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:std", "<crate::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]

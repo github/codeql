@@ -19,19 +19,72 @@ import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.TaintedPathExtensions
 import TaintedPathFlow::PathGraph
+private import codeql.rust.Concepts
 
-/**
- * A taint configuration for tainted data that reaches a file access sink.
- */
-module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof TaintedPath::Source }
-
-  predicate isSink(DataFlow::Node node) { node instanceof TaintedPath::Sink }
-
-  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof TaintedPath::Barrier }
+abstract private class NormalizationState extends string {
+  bindingset[this]
+  NormalizationState() { any() }
 }
 
-module TaintedPathFlow = TaintTracking::Global<TaintedPathConfig>;
+/** A state signifying that the file path has not been normalized. */
+class NotNormalized extends NormalizationState {
+  NotNormalized() { this = "NotNormalized" }
+}
+
+/** A state signifying that the file path has been normalized, but not checked. */
+class NormalizedUnchecked extends NormalizationState {
+  NormalizedUnchecked() { this = "NormalizedUnchecked" }
+}
+
+/**
+ * This configuration uses two flow states, `NotNormalized` and `NormalizedUnchecked`,
+ * to track the requirement that a file path must be first normalized and then checked
+ * before it is safe to use.
+ *
+ * At sources, paths are assumed not normalized. At normalization points, they change
+ * state to `NormalizedUnchecked` after which they can be made safe by an appropriate
+ * check of the prefix.
+ *
+ * Such checks are ineffective in the `NotNormalized` state.
+ */
+module TaintedPathConfig implements DataFlow::StateConfigSig {
+  class FlowState = NormalizationState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof TaintedPath::Source and state instanceof NotNormalized
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof TaintedPath::Sink and
+    (
+      state instanceof NotNormalized or
+      state instanceof NormalizedUnchecked
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof TaintedPath::Barrier or node instanceof TaintedPath::SanitizerGuard
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    // Block `NotNormalized` paths here, since they change state to `NormalizedUnchecked`
+    node instanceof Path::PathNormalization and
+    state instanceof NotNormalized
+    or
+    node instanceof Path::SafeAccessCheck and
+    state instanceof NormalizedUnchecked
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
+  ) {
+    nodeFrom = nodeTo.(Path::PathNormalization).getPathArg() and
+    stateFrom instanceof NotNormalized and
+    stateTo instanceof NormalizedUnchecked
+  }
+}
+
+module TaintedPathFlow = TaintTracking::GlobalWithState<TaintedPathConfig>;
 
 from TaintedPathFlow::PathNode source, TaintedPathFlow::PathNode sink
 where TaintedPathFlow::flowPath(source, sink)
