@@ -382,7 +382,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets the definition associated with this node, if this node is an uncertain definition.
    *
-   * See `Node.asDefinition` for a description of certain and uncertain definitions.
+   * See `Node.asDefinition/1` for a description of certain and uncertain definitions.
    */
   Expr asUncertainDefinition() { result = this.asDefinition(true) }
 
