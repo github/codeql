@@ -9,3 +9,4 @@
       - cs/inefficient-containskey
       - cs/call-to-object-tostring
       - cs/local-not-disposed
+      - cs/constant-condition
