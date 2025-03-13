@@ -6,4 +6,5 @@ require (
 	gorm.io/gorm v1.23.0
 	github.com/jmoiron/sqlx v1.4.0
 	go.mongodb.org/mongo-driver/mongo v1.17.2
+	github.com/nonexistent/sources v0.0.0-20250300000000-000000000000
 )
