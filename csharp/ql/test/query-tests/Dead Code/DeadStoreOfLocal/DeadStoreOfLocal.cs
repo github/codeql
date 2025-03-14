@@ -9,14 +9,14 @@ public class DeadStoreOfLocal
 
     public int M1()
     {
-        int x = M2(); // BAD
+        int x = M2(); // $ Alert
         return (x = 1) + x; // GOOD
     }
 
     public int M2()
     {
         int x = 1; // GOOD
-        return x + (x = 1); // BAD
+        return x + (x = 1); // $ Alert
     }
 
     public int M3()
@@ -41,19 +41,19 @@ public class DeadStoreOfLocal
 
     public void M5()
     {
-        int x = M3(); // BAD
+        int x = M3(); // $ Alert
     }
 
     public void M6()
     {
         int x = 42;
-        x += 1; // BAD
+        x += 1; // $ Alert
     }
 
     public void M7()
     {
         int x = 42;
-        x++; // BAD
+        x++; // $ Alert
     }
 
     public IEnumerable<string> M8(IEnumerable<string> source)
@@ -79,8 +79,8 @@ public class DeadStoreOfLocal
 
     public void M10(IEnumerable<string> source)
     {
-        foreach (var val in source)
-        { // BAD
+        foreach (var val in source) // $ Alert
+        {
         }
     }
 }
@@ -98,10 +98,10 @@ public abstract class ExceptionsFlow
             message = "Unsuccessful completion";  // GOOD: Used in finally
             Process();
             info2 = "Finishing";                  // GOOD: Used in exception handler
-            extra = "Dead store here";            // BAD: Dead store
+            extra = "Dead store here";            // $ Alert Dead store
             Process();
             message = "Successful completion";    // GOOD: Used in finally
-            info1 = "Used in handler";            // BAD: Used in handler, but not a reachable handler
+            info1 = "Used in handler";            // $ Alert Used in handler, but not a reachable handler
         }
         catch (SystemException ex)
         {
@@ -139,7 +139,7 @@ public abstract class ExceptionsFlow
         {
             Process();
         }
-        catch (Exception ex) // BAD
+        catch (Exception ex) // $ Alert
         {
             Console.WriteLine("Stage " + stage);
             stage = 3;  // GOOD: Used in finally
@@ -157,7 +157,7 @@ public class OutParam
     public void Test()
     {
         int x;
-        Fn(out x); // BAD
+        Fn(out x); // Missing Alert
         Fn(out _); // GOOD
     }
 
@@ -194,7 +194,7 @@ public class Captured
 
     void M2()
     {
-        var x = M6(); // BAD [FALSE NEGATIVE]
+        var x = M6(); // Missing Alert
         Action a = () =>
         {
             x = 1; // GOOD
@@ -208,7 +208,7 @@ public class Captured
         int x;
         Action a = () =>
         {
-            x = 1; // BAD [FALSE NEGATIVE]
+            x = 1; // Missing Alert
         };
         a();
     }
@@ -230,7 +230,7 @@ public class Captured
 
     void M5()
     {
-        int x = 0; // BAD: NOT DETECTED
+        int x = 0; // Missing Alert.
         Action a = () =>
         {
             x = 1; // GOOD
@@ -243,14 +243,14 @@ public class Captured
     {
         fn(() =>
         {
-            int y = M6(); // BAD
+            int y = M6(); // $ Alert
             return (y = 1) + y; // GOOD
         });
 
         int captured = 0; // GOOD: Variable captured variable
         fn(() => { return captured; });
 
-        return captured = 1; // BAD: NOT DETECTED
+        return captured = 1; // Missing Alert.
     }
 
     void M7()
@@ -258,7 +258,7 @@ public class Captured
         var y = 12; // GOOD: Not a dead store (used in delegate)
         fn(() =>
         {
-            var x = y;  // BAD: Dead store in lambda
+            var x = y;  // $ Alert Dead store in lambda
             return 0;
         });
     }
@@ -297,8 +297,8 @@ class Patterns
         { // GOOD
             Console.WriteLine($"int {i1}");
         }
-        else if (o is var v1)
-        { // BAD
+        else if (o is var v1) // $ Alert
+        {
         }
 
         switch (o)
@@ -311,7 +311,7 @@ class Patterns
             case int i3: // GOOD
                 Console.WriteLine($"int {i3}");
                 break;
-            case var v2: // BAD
+            case var v2: // $ Alert
                 break;
             default:
                 Console.WriteLine("Something else");
@@ -328,7 +328,7 @@ class Tuples
         Use(x);
         Use(b);
         Use(s);
-        (x, (b, s)) = GetTuple(); // BAD: `b`
+        (x, (b, s)) = GetTuple(); // $ Alert on `b`
         Use(x);
         Use(s);
         (x, (_, s)) = GetTuple(); // GOOD
@@ -369,7 +369,7 @@ class Initializers
 
     string M4()
     {
-        var s = M3(); // BAD
+        var s = M3(); // $ Alert
         s = "";
         return s;
     }
@@ -395,7 +395,7 @@ class Initializers
     {
         var s = "";
         if (b)
-            s = "abc"; // BAD
+            s = "abc"; // $ Alert
         if (!b)
             return s;
         return null;
@@ -469,7 +469,7 @@ public static class Using
         using var x = new System.IO.FileStream("", System.IO.FileMode.Open); // GOOD
         using var _ = new System.IO.FileStream("", System.IO.FileMode.Open); // GOOD
 
-        using (var y = new System.IO.FileStream("", System.IO.FileMode.Open)) // BAD
+        using (var y = new System.IO.FileStream("", System.IO.FileMode.Open)) // $ Alert
         {
         }
     }
