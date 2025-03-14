@@ -30,8 +30,10 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
 
   TupleFieldContent() { this = TTupleFieldContent(field) }
 
+  /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, int pos) { field.isVariantField(v, pos) }
 
+  /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
 
   override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getTupleField() }
@@ -61,8 +63,10 @@ class RecordFieldContent extends FieldContent, TRecordFieldContent {
 
   RecordFieldContent() { this = TRecordFieldContent(field) }
 
+  /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, string name) { field.isVariantField(v, name) }
 
+  /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
 
   override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getRecordField() }
@@ -141,6 +145,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 
   TuplePositionContent() { this = TTuplePositionContent(pos) }
 
+  /** Gets the index of this tuple position. */
   int getPosition() { result = pos }
 
   override FieldExprCfgNode getAnAccess() {
