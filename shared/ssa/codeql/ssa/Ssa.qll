@@ -1502,6 +1502,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * definition.
      */
     default predicate includeWriteDefsInFlowStep() { any() }
+
+    /**
+     * Holds if barrier guards should be supported on input edges to phi
+     * nodes. Disable this only if barrier guards are not going to be used.
+     */
+    default predicate supportBarrierGuardsOnPhiEdges() { any() }
   }
 
   /**
@@ -1533,6 +1539,29 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
+    /**
+     * Holds if the input to `phi` from the block `input` might be relevant for
+     * barrier guards as a separately synthesized `TSsaInputNode`.
+     */
+    private predicate relevantPhiInputNode(SsaPhiExt phi, BasicBlock input) {
+      DfInput::supportBarrierGuardsOnPhiEdges() and
+      // If the input isn't explicitly read then a guard cannot check it.
+      exists(DfInput::getARead(getAPhiInputDef(phi, input))) and
+      (
+        exists(DfInput::Guard g | g.controlsBranchEdge(input, phi.getBasicBlock(), _))
+        or
+        exists(BasicBlock prev |
+          AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
+            phi.getSourceVariable()) and
+          prev != input and
+          exists(DfInput::Guard g, boolean branch |
+            DfInput::guardControlsBlock(g, input, branch) and
+            not DfInput::guardControlsBlock(g, prev, branch)
+          )
+        )
+      )
+    }
+
     private newtype TNode =
       TParamNode(DfInput::Parameter p) {
         exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
@@ -1546,7 +1575,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
       } or
       TSsaDefinitionNode(DefinitionExt def) or
-      TSsaInputNode(SsaPhiExt phi, BasicBlock input) { exists(getAPhiInputDef(phi, input)) }
+      TSsaInputNode(SsaPhiExt phi, BasicBlock input) { relevantPhiInputNode(phi, input) }
 
     /**
      * A data flow node that we need to reference in the value step relation.
@@ -1822,8 +1851,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       // Flow from definition/read to phi input
       exists(BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
         AdjacentSsaRefs::adjacentRefPhi(bb1, i1, input, bbPhi, v) and
-        nodeTo = TSsaInputNode(phi, input) and
         phi.definesAt(v, bbPhi, -1, _)
+      |
+        nodeTo = TSsaInputNode(phi, input)
+        or
+        not relevantPhiInputNode(phi, input) and
+        nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
       )
     }
 
