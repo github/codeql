@@ -1495,6 +1495,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
     predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+
+    /**
+     * Holds if `WriteDefinition`s should be included as an intermediate node
+     * between the assigned `Expr` or `Parameter` and the first read of the SSA
+     * definition.
+     */
+    default predicate includeWriteDefsInFlowStep() { any() }
   }
 
   /**
@@ -1783,11 +1790,43 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
         def.definesAt(v, bb, i, _) and
-        isUseStep = false
+        isUseStep = false and
+        if DfInput::includeWriteDefsInFlowStep()
+        then any()
+        else (
+          def instanceof PhiNode or
+          def instanceof PhiReadNode or
+          DfInput::allowFlowIntoUncertainDef(def)
+        )
       )
       or
       [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
       isUseStep = true
+    }
+
+    private predicate flowFromRefToNode(SourceVariable v, BasicBlock bb1, int i1, Node nodeTo) {
+      // Flow from definition/read to next read
+      exists(BasicBlock bb2, int i2 |
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        nodeTo.(ReadNode).readsAt(bb2, i2, v)
+      )
+      or
+      // Flow from definition/read to next uncertain write
+      exists(BasicBlock bb2, int i2 |
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        exists(UncertainWriteDefinition def2 |
+          DfInput::allowFlowIntoUncertainDef(def2) and
+          nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
+          def2.definesAt(v, bb2, i2)
+        )
+      )
+      or
+      // Flow from definition/read to phi input
+      exists(BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
+        AdjacentSsaRefs::adjacentRefPhi(bb1, i1, input, bbPhi, v) and
+        nodeTo = TSsaInputNode(phi, input) and
+        phi.definesAt(v, bbPhi, -1, _)
+      )
     }
 
     /**
@@ -1804,35 +1843,21 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       |
-        nodeTo.(SsaDefinitionNode).getDefinition() = def and
-        v = def.getSourceVariable() and
-        isUseStep = false
+        isUseStep = false and
+        if DfInput::includeWriteDefsInFlowStep()
+        then
+          nodeTo.(SsaDefinitionNode).getDefinition() = def and
+          v = def.getSourceVariable()
+        else
+          exists(BasicBlock bb1, int i1 |
+            def.definesAt(v, bb1, i1) and
+            flowFromRefToNode(v, bb1, i1, nodeTo)
+          )
       )
       or
-      // Flow from definition/read to next read
-      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+      exists(BasicBlock bb1, int i1 |
         flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
-        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
-        nodeTo.(ReadNode).readsAt(bb2, i2, v)
-      )
-      or
-      // Flow from definition/read to next uncertain write
-      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
-        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
-        exists(UncertainWriteDefinition def2 |
-          DfInput::allowFlowIntoUncertainDef(def2) and
-          nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
-          def2.definesAt(v, bb2, i2)
-        )
-      )
-      or
-      // Flow from definition/read to phi input
-      exists(BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
-        flowOutOf(nodeFrom, v, bb, i, isUseStep) and
-        AdjacentSsaRefs::adjacentRefPhi(bb, i, input, bbPhi, v) and
-        nodeTo = TSsaInputNode(phi, input) and
-        phi.definesAt(v, bbPhi, -1, _)
+        flowFromRefToNode(v, bb1, i1, nodeTo)
       )
       or
       // Flow from input node to def
@@ -1853,8 +1878,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       |
-        nodeTo.(SsaDefinitionNode).getDefinition() = def and
-        v = def.getSourceVariable()
+        v = def.getSourceVariable() and
+        if DfInput::includeWriteDefsInFlowStep()
+        then nodeTo.(SsaDefinitionNode).getDefinition() = def
+        else nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
       )
       or
       // Flow from SSA definition to read
