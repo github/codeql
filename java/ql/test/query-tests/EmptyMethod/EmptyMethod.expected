@@ -1,2 +1,6 @@
-| Test.java:16:15:16:16 | f2 | Empty method found. |
+#select
+| Class1.java:16:15:16:16 | f2 | Empty method found. |
+| Class1.java:43:18:43:23 | method | Empty method found. |
 | Test.java:43:18:43:23 | method | Empty method found. |
+testFailures
+| Test.java:16:24:16:33 | // $ Alert | Missing result: Alert |
