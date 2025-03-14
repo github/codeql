@@ -368,7 +368,7 @@ bindingset[pred]
 predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
   exists(string name | succ = pred.getMember(name) and path = "Member[" + name + "]")
   or
-  succ = pred.getUnknownMember() and path = "AnyMember"
+  succ = pred.getUnknownArrayElement() and path = "ArrayElement"
   or
   succ = pred.getInstance() and path = "Instance"
   or

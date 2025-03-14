@@ -10,6 +10,7 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.dataflow.internal.sharedlib.SummaryTypeTracker as SummaryTypeTracker
+private import semmle.javascript.dataflow.internal.Contents::Private as ContentPrivate
 private import internal.CachedStages
 
 /**
@@ -222,13 +223,17 @@ module API {
     }
 
     /**
-     * Gets a node representing a member of this API component where the name of the member is
-     * not known statically.
+     * DEPRECATED. Use either `getArrayElement()` or `getAMember()` instead.
+     */
+    deprecated Node getUnknownMember() { result = this.getArrayElement() }
+
+    /**
+     * Gets an array element of unknown index.
      */
     cached
-    Node getUnknownMember() {
+    Node getUnknownArrayElement() {
       Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::unknownMember())
+      result = this.getASuccessor(Label::content(ContentPrivate::MkArrayElementUnknown()))
     }
 
     cached
@@ -274,7 +279,7 @@ module API {
       Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
-      result = this.getUnknownMember()
+      result = this.getUnknownArrayElement()
     }
 
     /**
@@ -1505,7 +1510,12 @@ module API {
     /** Gets the `content` edge label for content `c`. */
     LabelContent content(ContentPrivate::Content c) { result.getContent() = c }
 
-    /** Gets the `member` edge label for the unknown member. */
+    /**
+     * Gets the edge label for an unknown member.
+     *
+     * Currently this is represented the same way as an unknown array element, but this may
+     * change in the future.
+     */
     LabelContent unknownMember() { result.getContent().isUnknownArrayElement() }
 
     /**
@@ -1580,7 +1590,6 @@ module API {
     /** Gets an entry-point label for the entry-point `e`. */
     LabelEntryPoint entryPoint(API::EntryPoint e) { result.getEntryPoint() = e }
 
-    private import semmle.javascript.dataflow.internal.Contents::Private as ContentPrivate
     private import LabelImpl
 
     private module LabelImpl {
@@ -1676,7 +1685,7 @@ module API {
           or
           content instanceof ContentPrivate::MkPromiseError and result = "getPromisedError()"
           or
-          content instanceof ContentPrivate::MkArrayElementUnknown and result = "getUnknownMember()"
+          content instanceof ContentPrivate::MkArrayElementUnknown and result = "getArrayElement()"
         }
 
         override string toString() {
