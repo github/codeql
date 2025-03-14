@@ -32,5 +32,17 @@ module Impl {
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
+
+    /** Holds if this struct uses tuple fields. */
+    pragma[nomagic]
+    predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
+
+    /**
+     * Holds if this struct uses record fields.
+     *
+     * Empty structs are considered to use record fields.
+     */
+    pragma[nomagic]
+    predicate isRecord() { not this.isTuple() }
   }
 }
