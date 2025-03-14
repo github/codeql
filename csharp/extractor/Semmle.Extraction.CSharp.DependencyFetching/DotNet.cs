@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Text;
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -71,10 +71,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // the configuration file(s).
             if (restoreSettings.Sources != null)
             {
+                var feedArgs = new StringBuilder();
                 foreach (string source in restoreSettings.Sources)
                 {
-                    args += $" -s {source}";
+                    feedArgs.Append($" -s {source}");
                 }
+
+                args += feedArgs.ToString();
             }
 
             if (restoreSettings.ForceReevaluation)
