@@ -101,14 +101,16 @@
 #-----|  -> Crate(getopts@0.2.21)
 #-----|  -> Crate(libc@0.2.169)
 
-#-----| Crate(test@0.0.1)
+lib.rs:
+#    0| Crate(test@0.0.1)
 #-----|  -> Crate(core@0.0.0)
 #-----|  -> Crate(std@0.0.0)
 #-----|  -> Crate(alloc@0.0.0)
 #-----|  -> Crate(proc_macro@0.0.0)
 #-----|  -> Crate(test@0.0.0)
 
-#-----| Crate(main@0.0.1)
+main.rs:
+#    0| Crate(main@0.0.1)
 #-----|  -> Crate(core@0.0.0)
 #-----|  -> Crate(std@0.0.0)
 #-----|  -> Crate(alloc@0.0.0)
