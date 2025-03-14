@@ -10,4 +10,6 @@ import com.semmle.js.ast.Literal;
  * however, some expressions such as {@link Literal} type may occur in a type annotation because the
  * TypeScript AST does not distinguish <code>null</code> literals from the <code>null</code> type.
  */
-public interface ITypeExpression extends INode, ITypedAstNode {}
+public interface ITypeExpression extends INode, ITypedAstNode {
+    public default boolean isValidExpression() { return true; }
+}

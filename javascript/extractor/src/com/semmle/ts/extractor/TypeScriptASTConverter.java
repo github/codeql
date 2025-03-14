@@ -1907,7 +1907,7 @@ public class TypeScriptASTConverter {
   }
 
   private ITypeExpression asType(Node node) {
-    return node instanceof ITypeExpression ? (ITypeExpression) node : null;
+    return node instanceof ITypeExpression && ((ITypeExpression)node).isValidExpression() ? (ITypeExpression) node : null;
   }
 
   private List<ITypeExpression> convertChildrenAsTypes(JsonObject node, String child)

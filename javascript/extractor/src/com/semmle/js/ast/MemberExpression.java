@@ -69,4 +69,9 @@ public class MemberExpression extends Expression
   public void setSymbol(int symbol) {
     this.symbol = symbol;
   }
+
+  @Override 
+  public boolean isValidExpression() {
+    return object instanceof ITypeExpression || object instanceof DynamicImport;
+  }
 }
