@@ -446,41 +446,35 @@ private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
 
 final class CastNode = NaNode;
 
-/** A collection of cached types and predicates to be evaluated in the same stage. */
+private import codeql.rust.internal.CachedStages
+
 cached
-private module Cached {
-  private import codeql.rust.internal.CachedStages
-
-  cached
-  newtype TNode =
-    TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
-    TSourceParameterNode(ParamBaseCfgNode p) or
-    TPatNode(PatCfgNode p) or
-    TNameNode(NameCfgNode n) { n.getName() = any(Variable v).getName() } or
-    TExprPostUpdateNode(ExprCfgNode e) {
-      isArgumentForCall(e, _, _)
-      or
-      lambdaCallExpr(_, _, e)
-      or
-      lambdaCreationExpr(e.getExpr(), _)
-      or
-      // Whenever `&mut e` has a post-update node we also create one for `e`.
-      // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
-      e = any(RefExprCfgNode ref | ref.isMut() and exists(TExprPostUpdateNode(ref))).getExpr()
-      or
-      e =
-        [
-          any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
-          any(TryExprCfgNode try).getExpr(),
-          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
-          any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver()
-        ]
-    } or
-    TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or
-    TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
-    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-    TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
-    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
-}
-
-import Cached
+newtype TNode =
+  TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
+  TSourceParameterNode(ParamBaseCfgNode p) or
+  TPatNode(PatCfgNode p) or
+  TNameNode(NameCfgNode n) { n.getName() = any(Variable v).getName() } or
+  TExprPostUpdateNode(ExprCfgNode e) {
+    isArgumentForCall(e, _, _)
+    or
+    lambdaCallExpr(_, _, e)
+    or
+    lambdaCreationExpr(e.getExpr(), _)
+    or
+    // Whenever `&mut e` has a post-update node we also create one for `e`.
+    // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
+    e = any(RefExprCfgNode ref | ref.isMut() and exists(TExprPostUpdateNode(ref))).getExpr()
+    or
+    e =
+      [
+        any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
+        any(TryExprCfgNode try).getExpr(),
+        any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
+        any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver()
+      ]
+  } or
+  TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or
+  TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+  TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
+  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)

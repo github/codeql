@@ -209,32 +209,26 @@ final class SingletonContentSet extends ContentSet, TSingletonContentSet {
   override Content getAReadContent() { result = c }
 }
 
-/** A collection of cached types and predicates to be evaluated in the same stage. */
+private import codeql.rust.internal.CachedStages
+
 cached
-private module Cached {
-  private import codeql.rust.internal.CachedStages
-
-  cached
-  newtype TContent =
-    TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
-    TRecordFieldContent(RecordField field) or
-    // TODO: Remove once library types are extracted
-    TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
-    TElementContent() or
-    TFutureContent() or
-    TTuplePositionContent(int pos) {
-      pos in [0 .. max([
-                any(TuplePat pat).getNumberOfFields(),
-                any(FieldExpr access).getNameRef().getText().toInt()
-              ]
-          )]
-    } or
-    TFunctionCallReturnContent() or
-    TFunctionCallArgumentContent(int pos) {
-      pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
-    } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
-    TReferenceContent()
-}
-
-import Cached
+newtype TContent =
+  TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
+  TRecordFieldContent(RecordField field) or
+  // TODO: Remove once library types are extracted
+  TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
+  TElementContent() or
+  TFutureContent() or
+  TTuplePositionContent(int pos) {
+    pos in [0 .. max([
+              any(TuplePat pat).getNumberOfFields(),
+              any(FieldExpr access).getNameRef().getText().toInt()
+            ]
+        )]
+  } or
+  TFunctionCallReturnContent() or
+  TFunctionCallArgumentContent(int pos) {
+    pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
+  } or
+  TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+  TReferenceContent()

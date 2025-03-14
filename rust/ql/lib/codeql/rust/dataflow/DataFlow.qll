@@ -26,6 +26,20 @@ module DataFlow {
 
   final class Content = Content::Content;
 
+  final class FieldContent = Content::FieldContent;
+
+  final class TuplePositionContent = Content::TuplePositionContent;
+
+  final class TupleFieldContent = Content::TupleFieldContent;
+
+  final class RecordFieldContent = Content::RecordFieldContent;
+
+  final class ReferenceContent = Content::ReferenceContent;
+
+  final class ElementContent = Content::ElementContent;
+
+  final class FutureContent = Content::FutureContent;
+
   final class ContentSet = Content::ContentSet;
 
   /**
