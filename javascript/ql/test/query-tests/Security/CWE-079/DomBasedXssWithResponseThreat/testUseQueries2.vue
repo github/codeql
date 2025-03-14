@@ -9,7 +9,7 @@ const fetchContent = async () => {
 };
 
 async function fetchPost() {
-    const response = await fetch("${id}"); // $ MISSING: Source
+    const response = await fetch("${id}"); // $ Source
     return response.json();
 }
 
