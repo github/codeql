@@ -4,6 +4,7 @@
  * @kind problem
  * @tags reliability
  *       correctness
+ *       quality
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -188,29 +189,27 @@ predicate isLikelyPlaceholderFunction(Function f) {
 }
 
 from
-  PythonFunctionValue f, string message, string sizes, boolean show_counts, string name,
-  ClassValue owner, boolean show_unused_defaults
+  Function f, string message, string sizes, boolean show_counts, string name, Class owner,
+  boolean show_unused_defaults
 where
-  owner.getScope().getAMethod() = f.getScope() and
-  f.getScope().getName() = name and
+  owner.getAMethod() = f and
+  f.getName() = name and
   (
-    incorrect_special_method_defn(f.getScope(), message, show_counts, name, show_unused_defaults)
+    incorrect_special_method_defn(f, message, show_counts, name, show_unused_defaults)
     or
-    incorrect_pow(f.getScope(), message, show_counts, show_unused_defaults) and name = "__pow__"
+    incorrect_pow(f, message, show_counts, show_unused_defaults) and name = "__pow__"
     or
-    incorrect_get(f.getScope(), message, show_counts, show_unused_defaults) and name = "__get__"
+    incorrect_get(f, message, show_counts, show_unused_defaults) and name = "__get__"
     or
-    incorrect_round(f.getScope(), message, show_counts, show_unused_defaults) and
+    incorrect_round(f, message, show_counts, show_unused_defaults) and
     name = "__round__"
   ) and
-  not isLikelyPlaceholderFunction(f.getScope()) and
+  not isLikelyPlaceholderFunction(f) and
   show_unused_defaults = false and
   (
     show_counts = false and sizes = ""
     or
     show_counts = true and
-    sizes =
-      ", which has " + has_parameters(f.getScope()) + ", but should have " +
-        should_have_parameters(name)
+    sizes = ", which has " + has_parameters(f) + ", but should have " + should_have_parameters(name)
   )
 select f, message + " for special method " + name + sizes + ", in class $@.", owner, owner.getName()
