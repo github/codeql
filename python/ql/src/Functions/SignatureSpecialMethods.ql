@@ -16,7 +16,9 @@ predicate is_unary_op(string name) {
   name in [
       "__del__", "__repr__", "__neg__", "__pos__", "__abs__", "__invert__", "__complex__",
       "__int__", "__float__", "__long__", "__oct__", "__hex__", "__str__", "__index__", "__enter__",
-      "__hash__", "__bool__", "__nonzero__", "__unicode__", "__len__", "__iter__", "__reversed__"
+      "__hash__", "__bool__", "__nonzero__", "__unicode__", "__len__", "__iter__", "__reversed__",
+      "__aenter__", "__aiter__", "__anext__", "__await__", "__ceil__", "__floor__", "__trunc__",
+      "__length_hint__", "__dir__", "__bytes__"
     ]
 }
 
@@ -28,17 +30,19 @@ predicate is_binary_op(string name) {
       "__and__", "__xor__", "__or__", "__ne__", "__radd__", "__rsub__", "__rmul__", "__rfloordiv__",
       "__rdiv__", "__rtruediv__", "__rmod__", "__rdivmod__", "__rpow__", "__rlshift__", "__gt__",
       "__rrshift__", "__rand__", "__rxor__", "__ror__", "__iadd__", "__isub__", "__imul__",
-      "__ifloordiv__", "__idiv__", "__itruediv__", "__ge__", "__imod__", "__idivmod__", "__ipow__",
-      "__ilshift__", "__irshift__", "__iand__", "__ixor__", "__ior__", "__coerce__", "__cmp__",
-      "__rcmp__", "__getattr___", "__getattribute___"
+      "__ifloordiv__", "__idiv__", "__itruediv__", "__ge__", "__imod__", "__ipow__", "__ilshift__",
+      "__irshift__", "__iand__", "__ixor__", "__ior__", "__coerce__", "__cmp__", "__rcmp__",
+      "__getattr__", "__getattribute__", "__buffer__", "__release_buffer__", "__matmul__",
+      "__rmatmul__", "__imatmul__", "__missing__", "__class_getitem__", "__mro_entries__",
+      "__format__"
     ]
 }
 
 predicate is_ternary_op(string name) {
-  name in ["__setattr__", "__set__", "__setitem__", "__getslice__", "__delslice__"]
+  name in ["__setattr__", "__set__", "__setitem__", "__getslice__", "__delslice__", "__set_name__"]
 }
 
-predicate is_quad_op(string name) { name = "__setslice__" or name = "__exit__" }
+predicate is_quad_op(string name) { name in ["__setslice__", "__exit__", "__aexit__"] }
 
 int argument_count(string name) {
   is_unary_op(name) and result = 1
@@ -92,6 +96,27 @@ predicate incorrect_pow(
     or
     func.getMinPositionalArguments() = 3 and
     message = "Third parameter to __pow__ should have a default value" and
+    show_counts = false and
+    is_unused_default = false
+  )
+}
+
+predicate incorrect_round(
+  Function func, string message, boolean show_counts, boolean is_unused_default
+) {
+  exists(int correction | correction = staticmethod_correction(func) |
+    func.getMaxPositionalArguments() < 1 - correction and
+    message = "Too few parameters" and
+    show_counts = true and
+    is_unused_default = false
+    or
+    func.getMinPositionalArguments() > 2 - correction and
+    message = "Too many parameters" and
+    show_counts = true and
+    is_unused_default = false
+    or
+    func.getMinPositionalArguments() = 2 - correction and
+    message = "Second parameter to __round__ should have a default value" and
     show_counts = false and
     is_unused_default = false
   )
@@ -160,6 +185,8 @@ where
     or
     incorrect_get(f.getScope(), message, show_counts, show_unused_defaults) and name = "__get__"
     or
+    incorrect_round(f.getScope(), message, show_counts, show_unused_defaults) and
+    name = "__round__"
   ) and
   not isLikelyPlaceholderFunction(f.getScope()) and
   show_unused_defaults = false and
