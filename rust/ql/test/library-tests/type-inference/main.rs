@@ -225,8 +225,8 @@ mod m6 {
     impl<T> MyEnum<T> {
         fn m1(self) -> T {
             match self {
-                MyEnum::C1(a) => a,    // missing
-                MyEnum::C2 { a } => a, // missing
+                MyEnum::C1(a) => a,
+                MyEnum::C2 { a } => a,
             }
         }
     }
@@ -402,8 +402,8 @@ mod m9 {
     impl<T> MyOption<MyOption<T>> {
         fn flatten(self) -> MyOption<T> {
             match self {
-                MyOption::MyNone() => MyOption::MyNone(), // missing inner type `Option<T>`
-                MyOption::MySome(x) => x,                 // missing
+                MyOption::MyNone() => MyOption::MyNone(),
+                MyOption::MySome(x) => x,
             }
         }
     }
@@ -432,6 +432,27 @@ mod m9 {
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
+
+        let from_if = if 1 + 1 > 2 {
+            MyOption::MyNone()
+        } else {
+            MyOption::MySome(S)
+        };
+        println!("{:?}", from_if);
+
+        let from_match = match 1 + 1 > 2 {
+            true => MyOption::MyNone(),
+            false => MyOption::MySome(S),
+        };
+        println!("{:?}", from_match);
+
+        let from_loop = loop {
+            if 1 + 1 > 2 {
+                break MyOption::MyNone();
+            }
+            break MyOption::MySome(S);
+        };
+        println!("{:?}", from_loop);
     }
 }
 

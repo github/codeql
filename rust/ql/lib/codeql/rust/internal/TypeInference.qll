@@ -158,6 +158,18 @@ private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath 
   or
   n1 = n2.(BlockExpr).getStmtList().getTailExpr() and
   path1 = path2
+  or
+  n1 = n2.(IfExpr).getABranch() and
+  path1 = path2
+  or
+  n1 = n2.(MatchExpr).getAnArm().getExpr() and
+  path1 = path2
+  or
+  exists(BreakExpr break |
+    break.getExpr() = n1 and
+    break.getTarget() = n2.(LoopExpr) and
+    path1 = path2
+  )
 }
 
 pragma[nomagic]

@@ -90,7 +90,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
       or
       e = parent.(BinaryLogicalOperation).getRhs()
       or
-      parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
+      e = parent.(IfExpr).getABranch()
       or
       e = parent.(MatchExpr).getAnArm().getExpr()
       or
