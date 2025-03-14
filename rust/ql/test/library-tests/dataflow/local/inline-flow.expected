@@ -46,11 +46,24 @@ edges
 | main.rs:122:14:122:14 | a [tuple.1] | main.rs:122:13:122:18 | TupleExpr [tuple.0, tuple.1] | provenance |  |
 | main.rs:124:10:124:10 | b [tuple.0, tuple.1] | main.rs:124:10:124:12 | b.0 [tuple.1] | provenance |  |
 | main.rs:124:10:124:12 | b.0 [tuple.1] | main.rs:124:10:124:15 | ... .1 | provenance |  |
+| main.rs:137:9:137:9 | p [Point.x] | main.rs:138:10:138:10 | p [Point.x] | provenance |  |
+| main.rs:137:13:137:40 | Point {...} [Point.x] | main.rs:137:9:137:9 | p [Point.x] | provenance |  |
+| main.rs:137:24:137:32 | source(...) | main.rs:137:13:137:40 | Point {...} [Point.x] | provenance |  |
+| main.rs:138:10:138:10 | p [Point.x] | main.rs:138:10:138:12 | p.x | provenance |  |
+| main.rs:145:5:145:5 | [post] p [Point.y] | main.rs:146:10:146:10 | p [Point.y] | provenance |  |
+| main.rs:145:11:145:20 | source(...) | main.rs:145:5:145:5 | [post] p [Point.y] | provenance |  |
+| main.rs:146:10:146:10 | p [Point.y] | main.rs:146:10:146:12 | p.y | provenance |  |
 | main.rs:150:9:150:9 | p [Point.x] | main.rs:154:9:154:28 | Point {...} [Point.x] | provenance |  |
 | main.rs:150:13:153:5 | Point {...} [Point.x] | main.rs:150:9:150:9 | p [Point.x] | provenance |  |
 | main.rs:151:12:151:21 | source(...) | main.rs:150:13:153:5 | Point {...} [Point.x] | provenance |  |
 | main.rs:154:9:154:28 | Point {...} [Point.x] | main.rs:154:20:154:20 | a | provenance |  |
 | main.rs:154:20:154:20 | a | main.rs:155:10:155:10 | a | provenance |  |
+| main.rs:165:9:165:9 | p [Point3D.plane, Point.y] | main.rs:173:10:173:10 | p [Point3D.plane, Point.y] | provenance |  |
+| main.rs:165:13:171:5 | Point3D {...} [Point3D.plane, Point.y] | main.rs:165:9:165:9 | p [Point3D.plane, Point.y] | provenance |  |
+| main.rs:166:16:169:9 | Point {...} [Point.y] | main.rs:165:13:171:5 | Point3D {...} [Point3D.plane, Point.y] | provenance |  |
+| main.rs:168:16:168:25 | source(...) | main.rs:166:16:169:9 | Point {...} [Point.y] | provenance |  |
+| main.rs:173:10:173:10 | p [Point3D.plane, Point.y] | main.rs:173:10:173:16 | p.plane [Point.y] | provenance |  |
+| main.rs:173:10:173:16 | p.plane [Point.y] | main.rs:173:10:173:18 | ... .y | provenance |  |
 | main.rs:178:9:178:9 | y | main.rs:180:30:180:30 | y | provenance |  |
 | main.rs:178:13:178:22 | source(...) | main.rs:178:9:178:9 | y | provenance |  |
 | main.rs:179:9:179:9 | p [Point3D.plane, Point.y] | main.rs:183:11:183:11 | p [Point3D.plane, Point.y] | provenance |  |
@@ -61,9 +74,11 @@ edges
 | main.rs:184:9:187:9 | Point3D {...} [Point3D.plane, Point.y] | main.rs:185:20:185:33 | Point {...} [Point.y] | provenance |  |
 | main.rs:185:20:185:33 | Point {...} [Point.y] | main.rs:185:31:185:31 | y | provenance |  |
 | main.rs:185:31:185:31 | y | main.rs:189:18:189:18 | y | provenance |  |
+| main.rs:198:9:198:9 | s [MyTupleStruct(0)] | main.rs:199:10:199:10 | s [MyTupleStruct(0)] | provenance |  |
 | main.rs:198:9:198:9 | s [MyTupleStruct(0)] | main.rs:202:11:202:11 | s [MyTupleStruct(0)] | provenance |  |
 | main.rs:198:13:198:40 | MyTupleStruct(...) [MyTupleStruct(0)] | main.rs:198:9:198:9 | s [MyTupleStruct(0)] | provenance |  |
 | main.rs:198:27:198:36 | source(...) | main.rs:198:13:198:40 | MyTupleStruct(...) [MyTupleStruct(0)] | provenance |  |
+| main.rs:199:10:199:10 | s [MyTupleStruct(0)] | main.rs:199:10:199:12 | s.0 | provenance |  |
 | main.rs:202:11:202:11 | s [MyTupleStruct(0)] | main.rs:203:9:203:27 | MyTupleStruct(...) [MyTupleStruct(0)] | provenance |  |
 | main.rs:203:9:203:27 | MyTupleStruct(...) [MyTupleStruct(0)] | main.rs:203:23:203:23 | x | provenance |  |
 | main.rs:203:23:203:23 | x | main.rs:204:18:204:18 | x | provenance |  |
@@ -264,12 +279,28 @@ nodes
 | main.rs:124:10:124:10 | b [tuple.0, tuple.1] | semmle.label | b [tuple.0, tuple.1] |
 | main.rs:124:10:124:12 | b.0 [tuple.1] | semmle.label | b.0 [tuple.1] |
 | main.rs:124:10:124:15 | ... .1 | semmle.label | ... .1 |
+| main.rs:137:9:137:9 | p [Point.x] | semmle.label | p [Point.x] |
+| main.rs:137:13:137:40 | Point {...} [Point.x] | semmle.label | Point {...} [Point.x] |
+| main.rs:137:24:137:32 | source(...) | semmle.label | source(...) |
+| main.rs:138:10:138:10 | p [Point.x] | semmle.label | p [Point.x] |
+| main.rs:138:10:138:12 | p.x | semmle.label | p.x |
+| main.rs:145:5:145:5 | [post] p [Point.y] | semmle.label | [post] p [Point.y] |
+| main.rs:145:11:145:20 | source(...) | semmle.label | source(...) |
+| main.rs:146:10:146:10 | p [Point.y] | semmle.label | p [Point.y] |
+| main.rs:146:10:146:12 | p.y | semmle.label | p.y |
 | main.rs:150:9:150:9 | p [Point.x] | semmle.label | p [Point.x] |
 | main.rs:150:13:153:5 | Point {...} [Point.x] | semmle.label | Point {...} [Point.x] |
 | main.rs:151:12:151:21 | source(...) | semmle.label | source(...) |
 | main.rs:154:9:154:28 | Point {...} [Point.x] | semmle.label | Point {...} [Point.x] |
 | main.rs:154:20:154:20 | a | semmle.label | a |
 | main.rs:155:10:155:10 | a | semmle.label | a |
+| main.rs:165:9:165:9 | p [Point3D.plane, Point.y] | semmle.label | p [Point3D.plane, Point.y] |
+| main.rs:165:13:171:5 | Point3D {...} [Point3D.plane, Point.y] | semmle.label | Point3D {...} [Point3D.plane, Point.y] |
+| main.rs:166:16:169:9 | Point {...} [Point.y] | semmle.label | Point {...} [Point.y] |
+| main.rs:168:16:168:25 | source(...) | semmle.label | source(...) |
+| main.rs:173:10:173:10 | p [Point3D.plane, Point.y] | semmle.label | p [Point3D.plane, Point.y] |
+| main.rs:173:10:173:16 | p.plane [Point.y] | semmle.label | p.plane [Point.y] |
+| main.rs:173:10:173:18 | ... .y | semmle.label | ... .y |
 | main.rs:178:9:178:9 | y | semmle.label | y |
 | main.rs:178:13:178:22 | source(...) | semmle.label | source(...) |
 | main.rs:179:9:179:9 | p [Point3D.plane, Point.y] | semmle.label | p [Point3D.plane, Point.y] |
@@ -284,6 +315,8 @@ nodes
 | main.rs:198:9:198:9 | s [MyTupleStruct(0)] | semmle.label | s [MyTupleStruct(0)] |
 | main.rs:198:13:198:40 | MyTupleStruct(...) [MyTupleStruct(0)] | semmle.label | MyTupleStruct(...) [MyTupleStruct(0)] |
 | main.rs:198:27:198:36 | source(...) | semmle.label | source(...) |
+| main.rs:199:10:199:10 | s [MyTupleStruct(0)] | semmle.label | s [MyTupleStruct(0)] |
+| main.rs:199:10:199:12 | s.0 | semmle.label | s.0 |
 | main.rs:202:11:202:11 | s [MyTupleStruct(0)] | semmle.label | s [MyTupleStruct(0)] |
 | main.rs:203:9:203:27 | MyTupleStruct(...) [MyTupleStruct(0)] | semmle.label | MyTupleStruct(...) [MyTupleStruct(0)] |
 | main.rs:203:23:203:23 | x | semmle.label | x |
@@ -478,8 +511,12 @@ testFailures
 | main.rs:113:10:113:12 | a.1 | main.rs:111:21:111:30 | source(...) | main.rs:113:10:113:12 | a.1 | $@ | main.rs:111:21:111:30 | source(...) | source(...) |
 | main.rs:116:10:116:12 | a.0 | main.rs:114:11:114:20 | source(...) | main.rs:116:10:116:12 | a.0 | $@ | main.rs:114:11:114:20 | source(...) | source(...) |
 | main.rs:124:10:124:15 | ... .1 | main.rs:121:17:121:26 | source(...) | main.rs:124:10:124:15 | ... .1 | $@ | main.rs:121:17:121:26 | source(...) | source(...) |
+| main.rs:138:10:138:12 | p.x | main.rs:137:24:137:32 | source(...) | main.rs:138:10:138:12 | p.x | $@ | main.rs:137:24:137:32 | source(...) | source(...) |
+| main.rs:146:10:146:12 | p.y | main.rs:145:11:145:20 | source(...) | main.rs:146:10:146:12 | p.y | $@ | main.rs:145:11:145:20 | source(...) | source(...) |
 | main.rs:155:10:155:10 | a | main.rs:151:12:151:21 | source(...) | main.rs:155:10:155:10 | a | $@ | main.rs:151:12:151:21 | source(...) | source(...) |
+| main.rs:173:10:173:18 | ... .y | main.rs:168:16:168:25 | source(...) | main.rs:173:10:173:18 | ... .y | $@ | main.rs:168:16:168:25 | source(...) | source(...) |
 | main.rs:189:18:189:18 | y | main.rs:178:13:178:22 | source(...) | main.rs:189:18:189:18 | y | $@ | main.rs:178:13:178:22 | source(...) | source(...) |
+| main.rs:199:10:199:12 | s.0 | main.rs:198:27:198:36 | source(...) | main.rs:199:10:199:12 | s.0 | $@ | main.rs:198:27:198:36 | source(...) | source(...) |
 | main.rs:204:18:204:18 | x | main.rs:198:27:198:36 | source(...) | main.rs:204:18:204:18 | x | $@ | main.rs:198:27:198:36 | source(...) | source(...) |
 | main.rs:217:33:217:33 | n | main.rs:214:27:214:36 | source(...) | main.rs:217:33:217:33 | n | $@ | main.rs:214:27:214:36 | source(...) | source(...) |
 | main.rs:230:25:230:25 | n | main.rs:227:19:227:28 | source(...) | main.rs:230:25:230:25 | n | $@ | main.rs:227:19:227:28 | source(...) | source(...) |

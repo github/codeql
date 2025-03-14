@@ -8,11 +8,14 @@ private import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.Concepts
 
 /**
  * A data flow sink for regular expression injection vulnerabilities.
  */
-abstract class RegexInjectionSink extends DataFlow::Node { }
+abstract class RegexInjectionSink extends QuerySink::Range {
+  override string getSinkType() { result = "RegexInjection" }
+}
 
 /**
  * A barrier for regular expression injection vulnerabilities.

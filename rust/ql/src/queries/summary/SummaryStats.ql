@@ -54,6 +54,8 @@ where
   or
   key = "Inconsistencies - AST" and value = getTotalAstInconsistencies()
   or
+  key = "Inconsistencies - Path resolution" and value = getTotalPathResolutionInconsistencies()
+  or
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()

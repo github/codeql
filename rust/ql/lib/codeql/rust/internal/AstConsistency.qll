@@ -1,5 +1,5 @@
 /**
- * Provides classes for recognizing control flow graph inconsistencies.
+ * Provides classes for recognizing AST inconsistencies.
  */
 
 private import rust
@@ -40,7 +40,7 @@ query predicate multiplePrimaryQlClasses(Element e, string s) {
   s = strictconcat(e.getPrimaryQlClasses(), ", ")
 }
 
-private Element getParent(Element child) { child = getChildAndAccessor(result, _, _) }
+private Element getParent(Element child) { child = getChild(result, _) }
 
 private predicate multipleParents(Element child) { strictcount(getParent(child)) > 1 }
 
@@ -56,8 +56,8 @@ query predicate multipleParents(Element child, string childClass, Element parent
 
 /** Holds if `parent` has multiple children at the same index. */
 query predicate multipleChildren(Element parent, int index, Element child1, Element child2) {
-  child1 = getChildAndAccessor(parent, index, _) and
-  child2 = getChildAndAccessor(parent, index, _) and
+  child1 = getChild(parent, index) and
+  child2 = getChild(parent, index) and
   child1 != child2
 }
 
@@ -73,20 +73,6 @@ query predicate multiplePositions(Element parent, int pos1, int pos2, string acc
   child = getChildAndAccessor(parent, pos1, accessor) and
   child = getChildAndAccessor(parent, pos2, accessor) and
   pos1 != pos2
-}
-
-private import codeql.rust.elements.internal.PathResolution
-
-/** Holds if `p` may resolve to multiple items including `i`. */
-query predicate multiplePathResolutions(Path p, ItemNode i) {
-  i = resolvePath(p) and
-  // `use foo::bar` may use both a type `bar` and a value `bar`
-  not p =
-    any(UseTree use |
-      not use.isGlob() and
-      not use.hasUseTreeList()
-    ).getPath() and
-  strictcount(resolvePath(p)) > 1
 }
 
 /**
@@ -114,7 +100,4 @@ int getAstInconsistencyCounts(string type) {
   or
   type = "Multiple positions" and
   result = count(Element e | multiplePositions(_, _, _, _, e) | e)
-  or
-  type = "Multiple path resolutions" and
-  result = count(Path p | multiplePathResolutions(p, _) | p)
 }

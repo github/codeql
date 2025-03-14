@@ -137,3 +137,21 @@ def test_dict_unpacking(queryset, field_name, value):
     for tag in value.split(','):
         queryset = queryset.filter(**{field_name + '__name': tag})
     return queryset
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    ParamAnnotation = int
+    ReturnAnnotation = int
+    AssignmentAnnotation = int
+    ForwardParamAnnotation = int
+    ForwardReturnAnnotation = int
+    ForwardAssignmentAnnotation = int
+
+def test_direct_annotation(x: ParamAnnotation) -> ReturnAnnotation:
+    if x:
+        y : AssignmentAnnotation = 1
+
+def test_forward_annotation(x: "ForwardParamAnnotation") -> "ForwardReturnAnnotation":
+    if x:
+        y : "ForwardAssignmentAnnotation" = 1

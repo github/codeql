@@ -34,7 +34,7 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
 
   predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
 
-  override FieldExprCfgNode getAnAccess() { none() } // TODO
+  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getTupleField() }
 
   final override string toString() {
     exists(Variant v, int pos, string vname |
@@ -65,7 +65,7 @@ class RecordFieldContent extends FieldContent, TRecordFieldContent {
 
   predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
 
-  override FieldExprCfgNode getAnAccess() { none() } // TODO
+  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getRecordField() }
 
   final override string toString() {
     exists(Variant v, string name, string vname |
