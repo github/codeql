@@ -432,6 +432,27 @@ mod m9 {
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
+
+        let from_if = if 1 + 1 > 2 {
+            MyOption::MyNone() // missing type `S` at `T``
+        } else {
+            MyOption::MySome(S)
+        };
+        println!("{:?}", from_if);
+
+        let from_match = match 1 + 1 > 2 {
+            true => MyOption::MyNone(), // missing type `S` at `T``
+            false => MyOption::MySome(S),
+        };
+        println!("{:?}", from_match);
+
+        let from_loop = loop {
+            if 1 + 1 > 2 {
+                break MyOption::MyNone(); // missing type `S` at `T``
+            }
+            break MyOption::MySome(S);
+        };
+        println!("{:?}", from_loop);
     }
 }
 
