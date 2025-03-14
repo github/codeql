@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (JsonException ex)
                 {
                     logger.LogError($"Unable to parse '{EnvironmentVariableNames.ProxyURLs}': {ex.Message}");
                 }
