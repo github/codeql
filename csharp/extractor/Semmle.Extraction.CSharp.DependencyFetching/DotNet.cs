@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Text;
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -65,6 +65,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (restoreSettings.PathToNugetConfig != null)
             {
                 args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
+            }
+
+            // Add package sources. If any are present, they override all sources specified in
+            // the configuration file(s).
+            if (restoreSettings.Sources != null)
+            {
+                var feedArgs = new StringBuilder();
+                foreach (string source in restoreSettings.Sources)
+                {
+                    feedArgs.Append($" -s {source}");
+                }
+
+                args += feedArgs.ToString();
             }
 
             if (restoreSettings.ForceReevaluation)

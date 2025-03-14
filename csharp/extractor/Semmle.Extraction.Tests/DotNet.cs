@@ -123,7 +123,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, "myconfig.config"));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, "myconfig.config"));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -141,7 +141,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, "myconfig.config", true));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, "myconfig.config", true));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
