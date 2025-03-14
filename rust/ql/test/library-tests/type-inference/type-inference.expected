@@ -229,6 +229,10 @@ inferType
 | main.rs:227:13:230:13 | match self { ... } |  | main.rs:225:10:225:10 | T |
 | main.rs:227:19:227:22 | self |  | main.rs:214:5:218:5 | enum MyEnum |
 | main.rs:227:19:227:22 | self | A | main.rs:225:10:225:10 | T |
+| main.rs:228:28:228:28 | a |  | main.rs:225:10:225:10 | T |
+| main.rs:228:34:228:34 | a |  | main.rs:225:10:225:10 | T |
+| main.rs:229:30:229:30 | a |  | main.rs:225:10:225:10 | T |
+| main.rs:229:37:229:37 | a |  | main.rs:225:10:225:10 | T |
 | main.rs:235:13:235:13 | x |  | main.rs:214:5:218:5 | enum MyEnum |
 | main.rs:235:13:235:13 | x | A | main.rs:220:5:221:14 | struct S1 |
 | main.rs:235:17:235:30 | ...::C1(...) |  | main.rs:214:5:218:5 | enum MyEnum |
@@ -451,6 +455,11 @@ inferType
 | main.rs:404:19:404:22 | self | T | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:404:19:404:22 | self | T.T | main.rs:402:10:402:10 | T |
 | main.rs:405:39:405:56 | ...::MyNone(...) |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:405:39:405:56 | ...::MyNone(...) | T | main.rs:402:10:402:10 | T |
+| main.rs:406:34:406:34 | x |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:406:34:406:34 | x | T | main.rs:402:10:402:10 | T |
+| main.rs:406:40:406:40 | x |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:406:40:406:40 | x | T | main.rs:402:10:402:10 | T |
 | main.rs:415:13:415:14 | x1 |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:415:18:415:37 | ...::new(...) |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:416:26:416:27 | x1 |  | main.rs:378:5:382:5 | enum MyOption |
@@ -512,21 +521,43 @@ inferType
 | main.rs:434:59:434:60 | x6 |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:434:59:434:60 | x6 | T | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:434:59:434:60 | x6 | T.T | main.rs:411:5:412:13 | struct S |
+| main.rs:436:13:436:19 | from_if |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:436:13:436:19 | from_if | T | main.rs:411:5:412:13 | struct S |
+| main.rs:436:23:440:9 | if ... {...} else {...} |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:436:23:440:9 | if ... {...} else {...} | T | main.rs:411:5:412:13 | struct S |
 | main.rs:436:36:438:9 | { ... } |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:436:36:438:9 | { ... } | T | main.rs:411:5:412:13 | struct S |
 | main.rs:437:13:437:30 | ...::MyNone(...) |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:437:13:437:30 | ...::MyNone(...) | T | main.rs:411:5:412:13 | struct S |
 | main.rs:438:16:440:9 | { ... } |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:438:16:440:9 | { ... } | T | main.rs:411:5:412:13 | struct S |
 | main.rs:439:13:439:31 | ...::MySome(...) |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:439:13:439:31 | ...::MySome(...) | T | main.rs:411:5:412:13 | struct S |
 | main.rs:439:30:439:30 | S |  | main.rs:411:5:412:13 | struct S |
+| main.rs:441:26:441:32 | from_if |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:441:26:441:32 | from_if | T | main.rs:411:5:412:13 | struct S |
+| main.rs:443:13:443:22 | from_match |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:443:13:443:22 | from_match | T | main.rs:411:5:412:13 | struct S |
+| main.rs:443:26:446:9 | match ... { ... } |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:443:26:446:9 | match ... { ... } | T | main.rs:411:5:412:13 | struct S |
 | main.rs:444:21:444:38 | ...::MyNone(...) |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:444:21:444:38 | ...::MyNone(...) | T | main.rs:411:5:412:13 | struct S |
 | main.rs:445:22:445:40 | ...::MySome(...) |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:445:22:445:40 | ...::MySome(...) | T | main.rs:411:5:412:13 | struct S |
 | main.rs:445:39:445:39 | S |  | main.rs:411:5:412:13 | struct S |
+| main.rs:447:26:447:35 | from_match |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:447:26:447:35 | from_match | T | main.rs:411:5:412:13 | struct S |
+| main.rs:449:13:449:21 | from_loop |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:449:13:449:21 | from_loop | T | main.rs:411:5:412:13 | struct S |
+| main.rs:449:25:454:9 | loop { ... } |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:449:25:454:9 | loop { ... } | T | main.rs:411:5:412:13 | struct S |
 | main.rs:451:23:451:40 | ...::MyNone(...) |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:451:23:451:40 | ...::MyNone(...) | T | main.rs:411:5:412:13 | struct S |
 | main.rs:453:19:453:37 | ...::MySome(...) |  | main.rs:378:5:382:5 | enum MyOption |
 | main.rs:453:19:453:37 | ...::MySome(...) | T | main.rs:411:5:412:13 | struct S |
 | main.rs:453:36:453:36 | S |  | main.rs:411:5:412:13 | struct S |
+| main.rs:455:26:455:34 | from_loop |  | main.rs:378:5:382:5 | enum MyOption |
+| main.rs:455:26:455:34 | from_loop | T | main.rs:411:5:412:13 | struct S |
 | main.rs:468:15:468:18 | SelfParam |  | main.rs:461:5:462:19 | struct S |
 | main.rs:468:15:468:18 | SelfParam | T | main.rs:467:10:467:10 | T |
 | main.rs:468:26:470:9 | { ... } |  | main.rs:467:10:467:10 | T |

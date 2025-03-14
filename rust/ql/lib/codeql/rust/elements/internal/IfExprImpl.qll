@@ -39,5 +39,8 @@ module Impl {
       or
       index = 3 and this.hasElse() and result = "else {...}"
     }
+
+    /** Gets any of the branches of this if expression. */
+    Expr getABranch() { result = [this.getThen(), this.getElse()] }
   }
 }
