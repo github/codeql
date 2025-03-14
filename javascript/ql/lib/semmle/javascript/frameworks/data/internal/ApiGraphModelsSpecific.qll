@@ -162,8 +162,8 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   token.getName() = "Awaited" and
   result = node.getPromised()
   or
-  token.getName() = "ArrayElement" and
-  result = node.getMember(DataFlow::PseudoProperties::arrayElement())
+  token.getName() = ["ArrayElement", "Element"] and
+  result = node.getArrayElement()
   or
   token.getName() = "Element" and
   result = node.getMember(DataFlow::PseudoProperties::arrayLikeElement())
@@ -171,11 +171,6 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // Note: MapKey not currently supported
   token.getName() = "MapValue" and
   result = node.getMember(DataFlow::PseudoProperties::mapValueAll())
-  or
-  // Currently we need to include the "unknown member" for ArrayElement and Element since
-  // API graphs do not use store/load steps for arrays
-  token.getName() = ["ArrayElement", "Element"] and
-  result = node.getUnknownMember()
   or
   token.getName() = "Parameter" and
   token.getAnArgument() = "this" and

@@ -8,6 +8,8 @@
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.sharedlib.SummaryTypeTracker as SummaryTypeTracker
 private import internal.CachedStages
 
 /**
@@ -228,6 +230,40 @@ module API {
       Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::unknownMember())
     }
+
+    cached
+    private Node getContentRaw(DataFlow::Content content) {
+      Stages::ApiStage::ref() and
+      result = this.getASuccessor(Label::content(content))
+    }
+
+    /**
+     * Gets a representative for the `content` of this value.
+     *
+     * When possible, it is preferrable to use one of the specialized variants of this predicate, such as `getMember`.
+     */
+    pragma[inline]
+    Node getContent(DataFlow::Content content) {
+      result = this.getContentRaw(content)
+      or
+      result = this.getMember(content.asPropertyName())
+    }
+
+    /**
+     * Gets a representative for the `contents` of this value.
+     */
+    bindingset[this, contents]
+    pragma[inline_late]
+    Node getContents(DataFlow::ContentSet contents) {
+      // We always use getAStoreContent when generating content edges, and we always use getAReadContent when querying the graph.
+      result = this.getContent(contents.getAReadContent())
+    }
+
+    /**
+     * Gets a node representing an arbitrary array element in the array represented by this node.
+     */
+    cached
+    Node getArrayElement() { result = this.getContents(DataFlow::ContentSet::arrayElement()) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
@@ -790,6 +826,11 @@ module API {
             not DataFlow::PseudoProperties::isPseudoProperty(prop)
           )
           or
+          exists(DataFlow::ContentSet contents |
+            SummaryTypeTracker::basicStoreStep(rhs, pred.getALocalUse(), contents) and
+            lbl = Label::content(contents.getAStoreContent())
+          )
+          or
           exists(DataFlow::FunctionNode fn |
             fn = pred and
             lbl = Label::return()
@@ -981,6 +1022,11 @@ module API {
             lbl = Label::member(prop) and
             // avoid generating member edges like "$arrayElement$"
             not DataFlow::PseudoProperties::isPseudoProperty(prop)
+          )
+          or
+          exists(DataFlow::ContentSet contents |
+            SummaryTypeTracker::basicLoadStep(pred.getALocalUse(), ref, contents) and
+            lbl = Label::content(contents.getAStoreContent())
           )
         )
         or
@@ -1198,8 +1244,6 @@ module API {
       or
       t = useStep(nd, promisified, boundArgs, prop, result)
     }
-
-    private import semmle.javascript.dataflow.internal.StepSummary
 
     /**
      * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
@@ -1458,8 +1502,11 @@ module API {
     bindingset[result]
     LabelMember member(string m) { result.getProperty() = m }
 
+    /** Gets the `content` edge label for content `c`. */
+    LabelContent content(ContentPrivate::Content c) { result.getContent() = c }
+
     /** Gets the `member` edge label for the unknown member. */
-    LabelUnknownMember unknownMember() { any() }
+    LabelContent unknownMember() { result.getContent().isUnknownArrayElement() }
 
     /**
      * Gets a property name referred to by the given dynamic property access,
@@ -1516,10 +1563,10 @@ module API {
     LabelForwardingFunction forwardingFunction() { any() }
 
     /** Gets the `promised` edge label connecting a promise to its contained value. */
-    LabelPromised promised() { any() }
+    LabelContent promised() { result.getContent() = ContentPrivate::MkPromiseValue() }
 
     /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
-    LabelPromisedError promisedError() { any() }
+    LabelContent promisedError() { result.getContent() = ContentPrivate::MkPromiseError() }
 
     /** Gets the label for an edge leading from a value `D` to any class that has `D` as a decorator. */
     LabelDecoratedClass decoratedClass() { any() }
@@ -1533,6 +1580,7 @@ module API {
     /** Gets an entry-point label for the entry-point `e`. */
     LabelEntryPoint entryPoint(API::EntryPoint e) { result.getEntryPoint() = e }
 
+    private import semmle.javascript.dataflow.internal.Contents::Private as ContentPrivate
     private import LabelImpl
 
     private module LabelImpl {
@@ -1542,18 +1590,12 @@ module API {
           exists(Impl::MkModuleImport(mod))
         } or
         MkLabelInstance() or
-        MkLabelMember(string prop) {
-          exports(_, prop, _) or
-          exists(any(DataFlow::ClassNode c).getInstanceMethod(prop)) or
-          prop = "exports" or
-          prop = any(CanonicalName c).getName() or
-          prop = any(DataFlow::PropRef p).getPropertyName() or
-          exists(Impl::MkTypeUse(_, prop)) or
-          exists(any(Module m).getAnExportedValue(prop)) or
-          PreCallGraphStep::loadStep(_, _, prop) or
-          PreCallGraphStep::storeStep(_, _, prop)
+        MkLabelContent(DataFlow::Content content) or
+        MkLabelMember(string name) {
+          name instanceof PropertyName
+          or
+          exists(Impl::MkTypeUse(_, name))
         } or
-        MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           i =
             [0 .. max(int args |
@@ -1564,8 +1606,6 @@ module API {
         } or
         MkLabelReceiver() or
         MkLabelReturn() or
-        MkLabelPromised() or
-        MkLabelPromisedError() or
         MkLabelDecoratedClass() or
         MkLabelDecoratedMember() or
         MkLabelDecoratedParameter() or
@@ -1585,13 +1625,13 @@ module API {
       }
 
       /** A label that gets a promised value. */
-      class LabelPromised extends ApiLabel, MkLabelPromised {
-        override string toString() { result = "getPromised()" }
+      deprecated class LabelPromised extends ApiLabel {
+        LabelPromised() { this = MkLabelContent(ContentPrivate::MkPromiseValue()) }
       }
 
       /** A label that gets a rejected promise. */
-      class LabelPromisedError extends ApiLabel, MkLabelPromisedError {
-        override string toString() { result = "getPromisedError()" }
+      deprecated class LabelPromisedError extends ApiLabel {
+        LabelPromisedError() { this = MkLabelContent(ContentPrivate::MkPromiseError()) }
       }
 
       /** A label that gets the return value of a function. */
@@ -1617,9 +1657,39 @@ module API {
         override string toString() { result = "getInstance()" }
       }
 
+      /** A label for a content. */
+      class LabelContent extends ApiLabel, MkLabelContent {
+        private DataFlow::Content content;
+
+        LabelContent() {
+          this = MkLabelContent(content) and
+          // Property names are represented by LabelMember to ensure additional property
+          // names from PreCallGraph step are included, as well as those from MkTypeUse.
+          not content instanceof ContentPrivate::MkPropertyContent
+        }
+
+        /** Gets the content associated with this label. */
+        DataFlow::Content getContent() { result = content }
+
+        private string specialisedToString() {
+          content instanceof ContentPrivate::MkPromiseValue and result = "getPromised()"
+          or
+          content instanceof ContentPrivate::MkPromiseError and result = "getPromisedError()"
+          or
+          content instanceof ContentPrivate::MkArrayElementUnknown and result = "getUnknownMember()"
+        }
+
+        override string toString() {
+          result = this.specialisedToString()
+          or
+          not exists(this.specialisedToString()) and
+          result = "getContent(" + content + ")"
+        }
+      }
+
       /** A label for the member named `prop`. */
       class LabelMember extends ApiLabel, MkLabelMember {
-        string prop;
+        private string prop;
 
         LabelMember() { this = MkLabelMember(prop) }
 
@@ -1630,10 +1700,8 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
-        override string toString() { result = "getUnknownMember()" }
+      deprecated class LabelUnknownMember extends LabelContent {
+        LabelUnknownMember() { this.getContent().isUnknownArrayElement() }
       }
 
       /** A label for parameter `i`. */
