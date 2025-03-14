@@ -31,6 +31,13 @@ module VerifyResultConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(GuardCondition guard | guard.getAChild*() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-295/SSLResultConflation.ql:48: Column 1 does not select a source or sink originating from the flow call on line 42
+    // ql/src/Security/CWE/CWE-295/SSLResultConflation.ql:48: Column 1 does not select a source or sink originating from the flow call on line 43
+    none()
+  }
 }
 
 module VerifyResult = DataFlow::Global<VerifyResultConfig>;

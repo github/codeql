@@ -756,6 +756,12 @@ private module FieldFlow {
       or
       node.asExpr().getParent() instanceof ThrowExpr
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/code/cpp/dataflow/internal/DataFlowUtil.qll:764: Flow call outside 'select' clause
+      none()
+    }
   }
 
   private module Flow = DataFlow::Global<FieldConfig>;

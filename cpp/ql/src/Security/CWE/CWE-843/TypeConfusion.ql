@@ -178,6 +178,16 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(UnsafeCast cast).getUnconverted() }
 
   int fieldFlowBranchLimit() { result = 0 }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-843/TypeConfusion.ql:229: Flow call outside 'select' clause
+    // ql/src/Security/CWE/CWE-843/TypeConfusion.ql:262: Column 5 does not select a source or sink originating from the flow call on line 250
+    // ql/src/Security/CWE/CWE-843/TypeConfusion.ql:262: Column 5 does not select a source or sink originating from the flow call on line 260
+    // ql/src/Security/CWE/CWE-843/TypeConfusion.ql:263: Column 7 does not select a source or sink originating from the flow call on line 250
+    // ql/src/Security/CWE/CWE-843/TypeConfusion.ql:263: Column 7 does not select a source or sink originating from the flow call on line 260
+    none()
+  }
 }
 
 module Flow = DataFlow::Global<Config>;

@@ -72,6 +72,12 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-290/AuthenticationBypass.ql:86: Column 1 does not select a source or sink originating from the flow call on line 84
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

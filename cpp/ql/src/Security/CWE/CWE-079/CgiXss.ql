@@ -39,6 +39,12 @@ module Config implements DataFlow::ConfigSig {
     or
     node.asCertainDefinition().getUnspecifiedType() instanceof ArithmeticType
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-079/CgiXss.ql:51: Column 5 selects source.asIndirectExpr
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

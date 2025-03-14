@@ -47,6 +47,12 @@ module ToBufferConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE/CWE-311/CleartextBufferWrite.ql:65: Column 1 does not select a source or sink originating from the flow call on line 62
+    none()
+  }
 }
 
 module ToBufferFlow = TaintTracking::Global<ToBufferConfig>;
