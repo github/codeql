@@ -16,6 +16,7 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
+import codeql.rust.dataflow.internal.DataFlowImpl as DataflowImpl
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.TaintedPathExtensions
 import TaintedPathFlow::PathGraph
@@ -68,7 +69,10 @@ module TaintedPathConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Block `NotNormalized` paths here, since they change state to `NormalizedUnchecked`
-    node instanceof Path::PathNormalization and
+    (
+      node instanceof Path::PathNormalization or
+      DataflowImpl::optionalStep(_, "normalize-path", node)
+    ) and
     state instanceof NotNormalized
     or
     node instanceof Path::SafeAccessCheck and
@@ -78,7 +82,10 @@ module TaintedPathConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
-    nodeFrom = nodeTo.(Path::PathNormalization).getPathArg() and
+    (
+      nodeFrom = nodeTo.(Path::PathNormalization).getPathArg() or
+      DataflowImpl::optionalStep(nodeFrom, "normalize-path", nodeTo)
+    ) and
     stateFrom instanceof NotNormalized and
     stateTo instanceof NormalizedUnchecked
   }
