@@ -4,8 +4,8 @@
  * @description An empty method serves no purpose and makes code less readable. An empty method may
  *              indicate an error on the part of the developer.
  * @kind problem
- * @precision very-high
- * @problem.severity warning
+ * @precision medium
+ * @problem.severity recommendation
  * @tags correctness
  *       maintainability
  *       readability
