@@ -6,6 +6,11 @@
 
 import rust
 
-query predicate nodes(Crate c) { any() }
+class MyCrate extends Crate {
+  // avoid printing locations for crates outside of the test folder
+  Location getLocation() { result = super.getLocation() and this.fromSource() }
+}
 
-query predicate edges(Crate c1, Crate c2) { c1.getADependency() = c2 }
+query predicate nodes(MyCrate c) { any() }
+
+query predicate edges(MyCrate c1, MyCrate c2) { c1.getADependency() = c2 }

@@ -113,7 +113,7 @@ class ExtractorStep(Element):
     duration_ms: int
 
 
-class Crate(Element):
+class Crate(Locatable):
     name: optional[string]
     version: optional[string]
     module: optional["Module"]
