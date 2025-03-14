@@ -1515,9 +1515,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     final private class DefinitionExtFinal = DefinitionExt;
 
-    /** An SSA definition into which another SSA definition may flow. */
-    private class SsaInputDefinitionExt extends DefinitionExtFinal {
-      SsaInputDefinitionExt() {
+    /** An SSA definition which is either a phi node or a phi read node. */
+    private class SsaPhiExt extends DefinitionExtFinal {
+      SsaPhiExt() {
         this instanceof PhiNode
         or
         this instanceof PhiReadNode
@@ -1525,7 +1525,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     cached
-    private Definition getAPhiInputDef(SsaInputDefinitionExt phi, BasicBlock bb) {
+    private Definition getAPhiInputDef(SsaPhiExt phi, BasicBlock bb) {
       exists(SourceVariable v, BasicBlock bbDef |
         phi.definesAt(v, bbDef, _, _) and
         getABasicBlockPredecessor(bbDef) = bb and
@@ -1546,9 +1546,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
       } or
       TSsaDefinitionNode(DefinitionExt def) or
-      TSsaInputNode(SsaInputDefinitionExt phi, BasicBlock input) {
-        exists(getAPhiInputDef(phi, input))
-      }
+      TSsaInputNode(SsaPhiExt phi, BasicBlock input) { exists(getAPhiInputDef(phi, input)) }
 
     /**
      * A data flow node that we need to reference in the value step relation.
@@ -1750,7 +1748,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * both inputs into the phi read node after the outer condition are guarded.
      */
     private class SsaInputNodeImpl extends SsaNodeImpl, TSsaInputNode {
-      private SsaInputDefinitionExt def_;
+      private SsaPhiExt def_;
       private BasicBlock input_;
 
       SsaInputNodeImpl() { this = TSsaInputNode(def_, input_) }
@@ -1761,9 +1759,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         input = input_
       }
 
-      SsaInputDefinitionExt getPhi() { result = def_ }
+      SsaPhiExt getPhi() { result = def_ }
 
-      deprecated override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
+      deprecated override SsaPhiExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
 
@@ -1903,7 +1901,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[nomagic]
     private Definition getAPhiInputDef(SsaInputNodeImpl n) {
-      exists(SsaInputDefinitionExt phi, BasicBlock bb |
+      exists(SsaPhiExt phi, BasicBlock bb |
         result = getAPhiInputDef(phi, bb) and
         n.isInputInto(phi, bb)
       )
@@ -1997,7 +1995,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           )
           or
           // guard controls input block to a phi node
-          exists(SsaInputDefinitionExt phi |
+          exists(SsaPhiExt phi |
             def = getAPhiInputDef(result) and
             result.(SsaInputNodeImpl).isInputInto(phi, bb)
           |
