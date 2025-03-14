@@ -3,7 +3,4 @@
 | om_test.py:65:5:65:29 | Function WrongSpecials.__neg__ | Too many parameters for special method __neg__, which has 2 parameters, but should have 1, in class $@. | om_test.py:57:1:57:28 | class WrongSpecials | WrongSpecials |
 | om_test.py:68:5:68:35 | Function WrongSpecials.__exit__ | Too few parameters for special method __exit__, which has 3 parameters, but should have 4, in class $@. | om_test.py:57:1:57:28 | class WrongSpecials | WrongSpecials |
 | om_test.py:71:5:71:19 | Function WrongSpecials.__repr__ | Too few parameters for special method __repr__, which has no parameters, but should have 1, in class $@. | om_test.py:57:1:57:28 | class WrongSpecials | WrongSpecials |
-| om_test.py:74:5:74:46 | Function WrongSpecials.__add__ | 1 default values(s) will never be used for special method __add__, in class $@. | om_test.py:57:1:57:28 | class WrongSpecials | WrongSpecials |
-| om_test.py:97:15:97:34 | Function NotOKSpecials.lambda | Too few parameters for special method __sub__, which has 1 parameter, but should have 2, in class $@. | om_test.py:95:1:95:28 | class NotOKSpecials | NotOKSpecials |
-| protocols.py:107:1:107:12 | Function f | Too few parameters for special method __add__, which has 1 parameter, but should have 2, in class $@. | protocols.py:110:1:110:29 | class MissingMethods | MissingMethods |
-| protocols.py:107:1:107:12 | Function f | Too few parameters for special method __set__, which has 1 parameter, but should have 3, in class $@. | protocols.py:110:1:110:29 | class MissingMethods | MissingMethods |
+| om_test.py:83:5:83:18 | Function OKSpecials.__del__ | Too few parameters for special method __del__, which has no parameters, but should have 1, in class $@. | om_test.py:81:1:81:25 | class OKSpecials | OKSpecials |

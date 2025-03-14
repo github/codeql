@@ -11,6 +11,7 @@
  */
 
 import python
+import semmle.python.dataflow.new.internal.DataFlowDispatch as DD
 
 predicate is_unary_op(string name) {
   name in [
@@ -54,10 +55,20 @@ int argument_count(string name) {
   is_quad_op(name) and result = 4
 }
 
+/**
+ * Returns 1 if `func` is a static method, and 0 otherwise. This predicate is used to adjust the
+ * number of expected arguments for a special method accordingly.
+ */
+int staticmethod_correction(Function func) {
+  if DD::isStaticmethod(func) then result = 1 else result = 0
+}
+
 predicate incorrect_special_method_defn(
   Function func, string message, boolean show_counts, string name, boolean is_unused_default
 ) {
-  exists(int required | required = argument_count(name) |
+  exists(int required, int correction |
+    required = argument_count(name) - correction and correction = staticmethod_correction(func)
+  |
     /* actual_non_default <= actual */
     if required > func.getMaxPositionalArguments()
     then message = "Too few parameters" and show_counts = true and is_unused_default = false
@@ -78,23 +89,23 @@ predicate incorrect_special_method_defn(
 predicate incorrect_pow(
   Function func, string message, boolean show_counts, boolean is_unused_default
 ) {
-  (
-    func.getMaxPositionalArguments() < 2 and
+  exists(int correction | correction = staticmethod_correction(func) |
+    func.getMaxPositionalArguments() < 2 - correction and
     message = "Too few parameters" and
     show_counts = true and
     is_unused_default = false
     or
-    func.getMinPositionalArguments() > 3 and
+    func.getMinPositionalArguments() > 3 - correction and
     message = "Too many parameters" and
     show_counts = true and
     is_unused_default = false
     or
-    func.getMinPositionalArguments() < 2 and
+    func.getMinPositionalArguments() < 2 - correction and
     message = (2 - func.getMinPositionalArguments()) + " default value(s) will never be used" and
     show_counts = false and
     is_unused_default = true
     or
-    func.getMinPositionalArguments() = 3 and
+    func.getMinPositionalArguments() = 3 - correction and
     message = "Third parameter to __pow__ should have a default value" and
     show_counts = false and
     is_unused_default = false
@@ -125,18 +136,18 @@ predicate incorrect_round(
 predicate incorrect_get(
   Function func, string message, boolean show_counts, boolean is_unused_default
 ) {
-  (
-    func.getMaxPositionalArguments() < 3 and
+  exists(int correction | correction = staticmethod_correction(func) |
+    func.getMaxPositionalArguments() < 3 - correction and
     message = "Too few parameters" and
     show_counts = true and
     is_unused_default = false
     or
-    func.getMinPositionalArguments() > 3 and
+    func.getMinPositionalArguments() > 3 - correction and
     message = "Too many parameters" and
     show_counts = true and
     is_unused_default = false
     or
-    func.getMinPositionalArguments() < 2 and
+    func.getMinPositionalArguments() < 2 - correction and
     not func.hasVarArg() and
     message = (2 - func.getMinPositionalArguments()) + " default value(s) will never be used" and
     show_counts = false and
@@ -170,6 +181,9 @@ predicate isLikelyPlaceholderFunction(Function f) {
     or
     // Body just raises an exception.
     f.getBody().getLastItem() instanceof Raise
+    or
+    // Body is a pass statement.
+    f.getBody().getLastItem() instanceof Pass
   )
 }
 
@@ -177,7 +191,8 @@ from
   PythonFunctionValue f, string message, string sizes, boolean show_counts, string name,
   ClassValue owner, boolean show_unused_defaults
 where
-  owner.declaredAttribute(name) = f and
+  owner.getScope().getAMethod() = f.getScope() and
+  f.getScope().getName() = name and
   (
     incorrect_special_method_defn(f.getScope(), message, show_counts, name, show_unused_defaults)
     or
