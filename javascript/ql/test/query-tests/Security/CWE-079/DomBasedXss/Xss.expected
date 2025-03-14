@@ -120,8 +120,6 @@
 | string-manipulations.js:8:16:8:48 | documen ... mLeft() | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:8:16:8:37 | documen ... on.href | user-provided value |
 | string-manipulations.js:9:16:9:58 | String. ... n.href) | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:9:36:9:57 | documen ... on.href | user-provided value |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:10:23:10:44 | documen ... on.href | user-provided value |
-| string-manipulations.js:11:16:11:45 | escape( ... n.href) | string-manipulations.js:11:23:11:44 | documen ... on.href | string-manipulations.js:11:16:11:45 | escape( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:11:23:11:44 | documen ... on.href | user-provided value |
-| string-manipulations.js:12:16:12:61 | escape( ... href))) | string-manipulations.js:12:37:12:58 | documen ... on.href | string-manipulations.js:12:16:12:61 | escape( ... href))) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:12:37:12:58 | documen ... on.href | user-provided value |
 | tainted-url-suffix-arguments.js:6:22:6:22 | y | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | tainted-url-suffix-arguments.js:6:22:6:22 | y | Cross-site scripting vulnerability due to $@. | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | user-provided value |
 | tooltip.jsx:10:25:10:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:10:25:10:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
@@ -492,10 +490,6 @@ edges
 | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() | provenance |  |
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | provenance |  |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | provenance |  |
-| string-manipulations.js:11:23:11:44 | documen ... on.href | string-manipulations.js:11:16:11:45 | escape( ... n.href) | provenance |  |
-| string-manipulations.js:12:23:12:60 | escape( ... .href)) | string-manipulations.js:12:16:12:61 | escape( ... href))) | provenance |  |
-| string-manipulations.js:12:30:12:59 | escape( ... n.href) | string-manipulations.js:12:23:12:60 | escape( ... .href)) | provenance |  |
-| string-manipulations.js:12:37:12:58 | documen ... on.href | string-manipulations.js:12:30:12:59 | escape( ... n.href) | provenance |  |
 | tainted-url-suffix-arguments.js:3:17:3:17 | y | tainted-url-suffix-arguments.js:6:22:6:22 | y | provenance |  |
 | tainted-url-suffix-arguments.js:11:11:11:36 | url | tainted-url-suffix-arguments.js:12:17:12:19 | url | provenance |  |
 | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | tainted-url-suffix-arguments.js:11:11:11:36 | url | provenance |  |
@@ -1122,12 +1116,6 @@ nodes
 | string-manipulations.js:9:36:9:57 | documen ... on.href | semmle.label | documen ... on.href |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | semmle.label | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | semmle.label | documen ... on.href |
-| string-manipulations.js:11:16:11:45 | escape( ... n.href) | semmle.label | escape( ... n.href) |
-| string-manipulations.js:11:23:11:44 | documen ... on.href | semmle.label | documen ... on.href |
-| string-manipulations.js:12:16:12:61 | escape( ... href))) | semmle.label | escape( ... href))) |
-| string-manipulations.js:12:23:12:60 | escape( ... .href)) | semmle.label | escape( ... .href)) |
-| string-manipulations.js:12:30:12:59 | escape( ... n.href) | semmle.label | escape( ... n.href) |
-| string-manipulations.js:12:37:12:58 | documen ... on.href | semmle.label | documen ... on.href |
 | tainted-url-suffix-arguments.js:3:17:3:17 | y | semmle.label | y |
 | tainted-url-suffix-arguments.js:6:22:6:22 | y | semmle.label | y |
 | tainted-url-suffix-arguments.js:11:11:11:36 | url | semmle.label | url |
