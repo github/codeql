@@ -3,16 +3,16 @@ class IntGetHashCode
     void Test()
     {
         // These are all bad:
-        default(uint).GetHashCode();
-        default(int).GetHashCode();
-        default(long).GetHashCode();
-        default(ulong).GetHashCode();
-        default(short).GetHashCode();
-        default(ushort).GetHashCode();
-        default(byte).GetHashCode();
-        default(sbyte).GetHashCode();
+        default(int).GetHashCode(); // $ Alert
+        default(short).GetHashCode(); // $ Alert
+        default(ushort).GetHashCode(); // $ Alert
+        default(byte).GetHashCode(); // $ Alert
+        default(sbyte).GetHashCode(); // $ Alert
 
         // These are all good:
+        default(uint).GetHashCode();
+        default(long).GetHashCode();
+        default(ulong).GetHashCode();
         default(double).GetHashCode();
         default(float).GetHashCode();
         default(char).GetHashCode();

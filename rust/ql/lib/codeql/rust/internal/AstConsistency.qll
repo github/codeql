@@ -1,5 +1,5 @@
 /**
- * Provides classes for recognizing control flow graph inconsistencies.
+ * Provides classes for recognizing AST inconsistencies.
  */
 
 private import rust
@@ -75,20 +75,6 @@ query predicate multiplePositions(Element parent, int pos1, int pos2, string acc
   pos1 != pos2
 }
 
-private import codeql.rust.elements.internal.PathResolution
-
-/** Holds if `p` may resolve to multiple items including `i`. */
-query predicate multiplePathResolutions(Path p, ItemNode i) {
-  i = resolvePath(p) and
-  // `use foo::bar` may use both a type `bar` and a value `bar`
-  not p =
-    any(UseTree use |
-      not use.isGlob() and
-      not use.hasUseTreeList()
-    ).getPath() and
-  strictcount(resolvePath(p)) > 1
-}
-
 /**
  * Gets counts of abstract syntax tree inconsistencies of each type.
  */
@@ -114,7 +100,4 @@ int getAstInconsistencyCounts(string type) {
   or
   type = "Multiple positions" and
   result = count(Element e | multiplePositions(_, _, _, _, e) | e)
-  or
-  type = "Multiple path resolutions" and
-  result = count(Path p | multiplePathResolutions(p, _) | p)
 }
