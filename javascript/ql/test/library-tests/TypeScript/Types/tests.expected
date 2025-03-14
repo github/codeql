@@ -864,8 +864,6 @@ getTypeDefinitionType
 | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; | Alias<T> |
 getTypeExprType
 | badTypes.ts:5:11:5:11 | A | A |
-| badTypes.ts:5:21:5:26 | this.B | any |
-| badTypes.ts:5:26:5:26 | B | any |
 | badTypes.ts:6:6:6:6 | T | any |
 | badTypes.ts:6:10:6:23 | typeof var.bar | any |
 | badTypes.ts:6:17:6:19 | var | any |
