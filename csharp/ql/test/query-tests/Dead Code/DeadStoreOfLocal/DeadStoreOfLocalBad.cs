@@ -4,7 +4,7 @@ class Bad
 {
     double ParseInt(string s)
     {
-        var success = int.TryParse(s, out int i);
+        var success = int.TryParse(s, out int i); // $ Alert
         return i;
     }
 
@@ -20,7 +20,7 @@ class Bad
         {
             return double.Parse(s);
         }
-        catch (FormatException e)
+        catch (FormatException e) // $ Alert
         {
             return double.NaN;
         }
@@ -29,14 +29,14 @@ class Bad
     int Count(string[] ss)
     {
         int count = 0;
-        foreach (var s in ss)
+        foreach (var s in ss) // $ Alert
             count++;
         return count;
     }
 
     string IsInt(object o)
     {
-        if (o is int i)
+        if (o is int i) // $ Alert
             return "yes";
         else
             return "no";
@@ -46,7 +46,7 @@ class Bad
     {
         switch (o)
         {
-            case string s:
+            case string s: // $ Alert
                 return "yes";
             default:
                 return "no";
