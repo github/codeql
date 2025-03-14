@@ -33,3 +33,4 @@ The rule excludes reporting methods that are annotated.
 ## References
 - Java SE Documentation: [java.util.Collection.add](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Collection.html#add(E))
 - Wikipedia: [Template method pattern](https://en.wikipedia.org/wiki/Template_method_pattern)
+- Common Weakness Enumeration: [CWE-1071](https://cwe.mitre.org/data/definitions/1071.html)
