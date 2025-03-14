@@ -161,7 +161,7 @@ module Impl {
     }
 
     /** Hold is this variable is mutable. */
-    predicate isMutable() { this.getPat().isMut() }
+    predicate isMutable() { this.getPat().isMut() or this.getSelfParam().isMut() }
 
     /** Hold is this variable is immutable. */
     predicate isImmutable() { not this.isMutable() }

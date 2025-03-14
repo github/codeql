@@ -1022,6 +1022,32 @@ final class SingletonContentSet extends ContentSet, TSingletonContentSet {
   override Content getAReadContent() { result = c }
 }
 
+final class OptionalStep extends ContentSet, TOptionalStep {
+  override string toString() {
+    exists(string name |
+      this = TOptionalStep(name) and
+      result = "OptionalStep[" + name + "]"
+    )
+  }
+
+  override Content getAStoreContent() { none() }
+
+  override Content getAReadContent() { none() }
+}
+
+final class OptionalBarrier extends ContentSet, TOptionalBarrier {
+  override string toString() {
+    exists(string name |
+      this = TOptionalBarrier(name) and
+      result = "OptionalBarrier[" + name + "]"
+    )
+  }
+
+  override Content getAStoreContent() { none() }
+
+  override Content getAReadContent() { none() }
+}
+
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind`. */
@@ -1222,6 +1248,12 @@ module RustDataFlow implements InputSig<Location> {
     model = ""
     or
     LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, model)
+    or
+    // Add flow through optional barriers. This step is then blocked by the barrier for queries that choose to use the barrier.
+    FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom
+          .(Node::FlowSummaryNode)
+          .getSummaryNode(), TOptionalBarrier(_), nodeTo.(Node::FlowSummaryNode).getSummaryNode()) and
+    model = ""
   }
 
   /**
@@ -1353,7 +1385,8 @@ module RustDataFlow implements InputSig<Location> {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
-      cs, node2.(Node::FlowSummaryNode).getSummaryNode())
+      cs, node2.(Node::FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
   }
 
   pragma[nomagic]
@@ -1450,7 +1483,8 @@ module RustDataFlow implements InputSig<Location> {
     storeContentStep(node1, cs.(SingletonContentSet).getContent(), node2)
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
-      cs, node2.(Node::FlowSummaryNode).getSummaryNode())
+      cs, node2.(Node::FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
   }
 
   /**
@@ -1794,7 +1828,24 @@ private module Cached {
     TReferenceContent()
 
   cached
-  newtype TContentSet = TSingletonContentSet(Content c)
+  newtype TContentSet =
+    TSingletonContentSet(Content c) or
+    TOptionalStep(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalStep")
+    } or
+    TOptionalBarrier(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalBarrier")
+    }
+
+  /**
+   * Holds if `cs` is used to encode a special operation as a content component, but should not
+   * be treated as an ordinary content component.
+   */
+  cached
+  predicate isSpecialContentSet(ContentSet cs) {
+    cs instanceof TOptionalStep or
+    cs instanceof TOptionalBarrier
+  }
 
   /** Holds if `n` is a flow source of kind `kind`. */
   cached
@@ -1806,3 +1857,22 @@ private module Cached {
 }
 
 import Cached
+
+cached
+private module OptionalSteps {
+  cached
+  predicate optionalStep(Node node1, string name, Node node2) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
+      TOptionalStep(name), node2.(Node::FlowSummaryNode).getSummaryNode()) or
+    FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
+      TOptionalStep(name), node2.(Node::FlowSummaryNode).getSummaryNode())
+  }
+
+  cached
+  predicate optionalBarrier(Node node, string name) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(_, TOptionalBarrier(name),
+      node.(Node::FlowSummaryNode).getSummaryNode())
+  }
+}
+
+import OptionalSteps

@@ -212,7 +212,8 @@ predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
 /** Holds if `v` may be mutably borrowed in `e`. */
 private predicate mutablyBorrows(Expr e, Variable v) {
   e = any(MethodCallExpr mc).getReceiver() and
-  e.(VariableAccess).getVariable() = v
+  e.(VariableAccess).getVariable() = v and
+  v.isMutable()
   or
   exists(RefExpr re | re = e and re.isMut() and re.getExpr().(VariableAccess).getVariable() = v)
 }
