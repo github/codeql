@@ -278,3 +278,11 @@ function dangerConstant() {
   sink("danger-constant".safe); // OK
   sink("danger-constant"); // OK
 }
+
+function arraySource() {
+  const source = testlib.getSourceArray();
+  sink(source[0]); // NOT OK [INCONSISTENCY]
+  sink(source.pop()); // NOT OK [INCONSISTENCY]
+  source.forEach(e => sink(e)); // NOT OK [INCONSISTENCY]
+  source.map(e => sink(e)); // NOT OK [INCONSISTENCY]
+}
