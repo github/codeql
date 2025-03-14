@@ -322,6 +322,12 @@ nodes
 | string-manipulations.js:9:36:9:57 | documen ... on.href | semmle.label | documen ... on.href |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | semmle.label | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | semmle.label | documen ... on.href |
+| string-manipulations.js:11:16:11:45 | escape( ... n.href) | semmle.label | escape( ... n.href) |
+| string-manipulations.js:11:23:11:44 | documen ... on.href | semmle.label | documen ... on.href |
+| string-manipulations.js:12:16:12:61 | escape( ... href))) | semmle.label | escape( ... href))) |
+| string-manipulations.js:12:23:12:60 | escape( ... .href)) | semmle.label | escape( ... .href)) |
+| string-manipulations.js:12:30:12:59 | escape( ... n.href) | semmle.label | escape( ... n.href) |
+| string-manipulations.js:12:37:12:58 | documen ... on.href | semmle.label | documen ... on.href |
 | tainted-url-suffix-arguments.js:3:17:3:17 | y | semmle.label | y |
 | tainted-url-suffix-arguments.js:6:22:6:22 | y | semmle.label | y |
 | tainted-url-suffix-arguments.js:11:11:11:36 | url | semmle.label | url |
@@ -934,6 +940,10 @@ edges
 | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() | provenance |  |
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | provenance |  |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | provenance |  |
+| string-manipulations.js:11:23:11:44 | documen ... on.href | string-manipulations.js:11:16:11:45 | escape( ... n.href) | provenance |  |
+| string-manipulations.js:12:23:12:60 | escape( ... .href)) | string-manipulations.js:12:16:12:61 | escape( ... href))) | provenance |  |
+| string-manipulations.js:12:30:12:59 | escape( ... n.href) | string-manipulations.js:12:23:12:60 | escape( ... .href)) | provenance |  |
+| string-manipulations.js:12:37:12:58 | documen ... on.href | string-manipulations.js:12:30:12:59 | escape( ... n.href) | provenance |  |
 | tainted-url-suffix-arguments.js:3:17:3:17 | y | tainted-url-suffix-arguments.js:6:22:6:22 | y | provenance |  |
 | tainted-url-suffix-arguments.js:11:11:11:36 | url | tainted-url-suffix-arguments.js:12:17:12:19 | url | provenance |  |
 | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | tainted-url-suffix-arguments.js:11:11:11:36 | url | provenance |  |
