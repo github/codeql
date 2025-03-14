@@ -4,6 +4,7 @@ queries:
   - uses: security-and-quality
 
 paths-ignore:
+  - '/actions/ql/test'
   - '/cpp/'
   - '/java/'
   - '/python/'
