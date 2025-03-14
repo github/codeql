@@ -21,18 +21,3 @@ private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::Met
     branch = true
   }
 }
-
-/**
- * A call to `Path.canonicalize`.
- * See https://doc.rust-lang.org/std/path/struct.Path.html#method.canonicalize
- */
-private class PathCanonicalizeCall extends Path::PathNormalization::Range {
-  CfgNodes::MethodCallExprCfgNode call;
-
-  PathCanonicalizeCall() {
-    call = this.asExpr() and
-    call.getAstNode().(Resolvable).getResolvedPath() = "<crate::path::Path>::canonicalize"
-  }
-
-  override DataFlow::Node getPathArg() { result.asExpr() = call.getReceiver() }
-}
