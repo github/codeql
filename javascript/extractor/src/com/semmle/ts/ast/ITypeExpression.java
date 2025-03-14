@@ -11,5 +11,5 @@ import com.semmle.js.ast.Literal;
  * TypeScript AST does not distinguish <code>null</code> literals from the <code>null</code> type.
  */
 public interface ITypeExpression extends INode, ITypedAstNode {
-    public default boolean isValidExpression() { return true; }
+    public default boolean isValidTypeExpression() { return true; }
 }

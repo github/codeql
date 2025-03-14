@@ -71,7 +71,7 @@ public class MemberExpression extends Expression
   }
 
   @Override 
-  public boolean isValidExpression() {
-    return object instanceof ITypeExpression || object instanceof DynamicImport;
+  public boolean isValidTypeExpression() {
+    return object instanceof ITypeExpression && ((ITypeExpression)object).isValidTypeExpression() || object instanceof DynamicImport;
   }
 }
