@@ -126,7 +126,7 @@ fn test_set_struct_field() {
     let s = source(7);
     let my_struct = set_struct_field(s);
     sink(my_struct.field1);
-    sink(my_struct.field2); // $ MISSING: hasValueFlow=7
+    sink(my_struct.field2); // $ hasValueFlow=7
 }
 
 // has a flow model

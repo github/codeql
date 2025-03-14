@@ -236,13 +236,11 @@ module Impl {
       this instanceof VariableScope or
       this instanceof VariableAccessCand or
       this instanceof LetStmt or
-      getImmediateChildAndAccessor(this, _, _) instanceof RelevantElement
+      getImmediateChild(this, _) instanceof RelevantElement
     }
 
     pragma[nomagic]
-    private RelevantElement getChild(int index) {
-      result = getImmediateChildAndAccessor(this, index, _)
-    }
+    private RelevantElement getChild(int index) { result = getImmediateChild(this, index) }
 
     pragma[nomagic]
     private RelevantElement getImmediateChildMin(int index) {

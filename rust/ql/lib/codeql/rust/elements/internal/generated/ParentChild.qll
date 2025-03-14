@@ -12,6 +12,19 @@ private module Impl {
     none()
   }
 
+  private Element getImmediateChildOfCrate(Crate e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfExtractorStep(
     ExtractorStep e, int index, string partialPredicateCall
   ) {
@@ -4050,6 +4063,8 @@ private module Impl {
     // * none() simplifies generation, as we can append `or ...` without a special case for the first item
     none()
     or
+    result = getImmediateChildOfCrate(e, index, partialAccessor)
+    or
     result = getImmediateChildOfExtractorStep(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormat(e, index, partialAccessor)
@@ -4389,6 +4404,11 @@ Element getImmediateParent(Element e) {
 }
 
 /**
+ * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+ */
+Element getImmediateChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _) }
+
+/**
  * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
@@ -4407,3 +4427,8 @@ Element getChildAndAccessor(Element e, int index, string accessor) {
     accessor = "get" + partialAccessor
   )
 }
+
+/**
+ * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
+ */
+Element getChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _).resolve() }

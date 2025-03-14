@@ -11,7 +11,8 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
+import codeql.rust.Concepts
 import Stats
 
-from DataFlow::Node n
-select n, "Sink for " + strictconcat(getAQuerySinkKind(n), ", ") + "."
+from QuerySink s
+select s, "Sink for " + concat(s.getSinkType(), ", ") + "."
