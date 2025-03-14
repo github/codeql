@@ -262,9 +262,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="projects">A list of paths to project files.</param>
         private void RestoreProjects(IEnumerable<string> projects, HashSet<string>? configuredSources, out ConcurrentBag<DependencyContainer> dependencies)
         {
-            var sources = configuredSources ?? new();
-            sources.Add(PublicNugetOrgFeed);
-            this.dependabotProxy?.RegistryURLs.ForEach(url => sources.Add(url));
+            // Conservatively, we only set this to a non-null value if a Dependabot proxy is enabled.
+            // This ensures that we continue to get the old behaviour where feeds are taken from
+            // `nuget.config` files instead of the command-line arguments.
+            HashSet<string>? sources = null;
+
+            if (this.dependabotProxy != null)
+            {
+                // If the Dependabot proxy is configured, then our main goal is to make `dotnet` aware
+                // of the private registry feeds. However, since providing them as command-line arguments
+                // to `dotnet` ignores other feeds that may be configured, we also need to add the feeds
+                // we have discovered from analysing `nuget.config` files.
+                sources = configuredSources ?? new();
+                sources.Add(PublicNugetOrgFeed);
+                this.dependabotProxy?.RegistryURLs.ForEach(url => sources.Add(url));
+            }
 
             var successCount = 0;
             var nugetSourceFailures = 0;
