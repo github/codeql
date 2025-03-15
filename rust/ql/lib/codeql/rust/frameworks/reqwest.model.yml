@@ -7,6 +7,12 @@ extensions:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::blocking::get", "ReturnValue.Field[crate::result::Result::Ok(0)]", "remote", "manual"]
   - addsTo:
       pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::request", "Argument[1]", "transmission", "manual"]
+      - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::blocking::client::Client>::request", "Argument[1]", "transmission", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: summaryModel
     data:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::response::Response>::text", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
