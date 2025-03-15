@@ -3,6 +3,8 @@ private import rust
 private import rust as R
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.Node as Node
+private import codeql.rust.dataflow.internal.Content
 private import codeql.rust.dataflow.FlowSource as FlowSource
 private import codeql.rust.dataflow.FlowSink as FlowSink
 private import codeql.rust.dataflow.internal.TaintTrackingImpl

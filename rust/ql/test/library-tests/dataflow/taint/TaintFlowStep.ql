@@ -1,5 +1,5 @@
 import codeql.rust.dataflow.DataFlow
-import codeql.rust.dataflow.internal.DataFlowImpl
+import codeql.rust.dataflow.internal.Node as Node
 import codeql.rust.dataflow.internal.TaintTrackingImpl
 import utils.test.TranslateModels
 
