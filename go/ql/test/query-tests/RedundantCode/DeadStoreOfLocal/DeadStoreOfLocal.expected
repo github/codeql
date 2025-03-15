@@ -16,6 +16,8 @@
 | testdata.go:172:3:172:3 | assignment to x | This definition of x is never used. |
 | testdata.go:180:3:180:5 | increment statement | This definition of x is never used. |
 | testdata.go:201:2:201:2 | assignment to x | This definition of x is never used. |
+| testdata.go:227:3:227:5 | increment statement | This definition of x is never used. |
+| testdata.go:235:3:235:3 | assignment to x | This definition of x is never used. |
 | testdata.go:262:2:262:2 | assignment to x | This definition of x is never used. |
 | testdata.go:268:2:268:2 | assignment to x | This definition of x is never used. |
 | testdata.go:309:2:309:2 | assignment to a | This definition of a is never used. |

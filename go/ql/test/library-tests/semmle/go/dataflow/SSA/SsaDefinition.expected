@@ -35,7 +35,6 @@
 | main.go:95:22:95:28 | definition of wrapper |
 | main.go:96:2:96:2 | definition of x |
 | main.go:97:2:99:3 | capture variable x |
-| main.go:98:3:98:3 | definition of x |
 | main.go:103:20:103:26 | definition of wrapper |
 | main.go:104:2:104:2 | definition of x |
 | main.go:105:16:108:2 | capture variable x |
@@ -45,7 +44,6 @@
 | main.go:114:2:117:3 | capture variable x |
 | main.go:114:16:117:2 | capture variable x |
 | main.go:115:3:115:3 | definition of y |
-| main.go:116:3:116:3 | definition of x |
 | main.go:130:3:130:3 | definition of p |
 | main.go:132:3:132:3 | definition of p |
 | main.go:135:2:135:2 | p = phi(def@130:3, def@132:3) |

@@ -68,8 +68,6 @@
 | main.go:11:14:11:14 | z | main.go:11:9:11:15 | type conversion |
 | main.go:14:6:14:10 | function test2 | main.go:34:8:34:12 | test2 |
 | main.go:14:6:14:10 | function test2 | main.go:34:19:34:23 | test2 |
-| main.go:15:2:15:4 | definition of acc | main.go:16:9:19:2 | capture variable acc |
-| main.go:15:9:15:9 | 0 | main.go:15:2:15:4 | definition of acc |
 | main.go:16:9:19:2 | capture variable acc | main.go:17:3:17:5 | acc |
 | main.go:17:3:17:7 | definition of acc | main.go:16:9:19:2 | capture variable acc |
 | main.go:17:3:17:7 | definition of acc | main.go:18:10:18:12 | acc |

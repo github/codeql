@@ -36,7 +36,6 @@
 | main.go:95:22:95:28 | (def@95:22).s | wrapper.s |
 | main.go:96:2:96:2 | (def@96:2) | x |
 | main.go:97:2:99:3 | (capture@97:2) | x |
-| main.go:98:3:98:3 | (def@98:3) | x |
 | main.go:103:20:103:26 | (def@103:20) | wrapper |
 | main.go:103:20:103:26 | (def@103:20).s | wrapper.s |
 | main.go:104:2:104:2 | (def@104:2) | x |
@@ -48,7 +47,6 @@
 | main.go:114:2:117:3 | (capture@114:2) | x |
 | main.go:114:16:117:2 | (capture@114:16) | x |
 | main.go:115:3:115:3 | (def@115:3) | y |
-| main.go:116:3:116:3 | (def@116:3) | x |
 | main.go:130:3:130:3 | (def@130:3) | p |
 | main.go:132:3:132:3 | (def@132:3) | p |
 | main.go:135:2:135:2 | (phi@135:2) | p |
