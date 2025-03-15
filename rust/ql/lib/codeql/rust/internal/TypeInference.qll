@@ -578,14 +578,9 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     Declaration getTarget() {
-      result =
-        [
-          CallExprImpl::getResolvedFunction(this).(AstNode),
-          this.(CallExpr).getStruct(),
-          this.(CallExpr).getVariant(),
-          // mutual recursion; resolving method calls requires resolving types and vice versa
-          resolveMethodCallExpr(this)
-        ]
+      result = CallExprImpl::getResolvedFunction(this)
+      or
+      result = resolveMethodCallExpr(this) // mutual recursion; resolving method calls requires resolving types and vice versa
     }
   }
 

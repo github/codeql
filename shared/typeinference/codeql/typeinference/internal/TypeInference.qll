@@ -538,11 +538,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate directTypeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
+        not exists(getTypeArgument(a, target, tp, _)) and
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          adjustedAccessType(a, apos, target, pathToTypeParam.append(path), t) and
+          accessDeclarationPositionMatch(apos, dpos) and
           tp = target.getDeclaredType(dpos, pathToTypeParam) and
-          not exists(getTypeArgument(a, target, tp, _)) and
-          accessDeclarationPositionMatch(apos, dpos)
+          adjustedAccessType(a, apos, target, pathToTypeParam.append(path), t)
         )
       }
 
@@ -667,10 +667,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate baseTypeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
+        not exists(getTypeArgument(a, target, tp, _)) and
         exists(AccessPosition apos, DeclarationPosition dpos, Type base, TypePath pathToTypeParam |
           accessBaseType(a, apos, target, base, pathToTypeParam.append(path), t) and
           declarationBaseType(target, dpos, base, pathToTypeParam, tp) and
-          not exists(getTypeArgument(a, target, tp, _)) and
           accessDeclarationPositionMatch(apos, dpos)
         )
       }
@@ -744,8 +744,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(DeclarationPosition dpos | accessDeclarationPositionMatch(apos, dpos) |
           exists(Declaration target, TypePath prefix, TypeParameter tp, TypePath suffix |
             tp = target.getDeclaredType(pragma[only_bind_into](dpos), prefix) and
-            typeMatch(a, target, suffix, result, tp) and
-            path = prefix.append(suffix)
+            path = prefix.append(suffix) and
+            typeMatch(a, target, suffix, result, tp)
           )
           or
           exists(Declaration target |
