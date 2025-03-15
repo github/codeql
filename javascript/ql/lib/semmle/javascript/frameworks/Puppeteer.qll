@@ -32,7 +32,7 @@ module Puppeteer {
     or
     result = [browser(), context()].getMember("newPage").getReturn().getPromised()
     or
-    result = [browser(), context()].getMember("pages").getReturn().getPromised().getUnknownMember()
+    result = [browser(), context()].getMember("pages").getReturn().getPromised().getArrayElement()
     or
     result = target().getMember("page").getReturn().getPromised()
   }
@@ -45,7 +45,7 @@ module Puppeteer {
     or
     result = [page(), browser()].getMember("target").getReturn()
     or
-    result = context().getMember("targets").getReturn().getUnknownMember()
+    result = context().getMember("targets").getReturn().getArrayElement()
     or
     result = target().getMember("opener").getReturn()
   }
@@ -58,7 +58,7 @@ module Puppeteer {
     or
     result = [page(), target()].getMember("browserContext").getReturn()
     or
-    result = browser().getMember("browserContexts").getReturn().getUnknownMember()
+    result = browser().getMember("browserContexts").getReturn().getArrayElement()
     or
     result = browser().getMember("createIncognitoBrowserContext").getReturn().getPromised()
     or

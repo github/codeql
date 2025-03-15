@@ -72,7 +72,7 @@ module Execa {
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // if shell: true then first and second args are sinks
       // options can be third argument
-      arg = [this.getArgument(0), this.getParameter(1).getUnknownMember().asSink()] and
+      arg = [this.getArgument(0), this.getParameter(1).getArrayElement().asSink()] and
       isExecaShellEnable(this.getParameter(2))
       or
       // options can be second argument

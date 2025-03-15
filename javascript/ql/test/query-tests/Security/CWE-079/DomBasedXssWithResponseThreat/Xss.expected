@@ -16,6 +16,7 @@
 | testReactUseQueries.jsx:37:25:37:38 | repoQuery.data | testReactUseQueries.jsx:4:26:4:53 | fetch(' ... e.com') | testReactUseQueries.jsx:37:25:37:38 | repoQuery.data | Cross-site scripting vulnerability due to $@. | testReactUseQueries.jsx:4:26:4:53 | fetch(' ... e.com') | user-provided value |
 | testUseQueries2.vue:40:10:40:23 | v-html=data3 | testUseQueries2.vue:6:28:6:63 | fetch(" ... ntent") | testUseQueries2.vue:40:10:40:23 | v-html=data3 | Cross-site scripting vulnerability due to $@. | testUseQueries2.vue:6:28:6:63 | fetch(" ... ntent") | user-provided value |
 | testUseQueries2.vue:40:10:40:23 | v-html=data3 | testUseQueries2.vue:12:28:12:41 | fetch("${id}") | testUseQueries2.vue:40:10:40:23 | v-html=data3 | Cross-site scripting vulnerability due to $@. | testUseQueries2.vue:12:28:12:41 | fetch("${id}") | user-provided value |
+| testUseQueries.vue:25:10:25:23 | v-html=data2 | testUseQueries.vue:11:36:11:49 | fetch("${id}") | testUseQueries.vue:25:10:25:23 | v-html=data2 | Cross-site scripting vulnerability due to $@. | testUseQueries.vue:11:36:11:49 | fetch("${id}") | user-provided value |
 edges
 | test.jsx:5:11:5:63 | response | test.jsx:6:24:6:31 | response | provenance |  |
 | test.jsx:5:22:5:63 | await f ... ntent") | test.jsx:5:11:5:63 | response | provenance |  |
@@ -88,6 +89,12 @@ edges
 | testUseQueries2.vue:13:12:13:19 | response | testUseQueries2.vue:13:12:13:26 | response.json() | provenance |  |
 | testUseQueries2.vue:13:12:13:26 | response.json() | testUseQueries2.vue:33:22:33:36 | results[0].data | provenance |  |
 | testUseQueries2.vue:33:22:33:36 | results[0].data | testUseQueries2.vue:40:10:40:23 | v-html=data3 | provenance |  |
+| testUseQueries.vue:11:19:11:49 | response | testUseQueries.vue:12:20:12:27 | response | provenance |  |
+| testUseQueries.vue:11:30:11:49 | await fetch("${id}") | testUseQueries.vue:11:19:11:49 | response | provenance |  |
+| testUseQueries.vue:11:36:11:49 | fetch("${id}") | testUseQueries.vue:11:30:11:49 | await fetch("${id}") | provenance |  |
+| testUseQueries.vue:12:20:12:27 | response | testUseQueries.vue:12:20:12:34 | response.json() | provenance |  |
+| testUseQueries.vue:12:20:12:34 | response.json() | testUseQueries.vue:18:22:18:36 | results[0].data | provenance |  |
+| testUseQueries.vue:18:22:18:36 | results[0].data | testUseQueries.vue:25:10:25:23 | v-html=data2 | provenance |  |
 nodes
 | test.jsx:5:11:5:63 | response | semmle.label | response |
 | test.jsx:5:22:5:63 | await f ... ntent") | semmle.label | await f ... ntent") |
@@ -174,4 +181,11 @@ nodes
 | testUseQueries2.vue:13:12:13:26 | response.json() | semmle.label | response.json() |
 | testUseQueries2.vue:33:22:33:36 | results[0].data | semmle.label | results[0].data |
 | testUseQueries2.vue:40:10:40:23 | v-html=data3 | semmle.label | v-html=data3 |
+| testUseQueries.vue:11:19:11:49 | response | semmle.label | response |
+| testUseQueries.vue:11:30:11:49 | await fetch("${id}") | semmle.label | await fetch("${id}") |
+| testUseQueries.vue:11:36:11:49 | fetch("${id}") | semmle.label | fetch("${id}") |
+| testUseQueries.vue:12:20:12:27 | response | semmle.label | response |
+| testUseQueries.vue:12:20:12:34 | response.json() | semmle.label | response.json() |
+| testUseQueries.vue:18:22:18:36 | results[0].data | semmle.label | results[0].data |
+| testUseQueries.vue:25:10:25:23 | v-html=data2 | semmle.label | v-html=data2 |
 subpaths

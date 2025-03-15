@@ -57,6 +57,16 @@ module Private {
       this = getAPreciseArrayIndex().toString()
       or
       isAccessPathTokenPresent("Member", this)
+      or
+      this = any(ImportSpecifier spec).getImportedName()
+      or
+      this = any(ExportSpecifier n).getExportedName()
+      or
+      this = any(ExportNamedDeclaration d).getAnExportedDecl().getName()
+      or
+      this = any(MemberDefinition m).getName()
+      or
+      this = ["exports", "default"]
     }
 
     /** Gets the array index corresponding to this property name. */
