@@ -27,6 +27,6 @@ module Impl {
      */
     Expr getExpr() { result = this.getReturn().getResult() }
 
-    override string toString() { result = this.getBody().toString() }
+    override string toStringImpl() { result = this.getBody().toStringImpl() }
   }
 }

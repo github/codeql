@@ -6,6 +6,6 @@ module Impl {
    * A regular expression literal which is checked at compile time, for example `/a(a|b)*b/`.
    */
   class RegexLiteralExpr extends Generated::RegexLiteralExpr {
-    override string toString() { result = this.getPattern() }
+    override string toStringImpl() { result = this.getPattern() }
   }
 }

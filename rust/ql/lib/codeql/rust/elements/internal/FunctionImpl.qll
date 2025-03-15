@@ -25,6 +25,6 @@ module Impl {
    * ```
    */
   class Function extends Generated::Function {
-    override string toString() { result = "fn " + this.getName().getText() }
+    override string toStringImpl() { result = "fn " + this.getName().getText() }
   }
 }

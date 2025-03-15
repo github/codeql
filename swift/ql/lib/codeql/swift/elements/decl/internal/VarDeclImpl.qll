@@ -22,7 +22,7 @@ module Impl {
    * * ...
    */
   class VarDecl extends Generated::VarDecl {
-    override string toString() { result = this.getName() }
+    override string toStringImpl() { result = this.getName() }
   }
 
   /**

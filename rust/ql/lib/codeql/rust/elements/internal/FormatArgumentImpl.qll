@@ -36,7 +36,7 @@ module Impl {
 
     FormatArgument() { this = Synth::TFormatArgument(parent, index, kind, name, _, offset) }
 
-    override string toString() { result = name }
+    override string toStringImpl() { result = name }
 
     override Format getParent() { result = Synth::TFormat(parent, index, _, _) }
 

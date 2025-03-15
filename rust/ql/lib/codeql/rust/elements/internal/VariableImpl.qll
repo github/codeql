@@ -594,7 +594,7 @@ module Impl {
     /** Holds if this access is a capture. */
     predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
 
-    override string toString() { result = name }
+    override string toStringImpl() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
   }

@@ -26,7 +26,7 @@ module Impl {
    * ```
    */
   class LiteralExpr extends Generated::LiteralExpr {
-    override string toString() { result = this.getTrimmedText() }
+    override string toStringImpl() { result = this.getTrimmedText() }
 
     override string toAbbreviatedString() { result = this.getTrimmedText() }
 

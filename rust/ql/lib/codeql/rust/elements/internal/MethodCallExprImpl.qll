@@ -42,11 +42,11 @@ module Impl {
       )
     }
 
-    override string toString() {
+    override string toStringImpl() {
       exists(string base, string separator |
         base = this.getReceiver().toAbbreviatedString() and
         (if base = "..." then separator = " ." else separator = ".") and
-        result = base + separator + this.getNameRef().toString() + "(...)"
+        result = base + separator + this.getNameRef().toStringImpl() + "(...)"
       )
     }
   }

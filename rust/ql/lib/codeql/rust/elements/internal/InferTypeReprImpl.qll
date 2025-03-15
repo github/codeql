@@ -19,7 +19,7 @@ module Impl {
    * ```
    */
   class InferTypeRepr extends Generated::InferTypeRepr {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = "_" }
   }

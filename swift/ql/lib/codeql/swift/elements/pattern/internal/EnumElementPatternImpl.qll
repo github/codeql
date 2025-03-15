@@ -15,10 +15,10 @@ module Impl {
       i = 0
     }
 
-    override string toString() {
+    override string toStringImpl() {
       if this.hasSubPattern()
-      then result = "." + this.getElement().toString() + "(...)"
-      else result = "." + this.getElement().toString()
+      then result = "." + this.getElement().toStringImpl() + "(...)"
+      else result = "." + this.getElement().toStringImpl()
     }
   }
 }

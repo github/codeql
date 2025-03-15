@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class ParenPat extends Generated::ParenPat {
-    override string toString() { result = "(" + this.getPat().toAbbreviatedString() + ")" }
+    override string toStringImpl() { result = "(" + this.getPat().toAbbreviatedString() + ")" }
   }
 }

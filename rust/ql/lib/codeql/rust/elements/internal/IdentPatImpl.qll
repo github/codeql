@@ -28,7 +28,7 @@ module Impl {
    * ```
    */
   class IdentPat extends Generated::IdentPat {
-    override string toString() {
+    override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i), " " order by i)
     }
 

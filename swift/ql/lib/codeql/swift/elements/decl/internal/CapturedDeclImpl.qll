@@ -7,7 +7,7 @@ module Impl {
    * A captured variable or function parameter in the scope of a closure.
    */
   class CapturedDecl extends Generated::CapturedDecl {
-    override string toString() { result = this.getDecl().toString() }
+    override string toStringImpl() { result = this.getDecl().toStringImpl() }
 
     /**
      * Gets the closure or function that captures this variable.

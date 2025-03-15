@@ -20,7 +20,7 @@ module Impl {
    * ```
    */
   class PathTypeRepr extends Generated::PathTypeRepr {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = this.getPath().toAbbreviatedString() }
   }

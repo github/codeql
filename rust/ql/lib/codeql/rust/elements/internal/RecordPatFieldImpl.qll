@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class RecordPatField extends Generated::RecordPatField {
-    override string toString() { result = concat(int i | | this.toStringPart(i) order by i) }
+    override string toStringImpl() { result = concat(int i | | this.toStringPart(i) order by i) }
 
     private string toStringPart(int index) {
       index = 0 and result = this.getNameRef().getText()

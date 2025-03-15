@@ -25,6 +25,6 @@ module Impl {
    * ```
    */
   class Trait extends Generated::Trait {
-    override string toString() { result = "trait " + this.getName().getText() }
+    override string toStringImpl() { result = "trait " + this.getName().getText() }
   }
 }

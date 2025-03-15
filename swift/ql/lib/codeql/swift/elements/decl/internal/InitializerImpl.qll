@@ -9,7 +9,9 @@ module Impl {
    * An initializer of a class, struct, enum or protocol.
    */
   class Initializer extends Generated::Initializer, MethodImpl::Method {
-    override string toString() { result = this.getSelfParam().getType() + "." + super.toString() }
+    override string toStringImpl() {
+      result = this.getSelfParam().getType().toStringImpl() + "." + super.toStringImpl()
+    }
 
     /** Holds if this initializer returns an optional type. Failable initializers are written as `init?`. */
     predicate isFailable() {

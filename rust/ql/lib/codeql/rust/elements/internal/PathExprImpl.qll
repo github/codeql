@@ -22,8 +22,8 @@ module Impl {
    * ```
    */
   class PathExpr extends Generated::PathExpr {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
-    override string toAbbreviatedString() { result = this.getPath().toString() }
+    override string toAbbreviatedString() { result = this.getPath().toStringImpl() }
   }
 }

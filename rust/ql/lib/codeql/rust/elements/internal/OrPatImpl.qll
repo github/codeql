@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class OrPat extends Generated::OrPat {
-    override string toString() {
+    override string toStringImpl() {
       result = concat(int i | | this.getPat(i).toAbbreviatedString(), " | " order by i)
     }
 

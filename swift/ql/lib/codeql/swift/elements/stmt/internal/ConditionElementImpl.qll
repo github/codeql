@@ -3,12 +3,12 @@ private import codeql.swift.elements.AstNode
 
 module Impl {
   class ConditionElement extends Generated::ConditionElement {
-    override string toString() {
-      result = this.getBoolean().toString()
+    override string toStringImpl() {
+      result = this.getBoolean().toStringImpl()
       or
-      result = this.getPattern().toString() + " = ... "
+      result = this.getPattern().toStringImpl() + " = ... "
       or
-      result = this.getAvailability().toString()
+      result = this.getAvailability().toStringImpl()
     }
   }
 }

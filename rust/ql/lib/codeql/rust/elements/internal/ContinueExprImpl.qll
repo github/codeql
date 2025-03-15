@@ -49,7 +49,7 @@ module Impl {
    * ```
    */
   class ContinueExpr extends Generated::ContinueExpr {
-    override string toString() {
+    override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i), " " order by i)
     }
 

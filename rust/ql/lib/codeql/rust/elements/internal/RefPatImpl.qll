@@ -22,7 +22,7 @@ module Impl {
    * ```
    */
   class RefPat extends Generated::RefPat {
-    override string toString() {
+    override string toStringImpl() {
       result = "&" + concat(int i | | this.getSpecPart(i), " " order by i)
     }
 

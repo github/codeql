@@ -11,6 +11,8 @@ module Impl {
       )
     }
 
-    override string toString() { result = "switch " + this.getExpr().toString() + " { ... }" }
+    override string toStringImpl() {
+      result = "switch " + this.getExpr().toStringImpl() + " { ... }"
+    }
   }
 }

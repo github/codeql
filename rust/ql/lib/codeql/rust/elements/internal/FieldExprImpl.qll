@@ -28,7 +28,7 @@ module Impl {
     /** Gets the tuple field that this access references, if any. */
     TupleField getTupleField() { result = TypeInference::resolveTupleFieldExpr(this) }
 
-    override string toString() {
+    override string toStringImpl() {
       exists(string abbr, string name |
         abbr = this.getExpr().toAbbreviatedString() and
         name = this.getNameRef().getText() and

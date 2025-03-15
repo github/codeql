@@ -20,7 +20,7 @@ module Impl {
    * ```
    */
   class Comment extends Generated::Comment {
-    override string toString() {
+    override string toStringImpl() {
       result = this.getCommentMarker() + "..." + this.getCommentEndMarker()
     }
 

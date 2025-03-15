@@ -25,7 +25,7 @@ module Impl {
    * ```
    */
   class RecordPat extends Generated::RecordPat {
-    override string toString() { result = this.getPath().toAbbreviatedString() + " {...}" }
+    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + " {...}" }
 
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedPath(string name) {

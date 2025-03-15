@@ -6,7 +6,7 @@ module Impl {
    * A diagnostic directive, which is either `#error` or `#warning`.
    */
   class PoundDiagnosticDecl extends Generated::PoundDiagnosticDecl {
-    override string toString() {
+    override string toStringImpl() {
       this.isError() and result = "#error(...)"
       or
       this.isWarning() and result = "#warning(...)"

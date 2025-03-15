@@ -22,6 +22,6 @@ module Impl {
    * ```
    */
   class AwaitExpr extends Generated::AwaitExpr {
-    override string toString() { result = "await " + this.getExpr().toAbbreviatedString() }
+    override string toStringImpl() { result = "await " + this.getExpr().toAbbreviatedString() }
   }
 }

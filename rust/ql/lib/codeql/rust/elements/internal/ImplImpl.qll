@@ -19,7 +19,7 @@ module Impl {
    * ```
    */
   class Impl extends Generated::Impl {
-    override string toString() {
+    override string toStringImpl() {
       exists(string trait |
         (
           trait = this.getTrait().toAbbreviatedString() + " for "

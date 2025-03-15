@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class Union extends Generated::Union {
-    override string toString() { result = "union " + this.getName().getText() }
+    override string toStringImpl() { result = "union " + this.getName().getText() }
   }
 }

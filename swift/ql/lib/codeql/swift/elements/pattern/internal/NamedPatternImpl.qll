@@ -21,6 +21,6 @@ module Impl {
      */
     string getName() { result = this.getVarDecl().getName() }
 
-    override string toString() { result = this.getName() }
+    override string toStringImpl() { result = this.getName() }
   }
 }

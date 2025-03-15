@@ -36,7 +36,7 @@ module Impl {
 
     Format() { this = Synth::TFormat(parent, index, text, offset) }
 
-    override string toString() { result = text }
+    override string toStringImpl() { result = text }
 
     override FormatArgsExpr getParent() { result = Synth::convertFormatArgsExprFromRaw(parent) }
 

@@ -18,7 +18,7 @@ module Impl {
    * ```
    */
   class AvailabilityInfo extends Generated::AvailabilityInfo {
-    override string toString() {
+    override string toStringImpl() {
       result = "#available" and not this.isUnavailable()
       or
       result = "#unavailable" and this.isUnavailable()

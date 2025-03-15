@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class Param extends Generated::Param {
-    override string toString() { result = concat(int i | | this.toStringPart(i) order by i) }
+    override string toStringImpl() { result = concat(int i | | this.toStringPart(i) order by i) }
 
     private string toStringPart(int index) {
       index = 0 and result = this.getPat().toAbbreviatedString()

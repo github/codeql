@@ -6,6 +6,6 @@ module Impl {
    * A key-path expression.
    */
   class KeyPathExpr extends Generated::KeyPathExpr {
-    override string toString() { result = "#keyPath(...)" }
+    override string toStringImpl() { result = "#keyPath(...)" }
   }
 }

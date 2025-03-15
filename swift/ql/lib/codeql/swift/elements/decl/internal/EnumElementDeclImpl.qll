@@ -12,7 +12,7 @@ module Impl {
    * ```
    */
   class EnumElementDecl extends Generated::EnumElementDecl {
-    override string toString() { result = this.getName() }
+    override string toStringImpl() { result = this.getName() }
 
     /**
      * Holds if this enum element declaration is called `enumElementName` and is a member of an

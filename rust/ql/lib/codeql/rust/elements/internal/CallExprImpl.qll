@@ -34,7 +34,7 @@ module Impl {
    * ```
    */
   class CallExpr extends Generated::CallExpr {
-    override string toString() { result = this.getFunction().toAbbreviatedString() + "(...)" }
+    override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
 
     override Callable getStaticTarget() { result = getResolvedFunction(this) }
 

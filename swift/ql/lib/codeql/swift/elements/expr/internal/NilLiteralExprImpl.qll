@@ -2,6 +2,6 @@ private import codeql.swift.generated.expr.NilLiteralExpr
 
 module Impl {
   class NilLiteralExpr extends Generated::NilLiteralExpr {
-    override string toString() { result = "nil" }
+    override string toStringImpl() { result = "nil" }
   }
 }

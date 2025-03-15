@@ -26,7 +26,7 @@ module Impl {
    * ```
    */
   class LetStmt extends Generated::LetStmt {
-    override string toString() {
+    override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i), " " order by i)
     }
 

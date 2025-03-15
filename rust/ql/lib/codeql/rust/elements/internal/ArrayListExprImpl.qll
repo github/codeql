@@ -22,6 +22,6 @@ module Impl {
    * ```
    */
   class ArrayListExpr extends Generated::ArrayListExpr {
-    override string toString() { result = "[...]" }
+    override string toStringImpl() { result = "[...]" }
   }
 }

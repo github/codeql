@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class Enum extends Generated::Enum {
-    override string toString() { result = "enum " + this.getName().getText() }
+    override string toStringImpl() { result = "enum " + this.getName().getText() }
   }
 }

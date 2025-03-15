@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class ArrayRepeatExpr extends Generated::ArrayRepeatExpr {
-    override string toString() {
+    override string toStringImpl() {
       result =
         "[" + this.getRepeatOperand().toAbbreviatedString() + "; " +
           this.getRepeatLength().toAbbreviatedString() + "]"
