@@ -72,21 +72,24 @@ signature module InputSig1<LocationSig Location> {
 
 module Make1<LocationSig Location, InputSig1<Location> Input1> {
   private import Input1
-  private import codeql.util.DenseRank
 
-  private module DenseRankInput implements DenseRankInputSig {
-    class Ranked = TypeParameter;
+  private module TypeParameter {
+    private import codeql.util.DenseRank
 
-    predicate getRank = getTypeParameterId/1;
-  }
+    private module DenseRankInput implements DenseRankInputSig {
+      class Ranked = TypeParameter;
 
-  private int getTypeParameterRank(TypeParameter tp) {
-    tp = DenseRank<DenseRankInput>::denseRank(result)
-  }
+      predicate getRank = getTypeParameterId/1;
+    }
 
-  bindingset[s]
-  private predicate decodeTypePathComponent(string s, TypeParameter tp) {
-    getTypeParameterRank(tp) = s.toInt()
+    private int getTypeParameterRank(TypeParameter tp) {
+      tp = DenseRank<DenseRankInput>::denseRank(result)
+    }
+
+    string encode(TypeParameter tp) { result = getTypeParameterRank(tp).toString() }
+
+    bindingset[s]
+    TypeParameter decode(string s) { encode(result) = s }
   }
 
   final private class String = string;
@@ -123,10 +126,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
     bindingset[this]
     private TypeParameter getTypeParameter(int i) {
-      exists(string s |
-        s = this.splitAt(".", i) and
-        decodeTypePathComponent(s, result)
-      )
+      result = TypeParameter::decode(this.splitAt(".", i))
     }
 
     /** Gets a textual representation of this type path. */
@@ -159,13 +159,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Holds if this path starts with `tp`, followed by `suffix`. */
     bindingset[this]
     predicate isCons(TypeParameter tp, TypePath suffix) {
-      decodeTypePathComponent(this, tp) and
+      tp = TypeParameter::decode(this) and
       suffix.isEmpty()
       or
       exists(int first |
         first = min(this.indexOf(".")) and
         suffix = this.suffix(first + 1) and
-        decodeTypePathComponent(this.prefix(first), tp)
+        tp = TypeParameter::decode(this.prefix(first))
       )
     }
   }
@@ -176,7 +176,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     TypePath nil() { result.isEmpty() }
 
     /** Gets the singleton type path `tp`. */
-    TypePath singleton(TypeParameter tp) { result = getTypeParameterRank(tp).toString() }
+    TypePath singleton(TypeParameter tp) { result = TypeParameter::encode(tp) }
 
     /**
      * Gets the type path obtained by appending the singleton type path `tp`
