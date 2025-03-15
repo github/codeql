@@ -44,6 +44,18 @@ alias(
 )
 
 alias(
+    name = "cc-1.2.14",
+    actual = "@vendor_py__cc-1.2.14//:cc",
+    tags = ["manual"],
+)
+
+alias(
+    name = "cc",
+    actual = "@vendor_py__cc-1.2.14//:cc",
+    tags = ["manual"],
+)
+
+alias(
     name = "clap-4.5.30",
     actual = "@vendor_py__clap-4.5.30//:clap",
     tags = ["manual"],

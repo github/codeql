@@ -57,7 +57,7 @@ alias(
 
 alias(
     name = "chalk-ir-0.99.0",
-    actual = "@vendor_ts__chalk-ir-0.98.0//:chalk_ir",
+    actual = "@vendor_ts__chalk-ir-0.99.0//:chalk_ir",
     tags = ["manual"],
 )
 
