@@ -892,7 +892,10 @@ module TaintedPath {
       TaintTracking::uriStep(node1, node2)
       or
       exists(DataFlow::CallNode decode |
-        decode.getCalleeName() = "decodeURIComponent" or decode.getCalleeName() = "decodeURI"
+        decode.getCalleeName() = "decodeURIComponent" or
+        decode.getCalleeName() = "decodeURI" or
+        decode.getCalleeName() = "escape" or
+        decode.getCalleeName() = "unescape"
       |
         node1 = decode.getArgument(0) and
         node2 = decode

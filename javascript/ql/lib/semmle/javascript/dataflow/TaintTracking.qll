@@ -494,7 +494,8 @@ module TaintTracking {
           succ = c and
           c =
             DataFlow::globalVarRef([
-                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent", "unescape"
+                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent", "unescape",
+                "escape"
               ]).getACall() and
           pred = c.getArgument(0)
         )

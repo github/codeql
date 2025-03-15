@@ -8,5 +8,5 @@ document.write(document.location.href.toUpperCase()); // $ Alert
 document.write(document.location.href.trimLeft()); // $ Alert
 document.write(String.fromCharCode(document.location.href)); // $ Alert
 document.write(String(document.location.href)); // $ Alert
-document.write(escape(document.location.href)); // OK - for now
-document.write(escape(escape(escape(document.location.href)))); // OK - for now
+document.write(escape(document.location.href));
+document.write(escape(escape(escape(document.location.href))));
