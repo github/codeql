@@ -4,14 +4,14 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The `CAtlFileMapping` class from Microsoft's Active Template Library.
  */
 class CAtlFileMapping extends Class {
-  CAtlFileMapping() { this.hasGlobalName("CAtlFileMapping") }
+  CAtlFileMapping() { this.hasQualifiedName("ATL", "CAtlFileMapping") }
 }
 
 /**
  * The `CAtlFileMappingBase` class from Microsoft's Active Template Library.
  */
 class CAtlFileMappingBase extends Class {
-  CAtlFileMappingBase() { this.hasGlobalName("CAtlFileMappingBase") }
+  CAtlFileMappingBase() { this.hasQualifiedName("ATL", "CAtlFileMappingBase") }
 }
 
 private class CAtlFileMappingBaseGetData extends MemberFunction, LocalFlowSourceFunction {

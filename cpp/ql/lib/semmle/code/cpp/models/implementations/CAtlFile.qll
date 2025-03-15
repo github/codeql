@@ -4,7 +4,7 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The `CAtlFile` class from Microsoft's Active Template Library.
  */
 class CAtlFile extends Class {
-  CAtlFile() { this.hasGlobalName("CAtlFile") }
+  CAtlFile() { this.hasQualifiedName("ATL", "CAtlFile") }
 }
 
 private class CAtlFileRead extends MemberFunction, LocalFlowSourceFunction {

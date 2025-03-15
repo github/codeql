@@ -4,7 +4,7 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 
 /** The `CComBSTR` class from the Microsoft "Active Template Library". */
 class CcomBstr extends Class {
-  CcomBstr() { this.hasGlobalName("CComBSTR") }
+  CcomBstr() { this.hasQualifiedName("ATL", "CComBSTR") }
 }
 
 private class Mstr extends Field {

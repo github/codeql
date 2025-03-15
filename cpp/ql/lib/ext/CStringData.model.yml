@@ -3,4 +3,4 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data:
-      - ["", "CStringData", True, "data", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["ATL", "CStringData", True, "data", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
