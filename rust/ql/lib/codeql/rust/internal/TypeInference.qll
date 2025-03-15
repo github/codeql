@@ -903,7 +903,7 @@ private module Cached {
   }
 
   /**
-   * Gets a method that the method call `mce` infers to, if any.
+   * Gets a method that the method call `mce` resolves to, if any.
    */
   cached
   Function resolveMethodCallExpr(MethodCallExpr mce) {
@@ -917,7 +917,7 @@ private module Cached {
   }
 
   /**
-   * Gets the record field that the field expression `fe` infers to, if any.
+   * Gets the record field that the field expression `fe` resolves to, if any.
    */
   cached
   RecordField resolveRecordFieldExpr(FieldExpr fe) {
@@ -933,7 +933,7 @@ private module Cached {
   }
 
   /**
-   * Gets the tuple field that the field expression `fe` infers to, if any.
+   * Gets the tuple field that the field expression `fe` resolves to, if any.
    */
   cached
   TupleField resolveTupleFieldExpr(FieldExpr fe) {

@@ -651,7 +651,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * class Sub<T4> : Mid<C<T4>> { }
        *
-       *    new Sub<int>().Method();
+       *    new Sub<int>().Method(); // Note: `Sub<int>` is a subtype of `Base<C<C<int>>>`
        * // ^^^^^^^^^^^^^^^^^^^^^^^ `a`
        * ```
        *
@@ -675,6 +675,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      /**
+       * Holds if for `a` and corresponding `target`, the type parameter `tp` is
+       * matched by a type argument at the access with type `t` and type path
+       * `path`.
+       */
       pragma[nomagic]
       private predicate explicitTypeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
@@ -687,8 +692,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate implicitTypeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
+        // We can get the type of `tp` from one of the access positions
         directTypeMatch(a, target, path, t, tp)
         or
+        // We can get the type of `tp` by going up the type hiearchy
         baseTypeMatch(a, target, path, t, tp)
       }
 
@@ -696,8 +703,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate typeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
+        // A type given at the access corresponds directly to the type parameter
+        // at the target.
         explicitTypeMatch(a, target, path, t, tp)
         or
+        // No explicit type argument, so we deduce the parameter from other
+        // information
         implicitTypeMatch(a, target, path, t, tp)
       }
 
@@ -742,12 +753,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       pragma[nomagic]
       Type inferAccessType(Access a, AccessPosition apos, TypePath path) {
         exists(DeclarationPosition dpos | accessDeclarationPositionMatch(apos, dpos) |
+          // A suffix of `path` leads to a type parameter in the target
           exists(Declaration target, TypePath prefix, TypeParameter tp, TypePath suffix |
             tp = target.getDeclaredType(pragma[only_bind_into](dpos), prefix) and
             path = prefix.append(suffix) and
             typeMatch(a, target, suffix, result, tp)
           )
           or
+          // `path` corresponds directly to a concrete type in the declaration
           exists(Declaration target |
             result = target.getDeclaredType(pragma[only_bind_into](dpos), path) and
             target = a.getTarget() and
