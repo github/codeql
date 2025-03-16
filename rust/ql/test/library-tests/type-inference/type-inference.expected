@@ -1,4 +1,42 @@
 inferType
+| loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | trait T1 |
+| loop/main.rs:7:12:7:15 | SelfParam | T | loop/main.rs:6:10:6:10 | T |
+| loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:6:1:8:1 | trait T1 |
+| loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | trait T2 |
+| loop/main.rs:11:12:11:15 | SelfParam | T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:11:12:11:15 | SelfParam | T.T.T.T.T.T.T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:12:9:12:12 | self |  | loop/main.rs:6:1:8:1 | trait T1 |
+| loop/main.rs:12:9:12:12 | self |  | loop/main.rs:10:1:14:1 | trait T2 |
+| loop/main.rs:12:9:12:12 | self | T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:12:9:12:12 | self | T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:12:9:12:12 | self | T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T.T.T | loop/main.rs:10:10:10:10 | T |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T.T.T.T.T | loop/main.rs:4:1:4:15 | struct S |
+| loop/main.rs:12:9:12:12 | self | T.T.T.T.T.T.T.T.T.T | loop/main.rs:10:10:10:10 | T |
 | main.rs:5:19:5:22 | SelfParam |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:5:33:7:9 | { ... } |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:6:13:6:16 | self |  | main.rs:2:5:2:21 | struct Foo |
@@ -783,6 +821,7 @@ inferType
 | main.rs:582:11:582:20 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
 | main.rs:582:23:582:32 | ...::Foo {...} |  | main.rs:2:5:2:21 | struct Foo |
 resolveMethodCallExpr
+| loop/main.rs:12:9:12:18 | self.foo(...) | loop/main.rs:7:5:7:19 | fn foo |
 | main.rs:23:9:23:14 | x.m1(...) | main.rs:5:9:7:9 | fn m1 |
 | main.rs:24:9:24:14 | y.m2(...) | main.rs:9:9:11:9 | fn m2 |
 | main.rs:67:26:67:31 | x.m2(...) | main.rs:52:9:54:9 | fn m2 |
