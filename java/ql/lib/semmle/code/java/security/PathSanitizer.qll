@@ -414,7 +414,9 @@ private predicate isReplaceTarget(StringReplaceCall replaceCall, CompileTimeCons
 }
 
 /** Holds if a single `replaceAllCall` replaces all directory characters. */
-private predicate isSingleReplaceAll(StringReplaceAllCall replaceAllCall) {
+private predicate replacesDirectoryCharactersWithSingleReplaceAll(
+  StringReplaceAllCall replaceAllCall
+) {
   exists(CompileTimeConstantExpr target, string targetValue |
     isReplaceAllTarget(replaceAllCall, target) and
     target.getStringValue() = targetValue
@@ -436,7 +438,9 @@ private predicate isSingleReplaceAll(StringReplaceAllCall replaceAllCall) {
  * Holds if there are two chained replacement calls, `rc1` and `rc2`, that replace
  * '.' and one of '/' or '\'.
  */
-private predicate isDoubleReplaceOrReplaceAll(StringReplaceOrReplaceAllCall rc1) {
+private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(
+  StringReplaceOrReplaceAllCall rc1
+) {
   exists(
     CompileTimeConstantExpr target1, string targetValue1, StringReplaceOrReplaceAllCall rc2,
     CompileTimeConstantExpr target2, string targetValue2
@@ -471,8 +475,8 @@ private predicate isDoubleReplaceOrReplaceAll(StringReplaceOrReplaceAllCall rc1)
  */
 private class ReplaceDirectoryCharactersSanitizer extends StringReplaceOrReplaceAllCall {
   ReplaceDirectoryCharactersSanitizer() {
-    isSingleReplaceAll(this) or
-    isDoubleReplaceOrReplaceAll(this)
+    replacesDirectoryCharactersWithSingleReplaceAll(this) or
+    replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(this)
   }
 }
 
