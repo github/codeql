@@ -2340,6 +2340,7 @@ storeStep
 | main.rs:137:38:137:38 | 2 | Point.y | main.rs:137:13:137:40 | Point {...} |
 | main.rs:143:28:143:36 | source(...) | Point.x | main.rs:143:17:143:44 | Point {...} |
 | main.rs:143:42:143:42 | 2 | Point.y | main.rs:143:17:143:44 | Point {...} |
+| main.rs:145:11:145:20 | source(...) | Point.y | main.rs:145:5:145:5 | [post] p |
 | main.rs:151:12:151:21 | source(...) | Point.x | main.rs:150:13:153:5 | Point {...} |
 | main.rs:152:12:152:12 | 2 | Point.y | main.rs:150:13:153:5 | Point {...} |
 | main.rs:166:16:169:9 | Point {...} | Point3D.plane | main.rs:165:13:171:5 | Point3D {...} |
@@ -2512,10 +2513,14 @@ readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:std::_::crate::sys_common::ignore_notfound | Err | file://:0:0:0:0 | [summary] read: Argument[0].Field[crate::result::Result::Err(0)] in lang:std::_::crate::sys_common::ignore_notfound |
 | file://:0:0:0:0 | [summary param] 0 in lang:std::_::crate::thread::current::try_with_current | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:std::_::crate::thread::current::try_with_current |
 | file://:0:0:0:0 | [summary param] 0 in lang:std::_::crate::thread::with_current_name | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:std::_::crate::thread::with_current_name |
+<<<<<<< HEAD
 | file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::from_mut_slice | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::from_mut_slice |
 | file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::from_slice | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::from_slice |
 | file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::try_from_mut_slice | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::try_from_mut_slice |
 | file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::try_from_slice | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/fizyk20/generic-array.git:generic-array::_::<crate::GenericArray>::try_from_slice |
+=======
+| file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/rust-lang/regex:regex::_::crate::escape | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/rust-lang/regex:regex::_::crate::escape |
+>>>>>>> main
 | file://:0:0:0:0 | [summary param] 1 in lang:alloc::_::<crate::vec::into_iter::IntoIter as crate::iter::traits::iterator::Iterator>::fold | function return | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:alloc::_::<crate::vec::into_iter::IntoIter as crate::iter::traits::iterator::Iterator>::fold |
 | file://:0:0:0:0 | [summary param] 1 in lang:alloc::_::crate::collections::btree::mem::replace | function return | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:alloc::_::crate::collections::btree::mem::replace |
 | file://:0:0:0:0 | [summary param] 1 in lang:alloc::_::crate::collections::btree::mem::take_mut | function return | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:alloc::_::crate::collections::btree::mem::take_mut |
@@ -2982,13 +2987,25 @@ readStep
 | main.rs:124:10:124:10 | b | tuple.0 | main.rs:124:10:124:12 | b.0 |
 | main.rs:124:10:124:12 | b.0 | tuple.1 | main.rs:124:10:124:15 | ... .1 |
 | main.rs:125:10:125:10 | b | tuple.1 | main.rs:125:10:125:12 | b.1 |
+| main.rs:138:10:138:10 | p | Point.x | main.rs:138:10:138:12 | p.x |
+| main.rs:139:10:139:10 | p | Point.y | main.rs:139:10:139:12 | p.y |
+| main.rs:144:10:144:10 | p | Point.y | main.rs:144:10:144:12 | p.y |
+| main.rs:145:5:145:5 | p | Point.y | main.rs:145:5:145:7 | p.y |
+| main.rs:146:10:146:10 | p | Point.y | main.rs:146:10:146:12 | p.y |
 | main.rs:154:9:154:28 | Point {...} | Point.x | main.rs:154:20:154:20 | a |
 | main.rs:154:9:154:28 | Point {...} | Point.y | main.rs:154:26:154:26 | b |
+| main.rs:172:10:172:10 | p | Point3D.plane | main.rs:172:10:172:16 | p.plane |
+| main.rs:172:10:172:16 | p.plane | Point.x | main.rs:172:10:172:18 | ... .x |
+| main.rs:173:10:173:10 | p | Point3D.plane | main.rs:173:10:173:16 | p.plane |
+| main.rs:173:10:173:16 | p.plane | Point.y | main.rs:173:10:173:18 | ... .y |
+| main.rs:174:10:174:10 | p | Point3D.z | main.rs:174:10:174:12 | p.z |
 | main.rs:184:9:187:9 | Point3D {...} | Point3D.plane | main.rs:185:20:185:33 | Point {...} |
 | main.rs:184:9:187:9 | Point3D {...} | Point3D.z | main.rs:186:13:186:13 | z |
 | main.rs:185:20:185:33 | Point {...} | Point.x | main.rs:185:28:185:28 | x |
 | main.rs:185:20:185:33 | Point {...} | Point.y | main.rs:185:31:185:31 | y |
+| main.rs:199:10:199:10 | s | MyTupleStruct(0) | main.rs:199:10:199:12 | s.0 |
 | main.rs:199:10:199:10 | s | tuple.0 | main.rs:199:10:199:12 | s.0 |
+| main.rs:200:10:200:10 | s | MyTupleStruct(1) | main.rs:200:10:200:12 | s.1 |
 | main.rs:200:10:200:10 | s | tuple.1 | main.rs:200:10:200:12 | s.1 |
 | main.rs:203:9:203:27 | MyTupleStruct(...) | MyTupleStruct(0) | main.rs:203:23:203:23 | x |
 | main.rs:203:9:203:27 | MyTupleStruct(...) | MyTupleStruct(1) | main.rs:203:26:203:26 | y |

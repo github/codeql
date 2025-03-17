@@ -120,6 +120,63 @@ impl From<trap::Label<AstNode>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
+pub struct Crate {
+    pub id: trap::TrapId<Crate>,
+    pub name: Option<String>,
+    pub version: Option<String>,
+    pub module: Option<trap::Label<Module>>,
+    pub cfg_options: Vec<String>,
+    pub dependencies: Vec<trap::Label<Crate>>,
+}
+
+impl trap::TrapEntry for Crate {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("crates", vec![id.into()]);
+        if let Some(v) = self.name {
+            out.add_tuple("crate_names", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.version {
+            out.add_tuple("crate_versions", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.module {
+            out.add_tuple("crate_modules", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.cfg_options.into_iter().enumerate() {
+            out.add_tuple("crate_cfg_options", vec![id.into(), i.into(), v.into()]);
+        }
+        for (i, v) in self.dependencies.into_iter().enumerate() {
+            out.add_tuple("crate_dependencies", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for Crate {
+    fn class_name() -> &'static str { "Crate" }
+}
+
+impl From<trap::Label<Crate>> for trap::Label<Element> {
+    fn from(value: trap::Label<Crate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Crate is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Crate>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Crate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Crate is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Missing {
     pub id: trap::TrapId<Missing>,
 }

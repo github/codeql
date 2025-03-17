@@ -6,3 +6,5 @@ dependencies:
 extractor: rust
 tests: .
 warnOnImplicitThis: true
+dataExtensions:
+  - default-threat-models.model.yml

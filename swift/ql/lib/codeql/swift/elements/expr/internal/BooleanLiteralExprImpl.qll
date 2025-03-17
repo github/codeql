@@ -8,7 +8,7 @@ module Impl {
    * ```
    */
   class BooleanLiteralExpr extends Generated::BooleanLiteralExpr {
-    override string toString() { result = this.getValue().toString() }
+    override string toStringImpl() { result = this.getValue().toString() }
 
     override string getValueString() { result = this.getValue().toString() }
   }

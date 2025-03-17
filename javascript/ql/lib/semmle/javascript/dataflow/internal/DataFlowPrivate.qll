@@ -372,10 +372,11 @@ class CastNode extends DataFlow::Node {
 cached
 newtype TDataFlowCallable =
   MkSourceCallable(StmtContainer container) or
-  MkLibraryCallable(LibraryCallable callable)
+  MkLibraryCallable(LibraryCallable callable) or
+  MkFileCallable(File file)
 
 /**
- * A callable entity. This is a wrapper around either a `StmtContainer` or a `LibraryCallable`.
+ * A callable entity. This is a wrapper around either a `StmtContainer`, `LibraryCallable`, or `File`.
  */
 class DataFlowCallable extends TDataFlowCallable {
   /** Gets a string representation of this callable. */
@@ -383,13 +384,20 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSourceCallable().toString()
     or
     result = this.asLibraryCallable()
+    or
+    result = this.asFileCallable().toString()
   }
 
   /** Gets the location of this callable, if it is present in the source code. */
-  Location getLocation() { result = this.asSourceCallable().getLocation() }
+  Location getLocation() {
+    result = this.asSourceCallable().getLocation() or result = this.asFileCallable().getLocation()
+  }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   StmtContainer asSourceCallable() { this = MkSourceCallable(result) }
+
+  /** Gets the corresponding `File` if this is a file representing a callable. */
+  File asFileCallable() { this = MkFileCallable(result) }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   pragma[nomagic]
@@ -537,6 +545,10 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asLibraryCallable() = node.(FlowSummaryDefaultExceptionalReturn).getSummarizedCallable()
   or
   node = TGenericSynthesizedNode(_, _, result)
+  or
+  node instanceof DataFlow::HtmlAttributeNode and result.asFileCallable() = node.getFile()
+  or
+  node instanceof DataFlow::XmlAttributeNode and result.asFileCallable() = node.getFile()
 }
 
 newtype TDataFlowType =

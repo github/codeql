@@ -336,7 +336,7 @@ module ExprTrees {
     override predicate first(AstNode node) { first(super.getCondition(), node) }
 
     override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getCondition(), super.getThen(), super.getElse()]
+      child = [super.getCondition(), super.getABranch()]
     }
 
     private ConditionalCompletion conditionCompletion(Completion c) {

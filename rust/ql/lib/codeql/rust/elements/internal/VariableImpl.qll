@@ -236,13 +236,11 @@ module Impl {
       this instanceof VariableScope or
       this instanceof VariableAccessCand or
       this instanceof LetStmt or
-      getImmediateChildAndAccessor(this, _, _) instanceof RelevantElement
+      getImmediateChild(this, _) instanceof RelevantElement
     }
 
     pragma[nomagic]
-    private RelevantElement getChild(int index) {
-      result = getImmediateChildAndAccessor(this, index, _)
-    }
+    private RelevantElement getChild(int index) { result = getImmediateChild(this, index) }
 
     pragma[nomagic]
     private RelevantElement getImmediateChildMin(int index) {
@@ -596,7 +594,7 @@ module Impl {
     /** Holds if this access is a capture. */
     predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
 
-    override string toString() { result = name }
+    override string toStringImpl() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
   }

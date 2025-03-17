@@ -1,0 +1,7 @@
+# Models for the `regex` crate.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo:https://github.com/rust-lang/regex:regex", "crate::escape", "Argument[0].Reference", "ReturnValue", "taint", "manual"]

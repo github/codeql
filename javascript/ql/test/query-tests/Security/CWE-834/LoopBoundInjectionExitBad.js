@@ -5,19 +5,19 @@ var rootRoute = router.route('foobar');
 var _ = require("lodash");
 
 rootRoute.post(function (req, res) {
-	breaks(req.body);
+	breaks(req.body); // $ Source
 	
-	throws(req.body);
+	throws(req.body); // $ Source
 	
-	returns(req.body);
+	returns(req.body); // $ Source
 	
-	lodashThrow(req.body);
+	lodashThrow(req.body); // $ Source
 });
 
 function breaks(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) { // NOT OK!
+	for (var i = 0; i < val.length; i++) { // $ Alert
 	  for (var k = 0; k < 2; k++) {
 		  if (k == 3) {
 		      // Does not prevent DoS, because this is inside an inner loop.
@@ -31,7 +31,7 @@ function breaks(val) {
 function throws(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) { // NOT OK!
+	for (var i = 0; i < val.length; i++) { // $ Alert
 	  if (val[i] == null) {
 		  try {
 			  throw 2; // Is caught, and therefore the DoS is not prevented.
@@ -46,7 +46,7 @@ function throws(val) {
 function returns(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) { // NOT OK!
+	for (var i = 0; i < val.length; i++) { // $ Alert
 	  if (val[i] == null) {
 		  (function (i) {
 			  return i+2; // Does not prevent DoS.
@@ -57,7 +57,7 @@ function returns(val) {
 }
 
 function lodashThrow(val) {
-	_.map(val, function (e) { // NOT OK!
+	_.map(val, function (e) { // $ Alert
 		if (!e) {
 			try {
 				throw new Error(); // Does not prevent DoS.

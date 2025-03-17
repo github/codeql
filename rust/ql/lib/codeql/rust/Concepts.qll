@@ -153,6 +153,29 @@ class ModeledRemoteSource extends RemoteSource::Range {
 }
 
 /**
+ * A data flow sink that is used in a query.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `QuerySink::Range` instead.
+ */
+final class QuerySink = QuerySink::Range;
+
+/**
+ * Provides a class for modeling new query sinks.
+ */
+module QuerySink {
+  /**
+   * A data flow sink that is used in a query.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a string that describes the type of this sink (usually the query it applies to).
+     */
+    abstract string getSinkType();
+  }
+}
+
+/**
  * A data flow node that constructs a SQL statement (for later execution).
  *
  * Often, it is worthy of an alert if a SQL statement is constructed such that

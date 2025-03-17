@@ -15,9 +15,10 @@ models
 | 14 | Summary: repo::test; crate::get_var_field; Argument[0].Field[crate::MyFieldEnum::C::field_c]; ReturnValue; value |
 | 15 | Summary: repo::test; crate::get_var_pos; Argument[0].Field[crate::MyPosEnum::A(0)]; ReturnValue; value |
 | 16 | Summary: repo::test; crate::set_array_element; Argument[0]; ReturnValue.Element; value |
-| 17 | Summary: repo::test; crate::set_tuple_element; Argument[0]; ReturnValue.Field[1]; value |
-| 18 | Summary: repo::test; crate::set_var_field; Argument[0]; ReturnValue.Field[crate::MyFieldEnum::D::field_d]; value |
-| 19 | Summary: repo::test; crate::set_var_pos; Argument[0]; ReturnValue.Field[crate::MyPosEnum::B(0)]; value |
+| 17 | Summary: repo::test; crate::set_struct_field; Argument[0]; ReturnValue.Field[crate::MyStruct::field2]; value |
+| 18 | Summary: repo::test; crate::set_tuple_element; Argument[0]; ReturnValue.Field[1]; value |
+| 19 | Summary: repo::test; crate::set_var_field; Argument[0]; ReturnValue.Field[crate::MyFieldEnum::D::field_d]; value |
+| 20 | Summary: repo::test; crate::set_var_pos; Argument[0]; ReturnValue.Field[crate::MyPosEnum::B(0)]; value |
 edges
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
@@ -48,8 +49,8 @@ edges
 | main.rs:54:9:54:10 | e1 [B] | main.rs:55:11:55:12 | e1 [B] | provenance |  |
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | main.rs:54:9:54:10 | e1 [B] | provenance |  |
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | main.rs:54:9:54:10 | e1 [B] | provenance |  |
-| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:19 |
-| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:19 |
+| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:20 |
+| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:20 |
 | main.rs:55:11:55:12 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
 | main.rs:55:11:55:12 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
 | main.rs:57:9:57:23 | ...::B(...) [B] | main.rs:57:22:57:22 | i | provenance |  |
@@ -76,8 +77,8 @@ edges
 | main.rs:86:9:86:10 | e1 [D] | main.rs:87:11:87:12 | e1 [D] | provenance |  |
 | main.rs:86:14:86:29 | set_var_field(...) [D] | main.rs:86:9:86:10 | e1 [D] | provenance |  |
 | main.rs:86:14:86:29 | set_var_field(...) [D] | main.rs:86:9:86:10 | e1 [D] | provenance |  |
-| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:18 |
-| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:18 |
+| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:19 |
+| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:19 |
 | main.rs:87:11:87:12 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
 | main.rs:87:11:87:12 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
 | main.rs:89:9:89:37 | ...::D {...} [D] | main.rs:89:35:89:35 | i | provenance |  |
@@ -96,6 +97,18 @@ edges
 | main.rs:106:17:106:17 | s | main.rs:105:21:108:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
 | main.rs:109:27:109:35 | my_struct [MyStruct.field1] | main.rs:109:10:109:36 | get_struct_field(...) | provenance | MaD:12 |
 | main.rs:109:27:109:35 | my_struct [MyStruct.field1] | main.rs:109:10:109:36 | get_struct_field(...) | provenance | MaD:12 |
+| main.rs:126:9:126:9 | s | main.rs:127:38:127:38 | s | provenance |  |
+| main.rs:126:9:126:9 | s | main.rs:127:38:127:38 | s | provenance |  |
+| main.rs:126:13:126:21 | source(...) | main.rs:126:9:126:9 | s | provenance |  |
+| main.rs:126:13:126:21 | source(...) | main.rs:126:9:126:9 | s | provenance |  |
+| main.rs:127:9:127:17 | my_struct [MyStruct.field2] | main.rs:129:10:129:18 | my_struct [MyStruct.field2] | provenance |  |
+| main.rs:127:9:127:17 | my_struct [MyStruct.field2] | main.rs:129:10:129:18 | my_struct [MyStruct.field2] | provenance |  |
+| main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | main.rs:127:9:127:17 | my_struct [MyStruct.field2] | provenance |  |
+| main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | main.rs:127:9:127:17 | my_struct [MyStruct.field2] | provenance |  |
+| main.rs:127:38:127:38 | s | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | provenance | MaD:17 |
+| main.rs:127:38:127:38 | s | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | provenance | MaD:17 |
+| main.rs:129:10:129:18 | my_struct [MyStruct.field2] | main.rs:129:10:129:25 | my_struct.field2 | provenance |  |
+| main.rs:129:10:129:18 | my_struct [MyStruct.field2] | main.rs:129:10:129:25 | my_struct.field2 | provenance |  |
 | main.rs:138:9:138:9 | s | main.rs:139:29:139:29 | s | provenance |  |
 | main.rs:138:9:138:9 | s | main.rs:139:29:139:29 | s | provenance |  |
 | main.rs:138:13:138:21 | source(...) | main.rs:138:9:138:9 | s | provenance |  |
@@ -136,8 +149,8 @@ edges
 | main.rs:173:9:173:9 | t [tuple.1] | main.rs:175:10:175:10 | t [tuple.1] | provenance |  |
 | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | main.rs:173:9:173:9 | t [tuple.1] | provenance |  |
 | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | main.rs:173:9:173:9 | t [tuple.1] | provenance |  |
-| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:17 |
-| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:17 |
+| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:18 |
+| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:18 |
 | main.rs:175:10:175:10 | t [tuple.1] | main.rs:175:10:175:12 | t.1 | provenance |  |
 | main.rs:175:10:175:10 | t [tuple.1] | main.rs:175:10:175:12 | t.1 | provenance |  |
 | main.rs:184:9:184:9 | s | main.rs:189:11:189:11 | s | provenance |  |
@@ -337,6 +350,20 @@ nodes
 | main.rs:109:10:109:36 | get_struct_field(...) | semmle.label | get_struct_field(...) |
 | main.rs:109:27:109:35 | my_struct [MyStruct.field1] | semmle.label | my_struct [MyStruct.field1] |
 | main.rs:109:27:109:35 | my_struct [MyStruct.field1] | semmle.label | my_struct [MyStruct.field1] |
+| main.rs:126:9:126:9 | s | semmle.label | s |
+| main.rs:126:9:126:9 | s | semmle.label | s |
+| main.rs:126:13:126:21 | source(...) | semmle.label | source(...) |
+| main.rs:126:13:126:21 | source(...) | semmle.label | source(...) |
+| main.rs:127:9:127:17 | my_struct [MyStruct.field2] | semmle.label | my_struct [MyStruct.field2] |
+| main.rs:127:9:127:17 | my_struct [MyStruct.field2] | semmle.label | my_struct [MyStruct.field2] |
+| main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | semmle.label | set_struct_field(...) [MyStruct.field2] |
+| main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | semmle.label | set_struct_field(...) [MyStruct.field2] |
+| main.rs:127:38:127:38 | s | semmle.label | s |
+| main.rs:127:38:127:38 | s | semmle.label | s |
+| main.rs:129:10:129:18 | my_struct [MyStruct.field2] | semmle.label | my_struct [MyStruct.field2] |
+| main.rs:129:10:129:18 | my_struct [MyStruct.field2] | semmle.label | my_struct [MyStruct.field2] |
+| main.rs:129:10:129:25 | my_struct.field2 | semmle.label | my_struct.field2 |
+| main.rs:129:10:129:25 | my_struct.field2 | semmle.label | my_struct.field2 |
 | main.rs:138:9:138:9 | s | semmle.label | s |
 | main.rs:138:9:138:9 | s | semmle.label | s |
 | main.rs:138:13:138:21 | source(...) | semmle.label | source(...) |
@@ -532,6 +559,8 @@ invalidSpecComponent
 | main.rs:89:47:89:47 | i | main.rs:85:13:85:21 | source(...) | main.rs:89:47:89:47 | i | $@ | main.rs:85:13:85:21 | source(...) | source(...) |
 | main.rs:109:10:109:36 | get_struct_field(...) | main.rs:104:13:104:21 | source(...) | main.rs:109:10:109:36 | get_struct_field(...) | $@ | main.rs:104:13:104:21 | source(...) | source(...) |
 | main.rs:109:10:109:36 | get_struct_field(...) | main.rs:104:13:104:21 | source(...) | main.rs:109:10:109:36 | get_struct_field(...) | $@ | main.rs:104:13:104:21 | source(...) | source(...) |
+| main.rs:129:10:129:25 | my_struct.field2 | main.rs:126:13:126:21 | source(...) | main.rs:129:10:129:25 | my_struct.field2 | $@ | main.rs:126:13:126:21 | source(...) | source(...) |
+| main.rs:129:10:129:25 | my_struct.field2 | main.rs:126:13:126:21 | source(...) | main.rs:129:10:129:25 | my_struct.field2 | $@ | main.rs:126:13:126:21 | source(...) | source(...) |
 | main.rs:139:10:139:31 | get_array_element(...) | main.rs:138:13:138:21 | source(...) | main.rs:139:10:139:31 | get_array_element(...) | $@ | main.rs:138:13:138:21 | source(...) | source(...) |
 | main.rs:139:10:139:31 | get_array_element(...) | main.rs:138:13:138:21 | source(...) | main.rs:139:10:139:31 | get_array_element(...) | $@ | main.rs:138:13:138:21 | source(...) | source(...) |
 | main.rs:150:10:150:15 | arr[0] | main.rs:148:13:148:21 | source(...) | main.rs:150:10:150:15 | arr[0] | $@ | main.rs:148:13:148:21 | source(...) | source(...) |

@@ -68,6 +68,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCrate(Crate e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfFormat(Format e, int index, string partialPredicateCall) {
     exists(
       int b, int bLocatable, int n, int nArgumentRef, int nWidthArgument, int nPrecisionArgument
@@ -4052,6 +4065,8 @@ private module Impl {
     or
     result = getImmediateChildOfExtractorStep(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCrate(e, index, partialAccessor)
+    or
     result = getImmediateChildOfFormat(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormatArgument(e, index, partialAccessor)
@@ -4389,6 +4404,11 @@ Element getImmediateParent(Element e) {
 }
 
 /**
+ * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+ */
+Element getImmediateChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _) }
+
+/**
  * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
@@ -4407,3 +4427,8 @@ Element getChildAndAccessor(Element e, int index, string accessor) {
     accessor = "get" + partialAccessor
   )
 }
+
+/**
+ * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
+ */
+Element getChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _).resolve() }

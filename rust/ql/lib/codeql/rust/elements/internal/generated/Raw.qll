@@ -55,6 +55,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class Crate extends @crate, Locatable {
+    override string toString() { result = "Crate" }
+
+    /**
+     * Gets the name of this crate, if it exists.
+     */
+    string getName() { crate_names(this, result) }
+
+    /**
+     * Gets the version of this crate, if it exists.
+     */
+    string getVersion() { crate_versions(this, result) }
+
+    /**
+     * Gets the module of this crate, if it exists.
+     */
+    Module getModule() { crate_modules(this, result) }
+
+    /**
+     * Gets the `index`th cfg option of this crate (0-based).
+     */
+    string getCfgOption(int index) { crate_cfg_options(this, index, result) }
+
+    /**
+     * Gets the `index`th dependency of this crate (0-based).
+     */
+    Crate getDependency(int index) { crate_dependencies(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * The base class marking errors during parsing or resolution.
    */
   class Missing extends @missing, Unextracted {

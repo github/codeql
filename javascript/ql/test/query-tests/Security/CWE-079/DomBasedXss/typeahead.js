@@ -17,12 +17,12 @@
     {
       name: 'dashboards',
       source: function (query, cb) {
-        var target = document.location.search
+        var target = document.location.search // $ Source
         cb(target);
       },
       templates: {
         suggestion: function(val) {
-          return val; // NOT OK 
+          return val; // $ Alert
         }
       }
     }

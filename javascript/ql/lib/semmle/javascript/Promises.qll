@@ -4,6 +4,7 @@
 
 import javascript
 private import dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.FlowSteps
 
 /**
  * A call to the `Promise` constructor, such as `new Promise((resolve, reject) => { ... })`.
@@ -397,6 +398,17 @@ module PromiseFlow {
       value = call.getCallback(0).getExceptionalReturn() and
       obj = call
     )
+    or
+    exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+      // ordinary return
+      prop = valueProp() and
+      value = f.getAReturn() and
+      obj = f.getReturnNode()
+      or
+      // exceptional return
+      prop = errorProp() and
+      localExceptionStepWithAsyncFlag(value, obj, true)
+    )
   }
 
   /**
@@ -525,30 +537,6 @@ private class PromiseTaintStep extends TaintTracking::LegacyTaintStep {
  * Defines flow steps for return on async functions.
  */
 private module AsyncReturnSteps {
-  private predicate valueProp = Promises::valueProp/0;
-
-  private predicate errorProp = Promises::errorProp/0;
-
-  private import semmle.javascript.dataflow.internal.FlowSteps
-
-  /**
-   * A data-flow step for ordinary and exceptional returns from async functions.
-   */
-  private class AsyncReturn extends LegacyPreCallGraphStep {
-    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
-        // ordinary return
-        prop = valueProp() and
-        pred = f.getAReturn() and
-        succ = f.getReturnNode()
-        or
-        // exceptional return
-        prop = errorProp() and
-        localExceptionStepWithAsyncFlag(pred, succ, true)
-      )
-    }
-  }
-
   /**
    * A data-flow step for ordinary return from an async function in a taint configuration.
    */

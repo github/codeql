@@ -10,7 +10,7 @@
 | ConstantCondition.cs:95:13:95:13 | _ | Pattern always matches. |
 | ConstantCondition.cs:114:13:114:14 | access to parameter b1 | Condition always evaluates to 'true'. |
 | ConstantCondition.cs:114:19:114:20 | access to parameter b2 | Condition always evaluates to 'true'. |
-| ConstantConditionBad.cs:5:16:5:20 | ... > ... | Condition always evaluates to 'false'. |
+| ConstantCondition.cs:141:22:141:22 | _ | Pattern always matches. |
 | ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | Condition always evaluates to 'true'. |
 | ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | Condition always evaluates to 'false'. |
 | ConstantConditionalExpressionCondition.cs:13:21:13:30 | ... == ... | Condition always evaluates to 'true'. |
@@ -19,6 +19,7 @@
 | ConstantIfCondition.cs:11:17:11:29 | ... == ... | Condition always evaluates to 'true'. |
 | ConstantIfCondition.cs:14:17:14:21 | false | Condition always evaluates to 'false'. |
 | ConstantIfCondition.cs:17:17:17:26 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantIfCondition.cs:30:20:30:24 | ... > ... | Condition always evaluates to 'false'. |
 | ConstantIsNullOrEmpty.cs:10:21:10:54 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. |
 | ConstantIsNullOrEmpty.cs:46:21:46:46 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. |
 | ConstantIsNullOrEmpty.cs:50:21:50:44 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. |

@@ -4,7 +4,7 @@
  *              via default taint-tracking steps.
  * @kind problem
  * @problem.severity recommendation
- * @tags meta
+ * @tags meta-expensive
  * @id js/meta/alerts/tainted-nodes
  * @precision very-low
  */

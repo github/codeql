@@ -1,5 +1,5 @@
 /**
- * @name Enviroment Variable built from user-controlled sources
+ * @name Environment variable built from user-controlled sources
  * @description Building an environment variable from user-controlled sources may alter the execution of following system commands
  * @kind path-problem
  * @problem.severity error

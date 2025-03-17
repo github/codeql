@@ -13,7 +13,15 @@ private import codeql.rust.elements.PathExpr
  */
 module Impl {
   private import rust
-  private import PathResolution as PathResolution
+  private import codeql.rust.internal.PathResolution as PathResolution
+
+  pragma[nomagic]
+  Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }
+
+  pragma[nomagic]
+  PathResolution::ItemNode getResolvedFunction(CallExpr ce) {
+    result = PathResolution::resolvePath(getFunctionPath(ce))
+  }
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -26,11 +34,19 @@ module Impl {
    * ```
    */
   class CallExpr extends Generated::CallExpr {
-    override string toString() { result = this.getFunction().toAbbreviatedString() + "(...)" }
+    override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
+
+    override Callable getStaticTarget() { result = getResolvedFunction(this) }
+
+    /** Gets the struct that this call resolves to, if any. */
+    Struct getStruct() { result = getResolvedFunction(this) }
+
+    /** Gets the variant that this call resolves to, if any. */
+    Variant getVariant() { result = getResolvedFunction(this) }
 
     pragma[nomagic]
-    private PathResolution::ItemNode getResolvedFunction(int pos) {
-      result = PathResolution::resolvePath(this.getFunction().(PathExpr).getPath()) and
+    private PathResolution::ItemNode getResolvedFunctionAndPos(int pos) {
+      result = getResolvedFunction(this) and
       exists(this.getArgList().getArg(pos))
     }
 
@@ -42,7 +58,7 @@ module Impl {
      */
     pragma[nomagic]
     TupleField getTupleField(int pos) {
-      exists(PathResolution::ItemNode i | i = this.getResolvedFunction(pos) |
+      exists(PathResolution::ItemNode i | i = this.getResolvedFunctionAndPos(pos) |
         result.isStructField(i, pos) or
         result.isVariantField(i, pos)
       )

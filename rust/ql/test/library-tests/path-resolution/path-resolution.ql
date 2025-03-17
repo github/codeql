@@ -1,10 +1,12 @@
 import rust
-import codeql.rust.elements.internal.PathResolution
+import codeql.rust.internal.PathResolution
+import codeql.rust.internal.TypeInference
 import utils.test.InlineExpectationsTest
+import TestUtils
 
-query predicate mod(Module m) { any() }
+query predicate mod(Module m) { toBeTested(m) }
 
-query predicate resolvePath(Path p, ItemNode i) { i = resolvePath(p) }
+query predicate resolvePath(Path p, ItemNode i) { toBeTested(p) and i = resolvePath(p) }
 
 module ResolveTest implements TestSig {
   string getARelevantTag() { result = "item" }
@@ -31,12 +33,15 @@ module ResolveTest implements TestSig {
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Path p |
-      not p = any(Path parent).getQualifier() and
-      location = p.getLocation() and
-      element = p.toString() and
-      item(resolvePath(p), value) and
+    exists(AstNode n |
+      not n = any(Path parent).getQualifier() and
+      location = n.getLocation() and
+      element = n.toString() and
       tag = "item"
+    |
+      item(resolvePath(n), value)
+      or
+      item(n.(MethodCallExpr).getStaticTarget(), value)
     )
   }
 }

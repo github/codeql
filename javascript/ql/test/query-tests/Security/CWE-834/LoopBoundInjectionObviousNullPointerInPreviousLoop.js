@@ -14,11 +14,11 @@ function nullPointer(val) {
     var ret = [];
 
     // Has obvious null-pointer. And guards the next loop.
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i].foo);
     }
 
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i]);
     }
 }

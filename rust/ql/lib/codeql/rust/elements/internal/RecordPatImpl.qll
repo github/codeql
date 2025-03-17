@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.RecordPat
  */
 module Impl {
   private import rust
-  private import PathResolution as PathResolution
+  private import codeql.rust.internal.PathResolution as PathResolution
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -25,15 +25,18 @@ module Impl {
    * ```
    */
   class RecordPat extends Generated::RecordPat {
-    override string toString() { result = this.getPath().toAbbreviatedString() + " {...}" }
+    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + " {...}" }
+
+    pragma[nomagic]
+    private PathResolution::ItemNode getResolvedPath(string name) {
+      result = PathResolution::resolvePath(this.getPath()) and
+      name = this.getRecordPatFieldList().getAField().getFieldName()
+    }
 
     /** Gets the record field that matches the `name` pattern of this pattern. */
     pragma[nomagic]
     RecordField getRecordField(string name) {
-      exists(PathResolution::ItemNode i |
-        i = PathResolution::resolvePath(this.getPath()) and
-        name = this.getRecordPatFieldList().getAField().getFieldName()
-      |
+      exists(PathResolution::ItemNode i | i = this.getResolvedPath(name) |
         result.isStructField(i, name) or
         result.isVariantField(i, name)
       )

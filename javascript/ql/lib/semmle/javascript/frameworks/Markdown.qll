@@ -47,19 +47,6 @@ module Markdown {
   }
 
   /**
-   * A taint step for the `markdown-table` library.
-   */
-  private class MarkdownTableStep extends MarkdownStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::CallNode call | call = DataFlow::moduleImport("markdown-table").getACall() |
-        // TODO: needs a flow summary to ensure ArrayElement content is unfolded
-        succ = call and
-        pred = call.getArgument(0)
-      )
-    }
-  }
-
-  /**
    * A taint step for the `showdown` library.
    */
   private class ShowDownStep extends MarkdownStep {

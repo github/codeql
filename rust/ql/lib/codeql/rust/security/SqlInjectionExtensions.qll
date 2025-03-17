@@ -23,7 +23,9 @@ module SqlInjection {
   /**
    * A data flow sink for SQL injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "SqlInjection" }
+  }
 
   /**
    * A barrier for SQL injection vulnerabilities.

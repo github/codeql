@@ -1,5 +1,5 @@
 function sayHello() {
-  with (foo) {
+  with (foo) { // $ Alert
     var x = 3;
     return x;
   }

@@ -1318,7 +1318,7 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof InitialGlobalValue
   or
-  n instanceof SsaPhiInputNode
+  n instanceof SsaSynthNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1632,9 +1632,7 @@ private Instruction getAnInstruction(Node n) {
   not n instanceof InstructionNode and
   result = n.asOperand().getUse()
   or
-  result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
-  or
-  result = n.(SsaPhiInputNode).getBasicBlock().getFirstInstruction()
+  result = n.(SsaSynthNode).getBasicBlock().getFirstInstruction()
   or
   n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
   or
@@ -1766,14 +1764,14 @@ module IteratorFlow {
      * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
      * traverses back through iterator increment and decrement operations.
      */
-    private Ssa::DefinitionExt getAnUltimateDefinition(Ssa::DefinitionExt def) {
+    private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
       result = def.getAnUltimateDefinition()
       or
       exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesReadExt(sv, result, bb, i)
+        Ssa::ssaDefReachesRead(sv, result, bb, i)
       )
     }
 
@@ -1801,13 +1799,13 @@ module IteratorFlow {
       GetsIteratorCall beginCall, Instruction writeToDeref
     ) {
       exists(
-        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::DefinitionExt def,
-        IteratorPointerDereferenceCall starCall, Ssa::DefinitionExt ultimate, Operand address
+        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Definition def,
+        IteratorPointerDereferenceCall starCall, Ssa::Definition ultimate, Operand address
       |
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesReadExt(_, def, bbStar, iStar) and
+        Ssa::ssaDefReachesRead(_, def, bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
@@ -1836,45 +1834,15 @@ module IteratorFlow {
 
   private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
 
-  cached
-  private newtype TSsaDef =
-    TDef(IteratorSsa::DefinitionExt def) or
-    TPhi(PhiNode phi)
-
-  abstract private class SsaDef extends TSsaDef {
-    /** Gets a textual representation of this element. */
-    string toString() { none() }
-
-    /** Gets the underlying non-phi definition or use. */
-    IteratorSsa::DefinitionExt asDef() { none() }
-
-    /** Gets the underlying phi node. */
-    PhiNode asPhi() { none() }
-
-    /** Gets the location of this element. */
-    abstract Location getLocation();
-  }
-
-  private class Def extends TDef, SsaDef {
-    IteratorSsa::DefinitionExt def;
-
-    Def() { this = TDef(def) }
-
-    final override IteratorSsa::DefinitionExt asDef() { result = def }
-
+  private class Def extends IteratorSsa::DefinitionExt {
     final override Location getLocation() { result = this.getImpl().getLocation() }
-
-    /** Gets the variable written to by this definition. */
-    final SourceVariable getSourceVariable() { result = def.getSourceVariable() }
-
-    override string toString() { result = def.toString() }
 
     /**
      * Holds if this definition (or use) has index `index` in block `block`,
      * and is a definition (or use) of the variable `sv`.
      */
     predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-      def.definesAt(sv, block, index, _)
+      super.definesAt(sv, block, index, _)
     }
 
     private Ssa::DefImpl getImpl() {
@@ -1889,20 +1857,6 @@ module IteratorFlow {
 
     /** Gets the indirection index of this definition. */
     int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
-  }
-
-  private class Phi extends TPhi, SsaDef {
-    PhiNode phi;
-
-    Phi() { this = TPhi(phi) }
-
-    final override PhiNode asPhi() { result = phi }
-
-    final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
-
-    override string toString() { result = phi.toString() }
-
-    SsaIteratorNode getNode() { result.getIteratorFlowNode() = phi }
   }
 
   private class PhiNode extends IteratorSsa::DefinitionExt {

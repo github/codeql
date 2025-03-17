@@ -1650,6 +1650,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /** Gets the basic block to which this node belongs. */
       abstract BasicBlock getBasicBlock();
 
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Gets the basic block index of this node.
+       */
+      abstract int getIndex();
+
       /** Gets the underlying source variable that this node tracks flow for. */
       abstract SourceVariable getSourceVariable();
     }
@@ -1668,6 +1675,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       deprecated override DefinitionExt getDefinitionExt() { result = def }
 
       override BasicBlock getBasicBlock() { result = def.getBasicBlock() }
+
+      override int getIndex() { def.definesAt(_, _, result, _) }
 
       override SourceVariable getSourceVariable() { result = def.getSourceVariable() }
 
@@ -1750,6 +1759,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       deprecated override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
+
+      override int getIndex() { result = input_.length() }
 
       override SourceVariable getSourceVariable() { result = def_.getSourceVariable() }
 
@@ -1886,6 +1897,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       signature predicate guardChecksSig(
         DfInput::Guard g, DfInput::Expr e, boolean branch, State state
       );
+
+      /**
+       * Holds if the guard `g` validates the SSA definition `def` upon
+       * evaluating to `branch`, blocking flow in the given `state`.
+       */
+      signature predicate guardChecksDefSig(
+        DfInput::Guard g, Definition def, boolean branch, State state
+      );
     }
 
     /**
@@ -1922,6 +1941,20 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         guardChecks(g, DfInput::getARead(def), branch, state)
       }
 
+      private module Barrier = BarrierGuardDefWithState<State, guardChecksSsaDef/4>;
+
+      predicate getABarrierNode = Barrier::getABarrierNode/1;
+    }
+
+    /**
+     * Provides a set of barrier nodes for a guard that validates an expression.
+     *
+     * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+     * in data flow and taint tracking.
+     */
+    module BarrierGuardDefWithState<
+      StateSig State, WithState<State>::guardChecksDefSig/4 guardChecksSsaDef>
+    {
       /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
       Node getABarrierNode(State state) {
