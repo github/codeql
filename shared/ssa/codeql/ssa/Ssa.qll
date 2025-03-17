@@ -1562,6 +1562,58 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
+    /**
+     * Holds if a next adjacent use of `phi` is as input to `phi2` through
+     * `input`. The boolean `relevant` indicates whether the input edge might
+     * be relevant for barrier guards.
+     */
+    private predicate phiStepsToPhiInput(
+      SsaPhiExt phi, SsaPhiExt phi2, BasicBlock input, boolean relevant
+    ) {
+      exists(BasicBlock bb1, int i, SourceVariable v, BasicBlock bb2 |
+        phi.definesAt(v, bb1, i, _) and
+        AdjacentSsaRefs::adjacentRefPhi(bb1, i, input, bb2, v) and
+        phi2.definesAt(v, bb2, _, _) and
+        if relevantPhiInputNode(phi2, input) then relevant = true else relevant = false
+      )
+    }
+
+    /**
+     * Holds if a next adjacent use of `phi` occurs at index `i` in basic block
+     * `bb`. The boolean `isUse` indicates whether the use is a read or an
+     * uncertain write.
+     */
+    private predicate phiStepsToRef(SsaPhiExt phi, BasicBlock bb, int i, boolean isUse) {
+      exists(SourceVariable v, BasicBlock bb1, int i1 |
+        phi.definesAt(v, bb1, i1, _) and
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb, i, v)
+      |
+        isUse = true and
+        variableRead(bb, i, v, true)
+        or
+        isUse = false and
+        exists(UncertainWriteDefinition def2 |
+          DfInput::allowFlowIntoUncertainDef(def2) and
+          def2.definesAt(v, bb, i)
+        )
+      )
+    }
+
+    /**
+     * Holds if the next adjacent use of `phi` is unique. In this case, we can
+     * skip the phi in the use-use step relation without increasing the number
+     * flow edges.
+     */
+    private predicate phiHasUniqNextNode(SsaPhiExt phi) {
+      exists(int nextPhiInput, int nextPhi, int nextRef |
+        1 = nextPhiInput + nextPhi + nextRef and
+        nextPhiInput =
+          count(SsaPhiExt phi2, BasicBlock input | phiStepsToPhiInput(phi, phi2, input, true)) and
+        nextPhi = count(SsaPhiExt phi2 | phiStepsToPhiInput(phi, phi2, _, false)) and
+        nextRef = count(BasicBlock bb, int i, boolean isUse | phiStepsToRef(phi, bb, i, isUse))
+      )
+    }
+
     private newtype TNode =
       TParamNode(DfInput::Parameter p) {
         exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
@@ -1574,7 +1626,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           isPost = false
         )
       } or
-      TSsaDefinitionNode(DefinitionExt def) or
+      TSsaDefinitionNode(DefinitionExt def) { not phiHasUniqNextNode(def) } or
       TSsaInputNode(SsaPhiExt phi, BasicBlock input) { relevantPhiInputNode(phi, input) }
 
     /**
@@ -1853,10 +1905,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         AdjacentSsaRefs::adjacentRefPhi(bb1, i1, input, bbPhi, v) and
         phi.definesAt(v, bbPhi, -1, _)
       |
-        nodeTo = TSsaInputNode(phi, input)
-        or
-        not relevantPhiInputNode(phi, input) and
-        nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
+        if relevantPhiInputNode(phi, input)
+        then nodeTo = TSsaInputNode(phi, input)
+        else
+          if phiHasUniqNextNode(phi)
+          then flowFromRefToNode(v, bbPhi, -1, nodeTo)
+          else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
       )
     }
 
@@ -1892,11 +1946,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
       or
       // Flow from input node to def
-      exists(DefinitionExt def |
-        nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-        def = nodeFrom.(SsaInputNodeImpl).getPhi() and
-        v = def.getSourceVariable() and
-        isUseStep = false
+      exists(DefinitionExt phi, BasicBlock bbPhi |
+        phi = nodeFrom.(SsaInputNodeImpl).getPhi() and
+        phi.definesAt(v, bbPhi, _, _) and
+        isUseStep = false and
+        if phiHasUniqNextNode(phi)
+        then flowFromRefToNode(v, bbPhi, -1, nodeTo)
+        else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
       )
     }
 
