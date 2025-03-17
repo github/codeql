@@ -1,3 +1,7 @@
+## 0.5.2
+
+No user-facing changes.
+
 ## 0.5.1
 
 ### Bug Fixes
