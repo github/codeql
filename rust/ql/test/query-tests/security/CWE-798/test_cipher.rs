@@ -139,5 +139,5 @@ fn test_aes_gcm(
     _ = getrandom::fill(&mut key4).unwrap();
     _ = getrandom2::getrandom(&mut nonce4).unwrap();
     let cipher4 = Aes256Gcm::new(&key4.into());
-    let _ = cipher2.encrypt(&nonce4.into(), b"plaintext".as_ref()).unwrap();
+    let _ = cipher4.encrypt(&nonce4.into(), b"plaintext".as_ref()).unwrap();
 }
