@@ -578,14 +578,9 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     Declaration getTarget() {
-      result =
-        [
-          CallExprImpl::getResolvedFunction(this).(AstNode),
-          this.(CallExpr).getStruct(),
-          this.(CallExpr).getVariant(),
-          // mutual recursion; resolving method calls requires resolving types and vice versa
-          resolveMethodCallExpr(this)
-        ]
+      result = CallExprImpl::getResolvedFunction(this)
+      or
+      result = resolveMethodCallExpr(this) // mutual recursion; resolving method calls requires resolving types and vice versa
     }
   }
 
@@ -908,7 +903,7 @@ private module Cached {
   }
 
   /**
-   * Gets a method that the method call `mce` infers to, if any.
+   * Gets a method that the method call `mce` resolves to, if any.
    */
   cached
   Function resolveMethodCallExpr(MethodCallExpr mce) {
@@ -922,7 +917,7 @@ private module Cached {
   }
 
   /**
-   * Gets the record field that the field expression `fe` infers to, if any.
+   * Gets the record field that the field expression `fe` resolves to, if any.
    */
   cached
   RecordField resolveRecordFieldExpr(FieldExpr fe) {
@@ -938,7 +933,7 @@ private module Cached {
   }
 
   /**
-   * Gets the tuple field that the field expression `fe` infers to, if any.
+   * Gets the tuple field that the field expression `fe` resolves to, if any.
    */
   cached
   TupleField resolveTupleFieldExpr(FieldExpr fe) {
