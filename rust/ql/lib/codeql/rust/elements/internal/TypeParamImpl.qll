@@ -26,6 +26,6 @@ module Impl {
 
     override string toAbbreviatedString() { result = this.getName().getText() }
 
-    override string toString() { result = this.getName().getText() }
+    override string toStringImpl() { result = this.getName().getText() }
   }
 }

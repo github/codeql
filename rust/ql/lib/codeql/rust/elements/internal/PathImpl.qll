@@ -20,12 +20,19 @@ module Impl {
    * ```
    */
   class Path extends Generated::Path {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() {
-      if this.hasQualifier()
-      then result = "...::" + this.getPart().toAbbreviatedString()
-      else result = this.getPart().toAbbreviatedString()
+      result = strictconcat(int i | | this.toAbbreviatedStringPart(i) order by i)
+    }
+
+    private string toAbbreviatedStringPart(int index) {
+      index = 0 and
+      this.hasQualifier() and
+      result = "...::"
+      or
+      index = 1 and
+      result = this.getPart().toAbbreviatedString()
     }
 
     /**

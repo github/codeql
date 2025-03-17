@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.ExtractorStep
  */
 module Impl {
   class ExtractorStep extends Generated::ExtractorStep {
-    override string toString() {
+    override string toStringImpl() {
       result = this.getAction() + "(" + this.getFile().getAbsolutePath() + ")"
       or
       not this.hasFile() and result = this.getAction()
