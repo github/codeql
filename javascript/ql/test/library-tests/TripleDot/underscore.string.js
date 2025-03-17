@@ -80,3 +80,21 @@ function multiSource() {
   sink(s.quote(source("s21"), "quote")); // $ hasTaintFlow=s21
   sink(s.quote("base", source("s22"))); // $ hasTaintFlow=s22
 }
+
+function chaining() {
+  sink(s(source("s1"))
+      .slugify().capitalize().decapitalize().clean().cleanDiacritics()    
+      .swapCase().escapeHTML().unescapeHTML().wrap().dedent()
+      .reverse().pred().succ().titleize().camelize().classify()
+      .underscored().dasherize().humanize().trim().ltrim().rtrim()
+      .truncate().sprintf().strRight().strRightBack()
+      .strLeft().strLeftBack().stripTags().unquote().value()); // $ MISSING: hasTaintFlow=s1
+
+  sink(s(source("s2"))
+      .insert(4, source("s3")).replaceAll("a", source("s4"))
+      .join(",", source("s5")).splice(1, 2, source("s6"))
+      .prune(1, source("s7")).pad(10, source("s8"), "right")
+      .lpad(10, source("s9")).rpad(10, source("s10"))
+      .repeat(3, source("s11")).surround(source("s12"))
+      .quote(source("s13")).value()); // $ MISSING: hasTaintFlow=s2 MISSING: hasTaintFlow=s3 MISSING: hasTaintFlow=s4 MISSING: hasTaintFlow=s5 MISSING: hasTaintFlow=s6 MISSING: hasTaintFlow=s7 MISSING: hasTaintFlow=s8 MISSING: hasTaintFlow=s9 MISSING: hasTaintFlow=s10 MISSING: hasTaintFlow=s11 MISSING: hasTaintFlow=s12 MISSING: hasTaintFlow=s13
+}
