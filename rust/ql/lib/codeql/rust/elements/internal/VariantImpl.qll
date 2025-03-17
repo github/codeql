@@ -20,7 +20,7 @@ module Impl {
    * ```
    */
   class Variant extends Generated::Variant {
-    override string toString() { result = this.getName().getText() }
+    override string toStringImpl() { result = this.getName().getText() }
 
     /** Gets the record field named `name`, if any. */
     pragma[nomagic]

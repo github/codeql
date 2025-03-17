@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class GenericArgList extends Generated::GenericArgList {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = "<...>" }
 

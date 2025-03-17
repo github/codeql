@@ -7,6 +7,7 @@ private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.FlowSummary
+private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl

@@ -16,7 +16,7 @@ module Impl {
    * A path segment, which is one part of a whole path.
    */
   class PathSegment extends Generated::PathSegment {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() {
       result = strictconcat(int i | | this.toAbbreviatedStringPart(i), "::" order by i)

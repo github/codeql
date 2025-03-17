@@ -6,7 +6,8 @@
 private import rust
 private import codeql.dataflow.DataFlow
 private import internal.DataFlowImpl as DataFlowImpl
-private import DataFlowImpl::Node as Node
+private import internal.Node as Node
+private import internal.Content as Content
 
 /**
  * Provides classes for performing local (intra-procedural) and global
@@ -23,9 +24,23 @@ module DataFlow {
 
   final class PostUpdateNode = Node::PostUpdateNodePublic;
 
-  final class Content = DataFlowImpl::Content;
+  final class Content = Content::Content;
 
-  final class ContentSet = DataFlowImpl::ContentSet;
+  final class FieldContent = Content::FieldContent;
+
+  final class TuplePositionContent = Content::TuplePositionContent;
+
+  final class TupleFieldContent = Content::TupleFieldContent;
+
+  final class RecordFieldContent = Content::RecordFieldContent;
+
+  final class ReferenceContent = Content::ReferenceContent;
+
+  final class ElementContent = Content::ElementContent;
+
+  final class FutureContent = Content::FutureContent;
+
+  final class ContentSet = Content::ContentSet;
 
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local

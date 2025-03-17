@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class GenericParamList extends Generated::GenericParamList {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = "<...>" }
 
