@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 USER root
+# Install needed packages according to https://codeql.github.com/docs/codeql-overview/system-requirements/
+# most come from the base image, but we need to install some additional ones
 RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y sudo man-db python3.12 npm unminimize
 RUN yes | unminimize
