@@ -47,36 +47,36 @@ function arrayToStr() {
 }
 
 function multiSource() {
-  sink(s.insert("str", 4, source("s1"))); // $ MISSING: hasTaintFlow=s1
-  sink(s.insert(source("s2"), 4, "")); // $ MISSING: hasTaintFlow=s2
+  sink(s.insert("str", 4, source("s1"))); // $ hasTaintFlow=s1
+  sink(s.insert(source("s2"), 4, "")); // $ hasTaintFlow=s2
 
-  sink(s.replaceAll("astr", "a", source("s3"))); // $ MISSING: hasTaintFlow=s3
-  sink(s.replaceAll(source("s4"), "a", "")); // $ MISSING: hasTaintFlow=s4
+  sink(s.replaceAll("astr", "a", source("s3"))); // $ hasTaintFlow=s3
+  sink(s.replaceAll(source("s4"), "a", "")); // $ hasTaintFlow=s4
 
-  sink(s.join(",", source("s5"), "str")); // $ MISSING: hasTaintFlow=s5
-  sink(s.join(",", "str", source("s6"))); // $ MISSING: hasTaintFlow=s6
+  sink(s.join(",", source("s5"), "str")); // $ hasTaintFlow=s5
+  sink(s.join(",", "str", source("s6"))); // $ hasTaintFlow=s6
 
-  sink(s.splice(source("s7"), 1, 2, "str")); // $ MISSING: hasTaintFlow=s7 SPURIOUS: hasTaintFlow=s8
-  sink(s.splice("str", 1, 2, source("s8"))); // $ SPURIOUS: hasTaintFlow=s8
+  sink(s.splice(source("s7"), 1, 2, "str")); // $ hasTaintFlow=s7 SPURIOUS: hasTaintFlow=s8
+  sink(s.splice("str", 1, 2, source("s8"))); // $ hasTaintFlow=s8
 
-  sink(s.prune(source("s9"), 1, "additional")); // $ MISSING: hasTaintFlow=s9
-  sink(s.prune("base", 1, source("s10"))); // $ MISSING: hasTaintFlow=s10
+  sink(s.prune(source("s9"), 1, "additional")); // $ hasTaintFlow=s9
+  sink(s.prune("base", 1, source("s10"))); // $ hasTaintFlow=s10
 
-  sink(s.pad(source("s11"), 10, "charsToPad", "right")); // $ MISSING: hasTaintFlow=s11
-  sink(s.pad("base", 10, source("s12"), "right")); // $ MISSING: hasTaintFlow=s12
+  sink(s.pad(source("s11"), 10, "charsToPad", "right")); // $ hasTaintFlow=s11
+  sink(s.pad("base", 10, source("s12"), "right")); // $ hasTaintFlow=s12
 
-  sink(s.lpad(source("s13"), 10, "charsToPad")); // $ MISSING: hasTaintFlow=s13
-  sink(s.lpad("base", 10, source("s14"))); // $ MISSING: hasTaintFlow=s14
+  sink(s.lpad(source("s13"), 10, "charsToPad")); // $ hasTaintFlow=s13
+  sink(s.lpad("base", 10, source("s14"))); // $ hasTaintFlow=s14
 
-  sink(s.rpad(source("s15"), 10, "charsToPad")); // $ MISSING: hasTaintFlow=s15
-  sink(s.rpad("base", 10, source("s16"))); // $ MISSING: hasTaintFlow=s16
+  sink(s.rpad(source("s15"), 10, "charsToPad")); // $ hasTaintFlow=s15
+  sink(s.rpad("base", 10, source("s16"))); // $ hasTaintFlow=s16
 
-  sink(s.repeat(source("s17"), 3, "seperator")); // $ MISSING: hasTaintFlow=s17
-  sink(s.repeat("base", 3, source("s18"))); // $ MISSING: hasTaintFlow=s18
+  sink(s.repeat(source("s17"), 3, "seperator")); // $ hasTaintFlow=s17
+  sink(s.repeat("base", 3, source("s18"))); // $ hasTaintFlow=s18
 
-  sink(s.surround(source("s19"), "wrap")); // $ MISSING: hasTaintFlow=s19
-  sink(s.surround("base", source("s20"))); // $ MISSING: hasTaintFlow=s20
+  sink(s.surround(source("s19"), "wrap")); // $ hasTaintFlow=s19
+  sink(s.surround("base", source("s20"))); // $ hasTaintFlow=s20
 
-  sink(s.quote(source("s21"), "quote")); // $ MISSING: hasTaintFlow=s21
-  sink(s.quote("base", source("s22"))); // $ MISSING: hasTaintFlow=s22
+  sink(s.quote(source("s21"), "quote")); // $ hasTaintFlow=s21
+  sink(s.quote("base", source("s22"))); // $ hasTaintFlow=s22
 }
