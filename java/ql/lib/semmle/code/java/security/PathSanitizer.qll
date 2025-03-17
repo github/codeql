@@ -497,9 +497,9 @@ private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr,
     target.getStringValue() = targetValue and
     checkedExpr = matchesCall.getQualifier()
   |
-    targetValue.matches(["[%]*", "[%]+", "[%]{%}"]) and
     (
       // Allow anything except `.`, '/', '\'
+      targetValue.matches(["[%]*", "[%]+", "[%]{%}"]) and
       (
         // Note: we do not account for when '.', '/', '\' are inside a character range
         not targetValue.matches("[%" + [".", "/", "\\\\\\\\"] + "%]%") and
@@ -512,9 +512,10 @@ private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr,
       branch = true
       or
       // Disallow `.`, '/', '\'
-      targetValue.matches("[%.%]%") and
-      targetValue.matches("[%/%]%") and
-      targetValue.matches("[%\\\\\\\\%]%") and
+      targetValue.matches([".*[%].*", ".+[%].+"]) and
+      targetValue.matches("%[%.%]%") and
+      targetValue.matches("%[%/%]%") and
+      targetValue.matches("%[%\\\\\\\\%]%") and
       not targetValue.matches("%[^%]%") and
       branch = false
     )

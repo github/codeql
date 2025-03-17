@@ -684,16 +684,33 @@ public class Test {
         // branch = false
         {
             String source = (String) source();
+            if (source.matches(".*[\\./\\\\].*")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // Safe
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches(".+[\\./\\\\].+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // Safe
+            }
+        }
+        {
+            String source = (String) source();
+            // does not match whole string
             if (source.matches("[\\./\\\\]+")) {
                 sink(source); // $ hasTaintFlow
             } else {
-                sink(source); // $ Safe
+                sink(source); // $ hasTaintFlow
             }
         }
         {
             String source = (String) source();
             // not a complete sanitizer since it doesn't protect against absolute path injection
-            if (source.matches("[\\.]+")) {
+            if (source.matches(".+[\\.].+")) {
                 sink(source); // $ hasTaintFlow
             } else {
                 sink(source); // $ hasTaintFlow
