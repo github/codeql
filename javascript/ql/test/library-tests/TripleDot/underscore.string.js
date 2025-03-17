@@ -117,4 +117,8 @@ function chaining() {
   .strip().lstrip().rstrip().camelcase()
   .q(source("s17")).ljust(10, source("s18"))
   .rjust(10, source("s19"))); // $ hasTaintFlow=s16 hasTaintFlow=s17 hasTaintFlow=s18 hasTaintFlow=s19
+
+  sink(s(source("s20")).tap(function(value) { 
+    return value + source("s21"); 
+  }).value()); // $ MISSING: hasTaintFlow=s20 MISSING: hasTaintFlow=s21
 }
