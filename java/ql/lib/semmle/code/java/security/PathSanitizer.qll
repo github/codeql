@@ -428,7 +428,7 @@ private predicate replacesDirectoryCharactersWithSingleReplaceAll(
     targetValue.matches("[%\\\\\\\\%]")
     or
     targetValue.matches("%|%") and
-    targetValue.matches("%" + ["\\.\\.", "[.][.]", "\\."] + "%") and
+    targetValue.matches("%" + ["[.]", "\\."] + "%") and
     targetValue.matches("%/%") and
     targetValue.matches("%\\\\\\\\%")
   )
