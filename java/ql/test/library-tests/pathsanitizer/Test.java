@@ -716,13 +716,19 @@ public class Test {
         }
         {
             String source = (String) source();
-            source = source.replaceAll("\\.|[/\\\\]", "");
+            source = source.replaceAll("\\.|[/\\\\]", "-");
             sink(source); // Safe
         }
         {
             String source = (String) source();
-            source = source.replaceAll("[.][.]|[/\\\\]", "");
+            source = source.replaceAll("[.][.]|[/\\\\]", "_");
             sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character
+            source = source.replaceAll("[.][.]|[/\\\\]", "/");
+            sink(source); // $ hasTaintFlow
         }
         {
             String source = (String) source();
@@ -760,6 +766,24 @@ public class Test {
             String source = (String) source();
             source = source.replaceAll("\\.", "").replaceAll("/", "");
             sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character in each call
+            source = source.replaceAll("\\.", "/").replaceAll("/", ".");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character in first call
+            source = source.replaceAll("\\.", "/").replaceAll("/", "-");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character in second call
+            source = source.replaceAll("\\.", "_").replaceAll("/", ".");
+            sink(source); // $ hasTaintFlow
         }
         {
             String source = (String) source();

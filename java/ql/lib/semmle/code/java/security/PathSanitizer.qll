@@ -419,7 +419,8 @@ private predicate replacesDirectoryCharactersWithSingleReplaceAll(
 ) {
   exists(CompileTimeConstantExpr target, string targetValue |
     isReplaceAllTarget(replaceAllCall, target) and
-    target.getStringValue() = targetValue
+    target.getStringValue() = targetValue and
+    replaceAllCall.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar()
   |
     not targetValue.matches("%[^%]%") and
     targetValue.matches("[%.%]") and
@@ -460,6 +461,7 @@ private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(
     rc2.getQualifier() = rc1 and
     target1.getStringValue() = targetValue1 and
     target2.getStringValue() = targetValue2 and
+    rc1.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
     rc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
     // make sure the calls replace different characters
     targetValue2 != targetValue1 and
