@@ -9,3 +9,11 @@ pub mod nested3 {
         } // I13
     } // I11
 } // I10
+
+pub mod nested5 {
+    pub mod nested6 {
+        pub fn f() {
+            println!("nested2.rs::nested5::nested6::f");
+        } // I116
+    } // I115
+} // I114
