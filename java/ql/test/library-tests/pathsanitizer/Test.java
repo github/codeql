@@ -731,6 +731,11 @@ public class Test {
         }
         {
             String source = (String) source();
+            source = source.replaceAll("\\.|/|\\\\", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
             source = source.replaceAll("[\\./\\\\]", "");
             sink(source); // Safe
         }
