@@ -7,6 +7,7 @@ extensions:
       - ["'underscore.string'.Wrapper", "'underscore.string'.Wrapper", "Member[slugify,capitalize,decapitalize,clean,cleanDiacritics,swapCase,escapeHTML,unescapeHTML,wrap,dedent,reverse,pred,succ,titleize,camelize,classify,underscored,dasherize,humanize,trim,ltrim,rtrim,truncate,sprintf,strRight,strRightBack,strLeft,strLeftBack,stripTags,unquote,value,strip,lstrip,rstrip,camelcase].ReturnValue"]
       - ["'underscore.string'.Wrapper", "'underscore.string'.Wrapper", "Member[insert,replaceAll,join,splice,prune,pad,lpad,rpad,repeat,surround,quote,q,rjust,ljust].ReturnValue"]
       - ["'underscore.string'.Wrapper", "'underscore.string'.Wrapper", "Member[toUpperCase,toLowerCase,replace,slice,substring,substr,concat].ReturnValue"]
+      - ["'underscore.string'.Wrapper", "'underscore.string'.Wrapper", "Member[tap].ReturnValue"]
 
   - addsTo:
       pack: codeql/javascript-all
@@ -27,3 +28,5 @@ extensions:
       - ["'underscore.string'.Wrapper", "Member[splice]", "Argument[2]", "ReturnValue", "taint"]
       - ["'underscore.string'.Wrapper", "Member[join,concat]", "Argument[0..N-1]", "ReturnValue", "taint"]
       - ["'underscore.string'.Wrapper", "Member[toUpperCase,toLowerCase,replace,slice,substring,substr,split]", "Argument[this]", "ReturnValue", "taint"]
+      - ["'underscore.string'.Wrapper", "Member[tap]", "Argument[this]", "ReturnValue", "taint"]
+      - ["'underscore.string'.Wrapper", "Member[tap]", "Argument[0].ReturnValue", "ReturnValue", "taint"]

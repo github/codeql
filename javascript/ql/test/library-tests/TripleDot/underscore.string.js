@@ -120,5 +120,5 @@ function chaining() {
 
   sink(s(source("s20")).tap(function(value) { 
     return value + source("s21"); 
-  }).value()); // $ MISSING: hasTaintFlow=s20 MISSING: hasTaintFlow=s21
+  }).value()); // $ hasTaintFlow=s20 hasTaintFlow=s21
 }
