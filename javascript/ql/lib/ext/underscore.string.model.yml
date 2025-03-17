@@ -4,3 +4,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["'underscore.string'", "Member[slugify,capitalize,decapitalize,clean,cleanDiacritics,swapCase,escapeHTML,unescapeHTML,wrap,dedent,reverse,pred,succ,titleize,camelize,classify,underscored,dasherize,humanize,trim,ltrim,rtrim,truncate,sprintf,strRight,strRightBack,strLeft,strLeftBack,stripTags,unquote,map]", "Argument[0]", "ReturnValue", "taint"]
+      - ["'underscore.string'", "Member[chop,chars,words,lines]", "Argument[0]", "ReturnValue", "taint"]
