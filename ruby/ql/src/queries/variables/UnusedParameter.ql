@@ -7,6 +7,7 @@
  * @id rb/unused-parameter
  * @tags maintainability
  *       external/cwe/cwe-563
+ *       quality
  * @precision low
  */
 
