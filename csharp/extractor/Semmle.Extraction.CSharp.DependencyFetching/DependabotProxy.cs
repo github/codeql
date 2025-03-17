@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     // The value of the environment variable should be a JSON array of objects, such as:
                     // [ { "type": "nuget_feed", "url": "https://nuget.pkg.github.com/org/index.json" } ]
                     var array = JsonConvert.DeserializeObject<List<RegistryConfig>>(registryURLs);
-                    if (array != null)
+                    if (array is not null)
                     {
                         foreach (RegistryConfig config in array)
                         {

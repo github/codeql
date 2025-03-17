@@ -267,7 +267,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // `nuget.config` files instead of the command-line arguments.
             HashSet<string>? sources = null;
 
-            if (this.dependabotProxy != null)
+            if (this.dependabotProxy is not null)
             {
                 // If the Dependabot proxy is configured, then our main goal is to make `dotnet` aware
                 // of the private registry feeds. However, since providing them as command-line arguments
@@ -275,7 +275,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // we have discovered from analysing `nuget.config` files.
                 sources = configuredSources ?? new();
                 sources.Add(PublicNugetOrgFeed);
-                this.dependabotProxy?.RegistryURLs.ForEach(url => sources.Add(url));
+                this.dependabotProxy.RegistryURLs.ForEach(url => sources.Add(url));
             }
 
             var successCount = 0;
