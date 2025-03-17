@@ -42,6 +42,6 @@ function strToArray() {
 }
 
 function arrayToStr() {
-  sink(s.toSentence([source("s1")])); // $ MISSING: hasTaintFlow=s1
-  sink(s.toSentenceSerial([source("s2")])); // $ MISSING: hasTaintFlow=s2
+  sink(s.toSentence([source("s1")])); // $ hasTaintFlow=s1
+  sink(s.toSentenceSerial([source("s2")])); // $ hasTaintFlow=s2
 }
