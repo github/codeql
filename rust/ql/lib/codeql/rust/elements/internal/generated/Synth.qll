@@ -778,7 +778,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocatable = TAstNode or TFormat or TFormatArgument;
+  class TLocatable = TAstNode or TCrate or TFormat or TFormatArgument;
 
   /**
    * INTERNAL: Do not use.
@@ -2060,8 +2060,6 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   TElement convertElementFromRaw(Raw::Element e) {
-    result = convertCrateFromRaw(e)
-    or
     result = convertExtractorStepFromRaw(e)
     or
     result = convertLocatableFromRaw(e)
@@ -2247,6 +2245,8 @@ module Synth {
    */
   TLocatable convertLocatableFromRaw(Raw::Element e) {
     result = convertAstNodeFromRaw(e)
+    or
+    result = convertCrateFromRaw(e)
     or
     result = convertFormatFromRaw(e)
     or
@@ -3638,8 +3638,6 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   Raw::Element convertElementToRaw(TElement e) {
-    result = convertCrateToRaw(e)
-    or
     result = convertExtractorStepToRaw(e)
     or
     result = convertLocatableToRaw(e)
@@ -3825,6 +3823,8 @@ module Synth {
    */
   Raw::Element convertLocatableToRaw(TLocatable e) {
     result = convertAstNodeToRaw(e)
+    or
+    result = convertCrateToRaw(e)
     or
     result = convertFormatToRaw(e)
     or
