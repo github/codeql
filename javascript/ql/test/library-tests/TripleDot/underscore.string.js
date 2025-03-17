@@ -98,6 +98,6 @@ function chaining() {
       .repeat(3, source("s11")).surround(source("s12"))
       .quote(source("s13")).value()); // $ hasTaintFlow=s2 hasTaintFlow=s3 hasTaintFlow=s4 hasTaintFlow=s5 hasTaintFlow=s6 hasTaintFlow=s7 hasTaintFlow=s8 hasTaintFlow=s9 hasTaintFlow=s10 hasTaintFlow=s11 hasTaintFlow=s12 hasTaintFlow=s13
 
-  sink(s(source("s14")).toUpperCase().toLowerCase().replace().slice(1).substring(1).substr(1).concat(source("s15")).split()); // $ MISSING: hasTaintFlow=s14 MISSING: hasTaintFlow=s15
+  sink(s(source("s14")).toUpperCase().toLowerCase().replace().slice(1).substring(1).substr(1).concat(source("s15")).split()); // $ hasTaintFlow=s14 hasTaintFlow=s15
 
 }
