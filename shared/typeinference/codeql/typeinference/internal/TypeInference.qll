@@ -68,6 +68,15 @@ signature module InputSig1<LocationSig Location> {
   predicate typeArgumentParameterPositionMatch(
     TypeArgumentPosition tapos, TypeParameterPosition tppos
   );
+
+  /**
+   * Gets the limit on the length of type paths. Set to `none()` if there should
+   * be no limit.
+   *
+   * Having a limit can be useful to avoid inifinite recursion on malformed
+   * programs.
+   */
+  default int getTypePathLimit() { result = 10 }
 }
 
 module Make1<LocationSig Location, InputSig1<Location> Input1> {
@@ -143,6 +152,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Holds if this type path is empty. */
     predicate isEmpty() { this = "" }
 
+    /** Gets the length of this path. */
+    bindingset[this]
+    pragma[inline_late]
+    int length() {
+      this.isEmpty() and result = 0
+      or
+      result = strictcount(this.indexOf(".")) + 1
+    }
+
     /** Gets the path obtained by appending `suffix` onto this path. */
     bindingset[suffix, result]
     bindingset[this, result]
@@ -153,7 +171,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       else
         if suffix.isEmpty()
         then result = this
-        else result = this + "." + suffix
+        else (
+          result = this + "." + suffix and
+          not result.length() > getTypePathLimit()
+        )
     }
 
     /** Holds if this path starts with `tp`, followed by `suffix`. */
