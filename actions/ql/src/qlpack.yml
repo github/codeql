@@ -1,5 +1,5 @@
 name: codeql/actions-queries
-version: 0.5.2
+version: 0.5.3-dev
 library: false
 warnOnImplicitThis: true
 groups: [actions, queries]
