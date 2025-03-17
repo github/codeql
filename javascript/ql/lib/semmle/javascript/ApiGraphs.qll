@@ -257,9 +257,9 @@ module API {
     /**
      * Gets a representative for the `contents` of this value.
      */
-    bindingset[this, contents]
+    bindingset[contents]
     pragma[inline_late]
-    Node getContents(DataFlow::ContentSet contents) {
+    private Node getContents(DataFlow::ContentSet contents) {
       // We always use getAStoreContent when generating content edges, and we always use getAReadContent when querying the graph.
       result = this.getContent(contents.getAReadContent())
     }
