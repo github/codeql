@@ -88,7 +88,7 @@ function chaining() {
       .reverse().pred().succ().titleize().camelize().classify()
       .underscored().dasherize().humanize().trim().ltrim().rtrim()
       .truncate().sprintf().strRight().strRightBack()
-      .strLeft().strLeftBack().stripTags().unquote().value()); // $ MISSING: hasTaintFlow=s1
+      .strLeft().strLeftBack().stripTags().unquote().value()); // $ hasTaintFlow=s1
 
   sink(s(source("s2"))
       .insert(4, source("s3")).replaceAll("a", source("s4"))
@@ -96,5 +96,5 @@ function chaining() {
       .prune(1, source("s7")).pad(10, source("s8"), "right")
       .lpad(10, source("s9")).rpad(10, source("s10"))
       .repeat(3, source("s11")).surround(source("s12"))
-      .quote(source("s13")).value()); // $ MISSING: hasTaintFlow=s2 MISSING: hasTaintFlow=s3 MISSING: hasTaintFlow=s4 MISSING: hasTaintFlow=s5 MISSING: hasTaintFlow=s6 MISSING: hasTaintFlow=s7 MISSING: hasTaintFlow=s8 MISSING: hasTaintFlow=s9 MISSING: hasTaintFlow=s10 MISSING: hasTaintFlow=s11 MISSING: hasTaintFlow=s12 MISSING: hasTaintFlow=s13
+      .quote(source("s13")).value()); // $ hasTaintFlow=s2 hasTaintFlow=s3 hasTaintFlow=s4 hasTaintFlow=s5 hasTaintFlow=s6 hasTaintFlow=s7 hasTaintFlow=s8 hasTaintFlow=s9 hasTaintFlow=s10 hasTaintFlow=s11 hasTaintFlow=s12 hasTaintFlow=s13
 }
