@@ -69,7 +69,6 @@ int getTaintEdgesCount() {
 }
 
 /**
-<<<<<<< HEAD
  * Gets a kind of query for which `n` is a sink (if any).
  */
 string getAQuerySinkKind(DataFlow::Node n) {
@@ -81,8 +80,6 @@ string getAQuerySinkKind(DataFlow::Node n) {
 }
 
 /**
-=======
->>>>>>> main
  * Gets a count of the total number of query sinks in the database.
  */
 int getQuerySinksCount() { result = count(QuerySink s) }
