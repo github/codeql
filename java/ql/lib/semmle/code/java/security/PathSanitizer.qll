@@ -470,8 +470,8 @@ private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(
 }
 
 /**
- * A complementary sanitizer that protects against path injection vulnerabilities
- * by replacing directory characters ('..', '/', and '\') with safe characters.
+ * A sanitizer that protects against path injection vulnerabilities by replacing
+ * directory characters ('..', '/', and '\') with safe characters.
  */
 private class ReplaceDirectoryCharactersSanitizer extends StringReplaceOrReplaceAllCall {
   ReplaceDirectoryCharactersSanitizer() {
@@ -520,8 +520,8 @@ private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr,
 }
 
 /**
- * A complementary guard that protects against path traversal by looking
- * for patterns that exclude directory characters: `..`, '/', and '\'.
+ * A guard that protects against path traversal by looking for patterns
+ * that exclude directory characters: `..`, '/', and '\'.
  */
 private class DirectoryCharactersGuard extends PathGuard {
   Expr checkedExpr;
