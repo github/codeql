@@ -15,7 +15,11 @@
 | Macro calls - resolved | 2 |
 | Macro calls - total | 2 |
 | Macro calls - unresolved | 0 |
+<<<<<<< HEAD
+| Taint edges - number of edges | 1674 |
+=======
 | Taint edges - number of edges | 1671 |
+>>>>>>> main
 | Taint reach - nodes tainted | 0 |
 | Taint reach - per million nodes | 0 |
 | Taint sinks - cryptographic operations | 0 |

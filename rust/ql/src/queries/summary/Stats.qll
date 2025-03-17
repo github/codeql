@@ -4,7 +4,6 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
@@ -13,6 +12,7 @@ private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowCons
 private import codeql.rust.Concepts
 // import all query extensions files, so that all extensions of `QuerySink` are found
 private import codeql.rust.security.CleartextLoggingExtensions
+private import codeql.rust.security.HardcodedCryptographicValueExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 private import codeql.rust.security.regex.RegexInjectionExtensions
@@ -66,6 +66,17 @@ int getTaintEdgesCount() {
     count(DataFlow::Node a, DataFlow::Node b |
       RustTaintTracking::defaultAdditionalTaintStep(a, b, _)
     )
+}
+
+/**
+ * Gets a kind of query for which `n` is a sink (if any).
+ */
+string getAQuerySinkKind(DataFlow::Node n) {
+  n instanceof SqlInjection::Sink and result = "SqlInjection"
+  or
+  n instanceof CleartextLogging::Sink and result = "CleartextLogging"
+  or
+  n instanceof HardcodedCryptographicValue::Sink and result = "HardcodedCryptographicValue"
 }
 
 /**
