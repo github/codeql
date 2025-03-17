@@ -32,6 +32,10 @@ function strToStr() {
   sink(s.stripTags(source("s29"))); // $ hasTaintFlow=s29
   sink(s.unquote(source("s30"), "quote")); // $ hasTaintFlow=s30
   sink(s.map(source("s31"), (x) => {return x;})); // $ hasTaintFlow=s31
+  sink(s.strip(source("s32"),"charsToStrim")); // $ MISSING: hasTaintFlow=s32
+  sink(s.lstrip(source("s33"),"charsToStrim")); // $ MISSING: hasTaintFlow=s33
+  sink(s.rstrip(source("s34"),"charsToStrim")); // $ MISSING: hasTaintFlow=s34
+  sink(s.camelcase(source("s35"))); // $ MISSING: hasTaintFlow=s35
 }
 
 function strToArray() {
@@ -79,6 +83,15 @@ function multiSource() {
 
   sink(s.quote(source("s21"), "quote")); // $ hasTaintFlow=s21
   sink(s.quote("base", source("s22"))); // $ hasTaintFlow=s22
+
+  sink(s.q(source("s23"), "quote")); // $ MISSING: hasTaintFlow=s23
+  sink(s.q("base", source("s24"))); // $ MISSING: hasTaintFlow=s24
+
+  sink(s.rjust(source("s25"), 10, "charsToPad")); // $ MISSING: hasTaintFlow=s25
+  sink(s.rjust("base", 10, source("s26"))); // $ MISSING: hasTaintFlow=s26
+
+  sink(s.ljust(source("s27"), 10, "charsToPad")); // $ MISSING: hasTaintFlow=s27
+  sink(s.ljust("base", 10, source("s28"))); // $ MISSING: hasTaintFlow=s28
 }
 
 function chaining() {
@@ -100,4 +113,8 @@ function chaining() {
 
   sink(s(source("s14")).toUpperCase().toLowerCase().replace().slice(1).substring(1).substr(1).concat(source("s15")).split()); // $ hasTaintFlow=s14 hasTaintFlow=s15
 
+  sink(s(source("s16"))
+  .strip().lstrip().rstrip().camelcase()
+  .q(source("s17").ljust(10, source("s18"))
+  .rjust(10, source("s19")))); // $ MISSING: hasTaintFlow=s16 MISSING: hasTaintFlow=s17 MISSING: hasTaintFlow=s18 MISSING: hasTaintFlow=s19
 }
