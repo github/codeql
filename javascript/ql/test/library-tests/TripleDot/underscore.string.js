@@ -40,3 +40,8 @@ function strToArray() {
   sink(s.words(source("s3")[0])); // $ hasTaintFlow=s3
   sink(s.lines(source("s7")[0])); // $ hasTaintFlow=s7
 }
+
+function arrayToStr() {
+  sink(s.toSentence([source("s1")])); // $ MISSING: hasTaintFlow=s1
+  sink(s.toSentenceSerial([source("s2")])); // $ MISSING: hasTaintFlow=s2
+}
