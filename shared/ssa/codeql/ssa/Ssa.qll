@@ -1942,7 +1942,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       exists(BasicBlock bb1, int i1 |
         flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
-        flowFromRefToNode(v, bb1, i1, nodeTo)
+        flowFromRefToNode(v, bb1, i1, nodeTo) and
+        nodeFrom != nodeTo
       )
       or
       // Flow from input node to def
@@ -1950,6 +1951,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         phi = nodeFrom.(SsaInputNodeImpl).getPhi() and
         phi.definesAt(v, bbPhi, _, _) and
         isUseStep = false and
+        nodeFrom != nodeTo and
         if phiHasUniqNextNode(phi)
         then flowFromRefToNode(v, bbPhi, -1, nodeTo)
         else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
