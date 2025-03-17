@@ -1,3 +1,7 @@
+## 4.2.1
+
+No user-facing changes.
+
 ## 4.2.0
 
 ### Deprecated APIs
