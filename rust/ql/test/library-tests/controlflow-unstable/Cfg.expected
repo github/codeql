@@ -19,7 +19,6 @@ edges
 | test.rs:6:17:6:31 | let ... = b | test.rs:6:31:6:31 | b |  |
 | test.rs:6:21:6:27 | Some(...) | test.rs:6:12:6:31 | [boolean(false)] ... && ... | no-match |
 | test.rs:6:21:6:27 | Some(...) | test.rs:6:26:6:26 | d | match |
-| test.rs:6:26:6:26 | d | test.rs:6:12:6:31 | [boolean(false)] ... && ... | no-match |
 | test.rs:6:26:6:26 | d | test.rs:6:12:6:31 | [boolean(true)] ... && ... | match |
 | test.rs:6:26:6:26 | d | test.rs:6:26:6:26 | d |  |
 | test.rs:6:31:6:31 | b | test.rs:6:21:6:27 | Some(...) |  |
@@ -47,7 +46,6 @@ edges
 | test.rs:14:12:15:16 | [boolean(false)] ... && ... | test.rs:19:13:19:17 | false | false |
 | test.rs:14:12:15:16 | [boolean(true)] ... && ... | test.rs:17:13:17:13 | d | true |
 | test.rs:14:17:14:25 | let ... = b | test.rs:14:25:14:25 | b |  |
-| test.rs:14:21:14:21 | d | test.rs:14:12:14:25 | [boolean(false)] ... && ... | no-match |
 | test.rs:14:21:14:21 | d | test.rs:14:12:14:25 | [boolean(true)] ... && ... | match |
 | test.rs:14:21:14:21 | d | test.rs:14:21:14:21 | d |  |
 | test.rs:14:25:14:25 | b | test.rs:14:21:14:21 | d |  |

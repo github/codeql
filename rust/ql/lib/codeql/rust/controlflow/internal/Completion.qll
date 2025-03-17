@@ -126,8 +126,11 @@ private predicate cannotCauseMatchFailure(Pat pat) {
   pat instanceof RangePat or
   // Identifier patterns that are in fact path patterns can cause failures. For
   // instance `None`. Only if an `@ ...` part is present can we be sure that
-  // it's an actual identifier pattern.
-  pat = any(IdentPat p | p.hasPat()) or
+  // it's an actual identifier pattern. As a heuristic, if the identifier starts
+  // with a lower case letter, then we assume that it's an identifier.  This
+  // works for code that follows the Rust naming convention for enums and
+  // constants.
+  pat = any(IdentPat p | p.hasPat() or p.getName().getText().charAt(0).isLowercase()) or
   pat instanceof WildcardPat or
   pat instanceof RestPat or
   pat instanceof RefPat or
