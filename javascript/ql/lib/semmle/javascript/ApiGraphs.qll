@@ -11,6 +11,7 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.dataflow.internal.sharedlib.SummaryTypeTracker as SummaryTypeTracker
 private import semmle.javascript.dataflow.internal.Contents::Private as ContentPrivate
+private import semmle.javascript.DynamicPropertyAccess
 private import internal.CachedStages
 
 /**
@@ -1516,7 +1517,12 @@ module API {
      * Currently this is represented the same way as an unknown array element, but this may
      * change in the future.
      */
-    LabelContent unknownMember() { result.getContent().isUnknownArrayElement() }
+    ApiLabel unknownMember() { result = arrayElement() }
+
+    /**
+     * Gets the edge label for an unknown array element.
+     */
+    LabelContent arrayElement() { result.getContent().isUnknownArrayElement() }
 
     /**
      * Gets a property name referred to by the given dynamic property access,
@@ -1539,6 +1545,11 @@ module API {
       result = unique(string s | s = getAnIndirectPropName(ref))
     }
 
+    pragma[nomagic]
+    private predicate isEnumeratedPropName(DataFlow::Node node) {
+      node.getAPredecessor*() instanceof EnumeratedPropName
+    }
+
     /** Gets the `member` edge label for the given property reference. */
     ApiLabel memberFromRef(DataFlow::PropRef pr) {
       exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
@@ -1550,7 +1561,9 @@ module API {
       or
       not exists(pr.getPropertyName()) and
       not exists(getIndirectPropName(pr)) and
-      result = unknownMember()
+      // Avoid assignments in an extend-like pattern
+      not isEnumeratedPropName(pr.getPropertyNameExpr().flow()) and
+      result = arrayElement()
     }
 
     /** Gets the `instance` edge label. */
