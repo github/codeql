@@ -540,8 +540,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          accessDeclarationPositionMatch(apos, dpos) and
           tp = target.getDeclaredType(dpos, pathToTypeParam) and
+          accessDeclarationPositionMatch(apos, dpos) and
           adjustedAccessType(a, apos, target, pathToTypeParam.append(path), t)
         )
       }
