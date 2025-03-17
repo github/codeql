@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+
+USER root
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y sudo man-db python3.12 npm unminimize
+RUN yes | unminimize
