@@ -19,6 +19,7 @@ import codeql.rust.security.HardcodedCryptographicValueExtensions
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.dataflow.internal.DataFlowImpl
+import codeql.rust.dataflow.internal.Content
 
 /**
  * A taint-tracking configuration for hard-coded cryptographic value vulnerabilities.
