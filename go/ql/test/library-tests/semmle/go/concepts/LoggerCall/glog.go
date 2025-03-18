@@ -30,6 +30,13 @@ func glogTest() {
 	glog.Warningf(fmt, text)   // $ logger=fmt logger=text
 	glog.Warningln(text)       // $ logger=text
 
+	// components corresponding to the format specifier "%T" are not considered vulnerable
+	glog.Errorf("%s: found type %T", text, v)   // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	glog.Exitf("%s: found type %T", text, v)    // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	glog.Fatalf("%s: found type %T", text, v)   // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	glog.Infof("%s: found type %T", text, v)    // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	glog.Warningf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+
 	klog.Error(text)           // $ logger=text
 	klog.ErrorDepth(0, text)   // $ logger=text
 	klog.Errorf(fmt, text)     // $ logger=fmt logger=text
@@ -50,4 +57,11 @@ func glogTest() {
 	klog.WarningDepth(0, text) // $ logger=text
 	klog.Warningf(fmt, text)   // $ logger=fmt logger=text
 	klog.Warningln(text)       // $ logger=text
+
+	// components corresponding to the format specifier "%T" are not considered vulnerable
+	klog.Errorf("%s: found type %T", text, v)   // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	klog.Exitf("%s: found type %T", text, v)    // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	klog.Fatalf("%s: found type %T", text, v)   // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	klog.Infof("%s: found type %T", text, v)    // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	klog.Warningf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
 }
