@@ -17,3 +17,11 @@ pub mod nested5 {
         } // I116
     } // I115
 } // I114
+
+pub mod nested7 {
+    pub mod nested8 {
+        pub fn f() {
+            println!("nested2.rs::nested7::nested8::f");
+        } // I119
+    } // I118
+} // I117

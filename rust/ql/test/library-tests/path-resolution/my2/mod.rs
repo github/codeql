@@ -6,3 +6,5 @@ fn g() {
 } // I9
 
 pub use nested2::nested5::*; // $ item=I114
+
+pub use nested2::nested7::nested8::{self}; // $ item=I118
