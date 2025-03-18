@@ -13,17 +13,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Represents configurations for package registries.
         /// </summary>
-        public struct RegistryConfig
-        {
-            /// <summary>
-            /// The type of package registry.
-            /// </summary>
-            public string Type { get; set; }
-            /// <summary>
-            /// The URL of the package registry.
-            /// </summary>
-            public string URL { get; set; }
-        }
+        /// <param name="Type">The type of package registry.</param>
+        /// <param name="URL">The URL of the package registry.</param>
+        public record class RegistryConfig(string Type, string URL);
 
         private readonly string host;
         private readonly string port;
