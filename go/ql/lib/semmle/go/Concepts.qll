@@ -356,10 +356,9 @@ module RegexpReplaceFunction {
  */
 class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
   /**
-   * Gets a node that is a part of the logged message.
-   *
-   * Exclude components corresponding to the format specifier "%T" as this
-   * prints the type of the argument, which is not considered vulnerable.
+   * Gets a node whose value is a part of the logged message. Note that
+   * components corresponding to the format specifier "%T" are excluded as
+   * their type is logged rather than their value.
    */
   DataFlow::Node getAMessageComponent() {
     result = super.getAMessageComponent() and
