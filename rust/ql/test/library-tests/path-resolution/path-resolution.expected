@@ -251,6 +251,8 @@ resolvePath
 | main.rs:496:5:496:10 | ...::f | main.rs:417:5:441:5 | fn f |
 | main.rs:497:5:497:7 | m17 | main.rs:444:1:474:1 | mod m17 |
 | main.rs:497:5:497:10 | ...::f | main.rs:468:5:473:5 | fn f |
+| main.rs:498:5:498:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
+| main.rs:498:5:498:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
 | my2/mod.rs:5:5:5:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:5:5:5:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/mod.rs:5:5:5:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |

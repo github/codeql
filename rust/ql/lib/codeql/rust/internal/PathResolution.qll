@@ -460,7 +460,7 @@ private class UseItemNode extends ItemNode instanceof Use {
 
   override Namespace getNamespace() { none() }
 
-  override Visibility getVisibility() { none() }
+  override Visibility getVisibility() { result = Use.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -586,11 +586,12 @@ private predicate fileImport(Module m, SourceFile f) {
  * Holds if `mod` is a `mod name;` item targeting a file resulting in `item` being
  * in scope under the name `name`.
  */
+pragma[nomagic]
 private predicate fileImportEdge(Module mod, string name, ItemNode item) {
   item.isPublic() and
-  exists(SourceFile f |
+  exists(SourceFileItemNode f |
     fileImport(mod, f) and
-    sourceFileEdge(f, name, item)
+    item = f.getASuccessor(name)
   )
 }
 
