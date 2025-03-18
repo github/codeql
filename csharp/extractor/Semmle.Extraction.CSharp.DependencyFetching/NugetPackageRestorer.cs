@@ -109,7 +109,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (checkNugetFeedResponsiveness && !CheckFeeds(out explicitFeeds))
                 {
                     // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds(explicitFeeds);
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds([], explicitFeeds);
                     return unresponsiveMissingPackageLocation is null
                         ? []
                         : [unresponsiveMissingPackageLocation];
@@ -166,11 +166,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .ToList();
             assemblyLookupLocations.UnionWith(paths.Select(p => new AssemblyLookupLocation(p)));
 
-            LogAllUnusedPackages(dependencies);
+            var usedPackageNames = GetAllUsedPackageDirNames(dependencies);
 
             var missingPackageLocation = checkNugetFeedResponsiveness
-                ? DownloadMissingPackagesFromSpecificFeeds(explicitFeeds)
-                : DownloadMissingPackages();
+                ? DownloadMissingPackagesFromSpecificFeeds(usedPackageNames, explicitFeeds)
+                : DownloadMissingPackages(usedPackageNames);
 
             if (missingPackageLocation is not null)
             {
@@ -313,21 +313,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(HashSet<string>? feedsFromNugetConfigs)
+        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(IEnumerable<string> usedPackageNames, HashSet<string>? feedsFromNugetConfigs)
         {
             var reachableFallbackFeeds = GetReachableFallbackNugetFeeds(feedsFromNugetConfigs);
             if (reachableFallbackFeeds.Count > 0)
             {
-                return DownloadMissingPackages(fallbackNugetFeeds: reachableFallbackFeeds);
+                return DownloadMissingPackages(usedPackageNames, fallbackNugetFeeds: reachableFallbackFeeds);
             }
 
             logger.LogWarning("Skipping download of missing packages from specific feeds as no fallback Nuget feeds are reachable.");
             return null;
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackages(IEnumerable<string>? fallbackNugetFeeds = null)
+        private AssemblyLookupLocation? DownloadMissingPackages(IEnumerable<string> usedPackageNames, IEnumerable<string>? fallbackNugetFeeds = null)
         {
-            var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(PackageDirectory.DirInfo);
+            var alreadyDownloadedPackages = usedPackageNames.Select(p => p.ToLowerInvariant());
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
 
             var notYetDownloadedPackages = new HashSet<PackageReference>(fileContent.AllPackages);
@@ -434,17 +434,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return nugetConfig;
         }
 
-        private void LogAllUnusedPackages(DependencyContainer dependencies)
+        private IEnumerable<string> GetAllUsedPackageDirNames(DependencyContainer dependencies)
         {
             var allPackageDirectories = GetAllPackageDirectories();
 
             logger.LogInfo($"Restored {allPackageDirectories.Count} packages");
             logger.LogInfo($"Found {dependencies.Packages.Count} packages in project.assets.json files");
 
-            allPackageDirectories
-                .Where(package => !dependencies.Packages.Contains(package))
+            var usage = allPackageDirectories.Select(package => (package, isUsed: dependencies.Packages.Contains(package)));
+
+            usage
+                .Where(package => !package.isUsed)
                 .Order()
-                .ForEach(package => logger.LogDebug($"Unused package: {package}"));
+                .ForEach(package => logger.LogDebug($"Unused package: {package.package}"));
+
+            return usage
+                .Where(package => package.isUsed)
+                .Select(package => package.package);
         }
 
         private ICollection<string> GetAllPackageDirectories()
