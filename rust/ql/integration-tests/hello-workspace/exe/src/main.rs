@@ -1,7 +1,7 @@
-use lib::a_module::hello;
+use lib::a_module::hello; // $ MISSING: item=HELLO
 
 mod a_module;
 
 fn main() {
-    hello();
+    hello(); // $ MISSING: item=HELLO
 }
