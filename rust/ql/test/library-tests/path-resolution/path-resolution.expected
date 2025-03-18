@@ -129,7 +129,7 @@ resolvePath
 | main.rs:274:16:274:16 | T | main.rs:268:7:268:7 | T |
 | main.rs:275:14:275:17 | Self | main.rs:266:5:276:5 | trait MyParamTrait |
 | main.rs:275:14:275:33 | ...::AssociatedType | main.rs:270:9:270:28 | TypeAlias |
-| main.rs:284:13:284:17 | crate | main.rs:1:1:499:2 | SourceFile |
+| main.rs:284:13:284:17 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
 | main.rs:284:13:284:22 | ...::m13 | main.rs:279:1:292:1 | mod m13 |
 | main.rs:284:13:284:25 | ...::f | main.rs:280:5:280:17 | fn f |
 | main.rs:284:13:284:25 | ...::f | main.rs:280:19:281:19 | struct f |
@@ -220,7 +220,7 @@ resolvePath
 | main.rs:479:5:479:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
 | main.rs:480:5:480:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
 | main.rs:481:5:481:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:482:5:482:9 | crate | main.rs:1:1:499:2 | SourceFile |
+| main.rs:482:5:482:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
 | main.rs:482:5:482:12 | ...::h | main.rs:50:1:69:1 | fn h |
 | main.rs:483:5:483:6 | m1 | main.rs:13:1:37:1 | mod m1 |
 | main.rs:483:5:483:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
