@@ -26,6 +26,7 @@ func main() {
 	log.Panicf(password, "")   // $ Alert
 	log.Panicln(password)      // $ Alert
 	log.Output(0, password)    // $ Alert
+	log.Printf("%T", password)
 
 	l := log.Default()
 	l.Print(password)        // $ Alert
@@ -41,6 +42,7 @@ func main() {
 	l.Panicf(password, "")   // $ Alert
 	l.Panicln(password)      // $ Alert
 	l.Output(0, password)    // $ Alert
+	l.Printf("%T", password)
 
 	glog.Info(password)      // $ Alert
 	logrus.Warning(password) // $ Alert

@@ -718,3 +718,9 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		sLogger.Warnf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 	}
 }
+
+// GOOD: User-provided values formatted using a %T directive, which prints the type of the argument
+func handlerGood5(req *http.Request) {
+	object := req.URL.Query()["username"][0]
+	log.Printf("found object of type %T.\n", object)
+}
