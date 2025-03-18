@@ -12,43 +12,43 @@ import (
 func main() {
 	password := "P4ssw0rd"
 
-	log.Print(password)
-	log.Printf("", password)
-	log.Printf(password, "")
-	log.Println(password)
-	log.Fatal(password)
-	log.Fatalf("", password)
-	log.Fatalf(password, "")
-	log.Fatalln(password)
-	log.Panic(password)
-	log.Panicf("", password)
-	log.Panicf(password, "")
-	log.Panicln(password)
-	log.Output(0, password)
+	log.Print(password)      // $ Alert
+	log.Printf("", password) // $ Alert
+	log.Printf(password, "") // $ Alert
+	log.Println(password)    // $ Alert
+	log.Fatal(password)      // $ Alert
+	log.Fatalf("", password) // $ Alert
+	log.Fatalf(password, "") // $ Alert
+	log.Fatalln(password)    // $ Alert
+	log.Panic(password)      // $ Alert
+	log.Panicf("", password) // $ Alert
+	log.Panicf(password, "") // $ Alert
+	log.Panicln(password)    // $ Alert
+	log.Output(0, password)  // $ Alert
 
 	l := log.Default()
-	l.Print(password)
-	l.Printf("", password)
-	l.Printf(password, "")
-	l.Println(password)
-	l.Fatal(password)
-	l.Fatalf("", password)
-	l.Fatalf(password, "")
-	l.Fatalln(password)
-	l.Panic(password)
-	l.Panicf("", password)
-	l.Panicf(password, "")
-	l.Panicln(password)
-	l.Output(0, password)
+	l.Print(password)      // $ Alert
+	l.Printf("", password) // $ Alert
+	l.Printf(password, "") // $ Alert
+	l.Println(password)    // $ Alert
+	l.Fatal(password)      // $ Alert
+	l.Fatalf("", password) // $ Alert
+	l.Fatalf(password, "") // $ Alert
+	l.Fatalln(password)    // $ Alert
+	l.Panic(password)      // $ Alert
+	l.Panicf("", password) // $ Alert
+	l.Panicf(password, "") // $ Alert
+	l.Panicln(password)    // $ Alert
+	l.Output(0, password)  // $ Alert
 
-	glog.Info(password)
-	logrus.Warning(password)
+	glog.Info(password)      // $ Alert
+	logrus.Warning(password) // $ Alert
 
 	fields := make(logrus.Fields)
 	fields["pass"] = password
 	entry := logrus.WithFields(fields)
 	entry.Errorf("")
 
-	entry = logrus.WithField("pass", password)
+	entry = logrus.WithField("pass", password) // $ Alert
 	entry.Panic("")
 }
