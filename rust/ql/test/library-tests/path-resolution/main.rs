@@ -496,5 +496,5 @@ fn main() {
     m16::f(); // $ item=I83
     m17::f(); // $ item=I99
     nested6::f(); // $ item=I116
-    nested8::f(); // $ MISSING: item=I119
+    nested8::f(); // $ item=I119
 }

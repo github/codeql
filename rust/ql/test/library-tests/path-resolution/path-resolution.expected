@@ -255,6 +255,8 @@ resolvePath
 | main.rs:497:5:497:10 | ...::f | main.rs:468:5:473:5 | fn f |
 | main.rs:498:5:498:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
 | main.rs:498:5:498:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
+| main.rs:499:5:499:11 | nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| main.rs:499:5:499:14 | ...::f | my2/nested2.rs:23:9:25:9 | fn f |
 | my2/mod.rs:5:5:5:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:5:5:5:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/mod.rs:5:5:5:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
@@ -264,6 +266,7 @@ resolvePath
 | my2/mod.rs:10:9:10:15 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:10:9:10:24 | ...::nested7 | my2/nested2.rs:21:1:27:1 | mod nested7 |
 | my2/mod.rs:10:9:10:33 | ...::nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| my2/mod.rs:10:37:10:40 | self | my2/nested2.rs:22:5:26:5 | mod nested8 |
 | my.rs:3:5:3:10 | nested | my.rs:1:1:1:15 | mod nested |
 | my.rs:3:5:3:13 | ...::g | my/nested.rs:19:1:22:1 | fn g |
 | my.rs:11:5:11:5 | g | my/nested.rs:19:1:22:1 | fn g |

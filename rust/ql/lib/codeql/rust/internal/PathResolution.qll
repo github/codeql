@@ -177,8 +177,7 @@ abstract class ItemNode extends Locatable {
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
     name = "self" and
-    not this instanceof Module and
-    result = this.getImmediateParentModule()
+    if this instanceof Module then result = this else result = this.getImmediateParentModule()
     or
     name = "Self" and
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
