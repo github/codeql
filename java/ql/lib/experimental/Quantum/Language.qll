@@ -25,6 +25,11 @@ module CryptoInput implements InputSig<Language::Location> {
   class LocatableElement = Language::Element;
 
   class UnknownLocation = UnknownDefaultLocation;
+
+  LocatableElement dfn_to_element(DataFlow::Node node) {
+    result = node.asExpr() or
+    result = node.asParameter()
+  }
 }
 
 /**
@@ -101,6 +106,17 @@ class InsecureRandomnessInstance extends RandomnessInstance {
 }
 
 /**
+ * Output artifact flow logic
+ */
+abstract class DigestArtifactInstance extends Crypto::DigestArtifactInstance {
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override predicate isConsumerArtifact() { none() }
+}
+
+/**
  * Artifact output to node input configuration
  */
 abstract class AdditionalFlowInputStep extends DataFlow::Node {
@@ -115,6 +131,8 @@ abstract class CipherOutputArtifact extends Crypto::CipherOutputArtifactInstance
   override predicate flowsTo(Crypto::FlowAwareElement other) {
     ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
   }
+
+  override predicate isConsumerArtifact() { none() }
 }
 
 /**
@@ -144,7 +162,7 @@ module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
 
 module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source = any(Crypto::ArtifactElement artifact).getOutputNode()
+    source = any(Crypto::ArtifactInstance artifact).getOutputNode()
   }
 
   predicate isSink(DataFlow::Node sink) {

@@ -6,7 +6,8 @@ import experimental.Quantum.Language
 
 from
   Crypto::CipherOperationNode op, Crypto::CipherAlgorithmNode a,
-  Crypto::ModeOfOperationAlgorithmNode m, Crypto::PaddingAlgorithmNode p, Crypto::NonceNode nonce
+  Crypto::ModeOfOperationAlgorithmNode m, Crypto::PaddingAlgorithmNode p,
+  Crypto::NonceArtifactNode nonce
 where
   a = op.getAKnownCipherAlgorithm() and
   m = a.getModeOfOperation() and

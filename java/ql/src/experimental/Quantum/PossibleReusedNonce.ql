@@ -1,14 +1,16 @@
 /**
  * @name Possible Nonce Reuse: Produces false positives if reuse occurs in a source that is a re-entry point.
  * @id java/possible-nonce-reuse
+ * @kind problem
  */
 
 import experimental.Quantum.Language
 import semmle.code.java.dataflow.DataFlow
 
 from
-  Crypto::CipherOperationNode op1, Crypto::CipherOperationNode op2, Crypto::NonceNode nonce1,
-  Crypto::NonceNode nonce2, Crypto::FlowAwareElement src1, Crypto::FlowAwareElement src2
+  Crypto::CipherOperationNode op1, Crypto::CipherOperationNode op2,
+  Crypto::NonceArtifactNode nonce1, Crypto::NonceArtifactNode nonce2, Crypto::FlowAwareElement src1,
+  Crypto::FlowAwareElement src2
 where
   // NOTE: not looking at value of the nonce, if we knew value, it would be insecure (hard coded)
   // Instead trying to find nonce sources that trace to multiple operations.

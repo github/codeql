@@ -4,6 +4,7 @@
 
 import codeql.util.Location
 import codeql.util.Option
+import codeql.util.Either
 
 signature module InputSig<LocationSig Location> {
   class LocatableElement {
@@ -19,6 +20,8 @@ signature module InputSig<LocationSig Location> {
   }
 
   class UnknownLocation instanceof Location;
+
+  LocatableElement dfn_to_element(DataFlowNode node);
 }
 
 module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
@@ -50,12 +53,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   NodeBase getPassthroughNodeChild(NodeBase node) {
     result = node.(CipherInputNode).getChild(_) or
-    result = node.(NonceNode).getChild(_)
+    result = node.(NonceArtifactNode).getChild(_)
   }
 
   predicate isPassthroughNode(NodeBase node) {
     node instanceof CipherInputNode or
-    node instanceof NonceNode
+    node instanceof NonceArtifactNode
   }
 
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
@@ -121,7 +124,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * An element that represents a _known_ cryptographic asset.
+   * An element that represents a _known_ cryptographic asset with a determinable value OR an artifact.
    *
    * CROSS PRODUCT WARNING: Do not model any *other* element that is a `FlowAwareElement` to the same
    * instance in the database, as every other `KnownElement` will share that output artifact's flow.
@@ -133,28 +136,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element that represents a _known_ cryptographic operation.
    */
-  abstract class OperationElement extends KnownElement {
+  abstract class OperationInstance extends KnownElement {
     /**
-     * Gets the consumer of algorithms associated with this operation.
+     * Gets the consumers of algorithm values associated with this operation.
      */
-    abstract AlgorithmConsumer getAlgorithmConsumer();
+    abstract AlgorithmValueConsumer getAnAlgorithmValueConsumer();
   }
 
   /**
    * An element that represents a _known_ cryptographic algorithm.
    */
-  abstract class AlgorithmElement extends KnownElement {
+  abstract class AlgorithmInstance extends KnownElement {
     /**
      * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
      * This name is not parsed or formatted.
      */
     abstract string getRawAlgorithmName();
   }
-
-  /**
-   * An element that represents a _known_ cryptographic artifact.
-   */
-  abstract class ArtifactElement extends KnownElement, FlowAwareElement { }
 
   /**
    * An element that represents an _unknown_ data-source with a non-statically determinable value.
@@ -198,6 +196,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override DataFlowNode getOutputNode() { none() }
 
+    // for internal use only
     final GenericDataSourceInstance getAnUnknownSource() {
       result.flowsTo(this) and not result = this.getAKnownSource()
     }
@@ -207,23 +206,31 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     final NodeBase getAKnownSourceNode() { result.asElement() = this.getAKnownSource() }
+
+    final LocatableElement getASource() {
+      result = this.getAnUnknownSource() or
+      result = this.getAKnownSource()
+    }
+  }
+
+  abstract class AlgorithmValueConsumer extends ConsumerElement {
+    /**
+     * DO NOT USE.
+     * Model `getAKnownAlgorithmSource()` instead, which is equivalent but correctly typed.
+     */
+    final override KnownElement getAKnownSource() { result = this.getAKnownAlgorithmSource() }
+
+    /**
+     * Gets a known algorithm value that is equivalent to or consumed by this element.
+     */
+    abstract AlgorithmInstance getAKnownAlgorithmSource();
   }
 
   /**
-   * An element that consumes _known_ and _unknown_ values.
-   *
-   * A value consumer can consume multiple values and multiple value sources at once.
+   * An element that represents a _known_ cryptographic artifact.
    */
-  abstract class ValueConsumer extends ConsumerElement {
-    final override KnownElement getAKnownSource() { none() }
-
-    abstract string getAKnownValue(Location location);
-  }
-
-  abstract class AlgorithmConsumer extends ConsumerElement {
-    final override KnownElement getAKnownSource() { result = this.getAKnownAlgorithmSource() }
-
-    abstract AlgorithmElement getAKnownAlgorithmSource();
+  abstract class ArtifactInstance extends KnownElement, FlowAwareElement {
+    abstract predicate isConsumerArtifact(); // whether this is an input artifact defined by its consumer
   }
 
   /**
@@ -231,15 +238,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *
    * The concept of "`ArtifactConsumer` = `ArtifactNode`" should be used for inputs, as a consumer can be directly tied
    * to the artifact it receives, thereby becoming the definitive contextual source for that artifact.
-   *
-   * For example, consider a nonce artifact consumer:
-   *
-   * A `NonceArtifactConsumer` is always the `NonceArtifactInstance` itself, since data only becomes (i.e., is determined to be)
-   * a `NonceArtifactInstance` when it is consumed in a context that expects a nonce (e.g., an argument expecting nonce data).
-   * In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
-   * that identity without the need for additional differentiation. Without the context a consumer provides, that data could
-   * otherwise be any other type of artifact or even simply random data.
-   *
    *
    * Architectural Implications:
    *   * By directly coupling a consumer with the node that receives an artifact,
@@ -251,24 +249,114 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class ArtifactConsumer extends ConsumerElement {
     /**
+     * DO NOT USE:
      * Use `getAKnownArtifactSource() instead. The behaviour of these two predicates is equivalent.
      */
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
 
-    final ArtifactElement getAKnownArtifactSource() { result.flowsTo(this) }
+    final ArtifactInstance getAKnownArtifactSource() { result.flowsTo(this) }
   }
 
-  abstract class ArtifactConsumerAndInstance extends ArtifactConsumer {
-    final override DataFlowNode getOutputNode() { none() }
-
-    final override predicate flowsTo(FlowAwareElement other) { none() }
+  /**
+   * An `ArtifactConsumer` that is also an `ArtifactInstance`.
+   *
+   * For example:
+   * A `NonceArtifactConsumer` is always the `NonceArtifactInstance` itself, since data only becomes (i.e., is determined to be)
+   * a `NonceArtifactInstance` when it is consumed in a context that expects a nonce (e.g., an argument expecting nonce data).
+   * In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
+   * that identity without the need for additional differentiation. Without the context a consumer provides, that data could
+   * otherwise be any other type of artifact or even simply random data.
+   *
+   * TODO: what if a Nonce from hypothetical func `generateNonce()` flows to this instance which is also a Nonce?
+   * TODO: potential solution is creating another artifact type called NonceData or treating it as a generic source.
+   *
+   * TODO: An alternative is simply having a predicate DataFlowNode getNonceInputNode() on (for example) operations.
+   *       Under the hood, in Model.qll, we would create the instance for the modeller, thus avoiding the need for the modeller
+   *       to create a separate consumer class / instance themselves using this class.
+   */
+  abstract private class ArtifactConsumerAndInstance extends ArtifactConsumer, ArtifactInstance {
+    override predicate isConsumerArtifact() { any() }
   }
 
-  abstract class CipherOutputArtifactInstance extends ArtifactElement {
+  final private class NonceArtifactConsumer extends ArtifactConsumerAndInstance {
+    DataFlowNode inputNode;
+
+    NonceArtifactConsumer() {
+      exists(CipherOperationInstance op | inputNode = op.getNonceConsumer()) and
+      this = Input::dfn_to_element(inputNode)
+    }
+
+    final override DataFlowNode getInputNode() { result = inputNode }
+  }
+
+  final private class CipherInputArtifactConsumer extends ArtifactConsumerAndInstance {
+    DataFlowNode inputNode;
+
+    CipherInputArtifactConsumer() {
+      exists(CipherOperationInstance op | inputNode = op.getInputConsumer()) and
+      this = Input::dfn_to_element(inputNode)
+    }
+
+    final override DataFlowNode getInputNode() { result = inputNode }
+  }
+
+  // Output artifacts are determined solely by the element that produces them.
+  // Implementation guidance: these *do* need to be defined generically at the language-level
+  // in order for a flowsTo to be defined. At the per-modeling-instance level, extend that language-level class!
+  abstract class OutputArtifactInstance extends ArtifactInstance {
+    override predicate isConsumerArtifact() { none() }
+  }
+
+  abstract class DigestArtifactInstance extends OutputArtifactInstance {
     final override DataFlowNode getInputNode() { none() }
   }
 
-  abstract class CipherOperationInstance extends OperationElement {
+  abstract class RandomNumberGenerationInstance extends OutputArtifactInstance {
+    // TODO: input seed?
+    final override DataFlowNode getInputNode() { none() }
+  }
+
+  abstract class CipherOutputArtifactInstance extends ArtifactInstance {
+    final override DataFlowNode getInputNode() { none() }
+  }
+
+  // Artifacts that may be outputs or inputs
+  newtype TKeyArtifactType =
+    TSymmetricKeyType() or
+    TAsymmetricKeyType() or
+    TUnknownKeyType()
+
+  class KeyArtifactType extends TKeyArtifactType {
+    string toString() {
+      this = TSymmetricKeyType() and result = "Symmetric"
+      or
+      this = TAsymmetricKeyType() and result = "Asymmetric"
+      or
+      this = TUnknownKeyType() and result = "Unknown"
+    }
+  }
+
+  abstract class KeyArtifactInstance extends ArtifactInstance {
+    abstract KeyArtifactType getKeyType();
+  }
+
+  final class KeyArtifactConsumer extends ArtifactConsumerAndInstance, KeyArtifactInstance {
+    DataFlowNode inputNode;
+
+    KeyArtifactConsumer() {
+      exists(CipherOperationInstance op | inputNode = op.getKeyConsumer()) and
+      this = Input::dfn_to_element(inputNode)
+    }
+
+    override KeyArtifactType getKeyType() { result instanceof TUnknownKeyType }
+
+    final override DataFlowNode getInputNode() { result = inputNode }
+  }
+
+  /**
+   * A cipher operation instance, such as encryption or decryption.
+   */
+  abstract class CipherOperationInstance extends OperationInstance {
     /**
      * Gets the subtype of this cipher operation, distinguishing encryption, decryption, key wrapping, and key unwrapping.
      */
@@ -277,12 +365,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the consumer of nonces/IVs associated with this cipher operation.
      */
-    abstract NonceArtifactConsumer getNonceConsumer();
+    abstract DataFlowNode getNonceConsumer();
 
     /**
      * Gets the consumer of plaintext or ciphertext input associated with this cipher operation.
      */
-    abstract CipherInputConsumer getInputConsumer();
+    abstract DataFlowNode getInputConsumer();
+
+    /**
+     * Gets the consumer of a key.
+     */
+    abstract DataFlowNode getKeyConsumer();
 
     /**
      * Gets the output artifact of this cipher operation.
@@ -294,7 +387,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract CipherOutputArtifactInstance getOutputArtifact();
   }
 
-  abstract class CipherAlgorithmInstance extends AlgorithmElement {
+  abstract class CipherAlgorithmInstance extends AlgorithmInstance {
     /**
      * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
      */
@@ -303,7 +396,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
      *
-     * IMPLEMENTATION NOTE: as a trade-off, this is not a consumer but always either an instance or unknown.
+     * IMPLEMENTATION NOTE: as a tradeoff, this is not a consumer but always either an instance or unknown.
      * A mode of operation is therefore assumed to always be part of the cipher algorithm itself.
      */
     abstract ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm();
@@ -311,13 +404,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
      *
-     * IMPLEMENTATION NOTE: as a trade-off, this is not a consumer but always either an instance or unknown.
+     * IMPLEMENTATION NOTE: as a tradeoff, this is not a consumer but always either an instance or unknown.
      * A padding algorithm is therefore assumed to always be defined as part of the cipher algorithm itself.
      */
     abstract PaddingAlgorithmInstance getPaddingAlgorithm();
   }
 
-  abstract class ModeOfOperationAlgorithmInstance extends AlgorithmElement {
+  abstract class ModeOfOperationAlgorithmInstance extends AlgorithmInstance {
     /**
      * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
      *
@@ -335,7 +428,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract string getRawModeAlgorithmName();
   }
 
-  abstract class PaddingAlgorithmInstance extends AlgorithmElement {
+  abstract class PaddingAlgorithmInstance extends AlgorithmInstance {
     /**
      * Gets the isolated name as it appears in source, e.g., "PKCS7Padding" in "AES/CBC/PKCS7Padding".
      *
@@ -353,56 +446,70 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract TPaddingType getPaddingType();
   }
 
-  abstract class KeyEncapsulationOperationInstance extends LocatableElement { }
+  abstract class OAEPPaddingAlgorithmInstance extends PaddingAlgorithmInstance {
+    OAEPPaddingAlgorithmInstance() { this.getPaddingType() = OAEP() }
 
-  abstract class KeyEncapsulationAlgorithmInstance extends LocatableElement { }
+    /**
+     * Gets the hash algorithm used in this padding scheme.
+     */
+    abstract HashAlgorithmInstance getHashAlgorithm();
 
-  abstract class EllipticCurveAlgorithmInstance extends LocatableElement { }
-
-  abstract class HashOperationInstance extends OperationElement {
-    // TODO: need input and outputs, but this should be universal to all Operations
+    /**
+     * Gets the mask generation function used in this padding scheme.
+     */
+    abstract HashAlgorithmInstance getMaskGenerationFunction();
   }
 
-  abstract class HashAlgorithmInstance extends AlgorithmElement {
+  abstract class KeyEncapsulationOperationInstance extends OperationInstance { }
+
+  abstract class KeyEncapsulationAlgorithmInstance extends AlgorithmInstance { }
+
+  abstract class EllipticCurveAlgorithmInstance extends AlgorithmInstance { }
+
+  abstract class HashOperationInstance extends OperationInstance {
+    abstract DigestArtifactInstance getDigestArtifact();
+  }
+
+  abstract class HashAlgorithmInstance extends AlgorithmInstance {
     /**
      * Gets the type of this digest algorithm, e.g., "SHA1", "SHA2", "MD5" etc.
      */
     abstract THashType getHashFamily();
-
-    // abstract int getHashSize();
   }
 
-  abstract class KeyDerivationOperationInstance extends KnownElement { }
+  abstract class KeyDerivationOperationInstance extends OperationInstance { }
 
-  abstract class KeyDerivationAlgorithmInstance extends KnownElement { }
+  abstract class KeyDerivationAlgorithmInstance extends AlgorithmInstance { }
 
-  // Artifacts determined solely by the element that produces them
-  // Implementation guidance: these *do* need to be defined generically at the language-level
-  // in order for a flowsTo to be defined. At the per-modeling-instance level, extend that language-level class!
-  abstract class OutputArtifactElement extends ArtifactElement {
-    final override DataFlowNode getInputNode() { none() }
+  private signature class AlgorithmInstanceType instanceof AlgorithmInstance;
+
+  module AlgorithmInstanceOrValueConsumer<AlgorithmInstanceType Alg> {
+    class Union extends LocatableElement {
+      Union() {
+        this instanceof Alg
+        or
+        this instanceof AlgorithmValueConsumer and
+        not exists(this.(AlgorithmValueConsumer).getASource())
+      }
+
+      Alg asAlg() { result = this }
+
+      AlgorithmValueConsumer asAVC() { result = this }
+    }
   }
 
-  abstract class DigestArtifactInstance extends OutputArtifactElement { }
+  class CipherAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<CipherAlgorithmInstance>::Union;
 
-  abstract class RandomNumberGenerationInstance extends OutputArtifactElement { } // TODO: is this an OutputArtifactElement if it takes a seed?
-
-  // Artifacts determined solely by the consumer that consumes them are defined as consumers
-  // Implementation guidance: these do not need to be defined generically at the language-level
-  // Only the sink node needs to be defined per-modeling-instance (e.g., in JCA.qll)
-  abstract class NonceArtifactConsumer extends ArtifactConsumerAndInstance { }
-
-  abstract class CipherInputConsumer extends ArtifactConsumerAndInstance { }
-
-  // Other artifacts
-  abstract class KeyArtifactInstance extends ArtifactElement { } // TODO: implement and categorize
+  class HashAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance>::Union;
 
   newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
     TNonce(NonceArtifactConsumer e) or
-    TCipherInput(CipherInputConsumer e) or
+    TCipherInput(CipherInputArtifactConsumer e) or
     TCipherOutput(CipherOutputArtifactInstance e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Operations (e.g., hashing, encryption)
@@ -411,9 +518,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TCipherOperation(CipherOperationInstance e) or
     TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
     // Algorithms (e.g., SHA-256, AES)
-    TCipherAlgorithm(CipherAlgorithmInstance e) or
+    TCipherAlgorithm(CipherAlgorithmInstanceOrValueConsumer e) or
     TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstance e) or
-    THashAlgorithm(HashAlgorithmInstance e) or
+    THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstance e) or
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
     // Non-standalone Algorithms (e.g., Mode, Padding)
@@ -567,10 +674,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A nonce or initialization vector
    */
-  final class NonceNode extends ArtifactNode, TNonce {
+  final class NonceArtifactNode extends ArtifactNode, TNonce {
     NonceArtifactConsumer instance;
 
-    NonceNode() { this = TNonce(instance) }
+    NonceArtifactNode() { this = TNonce(instance) }
 
     final override string getInternalType() { result = "Nonce" }
 
@@ -594,7 +701,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * Input text to a cipher operation
    */
   final class CipherInputNode extends ArtifactNode, TCipherInput {
-    CipherInputConsumer instance;
+    CipherInputArtifactConsumer instance;
 
     CipherInputNode() { this = TCipherInput(instance) }
 
@@ -612,6 +719,41 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     RandomNumberGenerationNode() { this = TRandomNumberGeneration(instance) }
 
     final override string getInternalType() { result = "RandomNumberGeneration" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
+   * A cryptographic key, such as a symmetric key or asymmetric key pair.
+   */
+  final class KeyArtifactNode extends ArtifactNode, TKey {
+    KeyArtifactInstance instance;
+
+    KeyArtifactNode() { this = TKey(instance) }
+
+    final override string getInternalType() { result = "Key" }
+
+    override LocatableElement asElement() { result = instance }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ONLY_KNOWN]
+      key = "KeyType" and
+      value = instance.getKeyType().toString() and
+      location = this.getLocation()
+    }
+  }
+
+  /**
+   * A digest produced by a hash operation.
+   */
+  final class DigestArtifactNode extends ArtifactNode, TDigest {
+    DigestArtifactInstance instance;
+
+    DigestArtifactNode() { this = TDigest(instance) }
+
+    final override string getInternalType() { result = "Digest" }
 
     override LocatableElement asElement() { result = instance }
   }
@@ -693,26 +835,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     NodeBase getACipherAlgorithmOrUnknown() {
       result = this.getAKnownCipherAlgorithm() or
-      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAnUnknownSourceNode()
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
     }
 
     /**
      * Gets a known algorithm associated with this operation
      */
     CipherAlgorithmNode getAKnownCipherAlgorithm() {
-      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAKnownSourceNode()
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
     }
 
     CipherOperationSubtype getCipherOperationSubtype() {
       result = instance.getCipherOperationSubtype()
     }
 
-    NonceNode getANonce() {
-      result.asElement() = this.asElement().(CipherOperationInstance).getNonceConsumer()
+    NonceArtifactNode getANonce() {
+      result.asElement() =
+        Input::dfn_to_element(this.asElement().(CipherOperationInstance).getNonceConsumer())
     }
 
     CipherInputNode getAnInputArtifact() {
-      result.asElement() = this.asElement().(CipherOperationInstance).getInputConsumer()
+      result.asElement() =
+        Input::dfn_to_element(this.asElement().(CipherOperationInstance).getInputConsumer())
     }
 
     CipherOutputNode getAnOutputArtifact() {
@@ -858,6 +1004,32 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getRawAlgorithmName() { result = instance.getRawPaddingAlgorithmName() }
   }
 
+  class OAEPPaddingAlgorithmNode extends PaddingAlgorithmNode {
+    override OAEPPaddingAlgorithmInstance instance;
+
+    OAEPPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
+
+    HashAlgorithmNode getHashAlgorithm() { result.asElement() = instance.getHashAlgorithm() }
+
+    HashAlgorithmNode getMaskGenerationFunction() {
+      result.asElement() = instance.getMaskGenerationFunction()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "MD" and
+      if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "MGF" and
+      if exists(this.getMaskGenerationFunction())
+      then result = this.getMaskGenerationFunction()
+      else result = this
+    }
+  }
+
   /**
    * A helper type for distinguishing between block and stream ciphers.
    */
@@ -904,7 +1076,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     OtherCipherType()
 
   final class CipherAlgorithmNode extends AlgorithmNode, TCipherAlgorithm {
-    CipherAlgorithmInstance instance;
+    CipherAlgorithmInstanceOrValueConsumer instance;
 
     CipherAlgorithmNode() { this = TCipherAlgorithm(instance) }
 
@@ -920,7 +1092,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
     }
 
-    final override string getRawAlgorithmName() { result = instance.getRawAlgorithmName() }
+    final override string getRawAlgorithmName() { result = instance.asAlg().getRawAlgorithmName() }
 
     /**
      * Gets the key size of this cipher, e.g., "128" or "256".
@@ -930,20 +1102,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
      */
-    TCipherType getCipherFamily() { result = instance.getCipherFamily() }
+    TCipherType getCipherFamily() { result = instance.asAlg().getCipherFamily() }
 
     /**
      * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
      */
     ModeOfOperationAlgorithmNode getModeOfOperation() {
-      result.asElement() = instance.getModeOfOperationAlgorithm()
+      result.asElement() = instance.asAlg().getModeOfOperationAlgorithm()
     }
 
     /**
      * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
      */
     PaddingAlgorithmNode getPaddingAlgorithm() {
-      result.asElement() = instance.getPaddingAlgorithm()
+      result.asElement() = instance.asAlg().getPaddingAlgorithm()
     }
 
     bindingset[type]
@@ -1038,7 +1210,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * hash value as the output using a specified hashing algorithm.
    */
   class HashOperationNode extends OperationNode, THashOperation {
-    HashAlgorithmInstance instance;
+    HashOperationInstance instance;
 
     HashOperationNode() { this = THashOperation(instance) }
 
@@ -1049,16 +1221,39 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
      */
-    NodeBase getACipherAlgorithmOrUnknown() {
-      result = this.getAKnownCipherAlgorithm() or
-      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAnUnknownSourceNode()
+    NodeBase getAHashAlgorithmOrUnknown() {
+      result = this.getAKnownHashAlgorithm() or
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
     }
 
     /**
      * Gets a known algorithm associated with this operation
      */
-    HashAlgorithmNode getAKnownCipherAlgorithm() {
-      result = this.asElement().(OperationElement).getAlgorithmConsumer().getAKnownSourceNode()
+    HashAlgorithmNode getAKnownHashAlgorithm() {
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+    }
+
+    /**
+     * Gets the output digest node
+     */
+    DigestArtifactNode getDigest() {
+      result.asElement() = this.asElement().(HashOperationInstance).getDigestArtifact()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Algorithm" and
+      if exists(this.getAHashAlgorithmOrUnknown())
+      then result = this.getAHashAlgorithmOrUnknown()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Digest" and
+      if exists(this.getDigest()) then result = this.getDigest() else result = this
     }
   }
 
@@ -1083,10 +1278,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A hashing algorithm that transforms variable-length input into a fixed-size hash value.
    */
-  abstract class HashAlgorithmNode extends AlgorithmNode, THashAlgorithm {
-    HashAlgorithmInstance instance;
+  final class HashAlgorithmNode extends AlgorithmNode, THashAlgorithm {
+    HashAlgorithmInstanceOrValueConsumer instance;
+
     HashAlgorithmNode() { this = THashAlgorithm(instance) }
+
     override string getInternalType() { result = "HashAlgorithm" }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getRawAlgorithmName() { result = instance.asAlg().getRawAlgorithmName() }
 
     final predicate hashTypeToNameMapping(THashType type, string name) {
       type instanceof BLAKE2B and name = "BLAKE2B"

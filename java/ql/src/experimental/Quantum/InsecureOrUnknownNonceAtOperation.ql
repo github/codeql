@@ -6,17 +6,19 @@
 
 import experimental.Quantum.Language
 
-from Crypto::NonceNode n, Crypto::CipherOperationNode op, Crypto::FlowAwareElement src, string msg
+from
+  Crypto::NonceArtifactNode n, Crypto::CipherOperationNode op, Crypto::FlowAwareElement src,
+  string msg
 where
   op.getANonce() = n and
   // Only encryption mode is relevant for insecure nonces, consder any 'unknown' subtype
-  // as possibly encryption. 
+  // as possibly encryption.
   (
     op.getCipherOperationSubtype() instanceof Crypto::EncryptionSubtype
     or
     op.getCipherOperationSubtype() instanceof Crypto::WrapSubtype
     or
-    op.getCipherOperationSubtype() instanceof Crypto::UnwrapSubtype 
+    op.getCipherOperationSubtype() instanceof Crypto::UnwrapSubtype
   ) and
   (
     // Known sources cases that are not secure
@@ -30,7 +32,6 @@ where
     src = n.asElement()
   )
 select n, msg, src, src.toString()
-
 // variant using instances, does not yield the same results
 // from Crypto::NonceArtifactConsumer n, Crypto::CipherOperationInstance op, Crypto::FlowAwareElement src, string msg
 // where

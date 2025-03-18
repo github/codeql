@@ -205,7 +205,7 @@ module JCAModel {
    *
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
-  class CipherGetInstanceAlgorithmArg extends Crypto::AlgorithmConsumer instanceof Expr {
+  class CipherGetInstanceAlgorithmArg extends Crypto::AlgorithmValueConsumer instanceof Expr {
     CipherGetInstanceCall call;
 
     CipherGetInstanceAlgorithmArg() { this = call.getAlgorithmArg() }
@@ -218,7 +218,7 @@ module JCAModel {
       value = result.getValue()
     }
 
-    override Crypto::AlgorithmElement getAKnownAlgorithmSource() {
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
       result.(CipherStringLiteralAlgorithmInstance).getConsumer() = this
     }
   }
@@ -354,15 +354,17 @@ module JCAModel {
 
     override Crypto::CipherOperationSubtype getCipherOperationSubtype() { result = mode }
 
-    override Crypto::NonceArtifactConsumer getNonceConsumer() {
-      result = sink.getState().(InitializedCipherModeFlowState).getInitCall().getNonceArg()
+    override DataFlow::Node getNonceConsumer() {
+      result.asExpr() = sink.getState().(InitializedCipherModeFlowState).getInitCall().getNonceArg()
     }
 
-    override Crypto::CipherInputConsumer getInputConsumer() {
-      result = doFinalize.getMessageArg().asExpr()
+    override DataFlow::Node getInputConsumer() { result = doFinalize.getMessageArg() }
+
+    override DataFlow::Node getKeyConsumer() {
+      result.asExpr() = sink.getState().(InitializedCipherModeFlowState).getInitCall().getKeyArg()
     }
 
-    override Crypto::AlgorithmConsumer getAlgorithmConsumer() { result = consumer }
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = consumer }
 
     override Crypto::CipherOutputArtifactInstance getOutputArtifact() {
       result = doFinalize.getOutput()
@@ -493,20 +495,8 @@ module JCAModel {
     }
   }
 
-  class CipherInitCallNonceArgConsumer extends Crypto::NonceArtifactConsumer instanceof Expr {
-    CipherInitCallNonceArgConsumer() { this = any(CipherInitCall call).getNonceArg() }
-
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
-  }
-
   class CipherInitCallKeyConsumer extends Crypto::ArtifactConsumer {
     CipherInitCallKeyConsumer() { this = any(CipherInitCall call).getKeyArg() }
-
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
-  }
-
-  class CipherMessageInputConsumer extends Crypto::CipherInputConsumer {
-    CipherMessageInputConsumer() { this = any(CipherOperationCall call).getMessageArg().asExpr() }
 
     override DataFlow::Node getInputNode() { result.asExpr() = this }
   }
@@ -515,5 +505,104 @@ module JCAModel {
     CipherOperationCallOutput() { this = any(CipherOperationCall call).getOutput() }
 
     override DataFlow::Node getOutputNode() { result.asExpr() = this }
+  }
+
+  bindingset[hash]
+  predicate hash_names(string hash) {
+    hash.toUpperCase()
+        .matches([
+            "SHA-1", "SHA-256", "SHA-384", "SHA-512", "SHA3-224", "SHA3-256", "SHA3-384",
+            "SHA3-512", "BLAKE2b", "BLAKE2s"
+          ].toUpperCase())
+  }
+
+  // flow config from a known hash algorithm literal to MessageDigest.getInstance
+  module KnownHashAlgorithmLiteralToMessageDigestConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { hash_names(src.asExpr().(StringLiteral).getValue()) }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(MessageDigestGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
+    }
+  }
+
+  module KnownHashAlgorithmLiteralToMessageDigestFlow =
+    DataFlow::Global<KnownHashAlgorithmLiteralToMessageDigestConfig>;
+
+  class KnownHashAlgorithm extends Crypto::HashAlgorithmInstance instanceof StringLiteral {
+    MessageDigestAlgorithmValueConsumer consumer;
+
+    KnownHashAlgorithm() {
+      hash_names(this.getValue()) and
+      KnownHashAlgorithmLiteralToMessageDigestFlow::flow(DataFlow::exprNode(this),
+        consumer.getInputNode())
+    }
+
+    MessageDigestAlgorithmValueConsumer getConsumer() { result = consumer }
+
+    override string getRawAlgorithmName() { result = this.(StringLiteral).getValue() }
+
+    override Crypto::THashType getHashFamily() {
+      result = Crypto::OtherHashType() // TODO
+    }
+  }
+
+  class MessageDigestAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
+    MessageDigestGetInstanceCall call;
+
+    MessageDigestAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
+
+    override DataFlow::Node getInputNode() { result.asExpr() = this }
+
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+      exists(KnownHashAlgorithm l | l.getConsumer() = this and result = l)
+    }
+  }
+
+  class MessageDigestGetInstanceCall extends MethodCall {
+    MessageDigestGetInstanceCall() {
+      this.getCallee().hasQualifiedName("java.security", "MessageDigest", "getInstance")
+    }
+
+    Expr getAlgorithmArg() { result = this.getArgument(0) }
+
+    DigestHashOperation getDigestCall() {
+      DigestGetInstanceToDigestFlow::flow(DataFlow::exprNode(this),
+        DataFlow::exprNode(result.(DigestCall).getQualifier()))
+    }
+  }
+
+  class DigestCall extends MethodCall {
+    DigestCall() { this.getCallee().hasQualifiedName("java.security", "MessageDigest", "digest") }
+
+    Expr getDigestArtifactOutput() { result = this }
+  }
+
+  // flow config from MessageDigest.getInstance to MessageDigest.digest
+  module DigestGetInstanceToDigestConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof MessageDigestGetInstanceCall }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(DigestCall c | c.getQualifier() = sink.asExpr())
+    }
+  }
+
+  module DigestGetInstanceToDigestFlow = DataFlow::Global<DigestGetInstanceToDigestConfig>;
+
+  class DigestArtifact extends DigestArtifactInstance {
+    DigestArtifact() { this = any(DigestCall call).getDigestArtifactOutput() }
+
+    override DataFlow::Node getOutputNode() { result.asExpr() = this }
+  }
+
+  class DigestHashOperation extends Crypto::HashOperationInstance instanceof DigestCall {
+    override Crypto::DigestArtifactInstance getDigestArtifact() {
+      result = this.(DigestCall).getDigestArtifactOutput()
+    }
+
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      exists(MessageDigestGetInstanceCall call |
+        call.getDigestCall() = this and result = call.getAlgorithmArg()
+      )
+    }
   }
 }

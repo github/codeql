@@ -6,7 +6,7 @@ class EVP_Cipher_Initializer_Algorithm_Consumer extends Crypto::AlgorithmConsume
 {
   override DataFlow::Node getInputNode() { result.asExpr() = this }
 
-  override Crypto::AlgorithmElement getAKnownAlgorithmSource() {
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
     result.(KnownOpenSSLCipherConstantAlgorithmInstance).getConsumer() = this
   }
 }
