@@ -7,7 +7,7 @@ DataFlow::Node unverifiedDecode() {
     verify
         .getParameter(2)
         .getMember("algorithms")
-        .getUnknownMember()
+        .getArrayElement()
         .asSink()
         .mayHaveStringValue("none") and
     result = verify.getParameter(0).asSink()
@@ -32,7 +32,7 @@ DataFlow::Node verifiedDecode() {
       not verify
           .getParameter(2)
           .getMember("algorithms")
-          .getUnknownMember()
+          .getArrayElement()
           .asSink()
           .mayHaveStringValue("none") or
       not exists(verify.getParameter(2).getMember("algorithms"))
