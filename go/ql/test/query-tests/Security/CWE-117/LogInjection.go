@@ -30,52 +30,54 @@ import (
 
 func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 	username := req.URL.Query()["username"][0]
-	slice := []any{"username", username}
+	password := req.URL.Query()["password"][0]
+	formatString := req.URL.Query()["formatString"][0]
 	testFlag := req.URL.Query()["testFlag"][0]
+	slice := []any{"username", username}
 
 	{
-		fmt.Print(username)       // $ hasTaintFlow="username"
-		fmt.Printf(username)      // $ hasTaintFlow="username"
-		fmt.Println(username)     // $ hasTaintFlow="username"
-		fmt.Fprint(nil, username) // Fprint functions are only loggers if they target stdout/stderr
-		fmt.Fprintf(nil, username)
-		fmt.Fprintln(nil, username)
+		fmt.Print(username, password)                // $ hasTaintFlow="username" hasTaintFlow="password"
+		fmt.Printf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		fmt.Println(username, password)              // $ hasTaintFlow="username" hasTaintFlow="password"
+		fmt.Fprint(nil, username, password)          // Fprint functions are only loggers if they target stdout/stderr
+		fmt.Fprintf(nil, formatString, username, password)
+		fmt.Fprintln(nil, username, password)
 	}
 	// log
 	{
-		log.Print("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		log.Printf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		log.Println("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		log.Print("user is logged in:", username, password)   // $ hasTaintFlow="username" hasTaintFlow="password"
+		log.Printf(formatString, username, password)          // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		log.Println("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 
 		if testFlag == "true" {
-			log.Fatal("user %s logged in.\n", username) // $ hasTaintFlow="username"
+			log.Fatal("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
 		if testFlag == "true" {
-			log.Fatalf("user %s logged in.\n", username) // $ hasTaintFlow="username"
+			log.Fatalf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
 		}
 		if testFlag == "true" {
-			log.Fatalln("user %s logged in.\n", username) // $ hasTaintFlow="username"
+			log.Fatalln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
 		if testFlag == "true" {
-			log.Panic("user %s logged in.\n", username) // $ hasTaintFlow="username"
+			log.Panic("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
 		if testFlag == "true" {
-			log.Panicf("user %s logged in.\n", username) // $ hasTaintFlow="username"
+			log.Panicf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
 		}
 		if testFlag == "true" {
-			log.Panicln("user %s logged in.\n", username) // $ hasTaintFlow="username"
+			log.Panicln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
 
 		logger := log.Default()
-		logger.Print("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Printf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Println("user %s logged in.\n", username) // $ hasTaintFlow="username"
-		logger.Fatal("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Fatalf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Fatalln("user %s logged in.\n", username) // $ hasTaintFlow="username"
-		logger.Panic("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Panicf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Panicln("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		logger.Print("user is logged in:", username, password)   // $ hasTaintFlow="username" hasTaintFlow="password"
+		logger.Printf(formatString, username, password)          // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		logger.Println("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		logger.Fatal("user is logged in:", username, password)   // $ hasTaintFlow="username" hasTaintFlow="password"
+		logger.Fatalf(formatString, username, password)          // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		logger.Fatalln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		logger.Panic("user is logged in:", username, password)   // $ hasTaintFlow="username" hasTaintFlow="password"
+		logger.Panicf(formatString, username, password)          // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		logger.Panicln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 	}
 	// k8s.io/klog
 	{
@@ -421,7 +423,6 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		simpleLogger.Tracew("%s", username)    // $ hasTaintFlow="username"
 		simpleLogger.Debugw("%s %s", slice...) // $ hasTaintFlow="slice"
 	}
-
 }
 
 type Logger interface {
@@ -514,8 +515,12 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		verbose.Infof("user %q logged in.\n", username)
 		klog.Infof("user %q logged in.\n", username)
 		klog.Errorf("user %q logged in.\n", username)
-		klog.Fatalf("user %q logged in.\n", username)
-		klog.Exitf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			klog.Fatalf("user %q logged in.\n", username)
+		}
+		if testFlag == " true" {
+			klog.Exitf("user %q logged in.\n", username)
+		}
 	}
 	// elazarl/goproxy
 	{
@@ -529,16 +534,24 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 
 		glog.Infof("user %q logged in.\n", username)
 		glog.Errorf("user %q logged in.\n", username)
-		glog.Fatalf("user %q logged in.\n", username)
-		glog.Exitf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			glog.Fatalf("user %q logged in.\n", username)
+		}
+		if testFlag == " true" {
+			glog.Exitf("user %q logged in.\n", username)
+		}
 	}
 	// sirupsen/logrus
 	{
 		logrus.Debugf("user %q logged in.\n", username)
 		logrus.Errorf("user %q logged in.\n", username)
-		logrus.Fatalf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			logrus.Fatalf("user %q logged in.\n", username)
+		}
 		logrus.Infof("user %q logged in.\n", username)
-		logrus.Panicf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			logrus.Panicf("user %q logged in.\n", username)
+		}
 		logrus.Printf("user %q logged in.\n", username)
 		logrus.Tracef("user %q logged in.\n", username)
 		logrus.Warnf("user %q logged in.\n", username)
@@ -548,10 +561,14 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		entry := logrus.WithFields(fields)
 		entry.Debugf("user %q logged in.\n", username)
 		entry.Errorf("user %q logged in.\n", username)
-		entry.Fatalf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			entry.Fatalf("user %q logged in.\n", username)
+		}
 		entry.Infof("user %q logged in.\n", username)
 		entry.Logf(0, "user %q logged in.\n", username)
-		entry.Panicf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			entry.Panicf("user %q logged in.\n", username)
+		}
 		entry.Printf("user %q logged in.\n", username)
 		entry.Tracef("user %q logged in.\n", username)
 		entry.Warnf("user %q logged in.\n", username)
@@ -560,10 +577,14 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		logger := entry.Logger
 		logger.Debugf("user %q logged in.\n", username)
 		logger.Errorf("user %q logged in.\n", username)
-		logger.Fatalf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			logger.Fatalf("user %q logged in.\n", username)
+		}
 		logger.Infof("user %q logged in.\n", username)
 		logger.Logf(0, "user %q logged in.\n", username)
-		logger.Panicf("user %q logged in.\n", username)
+		if testFlag == " true" {
+			logger.Panicf("user %q logged in.\n", username)
+		}
 		logger.Printf("user %q logged in.\n", username)
 		logger.Tracef("user %q logged in.\n", username)
 		logger.Warnf("user %q logged in.\n", username)
@@ -599,8 +620,12 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		verbose.Infof("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 		klog.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
 		klog.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		klog.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		klog.Exitf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			klog.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == " true" {
+			klog.Exitf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 	}
 	// elazarl/goproxy
 	{
@@ -614,16 +639,24 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 
 		glog.Infof("user %#q logged in.\n", username)  // $ hasTaintFlow="username"
 		glog.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
-		glog.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
-		glog.Exitf("user %#q logged in.\n", username)  // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			glog.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == " true" {
+			glog.Exitf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 	}
 	// sirupsen/logrus
 	{
-		logrus.Debugf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logrus.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logrus.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logrus.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
-		logrus.Panicf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		logrus.Debugf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		logrus.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			logrus.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		logrus.Infof("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			logrus.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 		logrus.Printf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logrus.Tracef("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logrus.Warnf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
@@ -631,24 +664,32 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 
 		fields := make(logrus.Fields)
 		entry := logrus.WithFields(fields)
-		entry.Debugf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		entry.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		entry.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		entry.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
-		entry.Logf(0, "user %#q logged in.\n", username)  // $ hasTaintFlow="username"
-		entry.Panicf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		entry.Debugf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		entry.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			entry.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		entry.Infof("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		entry.Logf(0, "user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			entry.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 		entry.Printf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		entry.Tracef("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		entry.Warnf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
 		entry.Warningf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 
 		logger := entry.Logger
-		logger.Debugf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
-		logger.Logf(0, "user %#q logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Panicf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		logger.Debugf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		logger.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			logger.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		logger.Infof("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		logger.Logf(0, "user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == " true" {
+			logger.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 		logger.Printf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logger.Tracef("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logger.Warnf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
