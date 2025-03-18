@@ -1571,9 +1571,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       SsaPhiExt phi, SsaPhiExt phi2, BasicBlock input, boolean relevant
     ) {
       exists(BasicBlock bb1, int i, SourceVariable v, BasicBlock bb2 |
-        phi.definesAt(v, bb1, i, _) and
+        phi.definesAt(pragma[only_bind_into](v), bb1, i, _) and
         AdjacentSsaRefs::adjacentRefPhi(bb1, i, input, bb2, v) and
-        phi2.definesAt(v, bb2, _, _) and
+        phi2.definesAt(pragma[only_bind_into](v), bb2, _, _) and
         if relevantPhiInputNode(phi2, input) then relevant = true else relevant = false
       )
     }
@@ -1614,6 +1614,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
+    cached
     private newtype TNode =
       TParamNode(DfInput::Parameter p) {
         exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
