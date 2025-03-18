@@ -340,6 +340,9 @@
 /lib/codeql/rust/elements/internal/ModuleConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/NameConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/NameRefConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/NamedCrate.qll linguist-generated
+/lib/codeql/rust/elements/internal/NamedCrateConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/NamedCrateImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/NeverTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/OffsetOfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/OffsetOfExprImpl.qll linguist-generated
@@ -569,6 +572,7 @@
 /lib/codeql/rust/elements/internal/generated/Module.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Name.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/NameRef.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/NamedCrate.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/NeverTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/OffsetOfExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/OrPat.qll linguist-generated

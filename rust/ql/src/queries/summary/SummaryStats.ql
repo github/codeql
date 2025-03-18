@@ -17,6 +17,7 @@ import TaintReach
 class CrateElement extends Element {
   CrateElement() {
     this instanceof Crate or
+    this instanceof NamedCrate or
     this.(AstNode).getParentNode*() = any(Crate c).getModule()
   }
 }

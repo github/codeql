@@ -41,6 +41,23 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class NamedCrate extends @named_crate, Element {
+    override string toString() { result = "NamedCrate" }
+
+    /**
+     * Gets the name of this named crate, if it exists.
+     */
+    string getName() { named_crate_names(this, result) }
+
+    /**
+     * Gets the crate of this named crate.
+     */
+    Crate getCrate() { named_crates(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * The base class marking everything that was not properly extracted for some reason, such as:
    * * syntax errors
    * * insufficient context information
@@ -80,9 +97,9 @@ module Raw {
     string getCfgOption(int index) { crate_cfg_options(this, index, result) }
 
     /**
-     * Gets the `index`th dependency of this crate (0-based).
+     * Gets the `index`th named dependency of this crate (0-based).
      */
-    Crate getDependency(int index) { crate_dependencies(this, index, result) }
+    NamedCrate getNamedDependency(int index) { crate_named_dependencies(this, index, result) }
   }
 
   /**

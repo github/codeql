@@ -95,6 +95,7 @@ import codeql.rust.elements.internal.MissingConstructor
 import codeql.rust.elements.internal.ModuleConstructor
 import codeql.rust.elements.internal.NameConstructor
 import codeql.rust.elements.internal.NameRefConstructor
+import codeql.rust.elements.internal.NamedCrateConstructor
 import codeql.rust.elements.internal.NeverTypeReprConstructor
 import codeql.rust.elements.internal.OffsetOfExprConstructor
 import codeql.rust.elements.internal.OrPatConstructor

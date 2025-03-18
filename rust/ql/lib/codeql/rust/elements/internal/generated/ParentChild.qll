@@ -6,6 +6,7 @@
 import codeql.rust.elements
 import codeql.rust.elements.internal.ArrayExprInternal
 import codeql.rust.elements.internal.ExtractorStep
+import codeql.rust.elements.internal.NamedCrate
 
 private module Impl {
   private Element getImmediateChildOfElement(Element e, int index, string partialPredicateCall) {
@@ -28,6 +29,19 @@ private module Impl {
   }
 
   private Element getImmediateChildOfLocatable(Locatable e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfNamedCrate(NamedCrate e, int index, string partialPredicateCall) {
     exists(int b, int bElement, int n |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
@@ -4064,6 +4078,8 @@ private module Impl {
     none()
     or
     result = getImmediateChildOfExtractorStep(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNamedCrate(e, index, partialAccessor)
     or
     result = getImmediateChildOfCrate(e, index, partialAccessor)
     or

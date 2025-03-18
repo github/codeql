@@ -118,4 +118,11 @@ class Crate(Locatable):
     version: optional[string]
     module: optional["Module"]
     cfg_options: list[string]
-    dependencies: list["Crate"]
+    named_dependencies: list["NamedCrate"] | ql.internal
+
+
+@qltest.skip
+@ql.internal
+class NamedCrate(Element):
+    name: optional[string]
+    crate: "Crate"
