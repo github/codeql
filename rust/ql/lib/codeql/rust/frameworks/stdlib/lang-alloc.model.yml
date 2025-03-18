@@ -9,3 +9,9 @@ extensions:
       - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:alloc", "<crate::string::String>::as_bytes", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:alloc", "<_ as crate::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Alloc
+      - ["lang:alloc", "crate::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]

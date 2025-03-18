@@ -17,7 +17,7 @@ extensions:
       - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
-      # ptr
+      # Ptr
       - ["lang:core", "crate::ptr::read", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["lang:core", "crate::ptr::read_unaligned", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["lang:core", "crate::ptr::read_volatile", "Argument[0].Reference", "ReturnValue", "value", "manual"]
@@ -30,7 +30,22 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      # Alloc
+      # Mem
+      - ["lang:core", "crate::mem::drop", "Argument[0]", "pointer-invalidate", "manual"]
+      # Ptr
+      - ["lang:core", "crate::ptr::drop_in_place", "Argument[0]", "pointer-invalidate", "manual"]
       - ["lang:core", "crate::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
       - ["lang:core", "crate::ptr::dangling_mut", "ReturnValue", "pointer-invalidate", "manual"]
       - ["lang:core", "crate::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # Ptr
+      - ["lang:core", "crate::ptr::read", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::read_unaligned", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::read_volatile", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write_bytes", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write_unaligned", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write_volatile", "Argument[0]", "pointer-access", "manual"]
