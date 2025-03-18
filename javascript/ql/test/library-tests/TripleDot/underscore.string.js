@@ -11,7 +11,7 @@ function strToStr() {
   sink(s.unescapeHTML(source("s8"))); // $ hasTaintFlow=s8
   sink(s.wrap(source("s9"), {})); // $ hasTaintFlow=s9
   sink(s.dedent(source("s10"), "  ")); // $ hasTaintFlow=s10
-  sink(s.reverse(source("s11"))); // $ hasTaintFlow=s11 SPURIOUS: hasTaintFlow=s8
+  sink(s.reverse(source("s11"))); // $ hasTaintFlow=s11
   sink(s.pred(source("s12"))); // $ hasTaintFlow=s12
   sink(s.succ(source("s13"))); // $ hasTaintFlow=s13
   sink(s.titleize(source("s14"))); // $ hasTaintFlow=s14
@@ -60,7 +60,7 @@ function multiSource() {
   sink(s.join(",", source("s5"), "str")); // $ hasTaintFlow=s5
   sink(s.join(",", "str", source("s6"))); // $ hasTaintFlow=s6
 
-  sink(s.splice(source("s7"), 1, 2, "str")); // $ hasTaintFlow=s7 SPURIOUS: hasTaintFlow=s8
+  sink(s.splice(source("s7"), 1, 2, "str")); // $ hasTaintFlow=s7
   sink(s.splice("str", 1, 2, source("s8"))); // $ hasTaintFlow=s8
 
   sink(s.prune(source("s9"), 1, "additional")); // $ hasTaintFlow=s9
