@@ -18,9 +18,9 @@ func stdlib() {
 	logger.Println(text)     // $ logger=text
 
 	// components corresponding to the format specifier "%T" are not considered vulnerable
-	logger.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
-	logger.Panicf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
-	logger.Printf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	logger.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
+	logger.Panicf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
+	logger.Printf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
 
 	log.SetPrefix("prefix: ")
 	log.Fatal(text)       // $ logger=text
@@ -34,7 +34,7 @@ func stdlib() {
 	log.Println(text)     // $ logger=text
 
 	// components corresponding to the format specifier "%T" are not considered vulnerable
-	log.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
-	log.Panicf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
-	log.Printf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text SPURIOUS: logger=v
+	log.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
+	log.Panicf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
+	log.Printf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
 }
