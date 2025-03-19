@@ -883,8 +883,30 @@ localStep
 | main.rs:519:17:519:18 | &c | main.rs:519:9:519:13 | c_ref |
 | main.rs:523:14:523:18 | [post] c_ref | main.rs:524:11:524:15 | c_ref |
 | main.rs:523:14:523:18 | c_ref | main.rs:524:11:524:15 | c_ref |
-| main.rs:551:13:551:33 | result_questionmark(...) | main.rs:551:9:551:9 | _ |
-| main.rs:563:36:563:41 | ...::new(...) | main.rs:563:36:563:41 | MacroExpr |
+| main.rs:528:9:528:9 | [SSA] a | main.rs:530:10:530:10 | a |
+| main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | [SSA] a |
+| main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | a |
+| main.rs:528:18:528:27 | source(...) | main.rs:528:9:528:9 | a |
+| main.rs:530:10:530:10 | a | main.rs:531:10:531:10 | [SSA] a |
+| main.rs:530:10:530:10 | a | main.rs:531:10:531:10 | a |
+| main.rs:531:10:531:10 | [SSA] a | main.rs:532:20:532:20 | a |
+| main.rs:531:10:531:10 | [post] a | main.rs:532:20:532:20 | a |
+| main.rs:531:10:531:10 | [post] receiver for a | main.rs:531:10:531:10 | [post] a |
+| main.rs:531:10:531:10 | a | main.rs:531:10:531:10 | receiver for a |
+| main.rs:531:10:531:10 | a | main.rs:532:20:532:20 | a |
+| main.rs:534:9:534:9 | [SSA] b | main.rs:536:10:536:10 | b |
+| main.rs:534:9:534:9 | b | main.rs:534:9:534:9 | [SSA] b |
+| main.rs:534:9:534:9 | b | main.rs:534:9:534:9 | b |
+| main.rs:534:18:534:34 | ... as i32 | main.rs:534:9:534:9 | b |
+| main.rs:536:10:536:10 | b | main.rs:537:10:537:10 | [SSA] b |
+| main.rs:536:10:536:10 | b | main.rs:537:10:537:10 | b |
+| main.rs:537:10:537:10 | [SSA] b | main.rs:538:20:538:20 | b |
+| main.rs:537:10:537:10 | [post] b | main.rs:538:20:538:20 | b |
+| main.rs:537:10:537:10 | [post] receiver for b | main.rs:537:10:537:10 | [post] b |
+| main.rs:537:10:537:10 | b | main.rs:537:10:537:10 | receiver for b |
+| main.rs:537:10:537:10 | b | main.rs:538:20:538:20 | b |
+| main.rs:565:13:565:33 | result_questionmark(...) | main.rs:565:9:565:9 | _ |
+| main.rs:577:36:577:41 | ...::new(...) | main.rs:577:36:577:41 | MacroExpr |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:alloc; <&&str as crate::string::SpecToString>::spec_to_string; Argument[self].Reference.Reference; ReturnValue; value |
@@ -2393,7 +2415,7 @@ storeStep
 | main.rs:504:41:504:41 | 4 | element | main.rs:504:22:504:42 | [...] |
 | main.rs:519:18:519:18 | c | &ref | main.rs:519:17:519:18 | &c |
 | main.rs:522:15:522:15 | b | &ref | main.rs:522:14:522:15 | &b |
-| main.rs:531:27:531:27 | 0 | Some | main.rs:531:22:531:28 | Some(...) |
+| main.rs:545:27:545:27 | 0 | Some | main.rs:545:22:545:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::<crate::boxed::Box>::allocator | tuple.1 | file://:0:0:0:0 | [summary] read: Argument[0].Field[1] in lang:alloc::_::<crate::boxed::Box>::allocator |
 | file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::<crate::boxed::Box>::as_mut_ptr | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:alloc::_::<crate::boxed::Box>::as_mut_ptr |
@@ -3086,3 +3108,5 @@ readStep
 | main.rs:510:19:510:24 | vs_mut | &ref | main.rs:510:19:510:24 | receiver for vs_mut |
 | main.rs:510:19:510:35 | vs_mut.iter_mut(...) | element | main.rs:510:9:510:14 | &mut ... |
 | main.rs:524:11:524:15 | c_ref | &ref | main.rs:524:10:524:15 | * ... |
+| main.rs:531:10:531:10 | a | &ref | main.rs:531:10:531:10 | receiver for a |
+| main.rs:537:10:537:10 | b | &ref | main.rs:537:10:537:10 | receiver for b |
