@@ -317,6 +317,6 @@ function usePolyfill() {
 
 function useSuperagent(url){
     superagent('GET', url); // Not flagged
-    superagent.del(url); // Not flagged
+    superagent.del(url);
     superagent.agent().post(url).send(data); // Not flagged
 }

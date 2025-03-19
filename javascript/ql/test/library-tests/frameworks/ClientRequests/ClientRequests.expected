@@ -91,6 +91,7 @@ test_ClientRequest
 | tst.js:286:20:286:55 | new Web ... :8080') |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') |
+| tst.js:320:5:320:23 | superagent.del(url) |
 test_getADataNode
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
@@ -240,6 +241,7 @@ test_getUrl
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:26:312:35 | '/foo/bar' |
+| tst.js:320:5:320:23 | superagent.del(url) | tst.js:320:20:320:22 | url |
 test_getAResponseDataNode
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
@@ -314,3 +316,4 @@ test_getAResponseDataNode
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:37 | err.response | json | false |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:304:27:304:38 | err.response | json | false |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:12:312:36 | fetchPo ... o/bar') | fetch.response | true |
+| tst.js:320:5:320:23 | superagent.del(url) | tst.js:320:5:320:23 | superagent.del(url) | stream | true |

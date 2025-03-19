@@ -514,6 +514,13 @@ module ClientRequest {
   }
 
   /**
+   * Gets the name of a superagent request method.
+   */
+  private string getSuperagentRequestMethodName() {
+    result = [httpMethodName(), any(Http::RequestMethodName m), "del", "DEL"]
+  }
+
+  /**
    * A model of a URL request made using the `superagent` library.
    */
   class SuperAgentUrlRequest extends ClientRequest::Range {
@@ -522,7 +529,7 @@ module ClientRequest {
     SuperAgentUrlRequest() {
       exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
         moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
+        callee = DataFlow::moduleMember(moduleName, getSuperagentRequestMethodName()) and
         url = this.getArgument(0)
       )
     }
