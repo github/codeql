@@ -69,11 +69,12 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:
+        overridden_table_name = f.pragmas.get("ql_db_table_name")
         if f.synth:
             continue
         if f.is_unordered:
             yield Table(
-                name=inflection.tableize(f"{cls.name}_{f.name}"),
+                name=overridden_table_name or inflection.tableize(f"{cls.name}_{f.name}"),
                 columns=[
                     Column("id", type=dbtype(cls.name)),
                     Column(inflection.singularize(f.name), dbtype(f.type, add_or_none_except)),
@@ -83,7 +84,7 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
         elif f.is_repeated:
             yield Table(
                 keyset=KeySet(["id", "index"]),
-                name=inflection.tableize(f"{cls.name}_{f.name}"),
+                name=overridden_table_name or inflection.tableize(f"{cls.name}_{f.name}"),
                 columns=[
                     Column("id", type=dbtype(cls.name)),
                     Column("index", type="int"),
@@ -94,7 +95,7 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
         elif f.is_optional:
             yield Table(
                 keyset=KeySet(["id"]),
-                name=inflection.tableize(f"{cls.name}_{f.name}"),
+                name=overridden_table_name or inflection.tableize(f"{cls.name}_{f.name}"),
                 columns=[
                     Column("id", type=dbtype(cls.name)),
                     Column(f.name, dbtype(f.type, add_or_none_except)),
@@ -104,7 +105,7 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
         elif f.is_predicate:
             yield Table(
                 keyset=KeySet(["id"]),
-                name=inflection.underscore(f"{cls.name}_{f.name}"),
+                name=overridden_table_name or inflection.underscore(f"{cls.name}_{f.name}"),
                 columns=[
                     Column("id", type=dbtype(cls.name)),
                 ],
@@ -118,7 +119,8 @@ def check_name_conflicts(decls: list[Table | Union]):
         match decl:
             case Table(name=name):
                 if name in names:
-                    raise Error(f"Duplicate table name: {name}")
+                    raise Error(f"Duplicate table name: {
+                                name}, you can use `@ql.db_table_name` on a property to resolve this")
                 names.add(name)
 
 

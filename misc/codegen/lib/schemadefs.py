@@ -248,6 +248,7 @@ ql.add(_Parametrized(_ClassPragma("default_doc_name"), factory=lambda doc: doc))
 ql.add(_ClassPragma("hideable", inherited=True))
 ql.add(_Pragma("internal"))
 ql.add(_Parametrized(_Pragma("name"), factory=lambda name: name))
+ql.add(_Parametrized(_PropertyPragma("db_table_name"), factory=lambda name: name))
 
 cpp.add(_Pragma("skip"))
 

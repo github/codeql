@@ -603,5 +603,68 @@ def test_table_conflict(generate):
         ])
 
 
+def test_table_name_overrides(generate):
+    assert generate([
+        schema.Class("Obj", properties=[
+            schema.OptionalProperty("x", "a", pragmas={"ql_db_table_name": "foo"}),
+            schema.RepeatedProperty("y", "b", pragmas={"ql_db_table_name": "bar"}),
+            schema.RepeatedOptionalProperty("z", "c", pragmas={"ql_db_table_name": "baz"}),
+            schema.PredicateProperty("p", pragmas={"ql_db_table_name": "hello"}),
+            schema.RepeatedUnorderedProperty("q", "d", pragmas={"ql_db_table_name": "world"}),
+        ]),
+    ]) == dbscheme.Scheme(
+        src=schema_file.name,
+        includes=[],
+        declarations=[
+            dbscheme.Table(
+                name="objs",
+                columns=[
+                    dbscheme.Column("id", "@obj", binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="foo",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("x", "a"),
+                ],
+            ),
+            dbscheme.Table(
+                name="bar",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("index", "int"),
+                    dbscheme.Column("y", "b"),
+                ],
+            ),
+            dbscheme.Table(
+                name="baz",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("index", "int"),
+                    dbscheme.Column("z", "c"),
+                ],
+            ),
+            dbscheme.Table(
+                name="hello",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                ],
+            ),
+            dbscheme.Table(
+                name="world",
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("q", "d"),
+                ],
+            ),
+        ],
+    )
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))
