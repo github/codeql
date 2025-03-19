@@ -81,6 +81,7 @@ abstract private class StructOrEnumType extends Type {
     )
   }
 
+  /** Gets all of the fully parametric `impl` blocks that target this type. */
   final override ImplMention getABaseTypeMention() {
     this.asItemNode() = result.resolveSelfTy() and
     result.isFullyParametric()
@@ -153,6 +154,7 @@ class TraitType extends Type, TTrait {
     result = trait.getTypeBoundList().getABound().getTypeRepr()
   }
 
+  /** Gets any of the trait bounds of this trait. */
   override TypeMention getABaseTypeMention() { result = this.getABoundMention() }
 
   override string toString() { result = trait.toString() }
@@ -308,11 +310,19 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
 
   TypeParam getTypeParam() { result = typeParam }
 
-  override Function getMethod(string name) { result = typeParam.(ItemNode).getASuccessor(name) }
+  override Function getMethod(string name) {
+    // NOTE: If the type parameter has trait bounds, then this finds methods
+    // on the bounding traits.
+    result = typeParam.(ItemNode).getASuccessor(name)
+  }
 
   override string toString() { result = typeParam.toString() }
 
   override Location getLocation() { result = typeParam.getLocation() }
+
+  final override TypeMention getABaseTypeMention() {
+    result = typeParam.getTypeBoundList().getABound().getTypeRepr()
+  }
 }
 
 /** An implicit reference type parameter. */

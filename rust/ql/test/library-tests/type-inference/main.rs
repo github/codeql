@@ -36,14 +36,14 @@ mod field_access {
         let y = GenericThing { a: S };
         println!("{:?}", x.a);
 
-        // The type of the field `a` can only be infered from the concrete type
+        // The type of the field `a` can only be inferred from the concrete type
         // in the struct declaration.
         let x = OptionS {
             a: MyOption::MyNone(),
         };
         println!("{:?}", x.a);
 
-        // The type of the field `a` can only be infered from the type argument
+        // The type of the field `a` can only be inferred from the type argument
         let x = GenericThing::<MyOption<S>> {
             a: MyOption::MyNone(),
         };
@@ -212,23 +212,23 @@ mod type_parameter_bounds {
 
     fn call_first_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
-        let s1 = x.method(); // missing type for `s1`
+        let s1 = x.method();
         println!("{:?}", s1);
     }
 
     fn call_second_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
-        let s2 = x.method(); // missing type for `s2`
+        let s2 = x.method();
         println!("{:?}", s2);
     }
 
     fn trait_bound_with_type<T: FirstTrait<S1>>(x: T) {
-        let s = x.method(); // missing type for `s`
+        let s = x.method();
         println!("{:?}", s);
     }
 
     fn trait_per_bound_with_type<T: FirstTrait<S1>>(x: T) {
-        let s = x.method(); // missing type for `s`
+        let s = x.method();
         println!("{:?}", s);
     }
 
@@ -240,15 +240,15 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // missing type for `s1`
-        let s2 = y.snd(); // missing type for `s2`
+        let s1 = x.fst();
+        let s2 = y.snd();
         println!("{:?}, {:?}", s1, s2);
     }
 
     fn call_trait_per_bound_with_type_2<T2: Debug, T: Pair<S1, T2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // missing type for `s1`
-        let s2 = y.snd(); // missing type for `s2`
+        let s1 = x.fst();
+        let s2 = y.snd();
         println!("{:?}, {:?}", s1, s2);
     }
 }
@@ -530,11 +530,11 @@ mod type_aliases {
     type AnotherPair<Thr> = PairOption<S2, Thr>;
 
     pub fn f() {
-        // Type can be infered from the constructor
+        // Type can be inferred from the constructor
         let p1: MyPair = PairOption::PairBoth(S1, S2);
         println!("{:?}", p1);
 
-        // Type can be only infered from the type alias
+        // Type can be only inferred from the type alias
         let p2: MyPair = PairOption::PairNone(); // types for `Fst` and `Snd` missing
         println!("{:?}", p2);
 

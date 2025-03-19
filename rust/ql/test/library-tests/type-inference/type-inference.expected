@@ -236,20 +236,40 @@ inferType
 | main.rs:210:19:210:22 | SelfParam | ST | main.rs:209:23:209:24 | ST |
 | main.rs:213:64:213:64 | x |  | main.rs:209:5:211:5 | trait SecondTrait |
 | main.rs:213:64:213:64 | x |  | main.rs:213:45:213:61 | T |
+| main.rs:213:64:213:64 | x | ST | main.rs:213:35:213:42 | I |
+| main.rs:215:13:215:14 | s1 |  | main.rs:213:35:213:42 | I |
 | main.rs:215:18:215:18 | x |  | main.rs:209:5:211:5 | trait SecondTrait |
 | main.rs:215:18:215:18 | x |  | main.rs:213:45:213:61 | T |
+| main.rs:215:18:215:18 | x | ST | main.rs:213:35:213:42 | I |
+| main.rs:215:18:215:27 | x.method(...) |  | main.rs:213:35:213:42 | I |
+| main.rs:216:26:216:27 | s1 |  | main.rs:213:35:213:42 | I |
 | main.rs:219:65:219:65 | x |  | main.rs:209:5:211:5 | trait SecondTrait |
 | main.rs:219:65:219:65 | x |  | main.rs:219:46:219:62 | T |
+| main.rs:219:65:219:65 | x | ST | main.rs:219:36:219:43 | I |
+| main.rs:221:13:221:14 | s2 |  | main.rs:219:36:219:43 | I |
 | main.rs:221:18:221:18 | x |  | main.rs:209:5:211:5 | trait SecondTrait |
 | main.rs:221:18:221:18 | x |  | main.rs:219:46:219:62 | T |
+| main.rs:221:18:221:18 | x | ST | main.rs:219:36:219:43 | I |
+| main.rs:221:18:221:27 | x.method(...) |  | main.rs:219:36:219:43 | I |
+| main.rs:222:26:222:27 | s2 |  | main.rs:219:36:219:43 | I |
 | main.rs:225:49:225:49 | x |  | main.rs:205:5:207:5 | trait FirstTrait |
 | main.rs:225:49:225:49 | x |  | main.rs:225:30:225:46 | T |
+| main.rs:225:49:225:49 | x | FT | main.rs:197:5:198:14 | struct S1 |
+| main.rs:226:13:226:13 | s |  | main.rs:197:5:198:14 | struct S1 |
 | main.rs:226:17:226:17 | x |  | main.rs:205:5:207:5 | trait FirstTrait |
 | main.rs:226:17:226:17 | x |  | main.rs:225:30:225:46 | T |
+| main.rs:226:17:226:17 | x | FT | main.rs:197:5:198:14 | struct S1 |
+| main.rs:226:17:226:26 | x.method(...) |  | main.rs:197:5:198:14 | struct S1 |
+| main.rs:227:26:227:26 | s |  | main.rs:197:5:198:14 | struct S1 |
 | main.rs:230:53:230:53 | x |  | main.rs:205:5:207:5 | trait FirstTrait |
 | main.rs:230:53:230:53 | x |  | main.rs:230:34:230:50 | T |
+| main.rs:230:53:230:53 | x | FT | main.rs:197:5:198:14 | struct S1 |
+| main.rs:231:13:231:13 | s |  | main.rs:197:5:198:14 | struct S1 |
 | main.rs:231:17:231:17 | x |  | main.rs:205:5:207:5 | trait FirstTrait |
 | main.rs:231:17:231:17 | x |  | main.rs:230:34:230:50 | T |
+| main.rs:231:17:231:17 | x | FT | main.rs:197:5:198:14 | struct S1 |
+| main.rs:231:17:231:26 | x.method(...) |  | main.rs:197:5:198:14 | struct S1 |
+| main.rs:232:26:232:26 | s |  | main.rs:197:5:198:14 | struct S1 |
 | main.rs:236:16:236:19 | SelfParam |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:236:16:236:19 | SelfParam | P1 | main.rs:235:16:235:17 | P1 |
 | main.rs:236:16:236:19 | SelfParam | P2 | main.rs:235:20:235:21 | P2 |
@@ -258,20 +278,48 @@ inferType
 | main.rs:238:16:238:19 | SelfParam | P2 | main.rs:235:20:235:21 | P2 |
 | main.rs:241:58:241:58 | x |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:241:58:241:58 | x |  | main.rs:241:41:241:55 | T |
+| main.rs:241:58:241:58 | x | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:241:58:241:58 | x | P2 | main.rs:200:5:201:14 | struct S2 |
 | main.rs:241:64:241:64 | y |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:241:64:241:64 | y |  | main.rs:241:41:241:55 | T |
+| main.rs:241:64:241:64 | y | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:241:64:241:64 | y | P2 | main.rs:200:5:201:14 | struct S2 |
+| main.rs:243:13:243:14 | s1 |  | main.rs:197:5:198:14 | struct S1 |
 | main.rs:243:18:243:18 | x |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:243:18:243:18 | x |  | main.rs:241:41:241:55 | T |
+| main.rs:243:18:243:18 | x | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:243:18:243:18 | x | P2 | main.rs:200:5:201:14 | struct S2 |
+| main.rs:243:18:243:24 | x.fst(...) |  | main.rs:197:5:198:14 | struct S1 |
+| main.rs:244:13:244:14 | s2 |  | main.rs:200:5:201:14 | struct S2 |
 | main.rs:244:18:244:18 | y |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:244:18:244:18 | y |  | main.rs:241:41:241:55 | T |
+| main.rs:244:18:244:18 | y | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:244:18:244:18 | y | P2 | main.rs:200:5:201:14 | struct S2 |
+| main.rs:244:18:244:24 | y.snd(...) |  | main.rs:200:5:201:14 | struct S2 |
+| main.rs:245:32:245:33 | s1 |  | main.rs:197:5:198:14 | struct S1 |
+| main.rs:245:36:245:37 | s2 |  | main.rs:200:5:201:14 | struct S2 |
 | main.rs:248:69:248:69 | x |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:248:69:248:69 | x |  | main.rs:248:52:248:66 | T |
+| main.rs:248:69:248:69 | x | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:248:69:248:69 | x | P2 | main.rs:248:41:248:49 | T2 |
 | main.rs:248:75:248:75 | y |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:248:75:248:75 | y |  | main.rs:248:52:248:66 | T |
+| main.rs:248:75:248:75 | y | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:248:75:248:75 | y | P2 | main.rs:248:41:248:49 | T2 |
+| main.rs:250:13:250:14 | s1 |  | main.rs:197:5:198:14 | struct S1 |
 | main.rs:250:18:250:18 | x |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:250:18:250:18 | x |  | main.rs:248:52:248:66 | T |
+| main.rs:250:18:250:18 | x | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:250:18:250:18 | x | P2 | main.rs:248:41:248:49 | T2 |
+| main.rs:250:18:250:24 | x.fst(...) |  | main.rs:197:5:198:14 | struct S1 |
+| main.rs:251:13:251:14 | s2 |  | main.rs:248:41:248:49 | T2 |
 | main.rs:251:18:251:18 | y |  | main.rs:235:5:239:5 | trait Pair |
 | main.rs:251:18:251:18 | y |  | main.rs:248:52:248:66 | T |
+| main.rs:251:18:251:18 | y | P1 | main.rs:197:5:198:14 | struct S1 |
+| main.rs:251:18:251:18 | y | P2 | main.rs:248:41:248:49 | T2 |
+| main.rs:251:18:251:24 | y.snd(...) |  | main.rs:248:41:248:49 | T2 |
+| main.rs:252:32:252:33 | s1 |  | main.rs:197:5:198:14 | struct S1 |
+| main.rs:252:36:252:37 | s2 |  | main.rs:248:41:248:49 | T2 |
 | main.rs:268:15:268:18 | SelfParam |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:268:15:268:18 | SelfParam | A | main.rs:267:19:267:19 | A |
 | main.rs:270:15:270:18 | SelfParam |  | main.rs:267:5:276:5 | trait MyTrait |
