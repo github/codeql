@@ -3,8 +3,8 @@
  * @description Dereferencing an invalid or dangling pointer is undefined behavior and may cause memory corruption.
  * @kind path-problem
  * @problem.severity error
- * @security-severity TODO
- * @precision TODO
+ * @security-severity 7.5
+ * @precision high
  * @id rust/access-invalid-pointer
  * @tags reliability
  *       security
