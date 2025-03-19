@@ -527,26 +527,21 @@ module ClientRequest {
     DataFlow::Node url;
 
     SuperAgentUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee |
-        moduleName = "superagent" and
-        (
-          this = callee.getACall() and
-          // Handle method calls like superagent.get(url)
-          callee = DataFlow::moduleMember(moduleName, getSuperagentRequestMethodName()) and
+      exists(string moduleName | moduleName = "superagent" |
+        // Handle method calls like superagent.get(url)
+        this = DataFlow::moduleMember(moduleName, getSuperagentRequestMethodName()).getACall() and
+        url = this.getArgument(0)
+        or
+        // Handle direct calls like superagent('GET', url)
+        this = DataFlow::moduleImport(moduleName).getACall() and
+        this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
+        url = this.getArgument(1)
+        or
+        // Handle agent calls like superagent.agent().get(url)
+        exists(DataFlow::SourceNode agent |
+          agent = DataFlow::moduleMember(moduleName, "agent").getACall() and
+          this = agent.getAMethodCall(httpMethodName()) and
           url = this.getArgument(0)
-          or
-          this = callee.getACall() and
-          // Handle direct calls like superagent('GET', url)
-          callee = DataFlow::moduleImport(moduleName) and
-          this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
-          url = this.getArgument(1)
-          or
-          // Handle agent calls like superagent.agent().get(url)
-          exists(DataFlow::SourceNode agent |
-            agent = DataFlow::moduleMember(moduleName, "agent").getACall() and
-            this = agent.getAMethodCall(httpMethodName()) and
-            url = this.getArgument(0)
-          )
         )
       )
     }
