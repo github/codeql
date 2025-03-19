@@ -2,8 +2,9 @@ from typing import (
     Callable as _Callable,
     Dict as _Dict,
     Iterable as _Iterable,
-    ClassVar as _ClassVar,
+    Union as _Union,
 )
+from copy import deepcopy as _deepcopy
 from misc.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
@@ -75,7 +76,7 @@ class _Namespace:
     """ simple namespacing mechanism """
     _name: str
 
-    def add(self, pragma: "_PragmaBase", key: str | None = None):
+    def add(self, pragma: _Union["_PragmaBase", "_Parametrized"], key: str | None = None):
         self.__dict__[pragma.pragma] = pragma
         pragma.pragma = key or f"{self._name}_{pragma.pragma}"
 
@@ -101,6 +102,10 @@ synth = _SynthModifier("synth")
 @_dataclass
 class _PragmaBase:
     pragma: str
+    value: object = None
+
+    def _apply(self, pragmas: _Dict[str, object]) -> None:
+        pragmas[self.pragma] = self.value
 
 
 @_dataclass
@@ -109,7 +114,6 @@ class _ClassPragma(_PragmaBase):
     For schema classes it acts as a python decorator with `@`.
     """
     inherited: bool = False
-    value: object = None
 
     def __call__(self, cls: type) -> type:
         """ use this pragma as a decorator on classes """
@@ -122,15 +126,11 @@ class _ClassPragma(_PragmaBase):
             self._apply(cls._pragmas)
         return cls
 
-    def _apply(self, pragmas: _Dict[str, object]) -> None:
-        pragmas[self.pragma] = self.value
-
 
 @_dataclass
-class _Pragma(_ClassPragma, _schema.PropertyModifier):
-    """ A class or property pragma.
-    For properties, it functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
-    For schema classes it acts as a python decorator with `@`.
+class _PropertyPragma(_PragmaBase, _schema.PropertyModifier):
+    """ A property pragma.
+    It functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
     """
     remove: bool = False
 
@@ -138,7 +138,7 @@ class _Pragma(_ClassPragma, _schema.PropertyModifier):
         self._apply(prop.pragmas)
 
     def negate(self) -> _schema.PropertyModifier:
-        return _Pragma(self.pragma, remove=True)
+        return _PropertyPragma(self.pragma, remove=not self.remove)
 
     def _apply(self, pragmas: _Dict[str, object]) -> None:
         if self.remove:
@@ -148,31 +148,38 @@ class _Pragma(_ClassPragma, _schema.PropertyModifier):
 
 
 @_dataclass
-class _ParametrizedClassPragma(_PragmaBase):
-    """ A class parametrized pragma.
-    Needs to be applied to a parameter to give a class pragma.
+class _Pragma(_ClassPragma, _PropertyPragma):
+    """ A class or property pragma.
+    For properties, it functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
+    For schema classes it acts as a python decorator with `@`.
     """
-    _pragma_class: _ClassVar[type] = _ClassPragma
-
-    inherited: bool = False
-    factory: _Callable[..., object] = None
-
-    def __post_init__(self):
-        self.__signature__ = _inspect.signature(self.factory).replace(return_annotation=self._pragma_class)
-
-    def __call__(self, *args, **kwargs) -> _pragma_class:
-        return self._pragma_class(self.pragma, self.inherited, value=self.factory(*args, **kwargs))
 
 
-@_dataclass
-class _ParametrizedPragma(_ParametrizedClassPragma):
-    """ A class or property parametrized pragma.
+class _Parametrized[P, **Q, T]:
+    """ A parametrized pragma.
     Needs to be applied to a parameter to give a pragma.
     """
-    _pragma_class: _ClassVar[type] = _Pragma
 
-    def __invert__(self) -> _Pragma:
-        return _Pragma(self.pragma, remove=True)
+    def __init__(self, pragma_instance: P, factory: _Callable[Q, T]):
+        self.pragma_instance = pragma_instance
+        self.factory = factory
+        self.__signature__ = _inspect.signature(self.factory).replace(return_annotation=type(self.pragma_instance))
+
+    @property
+    def pragma(self):
+        return self.pragma_instance.pragma
+
+    @pragma.setter
+    def pragma(self, value):
+        self.pragma_instance.pragma = value
+
+    def __invert__(self) -> "_Parametrized[P, Q, T]":
+        return _Parametrized(~self.pragma_instance, factory=self.factory)
+
+    def __call__(self, *args: Q.args, **kwargs: Q.kwargs) -> T:
+        ret = _deepcopy(self.pragma_instance)
+        ret.value = self.factory(*args, **kwargs)
+        return ret
 
 
 class _Optionalizer(_schema.PropertyModifier):
@@ -232,30 +239,30 @@ desc = _DescModifier
 
 use_for_null = _ClassPragma("null")
 
-qltest.add(_Pragma("skip"))
+qltest.add(_ClassPragma("skip"))
 qltest.add(_ClassPragma("collapse_hierarchy"))
 qltest.add(_ClassPragma("uncollapse_hierarchy"))
-qltest.add(_ParametrizedClassPragma("test_with", inherited=True, factory=_schema.get_type_name))
+qltest.add(_Parametrized(_ClassPragma("test_with", inherited=True), factory=_schema.get_type_name))
 
-ql.add(_ParametrizedClassPragma("default_doc_name", factory=lambda doc: doc))
+ql.add(_Parametrized(_ClassPragma("default_doc_name"), factory=lambda doc: doc))
 ql.add(_ClassPragma("hideable", inherited=True))
 ql.add(_Pragma("internal"))
-ql.add(_ParametrizedPragma("name", factory=lambda name: name))
+ql.add(_Parametrized(_Pragma("name"), factory=lambda name: name))
 
 cpp.add(_Pragma("skip"))
 
-rust.add(_Pragma("detach"))
+rust.add(_PropertyPragma("detach"))
 rust.add(_Pragma("skip_doc_test"))
 
-rust.add(_ParametrizedClassPragma("doc_test_signature", factory=lambda signature: signature))
+rust.add(_Parametrized(_ClassPragma("doc_test_signature"), factory=lambda signature: signature))
 
-group = _ParametrizedClassPragma("group", inherited=True, factory=lambda group: group)
+group = _Parametrized(_ClassPragma("group", inherited=True), factory=lambda group: group)
 
 
-synth.add(_ParametrizedClassPragma("from_class", factory=lambda ref: _schema.SynthInfo(
+synth.add(_Parametrized(_ClassPragma("from_class"), factory=lambda ref: _schema.SynthInfo(
     from_class=_schema.get_type_name(ref))), key="synth")
-synth.add(_ParametrizedClassPragma("on_arguments", factory=lambda **kwargs:
-                                   _schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()})), key="synth")
+synth.add(_Parametrized(_ClassPragma("on_arguments"), factory=lambda **kwargs:
+                        _schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()})), key="synth")
 
 
 @_dataclass(frozen=True)
