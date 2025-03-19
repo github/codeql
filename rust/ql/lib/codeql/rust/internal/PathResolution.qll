@@ -109,7 +109,11 @@ abstract class ItemNode extends Locatable {
 
   /** Gets the immediately enclosing module (or source file) of this item. */
   pragma[nomagic]
-  ModuleLikeNode getImmediateParentModule() { this = result.getAnItemInScope() }
+  ModuleLikeNode getImmediateParentModule() {
+    this = result.getAnItemInScope()
+    or
+    result = this.(SourceFileItemNode).getSuper()
+  }
 
   pragma[nomagic]
   private ItemNode getASuccessorRec(string name) {
@@ -172,7 +176,7 @@ abstract class ItemNode extends Locatable {
     result = this.getASuccessorRec(name)
     or
     name = "super" and
-    if this instanceof Module
+    if this instanceof Module or this instanceof SourceFile
     then result = this.getImmediateParentModule()
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
@@ -206,6 +210,14 @@ abstract private class ModuleLikeNode extends ItemNode {
 }
 
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
+  pragma[nomagic]
+  ModuleLikeNode getSuper() {
+    exists(ModuleItemNode mod |
+      fileImport(mod, this) and
+      result = mod.getASuccessor("super")
+    )
+  }
+
   override string getName() { result = "(source file)" }
 
   override Namespace getNamespace() {

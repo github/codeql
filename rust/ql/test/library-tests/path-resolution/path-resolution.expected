@@ -270,6 +270,13 @@ resolvePath
 | my2/mod.rs:10:9:10:24 | ...::nested7 | my2/nested2.rs:21:1:27:1 | mod nested7 |
 | my2/mod.rs:10:9:10:33 | ...::nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
 | my2/mod.rs:10:37:10:40 | self | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
+| my2/my3/mod.rs:4:5:4:5 | h | main.rs:50:1:69:1 | fn h |
+| my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:12:13 | SourceFile |
+| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:501:2 | SourceFile |
+| my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:50:1:69:1 | fn h |
+| my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:12:13 | SourceFile |
+| my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |
 | my.rs:3:5:3:10 | nested | my.rs:1:1:1:15 | mod nested |
 | my.rs:3:5:3:13 | ...::g | my/nested.rs:19:1:22:1 | fn g |
 | my.rs:11:5:11:5 | g | my/nested.rs:19:1:22:1 | fn g |
