@@ -529,8 +529,16 @@ module ClientRequest {
     SuperAgentUrlRequest() {
       exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
         moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, getSuperagentRequestMethodName()) and
-        url = this.getArgument(0)
+        (
+          // Handle method calls like superagent.get(url)
+          callee = DataFlow::moduleMember(moduleName, getSuperagentRequestMethodName()) and
+          url = this.getArgument(0)
+          or
+          // Handle direct calls like superagent('GET', url)
+          callee = DataFlow::moduleImport(moduleName) and
+          this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
+          url = this.getArgument(1)
+        )
       )
     }
 
