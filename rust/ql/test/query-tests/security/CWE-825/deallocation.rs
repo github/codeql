@@ -51,18 +51,19 @@ pub fn test_alloc_array(do_dangerous_writes: bool) {
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");
 
-		std::alloc::dealloc(m2 as *mut u8, layout); // m1, m2 are now dangling
+		std::alloc::dealloc(m2 as *mut u8, layout); // $ Source=dealloc_array
+		// m1, m2 are now dangling
 
-		let v3 = (*m2)[0]; // $ MISSING: Alert
-		let v4 = (*m2)[1]; // $ MISSING: Alert
+		let v3 = (*m2)[0]; // $ Alert[rust/access-invalid-pointer]=dealloc_array
+		let v4 = (*m2)[1]; // $ Alert[rust/access-invalid-pointer]=dealloc_array
 		println!("	v3 = {v3} (!)"); // corrupt in practice
 		println!("	v4 = {v4} (!)"); // corrupt in practice
 
 		if do_dangerous_writes {
-			(*m2)[0] = 3; // $ MISSING: Alert
-			(*m2)[1] = 4; // $ MISSING: Alert
+			(*m2)[0] = 3; // $ Alert[rust/access-invalid-pointer]=dealloc_array
+			(*m2)[1] = 4; // $ Alert[rust/access-invalid-pointer]=dealloc_array
 			std::ptr::write::<u8>(m1, 5); // $ MISSING: Alert
-			std::ptr::write::<[u8; 10]>(m2, [6; 10]); // $ MISSING: Alert
+			std::ptr::write::<[u8; 10]>(m2, [6; 10]); // $ Alert[rust/access-invalid-pointer]=dealloc_array
 		}
 	}
 }
@@ -77,9 +78,10 @@ pub fn test_libc() {
 		let v1 = *my_ptr; // GOOD
 		println!("	v1 = {v1}");
 
-		libc::free(my_ptr as *mut libc::c_void); // my_ptr is now dangling
+		libc::free(my_ptr as *mut libc::c_void); // $ Source=free
+		// (my_ptr is now dangling)
 
-		let v2 = *my_ptr; // $ MISSING: Alert
+		let v2 = *my_ptr; // $ Alert[rust/access-invalid-pointer]=free
 		println!("	v2 = {v2} (!)"); // corrupt in practice
 	}
 }

@@ -50,7 +50,7 @@ module AccessInvalidPointer {
         sourceNode(n, "pointer-invalidate") and
         n.(FlowSummaryNode).getSourceElement() = ce.getFunction() and
         arg = ce.getArgList().getAnArg() and
-        this.asExpr().getExpr() = arg
+        this.asExpr().getExpr().getParentNode*() = arg
       )
     }
   }
