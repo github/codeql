@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/meta/alerts/nodes-with-underlying-type
- * @tags meta
+ * @tags meta-disabled
  * @precision very-low
  */
 
