@@ -850,9 +850,7 @@ localStep
 | main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | [SSA] a |
 | main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | a |
 | main.rs:528:18:528:27 | source(...) | main.rs:528:9:528:9 | a |
-| main.rs:530:10:530:10 | a | main.rs:531:10:531:10 | [SSA] a |
 | main.rs:530:10:530:10 | a | main.rs:531:10:531:10 | a |
-| main.rs:531:10:531:10 | [SSA] a | main.rs:532:20:532:20 | a |
 | main.rs:531:10:531:10 | [post] a | main.rs:532:20:532:20 | a |
 | main.rs:531:10:531:10 | [post] receiver for a | main.rs:531:10:531:10 | [post] a |
 | main.rs:531:10:531:10 | a | main.rs:531:10:531:10 | receiver for a |
@@ -861,9 +859,7 @@ localStep
 | main.rs:534:9:534:9 | b | main.rs:534:9:534:9 | [SSA] b |
 | main.rs:534:9:534:9 | b | main.rs:534:9:534:9 | b |
 | main.rs:534:18:534:34 | ... as i32 | main.rs:534:9:534:9 | b |
-| main.rs:536:10:536:10 | b | main.rs:537:10:537:10 | [SSA] b |
 | main.rs:536:10:536:10 | b | main.rs:537:10:537:10 | b |
-| main.rs:537:10:537:10 | [SSA] b | main.rs:538:20:538:20 | b |
 | main.rs:537:10:537:10 | [post] b | main.rs:538:20:538:20 | b |
 | main.rs:537:10:537:10 | [post] receiver for b | main.rs:537:10:537:10 | [post] b |
 | main.rs:537:10:537:10 | b | main.rs:537:10:537:10 | receiver for b |
