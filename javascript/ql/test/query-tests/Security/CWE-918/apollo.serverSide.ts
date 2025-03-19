@@ -4,8 +4,8 @@ import { get } from 'https';
 function createApolloServer(typeDefs) {
     const resolvers = {
         Mutation: {
-          downloadFiles: async (_, { files }) => { // $ MISSING: Source[js/request-forgery]
-            files.forEach((file) => { get(file.url, (res) => {}); }); // $ MISSING: Alert[js/request-forgery] Sink[js/request-forgery]
+          downloadFiles: async (_, { files }) => { // $ Source[js/request-forgery]
+            files.forEach((file) => { get(file.url, (res) => {}); }); // $ Alert[js/request-forgery] Sink[js/request-forgery]
             return true;
           },
         },

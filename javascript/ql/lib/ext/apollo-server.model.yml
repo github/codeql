@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["@apollo/server", "Member[ApolloServer].Argument[0].AnyMember.AnyMember.AnyMember.Parameter[1]", "remote"]
