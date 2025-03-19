@@ -318,6 +318,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class CipherOutputArtifactInstance extends ArtifactInstance {
     final override DataFlowNode getInputNode() { none() }
+
+    override predicate isConsumerArtifact() { none() }
   }
 
   // Artifacts that may be outputs or inputs
@@ -967,6 +969,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   newtype TPaddingType =
     PKCS1_v1_5() or // RSA encryption/signing padding
+    PSS() or
     PKCS7() or // Standard block cipher padding (PKCS5 for 8-byte blocks)
     ANSI_X9_23() or // Zero-padding except last byte = padding length
     NoPadding() or // Explicit no-padding
@@ -987,6 +990,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     bindingset[type]
     final private predicate paddingToNameMapping(TPaddingType type, string name) {
       type instanceof PKCS1_v1_5 and name = "PKCS1_v1_5"
+      or
+      type instanceof PSS and name = "PSS"
       or
       type instanceof PKCS7 and name = "PKCS7"
       or

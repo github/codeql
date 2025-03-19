@@ -9,6 +9,12 @@ module CryptoInput implements InputSig<Lang::Location> {
   class LocatableElement = Lang::Locatable;
 
   class UnknownLocation = Lang::UnknownDefaultLocation;
+
+  LocatableElement dfn_to_element(DataFlow::Node node) {
+    result = node.asExpr() or
+    result = node.asParameter() or
+    result = node.asVariable()
+  }
 }
 
 module Crypto = CryptographyBase<Lang::Location, CryptoInput>;
