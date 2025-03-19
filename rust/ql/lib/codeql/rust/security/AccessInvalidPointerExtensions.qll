@@ -8,6 +8,7 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
+private import codeql.rust.dataflow.internal.Node
 
 /**
  * Provides default sources, sinks and barriers for detecting accesses to
@@ -38,6 +39,20 @@ module AccessInvalidPointer {
    */
   private class ModelsAsDataSource extends Source {
     ModelsAsDataSource() { sourceNode(this, "pointer-invalidate") }
+  }
+
+  /**
+   * A pointer invalidation from an argument of a modelled call (this is a workaround).
+   */
+  private class ModelsAsDataArgumentSource extends Source {
+    ModelsAsDataArgumentSource() {
+      exists(DataFlow::Node n, CallExpr ce, Expr arg |
+        sourceNode(n, "pointer-invalidate") and
+        n.(FlowSummaryNode).getSourceElement() = ce.getFunction() and
+        arg = ce.getArgList().getAnArg() and
+        this.asExpr().getExpr() = arg
+      )
+    }
   }
 
   /**

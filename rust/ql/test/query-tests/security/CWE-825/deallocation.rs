@@ -17,11 +17,12 @@ pub fn test_alloc(do_dangerous_writes: bool) {
 		println!("	v3 = {v3}");
 		println!("	v4 = {v4}");
 
-		std::alloc::dealloc(m1, layout); // m1, m2 are now dangling
+		std::alloc::dealloc(m1, layout); // $ Source=dealloc
+		// (m1, m2 are now dangling)
 
-		let v5 = *m1; // $ MISSING: Alert
+		let v5 = *m1; // $ Alert[rust/access-invalid-pointer]=dealloc
 		let v6 = *m2; // $ MISSING: Alert
-		let v7 = std::ptr::read::<u8>(m1); // $ MISSING: Alert
+		let v7 = std::ptr::read::<u8>(m1); // $ Alert[rust/access-invalid-pointer]=dealloc
 		let v8 = std::ptr::read::<i64>(m2); // $ MISSING: Alert
 		println!("	v5 = {v5} (!)"); // corrupt in practice
 		println!("	v6 = {v6} (!)"); // corrupt in practice
@@ -29,9 +30,9 @@ pub fn test_alloc(do_dangerous_writes: bool) {
 		println!("	v8 = {v8} (!)"); // corrupt in practice
 
 		if do_dangerous_writes {
-			*m1 = 2; // $ MISSING: Alert
+			*m1 = 2; // $ Alert[rust/access-invalid-pointer]=dealloc
 			*m2 = 3; // $ MISSING: Alert
-			std::ptr::write::<u8>(m1, 4); // $ MISSING: Alert
+			std::ptr::write::<u8>(m1, 4); // $ Alert[rust/access-invalid-pointer]=dealloc
 			std::ptr::write::<i64>(m2, 5); // $ MISSING: Alert
 		}
 	}
@@ -139,9 +140,10 @@ pub fn test_ptr_drop() {
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");
 
-		std::ptr::drop_in_place(p1); // explicitly destructs the pointed-to `m2`
+		std::ptr::drop_in_place(p1); // $ Source=drop_in_place
+		// explicitly destructs the pointed-to `m2`
 
-		let v3 = (*p1)[0]; // $ MISSING: Alert
+		let v3 = (*p1)[0]; // $ Alert[rust/access-invalid-pointer]=drop_in_place
 		let v4 = (*p2)[0]; // $ MISSING: Alert
 		println!("	v3 = {v3} (!)"); // corrupt in practice
 		println!("	v4 = {v4} (!)"); // corrupt in practice
