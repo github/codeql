@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.FieldListImpl::Impl as FieldListImpl
-import codeql.rust.elements.RecordField
+import codeql.rust.elements.StructField
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordFieldList` and should not
@@ -15,7 +15,7 @@ import codeql.rust.elements.RecordField
  */
 module Generated {
   /**
-   * A RecordFieldList. For example:
+   * A field list of a struct expression. For example:
    * ```rust
    * todo!()
    * ```
@@ -28,9 +28,9 @@ module Generated {
     /**
      * Gets the `index`th field of this record field list (0-based).
      */
-    RecordField getField(int index) {
+    StructField getField(int index) {
       result =
-        Synth::convertRecordFieldFromRaw(Synth::convertRecordFieldListToRaw(this)
+        Synth::convertStructFieldFromRaw(Synth::convertRecordFieldListToRaw(this)
               .(Raw::RecordFieldList)
               .getField(index))
     }
@@ -38,7 +38,7 @@ module Generated {
     /**
      * Gets any of the fields of this record field list.
      */
-    final RecordField getAField() { result = this.getField(_) }
+    final StructField getAField() { result = this.getField(_) }
 
     /**
      * Gets the number of fields of this record field list.
