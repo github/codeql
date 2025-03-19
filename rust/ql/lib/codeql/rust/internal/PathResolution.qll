@@ -822,7 +822,8 @@ ItemNode resolvePath(RelevantPath path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
-    not pathUsesNamespace(path, _)
+    not pathUsesNamespace(path, _) and
+    not path = any(MacroCall mc).getPath()
   )
 }
 
