@@ -153,7 +153,7 @@ We'll use two "top-level" categories of quality queries, with sub-categories ben
 
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
   * `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
-  * `@tags unused-code`-for queries that detect functions that are never used and other instances of unused code
+  * `@tags useless-code`-for queries that detect functions that are never used and other instances of unused code
   * `@tags complexity`-for queries that detect patterns in the code that lead to unnecesary complexity such as unclear control flow, or high cyclomatic complexity
   
 
