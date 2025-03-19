@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
+import codeql.rust.elements.Expr
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
@@ -47,6 +48,19 @@ module Generated {
      * Gets the number of attrs of this record field.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this record field, if it exists.
+     */
+    Expr getExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertRecordFieldToRaw(this).(Raw::RecordField).getExpr())
+    }
+
+    /**
+     * Holds if `getExpr()` exists.
+     */
+    final predicate hasExpr() { exists(this.getExpr()) }
 
     /**
      * Gets the name of this record field, if it exists.

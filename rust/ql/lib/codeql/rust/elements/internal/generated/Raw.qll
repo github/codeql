@@ -55,6 +55,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class Crate extends @crate, Locatable {
+    override string toString() { result = "Crate" }
+
+    /**
+     * Gets the name of this crate, if it exists.
+     */
+    string getName() { crate_names(this, result) }
+
+    /**
+     * Gets the version of this crate, if it exists.
+     */
+    string getVersion() { crate_versions(this, result) }
+
+    /**
+     * Gets the module of this crate, if it exists.
+     */
+    Module getModule() { crate_modules(this, result) }
+
+    /**
+     * Gets the `index`th cfg option of this crate (0-based).
+     */
+    string getCfgOption(int index) { crate_cfg_options(this, index, result) }
+
+    /**
+     * Gets the `index`th dependency of this crate (0-based).
+     */
+    Crate getDependency(int index) { crate_dependencies(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * The base class marking errors during parsing or resolution.
    */
   class Missing extends @missing, Unextracted {
@@ -785,6 +817,11 @@ module Raw {
      * Gets the `index`th attr of this record field (0-based).
      */
     Attr getAttr(int index) { record_field_attrs(this, index, result) }
+
+    /**
+     * Gets the expression of this record field, if it exists.
+     */
+    Expr getExpr() { record_field_exprs(this, result) }
 
     /**
      * Gets the name of this record field, if it exists.

@@ -84,6 +84,6 @@ rust_library(
     }),
     version = "0.2.0",
     deps = [
-        "@vendor__tracing-0.1.41//:tracing",
+        "@vendor_ts__tracing-0.1.41//:tracing",
     ],
 )

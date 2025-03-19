@@ -8,6 +8,7 @@ private import codeql.dataflow.test.InlineFlowTest
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.Node as Node
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.dataflow.internal.ModelsAsData as MaD
 private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl

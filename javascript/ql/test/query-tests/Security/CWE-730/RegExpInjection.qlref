@@ -1,1 +1,2 @@
-Security/CWE-730/RegExpInjection.ql
+query: Security/CWE-730/RegExpInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

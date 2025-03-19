@@ -3,6 +3,6 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
-      - ["", "CAtlTemporaryFile", True, "Create", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      - ["", "CAtlTemporaryFile", True, "Read", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
-      - ["", "CAtlTemporaryFile", True, "Write", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["ATL", "CAtlTemporaryFile", True, "Create", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["ATL", "CAtlTemporaryFile", True, "Read", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["ATL", "CAtlTemporaryFile", True, "Write", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]

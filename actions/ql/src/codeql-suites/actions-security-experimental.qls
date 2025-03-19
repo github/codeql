@@ -1,2 +1,4 @@
 - description: Extended and experimental security queries for GitHub Actions
-- import: codeql-suites/actions-code-scanning.qls
+- queries: .
+- apply: security-experimental-selectors.yml
+  from: codeql/suite-helpers

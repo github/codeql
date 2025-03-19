@@ -23,6 +23,6 @@ module Impl {
    * ```
    */
   class BinaryExpr extends Generated::BinaryExpr {
-    override string toString() { result = "... " + this.getOperatorName() + " ..." }
+    override string toStringImpl() { result = "... " + this.getOperatorName() + " ..." }
   }
 }

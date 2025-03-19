@@ -1,1 +1,2 @@
-Security/CWE-200/PrivateFileExposure.ql
+query: Security/CWE-200/PrivateFileExposure.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -36,7 +36,7 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2018",
     proc_macro_deps = [
-        "@vendor__pear_codegen-0.2.9//:pear_codegen",
+        "@vendor_ts__pear_codegen-0.2.9//:pear_codegen",
     ],
     rustc_flags = [
         "--cap-lints=allow",
@@ -89,7 +89,7 @@ rust_library(
     }),
     version = "0.2.9",
     deps = [
-        "@vendor__inlinable_string-0.1.15//:inlinable_string",
-        "@vendor__yansi-1.0.1//:yansi",
+        "@vendor_ts__inlinable_string-0.1.15//:inlinable_string",
+        "@vendor_ts__yansi-1.0.1//:yansi",
     ],
 )

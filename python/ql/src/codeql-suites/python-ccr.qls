@@ -1,1 +1,5 @@
-[]
+- queries: .
+- include:
+    id:
+      - py/not-named-self 
+      - py/not-named-cls

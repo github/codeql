@@ -9,10 +9,10 @@ class C1 extends React.Component {
   }
 }
 
-class C2 extends React.Component {
+class C2 extends React.Component { // $ Alert
 
   state = {
-    p1: ''
+    p1: '' // $ RelatedLocation
   }
 
   static getDerivedStateFromProps_unmodeled(props, state) {

@@ -1,1 +1,2 @@
-Expressions/SuspiciousInvocation.ql
+query: Expressions/SuspiciousInvocation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

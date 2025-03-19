@@ -68,6 +68,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCrate(Crate e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfFormat(Format e, int index, string partialPredicateCall) {
     exists(
       int b, int bLocatable, int n, int nArgumentRef, int nWidthArgument, int nPrecisionArgument
@@ -903,12 +916,15 @@ private module Impl {
   private Element getImmediateChildOfRecordField(
     RecordField e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bAstNode, int n, int nAttr, int nName, int nTypeRepr, int nVisibility |
+    exists(
+      int b, int bAstNode, int n, int nAttr, int nExpr, int nName, int nTypeRepr, int nVisibility
+    |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nName = nAttr + 1 and
+      nExpr = nAttr + 1 and
+      nName = nExpr + 1 and
       nTypeRepr = nName + 1 and
       nVisibility = nTypeRepr + 1 and
       (
@@ -919,7 +935,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getName() and partialPredicateCall = "Name()"
+        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        or
+        index = nExpr and result = e.getName() and partialPredicateCall = "Name()"
         or
         index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
@@ -4047,6 +4065,8 @@ private module Impl {
     or
     result = getImmediateChildOfExtractorStep(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCrate(e, index, partialAccessor)
+    or
     result = getImmediateChildOfFormat(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormatArgument(e, index, partialAccessor)
@@ -4384,6 +4404,11 @@ Element getImmediateParent(Element e) {
 }
 
 /**
+ * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+ */
+Element getImmediateChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _) }
+
+/**
  * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
@@ -4402,3 +4427,8 @@ Element getChildAndAccessor(Element e, int index, string accessor) {
     accessor = "get" + partialAccessor
   )
 }
+
+/**
+ * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
+ */
+Element getChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _).resolve() }

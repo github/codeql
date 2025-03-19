@@ -1,1 +1,2 @@
-Expressions/MisspelledVariableName.ql
+query: Expressions/MisspelledVariableName.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

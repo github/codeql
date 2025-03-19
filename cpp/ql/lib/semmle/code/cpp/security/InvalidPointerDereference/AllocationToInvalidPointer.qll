@@ -327,9 +327,7 @@ private module Config implements ProductFlow::StateConfigSig {
 
   predicate isBarrierIn1(DataFlow::Node node) { isSourcePair(node, _, _, _) }
 
-  predicate isBarrierOut2(DataFlow::Node node) {
-    node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
-  }
+  predicate isBarrierOut2(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
 }
 
 private module AllocToInvalidPointerFlow = ProductFlow::GlobalWithState<Config>;

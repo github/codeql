@@ -1,5 +1,5 @@
-var escaped = raw.replace(/"/g, '\"');
+var escaped = raw.replace(/"/g, '\"'); // $ Alert
 (function() {
 	var indirect = /"/g;
-	raw.replace(indirect, '\"');
+	raw.replace(indirect, '\"'); // $ Alert
 });

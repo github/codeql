@@ -3,52 +3,52 @@
     foo() {}
   };
 
-  window.addEventListener('message', (ev) => {
+  window.addEventListener('message', (ev) => { // $ Source
     let name = JSON.parse(ev.data).name;
 
-    obj[ev.data](); // NOT OK: might not be a function
+    obj[ev.data](); // $ Alert - might not be a function
 
-    obj[name]();    // NOT OK: might not be a function
+    obj[name]();    // $ Alert - might not be a function
 
     try {
-      obj[name]();  // OK: exception is caught
+      obj[name]();  // OK - exception is caught
     } catch(e) {}
 
     let fn = obj[name];
-    fn();           // NOT OK: might not be a function
+    fn();           // $ Alert - might not be a function
     if (typeof fn == 'function') {
-      fn();         // NOT OK: might be `valueOf`
-      obj[name]();  // NOT OK: might be `__defineSetter__`
-      new fn();     // NOT OK: might be `valueOf` or `toString`
+      fn();         // $ Alert - might be `valueOf`
+      obj[name]();  // $ Alert - might be `__defineSetter__`
+      new fn();     // $ Alert - might be `valueOf` or `toString`
     }
 
     if (obj[name])
-      obj[name]();  // NOT OK
+      obj[name]();  // $ Alert
     if (typeof obj[name] === 'function')
-      obj[name]();  // NOT OK
+      obj[name]();  // $ Alert
 
     if (obj.hasOwnProperty(name)) {
-      obj[name]();  // NOT OK, but not flagged [INCONSISTENCY]
+      obj[name]();  // $ MISSING: Alert
     }
 
     let key = "$" + name;
-    obj[key]();     // NOT OK
+    obj[key]();     // $ Alert
     if (typeof obj[key] === 'function')
-      obj[key]();   // OK - but still flagged [INCONSISTENCY]
+      obj[key]();   // $ SPURIOUS: Alert
 
     if (typeof fn === 'function') {
-      fn.apply(obj); // OK
+      fn.apply(obj);
     }
   });
 
   let obj2 = Object.create(null);
   obj2.foo = function() {};
 
-  window.addEventListener('message', (ev) => {
+  window.addEventListener('message', (ev) => { // $ Source
     let name = JSON.parse(ev.data).name;
     let fn = obj2[name];
-    fn();           // NOT OK: might not be a function
+    fn();           // $ Alert - might not be a function
     if (typeof fn == 'function')
-      fn();         // OK: cannot be from prototype
+      fn();         // OK - cannot be from prototype
   });
 })();

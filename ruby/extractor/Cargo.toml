@@ -3,7 +3,7 @@ name = "codeql-extractor-ruby"
 description = "CodeQL Ruby extractor"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2021"
+edition = "2024"
 
 # When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
 [dependencies]

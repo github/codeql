@@ -139,6 +139,7 @@ extractor_step_files(
 
 @locatable =
   @ast_node
+| @crate
 ;
 
 @unextracted =
@@ -213,6 +214,42 @@ extractor_step_files(
 | @where_clause
 | @where_pred
 ;
+
+crates(
+  unique int id: @crate
+);
+
+#keyset[id]
+crate_names(
+  int id: @crate ref,
+  string name: string ref
+);
+
+#keyset[id]
+crate_versions(
+  int id: @crate ref,
+  string version: string ref
+);
+
+#keyset[id]
+crate_modules(
+  int id: @crate ref,
+  int module: @module ref
+);
+
+#keyset[id, index]
+crate_cfg_options(
+  int id: @crate ref,
+  int index: int ref,
+  string cfg_option: string ref
+);
+
+#keyset[id, index]
+crate_dependencies(
+  int id: @crate ref,
+  int index: int ref,
+  int dependency: @crate ref
+);
 
 missings(
   unique int id: @missing
@@ -834,6 +871,12 @@ record_field_attrs(
   int id: @record_field ref,
   int index: int ref,
   int attr: @attr ref
+);
+
+#keyset[id]
+record_field_exprs(
+  int id: @record_field ref,
+  int expr: @expr ref
 );
 
 #keyset[id]

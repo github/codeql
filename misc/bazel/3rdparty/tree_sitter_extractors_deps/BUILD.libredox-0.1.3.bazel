@@ -81,8 +81,8 @@ rust_library(
     }),
     version = "0.1.3",
     deps = [
-        "@vendor__bitflags-2.7.0//:bitflags",
-        "@vendor__libc-0.2.169//:libc",
-        "@vendor__redox_syscall-0.5.8//:syscall",
+        "@vendor_ts__bitflags-2.8.0//:bitflags",
+        "@vendor_ts__libc-0.2.169//:libc",
+        "@vendor_ts__redox_syscall-0.5.8//:syscall",
     ],
 )

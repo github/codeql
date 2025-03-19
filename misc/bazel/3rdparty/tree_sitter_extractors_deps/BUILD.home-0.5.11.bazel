@@ -82,13 +82,13 @@ rust_library(
     version = "0.5.11",
     deps = select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "//conditions:default": [],
     }),

@@ -1,1 +1,2 @@
-DOM/AmbiguousIdAttribute.ql
+query: DOM/AmbiguousIdAttribute.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -74,10 +74,10 @@ CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
 
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
-SsaImpl::DefinitionExt getParameterDef(NamedParameter p) {
+Ssa::Definition getParameterDef(NamedParameter p) {
   exists(BasicBlock bb, int i |
     bb.getNode(i).getAstNode() = p.getDefiningAccess() and
-    result.definesAt(_, bb, i, _)
+    result.definesAt(_, bb, i)
   )
 }
 
@@ -111,12 +111,14 @@ module SsaFlow {
     n = toParameterNode(result.(Impl::ParameterNode).getParameter())
   }
 
-  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  predicate localFlowStep(
+    SsaImpl::SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
+  ) {
+    Impl::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
-  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(_, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -175,7 +177,7 @@ module LocalFlow {
   }
 
   predicate localMustFlowStep(Node node1, Node node2) {
-    SsaFlow::localMustFlowStep(_, node1, node2)
+    SsaFlow::localMustFlowStep(node1, node2)
     or
     node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
@@ -386,15 +388,15 @@ module VariableCapture {
     Flow::clearsContent(asClosureNode(node), c.getVariable())
   }
 
-  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
-    CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
+  class CapturedSsaDefinition extends SsaImpl::Definition {
+    CapturedSsaDefinition() { this.getSourceVariable() instanceof CapturedVariable }
   }
 
   // From an assignment or implicit initialization of a captured variable to its flow-insensitive node
   private predicate flowInsensitiveWriteStep(
     SsaDefinitionNodeImpl node1, CapturedVariableNode node2, CapturedVariable v
   ) {
-    exists(CapturedSsaDefinitionExt def |
+    exists(CapturedSsaDefinition def |
       def = node1.getDefinition() and
       def.getSourceVariable() = v and
       (
@@ -410,7 +412,7 @@ module VariableCapture {
   private predicate flowInsensitiveReadStep(
     CapturedVariableNode node1, SsaDefinitionNodeImpl node2, CapturedVariable v
   ) {
-    exists(CapturedSsaDefinitionExt def |
+    exists(CapturedSsaDefinition def |
       node1.getVariable() = v and
       def = node2.getDefinition() and
       def.getSourceVariable() = v and
@@ -525,10 +527,10 @@ private module Cached {
     (
       LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      exists(SsaImpl::DefinitionExt def, boolean isUseStep |
-        SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep) and
+      exists(SsaImpl::SsaInput::SourceVariable v, boolean isUseStep |
+        SsaFlow::localFlowStep(v, nodeFrom, nodeTo, isUseStep) and
         // captured variables are handled by the shared `VariableCapture` library
-        not def instanceof VariableCapture::CapturedSsaDefinitionExt
+        not v instanceof VariableCapture::CapturedVariable
       |
         isUseStep = false
         or
@@ -770,7 +772,7 @@ class SsaNode extends NodeImpl, TSsaNode {
 class SsaDefinitionNodeImpl extends SsaNode {
   override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-  SsaImpl::Definition getDefinition() { result = node.getDefinition() }
+  Ssa::Definition getDefinition() { result = node.getDefinition() }
 
   override predicate isHidden() {
     exists(SsaImpl::Definition def | def = this.getDefinition() |
@@ -2476,7 +2478,7 @@ module TypeInference {
       n = def or
       n.asExpr() =
         any(CfgNodes::ExprCfgNode read |
-          read = def.getDefinition().(SsaImpl::DefinitionExt).getARead() and
+          read = def.getDefinition().getARead() and
           not isTypeCheckedRead(read, _) // could in principle be checked against a new type
         )
     )
