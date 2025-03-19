@@ -593,5 +593,15 @@ def test_synth_properties_ignored(generate):
     )
 
 
+def test_table_conflict(generate, dir_param):
+    with pytest.raises(dbschemegen.Error):
+        generate([
+            schema.Class("Foo", pragmas={"group": dir_param.input}, properties=[
+                schema.OptionalProperty("bar", "FooBar"),
+            ]),
+            schema.Class("FooBar", pragmas={"group": dir_param.input}),
+        ])
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

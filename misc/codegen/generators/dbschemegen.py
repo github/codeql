@@ -24,6 +24,10 @@ from misc.codegen.lib.dbscheme import *
 log = logging.getLogger(__name__)
 
 
+class Error(Exception):
+    pass
+
+
 def dbtype(typename: str, add_or_none_except: typing.Optional[str] = None) -> str:
     """ translate a type to a dbscheme counterpart, using `@lower_underscore` format for classes.
     For class types, appends an underscore followed by `null` if provided
@@ -108,6 +112,16 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
             )
 
 
+def check_name_conflicts(decls: list[Table | Union]):
+    names = set()
+    for decl in decls:
+        match decl:
+            case Table(name=name):
+                if name in names:
+                    raise Error(f"Duplicate table name: {name}")
+                names.add(name)
+
+
 def get_declarations(data: schema.Schema):
     add_or_none_except = data.root_class.name if data.null else None
     declarations = [d for cls in data.classes.values() if not cls.imported for d in cls_to_dbscheme(cls,
@@ -120,6 +134,7 @@ def get_declarations(data: schema.Schema):
         declarations += [
             Union(dbtype(t, data.null), [dbtype(t), dbtype(data.null)]) for t in sorted(property_classes)
         ]
+    check_name_conflicts(declarations)
     return declarations
 
 
