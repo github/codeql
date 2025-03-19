@@ -121,7 +121,7 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
 
 ## Query tags `@tags`
 
-The `@tags` property is used to define the high level category of problem that the query relates to. Each alert query should belong to one of the following two top-level categories, with additional sub-categories:
+The `@tags` property is used to define the high level category of problem that the query relates to.  Each alert query should belong to one of the following two top-level categories, with additional sub-categories:
 
 ### High level category `@tags`
 * `@tags security`–for queries that detect security weaknesses. See below for further information.
@@ -173,6 +173,8 @@ There are also more specific `@tags` that can be added. See, the following pages
 * [JavaScript queries](https://codeql.github.com/codeql-query-help/javascript/)
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
 
+> [!NOTE]
+> There is a limit of 10 tags per query!
 
 ### Severities
 
