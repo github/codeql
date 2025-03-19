@@ -226,6 +226,8 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
 
   override Visibility getVisibility() { none() }
 
+  override predicate isPublic() { any() }
+
   override TypeParam getTypeParam(int i) { none() }
 }
 
@@ -270,6 +272,8 @@ class CrateItemNode extends ItemNode instanceof Crate {
   }
 
   override Visibility getVisibility() { none() }
+
+  override predicate isPublic() { any() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -648,7 +652,6 @@ private predicate fileImport(Module m, SourceFile f) {
  */
 pragma[nomagic]
 private predicate fileImportEdge(Module mod, string name, ItemNode item) {
-  item.isPublic() and
   exists(SourceFileItemNode f |
     fileImport(mod, f) and
     item = f.getASuccessor(name)
@@ -828,14 +831,54 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   )
 }
 
-/** Gets the item that `path` resolves to, if any. */
-cached
-ItemNode resolvePath(RelevantPath path) {
+pragma[nomagic]
+private ItemNode resolvePath1(RelevantPath path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
     not pathUsesNamespace(path, _) and
     not path = any(MacroCall mc).getPath()
+  )
+}
+
+pragma[nomagic]
+private ItemNode resolvePathPrivate(
+  RelevantPath path, ModuleLikeNode itemParent, ModuleLikeNode pathParent
+) {
+  result = resolvePath1(path) and
+  itemParent = result.getImmediateParentModule() and
+  not result.isPublic() and
+  (
+    pathParent.getADescendant() = path
+    or
+    pathParent = any(ItemNode mid | path = mid.getADescendant()).getImmediateParentModule()
+  )
+}
+
+/**
+ * Gets a module that has access to private items defined inside `itemParent`.
+ *
+ * According to
+ *
+ * https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch07-02-controlling-visibility-with-pub.html#privacy-rules
+ *
+ * this is either `itemParent` itself or any (transitive) child of `itemParent`.
+ */
+pragma[nomagic]
+private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
+  exists(resolvePathPrivate(_, itemParent, _)) and
+  result.getImmediateParentModule*() = itemParent
+}
+
+/** Gets the item that `path` resolves to, if any. */
+cached
+ItemNode resolvePath(RelevantPath path) {
+  result = resolvePath1(path) and
+  result.isPublic()
+  or
+  exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
+    result = resolvePathPrivate(path, itemParent, pathParent) and
+    pathParent = getAPrivateVisibleModule(itemParent)
   )
 }
 
