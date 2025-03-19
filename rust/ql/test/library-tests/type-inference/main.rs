@@ -191,6 +191,68 @@ mod method_non_parametric_trait_impl {
     }
 }
 
+mod type_parameter_bounds {
+    use std::fmt::Debug;
+
+    #[derive(Debug)]
+    struct S1;
+
+    #[derive(Debug)]
+    struct S2;
+
+    // Two traits with the same method name.
+
+    trait FirstTrait<FT> {
+        fn method(self) -> FT;
+    }
+
+    trait SecondTrait<ST> {
+        fn method(self) -> ST;
+    }
+
+    fn call_first_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
+        // The type parameter bound determines which method this call is resolved to.
+        let s1 = x.method(); // missing type for `s1`
+        println!("{:?}", s1);
+    }
+
+    fn call_second_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
+        // The type parameter bound determines which method this call is resolved to.
+        let s2 = x.method(); // missing type for `s2`
+        println!("{:?}", s2);
+    }
+
+    fn trait_bound_with_type<T: FirstTrait<S1>>(x: T) {
+        let s = x.method(); // missing type for `s`
+        println!("{:?}", s);
+    }
+
+    fn trait_per_bound_with_type<T: FirstTrait<S1>>(x: T) {
+        let s = x.method(); // missing type for `s`
+        println!("{:?}", s);
+    }
+
+    trait Pair<P1, P2> {
+        fn fst(self) -> P1;
+
+        fn snd(self) -> P2;
+    }
+
+    fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // missing type for `s1`
+        let s2 = y.snd(); // missing type for `s2`
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_2<T2: Debug, T: Pair<S1, T2>>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // missing type for `s1`
+        let s2 = y.snd(); // missing type for `s2`
+        println!("{:?}, {:?}", s1, s2);
+    }
+}
+
 mod function_trait_bounds {
     #[derive(Debug)]
     struct MyThing<A> {
@@ -440,6 +502,49 @@ mod function_trait_bounds_2 {
 
         let x = S1;
         let y: S2 = into(x);
+    }
+}
+
+mod type_aliases {
+    #[derive(Debug)]
+    enum PairOption<Fst, Snd> {
+        PairNone(),
+        PairFst(Fst),
+        PairSnd(Snd),
+        PairBoth(Fst, Snd),
+    }
+
+    #[derive(Debug)]
+    struct S1;
+
+    #[derive(Debug)]
+    struct S2;
+
+    #[derive(Debug)]
+    struct S3;
+
+    // Non-generic type alias that fully applies the generic type
+    type MyPair = PairOption<S1, S2>;
+
+    // Generic type alias that partially applies the generic type
+    type AnotherPair<Thr> = PairOption<S2, Thr>;
+
+    pub fn f() {
+        // Type can be infered from the constructor
+        let p1: MyPair = PairOption::PairBoth(S1, S2);
+        println!("{:?}", p1);
+
+        // Type can be only infered from the type alias
+        let p2: MyPair = PairOption::PairNone(); // types for `Fst` and `Snd` missing
+        println!("{:?}", p2);
+
+        // First type from alias, second from constructor
+        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // type for `Fst` missing
+        println!("{:?}", p3);
+
+        // First type from alias definition, second from argument to alias
+        let p3: AnotherPair<S3> = PairOption::PairNone(); // type for `Snd` missing, spurious `S3` for `Fst`
+        println!("{:?}", p3);
     }
 }
 
