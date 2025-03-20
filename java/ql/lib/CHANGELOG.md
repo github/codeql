@@ -1,3 +1,17 @@
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 24.
+
+### Minor Analysis Improvements
+
+* Added a path injection sanitizer for the `child` argument of a `java.io.File` constructor if that argument does not contain path traversal sequences.
+
 ## 7.0.1
 
 No user-facing changes.

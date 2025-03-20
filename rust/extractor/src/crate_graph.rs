@@ -88,6 +88,17 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             let file_label = trap.emit_file(root_module_file);
             trap.emit_file_only_location(file_label, root_module);
 
+            let crate_dependencies: Vec<generated::NamedCrate> = krate
+                .dependencies
+                .iter()
+                .flat_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
+                .map(|(name, (module, hash))| generated::NamedCrate {
+                    id: trap::TrapId::Star,
+                    name: name.to_string(),
+                    crate_: trap.label(format!("{}:{hash}", module.display()).into()),
+                })
+                .collect();
+
             let element = generated::Crate {
                 id: trap::TrapId::Key(format!("{}:{hash}", root_module_file.display())),
                 name: krate
@@ -102,11 +113,9 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     .into_iter()
                     .map(|x| format!("{x}"))
                     .collect(),
-                dependencies: krate
-                    .dependencies
-                    .iter()
-                    .flat_map(|x| crate_id_map.get(&x.crate_id))
-                    .map(|(module, hash)| trap.label(format!("{}:{hash}", module.display()).into()))
+                named_dependencies: crate_dependencies
+                    .into_iter()
+                    .map(|dep| trap.emit(dep))
                     .collect(),
             };
             trap.emit(element);
