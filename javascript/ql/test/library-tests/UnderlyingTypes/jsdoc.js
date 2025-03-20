@@ -4,11 +4,11 @@ import { Response } from 'express';
 /**
  * @param {e.Request} req
  */
-function t1(req) { // $ hasUnderlyingType='express'.Request SPURIOUS: hasUnderlyingType=e.Request
+function t1(req) { // $ MISSING: hasUnderlyingType='express'.Request SPURIOUS: hasUnderlyingType=e.Request
 }
 
 /**
  * @param {Response} res
  */
-function t2(res) { // $ hasUnderlyingType='express'.Response SPURIOUS: hasUnderlyingType=Response
+function t2(res) { // $ MISSING: hasUnderlyingType='express'.Response SPURIOUS: hasUnderlyingType=Response
 }

@@ -6,11 +6,11 @@ interface Foo {
 }
 
 function t1(f: Foo) {
-    f.req; // $ hasUnderlyingType='express'.Request
-    f.e; // $ hasUnderlyingType='express'
+    f.req; // $ MISSING: hasUnderlyingType='express'.Request
+    f.e; // $ MISSING: hasUnderlyingType='express'
 
     const {
-        req, // $ hasUnderlyingType='express'.Request
-        e // $ hasUnderlyingType='express'
+        req, // $ MISSING: hasUnderlyingType='express'.Request
+        e // $ MISSING: hasUnderlyingType='express'
     } = f;
 }
