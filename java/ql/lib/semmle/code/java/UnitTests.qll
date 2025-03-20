@@ -199,7 +199,7 @@ class TestMethod extends Method {
 }
 
 /**
- * Any method that is likely a test method.
+ * A method that is likely a test method.
  */
 class LikelyTestMethod extends Method {
   LikelyTestMethod() {
