@@ -1,2 +1,6 @@
 unexpectedModel
+| Unexpected sink found: repo::test;<crate::option::MyOption>::replace;Argument[self];pointer-access;df-generated |
+| Unexpected sink found: repo::test;<crate::option::MyOption>::take;Argument[self];pointer-access;df-generated |
+| Unexpected sink found: repo::test;<crate::option::MyOption>::take_if;Argument[self];pointer-access;df-generated |
+| Unexpected sink found: repo::test;crate::option::replace;Argument[0];pointer-access;df-generated |
 expectedModel
