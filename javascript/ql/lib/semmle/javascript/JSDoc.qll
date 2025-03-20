@@ -372,6 +372,7 @@ class JSDocNamedTypeExpr extends JSDocTypeExpr {
    * - `Baz` has prefix `Baz` and an empty suffix.
    */
   predicate hasNameParts(string prefix, string suffix) {
+    not this = any(JSDocQualifiedTypeAccess a).getBase() and // restrict size of predicate
     exists(string regex, string name | regex = "([^.]+)(.*)" |
       name = this.getRawName() and
       prefix = name.regexpCapture(regex, 1) and
