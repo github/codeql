@@ -21,14 +21,17 @@ private DataFlow::TypeTrackingNode fileOpenInstance(DataFlow::TypeTracker t) {
   exists(DataFlow::TypeTracker t2 | result = fileOpenInstance(t2).track(t2, t))
 }
 
-/** A call that returns an instance of an open file object. */
+/**
+ * A call that returns an instance of an open file object.
+ * This includes calls to methods that transitively call `open` or similar.
+ */
 class FileOpen extends DataFlow::CallCfgNode {
   FileOpen() { fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(this) }
 }
 
 /** A call that may wrap a file object in a wrapper class or `os.fdopen`. */
 class FileWrapperCall extends DataFlow::CallCfgNode {
-  FileOpen wrapped;
+  DataFlow::Node wrapped;
 
   FileWrapperCall() {
     wrapped = this.getArg(_).getALocalSource() and
@@ -42,18 +45,18 @@ class FileWrapperCall extends DataFlow::CallCfgNode {
   }
 
   /** Gets the file that this call wraps. */
-  FileOpen getWrapped() { result = wrapped }
+  DataFlow::Node getWrapped() { result = wrapped }
 }
 
 /** A node where a file is closed. */
 abstract class FileClose extends DataFlow::CfgNode {
   /** Holds if this file close will occur if an exception is thrown at `e`. */
-  predicate guardsExceptions(Expr e) {
-    this.asCfgNode() =
-      DataFlow::exprNode(e).asCfgNode().getAnExceptionalSuccessor().getASuccessor*()
+  predicate guardsExceptions(DataFlow::CfgNode raises) {
+    this.asCfgNode() = raises.asCfgNode().getAnExceptionalSuccessor().getASuccessor*()
     or
-    // the expression is after the close call
-    DataFlow::exprNode(e).asCfgNode() = this.asCfgNode().getASuccessor*()
+    // The expression is after the close call.
+    // This also covers the body of a `with` statement.
+    raises.asCfgNode() = this.asCfgNode().getASuccessor*()
   }
 }
 
@@ -72,20 +75,14 @@ class WithStatement extends FileClose {
   With w;
 
   WithStatement() { this.asExpr() = w.getContextExpr() }
-
-  override predicate guardsExceptions(Expr e) {
-    super.guardsExceptions(e)
-    or
-    e = w.getAStmt().getAChildNode*()
-  }
 }
 
-/** Holds if an exception may be raised at `node` if it is a file object. */
-private predicate mayRaiseWithFile(DataFlow::CfgNode node) {
+/** Holds if an exception may be raised at `raises` if `file` is a file object. */
+private predicate mayRaiseWithFile(DataFlow::CfgNode file, DataFlow::CfgNode raises) {
   // Currently just consider any method called on `node`; e.g. `file.write()`; as potentially raising an exception
-  exists(DataFlow::MethodCallNode mc | node = mc.getObject()) and
-  not node instanceof FileOpen and
-  not node instanceof FileClose
+  raises.(DataFlow::MethodCallNode).getObject() = file and
+  not file instanceof FileOpen and
+  not file instanceof FileClose
 }
 
 /** Holds if data flows from `nodeFrom` to `nodeTo` in one step that also includes file wrapper classes. */
@@ -131,10 +128,12 @@ predicate fileNotClosed(FileOpen fo) {
 
 predicate fileMayNotBeClosedOnException(FileOpen fo, DataFlow::Node raises) {
   fileIsClosed(fo) and
-  mayRaiseWithFile(raises) and
-  fileLocalFlow(fo, raises) and
-  not exists(FileClose fc |
-    DataFlow::localFlow(fo, fc) and
-    fc.guardsExceptions(raises.asExpr())
+  exists(DataFlow::CfgNode fileRaised |
+    mayRaiseWithFile(fileRaised, raises) and
+    fileLocalFlow(fo, fileRaised) and
+    not exists(FileClose fc |
+      fileLocalFlow(fo, fc) and
+      fc.guardsExceptions(raises)
+    )
   )
 }

@@ -247,3 +247,34 @@ def not_closed22(path):
 def not_closed23(path):
     f23 = open(path, "w") # $ notClosed
     wr = FileWrapper(f23)
+
+def closed24(path):
+    f24 = open(path, "w")
+    try:
+        f24.write("hi")
+    except:
+        pass 
+    f24.close()
+
+def closed25(path):
+    from django.http import FileResponse 
+    return FileResponse(open(path))
+
+import os
+def closed26(path):
+    fd = os.open(path)
+    os.close(fd)
+
+def not_closed27(path):
+    fd = os.open(path, "w") # $notClosedOnException
+    f27 = os.fdopen(fd, "w")
+    f27.write("hi")
+    f27.close()
+
+def closed28(path):
+    fd = os.open(path, os.O_WRONLY) 
+    f28 = os.fdopen(fd, "w")
+    try:
+        f28.write("hi")
+    finally:
+        f28.close()
