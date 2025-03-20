@@ -72,14 +72,12 @@ class OsCloseCall extends FileClose {
 
 /** A `with` statement. */
 class WithStatement extends FileClose {
-  With w;
-
-  WithStatement() { this.asExpr() = w.getContextExpr() }
+  WithStatement() { this.asExpr() = any(With w).getContextExpr() }
 }
 
 /** Holds if an exception may be raised at `raises` if `file` is a file object. */
 private predicate mayRaiseWithFile(DataFlow::CfgNode file, DataFlow::CfgNode raises) {
-  // Currently just consider any method called on `node`; e.g. `file.write()`; as potentially raising an exception
+  // Currently just consider any method called on `file`; e.g. `file.write()`; as potentially raising an exception
   raises.(DataFlow::MethodCallNode).getObject() = file and
   not file instanceof FileOpen and
   not file instanceof FileClose
