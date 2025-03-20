@@ -36,13 +36,13 @@ canonicalPaths
 | regular.rs:51:5:51:18 | Use | None | None |
 | regular.rs:57:1:63:1 | fn enum_match | repo::test | crate::regular::enum_match |
 resolvedPaths
-| anonymous.rs:27:17:27:30 | OtherStruct {...} | None | None |
+| anonymous.rs:27:17:27:30 | OtherStruct {...} | repo::test | {0}::OtherStruct |
 | anonymous.rs:28:9:28:9 | s | None | None |
 | anonymous.rs:28:9:28:13 | s.f(...) | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
 | anonymous.rs:29:9:29:9 | s | None | None |
 | anonymous.rs:29:9:29:13 | s.g(...) | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
 | anonymous.rs:30:9:30:14 | nested | repo::test | {0}::nested |
-| regular.rs:27:13:27:21 | Struct {...} | None | None |
+| regular.rs:27:13:27:21 | Struct {...} | repo::test | crate::regular::Struct |
 | regular.rs:28:5:28:5 | s | None | None |
 | regular.rs:28:5:28:9 | s.f(...) | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
 | regular.rs:29:5:29:5 | s | None | None |
@@ -54,13 +54,13 @@ resolvedPaths
 | regular.rs:42:9:42:20 | ...::Some | lang:core | crate::option::Option::Some |
 | regular.rs:43:9:43:24 | ...::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
 | regular.rs:44:9:44:24 | ...::Variant2 | repo::test | crate::regular::MyEnum::Variant2 |
-| regular.rs:45:9:45:33 | ...::Variant3 {...} | None | None |
+| regular.rs:45:9:45:33 | ...::Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
 | regular.rs:49:9:49:18 | None::<...> | lang:core | crate::option::Option::None |
 | regular.rs:50:9:50:12 | Some | lang:core | crate::option::Option::Some |
 | regular.rs:52:9:52:16 | Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
 | regular.rs:53:9:53:16 | Variant2 | repo::test | crate::regular::MyEnum::Variant2 |
-| regular.rs:54:9:54:25 | Variant3 {...} | None | None |
+| regular.rs:54:9:54:25 | Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
 | regular.rs:58:11:58:11 | e | None | None |
 | regular.rs:59:9:59:24 | ...::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
 | regular.rs:60:9:60:27 | ...::Variant2(...) | repo::test | crate::regular::MyEnum::Variant2 |
-| regular.rs:61:9:61:31 | ...::Variant3 {...} | None | None |
+| regular.rs:61:9:61:31 | ...::Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
