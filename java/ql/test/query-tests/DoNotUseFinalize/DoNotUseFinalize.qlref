@@ -1,1 +1,2 @@
-Violations of Best Practice/Undesirable Calls/DoNotUseFinalize.ql
+query: Violations of Best Practice/Undesirable Calls/DoNotUseFinalize.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

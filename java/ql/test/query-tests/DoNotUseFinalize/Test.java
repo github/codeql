@@ -1,6 +1,7 @@
 public class Test {
     void f() throws Throwable {
-        this.finalize(); // NON_COMPLIANT
+        // NON_COMPLIANT
+        this.finalize(); // $ Alert
     }
 
     void f1() throws Throwable {
