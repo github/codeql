@@ -561,7 +561,8 @@ public class JSDocParser {
     private Token scanTypeName() {
       char ch, ch2;
 
-      value = new String(Character.toChars(advance()));
+      StringBuilder sb = new StringBuilder();
+      sb.append((char)advance());
       while (index < endIndex && isTypeName(source.charAt(index))) {
         ch = source.charAt(index);
         if (ch == '.') {
@@ -572,8 +573,9 @@ public class JSDocParser {
             }
           }
         }
-        value += new String(Character.toChars(advance()));
+        sb.append((char)advance());
       }
+      value = sb.toString();
       return Token.NAME;
     }
 
