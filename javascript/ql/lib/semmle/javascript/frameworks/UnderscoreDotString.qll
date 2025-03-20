@@ -10,7 +10,8 @@ private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
  */
 private class UnderscoreDotString extends AdditionalFlowInternal {
   /**
-   * Holds if a call to an Underscore.string method clears array element content of the receiver.
+   * Some of the methods in `underscore.string` have the same name as methods from `Array.prototype`.
+   * This prevents methods like `splice` from propagating into Argument[this].ArrayElement.
    */
   override predicate clearsContent(DataFlow::Node node, DataFlow::ContentSet contents) {
     exists(DataFlow::CallNode call |
