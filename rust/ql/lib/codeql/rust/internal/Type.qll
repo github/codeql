@@ -31,7 +31,7 @@ abstract class Type extends TType {
 
   /** Gets the record field `name` belonging to this type, if any. */
   pragma[nomagic]
-  abstract RecordField getRecordField(string name);
+  abstract StructField getStructField(string name);
 
   /** Gets the `i`th tuple field belonging to this type, if any. */
   pragma[nomagic]
@@ -95,7 +95,7 @@ class StructType extends StructOrEnumType, TStruct {
 
   override ItemNode asItemNode() { result = struct }
 
-  override RecordField getRecordField(string name) { result = struct.getRecordField(name) }
+  override StructField getStructField(string name) { result = struct.getStructField(name) }
 
   override TupleField getTupleField(int i) { result = struct.getTupleField(i) }
 
@@ -116,7 +116,7 @@ class EnumType extends StructOrEnumType, TEnum {
 
   override ItemNode asItemNode() { result = enum }
 
-  override RecordField getRecordField(string name) { none() }
+  override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
@@ -137,7 +137,7 @@ class TraitType extends Type, TTrait {
 
   override Function getMethod(string name) { result = trait.(ItemNode).getASuccessor(name) }
 
-  override RecordField getRecordField(string name) { none() }
+  override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
@@ -218,7 +218,7 @@ class ImplType extends Type, TImpl {
 
   override Function getMethod(string name) { result = impl.(ItemNode).getASuccessor(name) }
 
-  override RecordField getRecordField(string name) { none() }
+  override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
@@ -247,7 +247,7 @@ class ArrayType extends Type, TArrayType {
 
   override Function getMethod(string name) { none() }
 
-  override RecordField getRecordField(string name) { none() }
+  override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
@@ -273,7 +273,7 @@ class RefType extends Type, TRefType {
 
   override Function getMethod(string name) { none() }
 
-  override RecordField getRecordField(string name) { none() }
+  override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
@@ -293,7 +293,7 @@ class RefType extends Type, TRefType {
 abstract class TypeParameter extends Type {
   override TypeMention getABaseTypeMention() { none() }
 
-  override RecordField getRecordField(string name) { none() }
+  override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 

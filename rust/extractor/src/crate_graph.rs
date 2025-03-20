@@ -442,7 +442,7 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let record_field_list =
+            let struct_field_list =
                 emit_variant_data(trap, crate_graph, db, union_id.into()).into();
             let visibility = emit_visibility(crate_graph, db, trap, visibility);
             items.push(
@@ -450,7 +450,7 @@ fn emit_adt(
                     id: trap::TrapId::Star,
                     name,
                     attrs: vec![],
-                    record_field_list,
+                    struct_field_list,
                     generic_param_list: None,
                     visibility,
                     where_clause: None,
@@ -1245,7 +1245,7 @@ fn emit_variant_data(
                             .visibility
                             .resolve(db.upcast(), &variant_id.resolver(db.upcast())),
                     );
-                    trap.emit(generated::RecordField {
+                    trap.emit(generated::StructField {
                         id: trap::TrapId::Star,
                         attrs: vec![],
                         name,
