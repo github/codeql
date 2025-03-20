@@ -1879,15 +1879,6 @@ module IteratorFlow {
         phi.definesAt(sv, bb2, i2, _)
       )
     }
-
-    cached
-    Node getAPriorDefinition(IteratorSsa::DefinitionExt next) {
-      exists(IRBlock bb, int i, SourceVariable sv, IteratorSsa::DefinitionExt def |
-        IteratorSsa::lastRefRedefExt(pragma[only_bind_into](def), pragma[only_bind_into](sv),
-          pragma[only_bind_into](bb), pragma[only_bind_into](i), next) and
-        nodeToDefOrUse(result, sv, bb, i, _)
-      )
-    }
   }
 
   /** The set of nodes necessary for iterator flow. */
@@ -1912,25 +1903,19 @@ module IteratorFlow {
 
   private import IteratorSsaCached
 
-  private predicate defToNode(Node node, Def def, boolean uncertain) {
-    (
-      nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
-      or
-      nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
-    ) and
-    uncertain = false
+  private predicate defToNode(Node node, Def def) {
+    nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
+    or
+    nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
   }
 
-  private predicate nodeToDefOrUse(
-    Node node, SourceVariable sv, IRBlock bb, int i, boolean uncertain
-  ) {
+  private predicate nodeToDefOrUse(Node node, SourceVariable sv, IRBlock bb, int i) {
     exists(Def def |
       def.hasIndexInBlock(bb, i, sv) and
-      defToNode(node, def, uncertain)
+      defToNode(node, def)
     )
     or
-    useToNode(bb, i, sv, node) and
-    uncertain = false
+    useToNode(bb, i, sv, node)
   }
 
   private predicate useToNode(IRBlock bb, int i, SourceVariable sv, Node nodeTo) {
@@ -1949,21 +1934,10 @@ module IteratorFlow {
    * Holds if `nodeFrom` flows to `nodeTo` in a single step.
    */
   predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(
-      Node nFrom, SourceVariable sv, IRBlock bb1, int i1, IRBlock bb2, int i2, boolean uncertain
-    |
+    exists(SourceVariable sv, IRBlock bb1, int i1, IRBlock bb2, int i2 |
       adjacentDefRead(bb1, i1, sv, bb2, i2) and
-      nodeToDefOrUse(nFrom, sv, bb1, i1, uncertain) and
+      nodeToDefOrUse(nodeFrom, sv, bb1, i1) and
       useToNode(bb2, i2, sv, nodeTo)
-    |
-      if uncertain = true
-      then
-        nodeFrom =
-          [
-            nFrom,
-            getAPriorDefinition(any(IteratorSsa::DefinitionExt next | next.definesAt(sv, bb1, i1, _)))
-          ]
-      else nFrom = nodeFrom
     )
   }
 }
