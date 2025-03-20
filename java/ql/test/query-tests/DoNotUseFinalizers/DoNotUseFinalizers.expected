@@ -1,0 +1,3 @@
+| Test.java:3:9:3:19 | gc(...) | Call to prohibited method that may modify the JVM's garbage collection process. |
+| Test.java:4:9:4:33 | gc(...) | Call to prohibited method that may modify the JVM's garbage collection process. |
+| Test.java:5:9:5:23 | finalize(...) | Call to prohibited method that may modify the JVM's garbage collection process. |
