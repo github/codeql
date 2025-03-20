@@ -126,6 +126,9 @@ fn main() {
 	println!("test_qhelp_tests:");
 	test_qhelp_tests();
 
+	println!("test_vec_reserve:");
+	test_vec_reserve();
+
 	// ---
 
 	println!("test_local_dangling:");

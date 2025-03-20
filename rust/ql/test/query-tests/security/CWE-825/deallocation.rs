@@ -198,3 +198,43 @@ pub fn test_qhelp_tests() {
 		std::alloc::dealloc(ptr, layout);
 	}
 }
+
+pub fn test_vec_reserve() {
+	let mut vec1 = Vec::<u16>::new();
+	vec1.push(100);
+	let ptr1 = &raw mut vec1[0];
+
+	unsafe {
+		let v1 = *ptr1;
+		println!("	v1 = {}", v1);
+	}
+
+	vec1.reserve(1000); // $ MISSING: Source=reserve
+	// (may invalidate the pointer)
+
+	unsafe {
+		let v2 = *ptr1; // $ MISSING: Alert[rust/access-invalid-pointer]=reserve
+		println!("	v2 = {}", v2); // corrupt in practice
+	}
+
+	// -
+
+	let mut vec2 = Vec::<u16>::new();
+	vec2.push(200);
+	let ptr2 = &raw mut vec2[0];
+
+	unsafe {
+		let v3 = *ptr2;
+		println!("	v3 = {}", v3);
+	}
+
+	for _i in 0..1000 {
+		vec2.push(0); // $ MISSING: Source=push
+		// (may invalidate the pointer)
+	}
+
+	unsafe {
+		let v4 = *ptr2; // $ MISSING: Alert[rust/access-invalid-pointer]=push
+		println!("	v4 = {}", v4); // corrupt in practice
+	}
+}
