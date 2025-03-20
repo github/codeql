@@ -34,6 +34,6 @@ func logrusCalls() {
 	logrus.FatalFn(fn)       // $ logger=fn
 
 	// components corresponding to the format specifier "%T" are not considered vulnerable
-	logrus.Infof("%s: found type %T", text, v)  // $ logger="%s: found type %T" logger=text
-	logrus.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text
+	logrus.Infof("%s: found type %T", text, v)  // $ logger="%s: found type %T" logger=text type-logger=v
+	logrus.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
 }
