@@ -8,7 +8,7 @@ export default {
     queries: ids.map((id) => ({
         queryKey: ['post', id],
         queryFn: async () => {
-            const response = await fetch("${id}"); // $ MISSING: Source
+            const response = await fetch("${id}"); // $ Source
             return response.json();
         },
         staleTime: Infinity,
@@ -22,6 +22,6 @@ export default {
 
 <template>
   <VueQueryClientProvider :client="queryClient">
-    <div v-html="data2"></div> <!--$ MISSING: Alert -->
+    <div v-html="data2"></div> <!--$ Alert -->
   </VueQueryClientProvider>
 </template>

@@ -26,7 +26,7 @@ module Impl {
    * ```
    */
   class TupleStructPat extends Generated::TupleStructPat {
-    override string toString() { result = this.getPath().toAbbreviatedString() + "(...)" }
+    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + "(...)" }
 
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedPath(int pos) {

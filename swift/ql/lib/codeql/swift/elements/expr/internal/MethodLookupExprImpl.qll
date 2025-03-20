@@ -9,7 +9,7 @@ private import codeql.swift.generated.Synth
 
 module Impl {
   class MethodLookupExpr extends Generated::MethodLookupExpr {
-    override string toString() { result = "." + this.getMember().toString() }
+    override string toStringImpl() { result = "." + this.getMember().toStringImpl() }
 
     override Expr getImmediateBase() {
       result = Synth::convertExprFromRaw(this.getUnderlying().getBase())

@@ -22,7 +22,7 @@ module Impl {
    * ```
    */
   class Label extends Generated::Label {
-    override string toString() { result = this.getText() }
+    override string toStringImpl() { result = this.getText() }
 
     override string toAbbreviatedString() { result = this.getText() }
 
