@@ -254,6 +254,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   module Make2<InputSig2 Input2> {
     private import Input2
 
+    /** Gets the type at the empty path of `tm`. */
     pragma[nomagic]
     private Type resolveTypeMentionRoot(TypeMention tm) {
       result = tm.resolveTypeAt(TypePath::nil())
@@ -275,7 +276,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * class Mid<T3> : Base<C<T3>> { }
        *
-       * class Sub<T4> : Mid<C<T4>> { }
+       * class Sub<T4> : Mid<C<T4>> { } // Sub<T4> extends Base<C<C<T4>>
        * ```
        *
        * - `T3` is mentioned at `0.0` for immediate base type mention `Base<C<T3>>`
@@ -334,9 +335,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if `baseMention` is a (transitive) base type mention of `sub`, and
-       * non-type-parameter `t` is mentioned (implicitly) at `path` inside
-       * `baseMention`. For example, in
+       * Holds if `baseMention` is a (transitive) base type mention of `sub`,
+       * and `t`, which is not a type parameter of `sub`, is mentioned
+       * (implicitly) at `path` inside `baseMention`. For example, in
        *
        * ```csharp
        * class C<T1> { }
@@ -345,7 +346,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * class Mid<T3> : Base<C<T3>> { }
        *
-       * class Sub<T4> : Mid<C<T4>> { }
+       * class Sub<T4> : Mid<C<T4>> { } // Sub<T4> extends Base<C<C<T4>>
        * ```
        *
        * - ``C`1`` is mentioned at `0` for immediate base type mention `Base<C<T3>>`
@@ -359,7 +360,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate baseTypeMentionHasNonTypeParameterAt(
         Type sub, TypeMention baseMention, TypePath path, Type t
       ) {
-        not t instanceof TypeParameter and
+        not t = sub.getATypeParameter() and
         exists(TypeMention immediateBaseMention |
           pragma[only_bind_into](immediateBaseMention) =
             getABaseTypeMention(pragma[only_bind_into](sub))

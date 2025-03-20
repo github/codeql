@@ -234,6 +234,10 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
   )
 }
 
+/**
+ * Gets any of the types mentioned in `path` that corresponds to the type
+ * parameter `tp`.
+ */
 private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
   exists(int i |
     result = path.getPart().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
