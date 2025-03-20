@@ -686,7 +686,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TAddressable = TItem;
+  class TAddressable = TItem or TVariant;
 
   /**
    * INTERNAL: Do not use.
@@ -1858,7 +1858,11 @@ module Synth {
    * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TAddressable`, if possible.
    */
-  TAddressable convertAddressableFromRaw(Raw::Element e) { result = convertItemFromRaw(e) }
+  TAddressable convertAddressableFromRaw(Raw::Element e) {
+    result = convertItemFromRaw(e)
+    or
+    result = convertVariantFromRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3454,7 +3458,11 @@ module Synth {
    * INTERNAL: Do not use.
    * Converts a synthesized `TAddressable` to a raw DB element, if possible.
    */
-  Raw::Element convertAddressableToRaw(TAddressable e) { result = convertItemToRaw(e) }
+  Raw::Element convertAddressableToRaw(TAddressable e) {
+    result = convertItemToRaw(e)
+    or
+    result = convertVariantToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.

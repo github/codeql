@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.FieldList
@@ -26,7 +27,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Variant` class directly.
    * Use the subclass `Variant`, where the following predicates are available.
    */
-  class Variant extends Synth::TVariant, VariantDefImpl::VariantDef {
+  class Variant extends Synth::TVariant, VariantDefImpl::VariantDef, AddressableImpl::Addressable {
     override string getAPrimaryQlClass() { result = "Variant" }
 
     /**

@@ -279,6 +279,7 @@ abi_abi_strings(
 
 @addressable =
   @item
+| @variant
 ;
 
 #keyset[id]

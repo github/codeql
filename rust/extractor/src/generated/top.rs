@@ -8660,6 +8660,15 @@ impl From<trap::Label<Variant>> for trap::Label<Element> {
     }
 }
 
+impl From<trap::Label<Variant>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Variant>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct WildcardPat {
     pub id: trap::TrapId<WildcardPat>,

@@ -3125,7 +3125,7 @@ module Raw {
    * todo!()
    * ```
    */
-  class Variant extends @variant, VariantDef {
+  class Variant extends @variant, VariantDef, Addressable {
     override string toString() { result = "Variant" }
 
     /**

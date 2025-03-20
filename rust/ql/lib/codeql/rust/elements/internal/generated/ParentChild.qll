@@ -3063,13 +3063,15 @@ private module Impl {
 
   private Element getImmediateChildOfVariant(Variant e, int index, string partialPredicateCall) {
     exists(
-      int b, int bVariantDef, int n, int nAttr, int nExpr, int nFieldList, int nName,
-      int nVisibility
+      int b, int bVariantDef, int bAddressable, int n, int nAttr, int nExpr, int nFieldList,
+      int nName, int nVisibility
     |
       b = 0 and
       bVariantDef =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
-      n = bVariantDef and
+      bAddressable =
+        bVariantDef + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
+      n = bAddressable and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nExpr = nAttr + 1 and
       nFieldList = nExpr + 1 and
@@ -3079,6 +3081,8 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfVariantDef(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfAddressable(e, index - bVariantDef, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"

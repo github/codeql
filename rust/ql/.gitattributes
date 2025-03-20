@@ -1205,7 +1205,9 @@
 /test/extractor-tests/generated/UseTreeList/UseTreeList_getUseTree.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getAttr.ql linguist-generated
+/test/extractor-tests/generated/Variant/Variant_getCrateOrigin.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getExpr.ql linguist-generated
+/test/extractor-tests/generated/Variant/Variant_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getFieldList.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getName.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getVisibility.ql linguist-generated

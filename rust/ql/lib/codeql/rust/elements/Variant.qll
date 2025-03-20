@@ -4,6 +4,7 @@
  */
 
 private import internal.VariantImpl
+import codeql.rust.elements.Addressable
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.FieldList
