@@ -106,28 +106,32 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   /**
    * A path into a type.
    *
-   * Paths are represented in left-to-right order, for example, a path `"0.1"` into the
-   * type `C1<C2<A,B>,C3<C,D>>` points at the type `B`.
+   * Paths are represented in left-to-right order, for example, a path `"A0.B1"`
+   * into the type `A<B<S,T>,C<U,V>>` points at the type `T`, assuming that the
+   * first type parameter of `A` is named `A0` and the second type parameter of
+   * `B` is named `B1`.
    *
    * Type paths are used to represent constructed types without using a `newtype`, which
    * makes it practically feasible to do type inference in mutual recursion with call
    * resolution.
    *
-   * As an example, the type above can be represented by the following set of tuples
+   * As an example, the type above can be represented by the following set of
+   * tuples, if assuming the same naming convention for type parameters as
+   * above:
    *
-   * `TypePath` | `Type`
-   * ---------- | --------
-   * `""`       | ``C1`2``
-   * `"0"`      | ``C2`2``
-   * `"0.0"`    | `A`
-   * `"0.1"`    | `B`
-   * `"1"`      | ``C3`2``
-   * `"1.0"`    | `C`
-   * `"1.1"`    | `D`
+   * `TypePath`  | `Type`
+   * ----------- | --------
+   * `""`        | ``A`2``
+   * `"A0"`      | ``B`2``
+   * `"A0.B0"`   | `S`
+   * `"A0.B1"`   | `T`
+   * `"A1"`      | ``C`2``
+   * `"A1.C0"`   | `U`
+   * `"A1.C1"`   | `V`
    *
-   * Note that while we write type paths using type parameter positions (e.g. `"0.1"`),
-   * the actual implementation uses unique type parameter identifiers, in order to not
-   * mix up type parameters from different types.
+   * Note that while we write type paths using type parameter names, the actual
+   * implementation uses unique type parameter identifiers, in order to not mix
+   * up type parameters from different types.
    */
   class TypePath extends String {
     bindingset[this]
@@ -439,7 +443,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * Gets the declared type of this declaration at `path` for position `dpos`.
          *
          * For example, if this declaration is the method `int M(bool b)`,
-         * then the declared type at parameter position `0` is `bool` and the
+         * then the declared type at parameter position `0` is `bool`, the
+         * declared type at the `this` position is the class type, and the
          * declared return type is `int`.
          */
         Type getDeclaredType(DeclarationPosition dpos, TypePath path);
@@ -540,7 +545,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
-       * the type parameter `tp` in `target`.
+       * the type parameter `tp` in `target`, if any.
+       *
+       * Note, that this predicate crucially does not depend on type inference,
+       * and hence can appear in negated position, e.g., as in
+       * `directTypeMatch`.
        */
       bindingset[a, target]
       pragma[inline_late]
@@ -605,19 +614,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          *
          * class Sub<T4> : Mid<C<T4>> { }
          *
-         * new Sub<int>().ToString();
+         *     new Sub<int>().ToString();
+         * //  ^^^^^^^^^^^^^^ `apos`
+         * //  ^^^^^^^^^^^^^^^^^^^^^^^^^ `a`
          * ```
          *
-         * for the node `new Sub<int>()`, which is the receiver of a method call, we
-         * have:
+         * where the method call is an access and `new Sub<int>()` is an access
+         * position , which is the receiver of a method call, we have:
          *
-         * `baseMention` | `path`    | `t`
-         * ------------- | --------- | ---
-         * `Mid<C<T4>>`  | `"0"`     | ``C`1``
-         * `Mid<C<T4>>`  | `"0.1"`   | `int`
-         * `Base<C<T3>>` | `"0"`     | ``C`1``
-         * `Base<C<T3>>` | `"0.0"`   | ``C`1``
-         * `Base<C<T3>>` | `"0.0.1"` | `int`
+         * `baseMention` | `path`       | `t`
+         * ------------- | ------------ | ---
+         * `Mid<C<T4>>`  | `"T3"`       | ``C`1``
+         * `Mid<C<T4>>`  | `"T3.T1"`    | `int`
+         * `Base<C<T3>>` | `"T2"`       | ``C`1``
+         * `Base<C<T3>>` | `"T2.T1"`    | ``C`1``
+         * `Base<C<T3>>` | `"T2.T1.T1"` | `int`
          */
         pragma[nomagic]
         predicate hasBaseTypeMention(
@@ -635,28 +646,36 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
       }
 
+      /**
+       * Holds if the type of `a` at `apos` has the base type `base`, and when
+       * viewed as an element of that type has at `path` the type `t`.
+       */
       pragma[nomagic]
       private predicate accessBaseType(
-        Access a, AccessPosition apos, Declaration target, Type base, TypePath path, Type t
+        Access a, AccessPosition apos, Type base, TypePath path, Type t
       ) {
         exists(TypeMention tm |
-          target = a.getTarget() and
           AccessBaseType::hasBaseTypeMention(a, apos, tm, path, t) and
           base = resolveTypeMentionRoot(tm)
         )
       }
 
+      /**
+       * Holds if the declared type at `decl` for `dpos` at the `path` is `tp`
+       * and `path` starts with a type parameter of `base`.
+       */
       pragma[nomagic]
       private predicate declarationBaseType(
-        Declaration decl, DeclarationPosition dpos, Type base, TypePath path, Type t
+        Declaration decl, DeclarationPosition dpos, Type base, TypePath path, TypeParameter tp
       ) {
-        t = decl.getDeclaredType(dpos, path) and
+        tp = decl.getDeclaredType(dpos, path) and
         path.isCons(base.getATypeParameter(), _)
       }
 
       /**
-       * Holds if the (transitive) base type `t` at `path` of `a` matches the type
-       * parameter `tp`, which is used in the declared types of `target`.
+       * Holds if the (transitive) base type `t` at `path` of `a` for some
+       * `AccessPosition` matches the type parameter `tp`, which is used in the
+       * declared types of `target`.
        *
        * For example, in
        *
@@ -681,17 +700,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * `path`    | `t`
        * --------- | -------
-       * `"0"`     | ``C`1``
-       * `"0.0"`   | ``C`1``
-       * `"0.0.1"` | `int`
+       * `""`      | ``C`1``
+       * `"T1"`    | ``C`1``
+       * `"T1.T1"` | `int`
        */
       pragma[nomagic]
       private predicate baseTypeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
+        target = a.getTarget() and
         exists(AccessPosition apos, DeclarationPosition dpos, Type base, TypePath pathToTypeParam |
-          accessBaseType(a, apos, target, base, pathToTypeParam.append(path), t) and
+          accessBaseType(a, apos, base, pathToTypeParam.append(path), t) and
           declarationBaseType(target, dpos, base, pathToTypeParam, tp) and
           accessDeclarationPositionMatch(apos, dpos)
         )
@@ -710,17 +730,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         t = getTypeArgument(a, target, tp, path)
       }
 
-      pragma[nomagic]
-      private predicate implicitTypeMatch(
-        Access a, Declaration target, TypePath path, Type t, TypeParameter tp
-      ) {
-        // We can get the type of `tp` from one of the access positions
-        directTypeMatch(a, target, path, t, tp)
-        or
-        // We can get the type of `tp` by going up the type hiearchy
-        baseTypeMatch(a, target, path, t, tp)
-      }
-
       pragma[inline]
       private predicate typeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
@@ -729,9 +738,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         // at the target.
         explicitTypeMatch(a, target, path, t, tp)
         or
-        // No explicit type argument, so we deduce the parameter from other
-        // information
-        implicitTypeMatch(a, target, path, t, tp)
+        // We can infer the type of `tp` from one of the access positions
+        directTypeMatch(a, target, path, t, tp)
+        or
+        // We can infer the type of `tp` by going up the type hiearchy
+        baseTypeMatch(a, target, path, t, tp)
       }
 
       /**
@@ -750,27 +761,27 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        *
        * class Sub<T4> : Mid<C<T4>> { }
        *
-       *    new Sub<int>().Method();
+       *    new Sub<int>().Method(); // Note: Sub<int> is a subtype of Base<C<C<int>>>
        * // ^^^^^^^^^^^^^^^^^^^^^^^ `a`
        * ```
        *
        * we infer the following types for the return position:
        *
-       * `path`      | `t`
-       * ----------- | -------
-       * `"0"`       | ``C`1``
-       * `"0.0"`     | ``C`1``
-       * `"0.0.0"`   | ``C`1``
-       * `"0.0.0.1"` | `int`
+       * `path`       | `t`
+       * ------------ | -------
+       * `""`         | ``C`1``
+       * `"T1"`       | ``C`1``
+       * `"T1.T1"`    | ``C`1``
+       * `"T1.T1.T1"` | `int`
        *
        * We also infer the following types for the receiver position:
        *
-       * `path`      | `t`
-       * ----------- | -------
-       * `"0"`       | ``Base`1``
-       * `"0.0"`     | ``C`1``
-       * `"0.0.0"`   | ``C`1``
-       * `"0.0.0.1"` | `int`
+       * `path`       | `t`
+       * ------------ | -------
+       * `""`         | ``Base`1``
+       * `"T2"`       | ``C`1``
+       * `"T2.T1"`    | ``C`1``
+       * `"T2.T2.T2"` | `int`
        */
       pragma[nomagic]
       Type inferAccessType(Access a, AccessPosition apos, TypePath path) {
