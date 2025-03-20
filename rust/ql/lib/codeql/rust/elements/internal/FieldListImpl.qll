@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.generated.FieldList
  */
 module Impl {
   /**
-   * A FieldList. For example:
+   * A field of a variant. For example:
    * ```rust
    * todo!()
    * ```

@@ -251,7 +251,7 @@ private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
  * A matching configuration for resolving types of record expressions
  * like `Foo { bar = baz }`.
  */
-private module RecordExprMatchingInput implements MatchingInputSig {
+private module StructExprMatchingInput implements MatchingInputSig {
   private newtype TPos =
     TFieldPos(string name) { exists(any(Declaration decl).getField(name)) } or
     TRecordPos()
@@ -277,7 +277,7 @@ private module RecordExprMatchingInput implements MatchingInputSig {
       ppos = this.getATypeParam()
     }
 
-    abstract RecordField getField(string name);
+    abstract StructField getField(string name);
 
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       // type of a field
@@ -298,7 +298,7 @@ private module RecordExprMatchingInput implements MatchingInputSig {
 
     override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
 
-    override RecordField getField(string name) { result = this.getRecordField(name) }
+    override StructField getField(string name) { result = this.getStructField(name) }
 
     override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       result = super.getDeclaredType(dpos, path)
@@ -319,7 +319,7 @@ private module RecordExprMatchingInput implements MatchingInputSig {
       result = this.getEnum().getGenericParamList().getATypeParam()
     }
 
-    override RecordField getField(string name) { result = this.getRecordField(name) }
+    override StructField getField(string name) { result = this.getStructField(name) }
 
     override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       result = super.getDeclaredType(dpos, path)
@@ -333,7 +333,7 @@ private module RecordExprMatchingInput implements MatchingInputSig {
 
   class AccessPosition = DeclarationPosition;
 
-  class Access extends RecordExpr {
+  class Access extends StructExpr {
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       result = getExplicitTypeArgMention(this.getPath(), apos.asTypeParam()).resolveTypeAt(path)
     }
@@ -357,17 +357,17 @@ private module RecordExprMatchingInput implements MatchingInputSig {
   }
 }
 
-private module RecordExprMatching = Matching<RecordExprMatchingInput>;
+private module StructExprMatching = Matching<StructExprMatchingInput>;
 
 /**
  * Gets the type of `n` at `path`, where `n` is either a record expression or
  * a field expression of a record expression.
  */
 pragma[nomagic]
-private Type inferRecordExprType(AstNode n, TypePath path) {
-  exists(RecordExprMatchingInput::Access a, RecordExprMatchingInput::AccessPosition apos |
+private Type inferStructExprType(AstNode n, TypePath path) {
+  exists(StructExprMatchingInput::Access a, StructExprMatchingInput::AccessPosition apos |
     n = a.getNodeAt(apos) and
-    result = RecordExprMatching::inferAccessType(a, apos, path)
+    result = StructExprMatching::inferAccessType(a, apos, path)
   )
 }
 
@@ -737,7 +737,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       dpos.isSelf() and
       // no case for variants as those can only be destructured using pattern matching
-      exists(Struct s | s.getRecordField(_) = this or s.getTupleField(_) = this |
+      exists(Struct s | s.getStructField(_) = this or s.getTupleField(_) = this |
         result = TStruct(s) and
         path.isEmpty()
         or
@@ -750,8 +750,8 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     }
   }
 
-  private class RecordFieldDecl extends Declaration instanceof RecordField {
-    override TypeRepr getTypeRepr() { result = RecordField.super.getTypeRepr() }
+  private class StructFieldDecl extends Declaration instanceof StructField {
+    override TypeRepr getTypeRepr() { result = StructField.super.getTypeRepr() }
   }
 
   private class TupleFieldDecl extends Declaration instanceof TupleField {
@@ -924,8 +924,8 @@ private module Cached {
    * Gets the record field that the field expression `fe` resolves to, if any.
    */
   cached
-  RecordField resolveRecordFieldExpr(FieldExpr fe) {
-    exists(string name | result = getFieldExprLookupType(fe, name).getRecordField(name))
+  StructField resolveRecordFieldExpr(FieldExpr fe) {
+    exists(string name | result = getFieldExprLookupType(fe, name).getStructField(name))
   }
 
   pragma[nomagic]
@@ -992,7 +992,7 @@ private module Cached {
     or
     result = inferImplicitSelfType(n, path)
     or
-    result = inferRecordExprType(n, path)
+    result = inferStructExprType(n, path)
     or
     result = inferPathExprType(n, path)
     or

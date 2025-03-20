@@ -1050,24 +1050,24 @@ resolveMethodCallExpr
 | main.rs:748:9:748:14 | x.f1(...) | main.rs:729:9:731:9 | fn f1 |
 | main.rs:749:9:749:14 | x.f2(...) | main.rs:733:9:735:9 | fn f2 |
 resolveFieldExpr
-| main.rs:27:26:27:28 | x.a | main.rs:7:9:7:12 | RecordField |
-| main.rs:33:26:33:28 | x.a | main.rs:18:9:18:12 | RecordField |
-| main.rs:37:26:37:28 | x.a | main.rs:18:9:18:12 | RecordField |
-| main.rs:44:26:44:28 | x.a | main.rs:22:9:22:22 | RecordField |
-| main.rs:50:26:50:28 | x.a | main.rs:18:9:18:12 | RecordField |
-| main.rs:56:30:56:32 | x.a | main.rs:18:9:18:12 | RecordField |
-| main.rs:106:13:106:18 | self.a | main.rs:96:9:96:12 | RecordField |
-| main.rs:112:23:112:28 | self.a | main.rs:96:9:96:12 | RecordField |
-| main.rs:118:13:118:18 | self.a | main.rs:96:9:96:12 | RecordField |
-| main.rs:127:26:127:28 | x.a | main.rs:96:9:96:12 | RecordField |
-| main.rs:128:26:128:28 | y.a | main.rs:96:9:96:12 | RecordField |
-| main.rs:169:13:169:18 | self.a | main.rs:144:9:144:12 | RecordField |
-| main.rs:175:23:175:28 | self.a | main.rs:144:9:144:12 | RecordField |
-| main.rs:284:13:284:18 | self.a | main.rs:259:9:259:12 | RecordField |
-| main.rs:413:17:413:27 | ... .a | main.rs:377:9:377:12 | RecordField |
-| main.rs:415:17:415:32 | ... .a | main.rs:377:9:377:12 | RecordField |
-| main.rs:422:13:422:18 | self.a | main.rs:377:9:377:12 | RecordField |
-| main.rs:430:26:430:31 | self.a | main.rs:382:9:382:12 | RecordField |
+| main.rs:27:26:27:28 | x.a | main.rs:7:9:7:12 | StructField |
+| main.rs:33:26:33:28 | x.a | main.rs:18:9:18:12 | StructField |
+| main.rs:37:26:37:28 | x.a | main.rs:18:9:18:12 | StructField |
+| main.rs:44:26:44:28 | x.a | main.rs:22:9:22:22 | StructField |
+| main.rs:50:26:50:28 | x.a | main.rs:18:9:18:12 | StructField |
+| main.rs:56:30:56:32 | x.a | main.rs:18:9:18:12 | StructField |
+| main.rs:106:13:106:18 | self.a | main.rs:96:9:96:12 | StructField |
+| main.rs:112:23:112:28 | self.a | main.rs:96:9:96:12 | StructField |
+| main.rs:118:13:118:18 | self.a | main.rs:96:9:96:12 | StructField |
+| main.rs:127:26:127:28 | x.a | main.rs:96:9:96:12 | StructField |
+| main.rs:128:26:128:28 | y.a | main.rs:96:9:96:12 | StructField |
+| main.rs:169:13:169:18 | self.a | main.rs:144:9:144:12 | StructField |
+| main.rs:175:23:175:28 | self.a | main.rs:144:9:144:12 | StructField |
+| main.rs:284:13:284:18 | self.a | main.rs:259:9:259:12 | StructField |
+| main.rs:413:17:413:27 | ... .a | main.rs:377:9:377:12 | StructField |
+| main.rs:415:17:415:32 | ... .a | main.rs:377:9:377:12 | StructField |
+| main.rs:422:13:422:18 | self.a | main.rs:377:9:377:12 | StructField |
+| main.rs:430:26:430:31 | self.a | main.rs:382:9:382:12 | StructField |
 | main.rs:643:13:643:18 | self.0 | main.rs:636:17:636:17 | TupleField |
 | main.rs:647:14:647:19 | self.0 | main.rs:636:17:636:17 | TupleField |
 | main.rs:651:14:651:19 | self.0 | main.rs:636:17:636:17 | TupleField |

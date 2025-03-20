@@ -32,7 +32,7 @@ module DataFlow {
 
   final class TupleFieldContent = Content::TupleFieldContent;
 
-  final class RecordFieldContent = Content::RecordFieldContent;
+  final class StructFieldContent = Content::StructFieldContent;
 
   final class ReferenceContent = Content::ReferenceContent;
 

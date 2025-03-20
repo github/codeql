@@ -77,9 +77,9 @@ module Input implements InputSig<Location, RustDataFlow> {
           // TODO: calculate in QL
           arg = a.getExtendedCanonicalPath() + "::" + field
         |
-          c.(RecordFieldContent).isStructField(a, field)
+          c.(StructFieldContent).isStructField(a, field)
           or
-          c.(RecordFieldContent).isVariantField(a, field)
+          c.(StructFieldContent).isVariantField(a, field)
         )
         or
         c =
