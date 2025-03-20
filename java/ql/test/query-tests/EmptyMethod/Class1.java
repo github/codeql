@@ -20,6 +20,12 @@ public class Class1 {
   public void f4() {
   }
 
+  /**
+   * COMPLIANT - empty method with javadoc
+   */
+  public void f5() {
+  }
+
   public abstract class TestInner {
 
     public abstract void f(); // COMPLIANT - intentionally empty
@@ -41,6 +47,8 @@ public class Class1 {
 
     // NON_COMPLIANT
     default void method() { } // $ Alert
+
+    void method2(); // COMPLIANT
   }
 
 }
