@@ -575,9 +575,9 @@ module ExprTrees {
     }
   }
 
-  class RecordExprTree extends StandardPostOrderTree instanceof RecordExpr {
+  class StructExprTree extends StandardPostOrderTree instanceof StructExpr {
     override AstNode getChildNode(int i) {
-      result = super.getRecordExprFieldList().getField(i).getExpr()
+      result = super.getStructExprFieldList().getField(i).getExpr()
     }
   }
 
@@ -726,12 +726,12 @@ module PatternTrees {
     }
   }
 
-  class RecordPatTree extends PreOrderPatTree, RecordPat {
+  class StructPatTree extends PreOrderPatTree, StructPat {
     override Pat getPat(int i) {
-      result = this.getRecordPatFieldList().getField(i).getPat()
+      result = this.getStructPatFieldList().getField(i).getPat()
       or
-      i = this.getRecordPatFieldList().getNumberOfFields() and
-      result = this.getRecordPatFieldList().getRestPat()
+      i = this.getStructPatFieldList().getNumberOfFields() and
+      result = this.getStructPatFieldList().getRestPat()
     }
   }
 

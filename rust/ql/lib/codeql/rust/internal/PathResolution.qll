@@ -728,11 +728,11 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   (
     p = any(Visibility v).getPath()
     or
-    p = any(RecordExpr re).getPath()
+    p = any(StructExpr re).getPath()
     or
     p = any(PathTypeRepr ptr).getPath()
     or
-    p = any(RecordPat rp).getPath()
+    p = any(StructPat rp).getPath()
     or
     p =
       any(UseTree use |

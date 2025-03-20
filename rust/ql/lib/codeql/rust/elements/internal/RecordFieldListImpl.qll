@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.generated.RecordFieldList
  */
 module Impl {
   /**
-   * A RecordFieldList. For example:
+   * A field list of a struct expression. For example:
    * ```rust
    * todo!()
    * ```

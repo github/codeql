@@ -58,10 +58,10 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
 }
 
 /** A record field belonging to either a variant or a struct. */
-class RecordFieldContent extends FieldContent, TRecordFieldContent {
-  private RecordField field;
+class StructFieldContent extends FieldContent, TStructFieldContent {
+  private StructField field;
 
-  RecordFieldContent() { this = TRecordFieldContent(field) }
+  StructFieldContent() { this = TStructFieldContent(field) }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, string name) { field.isVariantField(v, name) }
@@ -69,21 +69,21 @@ class RecordFieldContent extends FieldContent, TRecordFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getRecordField() }
+  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getStructField() }
 
   final override string toString() {
     exists(Variant v, string name, string vname |
       this.isVariantField(v, name) and
       vname = v.getName().getText() and
       // only print field when the arity is > 1
-      if strictcount(v.getRecordField(_)) > 1 then result = vname + "." + name else result = vname
+      if strictcount(v.getStructField(_)) > 1 then result = vname + "." + name else result = vname
     )
     or
     exists(Struct s, string name, string sname |
       this.isStructField(s, name) and
       sname = s.getName().getText() and
       // only print field when the arity is > 1
-      if strictcount(s.getRecordField(_)) > 1 then result = sname + "." + name else result = sname
+      if strictcount(s.getStructField(_)) > 1 then result = sname + "." + name else result = sname
     )
   }
 
@@ -219,7 +219,7 @@ private import codeql.rust.internal.CachedStages
 cached
 newtype TContent =
   TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
-  TRecordFieldContent(RecordField field) or
+  TStructFieldContent(StructField field) or
   // TODO: Remove once library types are extracted
   TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
   TElementContent() or

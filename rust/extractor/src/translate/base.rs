@@ -53,13 +53,13 @@ macro_rules! emit_detached {
     (PathExpr, $self:ident, $node:ident, $label:ident) => {
         $self.extract_path_canonical_destination(&$node, $label.into());
     };
-    (RecordExpr, $self:ident, $node:ident, $label:ident) => {
+    (StructExpr, $self:ident, $node:ident, $label:ident) => {
         $self.extract_path_canonical_destination(&$node, $label.into());
     };
     (PathPat, $self:ident, $node:ident, $label:ident) => {
         $self.extract_path_canonical_destination(&$node, $label.into());
     };
-    (RecordPat, $self:ident, $node:ident, $label:ident) => {
+    (StructPat, $self:ident, $node:ident, $label:ident) => {
         $self.extract_path_canonical_destination(&$node, $label.into());
     };
     (TupleStructPat, $self:ident, $node:ident, $label:ident) => {

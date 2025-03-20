@@ -28,7 +28,7 @@ bazel_dep(name = "rules_kotlin", version = "2.0.0-codeql.1")
 bazel_dep(name = "gazelle", version = "0.40.0")
 bazel_dep(name = "rules_dotnet", version = "0.17.4")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
-bazel_dep(name = "rules_rust", version = "0.57.1")
+bazel_dep(name = "rules_rust", version = "0.58.0")
 bazel_dep(name = "zstd", version = "1.5.5.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)

@@ -1,3 +1,11 @@
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+No user-facing changes.
+
 ## 0.4.3
 
 ### New Features

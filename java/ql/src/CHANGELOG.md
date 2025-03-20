@@ -1,3 +1,13 @@
+## 1.3.1
+
+No user-facing changes.
+
+## 1.3.0
+
+### Major Analysis Improvements
+
+* Fixed false positive alerts in the java query "Cross-site scripting" (`java/xss`) when `javax.servlet.http.HttpServletResponse` is used with a content type which is not exploitable.
+
 ## 1.2.0
 
 ### New Queries
