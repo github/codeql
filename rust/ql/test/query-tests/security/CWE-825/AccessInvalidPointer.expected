@@ -13,6 +13,7 @@
 | deallocation.rs:100:14:100:15 | p2 | deallocation.rs:93:21:93:42 | ...::dangling_mut | deallocation.rs:100:14:100:15 | p2 | This operation dereferences a pointer that may be $@. | deallocation.rs:93:21:93:42 | ...::dangling_mut | invalid |
 | deallocation.rs:101:14:101:15 | p3 | deallocation.rs:94:23:94:36 | ...::null | deallocation.rs:101:14:101:15 | p3 | This operation dereferences a pointer that may be $@. | deallocation.rs:94:23:94:36 | ...::null | invalid |
 | deallocation.rs:148:14:148:15 | p1 | deallocation.rs:145:27:145:28 | p1 | deallocation.rs:148:14:148:15 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:145:27:145:28 | p1 | invalid |
+| deallocation.rs:179:18:179:20 | ptr | deallocation.rs:173:27:173:29 | ptr | deallocation.rs:179:18:179:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:173:27:173:29 | ptr | invalid |
 edges
 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:23:13:23:14 | m1 | provenance |  |
 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:25:33:25:34 | m1 | provenance |  |
@@ -38,6 +39,7 @@ edges
 | deallocation.rs:94:23:94:36 | ...::null | deallocation.rs:94:23:94:38 | ...::null(...) | provenance | Src:MaD:5 MaD:5 |
 | deallocation.rs:94:23:94:38 | ...::null(...) | deallocation.rs:94:6:94:7 | p3 | provenance |  |
 | deallocation.rs:145:27:145:28 | p1 | deallocation.rs:148:14:148:15 | p1 | provenance |  |
+| deallocation.rs:173:27:173:29 | ptr | deallocation.rs:179:18:179:20 | ptr | provenance |  |
 models
 | 1 | Sink: lang:core; crate::ptr::read; pointer-access; Argument[0] |
 | 2 | Sink: lang:core; crate::ptr::write; pointer-access; Argument[0] |
@@ -76,4 +78,6 @@ nodes
 | deallocation.rs:101:14:101:15 | p3 | semmle.label | p3 |
 | deallocation.rs:145:27:145:28 | p1 | semmle.label | p1 |
 | deallocation.rs:148:14:148:15 | p1 | semmle.label | p1 |
+| deallocation.rs:173:27:173:29 | ptr | semmle.label | ptr |
+| deallocation.rs:179:18:179:20 | ptr | semmle.label | ptr |
 subpaths

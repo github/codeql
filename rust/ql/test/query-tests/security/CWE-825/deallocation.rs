@@ -151,3 +151,50 @@ pub fn test_ptr_drop() {
 		println!("	v4 = {v4} (!)"); // corrupt in practice
 	}
 }
+
+fn do_something(s: &String) {
+	println!("	s = {}", s);
+}
+
+fn test_qhelp_test_good(ptr: *mut String) {
+	unsafe {
+		do_something(&*ptr);
+	}
+
+	// ...
+
+	unsafe {
+		std::ptr::drop_in_place(ptr);
+	}
+}
+
+fn test_qhelp_test_bad(ptr: *mut String) {
+	unsafe {
+		std::ptr::drop_in_place(ptr); // $ Source=drop_in_place
+	}
+
+	// ...
+
+	unsafe {
+		do_something(&*ptr); // $ Alert[rust/access-invalid-pointer]=drop_in_place
+	}
+}
+
+pub fn test_qhelp_tests() {
+	let layout = std::alloc::Layout::new::<[String; 2]>();
+	unsafe {
+		let ptr = std::alloc::alloc(layout);
+		let ptr_s = ptr as *mut [String; 2];
+		let ptr1 = &raw mut (*ptr_s)[0];
+		let ptr2 = &raw mut (*ptr_s)[1];
+
+		*ptr1 = String::from("123");
+		*ptr2 = String::from("456");
+
+		test_qhelp_test_good(ptr1);
+
+		test_qhelp_test_bad(ptr2);
+
+		std::alloc::dealloc(ptr, layout);
+	}
+}

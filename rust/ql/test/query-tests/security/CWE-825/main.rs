@@ -123,6 +123,9 @@ fn main() {
 	println!("test_ptr_drop:");
 	test_ptr_drop();
 
+	println!("test_qhelp_tests:");
+	test_qhelp_tests();
+
 	// ---
 
 	println!("test_local_dangling:");
