@@ -5,6 +5,8 @@ test_isNumber
 test_QualifiedName
 | VarType | tst.js:9:13:9:19 | VarType |
 | boolean | tst.js:5:14:5:20 | boolean |
+| foo | tst.js:4:12:4:22 | foo |
+| foo.bar | tst.js:4:12:4:22 | foo.bar |
 | foo.bar.baz | tst.js:4:12:4:22 | foo.bar.baz |
 | number | tst.js:3:12:3:17 | number |
 | string | tst.js:2:12:2:17 | string |
