@@ -11,3 +11,4 @@ dependencies:
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
 warnOnImplicitThis: true
+compileForOverlayEval: true

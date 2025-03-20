@@ -10,3 +10,4 @@ suites: codeql-suites
 extractor: python
 defaultSuiteFile: codeql-suites/python-code-scanning.qls
 warnOnImplicitThis: true
+compileForOverlayEval: true
