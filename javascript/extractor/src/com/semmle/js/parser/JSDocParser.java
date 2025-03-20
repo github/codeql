@@ -10,13 +10,14 @@ import com.semmle.js.ast.jsdoc.FunctionType;
 import com.semmle.js.ast.jsdoc.JSDocComment;
 import com.semmle.js.ast.jsdoc.JSDocTag;
 import com.semmle.js.ast.jsdoc.JSDocTypeExpression;
-import com.semmle.js.ast.jsdoc.NameExpression;
+import com.semmle.js.ast.jsdoc.Identifier;
 import com.semmle.js.ast.jsdoc.NonNullableType;
 import com.semmle.js.ast.jsdoc.NullLiteral;
 import com.semmle.js.ast.jsdoc.NullableLiteral;
 import com.semmle.js.ast.jsdoc.NullableType;
 import com.semmle.js.ast.jsdoc.OptionalType;
 import com.semmle.js.ast.jsdoc.ParameterType;
+import com.semmle.js.ast.jsdoc.QualifiedNameExpression;
 import com.semmle.js.ast.jsdoc.RecordType;
 import com.semmle.js.ast.jsdoc.RestType;
 import com.semmle.js.ast.jsdoc.TypeApplication;
@@ -827,10 +828,16 @@ public class JSDocParser {
     }
 
     private JSDocTypeExpression parseNameExpression() throws ParseError {
-      Object name = value;
       SourceLocation loc = loc();
       expect(Token.NAME);
-      return finishNode(new NameExpression(loc, name.toString()));
+      // Hacky initial implementation with wrong locations
+      String[] parts = value.toString().split("\\.");
+      JSDocTypeExpression node = finishNode(new Identifier(loc, parts[0]));
+      for (int i = 1; i < parts.length; i++) {
+        Identifier memberName = finishNode(new Identifier(loc, parts[i]));
+        node = finishNode(new QualifiedNameExpression(loc, node, memberName));
+      }
+      return node;
     }
 
     // TypeExpressionList :=
@@ -923,14 +930,14 @@ public class JSDocParser {
 
         SourceLocation loc = loc();
         expr = parseTypeExpression();
-        if (expr instanceof NameExpression && token == Token.COLON) {
+        if (expr instanceof Identifier && token == Token.COLON) {
           // Identifier ':' TypeExpression
           consume(Token.COLON);
           expr =
               finishNode(
                   new ParameterType(
                       new SourceLocation(loc),
-                      ((NameExpression) expr).getName(),
+                      ((Identifier) expr).getName(),
                       parseTypeExpression()));
         }
         if (token == Token.EQUAL) {
@@ -1106,7 +1113,7 @@ public class JSDocParser {
         consume(Token.RBRACK, "expected an array-style type declaration (' + value + '[])");
         List<JSDocTypeExpression> expressions = new ArrayList<>();
         expressions.add(expr);
-        NameExpression nameExpr = finishNode(new NameExpression(new SourceLocation(loc), "Array"));
+        Identifier nameExpr = finishNode(new Identifier(new SourceLocation(loc), "Array"));
         return finishNode(new TypeApplication(loc, nameExpr, expressions));
       }
 
@@ -1527,9 +1534,9 @@ public class JSDocParser {
             // fixed at the end
             if (isParamTitle(this._title)
                 && this._tag.type != null
-                && this._tag.type instanceof NameExpression) {
-              this._extra_name = ((NameExpression) this._tag.type).getName();
-              this._tag.name = ((NameExpression) this._tag.type).getName();
+                && this._tag.type instanceof Identifier) {
+              this._extra_name = ((Identifier) this._tag.type).getName();
+              this._tag.name = ((Identifier) this._tag.type).getName();
               this._tag.type = null;
             } else {
               if (!this.addError("Missing or invalid tag name")) {
@@ -1645,7 +1652,7 @@ public class JSDocParser {
             Position start = new Position(_tag.startLine, _tag.startColumn, _tag.startColumn);
             Position end = new Position(_tag.startLine, _tag.startColumn, _tag.startColumn);
             SourceLocation loc = new SourceLocation(_extra_name, start, end);
-            this._tag.type = new NameExpression(loc, _extra_name);
+            this._tag.type = new Identifier(loc, _extra_name);
           }
           this._tag.name = null;
 
