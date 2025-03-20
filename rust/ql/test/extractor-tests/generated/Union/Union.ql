@@ -4,7 +4,7 @@ import TestUtils
 
 from
   Union x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasGenericParamList, string hasName, string hasRecordFieldList, string hasVisibility,
+  string hasGenericParamList, string hasName, string hasStructFieldList, string hasVisibility,
   string hasWhereClause
 where
   toBeTested(x) and
@@ -18,10 +18,10 @@ where
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasRecordFieldList() then hasRecordFieldList = "yes" else hasRecordFieldList = "no") and
+  (if x.hasStructFieldList() then hasStructFieldList = "yes" else hasStructFieldList = "no") and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
   "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "hasName:",
-  hasName, "hasRecordFieldList:", hasRecordFieldList, "hasVisibility:", hasVisibility,
+  hasName, "hasStructFieldList:", hasStructFieldList, "hasVisibility:", hasVisibility,
   "hasWhereClause:", hasWhereClause

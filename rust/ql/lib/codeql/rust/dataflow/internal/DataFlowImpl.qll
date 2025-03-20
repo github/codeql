@@ -635,9 +635,9 @@ module RustDataFlow implements InputSig<Location> {
         node2.asPat() = pat.getField(pos)
       )
       or
-      exists(RecordPatCfgNode pat, string field |
+      exists(StructPatCfgNode pat, string field |
         pat = node1.asPat() and
-        c = TRecordFieldContent(pat.getRecordPat().getRecordField(field)) and
+        c = TStructFieldContent(pat.getStructPat().getStructField(field)) and
         node2.asPat() = pat.getFieldPat(field)
       )
       or
@@ -745,8 +745,8 @@ module RustDataFlow implements InputSig<Location> {
       VariantInLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
     )
     or
-    exists(RecordExprCfgNode re, string field |
-      c = TRecordFieldContent(re.getRecordExpr().getRecordField(field)) and
+    exists(StructExprCfgNode re, string field |
+      c = TStructFieldContent(re.getStructExpr().getStructField(field)) and
       node1.asExpr() = re.getFieldExpr(field) and
       node2.asExpr() = re
     )

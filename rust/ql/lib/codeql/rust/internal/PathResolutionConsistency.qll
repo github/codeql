@@ -24,9 +24,9 @@ query predicate multipleStaticCallTargets(CallExprBase call, Callable target) {
 }
 
 /** Holds if `fe` resolves to multiple record fields including `field`. */
-query predicate multipleRecordFields(FieldExpr fe, RecordField field) {
-  field = fe.getRecordField() and
-  strictcount(fe.getRecordField()) > 1
+query predicate multipleStructFields(FieldExpr fe, StructField field) {
+  field = fe.getStructField() and
+  strictcount(fe.getStructField()) > 1
 }
 
 /** Holds if `fe` resolves to multiple tuple fields including `field`. */
@@ -46,7 +46,7 @@ int getPathResolutionInconsistencyCounts(string type) {
   result = count(CallExprBase call | multipleStaticCallTargets(call, _) | call)
   or
   type = "Multiple record fields" and
-  result = count(FieldExpr fe | multipleRecordFields(fe, _) | fe)
+  result = count(FieldExpr fe | multipleStructFields(fe, _) | fe)
   or
   type = "Multiple tuple fields" and
   result = count(FieldExpr fe | multipleTupleFields(fe, _) | fe)

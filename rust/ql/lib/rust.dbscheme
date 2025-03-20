@@ -194,11 +194,6 @@ named_crates(
 | @pat
 | @path
 | @path_segment
-| @record_expr_field
-| @record_expr_field_list
-| @record_field
-| @record_pat_field
-| @record_pat_field_list
 | @rename
 | @resolvable
 | @ret_type_repr
@@ -206,6 +201,11 @@ named_crates(
 | @source_file
 | @stmt
 | @stmt_list
+| @struct_expr_field
+| @struct_expr_field_list
+| @struct_field
+| @struct_pat_field
+| @struct_pat_field_list
 | @token
 | @token_tree
 | @tuple_field
@@ -444,9 +444,9 @@ closure_binder_generic_param_lists(
 | @path_expr_base
 | @prefix_expr
 | @range_expr
-| @record_expr
 | @ref_expr
 | @return_expr
+| @struct_expr
 | @try_expr
 | @tuple_expr
 | @underscore_expr
@@ -751,10 +751,10 @@ parenthesized_arg_list_type_args(
 | @paren_pat
 | @path_pat
 | @range_pat
-| @record_pat
 | @ref_pat
 | @rest_pat
 | @slice_pat
+| @struct_pat
 | @tuple_pat
 | @tuple_struct_pat
 | @wildcard_pat
@@ -820,128 +820,6 @@ path_segment_type_reprs(
 path_segment_trait_type_reprs(
   int id: @path_segment ref,
   int trait_type_repr: @path_type_repr ref
-);
-
-record_expr_fields(
-  unique int id: @record_expr_field
-);
-
-#keyset[id, index]
-record_expr_field_attrs(
-  int id: @record_expr_field ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-record_expr_field_exprs(
-  int id: @record_expr_field ref,
-  int expr: @expr ref
-);
-
-#keyset[id]
-record_expr_field_name_refs(
-  int id: @record_expr_field ref,
-  int name_ref: @name_ref ref
-);
-
-record_expr_field_lists(
-  unique int id: @record_expr_field_list
-);
-
-#keyset[id, index]
-record_expr_field_list_attrs(
-  int id: @record_expr_field_list ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id, index]
-record_expr_field_list_fields(
-  int id: @record_expr_field_list ref,
-  int index: int ref,
-  int field: @record_expr_field ref
-);
-
-#keyset[id]
-record_expr_field_list_spreads(
-  int id: @record_expr_field_list ref,
-  int spread: @expr ref
-);
-
-record_fields(
-  unique int id: @record_field
-);
-
-#keyset[id, index]
-record_field_attrs(
-  int id: @record_field ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-record_field_exprs(
-  int id: @record_field ref,
-  int expr: @expr ref
-);
-
-#keyset[id]
-record_field_names(
-  int id: @record_field ref,
-  int name: @name ref
-);
-
-#keyset[id]
-record_field_type_reprs(
-  int id: @record_field ref,
-  int type_repr: @type_repr ref
-);
-
-#keyset[id]
-record_field_visibilities(
-  int id: @record_field ref,
-  int visibility: @visibility ref
-);
-
-record_pat_fields(
-  unique int id: @record_pat_field
-);
-
-#keyset[id, index]
-record_pat_field_attrs(
-  int id: @record_pat_field ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-record_pat_field_name_refs(
-  int id: @record_pat_field ref,
-  int name_ref: @name_ref ref
-);
-
-#keyset[id]
-record_pat_field_pats(
-  int id: @record_pat_field ref,
-  int pat: @pat ref
-);
-
-record_pat_field_lists(
-  unique int id: @record_pat_field_list
-);
-
-#keyset[id, index]
-record_pat_field_list_fields(
-  int id: @record_pat_field_list ref,
-  int index: int ref,
-  int field: @record_pat_field ref
-);
-
-#keyset[id]
-record_pat_field_list_rest_pats(
-  int id: @record_pat_field_list ref,
-  int rest_pat: @rest_pat ref
 );
 
 renames(
@@ -1031,6 +909,128 @@ stmt_list_statements(
 stmt_list_tail_exprs(
   int id: @stmt_list ref,
   int tail_expr: @expr ref
+);
+
+struct_expr_fields(
+  unique int id: @struct_expr_field
+);
+
+#keyset[id, index]
+struct_expr_field_attrs(
+  int id: @struct_expr_field ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+struct_expr_field_exprs(
+  int id: @struct_expr_field ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+struct_expr_field_name_refs(
+  int id: @struct_expr_field ref,
+  int name_ref: @name_ref ref
+);
+
+struct_expr_field_lists(
+  unique int id: @struct_expr_field_list
+);
+
+#keyset[id, index]
+struct_expr_field_list_attrs(
+  int id: @struct_expr_field_list ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id, index]
+struct_expr_field_list_fields(
+  int id: @struct_expr_field_list ref,
+  int index: int ref,
+  int field: @struct_expr_field ref
+);
+
+#keyset[id]
+struct_expr_field_list_spreads(
+  int id: @struct_expr_field_list ref,
+  int spread: @expr ref
+);
+
+struct_fields(
+  unique int id: @struct_field
+);
+
+#keyset[id, index]
+struct_field_attrs(
+  int id: @struct_field ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+struct_field_exprs(
+  int id: @struct_field ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+struct_field_names(
+  int id: @struct_field ref,
+  int name: @name ref
+);
+
+#keyset[id]
+struct_field_type_reprs(
+  int id: @struct_field ref,
+  int type_repr: @type_repr ref
+);
+
+#keyset[id]
+struct_field_visibilities(
+  int id: @struct_field ref,
+  int visibility: @visibility ref
+);
+
+struct_pat_fields(
+  unique int id: @struct_pat_field
+);
+
+#keyset[id, index]
+struct_pat_field_attrs(
+  int id: @struct_pat_field ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+struct_pat_field_name_refs(
+  int id: @struct_pat_field ref,
+  int name_ref: @name_ref ref
+);
+
+#keyset[id]
+struct_pat_field_pats(
+  int id: @struct_pat_field ref,
+  int pat: @pat ref
+);
+
+struct_pat_field_lists(
+  unique int id: @struct_pat_field_list
+);
+
+#keyset[id, index]
+struct_pat_field_list_fields(
+  int id: @struct_pat_field_list ref,
+  int index: int ref,
+  int field: @struct_pat_field ref
+);
+
+#keyset[id]
+struct_pat_field_list_rest_pats(
+  int id: @struct_pat_field_list ref,
+  int rest_pat: @rest_pat ref
 );
 
 @token =
@@ -2238,8 +2238,8 @@ paren_type_repr_type_reprs(
 @path_ast_node =
   @path_expr
 | @path_pat
-| @record_expr
-| @record_pat
+| @struct_expr
+| @struct_pat
 | @tuple_struct_pat
 ;
 
@@ -2365,7 +2365,7 @@ record_field_lists(
 record_field_list_fields(
   int id: @record_field_list ref,
   int index: int ref,
-  int field: @record_field ref
+  int field: @struct_field ref
 );
 
 ref_exprs(
@@ -3206,26 +3206,6 @@ path_pats(
   unique int id: @path_pat
 );
 
-record_exprs(
-  unique int id: @record_expr
-);
-
-#keyset[id]
-record_expr_record_expr_field_lists(
-  int id: @record_expr ref,
-  int record_expr_field_list: @record_expr_field_list ref
-);
-
-record_pats(
-  unique int id: @record_pat
-);
-
-#keyset[id]
-record_pat_record_pat_field_lists(
-  int id: @record_pat ref,
-  int record_pat_field_list: @record_pat_field_list ref
-);
-
 statics(
   unique int id: @static
 );
@@ -3315,6 +3295,26 @@ struct_visibilities(
 struct_where_clauses(
   int id: @struct ref,
   int where_clause: @where_clause ref
+);
+
+struct_exprs(
+  unique int id: @struct_expr
+);
+
+#keyset[id]
+struct_expr_struct_expr_field_lists(
+  int id: @struct_expr ref,
+  int struct_expr_field_list: @struct_expr_field_list ref
+);
+
+struct_pats(
+  unique int id: @struct_pat
+);
+
+#keyset[id]
+struct_pat_struct_pat_field_lists(
+  int id: @struct_pat ref,
+  int struct_pat_field_list: @struct_pat_field_list ref
 );
 
 traits(
@@ -3502,9 +3502,9 @@ union_names(
 );
 
 #keyset[id]
-union_record_field_lists(
+union_struct_field_lists(
   int id: @union ref,
-  int record_field_list: @record_field_list ref
+  int struct_field_list: @record_field_list ref
 );
 
 #keyset[id]
