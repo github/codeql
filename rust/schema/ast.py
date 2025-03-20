@@ -38,6 +38,9 @@ class TypeRepr(AstNode, ):
 class UseBoundGenericArg(AstNode, ):
     pass
 
+class VariantDef(AstNode, ):
+    pass
+
 class Item(Stmt, ):
     pass
 
@@ -621,7 +624,7 @@ class StmtList(AstNode, ):
     statements: list["Stmt"] | child
     tail_expr: optional["Expr"] | child
 
-class Struct(Item, ):
+class Struct(Item, VariantDef, ):
     attrs: list["Attr"] | child
     field_list: optional["FieldList"] | child
     generic_param_list: optional["GenericParamList"] | child
@@ -709,7 +712,7 @@ class TypeParam(GenericParam, ):
 class UnderscoreExpr(Expr, ):
     attrs: list["Attr"] | child
 
-class Union(Item, ):
+class Union(Item, VariantDef, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
@@ -734,7 +737,7 @@ class UseTree(AstNode, ):
 class UseTreeList(AstNode, ):
     use_trees: list["UseTree"] | child
 
-class Variant(AstNode, ):
+class Variant(VariantDef, ):
     attrs: list["Attr"] | child
     expr: optional["Expr"] | child
     field_list: optional["FieldList"] | child

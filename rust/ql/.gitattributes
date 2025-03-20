@@ -183,6 +183,7 @@
 /lib/codeql/rust/elements/UseTree.qll linguist-generated
 /lib/codeql/rust/elements/UseTreeList.qll linguist-generated
 /lib/codeql/rust/elements/Variant.qll linguist-generated
+/lib/codeql/rust/elements/VariantDef.qll linguist-generated
 /lib/codeql/rust/elements/VariantList.qll linguist-generated
 /lib/codeql/rust/elements/Visibility.qll linguist-generated
 /lib/codeql/rust/elements/WhereClause.qll linguist-generated
@@ -448,6 +449,7 @@
 /lib/codeql/rust/elements/internal/UseTreeListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseTreeListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/VariantDefImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VisibilityConstructor.qll linguist-generated
@@ -652,6 +654,7 @@
 /lib/codeql/rust/elements/internal/generated/UseTree.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/UseTreeList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Variant.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/VariantDef.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/VariantList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Visibility.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/WhereClause.qll linguist-generated
@@ -1202,9 +1205,7 @@
 /test/extractor-tests/generated/UseTreeList/UseTreeList_getUseTree.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getAttr.ql linguist-generated
-/test/extractor-tests/generated/Variant/Variant_getCrateOrigin.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getExpr.ql linguist-generated
-/test/extractor-tests/generated/Variant/Variant_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getFieldList.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getName.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getVisibility.ql linguist-generated

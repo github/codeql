@@ -216,6 +216,7 @@ named_crates(
 | @use_bound_generic_args
 | @use_tree
 | @use_tree_list
+| @variant_def
 | @variant_list
 | @visibility
 | @where_clause
@@ -278,7 +279,6 @@ abi_abi_strings(
 
 @addressable =
   @item
-| @variant
 ;
 
 #keyset[id]
@@ -1177,6 +1177,12 @@ use_tree_list_use_trees(
   int index: int ref,
   int use_tree: @use_tree ref
 );
+
+@variant_def =
+  @struct
+| @union
+| @variant
+;
 
 variant_lists(
   unique int id: @variant_list

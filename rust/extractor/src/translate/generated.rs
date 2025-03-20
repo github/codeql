@@ -176,6 +176,14 @@ impl Translator<'_> {
         }
     }
 
+    pub(crate) fn emit_variant_def(&mut self, node: ast::VariantDef) -> Option<Label<generated::VariantDef>> {
+        match node {
+            ast::VariantDef::Struct(inner) => self.emit_struct(inner).map(Into::into),
+            ast::VariantDef::Union(inner) => self.emit_union(inner).map(Into::into),
+            ast::VariantDef::Variant(inner) => self.emit_variant(inner).map(Into::into),
+        }
+    }
+
     pub(crate) fn emit_item(&mut self, node: ast::Item) -> Option<Label<generated::Item>> {
         match node {
             ast::Item::Const(inner) => self.emit_const(inner).map(Into::into),

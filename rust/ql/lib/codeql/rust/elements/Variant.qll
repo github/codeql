@@ -4,11 +4,11 @@
  */
 
 private import internal.VariantImpl
-import codeql.rust.elements.Addressable
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.Name
+import codeql.rust.elements.VariantDef
 import codeql.rust.elements.Visibility
 
 /**
