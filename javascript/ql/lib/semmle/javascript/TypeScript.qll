@@ -1,4 +1,5 @@
 import javascript
+private import semmle.javascript.internal.UnderlyingTypes
 
 /**
  * A statement that defines a namespace, that is, a namespace declaration or enum declaration.
@@ -577,7 +578,7 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 
   override DataFlow::ClassNode getClass() {
-    result.getAstNode() = this.getType().(ClassType).getClass()
+    UnderlyingTypes::nodeHasUnderlyingClassType(this, result.getAstNode())
   }
 }
 
