@@ -27,6 +27,12 @@ class Scope extends @scope {
     result = this.getAVariable() and
     result.getName() = name
   }
+
+  /** Gets the local type name with the given name declared in this scope. */
+  LocalTypeName getLocalTypeName(string name) {
+    result.getScope() = this and
+    result.getName() = name
+  }
 }
 
 /**
