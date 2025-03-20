@@ -367,8 +367,11 @@ class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
   DataFlow::Node getAValueFormattedMessageComponent() {
     result = this.getAMessageComponent() and
     not exists(string formatSpecifier |
-      formatSpecifier.regexpMatch("%[^%]*T") and
-      result = this.(StringOps::Formatting::StringFormatCall).getOperand(_, formatSpecifier)
+      result = this.(StringOps::Formatting::StringFormatCall).getOperand(_, formatSpecifier) and
+      // We already know that `formatSpecifier` starts with `%`, so we check
+      // that it ends with `T` to confirm that it is `%T` or possibly some
+      // variation on it.
+      formatSpecifier.matches("%T")
     )
   }
 }
