@@ -30,6 +30,12 @@ module CryptoInput implements InputSig<Language::Location> {
     result = node.asExpr() or
     result = node.asParameter()
   }
+
+  predicate artifactOutputFlowsToGenericInput(
+    DataFlow::Node artifactOutput, DataFlow::Node otherInput
+  ) {
+    ArtifactUniversalFlow::flow(artifactOutput, otherInput)
+  }
 }
 
 /**
@@ -70,16 +76,20 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
-  override DataFlow::Node getOutputNode() { result.asExpr() = this }
-
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    // TODO: separate config to avoid blowing up data-flow analysis
-    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
-
-  override string getAdditionalDescription() { result = this.toString() }
-}
+/*
+ * class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
+ *  ConstantDataSource() { not this instanceof Crypto::KnownElement }
+ *
+ *  override DataFlow::Node getOutputNode() { result.asExpr() = this }
+ *
+ *  override predicate flowsTo(Crypto::FlowAwareElement other) {
+ *    // TODO: separate config to avoid blowing up data-flow analysis
+ *    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+ *  }
+ *
+ *  override string getAdditionalDescription() { result = this.toString() }
+ * }
+ */
 
 /**
  * Random number generation, where each instance is modelled as the expression

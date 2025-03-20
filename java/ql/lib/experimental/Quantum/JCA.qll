@@ -84,7 +84,7 @@ module JCAModel {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherStringLiteral }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(CipherGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
+      exists(Crypto::AlgorithmValueConsumer consumer | sink = consumer.getInputNode())
     }
   }
 
@@ -102,13 +102,13 @@ module JCAModel {
   class CipherStringLiteralAlgorithmInstance extends Crypto::CipherAlgorithmInstance,
     Crypto::ModeOfOperationAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof CipherStringLiteral
   {
-    CipherGetInstanceAlgorithmArg consumer;
+    Crypto::AlgorithmValueConsumer consumer;
 
     CipherStringLiteralAlgorithmInstance() {
-      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(consumer))
+      AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
     }
 
-    CipherGetInstanceAlgorithmArg getConsumer() { result = consumer }
+    Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
 
     override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
       result = this and exists(this.getRawModeAlgorithmName()) // TODO: provider defaults
@@ -411,6 +411,19 @@ module JCAModel {
     }
   }
 
+  // e.g., getPublic or getPrivate
+  class KeyPairGetKeyCall extends MethodCall {
+    KeyPairGetKeyCall() {
+      this.getCallee().hasQualifiedName("java.security", "KeyPair", "getPublic")
+      or
+      this.getCallee().hasQualifiedName("java.security", "KeyPair", "getPrivate")
+    }
+
+    DataFlow::Node getInputNode() { result.asExpr() = this.getQualifier() }
+
+    DataFlow::Node getOutputNode() { result.asExpr() = this }
+  }
+
   predicate additionalFlowSteps(DataFlow::Node node1, DataFlow::Node node2) {
     exists(IvParameterSpecGetIvCall m |
       node1.asExpr() = m.getQualifier() and
@@ -421,12 +434,17 @@ module JCAModel {
       node1 = n.getInputNode() and
       node2 = n.getOutputNode()
     )
+    or
+    exists(KeyPairGetKeyCall call |
+      node1 = call.getInputNode() and
+      node2 = call.getOutputNode()
+    )
   }
 
-  class NonceAdditionalFlowInputStep extends AdditionalFlowInputStep {
+  class ArtifactAdditionalFlowStep extends AdditionalFlowInputStep {
     DataFlow::Node output;
 
-    NonceAdditionalFlowInputStep() { additionalFlowSteps(this, output) }
+    ArtifactAdditionalFlowStep() { additionalFlowSteps(this, output) }
 
     override DataFlow::Node getOutput() { result = output }
   }
@@ -603,6 +621,74 @@ module JCAModel {
       exists(MessageDigestGetInstanceCall call |
         call.getDigestCall() = this and result = call.getAlgorithmArg()
       )
+    }
+  }
+
+  class KeyGeneratorCallAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
+    KeyGeneratorGetInstanceCall call;
+
+    KeyGeneratorCallAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
+
+    override DataFlow::Node getInputNode() { result.asExpr() = this }
+
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+      result.(CipherStringLiteralAlgorithmInstance).getConsumer() = this
+    }
+  }
+
+  // flow from instance created by getInstance to generateKey
+  module KeyGeneratorGetInstanceToGenerateConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      exists(KeyGeneratorGetInstanceCall call | src.asExpr() = call)
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(KeyGeneratorGenerateCall call | sink.asExpr() = call.(MethodCall).getQualifier())
+    }
+  }
+
+  module KeyGeneratorGetInstanceToGenerateFlow =
+    DataFlow::Global<KeyGeneratorGetInstanceToGenerateConfig>;
+
+  class KeyGeneratorGetInstanceCall extends MethodCall {
+    KeyGeneratorGetInstanceCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", "getInstance")
+      or
+      this.getCallee().hasQualifiedName("java.security", "KeyPairGenerator", "getInstance")
+    }
+
+    Expr getAlgorithmArg() { result = super.getArgument(0) }
+
+    predicate flowsTo(KeyGeneratorGenerateCall sink) {
+      KeyGeneratorGetInstanceToGenerateFlow::flow(DataFlow::exprNode(this),
+        DataFlow::exprNode(sink.(MethodCall).getQualifier()))
+    }
+  }
+
+  class KeyGeneratorGenerateCall extends Crypto::KeyGenerationOperationInstance instanceof MethodCall
+  {
+    Crypto::KeyArtifactType type;
+
+    KeyGeneratorGenerateCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", "generateKey") and
+      type instanceof Crypto::TSymmetricKeyType
+      or
+      this.getCallee().hasQualifiedName("java.security", "KeyPairGenerator", "generateKeyPair") and
+      type instanceof Crypto::TAsymmetricKeyType
+    }
+
+    override DataFlow::Node getOutputKeyArtifact() { result.asExpr() = this }
+
+    override Crypto::KeyArtifactType getOutputKeyType() { result = type }
+
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      exists(KeyGeneratorGetInstanceCall getInstance |
+        getInstance.flowsTo(this) and result = getInstance.getAlgorithmArg()
+      )
+    }
+
+    Crypto::AlgorithmInstance getAKnownAlgorithm() {
+      result = this.getAnAlgorithmValueConsumer().getAKnownAlgorithmSource()
     }
   }
 }
