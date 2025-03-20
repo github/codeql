@@ -22,6 +22,10 @@ signature module InputSig<LocationSig Location> {
   class UnknownLocation instanceof Location;
 
   LocatableElement dfn_to_element(DataFlowNode node);
+
+  predicate artifactOutputFlowsToGenericInput(
+    DataFlowNode artifactOutput, DataFlowNode otherFlowAwareInput
+  );
 }
 
 module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
@@ -51,26 +55,22 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       )
   }
 
-  NodeBase getPassthroughNodeChild(NodeBase node) {
-    result = node.(CipherInputNode).getChild(_) or
-    result = node.(NonceArtifactNode).getChild(_)
-  }
+  NodeBase getPassthroughNodeChild(NodeBase node) { result = node.getChild(_) }
 
   predicate isPassthroughNode(NodeBase node) {
-    node instanceof CipherInputNode or
-    node instanceof NonceArtifactNode
+    node.asElement() instanceof ArtifactConsumerAndInstance
   }
 
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
     not node.isExcludedFromGraph() and
-    not isPassthroughNode(node) and
+    not isPassthroughNode(node) and // TODO: punt to fix known unknowns for passthrough nodes
     (
       key = "semmle.label" and
       value = node.toString()
       or
       // CodeQL's DGML output does not include a location
       key = "Location" and
-      value = node.getLocation().toString()
+      value = "demo" // node.getLocation().toString()
       or
       // Known unknown edges should be reported as properties rather than edges
       node = node.getChild(key) and
@@ -305,22 +305,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   // in order for a flowsTo to be defined. At the per-modeling-instance level, extend that language-level class!
   abstract class OutputArtifactInstance extends ArtifactInstance {
     override predicate isConsumerArtifact() { none() }
+
+    override DataFlowNode getInputNode() { none() }
   }
 
-  abstract class DigestArtifactInstance extends OutputArtifactInstance {
-    final override DataFlowNode getInputNode() { none() }
-  }
+  abstract class DigestArtifactInstance extends OutputArtifactInstance { }
 
   abstract class RandomNumberGenerationInstance extends OutputArtifactInstance {
     // TODO: input seed?
-    final override DataFlowNode getInputNode() { none() }
   }
 
-  abstract class CipherOutputArtifactInstance extends ArtifactInstance {
-    final override DataFlowNode getInputNode() { none() }
-
-    override predicate isConsumerArtifact() { none() }
-  }
+  abstract class CipherOutputArtifactInstance extends OutputArtifactInstance { }
 
   // Artifacts that may be outputs or inputs
   newtype TKeyArtifactType =
@@ -338,13 +333,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  abstract class KeyArtifactInstance extends ArtifactInstance {
+  abstract private class KeyArtifactInstance extends ArtifactInstance {
     abstract KeyArtifactType getKeyType();
   }
 
-  final class KeyArtifactConsumer extends ArtifactConsumerAndInstance, KeyArtifactInstance {
+  final class KeyArtifactOutputInstance extends KeyArtifactInstance, OutputArtifactInstance {
+    KeyCreationOperationInstance creator;
+
+    KeyArtifactOutputInstance() { Input::dfn_to_element(creator.getOutputKeyArtifact()) = this }
+
+    final KeyCreationOperationInstance getCreator() { result = creator }
+
+    override KeyArtifactType getKeyType() { result = creator.getOutputKeyType() }
+
+    override DataFlowNode getOutputNode() { result = creator.getOutputKeyArtifact() }
+
+    override predicate flowsTo(FlowAwareElement other) {
+      Input::artifactOutputFlowsToGenericInput(this.getOutputNode(), other.getInputNode())
+    }
+  }
+
+  final class KeyArtifactConsumer extends KeyArtifactInstance, ArtifactConsumerAndInstance {
     DataFlowNode inputNode;
 
+    // TODO: key type hint? e.g. hint: private || public
     KeyArtifactConsumer() {
       exists(CipherOperationInstance op | inputNode = op.getKeyConsumer()) and
       this = Input::dfn_to_element(inputNode)
@@ -483,6 +495,33 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class KeyDerivationAlgorithmInstance extends AlgorithmInstance { }
 
+  abstract private class KeyCreationOperationInstance extends OperationInstance {
+    abstract string getKeyCreationTypeDescription();
+
+    /**
+     * Gets the key artifact produced by this operation.
+     */
+    abstract DataFlowNode getOutputKeyArtifact();
+
+    /**
+     * Gets the key artifact type produced.
+     */
+    abstract KeyArtifactType getOutputKeyType();
+
+    /**
+     * Gets the key size of the key produced by this operation.
+     */
+    string getKeySize() { none() } // TODO: punt, might need a generic value consumer?
+  }
+
+  abstract class KeyGenerationOperationInstance extends KeyCreationOperationInstance {
+    final override string getKeyCreationTypeDescription() { result = "KeyGeneration" }
+  }
+
+  abstract class KeyLoadOperationInstance extends KeyCreationOperationInstance {
+    final override string getKeyCreationTypeDescription() { result = "KeyLoad" }
+  }
+
   private signature class AlgorithmInstanceType instanceof AlgorithmInstance;
 
   module AlgorithmInstanceOrValueConsumer<AlgorithmInstanceType Alg> {
@@ -519,6 +558,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyDerivationOperation(KeyDerivationOperationInstance e) or
     TCipherOperation(CipherOperationInstance e) or
     TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
+    // Key Creation Operations
+    TKeyCreationOperation(KeyCreationOperationInstance e) or
     // Algorithms (e.g., SHA-256, AES)
     TCipherAlgorithm(CipherAlgorithmInstanceOrValueConsumer e) or
     TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstance e) or
@@ -662,7 +703,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * If a child class defines this predicate as `none()`, no relationship will be reported.
      */
-    string getSourceNodeRelationship() { result = "Source" }
+    string getSourceNodeRelationship() { result = "Source" } // TODO: revisit why this exists
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
@@ -737,6 +778,33 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
+    /**
+     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
+     */
+    NodeBase getAnAlgorithmOrUnknown() {
+      result = this.getAKnownAlgorithm() or
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
+    }
+
+    /**
+     * Gets a known algorithm associated with this operation
+     */
+    CipherAlgorithmNode getAKnownAlgorithm() {
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Algorithm" and
+      if exists(this.getAnAlgorithmOrUnknown())
+      then result = this.getAnAlgorithmOrUnknown()
+      else result = this
+    }
+
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
@@ -785,6 +853,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // [ONLY_KNOWN]
       key = "RawName" and value = this.getRawAlgorithmName() and location = this.getLocation()
     }
+  }
+
+  final class KeyCreationOperationNode extends OperationNode, TKeyCreationOperation {
+    KeyCreationOperationInstance instance;
+
+    KeyCreationOperationNode() { this = TKeyCreationOperation(instance) }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getInternalType() { result = instance.getKeyCreationTypeDescription() }
   }
 
   newtype TCipherOperationSubtype =
@@ -867,6 +945,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = this.asElement().(CipherOperationInstance).getOutputArtifact()
     }
 
+    KeyArtifactNode getAKey() {
+      result.asElement() =
+        Input::dfn_to_element(this.asElement().(CipherOperationInstance).getKeyConsumer())
+    }
+
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
@@ -891,6 +974,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       if exists(this.getAnOutputArtifact())
       then result = this.getAnOutputArtifact()
       else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Key" and
+      if exists(this.getAKey()) then result = this.getAKey() else result = this
     }
 
     override predicate properties(string key, string value, Location location) {
