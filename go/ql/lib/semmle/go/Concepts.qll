@@ -355,13 +355,17 @@ module RegexpReplaceFunction {
  * extend `LoggerCall::Range` instead.
  */
 class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
+  /** Gets a node that is a part of the logged message. */
+  DataFlow::Node getAMessageComponent() { result = super.getAMessageComponent() }
+
   /**
-   * Gets a node whose value is a part of the logged message. Note that
-   * components corresponding to the format specifier "%T" are excluded as
+   * Gets a node whose value is a part of the logged message.
+   *
+   * Components corresponding to the format specifier "%T" are excluded as
    * their type is logged rather than their value.
    */
-  DataFlow::Node getAMessageComponent() {
-    result = super.getAMessageComponent() and
+  DataFlow::Node getAValueFormattedMessageComponent() {
+    result = this.getAMessageComponent() and
     not exists(string formatSpecifier |
       formatSpecifier.regexpMatch("%[^%]*T") and
       result = this.(StringOps::Formatting::StringFormatCall).getOperand(_, formatSpecifier)
