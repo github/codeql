@@ -1,3 +1,18 @@
+## 2.5.1
+
+No user-facing changes.
+
+## 2.5.0
+
+### Major Analysis Improvements
+
+* Added support for the `response` threat model kind, which can enabled with [advanced setup](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models). When enabled, the response data coming back from an outgoing HTTP request is considered a source of taint.
+* Added support for the `useQuery` hook from `@tanstack/react-query`.
+
+### Minor Analysis Improvements
+
+* The `response.download()` function in `express` is now recognized as a sink for path traversal attacks.
+
 ## 2.4.1
 
 ### Minor Analysis Improvements
