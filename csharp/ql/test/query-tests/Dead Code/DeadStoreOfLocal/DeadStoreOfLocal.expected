@@ -1,3 +1,4 @@
+#select
 | DeadStoreOfLocal.cs:8:13:8:48 | Boolean success = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:8:13:8:19 | success | success |
 | DeadStoreOfLocal.cs:24:32:24:32 | FormatException e | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:24:32:24:32 | e | e |
 | DeadStoreOfLocal.cs:33:22:33:22 | String s | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:33:22:33:22 | s | s |
@@ -20,3 +21,6 @@
 | DeadStoreOfLocal.cs:426:13:426:20 | String s = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:426:13:426:13 | s | s |
 | DeadStoreOfLocal.cs:452:13:452:21 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:450:13:450:13 | s | s |
 | DeadStoreOfLocal.cs:526:20:526:76 | FileStream y = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:526:20:526:20 | y | y |
+| DeadStoreOfLocal.cs:537:19:537:27 | Int32 align = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:537:19:537:23 | align | align |
+testFailures
+| DeadStoreOfLocal.cs:537:19:537:27 | This assignment to $@ is useless, since its value is never read. | Unexpected result: Alert |
