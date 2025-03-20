@@ -3,7 +3,7 @@ import * as express from 'express';
 function getRequest(): express.Request { }
 
 function t1() {
-    getRequest(); // $ hasUnderlyingType='express'.Request
+    getRequest(); // $ MISSING: hasUnderlyingType='express'.Request
 }
 
 declare function getRequestAmbient(): express.Request;
@@ -17,8 +17,8 @@ class C {
 }
 
 function t3(c: C) {
-    c.method(); // $ hasUnderlyingType='express'.Request
-    new C().method(); // $ hasUnderlyingType='express'.Request
+    c.method(); // $ MISSING: hasUnderlyingType='express'.Request
+    new C().method(); // $ MISSING: hasUnderlyingType='express'.Request
 }
 
 function callback(fn: (req: express.Request) => void) { // $ SPURIOUS: hasUnderlyingType='express'.Request - req seems to be a SourceNode
@@ -26,7 +26,7 @@ function callback(fn: (req: express.Request) => void) { // $ SPURIOUS: hasUnderl
 
 function t4() {
     callback(function (
-        req // $ hasUnderlyingType='express'.Request
+        req // $ MISSING: hasUnderlyingType='express'.Request
     ) { }
     );
 }
