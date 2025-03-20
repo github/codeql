@@ -529,17 +529,17 @@ module ClientRequest {
     SuperAgentUrlRequest() {
       exists(string moduleName | moduleName = "superagent" |
         // Handle method calls like superagent.get(url)
-        this = DataFlow::moduleMember(moduleName, getSuperagentRequestMethodName()).getACall() and
+        this = API::moduleImport(moduleName).getMember(getSuperagentRequestMethodName()).getACall() and
         url = this.getArgument(0)
         or
         // Handle direct calls like superagent('GET', url)
-        this = DataFlow::moduleImport(moduleName).getACall() and
+        this = API::moduleImport(moduleName).getACall() and
         this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
         url = this.getArgument(1)
         or
         // Handle agent calls like superagent.agent().get(url)
         exists(DataFlow::SourceNode agent |
-          agent = DataFlow::moduleMember(moduleName, "agent").getACall() and
+          agent = API::moduleImport(moduleName).getMember("agent").getACall() and
           this = agent.getAMethodCall(httpMethodName()) and
           url = this.getArgument(0)
         )

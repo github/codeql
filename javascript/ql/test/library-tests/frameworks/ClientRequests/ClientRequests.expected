@@ -10,6 +10,9 @@ test_ClientRequest
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') |
 | puppeteer.ts:8:5:8:61 | page.ad ... css" }) |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) |
+| superagent.js:4:5:4:26 | superag ... ', url) |
+| superagent.js:5:5:5:23 | superagent.del(url) |
+| superagent.js:6:5:6:32 | superag ... st(url) |
 | tst.js:11:5:11:16 | request(url) |
 | tst.js:13:5:13:20 | request.get(url) |
 | tst.js:15:5:15:23 | request.delete(url) |
@@ -97,6 +100,7 @@ test_ClientRequest
 test_getADataNode
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
+| superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:39:6:42 | data |
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:33:57:37 | data2 |
@@ -158,6 +162,9 @@ test_getUrl
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
 | puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
+| superagent.js:4:5:4:26 | superag ... ', url) | superagent.js:4:23:4:25 | url |
+| superagent.js:5:5:5:23 | superagent.del(url) | superagent.js:5:20:5:22 | url |
+| superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:29:6:31 | url |
 | tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
 | tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
 | tst.js:15:5:15:23 | request.delete(url) | tst.js:15:20:15:22 | url |
@@ -250,6 +257,9 @@ test_getUrl
 test_getAResponseDataNode
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
+| superagent.js:4:5:4:26 | superag ... ', url) | superagent.js:4:5:4:26 | superag ... ', url) | stream | true |
+| superagent.js:5:5:5:23 | superagent.del(url) | superagent.js:5:5:5:23 | superagent.del(url) | stream | true |
+| superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:5:6:32 | superag ... st(url) | stream | true |
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
 | tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) |  | true |
