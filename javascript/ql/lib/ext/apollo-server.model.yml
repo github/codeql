@@ -3,4 +3,13 @@ extensions:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
-      - ["@apollo/server", "Member[ApolloServer].Argument[0].AnyMember.AnyMember.AnyMember.Parameter[1]", "remote"]
+      - ["@apollo/server", "Member[ApolloServer,ApolloServerBase].Argument[0].AnyMember.AnyMember.AnyMember.Parameter[1]", "remote"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["@apollo/server", "@apollo/server/standalone", ""]
+      - ["@apollo/server", "apollo-server-express", ""]
+      - ["@apollo/server", "apollo-server-core", ""]
+      - ["@apollo/server", "apollo-server", ""]
