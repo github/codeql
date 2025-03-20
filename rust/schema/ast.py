@@ -519,21 +519,21 @@ class RangePat(Pat, ):
     operator_name: optional[string]
     start: optional["Pat"] | child
 
-class RecordExpr(Expr, ):
+class StructExpr(Expr, ):
     path: optional["Path"] | child
-    record_expr_field_list: optional["RecordExprFieldList"] | child
+    struct_expr_field_list: optional["StructExprFieldList"] | child
 
-class RecordExprField(AstNode, ):
+class StructExprField(AstNode, ):
     attrs: list["Attr"] | child
     expr: optional["Expr"] | child
     name_ref: optional["NameRef"] | child
 
-class RecordExprFieldList(AstNode, ):
+class StructExprFieldList(AstNode, ):
     attrs: list["Attr"] | child
-    fields: list["RecordExprField"] | child
+    fields: list["StructExprField"] | child
     spread: optional["Expr"] | child
 
-class RecordField(AstNode, ):
+class StructField(AstNode, ):
     attrs: list["Attr"] | child
     expr: optional["Expr"] | child
     name: optional["Name"] | child
@@ -541,19 +541,19 @@ class RecordField(AstNode, ):
     visibility: optional["Visibility"] | child
 
 class RecordFieldList(FieldList, ):
-    fields: list["RecordField"] | child
+    fields: list["StructField"] | child
 
-class RecordPat(Pat, ):
+class StructPat(Pat, ):
     path: optional["Path"] | child
-    record_pat_field_list: optional["RecordPatFieldList"] | child
+    struct_pat_field_list: optional["StructPatFieldList"] | child
 
-class RecordPatField(AstNode, ):
+class StructPatField(AstNode, ):
     attrs: list["Attr"] | child
     name_ref: optional["NameRef"] | child
     pat: optional["Pat"] | child
 
-class RecordPatFieldList(AstNode, ):
-    fields: list["RecordPatField"] | child
+class StructPatFieldList(AstNode, ):
+    fields: list["StructPatField"] | child
     rest_pat: optional["RestPat"] | child
 
 class RefExpr(Expr, ):
@@ -713,7 +713,7 @@ class Union(Item, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
-    record_field_list: optional["RecordFieldList"] | child
+    struct_field_list: optional["RecordFieldList"] | child
     visibility: optional["Visibility"] | child
     where_clause: optional["WhereClause"] | child
 
