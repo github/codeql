@@ -54,7 +54,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { result.isClosureSelf() }
 
-  ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() and Stage::ref() }
+  ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() }
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
@@ -196,13 +196,4 @@ module ParsePositions {
     isArgBody(c) and
     i = AccessPath::parseInt(c)
   }
-}
-
-cached
-module Stage {
-  cached
-  predicate ref() { 1 = 1 }
-
-  cached
-  predicate backref() { optionalStep(_, _, _) }
 }
