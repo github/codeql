@@ -1,5 +1,6 @@
 # github.com/ChrisTrenkamp/goxpath v0.0.0-20190607011252-c5096ec8773d
 ## explicit
+github.com/ChrisTrenkamp/goxpath/tree
 github.com/ChrisTrenkamp/goxpath
 # github.com/antchfx/htmlquery v1.2.2
 ## explicit
@@ -18,10 +19,11 @@ github.com/antchfx/xpath
 github.com/go-xmlpath/xmlpath
 # github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
 ## explicit
-github.com/jbowtie/gokogiri
+github.com/jbowtie/gokogiri/xpath
+github.com/jbowtie/gokogiri/xml
 # github.com/lestrrat-go/libxml2 v0.0.0-20231124114421-99c71026c2f5
 ## explicit
-github.com/lestrrat-go/libxml2
+github.com/lestrrat-go/libxml2/parser
 # github.com/santhosh-tekuri/xpathparser v1.0.0
 ## explicit
 github.com/santhosh-tekuri/xpathparser
