@@ -46,10 +46,10 @@ def closed7():
 def not_closed8():
     f8 = None
     try:
-        f8 = open("filename") # $ MISSING:notClosedOnException
+        f8 = open("filename") # $ MISSING:notClosedOnException 
         f8.write("Error could occur")
     finally:
-        if f8 is None:
+        if f8 is None: # We don't precisely consider this condition, so this result is MISSING. However, this seems uncommon.
             f8.close()
 
 def not_closed9():
@@ -58,7 +58,7 @@ def not_closed9():
         f9 = open("filename") # $ MISSING:notAlwaysClosed
         f9.write("Error could occur")
     finally:
-        if not f9:
+        if not f9: # We don't precisely consider this condition, so this result is MISSING.However, this seems uncommon.
             f9.close()
 
 def not_closed_but_cant_tell_locally():
@@ -81,7 +81,7 @@ def not_closed11():
         f11.write("IOError could occur")
         f11.write("IOError could occur")
         f11.close()
-    except AttributeError:
+    except AttributeError: # We don't consider the type of exception handled here, so this result is MISSING.
         f11.close()
 
 def doesnt_raise(*args):
@@ -121,7 +121,7 @@ def closer2(t3):
 
 def closed15():
     f15 = opener_func2() # $ SPURIOUS:notClosed
-    closer2(f15)
+    closer2(f15) # We don't detect that this call closes the file, so this result is SPURIOUS.
 
 
 def may_not_be_closed16(name):
@@ -144,7 +144,7 @@ def not_closed17():
         f17.write("IOError could occur")
         may_raise("ValueError could occur") # FN here.
         f17.close()
-    except IOError:
+    except IOError: # We don't detect that a ValueErrror could be raised that isn't handled here, so this result is MISSING.
         f17.close()
 
 #ODASA-3779
@@ -241,7 +241,7 @@ def not_closed22(path):
         if foo:
             f22.close()
     finally:
-        if f22.closed: # Wrong sense
+        if f22.closed: # We don't precisely consider this condition, so this result is MISSING. However, this seems uncommon.
             f22.close()
 
 def not_closed23(path):

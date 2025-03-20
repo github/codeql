@@ -7,7 +7,7 @@ module MethodArgTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::CfgNode el, FileOpen fo |
-      el = fo.getLocalSource() and
+      el = fo and
       element = el.toString() and
       location = el.getLocation() and
       value = "" and

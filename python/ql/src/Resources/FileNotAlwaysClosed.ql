@@ -22,4 +22,4 @@ where
   or
   fileMayNotBeClosedOnException(fo, _) and
   msg = "File may not be closed if an exception is raised."
-select fo.getLocalSource(), msg
+select fo, msg

@@ -24,17 +24,10 @@ private DataFlow::TypeTrackingNode fileOpenInstance(DataFlow::TypeTracker t) {
 /** A call that returns an instance of an open file object. */
 class FileOpen extends DataFlow::CallCfgNode {
   FileOpen() { fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(this) }
-
-  /** Gets the local source of this file object, through any wrapper calls. */
-  FileOpen getLocalSource() {
-    if this instanceof FileWrapperCall
-    then result = this.(FileWrapperCall).getWrapped().getLocalSource()
-    else result = this
-  }
 }
 
 /** A call that may wrap a file object in a wrapper class or `os.fdopen`. */
-class FileWrapperCall extends FileOpenSource, DataFlow::CallCfgNode {
+class FileWrapperCall extends DataFlow::CallCfgNode {
   FileOpen wrapped;
 
   FileWrapperCall() {
@@ -53,14 +46,11 @@ class FileWrapperCall extends FileOpenSource, DataFlow::CallCfgNode {
 abstract class FileClose extends DataFlow::CfgNode {
   /** Holds if this file close will occur if an exception is thrown at `e`. */
   predicate guardsExceptions(Expr e) {
-    exists(Try try |
-      e = try.getAStmt().getAChildNode*() and
-      (
-        this.asExpr() = try.getAHandler().getAChildNode*()
-        or
-        this.asExpr() = try.getAFinalstmt().getAChildNode*()
-      )
-    )
+    this.asCfgNode() =
+      DataFlow::exprNode(e).asCfgNode().getAnExceptionalSuccessor().getASuccessor*()
+    or
+    // the expression is after the close call
+    DataFlow::exprNode(e).asCfgNode() = this.asCfgNode().getASuccessor*()
   }
 }
 
@@ -95,8 +85,20 @@ private predicate mayRaiseWithFile(DataFlow::CfgNode node) {
   not node instanceof FileClose
 }
 
+/** Holds if data flows from `nodeFrom` to `nodeTo` in one step that also includes file wrapper classes. */
+private predicate fileLocalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  DataFlow::localFlowStep(nodeFrom, nodeTo)
+  or
+  exists(FileWrapperCall fw | nodeFrom = fw.getWrapped() and nodeTo = fw)
+}
+
+/** Holds if data flows from `source` to `sink`, including file wrapper classes. */
+private predicate fileLocalFlow(DataFlow::Node source, DataFlow::Node sink) {
+  fileLocalFlowStep*(source, sink)
+}
+
 /** Holds if the file opened at `fo` is closed. */
-predicate fileIsClosed(FileOpen fo) { exists(FileClose fc | DataFlow::localFlow(fo, fc)) }
+predicate fileIsClosed(FileOpen fo) { exists(FileClose fc | fileLocalFlow(fo, fc)) }
 
 /** Holds if the file opened at `fo` is returned to the caller. This makes the caller responsible for closing the file. */
 predicate fileIsReturned(FileOpen fo) {
@@ -108,27 +110,26 @@ predicate fileIsReturned(FileOpen fo) {
       or
       retVal = ret.getValue().(Tuple).getAnElt()
     ) and
-    DataFlow::localFlow(fo, DataFlow::exprNode(retVal))
+    fileLocalFlow(fo, DataFlow::exprNode(retVal))
   )
 }
 
 /** Holds if the file opened at `fo` is stored in a field. We assume that another method is then responsible for closing the file. */
 predicate fileIsStoredInField(FileOpen fo) {
-  exists(DataFlow::AttrWrite aw | DataFlow::localFlow(fo, aw.getValue()))
+  exists(DataFlow::AttrWrite aw | fileLocalFlow(fo, aw.getValue()))
 }
 
 /** Holds if the file opened at `fo` is not closed, and is expected to be closed. */
 predicate fileNotClosed(FileOpen fo) {
   not fileIsClosed(fo) and
   not fileIsReturned(fo) and
-  not fileIsStoredInField(fo) and
-  not exists(FileWrapperCall fwc | fo = fwc.getWrapped())
+  not fileIsStoredInField(fo)
 }
 
 predicate fileMayNotBeClosedOnException(FileOpen fo, DataFlow::Node raises) {
   fileIsClosed(fo) and
   mayRaiseWithFile(raises) and
-  DataFlow::localFlow(fo, raises) and
+  fileLocalFlow(fo, raises) and
   not exists(FileClose fc |
     DataFlow::localFlow(fo, fc) and
     fc.guardsExceptions(raises.asExpr())

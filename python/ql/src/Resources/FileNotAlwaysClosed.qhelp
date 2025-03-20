@@ -4,13 +4,16 @@
 <qhelp>
 
 <overview>
-<p>When a file is opened, it should always be closed. Failure to close files could result in loss of data or resource leaks.</p>
-
+<p>When a file is opened, it should always be closed. 
+</p>
+<p>A file opened for writing that is not closed when the application exits may result in data loss, where not all of the data written may be saved to the file.
+A file opened for reading or writing that is not closed may also use up file descriptors, which is a resource leak that in long running applications could lead to a failure to open additional files. 
+</p>
 </overview>
 <recommendation>
 
 <p>Ensure that opened files are always closed, including when an exception could be raised.
-The best practice is to use a <code>with</code> statement to automatically clean up resources.
+The best practice is often to use a <code>with</code> statement to automatically clean up resources.
 Otherwise, ensure that <code>.close()</code> is called in a <code>try...except</code> or <code>try...finally</code> 
 block to handle any possible exceptions.
 </p>
