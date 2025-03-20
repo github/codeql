@@ -122,3 +122,8 @@ function chaining() {
     return value + source("s21"); 
   }).value()); // $ hasTaintFlow=s20 hasTaintFlow=s21
 }
+
+function mapTests(){
+  sink(s.map(source("s1"), (x) => {return x + source("s2");})); // $ hasTaintFlow=s1 hasTaintFlow=s2
+  s.map(source("s1"), (x) => { sink(x); return x;}); // $ hasTaintFlow=s1
+}

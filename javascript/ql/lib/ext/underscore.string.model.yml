@@ -13,7 +13,7 @@ extensions:
       pack: codeql/javascript-all
       extensible: summaryModel
     data:
-      - ["'underscore.string'", "Member[slugify,capitalize,decapitalize,clean,cleanDiacritics,swapCase,escapeHTML,unescapeHTML,wrap,dedent,reverse,pred,succ,titleize,camelize,classify,underscored,dasherize,humanize,trim,ltrim,rtrim,truncate,sprintf,strRight,strRightBack,strLeft,strLeftBack,stripTags,unquote,map,strip,lstrip,rstrip,camelcase]", "Argument[0]", "ReturnValue", "taint"]
+      - ["'underscore.string'", "Member[slugify,capitalize,decapitalize,clean,cleanDiacritics,swapCase,escapeHTML,unescapeHTML,wrap,dedent,reverse,pred,succ,titleize,camelize,classify,underscored,dasherize,humanize,trim,ltrim,rtrim,truncate,sprintf,strRight,strRightBack,strLeft,strLeftBack,stripTags,unquote,strip,lstrip,rstrip,camelcase]", "Argument[0]", "ReturnValue", "taint"]
       - ["'underscore.string'", "Member[chop,chars,words,lines]", "Argument[0]", "ReturnValue", "taint"]
       - ["'underscore.string'", "Member[toSentence,toSentenceSerial]", "Argument[0].ArrayElement", "ReturnValue", "taint"]
       - ["'underscore.string'", "Member[insert,replaceAll,splice,prune,pad,lpad,rpad,repeat,rjust,ljust]", "Argument[0,2]", "ReturnValue", "taint"]
@@ -30,3 +30,5 @@ extensions:
       - ["'underscore.string'.Wrapper", "Member[toUpperCase,toLowerCase,replace,slice,substring,substr,split]", "Argument[this]", "ReturnValue", "taint"]
       - ["'underscore.string'.Wrapper", "Member[tap]", "Argument[this]", "ReturnValue", "taint"]
       - ["'underscore.string'.Wrapper", "Member[tap]", "Argument[0].ReturnValue", "ReturnValue", "taint"]
+      - ["'underscore.string'", "Member[map]", "Argument[0]", "Argument[1].Parameter[0]", "taint"]
+      - ["'underscore.string'", "Member[map]", "Argument[1].ReturnValue", "ReturnValue", "taint"]
