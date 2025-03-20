@@ -474,3 +474,13 @@ public static class Using
         }
     }
 }
+
+class StringInterpolation
+{
+    void Pi()
+    {
+        float pi = 3.14159f; // GOOD
+        const int align = 6; // GOOD
+        Console.WriteLine($"Pi, {pi,align:F3}");
+    }
+}
