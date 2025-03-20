@@ -32,4 +32,5 @@ module AccessInvalidPointerFlow = DataFlow::Global<AccessInvalidPointerConfig>;
 
 from AccessInvalidPointerFlow::PathNode sourceNode, AccessInvalidPointerFlow::PathNode sinkNode
 where AccessInvalidPointerFlow::flowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode, "This operation dereferences a pointer that may be $@.", sourceNode.getNode(), "invalid"
+select sinkNode.getNode(), sourceNode, sinkNode,
+  "This operation dereferences a pointer that may be $@.", sourceNode.getNode(), "invalid"

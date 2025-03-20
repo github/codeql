@@ -42,7 +42,7 @@ module AccessInvalidPointer {
   }
 
   /**
-   * A pointer invalidation from an argument of a modelled call (this is a workaround).
+   * A pointer invalidation from an argument of a modeled call (this is a workaround).
    */
   private class ModelsAsDataArgumentSource extends Source {
     ModelsAsDataArgumentSource() {
