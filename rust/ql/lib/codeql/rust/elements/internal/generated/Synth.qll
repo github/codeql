@@ -393,6 +393,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TNamedCrate(Raw::NamedCrate id) { constructNamedCrate(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TNeverTypeRepr(Raw::NeverTypeRepr id) { constructNeverTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1401,6 +1405,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TNamedCrate`, if possible.
+   */
+  TNamedCrate convertNamedCrateFromRaw(Raw::Element e) { result = TNamedCrate(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TNeverTypeRepr`, if possible.
    */
   TNeverTypeRepr convertNeverTypeReprFromRaw(Raw::Element e) { result = TNeverTypeRepr(e) }
@@ -2063,6 +2073,8 @@ module Synth {
     result = convertExtractorStepFromRaw(e)
     or
     result = convertLocatableFromRaw(e)
+    or
+    result = convertNamedCrateFromRaw(e)
     or
     result = convertUnextractedFromRaw(e)
   }
@@ -2979,6 +2991,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TNamedCrate` to a raw DB element, if possible.
+   */
+  Raw::Element convertNamedCrateToRaw(TNamedCrate e) { e = TNamedCrate(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TNeverTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertNeverTypeReprToRaw(TNeverTypeRepr e) { e = TNeverTypeRepr(result) }
@@ -3641,6 +3659,8 @@ module Synth {
     result = convertExtractorStepToRaw(e)
     or
     result = convertLocatableToRaw(e)
+    or
+    result = convertNamedCrateToRaw(e)
     or
     result = convertUnextractedToRaw(e)
   }

@@ -75,6 +75,36 @@ impl From<trap::Label<Locatable>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct NamedCrate {
+    pub id: trap::TrapId<NamedCrate>,
+    pub name: String,
+    pub crate_: trap::Label<Crate>,
+}
+
+impl trap::TrapEntry for NamedCrate {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("named_crates", vec![id.into(), self.name.into(), self.crate_.into()]);
+    }
+}
+
+impl trap::TrapClass for NamedCrate {
+    fn class_name() -> &'static str { "NamedCrate" }
+}
+
+impl From<trap::Label<NamedCrate>> for trap::Label<Element> {
+    fn from(value: trap::Label<NamedCrate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme NamedCrate is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Unextracted {
     _unused: ()
 }
@@ -126,7 +156,7 @@ pub struct Crate {
     pub version: Option<String>,
     pub module: Option<trap::Label<Module>>,
     pub cfg_options: Vec<String>,
-    pub dependencies: Vec<trap::Label<Crate>>,
+    pub named_dependencies: Vec<trap::Label<NamedCrate>>,
 }
 
 impl trap::TrapEntry for Crate {
@@ -148,8 +178,8 @@ impl trap::TrapEntry for Crate {
         for (i, v) in self.cfg_options.into_iter().enumerate() {
             out.add_tuple("crate_cfg_options", vec![id.into(), i.into(), v.into()]);
         }
-        for (i, v) in self.dependencies.into_iter().enumerate() {
-            out.add_tuple("crate_dependencies", vec![id.into(), i.into(), v.into()]);
+        for (i, v) in self.named_dependencies.into_iter().enumerate() {
+            out.add_tuple("crate_named_dependencies", vec![id.into(), i.into(), v.into()]);
         }
     }
 }
