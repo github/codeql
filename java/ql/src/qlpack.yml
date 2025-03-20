@@ -13,3 +13,4 @@ dependencies:
 dataExtensions:
   - Telemetry/ExtractorInformation.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true
