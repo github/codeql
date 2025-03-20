@@ -36,6 +36,9 @@ class FileWrapperCall extends DataFlow::CallCfgNode {
     or
     wrapped = this.getArg(0) and
     this = API::moduleImport("os").getMember("fdopen").getACall()
+    or
+    wrapped = this.getArg(0) and
+    this = API::moduleImport("django").getMember("http").getMember("FileResponse").getACall()
   }
 
   /** Gets the file that this call wraps. */
