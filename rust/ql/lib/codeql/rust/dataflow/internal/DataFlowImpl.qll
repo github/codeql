@@ -1141,8 +1141,6 @@ private module OptionalSteps {
   cached
   predicate optionalStep(Node node1, string name, Node node2) {
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
-      TOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode()) or
-    FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
       TOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode())
   }
 

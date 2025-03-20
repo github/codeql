@@ -71,7 +71,7 @@ module TaintedPathConfig implements DataFlow::StateConfigSig {
     // Block `NotNormalized` paths here, since they change state to `NormalizedUnchecked`
     (
       node instanceof Path::PathNormalization or
-      DataflowImpl::optionalStep(_, "normalize-path", node)
+      DataflowImpl::optionalBarrier(node, "normalize-path")
     ) and
     state instanceof NotNormalized
     or
