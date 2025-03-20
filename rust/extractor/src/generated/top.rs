@@ -77,7 +77,7 @@ impl From<trap::Label<Locatable>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct NamedCrate {
     pub id: trap::TrapId<NamedCrate>,
-    pub name: Option<String>,
+    pub name: String,
     pub crate_: trap::Label<Crate>,
 }
 
@@ -87,10 +87,7 @@ impl trap::TrapEntry for NamedCrate {
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("named_crates", vec![id.into(), self.crate_.into()]);
-        if let Some(v) = self.name {
-            out.add_tuple("named_crate_names", vec![id.into(), v.into()]);
-        }
+        out.add_tuple("named_crates", vec![id.into(), self.name.into(), self.crate_.into()]);
     }
 }
 

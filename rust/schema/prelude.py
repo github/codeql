@@ -124,5 +124,5 @@ class Crate(Locatable):
 @qltest.skip
 @ql.internal
 class NamedCrate(Element):
-    name: optional[string]
+    name: string
     crate: "Crate"

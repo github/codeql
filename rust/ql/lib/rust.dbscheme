@@ -145,13 +145,8 @@ extractor_step_files(
 
 named_crates(
   unique int id: @named_crate,
+  string name: string ref,
   int crate: @crate ref
-);
-
-#keyset[id]
-named_crate_names(
-  int id: @named_crate ref,
-  string name: string ref
 );
 
 @unextracted =

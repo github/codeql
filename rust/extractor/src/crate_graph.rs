@@ -94,7 +94,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                 .flat_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
                 .map(|(name, (module, hash))| generated::NamedCrate {
                     id: trap::TrapId::Star,
-                    name: name.to_string().into(),
+                    name: name.to_string(),
                     crate_: trap.label(format!("{}:{hash}", module.display()).into()),
                 })
                 .collect();

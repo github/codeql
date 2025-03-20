@@ -46,14 +46,14 @@ module Raw {
     override string toString() { result = "NamedCrate" }
 
     /**
-     * Gets the name of this named crate, if it exists.
+     * Gets the name of this named crate.
      */
-    string getName() { named_crate_names(this, result) }
+    string getName() { named_crates(this, result, _) }
 
     /**
      * Gets the crate of this named crate.
      */
-    Crate getCrate() { named_crates(this, result) }
+    Crate getCrate() { named_crates(this, _, result) }
   }
 
   /**

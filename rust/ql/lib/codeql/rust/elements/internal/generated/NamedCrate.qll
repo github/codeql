@@ -22,14 +22,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "NamedCrate" }
 
     /**
-     * Gets the name of this named crate, if it exists.
+     * Gets the name of this named crate.
      */
     string getName() { result = Synth::convertNamedCrateToRaw(this).(Raw::NamedCrate).getName() }
-
-    /**
-     * Holds if `getName()` exists.
-     */
-    final predicate hasName() { exists(this.getName()) }
 
     /**
      * Gets the crate of this named crate.
