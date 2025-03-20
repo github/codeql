@@ -1127,12 +1127,7 @@ private module Cached {
   /** Holds if `n` is a flow sink of kind `kind`. */
   cached
   predicate sinkNode(Node n, string kind) { n.(FlowSummaryNode).isSink(kind, _) }
-}
 
-import Cached
-
-cached
-private module OptionalSteps {
   /**
    * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
    * that by default the step is not present in the flow summary and needs to be explicitly enabled by defining
@@ -1155,4 +1150,4 @@ private module OptionalSteps {
   }
 }
 
-import OptionalSteps
+import Cached
