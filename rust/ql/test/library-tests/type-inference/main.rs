@@ -1,4 +1,69 @@
-mod m1 {
+mod field_access {
+    #[derive(Debug)]
+    struct S;
+
+    #[derive(Debug)]
+    struct MyThing {
+        a: S,
+    }
+
+    #[derive(Debug)]
+    enum MyOption<T> {
+        MyNone(),
+        MySome(T),
+    }
+
+    #[derive(Debug)]
+    struct GenericThing<A> {
+        a: A,
+    }
+
+    struct OptionS {
+        a: MyOption<S>,
+    }
+
+    fn simple_field_access() {
+        let x = MyThing { a: S };
+        println!("{:?}", x.a);
+    }
+
+    fn generic_field_access() {
+        // Explicit type argument
+        let x = GenericThing::<S> { a: S };
+        println!("{:?}", x.a);
+
+        // Implicit type argument
+        let y = GenericThing { a: S };
+        println!("{:?}", x.a);
+
+        // The type of the field `a` can only be infered from the concrete type
+        // in the struct declaration.
+        let x = OptionS {
+            a: MyOption::MyNone(),
+        };
+        println!("{:?}", x.a);
+
+        // The type of the field `a` can only be infered from the type argument
+        let x = GenericThing::<MyOption<S>> {
+            a: MyOption::MyNone(),
+        };
+        println!("{:?}", x.a);
+
+        let mut x = GenericThing {
+            a: MyOption::MyNone(),
+        };
+        // Only after this access can we infer the type parameter of `x`
+        let a: MyOption<S> = x.a;
+        println!("{:?}", a);
+    }
+
+    pub fn f() {
+        simple_field_access();
+        generic_field_access();
+    }
+}
+
+mod method_impl {
     pub struct Foo {}
 
     impl Foo {
@@ -25,7 +90,7 @@ mod m1 {
     }
 }
 
-mod m2 {
+mod method_non_parametric_impl {
     #[derive(Debug)]
     struct MyThing<A> {
         a: A,
@@ -58,6 +123,10 @@ mod m2 {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
+        // simple field access
+        println!("{:?}", x.a);
+        println!("{:?}", y.a);
+
         println!("{:?}", x.m1()); // missing call target
         println!("{:?}", y.m1().a); // missing call target
 
@@ -69,7 +138,7 @@ mod m2 {
     }
 }
 
-mod m3 {
+mod method_non_parametric_trait_impl {
     #[derive(Debug)]
     struct MyThing<A> {
         a: A,
@@ -122,7 +191,7 @@ mod m3 {
     }
 }
 
-mod m4 {
+mod function_trait_bounds {
     #[derive(Debug)]
     struct MyThing<A> {
         a: A,
@@ -175,7 +244,7 @@ mod m4 {
     }
 }
 
-mod m5 {
+mod trait_associated_type {
     trait MyTrait {
         type AssociatedType;
 
@@ -210,7 +279,7 @@ mod m5 {
     }
 }
 
-mod m6 {
+mod generic_enum {
     #[derive(Debug)]
     enum MyEnum<A> {
         C1(A),
@@ -225,8 +294,8 @@ mod m6 {
     impl<T> MyEnum<T> {
         fn m1(self) -> T {
             match self {
-                MyEnum::C1(a) => a,    // missing
-                MyEnum::C2 { a } => a, // missing
+                MyEnum::C1(a) => a,
+                MyEnum::C2 { a } => a,
             }
         }
     }
@@ -240,7 +309,7 @@ mod m6 {
     }
 }
 
-mod m7 {
+mod method_supertraits {
     #[derive(Debug)]
     struct MyThing<A> {
         a: A,
@@ -325,7 +394,7 @@ mod m7 {
     }
 }
 
-mod m8 {
+mod function_trait_bounds_2 {
     use std::convert::From;
     use std::fmt::Debug;
 
@@ -374,7 +443,7 @@ mod m8 {
     }
 }
 
-mod m9 {
+mod option_methods {
     #[derive(Debug)]
     enum MyOption<T> {
         MyNone(),
@@ -402,8 +471,8 @@ mod m9 {
     impl<T> MyOption<MyOption<T>> {
         fn flatten(self) -> MyOption<T> {
             match self {
-                MyOption::MyNone() => MyOption::MyNone(), // missing inner type `Option<T>`
-                MyOption::MySome(x) => x,                 // missing
+                MyOption::MyNone() => MyOption::MyNone(),
+                MyOption::MySome(x) => x,
             }
         }
     }
@@ -432,10 +501,31 @@ mod m9 {
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
+
+        let from_if = if 1 + 1 > 2 {
+            MyOption::MyNone()
+        } else {
+            MyOption::MySome(S)
+        };
+        println!("{:?}", from_if);
+
+        let from_match = match 1 + 1 > 2 {
+            true => MyOption::MyNone(),
+            false => MyOption::MySome(S),
+        };
+        println!("{:?}", from_match);
+
+        let from_loop = loop {
+            if 1 + 1 > 2 {
+                break MyOption::MyNone();
+            }
+            break MyOption::MySome(S);
+        };
+        println!("{:?}", from_loop);
     }
 }
 
-mod m10 {
+mod method_call_type_conversion {
 
     #[derive(Debug, Copy, Clone)]
     struct S<T>(T);
@@ -487,7 +577,7 @@ mod m10 {
     }
 }
 
-mod m11 {
+mod trait_implicit_self_borrow {
     trait MyTrait {
         fn foo(&self) -> &Self;
 
@@ -510,7 +600,7 @@ mod m11 {
     }
 }
 
-mod m12 {
+mod implicit_self_borrow {
     struct S;
 
     struct MyStruct<T>(T);
@@ -527,7 +617,7 @@ mod m12 {
     }
 }
 
-mod m13 {
+mod borrowed_typed {
     struct S;
 
     impl S {
@@ -557,18 +647,19 @@ mod m13 {
 }
 
 fn main() {
-    m1::f();
-    m1::g(m1::Foo {}, m1::Foo {});
-    m2::f();
-    m3::f();
-    m4::f();
-    m5::f();
-    m6::f();
-    m7::f();
-    m8::f();
-    m9::f();
-    m10::f();
-    m11::f();
-    m12::f();
-    m13::f();
+    field_access::f();
+    method_impl::f();
+    method_impl::g(method_impl::Foo {}, method_impl::Foo {});
+    method_non_parametric_impl::f();
+    method_non_parametric_trait_impl::f();
+    function_trait_bounds::f();
+    trait_associated_type::f();
+    generic_enum::f();
+    method_supertraits::f();
+    function_trait_bounds_2::f();
+    option_methods::f();
+    method_call_type_conversion::f();
+    trait_implicit_self_borrow::f();
+    implicit_self_borrow::f();
+    borrowed_typed::f();
 }

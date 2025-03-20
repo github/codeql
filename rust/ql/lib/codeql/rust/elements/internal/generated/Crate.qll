@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Crate
-import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
+import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
 import codeql.rust.elements.Module
 
 private class CrateAlias = Crate;
@@ -21,7 +21,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Crate` class directly.
    * Use the subclass `Crate`, where the following predicates are available.
    */
-  class Crate extends Synth::TCrate, ElementImpl::Element {
+  class Crate extends Synth::TCrate, LocatableImpl::Locatable {
     override string getAPrimaryQlClass() { result = "Crate" }
 
     /**

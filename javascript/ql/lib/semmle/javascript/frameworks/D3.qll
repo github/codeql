@@ -80,7 +80,7 @@ module D3 {
       or
       this = d3Selection().getMember("node").getReturn().asSource()
       or
-      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().asSource()
+      this = d3Selection().getMember("nodes").getReturn().getArrayElement().asSource()
     }
   }
 

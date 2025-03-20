@@ -15,38 +15,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Crate extends @crate, Element {
-    override string toString() { result = "Crate" }
-
-    /**
-     * Gets the name of this crate, if it exists.
-     */
-    string getName() { crate_names(this, result) }
-
-    /**
-     * Gets the version of this crate, if it exists.
-     */
-    string getVersion() { crate_versions(this, result) }
-
-    /**
-     * Gets the module of this crate, if it exists.
-     */
-    Module getModule() { crate_modules(this, result) }
-
-    /**
-     * Gets the `index`th cfg option of this crate (0-based).
-     */
-    string getCfgOption(int index) { crate_cfg_options(this, index, result) }
-
-    /**
-     * Gets the `index`th dependency of this crate (0-based).
-     */
-    Crate getDependency(int index) { crate_dependencies(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class ExtractorStep extends @extractor_step, Element {
     override string toString() { result = "ExtractorStep" }
 
@@ -84,6 +52,38 @@ module Raw {
    * INTERNAL: Do not use.
    */
   class AstNode extends @ast_node, Locatable { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Crate extends @crate, Locatable {
+    override string toString() { result = "Crate" }
+
+    /**
+     * Gets the name of this crate, if it exists.
+     */
+    string getName() { crate_names(this, result) }
+
+    /**
+     * Gets the version of this crate, if it exists.
+     */
+    string getVersion() { crate_versions(this, result) }
+
+    /**
+     * Gets the module of this crate, if it exists.
+     */
+    Module getModule() { crate_modules(this, result) }
+
+    /**
+     * Gets the `index`th cfg option of this crate (0-based).
+     */
+    string getCfgOption(int index) { crate_cfg_options(this, index, result) }
+
+    /**
+     * Gets the `index`th dependency of this crate (0-based).
+     */
+    Crate getDependency(int index) { crate_dependencies(this, index, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -328,7 +328,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A FieldList. For example:
+   * A field of a variant. For example:
    * ```rust
    * todo!()
    * ```
@@ -753,141 +753,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A field in a record expression. For example `a: 1` in:
-   * ```rust
-   * Foo { a: 1, b: 2 };
-   * ```
-   */
-  class RecordExprField extends @record_expr_field, AstNode {
-    override string toString() { result = "RecordExprField" }
-
-    /**
-     * Gets the `index`th attr of this record expression field (0-based).
-     */
-    Attr getAttr(int index) { record_expr_field_attrs(this, index, result) }
-
-    /**
-     * Gets the expression of this record expression field, if it exists.
-     */
-    Expr getExpr() { record_expr_field_exprs(this, result) }
-
-    /**
-     * Gets the name reference of this record expression field, if it exists.
-     */
-    NameRef getNameRef() { record_expr_field_name_refs(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A RecordExprFieldList. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class RecordExprFieldList extends @record_expr_field_list, AstNode {
-    override string toString() { result = "RecordExprFieldList" }
-
-    /**
-     * Gets the `index`th attr of this record expression field list (0-based).
-     */
-    Attr getAttr(int index) { record_expr_field_list_attrs(this, index, result) }
-
-    /**
-     * Gets the `index`th field of this record expression field list (0-based).
-     */
-    RecordExprField getField(int index) { record_expr_field_list_fields(this, index, result) }
-
-    /**
-     * Gets the spread of this record expression field list, if it exists.
-     */
-    Expr getSpread() { record_expr_field_list_spreads(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A RecordField. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class RecordField extends @record_field, AstNode {
-    override string toString() { result = "RecordField" }
-
-    /**
-     * Gets the `index`th attr of this record field (0-based).
-     */
-    Attr getAttr(int index) { record_field_attrs(this, index, result) }
-
-    /**
-     * Gets the expression of this record field, if it exists.
-     */
-    Expr getExpr() { record_field_exprs(this, result) }
-
-    /**
-     * Gets the name of this record field, if it exists.
-     */
-    Name getName() { record_field_names(this, result) }
-
-    /**
-     * Gets the type representation of this record field, if it exists.
-     */
-    TypeRepr getTypeRepr() { record_field_type_reprs(this, result) }
-
-    /**
-     * Gets the visibility of this record field, if it exists.
-     */
-    Visibility getVisibility() { record_field_visibilities(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A field in a record pattern. For example `a: 1` in:
-   * ```rust
-   * let Foo { a: 1, b: 2 } = foo;
-   * ```
-   */
-  class RecordPatField extends @record_pat_field, AstNode {
-    override string toString() { result = "RecordPatField" }
-
-    /**
-     * Gets the `index`th attr of this record pattern field (0-based).
-     */
-    Attr getAttr(int index) { record_pat_field_attrs(this, index, result) }
-
-    /**
-     * Gets the name reference of this record pattern field, if it exists.
-     */
-    NameRef getNameRef() { record_pat_field_name_refs(this, result) }
-
-    /**
-     * Gets the pattern of this record pattern field, if it exists.
-     */
-    Pat getPat() { record_pat_field_pats(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A RecordPatFieldList. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class RecordPatFieldList extends @record_pat_field_list, AstNode {
-    override string toString() { result = "RecordPatFieldList" }
-
-    /**
-     * Gets the `index`th field of this record pattern field list (0-based).
-     */
-    RecordPatField getField(int index) { record_pat_field_list_fields(this, index, result) }
-
-    /**
-     * Gets the rest pattern of this record pattern field list, if it exists.
-     */
-    RestPat getRestPat() { record_pat_field_list_rest_pats(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A Rename. For example:
    * ```rust
    * todo!()
@@ -996,6 +861,141 @@ module Raw {
      * Gets the tail expression of this statement list, if it exists.
      */
     Expr getTailExpr() { stmt_list_tail_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A field in a struct expression. For example `a: 1` in:
+   * ```rust
+   * Foo { a: 1, b: 2 };
+   * ```
+   */
+  class StructExprField extends @struct_expr_field, AstNode {
+    override string toString() { result = "StructExprField" }
+
+    /**
+     * Gets the `index`th attr of this struct expression field (0-based).
+     */
+    Attr getAttr(int index) { struct_expr_field_attrs(this, index, result) }
+
+    /**
+     * Gets the expression of this struct expression field, if it exists.
+     */
+    Expr getExpr() { struct_expr_field_exprs(this, result) }
+
+    /**
+     * Gets the name reference of this struct expression field, if it exists.
+     */
+    NameRef getNameRef() { struct_expr_field_name_refs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A StructExprFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class StructExprFieldList extends @struct_expr_field_list, AstNode {
+    override string toString() { result = "StructExprFieldList" }
+
+    /**
+     * Gets the `index`th attr of this struct expression field list (0-based).
+     */
+    Attr getAttr(int index) { struct_expr_field_list_attrs(this, index, result) }
+
+    /**
+     * Gets the `index`th field of this struct expression field list (0-based).
+     */
+    StructExprField getField(int index) { struct_expr_field_list_fields(this, index, result) }
+
+    /**
+     * Gets the spread of this struct expression field list, if it exists.
+     */
+    Expr getSpread() { struct_expr_field_list_spreads(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A StructField. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class StructField extends @struct_field, AstNode {
+    override string toString() { result = "StructField" }
+
+    /**
+     * Gets the `index`th attr of this struct field (0-based).
+     */
+    Attr getAttr(int index) { struct_field_attrs(this, index, result) }
+
+    /**
+     * Gets the expression of this struct field, if it exists.
+     */
+    Expr getExpr() { struct_field_exprs(this, result) }
+
+    /**
+     * Gets the name of this struct field, if it exists.
+     */
+    Name getName() { struct_field_names(this, result) }
+
+    /**
+     * Gets the type representation of this struct field, if it exists.
+     */
+    TypeRepr getTypeRepr() { struct_field_type_reprs(this, result) }
+
+    /**
+     * Gets the visibility of this struct field, if it exists.
+     */
+    Visibility getVisibility() { struct_field_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A field in a struct pattern. For example `a: 1` in:
+   * ```rust
+   * let Foo { a: 1, b: 2 } = foo;
+   * ```
+   */
+  class StructPatField extends @struct_pat_field, AstNode {
+    override string toString() { result = "StructPatField" }
+
+    /**
+     * Gets the `index`th attr of this struct pattern field (0-based).
+     */
+    Attr getAttr(int index) { struct_pat_field_attrs(this, index, result) }
+
+    /**
+     * Gets the name reference of this struct pattern field, if it exists.
+     */
+    NameRef getNameRef() { struct_pat_field_name_refs(this, result) }
+
+    /**
+     * Gets the pattern of this struct pattern field, if it exists.
+     */
+    Pat getPat() { struct_pat_field_pats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A StructPatFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class StructPatFieldList extends @struct_pat_field_list, AstNode {
+    override string toString() { result = "StructPatFieldList" }
+
+    /**
+     * Gets the `index`th field of this struct pattern field list (0-based).
+     */
+    StructPatField getField(int index) { struct_pat_field_list_fields(this, index, result) }
+
+    /**
+     * Gets the rest pattern of this struct pattern field list, if it exists.
+     */
+    RestPat getRestPat() { struct_pat_field_list_rest_pats(this, result) }
   }
 
   /**
@@ -2720,7 +2720,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RecordFieldList. For example:
+   * A field list of a struct expression. For example:
    * ```rust
    * todo!()
    * ```
@@ -2731,7 +2731,7 @@ module Raw {
     /**
      * Gets the `index`th field of this record field list (0-based).
      */
-    RecordField getField(int index) { record_field_list_fields(this, index, result) }
+    StructField getField(int index) { record_field_list_fields(this, index, result) }
   }
 
   /**
@@ -3762,46 +3762,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A record expression. For example:
-   * ```rust
-   * let first = Foo { a: 1, b: 2 };
-   * let second = Foo { a: 2, ..first };
-   * Foo { a: 1, b: 2 }[2] = 10;
-   * Foo { .. } = second;
-   * ```
-   */
-  class RecordExpr extends @record_expr, Expr, PathAstNode {
-    override string toString() { result = "RecordExpr" }
-
-    /**
-     * Gets the record expression field list of this record expression, if it exists.
-     */
-    RecordExprFieldList getRecordExprFieldList() {
-      record_expr_record_expr_field_lists(this, result)
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A record pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo { a: 1, b: 2 } => "ok",
-   *     Foo { .. } => "fail",
-   * }
-   * ```
-   */
-  class RecordPat extends @record_pat, Pat, PathAstNode {
-    override string toString() { result = "RecordPat" }
-
-    /**
-     * Gets the record pattern field list of this record pattern, if it exists.
-     */
-    RecordPatFieldList getRecordPatFieldList() { record_pat_record_pat_field_lists(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A Static. For example:
    * ```rust
    * todo!()
@@ -3890,6 +3850,46 @@ module Raw {
      * Gets the where clause of this struct, if it exists.
      */
     WhereClause getWhereClause() { struct_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct expression. For example:
+   * ```rust
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * Foo { a: 1, b: 2 }[2] = 10;
+   * Foo { .. } = second;
+   * ```
+   */
+  class StructExpr extends @struct_expr, Expr, PathAstNode {
+    override string toString() { result = "StructExpr" }
+
+    /**
+     * Gets the struct expression field list of this struct expression, if it exists.
+     */
+    StructExprFieldList getStructExprFieldList() {
+      struct_expr_struct_expr_field_lists(this, result)
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
+   */
+  class StructPat extends @struct_pat, Pat, PathAstNode {
+    override string toString() { result = "StructPat" }
+
+    /**
+     * Gets the struct pattern field list of this struct pattern, if it exists.
+     */
+    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
   }
 
   /**
@@ -4092,9 +4092,9 @@ module Raw {
     Name getName() { union_names(this, result) }
 
     /**
-     * Gets the record field list of this union, if it exists.
+     * Gets the struct field list of this union, if it exists.
      */
-    RecordFieldList getRecordFieldList() { union_record_field_lists(this, result) }
+    RecordFieldList getStructFieldList() { union_struct_field_lists(this, result) }
 
     /**
      * Gets the visibility of this union, if it exists.
