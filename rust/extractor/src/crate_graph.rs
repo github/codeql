@@ -402,7 +402,7 @@ fn emit_adt(
             );
         }
         ra_ap_hir_def::AdtId::EnumId(enum_id) => {
-            let data = db.enum_data(enum_id);
+            let data = db.enum_variants(enum_id);
             let variants = data
                 .variants
                 .iter()
@@ -480,13 +480,13 @@ fn emit_trait(
     visibility: Visibility,
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
-    let data = db.trait_data(trait_id);
+    let data = db.trait_items(trait_id);
     let assoc_items: Vec<trap::Label<generated::AssocItem>> = data
         .items
         .iter()
         .flat_map(|(name, item)| {
             if let AssocItemId::FunctionId(function) = item {
-                let sig = db.callable_item_signature((*function).into());
+                let sig = db.callable_item_signature(function.clone().into());
                 let sig = sig.skip_binders();
                 let params = sig
                     .params()
@@ -582,11 +582,11 @@ fn emit_module_impls(
     module.scope.impls().for_each(|imp| {
         let self_ty = db.impl_self_ty(imp);
         let self_ty = emit_hir_ty(trap, crate_graph, db, self_ty.skip_binders());
-        let imp = db.impl_data(imp);
-        let trait_ = imp
+        let imp_data = db.impl_data(imp);
+        let trait_ = imp_data
             .target_trait
             .as_ref()
-            .and_then(|t| make_qualified_path(trap, emit_hir_path(&imp.types_map[t.path])));
+            .and_then(|t| make_qualified_path(trap, emit_hir_path(&imp_data.types_map[t.path])));
         let trait_ = trait_.map(|trait_| {
             trap.emit(generated::PathTypeRepr {
                 id: trap::TrapId::Star,
@@ -594,12 +594,13 @@ fn emit_module_impls(
             })
             .into()
         });
-        let assoc_items = imp
+        let imp_items = db.impl_items(imp);
+        let assoc_items = imp_items
             .items
             .iter()
             .flat_map(|item| {
                 if let (name, AssocItemId::FunctionId(function)) = item {
-                    let sig = db.callable_item_signature((*function).into());
+                    let sig = db.callable_item_signature(function.clone().into());
                     let sig = sig.skip_binders();
                     let params = sig
                         .params()
@@ -631,7 +632,7 @@ fn emit_module_impls(
                         id: trap::TrapId::Star,
                         text: Some(name.as_str().to_owned()),
                     }));
-                    let data = db.function_data(*function);
+                    let data = db.function_data(function.clone());
                     let visibility = emit_visibility(
                         crate_graph,
                         db,
