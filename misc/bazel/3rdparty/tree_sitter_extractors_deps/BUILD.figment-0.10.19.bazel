@@ -91,7 +91,7 @@ rust_library(
     deps = [
         "@vendor_ts__figment-0.10.19//:build_script_build",
         "@vendor_ts__pear-0.2.9//:pear",
-        "@vendor_ts__serde-1.0.218//:serde",
+        "@vendor_ts__serde-1.0.219//:serde",
         "@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml",
         "@vendor_ts__uncased-0.9.10//:uncased",
     ] + select({
