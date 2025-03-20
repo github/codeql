@@ -610,6 +610,10 @@ module LocalFlow {
           or
           exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
         )
+        or
+        e1 = e2.(InterpolatedStringInsertExpr).getInsert() and
+        scope = e2 and
+        isSuccessor = true
       )
     }
 

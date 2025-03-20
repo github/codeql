@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             // If this is a "+" expression we might need to wrap the child expressions
             // in ToString calls
-            return Kind == ExprKind.ADD
+            return Kind == ExprKind.ADD && Type.IsStringType()
                 ? ImplicitToString.Create(cx, node, this, child)
                 : Create(cx, node, this, child);
         }
