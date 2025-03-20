@@ -70,30 +70,6 @@ public class JSDocParser {
     return new JSDocComment(comment, r.fst(), tags);
   }
 
-  /** Specification of Doctrine AST types for JSDoc type expressions. */
-  private static final Map<Class<? extends JSDocTypeExpression>, List<String>> spec =
-      new LinkedHashMap<Class<? extends JSDocTypeExpression>, List<String>>();
-
-  static {
-    spec.put(AllLiteral.class, Arrays.<String>asList());
-    spec.put(ArrayType.class, Arrays.asList("elements"));
-    spec.put(FieldType.class, Arrays.asList("key", "value"));
-    spec.put(FunctionType.class, Arrays.asList("this", "new", "params", "result"));
-    spec.put(NameExpression.class, Arrays.asList("name"));
-    spec.put(NonNullableType.class, Arrays.asList("expression", "prefix"));
-    spec.put(NullableLiteral.class, Arrays.<String>asList());
-    spec.put(NullLiteral.class, Arrays.<String>asList());
-    spec.put(NullableType.class, Arrays.asList("expression", "prefix"));
-    spec.put(OptionalType.class, Arrays.asList("expression"));
-    spec.put(ParameterType.class, Arrays.asList("name", "expression"));
-    spec.put(RecordType.class, Arrays.asList("fields"));
-    spec.put(RestType.class, Arrays.asList("expression"));
-    spec.put(TypeApplication.class, Arrays.asList("expression", "applications"));
-    spec.put(UndefinedLiteral.class, Arrays.<String>asList());
-    spec.put(UnionType.class, Arrays.asList("elements"));
-    spec.put(VoidLiteral.class, Arrays.<String>asList());
-  }
-
   private static String sliceSource(String source, int index, int last) {
     if (index >= source.length()) return "";
     if (last > source.length()) last = source.length();
