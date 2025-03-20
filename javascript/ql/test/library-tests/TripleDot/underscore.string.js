@@ -40,9 +40,9 @@ function strToStr() {
 
 function strToArray() {
   sink(s.chop(source("s1"), 3)); // $ MISSING: hasTaintFlow=s1
-  sink(s.chars(source("s2")[0])); // $ MISSING: hasTaintFlow=s2
-  sink(s.words(source("s3")[0])); // $ MISSING: hasTaintFlow=s3
-  sink(s.lines(source("s7")[0])); // $ MISSING: hasTaintFlow=s7
+  sink(s.chars(source("s2"))[0]); // $ hasTaintFlow=s2
+  sink(s.words(source("s3"))[0]); // $ hasTaintFlow=s3
+  sink(s.lines(source("s7"))[0]); // $ hasTaintFlow=s7
   sink(s.chop(source("s1"), 3).length);
 }
 
