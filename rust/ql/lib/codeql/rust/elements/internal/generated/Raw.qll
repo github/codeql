@@ -718,9 +718,9 @@ module Raw {
     Path getQualifier() { path_qualifiers(this, result) }
 
     /**
-     * Gets the part of this path, if it exists.
+     * Gets the last segment of this path, if it exists.
      */
-    PathSegment getPart() { path_parts(this, result) }
+    PathSegment getSegment() { path_segments_(this, result) }
   }
 
   /**

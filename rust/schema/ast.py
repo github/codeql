@@ -479,7 +479,7 @@ class ParenthesizedArgList(AstNode, ):
 
 class Path(AstNode, ):
     qualifier: optional["Path"] | child
-    part: optional["PathSegment"] | child
+    segment: optional["PathSegment"] | child
 
 class PathExpr(Expr, ):
     attrs: list["Attr"] | child

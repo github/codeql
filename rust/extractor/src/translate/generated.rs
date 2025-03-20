@@ -1659,11 +1659,11 @@ impl Translator<'_> {
 
     pub(crate) fn emit_path(&mut self, node: ast::Path) -> Option<Label<generated::Path>> {
         let qualifier = node.qualifier().and_then(|x| self.emit_path(x));
-        let part = node.segment().and_then(|x| self.emit_path_segment(x));
+        let segment = node.segment().and_then(|x| self.emit_path_segment(x));
         let label = self.trap.emit(generated::Path {
             id: TrapId::Star,
             qualifier,
-            part,
+            segment,
         });
         self.emit_location(label, &node);
         emit_detached!(Path, self, node, label);

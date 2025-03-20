@@ -240,7 +240,7 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
  */
 private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
   exists(int i |
-    result = path.getPart().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
+    result = path.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
     tp = resolvePath(path).getTypeParam(pragma[only_bind_into](i))
   )
   or
