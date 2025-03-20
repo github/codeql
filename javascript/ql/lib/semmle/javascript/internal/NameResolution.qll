@@ -1,0 +1,327 @@
+/**
+ * Provides name resolution and propagates type information.
+ */
+
+private import javascript
+
+/**
+ * Provides name resolution and propagates type information.
+ */
+module NameResolution {
+  private class NodeBase =
+    @expr or @typeexpr or @lexical_name or @toplevel or @function_decl_stmt or @class_decl_stmt or
+        @namespace_declaration or @enum_declaration or @interface_declaration or
+        @type_alias_declaration or @jsdoc_type_expr;
+
+  /**
+   * A node in a graph which we use to perform name and type resolution.
+   */
+  class Node extends NodeBase {
+    string toString() {
+      result = this.(AstNode).toString()
+      or
+      result = this.(LexicalName).toString()
+      or
+      result = this.(JSDocTypeExpr).toString()
+    }
+
+    Location getLocation() {
+      result = this.(AstNode).getLocation()
+      or
+      result = this.(LocalVariable).getLocation()
+      or
+      result = this.(JSDocTypeExpr).getLocation()
+    }
+  }
+
+  private signature predicate nodeSig(Node node);
+
+  /**
+   * A module top-level, or a `module {}` or `enum {}` statement.
+   */
+  private class ModuleLike extends AstNode {
+    ModuleLike() {
+      this instanceof Module
+      or
+      this instanceof NamespaceDefinition // `module {}` or `enum {}` statement
+    }
+  }
+
+  /**
+   * Holds if values/namespaces/types in `node1` can flow to values/namespaces/types in `node2`.
+   */
+  private predicate commonStep(Node node1, Node node2) {
+    // Import paths are part of the graph and has an incoming edge from the imported module, if found.
+    // This ensures we can also use the PathExpr as a source when working with external (unresolved) modules.
+    exists(Import imprt |
+      node1 = imprt.getImportedModule() and
+      node2 = imprt.getImportedPath()
+    )
+    or
+    exists(ImportNamespaceSpecifier spec |
+      node1 = spec.getImportDeclaration().getImportedPath() and
+      node2 = spec.getLocal()
+    )
+    or
+    exists(ExportNamespaceSpecifier spec |
+      node1 = spec.getExportDeclaration().(ReExportDeclaration).getImportedPath() and
+      node2 = spec
+    )
+    or
+    exists(ExportAssignDeclaration assign |
+      node1 = assign.getExpression() and
+      node2 = assign.getContainer()
+    )
+    or
+    exists(ImportEqualsDeclaration imprt |
+      node1 = imprt.getImportedEntity() and
+      node2 = imprt.getIdentifier()
+    )
+    or
+    exists(ExternalModuleReference ref |
+      node1 = ref.getImportedPath() and
+      node2 = ref
+    )
+    or
+    exists(ImportTypeExpr imprt |
+      node1 = imprt.getPathExpr() and // TODO: ImportTypeExpr does not seem to be resolved to a Module
+      node2 = imprt
+    )
+    or
+    exists(ClassOrInterface cls |
+      node1 = cls and
+      node2 = cls.getIdentifier()
+    )
+    or
+    exists(NamespaceDefinition def |
+      node1 = def and
+      node2 = def.getIdentifier()
+    )
+    or
+    exists(Function fun |
+      node1 = fun and
+      node2 = fun.getIdentifier()
+    )
+    or
+    exists(EnumMember def |
+      node1 = def.getInitializer() and
+      node2 = def.getIdentifier()
+    )
+    or
+    exists(TypeAliasDeclaration alias |
+      node1 = alias.getDefinition() and
+      node2 = alias.getIdentifier()
+    )
+    or
+    exists(VariableDeclarator decl |
+      node1 = decl.getInit() and
+      node2 = decl.getBindingPattern()
+    )
+    or
+    exists(ParenthesizedTypeExpr type |
+      node1 = type.getElementType() and
+      node2 = type
+    )
+    or
+    exists(ParenthesisExpr expr |
+      node1 = expr.getExpression() and
+      node2 = expr
+    )
+    or
+    exists(FunctionTypeExpr fun |
+      node1 = fun.getFunction() and
+      node2 = fun
+    )
+    or
+    exists(TypeofTypeExpr type |
+      node1 = type.getExpressionName() and
+      node2 = type
+    )
+    or
+    exists(JSDocNamedTypeExpr type, string name |
+      type.hasNameParts(name, "") and
+      node1 = type.getTopLevel().getScope().getLocalTypeName(name) and
+      node2 = type
+    )
+  }
+
+  /**
+   * Holds if there is a read from `node1` to `node2` that accesses the member `name`.
+   */
+  predicate readStep(Node node1, string name, Node node2) {
+    exists(QualifiedTypeAccess access |
+      node1 = access.getQualifier() and
+      name = access.getIdentifier().getName() and
+      node2 = access
+    )
+    or
+    exists(QualifiedNamespaceAccess access |
+      node1 = access.getQualifier() and
+      name = access.getIdentifier().getName() and
+      node2 = access
+    )
+    or
+    exists(QualifiedVarTypeAccess access |
+      node1 = access.getQualifier() and
+      name = access.getIdentifier().getName() and
+      node2 = access
+    )
+    or
+    exists(PropAccess access |
+      node1 = access.getBase() and
+      name = access.getPropertyName() and
+      node2 = access
+    )
+    or
+    exists(ImportSpecifier spec |
+      node1 = spec.getImportDeclaration().getImportedPath() and
+      name = spec.getImportedName() and
+      node2 = spec.getLocal()
+    )
+    or
+    exists(SelectiveReExportDeclaration exprt, ExportSpecifier spec |
+      spec = exprt.getASpecifier() and
+      node1 = exprt.getImportedPath() and
+      name = spec.getLocalName() and
+      node2 = spec.getLocal()
+    )
+    or
+    // Support JSDoc expressions of the form 'foo.bar' where 'foo' is an import
+    // at the top-level.
+    exists(JSDocNamedTypeExpr expr, string prefix |
+      expr.hasNameParts(prefix, "." + name) and
+      node1 = expr.getTopLevel().getScope().getVariable(prefix) and
+      node2 = expr
+    )
+  }
+
+  private signature module TypeResolutionInputSig {
+    /**
+     * Holds if flow is permitted through the given variable.
+     */
+    predicate isRelevantVariable(LexicalName var);
+  }
+
+  /**
+   * A local variable with exactly one definition, not counting implicit initialization.
+   */
+  private class EffectivelyConstantVariable extends LocalVariable {
+    EffectivelyConstantVariable() {
+      count(SsaExplicitDefinition ssa | ssa.getSourceVariable() = this) <= 1 // count may be zero if ambient
+    }
+  }
+
+  /** Configuration for propagating values and namespaces */
+  private module ValueConfig implements TypeResolutionInputSig {
+    predicate isRelevantVariable(LexicalName var) {
+      var instanceof EffectivelyConstantVariable
+      or
+      // We merge the namespace and value declaration spaces as it seems there is
+      // no need to distinguish them in practice.
+      var instanceof LocalNamespaceName
+    }
+  }
+
+  /**
+   * Associates information about values, such as references to a class, module, or namespace.
+   */
+  module ValueFlow = FlowImpl<ValueConfig>;
+
+  private module TypeConfig implements TypeResolutionInputSig {
+    predicate isRelevantVariable(LexicalName var) { var instanceof LocalTypeName }
+  }
+
+  /**
+   * Associates nodes with information about types.
+   */
+  module TypeFlow = FlowImpl<TypeConfig>;
+
+  private module FlowImpl<TypeResolutionInputSig S> {
+    /**
+     * Gets the exported member of `mod` named `name`.
+     */
+    Node getModuleExport(ModuleLike mod, string name) {
+      exists(ExportDeclaration exprt |
+        mod = exprt.getContainer() and
+        exprt.exportsAs(result, name) and
+        S::isRelevantVariable(result)
+      )
+      or
+      exists(ExportNamespaceSpecifier spec |
+        result = spec and
+        mod = spec.getContainer() and
+        name = spec.getExportedName()
+      )
+      or
+      exists(SelectiveReExportDeclaration exprt, ExportSpecifier spec |
+        // `export { A as B } from 'blah'`
+        // This is not covered by `exportsAs` above because neither A or B is a LexicalName
+        // (both are property names) so it doesn't fit the interface of `exportsAs`.
+        spec = exprt.getASpecifier() and
+        mod = exprt.getContainer() and
+        name = spec.getExportedName() and
+        result = spec.getLocal()
+      )
+      or
+      exists(EnumDeclaration enum |
+        mod = enum and
+        result = enum.getMemberByName(name).getIdentifier()
+      )
+    }
+
+    /** Steps that only apply for this configuration. */
+    private predicate specificStep(Node node1, Node node2) {
+      exists(LexicalName var | S::isRelevantVariable(var) |
+        node1.(LexicalDecl).getALexicalName() = var and
+        node2 = var
+        or
+        node1 = var and
+        node2.(LexicalAccess).getALexicalName() = var
+      )
+      or
+      exists(Node base, string name, ModuleLike mod |
+        readStep(base, name, node2) and
+        base = trackModule(mod) and
+        node1 = getModuleExport(mod, name)
+      )
+    }
+
+    /**
+     * Holds if data should propagate from `node1` to `node2`.
+     */
+    pragma[inline]
+    predicate step(Node node1, Node node2) {
+      commonStep(node1, node2)
+      or
+      specificStep(node1, node2)
+    }
+
+    /** Helps track flow from a particular set of source nodes. */
+    module Track<nodeSig/1 isSource> {
+      /** Gets the set of nodes reachable from `source`. */
+      Node track(Node source) {
+        isSource(source) and
+        result = source
+        or
+        step(track(source), result)
+      }
+    }
+
+    signature class AstNodeSig extends AstNode;
+
+    /** Helps track flow from a particular set of source nodes. */
+    module TrackNode<AstNodeSig Source> {
+      /** Gets the set of nodes reachable from `source`. */
+      Node track(Source source) {
+        result = source
+        or
+        step(track(source), result)
+      }
+    }
+  }
+
+  /**
+   * Gets a node to which the given module flows.
+   */
+  predicate trackModule = ValueFlow::TrackNode<ModuleLike>::track/1;
+}
