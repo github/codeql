@@ -1001,7 +1001,7 @@ case @jsdoc_type_expr.kind of
 |   2 = @jsdoc_undefined_type_expr
 |   3 = @jsdoc_unknown_type_expr
 |   4 = @jsdoc_void_type_expr
-|   5 = @jsdoc_named_type_expr
+|   5 = @jsdoc_identifier_type_expr
 |   6 = @jsdoc_applied_type_expr
 |   7 = @jsdoc_nullable_type_expr
 |   8 = @jsdoc_non_nullable_type_expr
@@ -1011,6 +1011,7 @@ case @jsdoc_type_expr.kind of
 |  12 = @jsdoc_function_type_expr
 |  13 = @jsdoc_optional_type_expr
 |  14 = @jsdoc_rest_type_expr
+|  15 = @jsdoc_qualified_type_expr
 ;
 
 #keyset[id, idx]

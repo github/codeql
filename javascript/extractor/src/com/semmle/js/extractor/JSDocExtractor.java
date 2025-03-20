@@ -9,13 +9,14 @@ import com.semmle.js.ast.jsdoc.JSDocComment;
 import com.semmle.js.ast.jsdoc.JSDocElement;
 import com.semmle.js.ast.jsdoc.JSDocTag;
 import com.semmle.js.ast.jsdoc.JSDocTypeExpression;
-import com.semmle.js.ast.jsdoc.NameExpression;
+import com.semmle.js.ast.jsdoc.Identifier;
 import com.semmle.js.ast.jsdoc.NonNullableType;
 import com.semmle.js.ast.jsdoc.NullLiteral;
 import com.semmle.js.ast.jsdoc.NullableLiteral;
 import com.semmle.js.ast.jsdoc.NullableType;
 import com.semmle.js.ast.jsdoc.OptionalType;
 import com.semmle.js.ast.jsdoc.ParameterType;
+import com.semmle.js.ast.jsdoc.QualifiedNameExpression;
 import com.semmle.js.ast.jsdoc.RecordType;
 import com.semmle.js.ast.jsdoc.RestType;
 import com.semmle.js.ast.jsdoc.TypeApplication;
@@ -42,7 +43,7 @@ public class JSDocExtractor {
     jsdocTypeExprKinds.put("UndefinedLiteral", 2);
     jsdocTypeExprKinds.put("NullableLiteral", 3);
     jsdocTypeExprKinds.put("VoidLiteral", 4);
-    jsdocTypeExprKinds.put("NameExpression", 5);
+    jsdocTypeExprKinds.put("Identifier", 5);
     jsdocTypeExprKinds.put("TypeApplication", 6);
     jsdocTypeExprKinds.put("NullableType", 7);
     jsdocTypeExprKinds.put("NonNullableType", 8);
@@ -52,6 +53,7 @@ public class JSDocExtractor {
     jsdocTypeExprKinds.put("FunctionType", 12);
     jsdocTypeExprKinds.put("OptionalType", 13);
     jsdocTypeExprKinds.put("RestType", 14);
+    jsdocTypeExprKinds.put("QualifiedNameExpression", 15);
   }
 
   private final TrapWriter trapwriter;
@@ -122,8 +124,15 @@ public class JSDocExtractor {
     }
 
     @Override
-    public void visit(NameExpression nd) {
+    public void visit(Identifier nd) {
       visit((JSDocTypeExpression) nd);
+    }
+
+    @Override
+    public void visit(QualifiedNameExpression nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      visit(nd.getBase(), label, 0);
+      visit(nd.getNameNode(), label, 1);
     }
 
     @Override

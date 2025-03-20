@@ -2,12 +2,12 @@ package com.semmle.js.ast.jsdoc;
 
 import com.semmle.js.ast.SourceLocation;
 
-/** A named JSDoc type. */
-public class NameExpression extends JSDocTypeExpression {
+/** An identifier in a JSDoc type. */
+public class Identifier extends JSDocTypeExpression {
   private final String name;
 
-  public NameExpression(SourceLocation loc, String name) {
-    super(loc, "NameExpression");
+  public Identifier(SourceLocation loc, String name) {
+    super(loc, "Identifier");
     this.name = name;
   }
 
