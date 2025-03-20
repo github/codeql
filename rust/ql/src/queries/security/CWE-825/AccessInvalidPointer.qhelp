@@ -43,6 +43,7 @@ comes before the call to <code>std::ptr::drop_in_place</code>:
 
 <li>Rust Documentation: <a href="https://doc.rust-lang.org/reference/behavior-considered-undefined.html#dangling-pointers">Behavior considered undefined &gt;&gt; Dangling pointers</a>.</li>
 <li>Rust Documentation: <a href="https://doc.rust-lang.org/std/ptr/index.html#safety">Module ptr - Safety</a>.</li>
+<li>Massachusetts Institute of Technology: <a href="https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer">Unsafe Rust - Dereferencing a Raw Pointer</a>.</li>
 
 </references>
 </qhelp>
