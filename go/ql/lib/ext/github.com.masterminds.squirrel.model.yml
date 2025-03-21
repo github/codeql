@@ -16,7 +16,6 @@ extensions:
       - ["group:squirrel", "", True, "QueryWith", "", "", "ReturnValue[0]", "database", "manual"]
       - ["group:squirrel", "DeleteBuilder", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
       - ["group:squirrel", "DeleteBuilder", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["group:squirrel", "DeleteBuilder", True, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"]
       - ["group:squirrel", "DeleteBuilder", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
       - ["group:squirrel", "InsertBuilder", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
       - ["group:squirrel", "InsertBuilder", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
