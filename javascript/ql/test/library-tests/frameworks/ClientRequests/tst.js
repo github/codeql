@@ -325,8 +325,8 @@ import { Options } from 'got';
 
 function gotTests(url){
     const options = new Options({url});
-    got(undefined, undefined, options); // undefined is flagged, but should be url from options
-    got(undefined, undefined, Options({url})); // undefined is flagged, but should be url from options
+    got(undefined, undefined, options);
+    got(undefined, undefined, Options({url}));
 
     const options2 = new Options({url});
     got.extend(options2).extend(options).get(); // call flagged not the actual url flow

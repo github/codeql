@@ -436,6 +436,13 @@ module ClientRequest {
     override DataFlow::Node getUrl() {
       result = this.getArgument(0) and
       not exists(this.getOptionArgument(1, "baseUrl"))
+      or
+      // Handle URL when passed as options
+      exists(API::InvokeNode optionsCall |
+        optionsCall = API::moduleImport("got").getMember("Options").getAnInvocation() and
+        optionsCall.getReturn().getAValueReachableFromSource() = this.getAnArgument() and
+        result = optionsCall.getParameter(0).getMember("url").asSink()
+      )
     }
 
     override DataFlow::Node getHost() {
