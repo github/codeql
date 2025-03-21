@@ -514,16 +514,35 @@ module ClientRequest {
   }
 
   /**
+   * Gets the name of a superagent request method.
+   */
+  private string getSuperagentRequestMethodName() {
+    result = [httpMethodName(), any(Http::RequestMethodName m), "del", "DEL"]
+  }
+
+  /**
    * A model of a URL request made using the `superagent` library.
    */
   class SuperAgentUrlRequest extends ClientRequest::Range {
     DataFlow::Node url;
 
     SuperAgentUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
+      exists(string moduleName | moduleName = "superagent" |
+        // Handle method calls like superagent.get(url)
+        this = API::moduleImport(moduleName).getMember(getSuperagentRequestMethodName()).getACall() and
         url = this.getArgument(0)
+        or
+        // Handle direct calls like superagent('GET', url)
+        this = API::moduleImport(moduleName).getACall() and
+        this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
+        url = this.getArgument(1)
+        or
+        // Handle agent calls like superagent.agent().get(url)
+        exists(DataFlow::SourceNode agent |
+          agent = API::moduleImport(moduleName).getMember("agent").getACall() and
+          this = agent.getAMethodCall(httpMethodName()) and
+          url = this.getArgument(0)
+        )
       )
     }
 
