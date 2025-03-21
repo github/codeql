@@ -547,12 +547,14 @@
 | LocalDataFlow.cs:273:13:273:36 | SSA def(sink69) | LocalDataFlow.cs:274:15:274:20 | access to local variable sink69 |
 | LocalDataFlow.cs:273:22:273:36 | $"..." | LocalDataFlow.cs:273:13:273:18 | access to local variable sink69 |
 | LocalDataFlow.cs:273:24:273:28 | "test " | LocalDataFlow.cs:273:22:273:36 | $"..." |
-| LocalDataFlow.cs:273:30:273:34 | access to local variable sink1 | LocalDataFlow.cs:273:22:273:36 | $"..." |
+| LocalDataFlow.cs:273:29:273:35 | {...} | LocalDataFlow.cs:273:22:273:36 | $"..." |
+| LocalDataFlow.cs:273:30:273:34 | access to local variable sink1 | LocalDataFlow.cs:273:29:273:35 | {...} |
 | LocalDataFlow.cs:277:9:277:16 | access to local variable nonSink0 | LocalDataFlow.cs:277:9:277:37 | SSA def(nonSink0) |
 | LocalDataFlow.cs:277:9:277:37 | SSA def(nonSink0) | LocalDataFlow.cs:278:15:278:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:277:20:277:37 | $"..." | LocalDataFlow.cs:277:9:277:16 | access to local variable nonSink0 |
 | LocalDataFlow.cs:277:22:277:26 | "test " | LocalDataFlow.cs:277:20:277:37 | $"..." |
-| LocalDataFlow.cs:277:28:277:35 | access to local variable nonSink0 | LocalDataFlow.cs:277:20:277:37 | $"..." |
+| LocalDataFlow.cs:277:27:277:36 | {...} | LocalDataFlow.cs:277:20:277:37 | $"..." |
+| LocalDataFlow.cs:277:28:277:35 | access to local variable nonSink0 | LocalDataFlow.cs:277:27:277:36 | {...} |
 | LocalDataFlow.cs:278:15:278:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:285:31:285:38 | access to local variable nonSink0 |
 | LocalDataFlow.cs:278:15:278:22 | access to local variable nonSink0 | LocalDataFlow.cs:285:31:285:38 | access to local variable nonSink0 |
 | LocalDataFlow.cs:281:13:281:18 | access to local variable sink70 | LocalDataFlow.cs:281:13:281:34 | SSA def(sink70) |
@@ -1237,8 +1239,10 @@
 | Splitting.cs:56:13:56:19 | [b (line 46): true] $"..." | Splitting.cs:56:9:56:9 | access to local variable x |
 | Splitting.cs:56:15:56:15 | [b (line 46): false] "c" | Splitting.cs:56:13:56:19 | [b (line 46): false] $"..." |
 | Splitting.cs:56:15:56:15 | [b (line 46): true] "c" | Splitting.cs:56:13:56:19 | [b (line 46): true] $"..." |
-| Splitting.cs:56:17:56:17 | [b (line 46): false] access to local variable x | Splitting.cs:56:13:56:19 | [b (line 46): false] $"..." |
-| Splitting.cs:56:17:56:17 | [b (line 46): true] access to local variable x | Splitting.cs:56:13:56:19 | [b (line 46): true] $"..." |
+| Splitting.cs:56:16:56:18 | [b (line 46): false] {...} | Splitting.cs:56:13:56:19 | [b (line 46): false] $"..." |
+| Splitting.cs:56:16:56:18 | [b (line 46): true] {...} | Splitting.cs:56:13:56:19 | [b (line 46): true] $"..." |
+| Splitting.cs:56:17:56:17 | [b (line 46): false] access to local variable x | Splitting.cs:56:16:56:18 | [b (line 46): false] {...} |
+| Splitting.cs:56:17:56:17 | [b (line 46): true] access to local variable x | Splitting.cs:56:16:56:18 | [b (line 46): true] {...} |
 | Splitting.cs:57:13:57:24 | [b (line 46): false] access to field Item1 | Splitting.cs:57:9:57:9 | access to local variable x |
 | Splitting.cs:57:13:57:24 | [b (line 46): true] access to field Item1 | Splitting.cs:57:9:57:9 | access to local variable x |
 | Splitting.cs:57:17:57:17 | [b (line 46): false] access to local variable y | Splitting.cs:58:27:58:27 | [b (line 46): false] access to local variable y |

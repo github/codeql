@@ -68,8 +68,9 @@ implicitToString.cs:
 #   32|           0: [LocalVariableAccess] access to local variable x2
 #   32|           1: [InterpolatedStringExpr] $"..."
 #   32|             0: [StringLiteralUtf16] "Hello "
-#   32|             1: [MethodCall] call to method ToString
-#   32|               -1: [LocalVariableAccess] access to local variable x1
+#   32|             1: [InterpolatedStringInsertExpr] {...}
+#   32|               0: [MethodCall] call to method ToString
+#   32|                 -1: [LocalVariableAccess] access to local variable x1
 #   33|       2: [ExprStmt] ...;
 #   33|         0: [MethodCall] call to method Sink
 #   33|           0: [LocalVariableAccess] access to local variable x2
@@ -88,8 +89,9 @@ implicitToString.cs:
 #   39|           0: [LocalVariableAccess] access to local variable x2
 #   39|           1: [InterpolatedStringExpr] $"..."
 #   39|             0: [StringLiteralUtf16] "Hello "
-#   39|             1: [MethodCall] call to method ToString
-#   39|               -1: [LocalVariableAccess] access to local variable x1
+#   39|             1: [InterpolatedStringInsertExpr] {...}
+#   39|               0: [MethodCall] call to method ToString
+#   39|                 -1: [LocalVariableAccess] access to local variable x1
 #   40|       2: [ExprStmt] ...;
 #   40|         0: [MethodCall] call to method Sink
 #   40|           0: [LocalVariableAccess] access to local variable x2

@@ -4,12 +4,14 @@ AlternateInterpolatedStrings.cs:
 #    5|     -1: [TypeMention] string
 #    5|     1: [InterpolatedStringExpr] $"..."
 #    5|       0: [StringLiteralUtf16] "C:"
-#    5|       1: [IntLiteral] 12
+#    5|       1: [InterpolatedStringInsertExpr] {...}
+#    5|         0: [IntLiteral] 12
 #    6|   6: [Field] s2
 #    6|     -1: [TypeMention] string
 #    6|     1: [InterpolatedStringExpr] $"..."
 #    6|       0: [StringLiteralUtf16] "C:"
-#    6|       1: [IntLiteral] 12
+#    6|       1: [InterpolatedStringInsertExpr] {...}
+#    6|         0: [IntLiteral] 12
 AsyncStreams.cs:
 #    6| [Class] AsyncStreams
 #    8|   5: [Method] Items

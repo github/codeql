@@ -30,33 +30,41 @@ csharp6.cs:
 #   25|           1: [ExprStmt] ...;
 #   25|             0: [MethodCall] call to method WriteLine
 #   25|               0: [InterpolatedStringExpr] $"..."
-#   25|                 0: [NameOfExpr] nameof(...)
-#   25|                   0: [LocalVariableAccess] access to local variable foo
+#   25|                 0: [InterpolatedStringInsertExpr] {...}
+#   25|                   0: [NameOfExpr] nameof(...)
+#   25|                     0: [LocalVariableAccess] access to local variable foo
 #   25|                 1: [StringLiteralUtf16] " is "
-#   25|                 2: [LocalVariableAccess] access to local variable foo
+#   25|                 2: [InterpolatedStringInsertExpr] {...}
+#   25|                   0: [LocalVariableAccess] access to local variable foo
 #   25|                 3: [StringLiteralUtf16] ", and "
-#   25|                 4: [NameOfExpr] nameof(...)
-#   25|                   0: [LocalVariableAccess] access to local variable bar
+#   25|                 4: [InterpolatedStringInsertExpr] {...}
+#   25|                   0: [NameOfExpr] nameof(...)
+#   25|                     0: [LocalVariableAccess] access to local variable bar
 #   25|                 5: [StringLiteralUtf16] " has length "
-#   25|                 6: [NullCoalescingExpr] ... ?? ...
-#   25|                   0: [PropertyCall] access to property Length
-#   25|                     -1: [LocalVariableAccess] access to local variable bar
-#   25|                   1: [IntLiteral] 0
+#   25|                 6: [InterpolatedStringInsertExpr] {...}
+#   25|                   0: [NullCoalescingExpr] ... ?? ...
+#   25|                     0: [PropertyCall] access to property Length
+#   25|                       -1: [LocalVariableAccess] access to local variable bar
+#   25|                     1: [IntLiteral] 0
 #   27|           2: [ExprStmt] ...;
 #   27|             0: [MethodCall] call to method Fn
 #   27|               0: [InterpolatedStringExpr] $"..."
-#   27|                 0: [NameOfExpr] nameof(...)
-#   27|                   0: [LocalVariableAccess] access to local variable foo
+#   27|                 0: [InterpolatedStringInsertExpr] {...}
+#   27|                   0: [NameOfExpr] nameof(...)
+#   27|                     0: [LocalVariableAccess] access to local variable foo
 #   27|                 1: [StringLiteralUtf16] " is "
-#   27|                 2: [LocalVariableAccess] access to local variable foo
+#   27|                 2: [InterpolatedStringInsertExpr] {...}
+#   27|                   0: [LocalVariableAccess] access to local variable foo
 #   27|                 3: [StringLiteralUtf16] ", and "
-#   27|                 4: [NameOfExpr] nameof(...)
-#   27|                   0: [LocalVariableAccess] access to local variable bar
+#   27|                 4: [InterpolatedStringInsertExpr] {...}
+#   27|                   0: [NameOfExpr] nameof(...)
+#   27|                     0: [LocalVariableAccess] access to local variable bar
 #   27|                 5: [StringLiteralUtf16] " has length "
-#   27|                 6: [NullCoalescingExpr] ... ?? ...
-#   27|                   0: [PropertyCall] access to property Length
-#   27|                     -1: [LocalVariableAccess] access to local variable bar
-#   27|                   1: [IntLiteral] 0
+#   27|                 6: [InterpolatedStringInsertExpr] {...}
+#   27|                   0: [NullCoalescingExpr] ... ?? ...
+#   27|                     0: [PropertyCall] access to property Length
+#   27|                       -1: [LocalVariableAccess] access to local variable bar
+#   27|                     1: [IntLiteral] 0
 #   29|           3: [LocalVariableDeclStmt] ... ...;
 #   29|             0: [LocalVariableDeclAndInitExpr] Nullable<Boolean> anythingInBar = ...
 #   29|               -1: [TypeMention] bool?

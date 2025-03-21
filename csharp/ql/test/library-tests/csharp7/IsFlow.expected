@@ -24,7 +24,8 @@
 | CSharp7.cs:255:17:255:45 | ...; | CSharp7.cs:255:37:255:38 | "x " | semmle.label | successor |
 | CSharp7.cs:255:35:255:43 | $"..." | CSharp7.cs:255:17:255:44 | call to method WriteLine | semmle.label | successor |
 | CSharp7.cs:255:37:255:38 | "x " | CSharp7.cs:255:40:255:41 | access to local variable s4 | semmle.label | successor |
-| CSharp7.cs:255:40:255:41 | access to local variable s4 | CSharp7.cs:255:35:255:43 | $"..." | semmle.label | successor |
+| CSharp7.cs:255:39:255:42 | {...} | CSharp7.cs:255:35:255:43 | $"..." | semmle.label | successor |
+| CSharp7.cs:255:40:255:41 | access to local variable s4 | CSharp7.cs:255:39:255:42 | {...} | semmle.label | successor |
 | CSharp7.cs:256:17:256:22 | break; | CSharp7.cs:230:10:230:13 | exit Test (normal) | semmle.label | break |
 | CSharp7.cs:257:13:257:36 | case ...: | CSharp7.cs:257:18:257:23 | Int32 i2 | semmle.label | successor |
 | CSharp7.cs:257:18:257:23 | Int32 i2 | CSharp7.cs:257:30:257:31 | access to local variable i2 | semmle.label | match |
@@ -37,7 +38,8 @@
 | CSharp7.cs:258:17:258:52 | ...; | CSharp7.cs:258:37:258:45 | "positive " | semmle.label | successor |
 | CSharp7.cs:258:35:258:50 | $"..." | CSharp7.cs:258:17:258:51 | call to method WriteLine | semmle.label | successor |
 | CSharp7.cs:258:37:258:45 | "positive " | CSharp7.cs:258:47:258:48 | access to local variable i2 | semmle.label | successor |
-| CSharp7.cs:258:47:258:48 | access to local variable i2 | CSharp7.cs:258:35:258:50 | $"..." | semmle.label | successor |
+| CSharp7.cs:258:46:258:49 | {...} | CSharp7.cs:258:35:258:50 | $"..." | semmle.label | successor |
+| CSharp7.cs:258:47:258:48 | access to local variable i2 | CSharp7.cs:258:46:258:49 | {...} | semmle.label | successor |
 | CSharp7.cs:259:17:259:22 | break; | CSharp7.cs:230:10:230:13 | exit Test (normal) | semmle.label | break |
 | CSharp7.cs:260:13:260:24 | case ...: | CSharp7.cs:260:18:260:23 | Int32 i3 | semmle.label | successor |
 | CSharp7.cs:260:18:260:23 | Int32 i3 | CSharp7.cs:261:17:261:47 | ...; | semmle.label | match |
@@ -46,7 +48,8 @@
 | CSharp7.cs:261:17:261:47 | ...; | CSharp7.cs:261:37:261:40 | "int " | semmle.label | successor |
 | CSharp7.cs:261:35:261:45 | $"..." | CSharp7.cs:261:17:261:46 | call to method WriteLine | semmle.label | successor |
 | CSharp7.cs:261:37:261:40 | "int " | CSharp7.cs:261:42:261:43 | access to local variable i3 | semmle.label | successor |
-| CSharp7.cs:261:42:261:43 | access to local variable i3 | CSharp7.cs:261:35:261:45 | $"..." | semmle.label | successor |
+| CSharp7.cs:261:41:261:44 | {...} | CSharp7.cs:261:35:261:45 | $"..." | semmle.label | successor |
+| CSharp7.cs:261:42:261:43 | access to local variable i3 | CSharp7.cs:261:41:261:44 | {...} | semmle.label | successor |
 | CSharp7.cs:262:17:262:22 | break; | CSharp7.cs:230:10:230:13 | exit Test (normal) | semmle.label | break |
 | CSharp7.cs:263:13:263:27 | case ...: | CSharp7.cs:263:18:263:26 | String s2 | semmle.label | successor |
 | CSharp7.cs:263:18:263:26 | String s2 | CSharp7.cs:264:17:264:50 | ...; | semmle.label | match |
@@ -55,7 +58,8 @@
 | CSharp7.cs:264:17:264:50 | ...; | CSharp7.cs:264:37:264:43 | "string " | semmle.label | successor |
 | CSharp7.cs:264:35:264:48 | $"..." | CSharp7.cs:264:17:264:49 | call to method WriteLine | semmle.label | successor |
 | CSharp7.cs:264:37:264:43 | "string " | CSharp7.cs:264:45:264:46 | access to local variable s2 | semmle.label | successor |
-| CSharp7.cs:264:45:264:46 | access to local variable s2 | CSharp7.cs:264:35:264:48 | $"..." | semmle.label | successor |
+| CSharp7.cs:264:44:264:47 | {...} | CSharp7.cs:264:35:264:48 | $"..." | semmle.label | successor |
+| CSharp7.cs:264:45:264:46 | access to local variable s2 | CSharp7.cs:264:44:264:47 | {...} | semmle.label | successor |
 | CSharp7.cs:265:17:265:22 | break; | CSharp7.cs:230:10:230:13 | exit Test (normal) | semmle.label | break |
 | CSharp7.cs:266:13:266:26 | case ...: | CSharp7.cs:266:18:266:23 | access to type Double | semmle.label | successor |
 | CSharp7.cs:266:18:266:23 | access to type Double | CSharp7.cs:267:17:267:44 | ...; | semmle.label | match |
