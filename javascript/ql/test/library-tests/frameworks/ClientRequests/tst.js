@@ -320,3 +320,22 @@ function useSuperagent(url){
     superagent.del(url);
     superagent.agent().post(url).send(data);
 }
+
+import { Options } from 'got';
+
+function gotTests(url){
+    const options = new Options({url});
+    got(undefined, undefined, options); // undefined is flagged, but should be url from options
+    got(undefined, undefined, Options({url})); // undefined is flagged, but should be url from options
+
+    const options2 = new Options({url});
+    got.extend(options2).extend(options).get(); // not flagged
+
+    got.paginate(url, {}); // not flagged 
+
+    const jsonClient = got.extend({url: url});
+    jsonClient.get(); // call flagged not the actual url flow
+
+    const jsonClient2 = got.extend({url: url}).extend({url: url});
+    jsonClient2.get(); // not flagged
+}
