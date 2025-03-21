@@ -296,7 +296,7 @@ module DOM {
               .getType()
               .getAnUnderlyingType()
               .(JSDocNamedTypeExpr)
-              .getName())
+              .getRawName())
       )
     }
 

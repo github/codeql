@@ -10,13 +10,14 @@ import com.semmle.js.ast.jsdoc.FunctionType;
 import com.semmle.js.ast.jsdoc.JSDocComment;
 import com.semmle.js.ast.jsdoc.JSDocTag;
 import com.semmle.js.ast.jsdoc.JSDocTypeExpression;
-import com.semmle.js.ast.jsdoc.NameExpression;
+import com.semmle.js.ast.jsdoc.Identifier;
 import com.semmle.js.ast.jsdoc.NonNullableType;
 import com.semmle.js.ast.jsdoc.NullLiteral;
 import com.semmle.js.ast.jsdoc.NullableLiteral;
 import com.semmle.js.ast.jsdoc.NullableType;
 import com.semmle.js.ast.jsdoc.OptionalType;
 import com.semmle.js.ast.jsdoc.ParameterType;
+import com.semmle.js.ast.jsdoc.QualifiedNameExpression;
 import com.semmle.js.ast.jsdoc.RecordType;
 import com.semmle.js.ast.jsdoc.RestType;
 import com.semmle.js.ast.jsdoc.TypeApplication;
@@ -70,30 +71,6 @@ public class JSDocParser {
     return new JSDocComment(comment, r.fst(), tags);
   }
 
-  /** Specification of Doctrine AST types for JSDoc type expressions. */
-  private static final Map<Class<? extends JSDocTypeExpression>, List<String>> spec =
-      new LinkedHashMap<Class<? extends JSDocTypeExpression>, List<String>>();
-
-  static {
-    spec.put(AllLiteral.class, Arrays.<String>asList());
-    spec.put(ArrayType.class, Arrays.asList("elements"));
-    spec.put(FieldType.class, Arrays.asList("key", "value"));
-    spec.put(FunctionType.class, Arrays.asList("this", "new", "params", "result"));
-    spec.put(NameExpression.class, Arrays.asList("name"));
-    spec.put(NonNullableType.class, Arrays.asList("expression", "prefix"));
-    spec.put(NullableLiteral.class, Arrays.<String>asList());
-    spec.put(NullLiteral.class, Arrays.<String>asList());
-    spec.put(NullableType.class, Arrays.asList("expression", "prefix"));
-    spec.put(OptionalType.class, Arrays.asList("expression"));
-    spec.put(ParameterType.class, Arrays.asList("name", "expression"));
-    spec.put(RecordType.class, Arrays.asList("fields"));
-    spec.put(RestType.class, Arrays.asList("expression"));
-    spec.put(TypeApplication.class, Arrays.asList("expression", "applications"));
-    spec.put(UndefinedLiteral.class, Arrays.<String>asList());
-    spec.put(UnionType.class, Arrays.asList("elements"));
-    spec.put(VoidLiteral.class, Arrays.<String>asList());
-  }
-
   private static String sliceSource(String source, int index, int last) {
     if (index >= source.length()) return "";
     if (last > source.length()) last = source.length();
@@ -137,7 +114,7 @@ public class JSDocParser {
   }
 
   private static boolean isTypeName(char ch) {
-    return "><(){}[],:*|?!=".indexOf(ch) == -1 && !isWhiteSpace(ch) && !isLineTerminator(ch);
+    return "><(){}[],:*|?!=.".indexOf(ch) == -1 && !isWhiteSpace(ch) && !isLineTerminator(ch);
   }
 
   private static boolean isParamTitle(String title) {
@@ -559,20 +536,9 @@ public class JSDocParser {
     }
 
     private Token scanTypeName() {
-      char ch, ch2;
-
       StringBuilder sb = new StringBuilder();
       sb.append((char)advance());
       while (index < endIndex && isTypeName(source.charAt(index))) {
-        ch = source.charAt(index);
-        if (ch == '.') {
-          if ((index + 1) < endIndex) {
-            ch2 = source.charAt(index + 1);
-            if (ch2 == '<') {
-              break;
-            }
-          }
-        }
         sb.append((char)advance());
       }
       value = sb.toString();
@@ -850,11 +816,24 @@ public class JSDocParser {
       return finishNode(new RecordType(loc, fields));
     }
 
-    private JSDocTypeExpression parseNameExpression() throws ParseError {
-      Object name = value;
+    private Identifier parseIdentifier() throws ParseError {
       SourceLocation loc = loc();
+      Object value = this.value; // save the value of the current token
       expect(Token.NAME);
-      return finishNode(new NameExpression(loc, name.toString()));
+      return finishNode(new Identifier(loc, value.toString()));
+    }
+
+    private JSDocTypeExpression parseNameExpression() throws ParseError {
+      JSDocTypeExpression node = parseIdentifier();
+      while (token == Token.DOT) {
+        consume(Token.DOT);
+        Identifier memberName = parseIdentifier();
+        // Create a SourceLocation object with the correct start location.
+        // The call to finishNode() will set the end location.
+        SourceLocation loc = new SourceLocation(node.getLoc());
+        node = finishNode(new QualifiedNameExpression(loc, node, memberName));
+      }
+      return node;
     }
 
     // TypeExpressionList :=
@@ -947,14 +926,14 @@ public class JSDocParser {
 
         SourceLocation loc = loc();
         expr = parseTypeExpression();
-        if (expr instanceof NameExpression && token == Token.COLON) {
+        if (expr instanceof Identifier && token == Token.COLON) {
           // Identifier ':' TypeExpression
           consume(Token.COLON);
           expr =
               finishNode(
                   new ParameterType(
                       new SourceLocation(loc),
-                      ((NameExpression) expr).getName(),
+                      ((Identifier) expr).getName(),
                       parseTypeExpression()));
         }
         if (token == Token.EQUAL) {
@@ -1130,7 +1109,7 @@ public class JSDocParser {
         consume(Token.RBRACK, "expected an array-style type declaration (' + value + '[])");
         List<JSDocTypeExpression> expressions = new ArrayList<>();
         expressions.add(expr);
-        NameExpression nameExpr = finishNode(new NameExpression(new SourceLocation(loc), "Array"));
+        Identifier nameExpr = finishNode(new Identifier(new SourceLocation(loc), "Array"));
         return finishNode(new TypeApplication(loc, nameExpr, expressions));
       }
 
@@ -1551,9 +1530,9 @@ public class JSDocParser {
             // fixed at the end
             if (isParamTitle(this._title)
                 && this._tag.type != null
-                && this._tag.type instanceof NameExpression) {
-              this._extra_name = ((NameExpression) this._tag.type).getName();
-              this._tag.name = ((NameExpression) this._tag.type).getName();
+                && this._tag.type instanceof Identifier) {
+              this._extra_name = ((Identifier) this._tag.type).getName();
+              this._tag.name = ((Identifier) this._tag.type).getName();
               this._tag.type = null;
             } else {
               if (!this.addError("Missing or invalid tag name")) {
@@ -1669,7 +1648,7 @@ public class JSDocParser {
             Position start = new Position(_tag.startLine, _tag.startColumn, _tag.startColumn);
             Position end = new Position(_tag.startLine, _tag.startColumn, _tag.startColumn);
             SourceLocation loc = new SourceLocation(_extra_name, start, end);
-            this._tag.type = new NameExpression(loc, _extra_name);
+            this._tag.type = new Identifier(loc, _extra_name);
           }
           this._tag.name = null;
 
