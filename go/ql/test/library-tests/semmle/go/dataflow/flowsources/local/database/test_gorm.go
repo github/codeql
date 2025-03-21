@@ -1,5 +1,7 @@
 package test
 
+//go:generate depstubber -vendor gorm.io/gorm Association,ConnPool,DB
+
 import "gorm.io/gorm"
 
 // test querying an Association
