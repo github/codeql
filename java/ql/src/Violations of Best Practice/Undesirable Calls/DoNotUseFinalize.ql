@@ -13,10 +13,9 @@
 
 import java
 
-from MethodCall mc, Method m
+from MethodCall mc
 where
-  mc.getMethod() = m and
-  m.hasName("finalize") and
+  mc.getMethod().hasName("finalize") and
   // The Java documentation for `finalize` states: "If a subclass overrides
   // `finalize` it must invoke the superclass finalizer explicitly". Therefore,
   // we do not alert on `super.finalize` calls that occur within a callable
