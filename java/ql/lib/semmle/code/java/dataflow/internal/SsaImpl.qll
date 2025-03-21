@@ -684,6 +684,8 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
     guard.controls(bb, branch)
   }
+
+  predicate includeWriteDefsInFlowStep() { none() }
 }
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

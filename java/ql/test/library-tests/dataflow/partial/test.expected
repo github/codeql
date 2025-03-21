@@ -3,14 +3,12 @@ edges
 | A.java:12:14:12:18 | src(...) : Object | A.java:12:5:12:5 | b [post update] : Box [elem] |
 | A.java:12:14:12:18 | src(...) : Object | A.java:12:5:12:18 | ...=... : Object |
 | A.java:13:12:13:12 | b : Box [elem] | A.java:17:13:17:16 | f1(...) : Box [elem] |
-| A.java:17:9:17:16 | SSA def(b) : Box [elem] | A.java:18:8:18:8 | b : Box [elem] |
-| A.java:17:13:17:16 | f1(...) : Box [elem] | A.java:17:9:17:16 | SSA def(b) : Box [elem] |
+| A.java:17:13:17:16 | f1(...) : Box [elem] | A.java:18:8:18:8 | b : Box [elem] |
 | A.java:18:8:18:8 | b : Box [elem] | A.java:21:11:21:15 | b : Box [elem] |
 #select
 | 0 | A.java:12:5:12:5 | b [post update] : Box [elem] |
 | 0 | A.java:12:5:12:18 | ...=... : Object |
 | 0 | A.java:13:12:13:12 | b : Box [elem] |
-| 1 | A.java:17:9:17:16 | SSA def(b) : Box [elem] |
 | 1 | A.java:17:13:17:16 | f1(...) : Box [elem] |
 | 1 | A.java:18:8:18:8 | b : Box [elem] |
 | 2 | A.java:21:11:21:15 | b : Box [elem] |
