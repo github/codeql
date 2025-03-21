@@ -114,7 +114,7 @@ public class JSDocParser {
   }
 
   private static boolean isTypeName(char ch) {
-    return "><(){}[],:*|?!=".indexOf(ch) == -1 && !isWhiteSpace(ch) && !isLineTerminator(ch);
+    return "><(){}[],:*|?!=.".indexOf(ch) == -1 && !isWhiteSpace(ch) && !isLineTerminator(ch);
   }
 
   private static boolean isParamTitle(String title) {
@@ -536,20 +536,9 @@ public class JSDocParser {
     }
 
     private Token scanTypeName() {
-      char ch, ch2;
-
       StringBuilder sb = new StringBuilder();
       sb.append((char)advance());
       while (index < endIndex && isTypeName(source.charAt(index))) {
-        ch = source.charAt(index);
-        if (ch == '.') {
-          if ((index + 1) < endIndex) {
-            ch2 = source.charAt(index + 1);
-            if (ch2 == '<') {
-              break;
-            }
-          }
-        }
         sb.append((char)advance());
       }
       value = sb.toString();
@@ -827,15 +816,21 @@ public class JSDocParser {
       return finishNode(new RecordType(loc, fields));
     }
 
-    private JSDocTypeExpression parseNameExpression() throws ParseError {
+    private Identifier parseIdentifier() throws ParseError {
       SourceLocation loc = loc();
       Object value = this.value; // save the value of the current token
       expect(Token.NAME);
-      // Hacky initial implementation with wrong locations
-      String[] parts = value.toString().split("\\.");
-      JSDocTypeExpression node = finishNode(new Identifier(loc, parts[0]));
-      for (int i = 1; i < parts.length; i++) {
-        Identifier memberName = finishNode(new Identifier(loc, parts[i]));
+      return finishNode(new Identifier(loc, value.toString()));
+    }
+
+    private JSDocTypeExpression parseNameExpression() throws ParseError {
+      JSDocTypeExpression node = parseIdentifier();
+      while (token == Token.DOT) {
+        consume(Token.DOT);
+        Identifier memberName = parseIdentifier();
+        // Create a SourceLocation object with the correct start location.
+        // The call to finishNode() will set the end location.
+        SourceLocation loc = new SourceLocation(node.getLoc());
         node = finishNode(new QualifiedNameExpression(loc, node, memberName));
       }
       return node;
