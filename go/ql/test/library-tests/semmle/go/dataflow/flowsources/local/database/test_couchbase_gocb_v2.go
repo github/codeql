@@ -1,6 +1,6 @@
 package test
 
-//go:generate depstubber -vendor github.com/couchbase/gocb/v2 Cluster,Scope,Collection,TransactionAttemptContext,ViewIndexManager
+//go:generate depstubber -vendor github.com/couchbase/gocb/v2 AnalyticsResult,AnalyticsResultRaw,Cluster,Collection,ExistsResult,GetResult,LookupInReplicaResult,LookupInResult,MutateInResult,MutationResult,QueryResult,QueryResultRaw,Result,ScanResult,ScanResultItem,Scope,SearchResult,SearchResultRaw,TransactionAttemptContext,TransactionGetResult,TransactionQueryResult,ViewIndexManager,ViewResult,ViewResultRaw
 
 import "github.com/couchbase/gocb/v2"
 

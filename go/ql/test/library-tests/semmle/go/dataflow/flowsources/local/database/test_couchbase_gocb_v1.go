@@ -1,5 +1,7 @@
 package test
 
+//go:generate depstubber -vendor github.com/couchbase/gocb Cluster,AnalyticsResults,QueryResults,SearchResults
+
 import "github.com/couchbase/gocb"
 
 func test_couchbase_gocb_v1_Cluster(cluster *gocb.Cluster, aq *gocb.AnalyticsQuery, n1ql *gocb.N1qlQuery, sq *gocb.SearchQuery) {
