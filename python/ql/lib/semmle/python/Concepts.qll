@@ -181,7 +181,7 @@ module Path {
     }
   }
 
-  /** A data-flow node that checks that a path is safe to access. */
+  /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
   class SafeAccessCheck extends DataFlow::ExprNode {
     SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
   }
@@ -192,7 +192,7 @@ module Path {
 
   /** Provides a class for modeling new path safety checks. */
   module SafeAccessCheck {
-    /** A data-flow node that checks that a path is safe to access. */
+    /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
     abstract class Range extends DataFlow::GuardNode {
       /** Holds if this guard validates `node` upon evaluating to `branch`. */
       abstract predicate checks(ControlFlowNode node, boolean branch);

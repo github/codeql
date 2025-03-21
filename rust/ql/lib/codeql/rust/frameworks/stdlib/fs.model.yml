@@ -1,0 +1,46 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["lang:std", "crate::fs::copy", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::copy", "Argument[1]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::create_dir", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::create_dir_all", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::hard_link", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::hard_link", "Argument[1]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::metadata", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::read", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::read_dir", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::read_link", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::read_to_string", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::remove_dir", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::remove_dir_all", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::remove_file", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::rename", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::rename", "Argument[1]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::set_permissions", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::soft_link", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::soft_link", "Argument[1]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::symlink_metadata", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "crate::fs::write", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "<crate::fs::DirBuilder>::create", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "<crate::fs::File>::create", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "<crate::fs::File>::create_buffered", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "<crate::fs::File>::create_new", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "<crate::fs::File>::open", "Argument[0]", "path-injection", "manual"]
+      - ["lang:std", "<crate::fs::File>::open_buffered", "Argument[0]", "path-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["lang:std", "<crate::path::PathBuf as crate::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::join", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self].OptionalStep[normalize-path]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self].OptionalBarrier[normalize-path]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
