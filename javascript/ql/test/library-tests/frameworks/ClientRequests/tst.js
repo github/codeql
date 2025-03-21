@@ -329,13 +329,13 @@ function gotTests(url){
     got(undefined, undefined, Options({url}));
 
     const options2 = new Options({url});
-    got.extend(options2).extend(options).get(); // call flagged not the actual url flow
+    got.extend(options2).extend(options).get();
 
     got.paginate(url, {}); // not flagged 
 
     const jsonClient = got.extend({url: url});
-    jsonClient.get(); // call flagged not the actual url flow
+    jsonClient.get();
 
     const jsonClient2 = got.extend({url: url}).extend({url: url});
-    jsonClient2.get(); // call flagged not the actual url flow
+    jsonClient2.get();
 }

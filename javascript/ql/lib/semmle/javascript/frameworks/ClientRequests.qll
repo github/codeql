@@ -437,7 +437,14 @@ module ClientRequest {
       result = this.getArgument(0) and
       not exists(this.getOptionArgument(1, "baseUrl"))
       or
-      // Handle URL when passed as options
+      // Handle URL from options passed to extend()
+      exists(API::CallNode extendCall |
+        extendCall = API::moduleImport("got").getMember("extend").getACall() and
+        result = extendCall.getParameter(0).getMember("url").asSink() and
+        not exists(this.getArgument(0))
+      )
+      or
+      // Handle URL from options passed as third argument when first arg is undefined/missing
       exists(API::InvokeNode optionsCall |
         optionsCall = API::moduleImport("got").getMember("Options").getAnInvocation() and
         optionsCall.getReturn().getAValueReachableFromSource() = this.getAnArgument() and
