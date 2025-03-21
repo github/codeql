@@ -6,7 +6,8 @@
  * @kind problem
  * @precision high
  * @problem.severity error
- * @tags correctness
+ * @tags quality
+ *       correctness
  *       external/cwe/cwe-586
  */
 
