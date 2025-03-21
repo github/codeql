@@ -113,6 +113,14 @@ class JUnitJupiterTestMethod extends Method {
 }
 
 /**
+ * A JUnit test class that contains at least one method annotated with
+ * `org.junit.jupiter.api.Test`.
+ */
+class JUnit5TestClass extends Class {
+  JUnit5TestClass() { this.getAMethod() instanceof JUnitJupiterTestMethod }
+}
+
+/**
  * A JUnit `@Ignore` annotation.
  */
 class JUnitIgnoreAnnotation extends Annotation {
