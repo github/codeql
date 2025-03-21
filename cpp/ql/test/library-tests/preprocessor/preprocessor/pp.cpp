@@ -113,6 +113,32 @@ templateClassContext<int> tcci;
 #endif
 
 
-#if defined /* // test */ SIMPLE_COMMENT   //this comment \
+#if defined /* //test */ SIMPLE_COMMENT   //this comment \
      (defined(SIMPLE_COMMENT)) spans over multiple lines
+#endif
+
+#warning foo \
+
+#warning foo \
+\
+/* a comment */
+
+#warning foo \
+\
+
+#warning foo \
+\
+// a comment
+
+
+#define FOO 8
+#define BAR 2
+#define BAZ 4
+#if ((FOO / BAR) \
+   == 4) && ((BAZ \
+    /** comment */ \
+   * QUX) \
+   /** comment */ \
+   > 10)
+#define CONDITIONAL_MACRO_3 3
 #endif
