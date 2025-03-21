@@ -341,7 +341,7 @@ function gotTests(url){
 }
 
 function moreAxiosTests(url, data, config){
-    axios.postForm(url, data, config); // not flagged
+    axios.postForm(url, data, config);
     axios.putForm(url, data); // not flagged
     axios.putForm(url, data, config); // not flagged
     axios.patchForm(url, data); // not flagged
