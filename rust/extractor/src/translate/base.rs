@@ -5,7 +5,6 @@ use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
 use ra_ap_base_db::{CrateOrigin, EditionedFileId};
-use ra_ap_base_db::salsa::plumbing::AsId;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{
     Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
@@ -399,9 +398,9 @@ impl<'a> Translator<'a> {
     }
 
     fn canonical_path_from_hir_module(&self, item: Module) -> Option<String> {
-        if let Some(block_id) = ModuleId::from(item).containing_block() {
-            // this means this is a block module, i.e. a virtual module for a block scope
-            return Some(format!("{{{}}}", block_id.as_id().as_u32()));
+        if ModuleId::from(item).containing_block().is_some() {
+            // this means this is a block module, i.e. a virtual module for an anonymous block scope
+            return None;
         }
         if item.is_crate_root() {
             return Some("crate".into());
