@@ -331,7 +331,7 @@ function gotTests(url){
     const options2 = new Options({url});
     got.extend(options2).extend(options).get();
 
-    got.paginate(url, {}); // not flagged 
+    got.paginate(url, {});
 
     const jsonClient = got.extend({url: url});
     jsonClient.get();

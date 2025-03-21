@@ -429,7 +429,11 @@ module ClientRequest {
     GotUrlRequest() {
       exists(API::Node callee, API::Node got | this = callee.getACall() |
         got = getAGotInstance() and
-        callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
+        callee =
+          [
+            got,
+            got.getMember(["stream", "get", "post", "put", "patch", "head", "delete", "paginate"])
+          ]
       )
     }
 
