@@ -142,3 +142,22 @@ templateClassContext<int> tcci;
    > 10)
 #define CONDITIONAL_MACRO_3 3
 #endif
+
+#define X 1
+#define Y 2
+#if defined(X) && \
+    /*this is a comment*/ defined(Y) \
+    // another comment
+#endif
+
+#warning FOO\
+	 \
+	 \
+	 \
+BAR
+
+
+#warning foo \
+\
+/* comment */ \
+\

@@ -68,6 +68,12 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 136 | 1 | 136 | 13 | Macro | BAZ | 4 |
 | pp.cpp:0:0:0:0 | pp.cpp | 137 | 1 | 142 | 8 | PreprocessorIf | ((FOO / BAR) == 4) && ((BAZ * QUX) > 10) | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 144 | 1 | 144 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 146 | 1 | 146 | 11 | Macro | X | 1 |
+| pp.cpp:0:0:0:0 | pp.cpp | 147 | 1 | 147 | 11 | Macro | Y | 2 |
+| pp.cpp:0:0:0:0 | pp.cpp | 148 | 1 | 149 | 38 | PreprocessorIf | defined(X) && defined(Y) | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 151 | 1 | 151 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 153 | 1 | 157 | 3 | PreprocessorWarning | FOOBAR | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 160 | 1 | 160 | 14 | PreprocessorWarning | foo | N/A |
 | pp.h:0:0:0:0 | pp.h | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
 | pp.h:0:0:0:0 | pp.h | 2 | 1 | 2 | 29 | PreprocessorWarning | "This should happen" | N/A |
 | pp.h:0:0:0:0 | pp.h | 3 | 1 | 3 | 27 | PreprocessorLine | 33 "emerald_city.h" | N/A |
