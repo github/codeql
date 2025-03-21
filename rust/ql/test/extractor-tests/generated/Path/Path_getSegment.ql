@@ -4,4 +4,4 @@ import TestUtils
 
 from Path x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getPart()
+select x, x.getSegment()

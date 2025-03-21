@@ -87,6 +87,7 @@ class _:
     foo::bar;
     ```
     """
+    segment: _ | ql.db_table_name("path_segments_") | doc("last segment of this path")
 
 
 @annotate(GenericArgList)

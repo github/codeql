@@ -272,10 +272,10 @@ def test_builtin_predicate_and_set_children_not_allowed(spec):
 _class_pragmas = [
     (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
     (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
+    (defs.qltest.skip, "qltest_skip"),
 ]
 
 _property_pragmas = [
-    (defs.qltest.skip, "qltest_skip"),
     (defs.cpp.skip, "cpp_skip"),
     (defs.ql.internal, "ql_internal"),
 ]
@@ -646,6 +646,17 @@ def test_class_default_doc_name():
     }
 
 
+def test_db_table_name():
+    @load
+    class data:
+        class A:
+            x: optional[int] | defs.ql.db_table_name("foo")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.OptionalProperty("x", "int", pragmas={"ql_db_table_name": "foo"})]),
+    }
+
+
 def test_null_class():
     @load
     class data:
@@ -838,7 +849,7 @@ def test_annotate_fields_negations():
     @load
     class data:
         class Root:
-            x: defs.int | defs.ql.internal | defs.qltest.skip
+            x: defs.int | defs.ql.internal
             y: defs.optional["Root"] | defs.child | defs.desc("foo\nbar\n")
             z: defs.string | defs.synth | defs.doc("foo")
 
@@ -850,7 +861,7 @@ def test_annotate_fields_negations():
 
     assert data.classes == {
         "Root": schema.Class("Root", properties=[
-            schema.SingleProperty("x", "int", pragmas=["qltest_skip"]),
+            schema.SingleProperty("x", "int"),
             schema.OptionalProperty("y", "Root"),
             schema.SingleProperty("z", "string"),
         ]),

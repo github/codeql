@@ -771,9 +771,9 @@ path_qualifiers(
 );
 
 #keyset[id]
-path_parts(
+path_segments_(
   int id: @path ref,
-  int part: @path_segment ref
+  int segment: @path_segment ref
 );
 
 path_segments(

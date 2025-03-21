@@ -809,12 +809,12 @@ private module Impl {
   }
 
   private Element getImmediateChildOfPath(Path e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nQualifier, int nPart |
+    exists(int b, int bAstNode, int n, int nQualifier, int nSegment |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nQualifier = n + 1 and
-      nPart = nQualifier + 1 and
+      nSegment = nQualifier + 1 and
       (
         none()
         or
@@ -822,7 +822,7 @@ private module Impl {
         or
         index = n and result = e.getQualifier() and partialPredicateCall = "Qualifier()"
         or
-        index = nQualifier and result = e.getPart() and partialPredicateCall = "Part()"
+        index = nQualifier and result = e.getSegment() and partialPredicateCall = "Segment()"
       )
     )
   }

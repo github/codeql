@@ -1008,8 +1008,8 @@
 /test/extractor-tests/generated/Path/PathSegment_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr_getPath.ql linguist-generated
-/test/extractor-tests/generated/Path/Path_getPart.ql linguist-generated
 /test/extractor-tests/generated/Path/Path_getQualifier.ql linguist-generated
+/test/extractor-tests/generated/Path/Path_getSegment.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr_getExpr.ql linguist-generated

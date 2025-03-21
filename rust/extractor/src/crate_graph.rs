@@ -953,7 +953,7 @@ fn make_qualified_path(
             id: trap::TrapId::Star,
             text: Some(name),
         }));
-        let part = Some(trap.emit(generated::PathSegment {
+        let segment = Some(trap.emit(generated::PathSegment {
             id: trap::TrapId::Star,
             generic_arg_list: None,
             name_ref,
@@ -964,7 +964,7 @@ fn make_qualified_path(
         trap.emit(generated::Path {
             id: trap::TrapId::Star,
             qualifier,
-            part,
+            segment,
         })
     }
     path.into_iter()

@@ -36,7 +36,6 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("CallExpr", "expr") => "function",
         ("LetExpr", "expr") => "scrutinee",
         ("MatchExpr", "expr") => "scrutinee",
-        ("Path", "segment") => "part",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
         ("ArrayType", "ty") => "element_type_repr",

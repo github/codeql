@@ -155,7 +155,7 @@ use_repo(csharp_main_extension, "paket.main")
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "codegen_deps",
-    python_version = "3.11",
+    python_version = "3.12",
     requirements_lock = "//misc/codegen:requirements_lock.txt",
 )
 use_repo(pip, "codegen_deps")
