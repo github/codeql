@@ -1,10 +1,11 @@
 /**
  * @name File is not always closed
- * @description Opening a file without ensuring that it is always closed may cause data loss or resource leaks.
+ * @description Opening a file without ensuring that it is always closed may lead to data loss or resource leaks.
  * @kind problem
  * @tags efficiency
  *       correctness
  *       resources
+ *       quality
  *       external/cwe/cwe-772
  * @problem.severity warning
  * @sub-severity high
