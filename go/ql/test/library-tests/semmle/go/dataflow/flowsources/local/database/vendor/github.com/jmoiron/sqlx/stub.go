@@ -10,8 +10,6 @@ package sqlx
 import (
 	context "context"
 	sql "database/sql"
-	driver "database/sql/driver"
-	time "time"
 )
 
 type Conn struct {
