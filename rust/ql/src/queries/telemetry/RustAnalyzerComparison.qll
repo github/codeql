@@ -90,11 +90,11 @@ private module QlPathResolution implements CompareSig<PathResolution> {
   private Path getPath(Resolvable r) {
     result = r.(PathExpr).getPath()
     or
-    result = r.(RecordExpr).getPath()
+    result = r.(StructExpr).getPath()
     or
     result = r.(PathPat).getPath()
     or
-    result = r.(RecordPat).getPath()
+    result = r.(StructPat).getPath()
     or
     result = r.(TupleStructPat).getPath()
   }

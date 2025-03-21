@@ -1,3 +1,17 @@
+## 1.5.1
+
+No user-facing changes.
+
+## 1.5.0
+
+### Major Analysis Improvements
+
+* Improved precision of data flow through arrays, fixing some spurious flows
+  that would sometimes cause the `length` property of an array to be seen as tainted.
+* Improved call resolution logic to better handle calls resolving "downwards", targeting
+  a method declared in a subclass of the enclosing class. Data flow analysis
+  has also improved to avoid spurious flow between unrelated classes in the class hierarchy.
+
 ## 1.4.1
 
 ### Bug Fixes

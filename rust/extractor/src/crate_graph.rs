@@ -88,6 +88,17 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             let file_label = trap.emit_file(root_module_file);
             trap.emit_file_only_location(file_label, root_module);
 
+            let crate_dependencies: Vec<generated::NamedCrate> = krate
+                .dependencies
+                .iter()
+                .flat_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
+                .map(|(name, (module, hash))| generated::NamedCrate {
+                    id: trap::TrapId::Star,
+                    name: name.to_string(),
+                    crate_: trap.label(format!("{}:{hash}", module.display()).into()),
+                })
+                .collect();
+
             let element = generated::Crate {
                 id: trap::TrapId::Key(format!("{}:{hash}", root_module_file.display())),
                 name: krate
@@ -102,11 +113,9 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     .into_iter()
                     .map(|x| format!("{x}"))
                     .collect(),
-                dependencies: krate
-                    .dependencies
-                    .iter()
-                    .flat_map(|x| crate_id_map.get(&x.crate_id))
-                    .map(|(module, hash)| trap.label(format!("{}:{hash}", module.display()).into()))
+                named_dependencies: crate_dependencies
+                    .into_iter()
+                    .map(|dep| trap.emit(dep))
                     .collect(),
             };
             trap.emit(element);
@@ -442,7 +451,7 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let record_field_list =
+            let struct_field_list =
                 emit_variant_data(trap, crate_graph, db, union_id.into()).into();
             let visibility = emit_visibility(crate_graph, db, trap, visibility);
             items.push(
@@ -450,7 +459,7 @@ fn emit_adt(
                     id: trap::TrapId::Star,
                     name,
                     attrs: vec![],
-                    record_field_list,
+                    struct_field_list,
                     generic_param_list: None,
                     visibility,
                     where_clause: None,
@@ -1245,7 +1254,7 @@ fn emit_variant_data(
                             .visibility
                             .resolve(db.upcast(), &variant_id.resolver(db.upcast())),
                     );
-                    trap.emit(generated::RecordField {
+                    trap.emit(generated::StructField {
                         id: trap::TrapId::Star,
                         attrs: vec![],
                         name,
