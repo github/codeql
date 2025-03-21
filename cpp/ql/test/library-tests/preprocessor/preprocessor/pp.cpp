@@ -111,3 +111,8 @@ templateClassContext<int> tcci;
 	defined(BAZ)
 #define CONDITIONAL_MACRO_4 4
 #endif
+
+
+#if defined /* // test */ SIMPLE_COMMENT   //this comment \
+     (defined(SIMPLE_COMMENT)) spans over multiple lines
+#endif
