@@ -39,16 +39,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             Context.TrapWriter.Writer.expr_call(this, target);
         }
 
-        private static bool IsStringType(AnnotatedTypeSymbol? type) =>
-            type.HasValue && type.Value.Symbol?.SpecialType == SpecialType.System_String;
-
         /// <summary>
         /// Creates a new expression, adding a compiler generated `ToString` call if required.
         /// </summary>
-        public static Expression Create(Context cx, ExpressionSyntax node, Expression parent, int child)
+        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child)
         {
             var info = new ExpressionNodeInfo(cx, node, parent, child);
-            return CreateFromNode(info.SetImplicitToString(IsStringType(parent.Type) && !IsStringType(info.Type)));
+            return CreateFromNode(info.SetImplicitToString(!info.Type.IsStringType()));
         }
 
         /// <summary>
