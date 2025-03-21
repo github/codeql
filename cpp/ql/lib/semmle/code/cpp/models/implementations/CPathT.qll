@@ -4,7 +4,7 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 
 /** The `CPathT` class from the Microsoft "Active Template Library". */
 class CPathT extends Class {
-  CPathT() { this.hasGlobalName("CPathT") }
+  CPathT() { this.hasQualifiedName("ATL", "CPathT") }
 }
 
 private class MStrPath extends Field {

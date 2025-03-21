@@ -2528,70 +2528,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasStart() { exists(this.getStart()) }
     }
 
-    final private class ParentRecordExpr extends ParentAstNode, RecordExpr {
-      override predicate relevantChild(AstNode child) { none() }
-    }
-
-    /**
-     * A record expression. For example:
-     * ```rust
-     * let first = Foo { a: 1, b: 2 };
-     * let second = Foo { a: 2, ..first };
-     * Foo { a: 1, b: 2 }[2] = 10;
-     * Foo { .. } = second;
-     * ```
-     */
-    final class RecordExprCfgNode extends CfgNodeFinal, ExprCfgNode {
-      private RecordExpr node;
-
-      RecordExprCfgNode() { node = this.getAstNode() }
-
-      /** Gets the underlying `RecordExpr`. */
-      RecordExpr getRecordExpr() { result = node }
-
-      /**
-       * Gets the record expression field list of this record expression, if it exists.
-       */
-      RecordExprFieldList getRecordExprFieldList() { result = node.getRecordExprFieldList() }
-
-      /**
-       * Holds if `getRecordExprFieldList()` exists.
-       */
-      predicate hasRecordExprFieldList() { exists(this.getRecordExprFieldList()) }
-    }
-
-    final private class ParentRecordPat extends ParentAstNode, RecordPat {
-      override predicate relevantChild(AstNode child) { none() }
-    }
-
-    /**
-     * A record pattern. For example:
-     * ```rust
-     * match x {
-     *     Foo { a: 1, b: 2 } => "ok",
-     *     Foo { .. } => "fail",
-     * }
-     * ```
-     */
-    final class RecordPatCfgNode extends CfgNodeFinal, PatCfgNode {
-      private RecordPat node;
-
-      RecordPatCfgNode() { node = this.getAstNode() }
-
-      /** Gets the underlying `RecordPat`. */
-      RecordPat getRecordPat() { result = node }
-
-      /**
-       * Gets the record pattern field list of this record pattern, if it exists.
-       */
-      RecordPatFieldList getRecordPatFieldList() { result = node.getRecordPatFieldList() }
-
-      /**
-       * Holds if `getRecordPatFieldList()` exists.
-       */
-      predicate hasRecordPatFieldList() { exists(this.getRecordPatFieldList()) }
-    }
-
     final private class ParentRefExpr extends ParentAstNode, RefExpr {
       override predicate relevantChild(AstNode child) {
         none()
@@ -2898,6 +2834,70 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of patterns of this slice pattern.
        */
       int getNumberOfPats() { result = count(int i | exists(this.getPat(i))) }
+    }
+
+    final private class ParentStructExpr extends ParentAstNode, StructExpr {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * A struct expression. For example:
+     * ```rust
+     * let first = Foo { a: 1, b: 2 };
+     * let second = Foo { a: 2, ..first };
+     * Foo { a: 1, b: 2 }[2] = 10;
+     * Foo { .. } = second;
+     * ```
+     */
+    final class StructExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private StructExpr node;
+
+      StructExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `StructExpr`. */
+      StructExpr getStructExpr() { result = node }
+
+      /**
+       * Gets the struct expression field list of this struct expression, if it exists.
+       */
+      StructExprFieldList getStructExprFieldList() { result = node.getStructExprFieldList() }
+
+      /**
+       * Holds if `getStructExprFieldList()` exists.
+       */
+      predicate hasStructExprFieldList() { exists(this.getStructExprFieldList()) }
+    }
+
+    final private class ParentStructPat extends ParentAstNode, StructPat {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * A struct pattern. For example:
+     * ```rust
+     * match x {
+     *     Foo { a: 1, b: 2 } => "ok",
+     *     Foo { .. } => "fail",
+     * }
+     * ```
+     */
+    final class StructPatCfgNode extends CfgNodeFinal, PatCfgNode {
+      private StructPat node;
+
+      StructPatCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `StructPat`. */
+      StructPat getStructPat() { result = node }
+
+      /**
+       * Gets the struct pattern field list of this struct pattern, if it exists.
+       */
+      StructPatFieldList getStructPatFieldList() { result = node.getStructPatFieldList() }
+
+      /**
+       * Holds if `getStructPatFieldList()` exists.
+       */
+      predicate hasStructPatFieldList() { exists(this.getStructPatFieldList()) }
     }
 
     final private class ParentTryExpr extends ParentAstNode, TryExpr {

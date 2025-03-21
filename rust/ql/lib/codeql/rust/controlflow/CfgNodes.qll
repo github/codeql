@@ -230,15 +230,15 @@ final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
  * Foo { .. } = second;
  * ```
  */
-final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
-  private RecordExprChildMapping node;
+final class StructExprCfgNode extends Nodes::StructExprCfgNode {
+  private StructExprChildMapping node;
 
-  RecordExprCfgNode() { node = this.getRecordExpr() }
+  StructExprCfgNode() { node = this.getStructExpr() }
 
   /** Gets the record expression for the field `field`. */
   pragma[nomagic]
   ExprCfgNode getFieldExpr(string field) {
-    exists(RecordExprField ref |
+    exists(StructExprField ref |
       ref = node.getFieldExpr(field) and
       any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result)
     )
@@ -254,16 +254,16 @@ final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
  * }
  * ```
  */
-final class RecordPatCfgNode extends Nodes::RecordPatCfgNode {
-  private RecordPatChildMapping node;
+final class StructPatCfgNode extends Nodes::StructPatCfgNode {
+  private StructPatChildMapping node;
 
-  RecordPatCfgNode() { node = this.getRecordPat() }
+  StructPatCfgNode() { node = this.getStructPat() }
 
   /** Gets the record pattern for the field `field`. */
   pragma[nomagic]
   PatCfgNode getFieldPat(string field) {
-    exists(RecordPatField rpf |
-      rpf = node.getRecordPatFieldList().getAField() and
+    exists(StructPatField rpf |
+      rpf = node.getStructPatFieldList().getAField() and
       any(ChildMapping mapping).hasCfgChild(node, rpf.getPat(), this, result) and
       field = rpf.getFieldName()
     )

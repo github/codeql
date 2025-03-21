@@ -7,6 +7,7 @@ private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.FlowSummary
+private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
@@ -76,9 +77,9 @@ module Input implements InputSig<Location, RustDataFlow> {
           // TODO: calculate in QL
           arg = a.getExtendedCanonicalPath() + "::" + field
         |
-          c.(RecordFieldContent).isStructField(a, field)
+          c.(StructFieldContent).isStructField(a, field)
           or
-          c.(RecordFieldContent).isVariantField(a, field)
+          c.(StructFieldContent).isVariantField(a, field)
         )
         or
         c =

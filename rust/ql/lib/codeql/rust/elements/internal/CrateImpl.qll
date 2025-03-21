@@ -11,8 +11,13 @@ private import codeql.rust.elements.internal.generated.Crate
  * be referenced directly.
  */
 module Impl {
+  private import rust
+  private import codeql.rust.elements.internal.NamedCrate
+
   class Crate extends Generated::Crate {
-    override string toString() { result = strictconcat(int i | | this.toStringPart(i) order by i) }
+    override string toStringImpl() {
+      result = strictconcat(int i | | this.toStringPart(i) order by i)
+    }
 
     private string toStringPart(int i) {
       i = 0 and result = "Crate("
@@ -25,5 +30,34 @@ module Impl {
       or
       i = 4 and result = ")"
     }
+
+    /**
+     * Gets the dependency named `name`, if any.
+     *
+     * `name` may be different from the name of the crate, when the dependency has been
+     * renamed in the `Cargo.toml` file, for example in
+     *
+     * ```yml
+     * [dependencies]
+     * my_serde = {package = "serde", version = "1.0.217"}
+     * ```
+     *
+     * the name of the dependency is `my_serde`, but the name of the crate is `serde`.
+     */
+    pragma[nomagic]
+    Crate getDependency(string name) {
+      exists(NamedCrate c |
+        c = this.getANamedDependency() and
+        result = c.getCrate() and
+        name = c.getName()
+      )
+    }
+
+    /**
+     * Gets any dependency of this crate.
+     */
+    Crate getADependency() { result = this.getDependency(_) }
+
+    override Location getLocation() { result = this.getModule().getLocation() }
   }
 }

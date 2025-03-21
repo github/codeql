@@ -75,19 +75,19 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the record field list of this union, if it exists.
+     * Gets the struct field list of this union, if it exists.
      */
-    RecordFieldList getRecordFieldList() {
+    RecordFieldList getStructFieldList() {
       result =
         Synth::convertRecordFieldListFromRaw(Synth::convertUnionToRaw(this)
               .(Raw::Union)
-              .getRecordFieldList())
+              .getStructFieldList())
     }
 
     /**
-     * Holds if `getRecordFieldList()` exists.
+     * Holds if `getStructFieldList()` exists.
      */
-    final predicate hasRecordFieldList() { exists(this.getRecordFieldList()) }
+    final predicate hasStructFieldList() { exists(this.getStructFieldList()) }
 
     /**
      * Gets the visibility of this union, if it exists.

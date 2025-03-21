@@ -21,8 +21,8 @@ module Impl {
       result.getLabel() = label
     }
 
-    override string toString() {
-      result = "call to " + this.getStaticTarget().toString()
+    override string toStringImpl() {
+      result = "call to " + this.getStaticTarget().toStringImpl()
       or
       not exists(this.getStaticTarget()) and
       result = "call to ..."
@@ -48,7 +48,7 @@ module Impl {
 
     override Expr getQualifier() { result = expr.getQualifier() }
 
-    override string toString() { result = "call to " + expr }
+    override string toStringImpl() { result = "call to " + expr }
   }
 
   private class FullDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {

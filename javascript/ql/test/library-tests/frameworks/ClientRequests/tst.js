@@ -314,3 +314,9 @@ function usePolyfill() {
             return response.text()
         })
 }
+
+function useSuperagent(url){
+    superagent('GET', url);
+    superagent.del(url);
+    superagent.agent().post(url).send(data);
+}

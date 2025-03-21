@@ -27,7 +27,7 @@ import ExprNodes
  * - `VariableNode`, which is used to model flow through global variables.
  * - `PostUpdateNodeImpl`, which is used to model the state of an object after
  *    an update after a number of loads.
- * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA
+ * - `SsaSynthNode`, which represents synthesized nodes as computed by the shared SSA
  *    library.
  * - `RawIndirectOperand`, which represents the value of `operand` after
  *    loading the address a number of times.
@@ -47,8 +47,7 @@ private newtype TIRDataFlowNode =
     or
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
-  TSsaPhiInputNode(Ssa::PhiNode phi, IRBlock input) { phi.hasInputFromBlock(_, _, _, _, input) } or
-  TSsaPhiNode(Ssa::PhiNode phi) or
+  TSsaSynthNode(Ssa::SynthNode n) or
   TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
   TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
     Ssa::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
@@ -184,10 +183,11 @@ class Node extends TIRDataFlowNode {
     or
     this.asOperand().getUse() = block.getInstruction(i)
     or
-    this.(SsaPhiNode).getPhiNode().getBasicBlock() = block and i = -1
-    or
-    this.(SsaPhiInputNode).getBlock() = block and
-    i = block.getInstructionCount()
+    exists(Ssa::SynthNode ssaNode |
+      this.(SsaSynthNode).getSynthNode() = ssaNode and
+      ssaNode.getBasicBlock() = block and
+      ssaNode.getIndex() = i
+    )
     or
     this.(RawIndirectOperand).getOperand().getUse() = block.getInstruction(i)
     or
@@ -364,10 +364,10 @@ class Node extends TIRDataFlowNode {
    * pointed to by `p`.
    */
   Expr asDefinition(boolean uncertain) {
-    exists(StoreInstruction store, Ssa::DefinitionExt def |
+    exists(StoreInstruction store, Ssa::Definition def |
       store = this.asInstruction() and
       result = asDefinitionImpl(store) and
-      Ssa::defToNode(this, def, _, _, _, _) and
+      Ssa::defToNode(this, def, _) and
       if def.isCertain() then uncertain = false else uncertain = true
     )
   }
@@ -686,117 +686,30 @@ class PostFieldUpdateNode extends PostUpdateNodeImpl {
 /**
  * INTERNAL: do not use.
  *
- * A phi node produced by the shared SSA library, viewed as a node in a data flow graph.
+ * A synthesized SSA node produced by the shared SSA library, viewed as a node
+ * in a data flow graph.
  */
-class SsaPhiNode extends Node, TSsaPhiNode {
-  Ssa::PhiNode phi;
+class SsaSynthNode extends Node, TSsaSynthNode {
+  Ssa::SynthNode node;
 
-  SsaPhiNode() { this = TSsaPhiNode(phi) }
+  SsaSynthNode() { this = TSsaSynthNode(node) }
 
-  /** Gets the phi node associated with this node. */
-  Ssa::PhiNode getPhiNode() { result = phi }
+  /** Gets the synthesized SSA node associated with this node. */
+  Ssa::SynthNode getSynthNode() { result = node }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getFunction()
   }
 
-  override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
+  override Declaration getFunction() { result = node.getBasicBlock().getEnclosingFunction() }
 
-  override DataFlowType getType() {
-    exists(Ssa::SourceVariable sv |
-      this.getPhiNode().definesAt(sv, _, _, _) and
-      result = sv.getType()
-    )
-  }
+  override DataFlowType getType() { result = node.getSourceVariable().getType() }
 
-  override predicate isGLValue() { phi.getSourceVariable().isGLValue() }
+  override predicate isGLValue() { node.getSourceVariable().isGLValue() }
 
-  final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
+  final override Location getLocationImpl() { result = node.getLocation() }
 
-  override string toStringImpl() { result = phi.toString() }
-
-  /**
-   * Gets a node that is used as input to this phi node.
-   * `fromBackEdge` is true if data flows along a back-edge,
-   * and `false` otherwise.
-   */
-  cached
-  final Node getAnInput(boolean fromBackEdge) {
-    result.(SsaPhiInputNode).getPhiNode() = phi and
-    exists(IRBlock bPhi, IRBlock bResult |
-      bPhi = phi.getBasicBlock() and bResult = result.getBasicBlock()
-    |
-      if bPhi.dominates(bResult) then fromBackEdge = true else fromBackEdge = false
-    )
-  }
-
-  /** Gets a node that is used as input to this phi node. */
-  final Node getAnInput() { result = this.getAnInput(_) }
-
-  /** Gets the source variable underlying this phi node. */
-  Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
-
-  /**
-   * Holds if this phi node is a phi-read node.
-   *
-   * Phi-read nodes are like normal phi nodes, but they are inserted based
-   * on reads instead of writes.
-   */
-  predicate isPhiRead() { phi.isPhiRead() }
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * A node that is used as an input to a phi node.
- *
- * This class exists to allow more powerful barrier guards. Consider this
- * example:
- *
- * ```cpp
- * int x = source();
- * if(!safe(x)) {
- *   x = clear();
- * }
- * // phi node for x here
- * sink(x);
- * ```
- *
- * At the phi node for `x` it is neither the case that `x` is dominated by
- * `safe(x)`, or is the case that the phi is dominated by a clearing of `x`.
- *
- * By inserting a "phi input" node as the last entry in the basic block that
- * defines the inputs to the phi we can conclude that each of those inputs are
- * safe to pass to `sink`.
- */
-class SsaPhiInputNode extends Node, TSsaPhiInputNode {
-  Ssa::PhiNode phi;
-  IRBlock block;
-
-  SsaPhiInputNode() { this = TSsaPhiInputNode(phi, block) }
-
-  /** Gets the phi node associated with this node. */
-  Ssa::PhiNode getPhiNode() { result = phi }
-
-  /** Gets the basic block in which this input originates. */
-  IRBlock getBlock() { result = block }
-
-  override DataFlowCallable getEnclosingCallable() {
-    result.asSourceCallable() = this.getFunction()
-  }
-
-  override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
-
-  override DataFlowType getType() { result = this.getSourceVariable().getType() }
-
-  override predicate isGLValue() { phi.getSourceVariable().isGLValue() }
-
-  final override Location getLocationImpl() { result = block.getLastInstruction().getLocation() }
-
-  override string toStringImpl() { result = "Phi input" }
-
-  /** Gets the source variable underlying this phi node. */
-  Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
+  override string toStringImpl() { result = node.toString() }
 }
 
 /**
@@ -1371,10 +1284,10 @@ class UninitializedNode extends Node {
   LocalVariable v;
 
   UninitializedNode() {
-    exists(Ssa::DefinitionExt def, Ssa::SourceVariable sv |
+    exists(Ssa::Definition def, Ssa::SourceVariable sv |
       def.getIndirectionIndex() = 0 and
       def.getValue().asInstruction() instanceof UninitializedInstruction and
-      Ssa::defToNode(this, def, sv, _, _, _) and
+      Ssa::defToNode(this, def, sv) and
       v = sv.getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
     )
   }
@@ -1800,6 +1713,21 @@ predicate hasInstructionAndIndex(
 cached
 private module Cached {
   /**
+   * Holds if `n` has a local flow step that goes through a back-edge.
+   */
+  cached
+  predicate flowsToBackEdge(Node n) {
+    exists(Node succ, IRBlock bb1, IRBlock bb2 |
+      Ssa::ssaFlow(n, succ) and
+      bb1 = n.getBasicBlock() and
+      bb2 = succ.getBasicBlock() and
+      bb1 != bb2 and
+      bb2.dominates(bb1) and
+      bb1.getASuccessor+() = bb2
+    )
+  }
+
+  /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step. This relation is only used for local dataflow
    * (for example `DataFlow::localFlow(source, sink)`) so it contains
@@ -1887,14 +1815,8 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     (
-      // Post update node -> Node flow
-      Ssa::postUpdateFlow(nodeFrom, nodeTo)
-      or
       // Def-use/Use-use flow
       Ssa::ssaFlow(nodeFrom, nodeTo)
-      or
-      // Phi input -> Phi
-      nodeFrom.(SsaPhiInputNode).getPhiNode() = nodeTo.(SsaPhiNode).getPhiNode()
       or
       IteratorFlow::localFlowStep(nodeFrom, nodeTo)
       or
@@ -1909,9 +1831,6 @@ private module Cached {
         // Omit when the instruction node also represents the operand.
         not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
       )
-      or
-      // Phi node -> Node flow
-      Ssa::fromPhiNode(nodeFrom, nodeTo)
       or
       // Indirect operand -> (indirect) instruction flow
       indirectionOperandFlow(nodeFrom, nodeTo)
@@ -2356,22 +2275,6 @@ class ContentSet instanceof Content {
   }
 }
 
-pragma[nomagic]
-private predicate guardControlsPhiInput(
-  IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
-) {
-  phi.hasInputFromBlock(def, _, _, _, input) and
-  (
-    g.controls(input, branch)
-    or
-    exists(EdgeKind kind |
-      g.getBlock() = input and
-      kind = getConditionalEdge(branch) and
-      input.getSuccessor(kind) = phi.getBasicBlock()
-    )
-  )
-}
-
 /**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
@@ -2401,6 +2304,10 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       e = value.getAnInstruction().getConvertedResultExpression() and
       n.asConvertedExpr() = e
     )
+  }
+
+  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch) {
+    guardChecks(g, n.asOperand().getDef().getConvertedResultExpression(), branch)
   }
 
   /**
@@ -2443,14 +2350,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       controls(g, result, edge)
     )
     or
-    exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
-    |
-      guardChecks(g, def.getARead().asOperand().getDef().getConvertedResultExpression(), branch) and
-      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
-        pragma[only_bind_into](phi)) and
-      result = TSsaPhiInputNode(phi, input)
-    )
+    result = Ssa::BarrierGuard<guardChecksNode/3>::getABarrierNode()
   }
 
   /**
@@ -2499,6 +2399,13 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
   }
 
+  private predicate guardChecksIndirectNode(
+    IRGuardCondition g, Node n, boolean branch, int indirectionIndex
+  ) {
+    guardChecks(g, n.asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
+      branch)
+  }
+
   /**
    * Gets an indirect expression node with indirection index `indirectionIndex` that is
    * safely guarded by the given guard check.
@@ -2541,16 +2448,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       controls(g, result, edge)
     )
     or
-    exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
-    |
-      guardChecks(g,
-        def.getARead().asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
-        branch) and
-      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
-        pragma[only_bind_into](phi)) and
-      result = TSsaPhiInputNode(phi, input)
-    )
+    result =
+      Ssa::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
   }
 }
 
@@ -2558,14 +2457,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  * Holds if the guard `g` validates the instruction `instr` upon evaluating to `branch`.
  */
 signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction instr, boolean branch);
-
-private EdgeKind getConditionalEdge(boolean branch) {
-  branch = true and
-  result instanceof TrueEdge
-  or
-  branch = false and
-  result instanceof FalseEdge
-}
 
 /**
  * Provides a set of barrier nodes for a guard that validates an instruction.
@@ -2583,6 +2474,10 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
     )
   }
 
+  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch) {
+    instructionGuardChecks(g, n.asOperand().getDef(), branch)
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
@@ -2591,14 +2486,7 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       controls(g, result, edge)
     )
     or
-    exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
-    |
-      instructionGuardChecks(g, def.getARead().asOperand().getDef(), branch) and
-      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
-        pragma[only_bind_into](phi)) and
-      result = TSsaPhiInputNode(phi, input)
-    )
+    result = Ssa::BarrierGuard<guardChecksNode/3>::getABarrierNode()
   }
 
   bindingset[value, n]
@@ -2608,6 +2496,12 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       use = value.getAnInstruction().getAUse() and
       n.asIndirectOperand(indirectionIndex) = use
     )
+  }
+
+  private predicate guardChecksIndirectNode(
+    IRGuardCondition g, Node n, boolean branch, int indirectionIndex
+  ) {
+    instructionGuardChecks(g, n.asIndirectOperand(indirectionIndex).getDef(), branch)
   }
 
   /**
@@ -2621,14 +2515,8 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       controls(g, result, edge)
     )
     or
-    exists(
-      IRGuardCondition g, boolean branch, Ssa::DefinitionExt def, IRBlock input, Ssa::PhiNode phi
-    |
-      instructionGuardChecks(g, def.getARead().asIndirectOperand(indirectionIndex).getDef(), branch) and
-      guardControlsPhiInput(g, branch, def, pragma[only_bind_into](input),
-        pragma[only_bind_into](phi)) and
-      result = TSsaPhiInputNode(phi, input)
-    )
+    result =
+      Ssa::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
   }
 }
 
