@@ -1,6 +1,3 @@
-# go.mongodb.org/mongo-driver v1.3.2
-## explicit
-go.mongodb.org/mongo-driver
 # github.com/couchbase/gocb/v2 v2.2.0
 ## explicit
 github.com/couchbase/gocb/v2
@@ -10,6 +7,10 @@ github.com/google/uuid
 # github.com/opentracing/opentracing-go v1.2.0
 ## explicit
 github.com/opentracing/opentracing-go
+# go.mongodb.org/mongo-driver v1.3.2
+## explicit
+go.mongodb.org/mongo-driver/bson
+go.mongodb.org/mongo-driver/mongo
 # gopkg.in/couchbase/gocb.v1 v1.6.7
 ## explicit
 gopkg.in/couchbase/gocb.v1
