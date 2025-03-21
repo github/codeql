@@ -3,6 +3,6 @@
 github.com/Masterminds/squirrel
 # go.mongodb.org/mongo-driver v1.3.3
 ## explicit
+go.mongodb.org/mongo-driver/bson
 go.mongodb.org/mongo-driver/mongo
 go.mongodb.org/mongo-driver/mongo/options
-go.mongodb.org/mongo-driver/bson
