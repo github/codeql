@@ -547,7 +547,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * Gets the type of the type argument at `path` in `a` that corresponds to
        * the type parameter `tp` in `target`, if any.
        *
-       * Note, that this predicate crucially does not depend on type inference,
+       * Note that this predicate crucially does not depend on type inference,
        * and hence can appear in negated position, e.g., as in
        * `directTypeMatch`.
        */
@@ -615,12 +615,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * class Sub<T4> : Mid<C<T4>> { }
          *
          *     new Sub<int>().ToString();
-         * //  ^^^^^^^^^^^^^^ `apos`
+         * //  ^^^^^^^^^^^^^^ node at `apos`
          * //  ^^^^^^^^^^^^^^^^^^^^^^^^^ `a`
          * ```
          *
-         * where the method call is an access and `new Sub<int>()` is an access
-         * position , which is the receiver of a method call, we have:
+         * where the method call is an access and `new Sub<int>()` is at an
+         * access position, which is the receiver of a method call, we have:
          *
          * `baseMention` | `path`       | `t`
          * ------------- | ------------ | ---
@@ -648,7 +648,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if the type of `a` at `apos` has the base type `base`, and when
-       * viewed as an element of that type has at `path` the type `t`.
+       * viewed as an element of that type has the type `t` at `path`.
        */
       pragma[nomagic]
       private predicate accessBaseType(
