@@ -47,11 +47,18 @@ public class IntegerOperationTest {
 
 ## Implementation Notes
 
-The `@Nested` annotation does not apply to inner static classes, since the meaning of the annotation is to mark a class as "a *non-static* inner class containing `@Test` methods to be picked up by a build system". Therefore, this rule does not aim to target static inner test classes with a `@Nested` annotation, nor does it try to enforce such correct usage of `@Nested`. Therefore, any code that resembles below is not non-compliant to this rule.
+The `@Nested` annotation does not apply to inner static classes, since the meaning of the annotation is to mark a class as "a *non-static* inner class containing `@Test` methods to be picked up by a build system". It also does not apply to inner abstract classes since there is no use case for an `@Nested` annotation on an abstract class. Therefore, this rule does not aim to target static or abstract inner test classes with a `@Nested` annotation, nor does it try to enforce such correct usage of `@Nested`. Therefore, any code that resembles the below is not non-compliant to this rule.
 
 ``` java
 @Nested
-public static class Test6 { // COMPLIANT: Although invalid, this matter is out of the scope
+public static class TestStatic { // COMPLIANT: Although invalid, this matter is out of the scope
+  @Test
+  public void test() {
+  }
+}
+
+@Nested
+public abstract class TestAbstract { // COMPLIANT: Although invalid, this matter is out of the scope
   @Test
   public void test() {
   }
