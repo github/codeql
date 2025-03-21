@@ -829,6 +829,7 @@ public class JSDocParser {
 
     private JSDocTypeExpression parseNameExpression() throws ParseError {
       SourceLocation loc = loc();
+      Object value = this.value; // save the value of the current token
       expect(Token.NAME);
       // Hacky initial implementation with wrong locations
       String[] parts = value.toString().split("\\.");
