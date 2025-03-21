@@ -186,6 +186,7 @@ import codeql.rust.elements.UseBoundGenericArgs
 import codeql.rust.elements.UseTree
 import codeql.rust.elements.UseTreeList
 import codeql.rust.elements.Variant
+import codeql.rust.elements.VariantDef
 import codeql.rust.elements.VariantList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause

@@ -81,7 +81,7 @@ rust_library(
     }),
     version = "1.10.0",
     deps = [
-        "@vendor_ts__either-1.14.0//:either",
+        "@vendor_ts__either-1.15.0//:either",
         "@vendor_ts__rayon-core-1.12.1//:rayon_core",
     ],
 )

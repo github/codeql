@@ -7,9 +7,7 @@ use chalk_ir::Scalar;
 use chalk_ir::UintTy;
 use chalk_ir::{FloatTy, Safety};
 use itertools::Itertools;
-use ra_ap_base_db::CrateGraph;
-use ra_ap_base_db::CrateId;
-use ra_ap_base_db::SourceDatabase;
+use ra_ap_base_db::{Crate, RootQueryDb};
 use ra_ap_cfg::CfgAtom;
 use ra_ap_hir::{DefMap, ModuleDefId, db::HirDatabase};
 use ra_ap_hir::{VariantId, Visibility, db::DefDatabase};
@@ -30,7 +28,7 @@ use std::{hash::Hash, vec};
 use tracing::{debug, error};
 
 pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootDatabase, vfs: &Vfs) {
-    let crate_graph = db.crate_graph();
+    let crate_graph = db.all_crates();
 
     // According to the documentation of `CrateGraph`:
     // Each crate is defined by the `FileId` of its root module, the set of enabled
@@ -39,18 +37,17 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
     // First compute a hash map with for each crate ID, the path to its root module and a hash of all
     // its `cfg` flags and dependencies hashes. Iterate in topological order to ensure hashes of dependencies
     // are present in the map.
-    let mut crate_id_map = HashMap::<CrateId, (PathBuf, u64)>::new();
-    for krate_id in crate_graph.crates_in_topological_order() {
-        let krate = &crate_graph[krate_id];
+    let mut crate_id_map = HashMap::<Crate, (PathBuf, u64)>::new();
+    for krate_id in crate_graph.as_ref().iter() {
+        let krate = krate_id.data(db);
         let root_module_file: &VfsPath = vfs.file_path(krate.root_file_id);
         if let Some(root_module_file) = root_module_file
             .as_path()
             .map(|p| std::fs::canonicalize(p).unwrap_or(p.into()))
         {
             let mut hasher = std::hash::DefaultHasher::new();
-            krate
-                .cfg_options
-                .as_ref()
+            krate_id
+                .cfg_options(db)
                 .into_iter()
                 .sorted_by(cmp_flag)
                 .for_each(|x| format!("{x}").hash(&mut hasher));
@@ -62,12 +59,12 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                 .sorted()
                 .for_each(|x| x.hash(&mut hasher));
             let hash = hasher.finish();
-            crate_id_map.insert(krate_id, (root_module_file, hash));
+            crate_id_map.insert(*krate_id, (root_module_file, hash));
         }
     }
     // Extract each crate
-    for krate_id in crate_graph.iter() {
-        if let Some((root_module_file, hash)) = crate_id_map.get(&krate_id) {
+    for krate_id in crate_graph.as_ref().iter() {
+        if let Some((root_module_file, hash)) = crate_id_map.get(krate_id) {
             let path = root_module_file.join(format!("{hash:0>16x}"));
             let mut trap = trap_provider.create("crates", path.as_path());
             // If the trap file already exists, then skip extraction because we have already extracted
@@ -76,11 +73,10 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             if trap.path.exists() {
                 continue;
             }
-            let krate = &crate_graph[krate_id];
+            let krate = krate_id.data(db);
             let root_module = emit_module(
-                &crate_graph,
                 db,
-                db.crate_def_map(krate_id).as_ref(),
+                db.crate_def_map(*krate_id).as_ref(),
                 "crate",
                 DefMap::ROOT,
                 &mut trap,
@@ -99,17 +95,17 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                 })
                 .collect();
 
+            let krate_extra = krate_id.extra_data(db);
             let element = generated::Crate {
                 id: trap::TrapId::Key(format!("{}:{hash}", root_module_file.display())),
-                name: krate
+                name: krate_extra
                     .display_name
                     .as_ref()
                     .map(|x| x.canonical_name().to_string()),
-                version: krate.version.to_owned(),
+                version: krate_extra.version.to_owned(),
                 module: Some(root_module),
-                cfg_options: krate
-                    .cfg_options
-                    .as_ref()
+                cfg_options: krate_id
+                    .cfg_options(db)
                     .into_iter()
                     .map(|x| format!("{x}"))
                     .collect(),
@@ -131,7 +127,6 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
 }
 
 fn emit_module(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     map: &DefMap,
     name: &str,
@@ -140,9 +135,9 @@ fn emit_module(
 ) -> trap::Label<generated::Module> {
     let module = &map.modules[module];
     let mut items = Vec::new();
-    items.extend(emit_module_children(crate_graph, db, map, module, trap));
-    items.extend(emit_module_items(crate_graph, db, module, trap));
-    items.extend(emit_module_impls(crate_graph, db, module, trap));
+    items.extend(emit_module_children(db, map, module, trap));
+    items.extend(emit_module_items(db, module, trap));
+    items.extend(emit_module_impls(db, module, trap));
 
     let name = trap.emit(generated::Name {
         id: trap::TrapId::Star,
@@ -153,7 +148,7 @@ fn emit_module(
         attrs: vec![],
         items,
     });
-    let visibility = emit_visibility(crate_graph, db, trap, module.visibility);
+    let visibility = emit_visibility(db, trap, module.visibility);
     trap.emit(generated::Module {
         id: trap::TrapId::Star,
         name: Some(name),
@@ -164,7 +159,6 @@ fn emit_module(
 }
 
 fn emit_module_children(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     map: &DefMap,
     module: &ModuleData,
@@ -174,12 +168,11 @@ fn emit_module_children(
         .children
         .iter()
         .sorted_by(|a, b| Ord::cmp(&a.0, &b.0))
-        .map(|(name, child)| emit_module(crate_graph, db, map, name.as_str(), *child, trap).into())
+        .map(|(name, child)| emit_module(db, map, name.as_str(), *child, trap).into())
         .collect()
 }
 
 fn emit_module_items(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     module: &ModuleData,
     trap: &mut TrapFile,
@@ -196,37 +189,16 @@ fn emit_module_items(
         {
             match value {
                 ModuleDefId::FunctionId(function) => {
-                    items.extend(emit_function(
-                        crate_graph,
-                        db,
-                        name.as_str(),
-                        trap,
-                        function,
-                        vis,
-                    ));
+                    items.extend(emit_function(db, name.as_str(), trap, function, vis));
                 }
                 ModuleDefId::ConstId(konst) => {
-                    items.extend(emit_const(crate_graph, db, name.as_str(), trap, konst, vis));
+                    items.extend(emit_const(db, name.as_str(), trap, konst, vis));
                 }
                 ModuleDefId::StaticId(statik) => {
-                    items.extend(emit_static(
-                        crate_graph,
-                        db,
-                        name.as_str(),
-                        trap,
-                        statik,
-                        vis,
-                    ));
+                    items.extend(emit_static(db, name.as_str(), trap, statik, vis));
                 }
                 ModuleDefId::EnumVariantId(variant_id) => {
-                    items.extend(emit_enum_variant(
-                        crate_graph,
-                        db,
-                        name.as_str(),
-                        trap,
-                        variant_id,
-                        vis,
-                    ));
+                    items.extend(emit_enum_variant(db, name.as_str(), trap, variant_id, vis));
                 }
                 _ => (),
             }
@@ -239,17 +211,10 @@ fn emit_module_items(
         {
             match type_id {
                 ModuleDefId::AdtId(adt_id) => {
-                    items.extend(emit_adt(crate_graph, db, name.as_str(), trap, adt_id, vis));
+                    items.extend(emit_adt(db, name.as_str(), trap, adt_id, vis));
                 }
                 ModuleDefId::TraitId(trait_id) => {
-                    items.extend(emit_trait(
-                        crate_graph,
-                        db,
-                        name.as_str(),
-                        trap,
-                        trait_id,
-                        vis,
-                    ));
+                    items.extend(emit_trait(db, name.as_str(), trap, trait_id, vis));
                 }
                 _ => (),
             }
@@ -259,7 +224,6 @@ fn emit_module_items(
 }
 
 fn emit_function(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -268,20 +232,12 @@ fn emit_function(
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
     if let Some(type_) = db.value_ty(function.into()) {
-        items.push(const_or_function(
-            crate_graph,
-            db,
-            name,
-            trap,
-            type_,
-            visibility,
-        ));
+        items.push(const_or_function(db, name, trap, type_, visibility));
     }
     items
 }
 
 fn emit_const(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -290,14 +246,13 @@ fn emit_const(
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
     let type_ = db.value_ty(konst.into());
-    let type_repr =
-        type_.and_then(|type_| emit_hir_ty(trap, crate_graph, db, type_.skip_binders()));
+    let type_repr = type_.and_then(|type_| emit_hir_ty(trap, db, type_.skip_binders()));
     let name = Some(trap.emit(generated::Name {
         id: trap::TrapId::Star,
         text: Some(name.to_owned()),
     }));
     let konst = db.const_data(konst);
-    let visibility = emit_visibility(crate_graph, db, trap, visibility);
+    let visibility = emit_visibility(db, trap, visibility);
     items.push(
         trap.emit(generated::Const {
             id: trap::TrapId::Star,
@@ -315,7 +270,6 @@ fn emit_const(
 }
 
 fn emit_static(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -324,14 +278,13 @@ fn emit_static(
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
     let type_ = db.value_ty(statik.into());
-    let type_repr =
-        type_.and_then(|type_| emit_hir_ty(trap, crate_graph, db, type_.skip_binders()));
+    let type_repr = type_.and_then(|type_| emit_hir_ty(trap, db, type_.skip_binders()));
     let name = Some(trap.emit(generated::Name {
         id: trap::TrapId::Star,
         text: Some(name.to_owned()),
     }));
     let statik = db.static_data(statik);
-    let visibility = emit_visibility(crate_graph, db, trap, visibility);
+    let visibility = emit_visibility(db, trap, visibility);
     items.push(
         trap.emit(generated::Static {
             id: trap::TrapId::Star,
@@ -350,7 +303,6 @@ fn emit_static(
 }
 
 fn emit_enum_variant(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -359,20 +311,12 @@ fn emit_enum_variant(
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
     if let Some(type_) = db.value_ty(variant_id.into()) {
-        items.push(const_or_function(
-            crate_graph,
-            db,
-            name,
-            trap,
-            type_,
-            visibility,
-        ));
+        items.push(const_or_function(db, name, trap, type_, visibility));
     }
     items
 }
 
 fn emit_adt(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -386,8 +330,8 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let field_list = emit_variant_data(trap, crate_graph, db, struct_id.into()).into();
-            let visibility = emit_visibility(crate_graph, db, trap, visibility);
+            let field_list = emit_variant_data(trap, db, struct_id.into()).into();
+            let visibility = emit_visibility(db, trap, visibility);
             items.push(
                 trap.emit(generated::Struct {
                     id: trap::TrapId::Star,
@@ -402,7 +346,7 @@ fn emit_adt(
             );
         }
         ra_ap_hir_def::AdtId::EnumId(enum_id) => {
-            let data = db.enum_data(enum_id);
+            let data = db.enum_variants(enum_id);
             let variants = data
                 .variants
                 .iter()
@@ -411,8 +355,7 @@ fn emit_adt(
                         id: trap::TrapId::Star,
                         text: Some(name.as_str().to_owned()),
                     }));
-                    let field_list =
-                        emit_variant_data(trap, crate_graph, db, (*enum_id).into()).into();
+                    let field_list = emit_variant_data(trap, db, (*enum_id).into()).into();
                     let visibility = None;
                     trap.emit(generated::Variant {
                         id: trap::TrapId::Star,
@@ -432,7 +375,7 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let visibility = emit_visibility(crate_graph, db, trap, visibility);
+            let visibility = emit_visibility(db, trap, visibility);
             items.push(
                 trap.emit(generated::Enum {
                     id: trap::TrapId::Star,
@@ -451,9 +394,8 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let struct_field_list =
-                emit_variant_data(trap, crate_graph, db, union_id.into()).into();
-            let visibility = emit_visibility(crate_graph, db, trap, visibility);
+            let struct_field_list = emit_variant_data(trap, db, union_id.into()).into();
+            let visibility = emit_visibility(db, trap, visibility);
             items.push(
                 trap.emit(generated::Union {
                     id: trap::TrapId::Star,
@@ -472,7 +414,6 @@ fn emit_adt(
 }
 
 fn emit_trait(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -480,7 +421,7 @@ fn emit_trait(
     visibility: Visibility,
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
-    let data = db.trait_data(trait_id);
+    let data = db.trait_items(trait_id);
     let assoc_items: Vec<trap::Label<generated::AssocItem>> = data
         .items
         .iter()
@@ -492,7 +433,7 @@ fn emit_trait(
                     .params()
                     .iter()
                     .map(|p| {
-                        let type_repr = emit_hir_ty(trap, crate_graph, db, p);
+                        let type_repr = emit_hir_ty(trap, db, p);
                         trap.emit(generated::Param {
                             id: trap::TrapId::Star,
                             attrs: vec![],
@@ -502,7 +443,7 @@ fn emit_trait(
                     })
                     .collect();
 
-                let ret_type = emit_hir_ty(trap, crate_graph, db, sig.ret());
+                let ret_type = emit_hir_ty(trap, db, sig.ret());
                 let param_list = trap.emit(generated::ParamList {
                     id: trap::TrapId::Star,
                     params,
@@ -518,7 +459,7 @@ fn emit_trait(
                     id: trap::TrapId::Star,
                     text: Some(name.as_str().to_owned()),
                 }));
-                let visibility = emit_visibility(crate_graph, db, trap, visibility);
+                let visibility = emit_visibility(db, trap, visibility);
                 Some(
                     trap.emit(generated::Function {
                         id: trap::TrapId::Star,
@@ -553,7 +494,7 @@ fn emit_trait(
         id: trap::TrapId::Star,
         text: Some(name.to_owned()),
     }));
-    let visibility = emit_visibility(crate_graph, db, trap, visibility);
+    let visibility = emit_visibility(db, trap, visibility);
     items.push(
         trap.emit(generated::Trait {
             id: trap::TrapId::Star,
@@ -573,7 +514,6 @@ fn emit_trait(
 }
 
 fn emit_module_impls(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     module: &ModuleData,
     trap: &mut TrapFile,
@@ -581,12 +521,12 @@ fn emit_module_impls(
     let mut items = Vec::new();
     module.scope.impls().for_each(|imp| {
         let self_ty = db.impl_self_ty(imp);
-        let self_ty = emit_hir_ty(trap, crate_graph, db, self_ty.skip_binders());
-        let imp = db.impl_data(imp);
-        let trait_ = imp
+        let self_ty = emit_hir_ty(trap, db, self_ty.skip_binders());
+        let imp_data = db.impl_data(imp);
+        let trait_ = imp_data
             .target_trait
             .as_ref()
-            .and_then(|t| make_qualified_path(trap, emit_hir_path(&imp.types_map[t.path])));
+            .and_then(|t| make_qualified_path(trap, emit_hir_path(&imp_data.types_map[t.path])));
         let trait_ = trait_.map(|trait_| {
             trap.emit(generated::PathTypeRepr {
                 id: trap::TrapId::Star,
@@ -594,7 +534,8 @@ fn emit_module_impls(
             })
             .into()
         });
-        let assoc_items = imp
+        let imp_items = db.impl_items(imp);
+        let assoc_items = imp_items
             .items
             .iter()
             .flat_map(|item| {
@@ -605,7 +546,7 @@ fn emit_module_impls(
                         .params()
                         .iter()
                         .map(|p| {
-                            let type_repr = emit_hir_ty(trap, crate_graph, db, p);
+                            let type_repr = emit_hir_ty(trap, db, p);
                             trap.emit(generated::Param {
                                 id: trap::TrapId::Star,
                                 attrs: vec![],
@@ -615,7 +556,7 @@ fn emit_module_impls(
                         })
                         .collect();
 
-                    let ret_type = emit_hir_ty(trap, crate_graph, db, sig.ret());
+                    let ret_type = emit_hir_ty(trap, db, sig.ret());
                     let param_list = trap.emit(generated::ParamList {
                         id: trap::TrapId::Star,
                         params,
@@ -633,7 +574,6 @@ fn emit_module_impls(
                     }));
                     let data = db.function_data(*function);
                     let visibility = emit_visibility(
-                        crate_graph,
                         db,
                         trap,
                         data.visibility
@@ -691,14 +631,13 @@ fn emit_module_impls(
 }
 
 fn emit_visibility(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     trap: &mut TrapFile,
     visibility: Visibility,
 ) -> Option<trap::Label<generated::Visibility>> {
     let path = match visibility {
         Visibility::Module(module_id, VisibilityExplicitness::Explicit) => {
-            Some(make_path_mod(crate_graph, db.upcast(), module_id))
+            Some(make_path_mod(db.upcast(), module_id))
         }
         Visibility::Public => Some(vec![]),
         Visibility::Module(_, VisibilityExplicitness::Implicit) => None,
@@ -712,7 +651,6 @@ fn emit_visibility(
     })
 }
 fn const_or_function(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     name: &str,
     trap: &mut TrapFile,
@@ -729,7 +667,7 @@ fn const_or_function(
                 .params()
                 .iter()
                 .map(|p| {
-                    let type_repr = emit_hir_ty(trap, crate_graph, db, p);
+                    let type_repr = emit_hir_ty(trap, db, p);
                     trap.emit(generated::Param {
                         id: trap::TrapId::Star,
                         attrs: vec![],
@@ -739,7 +677,7 @@ fn const_or_function(
                 })
                 .collect();
 
-            let ret_type = emit_hir_ty(trap, crate_graph, db, sig.ret());
+            let ret_type = emit_hir_ty(trap, db, sig.ret());
             let param_list = trap.emit(generated::ParamList {
                 id: trap::TrapId::Star,
                 params,
@@ -755,7 +693,7 @@ fn const_or_function(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let visibility = emit_visibility(crate_graph, db, trap, visibility);
+            let visibility = emit_visibility(db, trap, visibility);
             trap.emit(generated::Function {
                 id: trap::TrapId::Star,
                 name,
@@ -776,12 +714,12 @@ fn const_or_function(
             .into()
         }
         _ => {
-            let type_repr = emit_hir_ty(trap, crate_graph, db, type_);
+            let type_repr = emit_hir_ty(trap, db, type_);
             let name = Some(trap.emit(generated::Name {
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let visibility = emit_visibility(crate_graph, db, trap, visibility);
+            let visibility = emit_visibility(db, trap, visibility);
             trap.emit(generated::Const {
                 id: trap::TrapId::Star,
                 name,
@@ -797,14 +735,13 @@ fn const_or_function(
     }
 }
 fn emit_hir_type_bound(
-    crate_graph: &CrateGraph,
     db: &dyn HirDatabase,
     trap: &mut TrapFile,
     type_bound: &Binders<chalk_ir::WhereClause<Interner>>,
 ) -> Option<trap::Label<generated::TypeBound>> {
     match type_bound.skip_binders() {
         WhereClause::Implemented(trait_ref) => {
-            let mut path = make_path(crate_graph, db, trait_ref.hir_trait_id());
+            let mut path = make_path(db, trait_ref.hir_trait_id());
             path.push(
                 db.trait_data(trait_ref.hir_trait_id())
                     .name
@@ -841,7 +778,7 @@ fn emit_hir_path(path: &ra_ap_hir_def::path::Path) -> Vec<String> {
 
 fn emit_hir_fn_ptr(
     trap: &mut TrapFile,
-    crate_graph: &CrateGraph,
+
     db: &dyn HirDatabase,
     function: &FnPointer,
 ) -> trap::Label<generated::FnPtrTypeRepr> {
@@ -849,7 +786,7 @@ fn emit_hir_fn_ptr(
 
     let (ret_type, params) = parameters.split_last().unwrap();
 
-    let ret_type = emit_hir_ty(trap, crate_graph, db, ret_type);
+    let ret_type = emit_hir_ty(trap, db, ret_type);
     let ret_type = Some(trap.emit(generated::RetTypeRepr {
         id: trap::TrapId::Star,
         type_repr: ret_type,
@@ -857,7 +794,7 @@ fn emit_hir_fn_ptr(
     let params = params
         .iter()
         .map(|t| {
-            let type_repr = emit_hir_ty(trap, crate_graph, db, t);
+            let type_repr = emit_hir_ty(trap, db, t);
             trap.emit(generated::Param {
                 id: trap::TrapId::Star,
                 attrs: vec![],
@@ -906,13 +843,13 @@ fn scalar_to_str(scalar: &Scalar) -> &'static str {
     }
 }
 
-fn make_path(crate_graph: &CrateGraph, db: &dyn HirDatabase, item: impl HasModule) -> Vec<String> {
+fn make_path(db: &dyn HirDatabase, item: impl HasModule) -> Vec<String> {
     let db = db.upcast();
     let module = item.module(db);
-    make_path_mod(crate_graph, db, module)
+    make_path_mod(db, module)
 }
 
-fn make_path_mod(crate_graph: &CrateGraph, db: &dyn DefDatabase, module: ModuleId) -> Vec<String> {
+fn make_path_mod(db: &dyn DefDatabase, module: ModuleId) -> Vec<String> {
     let mut path = Vec::new();
     let mut module = module;
     loop {
@@ -920,7 +857,7 @@ fn make_path_mod(crate_graph: &CrateGraph, db: &dyn DefDatabase, module: ModuleI
             path.push("<block>".to_owned());
         } else if let Some(name) = module.name(db).map(|x| x.as_str().to_owned()).or_else(|| {
             module.as_crate_root().and_then(|k| {
-                let krate = &crate_graph[k.krate()];
+                let krate = k.krate().extra_data(db);
                 krate
                     .display_name
                     .as_ref()
@@ -972,7 +909,7 @@ fn make_qualified_path(
 }
 fn emit_hir_ty(
     trap: &mut TrapFile,
-    crate_graph: &CrateGraph,
+
     db: &dyn HirDatabase,
     ty: &Ty,
 ) -> Option<trap::Label<generated::TypeRepr>> {
@@ -994,7 +931,7 @@ fn emit_hir_ty(
         chalk_ir::TyKind::Tuple(_size, substitution) => {
             let fields = substitution.type_parameters(ra_ap_hir_ty::Interner);
             let fields = fields
-                .flat_map(|field| emit_hir_ty(trap, crate_graph, db, &field))
+                .flat_map(|field| emit_hir_ty(trap, db, &field))
                 .collect();
 
             Some(
@@ -1006,7 +943,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Raw(mutability, ty) => {
-            let type_repr = emit_hir_ty(trap, crate_graph, db, ty);
+            let type_repr = emit_hir_ty(trap, db, ty);
 
             Some(
                 trap.emit(generated::PtrTypeRepr {
@@ -1019,7 +956,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Ref(mutability, _lifetime, ty) => {
-            let type_repr = emit_hir_ty(trap, crate_graph, db, ty);
+            let type_repr = emit_hir_ty(trap, db, ty);
             let lifetime = None; //TODO: ?
             Some(
                 trap.emit(generated::RefTypeRepr {
@@ -1032,7 +969,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Array(ty, _konst) => {
-            let element_type_repr = emit_hir_ty(trap, crate_graph, db, ty);
+            let element_type_repr = emit_hir_ty(trap, db, ty);
             // TODO: handle array size constant
             Some(
                 trap.emit(generated::ArrayTypeRepr {
@@ -1044,7 +981,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Slice(ty) => {
-            let type_repr = emit_hir_ty(trap, crate_graph, db, ty);
+            let type_repr = emit_hir_ty(trap, db, ty);
             Some(
                 trap.emit(generated::SliceTypeRepr {
                     id: trap::TrapId::Star,
@@ -1055,7 +992,7 @@ fn emit_hir_ty(
         }
 
         chalk_ir::TyKind::Adt(adt_id, _substitution) => {
-            let mut path = make_path(crate_graph, db, adt_id.0);
+            let mut path = make_path(db, adt_id.0);
             let name = match adt_id.0 {
                 ra_ap_hir_def::AdtId::StructId(struct_id) => {
                     db.struct_data(struct_id).name.as_str().to_owned()
@@ -1098,7 +1035,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Function(fn_pointer) => {
-            Some(emit_hir_fn_ptr(trap, crate_graph, db, fn_pointer).into())
+            Some(emit_hir_fn_ptr(trap, db, fn_pointer).into())
         }
         chalk_ir::TyKind::OpaqueType(_, _)
         | chalk_ir::TyKind::Alias(chalk_ir::AliasTy::Opaque(_)) => {
@@ -1106,7 +1043,7 @@ fn emit_hir_ty(
                 .impl_trait_bounds(db)
                 .iter()
                 .flatten()
-                .flat_map(|t| emit_hir_type_bound(crate_graph, db, trap, t))
+                .flat_map(|t| emit_hir_type_bound(db, trap, t))
                 .collect();
             let type_bound_list = Some(trap.emit(generated::TypeBoundList {
                 id: trap::TrapId::Star,
@@ -1125,7 +1062,7 @@ fn emit_hir_ty(
                 .bounds
                 .skip_binders()
                 .iter(ra_ap_hir_ty::Interner)
-                .flat_map(|t| emit_hir_type_bound(crate_graph, db, trap, t))
+                .flat_map(|t| emit_hir_type_bound(db, trap, t))
                 .collect();
             let type_bound_list = Some(trap.emit(generated::TypeBoundList {
                 id: trap::TrapId::Star,
@@ -1141,7 +1078,7 @@ fn emit_hir_ty(
         }
         chalk_ir::TyKind::FnDef(fn_def_id, parameters) => {
             let sig = ra_ap_hir_ty::CallableSig::from_def(db, *fn_def_id, parameters);
-            Some(emit_hir_fn_ptr(trap, crate_graph, db, &sig.to_fn_ptr()).into())
+            Some(emit_hir_fn_ptr(trap, db, &sig.to_fn_ptr()).into())
         }
 
         chalk_ir::TyKind::Alias(chalk_ir::AliasTy::Projection(ProjectionTy {
@@ -1161,7 +1098,7 @@ fn emit_hir_ty(
                 trait_id: assoc_ty_data.trait_id,
                 substitution: assoc_ty_data.binders.identity_substitution(Interner),
             };
-            let mut trait_path = make_path(crate_graph, db, trait_ref.hir_trait_id());
+            let mut trait_path = make_path(db, trait_ref.hir_trait_id());
             trait_path.push(
                 db.trait_data(trait_ref.hir_trait_id())
                     .name
@@ -1225,12 +1162,7 @@ impl From<Variant> for Option<trap::Label<generated::FieldList>> {
     }
 }
 
-fn emit_variant_data(
-    trap: &mut TrapFile,
-    crate_graph: &CrateGraph,
-    db: &dyn HirDatabase,
-    variant_id: VariantId,
-) -> Variant {
+fn emit_variant_data(trap: &mut TrapFile, db: &dyn HirDatabase, variant_id: VariantId) -> Variant {
     let variant = variant_id.variant_data(db.upcast());
     match variant.as_ref() {
         VariantData::Record {
@@ -1245,9 +1177,8 @@ fn emit_variant_data(
                         id: trap::TrapId::Star,
                         text: Some(field_data[field_id].name.as_str().to_owned()),
                     }));
-                    let type_repr = emit_hir_ty(trap, crate_graph, db, ty.skip_binders());
+                    let type_repr = emit_hir_ty(trap, db, ty.skip_binders());
                     let visibility = emit_visibility(
-                        crate_graph,
                         db,
                         trap,
                         field_data[field_id]
@@ -1276,9 +1207,8 @@ fn emit_variant_data(
             let fields = field_types
                 .iter()
                 .map(|(field_id, ty)| {
-                    let type_repr = emit_hir_ty(trap, crate_graph, db, ty.skip_binders());
+                    let type_repr = emit_hir_ty(trap, db, ty.skip_binders());
                     let visibility = emit_visibility(
-                        crate_graph,
                         db,
                         trap,
                         field_data[field_id]

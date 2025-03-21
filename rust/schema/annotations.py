@@ -1795,7 +1795,7 @@ class _:
     """
 
 
-@annotate(Variant, replace_bases={AstNode: Addressable})
+@annotate(Variant, add_bases=(Addressable,))
 class _:
     """
     A Variant. For example:
