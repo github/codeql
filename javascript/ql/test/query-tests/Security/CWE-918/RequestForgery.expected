@@ -1,4 +1,5 @@
 #select
+| apollo.serverSide.ts:8:39:8:64 | get(fil ...  => {}) | apollo.serverSide.ts:7:36:7:44 | { files } | apollo.serverSide.ts:8:43:8:50 | file.url | The $@ of this request depends on a $@. | apollo.serverSide.ts:8:43:8:50 | file.url | URL | apollo.serverSide.ts:7:36:7:44 | { files } | user-provided value |
 | serverSide.js:18:5:18:20 | request(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:18:13:18:19 | tainted | The $@ of this request depends on a $@. | serverSide.js:18:13:18:19 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:20:5:20:24 | request.get(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:20:17:20:23 | tainted | The $@ of this request depends on a $@. | serverSide.js:20:17:20:23 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:24:5:24:20 | request(options) | serverSide.js:14:29:14:35 | req.url | serverSide.js:23:19:23:25 | tainted | The $@ of this request depends on a $@. | serverSide.js:23:19:23:25 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
@@ -24,6 +25,11 @@
 | serverSide.js:125:5:128:6 | axios({ ... \\n    }) | serverSide.js:123:29:123:35 | req.url | serverSide.js:127:14:127:20 | tainted | The $@ of this request depends on a $@. | serverSide.js:127:14:127:20 | tainted | URL | serverSide.js:123:29:123:35 | req.url | user-provided value |
 | serverSide.js:131:5:131:20 | axios.get(myUrl) | serverSide.js:123:29:123:35 | req.url | serverSide.js:131:15:131:19 | myUrl | The $@ of this request depends on a $@. | serverSide.js:131:15:131:19 | myUrl | URL | serverSide.js:123:29:123:35 | req.url | user-provided value |
 edges
+| apollo.serverSide.ts:7:36:7:44 | files | apollo.serverSide.ts:8:13:8:17 | files | provenance |  |
+| apollo.serverSide.ts:7:36:7:44 | { files } | apollo.serverSide.ts:7:36:7:44 | files | provenance |  |
+| apollo.serverSide.ts:8:13:8:17 | files | apollo.serverSide.ts:8:28:8:31 | file | provenance |  |
+| apollo.serverSide.ts:8:28:8:31 | file | apollo.serverSide.ts:8:43:8:46 | file | provenance |  |
+| apollo.serverSide.ts:8:43:8:46 | file | apollo.serverSide.ts:8:43:8:50 | file.url | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:20:17:20:23 | tainted | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:23:19:23:25 | tainted | provenance |  |
@@ -73,6 +79,12 @@ edges
 | serverSide.js:130:9:130:45 | myUrl | serverSide.js:131:15:131:19 | myUrl | provenance |  |
 | serverSide.js:130:37:130:43 | tainted | serverSide.js:130:9:130:45 | myUrl | provenance |  |
 nodes
+| apollo.serverSide.ts:7:36:7:44 | files | semmle.label | files |
+| apollo.serverSide.ts:7:36:7:44 | { files } | semmle.label | { files } |
+| apollo.serverSide.ts:8:13:8:17 | files | semmle.label | files |
+| apollo.serverSide.ts:8:28:8:31 | file | semmle.label | file |
+| apollo.serverSide.ts:8:43:8:46 | file | semmle.label | file |
+| apollo.serverSide.ts:8:43:8:50 | file.url | semmle.label | file.url |
 | serverSide.js:14:9:14:52 | tainted | semmle.label | tainted |
 | serverSide.js:14:19:14:42 | url.par ... , true) | semmle.label | url.par ... , true) |
 | serverSide.js:14:29:14:35 | req.url | semmle.label | req.url |
