@@ -44,4 +44,19 @@ public class AnnotationTest {
     public void test() {
     }
   }
+
+  public abstract class Test7 { // COMPLIANT: Abstract inner test classes don't need `@Nested`
+    @Test
+    public void test() {
+    }
+  }
+
+  // COMPLIANT: Invalid to use `@Nested` on an abstract class, but
+  // this matter is out of scope (see QHelp Implementation Notes)
+  @Nested
+  public abstract class Test8 {
+    @Test
+    public void test() {
+    }
+  }
 }
