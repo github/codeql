@@ -1,1 +1,2 @@
-Likely Bugs/Frameworks/JUnit/JUnit5NonStaticInnerClassMissingNestedAnnotation.ql
+query: Likely Bugs/Frameworks/JUnit/JUnit5NonStaticInnerClassMissingNestedAnnotation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

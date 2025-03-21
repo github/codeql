@@ -9,7 +9,8 @@ public class AnnotationTest {
     }
   }
 
-  public class Test2 { // NON_COMPLIANT: Inner test class is missing a `@Nested`
+  // NON_COMPLIANT: Inner test class is missing `@Nested`
+  public class Test2 {  // $ Alert
     @Test
     public void test() {
     }
@@ -35,8 +36,10 @@ public class AnnotationTest {
     }
   }
 
+  // COMPLIANT: Invalid to use `@Nested` on a static class, but
+  // this matter is out of scope (see QHelp Implementation Notes)
   @Nested
-  public static class Test6 { // COMPLIANT: Although invalid, this matter is out of the scope (see Implementation Details)
+  public static class Test6 {
     @Test
     public void test() {
     }

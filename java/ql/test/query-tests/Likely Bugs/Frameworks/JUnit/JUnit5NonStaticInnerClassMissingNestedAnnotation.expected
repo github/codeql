@@ -1,1 +1,1 @@
-| AnnotationTest.java:12:16:12:20 | Test2 | This JUnit5 inner test class lacks a @Nested annotation. |
+| AnnotationTest.java:13:16:13:20 | Test2 | This JUnit5 inner test class lacks a '@Nested' annotation. |
