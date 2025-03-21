@@ -1,0 +1,1 @@
+| Test.java:4:14:4:36 | replaceAll(...) | Call to 'replaceAll' uses an argument comprised of plain string characters only. |
