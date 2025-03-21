@@ -73,7 +73,10 @@ impl<'a> RustAnalyzer<'a> {
                 if let Some(file_id) = path_to_file_id(path, vfs) {
                     if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id))
                     {
-                        let file_id = EditionedFileId::new(semantics.db, SpanEditionedFileId::current_edition(file_id));
+                        let file_id = EditionedFileId::new(
+                            semantics.db,
+                            SpanEditionedFileId::current_edition(file_id),
+                        );
                         let source_file = semantics.parse(file_id);
                         let errors = semantics
                             .db

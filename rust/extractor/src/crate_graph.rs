@@ -64,7 +64,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
     }
     // Extract each crate
     for krate_id in crate_graph.as_ref().iter() {
-        if let Some((root_module_file, hash)) = crate_id_map.get(&krate_id) {
+        if let Some((root_module_file, hash)) = crate_id_map.get(krate_id) {
             let path = root_module_file.join(format!("{hash:0>16x}"));
             let mut trap = trap_provider.create("crates", path.as_path());
             // If the trap file already exists, then skip extraction because we have already extracted
@@ -427,7 +427,7 @@ fn emit_trait(
         .iter()
         .flat_map(|(name, item)| {
             if let AssocItemId::FunctionId(function) = item {
-                let sig = db.callable_item_signature(function.clone().into());
+                let sig = db.callable_item_signature((*function).into());
                 let sig = sig.skip_binders();
                 let params = sig
                     .params()
@@ -540,7 +540,7 @@ fn emit_module_impls(
             .iter()
             .flat_map(|item| {
                 if let (name, AssocItemId::FunctionId(function)) = item {
-                    let sig = db.callable_item_signature(function.clone().into());
+                    let sig = db.callable_item_signature((*function).into());
                     let sig = sig.skip_binders();
                     let params = sig
                         .params()
@@ -572,7 +572,7 @@ fn emit_module_impls(
                         id: trap::TrapId::Star,
                         text: Some(name.as_str().to_owned()),
                     }));
-                    let data = db.function_data(function.clone());
+                    let data = db.function_data(*function);
                     let visibility = emit_visibility(
                         db,
                         trap,

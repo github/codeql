@@ -532,7 +532,11 @@ fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
 
 fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
     let extractor_info = ExtractorInfo {
-        enums: grammar.enums.iter().filter_map(enum_to_extractor_info).collect(),
+        enums: grammar
+            .enums
+            .iter()
+            .filter_map(enum_to_extractor_info)
+            .collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
     let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;
