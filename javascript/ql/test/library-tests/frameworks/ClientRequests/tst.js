@@ -329,7 +329,7 @@ function gotTests(url){
     got(undefined, undefined, Options({url})); // undefined is flagged, but should be url from options
 
     const options2 = new Options({url});
-    got.extend(options2).extend(options).get(); // not flagged
+    got.extend(options2).extend(options).get(); // call flagged not the actual url flow
 
     got.paginate(url, {}); // not flagged 
 
@@ -337,5 +337,5 @@ function gotTests(url){
     jsonClient.get(); // call flagged not the actual url flow
 
     const jsonClient2 = got.extend({url: url}).extend({url: url});
-    jsonClient2.get(); // not flagged
+    jsonClient2.get(); // call flagged not the actual url flow
 }

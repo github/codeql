@@ -415,12 +415,20 @@ module ClientRequest {
   }
 
   /**
+   * Gets a reference to an instance of the `got` library, including instances
+   * created through chained `extend` calls.
+   */
+  private API::Node getAGotInstance() {
+    result = [API::moduleImport("got"), getAGotInstance().getMember("extend").getReturn()]
+  }
+
+  /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {
     GotUrlRequest() {
       exists(API::Node callee, API::Node got | this = callee.getACall() |
-        got = [API::moduleImport("got"), API::moduleImport("got").getMember("extend").getReturn()] and
+        got = getAGotInstance() and
         callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
       )
     }
