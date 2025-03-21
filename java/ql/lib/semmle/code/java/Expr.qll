@@ -180,7 +180,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the string value of this expression, where possible.
    */
-  pragma[nomagic]
+  cached
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
@@ -205,7 +205,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the boolean value of this expression, where possible.
    */
-  pragma[nomagic]
+  cached
   boolean getBooleanValue() {
     // Literal value.
     result = this.(BooleanLiteral).getBooleanValue()

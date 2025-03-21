@@ -5,6 +5,19 @@
 import java
 import Dominance
 
+cached
+private module BasicBlockStage {
+  cached
+  predicate ref() { any() }
+
+  cached
+  predicate backref() {
+    (exists(any(BasicBlock bb).getABBSuccessor()) implies any()) and
+    (exists(any(BasicBlock bb).getNode(_)) implies any()) and
+    (exists(any(BasicBlock bb).length()) implies any())
+  }
+}
+
 /**
  * A control-flow node that represents the start of a basic block.
  *
@@ -12,8 +25,11 @@ import Dominance
  * often be treated as a unit in analyses.
  */
 class BasicBlock extends ControlFlowNode {
+  cached
   BasicBlock() {
-    not exists(this.getAPredecessor()) and exists(this.getASuccessor())
+    BasicBlockStage::ref() and
+    not exists(this.getAPredecessor()) and
+    exists(this.getASuccessor())
     or
     strictcount(this.getAPredecessor()) > 1
     or
@@ -24,7 +40,10 @@ class BasicBlock extends ControlFlowNode {
 
   /** Gets an immediate successor of this basic block. */
   cached
-  BasicBlock getABBSuccessor() { result = this.getLastNode().getASuccessor() }
+  BasicBlock getABBSuccessor() {
+    BasicBlockStage::ref() and
+    result = this.getLastNode().getASuccessor()
+  }
 
   /** Gets an immediate predecessor of this basic block. */
   BasicBlock getABBPredecessor() { result.getABBSuccessor() = this }
@@ -35,7 +54,9 @@ class BasicBlock extends ControlFlowNode {
   /** Gets the control-flow node at a specific (zero-indexed) position in this basic block. */
   cached
   ControlFlowNode getNode(int pos) {
-    result = this and pos = 0
+    BasicBlockStage::ref() and
+    result = this and
+    pos = 0
     or
     exists(ControlFlowNode mid, int mid_pos | pos = mid_pos + 1 |
       this.getNode(mid_pos) = mid and
@@ -52,7 +73,10 @@ class BasicBlock extends ControlFlowNode {
 
   /** Gets the number of control-flow nodes contained in this basic block. */
   cached
-  int length() { result = strictcount(this.getANode()) }
+  int length() {
+    BasicBlockStage::ref() and
+    result = strictcount(this.getANode())
+  }
 
   /** Holds if this basic block strictly dominates `node`. */
   predicate bbStrictlyDominates(BasicBlock node) { bbStrictlyDominates(this, node) }
