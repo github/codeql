@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Alloc
+      - ["repo:https://github.com/rust-lang/libc:libc", "::free", "Argument[0]", "pointer-invalidate", "manual"]
