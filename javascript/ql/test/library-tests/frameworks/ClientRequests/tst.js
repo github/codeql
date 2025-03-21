@@ -339,3 +339,12 @@ function gotTests(url){
     const jsonClient2 = got.extend({url: url}).extend({url: url});
     jsonClient2.get();
 }
+
+function moreAxiosTests(url, data, config){
+    axios.postForm(url, data, config); // not flagged
+    axios.putForm(url, data); // not flagged
+    axios.putForm(url, data, config); // not flagged
+    axios.patchForm(url, data); // not flagged
+    axios.patchForm(url, data, config); // not flagged
+    axios.getUri({ url: url }); // not flagged
+}
