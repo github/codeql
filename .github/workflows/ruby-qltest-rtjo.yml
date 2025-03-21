@@ -1,0 +1,40 @@
+name: "Ruby: Run RTJO Language Tests"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: ruby
+
+permissions:
+  contents: read
+
+jobs:
+  qltest-rtjo:
+    if: "github.repository_owner == 'github' && github.event.label.name == 'Run: RTJO Language Tests'"
+    runs-on: ubuntu-latest-xl
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/fetch-codeql
+      - uses: ./ruby/actions/create-extractor-pack
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: ruby-qltest
+      - name: Run QL tests
+        run: |
+          codeql test run --dynamic-join-order-mode=all --threads=0 --ram 50000 --search-path "${{ github.workspace }}" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
