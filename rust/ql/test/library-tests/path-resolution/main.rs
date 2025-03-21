@@ -495,4 +495,7 @@ fn main() {
     m15::f(); // $ item=I75
     m16::f(); // $ item=I83
     m17::f(); // $ item=I99
+    nested6::f(); // $ item=I116
+    nested8::f(); // $ item=I119
+    my3::f(); // $ item=I200
 }
