@@ -1,8 +1,8 @@
 /**
- * @id java/junit5-non-static-inner-class-missing-nested-annotation
- * @name Non-static inner class defined in a JUnit 5 test is missing a `@Nested` annotation
- * @description A non-static inner class defined in a JUnit 5 test missing a `@Nested` annotation
- *              will be excluded from execution and it may indicate a misunderstanding from the
+ * @id java/junit5-missing-nested-annotation
+ * @name Missing `@Nested` annotation on JUnit 5 inner test class
+ * @description A JUnit 5 inner test class that is missing a `@Nested` annotation will be
+ *              excluded from execution and it may indicate a misunderstanding from the
  *              programmer.
  * @kind problem
  * @precision very-high
@@ -10,6 +10,7 @@
  * @tags quality
  *       maintainability
  *       correctness
+ *       previous-id:java/junit5-non-static-inner-class-missing-nested-annotation
  */
 
 import java
@@ -21,4 +22,4 @@ where
   not testClass.hasAnnotation("org.junit.jupiter.api", "Nested") and
   // An abstract class should not have a `@Nested` annotation
   not testClass.isAbstract()
-select testClass, "This JUnit5 inner test class lacks a '@Nested' annotation."
+select testClass, "This JUnit 5 inner test class lacks a '@Nested' annotation."

@@ -30,7 +30,7 @@ public class AnnotationTest {
     }
   }
 
-  public static class Test5 { // COMPLIANT: Static inner test classes don't need `@Nested`
+  public static class Test5 { // COMPLIANT: Static nested test classes don't need `@Nested`
     @Test
     public void test() {
     }
@@ -45,7 +45,7 @@ public class AnnotationTest {
     }
   }
 
-  public abstract class Test7 { // COMPLIANT: Abstract inner test classes don't need `@Nested`
+  public abstract class Test7 { // COMPLIANT: Abstract nested test classes don't need `@Nested`
     @Test
     public void test() {
     }
