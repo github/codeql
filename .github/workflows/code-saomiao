@@ -1,0 +1,35 @@
+name: OWASP ZAP Security Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Java (ZAP requires Java)
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      # Step 3: Download and run OWASP ZAP
+      - name: Run OWASP ZAP baseline scan
+        uses: zaproxy/action-baseline@v0.6.0
+        with:
+          target: 'https://www.kobelcogps.com'  # Replace with your target URL
+          rules: ''      # Optional: Custom scan rulesrules/scan-rules.tsv
+          format: 'markdown'                 # Report format (markdown, json, etc.)
+          output-file: 'www-kobelcogps-com.md'       # Output file name
+          fail-action: true                  # Fail the job if vulnerabilities are found
