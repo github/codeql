@@ -1104,6 +1104,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TDecryptionMode() or
     TWrapMode() or
     TUnwrapMode() or
+    TSignatureMode() or
     TUnknownCipherOperationMode()
 
   abstract class CipherOperationSubtype extends TCipherOperationSubtype {
@@ -1124,6 +1125,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   class UnwrapSubtype extends CipherOperationSubtype, TUnwrapMode {
     override string toString() { result = "Unwrap" }
+  }
+
+  class SignatureSubtype extends CipherOperationSubtype, TSignatureMode {
+    override string toString() { result = "Sign" }
   }
 
   class UnknownCipherOperationSubtype extends CipherOperationSubtype, TUnknownCipherOperationMode {
