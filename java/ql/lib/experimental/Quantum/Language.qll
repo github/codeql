@@ -26,6 +26,10 @@ module CryptoInput implements InputSig<Language::Location> {
 
   class UnknownLocation = UnknownDefaultLocation;
 
+  string locationToFileBaseNameAndLineNumberString(Location location) {
+    result = location.getFile().getBaseName() + ":" + location.getStartLine()
+  }
+
   LocatableElement dfn_to_element(DataFlow::Node node) {
     result = node.asExpr() or
     result = node.asParameter()
@@ -49,6 +53,20 @@ module Crypto = CryptographyBase<Language::Location, CryptoInput>;
 final class DefaultFlowSource = SourceNode;
 
 final class DefaultRemoteFlowSource = RemoteFlowSource;
+
+class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedParameterSource {
+  GenericUnreferencedParameterSource() {
+    exists(Parameter p | this = p and not exists(p.getAnArgument()))
+  }
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override DataFlow::Node getOutputNode() { result.asParameter() = this }
+
+  override string getAdditionalDescription() { result = this.toString() }
+}
 
 class GenericLocalDataSource extends Crypto::GenericLocalDataSource {
   GenericLocalDataSource() {
@@ -76,20 +94,16 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-/*
- * class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
- *  ConstantDataSource() { not this instanceof Crypto::KnownElement }
- *
- *  override DataFlow::Node getOutputNode() { result.asExpr() = this }
- *
- *  override predicate flowsTo(Crypto::FlowAwareElement other) {
- *    // TODO: separate config to avoid blowing up data-flow analysis
- *    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
- *  }
- *
- *  override string getAdditionalDescription() { result = this.toString() }
- * }
- */
+class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    // TODO: separate config to avoid blowing up data-flow analysis
+    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override string getAdditionalDescription() { result = this.toString() }
+}
 
 /**
  * Random number generation, where each instance is modelled as the expression
@@ -97,10 +111,6 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
  */
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
-
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
 }
 
 class SecureRandomnessInstance extends RandomnessInstance {
@@ -116,17 +126,6 @@ class InsecureRandomnessInstance extends RandomnessInstance {
 }
 
 /**
- * Output artifact flow logic
- */
-abstract class DigestArtifactInstance extends Crypto::DigestArtifactInstance {
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
-
-  override predicate isConsumerArtifact() { none() }
-}
-
-/**
  * Artifact output to node input configuration
  */
 abstract class AdditionalFlowInputStep extends DataFlow::Node {
@@ -136,14 +135,6 @@ abstract class AdditionalFlowInputStep extends DataFlow::Node {
 }
 
 module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
-
-abstract class CipherOutputArtifact extends Crypto::CipherOutputArtifactInstance {
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
-
-  override predicate isConsumerArtifact() { none() }
-}
 
 /**
  * Generic data source to node input configuration
@@ -167,6 +158,12 @@ module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.(AdditionalFlowInputStep).getOutput() = node2
+    or
+    exists(MethodCall m |
+      m.getMethod().hasQualifiedName("java.lang", "String", "getBytes") and
+      node1.asExpr() = m.getQualifier() and
+      node2.asExpr() = m
+    )
   }
 }
 

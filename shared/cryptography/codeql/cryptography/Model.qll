@@ -21,6 +21,8 @@ signature module InputSig<LocationSig Location> {
 
   class UnknownLocation instanceof Location;
 
+  string locationToFileBaseNameAndLineNumberString(Location location);
+
   LocatableElement dfn_to_element(DataFlowNode node);
 
   predicate artifactOutputFlowsToGenericInput(
@@ -70,7 +72,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // CodeQL's DGML output does not include a location
       key = "Location" and
-      value = "demo" // node.getLocation().toString()
+      value = Input::locationToFileBaseNameAndLineNumberString(node.getLocation()) // node.getLocation().toString()
       or
       // Known unknown edges should be reported as properties rather than edges
       node = node.getChild(key) and
@@ -146,13 +148,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element that represents a _known_ cryptographic algorithm.
    */
-  abstract class AlgorithmInstance extends KnownElement {
-    /**
-     * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
-     * This name is not parsed or formatted.
-     */
-    abstract string getRawAlgorithmName();
-  }
+  abstract class AlgorithmInstance extends KnownElement { }
 
   /**
    * An element that represents an _unknown_ data-source with a non-statically determinable value.
@@ -171,6 +167,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class GenericExternalCallSource extends GenericDataSourceInstance {
     final override string getInternalType() { result = "ExternalCall" } // TODO: call target name or toString of source?
+  }
+
+  abstract class GenericUnreferencedParameterSource extends GenericDataSourceInstance {
+    final override string getInternalType() { result = "Parameter" } // TODO: toString of source?
   }
 
   abstract class GenericRemoteDataSource extends GenericDataSourceInstance {
@@ -300,6 +300,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override DataFlowNode getInputNode() { result = inputNode }
   }
 
+  final private class MACInputArtifactConsumer extends ArtifactConsumerAndInstance {
+    DataFlowNode inputNode;
+
+    MACInputArtifactConsumer() {
+      exists(MACOperationInstance op | inputNode = op.getMessageConsumer()) and
+      this = Input::dfn_to_element(inputNode)
+    }
+
+    final override DataFlowNode getInputNode() { result = inputNode }
+  }
+
   // Output artifacts are determined solely by the element that produces them.
   // Implementation guidance: these *do* need to be defined generically at the language-level
   // in order for a flowsTo to be defined. At the per-modeling-instance level, extend that language-level class!
@@ -307,6 +318,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override predicate isConsumerArtifact() { none() }
 
     override DataFlowNode getInputNode() { none() }
+
+    final override predicate flowsTo(FlowAwareElement other) {
+      Input::artifactOutputFlowsToGenericInput(this.getOutputNode(), other.getInputNode())
+    }
   }
 
   abstract class DigestArtifactInstance extends OutputArtifactInstance { }
@@ -347,10 +362,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override KeyArtifactType getKeyType() { result = creator.getOutputKeyType() }
 
     override DataFlowNode getOutputNode() { result = creator.getOutputKeyArtifact() }
-
-    override predicate flowsTo(FlowAwareElement other) {
-      Input::artifactOutputFlowsToGenericInput(this.getOutputNode(), other.getInputNode())
-    }
   }
 
   final class KeyArtifactConsumer extends KeyArtifactInstance, ArtifactConsumerAndInstance {
@@ -402,6 +413,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class CipherAlgorithmInstance extends AlgorithmInstance {
+    /**
+     * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
+     * This name is not parsed or formatted.
+     */
+    abstract string getRawCipherAlgorithmName();
+
     /**
      * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
      */
@@ -466,12 +483,51 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the hash algorithm used in this padding scheme.
      */
-    abstract HashAlgorithmInstance getHashAlgorithm();
+    abstract HashAlgorithmInstance getOAEPEncodingHashAlgorithm();
 
     /**
-     * Gets the mask generation function used in this padding scheme.
+     * Gets the hash algorithm used by MGF1 (assumption: MGF1 is the only MGF used by OAEP)
      */
-    abstract HashAlgorithmInstance getMaskGenerationFunction();
+    abstract HashAlgorithmInstance getMGF1HashAlgorithm();
+  }
+
+  newtype TMACType =
+    THMAC() or
+    TOtherMACType()
+
+  abstract class MACAlgorithmInstance extends AlgorithmInstance {
+    /**
+     * Gets the type of this MAC algorithm, e.g., "HMAC" or "CMAC".
+     */
+    abstract TMACType getMACType();
+
+    /**
+     * Gets the isolated name as it appears in source, e.g., "HMAC-SHA256" in "HMAC-SHA256/UnrelatedInformation".
+     *
+     * This name should not be parsed or formatted beyond isolating the raw MAC name if necessary.
+     */
+    abstract string getRawMACAlgorithmName();
+  }
+
+  abstract class MACOperationInstance extends OperationInstance {
+    /**
+     * Gets the message input used in this operation.
+     */
+    abstract DataFlowNode getMessageConsumer();
+
+    /**
+     * Gets the key used in this operation.
+     */
+    abstract DataFlowNode getKeyConsumer();
+  }
+
+  abstract class HMACAlgorithmInstance extends MACAlgorithmInstance {
+    HMACAlgorithmInstance() { this.getMACType() instanceof THMAC }
+
+    /**
+     * Gets the hash algorithm used by this HMAC algorithm.
+     */
+    abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
   }
 
   abstract class KeyEncapsulationOperationInstance extends OperationInstance { }
@@ -489,6 +545,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Gets the type of this digest algorithm, e.g., "SHA1", "SHA2", "MD5" etc.
      */
     abstract THashType getHashFamily();
+
+    /**
+     * Gets the isolated name as it appears in source, e.g., "SHA-256" in "SHA-256/PKCS7Padding".
+     */
+    abstract string getRawHashAlgorithmName();
+
+    /**
+     * Gets the length of the hash digest in bits.
+     */
+    abstract int getDigestLength();
   }
 
   abstract class KeyDerivationOperationInstance extends OperationInstance { }
@@ -512,6 +578,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Gets the key size of the key produced by this operation.
      */
     string getKeySize() { none() } // TODO: punt, might need a generic value consumer?
+
+    final KeyArtifactOutputInstance getKeyArtifactOutputInstance() {
+      result.getOutputNode() = this.getOutputKeyArtifact()
+    }
   }
 
   abstract class KeyGenerationOperationInstance extends KeyCreationOperationInstance {
@@ -524,13 +594,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   private signature class AlgorithmInstanceType instanceof AlgorithmInstance;
 
-  module AlgorithmInstanceOrValueConsumer<AlgorithmInstanceType Alg> {
+  private signature predicate isCandidateAVCSig(AlgorithmValueConsumer avc);
+
+  module AlgorithmInstanceOrValueConsumer<
+    AlgorithmInstanceType Alg, isCandidateAVCSig/1 isCandidateAVC>
+  {
     class Union extends LocatableElement {
       Union() {
         this instanceof Alg
         or
-        this instanceof AlgorithmValueConsumer and
-        not exists(this.(AlgorithmValueConsumer).getASource())
+        isCandidateAVC(this) and
+        not exists(this.(AlgorithmValueConsumer).getAKnownAlgorithmSource()) and
+        exists(this.(AlgorithmValueConsumer).getAnUnknownSource())
       }
 
       Alg asAlg() { result = this }
@@ -539,25 +614,43 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  class CipherAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<CipherAlgorithmInstance>::Union;
+  private predicate isHashAVC(AlgorithmValueConsumer avc) {
+    exists(HashOperationInstance op | op.getAnAlgorithmValueConsumer() = avc) or
+    exists(HMACAlgorithmInstance alg | avc = alg.getAConsumer())
+  }
 
-  class HashAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance>::Union;
+  private predicate isCipherAVC(AlgorithmValueConsumer avc) {
+    exists(CipherOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
+  }
 
-  newtype TNode =
+  private predicate isMACAVC(AlgorithmValueConsumer avc) {
+    exists(MACOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
+  }
+
+  final private class CipherAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<CipherAlgorithmInstance, isCipherAVC/1>::Union;
+
+  final private class HashAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance, isHashAVC/1>::Union;
+
+  private class MACAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<MACAlgorithmInstance, isMACAVC/1>::Union;
+
+  private newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
     TNonce(NonceArtifactConsumer e) or
     TCipherInput(CipherInputArtifactConsumer e) or
     TCipherOutput(CipherOutputArtifactInstance e) or
+    TMACMessageInput(MACInputArtifactConsumer e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Operations (e.g., hashing, encryption)
     THashOperation(HashOperationInstance e) or
     TKeyDerivationOperation(KeyDerivationOperationInstance e) or
     TCipherOperation(CipherOperationInstance e) or
     TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
+    TMACOperation(MACOperationInstance e) or
     // Key Creation Operations
     TKeyCreationOperation(KeyCreationOperationInstance e) or
     // Algorithms (e.g., SHA-256, AES)
@@ -566,6 +659,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstance e) or
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
+    TMACAlgorithm(MACAlgorithmInstanceOrValueConsumer e) or
     // Non-standalone Algorithms (e.g., Mode, Padding)
     // TODO: need to rename this, as "mode" is getting reused in different contexts, be precise
     TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
@@ -738,6 +832,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override string getInternalType() { result = "CipherOutput" }
 
     override LocatableElement asElement() { result = instance }
+
+    override string getSourceNodeRelationship() { none() }
   }
 
   /**
@@ -764,6 +860,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override string getInternalType() { result = "RandomNumberGeneration" }
 
     override LocatableElement asElement() { result = instance }
+
+    override string getSourceNodeRelationship() { none() } // TODO: seed?
   }
 
   /**
@@ -812,6 +910,127 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       key = "KeyType" and
       value = instance.getKeyType().toString() and
       location = this.getLocation()
+    }
+
+    override string getSourceNodeRelationship() {
+      instance.isConsumerArtifact() and
+      result = "Source"
+    }
+  }
+
+  final class MACMessageInputNode extends ArtifactNode, TMACMessageInput {
+    MACInputArtifactConsumer instance;
+
+    MACMessageInputNode() { this = TMACMessageInput(instance) }
+
+    final override string getInternalType() { result = "MACMessageInput" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
+   * A MAC operation that produces a MAC value.
+   */
+  final class MACOperationNode extends OperationNode, TMACOperation {
+    MACOperationInstance instance;
+
+    MACOperationNode() { this = TMACOperation(instance) }
+
+    final override string getInternalType() { result = "MACOperation" }
+
+    override LocatableElement asElement() { result = instance }
+
+    MACMessageInputNode getAMessage() {
+      result.asElement() = Input::dfn_to_element(instance.getMessageConsumer())
+    }
+
+    KeyArtifactNode getAKey() {
+      result.asElement() = Input::dfn_to_element(instance.getKeyConsumer())
+    }
+
+    /**
+     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
+     */
+    NodeBase getAMACAlgorithmOrUnknown() {
+      result = this.getAKnownMACAlgorithm() or
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
+    }
+
+    /**
+     * Gets a known algorithm associated with this operation
+     */
+    MACAlgorithmNode getAKnownMACAlgorithm() {
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Algorithm" and
+      if exists(this.getAMACAlgorithmOrUnknown())
+      then result = this.getAMACAlgorithmOrUnknown()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Message" and
+      if exists(this.getAMessage()) then result = this.getAMessage() else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Key" and
+      if exists(this.getAKey()) then result = this.getAKey() else result = this
+    }
+  }
+
+  /**
+   * A MAC algorithm, such as HMAC or CMAC.
+   */
+  class MACAlgorithmNode extends AlgorithmNode, TMACAlgorithm {
+    MACAlgorithmInstanceOrValueConsumer instance;
+
+    MACAlgorithmNode() { this = TMACAlgorithm(instance) }
+
+    final override string getInternalType() { result = "MACAlgorithm" }
+
+    override LocatableElement asElement() { result = instance }
+
+    final override string getRawAlgorithmName() {
+      result = instance.asAlg().getRawMACAlgorithmName()
+    }
+
+    TMACType getMACType() { result = instance.asAlg().getMACType() }
+
+    bindingset[type]
+    final private predicate macToNameMapping(TMACType type, string name) {
+      type instanceof THMAC and
+      name = "HMAC"
+      or
+      type instanceof TOtherMACType and
+      name = this.getRawAlgorithmName()
+    }
+
+    override string getAlgorithmName() { this.macToNameMapping(this.getMACType(), result) }
+  }
+
+  final class HMACAlgorithmNode extends MACAlgorithmNode {
+    HMACAlgorithmInstance hmacInstance;
+
+    HMACAlgorithmNode() { hmacInstance = instance.asAlg() }
+
+    NodeBase getHashAlgorithmOrUnknown() {
+      result.asElement() = hmacInstance.getHashAlgorithmValueConsumer().getASource()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "H" and
+      if exists(this.getHashAlgorithmOrUnknown())
+      then result = this.getHashAlgorithmOrUnknown()
+      else result = this
     }
   }
 
@@ -863,6 +1082,21 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     override string getInternalType() { result = instance.getKeyCreationTypeDescription() }
+
+    /**
+     * Gets the key artifact produced by this operation.
+     */
+    KeyArtifactNode getOutputKeyArtifact() {
+      instance.getKeyArtifactOutputInstance() = result.asElement()
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [ALWAYS_KNOWN]
+      key = "Output" and
+      result = this.getOutputKeyArtifact()
+    }
   }
 
   newtype TCipherOperationSubtype =
@@ -1101,10 +1335,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     OAEPPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
 
-    HashAlgorithmNode getHashAlgorithm() { result.asElement() = instance.getHashAlgorithm() }
+    HashAlgorithmNode getOAEPEncodingHashAlgorithm() {
+      result.asElement() = instance.getOAEPEncodingHashAlgorithm()
+    }
 
-    HashAlgorithmNode getMaskGenerationFunction() {
-      result.asElement() = instance.getMaskGenerationFunction()
+    HashAlgorithmNode getMGF1HashAlgorithm() {
+      result.asElement() = instance.getMGF1HashAlgorithm()
     }
 
     override NodeBase getChild(string edgeName) {
@@ -1112,12 +1348,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MD" and
-      if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this
+      if exists(this.getOAEPEncodingHashAlgorithm())
+      then result = this.getOAEPEncodingHashAlgorithm()
+      else result = this
       or
       // [KNOWN_OR_UNKNOWN]
-      edgeName = "MGF" and
-      if exists(this.getMaskGenerationFunction())
-      then result = this.getMaskGenerationFunction()
+      edgeName = "MGF1Hash" and
+      if exists(this.getMGF1HashAlgorithm())
+      then result = this.getMGF1HashAlgorithm()
       else result = this
     }
   }
@@ -1184,7 +1422,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
     }
 
-    final override string getRawAlgorithmName() { result = instance.asAlg().getRawAlgorithmName() }
+    final override string getRawAlgorithmName() {
+      result = instance.asAlg().getRawCipherAlgorithmName()
+    }
 
     /**
      * Gets the key size of this cipher, e.g., "128" or "256".
@@ -1379,7 +1619,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
-    override string getRawAlgorithmName() { result = instance.asAlg().getRawAlgorithmName() }
+    override string getRawAlgorithmName() { result = instance.asAlg().getRawHashAlgorithmName() }
 
     final predicate hashTypeToNameMapping(THashType type, string name) {
       type instanceof BLAKE2B and name = "BLAKE2B"
@@ -1416,58 +1656,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * When modeling a new hashing algorithm, use this predicate to specify the type of the algorithm.
      */
-    abstract THashType getHashType();
+    THashType getHashFamily() { result = instance.asAlg().getHashFamily() }
 
-    override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashType(), result) }
+    override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashFamily(), result) }
 
-    /**
-     * Gets the digest size of SHA2 or SHA3 algorithms.
-     *
-     * This predicate does not need to hold for other algorithms,
-     * as the digest size is already known based on the algorithm itself.
-     *
-     * For `OtherHashType` algorithms where a digest size should be reported, `THashType`
-     * should be extended to explicitly model that algorithm. If the algorithm has variable
-     * or multiple digest size variants, a similar predicate to this one must be defined
-     * for that algorithm to report the digest size.
-     */
-    abstract string getSHA2OrSHA3DigestSize(Location location);
-
-    bindingset[type]
-    private string getTypeDigestSizeFixed(THashType type) {
-      type instanceof MD2 and result = "128"
-      or
-      type instanceof MD4 and result = "128"
-      or
-      type instanceof MD5 and result = "128"
-      or
-      type instanceof SHA1 and result = "160"
-      or
-      type instanceof RIPEMD160 and result = "160"
-      or
-      type instanceof WHIRLPOOL and result = "512"
-    }
-
-    bindingset[type]
-    private string getTypeDigestSize(THashType type, Location location) {
-      result = this.getTypeDigestSizeFixed(type) and location = this.getLocation()
-      or
-      type instanceof SHA2 and result = this.getSHA2OrSHA3DigestSize(location)
-      or
-      type instanceof SHA3 and result = this.getSHA2OrSHA3DigestSize(location)
-    }
-
-    string getDigestSize(Location location) {
-      result = this.getTypeDigestSize(this.getHashType(), location)
-    }
+    int getDigestLength() { result = instance.asAlg().getDigestLength() }
 
     final override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
       // [KNOWN_OR_UNKNOWN]
       key = "DigestSize" and
-      if exists(this.getDigestSize(location))
-      then value = this.getDigestSize(location)
+      if exists(this.getDigestLength())
+      then value = this.getDigestLength().toString() and location = this.getLocation()
       else (
         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
       )
