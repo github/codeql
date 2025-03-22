@@ -229,7 +229,10 @@ module DataFlow {
     predicate hasUnderlyingType(string globalName) {
       Stages::TypeTracking::ref() and
       exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.getNameResolutionNode(), type) and
+        TypeResolution::valueHasType(this.getNameResolutionNode(), type)
+        or
+        TypeResolution::valueHasContextualType(this.getNameResolutionNode(), type)
+      |
         UnderlyingTypes::nodeHasUnderlyingType(type, "global", globalName)
       )
     }
@@ -243,7 +246,10 @@ module DataFlow {
       Stages::TypeTracking::ref() and
       moduleName != "global" and
       exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.getNameResolutionNode(), type) and
+        TypeResolution::valueHasType(this.getNameResolutionNode(), type)
+        or
+        TypeResolution::valueHasContextualType(this.getNameResolutionNode(), type)
+      |
         UnderlyingTypes::nodeHasUnderlyingType(type, moduleName, typeName)
       )
     }
