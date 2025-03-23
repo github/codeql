@@ -37,7 +37,7 @@ public class IntegerOperationTest {
 
 ## Implementation Notes
 
-This rule is focused on missing `@Nested` annotations on non-static nested (inner) test classes. Static nested test classes and abstract nested test classes should not be annotated with `@Nested`. As a result, the absence of a `@Nested` annotation on such classes is compliant. Identifying incorrect application of a `@Nested` annotation to static and abstract classes is out of scope for this rule.
+This rule is focused on missing `@Nested` annotations on non-static nested (inner) test classes. Static nested test classes should not be annotated with `@Nested`. As a result, the absence of a `@Nested` annotation on such classes is compliant. Identifying incorrect application of a `@Nested` annotation to static nested classes is out of scope for this rule.
 
 ## References
 

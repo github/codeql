@@ -87,29 +87,20 @@ public class AnnotationTest {
     }
   }
 
-  // COMPLIANT: Invalid to use `@Nested` on an abstract class, but
-  // this matter is out of scope (see QHelp Implementation Notes)
-  @Nested
-  public abstract class Test8 {
-    @Test
-    public void test() {
-    }
-  }
-
-  interface Test9 {
+  interface Test8 {
   }
 
   public void f() {
     // COMPLIANT: anonymous classes are not considered as inner test
     // classes by JUnit and therefore don't need `@Nested`
-    new Test9() {
+    new Test8() {
       @Test
       public void test() {
       }
     };
     // COMPLIANT: local classes are not considered as inner test
     // classes by JUnit and therefore don't need `@Nested`
-    class Test10 {
+    class Test9 {
       @Test
       void test() {
       }
@@ -118,7 +109,7 @@ public class AnnotationTest {
 
   // COMPLIANT: private classes are not considered as inner test
   // classes by JUnit and therefore don't need `@Nested`
-  private class Test11 {
+  private class Test10 {
     @Test
     public void test() {
     }
