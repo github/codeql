@@ -10,6 +10,8 @@
  * @tags quality
  *       maintainability
  *       correctness
+ *       testability
+ *       frameworks/junit
  *       previous-id:java/junit5-non-static-inner-class-missing-nested-annotation
  */
 
