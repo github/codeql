@@ -16,8 +16,5 @@
 import java
 
 from JUnit5InnerTestClass testClass
-where
-  not testClass.hasAnnotation("org.junit.jupiter.api", "Nested") and
-  // An abstract class should not have a `@Nested` annotation
-  not testClass.isAbstract()
+where not testClass.hasAnnotation("org.junit.jupiter.api", "Nested")
 select testClass, "This JUnit 5 inner test class lacks a '@Nested' annotation."

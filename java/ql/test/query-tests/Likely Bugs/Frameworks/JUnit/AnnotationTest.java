@@ -1,5 +1,11 @@
+import java.util.Collection;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class AnnotationTest {
   @Nested
@@ -10,8 +16,38 @@ public class AnnotationTest {
   }
 
   // NON_COMPLIANT: Inner test class is missing `@Nested`
-  public class Test2 {  // $ Alert
+  public class Test2_Test { // $ Alert
     @Test
+    public void test() {
+    }
+  }
+
+  // NON_COMPLIANT: Inner test class is missing `@Nested`
+  public class Test2_RepeatedTest { // $ Alert
+    @RepeatedTest(2)
+    public void test() {
+    }
+  }
+
+  // NON_COMPLIANT: Inner test class is missing `@Nested`
+  public class Test2_ParameterizedTest { // $ Alert
+    @ParameterizedTest
+    @ValueSource(strings = { "" })
+    public void test(String s) {
+    }
+  }
+
+  // NON_COMPLIANT: Inner test class is missing `@Nested`
+  public class Test2_TestFactory { // $ Alert
+    @TestFactory
+    Collection<Object> test() {
+        return null;
+    }
+  }
+
+  // NON_COMPLIANT: Inner test class is missing `@Nested`
+  public class Test2_TestTemplate { // $ Alert
+    @TestTemplate
     public void test() {
     }
   }

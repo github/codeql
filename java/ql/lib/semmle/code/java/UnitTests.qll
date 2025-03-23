@@ -113,11 +113,36 @@ class JUnitJupiterTestMethod extends Method {
 }
 
 /**
- * A JUnit test class that contains at least one method annotated with
- * `org.junit.jupiter.api.Test`.
+ * A JUnit 5 test method.
+ * A test method is defined by JUnit as "any instance method
+ * that is directly annotated or meta-annotated with `@Test`,
+ * `@RepeatedTest`, `@ParameterizedTest`, `@TestFactory`, or
+ * `@TestTemplate`."
+ * See https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions
+ */
+class JUnit5TestMethod extends Method {
+  JUnit5TestMethod() {
+    this instanceof JUnitJupiterTestMethod or
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.junit.jupiter.api", ["RepeatedTest", "TestFactory", "TestTemplate"]) or
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.junit.jupiter.params", "ParameterizedTest")
+  }
+}
+
+/**
+ * A JUnit 5 test class.
+ * A test class must contain at least one test method, and
+ * cannot be abstract.
+ * See https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions
  */
 class JUnit5TestClass extends Class {
-  JUnit5TestClass() { this.getAMethod() instanceof JUnitJupiterTestMethod }
+  JUnit5TestClass() {
+    this.getAMethod() instanceof JUnit5TestMethod and
+    not this.isAbstract()
+  }
 }
 
 /**
