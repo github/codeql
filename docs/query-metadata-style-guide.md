@@ -113,7 +113,7 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
   * `medium`
   * `high`
   * `very-high`
-* `@problem.severity`–defines the likelihood that an alert, either security-related or not, causes an actual problem such as incorrect program behavior: 
+* `@problem.severity`–defines the likelihood that an alert, either security-related or not, causes an actual problem such as incorrect program behavior:
   * `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
   * `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
   * `recommendation`–an issue where the code behaves correctly, but it could be improved.
@@ -138,6 +138,8 @@ There are also more specific `@tags` that can be added. See, the following pages
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
 
 Metric queries (`@kind metric`) may have the `summary` tag. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
+
+Queries with alerts that used to be reported on a different query should have a `previous-id:<previous-query-id>` tag to refer back to the query where the alerts were originally reported. For example, if alerts from `java/query-one` are now reported on `java/query-two`, then the metadata for `java/query-two` should contain: `@tags previous-id:java/query-one`.
 
 If necessary, you can also define your own low-level tags to categorize the queries specific to your project or organization. When creating your own tags, you should:
 
