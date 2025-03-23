@@ -59,4 +59,32 @@ public class AnnotationTest {
     public void test() {
     }
   }
+
+  interface Test9 {
+  }
+
+  public void f() {
+    // COMPLIANT: anonymous classes are not considered as inner test
+    // classes by JUnit and therefore don't need `@Nested`
+    new Test9() {
+      @Test
+      public void test() {
+      }
+    };
+    // COMPLIANT: local classes are not considered as inner test
+    // classes by JUnit and therefore don't need `@Nested`
+    class Test10 {
+      @Test
+      void test() {
+      }
+    }
+  }
+
+  // COMPLIANT: private classes are not considered as inner test
+  // classes by JUnit and therefore don't need `@Nested`
+  private class Test11 {
+    @Test
+    public void test() {
+    }
+  }
 }

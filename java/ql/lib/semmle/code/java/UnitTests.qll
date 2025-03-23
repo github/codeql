@@ -121,6 +121,20 @@ class JUnit5TestClass extends Class {
 }
 
 /**
+ * A JUnit inner test class that is non-anonymous, non-local,
+ * and non-private.
+ */
+class JUnit5InnerTestClass extends JUnit5TestClass {
+  JUnit5InnerTestClass() {
+    // `InnerClass` is a non-static nested class.
+    this instanceof InnerClass and
+    not this.isAnonymous() and
+    not this.isLocal() and
+    not this.isPrivate()
+  }
+}
+
+/**
  * A JUnit `@Ignore` annotation.
  */
 class JUnitIgnoreAnnotation extends Annotation {

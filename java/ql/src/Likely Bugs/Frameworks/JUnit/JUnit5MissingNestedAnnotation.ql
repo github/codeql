@@ -15,10 +15,8 @@
 
 import java
 
-from JUnit5TestClass testClass
+from JUnit5InnerTestClass testClass
 where
-  // `InnerClass` is a non-static, nested class.
-  testClass instanceof InnerClass and
   not testClass.hasAnnotation("org.junit.jupiter.api", "Nested") and
   // An abstract class should not have a `@Nested` annotation
   not testClass.isAbstract()
