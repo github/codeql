@@ -80,6 +80,13 @@ module UnderlyingTypes {
       mod = "global"
     )
     or
+    exists(LocalTypeAccess type |
+      node = type and
+      not exists(type.getLocalTypeName()) and
+      name = type.getName() and
+      mod = "global"
+    )
+    or
     exists(Node mid | nodeHasUnderlyingType(mid, mod, name) |
       TypeFlow::step(mid, node)
       or
