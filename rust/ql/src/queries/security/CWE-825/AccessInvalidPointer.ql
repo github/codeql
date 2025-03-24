@@ -26,6 +26,11 @@ module AccessInvalidPointerConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof AccessInvalidPointer::Sink }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessInvalidPointer::Barrier }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node)
+  }
 }
 
 module AccessInvalidPointerFlow = DataFlow::Global<AccessInvalidPointerConfig>;

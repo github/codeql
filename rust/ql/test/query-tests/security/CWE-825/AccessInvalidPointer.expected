@@ -1,7 +1,5 @@
 #select
 | deallocation.rs:26:15:26:16 | m1 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:26:15:26:16 | m1 | This operation dereferences a pointer that may be $@. | deallocation.rs:20:23:20:24 | m1 | invalid |
-| deallocation.rs:32:16:32:17 | m1 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:32:16:32:17 | m1 | This operation dereferences a pointer that may be $@. | deallocation.rs:20:23:20:24 | m1 | invalid |
-| deallocation.rs:33:16:33:17 | m1 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:33:16:33:17 | m1 | This operation dereferences a pointer that may be $@. | deallocation.rs:20:23:20:24 | m1 | invalid |
 | deallocation.rs:37:14:37:33 | ...::read::<...> | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:37:14:37:33 | ...::read::<...> | This operation dereferences a pointer that may be $@. | deallocation.rs:20:23:20:24 | m1 | invalid |
 | deallocation.rs:44:6:44:7 | m1 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:44:6:44:7 | m1 | This operation dereferences a pointer that may be $@. | deallocation.rs:20:23:20:24 | m1 | invalid |
 | deallocation.rs:49:5:49:25 | ...::write::<...> | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:49:5:49:25 | ...::write::<...> | This operation dereferences a pointer that may be $@. | deallocation.rs:20:23:20:24 | m1 | invalid |
@@ -18,8 +16,6 @@
 | deallocation.rs:214:18:214:20 | ptr | deallocation.rs:208:27:208:29 | ptr | deallocation.rs:214:18:214:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:208:27:208:29 | ptr | invalid |
 edges
 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:26:15:26:16 | m1 | provenance |  |
-| deallocation.rs:20:23:20:24 | m1 | deallocation.rs:32:16:32:17 | m1 | provenance |  |
-| deallocation.rs:20:23:20:24 | m1 | deallocation.rs:33:16:33:17 | m1 | provenance |  |
 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:37:35:37:36 | m1 | provenance |  |
 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:44:6:44:7 | m1 | provenance |  |
 | deallocation.rs:20:23:20:24 | m1 | deallocation.rs:49:27:49:28 | m1 | provenance |  |
@@ -52,8 +48,6 @@ models
 nodes
 | deallocation.rs:20:23:20:24 | m1 | semmle.label | m1 |
 | deallocation.rs:26:15:26:16 | m1 | semmle.label | m1 |
-| deallocation.rs:32:16:32:17 | m1 | semmle.label | m1 |
-| deallocation.rs:33:16:33:17 | m1 | semmle.label | m1 |
 | deallocation.rs:37:14:37:33 | ...::read::<...> | semmle.label | ...::read::<...> |
 | deallocation.rs:37:35:37:36 | m1 | semmle.label | m1 |
 | deallocation.rs:44:6:44:7 | m1 | semmle.label | m1 |
