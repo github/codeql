@@ -781,7 +781,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `""`         | ``Base`1``
        * `"T2"`       | ``C`1``
        * `"T2.T1"`    | ``C`1``
-       * `"T2.T2.T2"` | `int`
+       * `"T2.T1.T1"` | `int`
        */
       pragma[nomagic]
       Type inferAccessType(Access a, AccessPosition apos, TypePath path) {
