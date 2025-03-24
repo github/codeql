@@ -98,7 +98,7 @@ test_ClientRequest
 | tst.js:320:5:320:23 | superagent.del(url) |
 | tst.js:321:5:321:32 | superag ... st(url) |
 | tst.js:328:5:328:38 | got(und ... ptions) |
-| tst.js:329:5:329:45 | got(und ... {url})) |
+| tst.js:329:5:329:49 | got(und ... {url})) |
 | tst.js:332:5:332:46 | got.ext ... ).get() |
 | tst.js:334:5:334:25 | got.pag ... rl, {}) |
 | tst.js:337:5:337:20 | jsonClient.get() |
@@ -262,8 +262,8 @@ test_getUrl
 | tst.js:321:5:321:32 | superag ... st(url) | tst.js:321:29:321:31 | url |
 | tst.js:328:5:328:38 | got(und ... ptions) | tst.js:327:34:327:36 | url |
 | tst.js:328:5:328:38 | got(und ... ptions) | tst.js:328:9:328:17 | undefined |
-| tst.js:329:5:329:45 | got(und ... {url})) | tst.js:329:9:329:17 | undefined |
-| tst.js:329:5:329:45 | got(und ... {url})) | tst.js:329:40:329:42 | url |
+| tst.js:329:5:329:49 | got(und ... {url})) | tst.js:329:9:329:17 | undefined |
+| tst.js:329:5:329:49 | got(und ... {url})) | tst.js:329:44:329:46 | url |
 | tst.js:334:5:334:25 | got.pag ... rl, {}) | tst.js:334:18:334:20 | url |
 | tst.js:337:5:337:20 | jsonClient.get() | tst.js:336:41:336:43 | url |
 | tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:42:339:44 | url |
@@ -349,7 +349,7 @@ test_getAResponseDataNode
 | tst.js:320:5:320:23 | superagent.del(url) | tst.js:320:5:320:23 | superagent.del(url) | stream | true |
 | tst.js:321:5:321:32 | superag ... st(url) | tst.js:321:5:321:32 | superag ... st(url) | stream | true |
 | tst.js:328:5:328:38 | got(und ... ptions) | tst.js:328:5:328:38 | got(und ... ptions) | text | true |
-| tst.js:329:5:329:45 | got(und ... {url})) | tst.js:329:5:329:45 | got(und ... {url})) | text | true |
+| tst.js:329:5:329:49 | got(und ... {url})) | tst.js:329:5:329:49 | got(und ... {url})) | text | true |
 | tst.js:332:5:332:46 | got.ext ... ).get() | tst.js:332:5:332:46 | got.ext ... ).get() | text | true |
 | tst.js:334:5:334:25 | got.pag ... rl, {}) | tst.js:334:5:334:25 | got.pag ... rl, {}) | text | true |
 | tst.js:337:5:337:20 | jsonClient.get() | tst.js:337:5:337:20 | jsonClient.get() | text | true |
