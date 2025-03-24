@@ -9,4 +9,4 @@ extensions:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
-      - ["axios", "Member[interceptors].Member[response].Member[use].Argument[0].Parameter[0]", "remote"]
+      - ["axios", "Member[interceptors].Member[response].Member[use].Argument[0].Parameter[0]", "response"]
