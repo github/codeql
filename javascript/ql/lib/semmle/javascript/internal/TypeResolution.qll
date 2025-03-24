@@ -114,22 +114,11 @@ module TypeResolution {
     )
   }
 
-  predicate valueHasContextualType(Node value, Node type) {
+  private predicate contextualType(Node value, Node contextualType) {
     exists(InvokeExpr call, Function target, int i |
       callTarget(call, target) and
       value = call.getArgument(i) and
-      type = target.getParameter(i).getTypeAnnotation()
-    )
-    or
-    exists(VariableDeclarator decl |
-      value = decl.getInit() and
-      type = decl.getTypeAnnotation()
-    )
-    or
-    exists(Function functionValue, Function functionType |
-      valueHasContextualType(functionValue, trackFunctionType(functionType)) and
-      value = functionValue.getAReturnedExpr() and
-      type = functionType.getReturnTypeAnnotation()
+      contextualType = target.getParameter(i).getTypeAnnotation()
     )
   }
 
@@ -165,10 +154,10 @@ module TypeResolution {
     or
     // Contextual typing for parameters
     exists(Function lambda, Function functionType, int i |
-      valueHasContextualType(lambda, trackFunctionType(functionType))
+      contextualType(lambda, trackFunctionType(functionType))
       or
       exists(InterfaceDefinition interface |
-        valueHasContextualType(lambda, trackType(interface)) and
+        contextualType(lambda, trackType(interface)) and
         functionType = interface.getACallSignature().getBody()
       )
     |
