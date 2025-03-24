@@ -153,6 +153,10 @@ nodes
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | semmle.label | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | semmle.label | location.href |
 | express.js:6:15:6:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| interceptors.js:7:6:7:13 | response | semmle.label | response |
+| interceptors.js:8:15:8:47 | userGeneratedHtml | semmle.label | userGeneratedHtml |
+| interceptors.js:8:35:8:42 | response | semmle.label | response |
+| interceptors.js:9:56:9:72 | userGeneratedHtml | semmle.label | userGeneratedHtml |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |
@@ -791,6 +795,9 @@ edges
 | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance | Config |
+| interceptors.js:7:6:7:13 | response | interceptors.js:8:35:8:42 | response | provenance |  |
+| interceptors.js:8:15:8:47 | userGeneratedHtml | interceptors.js:9:56:9:72 | userGeneratedHtml | provenance |  |
+| interceptors.js:8:35:8:42 | response | interceptors.js:8:15:8:47 | userGeneratedHtml | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:5:13:5:19 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:6:11:6:17 | tainted | provenance |  |

@@ -4,9 +4,9 @@ const axios = require("axios");
 const app = express();
 
 axios.interceptors.response.use(
-    (response) => { // $ MISSING: Source
+    (response) => { // $ Source
         const userGeneratedHtml = response.data;
-        document.getElementById("content").innerHTML = userGeneratedHtml; // $ MISSING: Alert
+        document.getElementById("content").innerHTML = userGeneratedHtml; // $ Alert
         return response;
     },
     (error) => {
