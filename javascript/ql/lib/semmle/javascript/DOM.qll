@@ -247,7 +247,7 @@ module DOM {
         ]
     |
       (
-        result = documentRef().getAMethodCall(collectionName) or
+        result = domValueRef().getAMethodCall(collectionName) or
         result = DataFlow::globalVarRef(collectionName).getACall()
       )
     )
