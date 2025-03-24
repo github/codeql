@@ -77,7 +77,7 @@ templateClassContext<int> tcci;
 #endif
 
 #if defined MACROTHREE/**hello*/ && /*world*/\
-/*hw*/(defined(MACROONE)) /* macroone */
+/*hw*/ (defined(MACROONE)) /* macroone */
 #endif
 
 #if defined SIMPLE_COMMENT  //this comment \
@@ -159,5 +159,5 @@ BAR
 
 #warning foo \
 \
-/* comment */ \
+/* comment */     \
 \
