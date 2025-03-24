@@ -9,3 +9,12 @@ function f() {
 lib.m1({
     ...f()
 })
+
+function getArgs() {
+    return [
+        'x', /* def=moduleImport("something").getMember("exports").getMember("m2").getParameter(0) */
+        'y', /* def=moduleImport("something").getMember("exports").getMember("m2").getParameter(1) */
+    ]
+}
+
+lib.m2(...getArgs());
