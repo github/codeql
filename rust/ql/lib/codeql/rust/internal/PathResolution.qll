@@ -212,10 +212,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
   ModuleLikeNode getSuper() {
-    exists(ModuleItemNode mod |
-      fileImport(mod, this) and
-      result = mod.getASuccessor("super")
-    )
+    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
   }
 
   override string getName() { result = "(source file)" }
@@ -858,11 +855,10 @@ private ItemNode resolvePathPrivate(
 /**
  * Gets a module that has access to private items defined inside `itemParent`.
  *
- * According to
+ * According to [The Rust Reference][1] this is either `itemParent` itself or any
+ * descendant of `itemParent`.
  *
- * https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch07-02-controlling-visibility-with-pub.html#privacy-rules
- *
- * this is either `itemParent` itself or any (transitive) child of `itemParent`.
+ * [1]: https://doc.rust-lang.org/reference/visibility-and-privacy.html#r-vis.access
  */
 pragma[nomagic]
 private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
@@ -964,10 +960,6 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      // filepath.matches("%/compile.rs") and
-      // startline = 1986
-      // filepath.matches("%/build_steps/mod.rs") and
-      // startline = 17
       filepath.matches("%/main.rs") and
       startline = 1
     )
