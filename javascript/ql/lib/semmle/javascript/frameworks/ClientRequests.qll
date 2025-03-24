@@ -415,20 +415,51 @@ module ClientRequest {
   }
 
   /**
-   * Gets a reference to an instance of the `got` library, including instances
-   * created through chained `extend` calls.
+   * Represents an instance of the `got` HTTP client library.
    */
-  private API::Node getAGotInstance() {
-    result = [API::moduleImport("got"), getAGotInstance().getMember("extend").getReturn()]
+  abstract private class GotInstance extends API::Node {
+    /**
+     * Gets the options object associated with this instance of `got`.
+     */
+    API::Node getOptions() { none() }
+  }
+
+  /**
+   * Represents the root `got` module import.
+   * For example: `const got = require('got')`.
+   */
+  private class RootGotInstance extends GotInstance {
+    RootGotInstance() { this = API::moduleImport("got") }
+  }
+
+  /**
+   * Represents an instance of `got` created by calling the `extend()` method.
+   * It may also be chained with multiple calls to `extend()`.
+   *
+   * For example: `const client = got.extend({ prefixUrl: 'https://example.com' })`.
+   */
+  private class ExtendGotInstance extends GotInstance {
+    private GotInstance base;
+    private API::CallNode extendCall;
+
+    ExtendGotInstance() {
+      extendCall = base.getMember("extend").getACall() and
+      this = extendCall.getReturn()
+    }
+
+    override API::Node getOptions() {
+      result = extendCall.getParameter(0) or result = base.getOptions()
+    }
   }
 
   /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {
+    GotInstance got;
+
     GotUrlRequest() {
-      exists(API::Node callee, API::Node got | this = callee.getACall() |
-        got = getAGotInstance() and
+      exists(API::Node callee | this = callee.getACall() |
         callee =
           [
             got,
@@ -442,11 +473,8 @@ module ClientRequest {
       not exists(this.getOptionArgument(1, "baseUrl"))
       or
       // Handle URL from options passed to extend()
-      exists(API::CallNode extendCall |
-        extendCall = API::moduleImport("got").getMember("extend").getACall() and
-        result = extendCall.getParameter(0).getMember("url").asSink() and
-        not exists(this.getArgument(0))
-      )
+      result = got.getOptions().getMember("url").asSink() and
+      not exists(this.getArgument(0))
       or
       // Handle URL from options passed as third argument when first arg is undefined/missing
       exists(API::InvokeNode optionsCall |

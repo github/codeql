@@ -264,13 +264,10 @@ test_getUrl
 | tst.js:328:5:328:38 | got(und ... ptions) | tst.js:328:9:328:17 | undefined |
 | tst.js:329:5:329:45 | got(und ... {url})) | tst.js:329:9:329:17 | undefined |
 | tst.js:329:5:329:45 | got(und ... {url})) | tst.js:329:40:329:42 | url |
-| tst.js:332:5:332:46 | got.ext ... ).get() | tst.js:336:41:336:43 | url |
-| tst.js:332:5:332:46 | got.ext ... ).get() | tst.js:339:42:339:44 | url |
 | tst.js:334:5:334:25 | got.pag ... rl, {}) | tst.js:334:18:334:20 | url |
 | tst.js:337:5:337:20 | jsonClient.get() | tst.js:336:41:336:43 | url |
-| tst.js:337:5:337:20 | jsonClient.get() | tst.js:339:42:339:44 | url |
-| tst.js:340:5:340:21 | jsonClient2.get() | tst.js:336:41:336:43 | url |
 | tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:42:339:44 | url |
+| tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:61:339:63 | url |
 test_getAResponseDataNode
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
