@@ -346,5 +346,5 @@ function moreAxiosTests(url, data, config){
     axios.putForm(url, data, config);
     axios.patchForm(url, data);
     axios.patchForm(url, data, config);
-    axios.getUri({ url: url }); // not flagged
+    axios.getUri({ url: url });
 }
