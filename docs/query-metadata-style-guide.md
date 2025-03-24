@@ -93,6 +93,10 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 * `@id java/tainted-format-string`
 * `@id cpp/tainted-format-string`
 
+#### Query previous ID `@previous-id`
+
+Queries with alerts that used to be reported on a different query should also have an `@previous-id` property to refer back to the query where the alerts were originally reported. For example, if alerts from `java/query-one` are now reported on `java/query-two`, then the metadata for `java/query-two` should contain: `@previous-id java/query-one`.
+
 
 ### Query type `@kind`
 
@@ -138,8 +142,6 @@ There are also more specific `@tags` that can be added. See, the following pages
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
 
 Metric queries (`@kind metric`) may have the `summary` tag. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
-
-Queries with alerts that used to be reported on a different query should have a `previous-id:<previous-query-id>` tag to refer back to the query where the alerts were originally reported. For example, if alerts from `java/query-one` are now reported on `java/query-two`, then the metadata for `java/query-two` should contain: `@tags previous-id:java/query-one`.
 
 If necessary, you can also define your own low-level tags to categorize the queries specific to your project or organization. When creating your own tags, you should:
 
