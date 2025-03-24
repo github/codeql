@@ -12,8 +12,8 @@ lib.m1({
 
 function getArgs() {
     return [
-        'x', /* def=moduleImport("something").getMember("exports").getMember("m2").getParameter(0) */
-        'y', /* def=moduleImport("something").getMember("exports").getMember("m2").getParameter(1) */
+        'x', /* def=moduleImport("something").getMember("exports").getMember("m2").getSpreadArgument(0).getArrayElement() */
+        'y', /* def=moduleImport("something").getMember("exports").getMember("m2").getSpreadArgument(0).getArrayElement() */
     ]
 }
 

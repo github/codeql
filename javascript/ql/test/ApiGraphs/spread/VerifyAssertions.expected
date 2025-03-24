@@ -1,2 +1,0 @@
-| tst.js:15:14:15:101 | /* def= ... r(0) */ | use moduleImport("something").getMember("exports").getMember("m2") has no outgoing edge labelled getParameter(0); it does have outgoing edges labelled getReceiver(), getReturn(). |
-| tst.js:16:14:16:101 | /* def= ... r(1) */ | use moduleImport("something").getMember("exports").getMember("m2") has no outgoing edge labelled getParameter(1); it does have outgoing edges labelled getReceiver(), getReturn(). |
