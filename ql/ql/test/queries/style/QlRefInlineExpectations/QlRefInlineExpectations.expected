@@ -1,4 +1,2 @@
-| PrintAst.qlref:1:1:1:17 | dummy/PrintAst.ql | Query test does not use inline test expectations. |
 | QlRefInlineExpectations.qlref:1:1:1:40 | queries ... ions.ql | Query test does not use inline test expectations. |
 | Test3.qlref:1:1:1:39 | query:  ... ists.ql | Query test does not use inline test expectations. |
-| Test4.qlref:1:1:1:25 | query:  ... tAst.ql | Query test does not use inline test expectations. |
