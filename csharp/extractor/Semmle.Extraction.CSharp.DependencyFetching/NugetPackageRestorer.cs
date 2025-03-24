@@ -265,7 +265,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Conservatively, we only set this to a non-null value if a Dependabot proxy is enabled.
             // This ensures that we continue to get the old behaviour where feeds are taken from
             // `nuget.config` files instead of the command-line arguments.
-            HashSet<string>? sources = null;
+            string? extraArgs = null;
 
             if (this.dependabotProxy is not null)
             {
@@ -273,9 +273,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // of the private registry feeds. However, since providing them as command-line arguments
                 // to `dotnet` ignores other feeds that may be configured, we also need to add the feeds
                 // we have discovered from analysing `nuget.config` files.
-                sources = configuredSources ?? new();
+                var sources = configuredSources ?? new();
                 sources.Add(PublicNugetOrgFeed);
                 this.dependabotProxy.RegistryURLs.ForEach(url => sources.Add(url));
+
+                // Add package sources. If any are present, they override all sources specified in
+                // the configuration file(s).
+                var feedArgs = new StringBuilder();
+                foreach (string source in sources)
+                {
+                    feedArgs.Append($" -s {source}");
+                }
+
+                extraArgs = feedArgs.ToString();
             }
 
             var successCount = 0;
@@ -292,7 +302,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, sources?.ToList(), TargetWindows: isWindows));
+                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, extraArgs, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
                     {

@@ -67,19 +67,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
             }
 
-            // Add package sources. If any are present, they override all sources specified in
-            // the configuration file(s).
-            if (restoreSettings.Sources != null)
-            {
-                var feedArgs = new StringBuilder();
-                foreach (string source in restoreSettings.Sources)
-                {
-                    feedArgs.Append($" -s {source}");
-                }
-
-                args += feedArgs.ToString();
-            }
-
             if (restoreSettings.ForceReevaluation)
             {
                 args += " --force";
@@ -88,6 +75,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (restoreSettings.TargetWindows)
             {
                 args += " /p:EnableWindowsTargeting=true";
+            }
+
+            if (restoreSettings.ExtraArgs != null)
+            {
+                args += $" {restoreSettings.ExtraArgs}";
             }
 
             return args;
