@@ -255,8 +255,8 @@ mod type_parameter_bounds {
 
 mod function_trait_bounds {
     #[derive(Debug)]
-    struct MyThing<A> {
-        a: A,
+    struct MyThing<T> {
+        a: T,
     }
 
     #[derive(Debug)]
@@ -387,12 +387,12 @@ mod method_supertraits {
     #[derive(Debug)]
     struct S2;
 
-    trait MyTrait1<A> {
-        fn m1(self) -> A;
+    trait MyTrait1<Tr1> {
+        fn m1(self) -> Tr1;
     }
 
-    trait MyTrait2<A>: MyTrait1<A> {
-        fn m2(self) -> A
+    trait MyTrait2<Tr2>: MyTrait1<Tr2> {
+        fn m2(self) -> Tr2
         where
             Self: Sized,
         {
@@ -404,8 +404,8 @@ mod method_supertraits {
         }
     }
 
-    trait MyTrait3<A>: MyTrait2<MyThing<A>> {
-        fn m3(self) -> A
+    trait MyTrait3<Tr3>: MyTrait2<MyThing<Tr3>> {
+        fn m3(self) -> Tr3
         where
             Self: Sized,
         {
