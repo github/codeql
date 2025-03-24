@@ -38,12 +38,12 @@ module Impl {
     predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
 
     /**
-     * Holds if this variant uses record fields.
+     * Holds if this variant uses struct fields.
      *
-     * Empty variants are considered to use record fields.
+     * Empty variants are considered to use struct fields.
      */
     pragma[nomagic]
-    predicate isRecord() { not this.isTuple() }
+    predicate isStruct() { not this.isTuple() }
 
     /** Gets the enum that this variant belongs to. */
     Enum getEnum() { this = result.getVariantList().getAVariant() }
