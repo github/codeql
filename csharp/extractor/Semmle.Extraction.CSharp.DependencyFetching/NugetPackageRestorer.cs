@@ -700,10 +700,35 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return (timeoutMilliSeconds, tryCount);
         }
 
+        /// <summary>
+        /// Checks that we can connect to all Nuget feeds that are explicitly configured in configuration files.
+        /// </summary>
+        /// <param name="explicitFeeds">Outputs the set of explicit feeds.</param>
+        /// <returns>True if all feeds are reachable or false otherwise.</returns>
         private bool CheckFeeds(out HashSet<string> explicitFeeds)
         {
-            logger.LogInfo("Checking Nuget feeds...");
             (explicitFeeds, var allFeeds) = GetAllFeeds();
+
+            var allFeedsReachable = this.CheckFeeds(explicitFeeds);
+
+            var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
+            if (inheritedFeeds.Count > 0)
+            {
+                logger.LogInfo($"Inherited Nuget feeds (not checked for reachability): {string.Join(", ", inheritedFeeds.OrderBy(f => f))}");
+                compilationInfoContainer.CompilationInfos.Add(("Inherited Nuget feed count", inheritedFeeds.Count.ToString()));
+            }
+
+            return allFeedsReachable;
+        }
+
+        /// <summary>
+        /// Checks that we can connect to the specified Nuget feeds.
+        /// </summary>
+        /// <param name="feeds">The set of package feeds to check.</param>
+        /// <returns>True if all feeds are reachable or false otherwise.</returns>
+        private bool CheckFeeds(HashSet<string> feeds)
+        {
+            logger.LogInfo("Checking that Nuget feeds are reachable...");
 
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
                 .ToHashSet();
@@ -715,7 +740,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
 
-            var allFeedsReachable = explicitFeeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed, initialTimeout, tryCount));
+            var allFeedsReachable = feeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed, initialTimeout, tryCount));
             if (!allFeedsReachable)
             {
                 logger.LogWarning("Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.");
@@ -729,14 +754,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 ));
             }
             compilationInfoContainer.CompilationInfos.Add(("All Nuget feeds reachable", allFeedsReachable ? "1" : "0"));
-
-
-            var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
-            if (inheritedFeeds.Count > 0)
-            {
-                logger.LogInfo($"Inherited Nuget feeds (not checked for reachability): {string.Join(", ", inheritedFeeds.OrderBy(f => f))}");
-                compilationInfoContainer.CompilationInfos.Add(("Inherited Nuget feed count", inheritedFeeds.Count.ToString()));
-            }
 
             return allFeedsReachable;
         }
