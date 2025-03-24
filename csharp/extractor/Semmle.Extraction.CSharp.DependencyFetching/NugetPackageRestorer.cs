@@ -708,8 +708,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool CheckFeeds(out HashSet<string> explicitFeeds)
         {
             (explicitFeeds, var allFeeds) = GetAllFeeds();
+            HashSet<string> feedsToCheck = explicitFeeds;
 
-            var allFeedsReachable = this.CheckFeeds(explicitFeeds);
+            // If private package registries are configured for C#, then check those
+            // in addition to the ones that are configured in `nuget.config` files.
+            this.dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
+
+            var allFeedsReachable = this.CheckFeeds(feedsToCheck);
 
             var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
             if (inheritedFeeds.Count > 0)
