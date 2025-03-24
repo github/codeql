@@ -109,6 +109,7 @@ test_ClientRequest
 | tst.js:347:5:347:30 | axios.p ... , data) |
 | tst.js:348:5:348:38 | axios.p ... config) |
 | tst.js:349:5:349:30 | axios.g ...  url }) |
+| tst.js:352:5:352:66 | axiosIn ... text"}) |
 test_getADataNode
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
@@ -285,6 +286,8 @@ test_getUrl
 | tst.js:347:5:347:30 | axios.p ... , data) | tst.js:347:21:347:23 | url |
 | tst.js:348:5:348:38 | axios.p ... config) | tst.js:348:21:348:23 | url |
 | tst.js:349:5:349:30 | axios.g ...  url }) | tst.js:349:18:349:29 | { url: url } |
+| tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:19:352:65 | {method ... "text"} |
+| tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:40:352:42 | url |
 test_getAResponseDataNode
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
@@ -377,3 +380,4 @@ test_getAResponseDataNode
 | tst.js:347:5:347:30 | axios.p ... , data) | tst.js:347:5:347:30 | axios.p ... , data) | json | true |
 | tst.js:348:5:348:38 | axios.p ... config) | tst.js:348:5:348:38 | axios.p ... config) | json | true |
 | tst.js:349:5:349:30 | axios.g ...  url }) | tst.js:349:5:349:30 | axios.g ...  url }) | json | true |
+| tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:5:352:66 | axiosIn ... text"}) | text | true |

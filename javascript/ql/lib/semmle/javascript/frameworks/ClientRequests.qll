@@ -223,6 +223,9 @@ module ClientRequest {
       or
       this = axios().getMember(method).getACall() and
       method = [httpMethodName(), "request", "postForm", "putForm", "patchForm", "getUri"]
+      or
+      this = axios().getMember("create").getReturn().getACall() and
+      method = "request"
     }
 
     private int getOptionsArgIndex() {

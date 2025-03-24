@@ -349,5 +349,5 @@ function moreAxiosTests(url, data, config){
     axios.getUri({ url: url });
 
     const axiosInstance = axios.create({});
-    axiosInstance({method: "get", url: url, responseType: "text"}); // Not flagged
+    axiosInstance({method: "get", url: url, responseType: "text"});
 }
