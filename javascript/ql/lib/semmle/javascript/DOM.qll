@@ -441,7 +441,7 @@ module DOM {
   DataFlow::SourceNode domValueRef() {
     result = domValueRef(DataFlow::TypeTracker::end())
     or
-    result.hasUnderlyingType("Element")
+    result.hasUnderlyingType(["Element", "HTMLCollection", "HTMLCollectionOf"])
     or
     result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
     or
