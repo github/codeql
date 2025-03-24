@@ -37,7 +37,7 @@ module CleartextLogging {
   private class SensitiveDataAsSource extends Source instanceof SensitiveData { }
 
   /** A sink for logging from model data. */
-  private class ModelsAsDataSinks extends Sink {
-    ModelsAsDataSinks() { exists(string s | sinkNode(this, s) and s.matches("log-injection%")) }
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() { exists(string s | sinkNode(this, s) and s.matches("log-injection%")) }
   }
 }
