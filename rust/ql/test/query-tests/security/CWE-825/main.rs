@@ -31,7 +31,7 @@ pub fn test_boxes_into() {
 	}
 }
 
-pub fn test_boxes_1(do_dangerous_writes: bool) {
+pub fn test_boxes_1(mode: i32) {
 	let p1: *const i64;
 	let p2: *const i64;
 	let p3: *mut i64;
@@ -50,27 +50,28 @@ pub fn test_boxes_1(do_dangerous_writes: bool) {
 			let v1 = *p1; // GOOD
 			let v2 = *p2; // GOOD
 			let v3 = *p3; // GOOD
-			*p3 = 4;
-
 			println!("	v1 = {v1}");
 			println!("	v2 = {v2}");
 			println!("	v3 = {v3}");
+			*p3 = 4;
 		}
 	} // (b2, b3 go out of scope, thus p2, p3 are dangling)
 
 	unsafe {
-		let v4 = *p1; // GOOD
-		let v5 = *p2; // $ MISSING: Alert
-		let v6 = *p3; // $ MISSING: Alert
-
-		if do_dangerous_writes {
+		if mode == 0 {
+			// reads
+			let v4 = *p1; // GOOD
+			let v5 = *p2; // $ MISSING: Alert
+			let v6 = *p3; // $ MISSING: Alert
+			println!("	v4 = {v4}");
+			println!("	v5 = {v5} (!)"); // corrupt in practice
+			println!("	v6 = {v6} (!)"); // corrupt in practice
+		}
+		if mode == 10 {
+			// write
 			*p3 = 5; // $ MISSING: Alert
 			use_the_heap(); // "malloc: Heap corruption detected"
 		}
-
-		println!("	v4 = {v4}");
-		println!("	v5 = {v5} (!)"); // corrupt in practice
-		println!("	v6 = {v6} (!)"); // corrupt in practice
 	}
 }
 
@@ -94,11 +95,15 @@ pub fn test_boxes_2() {
 // --- main ---
 
 fn main() {
+	let mode = std::env::args().nth(1).unwrap_or("0".to_string()).parse::<i32>().unwrap_or(0);
+		// mode = which test cases to explore (0 should be safe; some will crash / segfault).
+	println!("mode = {mode}");
+
 	println!("test_boxes_into:");
 	test_boxes_into();
 
 	println!("test_boxes_1:");
-	test_boxes_1(false);
+	test_boxes_1(mode);
 
 	println!("test_boxes_2:");
 	test_boxes_2();
@@ -106,22 +111,22 @@ fn main() {
 	// ---
 
 	println!("test_alloc:");
-	test_alloc(false);
+	test_alloc(mode);
 
 	println!("test_alloc_array:");
-	test_alloc_array(false);
+	test_alloc_array(mode);
 
 	println!("test_libc:");
 	test_libc();
 
 	println!("test_ptr_invalid:");
-	test_ptr_invalid(false);
+	test_ptr_invalid(mode);
 
 	println!("test_drop:");
 	test_drop();
 
 	println!("test_ptr_drop:");
-	test_ptr_drop();
+	test_ptr_drop(mode);
 
 	println!("test_qhelp_tests:");
 	test_qhelp_tests();
@@ -135,10 +140,10 @@ fn main() {
 	test_local_dangling();
 
 	println!("test_local_in_scope:");
-	test_local_in_scope();
+	test_local_in_scope(mode);
 
 	println!("test_static:");
-	test_static();
+	test_static(mode);
 
 	println!("test_call_contexts:");
 	test_call_contexts();
@@ -153,7 +158,7 @@ fn main() {
 	test_enum();
 
 	println!("test_ptr_to_struct:");
-	test_ptr_to_struct();
+	test_ptr_to_struct(mode);
 
 	println!("test_ptr_from_ref:");
 	test_ptr_from_ref();

@@ -88,7 +88,7 @@ pub fn test_local_dangling() {
 
 // --- local in scope ---
 
-fn use_pointers(p1: *const i64, p2: *mut i64) {
+fn use_pointers(p1: *const i64, p2: *mut i64, mode: i32) {
 	let p3: *const i64;
 	let my_local1 = 1;
 	p3 = &my_local1;
@@ -96,21 +96,27 @@ fn use_pointers(p1: *const i64, p2: *mut i64) {
 	use_the_stack();
 
 	unsafe {
-		let v1 = *p1; // GOOD
-		let v2 = *p2; // GOOD
-		let v3 = *p3; // GOOD
-		*p2 = 2; // GOOD
-		println!("	v1 = {v1}");
-		println!("	v2 = {v2}");
-		println!("	v3 = {v3}");
+		if (mode == 0) {
+			// reads
+			let v1 = *p1; // GOOD
+			let v2 = *p2; // GOOD
+			let v3 = *p3; // GOOD
+			println!("	v1 = {v1}");
+			println!("	v2 = {v2}");
+			println!("	v3 = {v3}");
+		}
+		if (mode == 200) {
+			// writes
+			*p2 = 2; // GOOD
+		}
 	}
 }
 
-pub fn test_local_in_scope() {
+pub fn test_local_in_scope(mode: i32) {
 	let my_local3: i64 = 3;
 	let mut my_local_mut4: i64 = 4;
 
-	use_pointers(&my_local3, &mut my_local_mut4);
+	use_pointers(&my_local3, &mut my_local_mut4, mode);
 }
 
 // --- static lifetime ---
@@ -129,18 +135,24 @@ fn get_static_mut() -> *mut i64 {
 	}
 }
 
-pub fn test_static() {
+pub fn test_static(mode: i32) {
 	let p1 = get_const();
 	let p2 = get_static_mut();
 
 	use_the_stack();
 
 	unsafe {
-		let v1 = *p1; // GOOD
-		let v2 = *p2; // GOOD
-		*p2 = 3; // GOOD
-		println!("	v1 = {v1}");
-		println!("	v2 = {v2}");
+		if (mode == 0) {
+			// reads
+			let v1 = *p1; // GOOD
+			let v2 = *p2; // GOOD
+			println!("	v1 = {v1}");
+			println!("	v2 = {v2}");
+		}
+		if (mode == 210) {
+			// writes
+			*p2 = 3; // GOOD
+		}
 	}
 }
 
@@ -299,7 +311,7 @@ impl Drop for MyPair {
 	}
 }
 
-pub fn test_ptr_to_struct() {
+pub fn test_ptr_to_struct(mode: i32) {
 	let p1: *mut MyPair;
 	let p2: *const i64;
 	let p3: *mut i64;
@@ -312,33 +324,54 @@ pub fn test_ptr_to_struct() {
 
 		unsafe {
 			let v1 = (*p1).a; // GOOD
+			println!("	v1 = {v1}");
+
 			let v2 = (*p1).b; // GOOD
+			println!("	v2 = {v2}");
+
 			let v3 = *p2; // GOOD
 			let v4 = *p3; // GOOD
-			(*p1).a = 3; // GOOD
-			(*p1).b = 4; // GOOD
-			*p3 = 5; // GOOD
-			println!("	v1 = {v1}");
-			println!("	v2 = {v2}");
 			println!("	v3 = {v3}");
 			println!("	v4 = {v4}");
+
+			(*p1).a = 3; // GOOD
+			*p3 = 4; // GOOD
+			(*p1).b = 5; // GOOD
 		}
 	}; // my_pair goes out of scope, thus p1, p2, p3 are dangling
 
 	use_the_stack();
 
 	unsafe {
-		let v5 = (*p1).a; // $ MISSING: Alert
-		let v6 = (*p1).b; // $ MISSING: Alert
-		let v7 = *p2; // $ MISSING: Alert
-		let v8 = *p3; // $ MISSING: Alert
-		(*p1).a = 6; // $ MISSING: Alert
-		(*p1).b = 7; // $ MISSING: Alert
-		*p3 = 8; // $ MISSING: Alert
-		println!("	v5 = {v5} (!)"); // dropped in practice
-		println!("	v6 = {v6} (!)"); // dropped in practice
-		println!("	v7 = {v7} (!)"); // dropped in practice
-		println!("	v8 = {v8} (!)"); // dropped in practice
+		match mode {
+			0 => {
+				// read
+				let v5 = (*p1).a; // $ MISSING: Alert
+				println!("	v5 = {v5} (!)"); // dropped in practice
+			},
+			220 => {
+				// another read
+				let v6 = (*p1).b; // $ MISSING: Alert
+				println!("	v6 = {v6} (!)"); // dropped in practice
+			},
+			221 => {
+				// more reads
+				let v7 = *p2; // $ MISSING: Alert
+				let v8 = *p3; // $ MISSING: Alert
+				println!("	v7 = {v7} (!)"); // dropped in practice
+				println!("	v8 = {v8} (!)"); // dropped in practice
+			},
+			222 => {
+				// writes
+				(*p1).a = 6; // $ MISSING: Alert
+				*p3 = 7; // $ MISSING: Alert
+			},
+			223 => {
+				// another write
+				(*p1).b = 8; // $ MISSING: Alert
+			},
+			_ => {}
+		}
 	}
 }
 
