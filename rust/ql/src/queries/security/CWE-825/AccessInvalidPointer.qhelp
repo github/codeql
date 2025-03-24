@@ -17,7 +17,7 @@ potential attacks.
 When dereferencing a pointer in <code>unsafe</code> code, take care that the pointer is valid and
 points to the intended data. Code may need to be rearranged or additional checks added to ensure
 safety in all circumstances. If possible, rewrite the code using safe Rust types to avoid this
-kind of problems altogether.
+kind of problem altogether.
 </p>
 
 </recommendation>
