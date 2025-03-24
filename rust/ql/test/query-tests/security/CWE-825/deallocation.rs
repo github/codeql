@@ -27,6 +27,10 @@ pub fn test_alloc(mode: i32) {
 				let v6 = *m2; // $ MISSING: Alert
 				println!("	v5 = {v5} (!)"); // corrupt in practice
 				println!("	v6 = {v6} (!)"); // corrupt in practice
+
+				// test repeat reads (we don't want lots of very similar results for the same dealloc)
+				let v5b = *m1; // $ Alert[rust/access-invalid-pointer]=dealloc
+				let v5c = *m1; // $ Alert[rust/access-invalid-pointer]=dealloc
 			},
 			100 => {
 				// more reads
