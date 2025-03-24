@@ -1,6 +1,6 @@
 /**
  * @name Access of invalid pointer
- * @description Dereferencing an invalid or dangling pointer is undefined behavior and may cause memory corruption.
+ * @description Dereferencing an invalid or dangling pointer causes undefined behavior and may result in memory corruption.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5

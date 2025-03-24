@@ -5,7 +5,7 @@
 <overview>
 
 <p>
-Dereferencing an invalid or dangling pointer is undefined behavior. Memory may be corrupted
+Dereferencing an invalid or dangling pointer may cause undefined behavior. Memory may be corrupted
 causing the program to crash or behave incorrectly, in some cases exposing the program to
 potential attacks.
 </p>
@@ -17,7 +17,7 @@ potential attacks.
 When dereferencing a pointer in <code>unsafe</code> code, take care that the pointer is valid and
 points to the intended data. Code may need to be rearranged or additional checks added to ensure
 safety in all circumstances. If possible, rewrite the code using safe Rust types to avoid this
-class of problems altogether.
+kind of problems altogether.
 </p>
 
 </recommendation>
@@ -32,7 +32,7 @@ undefined behavior:
 <sample src="AccessInvalidPointerBad.rs" />
 
 <p>
-In this case undefined behavior can be avoided by rearranging the code so that the dereference
+In this case, undefined behavior can be avoided by rearranging the code so that the dereferencing
 comes before the call to <code>std::ptr::drop_in_place</code>:
 </p>
 
