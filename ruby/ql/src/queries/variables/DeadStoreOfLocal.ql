@@ -12,11 +12,21 @@
 
 import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
+import codeql.ruby.ApiGraphs
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
   RelevantLocalVariableWriteAccess() {
     not this.getVariable().getName().charAt(0) = "_" and
-    not this = any(Parameter p).getAVariable().getDefiningAccess()
+    not this = any(Parameter p).getAVariable().getDefiningAccess() and
+    not exists(SuperCall s |
+      s.getEnclosingCallable().getAParameter().getAVariable().getAnAccess() = this
+    |
+      // a call to 'super' without any arguments will pass on the parameter.
+      // thus, the parameter is used, and the assignment is not useless.
+      not exists(s.getAnArgument())
+    ) and
+    not API::getTopLevelMember("ERB").getInstance().getAMethodCall("result").asExpr().getScope() =
+      this.getCfgScope()
   }
 }
 
