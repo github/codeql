@@ -810,23 +810,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // todo: this could be improved.
-            // We don't have to get the feeds from each of the folders from below, it would be enought to check the folders that recursively contain the others.
-            var allFeeds = nugetConfigs
-                .Select(config =>
-                {
-                    try
+            HashSet<string>? allFeeds = null;
+
+            if (nugetConfigs.Count > 0)
+            {
+                // We don't have to get the feeds from each of the folders from below, it would be enought to check the folders that recursively contain the others.
+                allFeeds = nugetConfigs
+                    .Select(config =>
                     {
-                        return new FileInfo(config).Directory?.FullName;
-                    }
-                    catch (Exception exc)
-                    {
-                        logger.LogWarning($"Failed to get directory of '{config}': {exc}");
-                    }
-                    return null;
-                })
-                .Where(folder => folder != null)
-                .SelectMany(folder => GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folder!)))
-                .ToHashSet();
+                        try
+                        {
+                            return new FileInfo(config).Directory?.FullName;
+                        }
+                        catch (Exception exc)
+                        {
+                            logger.LogWarning($"Failed to get directory of '{config}': {exc}");
+                        }
+                        return null;
+                    })
+                    .Where(folder => folder != null)
+                    .SelectMany(folder => GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folder!)))
+                    .ToHashSet();
+            }
+            else
+            {
+                // If we haven't found any `nuget.config` files, then obtain a list of feeds from the root source directory.
+                allFeeds = GetFeeds(() => dotnet.GetNugetFeedsFromFolder(this.fileProvider.SourceDir.FullName)).ToHashSet();
+            }
 
             logger.LogInfo($"Found {allFeeds.Count} Nuget feeds (with inherited ones) in nuget.config files: {string.Join(", ", allFeeds.OrderBy(f => f))}");
 
