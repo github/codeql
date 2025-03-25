@@ -44,14 +44,14 @@ app1.use(hdbext.middleware(hanaConfig));
 
 app1.get('/execute-query', function (req, res) {
   var client = req.db;
-  let maliciousInput = req.body.data; // $ MISSING: Source
+  let maliciousInput = req.body.data; // $ Source
   client.exec('SELECT * FROM DUMMY' + maliciousInput, function (err, rs) {}); // $ MISSING: Alert
 
   dbStream.createProcStatement(client, 'CALL PROC_DUMMY (?, ?, ?, ?, ?)' + maliciousInput, function (err, stmt) { // $ MISSING: Alert
     stmt.exec({ A: maliciousInput, B: 4 }, function (err, params, dummyRows, tablesRows) {}); // maliciousInput is treated as a parameter
   });
 
-  hdbext.loadProcedure(client, null, 'PROC_DUMMY' + maliciousInput, function(err, sp) { // $ MISSING: Alert
+  hdbext.loadProcedure(client, null, 'PROC_DUMMY' + maliciousInput, function(err, sp) { // $ Alert
     sp(3, maliciousInput, function(err, parameters, dummyRows, tablesRows) {}); // maliciousInput is treated as a parameter
   });
 });
