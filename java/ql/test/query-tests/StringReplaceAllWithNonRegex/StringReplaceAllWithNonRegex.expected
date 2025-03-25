@@ -1,1 +1,1 @@
-| Test.java:4:14:4:36 | replaceAll(...) | Call to 'replaceAll' uses an argument comprised of plain string characters only. |
+| Test.java:4:14:4:36 | replaceAll(...) | This call to 'replaceAll' should be a call `replace` as its $@ is not a regular expression. | Test.java:4:28:4:30 | "t" | first argument |
