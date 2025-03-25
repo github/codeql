@@ -47,7 +47,7 @@ app1.get('/execute-query', function (req, res) {
   let maliciousInput = req.body.data; // $ Source
   client.exec('SELECT * FROM DUMMY' + maliciousInput, function (err, rs) {}); // $ MISSING: Alert
 
-  dbStream.createProcStatement(client, 'CALL PROC_DUMMY (?, ?, ?, ?, ?)' + maliciousInput, function (err, stmt) { // $ MISSING: Alert
+  dbStream.createProcStatement(client, 'CALL PROC_DUMMY (?, ?, ?, ?, ?)' + maliciousInput, function (err, stmt) { // $ Alert
     stmt.exec({ A: maliciousInput, B: 4 }, function (err, params, dummyRows, tablesRows) {}); // maliciousInput is treated as a parameter
   });
 
