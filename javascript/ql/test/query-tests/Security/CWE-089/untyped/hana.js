@@ -81,6 +81,6 @@ app2.post('/documents/find', (req, res) => {
       statement.exec({A: 3, B: maliciousInput}, function(err, parameters, dummyRows, tableRows) {}); 
     });
 
-    client.execute('select A, B from TEST.NUMBERS order by A' + maliciousInput, function(err, rs) {}); // $ MISSING: Alert
+    client.execute('select A, B from TEST.NUMBERS order by A' + maliciousInput, function(err, rs) {}); // $ Alert
   });
 });

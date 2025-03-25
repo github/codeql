@@ -5,4 +5,4 @@ extensions:
     data:
       - ["@sap/hana-client", "Member[createConnection].ReturnValue.Member[exec,prepare].Argument[0]", "sql-injection"]
 
-      - ["hdb", "Member[createClient].ReturnValue.Member[exec,prepare].Argument[0]", "sql-injection"]
+      - ["hdb", "Member[createClient].ReturnValue.Member[exec,prepare,execute].Argument[0]", "sql-injection"]
