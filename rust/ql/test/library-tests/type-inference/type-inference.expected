@@ -409,8 +409,10 @@ inferType
 | main.rs:308:18:308:34 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:308:18:308:34 | MyThing {...} | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:308:31:308:32 | S2 |  | main.rs:264:5:265:14 | struct S2 |
+| main.rs:310:26:310:42 | call_trait_m1(...) |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:310:40:310:41 | x2 |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:310:40:310:41 | x2 | T | main.rs:262:5:263:14 | struct S1 |
+| main.rs:311:26:311:42 | call_trait_m1(...) |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:311:40:311:41 | y2 |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:311:40:311:41 | y2 | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:313:13:313:14 | x3 |  | main.rs:257:5:260:5 | struct MyThing |
@@ -431,9 +433,11 @@ inferType
 | main.rs:317:16:317:32 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:317:16:317:32 | MyThing {...} | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:317:29:317:30 | S2 |  | main.rs:264:5:265:14 | struct S2 |
+| main.rs:320:26:320:48 | call_trait_thing_m1(...) |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:320:46:320:47 | x3 |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:320:46:320:47 | x3 | T | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:320:46:320:47 | x3 | T.T | main.rs:262:5:263:14 | struct S1 |
+| main.rs:321:26:321:48 | call_trait_thing_m1(...) |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:321:46:321:47 | y3 |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:321:46:321:47 | y3 | T | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:321:46:321:47 | y3 | T.T | main.rs:264:5:265:14 | struct S2 |

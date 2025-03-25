@@ -307,8 +307,8 @@ mod function_trait_bounds {
         let x2 = MyThing { a: S1 };
         let y2 = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x2)); // missing
-        println!("{:?}", call_trait_m1(y2)); // missing
+        println!("{:?}", call_trait_m1(x2));
+        println!("{:?}", call_trait_m1(y2));
 
         let x3 = MyThing {
             a: MyThing { a: S1 },
@@ -317,8 +317,8 @@ mod function_trait_bounds {
             a: MyThing { a: S2 },
         };
 
-        println!("{:?}", call_trait_thing_m1(x3)); // missing
-        println!("{:?}", call_trait_thing_m1(y3)); // missing
+        println!("{:?}", call_trait_thing_m1(x3));
+        println!("{:?}", call_trait_thing_m1(y3));
     }
 }
 

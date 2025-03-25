@@ -512,36 +512,35 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private module AccessBaseType {
         /**
-         * Holds if inferring types at `a` might depend on the type at `apos`
-         * having `baseMention` as a transitive base type mention.
+         * Holds if inferring types at `a` might depend on the type at `path` of
+         * `apos` having `baseMention` as a transitive base type mention.
          */
-        private predicate relevantAccess(Access a, AccessPosition apos, Type base) {
+        private predicate relevantAccess(Access a, AccessPosition apos, TypePath path, Type base) {
           exists(Declaration target, DeclarationPosition dpos |
             adjustedAccessType(a, apos, target, _, _) and
-            accessDeclarationPositionMatch(apos, dpos) and
-            declarationBaseType(target, dpos, base, _, _)
+            accessDeclarationPositionMatch(apos, dpos)
+          |
+            path.isEmpty() and declarationBaseType(target, dpos, base, _, _)
+            or
+            typeParameterConstraintHasTypeParameter(target, dpos, path, _, base, _, _)
           )
         }
 
         pragma[nomagic]
-        private Type inferRootType(Access a, AccessPosition apos) {
-          relevantAccess(a, apos, _) and
-          result = a.getInferredType(apos, TypePath::nil())
-        }
-
-        pragma[nomagic]
-        private Type inferTypeAt(Access a, AccessPosition apos, TypeParameter tp, TypePath suffix) {
-          relevantAccess(a, apos, _) and
+        private Type inferTypeAt(
+          Access a, AccessPosition apos, TypePath prefix, TypeParameter tp, TypePath suffix
+        ) {
+          relevantAccess(a, apos, prefix, _) and
           exists(TypePath path0 |
-            result = a.getInferredType(apos, path0) and
+            result = a.getInferredType(apos, prefix.append(path0)) and
             path0.isCons(tp, suffix)
           )
         }
 
         /**
-         * Holds if `baseMention` is a (transitive) base type mention of the type of
-         * `a` at position `apos`, and `t` is mentioned (implicitly) at `path` inside
-         * `base`. For example, in
+         * Holds if `baseMention` is a (transitive) base type mention of the
+         * type of `a` at position `apos` at path `pathToSub`, and `t` is
+         * mentioned (implicitly) at `path` inside `base`. For example, in
          *
          * ```csharp
          * class C<T1> { }
@@ -570,17 +569,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         pragma[nomagic]
         predicate hasBaseTypeMention(
-          Access a, AccessPosition apos, TypeMention baseMention, TypePath path, Type t
+          Access a, AccessPosition apos, TypePath pathToSub, TypeMention baseMention, TypePath path,
+          Type t
         ) {
-          relevantAccess(a, apos, resolveTypeMentionRoot(baseMention)) and
-          exists(Type sub | sub = inferRootType(a, apos) |
+          relevantAccess(a, apos, pathToSub, resolveTypeMentionRoot(baseMention)) and
+          exists(Type sub | sub = a.getInferredType(apos, pathToSub) |
             not t = sub.getATypeParameter() and
             baseTypeMentionHasTypeAt(sub, baseMention, path, t)
             or
             exists(TypePath prefix, TypePath suffix, TypeParameter tp |
               tp = sub.getATypeParameter() and
               baseTypeMentionHasTypeAt(sub, baseMention, prefix, tp) and
-              t = inferTypeAt(a, apos, tp, suffix) and
+              t = inferTypeAt(a, apos, pathToSub, tp, suffix) and
               path = prefix.append(suffix)
             )
           )
@@ -596,7 +596,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, AccessPosition apos, Type base, TypePath path, Type t
       ) {
         exists(TypeMention tm |
-          AccessBaseType::hasBaseTypeMention(a, apos, tm, path, t) and
+          AccessBaseType::hasBaseTypeMention(a, apos, TypePath::nil(), tm, path, t) and
           base = resolveTypeMentionRoot(tm)
         )
       }
@@ -671,6 +671,58 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         t = getTypeArgument(a, target, tp, path)
       }
 
+      /**
+       * Holds if `tp1` and `tp2` are distinct type parameters of `target`, the
+       * declared type at `apos` mentions `tp1` at `path1`, `tp1` has a base
+       * type mention of type `constrant` that mentions `tp2` at the path
+       * `path2`.
+       *
+       * For this example
+       * ```csharp
+       * interface IFoo<A> { }
+       * void M<T1, T2>(T2 item) where T2 : IFoo<T1> { }
+       * ```
+       * with the method declaration being the target and the for the first
+       * parameter position, we have the following
+       * - `path1 = ""`,
+       * - `tp1 = T2`,
+       * - `constraint = IFoo`,
+       * - `path2 = "A"`,
+       * - `tp2 = T1`
+       */
+      pragma[nomagic]
+      private predicate typeParameterConstraintHasTypeParameter(
+        Declaration target, DeclarationPosition dpos, TypePath path1, TypeParameter tp1,
+        Type constraint, TypePath path2, TypeParameter tp2
+      ) {
+        tp1 = target.getTypeParameter(_) and
+        tp2 = target.getTypeParameter(_) and
+        tp1 != tp2 and
+        tp1 = target.getDeclaredType(dpos, path1) and
+        exists(TypeMention tm |
+          tm = getABaseTypeMention(tp1) and
+          tm.resolveTypeAt(path2) = tp2 and
+          constraint = resolveTypeMentionRoot(tm)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate typeConstraintBaseTypeMatch(
+        Access a, Declaration target, TypePath path, Type t, TypeParameter tp
+      ) {
+        not exists(getTypeArgument(a, target, tp, _)) and
+        target = a.getTarget() and
+        exists(
+          TypeMention base, AccessPosition apos, DeclarationPosition dpos, TypePath pathToTp,
+          TypePath pathToTp2
+        |
+          accessDeclarationPositionMatch(apos, dpos) and
+          typeParameterConstraintHasTypeParameter(target, dpos, pathToTp2, _,
+            resolveTypeMentionRoot(base), pathToTp, tp) and
+          AccessBaseType::hasBaseTypeMention(a, apos, pathToTp2, base, pathToTp.append(path), t)
+        )
+      }
+
       pragma[inline]
       private predicate typeMatch(
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
@@ -684,6 +736,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         or
         // We can infer the type of `tp` by going up the type hiearchy
         baseTypeMatch(a, target, path, t, tp)
+        or
+        // We can infer the type of `tp` by a type bound
+        typeConstraintBaseTypeMatch(a, target, path, t, tp)
       }
 
       /**
