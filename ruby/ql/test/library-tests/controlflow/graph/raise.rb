@@ -180,3 +180,23 @@ def m16(b1, b2)
     return 3
   end
 end
+
+def m17(b1, b2)
+  begin
+    raise ExceptionA if b1
+  rescue ExceptionA
+    if b2
+      b1 = false
+      retry
+  end
+end
+
+def m18(b2)
+  b1 = true
+  begin
+    raise ExceptionA if b1
+  rescue ExceptionA
+    if b2
+      b1 = false
+  end
+end
