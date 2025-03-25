@@ -6,7 +6,6 @@ private import SuccessorTypes
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.Splitting as Splitting
 private import internal.Completion
-private import internal.Scope
 
 /**
  * An AST node with an associated control-flow graph.
@@ -16,7 +15,16 @@ private import internal.Scope
  * Note that module declarations are not themselves CFG scopes, as they are part of
  * the CFG of the enclosing top-level or callable.
  */
-class CfgScope extends Scope instanceof CfgImpl::CfgScope { }
+class CfgScope extends Scope instanceof CfgImpl::CfgScope {
+  final CfgScope getOuterCfgScope() {
+    exists(Ast parent |
+      parent = this.getParent() and
+      result = CfgImpl::getCfgScope(parent)
+    )
+  }
+
+  Parameter getAParameter() { result = super.getAParameter() }
+}
 
 /**
  * A control flow node.

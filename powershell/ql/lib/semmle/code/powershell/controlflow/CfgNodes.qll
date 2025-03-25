@@ -419,7 +419,10 @@ module ExprNodes {
 
   private class IndexExprWriteAccessChildMapping extends IndexExprChildMapping, IndexExprWriteAccess
   {
-    override predicate relevantChild(Ast child) { this.isExplicitWrite(child) }
+    override predicate relevantChild(Ast child) {
+      super.relevantChild(child) or
+      this.isExplicitWrite(child)
+    }
   }
 
   class IndexExprWriteAccessCfgNode extends IndexExprCfgNode {
@@ -443,7 +446,7 @@ module ExprNodes {
   }
 
   private class IndexExprReadAccessChildMapping extends IndexExprChildMapping, IndexExprReadAccess {
-    override predicate relevantChild(Ast child) { none() }
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
 
   class IndexExprReadAccessCfgNode extends IndexExprCfgNode {
@@ -479,6 +482,8 @@ module ExprNodes {
 
     /** Gets the name that is used to select the callee. */
     string getName() { result = e.getName() }
+
+    predicate hasName(string name) { this.getName() = name }
 
     /** Gets the i'th positional argument to this call. */
     ExprCfgNode getPositionalArgument(int i) {
@@ -558,7 +563,10 @@ module ExprNodes {
   private class MemberExprWriteAccessChildMapping extends MemberExprChildMapping,
     MemberExprWriteAccess
   {
-    override predicate relevantChild(Ast child) { this.isExplicitWrite(child) }
+    override predicate relevantChild(Ast child) {
+      super.relevantChild(child) or
+      this.isExplicitWrite(child)
+    }
   }
 
   class MemberExprWriteAccessCfgNode extends MemberExprCfgNode {
@@ -584,7 +592,7 @@ module ExprNodes {
   private class MemberExprReadAccessChildMapping extends MemberExprChildMapping,
     MemberExprReadAccess
   {
-    override predicate relevantChild(Ast child) { none() }
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
 
   class MemberExprReadAccessCfgNode extends MemberExprCfgNode {
@@ -1322,9 +1330,7 @@ module StmtNodes {
   }
 
   class ConfigurationChildMapping extends NonExprChildMapping, Configuration {
-    override predicate relevantChild(Ast child) {
-      child = this.getName() or child = this.getBody()
-    }
+    override predicate relevantChild(Ast child) { child = this.getName() or child = this.getBody() }
   }
 
   class ConfigurationCfgNode extends StmtCfgNode {
