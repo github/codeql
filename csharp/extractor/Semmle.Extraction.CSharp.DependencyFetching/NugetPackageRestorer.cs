@@ -103,10 +103,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", checkNugetFeedResponsiveness ? "1" : "0"));
 
             HashSet<string>? explicitFeeds = null;
+            HashSet<string>? allFeeds = null;
 
             try
             {
-                if (checkNugetFeedResponsiveness && !CheckFeeds(out explicitFeeds))
+                if (checkNugetFeedResponsiveness && !CheckFeeds(out explicitFeeds, out allFeeds))
                 {
                     // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
                     var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds(explicitFeeds);
@@ -156,7 +157,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var restoredProjects = RestoreSolutions(out var container);
             var projects = fileProvider.Projects.Except(restoredProjects);
-            RestoreProjects(projects, explicitFeeds, out var containers);
+            RestoreProjects(projects, allFeeds, out var containers);
 
             var dependencies = containers.Flatten(container);
 
@@ -704,10 +705,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// as well as any private package registry feeds that are configured.
         /// </summary>
         /// <param name="explicitFeeds">Outputs the set of explicit feeds.</param>
+        /// <param name="allFeeds">Outputs the set of all feeds (explicit and inherited).</param>
         /// <returns>True if all feeds are reachable or false otherwise.</returns>
-        private bool CheckFeeds(out HashSet<string> explicitFeeds)
+        private bool CheckFeeds(out HashSet<string> explicitFeeds, out HashSet<string> allFeeds)
         {
-            (explicitFeeds, var allFeeds) = GetAllFeeds();
+            (explicitFeeds, allFeeds) = GetAllFeeds();
             HashSet<string> feedsToCheck = explicitFeeds;
 
             // If private package registries are configured for C#, then check those
