@@ -50,7 +50,7 @@ class FileWrapperCall extends DataFlow::CallCfgNode {
 
 /** A node where a file is closed. */
 abstract class FileClose extends DataFlow::CfgNode {
-  /** Holds if this file close will occur if an exception is thrown at `e`. */
+  /** Holds if this file close will occur if an exception is thrown at `raises`. */
   predicate guardsExceptions(DataFlow::CfgNode raises) {
     this.asCfgNode() = raises.asCfgNode().getAnExceptionalSuccessor().getASuccessor*()
     or
@@ -91,7 +91,7 @@ private predicate fileLocalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node node
 }
 
 /** Holds if data flows from `source` to `sink`, including file wrapper classes. */
-private predicate fileLocalFlow(DataFlow::Node source, DataFlow::Node sink) {
+private predicate fileLocalFlow(FileOpen source, DataFlow::Node sink) {
   fileLocalFlowStep*(source, sink)
 }
 
