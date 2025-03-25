@@ -1,4 +1,4 @@
-# J-STR-001: Use of `String.replaceAll` with a first argument of a non regular expression
+# Use of `String#replaceAll` with a first argument which is not a regular expression
 
 Using `String.replaceAll` is less performant than `String.replace` when the first argument is not a regular expression.
 
