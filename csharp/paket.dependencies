@@ -4,7 +4,7 @@ source https://api.nuget.org/v3/index.json
 # behave like nuget in choosing transitive dependency versions
 strategy: max
 
-nuget Basic.CompilerLog.Util
+nuget Basic.CompilerLog.Util 0.9.8
 nuget Mono.Posix.NETStandard
 nuget Newtonsoft.Json
 nuget xunit
