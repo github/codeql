@@ -1508,6 +1508,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * nodes. Disable this only if barrier guards are not going to be used.
      */
     default predicate supportBarrierGuardsOnPhiEdges() { any() }
+
+    /**
+     * Holds if all phi input back edges should be kept in the data flow graph.
+     *
+     * This is ordinarily not necessary and causes the retention of superfluous
+     * nodes.
+     */
+    default predicate keepAllPhiInputBackEdges() { none() }
   }
 
   /**
@@ -1540,10 +1548,25 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
+     * Holds if the phi input edge from `input` to `phi` is a back edge and
+     * must be kept.
+     */
+    private predicate relevantBackEdge(SsaPhiExt phi, BasicBlock input) {
+      exists(BasicBlock bbPhi |
+        DfInput::keepAllPhiInputBackEdges() and
+        exists(getAPhiInputDef(phi, input)) and
+        phi.getBasicBlock() = bbPhi and
+        getImmediateBasicBlockDominator+(input) = bbPhi
+      )
+    }
+
+    /**
      * Holds if the input to `phi` from the block `input` might be relevant for
      * barrier guards as a separately synthesized `TSsaInputNode`.
      */
     private predicate relevantPhiInputNode(SsaPhiExt phi, BasicBlock input) {
+      relevantBackEdge(phi, input)
+      or
       DfInput::supportBarrierGuardsOnPhiEdges() and
       // If the input isn't explicitly read then a guard cannot check it.
       exists(DfInput::getARead(getAPhiInputDef(phi, input))) and
@@ -1605,6 +1628,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * flow edges.
      */
     private predicate phiHasUniqNextNode(SsaPhiExt phi) {
+      not relevantBackEdge(phi, _) and
       exists(int nextPhiInput, int nextPhi, int nextRef |
         1 = nextPhiInput + nextPhi + nextRef and
         nextPhiInput =
