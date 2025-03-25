@@ -279,6 +279,15 @@ fn test_simple_sink() {
     simple_sink(s); // $ hasValueFlow=17
 }
 
+// has a source model
+fn arg_source(i: i64) {}
+
+fn test_arg_source() {
+    let i = 19;
+    arg_source(i);
+    sink(i) // $ MISSING: hasValueFlow=i
+}
+
 #[tokio::main]
 async fn main() {
     test_identify();
@@ -299,5 +308,6 @@ async fn main() {
     test_simple_source();
     test_simple_sink();
     test_get_async_number().await;
+    test_arg_source();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }
