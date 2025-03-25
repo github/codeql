@@ -19,7 +19,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class SourceVariable = LocalScopeVariable;
+  class SourceVariable = Variable;
 
   /**
    * Holds if the statement at index `i` of basic block `bb` contains a write to variable `v`.
@@ -27,23 +27,21 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
    */
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     (
+      exists(Scope scope | scope = v.(ThisParameter).getDeclaringScope() |
+        // We consider the `this` variable to have a single write at the entry to a method block
+        scope = bb.(BasicBlocks::EntryBasicBlock).getScope() and
+        i = 0
+      )
+      or
       uninitializedWrite(bb, i, v)
       or
-      parameterWrite(bb, i, v)
-      or
       variableWriteActual(bb, i, v, _)
-      or
-      pipelineIteratorWrite(bb, i, v)
     ) and
     certain = true
   }
 
-  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    (
-      variableReadActual(bb, i, v)
-      or
-      pipelineRead(bb, i, v)
-    ) and
+  predicate variableRead(BasicBlock bb, int i, Variable v, boolean certain) {
+    variableReadActual(bb, i, v) and
     certain = true
   }
 }
@@ -61,101 +59,20 @@ class PhiNode = Impl::PhiNode;
 module Consistency = Impl::Consistency;
 
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
-predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
-  v.getDeclaringScope() = bb.getScope() and
-  i = -1
-}
-
-predicate pipelineIteratorWrite(Cfg::BasicBlock bb, int i, LocalScopeVariable v) {
-  exists(ProcessBlockCfgNode process | process = bb.getNode(i) |
-    v.(PipelineIteratorVariable).getProcessBlock() = process.getAstNode()
-    or
-    v.(PipelineByPropertyNameIteratorVariable).getProcessBlock() = process.getAstNode()
-  )
-}
-
-/**
- * Gets index of `p` in a version of the enclosing function where the parameter
- * list is reversed.
- *
- * For example, given
- * ```ps
- * function f($a, $b) { ... }
- * ```
- * the inverted index of `$a` is 1, and the inverted index of `$b` is 0.
- *
- * The inverted index of `$this` is always always the number of
- * parameters (excluding `this`).
- */
-private int getInvertedIndex(Parameter p) {
-  p.isThis() and
-  result = p.getFunction().getNumberOfParameters()
-  or
-  exists(int i |
-    p.getIndex() = i or
-    p.hasParameterBlock(_, i)
-  |
-    result = p.getFunction().getNumberOfParameters() - i - 1
-  )
-}
-
-/**
- * Holds if the the SSA definition of `p` should be placed at index `i` in
- * block `bb`. Note that the index may be negative.
- */
-predicate parameterWrite(Cfg::EntryBasicBlock bb, int i, Parameter p) {
-  exists(Function f |
-    f.getEntryBasicBlock() = bb and
-    p.getFunction() = f and
-    // If the enclosing function has 2 parameters we map the index of parameter
-    // 0 to -2, the index of parameter 1 to -1.
-    i = -getInvertedIndex(p) - 1
-  )
-}
-
-private LocalScopeVariable getPipelineIterator(LocalScopeVariable pipelineParam) {
-  result.(PipelineIteratorVariable).getProcessBlock().getScriptBlock() =
-    pipelineParam.(PipelineParameter).getDeclaringScope()
-  or
-  result.(PipelineByPropertyNameIteratorVariable).getParameter() =
-    pipelineParam.(PipelineByPropertyNameParameter)
-}
-
-private predicate isPipelineIteratorVarAccess(VarAccessCfgNode va) {
-  (
-    va.getVariable() instanceof PipelineParameter or
-    va.getVariable() instanceof PipelineByPropertyNameParameter
-  ) and
-  va.getAstNode().getParent*() instanceof ProcessBlock
+predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, Variable v) {
+  bb.getNode(i).getAstNode() = v
 }
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
-private predicate variableReadActual(Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v) {
-  exists(VarReadAccessCfgNode read, SsaInput::SourceVariable w |
-    read.getVariable() = w and read = bb.getNode(i)
-  |
-    if isPipelineIteratorVarAccess(read) then v = getPipelineIterator(w) else v = w
-  )
-}
-
-private predicate pipelineRead(Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v) {
-  exists(ProcessBlockCfgNode process | process = bb.getNode(i) |
-    v = process.getPipelineParameter() or
-    v = process.getAPipelineByPropertyNameParameter()
+private predicate variableReadActual(Cfg::BasicBlock bb, int i, Variable v) {
+  exists(VarReadAccess read |
+    read.getVariable() = v and
+    read = bb.getNode(i).getAstNode()
   )
 }
 
 pragma[noinline]
-private predicate adjacentDefRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
-pragma[noinline]
-private predicate adjacentDefReadExt(
+deprecated private predicate adjacentDefReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
@@ -163,23 +80,7 @@ private predicate adjacentDefReadExt(
   v = def.getSourceVariable()
 }
 
-private predicate adjacentDefReachesRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-private predicate adjacentDefReachesReadExt(
+deprecated private predicate adjacentDefReachesReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
@@ -195,16 +96,7 @@ private predicate adjacentDefReachesReadExt(
   )
 }
 
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
-private predicate adjacentDefReachesUncertainReadExt(
+deprecated private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
@@ -213,13 +105,29 @@ private predicate adjacentDefReachesUncertainReadExt(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReadsExt(
+  DefinitionExt def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
+  )
+}
+
+/**
+ * Holds if the read of `def` at `read` may be a last read. That is, `read`
+ * can either reach another definition of the underlying source variable or
+ * the end of the CFG scope, without passing through another non-pseudo read.
+ */
+pragma[nomagic]
+deprecated predicate lastRead(Definition def, VarReadAccessCfgNode read) {
+  exists(Cfg::BasicBlock bb, int i |
+    lastRefSkipUncertainReadsExt(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    read = bb.getNode(i)
   )
 }
 
@@ -231,12 +139,11 @@ private module Cached {
    */
   cached
   predicate variableWriteActual(
-    Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v, VarWriteAccessCfgNode write
+    Cfg::BasicBlock bb, int i, Variable v, VarWriteAccessCfgNode write
   ) {
-    exists(Cfg::CfgNode n, SsaInput::SourceVariable w |
-      write.getVariable() = w and
-      n = bb.getNode(i) and
-      if isPipelineIteratorVarAccess(write) then v = getPipelineIterator(w) else v = w
+    exists(Cfg::CfgNode n |
+      write.getVariable() = v and
+      n = bb.getNode(i)
     |
       write.isExplicitWrite(n)
       or
@@ -246,10 +153,10 @@ private module Cached {
   }
 
   cached
-  AstCfgNode getARead(Definition def) {
-    exists(SsaInput::SourceVariable v, Cfg::BasicBlock bb, int i |
+  VarReadAccessCfgNode getARead(Definition def) {
+    exists(Variable v, Cfg::BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
-      SsaInput::variableRead(bb, i, v, true) and
+      variableReadActual(bb, i, v) and
       result = bb.getNode(i)
     )
   }
@@ -267,11 +174,7 @@ private module Cached {
    */
   cached
   predicate firstRead(Definition def, VarReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
+    exists(Cfg::BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and read = bb.getNode(i))
   }
 
   /**
@@ -281,25 +184,11 @@ private module Cached {
    */
   cached
   predicate adjacentReadPair(Definition def, VarReadAccessCfgNode read1, VarReadAccessCfgNode read2) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
+    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2, Variable v |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
-   * Holds if the read of `def` at `read` may be a last read. That is, `read`
-   * can either reach another definition of the underlying source variable or
-   * the end of the CFG scope, without passing through another non-pseudo read.
-   */
-  cached
-  predicate lastRead(Definition def, VarReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb, int i |
-      lastRefSkipUncertainReadsExt(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      read = bb.getNode(i)
     )
   }
 
@@ -326,8 +215,14 @@ private module Cached {
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+      ) {
+        guardChecks(g, e, branch)
+      }
+
       private Node getABarrierNodeImpl() {
-        none() // TODO
+        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
@@ -346,7 +241,7 @@ import Cached
  * Only intended for internal use.
  */
 class DefinitionExt extends Impl::DefinitionExt {
-  AstCfgNode getARead() { result = getARead(this) }
+  VarReadAccessCfgNode getARead() { result = getARead(this) }
 
   override string toString() { result = this.(Ssa::Definition).toString() }
 
@@ -367,29 +262,64 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
 DefinitionExt getParameterDef(Parameter p) {
-  exists(Cfg::EntryBasicBlock bb, int i |
-    parameterWrite(bb, i, p) and
-    result.definesAt(p, bb, i, _)
+  exists(Cfg::BasicBlock bb, int i |
+    bb.getNode(i).getAstNode() = p and
+    result.definesAt(_, bb, i, _)
   )
 }
 
-private newtype TParameterExt = TNormalParameter(Parameter p)
+private Parameter getANonPipelineParameter(FunctionBase f) {
+  result = f.getAParameter() and
+  not result instanceof PipelineParameter and
+  not result instanceof PipelineByPropertyNameParameter
+}
+
+class NormalParameter extends Parameter {
+  NormalParameter() {
+    not this instanceof PipelineParameter and
+    not this instanceof PipelineByPropertyNameParameter
+  }
+
+  int getIndexExcludingPipelines() {
+    exists(FunctionBase f |
+      f = this.getFunction() and
+      this =
+        rank[result + 1](int index, Parameter p |
+          p = getANonPipelineParameter(f) and index = p.getIndex()
+        |
+          p order by index
+        )
+    )
+  }
+}
+
+private newtype TParameterExt =
+  TNormalParameter(NormalParameter p) or
+  TSelfMethodParameter(Method m)
 
 /** A normal parameter or an implicit `self` parameter. */
 class ParameterExt extends TParameterExt {
-  Parameter asParameter() { this = TNormalParameter(result) }
+  NormalParameter asParameter() { this = TNormalParameter(result) }
 
-  predicate isInitializedBy(WriteDefinition def) { def = getParameterDef(this.asParameter()) }
+  Method asThis() { this = TSelfMethodParameter(result) }
 
-  string toString() { result = this.asParameter().toString() }
+  predicate isInitializedBy(WriteDefinition def) {
+    def = getParameterDef(this.asParameter())
+    or
+    def.(Ssa::ThisDefinition).getSourceVariable().getDeclaringScope() = this.asThis().(Scope)
+  }
 
-  Location getLocation() { result = this.asParameter().getLocation() }
+  string toString() { result = [this.asParameter().toString(), this.asThis().toString()] }
+
+  Location getLocation() {
+    result = [this.asParameter().getLocation(), this.asThis().getLocation()]
+  }
 }
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   class Parameter = ParameterExt;
 
-  class Expr extends Cfg::CfgNodes::AstCfgNode {
+  class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
@@ -406,9 +336,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
-    none() // TODO
-  }
+  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) { none() }
 
   /** Gets an immediate conditional successor of basic block `bb`, if any. */
   SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
