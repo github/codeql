@@ -11,9 +11,8 @@
 
 import java
 
-from MethodCall replaceAllCall
+from StringReplaceAllCall replaceAllCall
 where
-  replaceAllCall.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
   //only contains characters that could be a simple string
   replaceAllCall.getArgument(0).(StringLiteral).getValue().regexpMatch("^[a-zA-Z0-9]+$")
 select replaceAllCall,
