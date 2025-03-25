@@ -11,9 +11,11 @@
 
 import java
 
-from StringReplaceAllCall replaceAllCall
+from StringReplaceAllCall replaceAllCall, StringLiteral firstArg
 where
+  firstArg = replaceAllCall.getArgument(0) and
   //only contains characters that could be a simple string
-  replaceAllCall.getArgument(0).(StringLiteral).getValue().regexpMatch("^[a-zA-Z0-9]+$")
+  firstArg.getValue().regexpMatch("^[a-zA-Z0-9]+$")
 select replaceAllCall,
-  "Call to 'replaceAll' uses an argument comprised of plain string characters only."
+  "This call to 'replaceAll' should be a call `replace` as its $@ is not a regular expression.",
+  firstArg, "first argument"
