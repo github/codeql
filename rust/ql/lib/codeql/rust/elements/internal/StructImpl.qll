@@ -20,11 +20,11 @@ module Impl {
    * ```
    */
   class Struct extends Generated::Struct {
-    override string toString() { result = "struct " + this.getName().getText() }
+    override string toStringImpl() { result = "struct " + this.getName().getText() }
 
     /** Gets the record field named `name`, if any. */
     pragma[nomagic]
-    RecordField getRecordField(string name) {
+    StructField getStructField(string name) {
       result = this.getFieldList().(RecordFieldList).getAField() and
       result.getName().getText() = name
     }
@@ -32,5 +32,17 @@ module Impl {
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
+
+    /** Holds if this struct uses tuple fields. */
+    pragma[nomagic]
+    predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
+
+    /**
+     * Holds if this struct uses record fields.
+     *
+     * Empty structs are considered to use record fields.
+     */
+    pragma[nomagic]
+    predicate isStruct() { not this.isTuple() }
   }
 }

@@ -5,10 +5,10 @@
 
 private import internal.RecordFieldListImpl
 import codeql.rust.elements.FieldList
-import codeql.rust.elements.RecordField
+import codeql.rust.elements.StructField
 
 /**
- * A RecordFieldList. For example:
+ * A field list of a struct expression. For example:
  * ```rust
  * todo!()
  * ```

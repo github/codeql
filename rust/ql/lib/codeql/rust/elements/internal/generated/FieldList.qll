@@ -14,7 +14,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A FieldList. For example:
+   * A field of a variant. For example:
    * ```rust
    * todo!()
    * ```

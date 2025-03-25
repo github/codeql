@@ -1,3 +1,13 @@
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+### Minor Analysis Improvements
+
+* C#: Improve precision of the query `cs/call-to-object-tostring` for value tuples.
+
 ## 1.0.17
 
 No user-facing changes.

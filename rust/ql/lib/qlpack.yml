@@ -1,5 +1,5 @@
 name: codeql/rust-all
-version: 0.1.3-dev
+version: 0.1.5-dev
 groups: rust
 extractor: rust
 dbscheme: rust.dbscheme
@@ -12,6 +12,7 @@ dependencies:
   codeql/mad: ${workspace}
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
+  codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
   - /**/*.model.yml

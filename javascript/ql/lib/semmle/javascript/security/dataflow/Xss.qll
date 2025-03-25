@@ -53,7 +53,7 @@ module Shared {
   class UriEncodingSanitizer extends Sanitizer, DataFlow::CallNode {
     UriEncodingSanitizer() {
       exists(string name | this = DataFlow::globalVarRef(name).getACall() |
-        name = "encodeURI" or name = "encodeURIComponent"
+        name in ["encodeURI", "encodeURIComponent", "escape"]
       )
     }
   }

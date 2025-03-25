@@ -10,3 +10,5 @@
       - cs/call-to-object-tostring
       - cs/local-not-disposed
       - cs/constant-condition
+      - cs/useless-gethashcode-call
+      - cs/non-short-circuit

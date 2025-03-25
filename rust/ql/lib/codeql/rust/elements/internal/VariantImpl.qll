@@ -20,11 +20,11 @@ module Impl {
    * ```
    */
   class Variant extends Generated::Variant {
-    override string toString() { result = this.getName().getText() }
+    override string toStringImpl() { result = this.getName().getText() }
 
     /** Gets the record field named `name`, if any. */
     pragma[nomagic]
-    RecordField getRecordField(string name) {
+    StructField getStructField(string name) {
       result = this.getFieldList().(RecordFieldList).getAField() and
       result.getName().getText() = name
     }
@@ -32,5 +32,20 @@ module Impl {
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
+
+    /** Holds if this variant uses tuple fields. */
+    pragma[nomagic]
+    predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
+
+    /**
+     * Holds if this variant uses struct fields.
+     *
+     * Empty variants are considered to use struct fields.
+     */
+    pragma[nomagic]
+    predicate isStruct() { not this.isTuple() }
+
+    /** Gets the enum that this variant belongs to. */
+    Enum getEnum() { this = result.getVariantList().getAVariant() }
   }
 }

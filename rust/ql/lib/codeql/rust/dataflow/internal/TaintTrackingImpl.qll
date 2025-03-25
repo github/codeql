@@ -4,6 +4,8 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSummary
 private import DataFlowImpl
+private import Node as Node
+private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.rust.internal.CachedStages
 

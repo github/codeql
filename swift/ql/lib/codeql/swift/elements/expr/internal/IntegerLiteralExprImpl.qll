@@ -8,7 +8,7 @@ module Impl {
    * ```
    */
   class IntegerLiteralExpr extends Generated::IntegerLiteralExpr {
-    override string toString() { result = this.getStringValue() }
+    override string toStringImpl() { result = this.getStringValue() }
 
     override string getValueString() { result = this.getStringValue() }
   }

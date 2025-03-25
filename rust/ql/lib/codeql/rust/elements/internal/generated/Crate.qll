@@ -6,11 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Crate
-import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
+import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
 import codeql.rust.elements.Module
-
-private class CrateAlias = Crate;
+import codeql.rust.elements.internal.NamedCrate
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Crate` and should not
@@ -21,7 +19,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Crate` class directly.
    * Use the subclass `Crate`, where the following predicates are available.
    */
-  class Crate extends Synth::TCrate, ElementImpl::Element {
+  class Crate extends Synth::TCrate, LocatableImpl::Locatable {
     override string getAPrimaryQlClass() { result = "Crate" }
 
     /**
@@ -74,21 +72,29 @@ module Generated {
     final int getNumberOfCfgOptions() { result = count(int i | exists(this.getCfgOption(i))) }
 
     /**
-     * Gets the `index`th dependency of this crate (0-based).
+     * Gets the `index`th named dependency of this crate (0-based).
+     *
+     * INTERNAL: Do not use.
      */
-    CrateAlias getDependency(int index) {
+    NamedCrate getNamedDependency(int index) {
       result =
-        Synth::convertCrateFromRaw(Synth::convertCrateToRaw(this).(Raw::Crate).getDependency(index))
+        Synth::convertNamedCrateFromRaw(Synth::convertCrateToRaw(this)
+              .(Raw::Crate)
+              .getNamedDependency(index))
     }
 
     /**
-     * Gets any of the dependencies of this crate.
+     * Gets any of the named dependencies of this crate.
+     * INTERNAL: Do not use.
      */
-    final CrateAlias getADependency() { result = this.getDependency(_) }
+    final NamedCrate getANamedDependency() { result = this.getNamedDependency(_) }
 
     /**
-     * Gets the number of dependencies of this crate.
+     * Gets the number of named dependencies of this crate.
+     * INTERNAL: Do not use.
      */
-    final int getNumberOfDependencies() { result = count(int i | exists(this.getDependency(i))) }
+    final int getNumberOfNamedDependencies() {
+      result = count(int i | exists(this.getNamedDependency(i)))
+    }
   }
 }
