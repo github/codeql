@@ -285,7 +285,7 @@ fn arg_source(i: i64) {}
 fn test_arg_source() {
     let i = 19;
     arg_source(i);
-    sink(i) // $ MISSING: hasValueFlow=i
+    sink(i) // $ hasValueFlow=i
 }
 
 #[tokio::main]

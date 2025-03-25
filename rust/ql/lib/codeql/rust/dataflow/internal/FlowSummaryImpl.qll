@@ -143,20 +143,30 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     result.asCallBaseExprCfgNode().getCallExprBase() = sc.(LibraryCallable).getACall()
   }
 
+  private Expr getArg(CallExprBase call, ParameterPosition pos) {
+    result = call.getArgList().getArg(pos.getPosition())
+    or
+    result = call.(MethodCallExpr).getReceiver() and pos.isSelf()
+  }
+
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
     sc = Impl::Private::SummaryComponent::return(_) and
     result.asExpr().getExpr() = source.getCall()
+    or
+    exists(CallExprBase call, Expr arg, ParameterPosition pos |
+      result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() = arg and
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      call = source.getCall() and
+      arg = getArg(call, pos)
+    )
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
     exists(CallExprBase call, Expr arg, ParameterPosition pos |
       result.asExpr().getExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
-      call = sink.getCall()
-    |
-      arg = call.getArgList().getArg(pos.getPosition())
-      or
-      arg = call.(MethodCallExpr).getReceiver() and pos.isSelf()
+      call = sink.getCall() and
+      arg = getArg(call, pos)
     )
   }
 }
