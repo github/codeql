@@ -7,3 +7,4 @@ extensions:
       - ["hdb", "Member[createClient].ReturnValue.Member[exec,prepare,execute].Argument[0]", "sql-injection"]
       - ["@sap/hdbext", "Member[loadProcedure].Argument[2]", "sql-injection"]
       - ["@sap/hana-client/extension/Stream", "Member[createProcStatement].Argument[1]", "sql-injection"]
+      - ["express", "ReturnValue.Member[get].Argument[1].Parameter[0].Member[db].Member[exec].Argument[0]", "sql-injection"]
