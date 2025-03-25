@@ -674,8 +674,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if `tp1` and `tp2` are distinct type parameters of `target`, the
-       * declared type at `apos` mentions `tp1` at `path1`, `tp1` has a base
-       * type mention of type `constrant` that mentions `tp2` at the path
+       * declared type at `dpos` mentions `tp1` at `path1`, `tp1` has a base
+       * type mention of type `constraint` that mentions `tp2` at the path
        * `path2`.
        *
        * For this example
