@@ -6,9 +6,9 @@ const connectionParams = {};
 app.post('/documents/find', (req, res) => {
     const conn = hana.createConnection();
     conn.connect(connectionParams, (err) => {
-        let maliciousInput = req.body.data; // $ MISSING: Source
+        let maliciousInput = req.body.data; // $ Source
         const query = `SELECT * FROM Users WHERE username = '${maliciousInput}'`;
-        conn.exec(query, (err, rows) => {}); // $  MISSING: Alert
+        conn.exec(query, (err, rows) => {}); // $ Alert
         conn.disconnect();
     });
 
@@ -65,13 +65,13 @@ const app2 = express();
 
 app2.post('/documents/find', (req, res) => {
   var client = hdb.createClient(options);
-  let maliciousInput = req.body.data; // $ MISSING: Source
+  let maliciousInput = req.body.data; // $ Source
 
   client.connect(function onconnect(err) {
-    async.series([client.exec.bind(client, "INSERT INTO NUMBERS VALUES (1, 'one')" + maliciousInput)], function (err) {}); // $ MISSING: Alert
+    async.series([client.exec.bind(client, "INSERT INTO NUMBERS VALUES (1, 'one')" + maliciousInput)], function (err) {}); // $ Alert
 
-    client.exec('select * from DUMMY' + maliciousInput, function (err, rows) {}); // $ MISSING: Alert
-    client.exec('select * from DUMMY' + maliciousInput, options, function(err, rows) {}); // $ MISSING: Alert
+    client.exec('select * from DUMMY' + maliciousInput, function (err, rows) {}); // $ Alert
+    client.exec('select * from DUMMY' + maliciousInput, options, function(err, rows) {}); // $ Alert
 
     client.prepare('select * from DUMMY where DUMMY = ?' + maliciousInput, function (err, statement){ // $ MISSING: Alert
       statement.exec([maliciousInput], function (err, rows) {}); // maliciousInput is treated as a parameter
