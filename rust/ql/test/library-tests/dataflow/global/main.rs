@@ -42,7 +42,7 @@ fn data_out_of_call_side_effect1() {
 fn data_out_of_call_side_effect2() {
     let mut a = MyStruct { data: 0 };
     ({ 42; &mut a}).set_data(source(9));
-    sink(a.get_data()); // $ MISSING: hasValueFlow=9
+    sink(a.get_data()); // $ hasValueFlow=9
 }
 
 fn data_in(n: i64) {

@@ -213,6 +213,14 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result.(BreakExprCfgNode).getTarget() = e
 }
 
+ExprCfgNode getPostUpdateReverseStep(ExprCfgNode e, boolean preservesValue) {
+  result = getALastEvalNode(e) and
+  preservesValue = true
+  or
+  result = e.(CastExprCfgNode).getExpr() and
+  preservesValue = false
+}
+
 module LocalFlow {
   predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
     exists(FlowSummaryImpl::Public::SummarizedCallable c |
@@ -274,6 +282,9 @@ module LocalFlow {
     // The dual step of the above, for the post-update nodes.
     nodeFrom.(PostUpdateNode).getPreUpdateNode().(ReceiverNode).getReceiver() =
       nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), true)
   }
 }
 

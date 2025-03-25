@@ -472,6 +472,11 @@ newtype TNode =
         any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
         any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver()
       ]
+    or
+    exists(ExprCfgNode pred |
+      exists(TExprPostUpdateNode(pred)) and
+      e = getPostUpdateReverseStep(pred, _)
+    )
   } or
   TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or

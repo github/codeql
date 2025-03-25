@@ -53,6 +53,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       exists(FormatArgsExprCfgNode format | succ.asExpr() = format |
         pred.asExpr() = [format.getArgumentExpr(_), format.getFormatTemplateVariableAccess(_)]
       )
+      or
+      succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =
+        getPostUpdateReverseStep(pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), false)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),
