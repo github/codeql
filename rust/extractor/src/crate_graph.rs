@@ -9,9 +9,13 @@ use chalk_ir::{FloatTy, Safety};
 use itertools::Itertools;
 use ra_ap_base_db::{Crate, RootQueryDb};
 use ra_ap_cfg::CfgAtom;
-use ra_ap_hir::{DefMap, ModuleDefId, db::HirDatabase};
+use ra_ap_hir::{DefMap, ModuleDefId, PathKind, db::HirDatabase};
 use ra_ap_hir::{VariantId, Visibility, db::DefDatabase};
-use ra_ap_hir_def::{AssocItemId, LocalModuleId, data::adt::VariantData, nameres::ModuleData};
+use ra_ap_hir_def::Lookup;
+use ra_ap_hir_def::{
+    AssocItemId, LocalModuleId, data::adt::VariantData, item_scope::ImportOrGlob,
+    item_tree::ImportKind, nameres::ModuleData, path::ImportAlias,
+};
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
 use ra_ap_hir_ty::TraitRefExt;
@@ -22,6 +26,7 @@ use ra_ap_hir_ty::{Binders, FnPointer};
 use ra_ap_hir_ty::{Interner, ProjectionTy};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_vfs::{Vfs, VfsPath};
+
 use std::hash::Hasher;
 use std::{cmp::Ordering, collections::HashMap, path::PathBuf};
 use std::{hash::Hash, vec};
@@ -172,19 +177,116 @@ fn emit_module_children(
         .collect()
 }
 
+fn emit_reexport(
+    db: &dyn HirDatabase,
+    trap: &mut TrapFile,
+    uses: &mut HashMap<String, trap::Label<generated::Item>>,
+    import: ImportOrGlob,
+    name: &str,
+) {
+    let (use_, idx) = match import {
+        ImportOrGlob::Glob(import) => (import.use_, import.idx),
+        ImportOrGlob::Import(import) => (import.use_, import.idx),
+    };
+    let def_db = db.upcast();
+    let loc = use_.lookup(def_db);
+    let use_ = &loc.id.item_tree(def_db)[loc.id.value];
+
+    use_.use_tree.expand(|id, path, kind, alias| {
+        if id == idx {
+            let mut path_components = Vec::new();
+            match path.kind {
+                PathKind::Plain => (),
+                PathKind::Super(0) => path_components.push("self".to_owned()),
+                PathKind::Super(n) => {
+                    path_components.extend(std::iter::repeat_n("super".to_owned(), n.into()));
+                }
+                PathKind::Crate => path_components.push("crate".to_owned()),
+                PathKind::Abs => path_components.push("".to_owned()),
+                PathKind::DollarCrate(crate_id) => {
+                    let crate_extra = crate_id.extra_data(db);
+                    let crate_name = crate_extra
+                        .display_name
+                        .as_ref()
+                        .map(|x| x.canonical_name().to_string());
+                    path_components.push(crate_name.unwrap_or("crate".to_owned()));
+                }
+            }
+            path_components.extend(path.segments().iter().map(|x| x.as_str().to_owned()));
+            match kind {
+                ImportKind::Plain => (),
+                ImportKind::Glob => path_components.push(name.to_owned()),
+                ImportKind::TypeOnly => path_components.push("self".to_owned()),
+            };
+
+            let alias = alias.map(|alias| match alias {
+                ImportAlias::Underscore => "_".to_owned(),
+                ImportAlias::Alias(name) => name.as_str().to_owned(),
+            });
+            let key = format!(
+                "{} as {}",
+                path_components.join("::"),
+                alias.as_ref().unwrap_or(&"".to_owned())
+            );
+            // prevent duplicate imports
+            if uses.contains_key(&key) {
+                return;
+            }
+            let rename = alias.map(|name| {
+                let name = Some(trap.emit(generated::Name {
+                    id: trap::TrapId::Star,
+                    text: Some(name),
+                }));
+                trap.emit(generated::Rename {
+                    id: trap::TrapId::Star,
+                    name,
+                })
+            });
+            let path = make_qualified_path(trap, path_components);
+            let use_tree = trap.emit(generated::UseTree {
+                id: trap::TrapId::Star,
+                is_glob: false,
+                path,
+                rename,
+                use_tree_list: None,
+            });
+            let visibility = emit_visibility(db, trap, Visibility::Public);
+            uses.insert(
+                key,
+                trap.emit(generated::Use {
+                    id: trap::TrapId::Star,
+                    attrs: vec![],
+                    use_tree: Some(use_tree),
+                    visibility,
+                })
+                .into(),
+            );
+        }
+    });
+}
+
 fn emit_module_items(
     db: &dyn HirDatabase,
     module: &ModuleData,
     trap: &mut TrapFile,
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
+    let mut uses = HashMap::new();
     let item_scope = &module.scope;
     for (name, item) in item_scope.entries() {
         let def = item.filter_visibility(|x| matches!(x, ra_ap_hir::Visibility::Public));
         if let Some(ra_ap_hir_def::per_ns::Item {
+            def: _,
+            vis: _,
+            import: Some(import),
+        }) = def.values
+        {
+            emit_reexport(db, trap, &mut uses, import, name.as_str());
+        }
+        if let Some(ra_ap_hir_def::per_ns::Item {
             def: value,
             vis,
-            import: _,
+            import: None,
         }) = def.values
         {
             match value {
@@ -204,9 +306,20 @@ fn emit_module_items(
             }
         }
         if let Some(ra_ap_hir_def::per_ns::Item {
+            def: _,
+            vis: _,
+            import: Some(import),
+        }) = def.types
+        {
+            // TODO: handle ExternCrate as well?
+            if let Some(import) = import.import_or_glob() {
+                emit_reexport(db, trap, &mut uses, import, name.as_str());
+            }
+        }
+        if let Some(ra_ap_hir_def::per_ns::Item {
             def: type_id,
             vis,
-            import: _,
+            import: None,
         }) = def.types
         {
             match type_id {
@@ -220,6 +333,7 @@ fn emit_module_items(
             }
         }
     }
+    items.extend(uses.values());
     items
 }
 
