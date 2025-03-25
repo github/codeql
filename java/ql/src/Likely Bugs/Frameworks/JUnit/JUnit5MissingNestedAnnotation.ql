@@ -3,7 +3,7 @@
  * @previous-id java/junit5-non-static-inner-class-missing-nested-annotation
  * @name Missing `@Nested` annotation on JUnit 5 inner test class
  * @description A JUnit 5 inner test class that is missing a `@Nested` annotation will be
- *              excluded from execution and it may indicate a misunderstanding from the
+ *              excluded from execution and may indicate a mistake from the
  *              programmer.
  * @kind problem
  * @precision very-high

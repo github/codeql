@@ -1,6 +1,6 @@
 ## Overview
 
-JUnit tests are grouped in a class, and starting from JUnit 5 users can group the test classes in a bigger class so they can share the local environment of the enclosing class. While this helps to organize the unit tests and foster code reuse, if an inner test class is not annotated with `@Nested`, the unit tests in it will fail to execute during builds.
+JUnit tests are grouped in a class, and starting from JUnit 5, users can group the test classes in a larger class so they can share the local environment of the enclosing class. While this helps organize the unit tests and foster code reuse, if an inner test class is not annotated with `@Nested`, the unit tests in it will fail to execute during builds.
 
 ## Recommendation
 
