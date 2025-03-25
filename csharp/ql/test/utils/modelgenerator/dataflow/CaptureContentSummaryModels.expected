@@ -1,2 +1,8 @@
 unexpectedModel
+| Unexpected contentbased-summary found: Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];ReturnValue;value;dfc-generated |
+| Unexpected contentbased-summary found: Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];ReturnValue;value;dfc-generated |
+| Unexpected contentbased-summary found: Models;ParameterModifiers;false;RefParamFlowToSelf;(System.Object,System.Boolean);;Argument[0];ReturnValue;value;dfc-generated |
+| Unexpected contentbased-summary found: Models;ParameterModifiers;false;RefParamUse;(System.Object);;Argument[0];ReturnValue;value;dfc-generated |
 expectedModel
+| Expected contentbased-summary missing: Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];Argument[1];value;dfc-generated |
+| Expected contentbased-summary missing: Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];Argument[1];value;dfc-generated |
