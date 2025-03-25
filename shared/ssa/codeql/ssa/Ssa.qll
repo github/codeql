@@ -1493,8 +1493,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
     }
 
+    /** Holds if `guard` directly controls block `bb` upon evaluating to `branch`. */
+    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+
     /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
-    predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+    default predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
+      guardDirectlyControlsBlock(guard, bb, branch)
+    }
 
     /**
      * Holds if `WriteDefinition`s should be included as an intermediate node
@@ -1578,8 +1583,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
             phi.getSourceVariable()) and
           prev != input and
           exists(DfInput::Guard g, boolean branch |
-            DfInput::guardControlsBlock(g, input, branch) and
-            not DfInput::guardControlsBlock(g, prev, branch)
+            DfInput::guardDirectlyControlsBlock(g, input, branch) and
+            not DfInput::guardDirectlyControlsBlock(g, prev, branch)
           )
         )
       )
