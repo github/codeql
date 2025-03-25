@@ -259,7 +259,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     private import Input2
 
     /** Gets the type at the empty path of `tm`. */
-    pragma[nomagic]
+    bindingset[tm]
+    pragma[inline_late]
     private Type resolveTypeMentionRoot(TypeMention tm) {
       result = tm.resolveTypeAt(TypePath::nil())
     }
