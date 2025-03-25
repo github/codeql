@@ -701,7 +701,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Checks that we can connect to all Nuget feeds that are explicitly configured in configuration files.
+        /// Checks that we can connect to all Nuget feeds that are explicitly configured in configuration files
+        /// as well as any private package registry feeds that are configured.
         /// </summary>
         /// <param name="explicitFeeds">Outputs the set of explicit feeds.</param>
         /// <returns>True if all feeds are reachable or false otherwise.</returns>
@@ -714,7 +715,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // in addition to the ones that are configured in `nuget.config` files.
             this.dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
 
-            var allFeedsReachable = this.CheckFeeds(feedsToCheck);
+            var allFeedsReachable = this.CheckSpecifiedFeeds(feedsToCheck);
 
             var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
             if (inheritedFeeds.Count > 0)
@@ -731,7 +732,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         /// <param name="feeds">The set of package feeds to check.</param>
         /// <returns>True if all feeds are reachable or false otherwise.</returns>
-        private bool CheckFeeds(HashSet<string> feeds)
+        private bool CheckSpecifiedFeeds(HashSet<string> feeds)
         {
             logger.LogInfo("Checking that Nuget feeds are reachable...");
 
