@@ -3,6 +3,6 @@ extensions:
       pack: codeql/javascript-all
       extensible: sinkModel
     data:
-      - ["@sap/hana-client", "Member[createConnection].ReturnValue.Member[exec].Argument[0]", "sql-injection"]
+      - ["@sap/hana-client", "Member[createConnection].ReturnValue.Member[exec,prepare].Argument[0]", "sql-injection"]
 
-      - ["hdb", "Member[createClient].ReturnValue.Member[exec].Argument[0]", "sql-injection"]
+      - ["hdb", "Member[createClient].ReturnValue.Member[exec,prepare].Argument[0]", "sql-injection"]

@@ -13,22 +13,22 @@ app.post('/documents/find', (req, res) => {
     });
 
     conn.connect(connectionParams, (err) => {
-        const maliciousInput = req.body.data; // $ MISSING: Source
-        const stmt = conn.prepare(`SELECT * FROM Test WHERE ID = ? AND username = ` + maliciousInput); // $ MISSING: Alert
+        const maliciousInput = req.body.data; // $ Source
+        const stmt = conn.prepare(`SELECT * FROM Test WHERE ID = ? AND username = ` + maliciousInput); // $ Alert
         stmt.exec([maliciousInput], (err, rows) => {}); // maliciousInput is treated as a parameter
         conn.disconnect();
     });
 
     conn.connect(connectionParams, (err) => {
-        const maliciousInput = req.body.data; // $ MISSING: Source
-        var stmt = conn.prepare(`INSERT INTO Customers(ID, NAME) VALUES(?, ?) ` + maliciousInput); // $ MISSING: Alert
+        const maliciousInput = req.body.data; // $ Source
+        var stmt = conn.prepare(`INSERT INTO Customers(ID, NAME) VALUES(?, ?) ` + maliciousInput); // $ Alert
         stmt.execBatch([[1, maliciousInput], [2, maliciousInput]], function(err, rows) {}); // maliciousInput is treated as a parameter
         conn.disconnect();
     });
 
     conn.connect(connectionParams, (err) => {
-      const maliciousInput = req.body.data; // $ MISSING: Source
-      var stmt = conn.prepare("SELECT * FROM Customers WHERE ID >= ? AND ID < ?" + maliciousInput); // $ MISSING: Alert
+      const maliciousInput = req.body.data; // $ Source
+      var stmt = conn.prepare("SELECT * FROM Customers WHERE ID >= ? AND ID < ?" + maliciousInput); // $ Alert
       stmt.execQuery([100, maliciousInput], function(err, rs) {}); // $ maliciousInput is treated as a parameter
       conn.disconnect();
     });
@@ -73,11 +73,11 @@ app2.post('/documents/find', (req, res) => {
     client.exec('select * from DUMMY' + maliciousInput, function (err, rows) {}); // $ Alert
     client.exec('select * from DUMMY' + maliciousInput, options, function(err, rows) {}); // $ Alert
 
-    client.prepare('select * from DUMMY where DUMMY = ?' + maliciousInput, function (err, statement){ // $ MISSING: Alert
+    client.prepare('select * from DUMMY where DUMMY = ?' + maliciousInput, function (err, statement){ // $ Alert
       statement.exec([maliciousInput], function (err, rows) {}); // maliciousInput is treated as a parameter
     });
 
-    client.prepare('call PROC_DUMMY (?, ?, ?, ?, ?)' + maliciousInput, function(err, statement){ // $ MISSING: Alert
+    client.prepare('call PROC_DUMMY (?, ?, ?, ?, ?)' + maliciousInput, function(err, statement){ // $ Alert
       statement.exec({A: 3, B: maliciousInput}, function(err, parameters, dummyRows, tableRows) {}); 
     });
 
