@@ -188,6 +188,7 @@ def m17(b1, b2)
     if b2
       b1 = false
       retry
+    end
   end
 end
 
@@ -198,5 +199,6 @@ def m18(b2)
   rescue ExceptionA
     if b2
       b1 = false
+    end
   end
 end
