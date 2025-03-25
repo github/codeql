@@ -7,6 +7,8 @@
  * @precision very-high
  * @problem.severity recommendation
  * @tags performance
+ *       quality
+ *       external/cwe/cwe-1176
  */
 
 import java
