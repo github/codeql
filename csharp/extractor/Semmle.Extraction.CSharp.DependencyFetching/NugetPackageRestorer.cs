@@ -274,7 +274,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // to `dotnet` ignores other feeds that may be configured, we also need to add the feeds
                 // we have discovered from analysing `nuget.config` files.
                 var sources = configuredSources ?? new();
-                sources.Add(PublicNugetOrgFeed);
                 this.dependabotProxy.RegistryURLs.ForEach(url => sources.Add(url));
 
                 // Add package sources. If any are present, they override all sources specified in
