@@ -55,27 +55,6 @@ predicate hasImplicitTypeModel(string type, string otherType) {
   parseType(otherType, type, _)
 }
 
-pragma[nomagic]
-string getConstComponent(string consts, int n) {
-  parseRelevantType(_, consts, _) and
-  result = consts.splitAt(".", n)
-}
-
-private int getNumConstComponents(string consts) {
-  result = strictcount(int n | exists(getConstComponent(consts, n)))
-}
-
-private DataFlow::TypePathNode getConstantFromConstPath(string consts, int n) {
-  n = 1 and
-  result.getComponent() = getConstComponent(consts, 0)
-  or
-  result = getConstantFromConstPath(consts, n - 1).getConstant(getConstComponent(consts, n - 1))
-}
-
-private DataFlow::TypePathNode getConstantFromConstPath(string consts) {
-  result = getConstantFromConstPath(consts, getNumConstComponents(consts))
-}
-
 /** Gets a Powershell-specific interpretation of the `(type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[type, path]
 API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
@@ -91,15 +70,8 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
 
 /** Gets a Powershell-specific interpretation of the given `type`. */
 API::Node getExtraNodeFromType(string type) {
-  exists(string consts, string suffix, DataFlow::TypePathNode constRef |
-    parseRelevantType(type, consts, suffix) and
-    constRef = getConstantFromConstPath(consts)
-  |
-    suffix = "!" and
-    result = constRef.track()
-    or
-    suffix = "" and
-    result = constRef.track().getInstance()
+  exists(string consts, string suffix | parseRelevantType(type, consts, suffix) |
+    none() // TODO
   )
   or
   type = "" and
@@ -187,7 +159,7 @@ predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToke
 /** An API graph node representing a method call. */
 class InvokeNode extends API::MethodAccessNode {
   /** Gets the number of arguments to the call. */
-  int getNumArgument() { result = this.asCall().getNumberOfArguments() }
+  int getNumArgument() { result = count(this.asCall().getAnArgument()) }
 }
 
 /** Gets the `InvokeNode` corresponding to a specific invocation of `node`. */

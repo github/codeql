@@ -6,7 +6,7 @@ module EngineIntrinsics {
   private class EngineIntrinsicsGlobalEntry extends ModelInput::TypeModel {
     override DataFlow::Node getASource(string type) {
       type = "System.Management.Automation.EngineIntrinsics" and
-      result.asExpr().getExpr().(VarReadAccess).getUserPath().toLowerCase() = "executioncontext"
+      result.asExpr().getExpr().(VarReadAccess).getVariable().getName().toLowerCase() = "executioncontext"
     }
   }
 }

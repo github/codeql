@@ -111,7 +111,7 @@ class SplitPath extends CmdCall {
     not this.hasNamedArgument("path") and
     result = this.getPositionalArgument(0)
     or
-    // TODO: This should not be allowed, but I've seen code doing it
+    // TODO: This should not be allowed, but I've seen code doing it and somehow it works
     result = this.getNamedArgument("parent")
   }
 
