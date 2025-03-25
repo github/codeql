@@ -1,52 +1,54 @@
 #select
-| main.rs:18:13:18:31 | ...::realloc | main.rs:211:13:211:26 | ...::args | main.rs:18:13:18:31 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:21:13:21:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:21:13:21:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:22:13:22:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:22:13:22:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:23:13:23:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:23:13:23:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:24:13:24:36 | ...::alloc_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:24:13:24:36 | ...::alloc_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:30:13:30:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:30:13:30:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:33:13:33:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:33:13:33:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:37:13:37:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:37:13:37:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:40:13:40:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:40:13:40:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:50:13:50:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:50:13:50:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:51:13:51:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:51:13:51:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:53:13:53:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:53:13:53:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:54:13:54:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:54:13:54:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:59:13:59:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:59:13:59:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:61:13:61:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:61:13:61:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:63:13:63:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:63:13:63:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:64:13:64:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:64:13:64:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:65:13:65:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:65:13:65:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:68:13:68:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:68:13:68:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:85:17:85:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:85:17:85:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:87:17:87:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:87:17:87:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:91:17:91:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:91:17:91:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:93:17:93:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:93:17:93:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:104:17:104:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:104:17:104:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:107:17:107:33 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:107:17:107:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:111:13:111:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:111:13:111:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:114:13:114:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:114:13:114:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:117:13:117:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:117:13:117:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:119:13:119:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:119:13:119:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:123:13:123:29 | ...::alloc | main.rs:211:13:211:26 | ...::args | main.rs:123:13:123:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:138:32:138:36 | alloc | main.rs:211:13:211:26 | ...::args | main.rs:138:32:138:36 | alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:139:32:139:43 | alloc_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:139:32:139:43 | alloc_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:140:32:140:39 | allocate | main.rs:211:13:211:26 | ...::args | main.rs:140:32:140:39 | allocate | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:141:32:141:46 | allocate_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:141:32:141:46 | allocate_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:142:32:142:39 | allocate | main.rs:211:13:211:26 | ...::args | main.rs:142:32:142:39 | allocate | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:143:32:143:46 | allocate_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:143:32:143:46 | allocate_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:153:40:153:43 | grow | main.rs:211:13:211:26 | ...::args | main.rs:153:40:153:43 | grow | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:155:40:155:50 | grow_zeroed | main.rs:211:13:211:26 | ...::args | main.rs:155:40:155:50 | grow_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:164:13:164:24 | ...::malloc | main.rs:211:13:211:26 | ...::args | main.rs:164:13:164:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:164:13:164:24 | ...::malloc | main.rs:211:13:211:26 | ...::args | main.rs:164:13:164:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:165:13:165:31 | ...::aligned_alloc | main.rs:211:13:211:26 | ...::args | main.rs:165:13:165:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:165:13:165:31 | ...::aligned_alloc | main.rs:211:13:211:26 | ...::args | main.rs:165:13:165:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:167:13:167:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:167:13:167:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:167:13:167:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:167:13:167:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:168:13:168:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:168:13:168:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:168:13:168:24 | ...::calloc | main.rs:211:13:211:26 | ...::args | main.rs:168:13:168:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:169:13:169:25 | ...::realloc | main.rs:211:13:211:26 | ...::args | main.rs:169:13:169:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
-| main.rs:169:13:169:25 | ...::realloc | main.rs:211:13:211:26 | ...::args | main.rs:169:13:169:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:211:13:211:26 | ...::args | user-provided value |
+| main.rs:18:13:18:31 | ...::realloc | main.rs:262:13:262:26 | ...::args | main.rs:18:13:18:31 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:21:13:21:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:21:13:21:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:22:13:22:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:22:13:22:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:23:13:23:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:23:13:23:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:24:13:24:36 | ...::alloc_zeroed | main.rs:262:13:262:26 | ...::args | main.rs:24:13:24:36 | ...::alloc_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:30:13:30:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:30:13:30:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:33:13:33:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:33:13:33:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:37:13:37:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:37:13:37:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:40:13:40:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:40:13:40:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:50:13:50:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:50:13:50:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:51:13:51:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:51:13:51:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:53:13:53:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:53:13:53:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:54:13:54:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:54:13:54:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:59:13:59:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:59:13:59:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:61:13:61:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:61:13:61:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:63:13:63:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:63:13:63:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:64:13:64:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:64:13:64:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:65:13:65:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:65:13:65:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:68:13:68:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:68:13:68:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:85:17:85:33 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:85:17:85:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:87:17:87:33 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:87:17:87:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:91:17:91:33 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:91:17:91:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:93:17:93:33 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:93:17:93:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:104:17:104:33 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:104:17:104:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:107:17:107:33 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:107:17:107:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:111:13:111:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:111:13:111:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:114:13:114:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:114:13:114:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:117:13:117:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:117:13:117:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:119:13:119:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:119:13:119:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:123:13:123:29 | ...::alloc | main.rs:262:13:262:26 | ...::args | main.rs:123:13:123:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:138:32:138:36 | alloc | main.rs:262:13:262:26 | ...::args | main.rs:138:32:138:36 | alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:139:32:139:43 | alloc_zeroed | main.rs:262:13:262:26 | ...::args | main.rs:139:32:139:43 | alloc_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:140:32:140:39 | allocate | main.rs:262:13:262:26 | ...::args | main.rs:140:32:140:39 | allocate | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:141:32:141:46 | allocate_zeroed | main.rs:262:13:262:26 | ...::args | main.rs:141:32:141:46 | allocate_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:142:32:142:39 | allocate | main.rs:262:13:262:26 | ...::args | main.rs:142:32:142:39 | allocate | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:143:32:143:46 | allocate_zeroed | main.rs:262:13:262:26 | ...::args | main.rs:143:32:143:46 | allocate_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:153:40:153:43 | grow | main.rs:262:13:262:26 | ...::args | main.rs:153:40:153:43 | grow | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:155:40:155:50 | grow_zeroed | main.rs:262:13:262:26 | ...::args | main.rs:155:40:155:50 | grow_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:164:13:164:24 | ...::malloc | main.rs:262:13:262:26 | ...::args | main.rs:164:13:164:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:164:13:164:24 | ...::malloc | main.rs:262:13:262:26 | ...::args | main.rs:164:13:164:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:165:13:165:31 | ...::aligned_alloc | main.rs:262:13:262:26 | ...::args | main.rs:165:13:165:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:165:13:165:31 | ...::aligned_alloc | main.rs:262:13:262:26 | ...::args | main.rs:165:13:165:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:167:13:167:24 | ...::calloc | main.rs:262:13:262:26 | ...::args | main.rs:167:13:167:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:167:13:167:24 | ...::calloc | main.rs:262:13:262:26 | ...::args | main.rs:167:13:167:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:168:13:168:24 | ...::calloc | main.rs:262:13:262:26 | ...::args | main.rs:168:13:168:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:168:13:168:24 | ...::calloc | main.rs:262:13:262:26 | ...::args | main.rs:168:13:168:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:169:13:169:25 | ...::realloc | main.rs:262:13:262:26 | ...::args | main.rs:169:13:169:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:169:13:169:25 | ...::realloc | main.rs:262:13:262:26 | ...::args | main.rs:169:13:169:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:262:13:262:26 | ...::args | user-provided value |
+| main.rs:229:22:229:38 | ...::alloc | main.rs:253:25:253:38 | ...::args | main.rs:229:22:229:38 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:253:25:253:38 | ...::args | user-provided value |
+| main.rs:246:22:246:38 | ...::alloc | main.rs:254:26:254:39 | ...::args | main.rs:246:22:246:38 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:254:26:254:39 | ...::args | user-provided value |
 edges
 | main.rs:12:36:12:43 | ...: usize | main.rs:18:41:18:41 | v | provenance |  |
 | main.rs:18:41:18:41 | v | main.rs:18:13:18:31 | ...::realloc | provenance | MaD:5 Sink:MaD:5 |
@@ -227,22 +229,49 @@ edges
 | main.rs:168:26:168:26 | v | main.rs:169:31:169:31 | v | provenance |  |
 | main.rs:169:31:169:31 | v | main.rs:169:13:169:25 | ...::realloc | provenance | MaD:15 Sink:MaD:15 |
 | main.rs:169:31:169:31 | v | main.rs:169:13:169:25 | ...::realloc | provenance | MaD:15 Sink:MaD:15 |
-| main.rs:211:9:211:9 | v | main.rs:214:34:214:34 | v | provenance |  |
-| main.rs:211:9:211:9 | v | main.rs:215:42:215:42 | v | provenance |  |
-| main.rs:211:9:211:9 | v | main.rs:216:36:216:36 | v | provenance |  |
-| main.rs:211:9:211:9 | v | main.rs:217:27:217:27 | v | provenance |  |
-| main.rs:211:9:211:9 | v | main.rs:218:25:218:25 | v | provenance |  |
-| main.rs:211:13:211:26 | ...::args | main.rs:211:13:211:28 | ...::args(...) [element] | provenance | Src:MaD:16  |
-| main.rs:211:13:211:28 | ...::args(...) [element] | main.rs:211:13:211:35 | ... .nth(...) [Some] | provenance | MaD:35 |
-| main.rs:211:13:211:35 | ... .nth(...) [Some] | main.rs:211:13:211:65 | ... .unwrap_or(...) | provenance | MaD:29 |
-| main.rs:211:13:211:65 | ... .unwrap_or(...) | main.rs:211:13:211:82 | ... .parse(...) [Ok] | provenance | MaD:32 |
-| main.rs:211:13:211:82 | ... .parse(...) [Ok] | main.rs:211:13:211:91 | ... .unwrap(...) | provenance | MaD:31 |
-| main.rs:211:13:211:91 | ... .unwrap(...) | main.rs:211:9:211:9 | v | provenance |  |
-| main.rs:214:34:214:34 | v | main.rs:12:36:12:43 | ...: usize | provenance |  |
-| main.rs:215:42:215:42 | v | main.rs:43:44:43:51 | ...: usize | provenance |  |
-| main.rs:216:36:216:36 | v | main.rs:81:38:81:45 | ...: usize | provenance |  |
-| main.rs:217:27:217:27 | v | main.rs:128:29:128:36 | ...: usize | provenance |  |
-| main.rs:218:25:218:25 | v | main.rs:162:27:162:34 | ...: usize | provenance |  |
+| main.rs:224:24:224:41 | ...: String | main.rs:225:21:225:47 | user_input.parse(...) [Ok] | provenance | MaD:32 |
+| main.rs:225:9:225:17 | num_bytes | main.rs:227:54:227:62 | num_bytes | provenance |  |
+| main.rs:225:21:225:47 | user_input.parse(...) [Ok] | main.rs:225:21:225:48 | TryExpr | provenance |  |
+| main.rs:225:21:225:48 | TryExpr | main.rs:225:9:225:17 | num_bytes | provenance |  |
+| main.rs:227:9:227:14 | layout | main.rs:229:40:229:45 | layout | provenance |  |
+| main.rs:227:18:227:66 | ...::from_size_align(...) [Ok] | main.rs:227:18:227:75 | ... .unwrap(...) | provenance | MaD:31 |
+| main.rs:227:18:227:75 | ... .unwrap(...) | main.rs:227:9:227:14 | layout | provenance |  |
+| main.rs:227:54:227:62 | num_bytes | main.rs:227:18:227:66 | ...::from_size_align(...) [Ok] | provenance | MaD:23 |
+| main.rs:229:40:229:45 | layout | main.rs:229:22:229:38 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:237:25:237:42 | ...: String | main.rs:238:16:238:42 | user_input.parse(...) [Ok] | provenance | MaD:32 |
+| main.rs:238:9:238:12 | size | main.rs:242:9:242:17 | num_bytes | provenance |  |
+| main.rs:238:16:238:42 | user_input.parse(...) [Ok] | main.rs:238:16:238:43 | TryExpr | provenance |  |
+| main.rs:238:16:238:43 | TryExpr | main.rs:238:9:238:12 | size | provenance |  |
+| main.rs:242:9:242:17 | num_bytes | main.rs:244:54:244:62 | num_bytes | provenance |  |
+| main.rs:244:9:244:14 | layout | main.rs:246:40:246:45 | layout | provenance |  |
+| main.rs:244:18:244:66 | ...::from_size_align(...) [Ok] | main.rs:244:18:244:75 | ... .unwrap(...) | provenance | MaD:31 |
+| main.rs:244:18:244:75 | ... .unwrap(...) | main.rs:244:9:244:14 | layout | provenance |  |
+| main.rs:244:54:244:62 | num_bytes | main.rs:244:18:244:66 | ...::from_size_align(...) [Ok] | provenance | MaD:23 |
+| main.rs:246:40:246:45 | layout | main.rs:246:22:246:38 | ...::alloc | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:253:25:253:38 | ...::args | main.rs:253:25:253:40 | ...::args(...) [element] | provenance | Src:MaD:16  |
+| main.rs:253:25:253:40 | ...::args(...) [element] | main.rs:253:25:253:47 | ... .nth(...) [Some] | provenance | MaD:35 |
+| main.rs:253:25:253:47 | ... .nth(...) [Some] | main.rs:253:25:253:74 | ... .unwrap_or(...) | provenance | MaD:29 |
+| main.rs:253:25:253:74 | ... .unwrap_or(...) | main.rs:224:24:224:41 | ...: String | provenance |  |
+| main.rs:254:26:254:39 | ...::args | main.rs:254:26:254:41 | ...::args(...) [element] | provenance | Src:MaD:16  |
+| main.rs:254:26:254:41 | ...::args(...) [element] | main.rs:254:26:254:48 | ... .nth(...) [Some] | provenance | MaD:35 |
+| main.rs:254:26:254:48 | ... .nth(...) [Some] | main.rs:254:26:254:75 | ... .unwrap_or(...) | provenance | MaD:29 |
+| main.rs:254:26:254:75 | ... .unwrap_or(...) | main.rs:237:25:237:42 | ...: String | provenance |  |
+| main.rs:262:9:262:9 | v | main.rs:265:34:265:34 | v | provenance |  |
+| main.rs:262:9:262:9 | v | main.rs:266:42:266:42 | v | provenance |  |
+| main.rs:262:9:262:9 | v | main.rs:267:36:267:36 | v | provenance |  |
+| main.rs:262:9:262:9 | v | main.rs:268:27:268:27 | v | provenance |  |
+| main.rs:262:9:262:9 | v | main.rs:269:25:269:25 | v | provenance |  |
+| main.rs:262:13:262:26 | ...::args | main.rs:262:13:262:28 | ...::args(...) [element] | provenance | Src:MaD:16  |
+| main.rs:262:13:262:28 | ...::args(...) [element] | main.rs:262:13:262:35 | ... .nth(...) [Some] | provenance | MaD:35 |
+| main.rs:262:13:262:35 | ... .nth(...) [Some] | main.rs:262:13:262:65 | ... .unwrap_or(...) | provenance | MaD:29 |
+| main.rs:262:13:262:65 | ... .unwrap_or(...) | main.rs:262:13:262:82 | ... .parse(...) [Ok] | provenance | MaD:32 |
+| main.rs:262:13:262:82 | ... .parse(...) [Ok] | main.rs:262:13:262:91 | ... .unwrap(...) | provenance | MaD:31 |
+| main.rs:262:13:262:91 | ... .unwrap(...) | main.rs:262:9:262:9 | v | provenance |  |
+| main.rs:265:34:265:34 | v | main.rs:12:36:12:43 | ...: usize | provenance |  |
+| main.rs:266:42:266:42 | v | main.rs:43:44:43:51 | ...: usize | provenance |  |
+| main.rs:267:36:267:36 | v | main.rs:81:38:81:45 | ...: usize | provenance |  |
+| main.rs:268:27:268:27 | v | main.rs:128:29:128:36 | ...: usize | provenance |  |
+| main.rs:269:25:269:25 | v | main.rs:162:27:162:34 | ...: usize | provenance |  |
 models
 | 1 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate; alloc-layout; Argument[0] |
 | 2 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed; alloc-layout; Argument[0] |
@@ -461,17 +490,46 @@ nodes
 | main.rs:169:13:169:25 | ...::realloc | semmle.label | ...::realloc |
 | main.rs:169:13:169:25 | ...::realloc | semmle.label | ...::realloc |
 | main.rs:169:31:169:31 | v | semmle.label | v |
-| main.rs:211:9:211:9 | v | semmle.label | v |
-| main.rs:211:13:211:26 | ...::args | semmle.label | ...::args |
-| main.rs:211:13:211:28 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
-| main.rs:211:13:211:35 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
-| main.rs:211:13:211:65 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
-| main.rs:211:13:211:82 | ... .parse(...) [Ok] | semmle.label | ... .parse(...) [Ok] |
-| main.rs:211:13:211:91 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
-| main.rs:214:34:214:34 | v | semmle.label | v |
-| main.rs:215:42:215:42 | v | semmle.label | v |
-| main.rs:216:36:216:36 | v | semmle.label | v |
-| main.rs:217:27:217:27 | v | semmle.label | v |
-| main.rs:218:25:218:25 | v | semmle.label | v |
+| main.rs:224:24:224:41 | ...: String | semmle.label | ...: String |
+| main.rs:225:9:225:17 | num_bytes | semmle.label | num_bytes |
+| main.rs:225:21:225:47 | user_input.parse(...) [Ok] | semmle.label | user_input.parse(...) [Ok] |
+| main.rs:225:21:225:48 | TryExpr | semmle.label | TryExpr |
+| main.rs:227:9:227:14 | layout | semmle.label | layout |
+| main.rs:227:18:227:66 | ...::from_size_align(...) [Ok] | semmle.label | ...::from_size_align(...) [Ok] |
+| main.rs:227:18:227:75 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:227:54:227:62 | num_bytes | semmle.label | num_bytes |
+| main.rs:229:22:229:38 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:229:40:229:45 | layout | semmle.label | layout |
+| main.rs:237:25:237:42 | ...: String | semmle.label | ...: String |
+| main.rs:238:9:238:12 | size | semmle.label | size |
+| main.rs:238:16:238:42 | user_input.parse(...) [Ok] | semmle.label | user_input.parse(...) [Ok] |
+| main.rs:238:16:238:43 | TryExpr | semmle.label | TryExpr |
+| main.rs:242:9:242:17 | num_bytes | semmle.label | num_bytes |
+| main.rs:244:9:244:14 | layout | semmle.label | layout |
+| main.rs:244:18:244:66 | ...::from_size_align(...) [Ok] | semmle.label | ...::from_size_align(...) [Ok] |
+| main.rs:244:18:244:75 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:244:54:244:62 | num_bytes | semmle.label | num_bytes |
+| main.rs:246:22:246:38 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:246:40:246:45 | layout | semmle.label | layout |
+| main.rs:253:25:253:38 | ...::args | semmle.label | ...::args |
+| main.rs:253:25:253:40 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:253:25:253:47 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:253:25:253:74 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:254:26:254:39 | ...::args | semmle.label | ...::args |
+| main.rs:254:26:254:41 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:254:26:254:48 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:254:26:254:75 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:262:9:262:9 | v | semmle.label | v |
+| main.rs:262:13:262:26 | ...::args | semmle.label | ...::args |
+| main.rs:262:13:262:28 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:262:13:262:35 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:262:13:262:65 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:262:13:262:82 | ... .parse(...) [Ok] | semmle.label | ... .parse(...) [Ok] |
+| main.rs:262:13:262:91 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:265:34:265:34 | v | semmle.label | v |
+| main.rs:266:42:266:42 | v | semmle.label | v |
+| main.rs:267:36:267:36 | v | semmle.label | v |
+| main.rs:268:27:268:27 | v | semmle.label | v |
+| main.rs:269:25:269:25 | v | semmle.label | v |
 subpaths
 | main.rs:116:53:116:53 | v | main.rs:71:35:71:38 | ...: T | main.rs:77:9:77:16 | return v | main.rs:116:47:116:62 | clamp(...) |

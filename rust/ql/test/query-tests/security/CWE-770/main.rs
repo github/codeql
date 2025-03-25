@@ -203,6 +203,57 @@ unsafe fn test_vectors(v: usize) {
     let _ = Vec::<u64>::from_raw_parts_in(m7, 100, v, std::alloc::Global); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
 }
 
+// --- examples from the qhelp ---
+
+struct Error {
+    msg: String,
+}
+
+impl From<std::num::ParseIntError> for Error {
+    fn from(err: std::num::ParseIntError) -> Self {
+        Error { msg: "ParseIntError".to_string() }
+    }
+}
+
+impl From<&str> for Error {
+    fn from(msg: &str) -> Self {
+        Error { msg: msg.to_string() }
+    }
+}
+
+fn allocate_buffer_bad(user_input: String) -> Result<*mut u8, Error> {
+    let num_bytes = user_input.parse::<usize>()? * std::mem::size_of::<u64>();
+
+    let layout = std::alloc::Layout::from_size_align(num_bytes, 1).unwrap();
+    unsafe {
+        let buffer = std::alloc::alloc(layout); // $ Alert[rust/uncontrolled-allocation-size]=example1
+
+        Ok(buffer)
+    }
+}
+
+const BUFFER_LIMIT: usize = 10 * 1024;
+
+fn allocate_buffer_good(user_input: String) -> Result<*mut u8, Error> {
+    let size = user_input.parse::<usize>()?;
+    if (size > BUFFER_LIMIT) {
+        return Err("Size exceeds limit".into());
+    }
+    let num_bytes = size * std::mem::size_of::<u64>();
+
+    let layout = std::alloc::Layout::from_size_align(num_bytes, 1).unwrap();
+    unsafe {
+        let buffer = std::alloc::alloc(layout); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=example2
+
+        Ok(buffer)
+    }
+}
+
+fn test_examples() {
+    allocate_buffer_bad(std::env::args().nth(1).unwrap_or("0".to_string())); // $ Source=example1
+    allocate_buffer_good(std::env::args().nth(1).unwrap_or("0".to_string())); // $ Source=example2
+}
+
 // --- main ---
 
 fn main() {
@@ -217,6 +268,7 @@ fn main() {
         test_system_alloc(v);
         test_libc_alloc(v);
         test_vectors(v);
+        test_examples();
     }
 
     println!("--- end ---");
