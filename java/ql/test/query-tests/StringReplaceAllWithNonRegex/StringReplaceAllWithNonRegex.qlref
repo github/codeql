@@ -1,1 +1,2 @@
-Performance/StringReplaceAllWithNonRegex.ql
+query: Performance/StringReplaceAllWithNonRegex.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
