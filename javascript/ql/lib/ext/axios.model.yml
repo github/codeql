@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["axios", "Member[interceptors].Member[request].Member[use].Argument[0].Parameter[0].Member[url]", "request-forgery"]

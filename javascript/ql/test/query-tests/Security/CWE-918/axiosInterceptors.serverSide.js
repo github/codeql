@@ -8,7 +8,7 @@ let userProvidedUrl = "";
 axios.interceptors.request.use(
     function (config) {
         if (userProvidedUrl) {
-            config.url = userProvidedUrl; // $ MISSING: Alert[js/request-forgery]
+            config.url = userProvidedUrl; // $ Alert[js/request-forgery]
         }
         return config;
     },
@@ -16,7 +16,7 @@ axios.interceptors.request.use(
 );
 
 app.post("/fetch", (req, res) => {
-    const { url } = req.body; // $ MISSING: Source[js/request-forgery]
+    const { url } = req.body; // $ Source[js/request-forgery]
     userProvidedUrl = url; 
     axios.get("placeholder");
 });
