@@ -275,8 +275,14 @@ mod function_trait_bounds {
         }
     }
 
+    // Type parameter with bound occurs in the root of a parameter type.
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
         x.m1()
+    }
+
+    // Type parameter with bound occurs nested within another type.
+    fn call_trait_thing_m1<T1, T2: MyTrait<T1>>(x: MyThing<T2>) -> T1 {
+        x.a.m1()
     }
 
     impl<T> MyTrait<T> for MyThing<T> {
@@ -298,11 +304,21 @@ mod function_trait_bounds {
         println!("{:?}", x.m2());
         println!("{:?}", y.m2());
 
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        let x2 = MyThing { a: S1 };
+        let y2 = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x)); // missing
-        println!("{:?}", call_trait_m1(y)); // missing
+        println!("{:?}", call_trait_m1(x2)); // missing
+        println!("{:?}", call_trait_m1(y2)); // missing
+
+        let x3 = MyThing {
+            a: MyThing { a: S1 },
+        };
+        let y3 = MyThing {
+            a: MyThing { a: S2 },
+        };
+
+        println!("{:?}", call_trait_thing_m1(x3)); // missing
+        println!("{:?}", call_trait_thing_m1(y3)); // missing
     }
 }
 
