@@ -5,6 +5,7 @@ private import DataFlowPublic
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.powershell.dataflow.FlowSummary
+private import SsaImpl as SsaImpl
 private import codeql.util.Boolean
 private import codeql.util.Unit
 
@@ -39,10 +40,10 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
-  Call getACall() { none() }
+  CallExpr getACall() { none() }
 
   /** Same as `getACall()` except this does not depend on the call graph or API graph. */
-  Call getACallSimple() { none() }
+  CallExpr getACallSimple() { none() }
 }
 
 /** A callable defined in library code, which should be taken into account in type tracking. */
@@ -90,7 +91,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying source code call, if any. */
-  abstract CfgNodes::CallCfgNode asCall();
+  abstract CfgNodes::ExprNodes::CallExprCfgNode asCall();
 
   /** Gets a textual representation of this call. */
   abstract string toString();
@@ -130,7 +131,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
-  override CfgNodes::CallCfgNode asCall() { none() }
+  override CfgNodes::ExprNodes::CallExprCfgNode asCall() { none() }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -138,11 +139,11 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 }
 
 class NormalCall extends DataFlowCall, TNormalCall {
-  private CfgNodes::CallCfgNode c;
+  private CfgNodes::ExprNodes::CallExprCfgNode c;
 
   NormalCall() { this = TNormalCall(c) }
 
-  override CfgNodes::CallCfgNode asCall() { result = c }
+  override CfgNodes::ExprNodes::CallExprCfgNode asCall() { result = c }
 
   override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getScope()) }
 
@@ -161,7 +162,7 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
     start.(ObjectCreationNode).getObjectCreationNode().getConstructedTypeName() = typename and
     exact = true
     or
-    start.asExpr().(CfgNodes::ExprNodes::TypeNameCfgNode).getTypeName() = typename and
+    start.asExpr().(CfgNodes::ExprNodes::TypeNameExprCfgNode).getName() = typename and
     exact = true
     or
     start.asParameter().getStaticType() = typename and
@@ -195,7 +196,9 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   predicate filter(Node n, Unit u) { none() }
 }
 
-private predicate qualifiedCall(CfgNodes::CallCfgNode call, Node receiver, string method) {
+private predicate qualifiedCall(
+  CfgNodes::ExprNodes::CallExprCfgNode call, Node receiver, string method
+) {
   call.getQualifier() = receiver.asExpr() and
   call.getName() = method
 }
@@ -214,7 +217,7 @@ private Type getTypeWithName(string s, boolean exact) {
   exact = false
 }
 
-private CfgScope getTargetInstance(CfgNodes::CallCfgNode call) {
+private CfgScope getTargetInstance(CfgNodes::ExprNodes::CallExprCfgNode call) {
   // TODO: Also match argument/parameter types
   exists(Node receiver, string method, string typename, Type t, boolean exact |
     qualifiedCall(call, receiver, method) and
@@ -236,7 +239,7 @@ class AdditionalCallTarget extends Unit {
   /**
    * Gets a viable target for `call`.
    */
-  abstract DataFlowCallable viableTarget(CfgNodes::CallCfgNode call);
+  abstract DataFlowCallable viableTarget(CfgNodes::ExprNodes::CallExprCfgNode call);
 }
 
 /** Holds if `call` may resolve to the returned summarized library method. */
@@ -256,7 +259,7 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TNormalCall(CfgNodes::CallCfgNode c) or
+    TNormalCall(CfgNodes::ExprNodes::CallExprCfgNode c) or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
     ) {
@@ -283,7 +286,7 @@ private module Cached {
       FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     TPositionalArgumentPosition(int pos, NamedSet ns) {
-      exists(CfgNodes::CallCfgNode call |
+      exists(CfgNodes::ExprNodes::CallExprCfgNode call |
         call = ns.getABindingCall() and
         exists(call.getArgument(pos))
       )
@@ -297,7 +300,7 @@ private module Cached {
     TThisParameterPosition() or
     TKeywordParameter(string name) { name = any(Argument p).getName() } or
     TPositionalParameter(int pos, NamedSet ns) {
-      exists(CfgNodes::CallCfgNode call |
+      exists(CfgNodes::ExprNodes::CallExprCfgNode call |
         call = ns.getABindingCall() and
         exists(call.getArgument(pos))
       )
@@ -306,7 +309,7 @@ private module Cached {
       // `ns.getABindingCall()`, but those parameters should still have
       // positions since SSA depends on this.
       // In particular, global scope is also an uncalled function.
-      any(Parameter p).getIndexExcludingPipelines() = pos and
+      any(SsaImpl::NormalParameter p).getIndexExcludingPipelines() = pos and
       ns.isEmpty()
     } or
     TPipelineParameter()
