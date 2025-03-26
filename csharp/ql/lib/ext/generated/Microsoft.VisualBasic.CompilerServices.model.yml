@@ -2,11 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: summaryModel
-    data:
-      - ["Microsoft.VisualBasic.CompilerServices", "StringType", False, "MidStmtStr", "(System.String,System.Int32,System.Int32,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.VisualBasic.CompilerServices", "BooleanType", "FromObject", "(System.Object)", "summary", "df-generated"]
@@ -197,6 +192,7 @@ extensions:
       - ["Microsoft.VisualBasic.CompilerServices", "StringType", "FromShort", "(System.Int16)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "StringType", "FromSingle", "(System.Single)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "StringType", "FromSingle", "(System.Single,System.Globalization.NumberFormatInfo)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic.CompilerServices", "StringType", "MidStmtStr", "(System.String,System.Int32,System.Int32,System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "StringType", "StrCmp", "(System.String,System.String,System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "StringType", "StrLike", "(System.String,System.String,Microsoft.VisualBasic.CompareMethod)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "StringType", "StrLikeBinary", "(System.String,System.String)", "summary", "df-generated"]
