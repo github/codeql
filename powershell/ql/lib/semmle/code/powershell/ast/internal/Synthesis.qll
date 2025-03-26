@@ -567,3 +567,88 @@ private module CmdArguments {
     }
   }
 }
+
+/**
+ * Synthesize literals from known constant strings.
+ */
+private module LiteralSynth {
+  private class LiteralSynth extends Synthesis {
+    final override predicate isRelevant(Raw::Ast a) {
+      exists(Raw::VarAccess va | a = va |
+        va.getUserPath().toLowerCase() = "true"
+        or
+        va.getUserPath().toLowerCase() = "false"
+        or
+        va.getUserPath().toLowerCase() = "null"
+        or
+        Raw::isEnvVariableAccess(va, _)
+        or
+        Raw::isAutomaticVariableAccess(va, _)
+      )
+    }
+
+    final override Expr getResultAstImpl(Raw::Ast r) {
+      exists(Raw::Ast parent, ChildIndex i | this.child(parent, i, _, r) |
+        result = TBoolLiteral(parent, i) or
+        result = TNullLiteral(parent, i) or
+        result = TEnvVariable(parent, i) or
+        result = TAutomaticVariable(parent, i)
+      )
+    }
+
+    private predicate child(Raw::Ast parent, ChildIndex i, Child child, Raw::VarAccess va) {
+      exists(string s |
+        parent.getChild(toRawChildIndex(i)) = va and
+        va.getUserPath().toLowerCase() = s
+      |
+        s = "true" and
+        child = SynthChild(BoolLiteralKind(true))
+        or
+        s = "false" and
+        child = SynthChild(BoolLiteralKind(false))
+        or
+        s = "null" and
+        child = SynthChild(NullLiteralKind())
+        or
+        Raw::isEnvVariableAccess(va, s) and
+        child = SynthChild(EnvVariableKind(s))
+        or
+        Raw::isAutomaticVariableAccess(va, s) and
+        child = SynthChild(AutomaticVariableKind(s))
+      )
+    }
+
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      this.child(parent, i, child, _)
+    }
+
+    final override predicate booleanValue(BoolLiteral b, boolean value) {
+      exists(Raw::Ast parent, ChildIndex i |
+        b = TBoolLiteral(parent, i) and
+        this.child(parent, i, SynthChild(BoolLiteralKind(value)))
+      )
+    }
+
+    final override predicate envVariableName(EnvVariable var, string name) {
+      exists(Raw::Ast parent, ChildIndex i |
+        var = TEnvVariable(parent, i) and
+        this.child(parent, i, SynthChild(EnvVariableKind(name)))
+      )
+    }
+
+    final override predicate automaticVariableName(AutomaticVariable var, string name) {
+      exists(Raw::Ast parent, ChildIndex i |
+        var = TAutomaticVariable(parent, i) and
+        this.child(parent, i, SynthChild(AutomaticVariableKind(name)))
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(Raw::VarAccess va |
+        this.child(_, _, _, va) and
+        n = getResultAst(va) and
+        result = va.getLocation()
+      )
+    }
+  }
+}
