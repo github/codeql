@@ -22,20 +22,11 @@ import codeql.rust.security.TaintedPathExtensions
 import TaintedPathFlow::PathGraph
 private import codeql.rust.Concepts
 
-abstract private class NormalizationState extends string {
-  bindingset[this]
-  NormalizationState() { any() }
-}
-
-/** A state signifying that the file path has not been normalized. */
-class NotNormalized extends NormalizationState {
-  NotNormalized() { this = "NotNormalized" }
-}
-
-/** A state signifying that the file path has been normalized, but not checked. */
-class NormalizedUnchecked extends NormalizationState {
-  NormalizedUnchecked() { this = "NormalizedUnchecked" }
-}
+newtype NormalizationState =
+  /** A state signifying that the file path has not been normalized. */
+  NotNormalized() or
+  /** A state signifying that the file path has been normalized, but not checked. */
+  NormalizedUnchecked()
 
 /**
  * This configuration uses two flow states, `NotNormalized` and `NormalizedUnchecked`,

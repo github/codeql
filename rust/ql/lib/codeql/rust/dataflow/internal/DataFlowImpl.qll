@@ -720,6 +720,15 @@ module RustDataFlow implements InputSig<Location> {
     not isSpecialContentSet(cs)
   }
 
+  /**
+   * Holds if `cs` is used to encode a special operation as a content component, but should not
+   * be treated as an ordinary content component.
+   */
+  private predicate isSpecialContentSet(ContentSet cs) {
+    cs instanceof TOptionalStep or
+    cs instanceof TOptionalBarrier
+  }
+
   pragma[nomagic]
   private predicate fieldAssignment(Node node1, Node node2, FieldContent c) {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
@@ -1109,16 +1118,6 @@ private module Cached {
     TOptionalBarrier(string name) {
       name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalBarrier")
     }
-
-  /**
-   * Holds if `cs` is used to encode a special operation as a content component, but should not
-   * be treated as an ordinary content component.
-   */
-  cached
-  predicate isSpecialContentSet(ContentSet cs) {
-    cs instanceof TOptionalStep or
-    cs instanceof TOptionalBarrier
-  }
 
   /** Holds if `n` is a flow source of kind `kind`. */
   cached
