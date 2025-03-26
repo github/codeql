@@ -1834,7 +1834,7 @@ module IteratorFlow {
 
   private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
 
-  private class Def extends IteratorSsa::DefinitionExt {
+  private class Def extends IteratorSsa::Definition {
     final override Location getLocation() { result = this.getImpl().getLocation() }
 
     /**
@@ -1842,7 +1842,7 @@ module IteratorFlow {
      * and is a definition (or use) of the variable `sv`.
      */
     predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-      super.definesAt(sv, block, index, _)
+      super.definesAt(sv, block, index)
     }
 
     private Ssa::DefImpl getImpl() {
