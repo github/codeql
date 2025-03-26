@@ -652,3 +652,121 @@ private module LiteralSynth {
     }
   }
 }
+
+/**
+ * Synthesize variable accesses for pipeline iterators inside a process block.
+ */
+private module IteratorAccessSynth {
+  private class PipelineOrPipelineByPropertyNameIteratorVariable extends VariableSynth {
+    PipelineOrPipelineByPropertyNameIteratorVariable() {
+      this instanceof PipelineIteratorVariable
+      or
+      this instanceof PipelineByPropertyNameIteratorVariable
+    }
+
+    string getPropertyName() {
+      result = this.(PipelineByPropertyNameIteratorVariable).getPropertyName()
+    }
+
+    predicate isPipelineIterator() { this instanceof PipelineIteratorVariable }
+  }
+
+  bindingset[pb, v]
+  private string getAPipelineIteratorName(
+    Raw::ProcessBlock pb, PipelineOrPipelineByPropertyNameIteratorVariable v
+  ) {
+    v.isPipelineIterator() and
+    (
+      result = "_"
+      or
+      // or
+      // result = "psitem" // TODO: This is also an automatic variable
+      result = pb.getScriptBlock().getParamBlock().getPipelineParameter().getName().toLowerCase()
+    )
+    or
+    // TODO: We could join on something other than the string if we wanted (i.e., the raw parameter).
+    v.getPropertyName().toLowerCase() = result and
+    result =
+      pb.getScriptBlock()
+          .getParamBlock()
+          .getAPipelineByPropertyNameParameter()
+          .getName()
+          .toLowerCase()
+  }
+
+  private class IteratorAccessSynth extends Synthesis {
+    private predicate expr(Raw::Ast rawParent, ChildIndex i, Raw::VarAccess va, Child child) {
+      rawParent.getChild(toRawChildIndex(i)) = va and
+      child = SynthChild(VarAccessSynthKind(this.varAccess(va)))
+    }
+
+    private predicate stmt(Raw::Ast rawParent, ChildIndex i, Raw::CmdExpr cmdExpr, Child child) {
+      rawParent.getChild(toRawChildIndex(i)) = cmdExpr and
+      not mustHaveExprChild(rawParent, cmdExpr) and
+      child = SynthChild(ExprStmtKind())
+    }
+
+    private PipelineOrPipelineByPropertyNameIteratorVariable varAccess(Raw::VarAccess va) {
+      exists(Raw::ProcessBlock pb |
+        pb = va.getParent+() and
+        result = TVariableSynth(pb, _) and
+        va.getUserPath().toLowerCase() = getAPipelineIteratorName(pb, result)
+      )
+    }
+
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      this.expr(parent, i, _, child)
+      or
+      this.stmt(parent, i, _, child)
+      or
+      exists(Raw::ProcessBlock pb | parent = pb |
+        i = PipelineIteratorVar() and
+        child = SynthChild(VarSynthKind(PipelineIteratorKind()))
+        or
+        exists(Raw::Parameter p |
+          p = pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter() and
+          child = SynthChild(VarSynthKind(PipelineByPropertyNameIteratorKind(p.getName()))) and
+          i = PipelineByPropertyNameIteratorVar(p)
+        )
+      )
+    }
+
+    override predicate exprStmtExpr(ExprStmt e, Expr expr) {
+      exists(Raw::Ast p, Raw::VarAccess va, Raw::CmdExpr cmdExpr, ChildIndex i1, ChildIndex i2 |
+        this.stmt(p, i1, _, _) and
+        this.expr(cmdExpr, i2, va, _) and
+        e = TExprStmtSynth(p, i1) and
+        expr = TVarAccessSynth(cmdExpr, i2, this.varAccess(va))
+      )
+    }
+
+    final override Expr getResultAstImpl(Raw::Ast r) {
+      exists(Raw::Ast parent, ChildIndex i | this.expr(parent, i, r, _) |
+        result = TVarAccessSynth(parent, i, this.varAccess(r))
+      )
+    }
+
+    override predicate variableSynthName(VariableSynth v, string name) {
+      v = TVariableSynth(_, PipelineIteratorVar()) and
+      name = "__pipeline_iterator"
+      or
+      exists(Raw::PipelineByPropertyNameParameter p |
+        v = TVariableSynth(_, PipelineByPropertyNameIteratorVar(p)) and
+        name = "__pipeline_iterator for " + p.getName()
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::CmdExpr cmdExpr |
+        this.stmt(parent, i, cmdExpr, _) and
+        n = TExprStmtSynth(parent, i) and
+        result = cmdExpr.getLocation()
+      )
+      or
+      exists(Raw::Ast parent |
+        n = TVariableSynth(parent, _) and
+        result = parent.getLocation()
+      )
+    }
+  }
+}
