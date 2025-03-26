@@ -58,7 +58,9 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
-  predicate encodeArgumentPosition = encodeParameterPosition/1;
+  string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) {
+    result = encodeParameterPosition(pos)
+  }
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
@@ -146,17 +148,21 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
     sc = Impl::Private::SummaryComponent::return(_) and
     result.asExpr().getExpr() = source.getCall()
+    or
+    exists(CallExprBase call, Expr arg, ArgumentPosition pos |
+      result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() = arg and
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      call = source.getCall() and
+      arg = pos.getArgument(call)
+    )
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(CallExprBase call, Expr arg, ParameterPosition pos |
+    exists(CallExprBase call, Expr arg, ArgumentPosition pos |
       result.asExpr().getExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
-      call = sink.getCall()
-    |
-      arg = call.getArgList().getArg(pos.getPosition())
-      or
-      arg = call.(MethodCallExpr).getReceiver() and pos.isSelf()
+      call = sink.getCall() and
+      arg = pos.getArgument(call)
     )
   }
 }
