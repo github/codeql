@@ -11,8 +11,8 @@ const fs = require('fs').promises;
         method: 'GET',
         path: '/hello',
         handler: async (request, h) => {
-            const filepath = request.query.filepath; // $ MISSING: Source
-            const data = await fs.readFile(filepath, 'utf8'); // $ MISSING: Alert
+            const filepath = request.query.filepath; // $ Source
+            const data = await fs.readFile(filepath, 'utf8'); // $ Alert
             const firstLine = data.split('\n')[0];
             return firstLine;
         }
