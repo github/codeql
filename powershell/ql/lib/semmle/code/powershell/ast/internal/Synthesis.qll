@@ -113,3 +113,28 @@ Ast getResultAst(Raw::Ast r) {
 }
 
 Raw::Ast getRawAst(Ast r) { r = getResultAst(result) }
+
+private module ThisSynthesis {
+  private class ThisSynthesis extends Synthesis {
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      parent instanceof Raw::MethodScriptBlock and
+      i = ThisVar() and
+      child = SynthChild(VarSynthKind(ThisVarKind()))
+      or
+      parent.getChild(toRawChildIndex(i)).(Raw::VarAccess).getUserPath().toLowerCase() = "this" and
+      child = SynthChild(VarAccessSynthKind(TVariableSynth(parent.getScope(), ThisVar())))
+    }
+
+    override predicate variableSynthName(VariableSynth v, string name) {
+      v = TVariableSynth(_, ThisVar()) and
+      name = "this"
+    }
+
+    override Location getLocation(Ast n) {
+      exists(Raw::Ast scope |
+        n = TVariableSynth(scope, ThisVar()) and
+        result = scope.getLocation()
+      )
+    }
+  }
+}
