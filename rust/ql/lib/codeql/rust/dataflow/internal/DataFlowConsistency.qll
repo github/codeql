@@ -18,6 +18,8 @@ private module Input implements InputSig<Location, RustDataFlow> {
     // We allow flow into post-update node for receiver expressions (from the
     // synthetic post receiever node).
     n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = any(Node::ReceiverNode r).getReceiver()
+    or
+    n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_, _)
   }
 
   predicate missingLocationExclude(RustDataFlow::Node n) { not exists(n.asExpr().getLocation()) }

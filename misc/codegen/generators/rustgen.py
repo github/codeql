@@ -96,7 +96,9 @@ class Processor:
             name=name,
             fields=fields,
             detached_fields=detached_fields,
-            ancestors=sorted(set(a.name for a in _get_ancestors(cls, self._classmap))),
+            # remove duplicates but preserve ordering
+            # (`dict` preserves insertion order while `set` doesn't)
+            ancestors=[*{a.name: None for a in _get_ancestors(cls, self._classmap)}],
             entry_table=inflection.tableize(cls.name) if not cls.derived else None,
         )
 

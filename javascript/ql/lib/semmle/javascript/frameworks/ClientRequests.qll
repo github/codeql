@@ -415,19 +415,73 @@ module ClientRequest {
   }
 
   /**
+   * Represents an instance of the `got` HTTP client library.
+   */
+  abstract private class GotInstance extends API::Node {
+    /**
+     * Gets the options object associated with this instance of `got`.
+     */
+    API::Node getOptions() { none() }
+  }
+
+  /**
+   * Represents the root `got` module import.
+   * For example: `const got = require('got')`.
+   */
+  private class RootGotInstance extends GotInstance {
+    RootGotInstance() { this = API::moduleImport("got") }
+  }
+
+  /**
+   * Represents an instance of `got` created by calling the `extend()` method.
+   * It may also be chained with multiple calls to `extend()`.
+   *
+   * For example: `const client = got.extend({ prefixUrl: 'https://example.com' })`.
+   */
+  private class ExtendGotInstance extends GotInstance {
+    private GotInstance base;
+    private API::CallNode extendCall;
+
+    ExtendGotInstance() {
+      extendCall = base.getMember("extend").getACall() and
+      this = extendCall.getReturn()
+    }
+
+    override API::Node getOptions() {
+      result = extendCall.getParameter(0) or result = base.getOptions()
+    }
+  }
+
+  /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {
+    GotInstance got;
+
     GotUrlRequest() {
-      exists(API::Node callee, API::Node got | this = callee.getACall() |
-        got = [API::moduleImport("got"), API::moduleImport("got").getMember("extend").getReturn()] and
-        callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
+      exists(API::Node callee | this = callee.getACall() |
+        callee =
+          [
+            got,
+            got.getMember(["stream", "get", "post", "put", "patch", "head", "delete", "paginate"])
+          ]
       )
     }
 
     override DataFlow::Node getUrl() {
       result = this.getArgument(0) and
       not exists(this.getOptionArgument(1, "baseUrl"))
+      or
+      // Handle URL from options passed to extend()
+      result = got.getOptions().getMember("url").asSink() and
+      not exists(this.getArgument(0))
+      or
+      // Handle URL from options passed as third argument when first arg is undefined/missing
+      exists(API::InvokeNode optionsCall |
+        optionsCall = API::moduleImport("got").getMember("Options").getAnInvocation() and
+        optionsCall.getReturn().getAValueReachableFromSource() = this.getAnArgument() and
+        result = optionsCall.getParameter(0).getMember("url").asSink()
+      )
     }
 
     override DataFlow::Node getHost() {
@@ -514,16 +568,35 @@ module ClientRequest {
   }
 
   /**
+   * Gets the name of a superagent request method.
+   */
+  private string getSuperagentRequestMethodName() {
+    result = [httpMethodName(), any(Http::RequestMethodName m), "del", "DEL"]
+  }
+
+  /**
    * A model of a URL request made using the `superagent` library.
    */
   class SuperAgentUrlRequest extends ClientRequest::Range {
     DataFlow::Node url;
 
     SuperAgentUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
+      exists(string moduleName | moduleName = "superagent" |
+        // Handle method calls like superagent.get(url)
+        this = API::moduleImport(moduleName).getMember(getSuperagentRequestMethodName()).getACall() and
         url = this.getArgument(0)
+        or
+        // Handle direct calls like superagent('GET', url)
+        this = API::moduleImport(moduleName).getACall() and
+        this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
+        url = this.getArgument(1)
+        or
+        // Handle agent calls like superagent.agent().get(url)
+        exists(DataFlow::SourceNode agent |
+          agent = API::moduleImport(moduleName).getMember("agent").getACall() and
+          this = agent.getAMethodCall(httpMethodName()) and
+          url = this.getArgument(0)
+        )
       )
     }
 

@@ -10,6 +10,9 @@ test_ClientRequest
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') |
 | puppeteer.ts:8:5:8:61 | page.ad ... css" }) |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) |
+| superagent.js:4:5:4:26 | superag ... ', url) |
+| superagent.js:5:5:5:23 | superagent.del(url) |
+| superagent.js:6:5:6:32 | superag ... st(url) |
 | tst.js:11:5:11:16 | request(url) |
 | tst.js:13:5:13:20 | request.get(url) |
 | tst.js:15:5:15:23 | request.delete(url) |
@@ -91,9 +94,19 @@ test_ClientRequest
 | tst.js:286:20:286:55 | new Web ... :8080') |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') |
+| tst.js:319:5:319:26 | superag ... ', url) |
+| tst.js:320:5:320:23 | superagent.del(url) |
+| tst.js:321:5:321:32 | superag ... st(url) |
+| tst.js:328:5:328:38 | got(und ... ptions) |
+| tst.js:329:5:329:49 | got(und ... {url})) |
+| tst.js:332:5:332:46 | got.ext ... ).get() |
+| tst.js:334:5:334:25 | got.pag ... rl, {}) |
+| tst.js:337:5:337:20 | jsonClient.get() |
+| tst.js:340:5:340:21 | jsonClient2.get() |
 test_getADataNode
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
+| superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:39:6:42 | data |
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:33:57:37 | data2 |
@@ -132,6 +145,7 @@ test_getADataNode
 | tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:247:24:247:68 | request ... o.png') |
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:255:25:255:35 | 'new_value' |
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:288:21:288:35 | 'Hello Server!' |
+| tst.js:321:5:321:32 | superag ... st(url) | tst.js:321:39:321:42 | data |
 test_getHost
 | tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
@@ -154,6 +168,9 @@ test_getUrl
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
 | puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
+| superagent.js:4:5:4:26 | superag ... ', url) | superagent.js:4:23:4:25 | url |
+| superagent.js:5:5:5:23 | superagent.del(url) | superagent.js:5:20:5:22 | url |
+| superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:29:6:31 | url |
 | tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
 | tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
 | tst.js:15:5:15:23 | request.delete(url) | tst.js:15:20:15:22 | url |
@@ -240,9 +257,23 @@ test_getUrl
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:26:312:35 | '/foo/bar' |
+| tst.js:319:5:319:26 | superag ... ', url) | tst.js:319:23:319:25 | url |
+| tst.js:320:5:320:23 | superagent.del(url) | tst.js:320:20:320:22 | url |
+| tst.js:321:5:321:32 | superag ... st(url) | tst.js:321:29:321:31 | url |
+| tst.js:328:5:328:38 | got(und ... ptions) | tst.js:327:34:327:36 | url |
+| tst.js:328:5:328:38 | got(und ... ptions) | tst.js:328:9:328:17 | undefined |
+| tst.js:329:5:329:49 | got(und ... {url})) | tst.js:329:9:329:17 | undefined |
+| tst.js:329:5:329:49 | got(und ... {url})) | tst.js:329:44:329:46 | url |
+| tst.js:334:5:334:25 | got.pag ... rl, {}) | tst.js:334:18:334:20 | url |
+| tst.js:337:5:337:20 | jsonClient.get() | tst.js:336:41:336:43 | url |
+| tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:42:339:44 | url |
+| tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:61:339:63 | url |
 test_getAResponseDataNode
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
+| superagent.js:4:5:4:26 | superag ... ', url) | superagent.js:4:5:4:26 | superag ... ', url) | stream | true |
+| superagent.js:5:5:5:23 | superagent.del(url) | superagent.js:5:5:5:23 | superagent.del(url) | stream | true |
+| superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:5:6:32 | superag ... st(url) | stream | true |
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
 | tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) |  | true |
@@ -314,3 +345,12 @@ test_getAResponseDataNode
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:37 | err.response | json | false |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:304:27:304:38 | err.response | json | false |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:12:312:36 | fetchPo ... o/bar') | fetch.response | true |
+| tst.js:319:5:319:26 | superag ... ', url) | tst.js:319:5:319:26 | superag ... ', url) | stream | true |
+| tst.js:320:5:320:23 | superagent.del(url) | tst.js:320:5:320:23 | superagent.del(url) | stream | true |
+| tst.js:321:5:321:32 | superag ... st(url) | tst.js:321:5:321:32 | superag ... st(url) | stream | true |
+| tst.js:328:5:328:38 | got(und ... ptions) | tst.js:328:5:328:38 | got(und ... ptions) | text | true |
+| tst.js:329:5:329:49 | got(und ... {url})) | tst.js:329:5:329:49 | got(und ... {url})) | text | true |
+| tst.js:332:5:332:46 | got.ext ... ).get() | tst.js:332:5:332:46 | got.ext ... ).get() | text | true |
+| tst.js:334:5:334:25 | got.pag ... rl, {}) | tst.js:334:5:334:25 | got.pag ... rl, {}) | text | true |
+| tst.js:337:5:337:20 | jsonClient.get() | tst.js:337:5:337:20 | jsonClient.get() | text | true |
+| tst.js:340:5:340:21 | jsonClient2.get() | tst.js:340:5:340:21 | jsonClient2.get() | text | true |
