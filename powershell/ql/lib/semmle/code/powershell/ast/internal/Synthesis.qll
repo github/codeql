@@ -151,3 +151,124 @@ private module SetVariableAssignment {
     }
   }
 }
+
+/**
+ * Syntesize parameters from parameter blocks and function definitions
+ * so that they have a uniform API.
+ */
+private module ParameterSynth {
+  private class ParameterSynth extends Synthesis {
+    final override predicate isRelevant(Raw::Ast a) { a = any(Scope::Range r).getAParameter() }
+
+    private predicate parameter(
+      Raw::Ast parent, ChildIndex i, Raw::Parameter p, Child child, boolean isPipelineParameter
+    ) {
+      exists(Scope::Range r, int index |
+        p = r.getParameter(index) and
+        parent = r and
+        i = funParam(index) and
+        child = SynthChild(VarSynthKind(ParamVarRealKind())) and
+        if p instanceof Raw::PipelineParameter
+        then isPipelineParameter = true
+        else isPipelineParameter = false
+      )
+    }
+
+    final override predicate isPipelineParameter(Parameter p) {
+      exists(Raw::Ast parent, ChildIndex i |
+        parent = getRawAst(p.getFunction().getBody()) and
+        this.isPipelineParameterChild(parent, _, i) and
+        p = TVariableSynth(parent, i)
+      )
+    }
+
+    override predicate implicitAssignment(Raw::Ast dest, string name) {
+      exists(Raw::Parameter p |
+        dest = p and
+        name = p.getName()
+      )
+    }
+
+    final override predicate variableSynthName(VariableSynth v, string name) {
+      exists(Raw::Ast parent, int i, Raw::Parameter p |
+        this.parameter(parent, FunParam(i), p, _, false) and
+        v = TVariableSynth(parent, FunParam(i)) and
+        name = p.getName()
+      )
+      or
+      exists(Raw::Ast parent |
+        this.child(parent, PipelineParamVar(), _) and
+        v = TVariableSynth(parent, PipelineParamVar()) and
+        name = "[synth] pipeline"
+      )
+    }
+
+    private predicate isPipelineParameterChild(Raw::Ast parent, int index, ChildIndex i) {
+      exists(Scope::Range r | parent = r and i = PipelineParamVar() |
+        r.getParameter(index) instanceof Raw::PipelineParameter
+        or
+        not r.getAParameter() instanceof Raw::PipelineParameter and
+        index = synthPipelineParameterChildIndex(r)
+      )
+    }
+
+    final override predicate pipelineParameterHasIndex(ScriptBlock s, int i) {
+      exists(Raw::ScriptBlock scriptBlock |
+        s = TScriptBlock(scriptBlock) and
+        this.isPipelineParameterChild(scriptBlock, i, _)
+      )
+    }
+
+    final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      // Synthesize parameters
+      this.parameter(parent, i, _, child, false)
+      or
+      // Synthesize pipeline parameter
+      child = SynthChild(VarSynthKind(ParamVarPipelineKind())) and
+      this.isPipelineParameterChild(parent, _, i)
+      or
+      // Synthesize default values
+      exists(Raw::Parameter q |
+        parent = q and
+        this.parameter(_, _, q, _, _)
+      |
+        i = paramDefaultVal() and
+        child = childRef(getResultAst(q.getDefaultValue()))
+        or
+        exists(int index |
+          i = paramAttr(index) and
+          child = childRef(getResultAst(q.getAttribute(index)))
+        )
+      )
+    }
+
+    final override Parameter getResultAstImpl(Raw::Ast r) {
+      exists(Raw::Ast parent, int i |
+        this.parameter(parent, FunParam(i), r, _, false) and
+        result = TVariableSynth(parent, FunParam(i))
+      )
+      or
+      exists(Scope::Range scope, int i, ChildIndex index |
+        scope.getParameter(i) = r and
+        this.isPipelineParameterChild(scope, i, index) and
+        result = TVariableSynth(scope, index)
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(Raw::Ast parent, Raw::Parameter p, int i |
+        this.parameter(parent, _, p, _, _) and
+        n = TVariableSynth(parent, FunParam(i)) and
+        result = p.getLocation()
+      )
+    }
+
+    final override predicate parameterStaticType(Parameter n, string type) {
+      exists(Raw::Ast parent, int i, Raw::Parameter p |
+        this.parameter(parent, FunParam(i), p, _, false) and
+        n = TVariableSynth(parent, FunParam(i)) and
+        type = p.getStaticType()
+      )
+    }
+  }
+}
