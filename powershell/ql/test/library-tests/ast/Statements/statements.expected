@@ -1,24 +1,25 @@
-| ExitStatement.ps1:1:1:1:8 | exit ... |
-| ExitStatement.ps1:1:6:1:8 | -1 |
-| IfStatement.ps1:1:1:1:7 | ...=... |
-| IfStatement.ps1:1:6:1:7 | 4 |
-| IfStatement.ps1:3:1:8:2 | if (...) {...} else {...} |
-| IfStatement.ps1:3:5:3:13 | ... -ge ... |
-| IfStatement.ps1:4:2:4:36 | $x is greater than or equal to 3 |
-| IfStatement.ps1:7:2:7:21 | $x is less than 3 |
-| TrapStatement.ps1:1:1:4:2 | TrapTest |
-| TrapStatement.ps1:2:5:2:26 | TrapStatement at: TrapStatement.ps1:2:5:2:26 |
-| TrapStatement.ps1:2:11:2:25 | Error found. |
-| TrapStatement.ps1:3:5:3:19 | call to nonsenseString |
-| TrapStatement.ps1:6:1:6:9 | call to TrapTest |
-| Try.ps1:1:1:13:2 | try {...} |
-| Try.ps1:2:4:2:95 | ...=... |
-| Try.ps1:2:17:2:95 | call to New-Object |
-| Try.ps1:2:69:2:94 | ...,... |
-| Try.ps1:3:5:3:21 | throw ... |
-| Try.ps1:3:11:3:21 | Exception |
-| Try.ps1:6:5:6:64 | Unable to download MyDoc.doc from http://www.contoso.com. |
-| Try.ps1:9:5:9:52 | An error occurred that could not be resolved. |
-| Try.ps1:12:5:12:37 | The finally block is executed. |
-| UseProcessBlockForPipelineCommand.ps1:1:1:11:2 | Get-Number |
-| UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | Number |
+| ExitStatement.ps1:1:1:1:7 | exit ... |
+| IfStatement.ps1:1:1:1:6 | ...=... |
+| IfStatement.ps1:3:1:8:1 | [Stmt] if (...) {...} else {...} |
+| IfStatement.ps1:3:15:5:1 | {...} |
+| IfStatement.ps1:4:2:4:35 | [Stmt] $x is greater than or equal to 3 |
+| IfStatement.ps1:6:6:8:1 | {...} |
+| IfStatement.ps1:7:2:7:20 | [Stmt] $x is less than 3 |
+| TrapStatement.ps1:1:1:4:1 | def of TrapTest |
+| TrapStatement.ps1:2:5:2:25 | trap {...} |
+| TrapStatement.ps1:2:10:2:25 | {...} |
+| TrapStatement.ps1:2:11:2:24 | [Stmt] Error found. |
+| TrapStatement.ps1:3:5:3:18 | [Stmt] Call to nonsenseString |
+| TrapStatement.ps1:6:1:6:8 | [Stmt] Call to TrapTest |
+| Try.ps1:1:1:13:1 | try {...} |
+| Try.ps1:1:5:4:1 | {...} |
+| Try.ps1:2:4:2:94 | ...=... |
+| Try.ps1:3:5:3:20 | throw ... |
+| Try.ps1:5:57:7:1 | {...} |
+| Try.ps1:6:5:6:63 | [Stmt] Unable to download MyDoc.doc from http://www.contoso.com. |
+| Try.ps1:8:7:10:1 | {...} |
+| Try.ps1:9:5:9:51 | [Stmt] An error occurred that could not be resolved. |
+| Try.ps1:11:9:13:1 | {...} |
+| Try.ps1:12:5:12:36 | [Stmt] The finally block is executed. |
+| UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | def of Get-Number |
+| UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | [Stmt] Number |

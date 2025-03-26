@@ -1,16 +1,16 @@
 import powershell
 
-query predicate doUntil(DoUntilStmt s, PipelineBase e, StmtBlock body) {
+query predicate doUntil(DoUntilStmt s, Expr e, StmtBlock body) {
   e = s.getCondition() and
   body = s.getBody()
 }
 
-query predicate doWhile(DoWhileStmt s, PipelineBase e, StmtBlock body) {
+query predicate doWhile(DoWhileStmt s, Expr e, StmtBlock body) {
   e = s.getCondition() and
   body = s.getBody()
 }
 
-query predicate while(WhileStmt s, PipelineBase e, StmtBlock body) {
+query predicate while(WhileStmt s, Expr e, StmtBlock body) {
   e = s.getCondition() and
   body = s.getBody()
 }
