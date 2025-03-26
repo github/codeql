@@ -193,3 +193,6 @@ A && B
 
 */ FOOBAR
 #endif
+
+#if/*...*//*...*/A
+#endif
