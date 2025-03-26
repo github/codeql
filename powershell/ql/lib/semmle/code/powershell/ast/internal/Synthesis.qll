@@ -272,3 +272,104 @@ private module ParameterSynth {
     }
   }
 }
+
+/**
+ * Holds if `child` is a child of `n` that is a `Stmt` in the raw AST, but should
+ * be mapped to an `Expr` in the synthesized AST.
+ */
+private predicate mustHaveExprChild(Raw::Ast n, Raw::Stmt child) {
+  n.(Raw::AssignStmt).getRightHandSide() = child
+  or
+  n.(Raw::Pipeline).getAComponent() = child
+  or
+  n.(Raw::ReturnStmt).getPipeline() = child
+  or
+  n.(Raw::HashTableExpr).getAStmt() = child
+  or
+  n.(Raw::ParenExpr).getBase() = child
+  or
+  n.(Raw::DoUntilStmt).getCondition() = child
+  or
+  n.(Raw::DoWhileStmt).getCondition() = child
+  or
+  n.(Raw::ExitStmt).getPipeline() = child
+  or
+  n.(Raw::ForEachStmt).getIterableExpr() = child
+  or
+  // TODO: What to do about initializer and iterator?
+  exists(Raw::ForStmt for | n = for | for.getCondition() = child)
+  or
+  n.(Raw::IfStmt).getACondition() = child
+  or
+  n.(Raw::SwitchStmt).getCondition() = child
+  or
+  n.(Raw::ThrowStmt).getPipeline() = child
+  or
+  n.(Raw::WhileStmt).getCondition() = child
+}
+
+private class RawStmtThatShouldBeExpr extends Raw::Stmt {
+  RawStmtThatShouldBeExpr() {
+    this instanceof Raw::Cmd or
+    this instanceof Raw::Pipeline or
+    this instanceof Raw::PipelineChain or
+    this instanceof Raw::IfStmt
+  }
+
+  Expr getExpr() {
+    result = TCmd(this)
+    or
+    result = TPipeline(this)
+    or
+    result = TPipelineChain(this)
+    or
+    result = TIf(this)
+  }
+}
+
+/**
+ * Insert expr-to-stmt conversions where needed.
+ */
+private module ExprToStmtSynth {
+  private class ExprToStmtSynth extends Synthesis {
+    private predicate exprToSynthStmtChild(Raw::Ast parent, ChildIndex i, Raw::Stmt stmt, Expr e) {
+      this.child(parent, i, SynthChild(ExprStmtKind()), stmt) and
+      e = stmt.(RawStmtThatShouldBeExpr).getExpr()
+    }
+
+    private predicate child(Raw::Ast parent, ChildIndex i, Child child, Raw::Stmt stmt) {
+      // Synthesize the expr-to-stmt conversion
+      child = SynthChild(ExprStmtKind()) and
+      stmt instanceof RawStmtThatShouldBeExpr and
+      parent.getChild(toRawChildIndex(i)) = stmt and
+      not mustHaveExprChild(parent, stmt)
+    }
+
+    final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      this.child(parent, i, child, _)
+    }
+
+    final override predicate exprStmtExpr(ExprStmt e, Expr expr) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::Stmt stmt |
+        e = TExprStmtSynth(parent, i) and
+        this.exprToSynthStmtChild(parent, i, stmt, expr)
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::Stmt stmt |
+        n = TExprStmtSynth(parent, i) and
+        this.exprToSynthStmtChild(parent, i, stmt, _) and
+        result = stmt.getLocation()
+      )
+    }
+
+    final override string toString(Ast n) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::Stmt stmt |
+        n = TExprStmtSynth(parent, i) and
+        this.exprToSynthStmtChild(parent, i, stmt, _) and
+        result = stmt.toString()
+      )
+    }
+  }
+}
