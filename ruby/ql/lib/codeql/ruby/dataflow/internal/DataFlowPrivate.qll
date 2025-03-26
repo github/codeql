@@ -66,10 +66,22 @@ private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
   )
 }
 
-/** Gets a node for which to construct a post-update node for argument `arg`. */
-CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
-  result = getALastEvalNode*(arg) and
-  not exists(getALastEvalNode(result))
+/**
+ * Holds if a reverse local flow step should be added from the post-update node
+ * for `e` to the post-update node for the result.
+ *
+ * This is needed to allow for side-effects on compound expressions to propagate
+ * to sub components. For example, in
+ *
+ * ```ruby
+ * (foo1; foo2).set_field(taint)
+ * ```
+ *
+ * we add a reverse flow step from `[post] (foo1; foo2)` to `[post] foo2`,
+ * in order for the side-effect of `set_field` to reach `foo2`.
+ */
+CfgNodes::ExprCfgNode getPostUpdateReverseStep(CfgNodes::ExprCfgNode e) {
+  result = getALastEvalNode(e)
 }
 
 /** Gets the SSA definition node corresponding to parameter `p`. */
@@ -170,6 +182,9 @@ module LocalFlow {
       )
     or
     nodeTo.(ImplicitBlockArgumentNode).getParameterNode(true) = nodeFrom
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr())
   }
 
   predicate flowSummaryLocalStep(
@@ -486,7 +501,9 @@ private module Cached {
       // filter out nodes that clearly don't need post-update nodes
       isNonConstantExpr(n) and
       (
-        n = getAPostUpdateNodeForArg(_)
+        n instanceof Argument
+        or
+        n = getPostUpdateReverseStep(any(PostUpdateNode p).getPreUpdateNode().asExpr())
         or
         n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
       )
@@ -2018,18 +2035,7 @@ private module PostUpdateNodes {
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
-    override ExprNode getPreUpdateNode() {
-      // For compound arguments, such as `m(if b then x else y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
-      // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
-      // respectively.
-      //
-      // This ensures that we get flow out of the call into both leafs (1), while still
-      // maintaining the invariant that the underlying expression is a pre-update node (2).
-      e = getAPostUpdateNodeForArg(result.getExprNode())
-      or
-      e = result.getExprNode()
-    }
+    override ExprNode getPreUpdateNode() { e = result.getExprNode() }
 
     override CfgScope getCfgScope() { result = e.getExpr().getCfgScope() }
 

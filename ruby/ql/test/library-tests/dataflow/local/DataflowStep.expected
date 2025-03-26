@@ -2910,6 +2910,8 @@
 | local_dataflow.rb:141:19:141:37 | [false] ( ... ) | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... |
 | local_dataflow.rb:141:19:141:37 | [input] SSA phi read(self) | local_dataflow.rb:141:38:142:9 | [input] SSA phi read(self) |
 | local_dataflow.rb:141:19:141:37 | [input] SSA phi read(x) | local_dataflow.rb:141:38:142:9 | [input] SSA phi read(x) |
+| local_dataflow.rb:141:19:141:37 | [post] [false] ( ... ) | local_dataflow.rb:141:20:141:36 | [post] [false] ... && ... |
+| local_dataflow.rb:141:19:141:37 | [post] [true] ( ... ) | local_dataflow.rb:141:20:141:36 | [post] [true] ... && ... |
 | local_dataflow.rb:141:19:141:37 | [true] ( ... ) | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... |
 | local_dataflow.rb:141:20:141:25 | [input] SSA phi read(self) | local_dataflow.rb:143:11:143:16 | self |
 | local_dataflow.rb:141:20:141:25 | [input] SSA phi read(x) | local_dataflow.rb:143:15:143:15 | x |
