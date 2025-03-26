@@ -10,6 +10,70 @@ private predicate mkSynthChild(SynthKind kind, Raw::Ast parent, ChildIndex i) {
   any(Synthesis s).child(parent, i, SynthChild(kind))
 }
 
+string variableNameInScope(Raw::Ast n, Scope::Range scope) {
+  scope = Raw::scopeOf(n) and
+  (
+    result = n.(Raw::VarAccess).getUserPath() and
+    not scope.getAParameter().(Raw::PipelineByPropertyNameParameter).getName() = result and
+    not result.toLowerCase() = ["_", "this", "false", "true", "null"] and
+    not parameter(_, n, _, _) and
+    not Raw::isEnvVariableAccess(n, _) and
+    not Raw::isAutomaticVariableAccess(n, _)
+    or
+    any(Synthesis s).explicitAssignment(n, result, _)
+    or
+    any(Synthesis s).implicitAssignment(n, result)
+  )
+}
+
+private predicate scopeAssigns(Scope::Range scope, string name, Raw::Ast n) {
+  (explicitAssignment(n, _) or implicitAssignment(n)) and
+  name = variableNameInScope(n, scope)
+}
+
+private predicate scopeDefinesParameterVariable(Scope::Range scope, string name) {
+  exists(Raw::Parameter p |
+    any(Synthesis s).implicitAssignment(p, name) and
+    p.getScope() = scope
+  )
+}
+
+private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
+  not scopeDefinesParameterVariable(scope, name) and
+  (
+    outer = scope.getOuterScope() and
+    (
+      scopeDefinesParameterVariable(outer, name)
+      or
+      exists(Raw::Ast n |
+        scopeAssigns(outer, name, n) and
+        n.getLocation().strictlyBefore(scope.getLocation())
+      )
+    )
+    or
+    inherits(scope.getOuterScope(), name, outer)
+  )
+}
+
+pragma[nomagic]
+private predicate hasScopeAndName(VariableImpl variable, Scope::Range scope, string name) {
+  variable.getNameImpl() = name and
+  scope = variable.getDeclaringScopeImpl()
+}
+
+private predicate access(Raw::VarAccess va, VariableImpl v) {
+  exists(string name, Scope::Range scope |
+    pragma[only_bind_into](name) = variableNameInScope(va, scope)
+  |
+    hasScopeAndName(v, scope, name)
+    or
+    exists(Scope::Range declScope |
+      hasScopeAndName(v, declScope, pragma[only_bind_into](name)) and
+      inherits(scope, name, declScope)
+    )
+  )
+}
+
 cached
 private module Cached {
   private predicate excludeStringConstExpr(Raw::StringConstExpr e) {
@@ -76,6 +140,22 @@ private module Cached {
     TTypeConstraint(Raw::TypeConstraint t) or
     TUnaryExpr(Raw::UnaryExpr u) or
     TUsingStmt(Raw::UsingStmt u) or
+    TVariableReal(Scope::Range scope, string name, Raw::Ast n) {
+      not n instanceof Raw::Parameter and // we synthesize all parameters
+      n =
+        min(Raw::Ast other |
+          scopeAssigns(scope, name, other)
+        |
+          other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+        )
+    } or
+    TVariableSynth(Raw::Ast scope, ChildIndex i) { mkSynthChild(VarSynthKind(_), scope, i) } or
+    TVarAccessReal(Raw::VarAccess va, Variable v) { access(va, v) } or
+    TVarAccessSynth(Raw::Ast parent, ChildIndex i, Variable v) {
+      mkSynthChild(VarAccessRealKind(v), parent, i)
+      or
+      mkSynthChild(VarAccessSynthKind(v), parent, i)
+    } or
     TWhileStmt(Raw::WhileStmt w) or
     TTypeNameExpr(Raw::TypeNameExpr t) or
     TUsingExpr(Raw::UsingExpr u) or
@@ -95,18 +175,18 @@ private module Cached {
         TNamedAttributeArgument or TNamedBlock or TPipeline or TPipelineChain or TPropertyMember or
         TRedirection or TReturnStmt or TScriptBlock or TScriptBlockExpr or TStmtBlock or
         TStringConstExpr or TSwitchStmt or TConditionalExpr or TThrowStmt or TTrapStmt or
-        TTryStmt or TTypeDefinitionStmt or TTypeConstraint or TUsingStmt or
+        TTryStmt or TTypeDefinitionStmt or TTypeConstraint or TUsingStmt or TVarAccessReal or
         TWhileStmt or TFunctionDefinitionStmt or TExpandableSubExpr or TMethod or TTypeNameExpr or
-        TAttributedExpr or TUsingExpr or TThisExprReal or TParenExpr ;
+        TAttributedExpr or TUsingExpr or TThisExprReal or TParenExpr or TVariableReal;
 
   class TAstSynth =
-    TExprStmtSynth or TFunctionSynth or TBoolLiteral or TNullLiteral or
-        TEnvVariable or TTypeSynth or TAutomaticVariable;
+    TExprStmtSynth or TFunctionSynth or TBoolLiteral or TNullLiteral or TVarAccessSynth or
+        TEnvVariable or TTypeSynth or TAutomaticVariable or TVariableSynth;
 
   class TExpr =
     TArrayExpr or TArrayLiteral or TOperation or TConstExpr or TConvertExpr or TErrorExpr or
         THashTableExpr or TIndexExpr or TInvokeMemberExpr or TCmd or TMemberExpr or TPipeline or
-        TPipelineChain or TStringConstExpr or TConditionalExpr or
+        TPipelineChain or TStringConstExpr or TConditionalExpr or TVarAccess or
         TExpandableStringExpr or TScriptBlockExpr or TExpandableSubExpr or TTypeNameExpr or
         TUsingExpr or TAttributedExpr or TIf or TBoolLiteral or TNullLiteral or TThisExpr or
         TEnvVariable or TAutomaticVariable or TParenExpr;
@@ -137,6 +217,8 @@ private module Cached {
   class TCallExpr = TCmd or TInvokeMemberExpr;
 
   class TLoopStmt = TDoUntilStmt or TDoWhileStmt or TForEachStmt or TForStmt or TWhileStmt;
+
+  class TVarAccess = TVarAccessReal or TVarAccessSynth;
 
   class TLiteral = TBoolLiteral or TNullLiteral;
 
@@ -195,6 +277,7 @@ private module Cached {
     n = TTypeConstraint(result) or
     n = TUnaryExpr(result) or
     n = TUsingStmt(result) or
+    n = TVarAccessReal(result, _) or
     n = TWhileStmt(result) or
     n = TFunctionDefinitionStmt(result) or
     n = TExpandableSubExpr(result) or
@@ -202,6 +285,7 @@ private module Cached {
     n = TMethod(result) or
     n = TAttributedExpr(result) or
     n = TUsingExpr(result) or
+    n = TVariableReal(_, _, result)
   }
 
   cached
@@ -224,9 +308,11 @@ private module Cached {
     result = TFunctionSynth(parent, i) or
     result = TBoolLiteral(parent, i) or
     result = TNullLiteral(parent, i) or
+    result = TVarAccessSynth(parent, i, _) or
     result = TEnvVariable(parent, i) or
     result = TTypeSynth(parent, i) or
-    result = TAutomaticVariable(parent, i)
+    result = TAutomaticVariable(parent, i) or
+    result = TVariableSynth(parent, i)
   }
 
   cached
