@@ -373,3 +373,89 @@ private module ExprToStmtSynth {
     }
   }
 }
+
+predicate excludeFunctionDefinitionStmt(Raw::FunctionDefinitionStmt f) {
+  // We don't care about function definition statements which define methods
+  // because they live inside a type anyway (and we don't have control-flow
+  // inside a type).
+  parent(f, any(Raw::Method m))
+}
+
+/**
+ * Synthesize function "declarations" from function definitions statements.
+ */
+private module FunctionSynth {
+  private class FunctionSynth extends Synthesis {
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      i = funDefFun() and
+      child = SynthChild(FunctionSynthKind()) and
+      exists(Raw::FunctionDefinitionStmt fundefStmt |
+        if excludeFunctionDefinitionStmt(fundefStmt)
+        then parent(fundefStmt, parent)
+        else parent = fundefStmt
+      )
+    }
+
+    override predicate functionName(FunctionBase f, string name) {
+      exists(Raw::FunctionDefinitionStmt fundefStmt |
+        f = TFunctionSynth(fundefStmt, _) and
+        fundefStmt.getName() = name
+      )
+      or
+      exists(Raw::TopLevelScriptBlock topLevelScriptBlock |
+        f = TTopLevelFunction(topLevelScriptBlock) and
+        name = "toplevel function for " + topLevelScriptBlock.getLocation().getFile().getBaseName()
+      )
+    }
+
+    override predicate functionScriptBlock(FunctionBase f, ScriptBlock block) {
+      exists(Raw::FunctionDefinitionStmt fundefStmt |
+        f = TFunctionSynth(fundefStmt, _) and
+        getResultAst(fundefStmt.getBody()) = block
+      )
+      or
+      exists(Raw::TopLevelScriptBlock topLevelScriptBlock |
+        block = getResultAst(topLevelScriptBlock) and
+        f = TTopLevelFunction(topLevelScriptBlock)
+      )
+    }
+
+    override Location getLocation(Ast n) {
+      exists(Raw::FunctionDefinitionStmt fundefStmt |
+        n = TFunctionSynth(fundefStmt, _) and
+        result = fundefStmt.getLocation()
+      )
+    }
+  }
+}
+
+private module TypeSynth {
+  private class TypeSynth extends Synthesis {
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      parent instanceof Raw::TypeStmt and
+      i = typeDefType() and
+      child = SynthChild(TypeSynthKind())
+    }
+
+    final override predicate typeMember(Type t, int i, Member m) {
+      exists(Raw::TypeStmt typeStmt |
+        t = TTypeSynth(typeStmt, _) and
+        m = getResultAst(typeStmt.getMember(i))
+      )
+    }
+
+    override predicate typeName(Type t, string name) {
+      exists(Raw::TypeStmt typeStmt |
+        t = TTypeSynth(typeStmt, _) and
+        typeStmt.getName() = name
+      )
+    }
+
+    override Location getLocation(Ast n) {
+      exists(Raw::TypeStmt typeStmt |
+        n = TTypeSynth(typeStmt, _) and
+        result = typeStmt.getLocation()
+      )
+    }
+  }
+}
