@@ -337,69 +337,69 @@ inferType
 | main.rs:279:9:279:9 | x | A | main.rs:278:22:278:23 | T1 |
 | main.rs:279:9:279:14 | x.m1(...) |  | main.rs:278:22:278:23 | T1 |
 | main.rs:283:15:283:18 | SelfParam |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:283:15:283:18 | SelfParam | A | main.rs:282:10:282:10 | T |
+| main.rs:283:15:283:18 | SelfParam | T | main.rs:282:10:282:10 | T |
 | main.rs:283:26:285:9 | { ... } |  | main.rs:282:10:282:10 | T |
 | main.rs:284:13:284:16 | self |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:284:13:284:16 | self | A | main.rs:282:10:282:10 | T |
+| main.rs:284:13:284:16 | self | T | main.rs:282:10:282:10 | T |
 | main.rs:284:13:284:18 | self.a |  | main.rs:282:10:282:10 | T |
 | main.rs:289:13:289:13 | x |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:289:13:289:13 | x | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:289:13:289:13 | x | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:289:17:289:33 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:289:17:289:33 | MyThing {...} | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:289:17:289:33 | MyThing {...} | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:289:30:289:31 | S1 |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:290:13:290:13 | y |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:290:13:290:13 | y | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:290:13:290:13 | y | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:290:17:290:33 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:290:17:290:33 | MyThing {...} | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:290:17:290:33 | MyThing {...} | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:290:30:290:31 | S2 |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:292:26:292:26 | x |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:292:26:292:26 | x | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:292:26:292:26 | x | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:292:26:292:31 | x.m1(...) |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:293:26:293:26 | y |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:293:26:293:26 | y | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:293:26:293:26 | y | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:293:26:293:31 | y.m1(...) |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:295:13:295:13 | x |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:295:13:295:13 | x |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:295:13:295:13 | x | A | main.rs:262:5:263:14 | struct S1 |
-| main.rs:295:13:295:13 | x | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:295:13:295:13 | x | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:295:17:295:33 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:295:17:295:33 | MyThing {...} |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:295:17:295:33 | MyThing {...} | A | main.rs:262:5:263:14 | struct S1 |
-| main.rs:295:17:295:33 | MyThing {...} | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:295:17:295:33 | MyThing {...} | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:295:30:295:31 | S1 |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:296:13:296:13 | y |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:296:13:296:13 | y |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:296:13:296:13 | y | A | main.rs:264:5:265:14 | struct S2 |
-| main.rs:296:13:296:13 | y | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:296:13:296:13 | y | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:296:17:296:33 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:296:17:296:33 | MyThing {...} |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:296:17:296:33 | MyThing {...} | A | main.rs:264:5:265:14 | struct S2 |
-| main.rs:296:17:296:33 | MyThing {...} | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:296:17:296:33 | MyThing {...} | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:296:30:296:31 | S2 |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:298:26:298:26 | x |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:298:26:298:26 | x |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:298:26:298:26 | x | A | main.rs:262:5:263:14 | struct S1 |
-| main.rs:298:26:298:26 | x | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:298:26:298:26 | x | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:298:26:298:31 | x.m2(...) |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:299:26:299:26 | y |  | main.rs:257:5:260:5 | struct MyThing |
 | main.rs:299:26:299:26 | y |  | main.rs:267:5:276:5 | trait MyTrait |
 | main.rs:299:26:299:26 | y | A | main.rs:264:5:265:14 | struct S2 |
-| main.rs:299:26:299:26 | y | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:299:26:299:26 | y | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:299:26:299:31 | y.m2(...) |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:301:13:301:13 | x |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:301:13:301:13 | x | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:301:13:301:13 | x | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:301:17:301:33 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:301:17:301:33 | MyThing {...} | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:301:17:301:33 | MyThing {...} | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:301:30:301:31 | S1 |  | main.rs:262:5:263:14 | struct S1 |
 | main.rs:302:13:302:13 | y |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:302:13:302:13 | y | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:302:13:302:13 | y | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:302:17:302:33 | MyThing {...} |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:302:17:302:33 | MyThing {...} | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:302:17:302:33 | MyThing {...} | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:302:30:302:31 | S2 |  | main.rs:264:5:265:14 | struct S2 |
 | main.rs:304:40:304:40 | x |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:304:40:304:40 | x | A | main.rs:262:5:263:14 | struct S1 |
+| main.rs:304:40:304:40 | x | T | main.rs:262:5:263:14 | struct S1 |
 | main.rs:305:40:305:40 | y |  | main.rs:257:5:260:5 | struct MyThing |
-| main.rs:305:40:305:40 | y | A | main.rs:264:5:265:14 | struct S2 |
+| main.rs:305:40:305:40 | y | T | main.rs:264:5:265:14 | struct S2 |
 | main.rs:313:15:313:18 | SelfParam |  | main.rs:310:5:322:5 | trait MyTrait |
 | main.rs:315:15:315:18 | SelfParam |  | main.rs:310:5:322:5 | trait MyTrait |
 | main.rs:330:15:330:18 | SelfParam |  | main.rs:324:5:325:13 | struct S |
@@ -442,50 +442,50 @@ inferType
 | main.rs:370:26:370:26 | y | A | main.rs:353:5:354:14 | struct S2 |
 | main.rs:370:26:370:31 | y.m1(...) |  | main.rs:353:5:354:14 | struct S2 |
 | main.rs:391:15:391:18 | SelfParam |  | main.rs:390:5:392:5 | trait MyTrait1 |
-| main.rs:391:15:391:18 | SelfParam | A | main.rs:390:20:390:20 | A |
+| main.rs:391:15:391:18 | SelfParam | Tr1 | main.rs:390:20:390:22 | Tr1 |
 | main.rs:395:15:395:18 | SelfParam |  | main.rs:390:5:392:5 | trait MyTrait1 |
 | main.rs:395:15:395:18 | SelfParam |  | main.rs:394:5:405:5 | trait MyTrait2 |
-| main.rs:395:15:395:18 | SelfParam | A | main.rs:394:20:394:20 | A |
-| main.rs:395:15:395:18 | SelfParam | A | main.rs:394:20:394:20 | A |
-| main.rs:398:9:404:9 | { ... } |  | main.rs:394:20:394:20 | A |
-| main.rs:399:13:403:13 | if ... {...} else {...} |  | main.rs:394:20:394:20 | A |
-| main.rs:399:26:401:13 | { ... } |  | main.rs:394:20:394:20 | A |
+| main.rs:395:15:395:18 | SelfParam | Tr1 | main.rs:394:20:394:22 | Tr2 |
+| main.rs:395:15:395:18 | SelfParam | Tr2 | main.rs:394:20:394:22 | Tr2 |
+| main.rs:398:9:404:9 | { ... } |  | main.rs:394:20:394:22 | Tr2 |
+| main.rs:399:13:403:13 | if ... {...} else {...} |  | main.rs:394:20:394:22 | Tr2 |
+| main.rs:399:26:401:13 | { ... } |  | main.rs:394:20:394:22 | Tr2 |
 | main.rs:400:17:400:20 | self |  | main.rs:390:5:392:5 | trait MyTrait1 |
 | main.rs:400:17:400:20 | self |  | main.rs:394:5:405:5 | trait MyTrait2 |
-| main.rs:400:17:400:20 | self | A | main.rs:394:20:394:20 | A |
-| main.rs:400:17:400:20 | self | A | main.rs:394:20:394:20 | A |
-| main.rs:400:17:400:25 | self.m1(...) |  | main.rs:394:20:394:20 | A |
-| main.rs:401:20:403:13 | { ... } |  | main.rs:394:20:394:20 | A |
-| main.rs:402:17:402:30 | ...::m1(...) |  | main.rs:394:20:394:20 | A |
+| main.rs:400:17:400:20 | self | Tr1 | main.rs:394:20:394:22 | Tr2 |
+| main.rs:400:17:400:20 | self | Tr2 | main.rs:394:20:394:22 | Tr2 |
+| main.rs:400:17:400:25 | self.m1(...) |  | main.rs:394:20:394:22 | Tr2 |
+| main.rs:401:20:403:13 | { ... } |  | main.rs:394:20:394:22 | Tr2 |
+| main.rs:402:17:402:30 | ...::m1(...) |  | main.rs:394:20:394:22 | Tr2 |
 | main.rs:402:26:402:29 | self |  | main.rs:390:5:392:5 | trait MyTrait1 |
 | main.rs:402:26:402:29 | self |  | main.rs:394:5:405:5 | trait MyTrait2 |
-| main.rs:402:26:402:29 | self | A | main.rs:394:20:394:20 | A |
-| main.rs:402:26:402:29 | self | A | main.rs:394:20:394:20 | A |
+| main.rs:402:26:402:29 | self | Tr1 | main.rs:394:20:394:22 | Tr2 |
+| main.rs:402:26:402:29 | self | Tr2 | main.rs:394:20:394:22 | Tr2 |
 | main.rs:408:15:408:18 | SelfParam |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:408:15:408:18 | SelfParam |  | main.rs:407:5:418:5 | trait MyTrait3 |
-| main.rs:408:15:408:18 | SelfParam | A | main.rs:375:5:378:5 | struct MyThing |
-| main.rs:408:15:408:18 | SelfParam | A | main.rs:407:20:407:20 | A |
-| main.rs:408:15:408:18 | SelfParam | A.A | main.rs:407:20:407:20 | A |
-| main.rs:411:9:417:9 | { ... } |  | main.rs:407:20:407:20 | A |
-| main.rs:412:13:416:13 | if ... {...} else {...} |  | main.rs:407:20:407:20 | A |
-| main.rs:412:26:414:13 | { ... } |  | main.rs:407:20:407:20 | A |
+| main.rs:408:15:408:18 | SelfParam | Tr2 | main.rs:375:5:378:5 | struct MyThing |
+| main.rs:408:15:408:18 | SelfParam | Tr2.A | main.rs:407:20:407:22 | Tr3 |
+| main.rs:408:15:408:18 | SelfParam | Tr3 | main.rs:407:20:407:22 | Tr3 |
+| main.rs:411:9:417:9 | { ... } |  | main.rs:407:20:407:22 | Tr3 |
+| main.rs:412:13:416:13 | if ... {...} else {...} |  | main.rs:407:20:407:22 | Tr3 |
+| main.rs:412:26:414:13 | { ... } |  | main.rs:407:20:407:22 | Tr3 |
 | main.rs:413:17:413:20 | self |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:413:17:413:20 | self |  | main.rs:407:5:418:5 | trait MyTrait3 |
-| main.rs:413:17:413:20 | self | A | main.rs:375:5:378:5 | struct MyThing |
-| main.rs:413:17:413:20 | self | A | main.rs:407:20:407:20 | A |
-| main.rs:413:17:413:20 | self | A.A | main.rs:407:20:407:20 | A |
+| main.rs:413:17:413:20 | self | Tr2 | main.rs:375:5:378:5 | struct MyThing |
+| main.rs:413:17:413:20 | self | Tr2.A | main.rs:407:20:407:22 | Tr3 |
+| main.rs:413:17:413:20 | self | Tr3 | main.rs:407:20:407:22 | Tr3 |
 | main.rs:413:17:413:25 | self.m2(...) |  | main.rs:375:5:378:5 | struct MyThing |
-| main.rs:413:17:413:25 | self.m2(...) | A | main.rs:407:20:407:20 | A |
-| main.rs:413:17:413:27 | ... .a |  | main.rs:407:20:407:20 | A |
-| main.rs:414:20:416:13 | { ... } |  | main.rs:407:20:407:20 | A |
+| main.rs:413:17:413:25 | self.m2(...) | A | main.rs:407:20:407:22 | Tr3 |
+| main.rs:413:17:413:27 | ... .a |  | main.rs:407:20:407:22 | Tr3 |
+| main.rs:414:20:416:13 | { ... } |  | main.rs:407:20:407:22 | Tr3 |
 | main.rs:415:17:415:30 | ...::m2(...) |  | main.rs:375:5:378:5 | struct MyThing |
-| main.rs:415:17:415:30 | ...::m2(...) | A | main.rs:407:20:407:20 | A |
-| main.rs:415:17:415:32 | ... .a |  | main.rs:407:20:407:20 | A |
+| main.rs:415:17:415:30 | ...::m2(...) | A | main.rs:407:20:407:22 | Tr3 |
+| main.rs:415:17:415:32 | ... .a |  | main.rs:407:20:407:22 | Tr3 |
 | main.rs:415:26:415:29 | self |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:415:26:415:29 | self |  | main.rs:407:5:418:5 | trait MyTrait3 |
-| main.rs:415:26:415:29 | self | A | main.rs:375:5:378:5 | struct MyThing |
-| main.rs:415:26:415:29 | self | A | main.rs:407:20:407:20 | A |
-| main.rs:415:26:415:29 | self | A.A | main.rs:407:20:407:20 | A |
+| main.rs:415:26:415:29 | self | Tr2 | main.rs:375:5:378:5 | struct MyThing |
+| main.rs:415:26:415:29 | self | Tr2.A | main.rs:407:20:407:22 | Tr3 |
+| main.rs:415:26:415:29 | self | Tr3 | main.rs:407:20:407:22 | Tr3 |
 | main.rs:421:15:421:18 | SelfParam |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:421:15:421:18 | SelfParam | A | main.rs:420:10:420:10 | T |
 | main.rs:421:26:423:9 | { ... } |  | main.rs:420:10:420:10 | T |
@@ -520,58 +520,58 @@ inferType
 | main.rs:445:13:445:13 | x |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:445:13:445:13 | x |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:445:13:445:13 | x | A | main.rs:385:5:386:14 | struct S1 |
-| main.rs:445:13:445:13 | x | A | main.rs:385:5:386:14 | struct S1 |
+| main.rs:445:13:445:13 | x | Tr2 | main.rs:385:5:386:14 | struct S1 |
 | main.rs:445:17:445:33 | MyThing {...} |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:445:17:445:33 | MyThing {...} |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:445:17:445:33 | MyThing {...} | A | main.rs:385:5:386:14 | struct S1 |
-| main.rs:445:17:445:33 | MyThing {...} | A | main.rs:385:5:386:14 | struct S1 |
+| main.rs:445:17:445:33 | MyThing {...} | Tr2 | main.rs:385:5:386:14 | struct S1 |
 | main.rs:445:30:445:31 | S1 |  | main.rs:385:5:386:14 | struct S1 |
 | main.rs:446:13:446:13 | y |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:446:13:446:13 | y |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:446:13:446:13 | y | A | main.rs:387:5:388:14 | struct S2 |
-| main.rs:446:13:446:13 | y | A | main.rs:387:5:388:14 | struct S2 |
+| main.rs:446:13:446:13 | y | Tr2 | main.rs:387:5:388:14 | struct S2 |
 | main.rs:446:17:446:33 | MyThing {...} |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:446:17:446:33 | MyThing {...} |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:446:17:446:33 | MyThing {...} | A | main.rs:387:5:388:14 | struct S2 |
-| main.rs:446:17:446:33 | MyThing {...} | A | main.rs:387:5:388:14 | struct S2 |
+| main.rs:446:17:446:33 | MyThing {...} | Tr2 | main.rs:387:5:388:14 | struct S2 |
 | main.rs:446:30:446:31 | S2 |  | main.rs:387:5:388:14 | struct S2 |
 | main.rs:448:26:448:26 | x |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:448:26:448:26 | x |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:448:26:448:26 | x | A | main.rs:385:5:386:14 | struct S1 |
-| main.rs:448:26:448:26 | x | A | main.rs:385:5:386:14 | struct S1 |
+| main.rs:448:26:448:26 | x | Tr2 | main.rs:385:5:386:14 | struct S1 |
 | main.rs:448:26:448:31 | x.m2(...) |  | main.rs:385:5:386:14 | struct S1 |
 | main.rs:449:26:449:26 | y |  | main.rs:375:5:378:5 | struct MyThing |
 | main.rs:449:26:449:26 | y |  | main.rs:394:5:405:5 | trait MyTrait2 |
 | main.rs:449:26:449:26 | y | A | main.rs:387:5:388:14 | struct S2 |
-| main.rs:449:26:449:26 | y | A | main.rs:387:5:388:14 | struct S2 |
+| main.rs:449:26:449:26 | y | Tr2 | main.rs:387:5:388:14 | struct S2 |
 | main.rs:449:26:449:31 | y.m2(...) |  | main.rs:387:5:388:14 | struct S2 |
 | main.rs:451:13:451:13 | x |  | main.rs:380:5:383:5 | struct MyThing2 |
 | main.rs:451:13:451:13 | x |  | main.rs:407:5:418:5 | trait MyTrait3 |
 | main.rs:451:13:451:13 | x | A | main.rs:385:5:386:14 | struct S1 |
-| main.rs:451:13:451:13 | x | A | main.rs:385:5:386:14 | struct S1 |
+| main.rs:451:13:451:13 | x | Tr3 | main.rs:385:5:386:14 | struct S1 |
 | main.rs:451:17:451:34 | MyThing2 {...} |  | main.rs:380:5:383:5 | struct MyThing2 |
 | main.rs:451:17:451:34 | MyThing2 {...} |  | main.rs:407:5:418:5 | trait MyTrait3 |
 | main.rs:451:17:451:34 | MyThing2 {...} | A | main.rs:385:5:386:14 | struct S1 |
-| main.rs:451:17:451:34 | MyThing2 {...} | A | main.rs:385:5:386:14 | struct S1 |
+| main.rs:451:17:451:34 | MyThing2 {...} | Tr3 | main.rs:385:5:386:14 | struct S1 |
 | main.rs:451:31:451:32 | S1 |  | main.rs:385:5:386:14 | struct S1 |
 | main.rs:452:13:452:13 | y |  | main.rs:380:5:383:5 | struct MyThing2 |
 | main.rs:452:13:452:13 | y |  | main.rs:407:5:418:5 | trait MyTrait3 |
 | main.rs:452:13:452:13 | y | A | main.rs:387:5:388:14 | struct S2 |
-| main.rs:452:13:452:13 | y | A | main.rs:387:5:388:14 | struct S2 |
+| main.rs:452:13:452:13 | y | Tr3 | main.rs:387:5:388:14 | struct S2 |
 | main.rs:452:17:452:34 | MyThing2 {...} |  | main.rs:380:5:383:5 | struct MyThing2 |
 | main.rs:452:17:452:34 | MyThing2 {...} |  | main.rs:407:5:418:5 | trait MyTrait3 |
 | main.rs:452:17:452:34 | MyThing2 {...} | A | main.rs:387:5:388:14 | struct S2 |
-| main.rs:452:17:452:34 | MyThing2 {...} | A | main.rs:387:5:388:14 | struct S2 |
+| main.rs:452:17:452:34 | MyThing2 {...} | Tr3 | main.rs:387:5:388:14 | struct S2 |
 | main.rs:452:31:452:32 | S2 |  | main.rs:387:5:388:14 | struct S2 |
 | main.rs:454:26:454:26 | x |  | main.rs:380:5:383:5 | struct MyThing2 |
 | main.rs:454:26:454:26 | x |  | main.rs:407:5:418:5 | trait MyTrait3 |
 | main.rs:454:26:454:26 | x | A | main.rs:385:5:386:14 | struct S1 |
-| main.rs:454:26:454:26 | x | A | main.rs:385:5:386:14 | struct S1 |
+| main.rs:454:26:454:26 | x | Tr3 | main.rs:385:5:386:14 | struct S1 |
 | main.rs:454:26:454:31 | x.m3(...) |  | main.rs:385:5:386:14 | struct S1 |
 | main.rs:455:26:455:26 | y |  | main.rs:380:5:383:5 | struct MyThing2 |
 | main.rs:455:26:455:26 | y |  | main.rs:407:5:418:5 | trait MyTrait3 |
 | main.rs:455:26:455:26 | y | A | main.rs:387:5:388:14 | struct S2 |
-| main.rs:455:26:455:26 | y | A | main.rs:387:5:388:14 | struct S2 |
+| main.rs:455:26:455:26 | y | Tr3 | main.rs:387:5:388:14 | struct S2 |
 | main.rs:455:26:455:31 | y.m3(...) |  | main.rs:387:5:388:14 | struct S2 |
 | main.rs:473:22:473:22 | x |  | file://:0:0:0:0 | & |
 | main.rs:473:22:473:22 | x | &T | main.rs:473:11:473:19 | T |
@@ -1026,7 +1026,7 @@ resolveMethodCallExpr
 | main.rs:340:26:340:31 | x.m2(...) | main.rs:315:9:321:9 | fn m2 |
 | main.rs:369:26:369:31 | x.m1(...) | main.rs:357:9:362:9 | fn m1 |
 | main.rs:370:26:370:31 | y.m1(...) | main.rs:357:9:362:9 | fn m1 |
-| main.rs:400:17:400:25 | self.m1(...) | main.rs:391:9:391:25 | fn m1 |
+| main.rs:400:17:400:25 | self.m1(...) | main.rs:391:9:391:27 | fn m1 |
 | main.rs:413:17:413:25 | self.m2(...) | main.rs:395:9:404:9 | fn m2 |
 | main.rs:442:26:442:31 | x.m1(...) | main.rs:421:9:423:9 | fn m1 |
 | main.rs:443:26:443:31 | y.m1(...) | main.rs:421:9:423:9 | fn m1 |
