@@ -459,3 +459,72 @@ private module TypeSynth {
     }
   }
 }
+
+/**
+ * Remove the implicit expr-to-pipeline conversion.
+ */
+private module CmdExprRemoval {
+  private class CmdExprRemoval extends Synthesis {
+    final override predicate isRelevant(Raw::Ast a) { a instanceof Raw::CmdExpr }
+
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      // Remove the CmdExpr. There are two cases:
+      // - If the expression under the cmd expr exists in a place an expr is expected, then we're done
+      // - Otherwise, we need to synthesize an expr-to-stmt conversion with the expression as a child
+      exists(Raw::CmdExpr e, boolean exprCtx | this.parentHasCmdExpr(parent, i, e, exprCtx) |
+        if exprCtx = true
+        then child = childRef(getResultAst(e.getExpr()))
+        else child = SynthChild(ExprStmtKind())
+      )
+      or
+      // Synthesize the redirections from the redirections on the CmdExpr
+      exists(int index, Raw::CmdExpr e |
+        parent = e.getExpr() and
+        i = exprRedirection(index) and
+        child = childRef(getResultAst(e.getRedirection(index)))
+      )
+    }
+
+    final override predicate exprStmtExpr(ExprStmt e, Expr expr) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::CmdExpr cmd, Raw::Expr e0 |
+        e = TExprStmtSynth(parent, i) and
+        this.parentHasCmdExpr(parent, i, cmd, _) and
+        e0 = cmd.getExpr() and
+        expr = getResultAst(e0)
+      )
+    }
+
+    final override Ast getResultAstImpl(Raw::Ast r) {
+      exists(
+        Raw::CmdExpr cmdExpr, Raw::Expr e, Raw::ChildIndex rawIndex, Raw::Ast cmdParent,
+        ChildIndex i
+      |
+        r = cmdExpr and
+        cmdExpr.getExpr() = e and
+        cmdParent.getChild(rawIndex) = cmdExpr and
+        not mustHaveExprChild(cmdParent, cmdExpr) and
+        rawIndex = toRawChildIndex(i) and
+        result = TExprStmtSynth(cmdParent, i)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate parentHasCmdExpr(
+      Raw::Ast parent, ChildIndex i, Raw::CmdExpr cmdExpr, boolean exprCtx
+    ) {
+      exists(Raw::ChildIndex rawIndex |
+        rawIndex = toRawChildIndex(i) and
+        parent.getChild(rawIndex) = cmdExpr and
+        if mustHaveExprChild(parent, cmdExpr) then exprCtx = true else exprCtx = false
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::CmdExpr cmdStmt |
+        n = TExprStmtSynth(parent, i) and
+        this.parentHasCmdExpr(parent, i, cmdStmt, false) and
+        result = cmdStmt.getLocation()
+      )
+    }
+  }
+}
