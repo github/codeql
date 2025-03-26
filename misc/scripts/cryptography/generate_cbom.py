@@ -39,8 +39,7 @@ def convert_dgml_to_dot(dgml_file, dot_file):
 
     # Form dot element sequence
     body_l = ["digraph cbom {",
-              "node [shape=box];",
-              "rankdir=LR;"
+              "node [shape=box];"
     ]
 
     # Process nodes
