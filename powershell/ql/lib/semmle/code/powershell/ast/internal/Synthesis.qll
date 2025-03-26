@@ -138,3 +138,16 @@ private module ThisSynthesis {
     }
   }
 }
+
+private module SetVariableAssignment {
+  private class SetVariableAssignment extends Synthesis {
+    override predicate explicitAssignment(Raw::Ast dest, string name, Raw::Ast assignment) {
+      exists(Raw::Cmd cmd |
+        assignment = cmd and
+        cmd.getCommandName().toLowerCase() = "set-variable" and
+        cmd.getNamedArgument("name") = dest and
+        name = dest.(Raw::StringConstExpr).getValue().getValue()
+      )
+    }
+  }
+}
