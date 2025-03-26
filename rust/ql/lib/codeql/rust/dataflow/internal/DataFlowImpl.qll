@@ -213,6 +213,28 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result.(BreakExprCfgNode).getTarget() = e
 }
 
+/**
+ * Holds if a reverse local flow step should be added from the post-update node
+ * for `e` to the post-update node for the result.
+ *
+ * This is needed to allow for side-effects on compound expressions to propagate
+ * to sub components. For example, in
+ *
+ * ```rust
+ * ({ foo(); &mut a}).set_data(taint);
+ * ```
+ *
+ * we add a reverse flow step from `[post] { foo(); &mut a}` to `[post] &mut a`,
+ * in order for the side-effect of `set_data` to reach `&mut a`.
+ */
+ExprCfgNode getPostUpdateReverseStep(ExprCfgNode e, boolean preservesValue) {
+  result = getALastEvalNode(e) and
+  preservesValue = true
+  or
+  result = e.(CastExprCfgNode).getExpr() and
+  preservesValue = false
+}
+
 module LocalFlow {
   predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
     exists(FlowSummaryImpl::Public::SummarizedCallable c |
@@ -274,6 +296,9 @@ module LocalFlow {
     // The dual step of the above, for the post-update nodes.
     nodeFrom.(PostUpdateNode).getPreUpdateNode().(ReceiverNode).getReceiver() =
       nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), true)
   }
 }
 
