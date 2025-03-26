@@ -26,4 +26,4 @@ public class Test {
 ## References
 
 - Java SE Documentation: [String.replaceAll](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html#replaceAll(java.lang.String,java.lang.String)).
-- Common Weakness Enumeration: [CWE-1176](https://cwe.mitre.org/data/definitions/1176.html)
+- Common Weakness Enumeration: [CWE-1176](https://cwe.mitre.org/data/definitions/1176.html).

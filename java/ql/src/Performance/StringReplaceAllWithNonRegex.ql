@@ -19,5 +19,5 @@ where
   //only contains characters that could be a simple string
   firstArg.getValue().regexpMatch("^[a-zA-Z0-9]+$")
 select replaceAllCall,
-  "This call to 'replaceAll' should be a call `replace` as its $@ is not a regular expression.",
+  "This call to 'replaceAll' should be a call to 'replace' as its $@ is not a regular expression.",
   firstArg, "first argument"
