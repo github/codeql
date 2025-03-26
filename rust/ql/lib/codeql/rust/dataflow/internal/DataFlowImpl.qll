@@ -90,10 +90,10 @@ final class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * The position of a parameter or an argument in a function or call.
+ * The position of a parameter in a function.
  *
- * As there is a 1-to-1 correspondence between parameter positions and
- * arguments positions in Rust we use the same type for both.
+ * In Rust there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions, so we use the same underlying type for both.
  */
 final class ParameterPosition extends TParameterPosition {
   /** Gets the underlying integer position, if any. */
@@ -123,6 +123,22 @@ final class ParameterPosition extends TParameterPosition {
     result = ps.getParam(this.getPosition())
     or
     result = ps.getSelfParam() and this.isSelf()
+  }
+}
+
+/**
+ * The position of an argument in a call.
+ *
+ * In Rust there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions, so we use the same underlying type for both.
+ */
+final class ArgumentPosition extends ParameterPosition {
+  /** Gets the argument of `call` at this position, if any. */
+  Expr getArgument(CallExprBase call) {
+    result = call.getArgList().getArg(this.getPosition())
+    or
+    this.isSelf() and
+    result = call.(MethodCallExpr).getReceiver()
   }
 }
 
@@ -432,6 +448,8 @@ private module Aliases {
 
   class ParameterPositionAlias = ParameterPosition;
 
+  class ArgumentPositionAlias = ArgumentPosition;
+
   class ContentAlias = Content;
 
   class ContentSetAlias = ContentSet;
@@ -550,7 +568,7 @@ module RustDataFlow implements InputSig<Location> {
 
   class ParameterPosition = ParameterPositionAlias;
 
-  class ArgumentPosition = ParameterPosition;
+  class ArgumentPosition = ArgumentPositionAlias;
 
   /**
    * Holds if the parameter position `ppos` matches the argument position
