@@ -161,3 +161,35 @@ BAR
 \
 /* comment */     \
 \
+
+
+#if/** */A/* ... */&&B
+#endif
+
+
+#if/** */  /**/    A
+#endif
+
+#if \
+\
+A && B
+#endif
+
+
+#ifdef /*
+
+
+
+*/ FOOBAR
+#warning a
+#else
+#warning b
+#endif
+
+
+#if /*
+
+//test
+
+*/ FOOBAR
+#endif

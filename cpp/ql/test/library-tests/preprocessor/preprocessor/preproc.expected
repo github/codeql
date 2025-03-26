@@ -74,6 +74,18 @@
 | pp.cpp:0:0:0:0 | pp.cpp | 151 | 1 | 151 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 153 | 1 | 157 | 3 | PreprocessorWarning | FOO BAR | N/A |
 | pp.cpp:0:0:0:0 | pp.cpp | 160 | 1 | 160 | 12 | PreprocessorWarning | foo | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 166 | 1 | 166 | 22 | PreprocessorIf | A &&B | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 167 | 1 | 167 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 170 | 1 | 170 | 20 | PreprocessorIf | A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 171 | 1 | 171 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 173 | 1 | 175 | 6 | PreprocessorIf | A && B | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 176 | 1 | 176 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 179 | 1 | 183 | 9 | PreprocessorIfdef | FOOBAR | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 185 | 1 | 185 | 5 | PreprocessorElse | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 186 | 1 | 186 | 10 | PreprocessorWarning | b | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 187 | 1 | 187 | 6 | PreprocessorEndif | N/A | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 190 | 1 | 194 | 9 | PreprocessorIf | FOOBAR | N/A |
+| pp.cpp:0:0:0:0 | pp.cpp | 195 | 1 | 195 | 6 | PreprocessorEndif | N/A | N/A |
 | pp.h:0:0:0:0 | pp.h | 1 | 1 | 1 | 12 | PreprocessorPragma | once | N/A |
 | pp.h:0:0:0:0 | pp.h | 2 | 1 | 2 | 29 | PreprocessorWarning | "This should happen" | N/A |
 | pp.h:0:0:0:0 | pp.h | 3 | 1 | 3 | 27 | PreprocessorLine | 33 "emerald_city.h" | N/A |
