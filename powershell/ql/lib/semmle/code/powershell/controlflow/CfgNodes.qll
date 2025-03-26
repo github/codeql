@@ -127,325 +127,170 @@ abstract private class NonExprChildMapping extends ChildMapping {
   }
 }
 
-abstract private class AbstractCallCfgNode extends AstCfgNode {
-  override string getAPrimaryQlClass() { result = "CfgCall" }
-
-  /** Holds if this call invokes a function with the name `name`. */
-  final predicate hasName(string name) { this.getName() = name }
-
-  /** Gets the name of the function that is invoked by this call. */
-  abstract string getName();
-
-  /** Gets the qualifier of this call, if any. */
-  ExprCfgNode getQualifier() { none() }
-
-  /** Gets the i'th argument to this call. */
-  abstract ExprCfgNode getArgument(int i);
-
-  /** Gets the i'th positional argument to this call. */
-  abstract ExprCfgNode getPositionalArgument(int i);
-
-  /** Gets the argument with the name `name`, if any. */
-  abstract ExprCfgNode getNamedArgument(string name);
-
-  /**
-   * Gets any argument of this call.
-   *
-   * Note that this predicate doesn't get the pipeline argument, if any.
-   */
-  abstract ExprCfgNode getAnArgument();
-
-  /**
-   * Gets the expression that provides the call target of this call, if any.
-   */
-  abstract ExprCfgNode getCommand();
-
-  int getNumberOfArguments() { result = count(this.getAnArgument()) }
+private class AttributeBaseChildMapping extends NonExprChildMapping, AttributeBase {
+  override predicate relevantChild(Ast child) { none() }
 }
 
-final class CallCfgNode = AbstractCallCfgNode;
+class AttributeBaseCfgNode extends AstCfgNode {
+  AttributeBaseCfgNode() { attr = this.getAstNode() }
 
-class ObjectCreationCfgNode extends CallCfgNode {
-  ObjectCreation objectCreation;
+  override string getAPrimaryQlClass() { result = "AttributeBaseCfgNode" }
 
-  ObjectCreationCfgNode() { this.getAstNode() = objectCreation }
+  AttributeBaseChildMapping attr;
+}
 
-  ObjectCreation getObjectCreation() { result = objectCreation }
+private class AttributeChildMapping extends AttributeBaseChildMapping, Attribute {
+  override predicate relevantChild(Ast child) {
+    this.relevantChild(child)
+    or
+    child = this.getANamedArgument()
+    or
+    child = this.getAPositionalArgument()
+  }
+}
 
-  Type getConstructedType() { result = objectCreation.getConstructedType() }
+private class NamedAttributeArgumentChildMapping extends NonExprChildMapping, NamedAttributeArgument
+{
+  override predicate relevantChild(Ast child) { child = this.getValue() }
+}
 
-  string getConstructedTypeName() { result = objectCreation.getConstructedTypeName() }
+class NamedAttributeArgumentCfgNode extends AstCfgNode {
+  NamedAttributeArgumentCfgNode() { attr = this.getAstNode() }
+
+  override string getAPrimaryQlClass() { result = "NamedAttributeArgumentCfgNode" }
+
+  NamedAttributeArgumentChildMapping attr;
+
+  NamedAttributeArgument getAttr() { result = attr }
+
+  ExprCfgNode getValue() { attr.hasCfgChild(attr.getValue(), this, result) }
+
+  string getName() { result = attr.getName() }
+}
+
+class AttributeCfgNode extends AttributeBaseCfgNode {
+  override string getAPrimaryQlClass() { result = "AttributeCfgNode" }
+
+  override AttributeChildMapping attr;
+
+  NamedAttributeArgumentCfgNode getNamedArgument(int i) {
+    attr.hasCfgChild(attr.getNamedArgument(i), this, result)
+  }
+
+  ExprCfgNode getPositionalArgument(int i) {
+    attr.hasCfgChild(attr.getPositionalArgument(i), this, result)
+  }
+}
+
+private class ScriptBlockChildMapping extends NonExprChildMapping, ScriptBlock {
+  override predicate relevantChild(Ast child) {
+    child = this.getProcessBlock()
+    or
+    child = this.getBeginBlock()
+    or
+    child = this.getEndBlock()
+    or
+    child = this.getDynamicBlock()
+    or
+    child = this.getAnAttribute()
+    or
+    child = this.getAParameter()
+  }
+}
+
+private class ParameterChildMapping extends NonExprChildMapping, Parameter {
+  override predicate relevantChild(Ast child) {
+    child = this.getAnAttribute() or child = this.getDefaultValue()
+  }
+}
+
+class ParameterCfgNode extends AstCfgNode {
+  ParameterCfgNode() { param = this.getAstNode() }
+
+  override string getAPrimaryQlClass() { result = "ParameterCfgNode" }
+
+  ParameterChildMapping param;
+
+  Parameter getParameter() { result = param }
+
+  ExprCfgNode getDefaultValue() { param.hasCfgChild(param.getDefaultValue(), this, result) }
+
+  AttributeCfgNode getAttribute(int i) { param.hasCfgChild(param.getAttribute(i), this, result) }
+
+  AttributeCfgNode getAnAttribute() { result = this.getAttribute(_) }
+}
+
+class ScriptBlockCfgNode extends AstCfgNode {
+  ScriptBlockCfgNode() { block = this.getAstNode() }
+
+  override string getAPrimaryQlClass() { result = "ScriptBlockCfgNode" }
+
+  ScriptBlockChildMapping block;
+
+  ScriptBlock getBlock() { result = block }
+
+  ProcessBlockCfgNode getProcessBlock() { block.hasCfgChild(block.getProcessBlock(), this, result) }
+
+  NamedBlockCfgNode getBeginBlock() { block.hasCfgChild(block.getBeginBlock(), this, result) }
+
+  NamedBlockCfgNode getEndBlock() { block.hasCfgChild(block.getEndBlock(), this, result) }
+
+  NamedBlockCfgNode getDynamicBlock() { block.hasCfgChild(block.getDynamicBlock(), this, result) }
+
+  AttributeCfgNode getAttribute(int i) { block.hasCfgChild(block.getAttribute(i), this, result) }
+
+  AttributeCfgNode getAnAttribute() { result = this.getAttribute(_) }
+
+  ParameterCfgNode getParameter(int i) { block.hasCfgChild(block.getParameter(i), this, result) }
+
+  ParameterCfgNode getAParameter() { result = this.getParameter(_) }
 }
 
 private class NamedBlockChildMapping extends NonExprChildMapping, NamedBlock {
-  override predicate relevantChild(Ast n) { n = this.getAStmt() } // TODO: Handle getATrap
+  override predicate relevantChild(Ast child) {
+    child = this.getAStmt() or child = this.getATrapStmt()
+  }
 }
 
 class NamedBlockCfgNode extends AstCfgNode {
-  NamedBlockChildMapping block;
+  NamedBlockCfgNode() { block = this.getAstNode() }
 
-  NamedBlockCfgNode() { this.getAstNode() = block }
+  override string getAPrimaryQlClass() { result = "NamedBlockCfgNode" }
+
+  NamedBlockChildMapping block;
 
   NamedBlock getBlock() { result = block }
 
   StmtCfgNode getStmt(int i) { block.hasCfgChild(block.getStmt(i), this, result) }
 
-  StmtCfgNode getAStmt() { block.hasCfgChild(block.getAStmt(), this, result) }
+  StmtCfgNode getAStmt() { result = this.getStmt(_) }
+
+  StmtNodes::TrapStmtCfgNode getTrapStmt(int i) {
+    block.hasCfgChild(block.getTrapStmt(i), this, result)
+  }
+
+  StmtNodes::TrapStmtCfgNode getATrapStmt() { result = this.getTrapStmt(_) }
 }
 
 private class ProcessBlockChildMapping extends NamedBlockChildMapping, ProcessBlock { }
 
 class ProcessBlockCfgNode extends NamedBlockCfgNode {
+  override string getAPrimaryQlClass() { result = "ProcessBlockCfgNode" }
+
   override ProcessBlockChildMapping block;
 
   override ProcessBlock getBlock() { result = block }
 
-  PipelineParameter getPipelineParameter() { result = block.getPipelineParameter() }
-
-  PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {
-    result = block.getAPipelineByPropertyNameParameter()
-  }
+  ScriptBlockCfgNode getScriptBlock() { result.getProcessBlock() = this }
 }
 
-private class StmtBlockChildMapping extends NonExprChildMapping, StmtBlock {
-  override predicate relevantChild(Ast n) { n = this.getAStmt() or n = this.getAnElement() }
-}
-
-class StmtBlockCfgNode extends AstCfgNode {
-  StmtBlockChildMapping block;
-
-  StmtBlockCfgNode() { this.getAstNode() = block }
-
-  StmtBlock getBlock() { result = block }
-
-  StmtCfgNode getStmt(int i) { block.hasCfgChild(block.getStmt(i), this, result) }
-
-  StmtCfgNode getAStmt() { block.hasCfgChild(block.getAStmt(), this, result) }
-
-  /** Gets an AST element that may be returned from this `StmtBlockCfgNode`. */
-  AstCfgNode getAnElement() { block.hasCfgChild(block.getAnElement(), this, result) }
-}
-
-/** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
-  private class VarAccessChildMapping extends ExprChildMapping, VarAccess {
-    override predicate relevantChild(Ast n) { none() }
-  }
-
-  class VarAccessCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "VarAccessCfgNode" }
-
-    override VarAccessChildMapping e;
-
-    override VarAccess getExpr() { result = super.getExpr() }
-
-    Variable getVariable() { result = e.getVariable() }
-  }
-
-  private class VarReadAccessChildMapping extends VarAccessChildMapping, VarReadAccess { }
-
-  class VarReadAccessCfgNode extends VarAccessCfgNode {
-    override string getAPrimaryQlClass() { result = "VarReadAccessCfgNode" }
-
-    override VarReadAccessChildMapping e;
-
-    override VarReadAccess getExpr() { result = super.getExpr() }
-  }
-
-  private class VarWriteAccessChildMapping extends VarAccessChildMapping, VarWriteAccess { }
-
-  class VarWriteAccessCfgNode extends VarAccessCfgNode {
-    override string getAPrimaryQlClass() { result = "VarWriteAccessCfgNode" }
-
-    override VarWriteAccessChildMapping e;
-
-    override VarWriteAccess getExpr() { result = super.getExpr() }
-
-    predicate isExplicitWrite(StmtNodes::AssignStmtCfgNode assignment) {
-      this = assignment.getLeftHandSide()
+  private class ArrayExprChildMapping extends ExprChildMapping, ArrayExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getAnExpr()
+      or
+      child = this.getStmtBlock()
     }
-
-    predicate isImplicitWrite() { e.isImplicit() }
-  }
-
-  /** A control-flow node that wraps an argument expression. */
-  class ArgumentCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "ArgumentCfgNode" }
-
-    override Argument e;
-
-    final override Argument getExpr() { result = super.getExpr() }
-
-    /** Gets the position of this argument, if any. */
-    int getPosition() { result = e.getPosition() }
-
-    /** Gets the name of this argument, if any. */
-    string getName() { result = e.getName() }
-
-    /** Holds if `this` is a qualifier to a call. */
-    predicate isQualifier() { e.isQualifier() }
-
-    /** Gets the call for which this is an argument. */
-    CallCfgNode getCall() { result.getAnArgument() = this or result.getQualifier() = this }
-  }
-
-  private class InvokeMemberChildMapping extends ExprChildMapping, InvokeMemberExpr {
-    override predicate relevantChild(Ast n) { n = this.getQualifier() or n = this.getAnArgument() }
-  }
-
-  /** A control-flow node that wraps an `InvokeMemberExpr` expression. */
-  class InvokeMemberCfgNode extends ExprCfgNode, AbstractCallCfgNode {
-    override string getAPrimaryQlClass() { result = "InvokeMemberCfgNode" }
-
-    override InvokeMemberChildMapping e;
-
-    override InvokeMemberExpr getExpr() { result = super.getExpr() }
-
-    final override ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
-
-    final override ExprCfgNode getArgument(int i) { e.hasCfgChild(e.getArgument(i), this, result) }
-
-    final override ExprCfgNode getPositionalArgument(int i) { result = this.getArgument(i) }
-
-    final override ExprCfgNode getNamedArgument(string name) { none() }
-
-    final override ExprCfgNode getAnArgument() { e.hasCfgChild(e.getAnArgument(), this, result) }
-
-    final override string getName() { result = e.getName() }
-
-    final override ExprCfgNode getCommand() { none() }
-  }
-
-  /** A control-flow node that wraps an `ConstructorCall` expression. */
-  class ConstructorCallCfgNode extends InvokeMemberCfgNode {
-    ConstructorCallCfgNode() { super.getExpr() instanceof ConstructorCall }
-
-    final override ConstructorCall getExpr() { result = super.getExpr() }
-
-    Type getConstructedType() { result = this.getExpr().getConstructedType() }
-  }
-
-  /** A control-flow node that wraps a qualifier expression. */
-  class QualifierCfgNode extends ExprCfgNode {
-    QualifierCfgNode() { this = any(InvokeMemberCfgNode invoke).getQualifier() }
-
-    InvokeMemberCfgNode getInvokeMember() { this = result.getQualifier() }
-  }
-
-  class TypeNameChildMapping extends ExprChildMapping, TypeNameExpr {
-    override predicate relevantChild(Ast n) { none() }
-  }
-
-  /** A control-flow node that wraps a `TypeName` expression. */
-  class TypeNameCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "TypeNameCfgNode" }
-
-    override TypeNameChildMapping e;
-
-    override TypeNameExpr getExpr() { result = super.getExpr() }
-
-    Type getType() { result = this.getExpr().getType() }
-
-    string getTypeName() { result = this.getExpr().getName() }
-  }
-
-  class ConditionalChildMapping extends ExprChildMapping, ConditionalExpr {
-    override predicate relevantChild(Ast n) { n = this.getCondition() or n = this.getABranch() }
-  }
-
-  /** A control-flow node that wraps a `ConditionalExpr` expression. */
-  class ConditionalCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "ConditionalCfgNode" }
-
-    override ConditionalChildMapping e;
-
-    final override ConditionalExpr getExpr() { result = super.getExpr() }
-
-    final ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
-
-    final ExprCfgNode getBranch(boolean value) { e.hasCfgChild(e.getBranch(value), this, result) }
-
-    final ExprCfgNode getABranch() { result = this.getBranch(_) }
-
-    final ExprCfgNode getIfTrue() { e.hasCfgChild(e.getIfTrue(), this, result) }
-
-    final ExprCfgNode getIfFalse() { e.hasCfgChild(e.getIfFalse(), this, result) }
-  }
-
-  class MemberChildMapping extends ExprChildMapping, MemberExpr {
-    override predicate relevantChild(Ast n) { n = this.getQualifier() or n = this.getMember() }
-  }
-
-  /** A control-flow node that wraps a `MemberExpr` expression. */
-  class MemberCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "MemberCfgNode" }
-
-    override MemberChildMapping e;
-
-    final override MemberExpr getExpr() { result = super.getExpr() }
-
-    final ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
-
-    final string getMemberName() { result = e.getMemberName() }
-
-    predicate isStatic() { e.isStatic() }
-  }
-
-  /** A control-flow node that wraps a `MemberExpr` expression that is being written to. */
-  class MemberCfgWriteAccessNode extends MemberCfgNode {
-    MemberCfgWriteAccessNode() { this.getExpr() instanceof MemberExprWriteAccess }
-
-    StmtNodes::AssignStmtCfgNode getAssignStmt() { result.getLeftHandSide() = this }
-  }
-
-  /** A control-flow node that wraps a `MemberExpr` expression that is being read from. */
-  class MemberCfgReadAccessNode extends MemberCfgNode {
-    MemberCfgReadAccessNode() { this.getExpr() instanceof MemberExprReadAccess }
-  }
-
-  class ArrayLiteralChildMapping extends ExprChildMapping, ArrayLiteral {
-    override predicate relevantChild(Ast n) { n = this.getAnElement() }
-  }
-
-  class ArrayLiteralCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "ArrayLiteralCfgNode" }
-
-    override ArrayLiteralChildMapping e;
-
-    ExprCfgNode getElement(int i) { e.hasCfgChild(e.getElement(i), this, result) }
-
-    ExprCfgNode getAnElement() { e.hasCfgChild(e.getAnElement(), this, result) }
-  }
-
-  class IndexChildMapping extends ExprChildMapping, IndexExpr {
-    override predicate relevantChild(Ast n) { n = this.getBase() or n = this.getIndex() }
-  }
-
-  /** A control-flow node that wraps a `MemberExpr` expression. */
-  class IndexCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "IndexCfgNode" }
-
-    override IndexChildMapping e;
-
-    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
-
-    final ExprCfgNode getIndex() { e.hasCfgChild(e.getIndex(), this, result) }
-  }
-
-  /** A control-flow node that wraps a `MemberExpr` expression that is being written to. */
-  class IndexCfgWriteNode extends IndexCfgNode {
-    IndexCfgWriteNode() { this.getExpr() instanceof IndexExprWrite }
-
-    StmtNodes::AssignStmtCfgNode getAssignStmt() { result.getLeftHandSide() = this }
-  }
-
-  /** A control-flow node that wraps a `MemberExpr` expression that is being read from. */
-  class IndexCfgReadNode extends IndexCfgNode {
-    IndexCfgReadNode() { this.getExpr() instanceof IndexExprRead }
-  }
-
-  class ArrayExprChildMapping extends ExprChildMapping, ArrayExpr {
-    override predicate relevantChild(Ast n) { n = this.getStmtBlock() or n = this.getAnElement() }
   }
 
   class ArrayExprCfgNode extends ExprCfgNode {
@@ -453,107 +298,670 @@ module ExprNodes {
 
     override ArrayExprChildMapping e;
 
-    ExprCfgNode getElement(int i) { e.hasCfgChild(e.getElement(i), this, result) }
+    override ArrayExpr getExpr() { result = e }
 
-    ExprCfgNode getAnElement() { result = this.getElement(_) }
+    ExprCfgNode getExpr(int i) { e.hasCfgChild(e.getExpr(i), this, result) }
 
-    StmtBlockCfgNode getStmtBlock() { e.hasCfgChild(e.getStmtBlock(), this, result) }
+    ExprCfgNode getAnExpr() { result = this.getExpr(_) }
+
+    StmtCfgNode getStmtBlock() { e.hasCfgChild(e.getStmtBlock(), this, result) }
   }
 
-  class HashTableChildMapping extends ExprChildMapping, HashTableExpr {
-    override predicate relevantChild(Ast n) { this.hasEntry(_, _, n) or this.hasEntry(_, n, _) }
+  private class ArrayLiteralChildMapping extends ExprChildMapping, ArrayLiteral {
+    override predicate relevantChild(Ast child) { child = this.getAnExpr() }
   }
 
-  class HashTableCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "HashMapCfgNode" }
+  class ArrayLiteralCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ArrayLiteralCfgNode" }
 
-    override HashTableChildMapping e;
+    override ArrayLiteralChildMapping e;
 
-    override HashTableExpr getExpr() { result = super.getExpr() }
+    override ArrayLiteral getExpr() { result = e }
 
-    StmtCfgNode getElement(ExprCfgNode key) {
-      exists(Expr eKey |
-        eKey = key.getAstNode() and
-        e.hasCfgChild(eKey, this, key) and
-        e.hasCfgChild(e.getElement(eKey), this, result)
-      )
-    }
+    ExprCfgNode getExpr(int i) { e.hasCfgChild(e.getExpr(i), this, result) }
 
-    predicate hasKey(ExprCfgNode key) { exists(this.getElement(key)) }
-
-    StmtCfgNode getAnElement() { result = this.getElement(_) }
-
-    predicate hasEntry(int index, ExprCfgNode key, StmtCfgNode value) {
-      exists(Expr eKey, Stmt sValue |
-        e.hasCfgChild(eKey, this, key) and
-        e.hasCfgChild(sValue, this, value) and
-        e.hasEntry(index, eKey, sValue)
-      )
-    }
+    ExprCfgNode getAnExpr() { result = this.getExpr(_) }
   }
 
-  class ConvertExprChildMapping extends ExprChildMapping, ConvertExpr {
-    override predicate relevantChild(Ast n) { n = this.getBase() }
+  private class ParenExprChildMapping extends ExprChildMapping, ParenExpr {
+    override predicate relevantChild(Ast child) { child = this.getExpr() }
   }
 
-  class ConvertCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "ConvertCfgNode" }
-
-    override ConvertExprChildMapping e;
-
-    override ConvertExpr getExpr() { result = e }
-
-    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
-
-    TypeConstraint getType() { result = e.getType() }
-  }
-
-  class ParenExprChildMapping extends ExprChildMapping, ParenExpr {
-    override predicate relevantChild(Ast n) { n = this.getBase() }
-  }
-
-  class ParenCfgNode extends ExprCfgNode {
+  class ParenExprCfgNode extends ExprCfgNode {
     override string getAPrimaryQlClass() { result = "ParenExprCfgNode" }
 
     override ParenExprChildMapping e;
 
     override ParenExpr getExpr() { result = e }
 
-    final StmtCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+    ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
   }
 
-  class UnaryExprChildMapping extends ExprChildMapping, UnaryExpr {
-    override predicate relevantChild(Ast n) { n = this.getOperand() }
+  private class BinaryExprChildMapping extends ExprChildMapping, BinaryExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getLeft()
+      or
+      child = this.getRight()
+    }
   }
 
-  class UnaryCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "UnaryExprCfgNode" }
-
-    override UnaryExprChildMapping e;
-
-    override UnaryExpr getExpr() { result = e }
-
-    final ExprCfgNode getOperand() { e.hasCfgChild(e.getOperand(), this, result) }
-  }
-
-  class BinaryExprChildMapping extends ExprChildMapping, BinaryExpr {
-    override predicate relevantChild(Ast n) { n = this.getLeft() or n = this.getRight() }
-  }
-
-  class BinaryCfgNode extends ExprCfgNode {
+  class BinaryExprCfgNode extends ExprCfgNode {
     override string getAPrimaryQlClass() { result = "BinaryExprCfgNode" }
 
     override BinaryExprChildMapping e;
 
     override BinaryExpr getExpr() { result = e }
 
-    final ExprCfgNode getLeft() { e.hasCfgChild(e.getLeft(), this, result) }
+    ExprCfgNode getLeft() { e.hasCfgChild(e.getLeft(), this, result) }
 
-    final ExprCfgNode getRight() { e.hasCfgChild(e.getRight(), this, result) }
+    ExprCfgNode getRight() { e.hasCfgChild(e.getRight(), this, result) }
   }
 
-  class OperationChildMapping extends ExprChildMapping instanceof Operation {
-    override predicate relevantChild(Ast n) { n = super.getAnOperand() }
+  private class UnaryExprChildMapping extends ExprChildMapping, UnaryExpr {
+    override predicate relevantChild(Ast child) { child = this.getOperand() }
+  }
+
+  class UnaryExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "UnaryExprCfgNode" }
+
+    override UnaryExprChildMapping e;
+
+    override UnaryExpr getExpr() { result = e }
+
+    ExprCfgNode getOperand() { e.hasCfgChild(e.getOperand(), this, result) }
+  }
+
+  class ConstExprChildMapping extends ExprChildMapping, ConstExpr {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class ConstExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ConstExprCfgNode" }
+
+    override ConstExprChildMapping e;
+
+    override ConstExpr getExpr() { result = e }
+  }
+
+  class ConvertExprChildMapping extends ExprChildMapping, ConvertExpr {
+    override predicate relevantChild(Ast child) { child = this.getExpr() }
+  }
+
+  class ConvertExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ConvertExprCfgNode" }
+
+    override ConvertExprChildMapping e;
+
+    override ConvertExpr getExpr() { result = e }
+
+    ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
+  }
+
+  class IndexExprChildMapping extends ExprChildMapping, IndexExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getBase()
+      or
+      child = this.getIndex()
+    }
+  }
+
+  class IndexExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "IndexExprCfgNode" }
+
+    override IndexExprChildMapping e;
+
+    override IndexExpr getExpr() { result = e }
+
+    ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+
+    ExprCfgNode getIndex() { e.hasCfgChild(e.getIndex(), this, result) }
+  }
+
+  private class IndexExprWriteAccessChildMapping extends IndexExprChildMapping, IndexExprWriteAccess
+  {
+    override predicate relevantChild(Ast child) { this.isExplicitWrite(child) }
+  }
+
+  class IndexExprWriteAccessCfgNode extends IndexExprCfgNode {
+    override IndexExprWriteAccessChildMapping e;
+
+    override string getAPrimaryQlClass() { result = "IndexExprWriteAccessCfgNode" }
+
+    override IndexExprWriteAccess getExpr() { result = e }
+
+    final StmtNodes::AssignStmtCfgNode getAssignStmt() { this.isExplicitWrite(result) }
+
+    predicate isExplicitWrite(AstCfgNode assignmentCfg) {
+      exists(Ast assignment |
+        // this.isExplicitWrite(assignment) and
+        e.isExplicitWrite(assignment) and
+        e.hasCfgChild(assignment, this, assignmentCfg)
+      )
+    }
+
+    predicate isImplicitWrite() { e.isImplicitWrite() }
+  }
+
+  private class IndexExprReadAccessChildMapping extends IndexExprChildMapping, IndexExprReadAccess {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class IndexExprReadAccessCfgNode extends IndexExprCfgNode {
+    override IndexExprReadAccessChildMapping e;
+
+    override string getAPrimaryQlClass() { result = "IndexExprAccessCfgNode" }
+
+    override IndexExprReadAccess getExpr() { result = e }
+  }
+
+  class CallExprChildMapping extends ExprChildMapping, CallExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getQualifier()
+      or
+      child = this.getAnArgument()
+      or
+      child = this.getCallee()
+    }
+  }
+
+  class CallExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "CallExprCfgNode" }
+
+    override CallExprChildMapping e;
+
+    override CallExpr getExpr() { result = e }
+
+    ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
+
+    ExprCfgNode getArgument(int i) { e.hasCfgChild(e.getArgument(i), this, result) }
+
+    ExprCfgNode getAnArgument() { result = this.getArgument(_) }
+
+    /** Gets the name that is used to select the callee. */
+    string getName() { result = e.getName() }
+
+    /** Gets the i'th positional argument to this call. */
+    ExprCfgNode getPositionalArgument(int i) {
+      e.hasCfgChild(e.getPositionalArgument(i), this, result)
+    }
+
+    /** Holds if an argument with name `name` is provided to this call. */
+    final predicate hasNamedArgument(string name) { exists(this.getNamedArgument(name)) }
+
+    /** Gets the argument to this call with the name `name`. */
+    ExprCfgNode getNamedArgument(string name) {
+      e.hasCfgChild(e.getNamedArgument(name), this, result)
+    }
+
+    ExprCfgNode getCallee() { e.hasCfgChild(e.getCallee(), this, result) }
+
+    predicate isStatic() { this.getExpr().isStatic() }
+  }
+
+  class ObjectCreationChildMapping extends CallExprChildMapping instanceof ObjectCreation {
+    override predicate relevantChild(Ast child) { child = super.getConstructedTypeExpr() }
+  }
+
+  class ObjectCreationCfgNode extends CallExprCfgNode {
+    // TODO: Also calls to Activator.CreateInstance
+    override string getAPrimaryQlClass() { result = "CallExprCfgNode" }
+
+    override ObjectCreationChildMapping e;
+
+    override ObjectCreation getExpr() { result = e }
+
+    string getConstructedTypeName() { result = this.getExpr().getConstructedTypeName() }
+
+    ExprCfgNode getConstructedTypeExpr() {
+      e.hasCfgChild(this.getExpr().getConstructedTypeExpr(), this, result)
+    }
+  }
+
+  class CallOperatorChildMapping extends CallExprChildMapping instanceof CallOperator {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class CallOperatorCfgNode extends CallExprCfgNode {
+    override string getAPrimaryQlClass() { result = "CallOperatorCfgNode" }
+
+    override CallOperatorChildMapping e;
+
+    override CallOperator getExpr() { result = e }
+
+    ExprCfgNode getCommand() { result = this.getArgument(0) }
+  }
+
+  class MemberExprChildMapping extends ExprChildMapping, MemberExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getQualifier()
+      or
+      child = this.getMemberExpr()
+    }
+  }
+
+  class MemberExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "MemberExprCfgNode" }
+
+    override MemberExprChildMapping e;
+
+    override MemberExpr getExpr() { result = e }
+
+    ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
+
+    ExprCfgNode getMemberExpr() { e.hasCfgChild(e.getMemberExpr(), this, result) }
+
+    string getMemberName() { result = e.getMemberName() }
+
+    predicate isStatic() { e.isStatic() }
+  }
+
+  private class MemberExprWriteAccessChildMapping extends MemberExprChildMapping,
+    MemberExprWriteAccess
+  {
+    override predicate relevantChild(Ast child) { this.isExplicitWrite(child) }
+  }
+
+  class MemberExprWriteAccessCfgNode extends MemberExprCfgNode {
+    override MemberExprWriteAccessChildMapping e;
+
+    override string getAPrimaryQlClass() { result = "MemberExprWriteAccessCfgNode" }
+
+    override MemberExprWriteAccess getExpr() { result = e }
+
+    final StmtNodes::AssignStmtCfgNode getAssignStmt() { this.isExplicitWrite(result) }
+
+    predicate isExplicitWrite(AstCfgNode assignmentCfg) {
+      exists(Ast assignment |
+        // this.isExplicitWrite(assignment) and
+        e.isExplicitWrite(assignment) and
+        e.hasCfgChild(assignment, this, assignmentCfg)
+      )
+    }
+
+    predicate isImplicitWrite() { e.isImplicitWrite() }
+  }
+
+  private class MemberExprReadAccessChildMapping extends MemberExprChildMapping,
+    MemberExprReadAccess
+  {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class MemberExprReadAccessCfgNode extends MemberExprCfgNode {
+    override MemberExprReadAccessChildMapping e;
+
+    override string getAPrimaryQlClass() { result = "MemberExprReadAccessCfgNode" }
+
+    override MemberExprReadAccess getExpr() { result = e }
+  }
+
+  class TypeNameExprChildMapping extends ExprChildMapping, TypeNameExpr {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class TypeNameExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "TypeExprCfgNode" }
+
+    override TypeNameExprChildMapping e;
+
+    override TypeNameExpr getExpr() { result = e }
+
+    string getName() { result = e.getName() }
+
+    string getNamespace() { result = e.getNamespace() }
+
+    string getPossiblyQualifiedName() { result = e.getPossiblyQualifiedName() }
+
+    predicate isQualified() { e.isQualified() }
+  }
+
+  class QualifiedTypeNameExprCfgNode extends TypeNameExprCfgNode {
+    QualifiedTypeNameExprCfgNode() { e.isQualified() }
+
+    override string getAPrimaryQlClass() { result = "QualifiedTypeNameExprCfgNode" }
+
+    override QualifiedTypeNameExpr getExpr() { result = e }
+  }
+
+  class ErrorExprChildMapping extends ExprChildMapping, ErrorExpr {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class ErrorExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ErrorExprCfgNode" }
+
+    override ErrorExprChildMapping e;
+
+    override ErrorExpr getExpr() { result = e }
+  }
+
+  class ScriptBlockExprChildMapping extends ExprChildMapping, ScriptBlockExpr {
+    override predicate relevantChild(Ast child) { child = this.getBody() }
+  }
+
+  class ScriptBlockExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ScriptBlockExprCfgNode" }
+
+    override ScriptBlockExprChildMapping e;
+
+    override ScriptBlockExpr getExpr() { result = e }
+
+    ScriptBlockCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
+  }
+
+  class StringLiteralExprChildMapping extends ExprChildMapping, StringConstExpr {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class StringLiteralExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "StringLiteralExprCfgNode" }
+
+    override StringLiteralExprChildMapping e;
+
+    override StringConstExpr getExpr() { result = e }
+
+    string getValueString() { result = e.getValueString() }
+  }
+
+  class ExpandableStringExprChildMapping extends ExprChildMapping, ExpandableStringExpr {
+    override predicate relevantChild(Ast child) { child = this.getAnExpr() }
+  }
+
+  class ExpandableStringExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ExpandableStringExprCfgNode" }
+
+    override ExpandableStringExprChildMapping e;
+
+    override ExpandableStringExpr getExpr() { result = e }
+
+    ExprCfgNode getExpr(int i) { e.hasCfgChild(e.getExpr(i), this, result) }
+
+    ExprCfgNode getAnExpr() { result = this.getExpr(_) }
+  }
+
+  class VarAccessCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "VarAccessExprCfgNode" }
+
+    override VarAccess e;
+
+    override VarAccess getExpr() { result = e }
+
+    Variable getVariable() { result = e.getVariable() }
+  }
+
+  private class VarWriteAccessChildMapping extends ExprChildMapping, VarWriteAccess {
+    override predicate relevantChild(Ast child) { this.isExplicitWrite(child) }
+  }
+
+  class VarWriteAccessCfgNode extends VarAccessCfgNode {
+    override VarWriteAccessChildMapping e;
+
+    override string getAPrimaryQlClass() { result = "VarWriteAccessCfgNode" }
+
+    override VarWriteAccess getExpr() { result = e }
+
+    final StmtNodes::AssignStmtCfgNode getAssignStmt() { this.isExplicitWrite(result) }
+
+    predicate isExplicitWrite(AstCfgNode assignmentCfg) {
+      exists(Ast assignment |
+        e.isExplicitWrite(assignment) and
+        e.hasCfgChild(assignment, this, assignmentCfg)
+      )
+    }
+
+    predicate isImplicitWrite() { e.isImplicitWrite() }
+  }
+
+  class VarReadAccessCfgNode extends VarAccessCfgNode {
+    override VarReadAccess e;
+
+    override string getAPrimaryQlClass() { result = "VarReadAccessCfgNode" }
+
+    override VarReadAccess getExpr() { result = e }
+  }
+
+  class HashTableExprChildMapping extends ExprChildMapping, HashTableExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getAKey()
+      or
+      child = this.getAValue()
+    }
+  }
+
+  class HashTableExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "HashTableExprCfgNode" }
+
+    override HashTableExprChildMapping e;
+
+    override HashTableExpr getExpr() { result = e }
+
+    ExprCfgNode getKey(int i) { e.hasCfgChild(e.getKey(i), this, result) }
+
+    ExprCfgNode getAnKey() { result = this.getKey(_) }
+
+    ExprCfgNode getValue(int i) { e.hasCfgChild(e.getKey(i), this, result) }
+
+    ExprCfgNode getValueFromKey(ExprCfgNode key) {
+      exists(int i |
+        this.getKey(i) = key and
+        result = this.getValue(i)
+      )
+    }
+
+    ExprCfgNode getAValue() { result = this.getValue(_) }
+  }
+
+  class PipelineChildMapping extends ExprChildMapping, Pipeline {
+    override predicate relevantChild(Ast child) { child = this.getAComponent() }
+  }
+
+  class PipelineCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "PipelineCfgNode" }
+
+    override PipelineChildMapping e;
+
+    override Pipeline getExpr() { result = e }
+
+    ExprCfgNode getComponent(int i) { e.hasCfgChild(e.getComponent(i), this, result) }
+
+    ExprCfgNode getAComponent() { result = this.getComponent(_) }
+  }
+
+  class PipelineChainChildMapping extends ExprChildMapping, PipelineChain {
+    override predicate relevantChild(Ast child) {
+      child = this.getLeft() or child = this.getRight()
+    }
+  }
+
+  class PipelineChainCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "PipelineChainCfgNode" }
+
+    override PipelineChainChildMapping e;
+
+    override PipelineChain getExpr() { result = e }
+
+    ExprCfgNode getLeft() { e.hasCfgChild(e.getLeft(), this, result) }
+
+    ExprCfgNode getRight() { e.hasCfgChild(e.getRight(), this, result) }
+  }
+
+  class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getCondition()
+      or
+      child = this.getIfTrue()
+      or
+      child = this.getIfFalse()
+    }
+  }
+
+  class ConditionalExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ConditionalExprCfgNode" }
+
+    override ConditionalExprChildMapping e;
+
+    override ConditionalExpr getExpr() { result = e }
+
+    ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
+
+    ExprCfgNode getIfTrue() { e.hasCfgChild(e.getIfTrue(), this, result) }
+
+    ExprCfgNode getIfFalse() { e.hasCfgChild(e.getIfFalse(), this, result) }
+
+    ExprCfgNode getBranch(boolean b) {
+      b = true and
+      result = this.getIfTrue()
+      or
+      b = false and
+      result = this.getIfFalse()
+    }
+
+    ExprCfgNode getABranch() { result = this.getBranch(_) }
+  }
+
+  class ExpandableSubExprChildMapping extends ExprChildMapping, ExpandableSubExpr {
+    override predicate relevantChild(Ast child) { child = this.getExpr() }
+  }
+
+  class ExpandableSubExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ExpandableSubExprCfgNode" }
+
+    override ExpandableSubExprChildMapping e;
+
+    override ExpandableSubExpr getExpr() { result = e }
+
+    ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
+  }
+
+  class UsingExprChildMapping extends ExprChildMapping, UsingExpr {
+    override predicate relevantChild(Ast child) { child = this.getExpr() }
+  }
+
+  class UsingExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "UsingExprCfgNode" }
+
+    override UsingExprChildMapping e;
+
+    override UsingExpr getExpr() { result = e }
+
+    ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
+  }
+
+  class AttributedExprChildMapping extends ExprChildMapping, AttributedExpr {
+    override predicate relevantChild(Ast child) {
+      child = this.getExpr() or
+      child = this.getAttribute()
+    }
+  }
+
+  class AttributedExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "TAttributedExprCfgNode" }
+
+    override AttributedExprChildMapping e;
+
+    override AttributedExpr getExpr() { result = e }
+
+    ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
+
+    ExprCfgNode getAttribute() { e.hasCfgChild(e.getAttribute(), this, result) }
+  }
+
+  class IfChildMapping extends ExprChildMapping, If {
+    override predicate relevantChild(Ast child) {
+      child = this.getACondition()
+      or
+      child = this.getAThen()
+      or
+      child = this.getElse()
+    }
+  }
+
+  class IfCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "IfCfgNode" }
+
+    override IfChildMapping e;
+
+    override If getExpr() { result = e }
+
+    ExprCfgNode getCondition(int i) { e.hasCfgChild(e.getCondition(i), this, result) }
+
+    ExprCfgNode getACondition() { result = this.getCondition(_) }
+
+    StmtCfgNode getThen(int i) { e.hasCfgChild(e.getThen(i), this, result) }
+
+    StmtCfgNode getAThen() { result = this.getThen(_) }
+
+    StmtCfgNode getElse() { e.hasCfgChild(e.getElse(), this, result) }
+  }
+
+  class LiteralChildMapping extends ExprChildMapping, Literal {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class LiteralCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "LiteralCfgNode" }
+
+    override LiteralChildMapping e;
+
+    override Literal getExpr() { result = e }
+  }
+
+  class BoolLiteralChildMapping extends ExprChildMapping, BoolLiteral {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class BoolLiteralCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "BoolLiteralCfgNode" }
+
+    override BoolLiteralChildMapping e;
+
+    override BoolLiteral getExpr() { result = e }
+  }
+
+  class NullLiteralChildMapping extends ExprChildMapping, NullLiteral {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class NullLiteralCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "NullLiteralCfgNode" }
+
+    override NullLiteralChildMapping e;
+
+    override NullLiteral getExpr() { result = e }
+  }
+
+  class ArgumentCfgNode extends ExprCfgNode {
+    override Argument e;
+
+    CallExprCfgNode getCall() { result.getAnArgument() = this }
+
+    string getName() { result = e.getName() }
+
+    int getPosition() { result = e.getPosition() }
+  }
+
+  class QualifierCfgNode extends ExprCfgNode {
+    override Qualifier e;
+
+    CallExprCfgNode getCall() { result.getQualifier() = this }
+  }
+
+  private class EnvVariableChildMapping extends ExprChildMapping, EnvVariable {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class EnvVariableCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "EnvVariableCfgNode" }
+
+    override EnvVariableChildMapping e;
+
+    override EnvVariable getExpr() { result = e }
+
+    string getName() { result = e.getName() }
+  }
+
+  private class OperationChildMapping extends ExprChildMapping, Operation {
+    override predicate relevantChild(Ast child) { child = this.getAnOperand() }
   }
 
   class OperationCfgNode extends ExprCfgNode {
@@ -563,166 +971,423 @@ module ExprNodes {
 
     override Operation getExpr() { result = e }
 
-    final ExprCfgNode getAnOperand() { e.hasCfgChild(this.getExpr().getAnOperand(), this, result) }
-  }
-
-  class ExpandableStringChildMappinig extends ExprChildMapping, ExpandableStringExpr {
-    override predicate relevantChild(Ast n) { n = this.getAnExpr() }
-  }
-
-  class ExpandableStringCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "ExpandableStringCfgNode" }
-
-    override ExpandableStringChildMappinig e;
-
-    override ExpandableStringExpr getExpr() { result = e }
-
-    ExprCfgNode getExpr(int i) { e.hasCfgChild(e.getExpr(i), this, result) }
-
-    ExprCfgNode getAnExpr() { result = this.getExpr(_) }
+    ExprCfgNode getAnOperand() { e.hasCfgChild(e.getAnOperand(), this, result) }
   }
 }
 
 module StmtNodes {
-  private class CmdChildMapping extends CmdBaseChildMapping, Cmd {
-    override predicate relevantChild(Ast n) { n = this.getAnArgument() or n = this.getCommand() }
-  }
-
-  /** A control-flow node that wraps a `Cmd` AST expression. */
-  class CmdCfgNode extends CmdBaseCfgNode, AbstractCallCfgNode {
-    override string getAPrimaryQlClass() { result = "CmdCfgNode" }
-
-    override CmdChildMapping s;
-
-    override Cmd getStmt() { result = super.getStmt() }
-
-    override ExprCfgNode getArgument(int i) { s.hasCfgChild(s.getArgument(i), this, result) }
-
-    override ExprCfgNode getPositionalArgument(int i) {
-      s.hasCfgChild(s.getPositionalArgument(i), this, result)
-    }
-
-    override ExprCfgNode getNamedArgument(string name) {
-      s.hasCfgChild(s.getNamedArgument(name), this, result)
-    }
-
-    override ExprCfgNode getAnArgument() { s.hasCfgChild(s.getAnArgument(), this, result) }
-
-    final override ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
-
-    final override string getName() { result = s.getCommandName() }
-
-    /** Holds if the command is qualified. */
-    predicate isQualified() { s.isQualified() }
-
-    /** Gets the namespace qualifier of this command, if any. */
-    string getNamespaceQualifier() { result = s.getNamespaceQualifier() }
-  }
-
-  /** A control-flow node that wraps a call to operator `&` */
-  class CallOperatorCfgNode extends CmdCfgNode {
-    CallOperatorCfgNode() { this.getStmt() instanceof CallOperator }
-  }
-
-  private class AssignStmtChildMapping extends PipelineBaseChildMapping, AssignStmt {
-    override predicate relevantChild(Ast n) {
-      n = this.getLeftHandSide() or n = this.getRightHandSide()
+  private class AssignStmtChildMapping extends NonExprChildMapping, AssignStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getLeftHandSide()
+      or
+      child = this.getRightHandSide()
     }
   }
 
-  /** A control-flow node that wraps an `AssignStmt` AST expression. */
-  class AssignStmtCfgNode extends PipelineBaseCfgNode {
-    override string getAPrimaryQlClass() { result = "AssignCfgNode" }
+  class AssignStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "AssignStmtCfgNode" }
 
     override AssignStmtChildMapping s;
 
-    override AssignStmt getStmt() { result = super.getStmt() }
+    override AssignStmt getStmt() { result = s }
 
-    /** Gets the LHS of this assignment. */
-    final ExprCfgNode getLeftHandSide() { s.hasCfgChild(s.getLeftHandSide(), this, result) }
+    ExprCfgNode getLeftHandSide() { s.hasCfgChild(s.getLeftHandSide(), this, result) }
 
-    /** Gets the RHS of this assignment. */
-    final StmtCfgNode getRightHandSide() { s.hasCfgChild(s.getRightHandSide(), this, result) }
+    ExprCfgNode getRightHandSide() { s.hasCfgChild(s.getRightHandSide(), this, result) }
   }
 
-  class CmdExprChildMapping extends CmdBaseChildMapping, CmdExpr {
-    override predicate relevantChild(Ast n) { n = this.getExpr() }
+  class BreakStmtChildMapping extends NonExprChildMapping, BreakStmt {
+    override predicate relevantChild(Ast child) { none() }
   }
 
-  /** A control-flow node that wraps a `CmdExpr` expression. */
-  class CmdExprCfgNode extends CmdBaseCfgNode {
-    override string getAPrimaryQlClass() { result = "CmdExprCfgNode" }
+  class BreakStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "BreakStmtCfgNode" }
 
-    override CmdExprChildMapping s;
+    override BreakStmtChildMapping s;
 
-    override CmdExpr getStmt() { result = super.getStmt() }
-
-    final ExprCfgNode getExpr() { s.hasCfgChild(s.getExpr(), this, result) }
+    override BreakStmt getStmt() { result = s }
   }
 
-  class PipelineBaseChildMapping extends NonExprChildMapping, PipelineBase {
-    override predicate relevantChild(Ast n) { none() }
+  class ContinueStmtChildMapping extends NonExprChildMapping, ContinueStmt {
+    override predicate relevantChild(Ast child) { none() }
   }
 
-  class PipelineBaseCfgNode extends StmtCfgNode {
-    override string getAPrimaryQlClass() { result = "PipelineBaseCfgNode" }
+  class ContinueStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ContinueStmtCfgNode" }
 
-    override PipelineBaseChildMapping s;
+    override ContinueStmtChildMapping s;
 
-    override PipelineBase getStmt() { result = super.getStmt() }
+    override ContinueStmt getStmt() { result = s }
   }
 
-  class ChainableChildMapping extends PipelineBaseChildMapping, Chainable {
-    override predicate relevantChild(Ast n) { none() }
+  class DataStmtChildMapping extends NonExprChildMapping, DataStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getACmdAllowed() or child = this.getBody()
+    }
   }
 
-  class ChainableCfgNode extends PipelineBaseCfgNode {
-    override string getAPrimaryQlClass() { result = "ChainableCfgNode" }
+  class DataStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "DataStmtCfgNode" }
 
-    override ChainableChildMapping s;
+    override DataStmtChildMapping s;
 
-    override Chainable getStmt() { result = super.getStmt() }
+    override DataStmt getStmt() { result = s }
+
+    ExprCfgNode getCmdAllowed(int i) { s.hasCfgChild(s.getCmdAllowed(i), this, result) }
+
+    ExprCfgNode getACmdAllowed() { result = this.getCmdAllowed(_) }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class PipelineChainChildMapping extends ChainableChildMapping, PipelineChain {
-    override predicate relevantChild(Ast n) { n = this.getLeft() or n = this.getRight() }
+  class DoUntilStmtChildMapping extends NonExprChildMapping, DoUntilStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getCondition() or child = this.getBody()
+    }
   }
 
-  class PipelineChainCfgNode extends ChainableCfgNode {
-    override string getAPrimaryQlClass() { result = "PipelineChainCfgNode" }
+  class DoUntilStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "DoUntilStmtCfgNode" }
 
-    override PipelineChainChildMapping s;
+    override DoUntilStmtChildMapping s;
 
-    override PipelineChain getStmt() { result = super.getStmt() }
+    override DoUntilStmt getStmt() { result = s }
 
-    final ChainableCfgNode getLeft() { s.hasCfgChild(s.getLeft(), this, result) }
+    ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
 
-    final ChainableCfgNode getRight() { s.hasCfgChild(s.getRight(), this, result) }
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class CmdBaseChildMapping extends ChainableChildMapping, CmdBase { }
-
-  class CmdBaseCfgNode extends ChainableCfgNode {
-    override string getAPrimaryQlClass() { result = "CmdBaseCfgNode" }
-
-    override CmdBaseChildMapping s;
-
-    override CmdBase getStmt() { result = super.getStmt() }
+  class DoWhileStmtChildMapping extends NonExprChildMapping, DoWhileStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getCondition() or child = this.getBody()
+    }
   }
 
-  class PipelineChildMapping extends ChainableChildMapping, Pipeline {
-    override predicate relevantChild(Ast n) { n = this.getAComponent() }
+  class DoWhileStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "DoWhileStmtCfgNode" }
+
+    override DoWhileStmtChildMapping s;
+
+    override DoWhileStmt getStmt() { result = s }
+
+    ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class PipelineCfgNode extends ChainableCfgNode {
-    override string getAPrimaryQlClass() { result = "PipelineCfgNode" }
+  class ErrorStmtChildMapping extends NonExprChildMapping, ErrorStmt {
+    override predicate relevantChild(Ast child) { none() }
+  }
 
-    override PipelineChildMapping s;
+  class ErrorStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ErrorStmtCfgNode" }
 
-    override Pipeline getStmt() { result = super.getStmt() }
+    override ErrorStmtChildMapping s;
 
-    final CmdBaseCfgNode getComponent(int i) { s.hasCfgChild(s.getComponent(i), this, result) }
+    override ErrorStmt getStmt() { result = s }
+  }
 
-    final CmdBaseCfgNode getAComponent() { s.hasCfgChild(s.getAComponent(), this, result) }
+  class ExitStmtChildMapping extends NonExprChildMapping, ExitStmt {
+    override predicate relevantChild(Ast child) { child = this.getPipeline() }
+  }
+
+  class ExitStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ExitStmtCfgNode" }
+
+    override ExitStmtChildMapping s;
+
+    override ExitStmt getStmt() { result = s }
+
+    ExprCfgNode getPipeline() { s.hasCfgChild(s.getPipeline(), this, result) }
+  }
+
+  class DynamicStmtChildMapping extends NonExprChildMapping, DynamicStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getName() or child = this.getScriptBlock() or child = this.getHashTableExpr()
+    }
+  }
+
+  class DynamicStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "DynamicStmtCfgNode" }
+
+    override DynamicStmtChildMapping s;
+
+    override DynamicStmt getStmt() { result = s }
+
+    ExprCfgNode getName() { s.hasCfgChild(s.getName(), this, result) }
+
+    ExprCfgNode getScriptBlock() { s.hasCfgChild(s.getScriptBlock(), this, result) }
+
+    ExprCfgNode getHashTableExpr() { s.hasCfgChild(s.getHashTableExpr(), this, result) }
+  }
+
+  class ForEachStmtChildMapping extends NonExprChildMapping, ForEachStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getVarAccess() or child = this.getIterableExpr() or child = this.getBody()
+    }
+  }
+
+  class ForEachStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ForEachStmtCfgNode" }
+
+    override ForEachStmtChildMapping s;
+
+    override ForEachStmt getStmt() { result = s }
+
+    ExprCfgNode getVarAccess() { s.hasCfgChild(s.getVarAccess(), this, result) }
+
+    ExprCfgNode getIterableExpr() { s.hasCfgChild(s.getIterableExpr(), this, result) }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+  }
+
+  class ForStmtChildMapping extends NonExprChildMapping, ForStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getInitializer() or
+      child = this.getCondition() or
+      child = this.getIterator() or
+      child = this.getBody()
+    }
+  }
+
+  class ForStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ForStmtCfgNode" }
+
+    override ForStmtChildMapping s;
+
+    override ForStmt getStmt() { result = s }
+
+    AstCfgNode getInitializer() { s.hasCfgChild(s.getInitializer(), this, result) }
+
+    ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
+
+    AstCfgNode getIterator() { s.hasCfgChild(s.getIterator(), this, result) }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+  }
+
+  class GotoStmtChildMapping extends NonExprChildMapping, GotoStmt {
+    override predicate relevantChild(Ast child) { child = this.getLabel() }
+  }
+
+  class GotoStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "GotoStmtCfgNode" }
+
+    override GotoStmtChildMapping s;
+
+    override GotoStmt getStmt() { result = s }
+
+    ExprCfgNode getLabel() { s.hasCfgChild(s.getLabel(), this, result) }
+  }
+
+  class ReturnStmtChildMapping extends NonExprChildMapping, ReturnStmt {
+    override predicate relevantChild(Ast child) { child = this.getPipeline() }
+  }
+
+  class ReturnStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ReturnStmtCfgNode" }
+
+    override ReturnStmtChildMapping s;
+
+    override ReturnStmt getStmt() { result = s }
+
+    ExprCfgNode getPipeline() { s.hasCfgChild(s.getPipeline(), this, result) }
+  }
+
+  class StmtBlockChildMapping extends NonExprChildMapping, StmtBlock {
+    override predicate relevantChild(Ast child) { child = this.getAStmt() }
+  }
+
+  class StmtBlockCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "StmtBlockCfgNode" }
+
+    override StmtBlockChildMapping s;
+
+    override StmtBlock getStmt() { result = s }
+
+    StmtCfgNode getStmt(int i) { s.hasCfgChild(s.getStmt(i), this, result) }
+
+    StmtCfgNode getAStmt() { result = this.getStmt(_) }
+  }
+
+  class SwitchStmtChildMapping extends NonExprChildMapping, SwitchStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getCondition() or
+      child = this.getDefault() or
+      child = this.getACase() or
+      child = this.getAPattern()
+    }
+  }
+
+  class SwitchStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "SwitchStmtCfgNode" }
+
+    override SwitchStmtChildMapping s;
+
+    override SwitchStmt getStmt() { result = s }
+
+    ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
+
+    StmtCfgNode getDefault() { s.hasCfgChild(s.getDefault(), this, result) }
+
+    StmtCfgNode getCase(int i) { s.hasCfgChild(s.getCase(i), this, result) }
+
+    StmtCfgNode getACase() { result = this.getCase(_) }
+
+    ExprCfgNode getPattern(int i) { s.hasCfgChild(s.getPattern(i), this, result) }
+
+    ExprCfgNode getAPattern() { result = this.getPattern(_) }
+  }
+
+  class ThrowStmtChildMapping extends NonExprChildMapping, ThrowStmt {
+    override predicate relevantChild(Ast child) { child = this.getPipeline() }
+  }
+
+  class ThrowStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ThrowStmtCfgNode" }
+
+    override ThrowStmtChildMapping s;
+
+    override ThrowStmt getStmt() { result = s }
+
+    ExprCfgNode getPipeline() { s.hasCfgChild(s.getPipeline(), this, result) }
+  }
+
+  class TrapStmtChildMapping extends NonExprChildMapping, TrapStmt {
+    override predicate relevantChild(Ast child) { child = this.getBody() }
+  }
+
+  class TrapStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "TrapStmtCfgNode" }
+
+    override TrapStmtChildMapping s;
+
+    override TrapStmt getStmt() { result = s }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+  }
+
+  class TryStmtChildMapping extends NonExprChildMapping, TryStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getBody() or
+      child = this.getFinally() or
+      child = this.getACatchClause()
+    }
+  }
+
+  class TryStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "TryStmtCfgNode" }
+
+    override TryStmtChildMapping s;
+
+    override TryStmt getStmt() { result = s }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+
+    StmtCfgNode getFinally() { s.hasCfgChild(s.getFinally(), this, result) }
+
+    StmtCfgNode getCatchClause(int i) { s.hasCfgChild(s.getCatchClause(i), this, result) }
+  }
+
+  class UsingStmtChildMapping extends NonExprChildMapping, UsingStmt {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class UsingStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "UsingStmtCfgNode" }
+
+    override UsingStmtChildMapping s;
+
+    override UsingStmt getStmt() { result = s }
+  }
+
+  class WhileStmtChildMapping extends NonExprChildMapping, WhileStmt {
+    override predicate relevantChild(Ast child) {
+      child = this.getCondition() or
+      child = this.getBody()
+    }
+  }
+
+  class WhileStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "WhileStmtCfgNode" }
+
+    override WhileStmtChildMapping s;
+
+    override WhileStmt getStmt() { result = s }
+
+    ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+  }
+
+  class ConfigurationChildMapping extends NonExprChildMapping, Configuration {
+    override predicate relevantChild(Ast child) {
+      child = this.getName() or child = this.getBody()
+    }
+  }
+
+  class ConfigurationCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ConfigurationCfgNode" }
+
+    override ConfigurationChildMapping s;
+
+    override Configuration getStmt() { result = s }
+
+    ExprCfgNode getName() { s.hasCfgChild(s.getName(), this, result) }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+  }
+
+  class TypeStmtChildMapping extends NonExprChildMapping, TypeDefinitionStmt {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class TypeDefinitionStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "TypeStmtCfgNode" }
+
+    override TypeStmtChildMapping s;
+
+    override TypeDefinitionStmt getStmt() { result = s }
+
+    Member getMember(int i) { result = s.getMember(i) }
+
+    Member getAMember() { result = this.getMember(_) }
+
+    TypeConstraint getBaseType(int i) { result = s.getBaseType(i) }
+
+    TypeConstraint getABaseType() { result = this.getBaseType(_) }
+
+    Type getType() { result = s.getType() }
+
+    string getName() { result = s.getName() }
+  }
+
+  class FunctionDefinitionChildMapping extends NonExprChildMapping, FunctionDefinitionStmt {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class FunctionDefinitionCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "FunctionDefinitionCfgNode" }
+
+    override FunctionDefinitionChildMapping s;
+
+    override FunctionDefinitionStmt getStmt() { result = s }
+
+    FunctionBase getFunction() { result = s.getFunction() }
+  }
+
+  class ExprStmtChildMapping extends NonExprChildMapping, ExprStmt {
+    override predicate relevantChild(Ast child) { child = this.getExpr() }
+  }
+
+  class ExprStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "ExprStmtCfgNode" }
+
+    override ExprStmtChildMapping s;
+
+    override ExprStmt getStmt() { result = s }
+
+    ExprCfgNode getExpr() { s.hasCfgChild(s.getExpr(), this, result) }
   }
 }
