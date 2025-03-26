@@ -528,3 +528,42 @@ private module CmdExprRemoval {
     }
   }
 }
+
+/**
+ * Clean up arguments to commands by:
+ * - Removing the parameter name as an argument.
+ */
+private module CmdArguments {
+  private class CmdParameterRemoval extends Synthesis {
+    override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      exists(Raw::Expr e |
+        this.rawChild(parent, i, e) and
+        child = childRef(getResultAst(e))
+      )
+    }
+
+    private predicate rawChild(Raw::Cmd cmd, ChildIndex i, Raw::Expr child) {
+      exists(int index |
+        i = cmdArgument(index) and
+        child = cmd.getArgument(index)
+      )
+    }
+
+    override predicate isNamedArgument(CmdCall call, int i, string name) {
+      exists(Raw::Cmd cmd, Raw::Expr e, Raw::CmdParameter p |
+        this.rawChild(cmd, cmdArgument(i), e) and
+        call = getResultAst(cmd) and
+        p.getName().toLowerCase() = name
+      |
+        p.getExpr() = e
+        or
+        exists(ChildIndex j, int jndex |
+          j = cmdElement_(jndex) and
+          not exists(p.getExpr()) and
+          cmd.getChild(toRawChildIndex(j)) = p and
+          cmd.getChild(toRawChildIndex(cmdElement_(jndex + 1))) = e
+        )
+      )
+    }
+  }
+}
