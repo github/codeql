@@ -1,0 +1,44 @@
+nonUniqueSetRepresentation
+breakInvariant2
+breakInvariant3
+breakInvariant4
+breakInvariant5
+multipleSuccessors
+| functions.ps1:8:5:8:23 | [Stmt] ...+... | successor | functions.ps1:8:5:8:12 | number1 |
+| functions.ps1:8:5:8:23 | [Stmt] ...+... | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:8:5:8:23 | [Stmt] __pipeline_iterator | successor | functions.ps1:8:5:8:12 | number1 |
+| functions.ps1:8:5:8:23 | [Stmt] __pipeline_iterator | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:16:24:16:24 | 0 | successor | functions.ps1:13:28:20:1 | name2 |
+| functions.ps1:16:24:16:24 | 0 | successor | functions.ps1:17:24:17:29 | name1 |
+| functions.ps1:17:24:17:33 | ...+... | successor | functions.ps1:13:28:20:1 | [synth] pipeline |
+| functions.ps1:17:24:17:33 | ...+... | successor | functions.ps1:13:28:20:1 | name0 |
+| functions.ps1:19:5:19:18 | [Stmt] ...+... | successor | functions.ps1:19:13:19:18 | name2 |
+| functions.ps1:19:5:19:18 | [Stmt] ...+... | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:19:5:19:18 | [Stmt] __pipeline_iterator | successor | functions.ps1:19:13:19:18 | name2 |
+| functions.ps1:19:5:19:18 | [Stmt] __pipeline_iterator | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:33:5:33:8 | [Stmt] __pipeline_iterator | successor | functions.ps1:33:5:33:8 | sum |
+| functions.ps1:33:5:33:8 | [Stmt] __pipeline_iterator | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:33:5:33:8 | [Stmt] sum | successor | functions.ps1:33:5:33:8 | sum |
+| functions.ps1:33:5:33:8 | [Stmt] sum | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:46:9:46:12 | sum | successor | functions.ps1:44:5:47:5 | {...} |
+| functions.ps1:46:9:46:12 | sum | successor | functions.ps1:48:5:51:5 | {...} |
+| functions.ps1:50:9:50:12 | [Stmt] __pipeline_iterator | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:50:9:50:12 | [Stmt] __pipeline_iterator | successor | functions.ps1:50:9:50:12 | sum |
+| functions.ps1:50:9:50:12 | [Stmt] sum | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:50:9:50:12 | [Stmt] sum | successor | functions.ps1:50:9:50:12 | sum |
+| loops.ps1:45:14:45:19 | ...+... | successor | loops.ps1:44:18:44:19 | i |
+| loops.ps1:45:14:45:19 | ...+... | successor | loops.ps1:44:29:44:39 | ...=... |
+simpleAndNormalSuccessors
+deadEnd
+nonUniqueSplitKind
+nonUniqueListOrder
+multipleToString
+| functions.ps1:8:5:8:23 | [Stmt] ...+... | [Stmt] ...+...,[Stmt] __pipeline_iterator |
+| functions.ps1:8:5:8:23 | [Stmt] __pipeline_iterator | [Stmt] ...+...,[Stmt] __pipeline_iterator |
+| functions.ps1:19:5:19:18 | [Stmt] ...+... | [Stmt] ...+...,[Stmt] __pipeline_iterator |
+| functions.ps1:19:5:19:18 | [Stmt] __pipeline_iterator | [Stmt] ...+...,[Stmt] __pipeline_iterator |
+| functions.ps1:33:5:33:8 | [Stmt] __pipeline_iterator | [Stmt] __pipeline_iterator,[Stmt] sum |
+| functions.ps1:33:5:33:8 | [Stmt] sum | [Stmt] __pipeline_iterator,[Stmt] sum |
+| functions.ps1:50:9:50:12 | [Stmt] __pipeline_iterator | [Stmt] __pipeline_iterator,[Stmt] sum |
+| functions.ps1:50:9:50:12 | [Stmt] sum | [Stmt] __pipeline_iterator,[Stmt] sum |
+scopeNoFirst
