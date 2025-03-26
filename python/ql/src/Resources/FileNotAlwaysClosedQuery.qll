@@ -91,7 +91,7 @@ private predicate fileLocalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node node
 }
 
 /** Holds if data flows from `source` to `sink`, including file wrapper classes. */
-private predicate fileLocalFlow(FileOpen source, DataFlow::Node sink) {
+private predicate fileLocalFlow(DataFlow::Node source, DataFlow::Node sink) {
   fileLocalFlowStep*(source, sink)
 }
 
