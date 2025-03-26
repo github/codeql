@@ -94,7 +94,7 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-class ConstantDataSource extends Crypto::GenericConstantOrAllocationSource instanceof Literal {
+class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
@@ -141,7 +141,7 @@ module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
  */
 module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source = any(Crypto::GenericDataSourceInstance i).getOutputNode()
+    source = any(Crypto::GenericSourceInstance i).getOutputNode()
   }
 
   predicate isSink(DataFlow::Node sink) {
@@ -189,7 +189,21 @@ module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module GenericDataSourceUniversalFlow = DataFlow::Global<GenericDataSourceUniversalFlowConfig>;
+module GenericDataSourceUniversalFlow = TaintTracking::Global<GenericDataSourceUniversalFlowConfig>;
+
+/*
+ * class LiteralOrGenericDataSource extends Element {
+ *  DataFlow::Node node;
+ *
+ *  LiteralOrGenericDataSource() {
+ *    node = this.(Crypto::GenericSourceInstance).getOutputNode() or
+ *    node.asExpr() = this.(Literal)
+ *  }
+ *
+ *  bindingset[other]
+ *  predicate localFlowsTo(DataFlow::Node other) { DataFlow::localFlow(node, other) }
+ * }
+ */
 
 // Import library-specific modeling
 import JCA

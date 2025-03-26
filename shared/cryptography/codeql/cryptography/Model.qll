@@ -37,6 +37,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   final class DataFlowNode = Input::DataFlowNode;
 
+  class ConsumerInputDataFlowNode extends DataFlowNode {
+    ConsumerElement getConsumer() { result.getInputNode() = this }
+  }
+
   final class UnknownPropertyValue extends string {
     UnknownPropertyValue() { this = "<unknown>" }
   }
@@ -49,7 +53,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
             (
               if location = root or location instanceof UnknownLocation
               then parsed = value
-              else parsed = "(" + value + "," + location.toString() + ")"
+              else
+                parsed =
+                  "(" + value + "," + Input::locationToFileBaseNameAndLineNumberString(location) +
+                    ")"
             )
           |
             parsed
@@ -57,7 +64,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       )
   }
 
+  bindingset[node]
+  predicate node_as_property(GenericSourceNode node, string value, Location location) {
+    value =
+      node.getInternalType() + ":" +
+        node.asElement().(GenericSourceInstance).getAdditionalDescription() and
+    location = node.getLocation()
+  }
+
   NodeBase getPassthroughNodeChild(NodeBase node) { result = node.getChild(_) }
+
+  predicate isPassthroughNodeWithSource(NodeBase node) {
+    isPassthroughNode(node) and
+    exists(node.asElement().(ArtifactConsumerAndInstance).getASource())
+  }
 
   predicate isPassthroughNode(NodeBase node) {
     node.asElement() instanceof ArtifactConsumerAndInstance
@@ -65,7 +85,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   predicate nodes_graph_impl(NodeBase node, string key, string value) {
     not node.isExcludedFromGraph() and
-    not isPassthroughNode(node) and // TODO: punt to fix known unknowns for passthrough nodes
+    not isPassthroughNodeWithSource(node) and // TODO: punt to fix known unknowns for passthrough nodes
     (
       key = "semmle.label" and
       value = node.toString()
@@ -102,23 +122,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class FlowAwareElement extends LocatableElement {
     /**
-     * Gets the output node for this artifact, which should usually be the same as `this`.
+     * Gets the output node for this element, which should usually be the same as `this`.
      */
     abstract DataFlowNode getOutputNode();
 
     /**
-     * Gets the input node for this artifact.
+     * Gets the input node for this element which takes in data.
      *
      * If `getInput` is implemented as `none()`, the artifact will not have inbound flow analysis.
      */
-    abstract DataFlowNode getInputNode();
+    abstract ConsumerInputDataFlowNode getInputNode();
 
     /**
-     * Holds if this artifact flows to `other`.
+     * Holds if this element flows to `other`.
      *
      * This predicate should be defined generically per-language with library-specific extension support.
-     * The expected implementation is to perform flow analysis from this artifact's output to another artifact's input.
-     * The `other` argument should be one or more `ArtifactLocatableElement` that are sinks of the flow.
+     * The expected implementation is to perform flow analysis from this element's output to another element's input.
+     * The `other` argument should be one or more `FlowAwareElement`s that are sinks of the flow.
      *
      * If `flowsTo` is implemented as `none()`, the artifact will not have outbound flow analysis.
      */
@@ -128,8 +148,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element that represents a _known_ cryptographic asset with a determinable value OR an artifact.
    *
-   * CROSS PRODUCT WARNING: Do not model any *other* element that is a `FlowAwareElement` to the same
-   * instance in the database, as every other `KnownElement` will share that output artifact's flow.
+   * CROSS PRODUCT WARNING: Modeling any *other* element that is a `FlowAwareElement` to the same
+   * instance in the database will result in every `FlowAwareElement` sharing the output flow.
    */
   abstract class KnownElement extends LocatableElement {
     final ConsumerElement getAConsumer() { result.getAKnownSource() = this }
@@ -151,33 +171,71 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   abstract class AlgorithmInstance extends KnownElement { }
 
   /**
-   * An element that represents an _unknown_ data-source with a non-statically determinable value.
+   * An element that represents a generic source of data.
+   *
+   * A generic source of data is either:
+   * 1. A value (e.g., a string or integer literal) *or*
+   * 1. An input for which a value cannot be determined (e.g., `argv`, file system reads, and web request headers)
    */
-  abstract class GenericDataSourceInstance extends FlowAwareElement {
-    final override DataFlowNode getInputNode() { none() }
+  abstract class GenericSourceInstance extends FlowAwareElement {
+    final override ConsumerInputDataFlowNode getInputNode() { none() }
 
     abstract string getInternalType();
 
     string getAdditionalDescription() { none() }
   }
 
-  abstract class GenericConstantOrAllocationSource extends GenericDataSourceInstance {
-    final override string getInternalType() { result = "ConstantData" } // TODO: toString of source?
+  /**
+   * An element that has a constant value and is a generic source of data.
+   */
+  abstract class GenericValueSourceInstance extends GenericSourceInstance { }
+
+  /**
+   * An element with a constant value, such as a literal.
+   */
+  abstract class GenericConstantSourceInstance extends GenericValueSourceInstance {
+    final override string getInternalType() { result = "Constant" }
   }
 
-  abstract class GenericExternalCallSource extends GenericDataSourceInstance {
+  /**
+   * An element representing statically or dynamically allocated data.
+   */
+  abstract class GenericAllocationSourceInstance extends GenericValueSourceInstance {
+    final override string getInternalType() { result = "Allocation" }
+  }
+
+  /**
+   * An element that does not have a determinable constant value and is a generic source of data.
+   */
+  abstract class GenericNoValueSourceInstance extends GenericSourceInstance { }
+
+  /**
+   * A call to or an output argument of an external function with no definition.
+   */
+  abstract class GenericExternalCallSource extends GenericNoValueSourceInstance {
     final override string getInternalType() { result = "ExternalCall" } // TODO: call target name or toString of source?
   }
 
-  abstract class GenericUnreferencedParameterSource extends GenericDataSourceInstance {
+  /**
+   * A parameter of a function which has no identifiable callsite.
+   */
+  abstract class GenericUnreferencedParameterSource extends GenericNoValueSourceInstance {
     final override string getInternalType() { result = "Parameter" } // TODO: toString of source?
   }
 
-  abstract class GenericRemoteDataSource extends GenericDataSourceInstance {
+  /**
+   * A source of remote or external data, such as web request headers.
+   */
+  abstract class GenericRemoteDataSource extends GenericNoValueSourceInstance {
+    // TODO: avoid duplication with the above types?.. perhaps define the above generically then override
     final override string getInternalType() { result = "RemoteData" } // TODO: toString of source?
   }
 
-  abstract class GenericLocalDataSource extends GenericDataSourceInstance {
+  /**
+   * A source of local or environment data, such as environment variables or a local filesystem.
+   */
+  abstract class GenericLocalDataSource extends GenericNoValueSourceInstance {
+    // TODO: avoid duplication with the above types
     final override string getInternalType() { result = "LocalData" } // TODO: toString of source?
   }
 
@@ -185,7 +243,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * An element that consumes _known_ or _unknown_ cryptographic assets.
    *
    * Note that known assets are to be modeled explicitly with the `getAKnownSource` predicate, whereas
-   * unknown assets are modeled implicitly via flow analysis from any `GenericDataSourceInstance` to this element.
+   * unknown assets are modeled implicitly via flow analysis from any `GenericSourceInstance` to this element.
    *
    * A consumer can consume multiple instances and types of assets at once, e.g., both a `PaddingAlgorithm` and `CipherAlgorithm`.
    */
@@ -196,21 +254,44 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override DataFlowNode getOutputNode() { none() }
 
-    // for internal use only
-    final GenericDataSourceInstance getAnUnknownSource() {
+    final GenericSourceInstance getAGenericSource() {
       result.flowsTo(this) and not result = this.getAKnownSource()
     }
 
-    final GenericSourceNode getAnUnknownSourceNode() {
-      result.asElement() = this.getAnUnknownSource()
+    final GenericSourceNode getAGenericSourceNode() {
+      result.asElement() = this.getAGenericSource()
     }
 
     final NodeBase getAKnownSourceNode() { result.asElement() = this.getAKnownSource() }
 
     final LocatableElement getASource() {
-      result = this.getAnUnknownSource() or
+      result = this.getAGenericSource() or
       result = this.getAKnownSource()
     }
+  }
+
+  /**
+   * A generic value consumer, e.g. for inputs such as key length.
+   * TODO: type hints or per-instantiation type hint config on the source/sink pairs.
+   */
+  final private class GenericValueConsumer extends ConsumerElement {
+    ConsumerInputDataFlowNode input;
+
+    GenericValueConsumer() {
+      (
+        exists(KeyCreationOperationInstance op | input = op.getKeySizeConsumer())
+        or
+        exists(KeyDerivationOperationInstance op |
+          input = op.getIterationCountConsumer() or
+          input = op.getOutputKeySizeConsumer()
+        )
+      ) and
+      this = Input::dfn_to_element(input)
+    }
+
+    final override KnownElement getAKnownSource() { none() }
+
+    final override ConsumerInputDataFlowNode getInputNode() { result = input }
   }
 
   abstract class AlgorithmValueConsumer extends ConsumerElement {
@@ -279,45 +360,49 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   final private class NonceArtifactConsumer extends ArtifactConsumerAndInstance {
-    DataFlowNode inputNode;
+    ConsumerInputDataFlowNode inputNode;
 
     NonceArtifactConsumer() {
       exists(CipherOperationInstance op | inputNode = op.getNonceConsumer()) and
       this = Input::dfn_to_element(inputNode)
     }
 
-    final override DataFlowNode getInputNode() { result = inputNode }
+    final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
-  final private class CipherInputArtifactConsumer extends ArtifactConsumerAndInstance {
-    DataFlowNode inputNode;
+  final private class MessageArtifactConsumer extends ArtifactConsumerAndInstance {
+    ConsumerInputDataFlowNode inputNode;
 
-    CipherInputArtifactConsumer() {
-      exists(CipherOperationInstance op | inputNode = op.getInputConsumer()) and
+    MessageArtifactConsumer() {
+      (
+        exists(CipherOperationInstance op | inputNode = op.getInputConsumer())
+        or
+        exists(KeyDerivationOperationInstance op | inputNode = op.getInputConsumer())
+        or
+        exists(MACOperationInstance op | inputNode = op.getMessageConsumer())
+      ) and
       this = Input::dfn_to_element(inputNode)
     }
 
-    final override DataFlowNode getInputNode() { result = inputNode }
+    final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
-  final private class MACInputArtifactConsumer extends ArtifactConsumerAndInstance {
-    DataFlowNode inputNode;
+  final private class SaltArtifactConsumer extends ArtifactConsumerAndInstance {
+    ConsumerInputDataFlowNode inputNode;
 
-    MACInputArtifactConsumer() {
-      exists(MACOperationInstance op | inputNode = op.getMessageConsumer()) and
+    SaltArtifactConsumer() {
+      exists(KeyDerivationOperationInstance op | inputNode = op.getSaltConsumer()) and
       this = Input::dfn_to_element(inputNode)
     }
 
-    final override DataFlowNode getInputNode() { result = inputNode }
+    final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
   // Output artifacts are determined solely by the element that produces them.
-  // Implementation guidance: these *do* need to be defined generically at the language-level
-  // in order for a flowsTo to be defined. At the per-modeling-instance level, extend that language-level class!
   abstract class OutputArtifactInstance extends ArtifactInstance {
     override predicate isConsumerArtifact() { none() }
 
-    override DataFlowNode getInputNode() { none() }
+    override ConsumerInputDataFlowNode getInputNode() { none() }
 
     final override predicate flowsTo(FlowAwareElement other) {
       Input::artifactOutputFlowsToGenericInput(this.getOutputNode(), other.getInputNode())
@@ -365,17 +450,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   final class KeyArtifactConsumer extends KeyArtifactInstance, ArtifactConsumerAndInstance {
-    DataFlowNode inputNode;
+    ConsumerInputDataFlowNode inputNode;
 
     // TODO: key type hint? e.g. hint: private || public
     KeyArtifactConsumer() {
-      exists(CipherOperationInstance op | inputNode = op.getKeyConsumer()) and
+      (
+        exists(CipherOperationInstance op | inputNode = op.getKeyConsumer()) or
+        exists(MACOperationInstance op | inputNode = op.getKeyConsumer())
+      ) and
       this = Input::dfn_to_element(inputNode)
     }
 
     override KeyArtifactType getKeyType() { result instanceof TUnknownKeyType }
 
-    final override DataFlowNode getInputNode() { result = inputNode }
+    final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
   /**
@@ -390,17 +478,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the consumer of nonces/IVs associated with this cipher operation.
      */
-    abstract DataFlowNode getNonceConsumer();
+    abstract ConsumerInputDataFlowNode getNonceConsumer();
 
     /**
      * Gets the consumer of plaintext or ciphertext input associated with this cipher operation.
      */
-    abstract DataFlowNode getInputConsumer();
+    abstract ConsumerInputDataFlowNode getInputConsumer();
 
     /**
      * Gets the consumer of a key.
      */
-    abstract DataFlowNode getKeyConsumer();
+    abstract ConsumerInputDataFlowNode getKeyConsumer();
 
     /**
      * Gets the output artifact of this cipher operation.
@@ -513,12 +601,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the message input used in this operation.
      */
-    abstract DataFlowNode getMessageConsumer();
+    abstract ConsumerInputDataFlowNode getMessageConsumer();
 
     /**
      * Gets the key used in this operation.
      */
-    abstract DataFlowNode getKeyConsumer();
+    abstract ConsumerInputDataFlowNode getKeyConsumer();
   }
 
   abstract class HMACAlgorithmInstance extends MACAlgorithmInstance {
@@ -557,10 +645,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract int getDigestLength();
   }
 
-  abstract class KeyDerivationOperationInstance extends OperationInstance { }
-
-  abstract class KeyDerivationAlgorithmInstance extends AlgorithmInstance { }
-
   abstract private class KeyCreationOperationInstance extends OperationInstance {
     abstract string getKeyCreationTypeDescription();
 
@@ -574,14 +658,67 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract KeyArtifactType getOutputKeyType();
 
-    /**
-     * Gets the key size of the key produced by this operation.
-     */
-    string getKeySize() { none() } // TODO: punt, might need a generic value consumer?
+    // Defaults or fixed values
+    abstract string getKeySizeFixed();
+
+    // Consumer input nodes
+    abstract ConsumerInputDataFlowNode getKeySizeConsumer();
 
     final KeyArtifactOutputInstance getKeyArtifactOutputInstance() {
       result.getOutputNode() = this.getOutputKeyArtifact()
     }
+  }
+
+  abstract class KeyDerivationOperationInstance extends KeyCreationOperationInstance {
+    final override KeyArtifactType getOutputKeyType() { result instanceof TSymmetricKeyType }
+
+    final override string getKeyCreationTypeDescription() { result = "KeyDerivation" }
+
+    // Defaults or fixed values
+    abstract string getIterationCountFixed();
+
+    abstract string getOutputKeySizeFixed();
+
+    // Generic consumer input nodes
+    abstract ConsumerInputDataFlowNode getIterationCountConsumer();
+
+    abstract ConsumerInputDataFlowNode getOutputKeySizeConsumer();
+
+    // Artifact consumer input nodes
+    abstract ConsumerInputDataFlowNode getInputConsumer();
+
+    abstract ConsumerInputDataFlowNode getSaltConsumer();
+  }
+
+  newtype TKeyDerivationType =
+    PBKDF2() or
+    PBES() or
+    HKDF() or
+    ARGON2() or
+    OtherKeyDerivationType()
+
+  abstract class KeyDerivationAlgorithmInstance extends AlgorithmInstance {
+    /**
+     * Gets the type of this key derivation algorithm, e.g., "PBKDF2" or "HKDF".
+     */
+    abstract TKeyDerivationType getKDFType();
+
+    /**
+     * Gets the isolated name as it appears in source, e.g., "PBKDF2WithHmacSHA256" in "PBKDF2WithHmacSHA256/UnrelatedInformation".
+     */
+    abstract string getRawKDFAlgorithmName();
+  }
+
+  abstract class PBKDF2AlgorithmInstance extends KeyDerivationAlgorithmInstance {
+    PBKDF2AlgorithmInstance() { this.getKDFType() instanceof PBKDF2 }
+
+    /**
+     * Gets the HMAC algorithm used by this PBKDF2 algorithm.
+     *
+     * Note: Other PRFs are not supported, as most cryptographic libraries
+     * only support HMAC for PBKDF2's PRF input.
+     */
+    abstract AlgorithmValueConsumer getHMACAlgorithmValueConsumer();
   }
 
   abstract class KeyGenerationOperationInstance extends KeyCreationOperationInstance {
@@ -601,11 +738,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   {
     class Union extends LocatableElement {
       Union() {
+        // Either an AlgorithmInstance
         this instanceof Alg
         or
+        // Or an AlgorithmValueConsumer with unknown sources and no known sources
         isCandidateAVC(this) and
         not exists(this.(AlgorithmValueConsumer).getAKnownAlgorithmSource()) and
-        exists(this.(AlgorithmValueConsumer).getAnUnknownSource())
+        exists(this.(AlgorithmValueConsumer).getAGenericSource())
       }
 
       Alg asAlg() { result = this }
@@ -624,7 +763,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   private predicate isMACAVC(AlgorithmValueConsumer avc) {
-    exists(MACOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
+    exists(MACOperationInstance op | op.getAnAlgorithmValueConsumer() = avc) or
+    exists(PBKDF2AlgorithmInstance alg | avc = alg.getHMACAlgorithmValueConsumer())
+  }
+
+  private predicate isKeyDerivationAVC(AlgorithmValueConsumer avc) {
+    exists(KeyDerivationOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
   final private class CipherAlgorithmInstanceOrValueConsumer =
@@ -633,21 +777,24 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final private class HashAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance, isHashAVC/1>::Union;
 
-  private class MACAlgorithmInstanceOrValueConsumer =
+  final private class MACAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<MACAlgorithmInstance, isMACAVC/1>::Union;
+
+  final private class KeyDerivationAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAVC/1>::Union;
 
   private newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
-    TNonce(NonceArtifactConsumer e) or
-    TCipherInput(CipherInputArtifactConsumer e) or
     TCipherOutput(CipherOutputArtifactInstance e) or
-    TMACMessageInput(MACInputArtifactConsumer e) or
+    // Input artifact nodes (synthetic, used to differentiate input as entities)
+    TNonceInput(NonceArtifactConsumer e) or
+    TMessageInput(MessageArtifactConsumer e) or
+    TSaltInput(SaltArtifactConsumer e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Operations (e.g., hashing, encryption)
     THashOperation(HashOperationInstance e) or
-    TKeyDerivationOperation(KeyDerivationOperationInstance e) or
     TCipherOperation(CipherOperationInstance e) or
     TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
     TMACOperation(MACOperationInstance e) or
@@ -657,7 +804,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TCipherAlgorithm(CipherAlgorithmInstanceOrValueConsumer e) or
     TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstance e) or
     THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
-    TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstance e) or
+    TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
     TMACAlgorithm(MACAlgorithmInstanceOrValueConsumer e) or
     // Non-standalone Algorithms (e.g., Mode, Padding)
@@ -670,8 +817,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyAgreementHybridCryptosystem(CipherAlgorithmInstance ka) or
     TAsymmetricEncryptionMacHybridCryptosystem(CipherAlgorithmInstance enc) or
     TPostQuantumHybridCryptosystem(CipherAlgorithmInstance enc) or
-    // Unknown source node
-    TGenericSourceNode(GenericDataSourceInstance e) { e.flowsTo(_) }
+    // Generic source nodes
+    TGenericSourceNode(GenericSourceInstance e) {
+      // An element modelled as a `GenericSourceInstance` can also be modelled as a `KnownElement`
+      // For example, a string literal "AES" could be a generic constant but also an algorithm instance.
+      // Only create generic nodes tied to instances which are not also a `KnownElement`.
+      not e instanceof KnownElement and
+      // Only create nodes for generic sources which flow to other elements
+      e.flowsTo(_)
+    }
 
   /**
    * The base class for all cryptographic assets, such as operations and algorithms.
@@ -689,11 +843,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *
    * _Example 1_: A seed of a random number generation algorithm has meaning beyond its value, as its reuse in multiple
    * random number generation algorithms is more relevant than its underlying value. In contrast, a key size is only
-   * relevant to analysis in terms of its underlying value. Therefore, an RNG seed is a node; a key size is not.
+   * relevant to analysis in terms of its underlying value. Therefore, an RNG seed is a node; a key size is not. However,
+   * the key size might have a `GenericSourceNode` source, even if it itself is not a node.
    *
    * _Example 2_: A salt for a key derivation function *is* an `ArtifactNode`.
    *
-   * _Example 3_: The iteration count of a key derivation function is *not* a node.
+   * _Example 3_: The iteration count of a key derivation function is *not* a node, but it may link to a generic node.
    *
    * _Example 4_: A nonce for a cipher operation *is* an `ArtifactNode`.
    */
@@ -743,11 +898,32 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     predicate isExcludedFromGraph() { none() }
   }
 
+  signature string getDefaultValueSig();
+
+  signature ConsumerInputDataFlowNode getConsumerSig();
+
+  signature class NodeBaseSig instanceof NodeBase;
+
+  module PropertyOutput<getDefaultValueSig/0 getDefault, getConsumerSig/0 getConsumer> {
+    bindingset[root]
+    predicate get(NodeBase root, string value, Location location) {
+      if not exists(getDefault()) and not exists(getConsumer().getConsumer().getASource())
+      then value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+      else (
+        if exists(getDefault())
+        then
+          value = "Default:" + getDefault() and
+          location = root.getLocation()
+        else node_as_property(getConsumer().getConsumer().getAGenericSourceNode(), value, location)
+      )
+    }
+  }
+
   /**
    * A generic source node is a source of data that is not resolvable to a specific value or type.
    */
   private class GenericSourceNode extends NodeBase, TGenericSourceNode {
-    GenericDataSourceInstance instance;
+    GenericSourceInstance instance;
 
     GenericSourceNode() { this = TGenericSourceNode(instance) }
 
@@ -765,11 +941,73 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override predicate isExcludedFromGraph() {
-      not exists(NodeBase other | not other = this and other.getChild(_) = this)
+      // Exclude generic source instances that are not child nodes of another node
+      not exists(NodeBase other | other != this and other.getChild(_) = this)
     }
   }
 
   class AssetNode = NodeBase;
+
+  /**
+   * A cryptographic operation, such as hashing or encryption.
+   */
+  abstract class OperationNode extends AssetNode {
+    /**
+     * Holds if `node` is a potential candidate for a known algorithm node.
+     * This predicate should be used to restrict the set of candidate algorithm node types.
+     */
+    abstract predicate isCandidateKnownAlgorithmNode(AlgorithmNode node);
+
+    /**
+     * Gets the algorithm or generic source nodes consumed as an algorithm associated with this operation.
+     */
+    NodeBase getAnAlgorithmOrGenericSource() {
+      result = this.getAKnownAlgorithm() or
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAGenericSourceNode()
+    }
+
+    /**
+     * Gets a known algorithm associated with this operation, subject to `isCandidateKnownAlgorithmNode`.
+     */
+    AlgorithmNode getAKnownAlgorithm() {
+      result =
+        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode() and
+      this.isCandidateKnownAlgorithmNode(result)
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "Algorithm" and
+      if exists(this.getAnAlgorithmOrGenericSource())
+      then result = this.getAnAlgorithmOrGenericSource()
+      else result = this
+    }
+  }
+
+  abstract class AlgorithmNode extends AssetNode {
+    /**
+     * Gets the name of this algorithm, e.g., "AES" or "SHA".
+     */
+    abstract string getAlgorithmName();
+
+    /**
+     * Gets the raw name of this algorithm from source (no parsing or formatting)
+     */
+    abstract string getRawAlgorithmName();
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ONLY_KNOWN]
+      key = "Name" and value = this.getAlgorithmName() and location = this.getLocation()
+      or
+      // [ONLY_KNOWN]
+      key = "RawName" and value = this.getRawAlgorithmName() and location = this.getLocation()
+    }
+  }
 
   /**
    * An artifact is an instance of data that is used in a cryptographic operation or produced by one.
@@ -803,20 +1041,46 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = super.getChild(edgeName)
       or
       // [KNOWN_OR_UNKNOWN]
-      edgeName = this.getSourceNodeRelationship() and // only holds if not set to none()
+      edgeName = this.getSourceNodeRelationship() and // TODO: only holds if not set to none().. revisit this
       if exists(this.getSourceNode()) then result = this.getSourceNode() else result = this
     }
   }
 
   /**
-   * A nonce or initialization vector
+   * A nonce or initialization vector input
    */
-  final class NonceArtifactNode extends ArtifactNode, TNonce {
+  final class NonceArtifactNode extends ArtifactNode, TNonceInput {
     NonceArtifactConsumer instance;
 
-    NonceArtifactNode() { this = TNonce(instance) }
+    NonceArtifactNode() { this = TNonceInput(instance) }
 
     final override string getInternalType() { result = "Nonce" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
+   * A message or plaintext/ciphertext input
+   */
+  final class MessageArtifactNode extends ArtifactNode, TMessageInput {
+    MessageArtifactConsumer instance;
+
+    MessageArtifactNode() { this = TMessageInput(instance) }
+
+    final override string getInternalType() { result = "Message" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
+   * A salt input
+   */
+  final class SaltArtifactNode extends ArtifactNode, TSaltInput {
+    SaltArtifactConsumer instance;
+
+    SaltArtifactNode() { this = TSaltInput(instance) }
+
+    final override string getInternalType() { result = "Salt" }
 
     override LocatableElement asElement() { result = instance }
   }
@@ -834,19 +1098,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     override string getSourceNodeRelationship() { none() }
-  }
-
-  /**
-   * Input text to a cipher operation
-   */
-  final class CipherInputNode extends ArtifactNode, TCipherInput {
-    CipherInputArtifactConsumer instance;
-
-    CipherInputNode() { this = TCipherInput(instance) }
-
-    final override string getInternalType() { result = "CipherInput" }
-
-    override LocatableElement asElement() { result = instance }
   }
 
   /**
@@ -876,30 +1127,28 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
-    /**
-     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
-     */
-    NodeBase getAnAlgorithmOrUnknown() {
+    NodeBase getAKnownAlgorithmOrGenericSourceNode() {
       result = this.getAKnownAlgorithm() or
       result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
+        instance
+            .(KeyCreationOperationInstance)
+            .getAnAlgorithmValueConsumer()
+            .getAGenericSourceNode()
     }
 
-    /**
-     * Gets a known algorithm associated with this operation
-     */
     CipherAlgorithmNode getAKnownAlgorithm() {
       result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+        instance.(KeyCreationOperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
     }
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [KNOWN_OR_UNKNOWN] - only if asymmetric
       edgeName = "Algorithm" and
-      if exists(this.getAnAlgorithmOrUnknown())
-      then result = this.getAnAlgorithmOrUnknown()
+      instance.getKeyType() instanceof TAsymmetricKeyType and
+      if exists(this.getAKnownAlgorithmOrGenericSourceNode())
+      then result = this.getAKnownAlgorithmOrGenericSourceNode()
       else result = this
     }
 
@@ -918,14 +1167,42 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  final class MACMessageInputNode extends ArtifactNode, TMACMessageInput {
-    MACInputArtifactConsumer instance;
+  /**
+   * A digest produced by a hash operation.
+   */
+  final class DigestArtifactNode extends ArtifactNode, TDigest {
+    DigestArtifactInstance instance;
 
-    MACMessageInputNode() { this = TMACMessageInput(instance) }
+    DigestArtifactNode() { this = TDigest(instance) }
 
-    final override string getInternalType() { result = "MACMessageInput" }
+    final override string getInternalType() { result = "Digest" }
 
     override LocatableElement asElement() { result = instance }
+  }
+
+  abstract class KeyCreationOperationNode extends OperationNode, TKeyCreationOperation {
+    KeyCreationOperationInstance instance;
+
+    KeyCreationOperationNode() { this = TKeyCreationOperation(instance) }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getInternalType() { result = instance.getKeyCreationTypeDescription() }
+
+    /**
+     * Gets the key artifact produced by this operation.
+     */
+    KeyArtifactNode getOutputKeyArtifact() {
+      instance.getKeyArtifactOutputInstance() = result.asElement()
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [ALWAYS_KNOWN]
+      key = "Output" and
+      result = this.getOutputKeyArtifact()
+    }
   }
 
   /**
@@ -940,39 +1217,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
-    MACMessageInputNode getAMessage() {
-      result.asElement() = Input::dfn_to_element(instance.getMessageConsumer())
+    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+      node instanceof MACAlgorithmNode
     }
 
-    KeyArtifactNode getAKey() {
-      result.asElement() = Input::dfn_to_element(instance.getKeyConsumer())
+    MessageArtifactNode getAMessage() {
+      result.asElement() = instance.getMessageConsumer().getConsumer()
     }
 
-    /**
-     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
-     */
-    NodeBase getAMACAlgorithmOrUnknown() {
-      result = this.getAKnownMACAlgorithm() or
-      result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
-    }
-
-    /**
-     * Gets a known algorithm associated with this operation
-     */
-    MACAlgorithmNode getAKnownMACAlgorithm() {
-      result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
-    }
+    KeyArtifactNode getAKey() { result.asElement() = instance.getKeyConsumer().getConsumer() }
 
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
-      or
-      // [KNOWN_OR_UNKNOWN]
-      edgeName = "Algorithm" and
-      if exists(this.getAMACAlgorithmOrUnknown())
-      then result = this.getAMACAlgorithmOrUnknown()
-      else result = this
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "Message" and
@@ -1006,9 +1262,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final private predicate macToNameMapping(TMACType type, string name) {
       type instanceof THMAC and
       name = "HMAC"
-      or
-      type instanceof TOtherMACType and
-      name = this.getRawAlgorithmName()
     }
 
     override string getAlgorithmName() { this.macToNameMapping(this.getMACType(), result) }
@@ -1034,60 +1287,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  /**
-   * A digest produced by a hash operation.
-   */
-  final class DigestArtifactNode extends ArtifactNode, TDigest {
-    DigestArtifactInstance instance;
+  class KeyGenerationOperationNode extends KeyCreationOperationNode {
+    KeyGenerationOperationInstance keyGenInstance;
 
-    DigestArtifactNode() { this = TDigest(instance) }
+    KeyGenerationOperationNode() { keyGenInstance = instance }
 
-    final override string getInternalType() { result = "Digest" }
-
-    override LocatableElement asElement() { result = instance }
-  }
-
-  /**
-   * A cryptographic operation, such as hashing or encryption.
-   */
-  abstract class OperationNode extends AssetNode { }
-
-  abstract class AlgorithmNode extends AssetNode {
-    /**
-     * Gets the name of this algorithm, e.g., "AES" or "SHA".
-     */
-    abstract string getAlgorithmName();
-
-    /**
-     * Gets the raw name of this algorithm from source (no parsing or formatting)
-     */
-    abstract string getRawAlgorithmName();
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      // [ONLY_KNOWN]
-      key = "Name" and value = this.getAlgorithmName() and location = this.getLocation()
-      or
-      // [ONLY_KNOWN]
-      key = "RawName" and value = this.getRawAlgorithmName() and location = this.getLocation()
-    }
-  }
-
-  final class KeyCreationOperationNode extends OperationNode, TKeyCreationOperation {
-    KeyCreationOperationInstance instance;
-
-    KeyCreationOperationNode() { this = TKeyCreationOperation(instance) }
-
-    override LocatableElement asElement() { result = instance }
-
-    override string getInternalType() { result = instance.getKeyCreationTypeDescription() }
-
-    /**
-     * Gets the key artifact produced by this operation.
-     */
-    KeyArtifactNode getOutputKeyArtifact() {
-      instance.getKeyArtifactOutputInstance() = result.asElement()
+    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+      node instanceof CipherAlgorithmNode
     }
 
     override NodeBase getChild(string key) {
@@ -1098,6 +1304,236 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = this.getOutputKeyArtifact()
     }
   }
+
+  class KeyDerivationOperationNode extends KeyCreationOperationNode {
+    KeyDerivationOperationInstance kdfInstance;
+
+    KeyDerivationOperationNode() { kdfInstance = instance }
+
+    MessageArtifactNode getInput() {
+      result.asElement() = kdfInstance.getInputConsumer().getConsumer()
+    }
+
+    SaltArtifactNode getSalt() {
+      result.asElement().(SaltArtifactConsumer).getInputNode() = kdfInstance.getSaltConsumer()
+    }
+
+    GenericSourceNode getIterationCount() {
+      result.asElement() = kdfInstance.getIterationCountConsumer().getConsumer().getAGenericSource()
+    }
+
+    GenericSourceNode getOutputKeySize() {
+      result.asElement() = kdfInstance.getOutputKeySizeConsumer().getConsumer().getAGenericSource()
+    }
+
+    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+      node instanceof KeyDerivationAlgorithmNode
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Input" and
+      if exists(this.getInput()) then result = this.getInput() else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Salt" and
+      if exists(this.getSalt()) then result = this.getSalt() else result = this
+    }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ONLY_KNOWN]
+      key = "DefaultIterations" and
+      value = kdfInstance.getIterationCountFixed() and
+      location = this.getLocation()
+      or
+      // [ONLY_KNOWN]
+      key = "DefaultKeySize" and
+      value = kdfInstance.getKeySizeFixed() and
+      location = this.getLocation()
+      or
+      // [ONLY_KNOWN] - TODO: refactor for known unknowns
+      key = "Iterations" and
+      node_as_property(this.getIterationCount(), value, location)
+      or
+      // [ONLY_KNOWN] - TODO: refactor for known unknowns
+      key = "KeySize" and
+      node_as_property(this.getOutputKeySize(), value, location)
+    }
+  }
+
+  class KeyDerivationAlgorithmNode extends AlgorithmNode, TKeyDerivationAlgorithm {
+    KeyDerivationAlgorithmInstanceOrValueConsumer instance;
+
+    KeyDerivationAlgorithmNode() { this = TKeyDerivationAlgorithm(instance) }
+
+    final override string getInternalType() { result = "KeyDerivationAlgorithm" }
+
+    override LocatableElement asElement() { result = instance }
+
+    final override string getRawAlgorithmName() {
+      result = instance.asAlg().getRawKDFAlgorithmName()
+    }
+
+    final override string getAlgorithmName() { result = this.getRawAlgorithmName() }
+  }
+
+  /**
+   * PBKDF2 key derivation function
+   */
+  class PBKDF2AlgorithmNode extends KeyDerivationAlgorithmNode {
+    PBKDF2AlgorithmInstance pbkdf2Instance;
+
+    PBKDF2AlgorithmNode() { pbkdf2Instance = instance.asAlg() }
+
+    HMACAlgorithmNode getHMACAlgorithm() {
+      result.asElement() = pbkdf2Instance.getHMACAlgorithmValueConsumer().getASource()
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "PRF" and
+      if exists(this.getHMACAlgorithm()) then result = this.getHMACAlgorithm() else result = this
+    }
+  }
+
+  // /**
+  //  * PKCS12KDF key derivation function
+  //  */
+  // abstract class PKCS12KDF extends KeyDerivationWithDigestParameterNode {
+  //   override string getAlgorithmName() { result = "PKCS12KDF" }
+  //   /**
+  //    * Gets the iteration count of this key derivation algorithm.
+  //    */
+  //   abstract string getIterationCount(Location location);
+  //   /**
+  //    * Gets the raw ID argument specifying the intended use of the derived key.
+  //    *
+  //    * The intended use is defined in RFC 7292, appendix B.3, as follows:
+  //    *
+  //    * This standard specifies 3 different values for the ID byte mentioned above:
+  //    *
+  //    *   1.  If ID=1, then the pseudorandom bits being produced are to be used
+  //    *       as key material for performing encryption or decryption.
+  //    *
+  //    *   2.  If ID=2, then the pseudorandom bits being produced are to be used
+  //    *       as an IV (Initial Value) for encryption or decryption.
+  //    *
+  //    *   3.  If ID=3, then the pseudorandom bits being produced are to be used
+  //    *       as an integrity key for MACing.
+  //    */
+  //   abstract string getIDByte(Location location);
+  //   override predicate properties(string key, string value, Location location) {
+  //     super.properties(key, value, location)
+  //     or
+  //     (
+  //       // [KNOWN_OR_UNKNOWN]
+  //       key = "Iterations" and
+  //       if exists(this.getIterationCount(location))
+  //       then value = this.getIterationCount(location)
+  //       else (
+  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+  //       )
+  //     )
+  //     or
+  //     (
+  //       // [KNOWN_OR_UNKNOWN]
+  //       key = "IdByte" and
+  //       if exists(this.getIDByte(location))
+  //       then value = this.getIDByte(location)
+  //       else (
+  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+  //       )
+  //     )
+  //   }
+  // }
+  // /**
+  //  * scrypt key derivation function
+  //  */
+  // abstract class SCRYPT extends KeyDerivationAlgorithmNode {
+  //   final override string getAlgorithmName() { result = "scrypt" }
+  //   /**
+  //    * Gets the iteration count (`N`) argument
+  //    */
+  //   abstract string get_N(Location location);
+  //   /**
+  //    * Gets the block size (`r`) argument
+  //    */
+  //   abstract string get_r(Location location);
+  //   /**
+  //    * Gets the parallelization factor (`p`) argument
+  //    */
+  //   abstract string get_p(Location location);
+  //   /**
+  //    * Gets the derived key length argument
+  //    */
+  //   abstract string getDerivedKeyLength(Location location);
+  //   override predicate properties(string key, string value, Location location) {
+  //     super.properties(key, value, location)
+  //     or
+  //     (
+  //       // [KNOWN_OR_UNKNOWN]
+  //       key = "N" and
+  //       if exists(this.get_N(location))
+  //       then value = this.get_N(location)
+  //       else (
+  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+  //       )
+  //     )
+  //     or
+  //     (
+  //       // [KNOWN_OR_UNKNOWN]
+  //       key = "r" and
+  //       if exists(this.get_r(location))
+  //       then value = this.get_r(location)
+  //       else (
+  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+  //       )
+  //     )
+  //     or
+  //     (
+  //       // [KNOWN_OR_UNKNOWN]
+  //       key = "p" and
+  //       if exists(this.get_p(location))
+  //       then value = this.get_p(location)
+  //       else (
+  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+  //       )
+  //     )
+  //     or
+  //     (
+  //       // [KNOWN_OR_UNKNOWN]
+  //       key = "KeyLength" and
+  //       if exists(this.getDerivedKeyLength(location))
+  //       then value = this.getDerivedKeyLength(location)
+  //       else (
+  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
+  //       )
+  //     )
+  //   }
+  // }
+  /*
+   * TODO:
+   *
+   * Rule: No newtype representing a type of algorithm should be modelled with multiple interfaces
+   *
+   * Example 1: HKDF and PKCS12KDF are both key derivation algorithms.
+   *            However, PKCS12KDF also has a property: the iteration count.
+   *
+   *            If we have HKDF and PKCS12KDF under TKeyDerivationType,
+   *            someone modelling a library might try to make a generic identification of both of those algorithms.
+   *
+   *            They will therefore not use the specialized type for PKCS12KDF,
+   *            meaning "from PKCS12KDF algo select algo" will have no results.
+   *
+   * Example 2: Each type below represents a common family of elliptic curves, with a shared interface, i.e.,
+   *            predicates for library modellers to implement as well as the properties and edges reported.
+   */
 
   newtype TCipherOperationSubtype =
     TEncryptionMode() or
@@ -1149,54 +1585,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getInternalType() { result = "CipherOperation" }
 
-    /**
-     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
-     */
-    NodeBase getACipherAlgorithmOrUnknown() {
-      result = this.getAKnownCipherAlgorithm() or
-      result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
-    }
-
-    /**
-     * Gets a known algorithm associated with this operation
-     */
-    CipherAlgorithmNode getAKnownCipherAlgorithm() {
-      result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+      node instanceof CipherAlgorithmNode
     }
 
     CipherOperationSubtype getCipherOperationSubtype() {
       result = instance.getCipherOperationSubtype()
     }
 
-    NonceArtifactNode getANonce() {
-      result.asElement() =
-        Input::dfn_to_element(this.asElement().(CipherOperationInstance).getNonceConsumer())
+    NonceArtifactNode getANonce() { result.asElement() = instance.getNonceConsumer().getConsumer() }
+
+    MessageArtifactNode getAnInputArtifact() {
+      result.asElement() = instance.getInputConsumer().getConsumer()
     }
 
-    CipherInputNode getAnInputArtifact() {
-      result.asElement() =
-        Input::dfn_to_element(this.asElement().(CipherOperationInstance).getInputConsumer())
-    }
+    CipherOutputNode getAnOutputArtifact() { result.asElement() = instance.getOutputArtifact() }
 
-    CipherOutputNode getAnOutputArtifact() {
-      result.asElement() = this.asElement().(CipherOperationInstance).getOutputArtifact()
-    }
-
-    KeyArtifactNode getAKey() {
-      result.asElement() =
-        Input::dfn_to_element(this.asElement().(CipherOperationInstance).getKeyConsumer())
-    }
+    KeyArtifactNode getAKey() { result.asElement() = instance.getKeyConsumer().getConsumer() }
 
     override NodeBase getChild(string key) {
       result = super.getChild(key)
-      or
-      // [KNOWN_OR_UNKNOWN]
-      key = "Algorithm" and
-      if exists(this.getACipherAlgorithmOrUnknown())
-      then result = this.getACipherAlgorithmOrUnknown()
-      else result = this
       or
       // [KNOWN_OR_UNKNOWN]
       key = "Nonce" and
@@ -1286,8 +1694,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof CFB and name = "CFB"
       or
       type instanceof OFB and name = "OFB"
-      or
-      type instanceof OtherMode and name = this.getRawAlgorithmName()
     }
 
     override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
@@ -1326,8 +1732,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof NoPadding and name = "NoPadding"
       or
       type instanceof OAEP and name = "OAEP"
-      or
-      type instanceof OtherPadding and name = this.getRawAlgorithmName()
     }
 
     override string getAlgorithmName() { this.paddingToNameMapping(this.getPaddingType(), result) }
@@ -1500,7 +1904,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof SM4 and name = "SM4" and s = Block()
       or
       type instanceof OtherCipherType and
-      name = this.getRawAlgorithmName() and
+      name instanceof UnknownPropertyValue and
       s = UnknownCipherStructureType()
     }
 
@@ -1555,41 +1959,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
-    /**
-     * Gets the algorithm or unknown source nodes consumed as an algorithm associated with this operation.
-     */
-    NodeBase getAHashAlgorithmOrUnknown() {
-      result = this.getAKnownHashAlgorithm() or
-      result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAnUnknownSourceNode()
-    }
-
-    /**
-     * Gets a known algorithm associated with this operation
-     */
-    HashAlgorithmNode getAKnownHashAlgorithm() {
-      result =
-        this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+      node instanceof HashAlgorithmNode
     }
 
     /**
      * Gets the output digest node
      */
-    DigestArtifactNode getDigest() {
-      result.asElement() = this.asElement().(HashOperationInstance).getDigestArtifact()
-    }
+    DigestArtifactNode getDigest() { result.asElement() = instance.getDigestArtifact() }
 
-    override NodeBase getChild(string edgeName) {
-      result = super.getChild(edgeName)
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
       or
       // [KNOWN_OR_UNKNOWN]
-      edgeName = "Algorithm" and
-      if exists(this.getAHashAlgorithmOrUnknown())
-      then result = this.getAHashAlgorithmOrUnknown()
-      else result = this
-      or
-      // [KNOWN_OR_UNKNOWN]
-      edgeName = "Digest" and
+      key = "Digest" and
       if exists(this.getDigest()) then result = this.getDigest() else result = this
     }
   }
@@ -1652,8 +2035,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof SM3 and name = "SM3"
       or
       type instanceof WHIRLPOOL and name = "WHIRLPOOL"
-      or
-      type instanceof OtherHashType and name = this.getRawAlgorithmName()
     }
 
     /**
@@ -1679,242 +2060,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       )
     }
   }
-
-  /**
-   * An operation that derives one or more keys from an input value.
-   */
-  abstract class KeyDerivationOperationNode extends OperationNode, TKeyDerivationOperation {
-    final override Location getLocation() {
-      exists(LocatableElement le | this = TKeyDerivationOperation(le) and result = le.getLocation())
-    }
-
-    override string getInternalType() { result = "KeyDerivationOperation" }
-  }
-
-  /**
-   * An algorithm that derives one or more keys from an input value.
-   *
-   * Only use this class to model UNKNOWN key derivation algorithms.
-   *
-   * For known algorithms, use the specialized classes, e.g., `HKDF` and `PKCS12KDF`.
-   */
-  abstract class KeyDerivationAlgorithmNode extends AlgorithmNode, TKeyDerivationAlgorithm {
-    final override Location getLocation() {
-      exists(LocatableElement le | this = TKeyDerivationAlgorithm(le) and result = le.getLocation())
-    }
-
-    override string getInternalType() { result = "KeyDerivationAlgorithm" }
-
-    override string getAlgorithmName() { result = this.getRawAlgorithmName() }
-  }
-
-  /**
-   * An algorithm that derives one or more keys from an input value, using a configurable digest algorithm.
-   */
-  abstract private class KeyDerivationWithDigestParameterNode extends KeyDerivationAlgorithmNode {
-    abstract HashAlgorithmNode getHashAlgorithm();
-
-    override NodeBase getChild(string edgeName) {
-      result = super.getChild(edgeName)
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        edgeName = "Uses" and
-        if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this
-      )
-    }
-  }
-
-  /**
-   * HKDF key derivation function
-   */
-  abstract class HKDFNode extends KeyDerivationWithDigestParameterNode {
-    final override string getAlgorithmName() { result = "HKDF" }
-  }
-
-  /**
-   * PBKDF2 key derivation function
-   */
-  abstract class PBKDF2Node extends KeyDerivationWithDigestParameterNode {
-    final override string getAlgorithmName() { result = "PBKDF2" }
-
-    /**
-     * Gets the iteration count of this key derivation algorithm.
-     */
-    abstract string getIterationCount(Location location);
-
-    /**
-     * Gets the bit-length of the derived key.
-     */
-    abstract string getKeyLength(Location location);
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "Iterations" and
-        if exists(this.getIterationCount(location))
-        then value = this.getIterationCount(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "KeyLength" and
-        if exists(this.getKeyLength(location))
-        then value = this.getKeyLength(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-    }
-  }
-
-  /**
-   * PKCS12KDF key derivation function
-   */
-  abstract class PKCS12KDF extends KeyDerivationWithDigestParameterNode {
-    override string getAlgorithmName() { result = "PKCS12KDF" }
-
-    /**
-     * Gets the iteration count of this key derivation algorithm.
-     */
-    abstract string getIterationCount(Location location);
-
-    /**
-     * Gets the raw ID argument specifying the intended use of the derived key.
-     *
-     * The intended use is defined in RFC 7292, appendix B.3, as follows:
-     *
-     * This standard specifies 3 different values for the ID byte mentioned above:
-     *
-     *   1.  If ID=1, then the pseudorandom bits being produced are to be used
-     *       as key material for performing encryption or decryption.
-     *
-     *   2.  If ID=2, then the pseudorandom bits being produced are to be used
-     *       as an IV (Initial Value) for encryption or decryption.
-     *
-     *   3.  If ID=3, then the pseudorandom bits being produced are to be used
-     *       as an integrity key for MACing.
-     */
-    abstract string getIDByte(Location location);
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "Iterations" and
-        if exists(this.getIterationCount(location))
-        then value = this.getIterationCount(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "IdByte" and
-        if exists(this.getIDByte(location))
-        then value = this.getIDByte(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-    }
-  }
-
-  /**
-   * scrypt key derivation function
-   */
-  abstract class SCRYPT extends KeyDerivationAlgorithmNode {
-    final override string getAlgorithmName() { result = "scrypt" }
-
-    /**
-     * Gets the iteration count (`N`) argument
-     */
-    abstract string get_N(Location location);
-
-    /**
-     * Gets the block size (`r`) argument
-     */
-    abstract string get_r(Location location);
-
-    /**
-     * Gets the parallelization factor (`p`) argument
-     */
-    abstract string get_p(Location location);
-
-    /**
-     * Gets the derived key length argument
-     */
-    abstract string getDerivedKeyLength(Location location);
-
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "N" and
-        if exists(this.get_N(location))
-        then value = this.get_N(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "r" and
-        if exists(this.get_r(location))
-        then value = this.get_r(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "p" and
-        if exists(this.get_p(location))
-        then value = this.get_p(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-      or
-      (
-        // [KNOWN_OR_UNKNOWN]
-        key = "KeyLength" and
-        if exists(this.getDerivedKeyLength(location))
-        then value = this.getDerivedKeyLength(location)
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
-      )
-    }
-  }
-
-  /*
-   * TODO:
-   *
-   * Rule: No newtype representing a type of algorithm should be modelled with multiple interfaces
-   *
-   * Example 1: HKDF and PKCS12KDF are both key derivation algorithms.
-   *            However, PKCS12KDF also has a property: the iteration count.
-   *
-   *            If we have HKDF and PKCS12KDF under TKeyDerivationType,
-   *            someone modelling a library might try to make a generic identification of both of those algorithms.
-   *
-   *            They will therefore not use the specialized type for PKCS12KDF,
-   *            meaning "from PKCS12KDF algo select algo" will have no results.
-   *
-   * Example 2: Each type below represents a common family of elliptic curves, with a shared interface, i.e.,
-   *            predicates for library modellers to implement as well as the properties and edges reported.
-   */
 
   /**
    * Elliptic curve algorithms

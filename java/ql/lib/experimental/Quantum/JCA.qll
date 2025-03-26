@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.controlflow.Dominance
 
 module JCAModel {
@@ -41,6 +42,22 @@ module JCAModel {
     hash.toUpperCase()
         .matches(["SHA-%", "SHA3-%", "BLAKE2b%", "BLAKE2s%", "MD5", "RIPEMD160", "Whirlpool"]
               .toUpperCase())
+  }
+
+  bindingset[kdf]
+  predicate kdf_names(string kdf) {
+    kdf.toUpperCase().matches(["PBKDF2With%", "PBEWith%"].toUpperCase())
+  }
+
+  bindingset[name]
+  Crypto::TKeyDerivationType kdf_name_to_kdf_type(string name, string withSubstring) {
+    name.matches("PBKDF2With%") and
+    result instanceof Crypto::PBKDF2 and
+    withSubstring = name.regexpCapture("PBKDF2With(.*)", 1)
+    or
+    name.matches("PBEWith%") and
+    result instanceof Crypto::PBES and
+    withSubstring = name.regexpCapture("PBEWith(.*)", 1)
   }
 
   bindingset[name]
@@ -132,7 +149,7 @@ module JCAModel {
     }
   }
 
-  module AlgorithmStringToFetchFlow = DataFlow::Global<AlgorithmStringToFetchConfig>;
+  module AlgorithmStringToFetchFlow = TaintTracking::Global<AlgorithmStringToFetchConfig>;
 
   /**
    * Note: padding and a mode of operation will only exist when the padding / mode (*and its type*) are determinable.
@@ -303,7 +320,7 @@ module JCAModel {
 
     CipherGetInstanceAlgorithmArg() { this = call.getAlgorithmArg() }
 
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
     CipherStringLiteral getOrigin(string value) {
       AlgorithmStringToFetchFlow::flow(DataFlow::exprNode(result),
@@ -447,13 +464,15 @@ module JCAModel {
 
     override Crypto::CipherOperationSubtype getCipherOperationSubtype() { result = mode }
 
-    override DataFlow::Node getNonceConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
       result.asExpr() = sink.getState().(InitializedCipherModeFlowState).getInitCall().getNonceArg()
     }
 
-    override DataFlow::Node getInputConsumer() { result = doFinalize.getMessageArg() }
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+      result = doFinalize.getMessageArg()
+    }
 
-    override DataFlow::Node getKeyConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
       result.asExpr() = sink.getState().(InitializedCipherModeFlowState).getInitCall().getKeyArg()
     }
 
@@ -611,7 +630,7 @@ module JCAModel {
   class CipherInitCallKeyConsumer extends Crypto::ArtifactConsumer {
     CipherInitCallKeyConsumer() { this = any(CipherInitCall call).getKeyArg() }
 
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
   }
 
   class CipherOperationCallOutput extends Crypto::CipherOutputArtifactInstance {
@@ -659,7 +678,7 @@ module JCAModel {
 
     MessageDigestAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
 
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
     override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
       exists(KnownHashAlgorithm l | l.getConsumer() = this and result = l)
@@ -719,7 +738,7 @@ module JCAModel {
 
     KeyGeneratorCallAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
 
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
     override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
       result.(CipherStringLiteralAlgorithmInstance).getConsumer() = this
@@ -780,6 +799,10 @@ module JCAModel {
     Crypto::AlgorithmInstance getAKnownAlgorithm() {
       result = this.getAnAlgorithmValueConsumer().getAKnownAlgorithmSource()
     }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+    override string getKeySizeFixed() { none() }
   }
 
   /*
@@ -845,7 +868,9 @@ module JCAModel {
 
   module MACInitCallToMACOperationFlowConfig implements DataFlow::ConfigSig {
     // TODO: use flow state with one config
-    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof MACInitCall }
+    predicate isSource(DataFlow::Node src) {
+      exists(MACInitCall init | src.asExpr() = init.getQualifier())
+    }
 
     predicate isSink(DataFlow::Node sink) {
       exists(MACOperationCall call | sink.asExpr() = call.(MethodCall).getQualifier())
@@ -884,7 +909,7 @@ module JCAModel {
     }
 
     MACInitCall getInitCall() {
-      MACInitCallToMACOperationFlow::flow(DataFlow::exprNode(this),
+      MACGetInstanceToMACOperationFlow::flow(DataFlow::exprNode(this),
         DataFlow::exprNode(result.getQualifier()))
     }
   }
@@ -897,7 +922,7 @@ module JCAModel {
     }
 
     MACOperationCall getOperation() {
-      MACInitCallToMACOperationFlow::flow(DataFlow::exprNode(this),
+      MACInitCallToMACOperationFlow::flow(DataFlow::exprNode(this.getQualifier()),
         DataFlow::exprNode(result.(MethodCall).getQualifier()))
     }
   }
@@ -907,7 +932,7 @@ module JCAModel {
 
     MACGetInstanceAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
 
-    override DataFlow::Node getInputNode() { result.asExpr() = this }
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
     override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
       exists(KnownMACAlgorithm l | l.getConsumer() = this and result = l)
@@ -933,7 +958,7 @@ module JCAModel {
       )
     }
 
-    override DataFlow::Node getKeyConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
       exists(MACGetInstanceCall instantiation, MACInitCall initCall |
         instantiation.getOperation() = this and
         initCall.getOperation() = this and
@@ -942,9 +967,195 @@ module JCAModel {
       )
     }
 
-    override DataFlow::Node getMessageConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getMessageConsumer() {
       result.asExpr() = super.getArgument(0) and
       super.getMethod().getParameterType(0).hasName("byte[]")
     }
+  }
+
+  module SecretKeyFactoryGetInstanceToGenerateSecretFlowConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      exists(SecretKeyFactoryGetInstanceCall call | src.asExpr() = call)
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(SecretKeyFactoryGenerateSecretCall call |
+        sink.asExpr() = call.(MethodCall).getQualifier()
+      )
+    }
+  }
+
+  module PBEKeySpecInstantiationToGenerateSecretFlowConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      exists(PBEKeySpecInstantiation call | src.asExpr() = call)
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(SecretKeyFactoryGenerateSecretCall call | sink.asExpr() = call.getKeySpecArg())
+    }
+  }
+
+  module KDFAlgorithmStringToGetInstanceConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { kdf_names(src.asExpr().(StringLiteral).getValue()) }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(SecretKeyFactoryGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
+    }
+  }
+
+  module SecretKeyFactoryGetInstanceToGenerateSecretFlow =
+    DataFlow::Global<SecretKeyFactoryGetInstanceToGenerateSecretFlowConfig>;
+
+  module PBEKeySpecInstantiationToGenerateSecretFlow =
+    DataFlow::Global<PBEKeySpecInstantiationToGenerateSecretFlowConfig>;
+
+  module KDFAlgorithmStringToGetInstanceFlow =
+    DataFlow::Global<KDFAlgorithmStringToGetInstanceConfig>;
+
+  class PBEKeySpecInstantiation extends ClassInstanceExpr {
+    PBEKeySpecInstantiation() {
+      this.getConstructedType().hasQualifiedName("javax.crypto.spec", "PBEKeySpec")
+    }
+
+    Expr getPasswordArg() { result = this.getArgument(0) }
+
+    Expr getSaltArg() { result = this.getArgument(1) }
+
+    Expr getIterationCountArg() { result = this.getArgument(2) }
+
+    Expr getKeyLengthArg() { result = this.getArgument(3) }
+  }
+
+  class SecretKeyFactoryGetInstanceCall extends MethodCall {
+    SecretKeyFactoryGetInstanceCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "SecretKeyFactory", "getInstance")
+    }
+
+    Expr getAlgorithmArg() { result = this.getArgument(0) }
+
+    SecretKeyFactoryGenerateSecretCall getOperation() {
+      SecretKeyFactoryGetInstanceToGenerateSecretFlow::flow(DataFlow::exprNode(this),
+        DataFlow::exprNode(result.(MethodCall).getQualifier()))
+    }
+  }
+
+  class KDFAlgorithmStringLiteral extends Crypto::KeyDerivationAlgorithmInstance instanceof StringLiteral
+  {
+    SecretKeyFactoryKDFAlgorithmValueConsumer consumer;
+
+    KDFAlgorithmStringLiteral() {
+      kdf_names(this.getValue()) and
+      KDFAlgorithmStringToGetInstanceFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
+    }
+
+    override string getRawKDFAlgorithmName() { result = super.getValue() }
+
+    override Crypto::TKeyDerivationType getKDFType() {
+      result = kdf_name_to_kdf_type(super.getValue(), _)
+    }
+
+    SecretKeyFactoryKDFAlgorithmValueConsumer getConsumer() { result = consumer }
+  }
+
+  class PBKDF2AlgorithmStringLiteral extends KDFAlgorithmStringLiteral,
+    Crypto::PBKDF2AlgorithmInstance, Crypto::HMACAlgorithmInstance, Crypto::HashAlgorithmInstance,
+    Crypto::AlgorithmValueConsumer
+  {
+    PBKDF2AlgorithmStringLiteral() { super.getKDFType() instanceof Crypto::PBKDF2 }
+
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+    override Crypto::THashType getHashFamily() {
+      result = hash_name_to_hash_type(this.getRawHashAlgorithmName(), _)
+    }
+
+    override int getDigestLength() {
+      exists(hash_name_to_hash_type(this.getRawHashAlgorithmName(), result))
+    }
+
+    override string getRawMACAlgorithmName() {
+      result = super.getRawKDFAlgorithmName().splitAt("PBKDF2With", 1)
+    }
+
+    override string getRawHashAlgorithmName() {
+      result = super.getRawKDFAlgorithmName().splitAt("WithHmac", 1)
+    }
+
+    override Crypto::TMACType getMACType() { result instanceof Crypto::THMAC }
+
+    override Crypto::AlgorithmValueConsumer getHMACAlgorithmValueConsumer() { result = this }
+
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
+  }
+
+  class SecretKeyFactoryKDFAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof Expr
+  {
+    SecretKeyFactoryGetInstanceCall call;
+
+    SecretKeyFactoryKDFAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
+
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
+
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+      exists(KDFAlgorithmStringLiteral l | l.getConsumer() = this and result = l)
+    }
+
+    SecretKeyFactoryGetInstanceCall getInstantiation() { result = call }
+  }
+
+  class SecretKeyFactoryGenerateSecretCall extends Crypto::KeyDerivationOperationInstance instanceof MethodCall
+  {
+    SecretKeyFactoryGenerateSecretCall() {
+      super.getCallee().hasQualifiedName("javax.crypto", "SecretKeyFactory", "generateSecret")
+    }
+
+    Expr getKeySpecArg() {
+      result = super.getArgument(0) and
+      super.getMethod().getParameterType(0).hasName("KeySpec")
+    }
+
+    PBEKeySpecInstantiation getInstantiation() {
+      PBEKeySpecInstantiationToGenerateSecretFlow::flow(DataFlow::exprNode(result),
+        DataFlow::exprNode(this.getKeySpecArg()))
+    }
+
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      exists(SecretKeyFactoryGetInstanceCall instantiation |
+        instantiation.getOperation() = this and result = instantiation.getAlgorithmArg()
+      )
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getSaltConsumer() {
+      result.asExpr() = this.getInstantiation().getSaltArg()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+      result.asExpr() = this.getInstantiation().getPasswordArg()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getIterationCountConsumer() {
+      result.asExpr() = this.getInstantiation().getIterationCountArg()
+    }
+
+    override DataFlow::Node getOutputKeyArtifact() {
+      result.asExpr() = this and
+      super.getMethod().getReturnType().hasName("SecretKey")
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getOutputKeySizeConsumer() {
+      result.asExpr() = this.getInstantiation().getKeyLengthArg()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      result.asExpr() = this.getInstantiation().getKeyLengthArg()
+    }
+
+    override string getKeySizeFixed() { none() }
+
+    override string getOutputKeySizeFixed() { none() }
+
+    override string getIterationCountFixed() { none() }
   }
 }
