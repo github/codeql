@@ -159,9 +159,7 @@ private module JumpNodes {
      */
     Property getParameterProperty() {
       result.getAnAttribute() instanceof MicrosoftAspNetCoreComponentsParameterAttribute and
-      exists(NameOfExpr ne | ne = this.getArgument(1) |
-        result.getAnAccess() = ne.getAccess().(MemberAccess)
-      )
+      exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
     }
 
     /**
@@ -171,12 +169,13 @@ private module JumpNodes {
   }
 
   private class ComponentParameterJump extends DataFlow::NonLocalJumpNode {
-    ParameterPassingCall call;
     Property prop;
 
     ComponentParameterJump() {
-      prop = call.getParameterProperty() and
-      this.asExpr() = call.getParameterValue()
+      exists(ParameterPassingCall call |
+        prop = call.getParameterProperty() and
+        this.asExpr() = call.getParameterValue()
+      )
     }
 
     override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
