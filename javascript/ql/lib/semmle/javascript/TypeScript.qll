@@ -702,20 +702,6 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
   override string getAPrimaryQlClass() { result = "TypeAccess" }
 }
 
-/**
- * Gets a suitable name for the library imported by `imprt`.
- *
- * For relative imports, this is the snapshot-relative path to the imported module.
- * For non-relative imports, it is the import path itself.
- */
-private string getImportName(Import imprt) {
-  exists(string path | path = imprt.getImportedPath().getValue() |
-    if path.regexpMatch("[./].*")
-    then result = imprt.getImportedModule().getFile().getRelativePath()
-    else result = path
-  )
-}
-
 /** An identifier that is used as part of a type, such as `Date`. */
 class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, LexicalAccess {
   override predicate isStringy() { this.getName() = "String" }
