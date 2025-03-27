@@ -137,12 +137,6 @@ module NameResolution {
       node1 = type.getExpressionName() and
       node2 = type
     )
-    or
-    exists(JSDocNamedTypeExpr type, string name |
-      type.hasNameParts(name, "") and
-      node1 = type.getTopLevel().getScope().getLocalTypeName(name) and
-      node2 = type
-    )
   }
 
   /**
@@ -186,11 +180,9 @@ module NameResolution {
       node2 = spec.getLocal()
     )
     or
-    // Support JSDoc expressions of the form 'foo.bar' where 'foo' is an import
-    // at the top-level.
-    exists(JSDocNamedTypeExpr expr, string prefix |
-      expr.hasNameParts(prefix, "." + name) and
-      node1 = expr.getTopLevel().getScope().getVariable(prefix) and
+    exists(JSDocQualifiedTypeAccess expr |
+      node1 = expr.getBase() and
+      name = expr.getName() and
       node2 = expr
     )
   }
@@ -277,6 +269,9 @@ module NameResolution {
         or
         node1 = var and
         node2.(LexicalAccess).getALexicalName() = var
+        or
+        node1 = var and
+        node2.(JSDocLocalTypeAccess).getALexicalName() = var
       )
       or
       exists(Node base, string name, ModuleLike mod |
