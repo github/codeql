@@ -17,8 +17,8 @@ app.post('/rmsync', (req, res) => {
     fs.copyFileSync("source", filename); // $ Alert
     fs.cpSync(filename, "destination"); // $ Alert
     fs.cpSync("source", filename); // $ Alert
-    fs.emptydirSync(filename); // MISSING: $ Alert
-    fs.emptydir(filename); // MISSING: $ Alert
+    fs.emptydirSync(filename); // $ Alert
+    fs.emptydir(filename); // $ Alert
     fs.opendir(filename); // $ MISSING: Alert
     fs.opendirSync(filename); // $ MISSING: Alert
     fs.openAsBlob(filename); // $ MISSING: Alert

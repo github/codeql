@@ -462,7 +462,7 @@ module NodeJSLib {
     or
     methodName = ["ensureSymlink", "ensureSymlinkSync"] and i = [0, 1]
     or
-    methodName = ["emptyDir", "emptyDirSync"] and i = 0
+    methodName = ["emptyDir", "emptyDirSync", "emptydir", "emptydirSync"] and i = 0
     or
     methodName = ["pathExists", "pathExistsSync"] and i = 0
   }
