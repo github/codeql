@@ -54,7 +54,7 @@ module Squirrel {
     FunctionOutput outp;
 
     BuilderScan() {
-      // signature: func (b InsertBuilder) Scan(dest ...interface{}) error
+      // signature: func (b {Insert,Delete,Select,Update}Builder) Scan(dest ...interface{}) error
       this.hasQualifiedName(packagePath(),
         ["DeleteBuilder", "InsertBuilder", "SelectBuilder", "UpdateBuilder"], "Scan") and
       inp.isReceiver() and
@@ -71,7 +71,7 @@ module Squirrel {
     FunctionOutput outp;
 
     BuilderScanContext() {
-      // signature: func (b InsertBuilder) ScanContext(ctx context.Context, dest ...interface{}) error
+      // signature: func (b {Insert,Delete,Select,Update}Builder) ScanContext(ctx context.Context, dest ...interface{}) error
       this.hasQualifiedName(packagePath(),
         ["DeleteBuilder", "InsertBuilder", "SelectBuilder", "UpdateBuilder"], "ScanContext") and
       inp.isReceiver() and

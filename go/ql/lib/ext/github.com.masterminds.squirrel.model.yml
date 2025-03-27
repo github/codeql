@@ -80,3 +80,5 @@ extensions:
       - ["group:squirrel", "UpdateBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "UpdateBuilder", True, "Table", "", "", "Argument[0]", "sql-injection", "manual"]
       # UpdateBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+
+    # There are summary models for Row.Scan, RowScanner.Scan, {Insert,Delete,Select,Update}Builder.Scan and {Insert,Delete,Select,Update}Builder.ScanContext modeled in QL
