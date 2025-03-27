@@ -7,10 +7,10 @@ app.use(express.json());
 app.post('/rmsync', (req, res) => {
     const { filename } = req.body; // $ Source
     
-    fs.rmSync(filename); // MISSING: $ Alert
-    fs.rm(filename); // MISSING: $ Alert
-    fs.rmdir(filename); // MISSING: $ Alert
-    fs.rmdirSync(filename); // MISSING: $ Alert
+    fs.rmSync(filename); // $ Alert
+    fs.rm(filename); // $ Alert
+    fs.rmdir(filename); // $ Alert
+    fs.rmdirSync(filename); // $ Alert
     fs.cp(filename, "destination"); // $ Alert
     fs.cp("source", filename); // $ Alert
     fs.copyFileSync(filename, "destination"); // $ Alert

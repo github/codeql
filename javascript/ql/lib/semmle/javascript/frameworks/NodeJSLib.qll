@@ -450,7 +450,7 @@ module NodeJSLib {
     or
     methodName = ["readJson", "readJSON", "readJsonSync", "readJSONSync"] and i = 0
     or
-    methodName = ["remove", "removeSync"] and i = 0
+    methodName = ["remove", "removeSync", "rmSync", "rm", "rmdir", "rmdirSync"] and i = 0
     or
     methodName =
       ["outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync"] and
