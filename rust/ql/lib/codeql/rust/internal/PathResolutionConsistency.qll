@@ -7,6 +7,7 @@ private import PathResolution
 
 /** Holds if `p` may resolve to multiple items including `i`. */
 query predicate multiplePathResolutions(Path p, ItemNode i) {
+  p.fromSource() and
   i = resolvePath(p) and
   // `use foo::bar` may use both a type `bar` and a value `bar`
   not p =

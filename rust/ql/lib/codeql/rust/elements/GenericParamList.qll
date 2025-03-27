@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericParam
 
 /**
- * A GenericParamList. For example:
+ * A list of generic parameters. For example:
  * ```rust
- * todo!()
+ * fn f<A, B>(a: A, b: B) {}
+ * //  ^^^^^^
+ * type Foo<T1, T2> = (T1, T2);
+ * //      ^^^^^^^^
  * ```
  */
 final class GenericParamList = Impl::GenericParamList;

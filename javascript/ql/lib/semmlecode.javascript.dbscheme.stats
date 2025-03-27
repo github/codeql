@@ -1334,8 +1334,12 @@
 <v>8</v>
 </e>
 <e>
-<k>@jsdoc_named_type_expr</k>
+<k>@jsdoc_identifier_type_expr</k>
 <v>18639</v>
+</e>
+<e>
+<k>@jsdoc_qualified_type_expr</k>
+<v>1000</v>
 </e>
 <e>
 <k>@jsdoc_applied_type_expr</k>

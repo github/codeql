@@ -524,6 +524,20 @@ fn references() {
     sink(*c_ref); // $ hasValueFlow=42
 }
 
+fn conversions() {
+    let a: i64 = source(50);
+
+    sink(a as i64); // $ hasTaintFlow=50
+    sink(a.into()); // $ MISSING: hasValueFlow=50
+    sink(i64::from(a)); // $ hasValueFlow=50
+
+    let b: i32 = source(51) as i32;
+
+    sink(b as i64); // $ hasTaintFlow=51
+    sink(b.into()); // $ MISSING: hasTaintFlow=51
+    sink(i64::from(b)); // $ hasTaintFlow=51
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -565,4 +579,5 @@ fn main() {
     parse();
     iterators();
     references();
+    conversions();
 }

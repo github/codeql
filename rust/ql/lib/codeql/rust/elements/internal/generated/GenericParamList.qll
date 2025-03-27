@@ -15,9 +15,12 @@ import codeql.rust.elements.GenericParam
  */
 module Generated {
   /**
-   * A GenericParamList. For example:
+   * A list of generic parameters. For example:
    * ```rust
-   * todo!()
+   * fn f<A, B>(a: A, b: B) {}
+   * //  ^^^^^^
+   * type Foo<T1, T2> = (T1, T2);
+   * //      ^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::GenericParamList` class directly.
    * Use the subclass `GenericParamList`, where the following predicates are available.

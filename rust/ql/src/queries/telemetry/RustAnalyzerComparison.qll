@@ -59,6 +59,19 @@ private module Compare<ResolvableSig R, CompareSig<R> RustAnalyzer, CompareSig<R
 
   predicate qlUniqueCount(int c) { c = count(Source s | qlUnique(s)) }
 
+  // debug predicates to find missing targets in QL implementation
+  private module Debug {
+    predicate qlMissing(Source s, Target t) {
+      t = RustAnalyzer::resolve(s) and
+      not t = Ql::resolve(s)
+    }
+
+    predicate qlMissingWithCount(Source s, Target t, int c) {
+      qlMissing(s, t) and
+      c = strictcount(Source s0 | qlMissing(s0, t))
+    }
+  }
+
   predicate summary(string key, int value) {
     key = "rust-analyzer unique" and rustAnalyzerUniqueCount(value)
     or

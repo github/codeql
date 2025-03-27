@@ -43,6 +43,6 @@ module Impl {
      * Empty structs are considered to use record fields.
      */
     pragma[nomagic]
-    predicate isRecord() { not this.isTuple() }
+    predicate isStruct() { not this.isTuple() }
   }
 }

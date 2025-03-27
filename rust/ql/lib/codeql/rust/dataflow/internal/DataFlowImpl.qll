@@ -90,10 +90,10 @@ final class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * The position of a parameter or an argument in a function or call.
+ * The position of a parameter in a function.
  *
- * As there is a 1-to-1 correspondence between parameter positions and
- * arguments positions in Rust we use the same type for both.
+ * In Rust there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions, so we use the same underlying type for both.
  */
 final class ParameterPosition extends TParameterPosition {
   /** Gets the underlying integer position, if any. */
@@ -123,6 +123,22 @@ final class ParameterPosition extends TParameterPosition {
     result = ps.getParam(this.getPosition())
     or
     result = ps.getSelfParam() and this.isSelf()
+  }
+}
+
+/**
+ * The position of an argument in a call.
+ *
+ * In Rust there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions, so we use the same underlying type for both.
+ */
+final class ArgumentPosition extends ParameterPosition {
+  /** Gets the argument of `call` at this position, if any. */
+  Expr getArgument(CallExprBase call) {
+    result = call.getArgList().getArg(this.getPosition())
+    or
+    this.isSelf() and
+    result = call.(MethodCallExpr).getReceiver()
   }
 }
 
@@ -197,6 +213,28 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result.(BreakExprCfgNode).getTarget() = e
 }
 
+/**
+ * Holds if a reverse local flow step should be added from the post-update node
+ * for `e` to the post-update node for the result.
+ *
+ * This is needed to allow for side-effects on compound expressions to propagate
+ * to sub components. For example, in
+ *
+ * ```rust
+ * ({ foo(); &mut a}).set_data(taint);
+ * ```
+ *
+ * we add a reverse flow step from `[post] { foo(); &mut a}` to `[post] &mut a`,
+ * in order for the side-effect of `set_data` to reach `&mut a`.
+ */
+ExprCfgNode getPostUpdateReverseStep(ExprCfgNode e, boolean preservesValue) {
+  result = getALastEvalNode(e) and
+  preservesValue = true
+  or
+  result = e.(CastExprCfgNode).getExpr() and
+  preservesValue = false
+}
+
 module LocalFlow {
   predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
     exists(FlowSummaryImpl::Public::SummarizedCallable c |
@@ -258,6 +296,9 @@ module LocalFlow {
     // The dual step of the above, for the post-update nodes.
     nodeFrom.(PostUpdateNode).getPreUpdateNode().(ReceiverNode).getReceiver() =
       nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), true)
   }
 }
 
@@ -432,6 +473,8 @@ private module Aliases {
 
   class ParameterPositionAlias = ParameterPosition;
 
+  class ArgumentPositionAlias = ArgumentPosition;
+
   class ContentAlias = Content;
 
   class ContentSetAlias = ContentSet;
@@ -550,7 +593,7 @@ module RustDataFlow implements InputSig<Location> {
 
   class ParameterPosition = ParameterPositionAlias;
 
-  class ArgumentPosition = ParameterPosition;
+  class ArgumentPosition = ArgumentPositionAlias;
 
   /**
    * Holds if the parameter position `ppos` matches the argument position
@@ -581,6 +624,12 @@ module RustDataFlow implements InputSig<Location> {
     model = ""
     or
     LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, model)
+    or
+    // Add flow through optional barriers. This step is then blocked by the barrier for queries that choose to use the barrier.
+    FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom
+          .(Node::FlowSummaryNode)
+          .getSummaryNode(), TOptionalBarrier(_), nodeTo.(Node::FlowSummaryNode).getSummaryNode()) and
+    model = ""
   }
 
   /**
@@ -710,7 +759,17 @@ module RustDataFlow implements InputSig<Location> {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
+  }
+
+  /**
+   * Holds if `cs` is used to encode a special operation as a content component, but should not
+   * be treated as an ordinary content component.
+   */
+  private predicate isSpecialContentSet(ContentSet cs) {
+    cs instanceof TOptionalStep or
+    cs instanceof TOptionalBarrier
   }
 
   pragma[nomagic]
@@ -807,7 +866,8 @@ module RustDataFlow implements InputSig<Location> {
     storeContentStep(node1, cs.(SingletonContentSet).getContent(), node2)
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
   }
 
   /**
@@ -1093,7 +1153,14 @@ private module Cached {
   newtype TReturnKind = TNormalReturnKind()
 
   cached
-  newtype TContentSet = TSingletonContentSet(Content c)
+  newtype TContentSet =
+    TSingletonContentSet(Content c) or
+    TOptionalStep(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalStep")
+    } or
+    TOptionalBarrier(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalBarrier")
+    }
 
   /** Holds if `n` is a flow source of kind `kind`. */
   cached
@@ -1102,6 +1169,27 @@ private module Cached {
   /** Holds if `n` is a flow sink of kind `kind`. */
   cached
   predicate sinkNode(Node n, string kind) { n.(FlowSummaryNode).isSink(kind, _) }
+
+  /**
+   * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
+   * that by default the step is not present in the flow summary and needs to be explicitly enabled by defining
+   * an additional flow step.
+   */
+  cached
+  predicate optionalStep(Node node1, string name, Node node2) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+      TOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode())
+  }
+
+  /**
+   * A step in a flow summary defined using `OptionalBarrier[name]`. An `OptionalBarrier` is "opt-out", by default
+   * data can flow freely through the step. Flow through the step can be explicity blocked by defining its node as a barrier.
+   */
+  cached
+  predicate optionalBarrier(Node node, string name) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(_, TOptionalBarrier(name),
+      node.(FlowSummaryNode).getSummaryNode())
+  }
 }
 
 import Cached

@@ -1,0 +1,2 @@
+qltest_dependencies:
+    - poem = { version = "3.1.7" }

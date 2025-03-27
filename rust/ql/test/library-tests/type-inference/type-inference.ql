@@ -12,7 +12,7 @@ query predicate resolveMethodCallExpr(MethodCallExpr mce, Function f) {
 }
 
 query predicate resolveFieldExpr(FieldExpr fe, AstNode target) {
-  target = resolveRecordFieldExpr(fe)
+  target = resolveStructFieldExpr(fe)
   or
   target = resolveTupleFieldExpr(fe)
 }

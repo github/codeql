@@ -1,5 +1,7 @@
 package test
 
+//go:generate depstubber -vendor github.com/jmoiron/sqlx Conn,DB,NamedStmt,Stmt,Tx Get,GetContext,NamedQuery,NamedQueryContext,Select,SelectContext
+
 import (
 	"context"
 

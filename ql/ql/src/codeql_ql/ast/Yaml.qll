@@ -64,4 +64,15 @@ class QlRefDocument extends YamlDocument {
       value = n.lookup("postprocess").(YamlSequence).getElement(_)
     )
   }
+
+  predicate isPrintAst() {
+    this.getFile().getStem() = "PrintAst"
+    or
+    exists(YamlMapping n, YamlScalar value |
+      n.getDocument() = this and
+      value.getValue().matches("%PrintAst%")
+    |
+      value = n.lookup("query")
+    )
+  }
 }

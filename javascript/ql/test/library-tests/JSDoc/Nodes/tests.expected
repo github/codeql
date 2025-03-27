@@ -278,7 +278,11 @@ test_JSDocTypeExpr
 | tst.js:26:14:26:20 | boolean | tst.js:26:5:26:11 | @define | 0 |
 | tst.js:31:13:31:19 | boolean | tst.js:31:4:31:10 | @return | 0 |
 | tst.js:53:11:53:16 | number | tst.js:53:4:53:8 | @enum | 0 |
+| tst.js:68:14:68:17 | goog | tst.js:68:14:68:20 | goog.ds | 0 |
+| tst.js:68:14:68:20 | goog.ds | tst.js:68:14:68:34 | goog.ds.BasicNodeList | 0 |
 | tst.js:68:14:68:34 | goog.ds.BasicNodeList | tst.js:68:4:68:11 | @extends | 0 |
+| tst.js:68:19:68:20 | ds | tst.js:68:14:68:20 | goog.ds | 1 |
+| tst.js:68:22:68:34 | BasicNodeList | tst.js:68:14:68:34 | goog.ds.BasicNodeList | 1 |
 | tst.js:95:17:95:21 | Shape | tst.js:95:4:95:14 | @implements | 0 |
 | tst.js:110:14:110:18 | Shape | tst.js:110:4:110:11 | @extends | 0 |
 | tst.js:134:13:134:18 | Object | tst.js:134:4:134:10 | @return | 0 |
@@ -298,7 +302,9 @@ test_JSDocTypeExpr
 | tst.js:216:15:216:29 | (string\|number) | tst.js:216:5:216:12 | @typedef | 0 |
 | tst.js:216:16:216:21 | string | tst.js:216:15:216:29 | (string\|number) | 0 |
 | tst.js:216:23:216:28 | number | tst.js:216:15:216:29 | (string\|number) | 1 |
+| tst.js:219:13:219:16 | goog | tst.js:219:13:219:27 | goog.NumberLike | 0 |
 | tst.js:219:13:219:27 | goog.NumberLike | tst.js:219:5:219:10 | @param | 0 |
+| tst.js:219:18:219:27 | NumberLike | tst.js:219:13:219:27 | goog.NumberLike | 1 |
 | tst.js:223:12:223:36 | {myNum: number, myObject} | tst.js:223:5:223:9 | @type | 0 |
 | tst.js:223:20:223:25 | number | tst.js:223:12:223:36 | {myNum: number, myObject} | 0 |
 | tst.js:226:12:226:17 | number | tst.js:226:12:226:18 | number? | 0 |
@@ -311,10 +317,18 @@ test_JSDocTypeExpr
 | tst.js:234:12:234:29 | function (): number | tst.js:234:4:234:9 | @param | 0 |
 | tst.js:234:24:234:29 | number | tst.js:234:12:234:29 | function (): number | -1 |
 | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | tst.js:235:4:235:9 | @param | 0 |
+| tst.js:235:26:235:29 | goog | tst.js:235:26:235:32 | goog.ui | 0 |
+| tst.js:235:26:235:32 | goog.ui | tst.js:235:26:235:37 | goog.ui.Menu | 0 |
 | tst.js:235:26:235:37 | goog.ui.Menu | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | -2 |
+| tst.js:235:31:235:32 | ui | tst.js:235:26:235:32 | goog.ui | 1 |
+| tst.js:235:34:235:37 | Menu | tst.js:235:26:235:37 | goog.ui.Menu | 1 |
 | tst.js:235:40:235:45 | string | tst.js:235:12:235:46 | function (this: goog.ui.Menu, string) | 0 |
 | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | tst.js:236:4:236:9 | @param | 0 |
+| tst.js:236:25:236:28 | goog | tst.js:236:25:236:31 | goog.ui | 0 |
+| tst.js:236:25:236:31 | goog.ui | tst.js:236:25:236:36 | goog.ui.Menu | 0 |
 | tst.js:236:25:236:36 | goog.ui.Menu | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | -2 |
+| tst.js:236:30:236:31 | ui | tst.js:236:25:236:31 | goog.ui | 1 |
+| tst.js:236:33:236:36 | Menu | tst.js:236:25:236:36 | goog.ui.Menu | 1 |
 | tst.js:236:39:236:44 | string | tst.js:236:12:236:45 | function (new: goog.ui.Menu, string) | 0 |
 | tst.js:237:12:237:48 | function (string, ...[number]): number | tst.js:237:4:237:9 | @param | 0 |
 | tst.js:237:21:237:26 | string | tst.js:237:12:237:48 | function (string, ...[number]): number | 0 |

@@ -18,6 +18,33 @@ fn data_out_of_call() {
     sink(a); // $ hasValueFlow=n
 }
 
+struct MyStruct {
+    data: i64,
+}
+
+impl MyStruct {
+    fn set_data(&mut self, n: i64) {
+        (*self).data = n // todo: implicit deref not yet supported
+    }
+
+    fn get_data(&self) -> i64 {
+        (*self).data // todo: implicit deref not yet supported
+    }
+}
+
+fn data_out_of_call_side_effect1() {
+    let mut a = MyStruct { data: 0 };
+    sink(a.get_data());
+    (&mut a).set_data(source(8));
+    sink(a.get_data()); // $ hasValueFlow=8
+}
+
+fn data_out_of_call_side_effect2() {
+    let mut a = MyStruct { data: 0 };
+    ({ 42; &mut a}).set_data(source(9));
+    sink(a.get_data()); // $ hasValueFlow=9
+}
+
 fn data_in(n: i64) {
     sink(n); // $ hasValueFlow=3
 }
@@ -224,6 +251,8 @@ fn test_async_await() {
 
 fn main() {
     data_out_of_call();
+    data_out_of_call_side_effect1();
+    data_out_of_call_side_effect2();
     data_in_to_call();
     data_through_call();
     data_through_nested_function();
