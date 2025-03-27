@@ -599,7 +599,7 @@ module NodeJSLib {
     override DataFlow::Node getADataNode() {
       if methodName.matches("%Sync")
       then result = this
-      else
+      else (
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
           if paramName = "callback"
           then
@@ -610,6 +610,12 @@ module NodeJSLib {
             )
           else result = this.getArgument(i)
         )
+        or
+        exists(AwaitExpr await |
+          this.getEnclosingExpr() = await.getOperand() and
+          result = DataFlow::valueNode(await)
+        )
+      )
     }
   }
 
