@@ -12,3 +12,4 @@
       - java/input-resource-leak
       - java/output-resource-leak
       - java/type-variable-hides-type
+      - java/do-not-call-finalize
