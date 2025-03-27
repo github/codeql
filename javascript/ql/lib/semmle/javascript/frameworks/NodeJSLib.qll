@@ -628,6 +628,22 @@ module NodeJSLib {
     }
   }
 
+  /** A vectored read to the file system. */
+  private class NodeJSFileSystemAccessVectorRead extends FileSystemReadAccess,
+    NodeJSFileSystemAccess
+  {
+    NodeJSFileSystemAccessVectorRead() { methodName = ["readv", "readvSync"] }
+
+    override DataFlow::Node getADataNode() {
+      result = this.getArgument(1)
+      or
+      exists(DataFlow::ArrayCreationNode array |
+        array.flowsTo(this.getArgument(1)) and
+        result = array.getAnElement()
+      )
+    }
+  }
+
   /**
    * A write to the file system, using a stream.
    */
