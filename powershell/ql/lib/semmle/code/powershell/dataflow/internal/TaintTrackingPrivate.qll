@@ -41,7 +41,7 @@ private module Cached {
       )
       or
       // Flow through string interpolation
-      exists(CfgNodes::ExprNodes::ExpandableStringCfgNode es |
+      exists(CfgNodes::ExprNodes::ExpandableStringExprCfgNode es |
         nodeFrom.asExpr() = es.getAnExpr() and
         nodeTo.asExpr() = es
       )

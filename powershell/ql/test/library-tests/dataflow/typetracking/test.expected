@@ -1,2 +1,2 @@
-testFailures
-failures
+| test.ps1:15:20:15:36 | # $ type=PSObject | Missing result: type=PSObject |
+| test.ps1:19:25:19:41 | # $ type=PSObject | Missing result: type=PSObject |

@@ -13,8 +13,6 @@ class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
 
-  CfgNodes::StmtCfgNode asStmt() { result = this.(StmtNode).getStmtNode() }
-
   ScriptBlock asCallable() { result = this.(CallableNode).asCallableAstNode() }
 
   /** Gets the parameter corresponding to this node, if any. */
@@ -67,22 +65,6 @@ class ExprNode extends AbstractAstNode, TExprNode {
 
   /** Gets the expression corresponding to this node. */
   CfgNodes::ExprCfgNode getExprNode() { result = n }
-}
-
-/**
- * A statement, viewed as a node in a data flow graph.
- *
- * Note that because of control-flow splitting, one `Stmt` may correspond
- * to multiple `StmtNode`s, just like it may correspond to multiple
- * `ControlFlow::Node`s.
- */
-class StmtNode extends AbstractAstNode, TStmtNode {
-  override CfgNodes::StmtCfgNode n;
-
-  StmtNode() { this = TStmtNode(n) }
-
-  /** Gets the expression corresponding to this node. */
-  CfgNodes::StmtCfgNode getStmtNode() { result = n }
 }
 
 /**
@@ -193,21 +175,6 @@ class PostUpdateNode extends Node {
   Node getPreUpdateNode() { result = pre }
 }
 
-/**
- * A dataflow node that represents a component of a type or module path.
- *
- * For example, `System`, `System.Management`, `System.Management.Automation`,
- * and `System.Management.Automation.PowerShell` in the type
- * name `[System.Management.Automation.PowerShell]`.
- */
-class TypePathNode extends Node instanceof TypePathNodeImpl {
-  string getComponent() { result = super.getComponent() }
-
-  TypePathNode getConstant(string s) { result = super.getConstant(s) }
-
-  API::Node track() { result = API::mod(super.getType(), super.getIndex()) }
-}
-
 cached
 private module Cached {
   cached
@@ -246,9 +213,6 @@ private import Cached
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
-
-/** Gets a node corresponding to statement `s`. */
-StmtNode stmtNode(CfgNodes::StmtCfgNode e) { result.getStmtNode() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
@@ -437,27 +401,34 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  *
  * For example, `[Foo]::new()` or `New-Object Foo`.
  */
-class ObjectCreationNode extends Node {
-  CfgNodes::ObjectCreationCfgNode objectCreation;
+class ObjectCreationNode extends ExprNode {
+  CfgNodes::ExprNodes::ObjectCreationCfgNode objectCreation;
 
-  ObjectCreationNode() {
-    this.asExpr() = objectCreation
-    or
-    this.asStmt() = objectCreation
+  ObjectCreationNode() { this.getExprNode() = objectCreation }
+
+  final CfgNodes::ExprNodes::ObjectCreationCfgNode getObjectCreationNode() {
+    result = objectCreation
   }
 
-  final CfgNodes::ObjectCreationCfgNode getObjectCreationNode() { result = objectCreation }
+  /**
+   * Gets the node corresponding to the expression that decides which type
+   * to allocate.
+   *
+   * For example, in `[Foo]::new()`, this would be `Foo`, and in
+   * `New-Object Foo`, this would be `Foo`.
+   */
+  Node getConstructedTypeNode() { result.asExpr() = objectCreation.getConstructedTypeExpr() }
 
   string getConstructedTypeName() { result = this.getObjectCreationNode().getConstructedTypeName() }
 }
 
 /** A call, viewed as a node in a data flow graph. */
-class CallNode extends AstNode {
-  CfgNodes::CallCfgNode call;
+class CallNode extends ExprNode {
+  CfgNodes::ExprNodes::CallExprCfgNode call;
 
   CallNode() { call = this.getCfgNode() }
 
-  CfgNodes::CallCfgNode getCallNode() { result = call }
+  CfgNodes::ExprNodes::CallExprCfgNode getCallNode() { result = call }
 
   string getName() { result = call.getName() }
 
@@ -478,22 +449,33 @@ class CallNode extends AstNode {
    * Note that this predicate doesn't get the pipeline argument, if any.
    */
   Node getAnArgument() { result.asExpr() = call.getAnArgument() }
-
-  int getNumberOfArguments() { result = call.getNumberOfArguments() }
 }
 
 /** A call to operator `&`, viwed as a node in a data flow graph. */
 class CallOperatorNode extends CallNode {
-  override CfgNodes::StmtNodes::CallOperatorCfgNode call;
+  override CfgNodes::ExprNodes::CallOperatorCfgNode call;
 
-  Node getCommand() { result.asExpr() = call.getCommand() }
+  Node getCommand() { result.asExpr() = call.getCommand() } // TODO: Alternatively, we could remap calls to & as command expressions.
 }
 
 /** A use of a type name, viewed as a node in a data flow graph. */
 class TypeNameNode extends ExprNode {
-  override CfgNodes::ExprNodes::TypeNameCfgNode n;
+  override CfgNodes::ExprNodes::TypeNameExprCfgNode n;
 
-  final override CfgNodes::ExprNodes::TypeNameCfgNode getExprNode() { result = n }
+  override CfgNodes::ExprNodes::TypeNameExprCfgNode getExprNode() { result = n }
 
-  string getTypeName() { result = n.getTypeName() }
+  string getName() { result = n.getName() }
+
+  predicate isQualified() { n.isQualified() }
+
+  string getNamespace() { result = n.getNamespace() }
+
+  string getPossiblyQualifiedName() { result = n.getPossiblyQualifiedName() }
+}
+
+/** A use of a qualified type name, viewed as a node in a data flow graph. */
+class QualifiedTypeNameNode extends TypeNameNode {
+  override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode n;
+
+  final override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode getExprNode() { result = n }
 }

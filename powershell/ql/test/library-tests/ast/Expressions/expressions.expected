@@ -1,19 +1,15 @@
 binaryExpr
-| BinaryExpression.ps1:3:11:3:24 | ...+... | BinaryExpression.ps1:3:11:3:16 | val1 | BinaryExpression.ps1:3:19:3:24 | val2 |
-| TernaryExpression.ps1:1:9:1:16 | ... -gt ... | TernaryExpression.ps1:1:9:1:10 | 6 | TernaryExpression.ps1:1:15:1:16 | 7 |
+| BinaryExpression.ps1:3:11:3:23 | ...+... | BinaryExpression.ps1:3:11:3:15 | val1 | BinaryExpression.ps1:3:19:3:23 | val2 |
+| TernaryExpression.ps1:1:9:1:15 | ... -gt ... | TernaryExpression.ps1:1:9:1:9 | 6 | TernaryExpression.ps1:1:15:1:15 | 7 |
 cmdExpr
-| BinaryExpression.ps1:1:9:1:10 | 1 | BinaryExpression.ps1:1:9:1:10 | 1 |
-| BinaryExpression.ps1:2:9:2:10 | 2 | BinaryExpression.ps1:2:9:2:10 | 2 |
-| BinaryExpression.ps1:3:11:3:24 | ...+... | BinaryExpression.ps1:3:11:3:24 | ...+... |
-| BinaryExpression.ps1:4:1:4:8 | result | BinaryExpression.ps1:4:1:4:8 | result |
-| ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name | ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name |
-| ExpandableString.ps1:1:23:1:38 | Now | ExpandableString.ps1:1:23:1:38 | Now |
-| SubExpression.ps1:1:1:1:24 | call to AddDays | SubExpression.ps1:1:1:1:24 | call to AddDays |
-| SubExpression.ps1:2:1:2:22 | call to AddDays | SubExpression.ps1:2:1:2:22 | call to AddDays |
-| TernaryExpression.ps1:1:8:1:23 | ...?...:... | TernaryExpression.ps1:1:8:1:23 | ...?...:... |
-| TernaryExpression.ps1:1:9:1:16 | ... -gt ... | TernaryExpression.ps1:1:9:1:16 | ... -gt ... |
+| BinaryExpression.ps1:4:1:4:7 | [Stmt] result | BinaryExpression.ps1:4:1:4:7 | result |
+| ExpandableString.ps1:1:1:1:39 | [Stmt] Date: $([DateTime]::Now)\nName: $name | ExpandableString.ps1:1:1:1:39 | Date: $([DateTime]::Now)\nName: $name |
+| ExpandableString.ps1:1:23:1:37 | [Stmt] Now | ExpandableString.ps1:1:23:1:37 | Now |
+| SubExpression.ps1:1:1:1:23 | [Stmt] Call to AddDays | SubExpression.ps1:1:1:1:23 | Call to AddDays |
+| SubExpression.ps1:1:3:1:10 | [Stmt] Call to Get-Date | SubExpression.ps1:1:3:1:10 | Call to Get-Date |
+| SubExpression.ps1:2:1:2:21 | [Stmt] Call to AddDays | SubExpression.ps1:2:1:2:21 | Call to AddDays |
+| SubExpression.ps1:2:3:2:10 | [Stmt] Call to Get-Date | SubExpression.ps1:2:3:2:10 | Call to Get-Date |
 invokeMemoryExpression
-| SubExpression.ps1:1:1:1:24 | call to AddDays | SubExpression.ps1:1:1:1:12 | $(...) | 0 | SubExpression.ps1:1:21:1:23 | 10 |
+| SubExpression.ps1:1:1:1:23 | Call to AddDays | SubExpression.ps1:1:1:1:11 | $(...) | 0 | SubExpression.ps1:1:21:1:22 | 10 |
 expandableString
-| ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name | 0 | ExpandableString.ps1:1:8:1:13 | name |
-| ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name | 1 | ExpandableString.ps1:1:21:1:39 | $(...) |
+| ExpandableString.ps1:1:1:1:39 | Date: $([DateTime]::Now)\nName: $name | 1 | ExpandableString.ps1:1:21:1:38 | $(...) |

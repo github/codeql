@@ -30,7 +30,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
     this = type + ";" + path
   }
 
-  override Call getACall() {
+  override CallExpr getACall() {
     exists(API::MethodAccessNode base |
       ModelOutput::resolvedSummaryBase(type, path, base) and
       result = base.asCall().asExpr().getExpr()

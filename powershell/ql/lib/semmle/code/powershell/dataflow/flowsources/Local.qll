@@ -31,9 +31,7 @@ abstract class EnvironmentVariableSource extends LocalFlowSource {
 }
 
 private class EnvironmentVariableEnv extends EnvironmentVariableSource {
-  EnvironmentVariableEnv() {
-    this.asExpr().getExpr().(VarReadAccess).getVariable() instanceof EnvVariable
-  }
+  EnvironmentVariableEnv() { this.asExpr().getExpr() instanceof EnvVariable }
 }
 
 private class ExternalEnvironmentVariableSource extends EnvironmentVariableSource {
@@ -61,7 +59,7 @@ private class ExternalCommandLineArgumentSource extends CommandLineArgumentSourc
  * A data flow source that represents the parameters of the `Main` method of a program.
  */
 private class MainMethodArgumentSource extends CommandLineArgumentSource {
-  MainMethodArgumentSource() { this.asParameter().getFunction() instanceof TopLevel }
+  MainMethodArgumentSource() { this.asParameter().getParent() instanceof TopLevelScriptBlock }
 }
 
 /**

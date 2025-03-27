@@ -47,7 +47,7 @@ module Private {
       final override Element getAChild() { result = super.getAStmt() }
     }
 
-    private class CmdExprElement extends ElementImpl instanceof PS::CmdExpr {
+    private class ExprStmtElement extends ElementImpl instanceof PS::ExprStmt {
       final override T getANode() { result = interpret(super.getExpr()) }
 
       final override Element getAChild() { none() }
@@ -77,18 +77,6 @@ module Private {
 
     private class SwitchStmtElement extends ElementImpl instanceof PS::SwitchStmt {
       final override Element getAChild() { result = super.getACase() }
-    }
-
-    private class CmdBaseElement extends ElementImpl instanceof PS::CmdExpr {
-      final override T getANode() { result = interpret(super.getExpr()) }
-
-      final override Element getAChild() { none() }
-    }
-
-    private class CmdElement extends ElementImpl instanceof PS::Cmd {
-      final override T getANode() { result = interpret(this) }
-
-      final override Element getAChild() { none() }
     }
   }
 }

@@ -46,20 +46,12 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = this.getExprNode().toString() }
 }
 
-private class StmtNodeImpl extends StmtNode, NodeImpl {
-  override CfgScope getCfgScope() { result = this.getStmtNode().getStmt().getEnclosingScope() }
-
-  override Location getLocationImpl() { result = this.getStmtNode().getLocation() }
-
-  override string toStringImpl() { result = this.getStmtNode().toString() }
-}
-
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
 SsaImpl::DefinitionExt getParameterDef(Parameter p) {
   exists(EntryBasicBlock bb, int i |
-    SsaImpl::parameterWrite(bb, i, p) and
-    result.definesAt(p, bb, i, _)
+    bb.getNode(i).getAstNode() = p and
+    result.definesAt(_, bb, i, _)
   )
 }
 
@@ -75,8 +67,6 @@ module SsaFlow {
     n = TSsaNode(result)
     or
     result.(Impl::ExprNode).getExpr() = n.asExpr()
-    or
-    result.(Impl::ExprNode).getExpr() = n.asStmt()
     or
     result.(Impl::ExprNode).getExpr() =
       [n.(ProcessNode).getProcessBlock(), n.(ProcessPropertyByNameNode).getProcessBlock()]
@@ -99,15 +89,13 @@ module SsaFlow {
 module LocalFlow {
   pragma[nomagic]
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalCfgNode).getABranch()
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getABranch()
     or
-    nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
     or
-    nodeFrom.asExpr() = nodeTo.asStmt().(CfgNodes::StmtNodes::CmdExprCfgNode).getExpr()
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConvertExprCfgNode).getSubExpr()
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConvertCfgNode).getBase()
-    or
-    nodeFrom.asStmt() = nodeTo.asExpr().(CfgNodes::ExprNodes::ParenCfgNode).getBase()
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ParenExprCfgNode).getSubExpr()
     or
     exists(
       CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
@@ -149,8 +137,6 @@ module LocalFlow {
   predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
     SsaFlow::localMustFlowStep(_, nodeFrom, nodeTo)
     or
-    nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
-    or
     nodeFrom =
       unique(FlowSummaryNode n1 |
         FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
@@ -167,7 +153,7 @@ module VariableCapture {
 private predicate isProcessPropertyByNameNode(
   PipelineByPropertyNameIteratorVariable iter, ProcessBlock pb
 ) {
-  pb.getEnclosingScope() = iter.getDeclaringScope()
+  pb = iter.getProcessBlock()
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -180,18 +166,21 @@ private module Cached {
     TExprNode(CfgNodes::ExprCfgNode n) or
     TStmtNode(CfgNodes::StmtCfgNode n) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
-    TNormalParameterNode(Parameter p) or
+    TNormalParameterNode(SsaImpl::NormalParameter p) or
+    TThisParameterNode(Method m) or
+    TPipelineByPropertyNameParameterNode(PipelineByPropertyNameParameter p) or
+    TPipelineParamaterNode(PipelineParameter p) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       n instanceof CfgNodes::ExprNodes::ArgumentCfgNode
       or
       n instanceof CfgNodes::ExprNodes::QualifierCfgNode
       or
-      exists(CfgNodes::ExprNodes::MemberCfgNode member |
+      exists(CfgNodes::ExprNodes::MemberExprCfgNode member |
         n = member.getQualifier() and
         not member.isStatic()
       )
       or
-      n = any(CfgNodes::ExprNodes::IndexCfgNode index).getBase()
+      n = any(CfgNodes::ExprNodes::IndexExprCfgNode index).getBase()
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isMultiReturned(n) } or
@@ -202,7 +191,6 @@ private module Cached {
       isProcessPropertyByNameNode(iter, _)
     } or
     TScriptBlockNode(ScriptBlock scriptBlock) or
-    TTypePathNode(int n, CfgNode cfg) { isTypePathNode(_, n, cfg) } or
     TForbiddenRecursionGuard() {
       none() and
       // We want to prune irrelevant models before materialising data flow nodes, so types contributed
@@ -289,34 +277,12 @@ private module Cached {
     TypeTrackingInput::withoutContentStepImpl(_, n, _)
   }
 
-  private predicate isAutomaticVariable(Node n) {
-    n.asExpr().(CfgNodes::ExprNodes::VarReadAccessCfgNode).getVariable().getName() =
-      [
-        "args", "ConsoleFileName", "EnabledExperimentalFeatures", "Error", "Event", "EventArgs",
-        "EventSubscriber", "ExecutionContext", "HOME", "Host", "input", "IsCoreCLR", "IsLinux",
-        "IsMacOS", "IsWindows", "LASTEXITCODE", "MyInvocation", "NestedPromptLevel", "PID",
-        "PROFILE", "PSBoundParameters", "PSCmdlet", "PSCommandPath", "PSCulture", "PSDebugContext",
-        "PSEdition", "PSHOME", "PSItem", "PSScriptRoot", "PSSenderInfo", "PSUICulture",
-        "PSVersionTable", "PWD", "Sender", "ShellId", "StackTrace"
-      ]
-  }
-
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
     or
-    isAutomaticVariable(n)
-    or
     // Expressions that can't be reached from another entry definition or expression
-    (
-      n instanceof ExprNode
-      or
-      exists(CfgNodes::StmtNodes::AssignStmtCfgNode assign | assign.getRightHandSide() = n.asStmt())
-      or
-      n.asStmt() instanceof CfgNodes::StmtNodes::CmdCfgNode
-      or
-      exists(CfgNodes::StmtNodes::PipelineCfgNode pipeline | n.asStmt() = pipeline.getAComponent())
-    ) and
+    n instanceof ExprNode and
     not reachedFromExprOrEntrySsaDef(n)
     or
     // Ensure all entry SSA definitions are local sources, except those that correspond
@@ -442,10 +408,12 @@ class SsaInputNode extends SsaNode {
   override CfgScope getCfgScope() { result = node.getDefinitionExt().getBasicBlock().getScope() }
 }
 
-private string getANamedArgument(CfgNodes::CallCfgNode c) { exists(c.getNamedArgument(result)) }
+private string getANamedArgument(CfgNodes::ExprNodes::CallExprCfgNode c) {
+  exists(c.getNamedArgument(result))
+}
 
 private module NamedSetModule =
-  QlBuiltins::InternSets<CfgNodes::CallCfgNode, string, getANamedArgument/1>;
+  QlBuiltins::InternSets<CfgNodes::ExprNodes::CallExprCfgNode, string, getANamedArgument/1>;
 
 private newtype NamedSet0 =
   TEmptyNamedSet() or
@@ -475,7 +443,7 @@ class NamedSet extends NamedSet0 {
    *
    * NOTE: The `CfgNodes::CallCfgNode` may also provide more names.
    */
-  CfgNodes::CallCfgNode getABindingCall() {
+  CfgNodes::ExprNodes::CallExprCfgNode getABindingCall() {
     forex(string name | name = this.getAName() | exists(result.getNamedArgument(name)))
     or
     this.isEmpty() and
@@ -486,7 +454,7 @@ class NamedSet extends NamedSet0 {
    * Gets a `Cmd` that provides exactly the named parameters represented by
    * this set.
    */
-  CfgNodes::CallCfgNode getAnExactBindingCall() {
+  CfgNodes::ExprNodes::CallExprCfgNode getAnExactBindingCall() {
     forex(string name | name = this.getAName() | exists(result.getNamedArgument(name))) and
     forex(string name | exists(result.getNamedArgument(name)) | name = this.getAName())
     or
@@ -504,6 +472,11 @@ class NamedSet extends NamedSet0 {
 }
 
 NamedSet emptyNamedSet() { result.isEmpty() }
+
+SsaImpl::NormalParameter getNormalParameter(FunctionBase f, int index) {
+  result.getFunction() = f and
+  result.getIndexExcludingPipelines() = index
+}
 
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
@@ -524,18 +497,15 @@ private module ParameterNodes {
    * flow graph.
    */
   class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
-    Parameter parameter;
+    SsaImpl::NormalParameter parameter;
 
     NormalParameterNode() { this = TNormalParameterNode(parameter) }
 
     override Parameter getParameter() { result = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      parameter.getDeclaringScope() = c.asCfgScope() and
+      parameter.getEnclosingScope() = c.asCfgScope() and
       (
-        pos.isThis() and
-        parameter.isThis()
-        or
         pos.isKeyword(parameter.getName())
         or
         // Given a function f with parameters x, y we map
@@ -549,7 +519,7 @@ private module ParameterNodes {
         // 3. position(1, {})
         // The interpretation of `position(i, S)` is the position of the i'th unnamed parameter when the
         // keywords in S are specified.
-        exists(int i, int j, string name, NamedSet ns, Function f |
+        exists(int i, int j, string name, NamedSet ns, FunctionBase f |
           pos.isPositional(j, ns) and
           parameter.getIndexExcludingPipelines() = i and
           f = parameter.getFunction() and
@@ -560,29 +530,79 @@ private module ParameterNodes {
             i -
               count(int k, Parameter p |
                 k < i and
-                p = f.getParameterExcludingPiplines(k) and
+                p = getNormalParameter(f, k) and
                 p.getName() = ns.getAName()
               )
         )
-        or
-        (parameter.isPipeline() or parameter.isPipelineByPropertyName()) and
-        pos.isPipeline()
       )
     }
 
-    override CfgScope getCfgScope() {
-      result.getAParameter() = parameter or result.getThisParameter() = parameter
-    }
+    override CfgScope getCfgScope() { result.getAParameter() = parameter }
 
     override Location getLocationImpl() { result = parameter.getLocation() }
 
     override string toStringImpl() { result = parameter.toString() }
   }
 
-  class PipelineByPropertyNameParameterNode extends NormalParameterNode {
-    PipelineByPropertyNameParameterNode() { this.getParameter().isPipelineByPropertyName() }
+  class ThisParameterNode extends ParameterNodeImpl, TThisParameterNode {
+    Method m;
 
-    string getPropretyName() { result = this.getParameter().getName() }
+    ThisParameterNode() { this = TThisParameterNode(m) }
+
+    override Parameter getParameter() { none() }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      m.getBody() = c.asCfgScope() and
+      pos.isThis()
+    }
+
+    override CfgScope getCfgScope() { result = m.getBody() }
+
+    override Location getLocationImpl() { result = m.getLocation() }
+
+    override string toStringImpl() { result = "this" }
+  }
+
+  class PipelineParamaterNode extends ParameterNodeImpl, TPipelineParamaterNode {
+    private PipelineParameter parameter;
+
+    PipelineParamaterNode() { this = TPipelineParamaterNode(parameter) }
+
+    override PipelineParameter getParameter() { result = parameter }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      pos.isPipeline() and // what about when it is applied as a normal parameter?
+      c.asCfgScope() = parameter.getEnclosingScope()
+    }
+
+    override CfgScope getCfgScope() { result = parameter.getEnclosingScope() }
+
+    override Location getLocationImpl() { result = this.getParameter().getLocation() }
+
+    override string toStringImpl() { result = this.getParameter().toString() }
+  }
+
+  class PipelineByPropertyNameParameterNode extends ParameterNodeImpl,
+    TPipelineByPropertyNameParameterNode
+  {
+    private PipelineByPropertyNameParameter parameter;
+
+    PipelineByPropertyNameParameterNode() { this = TPipelineByPropertyNameParameterNode(parameter) }
+
+    override PipelineParameter getParameter() { result = parameter }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      pos.isPipeline() and // what about when it is applied as a normal parameter?
+      c.asCfgScope() = parameter.getEnclosingScope()
+    }
+
+    override CfgScope getCfgScope() { result = parameter.getEnclosingScope() }
+
+    override Location getLocationImpl() { result = this.getParameter().getLocation() }
+
+    override string toStringImpl() { result = this.getParameter().toString() }
+
+    string getPropertyName() { result = parameter.getPropertyName() }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -628,7 +648,9 @@ abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
-  abstract predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos);
+  abstract predicate sourceArgumentOf(
+    CfgNodes::ExprNodes::CallExprCfgNode call, ArgumentPosition pos
+  );
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -644,7 +666,9 @@ module ArgumentNodes {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos) {
+    override predicate sourceArgumentOf(
+      CfgNodes::ExprNodes::CallExprCfgNode call, ArgumentPosition pos
+    ) {
       arg.getCall() = call and
       (
         pos.isKeyword(arg.getName())
@@ -654,32 +678,46 @@ module ArgumentNodes {
           ns.getAnExactBindingCall() = call and
           pos.isPositional(i, ns)
         )
-        or
-        arg.isQualifier() and
-        pos.isThis()
       )
     }
   }
 
-  private predicate isPipelineInput(
-    CfgNodes::StmtNodes::CmdBaseCfgNode input, CfgNodes::StmtNodes::CmdBaseCfgNode consumer
-  ) {
-    exists(CfgNodes::StmtNodes::PipelineCfgNode pipeline, int i |
-      input = pipeline.getComponent(i) and
-      consumer = pipeline.getComponent(i + 1)
-    )
-  }
+  class ThisArgumentNode extends ArgumentNode {
+    CfgNodes::ExprNodes::QualifierCfgNode qual;
 
-  class PipelineArgumentNode extends ArgumentNode, StmtNode {
-    CfgNodes::StmtNodes::CmdBaseCfgNode consumer;
-
-    PipelineArgumentNode() { isPipelineInput(this.getStmtNode(), consumer) }
+    ThisArgumentNode() { this.asExpr() = qual }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos) {
+    override predicate sourceArgumentOf(
+      CfgNodes::ExprNodes::CallExprCfgNode call, ArgumentPosition pos
+    ) {
+      qual.getCall() = call and
+      pos.isThis()
+    }
+  }
+
+  private predicate isPipelineInput(CfgNodes::ExprCfgNode input, CfgNodes::ExprCfgNode consumer) {
+    exists(CfgNodes::ExprNodes::PipelineCfgNode pipeline, int i |
+      input = pipeline.getComponent(i) and
+      consumer = pipeline.getComponent(i + 1)
+    )
+  }
+
+  class PipelineArgumentNode extends ArgumentNode, ExprNode {
+    CfgNodes::ExprCfgNode consumer;
+
+    PipelineArgumentNode() { isPipelineInput(this.getExprNode(), consumer) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
+
+    override predicate sourceArgumentOf(
+      CfgNodes::ExprNodes::CallExprCfgNode call, ArgumentPosition pos
+    ) {
       call = consumer and
       pos.isPipeline()
     }
@@ -697,7 +735,11 @@ module ArgumentNodes {
       call.(SummaryCall).getReceiver() = receiver and pos = pos_
     }
 
-    override predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos) { none() }
+    override predicate sourceArgumentOf(
+      CfgNodes::ExprNodes::CallExprCfgNode call, ArgumentPosition pos
+    ) {
+      none()
+    }
   }
 }
 
@@ -715,11 +757,7 @@ private module EscapeContainer {
   private module ReturnContainerInterpreter implements InterpretAstInputSig {
     class T = CfgNodes::AstCfgNode;
 
-    T interpret(Ast a) {
-      result.(CfgNodes::ExprCfgNode).getExpr() = a
-      or
-      result.(CfgNodes::StmtCfgNode).getStmt() = a.(Cmd)
-    }
+    T interpret(Ast a) { result.(CfgNodes::ExprCfgNode).getExpr() = a } // TODO: Recutse into expr-to-stmt conversions
   }
 
   class EscapeContainer extends AstEscape<ReturnContainerInterpreter>::Element {
@@ -818,16 +856,16 @@ predicate jumpStep(Node pred, Node succ) {
  * content `c`.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
-  exists(CfgNodes::ExprNodes::MemberCfgWriteAccessNode var, Content::FieldContent fc |
+  exists(CfgNodes::ExprNodes::MemberExprWriteAccessCfgNode var, Content::FieldContent fc |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getQualifier() and
-    node1.asStmt() = var.getAssignStmt().getRightHandSide() and
+    node1.asExpr() = var.getAssignStmt().getRightHandSide() and
     fc.getName() = var.getMemberName() and
     c.isSingleton(fc)
   )
   or
-  exists(CfgNodes::ExprNodes::IndexCfgWriteNode var, CfgNodes::ExprCfgNode e |
+  exists(CfgNodes::ExprNodes::IndexExprWriteAccessCfgNode var, CfgNodes::ExprCfgNode e |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getBase() and
-    node1.asStmt() = var.getAssignStmt().getRightHandSide() and
+    node1.asExpr() = var.getAssignStmt().getRightHandSide() and
     e = var.getIndex()
   |
     exists(Content::KnownElementContent ec |
@@ -840,13 +878,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   )
   or
   exists(Content::KnownElementContent ec, int index |
-    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getElement(index) = node1.asExpr() and
+    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getExpr(index) = node1.asExpr() and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
   )
   or
   exists(CfgNodes::ExprCfgNode key |
-    node2.asExpr().(CfgNodes::ExprNodes::HashTableCfgNode).getElement(key) = node1.asStmt()
+    node2.asExpr().(CfgNodes::ExprNodes::HashTableExprCfgNode).getValueFromKey(key) = node1.asExpr()
   |
     exists(Content::KnownElementContent ec |
       c.isKnownOrUnknownElement(ec) and
@@ -887,14 +925,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * Holds if there is a read step of content `c` from `node1` to `node2`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
-  exists(CfgNodes::ExprNodes::MemberCfgReadAccessNode var, Content::FieldContent fc |
+  exists(CfgNodes::ExprNodes::MemberExprReadAccessCfgNode var, Content::FieldContent fc |
     node2.asExpr() = var and
     node1.asExpr() = var.getQualifier() and
     fc.getName() = var.getMemberName() and
     c.isSingleton(fc)
   )
   or
-  exists(CfgNodes::ExprNodes::IndexCfgReadNode var, CfgNodes::ExprCfgNode e |
+  exists(CfgNodes::ExprNodes::IndexExprReadAccessCfgNode var, CfgNodes::ExprCfgNode e |
     node2.asExpr() = var and
     node1.asExpr() = var.getBase() and
     e = var.getIndex()
@@ -915,7 +953,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   c.isAnyElement() and
-  exists(SsaImpl::DefinitionExt def, ProcessNode processNode, LocalScopeVariable iterator |
+  exists(SsaImpl::DefinitionExt def, ProcessNode processNode, Variable iterator |
     processNode = node1 and iterator = def.getSourceVariable()
   |
     processNode.getIteratorVariable() = iterator and
@@ -937,8 +975,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   exists(Content::KnownElementContent ec, SsaImpl::DefinitionExt def |
     c.isSingleton(ec) and
-    node1.(PipelineByPropertyNameParameterNode).getPropretyName() = ec.getIndex().asString() and
-    def.getSourceVariable() = node1.(PipelineByPropertyNameParameterNode).getParameter() and
+    node1.(PipelineByPropertyNameParameterNode).getPropertyName() = ec.getIndex().asString() and
+    def = SsaImpl::getParameterDef(node1.(PipelineByPropertyNameParameterNode).getParameter()) and
     SsaImpl::firstRead(def, node2.asExpr())
   )
   or
@@ -1163,64 +1201,6 @@ class ScriptBlockNode extends TScriptBlockNode, NodeImpl {
   override predicate nodeIsHidden() { any() }
 }
 
-private predicate isTypePathNode(string type, int n, CfgNode cfg) {
-  exists(CfgNodes::ExprNodes::TypeNameCfgNode typeName, string s |
-    cfg = typeName and
-    type = typeName.getTypeName() and
-    s = type.splitAt(".", n)
-  )
-  or
-  exists(CfgNodes::StmtNodes::CmdCfgNode cmd, string s |
-    cfg = cmd.getCommand() and
-    type = cmd.getNamespaceQualifier() and
-    s = type.splitAt(".", n)
-  )
-}
-
-/**
- * A dataflow node that represents a component of a type or module path.
- *
- * For example, `System`, `System.Management`, `System.Management.Automation`,
- * and `System.Management.Automation.PowerShell` in the type
- * name `[System.Management.Automation.PowerShell]`.
- */
-class TypePathNodeImpl extends TTypePathNode, NodeImpl {
-  int n;
-  CfgNode cfg;
-
-  TypePathNodeImpl() { this = TTypePathNode(n, cfg) }
-
-  string getType() { isTypePathNode(result, n, cfg) }
-
-  predicate isComplete() { not exists(this.getNext()) }
-
-  int getIndex() { result = n }
-
-  string getComponent() { result = this.getType().splitAt(".", n) }
-
-  override CfgScope getCfgScope() { result = cfg.getScope() }
-
-  override Location getLocationImpl() { result = cfg.getLocation() }
-
-  override string toStringImpl() {
-    not exists(this.getPrev()) and
-    result = this.getComponent()
-    or
-    result = this.getPrev() + "." + this.getComponent()
-  }
-
-  override predicate nodeIsHidden() { any() }
-
-  TypePathNodeImpl getNext() { result = TTypePathNode(n + 1, cfg) }
-
-  TypePathNodeImpl getPrev() { result.getNext() = this }
-
-  TypePathNodeImpl getConstant(string s) {
-    s = result.getComponent() and
-    result = this.getNext()
-  }
-}
-
 /** A node that performs a type cast. */
 class CastNode extends Node {
   CastNode() { none() }
@@ -1250,16 +1230,19 @@ predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 newtype LambdaCallKind = TLambdaCallKind()
 
-private class CmdName extends StringConstExpr {
-  CmdName() { this = any(Cmd c).getCmdName() }
+private class CmdName extends CfgNodes::ExprNodes::StringLiteralExprCfgNode {
+  CmdName() { this = any(CfgNodes::ExprNodes::CallExprCfgNode c).getCallee() }
 
-  string getName() { result = this.getValue().getValue() }
+  string getName() { result = this.getValueString() }
 }
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  creation.asExpr().getExpr().(CmdName).getName() = c.asCfgScope().getEnclosingFunction().getName() and
-  exists(kind)
+  exists(kind) and
+  exists(FunctionBase f |
+    f.getBody() = c.asCfgScope() and
+    creation.asExpr().(CmdName).getName() = f.getName()
+  )
 }
 
 /**
@@ -1267,7 +1250,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
  * where `receiver` is the lambda expression.
  */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  call.asCall().getCommand() = receiver.asExpr() and exists(kind)
+  call.asCall().getCallee() = receiver.asExpr() and exists(kind)
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */

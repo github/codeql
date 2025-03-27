@@ -74,7 +74,7 @@ namespace Semmle.Extraction.PowerShell.Standalone
         /// <summary>
         /// List of extensions to include.
         /// </summary>
-        public IList<string> Extensions { get; } = new List<string>() { ".ps1" };
+        public IList<string> Extensions { get; } = new List<string>() { ".ps1", ".psd1", ".psm1" };
 
         /// <summary>
         /// Files/patterns to exclude.
