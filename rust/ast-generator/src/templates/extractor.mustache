@@ -25,7 +25,7 @@ impl Translator<'_> {
     pub(crate) fn emit_{{snake_case_name}}(&mut self, node: ast::{{ast_name}}) -> Option<Label<generated::{{name}}>> {
         match node {
             {{#variants}}
-            ast::{{ast_name}}::{{name}}(inner) => self.emit_{{snake_case_name}}(inner).map(Into::into),
+            ast::{{ast_name}}::{{variant_ast_name}}(inner) => self.emit_{{snake_case_name}}(inner).map(Into::into),
             {{/variants}}
         }
     }

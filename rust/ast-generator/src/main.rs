@@ -432,6 +432,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
 struct EnumVariantInfo {
     name: String,
     snake_case_name: String,
+    variant_ast_name: String,
 }
 
 #[derive(Serialize)]
@@ -480,9 +481,14 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
         variants: node
             .variants
             .iter()
-            .map(|v| EnumVariantInfo {
-                name: v.clone(),
-                snake_case_name: to_lower_snake_case(v),
+            .map(|v| {
+                let name = class_name(v);
+                let snake_case_name = to_lower_snake_case(v);
+                EnumVariantInfo {
+                    name,
+                    snake_case_name,
+                    variant_ast_name: v.clone(),
+                }
             })
             .collect(),
     })
