@@ -27,12 +27,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
    */
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     (
-      exists(Scope scope | scope = v.(ThisParameter).getDeclaringScope() |
-        // We consider the `this` variable to have a single write at the entry to a method block
-        scope = bb.(BasicBlocks::EntryBasicBlock).getScope() and
-        i = 0
-      )
-      or
       uninitializedWrite(bb, i, v)
       or
       variableWriteActual(bb, i, v, _)
@@ -138,9 +132,7 @@ private module Cached {
    * AST write access is `write`.
    */
   cached
-  predicate variableWriteActual(
-    Cfg::BasicBlock bb, int i, Variable v, VarWriteAccessCfgNode write
-  ) {
+  predicate variableWriteActual(Cfg::BasicBlock bb, int i, Variable v, VarWriteAccessCfgNode write) {
     exists(Cfg::CfgNode n |
       write.getVariable() = v and
       n = bb.getNode(i)
@@ -277,7 +269,8 @@ private Parameter getANonPipelineParameter(FunctionBase f) {
 class NormalParameter extends Parameter {
   NormalParameter() {
     not this instanceof PipelineParameter and
-    not this instanceof PipelineByPropertyNameParameter
+    not this instanceof PipelineByPropertyNameParameter and
+    not this instanceof ThisParameter
   }
 
   int getIndexExcludingPipelines() {
@@ -295,18 +288,18 @@ class NormalParameter extends Parameter {
 
 private newtype TParameterExt =
   TNormalParameter(NormalParameter p) or
-  TSelfMethodParameter(Method m)
+  TThisMethodParameter(Method m)
 
-/** A normal parameter or an implicit `self` parameter. */
+/** A normal parameter or an implicit `this` parameter. */
 class ParameterExt extends TParameterExt {
   NormalParameter asParameter() { this = TNormalParameter(result) }
 
-  Method asThis() { this = TSelfMethodParameter(result) }
+  Method asThis() { this = TThisMethodParameter(result) }
 
   predicate isInitializedBy(WriteDefinition def) {
     def = getParameterDef(this.asParameter())
     or
-    def.(Ssa::ThisDefinition).getSourceVariable().getDeclaringScope() = this.asThis().(Scope)
+    def.(Ssa::ThisDefinition).getSourceVariable().getDeclaringScope() = this.asThis().getBody()
   }
 
   string toString() { result = [this.asParameter().toString(), this.asThis().toString()] }

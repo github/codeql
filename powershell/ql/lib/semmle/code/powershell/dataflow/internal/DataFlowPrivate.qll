@@ -61,6 +61,8 @@ module SsaFlow {
 
   private ParameterNodeImpl toParameterNode(SsaImpl::ParameterExt p) {
     result = TNormalParameterNode(p.asParameter())
+    or
+    result = TThisParameterNode(p.asThis())
   }
 
   Impl::Node asNode(Node n) {
@@ -164,7 +166,6 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
-    TStmtNode(CfgNodes::StmtCfgNode n) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TNormalParameterNode(SsaImpl::NormalParameter p) or
     TThisParameterNode(Method m) or
@@ -549,7 +550,7 @@ private module ParameterNodes {
 
     ThisParameterNode() { this = TThisParameterNode(m) }
 
-    override Parameter getParameter() { none() }
+    override Parameter getParameter() { result = m.getThisParameter() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       m.getBody() = c.asCfgScope() and
