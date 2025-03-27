@@ -187,11 +187,13 @@ pub fn test_ptr_drop(mode: i32) {
 	}
 }
 
+// --- qhelp examples ---
+
 fn do_something(s: &String) {
 	println!("	s = {}", s);
 }
 
-fn test_qhelp_test_good(ptr: *mut String) {
+fn test_qhelp_example_good(ptr: *mut String) {
 	unsafe {
 		do_something(&*ptr);
 	}
@@ -203,7 +205,7 @@ fn test_qhelp_test_good(ptr: *mut String) {
 	}
 }
 
-fn test_qhelp_test_bad(ptr: *mut String) {
+fn test_qhelp_example_bad(ptr: *mut String) {
 	unsafe {
 		std::ptr::drop_in_place(ptr); // $ Source=drop_in_place
 	}
@@ -215,7 +217,7 @@ fn test_qhelp_test_bad(ptr: *mut String) {
 	}
 }
 
-pub fn test_qhelp_tests() {
+pub fn test_qhelp_examples() {
 	let layout = std::alloc::Layout::new::<[String; 2]>();
 	unsafe {
 		let ptr = std::alloc::alloc(layout);
@@ -226,13 +228,15 @@ pub fn test_qhelp_tests() {
 		*ptr1 = String::from("123");
 		*ptr2 = String::from("456");
 
-		test_qhelp_test_good(ptr1);
+		test_qhelp_example_good(ptr1);
 
-		test_qhelp_test_bad(ptr2);
+		test_qhelp_example_bad(ptr2);
 
 		std::alloc::dealloc(ptr, layout);
 	}
 }
+
+// --- Vec ---
 
 pub fn test_vec_reserve() {
 	let mut vec1 = Vec::<u16>::new();

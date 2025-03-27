@@ -129,7 +129,7 @@ fn main() {
 	test_ptr_drop(mode);
 
 	println!("test_qhelp_tests:");
-	test_qhelp_tests();
+	test_qhelp_examples();
 
 	println!("test_vec_reserve:");
 	test_vec_reserve();
