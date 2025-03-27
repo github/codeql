@@ -1,6 +1,7 @@
 /**
- * @id java/do-not-use-finalize
- * @name Do not use `finalize`
+ * @id java/do-not-call-finalize
+ * @previous-id java/do-not-use-finalizers
+ * @name Do not call `finalize`
  * @description Calling `finalize` in application code may cause
  *              inconsistent program state or unpredicatable behavior.
  * @kind problem
