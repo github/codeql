@@ -473,6 +473,26 @@ mod m17 {
     } // I99
 }
 
+mod m18 {
+    fn f() {
+        println!("m18::f");
+    } // I101
+
+    pub mod m19 {
+        fn f() {
+            println!("m18::m19::f");
+        } // I102
+
+        pub mod m20 {
+            pub fn g() {
+                println!("m18::m19::m20::g");
+                super::f(); // $ item=I102
+                super::super::f(); // $ item=I101
+            } // I103
+        }
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -498,4 +518,6 @@ fn main() {
     nested6::f(); // $ item=I116
     nested8::f(); // $ item=I119
     my3::f(); // $ item=I200
+    nested_f(); // $ MISSING: item=I201
+    m18::m19::m20::g(); // $ item=I103
 }
