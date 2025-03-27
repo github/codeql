@@ -137,6 +137,61 @@ module NameResolution {
       node1 = type.getExpressionName() and
       node2 = type
     )
+    or
+    exists(ClosureModuleDeclaration decl, ClosureImport imprt |
+      decl.getClosureNamespace() = imprt.getClosureNamespace() and
+      node1 = decl.getContainer() and
+      node2 = imprt
+    )
+    or
+    exists(Closure::ClosureModule mod |
+      node1 = mod.getScope().getVariable("exports") and
+      node2 = mod
+    )
+    or
+    exists(ImmediatelyInvokedFunctionExpr fun, int i |
+      node1 = fun.getArgument(i) and
+      node2 = fun.getParameter(i)
+    )
+  }
+
+  class ClosureImport extends CallExpr {
+    ClosureImport() { this.getCallee().(PropAccess).getQualifiedName() = "goog.require" }
+
+    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
+  }
+
+  class ClosureModuleDeclaration extends CallExpr {
+    private string kind;
+
+    ClosureModuleDeclaration() {
+      this.getCallee().(PropAccess).getQualifiedName() = kind and
+      kind = ["goog.module", "goog.declareModuleId"]
+    }
+
+    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
+
+    string getModuleKind() { result = kind }
+  }
+
+  class ClosureExport extends AssignExpr {
+    private PropAccess lhs;
+
+    ClosureExport() {
+      exists(ClosureModuleDeclaration decl, Module mod |
+        decl.getModuleKind() = "goog.module" and
+        decl.getContainer() = mod and
+        this.getTopLevel() = mod and
+        this.getLhs() = lhs and
+        lhs.getBase() = mod.getScope().getVariable("exports").getAnAccess()
+      )
+    }
+
+    string getName() { result = lhs.getPropertyName() }
+
+    Module getModule() { result = this.getTopLevel() }
+
+    Expr getValue() { result = this.getRhs() }
   }
 
   /**
@@ -165,6 +220,11 @@ module NameResolution {
       node1 = access.getBase() and
       name = access.getPropertyName() and
       node2 = access
+    )
+    or
+    exists(ObjectPattern pattern |
+      node1 = pattern and
+      node2 = pattern.getPropertyPatternByName(name).getValuePattern()
     )
     or
     exists(ImportSpecifier spec |
@@ -259,6 +319,12 @@ module NameResolution {
         mod = enum and
         result = enum.getMemberByName(name).getIdentifier()
       )
+      or
+      exists(ClosureExport exprt |
+        mod = exprt.getModule() and
+        name = exprt.getName() and
+        result = exprt.getValue()
+      )
     }
 
     /** Steps that only apply for this configuration. */
@@ -347,6 +413,16 @@ module NameResolution {
     )
   }
 
+  private predicate needsQualifiedName(Node node) {
+    node = any(JSDocLocalTypeAccess t).getALexicalName().(Variable)
+    or
+    exists(Node prev | needsQualifiedName(prev) |
+      ValueFlow::step(node, prev)
+      or
+      readStep(node, _, prev)
+    )
+  }
+
   /**
    * Holds if `node` is a reference to the given module, or a qualified name rooted in that module.
    *
@@ -373,6 +449,23 @@ module NameResolution {
       not exists(access.getLocalNamespaceName()) and
       access.getName() = qualifiedName
     )
+    or
+    mod = "global" and
+    exists(JSDocLocalTypeAccess access |
+      node = access and
+      not exists(access.getALexicalName()) and
+      access.getName() = qualifiedName
+    )
+    or
+    mod = "global" and
+    exists(GlobalVarAccess access |
+      node = access and
+      needsQualifiedName(access) and // restrict number of qualified names we generate
+      access.getName() = qualifiedName
+    )
+    or
+    mod = "global" and
+    qualifiedName = node.(ClosureImport).getClosureNamespace()
     or
     // Additionally track through bulk re-exports (`export * from 'mod`).
     // These are normally handled by 'exportAs' which supports various shadowing rules,
