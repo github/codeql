@@ -415,7 +415,7 @@ class JSDocNamedTypeExpr extends JSDocTypeExpr {
    * - `foo.bar.Baz` has prefix `foo` and suffix `.bar.Baz`.
    * - `Baz` has prefix `Baz` and an empty suffix.
    */
-  predicate hasNameParts(string prefix, string suffix) {
+  deprecated predicate hasNameParts(string prefix, string suffix) {
     not this = any(JSDocQualifiedTypeAccess a).getBase() and // restrict size of predicate
     exists(string regex, string name | regex = "([^.]+)(.*)" |
       name = this.getRawName() and
@@ -635,7 +635,7 @@ module JSDoc {
   /**
    * A statement container which may declare JSDoc name aliases.
    */
-  class Environment extends StmtContainer {
+  deprecated class Environment extends StmtContainer {
     /**
      * Gets the fully qualified name aliased by the given unqualified name
      * within this container.
@@ -685,7 +685,7 @@ module JSDoc {
   }
 
   pragma[noinline]
-  private predicate isTypenamePrefix(string name) {
+  deprecated private predicate isTypenamePrefix(string name) {
     any(JSDocNamedTypeExpr expr).hasNameParts(name, _)
   }
 }
