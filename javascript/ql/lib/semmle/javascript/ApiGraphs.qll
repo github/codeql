@@ -955,12 +955,17 @@ module API {
       result = min(int i | expr.getArgument(i) instanceof SpreadElement)
     }
 
+    pragma[nomagic]
+    private InvokeExpr getAnInvocationWithSpread(DataFlow::SourceNode node, int i) {
+      result = node.getAnInvocation().asExpr() and
+      i = firstSpreadIndex(result)
+    }
+
     private predicate spreadArgumentPassing(TApiNode base, int i, DataFlow::Node spreadArray) {
       exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke |
         use(base, use) and
         pred = trackUseNode(use, _, bound, "") and
-        invoke = pred.getAnInvocation().asExpr() and
-        i = firstSpreadIndex(invoke) and
+        invoke = getAnInvocationWithSpread(pred, i) and
         spreadArray = invoke.getArgument(i - bound).(SpreadElement).getOperand().flow()
       )
     }
