@@ -74,9 +74,11 @@ module UnderlyingTypes {
   predicate nodeHasUnderlyingType(Node node, string mod, string name) {
     nodeRefersToModule(node, mod, name)
     or
-    exists(JSDocNamedTypeExpr type |
+    exists(JSDocLocalTypeAccess type |
       node = type and
-      type.hasQualifiedName(name) and
+      not exists(type.getALexicalName()) and
+      not type = any(JSDocQualifiedTypeAccess t).getBase() and
+      name = type.getName() and
       mod = "global"
     )
     or
