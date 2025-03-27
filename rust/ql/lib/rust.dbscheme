@@ -481,7 +481,7 @@ extern_item_list_extern_items(
 );
 
 @field_list =
-  @record_field_list
+  @struct_field_list
 | @tuple_field_list
 ;
 
@@ -2364,17 +2364,6 @@ range_pat_starts(
   int start: @pat ref
 );
 
-record_field_lists(
-  unique int id: @record_field_list
-);
-
-#keyset[id, index]
-record_field_list_fields(
-  int id: @record_field_list ref,
-  int index: int ref,
-  int field: @struct_field ref
-);
-
 ref_exprs(
   unique int id: @ref_expr
 );
@@ -2516,6 +2505,17 @@ slice_type_reprs(
 slice_type_repr_type_reprs(
   int id: @slice_type_repr ref,
   int type_repr: @type_repr ref
+);
+
+struct_field_lists(
+  unique int id: @struct_field_list
+);
+
+#keyset[id, index]
+struct_field_list_fields(
+  int id: @struct_field_list ref,
+  int index: int ref,
+  int field: @struct_field ref
 );
 
 try_exprs(
@@ -3275,7 +3275,7 @@ struct_attrs(
 );
 
 #keyset[id]
-struct_field_lists(
+struct_field_lists_(
   int id: @struct ref,
   int field_list: @field_list ref
 );
@@ -3511,7 +3511,7 @@ union_names(
 #keyset[id]
 union_struct_field_lists(
   int id: @union ref,
-  int struct_field_list: @record_field_list ref
+  int struct_field_list: @struct_field_list ref
 );
 
 #keyset[id]

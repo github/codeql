@@ -2737,25 +2737,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfRecordFieldList(
-    RecordFieldList e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bFieldList, int n, int nField |
-      b = 0 and
-      bFieldList = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFieldList(e, i, _)) | i) and
-      n = bFieldList and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfFieldList(e, index - b, partialPredicateCall)
-        or
-        result = e.getField(index - n) and
-        partialPredicateCall = "Field(" + (index - n).toString() + ")"
-      )
-    )
-  }
-
   private Element getImmediateChildOfRefExpr(RefExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nExpr |
       b = 0 and
@@ -2900,6 +2881,25 @@ private module Impl {
         result = getImmediateChildOfTypeRepr(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfStructFieldList(
+    StructFieldList e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bFieldList, int n, int nField |
+      b = 0 and
+      bFieldList = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFieldList(e, i, _)) | i) and
+      n = bFieldList and
+      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfFieldList(e, index - b, partialPredicateCall)
+        or
+        result = e.getField(index - n) and
+        partialPredicateCall = "Field(" + (index - n).toString() + ")"
       )
     )
   }
@@ -4334,8 +4334,6 @@ private module Impl {
     or
     result = getImmediateChildOfRangePat(e, index, partialAccessor)
     or
-    result = getImmediateChildOfRecordFieldList(e, index, partialAccessor)
-    or
     result = getImmediateChildOfRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfRefPat(e, index, partialAccessor)
@@ -4351,6 +4349,8 @@ private module Impl {
     result = getImmediateChildOfSlicePat(e, index, partialAccessor)
     or
     result = getImmediateChildOfSliceTypeRepr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStructFieldList(e, index, partialAccessor)
     or
     result = getImmediateChildOfTryExpr(e, index, partialAccessor)
     or

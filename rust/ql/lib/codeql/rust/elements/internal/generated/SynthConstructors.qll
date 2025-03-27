@@ -114,7 +114,6 @@ import codeql.rust.elements.internal.PrefixExprConstructor
 import codeql.rust.elements.internal.PtrTypeReprConstructor
 import codeql.rust.elements.internal.RangeExprConstructor
 import codeql.rust.elements.internal.RangePatConstructor
-import codeql.rust.elements.internal.RecordFieldListConstructor
 import codeql.rust.elements.internal.RefExprConstructor
 import codeql.rust.elements.internal.RefPatConstructor
 import codeql.rust.elements.internal.RefTypeReprConstructor
@@ -134,6 +133,7 @@ import codeql.rust.elements.internal.StructExprConstructor
 import codeql.rust.elements.internal.StructExprFieldConstructor
 import codeql.rust.elements.internal.StructExprFieldListConstructor
 import codeql.rust.elements.internal.StructFieldConstructor
+import codeql.rust.elements.internal.StructFieldListConstructor
 import codeql.rust.elements.internal.StructPatConstructor
 import codeql.rust.elements.internal.StructPatFieldConstructor
 import codeql.rust.elements.internal.StructPatFieldListConstructor

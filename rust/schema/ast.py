@@ -543,7 +543,7 @@ class StructField(AstNode, ):
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
 
-class RecordFieldList(FieldList, ):
+class StructFieldList(FieldList, ):
     fields: list["StructField"] | child
 
 class StructPat(Pat, ):
@@ -716,7 +716,7 @@ class Union(Item, VariantDef, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
-    struct_field_list: optional["RecordFieldList"] | child
+    struct_field_list: optional["StructFieldList"] | child
     visibility: optional["Visibility"] | child
     where_clause: optional["WhereClause"] | child
 

@@ -1489,7 +1489,7 @@ class _:
     """
 
 
-@annotate(RecordFieldList)
+@annotate(StructFieldList)
 class _:
     """
     A field list of a struct expression. For example:
@@ -1627,6 +1627,7 @@ class _:
     todo!()
     ```
     """
+    field_list: _ | ql.db_table_name("struct_field_lists_")
 
 
 @annotate(TokenTree)
