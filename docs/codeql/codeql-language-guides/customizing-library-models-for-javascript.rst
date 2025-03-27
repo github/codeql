@@ -540,6 +540,7 @@ Additionally there is a component related to middleware functions:
 
 - **GuardedRouteHandler** interprets the current value as a middleware function, and selects any route handler function that comes after it in the routing hierarchy.
   This can be used to model properties injected onto request and response objects, such as **req.db** after a middleware that injects a database connection.
+  Note that this currently over-approximates the set of route handlers but may be made more accurate in the future.
 
 Additional notes about the syntax of operands:
 
