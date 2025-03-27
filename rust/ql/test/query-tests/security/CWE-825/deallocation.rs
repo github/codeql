@@ -187,6 +187,35 @@ pub fn test_ptr_drop(mode: i32) {
 	}
 }
 
+struct MyDropBuffer {
+	ptr: *mut u8,
+}
+
+impl MyDropBuffer {
+	unsafe fn new() -> MyDropBuffer {
+		let layout = std::alloc::Layout::from_size_align(1024, 1).unwrap();
+
+		MyDropBuffer {
+			ptr: std::alloc::alloc(layout),
+		}
+
+		// ...
+	}
+}
+
+impl Drop for MyDropBuffer {
+	fn drop(&mut self) {
+		let layout = std::alloc::Layout::from_size_align(1024, 1).unwrap();
+
+		unsafe {
+			_ = *self.ptr;
+			drop(*self.ptr); // $ MISSING: Source=drop SPURIOUS: Alert[rust/access-invalid-pointer]=drop
+			_ = *self.ptr; // $ MISSING: Alert[rust/access-invalid-pointer]=drop
+			std::alloc::dealloc(self.ptr, layout);
+		}
+	}
+}
+
 // --- qhelp examples ---
 
 fn do_something(s: &String) {
