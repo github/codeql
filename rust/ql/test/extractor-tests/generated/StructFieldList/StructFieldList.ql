@@ -2,7 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordFieldList x, int getNumberOfFields
+from StructFieldList x, int getNumberOfFields
 where
   toBeTested(x) and
   not x.isUnknown() and

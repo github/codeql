@@ -1867,14 +1867,14 @@ impl Translator<'_> {
         Some(label)
     }
 
-    pub(crate) fn emit_record_field_list(&mut self, node: ast::RecordFieldList) -> Option<Label<generated::RecordFieldList>> {
+    pub(crate) fn emit_record_field_list(&mut self, node: ast::RecordFieldList) -> Option<Label<generated::StructFieldList>> {
         let fields = node.fields().filter_map(|x| self.emit_record_field(x)).collect();
-        let label = self.trap.emit(generated::RecordFieldList {
+        let label = self.trap.emit(generated::StructFieldList {
             id: TrapId::Star,
             fields,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordFieldList, self, node, label);
+        emit_detached!(StructFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }

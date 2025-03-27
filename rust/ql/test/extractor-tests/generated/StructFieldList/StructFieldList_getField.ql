@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordFieldList x, int index
+from StructFieldList x, int index
 where toBeTested(x) and not x.isUnknown()
 select x, index, x.getField(index)

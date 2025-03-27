@@ -2745,22 +2745,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A field list of a struct expression. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class RecordFieldList extends @record_field_list, FieldList {
-    override string toString() { result = "RecordFieldList" }
-
-    /**
-     * Gets the `index`th field of this record field list (0-based).
-     */
-    StructField getField(int index) { record_field_list_fields(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A reference expression. For example:
    * ```rust
    *     let ref_const = &foo;
@@ -2964,6 +2948,22 @@ module Raw {
      * Gets the type representation of this slice type representation, if it exists.
      */
     TypeRepr getTypeRepr() { slice_type_repr_type_reprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A field list of a struct expression. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class StructFieldList extends @struct_field_list, FieldList {
+    override string toString() { result = "StructFieldList" }
+
+    /**
+     * Gets the `index`th field of this struct field list (0-based).
+     */
+    StructField getField(int index) { struct_field_list_fields(this, index, result) }
   }
 
   /**
@@ -3854,7 +3854,7 @@ module Raw {
     /**
      * Gets the field list of this struct, if it exists.
      */
-    FieldList getFieldList() { struct_field_lists(this, result) }
+    FieldList getFieldList() { struct_field_lists_(this, result) }
 
     /**
      * Gets the generic parameter list of this struct, if it exists.
@@ -4124,7 +4124,7 @@ module Raw {
     /**
      * Gets the struct field list of this union, if it exists.
      */
-    RecordFieldList getStructFieldList() { union_struct_field_lists(this, result) }
+    StructFieldList getStructFieldList() { union_struct_field_lists(this, result) }
 
     /**
      * Gets the visibility of this union, if it exists.

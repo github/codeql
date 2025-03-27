@@ -469,10 +469,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRecordFieldList(Raw::RecordFieldList id) { constructRecordFieldList(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TRefExpr(Raw::RefExpr id) { constructRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -546,6 +542,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TStructField(Raw::StructField id) { constructStructField(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TStructFieldList(Raw::StructFieldList id) { constructStructFieldList(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -754,7 +754,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TFieldList = TRecordFieldList or TTupleFieldList;
+  class TFieldList = TStructFieldList or TTupleFieldList;
 
   /**
    * INTERNAL: Do not use.
@@ -1526,12 +1526,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRecordFieldList`, if possible.
-   */
-  TRecordFieldList convertRecordFieldListFromRaw(Raw::Element e) { result = TRecordFieldList(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TRefExpr`, if possible.
    */
   TRefExpr convertRefExprFromRaw(Raw::Element e) { result = TRefExpr(e) }
@@ -1645,6 +1639,12 @@ module Synth {
    * Converts a raw element to a synthesized `TStructField`, if possible.
    */
   TStructField convertStructFieldFromRaw(Raw::Element e) { result = TStructField(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TStructFieldList`, if possible.
+   */
+  TStructFieldList convertStructFieldListFromRaw(Raw::Element e) { result = TStructFieldList(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2177,7 +2177,7 @@ module Synth {
    * Converts a raw DB element to a synthesized `TFieldList`, if possible.
    */
   TFieldList convertFieldListFromRaw(Raw::Element e) {
-    result = convertRecordFieldListFromRaw(e)
+    result = convertStructFieldListFromRaw(e)
     or
     result = convertTupleFieldListFromRaw(e)
   }
@@ -3126,12 +3126,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRecordFieldList` to a raw DB element, if possible.
-   */
-  Raw::Element convertRecordFieldListToRaw(TRecordFieldList e) { e = TRecordFieldList(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TRefExpr` to a raw DB element, if possible.
    */
   Raw::Element convertRefExprToRaw(TRefExpr e) { e = TRefExpr(result) }
@@ -3245,6 +3239,12 @@ module Synth {
    * Converts a synthesized `TStructField` to a raw DB element, if possible.
    */
   Raw::Element convertStructFieldToRaw(TStructField e) { e = TStructField(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TStructFieldList` to a raw DB element, if possible.
+   */
+  Raw::Element convertStructFieldListToRaw(TStructFieldList e) { e = TStructFieldList(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3777,7 +3777,7 @@ module Synth {
    * Converts a synthesized `TFieldList` to a raw DB element, if possible.
    */
   Raw::Element convertFieldListToRaw(TFieldList e) {
-    result = convertRecordFieldListToRaw(e)
+    result = convertStructFieldListToRaw(e)
     or
     result = convertTupleFieldListToRaw(e)
   }

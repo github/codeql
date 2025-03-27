@@ -23,9 +23,7 @@ fn class_name(type_name: &str) -> String {
         "Literal" => "LiteralExpr".to_owned(),
         "ArrayExpr" => "ArrayExprInternal".to_owned(),
         "AsmOptions" => "AsmOptionsList".to_owned(),
-        _ if type_name.starts_with("Record") && type_name != "RecordFieldList" => {
-            type_name.replacen("Record", "Struct", 1)
-        }
+        _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
         _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
         _ => type_name.to_owned(),
     }
@@ -108,8 +106,8 @@ fn node_src_to_schema_class(
     super_types: &BTreeMap<String, BTreeSet<String>>,
 ) -> SchemaClass {
     let name = class_name(&node.name);
-    let   fields = get_fields(node)
-    .iter()
+    let fields = get_fields(node)
+        .iter()
         .map(|f| {
             let (ty, child) = match &f.ty {
                 FieldType::String => ("optional[string]".to_string(), false),
