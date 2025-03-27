@@ -453,7 +453,10 @@ module NodeJSLib {
     methodName = ["remove", "removeSync", "rmSync", "rm", "rmdir", "rmdirSync"] and i = 0
     or
     methodName =
-      ["outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync"] and
+      [
+        "outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync",
+        "outputJSONSync", "outputJsonSync"
+      ] and
     i = 0
     or
     methodName = ["ensureFile", "ensureFileSync"] and i = 0
@@ -465,6 +468,12 @@ module NodeJSLib {
     methodName = ["emptyDir", "emptyDirSync", "emptydir", "emptydirSync"] and i = 0
     or
     methodName = ["pathExists", "pathExistsSync"] and i = 0
+    or
+    methodName = ["lutimes", "lutimesSync"] and i = 0
+    or
+    methodName =
+      ["opendir", "opendirSync", "openAsBlob", "statfs", "statfsSync", "open", "openSync"] and
+    i = 0
   }
 
   /**

@@ -19,15 +19,15 @@ app.post('/rmsync', (req, res) => {
     fs.cpSync("source", filename); // $ Alert
     fs.emptydirSync(filename); // $ Alert
     fs.emptydir(filename); // $ Alert
-    fs.opendir(filename); // $ MISSING: Alert
-    fs.opendirSync(filename); // $ MISSING: Alert
-    fs.openAsBlob(filename); // $ MISSING: Alert
-    fs.statfs(filename); // $ MISSING: Alert
-    fs.statfsSync(filename); // $ MISSING: Alert
-    fs.open(filename, 'r'); // $ MISSING: Alert
-    fs.openSync(filename, 'r'); // $ MISSING: Alert
-    fs.outputJSONSync(filename, req.body.data, { spaces: 2 }); // $ MISSING: Alert
-    fs.lutimes(filename, new Date(req.body.atime), new Date(req.body.mtime)); // MISSING: $ Alert
-    fs.lutimesSync(filename, new Date(req.body.atime), new Date(req.body.mtime)); // MISSING: $ Alert
-    fs.outputJsonSync(filename, { timestamp: new Date().toISOString(), action: req.body.action, user: req.body.user}, { spaces: 2 }); // $ MISSING: Alert
+    fs.opendir(filename); // $ Alert
+    fs.opendirSync(filename); // $ Alert
+    fs.openAsBlob(filename); // $ Alert
+    fs.statfs(filename); // $ Alert
+    fs.statfsSync(filename); // $ Alert
+    fs.open(filename, 'r'); // $ Alert
+    fs.openSync(filename, 'r'); // $ Alert
+    fs.outputJSONSync(filename, req.body.data, { spaces: 2 }); // $ Alert
+    fs.lutimes(filename, new Date(req.body.atime), new Date(req.body.mtime)); // $ Alert
+    fs.lutimesSync(filename, new Date(req.body.atime), new Date(req.body.mtime)); // $ Alert
+    fs.outputJsonSync(filename, { timestamp: new Date().toISOString(), action: req.body.action, user: req.body.user}, { spaces: 2 }); // $ Alert
 });
