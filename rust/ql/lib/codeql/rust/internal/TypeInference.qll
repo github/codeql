@@ -764,7 +764,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
 
     AstNode getNodeAt(AccessPosition apos) {
-      result = this.getExpr() and
+      result = this.getContainer() and
       apos.isSelf()
       or
       result = this and
@@ -903,7 +903,7 @@ private module Cached {
   pragma[nomagic]
   private Type getMethodCallExprLookupType(MethodCallExpr mce, string name) {
     result = getLookupType(mce.getReceiver()) and
-    name = mce.getNameRef().getText()
+    name = mce.getIdentifier().getText()
   }
 
   /**
@@ -916,8 +916,8 @@ private module Cached {
 
   pragma[nomagic]
   private Type getFieldExprLookupType(FieldExpr fe, string name) {
-    result = getLookupType(fe.getExpr()) and
-    name = fe.getNameRef().getText()
+    result = getLookupType(fe.getContainer()) and
+    name = fe.getIdentifier().getText()
   }
 
   /**

@@ -47,7 +47,7 @@ module Input implements InputSig<Location, RustDataFlow> {
   private class MethodCallExprNameRef extends SourceBase, SinkBase {
     private MethodCallExpr call;
 
-    MethodCallExprNameRef() { this = call.getNameRef() }
+    MethodCallExprNameRef() { this = call.getIdentifier() }
 
     override MethodCallExpr getCall() { result = call }
   }

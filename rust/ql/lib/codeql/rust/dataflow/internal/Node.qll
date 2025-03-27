@@ -464,7 +464,7 @@ newtype TNode =
     e =
       [
         any(IndexExprCfgNode i).getBase(), //
-        any(FieldExprCfgNode access).getExpr(), //
+        any(FieldExprCfgNode access).getContainer(), //
         any(TryExprCfgNode try).getExpr(), //
         any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(), //
         any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver(), //
