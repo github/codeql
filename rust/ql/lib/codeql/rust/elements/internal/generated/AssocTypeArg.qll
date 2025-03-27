@@ -63,19 +63,19 @@ module Generated {
     final predicate hasGenericArgList() { exists(this.getGenericArgList()) }
 
     /**
-     * Gets the name reference of this assoc type argument, if it exists.
+     * Gets the identifier of this assoc type argument, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertAssocTypeArgToRaw(this)
               .(Raw::AssocTypeArg)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the parameter list of this assoc type argument, if it exists.

@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from StructPatField x
+from ExternCrate x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getNameRef()
+select x, x.getIdentifier()

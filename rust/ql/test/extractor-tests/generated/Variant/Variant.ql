@@ -4,7 +4,7 @@ import TestUtils
 
 from
   Variant x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasExpr, string hasFieldList, string hasName, string hasVisibility
+  string hasDiscriminant, string hasFieldList, string hasName, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,10 +15,10 @@ where
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  (if x.hasDiscriminant() then hasDiscriminant = "yes" else hasDiscriminant = "no") and
   (if x.hasFieldList() then hasFieldList = "yes" else hasFieldList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasFieldList:", hasFieldList,
-  "hasName:", hasName, "hasVisibility:", hasVisibility
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasDiscriminant:", hasDiscriminant, "hasFieldList:",
+  hasFieldList, "hasName:", hasName, "hasVisibility:", hasVisibility

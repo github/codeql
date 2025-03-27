@@ -44,19 +44,19 @@ module Generated {
     final predicate hasGenericArgList() { exists(this.getGenericArgList()) }
 
     /**
-     * Gets the name reference of this path segment, if it exists.
+     * Gets the identifier of this path segment, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the parenthesized argument list of this path segment, if it exists.

@@ -4,7 +4,7 @@ import TestUtils
 
 from
   ExternCrate x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasNameRef, string hasRename, string hasVisibility
+  string hasIdentifier, string hasRename, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,9 +15,9 @@ where
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
+  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
   (if x.hasRename() then hasRename = "yes" else hasRename = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasNameRef:", hasNameRef, "hasRename:", hasRename,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasIdentifier:", hasIdentifier, "hasRename:", hasRename,
   "hasVisibility:", hasVisibility

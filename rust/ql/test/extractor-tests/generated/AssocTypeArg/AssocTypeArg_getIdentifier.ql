@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from StructField x
+from AssocTypeArg x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getExpr()
+select x, x.getIdentifier()

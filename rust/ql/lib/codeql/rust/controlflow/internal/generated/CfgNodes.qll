@@ -901,7 +901,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
-        child = this.getExpr()
+        child = this.getContainer()
       }
     }
 
@@ -935,26 +935,26 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Gets the expression of this field expression, if it exists.
+       * Gets the container of this field expression, if it exists.
        */
-      ExprCfgNode getExpr() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      ExprCfgNode getContainer() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getContainer(), this, result)
       }
 
       /**
-       * Holds if `getExpr()` exists.
+       * Holds if `getContainer()` exists.
        */
-      predicate hasExpr() { exists(this.getExpr()) }
+      predicate hasContainer() { exists(this.getContainer()) }
 
       /**
-       * Gets the name reference of this field expression, if it exists.
+       * Gets the identifier of this field expression, if it exists.
        */
-      NameRef getNameRef() { result = node.getNameRef() }
+      NameRef getIdentifier() { result = node.getIdentifier() }
 
       /**
-       * Holds if `getNameRef()` exists.
+       * Holds if `getIdentifier()` exists.
        */
-      predicate hasNameRef() { exists(this.getNameRef()) }
+      predicate hasIdentifier() { exists(this.getIdentifier()) }
     }
 
     final private class ParentForExpr extends ParentAstNode, ForExpr {
@@ -2003,14 +2003,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasGenericArgList() { exists(this.getGenericArgList()) }
 
       /**
-       * Gets the name reference of this method call expression, if it exists.
+       * Gets the identifier of this method call expression, if it exists.
        */
-      NameRef getNameRef() { result = node.getNameRef() }
+      NameRef getIdentifier() { result = node.getIdentifier() }
 
       /**
-       * Holds if `getNameRef()` exists.
+       * Holds if `getIdentifier()` exists.
        */
-      predicate hasNameRef() { exists(this.getNameRef()) }
+      predicate hasIdentifier() { exists(this.getIdentifier()) }
 
       /**
        * Gets the receiver of this method call expression, if it exists.
@@ -3460,14 +3460,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getExpr" and
+      pred = "getContainer" and
       parent =
         any(Nodes::FieldExprCfgNode cfgNode, FieldExpr astNode |
           astNode = cfgNode.getFieldExpr() and
-          child = getDesugared(astNode.getExpr()) and
+          child = getDesugared(astNode.getContainer()) and
           i = -1 and
           hasCfgNode(child) and
-          not child = cfgNode.getExpr().getAstNode()
+          not child = cfgNode.getContainer().getAstNode()
         |
           cfgNode
         )

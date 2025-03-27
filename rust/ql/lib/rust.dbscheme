@@ -352,9 +352,9 @@ asm_reg_specs(
 );
 
 #keyset[id]
-asm_reg_spec_name_refs(
+asm_reg_spec_identifiers(
   int id: @asm_reg_spec ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 @assoc_item =
@@ -788,9 +788,9 @@ path_segment_generic_arg_lists(
 );
 
 #keyset[id]
-path_segment_name_refs(
+path_segment_identifiers(
   int id: @path_segment ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 #keyset[id]
@@ -930,9 +930,9 @@ struct_expr_field_exprs(
 );
 
 #keyset[id]
-struct_expr_field_name_refs(
+struct_expr_field_identifiers(
   int id: @struct_expr_field ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 struct_expr_field_lists(
@@ -971,9 +971,9 @@ struct_field_attrs(
 );
 
 #keyset[id]
-struct_field_exprs(
+struct_field_defaults(
   int id: @struct_field ref,
-  int expr: @expr ref
+  int default: @expr ref
 );
 
 #keyset[id]
@@ -1006,9 +1006,9 @@ struct_pat_field_attrs(
 );
 
 #keyset[id]
-struct_pat_field_name_refs(
+struct_pat_field_identifiers(
   int id: @struct_pat_field ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 #keyset[id]
@@ -1414,9 +1414,9 @@ assoc_type_arg_generic_arg_lists(
 );
 
 #keyset[id]
-assoc_type_arg_name_refs(
+assoc_type_arg_identifiers(
   int id: @assoc_type_arg ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 #keyset[id]
@@ -1747,15 +1747,15 @@ field_expr_attrs(
 );
 
 #keyset[id]
-field_expr_exprs(
+field_expr_containers(
   int id: @field_expr ref,
-  int expr: @expr ref
+  int container: @expr ref
 );
 
 #keyset[id]
-field_expr_name_refs(
+field_expr_identifiers(
   int id: @field_expr ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 fn_ptr_type_reprs(
@@ -2648,9 +2648,9 @@ variant_attrs(
 );
 
 #keyset[id]
-variant_exprs(
+variant_discriminants(
   int id: @variant ref,
-  int expr: @expr ref
+  int discriminant: @expr ref
 );
 
 #keyset[id]
@@ -2892,9 +2892,9 @@ extern_crate_attrs(
 );
 
 #keyset[id]
-extern_crate_name_refs(
+extern_crate_identifiers(
   int id: @extern_crate ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 #keyset[id]
@@ -3158,9 +3158,9 @@ method_call_expr_generic_arg_lists(
 );
 
 #keyset[id]
-method_call_expr_name_refs(
+method_call_expr_identifiers(
   int id: @method_call_expr ref,
-  int name_ref: @name_ref ref
+  int identifier: @name_ref ref
 );
 
 #keyset[id]

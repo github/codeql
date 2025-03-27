@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from AssocTypeArg x
+from Variant x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getNameRef()
+select x, x.getDiscriminant()
