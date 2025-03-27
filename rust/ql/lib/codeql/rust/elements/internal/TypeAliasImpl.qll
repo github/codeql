@@ -24,9 +24,7 @@ module Impl {
    * ```
    */
   class TypeAlias extends Generated::TypeAlias {
-    override string toStringImpl() {
-      result = concat(int i | | this.toStringPart(i), "" order by i)
-    }
+    override string toStringImpl() { result = concat(int i | | this.toStringPart(i) order by i) }
 
     private string toStringPart(int index) {
       index = 0 and result = "type "
