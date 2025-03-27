@@ -649,21 +649,13 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   class Parameter = J::Parameter;
 
-  predicate ssaDefAssigns(Impl::WriteDefinition def, Expr value) {
-    exists(VariableUpdate upd | upd = def.(SsaExplicitUpdate).getDefiningExpr() |
-      value = upd.(VariableAssign).getSource() or
-      value = upd.(AssignOp) or
-      value = upd.(RecordBindingVariableExpr)
-    )
+  predicate ssaDefHasSource(WriteDefinition def) {
+    def instanceof SsaExplicitUpdate or def.(SsaImplicitInit).isParameterDefinition(_)
   }
 
-  predicate ssaDefInitializesParam(Impl::WriteDefinition def, Parameter p) {
-    def.(SsaImplicitInit).getSourceVariable() =
-      any(SsaSourceVariable v |
-        v.getVariable() = p and
-        v.getEnclosingCallable() = p.getCallable()
-      )
-  }
+  predicate ssaDefAssigns(Impl::WriteDefinition def, Expr value) { none() }
+
+  predicate ssaDefInitializesParam(Impl::WriteDefinition def, Parameter p) { none() }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
     def instanceof SsaUncertainImplicitUpdate
