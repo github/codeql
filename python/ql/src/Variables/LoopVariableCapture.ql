@@ -10,38 +10,60 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
 
-// Gets the scope of the iteration variable of the looping scope
-Scope iteration_variable_scope(AstNode loop) {
-  result = loop.(For).getScope()
-  or
-  result = loop.(Comp).getFunction()
+abstract class Loop extends AstNode {
+  abstract Variable getALoopVariable();
 }
 
-predicate capturing_looping_construct(CallableExpr capturing, AstNode loop, Variable var) {
-  var.getScope() = iteration_variable_scope(loop) and
+class ForLoop extends Loop, For {
+  override Variable getALoopVariable() {
+    this.getTarget() = result.getAnAccess().getParentNode*() and
+    result.getScope() = this.getScope()
+  }
+}
+
+predicate capturesLoopVariable(CallableExpr capturing, Loop loop, Variable var) {
   var.getAnAccess().getScope() = capturing.getInnerScope() and
   capturing.getParentNode+() = loop and
-  (
-    loop.(For).getTarget() = var.getAnAccess()
-    or
-    var = loop.(Comp).getAnIterationVariable()
-  )
+  var = loop.getALoopVariable()
 }
 
-predicate escaping_capturing_looping_construct(CallableExpr capturing, AstNode loop, Variable var) {
-  capturing_looping_construct(capturing, loop, var) and
-  // Escapes if used out side of for loop or is a lambda in a comprehension
-  (
-    loop instanceof For and
-    exists(Expr e | e.pointsTo(_, _, capturing) | not loop.contains(e))
+module EscapingCaptureFlowSig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { capturesLoopVariable(node.asExpr(), _, _) }
+
+  predicate isSink(DataFlow::Node node) {
+    // Stored in a field.
+    exists(DataFlow::AttrWrite aw | aw.getObject() = node)
     or
-    loop.(Comp).getElt() = capturing
+    // Stored in a dict/list.
+    exists(Assign assign, Subscript sub |
+      sub = assign.getATarget() and node.asExpr() = assign.getValue()
+    )
     or
-    loop.(Comp).getElt().(Tuple).getAnElt() = capturing
-  )
+    // Stored in a list.
+    exists(DataFlow::MethodCallNode mc | mc.calls(_, "append") and node = mc.getArg(0))
+    or
+    // Used in a yeild statement, likely included in a collection.
+    // The element of comprehension expressions desugar to involve a yield statement internally.
+    exists(Yield y | node.asExpr() = y.getValue())
+  }
+
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet cs) {
+    isSink(node) and
+    exists(cs)
+  }
+}
+
+module EscapingCaptureFlow = DataFlow::Global<EscapingCaptureFlowSig>;
+
+predicate escapingCapture(CallableExpr capturing, Loop loop, Variable var) {
+  capturesLoopVariable(capturing, loop, var) and
+  EscapingCaptureFlow::flow(DataFlow::exprNode(capturing), _)
 }
 
 from CallableExpr capturing, AstNode loop, Variable var
-where escaping_capturing_looping_construct(capturing, loop, var)
+where escapingCapture(capturing, loop, var)
 select capturing, "Capture of loop variable $@.", loop, var.getId()
