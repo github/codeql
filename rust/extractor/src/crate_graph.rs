@@ -476,7 +476,7 @@ fn emit_adt(
                         name,
                         field_list,
                         attrs: vec![],
-                        expr: None,
+                        discriminant: None,
                         visibility,
                     })
                 })
@@ -1000,14 +1000,14 @@ fn make_qualified_path(
         qualifier: Option<trap::Label<generated::Path>>,
         name: String,
     ) -> trap::Label<generated::Path> {
-        let name_ref = Some(trap.emit(generated::NameRef {
+        let identifier = Some(trap.emit(generated::NameRef {
             id: trap::TrapId::Star,
             text: Some(name),
         }));
         let segment = Some(trap.emit(generated::PathSegment {
             id: trap::TrapId::Star,
             generic_arg_list: None,
-            name_ref,
+            identifier,
             parenthesized_arg_list: None,
             ret_type: None,
             return_type_syntax: None,
@@ -1305,7 +1305,7 @@ fn emit_variant_data(trap: &mut TrapFile, db: &dyn HirDatabase, variant_id: Vari
                         name,
                         type_repr,
                         visibility,
-                        expr: None,
+                        default: None,
                     })
                 })
                 .collect();
