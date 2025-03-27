@@ -1468,21 +1468,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     default predicate ssaDefHasSource(WriteDefinition def) { any() }
 
-    /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
-    predicate ssaDefAssigns(WriteDefinition def, Expr value);
-
-    /** A parameter. */
-    class Parameter {
-      /** Gets a textual representation of this parameter. */
-      string toString();
-
-      /** Gets the location of this parameter. */
-      Location getLocation();
-    }
-
-    /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
-    predicate ssaDefInitializesParam(WriteDefinition def, Parameter p);
-
     /**
      * Holds if flow should be allowed into uncertain SSA definition `def` from
      * previous definitions or reads.
@@ -1675,17 +1660,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TParamNode(DfInput::Parameter p) {
-        exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
-      } or
-      TExprNode(DfInput::Expr e, Boolean isPost) {
-        e = DfInput::getARead(_)
-        or
-        exists(DefinitionExt def |
-          DfInput::ssaDefAssigns(def, e) and
-          isPost = false
-        )
-      } or
+      TExprNode(DfInput::Expr e, Boolean isPost) { e = DfInput::getARead(_) } or
       TSsaDefinitionNode(DefinitionExt def) { not phiHasUniqNextNode(def) } or
       TSsaInputNode(SsaPhiExt phi, BasicBlock input) { relevantPhiInputNode(phi, input) }
 
@@ -1721,22 +1696,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     final class WriteDefSourceNode = WriteDefSourceNodeImpl;
-
-    /** A parameter node. */
-    private class ParameterNodeImpl extends NodeImpl, TParamNode {
-      private DfInput::Parameter p;
-
-      ParameterNodeImpl() { this = TParamNode(p) }
-
-      /** Gets the underlying parameter. */
-      DfInput::Parameter getParameter() { result = p }
-
-      override string toString() { result = p.toString() }
-
-      override Location getLocation() { result = p.getLocation() }
-    }
-
-    final class ParameterNode = ParameterNodeImpl;
 
     /** A (post-update) expression node. */
     abstract private class ExprNodePreOrPostImpl extends NodeImpl, TExprNode {
@@ -2003,14 +1962,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     predicate localFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
       exists(Definition def |
         // Flow from write definition source into SSA definition
-        nodeFrom = TWriteDefSource(def)
-        or
-        // Flow from assignment into SSA definition
-        DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
-        or
-        // Flow from parameter into entry definition
-        DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
-      |
+        nodeFrom = TWriteDefSource(def) and
         isUseStep = false and
         if DfInput::includeWriteDefsInFlowStep()
         then
@@ -2042,14 +1994,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     predicate localMustFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo) {
       exists(Definition def |
         // Flow from write definition source into SSA definition
-        nodeFrom = TWriteDefSource(def)
-        or
-        // Flow from assignment into SSA definition
-        DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
-        or
-        // Flow from parameter into entry definition
-        DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
-      |
+        nodeFrom = TWriteDefSource(def) and
         v = def.getSourceVariable() and
         if DfInput::includeWriteDefsInFlowStep()
         then nodeTo.(SsaDefinitionNode).getDefinition() = def

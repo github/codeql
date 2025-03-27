@@ -61,18 +61,6 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     none()
   }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    // This library only handles use-use flow after a post-update, there are no definitions, only uses.
-    none()
-  }
-
-  class Parameter = js::Parameter;
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    // This library only handles use-use flow after a post-update, there are no definitions, only uses.
-    none()
-  }
-
   cached
   Expr getARead(Definition def) {
     // Copied from implementation so we can cache it here

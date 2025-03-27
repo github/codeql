@@ -647,15 +647,9 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = getAUse(def) }
 
-  class Parameter = J::Parameter;
-
   predicate ssaDefHasSource(WriteDefinition def) {
     def instanceof SsaExplicitUpdate or def.(SsaImplicitInit).isParameterDefinition(_)
   }
-
-  predicate ssaDefAssigns(Impl::WriteDefinition def, Expr value) { none() }
-
-  predicate ssaDefInitializesParam(Impl::WriteDefinition def, Parameter p) { none() }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
     def instanceof SsaUncertainImplicitUpdate

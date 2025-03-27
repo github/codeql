@@ -1029,16 +1029,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     def instanceof Ssa::ImplicitParameterDefinition
   }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    // exclude flow directly from RHS to SSA definition, as we instead want to
-    // go from RHS to matching assingnable definition, and from there to SSA definition
-    none()
-  }
-
-  class Parameter = Ssa::ImplicitParameterDefinition;
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() }
-
   /**
    * Allows for flow into uncertain defintions that are not call definitions,
    * as we, conservatively, consider such definitions to be certain.

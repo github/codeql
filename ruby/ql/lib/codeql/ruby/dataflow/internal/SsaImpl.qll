@@ -473,17 +473,11 @@ class ParameterExt extends TParameterExt {
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.ruby.controlflow.internal.Guards as Guards
 
-  class Parameter = ParameterExt;
-
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
-
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) { none() }
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() }
 
   class Guard extends Cfg::CfgNodes::AstCfgNode {
     /**
