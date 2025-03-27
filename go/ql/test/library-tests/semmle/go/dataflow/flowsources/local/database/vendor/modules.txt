@@ -25,9 +25,6 @@ go.mongodb.org/mongo-driver/mongo
 # gorm.io/gorm v1.25.12
 ## explicit
 gorm.io/gorm
-# github.com/nonexistent/sources v0.0.0-20250300000000-000000000000
-## explicit
-github.com/nonexistent/sources
 # github.com/couchbase/gocbcore/v10 v10.5.4
 ## explicit
 github.com/couchbase/gocbcore/v10
