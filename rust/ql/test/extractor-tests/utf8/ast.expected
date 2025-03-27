@@ -14,7 +14,7 @@
 | utf8_identifiers.rs:4:5:4:6 | { ... } |
 | utf8_identifiers.rs:6:1:8:1 | struct X |
 | utf8_identifiers.rs:6:8:6:8 | X |
-| utf8_identifiers.rs:6:10:8:1 | RecordFieldList |
+| utf8_identifiers.rs:6:10:8:1 | StructFieldList |
 | utf8_identifiers.rs:7:5:7:5 | \u03b4 |
 | utf8_identifiers.rs:7:5:7:13 | StructField |
 | utf8_identifiers.rs:7:9:7:13 | usize |
