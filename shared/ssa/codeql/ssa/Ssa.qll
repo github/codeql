@@ -1459,6 +1459,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
+    /**
+     * Holds if `def` has some form of input flow. For example, the right-hand
+     * side of an assignment or a parameter of an SSA entry definition.
+     *
+     * For such definitions, a flow step is added from a synthetic node
+     * representing the source to the definition.
+     */
+    default predicate ssaDefHasSource(WriteDefinition def) { any() }
+
     /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
     predicate ssaDefAssigns(WriteDefinition def, Expr value);
 
@@ -1665,6 +1674,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     cached
     private newtype TNode =
+      TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
       TParamNode(DfInput::Parameter p) {
         exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
       } or
@@ -1695,6 +1705,22 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     final class Node = NodeImpl;
+
+    /** A source of a write definition. */
+    private class WriteDefSourceNodeImpl extends NodeImpl, TWriteDefSource {
+      private WriteDefinition def;
+
+      WriteDefSourceNodeImpl() { this = TWriteDefSource(def) }
+
+      /** Gets the underlying definition. */
+      WriteDefinition getDefinition() { result = def }
+
+      override string toString() { result = def.toString() }
+
+      override Location getLocation() { result = def.getLocation() }
+    }
+
+    final class WriteDefSourceNode = WriteDefSourceNodeImpl;
 
     /** A parameter node. */
     private class ParameterNodeImpl extends NodeImpl, TParamNode {
@@ -1976,6 +2002,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate localFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
       exists(Definition def |
+        // Flow from write definition source into SSA definition
+        nodeFrom = TWriteDefSource(def)
+        or
         // Flow from assignment into SSA definition
         DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
         or
@@ -2012,6 +2041,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if the value of `nodeTo` is given by `nodeFrom`. */
     predicate localMustFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo) {
       exists(Definition def |
+        // Flow from write definition source into SSA definition
+        nodeFrom = TWriteDefSource(def)
+        or
         // Flow from assignment into SSA definition
         DfInput::ssaDefAssigns(def, nodeFrom.(ExprNode).getExpr())
         or
