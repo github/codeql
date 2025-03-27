@@ -39,7 +39,7 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
               .(PathTypeRepr)
               .getPath()
               .getSegment()
-              .getNameRef()
+              .getIdentifier()
               .getText()
       ) and
       algorithmName = simplifyAlgorithmName(rawAlgorithmName)

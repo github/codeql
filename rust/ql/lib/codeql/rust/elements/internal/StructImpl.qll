@@ -25,7 +25,7 @@ module Impl {
     /** Gets the record field named `name`, if any. */
     pragma[nomagic]
     StructField getStructField(string name) {
-      result = this.getFieldList().(RecordFieldList).getAField() and
+      result = this.getFieldList().(StructFieldList).getAField() and
       result.getName().getText() = name
     }
 

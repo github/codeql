@@ -39,7 +39,7 @@ module Impl {
      * Gets the text of this path, if it exists.
      */
     pragma[nomagic]
-    string getText() { result = this.getSegment().getNameRef().getText() }
+    string getText() { result = this.getSegment().getIdentifier().getText() }
   }
 
   /** A simple identifier path. */
@@ -54,7 +54,7 @@ module Impl {
         not ps.hasParenthesizedArgList() and
         not ps.hasTypeRepr() and
         not ps.hasReturnTypeSyntax() and
-        name = ps.getNameRef().getText()
+        name = ps.getIdentifier().getText()
       )
     }
 
