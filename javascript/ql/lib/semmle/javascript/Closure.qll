@@ -5,6 +5,30 @@
 import javascript
 
 module Closure {
+  /** A call to `goog.require` */
+  class RequireCallExpr extends CallExpr {
+    RequireCallExpr() { this.getCallee().(PropAccess).getQualifiedName() = "goog.require" }
+
+    /** Gets the imported namespace name. */
+    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
+  }
+
+  /** A call to `goog.module` or `goog.declareModuleId`. */
+  private class ModuleDeclarationCall extends CallExpr {
+    private string kind;
+
+    ModuleDeclarationCall() {
+      this.getCallee().(PropAccess).getQualifiedName() = kind and
+      kind = ["goog.module", "goog.declareModuleId"]
+    }
+
+    /** Gets the declared namespace. */
+    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
+
+    /** Gets the string `goog.module` or `goog.declareModuleId` depending on which method is being called. */
+    string getModuleKind() { result = kind }
+  }
+
   /**
    * A reference to a Closure namespace.
    */
@@ -109,38 +133,26 @@ module Closure {
   class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
   { }
 
-  private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }
-
-  pragma[nomagic]
-  private MethodCallExpr googModuleDeclExpr() {
-    result.getReceiver() = googVariable().getAnAccess() and
-    result.getMethodName() = ["module", "declareModuleId"]
-  }
-
-  pragma[nomagic]
-  private MethodCallExpr googModuleDeclExprInContainer(StmtContainer container) {
-    result = googModuleDeclExpr() and
-    container = result.getContainer()
-  }
-
   pragma[noinline]
-  private ClosureRequireCall getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
+  private RequireCallExpr getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
 
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
-    ClosureModule() { exists(googModuleDeclExprInContainer(this)) }
+    private ModuleDeclarationCall decl;
+
+    ClosureModule() { decl.getTopLevel() = this }
 
     /**
      * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
      */
-    ClosureModuleDeclaration getModuleDeclaration() { result.getTopLevel() = this }
+    deprecated ClosureModuleDeclaration getModuleDeclaration() { result.getTopLevel() = this }
 
     /**
      * Gets the namespace of this module.
      */
-    string getClosureNamespace() { result = this.getModuleDeclaration().getClosureNamespace() }
+    string getClosureNamespace() { result = decl.getClosureNamespace() }
 
     override Module getAnImportedModule() {
       result.(ClosureModule).getClosureNamespace() =
@@ -156,7 +168,7 @@ module Closure {
      * Has no result for ES6 modules using `goog.declareModuleId`.
      */
     Variable getExportsVariable() {
-      this.getModuleDeclaration().getMethodName() = "module" and
+      decl.getModuleKind() = "goog.module" and
       result = this.getScope().getVariable("exports")
     }
 

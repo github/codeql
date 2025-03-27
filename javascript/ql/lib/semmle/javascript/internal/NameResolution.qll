@@ -138,14 +138,13 @@ module NameResolution {
       node2 = type
     )
     or
-    exists(ClosureModuleDeclaration decl, ClosureImport imprt |
-      decl.getClosureNamespace() = imprt.getClosureNamespace() and
-      node1 = decl.getContainer() and
-      node2 = imprt
+    exists(Closure::RequireCallExpr req |
+      node1.(Closure::ClosureModule).getClosureNamespace() = req.getClosureNamespace() and
+      node2 = req
     )
     or
     exists(Closure::ClosureModule mod |
-      node1 = mod.getScope().getVariable("exports") and
+      node1 = mod.getExportsVariable() and
       node2 = mod
     )
     or
@@ -153,45 +152,6 @@ module NameResolution {
       node1 = fun.getArgument(i) and
       node2 = fun.getParameter(i)
     )
-  }
-
-  class ClosureImport extends CallExpr {
-    ClosureImport() { this.getCallee().(PropAccess).getQualifiedName() = "goog.require" }
-
-    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
-  }
-
-  class ClosureModuleDeclaration extends CallExpr {
-    private string kind;
-
-    ClosureModuleDeclaration() {
-      this.getCallee().(PropAccess).getQualifiedName() = kind and
-      kind = ["goog.module", "goog.declareModuleId"]
-    }
-
-    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
-
-    string getModuleKind() { result = kind }
-  }
-
-  class ClosureExport extends AssignExpr {
-    private PropAccess lhs;
-
-    ClosureExport() {
-      exists(ClosureModuleDeclaration decl, Module mod |
-        decl.getModuleKind() = "goog.module" and
-        decl.getContainer() = mod and
-        this.getTopLevel() = mod and
-        this.getLhs() = lhs and
-        lhs.getBase() = mod.getScope().getVariable("exports").getAnAccess()
-      )
-    }
-
-    string getName() { result = lhs.getPropertyName() }
-
-    Module getModule() { result = this.getTopLevel() }
-
-    Expr getValue() { result = this.getRhs() }
   }
 
   /**
@@ -320,10 +280,9 @@ module NameResolution {
         result = enum.getMemberByName(name).getIdentifier()
       )
       or
-      exists(ClosureExport exprt |
-        mod = exprt.getModule() and
-        name = exprt.getName() and
-        result = exprt.getValue()
+      exists(AssignExpr assign, PropAccess lhs |
+        lhs.accesses(mod.(Closure::ClosureModule).getExportsVariable().getAnAccess(), name) and
+        result = assign.getRhs()
       )
     }
 
@@ -465,7 +424,7 @@ module NameResolution {
     )
     or
     mod = "global" and
-    qualifiedName = node.(ClosureImport).getClosureNamespace()
+    qualifiedName = node.(Closure::RequireCallExpr).getClosureNamespace()
     or
     // Additionally track through bulk re-exports (`export * from 'mod`).
     // These are normally handled by 'exportAs' which supports various shadowing rules,
