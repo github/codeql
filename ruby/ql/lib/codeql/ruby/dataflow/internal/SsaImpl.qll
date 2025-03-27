@@ -481,11 +481,9 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    def.(Ssa::WriteDefinition).assigns(value)
-  }
+  predicate ssaDefAssigns(WriteDefinition def, Expr value) { none() }
 
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { p.isInitializedBy(def) }
+  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() }
 
   class Guard extends Cfg::CfgNodes::AstCfgNode {
     /**
