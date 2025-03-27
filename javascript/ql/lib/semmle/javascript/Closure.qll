@@ -32,14 +32,14 @@ module Closure {
   /**
    * A reference to a Closure namespace.
    */
-  class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
+  deprecated class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
     /**
      * Gets the namespace being referenced.
      */
     string getClosureNamespace() { result = super.getClosureNamespace() }
   }
 
-  module ClosureNamespaceRef {
+  deprecated module ClosureNamespaceRef {
     /**
      * A reference to a Closure namespace.
      *
@@ -56,10 +56,10 @@ module Closure {
   /**
    * A data flow node that returns the value of a closure namespace.
    */
-  class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range {
-  }
+  deprecated class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range
+  { }
 
-  module ClosureNamespaceAccess {
+  deprecated module ClosureNamespaceAccess {
     /**
      * A data flow node that returns the value of a closure namespace.
      *
@@ -71,7 +71,7 @@ module Closure {
   /**
    * A call to a method on the `goog.` namespace, as a closure reference.
    */
-  abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
+  abstract deprecated private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
     ClosureNamespaceRef::Range
   {
     DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
@@ -83,14 +83,14 @@ module Closure {
    * Holds if `node` is the data flow node corresponding to the expression in
    * a top-level expression statement.
    */
-  private predicate isTopLevelExpr(DataFlow::Node node) {
+  deprecated private predicate isTopLevelExpr(DataFlow::Node node) {
     any(TopLevel tl).getAChildStmt().(ExprStmt).getExpr().flow() = node
   }
 
   /**
    * A top-level call to `goog.provide`.
    */
-  private class DefaultClosureProvideCall extends DefaultNamespaceRef {
+  deprecated private class DefaultClosureProvideCall extends DefaultNamespaceRef {
     DefaultClosureProvideCall() {
       this.getMethodName() = "provide" and
       isTopLevelExpr(this)
@@ -100,13 +100,14 @@ module Closure {
   /**
    * A top-level call to `goog.provide`.
    */
-  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall
+  deprecated class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall
   { }
 
   /**
    * A call to `goog.require`.
    */
-  private class DefaultClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess::Range
+  deprecated private class DefaultClosureRequireCall extends DefaultNamespaceRef,
+    ClosureNamespaceAccess::Range
   {
     DefaultClosureRequireCall() { this.getMethodName() = "require" }
   }
@@ -114,13 +115,13 @@ module Closure {
   /**
    * A call to `goog.require`.
    */
-  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall
+  deprecated class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall
   { }
 
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  private class DefaultClosureModuleDeclaration extends DefaultNamespaceRef {
+  deprecated private class DefaultClosureModuleDeclaration extends DefaultNamespaceRef {
     DefaultClosureModuleDeclaration() {
       (this.getMethodName() = "module" or this.getMethodName() = "declareModuleId") and
       isTopLevelExpr(this)
@@ -130,7 +131,7 @@ module Closure {
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
+  deprecated class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
   { }
 
   pragma[noinline]
@@ -193,7 +194,7 @@ module Closure {
    * A global Closure script, that is, a toplevel that is executed in the global scope and
    * contains a toplevel call to `goog.provide` or `goog.require`.
    */
-  class ClosureScript extends TopLevel {
+  deprecated class ClosureScript extends TopLevel {
     ClosureScript() {
       not this instanceof ClosureModule and
       (
@@ -225,7 +226,13 @@ module Closure {
    */
   pragma[noinline]
   predicate isClosureNamespace(string name) {
-    exists(string namespace | namespace = any(ClosureNamespaceRef ref).getClosureNamespace() |
+    exists(string namespace |
+      namespace =
+        [
+          any(RequireCallExpr ref).getClosureNamespace(),
+          any(ModuleDeclarationCall c).getClosureNamespace()
+        ]
+    |
       name = namespace.substring(0, namespace.indexOf("."))
       or
       name = namespace
