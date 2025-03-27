@@ -1034,3 +1034,40 @@ public class AvoidDuplicateLifted
         }
     }
 }
+
+public class ParameterModifiers
+{
+    // contentbased-summary=Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];Argument[1];value;dfc-generated
+    // summary=Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];Argument[1];taint;df-generated
+    public void Copy(object key, out object value)
+    {
+        value = key;
+    }
+
+    // contentbased-summary=Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];Argument[1];value;dfc-generated
+    // summary=Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];Argument[1];taint;df-generated
+    public void CopyToRef(object key, ref object value)
+    {
+        value = key;
+    }
+
+    // No summaries as we disregard flow from a parameter to itself.
+    // neutral=Models;ParameterModifiers;RefParamFlowToSelf;(System.Object,System.Boolean);summary;df-generated
+    public void RefParamFlowToSelf(ref object value, bool b)
+    {
+        value = b ? value : null;
+    }
+
+    // neutral=Models;ParameterModifiers;RefParamUse;(System.Object);summary;df-generated
+    public void RefParamUse(ref object value)
+    {
+        var b = value is null;
+    }
+
+    // contentbased-summary=Models;ParameterModifiers;false;InReturn;(System.Object);;Argument[0];ReturnValue;value;dfc-generated
+    // summary=Models;ParameterModifiers;false;InReturn;(System.Object);;Argument[0];ReturnValue;taint;df-generated
+    public object InReturn(in object v)
+    {
+        return v;
+    }
+}
