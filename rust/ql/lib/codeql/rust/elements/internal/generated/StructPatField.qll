@@ -48,19 +48,19 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the name reference of this struct pattern field, if it exists.
+     * Gets the identifier of this struct pattern field, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertStructPatFieldToRaw(this)
               .(Raw::StructPatField)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the pattern of this struct pattern field, if it exists.

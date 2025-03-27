@@ -32,14 +32,19 @@ fn class_name(type_name: &str) -> String {
 }
 
 fn property_name(type_name: &str, field_name: &str) -> String {
+    // N.B.: type names here are before any manipulation done by class_name
     let name = match (type_name, field_name) {
         ("CallExpr", "expr") => "function",
         ("LetExpr", "expr") => "scrutinee",
         ("MatchExpr", "expr") => "scrutinee",
+        ("Variant", "expr") => "discriminant",
+        ("FieldExpr", "expr") => "container",
+        (_, "name_ref") => "identifier",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
         ("ArrayType", "ty") => "element_type_repr",
         ("SelfParam", "is_amp") => "is_ref",
+        ("RecordField", "expr") => "default",
         ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
         _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),

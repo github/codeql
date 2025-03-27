@@ -49,16 +49,17 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this variant, if it exists.
+     * Gets the discriminant of this variant, if it exists.
      */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getExpr())
+    Expr getDiscriminant() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getDiscriminant())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getDiscriminant()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasDiscriminant() { exists(this.getDiscriminant()) }
 
     /**
      * Gets the field list of this variant, if it exists.

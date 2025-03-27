@@ -227,9 +227,9 @@ module Raw {
     override string toString() { result = "AsmRegSpec" }
 
     /**
-     * Gets the name reference of this asm reg spec, if it exists.
+     * Gets the identifier of this asm reg spec, if it exists.
      */
-    NameRef getNameRef() { asm_reg_spec_name_refs(this, result) }
+    NameRef getIdentifier() { asm_reg_spec_identifiers(this, result) }
   }
 
   /**
@@ -739,9 +739,9 @@ module Raw {
     GenericArgList getGenericArgList() { path_segment_generic_arg_lists(this, result) }
 
     /**
-     * Gets the name reference of this path segment, if it exists.
+     * Gets the identifier of this path segment, if it exists.
      */
-    NameRef getNameRef() { path_segment_name_refs(this, result) }
+    NameRef getIdentifier() { path_segment_identifiers(this, result) }
 
     /**
      * Gets the parenthesized argument list of this path segment, if it exists.
@@ -904,9 +904,9 @@ module Raw {
     Expr getExpr() { struct_expr_field_exprs(this, result) }
 
     /**
-     * Gets the name reference of this struct expression field, if it exists.
+     * Gets the identifier of this struct expression field, if it exists.
      */
-    NameRef getNameRef() { struct_expr_field_name_refs(this, result) }
+    NameRef getIdentifier() { struct_expr_field_identifiers(this, result) }
   }
 
   /**
@@ -951,9 +951,9 @@ module Raw {
     Attr getAttr(int index) { struct_field_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this struct field, if it exists.
+     * Gets the default of this struct field, if it exists.
      */
-    Expr getExpr() { struct_field_exprs(this, result) }
+    Expr getDefault() { struct_field_defaults(this, result) }
 
     /**
      * Gets the name of this struct field, if it exists.
@@ -987,9 +987,9 @@ module Raw {
     Attr getAttr(int index) { struct_pat_field_attrs(this, index, result) }
 
     /**
-     * Gets the name reference of this struct pattern field, if it exists.
+     * Gets the identifier of this struct pattern field, if it exists.
      */
-    NameRef getNameRef() { struct_pat_field_name_refs(this, result) }
+    NameRef getIdentifier() { struct_pat_field_identifiers(this, result) }
 
     /**
      * Gets the pattern of this struct pattern field, if it exists.
@@ -1468,9 +1468,9 @@ module Raw {
     GenericArgList getGenericArgList() { assoc_type_arg_generic_arg_lists(this, result) }
 
     /**
-     * Gets the name reference of this assoc type argument, if it exists.
+     * Gets the identifier of this assoc type argument, if it exists.
      */
-    NameRef getNameRef() { assoc_type_arg_name_refs(this, result) }
+    NameRef getIdentifier() { assoc_type_arg_identifiers(this, result) }
 
     /**
      * Gets the parameter list of this assoc type argument, if it exists.
@@ -1927,14 +1927,14 @@ module Raw {
     Attr getAttr(int index) { field_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this field expression, if it exists.
+     * Gets the container of this field expression, if it exists.
      */
-    Expr getExpr() { field_expr_exprs(this, result) }
+    Expr getContainer() { field_expr_containers(this, result) }
 
     /**
-     * Gets the name reference of this field expression, if it exists.
+     * Gets the identifier of this field expression, if it exists.
      */
-    NameRef getNameRef() { field_expr_name_refs(this, result) }
+    NameRef getIdentifier() { field_expr_identifiers(this, result) }
   }
 
   /**
@@ -3137,9 +3137,9 @@ module Raw {
     Attr getAttr(int index) { variant_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this variant, if it exists.
+     * Gets the discriminant of this variant, if it exists.
      */
-    Expr getExpr() { variant_exprs(this, result) }
+    Expr getDiscriminant() { variant_discriminants(this, result) }
 
     /**
      * Gets the field list of this variant, if it exists.
@@ -3427,9 +3427,9 @@ module Raw {
     Attr getAttr(int index) { extern_crate_attrs(this, index, result) }
 
     /**
-     * Gets the name reference of this extern crate, if it exists.
+     * Gets the identifier of this extern crate, if it exists.
      */
-    NameRef getNameRef() { extern_crate_name_refs(this, result) }
+    NameRef getIdentifier() { extern_crate_identifiers(this, result) }
 
     /**
      * Gets the rename of this extern crate, if it exists.
@@ -3706,9 +3706,9 @@ module Raw {
     GenericArgList getGenericArgList() { method_call_expr_generic_arg_lists(this, result) }
 
     /**
-     * Gets the name reference of this method call expression, if it exists.
+     * Gets the identifier of this method call expression, if it exists.
      */
-    NameRef getNameRef() { method_call_expr_name_refs(this, result) }
+    NameRef getIdentifier() { method_call_expr_identifiers(this, result) }
 
     /**
      * Gets the receiver of this method call expression, if it exists.

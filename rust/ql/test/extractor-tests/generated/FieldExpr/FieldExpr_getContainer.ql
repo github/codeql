@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from PathSegment x
+from FieldExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getNameRef()
+select x, x.getContainer()

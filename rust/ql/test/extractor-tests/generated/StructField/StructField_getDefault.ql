@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from FieldExpr x
+from StructField x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getExpr()
+select x, x.getDefault()

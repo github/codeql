@@ -97,7 +97,7 @@ class AsmRegOperand(AsmOperand, ):
     asm_reg_spec: optional["AsmRegSpec"] | child
 
 class AsmRegSpec(AstNode, ):
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
 
 class AsmSym(AsmOperand, ):
     path: optional["Path"] | child
@@ -109,7 +109,7 @@ class AssocItemList(AstNode, ):
 class AssocTypeArg(GenericArg, ):
     const_arg: optional["ConstArg"] | child
     generic_arg_list: optional["GenericArgList"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     param_list: optional["ParamList"] | child
     ret_type: optional["RetTypeRepr"] | child
     return_type_syntax: optional["ReturnTypeSyntax"] | child
@@ -226,7 +226,7 @@ class ExternBlock(Item, ):
 
 class ExternCrate(Item, ):
     attrs: list["Attr"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     rename: optional["Rename"] | child
     visibility: optional["Visibility"] | child
 
@@ -236,8 +236,8 @@ class ExternItemList(AstNode, ):
 
 class FieldExpr(Expr, ):
     attrs: list["Attr"] | child
-    expr: optional["Expr"] | child
-    name_ref: optional["NameRef"] | child
+    container: optional["Expr"] | child
+    identifier: optional["NameRef"] | child
 
 class Function(AssocItem, ExternItem, Item, ):
     abi: optional["Abi"] | child
@@ -432,7 +432,7 @@ class MethodCallExpr(Expr, ):
     arg_list: optional["ArgList"] | child
     attrs: list["Attr"] | child
     generic_arg_list: optional["GenericArgList"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     receiver: optional["Expr"] | child
 
 class Module(Item, ):
@@ -493,7 +493,7 @@ class PathPat(Pat, ):
 
 class PathSegment(AstNode, ):
     generic_arg_list: optional["GenericArgList"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     parenthesized_arg_list: optional["ParenthesizedArgList"] | child
     ret_type: optional["RetTypeRepr"] | child
     return_type_syntax: optional["ReturnTypeSyntax"] | child
@@ -529,7 +529,7 @@ class StructExpr(Expr, ):
 class StructExprField(AstNode, ):
     attrs: list["Attr"] | child
     expr: optional["Expr"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
 
 class StructExprFieldList(AstNode, ):
     attrs: list["Attr"] | child
@@ -538,7 +538,7 @@ class StructExprFieldList(AstNode, ):
 
 class StructField(AstNode, ):
     attrs: list["Attr"] | child
-    expr: optional["Expr"] | child
+    default: optional["Expr"] | child
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
@@ -552,7 +552,7 @@ class StructPat(Pat, ):
 
 class StructPatField(AstNode, ):
     attrs: list["Attr"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     pat: optional["Pat"] | child
 
 class StructPatFieldList(AstNode, ):
@@ -739,7 +739,7 @@ class UseTreeList(AstNode, ):
 
 class Variant(VariantDef, ):
     attrs: list["Attr"] | child
-    expr: optional["Expr"] | child
+    discriminant: optional["Expr"] | child
     field_list: optional["FieldList"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
