@@ -1,10 +1,10 @@
 ## Overview
 
-Calling `finalize` in application code may cause inconsistent program state or unpredicatable behavior.
+Calling `finalize()` in application code may cause inconsistent program state or unpredicatable behavior.
 
 ## Recommendation
 
-Avoid calling `finalize` in application code. Allow the JVM to determine a garbage collection schedule instead.
+Avoid calling `finalize()` in application code. Allow the JVM to determine a garbage collection schedule instead.
 
 ## Example
 
@@ -19,7 +19,7 @@ public class Test {
 
 # Implementation Notes
 
-This rule is focused on the use of existing `finalize` invocations rather than attempts to write a custom implementation.
+This rule is focused on the use of existing `finalize()` invocations rather than attempts to write a custom implementation.
 
 ## References
 

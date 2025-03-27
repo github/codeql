@@ -1,8 +1,8 @@
 /**
  * @id java/do-not-call-finalize
  * @previous-id java/do-not-use-finalizers
- * @name Do not call `finalize`
- * @description Calling `finalize` in application code may cause
+ * @name Do not call `finalize()`
+ * @description Calling `finalize()` in application code may cause
  *              inconsistent program state or unpredicatable behavior.
  * @kind problem
  * @precision high
@@ -16,13 +16,13 @@ import java
 
 from MethodCall mc
 where
-  mc.getMethod().hasName("finalize") and
-  // The Java documentation for `finalize` states: "If a subclass overrides
+  mc.getMethod() instanceof FinalizeMethod and
+  // The Java documentation for `finalize()` states: "If a subclass overrides
   // `finalize` it must invoke the superclass finalizer explicitly". Therefore,
-  // we do not alert on `super.finalize` calls that occur within a callable
+  // we do not alert on `super.finalize()` calls that occur within a callable
   // that overrides `finalize`.
   not exists(Callable caller, FinalizeMethod fm | caller = mc.getCaller() |
     caller.(Method).overrides(fm) and
     mc.getQualifier() instanceof SuperAccess
   )
-select mc, "Call to 'finalize'."
+select mc, "Call to 'finalize()'."

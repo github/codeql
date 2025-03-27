@@ -1,2 +1,1 @@
-| Test.java:4:9:4:23 | finalize(...) | Call to 'finalize'. |
-| Test.java:25:9:25:33 | finalize(...) | Call to 'finalize'. |
+| Test.java:4:9:4:23 | finalize(...) | Call to 'finalize()'. |

@@ -10,7 +10,7 @@ public class Test {
 
     @Override
     protected void finalize() throws Throwable {
-        // COMPLIANT: If a subclass overrides `finalize`
+        // COMPLIANT: If a subclass overrides `finalize()`
         // it must invoke the superclass finalizer explicitly.
         super.finalize();
     }
@@ -20,9 +20,9 @@ public class Test {
         System.out.println(s);
     }
 
-    // NON_COMPLIANT: call to overload of `finalize`
+    // COMPLIANT: call to overload of `finalize`
     void f2() throws Throwable {
-        this.finalize("overload"); // $ Alert
+        this.finalize("overload");
     }
 
 }
