@@ -1,3 +1,4 @@
 # go.uber.org/zap v1.16.0
 ## explicit
 go.uber.org/zap
+go.uber.org/zap/zapcore
