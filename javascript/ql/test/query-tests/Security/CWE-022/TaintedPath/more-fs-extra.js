@@ -5,18 +5,18 @@ const app = express();
 app.use(express.json());
 
 app.post('/rmsync', (req, res) => {
-    const { filename } = req.body; // $ MISSING: Source
+    const { filename } = req.body; // $ Source
     
     fs.rmSync(filename); // MISSING: $ Alert
     fs.rm(filename); // MISSING: $ Alert
     fs.rmdir(filename); // MISSING: $ Alert
     fs.rmdirSync(filename); // MISSING: $ Alert
-    fs.cp(filename, "destination"); // MISSING: $ Alert
-    fs.cp("source", filename); // MISSING: $ Alert
-    fs.copyFileSync(filename, "destination"); // MISSING: $ Alert
-    fs.copyFileSync("source", filename); // MISSING: $ Alert
-    fs.cpSync(filename, "destination"); // MISSING: $ Alert
-    fs.cpSync("source", filename); // MISSING: $ Alert
+    fs.cp(filename, "destination"); // $ Alert
+    fs.cp("source", filename); // $ Alert
+    fs.copyFileSync(filename, "destination"); // $ Alert
+    fs.copyFileSync("source", filename); // $ Alert
+    fs.cpSync(filename, "destination"); // $ Alert
+    fs.cpSync("source", filename); // $ Alert
     fs.emptydirSync(filename); // MISSING: $ Alert
     fs.emptydir(filename); // MISSING: $ Alert
     fs.opendir(filename); // $ MISSING: Alert

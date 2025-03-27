@@ -434,7 +434,7 @@ module NodeJSLib {
    * method might represent a file path.
    */
   private predicate fsExtraExtensionFileParam(string methodName, int i) {
-    methodName = ["copy", "copySync", "copyFile"] and i = [0, 1]
+    methodName = ["copy", "copySync", "copyFile", "cp", "copyFileSync", "cpSync"] and i = [0, 1]
     or
     methodName = ["move", "moveSync"] and i = [0, 1]
     or
