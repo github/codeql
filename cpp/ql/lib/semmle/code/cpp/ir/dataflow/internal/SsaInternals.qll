@@ -977,6 +977,8 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     )
   }
 
+  predicate ssaDefHasSource(SsaImpl::WriteDefinition def) { none() }
+
   predicate ssaDefAssigns(SsaImpl::WriteDefinition def, Expr value) { none() }
 
   class Parameter extends Void {
