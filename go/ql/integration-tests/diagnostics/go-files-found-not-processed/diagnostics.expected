@@ -13,12 +13,12 @@
   }
 }
 {
-  "markdownMessage": "[Specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
-  "severity": "error",
+  "markdownMessage": "CodeQL was unable to extract any Go files in <test-root-directory>/work. If this is unexpected, [specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
+  "severity": "warning",
   "source": {
     "extractorName": "go",
-    "id": "go/autobuilder/go-files-found-but-not-processed",
-    "name": "Go files were found but not processed"
+    "id": "go/autobuilder/go-files-found-but-not-processed-for-directory",
+    "name": "Go files were found but not processed for a directory"
   },
   "visibility": {
     "cliSummaryTable": true,
