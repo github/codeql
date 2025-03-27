@@ -72,7 +72,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       c instanceof ElementContent or
       c instanceof ReferenceContent
-    )
+    ) and
+    // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
+    not optionalStep(node, _, _)
   }
 
   /**

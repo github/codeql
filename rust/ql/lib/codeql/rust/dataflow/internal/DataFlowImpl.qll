@@ -624,6 +624,12 @@ module RustDataFlow implements InputSig<Location> {
     model = ""
     or
     LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, model)
+    or
+    // Add flow through optional barriers. This step is then blocked by the barrier for queries that choose to use the barrier.
+    FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom
+          .(Node::FlowSummaryNode)
+          .getSummaryNode(), TOptionalBarrier(_), nodeTo.(Node::FlowSummaryNode).getSummaryNode()) and
+    model = ""
   }
 
   /**
@@ -753,7 +759,17 @@ module RustDataFlow implements InputSig<Location> {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
+  }
+
+  /**
+   * Holds if `cs` is used to encode a special operation as a content component, but should not
+   * be treated as an ordinary content component.
+   */
+  private predicate isSpecialContentSet(ContentSet cs) {
+    cs instanceof TOptionalStep or
+    cs instanceof TOptionalBarrier
   }
 
   pragma[nomagic]
@@ -850,7 +866,8 @@ module RustDataFlow implements InputSig<Location> {
     storeContentStep(node1, cs.(SingletonContentSet).getContent(), node2)
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
   }
 
   /**
@@ -1136,7 +1153,14 @@ private module Cached {
   newtype TReturnKind = TNormalReturnKind()
 
   cached
-  newtype TContentSet = TSingletonContentSet(Content c)
+  newtype TContentSet =
+    TSingletonContentSet(Content c) or
+    TOptionalStep(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalStep")
+    } or
+    TOptionalBarrier(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalBarrier")
+    }
 
   /** Holds if `n` is a flow source of kind `kind`. */
   cached
@@ -1145,6 +1169,27 @@ private module Cached {
   /** Holds if `n` is a flow sink of kind `kind`. */
   cached
   predicate sinkNode(Node n, string kind) { n.(FlowSummaryNode).isSink(kind, _) }
+
+  /**
+   * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
+   * that by default the step is not present in the flow summary and needs to be explicitly enabled by defining
+   * an additional flow step.
+   */
+  cached
+  predicate optionalStep(Node node1, string name, Node node2) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+      TOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode())
+  }
+
+  /**
+   * A step in a flow summary defined using `OptionalBarrier[name]`. An `OptionalBarrier` is "opt-out", by default
+   * data can flow freely through the step. Flow through the step can be explicity blocked by defining its node as a barrier.
+   */
+  cached
+  predicate optionalBarrier(Node node, string name) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(_, TOptionalBarrier(name),
+      node.(FlowSummaryNode).getSummaryNode())
+  }
 }
 
 import Cached
