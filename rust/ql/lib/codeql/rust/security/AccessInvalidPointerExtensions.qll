@@ -36,6 +36,11 @@ module AccessInvalidPointer {
 
   /**
    * A pointer invalidation from model data.
+   *
+   * Note: we don't currently support invalidation via the object itself rather than via a pointer, such as:
+   * ```
+   * drop(obj)
+   * ```
    */
   private class ModelsAsDataSource extends Source {
     ModelsAsDataSource() { sourceNode(this, "pointer-invalidate") }

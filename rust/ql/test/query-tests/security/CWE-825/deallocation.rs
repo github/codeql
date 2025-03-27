@@ -209,7 +209,7 @@ impl Drop for MyDropBuffer {
 
 		unsafe {
 			_ = *self.ptr;
-			drop(*self.ptr); // $ MISSING: Source=drop SPURIOUS: Alert[rust/access-invalid-pointer]=drop
+			drop(*self.ptr); // $ MISSING: Source=drop
 			_ = *self.ptr; // $ MISSING: Alert[rust/access-invalid-pointer]=drop
 			std::alloc::dealloc(self.ptr, layout);
 		}

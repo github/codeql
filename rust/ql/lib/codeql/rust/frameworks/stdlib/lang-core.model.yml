@@ -30,8 +30,6 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      # Mem
-      - ["lang:core", "crate::mem::drop", "Argument[0]", "pointer-invalidate", "manual"]
       # Ptr
       - ["lang:core", "crate::ptr::drop_in_place", "Argument[0]", "pointer-invalidate", "manual"]
       - ["lang:core", "crate::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
