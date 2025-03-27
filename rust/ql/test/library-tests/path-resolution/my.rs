@@ -15,4 +15,4 @@ mod my4 {
     pub mod my5;
 }
 
-pub use my4::my5::f as nested_f; // $ MISSING: item=I201
+pub use my4::my5::f as nested_f; // $ item=I201

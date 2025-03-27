@@ -518,6 +518,6 @@ fn main() {
     nested6::f(); // $ item=I116
     nested8::f(); // $ item=I119
     my3::f(); // $ item=I200
-    nested_f(); // $ MISSING: item=I201
+    nested_f(); // $ item=I201
     m18::m19::m20::g(); // $ item=I103
 }
