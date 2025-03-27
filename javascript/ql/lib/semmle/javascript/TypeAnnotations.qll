@@ -77,16 +77,36 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
   TypeAnnotation getAnUnderlyingType() { result = this }
 
   /**
+   * DEPRECATED. Use `hasUnderlyingType` instead.
+   *
    * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope.
    */
-  final predicate hasQualifiedName(string globalName) {
+  deprecated predicate hasQualifiedName(string globalName) {
     UnderlyingTypes::nodeHasUnderlyingType(this, "global", globalName)
   }
 
   /**
+   * DEPRECATED. Use `hasUnderlyingType` instead.
+   *
    * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`.
    */
-  final predicate hasQualifiedName(string moduleName, string exportedName) {
+  deprecated predicate hasQualifiedName(string moduleName, string exportedName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, moduleName, exportedName)
+  }
+
+  /**
+   * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope,
+   * or is declared as a subtype thereof, or is a union or intersection containing such a type.
+   */
+  final predicate hasUnderlyingType(string globalName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, "global", globalName)
+  }
+
+  /**
+   * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`,
+   * or is declared as a subtype thereof, or is a union or intersection containing such a type.
+   */
+  final predicate hasUnderlyingType(string moduleName, string exportedName) {
     UnderlyingTypes::nodeHasUnderlyingType(this, moduleName, exportedName)
   }
 

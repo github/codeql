@@ -60,11 +60,7 @@ private predicate neverReturnsJQuery(string name) {
     decl.getBaseName() = "jQuery" and
     decl.getName() = name
   |
-    not decl.getDocumentation()
-        .getATagByTitle("return")
-        .getType()
-        .getAnUnderlyingType()
-        .hasQualifiedName("jQuery")
+    not decl.getDocumentation().getATagByTitle("return").getType().hasUnderlyingType("jQuery")
   )
 }
 
