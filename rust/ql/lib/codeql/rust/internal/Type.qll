@@ -29,7 +29,7 @@ abstract class Type extends TType {
   pragma[nomagic]
   abstract Function getMethod(string name);
 
-  /** Gets the record field `name` belonging to this type, if any. */
+  /** Gets the struct field `name` belonging to this type, if any. */
   pragma[nomagic]
   abstract StructField getStructField(string name);
 

@@ -1124,9 +1124,12 @@ class _:
 @annotate(GenericParamList)
 class _:
     """
-    A GenericParamList. For example:
+    A list of generic parameters. For example:
     ```rust
-    todo!()
+    fn f<A, B>(a: A, b: B) {}
+    //  ^^^^^^
+    type Foo<T1, T2> = (T1, T2);
+    //      ^^^^^^^^
     ```
     """
 
@@ -1706,9 +1709,14 @@ class _:
 @annotate(TypeAlias)
 class _:
     """
-    A TypeAlias. For example:
+    A type alias. For example:
     ```rust
-    todo!()
+    type Point = (u8, u8);
+
+    trait Trait {
+        type Output;
+    //  ^^^^^^^^^^^
+    }
     ```
     """
 

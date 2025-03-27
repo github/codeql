@@ -1,4 +1,4 @@
-| Elements extracted | 87 |
+| Elements extracted | 90 |
 | Elements unextracted | 0 |
 | Extraction errors | 0 |
 | Extraction warnings | 0 |
@@ -15,7 +15,7 @@
 | Macro calls - resolved | 2 |
 | Macro calls - total | 2 |
 | Macro calls - unresolved | 0 |
-| Taint edges - number of edges | 1671 |
+| Taint edges - number of edges | 1674 |
 | Taint reach - nodes tainted | 0 |
 | Taint reach - per million nodes | 0 |
 | Taint sinks - cryptographic operations | 0 |

@@ -248,24 +248,24 @@ private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
 }
 
 /**
- * A matching configuration for resolving types of record expressions
+ * A matching configuration for resolving types of struct expressions
  * like `Foo { bar = baz }`.
  */
 private module StructExprMatchingInput implements MatchingInputSig {
   private newtype TPos =
     TFieldPos(string name) { exists(any(Declaration decl).getField(name)) } or
-    TRecordPos()
+    TStructPos()
 
   class DeclarationPosition extends TPos {
     string asFieldPos() { this = TFieldPos(result) }
 
-    predicate isRecordPos() { this = TRecordPos() }
+    predicate isStructPos() { this = TStructPos() }
 
     string toString() {
       result = this.asFieldPos()
       or
-      this.isRecordPos() and
-      result = "(record)"
+      this.isStructPos() and
+      result = "(struct)"
     }
   }
 
@@ -286,15 +286,15 @@ private module StructExprMatchingInput implements MatchingInputSig {
         result = tp.resolveTypeAt(path)
       )
       or
-      // type parameter of the record itself
-      dpos.isRecordPos() and
+      // type parameter of the struct itself
+      dpos.isStructPos() and
       result = this.getTypeParameter(_) and
       path = TypePath::singleton(result)
     }
   }
 
-  private class RecordStructDecl extends Declaration, Struct {
-    RecordStructDecl() { this.isRecord() }
+  private class StructDecl extends Declaration, Struct {
+    StructDecl() { this.isStruct() }
 
     override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
 
@@ -304,14 +304,14 @@ private module StructExprMatchingInput implements MatchingInputSig {
       result = super.getDeclaredType(dpos, path)
       or
       // type of the struct itself
-      dpos.isRecordPos() and
+      dpos.isStructPos() and
       path.isEmpty() and
       result = TStruct(this)
     }
   }
 
-  private class RecordVariantDecl extends Declaration, Variant {
-    RecordVariantDecl() { this.isRecord() }
+  private class StructVariantDecl extends Declaration, Variant {
+    StructVariantDecl() { this.isStruct() }
 
     Enum getEnum() { result.getVariantList().getAVariant() = this }
 
@@ -325,7 +325,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
       result = super.getDeclaredType(dpos, path)
       or
       // type of the enum itself
-      dpos.isRecordPos() and
+      dpos.isStructPos() and
       path.isEmpty() and
       result = TEnum(this.getEnum())
     }
@@ -342,7 +342,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
       result = this.getFieldExpr(apos.asFieldPos()).getExpr()
       or
       result = this and
-      apos.isRecordPos()
+      apos.isStructPos()
     }
 
     Type getInferredType(AccessPosition apos, TypePath path) {
@@ -360,8 +360,8 @@ private module StructExprMatchingInput implements MatchingInputSig {
 private module StructExprMatching = Matching<StructExprMatchingInput>;
 
 /**
- * Gets the type of `n` at `path`, where `n` is either a record expression or
- * a field expression of a record expression.
+ * Gets the type of `n` at `path`, where `n` is either a struct expression or
+ * a field expression of a struct expression.
  */
 pragma[nomagic]
 private Type inferStructExprType(AstNode n, TypePath path) {
@@ -777,7 +777,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
     Declaration getTarget() {
       // mutual recursion; resolving fields requires resolving types and vice versa
-      result = [resolveRecordFieldExpr(this).(AstNode), resolveTupleFieldExpr(this)]
+      result = [resolveStructFieldExpr(this).(AstNode), resolveTupleFieldExpr(this)]
     }
   }
 
@@ -921,10 +921,10 @@ private module Cached {
   }
 
   /**
-   * Gets the record field that the field expression `fe` resolves to, if any.
+   * Gets the struct field that the field expression `fe` resolves to, if any.
    */
   cached
-  StructField resolveRecordFieldExpr(FieldExpr fe) {
+  StructField resolveStructFieldExpr(FieldExpr fe) {
     exists(string name | result = getFieldExprLookupType(fe, name).getStructField(name))
   }
 

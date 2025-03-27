@@ -13,6 +13,7 @@ private import codeql.rust.elements.internal.generated.Crate
 module Impl {
   private import rust
   private import codeql.rust.elements.internal.NamedCrate
+  private import codeql.rust.internal.PathResolution
 
   class Crate extends Generated::Crate {
     override string toStringImpl() {
@@ -57,6 +58,14 @@ module Impl {
      * Gets any dependency of this crate.
      */
     Crate getADependency() { result = this.getDependency(_) }
+
+    /** Gets the source file that defines this crate, if any. */
+    SourceFile getSourceFile() { result.getFile() = this.getModule().getFile() }
+
+    /**
+     * Gets a source file that belongs to this crate, if any.
+     */
+    SourceFile getASourceFile() { result = this.(CrateItemNode).getASourceFile() }
 
     override Location getLocation() { result = this.getModule().getLocation() }
   }
