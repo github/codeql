@@ -699,41 +699,6 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
    */
   TypeName getTypeName() { ast_node_symbol(this, result) }
 
-  override predicate hasQualifiedName(string globalName) {
-    this.getTypeName().hasQualifiedName(globalName)
-    or
-    exists(LocalTypeAccess local | local = this |
-      not exists(local.getLocalTypeName()) and // Without a local type name, the type is looked up in the global scope.
-      globalName = local.getName()
-    )
-  }
-
-  override predicate hasQualifiedName(string moduleName, string exportedName) {
-    this.getTypeName().hasQualifiedName(moduleName, exportedName)
-    or
-    exists(ImportDeclaration imprt, ImportSpecifier spec |
-      moduleName = getImportName(imprt) and
-      spec = imprt.getASpecifier()
-    |
-      spec.getImportedName() = exportedName and
-      this = spec.getLocal().(TypeDecl).getLocalTypeName().getAnAccess()
-      or
-      (spec instanceof ImportNamespaceSpecifier or spec instanceof ImportDefaultSpecifier) and
-      this =
-        spec.getLocal().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
-    )
-    or
-    exists(ImportEqualsDeclaration imprt |
-      moduleName = getImportName(imprt.getImportedEntity()) and
-      this =
-        imprt
-            .getIdentifier()
-            .(LocalNamespaceDecl)
-            .getLocalNamespaceName()
-            .getAMemberAccess(exportedName)
-    )
-  }
-
   override string getAPrimaryQlClass() { result = "TypeAccess" }
 }
 
@@ -822,14 +787,6 @@ class GenericTypeExpr extends @generic_typeexpr, TypeExpr {
 
   /** Gets the number of type arguments. This is always at least one. */
   int getNumTypeArgument() { result = count(this.getATypeArgument()) }
-
-  override predicate hasQualifiedName(string globalName) {
-    this.getTypeAccess().hasQualifiedName(globalName)
-  }
-
-  override predicate hasQualifiedName(string moduleName, string exportedName) {
-    this.getTypeAccess().hasQualifiedName(moduleName, exportedName)
-  }
 
   override string getAPrimaryQlClass() { result = "GenericTypeExpr" }
 }

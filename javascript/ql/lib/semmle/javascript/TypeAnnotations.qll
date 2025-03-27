@@ -4,6 +4,8 @@
 
 import javascript
 private import internal.StmtContainers
+private import internal.NameResolution
+private import internal.UnderlyingTypes
 
 /**
  * A type annotation, either in the form of a TypeScript type or a JSDoc comment.
@@ -77,12 +79,16 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
   /**
    * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope.
    */
-  predicate hasQualifiedName(string globalName) { none() }
+  final predicate hasQualifiedName(string globalName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, "global", globalName)
+  }
 
   /**
    * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`.
    */
-  predicate hasQualifiedName(string moduleName, string exportedName) { none() }
+  final predicate hasQualifiedName(string moduleName, string exportedName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, moduleName, exportedName)
+  }
 
   /** Gets the statement in which this type appears. */
   Stmt getEnclosingStmt() { none() }
