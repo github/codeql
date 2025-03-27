@@ -1,4 +1,0 @@
-| Program.cs:25:32:25:36 | false | Cookie attribute 'Secure' is not set to true. |
-| Program.cs:31:86:31:90 | false | Cookie attribute 'Secure' is not set to true. |
-| Program.cs:54:32:54:32 | access to local variable v | Cookie attribute 'Secure' is not set to true. |
-| Program.cs:61:86:61:86 | access to local variable v | Cookie attribute 'Secure' is not set to true. |
