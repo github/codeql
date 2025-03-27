@@ -84,15 +84,28 @@ private predicate mayRaiseWithFile(DataFlow::CfgNode file, DataFlow::CfgNode rai
 }
 
 /** Holds if data flows from `nodeFrom` to `nodeTo` in one step that also includes file wrapper classes. */
-private predicate fileLocalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  DataFlow::localFlowStep(nodeFrom, nodeTo)
-  or
+private predicate fileAdditionalLocalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(FileWrapperCall fw | nodeFrom = fw.getWrapped() and nodeTo = fw)
 }
 
+private predicate fileLocalFlowHelper0(
+  DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
+) {
+  exists(DataFlow::Node nodeMid |
+    nodeFrom.flowsTo(nodeMid) and fileAdditionalLocalFlowStep(nodeMid, nodeTo)
+  )
+}
+
+private predicate fileLocalFlowHelper1(
+  DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
+) {
+  fileLocalFlowHelper0*(nodeFrom, nodeTo)
+}
+
 /** Holds if data flows from `source` to `sink`, including file wrapper classes. */
-private predicate fileLocalFlow(DataFlow::Node source, DataFlow::Node sink) {
-  fileLocalFlowStep*(source, sink)
+pragma[inline]
+private predicate fileLocalFlow(FileOpen source, DataFlow::Node sink) {
+  exists(DataFlow::LocalSourceNode mid | fileLocalFlowHelper1(source, mid) and mid.flowsTo(sink))
 }
 
 /** Holds if the file opened at `fo` is closed. */
