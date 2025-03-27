@@ -349,6 +349,48 @@ Note that this flow is already recognized by the CodeQL JS analysis, but for thi
 - The last column, **value**, indicates the kind of flow to add. The value **value** means the input value is unchanged as
   it flows to the output.
 
+
+Example: Modeling properties injected by a middleware function
+--------------------------------------------------------------
+
+In this example, we'll show how to model a hypothetical middleware function that adds a tainted value
+on the incoming request objects:
+
+.. code-block:: js
+
+  const express = require('express')
+  const app = express()
+
+  app.use(require('@example/middleware').injectData())
+
+  app.get('/foo', (req, res) => {
+    req.data; // <-- mark 'req.data' as a taint source
+  });
+
+This can be achieved with the following data extension:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: sourceModel
+      data:
+        - [
+            "@example/middleware",
+            "Member[injectData].ReturnValue.GuardedRouteHandler.Parameter[0].Member[data]",
+            "remote",
+          ]
+
+- Since we're adding a new taint source, we add a tuple to the **sourceModel** extensible predicate.
+- The first column, **"@example/middleware"**, begins the search at imports of the hypothetical NPM package **@example/middleware**.
+- **Member[injectData]** selects accesses to the **injectData** member.
+- **ReturnValue** selects the return value of the call to **injectData**.
+- **GuardedRouteHandler** interprets the current value as a middleware function and selects all route handlers guarded by that middleware. Since the current value is passd to **app.use()**, the callback subsequently passed to **app.get()** is seen as a guarded route handler.
+- **Parameter[0]** selects the first parameter of the callback (the parameter named **req**).
+- **Member[data]** selects accesses to the **data** property of the **req** object.
+- Finally, the kind **remote** indicates that this is considered a source of remote flow.
+
 Reference material
 ------------------
 
@@ -493,6 +535,11 @@ Components related to decorators:
 - **DecoratedClass** selects a class that has the current value as a decorator. For example, **Member[Component].DecoratedClass** selects any class that is decorated with **@Component**.
 - **DecoratedParameter** selects a parameter that is decorated by the current value.
 - **DecoratedMember** selects a method, field, or accessor that is decorated by the current value.
+
+Additionally there is a component related to middleware functions:
+
+- **GuardedRouteHandler** interprets the current value as a middleware function, and selects any route handler function that comes after it in the routing hierarchy.
+  This can be used to model properties injected onto request and response objects, such as **req.db** after a middleware that injects a database connection.
 
 Additional notes about the syntax of operands:
 
