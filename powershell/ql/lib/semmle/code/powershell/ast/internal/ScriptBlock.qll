@@ -79,6 +79,9 @@ class ScriptBlock extends Ast, TScriptBlock {
       result = this.getParameter(index)
     )
     or
+    i = ThisVar() and
+    result = this.getThisParameter()
+    or
     exists(int index |
       i = scriptBlockUsing(index) and
       result = this.getUsingStmt(index)
@@ -90,13 +93,14 @@ class ScriptBlock extends Ast, TScriptBlock {
     or
     any(Synthesis s).pipelineParameterHasIndex(this, i) and
     synthChild(getRawAst(this), PipelineParamVar(), result)
-    or
-    i = -1 and
-    synthChild(getRawAst(this), ThisVar(), result)
   }
+
+  Parameter getThisParameter() { synthChild(getRawAst(this), ThisVar(), result) }
 
   /**
    * Gets a parameter of this block.
+   *
+   * Note: This does not include the `this` parameter, but it does include pipeline parameters.
    */
   Parameter getAParameter() { result = this.getParameter(_) }
 
