@@ -10,9 +10,7 @@ query predicate abseval(
 
 query predicate abstractValues(AbstractValue val) { any() }
 
-query predicate getAPrototype(AbstractValue av, DefiniteAbstractValue proto) {
-  av.getAPrototype() = proto
-}
+query DefiniteAbstractValue getAPrototype(AbstractValue av) { result = av.getAPrototype() }
 
 private import semmle.javascript.dataflow.Refinements
 

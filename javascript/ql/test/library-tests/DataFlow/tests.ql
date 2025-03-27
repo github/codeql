@@ -13,11 +13,11 @@ query predicate enclosingExpr(DataFlow::Node node, Expr enclosingExpr) {
 
 query predicate flowStep(DataFlow::Node pred, DataFlow::Node nd) { nd.getAPredecessor() = pred }
 
-query predicate getImmediatePredecessor(DataFlow::Node pred, DataFlow::Node nd) {
-  nd.getImmediatePredecessor() = pred
+query DataFlow::Node getImmediatePredecessor(DataFlow::Node pred) {
+  result.getImmediatePredecessor() = pred
 }
 
-query predicate getIntValue(DataFlow::Node node, int val) { node.getIntValue() = val }
+query int getIntValue(DataFlow::Node node) { result = node.getIntValue() }
 
 query predicate incomplete(DataFlow::Node dfn, DataFlow::Incompleteness cause) {
   dfn.isIncomplete(cause)

@@ -19,9 +19,9 @@ query predicate npm(PackageJson pkg, string name, string version) {
   version = pkg.getVersion()
 }
 
-query predicate getMainModule(PackageJson pkg, string name, Module mod) {
+query Module getMainModule(PackageJson pkg, string name) {
   name = pkg.getPackageName() and
-  mod = pkg.getMainModule()
+  result = pkg.getMainModule()
 }
 
 query predicate packageJson(PackageJson json) { any() }
