@@ -116,7 +116,7 @@ abstract class ItemNode extends Locatable {
   }
 
   pragma[nomagic]
-  private ItemNode getASuccessorRec(string name) {
+  ItemNode getASuccessorRec(string name) {
     sourceFileEdge(this, name, result)
     or
     this = result.getImmediateParent() and
@@ -613,11 +613,11 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
 }
 
 /**
- * Holds if `m` is a `mod name;` module declaration happening in a file named
- * `fileName.rs`, inside the folder `parent`.
+ * Holds if `m` is a `mod name;` module declaration, where the corresponding
+ * module file needs to be looked up in `lookup` or one of its descandants.
  */
-private predicate modImport(Module m, string fileName, string name, Folder parent) {
-  exists(File f |
+private predicate modImport0(Module m, string name, Folder lookup) {
+  exists(File f, Folder parent, string fileName |
     f = m.getFile() and
     not m.hasItemList() and
     // TODO: handle
@@ -629,17 +629,63 @@ private predicate modImport(Module m, string fileName, string name, Folder paren
     name = m.getName().getText() and
     parent = f.getParentContainer() and
     fileName = f.getStem()
+  |
+    // sibling import
+    lookup = parent and
+    (
+      m.getFile() = any(CrateItemNode c).getModuleNode().(SourceFileItemNode).getFile()
+      or
+      m.getFile().getBaseName() = "mod.rs"
+    )
+    or
+    // child import
+    lookup = parent.getFolder(fileName)
+  )
+}
+
+/**
+ * Holds if `m` is a `mod name;` module declaration, which happens inside a
+ * nested module, and `pred -> succ` is a module edge leading to `m`.
+ */
+private predicate modImportNested(ModuleItemNode m, ModuleItemNode pred, ModuleItemNode succ) {
+  pred.getAnItemInScope() = succ and
+  (
+    modImport0(m, _, _) and
+    succ = m
+    or
+    modImportNested(m, succ, _)
+  )
+}
+
+/**
+ * Holds if `m` is a `mod name;` module declaration, which happens inside a
+ * nested module, where `ancestor` is a reflexive transitive ancestor module
+ * of `m` with corresponding lookup folder `lookup`.
+ */
+private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folder lookup) {
+  modImport0(m, _, lookup) and
+  modImportNested(m, ancestor, _) and
+  not modImportNested(m, _, ancestor)
+  or
+  exists(ModuleItemNode m1, Folder mid |
+    modImportNestedLookup(m, m1, mid) and
+    modImportNested(m, m1, ancestor) and
+    lookup = mid.getFolder(m1.getName())
   )
 }
 
 /** Holds if `m` is a `mod name;` item importing file `f`. */
 private predicate fileImport(Module m, SourceFile f) {
-  exists(string fileName, string name, Folder parent | modImport(m, fileName, name, parent) |
-    // sibling import
+  exists(string name, Folder parent |
+    modImport0(m, name, _) and
     fileModule(f, name, parent)
+  |
+    // `m` is not inside a nested module
+    modImport0(m, name, parent) and
+    not modImportNested(m, _, _)
     or
-    // child import
-    fileModule(f, name, parent.getFolder(fileName))
+    // `m` is inside a nested module
+    modImportNestedLookup(m, m, parent)
   )
 }
 
@@ -651,7 +697,7 @@ pragma[nomagic]
 private predicate fileImportEdge(Module mod, string name, ItemNode item) {
   exists(SourceFileItemNode f |
     fileImport(mod, f) and
-    item = f.getASuccessor(name)
+    item = f.getASuccessorRec(name)
   )
 }
 
@@ -660,7 +706,7 @@ private predicate fileImportEdge(Module mod, string name, ItemNode item) {
  */
 pragma[nomagic]
 private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i) {
-  i = c.getModuleNode().getASuccessor(name) and
+  i = c.getModuleNode().getASuccessorRec(name) and
   not i instanceof Crate
 }
 
@@ -742,7 +788,16 @@ private predicate unqualifiedPathLookup(RelevantPath p, string name, Namespace n
     // lookup in an outer scope, but only if the item is not declared in inner scope
     exists(ItemNode mid |
       unqualifiedPathLookup(p, name, ns, mid) and
-      not declares(mid, ns, name)
+      not declares(mid, ns, name) and
+      not name = ["super", "self"] and
+      not (
+        name = "Self" and
+        mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
+      ) and
+      not (
+        name = "crate" and
+        mid = any(CrateItemNode i).getASourceFile()
+      )
     |
       // nested modules do not have unqualified access to items from outer modules,
       // except for items declared at top-level in the source file
@@ -943,15 +998,19 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
         encl.getADescendant() = use and
         item = getASuccessor(used, name, ns) and
         // glob imports can be shadowed
-        not declares(encl, ns, name)
+        not declares(encl, ns, name) and
+        not name = ["super", "self", "Self", "crate"]
       )
-    else item = used
-  |
-    not tree.hasRename() and
-    name = item.getName()
-    or
-    name = tree.getRename().getName().getText() and
-    name != "_"
+    else (
+      item = used and
+      (
+        not tree.hasRename() and
+        name = item.getName()
+        or
+        name = tree.getRename().getName().getText() and
+        name != "_"
+      )
+    )
   )
 }
 
@@ -961,7 +1020,7 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 1
+      startline = [1, 3]
     )
   }
 
