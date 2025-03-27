@@ -24,12 +24,12 @@ import codeql.rust.security.CleartextTransmissionExtensions
 module CleartextTransmissionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof SensitiveData }
 
-  predicate isSink(DataFlow::Node node) { node instanceof CleartextTransmissionSink }
+  predicate isSink(DataFlow::Node node) { node instanceof CleartextTransmission::Sink }
 
-  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof CleartextTransmissionBarrier }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof CleartextTransmission::Barrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(CleartextTransmissionAdditionalFlowStep s).step(nodeFrom, nodeTo)
+    any(CleartextTransmission::AdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
   predicate isBarrierIn(DataFlow::Node node) {

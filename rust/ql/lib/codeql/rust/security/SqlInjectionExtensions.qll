@@ -52,7 +52,7 @@ module SqlInjection {
   }
 
   /** A sink for sql-injection from model data. */
-  private class ModelsAsDataSinks extends Sink {
-    ModelsAsDataSinks() { sinkNode(this, "sql-injection") }
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() { sinkNode(this, "sql-injection") }
   }
 }
