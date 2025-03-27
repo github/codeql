@@ -340,6 +340,8 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
+  predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
+
   /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
   predicate ssaDefAssigns(WriteDefinition def, Expr value) {
     none() // handled in `DataFlowImpl.qll` instead
