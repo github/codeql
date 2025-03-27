@@ -1023,6 +1023,12 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }
 
+  predicate ssaDefHasSource(WriteDefinition def) {
+    // exclude flow directly from RHS to SSA definition, as we instead want to
+    // go from RHS to matching assignable definition, and from there to SSA definition
+    def instanceof Ssa::ImplicitParameterDefinition
+  }
+
   predicate ssaDefAssigns(WriteDefinition def, Expr value) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
     // go from RHS to matching assingnable definition, and from there to SSA definition
@@ -1031,7 +1037,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   class Parameter = Ssa::ImplicitParameterDefinition;
 
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { def = p }
+  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() }
 
   /**
    * Allows for flow into uncertain defintions that are not call definitions,
