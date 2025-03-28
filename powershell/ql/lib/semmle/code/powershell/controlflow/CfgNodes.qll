@@ -1078,13 +1078,27 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class DoUntilStmtChildMapping extends NonExprChildMapping, DoUntilStmt {
+  private class LoopStmtChildMapping extends NonExprChildMapping, LoopStmt {
+    override predicate relevantChild(Ast child) { child = this.getBody() }
+  }
+
+  class LoopStmtCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "LoopStmtCfgNode" }
+
+    override LoopStmtChildMapping s;
+
+    override LoopStmt getStmt() { result = s }
+
+    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+  }
+
+  private class DoUntilStmtChildMapping extends LoopStmtChildMapping, DoUntilStmt {
     override predicate relevantChild(Ast child) {
-      child = this.getCondition() or child = this.getBody()
+      child = this.getCondition() or super.relevantChild(child)
     }
   }
 
-  class DoUntilStmtCfgNode extends StmtCfgNode {
+  class DoUntilStmtCfgNode extends LoopStmtCfgNode {
     override string getAPrimaryQlClass() { result = "DoUntilStmtCfgNode" }
 
     override DoUntilStmtChildMapping s;
@@ -1092,17 +1106,15 @@ module StmtNodes {
     override DoUntilStmt getStmt() { result = s }
 
     ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
-
-    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  private class DoWhileStmtChildMapping extends NonExprChildMapping, DoWhileStmt {
+  private class DoWhileStmtChildMapping extends LoopStmtChildMapping, DoWhileStmt {
     override predicate relevantChild(Ast child) {
-      child = this.getCondition() or child = this.getBody()
+      child = this.getCondition() or super.relevantChild(child)
     }
   }
 
-  class DoWhileStmtCfgNode extends StmtCfgNode {
+  class DoWhileStmtCfgNode extends LoopStmtCfgNode {
     override string getAPrimaryQlClass() { result = "DoWhileStmtCfgNode" }
 
     override DoWhileStmtChildMapping s;
@@ -1110,8 +1122,6 @@ module StmtNodes {
     override DoWhileStmt getStmt() { result = s }
 
     ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
-
-    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
   private class ErrorStmtChildMapping extends NonExprChildMapping, ErrorStmt {
@@ -1160,13 +1170,13 @@ module StmtNodes {
     ExprCfgNode getHashTableExpr() { s.hasCfgChild(s.getHashTableExpr(), this, result) }
   }
 
-  private class ForEachStmtChildMapping extends NonExprChildMapping, ForEachStmt {
+  private class ForEachStmtChildMapping extends LoopStmtChildMapping, ForEachStmt {
     override predicate relevantChild(Ast child) {
-      child = this.getVarAccess() or child = this.getIterableExpr() or child = this.getBody()
+      child = this.getVarAccess() or child = this.getIterableExpr() or super.relevantChild(child)
     }
   }
 
-  class ForEachStmtCfgNode extends StmtCfgNode {
+  class ForEachStmtCfgNode extends LoopStmtCfgNode {
     override string getAPrimaryQlClass() { result = "ForEachStmtCfgNode" }
 
     override ForEachStmtChildMapping s;
@@ -1176,20 +1186,18 @@ module StmtNodes {
     ExprCfgNode getVarAccess() { s.hasCfgChild(s.getVarAccess(), this, result) }
 
     ExprCfgNode getIterableExpr() { s.hasCfgChild(s.getIterableExpr(), this, result) }
-
-    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  private class ForStmtChildMapping extends NonExprChildMapping, ForStmt {
+  private class ForStmtChildMapping extends LoopStmtChildMapping, ForStmt {
     override predicate relevantChild(Ast child) {
       child = this.getInitializer() or
       child = this.getCondition() or
       child = this.getIterator() or
-      child = this.getBody()
+      super.relevantChild(child)
     }
   }
 
-  class ForStmtCfgNode extends StmtCfgNode {
+  class ForStmtCfgNode extends LoopStmtCfgNode {
     override string getAPrimaryQlClass() { result = "ForStmtCfgNode" }
 
     override ForStmtChildMapping s;
@@ -1201,8 +1209,6 @@ module StmtNodes {
     ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
 
     AstCfgNode getIterator() { s.hasCfgChild(s.getIterator(), this, result) }
-
-    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
   private class GotoStmtChildMapping extends NonExprChildMapping, GotoStmt {
@@ -1340,14 +1346,14 @@ module StmtNodes {
     override UsingStmt getStmt() { result = s }
   }
 
-  private class WhileStmtChildMapping extends NonExprChildMapping, WhileStmt {
+  private class WhileStmtChildMapping extends LoopStmtChildMapping, WhileStmt {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or
-      child = this.getBody()
+      super.relevantChild(child)
     }
   }
 
-  class WhileStmtCfgNode extends StmtCfgNode {
+  class WhileStmtCfgNode extends LoopStmtCfgNode {
     override string getAPrimaryQlClass() { result = "WhileStmtCfgNode" }
 
     override WhileStmtChildMapping s;
@@ -1355,8 +1361,6 @@ module StmtNodes {
     override WhileStmt getStmt() { result = s }
 
     ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
-
-    StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
   private class ConfigurationChildMapping extends NonExprChildMapping, Configuration {
