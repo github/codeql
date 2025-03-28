@@ -103,6 +103,8 @@ module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     StringOps::Concatenation::taintStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Flow = DataFlow::Global<IncompleteHostNameRegexpConfig>;
