@@ -152,6 +152,30 @@ module Trees {
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       this.succEntry(pred, c) and
       (
+        first(super.getThisParameter(), succ)
+        or
+        not exists(super.getThisParameter()) and
+        first(super.getParameter(0), succ)
+        or
+        not exists(super.getThisParameter()) and
+        not exists(super.getAParameter()) and
+        first(super.getBeginBlock(), succ)
+        or
+        not exists(super.getThisParameter()) and
+        not exists(super.getAParameter()) and
+        not exists(super.getBeginBlock()) and
+        first(super.getProcessBlock(), succ)
+        or
+        not exists(super.getThisParameter()) and
+        not exists(super.getAParameter()) and
+        not exists(super.getBeginBlock()) and
+        not exists(super.getProcessBlock()) and
+        first(super.getEndBlock(), succ)
+      )
+      or
+      last(super.getThisParameter(), pred, c) and
+      completionIsNormal(c) and
+      (
         first(super.getParameter(0), succ)
         or
         not exists(super.getAParameter()) and

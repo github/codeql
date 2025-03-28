@@ -61,7 +61,7 @@ private predicate hasScopeAndName(VariableImpl variable, Scope::Range scope, str
   scope = variable.getDeclaringScopeImpl()
 }
 
-private predicate access(Raw::VarAccess va, VariableImpl v) {
+predicate access(Raw::VarAccess va, VariableImpl v) {
   exists(string name, Scope::Range scope |
     pragma[only_bind_into](name) = variableNameInScope(va, scope)
   |
@@ -150,11 +150,11 @@ private module Cached {
         )
     } or
     TVariableSynth(Raw::Ast scope, ChildIndex i) { mkSynthChild(VarSynthKind(_), scope, i) } or
-    TVarAccessReal(Raw::VarAccess va, Variable v) { access(va, v) } or
-    TVarAccessSynth(Raw::Ast parent, ChildIndex i, Variable v) {
-      mkSynthChild(VarAccessRealKind(v), parent, i)
+    TVarAccessReal(Raw::VarAccess va) { access(va, _) } or
+    TVarAccessSynth(Raw::Ast parent, ChildIndex i) {
+      mkSynthChild(VarAccessRealKind(_), parent, i)
       or
-      mkSynthChild(VarAccessSynthKind(v), parent, i)
+      mkSynthChild(VarAccessSynthKind(_), parent, i)
     } or
     TWhileStmt(Raw::WhileStmt w) or
     TTypeNameExpr(Raw::TypeNameExpr t) or
@@ -277,7 +277,7 @@ private module Cached {
     n = TTypeConstraint(result) or
     n = TUnaryExpr(result) or
     n = TUsingStmt(result) or
-    n = TVarAccessReal(result, _) or
+    n = TVarAccessReal(result) or
     n = TWhileStmt(result) or
     n = TFunctionDefinitionStmt(result) or
     n = TExpandableSubExpr(result) or
@@ -308,7 +308,7 @@ private module Cached {
     result = TFunctionSynth(parent, i) or
     result = TBoolLiteral(parent, i) or
     result = TNullLiteral(parent, i) or
-    result = TVarAccessSynth(parent, i, _) or
+    result = TVarAccessSynth(parent, i) or
     result = TEnvVariable(parent, i) or
     result = TTypeSynth(parent, i) or
     result = TAutomaticVariable(parent, i) or

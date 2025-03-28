@@ -53,5 +53,13 @@ class If extends Expr, TIf {
     )
   }
 
+  StmtBlock getABranch(boolean b) {
+    b = true and result = this.getAThen()
+    or
+    b = false and result = this.getElse()
+  }
+
+  StmtBlock getABranch() { result = this.getAThen() or result = this.getElse() }
+
   predicate hasElse() { exists(this.getElse()) }
 }

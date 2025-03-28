@@ -84,6 +84,8 @@ class Synthesis extends TSynthesis {
 
   predicate functionName(FunctionBase f, string name) { none() }
 
+  predicate getAnAccess(VarAccessSynth va, Variable v) { none() }
+
   predicate memberName(Member m, string name) { none() }
 
   predicate typeName(Type t, string name) { none() }
@@ -116,13 +118,26 @@ Raw::Ast getRawAst(Ast r) { r = getResultAst(result) }
 
 private module ThisSynthesis {
   private class ThisSynthesis extends Synthesis {
+    private predicate thisAccess(Raw::Ast parent, ChildIndex i, Child child, Raw::Scope scope) {
+      scope = parent.getScope() and
+      parent.getChild(toRawChildIndex(i)).(Raw::VarAccess).getUserPath().toLowerCase() = "this" and
+      child = SynthChild(VarAccessSynthKind(TVariableSynth(scope, ThisVar())))
+    }
+
     override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
       parent instanceof Raw::MethodScriptBlock and
       i = ThisVar() and
       child = SynthChild(VarSynthKind(ThisVarKind()))
       or
-      parent.getChild(toRawChildIndex(i)).(Raw::VarAccess).getUserPath().toLowerCase() = "this" and
-      child = SynthChild(VarAccessSynthKind(TVariableSynth(parent.getScope(), ThisVar())))
+      this.thisAccess(parent, i, child, _)
+    }
+
+    final override predicate getAnAccess(VarAccessSynth va, Variable v) {
+      exists(Raw::Ast parent, Raw::Scope scope, ChildIndex i |
+        this.thisAccess(parent, i, _, scope) and
+        v = TVariableSynth(scope, ThisVar()) and
+        va = TVarAccessSynth(parent, i)
+      )
     }
 
     override predicate variableSynthName(VariableSynth v, string name) {
@@ -731,18 +746,26 @@ private module IteratorAccessSynth {
       )
     }
 
+    final override predicate getAnAccess(VarAccessSynth va, Variable v) {
+      exists(Raw::Ast parent, ChildIndex i, Raw::VarAccess r |
+        this.expr(parent, i, r, _) and
+        va = TVarAccessSynth(parent, i) and
+        v = this.varAccess(r)
+      )
+    }
+
     override predicate exprStmtExpr(ExprStmt e, Expr expr) {
       exists(Raw::Ast p, Raw::VarAccess va, Raw::CmdExpr cmdExpr, ChildIndex i1, ChildIndex i2 |
         this.stmt(p, i1, _, _) and
         this.expr(cmdExpr, i2, va, _) and
         e = TExprStmtSynth(p, i1) and
-        expr = TVarAccessSynth(cmdExpr, i2, this.varAccess(va))
+        expr = TVarAccessSynth(cmdExpr, i2)
       )
     }
 
     final override Expr getResultAstImpl(Raw::Ast r) {
       exists(Raw::Ast parent, ChildIndex i | this.expr(parent, i, r, _) |
-        result = TVarAccessSynth(parent, i, this.varAccess(r))
+        result = TVarAccessSynth(parent, i)
       )
     }
 

@@ -8,6 +8,7 @@ private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.powershell.frameworks.data.ModelsAsData
+private import PipelineReturns as PipelineReturns
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -61,6 +62,8 @@ module SsaFlow {
 
   private ParameterNodeImpl toParameterNode(SsaImpl::ParameterExt p) {
     result = TNormalParameterNode(p.asParameter())
+    or
+    result = TThisParameterNode(p.asThis())
   }
 
   Impl::Node asNode(Node n) {
@@ -85,6 +88,16 @@ module SsaFlow {
   }
 }
 
+private module ArrayExprFlow {
+  private module Input implements PipelineReturns::InputSig {
+    predicate isSource(CfgNodes::AstCfgNode source) {
+      source = any(CfgNodes::ExprNodes::ArrayExprCfgNode ae).getStmtBlock()
+    }
+  }
+
+  import PipelineReturns::Make<Input>
+}
+
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   pragma[nomagic]
@@ -97,16 +110,13 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ParenExprCfgNode).getSubExpr()
     or
-    exists(
-      CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
-    |
-      nodeTo.asExpr() = arrayExpr and
-      container = arrayExpr.getStmtBlock().getAstNode() and
-      nodeFrom.(AstNode).getCfgNode() = container.getAnEscapingElement() and
-      not container.mayBeMultiReturned(_)
-    )
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ArrayExprCfgNode)
     or
-    nodeFrom.(AstNode).getCfgNode() = nodeTo.(PreReturNodeImpl).getReturnedNode()
+    exists(CfgNodes::ExprCfgNode e |
+      e = nodeFrom.(AstNode).getCfgNode() and
+      isReturned(e) and
+      e.getScope() = nodeTo.(PreReturNodeImpl).getCfgScope()
+    )
     or
     exists(CfgNode cfgNode |
       nodeFrom = TPreReturnNodeImpl(cfgNode, true) and
@@ -118,10 +128,12 @@ module LocalFlow {
       nodeTo = TReturnNodeImpl(cfgNode.getScope())
     )
     or
-    exists(CfgNode cfgNode |
-      cfgNode = nodeFrom.(AstNode).getCfgNode() and
-      isUniqueReturned(cfgNode) and
-      nodeTo.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+    exists(CfgNodes::ExprCfgNode e, CfgNodes::ScriptBlockCfgNode scriptBlock |
+      e = nodeFrom.(AstNode).getCfgNode() and
+      isReturned(e) and
+      e.getScope() = scriptBlock.getAstNode() and
+      not blockMayReturnMultipleValues(scriptBlock) and
+      nodeTo.(ReturnNodeImpl).getCfgScope() = scriptBlock.getAstNode()
     )
   }
 
@@ -164,7 +176,6 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
-    TStmtNode(CfgNodes::StmtCfgNode n) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TNormalParameterNode(SsaImpl::NormalParameter p) or
     TThisParameterNode(Method m) or
@@ -183,8 +194,12 @@ private module Cached {
       n = any(CfgNodes::ExprNodes::IndexExprCfgNode index).getBase()
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-    TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isMultiReturned(n) } or
-    TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isMultiReturned(n) } or
+    TPreReturnNodeImpl(CfgNodes::ScriptBlockCfgNode scriptBlock, Boolean isArray) {
+      blockMayReturnMultipleValues(scriptBlock)
+    } or
+    TImplicitWrapNode(CfgNodes::ScriptBlockCfgNode scriptBlock, Boolean shouldWrap) {
+      blockMayReturnMultipleValues(scriptBlock)
+    } or
     TReturnNodeImpl(CfgScope scope) or
     TProcessNode(ProcessBlock process) or
     TProcessPropertyByNameNode(PipelineByPropertyNameIteratorVariable iter) {
@@ -549,7 +564,7 @@ private module ParameterNodes {
 
     ThisParameterNode() { this = TThisParameterNode(m) }
 
-    override Parameter getParameter() { none() }
+    override Parameter getParameter() { result = m.getThisParameter() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       m.getBody() = c.asCfgScope() and
@@ -751,64 +766,41 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
-private module EscapeContainer {
-  private import semmle.code.powershell.internal.AstEscape::Private
+private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
+  private ReturnKind rk;
 
-  private module ReturnContainerInterpreter implements InterpretAstInputSig {
-    class T = CfgNodes::AstCfgNode;
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
-    T interpret(Ast a) { result.(CfgNodes::ExprCfgNode).getExpr() = a } // TODO: Recutse into expr-to-stmt conversions
-  }
-
-  class EscapeContainer extends AstEscape<ReturnContainerInterpreter>::Element {
-    /** Holds if `n` may be returned multiples times. */
-    predicate mayBeMultiReturned(CfgNode n) {
-      n = this.getANode() and
-      n.getASuccessor+() = n
-      or
-      this.getAChild().(EscapeContainer).mayBeMultiReturned(n)
-    }
-  }
-
-  private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
-    private ReturnKind rk;
-
-    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
-
-    override ReturnKind getKind() { result = rk }
-  }
+  override ReturnKind getKind() { result = rk }
 }
 
 private module ReturnNodes {
-  private import EscapeContainer
-
-  private predicate isReturnedImpl(CfgNodes::AstCfgNode n, EscapeContainer container) {
-    container = n.getScope() and
-    n = container.getAnEscapingElement()
+  private CfgNodes::NamedBlockCfgNode getAReturnBlock(CfgNodes::ScriptBlockCfgNode sb) {
+    result = sb.getBeginBlock()
+    or
+    result = sb.getEndBlock()
+    or
+    result = sb.getProcessBlock()
   }
+
+  private module CfgScopeReturn implements PipelineReturns::InputSig {
+    predicate isSource(CfgNodes::AstCfgNode source) { source = getAReturnBlock(_) }
+  }
+
+  private module P = PipelineReturns::Make<CfgScopeReturn>;
 
   /**
    * Holds if `n` may be returned, and there are possibly
    * more than one return value from the function.
    */
-  predicate isMultiReturned(CfgNodes::AstCfgNode n) {
-    exists(EscapeContainer container | isReturnedImpl(n, container) |
-      strictcount(container.getAnEscapingElement()) > 1
-      or
-      container.mayBeMultiReturned(n)
-    )
+  predicate blockMayReturnMultipleValues(CfgNodes::ScriptBlockCfgNode scriptBlock) {
+    P::mayReturnMultipleValues(getAReturnBlock(scriptBlock))
   }
 
   /**
    * Holds if `n` may be returned.
    */
-  predicate isReturned(CfgNodes::AstCfgNode n) { isReturnedImpl(n, _) }
-
-  /**
-   * Holds if `n` may be returned, and this is the only value that may be
-   * returned from the function.
-   */
-  predicate isUniqueReturned(CfgNodes::AstCfgNode n) { isReturned(n) and not isMultiReturned(n) }
+  predicate isReturned(CfgNodes::AstCfgNode n) { n = P::getAReturn(_) }
 
   class NormalReturnNode extends ReturnNode instanceof ReturnNodeImpl {
     final override NormalReturnKind getKind() { any() }
@@ -851,6 +843,24 @@ predicate jumpStep(Node pred, Node succ) {
     succ.(FlowSummaryNode).getSummaryNode())
 }
 
+private predicate arrayExprStore(Node node1, ContentSet cs, Node node2, CfgNodes::ExprCfgNode e) {
+  exists(CfgNodes::ExprNodes::ArrayExprCfgNode ae, CfgNodes::StmtNodes::StmtBlockCfgNode block |
+    e = node1.(AstNode).getCfgNode() and
+    ae = node2.asExpr() and
+    block = ae.getStmtBlock()
+  |
+    exists(Content::KnownElementContent ec, int index |
+      e = ArrayExprFlow::getReturn(block, index) and
+      cs.isKnownOrUnknownElement(ec) and
+      index = ec.getIndex().asInt()
+    )
+    or
+    not ArrayExprFlow::eachValueIsReturnedOnce(block) and
+    e = ArrayExprFlow::getAReturn(block) and
+    cs.isAnyElement()
+  )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
@@ -877,8 +887,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement()
   )
   or
-  exists(Content::KnownElementContent ec, int index |
-    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getExpr(index) = node1.asExpr() and
+  exists(Content::KnownElementContent ec, int index, CfgNodes::ExprCfgNode e |
+    e = node1.asExpr() and
+    not arrayExprStore(node1, _, _, e) and
+    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getExpr(index) = e and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
   )
@@ -895,15 +907,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement()
   )
   or
-  c.isAnyElement() and
-  exists(
-    CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
-  |
-    node2.asExpr() = arrayExpr and
-    container = arrayExpr.getStmtBlock().getAstNode() and
-    node1.(AstNode).getCfgNode() = container.getAnEscapingElement() and
-    container.mayBeMultiReturned(_)
-  )
+  arrayExprStore(node1, c, node2, _)
   or
   c.isAnyElement() and
   exists(CfgNode cfgNode |
@@ -1089,12 +1093,12 @@ private import PostUpdateNodes
  * (or statement) is being returned from a function.
  */
 private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
-  private CfgNodes::AstCfgNode n;
+  private CfgNodes::ScriptBlockCfgNode n;
   private boolean shouldWrap;
 
   ImplicitWrapNode() { this = TImplicitWrapNode(n, shouldWrap) }
 
-  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+  CfgNodes::ScriptBlockCfgNode getScriptBlock() { result = n }
 
   predicate shouldWrap() { shouldWrap = true }
 
@@ -1112,12 +1116,12 @@ private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
  * has been performed.
  */
 private class PreReturNodeImpl extends TPreReturnNodeImpl, NodeImpl {
-  private CfgNodes::AstCfgNode n;
+  private CfgNodes::ScriptBlockCfgNode n;
   private boolean isArray;
 
   PreReturNodeImpl() { this = TPreReturnNodeImpl(n, isArray) }
 
-  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+  CfgNodes::AstCfgNode getScriptBlock() { result = n }
 
   override CfgScope getCfgScope() { result = n.getScope() }
 
