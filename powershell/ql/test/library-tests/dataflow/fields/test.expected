@@ -40,11 +40,33 @@ edges
 | test.ps1:40:6:40:10 | arr8 [element 2] | test.ps1:40:6:40:13 | ...[...] | provenance |  |
 | test.ps1:41:6:41:10 | arr8 [element 2] | test.ps1:41:6:41:20 | ...[...] | provenance |  |
 | test.ps1:43:6:43:16 | Call to Source | test.ps1:45:17:45:18 | y | provenance |  |
-| test.ps1:45:11:45:18 | ...,... [element 2] | test.ps1:48:6:48:10 | arr9 [element 2] | provenance |  |
-| test.ps1:45:11:45:18 | ...,... [element 2] | test.ps1:49:6:49:10 | arr9 [element 2] | provenance |  |
-| test.ps1:45:17:45:18 | y | test.ps1:45:11:45:18 | ...,... [element 2] | provenance |  |
+| test.ps1:45:9:45:19 | @(...) [element 2] | test.ps1:48:6:48:10 | arr9 [element 2] | provenance |  |
+| test.ps1:45:9:45:19 | @(...) [element 2] | test.ps1:49:6:49:10 | arr9 [element 2] | provenance |  |
+| test.ps1:45:17:45:18 | y | test.ps1:45:9:45:19 | @(...) [element 2] | provenance |  |
 | test.ps1:48:6:48:10 | arr9 [element 2] | test.ps1:48:6:48:13 | ...[...] | provenance |  |
 | test.ps1:49:6:49:10 | arr9 [element 2] | test.ps1:49:6:49:20 | ...[...] | provenance |  |
+| test.ps1:54:5:56:5 | this [field] | test.ps1:55:14:55:24 | this [field] | provenance |  |
+| test.ps1:55:14:55:24 | this [field] | test.ps1:55:14:55:24 | field | provenance |  |
+| test.ps1:61:1:61:8 | [post] myClass [field] | test.ps1:63:1:63:8 | myClass [field] | provenance |  |
+| test.ps1:61:18:61:28 | Call to Source | test.ps1:61:1:61:8 | [post] myClass [field] | provenance |  |
+| test.ps1:63:1:63:8 | myClass [field] | test.ps1:54:5:56:5 | this [field] | provenance |  |
+| test.ps1:66:10:66:20 | Call to Source | test.ps1:69:5:69:6 | x | provenance |  |
+| test.ps1:67:10:67:20 | Call to Source | test.ps1:70:5:70:6 | y | provenance |  |
+| test.ps1:68:10:68:20 | Call to Source | test.ps1:70:9:70:10 | z | provenance |  |
+| test.ps1:69:5:69:6 | x | test.ps1:73:6:73:12 | Call to produce [element] | provenance |  |
+| test.ps1:70:5:70:6 | y | test.ps1:73:6:73:12 | Call to produce [element] | provenance |  |
+| test.ps1:70:9:70:10 | z | test.ps1:73:6:73:12 | Call to produce [element] | provenance |  |
+| test.ps1:73:6:73:12 | Call to produce [element] | test.ps1:74:6:74:7 | x [element] | provenance |  |
+| test.ps1:73:6:73:12 | Call to produce [element] | test.ps1:75:6:75:7 | x [element] | provenance |  |
+| test.ps1:73:6:73:12 | Call to produce [element] | test.ps1:76:6:76:7 | x [element] | provenance |  |
+| test.ps1:74:6:74:7 | x [element] | test.ps1:74:6:74:10 | ...[...] | provenance |  |
+| test.ps1:75:6:75:7 | x [element] | test.ps1:75:6:75:10 | ...[...] | provenance |  |
+| test.ps1:76:6:76:7 | x [element] | test.ps1:76:6:76:10 | ...[...] | provenance |  |
+| test.ps1:78:9:81:1 | ${...} [element a] | test.ps1:83:6:83:10 | hash [element a] | provenance |  |
+| test.ps1:78:9:81:1 | ${...} [element a] | test.ps1:87:6:87:10 | hash [element a] | provenance |  |
+| test.ps1:79:7:79:17 | Call to Source | test.ps1:78:9:81:1 | ${...} [element a] | provenance |  |
+| test.ps1:83:6:83:10 | hash [element a] | test.ps1:83:6:83:15 | ...[...] | provenance |  |
+| test.ps1:87:6:87:10 | hash [element a] | test.ps1:87:6:87:15 | ...[...] | provenance |  |
 | test.ps1:88:1:88:5 | [post] hash [b] | test.ps1:89:6:89:10 | hash [b] | provenance |  |
 | test.ps1:88:11:88:21 | Call to Source | test.ps1:88:1:88:5 | [post] hash [b] | provenance |  |
 | test.ps1:89:6:89:10 | hash [b] | test.ps1:89:6:89:12 | b | provenance |  |
@@ -98,30 +120,43 @@ nodes
 | test.ps1:41:6:41:10 | arr8 [element 2] | semmle.label | arr8 [element 2] |
 | test.ps1:41:6:41:20 | ...[...] | semmle.label | ...[...] |
 | test.ps1:43:6:43:16 | Call to Source | semmle.label | Call to Source |
-| test.ps1:45:11:45:18 | ...,... [element 2] | semmle.label | ...,... [element 2] |
+| test.ps1:45:9:45:19 | @(...) [element 2] | semmle.label | @(...) [element 2] |
 | test.ps1:45:17:45:18 | y | semmle.label | y |
 | test.ps1:48:6:48:10 | arr9 [element 2] | semmle.label | arr9 [element 2] |
 | test.ps1:48:6:48:13 | ...[...] | semmle.label | ...[...] |
 | test.ps1:49:6:49:10 | arr9 [element 2] | semmle.label | arr9 [element 2] |
 | test.ps1:49:6:49:20 | ...[...] | semmle.label | ...[...] |
+| test.ps1:54:5:56:5 | this [field] | semmle.label | this [field] |
+| test.ps1:55:14:55:24 | field | semmle.label | field |
+| test.ps1:55:14:55:24 | this [field] | semmle.label | this [field] |
+| test.ps1:61:1:61:8 | [post] myClass [field] | semmle.label | [post] myClass [field] |
+| test.ps1:61:18:61:28 | Call to Source | semmle.label | Call to Source |
+| test.ps1:63:1:63:8 | myClass [field] | semmle.label | myClass [field] |
+| test.ps1:66:10:66:20 | Call to Source | semmle.label | Call to Source |
+| test.ps1:67:10:67:20 | Call to Source | semmle.label | Call to Source |
+| test.ps1:68:10:68:20 | Call to Source | semmle.label | Call to Source |
+| test.ps1:69:5:69:6 | x | semmle.label | x |
+| test.ps1:70:5:70:6 | y | semmle.label | y |
+| test.ps1:70:9:70:10 | z | semmle.label | z |
+| test.ps1:73:6:73:12 | Call to produce [element] | semmle.label | Call to produce [element] |
+| test.ps1:74:6:74:7 | x [element] | semmle.label | x [element] |
+| test.ps1:74:6:74:10 | ...[...] | semmle.label | ...[...] |
+| test.ps1:75:6:75:7 | x [element] | semmle.label | x [element] |
+| test.ps1:75:6:75:10 | ...[...] | semmle.label | ...[...] |
+| test.ps1:76:6:76:7 | x [element] | semmle.label | x [element] |
+| test.ps1:76:6:76:10 | ...[...] | semmle.label | ...[...] |
+| test.ps1:78:9:81:1 | ${...} [element a] | semmle.label | ${...} [element a] |
+| test.ps1:79:7:79:17 | Call to Source | semmle.label | Call to Source |
+| test.ps1:83:6:83:10 | hash [element a] | semmle.label | hash [element a] |
+| test.ps1:83:6:83:15 | ...[...] | semmle.label | ...[...] |
+| test.ps1:87:6:87:10 | hash [element a] | semmle.label | hash [element a] |
+| test.ps1:87:6:87:15 | ...[...] | semmle.label | ...[...] |
 | test.ps1:88:1:88:5 | [post] hash [b] | semmle.label | [post] hash [b] |
 | test.ps1:88:11:88:21 | Call to Source | semmle.label | Call to Source |
 | test.ps1:89:6:89:10 | hash [b] | semmle.label | hash [b] |
 | test.ps1:89:6:89:12 | b | semmle.label | b |
 subpaths
 testFailures
-| test.ps1:55:26:55:44 | # $ hasValueFlow=12 | Missing result: hasValueFlow=12 |
-| test.ps1:74:12:74:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=13 |
-| test.ps1:74:12:74:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=14 |
-| test.ps1:74:12:74:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=15 |
-| test.ps1:75:12:75:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=13 |
-| test.ps1:75:12:75:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=14 |
-| test.ps1:75:12:75:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=15 |
-| test.ps1:76:12:76:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=13 |
-| test.ps1:76:12:76:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=14 |
-| test.ps1:76:12:76:62 | # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15 | Missing result: hasValueFlow=15 |
-| test.ps1:83:17:83:35 | # $ hasValueFlow=16 | Missing result: hasValueFlow=16 |
-| test.ps1:87:17:87:45 | # $ SPURIOUS: hasValueFlow=16 | Fixed spurious result: hasValueFlow=16 |
 #select
 | test.ps1:4:6:4:9 | f | test.ps1:3:8:3:17 | Call to Source | test.ps1:4:6:4:9 | f | $@ | test.ps1:3:8:3:17 | Call to Source | Call to Source |
 | test.ps1:11:6:11:13 | ...[...] | test.ps1:10:12:10:21 | Call to Source | test.ps1:11:6:11:13 | ...[...] | $@ | test.ps1:10:12:10:21 | Call to Source | Call to Source |
@@ -136,4 +171,16 @@ testFailures
 | test.ps1:41:6:41:20 | ...[...] | test.ps1:35:6:35:16 | Call to Source | test.ps1:41:6:41:20 | ...[...] | $@ | test.ps1:35:6:35:16 | Call to Source | Call to Source |
 | test.ps1:48:6:48:13 | ...[...] | test.ps1:43:6:43:16 | Call to Source | test.ps1:48:6:48:13 | ...[...] | $@ | test.ps1:43:6:43:16 | Call to Source | Call to Source |
 | test.ps1:49:6:49:20 | ...[...] | test.ps1:43:6:43:16 | Call to Source | test.ps1:49:6:49:20 | ...[...] | $@ | test.ps1:43:6:43:16 | Call to Source | Call to Source |
+| test.ps1:55:14:55:24 | field | test.ps1:61:18:61:28 | Call to Source | test.ps1:55:14:55:24 | field | $@ | test.ps1:61:18:61:28 | Call to Source | Call to Source |
+| test.ps1:74:6:74:10 | ...[...] | test.ps1:66:10:66:20 | Call to Source | test.ps1:74:6:74:10 | ...[...] | $@ | test.ps1:66:10:66:20 | Call to Source | Call to Source |
+| test.ps1:74:6:74:10 | ...[...] | test.ps1:67:10:67:20 | Call to Source | test.ps1:74:6:74:10 | ...[...] | $@ | test.ps1:67:10:67:20 | Call to Source | Call to Source |
+| test.ps1:74:6:74:10 | ...[...] | test.ps1:68:10:68:20 | Call to Source | test.ps1:74:6:74:10 | ...[...] | $@ | test.ps1:68:10:68:20 | Call to Source | Call to Source |
+| test.ps1:75:6:75:10 | ...[...] | test.ps1:66:10:66:20 | Call to Source | test.ps1:75:6:75:10 | ...[...] | $@ | test.ps1:66:10:66:20 | Call to Source | Call to Source |
+| test.ps1:75:6:75:10 | ...[...] | test.ps1:67:10:67:20 | Call to Source | test.ps1:75:6:75:10 | ...[...] | $@ | test.ps1:67:10:67:20 | Call to Source | Call to Source |
+| test.ps1:75:6:75:10 | ...[...] | test.ps1:68:10:68:20 | Call to Source | test.ps1:75:6:75:10 | ...[...] | $@ | test.ps1:68:10:68:20 | Call to Source | Call to Source |
+| test.ps1:76:6:76:10 | ...[...] | test.ps1:66:10:66:20 | Call to Source | test.ps1:76:6:76:10 | ...[...] | $@ | test.ps1:66:10:66:20 | Call to Source | Call to Source |
+| test.ps1:76:6:76:10 | ...[...] | test.ps1:67:10:67:20 | Call to Source | test.ps1:76:6:76:10 | ...[...] | $@ | test.ps1:67:10:67:20 | Call to Source | Call to Source |
+| test.ps1:76:6:76:10 | ...[...] | test.ps1:68:10:68:20 | Call to Source | test.ps1:76:6:76:10 | ...[...] | $@ | test.ps1:68:10:68:20 | Call to Source | Call to Source |
+| test.ps1:83:6:83:15 | ...[...] | test.ps1:79:7:79:17 | Call to Source | test.ps1:83:6:83:15 | ...[...] | $@ | test.ps1:79:7:79:17 | Call to Source | Call to Source |
+| test.ps1:87:6:87:15 | ...[...] | test.ps1:79:7:79:17 | Call to Source | test.ps1:87:6:87:15 | ...[...] | $@ | test.ps1:79:7:79:17 | Call to Source | Call to Source |
 | test.ps1:89:6:89:12 | b | test.ps1:88:11:88:21 | Call to Source | test.ps1:89:6:89:12 | b | $@ | test.ps1:88:11:88:21 | Call to Source | Call to Source |

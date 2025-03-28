@@ -8,6 +8,10 @@ multipleSuccessors
 | functions.ps1:8:5:8:23 | [Stmt] ...+... | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
 | functions.ps1:8:5:8:23 | [Stmt] __pipeline_iterator | successor | functions.ps1:8:5:8:12 | number1 |
 | functions.ps1:8:5:8:23 | [Stmt] __pipeline_iterator | successor | functions.ps1:46:17:46:18 | __pipeline_iterator |
+| functions.ps1:13:28:20:1 | name1 | successor | functions.ps1:13:28:20:1 | name2 |
+| functions.ps1:13:28:20:1 | name1 | successor | functions.ps1:16:24:16:24 | 0 |
+| functions.ps1:13:28:20:1 | name2 | successor | functions.ps1:13:28:20:1 | [synth] pipeline |
+| functions.ps1:13:28:20:1 | name2 | successor | functions.ps1:17:24:17:29 | name1 |
 | functions.ps1:16:24:16:24 | 0 | successor | functions.ps1:13:28:20:1 | name2 |
 | functions.ps1:16:24:16:24 | 0 | successor | functions.ps1:17:24:17:29 | name1 |
 | functions.ps1:17:24:17:33 | ...+... | successor | functions.ps1:13:28:20:1 | [synth] pipeline |

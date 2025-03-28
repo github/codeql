@@ -8,6 +8,16 @@ edges
 | test.ps1:13:6:13:20 | Call to callSourceTwice [element] | test.ps1:16:6:16:7 | x [element] | provenance |  |
 | test.ps1:15:6:15:7 | x [element] | test.ps1:15:6:15:10 | ...[...] | provenance |  |
 | test.ps1:16:6:16:7 | x [element] | test.ps1:16:6:16:10 | ...[...] | provenance |  |
+| test.ps1:19:12:19:21 | Call to Source | test.ps1:22:6:22:18 | Call to returnSource1 | provenance |  |
+| test.ps1:22:6:22:18 | Call to returnSource1 | test.ps1:23:6:23:7 | x | provenance |  |
+| test.ps1:26:10:26:19 | Call to Source | test.ps1:27:5:27:6 | x | provenance |  |
+| test.ps1:27:5:27:6 | x | test.ps1:32:6:32:18 | Call to returnSource2 [element] | provenance |  |
+| test.ps1:28:10:28:19 | Call to Source | test.ps1:29:12:29:13 | y | provenance |  |
+| test.ps1:29:12:29:13 | y | test.ps1:32:6:32:18 | Call to returnSource2 [element] | provenance |  |
+| test.ps1:32:6:32:18 | Call to returnSource2 [element] | test.ps1:33:6:33:7 | x [element] | provenance |  |
+| test.ps1:32:6:32:18 | Call to returnSource2 [element] | test.ps1:34:6:34:7 | x [element] | provenance |  |
+| test.ps1:33:6:33:7 | x [element] | test.ps1:33:6:33:10 | ...[...] | provenance |  |
+| test.ps1:34:6:34:7 | x [element] | test.ps1:34:6:34:10 | ...[...] | provenance |  |
 | test.ps1:38:9:38:18 | Call to Source | test.ps1:42:6:42:21 | Call to callSourceInLoop [element] | provenance |  |
 | test.ps1:42:6:42:21 | Call to callSourceInLoop [element] | test.ps1:43:6:43:7 | x [element] | provenance |  |
 | test.ps1:42:6:42:21 | Call to callSourceInLoop [element] | test.ps1:44:6:44:7 | x [element] | provenance |  |
@@ -24,6 +34,18 @@ nodes
 | test.ps1:15:6:15:10 | ...[...] | semmle.label | ...[...] |
 | test.ps1:16:6:16:7 | x [element] | semmle.label | x [element] |
 | test.ps1:16:6:16:10 | ...[...] | semmle.label | ...[...] |
+| test.ps1:19:12:19:21 | Call to Source | semmle.label | Call to Source |
+| test.ps1:22:6:22:18 | Call to returnSource1 | semmle.label | Call to returnSource1 |
+| test.ps1:23:6:23:7 | x | semmle.label | x |
+| test.ps1:26:10:26:19 | Call to Source | semmle.label | Call to Source |
+| test.ps1:27:5:27:6 | x | semmle.label | x |
+| test.ps1:28:10:28:19 | Call to Source | semmle.label | Call to Source |
+| test.ps1:29:12:29:13 | y | semmle.label | y |
+| test.ps1:32:6:32:18 | Call to returnSource2 [element] | semmle.label | Call to returnSource2 [element] |
+| test.ps1:33:6:33:7 | x [element] | semmle.label | x [element] |
+| test.ps1:33:6:33:10 | ...[...] | semmle.label | ...[...] |
+| test.ps1:34:6:34:7 | x [element] | semmle.label | x [element] |
+| test.ps1:34:6:34:10 | ...[...] | semmle.label | ...[...] |
 | test.ps1:38:9:38:18 | Call to Source | semmle.label | Call to Source |
 | test.ps1:42:6:42:21 | Call to callSourceInLoop [element] | semmle.label | Call to callSourceInLoop [element] |
 | test.ps1:43:6:43:7 | x [element] | semmle.label | x [element] |
@@ -32,16 +54,16 @@ nodes
 | test.ps1:44:6:44:10 | ...[...] | semmle.label | ...[...] |
 subpaths
 testFailures
-| test.ps1:23:9:23:26 | # $ hasValueFlow=4 | Missing result: hasValueFlow=4 |
-| test.ps1:33:12:33:54 | # $ hasValueFlow=5 SPURIOUS: hasValueFlow=6 | Fixed spurious result: hasValueFlow=6 |
-| test.ps1:33:12:33:54 | # $ hasValueFlow=5 SPURIOUS: hasValueFlow=6 | Missing result: hasValueFlow=5 |
-| test.ps1:34:12:34:54 | # $ hasValueFlow=6 SPURIOUS: hasValueFlow=5 | Fixed spurious result: hasValueFlow=5 |
-| test.ps1:34:12:34:54 | # $ hasValueFlow=6 SPURIOUS: hasValueFlow=5 | Missing result: hasValueFlow=6 |
 #select
 | test.ps1:6:6:6:7 | x | test.ps1:2:5:2:14 | Call to Source | test.ps1:6:6:6:7 | x | $@ | test.ps1:2:5:2:14 | Call to Source | Call to Source |
 | test.ps1:15:6:15:10 | ...[...] | test.ps1:9:5:9:14 | Call to Source | test.ps1:15:6:15:10 | ...[...] | $@ | test.ps1:9:5:9:14 | Call to Source | Call to Source |
 | test.ps1:15:6:15:10 | ...[...] | test.ps1:10:5:10:14 | Call to Source | test.ps1:15:6:15:10 | ...[...] | $@ | test.ps1:10:5:10:14 | Call to Source | Call to Source |
 | test.ps1:16:6:16:10 | ...[...] | test.ps1:9:5:9:14 | Call to Source | test.ps1:16:6:16:10 | ...[...] | $@ | test.ps1:9:5:9:14 | Call to Source | Call to Source |
 | test.ps1:16:6:16:10 | ...[...] | test.ps1:10:5:10:14 | Call to Source | test.ps1:16:6:16:10 | ...[...] | $@ | test.ps1:10:5:10:14 | Call to Source | Call to Source |
+| test.ps1:23:6:23:7 | x | test.ps1:19:12:19:21 | Call to Source | test.ps1:23:6:23:7 | x | $@ | test.ps1:19:12:19:21 | Call to Source | Call to Source |
+| test.ps1:33:6:33:10 | ...[...] | test.ps1:26:10:26:19 | Call to Source | test.ps1:33:6:33:10 | ...[...] | $@ | test.ps1:26:10:26:19 | Call to Source | Call to Source |
+| test.ps1:33:6:33:10 | ...[...] | test.ps1:28:10:28:19 | Call to Source | test.ps1:33:6:33:10 | ...[...] | $@ | test.ps1:28:10:28:19 | Call to Source | Call to Source |
+| test.ps1:34:6:34:10 | ...[...] | test.ps1:26:10:26:19 | Call to Source | test.ps1:34:6:34:10 | ...[...] | $@ | test.ps1:26:10:26:19 | Call to Source | Call to Source |
+| test.ps1:34:6:34:10 | ...[...] | test.ps1:28:10:28:19 | Call to Source | test.ps1:34:6:34:10 | ...[...] | $@ | test.ps1:28:10:28:19 | Call to Source | Call to Source |
 | test.ps1:43:6:43:10 | ...[...] | test.ps1:38:9:38:18 | Call to Source | test.ps1:43:6:43:10 | ...[...] | $@ | test.ps1:38:9:38:18 | Call to Source | Call to Source |
 | test.ps1:44:6:44:10 | ...[...] | test.ps1:38:9:38:18 | Call to Source | test.ps1:44:6:44:10 | ...[...] | $@ | test.ps1:38:9:38:18 | Call to Source | Call to Source |
