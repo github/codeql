@@ -657,391 +657,440 @@ inferType
 | main.rs:520:13:520:13 | y |  | main.rs:482:5:483:14 | struct S2 |
 | main.rs:520:21:520:27 | into(...) |  | main.rs:482:5:483:14 | struct S2 |
 | main.rs:520:26:520:26 | x |  | main.rs:479:5:480:14 | struct S1 |
-| main.rs:550:13:550:14 | p1 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:550:13:550:14 | p1 | Fst | main.rs:533:5:534:14 | struct S1 |
-| main.rs:550:13:550:14 | p1 | Snd | main.rs:536:5:537:14 | struct S2 |
-| main.rs:550:26:550:53 | ...::PairBoth(...) |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:550:26:550:53 | ...::PairBoth(...) | Fst | main.rs:533:5:534:14 | struct S1 |
-| main.rs:550:26:550:53 | ...::PairBoth(...) | Snd | main.rs:536:5:537:14 | struct S2 |
-| main.rs:550:47:550:48 | S1 |  | main.rs:533:5:534:14 | struct S1 |
-| main.rs:550:51:550:52 | S2 |  | main.rs:536:5:537:14 | struct S2 |
-| main.rs:551:26:551:27 | p1 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:551:26:551:27 | p1 | Fst | main.rs:533:5:534:14 | struct S1 |
-| main.rs:551:26:551:27 | p1 | Snd | main.rs:536:5:537:14 | struct S2 |
-| main.rs:554:13:554:14 | p2 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:554:26:554:47 | ...::PairNone(...) |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:555:26:555:27 | p2 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:558:13:558:14 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:558:13:558:14 | p3 | Snd | main.rs:539:5:540:14 | struct S3 |
-| main.rs:558:34:558:56 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:558:34:558:56 | ...::PairSnd(...) | Snd | main.rs:539:5:540:14 | struct S3 |
-| main.rs:558:54:558:55 | S3 |  | main.rs:539:5:540:14 | struct S3 |
-| main.rs:559:26:559:27 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:559:26:559:27 | p3 | Snd | main.rs:539:5:540:14 | struct S3 |
-| main.rs:562:13:562:14 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:562:13:562:14 | p3 | Fst | main.rs:539:5:540:14 | struct S3 |
-| main.rs:562:35:562:56 | ...::PairNone(...) |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:562:35:562:56 | ...::PairNone(...) | Fst | main.rs:539:5:540:14 | struct S3 |
-| main.rs:563:26:563:27 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:563:26:563:27 | p3 | Fst | main.rs:539:5:540:14 | struct S3 |
-| main.rs:575:16:575:24 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:575:16:575:24 | SelfParam | &T | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:575:16:575:24 | SelfParam | &T.S | main.rs:574:19:574:19 | S |
-| main.rs:575:27:575:31 | value |  | main.rs:574:19:574:19 | S |
-| main.rs:577:21:577:29 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:577:21:577:29 | SelfParam | &T | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:577:21:577:29 | SelfParam | &T.S | main.rs:574:19:574:19 | S |
-| main.rs:577:32:577:36 | value |  | main.rs:574:19:574:19 | S |
-| main.rs:578:13:578:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:578:13:578:16 | self | &T | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:578:13:578:16 | self | &T.S | main.rs:574:19:574:19 | S |
-| main.rs:578:22:578:26 | value |  | main.rs:574:19:574:19 | S |
-| main.rs:583:16:583:24 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:583:16:583:24 | SelfParam | &T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:583:16:583:24 | SelfParam | &T.T | main.rs:582:10:582:10 | T |
-| main.rs:583:27:583:31 | value |  | main.rs:582:10:582:10 | T |
-| main.rs:587:26:589:9 | { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:587:26:589:9 | { ... } | T | main.rs:586:10:586:10 | T |
-| main.rs:588:13:588:30 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:588:13:588:30 | ...::MyNone(...) | T | main.rs:586:10:586:10 | T |
-| main.rs:593:20:593:23 | SelfParam |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:593:20:593:23 | SelfParam | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:593:20:593:23 | SelfParam | T.T | main.rs:592:10:592:10 | T |
-| main.rs:593:41:598:9 | { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:593:41:598:9 | { ... } | T | main.rs:592:10:592:10 | T |
-| main.rs:594:13:597:13 | match self { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:594:13:597:13 | match self { ... } | T | main.rs:592:10:592:10 | T |
-| main.rs:594:19:594:22 | self |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:594:19:594:22 | self | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:594:19:594:22 | self | T.T | main.rs:592:10:592:10 | T |
-| main.rs:595:39:595:56 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:595:39:595:56 | ...::MyNone(...) | T | main.rs:592:10:592:10 | T |
-| main.rs:596:34:596:34 | x |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:596:34:596:34 | x | T | main.rs:592:10:592:10 | T |
-| main.rs:596:40:596:40 | x |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:596:40:596:40 | x | T | main.rs:592:10:592:10 | T |
-| main.rs:605:13:605:14 | x1 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:605:18:605:37 | ...::new(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:606:26:606:27 | x1 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:608:13:608:18 | mut x2 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:608:13:608:18 | mut x2 | T | main.rs:601:5:602:13 | struct S |
-| main.rs:608:22:608:36 | ...::new(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:608:22:608:36 | ...::new(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:609:9:609:10 | x2 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:609:9:609:10 | x2 | T | main.rs:601:5:602:13 | struct S |
-| main.rs:609:16:609:16 | S |  | main.rs:601:5:602:13 | struct S |
-| main.rs:610:26:610:27 | x2 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:610:26:610:27 | x2 | T | main.rs:601:5:602:13 | struct S |
-| main.rs:612:13:612:18 | mut x3 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:612:13:612:18 | mut x3 |  | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:612:13:612:18 | mut x3 | S | main.rs:601:5:602:13 | struct S |
-| main.rs:612:22:612:36 | ...::new(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:612:22:612:36 | ...::new(...) |  | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:612:22:612:36 | ...::new(...) | S | main.rs:601:5:602:13 | struct S |
-| main.rs:613:9:613:10 | x3 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:613:9:613:10 | x3 |  | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:613:9:613:10 | x3 | S | main.rs:601:5:602:13 | struct S |
-| main.rs:613:21:613:21 | S |  | main.rs:601:5:602:13 | struct S |
-| main.rs:614:26:614:27 | x3 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:614:26:614:27 | x3 |  | main.rs:574:5:580:5 | trait MyTrait |
-| main.rs:614:26:614:27 | x3 | S | main.rs:601:5:602:13 | struct S |
-| main.rs:616:13:616:18 | mut x4 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:616:13:616:18 | mut x4 | T | main.rs:601:5:602:13 | struct S |
-| main.rs:616:22:616:36 | ...::new(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:616:22:616:36 | ...::new(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:617:23:617:29 | &mut x4 |  | file://:0:0:0:0 | & |
-| main.rs:617:23:617:29 | &mut x4 | &T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:617:23:617:29 | &mut x4 | &T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:617:28:617:29 | x4 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:617:28:617:29 | x4 | T | main.rs:601:5:602:13 | struct S |
-| main.rs:617:32:617:32 | S |  | main.rs:601:5:602:13 | struct S |
-| main.rs:618:26:618:27 | x4 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:618:26:618:27 | x4 | T | main.rs:601:5:602:13 | struct S |
-| main.rs:620:13:620:14 | x5 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:620:13:620:14 | x5 | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:620:13:620:14 | x5 | T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:620:18:620:58 | ...::MySome(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:620:18:620:58 | ...::MySome(...) | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:620:18:620:58 | ...::MySome(...) | T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:620:35:620:57 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:620:35:620:57 | ...::MyNone(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:621:26:621:27 | x5 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:621:26:621:27 | x5 | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:621:26:621:27 | x5 | T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:623:13:623:14 | x6 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:623:13:623:14 | x6 | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:623:13:623:14 | x6 | T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:623:18:623:58 | ...::MySome(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:623:18:623:58 | ...::MySome(...) | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:623:18:623:58 | ...::MySome(...) | T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:623:35:623:57 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:623:35:623:57 | ...::MyNone(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:624:26:624:61 | ...::flatten(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:624:26:624:61 | ...::flatten(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:624:59:624:60 | x6 |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:624:59:624:60 | x6 | T | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:624:59:624:60 | x6 | T.T | main.rs:601:5:602:13 | struct S |
-| main.rs:626:13:626:19 | from_if |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:626:13:626:19 | from_if | T | main.rs:601:5:602:13 | struct S |
-| main.rs:626:23:630:9 | if ... {...} else {...} |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:626:23:630:9 | if ... {...} else {...} | T | main.rs:601:5:602:13 | struct S |
-| main.rs:626:36:628:9 | { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:626:36:628:9 | { ... } | T | main.rs:601:5:602:13 | struct S |
-| main.rs:627:13:627:30 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:627:13:627:30 | ...::MyNone(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:628:16:630:9 | { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:628:16:630:9 | { ... } | T | main.rs:601:5:602:13 | struct S |
-| main.rs:629:13:629:31 | ...::MySome(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:629:13:629:31 | ...::MySome(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:629:30:629:30 | S |  | main.rs:601:5:602:13 | struct S |
-| main.rs:631:26:631:32 | from_if |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:631:26:631:32 | from_if | T | main.rs:601:5:602:13 | struct S |
-| main.rs:633:13:633:22 | from_match |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:633:13:633:22 | from_match | T | main.rs:601:5:602:13 | struct S |
-| main.rs:633:26:636:9 | match ... { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:633:26:636:9 | match ... { ... } | T | main.rs:601:5:602:13 | struct S |
-| main.rs:634:21:634:38 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:634:21:634:38 | ...::MyNone(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:635:22:635:40 | ...::MySome(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:635:22:635:40 | ...::MySome(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:635:39:635:39 | S |  | main.rs:601:5:602:13 | struct S |
-| main.rs:637:26:637:35 | from_match |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:637:26:637:35 | from_match | T | main.rs:601:5:602:13 | struct S |
-| main.rs:639:13:639:21 | from_loop |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:639:13:639:21 | from_loop | T | main.rs:601:5:602:13 | struct S |
-| main.rs:639:25:644:9 | loop { ... } |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:639:25:644:9 | loop { ... } | T | main.rs:601:5:602:13 | struct S |
-| main.rs:641:23:641:40 | ...::MyNone(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:641:23:641:40 | ...::MyNone(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:643:19:643:37 | ...::MySome(...) |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:643:19:643:37 | ...::MySome(...) | T | main.rs:601:5:602:13 | struct S |
-| main.rs:643:36:643:36 | S |  | main.rs:601:5:602:13 | struct S |
-| main.rs:645:26:645:34 | from_loop |  | main.rs:568:5:572:5 | enum MyOption |
-| main.rs:645:26:645:34 | from_loop | T | main.rs:601:5:602:13 | struct S |
-| main.rs:658:15:658:18 | SelfParam |  | main.rs:651:5:652:19 | struct S |
-| main.rs:658:15:658:18 | SelfParam | T | main.rs:657:10:657:10 | T |
-| main.rs:658:26:660:9 | { ... } |  | main.rs:657:10:657:10 | T |
-| main.rs:659:13:659:16 | self |  | main.rs:651:5:652:19 | struct S |
-| main.rs:659:13:659:16 | self | T | main.rs:657:10:657:10 | T |
-| main.rs:659:13:659:18 | self.0 |  | main.rs:657:10:657:10 | T |
-| main.rs:662:15:662:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:662:15:662:19 | SelfParam | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:662:15:662:19 | SelfParam | &T.T | main.rs:657:10:657:10 | T |
-| main.rs:662:28:664:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:662:28:664:9 | { ... } | &T | main.rs:657:10:657:10 | T |
-| main.rs:663:13:663:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:663:13:663:19 | &... | &T | main.rs:657:10:657:10 | T |
-| main.rs:663:14:663:17 | self |  | file://:0:0:0:0 | & |
-| main.rs:663:14:663:17 | self | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:663:14:663:17 | self | &T.T | main.rs:657:10:657:10 | T |
-| main.rs:663:14:663:19 | self.0 |  | main.rs:657:10:657:10 | T |
-| main.rs:666:15:666:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:666:15:666:25 | SelfParam | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:666:15:666:25 | SelfParam | &T.T | main.rs:657:10:657:10 | T |
-| main.rs:666:34:668:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:666:34:668:9 | { ... } | &T | main.rs:657:10:657:10 | T |
-| main.rs:667:13:667:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:667:13:667:19 | &... | &T | main.rs:657:10:657:10 | T |
-| main.rs:667:14:667:17 | self |  | file://:0:0:0:0 | & |
-| main.rs:667:14:667:17 | self | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:667:14:667:17 | self | &T.T | main.rs:657:10:657:10 | T |
-| main.rs:667:14:667:19 | self.0 |  | main.rs:657:10:657:10 | T |
-| main.rs:672:13:672:14 | x1 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:672:13:672:14 | x1 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:672:18:672:22 | S(...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:672:18:672:22 | S(...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:672:20:672:21 | S2 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:673:26:673:27 | x1 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:673:26:673:27 | x1 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:673:26:673:32 | x1.m1(...) |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:675:13:675:14 | x2 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:675:13:675:14 | x2 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:675:18:675:22 | S(...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:675:18:675:22 | S(...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:675:20:675:21 | S2 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:677:26:677:27 | x2 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:677:26:677:27 | x2 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:677:26:677:32 | x2.m2(...) |  | file://:0:0:0:0 | & |
-| main.rs:677:26:677:32 | x2.m2(...) | &T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:678:26:678:27 | x2 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:678:26:678:27 | x2 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:678:26:678:32 | x2.m3(...) |  | file://:0:0:0:0 | & |
-| main.rs:678:26:678:32 | x2.m3(...) | &T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:680:13:680:14 | x3 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:680:13:680:14 | x3 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:680:18:680:22 | S(...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:680:18:680:22 | S(...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:680:20:680:21 | S2 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:682:26:682:41 | ...::m2(...) |  | file://:0:0:0:0 | & |
-| main.rs:682:26:682:41 | ...::m2(...) | &T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:682:38:682:40 | &x3 |  | file://:0:0:0:0 | & |
-| main.rs:682:38:682:40 | &x3 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:682:38:682:40 | &x3 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:682:39:682:40 | x3 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:682:39:682:40 | x3 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:683:26:683:41 | ...::m3(...) |  | file://:0:0:0:0 | & |
-| main.rs:683:26:683:41 | ...::m3(...) | &T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:683:38:683:40 | &x3 |  | file://:0:0:0:0 | & |
-| main.rs:683:38:683:40 | &x3 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:683:38:683:40 | &x3 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:683:39:683:40 | x3 |  | main.rs:651:5:652:19 | struct S |
-| main.rs:683:39:683:40 | x3 | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:685:13:685:14 | x4 |  | file://:0:0:0:0 | & |
-| main.rs:685:13:685:14 | x4 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:685:13:685:14 | x4 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:685:18:685:23 | &... |  | file://:0:0:0:0 | & |
-| main.rs:685:18:685:23 | &... | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:685:18:685:23 | &... | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:685:19:685:23 | S(...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:685:19:685:23 | S(...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:685:21:685:22 | S2 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:687:26:687:27 | x4 |  | file://:0:0:0:0 | & |
-| main.rs:687:26:687:27 | x4 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:687:26:687:27 | x4 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:687:26:687:32 | x4.m2(...) |  | file://:0:0:0:0 | & |
-| main.rs:687:26:687:32 | x4.m2(...) | &T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:688:26:688:27 | x4 |  | file://:0:0:0:0 | & |
-| main.rs:688:26:688:27 | x4 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:688:26:688:27 | x4 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:688:26:688:32 | x4.m3(...) |  | file://:0:0:0:0 | & |
-| main.rs:688:26:688:32 | x4.m3(...) | &T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:690:13:690:14 | x5 |  | file://:0:0:0:0 | & |
-| main.rs:690:13:690:14 | x5 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:690:13:690:14 | x5 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:690:18:690:23 | &... |  | file://:0:0:0:0 | & |
-| main.rs:690:18:690:23 | &... | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:690:18:690:23 | &... | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:690:19:690:23 | S(...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:690:19:690:23 | S(...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:690:21:690:22 | S2 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:692:26:692:27 | x5 |  | file://:0:0:0:0 | & |
-| main.rs:692:26:692:27 | x5 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:692:26:692:27 | x5 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:692:26:692:32 | x5.m1(...) |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:693:26:693:27 | x5 |  | file://:0:0:0:0 | & |
-| main.rs:693:26:693:27 | x5 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:693:26:693:27 | x5 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:693:26:693:29 | x5.0 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:695:13:695:14 | x6 |  | file://:0:0:0:0 | & |
-| main.rs:695:13:695:14 | x6 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:695:13:695:14 | x6 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:695:18:695:23 | &... |  | file://:0:0:0:0 | & |
-| main.rs:695:18:695:23 | &... | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:695:18:695:23 | &... | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:695:19:695:23 | S(...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:695:19:695:23 | S(...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:695:21:695:22 | S2 |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:697:26:697:30 | (...) |  | main.rs:651:5:652:19 | struct S |
-| main.rs:697:26:697:30 | (...) | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:697:26:697:35 | ... .m1(...) |  | main.rs:654:5:655:14 | struct S2 |
-| main.rs:697:27:697:29 | * ... |  | main.rs:651:5:652:19 | struct S |
-| main.rs:697:27:697:29 | * ... | T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:697:28:697:29 | x6 |  | file://:0:0:0:0 | & |
-| main.rs:697:28:697:29 | x6 | &T | main.rs:651:5:652:19 | struct S |
-| main.rs:697:28:697:29 | x6 | &T.T | main.rs:654:5:655:14 | struct S2 |
-| main.rs:703:16:703:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:703:16:703:20 | SelfParam | &T | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:705:16:705:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:705:16:705:20 | SelfParam | &T | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:705:32:707:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:705:32:707:9 | { ... } | &T | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:706:13:706:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:706:13:706:16 | self | &T | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:706:13:706:22 | self.foo(...) |  | file://:0:0:0:0 | & |
-| main.rs:706:13:706:22 | self.foo(...) | &T | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:713:16:713:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:713:16:713:20 | SelfParam | &T | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:713:36:715:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:713:36:715:9 | { ... } | &T | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:714:13:714:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:714:13:714:16 | self | &T | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:719:13:719:13 | x |  | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:719:13:719:13 | x |  | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:719:17:719:24 | MyStruct |  | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:719:17:719:24 | MyStruct |  | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:720:9:720:9 | x |  | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:720:9:720:9 | x |  | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:720:9:720:15 | x.bar(...) |  | file://:0:0:0:0 | & |
-| main.rs:720:9:720:15 | x.bar(...) | &T | main.rs:702:5:708:5 | trait MyTrait |
-| main.rs:720:9:720:15 | x.bar(...) | &T | main.rs:710:5:710:20 | struct MyStruct |
-| main.rs:730:16:730:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:730:16:730:20 | SelfParam | &T | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:730:16:730:20 | SelfParam | &T.T | main.rs:729:10:729:10 | T |
-| main.rs:730:32:732:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:730:32:732:9 | { ... } | &T | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:730:32:732:9 | { ... } | &T.T | main.rs:729:10:729:10 | T |
-| main.rs:731:13:731:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:731:13:731:16 | self | &T | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:731:13:731:16 | self | &T.T | main.rs:729:10:729:10 | T |
-| main.rs:736:13:736:13 | x |  | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:736:13:736:13 | x | T | main.rs:725:5:725:13 | struct S |
-| main.rs:736:17:736:27 | MyStruct(...) |  | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:736:17:736:27 | MyStruct(...) | T | main.rs:725:5:725:13 | struct S |
-| main.rs:736:26:736:26 | S |  | main.rs:725:5:725:13 | struct S |
-| main.rs:737:9:737:9 | x |  | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:737:9:737:9 | x | T | main.rs:725:5:725:13 | struct S |
-| main.rs:737:9:737:15 | x.foo(...) |  | file://:0:0:0:0 | & |
-| main.rs:737:9:737:15 | x.foo(...) | &T | main.rs:727:5:727:26 | struct MyStruct |
-| main.rs:737:9:737:15 | x.foo(...) | &T.T | main.rs:725:5:725:13 | struct S |
-| main.rs:745:15:745:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:745:15:745:19 | SelfParam | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:745:31:747:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:745:31:747:9 | { ... } | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:746:13:746:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:746:13:746:19 | &... | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:746:14:746:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:746:14:746:19 | &... | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:746:15:746:19 | &self |  | file://:0:0:0:0 | & |
-| main.rs:746:15:746:19 | &self | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:746:16:746:19 | self |  | file://:0:0:0:0 | & |
-| main.rs:746:16:746:19 | self | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:749:15:749:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:749:15:749:25 | SelfParam | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:749:37:751:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:749:37:751:9 | { ... } | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:750:13:750:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:750:13:750:19 | &... | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:750:14:750:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:750:14:750:19 | &... | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:750:15:750:19 | &self |  | file://:0:0:0:0 | & |
-| main.rs:750:15:750:19 | &self | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:750:16:750:19 | self |  | file://:0:0:0:0 | & |
-| main.rs:750:16:750:19 | self | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:753:15:753:15 | x |  | file://:0:0:0:0 | & |
-| main.rs:753:15:753:15 | x | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:753:34:755:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:753:34:755:9 | { ... } | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:754:13:754:13 | x |  | file://:0:0:0:0 | & |
-| main.rs:754:13:754:13 | x | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:757:15:757:15 | x |  | file://:0:0:0:0 | & |
-| main.rs:757:15:757:15 | x | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:757:34:759:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:757:34:759:9 | { ... } | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:758:13:758:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:758:13:758:16 | &... | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:758:14:758:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:758:14:758:16 | &... | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:758:15:758:16 | &x |  | file://:0:0:0:0 | & |
-| main.rs:758:15:758:16 | &x | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:758:16:758:16 | x |  | file://:0:0:0:0 | & |
-| main.rs:758:16:758:16 | x | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:763:13:763:13 | x |  | main.rs:742:5:742:13 | struct S |
-| main.rs:763:17:763:20 | S {...} |  | main.rs:742:5:742:13 | struct S |
-| main.rs:764:9:764:9 | x |  | main.rs:742:5:742:13 | struct S |
-| main.rs:764:9:764:14 | x.f1(...) |  | file://:0:0:0:0 | & |
-| main.rs:764:9:764:14 | x.f1(...) | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:765:9:765:9 | x |  | main.rs:742:5:742:13 | struct S |
-| main.rs:765:9:765:14 | x.f2(...) |  | file://:0:0:0:0 | & |
-| main.rs:765:9:765:14 | x.f2(...) | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:766:9:766:17 | ...::f3(...) |  | file://:0:0:0:0 | & |
-| main.rs:766:9:766:17 | ...::f3(...) | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:766:15:766:16 | &x |  | file://:0:0:0:0 | & |
-| main.rs:766:15:766:16 | &x | &T | main.rs:742:5:742:13 | struct S |
-| main.rs:766:16:766:16 | x |  | main.rs:742:5:742:13 | struct S |
-| main.rs:772:5:772:20 | ...::f(...) |  | main.rs:67:5:67:21 | struct Foo |
-| main.rs:773:5:773:60 | ...::g(...) |  | main.rs:67:5:67:21 | struct Foo |
-| main.rs:773:20:773:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | struct Foo |
-| main.rs:773:41:773:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | struct Foo |
+| main.rs:534:22:534:25 | SelfParam |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:534:22:534:25 | SelfParam | Fst | main.rs:533:10:533:12 | Fst |
+| main.rs:534:22:534:25 | SelfParam | Snd | main.rs:533:15:533:17 | Snd |
+| main.rs:534:35:541:9 | { ... } |  | main.rs:533:15:533:17 | Snd |
+| main.rs:535:13:540:13 | match self { ... } |  | main.rs:533:15:533:17 | Snd |
+| main.rs:535:19:535:22 | self |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:535:19:535:22 | self | Fst | main.rs:533:10:533:12 | Fst |
+| main.rs:535:19:535:22 | self | Snd | main.rs:533:15:533:17 | Snd |
+| main.rs:536:43:536:82 | MacroExpr |  | main.rs:533:15:533:17 | Snd |
+| main.rs:537:43:537:81 | MacroExpr |  | main.rs:533:15:533:17 | Snd |
+| main.rs:538:37:538:39 | snd |  | main.rs:533:15:533:17 | Snd |
+| main.rs:538:45:538:47 | snd |  | main.rs:533:15:533:17 | Snd |
+| main.rs:539:41:539:43 | snd |  | main.rs:533:15:533:17 | Snd |
+| main.rs:539:49:539:51 | snd |  | main.rs:533:15:533:17 | Snd |
+| main.rs:565:10:565:10 | t |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:565:10:565:10 | t | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:565:10:565:10 | t | Snd | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:565:10:565:10 | t | Snd.Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:565:10:565:10 | t | Snd.Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:566:26:566:26 | t |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:566:26:566:26 | t | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:566:26:566:26 | t | Snd | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:566:26:566:26 | t | Snd.Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:566:26:566:26 | t | Snd.Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:566:26:566:50 | ... .unwrapSnd(...) |  | main.rs:550:5:551:14 | struct S3 |
+| main.rs:571:13:571:14 | p1 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:571:13:571:14 | p1 | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:571:13:571:14 | p1 | Snd | main.rs:547:5:548:14 | struct S2 |
+| main.rs:571:26:571:53 | ...::PairBoth(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:571:26:571:53 | ...::PairBoth(...) | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:571:26:571:53 | ...::PairBoth(...) | Snd | main.rs:547:5:548:14 | struct S2 |
+| main.rs:571:47:571:48 | S1 |  | main.rs:544:5:545:14 | struct S1 |
+| main.rs:571:51:571:52 | S2 |  | main.rs:547:5:548:14 | struct S2 |
+| main.rs:572:26:572:27 | p1 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:572:26:572:27 | p1 | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:572:26:572:27 | p1 | Snd | main.rs:547:5:548:14 | struct S2 |
+| main.rs:575:13:575:14 | p2 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:575:13:575:14 | p2 | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:575:13:575:14 | p2 | Snd | main.rs:547:5:548:14 | struct S2 |
+| main.rs:575:26:575:47 | ...::PairNone(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:575:26:575:47 | ...::PairNone(...) | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:575:26:575:47 | ...::PairNone(...) | Snd | main.rs:547:5:548:14 | struct S2 |
+| main.rs:576:26:576:27 | p2 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:576:26:576:27 | p2 | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:576:26:576:27 | p2 | Snd | main.rs:547:5:548:14 | struct S2 |
+| main.rs:579:13:579:14 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:579:13:579:14 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:579:13:579:14 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:579:34:579:56 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:579:34:579:56 | ...::PairSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:579:34:579:56 | ...::PairSnd(...) | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:579:54:579:55 | S3 |  | main.rs:550:5:551:14 | struct S3 |
+| main.rs:580:26:580:27 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:580:26:580:27 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:580:26:580:27 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:583:13:583:14 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:583:13:583:14 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:583:13:583:14 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:583:35:583:56 | ...::PairNone(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:583:35:583:56 | ...::PairNone(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:583:35:583:56 | ...::PairNone(...) | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:584:26:584:27 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:584:26:584:27 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:584:26:584:27 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:586:11:586:54 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:586:11:586:54 | ...::PairSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:586:11:586:54 | ...::PairSnd(...) | Snd | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:586:11:586:54 | ...::PairSnd(...) | Snd.Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:586:11:586:54 | ...::PairSnd(...) | Snd.Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:586:31:586:53 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:586:31:586:53 | ...::PairSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:586:31:586:53 | ...::PairSnd(...) | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:586:51:586:52 | S3 |  | main.rs:550:5:551:14 | struct S3 |
+| main.rs:598:16:598:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:598:16:598:24 | SelfParam | &T | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:598:16:598:24 | SelfParam | &T.S | main.rs:597:19:597:19 | S |
+| main.rs:598:27:598:31 | value |  | main.rs:597:19:597:19 | S |
+| main.rs:600:21:600:29 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:600:21:600:29 | SelfParam | &T | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:600:21:600:29 | SelfParam | &T.S | main.rs:597:19:597:19 | S |
+| main.rs:600:32:600:36 | value |  | main.rs:597:19:597:19 | S |
+| main.rs:601:13:601:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:601:13:601:16 | self | &T | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:601:13:601:16 | self | &T.S | main.rs:597:19:597:19 | S |
+| main.rs:601:22:601:26 | value |  | main.rs:597:19:597:19 | S |
+| main.rs:606:16:606:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:606:16:606:24 | SelfParam | &T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:606:16:606:24 | SelfParam | &T.T | main.rs:605:10:605:10 | T |
+| main.rs:606:27:606:31 | value |  | main.rs:605:10:605:10 | T |
+| main.rs:610:26:612:9 | { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:610:26:612:9 | { ... } | T | main.rs:609:10:609:10 | T |
+| main.rs:611:13:611:30 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:611:13:611:30 | ...::MyNone(...) | T | main.rs:609:10:609:10 | T |
+| main.rs:616:20:616:23 | SelfParam |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:616:20:616:23 | SelfParam | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:616:20:616:23 | SelfParam | T.T | main.rs:615:10:615:10 | T |
+| main.rs:616:41:621:9 | { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:616:41:621:9 | { ... } | T | main.rs:615:10:615:10 | T |
+| main.rs:617:13:620:13 | match self { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:617:13:620:13 | match self { ... } | T | main.rs:615:10:615:10 | T |
+| main.rs:617:19:617:22 | self |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:617:19:617:22 | self | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:617:19:617:22 | self | T.T | main.rs:615:10:615:10 | T |
+| main.rs:618:39:618:56 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:618:39:618:56 | ...::MyNone(...) | T | main.rs:615:10:615:10 | T |
+| main.rs:619:34:619:34 | x |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:619:34:619:34 | x | T | main.rs:615:10:615:10 | T |
+| main.rs:619:40:619:40 | x |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:619:40:619:40 | x | T | main.rs:615:10:615:10 | T |
+| main.rs:628:13:628:14 | x1 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:628:18:628:37 | ...::new(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:629:26:629:27 | x1 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:631:13:631:18 | mut x2 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:631:13:631:18 | mut x2 | T | main.rs:624:5:625:13 | struct S |
+| main.rs:631:22:631:36 | ...::new(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:631:22:631:36 | ...::new(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:632:9:632:10 | x2 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:632:9:632:10 | x2 | T | main.rs:624:5:625:13 | struct S |
+| main.rs:632:16:632:16 | S |  | main.rs:624:5:625:13 | struct S |
+| main.rs:633:26:633:27 | x2 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:633:26:633:27 | x2 | T | main.rs:624:5:625:13 | struct S |
+| main.rs:635:13:635:18 | mut x3 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:635:13:635:18 | mut x3 |  | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:635:13:635:18 | mut x3 | S | main.rs:624:5:625:13 | struct S |
+| main.rs:635:22:635:36 | ...::new(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:635:22:635:36 | ...::new(...) |  | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:635:22:635:36 | ...::new(...) | S | main.rs:624:5:625:13 | struct S |
+| main.rs:636:9:636:10 | x3 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:636:9:636:10 | x3 |  | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:636:9:636:10 | x3 | S | main.rs:624:5:625:13 | struct S |
+| main.rs:636:21:636:21 | S |  | main.rs:624:5:625:13 | struct S |
+| main.rs:637:26:637:27 | x3 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:637:26:637:27 | x3 |  | main.rs:597:5:603:5 | trait MyTrait |
+| main.rs:637:26:637:27 | x3 | S | main.rs:624:5:625:13 | struct S |
+| main.rs:639:13:639:18 | mut x4 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:639:13:639:18 | mut x4 | T | main.rs:624:5:625:13 | struct S |
+| main.rs:639:22:639:36 | ...::new(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:639:22:639:36 | ...::new(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:640:23:640:29 | &mut x4 |  | file://:0:0:0:0 | & |
+| main.rs:640:23:640:29 | &mut x4 | &T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:640:23:640:29 | &mut x4 | &T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:640:28:640:29 | x4 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:640:28:640:29 | x4 | T | main.rs:624:5:625:13 | struct S |
+| main.rs:640:32:640:32 | S |  | main.rs:624:5:625:13 | struct S |
+| main.rs:641:26:641:27 | x4 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:641:26:641:27 | x4 | T | main.rs:624:5:625:13 | struct S |
+| main.rs:643:13:643:14 | x5 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:643:13:643:14 | x5 | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:643:13:643:14 | x5 | T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:643:18:643:58 | ...::MySome(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:643:18:643:58 | ...::MySome(...) | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:643:18:643:58 | ...::MySome(...) | T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:643:35:643:57 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:643:35:643:57 | ...::MyNone(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:644:26:644:27 | x5 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:644:26:644:27 | x5 | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:644:26:644:27 | x5 | T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:646:13:646:14 | x6 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:646:13:646:14 | x6 | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:646:13:646:14 | x6 | T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:646:18:646:58 | ...::MySome(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:646:18:646:58 | ...::MySome(...) | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:646:18:646:58 | ...::MySome(...) | T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:646:35:646:57 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:646:35:646:57 | ...::MyNone(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:647:26:647:61 | ...::flatten(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:647:26:647:61 | ...::flatten(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:647:59:647:60 | x6 |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:647:59:647:60 | x6 | T | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:647:59:647:60 | x6 | T.T | main.rs:624:5:625:13 | struct S |
+| main.rs:649:13:649:19 | from_if |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:649:13:649:19 | from_if | T | main.rs:624:5:625:13 | struct S |
+| main.rs:649:23:653:9 | if ... {...} else {...} |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:649:23:653:9 | if ... {...} else {...} | T | main.rs:624:5:625:13 | struct S |
+| main.rs:649:36:651:9 | { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:649:36:651:9 | { ... } | T | main.rs:624:5:625:13 | struct S |
+| main.rs:650:13:650:30 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:650:13:650:30 | ...::MyNone(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:651:16:653:9 | { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:651:16:653:9 | { ... } | T | main.rs:624:5:625:13 | struct S |
+| main.rs:652:13:652:31 | ...::MySome(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:652:13:652:31 | ...::MySome(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:652:30:652:30 | S |  | main.rs:624:5:625:13 | struct S |
+| main.rs:654:26:654:32 | from_if |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:654:26:654:32 | from_if | T | main.rs:624:5:625:13 | struct S |
+| main.rs:656:13:656:22 | from_match |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:656:13:656:22 | from_match | T | main.rs:624:5:625:13 | struct S |
+| main.rs:656:26:659:9 | match ... { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:656:26:659:9 | match ... { ... } | T | main.rs:624:5:625:13 | struct S |
+| main.rs:657:21:657:38 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:657:21:657:38 | ...::MyNone(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:658:22:658:40 | ...::MySome(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:658:22:658:40 | ...::MySome(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:658:39:658:39 | S |  | main.rs:624:5:625:13 | struct S |
+| main.rs:660:26:660:35 | from_match |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:660:26:660:35 | from_match | T | main.rs:624:5:625:13 | struct S |
+| main.rs:662:13:662:21 | from_loop |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:662:13:662:21 | from_loop | T | main.rs:624:5:625:13 | struct S |
+| main.rs:662:25:667:9 | loop { ... } |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:662:25:667:9 | loop { ... } | T | main.rs:624:5:625:13 | struct S |
+| main.rs:664:23:664:40 | ...::MyNone(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:664:23:664:40 | ...::MyNone(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:666:19:666:37 | ...::MySome(...) |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:666:19:666:37 | ...::MySome(...) | T | main.rs:624:5:625:13 | struct S |
+| main.rs:666:36:666:36 | S |  | main.rs:624:5:625:13 | struct S |
+| main.rs:668:26:668:34 | from_loop |  | main.rs:591:5:595:5 | enum MyOption |
+| main.rs:668:26:668:34 | from_loop | T | main.rs:624:5:625:13 | struct S |
+| main.rs:681:15:681:18 | SelfParam |  | main.rs:674:5:675:19 | struct S |
+| main.rs:681:15:681:18 | SelfParam | T | main.rs:680:10:680:10 | T |
+| main.rs:681:26:683:9 | { ... } |  | main.rs:680:10:680:10 | T |
+| main.rs:682:13:682:16 | self |  | main.rs:674:5:675:19 | struct S |
+| main.rs:682:13:682:16 | self | T | main.rs:680:10:680:10 | T |
+| main.rs:682:13:682:18 | self.0 |  | main.rs:680:10:680:10 | T |
+| main.rs:685:15:685:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:685:15:685:19 | SelfParam | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:685:15:685:19 | SelfParam | &T.T | main.rs:680:10:680:10 | T |
+| main.rs:685:28:687:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:685:28:687:9 | { ... } | &T | main.rs:680:10:680:10 | T |
+| main.rs:686:13:686:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:686:13:686:19 | &... | &T | main.rs:680:10:680:10 | T |
+| main.rs:686:14:686:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:686:14:686:17 | self | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:686:14:686:17 | self | &T.T | main.rs:680:10:680:10 | T |
+| main.rs:686:14:686:19 | self.0 |  | main.rs:680:10:680:10 | T |
+| main.rs:689:15:689:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:689:15:689:25 | SelfParam | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:689:15:689:25 | SelfParam | &T.T | main.rs:680:10:680:10 | T |
+| main.rs:689:34:691:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:689:34:691:9 | { ... } | &T | main.rs:680:10:680:10 | T |
+| main.rs:690:13:690:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:690:13:690:19 | &... | &T | main.rs:680:10:680:10 | T |
+| main.rs:690:14:690:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:690:14:690:17 | self | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:690:14:690:17 | self | &T.T | main.rs:680:10:680:10 | T |
+| main.rs:690:14:690:19 | self.0 |  | main.rs:680:10:680:10 | T |
+| main.rs:695:13:695:14 | x1 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:695:13:695:14 | x1 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:695:18:695:22 | S(...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:695:18:695:22 | S(...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:695:20:695:21 | S2 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:696:26:696:27 | x1 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:696:26:696:27 | x1 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:696:26:696:32 | x1.m1(...) |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:698:13:698:14 | x2 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:698:13:698:14 | x2 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:698:18:698:22 | S(...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:698:18:698:22 | S(...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:698:20:698:21 | S2 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:700:26:700:27 | x2 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:700:26:700:27 | x2 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:700:26:700:32 | x2.m2(...) |  | file://:0:0:0:0 | & |
+| main.rs:700:26:700:32 | x2.m2(...) | &T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:701:26:701:27 | x2 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:701:26:701:27 | x2 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:701:26:701:32 | x2.m3(...) |  | file://:0:0:0:0 | & |
+| main.rs:701:26:701:32 | x2.m3(...) | &T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:703:13:703:14 | x3 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:703:13:703:14 | x3 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:703:18:703:22 | S(...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:703:18:703:22 | S(...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:703:20:703:21 | S2 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:705:26:705:41 | ...::m2(...) |  | file://:0:0:0:0 | & |
+| main.rs:705:26:705:41 | ...::m2(...) | &T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:705:38:705:40 | &x3 |  | file://:0:0:0:0 | & |
+| main.rs:705:38:705:40 | &x3 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:705:38:705:40 | &x3 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:705:39:705:40 | x3 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:705:39:705:40 | x3 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:706:26:706:41 | ...::m3(...) |  | file://:0:0:0:0 | & |
+| main.rs:706:26:706:41 | ...::m3(...) | &T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:706:38:706:40 | &x3 |  | file://:0:0:0:0 | & |
+| main.rs:706:38:706:40 | &x3 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:706:38:706:40 | &x3 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:706:39:706:40 | x3 |  | main.rs:674:5:675:19 | struct S |
+| main.rs:706:39:706:40 | x3 | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:708:13:708:14 | x4 |  | file://:0:0:0:0 | & |
+| main.rs:708:13:708:14 | x4 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:708:13:708:14 | x4 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:708:18:708:23 | &... |  | file://:0:0:0:0 | & |
+| main.rs:708:18:708:23 | &... | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:708:18:708:23 | &... | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:708:19:708:23 | S(...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:708:19:708:23 | S(...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:708:21:708:22 | S2 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:710:26:710:27 | x4 |  | file://:0:0:0:0 | & |
+| main.rs:710:26:710:27 | x4 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:710:26:710:27 | x4 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:710:26:710:32 | x4.m2(...) |  | file://:0:0:0:0 | & |
+| main.rs:710:26:710:32 | x4.m2(...) | &T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:711:26:711:27 | x4 |  | file://:0:0:0:0 | & |
+| main.rs:711:26:711:27 | x4 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:711:26:711:27 | x4 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:711:26:711:32 | x4.m3(...) |  | file://:0:0:0:0 | & |
+| main.rs:711:26:711:32 | x4.m3(...) | &T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:713:13:713:14 | x5 |  | file://:0:0:0:0 | & |
+| main.rs:713:13:713:14 | x5 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:713:13:713:14 | x5 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:713:18:713:23 | &... |  | file://:0:0:0:0 | & |
+| main.rs:713:18:713:23 | &... | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:713:18:713:23 | &... | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:713:19:713:23 | S(...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:713:19:713:23 | S(...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:713:21:713:22 | S2 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:715:26:715:27 | x5 |  | file://:0:0:0:0 | & |
+| main.rs:715:26:715:27 | x5 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:715:26:715:27 | x5 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:715:26:715:32 | x5.m1(...) |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:716:26:716:27 | x5 |  | file://:0:0:0:0 | & |
+| main.rs:716:26:716:27 | x5 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:716:26:716:27 | x5 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:716:26:716:29 | x5.0 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:718:13:718:14 | x6 |  | file://:0:0:0:0 | & |
+| main.rs:718:13:718:14 | x6 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:718:13:718:14 | x6 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:718:18:718:23 | &... |  | file://:0:0:0:0 | & |
+| main.rs:718:18:718:23 | &... | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:718:18:718:23 | &... | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:718:19:718:23 | S(...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:718:19:718:23 | S(...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:718:21:718:22 | S2 |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:720:26:720:30 | (...) |  | main.rs:674:5:675:19 | struct S |
+| main.rs:720:26:720:30 | (...) | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:720:26:720:35 | ... .m1(...) |  | main.rs:677:5:678:14 | struct S2 |
+| main.rs:720:27:720:29 | * ... |  | main.rs:674:5:675:19 | struct S |
+| main.rs:720:27:720:29 | * ... | T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:720:28:720:29 | x6 |  | file://:0:0:0:0 | & |
+| main.rs:720:28:720:29 | x6 | &T | main.rs:674:5:675:19 | struct S |
+| main.rs:720:28:720:29 | x6 | &T.T | main.rs:677:5:678:14 | struct S2 |
+| main.rs:726:16:726:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:726:16:726:20 | SelfParam | &T | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:728:16:728:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:728:16:728:20 | SelfParam | &T | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:728:32:730:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:728:32:730:9 | { ... } | &T | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:729:13:729:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:729:13:729:16 | self | &T | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:729:13:729:22 | self.foo(...) |  | file://:0:0:0:0 | & |
+| main.rs:729:13:729:22 | self.foo(...) | &T | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:736:16:736:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:736:16:736:20 | SelfParam | &T | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:736:36:738:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:736:36:738:9 | { ... } | &T | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:737:13:737:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:737:13:737:16 | self | &T | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:742:13:742:13 | x |  | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:742:13:742:13 | x |  | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:742:17:742:24 | MyStruct |  | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:742:17:742:24 | MyStruct |  | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:743:9:743:9 | x |  | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:743:9:743:9 | x |  | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:743:9:743:15 | x.bar(...) |  | file://:0:0:0:0 | & |
+| main.rs:743:9:743:15 | x.bar(...) | &T | main.rs:725:5:731:5 | trait MyTrait |
+| main.rs:743:9:743:15 | x.bar(...) | &T | main.rs:733:5:733:20 | struct MyStruct |
+| main.rs:753:16:753:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:753:16:753:20 | SelfParam | &T | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:753:16:753:20 | SelfParam | &T.T | main.rs:752:10:752:10 | T |
+| main.rs:753:32:755:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:753:32:755:9 | { ... } | &T | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:753:32:755:9 | { ... } | &T.T | main.rs:752:10:752:10 | T |
+| main.rs:754:13:754:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:754:13:754:16 | self | &T | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:754:13:754:16 | self | &T.T | main.rs:752:10:752:10 | T |
+| main.rs:759:13:759:13 | x |  | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:759:13:759:13 | x | T | main.rs:748:5:748:13 | struct S |
+| main.rs:759:17:759:27 | MyStruct(...) |  | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:759:17:759:27 | MyStruct(...) | T | main.rs:748:5:748:13 | struct S |
+| main.rs:759:26:759:26 | S |  | main.rs:748:5:748:13 | struct S |
+| main.rs:760:9:760:9 | x |  | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:760:9:760:9 | x | T | main.rs:748:5:748:13 | struct S |
+| main.rs:760:9:760:15 | x.foo(...) |  | file://:0:0:0:0 | & |
+| main.rs:760:9:760:15 | x.foo(...) | &T | main.rs:750:5:750:26 | struct MyStruct |
+| main.rs:760:9:760:15 | x.foo(...) | &T.T | main.rs:748:5:748:13 | struct S |
+| main.rs:768:15:768:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:768:15:768:19 | SelfParam | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:768:31:770:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:768:31:770:9 | { ... } | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:769:13:769:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:769:13:769:19 | &... | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:769:14:769:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:769:14:769:19 | &... | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:769:15:769:19 | &self |  | file://:0:0:0:0 | & |
+| main.rs:769:15:769:19 | &self | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:769:16:769:19 | self |  | file://:0:0:0:0 | & |
+| main.rs:769:16:769:19 | self | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:772:15:772:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:772:15:772:25 | SelfParam | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:772:37:774:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:772:37:774:9 | { ... } | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:773:13:773:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:773:13:773:19 | &... | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:773:14:773:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:773:14:773:19 | &... | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:773:15:773:19 | &self |  | file://:0:0:0:0 | & |
+| main.rs:773:15:773:19 | &self | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:773:16:773:19 | self |  | file://:0:0:0:0 | & |
+| main.rs:773:16:773:19 | self | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:776:15:776:15 | x |  | file://:0:0:0:0 | & |
+| main.rs:776:15:776:15 | x | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:776:34:778:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:776:34:778:9 | { ... } | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:777:13:777:13 | x |  | file://:0:0:0:0 | & |
+| main.rs:777:13:777:13 | x | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:780:15:780:15 | x |  | file://:0:0:0:0 | & |
+| main.rs:780:15:780:15 | x | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:780:34:782:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:780:34:782:9 | { ... } | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:781:13:781:16 | &... |  | file://:0:0:0:0 | & |
+| main.rs:781:13:781:16 | &... | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:781:14:781:16 | &... |  | file://:0:0:0:0 | & |
+| main.rs:781:14:781:16 | &... | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:781:15:781:16 | &x |  | file://:0:0:0:0 | & |
+| main.rs:781:15:781:16 | &x | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:781:16:781:16 | x |  | file://:0:0:0:0 | & |
+| main.rs:781:16:781:16 | x | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:786:13:786:13 | x |  | main.rs:765:5:765:13 | struct S |
+| main.rs:786:17:786:20 | S {...} |  | main.rs:765:5:765:13 | struct S |
+| main.rs:787:9:787:9 | x |  | main.rs:765:5:765:13 | struct S |
+| main.rs:787:9:787:14 | x.f1(...) |  | file://:0:0:0:0 | & |
+| main.rs:787:9:787:14 | x.f1(...) | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:788:9:788:9 | x |  | main.rs:765:5:765:13 | struct S |
+| main.rs:788:9:788:14 | x.f2(...) |  | file://:0:0:0:0 | & |
+| main.rs:788:9:788:14 | x.f2(...) | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:789:9:789:17 | ...::f3(...) |  | file://:0:0:0:0 | & |
+| main.rs:789:9:789:17 | ...::f3(...) | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:789:15:789:16 | &x |  | file://:0:0:0:0 | & |
+| main.rs:789:15:789:16 | &x | &T | main.rs:765:5:765:13 | struct S |
+| main.rs:789:16:789:16 | x |  | main.rs:765:5:765:13 | struct S |
+| main.rs:795:5:795:20 | ...::f(...) |  | main.rs:67:5:67:21 | struct Foo |
+| main.rs:796:5:796:60 | ...::g(...) |  | main.rs:67:5:67:21 | struct Foo |
+| main.rs:796:20:796:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | struct Foo |
+| main.rs:796:41:796:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | struct Foo |
 resolveMethodCallExpr
 | loop/main.rs:12:9:12:18 | self.foo(...) | loop/main.rs:7:5:7:19 | fn foo |
 | main.rs:88:9:88:14 | x.m1(...) | main.rs:70:9:72:9 | fn m1 |
@@ -1076,21 +1125,23 @@ resolveMethodCallExpr
 | main.rs:465:26:465:31 | y.m2(...) | main.rs:411:9:420:9 | fn m2 |
 | main.rs:470:26:470:31 | x.m3(...) | main.rs:424:9:433:9 | fn m3 |
 | main.rs:471:26:471:31 | y.m3(...) | main.rs:424:9:433:9 | fn m3 |
-| main.rs:578:13:578:27 | self.set(...) | main.rs:575:9:575:36 | fn set |
-| main.rs:609:9:609:17 | x2.set(...) | main.rs:583:9:583:38 | fn set |
-| main.rs:613:9:613:22 | x3.call_set(...) | main.rs:577:9:579:9 | fn call_set |
-| main.rs:673:26:673:32 | x1.m1(...) | main.rs:658:9:660:9 | fn m1 |
-| main.rs:677:26:677:32 | x2.m2(...) | main.rs:662:9:664:9 | fn m2 |
-| main.rs:678:26:678:32 | x2.m3(...) | main.rs:666:9:668:9 | fn m3 |
-| main.rs:687:26:687:32 | x4.m2(...) | main.rs:662:9:664:9 | fn m2 |
-| main.rs:688:26:688:32 | x4.m3(...) | main.rs:666:9:668:9 | fn m3 |
-| main.rs:692:26:692:32 | x5.m1(...) | main.rs:658:9:660:9 | fn m1 |
-| main.rs:697:26:697:35 | ... .m1(...) | main.rs:658:9:660:9 | fn m1 |
-| main.rs:706:13:706:22 | self.foo(...) | main.rs:703:9:703:31 | fn foo |
-| main.rs:720:9:720:15 | x.bar(...) | main.rs:705:9:707:9 | fn bar |
-| main.rs:737:9:737:15 | x.foo(...) | main.rs:730:9:732:9 | fn foo |
-| main.rs:764:9:764:14 | x.f1(...) | main.rs:745:9:747:9 | fn f1 |
-| main.rs:765:9:765:14 | x.f2(...) | main.rs:749:9:751:9 | fn f2 |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) | main.rs:534:9:541:9 | fn unwrapSnd |
+| main.rs:566:26:566:50 | ... .unwrapSnd(...) | main.rs:534:9:541:9 | fn unwrapSnd |
+| main.rs:601:13:601:27 | self.set(...) | main.rs:598:9:598:36 | fn set |
+| main.rs:632:9:632:17 | x2.set(...) | main.rs:606:9:606:38 | fn set |
+| main.rs:636:9:636:22 | x3.call_set(...) | main.rs:600:9:602:9 | fn call_set |
+| main.rs:696:26:696:32 | x1.m1(...) | main.rs:681:9:683:9 | fn m1 |
+| main.rs:700:26:700:32 | x2.m2(...) | main.rs:685:9:687:9 | fn m2 |
+| main.rs:701:26:701:32 | x2.m3(...) | main.rs:689:9:691:9 | fn m3 |
+| main.rs:710:26:710:32 | x4.m2(...) | main.rs:685:9:687:9 | fn m2 |
+| main.rs:711:26:711:32 | x4.m3(...) | main.rs:689:9:691:9 | fn m3 |
+| main.rs:715:26:715:32 | x5.m1(...) | main.rs:681:9:683:9 | fn m1 |
+| main.rs:720:26:720:35 | ... .m1(...) | main.rs:681:9:683:9 | fn m1 |
+| main.rs:729:13:729:22 | self.foo(...) | main.rs:726:9:726:31 | fn foo |
+| main.rs:743:9:743:15 | x.bar(...) | main.rs:728:9:730:9 | fn bar |
+| main.rs:760:9:760:15 | x.foo(...) | main.rs:753:9:755:9 | fn foo |
+| main.rs:787:9:787:14 | x.f1(...) | main.rs:768:9:770:9 | fn f1 |
+| main.rs:788:9:788:14 | x.f2(...) | main.rs:772:9:774:9 | fn f2 |
 resolveFieldExpr
 | main.rs:27:26:27:28 | x.a | main.rs:7:9:7:12 | StructField |
 | main.rs:33:26:33:28 | x.a | main.rs:18:9:18:12 | StructField |
@@ -1111,7 +1162,7 @@ resolveFieldExpr
 | main.rs:431:17:431:32 | ... .a | main.rs:393:9:393:12 | StructField |
 | main.rs:438:13:438:18 | self.a | main.rs:393:9:393:12 | StructField |
 | main.rs:446:26:446:31 | self.a | main.rs:398:9:398:12 | StructField |
-| main.rs:659:13:659:18 | self.0 | main.rs:652:17:652:17 | TupleField |
-| main.rs:663:14:663:19 | self.0 | main.rs:652:17:652:17 | TupleField |
-| main.rs:667:14:667:19 | self.0 | main.rs:652:17:652:17 | TupleField |
-| main.rs:693:26:693:29 | x5.0 | main.rs:652:17:652:17 | TupleField |
+| main.rs:682:13:682:18 | self.0 | main.rs:675:17:675:17 | TupleField |
+| main.rs:686:14:686:19 | self.0 | main.rs:675:17:675:17 | TupleField |
+| main.rs:690:14:690:19 | self.0 | main.rs:675:17:675:17 | TupleField |
+| main.rs:716:26:716:29 | x5.0 | main.rs:675:17:675:17 | TupleField |
