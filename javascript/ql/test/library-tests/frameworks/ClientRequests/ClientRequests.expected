@@ -103,6 +103,13 @@ test_ClientRequest
 | tst.js:334:5:334:25 | got.pag ... rl, {}) |
 | tst.js:337:5:337:20 | jsonClient.get() |
 | tst.js:340:5:340:21 | jsonClient2.get() |
+| tst.js:344:5:344:37 | axios.p ... config) |
+| tst.js:345:5:345:28 | axios.p ... , data) |
+| tst.js:346:5:346:36 | axios.p ... config) |
+| tst.js:347:5:347:30 | axios.p ... , data) |
+| tst.js:348:5:348:38 | axios.p ... config) |
+| tst.js:349:5:349:30 | axios.g ...  url }) |
+| tst.js:352:5:352:66 | axiosIn ... text"}) |
 test_getADataNode
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
@@ -146,6 +153,11 @@ test_getADataNode
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:255:25:255:35 | 'new_value' |
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:288:21:288:35 | 'Hello Server!' |
 | tst.js:321:5:321:32 | superag ... st(url) | tst.js:321:39:321:42 | data |
+| tst.js:344:5:344:37 | axios.p ... config) | tst.js:344:25:344:28 | data |
+| tst.js:345:5:345:28 | axios.p ... , data) | tst.js:345:24:345:27 | data |
+| tst.js:346:5:346:36 | axios.p ... config) | tst.js:346:24:346:27 | data |
+| tst.js:347:5:347:30 | axios.p ... , data) | tst.js:347:26:347:29 | data |
+| tst.js:348:5:348:38 | axios.p ... config) | tst.js:348:26:348:29 | data |
 test_getHost
 | tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
@@ -268,6 +280,14 @@ test_getUrl
 | tst.js:337:5:337:20 | jsonClient.get() | tst.js:336:41:336:43 | url |
 | tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:42:339:44 | url |
 | tst.js:340:5:340:21 | jsonClient2.get() | tst.js:339:61:339:63 | url |
+| tst.js:344:5:344:37 | axios.p ... config) | tst.js:344:20:344:22 | url |
+| tst.js:345:5:345:28 | axios.p ... , data) | tst.js:345:19:345:21 | url |
+| tst.js:346:5:346:36 | axios.p ... config) | tst.js:346:19:346:21 | url |
+| tst.js:347:5:347:30 | axios.p ... , data) | tst.js:347:21:347:23 | url |
+| tst.js:348:5:348:38 | axios.p ... config) | tst.js:348:21:348:23 | url |
+| tst.js:349:5:349:30 | axios.g ...  url }) | tst.js:349:18:349:29 | { url: url } |
+| tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:19:352:65 | {method ... "text"} |
+| tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:40:352:42 | url |
 test_getAResponseDataNode
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
@@ -354,3 +374,10 @@ test_getAResponseDataNode
 | tst.js:334:5:334:25 | got.pag ... rl, {}) | tst.js:334:5:334:25 | got.pag ... rl, {}) | text | true |
 | tst.js:337:5:337:20 | jsonClient.get() | tst.js:337:5:337:20 | jsonClient.get() | text | true |
 | tst.js:340:5:340:21 | jsonClient2.get() | tst.js:340:5:340:21 | jsonClient2.get() | text | true |
+| tst.js:344:5:344:37 | axios.p ... config) | tst.js:344:5:344:37 | axios.p ... config) | json | true |
+| tst.js:345:5:345:28 | axios.p ... , data) | tst.js:345:5:345:28 | axios.p ... , data) | json | true |
+| tst.js:346:5:346:36 | axios.p ... config) | tst.js:346:5:346:36 | axios.p ... config) | json | true |
+| tst.js:347:5:347:30 | axios.p ... , data) | tst.js:347:5:347:30 | axios.p ... , data) | json | true |
+| tst.js:348:5:348:38 | axios.p ... config) | tst.js:348:5:348:38 | axios.p ... config) | json | true |
+| tst.js:349:5:349:30 | axios.g ...  url }) | tst.js:349:5:349:30 | axios.g ...  url }) | json | true |
+| tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:5:352:66 | axiosIn ... text"}) | text | true |

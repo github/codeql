@@ -8,6 +8,37 @@ extensions:
       - ["squirrel", "github.com/lann/squirrel"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:squirrel", "", True, "QueryContextWith", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "", True, "QueryRowContextWith", "", "", "ReturnValue", "database", "manual"]
+      - ["group:squirrel", "", True, "QueryRowWith", "", "", "ReturnValue", "database", "manual"]
+      - ["group:squirrel", "", True, "QueryWith", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "DeleteBuilder", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "DeleteBuilder", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "DeleteBuilder", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "InsertBuilder", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "InsertBuilder", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "InsertBuilder", True, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "InsertBuilder", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "QueryRower", True, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "QueryRowerContext", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "Queryer", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "QueryerContext", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "StdSql", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "StdSql", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["group:squirrel", "StdSqlCtx", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "StdSqlCtx", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["group:squirrel", "", False, "Delete", "", "", "Argument[0]", "sql-injection", "manual"]
@@ -49,3 +80,5 @@ extensions:
       - ["group:squirrel", "UpdateBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "UpdateBuilder", True, "Table", "", "", "Argument[0]", "sql-injection", "manual"]
       # UpdateBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+
+    # There are summary models for Row.Scan, RowScanner.Scan, {Insert,Delete,Select,Update}Builder.Scan and {Insert,Delete,Select,Update}Builder.ScanContext modeled in QL

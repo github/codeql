@@ -184,6 +184,20 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   or
   token.getName() = "DecoratedParameter" and
   result = node.getADecoratedParameter()
+  or
+  token.getName() = "GuardedRouteHandler" and
+  result = getAGuardedRouteHandlerApprox(node)
+}
+
+bindingset[node]
+pragma[inline_late]
+private API::Node getAGuardedRouteHandlerApprox(API::Node node) {
+  // For now just get any routing node with the same root (i.e. the same web app), as
+  // there are some known performance issues when checking if it is actually guarded by the given node.
+  exists(JS::Routing::Node root |
+    root = JS::Routing::getNode(node.getAValueReachableFromSource()).getRootNode() and
+    root = JS::Routing::getNode(result.asSink()).getRootNode()
+  )
 }
 
 /**
@@ -317,7 +331,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
     [
       "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
       "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
-      "WithStringArgument"
+      "WithStringArgument", "GuardedRouteHandler"
     ]
 }
 
@@ -329,7 +343,7 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
   name =
     [
       "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
-      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter", "GuardedRouteHandler"
     ]
 }
 

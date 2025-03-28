@@ -31,7 +31,7 @@ Go framework & library support
    `MongoDB Go Driver <https://www.mongodb.com/docs/drivers/go/current/>`_,``go.mongodb.org/mongo-driver*``,11,5,14
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",46,20,4
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_,``github.com/sendgrid/sendgrid-go*``,,1,
-   `Squirrel <https://github.com/Masterminds/squirrel>`_,"``github.com/Masterminds/squirrel*``, ``github.com/lann/squirrel*``, ``gopkg.in/Masterminds/squirrel``",,,96
+   `Squirrel <https://github.com/Masterminds/squirrel>`_,"``github.com/Masterminds/squirrel*``, ``github.com/lann/squirrel*``, ``gopkg.in/Masterminds/squirrel``",81,,96
    `Standard library <https://pkg.go.dev/std>`_,"````, ``archive/*``, ``bufio``, ``bytes``, ``cmp``, ``compress/*``, ``container/*``, ``context``, ``crypto``, ``crypto/*``, ``database/*``, ``debug/*``, ``embed``, ``encoding``, ``encoding/*``, ``errors``, ``expvar``, ``flag``, ``fmt``, ``go/*``, ``hash``, ``hash/*``, ``html``, ``html/*``, ``image``, ``image/*``, ``index/*``, ``io``, ``io/*``, ``log``, ``log/*``, ``maps``, ``math``, ``math/*``, ``mime``, ``mime/*``, ``net``, ``net/*``, ``os``, ``os/*``, ``path``, ``path/*``, ``plugin``, ``reflect``, ``reflect/*``, ``regexp``, ``regexp/*``, ``slices``, ``sort``, ``strconv``, ``strings``, ``sync``, ``sync/*``, ``syscall``, ``syscall/*``, ``testing``, ``testing/*``, ``text/*``, ``time``, ``time/*``, ``unicode``, ``unicode/*``, ``unsafe``, ``weak``",52,609,104
    `XORM <https://xorm.io>`_,"``github.com/go-xorm/xorm*``, ``xorm.io/xorm*``",,,68
    `XPath <https://github.com/antchfx/xpath>`_,``github.com/antchfx/xpath*``,,,4
@@ -74,5 +74,5 @@ Go framework & library support
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
    Others,``github.com/kanikanema/gorqlite``,8,2,24
-   Totals,,560,1048,1556
+   Totals,,641,1048,1556
 

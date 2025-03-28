@@ -425,7 +425,6 @@
 /lib/codeql/rust/elements/internal/TupleTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeAliasConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeAliasImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundConstructor.qll linguist-generated
