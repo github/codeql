@@ -287,11 +287,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * - `T3` is mentioned at `T2.T1` for immediate base type mention `Base<C<T3>>`
        *   of `Mid`,
        * - ``C`1`` is mentioned at `T3` for immediate base type mention `Mid<C<T4>>`
-       *   of `Sub`, and
+       *   of `Sub`,
        * - `T4` is mentioned at `T3.T1` for immediate base type mention `Mid<C<T4>>`
-       *   of `Sub`, and
+       *   of `Sub`,
        * - ``C`1`` is mentioned at `T2` and implicitly at `T2.T1` for transitive base type
-       *   mention `Base<C<T3>>` of `Sub`.
+       *   mention `Base<C<T3>>` of `Sub`, and
        * - `T4` is mentioned implicitly at `T2.T1.T1` for transitive base type mention
        *   `Base<C<T3>>` of `Sub`.
        */
@@ -307,8 +307,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           or
           // transitive base class
           exists(Type immediateBase | immediateBase = resolveTypeMentionRoot(immediateBaseMention) |
-            not t = immediateBase.getATypeParameter() and
-            baseTypeMentionHasTypeAt(immediateBase, baseMention, path, t)
+            baseTypeMentionHasNonTypeParameterAt(immediateBase, baseMention, path, t)
             or
             exists(TypePath path0, TypePath prefix, TypePath suffix, TypeParameter tp |
               /*
@@ -336,14 +335,28 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
                * ```
                */
 
-              baseTypeMentionHasTypeAt(immediateBase, baseMention, prefix, tp) and
-              tp = immediateBase.getATypeParameter() and
+              baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, tp) and
               t = immediateBaseMention.resolveTypeAt(path0) and
               path0.isCons(tp, suffix) and
               path = prefix.append(suffix)
             )
           )
         )
+      }
+
+      /** Similar to `baseTypeMentionHasTypeAt` but FIXME: */
+      pragma[inline]
+      predicate baseTypeMentionHasNonTypeParameterAt(
+        Type sub, TypeMention baseMention, TypePath path, Type t
+      ) {
+        not t = sub.getATypeParameter() and baseTypeMentionHasTypeAt(sub, baseMention, path, t)
+      }
+
+      pragma[inline]
+      predicate baseTypeMentionHasTypeParameterAt(
+        Type sub, TypeMention baseMention, TypePath path, TypeParameter tp
+      ) {
+        tp = sub.getATypeParameter() and baseTypeMentionHasTypeAt(sub, baseMention, path, tp)
       }
     }
 
@@ -514,7 +527,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module AccessBaseType {
         /**
          * Holds if inferring types at `a` might depend on the type at `path` of
-         * `apos` having `baseMention` as a transitive base type mention.
+         * `apos` having `base` as a transitive base type mention.
          */
         private predicate relevantAccess(Access a, AccessPosition apos, TypePath path, Type base) {
           exists(Declaration target, DeclarationPosition dpos |
@@ -557,8 +570,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * //  ^^^^^^^^^^^^^^^^^^^^^^^^^ `a`
          * ```
          *
-         * where the method call is an access and `new Sub<int>()` is at an
-         * access position, which is the receiver of a method call, we have:
+         * where the method call is an access, `new Sub<int>()` is at the access
+         * position which is the receiver of a method call, and `pathToSub` is
+         * `""` we have:
          *
          * `baseMention` | `path`       | `t`
          * ------------- | ------------ | ---
@@ -575,12 +589,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         ) {
           relevantAccess(a, apos, pathToSub, resolveTypeMentionRoot(baseMention)) and
           exists(Type sub | sub = a.getInferredType(apos, pathToSub) |
-            not t = sub.getATypeParameter() and
-            baseTypeMentionHasTypeAt(sub, baseMention, path, t)
+            baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
             or
             exists(TypePath prefix, TypePath suffix, TypeParameter tp |
-              tp = sub.getATypeParameter() and
-              baseTypeMentionHasTypeAt(sub, baseMention, prefix, tp) and
+              baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, tp) and
               t = inferTypeAt(a, apos, pathToSub, tp, suffix) and
               path = prefix.append(suffix)
             )
@@ -681,15 +693,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * For this example
        * ```csharp
        * interface IFoo<A> { }
-       * void M<T1, T2>(T2 item) where T2 : IFoo<T1> { }
+       * T1 M<T1, T2>(T2 item) where T2 : IFoo<T1> { }
        * ```
        * with the method declaration being the target and the for the first
        * parameter position, we have the following
        * - `path1 = ""`,
        * - `tp1 = T2`,
        * - `constraint = IFoo`,
-       * - `path2 = "A"`,
-       * - `tp2 = T1`
+       * - `path2 = "A"`, and
+       * - `tp2 = T1`.
        */
       pragma[nomagic]
       private predicate typeParameterConstraintHasTypeParameter(
