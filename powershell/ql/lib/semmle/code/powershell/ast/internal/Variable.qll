@@ -95,25 +95,23 @@ module Private {
 
   class VarAccessReal extends VarAccessImpl, TVarAccessReal {
     Raw::VarAccess va;
-    Variable v;
 
-    VarAccessReal() { this = TVarAccessReal(va, v) }
+    VarAccessReal() { this = TVarAccessReal(va) }
 
-    final override Variable getVariableImpl() { result = v }
+    final override Variable getVariableImpl() { access(va, result) }
 
-    final override string toString() { result = v.getName() }
+    final override string toString() { result = va.getUserPath() }
   }
 
   class VarAccessSynth extends VarAccessImpl, TVarAccessSynth {
     Raw::Ast parent;
     ChildIndex i;
-    Variable v;
 
-    VarAccessSynth() { this = TVarAccessSynth(parent, i, v) }
+    VarAccessSynth() { this = TVarAccessSynth(parent, i) }
 
-    final override Variable getVariableImpl() { result = v }
+    final override Variable getVariableImpl() { any(Synthesis s).getAnAccess(this, result) }
 
-    final override string toString() { result = v.getName() }
+    final override string toString() { result = this.getVariableImpl().getName() }
 
     final override Location getLocation() { result = parent.getLocation() }
   }
