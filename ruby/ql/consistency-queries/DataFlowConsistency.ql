@@ -8,30 +8,18 @@ private import codeql.dataflow.internal.DataFlowImplConsistency
 private module Input implements InputSig<Location, RubyDataFlow> {
   private import RubyDataFlow
 
-  predicate postWithInFlowExclude(Node n) { n instanceof FlowSummaryNode }
+  predicate postWithInFlowExclude(Node n) {
+    n instanceof FlowSummaryNode
+    or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_)
+  }
 
   predicate argHasPostUpdateExclude(ArgumentNode n) {
     n instanceof FlowSummaryNode
     or
     n instanceof SynthHashSplatArgumentNode
     or
-    not isNonConstantExpr(getAPostUpdateNodeForArg(n.asExpr()))
-  }
-
-  predicate postHasUniquePreExclude(PostUpdateNode n) {
-    exists(CfgNodes::ExprCfgNode e, CfgNodes::ExprCfgNode arg |
-      e = getAPostUpdateNodeForArg(arg) and
-      e != arg and
-      n = TExprPostUpdateNode(e)
-    )
-  }
-
-  predicate uniquePostUpdateExclude(Node n) {
-    exists(CfgNodes::ExprCfgNode e, CfgNodes::ExprCfgNode arg |
-      e = getAPostUpdateNodeForArg(arg) and
-      e != arg and
-      n.asExpr() = arg
-    )
+    not isNonConstantExpr(n.asExpr())
   }
 
   predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
