@@ -14,3 +14,14 @@ extensions:
     data:
       - ["hdb.Client", "hdb", "Member[createClient].ReturnValue"]
       - ["hdb.Client", "@sap/hdbext", "Member[middleware].ReturnValue.GuardedRouteHandler.Parameter[0].Member[db]"]
+      
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ['@sap/hana-client', 'Member[createConnection].ReturnValue.Member[exec].Argument[1].Parameter[1]', 'database-access-result']
+      - ['@sap/hana-client', 'Member[createConnection].ReturnValue.Member[prepare].ReturnValue.Member[execBatch,exec,execQuery].Argument[1].Parameter[1]', 'database-access-result']
+      - ['hdb.Client', 'Member[exec,execute].Argument[1..2].Parameter[1]', 'database-access-result']
+      - ['hdb.Client', 'Member[prepare].Argument[1].Parameter[1].Member[exec].Argument[1].Parameter[2..]', 'database-access-result']
+      - ["@sap/hana-client/extension/Stream", "Member[createProcStatement].Argument[2].Parameter[1].Member[exec].Argument[1].Parameter[2..]", "database-access-result"]
+      - ['@sap/hdbext', 'Member[loadProcedure].Argument[3].Parameter[1].Argument[2].Parameter[2..]', 'database-access-result']
