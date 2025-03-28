@@ -1,0 +1,10 @@
+postWithInFlow
+| deallocation.rs:20:23:20:24 | [post] m1 | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:70:23:70:35 | [post] m2 as ... | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:112:14:112:40 | [post] my_ptr as ... | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:176:27:176:28 | [post] p1 | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:189:27:189:44 | [post] ... .as_mut_ptr(...) | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:217:24:217:31 | [post] self.ptr | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:236:27:236:29 | [post] ptr | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:242:27:242:29 | [post] ptr | PostUpdateNode should not be the target of local flow. |
+| deallocation.rs:267:23:267:25 | [post] ptr | PostUpdateNode should not be the target of local flow. |
