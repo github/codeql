@@ -172,10 +172,6 @@ predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, Parameter
 module SsaFlow {
   private module SsaFlow = SsaImpl::DataFlowIntegration;
 
-  private ParameterNode toParameterNode(ParamCfgNode p) {
-    result.(SourceParameterNode).getParameter() = p
-  }
-
   /** Converts a control flow node into an SSA control flow node. */
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
@@ -183,8 +179,6 @@ module SsaFlow {
     result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
     or
     result.(SsaFlow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
-    or
-    n = toParameterNode(result.(SsaFlow::ParameterNode).getParameter())
   }
 
   predicate localFlowStep(
