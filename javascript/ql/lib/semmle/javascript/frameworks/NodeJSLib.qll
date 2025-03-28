@@ -601,6 +601,13 @@ module NodeJSLib {
     }
   }
 
+  /** A vectored write to the file system using `writev` or `writevSync` methods. */
+  private class NodeJSFileSystemVectorWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemVectorWrite() { methodName = ["writev", "writevSync"] }
+
+    override DataFlow::Node getADataNode() { result = this.getArgument(1) }
+  }
+
   /** A file system read. */
   private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
     NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
