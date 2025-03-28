@@ -163,7 +163,7 @@ pub fn test_drop() {
 pub fn test_ptr_drop(mode: i32) {
 	let layout = std::alloc::Layout::new::<Vec<i64>>();
 	unsafe {
-		let p1 = std::alloc::alloc(layout) as *mut Vec<i64>; // *mut i64
+		let p1 = std::alloc::alloc(layout) as *mut Vec<i64>;
 		let p2 = p1;
 
 		*p1 = vec!(1, 2, 3);
@@ -184,6 +184,9 @@ pub fn test_ptr_drop(mode: i32) {
 			let v4 = (*p2)[0]; // $ MISSING: Alert
 			println!("	v4 = {v4} (!)"); // corrupt in practice
 		}
+
+		let p3 = std::alloc::alloc(layout) as *mut Vec<i64>;
+		std::ptr::drop_in_place((*p3).as_mut_ptr()); // $ SPURIOUS: Alert[rust/access-invalid-pointer]
 	}
 }
 
