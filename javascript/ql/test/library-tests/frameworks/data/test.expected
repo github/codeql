@@ -1,6 +1,10 @@
 legacyDataFlowDifference
 consistencyIssue
 taintFlow
+| guardedRouteHandler.js:6:10:6:28 | req.injectedReqData | guardedRouteHandler.js:6:10:6:28 | req.injectedReqData |
+| guardedRouteHandler.js:10:10:10:28 | res.injectedResData | guardedRouteHandler.js:10:10:10:28 | res.injectedResData |
+| guardedRouteHandler.js:16:10:16:28 | req.injectedReqData | guardedRouteHandler.js:16:10:16:28 | req.injectedReqData |
+| guardedRouteHandler.js:20:10:20:28 | res.injectedResData | guardedRouteHandler.js:20:10:20:28 | res.injectedResData |
 | paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |
 | test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
 | test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) |
