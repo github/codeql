@@ -1,5 +1,5 @@
 /**
- * @name Use of a known vulnerable action.
+ * @name Use of a known vulnerable action
  * @description The workflow is using an action with known vulnerabilities.
  * @kind problem
  * @problem.severity error
