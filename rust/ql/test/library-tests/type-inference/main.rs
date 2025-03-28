@@ -530,6 +530,17 @@ mod type_aliases {
         PairBoth(Fst, Snd),
     }
 
+    impl<Fst, Snd> PairOption<Fst, Snd> {
+        fn unwrapSnd(self) -> Snd {
+            match self {
+                PairOption::PairNone() => panic!("PairNone has no second element"),
+                PairOption::PairFst(_) => panic!("PairFst has no second element"),
+                PairOption::PairSnd(snd) => snd,
+                PairOption::PairBoth(_, snd) => snd,
+            }
+        }
+    }
+
     #[derive(Debug)]
     struct S1;
 
@@ -543,7 +554,17 @@ mod type_aliases {
     type MyPair = PairOption<S1, S2>;
 
     // Generic type alias that partially applies the generic type
-    type AnotherPair<Thr> = PairOption<S2, Thr>;
+    type AnotherPair<A3> = PairOption<S2, A3>;
+
+    // Alias to another alias
+    type AliasToAlias<A4> = AnotherPair<A4>;
+
+    // Alias that appears nested withing another alias
+    type NestedAlias<A5> = AnotherPair<AliasToAlias<A5>>;
+
+    fn g(t: NestedAlias<S3>) {
+        println!("{:?}", t.unwrapSnd().unwrapSnd()); // missing
+    }
 
     pub fn f() {
         // Type can be inferred from the constructor
@@ -561,6 +582,8 @@ mod type_aliases {
         // First type from alias definition, second from argument to alias
         let p3: AnotherPair<S3> = PairOption::PairNone(); // type for `Snd` missing, spurious `S3` for `Fst`
         println!("{:?}", p3);
+
+        g(PairOption::PairSnd(PairOption::PairSnd(S3))); // missing
     }
 }
 
