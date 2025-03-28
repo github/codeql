@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/javascript-all
-      extensible: sourceModel
-    data:
-      - ["passport", "AnyMember.ReturnValue.GuardedRouteHandler.Parameter[0].Member[user]", "remote"]
