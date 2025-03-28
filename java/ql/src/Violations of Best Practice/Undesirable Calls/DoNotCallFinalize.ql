@@ -9,6 +9,7 @@
  * @problem.severity error
  * @tags quality
  *       correctness
+ *       performance
  *       external/cwe/cwe-586
  */
 
