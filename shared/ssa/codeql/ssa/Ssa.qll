@@ -1568,6 +1568,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Holds if the input to `phi` from the block `input` might be relevant for
      * barrier guards as a separately synthesized `TSsaInputNode`.
+     *
+     * Note that `TSsaInputNode`s have both unique predecessors and unique
+     * successors, both of which are given by `adjacentRefPhi`, so we can
+     * always skip them in the flow graph without increasing the number of flow
+     * edges, if they are not needed for barrier guards.
      */
     private predicate relevantPhiInputNode(SsaPhiExt phi, BasicBlock input) {
       relevantBackEdge(phi, input)
@@ -1576,8 +1581,23 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       // If the input isn't explicitly read then a guard cannot check it.
       exists(DfInput::getARead(getAPhiInputDef(phi, input))) and
       (
+        // The input node is relevant either if it sits directly on a branch
+        // edge for a guard,
         exists(DfInput::Guard g | g.controlsBranchEdge(input, phi.getBasicBlock(), _))
         or
+        // or if the unique predecessor is not an equivalent substitute in
+        // terms of being controlled by the same guards.
+        // Example:
+        // ```
+        // if (g1) {
+        //   use(x); // A
+        //   if (g2) { .. }
+        //   // no need for an input node here, as the set of guards controlling
+        //   // this block is the same as the set of guards controlling the prior
+        //   // use of `x` at A.
+        // }
+        // // phi-read node for `x`
+        // ```
         exists(BasicBlock prev |
           AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
             phi.getSourceVariable()) and
@@ -1937,11 +1957,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       |
         if relevantPhiInputNode(phi, input)
         then nodeTo = TSsaInputNode(phi, input)
-        else
-          if phiHasUniqNextNode(phi)
-          then flowFromRefToNode(v, bbPhi, -1, nodeTo)
-          else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
+        else flowIntoPhi(phi, v, bbPhi, nodeTo)
       )
+    }
+
+    private predicate flowIntoPhi(DefinitionExt phi, SourceVariable v, BasicBlock bbPhi, Node nodeTo) {
+      phi.definesAt(v, bbPhi, -1, _) and
+      if phiHasUniqNextNode(phi)
+      then flowFromRefToNode(v, bbPhi, -1, nodeTo)
+      else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
     }
 
     /**
@@ -1977,14 +2001,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
       or
       // Flow from input node to def
-      exists(DefinitionExt phi, BasicBlock bbPhi |
+      exists(DefinitionExt phi |
         phi = nodeFrom.(SsaInputNodeImpl).getPhi() and
-        phi.definesAt(v, bbPhi, _, _) and
         isUseStep = false and
         nodeFrom != nodeTo and
-        if phiHasUniqNextNode(phi)
-        then flowFromRefToNode(v, bbPhi, -1, nodeTo)
-        else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
+        flowIntoPhi(phi, v, _, nodeTo)
       )
     }
 
