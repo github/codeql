@@ -900,6 +900,16 @@ module ExprNodes {
     StmtCfgNode getAThen() { result = this.getThen(_) }
 
     StmtCfgNode getElse() { e.hasCfgChild(e.getElse(), this, result) }
+
+    StmtCfgNode getABranch(boolean b) {
+      b = true and
+      result = this.getAThen()
+      or
+      b = false and
+      result = this.getElse()
+    }
+
+    StmtCfgNode getABranch() { result = this.getABranch(_) }
   }
 
   private class LiteralChildMapping extends ExprChildMapping, Literal {
