@@ -18,6 +18,7 @@ use ra_ap_hir_def::{
 };
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
+use ra_ap_hir_ty::GenericArg;
 use ra_ap_hir_ty::TraitRefExt;
 use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
@@ -244,7 +245,7 @@ fn emit_reexport(
                     name,
                 })
             });
-            let path = make_qualified_path(trap, path_components);
+            let path = make_qualified_path(trap, path_components, None);
             let use_tree = trap.emit(generated::UseTree {
                 id: trap::TrapId::Star,
                 is_glob: false,
@@ -638,15 +639,13 @@ fn emit_module_impls(
     module.scope.impls().for_each(|imp| {
         let self_ty = db.impl_self_ty(imp);
         let self_ty = emit_hir_ty(trap, db, self_ty.skip_binders());
-        let imp_data = db.impl_data(imp);
-        let trait_ = imp_data
-            .target_trait
-            .as_ref()
-            .and_then(|t| make_qualified_path(trap, emit_hir_path(&imp_data.types_map[t.path])));
-        let trait_ = trait_.map(|trait_| {
+        let path = db
+            .impl_trait(imp)
+            .map(|trait_ref| trait_path(db, trap, trait_ref.skip_binders()));
+        let trait_ = path.map(|path| {
             trap.emit(generated::PathTypeRepr {
                 id: trap::TrapId::Star,
-                path: Some(trait_),
+                path,
             })
             .into()
         });
@@ -759,7 +758,7 @@ fn emit_visibility(
         Visibility::Module(_, VisibilityExplicitness::Implicit) => None,
     };
     path.map(|path| {
-        let path = make_qualified_path(trap, path);
+        let path = make_qualified_path(trap, path, None);
         trap.emit(generated::Visibility {
             id: trap::TrapId::Star,
             path,
@@ -859,14 +858,7 @@ fn emit_hir_type_bound(
 ) -> Option<trap::Label<generated::TypeBound>> {
     match type_bound.skip_binders() {
         WhereClause::Implemented(trait_ref) => {
-            let mut path = make_path(db, trait_ref.hir_trait_id());
-            path.push(
-                db.trait_data(trait_ref.hir_trait_id())
-                    .name
-                    .as_str()
-                    .to_owned(),
-            );
-            let path = make_qualified_path(trap, path);
+            let path = trait_path(db, trap, trait_ref);
             let type_repr = Some(
                 trap.emit(generated::PathTypeRepr {
                     id: trap::TrapId::Star,
@@ -887,11 +879,22 @@ fn emit_hir_type_bound(
     }
 }
 
-fn emit_hir_path(path: &ra_ap_hir_def::path::Path) -> Vec<String> {
-    path.segments()
-        .iter()
-        .map(|x| x.name.as_str().to_owned())
-        .collect()
+fn trait_path(
+    db: &dyn HirDatabase,
+    trap: &mut TrapFile,
+    trait_ref: &chalk_ir::TraitRef<Interner>,
+) -> Option<trap::Label<generated::Path>> {
+    let mut path = make_path(db, trait_ref.hir_trait_id());
+    path.push(
+        db.trait_data(trait_ref.hir_trait_id())
+            .name
+            .as_str()
+            .to_owned(),
+    );
+    let generic_arg_list =
+        emit_generic_arg_list(trap, db, &trait_ref.substitution.as_slice(Interner)[1..]);
+    let path = make_qualified_path(trap, path, generic_arg_list);
+    path
 }
 
 fn emit_hir_fn_ptr(
@@ -995,14 +998,17 @@ fn make_path_mod(db: &dyn DefDatabase, module: ModuleId) -> Vec<String> {
     path.reverse();
     path
 }
+
 fn make_qualified_path(
     trap: &mut TrapFile,
     path: Vec<String>,
+    generic_arg_list: Option<trap::Label<generated::GenericArgList>>,
 ) -> Option<trap::Label<generated::Path>> {
     fn qualified_path(
         trap: &mut TrapFile,
         qualifier: Option<trap::Label<generated::Path>>,
         name: String,
+        generic_arg_list: Option<trap::Label<generated::GenericArgList>>,
     ) -> trap::Label<generated::Path> {
         let identifier = Some(trap.emit(generated::NameRef {
             id: trap::TrapId::Star,
@@ -1010,7 +1016,7 @@ fn make_qualified_path(
         }));
         let segment = Some(trap.emit(generated::PathSegment {
             id: trap::TrapId::Star,
-            generic_arg_list: None,
+            generic_arg_list,
             identifier,
             parenthesized_arg_list: None,
             ret_type: None,
@@ -1022,8 +1028,10 @@ fn make_qualified_path(
             segment,
         })
     }
+    let args = std::iter::repeat_n(None, &path.len() - 1).chain(std::iter::once(generic_arg_list));
     path.into_iter()
-        .fold(None, |q, p| Some(qualified_path(trap, q, p)))
+        .zip(args)
+        .fold(None, |q, (p, a)| Some(qualified_path(trap, q, p, a)))
 }
 fn emit_hir_ty(
     trap: &mut TrapFile,
@@ -1109,7 +1117,7 @@ fn emit_hir_ty(
             )
         }
 
-        chalk_ir::TyKind::Adt(adt_id, _substitution) => {
+        chalk_ir::TyKind::Adt(adt_id, substitution) => {
             let mut path = make_path(db, adt_id.0);
             let name = match adt_id.0 {
                 ra_ap_hir_def::AdtId::StructId(struct_id) => {
@@ -1123,7 +1131,8 @@ fn emit_hir_ty(
                 }
             };
             path.push(name);
-            let path = make_qualified_path(trap, path);
+            let generic_arg_list = emit_generic_arg_list(trap, db, substitution.as_slice(Interner));
+            let path = make_qualified_path(trap, path, generic_arg_list);
             Some(
                 trap.emit(generated::PathTypeRepr {
                     id: trap::TrapId::Star,
@@ -1133,7 +1142,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Scalar(scalar) => {
-            let path = make_qualified_path(trap, vec![scalar_to_str(scalar).to_owned()]);
+            let path = make_qualified_path(trap, vec![scalar_to_str(scalar).to_owned()], None);
             Some(
                 trap.emit(generated::PathTypeRepr {
                     id: trap::TrapId::Star,
@@ -1143,7 +1152,7 @@ fn emit_hir_ty(
             )
         }
         chalk_ir::TyKind::Str => {
-            let path = make_qualified_path(trap, vec!["str".to_owned()]);
+            let path = make_qualified_path(trap, vec!["str".to_owned()], None);
             Some(
                 trap.emit(generated::PathTypeRepr {
                     id: trap::TrapId::Star,
@@ -1234,7 +1243,7 @@ fn emit_hir_ty(
         }
         chalk_ir::TyKind::BoundVar(var) => {
             let var = format!("T_{}_{}", var.debruijn.depth(), var.index);
-            let path = make_qualified_path(trap, vec![var]);
+            let path = make_qualified_path(trap, vec![var], None);
             Some(
                 trap.emit(generated::PathTypeRepr {
                     id: trap::TrapId::Star,
@@ -1253,6 +1262,66 @@ fn emit_hir_ty(
             None
         }
     }
+}
+
+fn emit_generic_arg_list(
+    trap: &mut TrapFile,
+    db: &dyn HirDatabase,
+    args: &[GenericArg],
+) -> Option<trap::Label<generated::GenericArgList>> {
+    if args.is_empty() {
+        return None;
+    }
+    let generic_args = args
+        .iter()
+        .flat_map(|arg| {
+            if let Some(ty) = arg.ty(Interner) {
+                let type_repr = emit_hir_ty(trap, db, ty);
+                Some(
+                    trap.emit(generated::TypeArg {
+                        id: trap::TrapId::Star,
+                        type_repr,
+                    })
+                    .into(),
+                )
+            } else if let Some(l) = arg.lifetime(Interner) {
+                let text = match l.data(Interner) {
+                    chalk_ir::LifetimeData::BoundVar(var) => {
+                        format!("'T_{}_{}", var.debruijn.depth(), var.index).into()
+                    }
+                    chalk_ir::LifetimeData::Static => "'static'".to_owned().into(),
+                    _ => None,
+                };
+                let lifetime = trap.emit(generated::Lifetime {
+                    id: trap::TrapId::Star,
+                    text,
+                });
+                Some(
+                    trap.emit(generated::LifetimeArg {
+                        id: trap::TrapId::Star,
+                        lifetime: Some(lifetime),
+                    })
+                    .into(),
+                )
+            } else if let Some(_) = arg.constant(Interner) {
+                Some(
+                    trap.emit(generated::ConstArg {
+                        id: trap::TrapId::Star,
+                        expr: None,
+                    })
+                    .into(),
+                )
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    trap.emit(generated::GenericArgList {
+        id: trap::TrapId::Star,
+        generic_args,
+    })
+    .into()
 }
 
 enum Variant {
