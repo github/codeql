@@ -43,3 +43,13 @@ pub static X_B: X = X::B;
 
 pub use std::fs::create_dir as mkdir;
 pub use std::{fs::*, path::PathBuf};
+
+pub struct LocalKey<T: 'static> {
+    inner: fn(Option<&mut Option<T>>) -> *const T,
+}
+
+impl From<usize> for X {
+    fn from(x: usize) -> Self {
+        X::A
+    }
+}
