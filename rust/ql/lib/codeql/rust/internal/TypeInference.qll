@@ -38,21 +38,42 @@ private module Input1 implements InputSig1<Location> {
     }
   }
 
-  class TypeParameterPosition = TypeParam;
+  private newtype TTypeParameterPosition =
+    TTypeParamTypeParameterPosition(TypeParam tp) or
+    TSelfTypeParameterPosition()
+
+  class TypeParameterPosition extends TTypeParameterPosition {
+    TypeParam asTypeParam() { this = TTypeParamTypeParameterPosition(result) }
+
+    predicate isSelf() { this = TSelfTypeParameterPosition() }
+
+    string toString() {
+      result = this.asTypeParam().toString()
+      or
+      result = "Self" and this.isSelf()
+    }
+  }
+
+  /** Holds if `typeParam`, `param` and `ppos` all concern the same `TypeParam`. */
+  additional predicate typeParamMatchPosition(
+    TypeParam typeParam, TypeParamTypeParameter param, TypeParameterPosition ppos
+  ) {
+    typeParam = param.getTypeParam() and typeParam = ppos.asTypeParam()
+  }
 
   bindingset[apos]
   bindingset[ppos]
   predicate typeArgumentParameterPositionMatch(TypeArgumentPosition apos, TypeParameterPosition ppos) {
-    apos.asTypeParam() = ppos
+    apos.asTypeParam() = ppos.asTypeParam()
     or
-    apos.asMethodTypeArgumentPosition() = ppos.getPosition()
+    apos.asMethodTypeArgumentPosition() = ppos.asTypeParam().getPosition()
   }
 
-  private predicate id(Raw::TypeParam x, Raw::TypeParam y) { x = y }
+  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
 
-  private predicate idOfRaw(Raw::TypeParam x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOfRaw(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
-  private int idOf(TypeParam node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
+  private int idOf(AstNode node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
 
   int getTypeParameterId(TypeParameter tp) {
     tp =
@@ -61,12 +82,11 @@ private module Input1 implements InputSig1<Location> {
         kind = 0 and
         id = 0
         or
-        tp0 instanceof SelfTypeParameter and
-        kind = 0 and
-        id = 1
-        or
-        id = idOf(tp0.(TypeParamTypeParameter).getTypeParam()) and
-        kind = 1
+        kind = 1 and
+        exists(AstNode node | id = idOf(node) |
+          node = tp0.(TypeParamTypeParameter).getTypeParam() or
+          node = tp0.(SelfTypeParameter).getTrait()
+        )
       |
         tp0 order by kind, id
       )
@@ -211,15 +231,6 @@ private Type inferImplSelfType(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
 }
 
-pragma[nomagic]
-private Type inferTraitSelfType(Trait t, TypePath path) {
-  result = TTrait(t) and
-  path.isEmpty()
-  or
-  result = TTypeParamTypeParameter(t.getGenericParamList().getATypeParam()) and
-  path = TypePath::singleton(result)
-}
-
 /** Gets the type at `path` of the implicitly typed `self` parameter. */
 pragma[nomagic]
 private Type inferImplicitSelfType(SelfParam self, TypePath path) {
@@ -230,7 +241,7 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
   |
     t = inferImplSelfType(i, suffix)
     or
-    t = inferTraitSelfType(i, suffix)
+    t = TSelfTypeParameter(i) and suffix.isEmpty()
   )
 }
 
@@ -273,8 +284,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
     abstract TypeParam getATypeParam();
 
     final TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      result.(TypeParamTypeParameter).getTypeParam() = ppos and
-      ppos = this.getATypeParam()
+      typeParamMatchPosition(this.getATypeParam(), result, ppos)
     }
 
     abstract StructField getField(string name);
@@ -417,12 +427,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   abstract class Declaration extends AstNode {
-    abstract TypeParam getATypeParam();
-
-    final TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      result.(TypeParamTypeParameter).getTypeParam() = ppos and
-      ppos = this.getATypeParam()
-    }
+    abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
 
     pragma[nomagic]
     abstract Type getParameterType(DeclarationPosition dpos, TypePath path);
@@ -440,7 +445,9 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   private class TupleStructDecl extends Declaration, Struct {
     TupleStructDecl() { this.isTuple() }
 
-    override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
+    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+    }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int pos |
@@ -461,8 +468,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   private class TupleVariantDecl extends Declaration, Variant {
     TupleVariantDecl() { this.isTuple() }
 
-    override TypeParam getATypeParam() {
-      result = this.getEnum().getGenericParamList().getATypeParam()
+    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getEnum().getGenericParamList().getATypeParam(), result, ppos)
     }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
@@ -483,38 +490,36 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  pragma[nomagic]
-  private Type inferAnnotatedTypeInclSelf(AstNode n, TypePath path) {
-    result = getTypeAnnotation(n).resolveTypeAtInclSelf(path)
-  }
-
   private class FunctionDecl extends Declaration, Function {
-    override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
+    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+      or
+      exists(TraitItemNode trait | this = trait.getAnAssocItem() |
+        typeParamMatchPosition(trait.getTypeParam(_), result, ppos)
+        or
+        ppos.isSelf() and result = TSelfTypeParameter(trait)
+      )
+    }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(Param p, int i, boolean inMethod |
         paramPos(this.getParamList(), p, i, inMethod) and
         dpos = TPositionalDeclarationPosition(i, inMethod) and
-        result = inferAnnotatedTypeInclSelf(p.getPat(), path)
+        result = inferAnnotatedType(p.getPat(), path)
       )
       or
       exists(SelfParam self |
         self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
         dpos.isSelf()
       |
-        // `self` parameter with type annotation
-        result = inferAnnotatedTypeInclSelf(self, path)
+        result = inferAnnotatedType(self, path) // `self` parameter with type annotation
         or
-        // `self` parameter without type annotation
-        result = inferImplicitSelfType(self, path)
-        or
-        // `self` parameter without type annotation should also have the special `Self` type
-        result = getRefAdjustImplicitSelfType(self, TypePath::nil(), TSelfTypeParameter(), path)
+        result = inferImplicitSelfType(self, path) // `self` parameter without type annotation
       )
     }
 
     override Type getReturnType(TypePath path) {
-      result = this.getRetType().getTypeRepr().(TypeReprMention).resolveTypeAtInclSelf(path)
+      result = this.getRetType().getTypeRepr().(TypeReprMention).resolveTypeAt(path)
     }
   }
 
