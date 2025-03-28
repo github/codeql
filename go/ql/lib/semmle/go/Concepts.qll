@@ -357,6 +357,23 @@ module RegexpReplaceFunction {
 class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
   /** Gets a node that is a part of the logged message. */
   DataFlow::Node getAMessageComponent() { result = super.getAMessageComponent() }
+
+  /**
+   * Gets a node whose value is a part of the logged message.
+   *
+   * Components corresponding to the format specifier "%T" are excluded as
+   * their type is logged rather than their value.
+   */
+  DataFlow::Node getAValueFormattedMessageComponent() {
+    result = this.getAMessageComponent() and
+    not exists(string formatSpecifier |
+      result = this.(StringOps::Formatting::StringFormatCall).getOperand(_, formatSpecifier) and
+      // We already know that `formatSpecifier` starts with `%`, so we check
+      // that it ends with `T` to confirm that it is `%T` or possibly some
+      // variation on it.
+      formatSpecifier.matches("%T")
+    )
+  }
 }
 
 /** Provides a class for modeling new logging APIs. */

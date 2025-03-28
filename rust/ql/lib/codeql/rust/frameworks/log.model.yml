@@ -3,9 +3,11 @@ extensions:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
-      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[0]", "log-injection", "manual"] # args
-      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[2]", "log-injection", "manual"] # target
-      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[3]", "log-injection", "manual"] # key value
+      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[0]", "log-injection", "manual"] # logger / args (pre v0.4.27)
+      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[1]", "log-injection", "manual"] # args / level (pre v0.4.27)
+      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[2]", "log-injection", "manual"] # level / target (pre v0.4.27)
+      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[3]", "log-injection", "manual"] # target / key value (pre v0.4.27)
+      - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[4]", "log-injection", "manual"] # key value
       - ["lang:std", "crate::io::stdio::_print", "Argument[0]", "log-injection", "manual"]
       - ["lang:std", "crate::io::stdio::_eprint", "Argument[0]", "log-injection", "manual"]
       - ["lang:std", "<crate::io::stdio::StdoutLock as crate::io::Write>::write", "Argument[0]", "log-injection", "manual"]

@@ -222,6 +222,11 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   string printContent(Lang::ContentSet c);
 
   /**
+   * Gets the parameter position of the return kind, if any.
+   */
+  default Lang::ParameterPosition getReturnKindParamPosition(Lang::ReturnKind node) { none() }
+
+  /**
    * Holds if it is irrelevant to generate models for `api` based on data flow analysis.
    *
    * This serves as an extra filter for the `relevant` predicate.
@@ -301,6 +306,14 @@ module MakeModelGenerator<
      * Gets the kind of the return node.
      */
     DataFlow::ReturnKindExt getKind() { result = kind }
+
+    /**
+     * Gets the parameter position of the return node, if any.
+     */
+    DataFlow::ParameterPosition getPosition() {
+      result = this.getKind().(DataFlow::ParamUpdateReturnKind).getPosition() or
+      result = getReturnKindParamPosition(this.getKind().(DataFlow::ValueReturnKind).getKind())
+    }
   }
 
   bindingset[c]
@@ -309,10 +322,11 @@ module MakeModelGenerator<
   private module PrintReturnNodeExt<printCallableParamSig/2 printCallableParam> {
     string getOutput(ReturnNodeExt node) {
       node.getKind() instanceof DataFlow::ValueReturnKind and
+      not exists(node.getPosition()) and
       result = "ReturnValue"
       or
       exists(DataFlow::ParameterPosition pos |
-        pos = node.getKind().(DataFlow::ParamUpdateReturnKind).getPosition() and
+        pos = node.getPosition() and
         result = printCallableParam(returnNodeEnclosingCallable(node), pos)
       )
     }
