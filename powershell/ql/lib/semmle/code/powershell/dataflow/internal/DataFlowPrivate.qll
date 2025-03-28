@@ -846,6 +846,24 @@ predicate jumpStep(Node pred, Node succ) {
     succ.(FlowSummaryNode).getSummaryNode())
 }
 
+private predicate arrayExprStore(Node node1, ContentSet cs, Node node2, CfgNodes::ExprCfgNode e) {
+  exists(CfgNodes::ExprNodes::ArrayExprCfgNode ae, CfgNodes::StmtNodes::StmtBlockCfgNode block |
+    e = node1.(AstNode).getCfgNode() and
+    ae = node2.asExpr() and
+    block = ae.getStmtBlock()
+  |
+    exists(Content::KnownElementContent ec, int index |
+      e = ArrayExprFlow::getReturn(block, index) and
+      cs.isKnownOrUnknownElement(ec) and
+      index = ec.getIndex().asInt()
+    )
+    or
+    not ArrayExprFlow::eachValueIsReturnedOnce(block) and
+    e = ArrayExprFlow::getAReturn(block) and
+    cs.isAnyElement()
+  )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
@@ -872,8 +890,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement()
   )
   or
-  exists(Content::KnownElementContent ec, int index |
-    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getExpr(index) = node1.asExpr() and
+  exists(Content::KnownElementContent ec, int index, CfgNodes::ExprCfgNode e |
+    e = node1.asExpr() and
+    not arrayExprStore(node1, _, _, e) and
+    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getExpr(index) = e and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
   )
@@ -890,15 +910,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement()
   )
   or
-  c.isAnyElement() and
-  exists(
-    CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
-  |
-    node2.asExpr() = arrayExpr and
-    container = arrayExpr.getStmtBlock().getAstNode() and
-    node1.(AstNode).getCfgNode() = container.getAnEscapingElement() and
-    container.mayBeMultiReturned(_)
-  )
+  arrayExprStore(node1, c, node2, _)
   or
   c.isAnyElement() and
   exists(CfgNode cfgNode |
