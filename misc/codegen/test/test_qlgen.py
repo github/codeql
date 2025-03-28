@@ -1013,5 +1013,38 @@ def test_hideable_property(generate_classes):
     }
 
 
+def test_property_with_custom_db_table_name(generate_classes):
+    assert generate_classes([
+        schema.Class("Obj", properties=[
+            schema.OptionalProperty("x", "a", pragmas={"ql_db_table_name": "foo"}),
+            schema.RepeatedProperty("y", "b", pragmas={"ql_db_table_name": "bar"}),
+            schema.RepeatedOptionalProperty("z", "c", pragmas={"ql_db_table_name": "baz"}),
+            schema.PredicateProperty("p", pragmas={"ql_db_table_name": "hello"}),
+            schema.RepeatedUnorderedProperty("q", "d", pragmas={"ql_db_table_name": "world"}),
+        ]),
+    ]) == {
+        "Obj.qll": (a_ql_class_public(name="Obj"),
+                    a_ql_stub(name="Obj"),
+                    a_ql_class(name="Obj", final=True, properties=[
+                        ql.Property(singular="X", type="a", tablename="foo",
+                                    tableparams=["this", "result"],
+                                    is_optional=True, doc="x of this obj"),
+                        ql.Property(singular="Y", plural="Ys", type="b", tablename="bar",
+                                    tableparams=["this", "index", "result"],
+                                    doc="y of this obj", doc_plural="ys of this obj"),
+                        ql.Property(singular="Z", plural="Zs", type="c", tablename="baz",
+                                    tableparams=["this", "index", "result"],
+                                    is_optional=True, doc="z of this obj", doc_plural="zs of this obj"),
+                        ql.Property(singular="p", type="predicate", tablename="hello",
+                                    tableparams=["this"], is_predicate=True,
+                                    doc="this obj p"),
+                        ql.Property(singular="Q", plural="Qs", type="d", tablename="world",
+                                    tableparams=["this", "result"], is_unordered=True,
+                                    doc="q of this obj", doc_plural="qs of this obj"),
+                    ],
+            imports=[stub_import_prefix + "Obj"])),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

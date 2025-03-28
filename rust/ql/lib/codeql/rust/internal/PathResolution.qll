@@ -378,7 +378,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   pragma[nomagic]
   private TypeRepr getASelfTyArg() {
     result =
-      this.getSelfPath().getPart().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
+      this.getSelfPath().getSegment().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
   }
 
   /**
