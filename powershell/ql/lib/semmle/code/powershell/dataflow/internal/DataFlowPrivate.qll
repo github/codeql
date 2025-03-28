@@ -110,16 +110,13 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ParenExprCfgNode).getSubExpr()
     or
-    exists(
-      CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
-    |
-      nodeTo.asExpr() = arrayExpr and
-      container = arrayExpr.getStmtBlock().getAstNode() and
-      nodeFrom.(AstNode).getCfgNode() = container.getAnEscapingElement() and
-      not container.mayBeMultiReturned(_)
-    )
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ArrayExprCfgNode)
     or
-    nodeFrom.(AstNode).getCfgNode() = nodeTo.(PreReturNodeImpl).getReturnedNode()
+    exists(CfgNodes::ExprCfgNode e |
+      e = nodeFrom.(AstNode).getCfgNode() and
+      isReturned(e) and
+      e.getScope() = nodeTo.(PreReturNodeImpl).getCfgScope()
+    )
     or
     exists(CfgNode cfgNode |
       nodeFrom = TPreReturnNodeImpl(cfgNode, true) and
