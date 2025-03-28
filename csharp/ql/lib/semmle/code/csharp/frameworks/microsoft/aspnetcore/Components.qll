@@ -122,6 +122,38 @@ private class MicrosoftAspNetCoreComponentsAddComponentParameterMethod extends M
   }
 }
 
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::OpenComponent<TComponent>` method.
+ */
+private class MicrosoftAspNetCoreComponentsOpenComponentTComponentMethod extends Method {
+  MicrosoftAspNetCoreComponentsOpenComponentTComponentMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "OpenComponent`1") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::OpenComponent` method.
+ */
+private class MicrosoftAspNetCoreComponentsOpenComponentMethod extends Method {
+  MicrosoftAspNetCoreComponentsOpenComponentMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "OpenComponent") and
+    this.getNumberOfParameters() = 2
+  }
+}
+
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::CloseComponent` method.
+ */
+private class MicrosoftAspNetCoreComponentsCloseComponentMethod extends Method {
+  MicrosoftAspNetCoreComponentsCloseComponentMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "CloseComponent")
+  }
+}
+
 private module Sources {
   private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -144,6 +176,38 @@ private module Sources {
   }
 }
 
+/**
+ * Holds for matching `RenderTreeBuilder.OpenComponent` and `RenderTreeBuilder.CloseComponent` calls with index `openCallIndex` and `closeCallIndex` respectively
+ * within the `enclosing` enclosing callabale. The `componentType` is the type of the component that is being opened and closed.
+ */
+private predicate matchingOpenCloseComponentCalls(
+  MethodCall openCall, int openCallIndex, MethodCall closeCall, int closeCallIndex,
+  Callable enclosing, Type componentType
+) {
+  (
+    openCall.getTarget().getUnboundDeclaration() instanceof
+      MicrosoftAspNetCoreComponentsOpenComponentTComponentMethod and
+    openCall.getTarget().(ConstructedGeneric).getTypeArgument(0) = componentType
+    or
+    openCall.getTarget() instanceof MicrosoftAspNetCoreComponentsOpenComponentMethod and
+    openCall.getArgument(1).(TypeofExpr).getTypeAccess().getTarget() = componentType
+  ) and
+  openCall.getEnclosingCallable() = enclosing and
+  closeCall.getTarget() instanceof MicrosoftAspNetCoreComponentsCloseComponentMethod and
+  closeCall.getEnclosingCallable() = enclosing and
+  closeCall.getParent().getParent() = openCall.getParent().getParent() and
+  openCall.getParent().getIndex() = openCallIndex and
+  closeCall.getParent().getIndex() = closeCallIndex and
+  closeCallIndex > openCallIndex and
+  not exists(int k, MethodCall otherCloseCall |
+    k in [openCallIndex + 1 .. closeCallIndex - 1] and
+    otherCloseCall.getTarget() instanceof MicrosoftAspNetCoreComponentsCloseComponentMethod and
+    otherCloseCall.getEnclosingCallable() = enclosing and
+    otherCloseCall.getParent().getParent() = openCall.getParent().getParent() and
+    otherCloseCall.getParent().getIndex() = k
+  )
+}
+
 private module JumpNodes {
   /**
    * A call to `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::AddComponentParameter` which
@@ -162,8 +226,15 @@ private module JumpNodes {
       (
         exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
         or
-        exists(string propertyName | propertyName = this.getArgument(1).(StringLiteral).getValue() |
-          result.hasName(propertyName)
+        exists(
+          string propertyName, MethodCall openComponent, int i, MethodCall closeComponent, int j
+        |
+          propertyName = this.getArgument(1).(StringLiteral).getValue() and
+          result.hasName(propertyName) and
+          matchingOpenCloseComponentCalls(openComponent, i, closeComponent, j,
+            this.getEnclosingCallable(), result.getDeclaringType()) and
+          this.getParent().getParent() = openComponent.getParent().getParent() and
+          this.getParent().getIndex() in [i + 1 .. j - 1]
         )
       )
     }
