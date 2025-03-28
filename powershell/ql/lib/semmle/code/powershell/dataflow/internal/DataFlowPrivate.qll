@@ -131,10 +131,12 @@ module LocalFlow {
       nodeTo = TReturnNodeImpl(cfgNode.getScope())
     )
     or
-    exists(CfgNode cfgNode |
-      cfgNode = nodeFrom.(AstNode).getCfgNode() and
-      isUniqueReturned(cfgNode) and
-      nodeTo.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+    exists(CfgNodes::ExprCfgNode e, CfgNodes::ScriptBlockCfgNode scriptBlock |
+      e = nodeFrom.(AstNode).getCfgNode() and
+      isReturned(e) and
+      e.getScope() = scriptBlock.getAstNode() and
+      not blockMayReturnMultipleValues(scriptBlock) and
+      nodeTo.(ReturnNodeImpl).getCfgScope() = scriptBlock.getAstNode()
     )
   }
 
@@ -1082,12 +1084,12 @@ private import PostUpdateNodes
  * (or statement) is being returned from a function.
  */
 private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
-  private CfgNodes::AstCfgNode n;
+  private CfgNodes::ScriptBlockCfgNode n;
   private boolean shouldWrap;
 
   ImplicitWrapNode() { this = TImplicitWrapNode(n, shouldWrap) }
 
-  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+  CfgNodes::ScriptBlockCfgNode getScriptBlock() { result = n }
 
   predicate shouldWrap() { shouldWrap = true }
 
@@ -1105,12 +1107,12 @@ private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
  * has been performed.
  */
 private class PreReturNodeImpl extends TPreReturnNodeImpl, NodeImpl {
-  private CfgNodes::AstCfgNode n;
+  private CfgNodes::ScriptBlockCfgNode n;
   private boolean isArray;
 
   PreReturNodeImpl() { this = TPreReturnNodeImpl(n, isArray) }
 
-  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+  CfgNodes::AstCfgNode getScriptBlock() { result = n }
 
   override CfgScope getCfgScope() { result = n.getScope() }
 
