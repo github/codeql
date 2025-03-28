@@ -744,7 +744,7 @@ module API {
       MkModuleImport(string m) {
         imports(_, m)
         or
-        any(TypeAnnotation n).hasQualifiedName(m, _)
+        any(TypeAnnotation n).hasUnderlyingType(m, _)
         or
         any(Type t).hasUnderlyingType(m, _)
       } or
@@ -753,7 +753,7 @@ module API {
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
       MkTypeUse(string moduleName, string exportName) {
-        any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
+        any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
         or
         any(Type t).hasUnderlyingType(moduleName, exportName)
       } or

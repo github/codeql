@@ -62,7 +62,7 @@ predicate isPackageUsed(string package) {
   or
   any(JS::TypeName t).hasQualifiedName(package, _)
   or
-  any(JS::TypeAnnotation t).hasQualifiedName(package, _)
+  any(JS::TypeAnnotation t).hasUnderlyingType(package, _)
   or
   exists(JS::PackageJson json | json.getPackageName() = package)
 }
