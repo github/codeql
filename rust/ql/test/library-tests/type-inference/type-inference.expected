@@ -672,9 +672,19 @@ inferType
 | main.rs:539:41:539:43 | snd |  | main.rs:533:15:533:17 | Snd |
 | main.rs:539:49:539:51 | snd |  | main.rs:533:15:533:17 | Snd |
 | main.rs:565:10:565:10 | t |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:565:10:565:10 | t | Fst | main.rs:550:5:551:14 | struct S3 |
+| main.rs:565:10:565:10 | t | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:565:10:565:10 | t | Snd | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:565:10:565:10 | t | Snd.Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:565:10:565:10 | t | Snd.Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:566:26:566:26 | t |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:566:26:566:26 | t | Fst | main.rs:550:5:551:14 | struct S3 |
+| main.rs:566:26:566:26 | t | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:566:26:566:26 | t | Snd | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:566:26:566:26 | t | Snd.Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:566:26:566:26 | t | Snd.Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:566:26:566:38 | t.unwrapSnd(...) | Snd | main.rs:550:5:551:14 | struct S3 |
+| main.rs:566:26:566:50 | ... .unwrapSnd(...) |  | main.rs:550:5:551:14 | struct S3 |
 | main.rs:571:13:571:14 | p1 |  | main.rs:525:5:531:5 | enum PairOption |
 | main.rs:571:13:571:14 | p1 | Fst | main.rs:544:5:545:14 | struct S1 |
 | main.rs:571:13:571:14 | p1 | Snd | main.rs:547:5:548:14 | struct S2 |
@@ -687,26 +697,40 @@ inferType
 | main.rs:572:26:572:27 | p1 | Fst | main.rs:544:5:545:14 | struct S1 |
 | main.rs:572:26:572:27 | p1 | Snd | main.rs:547:5:548:14 | struct S2 |
 | main.rs:575:13:575:14 | p2 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:575:13:575:14 | p2 | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:575:13:575:14 | p2 | Snd | main.rs:547:5:548:14 | struct S2 |
 | main.rs:575:26:575:47 | ...::PairNone(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:575:26:575:47 | ...::PairNone(...) | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:575:26:575:47 | ...::PairNone(...) | Snd | main.rs:547:5:548:14 | struct S2 |
 | main.rs:576:26:576:27 | p2 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:576:26:576:27 | p2 | Fst | main.rs:544:5:545:14 | struct S1 |
+| main.rs:576:26:576:27 | p2 | Snd | main.rs:547:5:548:14 | struct S2 |
 | main.rs:579:13:579:14 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:579:13:579:14 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
 | main.rs:579:13:579:14 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:579:34:579:56 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:579:34:579:56 | ...::PairSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
 | main.rs:579:34:579:56 | ...::PairSnd(...) | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:579:54:579:55 | S3 |  | main.rs:550:5:551:14 | struct S3 |
 | main.rs:580:26:580:27 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:580:26:580:27 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
 | main.rs:580:26:580:27 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:583:13:583:14 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:583:13:583:14 | p3 | Fst | main.rs:550:5:551:14 | struct S3 |
+| main.rs:583:13:583:14 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:583:13:583:14 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:583:35:583:56 | ...::PairNone(...) |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:583:35:583:56 | ...::PairNone(...) | Fst | main.rs:550:5:551:14 | struct S3 |
+| main.rs:583:35:583:56 | ...::PairNone(...) | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:583:35:583:56 | ...::PairNone(...) | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:584:26:584:27 | p3 |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:584:26:584:27 | p3 | Fst | main.rs:550:5:551:14 | struct S3 |
+| main.rs:584:26:584:27 | p3 | Fst | main.rs:547:5:548:14 | struct S2 |
+| main.rs:584:26:584:27 | p3 | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:586:11:586:54 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
-| main.rs:586:11:586:54 | ...::PairSnd(...) | Fst | main.rs:550:5:551:14 | struct S3 |
+| main.rs:586:11:586:54 | ...::PairSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
 | main.rs:586:11:586:54 | ...::PairSnd(...) | Snd | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:586:11:586:54 | ...::PairSnd(...) | Snd.Fst | main.rs:547:5:548:14 | struct S2 |
 | main.rs:586:11:586:54 | ...::PairSnd(...) | Snd.Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:586:31:586:53 | ...::PairSnd(...) |  | main.rs:525:5:531:5 | enum PairOption |
+| main.rs:586:31:586:53 | ...::PairSnd(...) | Fst | main.rs:547:5:548:14 | struct S2 |
 | main.rs:586:31:586:53 | ...::PairSnd(...) | Snd | main.rs:550:5:551:14 | struct S3 |
 | main.rs:586:51:586:52 | S3 |  | main.rs:550:5:551:14 | struct S3 |
 | main.rs:598:16:598:24 | SelfParam |  | file://:0:0:0:0 | & |
@@ -1102,6 +1126,7 @@ resolveMethodCallExpr
 | main.rs:470:26:470:31 | x.m3(...) | main.rs:424:9:433:9 | fn m3 |
 | main.rs:471:26:471:31 | y.m3(...) | main.rs:424:9:433:9 | fn m3 |
 | main.rs:566:26:566:38 | t.unwrapSnd(...) | main.rs:534:9:541:9 | fn unwrapSnd |
+| main.rs:566:26:566:50 | ... .unwrapSnd(...) | main.rs:534:9:541:9 | fn unwrapSnd |
 | main.rs:601:13:601:27 | self.set(...) | main.rs:598:9:598:36 | fn set |
 | main.rs:632:9:632:17 | x2.set(...) | main.rs:606:9:606:38 | fn set |
 | main.rs:636:9:636:22 | x3.call_set(...) | main.rs:600:9:602:9 | fn call_set |
