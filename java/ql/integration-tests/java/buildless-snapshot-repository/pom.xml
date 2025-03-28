@@ -14,7 +14,7 @@
   <repositories>
     <repository>
       <id>snapshot-test-repo</id>
-      <url>http://localhost:9427/snapshots</url>
+      <url>http://localhost:9428/snapshots</url>
       <releases>
         <enabled>false</enabled>
       </releases>

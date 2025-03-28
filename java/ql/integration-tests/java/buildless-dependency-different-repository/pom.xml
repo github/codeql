@@ -14,7 +14,7 @@
   <repositories>
     <repository>
       <id>first-test-repo</id>
-      <url>http://localhost:9428/releases</url>
+      <url>http://localhost:9427/releases</url>
     </repository>
   </repositories>
 
