@@ -510,9 +510,21 @@ inferType
 | main.rs:549:41:549:43 | snd |  | main.rs:543:15:543:17 | Snd |
 | main.rs:549:49:549:51 | snd |  | main.rs:543:15:543:17 | Snd |
 | main.rs:575:10:575:10 | t |  | main.rs:535:5:541:5 | PairOption |
-| main.rs:575:10:575:10 | t | Fst | main.rs:560:5:561:14 | S3 |
+| main.rs:575:10:575:10 | t | Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:575:10:575:10 | t | Snd | main.rs:535:5:541:5 | PairOption |
+| main.rs:575:10:575:10 | t | Snd.Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:575:10:575:10 | t | Snd.Snd | main.rs:560:5:561:14 | S3 |
+| main.rs:576:13:576:13 | x |  | main.rs:560:5:561:14 | S3 |
 | main.rs:576:17:576:17 | t |  | main.rs:535:5:541:5 | PairOption |
-| main.rs:576:17:576:17 | t | Fst | main.rs:560:5:561:14 | S3 |
+| main.rs:576:17:576:17 | t | Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:576:17:576:17 | t | Snd | main.rs:535:5:541:5 | PairOption |
+| main.rs:576:17:576:17 | t | Snd.Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:576:17:576:17 | t | Snd.Snd | main.rs:560:5:561:14 | S3 |
+| main.rs:576:17:576:29 | t.unwrapSnd() |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:576:17:576:29 | t.unwrapSnd() | Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:576:17:576:29 | t.unwrapSnd() | Snd | main.rs:560:5:561:14 | S3 |
+| main.rs:576:17:576:41 | ... .unwrapSnd() |  | main.rs:560:5:561:14 | S3 |
+| main.rs:577:26:577:26 | x |  | main.rs:560:5:561:14 | S3 |
 | main.rs:582:13:582:14 | p1 |  | main.rs:535:5:541:5 | PairOption |
 | main.rs:582:13:582:14 | p1 | Fst | main.rs:554:5:555:14 | S1 |
 | main.rs:582:13:582:14 | p1 | Snd | main.rs:557:5:558:14 | S2 |
@@ -525,26 +537,40 @@ inferType
 | main.rs:583:26:583:27 | p1 | Fst | main.rs:554:5:555:14 | S1 |
 | main.rs:583:26:583:27 | p1 | Snd | main.rs:557:5:558:14 | S2 |
 | main.rs:586:13:586:14 | p2 |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:586:13:586:14 | p2 | Fst | main.rs:554:5:555:14 | S1 |
+| main.rs:586:13:586:14 | p2 | Snd | main.rs:557:5:558:14 | S2 |
 | main.rs:586:26:586:47 | ...::PairNone(...) |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:586:26:586:47 | ...::PairNone(...) | Fst | main.rs:554:5:555:14 | S1 |
+| main.rs:586:26:586:47 | ...::PairNone(...) | Snd | main.rs:557:5:558:14 | S2 |
 | main.rs:587:26:587:27 | p2 |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:587:26:587:27 | p2 | Fst | main.rs:554:5:555:14 | S1 |
+| main.rs:587:26:587:27 | p2 | Snd | main.rs:557:5:558:14 | S2 |
 | main.rs:590:13:590:14 | p3 |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:590:13:590:14 | p3 | Fst | main.rs:557:5:558:14 | S2 |
 | main.rs:590:13:590:14 | p3 | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:590:34:590:56 | ...::PairSnd(...) |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:590:34:590:56 | ...::PairSnd(...) | Fst | main.rs:557:5:558:14 | S2 |
 | main.rs:590:34:590:56 | ...::PairSnd(...) | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:590:54:590:55 | S3 |  | main.rs:560:5:561:14 | S3 |
 | main.rs:591:26:591:27 | p3 |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:591:26:591:27 | p3 | Fst | main.rs:557:5:558:14 | S2 |
 | main.rs:591:26:591:27 | p3 | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:594:13:594:14 | p3 |  | main.rs:535:5:541:5 | PairOption |
-| main.rs:594:13:594:14 | p3 | Fst | main.rs:560:5:561:14 | S3 |
+| main.rs:594:13:594:14 | p3 | Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:594:13:594:14 | p3 | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:594:35:594:56 | ...::PairNone(...) |  | main.rs:535:5:541:5 | PairOption |
-| main.rs:594:35:594:56 | ...::PairNone(...) | Fst | main.rs:560:5:561:14 | S3 |
+| main.rs:594:35:594:56 | ...::PairNone(...) | Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:594:35:594:56 | ...::PairNone(...) | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:595:26:595:27 | p3 |  | main.rs:535:5:541:5 | PairOption |
-| main.rs:595:26:595:27 | p3 | Fst | main.rs:560:5:561:14 | S3 |
+| main.rs:595:26:595:27 | p3 | Fst | main.rs:557:5:558:14 | S2 |
+| main.rs:595:26:595:27 | p3 | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:597:11:597:54 | ...::PairSnd(...) |  | main.rs:535:5:541:5 | PairOption |
-| main.rs:597:11:597:54 | ...::PairSnd(...) | Fst | main.rs:560:5:561:14 | S3 |
+| main.rs:597:11:597:54 | ...::PairSnd(...) | Fst | main.rs:557:5:558:14 | S2 |
 | main.rs:597:11:597:54 | ...::PairSnd(...) | Snd | main.rs:535:5:541:5 | PairOption |
+| main.rs:597:11:597:54 | ...::PairSnd(...) | Snd.Fst | main.rs:557:5:558:14 | S2 |
 | main.rs:597:11:597:54 | ...::PairSnd(...) | Snd.Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:597:31:597:53 | ...::PairSnd(...) |  | main.rs:535:5:541:5 | PairOption |
+| main.rs:597:31:597:53 | ...::PairSnd(...) | Fst | main.rs:557:5:558:14 | S2 |
 | main.rs:597:31:597:53 | ...::PairSnd(...) | Snd | main.rs:560:5:561:14 | S3 |
 | main.rs:597:51:597:52 | S3 |  | main.rs:560:5:561:14 | S3 |
 | main.rs:610:16:610:24 | SelfParam |  | file://:0:0:0:0 | & |

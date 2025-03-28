@@ -569,11 +569,11 @@ mod type_aliases {
     // Alias to another alias
     type AliasToAlias<A4> = AnotherPair<A4>;
 
-    // Alias that appears nested withing another alias
+    // Alias that appears nested within another alias
     type NestedAlias<A5> = AnotherPair<AliasToAlias<A5>>;
 
     fn g(t: NestedAlias<S3>) {
-        let x = t.unwrapSnd().unwrapSnd(); // $ method=unwrapSnd MISSING: type=x:S3
+        let x = t.unwrapSnd().unwrapSnd(); // $ method=unwrapSnd type=x:S3
         println!("{:?}", x);
     }
 
@@ -583,15 +583,15 @@ mod type_aliases {
         println!("{:?}", p1);
 
         // Type can be only inferred from the type alias
-        let p2: MyPair = PairOption::PairNone(); // $ MISSING: type=p2:Fst.S1 MISSING: type=p2:Snd.S2
+        let p2: MyPair = PairOption::PairNone(); // $ type=p2:Fst.S1 type=p2:Snd.S2
         println!("{:?}", p2);
 
         // First type from alias, second from constructor
-        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // $ MISSING: type=p3:Fst.S2
+        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // $ type=p3:Fst.S2
         println!("{:?}", p3);
 
         // First type from alias definition, second from argument to alias
-        let p3: AnotherPair<S3> = PairOption::PairNone(); // $ SPURIOUS: type=p3:Fst.S3 MISSING: type=p3:Snd.S3
+        let p3: AnotherPair<S3> = PairOption::PairNone(); // $ type=p3:Fst.S2 type=p3:Snd.S3
         println!("{:?}", p3);
 
         g(PairOption::PairSnd(PairOption::PairSnd(S3)));
