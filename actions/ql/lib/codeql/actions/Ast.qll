@@ -242,6 +242,8 @@ class Step extends AstNode instanceof StepImpl {
 
   If getIf() { result = super.getIf() }
 
+  AstNode getUses() { result = super.getUses() }
+
   StepsContainer getContainer() { result = super.getContainer() }
 
   Step getNextStep() { result = super.getNextStep() }

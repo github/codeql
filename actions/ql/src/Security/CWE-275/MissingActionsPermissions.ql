@@ -14,7 +14,28 @@
 
 import actions
 
-from Job job
+Step stepInJob(Job job) { result = job.(LocalJob).getAStep() }
+
+bindingset[fullActionSelector]
+string versionedAction(string fullActionSelector) {
+  result = fullActionSelector.substring(0, fullActionSelector.indexOf("@"))
+  or
+  not exists(fullActionSelector.indexOf("@")) and
+  result = fullActionSelector
+}
+
+string stepUses(Step step) { result = step.getUses().(ScalarValue).getValue() }
+
+string jobNeedsPersmission(Job job) {
+  actionsPermissionsDataModel(versionedAction(stepUses(stepInJob(job))), result)
+}
+
+string permissionsForJob(Job job) {
+  result =
+    "{" + concat(string permission | permission = jobNeedsPersmission(job) | permission, ", ") + "}"
+}
+
+from Job job, string permissions
 where
   not exists(job.getPermissions()) and
   not exists(job.getEnclosingWorkflow().getPermissions()) and
@@ -22,5 +43,7 @@ where
   exists(Event e |
     e = job.getATriggerEvent() and
     not e.getName() = "workflow_call"
-  )
-select job, "Actions Job or Workflow does not set permissions"
+  ) and
+  permissions = permissionsForJob(job)
+select job,
+  "Actions Job or Workflow does not set permissions. A minimal set might be " + permissions

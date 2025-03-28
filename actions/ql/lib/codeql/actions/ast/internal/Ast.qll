@@ -1194,6 +1194,8 @@ class StepImpl extends AstNodeImpl, TStepNode {
   /** Gets the value of the `if` field in this step, if any. */
   IfImpl getIf() { result.getNode() = n.lookup("if") }
 
+  AstNodeImpl getUses() { result.getNode() = n.lookup("uses") }
+
   /** Gets the Runs or LocalJob that this step is in. */
   StepsContainerImpl getContainer() {
     result = this.getParentNode().(RunsImpl) or

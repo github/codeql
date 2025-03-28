@@ -77,3 +77,8 @@ extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag)
  * Holds for gh commands that may introduce untrusted data
  */
 extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
+
+/**
+ * Holds if `action` needs `permission` to run.
+ */
+extensible predicate actionsPermissionsDataModel(string action, string permission);
