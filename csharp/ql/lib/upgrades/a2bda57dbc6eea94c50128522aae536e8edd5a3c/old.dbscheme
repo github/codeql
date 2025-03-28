@@ -1168,7 +1168,6 @@ case @expr.kind of
 /* C# 12.0 */
 | 136 = @collection_expr
 | 137 = @spread_element_expr
-| 138 = @interpolated_string_insert_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
