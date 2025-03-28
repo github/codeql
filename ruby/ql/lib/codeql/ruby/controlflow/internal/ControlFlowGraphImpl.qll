@@ -1319,6 +1319,11 @@ module Trees {
       last(super.getBody(), pred, c) and
       c instanceof NormalCompletion and
       succ = this
+      or
+      pred = super.getBody().getAStmt().getAChild*() and
+      pred instanceof RetryStmt and
+      c instanceof RetryCompletion and
+      exists(BodyStmtTree stmt | this = stmt.getARescue() | first(stmt, succ))
     }
   }
 

@@ -69,6 +69,9 @@ private predicate completionIsValidForStmt(AstNode n, Completion c) {
   or
   n instanceof ReturnStmt and
   c = TReturnCompletion()
+  or
+  n instanceof RetryStmt and
+  c = TRetryCompletion()
 }
 
 private AstNode getARescuableBodyChild() {
