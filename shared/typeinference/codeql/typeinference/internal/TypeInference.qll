@@ -344,7 +344,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      /** Similar to `baseTypeMentionHasTypeAt` but FIXME: */
       pragma[inline]
       predicate baseTypeMentionHasNonTypeParameterAt(
         Type sub, TypeMention baseMention, TypePath path, Type t
@@ -527,7 +526,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module AccessBaseType {
         /**
          * Holds if inferring types at `a` might depend on the type at `path` of
-         * `apos` having `base` as a transitive base type mention.
+         * `apos` having `base` as a transitive base type.
          */
         private predicate relevantAccess(Access a, AccessPosition apos, TypePath path, Type base) {
           exists(Declaration target, DeclarationPosition dpos |
