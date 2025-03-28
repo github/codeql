@@ -6,6 +6,9 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.inspector.TagInspector;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.nibblesec.tools.SerialKiller;
 
@@ -65,35 +68,66 @@ public class A {
   public void deserializeSnakeYaml(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml();
     InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); // $unsafeDeserialization
-    Object o2 = yaml.loadAll(input); // $unsafeDeserialization
-    Object o3 = yaml.parse(new InputStreamReader(input)); // $unsafeDeserialization
-    A o4 = yaml.loadAs(input, A.class); // $unsafeDeserialization
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $unsafeDeserialization
+    Object o = yaml.load(input); // OK
+    Object o2 = yaml.loadAll(input); // OK
+    Object o3 = yaml.parse(new InputStreamReader(input)); // OK
+    A o4 = yaml.loadAs(input, A.class); // OK
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // OK
   }
 
   public void deserializeSnakeYaml2(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml(new Constructor());
     InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); // $unsafeDeserialization
-    Object o2 = yaml.loadAll(input); // $unsafeDeserialization
-    Object o3 = yaml.parse(new InputStreamReader(input)); // $unsafeDeserialization
-    A o4 = yaml.loadAs(input, A.class); // $unsafeDeserialization
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $unsafeDeserialization
+    Object o = yaml.load(input); // OK
+    Object o2 = yaml.loadAll(input); // OK
+    Object o3 = yaml.parse(new InputStreamReader(input)); // OK
+    A o4 = yaml.loadAs(input, A.class); // OK
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // OK
   }
 
   public void deserializeSnakeYaml3(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml(new SafeConstructor());
     InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); //OK
-    Object o2 = yaml.loadAll(input); //OK
-    Object o3 = yaml.parse(new InputStreamReader(input)); //OK
-    A o4 = yaml.loadAs(input, A.class); //OK
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); //OK
+    Object o = yaml.load(input); // OK
+    Object o2 = yaml.loadAll(input); // OK
+    Object o3 = yaml.parse(new InputStreamReader(input)); // OK
+    A o4 = yaml.loadAs(input, A.class); // OK
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // OK
   }
 
   public void deserializeSnakeYaml4(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml(new Constructor(A.class));
+    InputStream input = sock.getInputStream();
+    Object o = yaml.load(input); // OK
+    Object o2 = yaml.loadAll(input); // OK
+    Object o3 = yaml.parse(new InputStreamReader(input)); // OK
+    A o4 = yaml.loadAs(input, A.class); // OK
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // OK
+  }
+
+  private static class CustomSafeConstructor extends SafeConstructor {
+  }
+
+  public void deserializeSnakeYaml5(Socket sock) throws java.io.IOException {
+    Yaml yaml = new Yaml(new CustomSafeConstructor());
+    InputStream input = sock.getInputStream();
+    Object o = yaml.load(input); // OK
+    Object o2 = yaml.loadAll(input); // OK
+    Object o3 = yaml.parse(new InputStreamReader(input)); // OK
+    A o4 = yaml.loadAs(input, A.class); // OK
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // OK
+  }
+
+  public void deserializeSnakeYaml6(Socket sock) throws java.io.IOException {
+    LoaderOptions options = new LoaderOptions();
+    TagInspector allowedTags = new TagInspector() {
+      @Override
+      public boolean isGlobalTagAllowed(Tag tag) {
+        return true;
+      }
+    };
+    options.setTagInspector(allowedTags);
+    Yaml yaml = new Yaml(new Constructor(options));
     InputStream input = sock.getInputStream();
     Object o = yaml.load(input); // $unsafeDeserialization
     Object o2 = yaml.loadAll(input); // $unsafeDeserialization
