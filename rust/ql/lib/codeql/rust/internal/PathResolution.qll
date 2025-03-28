@@ -303,7 +303,14 @@ class CrateItemNode extends ItemNode instanceof Crate {
 
   override TypeParam getTypeParam(int i) { none() }
 
-  override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }
+  override string getCanonicalPath(Crate c) {
+    c = this and
+    result = Crate.super.getName() and
+    not exists(FunctionItemNode main |
+      main.getImmediateParent() = this.getModuleNode() and
+      main.getName() = "main"
+    )
+  }
 
   override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
     exists(ModuleLikeNode m |
