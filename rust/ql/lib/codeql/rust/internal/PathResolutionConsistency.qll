@@ -36,6 +36,12 @@ query predicate multipleTupleFields(FieldExpr fe, TupleField field) {
   strictcount(fe.getTupleField()) > 1
 }
 
+/** Holds if `p` may resolve to multiple items including `i`. */
+query predicate multipleCanonicalPaths(ItemNode i, Crate c, string path) {
+  path = i.getCanonicalPath(c) and
+  strictcount(i.getCanonicalPath(c)) > 1
+}
+
 /**
  * Gets counts of path resolution inconsistencies of each type.
  */
