@@ -50,17 +50,19 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this struct field, if it exists.
+     * Gets the default of this struct field, if it exists.
      */
-    Expr getExpr() {
+    Expr getDefault() {
       result =
-        Synth::convertExprFromRaw(Synth::convertStructFieldToRaw(this).(Raw::StructField).getExpr())
+        Synth::convertExprFromRaw(Synth::convertStructFieldToRaw(this)
+              .(Raw::StructField)
+              .getDefault())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getDefault()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasDefault() { exists(this.getDefault()) }
 
     /**
      * Gets the name of this struct field, if it exists.

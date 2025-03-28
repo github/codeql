@@ -72,7 +72,7 @@ repos:
 
       - id: rust-codegen
         name: Run Rust checked in code generation
-        files: ^misc/codegen/|^rust/(prefix\.dbscheme|schema/|codegen/|.*/generated/|ql/lib/(rust\.dbscheme$|codeql/rust/elements)|\.generated.list)
+        files: ^misc/codegen/|^rust/(prefix\.dbscheme|schema/|codegen/|.*/generated/|ql/lib/(rust\.dbscheme$|codeql/rust/elements)|\.generated.list|ast-generator/)
         language: system
         entry: bazel run //rust/codegen -- --quiet
         pass_filenames: false

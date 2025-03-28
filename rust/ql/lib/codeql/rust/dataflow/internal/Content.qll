@@ -150,7 +150,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 
   override FieldExprCfgNode getAnAccess() {
     // TODO: limit to tuple types
-    result.getNameRef().getText().toInt() = pos
+    result.getIdentifier().getText().toInt() = pos
   }
 
   override string toString() { result = "tuple." + pos.toString() }
@@ -262,7 +262,7 @@ newtype TContent =
   TTuplePositionContent(int pos) {
     pos in [0 .. max([
               any(TuplePat pat).getNumberOfFields(),
-              any(FieldExpr access).getNameRef().getText().toInt()
+              any(FieldExpr access).getIdentifier().getText().toInt()
             ]
         )]
   } or

@@ -650,7 +650,7 @@ impl From<trap::Label<AsmPiece>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct AsmRegSpec {
     pub id: trap::TrapId<AsmRegSpec>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
 }
 
 impl trap::TrapEntry for AsmRegSpec {
@@ -660,8 +660,8 @@ impl trap::TrapEntry for AsmRegSpec {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("asm_reg_specs", vec![id.into()]);
-        if let Some(v) = self.name_ref {
-            out.add_tuple("asm_reg_spec_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("asm_reg_spec_identifiers", vec![id.into(), v.into()]);
         }
     }
 }
@@ -2081,7 +2081,7 @@ impl From<trap::Label<Path>> for trap::Label<Element> {
 pub struct PathSegment {
     pub id: trap::TrapId<PathSegment>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub parenthesized_arg_list: Option<trap::Label<ParenthesizedArgList>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
@@ -2097,8 +2097,8 @@ impl trap::TrapEntry for PathSegment {
         if let Some(v) = self.generic_arg_list {
             out.add_tuple("path_segment_generic_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("path_segment_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("path_segment_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.parenthesized_arg_list {
             out.add_tuple("path_segment_parenthesized_arg_lists", vec![id.into(), v.into()]);
@@ -2496,7 +2496,7 @@ pub struct StructExprField {
     pub id: trap::TrapId<StructExprField>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub expr: Option<trap::Label<Expr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
 }
 
 impl trap::TrapEntry for StructExprField {
@@ -2512,8 +2512,8 @@ impl trap::TrapEntry for StructExprField {
         if let Some(v) = self.expr {
             out.add_tuple("struct_expr_field_exprs", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("struct_expr_field_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("struct_expr_field_identifiers", vec![id.into(), v.into()]);
         }
     }
 }
@@ -2611,7 +2611,7 @@ impl From<trap::Label<StructExprFieldList>> for trap::Label<Element> {
 pub struct StructField {
     pub id: trap::TrapId<StructField>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
+    pub default: Option<trap::Label<Expr>>,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -2627,8 +2627,8 @@ impl trap::TrapEntry for StructField {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("struct_field_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("struct_field_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.default {
+            out.add_tuple("struct_field_defaults", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("struct_field_names", vec![id.into(), v.into()]);
@@ -2677,7 +2677,7 @@ impl From<trap::Label<StructField>> for trap::Label<Element> {
 pub struct StructPatField {
     pub id: trap::TrapId<StructPatField>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub pat: Option<trap::Label<Pat>>,
 }
 
@@ -2691,8 +2691,8 @@ impl trap::TrapEntry for StructPatField {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("struct_pat_field_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("struct_pat_field_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("struct_pat_field_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.pat {
             out.add_tuple("struct_pat_field_pats", vec![id.into(), v.into()]);
@@ -4150,7 +4150,7 @@ pub struct AssocTypeArg {
     pub id: trap::TrapId<AssocTypeArg>,
     pub const_arg: Option<trap::Label<ConstArg>>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub param_list: Option<trap::Label<ParamList>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
@@ -4171,8 +4171,8 @@ impl trap::TrapEntry for AssocTypeArg {
         if let Some(v) = self.generic_arg_list {
             out.add_tuple("assoc_type_arg_generic_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("assoc_type_arg_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("assoc_type_arg_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.param_list {
             out.add_tuple("assoc_type_arg_param_lists", vec![id.into(), v.into()]);
@@ -5210,8 +5210,8 @@ impl From<trap::Label<ExprStmt>> for trap::Label<Element> {
 pub struct FieldExpr {
     pub id: trap::TrapId<FieldExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub container: Option<trap::Label<Expr>>,
+    pub identifier: Option<trap::Label<NameRef>>,
 }
 
 impl trap::TrapEntry for FieldExpr {
@@ -5224,11 +5224,11 @@ impl trap::TrapEntry for FieldExpr {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("field_expr_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("field_expr_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.container {
+            out.add_tuple("field_expr_containers", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("field_expr_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("field_expr_identifiers", vec![id.into(), v.into()]);
         }
     }
 }
@@ -7511,65 +7511,6 @@ impl From<trap::Label<RangePat>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct RecordFieldList {
-    pub id: trap::TrapId<RecordFieldList>,
-    pub fields: Vec<trap::Label<StructField>>,
-}
-
-impl trap::TrapEntry for RecordFieldList {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_field_lists", vec![id.into()]);
-        for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_field_list_fields", vec![id.into(), i.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordFieldList {
-    fn class_name() -> &'static str { "RecordFieldList" }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<FieldList> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of FieldList
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct RefExpr {
     pub id: trap::TrapId<RefExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
@@ -8094,6 +8035,65 @@ impl From<trap::Label<SliceTypeRepr>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct StructFieldList {
+    pub id: trap::TrapId<StructFieldList>,
+    pub fields: Vec<trap::Label<StructField>>,
+}
+
+impl trap::TrapEntry for StructFieldList {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_field_lists", vec![id.into()]);
+        for (i, v) in self.fields.into_iter().enumerate() {
+            out.add_tuple("struct_field_list_fields", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructFieldList {
+    fn class_name() -> &'static str { "StructFieldList" }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<FieldList> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of FieldList
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct TryExpr {
     pub id: trap::TrapId<TryExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
@@ -8589,7 +8589,7 @@ impl From<trap::Label<UnderscoreExpr>> for trap::Label<Element> {
 pub struct Variant {
     pub id: trap::TrapId<Variant>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
+    pub discriminant: Option<trap::Label<Expr>>,
     pub field_list: Option<trap::Label<FieldList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -8605,8 +8605,8 @@ impl trap::TrapEntry for Variant {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("variant_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("variant_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.discriminant {
+            out.add_tuple("variant_discriminants", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.field_list {
             out.add_tuple("variant_field_lists", vec![id.into(), v.into()]);
@@ -9326,7 +9326,7 @@ impl From<trap::Label<ExternBlock>> for trap::Label<Addressable> {
 pub struct ExternCrate {
     pub id: trap::TrapId<ExternCrate>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub rename: Option<trap::Label<Rename>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
@@ -9341,8 +9341,8 @@ impl trap::TrapEntry for ExternCrate {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("extern_crate_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("extern_crate_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("extern_crate_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.rename {
             out.add_tuple("extern_crate_renames", vec![id.into(), v.into()]);
@@ -10031,7 +10031,7 @@ pub struct MethodCallExpr {
     pub arg_list: Option<trap::Label<ArgList>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub receiver: Option<trap::Label<Expr>>,
 }
 
@@ -10051,8 +10051,8 @@ impl trap::TrapEntry for MethodCallExpr {
         if let Some(v) = self.generic_arg_list {
             out.add_tuple("method_call_expr_generic_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("method_call_expr_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("method_call_expr_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.receiver {
             out.add_tuple("method_call_expr_receivers", vec![id.into(), v.into()]);
@@ -10510,7 +10510,7 @@ impl trap::TrapEntry for Struct {
             out.add_tuple("struct_attrs", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.field_list {
-            out.add_tuple("struct_field_lists", vec![id.into(), v.into()]);
+            out.add_tuple("struct_field_lists_", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("struct_generic_param_lists", vec![id.into(), v.into()]);
@@ -11172,7 +11172,7 @@ pub struct Union {
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
-    pub struct_field_list: Option<trap::Label<RecordFieldList>>,
+    pub struct_field_list: Option<trap::Label<StructFieldList>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
 }

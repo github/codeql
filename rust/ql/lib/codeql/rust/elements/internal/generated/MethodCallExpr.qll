@@ -47,19 +47,19 @@ module Generated {
     final predicate hasGenericArgList() { exists(this.getGenericArgList()) }
 
     /**
-     * Gets the name reference of this method call expression, if it exists.
+     * Gets the identifier of this method call expression, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertMethodCallExprToRaw(this)
               .(Raw::MethodCallExpr)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the receiver of this method call expression, if it exists.
