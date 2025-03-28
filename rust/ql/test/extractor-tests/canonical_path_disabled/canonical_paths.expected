@@ -1,5 +1,5 @@
 canonicalPaths
-| anonymous.rs:4:1:4:26 | Use | None | None |
+| anonymous.rs:4:1:4:26 | use ...::Trait | None | None |
 | anonymous.rs:6:1:35:1 | fn canonicals | None | None |
 | anonymous.rs:7:5:7:23 | struct OtherStruct | None | None |
 | anonymous.rs:9:5:11:5 | trait OtherTrait | None | None |
@@ -33,7 +33,7 @@ canonicalPaths
 | regular.rs:37:1:41:1 | enum MyEnum | None | None |
 | regular.rs:43:1:49:1 | fn enum_qualified_usage | None | None |
 | regular.rs:51:1:58:1 | fn enum_unqualified_usage | None | None |
-| regular.rs:54:5:54:18 | Use | None | None |
+| regular.rs:54:5:54:18 | use MyEnum::* | None | None |
 | regular.rs:60:1:66:1 | fn enum_match | None | None |
 resolvedPaths
 | anonymous.rs:30:17:30:30 | OtherStruct {...} | None | None |

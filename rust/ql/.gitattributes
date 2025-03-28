@@ -442,9 +442,7 @@
 /lib/codeql/rust/elements/internal/UseBoundGenericArgsConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseBoundGenericArgsImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/UseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseTreeConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/UseTreeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseTreeListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseTreeListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantConstructor.qll linguist-generated
