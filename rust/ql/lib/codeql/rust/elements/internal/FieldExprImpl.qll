@@ -23,7 +23,7 @@ module Impl {
    */
   class FieldExpr extends Generated::FieldExpr {
     /** Gets the record field that this access references, if any. */
-    StructField getStructField() { result = TypeInference::resolveRecordFieldExpr(this) }
+    StructField getStructField() { result = TypeInference::resolveStructFieldExpr(this) }
 
     /** Gets the tuple field that this access references, if any. */
     TupleField getTupleField() { result = TypeInference::resolveTupleFieldExpr(this) }

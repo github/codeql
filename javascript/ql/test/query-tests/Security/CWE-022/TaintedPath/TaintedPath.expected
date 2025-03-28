@@ -51,6 +51,7 @@
 | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | This path depends on a $@. | express.js:8:20:8:32 | req.query.bar | user-provided value |
 | handlebars.js:11:32:11:39 | filePath | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:11:32:11:39 | filePath | This path depends on a $@. | handlebars.js:29:46:29:60 | req.params.path | user-provided value |
 | handlebars.js:15:25:15:32 | filePath | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:15:25:15:32 | filePath | This path depends on a $@. | handlebars.js:43:15:43:29 | req.params.path | user-provided value |
+| hapi.js:15:44:15:51 | filepath | hapi.js:14:30:14:51 | request ... ilepath | hapi.js:15:44:15:51 | filepath | This path depends on a $@. | hapi.js:14:30:14:51 | request ... ilepath | user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on a $@. | normalizedPaths.js:11:14:11:27 | req.query.path | user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on a $@. | normalizedPaths.js:11:14:11:27 | req.query.path | user-provided value |
 | normalizedPaths.js:15:19:15:38 | path + '/index.html' | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | This path depends on a $@. | normalizedPaths.js:11:14:11:27 | req.query.path | user-provided value |
@@ -344,6 +345,8 @@ edges
 | handlebars.js:13:73:13:80 | filePath | handlebars.js:15:25:15:32 | filePath | provenance |  |
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath | provenance |  |
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath | provenance |  |
+| hapi.js:14:19:14:51 | filepath | hapi.js:15:44:15:51 | filepath | provenance |  |
+| hapi.js:14:30:14:51 | request ... ilepath | hapi.js:14:19:14:51 | filepath | provenance |  |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path | provenance |  |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:14:26:14:29 | path | provenance |  |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:15:19:15:22 | path | provenance |  |
@@ -821,6 +824,9 @@ nodes
 | handlebars.js:15:25:15:32 | filePath | semmle.label | filePath |
 | handlebars.js:29:46:29:60 | req.params.path | semmle.label | req.params.path |
 | handlebars.js:43:15:43:29 | req.params.path | semmle.label | req.params.path |
+| hapi.js:14:19:14:51 | filepath | semmle.label | filepath |
+| hapi.js:14:30:14:51 | request ... ilepath | semmle.label | request ... ilepath |
+| hapi.js:15:44:15:51 | filepath | semmle.label | filepath |
 | normalizedPaths.js:11:7:11:27 | path | semmle.label | path |
 | normalizedPaths.js:11:14:11:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:13:19:13:22 | path | semmle.label | path |

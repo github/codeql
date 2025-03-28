@@ -67,6 +67,19 @@ class TestClass extends Class {
 }
 
 /**
+ * A class that is likely a test class. That is either a definite test class, or
+ * a class whose name, package, or location suggests that it might be a test class.
+ */
+class LikelyTestClass extends Class {
+  LikelyTestClass() {
+    this instanceof TestClass or
+    this.getName().toLowerCase().matches("%test%") or
+    this.getPackage().getName().toLowerCase().matches("%test%") or
+    this.getLocation().getFile().getAbsolutePath().matches("%/src/test/java%")
+  }
+}
+
+/**
  * A test method declared within a JUnit 3.8 test class.
  */
 class JUnit3TestMethod extends Method {
@@ -229,6 +242,37 @@ class TestMethod extends Method {
     this instanceof JUnit4TestMethod or
     this instanceof JUnitJupiterTestMethod or
     this instanceof TestNGTestMethod
+  }
+}
+
+/**
+ * A method that is likely a test method.
+ */
+class LikelyTestMethod extends Method {
+  LikelyTestMethod() {
+    this.getDeclaringType() instanceof LikelyTestClass
+    or
+    this instanceof TestMethod
+    or
+    this instanceof LikelyJunitTest
+  }
+}
+
+/**
+ * A `Method` that is public, has no parameters,
+ * has a "void" return type, AND either has a name that starts with "test" OR
+ * has an annotation that ends with "Test"
+ */
+class LikelyJunitTest extends Method {
+  LikelyJunitTest() {
+    this.isPublic() and
+    this.getReturnType().hasName("void") and
+    this.hasNoParameters() and
+    (
+      this.getName().matches("JUnit%") or
+      this.getName().matches("test%") or
+      this.getAnAnnotation().getType().getName().matches("%Test")
+    )
   }
 }
 

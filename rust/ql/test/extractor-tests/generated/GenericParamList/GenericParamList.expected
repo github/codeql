@@ -1,0 +1,2 @@
+| gen_generic_param_list.rs:5:9:5:14 | <...> | getNumberOfGenericParams: | 2 |
+| gen_generic_param_list.rs:7:13:7:20 | <...> | getNumberOfGenericParams: | 2 |
