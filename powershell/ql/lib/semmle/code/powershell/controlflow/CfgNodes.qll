@@ -371,7 +371,7 @@ module ExprNodes {
     ExprCfgNode getOperand() { e.hasCfgChild(e.getOperand(), this, result) }
   }
 
-  class ConstExprChildMapping extends ExprChildMapping, ConstExpr {
+  private class ConstExprChildMapping extends ExprChildMapping, ConstExpr {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -383,7 +383,7 @@ module ExprNodes {
     override ConstExpr getExpr() { result = e }
   }
 
-  class ConvertExprChildMapping extends ExprChildMapping, ConvertExpr {
+  private class ConvertExprChildMapping extends ExprChildMapping, ConvertExpr {
     override predicate relevantChild(Ast child) { child = this.getExpr() }
   }
 
@@ -397,7 +397,7 @@ module ExprNodes {
     ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
   }
 
-  class IndexExprChildMapping extends ExprChildMapping, IndexExpr {
+  private class IndexExprChildMapping extends ExprChildMapping, IndexExpr {
     override predicate relevantChild(Ast child) {
       child = this.getBase()
       or
@@ -457,7 +457,7 @@ module ExprNodes {
     override IndexExprReadAccess getExpr() { result = e }
   }
 
-  class CallExprChildMapping extends ExprChildMapping, CallExpr {
+  private class CallExprChildMapping extends ExprChildMapping, CallExpr {
     override predicate relevantChild(Ast child) {
       child = this.getQualifier()
       or
@@ -503,7 +503,7 @@ module ExprNodes {
     predicate isStatic() { this.getExpr().isStatic() }
   }
 
-  class ObjectCreationChildMapping extends CallExprChildMapping instanceof ObjectCreation {
+  private class ObjectCreationChildMapping extends CallExprChildMapping instanceof ObjectCreation {
     override predicate relevantChild(Ast child) { child = super.getConstructedTypeExpr() }
   }
 
@@ -522,7 +522,7 @@ module ExprNodes {
     }
   }
 
-  class CallOperatorChildMapping extends CallExprChildMapping instanceof CallOperator {
+  private class CallOperatorChildMapping extends CallExprChildMapping instanceof CallOperator {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -536,7 +536,7 @@ module ExprNodes {
     ExprCfgNode getCommand() { result = this.getArgument(0) }
   }
 
-  class MemberExprChildMapping extends ExprChildMapping, MemberExpr {
+  private class MemberExprChildMapping extends ExprChildMapping, MemberExpr {
     override predicate relevantChild(Ast child) {
       child = this.getQualifier()
       or
@@ -603,7 +603,7 @@ module ExprNodes {
     override MemberExprReadAccess getExpr() { result = e }
   }
 
-  class TypeNameExprChildMapping extends ExprChildMapping, TypeNameExpr {
+  private class TypeNameExprChildMapping extends ExprChildMapping, TypeNameExpr {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -631,7 +631,7 @@ module ExprNodes {
     override QualifiedTypeNameExpr getExpr() { result = e }
   }
 
-  class ErrorExprChildMapping extends ExprChildMapping, ErrorExpr {
+  private class ErrorExprChildMapping extends ExprChildMapping, ErrorExpr {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -643,7 +643,7 @@ module ExprNodes {
     override ErrorExpr getExpr() { result = e }
   }
 
-  class ScriptBlockExprChildMapping extends ExprChildMapping, ScriptBlockExpr {
+  private class ScriptBlockExprChildMapping extends ExprChildMapping, ScriptBlockExpr {
     override predicate relevantChild(Ast child) { child = this.getBody() }
   }
 
@@ -657,7 +657,7 @@ module ExprNodes {
     ScriptBlockCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
   }
 
-  class StringLiteralExprChildMapping extends ExprChildMapping, StringConstExpr {
+  private class StringLiteralExprChildMapping extends ExprChildMapping, StringConstExpr {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -671,7 +671,7 @@ module ExprNodes {
     string getValueString() { result = e.getValueString() }
   }
 
-  class ExpandableStringExprChildMapping extends ExprChildMapping, ExpandableStringExpr {
+  private class ExpandableStringExprChildMapping extends ExprChildMapping, ExpandableStringExpr {
     override predicate relevantChild(Ast child) { child = this.getAnExpr() }
   }
 
@@ -728,7 +728,7 @@ module ExprNodes {
     override VarReadAccess getExpr() { result = e }
   }
 
-  class HashTableExprChildMapping extends ExprChildMapping, HashTableExpr {
+  private class HashTableExprChildMapping extends ExprChildMapping, HashTableExpr {
     override predicate relevantChild(Ast child) {
       child = this.getAKey()
       or
@@ -759,7 +759,7 @@ module ExprNodes {
     ExprCfgNode getAValue() { result = this.getValue(_) }
   }
 
-  class PipelineChildMapping extends ExprChildMapping, Pipeline {
+  private class PipelineChildMapping extends ExprChildMapping, Pipeline {
     override predicate relevantChild(Ast child) { child = this.getAComponent() }
   }
 
@@ -775,7 +775,7 @@ module ExprNodes {
     ExprCfgNode getAComponent() { result = this.getComponent(_) }
   }
 
-  class PipelineChainChildMapping extends ExprChildMapping, PipelineChain {
+  private class PipelineChainChildMapping extends ExprChildMapping, PipelineChain {
     override predicate relevantChild(Ast child) {
       child = this.getLeft() or child = this.getRight()
     }
@@ -793,7 +793,7 @@ module ExprNodes {
     ExprCfgNode getRight() { e.hasCfgChild(e.getRight(), this, result) }
   }
 
-  class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
+  private class ConditionalExprChildMapping extends ExprChildMapping, ConditionalExpr {
     override predicate relevantChild(Ast child) {
       child = this.getCondition()
       or
@@ -827,7 +827,7 @@ module ExprNodes {
     ExprCfgNode getABranch() { result = this.getBranch(_) }
   }
 
-  class ExpandableSubExprChildMapping extends ExprChildMapping, ExpandableSubExpr {
+  private class ExpandableSubExprChildMapping extends ExprChildMapping, ExpandableSubExpr {
     override predicate relevantChild(Ast child) { child = this.getExpr() }
   }
 
@@ -841,7 +841,7 @@ module ExprNodes {
     ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
   }
 
-  class UsingExprChildMapping extends ExprChildMapping, UsingExpr {
+  private class UsingExprChildMapping extends ExprChildMapping, UsingExpr {
     override predicate relevantChild(Ast child) { child = this.getExpr() }
   }
 
@@ -855,7 +855,7 @@ module ExprNodes {
     ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
   }
 
-  class AttributedExprChildMapping extends ExprChildMapping, AttributedExpr {
+  private class AttributedExprChildMapping extends ExprChildMapping, AttributedExpr {
     override predicate relevantChild(Ast child) {
       child = this.getExpr() or
       child = this.getAttribute()
@@ -874,7 +874,7 @@ module ExprNodes {
     ExprCfgNode getAttribute() { e.hasCfgChild(e.getAttribute(), this, result) }
   }
 
-  class IfChildMapping extends ExprChildMapping, If {
+  private class IfChildMapping extends ExprChildMapping, If {
     override predicate relevantChild(Ast child) {
       child = this.getACondition()
       or
@@ -902,7 +902,7 @@ module ExprNodes {
     StmtCfgNode getElse() { e.hasCfgChild(e.getElse(), this, result) }
   }
 
-  class LiteralChildMapping extends ExprChildMapping, Literal {
+  private class LiteralChildMapping extends ExprChildMapping, Literal {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -914,7 +914,7 @@ module ExprNodes {
     override Literal getExpr() { result = e }
   }
 
-  class BoolLiteralChildMapping extends ExprChildMapping, BoolLiteral {
+  private class BoolLiteralChildMapping extends ExprChildMapping, BoolLiteral {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -926,7 +926,7 @@ module ExprNodes {
     override BoolLiteral getExpr() { result = e }
   }
 
-  class NullLiteralChildMapping extends ExprChildMapping, NullLiteral {
+  private class NullLiteralChildMapping extends ExprChildMapping, NullLiteral {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1004,7 +1004,7 @@ module StmtNodes {
     ExprCfgNode getRightHandSide() { s.hasCfgChild(s.getRightHandSide(), this, result) }
   }
 
-  class BreakStmtChildMapping extends NonExprChildMapping, BreakStmt {
+  private class BreakStmtChildMapping extends NonExprChildMapping, BreakStmt {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1016,7 +1016,7 @@ module StmtNodes {
     override BreakStmt getStmt() { result = s }
   }
 
-  class ContinueStmtChildMapping extends NonExprChildMapping, ContinueStmt {
+  private class ContinueStmtChildMapping extends NonExprChildMapping, ContinueStmt {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1028,7 +1028,7 @@ module StmtNodes {
     override ContinueStmt getStmt() { result = s }
   }
 
-  class DataStmtChildMapping extends NonExprChildMapping, DataStmt {
+  private class DataStmtChildMapping extends NonExprChildMapping, DataStmt {
     override predicate relevantChild(Ast child) {
       child = this.getACmdAllowed() or child = this.getBody()
     }
@@ -1066,7 +1066,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class DoWhileStmtChildMapping extends NonExprChildMapping, DoWhileStmt {
+  private class DoWhileStmtChildMapping extends NonExprChildMapping, DoWhileStmt {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or child = this.getBody()
     }
@@ -1084,7 +1084,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class ErrorStmtChildMapping extends NonExprChildMapping, ErrorStmt {
+  private class ErrorStmtChildMapping extends NonExprChildMapping, ErrorStmt {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1096,7 +1096,7 @@ module StmtNodes {
     override ErrorStmt getStmt() { result = s }
   }
 
-  class ExitStmtChildMapping extends NonExprChildMapping, ExitStmt {
+  private class ExitStmtChildMapping extends NonExprChildMapping, ExitStmt {
     override predicate relevantChild(Ast child) { child = this.getPipeline() }
   }
 
@@ -1110,7 +1110,7 @@ module StmtNodes {
     ExprCfgNode getPipeline() { s.hasCfgChild(s.getPipeline(), this, result) }
   }
 
-  class DynamicStmtChildMapping extends NonExprChildMapping, DynamicStmt {
+  private class DynamicStmtChildMapping extends NonExprChildMapping, DynamicStmt {
     override predicate relevantChild(Ast child) {
       child = this.getName() or child = this.getScriptBlock() or child = this.getHashTableExpr()
     }
@@ -1130,7 +1130,7 @@ module StmtNodes {
     ExprCfgNode getHashTableExpr() { s.hasCfgChild(s.getHashTableExpr(), this, result) }
   }
 
-  class ForEachStmtChildMapping extends NonExprChildMapping, ForEachStmt {
+  private class ForEachStmtChildMapping extends NonExprChildMapping, ForEachStmt {
     override predicate relevantChild(Ast child) {
       child = this.getVarAccess() or child = this.getIterableExpr() or child = this.getBody()
     }
@@ -1150,7 +1150,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class ForStmtChildMapping extends NonExprChildMapping, ForStmt {
+  private class ForStmtChildMapping extends NonExprChildMapping, ForStmt {
     override predicate relevantChild(Ast child) {
       child = this.getInitializer() or
       child = this.getCondition() or
@@ -1175,7 +1175,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class GotoStmtChildMapping extends NonExprChildMapping, GotoStmt {
+  private class GotoStmtChildMapping extends NonExprChildMapping, GotoStmt {
     override predicate relevantChild(Ast child) { child = this.getLabel() }
   }
 
@@ -1189,7 +1189,7 @@ module StmtNodes {
     ExprCfgNode getLabel() { s.hasCfgChild(s.getLabel(), this, result) }
   }
 
-  class ReturnStmtChildMapping extends NonExprChildMapping, ReturnStmt {
+  private class ReturnStmtChildMapping extends NonExprChildMapping, ReturnStmt {
     override predicate relevantChild(Ast child) { child = this.getPipeline() }
   }
 
@@ -1203,7 +1203,7 @@ module StmtNodes {
     ExprCfgNode getPipeline() { s.hasCfgChild(s.getPipeline(), this, result) }
   }
 
-  class StmtBlockChildMapping extends NonExprChildMapping, StmtBlock {
+  private class StmtBlockChildMapping extends NonExprChildMapping, StmtBlock {
     override predicate relevantChild(Ast child) { child = this.getAStmt() }
   }
 
@@ -1219,7 +1219,7 @@ module StmtNodes {
     StmtCfgNode getAStmt() { result = this.getStmt(_) }
   }
 
-  class SwitchStmtChildMapping extends NonExprChildMapping, SwitchStmt {
+  private class SwitchStmtChildMapping extends NonExprChildMapping, SwitchStmt {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or
       child = this.getDefault() or
@@ -1248,7 +1248,7 @@ module StmtNodes {
     ExprCfgNode getAPattern() { result = this.getPattern(_) }
   }
 
-  class ThrowStmtChildMapping extends NonExprChildMapping, ThrowStmt {
+  private class ThrowStmtChildMapping extends NonExprChildMapping, ThrowStmt {
     override predicate relevantChild(Ast child) { child = this.getPipeline() }
   }
 
@@ -1262,7 +1262,7 @@ module StmtNodes {
     ExprCfgNode getPipeline() { s.hasCfgChild(s.getPipeline(), this, result) }
   }
 
-  class TrapStmtChildMapping extends NonExprChildMapping, TrapStmt {
+  private class TrapStmtChildMapping extends NonExprChildMapping, TrapStmt {
     override predicate relevantChild(Ast child) { child = this.getBody() }
   }
 
@@ -1276,7 +1276,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class TryStmtChildMapping extends NonExprChildMapping, TryStmt {
+  private class TryStmtChildMapping extends NonExprChildMapping, TryStmt {
     override predicate relevantChild(Ast child) {
       child = this.getBody() or
       child = this.getFinally() or
@@ -1298,7 +1298,7 @@ module StmtNodes {
     StmtCfgNode getCatchClause(int i) { s.hasCfgChild(s.getCatchClause(i), this, result) }
   }
 
-  class UsingStmtChildMapping extends NonExprChildMapping, UsingStmt {
+  private class UsingStmtChildMapping extends NonExprChildMapping, UsingStmt {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1310,7 +1310,7 @@ module StmtNodes {
     override UsingStmt getStmt() { result = s }
   }
 
-  class WhileStmtChildMapping extends NonExprChildMapping, WhileStmt {
+  private class WhileStmtChildMapping extends NonExprChildMapping, WhileStmt {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or
       child = this.getBody()
@@ -1329,7 +1329,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class ConfigurationChildMapping extends NonExprChildMapping, Configuration {
+  private class ConfigurationChildMapping extends NonExprChildMapping, Configuration {
     override predicate relevantChild(Ast child) { child = this.getName() or child = this.getBody() }
   }
 
@@ -1345,7 +1345,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  class TypeStmtChildMapping extends NonExprChildMapping, TypeDefinitionStmt {
+  private class TypeStmtChildMapping extends NonExprChildMapping, TypeDefinitionStmt {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1369,7 +1369,7 @@ module StmtNodes {
     string getName() { result = s.getName() }
   }
 
-  class FunctionDefinitionChildMapping extends NonExprChildMapping, FunctionDefinitionStmt {
+  private class FunctionDefinitionChildMapping extends NonExprChildMapping, FunctionDefinitionStmt {
     override predicate relevantChild(Ast child) { none() }
   }
 
@@ -1383,7 +1383,7 @@ module StmtNodes {
     FunctionBase getFunction() { result = s.getFunction() }
   }
 
-  class ExprStmtChildMapping extends NonExprChildMapping, ExprStmt {
+  private class ExprStmtChildMapping extends NonExprChildMapping, ExprStmt {
     override predicate relevantChild(Ast child) { child = this.getExpr() }
   }
 
