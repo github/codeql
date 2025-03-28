@@ -479,6 +479,10 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
+  predicate ssaDefHasSource(WriteDefinition def) {
+    any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
+  }
+
   class Guard extends Cfg::CfgNodes::AstCfgNode {
     /**
      * Holds if the control flow branching from `bb1` is dependent on this guard,

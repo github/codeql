@@ -1690,7 +1690,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /** Gets the underlying definition. */
       WriteDefinition getDefinition() { result = def }
 
-      override string toString() { result = def.toString() }
+      override string toString() { result = "[source] " + def.toString() }
 
       override Location getLocation() { result = def.getLocation() }
     }
