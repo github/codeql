@@ -107,6 +107,10 @@ module Input implements InputSig<Location, RustDataFlow> {
       c = TFutureContent() and
       arg = ""
     )
+    or
+    cs = TOptionalStep(arg) and result = "OptionalStep"
+    or
+    cs = TOptionalBarrier(arg) and result = "OptionalBarrier"
   }
 
   string encodeReturn(ReturnKind rk, string arg) { none() }

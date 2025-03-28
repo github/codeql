@@ -1,4 +1,5 @@
 localStep
+| file://:0:0:0:0 | [summary param] self in lang:std::_::<crate::path::Path>::canonicalize | file://:0:0:0:0 | [summary] read: Argument[self].OptionalBarrier[normalize-path] in lang:std::_::<crate::path::Path>::canonicalize |
 | main.rs:3:11:3:11 | [SSA] i | main.rs:4:12:4:12 | i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | [SSA] i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | i |
@@ -429,13 +430,10 @@ localStep
 | main.rs:318:11:318:12 | s1 | main.rs:319:9:319:45 | ... \| ... |
 | main.rs:319:9:319:45 | ... \| ... | main.rs:319:9:319:25 | ...::A(...) |
 | main.rs:319:9:319:45 | ... \| ... | main.rs:319:29:319:45 | ...::B(...) |
-| main.rs:319:9:319:45 | [SSA] phi | main.rs:319:55:319:55 | n |
-| main.rs:319:24:319:24 | [SSA] [input] phi | main.rs:319:9:319:45 | [SSA] phi |
-| main.rs:319:24:319:24 | [SSA] n | main.rs:319:24:319:24 | [SSA] [input] phi |
+| main.rs:319:24:319:24 | [SSA] n | main.rs:319:55:319:55 | n |
 | main.rs:319:24:319:24 | n | main.rs:319:24:319:24 | [SSA] n |
 | main.rs:319:24:319:24 | n | main.rs:319:24:319:24 | n |
-| main.rs:319:44:319:44 | [SSA] [input] phi | main.rs:319:9:319:45 | [SSA] phi |
-| main.rs:319:44:319:44 | [SSA] n | main.rs:319:44:319:44 | [SSA] [input] phi |
+| main.rs:319:44:319:44 | [SSA] n | main.rs:319:55:319:55 | n |
 | main.rs:319:44:319:44 | n | main.rs:319:44:319:44 | [SSA] n |
 | main.rs:319:44:319:44 | n | main.rs:319:44:319:44 | n |
 | main.rs:319:50:319:56 | sink(...) | main.rs:318:5:320:5 | match s1 { ... } |
@@ -472,13 +470,10 @@ localStep
 | main.rs:336:11:336:12 | s1 | main.rs:337:9:337:19 | ... \| ... |
 | main.rs:337:9:337:19 | ... \| ... | main.rs:337:9:337:12 | A(...) |
 | main.rs:337:9:337:19 | ... \| ... | main.rs:337:16:337:19 | B(...) |
-| main.rs:337:9:337:19 | [SSA] phi | main.rs:337:29:337:29 | n |
-| main.rs:337:11:337:11 | [SSA] [input] phi | main.rs:337:9:337:19 | [SSA] phi |
-| main.rs:337:11:337:11 | [SSA] n | main.rs:337:11:337:11 | [SSA] [input] phi |
+| main.rs:337:11:337:11 | [SSA] n | main.rs:337:29:337:29 | n |
 | main.rs:337:11:337:11 | n | main.rs:337:11:337:11 | [SSA] n |
 | main.rs:337:11:337:11 | n | main.rs:337:11:337:11 | n |
-| main.rs:337:18:337:18 | [SSA] [input] phi | main.rs:337:9:337:19 | [SSA] phi |
-| main.rs:337:18:337:18 | [SSA] n | main.rs:337:18:337:18 | [SSA] [input] phi |
+| main.rs:337:18:337:18 | [SSA] n | main.rs:337:29:337:29 | n |
 | main.rs:337:18:337:18 | n | main.rs:337:18:337:18 | [SSA] n |
 | main.rs:337:18:337:18 | n | main.rs:337:18:337:18 | n |
 | main.rs:337:24:337:30 | sink(...) | main.rs:336:5:338:5 | match s1 { ... } |
@@ -515,13 +510,10 @@ localStep
 | main.rs:359:11:359:12 | s1 | main.rs:360:9:360:71 | ... \| ... |
 | main.rs:360:9:360:71 | ... \| ... | main.rs:360:9:360:38 | ...::C {...} |
 | main.rs:360:9:360:71 | ... \| ... | main.rs:360:42:360:71 | ...::D {...} |
-| main.rs:360:9:360:71 | [SSA] phi | main.rs:360:81:360:81 | n |
-| main.rs:360:36:360:36 | [SSA] [input] phi | main.rs:360:9:360:71 | [SSA] phi |
-| main.rs:360:36:360:36 | [SSA] n | main.rs:360:36:360:36 | [SSA] [input] phi |
+| main.rs:360:36:360:36 | [SSA] n | main.rs:360:81:360:81 | n |
 | main.rs:360:36:360:36 | n | main.rs:360:36:360:36 | [SSA] n |
 | main.rs:360:36:360:36 | n | main.rs:360:36:360:36 | n |
-| main.rs:360:69:360:69 | [SSA] [input] phi | main.rs:360:9:360:71 | [SSA] phi |
-| main.rs:360:69:360:69 | [SSA] n | main.rs:360:69:360:69 | [SSA] [input] phi |
+| main.rs:360:69:360:69 | [SSA] n | main.rs:360:81:360:81 | n |
 | main.rs:360:69:360:69 | n | main.rs:360:69:360:69 | [SSA] n |
 | main.rs:360:69:360:69 | n | main.rs:360:69:360:69 | n |
 | main.rs:360:76:360:82 | sink(...) | main.rs:359:5:361:5 | match s1 { ... } |
@@ -558,13 +550,10 @@ localStep
 | main.rs:379:11:379:12 | s1 | main.rs:380:9:380:43 | ... \| ... |
 | main.rs:380:9:380:43 | ... \| ... | main.rs:380:9:380:24 | C {...} |
 | main.rs:380:9:380:43 | ... \| ... | main.rs:380:28:380:43 | D {...} |
-| main.rs:380:9:380:43 | [SSA] phi | main.rs:380:53:380:53 | n |
-| main.rs:380:22:380:22 | [SSA] [input] phi | main.rs:380:9:380:43 | [SSA] phi |
-| main.rs:380:22:380:22 | [SSA] n | main.rs:380:22:380:22 | [SSA] [input] phi |
+| main.rs:380:22:380:22 | [SSA] n | main.rs:380:53:380:53 | n |
 | main.rs:380:22:380:22 | n | main.rs:380:22:380:22 | [SSA] n |
 | main.rs:380:22:380:22 | n | main.rs:380:22:380:22 | n |
-| main.rs:380:41:380:41 | [SSA] [input] phi | main.rs:380:9:380:43 | [SSA] phi |
-| main.rs:380:41:380:41 | [SSA] n | main.rs:380:41:380:41 | [SSA] [input] phi |
+| main.rs:380:41:380:41 | [SSA] n | main.rs:380:53:380:53 | n |
 | main.rs:380:41:380:41 | n | main.rs:380:41:380:41 | [SSA] n |
 | main.rs:380:41:380:41 | n | main.rs:380:41:380:41 | n |
 | main.rs:380:48:380:54 | sink(...) | main.rs:379:5:381:5 | match s1 { ... } |
@@ -2189,6 +2178,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::or_else | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::or_else |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<str>::parse | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<str>::parse |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<&[u8] as crate::io::BufRead>::fill_buf | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<&[u8] as crate::io::BufRead>::fill_buf |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::path::Path>::canonicalize | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::path::Path>::canonicalize |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout_ms | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout_ms |

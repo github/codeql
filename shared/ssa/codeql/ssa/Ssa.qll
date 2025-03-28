@@ -1493,8 +1493,34 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
     }
 
+    /** Holds if `guard` directly controls block `bb` upon evaluating to `branch`. */
+    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+
     /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
-    predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+    default predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
+      guardDirectlyControlsBlock(guard, bb, branch)
+    }
+
+    /**
+     * Holds if `WriteDefinition`s should be included as an intermediate node
+     * between the assigned `Expr` or `Parameter` and the first read of the SSA
+     * definition.
+     */
+    default predicate includeWriteDefsInFlowStep() { any() }
+
+    /**
+     * Holds if barrier guards should be supported on input edges to phi
+     * nodes. Disable this only if barrier guards are not going to be used.
+     */
+    default predicate supportBarrierGuardsOnPhiEdges() { any() }
+
+    /**
+     * Holds if all phi input back edges should be kept in the data flow graph.
+     *
+     * This is ordinarily not necessary and causes the retention of superfluous
+     * nodes.
+     */
+    default predicate keepAllPhiInputBackEdges() { none() }
   }
 
   /**
@@ -1508,9 +1534,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     final private class DefinitionExtFinal = DefinitionExt;
 
-    /** An SSA definition into which another SSA definition may flow. */
-    private class SsaInputDefinitionExt extends DefinitionExtFinal {
-      SsaInputDefinitionExt() {
+    /** An SSA definition which is either a phi node or a phi read node. */
+    private class SsaPhiExt extends DefinitionExtFinal {
+      SsaPhiExt() {
         this instanceof PhiNode
         or
         this instanceof PhiReadNode
@@ -1518,7 +1544,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     cached
-    private Definition getAPhiInputDef(SsaInputDefinitionExt phi, BasicBlock bb) {
+    private Definition getAPhiInputDef(SsaPhiExt phi, BasicBlock bb) {
       exists(SourceVariable v, BasicBlock bbDef |
         phi.definesAt(v, bbDef, _, _) and
         getABasicBlockPredecessor(bbDef) = bb and
@@ -1526,6 +1552,118 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
+    /**
+     * Holds if the phi input edge from `input` to `phi` is a back edge and
+     * must be kept.
+     */
+    private predicate relevantBackEdge(SsaPhiExt phi, BasicBlock input) {
+      exists(BasicBlock bbPhi |
+        DfInput::keepAllPhiInputBackEdges() and
+        exists(getAPhiInputDef(phi, input)) and
+        phi.getBasicBlock() = bbPhi and
+        getImmediateBasicBlockDominator+(input) = bbPhi
+      )
+    }
+
+    /**
+     * Holds if the input to `phi` from the block `input` might be relevant for
+     * barrier guards as a separately synthesized `TSsaInputNode`.
+     *
+     * Note that `TSsaInputNode`s have both unique predecessors and unique
+     * successors, both of which are given by `adjacentRefPhi`, so we can
+     * always skip them in the flow graph without increasing the number of flow
+     * edges, if they are not needed for barrier guards.
+     */
+    private predicate relevantPhiInputNode(SsaPhiExt phi, BasicBlock input) {
+      relevantBackEdge(phi, input)
+      or
+      DfInput::supportBarrierGuardsOnPhiEdges() and
+      // If the input isn't explicitly read then a guard cannot check it.
+      exists(DfInput::getARead(getAPhiInputDef(phi, input))) and
+      (
+        // The input node is relevant either if it sits directly on a branch
+        // edge for a guard,
+        exists(DfInput::Guard g | g.controlsBranchEdge(input, phi.getBasicBlock(), _))
+        or
+        // or if the unique predecessor is not an equivalent substitute in
+        // terms of being controlled by the same guards.
+        // Example:
+        // ```
+        // if (g1) {
+        //   use(x); // A
+        //   if (g2) { .. }
+        //   // no need for an input node here, as the set of guards controlling
+        //   // this block is the same as the set of guards controlling the prior
+        //   // use of `x` at A.
+        // }
+        // // phi-read node for `x`
+        // ```
+        exists(BasicBlock prev |
+          AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
+            phi.getSourceVariable()) and
+          prev != input and
+          exists(DfInput::Guard g, boolean branch |
+            DfInput::guardDirectlyControlsBlock(g, input, branch) and
+            not DfInput::guardDirectlyControlsBlock(g, prev, branch)
+          )
+        )
+      )
+    }
+
+    /**
+     * Holds if a next adjacent use of `phi` is as input to `phi2` through
+     * `input`. The boolean `relevant` indicates whether the input edge might
+     * be relevant for barrier guards.
+     */
+    private predicate phiStepsToPhiInput(
+      SsaPhiExt phi, SsaPhiExt phi2, BasicBlock input, boolean relevant
+    ) {
+      exists(BasicBlock bb1, int i, SourceVariable v, BasicBlock bb2 |
+        phi.definesAt(pragma[only_bind_into](v), bb1, i, _) and
+        AdjacentSsaRefs::adjacentRefPhi(bb1, i, input, bb2, v) and
+        phi2.definesAt(pragma[only_bind_into](v), bb2, _, _) and
+        if relevantPhiInputNode(phi2, input) then relevant = true else relevant = false
+      )
+    }
+
+    /**
+     * Holds if a next adjacent use of `phi` occurs at index `i` in basic block
+     * `bb`. The boolean `isUse` indicates whether the use is a read or an
+     * uncertain write.
+     */
+    private predicate phiStepsToRef(SsaPhiExt phi, BasicBlock bb, int i, boolean isUse) {
+      exists(SourceVariable v, BasicBlock bb1, int i1 |
+        phi.definesAt(v, bb1, i1, _) and
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb, i, v)
+      |
+        isUse = true and
+        variableRead(bb, i, v, true)
+        or
+        isUse = false and
+        exists(UncertainWriteDefinition def2 |
+          DfInput::allowFlowIntoUncertainDef(def2) and
+          def2.definesAt(v, bb, i)
+        )
+      )
+    }
+
+    /**
+     * Holds if the next adjacent use of `phi` is unique. In this case, we can
+     * skip the phi in the use-use step relation without increasing the number
+     * flow edges.
+     */
+    private predicate phiHasUniqNextNode(SsaPhiExt phi) {
+      not relevantBackEdge(phi, _) and
+      exists(int nextPhiInput, int nextPhi, int nextRef |
+        1 = nextPhiInput + nextPhi + nextRef and
+        nextPhiInput =
+          count(SsaPhiExt phi2, BasicBlock input | phiStepsToPhiInput(phi, phi2, input, true)) and
+        nextPhi = count(SsaPhiExt phi2 | phiStepsToPhiInput(phi, phi2, _, false)) and
+        nextRef = count(BasicBlock bb, int i, boolean isUse | phiStepsToRef(phi, bb, i, isUse))
+      )
+    }
+
+    cached
     private newtype TNode =
       TParamNode(DfInput::Parameter p) {
         exists(WriteDefinition def | DfInput::ssaDefInitializesParam(def, p))
@@ -1538,10 +1676,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           isPost = false
         )
       } or
-      TSsaDefinitionNode(DefinitionExt def) or
-      TSsaInputNode(SsaInputDefinitionExt phi, BasicBlock input) {
-        exists(getAPhiInputDef(phi, input))
-      }
+      TSsaDefinitionNode(DefinitionExt def) { not phiHasUniqNextNode(def) } or
+      TSsaInputNode(SsaPhiExt phi, BasicBlock input) { relevantPhiInputNode(phi, input) }
 
     /**
      * A data flow node that we need to reference in the value step relation.
@@ -1743,7 +1879,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * both inputs into the phi read node after the outer condition are guarded.
      */
     private class SsaInputNodeImpl extends SsaNodeImpl, TSsaInputNode {
-      private SsaInputDefinitionExt def_;
+      private SsaPhiExt def_;
       private BasicBlock input_;
 
       SsaInputNodeImpl() { this = TSsaInputNode(def_, input_) }
@@ -1754,9 +1890,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         input = input_
       }
 
-      SsaInputDefinitionExt getPhi() { result = def_ }
+      SsaPhiExt getPhi() { result = def_ }
 
-      deprecated override SsaInputDefinitionExt getDefinitionExt() { result = def_ }
+      deprecated override SsaPhiExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
 
@@ -1783,11 +1919,53 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
         def.definesAt(v, bb, i, _) and
-        isUseStep = false
+        isUseStep = false and
+        if DfInput::includeWriteDefsInFlowStep()
+        then any()
+        else (
+          def instanceof PhiNode or
+          def instanceof PhiReadNode or
+          DfInput::allowFlowIntoUncertainDef(def)
+        )
       )
       or
       [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
       isUseStep = true
+    }
+
+    private predicate flowFromRefToNode(SourceVariable v, BasicBlock bb1, int i1, Node nodeTo) {
+      // Flow from definition/read to next read
+      exists(BasicBlock bb2, int i2 |
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        nodeTo.(ReadNode).readsAt(bb2, i2, v)
+      )
+      or
+      // Flow from definition/read to next uncertain write
+      exists(BasicBlock bb2, int i2 |
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        exists(UncertainWriteDefinition def2 |
+          DfInput::allowFlowIntoUncertainDef(def2) and
+          nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
+          def2.definesAt(v, bb2, i2)
+        )
+      )
+      or
+      // Flow from definition/read to phi input
+      exists(BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
+        AdjacentSsaRefs::adjacentRefPhi(bb1, i1, input, bbPhi, v) and
+        phi.definesAt(v, bbPhi, -1, _)
+      |
+        if relevantPhiInputNode(phi, input)
+        then nodeTo = TSsaInputNode(phi, input)
+        else flowIntoPhi(phi, v, bbPhi, nodeTo)
+      )
+    }
+
+    private predicate flowIntoPhi(DefinitionExt phi, SourceVariable v, BasicBlock bbPhi, Node nodeTo) {
+      phi.definesAt(v, bbPhi, -1, _) and
+      if phiHasUniqNextNode(phi)
+      then flowFromRefToNode(v, bbPhi, -1, nodeTo)
+      else nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = phi
     }
 
     /**
@@ -1804,43 +1982,30 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       |
-        nodeTo.(SsaDefinitionNode).getDefinition() = def and
-        v = def.getSourceVariable() and
-        isUseStep = false
+        isUseStep = false and
+        if DfInput::includeWriteDefsInFlowStep()
+        then
+          nodeTo.(SsaDefinitionNode).getDefinition() = def and
+          v = def.getSourceVariable()
+        else
+          exists(BasicBlock bb1, int i1 |
+            def.definesAt(v, bb1, i1) and
+            flowFromRefToNode(v, bb1, i1, nodeTo)
+          )
       )
       or
-      // Flow from definition/read to next read
-      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+      exists(BasicBlock bb1, int i1 |
         flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
-        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
-        nodeTo.(ReadNode).readsAt(bb2, i2, v)
-      )
-      or
-      // Flow from definition/read to next uncertain write
-      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        flowOutOf(nodeFrom, v, bb1, i1, isUseStep) and
-        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
-        exists(UncertainWriteDefinition def2 |
-          DfInput::allowFlowIntoUncertainDef(def2) and
-          nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
-          def2.definesAt(v, bb2, i2)
-        )
-      )
-      or
-      // Flow from definition/read to phi input
-      exists(BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
-        flowOutOf(nodeFrom, v, bb, i, isUseStep) and
-        AdjacentSsaRefs::adjacentRefPhi(bb, i, input, bbPhi, v) and
-        nodeTo = TSsaInputNode(phi, input) and
-        phi.definesAt(v, bbPhi, -1, _)
+        flowFromRefToNode(v, bb1, i1, nodeTo) and
+        nodeFrom != nodeTo
       )
       or
       // Flow from input node to def
-      exists(DefinitionExt def |
-        nodeTo.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-        def = nodeFrom.(SsaInputNodeImpl).getPhi() and
-        v = def.getSourceVariable() and
-        isUseStep = false
+      exists(DefinitionExt phi |
+        phi = nodeFrom.(SsaInputNodeImpl).getPhi() and
+        isUseStep = false and
+        nodeFrom != nodeTo and
+        flowIntoPhi(phi, v, _, nodeTo)
       )
     }
 
@@ -1853,8 +2018,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // Flow from parameter into entry definition
         DfInput::ssaDefInitializesParam(def, nodeFrom.(ParameterNode).getParameter())
       |
-        nodeTo.(SsaDefinitionNode).getDefinition() = def and
-        v = def.getSourceVariable()
+        v = def.getSourceVariable() and
+        if DfInput::includeWriteDefsInFlowStep()
+        then nodeTo.(SsaDefinitionNode).getDefinition() = def
+        else nodeTo.(ExprNode).getExpr() = DfInput::getARead(def)
       )
       or
       // Flow from SSA definition to read
@@ -1876,7 +2043,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[nomagic]
     private Definition getAPhiInputDef(SsaInputNodeImpl n) {
-      exists(SsaInputDefinitionExt phi, BasicBlock bb |
+      exists(SsaPhiExt phi, BasicBlock bb |
         result = getAPhiInputDef(phi, bb) and
         n.isInputInto(phi, bb)
       )
@@ -1970,7 +2137,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           )
           or
           // guard controls input block to a phi node
-          exists(SsaInputDefinitionExt phi |
+          exists(SsaPhiExt phi |
             def = getAPhiInputDef(result) and
             result.(SsaInputNodeImpl).isInputInto(phi, bb)
           |

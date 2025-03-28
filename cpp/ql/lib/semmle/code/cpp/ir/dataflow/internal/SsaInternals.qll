@@ -1007,9 +1007,11 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     }
   }
 
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     guard.(IRGuards::IRGuardCondition).controls(bb, branch)
   }
+
+  predicate keepAllPhiInputBackEdges() { any() }
 }
 
 private module DataFlowIntegrationImpl = SsaImpl::DataFlowIntegration<DataFlowIntegrationInput>;

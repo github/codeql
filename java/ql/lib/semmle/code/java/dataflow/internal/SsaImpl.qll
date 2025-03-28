@@ -680,10 +680,17 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     }
   }
 
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `branch`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
+    guard.directlyControls(bb, branch)
+  }
+
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
     guard.controls(bb, branch)
   }
+
+  predicate includeWriteDefsInFlowStep() { none() }
 }
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;
