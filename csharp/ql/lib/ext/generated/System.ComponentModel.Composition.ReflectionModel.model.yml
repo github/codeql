@@ -28,7 +28,7 @@ extensions:
       - ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", False, "GetImportingMember", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", False, "GetImportingParameter", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", False, "GetPartType", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", False, "TryMakeGenericPartDefinition", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition,System.Collections.Generic.IEnumerable<System.Type>,System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", False, "TryMakeGenericPartDefinition", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition,System.Collections.Generic.IEnumerable<System.Type>,System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "", "Argument[0]", "Argument[2]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
