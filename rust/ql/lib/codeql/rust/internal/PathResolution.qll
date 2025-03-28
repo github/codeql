@@ -187,7 +187,12 @@ abstract class ItemNode extends Locatable {
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
     or
     name = "crate" and
-    this = result.(CrateItemNode).getASourceFile()
+    result =
+      any(CrateItemNode crate |
+        this = crate.getASourceFile()
+        or
+        this = crate.getModuleNode()
+      )
   }
 
   /** Gets the location of this item. */

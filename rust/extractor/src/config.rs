@@ -213,8 +213,7 @@ fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
     }
     let enabled_cfgs = enabled_cfgs.into_iter().collect();
     let disabled_cfgs = disabled_cfgs.into_iter().collect();
-    let global = CfgDiff::new(enabled_cfgs, disabled_cfgs)
-        .expect("There should be no duplicate cfgs by construction");
+    let global = CfgDiff::new(enabled_cfgs, disabled_cfgs);
     CfgOverrides {
         global,
         ..Default::default()

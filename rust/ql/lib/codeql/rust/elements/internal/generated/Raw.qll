@@ -1195,6 +1195,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class VariantDef extends @variant_def, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
    * A VariantList. For example:
    * ```rust
    * todo!()
@@ -3123,7 +3128,7 @@ module Raw {
    * todo!()
    * ```
    */
-  class Variant extends @variant, Addressable {
+  class Variant extends @variant, VariantDef, Addressable {
     override string toString() { result = "Variant" }
 
     /**
@@ -3838,7 +3843,7 @@ module Raw {
    * todo!()
    * ```
    */
-  class Struct extends @struct, Item {
+  class Struct extends @struct, Item, VariantDef {
     override string toString() { result = "Struct" }
 
     /**
@@ -4098,7 +4103,7 @@ module Raw {
    * todo!()
    * ```
    */
-  class Union extends @union, Item {
+  class Union extends @union, Item, VariantDef {
     override string toString() { result = "Union" }
 
     /**
