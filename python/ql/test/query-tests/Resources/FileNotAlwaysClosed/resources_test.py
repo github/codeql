@@ -1,12 +1,12 @@
 #File not always closed
 
 def not_close1():
-    f1 = open("filename")
+    f1 = open("filename") # $ notClosedOnException
     f1.write("Error could occur")
-    f1.close()
+    f1.close() 
 
 def not_close2():
-    f2 = open("filename")
+    f2 = open("filename") # $ notClosed
 
 def closed3():
     f3 = open("filename")
@@ -46,19 +46,19 @@ def closed7():
 def not_closed8():
     f8 = None
     try:
-        f8 = open("filename")
+        f8 = open("filename") # $ MISSING:notClosedOnException 
         f8.write("Error could occur")
     finally:
-        if f8 is None:
+        if f8 is None: # We don't precisely consider this condition, so this result is MISSING. However, this seems uncommon.
             f8.close()
 
 def not_closed9():
     f9 = None
     try:
-        f9 = open("filename")
+        f9 = open("filename") # $ MISSING:notAlwaysClosed
         f9.write("Error could occur")
     finally:
-        if not f9:
+        if not f9: # We don't precisely consider this condition, so this result is MISSING.However, this seems uncommon.
             f9.close()
 
 def not_closed_but_cant_tell_locally():
@@ -76,19 +76,19 @@ def closed10():
 
 #Not closed by handling the wrong exception
 def not_closed11():
-    f11 = open("filename")
+    f11 = open("filename") # $ MISSING:notAlwaysClosed
     try:
         f11.write("IOError could occur")
         f11.write("IOError could occur")
         f11.close()
-    except AttributeError:
+    except AttributeError: # We don't consider the type of exception handled here, so this result is MISSING.
         f11.close()
 
-def doesnt_raise():
+def doesnt_raise(*args):
     pass
 
 def mostly_closed12():
-    f12 = open("filename")
+    f12 = open("filename") 
     try:
         f12.write("IOError could occur")
         f12.write("IOError could occur")
@@ -105,11 +105,11 @@ def opener_func2(name):
     return t1
 
 def not_closed13(name):
-    f13 = open(name)
+    f13 = open(name) # $ notClosed
     f13.write("Hello")
 
 def may_not_be_closed14(name):
-    f14 = opener_func2(name)
+    f14 = opener_func2(name) # $ notClosedOnException
     f14.write("Hello")
     f14.close()
 
@@ -120,13 +120,13 @@ def closer2(t3):
     closer1(t3)
 
 def closed15():
-    f15 = opener_func2()
-    closer2(f15)
+    f15 = opener_func2() # $ SPURIOUS:notClosed
+    closer2(f15) # We don't detect that this call closes the file, so this result is SPURIOUS.
 
 
 def may_not_be_closed16(name):
     try:
-        f16 = open(name)
+        f16 = open(name) # $ notClosedOnException
         f16.write("Hello")
         f16.close()
     except IOError:
@@ -138,13 +138,13 @@ def may_raise():
 
 #Not handling all exceptions, but we'll tolerate the false negative
 def not_closed17():
-    f17 = open("filename")
+    f17 = open("filename") # $ MISSING:notClosedOnException
     try:
         f17.write("IOError could occur")
         f17.write("IOError could occur")
         may_raise("ValueError could occur") # FN here.
         f17.close()
-    except IOError:
+    except IOError: # We don't detect that a ValueErrror could be raised that isn't handled here, so this result is MISSING.
         f17.close()
 
 #ODASA-3779
@@ -234,13 +234,47 @@ def closed21(path):
 
 
 def not_closed22(path):
-    f22 = open(path, "wb")
+    f22 = open(path, "wb") # $ MISSING:notClosedOnException
     try:
         f22.write(b"foo")
         may_raise()
         if foo:
             f22.close()
     finally:
-        if f22.closed: # Wrong sense
+        if f22.closed: # We don't precisely consider this condition, so this result is MISSING. However, this seems uncommon.
             f22.close()
 
+def not_closed23(path):
+    f23 = open(path, "w") # $ notClosed
+    wr = FileWrapper(f23)
+
+def closed24(path):
+    f24 = open(path, "w")
+    try:
+        f24.write("hi")
+    except:
+        pass 
+    f24.close()
+
+def closed25(path):
+    from django.http import FileResponse 
+    return FileResponse(open(path))
+
+import os
+def closed26(path):
+    fd = os.open(path)
+    os.close(fd)
+
+def not_closed27(path):
+    fd = os.open(path, "w") # $notClosedOnException
+    f27 = os.fdopen(fd, "w")
+    f27.write("hi")
+    f27.close()
+
+def closed28(path):
+    fd = os.open(path, os.O_WRONLY) 
+    f28 = os.fdopen(fd, "w")
+    try:
+        f28.write("hi")
+    finally:
+        f28.close()
