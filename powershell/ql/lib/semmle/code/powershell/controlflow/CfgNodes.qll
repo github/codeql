@@ -284,6 +284,26 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
   ScriptBlockCfgNode getScriptBlock() { result.getProcessBlock() = this }
 }
 
+private class CatchClauseChildMapping extends NonExprChildMapping, CatchClause {
+  override predicate relevantChild(Ast child) {
+    child = this.getBody() or child = this.getACatchType()
+  }
+}
+
+class CatchClauseCfgNode extends AstCfgNode {
+  override string getAPrimaryQlClass() { result = "CatchClauseCfgNode" }
+
+  CatchClauseChildMapping s;
+
+  CatchClause getCatchClause() { result = s }
+
+  StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
+
+  TypeConstraint getCatchType(int i) { result = s.getCatchType(i) }
+
+  TypeConstraint getACatchType() { result = this.getCatchType(_) }
+}
+
 module ExprNodes {
   private class ArrayExprChildMapping extends ExprChildMapping, ArrayExpr {
     override predicate relevantChild(Ast child) {
@@ -747,7 +767,7 @@ module ExprNodes {
 
     ExprCfgNode getAnKey() { result = this.getKey(_) }
 
-    ExprCfgNode getValue(int i) { e.hasCfgChild(e.getKey(i), this, result) }
+    ExprCfgNode getValue(int i) { e.hasCfgChild(e.getValue(i), this, result) }
 
     ExprCfgNode getValueFromKey(ExprCfgNode key) {
       exists(int i |
