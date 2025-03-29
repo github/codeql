@@ -46,6 +46,67 @@ int synthPipelineParameterChildIndex(Raw::ScriptBlock sb) {
   )
 }
 
+string stringOfChildIndex(ChildIndex i) {
+  exists(Raw::ChildIndex rawIndex |
+    i = RawChildIndex(rawIndex) and
+    result = Raw::stringOfChildIndex(rawIndex)
+  )
+  or
+  i = ParamPipeline() and
+  result = "ParamPipeline"
+  or
+  i = ParamDefaultVal() and
+  result = "ParamDefaultVal"
+  or
+  i = FunParam(_) and
+  result = "FunParam"
+  or
+  i = CmdArgument(_) and
+  result = "CmdArgument"
+  or
+  i = ExprStmtExpr() and
+  result = "ExprStmtExpr"
+  or
+  i = MethodBody() and
+  result = "MethodBody"
+  or
+  i = ThisVar() and
+  result = "ThisVar"
+  or
+  i = PipelineParamVar() and
+  result = "PipelineParamVar"
+  or
+  i = PipelineIteratorVar() and
+  result = "PipelineIteratorVar"
+  or
+  i = PipelineByPropertyNameIteratorVar(_) and
+  result = "PipelineByPropertyNameIteratorVar"
+  or
+  i = RealVar(_) and
+  result = "RealVar"
+  or
+  i = ExprRedirection(_) and
+  result = "ExprRedirection"
+  or
+  i = FunDefFun() and
+  result = "FunDefFun"
+  or
+  i = TypeDefType() and
+  result = "TypeDefType"
+  or
+  i = TypeMember(_) and
+  result = "TypeMember"
+  or
+  i = ScriptBlockAttr(_) and
+  result = "ScriptBlockAttr"
+  or
+  i = ParamAttr(_) and
+  result = "ParamAttr"
+  or
+  i = FunctionBody() and
+  result = "FunctionBody"
+}
+
 Raw::ChildIndex toRawChildIndex(ChildIndex i) { i = RawChildIndex(result) }
 
 ChildIndex arrayExprStmtBlock() { result = RawChildIndex(Raw::ArrayExprStmtBlock()) }

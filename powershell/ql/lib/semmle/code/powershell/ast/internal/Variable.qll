@@ -100,7 +100,7 @@ module Private {
 
     final override Variable getVariableImpl() { access(va, result) }
 
-    final override string toString() { result = va.getUserPath() }
+    final override string toString() { result = "access to " + va.getUserPath() }
   }
 
   class VarAccessSynth extends VarAccessImpl, TVarAccessSynth {
@@ -111,7 +111,7 @@ module Private {
 
     final override Variable getVariableImpl() { any(Synthesis s).getAnAccess(this, result) }
 
-    final override string toString() { result = this.getVariableImpl().getName() }
+    final override string toString() { result = "access to " + this.getVariableImpl().getName() }
 
     final override Location getLocation() { result = parent.getLocation() }
   }

@@ -282,6 +282,14 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
   override ProcessBlock getBlock() { result = block }
 
   ScriptBlockCfgNode getScriptBlock() { result.getProcessBlock() = this }
+
+  PipelineVariable getPipelineVariable() {
+    result.getScriptBlock() = this.getScriptBlock().getAstNode()
+  }
+
+  PipelineIteratorVariable getPipelineIteratorVariable() {
+    result.getProcessBlock().getScriptBlock() = this.getScriptBlock().getAstNode()
+  }
 }
 
 private class CatchClauseChildMapping extends NonExprChildMapping, CatchClause {
