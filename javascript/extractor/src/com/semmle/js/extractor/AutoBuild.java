@@ -160,6 +160,9 @@ import com.semmle.util.trap.TrapWriter;
  *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
  *   <li>JSON files whose base name is ".xsaccess".
+ *   <li>JSON files whose base name is "xs-app.json".
+ *   <li>JSON files whose base name ends with ".view.json".
+ *   <li>JSON files whose base name is "manifest.json".
  *   <li>All extension-less files.
  * </ul>
  *
@@ -394,10 +397,12 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, .xsaccess files, package.json files,
-    // tsconfig.json files, and codeql-javascript-*.json files
+    // include JSON files which are relevant to our analysis
     patterns.add("**/.eslintrc*");
-    patterns.add("**/.xsaccess");
+    patterns.add("**/.xsaccess"); // SAP XSJS
+    patterns.add("**/xs-app.json"); // SAP XSJS
+    patterns.add("**/*.view.json"); // SAP UI5
+    patterns.add("**/manifest.json");
     patterns.add("**/package.json");
     patterns.add("**/tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");

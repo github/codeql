@@ -1,0 +1,16 @@
+{
+    "Type": "sap.ui.core.mvc.JSONView",
+    "controllerName": "codeql-sap-js.controller.app",
+    "content": [
+        {
+            "Type": "sap.m.Input",
+            "placeholder": "Enter Payload",
+            "description": "Try: <img src=x onerror=alert(\"XSS\")>",
+            "value": "{/input}"
+        },
+        {
+            "Type": "sap.ui.core.HTML",
+            "content": "{/input}"
+        }
+    ]
+}
