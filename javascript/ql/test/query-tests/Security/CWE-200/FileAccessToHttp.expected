@@ -1,6 +1,9 @@
 #select
 | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | Outbound network request depends on $@. | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | file data |
 | FileAccessToHttp.js:18:15:23:5 | {\\n      ... }\\n    } | FileAccessToHttp.js:16:21:16:56 | await f ... "utf8") | FileAccessToHttp.js:18:15:23:5 | {\\n      ... }\\n    } | Outbound network request depends on $@. | FileAccessToHttp.js:16:21:16:56 | await f ... "utf8") | file data |
+| FileAccessToHttp.js:36:13:41:3 | {\\n    h ... r }\\n  } | FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | FileAccessToHttp.js:36:13:41:3 | {\\n    h ... r }\\n  } | Outbound network request depends on $@. | FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | file data |
+| FileAccessToHttp.js:45:13:50:3 | {\\n    h ... ) }\\n  } | FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | FileAccessToHttp.js:45:13:50:3 | {\\n    h ... ) }\\n  } | Outbound network request depends on $@. | FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | file data |
+| FileAccessToHttp.js:54:15:59:5 | {\\n      ... }\\n    } | FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | FileAccessToHttp.js:54:15:59:5 | {\\n      ... }\\n    } | Outbound network request depends on $@. | FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | file data |
 | bufferRead.js:32:21:32:28 | postData | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:32:21:32:28 | postData | Outbound network request depends on $@. | bufferRead.js:12:22:12:43 | new Buf ... s.size) | file data |
 | googlecompiler.js:37:18:37:26 | post_data | googlecompiler.js:43:54:43:57 | data | googlecompiler.js:37:18:37:26 | post_data | Outbound network request depends on $@. | googlecompiler.js:43:54:43:57 | data | file data |
 | readFileSync.js:25:18:25:18 | s | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:25:18:25:18 | s | Outbound network request depends on $@. | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | file data |
@@ -18,6 +21,27 @@ edges
 | FileAccessToHttp.js:16:21:16:56 | await f ... "utf8") | FileAccessToHttp.js:16:11:16:56 | content | provenance |  |
 | FileAccessToHttp.js:22:16:22:35 | { Referer: content } [Referer] | FileAccessToHttp.js:18:15:23:5 | {\\n      ... }\\n    } | provenance |  |
 | FileAccessToHttp.js:22:27:22:33 | content | FileAccessToHttp.js:22:16:22:35 | { Referer: content } [Referer] | provenance |  |
+| FileAccessToHttp.js:34:9:34:57 | buffer | FileAccessToHttp.js:40:25:40:30 | buffer | provenance |  |
+| FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | FileAccessToHttp.js:34:9:34:57 | buffer | provenance |  |
+| FileAccessToHttp.js:40:14:40:32 | { Referer: buffer } [Referer] | FileAccessToHttp.js:36:13:41:3 | {\\n    h ... r }\\n  } | provenance |  |
+| FileAccessToHttp.js:40:25:40:30 | buffer | FileAccessToHttp.js:40:14:40:32 | { Referer: buffer } [Referer] | provenance |  |
+| FileAccessToHttp.js:43:9:43:36 | buffer1 | FileAccessToHttp.js:49:25:49:31 | buffer1 | provenance |  |
+| FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | FileAccessToHttp.js:43:9:43:36 | buffer1 | provenance |  |
+| FileAccessToHttp.js:49:14:49:65 | { Refer ... ing() } [Referer] | FileAccessToHttp.js:45:13:50:3 | {\\n    h ... ) }\\n  } | provenance |  |
+| FileAccessToHttp.js:49:25:49:31 | buffer1 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) | provenance |  |
+| FileAccessToHttp.js:49:25:49:31 | buffer1 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) [ArrayElement] | provenance |  |
+| FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) | FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | provenance |  |
+| FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) [ArrayElement] | FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | provenance |  |
+| FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | FileAccessToHttp.js:49:14:49:65 | { Refer ... ing() } [Referer] | provenance |  |
+| FileAccessToHttp.js:52:9:52:36 | buffer2 | FileAccessToHttp.js:53:17:53:23 | buffer2 | provenance |  |
+| FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | FileAccessToHttp.js:52:9:52:36 | buffer2 | provenance |  |
+| FileAccessToHttp.js:53:17:53:23 | buffer2 | FileAccessToHttp.js:58:27:58:33 | buffer2 | provenance |  |
+| FileAccessToHttp.js:58:16:58:67 | { Refer ... ing() } [Referer] | FileAccessToHttp.js:54:15:59:5 | {\\n      ... }\\n    } | provenance |  |
+| FileAccessToHttp.js:58:27:58:33 | buffer2 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) | provenance |  |
+| FileAccessToHttp.js:58:27:58:33 | buffer2 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) [ArrayElement] | provenance |  |
+| FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) | FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | provenance |  |
+| FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) [ArrayElement] | FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | provenance |  |
+| FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | FileAccessToHttp.js:58:16:58:67 | { Refer ... ing() } [Referer] | provenance |  |
 | bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:21:13:26 | buffer | provenance |  |
 | bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:32:13:37 | buffer | provenance |  |
 | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:12:13:12:43 | buffer | provenance |  |
@@ -74,6 +98,28 @@ nodes
 | FileAccessToHttp.js:18:15:23:5 | {\\n      ... }\\n    } | semmle.label | {\\n      ... }\\n    } |
 | FileAccessToHttp.js:22:16:22:35 | { Referer: content } [Referer] | semmle.label | { Referer: content } [Referer] |
 | FileAccessToHttp.js:22:27:22:33 | content | semmle.label | content |
+| FileAccessToHttp.js:34:9:34:57 | buffer | semmle.label | buffer |
+| FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | semmle.label | [Buffer ... (1024)] |
+| FileAccessToHttp.js:36:13:41:3 | {\\n    h ... r }\\n  } | semmle.label | {\\n    h ... r }\\n  } |
+| FileAccessToHttp.js:40:14:40:32 | { Referer: buffer } [Referer] | semmle.label | { Referer: buffer } [Referer] |
+| FileAccessToHttp.js:40:25:40:30 | buffer | semmle.label | buffer |
+| FileAccessToHttp.js:43:9:43:36 | buffer1 | semmle.label | buffer1 |
+| FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | semmle.label | Buffer.alloc(1024) |
+| FileAccessToHttp.js:45:13:50:3 | {\\n    h ... ) }\\n  } | semmle.label | {\\n    h ... ) }\\n  } |
+| FileAccessToHttp.js:49:14:49:65 | { Refer ... ing() } [Referer] | semmle.label | { Refer ... ing() } [Referer] |
+| FileAccessToHttp.js:49:25:49:31 | buffer1 | semmle.label | buffer1 |
+| FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) | semmle.label | buffer1 ... sRead1) |
+| FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) [ArrayElement] | semmle.label | buffer1 ... sRead1) [ArrayElement] |
+| FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | semmle.label | buffer1 ... tring() |
+| FileAccessToHttp.js:52:9:52:36 | buffer2 | semmle.label | buffer2 |
+| FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | semmle.label | Buffer.alloc(1024) |
+| FileAccessToHttp.js:53:17:53:23 | buffer2 | semmle.label | buffer2 |
+| FileAccessToHttp.js:54:15:59:5 | {\\n      ... }\\n    } | semmle.label | {\\n      ... }\\n    } |
+| FileAccessToHttp.js:58:16:58:67 | { Refer ... ing() } [Referer] | semmle.label | { Refer ... ing() } [Referer] |
+| FileAccessToHttp.js:58:27:58:33 | buffer2 | semmle.label | buffer2 |
+| FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) | semmle.label | buffer2 ... sRead2) |
+| FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) [ArrayElement] | semmle.label | buffer2 ... sRead2) [ArrayElement] |
+| FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | semmle.label | buffer2 ... tring() |
 | bufferRead.js:12:13:12:43 | buffer | semmle.label | buffer |
 | bufferRead.js:12:22:12:43 | new Buf ... s.size) | semmle.label | new Buf ... s.size) |
 | bufferRead.js:13:21:13:26 | buffer | semmle.label | buffer |
