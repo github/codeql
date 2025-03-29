@@ -710,6 +710,18 @@ private module IteratorAccessSynth {
   }
 
   private class IteratorAccessSynth extends Synthesis {
+    final override predicate isRelevant(Raw::Ast a) {
+      exists(Raw::ProcessBlock pb, Raw::VarAccess va |
+        va = a and
+        pb = va.getParent+()
+      |
+        va.getUserPath() = "_"
+        or
+        va.getUserPath().toLowerCase() =
+          pb.getScriptBlock().getParamBlock().getPipelineParameter().getName().toLowerCase()
+      )
+    }
+
     private predicate expr(Raw::Ast rawParent, ChildIndex i, Raw::VarAccess va, Child child) {
       rawParent.getChild(toRawChildIndex(i)) = va and
       child = SynthChild(VarAccessSynthKind(this.varAccess(va)))
