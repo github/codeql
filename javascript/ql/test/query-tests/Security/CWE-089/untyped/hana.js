@@ -84,3 +84,12 @@ app2.post('/documents/find', (req, res) => {
     client.execute('select A, B from TEST.NUMBERS order by A' + maliciousInput, function(err, rs) {}); // $ Alert
   });
 });
+
+var app3 = express();
+
+app3.get('/execute-query', function (req, res) {
+  var client = req.db;
+  let maliciousInput = req.body.data;
+  client.exec('SELECT * FROM DUMMY' + maliciousInput, function (err, rs) {});
+  req.db.exec('SELECT * FROM DUMMY' + maliciousInput, function (err, rs) {});
+});
