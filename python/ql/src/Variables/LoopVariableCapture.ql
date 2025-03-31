@@ -34,8 +34,9 @@ module EscapingCaptureFlowSig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     // Stored in a field.
-    exists(DataFlow::AttrWrite aw | aw.getObject() = node)
-    or
+    // This appeared to lead to FPs through wrapper classes.
+    // exists(DataFlow::AttrWrite aw | aw.getObject() = node)
+    // or
     // Stored in a dict/list.
     exists(Assign assign, Subscript sub |
       sub = assign.getATarget() and node.asExpr() = assign.getValue()
@@ -44,7 +45,7 @@ module EscapingCaptureFlowSig implements DataFlow::ConfigSig {
     // Stored in a list.
     exists(DataFlow::MethodCallNode mc | mc.calls(_, "append") and node = mc.getArg(0))
     or
-    // Used in a yeild statement, likely included in a collection.
+    // Used in a yield statement, likely included in a collection.
     // The element of comprehension expressions desugar to involve a yield statement internally.
     exists(Yield y | node.asExpr() = y.getValue())
   }
@@ -64,6 +65,8 @@ predicate escapingCapture(CallableExpr capturing, Loop loop, Variable var) {
   EscapingCaptureFlow::flow(DataFlow::exprNode(capturing), _)
 }
 
-from CallableExpr capturing, AstNode loop, Variable var
-where escapingCapture(capturing, loop, var)
-select capturing, "Capture of loop variable $@.", loop, var.getId()
+from CallableExpr capturing, AstNode loop, Variable var, string descr
+where
+  escapingCapture(capturing, loop, var) and
+  if capturing instanceof Lambda then descr = "lambda" else descr = "function"
+select capturing, "This " + descr + " captures the loop variable $@.", loop, var.getId()
