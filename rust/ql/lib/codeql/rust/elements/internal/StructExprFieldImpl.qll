@@ -25,9 +25,9 @@ module Impl {
     override string toStringImpl() { result = concat(int i | | this.toStringPart(i) order by i) }
 
     private string toStringPart(int index) {
-      index = 0 and result = this.getNameRef().getText()
+      index = 0 and result = this.getIdentifier().getText()
       or
-      index = 1 and this.hasNameRef() and result = ": "
+      index = 1 and this.hasIdentifier() and result = ": "
       or
       index = 2 and
       result = this.getExpr().toAbbreviatedString()
@@ -44,9 +44,9 @@ module Impl {
      * ```
      */
     string getFieldName() {
-      result = this.getNameRef().getText()
+      result = this.getIdentifier().getText()
       or
-      not this.hasNameRef() and
+      not this.hasIdentifier() and
       result = this.getExpr().(PathExpr).getPath().(PathImpl::IdentPath).getName()
     }
   }

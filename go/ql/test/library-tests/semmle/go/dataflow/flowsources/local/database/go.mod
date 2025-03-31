@@ -8,9 +8,11 @@ require (
 	github.com/couchbase/gocb v1.6.7
 	github.com/couchbase/gocb/v2 v2.9.4
 	github.com/jmoiron/sqlx v1.4.0
+	github.com/Masterminds/squirrel v1.5.4
 	github.com/rqlite/gorqlite v0.0.0-20250128004930-114c7828b55a
 	go.mongodb.org/mongo-driver v1.17.3
 	gorm.io/gorm v1.25.12
+	github.com/nonexistent/sources v0.0.0-20250300000000-000000000000
 )
 
 require (

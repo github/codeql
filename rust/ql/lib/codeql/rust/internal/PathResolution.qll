@@ -187,7 +187,12 @@ abstract class ItemNode extends Locatable {
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
     or
     name = "crate" and
-    this = result.(CrateItemNode).getASourceFile()
+    result =
+      any(CrateItemNode crate |
+        this = crate.getASourceFile()
+        or
+        this = crate.getModuleNode()
+      )
   }
 
   /** Gets the location of this item. */
@@ -307,7 +312,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   override string getName() { result = Variant.super.getName().getText() }
 
   override Namespace getNamespace() {
-    if super.getFieldList() instanceof RecordFieldList then result.isType() else result.isValue()
+    if super.getFieldList() instanceof StructFieldList then result.isType() else result.isValue()
   }
 
   override TypeParam getTypeParam(int i) {
@@ -373,7 +378,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   pragma[nomagic]
   private TypeRepr getASelfTyArg() {
     result =
-      this.getSelfPath().getPart().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
+      this.getSelfPath().getSegment().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
   }
 
   /**
@@ -466,7 +471,7 @@ private class StructItemNode extends ItemNode instanceof Struct {
   override Namespace getNamespace() {
     result.isType() // the struct itself
     or
-    not super.getFieldList() instanceof RecordFieldList and
+    not super.getFieldList() instanceof StructFieldList and
     result.isValue() // the constructor
   }
 

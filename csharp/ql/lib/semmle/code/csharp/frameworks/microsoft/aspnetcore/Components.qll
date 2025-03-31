@@ -112,6 +112,16 @@ class MicrosoftAspNetCoreComponentsComponent extends Class {
   }
 }
 
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::AddComponentParameter` method.
+ */
+private class MicrosoftAspNetCoreComponentsAddComponentParameterMethod extends Method {
+  MicrosoftAspNetCoreComponentsAddComponentParameterMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "AddComponentParameter")
+  }
+}
+
 private module Sources {
   private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -131,5 +141,46 @@ private module Sources {
     }
 
     override string getSourceType() { result = "ASP.NET Core component route parameter" }
+  }
+}
+
+private module JumpNodes {
+  /**
+   * A call to `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::AddComponentParameter` which
+   * sets the value of a parameter.
+   */
+  private class ParameterPassingCall extends Call {
+    ParameterPassingCall() {
+      this.getTarget() instanceof MicrosoftAspNetCoreComponentsAddComponentParameterMethod
+    }
+
+    /**
+     * Gets the property whose value is being set.
+     */
+    Property getParameterProperty() {
+      result.getAnAttribute() instanceof MicrosoftAspNetCoreComponentsParameterAttribute and
+      exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
+    }
+
+    /**
+     * Gets the value being set.
+     */
+    Expr getParameterValue() { result = this.getArgument(2) }
+  }
+
+  private class ComponentParameterJump extends DataFlow::NonLocalJumpNode {
+    Property prop;
+
+    ComponentParameterJump() {
+      exists(ParameterPassingCall call |
+        prop = call.getParameterProperty() and
+        this.asExpr() = call.getParameterValue()
+      )
+    }
+
+    override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+      preservesValue = true and
+      result.asExpr() = prop.getAnAccess()
+    }
   }
 }

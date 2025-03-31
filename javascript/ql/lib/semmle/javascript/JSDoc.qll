@@ -261,17 +261,14 @@ class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
 }
 
 /**
- * A type expression referring to a named type.
+ * An identifier in a JSDoc type expression, such as `Object` or `string`.
  *
- * Example:
- *
- * ```
- * string
- * Object
- * ```
+ * Note that qualified names consist of multiple identifier nodes.
  */
-class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
-  /** Gets the name of the type the expression refers to. */
+class JSDocIdentifierTypeExpr extends @jsdoc_identifier_type_expr, JSDocTypeExpr {
+  /**
+   * Gets the name of the identifier.
+   */
   string getName() { result = this.toString() }
 
   override predicate isString() { this.getName() = "string" }
@@ -300,6 +297,71 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   }
 
   override predicate isRawFunction() { this.getName() = "Function" }
+}
+
+/**
+ * An unqualified identifier in a JSDoc type expression.
+ *
+ * Example:
+ *
+ * ```
+ * string
+ * Object
+ * ```
+ */
+class JSDocLocalTypeAccess extends JSDocIdentifierTypeExpr {
+  JSDocLocalTypeAccess() { not this = any(JSDocQualifiedTypeAccess a).getNameNode() }
+}
+
+/**
+ * A qualified type name in a JSDoc type expression, such as `X.Y`.
+ */
+class JSDocQualifiedTypeAccess extends @jsdoc_qualified_type_expr, JSDocTypeExpr {
+  /**
+   * Gets the base of this access, such as the `X` in `X.Y`.
+   */
+  JSDocTypeExpr getBase() { result = this.getChild(0) }
+
+  /**
+   * Gets the node naming the member being accessed, such as the `Y` node in `X.Y`.
+   */
+  JSDocIdentifierTypeExpr getNameNode() { result = this.getChild(1) }
+
+  /**
+   * Gets the name being accessed, such as `Y` in `X.Y`.
+   */
+  string getName() { result = this.getNameNode().getName() }
+}
+
+/**
+ * A type expression referring to a named type.
+ *
+ * Example:
+ *
+ * ```
+ * string
+ * Object
+ * Namespace.Type
+ * ```
+ */
+class JSDocNamedTypeExpr extends JSDocTypeExpr {
+  JSDocNamedTypeExpr() {
+    this instanceof JSDocLocalTypeAccess
+    or
+    this instanceof JSDocQualifiedTypeAccess
+  }
+
+  /**
+   * Gets the name directly as it appears in this type, including any qualifiers.
+   *
+   * For example, for `X.Y` this gets the string `"X.Y"`.
+   */
+  string getRawName() { result = this.toString() }
+
+  /**
+   * DEPRECATED. Use `getRawName()` instead.
+   */
+  deprecated string getName() { result = this.toString() }
 
   /**
    * Holds if this name consists of the unqualified name `prefix`
@@ -310,8 +372,9 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
    * - `Baz` has prefix `Baz` and an empty suffix.
    */
   predicate hasNameParts(string prefix, string suffix) {
+    not this = any(JSDocQualifiedTypeAccess a).getBase() and // restrict size of predicate
     exists(string regex, string name | regex = "([^.]+)(.*)" |
-      name = this.getName() and
+      name = this.getRawName() and
       prefix = name.regexpCapture(regex, 1) and
       suffix = name.regexpCapture(regex, 2)
     )
@@ -340,7 +403,7 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
     globalName = this.resolvedName()
     or
     not exists(this.resolvedName()) and
-    globalName = this.getName()
+    globalName = this.getRawName()
   }
 
   override DataFlow::ClassNode getClass() {

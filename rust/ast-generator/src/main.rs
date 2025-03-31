@@ -23,9 +23,7 @@ fn class_name(type_name: &str) -> String {
         "Literal" => "LiteralExpr".to_owned(),
         "ArrayExpr" => "ArrayExprInternal".to_owned(),
         "AsmOptions" => "AsmOptionsList".to_owned(),
-        _ if type_name.starts_with("Record") && type_name != "RecordFieldList" => {
-            type_name.replacen("Record", "Struct", 1)
-        }
+        _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
         _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
         _ => type_name.to_owned(),
     }
@@ -36,11 +34,14 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("CallExpr", "expr") => "function",
         ("LetExpr", "expr") => "scrutinee",
         ("MatchExpr", "expr") => "scrutinee",
-        ("Path", "segment") => "part",
+        ("Variant", "expr") => "discriminant",
+        ("FieldExpr", "expr") => "container",
+        (_, "name_ref") => "identifier",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
-        ("ArrayType", "ty") => "element_type_repr",
+        ("ArrayTypeRepr", "ty") => "element_type_repr",
         ("SelfParam", "is_amp") => "is_ref",
+        ("StructField", "expr") => "default",
         ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
         _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
@@ -104,25 +105,27 @@ fn node_src_to_schema_class(
     node: &AstNodeSrc,
     super_types: &BTreeMap<String, BTreeSet<String>>,
 ) -> SchemaClass {
+    let name = class_name(&node.name);
+    let fields = get_fields(node)
+        .iter()
+        .map(|f| {
+            let (ty, child) = match &f.ty {
+                FieldType::String => ("optional[string]".to_string(), false),
+                FieldType::Predicate => ("predicate".to_string(), false),
+                FieldType::Optional(ty) => (format!("optional[\"{}\"]", class_name(ty)), true),
+                FieldType::List(ty) => (format!("list[\"{}\"]", class_name(ty)), true),
+            };
+            SchemaField {
+                name: property_name(&name, &f.name),
+                ty,
+                child,
+            }
+        })
+        .collect();
     SchemaClass {
-        name: class_name(&node.name),
+        name,
+        fields,
         bases: get_bases(&node.name, super_types),
-        fields: get_fields(node)
-            .iter()
-            .map(|f| {
-                let (ty, child) = match &f.ty {
-                    FieldType::String => ("optional[string]".to_string(), false),
-                    FieldType::Predicate => ("predicate".to_string(), false),
-                    FieldType::Optional(ty) => (format!("optional[\"{}\"]", class_name(ty)), true),
-                    FieldType::List(ty) => (format!("list[\"{}\"]", class_name(ty)), true),
-                };
-                SchemaField {
-                    name: property_name(&node.name, &f.name),
-                    ty,
-                    child,
-                }
-            })
-            .collect(),
     }
 }
 
@@ -429,6 +432,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
 struct EnumVariantInfo {
     name: String,
     snake_case_name: String,
+    variant_ast_name: String,
 }
 
 #[derive(Serialize)]
@@ -465,24 +469,33 @@ struct ExtractorInfo {
     nodes: Vec<ExtractorNodeInfo>,
 }
 
-fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
-    ExtractorEnumInfo {
+fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
+    if node.name == "VariantDef" {
+        // currently defined but unused
+        return None;
+    }
+    Some(ExtractorEnumInfo {
         name: class_name(&node.name),
         snake_case_name: to_lower_snake_case(&node.name),
         ast_name: node.name.clone(),
         variants: node
             .variants
             .iter()
-            .map(|v| EnumVariantInfo {
-                name: v.clone(),
-                snake_case_name: to_lower_snake_case(v),
+            .map(|v| {
+                let name = class_name(v);
+                let snake_case_name = to_lower_snake_case(v);
+                EnumVariantInfo {
+                    name,
+                    snake_case_name,
+                    variant_ast_name: v.clone(),
+                }
             })
             .collect(),
-    }
+    })
 }
 
-fn field_info_to_extractor_info(node: &AstNodeSrc, field: &FieldInfo) -> ExtractorNodeFieldInfo {
-    let name = property_name(&node.name, &field.name);
+fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeFieldInfo {
+    let name = property_name(name, &field.name);
     match &field.ty {
         FieldType::String => ExtractorNodeFieldInfo {
             name,
@@ -514,21 +527,27 @@ fn field_info_to_extractor_info(node: &AstNodeSrc, field: &FieldInfo) -> Extract
 fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
     let fields = get_fields(node);
     let has_attrs = fields.iter().any(|f| f.name == "attrs");
+    let name = class_name(&node.name);
+    let fields = fields
+        .iter()
+        .map(|f| field_info_to_extractor_info(&name, f))
+        .collect();
     ExtractorNodeInfo {
-        name: class_name(&node.name),
+        name,
         snake_case_name: to_lower_snake_case(&node.name),
         ast_name: node.name.clone(),
-        fields: fields
-            .iter()
-            .map(|f| field_info_to_extractor_info(node, f))
-            .collect(),
+        fields,
         has_attrs,
     }
 }
 
 fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
     let extractor_info = ExtractorInfo {
-        enums: grammar.enums.iter().map(enum_to_extractor_info).collect(),
+        enums: grammar
+            .enums
+            .iter()
+            .filter_map(enum_to_extractor_info)
+            .collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
     let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;

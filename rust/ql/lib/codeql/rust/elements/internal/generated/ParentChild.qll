@@ -290,17 +290,17 @@ private module Impl {
   }
 
   private Element getImmediateChildOfAsmRegSpec(AsmRegSpec e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nNameRef |
+    exists(int b, int bAstNode, int n, int nIdentifier |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
-      nNameRef = n + 1 and
+      nIdentifier = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = n and result = e.getIdentifier() and partialPredicateCall = "Identifier()"
       )
     )
   }
@@ -809,12 +809,12 @@ private module Impl {
   }
 
   private Element getImmediateChildOfPath(Path e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nQualifier, int nPart |
+    exists(int b, int bAstNode, int n, int nQualifier, int nSegment |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nQualifier = n + 1 and
-      nPart = nQualifier + 1 and
+      nSegment = nQualifier + 1 and
       (
         none()
         or
@@ -822,7 +822,7 @@ private module Impl {
         or
         index = n and result = e.getQualifier() and partialPredicateCall = "Qualifier()"
         or
-        index = nQualifier and result = e.getPart() and partialPredicateCall = "Part()"
+        index = nQualifier and result = e.getSegment() and partialPredicateCall = "Segment()"
       )
     )
   }
@@ -831,15 +831,15 @@ private module Impl {
     PathSegment e, int index, string partialPredicateCall
   ) {
     exists(
-      int b, int bAstNode, int n, int nGenericArgList, int nNameRef, int nParenthesizedArgList,
+      int b, int bAstNode, int n, int nGenericArgList, int nIdentifier, int nParenthesizedArgList,
       int nRetType, int nReturnTypeSyntax, int nTypeRepr, int nTraitTypeRepr
     |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nGenericArgList = n + 1 and
-      nNameRef = nGenericArgList + 1 and
-      nParenthesizedArgList = nNameRef + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nParenthesizedArgList = nIdentifier + 1 and
       nRetType = nParenthesizedArgList + 1 and
       nReturnTypeSyntax = nRetType + 1 and
       nTypeRepr = nReturnTypeSyntax + 1 and
@@ -851,9 +851,11 @@ private module Impl {
         or
         index = n and result = e.getGenericArgList() and partialPredicateCall = "GenericArgList()"
         or
-        index = nGenericArgList and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nGenericArgList and
+        result = e.getIdentifier() and
+        partialPredicateCall = "Identifier()"
         or
-        index = nNameRef and
+        index = nIdentifier and
         result = e.getParenthesizedArgList() and
         partialPredicateCall = "ParenthesizedArgList()"
         or
@@ -999,13 +1001,13 @@ private module Impl {
   private Element getImmediateChildOfStructExprField(
     StructExprField e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bAstNode, int n, int nAttr, int nExpr, int nNameRef |
+    exists(int b, int bAstNode, int n, int nAttr, int nExpr, int nIdentifier |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nExpr = nAttr + 1 and
-      nNameRef = nExpr + 1 and
+      nIdentifier = nExpr + 1 and
       (
         none()
         or
@@ -1016,7 +1018,7 @@ private module Impl {
         or
         index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
         or
-        index = nExpr and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nExpr and result = e.getIdentifier() and partialPredicateCall = "Identifier()"
       )
     )
   }
@@ -1051,14 +1053,14 @@ private module Impl {
     StructField e, int index, string partialPredicateCall
   ) {
     exists(
-      int b, int bAstNode, int n, int nAttr, int nExpr, int nName, int nTypeRepr, int nVisibility
+      int b, int bAstNode, int n, int nAttr, int nDefault, int nName, int nTypeRepr, int nVisibility
     |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
-      nName = nExpr + 1 and
+      nDefault = nAttr + 1 and
+      nName = nDefault + 1 and
       nTypeRepr = nName + 1 and
       nVisibility = nTypeRepr + 1 and
       (
@@ -1069,9 +1071,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        index = nAttr and result = e.getDefault() and partialPredicateCall = "Default()"
         or
-        index = nExpr and result = e.getName() and partialPredicateCall = "Name()"
+        index = nDefault and result = e.getName() and partialPredicateCall = "Name()"
         or
         index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
@@ -1083,13 +1085,13 @@ private module Impl {
   private Element getImmediateChildOfStructPatField(
     StructPatField e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bAstNode, int n, int nAttr, int nNameRef, int nPat |
+    exists(int b, int bAstNode, int n, int nAttr, int nIdentifier, int nPat |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nNameRef = nAttr + 1 and
-      nPat = nNameRef + 1 and
+      nIdentifier = nAttr + 1 and
+      nPat = nIdentifier + 1 and
       (
         none()
         or
@@ -1098,9 +1100,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nAttr and result = e.getIdentifier() and partialPredicateCall = "Identifier()"
         or
-        index = nNameRef and result = e.getPat() and partialPredicateCall = "Pat()"
+        index = nIdentifier and result = e.getPat() and partialPredicateCall = "Pat()"
       )
     )
   }
@@ -1303,6 +1305,19 @@ private module Impl {
         or
         result = e.getUseTree(index - n) and
         partialPredicateCall = "UseTree(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfVariantDef(VariantDef e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -1626,7 +1641,7 @@ private module Impl {
     AssocTypeArg e, int index, string partialPredicateCall
   ) {
     exists(
-      int b, int bGenericArg, int n, int nConstArg, int nGenericArgList, int nNameRef,
+      int b, int bGenericArg, int n, int nConstArg, int nGenericArgList, int nIdentifier,
       int nParamList, int nRetType, int nReturnTypeSyntax, int nTypeRepr, int nTypeBoundList
     |
       b = 0 and
@@ -1635,8 +1650,8 @@ private module Impl {
       n = bGenericArg and
       nConstArg = n + 1 and
       nGenericArgList = nConstArg + 1 and
-      nNameRef = nGenericArgList + 1 and
-      nParamList = nNameRef + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nParamList = nIdentifier + 1 and
       nRetType = nParamList + 1 and
       nReturnTypeSyntax = nRetType + 1 and
       nTypeRepr = nReturnTypeSyntax + 1 and
@@ -1652,9 +1667,11 @@ private module Impl {
         result = e.getGenericArgList() and
         partialPredicateCall = "GenericArgList()"
         or
-        index = nGenericArgList and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nGenericArgList and
+        result = e.getIdentifier() and
+        partialPredicateCall = "Identifier()"
         or
-        index = nNameRef and result = e.getParamList() and partialPredicateCall = "ParamList()"
+        index = nIdentifier and result = e.getParamList() and partialPredicateCall = "ParamList()"
         or
         index = nParamList and result = e.getRetType() and partialPredicateCall = "RetType()"
         or
@@ -1980,13 +1997,13 @@ private module Impl {
   }
 
   private Element getImmediateChildOfFieldExpr(FieldExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nExpr, int nNameRef |
+    exists(int b, int bExpr, int n, int nAttr, int nContainer, int nIdentifier |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
-      nNameRef = nExpr + 1 and
+      nContainer = nAttr + 1 and
+      nIdentifier = nContainer + 1 and
       (
         none()
         or
@@ -1995,9 +2012,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        index = nAttr and result = e.getContainer() and partialPredicateCall = "Container()"
         or
-        index = nExpr and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nContainer and result = e.getIdentifier() and partialPredicateCall = "Identifier()"
       )
     )
   }
@@ -2720,25 +2737,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfRecordFieldList(
-    RecordFieldList e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bFieldList, int n, int nField |
-      b = 0 and
-      bFieldList = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFieldList(e, i, _)) | i) and
-      n = bFieldList and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfFieldList(e, index - b, partialPredicateCall)
-        or
-        result = e.getField(index - n) and
-        partialPredicateCall = "Field(" + (index - n).toString() + ")"
-      )
-    )
-  }
-
   private Element getImmediateChildOfRefExpr(RefExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nExpr |
       b = 0 and
@@ -2883,6 +2881,25 @@ private module Impl {
         result = getImmediateChildOfTypeRepr(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfStructFieldList(
+    StructFieldList e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bFieldList, int n, int nField |
+      b = 0 and
+      bFieldList = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFieldList(e, i, _)) | i) and
+      n = bFieldList and
+      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfFieldList(e, index - b, partialPredicateCall)
+        or
+        result = e.getField(index - n) and
+        partialPredicateCall = "Field(" + (index - n).toString() + ")"
       )
     )
   }
@@ -3050,29 +3067,33 @@ private module Impl {
 
   private Element getImmediateChildOfVariant(Variant e, int index, string partialPredicateCall) {
     exists(
-      int b, int bAddressable, int n, int nAttr, int nExpr, int nFieldList, int nName,
-      int nVisibility
+      int b, int bVariantDef, int bAddressable, int n, int nAttr, int nDiscriminant, int nFieldList,
+      int nName, int nVisibility
     |
       b = 0 and
+      bVariantDef =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
       bAddressable =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
+        bVariantDef + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
       n = bAddressable and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
-      nFieldList = nExpr + 1 and
+      nDiscriminant = nAttr + 1 and
+      nFieldList = nDiscriminant + 1 and
       nName = nFieldList + 1 and
       nVisibility = nName + 1 and
       (
         none()
         or
-        result = getImmediateChildOfAddressable(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfVariantDef(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfAddressable(e, index - bVariantDef, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        index = nAttr and result = e.getDiscriminant() and partialPredicateCall = "Discriminant()"
         or
-        index = nExpr and result = e.getFieldList() and partialPredicateCall = "FieldList()"
+        index = nDiscriminant and result = e.getFieldList() and partialPredicateCall = "FieldList()"
         or
         index = nFieldList and result = e.getName() and partialPredicateCall = "Name()"
         or
@@ -3318,13 +3339,13 @@ private module Impl {
   private Element getImmediateChildOfExternCrate(
     ExternCrate e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bItem, int n, int nAttr, int nNameRef, int nRename, int nVisibility |
+    exists(int b, int bItem, int n, int nAttr, int nIdentifier, int nRename, int nVisibility |
       b = 0 and
       bItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfItem(e, i, _)) | i) and
       n = bItem and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nNameRef = nAttr + 1 and
-      nRename = nNameRef + 1 and
+      nIdentifier = nAttr + 1 and
+      nRename = nIdentifier + 1 and
       nVisibility = nRename + 1 and
       (
         none()
@@ -3334,9 +3355,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nAttr and result = e.getIdentifier() and partialPredicateCall = "Identifier()"
         or
-        index = nNameRef and result = e.getRename() and partialPredicateCall = "Rename()"
+        index = nIdentifier and result = e.getRename() and partialPredicateCall = "Rename()"
         or
         index = nRename and result = e.getVisibility() and partialPredicateCall = "Visibility()"
       )
@@ -3567,7 +3588,7 @@ private module Impl {
     MethodCallExpr e, int index, string partialPredicateCall
   ) {
     exists(
-      int b, int bCallExprBase, int bResolvable, int n, int nGenericArgList, int nNameRef,
+      int b, int bCallExprBase, int bResolvable, int n, int nGenericArgList, int nIdentifier,
       int nReceiver
     |
       b = 0 and
@@ -3578,8 +3599,8 @@ private module Impl {
           max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
       n = bResolvable and
       nGenericArgList = n + 1 and
-      nNameRef = nGenericArgList + 1 and
-      nReceiver = nNameRef + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nReceiver = nIdentifier + 1 and
       (
         none()
         or
@@ -3589,9 +3610,11 @@ private module Impl {
         or
         index = n and result = e.getGenericArgList() and partialPredicateCall = "GenericArgList()"
         or
-        index = nGenericArgList and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        index = nGenericArgList and
+        result = e.getIdentifier() and
+        partialPredicateCall = "Identifier()"
         or
-        index = nNameRef and result = e.getReceiver() and partialPredicateCall = "Receiver()"
+        index = nIdentifier and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -3700,12 +3723,14 @@ private module Impl {
 
   private Element getImmediateChildOfStruct(Struct e, int index, string partialPredicateCall) {
     exists(
-      int b, int bItem, int n, int nAttr, int nFieldList, int nGenericParamList, int nName,
-      int nVisibility, int nWhereClause
+      int b, int bItem, int bVariantDef, int n, int nAttr, int nFieldList, int nGenericParamList,
+      int nName, int nVisibility, int nWhereClause
     |
       b = 0 and
       bItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfItem(e, i, _)) | i) and
-      n = bItem and
+      bVariantDef =
+        bItem + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
+      n = bVariantDef and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nFieldList = nAttr + 1 and
       nGenericParamList = nFieldList + 1 and
@@ -3716,6 +3741,8 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfItem(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfVariantDef(e, index - bItem, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
@@ -3944,12 +3971,14 @@ private module Impl {
 
   private Element getImmediateChildOfUnion(Union e, int index, string partialPredicateCall) {
     exists(
-      int b, int bItem, int n, int nAttr, int nGenericParamList, int nName, int nStructFieldList,
-      int nVisibility, int nWhereClause
+      int b, int bItem, int bVariantDef, int n, int nAttr, int nGenericParamList, int nName,
+      int nStructFieldList, int nVisibility, int nWhereClause
     |
       b = 0 and
       bItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfItem(e, i, _)) | i) and
-      n = bItem and
+      bVariantDef =
+        bItem + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
+      n = bVariantDef and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
@@ -3960,6 +3989,8 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfItem(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfVariantDef(e, index - bItem, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
@@ -4303,8 +4334,6 @@ private module Impl {
     or
     result = getImmediateChildOfRangePat(e, index, partialAccessor)
     or
-    result = getImmediateChildOfRecordFieldList(e, index, partialAccessor)
-    or
     result = getImmediateChildOfRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfRefPat(e, index, partialAccessor)
@@ -4320,6 +4349,8 @@ private module Impl {
     result = getImmediateChildOfSlicePat(e, index, partialAccessor)
     or
     result = getImmediateChildOfSliceTypeRepr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStructFieldList(e, index, partialAccessor)
     or
     result = getImmediateChildOfTryExpr(e, index, partialAccessor)
     or

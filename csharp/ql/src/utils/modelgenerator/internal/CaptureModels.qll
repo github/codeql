@@ -233,6 +233,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     result = ParamReturnNodeAsOutput<parameterContentAccess/1>::paramReturnNodeAsOutput(c, pos)
   }
 
+  ParameterPosition getReturnKindParamPosition(ReturnKind kind) {
+    kind.(OutRefReturnKind).getPosition() = result.getPosition()
+  }
+
   Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
     result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable(_)
   }

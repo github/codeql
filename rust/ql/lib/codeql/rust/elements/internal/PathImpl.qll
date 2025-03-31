@@ -32,14 +32,14 @@ module Impl {
       result = "...::"
       or
       index = 1 and
-      result = this.getPart().toAbbreviatedString()
+      result = this.getSegment().toAbbreviatedString()
     }
 
     /**
      * Gets the text of this path, if it exists.
      */
     pragma[nomagic]
-    string getText() { result = this.getPart().getNameRef().getText() }
+    string getText() { result = this.getSegment().getIdentifier().getText() }
   }
 
   /** A simple identifier path. */
@@ -49,12 +49,12 @@ module Impl {
     IdentPath() {
       not this.hasQualifier() and
       exists(PathSegment ps |
-        ps = this.getPart() and
+        ps = this.getSegment() and
         not ps.hasGenericArgList() and
         not ps.hasParenthesizedArgList() and
         not ps.hasTypeRepr() and
         not ps.hasReturnTypeSyntax() and
-        name = ps.getNameRef().getText()
+        name = ps.getIdentifier().getText()
       )
     }
 

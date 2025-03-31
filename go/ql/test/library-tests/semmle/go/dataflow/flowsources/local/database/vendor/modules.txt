@@ -13,6 +13,9 @@ github.com/couchbase/gocb/v2
 # github.com/jmoiron/sqlx v1.4.0
 ## explicit
 github.com/jmoiron/sqlx
+# github.com/Masterminds/squirrel v1.5.4
+## explicit
+github.com/Masterminds/squirrel
 # github.com/rqlite/gorqlite v0.0.0-20250128004930-114c7828b55a
 ## explicit
 github.com/rqlite/gorqlite
@@ -22,6 +25,9 @@ go.mongodb.org/mongo-driver/mongo
 # gorm.io/gorm v1.25.12
 ## explicit
 gorm.io/gorm
+# github.com/nonexistent/sources v0.0.0-20250300000000-000000000000
+## explicit
+github.com/nonexistent/sources
 # github.com/couchbase/gocbcore/v10 v10.5.4
 ## explicit
 github.com/couchbase/gocbcore/v10

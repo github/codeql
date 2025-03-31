@@ -1,0 +1,18 @@
+#select
+| BlazorTest/Components/MyOutput.razor:5:53:5:57 | access to property Value | BlazorTest/Components/Pages/TestPage.razor:85:23:85:32 | access to property QueryParam : String | BlazorTest/Components/MyOutput.razor:5:53:5:57 | access to property Value | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:85:23:85:32 | access to property QueryParam : String | User-provided value |
+| BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | User-provided value |
+| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | User-provided value |
+edges
+| BlazorTest/Components/Pages/TestPage.razor:85:23:85:32 | access to property QueryParam : String | BlazorTest/obj/Debug/net9.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Components_Pages_TestPage_razor.g.cs:569:16:577:13 | call to method TypeCheck<String> : String | provenance | Src:MaD:2 MaD:3 |
+| BlazorTest/obj/Debug/net9.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Components_Pages_TestPage_razor.g.cs:569:16:577:13 | call to method TypeCheck<String> : String | BlazorTest/Components/MyOutput.razor:5:53:5:57 | access to property Value | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: Microsoft.AspNetCore.Components; MarkupString; false; MarkupString; (System.String); ; Argument[0]; html-injection; manual |
+| 2 | Source: Microsoft.AspNetCore.Components; SupplyParameterFromQueryAttribute; false; ; ; Attribute.Getter; ReturnValue; remote; manual |
+| 3 | Summary: Microsoft.AspNetCore.Components.CompilerServices; RuntimeHelpers; false; TypeCheck<T>; (T); ; Argument[0]; ReturnValue; value; manual |
+nodes
+| BlazorTest/Components/MyOutput.razor:5:53:5:57 | access to property Value | semmle.label | access to property Value |
+| BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | semmle.label | access to property UrlParam |
+| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | semmle.label | access to property QueryParam |
+| BlazorTest/Components/Pages/TestPage.razor:85:23:85:32 | access to property QueryParam : String | semmle.label | access to property QueryParam : String |
+| BlazorTest/obj/Debug/net9.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Components_Pages_TestPage_razor.g.cs:569:16:577:13 | call to method TypeCheck<String> : String | semmle.label | call to method TypeCheck<String> : String |
+subpaths
