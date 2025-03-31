@@ -12,11 +12,20 @@
 
 import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
+import codeql.ruby.ApiGraphs
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
   RelevantLocalVariableWriteAccess() {
     not this.getVariable().getName().charAt(0) = "_" and
-    not this = any(Parameter p).getAVariable().getDefiningAccess()
+    not this = any(Parameter p).getAVariable().getDefiningAccess() and
+    not API::getTopLevelMember("ERB").getInstance().getAMethodCall("result").asExpr().getScope() =
+      this.getCfgScope() and
+    not exists(RetryStmt r | r.getCfgScope() = this.getCfgScope()) and
+    not exists(MethodCall c |
+      c.getReceiver() instanceof SelfVariableAccess and
+      c.getMethodName() = "binding" and
+      c.getCfgScope() = this.getCfgScope()
+    )
   }
 }
 

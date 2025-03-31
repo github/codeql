@@ -6,5 +6,5 @@ template = ERB.new <<EOF
   \_\_ENCODING\_\_ is <%= \_\_ENCODING\_\_ %>.
   x is <%= x %>.
 EOF
-x = 5  #$ SPURIOUS: Alert
+x = 5  # OK - the template can see the value of x
 puts template.result
