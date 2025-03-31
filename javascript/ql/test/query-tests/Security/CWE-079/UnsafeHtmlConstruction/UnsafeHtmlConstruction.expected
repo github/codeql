@@ -127,6 +127,3 @@ nodes
 | typed.ts:1:39:1:39 | s | semmle.label | s |
 | typed.ts:2:29:2:29 | s | semmle.label | s |
 subpaths
-testFailures
-| typed.ts:6:56:6:66 | // $ Source | Missing result: Source |
-| typed.ts:8:55:8:131 | // $ SP ... in DOM. | Fixed spurious result: Alert |
