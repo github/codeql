@@ -1,7 +1,4 @@
-WARNING: predicate 'hasQualifiedName' has been deprecated and may be removed in future (Test.ql:4,10-26)
-WARNING: predicate 'hasQualifiedName' has been deprecated and may be removed in future (Test.ql:8,10-26)
-WARNING: predicate 'hasQualifiedName' has been deprecated and may be removed in future (Test.ql:12,30-46)
-hasQualifiedNameModule
+hasUnderlyingTypeModule
 | default-import |  | tst.ts:11:9:11:21 | DefaultImport |
 | global | UnresolvedName | tst.ts:12:9:12:22 | UnresolvedName |
 | import-assign |  | tst.ts:10:9:10:11 | asn |
@@ -12,7 +9,7 @@ hasQualifiedNameModule
 | named-import | Name2 | tst.ts:8:9:8:13 | Name2 |
 | namespace-import |  | tst.ts:9:9:9:17 | namespace |
 | namespace-import | Foo | tst.ts:9:9:9:21 | namespace.Foo |
-hasQualifiedNameGlobal
+hasUnderlyingTypeGlobal
 | UnresolvedName | tst.ts:12:9:12:22 | UnresolvedName |
 paramExample
 | tst.ts:7:5:7:6 | x1 |

@@ -1,4 +1,3 @@
-WARNING: predicate 'hasQualifiedName' has been deprecated and may be removed in future (test.ql:3,68-84)
 | bar.js:5:14:5:14 | x | ns.very.long.namespace |
 | bar.js:5:14:5:18 | x.Foo | ns.very.long.namespace.Foo |
 | bar.js:12:14:12:17 | iife | IIFE |
