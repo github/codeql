@@ -19,7 +19,3 @@ extensions:
       - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
       - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
       - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "::malloc", "Argument[0]", "alloc-size", "manual"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "::aligned_alloc", "Argument[1]", "alloc-size", "manual"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "::calloc", "Argument[0,1]", "alloc-size", "manual"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "::realloc", "Argument[1]", "alloc-size", "manual"]

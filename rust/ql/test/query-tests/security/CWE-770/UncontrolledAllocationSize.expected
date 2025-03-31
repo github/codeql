@@ -40,14 +40,9 @@
 | main.rs:208:40:208:43 | grow | main.rs:317:13:317:26 | ...::args | main.rs:208:40:208:43 | grow | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:210:40:210:50 | grow_zeroed | main.rs:317:13:317:26 | ...::args | main.rs:210:40:210:50 | grow_zeroed | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:219:13:219:24 | ...::malloc | main.rs:317:13:317:26 | ...::args | main.rs:219:13:219:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
-| main.rs:219:13:219:24 | ...::malloc | main.rs:317:13:317:26 | ...::args | main.rs:219:13:219:24 | ...::malloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
-| main.rs:220:13:220:31 | ...::aligned_alloc | main.rs:317:13:317:26 | ...::args | main.rs:220:13:220:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:220:13:220:31 | ...::aligned_alloc | main.rs:317:13:317:26 | ...::args | main.rs:220:13:220:31 | ...::aligned_alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:222:13:222:24 | ...::calloc | main.rs:317:13:317:26 | ...::args | main.rs:222:13:222:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
-| main.rs:222:13:222:24 | ...::calloc | main.rs:317:13:317:26 | ...::args | main.rs:222:13:222:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:223:13:223:24 | ...::calloc | main.rs:317:13:317:26 | ...::args | main.rs:223:13:223:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
-| main.rs:223:13:223:24 | ...::calloc | main.rs:317:13:317:26 | ...::args | main.rs:223:13:223:24 | ...::calloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
-| main.rs:224:13:224:25 | ...::realloc | main.rs:317:13:317:26 | ...::args | main.rs:224:13:224:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:224:13:224:25 | ...::realloc | main.rs:317:13:317:26 | ...::args | main.rs:224:13:224:25 | ...::realloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:284:22:284:38 | ...::alloc | main.rs:308:25:308:38 | ...::args | main.rs:284:22:284:38 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:308:25:308:38 | ...::args | user-provided value |
 edges
@@ -223,18 +218,13 @@ edges
 | main.rs:210:60:210:61 | l2 | main.rs:210:40:210:50 | grow_zeroed | provenance | MaD:9 Sink:MaD:9 |
 | main.rs:217:27:217:34 | ...: usize | main.rs:219:26:219:26 | v | provenance |  |
 | main.rs:219:26:219:26 | v | main.rs:219:13:219:24 | ...::malloc | provenance | MaD:14 Sink:MaD:14 |
-| main.rs:219:26:219:26 | v | main.rs:219:13:219:24 | ...::malloc | provenance | MaD:14 Sink:MaD:14 |
 | main.rs:219:26:219:26 | v | main.rs:220:36:220:36 | v | provenance |  |
-| main.rs:220:36:220:36 | v | main.rs:220:13:220:31 | ...::aligned_alloc | provenance | MaD:12 Sink:MaD:12 |
 | main.rs:220:36:220:36 | v | main.rs:220:13:220:31 | ...::aligned_alloc | provenance | MaD:12 Sink:MaD:12 |
 | main.rs:220:36:220:36 | v | main.rs:222:30:222:30 | v | provenance |  |
 | main.rs:222:30:222:30 | v | main.rs:222:13:222:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
-| main.rs:222:30:222:30 | v | main.rs:222:13:222:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
 | main.rs:222:30:222:30 | v | main.rs:223:26:223:26 | v | provenance |  |
 | main.rs:223:26:223:26 | v | main.rs:223:13:223:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
-| main.rs:223:26:223:26 | v | main.rs:223:13:223:24 | ...::calloc | provenance | MaD:13 Sink:MaD:13 |
 | main.rs:223:26:223:26 | v | main.rs:224:31:224:31 | v | provenance |  |
-| main.rs:224:31:224:31 | v | main.rs:224:13:224:25 | ...::realloc | provenance | MaD:15 Sink:MaD:15 |
 | main.rs:224:31:224:31 | v | main.rs:224:13:224:25 | ...::realloc | provenance | MaD:15 Sink:MaD:15 |
 | main.rs:279:24:279:41 | ...: String | main.rs:280:21:280:47 | user_input.parse(...) [Ok] | provenance | MaD:32 |
 | main.rs:280:9:280:17 | num_bytes | main.rs:282:54:282:62 | num_bytes | provenance |  |
@@ -475,18 +465,13 @@ nodes
 | main.rs:210:60:210:61 | l2 | semmle.label | l2 |
 | main.rs:217:27:217:34 | ...: usize | semmle.label | ...: usize |
 | main.rs:219:13:219:24 | ...::malloc | semmle.label | ...::malloc |
-| main.rs:219:13:219:24 | ...::malloc | semmle.label | ...::malloc |
 | main.rs:219:26:219:26 | v | semmle.label | v |
-| main.rs:220:13:220:31 | ...::aligned_alloc | semmle.label | ...::aligned_alloc |
 | main.rs:220:13:220:31 | ...::aligned_alloc | semmle.label | ...::aligned_alloc |
 | main.rs:220:36:220:36 | v | semmle.label | v |
 | main.rs:222:13:222:24 | ...::calloc | semmle.label | ...::calloc |
-| main.rs:222:13:222:24 | ...::calloc | semmle.label | ...::calloc |
 | main.rs:222:30:222:30 | v | semmle.label | v |
 | main.rs:223:13:223:24 | ...::calloc | semmle.label | ...::calloc |
-| main.rs:223:13:223:24 | ...::calloc | semmle.label | ...::calloc |
 | main.rs:223:26:223:26 | v | semmle.label | v |
-| main.rs:224:13:224:25 | ...::realloc | semmle.label | ...::realloc |
 | main.rs:224:13:224:25 | ...::realloc | semmle.label | ...::realloc |
 | main.rs:224:31:224:31 | v | semmle.label | v |
 | main.rs:279:24:279:41 | ...: String | semmle.label | ...: String |
