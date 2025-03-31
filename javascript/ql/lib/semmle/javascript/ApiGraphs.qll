@@ -1795,7 +1795,10 @@ module API {
         /** Gets the argument index at which the spread argument appears. */
         int getIndex() { result = index }
 
-        override string toString() { result = "getSpreadArgument(" + index + ")" }
+        override string toString() {
+          // Note: This refers to the internal edge that has no corresponding method on API::Node
+          result = "getSpreadArgument(" + index + ")"
+        }
       }
 
       /** A label for a function that is a wrapper around another function. */
