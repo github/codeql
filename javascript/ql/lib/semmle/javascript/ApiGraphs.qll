@@ -962,11 +962,14 @@ module API {
     }
 
     private predicate spreadArgumentPassing(TApiNode base, int i, DataFlow::Node spreadArray) {
-      exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke |
+      exists(
+        DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke, int spreadPos
+      |
         use(base, use) and
         pred = trackUseNode(use, _, bound, "") and
-        invoke = getAnInvocationWithSpread(pred, i) and
-        spreadArray = invoke.getArgument(i - bound).(SpreadElement).getOperand().flow()
+        invoke = getAnInvocationWithSpread(pred, spreadPos) and
+        spreadArray = invoke.getArgument(spreadPos).(SpreadElement).getOperand().flow() and
+        i = bound + spreadPos
       )
     }
 

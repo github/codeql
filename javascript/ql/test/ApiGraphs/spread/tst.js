@@ -18,3 +18,12 @@ function getArgs() {
 }
 
 lib.m2(...getArgs());
+
+function f3() {
+    return [
+        'x', /* def=moduleImport("something").getMember("exports").getMember("m3").getSpreadArgument(1).getArrayElement() */
+        'y', /* def=moduleImport("something").getMember("exports").getMember("m3").getSpreadArgument(1).getArrayElement() */
+    ]
+}
+
+lib.m3.bind(undefined, 1)(...f3());
