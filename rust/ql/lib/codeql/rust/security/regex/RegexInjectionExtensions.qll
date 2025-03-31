@@ -63,7 +63,7 @@ private class RegexInjectionDefaultBarrier extends RegexInjectionBarrier {
         .getFunction()
         .(PathExpr)
         .getPath()
-        .getPart()
+        .getSegment()
         .getNameRef()
         .getText() = "escape"
   }

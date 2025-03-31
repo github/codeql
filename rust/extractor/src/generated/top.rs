@@ -2027,7 +2027,7 @@ impl From<trap::Label<Pat>> for trap::Label<Element> {
 pub struct Path {
     pub id: trap::TrapId<Path>,
     pub qualifier: Option<trap::Label<Path>>,
-    pub part: Option<trap::Label<PathSegment>>,
+    pub segment: Option<trap::Label<PathSegment>>,
 }
 
 impl trap::TrapEntry for Path {
@@ -2040,8 +2040,8 @@ impl trap::TrapEntry for Path {
         if let Some(v) = self.qualifier {
             out.add_tuple("path_qualifiers", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.part {
-            out.add_tuple("path_parts", vec![id.into(), v.into()]);
+        if let Some(v) = self.segment {
+            out.add_tuple("path_segments_", vec![id.into(), v.into()]);
         }
     }
 }
