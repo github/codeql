@@ -78,13 +78,31 @@ fn clamp<T: std::cmp::PartialOrd>(v: T, min: T, max: T) -> T {
     }
 }
 
-unsafe fn test_std_alloc_with_bounds(v: usize) {
+unsafe fn test_fn_alloc_bounded(v: usize) {
+    let layout = std::alloc::Layout::from_size_align(v, 1).unwrap();
+    let _ = std::alloc::alloc(layout); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+}
+
+unsafe fn test_fn_alloc_unbounded(v: usize) {
+    let layout = std::alloc::Layout::from_size_align(v, 1).unwrap();
+    let _ = std::alloc::alloc(layout); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+}
+
+unsafe fn test_std_alloc_with_bounds(v: usize, limit: usize) {
     let l1 = std::alloc::Layout::array::<u32>(v).unwrap();
 
     if v < 100 {
+        let l2 = std::alloc::Layout::array::<u32>(v).unwrap();
         let _ = std::alloc::alloc(l1); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l2); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+
+        test_fn_alloc_bounded(v);
     } else {
+        let l3 = std::alloc::Layout::array::<u32>(v).unwrap();
         let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l3); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+
+        test_fn_alloc_unbounded(v);
     }
 
     if v == 100 {
@@ -93,6 +111,29 @@ unsafe fn test_std_alloc_with_bounds(v: usize) {
         let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     }
 
+    if (v < limit) {
+        let l4 = std::alloc::Layout::from_size_align(v, 1).unwrap();
+        let _ = std::alloc::alloc(l4); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    }
+
+    if (v < 2 * v) { // not a good bound
+        let l5 = std::alloc::Layout::from_size_align(v, 1).unwrap();
+        let _ = std::alloc::alloc(l5); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    }
+
+    if (true && v < limit && true) {
+        let l6 = std::alloc::Layout::from_size_align(v, 1).unwrap();
+        let _ = std::alloc::alloc(l6); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    }
+
+    let mut l7;
+    if (v < 100) {
+        l7 = std::alloc::Layout::from_size_align(v, 1).unwrap();
+    } else {
+        l7 = std::alloc::Layout::from_size_align(100, 1).unwrap();
+    }
+    let _ = std::alloc::alloc(l7); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+
     {
         let mut v_mut = v;
 
@@ -100,27 +141,41 @@ unsafe fn test_std_alloc_with_bounds(v: usize) {
             v_mut = 100;
         }
 
-        let l2 = std::alloc::Layout::array::<u32>(v_mut).unwrap();
-        let _ = std::alloc::alloc(l2); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
-
-        let l3 = std::alloc::Layout::array::<u32>(v).unwrap();
-        let _ = std::alloc::alloc(l3); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+        let l8 = std::alloc::Layout::array::<u32>(v_mut).unwrap();
+        let l9 = std::alloc::Layout::array::<u32>(v).unwrap();
+        let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l8); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l9); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     }
 
-    let l4 = std::alloc::Layout::array::<u32>(std::cmp::min(v, 100)).unwrap();
-    let _ = std::alloc::alloc(l4); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    let l10 = std::alloc::Layout::array::<u32>(std::cmp::min(v, 100)).unwrap();
+    let _ = std::alloc::alloc(l10); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 
-    let l5 = std::alloc::Layout::array::<u32>(std::cmp::max(v, 100)).unwrap();
-    let _ = std::alloc::alloc(l5); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let l11 = std::alloc::Layout::array::<u32>(std::cmp::max(v, 100)).unwrap();
+    let _ = std::alloc::alloc(l11); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
-    let l6 = std::alloc::Layout::array::<u32>(clamp(v, 1, 100)).unwrap();
-    let _ = std::alloc::alloc(l6); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    let l12 = std::alloc::Layout::array::<u32>(clamp(v, 1, 100)).unwrap();
+    let _ = std::alloc::alloc(l12); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 
-    let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    for i in 0..10 {
+        let l13 = std::alloc::Layout::from_size_align(v, 1).unwrap();
+        let _ = std::alloc::alloc(l13); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+
+        if (v > 1000) {
+            continue;
+        }
+
+        let l14 = std::alloc::Layout::from_size_align(v, 1).unwrap();
+        let _ = std::alloc::alloc(l13); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l14); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    }
+
     if v > 100 {
         return;
     }
+    let l15 = std::alloc::Layout::from_size_align(v, 1).unwrap();
     let _ = std::alloc::alloc(l1); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(l15); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 use std::alloc::{GlobalAlloc, Allocator};
@@ -264,7 +319,7 @@ fn main() {
     unsafe {
         test_std_alloc_from_size(v);
         test_std_alloc_new_repeat_extend(v);
-        test_std_alloc_with_bounds(v);
+        test_std_alloc_with_bounds(v, 1000);
         test_system_alloc(v);
         test_libc_alloc(v);
         test_vectors(v);
