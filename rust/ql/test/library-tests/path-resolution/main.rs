@@ -493,6 +493,33 @@ mod m18 {
     }
 }
 
+mod m21 {
+    mod m22 {
+        pub enum MyEnum {
+            A, // I104
+        } // I105
+
+        pub struct MyStruct; // I106
+    } // I107
+
+    mod m33 {
+        #[rustfmt::skip]
+        use super::m22::MyEnum::{ // $ item=I105
+            self // $ MISSING: item=I105 $ SPURIOUS: item=I107
+        };
+
+        #[rustfmt::skip]
+        use super::m22::MyStruct::{ // $ item=I106
+            self // $ MISSING: item=I106 $ SPURIOUS: item=I107
+        };
+
+        fn f() {
+            let _ = MyEnum::A; // $ MISSING: item=I104
+            let _ = MyStruct {}; // $ MISSING: item=I106
+        }
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
