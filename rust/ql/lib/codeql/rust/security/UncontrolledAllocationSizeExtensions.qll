@@ -35,18 +35,61 @@ module UncontrolledAllocationSize {
   }
 
   /**
-   * A barrier for uncontrolled allocation size that is an guard / bound check.
+   * A barrier for uncontrolled allocation size that is an upper bound check / guard.
    */
-  private class BoundCheckBarrier extends Barrier {
-    BoundCheckBarrier() { this = DataFlow::BarrierGuard<isBoundCheck/3>::getABarrierNode() }
+  private class UpperBoundCheckBarrier extends Barrier {
+    UpperBoundCheckBarrier() {
+      this = DataFlow::BarrierGuard<isUpperBoundCheck/3>::getABarrierNode()
+    }
   }
 
-  private predicate isBoundCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
-    // any comparison (`g` / `cmp`) guards the expression on either side (`node`)
-    exists(BinaryExpr cmp |
-      g = cmp.getACfgNode() and
+  /**
+   * Gets the operand on the "greater" (or "greater-or-equal") side
+   * of this relational expression, that is, the side that is larger
+   * if the overall expression evaluates to `true`; for example on
+   * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
+   */
+  private Expr getGreaterOperand(BinaryExpr op) {
+    op.getOperatorName() = ["<", "<="] and
+    result = op.getRhs()
+    or
+    op.getOperatorName() = [">", ">="] and
+    result = op.getLhs()
+  }
+
+  /**
+   * Gets the operand on the "lesser" (or "lesser-or-equal") side
+   * of this relational expression, that is, the side that is smaller
+   * if the overall expression evaluates to `true`; for example on
+   * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
+   */
+  private Expr getLesserOperand(BinaryExpr op) {
+    op.getOperatorName() = ["<", "<="] and
+    result = op.getLhs()
+    or
+    op.getOperatorName() = [">", ">="] and
+    result = op.getRhs()
+  }
+
+  /**
+   * Holds if comparison `g` having result `branch` indicates an upper bound for the sub-expression
+   * `node`. For example when the comparison `x < 10` is true, we have an upper bound for `x`.
+   */
+  private predicate isUpperBoundCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
+    exists(BinaryExpr cmp | g = cmp.getACfgNode() |
+      node = getLesserOperand(cmp).getACfgNode() and
+      branch = true
+      or
+      node = getGreaterOperand(cmp).getACfgNode() and
+      branch = false
+      or
+      cmp.getOperatorName() = "==" and
       [cmp.getLhs(), cmp.getRhs()].getACfgNode() = node and
-      branch = [true, false]
+      branch = true
+      or
+      cmp.getOperatorName() = "!=" and
+      [cmp.getLhs(), cmp.getRhs()].getACfgNode() = node and
+      branch = false
     )
   }
 }

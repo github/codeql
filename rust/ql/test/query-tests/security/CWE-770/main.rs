@@ -85,7 +85,7 @@ unsafe fn test_fn_alloc_bounded(v: usize) {
 
 unsafe fn test_fn_alloc_unbounded(v: usize) {
     let layout = std::alloc::Layout::from_size_align(v, 1).unwrap();
-    let _ = std::alloc::alloc(layout); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(layout); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 unsafe fn test_std_alloc_with_bounds(v: usize, limit: usize) {
@@ -100,7 +100,7 @@ unsafe fn test_std_alloc_with_bounds(v: usize, limit: usize) {
     } else {
         let l3 = std::alloc::Layout::array::<u32>(v).unwrap();
         let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
-        let _ = std::alloc::alloc(l3); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l3); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
         test_fn_alloc_unbounded(v);
     }
@@ -145,28 +145,28 @@ unsafe fn test_std_alloc_with_bounds(v: usize, limit: usize) {
         let l9 = std::alloc::Layout::array::<u32>(v).unwrap();
         let _ = std::alloc::alloc(l1); // $ Alert[rust/uncontrolled-allocation-size]=arg1
         let _ = std::alloc::alloc(l8); // $ GOOD (bounded)
-        let _ = std::alloc::alloc(l9); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l9); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     }
 
     let l10 = std::alloc::Layout::array::<u32>(std::cmp::min(v, 100)).unwrap();
-    let _ = std::alloc::alloc(l10); // $ GOOD (bounded)
+    let _ = std::alloc::alloc(l10); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l11 = std::alloc::Layout::array::<u32>(std::cmp::max(v, 100)).unwrap();
-    let _ = std::alloc::alloc(l11); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(l11); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l12 = std::alloc::Layout::array::<u32>(clamp(v, 1, 100)).unwrap();
     let _ = std::alloc::alloc(l12); // $ GOOD (bounded)
 
     for i in 0..10 {
         let l13 = std::alloc::Layout::from_size_align(v, 1).unwrap();
-        let _ = std::alloc::alloc(l13); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+        let _ = std::alloc::alloc(l13); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
         if (v > 1000) {
             continue;
         }
 
         let l14 = std::alloc::Layout::from_size_align(v, 1).unwrap();
-        let _ = std::alloc::alloc(l13); // $ GOOD (bounded)
+        let _ = std::alloc::alloc(l13); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
         let _ = std::alloc::alloc(l14); // $ GOOD (bounded)
     }
 
