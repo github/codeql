@@ -11,14 +11,14 @@ def test_retry
             raise "error"
         end
     rescue
-        x = 2  #$ SPURIOUS: Alert
+        x = 2  # OK - the retry will allow a later read
         retry
     end
     return 42
 end
 
 def test_binding
-    x = 4  #$ SPURIOUS: Alert
+    x = 4  # OK - the binding collects the value of x
     return binding
 end
 
