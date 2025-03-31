@@ -8,7 +8,7 @@ def test(codeql, java):
         [sys.executable, "-m", "http.server", "9427"], cwd="repo"
     )
     try:
-        time.sleep(30)
+        time.sleep(300)
         subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots"])
         subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots/com/github/my/snapshot/test/snapshottest/1.0-SNAPSHOT/maven-metadata.xml"])
         codeql.database.create(
