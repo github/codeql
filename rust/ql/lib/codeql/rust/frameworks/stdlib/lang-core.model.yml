@@ -31,6 +31,9 @@ extensions:
       - ["lang:core", "<crate::alloc::layout::Layout>::extend", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]", "taint", "manual"]
       - ["lang:core", "<crate::alloc::layout::Layout>::extend_packed", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
       - ["lang:core", "<crate::alloc::layout::Layout>::extend_packed", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::align_to", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::pad_to_align", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::size", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Ptr
       - ["lang:core", "crate::ptr::read", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["lang:core", "crate::ptr::read_unaligned", "Argument[0].Reference", "ReturnValue", "value", "manual"]

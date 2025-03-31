@@ -19,8 +19,8 @@ unsafe fn test_std_alloc_from_size(v: usize) {
 
     let l2 = std::alloc::Layout::from_size_align(v, 1).unwrap();
     let _ = std::alloc::alloc(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = std::alloc::alloc(l2.align_to(8).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = std::alloc::alloc(l2.align_to(8).unwrap().pad_to_align()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l2.align_to(8).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(l2.align_to(8).unwrap().pad_to_align()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = std::alloc::alloc_zeroed(l2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l3 = std::alloc::Layout::from_size_align(1, v).unwrap(); // not obviously dangerous?
@@ -37,7 +37,7 @@ unsafe fn test_std_alloc_from_size(v: usize) {
     let _ = std::alloc::alloc(l6); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l7 = std::alloc::Layout::from_size_align_unchecked(l6.size(), 8);
-    let _ = std::alloc::alloc(l7); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::alloc(l7); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 unsafe fn test_std_alloc_new_repeat_extend(v: usize) {
