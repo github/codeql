@@ -13,6 +13,6 @@ def test(codeql, java):
             _env={"CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS_CLASSPATH_FROM_BUILD_FILES": "true"},
         )
     finally:
-        subprocess.call(["pstree"])
+        subprocess.call(["ps", "aux", "-ww"])
         subprocess.call(["netstat", "-a", "-n", "-p"])
         repo_server_process.kill()
