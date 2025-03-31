@@ -255,8 +255,6 @@ cached
 newtype TContent =
   TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
   TStructFieldContent(StructField field) or
-  // TODO: Remove once library types are extracted
-  TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
   TElementContent() or
   TFutureContent() or
   TTuplePositionContent(int pos) {
