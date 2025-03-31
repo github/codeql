@@ -11,6 +11,8 @@ class FunctionDefinitionStmt extends @function_definition, Stmt {
 
   Parameter getAParameter() { result = this.getParameter(_) }
 
+  int getNumParameters() { result = count(this.getParameter(_)) }
+
   override Ast getChild(ChildIndex i) {
     i = FunDefStmtBody() and result = this.getBody()
     or

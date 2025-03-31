@@ -36,13 +36,22 @@ newtype ChildIndex =
   // PipelineByPropertNameVar(Raw::PipelineByPropertyNameParameter p) or
   PipelineIteratorVar() or
   PipelineByPropertyNameIteratorVar(Raw::PipelineByPropertyNameParameter p) or
-  RealVar(string name) { name = variableNameInScope(_, _) }
+  RealVar(string name) { name = variableNameInScope(_, _) } or
+  ProcessBlockPipelineVarReadAccess()
 
 int synthPipelineParameterChildIndex(Raw::ScriptBlock sb) {
+  // If there is a parameter block, but no pipeline parameter
   exists(Raw::ParamBlock pb |
     pb = sb.getParamBlock() and
     not pb.getAParameter() instanceof Raw::PipelineParameter and
     result = pb.getNumParameters()
+  )
+  or
+  // There is no parameter block
+  not exists(sb.getParamBlock()) and
+  exists(Raw::FunctionDefinitionStmt funDefStmt |
+    funDefStmt.getBody() = sb and
+    result = funDefStmt.getNumParameters()
   )
 }
 
@@ -105,6 +114,9 @@ string stringOfChildIndex(ChildIndex i) {
   or
   i = FunctionBody() and
   result = "FunctionBody"
+  or
+  i = ProcessBlockPipelineVarReadAccess() and
+  result = "ProcessBlockPipelineVarReadAccess"
 }
 
 Raw::ChildIndex toRawChildIndex(ChildIndex i) { i = RawChildIndex(result) }
@@ -326,3 +338,5 @@ ChildIndex usingExprExpr() { result = RawChildIndex(Raw::UsingExprExpr()) }
 ChildIndex whileStmtCond() { result = RawChildIndex(Raw::WhileStmtCond()) }
 
 ChildIndex whileStmtBody() { result = RawChildIndex(Raw::WhileStmtBody()) }
+
+ChildIndex processBlockPipelineVarReadAccess() { result = ProcessBlockPipelineVarReadAccess() }

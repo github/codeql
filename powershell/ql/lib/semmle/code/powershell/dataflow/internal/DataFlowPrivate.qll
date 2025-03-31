@@ -64,15 +64,24 @@ module SsaFlow {
     result = TNormalParameterNode(p.asParameter())
     or
     result = TThisParameterNode(p.asThis())
+    or
+    result = TPipelineParameterNode(p.asPipelineParameter())
   }
 
+  /** Gets the SSA node corresponding to the PowerShell node `n`. */
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
     result.(Impl::ExprNode).getExpr() = n.asExpr()
     or
-    result.(Impl::ExprNode).getExpr() =
-      [n.(ProcessNode).getProcessBlock(), n.(ProcessPropertyByNameNode).getProcessBlock()]
+    exists(CfgNodes::ProcessBlockCfgNode pb, BasicBlock bb, int i |
+      n.(ProcessNode).getProcessBlock() = pb and
+      bb.getNode(i) = pb and
+      result
+          .(Impl::SsaDefinitionNode)
+          .getDefinition()
+          .definesAt(pb.getPipelineIteratorVariable(), bb, i)
+    )
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
@@ -115,7 +124,7 @@ module LocalFlow {
     exists(CfgNodes::ExprCfgNode e |
       e = nodeFrom.(AstNode).getCfgNode() and
       isReturned(e) and
-      e.getScope() = nodeTo.(PreReturNodeImpl).getCfgScope()
+      e.getScope() = nodeTo.(PreReturnNodeImpl).getCfgScope()
     )
     or
     exists(CfgNode cfgNode |
@@ -134,6 +143,14 @@ module LocalFlow {
       e.getScope() = scriptBlock.getAstNode() and
       not blockMayReturnMultipleValues(scriptBlock) and
       nodeTo.(ReturnNodeImpl).getCfgScope() = scriptBlock.getAstNode()
+    )
+    or
+    exists(CfgNodes::ExprNodes::PipelineArgumentCfgNode e | nodeFrom.asExpr() = e |
+      // If we are not already tracking as element content
+      nodeTo = TPrePipelineArgumentNode(e)
+      or
+      // If we are already tracking an element content
+      nodeTo = TPipelineArgumentNode(e)
     )
   }
 
@@ -180,7 +197,9 @@ private module Cached {
     TNormalParameterNode(SsaImpl::NormalParameter p) or
     TThisParameterNode(Method m) or
     TPipelineByPropertyNameParameterNode(PipelineByPropertyNameParameter p) or
-    TPipelineParamaterNode(PipelineParameter p) or
+    TPipelineParameterNode(PipelineParameter p) or
+    TPrePipelineArgumentNode(CfgNodes::ExprNodes::PipelineArgumentCfgNode n) or
+    TPipelineArgumentNode(CfgNodes::ExprNodes::PipelineArgumentCfgNode n) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       n instanceof CfgNodes::ExprNodes::ArgumentCfgNode
       or
@@ -201,7 +220,7 @@ private module Cached {
       blockMayReturnMultipleValues(scriptBlock)
     } or
     TReturnNodeImpl(CfgScope scope) or
-    TProcessNode(ProcessBlock process) or
+    TProcessNode(CfgNodes::ProcessBlockCfgNode process) or
     TProcessPropertyByNameNode(PipelineByPropertyNameIteratorVariable iter) {
       isProcessPropertyByNameNode(iter, _)
     } or
@@ -578,10 +597,10 @@ private module ParameterNodes {
     override string toStringImpl() { result = "this" }
   }
 
-  class PipelineParamaterNode extends ParameterNodeImpl, TPipelineParamaterNode {
+  class PipelineParameterNode extends ParameterNodeImpl, TPipelineParameterNode {
     private PipelineParameter parameter;
 
-    PipelineParamaterNode() { this = TPipelineParamaterNode(parameter) }
+    PipelineParameterNode() { this = TPipelineParameterNode(parameter) }
 
     override PipelineParameter getParameter() { result = parameter }
 
@@ -671,6 +690,22 @@ abstract class ArgumentNode extends Node {
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
+class PrePipelineArgumentNodeImpl extends NodeImpl, TPrePipelineArgumentNode {
+  CfgNodes::ExprNodes::PipelineArgumentCfgNode e;
+
+  PrePipelineArgumentNodeImpl() { this = TPrePipelineArgumentNode(e) }
+
+  final override CfgScope getCfgScope() { result = e.getScope() }
+
+  final override Location getLocationImpl() { result = e.getLocation() }
+
+  final override string toStringImpl() { result = "[pre pipeline] " + e.toString() }
+
+  final override predicate nodeIsHidden() { any() }
+
+  CfgNodes::ExprNodes::PipelineArgumentCfgNode getPipelineArgument() { result = e }
+}
+
 module ArgumentNodes {
   class ExplicitArgumentNode extends ArgumentNode {
     CfgNodes::ExprNodes::ArgumentCfgNode arg;
@@ -714,18 +749,23 @@ module ArgumentNodes {
     }
   }
 
-  private predicate isPipelineInput(CfgNodes::ExprCfgNode input, CfgNodes::ExprCfgNode consumer) {
-    exists(CfgNodes::ExprNodes::PipelineCfgNode pipeline, int i |
-      input = pipeline.getComponent(i) and
-      consumer = pipeline.getComponent(i + 1)
-    )
+  class PipelineArgumentNodeImpl extends NodeImpl, TPipelineArgumentNode {
+    CfgNodes::ExprNodes::PipelineArgumentCfgNode e;
+
+    PipelineArgumentNodeImpl() { this = TPipelineArgumentNode(e) }
+
+    final override CfgScope getCfgScope() { result = e.getScope() }
+
+    final override Location getLocationImpl() { result = e.getLocation() }
+
+    final override string toStringImpl() { result = e.toString() }
+
+    final override predicate nodeIsHidden() { none() }
+
+    CfgNodes::ExprNodes::PipelineArgumentCfgNode getPipelineArgument() { result = e }
   }
 
-  class PipelineArgumentNode extends ArgumentNode, ExprNode {
-    CfgNodes::ExprCfgNode consumer;
-
-    PipelineArgumentNode() { isPipelineInput(this.getExprNode(), consumer) }
-
+  class PipelineArgumentNode extends ArgumentNode instanceof PipelineArgumentNodeImpl {
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
     }
@@ -733,7 +773,7 @@ module ArgumentNodes {
     override predicate sourceArgumentOf(
       CfgNodes::ExprNodes::CallExprCfgNode call, ArgumentPosition pos
     ) {
-      call = consumer and
+      call = super.getPipelineArgument().getCall() and
       pos.isPipeline()
     }
   }
@@ -921,6 +961,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
   or
+  c.isAnyElement() and
+  exists(CfgNodes::ExprNodes::PipelineArgumentCfgNode arg |
+    node1 = TPrePipelineArgumentNode(arg) and
+    node2 = TPipelineArgumentNode(arg)
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }
@@ -957,14 +1003,9 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   c.isAnyElement() and
-  exists(SsaImpl::DefinitionExt def, ProcessNode processNode, Variable iterator |
-    processNode = node1 and iterator = def.getSourceVariable()
-  |
-    processNode.getIteratorVariable() = iterator and
-    SsaImpl::firstRead(def, node2.asExpr())
-    or
-    processNode.getPropertyNameIteratorVariable() = iterator and
-    node2 = TProcessPropertyByNameNode(def.getSourceVariable())
+  exists(CfgNodes::ProcessBlockCfgNode processBlock |
+    processBlock.getPipelineVariableAccess() = node1.asExpr() and
+    node2 = TProcessNode(processBlock)
   )
   or
   exists(
@@ -1001,6 +1042,9 @@ predicate clearsContent(Node n, ContentSet c) {
   or
   n = TPreReturnNodeImpl(_, false) and
   c.isAnyElement()
+  or
+  n instanceof PrePipelineArgumentNodeImpl and
+  c.isAnyElement()
 }
 
 /**
@@ -1016,7 +1060,7 @@ predicate expectsContent(Node n, ContentSet c) {
   n = TImplicitWrapNode(_, false) and
   c.isSingleton(any(Content::UnknownElementContent ec))
   or
-  n instanceof ProcessNode and
+  n instanceof PipelineArgumentNode and
   c.isAnyElement()
 }
 
@@ -1115,11 +1159,11 @@ private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
  * A node that represents the return value before any array-unwrapping
  * has been performed.
  */
-private class PreReturNodeImpl extends TPreReturnNodeImpl, NodeImpl {
+private class PreReturnNodeImpl extends TPreReturnNodeImpl, NodeImpl {
   private CfgNodes::ScriptBlockCfgNode n;
   private boolean isArray;
 
-  PreReturNodeImpl() { this = TPreReturnNodeImpl(n, isArray) }
+  PreReturnNodeImpl() { this = TPreReturnNodeImpl(n, isArray) }
 
   CfgNodes::AstCfgNode getScriptBlock() { result = n }
 
@@ -1148,11 +1192,11 @@ private class ReturnNodeImpl extends TReturnNodeImpl, NodeImpl {
 }
 
 private class ProcessNode extends TProcessNode, NodeImpl {
-  ProcessBlock process;
+  CfgNodes::ProcessBlockCfgNode process;
 
   ProcessNode() { this = TProcessNode(process) }
 
-  override CfgScope getCfgScope() { result = process.getEnclosingScope() }
+  override CfgScope getCfgScope() { result = process.getScope() }
 
   override Location getLocationImpl() { result = process.getLocation() }
 
@@ -1160,13 +1204,11 @@ private class ProcessNode extends TProcessNode, NodeImpl {
 
   override predicate nodeIsHidden() { any() }
 
-  PipelineIteratorVariable getIteratorVariable() { result.getProcessBlock() = process }
-
-  PipelineByPropertyNameIteratorVariable getPropertyNameIteratorVariable() {
-    result.getProcessBlock() = process
+  PipelineIteratorVariable getPipelineIteratorVariable() {
+    result = process.getPipelineIteratorVariable()
   }
 
-  CfgNodes::ProcessBlockCfgNode getProcessBlock() { result.getAstNode() = process }
+  CfgNodes::ProcessBlockCfgNode getProcessBlock() { result = process }
 }
 
 private class ProcessPropertyByNameNode extends TProcessPropertyByNameNode, NodeImpl {

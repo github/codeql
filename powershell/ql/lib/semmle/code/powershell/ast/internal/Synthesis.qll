@@ -728,6 +728,7 @@ private module IteratorAccessSynth {
     }
 
     private predicate stmt(Raw::Ast rawParent, ChildIndex i, Raw::CmdExpr cmdExpr, Child child) {
+      exists(this.varAccess(cmdExpr.getExpr())) and
       rawParent.getChild(toRawChildIndex(i)) = cmdExpr and
       not mustHaveExprChild(rawParent, cmdExpr) and
       child = SynthChild(ExprStmtKind())
@@ -801,6 +802,34 @@ private module IteratorAccessSynth {
       exists(Raw::Ast parent |
         n = TVariableSynth(parent, _) and
         result = parent.getLocation()
+      )
+    }
+  }
+}
+
+private module PipelineAccess {
+  private class PipelineAccess extends Synthesis {
+    final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      exists(Raw::ProcessBlock pb | parent = pb |
+        i = processBlockPipelineVarReadAccess() and
+        exists(PipelineVariable pipelineVar |
+          pipelineVar = TVariableSynth(pb.getScriptBlock(), PipelineParamVar()) and
+          child = SynthChild(VarAccessSynthKind(pipelineVar))
+        )
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(ProcessBlock pb |
+        pb.getPipelineParameterAccess() = n and
+        result = pb.getLocation()
+      )
+    }
+
+    final override predicate getAnAccess(VarAccessSynth va, Variable v) {
+      exists(ProcessBlock pb |
+        pb.getPipelineParameterAccess() = va and
+        v = pb.getPipelineParameter()
       )
     }
   }

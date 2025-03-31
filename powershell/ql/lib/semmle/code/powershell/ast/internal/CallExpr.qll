@@ -28,6 +28,10 @@ class CallExpr extends Expr, TCallExpr {
   /** Gets the qualifier of this call, if any. */
   Expr getQualifier() { none() }
 
+  Expr getPipelineArgument() {
+    exists(Pipeline p, int i | this = p.getComponent(i + 1) and result = p.getComponent(i))
+  }
+
   final override string toString() { result = "Call to " + this.getName() }
 
   predicate isStatic() { none() }
@@ -49,6 +53,14 @@ class Qualifier extends Expr {
   CallExpr call;
 
   Qualifier() { this = call.getQualifier() }
+
+  CallExpr getCall() { result = call }
+}
+
+class PipelineArgument extends Expr {
+  CallExpr call;
+
+  PipelineArgument() { this = call.getPipelineArgument() }
 
   CallExpr getCall() { result = call }
 }
