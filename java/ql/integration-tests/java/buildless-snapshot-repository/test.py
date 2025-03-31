@@ -15,4 +15,6 @@ def test(codeql, java):
     finally:
         subprocess.call(["ps", "aux", "-ww"])
         subprocess.call(["netstat", "-anv"])
+        subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots"])
+        subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots/com/github/my/snapshot/test/snapshottest/1.0-SNAPSHOT/maven-metadata.xml"])
         repo_server_process.kill()
