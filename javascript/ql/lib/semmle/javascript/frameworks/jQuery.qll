@@ -410,6 +410,8 @@ module JQuery {
         this = DataFlow::moduleImport(["jquery", "zepto", "cash-dom"])
         or
         this.hasUnderlyingType("JQueryStatic")
+        or
+        this.hasUnderlyingType("jquery", "")
       }
     }
   }
