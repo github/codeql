@@ -649,11 +649,13 @@ module API {
     /** Gets a node corresponding to an import of module `m` without taking into account types from models. */
     Node getAModuleImportRaw(string m) {
       result = Impl::MkModuleImport(m) or
-      result = Impl::MkModuleImport(m).(Node).getMember("default")
+      result = Impl::MkModuleImport(m).(Node).getMember("default") or
+      result = Impl::MkTypeUse(m, "")
     }
 
     /** Gets a node whose type has the given qualified name, not including types from models. */
     Node getANodeOfTypeRaw(string moduleName, string exportedName) {
+      exportedName != "" and
       result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
       or
       exportedName = "" and

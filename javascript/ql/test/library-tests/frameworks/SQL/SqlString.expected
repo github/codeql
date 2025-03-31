@@ -47,6 +47,7 @@
 | sequelize2.js:12:17:15:1 | {\\n  que ... [123]\\n} |
 | sequelize2.js:13:10:13:20 | 'SELECT $1' |
 | sequelize2.js:17:31:17:41 | '123 + 345' |
+| sequelize-types.ts:7:24:7:35 | 'SELECT 123' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
 | sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
 | spanner2.js:4:19:4:59 | "not SQ ... anyway" |
