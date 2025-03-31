@@ -476,7 +476,7 @@ fn emit_adt(
                         name,
                         field_list,
                         attrs: vec![],
-                        expr: None,
+                        discriminant: None,
                         visibility,
                     })
                 })
@@ -1000,14 +1000,14 @@ fn make_qualified_path(
         qualifier: Option<trap::Label<generated::Path>>,
         name: String,
     ) -> trap::Label<generated::Path> {
-        let name_ref = Some(trap.emit(generated::NameRef {
+        let identifier = Some(trap.emit(generated::NameRef {
             id: trap::TrapId::Star,
             text: Some(name),
         }));
         let segment = Some(trap.emit(generated::PathSegment {
             id: trap::TrapId::Star,
             generic_arg_list: None,
-            name_ref,
+            identifier,
             parenthesized_arg_list: None,
             ret_type: None,
             return_type_syntax: None,
@@ -1253,11 +1253,11 @@ fn emit_hir_ty(
 
 enum Variant {
     Unit,
-    Record(trap::Label<generated::RecordFieldList>),
+    Record(trap::Label<generated::StructFieldList>),
     Tuple(trap::Label<generated::TupleFieldList>),
 }
 
-impl From<Variant> for Option<trap::Label<generated::RecordFieldList>> {
+impl From<Variant> for Option<trap::Label<generated::StructFieldList>> {
     fn from(val: Variant) -> Self {
         match val {
             Variant::Record(label) => Some(label),
@@ -1305,11 +1305,11 @@ fn emit_variant_data(trap: &mut TrapFile, db: &dyn HirDatabase, variant_id: Vari
                         name,
                         type_repr,
                         visibility,
-                        expr: None,
+                        default: None,
                     })
                 })
                 .collect();
-            Variant::Record(trap.emit(generated::RecordFieldList {
+            Variant::Record(trap.emit(generated::StructFieldList {
                 id: trap::TrapId::Star,
                 fields,
             }))

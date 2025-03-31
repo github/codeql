@@ -131,7 +131,6 @@
 /lib/codeql/rust/elements/PtrTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/RangeExpr.qll linguist-generated
 /lib/codeql/rust/elements/RangePat.qll linguist-generated
-/lib/codeql/rust/elements/RecordFieldList.qll linguist-generated
 /lib/codeql/rust/elements/RefExpr.qll linguist-generated
 /lib/codeql/rust/elements/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/RefTypeRepr.qll linguist-generated
@@ -153,6 +152,7 @@
 /lib/codeql/rust/elements/StructExprField.qll linguist-generated
 /lib/codeql/rust/elements/StructExprFieldList.qll linguist-generated
 /lib/codeql/rust/elements/StructField.qll linguist-generated
+/lib/codeql/rust/elements/StructFieldList.qll linguist-generated
 /lib/codeql/rust/elements/StructPat.qll linguist-generated
 /lib/codeql/rust/elements/StructPatField.qll linguist-generated
 /lib/codeql/rust/elements/StructPatFieldList.qll linguist-generated
@@ -369,8 +369,6 @@
 /lib/codeql/rust/elements/internal/RangeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RangePatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RangePatImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/RecordFieldListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/RecordFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RefExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RefPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RefTypeReprConstructor.qll linguist-generated
@@ -402,6 +400,8 @@
 /lib/codeql/rust/elements/internal/StructExprFieldListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructExprFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructFieldConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/StructFieldListConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/StructFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructPatFieldConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructPatFieldListConstructor.qll linguist-generated
@@ -597,7 +597,6 @@
 /lib/codeql/rust/elements/internal/generated/RangeExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RangePat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Raw.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/RecordFieldList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefTypeRepr.qll linguist-generated
@@ -619,6 +618,7 @@
 /lib/codeql/rust/elements/internal/generated/StructExprField.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructExprFieldList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructField.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/StructFieldList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructPatField.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/StructPatFieldList.qll linguist-generated
@@ -692,7 +692,7 @@
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getConstArg.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getGenericArgList.ql linguist-generated
-/test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getParamList.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getRetType.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getReturnTypeSyntax.ql linguist-generated
@@ -782,7 +782,7 @@
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getCrateOrigin.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getExtendedCanonicalPath.ql linguist-generated
-/test/extractor-tests/generated/ExternCrate/ExternCrate_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/ExternCrate/ExternCrate_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getRename.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getVisibility.ql linguist-generated
 /test/extractor-tests/generated/ExternItemList/ExternItemList.ql linguist-generated
@@ -790,8 +790,8 @@
 /test/extractor-tests/generated/ExternItemList/ExternItemList_getExternItem.ql linguist-generated
 /test/extractor-tests/generated/FieldExpr/FieldExpr.ql linguist-generated
 /test/extractor-tests/generated/FieldExpr/FieldExpr_getAttr.ql linguist-generated
-/test/extractor-tests/generated/FieldExpr/FieldExpr_getExpr.ql linguist-generated
-/test/extractor-tests/generated/FieldExpr/FieldExpr_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/FieldExpr/FieldExpr_getContainer.ql linguist-generated
+/test/extractor-tests/generated/FieldExpr/FieldExpr_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/FnPtrTypeRepr/FnPtrTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/FnPtrTypeRepr/FnPtrTypeRepr_getAbi.ql linguist-generated
 /test/extractor-tests/generated/FnPtrTypeRepr/FnPtrTypeRepr_getParamList.ql linguist-generated
@@ -951,7 +951,7 @@
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getArgList.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getGenericArgList.ql linguist-generated
-/test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getReceiver.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getResolvedCrateOrigin.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getResolvedPath.ql linguist-generated
@@ -1000,7 +1000,7 @@
 /test/extractor-tests/generated/Path/PathPat_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getGenericArgList.ql linguist-generated
-/test/extractor-tests/generated/Path/PathSegment_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/Path/PathSegment_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getParenthesizedArgList.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getRetType.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getReturnTypeSyntax.ql linguist-generated
@@ -1025,8 +1025,6 @@
 /test/extractor-tests/generated/RangePat/RangePat_getEnd.ql linguist-generated
 /test/extractor-tests/generated/RangePat/RangePat_getOperatorName.ql linguist-generated
 /test/extractor-tests/generated/RangePat/RangePat_getStart.ql linguist-generated
-/test/extractor-tests/generated/RecordFieldList/RecordFieldList.ql linguist-generated
-/test/extractor-tests/generated/RecordFieldList/RecordFieldList_getField.ql linguist-generated
 /test/extractor-tests/generated/RefExpr/RefExpr.ql linguist-generated
 /test/extractor-tests/generated/RefExpr/RefExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/RefExpr/RefExpr_getExpr.ql linguist-generated
@@ -1086,17 +1084,19 @@
 /test/extractor-tests/generated/StructExprField/StructExprField.ql linguist-generated
 /test/extractor-tests/generated/StructExprField/StructExprField_getAttr.ql linguist-generated
 /test/extractor-tests/generated/StructExprField/StructExprField_getExpr.ql linguist-generated
-/test/extractor-tests/generated/StructExprField/StructExprField_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/StructExprField/StructExprField_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/StructExprFieldList/StructExprFieldList.ql linguist-generated
 /test/extractor-tests/generated/StructExprFieldList/StructExprFieldList_getAttr.ql linguist-generated
 /test/extractor-tests/generated/StructExprFieldList/StructExprFieldList_getField.ql linguist-generated
 /test/extractor-tests/generated/StructExprFieldList/StructExprFieldList_getSpread.ql linguist-generated
 /test/extractor-tests/generated/StructField/StructField.ql linguist-generated
 /test/extractor-tests/generated/StructField/StructField_getAttr.ql linguist-generated
-/test/extractor-tests/generated/StructField/StructField_getExpr.ql linguist-generated
+/test/extractor-tests/generated/StructField/StructField_getDefault.ql linguist-generated
 /test/extractor-tests/generated/StructField/StructField_getName.ql linguist-generated
 /test/extractor-tests/generated/StructField/StructField_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/StructField/StructField_getVisibility.ql linguist-generated
+/test/extractor-tests/generated/StructFieldList/StructFieldList.ql linguist-generated
+/test/extractor-tests/generated/StructFieldList/StructFieldList_getField.ql linguist-generated
 /test/extractor-tests/generated/StructPat/StructPat.ql linguist-generated
 /test/extractor-tests/generated/StructPat/StructPat_getPath.ql linguist-generated
 /test/extractor-tests/generated/StructPat/StructPat_getResolvedCrateOrigin.ql linguist-generated
@@ -1104,7 +1104,7 @@
 /test/extractor-tests/generated/StructPat/StructPat_getStructPatFieldList.ql linguist-generated
 /test/extractor-tests/generated/StructPatField/StructPatField.ql linguist-generated
 /test/extractor-tests/generated/StructPatField/StructPatField_getAttr.ql linguist-generated
-/test/extractor-tests/generated/StructPatField/StructPatField_getNameRef.ql linguist-generated
+/test/extractor-tests/generated/StructPatField/StructPatField_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/StructPatField/StructPatField_getPat.ql linguist-generated
 /test/extractor-tests/generated/StructPatFieldList/StructPatFieldList.ql linguist-generated
 /test/extractor-tests/generated/StructPatFieldList/StructPatFieldList_getField.ql linguist-generated
@@ -1203,7 +1203,7 @@
 /test/extractor-tests/generated/Variant/Variant.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getCrateOrigin.ql linguist-generated
-/test/extractor-tests/generated/Variant/Variant_getExpr.ql linguist-generated
+/test/extractor-tests/generated/Variant/Variant_getDiscriminant.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getFieldList.ql linguist-generated
 /test/extractor-tests/generated/Variant/Variant_getName.ql linguist-generated

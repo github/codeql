@@ -312,7 +312,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   override string getName() { result = Variant.super.getName().getText() }
 
   override Namespace getNamespace() {
-    if super.getFieldList() instanceof RecordFieldList then result.isType() else result.isValue()
+    if super.getFieldList() instanceof StructFieldList then result.isType() else result.isValue()
   }
 
   override TypeParam getTypeParam(int i) {
@@ -471,7 +471,7 @@ private class StructItemNode extends ItemNode instanceof Struct {
   override Namespace getNamespace() {
     result.isType() // the struct itself
     or
-    not super.getFieldList() instanceof RecordFieldList and
+    not super.getFieldList() instanceof StructFieldList and
     result.isValue() // the constructor
   }
 

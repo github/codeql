@@ -688,7 +688,7 @@ module RustDataFlow implements InputSig<Location> {
       node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
       or
       exists(FieldExprCfgNode access |
-        node1.asExpr() = access.getExpr() and
+        node1.asExpr() = access.getContainer() and
         node2.asExpr() = access and
         access = c.(FieldContent).getAnAccess()
       )
@@ -771,7 +771,7 @@ module RustDataFlow implements InputSig<Location> {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
       assignment.getLhs() = access and
       node1.asExpr() = assignment.getRhs() and
-      node2.asExpr() = access.getExpr() and
+      node2.asExpr() = access.getContainer() and
       access = c.getAnAccess()
     )
   }
