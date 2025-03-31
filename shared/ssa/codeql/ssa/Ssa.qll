@@ -1757,8 +1757,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this.getExpr().hasCfgNode(bb_, i_)
       }
 
-      SourceVariable getVariable() { result = v_ }
-
       pragma[nomagic]
       predicate readsAt(BasicBlock bb, int i, SourceVariable v) {
         bb = bb_ and
