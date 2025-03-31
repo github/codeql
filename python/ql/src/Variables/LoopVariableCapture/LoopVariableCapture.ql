@@ -52,6 +52,14 @@ module EscapingCaptureFlowSig implements DataFlow::ConfigSig {
 
   predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 
+  predicate isBarrier(DataFlow::Node node) {
+    // Incorrect virtual dispatch to __call__ methods is a source of FPs.
+    exists(Function call |
+      call.getName() = "__call__" and
+      call.getArg(0) = node.(DataFlow::ParameterNode).getParameter()
+    )
+  }
+
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet cs) {
     isSink(node) and
     exists(cs)
