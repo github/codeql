@@ -26,14 +26,28 @@ module Impl {
       result = strictconcat(int i | | this.toStringPart(i) order by i)
     }
 
-    private string toStringPart(int index) {
-      result = this.getPath().toStringImpl() and index = 0
-      or
+    private string toStringPartCommon(int index) {
       result = "::{...}" and this.hasUseTreeList() and index = 1
       or
       result = "::*" and this.isGlob() and index = 2
       or
       result = " as " + this.getRename().getName().getText() and index = 3
+    }
+
+    private string toStringPart(int index) {
+      result = this.getPath().toStringImpl() and index = 0
+      or
+      result = this.toStringPartCommon(index)
+    }
+
+    override string toAbbreviatedString() {
+      result = strictconcat(int i | | this.toAbbreviatedStringPart(i) order by i)
+    }
+
+    private string toAbbreviatedStringPart(int index) {
+      result = this.getPath().toAbbreviatedString() and index = 0
+      or
+      result = this.toStringPartCommon(index)
     }
   }
 }
