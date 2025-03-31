@@ -232,6 +232,7 @@ resolvePath
 | main.rs:512:13:512:32 | ...::MyStruct | main.rs:502:9:502:28 | struct MyStruct |
 | main.rs:513:13:513:16 | self | main.rs:502:9:502:28 | struct MyStruct |
 | main.rs:517:21:517:26 | MyEnum | main.rs:498:9:500:9 | enum MyEnum |
+| main.rs:517:21:517:29 | ...::A | main.rs:499:13:499:13 | A |
 | main.rs:518:21:518:28 | MyStruct | main.rs:502:9:502:28 | struct MyStruct |
 | main.rs:524:5:524:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:524:5:524:14 | ...::nested | my.rs:1:1:1:15 | mod nested |

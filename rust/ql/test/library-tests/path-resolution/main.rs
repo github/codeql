@@ -514,7 +514,7 @@ mod m21 {
         };
 
         fn f() {
-            let _ = MyEnum::A; // $ MISSING: item=I104
+            let _ = MyEnum::A; // $ item=I104
             let _ = MyStruct {}; // $ item=I106
         }
     }

@@ -321,7 +321,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
     result = super.getEnum().getGenericParamList().getTypeParam(i)
   }
 
-  override Visibility getVisibility() { result = Variant.super.getVisibility() }
+  override Visibility getVisibility() { result = super.getEnum().getVisibility() }
 }
 
 class FunctionItemNode extends AssocItemNode instanceof Function {
