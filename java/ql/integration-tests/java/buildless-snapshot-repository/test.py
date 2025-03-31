@@ -8,6 +8,8 @@ def test(codeql, java):
         [sys.executable, "-m", "http.server", "9427"], cwd="repo"
     )
     try:
+        subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots"])
+        subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots/com/github/my/snapshot/test/snapshottest/1.0-SNAPSHOT/maven-metadata.xml"])
         codeql.database.create(
             extractor_option="buildless=true",
             _env={"CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS_CLASSPATH_FROM_BUILD_FILES": "true"},
