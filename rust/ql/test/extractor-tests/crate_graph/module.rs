@@ -48,8 +48,11 @@ pub struct LocalKey<T: 'static> {
     inner: fn(Option<&mut Option<T>>) -> *const T,
 }
 
-impl From<usize> for X {
-    fn from(x: usize) -> Self {
-        X::A
+pub struct Thing<T> {
+    x: T,
+}
+impl From<usize> for Thing<X> {
+    fn from(_x: usize) -> Self {
+        Thing { x: X::A }
     }
 }

@@ -20,7 +20,7 @@
 #-----| impl ...::Display for ...::X { ... }
 #-----|  -> fn fmt
 
-#-----| impl ...::From::<...> for ...::X { ... }
+#-----| impl ...::From::<...> for ...::Thing::<...> { ... }
 #-----|  -> fn from
 
 lib.rs:
@@ -34,8 +34,9 @@ lib.rs:
 #-----|  -> fn length
 #-----|  -> impl ...::AsString for ...::X { ... }
 #-----|  -> impl ...::Display for ...::X { ... }
-#-----|  -> impl ...::From::<...> for ...::X { ... }
-#-----|  -> struct LocalKey
+#-----|  -> impl ...::From::<...> for ...::Thing::<...> { ... }
+#-----|  -> struct LocalKey<T>
+#-----|  -> struct Thing<T>
 #-----|  -> struct X_List
 #-----|  -> trait AsString
 #-----|  -> use ...::DirBuilder
@@ -69,7 +70,9 @@ lib.rs:
 #-----|  -> use ...::symlink_metadata
 #-----|  -> use ...::write
 
-#-----| struct LocalKey
+#-----| struct LocalKey<T>
+
+#-----| struct Thing<T>
 
 #-----| struct X_List
 

@@ -11,10 +11,12 @@ use ra_ap_base_db::{Crate, RootQueryDb};
 use ra_ap_cfg::CfgAtom;
 use ra_ap_hir::{DefMap, ModuleDefId, PathKind, db::HirDatabase};
 use ra_ap_hir::{VariantId, Visibility, db::DefDatabase};
+use ra_ap_hir_def::GenericDefId;
 use ra_ap_hir_def::Lookup;
 use ra_ap_hir_def::{
-    AssocItemId, LocalModuleId, data::adt::VariantData, item_scope::ImportOrGlob,
-    item_tree::ImportKind, nameres::ModuleData, path::ImportAlias,
+    AssocItemId, ConstParamId, LocalModuleId, TypeOrConstParamId, data::adt::VariantData,
+    generics::TypeOrConstParamData, item_scope::ImportOrGlob, item_tree::ImportKind,
+    nameres::ModuleData, path::ImportAlias,
 };
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
@@ -22,6 +24,7 @@ use ra_ap_hir_ty::GenericArg;
 use ra_ap_hir_ty::TraitRefExt;
 use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
+use ra_ap_hir_ty::TyLoweringContext;
 use ra_ap_hir_ty::WhereClause;
 use ra_ap_hir_ty::db::InternedCallableDefId;
 use ra_ap_hir_ty::from_assoc_type_id;
@@ -432,7 +435,98 @@ fn emit_enum_variant(
     }
     items
 }
+fn emit_generic_param_list(
+    trap: &mut TrapFile,
+    db: &dyn HirDatabase,
+    def: GenericDefId,
+) -> Option<trap::Label<generated::GenericParamList>> {
+    let params = db.generic_params(def);
+    let trait_self_param = params.trait_self_param();
+    if params.is_empty() || params.len() == 1 && trait_self_param.is_some() {
+        return None;
+    }
+    let mut generic_params = Vec::new();
+    generic_params.extend(params.iter_lt().map(
+        |(_, param)| -> trap::Label<generated::GenericParam> {
+            let lifetime = trap
+                .emit(generated::Lifetime {
+                    id: trap::TrapId::Star,
+                    text: Some(param.name.as_str().to_owned()),
+                })
+                .into();
 
+            trap.emit(generated::LifetimeParam {
+                id: trap::TrapId::Star,
+                attrs: vec![],
+                lifetime,
+                type_bound_list: None,
+            })
+            .into()
+        },
+    ));
+    generic_params.extend(
+        params
+            .iter_type_or_consts()
+            .filter(|(id, _)| trait_self_param != Some(*id))
+            .map(
+                |(param_id, param)| -> trap::Label<generated::GenericParam> {
+                    match param {
+                        TypeOrConstParamData::TypeParamData(param) => {
+                            let name = Some(trap.emit(generated::Name {
+                                id: trap::TrapId::Star,
+                                text: param.name.as_ref().map(|name| name.as_str().to_owned()),
+                            }));
+                            let resolver = def.resolver(db.upcast());
+                            let mut ctx = TyLoweringContext::new(
+                                db,
+                                &resolver,
+                                &params.types_map,
+                                def.into(),
+                            );
+
+                            let default_type = param
+                                .default
+                                .and_then(|ty| emit_hir_ty(trap, db, &ctx.lower_ty(ty)));
+                            trap.emit(generated::TypeParam {
+                                id: trap::TrapId::Star,
+                                attrs: vec![],
+                                name,
+                                default_type,
+                                type_bound_list: None,
+                            })
+                            .into()
+                        }
+                        TypeOrConstParamData::ConstParamData(param) => {
+                            let name = Some(trap.emit(generated::Name {
+                                id: trap::TrapId::Star,
+                                text: param.name.as_str().to_owned().into(),
+                            }));
+                            let param_id = TypeOrConstParamId {
+                                parent: def,
+                                local_id: param_id,
+                            };
+                            let ty = db.const_param_ty(ConstParamId::from_unchecked(param_id));
+                            let type_repr = emit_hir_ty(trap, db, &ty);
+                            trap.emit(generated::ConstParam {
+                                id: trap::TrapId::Star,
+                                attrs: vec![],
+                                name,
+                                default_val: None,
+                                is_const: true,
+                                type_repr,
+                            })
+                            .into()
+                        }
+                    }
+                },
+            ),
+    );
+    trap.emit(generated::GenericParamList {
+        id: trap::TrapId::Star,
+        generic_params,
+    })
+    .into()
+}
 fn emit_adt(
     db: &dyn HirDatabase,
     name: &str,
@@ -441,6 +535,7 @@ fn emit_adt(
     visibility: Visibility,
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
+
     match adt_id {
         ra_ap_hir_def::AdtId::StructId(struct_id) => {
             let name = Some(trap.emit(generated::Name {
@@ -449,13 +544,14 @@ fn emit_adt(
             }));
             let field_list = emit_variant_data(trap, db, struct_id.into()).into();
             let visibility = emit_visibility(db, trap, visibility);
+            let generic_param_list = emit_generic_param_list(trap, db, adt_id.into());
             items.push(
                 trap.emit(generated::Struct {
                     id: trap::TrapId::Star,
                     name,
                     attrs: vec![],
                     field_list,
-                    generic_param_list: None,
+                    generic_param_list,
                     visibility,
                     where_clause: None,
                 })
@@ -493,12 +589,13 @@ fn emit_adt(
                 text: Some(name.to_owned()),
             }));
             let visibility = emit_visibility(db, trap, visibility);
+            let generic_param_list = emit_generic_param_list(trap, db, adt_id.into());
             items.push(
                 trap.emit(generated::Enum {
                     id: trap::TrapId::Star,
                     name,
                     attrs: vec![],
-                    generic_param_list: None,
+                    generic_param_list,
                     variant_list,
                     visibility,
                     where_clause: None,
@@ -513,13 +610,14 @@ fn emit_adt(
             }));
             let struct_field_list = emit_variant_data(trap, db, union_id.into()).into();
             let visibility = emit_visibility(db, trap, visibility);
+            let generic_param_list = emit_generic_param_list(trap, db, adt_id.into());
             items.push(
                 trap.emit(generated::Union {
                     id: trap::TrapId::Star,
                     name,
                     attrs: vec![],
                     struct_field_list,
-                    generic_param_list: None,
+                    generic_param_list,
                     visibility,
                     where_clause: None,
                 })
@@ -538,8 +636,8 @@ fn emit_trait(
     visibility: Visibility,
 ) -> Vec<trap::Label<generated::Item>> {
     let mut items = Vec::new();
-    let data = db.trait_items(trait_id);
-    let assoc_items: Vec<trap::Label<generated::AssocItem>> = data
+    let trait_items = db.trait_items(trait_id);
+    let assoc_items: Vec<trap::Label<generated::AssocItem>> = trait_items
         .items
         .iter()
         .flat_map(|(name, item)| {
@@ -577,6 +675,7 @@ fn emit_trait(
                     text: Some(name.as_str().to_owned()),
                 }));
                 let visibility = emit_visibility(db, trap, visibility);
+                let generic_param_list = emit_generic_param_list(trap, db, (*function).into());
                 Some(
                     trap.emit(generated::Function {
                         id: trap::TrapId::Star,
@@ -590,7 +689,7 @@ fn emit_trait(
                         is_async: false,
                         is_gen: false,
                         is_unsafe: matches!(sig.to_fn_ptr().sig.safety, Safety::Unsafe),
-                        generic_param_list: None, //TODO
+                        generic_param_list,
                         param_list: Some(param_list),
                         ret_type,
                         where_clause: None,
@@ -612,13 +711,14 @@ fn emit_trait(
         text: Some(name.to_owned()),
     }));
     let visibility = emit_visibility(db, trap, visibility);
+    let generic_param_list = emit_generic_param_list(trap, db, trait_id.into());
     items.push(
         trap.emit(generated::Trait {
             id: trap::TrapId::Star,
             name,
             assoc_item_list,
             attrs: vec![],
-            generic_param_list: None,
+            generic_param_list,
             is_auto: false,
             is_unsafe: false,
             type_bound_list: None,
@@ -694,7 +794,7 @@ fn emit_module_impls(
                         data.visibility
                             .resolve(db.upcast(), &function.resolver(db.upcast())),
                     );
-
+                    let generic_param_list = emit_generic_param_list(trap, db, (*function).into());
                     Some(
                         trap.emit(generated::Function {
                             id: trap::TrapId::Star,
@@ -708,7 +808,7 @@ fn emit_module_impls(
                             is_async: false,
                             is_gen: false,
                             is_unsafe: matches!(sig.to_fn_ptr().sig.safety, Safety::Unsafe),
-                            generic_param_list: None, //TODO
+                            generic_param_list,
                             param_list: Some(param_list),
                             ret_type,
                             where_clause: None,
@@ -725,6 +825,7 @@ fn emit_module_impls(
             assoc_items,
             attrs: vec![],
         }));
+        let generic_param_list = emit_generic_param_list(trap, db, imp.into());
         items.push(
             trap.emit(generated::Impl {
                 id: trap::TrapId::Star,
@@ -732,7 +833,7 @@ fn emit_module_impls(
                 self_ty,
                 assoc_item_list,
                 attrs: vec![],
-                generic_param_list: None,
+                generic_param_list,
                 is_const: false,
                 is_default: false,
                 is_unsafe: false,
@@ -778,7 +879,6 @@ fn const_or_function(
             let callable_def_id =
                 db.lookup_intern_callable_def(InternedCallableDefId::from(*fn_def_id));
             let data = db.fn_def_datum(callable_def_id);
-
             let sig = ra_ap_hir_ty::CallableSig::from_def(db, *fn_def_id, parameters);
             let params = sig
                 .params()
@@ -811,6 +911,11 @@ fn const_or_function(
                 text: Some(name.to_owned()),
             }));
             let visibility = emit_visibility(db, trap, visibility);
+            let callable_def_id = db.lookup_intern_callable_def((*fn_def_id).into());
+            let generic_def_id = GenericDefId::from_callable(db.upcast(), callable_def_id);
+            let generic_param_list: Option<trap::Label<generated::GenericParamList>> =
+                emit_generic_param_list(trap, db, generic_def_id);
+
             trap.emit(generated::Function {
                 id: trap::TrapId::Star,
                 name,
@@ -823,7 +928,7 @@ fn const_or_function(
                 is_async: false,
                 is_gen: false,
                 is_unsafe: matches!(data.sig.safety, Safety::Unsafe),
-                generic_param_list: None, //TODO
+                generic_param_list,
                 param_list: Some(param_list),
                 ret_type,
                 where_clause: None,
