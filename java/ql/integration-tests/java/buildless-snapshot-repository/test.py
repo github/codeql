@@ -14,5 +14,5 @@ def test(codeql, java):
         )
     finally:
         subprocess.call(["ps", "aux", "-ww"])
-        subprocess.call(["netstat", "-a", "-n", "-p"])
+        subprocess.call(["netstat", "-anv"])
         repo_server_process.kill()
