@@ -4,7 +4,7 @@ Using `String#replaceAll` is less performant than `String#replace` when the firs
 
 ## Overview
 
-The underlying implementation of `String#replaceAll` uses `Pattern#compile` and expects a regular expression as its first argument. However in cases where the argument could be represented by just a plain `String` that does not represent an interesting regular expression, a call to `String#replace` may be more performant as it does not need to compile the regular expression.
+The `String#replaceAll` method is designed to work with regular expressions as its first parameter. When you use a simple string without any regex patterns (like special characters or syntax), it's more efficient to use `String#replace` instead. This is because `replaceAll` has to compile the input as a regular expression first, which adds unnecessary overhead when you are just replacing literal text.
 
 ## Recommendation
 

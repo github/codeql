@@ -1,8 +1,8 @@
 /**
  * @id java/string-replace-all-with-non-regex
  * @name Use of `String#replaceAll` with a first argument which is not a regular expression
- * @description Using `String#replaceAll` is less performant than `String#replace` when the first
- *              argument is not a regular expression.
+ * @description Using `String#replaceAll` with a first argument which is not a regular expression
+ *              is less efficient than using `String#replace`.
  * @kind problem
  * @precision very-high
  * @problem.severity recommendation
