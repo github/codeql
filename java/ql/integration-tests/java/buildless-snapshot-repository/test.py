@@ -1,6 +1,6 @@
 import subprocess
 import sys
-
+import time
 
 def test(codeql, java):
     # This serves the "repo" directory on http://localhost:9427
@@ -8,6 +8,7 @@ def test(codeql, java):
         [sys.executable, "-m", "http.server", "9427"], cwd="repo"
     )
     try:
+        time.sleep(30)
         subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots"])
         subprocess.call(["curl", "-m", "30", "http://localhost:9427/snapshots/com/github/my/snapshot/test/snapshottest/1.0-SNAPSHOT/maven-metadata.xml"])
         codeql.database.create(
