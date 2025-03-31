@@ -6,7 +6,7 @@ import re
 
 # read first argument
 if len(sys.argv) < 2:
-    print("Usage: stagestats.py <dil>")
+    print("Usage: stageoverlap.py <dil>")
     sys.exit(1)
 
 dilfile = sys.argv[1]
