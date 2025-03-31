@@ -1792,7 +1792,7 @@ module API {
 
         LabelSpreadArgument() { this = MkLabelSpreadArgument(index) }
 
-        /** The argument index at which the spread argument appears. */
+        /** Gets the argument index at which the spread argument appears. */
         int getIndex() { result = index }
 
         override string toString() { result = "getSpreadArgument(" + index + ")" }
