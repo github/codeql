@@ -1,3 +1,0 @@
-| index.ts:14:36:14:142 | // use= ... "find") | use moduleImport("mongodb").getMember("exports").getMember("Collection") has no outgoing edge labelled getInstance(); it has no outgoing edges at all. |
-| index.ts:22:39:22:157 | // def= ... eter(0) | use moduleImport("mongoose").getMember("exports").getMember("Model") has no outgoing edge labelled getInstance(); it has no outgoing edges at all. |
-| index.ts:23:39:23:157 | // def= ... eter(0) | use moduleImport("mongoose").getMember("exports").getMember("Query") has no outgoing edge labelled getInstance(); it has no outgoing edges at all. |
