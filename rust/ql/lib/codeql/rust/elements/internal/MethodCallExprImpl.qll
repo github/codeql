@@ -46,7 +46,7 @@ module Impl {
       exists(string base, string separator |
         base = this.getReceiver().toAbbreviatedString() and
         (if base = "..." then separator = " ." else separator = ".") and
-        result = base + separator + this.getNameRef().toStringImpl() + "(...)"
+        result = base + separator + this.getIdentifier().toStringImpl() + "(...)"
       )
     }
   }

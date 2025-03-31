@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -75,6 +74,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (restoreSettings.TargetWindows)
             {
                 args += " /p:EnableWindowsTargeting=true";
+            }
+
+            if (restoreSettings.ExtraArgs is not null)
+            {
+                args += $" {restoreSettings.ExtraArgs}";
             }
 
             return args;

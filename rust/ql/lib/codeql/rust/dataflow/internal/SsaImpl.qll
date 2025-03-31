@@ -340,10 +340,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
-  /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    none() // handled in `DataFlowImpl.qll` instead
-  }
+  predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 
   private predicate isArg(CfgNodes::CallExprBaseCfgNode call, CfgNodes::ExprCfgNode e) {
     call.getArgument(_) = e
@@ -364,13 +361,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     )
   }
 
-  class Parameter = CfgNodes::ParamBaseCfgNode;
-
-  /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    none() // handled in `DataFlowImpl.qll` instead
-  }
-
   class Guard extends CfgNodes::AstCfgNode {
     /**
      * Holds if the control flow branching from `bb1` is dependent on this guard,
@@ -387,7 +377,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
