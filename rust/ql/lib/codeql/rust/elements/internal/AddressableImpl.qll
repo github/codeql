@@ -14,6 +14,7 @@ module Impl {
   private import rust
   private import codeql.rust.internal.PathResolution
 
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * Something that can be addressed by a path.
    *
