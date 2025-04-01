@@ -141,6 +141,16 @@ module TypeResolution {
     )
   }
 
+  private predicate functionReturnType(Function func, Node returnType) {
+    returnType = func.getReturnTypeAnnotation()
+    or
+    not exists(func.getReturnTypeAnnotation()) and
+    exists(Function functionType |
+      contextualType(func, trackFunctionType(functionType)) and
+      returnType = functionType.getReturnTypeAnnotation()
+    )
+  }
+
   private predicate contextualType(Node value, Node type) {
     exists(InvokeExpr call, Function target, int i |
       callTarget(call, target) and
@@ -150,15 +160,8 @@ module TypeResolution {
     or
     exists(Function lambda |
       not lambda.isAsyncOrGenerator() and
-      value = lambda.getAReturnedExpr()
-    |
-      type = lambda.getReturnTypeAnnotation()
-      or
-      not exists(lambda.getReturnTypeAnnotation()) and
-      exists(Function functionType |
-        contextualType(lambda, trackFunctionType(functionType)) and
-        type = functionType.getReturnTypeAnnotation()
-      )
+      value = lambda.getAReturnedExpr() and
+      functionReturnType(lambda, type)
     )
     or
     exists(ObjectExpr object, Node objectType, Node host, string name |
