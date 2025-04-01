@@ -48,7 +48,8 @@ void main() {
 
 # Implementation Notes
 
-This rule is focused on the use of existing `finalize()` invocations rather than attempts to write a custom implementation.
+This rule ignores `super.finalize()` calls that occur within `finalize()` overrides since calling the superclass finalizer is required when overriding `finalize()`. Also, although overriding `finalize()` is not recommended, this rule only alerts on direct calls to `finalize()` and does not alert on overrides of `finalize()`.
+
 
 ## References
 
