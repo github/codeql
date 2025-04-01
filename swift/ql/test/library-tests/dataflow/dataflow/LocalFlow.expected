@@ -250,11 +250,13 @@
 | test.swift:7:15:7:15 | [post] t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:8:5:8:10 | SSA def(t2) | test.swift:10:15:10:15 | t2 |
+| test.swift:8:5:8:10 | SSA def(t2) | test.swift:15:5:15:5 | SSA phi(t2) |
 | test.swift:8:10:8:10 | t1 | test.swift:8:5:8:10 | SSA def(t2) |
 | test.swift:8:10:8:10 | t1 | test.swift:9:15:9:15 | t1 |
 | test.swift:9:15:9:15 | [post] t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:9:15:9:15 | t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:12:9:12:14 | SSA def(t2) | test.swift:13:19:13:19 | t2 |
+| test.swift:12:9:12:14 | SSA def(t2) | test.swift:15:5:15:5 | SSA phi(t2) |
 | test.swift:12:14:12:14 | 0 | test.swift:12:9:12:14 | SSA def(t2) |
 | test.swift:15:5:15:5 | SSA phi(t2) | test.swift:15:15:15:15 | t2 |
 | test.swift:17:5:17:10 | SSA def(t1) | test.swift:21:15:21:15 | t1 |
