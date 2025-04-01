@@ -197,15 +197,11 @@ private predicate matchingOpenCloseComponentCalls(
   closeCall.getEnclosingCallable() = enclosing and
   closeCall.getParent().getParent() = openCall.getParent().getParent() and
   openCall.getParent().getIndex() = openCallIndex and
-  closeCall.getParent().getIndex() = closeCallIndex and
-  closeCallIndex > openCallIndex and
-  not exists(int k, MethodCall otherCloseCall |
-    k in [openCallIndex + 1 .. closeCallIndex - 1] and
-    otherCloseCall.getTarget() instanceof MicrosoftAspNetCoreComponentsCloseComponentMethod and
-    otherCloseCall.getEnclosingCallable() = enclosing and
-    otherCloseCall.getParent().getParent() = openCall.getParent().getParent() and
-    otherCloseCall.getParent().getIndex() = k
-  )
+  closeCallIndex =
+    min(int closeCallIndex0 |
+      closeCall.getParent().getIndex() = closeCallIndex0 and
+      closeCallIndex0 > openCallIndex
+    )
 }
 
 private module JumpNodes {
