@@ -1,5 +1,5 @@
 /**
- * @name Checkout of untrusted code in trusted context
+ * @name Checkout of untrusted code in a priviledged context
  * @description Privileged workflows have read/write access to the base repository and access to secrets.
  *              By explicitly checking out and running the build script from a fork the untrusted code is running in an environment
  *              that is able to push to the base repository and to access secrets.

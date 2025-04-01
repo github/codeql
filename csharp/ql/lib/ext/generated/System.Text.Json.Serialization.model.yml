@@ -4,9 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Text.Json.Serialization", "BinaryDataJsonConverter", False, "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.Json.Serialization", "JsonConverter<T>", True, "ReadAsPropertyName", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0].Property[System.Text.Json.Utf8JsonReader.ValueSpan].Element", "ReturnValue", "taint", "dfc-generated"]
-      - ["System.Text.Json.Serialization", "JsonConverter<T>", True, "ReadAsPropertyName", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.Json.Serialization", "JsonConverterFactory", True, "CreateConverter", "(System.Type,System.Text.Json.JsonSerializerOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonDerivedTypeAttribute", False, "JsonDerivedTypeAttribute", "(System.Type,System.String)", "", "Argument[1]", "Argument[this].Property[System.Text.Json.Serialization.JsonDerivedTypeAttribute.TypeDiscriminator]", "value", "dfc-generated"]
       - ["System.Text.Json.Serialization", "JsonPropertyNameAttribute", False, "JsonPropertyNameAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Text.Json.Serialization.JsonPropertyNameAttribute.Name]", "value", "dfc-generated"]
@@ -19,6 +17,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Text.Json.Serialization", "BinaryDataJsonConverter", "Read", "(System.Text.Json.Utf8JsonReader,System.Type,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "BinaryDataJsonConverter", "Write", "(System.Text.Json.Utf8JsonWriter,System.BinaryData,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "IJsonOnDeserialized", "OnDeserialized", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "IJsonOnDeserializing", "OnDeserializing", "()", "summary", "df-generated"]
