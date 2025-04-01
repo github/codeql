@@ -37,3 +37,12 @@ ThreeArgs -z $third $second -x $first
 ThreeArgs -z $third -x $first $second
 ThreeArgs -z $third $first -y $second
 ThreeArgs -z $third -y $second $first
+
+function Invoke-InvokeExpressionInjection2
+{
+    param($UserInput)
+    Sink $UserInput # $ MISSING: hasValueFlow=1
+}
+
+$input = Source "1"
+Invoke-InvokeExpressionInjection2 -UserInput $input  
