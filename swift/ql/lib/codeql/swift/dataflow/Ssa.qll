@@ -159,6 +159,7 @@ module Ssa {
 
     cached
     predicate adjacentReadPair(ControlFlowNode read1, ControlFlowNode read2) {
+      read1 = this.getARead() and
       exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
         read1 = bb1.getNode(i1) and
         SsaImpl::adjacentUseUse(bb1, i1, bb2, i2, _, true) and
