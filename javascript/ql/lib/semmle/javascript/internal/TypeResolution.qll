@@ -55,7 +55,7 @@ module TypeResolution {
       content.isUnknownArrayElement()
     )
     or
-    // Ad-hoc support for array types
+    // Ad-hoc support for array types. We don't support generics in general currently, we just special-case arrays.
     content.isUnknownArrayElement() and
     (
       memberType = host.(ArrayTypeExpr).getElementType()
