@@ -186,7 +186,7 @@ pub fn test_ptr_drop(mode: i32) {
 		}
 
 		let p3 = std::alloc::alloc(layout) as *mut Vec<i64>;
-		std::ptr::drop_in_place((*p3).as_mut_ptr()); // $ SPURIOUS: Alert[rust/access-invalid-pointer]
+		std::ptr::drop_in_place((*p3).as_mut_ptr()); // GOOD
 	}
 }
 

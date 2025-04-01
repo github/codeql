@@ -14,6 +14,7 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
+import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.AccessInvalidPointerExtensions
 import AccessInvalidPointerFlow::PathGraph
 
@@ -33,7 +34,7 @@ module AccessInvalidPointerConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AccessInvalidPointerFlow = DataFlow::Global<AccessInvalidPointerConfig>;
+module AccessInvalidPointerFlow = TaintTracking::Global<AccessInvalidPointerConfig>;
 
 from AccessInvalidPointerFlow::PathNode sourceNode, AccessInvalidPointerFlow::PathNode sinkNode
 where AccessInvalidPointerFlow::flowPath(sourceNode, sinkNode)

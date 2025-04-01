@@ -47,20 +47,6 @@ module AccessInvalidPointer {
   }
 
   /**
-   * A pointer invalidation from an argument of a modeled call (this is a workaround).
-   */
-  private class ModelsAsDataArgumentSource extends Source {
-    ModelsAsDataArgumentSource() {
-      exists(DataFlow::Node n, CallExpr ce, Expr arg |
-        sourceNode(n, "pointer-invalidate") and
-        n.(FlowSummaryNode).getSourceElement() = ce.getFunction() and
-        arg = ce.getArgList().getAnArg() and
-        this.asExpr().getExpr().getParentNode+() = arg
-      )
-    }
-  }
-
-  /**
    * A pointer access using the unary `*` operator.
    */
   private class DereferenceSink extends Sink {
