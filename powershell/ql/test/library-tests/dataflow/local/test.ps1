@@ -19,3 +19,6 @@ Sink $e
 $f = Source
 
 Sink "here is a string: $f"
+
+$input = Read-Host "enter input"
+Sink -UserInput $input

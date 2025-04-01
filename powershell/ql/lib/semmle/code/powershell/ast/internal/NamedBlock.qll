@@ -50,6 +50,14 @@ class ProcessBlock extends NamedBlock {
     result = this.getEnclosingFunction().getPipelineParameter()
   }
 
+  PipelineIteratorVariable getPipelineIteratorVariable() {
+    result = TVariableSynth(getRawAst(this), PipelineIteratorVar())
+  }
+
+  VarReadAccess getPipelineParameterAccess() {
+    synthChild(getRawAst(this), processBlockPipelineVarReadAccess(), result)
+  }
+
   PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {
     result = scriptBlock.getEnclosingFunction().getAParameter()
   }

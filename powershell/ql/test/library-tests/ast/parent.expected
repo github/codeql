@@ -328,6 +328,7 @@
 | Statements/TrapStatement.ps1:1:1:4:1 | def of TrapTest | Statements/TrapStatement.ps1:1:1:6:8 | {...} |
 | Statements/TrapStatement.ps1:1:1:6:8 | {...} | Statements/TrapStatement.ps1:1:1:6:8 | {...} |
 | Statements/TrapStatement.ps1:1:1:6:8 | {...} | file://:0:0:0:0 | toplevel function for TrapStatement.ps1 |
+| Statements/TrapStatement.ps1:1:19:4:1 | [synth] pipeline | Statements/TrapStatement.ps1:1:19:4:1 | {...} |
 | Statements/TrapStatement.ps1:1:19:4:1 | {...} | Statements/TrapStatement.ps1:1:1:4:1 | TrapTest |
 | Statements/TrapStatement.ps1:2:5:2:25 | trap {...} | Statements/TrapStatement.ps1:2:5:3:18 | {...} |
 | Statements/TrapStatement.ps1:2:5:3:18 | {...} | Statements/TrapStatement.ps1:1:19:4:1 | {...} |
@@ -375,14 +376,12 @@
 | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | def of Get-Number | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} | file://:0:0:0:0 | toplevel function for UseProcessBlockForPipelineCommand.ps1 |
-| Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | Number | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | [synth] pipeline | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | Get-Number |
 | Statements/UseProcessBlockForPipelineCommand.ps1:3:5:3:21 | CmdletBinding | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:11 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
-| Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:38 | ValueFromPipeline | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | Number |
+| Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:38 | ValueFromPipeline | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | [synth] pipeline |
 | Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:36 | (no string representation) | Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:36 | ValueFromPipeline |
 | Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:36 | ValueFromPipeline | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:38 | ValueFromPipeline |
-| Statements/UseProcessBlockForPipelineCommand.ps1:6:9:6:13 | int | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | Number |
-| Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | Number | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | [Stmt] Number |
-| Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | [Stmt] Number | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:11 | {...} |
+| Statements/UseProcessBlockForPipelineCommand.ps1:6:9:6:13 | int | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | [synth] pipeline |
+| Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | (no string representation) | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:11 | {...} |

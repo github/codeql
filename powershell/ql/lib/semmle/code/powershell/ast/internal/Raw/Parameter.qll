@@ -35,7 +35,7 @@ class PipelineParameter extends Parameter {
       this.getAnAttribute().(Attribute).getANamedArgument() = namedAttribute and
       namedAttribute.getName().toLowerCase() = "valuefrompipeline"
     |
-      namedAttribute.getValue().(ConstExpr).getValue().getValue() = "true"
+      namedAttribute.getValue().(ConstExpr).getValue().getValue().toLowerCase() = "true"
       or
       not exists(namedAttribute.getValue().(ConstExpr).getValue().getValue())
     )
@@ -50,7 +50,7 @@ class PipelineByPropertyNameParameter extends Parameter {
       this.getAnAttribute().(Attribute).getANamedArgument() = namedAttribute and
       namedAttribute.getName().toLowerCase() = "valuefrompipelinebypropertyname"
     |
-      namedAttribute.getValue().(ConstExpr).getValue().getValue() = "true"
+      namedAttribute.getValue().(ConstExpr).getValue().getValue().toLowerCase() = "true"
       or
       not exists(namedAttribute.getValue().(ConstExpr).getValue().getValue())
     )

@@ -587,6 +587,57 @@ private module CmdArguments {
  * Synthesize literals from known constant strings.
  */
 private module LiteralSynth {
+  pragma[nomagic]
+  private predicate assignmentHasLocation(
+    Raw::Scope scope, string name, File file, int startLine, int startColumn
+  ) {
+    Raw::isAutomaticVariableAccess(_, name) and
+    exists(Raw::Ast n, Location loc |
+      scopeAssigns(scope, name, n) and
+      loc = n.getLocation() and
+      file = loc.getFile() and
+      startLine = loc.getStartLine() and
+      startColumn = loc.getStartColumn()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate varAccessHasLocation(
+    Raw::VarAccess va, File file, int startLine, int startColumn
+  ) {
+    exists(Location loc |
+      loc = va.getLocation() and
+      loc.getFile() = file and
+      loc.getStartLine() = startLine and
+      loc.getStartColumn() = startColumn
+    )
+  }
+
+  /**
+   * Holds if `va` is an access to the automatic variable named `name`.
+   * 
+   * Unlike `Raw::isAutomaticVariableAccess`, this predicate also checks for
+   * shadowing.
+   */
+  private predicate isAutomaticVariableAccess(Raw::VarAccess va, string name) {
+    Raw::isAutomaticVariableAccess(va, name) and
+    exists(Raw::Scope scope, File file, int startLine, int startColumn |
+      scope = Raw::scopeOf(va) and
+      varAccessHasLocation(va, file, startLine, startColumn)
+    |
+      // If it's a read then make sure there is no assignment precedeeding it
+      va.isReadAccess() and
+      not exists(int assignStartLine, int assignStartCoumn |
+        assignmentHasLocation(scope, name, file, assignStartLine, assignStartCoumn)
+      |
+        assignStartLine < startLine
+        or
+        assignStartLine = startLine and
+        assignStartCoumn < startColumn
+      )
+    )
+  }
+
   private class LiteralSynth extends Synthesis {
     final override predicate isRelevant(Raw::Ast a) {
       exists(Raw::VarAccess va | a = va |
@@ -598,7 +649,7 @@ private module LiteralSynth {
         or
         Raw::isEnvVariableAccess(va, _)
         or
-        Raw::isAutomaticVariableAccess(va, _)
+        isAutomaticVariableAccess(va, _)
       )
     }
 
@@ -628,7 +679,7 @@ private module LiteralSynth {
         Raw::isEnvVariableAccess(va, s) and
         child = SynthChild(EnvVariableKind(s))
         or
-        Raw::isAutomaticVariableAccess(va, s) and
+        isAutomaticVariableAccess(va, s) and
         child = SynthChild(AutomaticVariableKind(s))
       )
     }
@@ -710,12 +761,25 @@ private module IteratorAccessSynth {
   }
 
   private class IteratorAccessSynth extends Synthesis {
+    final override predicate isRelevant(Raw::Ast a) {
+      exists(Raw::ProcessBlock pb, Raw::VarAccess va |
+        va = a and
+        pb = va.getParent+()
+      |
+        va.getUserPath() = "_"
+        or
+        va.getUserPath().toLowerCase() =
+          pb.getScriptBlock().getParamBlock().getPipelineParameter().getName().toLowerCase()
+      )
+    }
+
     private predicate expr(Raw::Ast rawParent, ChildIndex i, Raw::VarAccess va, Child child) {
       rawParent.getChild(toRawChildIndex(i)) = va and
       child = SynthChild(VarAccessSynthKind(this.varAccess(va)))
     }
 
     private predicate stmt(Raw::Ast rawParent, ChildIndex i, Raw::CmdExpr cmdExpr, Child child) {
+      exists(this.varAccess(cmdExpr.getExpr())) and
       rawParent.getChild(toRawChildIndex(i)) = cmdExpr and
       not mustHaveExprChild(rawParent, cmdExpr) and
       child = SynthChild(ExprStmtKind())
@@ -789,6 +853,34 @@ private module IteratorAccessSynth {
       exists(Raw::Ast parent |
         n = TVariableSynth(parent, _) and
         result = parent.getLocation()
+      )
+    }
+  }
+}
+
+private module PipelineAccess {
+  private class PipelineAccess extends Synthesis {
+    final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
+      exists(Raw::ProcessBlock pb | parent = pb |
+        i = processBlockPipelineVarReadAccess() and
+        exists(PipelineVariable pipelineVar |
+          pipelineVar = TVariableSynth(pb.getScriptBlock(), PipelineParamVar()) and
+          child = SynthChild(VarAccessSynthKind(pipelineVar))
+        )
+      )
+    }
+
+    final override Location getLocation(Ast n) {
+      exists(ProcessBlock pb |
+        pb.getPipelineParameterAccess() = n and
+        result = pb.getLocation()
+      )
+    }
+
+    final override predicate getAnAccess(VarAccessSynth va, Variable v) {
+      exists(ProcessBlock pb |
+        pb.getPipelineParameterAccess() = va and
+        v = pb.getPipelineParameter()
       )
     }
   }

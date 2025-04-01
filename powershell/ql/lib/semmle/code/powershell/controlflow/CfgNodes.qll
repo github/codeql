@@ -272,7 +272,13 @@ class NamedBlockCfgNode extends AstCfgNode {
   StmtNodes::TrapStmtCfgNode getATrapStmt() { result = this.getTrapStmt(_) }
 }
 
-private class ProcessBlockChildMapping extends NamedBlockChildMapping, ProcessBlock { }
+private class ProcessBlockChildMapping extends NamedBlockChildMapping, ProcessBlock {
+  override predicate relevantChild(Ast child) {
+    super.relevantChild(child)
+    or
+    child = super.getPipelineParameterAccess()
+  }
+}
 
 class ProcessBlockCfgNode extends NamedBlockCfgNode {
   override string getAPrimaryQlClass() { result = "ProcessBlockCfgNode" }
@@ -282,6 +288,18 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
   override ProcessBlock getBlock() { result = block }
 
   ScriptBlockCfgNode getScriptBlock() { result.getProcessBlock() = this }
+
+  PipelineVariable getPipelineVariable() {
+    result.getScriptBlock() = this.getScriptBlock().getAstNode()
+  }
+
+  ExprNodes::VarReadAccessCfgNode getPipelineVariableAccess() {
+    block.hasCfgChild(block.getPipelineParameterAccess(), this, result)
+  }
+
+  PipelineIteratorVariable getPipelineIteratorVariable() {
+    result.getProcessBlock().getScriptBlock() = this.getScriptBlock().getAstNode()
+  }
 }
 
 private class CatchClauseChildMapping extends NonExprChildMapping, CatchClause {
@@ -519,6 +537,13 @@ module ExprNodes {
     }
 
     ExprCfgNode getCallee() { e.hasCfgChild(e.getCallee(), this, result) }
+
+    ExprCfgNode getPipelineArgument() {
+      exists(ExprNodes::PipelineCfgNode pipeline, int i |
+        pipeline.getComponent(i + 1) = this and
+        result = pipeline.getComponent(i)
+      )
+    }
 
     predicate isStatic() { this.getExpr().isStatic() }
   }
@@ -982,6 +1007,12 @@ module ExprNodes {
     override Qualifier e;
 
     CallExprCfgNode getCall() { result.getQualifier() = this }
+  }
+
+  class PipelineArgumentCfgNode extends ExprCfgNode {
+    override PipelineArgument e;
+
+    CallExprCfgNode getCall() { result.getPipelineArgument() = this }
   }
 
   private class EnvVariableChildMapping extends ExprChildMapping, EnvVariable {

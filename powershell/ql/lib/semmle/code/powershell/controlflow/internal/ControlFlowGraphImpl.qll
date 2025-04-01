@@ -193,21 +193,21 @@ module Trees {
       or
       exists(int i |
         last(super.getParameter(i), pred, c) and
-        completionIsNormal(c) and
+        completionIsNormal(c)
+      |
         first(super.getParameter(i + 1), succ)
-      )
-      or
-      last(super.getParameter(super.getNumberOfParameters() - 1), pred, c) and
-      completionIsNormal(c) and
-      (
-        first(super.getBeginBlock(), succ)
         or
-        not exists(super.getBeginBlock()) and
-        first(super.getProcessBlock(), succ)
-        or
-        not exists(super.getBeginBlock()) and
-        not exists(super.getProcessBlock()) and
-        first(super.getEndBlock(), succ)
+        not exists(super.getParameter(i + 1)) and
+        (
+          first(super.getBeginBlock(), succ)
+          or
+          not exists(super.getBeginBlock()) and
+          first(super.getProcessBlock(), succ)
+          or
+          not exists(super.getBeginBlock()) and
+          not exists(super.getProcessBlock()) and
+          first(super.getEndBlock(), succ)
+        )
       )
       or
       last(super.getBeginBlock(), pred, c) and
@@ -292,9 +292,55 @@ module Trees {
     final override predicate succEntry(Ast n, Completion c) { n = this and completionIsSimple(c) }
   }
 
-  class NamedBlockTree extends StandardPreOrderTree instanceof NamedBlock {
-    // TODO: Handle trap
-    override AstNode getChildNode(int i) { result = super.getStmt(i) }
+  abstract class NamedBlockTreeBase extends ControlFlowTree instanceof NamedBlock {
+    final override predicate last(Ast last, Completion c) {
+      exists(int i | last(super.getStmt(i), last, c) |
+        completionIsNormal(c) and
+        not exists(super.getStmt(i + 1))
+        or
+        not completionIsNormal(c)
+      )
+      or
+      not exists(super.getAStmt()) and
+      completionIsSimple(c) and
+      last = this
+    }
+
+    override predicate succ(Ast pred, Ast succ, Completion c) {
+      pred = this and
+      completionIsSimple(c) and
+      first(super.getStmt(0), succ)
+      or
+      exists(int i |
+        last(super.getStmt(i), pred, c) and
+        completionIsNormal(c) and
+        first(super.getStmt(i + 1), succ)
+      )
+    }
+
+    override predicate propagatesAbnormal(Ast child) { child = super.getAStmt() }
+  }
+
+  class NamedBlockTree extends NamedBlockTreeBase instanceof NamedBlock {
+    NamedBlockTree() { not this instanceof ProcessBlock }
+
+    final override predicate first(Ast first) { first = this }
+
+    final override predicate propagatesAbnormal(Ast child) { super.propagatesAbnormal(child) }
+  }
+
+  class ProcessBlockTree extends NamedBlockTreeBase instanceof ProcessBlock {
+    final override predicate first(Ast first) { first = super.getPipelineParameterAccess() }
+
+    final override predicate succ(Ast pred, Ast succ, Completion c) {
+      this.first(pred) and
+      completionIsSimple(c) and
+      succ = this
+      or
+      super.succ(pred, succ, c)
+    }
+
+    final override predicate propagatesAbnormal(Ast child) { super.propagatesAbnormal(child) }
   }
 
   class AssignStmtTree extends StandardPreOrderTree instanceof AssignStmt {

@@ -30,6 +30,13 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
       uninitializedWrite(bb, i, v)
       or
       variableWriteActual(bb, i, v, _)
+      or
+      exists(ProcessBlockCfgNode processBlock |
+        bb.getNode(i) = processBlock and
+        processBlock.getPipelineIteratorVariable() = v
+      )
+      or
+      parameterWrite(bb, i, v)
     ) and
     certain = true
   }
@@ -54,7 +61,12 @@ module Consistency = Impl::Consistency;
 
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, Variable v) {
-  bb.getNode(i).getAstNode() = v
+  i = -1 and
+  bb.getANode().getAstNode() = v
+}
+
+predicate parameterWrite(Cfg::EntryBasicBlock bb, int i, Parameter p) {
+  bb.getNode(i).getAstNode() = p
 }
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
@@ -288,7 +300,8 @@ class NormalParameter extends Parameter {
 
 private newtype TParameterExt =
   TNormalParameter(NormalParameter p) or
-  TThisMethodParameter(Method m)
+  TThisMethodParameter(Method m) or
+  TPipelineParameter(PipelineParameter p)
 
 /** A normal parameter or an implicit `this` parameter. */
 class ParameterExt extends TParameterExt {
@@ -296,16 +309,30 @@ class ParameterExt extends TParameterExt {
 
   Method asThis() { this = TThisMethodParameter(result) }
 
+  PipelineParameter asPipelineParameter() { this = TPipelineParameter(result) }
+
   predicate isInitializedBy(WriteDefinition def) {
     def = getParameterDef(this.asParameter())
+    or
+    def = getParameterDef(this.asPipelineParameter())
     or
     def.(Ssa::ThisDefinition).getSourceVariable().getDeclaringScope() = this.asThis().getBody()
   }
 
-  string toString() { result = [this.asParameter().toString(), this.asThis().toString()] }
+  string toString() {
+    result =
+      [
+        this.asParameter().toString(), this.asThis().toString(),
+        this.asPipelineParameter().toString()
+      ]
+  }
 
   Location getLocation() {
-    result = [this.asParameter().getLocation(), this.asThis().getLocation()]
+    result =
+      [
+        this.asParameter().getLocation(), this.asThis().getLocation(),
+        this.asPipelineParameter().getLocation()
+      ]
   }
 }
 

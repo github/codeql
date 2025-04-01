@@ -22,4 +22,4 @@
 | Try.ps1:11:9:13:1 | {...} |
 | Try.ps1:12:5:12:36 | [Stmt] The finally block is executed. |
 | UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | def of Get-Number |
-| UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | [Stmt] Number |
+| UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | (no string representation) |

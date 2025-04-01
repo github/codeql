@@ -24,6 +24,10 @@ class VarAccess extends @variable_expression, Expr {
   boolean isVariable() { variable_expression(this, _, _, _, _, _, _, _, _, _, result, _) }
 
   boolean isDriveQualified() { variable_expression(this, _, _, _, _, _, _, _, _, _, _, result) }
+
+  predicate isReadAccess() { not this.isWriteAccess() }
+
+  predicate isWriteAccess() { any(AssignStmt assign).getLeftHandSide() = this }
 }
 
 class ThisAccess extends VarAccess {
