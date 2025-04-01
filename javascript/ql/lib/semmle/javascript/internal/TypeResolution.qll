@@ -129,6 +129,13 @@ module TypeResolution {
   predicate valueHasType(Node value, Node type) {
     value.(BindingPattern).getTypeAnnotation() = type
     or
+    exists(VarDecl decl |
+      // ValueFlow::step is restricted to variables with at most one assignment. Allow the type annotation
+      // of a variable to propagate to its uses, even if the variable has multiple assignments.
+      type = decl.getTypeAnnotation() and
+      value = decl.getVariable().(LocalVariable).getAnAccess()
+    )
+    or
     exists(MemberDeclaration member |
       value.(ThisExpr).getBindingContainer() = member.getInit() and
       type = getMemberBase(member)
