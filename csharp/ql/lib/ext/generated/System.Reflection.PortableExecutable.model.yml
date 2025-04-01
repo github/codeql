@@ -26,7 +26,7 @@ extensions:
       - ["System.Reflection.PortableExecutable", "PEReader", False, "PEReader", "(System.Collections.Immutable.ImmutableArray<System.Byte>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEReader", False, "PEReader", "(System.IO.Stream,System.Reflection.PortableExecutable.PEStreamOptions,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEReader", False, "TryOpenAssociatedPortablePdb", "(System.String,System.Func<System.String,System.IO.Stream>,System.Reflection.Metadata.MetadataReaderProvider,System.String)", "", "Argument[0]", "Argument[1].Parameter[0]", "taint", "dfc-generated"]
-      - ["System.Reflection.PortableExecutable", "PEReader", False, "TryOpenAssociatedPortablePdb", "(System.String,System.Func<System.String,System.IO.Stream>,System.Reflection.Metadata.MetadataReaderProvider,System.String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Reflection.PortableExecutable", "PEReader", False, "TryOpenAssociatedPortablePdb", "(System.String,System.Func<System.String,System.IO.Stream>,System.Reflection.Metadata.MetadataReaderProvider,System.String)", "", "Argument[0]", "Argument[3]", "taint", "dfc-generated"]
       - ["System.Reflection.PortableExecutable", "PEReader", False, "get_PEHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
