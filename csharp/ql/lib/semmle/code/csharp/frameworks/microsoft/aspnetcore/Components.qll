@@ -195,13 +195,16 @@ private predicate matchingOpenCloseComponentCalls(
   openCall.getEnclosingCallable() = enclosing and
   closeCall.getTarget() instanceof MicrosoftAspNetCoreComponentsCloseComponentMethod and
   closeCall.getEnclosingCallable() = enclosing and
-  closeCall.getParent().getParent() = openCall.getParent().getParent() and
-  openCall.getParent().getIndex() = openCallIndex and
-  closeCallIndex =
-    min(int closeCallIndex0 |
-      closeCall.getParent().getIndex() = closeCallIndex0 and
-      closeCallIndex0 > openCallIndex
-    )
+  exists(BlockStmt block |
+    block = closeCall.getParent().getParent() and
+    block = openCall.getParent().getParent() and
+    block.getChildStmt(openCallIndex) = openCall.getParent() and
+    closeCallIndex =
+      min(int closeCallIndex0 |
+        block.getChildStmt(closeCallIndex0) = closeCall.getParent() and
+        closeCallIndex0 > openCallIndex
+      )
+  )
 }
 
 private module JumpNodes {
@@ -223,14 +226,17 @@ private module JumpNodes {
         exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
         or
         exists(
-          string propertyName, MethodCall openComponent, int i, MethodCall closeComponent, int j
+          string propertyName, MethodCall openComponent, BlockStmt block, int openIdx, int closeIdx,
+          int thisIdx
         |
           propertyName = this.getArgument(1).(StringLiteral).getValue() and
           result.hasName(propertyName) and
-          matchingOpenCloseComponentCalls(openComponent, i, closeComponent, j,
+          matchingOpenCloseComponentCalls(openComponent, openIdx, _, closeIdx,
             this.getEnclosingCallable(), result.getDeclaringType()) and
-          this.getParent().getParent() = openComponent.getParent().getParent() and
-          this.getParent().getIndex() in [i + 1 .. j - 1]
+          block = this.getParent().getParent() and
+          block = openComponent.getParent().getParent() and
+          block.getChildStmt(thisIdx) = this.getParent() and
+          thisIdx in [openIdx + 1 .. closeIdx - 1]
         )
       )
     }
