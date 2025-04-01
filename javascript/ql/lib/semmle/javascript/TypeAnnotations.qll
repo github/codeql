@@ -133,5 +133,7 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
    *
    * This unfolds nullability modifiers and generic type applications.
    */
-  DataFlow::ClassNode getClass() { none() }
+  final DataFlow::ClassNode getClass() {
+    UnderlyingTypes::nodeHasUnderlyingClassType(this, result.getAstNode())
+  }
 }

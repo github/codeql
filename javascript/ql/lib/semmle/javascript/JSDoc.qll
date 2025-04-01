@@ -395,6 +395,8 @@ class JSDocNamedTypeExpr extends JSDocTypeExpr {
     this instanceof JSDocQualifiedTypeAccess
   }
 
+  private predicate test() { not this.getTopLevel().isExterns() }
+
   /**
    * Gets the name directly as it appears in this type, including any qualifiers.
    *
@@ -451,8 +453,6 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
    * For example, in `Array<string>`, `string` is the only argument type.
    */
   JSDocTypeExpr getAnArgument() { result = this.getArgument(_) }
-
-  override DataFlow::ClassNode getClass() { result = this.getHead().getClass() }
 }
 
 /**
@@ -472,8 +472,6 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = this.getTypeExpr().getAnUnderlyingType() }
-
-  override DataFlow::ClassNode getClass() { result = this.getTypeExpr().getClass() }
 }
 
 /**
@@ -493,8 +491,6 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = this.getTypeExpr().getAnUnderlyingType() }
-
-  override DataFlow::ClassNode getClass() { result = this.getTypeExpr().getClass() }
 }
 
 /**
@@ -599,8 +595,6 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
   override JSDocTypeExpr getAnUnderlyingType() {
     result = this.getUnderlyingType().getAnUnderlyingType()
   }
-
-  override DataFlow::ClassNode getClass() { result = this.getUnderlyingType().getClass() }
 }
 
 /**

@@ -576,10 +576,6 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
-
-  override DataFlow::ClassNode getClass() {
-    UnderlyingTypes::nodeHasUnderlyingClassType(this, result.getAstNode())
-  }
 }
 
 /**
