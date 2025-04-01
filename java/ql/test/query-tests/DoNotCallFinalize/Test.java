@@ -17,11 +17,11 @@ public class Test {
 
     // Overload of `finalize`
     protected void finalize(String s) throws Throwable {
-        System.out.println(s);
+        // ...
     }
 
-    // COMPLIANT: call to overload of `finalize`
     void f2() throws Throwable {
+        // COMPLIANT: call to overload of `finalize`
         this.finalize("overload");
     }
 
