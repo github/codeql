@@ -318,6 +318,11 @@ module API {
     Node getParameter(int i) {
       Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::parameter(i))
+      or
+      exists(int spreadIndex, string arrayProp |
+        result = this.getASuccessor(Label::spreadArgument(spreadIndex)).getMember(arrayProp) and
+        i = spreadIndex + arrayProp.toInt()
+      )
     }
 
     /**
@@ -860,6 +865,23 @@ module API {
                   .getStaticMember(name, DataFlow::MemberKind::getter())
                   .getAReturn()
           )
+          or
+          // Handle rest parameters escaping into external code. For example:
+          //
+          //   function foo(...rest) {
+          //     externalFunc(rest);
+          //   }
+          //
+          // Here, 'rest' reaches a def-node at the call to externalFunc, so we need to ensure
+          // the arguments passed to 'foo' are stored in the 'rest' array.
+          exists(Function fun, DataFlow::InvokeNode invoke, int argIndex, Parameter rest |
+            fun.getRestParameter() = rest and
+            rest.flow() = pred and
+            invoke.getACallee() = fun and
+            invoke.getArgument(argIndex) = rhs and
+            argIndex >= rest.getIndex() and
+            lbl = Label::member((argIndex - rest.getIndex()).toString())
+          )
         )
         or
         exists(DataFlow::ClassNode cls, string name |
@@ -886,6 +908,11 @@ module API {
           lbl = Label::parameter(i)
           or
           i = -1 and lbl = Label::receiver()
+        )
+        or
+        exists(int i |
+          spreadArgumentPassing(base, i, rhs) and
+          lbl = Label::spreadArgument(i)
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
@@ -928,6 +955,29 @@ module API {
           bound = 0 and
           i = -1
         )
+      )
+    }
+
+    pragma[nomagic]
+    private int firstSpreadIndex(InvokeExpr expr) {
+      result = min(int i | expr.getArgument(i) instanceof SpreadElement)
+    }
+
+    pragma[nomagic]
+    private InvokeExpr getAnInvocationWithSpread(DataFlow::SourceNode node, int i) {
+      result = node.getAnInvocation().asExpr() and
+      i = firstSpreadIndex(result)
+    }
+
+    private predicate spreadArgumentPassing(TApiNode base, int i, DataFlow::Node spreadArray) {
+      exists(
+        DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke, int spreadPos
+      |
+        use(base, use) and
+        pred = trackUseNode(use, _, bound, "") and
+        invoke = getAnInvocationWithSpread(pred, spreadPos) and
+        spreadArray = invoke.getArgument(spreadPos).(SpreadElement).getOperand().flow() and
+        i = bound + spreadPos
       )
     }
 
@@ -1579,6 +1629,9 @@ module API {
     /** Gets the edge label for the receiver. */
     LabelReceiver receiver() { any() }
 
+    /** Gets the edge label for a spread argument passed at index `i`. */
+    LabelSpreadArgument spreadArgument(int i) { result.getIndex() = i }
+
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
 
@@ -1628,6 +1681,7 @@ module API {
         } or
         MkLabelReceiver() or
         MkLabelReturn() or
+        MkLabelSpreadArgument(int index) { index = [0 .. 10] } or
         MkLabelDecoratedClass() or
         MkLabelDecoratedMember() or
         MkLabelDecoratedParameter() or
@@ -1741,6 +1795,21 @@ module API {
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
         override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label representing an array passed as a spread argument at a given index. */
+      class LabelSpreadArgument extends ApiLabel, MkLabelSpreadArgument {
+        private int index;
+
+        LabelSpreadArgument() { this = MkLabelSpreadArgument(index) }
+
+        /** Gets the argument index at which the spread argument appears. */
+        int getIndex() { result = index }
+
+        override string toString() {
+          // Note: This refers to the internal edge that has no corresponding method on API::Node
+          result = "getSpreadArgument(" + index + ")"
+        }
       }
 
       /** A label for a function that is a wrapper around another function. */

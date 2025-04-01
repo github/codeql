@@ -254,6 +254,12 @@ private module Cached {
   cached
   predicate invocation(DataFlow::SourceNode func, DataFlow::InvokeNode invoke) {
     hasLocalSource(invoke.getCalleeNode(), func)
+    or
+    exists(ClassDefinition cls, SuperCall call |
+      hasLocalSource(cls.getSuperClass().flow(), func) and
+      call.getBinder() = cls.getConstructor().getBody() and
+      invoke = call.flow()
+    )
   }
 
   /**
