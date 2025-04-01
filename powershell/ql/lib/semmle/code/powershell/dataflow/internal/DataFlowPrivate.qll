@@ -540,7 +540,7 @@ private module ParameterNodes {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       parameter.getEnclosingScope() = c.asCfgScope() and
       (
-        pos.isKeyword(parameter.getName())
+        pos.isKeyword(parameter.getName().toLowerCase())
         or
         // Given a function f with parameters x, y we map
         // x to the positions:
@@ -558,7 +558,7 @@ private module ParameterNodes {
           parameter.getIndexExcludingPipelines() = i and
           f = parameter.getFunction() and
           f = ns.getAFunction() and
-          name = parameter.getName() and
+          name = parameter.getName().toLowerCase() and
           not name = ns.getAName() and
           j =
             i -
