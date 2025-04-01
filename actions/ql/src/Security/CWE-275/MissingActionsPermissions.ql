@@ -30,6 +30,7 @@ string jobNeedsPersmission(Job job) {
   actionsPermissionsDataModel(versionedAction(stepUses(stepInJob(job))), result)
 }
 
+/** Gets a suggestion for the minimal token permissions for `job`, as a JSON string. */
 string permissionsForJob(Job job) {
   result =
     "{" + concat(string permission | permission = jobNeedsPersmission(job) | permission, ", ") + "}"
@@ -46,4 +47,4 @@ where
   ) and
   permissions = permissionsForJob(job)
 select job,
-  "Actions Job or Workflow does not set permissions. A minimal set might be " + permissions
+  "Actions job or workflow does not limit the permissions of the GITHUB_TOKEN. Consider setting an explicit permissions block, using the following as a minimal starting point: " + permissions
