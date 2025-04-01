@@ -180,7 +180,7 @@ There are also more specific `@tags` that can be added. See, the following pages
 
 Maintainers are expected to add a `@security-severity` tag to security relevant queries that will be run on Code Scanning.  There is a documented internal process for generating these `@security-severity` values.
 
-TODO: should we have a severity value for quality queries?
+We will use the `problem.severity` attribute to handle the severity for quality-related queries.
 
 ### Metric/summary `@tags`
 
