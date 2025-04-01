@@ -1,11 +1,15 @@
 import subprocess
-import sys
+import runs_on
 
 
 def test(codeql, java):
-    # This serves the "repo" directory on http://localhost:9427
+    # This serves the "repo" directory on http://localhost:9428
+    command = ["python3", "-m", "http.server", "9428", "-b", "localhost"]
+    if runs_on.github_actions and runs_on.posix:
+        # On GitHub Actions, we try to run the server with higher priority
+        command = ["nice", "-n", "10"] + command
     repo_server_process = subprocess.Popen(
-        [sys.executable, "-m", "http.server", "9427"], cwd="repo"
+        command, cwd="repo"
     )
     try:
         codeql.database.create(
