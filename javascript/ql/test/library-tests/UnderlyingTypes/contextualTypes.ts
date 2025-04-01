@@ -35,3 +35,11 @@ function t4(): Options[] {
         }
     ]
 }
+
+async function t5(): Promise<Options> {
+    return {
+        handle(req) { // $ MISSING: hasUnderlyingType='express'.Request
+
+        }
+    }
+}
