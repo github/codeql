@@ -3,6 +3,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.ReflectedXssCustomizations
 
 /**
  * Provides classes and predicates modeling [Next.js](https://www.npmjs.com/package/next).
@@ -324,5 +325,45 @@ module NextJS {
     override Http::RouteHandler getRouteHandler() { result = handler }
 
     override string getSourceType() { result = "Next.js App Router request" }
+  }
+
+  /**
+   * Gets the headers value from the options object passed to a Next.js Response constructor.
+   */
+  DataFlow::Node getContentTypeHeadersForResponse(DataFlow::InvokeNode responseNode) {
+    exists(DataFlow::ObjectLiteralNode options |
+      options.flowsTo(responseNode.getArgument(1)) and
+      result = options.getAPropertyWrite("headers").getRhs()
+    )
+  }
+
+  /**
+   * A sink representing response content in Next.js API routes that may be vulnerable
+   * to XSS attacks.
+   *
+   * This class identifies responses created with the standard `Response` constructor
+   * or Next.js `NextResponse`.
+   */
+  class WebApiResponseSink extends Http::ResponseSendArgument {
+    WebApiResponseSink() {
+      exists(
+        DataFlow::InvokeNode response, DataFlow::ObjectLiteralNode options, DataFlow::Node headers
+      |
+        response =
+          [
+            DataFlow::globalVarRef("Response").getAnInstantiation(),
+            API::moduleImport("next/server").getMember("NextResponse").getAnInstantiation()
+          ] and
+        this = response.getArgument(0) and
+        options.flowsTo(response.getArgument(1)) and
+        headers = getContentTypeHeadersForResponse(response) and
+        not exists(DataFlow::Node goodHeaders |
+          goodHeaders = ReflectedXss::getGoodContentHeaders() and
+          goodHeaders.getALocalSource().flowsTo(headers)
+        )
+      )
+    }
+
+    override Http::RouteHandler getRouteHandler() { none() }
   }
 }
