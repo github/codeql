@@ -587,6 +587,57 @@ private module CmdArguments {
  * Synthesize literals from known constant strings.
  */
 private module LiteralSynth {
+  pragma[nomagic]
+  private predicate assignmentHasLocation(
+    Raw::Scope scope, string name, File file, int startLine, int startColumn
+  ) {
+    Raw::isAutomaticVariableAccess(_, name) and
+    exists(Raw::Ast n, Location loc |
+      scopeAssigns(scope, name, n) and
+      loc = n.getLocation() and
+      file = loc.getFile() and
+      startLine = loc.getStartLine() and
+      startColumn = loc.getStartColumn()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate varAccessHasLocation(
+    Raw::VarAccess va, File file, int startLine, int startColumn
+  ) {
+    exists(Location loc |
+      loc = va.getLocation() and
+      loc.getFile() = file and
+      loc.getStartLine() = startLine and
+      loc.getStartColumn() = startColumn
+    )
+  }
+
+  /**
+   * Holds if `va` is an access to the automatic variable named `name`.
+   * 
+   * Unlike `Raw::isAutomaticVariableAccess`, this predicate also checks for
+   * shadowing.
+   */
+  private predicate isAutomaticVariableAccess(Raw::VarAccess va, string name) {
+    Raw::isAutomaticVariableAccess(va, name) and
+    exists(Raw::Scope scope, File file, int startLine, int startColumn |
+      scope = Raw::scopeOf(va) and
+      varAccessHasLocation(va, file, startLine, startColumn)
+    |
+      // If it's a read then make sure there is no assignment precedeeding it
+      va.isReadAccess() and
+      not exists(int assignStartLine, int assignStartCoumn |
+        assignmentHasLocation(scope, name, file, assignStartLine, assignStartCoumn)
+      |
+        assignStartLine < startLine
+        or
+        assignStartLine = startLine and
+        assignStartCoumn < startColumn
+      )
+    )
+  }
+
   private class LiteralSynth extends Synthesis {
     final override predicate isRelevant(Raw::Ast a) {
       exists(Raw::VarAccess va | a = va |
@@ -598,7 +649,7 @@ private module LiteralSynth {
         or
         Raw::isEnvVariableAccess(va, _)
         or
-        Raw::isAutomaticVariableAccess(va, _)
+        isAutomaticVariableAccess(va, _)
       )
     }
 
@@ -628,7 +679,7 @@ private module LiteralSynth {
         Raw::isEnvVariableAccess(va, s) and
         child = SynthChild(EnvVariableKind(s))
         or
-        Raw::isAutomaticVariableAccess(va, s) and
+        isAutomaticVariableAccess(va, s) and
         child = SynthChild(AutomaticVariableKind(s))
       )
     }

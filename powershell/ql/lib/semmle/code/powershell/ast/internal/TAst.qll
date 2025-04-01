@@ -17,8 +17,7 @@ string variableNameInScope(Raw::Ast n, Scope::Range scope) {
     not scope.getAParameter().(Raw::PipelineByPropertyNameParameter).getName() = result and
     not result.toLowerCase() = ["_", "this", "false", "true", "null"] and
     not parameter(_, n, _, _) and
-    not Raw::isEnvVariableAccess(n, _) and
-    not Raw::isAutomaticVariableAccess(n, _)
+    not Raw::isEnvVariableAccess(n, _)
     or
     any(Synthesis s).explicitAssignment(n, result, _)
     or
@@ -26,7 +25,7 @@ string variableNameInScope(Raw::Ast n, Scope::Range scope) {
   )
 }
 
-private predicate scopeAssigns(Scope::Range scope, string name, Raw::Ast n) {
+predicate scopeAssigns(Scope::Range scope, string name, Raw::Ast n) {
   (explicitAssignment(n, _) or implicitAssignment(n)) and
   name = variableNameInScope(n, scope)
 }
