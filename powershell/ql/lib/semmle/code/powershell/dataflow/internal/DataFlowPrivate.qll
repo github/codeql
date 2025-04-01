@@ -333,15 +333,13 @@ private module Cached {
 
   cached
   newtype TContentSet =
-    TSingletonContent(Content c) or
-    TAnyElementContent() or
-    TKnownOrUnknownElementContent(Content::KnownElementContent c)
-
-  private predicate trackKnownValue(ConstantValue cv) {
-    exists(cv.asString())
-    or
-    cv.asInt() = [0 .. 10]
-  }
+    TSingletonContentSet(Content c) or
+    TAnyElementContentSet() or
+    TAnyPositionalContentSet() or
+    TKnownOrUnknownKeyContentSet(Content::KnownKeyContent c) or
+    TKnownOrUnknownPositionalContentSet(Content::KnownPositionalContent c) or
+    TUnknownPositionalElementContentSet() or
+    TUnknownKeyContentSet()
 
   cached
   newtype TContent =
@@ -350,19 +348,40 @@ private module Cached {
       or
       name = any(MemberExpr me).getMemberName()
     } or
-    TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
-    TUnknownElementContent()
+    // A known map key
+    TKnownKeyContent(ConstantValue cv) { exists(cv.asString()) } or
+    // A known array index
+    TKnownPositionalContent(ConstantValue cv) { cv.asInt() = [0 .. 10] } or
+    // An unknown key
+    TUnknownKeyContent() or
+    // An unknown positional element
+    TUnknownPositionalContent() or
+    // A unknown position or key - and we dont even know what kind it is
+    TUnknownKeyOrPositionContent()
 
   cached
   newtype TContentApprox =
+    // A field
     TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
-    TUnknownElementContentApprox() or
-    TKnownIntegerElementContentApprox() or
-    TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) }
+    // An unknown key
+    TUnkownKeyContentApprox() or
+    // A known map key
+    TKnownKeyContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
+    // A known positional element
+    TKnownPositionalContentApprox() or
+    // An unknown positional element
+    TUnknownPositionalContentApprox() or
+    TUnknownContentApprox()
 
   cached
   newtype TDataFlowType = TUnknownDataFlowType()
 }
+
+class TKnownElementContent = TKnownKeyContent or TKnownPositionalContent;
+
+class TKnownKindContent = TUnknownPositionalContent or TUnknownKeyContent;
+
+class TUnknownElementContent = TKnownKindContent or TUnknownKeyOrPositionContent;
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
 
@@ -923,7 +942,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
       e.getValue() = ec.getIndex()
     )
     or
-    not exists(e.getValue().asInt()) and
+    not exists(Content::KnownElementContent ec | ec.getIndex() = e.getValue()) and
     c.isAnyElement()
   )
   or
@@ -931,7 +950,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     e = node1.asExpr() and
     not arrayExprStore(node1, _, _, e) and
     node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getExpr(index) = e and
-    c.isKnownOrUnknownElement(ec) and
+    c.isKnownOrUnknownPositional(ec) and
     index = ec.getIndex().asInt()
   )
   or
@@ -939,29 +958,29 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr().(CfgNodes::ExprNodes::HashTableExprCfgNode).getValueFromKey(key) = node1.asExpr()
   |
     exists(Content::KnownElementContent ec |
-      c.isKnownOrUnknownElement(ec) and
-      ec.getIndex() = key.getValue()
+      c.isKnownOrUnknownKeyContent(ec) and
+      key.getValue() = ec.getIndex()
     )
     or
-    not exists(key.getValue()) and
-    c.isAnyElement()
+    not exists(Content::KnownKeyContent ec | ec.getIndex() = key.getValue()) and
+    c.isUnknownKeyContent()
   )
   or
   arrayExprStore(node1, c, node2, _)
   or
-  c.isAnyElement() and
+  c.isUnknownPositionalContent() and
   exists(CfgNode cfgNode |
     node1 = TPreReturnNodeImpl(cfgNode, false) and
     node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
   or
-  c.isAnyElement() and
+  c.isUnknownPositionalContent() and
   exists(CfgNode cfgNode |
     node1 = TImplicitWrapNode(cfgNode, true) and
     node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
   or
-  c.isAnyElement() and
+  c.isUnknownPositionalContent() and
   exists(CfgNodes::ExprNodes::PipelineArgumentCfgNode arg |
     node1 = TPrePipelineArgumentNode(arg) and
     node2 = TPipelineArgumentNode(arg)
@@ -992,7 +1011,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       e.getValue() = ec.getIndex()
     )
     or
-    not exists(e.getValue()) and
+    not exists(Content::KnownElementContent ec | ec.getIndex() = e.getValue()) and
     c.isAnyElement()
   )
   or
@@ -1044,7 +1063,7 @@ predicate clearsContent(Node n, ContentSet c) {
   c.isAnyElement()
   or
   n instanceof PrePipelineArgumentNodeImpl and
-  c.isAnyElement()
+  c.isAnyPositional()
 }
 
 /**
@@ -1061,7 +1080,7 @@ predicate expectsContent(Node n, ContentSet c) {
   c.isSingleton(any(Content::UnknownElementContent ec))
   or
   n instanceof PipelineArgumentNode and
-  c.isAnyElement()
+  c.isAnyPositional()
 }
 
 class DataFlowType extends TDataFlowType {
@@ -1338,18 +1357,38 @@ class ContentApprox extends TContentApprox {
 
 /** Gets an approximated value for content `c`. */
 ContentApprox getContentApprox(Content c) {
-  c instanceof Content::UnknownElementContent and
-  result = TUnknownElementContentApprox()
+  c instanceof Content::KnownPositionalContent and
+  result = TKnownPositionalContentApprox()
   or
-  exists(c.(Content::KnownElementContent).getIndex().asInt()) and
-  result = TKnownIntegerElementContentApprox()
-  or
-  result =
-    TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
+  result = TKnownKeyContentApprox(approxKnownElementIndex(c.(Content::KnownKeyContent).getIndex()))
   or
   result = TNonElementContentApprox(c)
+  or
+  c instanceof Content::UnknownKeyContent and
+  result = TUnkownKeyContentApprox()
+  or
+  c instanceof Content::UnknownPositionalContent and
+  result = TUnknownPositionalContentApprox()
+  or
+  c instanceof Content::UnknownKeyOrPositionContent and
+  result = TUnknownContentApprox()
 }
 
+// TFieldContent(string name) {
+//   name = any(PropertyMember member).getName()
+//   or
+//   name = any(MemberExpr me).getMemberName()
+// } or
+// // A known map key
+// TKnownKeyContent(ConstantValue cv) { exists(cv.asString()) } or
+// // A known array index
+// TKnownPositionalContent(ConstantValue cv) { cv.asInt() = [0 .. 10] } or
+// // An unknown key
+// TUnknownKeyContent() or
+// // An unknown positional element
+// TUnknownPositionalContent() or
+// // A unknown position or key - and we dont even know what kind it is
+// TUnknownKeyOrPositionContent()
 /**
  * A unit class for adding additional jump steps.
  *
