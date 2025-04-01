@@ -383,3 +383,178 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
     )
   }
 }
+
+/** A call to `java.lang.String.replace` or `java.lang.String.replaceAll`. */
+private class StringReplaceOrReplaceAllCall extends MethodCall {
+  StringReplaceOrReplaceAllCall() {
+    this instanceof StringReplaceCall or
+    this instanceof StringReplaceAllCall
+  }
+}
+
+/** Gets a character used for replacement. */
+private string getAReplacementChar() { result = ["", "_", "-"] }
+
+/** Gets a directory character represented as regex. */
+private string getADirRegexChar() { result = ["\\.", "/", "\\\\"] }
+
+/** Gets a directory character represented as a char. */
+private string getADirChar() { result = [".", "/", "\\"] }
+
+/** Holds if `target` is the first argument of `replaceAllCall`. */
+private predicate isReplaceAllTarget(
+  StringReplaceAllCall replaceAllCall, CompileTimeConstantExpr target
+) {
+  target = replaceAllCall.getArgument(0)
+}
+
+/** Holds if `target` is the first argument of `replaceCall`. */
+private predicate isReplaceTarget(StringReplaceCall replaceCall, CompileTimeConstantExpr target) {
+  target = replaceCall.getArgument(0)
+}
+
+/** Holds if a single `replaceAllCall` replaces all directory characters. */
+private predicate replacesDirectoryCharactersWithSingleReplaceAll(
+  StringReplaceAllCall replaceAllCall
+) {
+  exists(CompileTimeConstantExpr target, string targetValue |
+    isReplaceAllTarget(replaceAllCall, target) and
+    target.getStringValue() = targetValue and
+    replaceAllCall.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar()
+  |
+    not targetValue.matches("%[^%]%") and
+    targetValue.matches("[%.%]") and
+    targetValue.matches("[%/%]") and
+    // Search for "\\\\" (needs extra backslashes to avoid escaping the '%')
+    targetValue.matches("[%\\\\\\\\%]")
+    or
+    targetValue.matches("%|%") and
+    targetValue.matches("%" + ["[.]", "\\."] + "%") and
+    targetValue.matches("%/%") and
+    targetValue.matches("%\\\\\\\\%")
+  )
+}
+
+/**
+ * Holds if there are two chained replacement calls, `rc1` and `rc2`, that replace
+ * '.' and one of '/' or '\'.
+ */
+private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(
+  StringReplaceOrReplaceAllCall rc1
+) {
+  exists(
+    CompileTimeConstantExpr target1, string targetValue1, StringReplaceOrReplaceAllCall rc2,
+    CompileTimeConstantExpr target2, string targetValue2
+  |
+    rc1 instanceof StringReplaceAllCall and
+    isReplaceAllTarget(rc1, target1) and
+    isReplaceAllTarget(rc2, target2) and
+    targetValue1 = getADirRegexChar() and
+    targetValue2 = getADirRegexChar()
+    or
+    rc1 instanceof StringReplaceCall and
+    isReplaceTarget(rc1, target1) and
+    isReplaceTarget(rc2, target2) and
+    targetValue1 = getADirChar() and
+    targetValue2 = getADirChar()
+  |
+    rc2.getQualifier() = rc1 and
+    target1.getStringValue() = targetValue1 and
+    target2.getStringValue() = targetValue2 and
+    rc1.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+    rc2.getArgument(1).(CompileTimeConstantExpr).getStringValue() = getAReplacementChar() and
+    // make sure the calls replace different characters
+    targetValue2 != targetValue1 and
+    // make sure one of the calls replaces '.'
+    // then the other call must replace one of '/' or '\' if they are not equal
+    (targetValue2.matches("%.%") or targetValue1.matches("%.%"))
+  )
+}
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities by replacing
+ * directory characters ('..', '/', and '\') with safe characters.
+ */
+private class ReplaceDirectoryCharactersSanitizer extends StringReplaceOrReplaceAllCall {
+  ReplaceDirectoryCharactersSanitizer() {
+    replacesDirectoryCharactersWithSingleReplaceAll(this) or
+    replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(this)
+  }
+}
+
+/** Holds if `target` is the first argument of `matchesCall`. */
+private predicate isMatchesTarget(StringMatchesCall matchesCall, CompileTimeConstantExpr target) {
+  target = matchesCall.getArgument(0)
+}
+
+/**
+ * Holds if `matchesCall` confirms that `checkedExpr` does not contain any directory characters
+ * on the given `branch`.
+ */
+private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr, boolean branch) {
+  exists(CompileTimeConstantExpr target, string targetValue |
+    isMatchesTarget(matchesCall, target) and
+    target.getStringValue() = targetValue and
+    checkedExpr = matchesCall.getQualifier()
+  |
+    (
+      // Allow anything except `.`, '/', '\'
+      targetValue.matches(["[%]*", "[%]+", "[%]{%}"]) and
+      (
+        // Note: we do not account for when '.', '/', '\' are inside a character range
+        not targetValue.matches("[%" + [".", "/", "\\\\\\\\"] + "%]%") and
+        not targetValue.matches("%[^%]%")
+        or
+        targetValue.matches("[^%.%]%") and
+        targetValue.matches("[^%/%]%") and
+        targetValue.matches("[^%\\\\\\\\%]%")
+      ) and
+      branch = true
+      or
+      // Disallow `.`, '/', '\'
+      targetValue.matches([".*[%].*", ".+[%].+"]) and
+      targetValue.matches("%[%.%]%") and
+      targetValue.matches("%[%/%]%") and
+      targetValue.matches("%[%\\\\\\\\%]%") and
+      not targetValue.matches("%[^%]%") and
+      branch = false
+    )
+  )
+}
+
+/**
+ * A guard that protects against path traversal by looking for patterns
+ * that exclude directory characters: `..`, '/', and '\'.
+ */
+private class DirectoryCharactersGuard extends PathGuard {
+  Expr checkedExpr;
+  boolean branch;
+
+  DirectoryCharactersGuard() { isMatchesCall(this, checkedExpr, branch) }
+
+  override Expr getCheckedExpr() { result = checkedExpr }
+
+  boolean getBranch() { result = branch }
+}
+
+/**
+ * Holds if `g` is a guard that considers a path safe because it is checked to make
+ * sure it does not contain any directory characters: '..', '/', and '\'.
+ */
+private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
+  branch = g.(DirectoryCharactersGuard).getBranch() and
+  localTaintFlowToPathGuard(e, g)
+}
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by ensuring that the path does not contain any directory characters:
+ *  '..', '/', and '\'.
+ */
+private class DirectoryCharactersSanitizer extends PathInjectionSanitizer {
+  DirectoryCharactersSanitizer() {
+    this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer or
+    this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode() or
+    this = ValidationMethod<directoryCharactersGuard/3>::getAValidatedNode()
+  }
+}

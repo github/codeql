@@ -4,7 +4,7 @@ import TestUtils
 
 from
   MethodCallExpr x, string hasArgList, int getNumberOfAttrs, string hasResolvedPath,
-  string hasResolvedCrateOrigin, string hasGenericArgList, string hasNameRef, string hasReceiver
+  string hasResolvedCrateOrigin, string hasGenericArgList, string hasIdentifier, string hasReceiver
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -17,8 +17,8 @@ where
     else hasResolvedCrateOrigin = "no"
   ) and
   (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
-  (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
+  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
   if x.hasReceiver() then hasReceiver = "yes" else hasReceiver = "no"
 select x, "hasArgList:", hasArgList, "getNumberOfAttrs:", getNumberOfAttrs, "hasResolvedPath:",
   hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin, "hasGenericArgList:",
-  hasGenericArgList, "hasNameRef:", hasNameRef, "hasReceiver:", hasReceiver
+  hasGenericArgList, "hasIdentifier:", hasIdentifier, "hasReceiver:", hasReceiver

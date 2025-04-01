@@ -25,11 +25,11 @@ module Impl {
       this instanceof WillSetObserver or this instanceof DidSetObserver
     }
 
-    override string toString() {
+    override string toStringImpl() {
       isKnownAccessorKind(this, result)
       or
       not isKnownAccessorKind(this, _) and
-      result = super.toString()
+      result = super.toStringImpl()
     }
   }
 }

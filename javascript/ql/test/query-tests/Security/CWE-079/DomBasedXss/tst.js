@@ -493,3 +493,8 @@ function nonGlobalSanitizer() {
   $("#foo").html(target.replace(new RegExp("<|>", unknownFlags()), '')); // OK - most likely good. We don't know what the flags are.
   $("#foo").html(target.replace(new RegExp("<|>", "g"), ''));
 }
+
+function FooBar() {
+  let source = window.name; // $ Source
+  $('myId').html(unescape(source)) // $ Alert
+}

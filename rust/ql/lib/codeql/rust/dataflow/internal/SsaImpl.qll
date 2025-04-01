@@ -212,7 +212,8 @@ predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
 /** Holds if `v` may be mutably borrowed in `e`. */
 private predicate mutablyBorrows(Expr e, Variable v) {
   e = any(MethodCallExpr mc).getReceiver() and
-  e.(VariableAccess).getVariable() = v
+  e.(VariableAccess).getVariable() = v and
+  v.isMutable()
   or
   exists(RefExpr re | re = e and re.isMut() and re.getExpr().(VariableAccess).getVariable() = v)
 }
@@ -331,33 +332,33 @@ import Cached
 private import codeql.rust.dataflow.Ssa
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
+
   class Expr extends CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
-  /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    none() // handled in `DataFlowImpl.qll` instead
+  predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
+
+  private predicate isArg(CfgNodes::CallExprBaseCfgNode call, CfgNodes::ExprCfgNode e) {
+    call.getArgument(_) = e
+    or
+    call.(CfgNodes::MethodCallExprCfgNode).getReceiver() = e
+    or
+    exists(CfgNodes::ExprCfgNode mid |
+      isArg(call, mid) and
+      e = DataFlowImpl::getPostUpdateReverseStep(mid, _)
+    )
   }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
     exists(CfgNodes::CallExprBaseCfgNode call, Variable v, BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
-      mutablyBorrows(bb.getNode(i).getAstNode(), v)
-    |
-      call.getArgument(_) = bb.getNode(i)
-      or
-      call.(CfgNodes::MethodCallExprCfgNode).getReceiver() = bb.getNode(i)
+      mutablyBorrows(bb.getNode(i).getAstNode(), v) and
+      isArg(call, bb.getNode(i))
     )
-  }
-
-  class Parameter = CfgNodes::ParamBaseCfgNode;
-
-  /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    none() // handled in `DataFlowImpl.qll` instead
   }
 
   class Guard extends CfgNodes::AstCfgNode {
@@ -376,7 +377,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and

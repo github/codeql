@@ -17,6 +17,7 @@ import TaintReach
 class CrateElement extends Element {
   CrateElement() {
     this instanceof Crate or
+    this instanceof NamedCrate or
     this.(AstNode).getParentNode*() = any(Crate c).getModule()
   }
 }
@@ -53,6 +54,8 @@ where
   key = "Lines of user code extracted" and value = getLinesOfUserCode()
   or
   key = "Inconsistencies - AST" and value = getTotalAstInconsistencies()
+  or
+  key = "Inconsistencies - Path resolution" and value = getTotalPathResolutionInconsistencies()
   or
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or

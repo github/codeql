@@ -14,9 +14,26 @@
 import java
 private import codeql.ssa.Ssa as SsaImplCommon
 
+cached
+private module BaseSsaStage {
+  cached
+  predicate ref() { any() }
+
+  cached
+  predicate backref() {
+    (exists(TLocalVar(_, _)) implies any()) and
+    (exists(any(BaseSsaSourceVariable v).getAnAccess()) implies any()) and
+    (exists(getAUse(_)) implies any())
+  }
+}
+
+cached
 private newtype TBaseSsaSourceVariable =
   TLocalVar(Callable c, LocalScopeVariable v) {
-    c = v.getCallable() or c = v.getAnAccess().getEnclosingCallable()
+    BaseSsaStage::ref() and
+    c = v.getCallable()
+    or
+    c = v.getAnAccess().getEnclosingCallable()
   }
 
 /**
@@ -31,6 +48,7 @@ class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
    */
   cached
   VarAccess getAnAccess() {
+    BaseSsaStage::ref() and
     exists(LocalScopeVariable v, Callable c |
       this = TLocalVar(c, v) and result = v.getAnAccess() and result.getEnclosingCallable() = c
     )
@@ -188,6 +206,7 @@ cached
 private module Cached {
   cached
   VarRead getAUse(Impl::Definition def) {
+    BaseSsaStage::ref() and
     exists(BaseSsaSourceVariable v, BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
       result.getControlFlowNode() = bb.getNode(i) and

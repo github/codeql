@@ -1,3 +1,31 @@
+## 1.5.2
+
+### Bug Fixes
+
+* Fixed a bug, first introduced in `2.20.3`, that would prevent `v-html` attributes in Vue files
+  from being flagged by the `js/xss` query. The original behaviour has been restored and the `v-html`
+  attribute is once again functioning as a sink for the `js/xss` query.
+* Fixed a bug that would in rare cases cause some regexp-based checks
+  to be seen as generic taint sanitisers, even though the underlying regexp
+  is not restrictive enough. The regexps are now analysed more precisely,
+  and unrestrictive regexp checks will no longer block taint flow.
+* Fixed a recently-introduced bug that caused `js/server-side-unvalidated-url-redirection` to ignore
+  valid hostname checks and report spurious alerts after such a check. The original behaviour has been restored.
+
+## 1.5.1
+
+No user-facing changes.
+
+## 1.5.0
+
+### Major Analysis Improvements
+
+* Improved precision of data flow through arrays, fixing some spurious flows
+  that would sometimes cause the `length` property of an array to be seen as tainted.
+* Improved call resolution logic to better handle calls resolving "downwards", targeting
+  a method declared in a subclass of the enclosing class. Data flow analysis
+  has also improved to avoid spurious flow between unrelated classes in the class hierarchy.
+
 ## 1.4.1
 
 ### Bug Fixes

@@ -1,4 +1,5 @@
 localStep
+| file://:0:0:0:0 | [summary param] self in lang:std::_::<crate::path::Path>::canonicalize | file://:0:0:0:0 | [summary] read: Argument[self].OptionalBarrier[normalize-path] in lang:std::_::<crate::path::Path>::canonicalize |
 | main.rs:3:11:3:11 | [SSA] i | main.rs:4:12:4:12 | i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | [SSA] i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | i |
@@ -9,11 +10,13 @@ localStep
 | main.rs:6:9:6:9 | s | main.rs:6:9:6:9 | s |
 | main.rs:6:9:6:14 | ...: i64 | main.rs:6:9:6:9 | s |
 | main.rs:7:14:7:20 | FormatArgsExpr | main.rs:7:14:7:20 | MacroExpr |
+| main.rs:7:14:7:20 | [post] MacroExpr | main.rs:7:14:7:20 | [post] FormatArgsExpr |
 | main.rs:10:13:10:14 | [SSA] sr | main.rs:11:20:11:21 | sr |
 | main.rs:10:13:10:14 | sr | main.rs:10:13:10:14 | [SSA] sr |
 | main.rs:10:13:10:14 | sr | main.rs:10:13:10:14 | sr |
 | main.rs:10:13:10:20 | ...: ... | main.rs:10:13:10:14 | sr |
 | main.rs:11:14:11:21 | FormatArgsExpr | main.rs:11:14:11:21 | MacroExpr |
+| main.rs:11:14:11:21 | [post] MacroExpr | main.rs:11:14:11:21 | [post] FormatArgsExpr |
 | main.rs:22:9:22:9 | [SSA] s | main.rs:23:10:23:10 | s |
 | main.rs:22:9:22:9 | s | main.rs:22:9:22:9 | [SSA] s |
 | main.rs:22:9:22:9 | s | main.rs:22:9:22:9 | s |
@@ -316,7 +319,6 @@ localStep
 | main.rs:263:9:263:10 | i1 | main.rs:263:9:263:10 | i1 |
 | main.rs:263:14:263:16 | TryExpr | main.rs:263:9:263:10 | i1 |
 | main.rs:266:5:266:11 | Some(...) | main.rs:260:41:267:1 | { ... } |
-| main.rs:270:9:270:10 | [SSA] r1 | main.rs:271:29:271:30 | [SSA] r1 |
 | main.rs:270:9:270:10 | [SSA] r1 | main.rs:271:29:271:30 | r1 |
 | main.rs:270:9:270:10 | r1 | main.rs:270:9:270:10 | [SSA] r1 |
 | main.rs:270:9:270:10 | r1 | main.rs:270:9:270:10 | r1 |
@@ -324,7 +326,6 @@ localStep
 | main.rs:271:9:271:11 | [SSA] o1a | main.rs:273:10:273:12 | o1a |
 | main.rs:271:9:271:11 | o1a | main.rs:271:9:271:11 | [SSA] o1a |
 | main.rs:271:9:271:11 | o1a | main.rs:271:9:271:11 | o1a |
-| main.rs:271:29:271:30 | [SSA] r1 | main.rs:272:29:272:30 | r1 |
 | main.rs:271:29:271:30 | [post] r1 | main.rs:272:29:272:30 | r1 |
 | main.rs:271:29:271:30 | [post] receiver for r1 | main.rs:271:29:271:30 | [post] r1 |
 | main.rs:271:29:271:30 | r1 | main.rs:271:29:271:30 | receiver for r1 |
@@ -340,7 +341,6 @@ localStep
 | main.rs:273:10:273:12 | o1a | main.rs:273:10:273:12 | receiver for o1a |
 | main.rs:274:10:274:12 | [post] receiver for o1b | main.rs:274:10:274:12 | [post] o1b |
 | main.rs:274:10:274:12 | o1b | main.rs:274:10:274:12 | receiver for o1b |
-| main.rs:276:9:276:10 | [SSA] r2 | main.rs:277:29:277:30 | [SSA] r2 |
 | main.rs:276:9:276:10 | [SSA] r2 | main.rs:277:29:277:30 | r2 |
 | main.rs:276:9:276:10 | r2 | main.rs:276:9:276:10 | [SSA] r2 |
 | main.rs:276:9:276:10 | r2 | main.rs:276:9:276:10 | r2 |
@@ -348,7 +348,6 @@ localStep
 | main.rs:277:9:277:11 | [SSA] o2a | main.rs:279:10:279:12 | o2a |
 | main.rs:277:9:277:11 | o2a | main.rs:277:9:277:11 | [SSA] o2a |
 | main.rs:277:9:277:11 | o2a | main.rs:277:9:277:11 | o2a |
-| main.rs:277:29:277:30 | [SSA] r2 | main.rs:278:29:278:30 | r2 |
 | main.rs:277:29:277:30 | [post] r2 | main.rs:278:29:278:30 | r2 |
 | main.rs:277:29:277:30 | [post] receiver for r2 | main.rs:277:29:277:30 | [post] r2 |
 | main.rs:277:29:277:30 | r2 | main.rs:277:29:277:30 | receiver for r2 |
@@ -389,24 +388,20 @@ localStep
 | main.rs:291:9:291:10 | i3 | main.rs:291:9:291:10 | i3 |
 | main.rs:291:14:291:16 | TryExpr | main.rs:291:9:291:10 | i3 |
 | main.rs:293:5:293:9 | Ok(...) | main.rs:283:46:294:1 | { ... } |
-| main.rs:297:9:297:10 | [SSA] s1 | main.rs:298:10:298:11 | [SSA] s1 |
 | main.rs:297:9:297:10 | [SSA] s1 | main.rs:298:10:298:11 | s1 |
 | main.rs:297:9:297:10 | s1 | main.rs:297:9:297:10 | [SSA] s1 |
 | main.rs:297:9:297:10 | s1 | main.rs:297:9:297:10 | s1 |
 | main.rs:297:32:297:45 | Ok(...) | main.rs:297:9:297:10 | s1 |
-| main.rs:298:10:298:11 | [SSA] s1 | main.rs:299:10:299:11 | s1 |
 | main.rs:298:10:298:11 | [post] receiver for s1 | main.rs:298:10:298:11 | [post] s1 |
 | main.rs:298:10:298:11 | [post] s1 | main.rs:299:10:299:11 | s1 |
 | main.rs:298:10:298:11 | s1 | main.rs:298:10:298:11 | receiver for s1 |
 | main.rs:298:10:298:11 | s1 | main.rs:299:10:299:11 | s1 |
 | main.rs:299:10:299:11 | [post] receiver for s1 | main.rs:299:10:299:11 | [post] s1 |
 | main.rs:299:10:299:11 | s1 | main.rs:299:10:299:11 | receiver for s1 |
-| main.rs:301:9:301:10 | [SSA] s2 | main.rs:302:10:302:11 | [SSA] s2 |
 | main.rs:301:9:301:10 | [SSA] s2 | main.rs:302:10:302:11 | s2 |
 | main.rs:301:9:301:10 | s2 | main.rs:301:9:301:10 | [SSA] s2 |
 | main.rs:301:9:301:10 | s2 | main.rs:301:9:301:10 | s2 |
 | main.rs:301:32:301:46 | Err(...) | main.rs:301:9:301:10 | s2 |
-| main.rs:302:10:302:11 | [SSA] s2 | main.rs:303:10:303:11 | s2 |
 | main.rs:302:10:302:11 | [post] receiver for s2 | main.rs:302:10:302:11 | [post] s2 |
 | main.rs:302:10:302:11 | [post] s2 | main.rs:303:10:303:11 | s2 |
 | main.rs:302:10:302:11 | s2 | main.rs:302:10:302:11 | receiver for s2 |
@@ -435,13 +430,10 @@ localStep
 | main.rs:318:11:318:12 | s1 | main.rs:319:9:319:45 | ... \| ... |
 | main.rs:319:9:319:45 | ... \| ... | main.rs:319:9:319:25 | ...::A(...) |
 | main.rs:319:9:319:45 | ... \| ... | main.rs:319:29:319:45 | ...::B(...) |
-| main.rs:319:9:319:45 | [SSA] phi | main.rs:319:55:319:55 | n |
-| main.rs:319:24:319:24 | [SSA] [input] phi | main.rs:319:9:319:45 | [SSA] phi |
-| main.rs:319:24:319:24 | [SSA] n | main.rs:319:24:319:24 | [SSA] [input] phi |
+| main.rs:319:24:319:24 | [SSA] n | main.rs:319:55:319:55 | n |
 | main.rs:319:24:319:24 | n | main.rs:319:24:319:24 | [SSA] n |
 | main.rs:319:24:319:24 | n | main.rs:319:24:319:24 | n |
-| main.rs:319:44:319:44 | [SSA] [input] phi | main.rs:319:9:319:45 | [SSA] phi |
-| main.rs:319:44:319:44 | [SSA] n | main.rs:319:44:319:44 | [SSA] [input] phi |
+| main.rs:319:44:319:44 | [SSA] n | main.rs:319:55:319:55 | n |
 | main.rs:319:44:319:44 | n | main.rs:319:44:319:44 | [SSA] n |
 | main.rs:319:44:319:44 | n | main.rs:319:44:319:44 | n |
 | main.rs:319:50:319:56 | sink(...) | main.rs:318:5:320:5 | match s1 { ... } |
@@ -478,13 +470,10 @@ localStep
 | main.rs:336:11:336:12 | s1 | main.rs:337:9:337:19 | ... \| ... |
 | main.rs:337:9:337:19 | ... \| ... | main.rs:337:9:337:12 | A(...) |
 | main.rs:337:9:337:19 | ... \| ... | main.rs:337:16:337:19 | B(...) |
-| main.rs:337:9:337:19 | [SSA] phi | main.rs:337:29:337:29 | n |
-| main.rs:337:11:337:11 | [SSA] [input] phi | main.rs:337:9:337:19 | [SSA] phi |
-| main.rs:337:11:337:11 | [SSA] n | main.rs:337:11:337:11 | [SSA] [input] phi |
+| main.rs:337:11:337:11 | [SSA] n | main.rs:337:29:337:29 | n |
 | main.rs:337:11:337:11 | n | main.rs:337:11:337:11 | [SSA] n |
 | main.rs:337:11:337:11 | n | main.rs:337:11:337:11 | n |
-| main.rs:337:18:337:18 | [SSA] [input] phi | main.rs:337:9:337:19 | [SSA] phi |
-| main.rs:337:18:337:18 | [SSA] n | main.rs:337:18:337:18 | [SSA] [input] phi |
+| main.rs:337:18:337:18 | [SSA] n | main.rs:337:29:337:29 | n |
 | main.rs:337:18:337:18 | n | main.rs:337:18:337:18 | [SSA] n |
 | main.rs:337:18:337:18 | n | main.rs:337:18:337:18 | n |
 | main.rs:337:24:337:30 | sink(...) | main.rs:336:5:338:5 | match s1 { ... } |
@@ -521,13 +510,10 @@ localStep
 | main.rs:359:11:359:12 | s1 | main.rs:360:9:360:71 | ... \| ... |
 | main.rs:360:9:360:71 | ... \| ... | main.rs:360:9:360:38 | ...::C {...} |
 | main.rs:360:9:360:71 | ... \| ... | main.rs:360:42:360:71 | ...::D {...} |
-| main.rs:360:9:360:71 | [SSA] phi | main.rs:360:81:360:81 | n |
-| main.rs:360:36:360:36 | [SSA] [input] phi | main.rs:360:9:360:71 | [SSA] phi |
-| main.rs:360:36:360:36 | [SSA] n | main.rs:360:36:360:36 | [SSA] [input] phi |
+| main.rs:360:36:360:36 | [SSA] n | main.rs:360:81:360:81 | n |
 | main.rs:360:36:360:36 | n | main.rs:360:36:360:36 | [SSA] n |
 | main.rs:360:36:360:36 | n | main.rs:360:36:360:36 | n |
-| main.rs:360:69:360:69 | [SSA] [input] phi | main.rs:360:9:360:71 | [SSA] phi |
-| main.rs:360:69:360:69 | [SSA] n | main.rs:360:69:360:69 | [SSA] [input] phi |
+| main.rs:360:69:360:69 | [SSA] n | main.rs:360:81:360:81 | n |
 | main.rs:360:69:360:69 | n | main.rs:360:69:360:69 | [SSA] n |
 | main.rs:360:69:360:69 | n | main.rs:360:69:360:69 | n |
 | main.rs:360:76:360:82 | sink(...) | main.rs:359:5:361:5 | match s1 { ... } |
@@ -564,13 +550,10 @@ localStep
 | main.rs:379:11:379:12 | s1 | main.rs:380:9:380:43 | ... \| ... |
 | main.rs:380:9:380:43 | ... \| ... | main.rs:380:9:380:24 | C {...} |
 | main.rs:380:9:380:43 | ... \| ... | main.rs:380:28:380:43 | D {...} |
-| main.rs:380:9:380:43 | [SSA] phi | main.rs:380:53:380:53 | n |
-| main.rs:380:22:380:22 | [SSA] [input] phi | main.rs:380:9:380:43 | [SSA] phi |
-| main.rs:380:22:380:22 | [SSA] n | main.rs:380:22:380:22 | [SSA] [input] phi |
+| main.rs:380:22:380:22 | [SSA] n | main.rs:380:53:380:53 | n |
 | main.rs:380:22:380:22 | n | main.rs:380:22:380:22 | [SSA] n |
 | main.rs:380:22:380:22 | n | main.rs:380:22:380:22 | n |
-| main.rs:380:41:380:41 | [SSA] [input] phi | main.rs:380:9:380:43 | [SSA] phi |
-| main.rs:380:41:380:41 | [SSA] n | main.rs:380:41:380:41 | [SSA] [input] phi |
+| main.rs:380:41:380:41 | [SSA] n | main.rs:380:53:380:53 | n |
 | main.rs:380:41:380:41 | n | main.rs:380:41:380:41 | [SSA] n |
 | main.rs:380:41:380:41 | n | main.rs:380:41:380:41 | n |
 | main.rs:380:48:380:54 | sink(...) | main.rs:379:5:381:5 | match s1 { ... } |
@@ -698,16 +681,14 @@ localStep
 | main.rs:462:16:462:16 | s | main.rs:462:16:462:16 | s |
 | main.rs:462:16:462:24 | ...: String | main.rs:462:16:462:16 | s |
 | main.rs:463:14:463:20 | FormatArgsExpr | main.rs:463:14:463:20 | MacroExpr |
-| main.rs:467:9:467:9 | [SSA] a | main.rs:468:13:468:13 | [SSA] a |
+| main.rs:463:14:463:20 | [post] MacroExpr | main.rs:463:14:463:20 | [post] FormatArgsExpr |
 | main.rs:467:9:467:9 | [SSA] a | main.rs:468:13:468:13 | a |
 | main.rs:467:9:467:9 | a | main.rs:467:9:467:9 | [SSA] a |
 | main.rs:467:9:467:9 | a | main.rs:467:9:467:9 | a |
 | main.rs:467:13:467:22 | source(...) | main.rs:467:9:467:9 | a |
-| main.rs:468:9:468:9 | [SSA] b | main.rs:469:13:469:13 | [SSA] b |
 | main.rs:468:9:468:9 | [SSA] b | main.rs:469:13:469:13 | b |
 | main.rs:468:9:468:9 | b | main.rs:468:9:468:9 | [SSA] b |
 | main.rs:468:9:468:9 | b | main.rs:468:9:468:9 | b |
-| main.rs:468:13:468:13 | [SSA] a | main.rs:472:10:472:10 | a |
 | main.rs:468:13:468:13 | [post] a | main.rs:472:10:472:10 | a |
 | main.rs:468:13:468:13 | [post] receiver for a | main.rs:468:13:468:13 | [post] a |
 | main.rs:468:13:468:13 | a | main.rs:468:13:468:13 | receiver for a |
@@ -716,13 +697,9 @@ localStep
 | main.rs:469:9:469:9 | [SSA] c | main.rs:474:10:474:10 | c |
 | main.rs:469:9:469:9 | c | main.rs:469:9:469:9 | [SSA] c |
 | main.rs:469:9:469:9 | c | main.rs:469:9:469:9 | c |
-| main.rs:469:13:469:13 | [SSA] b | main.rs:470:19:470:19 | [SSA] b |
-| main.rs:469:13:469:13 | [SSA] b | main.rs:470:19:470:19 | b |
-| main.rs:469:13:469:13 | [post] b | main.rs:470:19:470:19 | [SSA] b |
 | main.rs:469:13:469:13 | [post] b | main.rs:470:19:470:19 | b |
 | main.rs:469:13:469:13 | [post] receiver for b | main.rs:469:13:469:13 | [post] b |
 | main.rs:469:13:469:13 | b | main.rs:469:13:469:13 | receiver for b |
-| main.rs:469:13:469:13 | b | main.rs:470:19:470:19 | [SSA] b |
 | main.rs:469:13:469:13 | b | main.rs:470:19:470:19 | b |
 | main.rs:469:13:469:28 | [post] receiver for b.parse(...) | main.rs:469:13:469:28 | [post] b.parse(...) |
 | main.rs:469:13:469:28 | b.parse(...) | main.rs:469:13:469:28 | receiver for b.parse(...) |
@@ -730,7 +707,6 @@ localStep
 | main.rs:470:9:470:9 | [SSA] d | main.rs:475:10:475:10 | d |
 | main.rs:470:9:470:9 | d | main.rs:470:9:470:9 | [SSA] d |
 | main.rs:470:9:470:9 | d | main.rs:470:9:470:9 | d |
-| main.rs:470:19:470:19 | [SSA] b | main.rs:473:17:473:17 | b |
 | main.rs:470:19:470:19 | [post] b | main.rs:473:17:473:17 | b |
 | main.rs:470:19:470:19 | [post] receiver for b | main.rs:470:19:470:19 | [post] b |
 | main.rs:470:19:470:19 | b | main.rs:470:19:470:19 | receiver for b |
@@ -742,23 +718,16 @@ localStep
 | main.rs:479:9:479:10 | vs | main.rs:479:9:479:10 | [SSA] vs |
 | main.rs:479:9:479:10 | vs | main.rs:479:9:479:10 | vs |
 | main.rs:479:14:479:34 | [...] | main.rs:479:9:479:10 | vs |
-| main.rs:481:10:481:11 | [post] vs | main.rs:482:11:482:12 | [SSA] vs |
 | main.rs:481:10:481:11 | [post] vs | main.rs:482:11:482:12 | vs |
-| main.rs:481:10:481:11 | vs | main.rs:482:11:482:12 | [SSA] vs |
 | main.rs:481:10:481:11 | vs | main.rs:482:11:482:12 | vs |
-| main.rs:482:11:482:12 | [SSA] vs | main.rs:483:11:483:12 | [SSA] vs |
-| main.rs:482:11:482:12 | [SSA] vs | main.rs:483:11:483:12 | vs |
 | main.rs:482:11:482:12 | [post] receiver for vs | main.rs:482:11:482:12 | [post] vs |
-| main.rs:482:11:482:12 | [post] vs | main.rs:483:11:483:12 | [SSA] vs |
 | main.rs:482:11:482:12 | [post] vs | main.rs:483:11:483:12 | vs |
 | main.rs:482:11:482:12 | vs | main.rs:482:11:482:12 | receiver for vs |
-| main.rs:482:11:482:12 | vs | main.rs:483:11:483:12 | [SSA] vs |
 | main.rs:482:11:482:12 | vs | main.rs:483:11:483:12 | vs |
 | main.rs:482:11:482:19 | [post] receiver for vs.iter(...) | main.rs:482:11:482:19 | [post] vs.iter(...) |
 | main.rs:482:11:482:19 | vs.iter(...) | main.rs:482:11:482:19 | receiver for vs.iter(...) |
 | main.rs:482:11:482:26 | ... .next(...) | main.rs:482:11:482:26 | receiver for ... .next(...) |
 | main.rs:482:11:482:26 | [post] receiver for ... .next(...) | main.rs:482:11:482:26 | [post] ... .next(...) |
-| main.rs:483:11:483:12 | [SSA] vs | main.rs:485:14:485:15 | vs |
 | main.rs:483:11:483:12 | [post] receiver for vs | main.rs:483:11:483:12 | [post] vs |
 | main.rs:483:11:483:12 | [post] vs | main.rs:485:14:485:15 | vs |
 | main.rs:483:11:483:12 | vs | main.rs:483:11:483:12 | receiver for vs |
@@ -770,29 +739,20 @@ localStep
 | main.rs:485:9:485:9 | [SSA] v | main.rs:486:14:486:14 | v |
 | main.rs:485:9:485:9 | v | main.rs:485:9:485:9 | [SSA] v |
 | main.rs:485:9:485:9 | v | main.rs:485:9:485:9 | v |
-| main.rs:485:14:485:15 | vs | main.rs:488:15:488:16 | [SSA] vs |
 | main.rs:485:14:485:15 | vs | main.rs:488:15:488:16 | vs |
 | main.rs:488:10:488:10 | [SSA] v | main.rs:489:14:489:14 | v |
 | main.rs:488:10:488:10 | v | main.rs:488:10:488:10 | [SSA] v |
 | main.rs:488:10:488:10 | v | main.rs:488:10:488:10 | v |
-| main.rs:488:15:488:16 | [SSA] vs | main.rs:492:27:492:28 | [SSA] vs |
-| main.rs:488:15:488:16 | [SSA] vs | main.rs:492:27:492:28 | vs |
 | main.rs:488:15:488:16 | [post] receiver for vs | main.rs:488:15:488:16 | [post] vs |
-| main.rs:488:15:488:16 | [post] vs | main.rs:492:27:492:28 | [SSA] vs |
 | main.rs:488:15:488:16 | [post] vs | main.rs:492:27:492:28 | vs |
 | main.rs:488:15:488:16 | vs | main.rs:488:15:488:16 | receiver for vs |
-| main.rs:488:15:488:16 | vs | main.rs:492:27:492:28 | [SSA] vs |
 | main.rs:488:15:488:16 | vs | main.rs:492:27:492:28 | vs |
 | main.rs:492:9:492:11 | [SSA] vs2 | main.rs:493:15:493:17 | vs2 |
 | main.rs:492:9:492:11 | vs2 | main.rs:492:9:492:11 | [SSA] vs2 |
 | main.rs:492:9:492:11 | vs2 | main.rs:492:9:492:11 | vs2 |
-| main.rs:492:27:492:28 | [SSA] vs | main.rs:497:5:497:6 | [SSA] vs |
-| main.rs:492:27:492:28 | [SSA] vs | main.rs:497:5:497:6 | vs |
 | main.rs:492:27:492:28 | [post] receiver for vs | main.rs:492:27:492:28 | [post] vs |
-| main.rs:492:27:492:28 | [post] vs | main.rs:497:5:497:6 | [SSA] vs |
 | main.rs:492:27:492:28 | [post] vs | main.rs:497:5:497:6 | vs |
 | main.rs:492:27:492:28 | vs | main.rs:492:27:492:28 | receiver for vs |
-| main.rs:492:27:492:28 | vs | main.rs:497:5:497:6 | [SSA] vs |
 | main.rs:492:27:492:28 | vs | main.rs:497:5:497:6 | vs |
 | main.rs:492:27:492:35 | [post] receiver for vs.iter(...) | main.rs:492:27:492:35 | [post] vs.iter(...) |
 | main.rs:492:27:492:35 | vs.iter(...) | main.rs:492:27:492:35 | receiver for vs.iter(...) |
@@ -800,13 +760,9 @@ localStep
 | main.rs:493:10:493:10 | [SSA] v | main.rs:494:14:494:14 | v |
 | main.rs:493:10:493:10 | v | main.rs:493:10:493:10 | [SSA] v |
 | main.rs:493:10:493:10 | v | main.rs:493:10:493:10 | v |
-| main.rs:497:5:497:6 | [SSA] vs | main.rs:498:5:498:6 | [SSA] vs |
-| main.rs:497:5:497:6 | [SSA] vs | main.rs:498:5:498:6 | vs |
 | main.rs:497:5:497:6 | [post] receiver for vs | main.rs:497:5:497:6 | [post] vs |
-| main.rs:497:5:497:6 | [post] vs | main.rs:498:5:498:6 | [SSA] vs |
 | main.rs:497:5:497:6 | [post] vs | main.rs:498:5:498:6 | vs |
 | main.rs:497:5:497:6 | vs | main.rs:497:5:497:6 | receiver for vs |
-| main.rs:497:5:497:6 | vs | main.rs:498:5:498:6 | [SSA] vs |
 | main.rs:497:5:497:6 | vs | main.rs:498:5:498:6 | vs |
 | main.rs:497:5:497:13 | [post] receiver for vs.iter(...) | main.rs:497:5:497:13 | [post] vs.iter(...) |
 | main.rs:497:5:497:13 | vs.iter(...) | main.rs:497:5:497:13 | receiver for vs.iter(...) |
@@ -814,7 +770,6 @@ localStep
 | main.rs:497:20:497:20 | [SSA] x | main.rs:497:29:497:29 | x |
 | main.rs:497:20:497:20 | x | main.rs:497:20:497:20 | [SSA] x |
 | main.rs:497:20:497:20 | x | main.rs:497:20:497:20 | x |
-| main.rs:498:5:498:6 | [SSA] vs | main.rs:500:14:500:15 | vs |
 | main.rs:498:5:498:6 | [post] receiver for vs | main.rs:498:5:498:6 | [post] vs |
 | main.rs:498:5:498:6 | [post] vs | main.rs:500:14:500:15 | vs |
 | main.rs:498:5:498:6 | vs | main.rs:498:5:498:6 | receiver for vs |
@@ -883,8 +838,29 @@ localStep
 | main.rs:519:17:519:18 | &c | main.rs:519:9:519:13 | c_ref |
 | main.rs:523:14:523:18 | [post] c_ref | main.rs:524:11:524:15 | c_ref |
 | main.rs:523:14:523:18 | c_ref | main.rs:524:11:524:15 | c_ref |
-| main.rs:551:13:551:33 | result_questionmark(...) | main.rs:551:9:551:9 | _ |
-| main.rs:563:36:563:41 | ...::new(...) | main.rs:563:36:563:41 | MacroExpr |
+| main.rs:528:9:528:9 | [SSA] a | main.rs:530:10:530:10 | a |
+| main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | [SSA] a |
+| main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | a |
+| main.rs:528:18:528:27 | source(...) | main.rs:528:9:528:9 | a |
+| main.rs:530:10:530:10 | [post] a | main.rs:531:10:531:10 | a |
+| main.rs:530:10:530:10 | a | main.rs:531:10:531:10 | a |
+| main.rs:531:10:531:10 | [post] a | main.rs:532:20:532:20 | a |
+| main.rs:531:10:531:10 | [post] receiver for a | main.rs:531:10:531:10 | [post] a |
+| main.rs:531:10:531:10 | a | main.rs:531:10:531:10 | receiver for a |
+| main.rs:531:10:531:10 | a | main.rs:532:20:532:20 | a |
+| main.rs:534:9:534:9 | [SSA] b | main.rs:536:10:536:10 | b |
+| main.rs:534:9:534:9 | b | main.rs:534:9:534:9 | [SSA] b |
+| main.rs:534:9:534:9 | b | main.rs:534:9:534:9 | b |
+| main.rs:534:18:534:34 | ... as i32 | main.rs:534:9:534:9 | b |
+| main.rs:536:10:536:10 | [post] b | main.rs:537:10:537:10 | b |
+| main.rs:536:10:536:10 | b | main.rs:537:10:537:10 | b |
+| main.rs:537:10:537:10 | [post] b | main.rs:538:20:538:20 | b |
+| main.rs:537:10:537:10 | [post] receiver for b | main.rs:537:10:537:10 | [post] b |
+| main.rs:537:10:537:10 | b | main.rs:537:10:537:10 | receiver for b |
+| main.rs:537:10:537:10 | b | main.rs:538:20:538:20 | b |
+| main.rs:565:13:565:33 | result_questionmark(...) | main.rs:565:9:565:9 | _ |
+| main.rs:577:36:577:41 | ...::new(...) | main.rs:577:36:577:41 | MacroExpr |
+| main.rs:577:36:577:41 | [post] MacroExpr | main.rs:577:36:577:41 | [post] ...::new(...) |
 models
 | 1 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 2 | Summary: lang:alloc; <&&str as crate::string::SpecToString>::spec_to_string; Argument[self].Reference.Reference; ReturnValue; value |
@@ -2202,6 +2178,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::or_else | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<crate::result::Result>::or_else |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:core::_::<str>::parse | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:core::_::<str>::parse |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<&[u8] as crate::io::BufRead>::fill_buf | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<&[u8] as crate::io::BufRead>::fill_buf |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::path::Path>::canonicalize | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::path::Path>::canonicalize |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout_ms | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout_ms |
@@ -2216,6 +2193,7 @@ storeStep
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::chunk | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::chunk |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text_with_charset | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::response::Response>::text_with_charset |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in repo:https://github.com/servo/rust-url:url::_::<crate::Url>::parse | Ok | file://:0:0:0:0 | [summary] to write: ReturnValue in repo:https://github.com/servo/rust-url:url::_::<crate::Url>::parse |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)].Field[0] in lang:alloc::_::<crate::collections::btree::node::NodeRef>::search_tree_for_bifurcation | tuple.0 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:alloc::_::<crate::collections::btree::node::NodeRef>::search_tree_for_bifurcation |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)].Field[0] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout | tuple.0 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout |
 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)].Field[0] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout_ms | tuple.0 | file://:0:0:0:0 | [summary] to write: ReturnValue.Field[crate::result::Result::Ok(0)] in lang:std::_::<crate::sync::poison::condvar::Condvar>::wait_timeout_ms |
@@ -2321,6 +2299,7 @@ storeStep
 | main.rs:137:38:137:38 | 2 | Point.y | main.rs:137:13:137:40 | Point {...} |
 | main.rs:143:28:143:36 | source(...) | Point.x | main.rs:143:17:143:44 | Point {...} |
 | main.rs:143:42:143:42 | 2 | Point.y | main.rs:143:17:143:44 | Point {...} |
+| main.rs:145:11:145:20 | source(...) | Point.y | main.rs:145:5:145:5 | [post] p |
 | main.rs:151:12:151:21 | source(...) | Point.x | main.rs:150:13:153:5 | Point {...} |
 | main.rs:152:12:152:12 | 2 | Point.y | main.rs:150:13:153:5 | Point {...} |
 | main.rs:166:16:169:9 | Point {...} | Point3D.plane | main.rs:165:13:171:5 | Point3D {...} |
@@ -2391,7 +2370,7 @@ storeStep
 | main.rs:504:41:504:41 | 4 | element | main.rs:504:22:504:42 | [...] |
 | main.rs:519:18:519:18 | c | &ref | main.rs:519:17:519:18 | &c |
 | main.rs:522:15:522:15 | b | &ref | main.rs:522:14:522:15 | &b |
-| main.rs:531:27:531:27 | 0 | Some | main.rs:531:22:531:28 | Some(...) |
+| main.rs:545:27:545:27 | 0 | Some | main.rs:545:22:545:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::<crate::boxed::Box>::allocator | tuple.1 | file://:0:0:0:0 | [summary] read: Argument[0].Field[1] in lang:alloc::_::<crate::boxed::Box>::allocator |
 | file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::<crate::boxed::Box>::as_mut_ptr | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in lang:alloc::_::<crate::boxed::Box>::as_mut_ptr |
@@ -2494,6 +2473,7 @@ readStep
 | file://:0:0:0:0 | [summary param] 0 in lang:std::_::crate::thread::current::try_with_current | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:std::_::crate::thread::current::try_with_current |
 | file://:0:0:0:0 | [summary param] 0 in lang:std::_::crate::thread::with_current_name | function return | file://:0:0:0:0 | [summary] read: Argument[0].ReturnValue in lang:std::_::crate::thread::with_current_name |
 | file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/rust-lang/regex:regex::_::crate::escape | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/rust-lang/regex:regex::_::crate::escape |
+| file://:0:0:0:0 | [summary param] 0 in repo:https://github.com/servo/rust-url:url::_::<crate::Url>::parse | &ref | file://:0:0:0:0 | [summary] read: Argument[0].Reference in repo:https://github.com/servo/rust-url:url::_::<crate::Url>::parse |
 | file://:0:0:0:0 | [summary param] 1 in lang:alloc::_::<crate::vec::into_iter::IntoIter as crate::iter::traits::iterator::Iterator>::fold | function return | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:alloc::_::<crate::vec::into_iter::IntoIter as crate::iter::traits::iterator::Iterator>::fold |
 | file://:0:0:0:0 | [summary param] 1 in lang:alloc::_::crate::collections::btree::mem::replace | function return | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:alloc::_::crate::collections::btree::mem::replace |
 | file://:0:0:0:0 | [summary param] 1 in lang:alloc::_::crate::collections::btree::mem::take_mut | function return | file://:0:0:0:0 | [summary] read: Argument[1].ReturnValue in lang:alloc::_::crate::collections::btree::mem::take_mut |
@@ -2956,13 +2936,25 @@ readStep
 | main.rs:124:10:124:10 | b | tuple.0 | main.rs:124:10:124:12 | b.0 |
 | main.rs:124:10:124:12 | b.0 | tuple.1 | main.rs:124:10:124:15 | ... .1 |
 | main.rs:125:10:125:10 | b | tuple.1 | main.rs:125:10:125:12 | b.1 |
+| main.rs:138:10:138:10 | p | Point.x | main.rs:138:10:138:12 | p.x |
+| main.rs:139:10:139:10 | p | Point.y | main.rs:139:10:139:12 | p.y |
+| main.rs:144:10:144:10 | p | Point.y | main.rs:144:10:144:12 | p.y |
+| main.rs:145:5:145:5 | p | Point.y | main.rs:145:5:145:7 | p.y |
+| main.rs:146:10:146:10 | p | Point.y | main.rs:146:10:146:12 | p.y |
 | main.rs:154:9:154:28 | Point {...} | Point.x | main.rs:154:20:154:20 | a |
 | main.rs:154:9:154:28 | Point {...} | Point.y | main.rs:154:26:154:26 | b |
+| main.rs:172:10:172:10 | p | Point3D.plane | main.rs:172:10:172:16 | p.plane |
+| main.rs:172:10:172:16 | p.plane | Point.x | main.rs:172:10:172:18 | ... .x |
+| main.rs:173:10:173:10 | p | Point3D.plane | main.rs:173:10:173:16 | p.plane |
+| main.rs:173:10:173:16 | p.plane | Point.y | main.rs:173:10:173:18 | ... .y |
+| main.rs:174:10:174:10 | p | Point3D.z | main.rs:174:10:174:12 | p.z |
 | main.rs:184:9:187:9 | Point3D {...} | Point3D.plane | main.rs:185:20:185:33 | Point {...} |
 | main.rs:184:9:187:9 | Point3D {...} | Point3D.z | main.rs:186:13:186:13 | z |
 | main.rs:185:20:185:33 | Point {...} | Point.x | main.rs:185:28:185:28 | x |
 | main.rs:185:20:185:33 | Point {...} | Point.y | main.rs:185:31:185:31 | y |
+| main.rs:199:10:199:10 | s | MyTupleStruct(0) | main.rs:199:10:199:12 | s.0 |
 | main.rs:199:10:199:10 | s | tuple.0 | main.rs:199:10:199:12 | s.0 |
+| main.rs:200:10:200:10 | s | MyTupleStruct(1) | main.rs:200:10:200:12 | s.1 |
 | main.rs:200:10:200:10 | s | tuple.1 | main.rs:200:10:200:12 | s.1 |
 | main.rs:203:9:203:27 | MyTupleStruct(...) | MyTupleStruct(0) | main.rs:203:23:203:23 | x |
 | main.rs:203:9:203:27 | MyTupleStruct(...) | MyTupleStruct(1) | main.rs:203:26:203:26 | y |
@@ -3071,3 +3063,5 @@ readStep
 | main.rs:510:19:510:24 | vs_mut | &ref | main.rs:510:19:510:24 | receiver for vs_mut |
 | main.rs:510:19:510:35 | vs_mut.iter_mut(...) | element | main.rs:510:9:510:14 | &mut ... |
 | main.rs:524:11:524:15 | c_ref | &ref | main.rs:524:10:524:15 | * ... |
+| main.rs:531:10:531:10 | a | &ref | main.rs:531:10:531:10 | receiver for a |
+| main.rs:537:10:537:10 | b | &ref | main.rs:537:10:537:10 | receiver for b |

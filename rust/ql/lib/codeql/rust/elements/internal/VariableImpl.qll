@@ -161,7 +161,7 @@ module Impl {
     }
 
     /** Hold is this variable is mutable. */
-    predicate isMutable() { this.getPat().isMut() }
+    predicate isMutable() { this.getPat().isMut() or this.getSelfParam().isMut() }
 
     /** Hold is this variable is immutable. */
     predicate isImmutable() { not this.isMutable() }
@@ -594,7 +594,7 @@ module Impl {
     /** Holds if this access is a capture. */
     predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
 
-    override string toString() { result = name }
+    override string toStringImpl() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
   }

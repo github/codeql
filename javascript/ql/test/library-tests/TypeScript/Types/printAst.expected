@@ -2,9 +2,6 @@ nodes
 | badTypes.ts:5:1:5:29 | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} |
 | badTypes.ts:5:1:5:29 | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} | semmle.order | 1 |
 | badTypes.ts:5:11:5:11 | [Identifier] A | semmle.label | [Identifier] A |
-| badTypes.ts:5:21:5:24 | [ThisVarTypeAccess] this | semmle.label | [ThisVarTypeAccess] this |
-| badTypes.ts:5:21:5:26 | [TypeAccess] this.B | semmle.label | [TypeAccess] this.B |
-| badTypes.ts:5:26:5:26 | [Identifier] B | semmle.label | [Identifier] B |
 | badTypes.ts:6:1:6:24 | [TypeAliasDeclaration,TypeDefinition] type T ... ar.bar; | semmle.label | [TypeAliasDeclaration,TypeDefinition] type T ... ar.bar; |
 | badTypes.ts:6:1:6:24 | [TypeAliasDeclaration,TypeDefinition] type T ... ar.bar; | semmle.order | 2 |
 | badTypes.ts:6:6:6:6 | [Identifier] T | semmle.label | [Identifier] T |
@@ -2171,12 +2168,6 @@ nodes
 edges
 | badTypes.ts:5:1:5:29 | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} | badTypes.ts:5:11:5:11 | [Identifier] A | semmle.label | 1 |
 | badTypes.ts:5:1:5:29 | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} | badTypes.ts:5:11:5:11 | [Identifier] A | semmle.order | 1 |
-| badTypes.ts:5:1:5:29 | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} | badTypes.ts:5:21:5:26 | [TypeAccess] this.B | semmle.label | 2 |
-| badTypes.ts:5:1:5:29 | [InterfaceDeclaration,TypeDefinition] interfa ... is.B {} | badTypes.ts:5:21:5:26 | [TypeAccess] this.B | semmle.order | 2 |
-| badTypes.ts:5:21:5:26 | [TypeAccess] this.B | badTypes.ts:5:21:5:24 | [ThisVarTypeAccess] this | semmle.label | 1 |
-| badTypes.ts:5:21:5:26 | [TypeAccess] this.B | badTypes.ts:5:21:5:24 | [ThisVarTypeAccess] this | semmle.order | 1 |
-| badTypes.ts:5:21:5:26 | [TypeAccess] this.B | badTypes.ts:5:26:5:26 | [Identifier] B | semmle.label | 2 |
-| badTypes.ts:5:21:5:26 | [TypeAccess] this.B | badTypes.ts:5:26:5:26 | [Identifier] B | semmle.order | 2 |
 | badTypes.ts:6:1:6:24 | [TypeAliasDeclaration,TypeDefinition] type T ... ar.bar; | badTypes.ts:6:6:6:6 | [Identifier] T | semmle.label | 1 |
 | badTypes.ts:6:1:6:24 | [TypeAliasDeclaration,TypeDefinition] type T ... ar.bar; | badTypes.ts:6:6:6:6 | [Identifier] T | semmle.order | 1 |
 | badTypes.ts:6:1:6:24 | [TypeAliasDeclaration,TypeDefinition] type T ... ar.bar; | badTypes.ts:6:10:6:23 | [TypeofTypeExpr] typeof var.bar | semmle.label | 2 |

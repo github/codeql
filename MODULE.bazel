@@ -28,7 +28,7 @@ bazel_dep(name = "rules_kotlin", version = "2.0.0-codeql.1")
 bazel_dep(name = "gazelle", version = "0.40.0")
 bazel_dep(name = "rules_dotnet", version = "0.17.4")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
-bazel_dep(name = "rules_rust", version = "0.57.1")
+bazel_dep(name = "rules_rust", version = "0.58.0")
 bazel_dep(name = "zstd", version = "1.5.5.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
@@ -71,13 +71,13 @@ use_repo(
 tree_sitter_extractors_deps = use_extension("//misc/bazel/3rdparty:tree_sitter_extractors_extension.bzl", "r")
 use_repo(
     tree_sitter_extractors_deps,
-    "vendor_ts__anyhow-1.0.96",
+    "vendor_ts__anyhow-1.0.97",
     "vendor_ts__argfile-0.2.1",
-    "vendor_ts__chalk-ir-0.99.0",
-    "vendor_ts__chrono-0.4.39",
-    "vendor_ts__clap-4.5.31",
+    "vendor_ts__chalk-ir-0.100.0",
+    "vendor_ts__chrono-0.4.40",
+    "vendor_ts__clap-4.5.32",
     "vendor_ts__dunce-1.0.5",
-    "vendor_ts__either-1.14.0",
+    "vendor_ts__either-1.15.0",
     "vendor_ts__encoding-0.2.33",
     "vendor_ts__figment-0.10.19",
     "vendor_ts__flate2-1.1.0",
@@ -88,31 +88,31 @@ use_repo(
     "vendor_ts__mustache-0.9.0",
     "vendor_ts__num-traits-0.2.19",
     "vendor_ts__num_cpus-1.16.0",
-    "vendor_ts__proc-macro2-1.0.93",
-    "vendor_ts__quote-1.0.38",
-    "vendor_ts__ra_ap_base_db-0.0.266",
-    "vendor_ts__ra_ap_cfg-0.0.266",
-    "vendor_ts__ra_ap_hir-0.0.266",
-    "vendor_ts__ra_ap_hir_def-0.0.266",
-    "vendor_ts__ra_ap_hir_expand-0.0.266",
-    "vendor_ts__ra_ap_hir_ty-0.0.266",
-    "vendor_ts__ra_ap_ide_db-0.0.266",
-    "vendor_ts__ra_ap_intern-0.0.266",
-    "vendor_ts__ra_ap_load-cargo-0.0.266",
-    "vendor_ts__ra_ap_parser-0.0.266",
-    "vendor_ts__ra_ap_paths-0.0.266",
-    "vendor_ts__ra_ap_project_model-0.0.266",
-    "vendor_ts__ra_ap_span-0.0.266",
-    "vendor_ts__ra_ap_stdx-0.0.266",
-    "vendor_ts__ra_ap_syntax-0.0.266",
-    "vendor_ts__ra_ap_vfs-0.0.266",
+    "vendor_ts__proc-macro2-1.0.94",
+    "vendor_ts__quote-1.0.40",
+    "vendor_ts__ra_ap_base_db-0.0.270",
+    "vendor_ts__ra_ap_cfg-0.0.270",
+    "vendor_ts__ra_ap_hir-0.0.270",
+    "vendor_ts__ra_ap_hir_def-0.0.270",
+    "vendor_ts__ra_ap_hir_expand-0.0.270",
+    "vendor_ts__ra_ap_hir_ty-0.0.270",
+    "vendor_ts__ra_ap_ide_db-0.0.270",
+    "vendor_ts__ra_ap_intern-0.0.270",
+    "vendor_ts__ra_ap_load-cargo-0.0.270",
+    "vendor_ts__ra_ap_parser-0.0.270",
+    "vendor_ts__ra_ap_paths-0.0.270",
+    "vendor_ts__ra_ap_project_model-0.0.270",
+    "vendor_ts__ra_ap_span-0.0.270",
+    "vendor_ts__ra_ap_stdx-0.0.270",
+    "vendor_ts__ra_ap_syntax-0.0.270",
+    "vendor_ts__ra_ap_vfs-0.0.270",
     "vendor_ts__rand-0.9.0",
     "vendor_ts__rayon-1.10.0",
     "vendor_ts__regex-1.11.1",
-    "vendor_ts__serde-1.0.218",
-    "vendor_ts__serde_json-1.0.139",
+    "vendor_ts__serde-1.0.219",
+    "vendor_ts__serde_json-1.0.140",
     "vendor_ts__serde_with-3.12.0",
-    "vendor_ts__syn-2.0.98",
+    "vendor_ts__syn-2.0.100",
     "vendor_ts__toml-0.8.20",
     "vendor_ts__tracing-0.1.41",
     "vendor_ts__tracing-flame-0.2.0",
@@ -155,7 +155,7 @@ use_repo(csharp_main_extension, "paket.main")
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "codegen_deps",
-    python_version = "3.11",
+    python_version = "3.12",
     requirements_lock = "//misc/codegen:requirements_lock.txt",
 )
 use_repo(pip, "codegen_deps")

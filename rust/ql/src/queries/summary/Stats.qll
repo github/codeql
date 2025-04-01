@@ -7,6 +7,7 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
+private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.Concepts
@@ -33,6 +34,14 @@ int getLinesOfUserCode() {
  */
 int getTotalAstInconsistencies() {
   result = sum(string type | | AstConsistency::getAstInconsistencyCounts(type))
+}
+
+/**
+ * Gets a count of the total number of path resolution inconsistencies in the database.
+ */
+int getTotalPathResolutionInconsistencies() {
+  result =
+    sum(string type | | PathResolutionConsistency::getPathResolutionInconsistencyCounts(type))
 }
 
 /**

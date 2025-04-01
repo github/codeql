@@ -647,22 +647,8 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = getAUse(def) }
 
-  class Parameter = J::Parameter;
-
-  predicate ssaDefAssigns(Impl::WriteDefinition def, Expr value) {
-    exists(VariableUpdate upd | upd = def.(SsaExplicitUpdate).getDefiningExpr() |
-      value = upd.(VariableAssign).getSource() or
-      value = upd.(AssignOp) or
-      value = upd.(RecordBindingVariableExpr)
-    )
-  }
-
-  predicate ssaDefInitializesParam(Impl::WriteDefinition def, Parameter p) {
-    def.(SsaImplicitInit).getSourceVariable() =
-      any(SsaSourceVariable v |
-        v.getVariable() = p and
-        v.getEnclosingCallable() = p.getCallable()
-      )
+  predicate ssaDefHasSource(WriteDefinition def) {
+    def instanceof SsaExplicitUpdate or def.(SsaImplicitInit).isParameterDefinition(_)
   }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
@@ -680,10 +666,17 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     }
   }
 
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `branch`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
+    guard.directlyControls(bb, branch)
+  }
+
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
     guard.controls(bb, branch)
   }
+
+  predicate includeWriteDefsInFlowStep() { none() }
 }
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

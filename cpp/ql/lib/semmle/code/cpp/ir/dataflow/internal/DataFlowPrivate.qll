@@ -1318,7 +1318,7 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof InitialGlobalValue
   or
-  n instanceof SsaPhiInputNode
+  n instanceof SsaSynthNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1632,9 +1632,7 @@ private Instruction getAnInstruction(Node n) {
   not n instanceof InstructionNode and
   result = n.asOperand().getUse()
   or
-  result = n.(SsaPhiNode).getPhiNode().getBasicBlock().getFirstInstruction()
-  or
-  result = n.(SsaPhiInputNode).getBasicBlock().getFirstInstruction()
+  result = n.(SsaSynthNode).getBasicBlock().getFirstInstruction()
   or
   n.(IndirectInstruction).hasInstructionAndIndirectionIndex(result, _)
   or
@@ -1766,14 +1764,14 @@ module IteratorFlow {
      * Note: Unlike `def.getAnUltimateDefinition()` this predicate also
      * traverses back through iterator increment and decrement operations.
      */
-    private Ssa::DefinitionExt getAnUltimateDefinition(Ssa::DefinitionExt def) {
+    private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
       result = def.getAnUltimateDefinition()
       or
       exists(IRBlock bb, int i, IteratorCrementCall crementCall, Ssa::SourceVariable sv |
         crementCall = def.getValue().asInstruction().(StoreInstruction).getSourceValue() and
         sv = def.getSourceVariable() and
         bb.getInstruction(i) = crementCall and
-        Ssa::ssaDefReachesReadExt(sv, result, bb, i)
+        Ssa::ssaDefReachesRead(sv, result, bb, i)
       )
     }
 
@@ -1801,13 +1799,13 @@ module IteratorFlow {
       GetsIteratorCall beginCall, Instruction writeToDeref
     ) {
       exists(
-        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::DefinitionExt def,
-        IteratorPointerDereferenceCall starCall, Ssa::DefinitionExt ultimate, Operand address
+        StoreInstruction beginStore, IRBlock bbStar, int iStar, Ssa::Definition def,
+        IteratorPointerDereferenceCall starCall, Ssa::Definition ultimate, Operand address
       |
         isIteratorWrite(writeToDeref, address) and
         operandForFullyConvertedCall(address, starCall) and
         bbStar.getInstruction(iStar) = starCall and
-        Ssa::ssaDefReachesReadExt(_, def, bbStar, iStar) and
+        Ssa::ssaDefReachesRead(_, def, bbStar, iStar) and
         ultimate = getAnUltimateDefinition*(def) and
         beginStore = ultimate.getValue().asInstruction() and
         operandForFullyConvertedCall(beginStore.getSourceValueOperand(), beginCall)
@@ -1836,45 +1834,55 @@ module IteratorFlow {
 
   private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
 
-  cached
-  private newtype TSsaDef =
-    TDef(IteratorSsa::DefinitionExt def) or
-    TPhi(PhiNode phi)
+  private module DataFlowIntegrationInput implements IteratorSsa::DataFlowIntegrationInputSig {
+    private import codeql.util.Void
 
-  abstract private class SsaDef extends TSsaDef {
-    /** Gets a textual representation of this element. */
-    string toString() { none() }
+    class Expr extends Instruction {
+      Expr() {
+        exists(IRBlock bb, int i |
+          SsaInput::variableRead(bb, i, _, true) and
+          this = bb.getInstruction(i)
+        )
+      }
 
-    /** Gets the underlying non-phi definition or use. */
-    IteratorSsa::DefinitionExt asDef() { none() }
+      predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { bb.getInstruction(i) = this }
+    }
 
-    /** Gets the underlying phi node. */
-    PhiNode asPhi() { none() }
+    predicate ssaDefHasSource(IteratorSsa::WriteDefinition def) { none() }
 
-    /** Gets the location of this element. */
-    abstract Location getLocation();
+    predicate allowFlowIntoUncertainDef(IteratorSsa::UncertainWriteDefinition def) { any() }
+
+    class Guard extends Void {
+      predicate controlsBranchEdge(
+        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch
+      ) {
+        none()
+      }
+    }
+
+    predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+      none()
+    }
+
+    predicate supportBarrierGuardsOnPhiEdges() { none() }
   }
 
-  private class Def extends TDef, SsaDef {
-    IteratorSsa::DefinitionExt def;
+  private module DataFlowIntegrationImpl =
+    IteratorSsa::DataFlowIntegration<DataFlowIntegrationInput>;
 
-    Def() { this = TDef(def) }
+  private class IteratorSynthNode extends DataFlowIntegrationImpl::SsaNode {
+    IteratorSynthNode() { not this.asDefinition() instanceof IteratorSsa::WriteDefinition }
+  }
 
-    final override IteratorSsa::DefinitionExt asDef() { result = def }
-
+  private class Def extends IteratorSsa::Definition {
     final override Location getLocation() { result = this.getImpl().getLocation() }
-
-    /** Gets the variable written to by this definition. */
-    final SourceVariable getSourceVariable() { result = def.getSourceVariable() }
-
-    override string toString() { result = def.toString() }
 
     /**
      * Holds if this definition (or use) has index `index` in block `block`,
      * and is a definition (or use) of the variable `sv`.
      */
     predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
-      def.definesAt(sv, block, index, _)
+      super.definesAt(sv, block, index)
     }
 
     private Ssa::DefImpl getImpl() {
@@ -1891,60 +1899,15 @@ module IteratorFlow {
     int getIndirectionIndex() { result = this.getImpl().getIndirectionIndex() }
   }
 
-  private class Phi extends TPhi, SsaDef {
-    PhiNode phi;
-
-    Phi() { this = TPhi(phi) }
-
-    final override PhiNode asPhi() { result = phi }
-
-    final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
-
-    override string toString() { result = phi.toString() }
-
-    SsaIteratorNode getNode() { result.getIteratorFlowNode() = phi }
-  }
-
-  private class PhiNode extends IteratorSsa::DefinitionExt {
-    PhiNode() {
-      this instanceof IteratorSsa::PhiNode or
-      this instanceof IteratorSsa::PhiReadNode
-    }
-
-    SsaIteratorNode getNode() { result.getIteratorFlowNode() = this }
-  }
-
-  cached
-  private module IteratorSsaCached {
-    cached
-    predicate adjacentDefRead(IRBlock bb1, int i1, SourceVariable sv, IRBlock bb2, int i2) {
-      IteratorSsa::adjacentDefReadExt(_, sv, bb1, i1, bb2, i2)
-      or
-      exists(PhiNode phi |
-        IteratorSsa::lastRefRedefExt(_, sv, bb1, i1, phi) and
-        phi.definesAt(sv, bb2, i2, _)
-      )
-    }
-
-    cached
-    Node getAPriorDefinition(IteratorSsa::DefinitionExt next) {
-      exists(IRBlock bb, int i, SourceVariable sv, IteratorSsa::DefinitionExt def |
-        IteratorSsa::lastRefRedefExt(pragma[only_bind_into](def), pragma[only_bind_into](sv),
-          pragma[only_bind_into](bb), pragma[only_bind_into](i), next) and
-        nodeToDefOrUse(result, sv, bb, i, _)
-      )
-    }
-  }
-
   /** The set of nodes necessary for iterator flow. */
-  class IteratorFlowNode instanceof PhiNode {
+  class IteratorFlowNode instanceof IteratorSynthNode {
     /** Gets a textual representation of this node. */
     string toString() { result = super.toString() }
 
     /** Gets the type of this node. */
     DataFlowType getType() {
       exists(Ssa::SourceVariable sv |
-        super.definesAt(sv, _, _, _) and
+        super.getSourceVariable() = sv and
         result = sv.getType()
       )
     }
@@ -1956,60 +1919,33 @@ module IteratorFlow {
     Location getLocation() { result = super.getBasicBlock().getLocation() }
   }
 
-  private import IteratorSsaCached
-
-  private predicate defToNode(Node node, Def def, boolean uncertain) {
-    (
-      nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
-      or
-      nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
-    ) and
-    uncertain = false
+  private predicate defToNode(Node node, Def def) {
+    nodeHasOperand(node, def.getValue().asOperand(), def.getIndirectionIndex())
+    or
+    nodeHasInstruction(node, def.getValue().asInstruction(), def.getIndirectionIndex())
   }
 
-  private predicate nodeToDefOrUse(
-    Node node, SourceVariable sv, IRBlock bb, int i, boolean uncertain
-  ) {
-    exists(Def def |
-      def.hasIndexInBlock(bb, i, sv) and
-      defToNode(node, def, uncertain)
+  bindingset[result, v]
+  pragma[inline_late]
+  private DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
+    result = n.(SsaIteratorNode).getIteratorFlowNode()
+    or
+    exists(Ssa::UseImpl use, IRBlock bb, int i |
+      result.(DataFlowIntegrationImpl::ExprNode).getExpr().hasCfgNode(bb, i) and
+      use.hasIndexInBlock(bb, i, v) and
+      use.getNode() = n
     )
     or
-    useToNode(bb, i, sv, node) and
-    uncertain = false
-  }
-
-  private predicate useToNode(IRBlock bb, int i, SourceVariable sv, Node nodeTo) {
-    exists(PhiNode phi |
-      phi.definesAt(sv, bb, i, _) and
-      nodeTo = phi.getNode()
-    )
-    or
-    exists(Ssa::UseImpl use |
-      use.hasIndexInBlock(bb, i, sv) and
-      nodeTo = use.getNode()
-    )
+    defToNode(n, result.(DataFlowIntegrationImpl::SsaDefinitionNode).getDefinition())
   }
 
   /**
    * Holds if `nodeFrom` flows to `nodeTo` in a single step.
    */
   predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(
-      Node nFrom, SourceVariable sv, IRBlock bb1, int i1, IRBlock bb2, int i2, boolean uncertain
-    |
-      adjacentDefRead(bb1, i1, sv, bb2, i2) and
-      nodeToDefOrUse(nFrom, sv, bb1, i1, uncertain) and
-      useToNode(bb2, i2, sv, nodeTo)
-    |
-      if uncertain = true
-      then
-        nodeFrom =
-          [
-            nFrom,
-            getAPriorDefinition(any(IteratorSsa::DefinitionExt next | next.definesAt(sv, bb1, i1, _)))
-          ]
-      else nFrom = nodeFrom
+    exists(SourceVariable v |
+      nodeFrom != nodeTo and
+      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v), _)
     )
   }
 }

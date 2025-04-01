@@ -1,3 +1,17 @@
+## 1.1.0
+
+### New Queries
+
+* Added a new summary query counting the total number of extracted AST nodes.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+No user-facing changes.
+
 ## 1.0.17
 
 No user-facing changes.

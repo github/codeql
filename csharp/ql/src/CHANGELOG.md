@@ -1,3 +1,28 @@
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `csharp/path-combine`, to recommend against the `Path.Combine` method due to it silently discarding its earlier parameters if later parameters are rooted.
+
+### Minor Analysis Improvements
+
+* Improved dependency resolution in `build-mode: none` extraction to handle failing `dotnet restore` processes that managed to download a subset of the dependencies before the failure.
+* Increase query precision for `cs/useless-gethashcode-call` by not flagging calls to `GetHashCode` on `uint`, `long` and `ulong`.
+* Increase query precision for `cs/constant-condition` and allow the use of discards in switch/case statements and also take the condition (if any) into account.
+* The `cs/local-not-disposed` query no longer flags un-disposed tasks as this is often not needed (explained [here](https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/)).
+* Increase query precision for `cs/useless-assignment-to-local` and `cs/constant-condition` when *unknown* types are involved (mostly relevant for `build-mode: none` databases).
+* Don't consider an if-statement to be *useless* in `cs/useless-if-statement` if there is at least a comment.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+### Minor Analysis Improvements
+
+* C#: Improve precision of the query `cs/call-to-object-tostring` for value tuples.
+
 ## 1.0.17
 
 No user-facing changes.

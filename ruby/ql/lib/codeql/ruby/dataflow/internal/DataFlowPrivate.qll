@@ -108,7 +108,12 @@ module SsaFlow {
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
-    n = toParameterNode(result.(Impl::ParameterNode).getParameter())
+    exists(SsaImpl::ParameterExt p |
+      n = toParameterNode(p) and
+      p.isInitializedBy(result.(Impl::WriteDefSourceNode).getDefinition())
+    )
+    or
+    result.(Impl::WriteDefSourceNode).getDefinition().(Ssa::WriteDefinition).assigns(n.asExpr())
   }
 
   predicate localFlowStep(

@@ -1,6 +1,7 @@
 import codeql.rust.dataflow.DataFlow::DataFlow as DataFlow
 private import rust
 private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.Node as Node
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
@@ -17,6 +18,8 @@ private module Input implements InputSig<Location, RustDataFlow> {
     // We allow flow into post-update node for receiver expressions (from the
     // synthetic post receiever node).
     n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = any(Node::ReceiverNode r).getReceiver()
+    or
+    n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_, _)
   }
 
   predicate missingLocationExclude(RustDataFlow::Node n) { not exists(n.asExpr().getLocation()) }
