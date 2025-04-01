@@ -866,6 +866,14 @@ module API {
                   .getAReturn()
           )
           or
+          // Handle rest parameters escaping into external code. For example:
+          //
+          //   function foo(...rest) {
+          //     externalFunc(rest);
+          //   }
+          //
+          // Here, 'rest' reaches a def-node at the call to externalFunc, so we need to ensure
+          // the arguments passed to 'foo' are stored in the 'rest' array.
           exists(Function fun, DataFlow::InvokeNode invoke, int argIndex, Parameter rest |
             fun.getRestParameter() = rest and
             rest.flow() = pred and
