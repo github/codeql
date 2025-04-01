@@ -54,6 +54,14 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   override DataFlow::Node getAUrlPart() {
     result = request.getArgument(0)
     or
+    result = this.getAUrlPartFromConstructor()
+  }
+
+  /**
+   * Gets a node that contributes to the URL of the request
+   * indirectly, through the constructor.
+   */
+  private DataFlow::Node getAUrlPartFromConstructor() {
     // Net::HTTP.new(...).get(...)
     exists(API::Node new |
       new = API::getTopLevelMember("Net").getMember("HTTP").getInstance() and
