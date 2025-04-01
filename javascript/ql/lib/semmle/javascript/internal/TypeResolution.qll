@@ -151,6 +151,25 @@ module TypeResolution {
     )
   }
 
+  bindingset[name]
+  private predicate isPromiseTypeName(string name) {
+    name.regexpMatch(".?(Promise|Thenable)(Like)?")
+  }
+
+  private Node unwrapPromiseType(Node promiseType) {
+    exists(GenericTypeExpr type |
+      promiseType = type and
+      isPromiseTypeName(type.getTypeAccess().(LocalTypeAccess).getName()) and
+      result = type.getTypeArgument(0)
+    )
+    or
+    exists(JSDocAppliedTypeExpr type |
+      promiseType = type and
+      isPromiseTypeName(type.getHead().(JSDocLocalTypeAccess).getName()) and
+      result = type.getArgument(0)
+    )
+  }
+
   private predicate contextualType(Node value, Node type) {
     exists(InvokeExpr call, Function target, int i |
       callTarget(call, target) and
@@ -158,10 +177,15 @@ module TypeResolution {
       type = target.getParameter(i).getTypeAnnotation()
     )
     or
-    exists(Function lambda |
-      not lambda.isAsyncOrGenerator() and
+    exists(Function lambda, Node returnType |
       value = lambda.getAReturnedExpr() and
-      functionReturnType(lambda, type)
+      functionReturnType(lambda, returnType)
+    |
+      not lambda.isAsyncOrGenerator() and
+      type = returnType
+      or
+      lambda.isAsync() and
+      type = unwrapPromiseType(returnType)
     )
     or
     exists(ObjectExpr object, Node objectType, Node host, string name |
