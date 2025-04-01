@@ -16,18 +16,8 @@ import actions
 
 Step stepInJob(Job job) { result = job.(LocalJob).getAStep() }
 
-bindingset[fullActionSelector]
-string versionedAction(string fullActionSelector) {
-  result = fullActionSelector.substring(0, fullActionSelector.indexOf("@"))
-  or
-  not exists(fullActionSelector.indexOf("@")) and
-  result = fullActionSelector
-}
-
-string stepUses(Step step) { result = step.getUses().(ScalarValue).getValue() }
-
 string jobNeedsPermission(Job job) {
-  actionsPermissionsDataModel(versionedAction(stepUses(stepInJob(job))), result)
+  actionsPermissionsDataModel(stepInJob(job).(UsesStep).getCallee(), result)
 }
 
 /** Gets a suggestion for the minimal token permissions for `job`, as a JSON string. */
