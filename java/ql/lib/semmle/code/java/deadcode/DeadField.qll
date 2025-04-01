@@ -3,7 +3,6 @@ import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.frameworks.jackson.JacksonSerializability
-import semmle.code.java.frameworks.javaee.Persistence
 
 /**
  * A field that is from a source file.
