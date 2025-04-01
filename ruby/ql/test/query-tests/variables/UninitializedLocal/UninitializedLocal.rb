@@ -14,33 +14,57 @@ def foo
 end
 
 def test_guards
-  if (a = 3 && a)  #$ Alert
-      a
-  end
-  if (a = 3) && a  # OK - a is assigned in the previous conjunct
-      a
-  end
-  if !(a = 3) or a  # OK - a is assigned in the previous conjunct
-      a
-  end
-  if false
-      b = 0
-  end
-  b.nil?
-  b || 0  #$ SPURIOUS: Alert
-  b&.m  #$ SPURIOUS: Alert
-  b if b  #$ SPURIOUS: Alert
-  b.close if b && !b.closed #$ SPURIOUS: Alert
-  b.blowup if b || !b.blownup #$ Alert
+    if (a = 3 && a)  # OK - a is in a Boolean context
+        a
+    end
+    if (a = 3) && a  # OK - a is assigned in the previous conjunct
+        a
+    end
+    if !(a = 3) or a  # OK - a is assigned in the previous conjunct
+        a
+    end
+    if false
+        b = 0
+    end
+    b.nil?
+    b || 0  # OK
+    b&.m  # OK - safe navigation
+    b if b  # OK
+    b.close if b && !b.closed # OK
+    b.blowup if b || !b.blownup #$ Alert
+
+    if false
+        c = 0
+    end
+    unless c
+        return
+    end
+    c  # OK - given above unless
+
+    if false
+        d = 0
+    end
+    if (d.nil?)
+        return
+    end
+    d # OK - given above check
+
+    if false
+        e = 0
+    end
+    unless (!e.nil?)
+        return
+    end
+    e  # OK - given above unless
 end
 
 def test_loop
-  begin
-      if false
-          a = 0
-      else
-          set_a
-      end   
-  end until a  #$ SPURIOUS: Alert
-  a  #$ SPURIOUS: Alert
+    begin
+        if false
+            a = 0
+        else
+            set_a
+        end   
+    end until a  # OK
+    a  # OK - given previous until
 end

@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In Ruby, raw identifiers like <code>x</code> can be both local variable accesses and method calls. It is a local variable access iff it is syntactically preceded by something that binds it (like an assignment).
+Consider the following example:
+</p>
+
+<sample src="examples/UninitializedLocal.rb" />
+
+<p>
+This will generate an alert on the last access to <code>m</code>, where it is not clear that the programmer intended to read from the local variable.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that you check the control and data flow in the method carefully.
+Check that the variable reference is spelled correctly, perhaps the variable has been renamed and the reference needs to be updated.
+Another possibility is that an exception may be raised before the variable is assigned, in which case the read should be protected by a check for <code>nil</code>.
+</p>
+
+</recommendation>
+
+<references>
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
+
+
+
+</references>
+</qhelp>

@@ -1,14 +1,3 @@
 | UninitializedLocal.rb:12:3:12:3 | m | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:8:7:8:7 | m | m |
-| UninitializedLocal.rb:17:16:17:16 | a | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:17:7:17:7 | a | a |
-| UninitializedLocal.rb:30:3:30:3 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:31:3:31:3 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:32:3:32:3 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:32:8:32:8 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:33:3:33:3 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:33:14:33:14 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:33:20:33:20 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:34:3:34:3 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:34:15:34:15 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:34:21:34:21 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:7:27:7 | b | b |
-| UninitializedLocal.rb:44:13:44:13 | a | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:40:11:40:11 | a | a |
-| UninitializedLocal.rb:45:3:45:3 | a | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:40:11:40:11 | a | a |
+| UninitializedLocal.rb:34:5:34:5 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:9:27:9 | b | b |
+| UninitializedLocal.rb:34:23:34:23 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:9:27:9 | b | b |
