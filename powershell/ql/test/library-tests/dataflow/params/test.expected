@@ -142,6 +142,9 @@ edges
 | test.ps1:39:14:39:19 | third | test.ps1:8:32:12:1 | z | provenance |  |
 | test.ps1:39:24:39:30 | second | test.ps1:8:32:12:1 | y | provenance |  |
 | test.ps1:39:32:39:37 | first | test.ps1:8:32:12:1 | x | provenance |  |
+| test.ps1:42:1:45:1 | UserInput | test.ps1:44:10:44:19 | UserInput | provenance |  |
+| test.ps1:47:10:47:19 | Call to Source | test.ps1:48:46:48:51 | input | provenance |  |
+| test.ps1:48:46:48:51 | input | test.ps1:42:1:45:1 | UserInput | provenance |  |
 nodes
 | global.ps1:1:1:6:32 | Source1 | semmle.label | Source1 |
 | global.ps1:1:1:6:32 | Source2 | semmle.label | Source2 |
@@ -230,6 +233,10 @@ nodes
 | test.ps1:39:14:39:19 | third | semmle.label | third |
 | test.ps1:39:24:39:30 | second | semmle.label | second |
 | test.ps1:39:32:39:37 | first | semmle.label | first |
+| test.ps1:42:1:45:1 | UserInput | semmle.label | UserInput |
+| test.ps1:44:10:44:19 | UserInput | semmle.label | UserInput |
+| test.ps1:47:10:47:19 | Call to Source | semmle.label | Call to Source |
+| test.ps1:48:46:48:51 | input | semmle.label | input |
 subpaths
 testFailures
 #select
@@ -241,3 +248,4 @@ testFailures
 | test.ps1:9:10:9:11 | x | test.ps1:14:10:14:19 | Call to Source | test.ps1:9:10:9:11 | x | $@ | test.ps1:14:10:14:19 | Call to Source | Call to Source |
 | test.ps1:10:10:10:11 | y | test.ps1:15:11:15:20 | Call to Source | test.ps1:10:10:10:11 | y | $@ | test.ps1:15:11:15:20 | Call to Source | Call to Source |
 | test.ps1:11:10:11:11 | z | test.ps1:16:10:16:19 | Call to Source | test.ps1:11:10:11:11 | z | $@ | test.ps1:16:10:16:19 | Call to Source | Call to Source |
+| test.ps1:44:10:44:19 | UserInput | test.ps1:47:10:47:19 | Call to Source | test.ps1:44:10:44:19 | UserInput | $@ | test.ps1:47:10:47:19 | Call to Source | Call to Source |
