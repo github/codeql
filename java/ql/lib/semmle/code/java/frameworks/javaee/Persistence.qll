@@ -7,9 +7,7 @@ import java
 /**
  * Gets a JavaEE Persistence API package name.
  */
-string getAPersistencePackageName() {
-  result = ["javax.persistence", "jakarta.persistence"]
-}
+string getAPersistencePackageName() { result = ["javax.persistence", "jakarta.persistence"] }
 
 /**
  * A `RefType` with the `@Entity` annotation that indicates that it can be persisted using a JPA
@@ -40,7 +38,7 @@ class PersistentEntity extends RefType {
   }
 
   /**
-   * Gets the access type for this entity as defined by a `@javax.persistence.Access` annotation,
+   * Gets the access type for this entity as defined by a `@{javax,jakarta}.persistence.Access` annotation,
    * if any, in lower case.
    */
   string getAccessTypeFromAnnotation() {
@@ -51,18 +49,18 @@ class PersistentEntity extends RefType {
 }
 
 /*
- * Annotations in the `javax.persistence` package.
+ * Annotations in the `{javax,jakarta}.persistence` package.
  */
 
 /**
- * A `@javax.persistence.Access` annotation.
+ * A `@{javax,jakarta}.persistence.Access` annotation.
  */
 class AccessAnnotation extends Annotation {
   AccessAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Access") }
 }
 
 /**
- * A `@javax.persistence.AccessType` annotation.
+ * A `@{javax,jakarta}.persistence.AccessType` annotation.
  */
 class AccessTypeAnnotation extends Annotation {
   AccessTypeAnnotation() {
@@ -71,7 +69,7 @@ class AccessTypeAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.AssociationOverride` annotation.
+ * A `@{javax,jakarta}.persistence.AssociationOverride` annotation.
  */
 class AssociationOverrideAnnotation extends Annotation {
   AssociationOverrideAnnotation() {
@@ -80,7 +78,7 @@ class AssociationOverrideAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.AssociationOverrides` annotation.
+ * A `@{javax,jakarta}.persistence.AssociationOverrides` annotation.
  */
 class AssociationOverridesAnnotation extends Annotation {
   AssociationOverridesAnnotation() {
@@ -89,7 +87,7 @@ class AssociationOverridesAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.AttributeOverride` annotation.
+ * A `@{javax,jakarta}.persistence.AttributeOverride` annotation.
  */
 class AttributeOverrideAnnotation extends Annotation {
   AttributeOverrideAnnotation() {
@@ -98,7 +96,7 @@ class AttributeOverrideAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.AttributeOverrides` annotation.
+ * A `@{javax,jakarta}.persistence.AttributeOverrides` annotation.
  */
 class AttributeOverridesAnnotation extends Annotation {
   AttributeOverridesAnnotation() {
@@ -107,14 +105,14 @@ class AttributeOverridesAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Basic` annotation.
+ * A `@{javax,jakarta}.persistence.Basic` annotation.
  */
 class BasicAnnotation extends Annotation {
   BasicAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Basic") }
 }
 
 /**
- * A `@javax.persistence.Cacheable` annotation.
+ * A `@{javax,jakarta}.persistence.Cacheable` annotation.
  */
 class CacheableAnnotation extends Annotation {
   CacheableAnnotation() {
@@ -123,7 +121,7 @@ class CacheableAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.CollectionTable` annotation.
+ * A `@{javax,jakarta}.persistence.CollectionTable` annotation.
  */
 class CollectionTableAnnotation extends Annotation {
   CollectionTableAnnotation() {
@@ -132,14 +130,14 @@ class CollectionTableAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Column` annotation.
+ * A `@{javax,jakarta}.persistence.Column` annotation.
  */
 class ColumnAnnotation extends Annotation {
   ColumnAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Column") }
 }
 
 /**
- * A `@javax.persistence.ColumnResult` annotation.
+ * A `@{javax,jakarta}.persistence.ColumnResult` annotation.
  */
 class ColumnResultAnnotation extends Annotation {
   ColumnResultAnnotation() {
@@ -148,7 +146,7 @@ class ColumnResultAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.DiscriminatorColumn` annotation.
+ * A `@{javax,jakarta}.persistence.DiscriminatorColumn` annotation.
  */
 class DiscriminatorColumnAnnotation extends Annotation {
   DiscriminatorColumnAnnotation() {
@@ -157,7 +155,7 @@ class DiscriminatorColumnAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.DiscriminatorValue` annotation.
+ * A `@{javax,jakarta}.persistence.DiscriminatorValue` annotation.
  */
 class DiscriminatorValueAnnotation extends Annotation {
   DiscriminatorValueAnnotation() {
@@ -166,7 +164,7 @@ class DiscriminatorValueAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.ElementCollection` annotation.
+ * A `@{javax,jakarta}.persistence.ElementCollection` annotation.
  */
 class ElementCollectionAnnotation extends Annotation {
   ElementCollectionAnnotation() {
@@ -175,7 +173,7 @@ class ElementCollectionAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Embeddable` annotation.
+ * A `@{javax,jakarta}.persistence.Embeddable` annotation.
  */
 class EmbeddableAnnotation extends Annotation {
   EmbeddableAnnotation() {
@@ -184,14 +182,14 @@ class EmbeddableAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Embedded` annotation.
+ * A `@{javax,jakarta}.persistence.Embedded` annotation.
  */
 class EmbeddedAnnotation extends Annotation {
   EmbeddedAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Embedded") }
 }
 
 /**
- * A `@javax.persistence.EmbeddedId` annotation.
+ * A `@{javax,jakarta}.persistence.EmbeddedId` annotation.
  */
 class EmbeddedIdAnnotation extends Annotation {
   EmbeddedIdAnnotation() {
@@ -200,14 +198,14 @@ class EmbeddedIdAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Entity` annotation.
+ * A `@{javax,jakarta}.persistence.Entity` annotation.
  */
 class EntityAnnotation extends Annotation {
   EntityAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Entity") }
 }
 
 /**
- * A `@javax.persistence.EntityListeners` annotation.
+ * A `@{javax,jakarta}.persistence.EntityListeners` annotation.
  */
 class EntityListenersAnnotation extends Annotation {
   EntityListenersAnnotation() {
@@ -216,7 +214,7 @@ class EntityListenersAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.EntityResult` annotation.
+ * A `@{javax,jakarta}.persistence.EntityResult` annotation.
  */
 class EntityResultAnnotation extends Annotation {
   EntityResultAnnotation() {
@@ -225,7 +223,7 @@ class EntityResultAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Enumerated` annotation.
+ * A `@{javax,jakarta}.persistence.Enumerated` annotation.
  */
 class EnumeratedAnnotation extends Annotation {
   EnumeratedAnnotation() {
@@ -234,7 +232,7 @@ class EnumeratedAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.ExcludeDefaultListeners` annotation.
+ * A `@{javax,jakarta}.persistence.ExcludeDefaultListeners` annotation.
  */
 class ExcludeDefaultListenersAnnotation extends Annotation {
   ExcludeDefaultListenersAnnotation() {
@@ -243,7 +241,7 @@ class ExcludeDefaultListenersAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.ExcludeSuperclassListeners` annotation.
+ * A `@{javax,jakarta}.persistence.ExcludeSuperclassListeners` annotation.
  */
 class ExcludeSuperclassListenersAnnotation extends Annotation {
   ExcludeSuperclassListenersAnnotation() {
@@ -252,7 +250,7 @@ class ExcludeSuperclassListenersAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.FieldResult` annotation.
+ * A `@{javax,jakarta}.persistence.FieldResult` annotation.
  */
 class FieldResultAnnotation extends Annotation {
   FieldResultAnnotation() {
@@ -261,7 +259,7 @@ class FieldResultAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.GeneratedValue` annotation.
+ * A `@{javax,jakarta}.persistence.GeneratedValue` annotation.
  */
 class GeneratedValueAnnotation extends Annotation {
   GeneratedValueAnnotation() {
@@ -270,21 +268,21 @@ class GeneratedValueAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Id` annotation.
+ * A `@{javax,jakarta}.persistence.Id` annotation.
  */
 class IdAnnotation extends Annotation {
   IdAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Id") }
 }
 
 /**
- * A `@javax.persistence.IdClass` annotation.
+ * A `@{javax,jakarta}.persistence.IdClass` annotation.
  */
 class IdClassAnnotation extends Annotation {
   IdClassAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "IdClass") }
 }
 
 /**
- * A `@javax.persistence.Inheritance` annotation.
+ * A `@{javax,jakarta}.persistence.Inheritance` annotation.
  */
 class InheritanceAnnotation extends Annotation {
   InheritanceAnnotation() {
@@ -293,7 +291,7 @@ class InheritanceAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.JoinColumn` annotation.
+ * A `@{javax,jakarta}.persistence.JoinColumn` annotation.
  */
 class JoinColumnAnnotation extends Annotation {
   JoinColumnAnnotation() {
@@ -302,7 +300,7 @@ class JoinColumnAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.JoinColumns` annotation.
+ * A `@{javax,jakarta}.persistence.JoinColumns` annotation.
  */
 class JoinColumnsAnnotation extends Annotation {
   JoinColumnsAnnotation() {
@@ -311,7 +309,7 @@ class JoinColumnsAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.JoinTable` annotation.
+ * A `@{javax,jakarta}.persistence.JoinTable` annotation.
  */
 class JoinTableAnnotation extends Annotation {
   JoinTableAnnotation() {
@@ -320,14 +318,14 @@ class JoinTableAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Lob` annotation.
+ * A `@{javax,jakarta}.persistence.Lob` annotation.
  */
 class LobAnnotation extends Annotation {
   LobAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Lob") }
 }
 
 /**
- * A `@javax.persistence.ManyToMany` annotation.
+ * A `@{javax,jakarta}.persistence.ManyToMany` annotation.
  */
 class ManyToManyAnnotation extends Annotation {
   ManyToManyAnnotation() {
@@ -336,7 +334,7 @@ class ManyToManyAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.ManyToOne` annotation.
+ * A `@{javax,jakarta}.persistence.ManyToOne` annotation.
  */
 class ManyToOneAnnotation extends Annotation {
   ManyToOneAnnotation() {
@@ -345,14 +343,14 @@ class ManyToOneAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapKey` annotation.
+ * A `@{javax,jakarta}.persistence.MapKey` annotation.
  */
 class MapKeyAnnotation extends Annotation {
   MapKeyAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "MapKey") }
 }
 
 /**
- * A `@javax.persistence.MapKeyClass` annotation.
+ * A `@{javax,jakarta}.persistence.MapKeyClass` annotation.
  */
 class MapKeyClassAnnotation extends Annotation {
   MapKeyClassAnnotation() {
@@ -361,7 +359,7 @@ class MapKeyClassAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapKeyColumn` annotation.
+ * A `@{javax,jakarta}.persistence.MapKeyColumn` annotation.
  */
 class MapKeyColumnAnnotation extends Annotation {
   MapKeyColumnAnnotation() {
@@ -370,7 +368,7 @@ class MapKeyColumnAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapKeyEnumerated` annotation.
+ * A `@{javax,jakarta}.persistence.MapKeyEnumerated` annotation.
  */
 class MapKeyEnumeratedAnnotation extends Annotation {
   MapKeyEnumeratedAnnotation() {
@@ -379,7 +377,7 @@ class MapKeyEnumeratedAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapKeyJoinColumn` annotation.
+ * A `@{javax,jakarta}.persistence.MapKeyJoinColumn` annotation.
  */
 class MapKeyJoinColumnAnnotation extends Annotation {
   MapKeyJoinColumnAnnotation() {
@@ -388,7 +386,7 @@ class MapKeyJoinColumnAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapKeyJoinColumns` annotation.
+ * A `@{javax,jakarta}.persistence.MapKeyJoinColumns` annotation.
  */
 class MapKeyJoinColumnsAnnotation extends Annotation {
   MapKeyJoinColumnsAnnotation() {
@@ -397,7 +395,7 @@ class MapKeyJoinColumnsAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapKeyTemporal` annotation.
+ * A `@{javax,jakarta}.persistence.MapKeyTemporal` annotation.
  */
 class MapKeyTemporalAnnotation extends Annotation {
   MapKeyTemporalAnnotation() {
@@ -406,7 +404,7 @@ class MapKeyTemporalAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MappedSuperclass` annotation.
+ * A `@{javax,jakarta}.persistence.MappedSuperclass` annotation.
  */
 class MappedSuperclassAnnotation extends Annotation {
   MappedSuperclassAnnotation() {
@@ -415,14 +413,14 @@ class MappedSuperclassAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.MapsId` annotation.
+ * A `@{javax,jakarta}.persistence.MapsId` annotation.
  */
 class MapsIdAnnotation extends Annotation {
   MapsIdAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "MapsId") }
 }
 
 /**
- * A `@javax.persistence.NamedNativeQueries` annotation.
+ * A `@{javax,jakarta}.persistence.NamedNativeQueries` annotation.
  */
 class NamedNativeQueriesAnnotation extends Annotation {
   NamedNativeQueriesAnnotation() {
@@ -431,7 +429,7 @@ class NamedNativeQueriesAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.NamedNativeQuery` annotation.
+ * A `@{javax,jakarta}.persistence.NamedNativeQuery` annotation.
  */
 class NamedNativeQueryAnnotation extends Annotation {
   NamedNativeQueryAnnotation() {
@@ -440,7 +438,7 @@ class NamedNativeQueryAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.NamedQueries` annotation.
+ * A `@{javax,jakarta}.persistence.NamedQueries` annotation.
  */
 class NamedQueriesAnnotation extends Annotation {
   NamedQueriesAnnotation() {
@@ -449,7 +447,7 @@ class NamedQueriesAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.NamedQuery` annotation.
+ * A `@{javax,jakarta}.persistence.NamedQuery` annotation.
  */
 class NamedQueryAnnotation extends Annotation {
   NamedQueryAnnotation() {
@@ -458,7 +456,7 @@ class NamedQueryAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.OneToMany` annotation.
+ * A `@{javax,jakarta}.persistence.OneToMany` annotation.
  */
 class OneToManyAnnotation extends Annotation {
   OneToManyAnnotation() {
@@ -467,21 +465,21 @@ class OneToManyAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.OneToOne` annotation.
+ * A `@{javax,jakarta}.persistence.OneToOne` annotation.
  */
 class OneToOneAnnotation extends Annotation {
   OneToOneAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "OneToOne") }
 }
 
 /**
- * A `@javax.persistence.OrderBy` annotation.
+ * A `@{javax,jakarta}.persistence.OrderBy` annotation.
  */
 class OrderByAnnotation extends Annotation {
   OrderByAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "OrderBy") }
 }
 
 /**
- * A `@javax.persistence.OrderColumn` annotation.
+ * A `@{javax,jakarta}.persistence.OrderColumn` annotation.
  */
 class OrderColumnAnnotation extends Annotation {
   OrderColumnAnnotation() {
@@ -490,7 +488,7 @@ class OrderColumnAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PersistenceContext` annotation.
+ * A `@{javax,jakarta}.persistence.PersistenceContext` annotation.
  */
 class PersistenceContextAnnotation extends Annotation {
   PersistenceContextAnnotation() {
@@ -499,7 +497,7 @@ class PersistenceContextAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PersistenceContexts` annotation.
+ * A `@{javax,jakarta}.persistence.PersistenceContexts` annotation.
  */
 class PersistenceContextsAnnotation extends Annotation {
   PersistenceContextsAnnotation() {
@@ -508,7 +506,7 @@ class PersistenceContextsAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PersistenceProperty` annotation.
+ * A `@{javax,jakarta}.persistence.PersistenceProperty` annotation.
  */
 class PersistencePropertyAnnotation extends Annotation {
   PersistencePropertyAnnotation() {
@@ -517,7 +515,7 @@ class PersistencePropertyAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PersistenceUnit` annotation.
+ * A `@{javax,jakarta}.persistence.PersistenceUnit` annotation.
  */
 class PersistenceUnitAnnotation extends Annotation {
   PersistenceUnitAnnotation() {
@@ -526,7 +524,7 @@ class PersistenceUnitAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PersistenceUnits` annotation.
+ * A `@{javax,jakarta}.persistence.PersistenceUnits` annotation.
  */
 class PersistenceUnitsAnnotation extends Annotation {
   PersistenceUnitsAnnotation() {
@@ -535,14 +533,14 @@ class PersistenceUnitsAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PostLoad` annotation.
+ * A `@{javax,jakarta}.persistence.PostLoad` annotation.
  */
 class PostLoadAnnotation extends Annotation {
   PostLoadAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "PostLoad") }
 }
 
 /**
- * A `@javax.persistence.PostPersist` annotation.
+ * A `@{javax,jakarta}.persistence.PostPersist` annotation.
  */
 class PostPersistAnnotation extends Annotation {
   PostPersistAnnotation() {
@@ -551,7 +549,7 @@ class PostPersistAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PostRemove` annotation.
+ * A `@{javax,jakarta}.persistence.PostRemove` annotation.
  */
 class PostRemoveAnnotation extends Annotation {
   PostRemoveAnnotation() {
@@ -560,7 +558,7 @@ class PostRemoveAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PostUpdate` annotation.
+ * A `@{javax,jakarta}.persistence.PostUpdate` annotation.
  */
 class PostUpdateAnnotation extends Annotation {
   PostUpdateAnnotation() {
@@ -569,7 +567,7 @@ class PostUpdateAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PrePersist` annotation.
+ * A `@{javax,jakarta}.persistence.PrePersist` annotation.
  */
 class PrePersistAnnotation extends Annotation {
   PrePersistAnnotation() {
@@ -578,7 +576,7 @@ class PrePersistAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PreRemove` annotation.
+ * A `@{javax,jakarta}.persistence.PreRemove` annotation.
  */
 class PreRemoveAnnotation extends Annotation {
   PreRemoveAnnotation() {
@@ -587,7 +585,7 @@ class PreRemoveAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PreUpdate` annotation.
+ * A `@{javax,jakarta}.persistence.PreUpdate` annotation.
  */
 class PreUpdateAnnotation extends Annotation {
   PreUpdateAnnotation() {
@@ -596,7 +594,7 @@ class PreUpdateAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PrimaryKeyJoinColumn` annotation.
+ * A `@{javax,jakarta}.persistence.PrimaryKeyJoinColumn` annotation.
  */
 class PrimaryKeyJoinColumnAnnotation extends Annotation {
   PrimaryKeyJoinColumnAnnotation() {
@@ -605,7 +603,7 @@ class PrimaryKeyJoinColumnAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.PrimaryKeyJoinColumns` annotation.
+ * A `@{javax,jakarta}.persistence.PrimaryKeyJoinColumns` annotation.
  */
 class PrimaryKeyJoinColumnsAnnotation extends Annotation {
   PrimaryKeyJoinColumnsAnnotation() {
@@ -614,7 +612,7 @@ class PrimaryKeyJoinColumnsAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.QueryHint` annotation.
+ * A `@{javax,jakarta}.persistence.QueryHint` annotation.
  */
 class QueryHintAnnotation extends Annotation {
   QueryHintAnnotation() {
@@ -623,7 +621,7 @@ class QueryHintAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.SecondaryTable` annotation.
+ * A `@{javax,jakarta}.persistence.SecondaryTable` annotation.
  */
 class SecondaryTableAnnotation extends Annotation {
   SecondaryTableAnnotation() {
@@ -632,7 +630,7 @@ class SecondaryTableAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.SecondaryTables` annotation.
+ * A `@{javax,jakarta}.persistence.SecondaryTables` annotation.
  */
 class SecondaryTablesAnnotation extends Annotation {
   SecondaryTablesAnnotation() {
@@ -641,7 +639,7 @@ class SecondaryTablesAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.SequenceGenerator` annotation.
+ * A `@{javax,jakarta}.persistence.SequenceGenerator` annotation.
  */
 class SequenceGeneratorAnnotation extends Annotation {
   SequenceGeneratorAnnotation() {
@@ -650,7 +648,7 @@ class SequenceGeneratorAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.SqlResultSetMapping` annotation.
+ * A `@{javax,jakarta}.persistence.SqlResultSetMapping` annotation.
  */
 class SqlResultSetMappingAnnotation extends Annotation {
   SqlResultSetMappingAnnotation() {
@@ -659,7 +657,7 @@ class SqlResultSetMappingAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.SqlResultSetMappings` annotation.
+ * A `@{javax,jakarta}.persistence.SqlResultSetMappings` annotation.
  */
 class SqlResultSetMappingsAnnotation extends Annotation {
   SqlResultSetMappingsAnnotation() {
@@ -668,14 +666,14 @@ class SqlResultSetMappingsAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Table` annotation.
+ * A `@{javax,jakarta}.persistence.Table` annotation.
  */
 class TableAnnotation extends Annotation {
   TableAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Table") }
 }
 
 /**
- * A `@javax.persistence.TableGenerator` annotation.
+ * A `@{javax,jakarta}.persistence.TableGenerator` annotation.
  */
 class TableGeneratorAnnotation extends Annotation {
   TableGeneratorAnnotation() {
@@ -684,14 +682,14 @@ class TableGeneratorAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Temporal` annotation.
+ * A `@{javax,jakarta}.persistence.Temporal` annotation.
  */
 class TemporalAnnotation extends Annotation {
   TemporalAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Temporal") }
 }
 
 /**
- * A `@javax.persistence.Transient` annotation.
+ * A `@{javax,jakarta}.persistence.Transient` annotation.
  */
 class TransientAnnotation extends Annotation {
   TransientAnnotation() {
@@ -700,7 +698,7 @@ class TransientAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.UniqueConstraint` annotation.
+ * A `@{javax,jakarta}.persistence.UniqueConstraint` annotation.
  */
 class UniqueConstraintAnnotation extends Annotation {
   UniqueConstraintAnnotation() {
@@ -709,7 +707,7 @@ class UniqueConstraintAnnotation extends Annotation {
 }
 
 /**
- * A `@javax.persistence.Version` annotation.
+ * A `@{javax,jakarta}.persistence.Version` annotation.
  */
 class VersionAnnotation extends Annotation {
   VersionAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Version") }
