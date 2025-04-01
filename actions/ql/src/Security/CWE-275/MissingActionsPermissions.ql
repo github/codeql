@@ -26,14 +26,14 @@ string versionedAction(string fullActionSelector) {
 
 string stepUses(Step step) { result = step.getUses().(ScalarValue).getValue() }
 
-string jobNeedsPersmission(Job job) {
+string jobNeedsPermission(Job job) {
   actionsPermissionsDataModel(versionedAction(stepUses(stepInJob(job))), result)
 }
 
 /** Gets a suggestion for the minimal token permissions for `job`, as a JSON string. */
 string permissionsForJob(Job job) {
   result =
-    "{" + concat(string permission | permission = jobNeedsPersmission(job) | permission, ", ") + "}"
+    "{" + concat(string permission | permission = jobNeedsPermission(job) | permission, ", ") + "}"
 }
 
 from Job job, string permissions
@@ -47,4 +47,5 @@ where
   ) and
   permissions = permissionsForJob(job)
 select job,
-  "Actions job or workflow does not limit the permissions of the GITHUB_TOKEN. Consider setting an explicit permissions block, using the following as a minimal starting point: " + permissions
+  "Actions job or workflow does not limit the permissions of the GITHUB_TOKEN. Consider setting an explicit permissions block, using the following as a minimal starting point: "
+    + permissions
