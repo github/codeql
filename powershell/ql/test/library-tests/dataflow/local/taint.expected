@@ -39,5 +39,7 @@
 | test.ps1:21:1:21:27 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
 | test.ps1:21:1:21:27 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
 | test.ps1:21:25:21:26 | f | test.ps1:21:6:21:27 | here is a string: $f |
+| test.ps1:23:1:23:6 | input | test.ps1:24:17:24:22 | input |
+| test.ps1:23:10:23:32 | Call to Read-Host | test.ps1:23:1:23:6 | input |
 | test.ps1:24:1:24:22 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
 | test.ps1:24:1:24:22 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
