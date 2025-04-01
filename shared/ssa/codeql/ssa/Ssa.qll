@@ -1412,13 +1412,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /** Holds if `phi` has less than 2 immediately prior references. */
-    query predicate phiWithoutTwoPriorRefs(PhiNode phi, int inputRefs) {
-      exists(BasicBlock bbPhi, SourceVariable v |
-        phi.definesAt(v, bbPhi, _) and
-        inputRefs =
-          count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
-        inputRefs < 2
-      )
+    query predicate phiWithoutTwoPriorRefs(
+      PhiNode phi, BasicBlock bbPhi, SourceVariable v, int inputRefs
+    ) {
+      phi.definesAt(v, bbPhi, _) and
+      inputRefs = count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
+      inputRefs < 2
     }
 
     /**

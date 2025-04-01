@@ -1,4 +1,4 @@
 uselessPhiNode
-| sqlx.rs:155:5:157:5 | phi | 1 |
+| sqlx.rs:155:5:157:5 | SSA phi(arg0) | 1 |
 phiWithoutTwoPriorRefs
-| sqlx.rs:155:5:157:5 | phi | 1 |
+| sqlx.rs:155:5:157:5 | SSA phi(arg0) | sqlx.rs:155:5:157:5 | if enable_remote {...} | sqlx.rs:156:17:156:86 | arg0 | 1 |
