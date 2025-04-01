@@ -280,8 +280,11 @@ module NameResolution {
         result = enum.getMemberByName(name).getIdentifier()
       )
       or
-      exists(AssignExpr assign, PropAccess lhs |
-        lhs.accesses(mod.(Closure::ClosureModule).getExportsVariable().getAnAccess(), name) and
+      exists(AssignExpr assign |
+        assign
+            .getLhs()
+            .(PropAccess)
+            .accesses(mod.(Closure::ClosureModule).getExportsVariable().getAnAccess(), name) and
         result = assign.getRhs()
       )
     }
