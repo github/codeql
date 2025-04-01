@@ -1,0 +1,5 @@
+| Test.java:70:5:70:16 | run(...) | The run method is called directly on a thread instance. |
+| Test.java:74:5:74:24 | run(...) | The run method is called directly on a thread instance. |
+| Test.java:78:5:78:24 | run(...) | The run method is called directly on a thread instance. |
+| Test.java:82:5:82:27 | run(...) | The run method is called directly on a thread instance. |
+| Test.java:86:5:86:27 | run(...) | The run method is called directly on a thread instance. |
