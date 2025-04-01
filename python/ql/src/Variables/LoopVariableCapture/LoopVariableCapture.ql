@@ -29,7 +29,7 @@ predicate capturesLoopVariable(CallableExpr capturing, Loop loop, Variable var) 
   var = loop.getALoopVariable()
 }
 
-module EscapingCaptureFlowSig implements DataFlow::ConfigSig {
+module EscapingCaptureFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { capturesLoopVariable(node.asExpr(), _, _) }
 
   predicate isSink(DataFlow::Node node) {
@@ -66,7 +66,7 @@ module EscapingCaptureFlowSig implements DataFlow::ConfigSig {
   }
 }
 
-module EscapingCaptureFlow = DataFlow::Global<EscapingCaptureFlowSig>;
+module EscapingCaptureFlow = DataFlow::Global<EscapingCaptureFlowConfig>;
 
 import EscapingCaptureFlow::PathGraph
 
@@ -86,5 +86,5 @@ where
   escapingCapture(capturing, loop, var, source, sink) and
   if capturing instanceof Lambda then descr = "lambda" else descr = "function"
 select capturing, source, sink,
-  "This " + descr + " captures the loop variable $@, and may escape the loop by being stored $@.",
-  loop, var.getId(), sink, "here"
+  "This " + descr + " captures the loop variable $@, and may escape the loop by being stored at $@.",
+  loop, var.getId(), sink, "this location"
