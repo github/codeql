@@ -19,7 +19,7 @@ module UnderlyingTypes {
     )
   }
 
-  private predicate underlyingTypeStep(Node node1, Node node2) {
+  predicate underlyingTypeStep(Node node1, Node node2) {
     exists(UnionOrIntersectionTypeExpr type |
       node1 = type.getAnElementType() and
       node2 = type

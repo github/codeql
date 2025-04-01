@@ -1,5 +1,6 @@
 private import javascript
 private import semmle.javascript.internal.NameResolution::NameResolution
+private import semmle.javascript.internal.UnderlyingTypes
 private import semmle.javascript.dataflow.internal.sharedlib.SummaryTypeTracker as SummaryTypeTracker
 
 module TypeResolution {
@@ -67,7 +68,7 @@ module TypeResolution {
     exists(Node mid | typeMemberHostReaches(host, mid) |
       TypeFlow::step(mid, use)
       or
-      mid.(UnionOrIntersectionTypeExpr).getAnElementType() = use
+      UnderlyingTypes::underlyingTypeStep(mid, use)
     )
   }
 
