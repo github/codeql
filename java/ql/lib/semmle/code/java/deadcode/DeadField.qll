@@ -3,6 +3,7 @@ import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.frameworks.jackson.JacksonSerializability
+import semmle.code.java.frameworks.javaee.Persistence
 
 /**
  * A field that is from a source file.
@@ -161,10 +162,10 @@ class JpaReadField extends ReflectivelyReadField {
       this = entity.getAField() and
       (
         entity.getAccessType() = "field" or
-        this.hasAnnotation("javax.persistence", "Access")
+        this.hasAnnotation(getAPersistencePackageName(), "Access")
       )
     |
-      not this.hasAnnotation("javax.persistence", "Transient") and
+      not this.hasAnnotation(getAPersistencePackageName(), "Transient") and
       not this.isStatic() and
       not this.isFinal()
     )

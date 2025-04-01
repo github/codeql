@@ -4,7 +4,10 @@
 
 import java
 
-private string getAPersistencePackageName() {
+/**
+ * Gets a JavaEE Persistence API package name.
+ */
+string getAPersistencePackageName() {
   result = ["javax.persistence", "jakarta.persistence"]
 }
 
