@@ -1,5 +1,5 @@
 name: codeql/ruby-all
-version: 4.1.3-dev
+version: 4.1.3
 groups: ruby
 extractor: ruby
 dbscheme: ruby.dbscheme
