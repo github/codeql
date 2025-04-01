@@ -9,7 +9,7 @@ function t1() {
 declare function getRequestAmbient(): express.Request;
 
 function t2() {
-    getRequestAmbient(); // $ MISSING: hasUnderlyingType='express'.Request
+    getRequestAmbient(); // $ hasUnderlyingType='express'.Request
 }
 
 class C {
