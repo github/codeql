@@ -280,13 +280,22 @@ module NameResolution {
         result = enum.getMemberByName(name).getIdentifier()
       )
       or
+      storeToVariable(result, name, mod.(Closure::ClosureModule).getExportsVariable())
+    }
+
+    /**
+     * Holds if `value` is stored in `target.prop`. Only needs to recognise assignments
+     * that are also recognised by JSDoc tooling such as the Closure compiler.
+     */
+    private predicate storeToVariable(Expr value, string prop, LocalVariable target) {
       exists(AssignExpr assign |
-        assign
-            .getLhs()
-            .(PropAccess)
-            .accesses(mod.(Closure::ClosureModule).getExportsVariable().getAnAccess(), name) and
-        result = assign.getRhs()
+        // exports.name = value
+        assign.getLhs().(PropAccess).accesses(target.getAnAccess(), prop) and
+        value = assign.getRhs()
       )
+      or
+      // exports = { name: value }
+      value = target.getAnAssignedExpr().(ObjectExpr).getPropertyByName(prop).getInit()
     }
 
     /** Steps that only apply for this configuration. */
