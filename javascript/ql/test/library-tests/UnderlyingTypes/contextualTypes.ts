@@ -8,22 +8,30 @@ declare function doSomething(options: Options);
 
 function t1() {
     doSomething({
-        handle(req) { // $ MISSING: hasUnderlyingType='express'.Request
+        handle(req) { // $ hasUnderlyingType='express'.Request
         }
     });
 }
 
 function t2(callback: ((opts: Options) => void) | undefined) {
     callback({
-        handle(req) { } // $ MISSING: hasUnderlyingType='express'.Request
+        handle(req) { } // $ hasUnderlyingType='express'.Request
     })
     callback!({
-        handle(req) { } // $ MISSING: hasUnderlyingType='express'.Request
+        handle(req) { } // $ hasUnderlyingType='express'.Request
     })
 }
 
 function t3(): Options {
     return {
-        handle(req) { } // $ MISSING: hasUnderlyingType='express'.Request
+        handle(req) { } // $ hasUnderlyingType='express'.Request
     }
+}
+
+function t4(): Options[] {
+    return [
+        {
+            handle(req) { } // $ hasUnderlyingType='express'.Request
+        }
+    ]
 }

@@ -8,7 +8,15 @@ module TypeResolution {
 
   predicate trackType = TypeFlow::TrackNode<TypeDefinition>::track/1;
 
-  predicate trackFunctionType = TypeFlow::TrackNode<Function>::track/1;
+  Node trackFunctionType(Function fun) {
+    result = fun
+    or
+    exists(Node mid | mid = trackFunctionType(fun) |
+      TypeFlow::step(mid, result)
+      or
+      UnderlyingTypes::underlyingTypeStep(mid, result)
+    )
+  }
 
   predicate trackFunctionValue = ValueFlow::TrackNode<Function>::track/1;
 
@@ -45,6 +53,24 @@ module TypeResolution {
       decl instanceof IndexSignature and
       memberType = decl.(IndexSignature).getBody().getReturnTypeAnnotation() and
       content.isUnknownArrayElement()
+    )
+    or
+    // Ad-hoc support for array types
+    content.isUnknownArrayElement() and
+    (
+      memberType = host.(ArrayTypeExpr).getElementType()
+      or
+      exists(GenericTypeExpr type |
+        host = type and
+        type.getTypeAccess().(LocalTypeAccess).getName() = ["Array", "ReadonlyArray"] and
+        memberType = type.getTypeArgument(0)
+      )
+      or
+      exists(JSDocAppliedTypeExpr type |
+        host = type and
+        type.getHead().(JSDocLocalTypeAccess).getName() = "Array" and
+        memberType = type.getArgument(0)
+      )
     )
     or
     // Inherit members from base types
@@ -115,11 +141,38 @@ module TypeResolution {
     )
   }
 
-  private predicate contextualType(Node value, Node contextualType) {
+  private predicate contextualType(Node value, Node type) {
     exists(InvokeExpr call, Function target, int i |
       callTarget(call, target) and
       value = call.getArgument(i) and
-      contextualType = target.getParameter(i).getTypeAnnotation()
+      type = target.getParameter(i).getTypeAnnotation()
+    )
+    or
+    exists(Function lambda |
+      not lambda.isAsyncOrGenerator() and
+      value = lambda.getAReturnedExpr()
+    |
+      type = lambda.getReturnTypeAnnotation()
+      or
+      not exists(lambda.getReturnTypeAnnotation()) and
+      exists(Function functionType |
+        contextualType(lambda, trackFunctionType(functionType)) and
+        type = functionType.getReturnTypeAnnotation()
+      )
+    )
+    or
+    exists(ObjectExpr object, Node objectType, Node host, string name |
+      contextualType(object, objectType) and
+      typeMemberHostReaches(host, objectType) and
+      typeMember(host, any(DataFlow::Content c | c.asPropertyName() = name), type) and
+      value = object.getPropertyByName(name).getInit()
+    )
+    or
+    exists(ArrayExpr array, Node arrayType, Node host |
+      contextualType(array, arrayType) and
+      typeMemberHostReaches(host, arrayType) and
+      typeMember(host, any(DataFlow::Content c | c.isUnknownArrayElement()), type) and
+      value = array.getAnElement()
     )
   }
 
