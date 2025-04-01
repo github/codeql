@@ -80,5 +80,10 @@ extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
 
 /**
  * Holds if `action` needs `permission` to run.
+ * - 'action' is the name of the action without any version information.
+ *   E.g. for the action selector `actions/checkout@v2`, `action` is `actions/checkout`.
+ * - `permission` is of the form `scope-name: read|write`, for example `contents: read`.
+ * - see https://github.com/actions/checkout?tab=readme-ov-file#recommended-permissions
+ *   for an example of recommended permissions.
  */
 extensible predicate actionsPermissionsDataModel(string action, string permission);
