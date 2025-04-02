@@ -8,6 +8,7 @@
  * @precision high
  * @problem.severity error
  * @tags quality
+ *       reliability
  *       correctness
  *       performance
  *       external/cwe/cwe-586
