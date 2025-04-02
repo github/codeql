@@ -5,6 +5,7 @@
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.internal.NameResolution
 private import semmle.javascript.internal.TypeResolution
 
 /**
@@ -317,14 +318,6 @@ module NestJS {
     }
   }
 
-  private predicate isStringType(Type type) {
-    type instanceof StringType
-    or
-    type instanceof AnyType
-    or
-    isStringType(type.(PromiseType).getElementType().unfold())
-  }
-
   /**
    * A return value from a route handler, seen as an argument to `res.send()`.
    *
@@ -343,10 +336,10 @@ module NestJS {
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
       this = handler.getAReturn() and
-      // Only returned strings are sinks
-      not exists(Type type |
-        type = this.asExpr().getType() and
-        not isStringType(type.unfold())
+      // Only returned strings are sinks. If we can find a type for the return value, it must be string-like.
+      not exists(NameResolution::Node type |
+        TypeResolution::valueHasType(this.asExpr(), type) and
+        not TypeResolution::hasUnderlyingStringOrAnyType(type)
       )
     }
 

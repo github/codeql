@@ -360,4 +360,25 @@ module TypeResolution {
    * Holds if the given value has a type that implied it is a Promise object. Does not hold for unions unless all parts of the union are promises.
    */
   predicate valueHasPromiseType = ValueHasProperty<isPromiseType/1>::valueHasProperty/1;
+
+  /**
+   * Holds if `type` contains `string` or `any`, possibly wrapped in a promise.
+   */
+  predicate hasUnderlyingStringOrAnyType(Node type) {
+    type.(TypeAnnotation).isStringy()
+    or
+    type.(TypeAnnotation).isAny()
+    or
+    type instanceof StringLiteralTypeExpr
+    or
+    type instanceof TemplateLiteralTypeExpr
+    or
+    exists(Node mid | hasUnderlyingStringOrAnyType(mid) |
+      TypeFlow::step(mid, type)
+      or
+      UnderlyingTypes::underlyingTypeStep(mid, type)
+      or
+      type = unwrapPromiseType(mid)
+    )
+  }
 }
