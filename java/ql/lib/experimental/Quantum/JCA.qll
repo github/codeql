@@ -419,7 +419,7 @@ module JCAModel {
       src.asExpr() instanceof CipherGetInstanceCall
     }
 
-    predicate isSink(DataFlow::Node sink, FlowState state) { none() }
+    predicate isSink(DataFlow::Node sink, FlowState state) { none() } // TODO: document this, but this is intentional (avoid cross products?)
 
     predicate isSink(DataFlow::Node sink) {
       exists(CipherOperationCall c | c.getQualifier() = sink.asExpr())
@@ -786,7 +786,7 @@ module JCAModel {
       type instanceof Crypto::TAsymmetricKeyType
     }
 
-    override DataFlow::Node getOutputKeyArtifact() { result.asExpr() = this }
+    override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() { result.asExpr() = this }
 
     override Crypto::KeyArtifactType getOutputKeyType() { result = type }
 
@@ -1139,7 +1139,7 @@ module JCAModel {
       result.asExpr() = this.getInstantiation().getIterationCountArg()
     }
 
-    override DataFlow::Node getOutputKeyArtifact() {
+    override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() {
       result.asExpr() = this and
       super.getMethod().getReturnType().hasName("SecretKey")
     }

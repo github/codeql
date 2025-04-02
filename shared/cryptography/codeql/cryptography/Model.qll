@@ -41,6 +41,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     ConsumerElement getConsumer() { result.getInputNode() = this }
   }
 
+  class ArtifactOutputDataFlowNode extends DataFlowNode {
+    OutputArtifactInstance getArtifact() { result.getOutputNode() = this }
+  }
+
   final class UnknownPropertyValue extends string {
     UnknownPropertyValue() { this = "<unknown>" }
   }
@@ -461,7 +465,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this = Input::dfn_to_element(inputNode)
     }
 
-    override KeyArtifactType getKeyType() { result instanceof TUnknownKeyType }
+    override KeyArtifactType getKeyType() { result instanceof TUnknownKeyType } // A consumer node does not have a key type, refer to source (TODO: refine, should this be none())
 
     final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
@@ -651,7 +655,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the key artifact produced by this operation.
      */
-    abstract DataFlowNode getOutputKeyArtifact();
+    abstract ArtifactOutputDataFlowNode getOutputKeyArtifact();
 
     /**
      * Gets the key artifact type produced.
@@ -898,29 +902,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     predicate isExcludedFromGraph() { none() }
   }
 
-  signature string getDefaultValueSig();
-
-  signature ConsumerInputDataFlowNode getConsumerSig();
-
-  signature class NodeBaseSig instanceof NodeBase;
-
-  module PropertyOutput<getDefaultValueSig/0 getDefault, getConsumerSig/0 getConsumer> {
-    bindingset[root]
-    predicate get(NodeBase root, string value, Location location) {
-      if not exists(getDefault()) and not exists(getConsumer().getConsumer().getASource())
-      then value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-      else (
-        if exists(getDefault())
-        then
-          value = "Default:" + getDefault() and
-          location = root.getLocation()
-        else node_as_property(getConsumer().getConsumer().getAGenericSourceNode(), value, location)
-      )
-    }
-  }
-
   /**
-   * A generic source node is a source of data that is not resolvable to a specific value or type.
+   * A generic source node is a source of data that is not resolvable to a specific asset.
    */
   private class GenericSourceNode extends NodeBase, TGenericSourceNode {
     GenericSourceInstance instance;
@@ -956,7 +939,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Holds if `node` is a potential candidate for a known algorithm node.
      * This predicate should be used to restrict the set of candidate algorithm node types.
      */
-    abstract predicate isCandidateKnownAlgorithmNode(AlgorithmNode node);
+    abstract predicate isCandidateAlgorithmNode(AlgorithmNode node);
 
     /**
      * Gets the algorithm or generic source nodes consumed as an algorithm associated with this operation.
@@ -968,12 +951,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Gets a known algorithm associated with this operation, subject to `isCandidateKnownAlgorithmNode`.
+     * Gets a known algorithm associated with this operation, subject to `isCandidateAlgorithmNode`.
      */
     AlgorithmNode getAKnownAlgorithm() {
       result =
         this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode() and
-      this.isCandidateKnownAlgorithmNode(result)
+      this.isCandidateAlgorithmNode(result)
     }
 
     override NodeBase getChild(string edgeName) {
@@ -1147,9 +1130,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // [KNOWN_OR_UNKNOWN] - only if asymmetric
       edgeName = "Algorithm" and
       instance.getKeyType() instanceof TAsymmetricKeyType and
-      if exists(this.getAKnownAlgorithmOrGenericSourceNode())
-      then result = this.getAKnownAlgorithmOrGenericSourceNode()
-      else result = this
+      (
+        if exists(this.getAKnownAlgorithmOrGenericSourceNode())
+        then result = this.getAKnownAlgorithmOrGenericSourceNode()
+        else result = this
+      )
     }
 
     override predicate properties(string key, string value, Location location) {
@@ -1217,7 +1202,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
-    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+    override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
       node instanceof MACAlgorithmNode
     }
 
@@ -1292,7 +1277,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     KeyGenerationOperationNode() { keyGenInstance = instance }
 
-    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+    override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
       node instanceof CipherAlgorithmNode
     }
 
@@ -1326,7 +1311,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = kdfInstance.getOutputKeySizeConsumer().getConsumer().getAGenericSource()
     }
 
-    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+    override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
       node instanceof KeyDerivationAlgorithmNode
     }
 
@@ -1585,7 +1570,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getInternalType() { result = "CipherOperation" }
 
-    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+    override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
       node instanceof CipherAlgorithmNode
     }
 
@@ -1904,7 +1889,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type instanceof SM4 and name = "SM4" and s = Block()
       or
       type instanceof OtherCipherType and
-      name instanceof UnknownPropertyValue and
+      name instanceof UnknownPropertyValue and // TODO: get rid of this hack to bind structure and type
       s = UnknownCipherStructureType()
     }
 
@@ -1959,7 +1944,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override LocatableElement asElement() { result = instance }
 
-    override predicate isCandidateKnownAlgorithmNode(AlgorithmNode node) {
+    override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
       node instanceof HashAlgorithmNode
     }
 
