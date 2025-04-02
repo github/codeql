@@ -9,7 +9,7 @@
  * @precision very-high
  * @problem.severity warning
  * @tags quality
- *       maintainability
+ *       reliability
  *       correctness
  *       testability
  *       frameworks/junit
