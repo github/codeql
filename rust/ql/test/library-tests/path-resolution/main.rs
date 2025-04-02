@@ -568,7 +568,7 @@ mod m24 {
         T: TraitA // $ item=I111 item=I1151
     {
         fn call_trait_a(&self) {
-            self.data.trait_a_method(); // $ MISSING: item=I110
+            self.data.trait_a_method(); // $ item=I110
         } // I116
     }
 
@@ -580,8 +580,8 @@ mod m24 {
         T: TraitA, // $ item=I111 item=I1161
     {
         fn call_both(&self) {
-            self.data.trait_a_method(); // $ MISSING: item=I110
-            self.data.trait_b_method(); // $ MISSING: item=I112
+            self.data.trait_a_method(); // $ item=I110
+            self.data.trait_b_method(); // $ item=I112
         } // I117
     }
 
