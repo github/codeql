@@ -1,0 +1,2 @@
+postWithInFlow
+| test.rs:118:17:118:19 | [post] ptr | PostUpdateNode should not be the target of local flow. |
