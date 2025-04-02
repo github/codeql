@@ -1,7 +1,7 @@
 .. _codeql-library-for-actions:
 
 CodeQL library for GitHub Actions
-=======================
+=================================
 
 When you're analyzing GitHub Actions workflows and action metadata files, you can make use of the large collection of classes in the CodeQL library for GitHub Actions.
 
