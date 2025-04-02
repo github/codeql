@@ -10,13 +10,13 @@ app.post('/foo', async (req, res) => {
 
     mkdirp(dirPath); // $ Alert
     mkdirp.sync(dirPath); // $ Alert
-    mkdirp.nativeSync(dirPath); // $ MISSING: Alert
-    mkdirp.native(dirPath); // $ MISSING: Alert
-    mkdirp.manual(dirPath); // $ MISSING: Alert
-    mkdirp.manualSync(dirPath); // $ MISSING: Alert
-    mkdirp.mkdirpNative(dirPath); // $ MISSING: Alert
-    mkdirp.mkdirpManual(dirPath); // $ MISSING: Alert
-    mkdirp.mkdirpManualSync(dirPath); // $ MISSING: Alert
-    mkdirp.mkdirpNativeSync(dirPath); // $ MISSING: Alert
-    mkdirp.mkdirpSync(dirPath); // $ MISSING: Alert
+    mkdirp.nativeSync(dirPath); // $ Alert
+    mkdirp.native(dirPath); // $ Alert
+    mkdirp.manual(dirPath); // $ Alert
+    mkdirp.manualSync(dirPath); // $ Alert
+    mkdirp.mkdirpNative(dirPath); // $ Alert
+    mkdirp.mkdirpManual(dirPath); // $ Alert
+    mkdirp.mkdirpManualSync(dirPath); // $ Alert
+    mkdirp.mkdirpNativeSync(dirPath); // $ Alert
+    mkdirp.mkdirpSync(dirPath); // $ Alert
 });
