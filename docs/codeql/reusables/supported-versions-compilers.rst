@@ -16,6 +16,7 @@
    .NET Core up to 3.1
 
    .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   GitHub Actions [12]_,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``action.yml``, ``action.yaml``"
    Go (aka Golang), "Go up to 1.24", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 24 [5]_","javac (OpenJDK and Oracle JDK),
 
@@ -40,3 +41,4 @@
     .. [9] Requires glibc 2.17.
     .. [10] Support for the analysis of Swift requires macOS.
     .. [11] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
+    .. [12] Support for GitHub Actions is in public preview.

@@ -19,10 +19,13 @@ For examples of query files for the languages supported by CodeQL, visit the fol
 
 * [C/C++ queries](https://codeql.github.com/codeql-query-help/cpp/)
 * [C# queries](https://codeql.github.com/codeql-query-help/csharp/)
+* [GitHub Actions queries](https://codeql.github.com/codeql-query-help/actions/)
 * [Go queries](https://codeql.github.com/codeql-query-help/go/)
-* [Java queries](https://codeql.github.com/codeql-query-help/java/)
+* [Java/Kotlin queries](https://codeql.github.com/codeql-query-help/java/)
 * [JavaScript queries](https://codeql.github.com/codeql-query-help/javascript/)
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
+* [Ruby queries](https://codeql.github.com/codeql-query-help/ruby/)
+* [Swift queries](https://codeql.github.com/codeql-query-help/swift/)
 
 ## Metadata area
 
