@@ -3,7 +3,7 @@
 CodeQL library for GitHub Actions
 =================================
 
-When you're analyzing GitHub Actions workflows and action metadata files, you can make use of the large collection of classes in the CodeQL library for GitHub Actions.
+When you're analyzing GitHub Actions workflows and Action metadata files, you can make use of the large collection of classes in the CodeQL library for GitHub Actions.
 
 Overview
 --------
@@ -116,7 +116,7 @@ See the GitHub Actions documentation on `workflows <https://docs.github.com/en/a
    * - CodeQL class
      - Description and selected predicates
    * - ``Workflow``
-     -  An Actions workflow. This is a mapping at the top level of an Actions YAML workflow file. See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
+     -  An Actions workflow, defined as a mapping at the top level of a workflow YAML file in `.github/workflows`. See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
         - `getAJob()` - Gets a job within the `jobs` mapping of this workflow.
         - `getEnv()` - Gets an `env` mapping within this workflow declaring workflow-level environment variables, if any.
         - `getJob(string jobId)` - Gets a job within the `jobs` mapping of this workflow with the given job ID.
