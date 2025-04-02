@@ -247,7 +247,7 @@ module DOM {
         ]
     |
       (
-        result = documentRef().getAMethodCall(collectionName) or
+        result = domValueRef().getAMethodCall(collectionName) or
         result = DataFlow::globalVarRef(collectionName).getACall()
       )
     )
@@ -441,9 +441,11 @@ module DOM {
   DataFlow::SourceNode domValueRef() {
     result = domValueRef(DataFlow::TypeTracker::end())
     or
-    result.hasUnderlyingType("Element")
+    result.hasUnderlyingType(["Element", "HTMLCollection", "HTMLCollectionOf"])
     or
     result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
+    or
+    result = documentRef()
     or
     exists(DataFlow::ClassNode cls |
       cls.getASuperClassNode().getALocalSource() =
