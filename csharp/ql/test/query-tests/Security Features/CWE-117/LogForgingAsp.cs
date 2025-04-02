@@ -10,11 +10,11 @@ public enum TestEnum
 
 public class AspController : ControllerBase
 {
-    public void Action1(string username)
+    public void Action1(string username) // $ Source
     {
         var logger = new ILogger();
         // BAD: Logged as-is
-        logger.Warn(username + " logged in");
+        logger.Warn(username + " logged in"); // $ Alert
     }
 
     public void Action1(DateTime date)
@@ -89,7 +89,7 @@ public class AspController : ControllerBase
     public void ActionDateTime(DateTimeOffset dt)
     {
         var logger = new ILogger();
-        // GOOD: DateTimeOffset is a sanitizer. [FALSEPOSITIVE]
+        // GOOD: DateTimeOffset is a sanitizer. [FALSE POSITIVE]
         logger.Warn($"Warning about the DateTimeOffset: {dt}");
     }
 }
