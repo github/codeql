@@ -82,14 +82,14 @@ public class AspController : ControllerBase
     public void ActionEnum(TestEnum e)
     {
         var logger = new ILogger();
-        // GOOD: Enum is a sanitizer. [FALSE POSITIVE]
+        // GOOD: Enum is a sanitizer.
         logger.Warn($"Warning about the enum: {e}");
     }
 
     public void ActionDateTime(DateTimeOffset dt)
     {
         var logger = new ILogger();
-        // GOOD: DateTimeOffset is a sanitizer. [FALSE POSITIVE]
+        // GOOD: DateTimeOffset is a sanitizer.
         logger.Warn($"Warning about the DateTimeOffset: {dt}");
     }
 }
