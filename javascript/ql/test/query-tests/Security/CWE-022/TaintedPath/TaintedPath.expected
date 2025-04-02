@@ -168,6 +168,26 @@
 | prettier.js:11:44:11:44 | p | prettier.js:6:13:6:13 | p | prettier.js:11:44:11:44 | p | This path depends on a $@. | prettier.js:6:13:6:13 | p | user-provided value |
 | pupeteer.js:9:28:9:34 | tainted | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:9:28:9:34 | tainted | This path depends on a $@. | pupeteer.js:5:28:5:53 | parseTo ... t).name | user-provided value |
 | pupeteer.js:13:37:13:43 | tainted | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:13:37:13:43 | tainted | This path depends on a $@. | pupeteer.js:5:28:5:53 | parseTo ... t).name | user-provided value |
+| rimraf.js:10:17:10:20 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:10:17:10:20 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:11:23:11:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:11:23:11:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:12:19:12:22 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:12:19:12:22 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:13:25:13:28 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:13:25:13:28 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:14:24:14:27 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:14:24:14:27 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:15:23:15:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:15:23:15:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:16:25:16:28 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:16:25:16:28 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:17:19:17:22 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:17:19:17:22 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:18:24:18:27 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:18:24:18:27 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:19:23:19:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:19:23:19:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:20:26:20:29 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:20:26:20:29 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:21:20:21:23 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:21:20:21:23 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:22:25:22:28 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:22:25:22:28 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:23:24:23:27 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:23:24:23:27 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:24:23:24:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:24:23:24:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:25:28:25:31 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:25:28:25:31 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:26:27:26:30 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:26:27:26:30 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:27:22:27:25 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:27:22:27:25 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:28:18:28:21 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:28:18:28:21 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:29:23:29:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:29:23:29:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
 | sharedlib-repro.js:22:18:22:25 | filepath | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | sharedlib-repro.js:22:18:22:25 | filepath | This path depends on a $@. | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | user-provided value |
 | tainted-access-paths.js:8:19:8:22 | path | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:8:19:8:22 | path | This path depends on a $@. | tainted-access-paths.js:6:24:6:30 | req.url | user-provided value |
 | tainted-access-paths.js:12:19:12:25 | obj.sub | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:12:19:12:25 | obj.sub | This path depends on a $@. | tainted-access-paths.js:6:24:6:30 | req.url | user-provided value |
@@ -594,6 +614,29 @@ edges
 | pupeteer.js:5:9:5:71 | tainted | pupeteer.js:13:37:13:43 | tainted | provenance |  |
 | pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | pupeteer.js:5:9:5:71 | tainted | provenance |  |
 | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | provenance | Config |
+| rimraf.js:8:11:8:18 | { path } | rimraf.js:8:13:8:16 | path | provenance | Config |
+| rimraf.js:8:11:8:29 | path | rimraf.js:10:17:10:20 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:11:23:11:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:12:19:12:22 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:13:25:13:28 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:14:24:14:27 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:15:23:15:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:16:25:16:28 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:17:19:17:22 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:18:24:18:27 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:19:23:19:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:20:26:20:29 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:21:20:21:23 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:22:25:22:28 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:23:24:23:27 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:24:23:24:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:25:28:25:31 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:26:27:26:30 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:27:22:27:25 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:28:18:28:21 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:29:23:29:26 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:8:11:8:29 | path | provenance |  |
+| rimraf.js:8:22:8:29 | req.body | rimraf.js:8:11:8:18 | { path } | provenance |  |
 | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | sharedlib-repro.js:21:27:21:34 | filepath | provenance |  |
 | sharedlib-repro.js:21:27:21:34 | filepath | sharedlib-repro.js:22:18:22:25 | filepath | provenance |  |
 | tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path | provenance |  |
@@ -1133,6 +1176,30 @@ nodes
 | pupeteer.js:5:28:5:53 | parseTo ... t).name | semmle.label | parseTo ... t).name |
 | pupeteer.js:9:28:9:34 | tainted | semmle.label | tainted |
 | pupeteer.js:13:37:13:43 | tainted | semmle.label | tainted |
+| rimraf.js:8:11:8:18 | { path } | semmle.label | { path } |
+| rimraf.js:8:11:8:29 | path | semmle.label | path |
+| rimraf.js:8:13:8:16 | path | semmle.label | path |
+| rimraf.js:8:22:8:29 | req.body | semmle.label | req.body |
+| rimraf.js:10:17:10:20 | path | semmle.label | path |
+| rimraf.js:11:23:11:26 | path | semmle.label | path |
+| rimraf.js:12:19:12:22 | path | semmle.label | path |
+| rimraf.js:13:25:13:28 | path | semmle.label | path |
+| rimraf.js:14:24:14:27 | path | semmle.label | path |
+| rimraf.js:15:23:15:26 | path | semmle.label | path |
+| rimraf.js:16:25:16:28 | path | semmle.label | path |
+| rimraf.js:17:19:17:22 | path | semmle.label | path |
+| rimraf.js:18:24:18:27 | path | semmle.label | path |
+| rimraf.js:19:23:19:26 | path | semmle.label | path |
+| rimraf.js:20:26:20:29 | path | semmle.label | path |
+| rimraf.js:21:20:21:23 | path | semmle.label | path |
+| rimraf.js:22:25:22:28 | path | semmle.label | path |
+| rimraf.js:23:24:23:27 | path | semmle.label | path |
+| rimraf.js:24:23:24:26 | path | semmle.label | path |
+| rimraf.js:25:28:25:31 | path | semmle.label | path |
+| rimraf.js:26:27:26:30 | path | semmle.label | path |
+| rimraf.js:27:22:27:25 | path | semmle.label | path |
+| rimraf.js:28:18:28:21 | path | semmle.label | path |
+| rimraf.js:29:23:29:26 | path | semmle.label | path |
 | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | semmle.label | req.par ... spaceId |
 | sharedlib-repro.js:21:27:21:34 | filepath | semmle.label | filepath |
 | sharedlib-repro.js:22:18:22:25 | filepath | semmle.label | filepath |
