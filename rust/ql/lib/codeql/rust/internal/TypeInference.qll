@@ -69,9 +69,12 @@ private module Input1 implements InputSig1<Location> {
     apos.asMethodTypeArgumentPosition() = ppos.asTypeParam().getPosition()
   }
 
-  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
+  /** A raw AST node that might correspond to a type parameter. */
+  private class RawTypeParameter = @type_param or @trait;
 
-  private predicate idOfRaw(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate id(RawTypeParameter x, RawTypeParameter y) { x = y }
+
+  private predicate idOfRaw(RawTypeParameter x, int y) = equivalenceRelation(id/2)(x, y)
 
   private int idOf(AstNode node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
 
