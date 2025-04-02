@@ -303,6 +303,15 @@ module TypeResolution {
     }
   }
 
+  module ValueHasProperty<nodeSig/1 typeHasProperty> {
+    predicate valueHasProperty(Node value) {
+      exists(Node type |
+        valueHasType(value, type) and
+        typeHasProperty(type)
+      )
+    }
+  }
+
   private predicate isSanitizingPrimitiveTypeBase(Node node) {
     node.(TypeExpr).isNumbery()
     or
@@ -337,10 +346,18 @@ module TypeResolution {
    *
    * See `isSanitizingPrimitiveType`.
    */
-  predicate valueHasSanitizingPrimitiveType(Node value) {
-    exists(Node type |
-      valueHasType(value, type) and
-      isSanitizingPrimitiveType(type)
-    )
-  }
+  predicate valueHasSanitizingPrimitiveType =
+    ValueHasProperty<isSanitizingPrimitiveType/1>::valueHasProperty/1;
+
+  private predicate isPromiseBase(Node node) { exists(unwrapPromiseType(node)) }
+
+  /**
+   * Holds if the given type is a Promise object. Does not hold for unions unless all parts of the union are promises.
+   */
+  predicate isPromiseType = TrackMustProp<isPromiseBase/1>::hasProperty/1;
+
+  /**
+   * Holds if the given value has a type that implied it is a Promise object. Does not hold for unions unless all parts of the union are promises.
+   */
+  predicate valueHasPromiseType = ValueHasProperty<isPromiseType/1>::valueHasProperty/1;
 }
