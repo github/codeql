@@ -1661,7 +1661,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
       TExprNode(DfInput::Expr e, Boolean isPost) { e = DfInput::getARead(_) } or
-      TSsaDefinitionNode(DefinitionExt def) { not phiHasUniqNextNode(def) } or
+      TSsaDefinitionNode(DefinitionExt def) {
+        not phiHasUniqNextNode(def) and
+        if DfInput::includeWriteDefsInFlowStep()
+        then any()
+        else (
+          def instanceof PhiNode or
+          def instanceof PhiReadNode or
+          DfInput::allowFlowIntoUncertainDef(def)
+        )
+      } or
       TSsaInputNode(SsaPhiExt phi, BasicBlock input) { relevantPhiInputNode(phi, input) }
 
     /**
@@ -1747,8 +1756,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         variableRead(bb_, i_, v_, true) and
         this.getExpr().hasCfgNode(bb_, i_)
       }
-
-      SourceVariable getVariable() { result = v_ }
 
       pragma[nomagic]
       predicate readsAt(BasicBlock bb, int i, SourceVariable v) {
@@ -1904,14 +1911,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
         def.definesAt(v, bb, i, _) and
-        isUseStep = false and
-        if DfInput::includeWriteDefsInFlowStep()
-        then any()
-        else (
-          def instanceof PhiNode or
-          def instanceof PhiReadNode or
-          DfInput::allowFlowIntoUncertainDef(def)
-        )
+        isUseStep = false
       )
       or
       [nodeFrom, nodeFrom.(ExprPostUpdateNode).getPreUpdateNode()].(ReadNode).readsAt(bb, i, v) and
