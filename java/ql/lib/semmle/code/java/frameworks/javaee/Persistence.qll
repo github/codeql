@@ -713,7 +713,7 @@ class VersionAnnotation extends Annotation {
   VersionAnnotation() { this.getType().hasQualifiedName(getAPersistencePackageName(), "Version") }
 }
 
-/** The interface `javax.persistence.EntityManager`. */
+/** The interface `{javax,jakarta}.persistence.EntityManager`. */
 class TypeEntityManager extends Interface {
   TypeEntityManager() { this.hasQualifiedName(getAPersistencePackageName(), "EntityManager") }
 
@@ -736,7 +736,7 @@ class TypeEntityManager extends Interface {
   }
 }
 
-/** The interface `javax.persistence.Query`, which represents queries in the Java Persistence Query Language. */
+/** The interface `{javax,jakarta}.persistence.Query`, which represents queries in the Java Persistence Query Language. */
 class TypeQuery extends Interface {
   TypeQuery() { this.hasQualifiedName(getAPersistencePackageName(), "Query") }
 
