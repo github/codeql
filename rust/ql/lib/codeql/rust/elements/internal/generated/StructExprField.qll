@@ -63,18 +63,18 @@ module Generated {
     final predicate hasExpr() { exists(this.getExpr()) }
 
     /**
-     * Gets the name reference of this struct expression field, if it exists.
+     * Gets the identifier of this struct expression field, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertStructExprFieldToRaw(this)
               .(Raw::StructExprField)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
   }
 }

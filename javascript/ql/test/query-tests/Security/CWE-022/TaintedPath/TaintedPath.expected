@@ -51,6 +51,30 @@
 | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | This path depends on a $@. | express.js:8:20:8:32 | req.query.bar | user-provided value |
 | handlebars.js:11:32:11:39 | filePath | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:11:32:11:39 | filePath | This path depends on a $@. | handlebars.js:29:46:29:60 | req.params.path | user-provided value |
 | handlebars.js:15:25:15:32 | filePath | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:15:25:15:32 | filePath | This path depends on a $@. | handlebars.js:43:15:43:29 | req.params.path | user-provided value |
+| hapi.js:15:44:15:51 | filepath | hapi.js:14:30:14:51 | request ... ilepath | hapi.js:15:44:15:51 | filepath | This path depends on a $@. | hapi.js:14:30:14:51 | request ... ilepath | user-provided value |
+| more-fs-extra.js:10:15:10:22 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:10:15:10:22 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:11:11:11:18 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:11:11:11:18 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:12:14:12:21 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:12:14:12:21 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:13:18:13:25 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:13:18:13:25 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:14:11:14:18 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:14:11:14:18 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:15:21:15:28 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:15:21:15:28 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:16:21:16:28 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:16:21:16:28 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:17:31:17:38 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:17:31:17:38 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:18:15:18:22 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:18:15:18:22 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:19:25:19:32 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:19:25:19:32 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:20:21:20:28 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:20:21:20:28 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:21:17:21:24 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:21:17:21:24 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:22:16:22:23 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:22:16:22:23 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:23:20:23:27 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:23:20:23:27 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:24:19:24:26 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:24:19:24:26 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:25:15:25:22 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:25:15:25:22 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:26:19:26:26 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:26:19:26:26 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:27:13:27:20 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:27:13:27:20 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:28:17:28:24 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:28:17:28:24 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:29:23:29:30 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:29:23:29:30 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:30:16:30:23 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:30:16:30:23 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:31:20:31:27 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:31:20:31:27 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
+| more-fs-extra.js:32:23:32:30 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:32:23:32:30 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on a $@. | normalizedPaths.js:11:14:11:27 | req.query.path | user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on a $@. | normalizedPaths.js:11:14:11:27 | req.query.path | user-provided value |
 | normalizedPaths.js:15:19:15:38 | path + '/index.html' | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | This path depends on a $@. | normalizedPaths.js:11:14:11:27 | req.query.path | user-provided value |
@@ -344,6 +368,34 @@ edges
 | handlebars.js:13:73:13:80 | filePath | handlebars.js:15:25:15:32 | filePath | provenance |  |
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath | provenance |  |
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath | provenance |  |
+| hapi.js:14:19:14:51 | filepath | hapi.js:15:44:15:51 | filepath | provenance |  |
+| hapi.js:14:30:14:51 | request ... ilepath | hapi.js:14:19:14:51 | filepath | provenance |  |
+| more-fs-extra.js:8:11:8:22 | { filename } | more-fs-extra.js:8:13:8:20 | filename | provenance | Config |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:10:15:10:22 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:11:11:11:18 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:12:14:12:21 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:13:18:13:25 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:14:11:14:18 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:15:21:15:28 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:16:21:16:28 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:17:31:17:38 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:18:15:18:22 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:19:25:19:32 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:20:21:20:28 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:21:17:21:24 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:22:16:22:23 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:23:20:23:27 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:24:19:24:26 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:25:15:25:22 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:26:19:26:26 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:27:13:27:20 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:28:17:28:24 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:29:23:29:30 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:30:16:30:23 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:31:20:31:27 | filename | provenance |  |
+| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:32:23:32:30 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:8:11:8:33 | filename | provenance |  |
+| more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:8:11:8:22 | { filename } | provenance |  |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path | provenance |  |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:14:26:14:29 | path | provenance |  |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:15:19:15:22 | path | provenance |  |
@@ -821,6 +873,36 @@ nodes
 | handlebars.js:15:25:15:32 | filePath | semmle.label | filePath |
 | handlebars.js:29:46:29:60 | req.params.path | semmle.label | req.params.path |
 | handlebars.js:43:15:43:29 | req.params.path | semmle.label | req.params.path |
+| hapi.js:14:19:14:51 | filepath | semmle.label | filepath |
+| hapi.js:14:30:14:51 | request ... ilepath | semmle.label | request ... ilepath |
+| hapi.js:15:44:15:51 | filepath | semmle.label | filepath |
+| more-fs-extra.js:8:11:8:22 | { filename } | semmle.label | { filename } |
+| more-fs-extra.js:8:11:8:33 | filename | semmle.label | filename |
+| more-fs-extra.js:8:13:8:20 | filename | semmle.label | filename |
+| more-fs-extra.js:8:26:8:33 | req.body | semmle.label | req.body |
+| more-fs-extra.js:10:15:10:22 | filename | semmle.label | filename |
+| more-fs-extra.js:11:11:11:18 | filename | semmle.label | filename |
+| more-fs-extra.js:12:14:12:21 | filename | semmle.label | filename |
+| more-fs-extra.js:13:18:13:25 | filename | semmle.label | filename |
+| more-fs-extra.js:14:11:14:18 | filename | semmle.label | filename |
+| more-fs-extra.js:15:21:15:28 | filename | semmle.label | filename |
+| more-fs-extra.js:16:21:16:28 | filename | semmle.label | filename |
+| more-fs-extra.js:17:31:17:38 | filename | semmle.label | filename |
+| more-fs-extra.js:18:15:18:22 | filename | semmle.label | filename |
+| more-fs-extra.js:19:25:19:32 | filename | semmle.label | filename |
+| more-fs-extra.js:20:21:20:28 | filename | semmle.label | filename |
+| more-fs-extra.js:21:17:21:24 | filename | semmle.label | filename |
+| more-fs-extra.js:22:16:22:23 | filename | semmle.label | filename |
+| more-fs-extra.js:23:20:23:27 | filename | semmle.label | filename |
+| more-fs-extra.js:24:19:24:26 | filename | semmle.label | filename |
+| more-fs-extra.js:25:15:25:22 | filename | semmle.label | filename |
+| more-fs-extra.js:26:19:26:26 | filename | semmle.label | filename |
+| more-fs-extra.js:27:13:27:20 | filename | semmle.label | filename |
+| more-fs-extra.js:28:17:28:24 | filename | semmle.label | filename |
+| more-fs-extra.js:29:23:29:30 | filename | semmle.label | filename |
+| more-fs-extra.js:30:16:30:23 | filename | semmle.label | filename |
+| more-fs-extra.js:31:20:31:27 | filename | semmle.label | filename |
+| more-fs-extra.js:32:23:32:30 | filename | semmle.label | filename |
 | normalizedPaths.js:11:7:11:27 | path | semmle.label | path |
 | normalizedPaths.js:11:14:11:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:13:19:13:22 | path | semmle.label | path |
