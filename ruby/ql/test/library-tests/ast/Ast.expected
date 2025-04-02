@@ -3153,6 +3153,46 @@ params/params.rb:
 #   95|       getReceiver: [LocalVariableAccess] hash
 #   95|       getArgument: [HashSplatExpr] ** ...
 #   95|         getAnOperand/getOperand/getReceiver: [LocalVariableAccess] __synth__0
+#   98|   getStmt: [ClassDeclaration] Sup
+#   99|     getStmt: [Method] m
+#   99|       getParameter: [SimpleParameter] x
+#   99|         getDefiningAccess: [LocalVariableAccess] x
+#   99|       getParameter: [SplatParameter] *rest
+#   99|         getDefiningAccess: [LocalVariableAccess] rest
+#   99|       getParameter: [KeywordParameter] k
+#   99|         getDefiningAccess: [LocalVariableAccess] k
+#   99|       getParameter: [HashSplatParameter] **kwargs
+#   99|         getDefiningAccess: [LocalVariableAccess] kwargs
+#  100|       getStmt: [MethodCall] call to print
+#  100|         getReceiver: [SelfVariableAccess] self
+#  100|         getArgument: [AddExpr] ... + ...
+#  100|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] x
+#  100|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  101|       getStmt: [MethodCall] call to print
+#  101|         getReceiver: [SelfVariableAccess] self
+#  101|         getArgument: [AddExpr] ... + ...
+#  101|           getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] k
+#  101|           getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  105|   getStmt: [ClassDeclaration] Sub
+#  105|     getSuperclassExpr: [ConstantReadAccess] Sup
+#  106|     getStmt: [Method] m
+#  106|       getParameter: [SimpleParameter] y
+#  106|         getDefiningAccess: [LocalVariableAccess] y
+#  106|       getParameter: [SplatParameter] *rest
+#  106|         getDefiningAccess: [LocalVariableAccess] rest
+#  106|       getParameter: [KeywordParameter] k
+#  106|         getDefiningAccess: [LocalVariableAccess] k
+#  106|       getParameter: [HashSplatParameter] **kwargs
+#  106|         getDefiningAccess: [LocalVariableAccess] kwargs
+#  107|       getStmt: [SuperCall] super call to m
+#  111|   getStmt: [MethodCall] call to m
+#  111|     getReceiver: [MethodCall] call to new
+#  111|       getReceiver: [ConstantReadAccess] Sub
+#  111|     getArgument: [IntegerLiteral] 42
+#  111|     getArgument: [Pair] Pair
+#  111|       getKey: [SymbolLiteral] :k
+#  111|         getComponent: [StringTextComponent] k
+#  111|       getValue: [IntegerLiteral] 22
 erb/template.html.erb:
 #   19| [Toplevel] template.html.erb
 #   19|   getStmt: [StringLiteral] "hello world"

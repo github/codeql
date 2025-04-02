@@ -205,3 +205,25 @@ def foo(x, y)
 end
 
 foo(*int_hash)
+
+class Sup
+    def m(x, *rest, k1:, **kwargs)
+        sink(x) # $ MISSING: hasValueFlow=81
+        sink(rest[0]) # $ MISSING: hasValueFlow=82
+        sink(rest[1])
+        sink(rest[2]) # $ MISSING: hasValueFlow=83
+        sink(k1) # $ MISSING: hasValueFlow=84
+        sink(kwargs[:k2]) # $ MISSING: hasValueFlow=85
+        yield taint(86)
+    end
+end
+
+class Sub < Sup
+    def m(x, *rest, k1:, **kwargs)
+        super
+    end
+end
+
+Sub.new.m(taint(81), taint(82), 0, taint(83), k1: taint(84), k2: taint(85)) do |x|
+    sink(x) # $ MISSING: hasValueFlow=86
+end

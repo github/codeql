@@ -3,25 +3,25 @@ track
 | params_flow.rb:1:1:3:3 | self in taint | type tracker without call steps | params_flow.rb:1:1:3:3 | self in taint |
 | params_flow.rb:1:1:3:3 | synthetic splat parameter | type tracker without call steps | params_flow.rb:1:1:3:3 | synthetic splat parameter |
 | params_flow.rb:1:1:3:3 | taint | type tracker without call steps | params_flow.rb:1:1:3:3 | taint |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:1:1:3:3 | self in taint |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:5:1:7:3 | self in sink |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:9:1:12:3 | self in positional |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:16:1:19:3 | self in keyword |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:25:1:31:3 | self in kwargs |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:49:1:53:3 | self in posargs |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:64:1:66:3 | self in splatstuff |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:69:1:76:3 | self in splatmid |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:83:1:91:3 | self in pos_many |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:98:1:103:3 | self in splatmidsmall |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:108:1:112:3 | self in splat_followed_by_keyword_param |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:120:1:126:3 | self in destruct |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:133:1:135:3 | self in splatall |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:139:1:141:3 | self in hashSplatSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:153:1:155:3 | self in keywordSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:167:1:169:3 | self in splatSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:181:1:183:3 | self in positionSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker with call steps | params_flow.rb:200:1:205:3 | self in foo |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | type tracker without call steps | params_flow.rb:1:1:207:15 | self in params_flow.rb |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:1:1:3:3 | self in taint |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:5:1:7:3 | self in sink |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:9:1:12:3 | self in positional |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:16:1:19:3 | self in keyword |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:25:1:31:3 | self in kwargs |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:49:1:53:3 | self in posargs |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:64:1:66:3 | self in splatstuff |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:69:1:76:3 | self in splatmid |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:83:1:91:3 | self in pos_many |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:98:1:103:3 | self in splatmidsmall |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:108:1:112:3 | self in splat_followed_by_keyword_param |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:120:1:126:3 | self in destruct |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:133:1:135:3 | self in splatall |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:139:1:141:3 | self in hashSplatSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:153:1:155:3 | self in keywordSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:167:1:169:3 | self in splatSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:181:1:183:3 | self in positionSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker with call steps | params_flow.rb:200:1:205:3 | self in foo |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | type tracker without call steps | params_flow.rb:1:1:229:4 | self in params_flow.rb |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:9:16:9:17 | p1 |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:9:20:9:21 | p2 |
@@ -52,6 +52,8 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:168:26:168:35 | ...[...] |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:181:28:181:29 | p2 |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:200:9:200:9 | x |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps | params_flow.rb:222:21:222:22 | k1 |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element | params_flow.rb:9:1:12:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:9:1:12:3 | synthetic splat parameter |
@@ -88,6 +90,8 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:133:14:133:18 | *args |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:134:5:134:16 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:200:1:205:3 | synthetic splat parameter |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 | params_flow.rb:222:14:222:18 | *rest |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 or unknown | params_flow.rb:64:16:64:17 | *x |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 or unknown | params_flow.rb:140:5:140:15 | [post] ...[...] |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 0 or unknown | params_flow.rb:140:5:140:38 | call to insert |
@@ -110,15 +114,20 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 1 | params_flow.rb:168:5:168:36 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 1 | params_flow.rb:181:1:183:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 1 | params_flow.rb:182:5:182:20 | synthetic splat argument |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 1 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 2 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 2 | params_flow.rb:83:1:91:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 2 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 2 | params_flow.rb:133:14:133:18 | *args |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 2 | params_flow.rb:222:14:222:18 | *rest |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 3 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 3 | params_flow.rb:83:1:91:3 | synthetic splat parameter |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 3 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 4 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 4 | params_flow.rb:83:1:91:3 | synthetic splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element 5 | params_flow.rb:83:1:91:3 | synthetic splat parameter |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element :k1 | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element :k2 | params_flow.rb:222:26:222:33 | **kwargs |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element :p1 | params_flow.rb:16:1:19:3 | synthetic hash-splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element :p1 | params_flow.rb:25:1:31:3 | synthetic hash-splat parameter |
 | params_flow.rb:1:11:1:11 | x | type tracker with call steps with content element :p1 | params_flow.rb:25:17:25:24 | **kwargs |
@@ -212,6 +221,12 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:185:14:185:22 | call to taint |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:192:24:192:32 | call to taint |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:196:10:196:18 | call to taint |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:217:15:217:23 | call to taint |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:227:11:227:19 | call to taint |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:227:22:227:30 | call to taint |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:227:36:227:44 | call to taint |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:227:51:227:59 | call to taint |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps | params_flow.rb:227:66:227:74 | call to taint |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content attribute [] | params_flow.rb:117:1:117:1 | [post] x |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element | params_flow.rb:117:1:117:1 | [post] x |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element | params_flow.rb:118:12:118:13 | * ... |
@@ -263,6 +278,8 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 0 | params_flow.rb:195:12:198:1 | call to [] |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 0 | params_flow.rb:195:12:198:1 | synthetic hash-splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 0 | params_flow.rb:207:5:207:13 | * ... |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 0 | params_flow.rb:217:9:217:23 | synthetic splat argument |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 0 | params_flow.rb:227:1:229:3 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 0 or unknown | params_flow.rb:67:12:67:16 | * ... |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 1 | params_flow.rb:14:1:14:30 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 1 | params_flow.rb:44:1:44:28 | synthetic splat argument |
@@ -312,6 +329,7 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 1 | params_flow.rb:185:8:185:24 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 1 | params_flow.rb:187:20:187:24 | * ... |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 1 | params_flow.rb:192:1:192:33 | synthetic splat argument |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 1 | params_flow.rb:227:1:229:3 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 2 | params_flow.rb:78:1:78:63 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 2 | params_flow.rb:80:8:80:51 | call to [] |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 2 | params_flow.rb:80:8:80:51 | synthetic splat argument |
@@ -340,12 +358,15 @@ track
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 3 | params_flow.rb:94:1:94:48 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 3 | params_flow.rb:94:32:94:36 | * ... |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 3 | params_flow.rb:96:1:96:88 | synthetic splat argument |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 3 | params_flow.rb:227:1:229:3 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 4 | params_flow.rb:78:1:78:63 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 4 | params_flow.rb:81:1:81:37 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 4 | params_flow.rb:94:1:94:48 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 4 | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element 5 | params_flow.rb:94:1:94:48 | synthetic splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element :c | params_flow.rb:114:1:114:67 | synthetic hash-splat argument |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element :k1 | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element :k2 | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element :p1 | params_flow.rb:21:1:21:35 | synthetic hash-splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element :p1 | params_flow.rb:22:1:22:35 | synthetic hash-splat argument |
 | params_flow.rb:1:11:1:11 | x | type tracker without call steps with content element :p1 | params_flow.rb:23:1:23:41 | synthetic hash-splat argument |
@@ -470,6 +491,13 @@ track
 | params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:203:5:203:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:204:5:204:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:207:1:207:14 | call to foo |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:211:9:211:15 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:212:9:212:21 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:213:9:213:21 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:214:9:214:21 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:215:9:215:16 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:216:9:216:25 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | type tracker without call steps | params_flow.rb:228:5:228:11 | call to sink |
 | params_flow.rb:6:5:6:10 | synthetic splat argument | type tracker without call steps | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:9:1:12:3 | &block | type tracker without call steps | params_flow.rb:9:1:12:3 | &block |
 | params_flow.rb:9:1:12:3 | positional | type tracker without call steps | params_flow.rb:9:1:12:3 | positional |
@@ -3089,221 +3117,407 @@ track
 | params_flow.rb:207:1:207:14 | call to foo | type tracker without call steps | params_flow.rb:207:1:207:14 | call to foo |
 | params_flow.rb:207:5:207:13 | * ... | type tracker with call steps | params_flow.rb:200:1:205:3 | synthetic splat parameter |
 | params_flow.rb:207:5:207:13 | * ... | type tracker without call steps | params_flow.rb:207:5:207:13 | * ... |
+| params_flow.rb:209:1:219:3 | self (Sup) | type tracker without call steps | params_flow.rb:209:1:219:3 | self (Sup) |
+| params_flow.rb:210:5:218:7 | &block | type tracker without call steps | params_flow.rb:210:5:218:7 | &block |
+| params_flow.rb:210:5:218:7 | m | type tracker without call steps | params_flow.rb:210:5:218:7 | m |
+| params_flow.rb:210:5:218:7 | self in m | type tracker with call steps | params_flow.rb:1:1:3:3 | self in taint |
+| params_flow.rb:210:5:218:7 | self in m | type tracker with call steps | params_flow.rb:5:1:7:3 | self in sink |
+| params_flow.rb:210:5:218:7 | self in m | type tracker without call steps | params_flow.rb:210:5:218:7 | self in m |
+| params_flow.rb:210:5:218:7 | synthetic hash-splat parameter | type tracker without call steps | params_flow.rb:210:5:218:7 | synthetic hash-splat parameter |
+| params_flow.rb:210:5:218:7 | synthetic splat parameter | type tracker without call steps | params_flow.rb:210:5:218:7 | synthetic splat parameter |
+| params_flow.rb:210:11:210:11 | x | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:210:11:210:11 | x | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:210:11:210:11 | x | type tracker without call steps | params_flow.rb:210:11:210:11 | x |
+| params_flow.rb:210:11:210:11 | x | type tracker without call steps | params_flow.rb:210:11:210:11 | x |
+| params_flow.rb:210:11:210:11 | x | type tracker without call steps with content element 0 | params_flow.rb:211:9:211:15 | synthetic splat argument |
+| params_flow.rb:210:14:210:18 | *rest | type tracker without call steps | params_flow.rb:210:14:210:18 | *rest |
+| params_flow.rb:210:15:210:18 | rest | type tracker without call steps | params_flow.rb:210:15:210:18 | rest |
+| params_flow.rb:210:21:210:22 | k1 | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:210:21:210:22 | k1 | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:210:21:210:22 | k1 | type tracker without call steps | params_flow.rb:210:21:210:22 | k1 |
+| params_flow.rb:210:21:210:22 | k1 | type tracker without call steps | params_flow.rb:210:21:210:22 | k1 |
+| params_flow.rb:210:21:210:22 | k1 | type tracker without call steps with content element 0 | params_flow.rb:215:9:215:16 | synthetic splat argument |
+| params_flow.rb:210:26:210:33 | **kwargs | type tracker without call steps | params_flow.rb:210:26:210:33 | **kwargs |
+| params_flow.rb:210:28:210:33 | kwargs | type tracker without call steps | params_flow.rb:210:28:210:33 | kwargs |
+| params_flow.rb:211:9:211:15 | call to sink | type tracker without call steps | params_flow.rb:211:9:211:15 | call to sink |
+| params_flow.rb:211:9:211:15 | synthetic splat argument | type tracker without call steps | params_flow.rb:211:9:211:15 | synthetic splat argument |
+| params_flow.rb:212:9:212:21 | call to sink | type tracker without call steps | params_flow.rb:212:9:212:21 | call to sink |
+| params_flow.rb:212:9:212:21 | synthetic splat argument | type tracker without call steps | params_flow.rb:212:9:212:21 | synthetic splat argument |
+| params_flow.rb:212:14:212:20 | ...[...] | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:212:14:212:20 | ...[...] | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:212:14:212:20 | ...[...] | type tracker without call steps | params_flow.rb:212:14:212:20 | ...[...] |
+| params_flow.rb:212:14:212:20 | ...[...] | type tracker without call steps with content element 0 | params_flow.rb:212:9:212:21 | synthetic splat argument |
+| params_flow.rb:212:14:212:20 | synthetic splat argument | type tracker without call steps | params_flow.rb:212:14:212:20 | synthetic splat argument |
+| params_flow.rb:212:19:212:19 | 0 | type tracker without call steps | params_flow.rb:212:19:212:19 | 0 |
+| params_flow.rb:212:19:212:19 | 0 | type tracker without call steps with content element 0 | params_flow.rb:212:14:212:20 | synthetic splat argument |
+| params_flow.rb:213:9:213:21 | call to sink | type tracker without call steps | params_flow.rb:213:9:213:21 | call to sink |
+| params_flow.rb:213:9:213:21 | synthetic splat argument | type tracker without call steps | params_flow.rb:213:9:213:21 | synthetic splat argument |
+| params_flow.rb:213:14:213:20 | ...[...] | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:213:14:213:20 | ...[...] | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:213:14:213:20 | ...[...] | type tracker without call steps | params_flow.rb:213:14:213:20 | ...[...] |
+| params_flow.rb:213:14:213:20 | ...[...] | type tracker without call steps with content element 0 | params_flow.rb:213:9:213:21 | synthetic splat argument |
+| params_flow.rb:213:14:213:20 | synthetic splat argument | type tracker without call steps | params_flow.rb:213:14:213:20 | synthetic splat argument |
+| params_flow.rb:213:19:213:19 | 1 | type tracker without call steps | params_flow.rb:213:19:213:19 | 1 |
+| params_flow.rb:213:19:213:19 | 1 | type tracker without call steps with content element 0 | params_flow.rb:213:14:213:20 | synthetic splat argument |
+| params_flow.rb:214:9:214:21 | call to sink | type tracker without call steps | params_flow.rb:214:9:214:21 | call to sink |
+| params_flow.rb:214:9:214:21 | synthetic splat argument | type tracker without call steps | params_flow.rb:214:9:214:21 | synthetic splat argument |
+| params_flow.rb:214:14:214:20 | ...[...] | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:214:14:214:20 | ...[...] | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:214:14:214:20 | ...[...] | type tracker without call steps | params_flow.rb:214:14:214:20 | ...[...] |
+| params_flow.rb:214:14:214:20 | ...[...] | type tracker without call steps with content element 0 | params_flow.rb:214:9:214:21 | synthetic splat argument |
+| params_flow.rb:214:14:214:20 | synthetic splat argument | type tracker without call steps | params_flow.rb:214:14:214:20 | synthetic splat argument |
+| params_flow.rb:214:19:214:19 | 2 | type tracker without call steps | params_flow.rb:214:19:214:19 | 2 |
+| params_flow.rb:214:19:214:19 | 2 | type tracker without call steps with content element 0 | params_flow.rb:214:14:214:20 | synthetic splat argument |
+| params_flow.rb:215:9:215:16 | call to sink | type tracker without call steps | params_flow.rb:215:9:215:16 | call to sink |
+| params_flow.rb:215:9:215:16 | synthetic splat argument | type tracker without call steps | params_flow.rb:215:9:215:16 | synthetic splat argument |
+| params_flow.rb:216:9:216:25 | call to sink | type tracker without call steps | params_flow.rb:216:9:216:25 | call to sink |
+| params_flow.rb:216:9:216:25 | synthetic splat argument | type tracker without call steps | params_flow.rb:216:9:216:25 | synthetic splat argument |
+| params_flow.rb:216:14:216:24 | ...[...] | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:216:14:216:24 | ...[...] | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:216:14:216:24 | ...[...] | type tracker without call steps | params_flow.rb:216:14:216:24 | ...[...] |
+| params_flow.rb:216:14:216:24 | ...[...] | type tracker without call steps with content element 0 | params_flow.rb:216:9:216:25 | synthetic splat argument |
+| params_flow.rb:216:14:216:24 | synthetic splat argument | type tracker without call steps | params_flow.rb:216:14:216:24 | synthetic splat argument |
+| params_flow.rb:216:21:216:23 | :k2 | type tracker without call steps | params_flow.rb:216:21:216:23 | :k2 |
+| params_flow.rb:216:21:216:23 | :k2 | type tracker without call steps with content element 0 | params_flow.rb:216:14:216:24 | synthetic splat argument |
+| params_flow.rb:217:9:217:23 | synthetic splat argument | type tracker without call steps | params_flow.rb:217:9:217:23 | synthetic splat argument |
+| params_flow.rb:217:9:217:23 | yield ... | type tracker without call steps | params_flow.rb:217:9:217:23 | yield ... |
+| params_flow.rb:217:9:217:23 | yield ... | type tracker without call steps | params_flow.rb:223:9:223:13 | super call to m |
+| params_flow.rb:217:9:217:23 | yield ... | type tracker without call steps | params_flow.rb:227:1:229:3 | call to m |
+| params_flow.rb:217:9:217:23 | yield block argument | type tracker without call steps | params_flow.rb:217:9:217:23 | yield block argument |
+| params_flow.rb:217:15:217:23 | call to taint | type tracker without call steps | params_flow.rb:217:15:217:23 | call to taint |
+| params_flow.rb:217:15:217:23 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:217:9:217:23 | synthetic splat argument |
+| params_flow.rb:217:15:217:23 | synthetic splat argument | type tracker without call steps | params_flow.rb:217:15:217:23 | synthetic splat argument |
+| params_flow.rb:217:21:217:22 | 86 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:217:21:217:22 | 86 | type tracker without call steps | params_flow.rb:217:15:217:23 | call to taint |
+| params_flow.rb:217:21:217:22 | 86 | type tracker without call steps | params_flow.rb:217:21:217:22 | 86 |
+| params_flow.rb:217:21:217:22 | 86 | type tracker without call steps with content element 0 | params_flow.rb:217:9:217:23 | synthetic splat argument |
+| params_flow.rb:217:21:217:22 | 86 | type tracker without call steps with content element 0 | params_flow.rb:217:15:217:23 | synthetic splat argument |
+| params_flow.rb:221:1:225:3 | self (Sub) | type tracker without call steps | params_flow.rb:221:1:225:3 | self (Sub) |
+| params_flow.rb:221:13:221:15 | Sup | type tracker without call steps | params_flow.rb:221:13:221:15 | Sup |
+| params_flow.rb:222:5:224:7 | &block | type tracker without call steps | params_flow.rb:222:5:224:7 | &block |
+| params_flow.rb:222:5:224:7 | m | type tracker without call steps | params_flow.rb:222:5:224:7 | m |
+| params_flow.rb:222:5:224:7 | self in m | type tracker without call steps | params_flow.rb:222:5:224:7 | self in m |
+| params_flow.rb:222:5:224:7 | synthetic hash-splat parameter | type tracker without call steps | params_flow.rb:222:5:224:7 | synthetic hash-splat parameter |
+| params_flow.rb:222:5:224:7 | synthetic splat parameter | type tracker without call steps | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:222:11:222:11 | x | type tracker without call steps | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:222:11:222:11 | x | type tracker without call steps | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:222:14:222:18 | *rest | type tracker without call steps | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:222:15:222:18 | rest | type tracker without call steps | params_flow.rb:222:15:222:18 | rest |
+| params_flow.rb:222:21:222:22 | k1 | type tracker without call steps | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:222:21:222:22 | k1 | type tracker without call steps | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:222:26:222:33 | **kwargs | type tracker without call steps | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:222:28:222:33 | kwargs | type tracker without call steps | params_flow.rb:222:28:222:33 | kwargs |
+| params_flow.rb:223:9:223:13 | super call to m | type tracker without call steps | params_flow.rb:223:9:223:13 | super call to m |
+| params_flow.rb:223:9:223:13 | super call to m | type tracker without call steps | params_flow.rb:227:1:229:3 | call to m |
+| params_flow.rb:227:1:227:3 | Sub | type tracker without call steps | params_flow.rb:227:1:227:3 | Sub |
+| params_flow.rb:227:1:227:7 | call to new | type tracker with call steps | params_flow.rb:222:5:224:7 | self in m |
+| params_flow.rb:227:1:227:7 | call to new | type tracker without call steps | params_flow.rb:227:1:227:7 | call to new |
+| params_flow.rb:227:1:229:3 | call to m | type tracker without call steps | params_flow.rb:227:1:229:3 | call to m |
+| params_flow.rb:227:1:229:3 | synthetic hash-splat argument | type tracker with call steps | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:227:1:229:3 | synthetic hash-splat argument | type tracker without call steps | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:227:1:229:3 | synthetic splat argument | type tracker with call steps | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:1:229:3 | synthetic splat argument | type tracker without call steps | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:11:227:19 | call to taint | type tracker with call steps | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:227:11:227:19 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:11:227:19 | call to taint | type tracker without call steps | params_flow.rb:227:11:227:19 | call to taint |
+| params_flow.rb:227:11:227:19 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:11:227:19 | synthetic splat argument | type tracker without call steps | params_flow.rb:227:11:227:19 | synthetic splat argument |
+| params_flow.rb:227:17:227:18 | 81 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:17:227:18 | 81 | type tracker with call steps | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:227:17:227:18 | 81 | type tracker with call steps with content element 0 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:17:227:18 | 81 | type tracker without call steps | params_flow.rb:227:11:227:19 | call to taint |
+| params_flow.rb:227:17:227:18 | 81 | type tracker without call steps | params_flow.rb:227:17:227:18 | 81 |
+| params_flow.rb:227:17:227:18 | 81 | type tracker without call steps with content element 0 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:17:227:18 | 81 | type tracker without call steps with content element 0 | params_flow.rb:227:11:227:19 | synthetic splat argument |
+| params_flow.rb:227:22:227:30 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:227:22:227:30 | call to taint | type tracker with call steps with content element 1 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:22:227:30 | call to taint | type tracker without call steps | params_flow.rb:227:22:227:30 | call to taint |
+| params_flow.rb:227:22:227:30 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:22:227:30 | synthetic splat argument | type tracker without call steps | params_flow.rb:227:22:227:30 | synthetic splat argument |
+| params_flow.rb:227:28:227:29 | 82 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:28:227:29 | 82 | type tracker with call steps with content element 0 | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:227:28:227:29 | 82 | type tracker with call steps with content element 1 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:28:227:29 | 82 | type tracker without call steps | params_flow.rb:227:22:227:30 | call to taint |
+| params_flow.rb:227:28:227:29 | 82 | type tracker without call steps | params_flow.rb:227:28:227:29 | 82 |
+| params_flow.rb:227:28:227:29 | 82 | type tracker without call steps with content element 0 | params_flow.rb:227:22:227:30 | synthetic splat argument |
+| params_flow.rb:227:28:227:29 | 82 | type tracker without call steps with content element 1 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:33:227:33 | 0 | type tracker with call steps with content element 1 | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:227:33:227:33 | 0 | type tracker with call steps with content element 2 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:33:227:33 | 0 | type tracker without call steps | params_flow.rb:227:33:227:33 | 0 |
+| params_flow.rb:227:33:227:33 | 0 | type tracker without call steps with content element 2 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:36:227:44 | call to taint | type tracker with call steps with content element 2 | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:227:36:227:44 | call to taint | type tracker with call steps with content element 3 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:36:227:44 | call to taint | type tracker without call steps | params_flow.rb:227:36:227:44 | call to taint |
+| params_flow.rb:227:36:227:44 | call to taint | type tracker without call steps with content element 3 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:36:227:44 | synthetic splat argument | type tracker without call steps | params_flow.rb:227:36:227:44 | synthetic splat argument |
+| params_flow.rb:227:42:227:43 | 83 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:42:227:43 | 83 | type tracker with call steps with content element 2 | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:227:42:227:43 | 83 | type tracker with call steps with content element 3 | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:42:227:43 | 83 | type tracker without call steps | params_flow.rb:227:36:227:44 | call to taint |
+| params_flow.rb:227:42:227:43 | 83 | type tracker without call steps | params_flow.rb:227:42:227:43 | 83 |
+| params_flow.rb:227:42:227:43 | 83 | type tracker without call steps with content element 0 | params_flow.rb:227:36:227:44 | synthetic splat argument |
+| params_flow.rb:227:42:227:43 | 83 | type tracker without call steps with content element 3 | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:47:227:48 | :k1 | type tracker without call steps | params_flow.rb:227:47:227:48 | :k1 |
+| params_flow.rb:227:47:227:59 | Pair | type tracker without call steps | params_flow.rb:227:47:227:59 | Pair |
+| params_flow.rb:227:51:227:59 | call to taint | type tracker with call steps | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:227:51:227:59 | call to taint | type tracker with call steps with content element :k1 | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:227:51:227:59 | call to taint | type tracker without call steps | params_flow.rb:227:51:227:59 | call to taint |
+| params_flow.rb:227:51:227:59 | call to taint | type tracker without call steps with content element :k1 | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:227:51:227:59 | synthetic splat argument | type tracker without call steps | params_flow.rb:227:51:227:59 | synthetic splat argument |
+| params_flow.rb:227:57:227:58 | 84 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:57:227:58 | 84 | type tracker with call steps | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:227:57:227:58 | 84 | type tracker with call steps with content element :k1 | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:227:57:227:58 | 84 | type tracker without call steps | params_flow.rb:227:51:227:59 | call to taint |
+| params_flow.rb:227:57:227:58 | 84 | type tracker without call steps | params_flow.rb:227:57:227:58 | 84 |
+| params_flow.rb:227:57:227:58 | 84 | type tracker without call steps with content element 0 | params_flow.rb:227:51:227:59 | synthetic splat argument |
+| params_flow.rb:227:57:227:58 | 84 | type tracker without call steps with content element :k1 | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:227:62:227:63 | :k2 | type tracker without call steps | params_flow.rb:227:62:227:63 | :k2 |
+| params_flow.rb:227:62:227:74 | Pair | type tracker without call steps | params_flow.rb:227:62:227:74 | Pair |
+| params_flow.rb:227:66:227:74 | call to taint | type tracker with call steps with content element :k2 | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:227:66:227:74 | call to taint | type tracker without call steps | params_flow.rb:227:66:227:74 | call to taint |
+| params_flow.rb:227:66:227:74 | call to taint | type tracker without call steps with content element :k2 | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:227:66:227:74 | synthetic splat argument | type tracker without call steps | params_flow.rb:227:66:227:74 | synthetic splat argument |
+| params_flow.rb:227:72:227:73 | 85 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:72:227:73 | 85 | type tracker with call steps with content element :k2 | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:227:72:227:73 | 85 | type tracker without call steps | params_flow.rb:227:66:227:74 | call to taint |
+| params_flow.rb:227:72:227:73 | 85 | type tracker without call steps | params_flow.rb:227:72:227:73 | 85 |
+| params_flow.rb:227:72:227:73 | 85 | type tracker without call steps with content element 0 | params_flow.rb:227:66:227:74 | synthetic splat argument |
+| params_flow.rb:227:72:227:73 | 85 | type tracker without call steps with content element :k2 | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:227:77:229:3 | <captured entry> self | type tracker with call steps | params_flow.rb:5:1:7:3 | self in sink |
+| params_flow.rb:227:77:229:3 | <captured entry> self | type tracker without call steps | params_flow.rb:227:77:229:3 | <captured entry> self |
+| params_flow.rb:227:77:229:3 | do ... end | type tracker with call steps | params_flow.rb:222:5:224:7 | &block |
+| params_flow.rb:227:77:229:3 | do ... end | type tracker without call steps | params_flow.rb:227:77:229:3 | do ... end |
+| params_flow.rb:227:77:229:3 | synthetic splat parameter | type tracker without call steps | params_flow.rb:227:77:229:3 | synthetic splat parameter |
+| params_flow.rb:227:81:227:81 | x | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:227:81:227:81 | x | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
+| params_flow.rb:227:81:227:81 | x | type tracker without call steps | params_flow.rb:227:81:227:81 | x |
+| params_flow.rb:227:81:227:81 | x | type tracker without call steps | params_flow.rb:227:81:227:81 | x |
+| params_flow.rb:227:81:227:81 | x | type tracker without call steps with content element 0 | params_flow.rb:228:5:228:11 | synthetic splat argument |
+| params_flow.rb:228:5:228:11 | call to sink | type tracker without call steps | params_flow.rb:228:5:228:11 | call to sink |
+| params_flow.rb:228:5:228:11 | synthetic splat argument | type tracker without call steps | params_flow.rb:228:5:228:11 | synthetic splat argument |
 trackEnd
 | params_flow.rb:1:1:3:3 | &block | params_flow.rb:1:1:3:3 | &block |
 | params_flow.rb:1:1:3:3 | self in taint | params_flow.rb:1:1:3:3 | self in taint |
 | params_flow.rb:1:1:3:3 | synthetic splat parameter | params_flow.rb:1:1:3:3 | synthetic splat parameter |
 | params_flow.rb:1:1:3:3 | taint | params_flow.rb:1:1:3:3 | taint |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:1:1:3:3 | self in taint |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:1:1:207:15 | self (params_flow.rb) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:1:1:207:15 | self in params_flow.rb |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:5:1:7:3 | self (sink) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:5:1:7:3 | self in sink |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:6:5:6:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:9:1:12:3 | self (positional) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:9:1:12:3 | self in positional |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:10:5:10:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:11:5:11:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:14:1:14:30 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:14:12:14:19 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:14:22:14:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:16:1:19:3 | self (keyword) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:16:1:19:3 | self in keyword |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:17:5:17:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:18:5:18:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:21:1:21:35 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:21:13:21:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:21:27:21:34 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:22:1:22:35 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:22:13:22:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:22:27:22:34 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:23:1:23:41 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:23:16:23:23 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:23:33:23:40 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:25:1:31:3 | self (kwargs) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:25:1:31:3 | self in kwargs |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:26:5:26:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:27:5:27:22 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:28:5:28:22 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:29:5:29:22 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:30:5:30:22 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:33:1:33:58 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:33:12:33:19 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:33:26:33:34 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:33:41:33:49 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:34:14:34:22 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:35:1:35:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:35:12:35:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:37:16:37:24 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:37:34:37:42 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:38:1:38:14 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:40:16:40:24 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:41:1:41:30 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:41:13:41:21 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:43:9:43:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:44:1:44:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:44:12:44:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:46:9:46:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:46:20:46:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:47:1:47:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:49:1:53:3 | self (posargs) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:49:1:53:3 | self in posargs |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:50:5:50:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:51:5:51:21 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:52:5:52:21 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:55:1:55:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:55:9:55:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:55:20:55:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:57:9:57:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:58:1:58:25 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:58:9:58:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:60:9:60:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:60:20:60:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:61:1:61:14 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:63:8:63:16 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:64:1:66:3 | self (splatstuff) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:64:1:66:3 | self in splatstuff |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:65:5:65:13 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:67:1:67:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:69:1:76:3 | self (splatmid) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:69:1:76:3 | self in splatmid |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:70:5:70:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:71:5:71:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:72:5:72:13 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:73:5:73:13 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:74:5:74:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:75:5:75:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:78:1:78:63 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:78:10:78:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:78:21:78:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:78:32:78:40 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:78:43:78:51 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:78:54:78:62 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:80:9:80:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:80:20:80:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:80:31:80:39 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:80:42:80:50 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:81:1:81:37 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:81:10:81:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:81:28:81:36 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:83:1:91:3 | self (pos_many) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:83:1:91:3 | self in pos_many |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:84:5:84:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:85:5:85:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:86:5:86:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:87:5:87:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:88:5:88:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:89:5:89:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:90:5:90:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:93:9:93:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:93:20:93:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:93:31:93:39 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:93:42:93:50 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:94:1:94:48 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:94:10:94:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:94:21:94:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:94:39:94:47 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:1:96:88 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:10:96:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:21:96:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:34:96:42 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:45:96:53 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:56:96:64 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:68:96:76 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:96:79:96:87 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:98:1:103:3 | self (splatmidsmall) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:98:1:103:3 | self in splatmidsmall |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:99:5:99:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:100:5:100:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:101:5:101:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:102:5:102:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:105:1:105:49 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:105:15:105:23 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:105:28:105:36 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:105:39:105:47 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:106:1:106:46 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:106:15:106:23 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:106:26:106:34 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:106:37:106:45 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:108:1:112:3 | self (splat_followed_by_keyword_param) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:108:1:112:3 | self in splat_followed_by_keyword_param |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:109:5:109:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:110:5:110:13 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:111:5:111:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:114:1:114:67 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:114:33:114:41 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:114:44:114:52 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:114:58:114:66 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:117:3:117:14 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:117:19:117:27 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:118:1:118:14 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:120:1:126:3 | self (destruct) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:120:1:126:3 | self in destruct |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:121:5:121:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:122:5:122:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:123:5:123:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:124:5:124:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:125:5:125:10 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:128:1:128:61 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:128:11:128:19 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:128:22:128:30 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:128:35:128:43 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:128:50:128:58 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:130:9:130:17 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:130:20:130:28 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:131:1:131:46 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:131:17:131:25 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:133:1:135:3 | self (splatall) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:133:1:135:3 | self in splatall |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:134:5:134:16 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:137:1:137:44 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:137:12:137:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:137:23:137:31 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:137:34:137:42 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:139:1:141:3 | self in hashSplatSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:143:24:143:32 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:144:1:144:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:145:1:145:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:146:1:146:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:149:1:149:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:150:1:150:42 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:150:33:150:41 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:151:1:151:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:153:1:155:3 | self in keywordSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:157:24:157:32 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:158:1:158:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:159:1:159:27 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:160:1:160:20 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:163:1:163:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:164:1:164:40 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:164:31:164:39 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:165:1:165:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:167:1:169:3 | self in splatSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:171:17:171:25 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:172:1:172:19 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:173:1:173:25 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:174:1:174:19 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:177:1:177:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:178:1:178:30 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:178:21:178:29 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:179:1:179:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:181:1:183:3 | self in positionSideEffect |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:185:14:185:22 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:186:1:186:16 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:187:1:187:25 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:188:1:188:16 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:191:1:191:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:192:1:192:33 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:192:24:192:32 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:193:1:193:11 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:196:10:196:18 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:200:1:205:3 | self (foo) |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:200:1:205:3 | self in foo |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:201:5:201:15 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:202:5:202:15 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:203:5:203:15 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:204:5:204:15 | self |
-| params_flow.rb:1:1:207:15 | self in params_flow.rb | params_flow.rb:207:1:207:14 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:1:1:3:3 | self in taint |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:1:1:229:4 | captured self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:1:1:229:4 | self (params_flow.rb) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:1:1:229:4 | self in params_flow.rb |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:5:1:7:3 | self (sink) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:5:1:7:3 | self in sink |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:6:5:6:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:9:1:12:3 | self (positional) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:9:1:12:3 | self in positional |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:10:5:10:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:11:5:11:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:14:1:14:30 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:14:12:14:19 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:14:22:14:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:16:1:19:3 | self (keyword) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:16:1:19:3 | self in keyword |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:17:5:17:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:18:5:18:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:21:1:21:35 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:21:13:21:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:21:27:21:34 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:22:1:22:35 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:22:13:22:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:22:27:22:34 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:23:1:23:41 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:23:16:23:23 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:23:33:23:40 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:25:1:31:3 | self (kwargs) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:25:1:31:3 | self in kwargs |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:26:5:26:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:27:5:27:22 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:28:5:28:22 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:29:5:29:22 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:30:5:30:22 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:33:1:33:58 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:33:12:33:19 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:33:26:33:34 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:33:41:33:49 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:34:14:34:22 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:35:1:35:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:35:12:35:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:37:16:37:24 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:37:34:37:42 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:38:1:38:14 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:40:16:40:24 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:41:1:41:30 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:41:13:41:21 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:43:9:43:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:44:1:44:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:44:12:44:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:46:9:46:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:46:20:46:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:47:1:47:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:49:1:53:3 | self (posargs) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:49:1:53:3 | self in posargs |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:50:5:50:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:51:5:51:21 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:52:5:52:21 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:55:1:55:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:55:9:55:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:55:20:55:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:57:9:57:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:58:1:58:25 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:58:9:58:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:60:9:60:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:60:20:60:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:61:1:61:14 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:63:8:63:16 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:64:1:66:3 | self (splatstuff) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:64:1:66:3 | self in splatstuff |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:65:5:65:13 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:67:1:67:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:69:1:76:3 | self (splatmid) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:69:1:76:3 | self in splatmid |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:70:5:70:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:71:5:71:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:72:5:72:13 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:73:5:73:13 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:74:5:74:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:75:5:75:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:78:1:78:63 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:78:10:78:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:78:21:78:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:78:32:78:40 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:78:43:78:51 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:78:54:78:62 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:80:9:80:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:80:20:80:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:80:31:80:39 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:80:42:80:50 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:81:1:81:37 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:81:10:81:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:81:28:81:36 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:83:1:91:3 | self (pos_many) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:83:1:91:3 | self in pos_many |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:84:5:84:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:85:5:85:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:86:5:86:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:87:5:87:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:88:5:88:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:89:5:89:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:90:5:90:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:93:9:93:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:93:20:93:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:93:31:93:39 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:93:42:93:50 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:94:1:94:48 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:94:10:94:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:94:21:94:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:94:39:94:47 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:1:96:88 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:10:96:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:21:96:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:34:96:42 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:45:96:53 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:56:96:64 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:68:96:76 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:96:79:96:87 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:98:1:103:3 | self (splatmidsmall) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:98:1:103:3 | self in splatmidsmall |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:99:5:99:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:100:5:100:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:101:5:101:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:102:5:102:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:105:1:105:49 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:105:15:105:23 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:105:28:105:36 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:105:39:105:47 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:106:1:106:46 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:106:15:106:23 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:106:26:106:34 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:106:37:106:45 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:108:1:112:3 | self (splat_followed_by_keyword_param) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:108:1:112:3 | self in splat_followed_by_keyword_param |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:109:5:109:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:110:5:110:13 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:111:5:111:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:114:1:114:67 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:114:33:114:41 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:114:44:114:52 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:114:58:114:66 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:117:3:117:14 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:117:19:117:27 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:118:1:118:14 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:120:1:126:3 | self (destruct) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:120:1:126:3 | self in destruct |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:121:5:121:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:122:5:122:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:123:5:123:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:124:5:124:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:125:5:125:10 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:128:1:128:61 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:128:11:128:19 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:128:22:128:30 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:128:35:128:43 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:128:50:128:58 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:130:9:130:17 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:130:20:130:28 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:131:1:131:46 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:131:17:131:25 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:133:1:135:3 | self (splatall) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:133:1:135:3 | self in splatall |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:134:5:134:16 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:137:1:137:44 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:137:12:137:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:137:23:137:31 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:137:34:137:42 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:139:1:141:3 | self in hashSplatSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:143:24:143:32 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:144:1:144:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:145:1:145:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:146:1:146:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:149:1:149:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:150:1:150:42 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:150:33:150:41 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:151:1:151:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:153:1:155:3 | self in keywordSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:157:24:157:32 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:158:1:158:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:159:1:159:27 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:160:1:160:20 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:163:1:163:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:164:1:164:40 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:164:31:164:39 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:165:1:165:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:167:1:169:3 | self in splatSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:171:17:171:25 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:172:1:172:19 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:173:1:173:25 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:174:1:174:19 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:177:1:177:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:178:1:178:30 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:178:21:178:29 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:179:1:179:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:181:1:183:3 | self in positionSideEffect |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:185:14:185:22 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:186:1:186:16 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:187:1:187:25 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:188:1:188:16 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:191:1:191:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:192:1:192:33 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:192:24:192:32 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:193:1:193:11 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:196:10:196:18 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:200:1:205:3 | self (foo) |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:200:1:205:3 | self in foo |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:201:5:201:15 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:202:5:202:15 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:203:5:203:15 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:204:5:204:15 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:207:1:207:14 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:227:11:227:19 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:227:22:227:30 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:227:36:227:44 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:227:51:227:59 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:227:66:227:74 | self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:227:77:229:3 | <captured entry> self |
+| params_flow.rb:1:1:229:4 | self in params_flow.rb | params_flow.rb:228:5:228:11 | self |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:1:11:1:11 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:1:11:1:11 | x |
@@ -3474,6 +3688,14 @@ trackEnd
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:200:9:200:9 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:201:11:201:11 | x |
 | params_flow.rb:1:11:1:11 | x | params_flow.rb:202:11:202:11 | x |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:217:15:217:23 | call to taint |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:227:11:227:19 | call to taint |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:227:22:227:30 | call to taint |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:227:36:227:44 | call to taint |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:227:51:227:59 | call to taint |
+| params_flow.rb:1:11:1:11 | x | params_flow.rb:227:66:227:74 | call to taint |
 | params_flow.rb:5:1:7:3 | &block | params_flow.rb:5:1:7:3 | &block |
 | params_flow.rb:5:1:7:3 | self in sink | params_flow.rb:5:1:7:3 | self (sink) |
 | params_flow.rb:5:1:7:3 | self in sink | params_flow.rb:5:1:7:3 | self in sink |
@@ -3570,6 +3792,13 @@ trackEnd
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:203:5:203:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:204:5:204:15 | call to sink |
 | params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:207:1:207:14 | call to foo |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:211:9:211:15 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:212:9:212:21 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:213:9:213:21 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:214:9:214:21 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:215:9:215:16 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:216:9:216:25 | call to sink |
+| params_flow.rb:6:5:6:10 | call to puts | params_flow.rb:228:5:228:11 | call to sink |
 | params_flow.rb:6:5:6:10 | synthetic splat argument | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:9:1:12:3 | &block | params_flow.rb:9:1:12:3 | &block |
 | params_flow.rb:9:1:12:3 | positional | params_flow.rb:9:1:12:3 | positional |
@@ -6205,5 +6434,184 @@ trackEnd
 | params_flow.rb:207:1:207:14 | call to foo | params_flow.rb:207:1:207:14 | call to foo |
 | params_flow.rb:207:5:207:13 | * ... | params_flow.rb:200:1:205:3 | synthetic splat parameter |
 | params_flow.rb:207:5:207:13 | * ... | params_flow.rb:207:5:207:13 | * ... |
+| params_flow.rb:209:1:219:3 | self (Sup) | params_flow.rb:209:1:219:3 | self (Sup) |
+| params_flow.rb:210:5:218:7 | &block | params_flow.rb:210:5:218:7 | &block |
+| params_flow.rb:210:5:218:7 | &block | params_flow.rb:217:9:217:23 | yield block argument |
+| params_flow.rb:210:5:218:7 | m | params_flow.rb:209:1:219:3 | Sup |
+| params_flow.rb:210:5:218:7 | m | params_flow.rb:210:5:218:7 | m |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:1:1:3:3 | self in taint |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:5:1:7:3 | self (sink) |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:5:1:7:3 | self in sink |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:6:5:6:10 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:210:5:218:7 | self (m) |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:210:5:218:7 | self in m |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:211:9:211:15 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:212:9:212:21 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:213:9:213:21 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:214:9:214:21 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:215:9:215:16 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:216:9:216:25 | self |
+| params_flow.rb:210:5:218:7 | self in m | params_flow.rb:217:15:217:23 | self |
+| params_flow.rb:210:5:218:7 | synthetic hash-splat parameter | params_flow.rb:210:5:218:7 | synthetic hash-splat parameter |
+| params_flow.rb:210:5:218:7 | synthetic splat parameter | params_flow.rb:210:5:218:7 | synthetic splat parameter |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:210:11:210:11 | x |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:210:11:210:11 | x |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:210:11:210:11 | x |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:211:14:211:14 | x |
+| params_flow.rb:210:14:210:18 | *rest | params_flow.rb:210:14:210:18 | *rest |
+| params_flow.rb:210:14:210:18 | *rest | params_flow.rb:210:15:210:18 | rest |
+| params_flow.rb:210:14:210:18 | *rest | params_flow.rb:212:14:212:17 | rest |
+| params_flow.rb:210:14:210:18 | *rest | params_flow.rb:213:14:213:17 | rest |
+| params_flow.rb:210:14:210:18 | *rest | params_flow.rb:214:14:214:17 | rest |
+| params_flow.rb:210:15:210:18 | rest | params_flow.rb:210:15:210:18 | rest |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:210:21:210:22 | k1 |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:210:21:210:22 | k1 |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:210:21:210:22 | k1 |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:215:14:215:15 | k1 |
+| params_flow.rb:210:26:210:33 | **kwargs | params_flow.rb:210:26:210:33 | **kwargs |
+| params_flow.rb:210:26:210:33 | **kwargs | params_flow.rb:210:28:210:33 | kwargs |
+| params_flow.rb:210:26:210:33 | **kwargs | params_flow.rb:216:14:216:19 | kwargs |
+| params_flow.rb:210:28:210:33 | kwargs | params_flow.rb:210:28:210:33 | kwargs |
+| params_flow.rb:211:9:211:15 | call to sink | params_flow.rb:211:9:211:15 | call to sink |
+| params_flow.rb:211:9:211:15 | synthetic splat argument | params_flow.rb:211:9:211:15 | synthetic splat argument |
+| params_flow.rb:212:9:212:21 | call to sink | params_flow.rb:212:9:212:21 | call to sink |
+| params_flow.rb:212:9:212:21 | synthetic splat argument | params_flow.rb:212:9:212:21 | synthetic splat argument |
+| params_flow.rb:212:14:212:20 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:212:14:212:20 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:212:14:212:20 | ...[...] | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:212:14:212:20 | ...[...] | params_flow.rb:212:14:212:20 | ...[...] |
+| params_flow.rb:212:14:212:20 | synthetic splat argument | params_flow.rb:212:14:212:20 | synthetic splat argument |
+| params_flow.rb:212:19:212:19 | 0 | params_flow.rb:212:19:212:19 | 0 |
+| params_flow.rb:213:9:213:21 | call to sink | params_flow.rb:213:9:213:21 | call to sink |
+| params_flow.rb:213:9:213:21 | synthetic splat argument | params_flow.rb:213:9:213:21 | synthetic splat argument |
+| params_flow.rb:213:14:213:20 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:213:14:213:20 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:213:14:213:20 | ...[...] | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:213:14:213:20 | ...[...] | params_flow.rb:213:14:213:20 | ...[...] |
+| params_flow.rb:213:14:213:20 | synthetic splat argument | params_flow.rb:213:14:213:20 | synthetic splat argument |
+| params_flow.rb:213:19:213:19 | 1 | params_flow.rb:213:19:213:19 | 1 |
+| params_flow.rb:214:9:214:21 | call to sink | params_flow.rb:214:9:214:21 | call to sink |
+| params_flow.rb:214:9:214:21 | synthetic splat argument | params_flow.rb:214:9:214:21 | synthetic splat argument |
+| params_flow.rb:214:14:214:20 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:214:14:214:20 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:214:14:214:20 | ...[...] | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:214:14:214:20 | ...[...] | params_flow.rb:214:14:214:20 | ...[...] |
+| params_flow.rb:214:14:214:20 | synthetic splat argument | params_flow.rb:214:14:214:20 | synthetic splat argument |
+| params_flow.rb:214:19:214:19 | 2 | params_flow.rb:214:19:214:19 | 2 |
+| params_flow.rb:215:9:215:16 | call to sink | params_flow.rb:215:9:215:16 | call to sink |
+| params_flow.rb:215:9:215:16 | synthetic splat argument | params_flow.rb:215:9:215:16 | synthetic splat argument |
+| params_flow.rb:216:9:216:25 | call to sink | params_flow.rb:216:9:216:25 | call to sink |
+| params_flow.rb:216:9:216:25 | synthetic splat argument | params_flow.rb:216:9:216:25 | synthetic splat argument |
+| params_flow.rb:216:14:216:24 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:216:14:216:24 | ...[...] | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:216:14:216:24 | ...[...] | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:216:14:216:24 | ...[...] | params_flow.rb:216:14:216:24 | ...[...] |
+| params_flow.rb:216:14:216:24 | synthetic splat argument | params_flow.rb:216:14:216:24 | synthetic splat argument |
+| params_flow.rb:216:21:216:23 | :k2 | params_flow.rb:216:21:216:23 | :k2 |
+| params_flow.rb:217:9:217:23 | synthetic splat argument | params_flow.rb:217:9:217:23 | synthetic splat argument |
+| params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:217:9:217:23 | yield ... |
+| params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:223:9:223:13 | super call to m |
+| params_flow.rb:217:9:217:23 | yield ... | params_flow.rb:227:1:229:3 | call to m |
+| params_flow.rb:217:9:217:23 | yield block argument | params_flow.rb:217:9:217:23 | yield block argument |
+| params_flow.rb:217:15:217:23 | call to taint | params_flow.rb:217:15:217:23 | call to taint |
+| params_flow.rb:217:15:217:23 | synthetic splat argument | params_flow.rb:217:15:217:23 | synthetic splat argument |
+| params_flow.rb:217:21:217:22 | 86 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:217:21:217:22 | 86 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:217:21:217:22 | 86 | params_flow.rb:2:5:2:5 | x |
+| params_flow.rb:217:21:217:22 | 86 | params_flow.rb:217:15:217:23 | call to taint |
+| params_flow.rb:217:21:217:22 | 86 | params_flow.rb:217:21:217:22 | 86 |
+| params_flow.rb:221:1:225:3 | self (Sub) | params_flow.rb:221:1:225:3 | self (Sub) |
+| params_flow.rb:221:13:221:15 | Sup | params_flow.rb:221:13:221:15 | Sup |
+| params_flow.rb:222:5:224:7 | &block | params_flow.rb:222:5:224:7 | &block |
+| params_flow.rb:222:5:224:7 | m | params_flow.rb:221:1:225:3 | Sub |
+| params_flow.rb:222:5:224:7 | m | params_flow.rb:222:5:224:7 | m |
+| params_flow.rb:222:5:224:7 | self in m | params_flow.rb:222:5:224:7 | self in m |
+| params_flow.rb:222:5:224:7 | synthetic hash-splat parameter | params_flow.rb:222:5:224:7 | synthetic hash-splat parameter |
+| params_flow.rb:222:5:224:7 | synthetic splat parameter | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:222:11:222:11 | x | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:222:11:222:11 | x | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:222:14:222:18 | *rest | params_flow.rb:222:14:222:18 | *rest |
+| params_flow.rb:222:15:222:18 | rest | params_flow.rb:222:15:222:18 | rest |
+| params_flow.rb:222:21:222:22 | k1 | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:222:21:222:22 | k1 | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:222:26:222:33 | **kwargs | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:222:28:222:33 | kwargs | params_flow.rb:222:28:222:33 | kwargs |
+| params_flow.rb:223:9:223:13 | super call to m | params_flow.rb:223:9:223:13 | super call to m |
+| params_flow.rb:223:9:223:13 | super call to m | params_flow.rb:227:1:229:3 | call to m |
+| params_flow.rb:227:1:227:3 | Sub | params_flow.rb:227:1:227:3 | Sub |
+| params_flow.rb:227:1:227:7 | call to new | params_flow.rb:222:5:224:7 | self in m |
+| params_flow.rb:227:1:227:7 | call to new | params_flow.rb:227:1:227:7 | call to new |
+| params_flow.rb:227:1:229:3 | call to m | params_flow.rb:227:1:229:3 | call to m |
+| params_flow.rb:227:1:229:3 | synthetic hash-splat argument | params_flow.rb:222:26:222:33 | **kwargs |
+| params_flow.rb:227:1:229:3 | synthetic hash-splat argument | params_flow.rb:227:1:229:3 | synthetic hash-splat argument |
+| params_flow.rb:227:1:229:3 | synthetic splat argument | params_flow.rb:222:5:224:7 | synthetic splat parameter |
+| params_flow.rb:227:1:229:3 | synthetic splat argument | params_flow.rb:227:1:229:3 | synthetic splat argument |
+| params_flow.rb:227:11:227:19 | call to taint | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:227:11:227:19 | call to taint | params_flow.rb:227:11:227:19 | call to taint |
+| params_flow.rb:227:11:227:19 | synthetic splat argument | params_flow.rb:227:11:227:19 | synthetic splat argument |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:2:5:2:5 | x |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:222:11:222:11 | x |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:227:11:227:19 | call to taint |
+| params_flow.rb:227:17:227:18 | 81 | params_flow.rb:227:17:227:18 | 81 |
+| params_flow.rb:227:22:227:30 | call to taint | params_flow.rb:227:22:227:30 | call to taint |
+| params_flow.rb:227:22:227:30 | synthetic splat argument | params_flow.rb:227:22:227:30 | synthetic splat argument |
+| params_flow.rb:227:28:227:29 | 82 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:28:227:29 | 82 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:28:227:29 | 82 | params_flow.rb:2:5:2:5 | x |
+| params_flow.rb:227:28:227:29 | 82 | params_flow.rb:227:22:227:30 | call to taint |
+| params_flow.rb:227:28:227:29 | 82 | params_flow.rb:227:28:227:29 | 82 |
+| params_flow.rb:227:33:227:33 | 0 | params_flow.rb:227:33:227:33 | 0 |
+| params_flow.rb:227:36:227:44 | call to taint | params_flow.rb:227:36:227:44 | call to taint |
+| params_flow.rb:227:36:227:44 | synthetic splat argument | params_flow.rb:227:36:227:44 | synthetic splat argument |
+| params_flow.rb:227:42:227:43 | 83 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:42:227:43 | 83 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:42:227:43 | 83 | params_flow.rb:2:5:2:5 | x |
+| params_flow.rb:227:42:227:43 | 83 | params_flow.rb:227:36:227:44 | call to taint |
+| params_flow.rb:227:42:227:43 | 83 | params_flow.rb:227:42:227:43 | 83 |
+| params_flow.rb:227:47:227:48 | :k1 | params_flow.rb:227:47:227:48 | :k1 |
+| params_flow.rb:227:47:227:59 | Pair | params_flow.rb:227:47:227:59 | Pair |
+| params_flow.rb:227:51:227:59 | call to taint | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:227:51:227:59 | call to taint | params_flow.rb:227:51:227:59 | call to taint |
+| params_flow.rb:227:51:227:59 | synthetic splat argument | params_flow.rb:227:51:227:59 | synthetic splat argument |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:2:5:2:5 | x |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:222:21:222:22 | k1 |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:227:51:227:59 | call to taint |
+| params_flow.rb:227:57:227:58 | 84 | params_flow.rb:227:57:227:58 | 84 |
+| params_flow.rb:227:62:227:63 | :k2 | params_flow.rb:227:62:227:63 | :k2 |
+| params_flow.rb:227:62:227:74 | Pair | params_flow.rb:227:62:227:74 | Pair |
+| params_flow.rb:227:66:227:74 | call to taint | params_flow.rb:227:66:227:74 | call to taint |
+| params_flow.rb:227:66:227:74 | synthetic splat argument | params_flow.rb:227:66:227:74 | synthetic splat argument |
+| params_flow.rb:227:72:227:73 | 85 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:72:227:73 | 85 | params_flow.rb:1:11:1:11 | x |
+| params_flow.rb:227:72:227:73 | 85 | params_flow.rb:2:5:2:5 | x |
+| params_flow.rb:227:72:227:73 | 85 | params_flow.rb:227:66:227:74 | call to taint |
+| params_flow.rb:227:72:227:73 | 85 | params_flow.rb:227:72:227:73 | 85 |
+| params_flow.rb:227:77:229:3 | <captured entry> self | params_flow.rb:5:1:7:3 | self (sink) |
+| params_flow.rb:227:77:229:3 | <captured entry> self | params_flow.rb:5:1:7:3 | self in sink |
+| params_flow.rb:227:77:229:3 | <captured entry> self | params_flow.rb:6:5:6:10 | self |
+| params_flow.rb:227:77:229:3 | <captured entry> self | params_flow.rb:227:77:229:3 | <captured entry> self |
+| params_flow.rb:227:77:229:3 | <captured entry> self | params_flow.rb:228:5:228:11 | self |
+| params_flow.rb:227:77:229:3 | do ... end | params_flow.rb:222:5:224:7 | &block |
+| params_flow.rb:227:77:229:3 | do ... end | params_flow.rb:227:77:229:3 | do ... end |
+| params_flow.rb:227:77:229:3 | synthetic splat parameter | params_flow.rb:227:77:229:3 | synthetic splat parameter |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:5:10:5:10 | x |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:6:10:6:10 | x |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:227:81:227:81 | x |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:227:81:227:81 | x |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:227:81:227:81 | x |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:228:10:228:10 | x |
+| params_flow.rb:228:5:228:11 | call to sink | params_flow.rb:228:5:228:11 | call to sink |
+| params_flow.rb:228:5:228:11 | synthetic splat argument | params_flow.rb:228:5:228:11 | synthetic splat argument |
 forwardButNoBackwardFlow
 backwardButNoForwardFlow
