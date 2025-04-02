@@ -158,8 +158,8 @@ predicate untrustedGhCommandDataModel(string cmd_regex, string flag) {
 /**
  * MaD models for permissions needed by actions
  * Fields:
- *    - action: action name
- *    - permission: permission name
+ *    - action: action name, e.g. `actions/checkout`
+ *    - permission: permission name, e.g. `contents: read`
  */
 predicate actionsPermissionsDataModel(string action, string permission) {
   Extensions::actionsPermissionsDataModel(action, permission)

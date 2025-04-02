@@ -85,5 +85,6 @@ extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
  * - `permission` is of the form `scope-name: read|write`, for example `contents: read`.
  * - see https://github.com/actions/checkout?tab=readme-ov-file#recommended-permissions
  *   for an example of recommended permissions.
+ * - see https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token for documentation of token permissions.
  */
 extensible predicate actionsPermissionsDataModel(string action, string permission);
