@@ -5,9 +5,10 @@
  * @kind problem
  * @problem.severity error
  * @id rb/uninitialized-local-variable
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- * @precision low
+ * @precision high
  */
 
 import codeql.ruby.AST
@@ -86,6 +87,5 @@ where
     sink.asExpr() = read.getAControlFlowNode() and
     localFlow(source, sink)
   )
-select read,
-  "Local variable $@ may be used before it is initialized. Uninitialized value appears $@.", v,
-  v.getName(), source, "here"
+select read, "Here local variable $@ is using $@.", v, v.getName(), source,
+  "this potentially uninitialized value"
