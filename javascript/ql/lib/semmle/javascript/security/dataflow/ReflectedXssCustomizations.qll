@@ -136,6 +136,41 @@ module ReflectedXss {
     }
   }
 
+  /**
+   * Gets a data flow node representing headers that set content-type to a value
+   * that is not susceptible to XSS attacks.
+   */
+  DataFlow::Node getGoodContentHeaders() {
+    // Case 1: Direct object literal with content-type `headers: { 'Content-Type': 'goodType' }`
+    exists(DataFlow::ObjectLiteralNode headersObj, string name, string contentType |
+      result = headersObj and
+      name.toLowerCase() = "content-type" and
+      headersObj.getAPropertyWrite(name).getRhs().mayHaveStringValue(contentType) and
+      not contentType.toLowerCase().matches(xssUnsafeContentType() + "%")
+    )
+    or
+    // Case 2: Headers with set/append methods `headers.append('Content-Type', 'goodType')`
+    exists(DataFlow::MethodCallNode call, string contentType |
+      call.getMethodName() = ["set", "append"] and
+      call.getReceiver().getALocalSource() = result and
+      call.getArgument(0).mayHaveStringValue(any(string s | s.toLowerCase() = "content-type")) and
+      call.getArgument(1).mayHaveStringValue(contentType) and
+      not contentType.toLowerCase().matches(xssUnsafeContentType() + "%")
+    )
+    or
+    // Case 3: New Headers with initial content-type `new Headers({ 'Content-Type': 'goodType' })`
+    exists(
+      NewExpr headersNew, DataFlow::ObjectLiteralNode headersInit, string name, string contentType
+    |
+      result.asExpr() = headersNew and
+      headersNew.getCalleeName() = "Headers" and
+      headersInit.flowsTo(DataFlow::valueNode(headersNew.getArgument(0))) and
+      name.toLowerCase() = "content-type" and
+      headersInit.getAPropertyWrite(name).getRhs().mayHaveStringValue(contentType) and
+      not contentType.toLowerCase().matches(xssUnsafeContentType() + "%")
+    )
+  }
+
   private class SinkFromModel extends Sink {
     SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
   }

@@ -3,6 +3,7 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.ReflectedXssCustomizations
 
 /**
  * Provides classes and predicates modeling [Next.js](https://www.npmjs.com/package/next).
@@ -213,10 +214,12 @@ module NextJS {
   /**
    * Gets a folder that contains API endpoints for a Next.js application.
    * These API endpoints act as Express-like route-handlers.
+   * It matches both the Pages Router (`pages/api/`) Next.js 12 or earlier and
+   * the App Router (`app/api/`) Next.js 13+ structures.
    */
   Folder apiFolder() {
-    result = getANextPackage().getFile().getParentContainer().getFolder("pages").getFolder("api")
-    or
+    result =
+      getANextPackage().getFile().getParentContainer().getFolder(["pages", "app"]).getFolder("api") or
     result = apiFolder().getAFolder()
   }
 
@@ -270,5 +273,97 @@ module NextJS {
 
       override string getCredentialsKind() { result = "jwt key" }
     }
+  }
+
+  /**
+   * A route handler for Next.js 13+ App Router API endpoints, which are defined by exporting
+   * HTTP method functions (like `GET`, `POST`, `PUT`, `DELETE`) from route.js files inside
+   * the `app/api/` directory.
+   */
+  class NextAppRouteHandler extends DataFlow::FunctionNode, Http::Servers::StandardRouteHandler {
+    NextAppRouteHandler() {
+      exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
+        this = mod.getAnExportedValue(any(Http::RequestMethodName m)).getAFunctionValue() and
+        (
+          this.getParameter(0).hasUnderlyingType("next/server", "NextRequest")
+          or
+          this.getParameter(0).hasUnderlyingType("Request")
+        )
+      )
+    }
+
+    /**
+     * Gets the request parameter, which is either a `NextRequest` object (from `next/server`) or a standard web `Request` object.
+     */
+    DataFlow::SourceNode getRequest() { result = this.getParameter(0) }
+  }
+
+  /**
+   * A source of user-controlled data from a `NextRequest` object (from `next/server`) or a standard web `Request` object
+   * in a Next.js App Router route handler.
+   */
+  class NextAppRequestSource extends Http::RequestInputAccess {
+    NextAppRouteHandler handler;
+    string kind;
+
+    NextAppRequestSource() {
+      (
+        this =
+          handler.getRequest().getAMethodCall(["json", "formData", "blob", "arrayBuffer", "text"])
+        or
+        this = handler.getRequest().getAPropertyRead("body")
+      ) and
+      kind = "body"
+      or
+      this = handler.getRequest().getAPropertyRead(["url", "nextUrl"]) and kind = "url"
+      or
+      this = handler.getRequest().getAPropertyRead("headers") and kind = "headers"
+    }
+
+    override string getKind() { result = kind }
+
+    override Http::RouteHandler getRouteHandler() { result = handler }
+
+    override string getSourceType() { result = "Next.js App Router request" }
+  }
+
+  /**
+   * Gets the headers value from the options object passed to a Next.js Response constructor.
+   */
+  DataFlow::Node getContentTypeHeadersForResponse(DataFlow::InvokeNode responseNode) {
+    exists(DataFlow::ObjectLiteralNode options |
+      options.flowsTo(responseNode.getArgument(1)) and
+      result = options.getAPropertyWrite("headers").getRhs()
+    )
+  }
+
+  /**
+   * A sink representing response content in Next.js API routes that may be vulnerable
+   * to XSS attacks.
+   *
+   * This class identifies responses created with the standard `Response` constructor
+   * or Next.js `NextResponse`.
+   */
+  class WebApiResponseSink extends Http::ResponseSendArgument {
+    WebApiResponseSink() {
+      exists(
+        DataFlow::InvokeNode response, DataFlow::ObjectLiteralNode options, DataFlow::Node headers
+      |
+        response =
+          [
+            DataFlow::globalVarRef("Response").getAnInstantiation(),
+            API::moduleImport("next/server").getMember("NextResponse").getAnInstantiation()
+          ] and
+        this = response.getArgument(0) and
+        options.flowsTo(response.getArgument(1)) and
+        headers = getContentTypeHeadersForResponse(response) and
+        not exists(DataFlow::Node goodHeaders |
+          goodHeaders = ReflectedXss::getGoodContentHeaders() and
+          goodHeaders.getALocalSource().flowsTo(headers)
+        )
+      )
+    }
+
+    override Http::RouteHandler getRouteHandler() { none() }
   }
 }
