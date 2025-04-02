@@ -263,4 +263,84 @@ module TypeResolution {
       typeMember(host, contents.getAReadContent(), type)
     )
   }
+
+  signature predicate nodeSig(Node node);
+
+  /**
+   * Tracks types that have a certain property, in the sense that:
+   * - an intersection type has the property if any member has the property
+   * - a union type has the property if all its members have the property
+   */
+  module TrackMustProp<nodeSig/1 directlyHasProperty> {
+    predicate hasProperty(Node node) {
+      directlyHasProperty(node)
+      or
+      exists(Node mid |
+        hasProperty(mid) and
+        TypeFlow::step(mid, node)
+      )
+      or
+      unionHasProp(node)
+      or
+      hasProperty(node.(IntersectionTypeExpr).getAnElementType())
+      or
+      exists(ConditionalTypeExpr cond |
+        node = cond and
+        hasProperty(cond.getTrueType()) and
+        hasProperty(cond.getFalseType())
+      )
+    }
+
+    private predicate unionHasProp(UnionTypeExpr node, int n) {
+      hasProperty(node.getElementType(0)) and n = 1
+      or
+      unionHasProp(node, n - 1) and
+      hasProperty(node.getElementType(n - 1))
+    }
+
+    private predicate unionHasProp(UnionTypeExpr node) {
+      unionHasProp(node, node.getNumElementType())
+    }
+  }
+
+  private predicate isSanitizingPrimitiveTypeBase(Node node) {
+    node.(TypeExpr).isNumbery()
+    or
+    node.(TypeExpr).isBooleany()
+    or
+    node.(TypeExpr).isNull()
+    or
+    node.(TypeExpr).isUndefined()
+    or
+    node.(TypeExpr).isVoid()
+    or
+    node.(TypeExpr).isNever()
+    or
+    node instanceof LiteralTypeExpr
+    or
+    node = any(EnumMember m).getIdentifier() // enum members are constant
+    or
+    node instanceof EnumDeclaration // enums are unions of constants
+  }
+
+  /**
+   * Holds if `node` refers to a type that is considered untaintable (if actually enforced at runtime).
+   *
+   * Specifically, the types `number`, `boolean`, `null`, `undefined`, `void`, `never`, as well as literal types (`"foo"`)
+   * and enums and enum members have this property.
+   */
+  predicate isSanitizingPrimitiveType =
+    TrackMustProp<isSanitizingPrimitiveTypeBase/1>::hasProperty/1;
+
+  /**
+   * Holds if `value` has a type that is considered untaintable (if actually enforced at runtime).
+   *
+   * See `isSanitizingPrimitiveType`.
+   */
+  predicate valueHasSanitizingPrimitiveType(Node value) {
+    exists(Node type |
+      valueHasType(value, type) and
+      isSanitizingPrimitiveType(type)
+    )
+  }
 }
