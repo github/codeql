@@ -3,4 +3,5 @@ extensions:
       pack: codeql/javascript-all
       extensible: sinkModel
     data:
-      - ["mkdirp", "Member[nativeSync,native,manual,manualSync,mkdirpNative,mkdirpManual,mkdirpManualSync,mkdirpNativeSync,mkdirpSync].Argument[0]", "path-injection"]
+      - ["mkdirp", "Member[nativeSync,native,manual,manualSync,mkdirpNative,mkdirpManual,mkdirpManualSync,mkdirpNativeSync,mkdirpSync,sync].Argument[0]", "path-injection"]
+      - ["mkdirp", "Argument[0]", "path-injection"]
