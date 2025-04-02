@@ -199,19 +199,5 @@ module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
 
 module GenericDataSourceUniversalFlow = TaintTracking::Global<GenericDataSourceUniversalFlowConfig>;
 
-/*
- * class LiteralOrGenericDataSource extends Element {
- *  DataFlow::Node node;
- *
- *  LiteralOrGenericDataSource() {
- *    node = this.(Crypto::GenericSourceInstance).getOutputNode() or
- *    node.asExpr() = this.(Literal)
- *  }
- *
- *  bindingset[other]
- *  predicate localFlowsTo(DataFlow::Node other) { DataFlow::localFlow(node, other) }
- * }
- */
-
 // Import library-specific modeling
 import JCA
