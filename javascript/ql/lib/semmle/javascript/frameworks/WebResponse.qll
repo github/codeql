@@ -93,4 +93,8 @@ private class ResponseSink extends Http::ResponseSendArgument {
   ResponseSink() { this = response.getArgument(0) }
 
   override Http::RouteHandler getRouteHandler() { none() }
+
+  override ResponseArgumentHeaders getAnAssociatedHeaderDefinition() {
+    result.getResponse() = response
+  }
 }

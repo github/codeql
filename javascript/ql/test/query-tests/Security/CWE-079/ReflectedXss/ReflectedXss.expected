@@ -43,14 +43,10 @@
 | response-object.js:9:18:9:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:9:18:9:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:10:18:10:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:10:18:10:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:11:18:11:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:11:18:11:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:13:18:13:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:13:18:13:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:14:18:14:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:14:18:14:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:16:18:16:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:16:18:16:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:17:18:17:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:17:18:17:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:20:18:20:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:20:18:20:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:23:18:23:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:23:18:23:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:26:18:26:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:26:18:26:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:30:18:30:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:30:18:30:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:34:18:34:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:34:18:34:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:38:18:38:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:38:18:38:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | tst2.js:7:12:7:12 | p | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:6:9:6:9 | p | user-provided value |
@@ -165,14 +161,10 @@ edges
 | response-object.js:7:11:7:25 | data | response-object.js:9:18:9:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:10:18:10:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:11:18:11:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:13:18:13:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:14:18:14:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:16:18:16:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:17:18:17:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:20:18:20:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:23:18:23:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:26:18:26:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:30:18:30:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:34:18:34:21 | data | provenance |  |
 | response-object.js:7:11:7:25 | data | response-object.js:38:18:38:21 | data | provenance |  |
 | response-object.js:7:18:7:25 | req.body | response-object.js:7:11:7:25 | data | provenance |  |
@@ -364,14 +356,10 @@ nodes
 | response-object.js:9:18:9:21 | data | semmle.label | data |
 | response-object.js:10:18:10:21 | data | semmle.label | data |
 | response-object.js:11:18:11:21 | data | semmle.label | data |
-| response-object.js:13:18:13:21 | data | semmle.label | data |
 | response-object.js:14:18:14:21 | data | semmle.label | data |
-| response-object.js:16:18:16:21 | data | semmle.label | data |
 | response-object.js:17:18:17:21 | data | semmle.label | data |
-| response-object.js:20:18:20:21 | data | semmle.label | data |
 | response-object.js:23:18:23:21 | data | semmle.label | data |
 | response-object.js:26:18:26:21 | data | semmle.label | data |
-| response-object.js:30:18:30:21 | data | semmle.label | data |
 | response-object.js:34:18:34:21 | data | semmle.label | data |
 | response-object.js:38:18:38:21 | data | semmle.label | data |
 | tst2.js:6:7:6:30 | p | semmle.label | p |
