@@ -943,6 +943,7 @@ exprValue
 | params/params.rb:70:52:70:53 | 20 | 20 | int |
 | params/params.rb:100:15:100:15 | 1 | 1 | int |
 | params/params.rb:101:15:101:15 | 1 | 1 | int |
+| params/params.rb:107:5:107:9 | k | :k | symbol |
 | params/params.rb:111:11:111:12 | 42 | 42 | int |
 | params/params.rb:111:15:111:15 | :k | :k | symbol |
 | params/params.rb:111:18:111:19 | 22 | 22 | int |
@@ -1862,6 +1863,7 @@ exprCfgNodeValue
 | params/params.rb:70:52:70:53 | 20 | 20 | int |
 | params/params.rb:100:15:100:15 | 1 | 1 | int |
 | params/params.rb:101:15:101:15 | 1 | 1 | int |
+| params/params.rb:107:5:107:9 | k | :k | symbol |
 | params/params.rb:111:11:111:12 | 42 | 42 | int |
 | params/params.rb:111:15:111:15 | :k | :k | symbol |
 | params/params.rb:111:18:111:19 | 22 | 22 | int |

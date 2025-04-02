@@ -3185,6 +3185,14 @@ params/params.rb:
 #  106|       getParameter: [HashSplatParameter] **kwargs
 #  106|         getDefiningAccess: [LocalVariableAccess] kwargs
 #  107|       getStmt: [SuperCall] super call to m
+#  107|         getArgument: [HashSplatExpr] ** ...
+#  107|           getAnOperand/getOperand/getReceiver: [LocalVariableAccess] kwargs
+#  107|         getArgument: [Pair] Pair
+#  107|           getKey: [SymbolLiteral] k
+#  107|           getValue: [LocalVariableAccess] k
+#  107|         getArgument: [SplatExpr] * ...
+#  107|           getAnOperand/getOperand/getReceiver: [LocalVariableAccess] rest
+#  107|         getArgument: [LocalVariableAccess] y
 #  111|   getStmt: [MethodCall] call to m
 #  111|     getReceiver: [MethodCall] call to new
 #  111|       getReceiver: [ConstantReadAccess] Sub
