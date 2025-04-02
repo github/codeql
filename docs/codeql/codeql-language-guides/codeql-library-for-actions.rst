@@ -117,9 +117,6 @@ See the GitHub Actions documentation on `workflows <https://docs.github.com/en/a
      - Description and selected predicates
    * - ``Workflow``
      -  An Actions workflow. This is a mapping at the top level of an Actions YAML workflow file. See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
-
-  On getOn() { result = super.getOn() }
-
         - `getAJob()` - Gets a job within the `jobs` mapping of this workflow.
         - `getEnv()` - Gets an `env` mapping within this workflow declaring workflow-level environment variables, if any.
         - `getJob(string jobId)` - Gets a job within the `jobs` mapping of this workflow with the given job ID.
