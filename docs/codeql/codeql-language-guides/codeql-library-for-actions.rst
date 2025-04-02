@@ -101,7 +101,7 @@ to all AST classes:
      
 
 Workflows
-~~~~~~~
+~~~~~~~~~
 
 A workflow is a configurable automated process made up of one or more jobs,
 defined in a workflow YAML file in the `.github/workflows` directory of a GitHub repository.

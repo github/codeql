@@ -2,7 +2,7 @@
 .. _codeql-for-actions:
 
 CodeQL for GitHub Actions
-===============
+=========================
 
 Experiment and learn how to write effective and efficient queries for CodeQL databases generated from GitHub Actions code.
 
