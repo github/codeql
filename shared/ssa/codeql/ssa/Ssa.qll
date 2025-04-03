@@ -1408,6 +1408,18 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       not uncertainWriteDefinitionInput(_, def)
     }
 
+    /** Holds if a read is not dominated by a definition. */
+    query predicate notDominatedByDef(Definition def, SourceVariable v, BasicBlock bb, int i) {
+      exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
+        SsaDefReachesNew::ssaDefReachesReadWithinBlock(v, def, bb, i) and
+        (bb != bbDef or i < iDef)
+        or
+        ssaDefReachesRead(v, def, bb, i) and
+        not SsaDefReachesNew::ssaDefReachesReadWithinBlock(v, def, bb, i) and
+        not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _)
+      )
+    }
+
     /** Holds if the end of a basic block can be reached by multiple definitions. */
     query predicate nonUniqueDefReachesEndOfBlock(Definition def, SourceVariable v, BasicBlock bb) {
       ssaDefReachesEndOfBlock(bb, def, v) and
