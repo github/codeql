@@ -17,13 +17,13 @@ import "lib/index.ts";
 import "lib/index.js";
 
 // Import matching "@/*" path mapping
-import "@/file"; // $ importTarget=NoBaseUrl/lib/file.ts
-import "@/file.ts"; // $ importTarget=NoBaseUrl/lib/file.ts
-import "@/file.js"; // $ importTarget=NoBaseUrl/lib/file.ts
-import "@"; // $ importTarget=NoBaseUrl/lib/nostar.ts
-import "@/index"; // $ importTarget=NoBaseUrl/lib/index.ts
-import "@/index.ts"; // $ importTarget=NoBaseUrl/lib/index.ts
-import "@/index.js"; // $ importTarget=NoBaseUrl/lib/index.ts
+import "@/file"; // $ MISSING: importTarget=NoBaseUrl/lib/file.ts
+import "@/file.ts"; // $ MISSING: importTarget=NoBaseUrl/lib/file.ts
+import "@/file.js"; // $ MISSING: importTarget=NoBaseUrl/lib/file.ts
+import "@"; // $ MISSING: importTarget=NoBaseUrl/lib/nostar.ts
+import "@/index"; // $ MISSING: importTarget=NoBaseUrl/lib/index.ts
+import "@/index.ts"; // $ MISSING: importTarget=NoBaseUrl/lib/index.ts
+import "@/index.js"; // $ MISSING: importTarget=NoBaseUrl/lib/index.ts
 
 // Import matching "@/*.xyz" path mapping. Note that this is not actually supported by TypeScript.
 import "@/file.xyz";

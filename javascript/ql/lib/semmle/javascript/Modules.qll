@@ -170,12 +170,7 @@ abstract class Import extends AstNode {
   /**
    * Gets the imported module, as determined by the TypeScript compiler, if any.
    */
-  private Module resolveFromTypeScriptSymbol() {
-    exists(CanonicalName symbol |
-      ast_node_symbol(this, symbol) and
-      ast_node_symbol(result, symbol)
-    )
-  }
+  private Module resolveFromTypeScriptSymbol() { none() }
 
   /**
    * Gets the module this import refers to.
