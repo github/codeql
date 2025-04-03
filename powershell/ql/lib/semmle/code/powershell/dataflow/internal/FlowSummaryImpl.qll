@@ -52,22 +52,24 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    exists(Content c | cs = TSingletonContent(c) |
+    exists(Content c | cs = TSingletonContentSet(c) |
       c = TFieldContent(arg) and result = "Field"
       or
-      exists(ConstantValue cv |
-        c = TKnownElementContent(cv) and
+      exists(ConstantValue cv | c = TKnownKeyContent(cv) or c = TKnownPositionalContent(cv) |
         result = "Element" and
         arg = cv.serialize() + "!"
       )
       or
-      c = TUnknownElementContent() and result = "Element" and arg = "?"
+      (c = TUnknownPositionalContent() or c = TUnknownKeyContent()) and
+      result = "Element" and
+      arg = "?"
     )
     or
-    cs = TAnyElementContent() and result = "Element" and arg = "any"
+    cs = TAnyElementContentSet() and result = "Element" and arg = "any"
     or
     exists(Content::KnownElementContent kec |
-      cs = TKnownOrUnknownElementContent(kec) and
+      cs = TKnownOrUnknownKeyContentSet(kec) or cs = TKnownOrUnknownPositionalContentSet(kec)
+    |
       result = "Element" and
       arg = kec.getIndex().serialize()
     )
@@ -102,13 +104,13 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
   bindingset[token]
   ContentSet decodeUnknownContent(AccessPath::AccessPathTokenBase token) {
     token.getName() = "Element" and
-    result = TSingletonContent(TUnknownElementContent())
+    result = TSingletonContentSet(TUnknownKeyOrPositionContent())
   }
 
   bindingset[token]
   ContentSet decodeUnknownWithContent(AccessPath::AccessPathTokenBase token) {
     token.getName() = "WithElement" and
-    result = TAnyElementContent()
+    result = TAnyElementContentSet()
   }
 }
 
@@ -152,12 +154,12 @@ module Private {
 
     /** Gets a summary component that represents an element in a collection at an unknown index. */
     SummaryComponent elementUnknown() {
-      result = SC::content(TSingletonContent(TUnknownElementContent()))
+      result = SC::content(TSingletonContentSet(TUnknownKeyOrPositionContent()))
     }
 
     /** Gets a summary component that represents an element in a collection at a known index. */
     SummaryComponent elementKnown(ConstantValue cv) {
-      result = SC::content(TSingletonContent(Content::getElementContent(cv)))
+      result = SC::content(TSingletonContentSet(Content::getKnownElementContent(cv)))
     }
 
     /**
@@ -165,9 +167,14 @@ module Private {
      * known index `cv`, or an unknown index.
      */
     SummaryComponent elementKnownOrUnknown(ConstantValue cv) {
-      result = SC::content(TKnownOrUnknownElementContent(TKnownElementContent(cv)))
+      result =
+        SC::content(any(ContentSet cs |
+            cs.isKnownOrUnknownElement(Content::getKnownElementContent(cv))
+          ))
       or
-      not exists(TKnownElementContent(cv)) and
+      not exists(
+        any(ContentSet cs | cs.isKnownOrUnknownElement(Content::getKnownElementContent(cv)))
+      ) and
       result = elementUnknown()
     }
 
@@ -181,7 +188,7 @@ module Private {
      *
      * but is more efficient, because it is represented by a single value.
      */
-    SummaryComponent elementAny() { result = SC::content(TAnyElementContent()) }
+    SummaryComponent elementAny() { result = SC::content(TAnyElementContentSet()) }
 
     /** Gets a summary component that represents the return value of a call. */
     SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }

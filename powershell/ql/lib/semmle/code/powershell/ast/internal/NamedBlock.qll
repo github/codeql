@@ -58,7 +58,20 @@ class ProcessBlock extends NamedBlock {
     synthChild(getRawAst(this), processBlockPipelineVarReadAccess(), result)
   }
 
+  PipelineByPropertyNameParameter getPipelineByPropertyNameParameter(string name) {
+    result = scriptBlock.getAParameter() and
+    result.getPropertyName() = name
+  }
+
   PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {
-    result = scriptBlock.getEnclosingFunction().getAParameter()
+    result = this.getPipelineByPropertyNameParameter(_)
+  }
+
+  VarReadAccess getPipelineByPropertyNameParameterAccess(string name) {
+    synthChild(getRawAst(this), processBlockPipelineByPropertyNameVarReadAccess(name), result)
+  }
+
+  VarReadAccess getAPipelineByPropertyNameParameterAccess() {
+    result = this.getPipelineByPropertyNameParameterAccess(_)
   }
 }

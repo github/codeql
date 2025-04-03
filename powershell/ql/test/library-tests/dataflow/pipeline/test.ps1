@@ -33,7 +33,7 @@ $x, $y | consumeWithProcessAnonymous
 function consumeValueFromPipelineByPropertyNameWithoutProcess {
     Param([Parameter(ValueFromPipelineByPropertyName)] $x)
 
-    Sink $x # $ hasValueFlow=8
+    Sink $x # $ MISSING: hasValueFlow=8
 }
 
 $x = Source "8"

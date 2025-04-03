@@ -221,13 +221,7 @@ module Trees {
       or
       last(super.getProcessBlock(), pred, c) and
       completionIsNormal(c) and
-      (
-        // If we process multiple items we will loop back to the process block
-        first(super.getProcessBlock(), succ)
-        or
-        // Once we're done process all items we will go to the end block
-        first(super.getEndBlock(), succ)
-      )
+      first(super.getEndBlock(), succ)
     }
 
     final override predicate propagatesAbnormal(AstNode child) {
@@ -292,25 +286,17 @@ module Trees {
     final override predicate succEntry(Ast n, Completion c) { n = this and completionIsSimple(c) }
   }
 
-  abstract class NamedBlockTreeBase extends ControlFlowTree instanceof NamedBlock {
-    final override predicate last(Ast last, Completion c) {
+  abstract class NamedBlockTreeBase extends PreOrderTree instanceof NamedBlock {
+    override predicate last(Ast last, Completion c) {
       exists(int i | last(super.getStmt(i), last, c) |
         completionIsNormal(c) and
         not exists(super.getStmt(i + 1))
         or
         not completionIsNormal(c)
       )
-      or
-      not exists(super.getAStmt()) and
-      completionIsSimple(c) and
-      last = this
     }
 
     override predicate succ(Ast pred, Ast succ, Completion c) {
-      pred = this and
-      completionIsSimple(c) and
-      first(super.getStmt(0), succ)
-      or
       exists(int i |
         last(super.getStmt(i), pred, c) and
         completionIsNormal(c) and
@@ -324,20 +310,85 @@ module Trees {
   class NamedBlockTree extends NamedBlockTreeBase instanceof NamedBlock {
     NamedBlockTree() { not this instanceof ProcessBlock }
 
-    final override predicate first(Ast first) { first = this }
+    final override predicate last(Ast last, Completion c) {
+      super.last(last, c)
+      or
+      not exists(super.getAStmt()) and
+      completionIsSimple(c) and
+      last = this
+    }
+
+    final override predicate succ(Ast pred, Ast succ, Completion c) {
+      pred = this and
+      completionIsSimple(c) and
+      first(super.getStmt(0), succ)
+      or
+      super.succ(pred, succ, c)
+    }
 
     final override predicate propagatesAbnormal(Ast child) { super.propagatesAbnormal(child) }
   }
 
+  private VarAccess getRankedPipelineByPropertyNameVariable(ProcessBlock pb, int i) {
+    result =
+      rank[i + 1](string name | | pb.getPipelineByPropertyNameParameterAccess(name) order by name)
+  }
+
   class ProcessBlockTree extends NamedBlockTreeBase instanceof ProcessBlock {
-    final override predicate first(Ast first) { first = super.getPipelineParameterAccess() }
+    predicate lastEmptinessCheck(AstNode last) {
+      last = super.getPipelineParameterAccess() and
+      not exists(super.getAPipelineByPropertyNameParameterAccess())
+      or
+      exists(int i |
+        last = getRankedPipelineByPropertyNameVariable(this, i) and
+        not exists(getRankedPipelineByPropertyNameVariable(this, i + 1))
+      )
+    }
+
+    private predicate succEmptinessCheck(AstNode pred, AstNode succ, Completion c) {
+      last(super.getPipelineParameterAccess(), pred, c) and
+      first(getRankedPipelineByPropertyNameVariable(this, 0), succ)
+      or
+      exists(int i |
+        last(getRankedPipelineByPropertyNameVariable(this, i), pred, c) and
+        first(getRankedPipelineByPropertyNameVariable(this, i + 1), succ)
+      )
+    }
+
+    private predicate firstEmptinessCheck(AstNode first) {
+      first(super.getPipelineParameterAccess(), first)
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      // Emptiness test exits with no more elements
+      this.lastEmptinessCheck(last) and
+      c.(EmptinessCompletion).isEmpty()
+      or
+      super.last(last, c)
+    }
 
     final override predicate succ(Ast pred, Ast succ, Completion c) {
-      this.first(pred) and
-      completionIsSimple(c) and
-      succ = this
+      // Evaluate the pipeline access
+      pred = this and
+      this.firstEmptinessCheck(succ) and
+      completionIsSimple(c)
+      or
+      this.succEmptinessCheck(pred, succ, c)
+      or
+      this.lastEmptinessCheck(pred) and
+      c = any(EmptinessCompletion ec | not ec.isEmpty()) and
+      first(super.getStmt(0), succ)
       or
       super.succ(pred, succ, c)
+      or
+      // Body to emptiness test
+      exists(Ast last0 |
+        super.last(last0, _) and
+        last(last0, pred, c) and
+        // TODO: I don't think this correctly models the semantics inside process blocks
+        c.continuesLoop()
+      ) and
+      this.firstEmptinessCheck(succ)
     }
 
     final override predicate propagatesAbnormal(Ast child) { super.propagatesAbnormal(child) }

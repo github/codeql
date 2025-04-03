@@ -7,11 +7,11 @@
 | test.ps1:2:1:2:8 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
 | test.ps1:4:1:4:2 | b | test.ps1:5:4:5:5 | b |
 | test.ps1:4:6:4:12 | Call to GetBool | test.ps1:4:1:4:2 | b |
-| test.ps1:5:1:7:1 | phi | test.ps1:8:6:8:8 | a2 |
+| test.ps1:5:1:7:1 | phi (a2) | test.ps1:8:6:8:8 | a2 |
 | test.ps1:5:4:5:5 | b | test.ps1:10:14:10:15 | b |
-| test.ps1:6:5:6:7 | a2 | test.ps1:6:11:6:16 | [input] phi |
+| test.ps1:6:5:6:7 | a2 | test.ps1:6:11:6:16 | [input] phi (a2) |
 | test.ps1:6:11:6:16 | Call to Source | test.ps1:6:5:6:7 | a2 |
-| test.ps1:6:11:6:16 | [input] phi | test.ps1:5:1:7:1 | phi |
+| test.ps1:6:11:6:16 | [input] phi (a2) | test.ps1:5:1:7:1 | phi (a2) |
 | test.ps1:8:1:8:8 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
 | test.ps1:8:1:8:8 | Call to Sink | test.ps1:1:1:24:22 | pre-return value for {...} |
 | test.ps1:10:1:10:2 | c | test.ps1:11:6:11:7 | c |

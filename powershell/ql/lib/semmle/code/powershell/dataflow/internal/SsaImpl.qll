@@ -31,9 +31,10 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
       or
       variableWriteActual(bb, i, v, _)
       or
-      exists(ProcessBlockCfgNode processBlock |
-        bb.getNode(i) = processBlock and
+      exists(ProcessBlockCfgNode processBlock | bb.getNode(i) = processBlock |
         processBlock.getPipelineIteratorVariable() = v
+        or
+        processBlock.getAPipelineBypropertyNameIteratorVariable() = v
       )
       or
       parameterWrite(bb, i, v)
@@ -301,7 +302,8 @@ class NormalParameter extends Parameter {
 private newtype TParameterExt =
   TNormalParameter(NormalParameter p) or
   TThisMethodParameter(Method m) or
-  TPipelineParameter(PipelineParameter p)
+  TPipelineParameter(PipelineParameter p) or
+  TPipelineByPropertyNameParameter(PipelineByPropertyNameParameter p)
 
 /** A normal parameter or an implicit `this` parameter. */
 class ParameterExt extends TParameterExt {
@@ -311,10 +313,16 @@ class ParameterExt extends TParameterExt {
 
   PipelineParameter asPipelineParameter() { this = TPipelineParameter(result) }
 
+  PipelineByPropertyNameParameter asPipelineByPropertyNameParameter() {
+    this = TPipelineByPropertyNameParameter(result)
+  }
+
   predicate isInitializedBy(WriteDefinition def) {
     def = getParameterDef(this.asParameter())
     or
     def = getParameterDef(this.asPipelineParameter())
+    or
+    def = getParameterDef(this.asPipelineByPropertyNameParameter())
     or
     def.(Ssa::ThisDefinition).getSourceVariable().getDeclaringScope() = this.asThis().getBody()
   }
@@ -323,7 +331,7 @@ class ParameterExt extends TParameterExt {
     result =
       [
         this.asParameter().toString(), this.asThis().toString(),
-        this.asPipelineParameter().toString()
+        this.asPipelineParameter().toString(), this.asPipelineByPropertyNameParameter().toString()
       ]
   }
 
@@ -331,7 +339,8 @@ class ParameterExt extends TParameterExt {
     result =
       [
         this.asParameter().getLocation(), this.asThis().getLocation(),
-        this.asPipelineParameter().getLocation()
+        this.asPipelineParameter().getLocation(),
+        this.asPipelineByPropertyNameParameter().getLocation()
       ]
   }
 }
