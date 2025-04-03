@@ -33,11 +33,14 @@ newtype ChildIndex =
   } or
   ThisVar() or
   PipelineParamVar() or
-  // PipelineByPropertNameVar(Raw::PipelineByPropertyNameParameter p) or
+  PipelineByPropertyNameVar(Raw::PipelineByPropertyNameParameter p) or
   PipelineIteratorVar() or
   PipelineByPropertyNameIteratorVar(Raw::PipelineByPropertyNameParameter p) or
   RealVar(string name) { name = variableNameInScope(_, _) } or
-  ProcessBlockPipelineVarReadAccess()
+  ProcessBlockPipelineVarReadAccess() or
+  ProcessBlockPipelineByPropertyNameVarReadAccess(string name) {
+    name = any(Raw::PipelineByPropertyNameParameter p).getName()
+  }
 
 int synthPipelineParameterChildIndex(Raw::ScriptBlock sb) {
   // If there is a parameter block, but no pipeline parameter
@@ -340,3 +343,7 @@ ChildIndex whileStmtCond() { result = RawChildIndex(Raw::WhileStmtCond()) }
 ChildIndex whileStmtBody() { result = RawChildIndex(Raw::WhileStmtBody()) }
 
 ChildIndex processBlockPipelineVarReadAccess() { result = ProcessBlockPipelineVarReadAccess() }
+
+ChildIndex processBlockPipelineByPropertyNameVarReadAccess(string name) {
+  result = ProcessBlockPipelineByPropertyNameVarReadAccess(name)
+}

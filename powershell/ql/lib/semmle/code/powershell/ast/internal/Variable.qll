@@ -45,7 +45,9 @@ module Private {
 
   class ParameterImpl extends VariableSynth {
     ParameterImpl() {
-      i instanceof FunParam or i instanceof PipelineParamVar or i instanceof ThisVar
+      i instanceof FunParam or
+      i instanceof PipelineParamVar or
+      i instanceof ThisVar
     }
   }
 
@@ -55,6 +57,14 @@ module Private {
 
   class PipelineVariableImpl extends ParameterImpl {
     override PipelineParamVar i;
+
+    ScriptBlock getScriptBlock() { this = TVariableSynth(getRawAst(result), _) }
+  }
+
+  class PipelineByPropertyNameVariableImpl extends ParameterImpl {
+    PipelineByPropertyNameVariableImpl() {
+      getRawAst(this) instanceof Raw::PipelineByPropertyNameParameter
+    }
 
     ScriptBlock getScriptBlock() { this = TVariableSynth(getRawAst(result), _) }
   }
@@ -168,6 +178,11 @@ module Public {
   }
 
   class PipelineVariable extends Variable instanceof PipelineVariableImpl {
+    ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
+  }
+
+  class PipelineByPropertyNameVariable extends Variable instanceof PipelineByPropertyNameVariableImpl
+  {
     ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
   }
 
