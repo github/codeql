@@ -14,6 +14,7 @@ module ResolveTest implements TestSig {
     f.getAPrecedingComment().getCommentText() = value
     or
     not exists(f.getAPrecedingComment()) and
+    // TODO: Default to canonical path once that is available
     value = f.getName().getText()
   }
 
