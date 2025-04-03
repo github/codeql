@@ -6,8 +6,11 @@ import (
 	"context"
 
 	"github.com/Masterminds/squirrel"
-	src "github.com/nonexistent/sources"
 )
+
+func Source[T any]() T {
+	return *new(T)
+}
 
 func test_Masterminds_squirrel_QueryRower(ctx context.Context, db squirrel.QueryRower, sqlizer squirrel.Sqlizer) {
 	scanner := db.QueryRow("") // $ source
@@ -136,7 +139,7 @@ func test_Masterminds_squirrel_DeleteBuilder(ctx context.Context, builder squirr
 	sink(r32) // $ hasTaintFlow="r32"
 	sink(r33) // $ hasTaintFlow="r33"
 
-	builder2 := src.Source[squirrel.DeleteBuilder]() // $ source
+	builder2 := Source[squirrel.DeleteBuilder]() // $ source
 
 	var r41, r42, r43 string
 	builder2.ScanContext(ctx, &r41, &r42, &r43)
@@ -177,7 +180,7 @@ func test_Masterminds_squirrel_InsertBuilder(ctx context.Context, builder squirr
 	sink(r42) // $ hasTaintFlow="r42"
 	sink(r43) // $ hasTaintFlow="r43"
 
-	builder2 := src.Source[squirrel.InsertBuilder]() // $ source
+	builder2 := Source[squirrel.InsertBuilder]() // $ source
 
 	var r51, r52, r53 string
 	builder2.Scan(&r51, &r52, &r53)
@@ -225,7 +228,7 @@ func test_Masterminds_squirrel_SelectBuilder(ctx context.Context, builder squirr
 	sink(r42) // $ hasTaintFlow="r42"
 	sink(r43) // $ hasTaintFlow="r43"
 
-	builder2 := src.Source[squirrel.SelectBuilder]() // $ source
+	builder2 := Source[squirrel.SelectBuilder]() // $ source
 
 	var r51, r52, r53 string
 	builder2.Scan(&r51, &r52, &r53)
@@ -273,7 +276,7 @@ func test_Masterminds_squirrel_UpdateBuilder(ctx context.Context, builder squirr
 	sink(r42) // $ hasTaintFlow="r42"
 	sink(r43) // $ hasTaintFlow="r43"
 
-	builder2 := src.Source[squirrel.UpdateBuilder]() // $ source
+	builder2 := Source[squirrel.UpdateBuilder]() // $ source
 
 	var r51, r52, r53 string
 	builder2.Scan(&r51, &r52, &r53)

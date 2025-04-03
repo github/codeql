@@ -32,6 +32,7 @@ import semmle.go.frameworks.Afero
 import semmle.go.frameworks.AwsLambda
 import semmle.go.frameworks.Beego
 import semmle.go.frameworks.BeegoOrm
+import semmle.go.frameworks.Bun
 import semmle.go.frameworks.RsCors
 import semmle.go.frameworks.Couchbase
 import semmle.go.frameworks.Echo

@@ -8,4 +8,4 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/nonexistent/sources", "", False, "Source", "", "", "ReturnValue", "database", "manual"]
+      - ["test", "", False, "Source", "", "", "ReturnValue", "database", "manual"]
