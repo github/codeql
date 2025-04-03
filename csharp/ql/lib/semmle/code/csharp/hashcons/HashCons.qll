@@ -306,7 +306,7 @@ private module ListHashCons<ListHashConsInputSig Input> {
     }
 }
 
-module CallHashConsInput implements ListHashConsInputSig {
+private module CallHashConsInput implements ListHashConsInputSig {
   class List = Call;
 
   Expr getExpr(List l, int i) { result = l.getArgument(i) }
@@ -351,7 +351,7 @@ private predicate objectCreationHashCons(
   CallHashCons::listHashCons(oc, args)
 }
 
-module ArrayInitializerHashConsInput implements ListHashConsInputSig {
+private module ArrayInitializerHashConsInput implements ListHashConsInputSig {
   class List extends ArrayInitializer {
     List() {
       // For performance reasons we restrict this to "small" array initializers.
@@ -364,7 +364,7 @@ module ArrayInitializerHashConsInput implements ListHashConsInputSig {
 
 private module ArrayInitializerHashCons = ListHashCons<ArrayInitializerHashConsInput>;
 
-module ArrayCreationHashConsInput implements ListHashConsInputSig {
+private module ArrayCreationHashConsInput implements ListHashConsInputSig {
   class List = ArrayCreation;
 
   Expr getExpr(List l, int i) { result = l.getLengthArgument(i) }
