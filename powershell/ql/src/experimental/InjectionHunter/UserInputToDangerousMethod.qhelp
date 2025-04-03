@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Code that passes user input directly to
+<code>Invoke-Expression</code>, <code>&</code>, or some other library
+routine that executes a command, allows the user to execute malicious
+code.</p>
+
+</overview>
+<recommendation>
+
+<p>Possible script injection risk via the Invoke-Expression cmdlet. Untrusted input can cause arbitrary PowerShell expressions to be run. 
+Variables may be used directly for dynamic parameter arguments, splatting can be used for dynamic parameter names, 
+and the invocation operator can be used for dynamic command names. If content escaping is truly needed, PowerShell has several valid quote characters, 
+so  [System.Management.Automation.Language.CodeGeneration]::Escape* should be used.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows code that takes a shell script that can be changed
+maliciously by a user, and passes it straight to <code>Invoke-Expression</code>
+without examining it first.</p>
+
+<sample src="examples/command_injection.ps1" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+
+<!--  LocalWords:  CWE untrusted unsanitized Runtime
+ -->
+
+</references>
+</qhelp>
