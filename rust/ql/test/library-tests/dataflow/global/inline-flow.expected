@@ -17,13 +17,13 @@ edges
 | main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | provenance |  |
 | main.rs:38:23:38:31 | source(...) | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | provenance |  |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | provenance |  |
-| main.rs:39:10:39:10 | a [MyStruct] | main.rs:39:10:39:21 | a.get_data(...) | provenance |  |
+| main.rs:39:10:39:10 | a [MyStruct] | main.rs:39:10:39:21 | a.get_data() | provenance |  |
 | main.rs:44:12:44:17 | [post] &mut a [&ref, MyStruct] | main.rs:44:17:44:17 | [post] a [MyStruct] | provenance |  |
 | main.rs:44:17:44:17 | [post] a [MyStruct] | main.rs:45:10:45:10 | a [MyStruct] | provenance |  |
 | main.rs:44:30:44:38 | source(...) | main.rs:26:28:26:33 | ...: i64 | provenance |  |
 | main.rs:44:30:44:38 | source(...) | main.rs:44:12:44:17 | [post] &mut a [&ref, MyStruct] | provenance |  |
 | main.rs:45:10:45:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | provenance |  |
-| main.rs:45:10:45:10 | a [MyStruct] | main.rs:45:10:45:21 | a.get_data(...) | provenance |  |
+| main.rs:45:10:45:10 | a [MyStruct] | main.rs:45:10:45:21 | a.get_data() | provenance |  |
 | main.rs:48:12:48:17 | ...: i64 | main.rs:49:10:49:10 | n | provenance |  |
 | main.rs:53:9:53:9 | a | main.rs:54:13:54:13 | a | provenance |  |
 | main.rs:53:13:53:21 | source(...) | main.rs:53:9:53:9 | a | provenance |  |
@@ -48,11 +48,11 @@ edges
 | main.rs:82:26:82:26 | a | main.rs:78:21:78:26 | ...: i64 | provenance |  |
 | main.rs:82:26:82:26 | a | main.rs:82:13:82:27 | pass_through(...) | provenance |  |
 | main.rs:94:22:94:27 | ...: i64 | main.rs:95:14:95:14 | n | provenance |  |
-| main.rs:98:30:104:5 | { ... } | main.rs:117:13:117:25 | mn.get_data(...) | provenance |  |
+| main.rs:98:30:104:5 | { ... } | main.rs:117:13:117:25 | mn.get_data() | provenance |  |
 | main.rs:102:13:102:21 | source(...) | main.rs:98:30:104:5 | { ... } | provenance |  |
 | main.rs:106:27:106:32 | ...: i64 | main.rs:106:42:112:5 | { ... } | provenance |  |
 | main.rs:117:9:117:9 | a | main.rs:118:10:118:10 | a | provenance |  |
-| main.rs:117:13:117:25 | mn.get_data(...) | main.rs:117:9:117:9 | a | provenance |  |
+| main.rs:117:13:117:25 | mn.get_data() | main.rs:117:9:117:9 | a | provenance |  |
 | main.rs:123:9:123:9 | a | main.rs:124:16:124:16 | a | provenance |  |
 | main.rs:123:13:123:21 | source(...) | main.rs:123:9:123:9 | a | provenance |  |
 | main.rs:124:16:124:16 | a | main.rs:94:22:94:27 | ...: i64 | provenance |  |
@@ -115,12 +115,12 @@ nodes
 | main.rs:38:11:38:11 | [post] a [MyStruct] | semmle.label | [post] a [MyStruct] |
 | main.rs:38:23:38:31 | source(...) | semmle.label | source(...) |
 | main.rs:39:10:39:10 | a [MyStruct] | semmle.label | a [MyStruct] |
-| main.rs:39:10:39:21 | a.get_data(...) | semmle.label | a.get_data(...) |
+| main.rs:39:10:39:21 | a.get_data() | semmle.label | a.get_data() |
 | main.rs:44:12:44:17 | [post] &mut a [&ref, MyStruct] | semmle.label | [post] &mut a [&ref, MyStruct] |
 | main.rs:44:17:44:17 | [post] a [MyStruct] | semmle.label | [post] a [MyStruct] |
 | main.rs:44:30:44:38 | source(...) | semmle.label | source(...) |
 | main.rs:45:10:45:10 | a [MyStruct] | semmle.label | a [MyStruct] |
-| main.rs:45:10:45:21 | a.get_data(...) | semmle.label | a.get_data(...) |
+| main.rs:45:10:45:21 | a.get_data() | semmle.label | a.get_data() |
 | main.rs:48:12:48:17 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:49:10:49:10 | n | semmle.label | n |
 | main.rs:53:9:53:9 | a | semmle.label | a |
@@ -154,7 +154,7 @@ nodes
 | main.rs:106:27:106:32 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:106:42:112:5 | { ... } | semmle.label | { ... } |
 | main.rs:117:9:117:9 | a | semmle.label | a |
-| main.rs:117:13:117:25 | mn.get_data(...) | semmle.label | mn.get_data(...) |
+| main.rs:117:13:117:25 | mn.get_data() | semmle.label | mn.get_data() |
 | main.rs:118:10:118:10 | a | semmle.label | a |
 | main.rs:123:9:123:9 | a | semmle.label | a |
 | main.rs:123:13:123:21 | source(...) | semmle.label | source(...) |
@@ -204,9 +204,9 @@ nodes
 | main.rs:239:14:239:14 | c | semmle.label | c |
 subpaths
 | main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] |
-| main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data(...) |
+| main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
 | main.rs:44:30:44:38 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:44:12:44:17 | [post] &mut a [&ref, MyStruct] |
-| main.rs:45:10:45:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:45:10:45:21 | a.get_data(...) |
+| main.rs:45:10:45:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:45:10:45:21 | a.get_data() |
 | main.rs:63:26:63:26 | a | main.rs:57:17:57:22 | ...: i64 | main.rs:57:32:59:1 | { ... } | main.rs:63:13:63:27 | pass_through(...) |
 | main.rs:68:26:71:5 | { ... } | main.rs:57:17:57:22 | ...: i64 | main.rs:57:32:59:1 | { ... } | main.rs:68:13:71:6 | pass_through(...) |
 | main.rs:82:26:82:26 | a | main.rs:78:21:78:26 | ...: i64 | main.rs:78:36:80:5 | { ... } | main.rs:82:13:82:27 | pass_through(...) |
@@ -217,8 +217,8 @@ subpaths
 testFailures
 #select
 | main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) | source(...) |
-| main.rs:39:10:39:21 | a.get_data(...) | main.rs:38:23:38:31 | source(...) | main.rs:39:10:39:21 | a.get_data(...) | $@ | main.rs:38:23:38:31 | source(...) | source(...) |
-| main.rs:45:10:45:21 | a.get_data(...) | main.rs:44:30:44:38 | source(...) | main.rs:45:10:45:21 | a.get_data(...) | $@ | main.rs:44:30:44:38 | source(...) | source(...) |
+| main.rs:39:10:39:21 | a.get_data() | main.rs:38:23:38:31 | source(...) | main.rs:39:10:39:21 | a.get_data() | $@ | main.rs:38:23:38:31 | source(...) | source(...) |
+| main.rs:45:10:45:21 | a.get_data() | main.rs:44:30:44:38 | source(...) | main.rs:45:10:45:21 | a.get_data() | $@ | main.rs:44:30:44:38 | source(...) | source(...) |
 | main.rs:49:10:49:10 | n | main.rs:53:13:53:21 | source(...) | main.rs:49:10:49:10 | n | $@ | main.rs:53:13:53:21 | source(...) | source(...) |
 | main.rs:64:10:64:10 | b | main.rs:62:13:62:21 | source(...) | main.rs:64:10:64:10 | b | $@ | main.rs:62:13:62:21 | source(...) | source(...) |
 | main.rs:72:10:72:10 | a | main.rs:70:9:70:18 | source(...) | main.rs:72:10:72:10 | a | $@ | main.rs:70:9:70:18 | source(...) | source(...) |
