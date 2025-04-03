@@ -1005,6 +1005,11 @@ specifiers(
     unique string str: string ref
 );
 
+paramspecifiers(
+    int param_id: @parameter ref,
+    int spec_id: @specifier ref
+);
+
 typespecifiers(
     int type_id: @type ref,
     int spec_id: @specifier ref

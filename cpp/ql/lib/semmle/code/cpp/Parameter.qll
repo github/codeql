@@ -49,6 +49,11 @@ class Parameter extends LocalScopeVariable, @parameter {
     result = "(unnamed parameter " + this.getIndex().toString() + ")"
   }
 
+  /** Gets a specifier for this parameter. */
+  override Specifier getASpecifier() {
+    paramspecifiers(underlyingElement(this), unresolveElement(result))
+  }
+
   override string getAPrimaryQlClass() { result = "Parameter" }
 
   /**
