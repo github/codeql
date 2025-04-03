@@ -440,6 +440,11 @@ private module FunctionSynth {
         n = TFunctionSynth(fundefStmt, _) and
         result = fundefStmt.getLocation()
       )
+      or
+      exists(Raw::TopLevelScriptBlock topLevelScriptBlock |
+        n = TTopLevelFunction(topLevelScriptBlock) and
+        result = topLevelScriptBlock.getLocation()
+      )
     }
   }
 }
