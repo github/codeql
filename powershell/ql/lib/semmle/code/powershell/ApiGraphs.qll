@@ -543,7 +543,9 @@ module API {
 
     cached
     predicate methodEdge(Node pred, string name, Node succ) {
-      exists(DataFlow::CallNode call | succ = MkMethodAccessNode(call) and name = call.getName() |
+      exists(DataFlow::CallNode call |
+        succ = MkMethodAccessNode(call) and name = call.getName().toLowerCase()
+      |
         pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier()))
       )
     }
