@@ -527,8 +527,18 @@ module API {
         pred = MkNamespaceOfTypeNameNode(typeName) and
         succ = getForwardStartNode(typeName)
       )
-      // or
-      // TODO: Handle getAMember when the predecessor is a MkUsingNode?
+      or
+      pred = MkRoot() and
+      exists(DataFlow::AutomaticVariableNode automatic |
+        automatic.getName() = name and
+        succ = getForwardStartNode(automatic)
+      )
+      or
+      exists(MemberExprReadAccess read |
+        read.getMemberName().toLowerCase() = name and
+        pred = getForwardEndNode(getALocalSourceStrict(getNodeFromExpr(read.getQualifier()))) and
+        succ = getForwardStartNode(getNodeFromExpr(read))
+      )
     }
 
     cached
