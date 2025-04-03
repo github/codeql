@@ -38,17 +38,17 @@ canonicalPaths
 resolvedPaths
 | anonymous.rs:30:17:30:30 | OtherStruct {...} | None | None |
 | anonymous.rs:31:9:31:9 | s | None | None |
-| anonymous.rs:31:9:31:13 | s.f(...) | None | None |
+| anonymous.rs:31:9:31:13 | s.f() | None | None |
 | anonymous.rs:32:9:32:9 | s | None | None |
-| anonymous.rs:32:9:32:13 | s.g(...) | None | None |
+| anonymous.rs:32:9:32:13 | s.g() | None | None |
 | anonymous.rs:33:9:33:14 | nested | None | None |
 | regular.rs:30:13:30:21 | Struct {...} | None | None |
 | regular.rs:31:5:31:5 | s | None | None |
-| regular.rs:31:5:31:9 | s.f(...) | None | None |
+| regular.rs:31:5:31:9 | s.f() | None | None |
 | regular.rs:32:5:32:5 | s | None | None |
-| regular.rs:32:5:32:9 | s.g(...) | None | None |
+| regular.rs:32:5:32:9 | s.g() | None | None |
 | regular.rs:33:5:33:5 | s | None | None |
-| regular.rs:33:5:33:9 | s.h(...) | None | None |
+| regular.rs:33:5:33:9 | s.h() | None | None |
 | regular.rs:34:5:34:8 | free | None | None |
 | regular.rs:44:9:44:26 | ...::None::<...> | None | None |
 | regular.rs:45:9:45:20 | ...::Some | None | None |

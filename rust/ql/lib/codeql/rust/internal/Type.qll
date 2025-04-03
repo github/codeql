@@ -104,7 +104,7 @@ class StructType extends StructOrEnumType, TStruct {
     result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
   }
 
-  override string toString() { result = struct.toString() }
+  override string toString() { result = struct.getName().getText() }
 
   override Location getLocation() { result = struct.getLocation() }
 }
@@ -125,7 +125,7 @@ class EnumType extends StructOrEnumType, TEnum {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
   }
 
-  override string toString() { result = enum.toString() }
+  override string toString() { result = enum.getName().getText() }
 
   override Location getLocation() { result = enum.getLocation() }
 }

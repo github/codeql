@@ -38,17 +38,17 @@ canonicalPaths
 resolvedPaths
 | anonymous.rs:27:17:27:30 | OtherStruct {...} | None | None |
 | anonymous.rs:28:9:28:9 | s | None | None |
-| anonymous.rs:28:9:28:13 | s.f(...) | None | None |
+| anonymous.rs:28:9:28:13 | s.f() | None | None |
 | anonymous.rs:29:9:29:9 | s | None | None |
-| anonymous.rs:29:9:29:13 | s.g(...) | None | None |
+| anonymous.rs:29:9:29:13 | s.g() | None | None |
 | anonymous.rs:30:9:30:14 | nested | None | None |
 | regular.rs:27:13:27:21 | Struct {...} | repo::test | crate::regular::Struct |
 | regular.rs:28:5:28:5 | s | None | None |
-| regular.rs:28:5:28:9 | s.f(...) | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
+| regular.rs:28:5:28:9 | s.f() | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
 | regular.rs:29:5:29:5 | s | None | None |
-| regular.rs:29:5:29:9 | s.g(...) | repo::test | <crate::regular::Struct>::g |
+| regular.rs:29:5:29:9 | s.g() | repo::test | <crate::regular::Struct>::g |
 | regular.rs:30:5:30:5 | s | None | None |
-| regular.rs:30:5:30:9 | s.h(...) | repo::test | <_ as crate::regular::TraitWithBlanketImpl>::h |
+| regular.rs:30:5:30:9 | s.h() | repo::test | <_ as crate::regular::TraitWithBlanketImpl>::h |
 | regular.rs:31:5:31:8 | free | repo::test | crate::regular::free |
 | regular.rs:41:9:41:26 | ...::None::<...> | lang:core | crate::option::Option::None |
 | regular.rs:42:9:42:20 | ...::Some | lang:core | crate::option::Option::Some |
