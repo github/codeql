@@ -11,9 +11,9 @@ module ResolveTest implements TestSig {
   string getARelevantTag() { result = ["method", "fieldof"] }
 
   private predicate functionHasValue(Function f, string value) {
-    f.getPrecedingComment().getCommentText() = value
+    f.getAPrecedingComment().getCommentText() = value
     or
-    not exists(f.getPrecedingComment()) and
+    not exists(f.getAPrecedingComment()) and
     value = f.getName().getText()
   }
 

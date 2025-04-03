@@ -5,7 +5,7 @@ private module InlineMadTestLang implements InlineMadTestLangSig {
   class Callable = R::Function;
 
   string getComment(R::Function callable) {
-    result = callable.getPrecedingComment().getCommentText()
+    result = callable.getAPrecedingComment().getCommentText()
   }
 }
 
