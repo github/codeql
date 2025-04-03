@@ -904,3 +904,15 @@ private module PipelineAccess {
     }
   }
 }
+
+private module ImplicitAssignmentInForEach {
+  private class ForEachAssignment extends Synthesis {
+    override predicate implicitAssignment(Raw::Ast dest, string name) {
+      exists(Raw::ForEachStmt forEach, Raw::VarAccess va |
+        va = forEach.getVarAccess() and
+        va = dest and
+        va.getUserPath() = name
+      )
+    }
+  }
+}
