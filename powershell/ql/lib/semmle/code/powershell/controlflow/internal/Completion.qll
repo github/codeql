@@ -188,7 +188,11 @@ private predicate inMatchingContext(Ast n) {
  * Holds if a normal completion of `cfe` must be an emptiness completion. Thats is,
  * whether `cfe` determines whether to execute the body of a `foreach` statement.
  */
-private predicate mustHaveEmptinessCompletion(Ast n) { n instanceof ForEachStmt }
+private predicate mustHaveEmptinessCompletion(Ast n) {
+  n instanceof ForEachStmt
+  or
+  any(CfgImpl::Trees::ProcessBlockTree pbtree).lastEmptinessCheck(n)
+}
 
 /**
  * A completion that represents normal evaluation of a statement or an

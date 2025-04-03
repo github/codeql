@@ -255,21 +255,43 @@ module Content {
   /** An element in a collection, for example an element in an array or in a hash. */
   class ElementContent extends Content, TElementContent { }
 
-  /** An element in a collection at a known index. */
-  class KnownElementContent extends ElementContent, TKnownElementContent {
-    private ConstantValue cv;
-
-    KnownElementContent() { this = TKnownElementContent(cv) }
+  abstract class KnownElementContent extends ElementContent, TKnownElementContent {
+    ConstantValue cv;
 
     /** Gets the index in the collection. */
-    ConstantValue getIndex() { result = cv }
+    final ConstantValue getIndex() { result = cv }
 
     override string toString() { result = "element " + cv }
   }
 
-  /** An element in a collection at an unknown index. */
-  class UnknownElementContent extends ElementContent, TUnknownElementContent {
-    override string toString() { result = "element" }
+  /** An element in a collection at a known index. */
+  class KnownKeyContent extends KnownElementContent, TKnownKeyContent {
+    KnownKeyContent() { this = TKnownKeyContent(cv) }
+  }
+
+  /** An element in a collection at a known index. */
+  class KnownPositionalContent extends KnownElementContent, TKnownPositionalContent {
+    KnownPositionalContent() { this = TKnownPositionalContent(cv) }
+  }
+
+  class UnknownElementContent extends ElementContent, TUnknownElementContent { }
+
+  class UnknownKeyContent extends UnknownElementContent, TUnknownKeyContent {
+    UnknownKeyContent() { this = TUnknownKeyContent() }
+
+    override string toString() { result = "unknown map key" }
+  }
+
+  class UnknownPositionalContent extends UnknownElementContent, TUnknownPositionalContent {
+    UnknownPositionalContent() { this = TUnknownPositionalContent() }
+
+    override string toString() { result = "unknown index" }
+  }
+
+  class UnknownKeyOrPositionContent extends UnknownElementContent, TUnknownKeyOrPositionContent {
+    UnknownKeyOrPositionContent() { this = TUnknownKeyOrPositionContent() }
+
+    override string toString() { result = "unknown" }
   }
 
   /** A field of an object. */
@@ -285,20 +307,18 @@ module Content {
   }
 
   /** Gets the element content corresponding to constant value `cv`. */
-  ElementContent getElementContent(ConstantValue cv) {
-    result = TKnownElementContent(cv)
+  KnownElementContent getKnownElementContent(ConstantValue cv) {
+    result = TKnownPositionalContent(cv)
     or
-    not exists(TKnownElementContent(cv)) and
-    result = TUnknownElementContent()
+    result = TKnownKeyContent(cv)
   }
 
   /**
    * Gets the constant value of `e`, which corresponds to a valid known
-   * element index. Unlike calling simply `e.getConstantValue()`, this
-   * excludes negative array indices.
+   * element index.
    */
   ConstantValue getKnownElementIndex(Expr e) {
-    result = getElementContent(e.getValue()).(KnownElementContent).getIndex()
+    result = getKnownElementContent(e.getValue()).getIndex()
   }
 }
 
@@ -310,19 +330,31 @@ module Content {
  */
 class ContentSet extends TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
-  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+  predicate isSingleton(Content c) { this = TSingletonContentSet(c) }
 
-  /** Holds if this content set represents all `ElementContent`s. */
-  predicate isAnyElement() { this = TAnyElementContent() }
-
-  /**
-   * Holds if this content set represents a specific known element index, or an
-   * unknown element index.
-   */
-  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
-    this = TKnownOrUnknownElementContent(c)
+  predicate isKnownOrUnknownKeyContent(Content::KnownKeyContent c) {
+    this = TKnownOrUnknownKeyContentSet(c)
   }
 
+  predicate isKnownOrUnknownPositional(Content::KnownPositionalContent c) {
+    this = TKnownOrUnknownPositionalContentSet(c)
+  }
+
+  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
+    this.isKnownOrUnknownKeyContent(c)
+    or
+    this.isKnownOrUnknownPositional(c)
+  }
+
+  predicate isUnknownPositionalContent() { this = TUnknownPositionalElementContentSet() }
+
+  predicate isUnknownKeyContent() { this = TUnknownKeyContentSet() }
+
+  predicate isAnyElement() { this = TAnyElementContentSet() }
+
+  predicate isAnyPositional() { this = TAnyPositionalContentSet() }
+
+  // predicate isPipelineContentSet() { this = TPipelineContentSet() }
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -330,15 +362,25 @@ class ContentSet extends TContentSet {
       result = c.toString()
     )
     or
-    this.isAnyElement() and
-    result = "any element"
-    or
     exists(Content::KnownElementContent c |
       this.isKnownOrUnknownElement(c) and
-      result = c + " or unknown"
+      result = c.toString() + " or unknown"
     )
+    or
+    this.isUnknownPositionalContent() and
+    result = "unknown positional"
+    or
+    this.isUnknownKeyContent() and
+    result = "unknown key"
+    or
+    this.isAnyPositional() and
+    result = "any positional"
+    or
+    this.isAnyElement() and
+    result = "any element"
   }
 
+  /** Gets a content that may be stored into when storing into this set. */
   Content getAStoreContent() {
     this.isSingleton(result)
     or
@@ -346,20 +388,25 @@ class ContentSet extends TContentSet {
     // from `a` to `a[unknown]` (which can read any element), gets translated into
     // a reverse store step that store only into `?`
     this.isAnyElement() and
-    result = TUnknownElementContent()
+    result = TUnknownKeyOrPositionContent()
     or
     // For reverse stores, `a[1][0] = x`, it is important that the read-step
     // from `a` to `a[1]` (which can read both elements stored at exactly index `1`
     // and elements stored at unknown index), gets translated into a reverse store
     // step that store only into `1`
     this.isKnownOrUnknownElement(result)
-  }
-
-  pragma[nomagic]
-  private Content getAnElementReadContent() {
-    exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
-      result = c or
-      result = TUnknownElementContent()
+    or
+    this.isUnknownPositionalContent() and
+    result = TUnknownPositionalContent()
+    or
+    this.isUnknownKeyContent() and
+    result = TUnknownKeyContent()
+    or
+    this.isAnyPositional() and
+    (
+      result instanceof Content::KnownPositionalContent
+      or
+      result = TUnknownPositionalContent()
     )
   }
 
@@ -370,7 +417,36 @@ class ContentSet extends TContentSet {
     this.isAnyElement() and
     result instanceof Content::ElementContent
     or
-    result = this.getAnElementReadContent()
+    exists(Content::KnownElementContent c |
+      this.isKnownOrUnknownKeyContent(c) and
+      (
+        result = c
+        or
+        result = TUnknownKeyContent()
+        or
+        result = TUnknownKeyOrPositionContent()
+      )
+      or
+      this.isKnownOrUnknownPositional(c) and
+      (
+        result = c or
+        result = TUnknownPositionalContent() or
+        result = TUnknownKeyOrPositionContent()
+      )
+    )
+    or
+    this.isUnknownPositionalContent() and
+    result = TUnknownPositionalContent()
+    or
+    this.isUnknownKeyContent() and
+    result = TUnknownKeyContent()
+    or
+    this.isAnyPositional() and
+    (
+      result instanceof Content::KnownPositionalContent
+      or
+      result = TUnknownPositionalContent()
+    )
   }
 }
 

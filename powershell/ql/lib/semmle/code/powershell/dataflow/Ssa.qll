@@ -158,7 +158,7 @@ module Ssa {
         not exists(this.getSplitString()) and
         prefix = ""
       |
-        result = prefix + "phi"
+        result = prefix + "phi (" + this.getSourceVariable() + ")"
       )
     }
 

@@ -277,6 +277,8 @@ private class ProcessBlockChildMapping extends NamedBlockChildMapping, ProcessBl
     super.relevantChild(child)
     or
     child = super.getPipelineParameterAccess()
+    or
+    child = super.getAPipelineByPropertyNameParameterAccess()
   }
 }
 
@@ -299,6 +301,23 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
 
   PipelineIteratorVariable getPipelineIteratorVariable() {
     result.getProcessBlock().getScriptBlock() = this.getScriptBlock().getAstNode()
+  }
+
+  PipelineByPropertyNameIteratorVariable getPipelineBypropertyNameIteratorVariable(string name) {
+    result.getPropertyName() = name and
+    result.getProcessBlock().getScriptBlock() = this.getScriptBlock().getAstNode()
+  }
+
+  PipelineByPropertyNameIteratorVariable getAPipelineBypropertyNameIteratorVariable() {
+    result = this.getPipelineBypropertyNameIteratorVariable(_)
+  }
+
+  ExprNodes::VarReadAccessCfgNode getPipelineByPropertyNameParameterAccess(string name) {
+    block.hasCfgChild(block.getPipelineByPropertyNameParameterAccess(name), this, result)
+  }
+
+  ExprNodes::VarReadAccessCfgNode getAPipelineByPropertyNameParameterAccess() {
+    result = this.getPipelineByPropertyNameParameterAccess(_)
   }
 }
 
