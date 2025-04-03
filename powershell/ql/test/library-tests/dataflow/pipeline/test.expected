@@ -13,14 +13,11 @@ edges
 | test.ps1:12:5:14:5 | [synth] pipeline [element 1] | test.ps1:13:9:13:15 | __pipeline_iterator | provenance |  |
 | test.ps1:12:5:14:5 | [synth] pipeline [unknown index] | test.ps1:13:9:13:15 | __pipeline_iterator | provenance |  |
 | test.ps1:17:1:17:7 | Call to produce [unknown index] | test.ps1:9:29:15:1 | [synth] pipeline [unknown index] | provenance |  |
-| test.ps1:17:1:17:7 | Call to produce [unknown index] | test.ps1:17:1:17:7 | Call to produce [unknown index] | provenance |  |
 | test.ps1:19:6:19:15 | Call to Source | test.ps1:21:1:21:2 | x | provenance |  |
 | test.ps1:20:6:20:15 | Call to Source | test.ps1:21:5:21:6 | y | provenance |  |
 | test.ps1:21:1:21:2 | x | test.ps1:21:1:21:6 | ...,... [element 0] | provenance |  |
 | test.ps1:21:1:21:6 | ...,... [element 0] | test.ps1:9:29:15:1 | [synth] pipeline [element 0] | provenance |  |
-| test.ps1:21:1:21:6 | ...,... [element 0] | test.ps1:21:1:21:6 | ...,... [element 0] | provenance |  |
 | test.ps1:21:1:21:6 | ...,... [element 1] | test.ps1:9:29:15:1 | [synth] pipeline [element 1] | provenance |  |
-| test.ps1:21:1:21:6 | ...,... [element 1] | test.ps1:21:1:21:6 | ...,... [element 1] | provenance |  |
 | test.ps1:21:5:21:6 | y | test.ps1:21:1:21:6 | ...,... [element 1] | provenance |  |
 | test.ps1:23:38:27:1 | [synth] pipeline [element 0] | test.ps1:24:5:26:5 | [synth] pipeline [element 0] | provenance |  |
 | test.ps1:23:38:27:1 | [synth] pipeline [element 1] | test.ps1:24:5:26:5 | [synth] pipeline [element 1] | provenance |  |
@@ -30,10 +27,26 @@ edges
 | test.ps1:30:6:30:15 | Call to Source | test.ps1:31:5:31:6 | y | provenance |  |
 | test.ps1:31:1:31:2 | x | test.ps1:31:1:31:6 | ...,... [element 0] | provenance |  |
 | test.ps1:31:1:31:6 | ...,... [element 0] | test.ps1:23:38:27:1 | [synth] pipeline [element 0] | provenance |  |
-| test.ps1:31:1:31:6 | ...,... [element 0] | test.ps1:31:1:31:6 | ...,... [element 0] | provenance |  |
 | test.ps1:31:1:31:6 | ...,... [element 1] | test.ps1:23:38:27:1 | [synth] pipeline [element 1] | provenance |  |
-| test.ps1:31:1:31:6 | ...,... [element 1] | test.ps1:31:1:31:6 | ...,... [element 1] | provenance |  |
 | test.ps1:31:5:31:6 | y | test.ps1:31:1:31:6 | ...,... [element 1] | provenance |  |
+| test.ps1:42:60:48:1 | x [element 0, element x] | test.ps1:45:5:47:5 | x [element 0, element x] | provenance |  |
+| test.ps1:42:60:48:1 | x [element 1, element x] | test.ps1:45:5:47:5 | x [element 1, element x] | provenance |  |
+| test.ps1:42:60:48:1 | x [element 2, element x] | test.ps1:45:5:47:5 | x [element 2, element x] | provenance |  |
+| test.ps1:45:5:47:5 | x [element 0, element x] | test.ps1:46:9:46:15 | __pipeline_iterator for x | provenance |  |
+| test.ps1:45:5:47:5 | x [element 1, element x] | test.ps1:46:9:46:15 | __pipeline_iterator for x | provenance |  |
+| test.ps1:45:5:47:5 | x [element 2, element x] | test.ps1:46:9:46:15 | __pipeline_iterator for x | provenance |  |
+| test.ps1:50:1:50:33 | [...]... [element x] | test.ps1:50:1:50:105 | ...,... [element 0, element x] | provenance |  |
+| test.ps1:50:1:50:105 | ...,... [element 0, element x] | test.ps1:42:60:48:1 | x [element 0, element x] | provenance |  |
+| test.ps1:50:1:50:105 | ...,... [element 1, element x] | test.ps1:42:60:48:1 | x [element 1, element x] | provenance |  |
+| test.ps1:50:1:50:105 | ...,... [element 2, element x] | test.ps1:42:60:48:1 | x [element 2, element x] | provenance |  |
+| test.ps1:50:17:50:33 | ${...} [element x] | test.ps1:50:1:50:33 | [...]... [element x] | provenance |  |
+| test.ps1:50:23:50:32 | Call to Source | test.ps1:50:17:50:33 | ${...} [element x] | provenance |  |
+| test.ps1:50:36:50:69 | [...]... [element x] | test.ps1:50:1:50:105 | ...,... [element 1, element x] | provenance |  |
+| test.ps1:50:52:50:69 | ${...} [element x] | test.ps1:50:36:50:69 | [...]... [element x] | provenance |  |
+| test.ps1:50:58:50:68 | Call to Source | test.ps1:50:52:50:69 | ${...} [element x] | provenance |  |
+| test.ps1:50:72:50:105 | [...]... [element x] | test.ps1:50:1:50:105 | ...,... [element 2, element x] | provenance |  |
+| test.ps1:50:88:50:105 | ${...} [element x] | test.ps1:50:72:50:105 | [...]... [element x] | provenance |  |
+| test.ps1:50:94:50:104 | Call to Source | test.ps1:50:88:50:105 | ${...} [element x] | provenance |  |
 nodes
 | test.ps1:2:10:2:19 | Call to Source | semmle.label | Call to Source |
 | test.ps1:3:10:3:19 | Call to Source | semmle.label | Call to Source |
@@ -49,13 +62,10 @@ nodes
 | test.ps1:12:5:14:5 | [synth] pipeline [unknown index] | semmle.label | [synth] pipeline [unknown index] |
 | test.ps1:13:9:13:15 | __pipeline_iterator | semmle.label | __pipeline_iterator |
 | test.ps1:17:1:17:7 | Call to produce [unknown index] | semmle.label | Call to produce [unknown index] |
-| test.ps1:17:1:17:7 | Call to produce [unknown index] | semmle.label | Call to produce [unknown index] |
 | test.ps1:19:6:19:15 | Call to Source | semmle.label | Call to Source |
 | test.ps1:20:6:20:15 | Call to Source | semmle.label | Call to Source |
 | test.ps1:21:1:21:2 | x | semmle.label | x |
 | test.ps1:21:1:21:6 | ...,... [element 0] | semmle.label | ...,... [element 0] |
-| test.ps1:21:1:21:6 | ...,... [element 0] | semmle.label | ...,... [element 0] |
-| test.ps1:21:1:21:6 | ...,... [element 1] | semmle.label | ...,... [element 1] |
 | test.ps1:21:1:21:6 | ...,... [element 1] | semmle.label | ...,... [element 1] |
 | test.ps1:21:5:21:6 | y | semmle.label | y |
 | test.ps1:23:38:27:1 | [synth] pipeline [element 0] | semmle.label | [synth] pipeline [element 0] |
@@ -67,16 +77,29 @@ nodes
 | test.ps1:30:6:30:15 | Call to Source | semmle.label | Call to Source |
 | test.ps1:31:1:31:2 | x | semmle.label | x |
 | test.ps1:31:1:31:6 | ...,... [element 0] | semmle.label | ...,... [element 0] |
-| test.ps1:31:1:31:6 | ...,... [element 0] | semmle.label | ...,... [element 0] |
-| test.ps1:31:1:31:6 | ...,... [element 1] | semmle.label | ...,... [element 1] |
 | test.ps1:31:1:31:6 | ...,... [element 1] | semmle.label | ...,... [element 1] |
 | test.ps1:31:5:31:6 | y | semmle.label | y |
+| test.ps1:42:60:48:1 | x [element 0, element x] | semmle.label | x [element 0, element x] |
+| test.ps1:42:60:48:1 | x [element 1, element x] | semmle.label | x [element 1, element x] |
+| test.ps1:42:60:48:1 | x [element 2, element x] | semmle.label | x [element 2, element x] |
+| test.ps1:45:5:47:5 | x [element 0, element x] | semmle.label | x [element 0, element x] |
+| test.ps1:45:5:47:5 | x [element 1, element x] | semmle.label | x [element 1, element x] |
+| test.ps1:45:5:47:5 | x [element 2, element x] | semmle.label | x [element 2, element x] |
+| test.ps1:46:9:46:15 | __pipeline_iterator for x | semmle.label | __pipeline_iterator for x |
+| test.ps1:50:1:50:33 | [...]... [element x] | semmle.label | [...]... [element x] |
+| test.ps1:50:1:50:105 | ...,... [element 0, element x] | semmle.label | ...,... [element 0, element x] |
+| test.ps1:50:1:50:105 | ...,... [element 1, element x] | semmle.label | ...,... [element 1, element x] |
+| test.ps1:50:1:50:105 | ...,... [element 2, element x] | semmle.label | ...,... [element 2, element x] |
+| test.ps1:50:17:50:33 | ${...} [element x] | semmle.label | ${...} [element x] |
+| test.ps1:50:23:50:32 | Call to Source | semmle.label | Call to Source |
+| test.ps1:50:36:50:69 | [...]... [element x] | semmle.label | [...]... [element x] |
+| test.ps1:50:52:50:69 | ${...} [element x] | semmle.label | ${...} [element x] |
+| test.ps1:50:58:50:68 | Call to Source | semmle.label | Call to Source |
+| test.ps1:50:72:50:105 | [...]... [element x] | semmle.label | [...]... [element x] |
+| test.ps1:50:88:50:105 | ${...} [element x] | semmle.label | ${...} [element x] |
+| test.ps1:50:94:50:104 | Call to Source | semmle.label | Call to Source |
 subpaths
 testFailures
-| test.ps1:36:13:36:30 | # $ hasValueFlow=8 | Missing result: hasValueFlow=8 |
-| test.ps1:46:17:46:66 | # $ hasValueFlow=9 hasValueFlow=10 hasValueFlow=11 | Missing result: hasValueFlow=9 |
-| test.ps1:46:17:46:66 | # $ hasValueFlow=9 hasValueFlow=10 hasValueFlow=11 | Missing result: hasValueFlow=10 |
-| test.ps1:46:17:46:66 | # $ hasValueFlow=9 hasValueFlow=10 hasValueFlow=11 | Missing result: hasValueFlow=11 |
 #select
 | test.ps1:13:9:13:15 | __pipeline_iterator | test.ps1:2:10:2:19 | Call to Source | test.ps1:13:9:13:15 | __pipeline_iterator | $@ | test.ps1:2:10:2:19 | Call to Source | Call to Source |
 | test.ps1:13:9:13:15 | __pipeline_iterator | test.ps1:3:10:3:19 | Call to Source | test.ps1:13:9:13:15 | __pipeline_iterator | $@ | test.ps1:3:10:3:19 | Call to Source | Call to Source |
@@ -85,3 +108,6 @@ testFailures
 | test.ps1:13:9:13:15 | __pipeline_iterator | test.ps1:20:6:20:15 | Call to Source | test.ps1:13:9:13:15 | __pipeline_iterator | $@ | test.ps1:20:6:20:15 | Call to Source | Call to Source |
 | test.ps1:25:9:25:15 | __pipeline_iterator | test.ps1:29:6:29:15 | Call to Source | test.ps1:25:9:25:15 | __pipeline_iterator | $@ | test.ps1:29:6:29:15 | Call to Source | Call to Source |
 | test.ps1:25:9:25:15 | __pipeline_iterator | test.ps1:30:6:30:15 | Call to Source | test.ps1:25:9:25:15 | __pipeline_iterator | $@ | test.ps1:30:6:30:15 | Call to Source | Call to Source |
+| test.ps1:46:9:46:15 | __pipeline_iterator for x | test.ps1:50:23:50:32 | Call to Source | test.ps1:46:9:46:15 | __pipeline_iterator for x | $@ | test.ps1:50:23:50:32 | Call to Source | Call to Source |
+| test.ps1:46:9:46:15 | __pipeline_iterator for x | test.ps1:50:58:50:68 | Call to Source | test.ps1:46:9:46:15 | __pipeline_iterator for x | $@ | test.ps1:50:58:50:68 | Call to Source | Call to Source |
+| test.ps1:46:9:46:15 | __pipeline_iterator for x | test.ps1:50:94:50:104 | Call to Source | test.ps1:46:9:46:15 | __pipeline_iterator for x | $@ | test.ps1:50:94:50:104 | Call to Source | Call to Source |
