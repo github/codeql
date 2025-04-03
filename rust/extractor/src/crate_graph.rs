@@ -340,12 +340,9 @@ fn emit_function(
     trap: &mut TrapFile,
     function: ra_ap_hir_def::FunctionId,
     visibility: Visibility,
-) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
-    if let Some(type_) = db.value_ty(function.into()) {
-        items.push(const_or_function(db, name, trap, type_, visibility));
-    }
-    items
+) -> Option<trap::Label<generated::Item>> {
+    db.value_ty(function.into())
+        .map(|type_| const_or_function(db, name, trap, type_, visibility))
 }
 
 fn emit_const(
@@ -354,8 +351,7 @@ fn emit_const(
     trap: &mut TrapFile,
     konst: ra_ap_hir_def::ConstId,
     visibility: Visibility,
-) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
+) -> Option<trap::Label<generated::Item>> {
     let type_ = db.value_ty(konst.into());
     let type_repr = type_.and_then(|type_| emit_hir_ty(trap, db, type_.skip_binders()));
     let name = Some(trap.emit(generated::Name {
@@ -364,7 +360,7 @@ fn emit_const(
     }));
     let konst = db.const_data(konst);
     let visibility = emit_visibility(db, trap, visibility);
-    items.push(
+    Some(
         trap.emit(generated::Const {
             id: trap::TrapId::Star,
             name,
@@ -376,8 +372,7 @@ fn emit_const(
             visibility,
         })
         .into(),
-    );
-    items
+    )
 }
 
 fn emit_static(
@@ -386,8 +381,7 @@ fn emit_static(
     trap: &mut TrapFile,
     statik: ra_ap_hir_def::StaticId,
     visibility: Visibility,
-) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
+) -> Option<trap::Label<generated::Item>> {
     let type_ = db.value_ty(statik.into());
     let type_repr = type_.and_then(|type_| emit_hir_ty(trap, db, type_.skip_binders()));
     let name = Some(trap.emit(generated::Name {
@@ -396,7 +390,7 @@ fn emit_static(
     }));
     let statik = db.static_data(statik);
     let visibility = emit_visibility(db, trap, visibility);
-    items.push(
+    Some(
         trap.emit(generated::Static {
             id: trap::TrapId::Star,
             name,
@@ -409,8 +403,7 @@ fn emit_static(
             is_unsafe: statik.has_unsafe_kw,
         })
         .into(),
-    );
-    items
+    )
 }
 
 fn emit_generic_param_list(
@@ -511,9 +504,7 @@ fn emit_adt(
     trap: &mut TrapFile,
     adt_id: ra_ap_hir_def::AdtId,
     visibility: Visibility,
-) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
-
+) -> Option<trap::Label<generated::Item>> {
     match adt_id {
         ra_ap_hir_def::AdtId::StructId(struct_id) => {
             let name = Some(trap.emit(generated::Name {
@@ -523,7 +514,7 @@ fn emit_adt(
             let field_list = emit_variant_data(trap, db, struct_id.into()).into();
             let visibility = emit_visibility(db, trap, visibility);
             let generic_param_list = emit_generic_param_list(trap, db, adt_id.into());
-            items.push(
+            Some(
                 trap.emit(generated::Struct {
                     id: trap::TrapId::Star,
                     name,
@@ -534,7 +525,7 @@ fn emit_adt(
                     where_clause: None,
                 })
                 .into(),
-            );
+            )
         }
         ra_ap_hir_def::AdtId::EnumId(enum_id) => {
             let data = db.enum_variants(enum_id);
@@ -568,7 +559,7 @@ fn emit_adt(
             }));
             let visibility = emit_visibility(db, trap, visibility);
             let generic_param_list = emit_generic_param_list(trap, db, adt_id.into());
-            items.push(
+            Some(
                 trap.emit(generated::Enum {
                     id: trap::TrapId::Star,
                     name,
@@ -579,7 +570,7 @@ fn emit_adt(
                     where_clause: None,
                 })
                 .into(),
-            );
+            )
         }
         ra_ap_hir_def::AdtId::UnionId(union_id) => {
             let name = Some(trap.emit(generated::Name {
@@ -589,7 +580,7 @@ fn emit_adt(
             let struct_field_list = emit_variant_data(trap, db, union_id.into()).into();
             let visibility = emit_visibility(db, trap, visibility);
             let generic_param_list = emit_generic_param_list(trap, db, adt_id.into());
-            items.push(
+            Some(
                 trap.emit(generated::Union {
                     id: trap::TrapId::Star,
                     name,
@@ -600,10 +591,9 @@ fn emit_adt(
                     where_clause: None,
                 })
                 .into(),
-            );
+            )
         }
     }
-    items
 }
 
 fn emit_trait(
@@ -612,8 +602,7 @@ fn emit_trait(
     trap: &mut TrapFile,
     trait_id: ra_ap_hir_def::TraitId,
     visibility: Visibility,
-) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
+) -> Option<trap::Label<generated::Item>> {
     let trait_items = db.trait_items(trait_id);
     let assoc_items: Vec<trap::Label<generated::AssocItem>> = trait_items
         .items
@@ -690,7 +679,7 @@ fn emit_trait(
     }));
     let visibility = emit_visibility(db, trap, visibility);
     let generic_param_list = emit_generic_param_list(trap, db, trait_id.into());
-    items.push(
+    Some(
         trap.emit(generated::Trait {
             id: trap::TrapId::Star,
             name,
@@ -704,8 +693,7 @@ fn emit_trait(
             where_clause: None,
         })
         .into(),
-    );
-    items
+    )
 }
 
 fn emit_module_impls(
