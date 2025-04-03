@@ -395,8 +395,6 @@ class JSDocNamedTypeExpr extends JSDocTypeExpr {
     this instanceof JSDocQualifiedTypeAccess
   }
 
-  private predicate test() { not this.getTopLevel().isExterns() }
-
   /**
    * Gets the name directly as it appears in this type, including any qualifiers.
    *
