@@ -555,3 +555,12 @@ class QualifiedTypeNameNode extends TypeNameNode {
 
   final override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode getExprNode() { result = n }
 }
+
+/** A use of an automatic variable, viewed as a node in a data flow graph. */
+class AutomaticVariableNode extends ExprNode {
+  override CfgNodes::ExprNodes::AutomaticVariableCfgNode n;
+
+  final override CfgNodes::ExprNodes::AutomaticVariableCfgNode getExprNode() { result = n }
+
+  string getName() { result = n.getName() }
+}

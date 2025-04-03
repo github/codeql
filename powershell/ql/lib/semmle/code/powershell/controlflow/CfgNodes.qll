@@ -1061,6 +1061,20 @@ module ExprNodes {
 
     ExprCfgNode getAnOperand() { e.hasCfgChild(e.getAnOperand(), this, result) }
   }
+
+  private class AutomaticVariableChildMapping extends ExprChildMapping, AutomaticVariable {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class AutomaticVariableCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "AutomaticVariableCfgNode" }
+
+    override AutomaticVariableChildMapping e;
+
+    override AutomaticVariable getExpr() { result = e }
+
+    string getName() { result = e.getName() }
+  }
 }
 
 module StmtNodes {
