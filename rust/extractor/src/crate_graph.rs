@@ -26,7 +26,6 @@ use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
 use ra_ap_hir_ty::TyLoweringContext;
 use ra_ap_hir_ty::WhereClause;
-use ra_ap_hir_ty::db::InternedCallableDefId;
 use ra_ap_hir_ty::from_assoc_type_id;
 use ra_ap_hir_ty::{Binders, FnPointer};
 use ra_ap_hir_ty::{Interner, ProjectionTy};
@@ -347,8 +346,61 @@ fn emit_function(
     function: ra_ap_hir_def::FunctionId,
     visibility: Visibility,
 ) -> Option<trap::Label<generated::Item>> {
-    db.value_ty(function.into())
-        .map(|type_| const_or_function(db, name, trap, type_, visibility))
+    let name = Some(trap.emit(generated::Name {
+        id: trap::TrapId::Star,
+        text: Some(name.to_owned()),
+    }));
+    let visibility = emit_visibility(db, trap, visibility);
+    let generic_param_list = emit_generic_param_list(trap, db, function.into());
+    let data = db.function_data(function);
+    let sig = db.callable_item_signature(function.into());
+    let sig = sig.skip_binders();
+    let params = sig
+        .params()
+        .iter()
+        .map(|p| {
+            let type_repr = emit_hir_ty(trap, db, p);
+            trap.emit(generated::Param {
+                id: trap::TrapId::Star,
+                attrs: vec![],
+                type_repr,
+                pat: None,
+            })
+        })
+        .collect();
+
+    let ret_type = emit_hir_ty(trap, db, sig.ret());
+    let param_list = trap.emit(generated::ParamList {
+        id: trap::TrapId::Star,
+        params,
+        self_param: None,
+    });
+    let ret_type = ret_type.map(|ret_type| {
+        trap.emit(generated::RetTypeRepr {
+            id: trap::TrapId::Star,
+            type_repr: Some(ret_type),
+        })
+    });
+    Some(
+        trap.emit(generated::Function {
+            id: trap::TrapId::Star,
+            name,
+            attrs: vec![],
+            body: None,
+            is_const: data.is_const(),
+            is_default: data.is_default(),
+            visibility,
+            abi: None,
+            is_async: data.is_async(),
+            is_gen: false,
+            is_unsafe: data.is_unsafe(),
+            generic_param_list,
+            param_list: Some(param_list),
+            ret_type,
+            where_clause: None,
+        })
+        .into(),
+    )
 }
 
 fn emit_const(
@@ -838,96 +890,7 @@ fn emit_visibility(
         })
     })
 }
-fn const_or_function(
-    db: &dyn HirDatabase,
-    name: &str,
-    trap: &mut TrapFile,
-    type_: Binders<Ty>,
-    visibility: Visibility,
-) -> trap::Label<generated::Item> {
-    let type_: &chalk_ir::Ty<Interner> = type_.skip_binders();
-    match type_.kind(ra_ap_hir_ty::Interner) {
-        chalk_ir::TyKind::FnDef(fn_def_id, parameters) => {
-            let callable_def_id =
-                db.lookup_intern_callable_def(InternedCallableDefId::from(*fn_def_id));
-            let data = db.fn_def_datum(callable_def_id);
-            let sig = ra_ap_hir_ty::CallableSig::from_def(db, *fn_def_id, parameters);
-            let params = sig
-                .params()
-                .iter()
-                .map(|p| {
-                    let type_repr = emit_hir_ty(trap, db, p);
-                    trap.emit(generated::Param {
-                        id: trap::TrapId::Star,
-                        attrs: vec![],
-                        type_repr,
-                        pat: None,
-                    })
-                })
-                .collect();
 
-            let ret_type = emit_hir_ty(trap, db, sig.ret());
-            let param_list = trap.emit(generated::ParamList {
-                id: trap::TrapId::Star,
-                params,
-                self_param: None,
-            });
-            let ret_type = ret_type.map(|ret_type| {
-                trap.emit(generated::RetTypeRepr {
-                    id: trap::TrapId::Star,
-                    type_repr: Some(ret_type),
-                })
-            });
-            let name = Some(trap.emit(generated::Name {
-                id: trap::TrapId::Star,
-                text: Some(name.to_owned()),
-            }));
-            let visibility = emit_visibility(db, trap, visibility);
-            let callable_def_id = db.lookup_intern_callable_def((*fn_def_id).into());
-            let generic_def_id = GenericDefId::from_callable(db.upcast(), callable_def_id);
-            let generic_param_list: Option<trap::Label<generated::GenericParamList>> =
-                emit_generic_param_list(trap, db, generic_def_id);
-
-            trap.emit(generated::Function {
-                id: trap::TrapId::Star,
-                name,
-                attrs: vec![],
-                body: None,
-                is_const: false,
-                is_default: false,
-                visibility,
-                abi: None,
-                is_async: false,
-                is_gen: false,
-                is_unsafe: matches!(data.sig.safety, Safety::Unsafe),
-                generic_param_list,
-                param_list: Some(param_list),
-                ret_type,
-                where_clause: None,
-            })
-            .into()
-        }
-        _ => {
-            let type_repr = emit_hir_ty(trap, db, type_);
-            let name = Some(trap.emit(generated::Name {
-                id: trap::TrapId::Star,
-                text: Some(name.to_owned()),
-            }));
-            let visibility = emit_visibility(db, trap, visibility);
-            trap.emit(generated::Const {
-                id: trap::TrapId::Star,
-                name,
-                attrs: vec![],
-                body: None,
-                is_const: false,
-                is_default: false,
-                type_repr,
-                visibility,
-            })
-            .into()
-        }
-    }
-}
 fn emit_hir_type_bound(
     db: &dyn HirDatabase,
     trap: &mut TrapFile,
