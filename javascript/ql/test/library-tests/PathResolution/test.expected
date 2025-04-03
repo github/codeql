@@ -40,6 +40,15 @@
 | Extended/src/main.ts:24:1:24:17 | import "@/index"; | Extended/lib/index.ts |
 | Extended/src/main.ts:25:1:25:20 | import "@/index.ts"; | Extended/lib/index.ts |
 | Extended/src/main.ts:26:1:26:20 | import "@/index.js"; | Extended/lib/index.ts |
+| Fallback/src/main.ts:1:1:1:15 | import "@/both" | Fallback/lib1/both.ts |
+| Fallback/src/main.ts:2:1:2:16 | import "@/only1" | Fallback/lib1/only1.ts |
+| Fallback/src/main.ts:3:1:3:16 | import "@/only2" | Fallback/lib2/only2.ts |
+| Fallback/src/main.ts:4:1:4:29 | import  ... ension" | Fallback/lib2/differentExtension.ts |
+| Fallback/src/main.ts:5:1:5:32 | import  ... ion.js" | Fallback/lib2/differentExtension.ts |
+| Fallback/src/main.ts:7:1:7:17 | import "@/subdir" | Fallback/lib1/subdir/index.ts |
+| Fallback/src/main.ts:8:1:8:22 | import  ... r/both" | Fallback/lib1/subdir/both.ts |
+| Fallback/src/main.ts:9:1:9:23 | import  ... /only1" | Fallback/lib1/subdir/only1.ts |
+| Fallback/src/main.ts:10:1:10:23 | import  ... /only2" | Fallback/lib2/subdir/only2.ts |
 | NoBaseUrl/src/main.ts:2:1:2:21 | import  ... /file"; | NoBaseUrl/lib/file.ts |
 | NoBaseUrl/src/main.ts:3:1:3:24 | import  ... le.ts"; | NoBaseUrl/lib/file.ts |
 | NoBaseUrl/src/main.ts:4:1:4:24 | import  ... le.js"; | NoBaseUrl/lib/file.ts |
