@@ -305,9 +305,6 @@ fn emit_module_items(
                 ModuleDefId::StaticId(statik) => {
                     items.extend(emit_static(db, name.as_str(), trap, statik, vis));
                 }
-                ModuleDefId::EnumVariantId(variant_id) => {
-                    items.extend(emit_enum_variant(db, name.as_str(), trap, variant_id, vis));
-                }
                 _ => (),
             }
         }
@@ -422,19 +419,6 @@ fn emit_static(
     items
 }
 
-fn emit_enum_variant(
-    db: &dyn HirDatabase,
-    name: &str,
-    trap: &mut TrapFile,
-    variant_id: ra_ap_hir_def::EnumVariantId,
-    visibility: Visibility,
-) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
-    if let Some(type_) = db.value_ty(variant_id.into()) {
-        items.push(const_or_function(db, name, trap, type_, visibility));
-    }
-    items
-}
 fn emit_generic_param_list(
     trap: &mut TrapFile,
     db: &dyn HirDatabase,
