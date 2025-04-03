@@ -6,6 +6,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.PathResolution
 
 /**
  * A module, which may either be an ECMAScript 2015-style module,
@@ -139,7 +140,8 @@ abstract class Import extends AstNode {
    * Gets the module the path of this import resolves to.
    */
   Module resolveImportedPath() {
-    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
+    result.getFile() = PathResolution::resolvePathExpr(this.getImportedPath())
+    // result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
   }
 
   /**

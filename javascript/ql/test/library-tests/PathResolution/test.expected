@@ -5,6 +5,19 @@
 | BaseUrl/src/main.ts:6:1:6:22 | import  ... index"; | BaseUrl/lib/index.ts |
 | BaseUrl/src/main.ts:7:1:7:25 | import  ... ex.ts"; | BaseUrl/lib/index.ts |
 | BaseUrl/src/main.ts:8:1:8:25 | import  ... ex.js"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:11:1:11:18 | import "lib/file"; | BaseUrl/lib/file.ts |
+| BaseUrl/src/main.ts:12:1:12:21 | import  ... le.ts"; | BaseUrl/lib/file.ts |
+| BaseUrl/src/main.ts:13:1:13:21 | import  ... le.js"; | BaseUrl/lib/file.ts |
+| BaseUrl/src/main.ts:14:1:14:13 | import "lib"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:15:1:15:19 | import "lib/index"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:16:1:16:22 | import  ... ex.ts"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:17:1:17:22 | import  ... ex.js"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:20:1:20:16 | import "@/file"; | BaseUrl/lib/file.ts |
+| BaseUrl/src/main.ts:21:1:21:19 | import "@/file.ts"; | BaseUrl/lib/file.ts |
+| BaseUrl/src/main.ts:22:1:22:19 | import "@/file.js"; | BaseUrl/lib/file.ts |
+| BaseUrl/src/main.ts:24:1:24:17 | import "@/index"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:25:1:25:20 | import "@/index.ts"; | BaseUrl/lib/index.ts |
+| BaseUrl/src/main.ts:26:1:26:20 | import "@/index.js"; | BaseUrl/lib/index.ts |
 | Extended/src/main.ts:2:1:2:21 | import  ... /file"; | Extended/lib/file.ts |
 | Extended/src/main.ts:3:1:3:24 | import  ... le.ts"; | Extended/lib/file.ts |
 | Extended/src/main.ts:4:1:4:24 | import  ... le.js"; | Extended/lib/file.ts |
@@ -12,6 +25,19 @@
 | Extended/src/main.ts:6:1:6:22 | import  ... index"; | Extended/lib/index.ts |
 | Extended/src/main.ts:7:1:7:25 | import  ... ex.ts"; | Extended/lib/index.ts |
 | Extended/src/main.ts:8:1:8:25 | import  ... ex.js"; | Extended/lib/index.ts |
+| Extended/src/main.ts:11:1:11:18 | import "lib/file"; | Extended/lib/file.ts |
+| Extended/src/main.ts:12:1:12:21 | import  ... le.ts"; | Extended/lib/file.ts |
+| Extended/src/main.ts:13:1:13:21 | import  ... le.js"; | Extended/lib/file.ts |
+| Extended/src/main.ts:14:1:14:13 | import "lib"; | Extended/lib/index.ts |
+| Extended/src/main.ts:15:1:15:19 | import "lib/index"; | Extended/lib/index.ts |
+| Extended/src/main.ts:16:1:16:22 | import  ... ex.ts"; | Extended/lib/index.ts |
+| Extended/src/main.ts:17:1:17:22 | import  ... ex.js"; | Extended/lib/index.ts |
+| Extended/src/main.ts:20:1:20:16 | import "@/file"; | Extended/lib/file.ts |
+| Extended/src/main.ts:21:1:21:19 | import "@/file.ts"; | Extended/lib/file.ts |
+| Extended/src/main.ts:22:1:22:19 | import "@/file.js"; | Extended/lib/file.ts |
+| Extended/src/main.ts:24:1:24:17 | import "@/index"; | Extended/lib/index.ts |
+| Extended/src/main.ts:25:1:25:20 | import "@/index.ts"; | Extended/lib/index.ts |
+| Extended/src/main.ts:26:1:26:20 | import "@/index.js"; | Extended/lib/index.ts |
 | NoBaseUrl/src/main.ts:2:1:2:21 | import  ... /file"; | NoBaseUrl/lib/file.ts |
 | NoBaseUrl/src/main.ts:3:1:3:24 | import  ... le.ts"; | NoBaseUrl/lib/file.ts |
 | NoBaseUrl/src/main.ts:4:1:4:24 | import  ... le.js"; | NoBaseUrl/lib/file.ts |
@@ -19,3 +45,9 @@
 | NoBaseUrl/src/main.ts:6:1:6:22 | import  ... index"; | NoBaseUrl/lib/index.ts |
 | NoBaseUrl/src/main.ts:7:1:7:25 | import  ... ex.ts"; | NoBaseUrl/lib/index.ts |
 | NoBaseUrl/src/main.ts:8:1:8:25 | import  ... ex.js"; | NoBaseUrl/lib/index.ts |
+| NoBaseUrl/src/main.ts:20:1:20:16 | import "@/file"; | NoBaseUrl/lib/file.ts |
+| NoBaseUrl/src/main.ts:21:1:21:19 | import "@/file.ts"; | NoBaseUrl/lib/file.ts |
+| NoBaseUrl/src/main.ts:22:1:22:19 | import "@/file.js"; | NoBaseUrl/lib/file.ts |
+| NoBaseUrl/src/main.ts:24:1:24:17 | import "@/index"; | NoBaseUrl/lib/index.ts |
+| NoBaseUrl/src/main.ts:25:1:25:20 | import "@/index.ts"; | NoBaseUrl/lib/index.ts |
+| NoBaseUrl/src/main.ts:26:1:26:20 | import "@/index.js"; | NoBaseUrl/lib/index.ts |
