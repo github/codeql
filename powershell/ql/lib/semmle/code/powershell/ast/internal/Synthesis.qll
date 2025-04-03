@@ -615,7 +615,7 @@ private module LiteralSynth {
 
   /**
    * Holds if `va` is an access to the automatic variable named `name`.
-   * 
+   *
    * Unlike `Raw::isAutomaticVariableAccess`, this predicate also checks for
    * shadowing.
    */
@@ -770,6 +770,13 @@ private module IteratorAccessSynth {
         or
         va.getUserPath().toLowerCase() =
           pb.getScriptBlock().getParamBlock().getPipelineParameter().getName().toLowerCase()
+        or
+        va.getUserPath().toLowerCase() =
+          pb.getScriptBlock()
+              .getParamBlock()
+              .getAPipelineByPropertyNameParameter()
+              .getName()
+              .toLowerCase()
       )
     }
 
@@ -867,12 +874,19 @@ private module PipelineAccess {
           pipelineVar = TVariableSynth(pb.getScriptBlock(), PipelineParamVar()) and
           child = SynthChild(VarAccessSynthKind(pipelineVar))
         )
+        or
+        exists(PipelineByPropertyNameVariable pipelineVar, Raw::PipelineByPropertyNameParameter p |
+          i = processBlockPipelineByPropertyNameVarReadAccess(p.getName()) and
+          getResultAst(p) = pipelineVar and
+          child = SynthChild(VarAccessSynthKind(pipelineVar))
+        )
       )
     }
 
     final override Location getLocation(Ast n) {
       exists(ProcessBlock pb |
-        pb.getPipelineParameterAccess() = n and
+        pb.getPipelineParameterAccess() = n or pb.getAPipelineByPropertyNameParameterAccess() = n
+      |
         result = pb.getLocation()
       )
     }
@@ -881,6 +895,11 @@ private module PipelineAccess {
       exists(ProcessBlock pb |
         pb.getPipelineParameterAccess() = va and
         v = pb.getPipelineParameter()
+        or
+        exists(string name |
+          pb.getPipelineByPropertyNameParameterAccess(name) = va and
+          v = pb.getPipelineByPropertyNameParameter(name)
+        )
       )
     }
   }
