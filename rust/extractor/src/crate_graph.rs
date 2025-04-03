@@ -2,10 +2,10 @@ use crate::{
     generated::{self},
     trap::{self, TrapFile},
 };
+use chalk_ir::FloatTy;
 use chalk_ir::IntTy;
 use chalk_ir::Scalar;
 use chalk_ir::UintTy;
-use chalk_ir::{FloatTy, Safety};
 use itertools::Itertools;
 use ra_ap_base_db::{Crate, RootQueryDb};
 use ra_ap_cfg::CfgAtom;
@@ -296,7 +296,7 @@ fn emit_module_items(
         {
             match value {
                 ModuleDefId::FunctionId(function) => {
-                    items.extend(emit_function(db, name.as_str(), trap, function, vis));
+                    items.push(emit_function(db, trap, function, name).into());
                 }
                 ModuleDefId::ConstId(konst) => {
                     items.extend(emit_const(db, name.as_str(), trap, konst, vis));
@@ -341,18 +341,10 @@ fn emit_module_items(
 
 fn emit_function(
     db: &dyn HirDatabase,
-    name: &str,
     trap: &mut TrapFile,
     function: ra_ap_hir_def::FunctionId,
-    visibility: Visibility,
-) -> Option<trap::Label<generated::Item>> {
-    let name = Some(trap.emit(generated::Name {
-        id: trap::TrapId::Star,
-        text: Some(name.to_owned()),
-    }));
-    let visibility = emit_visibility(db, trap, visibility);
-    let generic_param_list = emit_generic_param_list(trap, db, function.into());
-    let data = db.function_data(function);
+    name: &ra_ap_hir::Name,
+) -> trap::Label<generated::Function> {
     let sig = db.callable_item_signature(function.into());
     let sig = sig.skip_binders();
     let params = sig
@@ -381,26 +373,35 @@ fn emit_function(
             type_repr: Some(ret_type),
         })
     });
-    Some(
-        trap.emit(generated::Function {
-            id: trap::TrapId::Star,
-            name,
-            attrs: vec![],
-            body: None,
-            is_const: data.is_const(),
-            is_default: data.is_default(),
-            visibility,
-            abi: None,
-            is_async: data.is_async(),
-            is_gen: false,
-            is_unsafe: data.is_unsafe(),
-            generic_param_list,
-            param_list: Some(param_list),
-            ret_type,
-            where_clause: None,
-        })
-        .into(),
-    )
+    let name = Some(trap.emit(generated::Name {
+        id: trap::TrapId::Star,
+        text: Some(name.as_str().to_owned()),
+    }));
+    let data = db.function_data(function);
+    let visibility = emit_visibility(
+        db,
+        trap,
+        data.visibility
+            .resolve(db.upcast(), &function.resolver(db.upcast())),
+    );
+    let generic_param_list = emit_generic_param_list(trap, db, function.into());
+    trap.emit(generated::Function {
+        id: trap::TrapId::Star,
+        name,
+        attrs: vec![],
+        body: None,
+        is_const: data.is_const(),
+        is_default: data.is_default(),
+        visibility,
+        abi: None,
+        is_async: data.is_async(),
+        is_gen: false,
+        is_unsafe: data.is_unsafe(),
+        generic_param_list,
+        param_list: Some(param_list),
+        ret_type,
+        where_clause: None,
+    })
 }
 
 fn emit_const(
@@ -667,60 +668,7 @@ fn emit_trait(
         .iter()
         .flat_map(|(name, item)| {
             if let AssocItemId::FunctionId(function) = item {
-                let sig = db.callable_item_signature((*function).into());
-                let sig = sig.skip_binders();
-                let params = sig
-                    .params()
-                    .iter()
-                    .map(|p| {
-                        let type_repr = emit_hir_ty(trap, db, p);
-                        trap.emit(generated::Param {
-                            id: trap::TrapId::Star,
-                            attrs: vec![],
-                            type_repr,
-                            pat: None,
-                        })
-                    })
-                    .collect();
-
-                let ret_type = emit_hir_ty(trap, db, sig.ret());
-                let param_list = trap.emit(generated::ParamList {
-                    id: trap::TrapId::Star,
-                    params,
-                    self_param: None,
-                });
-                let ret_type = ret_type.map(|ret_type| {
-                    trap.emit(generated::RetTypeRepr {
-                        id: trap::TrapId::Star,
-                        type_repr: Some(ret_type),
-                    })
-                });
-                let name = Some(trap.emit(generated::Name {
-                    id: trap::TrapId::Star,
-                    text: Some(name.as_str().to_owned()),
-                }));
-                let visibility = emit_visibility(db, trap, visibility);
-                let generic_param_list = emit_generic_param_list(trap, db, (*function).into());
-                Some(
-                    trap.emit(generated::Function {
-                        id: trap::TrapId::Star,
-                        name,
-                        attrs: vec![],
-                        body: None,
-                        is_const: false,
-                        is_default: false,
-                        visibility,
-                        abi: None,
-                        is_async: false,
-                        is_gen: false,
-                        is_unsafe: matches!(sig.to_fn_ptr().sig.safety, Safety::Unsafe),
-                        generic_param_list,
-                        param_list: Some(param_list),
-                        ret_type,
-                        where_clause: None,
-                    })
-                    .into(),
-                )
+                Some(emit_function(db, trap, *function, name).into())
             } else {
                 None
             }
@@ -779,66 +727,7 @@ fn emit_module_impls(
             .iter()
             .flat_map(|item| {
                 if let (name, AssocItemId::FunctionId(function)) = item {
-                    let sig = db.callable_item_signature((*function).into());
-                    let sig = sig.skip_binders();
-                    let params = sig
-                        .params()
-                        .iter()
-                        .map(|p| {
-                            let type_repr = emit_hir_ty(trap, db, p);
-                            trap.emit(generated::Param {
-                                id: trap::TrapId::Star,
-                                attrs: vec![],
-                                type_repr,
-                                pat: None,
-                            })
-                        })
-                        .collect();
-
-                    let ret_type = emit_hir_ty(trap, db, sig.ret());
-                    let param_list = trap.emit(generated::ParamList {
-                        id: trap::TrapId::Star,
-                        params,
-                        self_param: None,
-                    });
-                    let ret_type = ret_type.map(|ret_type| {
-                        trap.emit(generated::RetTypeRepr {
-                            id: trap::TrapId::Star,
-                            type_repr: Some(ret_type),
-                        })
-                    });
-                    let name = Some(trap.emit(generated::Name {
-                        id: trap::TrapId::Star,
-                        text: Some(name.as_str().to_owned()),
-                    }));
-                    let data = db.function_data(*function);
-                    let visibility = emit_visibility(
-                        db,
-                        trap,
-                        data.visibility
-                            .resolve(db.upcast(), &function.resolver(db.upcast())),
-                    );
-                    let generic_param_list = emit_generic_param_list(trap, db, (*function).into());
-                    Some(
-                        trap.emit(generated::Function {
-                            id: trap::TrapId::Star,
-                            name,
-                            attrs: vec![],
-                            body: None,
-                            is_const: false,
-                            is_default: false,
-                            visibility,
-                            abi: None,
-                            is_async: false,
-                            is_gen: false,
-                            is_unsafe: matches!(sig.to_fn_ptr().sig.safety, Safety::Unsafe),
-                            generic_param_list,
-                            param_list: Some(param_list),
-                            ret_type,
-                            where_clause: None,
-                        })
-                        .into(),
-                    )
+                    Some(emit_function(db, trap, *function, name).into())
                 } else {
                     None
                 }
