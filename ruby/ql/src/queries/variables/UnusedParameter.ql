@@ -7,6 +7,7 @@
  * @id rb/unused-parameter
  * @tags maintainability
  *       external/cwe/cwe-563
+ *       quality
  * @precision low
  */
 
@@ -24,5 +25,9 @@ class RelevantParameterVariable extends LocalVariable {
 
 from RelevantParameterVariable v
 where
-  not exists(Ssa::WriteDefinition def | def.getWriteAccess().getAstNode() = v.getDefiningAccess())
+  not exists(Ssa::WriteDefinition def | def.getWriteAccess().getAstNode() = v.getDefiningAccess()) and
+  not exists(SuperCall s | s.getEnclosingCallable().getAParameter().getAVariable() = v |
+    // a call to 'super' without any arguments will pass on the parameter.
+    not exists(s.getAnArgument())
+  )
 select v, "The parameter '" + v.getName() + "' is never used."
