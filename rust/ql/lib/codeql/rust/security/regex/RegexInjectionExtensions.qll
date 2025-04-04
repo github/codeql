@@ -33,6 +33,17 @@ module RegexInjection {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
+   * A unit class for adding additional flow steps.
+   */
+  class AdditionalFlowStep extends Unit {
+    /**
+     * Holds if the step from `node1` to `node2` should be considered a flow
+     * step for paths related to regular expression injection vulnerabilities.
+     */
+    abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+  }
+
+  /**
    * An active threat-model source, considered as a flow source.
    */
   private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
@@ -57,17 +68,6 @@ module RegexInjection {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "regex-use") }
-  }
-
-  /**
-   * A unit class for adding additional flow steps.
-   */
-  class AdditionalFlowStep extends Unit {
-    /**
-     * Holds if the step from `node1` to `node2` should be considered a flow
-     * step for paths related to regular expression injection vulnerabilities.
-     */
-    abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
   }
 
   /**
