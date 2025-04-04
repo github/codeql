@@ -1,0 +1,6 @@
+| UninitializedLocal.rb:17:18:17:18 | x | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:17:9:17:9 | x | x |
+| UninitializedLocal.rb:26:10:26:15 | status | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:24:9:24:14 | status | status |
+| UninitializedLocal.rb:39:10:39:10 | a | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:35:5:35:5 | a | a |
+| UninitializedLocal.rb:40:10:40:10 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:36:5:36:5 | b | b |
+| UninitializedLocal.rb:45:10:45:10 | a | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:35:5:35:5 | a | a |
+| UninitializedLocal.rb:46:10:46:10 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:36:5:36:5 | b | b |
