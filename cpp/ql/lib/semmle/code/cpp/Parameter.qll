@@ -157,6 +157,8 @@ class Parameter extends LocalScopeVariable, @parameter {
       vde.isDefinition() or not this.getAnEffectiveDeclarationEntry().isDefinition()
     )
   }
+
+  override predicate isStatic() { none() }
 }
 
 /**
