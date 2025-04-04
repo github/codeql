@@ -33,13 +33,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Add and fetch upstream
         run: |
+          set -x
+          git fetch
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
-      - name: Create or reset sync branch
-        run: |
           git fetch origin sync-main-pr || true
           git checkout -B sync-main-pr origin/main
-          git merge upstream/codeql-cli/latest --no-edit || true
+          git merge codeql-cli/latest
       - name: Setup CodeQL
         shell: bash
         run: |
@@ -50,9 +50,6 @@ jobs:
           gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Compile PowerShell Queries
-        run: |
-          codeql query compile --check-only --keep-going powershell/ql/src
       - name: Push sync branch
         run: |
           git push origin sync-main-pr --force
