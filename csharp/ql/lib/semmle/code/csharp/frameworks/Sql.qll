@@ -68,6 +68,12 @@ private module DapperCommandDefitionMethodCallSqlConfig implements DataFlow::Con
       node.asExpr() = mc.getArgumentForName("command")
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/frameworks/Sql.qll:54: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module DapperCommandDefinitionMethodCallSql =
