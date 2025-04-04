@@ -1,6 +1,6 @@
-(function () {
-	const WebSocket = require('ws');
+const WebSocket = require('ws');
 
+(function () {
 	const ws = new WebSocket('ws://example.org'); // $clientSocket
 
 	ws.on('open', function open() {
@@ -13,3 +13,4 @@
 })();
 
 module.exports.MyWebSocketWS = require('ws');
+module.exports.myWebSocketWSInstance = new WebSocket('ws://example.org'); // $ clientSocket

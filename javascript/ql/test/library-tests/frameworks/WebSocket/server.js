@@ -1,6 +1,6 @@
-(function () {
-	const WebSocket = require('ws');
+const WebSocket = require('ws');
 
+(function () {
 	const wss = new WebSocket.Server({ port: 8080 });
 
 	wss.on('connection', function connection(ws) { // $serverSocket
@@ -13,3 +13,4 @@
 })();
 
 module.exports.MyWebSocketServer = require('ws').Server;
+module.exports.myWebSocketServerInstance = new WebSocket.Server({ port: 8080 });

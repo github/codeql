@@ -33,3 +33,5 @@
 
 export const MyWebSocket = WebSocket;
 export const MySockJS = SockJS;
+export const myWebSocketInstance = new WebSocket('ws://localhost:8080'); // $ clientSocket
+export const mySockJSInstance = new SockJS('http://0.0.0.0:9999/echo'); // $ clientSocket
