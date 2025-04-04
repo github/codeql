@@ -141,6 +141,103 @@ bad_stmts.cpp:
 #    5|     v5_5(void)         = AliasedUse              : ~m?
 #    5|     v5_6(void)         = ExitFunction            : 
 
+c11.c:
+#    1| void c11_generic_test_with_load(unsigned int, int)
+#    1|   Block 0
+#    1|     v1_1(void)                = EnterFunction          : 
+#    1|     mu1_2(unknown)            = AliasedDefinition      : 
+#    1|     mu1_3(unknown)            = InitializeNonLocal     : 
+#    1|     r1_4(glval<unsigned int>) = VariableAddress[x]     : 
+#    1|     mu1_5(unsigned int)       = InitializeParameter[x] : &:r1_4
+#    1|     r1_6(glval<int>)          = VariableAddress[y]     : 
+#    1|     mu1_7(int)                = InitializeParameter[y] : &:r1_6
+#    2|     r2_1(glval<unsigned int>) = VariableAddress[r]     : 
+#    2|     mu2_2(unsigned int)       = Uninitialized[r]       : &:r2_1
+#    3|     r3_1(glval<unsigned int>) = VariableAddress[x]     : 
+#    3|     r3_2(unsigned int)        = Load[x]                : &:r3_1, ~m?
+#    3|     r3_3(unsigned int)        = Constant[1]            : 
+#    3|     r3_4(unsigned int)        = Add                    : r3_2, r3_3
+#    3|     r3_5(glval<unsigned int>) = VariableAddress[r]     : 
+#    3|     mu3_6(unsigned int)       = Store[r]               : &:r3_5, r3_4
+#    4|     v4_1(void)                = NoOp                   : 
+#    1|     v1_8(void)                = ReturnVoid             : 
+#    1|     v1_9(void)                = AliasedUse             : ~m?
+#    1|     v1_10(void)               = ExitFunction           : 
+
+#   12| char const* c11_generic_test_with_constant_and_macro()
+#   12|   Block 0
+#   12|     v12_1(void)           = EnterFunction            : 
+#   12|     mu12_2(unknown)       = AliasedDefinition        : 
+#   12|     mu12_3(unknown)       = InitializeNonLocal       : 
+#   14|     r14_1(glval<int>)     = VariableAddress[i]       : 
+#   14|     mu14_2(int)           = Uninitialized[i]         : &:r14_1
+#   16|     r16_1(glval<char *>)  = VariableAddress[#return] : 
+#   16|     r16_2(glval<char[4]>) = Constant[int]            : 
+#   16|     r16_3(char *)         = Convert                  : r16_2
+#   16|     r16_4(char *)         = Convert                  : r16_3
+#   16|     mu16_5(char *)        = Store[#return]           : &:r16_1, r16_4
+#   12|     r12_4(glval<char *>)  = VariableAddress[#return] : 
+#   12|     v12_5(void)           = ReturnValue              : &:r12_4, ~m?
+#   12|     v12_6(void)           = AliasedUse               : ~m?
+#   12|     v12_7(void)           = ExitFunction             : 
+
+#   19| char const* c11_generic_test_with_constant_and_no_macro()
+#   19|   Block 0
+#   19|     v19_1(void)           = EnterFunction            : 
+#   19|     mu19_2(unknown)       = AliasedDefinition        : 
+#   19|     mu19_3(unknown)       = InitializeNonLocal       : 
+#   21|     r21_1(glval<int>)     = VariableAddress[i]       : 
+#   21|     mu21_2(int)           = Uninitialized[i]         : &:r21_1
+#   23|     r23_1(glval<char *>)  = VariableAddress[#return] : 
+#   23|     r23_2(glval<char[4]>) = Constant[int]            : 
+#   23|     r23_3(char *)         = Convert                  : r23_2
+#   23|     r23_4(char *)         = Convert                  : r23_3
+#   23|     mu23_5(char *)        = Store[#return]           : &:r23_1, r23_4
+#   19|     r19_4(glval<char *>)  = VariableAddress[#return] : 
+#   19|     v19_5(void)           = ReturnValue              : &:r19_4, ~m?
+#   19|     v19_6(void)           = AliasedUse               : ~m?
+#   19|     v19_7(void)           = ExitFunction             : 
+
+#   26| void c11_generic_test_test_with_cast(int)
+#   26|   Block 0
+#   26|     v26_1(void)                = EnterFunction          : 
+#   26|     mu26_2(unknown)            = AliasedDefinition      : 
+#   26|     mu26_3(unknown)            = InitializeNonLocal     : 
+#   26|     r26_4(glval<int>)          = VariableAddress[y]     : 
+#   26|     mu26_5(int)                = InitializeParameter[y] : &:r26_4
+#   27|     r27_1(glval<unsigned int>) = VariableAddress[r]     : 
+#   27|     mu27_2(unsigned int)       = Uninitialized[r]       : &:r27_1
+#   28|     r28_1(glval<int>)          = VariableAddress[y]     : 
+#   28|     r28_2(int)                 = Load[y]                : &:r28_1, ~m?
+#   28|     r28_3(unsigned int)        = Convert                : r28_2
+#   28|     r28_4(glval<unsigned int>) = VariableAddress[r]     : 
+#   28|     mu28_5(unsigned int)       = Store[r]               : &:r28_4, r28_3
+#   29|     v29_1(void)                = NoOp                   : 
+#   26|     v26_6(void)                = ReturnVoid             : 
+#   26|     v26_7(void)                = AliasedUse             : ~m?
+#   26|     v26_8(void)                = ExitFunction           : 
+
+#   32| void static_array_param(int[3])
+#   32|   Block 0
+#   32|     v32_1(void)         = EnterFunction            : 
+#   32|     mu32_2(unknown)     = AliasedDefinition        : 
+#   32|     mu32_3(unknown)     = InitializeNonLocal       : 
+#   32|     r32_4(glval<int *>) = VariableAddress[a]       : 
+#   32|     mu32_5(int *)       = InitializeParameter[a]   : &:r32_4
+#   32|     r32_6(int *)        = Load[a]                  : &:r32_4, ~m?
+#   32|     mu32_7(unknown)     = InitializeIndirection[a] : &:r32_6
+#   33|     r33_1(int)          = Constant[1]              : 
+#   33|     r33_2(glval<int *>) = VariableAddress[a]       : 
+#   33|     r33_3(int *)        = Load[a]                  : &:r33_2, ~m?
+#   33|     r33_4(int)          = Constant[0]              : 
+#   33|     r33_5(glval<int>)   = PointerAdd[4]            : r33_3, r33_4
+#   33|     mu33_6(int)         = Store[?]                 : &:r33_5, r33_1
+#   34|     v34_1(void)         = NoOp                     : 
+#   32|     v32_8(void)         = ReturnIndirection[a]     : &:r32_6, ~m?
+#   32|     v32_9(void)         = ReturnVoid               : 
+#   32|     v32_10(void)        = AliasedUse               : ~m?
+#   32|     v32_11(void)        = ExitFunction             : 
+
 clang.cpp:
 #    5| int* globalIntAddress()
 #    5|   Block 0
@@ -2731,82 +2828,6 @@ destructors_for_temps.cpp:
 #  102|     v102_6(void)                         = ReturnVoid                               : 
 #  102|     v102_7(void)                         = AliasedUse                               : ~m?
 #  102|     v102_8(void)                         = ExitFunction                             : 
-
-generic.c:
-#    1| void c11_generic_test_with_load(unsigned int, int)
-#    1|   Block 0
-#    1|     v1_1(void)                = EnterFunction          : 
-#    1|     mu1_2(unknown)            = AliasedDefinition      : 
-#    1|     mu1_3(unknown)            = InitializeNonLocal     : 
-#    1|     r1_4(glval<unsigned int>) = VariableAddress[x]     : 
-#    1|     mu1_5(unsigned int)       = InitializeParameter[x] : &:r1_4
-#    1|     r1_6(glval<int>)          = VariableAddress[y]     : 
-#    1|     mu1_7(int)                = InitializeParameter[y] : &:r1_6
-#    2|     r2_1(glval<unsigned int>) = VariableAddress[r]     : 
-#    2|     mu2_2(unsigned int)       = Uninitialized[r]       : &:r2_1
-#    3|     r3_1(glval<unsigned int>) = VariableAddress[x]     : 
-#    3|     r3_2(unsigned int)        = Load[x]                : &:r3_1, ~m?
-#    3|     r3_3(unsigned int)        = Constant[1]            : 
-#    3|     r3_4(unsigned int)        = Add                    : r3_2, r3_3
-#    3|     r3_5(glval<unsigned int>) = VariableAddress[r]     : 
-#    3|     mu3_6(unsigned int)       = Store[r]               : &:r3_5, r3_4
-#    4|     v4_1(void)                = NoOp                   : 
-#    1|     v1_8(void)                = ReturnVoid             : 
-#    1|     v1_9(void)                = AliasedUse             : ~m?
-#    1|     v1_10(void)               = ExitFunction           : 
-
-#   12| char const* c11_generic_test_with_constant_and_macro()
-#   12|   Block 0
-#   12|     v12_1(void)           = EnterFunction            : 
-#   12|     mu12_2(unknown)       = AliasedDefinition        : 
-#   12|     mu12_3(unknown)       = InitializeNonLocal       : 
-#   14|     r14_1(glval<int>)     = VariableAddress[i]       : 
-#   14|     mu14_2(int)           = Uninitialized[i]         : &:r14_1
-#   16|     r16_1(glval<char *>)  = VariableAddress[#return] : 
-#   16|     r16_2(glval<char[4]>) = Constant[int]            : 
-#   16|     r16_3(char *)         = Convert                  : r16_2
-#   16|     r16_4(char *)         = Convert                  : r16_3
-#   16|     mu16_5(char *)        = Store[#return]           : &:r16_1, r16_4
-#   12|     r12_4(glval<char *>)  = VariableAddress[#return] : 
-#   12|     v12_5(void)           = ReturnValue              : &:r12_4, ~m?
-#   12|     v12_6(void)           = AliasedUse               : ~m?
-#   12|     v12_7(void)           = ExitFunction             : 
-
-#   19| char const* c11_generic_test_with_constant_and_no_macro()
-#   19|   Block 0
-#   19|     v19_1(void)           = EnterFunction            : 
-#   19|     mu19_2(unknown)       = AliasedDefinition        : 
-#   19|     mu19_3(unknown)       = InitializeNonLocal       : 
-#   21|     r21_1(glval<int>)     = VariableAddress[i]       : 
-#   21|     mu21_2(int)           = Uninitialized[i]         : &:r21_1
-#   23|     r23_1(glval<char *>)  = VariableAddress[#return] : 
-#   23|     r23_2(glval<char[4]>) = Constant[int]            : 
-#   23|     r23_3(char *)         = Convert                  : r23_2
-#   23|     r23_4(char *)         = Convert                  : r23_3
-#   23|     mu23_5(char *)        = Store[#return]           : &:r23_1, r23_4
-#   19|     r19_4(glval<char *>)  = VariableAddress[#return] : 
-#   19|     v19_5(void)           = ReturnValue              : &:r19_4, ~m?
-#   19|     v19_6(void)           = AliasedUse               : ~m?
-#   19|     v19_7(void)           = ExitFunction             : 
-
-#   26| void c11_generic_test_test_with_cast(int)
-#   26|   Block 0
-#   26|     v26_1(void)                = EnterFunction          : 
-#   26|     mu26_2(unknown)            = AliasedDefinition      : 
-#   26|     mu26_3(unknown)            = InitializeNonLocal     : 
-#   26|     r26_4(glval<int>)          = VariableAddress[y]     : 
-#   26|     mu26_5(int)                = InitializeParameter[y] : &:r26_4
-#   27|     r27_1(glval<unsigned int>) = VariableAddress[r]     : 
-#   27|     mu27_2(unsigned int)       = Uninitialized[r]       : &:r27_1
-#   28|     r28_1(glval<int>)          = VariableAddress[y]     : 
-#   28|     r28_2(int)                 = Load[y]                : &:r28_1, ~m?
-#   28|     r28_3(unsigned int)        = Convert                : r28_2
-#   28|     r28_4(glval<unsigned int>) = VariableAddress[r]     : 
-#   28|     mu28_5(unsigned int)       = Store[r]               : &:r28_4, r28_3
-#   29|     v29_1(void)                = NoOp                   : 
-#   26|     v26_6(void)                = ReturnVoid             : 
-#   26|     v26_7(void)                = AliasedUse             : ~m?
-#   26|     v26_8(void)                = ExitFunction           : 
 
 ir-not-microsoft.c:
 #    1| void gnuConditionalOmittedOperand()

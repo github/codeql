@@ -28,4 +28,9 @@ void c11_generic_test_test_with_cast(int y) {
   r = _Generic(r, unsigned int: (unsigned int)y, int: y);
 }
 
+
+void static_array_param(int a[static 3]) {
+  a[0] = 1;
+}
+
 // semmle-extractor-options: -std=c11
