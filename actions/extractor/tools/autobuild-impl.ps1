@@ -21,7 +21,7 @@ if (($null -ne $env:LGTM_INDEX_INCLUDE) -or ($null -ne $env:LGTM_INDEX_EXCLUDE) 
 
 # Find the JavaScript extractor directory via `codeql resolve extractor`.
 $CodeQL = Join-Path $env:CODEQL_DIST 'codeql.exe'
-$env:CODEQL_EXTRACTOR_JAVASCRIPT_ROOT = &$CodeQL resolve extractor --language javascript
+$env:CODEQL_EXTRACTOR_JAVASCRIPT_ROOT = &"$CodeQL" resolve extractor --language javascript
 if ($LASTEXITCODE -ne 0) {
     throw 'Failed to resolve JavaScript extractor.'
 }
@@ -40,7 +40,7 @@ $env:CODEQL_EXTRACTOR_JAVASCRIPT_SOURCE_ARCHIVE_DIR = $env:CODEQL_EXTRACTOR_ACTI
 $env:CODEQL_EXTRACTOR_JAVASCRIPT_TRAP_DIR = $env:CODEQL_EXTRACTOR_ACTIONS_TRAP_DIR
 $env:CODEQL_EXTRACTOR_JAVASCRIPT_WIP_DATABASE = $env:CODEQL_EXTRACTOR_ACTIONS_WIP_DATABASE
 
-&$JavaScriptAutoBuild
+&"$JavaScriptAutoBuild"
 if ($LASTEXITCODE -ne 0) {
     throw "JavaScript autobuilder failed."
 }
