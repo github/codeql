@@ -4,10 +4,10 @@ def bad1():
     for x in range(10):
         def inner(): # $capturedVar=x
             return x
-    results.append(inner)
+        results.append(inner)
     return results
 
-a = [lambda: i for i in range(1, 4)] # $capturedVar=a
+a = [lambda: i for i in range(1, 4)] # $capturedVar=i
 for f in a:
     print(f())
 
@@ -18,7 +18,14 @@ def good1():
     for y in range(10):
         def inner(y=y):
             return y
-    results.append(inner)
+        results.append(inner)
+    return results
+
+# OK: Using default argument.
+def good2():
+    results = []
+    for y in range(10):
+        results.append(lambda y=y: y)
     return results
 
 #Factory function
@@ -46,7 +53,7 @@ s = {lambda: i for i in range(1, 4)} # $capturedVar=i
 for f in s:
     print(f())
 
-d = {i:lambda: i for i in range(1, 4)} # $capturedVar=d
+d = {i:lambda: i for i in range(1, 4)} # $capturedVar=i
 for k, f in d.items():
     print(k, f())
 
