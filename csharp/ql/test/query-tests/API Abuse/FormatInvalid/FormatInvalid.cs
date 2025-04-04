@@ -72,6 +72,7 @@ class FormatInvalid
         Format("}", 0);
 
         // BAD: All of these are format methods with an invalid string.
+        String.Format("}"); // $ Alert
         String.Format("}", 0); // $ Alert
         String.Format("}", ps); // $ Alert
         String.Format(fp, "}", ps); // $ Alert
@@ -79,6 +80,7 @@ class FormatInvalid
         String.Format("}", 0, 1, 2); // $ Alert
         String.Format("}", 0, 1, 2, 3); // $ Alert
 
+        sb.AppendFormat("}"); // $ Alert
         sb.AppendFormat("}", 0); // $ Alert
         sb.AppendFormat("}", ps); // $ Alert
         sb.AppendFormat(fp, "}", ps); // $ Alert
@@ -117,6 +119,19 @@ class FormatInvalid
         System.Diagnostics.Debug.Print("}", ps); // $ Alert
 
         Console.WriteLine("}"); // GOOD
+
+        // The Following methods are not recognised as format methods.
+        Console.WriteLine("{0}"); // GOOD
+        Console.Write("{0}"); // GOOD
+        tw.WriteLine("{0}"); // GOOD
+        tw.Write("{0}"); // GOOD
+        System.Diagnostics.Debug.Print("{0}"); // GOOD
+        System.Diagnostics.Debug.WriteLine("{0}"); // GOOD
+        System.Diagnostics.Debug.Write("{0}");     // GOOD
+        System.Diagnostics.Trace.TraceError("{0}"); // GOOD
+        System.Diagnostics.Trace.TraceInformation("{0}"); // GOOD
+        System.Diagnostics.Trace.TraceWarning("{0}"); // GOOD
+        ts.TraceInformation("{0}"); // GOOD
     }
 
     System.IO.StringWriter sw;
