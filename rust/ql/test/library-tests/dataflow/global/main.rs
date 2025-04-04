@@ -244,7 +244,7 @@ async fn test_async_await_async_part() {
 
 fn test_async_await() {
     let a = futures::executor::block_on(async_source());
-    sink(a); // $ MISSING: hasValueFlow=1
+    sink(a); // $ hasValueFlow=1
 
     futures::executor::block_on(test_async_await_async_part());
 }
