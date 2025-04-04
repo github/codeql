@@ -377,8 +377,8 @@
 | Conditions.cs:143:10:143:12 | exit M11 (normal) | Conditions.cs:143:10:143:12 | exit M11 | 2 |
 | Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:146:13:146:13 | [b (line 143): true] access to parameter b | 5 |
 | Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:146:13:146:13 | [b (line 143): false] access to parameter b | 5 |
-| Conditions.cs:147:13:147:49 | ...; | Conditions.cs:147:13:147:48 | call to method WriteLine | 5 |
-| Conditions.cs:149:13:149:49 | ...; | Conditions.cs:149:13:149:48 | call to method WriteLine | 5 |
+| Conditions.cs:147:13:147:49 | ...; | Conditions.cs:147:13:147:48 | call to method WriteLine | 6 |
+| Conditions.cs:149:13:149:49 | ...; | Conditions.cs:149:13:149:48 | call to method WriteLine | 6 |
 | ExitMethods.cs:6:7:6:17 | enter ExitMethods | ExitMethods.cs:6:7:6:17 | exit ExitMethods | 5 |
 | ExitMethods.cs:8:10:8:11 | enter M1 | ExitMethods.cs:8:10:8:11 | exit M1 | 8 |
 | ExitMethods.cs:14:10:14:11 | enter M2 | ExitMethods.cs:14:10:14:11 | exit M2 | 8 |
@@ -859,11 +859,11 @@
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:8:18:8:23 | Int32 i1 | 8 |
 | Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:8:13:8:23 | [false] ... is ... | 1 |
 | Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:8:13:8:23 | [true] ... is ... | 1 |
-| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:42 | call to method WriteLine | 6 |
+| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:42 | call to method WriteLine | 7 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:23:12:31 | String s1 | 3 |
 | Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:12:18:12:31 | [false] ... is ... | 1 |
 | Patterns.cs:12:18:12:31 | [true] ... is ... | Patterns.cs:12:18:12:31 | [true] ... is ... | 1 |
-| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:14:13:14:45 | call to method WriteLine | 6 |
+| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:14:13:14:45 | call to method WriteLine | 7 |
 | Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:16:23:16:28 | Object v1 | 3 |
 | Patterns.cs:16:18:16:28 | [false] ... is ... | Patterns.cs:16:18:16:28 | [false] ... is ... | 1 |
 | Patterns.cs:16:18:16:28 | [true] ... is ... | Patterns.cs:16:18:16:28 | [true] ... is ... | 1 |
@@ -872,11 +872,11 @@
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; | 1 |
 | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 | 2 |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:35 | ... > ... | 3 |
-| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:26:17:26:22 | break; | 6 |
+| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:26:17:26:22 | break; | 7 |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | 2 |
-| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:29:17:29:22 | break; | 6 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:29:17:29:22 | break; | 7 |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | 2 |
-| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:32:17:32:22 | break; | 6 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:32:17:32:22 | break; | 7 |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | 2 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | 1 |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:37:17:37:22 | break; | 5 |
@@ -1076,8 +1076,8 @@
 | Switch.cs:156:36:156:38 | "a" | Switch.cs:156:28:156:38 | ... => ... | 2 |
 | Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | false | 1 |
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:156:41:156:52 | ... => ... | 2 |
-| Switch.cs:158:13:158:49 | ...; | Switch.cs:158:13:158:48 | call to method WriteLine | 5 |
-| Switch.cs:160:13:160:49 | ...; | Switch.cs:160:13:160:48 | call to method WriteLine | 5 |
+| Switch.cs:158:13:158:49 | ...; | Switch.cs:158:13:158:48 | call to method WriteLine | 6 |
+| Switch.cs:160:13:160:49 | ...; | Switch.cs:160:13:160:48 | call to method WriteLine | 6 |
 | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses | 5 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:18:7:22 | Int32 j | 13 |
 | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | 1 |

@@ -1312,8 +1312,8 @@ edges
 | main.rs:532:5:532:13 | print_i64 | main.rs:532:15:532:15 | a |  |
 | main.rs:532:5:532:25 | print_i64(...) | main.rs:533:5:533:14 | ExprStmt |  |
 | main.rs:532:5:532:26 | ExprStmt | main.rs:532:5:532:13 | print_i64 |  |
-| main.rs:532:15:532:15 | a | main.rs:532:15:532:24 | a.my_get(...) |  |
-| main.rs:532:15:532:24 | a.my_get(...) | main.rs:532:5:532:25 | print_i64(...) |  |
+| main.rs:532:15:532:15 | a | main.rs:532:15:532:24 | a.my_get() |  |
+| main.rs:532:15:532:24 | a.my_get() | main.rs:532:5:532:25 | print_i64(...) |  |
 | main.rs:533:5:533:5 | a | main.rs:533:5:533:9 | a.val |  |
 | main.rs:533:5:533:9 | a.val | main.rs:533:13:533:13 | 5 |  |
 | main.rs:533:5:533:13 | ... = ... | main.rs:534:5:534:26 | ExprStmt |  |
@@ -1322,8 +1322,8 @@ edges
 | main.rs:534:5:534:13 | print_i64 | main.rs:534:15:534:15 | a |  |
 | main.rs:534:5:534:25 | print_i64(...) | main.rs:535:5:535:28 | ExprStmt |  |
 | main.rs:534:5:534:26 | ExprStmt | main.rs:534:5:534:13 | print_i64 |  |
-| main.rs:534:15:534:15 | a | main.rs:534:15:534:24 | a.my_get(...) |  |
-| main.rs:534:15:534:24 | a.my_get(...) | main.rs:534:5:534:25 | print_i64(...) |  |
+| main.rs:534:15:534:15 | a | main.rs:534:15:534:24 | a.my_get() |  |
+| main.rs:534:15:534:24 | a.my_get() | main.rs:534:5:534:25 | print_i64(...) |  |
 | main.rs:535:5:535:5 | a | main.rs:535:25:535:25 | 2 |  |
 | main.rs:535:5:535:27 | ... = ... | main.rs:536:5:536:26 | ExprStmt |  |
 | main.rs:535:5:535:28 | ExprStmt | main.rs:535:5:535:5 | a |  |
@@ -1332,8 +1332,8 @@ edges
 | main.rs:536:5:536:13 | print_i64 | main.rs:536:15:536:15 | a |  |
 | main.rs:536:5:536:25 | print_i64(...) | main.rs:530:14:537:1 | { ... } |  |
 | main.rs:536:5:536:26 | ExprStmt | main.rs:536:5:536:13 | print_i64 |  |
-| main.rs:536:15:536:15 | a | main.rs:536:15:536:24 | a.my_get(...) |  |
-| main.rs:536:15:536:24 | a.my_get(...) | main.rs:536:5:536:25 | print_i64(...) |  |
+| main.rs:536:15:536:15 | a | main.rs:536:15:536:24 | a.my_get() |  |
+| main.rs:536:15:536:24 | a.my_get() | main.rs:536:5:536:25 | print_i64(...) |  |
 | main.rs:539:1:546:1 | enter fn arrays | main.rs:540:5:540:26 | let ... = ... |  |
 | main.rs:539:1:546:1 | exit fn arrays (normal) | main.rs:539:1:546:1 | exit fn arrays |  |
 | main.rs:539:13:546:1 | { ... } | main.rs:539:1:546:1 | exit fn arrays (normal) |  |
@@ -1419,8 +1419,8 @@ edges
 | main.rs:568:11:568:11 | a | main.rs:568:7:568:11 | mut a |  |
 | main.rs:568:15:568:33 | MyStruct {...} | main.rs:568:11:568:11 | a |  |
 | main.rs:568:31:568:31 | 1 | main.rs:568:15:568:33 | MyStruct {...} |  |
-| main.rs:569:3:569:3 | a | main.rs:569:3:569:9 | a.bar(...) |  |
-| main.rs:569:3:569:9 | a.bar(...) | main.rs:571:3:571:19 | ExprStmt |  |
+| main.rs:569:3:569:3 | a | main.rs:569:3:569:9 | a.bar() |  |
+| main.rs:569:3:569:9 | a.bar() | main.rs:571:3:571:19 | ExprStmt |  |
 | main.rs:569:3:569:10 | ExprStmt | main.rs:569:3:569:3 | a |  |
 | main.rs:571:3:571:11 | print_i64 | main.rs:571:13:571:13 | a |  |
 | main.rs:571:3:571:18 | print_i64(...) | main.rs:567:30:572:1 | { ... } |  |

@@ -2,15 +2,15 @@
 | main.rs:17:13:17:23 | get_data(...) | main.rs:12:1:14:1 | fn get_data |
 | main.rs:18:5:18:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:37:5:37:22 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:37:10:37:21 | a.get_data(...) | main.rs:30:5:32:5 | fn get_data |
+| main.rs:37:10:37:21 | a.get_data() | main.rs:30:5:32:5 | fn get_data |
 | main.rs:38:5:38:32 | ... .set_data(...) | main.rs:26:5:28:5 | fn set_data |
 | main.rs:38:23:38:31 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:39:5:39:22 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:39:10:39:21 | a.get_data(...) | main.rs:30:5:32:5 | fn get_data |
+| main.rs:39:10:39:21 | a.get_data() | main.rs:30:5:32:5 | fn get_data |
 | main.rs:44:5:44:39 | ... .set_data(...) | main.rs:26:5:28:5 | fn set_data |
 | main.rs:44:30:44:38 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:45:5:45:22 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:45:10:45:21 | a.get_data(...) | main.rs:30:5:32:5 | fn get_data |
+| main.rs:45:10:45:21 | a.get_data() | main.rs:30:5:32:5 | fn get_data |
 | main.rs:49:5:49:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:53:13:53:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:54:5:54:14 | data_in(...) | main.rs:48:1:50:1 | fn data_in |
@@ -25,7 +25,7 @@
 | main.rs:83:5:83:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:95:9:95:15 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:102:13:102:21 | source(...) | main.rs:1:1:3:1 | fn source |
-| main.rs:117:13:117:25 | mn.get_data(...) | main.rs:98:5:104:5 | fn get_data |
+| main.rs:117:13:117:25 | mn.get_data() | main.rs:98:5:104:5 | fn get_data |
 | main.rs:118:5:118:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:123:13:123:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:124:5:124:17 | mn.data_in(...) | main.rs:94:5:96:5 | fn data_in |
