@@ -10,8 +10,8 @@ Go framework & library support
    `Afero <https://github.com/spf13/afero>`_,``github.com/spf13/afero*``,,,34
    `Bun <https://bun.uptrace.dev/>`_,``github.com/uptrace/bun*``,,,63
    `CleverGo <https://github.com/clevergo/clevergo>`_,"``clevergo.tech/clevergo*``, ``github.com/clevergo/clevergo*``",,,2
-   `Couchbase official client(gocb) <https://github.com/couchbase/gocb>`_,"``github.com/couchbase/gocb*``, ``gopkg.in/couchbase/gocb*``",,36,16
-   `Couchbase unofficial client <http://www.github.com/couchbase/go-couchbase>`_,``github.com/couchbaselabs/gocb*``,,18,8
+   `Couchbase official client(gocb) <https://github.com/couchbase/gocb>`_,"``github.com/couchbase/gocb*``, ``gopkg.in/couchbase/gocb*``",44,96,16
+   `Couchbase unofficial client <http://www.github.com/couchbase/go-couchbase>`_,``github.com/couchbaselabs/gocb*``,22,48,8
    `Echo <https://echo.labstack.com/>`_,``github.com/labstack/echo*``,12,2,3
    `Fiber <https://github.com/gofiber/fiber>`_,``github.com/gofiber/fiber*``,,,5
    `Fosite <https://github.com/ory/fosite>`_,``github.com/ory/fosite*``,,,2
@@ -31,7 +31,7 @@ Go framework & library support
    `MongoDB Go Driver <https://www.mongodb.com/docs/drivers/go/current/>`_,``go.mongodb.org/mongo-driver*``,11,5,14
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",46,20,4
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_,``github.com/sendgrid/sendgrid-go*``,,1,
-   `Squirrel <https://github.com/Masterminds/squirrel>`_,"``github.com/Masterminds/squirrel*``, ``github.com/lann/squirrel*``, ``gopkg.in/Masterminds/squirrel``",,,96
+   `Squirrel <https://github.com/Masterminds/squirrel>`_,"``github.com/Masterminds/squirrel*``, ``github.com/lann/squirrel*``, ``gopkg.in/Masterminds/squirrel``",81,,96
    `Standard library <https://pkg.go.dev/std>`_,"````, ``archive/*``, ``bufio``, ``bytes``, ``cmp``, ``compress/*``, ``container/*``, ``context``, ``crypto``, ``crypto/*``, ``database/*``, ``debug/*``, ``embed``, ``encoding``, ``encoding/*``, ``errors``, ``expvar``, ``flag``, ``fmt``, ``go/*``, ``hash``, ``hash/*``, ``html``, ``html/*``, ``image``, ``image/*``, ``index/*``, ``io``, ``io/*``, ``log``, ``log/*``, ``maps``, ``math``, ``math/*``, ``mime``, ``mime/*``, ``net``, ``net/*``, ``os``, ``os/*``, ``path``, ``path/*``, ``plugin``, ``reflect``, ``reflect/*``, ``regexp``, ``regexp/*``, ``slices``, ``sort``, ``strconv``, ``strings``, ``sync``, ``sync/*``, ``syscall``, ``syscall/*``, ``testing``, ``testing/*``, ``text/*``, ``time``, ``time/*``, ``unicode``, ``unicode/*``, ``unsafe``, ``weak``",52,609,104
    `XORM <https://xorm.io>`_,"``github.com/go-xorm/xorm*``, ``xorm.io/xorm*``",,,68
    `XPath <https://github.com/antchfx/xpath>`_,``github.com/antchfx/xpath*``,,,4
@@ -74,5 +74,5 @@ Go framework & library support
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
    Others,``github.com/kanikanema/gorqlite``,8,2,24
-   Totals,,494,958,1556
+   Totals,,641,1048,1556
 

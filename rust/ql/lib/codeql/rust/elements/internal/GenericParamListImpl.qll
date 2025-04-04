@@ -15,9 +15,12 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A GenericParamList. For example:
+   * A list of generic parameters. For example:
    * ```rust
-   * todo!()
+   * fn f<A, B>(a: A, b: B) {}
+   * //  ^^^^^^
+   * type Foo<T1, T2> = (T1, T2);
+   * //      ^^^^^^^^
    * ```
    */
   class GenericParamList extends Generated::GenericParamList {

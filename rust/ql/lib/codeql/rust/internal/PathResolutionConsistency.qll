@@ -7,7 +7,10 @@ private import PathResolution
 
 /** Holds if `p` may resolve to multiple items including `i`. */
 query predicate multiplePathResolutions(Path p, ItemNode i) {
+  p.fromSource() and
   i = resolvePath(p) and
+  // known limitation for `$crate`
+  not p.getQualifier*().(RelevantPath).isUnqualified("$crate") and
   // `use foo::bar` may use both a type `bar` and a value `bar`
   not p =
     any(UseTree use |
@@ -18,7 +21,7 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
 }
 
 /** Holds if `call` has multiple static call targets including `target`. */
-query predicate multipleStaticCallTargets(CallExprBase call, Callable target) {
+query predicate multipleMethodCallTargets(MethodCallExpr call, Callable target) {
   target = call.getStaticTarget() and
   strictcount(call.getStaticTarget()) > 1
 }
@@ -42,8 +45,8 @@ int getPathResolutionInconsistencyCounts(string type) {
   type = "Multiple path resolutions" and
   result = count(Path p | multiplePathResolutions(p, _) | p)
   or
-  type = "Multiple static call targets" and
-  result = count(CallExprBase call | multipleStaticCallTargets(call, _) | call)
+  type = "Multiple static method call targets" and
+  result = count(CallExprBase call | multipleMethodCallTargets(call, _) | call)
   or
   type = "Multiple record fields" and
   result = count(FieldExpr fe | multipleStructFields(fe, _) | fe)

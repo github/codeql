@@ -23,15 +23,15 @@ module Impl {
    */
   class FieldExpr extends Generated::FieldExpr {
     /** Gets the record field that this access references, if any. */
-    StructField getStructField() { result = TypeInference::resolveRecordFieldExpr(this) }
+    StructField getStructField() { result = TypeInference::resolveStructFieldExpr(this) }
 
     /** Gets the tuple field that this access references, if any. */
     TupleField getTupleField() { result = TypeInference::resolveTupleFieldExpr(this) }
 
     override string toStringImpl() {
       exists(string abbr, string name |
-        abbr = this.getExpr().toAbbreviatedString() and
-        name = this.getNameRef().getText() and
+        abbr = this.getContainer().toAbbreviatedString() and
+        name = this.getIdentifier().getText() and
         if abbr = "..." then result = "... ." + name else result = abbr + "." + name
       )
     }

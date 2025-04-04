@@ -24,36 +24,36 @@ mod field_access {
 
     fn simple_field_access() {
         let x = MyThing { a: S };
-        println!("{:?}", x.a);
+        println!("{:?}", x.a); // $ fieldof=MyThing
     }
 
     fn generic_field_access() {
         // Explicit type argument
-        let x = GenericThing::<S> { a: S };
-        println!("{:?}", x.a);
+        let x = GenericThing::<S> { a: S }; // $ type=x:A.S
+        println!("{:?}", x.a); // $ fieldof=GenericThing
 
         // Implicit type argument
         let y = GenericThing { a: S };
-        println!("{:?}", x.a);
+        println!("{:?}", x.a); // $ fieldof=GenericThing
 
         // The type of the field `a` can only be inferred from the concrete type
         // in the struct declaration.
         let x = OptionS {
             a: MyOption::MyNone(),
         };
-        println!("{:?}", x.a);
+        println!("{:?}", x.a); // $ fieldof=OptionS
 
         // The type of the field `a` can only be inferred from the type argument
         let x = GenericThing::<MyOption<S>> {
             a: MyOption::MyNone(),
         };
-        println!("{:?}", x.a);
+        println!("{:?}", x.a); // $ fieldof=GenericThing
 
         let mut x = GenericThing {
             a: MyOption::MyNone(),
         };
         // Only after this access can we infer the type parameter of `x`
-        let a: MyOption<S> = x.a;
+        let a: MyOption<S> = x.a; // $ fieldof=GenericThing
         println!("{:?}", a);
     }
 
@@ -85,8 +85,8 @@ mod method_impl {
 
     pub fn g(x: Foo, y: Foo) -> Foo {
         println!("main.rs::m1::g");
-        x.m1();
-        y.m2()
+        x.m1(); // $ method=m1
+        y.m2() // $ method=m2
     }
 }
 
@@ -102,20 +102,22 @@ mod method_non_parametric_impl {
     struct S2;
 
     impl MyThing<S1> {
+        // MyThing<S1>::m1
         fn m1(self) -> S1 {
-            self.a
+            self.a // $ fieldof=MyThing
         }
     }
 
     impl MyThing<S2> {
+        // MyThing<S2>::m1
         fn m1(self) -> Self {
-            Self { a: self.a }
+            Self { a: self.a } // $ fieldof=MyThing
         }
     }
 
     impl<T> MyThing<T> {
         fn m2(self) -> T {
-            self.a
+            self.a // $ fieldof=MyThing
         }
     }
 
@@ -124,17 +126,17 @@ mod method_non_parametric_impl {
         let y = MyThing { a: S2 };
 
         // simple field access
-        println!("{:?}", x.a);
-        println!("{:?}", y.a);
+        println!("{:?}", x.a); // $ fieldof=MyThing
+        println!("{:?}", y.a); // $ fieldof=MyThing
 
-        println!("{:?}", x.m1()); // missing call target
-        println!("{:?}", y.m1().a); // missing call target
+        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
+        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1, field=MyThing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2());
-        println!("{:?}", y.m2());
+        println!("{:?}", x.m2()); // $ method=m2
+        println!("{:?}", y.m2()); // $ method=m2
     }
 }
 
@@ -161,18 +163,20 @@ mod method_non_parametric_trait_impl {
     }
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
-        x.m1()
+        x.m1() // $ method=m1
     }
 
     impl MyTrait<S1> for MyThing<S1> {
+        // MyThing<S1>::m1
         fn m1(self) -> S1 {
-            self.a
+            self.a // $ fieldof=MyThing
         }
     }
 
     impl MyTrait<Self> for MyThing<S2> {
+        // MyThing<S2>::m1
         fn m1(self) -> Self {
-            Self { a: self.a }
+            Self { a: self.a } // $ fieldof=MyThing
         }
     }
 
@@ -180,14 +184,14 @@ mod method_non_parametric_trait_impl {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // missing call target
-        println!("{:?}", y.m1().a); // missing call target
+        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
+        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1, field=MyThing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x)); // missing
-        println!("{:?}", call_trait_m1(y).a); // missing
+        println!("{:?}", call_trait_m1(x)); // MISSING: type=call_trait_m1(...):S1
+        println!("{:?}", call_trait_m1(y).a); // MISSING: field=MyThing
     }
 }
 
@@ -203,32 +207,34 @@ mod type_parameter_bounds {
     // Two traits with the same method name.
 
     trait FirstTrait<FT> {
+        // FirstTrait::method
         fn method(self) -> FT;
     }
 
     trait SecondTrait<ST> {
+        // SecondTrait::method
         fn method(self) -> ST;
     }
 
     fn call_first_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
-        let s1 = x.method();
+        let s1 = x.method(); // $ method=SecondTrait::method
         println!("{:?}", s1);
     }
 
     fn call_second_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
-        let s2 = x.method();
+        let s2 = x.method(); // $ method=SecondTrait::method
         println!("{:?}", s2);
     }
 
     fn trait_bound_with_type<T: FirstTrait<S1>>(x: T) {
-        let s = x.method();
-        println!("{:?}", s);
+        let s = x.method(); // $ method=FirstTrait::method
+        println!("{:?}", s); // $ type=s:S1
     }
 
     fn trait_per_bound_with_type<T: FirstTrait<S1>>(x: T) {
-        let s = x.method();
+        let s = x.method(); // $ method=FirstTrait::method
         println!("{:?}", s);
     }
 
@@ -240,23 +246,23 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst();
-        let s2 = y.snd();
+        let s1 = x.fst(); // $ method=fst
+        let s2 = y.snd(); // $ method=snd
         println!("{:?}, {:?}", s1, s2);
     }
 
     fn call_trait_per_bound_with_type_2<T2: Debug, T: Pair<S1, T2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst();
-        let s2 = y.snd();
+        let s1 = x.fst(); // $ method=fst
+        let s2 = y.snd(); // $ method=snd
         println!("{:?}, {:?}", s1, s2);
     }
 }
 
 mod function_trait_bounds {
     #[derive(Debug)]
-    struct MyThing<A> {
-        a: A,
+    struct MyThing<T> {
+        a: T,
     }
 
     #[derive(Debug)]
@@ -271,17 +277,23 @@ mod function_trait_bounds {
         where
             Self: Sized,
         {
-            self.m1()
+            self.m1() // $ method=m1
         }
     }
 
+    // Type parameter with bound occurs in the root of a parameter type.
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
-        x.m1()
+        x.m1() // $ method=m1 type=x.m1():T1
+    }
+
+    // Type parameter with bound occurs nested within another type.
+    fn call_trait_thing_m1<T1, T2: MyTrait<T1>>(x: MyThing<T2>) -> T1 {
+        x.a.m1() // $ fieldof=MyThing method=m1
     }
 
     impl<T> MyTrait<T> for MyThing<T> {
         fn m1(self) -> T {
-            self.a
+            self.a // $ fieldof=MyThing
         }
     }
 
@@ -289,20 +301,30 @@ mod function_trait_bounds {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1());
-        println!("{:?}", y.m1());
+        println!("{:?}", x.m1()); // $ method=m1
+        println!("{:?}", y.m1()); // $ method=m1
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2());
-        println!("{:?}", y.m2());
+        println!("{:?}", x.m2()); // $ method=m2
+        println!("{:?}", y.m2()); // $ method=m2
 
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        let x2 = MyThing { a: S1 };
+        let y2 = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x)); // missing
-        println!("{:?}", call_trait_m1(y)); // missing
+        println!("{:?}", call_trait_m1(x2));
+        println!("{:?}", call_trait_m1(y2));
+
+        let x3 = MyThing {
+            a: MyThing { a: S1 },
+        };
+        let y3 = MyThing {
+            a: MyThing { a: S2 },
+        };
+
+        println!("{:?}", call_trait_thing_m1(x3));
+        println!("{:?}", call_trait_thing_m1(y3));
     }
 }
 
@@ -327,6 +349,7 @@ mod trait_associated_type {
     impl MyTrait for S {
         type AssociatedType = S;
 
+        // S::m1
         fn m1(self) -> Self::AssociatedType {
             S
         }
@@ -334,10 +357,10 @@ mod trait_associated_type {
 
     pub fn f() {
         let x = S;
-        println!("{:?}", x.m1());
+        println!("{:?}", x.m1()); // $ method=S::m1
 
         let x = S;
-        println!("{:?}", x.m2()); // missing
+        println!("{:?}", x.m2()); // $ method=m2
     }
 }
 
@@ -366,8 +389,8 @@ mod generic_enum {
         let x = MyEnum::C1(S1);
         let y = MyEnum::C2 { a: S2 };
 
-        println!("{:?}", x.m1());
-        println!("{:?}", y.m1());
+        println!("{:?}", x.m1()); // $ method=m1
+        println!("{:?}", y.m1()); // $ method=m1
     }
 }
 
@@ -387,47 +410,50 @@ mod method_supertraits {
     #[derive(Debug)]
     struct S2;
 
-    trait MyTrait1<A> {
-        fn m1(self) -> A;
+    trait MyTrait1<Tr1> {
+        // MyTrait1::m1
+        fn m1(self) -> Tr1;
     }
 
-    trait MyTrait2<A>: MyTrait1<A> {
-        fn m2(self) -> A
+    trait MyTrait2<Tr2>: MyTrait1<Tr2> {
+        fn m2(self) -> Tr2
         where
             Self: Sized,
         {
             if 1 + 1 > 2 {
-                self.m1()
+                self.m1() // $ method=MyTrait1::m1
             } else {
                 Self::m1(self)
             }
         }
     }
 
-    trait MyTrait3<A>: MyTrait2<MyThing<A>> {
-        fn m3(self) -> A
+    trait MyTrait3<Tr3>: MyTrait2<MyThing<Tr3>> {
+        fn m3(self) -> Tr3
         where
             Self: Sized,
         {
             if 1 + 1 > 2 {
-                self.m2().a
+                self.m2().a // $ method=m2 $ fieldof=MyThing
             } else {
-                Self::m2(self).a
+                Self::m2(self).a // $ fieldof=MyThing
             }
         }
     }
 
     impl<T> MyTrait1<T> for MyThing<T> {
+        // MyThing::m1
         fn m1(self) -> T {
-            self.a
+            self.a // $ fieldof=MyThing
         }
     }
 
     impl<T> MyTrait2<T> for MyThing<T> {}
 
     impl<T> MyTrait1<MyThing<T>> for MyThing2<T> {
+        // MyThing2::m1
         fn m1(self) -> MyThing<T> {
-            MyThing { a: self.a }
+            MyThing { a: self.a } // $ fieldof=MyThing2
         }
     }
 
@@ -439,20 +465,20 @@ mod method_supertraits {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1());
-        println!("{:?}", y.m1());
+        println!("{:?}", x.m1()); // $ method=MyThing::m1
+        println!("{:?}", y.m1()); // $ method=MyThing::m1
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2());
-        println!("{:?}", y.m2());
+        println!("{:?}", x.m2()); // $ method=m2
+        println!("{:?}", y.m2()); // $ method=m2
 
         let x = MyThing2 { a: S1 };
         let y = MyThing2 { a: S2 };
 
-        println!("{:?}", x.m3());
-        println!("{:?}", y.m3());
+        println!("{:?}", x.m3()); // $ method=m3
+        println!("{:?}", y.m3()); // $ method=m3
     }
 }
 
@@ -556,14 +582,16 @@ mod option_methods {
     }
 
     trait MyTrait<S> {
+        // MyTrait::set
         fn set(&mut self, value: S);
 
         fn call_set(&mut self, value: S) {
-            self.set(value);
+            self.set(value); // $ method=MyTrait::set
         }
     }
 
     impl<T> MyTrait<T> for MyOption<T> {
+        // MyOption::set
         fn set(&mut self, value: T) {}
     }
 
@@ -586,15 +614,15 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // `::new` missing type `S`
+        let x1 = MyOption::<S>::new(); // $ MISSING: type=x1:T.S
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new();
-        x2.set(S);
+        x2.set(S); // $ method=MyOption::set
         println!("{:?}", x2);
 
         let mut x3 = MyOption::new(); // missing type `S` from `MyOption<S>` (but can resolve `MyTrait<S>`)
-        x3.call_set(S);
+        x3.call_set(S); // $ method=call_set
         println!("{:?}", x3);
 
         let mut x4 = MyOption::new();
@@ -602,7 +630,7 @@ mod option_methods {
         println!("{:?}", x4);
 
         let x5 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", x5.flatten()); // missing call target
+        println!("{:?}", x5.flatten()); // MISSING: method=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
@@ -640,26 +668,26 @@ mod method_call_type_conversion {
 
     impl<T> S<T> {
         fn m1(self) -> T {
-            self.0
+            self.0 // $ fieldof=S
         }
 
         fn m2(&self) -> &T {
-            &self.0
+            &self.0 // $ fieldof=S
         }
 
         fn m3(self: &S<T>) -> &T {
-            &self.0
+            &self.0 // $ fieldof=S
         }
     }
 
     pub fn f() {
         let x1 = S(S2);
-        println!("{:?}", x1.m1());
+        println!("{:?}", x1.m1()); // $ method=m1
 
         let x2 = S(S2);
         // implicit borrow
-        println!("{:?}", x2.m2());
-        println!("{:?}", x2.m3());
+        println!("{:?}", x2.m2()); // $ method=m2
+        println!("{:?}", x2.m3()); // $ method=m3
 
         let x3 = S(S2);
         // explicit borrow
@@ -668,32 +696,35 @@ mod method_call_type_conversion {
 
         let x4 = &S(S2);
         // explicit borrow
-        println!("{:?}", x4.m2());
-        println!("{:?}", x4.m3());
+        println!("{:?}", x4.m2()); // $ method=m2
+        println!("{:?}", x4.m3()); // $ method=m3
 
         let x5 = &S(S2);
         // implicit dereference
-        println!("{:?}", x5.m1());
-        println!("{:?}", x5.0);
+        println!("{:?}", x5.m1()); // $ method=m1
+        println!("{:?}", x5.0); // $ fieldof=S
 
         let x6 = &S(S2);
         // explicit dereference
-        println!("{:?}", (*x6).m1());
+        println!("{:?}", (*x6).m1()); // $ method=m1
     }
 }
 
 mod trait_implicit_self_borrow {
     trait MyTrait {
+        // MyTrait::foo
         fn foo(&self) -> &Self;
 
+        // MyTrait::bar
         fn bar(&self) -> &Self {
-            self.foo()
+            self.foo() // $ method=MyTrait::foo
         }
     }
 
     struct MyStruct;
 
     impl MyTrait for MyStruct {
+        // MyStruct::foo
         fn foo(&self) -> &MyStruct {
             self
         }
@@ -701,7 +732,7 @@ mod trait_implicit_self_borrow {
 
     pub fn f() {
         let x = MyStruct;
-        x.bar();
+        x.bar(); // $ method=MyTrait::bar
     }
 }
 
@@ -718,7 +749,7 @@ mod implicit_self_borrow {
 
     pub fn f() {
         let x = MyStruct(S);
-        x.foo();
+        x.foo(); // $ method=foo
     }
 }
 
@@ -745,8 +776,8 @@ mod borrowed_typed {
 
     pub fn f() {
         let x = S {};
-        x.f1();
-        x.f2();
+        x.f1(); // $ method=f1
+        x.f2(); // $ method=f2
         S::f3(&x);
     }
 }

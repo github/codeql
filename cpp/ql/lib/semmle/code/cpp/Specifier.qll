@@ -98,6 +98,18 @@ class AccessSpecifier extends Specifier {
 }
 
 /**
+ * A C/C++ calling convention specifier: `cdecl`, `fastcall`, `stdcall`, `thiscall`,
+ * `vectorcall`, or `clrcall`.
+ */
+class CallingConventionSpecifier extends Specifier {
+  CallingConventionSpecifier() {
+    this.hasName(["cdecl", "fastcall", "stdcall", "thiscall", "vectorcall", "clrcall"])
+  }
+
+  override string getAPrimaryQlClass() { result = "CallingConventionSpecifier" }
+}
+
+/**
  * An attribute introduced by GNU's `__attribute__((name))` syntax,
  * Microsoft's `__declspec(name)` syntax, Microsoft's `[name]` syntax, the
  * C++11 standard `[[name]]` syntax, or the C++11 `alignas` syntax.

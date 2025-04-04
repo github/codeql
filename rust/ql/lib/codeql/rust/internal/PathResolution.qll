@@ -4,6 +4,7 @@
 
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.internal.CachedStages
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -73,7 +74,7 @@ final class Namespace extends TNamespace {
  * - https://doc.rust-lang.org/reference/visibility-and-privacy.html
  * - https://doc.rust-lang.org/reference/names/namespaces.html
  */
-abstract class ItemNode extends AstNode {
+abstract class ItemNode extends Locatable {
   /** Gets the (original) name of this item. */
   abstract string getName();
 
@@ -109,10 +110,15 @@ abstract class ItemNode extends AstNode {
 
   /** Gets the immediately enclosing module (or source file) of this item. */
   pragma[nomagic]
-  ModuleLikeNode getImmediateParentModule() { this = result.getAnItemInScope() }
+  ModuleLikeNode getImmediateParentModule() {
+    this = result.getAnItemInScope()
+    or
+    result = this.(SourceFileItemNode).getSuper()
+  }
 
-  pragma[nomagic]
-  private ItemNode getASuccessorRec(string name) {
+  cached
+  ItemNode getASuccessorRec(string name) {
+    Stages::PathResolutionStage::ref() and
     sourceFileEdge(this, name, result)
     or
     this = result.getImmediateParent() and
@@ -121,6 +127,10 @@ abstract class ItemNode extends AstNode {
     fileImportEdge(this, name, result)
     or
     useImportEdge(this, name, result)
+    or
+    crateDefEdge(this, name, result)
+    or
+    crateDependencyEdge(this, name, result)
     or
     // items made available through `use` are available to nodes that contain the `use`
     exists(UseItemNode use |
@@ -163,24 +173,43 @@ abstract class ItemNode extends AstNode {
   }
 
   /** Gets a successor named `name` of this item, if any. */
-  pragma[nomagic]
+  cached
   ItemNode getASuccessor(string name) {
+    Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
+    preludeEdge(this, name, result)
+    or
     name = "super" and
-    if this instanceof Module
+    if this instanceof Module or this instanceof SourceFile
     then result = this.getImmediateParentModule()
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
     name = "self" and
-    not this instanceof Module and
-    result = this.getImmediateParentModule()
+    if this instanceof Module or this instanceof Enum or this instanceof Struct
+    then result = this
+    else result = this.getImmediateParentModule()
     or
     name = "Self" and
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
     or
     name = "crate" and
-    result.(SourceFileItemNode).getFile() = this.getFile()
+    result =
+      any(CrateItemNode crate |
+        this = crate.getASourceFile()
+        or
+        this = crate.getModuleNode()
+      )
+    or
+    // todo: implement properly
+    name = "$crate" and
+    result =
+      any(CrateItemNode crate |
+        this = crate.getASourceFile()
+        or
+        this = crate.getModuleNode()
+      ).(Crate).getADependency*() and
+    result.(CrateItemNode).isPotentialDollarCrateTarget()
   }
 
   /** Gets the location of this item. */
@@ -200,9 +229,24 @@ abstract private class ModuleLikeNode extends ItemNode {
       not mid instanceof ModuleLikeNode
     )
   }
+
+  /**
+   * Holds if this is a root module, meaning either a source file or
+   * the entry module of a crate.
+   */
+  predicate isRoot() {
+    this instanceof SourceFileItemNode
+    or
+    this = any(CrateItemNode c).getModuleNode()
+  }
 }
 
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
+  pragma[nomagic]
+  ModuleLikeNode getSuper() {
+    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
+  }
+
   override string getName() { result = "(source file)" }
 
   override Namespace getNamespace() {
@@ -210,6 +254,63 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   }
 
   override Visibility getVisibility() { none() }
+
+  override predicate isPublic() { any() }
+
+  override TypeParam getTypeParam(int i) { none() }
+}
+
+class CrateItemNode extends ItemNode instanceof Crate {
+  /**
+   * Gets the module node that defines this crate.
+   *
+   * This is either a source file, when the crate is defined in source code,
+   * or a module, when the crate is defined in a dependency.
+   */
+  pragma[nomagic]
+  ModuleLikeNode getModuleNode() {
+    result = super.getSourceFile()
+    or
+    not exists(super.getSourceFile()) and
+    result = super.getModule()
+  }
+
+  /**
+   * Gets a source file that belongs to this crate, if any.
+   *
+   * This is calculated as those source files that can be reached from the entry
+   * file of this crate using zero or more `mod` imports, without going through
+   * the entry point of some other crate.
+   */
+  pragma[nomagic]
+  SourceFileItemNode getASourceFile() {
+    result = super.getSourceFile()
+    or
+    exists(SourceFileItemNode mid, Module mod |
+      mid = this.getASourceFile() and
+      mod.getFile() = mid.getFile() and
+      fileImport(mod, result) and
+      not result = any(Crate other).getSourceFile()
+    )
+  }
+
+  pragma[nomagic]
+  predicate isPotentialDollarCrateTarget() {
+    exists(string name, RelevantPath p |
+      p.isDollarCrateQualifiedPath(name) and
+      exists(this.getASuccessor(name))
+    )
+  }
+
+  override string getName() { result = Crate.super.getName() }
+
+  override Namespace getNamespace() {
+    result.isType() // can be referenced with `crate`
+  }
+
+  override Visibility getVisibility() { none() }
+
+  override predicate isPublic() { any() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -246,14 +347,14 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   override string getName() { result = Variant.super.getName().getText() }
 
   override Namespace getNamespace() {
-    if super.getFieldList() instanceof RecordFieldList then result.isType() else result.isValue()
+    if super.getFieldList() instanceof StructFieldList then result.isType() else result.isValue()
   }
 
   override TypeParam getTypeParam(int i) {
     result = super.getEnum().getGenericParamList().getTypeParam(i)
   }
 
-  override Visibility getVisibility() { result = Variant.super.getVisibility() }
+  override Visibility getVisibility() { result = super.getEnum().getVisibility() }
 }
 
 class FunctionItemNode extends AssocItemNode instanceof Function {
@@ -312,7 +413,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   pragma[nomagic]
   private TypeRepr getASelfTyArg() {
     result =
-      this.getSelfPath().getPart().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
+      this.getSelfPath().getSegment().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
   }
 
   /**
@@ -405,7 +506,7 @@ private class StructItemNode extends ItemNode instanceof Struct {
   override Namespace getNamespace() {
     result.isType() // the struct itself
     or
-    not super.getFieldList() instanceof RecordFieldList and
+    not super.getFieldList() instanceof StructFieldList and
     result.isValue() // the constructor
   }
 
@@ -420,6 +521,7 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
   }
 
+  pragma[nomagic]
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
@@ -460,7 +562,7 @@ private class UseItemNode extends ItemNode instanceof Use {
 
   override Namespace getNamespace() { none() }
 
-  override Visibility getVisibility() { none() }
+  override Visibility getVisibility() { result = Use.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -481,6 +583,7 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
   }
 
+  pragma[nomagic]
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   /**
@@ -552,11 +655,11 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
 }
 
 /**
- * Holds if `m` is a `mod name;` module declaration happening in a file named
- * `fileName.rs`, inside the folder `parent`.
+ * Holds if `m` is a `mod name;` module declaration, where the corresponding
+ * module file needs to be looked up in `lookup` or one of its descandants.
  */
-private predicate modImport(Module m, string fileName, string name, Folder parent) {
-  exists(File f |
+private predicate modImport0(Module m, string name, Folder lookup) {
+  exists(File f, Folder parent, string fileName |
     f = m.getFile() and
     not m.hasItemList() and
     // TODO: handle
@@ -568,17 +671,63 @@ private predicate modImport(Module m, string fileName, string name, Folder paren
     name = m.getName().getText() and
     parent = f.getParentContainer() and
     fileName = f.getStem()
+  |
+    // sibling import
+    lookup = parent and
+    (
+      m.getFile() = any(CrateItemNode c).getModuleNode().(SourceFileItemNode).getFile()
+      or
+      m.getFile().getBaseName() = "mod.rs"
+    )
+    or
+    // child import
+    lookup = parent.getFolder(fileName)
+  )
+}
+
+/**
+ * Holds if `m` is a `mod name;` module declaration, which happens inside a
+ * nested module, and `pred -> succ` is a module edge leading to `m`.
+ */
+private predicate modImportNested(ModuleItemNode m, ModuleItemNode pred, ModuleItemNode succ) {
+  pred.getAnItemInScope() = succ and
+  (
+    modImport0(m, _, _) and
+    succ = m
+    or
+    modImportNested(m, succ, _)
+  )
+}
+
+/**
+ * Holds if `m` is a `mod name;` module declaration, which happens inside a
+ * nested module, where `ancestor` is a reflexive transitive ancestor module
+ * of `m` with corresponding lookup folder `lookup`.
+ */
+private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folder lookup) {
+  modImport0(m, _, lookup) and
+  modImportNested(m, ancestor, _) and
+  not modImportNested(m, _, ancestor)
+  or
+  exists(ModuleItemNode m1, Folder mid |
+    modImportNestedLookup(m, m1, mid) and
+    modImportNested(m, m1, ancestor) and
+    lookup = mid.getFolder(m1.getName())
   )
 }
 
 /** Holds if `m` is a `mod name;` item importing file `f`. */
 private predicate fileImport(Module m, SourceFile f) {
-  exists(string fileName, string name, Folder parent | modImport(m, fileName, name, parent) |
-    // sibling import
+  exists(string name, Folder parent |
+    modImport0(m, name, _) and
     fileModule(f, name, parent)
+  |
+    // `m` is not inside a nested module
+    modImport0(m, name, parent) and
+    not modImportNested(m, _, _)
     or
-    // child import
-    fileModule(f, name, parent.getFolder(fileName))
+    // `m` is inside a nested module
+    modImportNestedLookup(m, m, parent)
   )
 }
 
@@ -586,11 +735,33 @@ private predicate fileImport(Module m, SourceFile f) {
  * Holds if `mod` is a `mod name;` item targeting a file resulting in `item` being
  * in scope under the name `name`.
  */
+pragma[nomagic]
 private predicate fileImportEdge(Module mod, string name, ItemNode item) {
-  item.isPublic() and
-  exists(SourceFile f |
+  exists(SourceFileItemNode f |
     fileImport(mod, f) and
-    sourceFileEdge(f, name, item)
+    item = f.getASuccessorRec(name)
+  )
+}
+
+/**
+ * Holds if crate `c` defines the item `i` named `name`.
+ */
+pragma[nomagic]
+private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i) {
+  i = c.getModuleNode().getASuccessorRec(name) and
+  not i instanceof Crate
+}
+
+/**
+ * Holds if `m` depends on crate `dep` named `name`.
+ */
+private predicate crateDependencyEdge(ModuleLikeNode m, string name, CrateItemNode dep) {
+  exists(CrateItemNode c | dep = c.(Crate).getDependency(name) |
+    // entry module/entry source file
+    m = c.getModuleNode()
+    or
+    // entry/transitive source file
+    m = c.getASourceFile()
   )
 }
 
@@ -633,7 +804,7 @@ private predicate declares(ItemNode item, Namespace ns, string name) {
 }
 
 /** A path that does not access a local variable. */
-private class RelevantPath extends Path {
+class RelevantPath extends Path {
   RelevantPath() { not this = any(VariableAccess va).(PathExpr).getPath() }
 
   pragma[nomagic]
@@ -641,6 +812,19 @@ private class RelevantPath extends Path {
     not exists(this.getQualifier()) and
     not this = any(UseTreeList list).getAUseTree().getPath() and
     name = this.getText()
+  }
+
+  pragma[nomagic]
+  predicate isCratePath(string name, ItemNode encl) {
+    name = ["crate", "$crate"] and
+    this.isUnqualified(name) and
+    encl.getADescendant() = this
+  }
+
+  pragma[nomagic]
+  predicate isDollarCrateQualifiedPath(string name) {
+    this.getQualifier().(RelevantPath).isCratePath("$crate", _) and
+    this.getText() = name
   }
 }
 
@@ -654,17 +838,23 @@ private predicate unqualifiedPathLookup(RelevantPath p, string name, Namespace n
     // lookup in the immediately enclosing item
     p.isUnqualified(name) and
     encl0.getADescendant() = p and
-    exists(ns)
+    exists(ns) and
+    not name = ["crate", "$crate"]
     or
     // lookup in an outer scope, but only if the item is not declared in inner scope
     exists(ItemNode mid |
       unqualifiedPathLookup(p, name, ns, mid) and
-      not declares(mid, ns, name)
+      not declares(mid, ns, name) and
+      not name = ["super", "self"] and
+      not (
+        name = "Self" and
+        mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
+      )
     |
       // nested modules do not have unqualified access to items from outer modules,
-      // except for items declared at top-level in the source file
+      // except for items declared at top-level in the root module
       if mid instanceof Module
-      then encl0.(SourceFileItemNode) = mid.getImmediateParent+()
+      then encl0 = mid.getImmediateParent+() and encl0.(ModuleLikeNode).isRoot()
       else encl0 = mid.getImmediateParent()
     )
   |
@@ -682,11 +872,29 @@ private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
   ns = result.getNamespace()
 }
 
+private predicate isRoot(ItemNode root) { root.(ModuleLikeNode).isRoot() }
+
+private predicate hasCratePath(ItemNode i) { any(RelevantPath path).isCratePath(_, i) }
+
+private predicate hasChild(ItemNode parent, ItemNode child) { child.getImmediateParent() = parent }
+
+private predicate rootHasCratePathTc(ItemNode i1, ItemNode i2) =
+  doublyBoundedFastTC(hasChild/2, isRoot/1, hasCratePath/1)(i1, i2)
+
 pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath path, Namespace ns) {
   exists(ItemNode encl, string name |
-    unqualifiedPathLookup(path, name, ns, encl) and
-    result = getASuccessor(encl, name, ns)
+    result = getASuccessor(encl, pragma[only_bind_into](name), ns)
+  |
+    unqualifiedPathLookup(path, name, ns, encl)
+    or
+    // For `($)crate`, jump directly to the root module
+    exists(ItemNode i | path.isCratePath(pragma[only_bind_into](name), i) |
+      encl.(ModuleLikeNode).isRoot() and
+      encl = i
+      or
+      rootHasCratePathTc(encl, i)
+    )
   )
 }
 
@@ -745,13 +953,53 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   )
 }
 
-/** Gets the item that `path` resolves to, if any. */
-cached
-ItemNode resolvePath(RelevantPath path) {
+pragma[nomagic]
+private ItemNode resolvePath1(RelevantPath path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
-    not pathUsesNamespace(path, _)
+    not pathUsesNamespace(path, _) and
+    not path = any(MacroCall mc).getPath()
+  )
+}
+
+pragma[nomagic]
+private ItemNode resolvePathPrivate(
+  RelevantPath path, ModuleLikeNode itemParent, ModuleLikeNode pathParent
+) {
+  result = resolvePath1(path) and
+  itemParent = result.getImmediateParentModule() and
+  not result.isPublic() and
+  (
+    pathParent.getADescendant() = path
+    or
+    pathParent = any(ItemNode mid | path = mid.getADescendant()).getImmediateParentModule()
+  )
+}
+
+/**
+ * Gets a module that has access to private items defined inside `itemParent`.
+ *
+ * According to [The Rust Reference][1] this is either `itemParent` itself or any
+ * descendant of `itemParent`.
+ *
+ * [1]: https://doc.rust-lang.org/reference/visibility-and-privacy.html#r-vis.access
+ */
+pragma[nomagic]
+private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
+  exists(resolvePathPrivate(_, itemParent, _)) and
+  result.getImmediateParentModule*() = itemParent
+}
+
+/** Gets the item that `path` resolves to, if any. */
+cached
+ItemNode resolvePath(RelevantPath path) {
+  result = resolvePath1(path) and
+  result.isPublic()
+  or
+  exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
+    result = resolvePathPrivate(path, itemParent, pathParent) and
+    pathParent = getAPrivateVisibleModule(itemParent)
   )
 }
 
@@ -820,14 +1068,82 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
         encl.getADescendant() = use and
         item = getASuccessor(used, name, ns) and
         // glob imports can be shadowed
-        not declares(encl, ns, name)
+        not declares(encl, ns, name) and
+        not name = ["super", "self", "Self", "$crate", "crate"]
       )
-    else item = used
-  |
-    not tree.hasRename() and
-    name = item.getName()
-    or
-    name = tree.getRename().getName().getText() and
-    name != "_"
+    else (
+      item = used and
+      (
+        not tree.hasRename() and
+        name = item.getName()
+        or
+        name = tree.getRename().getName().getText() and
+        name != "_"
+      )
+    )
   )
+}
+
+/**
+ * Holds if `i` is available inside `f` because it is reexported in [the prelude][1].
+ *
+ * We don't yet have access to prelude information from the extractor, so for now
+ * we include all the preludes for Rust: 2015, 2018, 2021, and 2024.
+ *
+ * [1]: https://doc.rust-lang.org/core/prelude/index.html
+ */
+private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
+  exists(Crate core, ModuleItemNode mod, ModuleItemNode prelude, ModuleItemNode rust |
+    f = any(Crate c0 | core = c0.getDependency(_)).getASourceFile() and
+    core.getName() = "core" and
+    mod = core.getModule() and
+    prelude = mod.getASuccessorRec("prelude") and
+    rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
+    i = rust.getASuccessorRec(name) and
+    not i instanceof Use
+  )
+}
+
+/** Provides predicates for debugging the path resolution implementation. */
+private module Debug {
+  private Locatable getRelevantLocatable() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      filepath.matches("%/test_logging.rs") and
+      startline = 163
+    )
+  }
+
+  predicate debugUnqualifiedPathLookup(
+    RelevantPath p, string name, Namespace ns, ItemNode encl, string path
+  ) {
+    p = getRelevantLocatable() and
+    unqualifiedPathLookup(p, name, ns, encl) and
+    path = p.toStringDebug()
+  }
+
+  ItemNode debugResolvePath(RelevantPath path) {
+    path = getRelevantLocatable() and
+    result = resolvePath(path)
+  }
+
+  predicate debugUseImportEdge(Use use, string name, ItemNode item) {
+    use = getRelevantLocatable() and
+    useImportEdge(use, name, item)
+  }
+
+  ItemNode debugGetASuccessorRec(ItemNode i, string name) {
+    i = getRelevantLocatable() and
+    result = i.getASuccessor(name)
+  }
+
+  predicate debugFileImportEdge(Module mod, string name, ItemNode item) {
+    mod = getRelevantLocatable() and
+    fileImportEdge(mod, name, item)
+  }
+
+  predicate debugFileImport(Module m, SourceFile f) {
+    m = getRelevantLocatable() and
+    fileImport(m, f)
+  }
 }

@@ -20,6 +20,7 @@ module Impl {
      * Returns a string suitable to be inserted into the name of the parent. Typically `"..."`,
      * but may be overridden by subclasses.
      */
+    pragma[nomagic]
     string toAbbreviatedString() { result = "..." }
 
     predicate isUnknown() { none() } // compatibility with test generation, to be fixed

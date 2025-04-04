@@ -329,7 +329,7 @@ module ExprTrees {
   }
 
   class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+    override AstNode getChildNode(int i) { i = 0 and result = super.getContainer() }
   }
 
   class IfExprTree extends PostOrderTree instanceof IfExpr {

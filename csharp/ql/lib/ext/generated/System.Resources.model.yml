@@ -18,7 +18,7 @@ extensions:
       - ["System.Resources", "ResourceManager", True, "GetResourceFileName", "(System.Globalization.CultureInfo)", "", "Argument[this].Field[System.Resources.ResourceManager.BaseNameField]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Resources", "ResourceManager", True, "GetString", "(System.String,System.Globalization.CultureInfo)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Resources", "ResourceManager", True, "get_BaseName", "()", "", "Argument[this].Field[System.Resources.ResourceManager.BaseNameField]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Resources", "ResourceReader", False, "GetResourceData", "(System.String,System.String,System.Byte[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Resources", "ResourceReader", False, "GetResourceData", "(System.String,System.String,System.Byte[])", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["System.Resources", "ResourceReader", False, "ResourceReader", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Resources", "ResourceSet", False, "ResourceSet", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Resources", "ResourceSet", False, "ResourceSet", "(System.Resources.IResourceReader)", "", "Argument[0]", "Argument[this].Field[System.Resources.ResourceSet.Reader]", "value", "dfc-generated"]

@@ -858,17 +858,26 @@ module TestPostProcessing {
       bindingset[result]
       string getARelevantTag() { any() }
 
-      predicate tagMatches = PathProblemSourceTestInput::tagMatches/2;
+      bindingset[expectedTag, actualTag]
+      predicate tagMatches(string expectedTag, string actualTag) {
+        PathProblemSourceTestInput::tagMatches(expectedTag, actualTag)
+        or
+        not exists(getQueryKind()) and
+        expectedTag = actualTag
+      }
 
       bindingset[expectedTag]
       predicate tagIsOptional(string expectedTag) {
-        // ignore irrelevant tags
-        not expectedTag.regexpMatch(getTagRegex())
-        or
-        // ignore tags annotated with a query ID that does not match the current query ID
-        exists(string queryId |
-          queryId = expectedTag.regexpCapture(getTagRegex(), 3) and
-          queryId != getQueryId()
+        exists(getQueryKind()) and
+        (
+          // ignore irrelevant tags
+          not expectedTag.regexpMatch(getTagRegex())
+          or
+          // ignore tags annotated with a query ID that does not match the current query ID
+          exists(string queryId |
+            queryId = expectedTag.regexpCapture(getTagRegex(), 3) and
+            queryId != getQueryId()
+          )
         )
       }
 
@@ -912,6 +921,28 @@ module TestPostProcessing {
       }
 
       /**
+       * Holds if a custom query predicate implies `tag=value` at the given `location`.
+       *
+       * Such query predicates are only allowed in kind-less queries, usually in the form
+       * of a `.ql` file in a test folder, with a same-named `.qlref` file to enable
+       * post-processing for that test.
+       */
+      private predicate hasCustomQueryPredicateResult(
+        int row, TestLocation location, string element, string tag, string value
+      ) {
+        not exists(getQueryKind()) and
+        queryResults(tag, row, 0, location.getRelativeUrl()) and
+        queryResults(tag, row, 1, element) and
+        (
+          queryResults(tag, row, 2, value) and
+          not queryResults(tag, row, 3, _) // ignore if arity is greater than expected
+          or
+          not queryResults(tag, row, 2, _) and
+          value = "" // allow value-less expectations for unary predicates
+        )
+      }
+
+      /**
        * Gets the expected value for result row `row`, if any. This value must
        * match the value at the corresponding path-problem source (if it is
        * present).
@@ -939,6 +970,8 @@ module TestPostProcessing {
           or
           value = getValue(row)
         )
+        or
+        hasCustomQueryPredicateResult(_, location, element, tag, value)
       }
     }
 

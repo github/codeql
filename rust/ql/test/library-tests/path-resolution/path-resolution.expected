@@ -21,10 +21,23 @@ mod
 | main.rs:294:1:348:1 | mod m15 |
 | main.rs:350:1:442:1 | mod m16 |
 | main.rs:444:1:474:1 | mod m17 |
+| main.rs:476:1:494:1 | mod m18 |
+| main.rs:481:5:493:5 | mod m19 |
+| main.rs:486:9:492:9 | mod m20 |
+| main.rs:496:1:521:1 | mod m21 |
+| main.rs:497:5:503:5 | mod m22 |
+| main.rs:505:5:520:5 | mod m33 |
 | my2/mod.rs:1:1:1:16 | mod nested2 |
+| my2/mod.rs:12:1:12:12 | mod my3 |
 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/nested2.rs:2:5:10:5 | mod nested4 |
+| my2/nested2.rs:13:1:19:1 | mod nested5 |
+| my2/nested2.rs:14:5:18:5 | mod nested6 |
+| my2/nested2.rs:21:1:27:1 | mod nested7 |
+| my2/nested2.rs:22:5:26:5 | mod nested8 |
 | my.rs:1:1:1:15 | mod nested |
+| my.rs:14:1:16:1 | mod my4 |
+| my.rs:15:5:15:16 | mod my5 |
 | my/nested.rs:1:1:17:1 | mod nested1 |
 | my/nested.rs:2:5:11:5 | mod nested2 |
 resolvePath
@@ -46,7 +59,7 @@ resolvePath
 | main.rs:30:17:30:21 | super | main.rs:18:5:36:5 | mod m2 |
 | main.rs:30:17:30:24 | ...::f | main.rs:19:9:21:9 | fn f |
 | main.rs:33:17:33:17 | f | main.rs:19:9:21:9 | fn f |
-| main.rs:40:9:40:13 | super | main.rs:1:1:498:2 | SourceFile |
+| main.rs:40:9:40:13 | super | main.rs:1:1:550:2 | SourceFile |
 | main.rs:40:9:40:17 | ...::m1 | main.rs:13:1:37:1 | mod m1 |
 | main.rs:40:9:40:21 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
 | main.rs:40:9:40:24 | ...::g | main.rs:23:9:27:9 | fn g |
@@ -58,7 +71,7 @@ resolvePath
 | main.rs:61:17:61:19 | Foo | main.rs:59:9:59:21 | struct Foo |
 | main.rs:64:13:64:15 | Foo | main.rs:53:5:53:17 | struct Foo |
 | main.rs:66:5:66:5 | f | main.rs:55:5:62:5 | fn f |
-| main.rs:68:5:68:8 | self | main.rs:1:1:498:2 | SourceFile |
+| main.rs:68:5:68:8 | self | main.rs:1:1:550:2 | SourceFile |
 | main.rs:68:5:68:11 | ...::i | main.rs:71:1:83:1 | fn i |
 | main.rs:74:13:74:15 | Foo | main.rs:48:1:48:13 | struct Foo |
 | main.rs:81:17:81:19 | Foo | main.rs:77:9:79:9 | struct Foo |
@@ -72,7 +85,7 @@ resolvePath
 | main.rs:87:57:87:66 | ...::g | my2/nested2.rs:7:9:9:9 | fn g |
 | main.rs:87:80:87:86 | nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
 | main.rs:100:5:100:22 | f_defined_in_macro | main.rs:99:18:99:42 | fn f_defined_in_macro |
-| main.rs:117:13:117:17 | super | main.rs:1:1:498:2 | SourceFile |
+| main.rs:117:13:117:17 | super | main.rs:1:1:550:2 | SourceFile |
 | main.rs:117:13:117:21 | ...::m5 | main.rs:103:1:107:1 | mod m5 |
 | main.rs:118:9:118:9 | f | main.rs:104:5:106:5 | fn f |
 | main.rs:118:9:118:9 | f | main.rs:110:5:112:5 | fn f |
@@ -126,8 +139,8 @@ resolvePath
 | main.rs:261:17:261:17 | C | main.rs:254:9:254:9 | C |
 | main.rs:274:16:274:16 | T | main.rs:268:7:268:7 | T |
 | main.rs:275:14:275:17 | Self | main.rs:266:5:276:5 | trait MyParamTrait |
-| main.rs:275:14:275:33 | ...::AssociatedType | main.rs:270:9:270:28 | TypeAlias |
-| main.rs:284:13:284:17 | crate | main.rs:1:1:498:2 | SourceFile |
+| main.rs:275:14:275:33 | ...::AssociatedType | main.rs:270:9:270:28 | type AssociatedType |
+| main.rs:284:13:284:17 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
 | main.rs:284:13:284:22 | ...::m13 | main.rs:279:1:292:1 | mod m13 |
 | main.rs:284:13:284:25 | ...::f | main.rs:280:5:280:17 | fn f |
 | main.rs:284:13:284:25 | ...::f | main.rs:280:19:281:19 | struct f |
@@ -205,57 +218,100 @@ resolvePath
 | main.rs:465:9:465:18 | ...::f | main.rs:446:9:446:20 | fn f |
 | main.rs:470:9:470:9 | g | main.rs:459:5:466:5 | fn g |
 | main.rs:471:11:471:11 | S | main.rs:449:5:449:13 | struct S |
-| main.rs:477:5:477:6 | my | main.rs:1:1:1:7 | mod my |
-| main.rs:477:5:477:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
-| main.rs:477:5:477:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
-| main.rs:477:5:477:32 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
-| main.rs:477:5:477:35 | ...::f | my/nested.rs:3:9:5:9 | fn f |
-| main.rs:478:5:478:6 | my | main.rs:1:1:1:7 | mod my |
-| main.rs:478:5:478:9 | ...::f | my.rs:5:1:7:1 | fn f |
-| main.rs:479:5:479:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
-| main.rs:479:5:479:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
-| main.rs:479:5:479:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
-| main.rs:479:5:479:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:480:5:480:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:481:5:481:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:482:5:482:9 | crate | main.rs:1:1:498:2 | SourceFile |
-| main.rs:482:5:482:12 | ...::h | main.rs:50:1:69:1 | fn h |
-| main.rs:483:5:483:6 | m1 | main.rs:13:1:37:1 | mod m1 |
-| main.rs:483:5:483:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
-| main.rs:483:5:483:13 | ...::g | main.rs:23:9:27:9 | fn g |
-| main.rs:484:5:484:6 | m1 | main.rs:13:1:37:1 | mod m1 |
-| main.rs:484:5:484:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
-| main.rs:484:5:484:14 | ...::m3 | main.rs:29:9:35:9 | mod m3 |
-| main.rs:484:5:484:17 | ...::h | main.rs:30:27:34:13 | fn h |
-| main.rs:485:5:485:6 | m4 | main.rs:39:1:46:1 | mod m4 |
-| main.rs:485:5:485:9 | ...::i | main.rs:42:5:45:5 | fn i |
-| main.rs:486:5:486:5 | h | main.rs:50:1:69:1 | fn h |
-| main.rs:487:5:487:11 | f_alias | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:488:5:488:11 | g_alias | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:489:5:489:5 | j | main.rs:97:1:101:1 | fn j |
-| main.rs:490:5:490:6 | m6 | main.rs:109:1:120:1 | mod m6 |
-| main.rs:490:5:490:9 | ...::g | main.rs:114:5:119:5 | fn g |
-| main.rs:491:5:491:6 | m7 | main.rs:122:1:137:1 | mod m7 |
-| main.rs:491:5:491:9 | ...::f | main.rs:129:5:136:5 | fn f |
-| main.rs:492:5:492:6 | m8 | main.rs:139:1:193:1 | mod m8 |
-| main.rs:492:5:492:9 | ...::g | main.rs:177:5:192:5 | fn g |
-| main.rs:493:5:493:6 | m9 | main.rs:195:1:203:1 | mod m9 |
-| main.rs:493:5:493:9 | ...::f | main.rs:198:5:202:5 | fn f |
-| main.rs:494:5:494:7 | m11 | main.rs:226:1:263:1 | mod m11 |
-| main.rs:494:5:494:10 | ...::f | main.rs:231:5:234:5 | fn f |
-| main.rs:495:5:495:7 | m15 | main.rs:294:1:348:1 | mod m15 |
-| main.rs:495:5:495:10 | ...::f | main.rs:335:5:347:5 | fn f |
-| main.rs:496:5:496:7 | m16 | main.rs:350:1:442:1 | mod m16 |
-| main.rs:496:5:496:10 | ...::f | main.rs:417:5:441:5 | fn f |
-| main.rs:497:5:497:7 | m17 | main.rs:444:1:474:1 | mod m17 |
-| main.rs:497:5:497:10 | ...::f | main.rs:468:5:473:5 | fn f |
+| main.rs:489:17:489:21 | super | main.rs:481:5:493:5 | mod m19 |
+| main.rs:489:17:489:24 | ...::f | main.rs:482:9:484:9 | fn f |
+| main.rs:490:17:490:21 | super | main.rs:481:5:493:5 | mod m19 |
+| main.rs:490:17:490:28 | ...::super | main.rs:476:1:494:1 | mod m18 |
+| main.rs:490:17:490:31 | ...::f | main.rs:477:5:479:5 | fn f |
+| main.rs:507:13:507:17 | super | main.rs:496:1:521:1 | mod m21 |
+| main.rs:507:13:507:22 | ...::m22 | main.rs:497:5:503:5 | mod m22 |
+| main.rs:507:13:507:30 | ...::MyEnum | main.rs:498:9:500:9 | enum MyEnum |
+| main.rs:508:13:508:16 | self | main.rs:498:9:500:9 | enum MyEnum |
+| main.rs:512:13:512:17 | super | main.rs:496:1:521:1 | mod m21 |
+| main.rs:512:13:512:22 | ...::m22 | main.rs:497:5:503:5 | mod m22 |
+| main.rs:512:13:512:32 | ...::MyStruct | main.rs:502:9:502:28 | struct MyStruct |
+| main.rs:513:13:513:16 | self | main.rs:502:9:502:28 | struct MyStruct |
+| main.rs:517:21:517:26 | MyEnum | main.rs:498:9:500:9 | enum MyEnum |
+| main.rs:517:21:517:29 | ...::A | main.rs:499:13:499:13 | A |
+| main.rs:518:21:518:28 | MyStruct | main.rs:502:9:502:28 | struct MyStruct |
+| main.rs:524:5:524:6 | my | main.rs:1:1:1:7 | mod my |
+| main.rs:524:5:524:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
+| main.rs:524:5:524:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
+| main.rs:524:5:524:32 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
+| main.rs:524:5:524:35 | ...::f | my/nested.rs:3:9:5:9 | fn f |
+| main.rs:525:5:525:6 | my | main.rs:1:1:1:7 | mod my |
+| main.rs:525:5:525:9 | ...::f | my.rs:5:1:7:1 | fn f |
+| main.rs:526:5:526:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
+| main.rs:526:5:526:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
+| main.rs:526:5:526:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
+| main.rs:526:5:526:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:527:5:527:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:528:5:528:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
+| main.rs:529:5:529:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| main.rs:529:5:529:12 | ...::h | main.rs:50:1:69:1 | fn h |
+| main.rs:530:5:530:6 | m1 | main.rs:13:1:37:1 | mod m1 |
+| main.rs:530:5:530:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
+| main.rs:530:5:530:13 | ...::g | main.rs:23:9:27:9 | fn g |
+| main.rs:531:5:531:6 | m1 | main.rs:13:1:37:1 | mod m1 |
+| main.rs:531:5:531:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
+| main.rs:531:5:531:14 | ...::m3 | main.rs:29:9:35:9 | mod m3 |
+| main.rs:531:5:531:17 | ...::h | main.rs:30:27:34:13 | fn h |
+| main.rs:532:5:532:6 | m4 | main.rs:39:1:46:1 | mod m4 |
+| main.rs:532:5:532:9 | ...::i | main.rs:42:5:45:5 | fn i |
+| main.rs:533:5:533:5 | h | main.rs:50:1:69:1 | fn h |
+| main.rs:534:5:534:11 | f_alias | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:535:5:535:11 | g_alias | my2/nested2.rs:7:9:9:9 | fn g |
+| main.rs:536:5:536:5 | j | main.rs:97:1:101:1 | fn j |
+| main.rs:537:5:537:6 | m6 | main.rs:109:1:120:1 | mod m6 |
+| main.rs:537:5:537:9 | ...::g | main.rs:114:5:119:5 | fn g |
+| main.rs:538:5:538:6 | m7 | main.rs:122:1:137:1 | mod m7 |
+| main.rs:538:5:538:9 | ...::f | main.rs:129:5:136:5 | fn f |
+| main.rs:539:5:539:6 | m8 | main.rs:139:1:193:1 | mod m8 |
+| main.rs:539:5:539:9 | ...::g | main.rs:177:5:192:5 | fn g |
+| main.rs:540:5:540:6 | m9 | main.rs:195:1:203:1 | mod m9 |
+| main.rs:540:5:540:9 | ...::f | main.rs:198:5:202:5 | fn f |
+| main.rs:541:5:541:7 | m11 | main.rs:226:1:263:1 | mod m11 |
+| main.rs:541:5:541:10 | ...::f | main.rs:231:5:234:5 | fn f |
+| main.rs:542:5:542:7 | m15 | main.rs:294:1:348:1 | mod m15 |
+| main.rs:542:5:542:10 | ...::f | main.rs:335:5:347:5 | fn f |
+| main.rs:543:5:543:7 | m16 | main.rs:350:1:442:1 | mod m16 |
+| main.rs:543:5:543:10 | ...::f | main.rs:417:5:441:5 | fn f |
+| main.rs:544:5:544:7 | m17 | main.rs:444:1:474:1 | mod m17 |
+| main.rs:544:5:544:10 | ...::f | main.rs:468:5:473:5 | fn f |
+| main.rs:545:5:545:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
+| main.rs:545:5:545:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
+| main.rs:546:5:546:11 | nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| main.rs:546:5:546:14 | ...::f | my2/nested2.rs:23:9:25:9 | fn f |
+| main.rs:547:5:547:7 | my3 | my2/mod.rs:12:1:12:12 | mod my3 |
+| main.rs:547:5:547:10 | ...::f | my2/my3/mod.rs:1:1:5:1 | fn f |
+| main.rs:548:5:548:12 | nested_f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
+| main.rs:549:5:549:7 | m18 | main.rs:476:1:494:1 | mod m18 |
+| main.rs:549:5:549:12 | ...::m19 | main.rs:481:5:493:5 | mod m19 |
+| main.rs:549:5:549:17 | ...::m20 | main.rs:486:9:492:9 | mod m20 |
+| main.rs:549:5:549:20 | ...::g | main.rs:487:13:491:13 | fn g |
 | my2/mod.rs:5:5:5:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:5:5:5:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/mod.rs:5:5:5:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
 | my2/mod.rs:5:5:5:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
+| my2/mod.rs:8:9:8:15 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
+| my2/mod.rs:8:9:8:24 | ...::nested5 | my2/nested2.rs:13:1:19:1 | mod nested5 |
+| my2/mod.rs:10:9:10:15 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
+| my2/mod.rs:10:9:10:24 | ...::nested7 | my2/nested2.rs:21:1:27:1 | mod nested7 |
+| my2/mod.rs:10:9:10:33 | ...::nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| my2/mod.rs:10:37:10:40 | self | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
+| my2/my3/mod.rs:4:5:4:5 | h | main.rs:50:1:69:1 | fn h |
+| my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:12:13 | SourceFile |
+| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:550:2 | SourceFile |
+| my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:50:1:69:1 | fn h |
+| my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:12:13 | SourceFile |
+| my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |
 | my.rs:3:5:3:10 | nested | my.rs:1:1:1:15 | mod nested |
 | my.rs:3:5:3:13 | ...::g | my/nested.rs:19:1:22:1 | fn g |
 | my.rs:11:5:11:5 | g | my/nested.rs:19:1:22:1 | fn g |
+| my.rs:18:9:18:11 | my4 | my.rs:14:1:16:1 | mod my4 |
+| my.rs:18:9:18:16 | ...::my5 | my.rs:15:5:15:16 | mod my5 |
+| my.rs:18:9:18:19 | ...::f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
 | my/nested.rs:9:13:9:13 | f | my/nested.rs:3:9:5:9 | fn f |
 | my/nested.rs:15:9:15:15 | nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
 | my/nested.rs:15:9:15:18 | ...::f | my/nested.rs:3:9:5:9 | fn f |

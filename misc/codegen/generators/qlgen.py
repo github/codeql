@@ -130,6 +130,9 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         internal="ql_internal" in prop.pragmas,
     )
     ql_name = prop.pragmas.get("ql_name", prop.name)
+    db_table_name = prop.pragmas.get("ql_db_table_name")
+    if db_table_name and prop.is_single:
+        raise Error(f"`db_table_name` pragma is not supported for single properties, but {cls.name}.{prop.name} has it")
     if prop.is_single:
         args.update(
             singular=inflection.camelize(ql_name),
@@ -141,7 +144,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         args.update(
             singular=inflection.singularize(inflection.camelize(ql_name)),
             plural=inflection.pluralize(inflection.camelize(ql_name)),
-            tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
+            tablename=db_table_name or inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"] if not prop.is_unordered else ["this", "result"],
             doc=_get_doc(cls, prop, plural=False),
             doc_plural=_get_doc(cls, prop, plural=True),
@@ -149,14 +152,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
     elif prop.is_optional:
         args.update(
             singular=inflection.camelize(ql_name),
-            tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
+            tablename=db_table_name or inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
             doc=_get_doc(cls, prop),
         )
     elif prop.is_predicate:
         args.update(
             singular=inflection.camelize(ql_name, uppercase_first_letter=False),
-            tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
+            tablename=db_table_name or inflection.underscore(f"{cls.name}_{prop.name}"),
             tableparams=["this"],
             doc=_get_doc(cls, prop),
         )

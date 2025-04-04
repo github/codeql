@@ -58,7 +58,19 @@ def file_checksum(filename):
     with open(filename, 'rb') as file_handle:
         return hashlib.sha1(file_handle.read()).hexdigest()
 
-def check_group(group_name, files, master_file_picker, emit_error):
+def accept_prefix(line1, line2):
+    suffix = line2.removeprefix(line1)
+    return not suffix or suffix.lstrip().startswith("//")
+
+def equivalent_lines(lines1, lines2):
+    if len(lines1) != len(lines2):
+        return False
+    for line1, line2 in zip(lines1, lines2):
+        if not accept_prefix(line1, line2) and not accept_prefix(line2, line1):
+            return False
+    return True
+
+def check_group(group_name, files, master_file_picker, emit_error, accept_prefix):
     extant_files = [f for f in files if path.isfile(f)]
     if len(extant_files) == 0:
         emit_error(__file__, 0, "No files found from group '" + group_name + "'.")
@@ -70,10 +82,22 @@ def check_group(group_name, files, master_file_picker, emit_error):
         return
 
     checksums = {file_checksum(f) for f in extant_files}
-
-    if len(checksums) == 1 and len(extant_files) == len(files):
+    same_lengths = len(extant_files) == len(files)
+    if len(checksums) == 1 and same_lengths:
         # All files are present and identical.
         return
+
+    # In this case we also consider files indentical, if
+    # (1) The group only containts two files.
+    # (2) The lines of one file are the same as the lines of another file
+    # modulo comments.
+    if accept_prefix and same_lengths and len(extant_files) == 2:
+        with open(extant_files[0], 'r') as f1:
+            file1_lines = [l.strip('\n\r') for l in f1.readlines()]
+        with open(extant_files[1], 'r') as f2:
+            file2_lines = [l.strip('\n\r') for l in f2.readlines()]
+        if equivalent_lines(file1_lines, file2_lines):
+            return
 
     master_file = master_file_picker(extant_files)
     if master_file is None:
@@ -139,9 +163,10 @@ def sync_identical_files(emit_error):
         raise Exception("Bad command line or file not found")
     chdir_repo_root()
     load_if_exists('.', 'config/identical-files.json')
-    file_groups.update(csharp_test_files())
+    for group_name, files in csharp_test_files().items():
+        check_group(group_name, files, master_file_picker, emit_error, True)
     for group_name, files in file_groups.items():
-        check_group(group_name, files, master_file_picker, emit_error)
+        check_group(group_name, files, master_file_picker, emit_error, False)
 
 def main():
     sync_identical_files(emit_local_error)
