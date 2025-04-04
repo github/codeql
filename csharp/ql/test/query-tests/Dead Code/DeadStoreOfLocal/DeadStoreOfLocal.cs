@@ -157,7 +157,7 @@ public class OutParam
     public void Test()
     {
         int x;
-        Fn(out x); // Missing Alert
+        Fn(out x); // $ MISSING: Alert
         Fn(out _); // GOOD
     }
 
@@ -194,7 +194,7 @@ public class Captured
 
     void M2()
     {
-        var x = M6(); // Missing Alert
+        var x = M6(); // $ MISSING: Alert
         Action a = () =>
         {
             x = 1; // GOOD
@@ -208,7 +208,7 @@ public class Captured
         int x;
         Action a = () =>
         {
-            x = 1; // Missing Alert
+            x = 1; // $ MISSING: Alert
         };
         a();
     }
@@ -230,7 +230,7 @@ public class Captured
 
     void M5()
     {
-        int x = 0; // Missing Alert.
+        int x = 0; // $ MISSING: Alert
         Action a = () =>
         {
             x = 1; // GOOD
@@ -250,7 +250,7 @@ public class Captured
         int captured = 0; // GOOD: Variable captured variable
         fn(() => { return captured; });
 
-        return captured = 1; // Missing Alert.
+        return captured = 1; // $ MISSING: Alert
     }
 
     void M7()
