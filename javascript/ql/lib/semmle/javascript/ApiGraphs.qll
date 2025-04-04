@@ -1372,7 +1372,7 @@ module API {
       exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
         next = trackDefNode(nd, t) and
         StepSummary::step(prev, next, summary) and
-        result = t.prepend(summary)
+        result = t.prepend_cached(summary)
       )
     }
 
