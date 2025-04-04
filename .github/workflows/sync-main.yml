@@ -60,3 +60,5 @@ jobs:
           else
             echo "PR already exists: $PR_URL"
           fi
+        env:
+          GH_TOKEN: ${{ github.token }}
