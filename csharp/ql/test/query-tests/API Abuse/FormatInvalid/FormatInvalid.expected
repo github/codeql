@@ -7,12 +7,14 @@
 | FormatInvalid.cs:42:23:42:28 | "{0}}" | FormatInvalid.cs:42:23:42:28 | "{0}}" | FormatInvalid.cs:42:23:42:28 | "{0}}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:42:9:42:35 | call to method Format | this | FormatInvalid.cs:42:9:42:35 | call to method Format | this |
 | FormatInvalid.cs:45:23:45:32 | "{foo{0}}" | FormatInvalid.cs:45:23:45:32 | "{foo{0}}" | FormatInvalid.cs:45:23:45:32 | "{foo{0}}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:45:9:45:36 | call to method Format | this | FormatInvalid.cs:45:9:45:36 | call to method Format | this |
 | FormatInvalid.cs:51:23:51:28 | "}{0}" | FormatInvalid.cs:51:23:51:28 | "}{0}" | FormatInvalid.cs:51:23:51:28 | "}{0}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:51:9:51:32 | call to method Format | this | FormatInvalid.cs:51:9:51:32 | call to method Format | this |
+| FormatInvalid.cs:75:23:75:25 | "}" | FormatInvalid.cs:75:23:75:25 | "}" | FormatInvalid.cs:75:23:75:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:75:9:75:26 | call to method Format | this | FormatInvalid.cs:75:9:75:26 | call to method Format | this |
 | FormatInvalid.cs:76:23:76:25 | "}" | FormatInvalid.cs:76:23:76:25 | "}" | FormatInvalid.cs:76:23:76:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:76:9:76:29 | call to method Format | this | FormatInvalid.cs:76:9:76:29 | call to method Format | this |
 | FormatInvalid.cs:77:23:77:25 | "}" | FormatInvalid.cs:77:23:77:25 | "}" | FormatInvalid.cs:77:23:77:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:77:9:77:30 | call to method Format | this | FormatInvalid.cs:77:9:77:30 | call to method Format | this |
 | FormatInvalid.cs:78:27:78:29 | "}" | FormatInvalid.cs:78:27:78:29 | "}" | FormatInvalid.cs:78:27:78:29 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:78:9:78:34 | call to method Format | this | FormatInvalid.cs:78:9:78:34 | call to method Format | this |
 | FormatInvalid.cs:79:23:79:25 | "}" | FormatInvalid.cs:79:23:79:25 | "}" | FormatInvalid.cs:79:23:79:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:79:9:79:32 | call to method Format | this | FormatInvalid.cs:79:9:79:32 | call to method Format | this |
 | FormatInvalid.cs:80:23:80:25 | "}" | FormatInvalid.cs:80:23:80:25 | "}" | FormatInvalid.cs:80:23:80:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:80:9:80:35 | call to method Format | this | FormatInvalid.cs:80:9:80:35 | call to method Format | this |
 | FormatInvalid.cs:81:23:81:25 | "}" | FormatInvalid.cs:81:23:81:25 | "}" | FormatInvalid.cs:81:23:81:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:81:9:81:38 | call to method Format | this | FormatInvalid.cs:81:9:81:38 | call to method Format | this |
+| FormatInvalid.cs:83:25:83:27 | "}" | FormatInvalid.cs:83:25:83:27 | "}" | FormatInvalid.cs:83:25:83:27 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:83:9:83:28 | call to method AppendFormat | this | FormatInvalid.cs:83:9:83:28 | call to method AppendFormat | this |
 | FormatInvalid.cs:84:25:84:27 | "}" | FormatInvalid.cs:84:25:84:27 | "}" | FormatInvalid.cs:84:25:84:27 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:84:9:84:31 | call to method AppendFormat | this | FormatInvalid.cs:84:9:84:31 | call to method AppendFormat | this |
 | FormatInvalid.cs:85:25:85:27 | "}" | FormatInvalid.cs:85:25:85:27 | "}" | FormatInvalid.cs:85:25:85:27 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:85:9:85:32 | call to method AppendFormat | this | FormatInvalid.cs:85:9:85:32 | call to method AppendFormat | this |
 | FormatInvalid.cs:86:29:86:31 | "}" | FormatInvalid.cs:86:29:86:31 | "}" | FormatInvalid.cs:86:29:86:31 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:86:9:86:36 | call to method AppendFormat | this | FormatInvalid.cs:86:9:86:36 | call to method AppendFormat | this |
@@ -41,15 +43,6 @@
 | FormatInvalid.cs:117:56:117:58 | "}" | FormatInvalid.cs:117:56:117:58 | [assertion success] "}" | FormatInvalid.cs:117:56:117:58 | [assertion success] "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:117:9:117:63 | call to method Assert | this | FormatInvalid.cs:117:9:117:63 | call to method Assert | this |
 | FormatInvalid.cs:118:18:118:20 | "}" | FormatInvalid.cs:118:18:118:20 | "}" | FormatInvalid.cs:118:18:118:20 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:118:9:118:24 | call to method Write | this | FormatInvalid.cs:118:9:118:24 | call to method Write | this |
 | FormatInvalid.cs:119:40:119:42 | "}" | FormatInvalid.cs:119:40:119:42 | "}" | FormatInvalid.cs:119:40:119:42 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:119:9:119:47 | call to method Print | this | FormatInvalid.cs:119:9:119:47 | call to method Print | this |
-| FormatInvalid.cs:124:9:124:32 | call to method WriteLine | FormatInvalid.cs:124:27:124:31 | "{0}" | FormatInvalid.cs:124:27:124:31 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:124:27:124:31 | "{0}" | this | FormatInvalid.cs:124:27:124:31 | "{0}" | this |
-| FormatInvalid.cs:125:9:125:28 | call to method Write | FormatInvalid.cs:125:23:125:27 | "{0}" | FormatInvalid.cs:125:23:125:27 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:125:23:125:27 | "{0}" | this | FormatInvalid.cs:125:23:125:27 | "{0}" | this |
-| FormatInvalid.cs:126:9:126:27 | call to method WriteLine | FormatInvalid.cs:126:22:126:26 | "{0}" | FormatInvalid.cs:126:22:126:26 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:126:22:126:26 | "{0}" | this | FormatInvalid.cs:126:22:126:26 | "{0}" | this |
-| FormatInvalid.cs:127:9:127:23 | call to method Write | FormatInvalid.cs:127:18:127:22 | "{0}" | FormatInvalid.cs:127:18:127:22 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:127:18:127:22 | "{0}" | this | FormatInvalid.cs:127:18:127:22 | "{0}" | this |
-| FormatInvalid.cs:128:9:128:45 | call to method Print | FormatInvalid.cs:128:40:128:44 | "{0}" | FormatInvalid.cs:128:40:128:44 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:128:40:128:44 | "{0}" | this | FormatInvalid.cs:128:40:128:44 | "{0}" | this |
-| FormatInvalid.cs:131:9:131:50 | call to method TraceError | FormatInvalid.cs:131:45:131:49 | "{0}" | FormatInvalid.cs:131:45:131:49 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:131:45:131:49 | "{0}" | this | FormatInvalid.cs:131:45:131:49 | "{0}" | this |
-| FormatInvalid.cs:132:9:132:56 | call to method TraceInformation | FormatInvalid.cs:132:51:132:55 | "{0}" | FormatInvalid.cs:132:51:132:55 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:132:51:132:55 | "{0}" | this | FormatInvalid.cs:132:51:132:55 | "{0}" | this |
-| FormatInvalid.cs:133:9:133:52 | call to method TraceWarning | FormatInvalid.cs:133:47:133:51 | "{0}" | FormatInvalid.cs:133:47:133:51 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:133:47:133:51 | "{0}" | this | FormatInvalid.cs:133:47:133:51 | "{0}" | this |
-| FormatInvalid.cs:134:9:134:34 | call to method TraceInformation | FormatInvalid.cs:134:29:134:33 | "{0}" | FormatInvalid.cs:134:29:134:33 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatInvalid.cs:134:29:134:33 | "{0}" | this | FormatInvalid.cs:134:29:134:33 | "{0}" | this |
 | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | Invalid format string used in $@ formatting call. | FormatInvalidBad.cs:7:16:7:50 | call to method Format | this | FormatInvalidBad.cs:7:16:7:50 | call to method Format | this |
 | FormatMissingArgument.cs:11:9:11:31 | call to method Format | FormatMissingArgument.cs:11:23:11:27 | "{1}" | FormatMissingArgument.cs:11:23:11:27 | "{1}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:11:23:11:27 | "{1}" | this | FormatMissingArgument.cs:11:23:11:27 | "{1}" | this |
 | FormatMissingArgument.cs:11:9:11:31 | call to method Format | FormatMissingArgument.cs:11:23:11:27 | "{1}" | FormatMissingArgument.cs:11:23:11:27 | "{1}" | The $@ ignores $@. | FormatMissingArgument.cs:11:23:11:27 | "{1}" | format string | FormatMissingArgument.cs:11:30:11:30 | (...) ... | this supplied value |
@@ -133,16 +126,6 @@ nodes
 | FormatInvalid.cs:117:56:117:58 | [assertion success] "}" | semmle.label | [assertion success] "}" |
 | FormatInvalid.cs:118:18:118:20 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:119:40:119:42 | "}" | semmle.label | "}" |
-| FormatInvalid.cs:121:27:121:29 | "}" | semmle.label | "}" |
-| FormatInvalid.cs:124:27:124:31 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:125:23:125:27 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:126:22:126:26 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:127:18:127:22 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:128:40:128:44 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:131:45:131:49 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:132:51:132:55 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:133:47:133:51 | "{0}" | semmle.label | "{0}" |
-| FormatInvalid.cs:134:29:134:33 | "{0}" | semmle.label | "{0}" |
 | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | semmle.label | "class {0} { }" |
 | FormatInvalidGood.cs:7:30:7:46 | "class {0} {{ }}" | semmle.label | "class {0} {{ }}" |
 | FormatMissingArgument.cs:8:23:8:27 | "{0}" | semmle.label | "{0}" |
@@ -172,33 +155,3 @@ nodes
 | FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | semmle.label | "Error processing file: {1} ({1})" |
 | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
 subpaths
-testFailures
-| FormatInvalid.cs:75:29:75:38 | // ... | Missing result: Alert |
-| FormatInvalid.cs:83:31:83:40 | // ... | Missing result: Alert |
-| FormatInvalid.cs:124:9:124:32 | FormatInvalid.cs:124:27:124:31 | Unexpected result: Alert |
-| FormatInvalid.cs:124:27:124:31 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:124:27:124:31 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:125:9:125:28 | FormatInvalid.cs:125:23:125:27 | Unexpected result: Alert |
-| FormatInvalid.cs:125:23:125:27 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:125:23:125:27 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:126:9:126:27 | FormatInvalid.cs:126:22:126:26 | Unexpected result: Alert |
-| FormatInvalid.cs:126:22:126:26 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:126:22:126:26 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:127:9:127:23 | FormatInvalid.cs:127:18:127:22 | Unexpected result: Alert |
-| FormatInvalid.cs:127:18:127:22 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:127:18:127:22 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:128:9:128:45 | FormatInvalid.cs:128:40:128:44 | Unexpected result: Alert |
-| FormatInvalid.cs:128:40:128:44 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:128:40:128:44 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:131:9:131:50 | FormatInvalid.cs:131:45:131:49 | Unexpected result: Alert |
-| FormatInvalid.cs:131:45:131:49 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:131:45:131:49 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:132:9:132:56 | FormatInvalid.cs:132:51:132:55 | Unexpected result: Alert |
-| FormatInvalid.cs:132:51:132:55 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:132:51:132:55 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:133:9:133:52 | FormatInvalid.cs:133:47:133:51 | Unexpected result: Alert |
-| FormatInvalid.cs:133:47:133:51 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:133:47:133:51 | "{0}" | Unexpected result: Sink |
-| FormatInvalid.cs:134:9:134:34 | FormatInvalid.cs:134:29:134:33 | Unexpected result: Alert |
-| FormatInvalid.cs:134:29:134:33 | "{0}" | Unexpected result: Alert |
-| FormatInvalid.cs:134:29:134:33 | "{0}" | Unexpected result: Sink |
