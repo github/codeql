@@ -236,7 +236,7 @@ module Stages {
       or
       exists(any(DataFlow::TypeTracker t).append(_))
       or
-      exists(any(DataFlow::TypeBackTracker t).prepend(_))
+      exists(any(DataFlow::TypeBackTracker t).prepend_cached(_))
       or
       DataFlow::functionForwardingStep(_, _)
       or
