@@ -837,6 +837,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
     TMACAlgorithm(MACAlgorithmInstanceOrValueConsumer e) or
+    TKeyAgreementAlgorithm(KeyAgreementAlgorithmInstance e) or
     // Non-standalone Algorithms (e.g., Mode, Padding)
     // TODO: need to rename this, as "mode" is getting reused in different contexts, be precise
     TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
@@ -2219,5 +2220,57 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, AlgorithmNode {
     final override string getInternalType() { result = "KeyEncapsulationAlgorithm" }
+  }
+
+  /**
+   * Key agreement algorithms
+   */
+  newtype TKeyAgreementType =
+    DH() or // Diffie-Hellman
+    EDH() or // Ephemeral Diffie-Hellman
+    ECDH() or // Elliptic Curve Diffie-Hellman
+    // Note: x25519 and x448 are applications of ECDH
+    OtherKeyAgreementType()
+
+  bindingset[name]
+  predicate isKeyAgreementAlgorithmName(string name) { isKeyAgreementAlgorithm(name, _) }
+
+  bindingset[name]
+  predicate isKeyAgreementAlgorithm(string name, TKeyAgreementType type) {
+    exists(string name2 | name2 = name.toUpperCase() |
+      name2 = "DH" and type = DH()
+      or
+      name2 = "EDH" and type = EDH()
+      or
+      name2 = "ECDH" and type = ECDH()
+      or
+      name2 = "X25519" and type = ECDH()
+      or
+      name2 = "X448" and type = ECDH()
+    )
+  }
+
+  abstract class KeyAgreementAlgorithmInstance extends AlgorithmInstance {
+    // /**
+    //  * If the key agreement uses a curve, (e.g., ECDH) point to the curve instance.
+    //  * none() if the agreement is not curve based (e.g., plain DH).
+    //  * Note that if the curve is inherent to the algorithm (e.g., x25519), this will be
+    //  * the key agreement algorithm instance itself (this).
+    //  */
+    // abstract EllipticCurveAlgorithmInstance getEllipticCurveAlgorithm();
+  }
+
+  abstract class KeyAgreementSecretGenerationOperationInstance extends OperationInstance {
+    /**
+     * The private key used in the key agreement operation.
+     * This key represents the local party in the key agreement.
+     */
+    abstract ConsumerInputDataFlowNode getServerKeyConsumer();
+
+    /**
+     * The public key used in the key agreement operation, coming
+     * from the peer (the other party in the key agreement).
+     */
+    abstract ConsumerInputDataFlowNode getPeerKeyConsumer();
   }
 }

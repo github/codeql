@@ -57,6 +57,9 @@ module JCAModel {
   predicate elliptic_curve_names(string name) { Crypto::isEllipticCurveAlgorithmName(name) }
 
   bindingset[name]
+  predicate key_agreement_names(string name) { Crypto::isKeyAgreementAlgorithmName(name) }
+
+  bindingset[name]
   Crypto::TKeyDerivationType kdf_name_to_kdf_type(string name, string withSubstring) {
     name.matches("PBKDF2With%") and
     result instanceof Crypto::PBKDF2 and
@@ -123,6 +126,10 @@ module JCAModel {
     string getStandardEllipticCurveName() { result = this.getValue() }
   }
 
+  class KeyAgreementStringLiteral extends StringLiteral {
+    KeyAgreementStringLiteral() { key_agreement_names(this.getValue()) }
+  }
+
   class CipherGetInstanceCall extends Call {
     CipherGetInstanceCall() {
       this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "getInstance")
@@ -166,7 +173,7 @@ module JCAModel {
     TaintTracking::Global<CipherAlgorithmStringToFetchConfig>;
 
   /**
-   * Data-flow configuration modelling flow from a cipher string literal to a value consumer argument.
+   * Data-flow configuration modelling flow from a elliptic curve literal to a value consumer argument.
    */
   private module EllipticCurveAlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof EllipticCurveStringLiteral }
@@ -208,6 +215,89 @@ module JCAModel {
       if this.paddingToNameMappingKnown(_, super.getPadding())
       then this.paddingToNameMappingKnown(result, super.getPadding())
       else result instanceof Crypto::OtherPadding
+    }
+  }
+
+  /**
+   * Data-flow configuration modelling flow from a key agreement literal to a value consumer argument.
+   */
+  private module KeyAgreementAlgorithmStringToFetchConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof KeyAgreementStringLiteral }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(Crypto::AlgorithmValueConsumer consumer | sink = consumer.getInputNode())
+    }
+  }
+
+  module KeyAgreementAlgorithmStringToFetchFlow =
+    TaintTracking::Global<KeyAgreementAlgorithmStringToFetchConfig>;
+
+  class KeyAgreementInitCall extends MethodCall {
+    KeyAgreementInitCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "KeyAgreement", "init")
+    }
+
+    Expr getServerKeyArg() { result = this.getArgument(0) }
+  }
+
+  private module KeyAgreementInitQualifierToSecretGenQualifierConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      exists(KeyAgreementInitCall init | src.asExpr() = init.getQualifier())
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(KeyAgreementGenerateSecretCall c | sink.asExpr() = c.getQualifier())
+    }
+
+    /**
+     * Barrier if we go into another init, assume the second init overwrites the first
+     */
+    predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+  }
+
+  module KeyAgreementInitQualifierToSecretGenQualifierFlow =
+    DataFlow::Global<KeyAgreementInitQualifierToSecretGenQualifierConfig>;
+
+  class KeyAgreementGenerateSecretCall extends MethodCall {
+    KeyAgreementGenerateSecretCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "KeyAgreement", "generateSecret")
+    }
+
+    KeyAgreementInitCall getKeyAgreementInitCall() {
+      KeyAgreementInitQualifierToSecretGenQualifierFlow::flow(DataFlow::exprNode(result
+              .getQualifier()), DataFlow::exprNode(this.getQualifier()))
+    }
+  }
+
+  private module KeyAgreementAVCToInitQualifierConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) {
+      exists(KeyAgreementAlgorithmValueConsumer consumer | consumer.getResultNode() = src)
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(KeyAgreementInitCall init | sink.asExpr() = init.getQualifier())
+    }
+  }
+
+  module KeyAgreementAVCToInitQualifierFlow =
+    DataFlow::Global<KeyAgreementAVCToInitQualifierConfig>;
+
+  class KeyAgreementSecretGenerationOperationInstance extends Crypto::KeyAgreementSecretGenerationOperationInstance instanceof KeyAgreementGenerateSecretCall
+  {
+    override Crypto::ConsumerInputDataFlowNode getServerKeyConsumer() {
+      this.(KeyAgreementGenerateSecretCall).getKeyAgreementInitCall().getServerKeyArg() =
+        result.asExpr()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getPeerKeyConsumer() {
+      none() //TODO
+    }
+
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      none() // TODO: key agreeement has it's own algorithm consumer, separate from the key
+      // TODO: the char pred must trace from the consumer to here,
+      // in theory, along that path we would get the init and doPhase, but can I just get those
+      // separately avoiding a complicated config state for dataflow?
     }
   }
 
@@ -339,7 +429,7 @@ module JCAModel {
   }
 
   class EllipticCurveStringLiteralAlgorithmInstance extends JCAAlgorithmInstance,
-    Crypto::EllipticCurveAlgorithmInstance instanceof StringLiteral
+    Crypto::EllipticCurveAlgorithmInstance instanceof EllipticCurveStringLiteral
   {
     Crypto::AlgorithmValueConsumer consumer;
 
@@ -365,6 +455,47 @@ module JCAModel {
         result = keySize.toString()
       )
     }
+  }
+
+  class KeyAgreementGetInstanceCall extends MethodCall {
+    KeyAgreementGetInstanceCall() {
+      this.getCallee().hasQualifiedName("javax.crypto", "KeyAgreement", "getInstance")
+    }
+
+    Expr getAlgorithmArg() { result = super.getArgument(0) }
+  }
+
+  class KeyAgreementAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
+    KeyAgreementGetInstanceCall call;
+
+    KeyAgreementAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
+
+    DataFlow::Node getResultNode() { result.asExpr() = call }
+
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
+
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+      result.(KeyAgreementStringLiteralAlgorithmInstance).getConsumer() = this
+    }
+  }
+
+  class KeyAgreementStringLiteralAlgorithmInstance extends JCAAlgorithmInstance,
+    Crypto::KeyAgreementAlgorithmInstance instanceof KeyAgreementStringLiteral
+  {
+    Crypto::AlgorithmValueConsumer consumer;
+
+    KeyAgreementStringLiteralAlgorithmInstance() {
+      KeyAgreementAlgorithmStringToFetchFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
+    }
+
+    override Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
+    // override Crypto::EllipticCurveAlgorithmInstance getEllipticCurveAlgorithm() {
+    //   this.(KeyAgreementStringLiteral).getValue().toUpperCase() in ["X25519", "X448"] and
+    //   // NOTE: this relies upon modeling the elliptic curve on 'this' separately
+    //   result = this
+    //   // TODO: or is ecdh and go find the curve
+    //   //  this.(KeyAgreementStringLiteral).toString().toUpperCase() = ["ECDH"]
+    // }
   }
 
   class CipherStringLiteralAlgorithmInstance extends JCAAlgorithmInstance,
