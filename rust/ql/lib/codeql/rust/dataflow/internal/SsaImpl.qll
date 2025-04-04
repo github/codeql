@@ -189,7 +189,7 @@ private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) 
     hasCapturedRead(pragma[only_bind_into](v), pragma[only_bind_into](scope)) and
     (
       variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
-      variableWriteInOuterScope(bb.getAPredecessor+(), _, v, scope)
+      variableWriteInOuterScope(bb.getImmediateDominator+(), _, v, scope)
     ) and
     call = bb.getNode(i).getAstNode()
   )
@@ -340,10 +340,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
-  /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    none() // handled in `DataFlowImpl.qll` instead
-  }
+  predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 
   private predicate isArg(CfgNodes::CallExprBaseCfgNode call, CfgNodes::ExprCfgNode e) {
     call.getArgument(_) = e
@@ -362,13 +359,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
       mutablyBorrows(bb.getNode(i).getAstNode(), v) and
       isArg(call, bb.getNode(i))
     )
-  }
-
-  class Parameter = CfgNodes::ParamBaseCfgNode;
-
-  /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    none() // handled in `DataFlowImpl.qll` instead
   }
 
   class Guard extends CfgNodes::AstCfgNode {

@@ -25,11 +25,6 @@ namespace ConstantIfCondition
             }
         }
 
-        public int Max(int a, int b)
-        {
-            return a > a ? a : b; // $ Alert
-        }
-
         public int Bar()
         {
             return ZERO;

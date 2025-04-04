@@ -956,8 +956,6 @@ class GlobalDef extends Definition {
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
-  private import codeql.util.Void
-
   class Expr extends Instruction {
     Expr() {
       exists(IRBlock bb, int i |
@@ -977,13 +975,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     )
   }
 
-  predicate ssaDefAssigns(SsaImpl::WriteDefinition def, Expr value) { none() }
-
-  class Parameter extends Void {
-    Location getLocation() { none() }
-  }
-
-  predicate ssaDefInitializesParam(SsaImpl::WriteDefinition def, Parameter p) { none() }
+  predicate ssaDefHasSource(SsaImpl::WriteDefinition def) { none() }
 
   predicate allowFlowIntoUncertainDef(SsaImpl::UncertainWriteDefinition def) { any() }
 
@@ -1077,7 +1069,7 @@ module BarrierGuard<guardChecksNodeSig/3 guardChecksNode> {
 
 bindingset[result, v]
 pragma[inline_late]
-DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
+private DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
   result = n.(SsaSynthNode).getSynthNode()
   or
   exists(UseImpl use, IRBlock bb, int i |

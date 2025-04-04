@@ -8,7 +8,7 @@ private import codeql.rust.internal.CachedStages
 
 cached
 newtype TType =
-  TStruct(Struct s) { Stages::TypeInference::ref() } or
+  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
   TEnum(Enum e) or
   TTrait(Trait t) or
   TImpl(Impl i) or
@@ -16,7 +16,7 @@ newtype TType =
   TRefType() or // todo: add mut?
   TTypeParamTypeParameter(TypeParam t) or
   TRefTypeParameter() or
-  TSelfTypeParameter()
+  TSelfTypeParameter(Trait t)
 
 /**
  * A type without type arguments.
@@ -104,7 +104,7 @@ class StructType extends StructOrEnumType, TStruct {
     result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
   }
 
-  override string toString() { result = struct.toString() }
+  override string toString() { result = struct.getName().getText() }
 
   override Location getLocation() { result = struct.getLocation() }
 }
@@ -125,7 +125,7 @@ class EnumType extends StructOrEnumType, TEnum {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
   }
 
-  override string toString() { result = enum.toString() }
+  override string toString() { result = enum.getName().getText() }
 
   override Location getLocation() { result = enum.getLocation() }
 }
@@ -144,9 +144,6 @@ class TraitType extends Type, TTrait {
 
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
-    or
-    result = TSelfTypeParameter() and
-    i = -1
   }
 
   pragma[nomagic]
@@ -226,11 +223,9 @@ class ImplType extends Type, TImpl {
 
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(impl.getGenericParamList().getTypeParam(i))
-    or
-    result = TSelfTypeParameter() and
-    i = -1
   }
 
+  /** Get the trait implemented by this `impl` block, if any. */
   override TypeMention getABaseTypeMention() { result = impl.getTrait() }
 
   override string toString() { result = impl.toString() }
@@ -334,11 +329,29 @@ class RefTypeParameter extends TypeParameter, TRefTypeParameter {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
-/** An implicit `Self` type parameter. */
+/**
+ * The implicit `Self` type parameter of a trait, that refers to the
+ * implementing type of the trait.
+ *
+ * The Rust Reference on the implicit `Self` parameter:
+ * https://doc.rust-lang.org/reference/items/traits.html#r-items.traits.self-param
+ */
 class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
-  override Function getMethod(string name) { none() }
+  private Trait trait;
 
-  override string toString() { result = "(Self)" }
+  SelfTypeParameter() { this = TSelfTypeParameter(trait) }
 
-  override Location getLocation() { result instanceof EmptyLocation }
+  Trait getTrait() { result = trait }
+
+  override TypeMention getABaseTypeMention() { result = trait }
+
+  override Function getMethod(string name) {
+    // The `Self` type parameter is an implementation of the trait, so it has
+    // all the trait's methods.
+    result = trait.(ItemNode).getASuccessor(name)
+  }
+
+  override string toString() { result = "Self [" + trait.toString() + "]" }
+
+  override Location getLocation() { result = trait.getLocation() }
 }

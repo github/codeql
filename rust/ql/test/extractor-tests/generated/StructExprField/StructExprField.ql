@@ -2,11 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from StructExprField x, int getNumberOfAttrs, string hasExpr, string hasNameRef
+from StructExprField x, int getNumberOfAttrs, string hasExpr, string hasIdentifier
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
-  if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasNameRef:", hasNameRef
+  if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasIdentifier:",
+  hasIdentifier

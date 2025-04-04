@@ -18,7 +18,6 @@
 | A.java:21:11:21:13 | "B" : String | A.java:15:16:15:22 | get(...) : String |
 | A.java:21:11:21:13 | "B" : String | A.java:21:7:21:13 | ...=... : String |
 | A.java:21:11:21:13 | "B" : String | A.java:25:5:25:26 | SSA phi(s) : String |
-| A.java:21:11:21:13 | "B" : String | A.java:25:5:25:26 | phi(String s) : String |
 | A.java:21:11:21:13 | "B" : String | A.java:28:11:38:5 | String s : String |
 | A.java:21:11:21:13 | "B" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [String s] |
 | A.java:21:11:21:13 | "B" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [String s] |
@@ -35,7 +34,6 @@
 | A.java:23:11:23:13 | "C" : String | A.java:15:16:15:22 | get(...) : String |
 | A.java:23:11:23:13 | "C" : String | A.java:23:7:23:13 | ...=... : String |
 | A.java:23:11:23:13 | "C" : String | A.java:25:5:25:26 | SSA phi(s) : String |
-| A.java:23:11:23:13 | "C" : String | A.java:25:5:25:26 | phi(String s) : String |
 | A.java:23:11:23:13 | "C" : String | A.java:28:11:38:5 | String s : String |
 | A.java:23:11:23:13 | "C" : String | A.java:28:11:38:5 | new (...) : new A(...) { ... } [String s] |
 | A.java:23:11:23:13 | "C" : String | A.java:30:14:30:16 | parameter this : new A(...) { ... } [String s] |
