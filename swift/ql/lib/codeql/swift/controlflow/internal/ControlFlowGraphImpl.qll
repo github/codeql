@@ -186,9 +186,17 @@ module Stmts {
       )
     }
 
+    private Element getLastElement() {
+      result = ast.getLastElement()
+    }
+
+    private Element getAnElement() {
+      result = ast.getAnElement()
+    }
+
     predicate lastInner(ControlFlowElement last, Completion c) {
       // Normal exit and no defer statements
-      astLast(ast.getLastElement().getFullyUnresolved(), last, c) and
+      astLast(this.getLastElement().getFullyUnresolved(), last, c) and
       not exists(this.getFirstDeferStmtBody()) and
       c instanceof NormalCompletion
       or
@@ -198,7 +206,7 @@ module Stmts {
       or
       // Abnormal exit without any defer statements
       not c instanceof NormalCompletion and
-      astLast(ast.getAnElement().getFullyUnresolved(), last, c) and
+      astLast(this.getAnElement().getFullyUnresolved(), last, c) and
       not exists(this.getFirstDeferStmtBody())
     }
 
