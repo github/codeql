@@ -27,10 +27,13 @@ In the following (BAD) example, a `tasks` list is created, but each task capture
 <sample src="examples/bad.py" />
 <p>
 In the following (GOOD) example, each closure has an `i` default parameter, shadowing the outer <code>i</code> variable, the default value of which is determined as the value of the loop variable <code>i</code> at the time the closure is created.
-<sample src="examples/good.py" />
-In the following (GOOD) example, <code>functools.partial</code> is used to partially evaluate the lambda expression with the value of <code>i</code>.
-<sample src="examples/good2.py" />
 </p>
+<sample src="examples/good.py" />
+<p>
+In the following (GOOD) example, <code>functools.partial</code> is used to partially evaluate the lambda expression with the value of <code>i</code>.
+</p>
+<sample src="examples/good2.py" />
+
 
 
 </example>
