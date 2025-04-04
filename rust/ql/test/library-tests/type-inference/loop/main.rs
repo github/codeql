@@ -9,6 +9,6 @@ trait T1<T>: T2<S<T>> {
 
 trait T2<T>: T1<S<T>> {
     fn bar(self) {
-        self.foo()
+        self.foo() // $ method=foo
     }
 }

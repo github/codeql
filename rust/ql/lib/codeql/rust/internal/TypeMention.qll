@@ -29,27 +29,6 @@ abstract class TypeMention extends AstNode {
 
   /** Gets the type that the sub mention at `path` resolves to, if any. */
   Type resolveTypeAt(TypePath path) { result = this.getMentionAt(path).resolveType() }
-
-  /**
-   * Like `resolveTypeAt`, but also resolves `Self` mentions to the implicit
-   * `Self` type parameter.
-   *
-   * This is only needed when resolving types for calls to methods; inside the
-   * methods themselves, `Self` only resolves to the relevant trait or type
-   * being implemented.
-   */
-  final Type resolveTypeAtInclSelf(TypePath path) {
-    result = this.resolveTypeAt(path)
-    or
-    exists(TypeMention tm, ImplOrTraitItemNode node |
-      tm = this.getMentionAt(path) and
-      result = TSelfTypeParameter()
-    |
-      tm = node.getASelfPath()
-      or
-      tm.(PathTypeRepr).getPath() = node.getASelfPath()
-    )
-  }
 }
 
 class TypeReprMention extends TypeMention, TypeRepr {
@@ -78,13 +57,13 @@ class TypeReprMention extends TypeMention, TypeRepr {
 
 class PathMention extends TypeMention, Path {
   override TypeMention getTypeArgument(int i) {
-    result = this.getPart().getGenericArgList().getTypeArg(i)
+    result = this.getSegment().getGenericArgList().getTypeArg(i)
     or
-    // `Self` paths inside traits and `impl` blocks have implicit type arguments
-    // that are the type parameters of the trait or impl. For example, in
+    // `Self` paths inside `impl` blocks have implicit type arguments that are
+    // the type parameters of the `impl` block. For example, in
     //
     // ```rust
-    // impl Foo<T> {
+    // impl<T> Foo<T> {
     //   fn m(self) -> Self {
     //     self
     //   }
@@ -92,10 +71,9 @@ class PathMention extends TypeMention, Path {
     // ```
     //
     // the `Self` return type is shorthand for `Foo<T>`.
-    exists(ImplOrTraitItemNode node | this = node.getASelfPath() |
-      result = node.(ImplItemNode).getSelfPath().getPart().getGenericArgList().getTypeArg(i)
-      or
-      result = node.(Trait).getGenericParamList().getTypeParam(i)
+    exists(ImplItemNode node |
+      this = node.getASelfPath() and
+      result = node.(ImplItemNode).getSelfPath().getSegment().getGenericArgList().getTypeArg(i)
     )
   }
 
@@ -105,7 +83,13 @@ class PathMention extends TypeMention, Path {
       or
       result = TEnum(i)
       or
-      result = TTrait(i)
+      exists(TraitItemNode trait | trait = i |
+        // If this is a `Self` path, then it resolves to the implicit `Self`
+        // type parameter, otherwise it is a trait bound.
+        if this = trait.getASelfPath()
+        then result = TSelfTypeParameter(trait)
+        else result = TTrait(trait)
+      )
       or
       result = TTypeParamTypeParameter(i)
       or
@@ -140,7 +124,7 @@ private predicate isImplSelfTypeParam(
 ) {
   exists(PathMention path |
     selfPath = impl.getSelfPath() and
-    path = selfPath.getPart().getGenericArgList().getTypeArg(i).(PathTypeRepr).getPath() and
+    path = selfPath.getSegment().getGenericArgList().getTypeArg(i).(PathTypeRepr).getPath() and
     tp = path.resolveType()
   )
 }
@@ -170,4 +154,10 @@ class ImplMention extends TypeMention, ImplItemNode {
       path = TypePath::singleton(tp)
     )
   }
+}
+
+class TraitMention extends TypeMention, TraitItemNode {
+  override TypeMention getTypeArgument(int i) { result = this.getTypeParam(i) }
+
+  override Type resolveType() { result = TTrait(this) }
 }

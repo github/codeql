@@ -3,7 +3,7 @@ load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 _args = [
     "//rust/ast-generator",
-    "//rust/ast-generator:ungram",
+    "//rust/ast-generator:rust.ungram",
     "//rust/ast-generator:Cargo.toml",
     "//misc/codegen",
     "//rust:codegen-conf",
