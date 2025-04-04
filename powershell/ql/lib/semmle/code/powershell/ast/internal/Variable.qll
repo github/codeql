@@ -38,7 +38,7 @@ module Private {
 
     override string getNameImpl() { any(Synthesis s).variableSynthName(this, result) }
 
-    override Location getLocationImpl() { result = scope.getLocation() }
+    override Location getLocationImpl() { result = any(Synthesis s).getLocation(this) }
 
     override Scope::Range getDeclaringScopeImpl() { result = scope }
   }
