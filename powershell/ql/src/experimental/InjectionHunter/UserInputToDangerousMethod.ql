@@ -22,7 +22,7 @@ private module TestConfig implements DataFlow::ConfigSig {
             c.getName() = "Read-Host" and
             source.asExpr().getExpr() = c) }
   
-    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isSink(DataFlow::Node sink) { any()}//sink instanceof Sink }
     predicate isBarrier(DataFlow::Node node) {node instanceof Sanitizer}
 }
 
@@ -98,37 +98,33 @@ class AddScriptInvokeSink extends Sink {
 
 abstract class Sanitizer extends DataFlow::Node {}
 
-// class TypedParameterSanitizer extends Sanitizer{
-//     TypedParameterSanitizer() { 
-//         exists(Function f, CmdCall c, Parameter p, Argument a | 
-//             p = f.getAParameter() and
-//             a = c.getAnArgument() and 
-//             p.getName().toLowerCase() = a.getName() and 
-//             p.getStaticType() != "Object" and
-//             c.getName() = f.getName() and 
-            
-//             this.asExpr().getExpr() = a
+// class TypedParameterSanitizer extends Sanitizer {
+//     TypedParameterSanitizer() {
+//       exists(Function f, Parameter p |
+//         p = f.getAParameter() and
+//         p.getStaticType() != "Object" and
+//         this.asParameter() = p
+//       )
+//     }
+// }
+
+// class SingleQuoteSanitizer extends Sanitizer {
+//     SingleQuoteSanitizer() { 
+//         exists(Expr e, VarReadAccess v | 
+//             e = this.asExpr().getExpr().getParent() and
+//             e.toString().matches("%'$" + v.getVariable().getName() + "'%")
 //         )
 //     }
 // }
 
-class SingleQuoteSanitizer extends Sanitizer {
-    SingleQuoteSanitizer() { 
-        exists(Expr e, VarReadAccess v | 
-            e = this.asExpr().getExpr().getParent() and
-            e.toString().matches("%'$" + v.getVariable().getName() + "'%")
-        )
-    }
-}
-
 module TestFlow = TaintTracking::Global<TestConfig>;
 import TestFlow::PathGraph
 
-// from TestFlow::PathNode source, TestFlow::PathNode sink
-// where
-//     TestFlow::flowPath(source, sink) and 
-//     sink.getNode().asExpr().getExpr().getLocation().getFile().getBaseName() = "sanitizers.ps1" 
-// select sink.getNode(), source, sink, "Flow from user input to Invoke-Expression"
+from TestFlow::PathNode source, TestFlow::PathNode sink
+where
+    TestFlow::flowPath(source, sink) and 
+    sink.getNode().asExpr().getExpr().getLocation().getFile().getBaseName() = "sanitizers.ps1" 
+select sink.getNode(), source, sink, "Flow from user input to Invoke-Expression"
 
 // from Function f, CmdCall c 
 // where f.getLocation().getFile().getBaseName() = "sanitizers.ps1" 
@@ -155,15 +151,18 @@ import TestFlow::PathGraph
 // and e.getLocation().getStartLine() = 14
 // select e, e.getAChild(), e.getParent(), e.toString()
 
+// from PipelineParameter p 
+// where p.getLocation().getFile().getBaseName() = "userinput.ps1"
+// select p, p.getName(), p.getAChild()
 
-from Parameter p 
-where p.getLocation().getFile().getBaseName() = "userinput.ps1" 
-// p.getAnAttribute().toString() = "ValueFromPipeline" and 
+// from Attribute a
+// select a, a.getParent(), a.getParent().getAQlClass(), a.getANamedArgument()
 
-select p, p.getName()
+
 
 // from Expr e 
-// where e.getLocation().getFile().getBaseName() = "userinput.ps1"
+// where e.getLocation().getFile().getBaseName() = "sanitizers.ps1"
+// and e.getLocation().getStartLine() = 31
 // select e, e.getAQlClass()
 
 // from InvokeMemberExpr ie
