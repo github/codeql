@@ -97,15 +97,22 @@ module SsaFlow {
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
-    n = toParameterNode(result.(Impl::ParameterNode).getParameter())
+    exists(SsaImpl::ParameterExt p |
+      n = toParameterNode(p) and
+      p.isInitializedBy(result.(Impl::WriteDefSourceNode).getDefinition())
+    )
+    or
+    result.(Impl::WriteDefSourceNode).getDefinition().(Ssa::WriteDefinition).assigns(n.asExpr())
   }
 
-  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  predicate localFlowStep(
+    SsaImpl::SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
+  ) {
+    Impl::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
-  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(_, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -179,7 +186,7 @@ module LocalFlow {
   }
 
   predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
-    SsaFlow::localMustFlowStep(_, nodeFrom, nodeTo)
+    SsaFlow::localMustFlowStep(nodeFrom, nodeTo)
     or
     nodeFrom =
       unique(FlowSummaryNode n1 |
@@ -258,9 +265,7 @@ private module Cached {
     (
       LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      exists(SsaImpl::DefinitionExt def, boolean isUseStep |
-        SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
-      |
+      exists(boolean isUseStep | SsaFlow::localFlowStep(_, nodeFrom, nodeTo, isUseStep) |
         isUseStep = false
         or
         isUseStep = true and
@@ -293,8 +298,8 @@ private module Cached {
   }
 
   /** Holds if `n` wraps an SSA definition without ingoing flow. */
-  private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
-    n.getDefinitionExt() =
+  private predicate entrySsaDefinition(SsaDefinitionNodeImpl n) {
+    n.getDefinition() =
       any(SsaImpl::WriteDefinition def | not def.(Ssa::WriteDefinition).assigns(_))
   }
 
@@ -334,7 +339,7 @@ private module Cached {
     // to parameters (which are themselves local sources)
     entrySsaDefinition(n) and
     not exists(SsaImpl::ParameterExt p |
-      p.isInitializedBy(n.(SsaDefinitionExtNode).getDefinitionExt())
+      p.isInitializedBy(n.(SsaDefinitionNodeImpl).getDefinition())
     )
     or
     isStoreTargetNode(n)
@@ -419,57 +424,36 @@ predicate nodeIsHidden(Node n) { n.(NodeImpl).nodeIsHidden() }
 predicate neverSkipInPathGraph(Node n) { isReturned(n.(AstNode).getCfgNode()) }
 
 /** An SSA node. */
-abstract class SsaNode extends NodeImpl, TSsaNode {
+class SsaNode extends NodeImpl, TSsaNode {
   SsaImpl::DataFlowIntegration::SsaNode node;
-  SsaImpl::DefinitionExt def;
 
-  SsaNode() {
-    this = TSsaNode(node) and
-    def = node.getDefinitionExt()
-  }
+  SsaNode() { this = TSsaNode(node) }
 
-  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = node.getSourceVariable() }
 
   /** Holds if this node should be hidden from path explanations. */
-  abstract predicate isHidden();
+  predicate isHidden() { any() }
+
+  override CfgScope getCfgScope() { result = node.getBasicBlock().getScope() }
 
   override Location getLocationImpl() { result = node.getLocation() }
 
   override string toStringImpl() { result = node.toString() }
 }
 
-/** An (extended) SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionExtNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaDefinitionExtNode node;
+class SsaDefinitionNodeImpl extends SsaNode {
+  override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-  /** Gets the underlying variable. */
-  Variable getVariable() { result = def.getSourceVariable() }
+  Ssa::Definition getDefinition() { result = node.getDefinition() }
 
   override predicate isHidden() {
-    not def instanceof Ssa::WriteDefinition
-    or
-    def = getParameterDef(_)
+    exists(SsaImpl::Definition def | def = this.getDefinition() |
+      not def instanceof Ssa::WriteDefinition
+      or
+      def = getParameterDef(_)
+    )
   }
-
-  override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
-}
-
-class SsaDefinitionNodeImpl extends SsaDefinitionExtNode {
-  Ssa::Definition ssaDef;
-
-  SsaDefinitionNodeImpl() { ssaDef = def }
-
-  override Location getLocationImpl() { result = ssaDef.getLocation() }
-
-  override string toStringImpl() { result = ssaDef.toString() }
-}
-
-class SsaInputNode extends SsaNode {
-  override SsaImpl::DataFlowIntegration::SsaInputNode node;
-
-  override predicate isHidden() { any() }
-
-  override CfgScope getCfgScope() { result = node.getDefinitionExt().getBasicBlock().getScope() }
 }
 
 private string getANamedArgument(CfgNodes::ExprNodes::CallExprCfgNode c) {
