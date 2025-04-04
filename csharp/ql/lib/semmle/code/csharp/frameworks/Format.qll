@@ -8,67 +8,91 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
 
 /** A method that formats a string, for example `string.Format()`. */
-class FormatMethod extends Method {
-  FormatMethod() {
-    exists(Class declType | declType = this.getDeclaringType() |
-      this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
-      this.getParameter(1).getType() instanceof StringType and
-      (
-        this = any(SystemStringClass c).getFormatMethod()
-        or
-        this = any(SystemTextStringBuilderClass c).getAppendFormatMethod()
-      )
-      or
-      this.getParameter(0).getType() instanceof StringType and
-      (
-        this = any(SystemStringClass c).getFormatMethod()
-        or
-        this = any(SystemTextStringBuilderClass c).getAppendFormatMethod()
-        or
-        (this.hasName("Write") or this.hasName("WriteLine")) and
-        (
-          declType.hasFullyQualifiedName("System", "Console")
-          or
-          declType.hasFullyQualifiedName("System.IO", "TextWriter")
-          or
-          declType.hasFullyQualifiedName("System.Diagnostics", "Debug") and
-          this.getParameter(1).getType() instanceof ArrayType
-        )
-        or
-        declType.hasFullyQualifiedName("System.Diagnostics", "Trace") and
-        (
-          this.hasName("TraceError") or
-          this.hasName("TraceInformation") or
-          this.hasName("TraceWarning")
-        )
-        or
-        this.hasName("TraceInformation") and
-        declType.hasFullyQualifiedName("System.Diagnostics", "TraceSource")
-        or
-        this.hasName("Print") and
-        declType.hasFullyQualifiedName("System.Diagnostics", "Debug")
-      )
-      or
-      this.hasName("Assert") and
-      declType.hasFullyQualifiedName("System.Diagnostics", "Debug") and
-      this.getNumberOfParameters() = 4
-    )
-  }
-
+abstract class FormatMethod extends Method {
   /**
    * Gets the argument containing the format string. For example, the argument of
    * `string.Format(IFormatProvider, String, Object)` is `1`.
    */
-  int getFormatArgument() {
+  abstract int getFormatArgument();
+}
+
+private class StringAndStringBuilderFormatMethods extends FormatMethod {
+  StringAndStringBuilderFormatMethods() {
+    (
+      this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
+      this.getParameter(1).getType() instanceof StringType
+      or
+      this.getParameter(0).getType() instanceof StringType
+    ) and
+    (
+      this = any(SystemStringClass c).getFormatMethod()
+      or
+      this = any(SystemTextStringBuilderClass c).getAppendFormatMethod()
+    )
+  }
+
+  override int getFormatArgument() {
     if this.getParameter(0).getType() instanceof SystemIFormatProviderInterface
     then result = 1
-    else
-      if
-        this.hasName("Assert") and
-        this.getDeclaringType().hasFullyQualifiedName("System.Diagnostics", "Debug")
-      then result = 2
-      else result = 0
+    else result = 0
   }
+}
+
+private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMethod {
+  SystemConsoleAndSystemIoTextWriterFormatMethods() {
+    this.getParameter(0).getType() instanceof StringType and
+    exists(Class declType | declType = this.getDeclaringType() |
+      this.hasName(["Write", "WriteLine"]) and
+      (
+        declType.hasFullyQualifiedName("System", "Console")
+        or
+        declType.hasFullyQualifiedName("System.IO", "TextWriter")
+      )
+    )
+  }
+
+  override int getFormatArgument() { result = 0 }
+}
+
+private class SystemDiagnosticsDebugAssert extends FormatMethod {
+  SystemDiagnosticsDebugAssert() {
+    this.hasName("Assert") and
+    this.getDeclaringType().hasFullyQualifiedName("System.Diagnostics", "Debug") and
+    this.getNumberOfParameters() = 4
+  }
+
+  override int getFormatArgument() { result = 2 }
+}
+
+private class SystemDiagnosticsFormatMethods extends FormatMethod {
+  SystemDiagnosticsFormatMethods() {
+    this.getParameter(0).getType() instanceof StringType and
+    exists(Class declType |
+      declType = this.getDeclaringType() and
+      declType.getNamespace().getFullName() = "System.Diagnostics"
+    |
+      declType.hasName("Trace") and
+      (
+        this.hasName("TraceError")
+        or
+        this.hasName("TraceInformation")
+        or
+        this.hasName("TraceWarning")
+      )
+      or
+      declType.hasName("TraceSource") and this.hasName("TraceInformation")
+      or
+      declType.hasName("Debug") and
+      (
+        this.hasName("Print")
+        or
+        this.hasName(["Write", "WriteLine"]) and
+        this.getParameter(1).getType() instanceof ArrayType
+      )
+    )
+  }
+
+  override int getFormatArgument() { result = 0 }
 }
 
 pragma[nomagic]
