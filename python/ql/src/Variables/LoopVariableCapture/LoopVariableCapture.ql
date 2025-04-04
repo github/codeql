@@ -11,7 +11,6 @@
 
 import python
 import LoopVariableCaptureQuery
-import semmle.python.dataflow.new.DataFlow
 import EscapingCaptureFlow::PathGraph
 
 from
