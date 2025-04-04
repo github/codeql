@@ -3,6 +3,7 @@
  * @description Capture of a loop variable is not the same as capturing the value of a loop variable, and may be erroneous.
  * @kind path-problem
  * @tags correctness
+ *       quality
  * @problem.severity error
  * @sub-severity low
  * @precision high

@@ -5,56 +5,40 @@
 
 <overview>
 <p> 
-Nested functions are a useful feature of Python as it allows a function to access the variables of its enclosing function.
-However, the programmer needs to be aware that when an inner function accesses a variable in an outer scope, 
-it is the variable that is captured, not the value of that variable.
+In Python, a nested function or lambda expression that captures a variable from its surrounding scope is a <em>late-binding</em> closure, 
+meaning that the value of the variable is determined when the closure is called, not when it is created.
 </p>
 <p>
-Therefore, care must be taken when the captured variable is a loop variable, since it is the loop <em>variable</em> and
-<em>not</em> the <em>value</em> of that variable that is captured.
-This will mean that by the time that the inner function executes, 
-the loop variable will have its final value, not the value when the inner function was created.
+Care must be taken when the captured variable is a loop variable. If the closure is called after the loop ends, it will use the value of the variable on the last iteration of the loop, rather than the value at the iteration at which it was created.
 </p>
 
 </overview>
 <recommendation>
 <p>
-The simplest way to fix this problem is to add a local variable of the same name as the outer variable and initialize that 
-using the outer variable as a default.
-<code>
-for var in seq:
-    ...
-    def inner_func(arg):
-        ...
-        use(var)
-</code>
-becomes
-<code>
-for var in seq:
-    ...
-    def inner_func(arg, var=var):
-        ...
-        use(var)
-</code>
+Ensure that closures that capture loop variables aren't used outside of a single iteration of the loop. 
+To capture the value of a loop variable at the time the closure is created, use a default parameter, or <code>functools.partial</code>. 
 </p>
 
 </recommendation>
 <example>
 <p>
-In this example, a list of functions is created which should each increment its argument by its index in the list.
-However, since <code>i</code> will be 9 when the functions execute, they will each increment their argument by 9.
+In the following (BAD) example, a `tasks` list is created, but each task captures the loop variable <code>i</code>, and reads the same value when run.
  </p>
-<sample src="LoopVariableCapture.py" />
+<sample src="examples/bad.py" />
 <p>
-This can be fixed by adding the default value as shown below. The default value is computed when the function is created, so the desired effect is achieved.
+In the following (GOOD) example, each closure has an `i` default parameter, shadowing the outer <code>i</code> variable, the default value of which is determined as the value of the loop variable <code>i</code> at the time the closure is created.
+<sample src="examples/good.py" />
+In the following (GOOD) example, <code>functools.partial</code> is used to partially evaluate the lambda expression with the value of <code>i</code>.
+<sample src="examples/good2.py" />
 </p>
 
-<sample src="LoopVariableCapture2.py" />
 
 </example>
 <references>
-<li>The Hitchhiker’s Guide to Python: <a href="http://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a></li>
-<li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#naming-and-binding">Naming and binding</a></li>
+<li>The Hitchhiker's Guide to Python: <a href="http://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#naming-and-binding">Naming and binding</a>.</li>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/3431676/creating-functions-or-lambdas-in-a-loop-or-comprehension">Creating functions (or lambdas) in a loop (or comprehension)</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/3/library/functools.html#functools.partial">functools.partial</a>.</li>
 
 </references>
 </qhelp>
