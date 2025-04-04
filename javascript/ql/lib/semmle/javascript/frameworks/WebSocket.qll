@@ -95,10 +95,10 @@ module ClientWebSocket {
   /**
    * A client WebSocket instance.
    */
-  class ClientSocket extends EventEmitter::Range, DataFlow::NewNode, ClientRequest::Range {
+  class ClientSocket extends EventEmitter::Range, API::NewNode, ClientRequest::Range {
     SocketClass socketClass;
 
-    ClientSocket() { this = socketClass.getAnInstantiation() }
+    ClientSocket() { this = socketClass.getAnInvocation() }
 
     /**
      * Gets the WebSocket library name.
@@ -129,10 +129,10 @@ module ClientWebSocket {
   /**
    * A message sent from a WebSocket client.
    */
-  class SendNode extends EventDispatch::Range, DataFlow::CallNode {
+  class SendNode extends EventDispatch::Range, API::CallNode {
     override ClientSocket emitter;
 
-    SendNode() { this = emitter.getAMemberCall("send") }
+    SendNode() { this = emitter.getReturn().getMember("send").getACall() }
 
     override string getChannel() { result = channelName() }
 

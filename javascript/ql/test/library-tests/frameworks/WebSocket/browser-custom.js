@@ -36,7 +36,7 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 
 (function () {
     myWebSocketInstance.addEventListener('open', function (event) {
-        myWebSocketInstance.send('Hi from browser!'); // $ MISSING: clientSend
+        myWebSocketInstance.send('Hi from browser!'); // $ clientSend
     });
 
     myWebSocketInstance.addEventListener('message', function (event) {
@@ -51,7 +51,7 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 
 (function () {
     mySockJSInstance.onopen = function () {
-        mySockJSInstance.send('test'); // $ MISSING: clientSend
+        mySockJSInstance.send('test'); // $ clientSend
     };
     
     mySockJSInstance.onmessage = function (e) {

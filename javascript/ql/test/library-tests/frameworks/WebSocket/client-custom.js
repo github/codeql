@@ -14,7 +14,7 @@ const { MyWebSocketWS, myWebSocketWSInstance } = require('./client.js');
 
 (function () {
 	myWebSocketWSInstance.on('open', function open() {
-		myWebSocketWSInstance.send('Hi from client!'); // $ MISSING: clientSend
+		myWebSocketWSInstance.send('Hi from client!'); // $ clientSend
 	});
 
 	myWebSocketWSInstance.on('message', function incoming(data) {
