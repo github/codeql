@@ -19,6 +19,7 @@ private import codeql.rust.security.AccessInvalidPointerExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
+private import codeql.rust.security.UncontrolledAllocationSizeExtensions
 private import codeql.rust.security.regex.RegexInjectionExtensions
 
 /**
