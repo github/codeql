@@ -3,7 +3,7 @@
  * @description A table of summary statistics about a database, with data that
  *              has been found to be noisy on tests removed.
  * @kind metric
- * @id rust/summary/summary-statistics-reduced
+ * @id rust/summary/reduced-summary-statistics
  * @tags summary
  */
 
