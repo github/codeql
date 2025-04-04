@@ -20,9 +20,6 @@ class Class1
         String.Format("{0} {1} {2} {3}", 0, 1, 2, 3);
 
         helper("{1}"); // $ Source
-
-        // BAD: Missing {0}
-        Console.WriteLine("{0}"); // $ Alert Sink
     }
 
     void helper(string format)

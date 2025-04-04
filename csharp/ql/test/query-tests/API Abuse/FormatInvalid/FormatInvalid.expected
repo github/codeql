@@ -57,9 +57,8 @@
 | FormatMissingArgument.cs:14:9:14:38 | call to method Format | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | this | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | this |
 | FormatMissingArgument.cs:14:9:14:38 | call to method Format | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | The $@ ignores $@. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | format string | FormatMissingArgument.cs:14:34:14:34 | (...) ... | this supplied value |
 | FormatMissingArgument.cs:14:9:14:38 | call to method Format | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | The $@ ignores $@. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | format string | FormatMissingArgument.cs:14:37:14:37 | (...) ... | this supplied value |
-| FormatMissingArgument.cs:25:9:25:32 | call to method WriteLine | FormatMissingArgument.cs:25:27:25:31 | "{0}" | FormatMissingArgument.cs:25:27:25:31 | "{0}" | Argument '{0}' has not been supplied to $@ format string. | FormatMissingArgument.cs:25:27:25:31 | "{0}" | this | FormatMissingArgument.cs:25:27:25:31 | "{0}" | this |
-| FormatMissingArgument.cs:31:9:31:32 | call to method Format | FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:31:23:31:28 | access to parameter format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:22:16:22:20 | "{1}" | this | FormatMissingArgument.cs:22:16:22:20 | "{1}" | this |
-| FormatMissingArgument.cs:31:9:31:32 | call to method Format | FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:31:23:31:28 | access to parameter format | The $@ ignores $@. | FormatMissingArgument.cs:22:16:22:20 | "{1}" | format string | FormatMissingArgument.cs:31:31:31:31 | (...) ... | this supplied value |
+| FormatMissingArgument.cs:28:9:28:32 | call to method Format | FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:28:23:28:28 | access to parameter format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:22:16:22:20 | "{1}" | this | FormatMissingArgument.cs:22:16:22:20 | "{1}" | this |
+| FormatMissingArgument.cs:28:9:28:32 | call to method Format | FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:28:23:28:28 | access to parameter format | The $@ ignores $@. | FormatMissingArgument.cs:22:16:22:20 | "{1}" | format string | FormatMissingArgument.cs:28:31:28:31 | (...) ... | this supplied value |
 | FormatMissingArgumentBad.cs:7:9:7:49 | call to method WriteLine | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | this | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | this |
 | FormatMissingArgumentBad.cs:8:9:8:55 | call to method WriteLine | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | this | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | this |
 | FormatMissingArgumentBad.cs:8:9:8:55 | call to method WriteLine | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | The $@ ignores $@. | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | format string | FormatMissingArgumentBad.cs:8:44:8:48 | access to parameter first | this supplied value |
@@ -77,8 +76,8 @@
 | FormatUnusedArgumentBad.cs:9:9:9:75 | call to method WriteLine | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | The $@ ignores $@. | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | format string | FormatUnusedArgumentBad.cs:9:61:9:62 | access to parameter ex | this supplied value |
 | FormatUnusedArgumentBad.cs:9:9:9:75 | call to method WriteLine | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | The $@ ignores $@. | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | format string | FormatUnusedArgumentBad.cs:9:65:9:74 | (...) ... | this supplied value |
 edges
-| FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:28:24:28:29 | format : String | provenance |  |
-| FormatMissingArgument.cs:28:24:28:29 | format : String | FormatMissingArgument.cs:31:23:31:28 | access to parameter format | provenance |  |
+| FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:25:24:25:29 | format : String | provenance |  |
+| FormatMissingArgument.cs:25:24:25:29 | format : String | FormatMissingArgument.cs:28:23:28:28 | access to parameter format | provenance |  |
 nodes
 | FormatInvalid.cs:9:23:9:27 | "{0}" | semmle.label | "{0}" |
 | FormatInvalid.cs:12:23:12:29 | "{0,1}" | semmle.label | "{0,1}" |
@@ -152,9 +151,8 @@ nodes
 | FormatMissingArgument.cs:17:23:17:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
 | FormatMissingArgument.cs:20:23:20:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
 | FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | semmle.label | "{1}" : String |
-| FormatMissingArgument.cs:25:27:25:31 | "{0}" | semmle.label | "{0}" |
-| FormatMissingArgument.cs:28:24:28:29 | format : String | semmle.label | format : String |
-| FormatMissingArgument.cs:31:23:31:28 | access to parameter format | semmle.label | access to parameter format |
+| FormatMissingArgument.cs:25:24:25:29 | format : String | semmle.label | format : String |
+| FormatMissingArgument.cs:28:23:28:28 | access to parameter format | semmle.label | access to parameter format |
 | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | semmle.label | "Hello {0} {1}" |
 | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | semmle.label | "Hello {1} {2}" |
 | FormatMissingArgumentGood.cs:7:27:7:41 | "Hello {0} {1}" | semmle.label | "Hello {0} {1}" |
