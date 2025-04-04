@@ -8,7 +8,7 @@ private import codeql.rust.internal.CachedStages
 
 cached
 newtype TType =
-  TStruct(Struct s) { Stages::TypeInference::ref() } or
+  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
   TEnum(Enum e) or
   TTrait(Trait t) or
   TImpl(Impl i) or
