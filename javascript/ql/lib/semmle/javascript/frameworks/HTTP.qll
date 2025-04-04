@@ -108,6 +108,12 @@ module Http {
      * Gets the route handler that sends this expression.
      */
     abstract RouteHandler getRouteHandler();
+
+    /**
+     * Gets a header definition associated with this response body, if it they are provided
+     * by the same call.
+     */
+    HeaderDefinition getAnAssociatedHeaderDefinition() { none() }
   }
 
   /**
