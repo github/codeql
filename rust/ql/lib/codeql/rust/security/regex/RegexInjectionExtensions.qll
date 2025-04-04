@@ -16,6 +16,11 @@ private import codeql.rust.Concepts
  */
 module RegexInjection {
   /**
+   * A data flow source for regular expression injection vulnerabilities.
+   */
+  abstract class Source extends DataFlow::Node { }
+
+  /**
    * A data flow sink for regular expression injection vulnerabilities.
    */
   abstract class Sink extends QuerySink::Range {
@@ -26,6 +31,11 @@ module RegexInjection {
    * A barrier for regular expression injection vulnerabilities.
    */
   abstract class Barrier extends DataFlow::Node { }
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A sink for `a` in `Regex::new(a)` when `a` is not a literal.

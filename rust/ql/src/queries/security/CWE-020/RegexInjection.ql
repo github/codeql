@@ -17,7 +17,6 @@
 private import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.TaintTracking
-private import codeql.rust.Concepts
 private import codeql.rust.security.regex.RegexInjectionExtensions
 
 /**
@@ -26,7 +25,7 @@ private import codeql.rust.security.regex.RegexInjectionExtensions
 module RegexInjectionConfig implements DataFlow::ConfigSig {
   import RegexInjection
 
-  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
