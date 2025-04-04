@@ -11,6 +11,7 @@ private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
+  private import codeql.rust.frameworks.stdlib.Stdlib
 
   class SummarizedCallableBase = string;
 
@@ -66,9 +67,20 @@ module Input implements InputSig<Location, RustDataFlow> {
     exists(Content c | cs = TSingletonContentSet(c) |
       result = "Field" and
       (
-        exists(Addressable a, int pos |
+        exists(Addressable a, int pos, string prefix |
           // TODO: calculate in QL
-          arg = a.getExtendedCanonicalPath() + "(" + pos + ")"
+          arg = prefix + "(" + pos + ")" and
+          (
+            prefix = a.getExtendedCanonicalPath()
+            or
+            a = any(OptionEnum o).getSome() and
+            prefix = "crate::option::Option::Some"
+            or
+            exists(string name |
+              a = any(ResultEnum r).getVariant(name) and
+              prefix = "crate::result::Result::" + name
+            )
+          )
         |
           c.(TupleFieldContent).isStructField(a, pos)
           or
@@ -83,11 +95,6 @@ module Input implements InputSig<Location, RustDataFlow> {
           or
           c.(StructFieldContent).isVariantField(a, field)
         )
-        or
-        c =
-          any(VariantInLibTupleFieldContent v |
-            arg = v.getExtendedCanonicalPath() + "(" + v.getPosition() + ")"
-          )
         or
         exists(int pos |
           c = TTuplePositionContent(pos) and
