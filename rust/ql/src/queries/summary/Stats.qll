@@ -15,6 +15,7 @@ private import codeql.rust.Diagnostics
 private import codeql.rust.security.SensitiveData
 private import TaintReach
 // import all query extensions files, so that all extensions of `QuerySink` are found
+private import codeql.rust.security.AccessInvalidPointerExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
