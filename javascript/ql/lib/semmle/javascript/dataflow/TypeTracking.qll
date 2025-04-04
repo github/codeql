@@ -224,8 +224,16 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+  bindingset[this, step]
+  pragma[inline_late]
+  TypeBackTracker prepend(StepSummary step) { result = this.prepend_cached(step) }
+
+  /**
+   * INTERNAL: DO NOT USE
+   * Raw version of prepend.
+   */
   cached
-  TypeBackTracker prepend(StepSummary step) {
+  TypeBackTracker prepend_cached(StepSummary step) {
     Stages::TypeTracking::ref() and
     step = LevelStep() and
     result = this
