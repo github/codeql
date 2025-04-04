@@ -626,7 +626,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class KeyEncapsulationAlgorithmInstance extends AlgorithmInstance { }
 
-  abstract class EllipticCurveAlgorithmInstance extends AlgorithmInstance { }
+  abstract class EllipticCurveAlgorithmInstance extends AlgorithmInstance {
+    /**
+     * Gets the isolated name as it appears in source
+     *
+     * This name should not be parsed or formatted beyond isolating the raw name if necessary.
+     */
+    abstract string getRawEllipticCurveAlgorithmName();
+
+    /**
+     * The 'standard' curve name, e.g., "P-256" or "secp256r1".
+     * meaning the full name of the curve, including the family, key size, and other
+     * typical parameters found on the name. In many cases this will
+     * be equivalent to `getRawEllipticCurveAlgorithmName()`, but not always
+     * (e.g., if the curve is specified through a raw NID).
+     * In cases like an NID, we want the standardized name so users can quickly
+     * understand what the curve is, while also parsing out the family and key size
+     * separately.
+     */
+    abstract string getStandardCurveName();
+
+    abstract TEllipticCurveType getEllipticCurveFamily();
+
+    abstract string getKeySize();
+  }
 
   abstract class HashOperationInstance extends OperationInstance {
     abstract DigestArtifactInstance getDigestArtifact();
@@ -787,6 +810,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final private class KeyDerivationAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAVC/1>::Union;
 
+  final private class EllipticCurveAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<EllipticCurveAlgorithmInstance, isCipherAVC/1>::Union;
+
   private newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
@@ -806,7 +832,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyCreationOperation(KeyCreationOperationInstance e) or
     // Algorithms (e.g., SHA-256, AES)
     TCipherAlgorithm(CipherAlgorithmInstanceOrValueConsumer e) or
-    TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstance e) or
+    TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstanceOrValueConsumer e) or
     THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
     TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
@@ -2062,39 +2088,133 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     ES() or
     OtherEllipticCurveType()
 
-  abstract class EllipticCurve extends AlgorithmNode, TEllipticCurveAlgorithm {
-    abstract string getKeySize(Location location);
+  private predicate isBrainpoolCurve(string curveName, int keySize) {
+    // ALL BRAINPOOL CURVES
+    keySize in [160, 192, 224, 256, 320, 384, 512] and
+    (
+      curveName = "BRAINPOOLP" + keySize.toString() + "R1"
+      or
+      curveName = "BRAINPOOLP" + keySize.toString() + "T1"
+    )
+  }
 
-    abstract TEllipticCurveType getCurveFamily();
+  private predicate isSecCurve(string curveName, int keySize) {
+    // ALL SEC CURVES
+    keySize in [112, 113, 128, 131, 160, 163, 192, 193, 224, 233, 239, 256, 283, 384, 409, 521, 571] and
+    exists(string suff | suff in ["R1", "R2", "K1"] |
+      curveName = "SECT" + keySize.toString() + suff or
+      curveName = "SECP" + keySize.toString() + suff
+    )
+  }
+
+  private predicate isC2Curve(string curveName, int keySize) {
+    // ALL C2 CURVES
+    keySize in [163, 176, 191, 208, 239, 272, 304, 359, 368, 431] and
+    exists(string pre, string suff |
+      pre in ["PNB", "ONB", "TNB"] and suff in ["V1", "V2", "V3", "V4", "V5", "W1", "R1"]
+    |
+      curveName = "C2" + pre + keySize.toString() + suff
+    )
+  }
+
+  private predicate isPrimeCurve(string curveName, int keySize) {
+    // ALL PRIME CURVES
+    keySize in [192, 239, 256] and
+    exists(string suff | suff in ["V1", "V2", "V3"] |
+      curveName = "PRIME" + keySize.toString() + suff
+    )
+  }
+
+  private predicate isNumsCurve(string curveName, int keySize) {
+    // ALL NUMS CURVES
+    keySize in [256, 384, 512] and
+    exists(string suff | suff in ["T1"] | curveName = "NUMSP" + keySize.toString() + suff)
+  }
+
+  bindingset[curveName]
+  predicate isEllipticCurveAlgorithmName(string curveName) {
+    isEllipticCurveAlgorithm(curveName, _, _)
+  }
+
+  /**
+   * Holds if `name` corresponds to a known elliptic curve.
+   */
+  bindingset[rawName]
+  predicate isEllipticCurveAlgorithm(string rawName, int keySize, TEllipticCurveType curveFamily) {
+    exists(string curveName | curveName = rawName.toUpperCase() |
+      isSecCurve(curveName, keySize) and curveFamily = SEC()
+      or
+      isBrainpoolCurve(curveName, keySize) and curveFamily = BRAINPOOL()
+      or
+      isC2Curve(curveName, keySize) and curveFamily = C2()
+      or
+      isPrimeCurve(curveName, keySize) and curveFamily = PRIME()
+      or
+      isNumsCurve(curveName, keySize) and curveFamily = NUMS()
+      or
+      curveName = "ES256" and keySize = 256 and curveFamily = ES()
+      or
+      curveName = "CURVE25519" and keySize = 255 and curveFamily = CURVE25519()
+      or
+      curveName = "X25519" and keySize = 255 and curveFamily = CURVE25519()
+      or
+      curveName = "ED25519" and keySize = 255 and curveFamily = CURVE25519()
+      or
+      curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
+      or
+      curveName = "ED448" and keySize = 448 and curveFamily = CURVE448()
+      or
+      curveName = "X448" and keySize = 448 and curveFamily = CURVE448()
+      or
+      curveName = "SM2" and keySize in [256, 512] and curveFamily = SM2()
+    )
+  }
+
+  final class EllipticCurveNode extends AlgorithmNode, TEllipticCurveAlgorithm {
+    EllipticCurveAlgorithmInstanceOrValueConsumer instance;
+
+    EllipticCurveNode() { this = TEllipticCurveAlgorithm(instance) }
+
+    override string getInternalType() { result = "EllipticCurveAlgorithm" }
+
+    final override string getRawAlgorithmName() {
+      result = instance.asAlg().getRawEllipticCurveAlgorithmName()
+    }
+
+    // NICK QUESTION: do I repeat the key size and curve family predicates here as wrappers of the instance?
+    override LocatableElement asElement() { result = instance }
+
+    TEllipticCurveType getEllipticCurveFamily() {
+      result = instance.asAlg().getEllipticCurveFamily()
+    }
 
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [ONLY_KNOWN]
       key = "KeySize" and
-      if exists(this.getKeySize(location))
-      then value = this.getKeySize(location)
-      else (
-        value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-      )
-      // other properties, like field type are possible, but not modeled until considered necessary
+      value = instance.asAlg().getKeySize() and
+      location = this.getLocation()
+      or
+      key = "StdCurveName" and
+      value = instance.asAlg().getStandardCurveName().toUpperCase() and
+      location = this.getLocation()
     }
 
     override string getAlgorithmName() { result = this.getRawAlgorithmName().toUpperCase() }
-
-    /**
-     * Mandating that for Elliptic Curves specifically, users are responsible
-     * for providing as the 'raw' name, the official name of the algorithm.
-     *
-     * Casing doesn't matter, we will enforce further naming restrictions on
-     * `getAlgorithmName` by default.
-     *
-     * Rationale: elliptic curve names can have a lot of variation in their components
-     * (e.g., "secp256r1" vs "P-256"), trying to produce generalized set of properties
-     * is possible to capture all cases, but such modeling is likely not necessary.
-     * if all properties need to be captured, we can reassess how names are generated.
-     */
-    abstract override string getRawAlgorithmName();
+    // /**
+    //  * Mandating that for Elliptic Curves specifically, users are responsible
+    //  * for providing as the 'raw' name, the official name of the algorithm.
+    //  *
+    //  * Casing doesn't matter, we will enforce further naming restrictions on
+    //  * `getAlgorithmName` by default.
+    //  *
+    //  * Rationale: elliptic curve names can have a lot of variation in their components
+    //  * (e.g., "secp256r1" vs "P-256"), trying to produce generalized set of properties
+    //  * is possible to capture all cases, but such modeling is likely not necessary.
+    //  * if all properties need to be captured, we can reassess how names are generated.
+    //  */
+    // abstract override string getRawAlgorithmName();
   }
 
   abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, AlgorithmNode {

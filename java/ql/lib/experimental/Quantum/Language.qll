@@ -95,6 +95,14 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
 }
 
 class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
+  ConstantDataSource() {
+    // TODO: this is an API specific workaround for JCA, as 'EC' is a constant that may be used
+    // where typical algorithms are specified, but EC specifically means set up a
+    // default curve container, that will later be specified explicitly (or if not a default)
+    // curve is used.
+    this = any(Literal l | l.getValue() != "EC")
+  }
+
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
