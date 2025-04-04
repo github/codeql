@@ -329,9 +329,21 @@ mod function_trait_bounds {
 }
 
 mod trait_associated_type {
+    #[derive(Debug)]
+    struct Wrapper<A> {
+        field: A,
+    }
+
+    impl<A> Wrapper<A> {
+        fn unwrap(self) -> A {
+            self.field // $ fieldof=Wrapper
+        }
+    }
+
     trait MyTrait {
         type AssociatedType;
 
+        // MyTrait::m1
         fn m1(self) -> Self::AssociatedType;
 
         fn m2(self) -> Self::AssociatedType
@@ -339,28 +351,96 @@ mod trait_associated_type {
             Self::AssociatedType: Default,
             Self: Sized,
         {
+            self.m1(); // $ method=MyTrait::m1
             Self::AssociatedType::default()
+        }
+    }
+
+    trait MyTraitAssoc2 {
+        type GenericAssociatedType<AssociatedParam>;
+
+        // MyTrait::put
+        fn put<A>(&self, a: A) -> Self::GenericAssociatedType<A>;
+
+        fn putTwo<A>(&self, a: A, b: A) -> Self::GenericAssociatedType<A> {
+            self.put(a); // $ method=MyTrait::put
+            self.put(b) // $ method=MyTrait::put
         }
     }
 
     #[derive(Debug, Default)]
     struct S;
 
+    #[derive(Debug, Default)]
+    struct S2;
+
+    #[derive(Debug, Default)]
+    struct AT;
+
     impl MyTrait for S {
-        type AssociatedType = S;
+        type AssociatedType = AT;
 
         // S::m1
         fn m1(self) -> Self::AssociatedType {
-            S
+            AT
         }
     }
 
-    pub fn f() {
-        let x = S;
-        println!("{:?}", x.m1()); // $ method=S::m1
+    impl MyTraitAssoc2 for S {
+        // Associated type with a type parameter
+        type GenericAssociatedType<AssociatedParam> = Wrapper<AssociatedParam>;
 
-        let x = S;
-        println!("{:?}", x.m2()); // $ method=m2
+        // S::put
+        fn put<A>(&self, a: A) -> Wrapper<A> {
+            Wrapper { field: a }
+        }
+    }
+
+    impl MyTrait for S2 {
+        // Associated type definition with a type argument
+        type AssociatedType = Wrapper<S2>;
+
+        fn m1(self) -> Self::AssociatedType {
+            Wrapper { field: self }
+        }
+    }
+
+    // NOTE: This implementation is just to make it possible to call `m2` on `S2.`
+    impl Default for Wrapper<S2> {
+        fn default() -> Self {
+            Wrapper { field: S2 }
+        }
+    }
+
+    // Function that returns an associated type from a trait bound
+    fn g<T: MyTrait>(thing: T) -> <T as MyTrait>::AssociatedType {
+        thing.m1() // $ method=MyTrait::m1
+    }
+
+    pub fn f() {
+        let x1 = S;
+        // Call to method in `impl` block
+        println!("{:?}", x1.m1()); // $ method=S::m1 type=x1.m1():AT
+
+        let x2 = S;
+        // Call to default method in `trait` block
+        let y = x2.m2(); // $ method=m2 MISSING: type=y:AT
+        println!("{:?}", y);
+
+        let x3 = S;
+        // Call to the method in `impl` block
+        println!("{:?}", x3.put(1).unwrap()); // $ method=S::put method=unwrap
+
+        // Call to default implementation in `trait` block
+        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo MISSING: method=unwrap
+
+        let x4 = g(S); // $ MISSING: type=x4:AT
+        println!("{:?}", x4);
+
+        let x5 = S2;
+        println!("{:?}", x5.m1()); // $ method=m1 MISSING: type=x5.m1():A.S2
+        let x6 = S2;
+        println!("{:?}", x6.m2()); // $ method=m2 MISSING: type=x6.m2():A.S2
     }
 }
 
