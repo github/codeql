@@ -336,7 +336,10 @@ inferType
 | main.rs:339:13:339:22 | self.field |  | main.rs:337:10:337:10 | A |
 | main.rs:347:15:347:18 | SelfParam |  | main.rs:343:5:357:5 | Self [trait MyTrait] |
 | main.rs:349:15:349:18 | SelfParam |  | main.rs:343:5:357:5 | Self [trait MyTrait] |
+| main.rs:353:9:356:9 | { ... } |  | main.rs:344:9:344:28 | AssociatedType |
 | main.rs:354:13:354:16 | self |  | main.rs:343:5:357:5 | Self [trait MyTrait] |
+| main.rs:354:13:354:21 | self.m1() |  | main.rs:344:9:344:28 | AssociatedType |
+| main.rs:355:13:355:43 | ...::default(...) |  | main.rs:344:9:344:28 | AssociatedType |
 | main.rs:363:19:363:23 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:363:19:363:23 | SelfParam | &T | main.rs:359:5:369:5 | Self [trait MyTraitAssoc2] |
 | main.rs:363:26:363:26 | a |  | main.rs:363:16:363:16 | A |
@@ -344,11 +347,14 @@ inferType
 | main.rs:365:22:365:26 | SelfParam | &T | main.rs:359:5:369:5 | Self [trait MyTraitAssoc2] |
 | main.rs:365:29:365:29 | a |  | main.rs:365:19:365:19 | A |
 | main.rs:365:35:365:35 | b |  | main.rs:365:19:365:19 | A |
+| main.rs:365:75:368:9 | { ... } |  | main.rs:360:9:360:52 | GenericAssociatedType |
 | main.rs:366:13:366:16 | self |  | file://:0:0:0:0 | & |
 | main.rs:366:13:366:16 | self | &T | main.rs:359:5:369:5 | Self [trait MyTraitAssoc2] |
+| main.rs:366:13:366:23 | self.put(...) |  | main.rs:360:9:360:52 | GenericAssociatedType |
 | main.rs:366:22:366:22 | a |  | main.rs:365:19:365:19 | A |
 | main.rs:367:13:367:16 | self |  | file://:0:0:0:0 | & |
 | main.rs:367:13:367:16 | self | &T | main.rs:359:5:369:5 | Self [trait MyTraitAssoc2] |
+| main.rs:367:13:367:23 | self.put(...) |  | main.rs:360:9:360:52 | GenericAssociatedType |
 | main.rs:367:22:367:22 | b |  | main.rs:365:19:365:19 | A |
 | main.rs:384:15:384:18 | SelfParam |  | main.rs:371:5:372:13 | S |
 | main.rs:384:45:386:9 | { ... } |  | main.rs:377:5:378:14 | AT |
@@ -380,7 +386,10 @@ inferType
 | main.rs:423:26:423:32 | x1.m1() |  | main.rs:377:5:378:14 | AT |
 | main.rs:425:13:425:14 | x2 |  | main.rs:371:5:372:13 | S |
 | main.rs:425:18:425:18 | S |  | main.rs:371:5:372:13 | S |
+| main.rs:427:13:427:13 | y |  | main.rs:377:5:378:14 | AT |
 | main.rs:427:17:427:18 | x2 |  | main.rs:371:5:372:13 | S |
+| main.rs:427:17:427:23 | x2.m2() |  | main.rs:377:5:378:14 | AT |
+| main.rs:428:26:428:26 | y |  | main.rs:377:5:378:14 | AT |
 | main.rs:430:13:430:14 | x3 |  | main.rs:371:5:372:13 | S |
 | main.rs:430:18:430:18 | S |  | main.rs:371:5:372:13 | S |
 | main.rs:432:26:432:27 | x3 |  | main.rs:371:5:372:13 | S |
@@ -394,6 +403,8 @@ inferType
 | main.rs:442:13:442:14 | x6 |  | main.rs:374:5:375:14 | S2 |
 | main.rs:442:18:442:19 | S2 |  | main.rs:374:5:375:14 | S2 |
 | main.rs:443:26:443:27 | x6 |  | main.rs:374:5:375:14 | S2 |
+| main.rs:443:26:443:32 | x6.m2() |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:443:26:443:32 | x6.m2() | A | main.rs:374:5:375:14 | S2 |
 | main.rs:460:15:460:18 | SelfParam |  | main.rs:448:5:452:5 | MyEnum |
 | main.rs:460:15:460:18 | SelfParam | A | main.rs:459:10:459:10 | T |
 | main.rs:460:26:465:9 | { ... } |  | main.rs:459:10:459:10 | T |

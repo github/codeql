@@ -351,7 +351,7 @@ mod trait_associated_type {
             Self::AssociatedType: Default,
             Self: Sized,
         {
-            self.m1(); // $ method=MyTrait::m1
+            self.m1(); // $ method=MyTrait::m1 type=self.m1():AssociatedType
             Self::AssociatedType::default()
         }
     }
@@ -424,7 +424,7 @@ mod trait_associated_type {
 
         let x2 = S;
         // Call to default method in `trait` block
-        let y = x2.m2(); // $ method=m2 MISSING: type=y:AT
+        let y = x2.m2(); // $ method=m2 type=y:AT
         println!("{:?}", y);
 
         let x3 = S;
@@ -440,7 +440,7 @@ mod trait_associated_type {
         let x5 = S2;
         println!("{:?}", x5.m1()); // $ method=m1 MISSING: type=x5.m1():A.S2
         let x6 = S2;
-        println!("{:?}", x6.m2()); // $ method=m2 MISSING: type=x6.m2():A.S2
+        println!("{:?}", x6.m2()); // $ method=m2 type=x6.m2():A.S2
     }
 }
 

@@ -2,9 +2,10 @@
 
 private import rust
 private import PathResolution
-private import TypeInference
 private import TypeMention
 private import codeql.rust.internal.CachedStages
+private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.elements.internal.generated.Synth
 
 cached
 newtype TType =
@@ -15,6 +16,7 @@ newtype TType =
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TTypeParamTypeParameter(TypeParam t) or
+  TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getADescendant() = t } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t)
 
@@ -144,6 +146,9 @@ class TraitType extends Type, TTrait {
 
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
+    or
+    result =
+      any(AssociatedTypeTypeParameter param | param.getTrait() = trait and param.getIndex() = i)
   }
 
   pragma[nomagic]
@@ -297,6 +302,14 @@ abstract class TypeParameter extends Type {
   override TypeParameter getTypeParameter(int i) { none() }
 }
 
+private class RawTypeParameter = @type_param or @trait or @type_alias;
+
+private predicate id(RawTypeParameter x, RawTypeParameter y) { x = y }
+
+private predicate idOfRaw(RawTypeParameter x, int y) = equivalenceRelation(id/2)(x, y)
+
+int idOfTypeParameterAstNode(AstNode node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
+
 /** A type parameter from source code. */
 class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   private TypeParam typeParam;
@@ -318,6 +331,55 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   final override TypeMention getABaseTypeMention() {
     result = typeParam.getTypeBoundList().getABound().getTypeRepr()
   }
+}
+
+/** Gets type alias that is the `i`th type parameter of `trait`. */
+predicate traitAliasIndex(Trait trait, int i, TypeAlias typeAlias) {
+  typeAlias =
+    rank[i + 1 - trait.getNumberOfGenericParams()](TypeAlias alias |
+      trait.(TraitItemNode).getADescendant() = alias
+    |
+      alias order by idOfTypeParameterAstNode(alias)
+    )
+}
+
+/**
+ * A type parameter corresponding to an associated type in a trait.
+ *
+ * We treat associated type declarations in traits as type parameters. E.g., a
+ * trait such as
+ * ```rust
+ * trait ATrait {
+ *   type AssociatedType;
+ *   // ...
+ * }
+ * ```
+ * is treated as if it where
+ * ```rust
+ * trait ATrait<AssociatedType> {
+ *   // ...
+ * }
+ * ```
+ */
+class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypeParameter {
+  private TypeAlias typeAlias;
+
+  AssociatedTypeTypeParameter() { this = TAssociatedTypeTypeParameter(typeAlias) }
+
+  TypeAlias getTypeAlias() { result = typeAlias }
+
+  /** Gets the trait that contains this associated type declaration. */
+  TraitItemNode getTrait() { result.getADescendant() = typeAlias }
+
+  int getIndex() { traitAliasIndex(this.getTrait(), result, typeAlias) }
+
+  override Function getMethod(string name) { none() }
+
+  override string toString() { result = typeAlias.getName().getText() }
+
+  override Location getLocation() { result = typeAlias.getLocation() }
+
+  override TypeMention getABaseTypeMention() { none() }
 }
 
 /** An implicit reference type parameter. */
