@@ -47,6 +47,20 @@ private predicate areLibrariesCompatible(
   (client = LibraryNames::ws() or client = LibraryNames::websocket())
 }
 
+/** Treats `WebSocket` as an entry point for API graphs. */
+private class WebSocketEntryPoint extends API::EntryPoint {
+  WebSocketEntryPoint() { this = "global.WebSocket" }
+
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("WebSocket") }
+}
+
+/** Treats `SockJS` as an entry point for API graphs. */
+private class SockJSEntryPoint extends API::EntryPoint {
+  SockJSEntryPoint() { this = "global.SockJS" }
+
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("SockJS") }
+}
+
 /**
  * Provides classes that model WebSockets clients.
  */
@@ -56,19 +70,19 @@ module ClientWebSocket {
   /**
    * A class that can be used to instantiate a WebSocket instance.
    */
-  class SocketClass extends DataFlow::SourceNode {
+  class SocketClass extends API::Node {
     LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
 
     SocketClass() {
-      this = DataFlow::globalVarRef("WebSocket") and library = websocket()
+      this = any(WebSocketEntryPoint e).getANode() and library = websocket()
       or
-      this = DataFlow::moduleImport("ws") and library = ws()
+      this = API::moduleImport("ws") and library = ws()
       or
       // the sockjs-client library:https://www.npmjs.com/package/sockjs-client
       library = sockjs() and
       (
-        this = DataFlow::moduleImport("sockjs-client") or
-        this = DataFlow::globalVarRef("SockJS")
+        this = API::moduleImport("sockjs-client") or
+        this = any(SockJSEntryPoint e).getANode()
       )
     }
 
