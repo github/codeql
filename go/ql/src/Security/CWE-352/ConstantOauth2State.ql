@@ -40,6 +40,8 @@ module ConstantStateFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -110,6 +112,12 @@ module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-352/ConstantOauth2State.ql:134: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -146,6 +154,12 @@ module FlowToPrintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = any(AuthCodeUrl m).getACall().getResult() }
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-352/ConstantOauth2State.ql:153: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module FlowToPrintFlow = DataFlow::Global<FlowToPrintConfig>;

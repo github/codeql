@@ -39,6 +39,13 @@ module InsecureRandomness {
         n2.getType() instanceof IntegerType
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-338/InsecureRandomness.ql:33: Column 1 does not select a source or sink originating from the flow call on line 26
+      // ql/src/Security/CWE-338/InsecureRandomness.ql:34: Column 5 does not select a source or sink originating from the flow call on line 26
+      none()
+    }
   }
 
   /**

@@ -36,6 +36,14 @@ module SafeUrlFlow {
       or
       node instanceof SanitizerEdge
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-601/OpenUrlRedirect.ql:26: Column 5 does not select a source or sink originating from the flow call on line 24
+      // ql/src/Security/CWE-918/RequestForgery.ql:25: Column 1 selects sink.getARequest
+      // ql/src/Security/CWE-918/RequestForgery.ql:26: Column 7 does not select a source or sink originating from the flow call on line 24
+      none()
+    }
   }
 
   /** Tracks taint flow for reasoning about safe URLs. */

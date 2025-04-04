@@ -62,6 +62,8 @@ module StackTraceExposureConfig implements DataFlow::ConfigSig {
       cgn.dominates(node.getBasicBlock())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
