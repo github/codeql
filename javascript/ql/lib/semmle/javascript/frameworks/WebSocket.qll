@@ -47,6 +47,20 @@ private predicate areLibrariesCompatible(
   (client = LibraryNames::ws() or client = LibraryNames::websocket())
 }
 
+/** Treats `WebSocket` as an entry point for API graphs. */
+private class WebSocketEntryPoint extends API::EntryPoint {
+  WebSocketEntryPoint() { this = "global.WebSocket" }
+
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("WebSocket") }
+}
+
+/** Treats `SockJS` as an entry point for API graphs. */
+private class SockJSEntryPoint extends API::EntryPoint {
+  SockJSEntryPoint() { this = "global.SockJS" }
+
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("SockJS") }
+}
+
 /**
  * Provides classes that model WebSockets clients.
  */
@@ -56,19 +70,19 @@ module ClientWebSocket {
   /**
    * A class that can be used to instantiate a WebSocket instance.
    */
-  class SocketClass extends DataFlow::SourceNode {
+  class SocketClass extends API::Node {
     LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
 
     SocketClass() {
-      this = DataFlow::globalVarRef("WebSocket") and library = websocket()
+      this = any(WebSocketEntryPoint e).getANode() and library = websocket()
       or
-      this = DataFlow::moduleImport("ws") and library = ws()
+      this = API::moduleImport("ws") and library = ws()
       or
       // the sockjs-client library:https://www.npmjs.com/package/sockjs-client
       library = sockjs() and
       (
-        this = DataFlow::moduleImport("sockjs-client") or
-        this = DataFlow::globalVarRef("SockJS")
+        this = API::moduleImport("sockjs-client") or
+        this = any(SockJSEntryPoint e).getANode()
       )
     }
 
@@ -81,10 +95,10 @@ module ClientWebSocket {
   /**
    * A client WebSocket instance.
    */
-  class ClientSocket extends EventEmitter::Range, DataFlow::NewNode, ClientRequest::Range {
+  class ClientSocket extends EventEmitter::Range, API::NewNode, ClientRequest::Range {
     SocketClass socketClass;
 
-    ClientSocket() { this = socketClass.getAnInstantiation() }
+    ClientSocket() { this = socketClass.getAnInvocation() }
 
     /**
      * Gets the WebSocket library name.
@@ -115,10 +129,10 @@ module ClientWebSocket {
   /**
    * A message sent from a WebSocket client.
    */
-  class SendNode extends EventDispatch::Range, DataFlow::CallNode {
+  class SendNode extends EventDispatch::Range, API::CallNode {
     override ClientSocket emitter;
 
-    SendNode() { this = emitter.getAMemberCall("send") }
+    SendNode() { this = emitter.getReturn().getMember("send").getACall() }
 
     override string getChannel() { result = channelName() }
 
@@ -145,8 +159,8 @@ module ClientWebSocket {
   private DataFlow::FunctionNode getAMessageHandler(
     ClientWebSocket::ClientSocket emitter, string methodName
   ) {
-    exists(DataFlow::CallNode call |
-      call = emitter.getAMemberCall(methodName) and
+    exists(API::CallNode call |
+      call = emitter.getReturn().getMember(methodName).getACall() and
       call.getArgument(0).mayHaveStringValue("message") and
       result = call.getCallback(1)
     )
@@ -161,7 +175,13 @@ module ClientWebSocket {
     WebSocketReceiveNode() {
       this = getAMessageHandler(emitter, "addEventListener")
       or
-      this = emitter.getAPropertyWrite("onmessage").getRhs()
+      this = emitter.getReturn().getMember("onmessage").getAValueReachingSink()
+      or
+      exists(DataFlow::MethodCallNode bindCall |
+        bindCall = emitter.getReturn().getMember("onmessage").getAValueReachingSink() and
+        bindCall.getMethodName() = "bind" and
+        this = bindCall.getReceiver().getAFunctionValue()
+      )
     }
 
     override DataFlow::Node getReceivedItem(int i) {
@@ -192,19 +212,19 @@ module ServerWebSocket {
   /**
    * Gets a server created by a library named `library`.
    */
-  DataFlow::SourceNode getAServer(LibraryName library) {
+  API::InvokeNode getAServer(LibraryName library) {
     library = ws() and
-    result = DataFlow::moduleImport("ws").getAConstructorInvocation("Server")
+    result = API::moduleImport("ws").getMember("Server").getAnInvocation()
     or
     library = sockjs() and
-    result = DataFlow::moduleImport("sockjs").getAMemberCall("createServer")
+    result = API::moduleImport("sockjs").getMember("createServer").getAnInvocation()
   }
 
   /**
    * Gets a `socket.on("connection", (msg, req) => {})` call.
    */
   private DataFlow::CallNode getAConnectionCall(LibraryName library) {
-    result = getAServer(library).getAMemberCall(EventEmitter::on()) and
+    result = getAServer(library).getReturn().getMember(EventEmitter::on()).getACall() and
     result.getArgument(0).mayHaveStringValue("connection")
   }
 
