@@ -1,8 +1,13 @@
 name: Sync Main
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/sync-main.yml
   schedule:
-    - cron:  '55 * * * *'
+    - cron: '55 * * * *'
   
 jobs:
 
