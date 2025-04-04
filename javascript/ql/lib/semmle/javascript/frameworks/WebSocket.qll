@@ -212,19 +212,19 @@ module ServerWebSocket {
   /**
    * Gets a server created by a library named `library`.
    */
-  DataFlow::SourceNode getAServer(LibraryName library) {
+  API::InvokeNode getAServer(LibraryName library) {
     library = ws() and
-    result = DataFlow::moduleImport("ws").getAConstructorInvocation("Server")
+    result = API::moduleImport("ws").getMember("Server").getAnInvocation()
     or
     library = sockjs() and
-    result = DataFlow::moduleImport("sockjs").getAMemberCall("createServer")
+    result = API::moduleImport("sockjs").getMember("createServer").getAnInvocation()
   }
 
   /**
    * Gets a `socket.on("connection", (msg, req) => {})` call.
    */
   private DataFlow::CallNode getAConnectionCall(LibraryName library) {
-    result = getAServer(library).getAMemberCall(EventEmitter::on()) and
+    result = getAServer(library).getReturn().getMember(EventEmitter::on()).getACall() and
     result.getArgument(0).mayHaveStringValue("connection")
   }
 
