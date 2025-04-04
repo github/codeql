@@ -685,14 +685,24 @@ module ExprNodes {
     string getPossiblyQualifiedName() { result = e.getPossiblyQualifiedName() }
 
     predicate isQualified() { e.isQualified() }
+
+    predicate hasQualifiedName(string namespace, string typename) {
+      e.hasQualifiedName(namespace, typename)
+    }
+  }
+
+  private class QualifiedTypeNameExprChildMapping extends TypeNameExprChildMapping,
+    QualifiedTypeNameExpr
+  {
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
 
   class QualifiedTypeNameExprCfgNode extends TypeNameExprCfgNode {
-    QualifiedTypeNameExprCfgNode() { e.isQualified() }
+    override QualifiedTypeNameExprChildMapping e;
+
+    override TypeNameExpr getExpr() { result = e }
 
     override string getAPrimaryQlClass() { result = "QualifiedTypeNameExprCfgNode" }
-
-    override QualifiedTypeNameExpr getExpr() { result = e }
   }
 
   private class ErrorExprChildMapping extends ExprChildMapping, ErrorExpr {

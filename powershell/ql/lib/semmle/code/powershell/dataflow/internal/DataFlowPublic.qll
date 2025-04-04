@@ -544,6 +544,10 @@ class TypeNameNode extends ExprNode {
 
   predicate isQualified() { n.isQualified() }
 
+  predicate hasQualifiedName(string namespace, string typename) {
+    n.hasQualifiedName(namespace, typename)
+  }
+
   string getNamespace() { result = n.getNamespace() }
 
   string getPossiblyQualifiedName() { result = n.getPossiblyQualifiedName() }
