@@ -871,12 +871,12 @@ private module PipelineAccess {
     final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
       exists(Raw::ProcessBlock pb | parent = pb |
         i = processBlockPipelineVarReadAccess() and
-        exists(PipelineVariable pipelineVar |
-          pipelineVar = TVariableSynth(pb.getScriptBlock(), PipelineParamVar()) and
+        exists(PipelineParameter pipelineVar |
+          pipelineVar = getPipelineParameter(pb.getScriptBlock()) and
           child = SynthChild(VarAccessSynthKind(pipelineVar))
         )
         or
-        exists(PipelineByPropertyNameVariable pipelineVar, Raw::PipelineByPropertyNameParameter p |
+        exists(PipelineByPropertyNameParameter pipelineVar, Raw::PipelineByPropertyNameParameter p |
           i = processBlockPipelineByPropertyNameVarReadAccess(p.getName()) and
           getResultAst(p) = pipelineVar and
           child = SynthChild(VarAccessSynthKind(pipelineVar))

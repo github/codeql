@@ -291,11 +291,11 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
 
   ScriptBlockCfgNode getScriptBlock() { result.getProcessBlock() = this }
 
-  PipelineVariable getPipelineVariable() {
+  PipelineParameter getPipelineParameter() {
     result.getScriptBlock() = this.getScriptBlock().getAstNode()
   }
 
-  ExprNodes::VarReadAccessCfgNode getPipelineVariableAccess() {
+  ExprNodes::VarReadAccessCfgNode getPipelineParameterAccess() {
     block.hasCfgChild(block.getPipelineParameterAccess(), this, result)
   }
 

@@ -164,7 +164,7 @@ module LocalFlow {
       nodeTo = TProcessPropertyByNameNode(pbNode.getAccess().getVariable(), false)
     )
     or
-    nodeTo.(PreProcessNode).getProcessBlock().getPipelineVariableAccess() = nodeFrom.asExpr()
+    nodeTo.(PreProcessNode).getProcessBlock().getPipelineParameterAccess() = nodeFrom.asExpr()
     or
     nodeTo.(ProcessNode).getProcessBlock() = nodeFrom.(PreProcessNode).getProcessBlock()
   }
@@ -1010,7 +1010,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   c.isAnyPositional() and
   exists(CfgNodes::ProcessBlockCfgNode processBlock |
-    processBlock.getPipelineVariableAccess() = node1.asExpr() and
+    processBlock.getPipelineParameterAccess() = node1.asExpr() and
     node2 = TProcessNode(processBlock)
   )
   or
