@@ -7,8 +7,8 @@ class Foo(object):
         self.direct_ref = my_func
 
     def later(self):
-        self.indirect_ref() # $ pt=my_func MISSING: tt=my_func
-        self.direct_ref() # $ pt=my_func MISSING: tt=my_func
+        self.indirect_ref() # $ pt,tt=my_func
+        self.direct_ref() # $ pt,tt=my_func
 
 foo = Foo(my_func) # $ tt=Foo.__init__
 foo.later() # $ pt,tt=Foo.later
