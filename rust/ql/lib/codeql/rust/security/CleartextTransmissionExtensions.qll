@@ -7,6 +7,7 @@ private import codeql.util.Unit
 private import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.security.SensitiveData
 private import codeql.rust.Concepts
 
 /**

@@ -13,7 +13,6 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
-import codeql.rust.security.SensitiveData
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.CleartextTransmissionExtensions
 
