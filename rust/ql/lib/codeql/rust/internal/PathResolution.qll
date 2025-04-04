@@ -648,6 +648,16 @@ private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
 
   override Visibility getVisibility() { none() }
 
+  override predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    any(ItemNode parent).providesCanonicalPathPrefixFor(c, this) and
+    child.getImmediateParent() = this
+  }
+
+  override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    result = this.getCanonicalPathPrefix(c) and
+    this.providesCanonicalPathPrefixFor(c, child)
+  }
+
   override predicate hasCanonicalPath(Crate c) { none() }
 
   override string getCanonicalPath(Crate c) { none() }
@@ -946,6 +956,19 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
 private Meta getPathAttrMeta(Module m) {
   result = m.getAnAttr().getMeta() and
   result.getPath().getText() = "path"
+}
+
+private Meta testgetPathAttrMeta(TokenTree tree, Token t) {
+  // result = getPathAttrMeta(m) and
+  result.getPath().getText() = "cfg_attr" and
+  result.getLocation().getFile().getBaseName() = "masks.rs" and
+  tree = result.getTokenTree() and
+  t.getParentNode() = tree
+}
+
+private predicate sdf(Token t) {
+  // result = getPathAttrMeta(m) and
+  t.getLocation().getFile().getBaseName() = "masks.rs"
 }
 
 /**
@@ -1388,6 +1411,42 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
   )
 }
 
+private predicate test(
+  Crate core, ModuleItemNode mod, ModuleItemNode prelude, ModuleItemNode rust, Use use,
+  RelevantPath path, string p, ModuleItemNode v1, Use asMutUse, RelevantPath asMutPath,
+  string asMutP, ModuleItemNode common, Use asMutUse2, RelevantPath asMutPath2, string asMutP2,
+  Item i2
+) {
+  // Item i2
+  core.getName() = "core" and
+  mod = core.getModule() and
+  prelude = mod.getASuccessorRec("prelude") and
+  rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
+  // use = rust.getASuccessorRec(_) and
+  use = rust.(Module).getItemList().getAnItem() and
+  p = path.toStringDebug() + " (" + use.getUseTree().getPath().toStringDebug() + ")" and
+  path = use.getUseTree().getPath().getQualifier*() and
+  use.getUseTree().getPath().toStringDebug() = "super::v1::AsMut" and
+  v1 = resolvePath(path) and
+  path.toStringDebug() = "super::v1" and
+  asMutUse = v1.(Module).getItemList().getAnItem() and
+  // asMutUse = v1.getASuccessorRec(name) and
+  asMutPath = asMutUse.getUseTree().getPath().getQualifier*() and
+  asMutP = asMutPath.toStringDebug() + " (" + asMutUse.getUseTree().getPath().toStringDebug() + ")" and
+  common = resolvePath(asMutPath) and
+  asMutPath.toStringDebug() = "super::common" and
+  asMutUse2 = common.(Module).getItemList().getAnItem() and
+  // asMutUse = v1.getASuccessorRec(name) and
+  asMutPath2 = asMutUse2.getUseTree().getPath().getQualifier*() and
+  asMutP2 =
+    asMutPath2.toStringDebug() + " (" + asMutUse2.getUseTree().getPath().toStringDebug() + ")" and
+  i2 = resolvePath(asMutPath2) and
+  hasCratePath(asMutUse2) and
+  rootHasCratePathTc(_, asMutUse2)
+  // asMutUse2.(UseItemNode).getImmediateParent+() = i and
+  // i = any(Crate c).getModule()
+}
+
 /**
  * Holds if `i` is available inside `f` because it is reexported in [the prelude][1].
  *
@@ -1413,8 +1472,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test_logging.rs") and
-      startline = 163
+      filepath.matches("%/clean/types.rs") and
+      startline = [5, 350]
     )
   }
 
@@ -1449,5 +1508,15 @@ private module Debug {
   predicate debugFileImport(Module m, SourceFile f) {
     m = getRelevantLocatable() and
     fileImport(m, f)
+  }
+
+  predicate debugPreludeEdge(SourceFile f, string name, ItemNode i) {
+    preludeEdge(f, name, i) and
+    f = getRelevantLocatable()
+  }
+
+  string debugGetCanonicalPath(ItemNode i, Crate c) {
+    result = i.getCanonicalPath(c) and
+    i = getRelevantLocatable()
   }
 }
