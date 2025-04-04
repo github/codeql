@@ -11,3 +11,5 @@
 		console.log(data);
 	}); // $clientReceive
 })();
+
+module.exports.MyWebSocketWS = require('ws');

@@ -13,9 +13,12 @@ clientSocket
 | browser.js:19:13:19:50 | new Soc ... /echo') |
 | client.js:4:13:4:45 | new Web ... e.org') |
 flowSteps
+| browser-custom.js:1:10:1:20 | MyWebSocket | browser-custom.js:1:10:1:20 | MyWebSocket |
+| browser-custom.js:1:23:1:30 | MySockJS | browser-custom.js:1:23:1:30 | MySockJS |
 | browser.js:5:15:5:32 | 'Hi from browser!' | server.js:7:38:7:44 | message |
 | browser.js:21:13:21:18 | 'test' | sockjs.js:9:31:9:37 | message |
 | client.js:7:11:7:27 | 'Hi from client!' | server.js:7:38:7:44 | message |
+| client.js:15:32:15:44 | require('ws') | client-custom.js:1:9:1:21 | MyWebSocketWS |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | client.js:10:37:10:40 | data |

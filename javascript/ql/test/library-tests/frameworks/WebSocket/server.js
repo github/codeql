@@ -11,3 +11,5 @@
 		ws.send('Hi from server!'); // $serverSend
 	});
 })();
+
+module.exports.MyWebSocketServer = require('ws').Server;

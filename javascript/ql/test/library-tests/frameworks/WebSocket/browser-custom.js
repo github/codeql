@@ -1,35 +1,34 @@
+import { MyWebSocket, MySockJS } from './browser.js';
+
 (function () {
-	const socket = new WebSocket('ws://localhost:8080'); // $clientSocket
+	const socket = new MyWebSocket('ws://localhost:9080'); // $ MISSING: clientSocket
 
 	socket.addEventListener('open', function (event) {
-		socket.send('Hi from browser!'); // $clientSend
+		socket.send('Hi from browser!'); // $ MISSING: clientSend
 	});
 
 	socket.addEventListener('message', function (event) {
 		console.log('Message from server ', event.data);
-	}); // $clientReceive
+	}); // $ MISSING: clientReceive
 
 	socket.onmessage = function (event) {
 		console.log("Message from server 2", event.data)
-	}; // $clientReceive
+	}; // $ MISSING: clientReceive
 })();
 
 
 (function () {
-	var sock = new SockJS('http://0.0.0.0:9999/echo'); // $clientSocket
+	var sock = new MySockJS('http://0.0.0.0:9999/echo'); // $ MISSING: clientSocket
 	sock.onopen = function () {
-		sock.send('test'); // $clientSend
+		sock.send('test'); // $ MISSING: clientSend
 	};
 	
 	sock.onmessage = function (e) {
 		console.log('message', e.data);
 		sock.close();
-	}; // $clientReceive
+	}; // $ MISSING: clientReceive
 	
 	sock.addEventListener('message', function (event) {
 		console.log('Using addEventListener ', event.data);
-	}); // $clientReceive
+	}); // $ MISSING: clientReceive
 })();
-
-export const MyWebSocket = WebSocket;
-export const MySockJS = SockJS;
