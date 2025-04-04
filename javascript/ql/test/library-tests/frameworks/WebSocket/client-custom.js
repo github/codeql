@@ -19,5 +19,5 @@ const { MyWebSocketWS, myWebSocketWSInstance } = require('./client.js');
 
 	myWebSocketWSInstance.on('message', function incoming(data) {
 		console.log(data);
-	}); // $ MISSING: clientReceive
+	}); // $ clientReceive
 })();

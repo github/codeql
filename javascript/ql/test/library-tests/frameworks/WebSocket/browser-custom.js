@@ -41,11 +41,11 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 
     myWebSocketInstance.addEventListener('message', function (event) {
         console.log('Message from server ', event.data);
-    }); // $ MISSING: clientReceive
+    }); // $ clientReceive
 
     myWebSocketInstance.onmessage = function (event) {
         console.log("Message from server 2", event.data)
-    }; // $ MISSING: clientReceive
+    }; // $ clientReceive
 })();
 
 
@@ -57,9 +57,9 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
     mySockJSInstance.onmessage = function (e) {
         console.log('message', e.data);
         mySockJSInstance.close();
-    }; // $ MISSING: clientReceive
+    }; // $ clientReceive
     
     mySockJSInstance.addEventListener('message', function (event) {
         console.log('Using addEventListener ', event.data);
-    }); // $ MISSING: clientReceive
+    }); // $ clientReceive
 })();

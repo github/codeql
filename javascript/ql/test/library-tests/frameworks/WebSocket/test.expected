@@ -3,11 +3,16 @@ clientReceive
 | browser-custom.js:14:21:16:2 | functio ... ata)\\n\\t} |
 | browser-custom.js:26:19:29:2 | functio ... e();\\n\\t} |
 | browser-custom.js:31:35:33:2 | functio ... ta);\\n\\t} |
+| browser-custom.js:42:53:44:5 | functio ... ;\\n    } |
+| browser-custom.js:46:37:48:5 | functio ... )\\n    } |
+| browser-custom.js:57:34:60:5 | functio ... ;\\n    } |
+| browser-custom.js:62:50:64:5 | functio ... ;\\n    } |
 | browser.js:8:37:10:2 | functio ... ta);\\n\\t} |
 | browser.js:12:21:14:2 | functio ... ata)\\n\\t} |
 | browser.js:24:19:27:2 | functio ... e();\\n\\t} |
 | browser.js:29:35:31:2 | functio ... ta);\\n\\t} |
 | client-custom.js:10:19:12:2 | functio ... ta);\\n\\t} |
+| client-custom.js:20:38:22:2 | functio ... ta);\\n\\t} |
 | client.js:10:19:12:2 | functio ... ta);\\n\\t} |
 clientSend
 | browser-custom.js:7:3:7:33 | socket. ... wser!') |
@@ -47,14 +52,19 @@ flowSteps
 | client.js:16:40:16:72 | new Web ... e.org') | client-custom.js:1:24:1:44 | myWebSo ... nstance |
 | server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:11:39:11:48 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:15:40:15:49 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:43:45:43:54 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:47:46:47:55 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | client-custom.js:10:37:10:40 | data |
+| server.js:11:11:11:27 | 'Hi from server!' | client-custom.js:20:56:20:59 | data |
 | server.js:11:11:11:27 | 'Hi from server!' | client.js:10:37:10:40 | data |
 | server.js:15:36:15:55 | require('ws').Server | server-custom.js:1:9:1:25 | MyWebSocketServer |
 | server.js:16:44:16:79 | new Web ... 8080 }) | server-custom.js:1:28:1:52 | myWebSo ... nstance |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:27:26:27:31 | e.data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:32:42:32:51 | event.data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:58:32:58:37 | e.data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:63:48:63:57 | event.data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:25:26:25:31 | e.data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:30:42:30:51 | event.data |
 remoteFlow

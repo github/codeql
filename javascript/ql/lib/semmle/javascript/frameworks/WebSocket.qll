@@ -159,8 +159,8 @@ module ClientWebSocket {
   private DataFlow::FunctionNode getAMessageHandler(
     ClientWebSocket::ClientSocket emitter, string methodName
   ) {
-    exists(DataFlow::CallNode call |
-      call = emitter.getAMemberCall(methodName) and
+    exists(API::CallNode call |
+      call = emitter.getReturn().getMember(methodName).getACall() and
       call.getArgument(0).mayHaveStringValue("message") and
       result = call.getCallback(1)
     )
@@ -175,7 +175,7 @@ module ClientWebSocket {
     WebSocketReceiveNode() {
       this = getAMessageHandler(emitter, "addEventListener")
       or
-      this = emitter.getAPropertyWrite("onmessage").getRhs()
+      this = emitter.getReturn().getMember("onmessage").getAValueReachingSink()
     }
 
     override DataFlow::Node getReceivedItem(int i) {
