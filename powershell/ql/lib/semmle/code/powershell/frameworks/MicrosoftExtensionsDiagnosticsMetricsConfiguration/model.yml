@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Extensions.Configuration.IConfiguration", "Microsoft.Extensions.Diagnostics.Metrics.Configuration.IMetricListenerConfigurationFactory", "Method[GetConfiguration].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfiguration", "microsoft.extensions.diagnostics.metrics.configuration.imetriclistenerconfigurationfactory", "Method[getconfiguration].ReturnValue"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.host.ihostsupportsinteractivesession", "Method[get_runspace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.host.ihostsupportsinteractivesession", "Method[pushrunspace]", "Argument[0]", "Argument[this]", "taint"]
+      

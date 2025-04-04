@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.parseexception", "Method[get_errors]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.parseexception", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.parseexception", "Method[parseexception]", "Argument[0].Element", "Argument[this]", "taint"]
+      

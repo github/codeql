@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.trystatementast", "Method[trystatementast]", "Argument[1]", "Argument[3]", "taint"]
+      - ["system.management.automation.language.trystatementast", "Method[trystatementast]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.trystatementast", "Method[trystatementast]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.trystatementast", "Method[trystatementast]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.management.automation.language.trystatementast", "Method[trystatementast]", "Argument[this]", "Argument[3]", "taint"]
+      

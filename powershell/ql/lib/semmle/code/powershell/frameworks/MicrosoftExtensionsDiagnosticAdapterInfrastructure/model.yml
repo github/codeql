@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["T", "Microsoft.Extensions.DiagnosticAdapter.Infrastructure.IProxy", "Method[Upwrap<T>].ReturnValue"]
-    - ["TProxy", "Microsoft.Extensions.DiagnosticAdapter.Infrastructure.IProxyFactory", "Method[CreateProxy<TProxy>].ReturnValue"]
+    - ["t", "microsoft.extensions.diagnosticadapter.infrastructure.iproxy", "Method[Upwrap<t>].ReturnValue"]
+    - ["tproxy", "microsoft.extensions.diagnosticadapter.infrastructure.iproxyfactory", "Method[CreateProxy<tproxy>].ReturnValue"]

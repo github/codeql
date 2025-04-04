@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Diagnostics.Design.LogConverter", "Method[CanConvertFrom].ReturnValue"]
-    - ["System.ComponentModel.TypeConverter+StandardValuesCollection", "System.Diagnostics.Design.LogConverter", "Method[GetStandardValues].ReturnValue"]
-    - ["System.Boolean", "System.Diagnostics.Design.LogConverter", "Method[GetStandardValuesSupported].ReturnValue"]
-    - ["System.Object", "System.Diagnostics.Design.LogConverter", "Method[ConvertFrom].ReturnValue"]
+    - ["system.boolean", "system.diagnostics.design.logconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.componentmodel.typeconverter+standardvaluescollection", "system.diagnostics.design.logconverter", "Method[getstandardvalues].ReturnValue"]
+    - ["system.boolean", "system.diagnostics.design.logconverter", "Method[getstandardvaluessupported].ReturnValue"]
+    - ["system.object", "system.diagnostics.design.logconverter", "Method[convertfrom].ReturnValue"]

@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Activities.Activity", "System.ServiceModel.Activities.Presentation.Factories.ReceiveAndSendReplyFactory", "Method[Create].ReturnValue"]
-    - ["System.Activities.Activity", "System.ServiceModel.Activities.Presentation.Factories.SendAndReceiveReplyFactory", "Method[Create].ReturnValue"]
+    - ["system.activities.activity", "system.servicemodel.activities.presentation.factories.receiveandsendreplyfactory", "Method[create].ReturnValue"]
+    - ["system.activities.activity", "system.servicemodel.activities.presentation.factories.sendandreceivereplyfactory", "Method[create].ReturnValue"]

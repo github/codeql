@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Delegate", "XamlGeneratedNamespace.GeneratedInternalTypeHelper", "Method[CreateDelegate].ReturnValue"]
-    - ["System.Object", "XamlGeneratedNamespace.GeneratedInternalTypeHelper", "Method[GetPropertyValue].ReturnValue"]
-    - ["System.Object", "XamlGeneratedNamespace.GeneratedInternalTypeHelper", "Method[CreateInstance].ReturnValue"]
+    - ["system.delegate", "xamlgeneratednamespace.generatedinternaltypehelper", "Method[createdelegate].ReturnValue"]
+    - ["system.object", "xamlgeneratednamespace.generatedinternaltypehelper", "Method[getpropertyvalue].ReturnValue"]
+    - ["system.object", "xamlgeneratednamespace.generatedinternaltypehelper", "Method[createinstance].ReturnValue"]

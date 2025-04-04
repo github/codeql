@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents", "Property[Exists]"]
-    - ["System.Collections.Generic.IEnumerator<Microsoft.Extensions.FileProviders.IFileInfo>", "Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents", "Method[GetEnumerator].ReturnValue"]
-    - ["System.Collections.IEnumerator", "Microsoft.Extensions.FileProviders.Composite.CompositeDirectoryContents", "Method[System.Collections.IEnumerable.GetEnumerator].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Property[exists]"]
+    - ["system.collections.generic.ienumerator<microsoft.extensions.fileproviders.ifileinfo>", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Method[system.collections.ienumerable.getenumerator].ReturnValue"]

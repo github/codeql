@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Type", "System.Activities.Presentation.Metadata.AttributeCallbackBuilder", "Property[CallbackType]"]
-    - ["System.Collections.IEnumerable", "System.Activities.Presentation.Metadata.AttributeTable", "Method[GetCustomAttributes].ReturnValue"]
-    - ["System.Collections.Generic.IEnumerable<System.Type>", "System.Activities.Presentation.Metadata.AttributeTable", "Property[AttributedTypes]"]
-    - ["System.Activities.Presentation.Metadata.AttributeTable", "System.Activities.Presentation.Metadata.AttributeTableBuilder", "Method[CreateTable].ReturnValue"]
-    - ["System.Boolean", "System.Activities.Presentation.Metadata.AttributeTable", "Method[ContainsAttributes].ReturnValue"]
-    - ["System.Collections.Generic.IEnumerable<System.String>", "System.Activities.Presentation.Metadata.AttributeTableValidationException", "Property[ValidationErrors]"]
+    - ["system.type", "system.activities.presentation.metadata.attributecallbackbuilder", "Property[callbacktype]"]
+    - ["system.collections.ienumerable", "system.activities.presentation.metadata.attributetable", "Method[getcustomattributes].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.type>", "system.activities.presentation.metadata.attributetable", "Property[attributedtypes]"]
+    - ["system.activities.presentation.metadata.attributetable", "system.activities.presentation.metadata.attributetableBuilder", "Method[createtable].ReturnValue"]
+    - ["system.boolean", "system.activities.presentation.metadata.attributetable", "Method[containsattributes].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.string>", "system.activities.presentation.metadata.attributetablevalidationexception", "Property[validationerrors]"]

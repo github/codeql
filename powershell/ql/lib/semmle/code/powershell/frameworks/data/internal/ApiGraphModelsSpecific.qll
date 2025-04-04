@@ -76,7 +76,7 @@ API::Node getExtraNodeFromType(string rawType) {
   |
     parseRelevantType(rawType, type, suffix) and
     qualifiedTypeName.hasQualifiedName(namespace, typename) and
-    namespace + "." + typename = type
+    (namespace + "." + typename).toLowerCase() = type
   |
     suffix = "!" and
     result = qualifiedTypeName.(DataFlow::LocalSourceNode).track()

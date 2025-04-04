@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.psrunspacecmdlet", "Method[getmatchingrunspaces]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.psrunspacecmdlet", "Method[getmatchingrunspacesbyname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.psrunspacecmdlet", "Method[getmatchingrunspacesbyrunspaceid]", "Argument[this]", "ReturnValue", "taint"]
+      

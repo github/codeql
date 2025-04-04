@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.catchclauseast", "Method[catchclauseast]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.catchclauseast", "Method[catchclauseast]", "Argument[this]", "Argument[2]", "taint"]
+      

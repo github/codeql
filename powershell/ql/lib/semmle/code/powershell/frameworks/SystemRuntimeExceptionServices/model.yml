@@ -3,8 +3,8 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Exception", "System.Runtime.ExceptionServices.ExceptionDispatchInfo", "Property[SourceException]"]
-    - ["System.Exception", "System.Runtime.ExceptionServices.ExceptionDispatchInfo!", "Method[SetCurrentStackTrace].ReturnValue"]
-    - ["System.Runtime.ExceptionServices.ExceptionDispatchInfo", "System.Runtime.ExceptionServices.ExceptionDispatchInfo!", "Method[Capture].ReturnValue"]
-    - ["System.Exception", "System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs", "Property[Exception]"]
-    - ["System.Exception", "System.Runtime.ExceptionServices.ExceptionDispatchInfo!", "Method[SetRemoteStackTrace].ReturnValue"]
+    - ["system.exception", "system.runtime.exceptionservices.exceptiondispatchinfo", "Property[sourceexception]"]
+    - ["system.exception", "system.runtime.exceptionservices.exceptiondispatchinfo!", "Method[setcurrentstacktrace].ReturnValue"]
+    - ["system.runtime.exceptionservices.exceptiondispatchinfo", "system.runtime.exceptionservices.exceptiondispatchinfo!", "Method[capture].ReturnValue"]
+    - ["system.exception", "system.runtime.exceptionservices.firstchanceexceptioneventargs", "Property[exception]"]
+    - ["system.exception", "system.runtime.exceptionservices.exceptiondispatchinfo!", "Method[setremotestacktrace].ReturnValue"]

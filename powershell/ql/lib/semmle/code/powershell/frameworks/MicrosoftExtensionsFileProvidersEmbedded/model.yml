@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.DateTimeOffset", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[LastModified]"]
-    - ["System.Int64", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[Length]"]
-    - ["System.String", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[PhysicalPath]"]
-    - ["System.String", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[Name]"]
-    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[IsDirectory]"]
-    - ["System.IO.Stream", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Method[CreateReadStream].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Embedded.EmbeddedResourceFileInfo", "Property[Exists]"]
+    - ["system.datetimeoffset", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Property[lastmodified]"]
+    - ["system.int64", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Property[length]"]
+    - ["system.string", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Property[physicalpath]"]
+    - ["system.string", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Property[name]"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Property[isdirectory]"]
+    - ["system.io.stream", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Method[createreadstream].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Property[exists]"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.breakstatementast", "Method[breakstatementast]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.breakstatementast", "Method[breakstatementast]", "Argument[this]", "Argument[1]", "taint"]
+      

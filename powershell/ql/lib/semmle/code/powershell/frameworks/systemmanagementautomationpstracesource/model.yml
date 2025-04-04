@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pstracesource", "Method[get_attributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pstracesource", "Method[get_listeners]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pstracesource", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      

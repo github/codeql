@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Int32", "Microsoft.DotNet.PlatformAbstractions.HashCodeCombiner", "Property[CombinedHash]"]
-    - ["Microsoft.DotNet.PlatformAbstractions.HashCodeCombiner", "Microsoft.DotNet.PlatformAbstractions.HashCodeCombiner!", "Method[Start].ReturnValue"]
+    - ["system.int32", "microsoft.dotnet.platformabstractions.hashcodecombiner", "Property[combinedhash]"]
+    - ["microsoft.dotnet.platformabstractions.hashcodecombiner", "microsoft.dotnet.platformabstractions.hashcodecombiner!", "Method[start].ReturnValue"]

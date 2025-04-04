@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Method[GetIdRef].ReturnValue"]
-    - ["System.Xaml.AttachableMemberIdentifier", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Field[ViewStateManagerProperty]"]
-    - ["System.Xaml.AttachableMemberIdentifier", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Field[IdRefProperty]"]
-    - ["System.String", "System.Activities.Presentation.ViewState.ViewStateData", "Property[Id]"]
-    - ["System.Activities.Presentation.ViewState.ViewStateManager", "System.Activities.Presentation.ViewState.WorkflowViewState!", "Method[GetViewStateManager].ReturnValue"]
-    - ["System.Collections.ObjectModel.Collection<System.Activities.Presentation.ViewState.ViewStateData>", "System.Activities.Presentation.ViewState.ViewStateManager", "Property[ViewStateData]"]
+    - ["system.string", "system.activities.presentation.viewstate.workflowviewstate!", "Method[getidref].ReturnValue"]
+    - ["system.xaml.attachablememberidentifier", "system.activities.presentation.viewstate.workflowviewstate!", "Field[viewstatemanagerproperty]"]
+    - ["system.xaml.attachablememberidentifier", "system.activities.presentation.viewstate.workflowviewstate!", "Field[idrefproperty]"]
+    - ["system.string", "system.activities.presentation.viewstate.viewstatedata", "Property[id]"]
+    - ["system.activities.presentation.viewstate.viewstatemanager", "system.activities.presentation.viewstate.workflowviewstate!", "Method[getviewstatemanager].ReturnValue"]
+    - ["system.collections.objectmodel.collection<system.activities.presentation.viewstate.viewstatedata>", "system.activities.presentation.viewstate.viewstatemanager", "Property[viewstatedata]"]

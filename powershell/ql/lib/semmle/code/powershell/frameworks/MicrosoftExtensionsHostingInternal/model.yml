@@ -3,12 +3,12 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[ContentRootPath]"]
-    - ["System.String", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[EnvironmentName]"]
-    - ["Microsoft.Extensions.FileProviders.IFileProvider", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[ContentRootFileProvider]"]
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Hosting.Internal.ConsoleLifetime", "Method[WaitForStartAsync].ReturnValue"]
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Hosting.Internal.ConsoleLifetime", "Method[StopAsync].ReturnValue"]
-    - ["System.String", "Microsoft.Extensions.Hosting.Internal.HostingEnvironment", "Property[ApplicationName]"]
-    - ["System.Threading.CancellationToken", "Microsoft.Extensions.Hosting.Internal.ApplicationLifetime", "Property[ApplicationStopping]"]
-    - ["System.Threading.CancellationToken", "Microsoft.Extensions.Hosting.Internal.ApplicationLifetime", "Property[ApplicationStarted]"]
-    - ["System.Threading.CancellationToken", "Microsoft.Extensions.Hosting.Internal.ApplicationLifetime", "Property[ApplicationStopped]"]
+    - ["system.string", "microsoft.extensions.hosting.internal.hostingenvironment", "Property[contentrootpath]"]
+    - ["system.string", "microsoft.extensions.hosting.internal.hostingenvironment", "Property[environmentname]"]
+    - ["microsoft.extensions.fileproviders.ifileprovider", "microsoft.extensions.hosting.internal.hostingenvironment", "Property[contentrootfileprovider]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.internal.consolelifetime", "Method[waitforstartasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.internal.consolelifetime", "Method[stopasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.hosting.internal.hostingenvironment", "Property[applicationname]"]
+    - ["system.threading.cancellationtoken", "microsoft.extensions.hosting.internal.applicationlifetime", "Property[applicationstopping]"]
+    - ["system.threading.cancellationtoken", "microsoft.extensions.hosting.internal.applicationlifetime", "Property[applicationstarted]"]
+    - ["system.threading.cancellationtoken", "microsoft.extensions.hosting.internal.applicationlifetime", "Property[applicationstopped]"]

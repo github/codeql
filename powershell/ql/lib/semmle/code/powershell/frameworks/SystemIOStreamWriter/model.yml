@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["System.IO.StreamWriter", "Instance", "file-write"]
+      - ["system.io.streamwriter", "Instance", "file-write"]

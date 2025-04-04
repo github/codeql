@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Windows.Forms.ComponentModel.Com2Interop.IComPropertyBrowser", "Property[InPropertySet]"]
-    - ["System.Boolean", "System.Windows.Forms.ComponentModel.Com2Interop.IComPropertyBrowser", "Method[EnsurePendingChangesCommitted].ReturnValue"]
+    - ["system.boolean", "system.windows.forms.componentmodel.com2interop.icompropertybrowser", "Property[inpropertyset]"]
+    - ["system.boolean", "system.windows.forms.componentmodel.com2interop.icompropertybrowser", "Method[ensurependingchangescommitted].ReturnValue"]

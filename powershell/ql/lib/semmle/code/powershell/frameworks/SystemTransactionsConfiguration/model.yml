@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Transactions.Configuration.MachineSettingsSection", "System.Transactions.Configuration.TransactionsSectionGroup", "Property[MachineSettings]"]
-    - ["System.String", "System.Transactions.Configuration.DefaultSettingsSection", "Property[DistributedTransactionManagerName]"]
-    - ["System.Transactions.Configuration.TransactionsSectionGroup", "System.Transactions.Configuration.TransactionsSectionGroup!", "Method[GetSectionGroup].ReturnValue"]
-    - ["System.Configuration.ConfigurationPropertyCollection", "System.Transactions.Configuration.MachineSettingsSection", "Property[Properties]"]
-    - ["System.TimeSpan", "System.Transactions.Configuration.DefaultSettingsSection", "Property[Timeout]"]
-    - ["System.Transactions.Configuration.DefaultSettingsSection", "System.Transactions.Configuration.TransactionsSectionGroup", "Property[DefaultSettings]"]
-    - ["System.Configuration.ConfigurationPropertyCollection", "System.Transactions.Configuration.DefaultSettingsSection", "Property[Properties]"]
-    - ["System.TimeSpan", "System.Transactions.Configuration.MachineSettingsSection", "Property[MaxTimeout]"]
+    - ["system.transactions.configuration.machinesettingssection", "system.transactions.configuration.transactionssectiongroup", "Property[machinesettings]"]
+    - ["system.string", "system.transactions.configuration.defaultsettingssection", "Property[distributedtransactionmanagername]"]
+    - ["system.transactions.configuration.transactionssectiongroup", "system.transactions.configuration.transactionssectiongroup!", "Method[getsectiongroup].ReturnValue"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.machinesettingssection", "Property[properties]"]
+    - ["system.timespan", "system.transactions.configuration.defaultsettingssection", "Property[timeout]"]
+    - ["system.transactions.configuration.defaultsettingssection", "system.transactions.configuration.transactionssectiongroup", "Property[defaultsettings]"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.defaultsettingssection", "Property[properties]"]
+    - ["system.timespan", "system.transactions.configuration.machinesettingssection", "Property[maxtimeout]"]

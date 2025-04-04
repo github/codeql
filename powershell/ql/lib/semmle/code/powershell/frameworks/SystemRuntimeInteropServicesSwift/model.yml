@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Void*", "System.Runtime.InteropServices.Swift.SwiftError", "Property[Value]"]
-    - ["System.Void*", "System.Runtime.InteropServices.Swift.SwiftSelf", "Property[Value]"]
-    - ["System.Void*", "System.Runtime.InteropServices.Swift.SwiftIndirectResult", "Property[Value]"]
+    - ["system.void*", "system.runtime.interopservices.swift.swifterror", "Property[value]"]
+    - ["system.void*", "system.runtime.interopservices.swift.swiftself", "Property[value]"]
+    - ["system.void*", "system.runtime.interopservices.swift.swiftindirectresult", "Property[value]"]

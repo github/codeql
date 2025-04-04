@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psprimitivedictionary", "Method[add]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[add]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[add]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[psprimitivedictionary]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[set_item]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psprimitivedictionary", "Method[set_item]", "Argument[1]", "Argument[this]", "taint"]
+      

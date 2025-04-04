@@ -3,4 +3,16 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["Microsoft.PowerShell.Utility!", "Method[Read-Host].ReturnValue", "stdin"]
+      - ["microsoft.powershell.utility!", "Method[Read-Host].ReturnValue", "stdin"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+      - ["system.datetime", "microsoft.powershell.utility!", "Method[get-date].ReturnValue"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.datetime", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

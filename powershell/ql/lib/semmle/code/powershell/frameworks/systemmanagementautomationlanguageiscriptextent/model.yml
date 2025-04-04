@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.iscriptextent", "Method[get_endscriptposition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.iscriptextent", "Method[get_file]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.iscriptextent", "Method[get_startscriptposition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.iscriptextent", "Method[get_text]", "Argument[this]", "ReturnValue", "taint"]
+      

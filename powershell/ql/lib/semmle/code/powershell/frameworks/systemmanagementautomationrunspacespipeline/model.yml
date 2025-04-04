@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.pipeline", "Method[connect]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pipeline", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pipeline", "Method[get_error]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pipeline", "Method[get_input]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pipeline", "Method[get_output]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pipeline", "Method[get_pipelinestateinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pipeline", "Method[get_runspace]", "Argument[this]", "ReturnValue", "taint"]
+      

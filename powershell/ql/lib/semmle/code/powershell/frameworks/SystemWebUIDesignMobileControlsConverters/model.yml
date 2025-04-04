@@ -3,13 +3,13 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Object", "System.Web.UI.Design.MobileControls.Converters.DataMemberConverter", "Method[ConvertFrom].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.MobileControls.Converters.DataFieldConverter", "Method[GetStandardValuesExclusive].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.MobileControls.Converters.DataFieldConverter", "Method[CanConvertFrom].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.MobileControls.Converters.DataMemberConverter", "Method[GetStandardValuesExclusive].ReturnValue"]
-    - ["System.ComponentModel.TypeConverter+StandardValuesCollection", "System.Web.UI.Design.MobileControls.Converters.DataMemberConverter", "Method[GetStandardValues].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.MobileControls.Converters.DataMemberConverter", "Method[CanConvertFrom].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.MobileControls.Converters.DataFieldConverter", "Method[GetStandardValuesSupported].ReturnValue"]
-    - ["System.ComponentModel.TypeConverter+StandardValuesCollection", "System.Web.UI.Design.MobileControls.Converters.DataFieldConverter", "Method[GetStandardValues].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.MobileControls.Converters.DataMemberConverter", "Method[GetStandardValuesSupported].ReturnValue"]
-    - ["System.Object", "System.Web.UI.Design.MobileControls.Converters.DataFieldConverter", "Method[ConvertFrom].ReturnValue"]
+    - ["system.object", "system.web.ui.design.mobilecontrols.converters.datamemberconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.mobilecontrols.converters.datafieldconverter", "Method[getstandardvaluesexclusive].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.mobilecontrols.converters.datafieldconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.mobilecontrols.converters.datamemberconverter", "Method[getstandardvaluesexclusive].ReturnValue"]
+    - ["system.componentmodel.typeconverter+standardvaluescollection", "system.web.ui.design.mobilecontrols.converters.datamemberconverter", "Method[getstandardvalues].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.mobilecontrols.converters.datamemberconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.mobilecontrols.converters.datafieldconverter", "Method[getstandardvaluessupported].ReturnValue"]
+    - ["system.componentmodel.typeconverter+standardvaluescollection", "system.web.ui.design.mobilecontrols.converters.datafieldconverter", "Method[getstandardvalues].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.mobilecontrols.converters.datamemberconverter", "Method[getstandardvaluessupported].ReturnValue"]
+    - ["system.object", "system.web.ui.design.mobilecontrols.converters.datafieldconverter", "Method[convertfrom].ReturnValue"]

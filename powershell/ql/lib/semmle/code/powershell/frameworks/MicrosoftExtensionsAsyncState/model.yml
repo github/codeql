@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "Microsoft.Extensions.AsyncState.AsyncStateToken", "Method[Equals].ReturnValue"]
-    - ["System.Object", "Microsoft.Extensions.AsyncState.IAsyncState", "Method[Get].ReturnValue"]
-    - ["Microsoft.Extensions.AsyncState.AsyncStateToken", "Microsoft.Extensions.AsyncState.IAsyncState", "Method[RegisterAsyncContext].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.AsyncState.AsyncStateToken!", "Method[op_Equality].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.AsyncState.AsyncStateToken!", "Method[op_Inequality].ReturnValue"]
-    - ["System.Int32", "Microsoft.Extensions.AsyncState.AsyncStateToken", "Method[GetHashCode].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.AsyncState.IAsyncState", "Method[TryGet].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.asyncstatetoken", "Method[equals].ReturnValue"]
+    - ["system.object", "microsoft.extensions.asyncstate.iasyncstate", "Method[get].ReturnValue"]
+    - ["microsoft.extensions.asyncstate.asyncstatetoken", "microsoft.extensions.asyncstate.iasyncstate", "Method[registerasynccontext].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.asyncstatetoken!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.asyncstatetoken!", "Method[op_inequality].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.asyncstate.asyncstatetoken", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.iasyncstate", "Method[tryget].ReturnValue"]

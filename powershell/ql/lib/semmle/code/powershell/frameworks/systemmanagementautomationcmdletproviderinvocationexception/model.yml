@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.cmdletproviderinvocationexception", "Method[cmdletproviderinvocationexception]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.cmdletproviderinvocationexception", "Method[get_providerinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.cmdletproviderinvocationexception", "Method[get_providerinvocationexception]", "Argument[this]", "ReturnValue", "taint"]
+      
