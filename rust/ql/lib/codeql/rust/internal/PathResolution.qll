@@ -1088,7 +1088,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
  * Holds if `i` is available inside `f` because it is reexported in [the prelude][1].
  *
  * We don't yet have access to prelude information from the extractor, so for now
- * we include all the preludes for Rust 2015, 2018, 2021, and 2024.
+ * we include all the preludes for Rust: 2015, 2018, 2021, and 2024.
  *
  * [1]: https://doc.rust-lang.org/core/prelude/index.html
  */
