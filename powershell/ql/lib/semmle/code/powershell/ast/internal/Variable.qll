@@ -46,7 +46,6 @@ module Private {
   class ParameterImpl extends VariableSynth {
     ParameterImpl() {
       i instanceof FunParam or
-      i instanceof PipelineParamVar or
       i instanceof ThisVar
     }
   }
@@ -56,7 +55,14 @@ module Private {
   }
 
   class PipelineVariableImpl extends ParameterImpl {
-    override PipelineParamVar i;
+    override FunParam i;
+
+    PipelineVariableImpl() {
+      exists(int index |
+        i = FunParam(index) and
+        any(Synthesis s).pipelineParameterHasIndex(super.getDeclaringScopeImpl(), index)
+      )
+    }
 
     ScriptBlock getScriptBlock() { this = TVariableSynth(getRawAst(result), _) }
   }
