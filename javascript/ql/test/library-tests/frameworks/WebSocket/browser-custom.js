@@ -63,3 +63,12 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
         console.log('Using addEventListener ', event.data);
     }); // $ clientReceive
 })();
+
+
+const recv_message = function (e) {
+    console.log('Received message:', e.data);
+}; // $ MISSING: clientReceive
+
+(function () {
+    myWebSocketInstance.onmessage = recv_message.bind(this);
+})();
