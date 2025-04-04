@@ -3,9 +3,9 @@ export function basicHtmlConstruction(s: string) { // $ Source
     document.body.innerHTML = html;
 }
 
-export function insertIntoCreatedDocument(s: string) { // $ Source
+export function insertIntoCreatedDocument(s: string) {
     const newDoc = document.implementation.createHTMLDocument("");
-    newDoc.body.innerHTML = "<span>" + s + "</span>"; // $ SPURIOUS: Alert - inserted into document disconnected from the main DOM.
+    newDoc.body.innerHTML = "<span>" + s + "</span>"; // OK - inserted into document disconnected from the main DOM.
 }
 
 export function id(s: string) {
@@ -17,4 +17,3 @@ export function notVulnerable() {
     const html = "<span>" + s + "</span>";
     document.body.innerHTML = html;
 }
- 
