@@ -7,7 +7,7 @@
  * @id rb/useless-assignment-to-local
  * @tags maintainability
  *       external/cwe/cwe-563
- * @precision low
+ * @precision medium
  */
 
 import codeql.ruby.AST
