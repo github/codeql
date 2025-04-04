@@ -811,7 +811,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAVC/1>::Union;
 
   final private class EllipticCurveAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<EllipticCurveAlgorithmInstance, isKeyDerivationAVC/1>::Union;
+    AlgorithmInstanceOrValueConsumer<EllipticCurveAlgorithmInstance, isCipherAVC/1>::Union;
 
   private newtype TNode =
     // Artifacts (data that is not an operation or algorithm, e.g., a key)
