@@ -34,6 +34,14 @@ class Container = Impl::Container;
 
 class Folder = Impl::Folder;
 
+/** Holds if `relativePath` needs to be appended to `f`. */
+signature predicate appendSig(Folder f, string relativePath);
+
+/** Provides the `append` predicate for appending a relative path onto a folder. */
+module FolderAppend<appendSig/2 app> {
+  import Impl::FolderAppend<app/2>
+}
+
 /** A file. */
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
