@@ -41,6 +41,7 @@ private class StringAndStringBuilderFormatMethods extends FormatMethod {
 private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMethod {
   SystemConsoleAndSystemIoTextWriterFormatMethods() {
     this.getParameter(0).getType() instanceof StringType and
+    this.getNumberOfParameters() > 1 and
     exists(Class declType | declType = this.getDeclaringType() |
       this.hasName(["Write", "WriteLine"]) and
       (
@@ -67,6 +68,7 @@ private class SystemDiagnosticsDebugAssert extends FormatMethod {
 private class SystemDiagnosticsFormatMethods extends FormatMethod {
   SystemDiagnosticsFormatMethods() {
     this.getParameter(0).getType() instanceof StringType and
+    this.getNumberOfParameters() > 1 and
     exists(Class declType |
       declType = this.getDeclaringType() and
       declType.getNamespace().getFullName() = "System.Diagnostics"

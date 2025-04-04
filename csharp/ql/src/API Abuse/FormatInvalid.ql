@@ -29,7 +29,6 @@ private predicate invalidFormatString(
   source.getNode().asExpr() = src and
   sink.getNode().asExpr() = call.getFormatExpr() and
   FormatInvalid::flowPath(source, sink) and
-  call.hasInsertions() and
   msg = "Invalid format string used in $@ formatting call." and
   callString = "this"
 }
