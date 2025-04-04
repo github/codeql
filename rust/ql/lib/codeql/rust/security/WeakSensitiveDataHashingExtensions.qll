@@ -44,6 +44,8 @@ module NormalHashFunction {
    * hashing. That is, a broken or weak hashing algorithm.
    */
   abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "WeakSensitiveDataHashing" }
+
     /**
      * Gets the name of the weak hashing algorithm.
      */
@@ -75,8 +77,6 @@ module NormalHashFunction {
    */
   class WeakHashingOperationInputAsSink extends Sink {
     Cryptography::HashingAlgorithm algorithm;
-
-    override string getSinkType() { result = "WeakSensitiveDataHashing" }
 
     WeakHashingOperationInputAsSink() {
       exists(Cryptography::CryptographicOperation operation |

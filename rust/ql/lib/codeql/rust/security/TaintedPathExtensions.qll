@@ -23,7 +23,9 @@ module TaintedPath {
   /**
    * A data flow sink for path injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "TaintedPath" }
+  }
 
   /**
    * A barrier for path injection vulnerabilities.

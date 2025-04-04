@@ -51,8 +51,10 @@ module SqlInjection {
     SqlExecutionAsSink() { this = any(SqlExecution e).getSql() }
   }
 
-  /** A sink for sql-injection from model data. */
-  private class ModelsAsDataSinks extends Sink {
-    ModelsAsDataSinks() { sinkNode(this, "sql-injection") }
+  /**
+   * A sink for sql-injection from model data.
+   */
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() { sinkNode(this, "sql-injection") }
   }
 }

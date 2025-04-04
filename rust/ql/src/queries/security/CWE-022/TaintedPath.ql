@@ -16,11 +16,10 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
-import codeql.rust.dataflow.internal.DataFlowImpl as DataflowImpl
 import codeql.rust.dataflow.TaintTracking
+import codeql.rust.dataflow.internal.DataFlowImpl as DataflowImpl
+import codeql.rust.Concepts
 import codeql.rust.security.TaintedPathExtensions
-import TaintedPathFlow::PathGraph
-private import codeql.rust.Concepts
 
 newtype NormalizationState =
   /** A state signifying that the file path has not been normalized. */
@@ -83,6 +82,8 @@ module TaintedPathConfig implements DataFlow::StateConfigSig {
 }
 
 module TaintedPathFlow = TaintTracking::GlobalWithState<TaintedPathConfig>;
+
+import TaintedPathFlow::PathGraph
 
 from TaintedPathFlow::PathNode source, TaintedPathFlow::PathNode sink
 where TaintedPathFlow::flowPath(source, sink)
