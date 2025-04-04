@@ -25,7 +25,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Git config
         shell: bash
         run: |
@@ -33,23 +32,19 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Add and fetch upstream
         run: |
-          set -x
+          echo "::group::Fetch and set up remotes"
           git fetch
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
+          echo "::endgroup::"
+
+          echo "::group::Checkout and merge"
+          set -x
           git fetch origin sync-main-pr || true
           git checkout -B sync-main-pr origin/main
           git merge codeql-cli/latest
-      - name: Setup CodeQL
-        shell: bash
-        run: |
-          gh extension install github/gh-codeql
-          gh codeql version
-          printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
-          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
-          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          set +x
+          echo "::endgroup::"
       - name: Push sync branch
         run: |
           git push origin sync-main-pr --force
@@ -65,5 +60,3 @@ jobs:
           else
             echo "PR already exists: $PR_URL"
           fi
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
