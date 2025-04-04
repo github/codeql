@@ -1,8 +1,26 @@
-| test.py:5:9:5:20 | FunctionExpr | Capture of loop variable $@. | test.py:4:5:4:23 | For | x |
-| test.py:10:6:10:14 | Lambda | Capture of loop variable $@. | test.py:10:5:10:36 | ListComp | i |
-| test.py:42:6:42:14 | Lambda | Capture of loop variable $@. | test.py:42:5:42:56 | ListComp | i |
-| test.py:43:6:43:14 | Lambda | Capture of loop variable $@. | test.py:43:5:43:56 | ListComp | j |
-| test.py:45:6:45:14 | Lambda | Capture of loop variable $@. | test.py:45:5:45:36 | SetComp | i |
-| test.py:49:8:49:16 | Lambda | Capture of loop variable $@. | test.py:49:5:49:38 | DictComp | i |
-| test.py:57:6:57:14 | Lambda | Capture of loop variable $@. | test.py:57:6:57:35 | GeneratorExp | i |
-| test.py:62:10:62:18 | Lambda | Capture of loop variable $@. | test.py:62:10:62:39 | GeneratorExp | i |
+edges
+| test.py:5:9:5:20 | ControlFlowNode for FunctionExpr | test.py:5:13:5:17 | ControlFlowNode for inner | provenance |  |
+| test.py:5:13:5:17 | ControlFlowNode for inner | test.py:7:20:7:24 | ControlFlowNode for inner | provenance |  |
+| test.py:49:8:49:16 | ControlFlowNode for Lambda | test.py:49:6:49:16 | ControlFlowNode for Tuple | provenance |  |
+nodes
+| test.py:5:9:5:20 | ControlFlowNode for FunctionExpr | semmle.label | ControlFlowNode for FunctionExpr |
+| test.py:5:13:5:17 | ControlFlowNode for inner | semmle.label | ControlFlowNode for inner |
+| test.py:7:20:7:24 | ControlFlowNode for inner | semmle.label | ControlFlowNode for inner |
+| test.py:10:6:10:14 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+| test.py:42:6:42:14 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+| test.py:43:6:43:14 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+| test.py:45:6:45:14 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+| test.py:49:6:49:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:49:8:49:16 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+| test.py:57:6:57:14 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+| test.py:62:10:62:18 | ControlFlowNode for Lambda | semmle.label | ControlFlowNode for Lambda |
+subpaths
+#select
+| test.py:5:9:5:20 | FunctionExpr | test.py:5:9:5:20 | ControlFlowNode for FunctionExpr | test.py:7:20:7:24 | ControlFlowNode for inner | This function captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:4:5:4:23 | For | x | test.py:7:20:7:24 | ControlFlowNode for inner | this location |
+| test.py:10:6:10:14 | Lambda | test.py:10:6:10:14 | ControlFlowNode for Lambda | test.py:10:6:10:14 | ControlFlowNode for Lambda | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:10:5:10:36 | For | i | test.py:10:6:10:14 | ControlFlowNode for Lambda | this location |
+| test.py:42:6:42:14 | Lambda | test.py:42:6:42:14 | ControlFlowNode for Lambda | test.py:42:6:42:14 | ControlFlowNode for Lambda | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:42:5:42:56 | For | i | test.py:42:6:42:14 | ControlFlowNode for Lambda | this location |
+| test.py:43:6:43:14 | Lambda | test.py:43:6:43:14 | ControlFlowNode for Lambda | test.py:43:6:43:14 | ControlFlowNode for Lambda | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:43:5:43:56 | For | j | test.py:43:6:43:14 | ControlFlowNode for Lambda | this location |
+| test.py:45:6:45:14 | Lambda | test.py:45:6:45:14 | ControlFlowNode for Lambda | test.py:45:6:45:14 | ControlFlowNode for Lambda | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:45:5:45:36 | For | i | test.py:45:6:45:14 | ControlFlowNode for Lambda | this location |
+| test.py:49:8:49:16 | Lambda | test.py:49:8:49:16 | ControlFlowNode for Lambda | test.py:49:6:49:16 | ControlFlowNode for Tuple | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:49:5:49:38 | For | i | test.py:49:6:49:16 | ControlFlowNode for Tuple | this location |
+| test.py:57:6:57:14 | Lambda | test.py:57:6:57:14 | ControlFlowNode for Lambda | test.py:57:6:57:14 | ControlFlowNode for Lambda | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:57:6:57:35 | For | i | test.py:57:6:57:14 | ControlFlowNode for Lambda | this location |
+| test.py:62:10:62:18 | Lambda | test.py:62:10:62:18 | ControlFlowNode for Lambda | test.py:62:10:62:18 | ControlFlowNode for Lambda | This lambda captures the loop variable $@, and may escape the loop by being stored at $@. | test.py:62:10:62:39 | For | i | test.py:62:10:62:18 | ControlFlowNode for Lambda | this location |
