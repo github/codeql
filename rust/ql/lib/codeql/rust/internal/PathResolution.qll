@@ -655,6 +655,11 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
   )
 }
 
+private Meta getPathAttrMeta(Module m) {
+  result = m.getAnAttr().getMeta() and
+  result.getPath().getText() = "path"
+}
+
 /**
  * Holds if `m` is a `mod name;` module declaration, where the corresponding
  * module file needs to be looked up in `lookup` or one of its descandants.
@@ -663,12 +668,7 @@ private predicate modImport0(Module m, string name, Folder lookup) {
   exists(File f, Folder parent, string fileName |
     f = m.getFile() and
     not m.hasItemList() and
-    // TODO: handle
-    // ```
-    // #[path = "foo.rs"]
-    // mod bar;
-    // ```
-    not m.getAnAttr().getMeta().getPath().getText() = "path" and
+    not exists(getPathAttrMeta(m)) and
     name = m.getName().getText() and
     parent = f.getParentContainer() and
     fileName = f.getStem()
@@ -717,6 +717,16 @@ private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folde
   )
 }
 
+private predicate pathAttrImport(Folder f, Module m, string relativePath) {
+  exists(Meta meta |
+    f = m.getFile().getParentContainer() and
+    meta = getPathAttrMeta(m) and
+    relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
+  )
+}
+
+private predicate append(Folder f, string relativePath) { pathAttrImport(f, _, relativePath) }
+
 /** Holds if `m` is a `mod name;` item importing file `f`. */
 private predicate fileImport(Module m, SourceFile f) {
   exists(string name, Folder parent |
@@ -729,6 +739,11 @@ private predicate fileImport(Module m, SourceFile f) {
     or
     // `m` is inside a nested module
     modImportNestedLookup(m, m, parent)
+  )
+  or
+  exists(Folder folder, string relativePath |
+    pathAttrImport(folder, m, relativePath) and
+    f.getFile() = Folder::Append<append/2>::append(folder, relativePath)
   )
 }
 

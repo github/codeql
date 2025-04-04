@@ -14,4 +14,4 @@ pub mod my3;
 #[path = "renamed.rs"]
 mod mymod;
 
-use mymod::f; // $ MISSING: item=I1001
+use mymod::f; // $ item=I1001

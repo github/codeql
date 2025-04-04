@@ -218,6 +218,53 @@ module Make<InputSig Input> {
     /** Gets the URL of this file. */
     override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
   }
+
+  /** Provides logic related to `Folder`s. */
+  module Folder {
+    /** Holds if `relativePath` needs to be appended to `f`. */
+    signature predicate appendSig(Folder f, string relativePath);
+
+    /** Provides the `append` predicate for appending a relative path onto a folder. */
+    module Append<appendSig/2 app> {
+      pragma[nomagic]
+      private string getComponent(string relativePath, int i) {
+        app(_, relativePath) and
+        result = relativePath.replaceAll("\\", "/").regexpFind("[^/]+", i, _)
+      }
+
+      pragma[nomagic]
+      private Container appendStep(Folder f, string relativePath, int i) {
+        i = -1 and
+        app(f, relativePath) and
+        result = f
+        or
+        exists(Container mid, string comp |
+          mid = appendStep(f, relativePath, i - 1) and
+          comp = getComponent(relativePath, i) and
+          if comp = ".."
+          then result = mid.getParentContainer()
+          else
+            if comp = "."
+            then result = mid
+            else (
+              result = mid.getAChildContainer() and
+              result.getBaseName() = comp
+            )
+        )
+      }
+
+      /**
+       * Gets the file or folder obtained by appending `relativePath` onto `f`.
+       */
+      pragma[nomagic]
+      Container append(Folder f, string relativePath) {
+        exists(int components |
+          components = (-1).maximum(max(int comp | exists(getComponent(relativePath, comp)) | comp)) and
+          result = appendStep(f, relativePath, components)
+        )
+      }
+    }
+  }
 }
 
 /** A file. */
