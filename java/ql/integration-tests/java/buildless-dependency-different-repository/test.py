@@ -16,7 +16,7 @@ def test(codeql, java):
         command1, cwd="repo"
     )
     repo_server_process2 = subprocess.Popen(
-        command2, cwd="repo"
+        command2, cwd="repo2"
     )
     try:
         codeql.database.create(
