@@ -3,7 +3,7 @@ const BUFFER_LIMIT: usize = 10 * 1024;
 
 fn allocate_buffer(user_input: String) -> Result<*mut u8, Error> {
     let size = user_input.parse::<usize>()?;
-    if (size > BUFFER_LIMIT) {
+    if size > BUFFER_LIMIT {
         return Err("Size exceeds limit".into());
     }
     let num_bytes = size * std::mem::size_of::<u64>();
