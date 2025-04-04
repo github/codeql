@@ -12,8 +12,11 @@
 
 import javascript
 
-from LabeledStmt l, Case c
-where
+int labelInCaseStartColumn(Case c, LabeledStmt l) {
   l = c.getAChildStmt+() and
-  l.getLocation().getStartColumn() = c.getLocation().getStartColumn()
+  result = l.getLocation().getStartColumn()
+}
+
+from LabeledStmt l, Case c
+where labelInCaseStartColumn(c, l) = c.getLocation().getStartColumn()
 select l.getChildExpr(0), "Non-case labels in switch statements are confusing."
