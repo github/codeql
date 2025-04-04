@@ -176,6 +176,12 @@ module ClientWebSocket {
       this = getAMessageHandler(emitter, "addEventListener")
       or
       this = emitter.getReturn().getMember("onmessage").getAValueReachingSink()
+      or
+      exists(DataFlow::MethodCallNode bindCall |
+        bindCall = emitter.getReturn().getMember("onmessage").getAValueReachingSink() and
+        bindCall.getMethodName() = "bind" and
+        this = bindCall.getReceiver().getAFunctionValue()
+      )
     }
 
     override DataFlow::Node getReceivedItem(int i) {

@@ -7,6 +7,7 @@ clientReceive
 | browser-custom.js:46:37:48:5 | functio ... )\\n    } |
 | browser-custom.js:57:34:60:5 | functio ... ;\\n    } |
 | browser-custom.js:62:50:64:5 | functio ... ;\\n    } |
+| browser-custom.js:68:22:70:1 | functio ... ata);\\n} |
 | browser.js:8:37:10:2 | functio ... ta);\\n\\t} |
 | browser.js:12:21:14:2 | functio ... ata)\\n\\t} |
 | browser.js:24:19:27:2 | functio ... e();\\n\\t} |
@@ -54,6 +55,7 @@ flowSteps
 | server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:15:40:15:49 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:43:45:43:54 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:47:46:47:55 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:69:38:69:43 | e.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | client-custom.js:10:37:10:40 | data |

@@ -67,7 +67,7 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 
 const recv_message = function (e) {
     console.log('Received message:', e.data);
-}; // $ MISSING: clientReceive
+}; // $ clientReceive
 
 (function () {
     myWebSocketInstance.onmessage = recv_message.bind(this);
