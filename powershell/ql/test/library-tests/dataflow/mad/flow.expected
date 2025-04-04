@@ -1,0 +1,19 @@
+models
+edges
+| file://:0:0:0:0 | [summary param] pos(0, {}) in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | provenance |  |
+| test.ps1:1:6:1:15 | Call to Source | test.ps1:2:94:2:95 | x | provenance |  |
+| test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent | test.ps1:3:6:3:7 | y | provenance |  |
+| test.ps1:2:94:2:95 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | provenance |  |
+| test.ps1:2:94:2:95 | x | test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent | provenance |  |
+nodes
+| file://:0:0:0:0 | [summary param] pos(0, {}) in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | semmle.label | [summary param] pos(0, {}) in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | semmle.label | [summary] to write: ReturnValue in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] |
+| test.ps1:1:6:1:15 | Call to Source | semmle.label | Call to Source |
+| test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent | semmle.label | Call to EscapeSingleQuotedStringContent |
+| test.ps1:2:94:2:95 | x | semmle.label | x |
+| test.ps1:3:6:3:7 | y | semmle.label | y |
+subpaths
+| test.ps1:2:94:2:95 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent |
+testFailures
+#select
+| test.ps1:3:6:3:7 | y | test.ps1:1:6:1:15 | Call to Source | test.ps1:3:6:3:7 | y | $@ | test.ps1:1:6:1:15 | Call to Source | Call to Source |
