@@ -40,17 +40,21 @@ private module Input1 implements InputSig1<Location> {
 
   private newtype TTypeParameterPosition =
     TTypeParamTypeParameterPosition(TypeParam tp) or
-    TSelfTypeParameterPosition()
+    TImplicitTypeParameterPosition()
 
   class TypeParameterPosition extends TTypeParameterPosition {
     TypeParam asTypeParam() { this = TTypeParamTypeParameterPosition(result) }
 
-    predicate isSelf() { this = TSelfTypeParameterPosition() }
+    /**
+     * Holds if this is the implicit type parameter position used to represent
+     * parameters that are never passed explicitly as arguments.
+     */
+    predicate isImplicit() { this = TImplicitTypeParameterPosition() }
 
     string toString() {
       result = this.asTypeParam().toString()
       or
-      result = "Self" and this.isSelf()
+      result = "Implicit" and this.isImplicit()
     }
   }
 
@@ -69,15 +73,6 @@ private module Input1 implements InputSig1<Location> {
     apos.asMethodTypeArgumentPosition() = ppos.asTypeParam().getPosition()
   }
 
-  /** A raw AST node that might correspond to a type parameter. */
-  private class RawTypeParameter = @type_param or @trait;
-
-  private predicate id(RawTypeParameter x, RawTypeParameter y) { x = y }
-
-  private predicate idOfRaw(RawTypeParameter x, int y) = equivalenceRelation(id/2)(x, y)
-
-  private int idOf(AstNode node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
-
   int getTypeParameterId(TypeParameter tp) {
     tp =
       rank[result](TypeParameter tp0, int kind, int id |
@@ -86,8 +81,9 @@ private module Input1 implements InputSig1<Location> {
         id = 0
         or
         kind = 1 and
-        exists(AstNode node | id = idOf(node) |
+        exists(AstNode node | id = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
+          node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
           node = tp0.(SelfTypeParameter).getTrait()
         )
       |
@@ -500,7 +496,10 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       exists(TraitItemNode trait | this = trait.getAnAssocItem() |
         typeParamMatchPosition(trait.getTypeParam(_), result, ppos)
         or
-        ppos.isSelf() and result = TSelfTypeParameter(trait)
+        ppos.isImplicit() and result = TSelfTypeParameter(trait)
+        or
+        ppos.isImplicit() and
+        result.(AssociatedTypeTypeParameter).getTrait() = trait
       )
     }
 

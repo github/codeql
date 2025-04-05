@@ -26,5 +26,15 @@ module Impl {
    */
   class Trait extends Generated::Trait {
     override string toStringImpl() { result = "trait " + this.getName().getText() }
+
+    /**
+     * Gets the number of generic parameters of this trait.
+     */
+    int getNumberOfGenericParams() {
+      result = this.getGenericParamList().getNumberOfGenericParams()
+      or
+      not this.hasGenericParamList() and
+      result = 0
+    }
   }
 }
