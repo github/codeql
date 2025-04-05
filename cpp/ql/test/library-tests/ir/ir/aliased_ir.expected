@@ -151,6 +151,109 @@ bad_stmts.cpp:
 #    5|     v5_6(void)         = AliasedUse              : m5_3
 #    5|     v5_7(void)         = ExitFunction            : 
 
+c11.c:
+#    1| void c11_generic_test_with_load(unsigned int, int)
+#    1|   Block 0
+#    1|     v1_1(void)                = EnterFunction          : 
+#    1|     m1_2(unknown)             = AliasedDefinition      : 
+#    1|     m1_3(unknown)             = InitializeNonLocal     : 
+#    1|     m1_4(unknown)             = Chi                    : total:m1_2, partial:m1_3
+#    1|     r1_5(glval<unsigned int>) = VariableAddress[x]     : 
+#    1|     m1_6(unsigned int)        = InitializeParameter[x] : &:r1_5
+#    1|     r1_7(glval<int>)          = VariableAddress[y]     : 
+#    1|     m1_8(int)                 = InitializeParameter[y] : &:r1_7
+#    2|     r2_1(glval<unsigned int>) = VariableAddress[r]     : 
+#    2|     m2_2(unsigned int)        = Uninitialized[r]       : &:r2_1
+#    3|     r3_1(glval<unsigned int>) = VariableAddress[x]     : 
+#    3|     r3_2(unsigned int)        = Load[x]                : &:r3_1, m1_6
+#    3|     r3_3(unsigned int)        = Constant[1]            : 
+#    3|     r3_4(unsigned int)        = Add                    : r3_2, r3_3
+#    3|     r3_5(glval<unsigned int>) = VariableAddress[r]     : 
+#    3|     m3_6(unsigned int)        = Store[r]               : &:r3_5, r3_4
+#    4|     v4_1(void)                = NoOp                   : 
+#    1|     v1_9(void)                = ReturnVoid             : 
+#    1|     v1_10(void)               = AliasedUse             : m1_3
+#    1|     v1_11(void)               = ExitFunction           : 
+
+#   12| char const* c11_generic_test_with_constant_and_macro()
+#   12|   Block 0
+#   12|     v12_1(void)           = EnterFunction            : 
+#   12|     m12_2(unknown)        = AliasedDefinition        : 
+#   12|     m12_3(unknown)        = InitializeNonLocal       : 
+#   12|     m12_4(unknown)        = Chi                      : total:m12_2, partial:m12_3
+#   14|     r14_1(glval<int>)     = VariableAddress[i]       : 
+#   14|     m14_2(int)            = Uninitialized[i]         : &:r14_1
+#   16|     r16_1(glval<char *>)  = VariableAddress[#return] : 
+#   16|     r16_2(glval<char[4]>) = Constant[int]            : 
+#   16|     r16_3(char *)         = Convert                  : r16_2
+#   16|     r16_4(char *)         = Convert                  : r16_3
+#   16|     m16_5(char *)         = Store[#return]           : &:r16_1, r16_4
+#   12|     r12_5(glval<char *>)  = VariableAddress[#return] : 
+#   12|     v12_6(void)           = ReturnValue              : &:r12_5, m16_5
+#   12|     v12_7(void)           = AliasedUse               : m12_3
+#   12|     v12_8(void)           = ExitFunction             : 
+
+#   19| char const* c11_generic_test_with_constant_and_no_macro()
+#   19|   Block 0
+#   19|     v19_1(void)           = EnterFunction            : 
+#   19|     m19_2(unknown)        = AliasedDefinition        : 
+#   19|     m19_3(unknown)        = InitializeNonLocal       : 
+#   19|     m19_4(unknown)        = Chi                      : total:m19_2, partial:m19_3
+#   21|     r21_1(glval<int>)     = VariableAddress[i]       : 
+#   21|     m21_2(int)            = Uninitialized[i]         : &:r21_1
+#   23|     r23_1(glval<char *>)  = VariableAddress[#return] : 
+#   23|     r23_2(glval<char[4]>) = Constant[int]            : 
+#   23|     r23_3(char *)         = Convert                  : r23_2
+#   23|     r23_4(char *)         = Convert                  : r23_3
+#   23|     m23_5(char *)         = Store[#return]           : &:r23_1, r23_4
+#   19|     r19_5(glval<char *>)  = VariableAddress[#return] : 
+#   19|     v19_6(void)           = ReturnValue              : &:r19_5, m23_5
+#   19|     v19_7(void)           = AliasedUse               : m19_3
+#   19|     v19_8(void)           = ExitFunction             : 
+
+#   26| void c11_generic_test_test_with_cast(int)
+#   26|   Block 0
+#   26|     v26_1(void)                = EnterFunction          : 
+#   26|     m26_2(unknown)             = AliasedDefinition      : 
+#   26|     m26_3(unknown)             = InitializeNonLocal     : 
+#   26|     m26_4(unknown)             = Chi                    : total:m26_2, partial:m26_3
+#   26|     r26_5(glval<int>)          = VariableAddress[y]     : 
+#   26|     m26_6(int)                 = InitializeParameter[y] : &:r26_5
+#   27|     r27_1(glval<unsigned int>) = VariableAddress[r]     : 
+#   27|     m27_2(unsigned int)        = Uninitialized[r]       : &:r27_1
+#   28|     r28_1(glval<int>)          = VariableAddress[y]     : 
+#   28|     r28_2(int)                 = Load[y]                : &:r28_1, m26_6
+#   28|     r28_3(unsigned int)        = Convert                : r28_2
+#   28|     r28_4(glval<unsigned int>) = VariableAddress[r]     : 
+#   28|     m28_5(unsigned int)        = Store[r]               : &:r28_4, r28_3
+#   29|     v29_1(void)                = NoOp                   : 
+#   26|     v26_7(void)                = ReturnVoid             : 
+#   26|     v26_8(void)                = AliasedUse             : m26_3
+#   26|     v26_9(void)                = ExitFunction           : 
+
+#   32| void static_array_param(int[3])
+#   32|   Block 0
+#   32|     v32_1(void)         = EnterFunction            : 
+#   32|     m32_2(unknown)      = AliasedDefinition        : 
+#   32|     m32_3(unknown)      = InitializeNonLocal       : 
+#   32|     m32_4(unknown)      = Chi                      : total:m32_2, partial:m32_3
+#   32|     r32_5(glval<int *>) = VariableAddress[a]       : 
+#   32|     m32_6(int *)        = InitializeParameter[a]   : &:r32_5
+#   32|     r32_7(int *)        = Load[a]                  : &:r32_5, m32_6
+#   32|     m32_8(unknown)      = InitializeIndirection[a] : &:r32_7
+#   33|     r33_1(int)          = Constant[1]              : 
+#   33|     r33_2(glval<int *>) = VariableAddress[a]       : 
+#   33|     r33_3(int *)        = Load[a]                  : &:r33_2, m32_6
+#   33|     r33_4(int)          = Constant[0]              : 
+#   33|     r33_5(glval<int>)   = PointerAdd[4]            : r33_3, r33_4
+#   33|     m33_6(int)          = Store[?]                 : &:r33_5, r33_1
+#   33|     m33_7(unknown)      = Chi                      : total:m32_8, partial:m33_6
+#   34|     v34_1(void)         = NoOp                     : 
+#   32|     v32_9(void)         = ReturnIndirection[a]     : &:r32_7, m33_7
+#   32|     v32_10(void)        = ReturnVoid               : 
+#   32|     v32_11(void)        = AliasedUse               : m32_3
+#   32|     v32_12(void)        = ExitFunction             : 
+
 clang.cpp:
 #    5| int* globalIntAddress()
 #    5|   Block 0
@@ -2951,86 +3054,6 @@ destructors_for_temps.cpp:
 #  102|     v102_8(void)                         = ReturnVoid                               : 
 #  102|     v102_9(void)                         = AliasedUse                               : ~m103_26
 #  102|     v102_10(void)                        = ExitFunction                             : 
-
-generic.c:
-#    1| void c11_generic_test_with_load(unsigned int, int)
-#    1|   Block 0
-#    1|     v1_1(void)                = EnterFunction          : 
-#    1|     m1_2(unknown)             = AliasedDefinition      : 
-#    1|     m1_3(unknown)             = InitializeNonLocal     : 
-#    1|     m1_4(unknown)             = Chi                    : total:m1_2, partial:m1_3
-#    1|     r1_5(glval<unsigned int>) = VariableAddress[x]     : 
-#    1|     m1_6(unsigned int)        = InitializeParameter[x] : &:r1_5
-#    1|     r1_7(glval<int>)          = VariableAddress[y]     : 
-#    1|     m1_8(int)                 = InitializeParameter[y] : &:r1_7
-#    2|     r2_1(glval<unsigned int>) = VariableAddress[r]     : 
-#    2|     m2_2(unsigned int)        = Uninitialized[r]       : &:r2_1
-#    3|     r3_1(glval<unsigned int>) = VariableAddress[x]     : 
-#    3|     r3_2(unsigned int)        = Load[x]                : &:r3_1, m1_6
-#    3|     r3_3(unsigned int)        = Constant[1]            : 
-#    3|     r3_4(unsigned int)        = Add                    : r3_2, r3_3
-#    3|     r3_5(glval<unsigned int>) = VariableAddress[r]     : 
-#    3|     m3_6(unsigned int)        = Store[r]               : &:r3_5, r3_4
-#    4|     v4_1(void)                = NoOp                   : 
-#    1|     v1_9(void)                = ReturnVoid             : 
-#    1|     v1_10(void)               = AliasedUse             : m1_3
-#    1|     v1_11(void)               = ExitFunction           : 
-
-#   12| char const* c11_generic_test_with_constant_and_macro()
-#   12|   Block 0
-#   12|     v12_1(void)           = EnterFunction            : 
-#   12|     m12_2(unknown)        = AliasedDefinition        : 
-#   12|     m12_3(unknown)        = InitializeNonLocal       : 
-#   12|     m12_4(unknown)        = Chi                      : total:m12_2, partial:m12_3
-#   14|     r14_1(glval<int>)     = VariableAddress[i]       : 
-#   14|     m14_2(int)            = Uninitialized[i]         : &:r14_1
-#   16|     r16_1(glval<char *>)  = VariableAddress[#return] : 
-#   16|     r16_2(glval<char[4]>) = Constant[int]            : 
-#   16|     r16_3(char *)         = Convert                  : r16_2
-#   16|     r16_4(char *)         = Convert                  : r16_3
-#   16|     m16_5(char *)         = Store[#return]           : &:r16_1, r16_4
-#   12|     r12_5(glval<char *>)  = VariableAddress[#return] : 
-#   12|     v12_6(void)           = ReturnValue              : &:r12_5, m16_5
-#   12|     v12_7(void)           = AliasedUse               : m12_3
-#   12|     v12_8(void)           = ExitFunction             : 
-
-#   19| char const* c11_generic_test_with_constant_and_no_macro()
-#   19|   Block 0
-#   19|     v19_1(void)           = EnterFunction            : 
-#   19|     m19_2(unknown)        = AliasedDefinition        : 
-#   19|     m19_3(unknown)        = InitializeNonLocal       : 
-#   19|     m19_4(unknown)        = Chi                      : total:m19_2, partial:m19_3
-#   21|     r21_1(glval<int>)     = VariableAddress[i]       : 
-#   21|     m21_2(int)            = Uninitialized[i]         : &:r21_1
-#   23|     r23_1(glval<char *>)  = VariableAddress[#return] : 
-#   23|     r23_2(glval<char[4]>) = Constant[int]            : 
-#   23|     r23_3(char *)         = Convert                  : r23_2
-#   23|     r23_4(char *)         = Convert                  : r23_3
-#   23|     m23_5(char *)         = Store[#return]           : &:r23_1, r23_4
-#   19|     r19_5(glval<char *>)  = VariableAddress[#return] : 
-#   19|     v19_6(void)           = ReturnValue              : &:r19_5, m23_5
-#   19|     v19_7(void)           = AliasedUse               : m19_3
-#   19|     v19_8(void)           = ExitFunction             : 
-
-#   26| void c11_generic_test_test_with_cast(int)
-#   26|   Block 0
-#   26|     v26_1(void)                = EnterFunction          : 
-#   26|     m26_2(unknown)             = AliasedDefinition      : 
-#   26|     m26_3(unknown)             = InitializeNonLocal     : 
-#   26|     m26_4(unknown)             = Chi                    : total:m26_2, partial:m26_3
-#   26|     r26_5(glval<int>)          = VariableAddress[y]     : 
-#   26|     m26_6(int)                 = InitializeParameter[y] : &:r26_5
-#   27|     r27_1(glval<unsigned int>) = VariableAddress[r]     : 
-#   27|     m27_2(unsigned int)        = Uninitialized[r]       : &:r27_1
-#   28|     r28_1(glval<int>)          = VariableAddress[y]     : 
-#   28|     r28_2(int)                 = Load[y]                : &:r28_1, m26_6
-#   28|     r28_3(unsigned int)        = Convert                : r28_2
-#   28|     r28_4(glval<unsigned int>) = VariableAddress[r]     : 
-#   28|     m28_5(unsigned int)        = Store[r]               : &:r28_4, r28_3
-#   29|     v29_1(void)                = NoOp                   : 
-#   26|     v26_7(void)                = ReturnVoid             : 
-#   26|     v26_8(void)                = AliasedUse             : m26_3
-#   26|     v26_9(void)                = ExitFunction           : 
 
 ir-not-microsoft.c:
 #    1| void gnuConditionalOmittedOperand()

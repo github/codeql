@@ -236,6 +236,202 @@ bad_stmts.cpp:
 #    8|             Type = [ErroneousType] error
 #    8|             ValueCategory = prvalue(load)
 #    9|     getStmt(3): [ReturnStmt] return ...
+c11.c:
+#    1| [TopLevelFunction] void c11_generic_test_with_load(unsigned int, int)
+#    1|   <params>: 
+#    1|     getParameter(0): [Parameter] x
+#    1|         Type = [IntType] unsigned int
+#    1|     getParameter(1): [Parameter] y
+#    1|         Type = [IntType] int
+#    1|   getEntryPoint(): [BlockStmt] { ... }
+#    2|     getStmt(0): [DeclStmt] declaration
+#    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#    2|           Type = [IntType] unsigned int
+#    3|     getStmt(1): [ExprStmt] ExprStmt
+#    3|       getExpr(): [AssignExpr] ... = ...
+#    3|           Type = [IntType] unsigned int
+#    3|           ValueCategory = prvalue
+#    3|         getLValue(): [VariableAccess] r
+#    3|             Type = [IntType] unsigned int
+#    3|             ValueCategory = lvalue
+#    3|         getRValue(): [AddExpr] ... + ...
+#    3|             Type = [IntType] unsigned int
+#    3|             ValueCategory = prvalue
+#    3|           getLeftOperand(): [VariableAccess] x
+#    3|               Type = [IntType] unsigned int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getRightOperand(): [Literal] 1
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 1
+#    3|               ValueCategory = prvalue
+#    3|           getLeftOperand().getFullyConverted(): [C11GenericExpr] _Generic
+#    3|               Type = [IntType] unsigned int
+#    3|               ValueCategory = prvalue(load)
+#    3|             getControllingExpr(): [VariableAccess] r
+#    3|                 Type = [IntType] unsigned int
+#    3|                 ValueCategory = prvalue(load)
+#    3|             getAssociationType(0): [TypeName] unsigned int
+#    3|                 Type = [IntType] unsigned int
+#    3|                 ValueCategory = prvalue
+#    3|             getAssociationExpr(0): [ReuseExpr] reuse of x
+#    3|                 Type = [IntType] unsigned int
+#    3|                 ValueCategory = lvalue
+#    3|             getAssociationType(1): [TypeName] int
+#    3|                 Type = [IntType] int
+#    3|                 ValueCategory = prvalue
+#    3|             getAssociationExpr(1): [VariableAccess] y
+#    3|                 Type = [IntType] int
+#    3|                 ValueCategory = lvalue
+#    3|           getRightOperand().getFullyConverted(): [CStyleCast] (unsigned int)...
+#    3|               Conversion = [IntegralConversion] integral conversion
+#    3|               Type = [IntType] unsigned int
+#    3|               Value = [CStyleCast] 1
+#    3|               ValueCategory = prvalue
+#    4|     getStmt(2): [ReturnStmt] return ...
+#   12| [TopLevelFunction] char const* c11_generic_test_with_constant_and_macro()
+#   12|   <params>: 
+#   13|   getEntryPoint(): [BlockStmt] { ... }
+#   14|     getStmt(0): [DeclStmt] declaration
+#   14|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#   14|           Type = [IntType] int
+#   16|     getStmt(1): [ReturnStmt] return ...
+#   16|       getExpr(): int
+#   16|           Type = [ArrayType] char[4]
+#   16|           Value = [StringLiteral] "int"
+#   16|           ValueCategory = lvalue
+#   16|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
+#   16|           Conversion = [PointerConversion] pointer conversion
+#   16|           Type = [PointerType] const char *
+#   16|           ValueCategory = prvalue
+#   16|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   16|             Type = [CharPointerType] char *
+#   16|             ValueCategory = prvalue
+#   16|           getExpr(): [C11GenericExpr] _Generic
+#   16|               Type = [ArrayType] char[4]
+#   16|               Value = [C11GenericExpr] int
+#   16|               ValueCategory = lvalue
+#   16|             getControllingExpr(): [VariableAccess] i
+#   16|                 Type = [IntType] int
+#   16|                 ValueCategory = prvalue(load)
+#   16|             getAssociationType(0): [TypeName] int
+#   16|                 Type = [IntType] int
+#   16|                 ValueCategory = prvalue
+#   16|             getAssociationExpr(0): [ReuseExpr] reuse of int
+#   16|                 Type = [ArrayType] char[4]
+#   16|                 ValueCategory = lvalue
+#   16|             getAssociationType(1): [TypeName] void
+#   16|                 Type = [VoidType] void
+#   16|                 ValueCategory = prvalue
+#   16|             getAssociationExpr(1): unknown
+#   16|                 Type = [ArrayType] char[8]
+#   16|                 Value = [StringLiteral] "unknown"
+#   16|                 ValueCategory = lvalue
+#   16|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   16|                 Type = [IntType] int
+#   16|                 ValueCategory = prvalue(load)
+#   19| [TopLevelFunction] char const* c11_generic_test_with_constant_and_no_macro()
+#   19|   <params>: 
+#   20|   getEntryPoint(): [BlockStmt] { ... }
+#   21|     getStmt(0): [DeclStmt] declaration
+#   21|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#   21|           Type = [IntType] int
+#   23|     getStmt(1): [ReturnStmt] return ...
+#   23|       getExpr(): int
+#   23|           Type = [ArrayType] char[4]
+#   23|           Value = [StringLiteral] "int"
+#   23|           ValueCategory = lvalue
+#   23|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
+#   23|           Conversion = [PointerConversion] pointer conversion
+#   23|           Type = [PointerType] const char *
+#   23|           ValueCategory = prvalue
+#   23|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   23|             Type = [CharPointerType] char *
+#   23|             ValueCategory = prvalue
+#   23|           getExpr(): [C11GenericExpr] _Generic
+#   23|               Type = [ArrayType] char[4]
+#   23|               Value = [C11GenericExpr] int
+#   23|               ValueCategory = lvalue
+#   23|             getControllingExpr(): [VariableAccess] i
+#   23|                 Type = [IntType] int
+#   23|                 ValueCategory = prvalue(load)
+#   23|             getAssociationType(0): [TypeName] int
+#   23|                 Type = [IntType] int
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(0): [ReuseExpr] reuse of int
+#   23|                 Type = [ArrayType] char[4]
+#   23|                 ValueCategory = lvalue
+#   23|             getAssociationType(1): [TypeName] void
+#   23|                 Type = [VoidType] void
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(1): unknown
+#   23|                 Type = [ArrayType] char[8]
+#   23|                 Value = [StringLiteral] "unknown"
+#   23|                 ValueCategory = lvalue
+#   26| [TopLevelFunction] void c11_generic_test_test_with_cast(int)
+#   26|   <params>: 
+#   26|     getParameter(0): [Parameter] y
+#   26|         Type = [IntType] int
+#   26|   getEntryPoint(): [BlockStmt] { ... }
+#   27|     getStmt(0): [DeclStmt] declaration
+#   27|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#   27|           Type = [IntType] unsigned int
+#   28|     getStmt(1): [ExprStmt] ExprStmt
+#   28|       getExpr(): [AssignExpr] ... = ...
+#   28|           Type = [IntType] unsigned int
+#   28|           ValueCategory = prvalue
+#   28|         getLValue(): [VariableAccess] r
+#   28|             Type = [IntType] unsigned int
+#   28|             ValueCategory = lvalue
+#   28|         getRValue(): [VariableAccess] y
+#   28|             Type = [IntType] int
+#   28|             ValueCategory = prvalue(load)
+#   28|         getRValue().getFullyConverted(): [C11GenericExpr] _Generic
+#   28|             Type = [IntType] unsigned int
+#   28|             ValueCategory = prvalue
+#   28|           getControllingExpr(): [VariableAccess] r
+#   28|               Type = [IntType] unsigned int
+#   28|               ValueCategory = prvalue(load)
+#   28|           getAssociationType(0): [TypeName] unsigned int
+#   28|               Type = [IntType] unsigned int
+#   28|               ValueCategory = prvalue
+#   28|           getAssociationExpr(0): [ReuseExpr] reuse of y
+#   28|               Type = [IntType] int
+#   28|               ValueCategory = prvalue
+#   28|           getAssociationType(1): [TypeName] int
+#   28|               Type = [IntType] int
+#   28|               ValueCategory = prvalue
+#   28|           getAssociationExpr(1): [VariableAccess] y
+#   28|               Type = [IntType] int
+#   28|               ValueCategory = lvalue
+#   28|           getExpr(): [CStyleCast] (unsigned int)...
+#   28|               Conversion = [IntegralConversion] integral conversion
+#   28|               Type = [IntType] unsigned int
+#   28|               ValueCategory = prvalue
+#   29|     getStmt(2): [ReturnStmt] return ...
+#   32| [TopLevelFunction] void static_array_param(int[3])
+#   32|   <params>: 
+#   32|     getParameter(0): [Parameter] a
+#   32|         Type = [ArrayType] int[3]
+#   32|   getEntryPoint(): [BlockStmt] { ... }
+#   33|     getStmt(0): [ExprStmt] ExprStmt
+#   33|       getExpr(): [AssignExpr] ... = ...
+#   33|           Type = [IntType] int
+#   33|           ValueCategory = prvalue
+#   33|         getLValue(): [ArrayExpr] access to array
+#   33|             Type = [IntType] int
+#   33|             ValueCategory = lvalue
+#   33|           getArrayBase(): [VariableAccess] a
+#   33|               Type = [IntPointerType] int *
+#   33|               ValueCategory = prvalue(load)
+#   33|           getArrayOffset(): [Literal] 0
+#   33|               Type = [IntType] int
+#   33|               Value = [Literal] 0
+#   33|               ValueCategory = prvalue
+#   33|         getRValue(): [Literal] 1
+#   33|             Type = [IntType] int
+#   33|             Value = [Literal] 1
+#   33|             ValueCategory = prvalue
+#   34|     getStmt(1): [ReturnStmt] return ...
 clang.cpp:
 #    5| [TopLevelFunction] int* globalIntAddress()
 #    5|   <params>: 
@@ -4179,178 +4375,6 @@ destructors_for_temps.cpp:
 #  103|             Type = [IntType] int
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
-generic.c:
-#    1| [TopLevelFunction] void c11_generic_test_with_load(unsigned int, int)
-#    1|   <params>: 
-#    1|     getParameter(0): [Parameter] x
-#    1|         Type = [IntType] unsigned int
-#    1|     getParameter(1): [Parameter] y
-#    1|         Type = [IntType] int
-#    1|   getEntryPoint(): [BlockStmt] { ... }
-#    2|     getStmt(0): [DeclStmt] declaration
-#    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
-#    2|           Type = [IntType] unsigned int
-#    3|     getStmt(1): [ExprStmt] ExprStmt
-#    3|       getExpr(): [AssignExpr] ... = ...
-#    3|           Type = [IntType] unsigned int
-#    3|           ValueCategory = prvalue
-#    3|         getLValue(): [VariableAccess] r
-#    3|             Type = [IntType] unsigned int
-#    3|             ValueCategory = lvalue
-#    3|         getRValue(): [AddExpr] ... + ...
-#    3|             Type = [IntType] unsigned int
-#    3|             ValueCategory = prvalue
-#    3|           getLeftOperand(): [VariableAccess] x
-#    3|               Type = [IntType] unsigned int
-#    3|               ValueCategory = prvalue(load)
-#    3|           getRightOperand(): [Literal] 1
-#    3|               Type = [IntType] int
-#    3|               Value = [Literal] 1
-#    3|               ValueCategory = prvalue
-#    3|           getLeftOperand().getFullyConverted(): [C11GenericExpr] _Generic
-#    3|               Type = [IntType] unsigned int
-#    3|               ValueCategory = prvalue(load)
-#    3|             getControllingExpr(): [VariableAccess] r
-#    3|                 Type = [IntType] unsigned int
-#    3|                 ValueCategory = prvalue(load)
-#    3|             getAssociationType(0): [TypeName] unsigned int
-#    3|                 Type = [IntType] unsigned int
-#    3|                 ValueCategory = prvalue
-#    3|             getAssociationExpr(0): [ReuseExpr] reuse of x
-#    3|                 Type = [IntType] unsigned int
-#    3|                 ValueCategory = lvalue
-#    3|             getAssociationType(1): [TypeName] int
-#    3|                 Type = [IntType] int
-#    3|                 ValueCategory = prvalue
-#    3|             getAssociationExpr(1): [VariableAccess] y
-#    3|                 Type = [IntType] int
-#    3|                 ValueCategory = lvalue
-#    3|           getRightOperand().getFullyConverted(): [CStyleCast] (unsigned int)...
-#    3|               Conversion = [IntegralConversion] integral conversion
-#    3|               Type = [IntType] unsigned int
-#    3|               Value = [CStyleCast] 1
-#    3|               ValueCategory = prvalue
-#    4|     getStmt(2): [ReturnStmt] return ...
-#   12| [TopLevelFunction] char const* c11_generic_test_with_constant_and_macro()
-#   12|   <params>: 
-#   13|   getEntryPoint(): [BlockStmt] { ... }
-#   14|     getStmt(0): [DeclStmt] declaration
-#   14|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
-#   14|           Type = [IntType] int
-#   16|     getStmt(1): [ReturnStmt] return ...
-#   16|       getExpr(): int
-#   16|           Type = [ArrayType] char[4]
-#   16|           Value = [StringLiteral] "int"
-#   16|           ValueCategory = lvalue
-#   16|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
-#   16|           Conversion = [PointerConversion] pointer conversion
-#   16|           Type = [PointerType] const char *
-#   16|           ValueCategory = prvalue
-#   16|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
-#   16|             Type = [CharPointerType] char *
-#   16|             ValueCategory = prvalue
-#   16|           getExpr(): [C11GenericExpr] _Generic
-#   16|               Type = [ArrayType] char[4]
-#   16|               Value = [C11GenericExpr] int
-#   16|               ValueCategory = lvalue
-#   16|             getControllingExpr(): [VariableAccess] i
-#   16|                 Type = [IntType] int
-#   16|                 ValueCategory = prvalue(load)
-#   16|             getAssociationType(0): [TypeName] int
-#   16|                 Type = [IntType] int
-#   16|                 ValueCategory = prvalue
-#   16|             getAssociationExpr(0): [ReuseExpr] reuse of int
-#   16|                 Type = [ArrayType] char[4]
-#   16|                 ValueCategory = lvalue
-#   16|             getAssociationType(1): [TypeName] void
-#   16|                 Type = [VoidType] void
-#   16|                 ValueCategory = prvalue
-#   16|             getAssociationExpr(1): unknown
-#   16|                 Type = [ArrayType] char[8]
-#   16|                 Value = [StringLiteral] "unknown"
-#   16|                 ValueCategory = lvalue
-#   16|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
-#   16|                 Type = [IntType] int
-#   16|                 ValueCategory = prvalue(load)
-#   19| [TopLevelFunction] char const* c11_generic_test_with_constant_and_no_macro()
-#   19|   <params>: 
-#   20|   getEntryPoint(): [BlockStmt] { ... }
-#   21|     getStmt(0): [DeclStmt] declaration
-#   21|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
-#   21|           Type = [IntType] int
-#   23|     getStmt(1): [ReturnStmt] return ...
-#   23|       getExpr(): int
-#   23|           Type = [ArrayType] char[4]
-#   23|           Value = [StringLiteral] "int"
-#   23|           ValueCategory = lvalue
-#   23|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
-#   23|           Conversion = [PointerConversion] pointer conversion
-#   23|           Type = [PointerType] const char *
-#   23|           ValueCategory = prvalue
-#   23|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
-#   23|             Type = [CharPointerType] char *
-#   23|             ValueCategory = prvalue
-#   23|           getExpr(): [C11GenericExpr] _Generic
-#   23|               Type = [ArrayType] char[4]
-#   23|               Value = [C11GenericExpr] int
-#   23|               ValueCategory = lvalue
-#   23|             getControllingExpr(): [VariableAccess] i
-#   23|                 Type = [IntType] int
-#   23|                 ValueCategory = prvalue(load)
-#   23|             getAssociationType(0): [TypeName] int
-#   23|                 Type = [IntType] int
-#   23|                 ValueCategory = prvalue
-#   23|             getAssociationExpr(0): [ReuseExpr] reuse of int
-#   23|                 Type = [ArrayType] char[4]
-#   23|                 ValueCategory = lvalue
-#   23|             getAssociationType(1): [TypeName] void
-#   23|                 Type = [VoidType] void
-#   23|                 ValueCategory = prvalue
-#   23|             getAssociationExpr(1): unknown
-#   23|                 Type = [ArrayType] char[8]
-#   23|                 Value = [StringLiteral] "unknown"
-#   23|                 ValueCategory = lvalue
-#   26| [TopLevelFunction] void c11_generic_test_test_with_cast(int)
-#   26|   <params>: 
-#   26|     getParameter(0): [Parameter] y
-#   26|         Type = [IntType] int
-#   26|   getEntryPoint(): [BlockStmt] { ... }
-#   27|     getStmt(0): [DeclStmt] declaration
-#   27|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
-#   27|           Type = [IntType] unsigned int
-#   28|     getStmt(1): [ExprStmt] ExprStmt
-#   28|       getExpr(): [AssignExpr] ... = ...
-#   28|           Type = [IntType] unsigned int
-#   28|           ValueCategory = prvalue
-#   28|         getLValue(): [VariableAccess] r
-#   28|             Type = [IntType] unsigned int
-#   28|             ValueCategory = lvalue
-#   28|         getRValue(): [VariableAccess] y
-#   28|             Type = [IntType] int
-#   28|             ValueCategory = prvalue(load)
-#   28|         getRValue().getFullyConverted(): [C11GenericExpr] _Generic
-#   28|             Type = [IntType] unsigned int
-#   28|             ValueCategory = prvalue
-#   28|           getControllingExpr(): [VariableAccess] r
-#   28|               Type = [IntType] unsigned int
-#   28|               ValueCategory = prvalue(load)
-#   28|           getAssociationType(0): [TypeName] unsigned int
-#   28|               Type = [IntType] unsigned int
-#   28|               ValueCategory = prvalue
-#   28|           getAssociationExpr(0): [ReuseExpr] reuse of y
-#   28|               Type = [IntType] int
-#   28|               ValueCategory = prvalue
-#   28|           getAssociationType(1): [TypeName] int
-#   28|               Type = [IntType] int
-#   28|               ValueCategory = prvalue
-#   28|           getAssociationExpr(1): [VariableAccess] y
-#   28|               Type = [IntType] int
-#   28|               ValueCategory = lvalue
-#   28|           getExpr(): [CStyleCast] (unsigned int)...
-#   28|               Conversion = [IntegralConversion] integral conversion
-#   28|               Type = [IntType] unsigned int
-#   28|               ValueCategory = prvalue
-#   29|     getStmt(2): [ReturnStmt] return ...
 ir-not-microsoft.c:
 #    1| [TopLevelFunction] void gnuConditionalOmittedOperand()
 #    1|   <params>: 
