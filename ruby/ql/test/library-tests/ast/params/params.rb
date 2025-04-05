@@ -94,3 +94,18 @@ end
 def anonymous_hash_splat_parameter(hash, **)
   hash.merge(**)
 end
+
+class Sup
+  def m(x, *rest, k:, **kwargs)
+    print(x + 1)
+    print(k + 1)
+  end
+end
+
+class Sub < Sup
+  def m(y, *rest, k:, **kwargs)
+    super
+  end
+end
+
+Sub.new.m(42, k: 22)

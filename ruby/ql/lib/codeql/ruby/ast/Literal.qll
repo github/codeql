@@ -305,7 +305,9 @@ class StringlikeLiteral extends Literal instanceof StringlikeLiteralImpl {
   final override AstNode getAChild(string pred) {
     result = Literal.super.getAChild(pred)
     or
-    pred = "getComponent" and result = this.getComponent(_)
+    pred = "getComponent" and
+    result = this.getComponent(_) and
+    not this instanceof SimpleSymbolLiteralSynth
   }
 }
 

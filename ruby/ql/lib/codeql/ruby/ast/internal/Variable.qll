@@ -49,11 +49,11 @@ predicate implicitAssignmentNode(Ruby::AstNode n) {
 }
 
 /** Holds if `n` is inside a parameter. */
-predicate implicitParameterAssignmentNode(Ruby::AstNode n, Callable::Range c) {
-  n = c.getParameter(_) or
-  n = c.(Ruby::Block).getParameters().getLocals(_) or
-  n = c.(Ruby::DoBlock).getParameters().getLocals(_) or
-  implicitParameterAssignmentNode(n.getParent().(Ruby::DestructuredParameter), c)
+predicate implicitParameterAssignmentNode(Ruby::AstNode n, Callable::Range c, int pos) {
+  n = c.getParameter(pos) or
+  n = c.(Ruby::Block).getParameters().getLocals(pos) or
+  n = c.(Ruby::DoBlock).getParameters().getLocals(pos) or
+  implicitParameterAssignmentNode(n.getParent().(Ruby::DestructuredParameter), c, pos)
 }
 
 private predicate instanceVariableAccess(
@@ -77,26 +77,29 @@ private ModuleBase::Range enclosingModuleOrClass(Ruby::AstNode node) {
   exists(Scope::Range s | scopeOf(node) = s and result = s.getEnclosingModule())
 }
 
-private predicate parameterAssignment(Callable::Range scope, string name, Ruby::Identifier i) {
-  implicitParameterAssignmentNode(i, scope) and
+private predicate parameterAssignment(
+  Callable::Range scope, string name, Ruby::Identifier i, int pos
+) {
+  implicitParameterAssignmentNode(i, scope, pos) and
   name = i.getValue()
 }
 
 /** Holds if `scope` defines `name` in its parameter declaration at `i`. */
-private predicate scopeDefinesParameterVariable(
-  Callable::Range scope, string name, Ruby::Identifier i
+predicate scopeDefinesParameterVariable(
+  Callable::Range scope, string name, Ruby::Identifier i, int pos
 ) {
   // In case of overlapping parameter names (e.g. `_`), only the first
   // parameter will give rise to a variable
   i =
     min(Ruby::Identifier other |
-      parameterAssignment(scope, name, other)
+      parameterAssignment(scope, name, other, _)
     |
       other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
-    )
+    ) and
+  parameterAssignment(scope, name, _, pos)
   or
   exists(Parameter::Range p |
-    p = scope.getParameter(_) and
+    p = scope.getParameter(pos) and
     name = i.getValue()
   |
     i = p.(Ruby::BlockParameter).getName() or
@@ -153,7 +156,7 @@ private module Cached {
         )
     } or
     TLocalVariableReal(Scope::Range scope, string name, Ruby::AstNode i) {
-      scopeDefinesParameterVariable(scope, name, i)
+      scopeDefinesParameterVariable(scope, name, i, _)
       or
       i =
         min(Ruby::AstNode other |
@@ -161,7 +164,7 @@ private module Cached {
         |
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         ) and
-      not scopeDefinesParameterVariable(scope, name, _) and
+      not scopeDefinesParameterVariable(scope, name, _, _) and
       not inherits(scope, name, _)
     } or
     TSelfVariable(SelfBase::Range scope) or
@@ -330,8 +333,8 @@ private module Cached {
       not access.getLocation().strictlyBefore(variable.getLocationImpl()) and
       // In case of overlapping parameter names, later parameters should not
       // be considered accesses to the first parameter
-      if parameterAssignment(_, _, access)
-      then scopeDefinesParameterVariable(_, _, access)
+      if parameterAssignment(_, _, access, _)
+      then scopeDefinesParameterVariable(_, _, access, _)
       else any()
       or
       exists(Scope::Range declScope |
@@ -360,7 +363,7 @@ private module Cached {
   predicate implicitWriteAccess(Access access) {
     implicitAssignmentNode(access)
     or
-    scopeDefinesParameterVariable(_, _, access)
+    scopeDefinesParameterVariable(_, _, access, _)
   }
 
   cached
@@ -399,11 +402,11 @@ private predicate inherits(Scope::Range scope, string name, Scope::Range outer) 
     scope instanceof Ruby::DoBlock or
     scope instanceof Ruby::Lambda
   ) and
-  not scopeDefinesParameterVariable(scope, name, _) and
+  not scopeDefinesParameterVariable(scope, name, _, _) and
   (
     outer = scope.getOuterScope() and
     (
-      scopeDefinesParameterVariable(outer, name, _)
+      scopeDefinesParameterVariable(outer, name, _, _)
       or
       exists(Ruby::AstNode i |
         scopeAssigns(outer, name, i) and

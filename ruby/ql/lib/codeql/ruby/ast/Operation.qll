@@ -92,10 +92,6 @@ class SplatExpr extends UnaryOperation, TSplatExpr {
  * ```
  */
 class HashSplatExpr extends UnaryOperation, THashSplatExpr {
-  private Ruby::HashSplatArgument g;
-
-  HashSplatExpr() { this = THashSplatExpr(g) }
-
   final override string getAPrimaryQlClass() { result = "HashSplatExpr" }
 }
 

@@ -11,7 +11,7 @@ private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
-newtype SynthKind =
+newtype TSynthKind =
   AddExprKind() or
   AssignExprKind() or
   BitwiseAndExprKind() or
@@ -42,15 +42,106 @@ newtype SynthKind =
   MulExprKind() or
   NilLiteralKind() or
   NotExprKind() or
+  PairExprKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
   SimpleParameterKind() or
   SplatExprKind() or
+  HashSplatExprKind() or
+  SymbolLiteralExprKind(string value) {
+    value = any(Ruby::SimpleSymbol s).getValue()
+    or
+    value = any(Ruby::KeywordParameter p).getName().getValue()
+  } or
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
   SubExprKind() or
   ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) } or
   ConstantWriteAccessKind(string value) { any(Synthesis s).constantWriteAccess(value) }
+
+class SynthKind extends TSynthKind {
+  string toString() {
+    this = AddExprKind() and result = "AddExprKind"
+    or
+    this = AssignExprKind() and result = "AssignExprKind"
+    or
+    this = BitwiseAndExprKind() and result = "BitwiseAndExprKind"
+    or
+    this = BitwiseOrExprKind() and result = "BitwiseOrExprKind"
+    or
+    this = BitwiseXorExprKind() and result = "BitwiseXorExprKind"
+    or
+    this = BooleanLiteralKind(_) and result = "BooleanLiteralKind"
+    or
+    this = BraceBlockKind() and result = "BraceBlockKind"
+    or
+    this = CaseMatchKind() and result = "CaseMatchKind"
+    or
+    this = ClassVariableAccessKind(_) and result = "ClassVariableAccessKind"
+    or
+    this = DefinedExprKind() and result = "DefinedExprKind"
+    or
+    this = DivExprKind() and result = "DivExprKind"
+    or
+    this = ElseKind() and result = "ElseKind"
+    or
+    this = ExponentExprKind() and result = "ExponentExprKind"
+    or
+    this = GlobalVariableAccessKind(_) and result = "GlobalVariableAccessKind"
+    or
+    this = IfKind() and result = "IfKind"
+    or
+    this = InClauseKind() and result = "InClauseKind"
+    or
+    this = InstanceVariableAccessKind(_) and result = "InstanceVariableAccessKind"
+    or
+    this = IntegerLiteralKind(_) and result = "IntegerLiteralKind"
+    or
+    this = LShiftExprKind() and result = "LShiftExprKind"
+    or
+    this = LocalVariableAccessRealKind(_) and result = "LocalVariableAccessRealKind"
+    or
+    this = LocalVariableAccessSynthKind(_) and result = "LocalVariableAccessSynthKind"
+    or
+    this = LogicalAndExprKind() and result = "LogicalAndExprKind"
+    or
+    this = LogicalOrExprKind() and result = "LogicalOrExprKind"
+    or
+    this = MethodCallKind(_, _, _) and result = "MethodCallKind"
+    or
+    this = ModuloExprKind() and result = "ModuloExprKind"
+    or
+    this = MulExprKind() and result = "MulExprKind"
+    or
+    this = NilLiteralKind() and result = "NilLiteralKind"
+    or
+    this = NotExprKind() and result = "NotExprKind"
+    or
+    this = PairExprKind() and result = "PairExprKind"
+    or
+    this = RangeLiteralKind(_) and result = "RangeLiteralKind"
+    or
+    this = RShiftExprKind() and result = "RShiftExprKind"
+    or
+    this = SimpleParameterKind() and result = "SimpleParameterKind"
+    or
+    this = SplatExprKind() and result = "SplatExprKind"
+    or
+    this = HashSplatExprKind() and result = "HashSplatExprKind"
+    or
+    this = SymbolLiteralExprKind(_) and result = "SymbolLiteralExprKind"
+    or
+    this = StmtSequenceKind() and result = "StmtSequenceKind"
+    or
+    this = SubExprKind() and result = "SubExprKind"
+    or
+    this = SelfKind(_) and result = "SelfKind"
+    or
+    this = ConstantReadAccessKind(_) and result = "ConstantReadAccessKind"
+    or
+    this = ConstantWriteAccessKind(_) and result = "ConstantWriteAccessKind"
+  }
+}
 
 /**
  * An AST child.
@@ -441,7 +532,7 @@ private module AssignOperationDesugar {
     pragma[nomagic]
     SynthKind getVariableAccessKind() {
       result in [
-          LocalVariableAccessRealKind(v).(SynthKind), InstanceVariableAccessKind(v),
+          LocalVariableAccessRealKind(v).(TSynthKind), InstanceVariableAccessKind(v),
           ClassVariableAccessKind(v), GlobalVariableAccessKind(v)
         ]
     }
@@ -1799,6 +1890,62 @@ private module MatchPatternDesugar {
   private class MatchPatternSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       matchPatternSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module ImplicitSuperArgsSynthesis {
+  pragma[nomagic]
+  private predicate superCallSynthesis(AstNode parent, int i, Child child) {
+    exists(TokenSuperCall call, SynthChild access, int pos, Ruby::AstNode param |
+      access = SynthChild(LocalVariableAccessRealKind(call.getImplicitArgument(pos, param)))
+    |
+      parent = call and
+      param instanceof Ruby::Identifier and
+      i = pos and
+      child = access
+      or
+      param instanceof Ruby::SplatParameter and
+      (
+        parent = call and
+        i = pos and
+        child = SynthChild(SplatExprKind())
+        or
+        parent = TSplatExprSynth(call, pos) and
+        i = 0 and
+        child = access
+      )
+      or
+      param instanceof Ruby::HashSplatParameter and
+      (
+        parent = call and
+        i = pos and
+        child = SynthChild(HashSplatExprKind())
+        or
+        parent = THashSplatExprSynth(call, pos) and
+        i = 0 and
+        child = access
+      )
+      or
+      exists(string name | name = param.(Ruby::KeywordParameter).getName().getValue() |
+        parent = call and
+        i = pos and
+        child = SynthChild(PairExprKind())
+        or
+        parent = TPairSynth(call, pos) and
+        i = 0 and
+        child = SynthChild(SymbolLiteralExprKind(name))
+        or
+        parent = TPairSynth(call, pos) and
+        i = 1 and
+        child = access
+      )
+    )
+  }
+
+  private class SuperCallSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      superCallSynthesis(parent, i, child)
     }
   }
 }
