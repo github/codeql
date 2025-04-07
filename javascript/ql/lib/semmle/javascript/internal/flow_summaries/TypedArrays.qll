@@ -36,3 +36,32 @@ class BufferTypedArray extends DataFlow::AdditionalFlowStep {
     )
   }
 }
+
+class SetLike extends SummarizedCallable {
+  SetLike() { this = "TypedArray#set" }
+
+  override InstanceCall getACall() {
+    result = typedArrayConstructorRef().getAnInstantiation().getReturn().getMember("set").getACall()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    input = "Argument[0].ArrayElement" and
+    output = "Argument[this].ArrayElement"
+  }
+}
+
+class SubArrayLike extends SummarizedCallable {
+  SubArrayLike() { this = "TypedArray#subarray" }
+
+  override InstanceCall getACall() {
+    result =
+      typedArrayConstructorRef().getAnInstantiation().getReturn().getMember("subarray").getACall()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    input = "Argument[this].ArrayElement" and
+    output = "ReturnValue.ArrayElement"
+  }
+}

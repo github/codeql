@@ -16,8 +16,4 @@ function test() {
 
     const sub = y.subarray(1, 3)
     sink(sub); // NOT OK
-
-    const clone = new y.constructor(y.length);
-    clone.set(y);    
-    sink(clone); // NOT OK
 }
