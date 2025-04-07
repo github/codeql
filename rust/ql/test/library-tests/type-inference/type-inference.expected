@@ -356,577 +356,604 @@ inferType
 | main.rs:367:13:367:16 | self | &T | main.rs:359:5:369:5 | Self [trait MyTraitAssoc2] |
 | main.rs:367:13:367:23 | self.put(...) |  | main.rs:360:9:360:52 | GenericAssociatedType |
 | main.rs:367:22:367:22 | b |  | main.rs:365:19:365:19 | A |
-| main.rs:384:15:384:18 | SelfParam |  | main.rs:371:5:372:13 | S |
-| main.rs:384:45:386:9 | { ... } |  | main.rs:377:5:378:14 | AT |
-| main.rs:385:13:385:14 | AT |  | main.rs:377:5:378:14 | AT |
-| main.rs:394:19:394:23 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:394:19:394:23 | SelfParam | &T | main.rs:371:5:372:13 | S |
-| main.rs:394:26:394:26 | a |  | main.rs:394:16:394:16 | A |
-| main.rs:394:46:396:9 | { ... } |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:394:46:396:9 | { ... } | A | main.rs:394:16:394:16 | A |
-| main.rs:395:13:395:32 | Wrapper {...} |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:395:13:395:32 | Wrapper {...} | A | main.rs:394:16:394:16 | A |
-| main.rs:395:30:395:30 | a |  | main.rs:394:16:394:16 | A |
-| main.rs:403:15:403:18 | SelfParam |  | main.rs:374:5:375:14 | S2 |
-| main.rs:403:45:405:9 | { ... } |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:403:45:405:9 | { ... } | A | main.rs:374:5:375:14 | S2 |
-| main.rs:404:13:404:35 | Wrapper {...} |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:404:13:404:35 | Wrapper {...} | A | main.rs:374:5:375:14 | S2 |
-| main.rs:404:30:404:33 | self |  | main.rs:374:5:375:14 | S2 |
-| main.rs:410:30:412:9 | { ... } |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:410:30:412:9 | { ... } | A | main.rs:374:5:375:14 | S2 |
-| main.rs:411:13:411:33 | Wrapper {...} |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:411:13:411:33 | Wrapper {...} | A | main.rs:374:5:375:14 | S2 |
-| main.rs:411:30:411:31 | S2 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:416:22:416:26 | thing |  | main.rs:416:10:416:19 | T |
-| main.rs:417:9:417:13 | thing |  | main.rs:416:10:416:19 | T |
-| main.rs:421:13:421:14 | x1 |  | main.rs:371:5:372:13 | S |
-| main.rs:421:18:421:18 | S |  | main.rs:371:5:372:13 | S |
-| main.rs:423:26:423:27 | x1 |  | main.rs:371:5:372:13 | S |
-| main.rs:423:26:423:32 | x1.m1() |  | main.rs:377:5:378:14 | AT |
-| main.rs:425:13:425:14 | x2 |  | main.rs:371:5:372:13 | S |
-| main.rs:425:18:425:18 | S |  | main.rs:371:5:372:13 | S |
-| main.rs:427:13:427:13 | y |  | main.rs:377:5:378:14 | AT |
-| main.rs:427:17:427:18 | x2 |  | main.rs:371:5:372:13 | S |
-| main.rs:427:17:427:23 | x2.m2() |  | main.rs:377:5:378:14 | AT |
-| main.rs:428:26:428:26 | y |  | main.rs:377:5:378:14 | AT |
-| main.rs:430:13:430:14 | x3 |  | main.rs:371:5:372:13 | S |
-| main.rs:430:18:430:18 | S |  | main.rs:371:5:372:13 | S |
-| main.rs:432:26:432:27 | x3 |  | main.rs:371:5:372:13 | S |
-| main.rs:432:26:432:34 | x3.put(...) |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:435:26:435:27 | x3 |  | main.rs:371:5:372:13 | S |
-| main.rs:437:20:437:20 | S |  | main.rs:371:5:372:13 | S |
-| main.rs:440:13:440:14 | x5 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:440:18:440:19 | S2 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:441:26:441:27 | x5 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:441:26:441:32 | x5.m1() |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:442:13:442:14 | x6 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:442:18:442:19 | S2 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:443:26:443:27 | x6 |  | main.rs:374:5:375:14 | S2 |
-| main.rs:443:26:443:32 | x6.m2() |  | main.rs:332:5:335:5 | Wrapper |
-| main.rs:443:26:443:32 | x6.m2() | A | main.rs:374:5:375:14 | S2 |
-| main.rs:460:15:460:18 | SelfParam |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:460:15:460:18 | SelfParam | A | main.rs:459:10:459:10 | T |
-| main.rs:460:26:465:9 | { ... } |  | main.rs:459:10:459:10 | T |
-| main.rs:461:13:464:13 | match self { ... } |  | main.rs:459:10:459:10 | T |
-| main.rs:461:19:461:22 | self |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:461:19:461:22 | self | A | main.rs:459:10:459:10 | T |
-| main.rs:462:28:462:28 | a |  | main.rs:459:10:459:10 | T |
-| main.rs:462:34:462:34 | a |  | main.rs:459:10:459:10 | T |
-| main.rs:463:30:463:30 | a |  | main.rs:459:10:459:10 | T |
-| main.rs:463:37:463:37 | a |  | main.rs:459:10:459:10 | T |
-| main.rs:469:13:469:13 | x |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:469:13:469:13 | x | A | main.rs:454:5:455:14 | S1 |
-| main.rs:469:17:469:30 | ...::C1(...) |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:469:17:469:30 | ...::C1(...) | A | main.rs:454:5:455:14 | S1 |
-| main.rs:469:28:469:29 | S1 |  | main.rs:454:5:455:14 | S1 |
-| main.rs:470:13:470:13 | y |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:470:13:470:13 | y | A | main.rs:456:5:457:14 | S2 |
-| main.rs:470:17:470:36 | ...::C2 {...} |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:470:17:470:36 | ...::C2 {...} | A | main.rs:456:5:457:14 | S2 |
-| main.rs:470:33:470:34 | S2 |  | main.rs:456:5:457:14 | S2 |
-| main.rs:472:26:472:26 | x |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:472:26:472:26 | x | A | main.rs:454:5:455:14 | S1 |
-| main.rs:472:26:472:31 | x.m1() |  | main.rs:454:5:455:14 | S1 |
-| main.rs:473:26:473:26 | y |  | main.rs:448:5:452:5 | MyEnum |
-| main.rs:473:26:473:26 | y | A | main.rs:456:5:457:14 | S2 |
-| main.rs:473:26:473:31 | y.m1() |  | main.rs:456:5:457:14 | S2 |
-| main.rs:495:15:495:18 | SelfParam |  | main.rs:493:5:496:5 | Self [trait MyTrait1] |
-| main.rs:499:15:499:18 | SelfParam |  | main.rs:498:5:509:5 | Self [trait MyTrait2] |
-| main.rs:502:9:508:9 | { ... } |  | main.rs:498:20:498:22 | Tr2 |
-| main.rs:503:13:507:13 | if ... {...} else {...} |  | main.rs:498:20:498:22 | Tr2 |
-| main.rs:503:26:505:13 | { ... } |  | main.rs:498:20:498:22 | Tr2 |
-| main.rs:504:17:504:20 | self |  | main.rs:498:5:509:5 | Self [trait MyTrait2] |
-| main.rs:504:17:504:25 | self.m1() |  | main.rs:498:20:498:22 | Tr2 |
-| main.rs:505:20:507:13 | { ... } |  | main.rs:498:20:498:22 | Tr2 |
-| main.rs:506:17:506:30 | ...::m1(...) |  | main.rs:498:20:498:22 | Tr2 |
-| main.rs:506:26:506:29 | self |  | main.rs:498:5:509:5 | Self [trait MyTrait2] |
-| main.rs:512:15:512:18 | SelfParam |  | main.rs:511:5:522:5 | Self [trait MyTrait3] |
-| main.rs:515:9:521:9 | { ... } |  | main.rs:511:20:511:22 | Tr3 |
-| main.rs:516:13:520:13 | if ... {...} else {...} |  | main.rs:511:20:511:22 | Tr3 |
-| main.rs:516:26:518:13 | { ... } |  | main.rs:511:20:511:22 | Tr3 |
-| main.rs:517:17:517:20 | self |  | main.rs:511:5:522:5 | Self [trait MyTrait3] |
-| main.rs:517:17:517:25 | self.m2() |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:517:17:517:25 | self.m2() | A | main.rs:511:20:511:22 | Tr3 |
-| main.rs:517:17:517:27 | ... .a |  | main.rs:511:20:511:22 | Tr3 |
-| main.rs:518:20:520:13 | { ... } |  | main.rs:511:20:511:22 | Tr3 |
-| main.rs:519:17:519:30 | ...::m2(...) |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:519:17:519:30 | ...::m2(...) | A | main.rs:511:20:511:22 | Tr3 |
-| main.rs:519:17:519:32 | ... .a |  | main.rs:511:20:511:22 | Tr3 |
-| main.rs:519:26:519:29 | self |  | main.rs:511:5:522:5 | Self [trait MyTrait3] |
-| main.rs:526:15:526:18 | SelfParam |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:526:15:526:18 | SelfParam | A | main.rs:524:10:524:10 | T |
-| main.rs:526:26:528:9 | { ... } |  | main.rs:524:10:524:10 | T |
-| main.rs:527:13:527:16 | self |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:527:13:527:16 | self | A | main.rs:524:10:524:10 | T |
-| main.rs:527:13:527:18 | self.a |  | main.rs:524:10:524:10 | T |
-| main.rs:535:15:535:18 | SelfParam |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:535:15:535:18 | SelfParam | A | main.rs:533:10:533:10 | T |
-| main.rs:535:35:537:9 | { ... } |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:535:35:537:9 | { ... } | A | main.rs:533:10:533:10 | T |
-| main.rs:536:13:536:33 | MyThing {...} |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:536:13:536:33 | MyThing {...} | A | main.rs:533:10:533:10 | T |
-| main.rs:536:26:536:29 | self |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:536:26:536:29 | self | A | main.rs:533:10:533:10 | T |
-| main.rs:536:26:536:31 | self.a |  | main.rs:533:10:533:10 | T |
-| main.rs:545:13:545:13 | x |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:545:13:545:13 | x | A | main.rs:488:5:489:14 | S1 |
-| main.rs:545:17:545:33 | MyThing {...} |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:545:17:545:33 | MyThing {...} | A | main.rs:488:5:489:14 | S1 |
-| main.rs:545:30:545:31 | S1 |  | main.rs:488:5:489:14 | S1 |
-| main.rs:546:13:546:13 | y |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:546:13:546:13 | y | A | main.rs:490:5:491:14 | S2 |
-| main.rs:546:17:546:33 | MyThing {...} |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:546:17:546:33 | MyThing {...} | A | main.rs:490:5:491:14 | S2 |
-| main.rs:546:30:546:31 | S2 |  | main.rs:490:5:491:14 | S2 |
-| main.rs:548:26:548:26 | x |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:548:26:548:26 | x | A | main.rs:488:5:489:14 | S1 |
-| main.rs:548:26:548:31 | x.m1() |  | main.rs:488:5:489:14 | S1 |
-| main.rs:549:26:549:26 | y |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:549:26:549:26 | y | A | main.rs:490:5:491:14 | S2 |
-| main.rs:549:26:549:31 | y.m1() |  | main.rs:490:5:491:14 | S2 |
-| main.rs:551:13:551:13 | x |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:551:13:551:13 | x | A | main.rs:488:5:489:14 | S1 |
-| main.rs:551:17:551:33 | MyThing {...} |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:551:17:551:33 | MyThing {...} | A | main.rs:488:5:489:14 | S1 |
-| main.rs:551:30:551:31 | S1 |  | main.rs:488:5:489:14 | S1 |
-| main.rs:552:13:552:13 | y |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:552:13:552:13 | y | A | main.rs:490:5:491:14 | S2 |
-| main.rs:552:17:552:33 | MyThing {...} |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:552:17:552:33 | MyThing {...} | A | main.rs:490:5:491:14 | S2 |
-| main.rs:552:30:552:31 | S2 |  | main.rs:490:5:491:14 | S2 |
-| main.rs:554:26:554:26 | x |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:554:26:554:26 | x | A | main.rs:488:5:489:14 | S1 |
-| main.rs:554:26:554:31 | x.m2() |  | main.rs:488:5:489:14 | S1 |
-| main.rs:555:26:555:26 | y |  | main.rs:478:5:481:5 | MyThing |
-| main.rs:555:26:555:26 | y | A | main.rs:490:5:491:14 | S2 |
-| main.rs:555:26:555:31 | y.m2() |  | main.rs:490:5:491:14 | S2 |
-| main.rs:557:13:557:13 | x |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:557:13:557:13 | x | A | main.rs:488:5:489:14 | S1 |
-| main.rs:557:17:557:34 | MyThing2 {...} |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:557:17:557:34 | MyThing2 {...} | A | main.rs:488:5:489:14 | S1 |
-| main.rs:557:31:557:32 | S1 |  | main.rs:488:5:489:14 | S1 |
-| main.rs:558:13:558:13 | y |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:558:13:558:13 | y | A | main.rs:490:5:491:14 | S2 |
-| main.rs:558:17:558:34 | MyThing2 {...} |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:558:17:558:34 | MyThing2 {...} | A | main.rs:490:5:491:14 | S2 |
-| main.rs:558:31:558:32 | S2 |  | main.rs:490:5:491:14 | S2 |
-| main.rs:560:26:560:26 | x |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:560:26:560:26 | x | A | main.rs:488:5:489:14 | S1 |
-| main.rs:560:26:560:31 | x.m3() |  | main.rs:488:5:489:14 | S1 |
-| main.rs:561:26:561:26 | y |  | main.rs:483:5:486:5 | MyThing2 |
-| main.rs:561:26:561:26 | y | A | main.rs:490:5:491:14 | S2 |
-| main.rs:561:26:561:31 | y.m3() |  | main.rs:490:5:491:14 | S2 |
-| main.rs:579:22:579:22 | x |  | file://:0:0:0:0 | & |
-| main.rs:579:22:579:22 | x | &T | main.rs:579:11:579:19 | T |
-| main.rs:579:35:581:5 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:579:35:581:5 | { ... } | &T | main.rs:579:11:579:19 | T |
-| main.rs:580:9:580:9 | x |  | file://:0:0:0:0 | & |
-| main.rs:580:9:580:9 | x | &T | main.rs:579:11:579:19 | T |
-| main.rs:584:17:584:20 | SelfParam |  | main.rs:569:5:570:14 | S1 |
-| main.rs:584:29:586:9 | { ... } |  | main.rs:572:5:573:14 | S2 |
-| main.rs:585:13:585:14 | S2 |  | main.rs:572:5:573:14 | S2 |
-| main.rs:589:21:589:21 | x |  | main.rs:589:13:589:14 | T1 |
-| main.rs:592:5:594:5 | { ... } |  | main.rs:589:17:589:18 | T2 |
-| main.rs:593:9:593:9 | x |  | main.rs:589:13:589:14 | T1 |
-| main.rs:593:9:593:16 | x.into() |  | main.rs:589:17:589:18 | T2 |
-| main.rs:597:13:597:13 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:597:17:597:18 | S1 |  | main.rs:569:5:570:14 | S1 |
-| main.rs:598:26:598:31 | id(...) |  | file://:0:0:0:0 | & |
-| main.rs:598:26:598:31 | id(...) | &T | main.rs:569:5:570:14 | S1 |
-| main.rs:598:29:598:30 | &x |  | file://:0:0:0:0 | & |
-| main.rs:598:29:598:30 | &x | &T | main.rs:569:5:570:14 | S1 |
-| main.rs:598:30:598:30 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:600:13:600:13 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:600:17:600:18 | S1 |  | main.rs:569:5:570:14 | S1 |
-| main.rs:601:26:601:37 | id::<...>(...) |  | file://:0:0:0:0 | & |
-| main.rs:601:26:601:37 | id::<...>(...) | &T | main.rs:569:5:570:14 | S1 |
-| main.rs:601:35:601:36 | &x |  | file://:0:0:0:0 | & |
-| main.rs:601:35:601:36 | &x | &T | main.rs:569:5:570:14 | S1 |
-| main.rs:601:36:601:36 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:603:13:603:13 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:603:17:603:18 | S1 |  | main.rs:569:5:570:14 | S1 |
-| main.rs:604:26:604:44 | id::<...>(...) |  | file://:0:0:0:0 | & |
-| main.rs:604:26:604:44 | id::<...>(...) | &T | main.rs:569:5:570:14 | S1 |
-| main.rs:604:42:604:43 | &x |  | file://:0:0:0:0 | & |
-| main.rs:604:42:604:43 | &x | &T | main.rs:569:5:570:14 | S1 |
-| main.rs:604:43:604:43 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:606:13:606:13 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:606:17:606:18 | S1 |  | main.rs:569:5:570:14 | S1 |
-| main.rs:607:9:607:25 | into::<...>(...) |  | main.rs:572:5:573:14 | S2 |
-| main.rs:607:24:607:24 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:609:13:609:13 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:609:17:609:18 | S1 |  | main.rs:569:5:570:14 | S1 |
-| main.rs:610:13:610:13 | y |  | main.rs:572:5:573:14 | S2 |
-| main.rs:610:21:610:27 | into(...) |  | main.rs:572:5:573:14 | S2 |
-| main.rs:610:26:610:26 | x |  | main.rs:569:5:570:14 | S1 |
-| main.rs:640:13:640:14 | p1 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:640:13:640:14 | p1 | Fst | main.rs:623:5:624:14 | S1 |
-| main.rs:640:13:640:14 | p1 | Snd | main.rs:626:5:627:14 | S2 |
-| main.rs:640:26:640:53 | ...::PairBoth(...) |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:640:26:640:53 | ...::PairBoth(...) | Fst | main.rs:623:5:624:14 | S1 |
-| main.rs:640:26:640:53 | ...::PairBoth(...) | Snd | main.rs:626:5:627:14 | S2 |
-| main.rs:640:47:640:48 | S1 |  | main.rs:623:5:624:14 | S1 |
-| main.rs:640:51:640:52 | S2 |  | main.rs:626:5:627:14 | S2 |
-| main.rs:641:26:641:27 | p1 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:641:26:641:27 | p1 | Fst | main.rs:623:5:624:14 | S1 |
-| main.rs:641:26:641:27 | p1 | Snd | main.rs:626:5:627:14 | S2 |
-| main.rs:644:13:644:14 | p2 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:644:26:644:47 | ...::PairNone(...) |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:645:26:645:27 | p2 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:648:13:648:14 | p3 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:648:13:648:14 | p3 | Snd | main.rs:629:5:630:14 | S3 |
-| main.rs:648:34:648:56 | ...::PairSnd(...) |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:648:34:648:56 | ...::PairSnd(...) | Snd | main.rs:629:5:630:14 | S3 |
-| main.rs:648:54:648:55 | S3 |  | main.rs:629:5:630:14 | S3 |
-| main.rs:649:26:649:27 | p3 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:649:26:649:27 | p3 | Snd | main.rs:629:5:630:14 | S3 |
-| main.rs:652:13:652:14 | p3 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:652:13:652:14 | p3 | Fst | main.rs:629:5:630:14 | S3 |
-| main.rs:652:35:652:56 | ...::PairNone(...) |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:652:35:652:56 | ...::PairNone(...) | Fst | main.rs:629:5:630:14 | S3 |
-| main.rs:653:26:653:27 | p3 |  | main.rs:615:5:621:5 | PairOption |
-| main.rs:653:26:653:27 | p3 | Fst | main.rs:629:5:630:14 | S3 |
-| main.rs:666:16:666:24 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:666:16:666:24 | SelfParam | &T | main.rs:664:5:671:5 | Self [trait MyTrait] |
-| main.rs:666:27:666:31 | value |  | main.rs:664:19:664:19 | S |
-| main.rs:668:21:668:29 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:668:21:668:29 | SelfParam | &T | main.rs:664:5:671:5 | Self [trait MyTrait] |
-| main.rs:668:32:668:36 | value |  | main.rs:664:19:664:19 | S |
-| main.rs:669:13:669:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:669:13:669:16 | self | &T | main.rs:664:5:671:5 | Self [trait MyTrait] |
-| main.rs:669:22:669:26 | value |  | main.rs:664:19:664:19 | S |
-| main.rs:675:16:675:24 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:675:16:675:24 | SelfParam | &T | main.rs:658:5:662:5 | MyOption |
-| main.rs:675:16:675:24 | SelfParam | &T.T | main.rs:673:10:673:10 | T |
-| main.rs:675:27:675:31 | value |  | main.rs:673:10:673:10 | T |
-| main.rs:679:26:681:9 | { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:679:26:681:9 | { ... } | T | main.rs:678:10:678:10 | T |
-| main.rs:680:13:680:30 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:680:13:680:30 | ...::MyNone(...) | T | main.rs:678:10:678:10 | T |
-| main.rs:685:20:685:23 | SelfParam |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:685:20:685:23 | SelfParam | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:685:20:685:23 | SelfParam | T.T | main.rs:684:10:684:10 | T |
-| main.rs:685:41:690:9 | { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:685:41:690:9 | { ... } | T | main.rs:684:10:684:10 | T |
-| main.rs:686:13:689:13 | match self { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:686:13:689:13 | match self { ... } | T | main.rs:684:10:684:10 | T |
-| main.rs:686:19:686:22 | self |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:686:19:686:22 | self | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:686:19:686:22 | self | T.T | main.rs:684:10:684:10 | T |
-| main.rs:687:39:687:56 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:687:39:687:56 | ...::MyNone(...) | T | main.rs:684:10:684:10 | T |
-| main.rs:688:34:688:34 | x |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:688:34:688:34 | x | T | main.rs:684:10:684:10 | T |
-| main.rs:688:40:688:40 | x |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:688:40:688:40 | x | T | main.rs:684:10:684:10 | T |
-| main.rs:697:13:697:14 | x1 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:697:18:697:37 | ...::new(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:698:26:698:27 | x1 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:700:13:700:18 | mut x2 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:700:13:700:18 | mut x2 | T | main.rs:693:5:694:13 | S |
-| main.rs:700:22:700:36 | ...::new(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:700:22:700:36 | ...::new(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:701:9:701:10 | x2 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:701:9:701:10 | x2 | T | main.rs:693:5:694:13 | S |
-| main.rs:701:16:701:16 | S |  | main.rs:693:5:694:13 | S |
-| main.rs:702:26:702:27 | x2 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:702:26:702:27 | x2 | T | main.rs:693:5:694:13 | S |
-| main.rs:704:13:704:18 | mut x3 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:704:22:704:36 | ...::new(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:705:9:705:10 | x3 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:705:21:705:21 | S |  | main.rs:693:5:694:13 | S |
-| main.rs:706:26:706:27 | x3 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:708:13:708:18 | mut x4 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:708:13:708:18 | mut x4 | T | main.rs:693:5:694:13 | S |
-| main.rs:708:22:708:36 | ...::new(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:708:22:708:36 | ...::new(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:709:23:709:29 | &mut x4 |  | file://:0:0:0:0 | & |
-| main.rs:709:23:709:29 | &mut x4 | &T | main.rs:658:5:662:5 | MyOption |
-| main.rs:709:23:709:29 | &mut x4 | &T.T | main.rs:693:5:694:13 | S |
-| main.rs:709:28:709:29 | x4 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:709:28:709:29 | x4 | T | main.rs:693:5:694:13 | S |
-| main.rs:709:32:709:32 | S |  | main.rs:693:5:694:13 | S |
-| main.rs:710:26:710:27 | x4 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:710:26:710:27 | x4 | T | main.rs:693:5:694:13 | S |
-| main.rs:712:13:712:14 | x5 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:712:13:712:14 | x5 | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:712:13:712:14 | x5 | T.T | main.rs:693:5:694:13 | S |
-| main.rs:712:18:712:58 | ...::MySome(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:712:18:712:58 | ...::MySome(...) | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:712:18:712:58 | ...::MySome(...) | T.T | main.rs:693:5:694:13 | S |
-| main.rs:712:35:712:57 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:712:35:712:57 | ...::MyNone(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:713:26:713:27 | x5 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:713:26:713:27 | x5 | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:713:26:713:27 | x5 | T.T | main.rs:693:5:694:13 | S |
-| main.rs:715:13:715:14 | x6 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:715:13:715:14 | x6 | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:715:13:715:14 | x6 | T.T | main.rs:693:5:694:13 | S |
-| main.rs:715:18:715:58 | ...::MySome(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:715:18:715:58 | ...::MySome(...) | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:715:18:715:58 | ...::MySome(...) | T.T | main.rs:693:5:694:13 | S |
-| main.rs:715:35:715:57 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:715:35:715:57 | ...::MyNone(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:716:26:716:61 | ...::flatten(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:716:26:716:61 | ...::flatten(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:716:59:716:60 | x6 |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:716:59:716:60 | x6 | T | main.rs:658:5:662:5 | MyOption |
-| main.rs:716:59:716:60 | x6 | T.T | main.rs:693:5:694:13 | S |
-| main.rs:718:13:718:19 | from_if |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:718:13:718:19 | from_if | T | main.rs:693:5:694:13 | S |
-| main.rs:718:23:722:9 | if ... {...} else {...} |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:718:23:722:9 | if ... {...} else {...} | T | main.rs:693:5:694:13 | S |
-| main.rs:718:36:720:9 | { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:718:36:720:9 | { ... } | T | main.rs:693:5:694:13 | S |
-| main.rs:719:13:719:30 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:719:13:719:30 | ...::MyNone(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:720:16:722:9 | { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:720:16:722:9 | { ... } | T | main.rs:693:5:694:13 | S |
-| main.rs:721:13:721:31 | ...::MySome(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:721:13:721:31 | ...::MySome(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:721:30:721:30 | S |  | main.rs:693:5:694:13 | S |
-| main.rs:723:26:723:32 | from_if |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:723:26:723:32 | from_if | T | main.rs:693:5:694:13 | S |
-| main.rs:725:13:725:22 | from_match |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:725:13:725:22 | from_match | T | main.rs:693:5:694:13 | S |
-| main.rs:725:26:728:9 | match ... { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:725:26:728:9 | match ... { ... } | T | main.rs:693:5:694:13 | S |
-| main.rs:726:21:726:38 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:726:21:726:38 | ...::MyNone(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:727:22:727:40 | ...::MySome(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:727:22:727:40 | ...::MySome(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:727:39:727:39 | S |  | main.rs:693:5:694:13 | S |
-| main.rs:729:26:729:35 | from_match |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:729:26:729:35 | from_match | T | main.rs:693:5:694:13 | S |
-| main.rs:731:13:731:21 | from_loop |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:731:13:731:21 | from_loop | T | main.rs:693:5:694:13 | S |
-| main.rs:731:25:736:9 | loop { ... } |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:731:25:736:9 | loop { ... } | T | main.rs:693:5:694:13 | S |
-| main.rs:733:23:733:40 | ...::MyNone(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:733:23:733:40 | ...::MyNone(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:735:19:735:37 | ...::MySome(...) |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:735:19:735:37 | ...::MySome(...) | T | main.rs:693:5:694:13 | S |
-| main.rs:735:36:735:36 | S |  | main.rs:693:5:694:13 | S |
-| main.rs:737:26:737:34 | from_loop |  | main.rs:658:5:662:5 | MyOption |
-| main.rs:737:26:737:34 | from_loop | T | main.rs:693:5:694:13 | S |
-| main.rs:750:15:750:18 | SelfParam |  | main.rs:743:5:744:19 | S |
-| main.rs:750:15:750:18 | SelfParam | T | main.rs:749:10:749:10 | T |
-| main.rs:750:26:752:9 | { ... } |  | main.rs:749:10:749:10 | T |
-| main.rs:751:13:751:16 | self |  | main.rs:743:5:744:19 | S |
-| main.rs:751:13:751:16 | self | T | main.rs:749:10:749:10 | T |
-| main.rs:751:13:751:18 | self.0 |  | main.rs:749:10:749:10 | T |
-| main.rs:754:15:754:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:754:15:754:19 | SelfParam | &T | main.rs:743:5:744:19 | S |
-| main.rs:754:15:754:19 | SelfParam | &T.T | main.rs:749:10:749:10 | T |
-| main.rs:754:28:756:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:754:28:756:9 | { ... } | &T | main.rs:749:10:749:10 | T |
-| main.rs:755:13:755:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:755:13:755:19 | &... | &T | main.rs:749:10:749:10 | T |
-| main.rs:755:14:755:17 | self |  | file://:0:0:0:0 | & |
-| main.rs:755:14:755:17 | self | &T | main.rs:743:5:744:19 | S |
-| main.rs:755:14:755:17 | self | &T.T | main.rs:749:10:749:10 | T |
-| main.rs:755:14:755:19 | self.0 |  | main.rs:749:10:749:10 | T |
-| main.rs:758:15:758:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:758:15:758:25 | SelfParam | &T | main.rs:743:5:744:19 | S |
-| main.rs:758:15:758:25 | SelfParam | &T.T | main.rs:749:10:749:10 | T |
-| main.rs:758:34:760:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:758:34:760:9 | { ... } | &T | main.rs:749:10:749:10 | T |
-| main.rs:759:13:759:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:759:13:759:19 | &... | &T | main.rs:749:10:749:10 | T |
-| main.rs:759:14:759:17 | self |  | file://:0:0:0:0 | & |
-| main.rs:759:14:759:17 | self | &T | main.rs:743:5:744:19 | S |
-| main.rs:759:14:759:17 | self | &T.T | main.rs:749:10:749:10 | T |
-| main.rs:759:14:759:19 | self.0 |  | main.rs:749:10:749:10 | T |
-| main.rs:764:13:764:14 | x1 |  | main.rs:743:5:744:19 | S |
-| main.rs:764:13:764:14 | x1 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:764:18:764:22 | S(...) |  | main.rs:743:5:744:19 | S |
-| main.rs:764:18:764:22 | S(...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:764:20:764:21 | S2 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:765:26:765:27 | x1 |  | main.rs:743:5:744:19 | S |
-| main.rs:765:26:765:27 | x1 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:765:26:765:32 | x1.m1() |  | main.rs:746:5:747:14 | S2 |
-| main.rs:767:13:767:14 | x2 |  | main.rs:743:5:744:19 | S |
-| main.rs:767:13:767:14 | x2 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:767:18:767:22 | S(...) |  | main.rs:743:5:744:19 | S |
-| main.rs:767:18:767:22 | S(...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:767:20:767:21 | S2 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:769:26:769:27 | x2 |  | main.rs:743:5:744:19 | S |
-| main.rs:769:26:769:27 | x2 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:769:26:769:32 | x2.m2() |  | file://:0:0:0:0 | & |
-| main.rs:769:26:769:32 | x2.m2() | &T | main.rs:746:5:747:14 | S2 |
-| main.rs:770:26:770:27 | x2 |  | main.rs:743:5:744:19 | S |
-| main.rs:770:26:770:27 | x2 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:770:26:770:32 | x2.m3() |  | file://:0:0:0:0 | & |
-| main.rs:770:26:770:32 | x2.m3() | &T | main.rs:746:5:747:14 | S2 |
-| main.rs:772:13:772:14 | x3 |  | main.rs:743:5:744:19 | S |
-| main.rs:772:13:772:14 | x3 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:772:18:772:22 | S(...) |  | main.rs:743:5:744:19 | S |
-| main.rs:772:18:772:22 | S(...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:772:20:772:21 | S2 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:774:26:774:41 | ...::m2(...) |  | file://:0:0:0:0 | & |
-| main.rs:774:26:774:41 | ...::m2(...) | &T | main.rs:746:5:747:14 | S2 |
-| main.rs:774:38:774:40 | &x3 |  | file://:0:0:0:0 | & |
-| main.rs:774:38:774:40 | &x3 | &T | main.rs:743:5:744:19 | S |
-| main.rs:774:38:774:40 | &x3 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:774:39:774:40 | x3 |  | main.rs:743:5:744:19 | S |
-| main.rs:774:39:774:40 | x3 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:775:26:775:41 | ...::m3(...) |  | file://:0:0:0:0 | & |
-| main.rs:775:26:775:41 | ...::m3(...) | &T | main.rs:746:5:747:14 | S2 |
-| main.rs:775:38:775:40 | &x3 |  | file://:0:0:0:0 | & |
-| main.rs:775:38:775:40 | &x3 | &T | main.rs:743:5:744:19 | S |
-| main.rs:775:38:775:40 | &x3 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:775:39:775:40 | x3 |  | main.rs:743:5:744:19 | S |
-| main.rs:775:39:775:40 | x3 | T | main.rs:746:5:747:14 | S2 |
-| main.rs:777:13:777:14 | x4 |  | file://:0:0:0:0 | & |
-| main.rs:777:13:777:14 | x4 | &T | main.rs:743:5:744:19 | S |
-| main.rs:777:13:777:14 | x4 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:777:18:777:23 | &... |  | file://:0:0:0:0 | & |
-| main.rs:777:18:777:23 | &... | &T | main.rs:743:5:744:19 | S |
-| main.rs:777:18:777:23 | &... | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:777:19:777:23 | S(...) |  | main.rs:743:5:744:19 | S |
-| main.rs:777:19:777:23 | S(...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:777:21:777:22 | S2 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:779:26:779:27 | x4 |  | file://:0:0:0:0 | & |
-| main.rs:779:26:779:27 | x4 | &T | main.rs:743:5:744:19 | S |
-| main.rs:779:26:779:27 | x4 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:779:26:779:32 | x4.m2() |  | file://:0:0:0:0 | & |
-| main.rs:779:26:779:32 | x4.m2() | &T | main.rs:746:5:747:14 | S2 |
-| main.rs:780:26:780:27 | x4 |  | file://:0:0:0:0 | & |
-| main.rs:780:26:780:27 | x4 | &T | main.rs:743:5:744:19 | S |
-| main.rs:780:26:780:27 | x4 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:780:26:780:32 | x4.m3() |  | file://:0:0:0:0 | & |
-| main.rs:780:26:780:32 | x4.m3() | &T | main.rs:746:5:747:14 | S2 |
-| main.rs:782:13:782:14 | x5 |  | file://:0:0:0:0 | & |
-| main.rs:782:13:782:14 | x5 | &T | main.rs:743:5:744:19 | S |
-| main.rs:782:13:782:14 | x5 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:782:18:782:23 | &... |  | file://:0:0:0:0 | & |
-| main.rs:782:18:782:23 | &... | &T | main.rs:743:5:744:19 | S |
-| main.rs:782:18:782:23 | &... | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:782:19:782:23 | S(...) |  | main.rs:743:5:744:19 | S |
-| main.rs:782:19:782:23 | S(...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:782:21:782:22 | S2 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:784:26:784:27 | x5 |  | file://:0:0:0:0 | & |
-| main.rs:784:26:784:27 | x5 | &T | main.rs:743:5:744:19 | S |
-| main.rs:784:26:784:27 | x5 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:784:26:784:32 | x5.m1() |  | main.rs:746:5:747:14 | S2 |
-| main.rs:785:26:785:27 | x5 |  | file://:0:0:0:0 | & |
-| main.rs:785:26:785:27 | x5 | &T | main.rs:743:5:744:19 | S |
-| main.rs:785:26:785:27 | x5 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:785:26:785:29 | x5.0 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:787:13:787:14 | x6 |  | file://:0:0:0:0 | & |
-| main.rs:787:13:787:14 | x6 | &T | main.rs:743:5:744:19 | S |
-| main.rs:787:13:787:14 | x6 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:787:18:787:23 | &... |  | file://:0:0:0:0 | & |
-| main.rs:787:18:787:23 | &... | &T | main.rs:743:5:744:19 | S |
-| main.rs:787:18:787:23 | &... | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:787:19:787:23 | S(...) |  | main.rs:743:5:744:19 | S |
-| main.rs:787:19:787:23 | S(...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:787:21:787:22 | S2 |  | main.rs:746:5:747:14 | S2 |
-| main.rs:789:26:789:30 | (...) |  | main.rs:743:5:744:19 | S |
-| main.rs:789:26:789:30 | (...) | T | main.rs:746:5:747:14 | S2 |
-| main.rs:789:26:789:35 | ... .m1() |  | main.rs:746:5:747:14 | S2 |
-| main.rs:789:27:789:29 | * ... |  | main.rs:743:5:744:19 | S |
-| main.rs:789:27:789:29 | * ... | T | main.rs:746:5:747:14 | S2 |
-| main.rs:789:28:789:29 | x6 |  | file://:0:0:0:0 | & |
-| main.rs:789:28:789:29 | x6 | &T | main.rs:743:5:744:19 | S |
-| main.rs:789:28:789:29 | x6 | &T.T | main.rs:746:5:747:14 | S2 |
-| main.rs:796:16:796:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:796:16:796:20 | SelfParam | &T | main.rs:794:5:802:5 | Self [trait MyTrait] |
-| main.rs:799:16:799:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:799:16:799:20 | SelfParam | &T | main.rs:794:5:802:5 | Self [trait MyTrait] |
-| main.rs:799:32:801:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:799:32:801:9 | { ... } | &T | main.rs:794:5:802:5 | Self [trait MyTrait] |
-| main.rs:800:13:800:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:800:13:800:16 | self | &T | main.rs:794:5:802:5 | Self [trait MyTrait] |
-| main.rs:800:13:800:22 | self.foo() |  | file://:0:0:0:0 | & |
-| main.rs:800:13:800:22 | self.foo() | &T | main.rs:794:5:802:5 | Self [trait MyTrait] |
-| main.rs:808:16:808:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:808:16:808:20 | SelfParam | &T | main.rs:804:5:804:20 | MyStruct |
-| main.rs:808:36:810:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:808:36:810:9 | { ... } | &T | main.rs:804:5:804:20 | MyStruct |
-| main.rs:809:13:809:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:809:13:809:16 | self | &T | main.rs:804:5:804:20 | MyStruct |
-| main.rs:814:13:814:13 | x |  | main.rs:804:5:804:20 | MyStruct |
-| main.rs:814:17:814:24 | MyStruct |  | main.rs:804:5:804:20 | MyStruct |
-| main.rs:815:9:815:9 | x |  | main.rs:804:5:804:20 | MyStruct |
-| main.rs:815:9:815:15 | x.bar() |  | file://:0:0:0:0 | & |
-| main.rs:815:9:815:15 | x.bar() | &T | main.rs:804:5:804:20 | MyStruct |
-| main.rs:825:16:825:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:825:16:825:20 | SelfParam | &T | main.rs:822:5:822:26 | MyStruct |
-| main.rs:825:16:825:20 | SelfParam | &T.T | main.rs:824:10:824:10 | T |
-| main.rs:825:32:827:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:825:32:827:9 | { ... } | &T | main.rs:822:5:822:26 | MyStruct |
-| main.rs:825:32:827:9 | { ... } | &T.T | main.rs:824:10:824:10 | T |
-| main.rs:826:13:826:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:826:13:826:16 | self | &T | main.rs:822:5:822:26 | MyStruct |
-| main.rs:826:13:826:16 | self | &T.T | main.rs:824:10:824:10 | T |
-| main.rs:831:13:831:13 | x |  | main.rs:822:5:822:26 | MyStruct |
-| main.rs:831:13:831:13 | x | T | main.rs:820:5:820:13 | S |
-| main.rs:831:17:831:27 | MyStruct(...) |  | main.rs:822:5:822:26 | MyStruct |
-| main.rs:831:17:831:27 | MyStruct(...) | T | main.rs:820:5:820:13 | S |
-| main.rs:831:26:831:26 | S |  | main.rs:820:5:820:13 | S |
-| main.rs:832:9:832:9 | x |  | main.rs:822:5:822:26 | MyStruct |
-| main.rs:832:9:832:9 | x | T | main.rs:820:5:820:13 | S |
-| main.rs:832:9:832:15 | x.foo() |  | file://:0:0:0:0 | & |
-| main.rs:832:9:832:15 | x.foo() | &T | main.rs:822:5:822:26 | MyStruct |
-| main.rs:832:9:832:15 | x.foo() | &T.T | main.rs:820:5:820:13 | S |
-| main.rs:840:15:840:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:840:15:840:19 | SelfParam | &T | main.rs:837:5:837:13 | S |
-| main.rs:840:31:842:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:840:31:842:9 | { ... } | &T | main.rs:837:5:837:13 | S |
-| main.rs:841:13:841:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:841:13:841:19 | &... | &T | main.rs:837:5:837:13 | S |
-| main.rs:841:14:841:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:841:14:841:19 | &... | &T | main.rs:837:5:837:13 | S |
-| main.rs:841:15:841:19 | &self |  | file://:0:0:0:0 | & |
-| main.rs:841:15:841:19 | &self | &T | main.rs:837:5:837:13 | S |
-| main.rs:841:16:841:19 | self |  | file://:0:0:0:0 | & |
-| main.rs:841:16:841:19 | self | &T | main.rs:837:5:837:13 | S |
-| main.rs:844:15:844:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:844:15:844:25 | SelfParam | &T | main.rs:837:5:837:13 | S |
-| main.rs:844:37:846:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:844:37:846:9 | { ... } | &T | main.rs:837:5:837:13 | S |
-| main.rs:845:13:845:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:845:13:845:19 | &... | &T | main.rs:837:5:837:13 | S |
-| main.rs:845:14:845:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:845:14:845:19 | &... | &T | main.rs:837:5:837:13 | S |
-| main.rs:845:15:845:19 | &self |  | file://:0:0:0:0 | & |
-| main.rs:845:15:845:19 | &self | &T | main.rs:837:5:837:13 | S |
-| main.rs:845:16:845:19 | self |  | file://:0:0:0:0 | & |
-| main.rs:845:16:845:19 | self | &T | main.rs:837:5:837:13 | S |
-| main.rs:848:15:848:15 | x |  | file://:0:0:0:0 | & |
-| main.rs:848:15:848:15 | x | &T | main.rs:837:5:837:13 | S |
-| main.rs:848:34:850:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:848:34:850:9 | { ... } | &T | main.rs:837:5:837:13 | S |
-| main.rs:849:13:849:13 | x |  | file://:0:0:0:0 | & |
-| main.rs:849:13:849:13 | x | &T | main.rs:837:5:837:13 | S |
-| main.rs:852:15:852:15 | x |  | file://:0:0:0:0 | & |
-| main.rs:852:15:852:15 | x | &T | main.rs:837:5:837:13 | S |
-| main.rs:852:34:854:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:852:34:854:9 | { ... } | &T | main.rs:837:5:837:13 | S |
-| main.rs:853:13:853:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:853:13:853:16 | &... | &T | main.rs:837:5:837:13 | S |
-| main.rs:853:14:853:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:853:14:853:16 | &... | &T | main.rs:837:5:837:13 | S |
-| main.rs:853:15:853:16 | &x |  | file://:0:0:0:0 | & |
-| main.rs:853:15:853:16 | &x | &T | main.rs:837:5:837:13 | S |
-| main.rs:853:16:853:16 | x |  | file://:0:0:0:0 | & |
-| main.rs:853:16:853:16 | x | &T | main.rs:837:5:837:13 | S |
-| main.rs:858:13:858:13 | x |  | main.rs:837:5:837:13 | S |
-| main.rs:858:17:858:20 | S {...} |  | main.rs:837:5:837:13 | S |
-| main.rs:859:9:859:9 | x |  | main.rs:837:5:837:13 | S |
-| main.rs:859:9:859:14 | x.f1() |  | file://:0:0:0:0 | & |
-| main.rs:859:9:859:14 | x.f1() | &T | main.rs:837:5:837:13 | S |
-| main.rs:860:9:860:9 | x |  | main.rs:837:5:837:13 | S |
-| main.rs:860:9:860:14 | x.f2() |  | file://:0:0:0:0 | & |
-| main.rs:860:9:860:14 | x.f2() | &T | main.rs:837:5:837:13 | S |
-| main.rs:861:9:861:17 | ...::f3(...) |  | file://:0:0:0:0 | & |
-| main.rs:861:9:861:17 | ...::f3(...) | &T | main.rs:837:5:837:13 | S |
-| main.rs:861:15:861:16 | &x |  | file://:0:0:0:0 | & |
-| main.rs:861:15:861:16 | &x | &T | main.rs:837:5:837:13 | S |
-| main.rs:861:16:861:16 | x |  | main.rs:837:5:837:13 | S |
-| main.rs:867:5:867:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:868:5:868:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:868:20:868:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:868:41:868:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:376:21:376:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:376:21:376:25 | SelfParam | &T | main.rs:371:5:381:5 | Self [trait TraitMultipleAssoc] |
+| main.rs:378:20:378:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:378:20:378:24 | SelfParam | &T | main.rs:371:5:381:5 | Self [trait TraitMultipleAssoc] |
+| main.rs:380:20:380:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:380:20:380:24 | SelfParam | &T | main.rs:371:5:381:5 | Self [trait TraitMultipleAssoc] |
+| main.rs:396:15:396:18 | SelfParam |  | main.rs:383:5:384:13 | S |
+| main.rs:396:45:398:9 | { ... } |  | main.rs:389:5:390:14 | AT |
+| main.rs:397:13:397:14 | AT |  | main.rs:389:5:390:14 | AT |
+| main.rs:406:19:406:23 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:406:19:406:23 | SelfParam | &T | main.rs:383:5:384:13 | S |
+| main.rs:406:26:406:26 | a |  | main.rs:406:16:406:16 | A |
+| main.rs:406:46:408:9 | { ... } |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:406:46:408:9 | { ... } | A | main.rs:406:16:406:16 | A |
+| main.rs:407:13:407:32 | Wrapper {...} |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:407:13:407:32 | Wrapper {...} | A | main.rs:406:16:406:16 | A |
+| main.rs:407:30:407:30 | a |  | main.rs:406:16:406:16 | A |
+| main.rs:415:15:415:18 | SelfParam |  | main.rs:386:5:387:14 | S2 |
+| main.rs:415:45:417:9 | { ... } |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:415:45:417:9 | { ... } | A | main.rs:386:5:387:14 | S2 |
+| main.rs:416:13:416:35 | Wrapper {...} |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:416:13:416:35 | Wrapper {...} | A | main.rs:386:5:387:14 | S2 |
+| main.rs:416:30:416:33 | self |  | main.rs:386:5:387:14 | S2 |
+| main.rs:422:30:424:9 | { ... } |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:422:30:424:9 | { ... } | A | main.rs:386:5:387:14 | S2 |
+| main.rs:423:13:423:33 | Wrapper {...} |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:423:13:423:33 | Wrapper {...} | A | main.rs:386:5:387:14 | S2 |
+| main.rs:423:30:423:31 | S2 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:428:22:428:26 | thing |  | main.rs:428:10:428:19 | T |
+| main.rs:429:9:429:13 | thing |  | main.rs:428:10:428:19 | T |
+| main.rs:436:21:436:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:436:21:436:25 | SelfParam | &T | main.rs:389:5:390:14 | AT |
+| main.rs:436:34:438:9 | { ... } |  | main.rs:389:5:390:14 | AT |
+| main.rs:437:13:437:14 | AT |  | main.rs:389:5:390:14 | AT |
+| main.rs:440:20:440:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:440:20:440:24 | SelfParam | &T | main.rs:389:5:390:14 | AT |
+| main.rs:440:43:442:9 | { ... } |  | main.rs:383:5:384:13 | S |
+| main.rs:441:13:441:13 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:444:20:444:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:444:20:444:24 | SelfParam | &T | main.rs:389:5:390:14 | AT |
+| main.rs:444:43:446:9 | { ... } |  | main.rs:386:5:387:14 | S2 |
+| main.rs:445:13:445:14 | S2 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:450:13:450:14 | x1 |  | main.rs:383:5:384:13 | S |
+| main.rs:450:18:450:18 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:452:26:452:27 | x1 |  | main.rs:383:5:384:13 | S |
+| main.rs:452:26:452:32 | x1.m1() |  | main.rs:389:5:390:14 | AT |
+| main.rs:454:13:454:14 | x2 |  | main.rs:383:5:384:13 | S |
+| main.rs:454:18:454:18 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:456:13:456:13 | y |  | main.rs:389:5:390:14 | AT |
+| main.rs:456:17:456:18 | x2 |  | main.rs:383:5:384:13 | S |
+| main.rs:456:17:456:23 | x2.m2() |  | main.rs:389:5:390:14 | AT |
+| main.rs:457:26:457:26 | y |  | main.rs:389:5:390:14 | AT |
+| main.rs:459:13:459:14 | x3 |  | main.rs:383:5:384:13 | S |
+| main.rs:459:18:459:18 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:461:26:461:27 | x3 |  | main.rs:383:5:384:13 | S |
+| main.rs:461:26:461:34 | x3.put(...) |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:464:26:464:27 | x3 |  | main.rs:383:5:384:13 | S |
+| main.rs:466:20:466:20 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:469:13:469:14 | x5 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:469:18:469:19 | S2 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:470:26:470:27 | x5 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:470:26:470:32 | x5.m1() |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:471:13:471:14 | x6 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:471:18:471:19 | S2 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:472:26:472:27 | x6 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:472:26:472:32 | x6.m2() |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:472:26:472:32 | x6.m2() | A | main.rs:386:5:387:14 | S2 |
+| main.rs:474:13:474:22 | assoc_zero |  | main.rs:389:5:390:14 | AT |
+| main.rs:474:26:474:27 | AT |  | main.rs:389:5:390:14 | AT |
+| main.rs:474:26:474:38 | AT.get_zero() |  | main.rs:389:5:390:14 | AT |
+| main.rs:475:13:475:21 | assoc_one |  | main.rs:383:5:384:13 | S |
+| main.rs:475:25:475:26 | AT |  | main.rs:389:5:390:14 | AT |
+| main.rs:475:25:475:36 | AT.get_one() |  | main.rs:383:5:384:13 | S |
+| main.rs:476:13:476:21 | assoc_two |  | main.rs:386:5:387:14 | S2 |
+| main.rs:476:25:476:26 | AT |  | main.rs:389:5:390:14 | AT |
+| main.rs:476:25:476:36 | AT.get_two() |  | main.rs:386:5:387:14 | S2 |
+| main.rs:493:15:493:18 | SelfParam |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:493:15:493:18 | SelfParam | A | main.rs:492:10:492:10 | T |
+| main.rs:493:26:498:9 | { ... } |  | main.rs:492:10:492:10 | T |
+| main.rs:494:13:497:13 | match self { ... } |  | main.rs:492:10:492:10 | T |
+| main.rs:494:19:494:22 | self |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:494:19:494:22 | self | A | main.rs:492:10:492:10 | T |
+| main.rs:495:28:495:28 | a |  | main.rs:492:10:492:10 | T |
+| main.rs:495:34:495:34 | a |  | main.rs:492:10:492:10 | T |
+| main.rs:496:30:496:30 | a |  | main.rs:492:10:492:10 | T |
+| main.rs:496:37:496:37 | a |  | main.rs:492:10:492:10 | T |
+| main.rs:502:13:502:13 | x |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:502:13:502:13 | x | A | main.rs:487:5:488:14 | S1 |
+| main.rs:502:17:502:30 | ...::C1(...) |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:502:17:502:30 | ...::C1(...) | A | main.rs:487:5:488:14 | S1 |
+| main.rs:502:28:502:29 | S1 |  | main.rs:487:5:488:14 | S1 |
+| main.rs:503:13:503:13 | y |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:503:13:503:13 | y | A | main.rs:489:5:490:14 | S2 |
+| main.rs:503:17:503:36 | ...::C2 {...} |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:503:17:503:36 | ...::C2 {...} | A | main.rs:489:5:490:14 | S2 |
+| main.rs:503:33:503:34 | S2 |  | main.rs:489:5:490:14 | S2 |
+| main.rs:505:26:505:26 | x |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:505:26:505:26 | x | A | main.rs:487:5:488:14 | S1 |
+| main.rs:505:26:505:31 | x.m1() |  | main.rs:487:5:488:14 | S1 |
+| main.rs:506:26:506:26 | y |  | main.rs:481:5:485:5 | MyEnum |
+| main.rs:506:26:506:26 | y | A | main.rs:489:5:490:14 | S2 |
+| main.rs:506:26:506:31 | y.m1() |  | main.rs:489:5:490:14 | S2 |
+| main.rs:528:15:528:18 | SelfParam |  | main.rs:526:5:529:5 | Self [trait MyTrait1] |
+| main.rs:532:15:532:18 | SelfParam |  | main.rs:531:5:542:5 | Self [trait MyTrait2] |
+| main.rs:535:9:541:9 | { ... } |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:536:13:540:13 | if ... {...} else {...} |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:536:26:538:13 | { ... } |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:537:17:537:20 | self |  | main.rs:531:5:542:5 | Self [trait MyTrait2] |
+| main.rs:537:17:537:25 | self.m1() |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:538:20:540:13 | { ... } |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:539:17:539:30 | ...::m1(...) |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:539:26:539:29 | self |  | main.rs:531:5:542:5 | Self [trait MyTrait2] |
+| main.rs:545:15:545:18 | SelfParam |  | main.rs:544:5:555:5 | Self [trait MyTrait3] |
+| main.rs:548:9:554:9 | { ... } |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:549:13:553:13 | if ... {...} else {...} |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:549:26:551:13 | { ... } |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:550:17:550:20 | self |  | main.rs:544:5:555:5 | Self [trait MyTrait3] |
+| main.rs:550:17:550:25 | self.m2() |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:550:17:550:25 | self.m2() | A | main.rs:544:20:544:22 | Tr3 |
+| main.rs:550:17:550:27 | ... .a |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:551:20:553:13 | { ... } |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:552:17:552:30 | ...::m2(...) |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:552:17:552:30 | ...::m2(...) | A | main.rs:544:20:544:22 | Tr3 |
+| main.rs:552:17:552:32 | ... .a |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:552:26:552:29 | self |  | main.rs:544:5:555:5 | Self [trait MyTrait3] |
+| main.rs:559:15:559:18 | SelfParam |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:559:15:559:18 | SelfParam | A | main.rs:557:10:557:10 | T |
+| main.rs:559:26:561:9 | { ... } |  | main.rs:557:10:557:10 | T |
+| main.rs:560:13:560:16 | self |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:560:13:560:16 | self | A | main.rs:557:10:557:10 | T |
+| main.rs:560:13:560:18 | self.a |  | main.rs:557:10:557:10 | T |
+| main.rs:568:15:568:18 | SelfParam |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:568:15:568:18 | SelfParam | A | main.rs:566:10:566:10 | T |
+| main.rs:568:35:570:9 | { ... } |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:568:35:570:9 | { ... } | A | main.rs:566:10:566:10 | T |
+| main.rs:569:13:569:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:569:13:569:33 | MyThing {...} | A | main.rs:566:10:566:10 | T |
+| main.rs:569:26:569:29 | self |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:569:26:569:29 | self | A | main.rs:566:10:566:10 | T |
+| main.rs:569:26:569:31 | self.a |  | main.rs:566:10:566:10 | T |
+| main.rs:578:13:578:13 | x |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:578:13:578:13 | x | A | main.rs:521:5:522:14 | S1 |
+| main.rs:578:17:578:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:578:17:578:33 | MyThing {...} | A | main.rs:521:5:522:14 | S1 |
+| main.rs:578:30:578:31 | S1 |  | main.rs:521:5:522:14 | S1 |
+| main.rs:579:13:579:13 | y |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:579:13:579:13 | y | A | main.rs:523:5:524:14 | S2 |
+| main.rs:579:17:579:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:579:17:579:33 | MyThing {...} | A | main.rs:523:5:524:14 | S2 |
+| main.rs:579:30:579:31 | S2 |  | main.rs:523:5:524:14 | S2 |
+| main.rs:581:26:581:26 | x |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:581:26:581:26 | x | A | main.rs:521:5:522:14 | S1 |
+| main.rs:581:26:581:31 | x.m1() |  | main.rs:521:5:522:14 | S1 |
+| main.rs:582:26:582:26 | y |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:582:26:582:26 | y | A | main.rs:523:5:524:14 | S2 |
+| main.rs:582:26:582:31 | y.m1() |  | main.rs:523:5:524:14 | S2 |
+| main.rs:584:13:584:13 | x |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:584:13:584:13 | x | A | main.rs:521:5:522:14 | S1 |
+| main.rs:584:17:584:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:584:17:584:33 | MyThing {...} | A | main.rs:521:5:522:14 | S1 |
+| main.rs:584:30:584:31 | S1 |  | main.rs:521:5:522:14 | S1 |
+| main.rs:585:13:585:13 | y |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:585:13:585:13 | y | A | main.rs:523:5:524:14 | S2 |
+| main.rs:585:17:585:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:585:17:585:33 | MyThing {...} | A | main.rs:523:5:524:14 | S2 |
+| main.rs:585:30:585:31 | S2 |  | main.rs:523:5:524:14 | S2 |
+| main.rs:587:26:587:26 | x |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:587:26:587:26 | x | A | main.rs:521:5:522:14 | S1 |
+| main.rs:587:26:587:31 | x.m2() |  | main.rs:521:5:522:14 | S1 |
+| main.rs:588:26:588:26 | y |  | main.rs:511:5:514:5 | MyThing |
+| main.rs:588:26:588:26 | y | A | main.rs:523:5:524:14 | S2 |
+| main.rs:588:26:588:31 | y.m2() |  | main.rs:523:5:524:14 | S2 |
+| main.rs:590:13:590:13 | x |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:590:13:590:13 | x | A | main.rs:521:5:522:14 | S1 |
+| main.rs:590:17:590:34 | MyThing2 {...} |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:590:17:590:34 | MyThing2 {...} | A | main.rs:521:5:522:14 | S1 |
+| main.rs:590:31:590:32 | S1 |  | main.rs:521:5:522:14 | S1 |
+| main.rs:591:13:591:13 | y |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:591:13:591:13 | y | A | main.rs:523:5:524:14 | S2 |
+| main.rs:591:17:591:34 | MyThing2 {...} |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:591:17:591:34 | MyThing2 {...} | A | main.rs:523:5:524:14 | S2 |
+| main.rs:591:31:591:32 | S2 |  | main.rs:523:5:524:14 | S2 |
+| main.rs:593:26:593:26 | x |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:593:26:593:26 | x | A | main.rs:521:5:522:14 | S1 |
+| main.rs:593:26:593:31 | x.m3() |  | main.rs:521:5:522:14 | S1 |
+| main.rs:594:26:594:26 | y |  | main.rs:516:5:519:5 | MyThing2 |
+| main.rs:594:26:594:26 | y | A | main.rs:523:5:524:14 | S2 |
+| main.rs:594:26:594:31 | y.m3() |  | main.rs:523:5:524:14 | S2 |
+| main.rs:612:22:612:22 | x |  | file://:0:0:0:0 | & |
+| main.rs:612:22:612:22 | x | &T | main.rs:612:11:612:19 | T |
+| main.rs:612:35:614:5 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:612:35:614:5 | { ... } | &T | main.rs:612:11:612:19 | T |
+| main.rs:613:9:613:9 | x |  | file://:0:0:0:0 | & |
+| main.rs:613:9:613:9 | x | &T | main.rs:612:11:612:19 | T |
+| main.rs:617:17:617:20 | SelfParam |  | main.rs:602:5:603:14 | S1 |
+| main.rs:617:29:619:9 | { ... } |  | main.rs:605:5:606:14 | S2 |
+| main.rs:618:13:618:14 | S2 |  | main.rs:605:5:606:14 | S2 |
+| main.rs:622:21:622:21 | x |  | main.rs:622:13:622:14 | T1 |
+| main.rs:625:5:627:5 | { ... } |  | main.rs:622:17:622:18 | T2 |
+| main.rs:626:9:626:9 | x |  | main.rs:622:13:622:14 | T1 |
+| main.rs:626:9:626:16 | x.into() |  | main.rs:622:17:622:18 | T2 |
+| main.rs:630:13:630:13 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:630:17:630:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:631:26:631:31 | id(...) |  | file://:0:0:0:0 | & |
+| main.rs:631:26:631:31 | id(...) | &T | main.rs:602:5:603:14 | S1 |
+| main.rs:631:29:631:30 | &x |  | file://:0:0:0:0 | & |
+| main.rs:631:29:631:30 | &x | &T | main.rs:602:5:603:14 | S1 |
+| main.rs:631:30:631:30 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:633:13:633:13 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:633:17:633:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:634:26:634:37 | id::<...>(...) |  | file://:0:0:0:0 | & |
+| main.rs:634:26:634:37 | id::<...>(...) | &T | main.rs:602:5:603:14 | S1 |
+| main.rs:634:35:634:36 | &x |  | file://:0:0:0:0 | & |
+| main.rs:634:35:634:36 | &x | &T | main.rs:602:5:603:14 | S1 |
+| main.rs:634:36:634:36 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:636:13:636:13 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:636:17:636:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:637:26:637:44 | id::<...>(...) |  | file://:0:0:0:0 | & |
+| main.rs:637:26:637:44 | id::<...>(...) | &T | main.rs:602:5:603:14 | S1 |
+| main.rs:637:42:637:43 | &x |  | file://:0:0:0:0 | & |
+| main.rs:637:42:637:43 | &x | &T | main.rs:602:5:603:14 | S1 |
+| main.rs:637:43:637:43 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:639:13:639:13 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:639:17:639:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:640:9:640:25 | into::<...>(...) |  | main.rs:605:5:606:14 | S2 |
+| main.rs:640:24:640:24 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:642:13:642:13 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:642:17:642:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:643:13:643:13 | y |  | main.rs:605:5:606:14 | S2 |
+| main.rs:643:21:643:27 | into(...) |  | main.rs:605:5:606:14 | S2 |
+| main.rs:643:26:643:26 | x |  | main.rs:602:5:603:14 | S1 |
+| main.rs:673:13:673:14 | p1 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:673:13:673:14 | p1 | Fst | main.rs:656:5:657:14 | S1 |
+| main.rs:673:13:673:14 | p1 | Snd | main.rs:659:5:660:14 | S2 |
+| main.rs:673:26:673:53 | ...::PairBoth(...) |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:673:26:673:53 | ...::PairBoth(...) | Fst | main.rs:656:5:657:14 | S1 |
+| main.rs:673:26:673:53 | ...::PairBoth(...) | Snd | main.rs:659:5:660:14 | S2 |
+| main.rs:673:47:673:48 | S1 |  | main.rs:656:5:657:14 | S1 |
+| main.rs:673:51:673:52 | S2 |  | main.rs:659:5:660:14 | S2 |
+| main.rs:674:26:674:27 | p1 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:674:26:674:27 | p1 | Fst | main.rs:656:5:657:14 | S1 |
+| main.rs:674:26:674:27 | p1 | Snd | main.rs:659:5:660:14 | S2 |
+| main.rs:677:13:677:14 | p2 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:677:26:677:47 | ...::PairNone(...) |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:678:26:678:27 | p2 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:681:13:681:14 | p3 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:681:13:681:14 | p3 | Snd | main.rs:662:5:663:14 | S3 |
+| main.rs:681:34:681:56 | ...::PairSnd(...) |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:681:34:681:56 | ...::PairSnd(...) | Snd | main.rs:662:5:663:14 | S3 |
+| main.rs:681:54:681:55 | S3 |  | main.rs:662:5:663:14 | S3 |
+| main.rs:682:26:682:27 | p3 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:682:26:682:27 | p3 | Snd | main.rs:662:5:663:14 | S3 |
+| main.rs:685:13:685:14 | p3 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:685:13:685:14 | p3 | Fst | main.rs:662:5:663:14 | S3 |
+| main.rs:685:35:685:56 | ...::PairNone(...) |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:685:35:685:56 | ...::PairNone(...) | Fst | main.rs:662:5:663:14 | S3 |
+| main.rs:686:26:686:27 | p3 |  | main.rs:648:5:654:5 | PairOption |
+| main.rs:686:26:686:27 | p3 | Fst | main.rs:662:5:663:14 | S3 |
+| main.rs:699:16:699:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:699:16:699:24 | SelfParam | &T | main.rs:697:5:704:5 | Self [trait MyTrait] |
+| main.rs:699:27:699:31 | value |  | main.rs:697:19:697:19 | S |
+| main.rs:701:21:701:29 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:701:21:701:29 | SelfParam | &T | main.rs:697:5:704:5 | Self [trait MyTrait] |
+| main.rs:701:32:701:36 | value |  | main.rs:697:19:697:19 | S |
+| main.rs:702:13:702:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:702:13:702:16 | self | &T | main.rs:697:5:704:5 | Self [trait MyTrait] |
+| main.rs:702:22:702:26 | value |  | main.rs:697:19:697:19 | S |
+| main.rs:708:16:708:24 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:708:16:708:24 | SelfParam | &T | main.rs:691:5:695:5 | MyOption |
+| main.rs:708:16:708:24 | SelfParam | &T.T | main.rs:706:10:706:10 | T |
+| main.rs:708:27:708:31 | value |  | main.rs:706:10:706:10 | T |
+| main.rs:712:26:714:9 | { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:712:26:714:9 | { ... } | T | main.rs:711:10:711:10 | T |
+| main.rs:713:13:713:30 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:713:13:713:30 | ...::MyNone(...) | T | main.rs:711:10:711:10 | T |
+| main.rs:718:20:718:23 | SelfParam |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:718:20:718:23 | SelfParam | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:718:20:718:23 | SelfParam | T.T | main.rs:717:10:717:10 | T |
+| main.rs:718:41:723:9 | { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:718:41:723:9 | { ... } | T | main.rs:717:10:717:10 | T |
+| main.rs:719:13:722:13 | match self { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:719:13:722:13 | match self { ... } | T | main.rs:717:10:717:10 | T |
+| main.rs:719:19:719:22 | self |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:719:19:719:22 | self | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:719:19:719:22 | self | T.T | main.rs:717:10:717:10 | T |
+| main.rs:720:39:720:56 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:720:39:720:56 | ...::MyNone(...) | T | main.rs:717:10:717:10 | T |
+| main.rs:721:34:721:34 | x |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:721:34:721:34 | x | T | main.rs:717:10:717:10 | T |
+| main.rs:721:40:721:40 | x |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:721:40:721:40 | x | T | main.rs:717:10:717:10 | T |
+| main.rs:730:13:730:14 | x1 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:730:18:730:37 | ...::new(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:731:26:731:27 | x1 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:733:13:733:18 | mut x2 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:733:13:733:18 | mut x2 | T | main.rs:726:5:727:13 | S |
+| main.rs:733:22:733:36 | ...::new(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:733:22:733:36 | ...::new(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:734:9:734:10 | x2 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:734:9:734:10 | x2 | T | main.rs:726:5:727:13 | S |
+| main.rs:734:16:734:16 | S |  | main.rs:726:5:727:13 | S |
+| main.rs:735:26:735:27 | x2 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:735:26:735:27 | x2 | T | main.rs:726:5:727:13 | S |
+| main.rs:737:13:737:18 | mut x3 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:737:22:737:36 | ...::new(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:738:9:738:10 | x3 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:738:21:738:21 | S |  | main.rs:726:5:727:13 | S |
+| main.rs:739:26:739:27 | x3 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:741:13:741:18 | mut x4 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:741:13:741:18 | mut x4 | T | main.rs:726:5:727:13 | S |
+| main.rs:741:22:741:36 | ...::new(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:741:22:741:36 | ...::new(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:742:23:742:29 | &mut x4 |  | file://:0:0:0:0 | & |
+| main.rs:742:23:742:29 | &mut x4 | &T | main.rs:691:5:695:5 | MyOption |
+| main.rs:742:23:742:29 | &mut x4 | &T.T | main.rs:726:5:727:13 | S |
+| main.rs:742:28:742:29 | x4 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:742:28:742:29 | x4 | T | main.rs:726:5:727:13 | S |
+| main.rs:742:32:742:32 | S |  | main.rs:726:5:727:13 | S |
+| main.rs:743:26:743:27 | x4 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:743:26:743:27 | x4 | T | main.rs:726:5:727:13 | S |
+| main.rs:745:13:745:14 | x5 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:745:13:745:14 | x5 | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:745:13:745:14 | x5 | T.T | main.rs:726:5:727:13 | S |
+| main.rs:745:18:745:58 | ...::MySome(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:745:18:745:58 | ...::MySome(...) | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:745:18:745:58 | ...::MySome(...) | T.T | main.rs:726:5:727:13 | S |
+| main.rs:745:35:745:57 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:745:35:745:57 | ...::MyNone(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:746:26:746:27 | x5 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:746:26:746:27 | x5 | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:746:26:746:27 | x5 | T.T | main.rs:726:5:727:13 | S |
+| main.rs:748:13:748:14 | x6 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:748:13:748:14 | x6 | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:748:13:748:14 | x6 | T.T | main.rs:726:5:727:13 | S |
+| main.rs:748:18:748:58 | ...::MySome(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:748:18:748:58 | ...::MySome(...) | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:748:18:748:58 | ...::MySome(...) | T.T | main.rs:726:5:727:13 | S |
+| main.rs:748:35:748:57 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:748:35:748:57 | ...::MyNone(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:749:26:749:61 | ...::flatten(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:749:26:749:61 | ...::flatten(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:749:59:749:60 | x6 |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:749:59:749:60 | x6 | T | main.rs:691:5:695:5 | MyOption |
+| main.rs:749:59:749:60 | x6 | T.T | main.rs:726:5:727:13 | S |
+| main.rs:751:13:751:19 | from_if |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:751:13:751:19 | from_if | T | main.rs:726:5:727:13 | S |
+| main.rs:751:23:755:9 | if ... {...} else {...} |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:751:23:755:9 | if ... {...} else {...} | T | main.rs:726:5:727:13 | S |
+| main.rs:751:36:753:9 | { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:751:36:753:9 | { ... } | T | main.rs:726:5:727:13 | S |
+| main.rs:752:13:752:30 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:752:13:752:30 | ...::MyNone(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:753:16:755:9 | { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:753:16:755:9 | { ... } | T | main.rs:726:5:727:13 | S |
+| main.rs:754:13:754:31 | ...::MySome(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:754:13:754:31 | ...::MySome(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:754:30:754:30 | S |  | main.rs:726:5:727:13 | S |
+| main.rs:756:26:756:32 | from_if |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:756:26:756:32 | from_if | T | main.rs:726:5:727:13 | S |
+| main.rs:758:13:758:22 | from_match |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:758:13:758:22 | from_match | T | main.rs:726:5:727:13 | S |
+| main.rs:758:26:761:9 | match ... { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:758:26:761:9 | match ... { ... } | T | main.rs:726:5:727:13 | S |
+| main.rs:759:21:759:38 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:759:21:759:38 | ...::MyNone(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:760:22:760:40 | ...::MySome(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:760:22:760:40 | ...::MySome(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:760:39:760:39 | S |  | main.rs:726:5:727:13 | S |
+| main.rs:762:26:762:35 | from_match |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:762:26:762:35 | from_match | T | main.rs:726:5:727:13 | S |
+| main.rs:764:13:764:21 | from_loop |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:764:13:764:21 | from_loop | T | main.rs:726:5:727:13 | S |
+| main.rs:764:25:769:9 | loop { ... } |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:764:25:769:9 | loop { ... } | T | main.rs:726:5:727:13 | S |
+| main.rs:766:23:766:40 | ...::MyNone(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:766:23:766:40 | ...::MyNone(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:768:19:768:37 | ...::MySome(...) |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:768:19:768:37 | ...::MySome(...) | T | main.rs:726:5:727:13 | S |
+| main.rs:768:36:768:36 | S |  | main.rs:726:5:727:13 | S |
+| main.rs:770:26:770:34 | from_loop |  | main.rs:691:5:695:5 | MyOption |
+| main.rs:770:26:770:34 | from_loop | T | main.rs:726:5:727:13 | S |
+| main.rs:783:15:783:18 | SelfParam |  | main.rs:776:5:777:19 | S |
+| main.rs:783:15:783:18 | SelfParam | T | main.rs:782:10:782:10 | T |
+| main.rs:783:26:785:9 | { ... } |  | main.rs:782:10:782:10 | T |
+| main.rs:784:13:784:16 | self |  | main.rs:776:5:777:19 | S |
+| main.rs:784:13:784:16 | self | T | main.rs:782:10:782:10 | T |
+| main.rs:784:13:784:18 | self.0 |  | main.rs:782:10:782:10 | T |
+| main.rs:787:15:787:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:787:15:787:19 | SelfParam | &T | main.rs:776:5:777:19 | S |
+| main.rs:787:15:787:19 | SelfParam | &T.T | main.rs:782:10:782:10 | T |
+| main.rs:787:28:789:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:787:28:789:9 | { ... } | &T | main.rs:782:10:782:10 | T |
+| main.rs:788:13:788:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:788:13:788:19 | &... | &T | main.rs:782:10:782:10 | T |
+| main.rs:788:14:788:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:788:14:788:17 | self | &T | main.rs:776:5:777:19 | S |
+| main.rs:788:14:788:17 | self | &T.T | main.rs:782:10:782:10 | T |
+| main.rs:788:14:788:19 | self.0 |  | main.rs:782:10:782:10 | T |
+| main.rs:791:15:791:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:791:15:791:25 | SelfParam | &T | main.rs:776:5:777:19 | S |
+| main.rs:791:15:791:25 | SelfParam | &T.T | main.rs:782:10:782:10 | T |
+| main.rs:791:34:793:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:791:34:793:9 | { ... } | &T | main.rs:782:10:782:10 | T |
+| main.rs:792:13:792:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:792:13:792:19 | &... | &T | main.rs:782:10:782:10 | T |
+| main.rs:792:14:792:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:792:14:792:17 | self | &T | main.rs:776:5:777:19 | S |
+| main.rs:792:14:792:17 | self | &T.T | main.rs:782:10:782:10 | T |
+| main.rs:792:14:792:19 | self.0 |  | main.rs:782:10:782:10 | T |
+| main.rs:797:13:797:14 | x1 |  | main.rs:776:5:777:19 | S |
+| main.rs:797:13:797:14 | x1 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:797:18:797:22 | S(...) |  | main.rs:776:5:777:19 | S |
+| main.rs:797:18:797:22 | S(...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:797:20:797:21 | S2 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:798:26:798:27 | x1 |  | main.rs:776:5:777:19 | S |
+| main.rs:798:26:798:27 | x1 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:798:26:798:32 | x1.m1() |  | main.rs:779:5:780:14 | S2 |
+| main.rs:800:13:800:14 | x2 |  | main.rs:776:5:777:19 | S |
+| main.rs:800:13:800:14 | x2 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:800:18:800:22 | S(...) |  | main.rs:776:5:777:19 | S |
+| main.rs:800:18:800:22 | S(...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:800:20:800:21 | S2 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:802:26:802:27 | x2 |  | main.rs:776:5:777:19 | S |
+| main.rs:802:26:802:27 | x2 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:802:26:802:32 | x2.m2() |  | file://:0:0:0:0 | & |
+| main.rs:802:26:802:32 | x2.m2() | &T | main.rs:779:5:780:14 | S2 |
+| main.rs:803:26:803:27 | x2 |  | main.rs:776:5:777:19 | S |
+| main.rs:803:26:803:27 | x2 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:803:26:803:32 | x2.m3() |  | file://:0:0:0:0 | & |
+| main.rs:803:26:803:32 | x2.m3() | &T | main.rs:779:5:780:14 | S2 |
+| main.rs:805:13:805:14 | x3 |  | main.rs:776:5:777:19 | S |
+| main.rs:805:13:805:14 | x3 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:805:18:805:22 | S(...) |  | main.rs:776:5:777:19 | S |
+| main.rs:805:18:805:22 | S(...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:805:20:805:21 | S2 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:807:26:807:41 | ...::m2(...) |  | file://:0:0:0:0 | & |
+| main.rs:807:26:807:41 | ...::m2(...) | &T | main.rs:779:5:780:14 | S2 |
+| main.rs:807:38:807:40 | &x3 |  | file://:0:0:0:0 | & |
+| main.rs:807:38:807:40 | &x3 | &T | main.rs:776:5:777:19 | S |
+| main.rs:807:38:807:40 | &x3 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:807:39:807:40 | x3 |  | main.rs:776:5:777:19 | S |
+| main.rs:807:39:807:40 | x3 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:808:26:808:41 | ...::m3(...) |  | file://:0:0:0:0 | & |
+| main.rs:808:26:808:41 | ...::m3(...) | &T | main.rs:779:5:780:14 | S2 |
+| main.rs:808:38:808:40 | &x3 |  | file://:0:0:0:0 | & |
+| main.rs:808:38:808:40 | &x3 | &T | main.rs:776:5:777:19 | S |
+| main.rs:808:38:808:40 | &x3 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:808:39:808:40 | x3 |  | main.rs:776:5:777:19 | S |
+| main.rs:808:39:808:40 | x3 | T | main.rs:779:5:780:14 | S2 |
+| main.rs:810:13:810:14 | x4 |  | file://:0:0:0:0 | & |
+| main.rs:810:13:810:14 | x4 | &T | main.rs:776:5:777:19 | S |
+| main.rs:810:13:810:14 | x4 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:810:18:810:23 | &... |  | file://:0:0:0:0 | & |
+| main.rs:810:18:810:23 | &... | &T | main.rs:776:5:777:19 | S |
+| main.rs:810:18:810:23 | &... | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:810:19:810:23 | S(...) |  | main.rs:776:5:777:19 | S |
+| main.rs:810:19:810:23 | S(...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:810:21:810:22 | S2 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:812:26:812:27 | x4 |  | file://:0:0:0:0 | & |
+| main.rs:812:26:812:27 | x4 | &T | main.rs:776:5:777:19 | S |
+| main.rs:812:26:812:27 | x4 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:812:26:812:32 | x4.m2() |  | file://:0:0:0:0 | & |
+| main.rs:812:26:812:32 | x4.m2() | &T | main.rs:779:5:780:14 | S2 |
+| main.rs:813:26:813:27 | x4 |  | file://:0:0:0:0 | & |
+| main.rs:813:26:813:27 | x4 | &T | main.rs:776:5:777:19 | S |
+| main.rs:813:26:813:27 | x4 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:813:26:813:32 | x4.m3() |  | file://:0:0:0:0 | & |
+| main.rs:813:26:813:32 | x4.m3() | &T | main.rs:779:5:780:14 | S2 |
+| main.rs:815:13:815:14 | x5 |  | file://:0:0:0:0 | & |
+| main.rs:815:13:815:14 | x5 | &T | main.rs:776:5:777:19 | S |
+| main.rs:815:13:815:14 | x5 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:815:18:815:23 | &... |  | file://:0:0:0:0 | & |
+| main.rs:815:18:815:23 | &... | &T | main.rs:776:5:777:19 | S |
+| main.rs:815:18:815:23 | &... | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:815:19:815:23 | S(...) |  | main.rs:776:5:777:19 | S |
+| main.rs:815:19:815:23 | S(...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:815:21:815:22 | S2 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:817:26:817:27 | x5 |  | file://:0:0:0:0 | & |
+| main.rs:817:26:817:27 | x5 | &T | main.rs:776:5:777:19 | S |
+| main.rs:817:26:817:27 | x5 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:817:26:817:32 | x5.m1() |  | main.rs:779:5:780:14 | S2 |
+| main.rs:818:26:818:27 | x5 |  | file://:0:0:0:0 | & |
+| main.rs:818:26:818:27 | x5 | &T | main.rs:776:5:777:19 | S |
+| main.rs:818:26:818:27 | x5 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:818:26:818:29 | x5.0 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:820:13:820:14 | x6 |  | file://:0:0:0:0 | & |
+| main.rs:820:13:820:14 | x6 | &T | main.rs:776:5:777:19 | S |
+| main.rs:820:13:820:14 | x6 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:820:18:820:23 | &... |  | file://:0:0:0:0 | & |
+| main.rs:820:18:820:23 | &... | &T | main.rs:776:5:777:19 | S |
+| main.rs:820:18:820:23 | &... | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:820:19:820:23 | S(...) |  | main.rs:776:5:777:19 | S |
+| main.rs:820:19:820:23 | S(...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:820:21:820:22 | S2 |  | main.rs:779:5:780:14 | S2 |
+| main.rs:822:26:822:30 | (...) |  | main.rs:776:5:777:19 | S |
+| main.rs:822:26:822:30 | (...) | T | main.rs:779:5:780:14 | S2 |
+| main.rs:822:26:822:35 | ... .m1() |  | main.rs:779:5:780:14 | S2 |
+| main.rs:822:27:822:29 | * ... |  | main.rs:776:5:777:19 | S |
+| main.rs:822:27:822:29 | * ... | T | main.rs:779:5:780:14 | S2 |
+| main.rs:822:28:822:29 | x6 |  | file://:0:0:0:0 | & |
+| main.rs:822:28:822:29 | x6 | &T | main.rs:776:5:777:19 | S |
+| main.rs:822:28:822:29 | x6 | &T.T | main.rs:779:5:780:14 | S2 |
+| main.rs:829:16:829:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:829:16:829:20 | SelfParam | &T | main.rs:827:5:835:5 | Self [trait MyTrait] |
+| main.rs:832:16:832:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:832:16:832:20 | SelfParam | &T | main.rs:827:5:835:5 | Self [trait MyTrait] |
+| main.rs:832:32:834:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:832:32:834:9 | { ... } | &T | main.rs:827:5:835:5 | Self [trait MyTrait] |
+| main.rs:833:13:833:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:833:13:833:16 | self | &T | main.rs:827:5:835:5 | Self [trait MyTrait] |
+| main.rs:833:13:833:22 | self.foo() |  | file://:0:0:0:0 | & |
+| main.rs:833:13:833:22 | self.foo() | &T | main.rs:827:5:835:5 | Self [trait MyTrait] |
+| main.rs:841:16:841:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:841:16:841:20 | SelfParam | &T | main.rs:837:5:837:20 | MyStruct |
+| main.rs:841:36:843:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:841:36:843:9 | { ... } | &T | main.rs:837:5:837:20 | MyStruct |
+| main.rs:842:13:842:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:842:13:842:16 | self | &T | main.rs:837:5:837:20 | MyStruct |
+| main.rs:847:13:847:13 | x |  | main.rs:837:5:837:20 | MyStruct |
+| main.rs:847:17:847:24 | MyStruct |  | main.rs:837:5:837:20 | MyStruct |
+| main.rs:848:9:848:9 | x |  | main.rs:837:5:837:20 | MyStruct |
+| main.rs:848:9:848:15 | x.bar() |  | file://:0:0:0:0 | & |
+| main.rs:848:9:848:15 | x.bar() | &T | main.rs:837:5:837:20 | MyStruct |
+| main.rs:858:16:858:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:858:16:858:20 | SelfParam | &T | main.rs:855:5:855:26 | MyStruct |
+| main.rs:858:16:858:20 | SelfParam | &T.T | main.rs:857:10:857:10 | T |
+| main.rs:858:32:860:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:858:32:860:9 | { ... } | &T | main.rs:855:5:855:26 | MyStruct |
+| main.rs:858:32:860:9 | { ... } | &T.T | main.rs:857:10:857:10 | T |
+| main.rs:859:13:859:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:859:13:859:16 | self | &T | main.rs:855:5:855:26 | MyStruct |
+| main.rs:859:13:859:16 | self | &T.T | main.rs:857:10:857:10 | T |
+| main.rs:864:13:864:13 | x |  | main.rs:855:5:855:26 | MyStruct |
+| main.rs:864:13:864:13 | x | T | main.rs:853:5:853:13 | S |
+| main.rs:864:17:864:27 | MyStruct(...) |  | main.rs:855:5:855:26 | MyStruct |
+| main.rs:864:17:864:27 | MyStruct(...) | T | main.rs:853:5:853:13 | S |
+| main.rs:864:26:864:26 | S |  | main.rs:853:5:853:13 | S |
+| main.rs:865:9:865:9 | x |  | main.rs:855:5:855:26 | MyStruct |
+| main.rs:865:9:865:9 | x | T | main.rs:853:5:853:13 | S |
+| main.rs:865:9:865:15 | x.foo() |  | file://:0:0:0:0 | & |
+| main.rs:865:9:865:15 | x.foo() | &T | main.rs:855:5:855:26 | MyStruct |
+| main.rs:865:9:865:15 | x.foo() | &T.T | main.rs:853:5:853:13 | S |
+| main.rs:873:15:873:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:873:15:873:19 | SelfParam | &T | main.rs:870:5:870:13 | S |
+| main.rs:873:31:875:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:873:31:875:9 | { ... } | &T | main.rs:870:5:870:13 | S |
+| main.rs:874:13:874:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:874:13:874:19 | &... | &T | main.rs:870:5:870:13 | S |
+| main.rs:874:14:874:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:874:14:874:19 | &... | &T | main.rs:870:5:870:13 | S |
+| main.rs:874:15:874:19 | &self |  | file://:0:0:0:0 | & |
+| main.rs:874:15:874:19 | &self | &T | main.rs:870:5:870:13 | S |
+| main.rs:874:16:874:19 | self |  | file://:0:0:0:0 | & |
+| main.rs:874:16:874:19 | self | &T | main.rs:870:5:870:13 | S |
+| main.rs:877:15:877:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:877:15:877:25 | SelfParam | &T | main.rs:870:5:870:13 | S |
+| main.rs:877:37:879:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:877:37:879:9 | { ... } | &T | main.rs:870:5:870:13 | S |
+| main.rs:878:13:878:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:878:13:878:19 | &... | &T | main.rs:870:5:870:13 | S |
+| main.rs:878:14:878:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:878:14:878:19 | &... | &T | main.rs:870:5:870:13 | S |
+| main.rs:878:15:878:19 | &self |  | file://:0:0:0:0 | & |
+| main.rs:878:15:878:19 | &self | &T | main.rs:870:5:870:13 | S |
+| main.rs:878:16:878:19 | self |  | file://:0:0:0:0 | & |
+| main.rs:878:16:878:19 | self | &T | main.rs:870:5:870:13 | S |
+| main.rs:881:15:881:15 | x |  | file://:0:0:0:0 | & |
+| main.rs:881:15:881:15 | x | &T | main.rs:870:5:870:13 | S |
+| main.rs:881:34:883:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:881:34:883:9 | { ... } | &T | main.rs:870:5:870:13 | S |
+| main.rs:882:13:882:13 | x |  | file://:0:0:0:0 | & |
+| main.rs:882:13:882:13 | x | &T | main.rs:870:5:870:13 | S |
+| main.rs:885:15:885:15 | x |  | file://:0:0:0:0 | & |
+| main.rs:885:15:885:15 | x | &T | main.rs:870:5:870:13 | S |
+| main.rs:885:34:887:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:885:34:887:9 | { ... } | &T | main.rs:870:5:870:13 | S |
+| main.rs:886:13:886:16 | &... |  | file://:0:0:0:0 | & |
+| main.rs:886:13:886:16 | &... | &T | main.rs:870:5:870:13 | S |
+| main.rs:886:14:886:16 | &... |  | file://:0:0:0:0 | & |
+| main.rs:886:14:886:16 | &... | &T | main.rs:870:5:870:13 | S |
+| main.rs:886:15:886:16 | &x |  | file://:0:0:0:0 | & |
+| main.rs:886:15:886:16 | &x | &T | main.rs:870:5:870:13 | S |
+| main.rs:886:16:886:16 | x |  | file://:0:0:0:0 | & |
+| main.rs:886:16:886:16 | x | &T | main.rs:870:5:870:13 | S |
+| main.rs:891:13:891:13 | x |  | main.rs:870:5:870:13 | S |
+| main.rs:891:17:891:20 | S {...} |  | main.rs:870:5:870:13 | S |
+| main.rs:892:9:892:9 | x |  | main.rs:870:5:870:13 | S |
+| main.rs:892:9:892:14 | x.f1() |  | file://:0:0:0:0 | & |
+| main.rs:892:9:892:14 | x.f1() | &T | main.rs:870:5:870:13 | S |
+| main.rs:893:9:893:9 | x |  | main.rs:870:5:870:13 | S |
+| main.rs:893:9:893:14 | x.f2() |  | file://:0:0:0:0 | & |
+| main.rs:893:9:893:14 | x.f2() | &T | main.rs:870:5:870:13 | S |
+| main.rs:894:9:894:17 | ...::f3(...) |  | file://:0:0:0:0 | & |
+| main.rs:894:9:894:17 | ...::f3(...) | &T | main.rs:870:5:870:13 | S |
+| main.rs:894:15:894:16 | &x |  | file://:0:0:0:0 | & |
+| main.rs:894:15:894:16 | &x | &T | main.rs:870:5:870:13 | S |
+| main.rs:894:16:894:16 | x |  | main.rs:870:5:870:13 | S |
+| main.rs:900:5:900:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:901:5:901:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:901:20:901:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:901:41:901:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |

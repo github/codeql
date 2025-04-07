@@ -368,6 +368,18 @@ mod trait_associated_type {
         }
     }
 
+    // A generic trait with multiple associated types.
+    trait TraitMultipleAssoc<TrG> {
+        type Assoc1;
+        type Assoc2;
+
+        fn get_zero(&self) -> TrG;
+
+        fn get_one(&self) -> Self::Assoc1;
+
+        fn get_two(&self) -> Self::Assoc2;
+    }
+
     #[derive(Debug, Default)]
     struct S;
 
@@ -417,6 +429,23 @@ mod trait_associated_type {
         thing.m1() // $ method=MyTrait::m1
     }
 
+    impl TraitMultipleAssoc<AT> for AT {
+        type Assoc1 = S;
+        type Assoc2 = S2;
+
+        fn get_zero(&self) -> AT {
+            AT
+        }
+
+        fn get_one(&self) -> Self::Assoc1 {
+            S
+        }
+
+        fn get_two(&self) -> Self::Assoc2 {
+            S2
+        }
+    }
+
     pub fn f() {
         let x1 = S;
         // Call to method in `impl` block
@@ -441,6 +470,10 @@ mod trait_associated_type {
         println!("{:?}", x5.m1()); // $ method=m1 MISSING: type=x5.m1():A.S2
         let x6 = S2;
         println!("{:?}", x6.m2()); // $ method=m2 type=x6.m2():A.S2
+
+        let assoc_zero = AT.get_zero(); // $ method=get_zero type=assoc_zero:AT
+        let assoc_one = AT.get_one(); // $ method=get_one type=assoc_one:S
+        let assoc_two = AT.get_two(); // $ method=get_two type=assoc_two:S2
     }
 }
 
