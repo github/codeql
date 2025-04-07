@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unchecked-cast-in-equals
  * @suites security-and-quality
+ *         quality
  * @tags reliability
  *       correctness
  */

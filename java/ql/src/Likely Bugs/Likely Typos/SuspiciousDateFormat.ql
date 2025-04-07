@@ -6,6 +6,7 @@
  * @precision high
  * @id java/suspicious-date-format
  * @suites security-and-quality
+ *         quality
  * @tags correctness
  */
 

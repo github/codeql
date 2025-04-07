@@ -7,6 +7,7 @@
  * @precision very-high
  * @id java/reference-equality-of-boxed-types
  * @suites security-and-quality
+ *         quality
  * @tags reliability
  *       correctness
  *       external/cwe/cwe-595

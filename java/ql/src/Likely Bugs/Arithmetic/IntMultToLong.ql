@@ -7,6 +7,7 @@
  * @precision very-high
  * @id java/integer-multiplication-cast-to-long
  * @suites security-and-quality
+ *         quality
  * @tags reliability
  *       correctness
  *       types

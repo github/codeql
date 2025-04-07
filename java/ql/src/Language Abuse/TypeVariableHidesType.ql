@@ -7,6 +7,7 @@
  * @precision medium
  * @id java/type-variable-hides-type
  * @suites security-and-quality
+ *         quality
  * @tags reliability
  *       readability
  *       types

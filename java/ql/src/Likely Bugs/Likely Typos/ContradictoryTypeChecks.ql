@@ -8,6 +8,7 @@
  * @precision very-high
  * @id java/contradictory-type-checks
  * @suites security-and-quality
+ *         quality
  * @tags correctness
  *       logic
  */

@@ -1,14 +1,4 @@
 - queries: .
 - include:
-    id:
-      - java/suspicious-date-format
-      - java/integer-multiplication-cast-to-long
-      - java/equals-on-unrelated-types
-      - java/contradictory-type-checks
-      - java/reference-equality-of-boxed-types
-      - java/inconsistent-equals-and-hashcode
-      - java/unchecked-cast-in-equals
-      - java/unused-container
-      - java/input-resource-leak
-      - java/output-resource-leak
-      - java/type-variable-hides-type
+    suites contain:
+    - quality

@@ -7,6 +7,7 @@
  * @precision very-high
  * @id java/inconsistent-equals-and-hashcode
  * @suites security-and-quality
+ *         quality
  * @tags reliability
  *       correctness
  *       external/cwe/cwe-581

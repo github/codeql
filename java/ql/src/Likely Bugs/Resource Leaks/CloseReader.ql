@@ -7,6 +7,7 @@
  * @precision high
  * @id java/input-resource-leak
  * @suites security-and-quality
+ *         quality
  * @tags efficiency
  *       correctness
  *       resources

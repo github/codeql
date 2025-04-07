@@ -6,6 +6,7 @@
  * @precision very-high
  * @id java/unused-container
  * @suites security-and-quality
+ *         quality
  * @tags maintainability
  *       useless-code
  *       external/cwe/cwe-561

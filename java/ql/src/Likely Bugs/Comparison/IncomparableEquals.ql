@@ -7,6 +7,7 @@
  * @precision very-high
  * @id java/equals-on-unrelated-types
  * @suites security-and-quality
+ *         quality
  * @tags reliability
  *       correctness
  */
