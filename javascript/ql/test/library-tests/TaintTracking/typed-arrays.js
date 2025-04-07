@@ -32,4 +32,20 @@ function test() {
     const transfered2 = buffer.transferToFixedLength();
     const transferedView2 = new Uint8Array(transfered2);
     sink(transferedView2); // NOT OK
+
+    var typedArrayToString = (function () {
+        return function (a) { return String.fromCharCode.apply(null, a); };
+    })();
+
+    sink(typedArrayToString(y)); // NOT OK -- Should be flagged but it is not.
+
+    let str = '';
+    for (let i = 0; i < y.length; i++) 
+        str += String.fromCharCode(y[i]);
+    
+    sink(str); // NOT OK
+
+    const decoder = new TextDecoder('utf-8');
+    const str2 = decoder.decode(y);
+    sink(str2); //  NOT OK
 }
