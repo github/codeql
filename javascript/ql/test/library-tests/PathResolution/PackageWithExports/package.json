@@ -1,0 +1,8 @@
+{
+    "name": "@example/package-with-exports",
+    "exports": {
+        ".": {
+            "default": "./main.js"
+        }
+    }
+}
