@@ -53,11 +53,31 @@ class TypeReprMention extends TypeMention, TypeRepr {
     or
     result = this.(PathTypeRepr).getPath().(PathMention).resolveType()
   }
+
+  override Type resolveTypeAt(TypePath path) {
+    result = this.(PathTypeRepr).getPath().(PathMention).resolveTypeAt(path)
+    or
+    not exists(this.(PathTypeRepr).getPath()) and
+    result = super.resolveTypeAt(path)
+  }
 }
 
-class PathMention extends TypeMention, Path {
+/** Holds if `path` resolves to the type alias `alias` with the definition `rhs`. */
+private predicate resolvePathAlias(Path path, TypeAlias alias, TypeReprMention rhs) {
+  alias = resolvePath(path) and rhs = alias.getTypeRepr()
+}
+
+abstract class PathMention extends TypeMention, Path {
   override TypeMention getTypeArgument(int i) {
     result = this.getSegment().getGenericArgList().getTypeArg(i)
+  }
+}
+
+class NonAliasPathMention extends PathMention {
+  NonAliasPathMention() { not resolvePathAlias(this, _, _) }
+
+  override TypeMention getTypeArgument(int i) {
+    result = super.getTypeArgument(i)
     or
     // `Self` paths inside `impl` blocks have implicit type arguments that are
     // the type parameters of the `impl` block. For example, in
@@ -119,6 +139,33 @@ class PathMention extends TypeMention, Path {
         or
         result = alias.getTypeRepr().(TypeReprMention).resolveType()
       )
+    )
+  }
+}
+
+class AliasPathMention extends PathMention {
+  TypeAlias alias;
+  TypeReprMention rhs;
+
+  AliasPathMention() { resolvePathAlias(this, alias, rhs) }
+
+  /** Get the `i`th type parameter of the alias itself. */
+  private TypeParameter getTypeParameter(int i) {
+    result = TTypeParamTypeParameter(alias.getGenericParamList().getTypeParam(i))
+  }
+
+  override Type resolveType() { result = rhs.resolveType() }
+
+  override Type resolveTypeAt(TypePath path) {
+    result = rhs.resolveTypeAt(path) and
+    not result = this.getTypeParameter(_)
+    or
+    exists(TypeParameter tp, TypeMention arg, TypePath prefix, TypePath suffix, int i |
+      tp = rhs.resolveTypeAt(prefix) and
+      tp = this.getTypeParameter(i) and
+      arg = this.getTypeArgument(i) and
+      result = arg.resolveTypeAt(suffix) and
+      path = prefix.append(suffix)
     )
   }
 }

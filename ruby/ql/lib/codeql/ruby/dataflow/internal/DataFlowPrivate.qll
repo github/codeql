@@ -1,6 +1,7 @@
 private import codeql.util.Boolean
 private import codeql.util.Unit
 private import codeql.ruby.AST
+private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
@@ -66,10 +67,22 @@ private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
   )
 }
 
-/** Gets a node for which to construct a post-update node for argument `arg`. */
-CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
-  result = getALastEvalNode*(arg) and
-  not exists(getALastEvalNode(result))
+/**
+ * Holds if a reverse local flow step should be added from the post-update node
+ * for `e` to the post-update node for the result.
+ *
+ * This is needed to allow for side-effects on compound expressions to propagate
+ * to sub components. For example, in
+ *
+ * ```ruby
+ * (foo1; foo2).set_field(taint)
+ * ```
+ *
+ * we add a reverse flow step from `[post] (foo1; foo2)` to `[post] foo2`,
+ * in order for the side-effect of `set_field` to reach `foo2`.
+ */
+CfgNodes::ExprCfgNode getPostUpdateReverseStep(CfgNodes::ExprCfgNode e) {
+  result = getALastEvalNode(e)
 }
 
 /** Gets the SSA definition node corresponding to parameter `p`. */
@@ -170,6 +183,9 @@ module LocalFlow {
       )
     or
     nodeTo.(ImplicitBlockArgumentNode).getParameterNode(true) = nodeFrom
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr())
   }
 
   predicate flowSummaryLocalStep(
@@ -468,8 +484,11 @@ private module Cached {
     TSelfToplevelParameterNode(Toplevel t) or
     TLambdaSelfReferenceNode(Callable c) { lambdaCreationExpr(_, _, c) } or
     TImplicitBlockParameterNode(MethodBase m) { not m.getAParameter() instanceof BlockParameter } or
-    TImplicitBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
+    TImplicitYieldBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
       yield = any(BlockParameterNode b).getAYieldCall()
+    } or
+    TImplicitSuperBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode sup) {
+      sup = any(BlockParameterNode b).getASuperCall()
     } or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
@@ -486,7 +505,9 @@ private module Cached {
       // filter out nodes that clearly don't need post-update nodes
       isNonConstantExpr(n) and
       (
-        n = getAPostUpdateNodeForArg(_)
+        n instanceof Argument
+        or
+        n = getPostUpdateReverseStep(any(PostUpdateNode p).getPreUpdateNode().asExpr())
         or
         n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
       )
@@ -1032,6 +1053,11 @@ private module ParameterNodes {
     CfgNodes::ExprNodes::CallCfgNode getAYieldCall() {
       this.getMethod() = result.getExpr().(YieldCall).getEnclosingMethod()
     }
+
+    CfgNodes::ExprNodes::CallCfgNode getASuperCall() {
+      this.getMethod() = result.getExpr().getEnclosingMethod() and
+      result.getExpr() instanceof TokenSuperCall
+    }
   }
 
   private class ExplicitBlockParameterNode extends BlockParameterNode, NormalParameterNode {
@@ -1298,15 +1324,23 @@ module ArgumentNodes {
     }
   }
 
-  class ImplicitBlockArgumentNode extends NodeImpl, ArgumentNode, TImplicitBlockArgumentNode {
+  abstract class ImplicitBlockArgumentNode extends NodeImpl, ArgumentNode {
+    pragma[nomagic]
+    abstract BlockParameterNode getParameterNode(boolean inSameScope);
+
+    override string toStringImpl() { result = "yield block argument" }
+  }
+
+  class ImplicitYieldBlockArgumentNode extends ImplicitBlockArgumentNode,
+    TImplicitYieldBlockArgumentNode
+  {
     CfgNodes::ExprNodes::CallCfgNode yield;
 
-    ImplicitBlockArgumentNode() { this = TImplicitBlockArgumentNode(yield) }
+    ImplicitYieldBlockArgumentNode() { this = TImplicitYieldBlockArgumentNode(yield) }
 
     CfgNodes::ExprNodes::CallCfgNode getYieldCall() { result = yield }
 
-    pragma[nomagic]
-    BlockParameterNode getParameterNode(boolean inSameScope) {
+    override BlockParameterNode getParameterNode(boolean inSameScope) {
       result.getAYieldCall() = yield and
       if nodeGetEnclosingCallable(this) = nodeGetEnclosingCallable(result)
       then inSameScope = true
@@ -1326,8 +1360,36 @@ module ArgumentNodes {
     override CfgScope getCfgScope() { result = yield.getScope() }
 
     override Location getLocationImpl() { result = yield.getLocation() }
+  }
 
-    override string toStringImpl() { result = "yield block argument" }
+  class ImplicitSuperBlockArgumentNode extends ImplicitBlockArgumentNode,
+    TImplicitSuperBlockArgumentNode
+  {
+    CfgNodes::ExprNodes::CallCfgNode sup;
+
+    ImplicitSuperBlockArgumentNode() { this = TImplicitSuperBlockArgumentNode(sup) }
+
+    CfgNodes::ExprNodes::CallCfgNode getSuperCall() { result = sup }
+
+    override BlockParameterNode getParameterNode(boolean inSameScope) {
+      result.getASuperCall() = sup and
+      if nodeGetEnclosingCallable(this) = nodeGetEnclosingCallable(result)
+      then inSameScope = true
+      else inSameScope = false
+    }
+
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
+      call = sup and
+      pos.isBlock()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
+
+    override CfgScope getCfgScope() { result = sup.getScope() }
+
+    override Location getLocationImpl() { result = sup.getLocation() }
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
@@ -2018,18 +2080,7 @@ private module PostUpdateNodes {
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
-    override ExprNode getPreUpdateNode() {
-      // For compound arguments, such as `m(if b then x else y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
-      // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
-      // respectively.
-      //
-      // This ensures that we get flow out of the call into both leafs (1), while still
-      // maintaining the invariant that the underlying expression is a pre-update node (2).
-      e = getAPostUpdateNodeForArg(result.getExprNode())
-      or
-      e = result.getExprNode()
-    }
+    override ExprNode getPreUpdateNode() { e = result.getExprNode() }
 
     override CfgScope getCfgScope() { result = e.getExpr().getCfgScope() }
 
@@ -2152,7 +2203,7 @@ private predicate lambdaCallExpr(
  */
 predicate lambdaSourceCall(CfgNodes::ExprNodes::CallCfgNode call, LambdaCallKind kind, Node receiver) {
   kind = TYieldCallKind() and
-  call = receiver.(ImplicitBlockArgumentNode).getYieldCall()
+  call = receiver.(ImplicitYieldBlockArgumentNode).getYieldCall()
   or
   kind = TLambdaCallKind() and
   lambdaCallExpr(call, receiver.asExpr())

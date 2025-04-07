@@ -992,7 +992,7 @@ private module Cached {
    */
   cached
   Type inferType(AstNode n, TypePath path) {
-    Stages::TypeInference::backref() and
+    Stages::TypeInferenceStage::ref() and
     result = inferAnnotatedType(n, path)
     or
     result = inferTypeEquality(n, path)
