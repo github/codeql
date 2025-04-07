@@ -7,7 +7,7 @@ const { MyWebSocketWS, myWebSocketWSInstance } = require('./client.js');
 		ws.send('Hi from client!'); // $ clientSend
 	});
 
-	ws.on('message', function incoming(data) {
+	ws.on('message', function incoming(data) { // $ remoteFlow
 		console.log(data);
 	}); // $ clientReceive
 })();
@@ -17,7 +17,7 @@ const { MyWebSocketWS, myWebSocketWSInstance } = require('./client.js');
 		myWebSocketWSInstance.send('Hi from client!'); // $ clientSend
 	});
 
-	myWebSocketWSInstance.on('message', function incoming(data) {
+	myWebSocketWSInstance.on('message', function incoming(data) { // $ remoteFlow
 		console.log(data);
 	}); // $ clientReceive
 })();

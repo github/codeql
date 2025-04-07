@@ -344,15 +344,18 @@ module ServerWebSocket {
       result = this.getCallback(1).getParameter(0)
     }
   }
+}
 
-  /**
-   * A data flow node representing data received from a client, viewed as remote user input.
-   */
-  private class ReceivedItemAsRemoteFlow extends RemoteFlowSource {
-    ReceivedItemAsRemoteFlow() { this = any(ReceiveNode rercv).getReceivedItem(_) }
-
-    override string getSourceType() { result = "WebSocket client data" }
-
-    override predicate isUserControlledObject() { any() }
+/**
+ * A data flow node representing data received from a client or server, viewed as remote user input.
+ */
+private class ReceivedItemAsRemoteFlow extends RemoteFlowSource {
+  ReceivedItemAsRemoteFlow() {
+    this = any(ClientWebSocket::ReceiveNode rercv).getReceivedItem(_) or
+    this = any(ServerWebSocket::ReceiveNode rercv).getReceivedItem(_)
   }
+
+  override string getSourceType() { result = "WebSocket transmitted data" }
+
+  override predicate isUserControlledObject() { any() }
 }

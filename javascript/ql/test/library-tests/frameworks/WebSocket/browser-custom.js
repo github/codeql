@@ -8,11 +8,11 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 	});
 
 	socket.addEventListener('message', function (event) {
-		console.log('Message from server ', event.data);
+		console.log('Message from server ', event.data); // $ remoteFlow
 	}); // $ clientReceive
 
 	socket.onmessage = function (event) {
-		console.log("Message from server 2", event.data)
+		console.log("Message from server 2", event.data); // $ remoteFlow
 	}; // $ clientReceive
 })();
 
@@ -24,12 +24,12 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
 	};
 	
 	sock.onmessage = function (e) {
-		console.log('message', e.data);
+		console.log('message', e.data); // $ remoteFlow
 		sock.close();
 	}; // $ clientReceive
 	
 	sock.addEventListener('message', function (event) {
-		console.log('Using addEventListener ', event.data);
+		console.log('Using addEventListener ', event.data); // $ remoteFlow
 	}); // $ clientReceive
 })();
 
@@ -40,11 +40,11 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
     });
 
     myWebSocketInstance.addEventListener('message', function (event) {
-        console.log('Message from server ', event.data);
+        console.log('Message from server ', event.data); // $ remoteFlow
     }); // $ clientReceive
 
     myWebSocketInstance.onmessage = function (event) {
-        console.log("Message from server 2", event.data)
+        console.log("Message from server 2", event.data); // $ remoteFlow
     }; // $ clientReceive
 })();
 
@@ -55,18 +55,18 @@ import { MyWebSocket, MySockJS, myWebSocketInstance, mySockJSInstance } from './
     };
     
     mySockJSInstance.onmessage = function (e) {
-        console.log('message', e.data);
+        console.log('message', e.data); // $ remoteFlow
         mySockJSInstance.close();
     }; // $ clientReceive
     
     mySockJSInstance.addEventListener('message', function (event) {
-        console.log('Using addEventListener ', event.data);
+        console.log('Using addEventListener ', event.data); // $ remoteFlow
     }); // $ clientReceive
 })();
 
 
 const recv_message = function (e) {
-    console.log('Received message:', e.data);
+    console.log('Received message:', e.data); // $ remoteFlow
 }; // $ clientReceive
 
 (function () {

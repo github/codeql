@@ -6,11 +6,11 @@
 	});
 
 	socket.addEventListener('message', function (event) {
-		console.log('Message from server ', event.data);
+		console.log('Message from server ', event.data); // $ remoteFlow
 	}); // $clientReceive
 
 	socket.onmessage = function (event) {
-		console.log("Message from server 2", event.data)
+		console.log("Message from server 2", event.data); // $ remoteFlow
 	}; // $clientReceive
 })();
 
@@ -22,12 +22,12 @@
 	};
 	
 	sock.onmessage = function (e) {
-		console.log('message', e.data);
+		console.log('message', e.data); // $ remoteFlow
 		sock.close();
 	}; // $clientReceive
 	
 	sock.addEventListener('message', function (event) {
-		console.log('Using addEventListener ', event.data);
+		console.log('Using addEventListener ', event.data); // $ remoteFlow
 	}); // $clientReceive
 })();
 

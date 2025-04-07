@@ -7,7 +7,7 @@ const WebSocket = require('ws');
 		ws.send('Hi from client!'); // $clientSend
 	});
 
-	ws.on('message', function incoming(data) {
+	ws.on('message', function incoming(data) { // $ remoteFlow
 		console.log(data);
 	}); // $clientReceive
 })();
