@@ -171,7 +171,7 @@ module PathResolution {
   private module TSConfigResolve = ResolvePaths<TSConfigResolveConfig>;
 
   bindingset[path]
-  private predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?[/\\\\].*") }
+  private predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
 
   private module ResolvePathMappingConfig implements ResolvePathsSig {
     additional predicate shouldResolve(TSConfig cfg, Container base, string path) {

@@ -18,6 +18,11 @@
 | BaseUrl/src/main.ts:24:1:24:17 | import "@/index"; | BaseUrl/lib/index.ts |
 | BaseUrl/src/main.ts:25:1:25:20 | import "@/index.ts"; | BaseUrl/lib/index.ts |
 | BaseUrl/src/main.ts:26:1:26:20 | import "@/index.js"; | BaseUrl/lib/index.ts |
+| Basic/Subdir/sub.ts:1:1:1:12 | import '..'; | Basic/index.ts |
+| Basic/Subdir/sub.ts:2:1:2:13 | import '../'; | Basic/index.ts |
+| Basic/Subdir/sub.ts:3:1:3:14 | import './..'; | Basic/index.ts |
+| Basic/Subdir/sub.ts:4:1:4:15 | import './../'; | Basic/index.ts |
+| Basic/index.ts:1:1:1:22 | import  ... r/sub'; | Basic/Subdir/sub.ts |
 | Extended/src/main.ts:2:1:2:21 | import  ... /file"; | Extended/lib/file.ts |
 | Extended/src/main.ts:3:1:3:24 | import  ... le.ts"; | Extended/lib/file.ts |
 | Extended/src/main.ts:4:1:4:24 | import  ... le.js"; | Extended/lib/file.ts |
