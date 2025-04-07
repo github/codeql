@@ -9,4 +9,15 @@ function test() {
 
     var arr = new Uint8Array(y.buffer, y.byteOffset, y.byteLength);
     sink(arr); // NOT OK
+
+    const z = new Uint8Array([1, 2, 3]);
+    z.set(y, 3);
+    sink(z); // NOT OK
+
+    const sub = y.subarray(1, 3)
+    sink(sub); // NOT OK
+
+    const clone = new y.constructor(y.length);
+    clone.set(y);    
+    sink(clone); // NOT OK
 }
