@@ -23,13 +23,6 @@
 | Basic/Subdir/sub.ts:2:1:2:13 | import '../'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:3:1:3:14 | import './..'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:4:1:4:15 | import './../'; | Basic/index.ts |
-| Basic/import-packages.ts:1:1:1:28 | import  ... hMain'; | PackageWithMain/main.js |
-| Basic/import-packages.ts:2:1:2:34 | import  ... eMain'; | PackageWithModuleMain/main.js |
-| Basic/import-packages.ts:5:1:5:36 | import  ... -main'; | PackageWithMain/main.js |
-| Basic/import-packages.ts:6:1:6:43 | import  ... -main'; | PackageWithModuleMain/main.js |
-| Basic/import-packages.ts:7:1:7:39 | import  ... ports'; | PackageWithExports/main.js |
-| Basic/import-packages.ts:10:1:10:49 | import  ... -file'; | PackageWithExports/fake-file-impl.js |
-| Basic/import-packages.ts:13:1:13:48 | import  ... r/foo'; | PackageWithExports/star-impl/foo.js |
 | Basic/index.ts:1:1:1:22 | import  ... r/sub'; | Basic/Subdir/sub.ts |
 | Extended/src/main.ts:2:1:2:21 | import  ... /file"; | Extended/lib/file.ts |
 | Extended/src/main.ts:3:1:3:24 | import  ... le.ts"; | Extended/lib/file.ts |
@@ -66,3 +59,15 @@
 | NoBaseUrl/src/main.ts:24:1:24:17 | import "@/index"; | NoBaseUrl/lib/index.ts |
 | NoBaseUrl/src/main.ts:25:1:25:20 | import "@/index.ts"; | NoBaseUrl/lib/index.ts |
 | NoBaseUrl/src/main.ts:26:1:26:20 | import "@/index.js"; | NoBaseUrl/lib/index.ts |
+| import-packages.ts:1:1:1:32 | import  ... /main'; | PackageWithMain/main.js |
+| import-packages.ts:2:1:2:36 | import  ... -main'; | PackageWithMain/main.js |
+| import-packages.ts:4:1:4:33 | import  ... eMain'; | PackageWithModuleMain/main.js |
+| import-packages.ts:5:1:5:43 | import  ... -main'; | PackageWithModuleMain/main.js |
+| import-packages.ts:10:1:10:39 | import  ... ports'; | PackageWithExports/main.js |
+| import-packages.ts:11:1:11:49 | import  ... -file'; | PackageWithExports/fake-file-impl.js |
+| import-packages.ts:12:1:12:48 | import  ... r/foo'; | PackageWithExports/star-impl/foo.js |
+| import-packages.ts:14:1:14:28 | import  ... xFile'; | PackageIndexFile/index.js |
+| import-packages.ts:15:1:15:42 | import  ... -file'; | PackageIndexFile/index.js |
+| import-packages.ts:17:1:17:25 | import  ... uess1'; | PackageGuess1/src/index.ts |
+| import-packages.ts:18:1:18:33 | import  ... uess1'; | PackageGuess1/src/index.ts |
+| import-packages.ts:21:1:21:33 | import  ... uess2'; | PackageGuess2/blah/stuff.ts |
