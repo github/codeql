@@ -5,7 +5,7 @@
  * @id rust/diagnostics/ssa-consistency-counts
  */
 
- private import codeql.rust.dataflow.internal.SsaImpl as SsaImpl
+private import codeql.rust.dataflow.internal.SsaImpl as SsaImpl
 
 // see also `rust/diagnostics/ssa-consistency`, which lists the
 // individual inconsistency results.

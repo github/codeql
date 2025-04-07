@@ -5,6 +5,6 @@
  * @id rust/diagnostics/ssa-consistency
  */
 
- import codeql.rust.dataflow.Ssa
+import codeql.rust.dataflow.Ssa
 import codeql.rust.dataflow.internal.SsaImpl
 import Consistency
