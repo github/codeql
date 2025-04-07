@@ -67,13 +67,13 @@ func restoreRepoLayout(fromDir string, dirEntries []string, scratchDirName strin
 
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
 func addVersionToMod(version string) bool {
-	cmd := exec.Command("go", "mod", "edit", "-go="+version)
+	cmd := toolchain.GoCommand("mod", "edit", "-go="+version)
 	return util.RunCmd(cmd)
 }
 
 // checkVendor tests to see whether a vendor directory is inconsistent according to the go frontend
 func checkVendor() bool {
-	vendorCheckCmd := exec.Command("go", "list", "-mod=vendor", "./...")
+	vendorCheckCmd := toolchain.GoCommand("list", "-mod=vendor", "./...")
 	outp, err := vendorCheckCmd.CombinedOutput()
 	if err != nil {
 		badVendorRe := regexp.MustCompile(`(?m)^go: inconsistent vendoring in .*:$`)
@@ -438,7 +438,7 @@ func installDependencies(workspace project.GoWorkspace) {
 				util.RunCmd(vendor)
 			}
 
-			install = exec.Command("go", "get", "-v", "./...")
+			install = toolchain.GoCommand("get", "-v", "./...")
 			install.Dir = path
 			log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", path)
 			util.RunCmd(install)
