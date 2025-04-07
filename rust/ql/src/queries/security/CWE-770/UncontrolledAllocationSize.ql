@@ -1,7 +1,8 @@
 /**
  * @name Uncontrolled allocation size
  * @description Allocating memory with a size controlled by an external user can result in
- *              arbitrary amounts of memory being allocated.
+ *              arbitrary amounts of memory being allocated, leading to a crash or a
+ *              denial-of-service (DoS) attack.
  * @kind path-problem
  * @problem.severity recommendation
  * @security-severity 7.5
