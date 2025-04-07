@@ -16,6 +16,7 @@
 """
 
 load("@bazel_skylib//lib:selects.bzl", "selects")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
@@ -2578,12 +2579,11 @@ def crate_repositories():
     )
 
     maybe(
-        http_archive,
+        new_git_repository,
         name = "vendor_ts__rustc_apfloat-0.2.2-llvm-462a31f5a5ab",
-        sha256 = "121e2195ff969977a4e2b5c9965ea867fce7e4cb5aee5b09dee698a7932d574f",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/rustc_apfloat/0.2.2+llvm-462a31f5a5ab/download"],
-        strip_prefix = "rustc_apfloat-0.2.2+llvm-462a31f5a5ab",
+        commit = "32968f16ef1b082243f9bf43a3fbd65c381b3e27",
+        init_submodules = True,
+        remote = "https://github.com/redsun82/rustc_apfloat.git",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustc_apfloat-0.2.2+llvm-462a31f5a5ab.bazel"),
     )
 
