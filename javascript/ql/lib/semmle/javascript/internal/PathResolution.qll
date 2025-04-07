@@ -273,9 +273,55 @@ module PathResolution {
     )
   }
 
+  private JsonValue getAPartOfExportsSection(PackageJson pkg, string exportedPath) {
+    result = pkg.getPropValue("exports") and
+    exportedPath = "."
+    or
+    exists(string prop, string prevPath |
+      result = getAPartOfExportsSection(pkg, prevPath).getPropValue(prop) and
+      if prop.matches(".%") then exportedPath = prop else exportedPath = prevPath
+    )
+  }
+
+  private module ResolvePackageMainConfig implements ResolvePathsSig {
+    additional predicate shouldResolve(
+      PackageJson pkg, string exportedPath, Folder base, string path
+    ) {
+      base = pkg.getJsonFile().getParentContainer() and
+      (
+        path = pkg.getPropStringValue(["main", "module"]) and
+        exportedPath = "."
+        or
+        path = getAPartOfExportsSection(pkg, exportedPath).getStringValue()
+      )
+    }
+
+    predicate shouldResolve(Folder base, string path) { shouldResolve(_, _, base, path) }
+  }
+
+  private module ResolvePackageMain = ResolvePaths<ResolvePackageMainConfig>;
+
+  private Container resolvePackageMain(PackageJson pkg, string exportedPath) {
+    exists(Folder base, string path |
+      ResolvePackageMainConfig::shouldResolve(pkg, exportedPath, base, path) and
+      result = ResolvePackageMain::resolve(base, path)
+    )
+  }
+
+  private Container resolvePackageMain(PackageJson pkg) { result = resolvePackageMain(pkg, ".") }
+
+  private File getFileFromFolderImport(Folder folder) {
+    result = folder.getJavaScriptFile("index")
+    or
+    exists(PackageJson pkg |
+      pkg.getJsonFile().getParentContainer() = folder and
+      result = resolvePackageMain(pkg)
+    )
+  }
+
   File resolvePathExpr(PathExpr expr) {
     result = resolvePathExpr1(expr)
     or
-    result = resolvePathExpr1(expr).(Folder).getJavaScriptFile("index")
+    result = getFileFromFolderImport(resolvePathExpr1(expr))
   }
 }
