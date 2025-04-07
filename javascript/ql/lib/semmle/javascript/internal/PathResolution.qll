@@ -4,7 +4,7 @@ signature module ResolvePathsSig {
   /**
    * Holds if `path` should be resolved to a file or folder, relative to `base`.
    */
-  predicate shouldResolve(Folder base, string path);
+  predicate shouldResolve(Container base, string path);
 
   /**
    * Gets an additional file or folder to consider a child of `base`.
@@ -160,7 +160,7 @@ module PathResolution {
   }
 
   private module TSConfigResolveConfig implements ResolvePathsSig {
-    predicate shouldResolve(Folder base, string path) {
+    predicate shouldResolve(Container base, string path) {
       exists(TSConfig cfg |
         base = cfg.getFolder() and
         path = [cfg.getExtendsPath(), cfg.getBaseUrlPath(), cfg.getAnIncludePath()]
@@ -181,7 +181,7 @@ module PathResolution {
       else base = cfg.getBaseUrlFolder() // non-relative paths are resolved relative to the baseUrl
     }
 
-    predicate shouldResolve(Folder base, string path) { shouldResolve(_, base, path) }
+    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
   }
 
   private module ResolvePathMapping = ResolvePaths<ResolvePathMappingConfig>;
@@ -199,8 +199,46 @@ module PathResolution {
     expr = any(Import imprt).getImportedPath()
   }
 
+  private JsonValue getAPartOfExportsSection(PackageJson pkg, string matchedPath) {
+    result = pkg.getPropValue("exports") and
+    matchedPath = pkg.getDeclaredPackageName()
+    or
+    exists(string prop, string prevPath |
+      result = getAPartOfExportsSection(pkg, prevPath).getPropValue(prop) and
+      if prop.matches("./%")
+      then matchedPath = prevPath + prop.suffix(1)
+      else matchedPath = prevPath
+    )
+  }
+
+  private module ResolvePackageExportsConfig implements ResolvePathsSig {
+    additional predicate shouldResolve(
+      PackageJson pkg, string exportedPath, Container base, string path
+    ) {
+      base = pkg.getJsonFile().getParentContainer() and
+      path = getAPartOfExportsSection(pkg, exportedPath).getStringValue()
+    }
+
+    predicate shouldResolve(Container base, string path) { shouldResolve(_, _, base, path) }
+  }
+
+  private module ResolvePackageExports = ResolvePaths<ResolvePackageExportsConfig>;
+
+  private Container resolvePackageExports(PackageJson pkg, string matchedPath) {
+    exists(Container base, string path |
+      ResolvePackageExportsConfig::shouldResolve(pkg, matchedPath, base, path) and
+      result = ResolvePackageExports::resolve(base, path)
+    )
+  }
+
+  pragma[nomagic]
+  private string getPackagePrefixFromPathExpr(PathExpr expr) {
+    result = expr.getValue().regexpFind("^(@[^/\\\\]+[/\\\\])?[^@./\\\\][^/\\\\]*", _, _)
+  }
+
   pragma[nomagic]
   private predicate replacedPath1(PathExpr expr, Container base, string newPath) {
+    // Import path matching a "paths" passing in tsconfig.json
     exists(TSConfig config, string value, string mappedPath |
       config = getTSConfigFromPathExpr(expr).getExtendedTSConfig*() and
       value = expr.getValue()
@@ -216,6 +254,19 @@ module PathResolution {
         newPath = value.suffix(pattern.length())
       )
     )
+    or
+    // Import path matching a path within a package, matched by an "exports" mapping in package.json
+    base = resolvePackageExports(_, expr.getValue()) and
+    newPath = ""
+    or
+    // Import path matching a non-empty path within a package, where the package has no explicit "exports"
+    exists(PackageJson pkg, string packageName |
+      packageName = getPackagePrefixFromPathExpr(expr) and
+      pkg.getDeclaredPackageName() = packageName and
+      not exists(pkg.getPropValue("exports")) and
+      newPath = expr.getValue().suffix(packageName.length()) and
+      base = pkg.getJsonFile().getParentContainer()
+    )
   }
 
   pragma[nomagic]
@@ -230,7 +281,7 @@ module PathResolution {
   }
 
   private module ResolvePathExprConfig implements ResolvePathsSig {
-    additional predicate shouldResolve(PathExpr expr, Folder base, string path) {
+    additional predicate shouldResolve(PathExpr expr, Container base, string path) {
       expr = any(Import imprt).getImportedPath() and
       (
         replacedPath(expr, base, path)
@@ -242,7 +293,7 @@ module PathResolution {
       )
     }
 
-    predicate shouldResolve(Folder base, string path) { shouldResolve(_, base, path) }
+    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
 
     private predicate extensionCompilesTo(string original, string compilesTo) {
       original = "ts" and
@@ -273,46 +324,30 @@ module PathResolution {
     )
   }
 
-  private JsonValue getAPartOfExportsSection(PackageJson pkg, string exportedPath) {
-    result = pkg.getPropValue("exports") and
-    exportedPath = "."
-    or
-    exists(string prop, string prevPath |
-      result = getAPartOfExportsSection(pkg, prevPath).getPropValue(prop) and
-      if prop.matches(".%") then exportedPath = prop else exportedPath = prevPath
-    )
-  }
-
+  /** Resolves `main` and `module` paths in a package.json file */
   private module ResolvePackageMainConfig implements ResolvePathsSig {
-    additional predicate shouldResolve(
-      PackageJson pkg, string exportedPath, Folder base, string path
-    ) {
+    additional predicate shouldResolve(PackageJson pkg, Container base, string path) {
       base = pkg.getJsonFile().getParentContainer() and
-      (
-        path = pkg.getPropStringValue(["main", "module"]) and
-        exportedPath = "."
-        or
-        path = getAPartOfExportsSection(pkg, exportedPath).getStringValue()
-      )
+      path = pkg.getPropStringValue(["main", "module"])
     }
 
-    predicate shouldResolve(Folder base, string path) { shouldResolve(_, _, base, path) }
+    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
   }
 
   private module ResolvePackageMain = ResolvePaths<ResolvePackageMainConfig>;
 
-  private Container resolvePackageMain(PackageJson pkg, string exportedPath) {
-    exists(Folder base, string path |
-      ResolvePackageMainConfig::shouldResolve(pkg, exportedPath, base, path) and
+  private Container resolvePackageMain(PackageJson pkg) {
+    exists(Container base, string path |
+      ResolvePackageMainConfig::shouldResolve(pkg, base, path) and
       result = ResolvePackageMain::resolve(base, path)
     )
   }
 
-  private Container resolvePackageMain(PackageJson pkg) { result = resolvePackageMain(pkg, ".") }
-
   private File getFileFromFolderImport(Folder folder) {
     result = folder.getJavaScriptFile("index")
     or
+    // Note that unlike "exports" paths, "main" and "module" also take effect when the package
+    // is imported via a relative path, e.g. `require("..")` targeting a folder with a package.json file.
     exists(PackageJson pkg |
       pkg.getJsonFile().getParentContainer() = folder and
       result = resolvePackageMain(pkg)

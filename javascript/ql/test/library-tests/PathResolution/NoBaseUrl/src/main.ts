@@ -20,7 +20,7 @@ import "lib/index.js";
 import "@/file"; // $ importTarget=NoBaseUrl/lib/file.ts
 import "@/file.ts"; // $ importTarget=NoBaseUrl/lib/file.ts
 import "@/file.js"; // $ importTarget=NoBaseUrl/lib/file.ts
-import "@"; // $ MISSING: importTarget=NoBaseUrl/lib/nostar.ts
+import "@"; // $ importTarget=NoBaseUrl/lib/nostar.ts
 import "@/index"; // $ importTarget=NoBaseUrl/lib/index.ts
 import "@/index.ts"; // $ importTarget=NoBaseUrl/lib/index.ts
 import "@/index.js"; // $ importTarget=NoBaseUrl/lib/index.ts

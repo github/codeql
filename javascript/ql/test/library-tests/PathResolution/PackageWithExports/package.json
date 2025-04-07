@@ -3,6 +3,9 @@
     "exports": {
         ".": {
             "default": "./main.js"
+        },
+        "./fake-file": {
+            "default": "./fake-file-impl.js"
         }
     }
 }
