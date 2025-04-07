@@ -1,6 +1,7 @@
 private import codeql.util.Boolean
 private import codeql.util.Unit
 private import codeql.ruby.AST
+private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
@@ -483,8 +484,11 @@ private module Cached {
     TSelfToplevelParameterNode(Toplevel t) or
     TLambdaSelfReferenceNode(Callable c) { lambdaCreationExpr(_, _, c) } or
     TImplicitBlockParameterNode(MethodBase m) { not m.getAParameter() instanceof BlockParameter } or
-    TImplicitBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
+    TImplicitYieldBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
       yield = any(BlockParameterNode b).getAYieldCall()
+    } or
+    TImplicitSuperBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode sup) {
+      sup = any(BlockParameterNode b).getASuperCall()
     } or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
@@ -1049,6 +1053,11 @@ private module ParameterNodes {
     CfgNodes::ExprNodes::CallCfgNode getAYieldCall() {
       this.getMethod() = result.getExpr().(YieldCall).getEnclosingMethod()
     }
+
+    CfgNodes::ExprNodes::CallCfgNode getASuperCall() {
+      this.getMethod() = result.getExpr().getEnclosingMethod() and
+      result.getExpr() instanceof TokenSuperCall
+    }
   }
 
   private class ExplicitBlockParameterNode extends BlockParameterNode, NormalParameterNode {
@@ -1315,15 +1324,23 @@ module ArgumentNodes {
     }
   }
 
-  class ImplicitBlockArgumentNode extends NodeImpl, ArgumentNode, TImplicitBlockArgumentNode {
+  abstract class ImplicitBlockArgumentNode extends NodeImpl, ArgumentNode {
+    pragma[nomagic]
+    abstract BlockParameterNode getParameterNode(boolean inSameScope);
+
+    override string toStringImpl() { result = "yield block argument" }
+  }
+
+  class ImplicitYieldBlockArgumentNode extends ImplicitBlockArgumentNode,
+    TImplicitYieldBlockArgumentNode
+  {
     CfgNodes::ExprNodes::CallCfgNode yield;
 
-    ImplicitBlockArgumentNode() { this = TImplicitBlockArgumentNode(yield) }
+    ImplicitYieldBlockArgumentNode() { this = TImplicitYieldBlockArgumentNode(yield) }
 
     CfgNodes::ExprNodes::CallCfgNode getYieldCall() { result = yield }
 
-    pragma[nomagic]
-    BlockParameterNode getParameterNode(boolean inSameScope) {
+    override BlockParameterNode getParameterNode(boolean inSameScope) {
       result.getAYieldCall() = yield and
       if nodeGetEnclosingCallable(this) = nodeGetEnclosingCallable(result)
       then inSameScope = true
@@ -1343,8 +1360,36 @@ module ArgumentNodes {
     override CfgScope getCfgScope() { result = yield.getScope() }
 
     override Location getLocationImpl() { result = yield.getLocation() }
+  }
 
-    override string toStringImpl() { result = "yield block argument" }
+  class ImplicitSuperBlockArgumentNode extends ImplicitBlockArgumentNode,
+    TImplicitSuperBlockArgumentNode
+  {
+    CfgNodes::ExprNodes::CallCfgNode sup;
+
+    ImplicitSuperBlockArgumentNode() { this = TImplicitSuperBlockArgumentNode(sup) }
+
+    CfgNodes::ExprNodes::CallCfgNode getSuperCall() { result = sup }
+
+    override BlockParameterNode getParameterNode(boolean inSameScope) {
+      result.getASuperCall() = sup and
+      if nodeGetEnclosingCallable(this) = nodeGetEnclosingCallable(result)
+      then inSameScope = true
+      else inSameScope = false
+    }
+
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
+      call = sup and
+      pos.isBlock()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
+
+    override CfgScope getCfgScope() { result = sup.getScope() }
+
+    override Location getLocationImpl() { result = sup.getLocation() }
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
@@ -2158,7 +2203,7 @@ private predicate lambdaCallExpr(
  */
 predicate lambdaSourceCall(CfgNodes::ExprNodes::CallCfgNode call, LambdaCallKind kind, Node receiver) {
   kind = TYieldCallKind() and
-  call = receiver.(ImplicitBlockArgumentNode).getYieldCall()
+  call = receiver.(ImplicitYieldBlockArgumentNode).getYieldCall()
   or
   kind = TLambdaCallKind() and
   lambdaCallExpr(call, receiver.asExpr())
