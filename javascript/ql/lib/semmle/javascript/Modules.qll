@@ -140,8 +140,14 @@ abstract class Import extends AstNode {
    * Gets the module the path of this import resolves to.
    */
   Module resolveImportedPath() {
+    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
+  }
+
+  /**
+   * Gets the module the path of this import resolves to.
+   */
+  Module resolveImportedPathNew() {
     result.getFile() = PathResolution::resolvePathExpr(this.getImportedPath())
-    // result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
   }
 
   /**
@@ -189,7 +195,7 @@ abstract class Import extends AstNode {
     then result = this.resolveExternsImport()
     else (
       result = this.resolveAsProvidedModule() or
-      result = this.resolveImportedPath() or
+      result = this.resolveImportedPathNew() or
       result = this.resolveFromTypeRoot() or
       result = this.resolveFromTypeScriptSymbol() or
       result = resolveNeighbourPackage(this.getImportedPath().getValue())
