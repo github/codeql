@@ -977,6 +977,11 @@ struct_field_defaults(
 );
 
 #keyset[id]
+struct_field_is_unsafe(
+  int id: @struct_field ref
+);
+
+#keyset[id]
 struct_field_names(
   int id: @struct_field ref,
   int name: @name ref
