@@ -62,18 +62,22 @@ class TypeReprMention extends TypeMention, TypeRepr {
   }
 }
 
-/** Holds if `path` resolves the type alias `alias` with the definition `rhs`. */
+/** Holds if `path` resolves to the type alias `alias` with the definition `rhs`. */
 private predicate resolvePathAlias(Path path, TypeAlias alias, TypeReprMention rhs) {
   alias = resolvePath(path) and rhs = alias.getTypeRepr()
 }
 
-abstract class PathMention extends TypeMention, Path { }
+abstract class PathMention extends TypeMention, Path {
+  override TypeMention getTypeArgument(int i) {
+    result = this.getSegment().getGenericArgList().getTypeArg(i)
+  }
+}
 
 class NonAliasPathMention extends PathMention {
   NonAliasPathMention() { not resolvePathAlias(this, _, _) }
 
   override TypeMention getTypeArgument(int i) {
-    result = this.getSegment().getGenericArgList().getTypeArg(i)
+    result = super.getTypeArgument(i)
     or
     // `Self` paths inside `impl` blocks have implicit type arguments that are
     // the type parameters of the `impl` block. For example, in
@@ -119,10 +123,6 @@ class AliasPathMention extends PathMention {
   TypeReprMention rhs;
 
   AliasPathMention() { resolvePathAlias(this, alias, rhs) }
-
-  override TypeMention getTypeArgument(int i) {
-    result = this.getSegment().getGenericArgList().getTypeArg(i)
-  }
 
   /** Get the `i`th type parameter of the alias itself. */
   private TypeParameter getTypeParameter(int i) {
