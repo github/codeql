@@ -13,11 +13,17 @@ class PackageJson extends JsonObject {
   }
 
   /**
+   * Gets the name of this package as it appears in the `name` field.
+   */
+  pragma[nomagic]
+  string getDeclaredPackageName() { result = this.getPropStringValue("name") }
+
+  /**
    * Gets the name of this package.
    * If the package is located under the package `pkg1` and its relative path is `foo/bar`, then the resulting package name will be `pkg1/foo/bar`.
    */
   string getPackageName() {
-    result = this.getPropStringValue("name")
+    result = this.getDeclaredPackageName()
     or
     exists(
       PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName,
