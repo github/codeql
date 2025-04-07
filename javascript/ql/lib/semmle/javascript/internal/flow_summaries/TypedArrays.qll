@@ -65,3 +65,47 @@ class SubArrayLike extends SummarizedCallable {
     output = "ReturnValue.ArrayElement"
   }
 }
+
+private class ArrayBufferEntryPoint extends API::EntryPoint {
+  ArrayBufferEntryPoint() { this = ["global.ArrayBuffer", "global.SharedArrayBuffer"] }
+
+  override DataFlow::SourceNode getASource() {
+    result = DataFlow::globalVarRef(["ArrayBuffer", "SharedArrayBuffer"])
+  }
+}
+
+pragma[nomagic]
+API::Node arrayBufferConstructorRef() { result = any(ArrayBufferEntryPoint a).getANode() }
+
+class ArrayBufferConstructorSummary extends SummarizedCallable {
+  ArrayBufferConstructorSummary() { this = "ArrayBuffer constructor" }
+
+  override DataFlow::InvokeNode getACall() {
+    result = arrayBufferConstructorRef().getAnInstantiation()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    input = "Argument[0].ArrayElement" and
+    output = "ReturnValue.ArrayElement"
+  }
+}
+
+class TransferLike extends SummarizedCallable {
+  TransferLike() { this = "ArrayBuffer#transfer" }
+
+  override InstanceCall getACall() {
+    result =
+      arrayBufferConstructorRef()
+          .getAnInstantiation()
+          .getReturn()
+          .getMember(["transfer", "transferToFixedLength"])
+          .getACall()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    input = "Argument[this].ArrayElement" and
+    output = "ReturnValue.ArrayElement"
+  }
+}

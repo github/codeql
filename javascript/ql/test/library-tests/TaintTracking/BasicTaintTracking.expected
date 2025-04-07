@@ -40,15 +40,15 @@ legacyDataFlowDifference
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:11:10:11:12 | arr | only flow with NEW data flow library |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:15:10:15:10 | z | only flow with NEW data flow library |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:18:10:18:12 | sub | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:22:10:22:13 | view | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:26:10:26:14 | view1 | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:30:10:30:23 | transferedView | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:34:10:34:24 | transferedView2 | only flow with NEW data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
 | stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
 | stringification-read-steps.js:25 | expected an alert, but found none | NOT OK | Consistency |
-| typed-arrays.js:22 | expected an alert, but found none | NOT OK | Consistency |
-| typed-arrays.js:26 | expected an alert, but found none | NOT OK | Consistency |
-| typed-arrays.js:30 | expected an alert, but found none | NOT OK | Consistency |
-| typed-arrays.js:34 | expected an alert, but found none | NOT OK | Consistency |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
@@ -339,6 +339,10 @@ flow
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:11:10:11:12 | arr |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:15:10:15:10 | z |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:18:10:18:12 | sub |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:22:10:22:13 | view |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:26:10:26:14 | view1 |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:30:10:30:23 | transferedView |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:34:10:34:24 | transferedView2 |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
