@@ -131,11 +131,15 @@ class TypeParamMention extends TypeMention, TypeParam {
   override Type resolveType() { result = TTypeParamTypeParameter(this) }
 }
 
-// Used to represent implicit associated type type arguments in traits.
+// Used to represent implicit type arguments for associated types in traits.
 class TypeAliasMention extends TypeMention, TypeAlias {
+  private Type t;
+
+  TypeAliasMention() { t = TAssociatedTypeTypeParameter(this) }
+
   override TypeReprMention getTypeArgument(int i) { none() }
 
-  override Type resolveType() { result = TAssociatedTypeTypeParameter(this) }
+  override Type resolveType() { result = t }
 }
 
 /**

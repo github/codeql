@@ -16,7 +16,7 @@ newtype TType =
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TTypeParamTypeParameter(TypeParam t) or
-  TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getADescendant() = t } or
+  TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t)
 
@@ -333,7 +333,11 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   }
 }
 
-/** Gets type alias that is the `i`th type parameter of `trait`. */
+/**
+ * Gets the type alias that is the `i`th type parameter of `trait`. Type aliases
+ * are numbered consecutively but in arbitrary order, starting from the index
+ * following the last ordinary type parameter.
+ */
 predicate traitAliasIndex(Trait trait, int i, TypeAlias typeAlias) {
   typeAlias =
     rank[i + 1 - trait.getNumberOfGenericParams()](TypeAlias alias |
@@ -354,7 +358,7 @@ predicate traitAliasIndex(Trait trait, int i, TypeAlias typeAlias) {
  *   // ...
  * }
  * ```
- * is treated as if it where
+ * is treated as if it was
  * ```rust
  * trait ATrait<AssociatedType> {
  *   // ...
@@ -369,9 +373,9 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   TypeAlias getTypeAlias() { result = typeAlias }
 
   /** Gets the trait that contains this associated type declaration. */
-  TraitItemNode getTrait() { result.getADescendant() = typeAlias }
+  TraitItemNode getTrait() { result.getAnAssocItem() = typeAlias }
 
-  int getIndex() { traitAliasIndex(this.getTrait(), result, typeAlias) }
+  int getIndex() { traitAliasIndex(_, result, typeAlias) }
 
   override Function getMethod(string name) { none() }
 
