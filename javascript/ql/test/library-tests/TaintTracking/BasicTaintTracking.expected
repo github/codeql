@@ -40,6 +40,9 @@ consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
 | stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
 | stringification-read-steps.js:25 | expected an alert, but found none | NOT OK | Consistency |
+| typed-arrays.js:5 | expected an alert, but found none | NOT OK | Consistency |
+| typed-arrays.js:7 | expected an alert, but found none | NOT OK | Consistency |
+| typed-arrays.js:11 | expected an alert, but found none | NOT OK | Consistency |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
