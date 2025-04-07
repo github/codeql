@@ -5,11 +5,11 @@
 <overview>
 
 <p>Allocating memory with a size based on user input may allow arbitrary amounts of memory to be
-allocated, leading to a crash or denial of service incident.</p>
+allocated, leading to a crash or a denial-of-service (DoS) attack.</p>
 
 <p>If the user input is multiplied by a constant, such as the size of a type, the result may
-overflow. In a build with the <code>--release</code> flag Rust performs two's complement wrapping,
-with the result that less memory may be allocated than expected. This can lead to buffer overflow
+overflow. In a build with the <code>--release</code> flag, Rust performs two's complement wrapping,
+with the result that less memory than expected may be allocated. This can lead to buffer overflow
 incidents.</p>
 
 </overview>
@@ -24,12 +24,12 @@ does not wrap around.</p>
 <example>
 
 <p>In the following example, an arbitrary amount of memory is allocated based on user input. In
-addition, due to the multiplication operation the result may overflow if a very large value is
-provided, leading to less memory being allocated than other parts of the program expect.</p>
+addition, due to the multiplication operation, the result may overflow if a very large value is
+provided. This may lead to less memory being allocated than expected by other parts of the program.</p>
 <sample src="UncontrolledAllocationSizeBad.rs" />
 
-<p>In the fixed example, the user input is checked against a maximum value. If the check fails an
-error is returned, and both the multiplication and alloaction do not take place.</p>
+<p>In the fixed example, the user input is checked against a maximum value. If the check fails, an
+error is returned, and both the multiplication and allocation do not take place.</p>
 <sample src="UncontrolledAllocationSizeGood.rs" />
 
 </example>
