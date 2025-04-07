@@ -213,7 +213,7 @@ abstract class Import extends AstNode {
  *
  * No support for importing from folders inside the other package.
  */
-private Module resolveNeighbourPackage(PathString importPath) {
+Module resolveNeighbourPackage(PathString importPath) {
   exists(PackageJson json | importPath = json.getPackageName() and result = json.getMainModule())
   or
   exists(string package |
