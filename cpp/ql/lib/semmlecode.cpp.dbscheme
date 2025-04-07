@@ -720,7 +720,7 @@ case @derivedtype.kind of
 ;
 
 derivedtypes(
-    unique int id: @derivedtype,
+    int id: @derivedtype,
     string name: string ref,
     int kind: int ref,
     int type_id: @type ref
