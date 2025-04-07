@@ -1468,6 +1468,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       inputRefs = count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
       inputRefs < 2
     }
+
+    /**
+     * Gets counts of inconsistencies of each type.
+     */
+    int getInconsistencyCounts(string type) {
+      type = "" and result = 0
+    }
   }
 
   /** Provides the input to `DataFlowIntegration`. */

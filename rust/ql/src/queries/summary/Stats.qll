@@ -10,6 +10,7 @@ private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
+private import codeql.rust.dataflow.internal.SsaImpl as SsaImpl
 private import codeql.rust.Concepts
 private import codeql.rust.Diagnostics
 private import codeql.rust.security.SensitiveData
@@ -55,6 +56,13 @@ int getTotalPathResolutionInconsistencies() {
  */
 int getTotalCfgInconsistencies() {
   result = sum(string type | | CfgConsistency::getCfgInconsistencyCounts(type))
+}
+
+/**
+ * Gets a count of the total number of SSA inconsistencies in the database.
+ */
+int getTotalSsaInconsistencies() {
+  result = sum(string type | | SsaImpl::Consistency::getInconsistencyCounts(type))
 }
 
 /**
@@ -141,6 +149,8 @@ predicate inconsistencyStats(string key, int value) {
   key = "Inconsistencies - Path resolution" and value = getTotalPathResolutionInconsistencies()
   or
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
+  or
+  key = "Inconsistencies - SSA" and value = getTotalSsaInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
 }
