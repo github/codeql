@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/random-used-once
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       external/cwe/cwe-335

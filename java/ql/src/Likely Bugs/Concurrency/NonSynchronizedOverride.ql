@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/non-sync-override
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

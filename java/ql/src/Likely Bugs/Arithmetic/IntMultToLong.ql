@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/integer-multiplication-cast-to-long
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       types

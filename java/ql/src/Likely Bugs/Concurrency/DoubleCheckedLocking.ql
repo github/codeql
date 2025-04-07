@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision high
  * @id java/unsafe-double-checked-locking
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

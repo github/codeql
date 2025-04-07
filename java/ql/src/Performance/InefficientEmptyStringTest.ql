@@ -5,6 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-empty-string-test
+ * @suites security-and-quality
  * @tags efficiency
  *       maintainability
  */

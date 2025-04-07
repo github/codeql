@@ -8,6 +8,7 @@
  * @security-severity 8.1
  * @precision very-high
  * @id java/implicit-cast-in-compound-assignment
+ * @suites security-and-quality
  * @tags reliability
  *       security
  *       external/cwe/cwe-190

@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/jdk-internal-api-access
+ * @suites security-and-quality
  * @tags maintainability
  */
 

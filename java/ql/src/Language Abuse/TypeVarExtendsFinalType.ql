@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/type-bound-extends-final
+ * @suites security-and-quality
  * @tags maintainability
  *       readability
  *       types

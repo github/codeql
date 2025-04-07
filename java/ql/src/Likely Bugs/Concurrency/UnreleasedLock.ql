@@ -7,6 +7,7 @@
  * @security-severity 5.0
  * @precision medium
  * @id java/unreleased-lock
+ * @suites security-and-quality
  * @tags reliability
  *       security
  *       external/cwe/cwe-764

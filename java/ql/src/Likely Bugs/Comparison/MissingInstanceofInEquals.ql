@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision high
  * @id java/unchecked-cast-in-equals
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  */

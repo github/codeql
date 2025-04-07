@@ -7,6 +7,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/missing-space-in-concatenation
+ * @suites security-and-quality
  * @tags readability
  */
 

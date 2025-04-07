@@ -7,6 +7,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/contradictory-type-checks
+ * @suites security-and-quality
  * @tags correctness
  *       logic
  */

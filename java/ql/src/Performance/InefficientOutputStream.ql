@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/inefficient-output-stream
+ * @suites security-and-quality
  * @tags efficiency
  */
 

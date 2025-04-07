@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/abs-of-random
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  */

@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/non-static-nested-class
+ * @suites security-and-quality
  * @tags efficiency
  *       maintainability
  */

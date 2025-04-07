@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/notify-instead-of-notify-all
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @precision high
  * @id java/unsafe-double-checked-locking-init-order
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

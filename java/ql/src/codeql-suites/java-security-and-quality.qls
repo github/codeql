@@ -7,14 +7,22 @@
     precision:
     - high
     - very-high
+    tags contain:
+    - security
 - include:
     kind:
     - problem
     - path-problem
-    precision: medium
+    precision:
+    - medium
     problem.severity:
-      - error
-      - warning
+    - error
+    - warning
+    tags contain:
+    - security
+- include:
+    suites contain:
+    - security-and-quality
 - include:
     kind:
     - diagnostic

@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/wrong-junit-suite-signature
+ * @suites security-and-quality
  * @tags testability
  *       maintainability
  *       frameworks/junit

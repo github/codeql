@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/thread-unsafe-dateformat
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/lshift-larger-than-type-width
+ * @suites security-and-quality
  * @tags correctness
  */
 

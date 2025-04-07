@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision medium
  * @id java/unsafe-sync-on-field
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

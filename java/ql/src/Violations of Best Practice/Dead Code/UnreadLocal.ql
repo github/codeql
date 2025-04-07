@@ -5,6 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/local-variable-is-never-read
+ * @suites security-and-quality
  * @tags maintainability
  *       useless-code
  *       external/cwe/cwe-561

@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/evaluation-to-constant
+ * @suites security-and-quality
  * @tags maintainability
  *       useless-code
  */

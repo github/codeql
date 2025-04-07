@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/empty-zip-file-entry
+ * @suites security-and-quality
  * @tags reliability
  *       readability
  */

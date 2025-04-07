@@ -5,6 +5,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/empty-container
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       useless-code

@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/field-masks-super-field
+ * @suites security-and-quality
  * @tags maintainability
  *       readability
  */

@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/hashcode-typo
+ * @suites security-and-quality
  * @tags maintainability
  *       readability
  *       naming

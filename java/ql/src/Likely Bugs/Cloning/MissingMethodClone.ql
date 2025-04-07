@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision medium
  * @id java/missing-clone-method
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  */

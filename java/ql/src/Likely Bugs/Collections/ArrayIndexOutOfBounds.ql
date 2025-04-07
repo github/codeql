@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision high
  * @id java/index-out-of-bounds
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       exceptions

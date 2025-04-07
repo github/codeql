@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/non-overriding-package-private
+ * @suites security-and-quality
  * @tags maintainability
  *       readability
  */

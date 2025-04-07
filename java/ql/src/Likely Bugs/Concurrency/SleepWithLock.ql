@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision medium
  * @id java/sleep-with-lock-held
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/missing-no-arg-constructor-on-externalizable
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       language-features

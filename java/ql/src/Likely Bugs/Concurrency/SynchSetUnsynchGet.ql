@@ -7,6 +7,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/unsynchronized-getter
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/subtle-inherited-call
+ * @suites security-and-quality
  * @tags reliability
  *       readability
  */

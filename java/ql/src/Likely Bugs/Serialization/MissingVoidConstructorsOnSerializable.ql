@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/missing-no-arg-constructor-on-serializable
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       language-features

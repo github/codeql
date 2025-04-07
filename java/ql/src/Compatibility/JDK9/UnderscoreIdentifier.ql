@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/underscore-identifier
+ * @suites security-and-quality
  * @tags maintainability
  */
 

@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision high
  * @id java/unreachable-catch-clause
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       exceptions

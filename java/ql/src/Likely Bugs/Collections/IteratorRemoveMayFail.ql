@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/iterator-remove-failure
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       logic

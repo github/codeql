@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/abstract-to-concrete-cast
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       modularity

@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/non-null-boxed-variable
+ * @suites security-and-quality
  * @tags readability
  *       types
  */

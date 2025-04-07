@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/call-to-object-tostring
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  */

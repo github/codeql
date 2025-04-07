@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/unsafe-get-resource
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  */

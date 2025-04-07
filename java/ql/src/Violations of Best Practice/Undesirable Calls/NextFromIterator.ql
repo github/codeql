@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/iterator-hasnext-calls-next
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  */

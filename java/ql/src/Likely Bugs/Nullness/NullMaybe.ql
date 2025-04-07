@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision high
  * @id java/dereferenced-value-may-be-null
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       exceptions

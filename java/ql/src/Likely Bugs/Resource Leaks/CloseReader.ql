@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision high
  * @id java/input-resource-leak
+ * @suites security-and-quality
  * @tags efficiency
  *       correctness
  *       resources

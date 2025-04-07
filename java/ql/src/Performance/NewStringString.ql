@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-string-constructor
+ * @suites security-and-quality
  * @tags efficiency
  *       maintainability
  */

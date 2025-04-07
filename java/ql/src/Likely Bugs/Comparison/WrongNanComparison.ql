@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/comparison-with-nan
+ * @suites security-and-quality
  * @tags correctness
  */
 

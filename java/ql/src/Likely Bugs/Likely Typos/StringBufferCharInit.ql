@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/string-buffer-char-init
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  */

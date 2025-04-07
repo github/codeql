@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/non-serializable-inner-class
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       language-features

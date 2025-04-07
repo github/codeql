@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @precision high
  * @id java/suspicious-date-format
+ * @suites security-and-quality
  * @tags correctness
  */
 

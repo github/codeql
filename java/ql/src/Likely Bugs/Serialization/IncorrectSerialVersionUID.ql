@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/incorrect-serial-version-uid
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       language-features

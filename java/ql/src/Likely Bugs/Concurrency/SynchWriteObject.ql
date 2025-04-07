@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/inconsistent-sync-writeobject
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

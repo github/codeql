@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/reference-equality-on-strings
+ * @suites security-and-quality
  * @tags reliability
  *       external/cwe/cwe-597
  */

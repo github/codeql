@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/missing-override-annotation
+ * @suites security-and-quality
  * @tags maintainability
  */
 

@@ -8,6 +8,7 @@
  * @id java/continue-in-false-loop
  * @problem.severity warning
  * @precision high
+ * @suites security-and-quality
  * @tags correctness
  */
 

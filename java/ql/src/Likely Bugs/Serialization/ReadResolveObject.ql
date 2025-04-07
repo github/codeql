@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/wrong-readresolve-signature
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       language-features

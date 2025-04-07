@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/ignored-error-status-of-call
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       external/cwe/cwe-391

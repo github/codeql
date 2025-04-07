@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/spin-on-field
+ * @suites security-and-quality
  * @tags efficiency
  *       correctness
  *       concurrency

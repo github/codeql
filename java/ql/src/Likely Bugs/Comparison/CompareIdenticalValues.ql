@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/comparison-of-identical-expressions
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       logic

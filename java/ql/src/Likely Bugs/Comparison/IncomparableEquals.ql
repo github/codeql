@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/equals-on-unrelated-types
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  */

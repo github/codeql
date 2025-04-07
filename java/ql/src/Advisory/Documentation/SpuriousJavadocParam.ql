@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/unknown-javadoc-parameter
+ * @suites security-and-quality
  * @tags maintainability
  */
 

@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision medium
  * @id java/ineffective-annotation-present-check
+ * @suites security-and-quality
  * @tags correctness
  *       logic
  */

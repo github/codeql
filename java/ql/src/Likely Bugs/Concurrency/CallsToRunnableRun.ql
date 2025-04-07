@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/call-to-thread-run
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  *       concurrency

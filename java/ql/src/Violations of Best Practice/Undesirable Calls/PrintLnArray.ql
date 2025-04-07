@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/print-array
+ * @suites security-and-quality
  * @tags maintainability
  */
 

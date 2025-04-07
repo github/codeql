@@ -7,6 +7,7 @@
  * @problem.severity error
  * @precision medium
  * @id java/run-finalizers-on-exit
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  */

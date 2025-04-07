@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/misleading-indentation
+ * @suites security-and-quality
  * @tags maintainability
  *       correctness
  *       logic

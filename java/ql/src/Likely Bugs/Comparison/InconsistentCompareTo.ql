@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/inconsistent-compareto-and-equals
+ * @suites security-and-quality
  * @tags reliability
  *       correctness
  */

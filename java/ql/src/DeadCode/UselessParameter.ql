@@ -5,6 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/unused-parameter
+ * @suites security-and-quality
  * @tags maintainability
  *       useless-code
  *       external/cwe/cwe-561

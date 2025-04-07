@@ -5,6 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-boxed-constructor
+ * @suites security-and-quality
  * @tags efficiency
  *       maintainability
  */

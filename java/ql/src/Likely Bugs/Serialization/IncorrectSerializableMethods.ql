@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/wrong-object-serialization-signature
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       language-features

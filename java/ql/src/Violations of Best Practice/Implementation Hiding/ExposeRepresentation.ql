@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/internal-representation-exposure
+ * @suites security-and-quality
  * @tags reliability
  *       maintainability
  *       modularity
