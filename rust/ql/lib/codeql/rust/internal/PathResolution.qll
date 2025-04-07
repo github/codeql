@@ -373,6 +373,8 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   /** Gets an item that may refer to this node using `Self`. */
   pragma[nomagic]
   ItemNode getAnItemInSelfScope() {
+    result = this
+    or
     result.getImmediateParent() = this
     or
     exists(ItemNode mid |

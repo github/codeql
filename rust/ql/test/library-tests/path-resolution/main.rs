@@ -532,7 +532,7 @@ mod m23 {
 
     #[rustfmt::skip]
     impl Trait1<
-      Self // $ MISSING: item=I4
+      Self // $ item=I4
     > // $ item=I2
       for S { // $ item=I4
         fn f(&self) {
