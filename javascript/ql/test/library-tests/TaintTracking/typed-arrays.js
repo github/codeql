@@ -16,4 +16,20 @@ function test() {
 
     const sub = y.subarray(1, 3)
     sink(sub); // NOT OK
+
+    const buffer = new ArrayBuffer(x);
+    const view = new Uint8Array(buffer);
+    sink(view); // NOT OK
+
+    const sharedBuffer = new SharedArrayBuffer(x);
+    const view1 = new Uint8Array(sharedBuffer);
+    sink(view1); // NOT OK
+
+    const transfered = buffer.transfer();
+    const transferedView = new Uint8Array(transfered);
+    sink(transferedView); // NOT OK
+
+    const transfered2 = buffer.transferToFixedLength();
+    const transferedView2 = new Uint8Array(transfered2);
+    sink(transferedView2); // NOT OK
 }
