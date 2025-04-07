@@ -193,13 +193,14 @@ module PathResolution {
     )
   }
 
+  pragma[nomagic]
   private TSConfig getTSConfigFromPathExpr(PathExpr expr) {
-    result.getAnAffectedFile() = expr.getFile()
+    result.getAnAffectedFile() = expr.getFile() and
+    expr = any(Import imprt).getImportedPath()
   }
 
   pragma[nomagic]
   private predicate replacedPath1(PathExpr expr, Container base, string newPath) {
-    expr = any(Import imprt).getImportedPath() and
     exists(TSConfig config, string value, string mappedPath |
       config = getTSConfigFromPathExpr(expr).getExtendedTSConfig*() and
       value = expr.getValue()
@@ -222,7 +223,6 @@ module PathResolution {
     replacedPath1(expr, base, newPath)
     or
     // resolve from baseUrl
-    expr = any(Import imprt).getImportedPath() and
     not replacedPath1(expr, _, _) and
     newPath = expr.getValue() and
     newPath.charAt(0) != "." and
