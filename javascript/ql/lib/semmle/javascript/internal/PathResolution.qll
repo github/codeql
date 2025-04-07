@@ -373,6 +373,8 @@ module PathResolution {
     }
 
     predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
+
+    predicate getAnAdditionalChild = AutomaticFileExtensions::getAnAdditionalChild/2;
   }
 
   private module ResolvePackageMain = ResolvePaths<ResolvePackageMainConfig>;

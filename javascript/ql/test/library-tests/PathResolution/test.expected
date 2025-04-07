@@ -71,3 +71,5 @@
 | import-packages.ts:17:1:17:25 | import  ... uess1'; | PackageGuess1/src/index.ts |
 | import-packages.ts:18:1:18:33 | import  ... uess1'; | PackageGuess1/src/index.ts |
 | import-packages.ts:21:1:21:33 | import  ... uess2'; | PackageGuess2/blah/stuff.ts |
+| import-packages.ts:23:1:23:30 | import  ... inExt'; | PackageWithMainExt/lib/main.ts |
+| import-packages.ts:24:1:24:40 | import  ... n-ext'; | PackageWithMainExt/lib/main.ts |
