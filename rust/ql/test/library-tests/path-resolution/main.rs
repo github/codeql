@@ -525,7 +525,7 @@ mod m23 {
     trait Trait1<
       T // I1
     > {
-        fn f(&self); // // I3
+        fn f(&self); // I3
     } // I2
 
     struct S; // I4
