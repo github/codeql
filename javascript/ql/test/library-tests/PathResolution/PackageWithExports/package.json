@@ -6,6 +6,9 @@
         },
         "./fake-file": {
             "default": "./fake-file-impl.js"
+        },
+        "./star/*": {
+            "default": "./star-impl/*"
         }
     }
 }

@@ -29,6 +29,7 @@
 | Basic/import-packages.ts:6:1:6:43 | import  ... -main'; | PackageWithModuleMain/main.js |
 | Basic/import-packages.ts:7:1:7:39 | import  ... ports'; | PackageWithExports/main.js |
 | Basic/import-packages.ts:10:1:10:49 | import  ... -file'; | PackageWithExports/fake-file-impl.js |
+| Basic/import-packages.ts:13:1:13:48 | import  ... r/foo'; | PackageWithExports/star-impl/foo.js |
 | Basic/index.ts:1:1:1:22 | import  ... r/sub'; | Basic/Subdir/sub.ts |
 | Extended/src/main.ts:2:1:2:21 | import  ... /file"; | Extended/lib/file.ts |
 | Extended/src/main.ts:3:1:3:24 | import  ... le.ts"; | Extended/lib/file.ts |

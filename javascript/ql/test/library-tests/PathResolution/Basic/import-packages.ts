@@ -8,3 +8,6 @@ import '@example/package-with-exports'; // $ importTarget=PackageWithExports/mai
 
 import '../PackageWithExports/fake-file'; // Not a valid import
 import '@example/package-with-exports/fake-file'; // $ importTarget=PackageWithExports/fake-file-impl.js
+
+import '../PackageWithExports/star/foo'; // Not a valid import
+import '@example/package-with-exports/star/foo'; // $ importTarget=PackageWithExports/star-impl/foo.js
