@@ -90,6 +90,18 @@ module PathResolution {
   bindingset[path]
   private predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
 
+  /**
+   * Gets an access to `__dirname`.
+   */
+  private VarAccess dirname() { result.getName() = "__dirname" }
+
+  /** Holds if `add` is a relevant path expression of form `__dirname + expr`. */
+  private predicate prefixedByDirname(PathExpr expr) {
+    expr = dirname()
+    or
+    prefixedByDirname(expr.(AddExpr).getLeftOperand())
+  }
+
   //
   //  TSCONFIG.JSON
   //
@@ -355,8 +367,13 @@ module PathResolution {
         replacedPath(expr, base, path)
         or
         path = expr.getValue() and
-        isRelativePath(path) and
-        base = expr.getFile().getParentContainer()
+        (
+          isRelativePath(path) and
+          base = expr.getFile().getParentContainer()
+          or
+          prefixedByDirname(expr) and
+          not exists(base.getParentContainer()) // resolve from root dir
+        )
       )
     }
 
