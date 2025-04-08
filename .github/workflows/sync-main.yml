@@ -27,8 +27,8 @@ jobs:
       - name: Git config
         shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "dilanbhalla"
+          git config user.email "dilanbhalla@microsoft.com"
       - name: Git checkout auto/sync-main-pr
         shell: bash
         run: |
@@ -81,3 +81,4 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
