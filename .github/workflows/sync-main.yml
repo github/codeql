@@ -61,14 +61,14 @@ jobs:
           git status
           
           echo "::group::Diff between sync-main-pr and main"
-          git diff main..sync-main-pr
+          git diff origin/main..origin/sync-main-pr
           echo "::endgroup::"
           
-          echo "Current SHA for main: $(git rev-parse main)"
-          echo "Current SHA for sync-main-pr: $(git rev-parse sync-main-pr)"
+          echo "Current SHA for main: $(git rev-parse origin/main)"
+          echo "Current SHA for sync-main-pr: $(git rev-parse origin/sync-main-pr)"
       - name: Create or update PR
         run: |
-          gh pr create --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
+          gh pr create --fill -B origin/main -H origin/sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
           exit 0
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
