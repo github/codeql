@@ -329,12 +329,11 @@ module PathResolution {
       base = getTSConfigFromPathExpr(expr).getBaseUrlFolder()
       or
       // TODO: is this needed?
-      exists(PackageJson pkg, string packageName, string remainder |
+      exists(PackageJson pkg, string packageName |
         packageName = getPackagePrefixFromPathExpr(expr) and
         pkg.getDeclaredPackageName() = packageName and
-        remainder = expr.getValue().suffix(packageName.length()).regexpReplaceAll("^[/\\\\]", "") and
-        base = pkg.getJsonFile().getParentContainer() and
-        newPath = remainder
+        newPath = expr.getValue().suffix(packageName.length()).regexpReplaceAll("^[/\\\\]", "") and
+        base = pkg.getJsonFile().getParentContainer()
       )
     )
   }
@@ -366,22 +365,38 @@ module PathResolution {
   }
 
   /** Resolves `main` and `module` paths in a package.json file */
-  private module ResolvePackageMainConfig implements ResolvePathsSig {
-    additional predicate shouldResolve(PackageJson pkg, Container base, string path) {
+  private module ResolvePackageJsonPaths implements ResolvePathsSig {
+    additional predicate shouldResolve(PackageJson pkg, Container base, string path, string kind) {
       base = pkg.getJsonFile().getParentContainer() and
-      path = pkg.getPropStringValue(["main", "module"])
+      (
+        kind = ["main", "module"] and
+        path = pkg.getPropStringValue(kind)
+        or
+        kind = "files" and
+        path = pkg.getPropValue("files").(JsonArray).getElementStringValue(_)
+      )
     }
 
-    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
+    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path, _) }
 
-    predicate getAnAdditionalChild = AutomaticFileExtensions::getAnAdditionalChild/2;
+    Container getAnAdditionalChild(Container base, string name) {
+      result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
+      or
+      // When resolving an output-like folder that doesn't exist, try resolving from 'src'
+      exists(Folder folder | base = folder |
+        folder = any(PackageJson pkg).getJsonFile().getParentContainer() and
+        name = getABuildOutputFolderName() and
+        not exists(folder.getChildContainer(name)) and
+        result = folder.getChildContainer(getASrcFolderName())
+      )
+    }
   }
 
-  private module ResolvePackageMain = ResolvePaths<ResolvePackageMainConfig>;
+  private module ResolvePackageMain = ResolvePaths<ResolvePackageJsonPaths>;
 
   private Container resolvePackageMain(PackageJson pkg) {
     exists(Container base, string path |
-      ResolvePackageMainConfig::shouldResolve(pkg, base, path) and
+      ResolvePackageJsonPaths::shouldResolve(pkg, base, path, ["main", "module"]) and
       result = ResolvePackageMain::resolve(base, path)
     )
   }
@@ -391,12 +406,15 @@ module PathResolution {
    */
   private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
 
-  private File guessPackageJsonMain(PackageJson pkg) {
+  /**
+   * Gets a folder name that is a common build output folder name.
+   */
+  private string getABuildOutputFolderName() { result = ["dist", "build", "out", "lib"] }
+
+  private File guessPackageJsonMain1(PackageJson pkg) {
     not exists(resolvePackageMain(pkg)) and
     exists(Folder folder, Folder subfolder |
       folder = pkg.getJsonFile().getParentContainer() and
-      // No need to guess if folder contains an index file, other than index.d.ts
-      not exists(File f | f = folder.getJavaScriptFile("index") and not f.getStem().matches("%.d")) and
       (
         subfolder = folder or
         subfolder = folder.getChildContainer(getASrcFolderName()) or
@@ -410,6 +428,19 @@ module PathResolution {
     )
   }
 
+  private Container resolveAPackageFile(PackageJson pkg) {
+    exists(Container base, string path |
+      ResolvePackageJsonPaths::shouldResolve(pkg, base, path, "files") and
+      result = ResolvePackageMain::resolve(base, path)
+    )
+  }
+
+  private File guessPackageJsonMain2(PackageJson pkg) {
+    not exists(resolvePackageMain(pkg)) and
+    not exists(guessPackageJsonMain1(pkg)) and
+    result = resolveAPackageFile(pkg)
+  }
+
   private File getFileFromFolderImport(Folder folder) {
     result = folder.getJavaScriptFile("index")
     or
@@ -418,7 +449,9 @@ module PathResolution {
     exists(PackageJson pkg | pkg.getJsonFile().getParentContainer() = folder |
       result = resolvePackageMain(pkg)
       or
-      result = guessPackageJsonMain(pkg)
+      result = guessPackageJsonMain1(pkg)
+      or
+      result = guessPackageJsonMain2(pkg)
     )
   }
 
@@ -432,7 +465,7 @@ module PathResolution {
     final private class FinalPathExpr = PathExpr;
 
     class PathExprToDebug extends FinalPathExpr {
-      PathExprToDebug() { this.getValue() = "semantic-ui-react" }
+      PathExprToDebug() { this.getValue() = "~/core/handlers/RequestHandler" }
     }
 
     query PathExprToDebug pathExprs() { any() }
@@ -460,7 +493,9 @@ module PathResolution {
     // Some predicates that are usually small enough that they don't need restriction
     query predicate resolvePackageMain_ = resolvePackageMain/1;
 
-    query predicate guessPackageJsonMain_ = guessPackageJsonMain/1;
+    query predicate guessPackageJsonMain1_ = guessPackageJsonMain1/1;
+
+    query predicate guessPackageJsonMain2_ = guessPackageJsonMain2/1;
 
     query predicate getFileFromFolderImport_ = getFileFromFolderImport/1;
   }

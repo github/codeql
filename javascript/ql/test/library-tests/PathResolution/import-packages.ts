@@ -17,7 +17,7 @@ import '@example/package-with-index-file'; // $ importTarget=PackageIndexFile/in
 import './PackageGuess1'; // $ importTarget=PackageGuess1/src/index.ts
 import '@example/package-guess1'; // $ importTarget=PackageGuess1/src/index.ts
 
-import './PackageGuess2'; // $ MISSING: importTarget=PackageGuess2/blah/stuff.ts
+import './PackageGuess2'; // $ importTarget=PackageGuess2/blah/stuff.ts
 import '@example/package-guess2'; // $ importTarget=PackageGuess2/blah/stuff.ts
 
 import './PackageWithMainExt'; // $ importTarget=PackageWithMainExt/lib/main.ts
