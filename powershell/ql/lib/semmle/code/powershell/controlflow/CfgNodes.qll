@@ -587,7 +587,7 @@ module ExprNodes {
   }
 
   private class CallOperatorChildMapping extends CallExprChildMapping instanceof CallOperator {
-    override predicate relevantChild(Ast child) { none() }
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
 
   class CallOperatorCfgNode extends CallExprCfgNode {
@@ -598,6 +598,18 @@ module ExprNodes {
     override CallOperator getExpr() { result = e }
 
     ExprCfgNode getCommand() { result = this.getArgument(0) }
+  }
+
+  private class ToStringCallChildmapping extends CallExprChildMapping instanceof ToStringCall {
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
+  }
+
+  class ToStringCallCfgNode extends CallExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ToStringCallCfgNode" }
+
+    override ToStringCallChildmapping e;
+
+    override ToStringCall getExpr() { result = e }
   }
 
   private class MemberExprChildMapping extends ExprChildMapping, MemberExpr {

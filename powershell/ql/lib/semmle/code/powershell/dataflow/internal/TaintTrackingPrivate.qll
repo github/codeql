@@ -57,6 +57,8 @@ private module Cached {
         or
         c.isAnyElement()
       )
+      or
+      nodeTo.(DataFlow::ToStringCallNode).getQualifier() = nodeFrom
     ) and
     model = ""
     or
