@@ -14,13 +14,26 @@ abstract class FormatMethod extends Method {
    * `string.Format(IFormatProvider, String, Object)` is `1`.
    */
   abstract int getFormatArgument();
+
+  /**
+   * Gets the argument number of the first supplied insert.
+   */
+  int getFirstArgument() { result = this.getFormatArgument() + 1 }
+}
+
+/** A class of types used for formatting. */
+private class FormatType extends Type {
+  FormatType() {
+    this instanceof StringType or
+    this instanceof SystemTextCompositeFormatClass
+  }
 }
 
 private class StringAndStringBuilderFormatMethods extends FormatMethod {
   StringAndStringBuilderFormatMethods() {
     (
       this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
-      this.getParameter(1).getType() instanceof StringType
+      this.getParameter(1).getType() instanceof FormatType
       or
       this.getParameter(0).getType() instanceof StringType
     ) and
@@ -36,6 +49,18 @@ private class StringAndStringBuilderFormatMethods extends FormatMethod {
     then result = 1
     else result = 0
   }
+}
+
+private class SystemMemoryExtensionsFormatMethods extends FormatMethod {
+  SystemMemoryExtensionsFormatMethods() {
+    this = any(SystemMemoryExtensionsClass c).getTryWriteMethod() and
+    this.getParameter(1).getType() instanceof SystemIFormatProviderInterface and
+    this.getParameter(2).getType() instanceof SystemTextCompositeFormatClass
+  }
+
+  override int getFormatArgument() { result = 2 }
+
+  override int getFirstArgument() { result = this.getFormatArgument() + 2 }
 }
 
 private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMethod {
@@ -220,7 +245,7 @@ class FormatCall extends MethodCall {
   int getFormatArgument() { result = this.getTarget().(FormatMethod).getFormatArgument() }
 
   /** Gets the argument number of the first supplied insert. */
-  int getFirstArgument() { result = this.getFormatArgument() + 1 }
+  int getFirstArgument() { result = this.getTarget().(FormatMethod).getFirstArgument() }
 
   /** Holds if this call has one or more insertions. */
   predicate hasInsertions() { exists(this.getArgument(this.getFirstArgument())) }
