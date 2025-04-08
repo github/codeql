@@ -72,7 +72,7 @@ jobs:
       
           echo "🔄 Waiting for branch '$BRANCH_NAME' to be visible on GitHub..."
           for (( i=1; i<=MAX_RETRIES; i++ )); do
-            if gh api "repos/:owner/:repo/branches/$BRANCH_NAME" > /dev/null 2>&1; then
+            if git ls-remote --exit-code origin "refs/heads/$BRANCH_NAME" > /dev/null 2>&1; then
               echo "✅ Branch is now visible on GitHub."
               break
             else
