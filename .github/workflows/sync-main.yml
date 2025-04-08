@@ -59,6 +59,9 @@ jobs:
             echo "Branch not yet visible to GitHub — waiting a bit more"
             sleep 10
           }
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create or update PR
         run: |
           git branch
