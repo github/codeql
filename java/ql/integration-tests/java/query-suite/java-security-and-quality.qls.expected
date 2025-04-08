@@ -1,0 +1,243 @@
+ql/java/ql/src/Advisory/Declarations/MissingOverrideAnnotation.ql
+ql/java/ql/src/Advisory/Deprecated Code/AvoidDeprecatedCallableAccess.ql
+ql/java/ql/src/Advisory/Documentation/ImpossibleJavadocThrows.ql
+ql/java/ql/src/Advisory/Documentation/SpuriousJavadocParam.ql
+ql/java/ql/src/Compatibility/JDK9/JdkInternalAccess.ql
+ql/java/ql/src/Compatibility/JDK9/UnderscoreIdentifier.ql
+ql/java/ql/src/DeadCode/UselessParameter.ql
+ql/java/ql/src/Diagnostics/ExtractionErrors.ql
+ql/java/ql/src/Diagnostics/ExtractionWarnings.ql
+ql/java/ql/src/Diagnostics/SuccessfullyExtractedFiles.ql
+ql/java/ql/src/Language Abuse/ChainedInstanceof.ql
+ql/java/ql/src/Language Abuse/IterableIterator.ql
+ql/java/ql/src/Language Abuse/OverridePackagePrivate.ql
+ql/java/ql/src/Language Abuse/TypeVarExtendsFinalType.ql
+ql/java/ql/src/Language Abuse/TypeVariableHidesType.ql
+ql/java/ql/src/Language Abuse/UselessNullCheck.ql
+ql/java/ql/src/Language Abuse/UselessTypeTest.ql
+ql/java/ql/src/Language Abuse/WrappedIterator.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/BadAbsOfRandom.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/ConstantExpAppearsNonConstant.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/InformationLoss.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/LShiftLargerThanTypeWidth.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/MultiplyRemainder.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/RandomUsedOnce.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/WhitespaceContradictsPrecedence.ql
+ql/java/ql/src/Likely Bugs/Cloning/MissingCallToSuperClone.ql
+ql/java/ql/src/Likely Bugs/Cloning/MissingMethodClone.ql
+ql/java/ql/src/Likely Bugs/Collections/ArrayIndexOutOfBounds.ql
+ql/java/ql/src/Likely Bugs/Collections/ContainsTypeMismatch.ql
+ql/java/ql/src/Likely Bugs/Collections/IteratorRemoveMayFail.ql
+ql/java/ql/src/Likely Bugs/Collections/ReadOnlyContainer.ql
+ql/java/ql/src/Likely Bugs/Collections/RemoveTypeMismatch.ql
+ql/java/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
+ql/java/ql/src/Likely Bugs/Comparison/CompareIdenticalValues.ql
+ql/java/ql/src/Likely Bugs/Comparison/CovariantCompareTo.ql
+ql/java/ql/src/Likely Bugs/Comparison/CovariantEquals.ql
+ql/java/ql/src/Likely Bugs/Comparison/EqualsArray.ql
+ql/java/ql/src/Likely Bugs/Comparison/HashedButNoHash.ql
+ql/java/ql/src/Likely Bugs/Comparison/IncomparableEquals.ql
+ql/java/ql/src/Likely Bugs/Comparison/InconsistentCompareTo.ql
+ql/java/ql/src/Likely Bugs/Comparison/InconsistentEqualsHashCode.ql
+ql/java/ql/src/Likely Bugs/Comparison/MissingInstanceofInEquals.ql
+ql/java/ql/src/Likely Bugs/Comparison/RefEqBoxed.ql
+ql/java/ql/src/Likely Bugs/Comparison/StringComparison.ql
+ql/java/ql/src/Likely Bugs/Comparison/UselessComparisonTest.ql
+ql/java/ql/src/Likely Bugs/Comparison/WrongNanComparison.ql
+ql/java/ql/src/Likely Bugs/Concurrency/CallsToConditionWait.ql
+ql/java/ql/src/Likely Bugs/Concurrency/CallsToRunnableRun.ql
+ql/java/ql/src/Likely Bugs/Concurrency/DateFormatThreadUnsafe.ql
+ql/java/ql/src/Likely Bugs/Concurrency/DoubleCheckedLocking.ql
+ql/java/ql/src/Likely Bugs/Concurrency/DoubleCheckedLockingWithInitRace.ql
+ql/java/ql/src/Likely Bugs/Concurrency/FutileSynchOnField.ql
+ql/java/ql/src/Likely Bugs/Concurrency/NonSynchronizedOverride.ql
+ql/java/ql/src/Likely Bugs/Concurrency/NotifyNotNotifyAll.ql
+ql/java/ql/src/Likely Bugs/Concurrency/SleepWithLock.ql
+ql/java/ql/src/Likely Bugs/Concurrency/StartInConstructor.ql
+ql/java/ql/src/Likely Bugs/Concurrency/SynchOnBoxedType.ql
+ql/java/ql/src/Likely Bugs/Concurrency/SynchSetUnsynchGet.ql
+ql/java/ql/src/Likely Bugs/Concurrency/SynchWriteObject.ql
+ql/java/ql/src/Likely Bugs/Concurrency/UnreleasedLock.ql
+ql/java/ql/src/Likely Bugs/Finalization/NullifiedSuperFinalize.ql
+ql/java/ql/src/Likely Bugs/Frameworks/JUnit/BadSuiteMethod.ql
+ql/java/ql/src/Likely Bugs/Frameworks/Swing/BadlyOverriddenAdapter.ql
+ql/java/ql/src/Likely Bugs/Inheritance/NoNonFinalInConstructor.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/ContainerSizeCmpZero.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/ContradictoryTypeChecks.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/DangerousNonCircuitLogic.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/EqualsTypo.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/HashCodeTypo.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/MissingFormatArg.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/MissingSpaceTypo.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/SelfAssignment.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/StringBufferCharInit.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/SuspiciousDateFormat.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/ToStringTypo.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/UnusedFormatArg.ql
+ql/java/ql/src/Likely Bugs/Nullness/NullAlways.ql
+ql/java/ql/src/Likely Bugs/Nullness/NullExprDeref.ql
+ql/java/ql/src/Likely Bugs/Nullness/NullMaybe.ql
+ql/java/ql/src/Likely Bugs/Reflection/AnnotationPresentCheck.ql
+ql/java/ql/src/Likely Bugs/Resource Leaks/CloseReader.ql
+ql/java/ql/src/Likely Bugs/Resource Leaks/CloseSql.ql
+ql/java/ql/src/Likely Bugs/Resource Leaks/CloseWriter.ql
+ql/java/ql/src/Likely Bugs/Serialization/IncorrectSerialVersionUID.ql
+ql/java/ql/src/Likely Bugs/Serialization/IncorrectSerializableMethods.ql
+ql/java/ql/src/Likely Bugs/Serialization/MissingVoidConstructorOnExternalizable.ql
+ql/java/ql/src/Likely Bugs/Serialization/MissingVoidConstructorsOnSerializable.ql
+ql/java/ql/src/Likely Bugs/Serialization/NonSerializableInnerClass.ql
+ql/java/ql/src/Likely Bugs/Serialization/ReadResolveObject.ql
+ql/java/ql/src/Likely Bugs/Statements/ContinueInFalseLoop.ql
+ql/java/ql/src/Likely Bugs/Statements/MissingEnumInSwitch.ql
+ql/java/ql/src/Likely Bugs/Statements/PartiallyMaskedCatch.ql
+ql/java/ql/src/Likely Bugs/Statements/UseBraces.ql
+ql/java/ql/src/Likely Bugs/Termination/ConstantLoopCondition.ql
+ql/java/ql/src/Likely Bugs/Termination/SpinOnField.ql
+ql/java/ql/src/Metrics/Summaries/LinesOfCode.ql
+ql/java/ql/src/Metrics/Summaries/LinesOfCodeJava.ql
+ql/java/ql/src/Metrics/Summaries/LinesOfCodeKotlin.ql
+ql/java/ql/src/Performance/InefficientEmptyStringTest.ql
+ql/java/ql/src/Performance/InefficientKeySetIterator.ql
+ql/java/ql/src/Performance/InefficientOutputStream.ql
+ql/java/ql/src/Performance/InefficientPrimConstructor.ql
+ql/java/ql/src/Performance/InnerClassCouldBeStatic.ql
+ql/java/ql/src/Performance/NewStringString.ql
+ql/java/ql/src/Security/CWE/CWE-020/OverlyLargeRange.ql
+ql/java/ql/src/Security/CWE/CWE-022/TaintedPath.ql
+ql/java/ql/src/Security/CWE/CWE-022/ZipSlip.ql
+ql/java/ql/src/Security/CWE/CWE-023/PartialPathTraversal.ql
+ql/java/ql/src/Security/CWE/CWE-023/PartialPathTraversalFromRemote.ql
+ql/java/ql/src/Security/CWE/CWE-074/JndiInjection.ql
+ql/java/ql/src/Security/CWE/CWE-074/XsltInjection.ql
+ql/java/ql/src/Security/CWE/CWE-078/ExecRelative.ql
+ql/java/ql/src/Security/CWE/CWE-078/ExecTainted.ql
+ql/java/ql/src/Security/CWE/CWE-078/ExecTaintedEnvironment.ql
+ql/java/ql/src/Security/CWE/CWE-078/ExecUnescaped.ql
+ql/java/ql/src/Security/CWE/CWE-079/AndroidWebViewAddJavascriptInterface.ql
+ql/java/ql/src/Security/CWE/CWE-079/AndroidWebViewSettingsEnabledJavaScript.ql
+ql/java/ql/src/Security/CWE/CWE-079/XSS.ql
+ql/java/ql/src/Security/CWE/CWE-089/SqlConcatenated.ql
+ql/java/ql/src/Security/CWE/CWE-089/SqlTainted.ql
+ql/java/ql/src/Security/CWE/CWE-090/LdapInjection.ql
+ql/java/ql/src/Security/CWE/CWE-094/ArbitraryApkInstallation.ql
+ql/java/ql/src/Security/CWE/CWE-094/GroovyInjection.ql
+ql/java/ql/src/Security/CWE/CWE-094/InsecureBeanValidation.ql
+ql/java/ql/src/Security/CWE/CWE-094/JexlInjection.ql
+ql/java/ql/src/Security/CWE/CWE-094/MvelInjection.ql
+ql/java/ql/src/Security/CWE/CWE-094/SpelInjection.ql
+ql/java/ql/src/Security/CWE/CWE-094/TemplateInjection.ql
+ql/java/ql/src/Security/CWE/CWE-1104/MavenPomDependsOnBintray.ql
+ql/java/ql/src/Security/CWE/CWE-113/NettyResponseSplitting.ql
+ql/java/ql/src/Security/CWE/CWE-113/ResponseSplitting.ql
+ql/java/ql/src/Security/CWE/CWE-117/LogInjection.ql
+ql/java/ql/src/Security/CWE/CWE-1204/StaticInitializationVector.ql
+ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayConstruction.ql
+ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayIndex.ql
+ql/java/ql/src/Security/CWE/CWE-134/ExternallyControlledFormatString.ql
+ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql
+ql/java/ql/src/Security/CWE/CWE-190/ArithmeticUncontrolled.ql
+ql/java/ql/src/Security/CWE/CWE-190/ComparisonWithWiderType.ql
+ql/java/ql/src/Security/CWE/CWE-200/AndroidSensitiveNotifications.ql
+ql/java/ql/src/Security/CWE/CWE-200/AndroidSensitiveTextField.ql
+ql/java/ql/src/Security/CWE/CWE-200/AndroidWebViewSettingsAllowsContentAccess.ql
+ql/java/ql/src/Security/CWE/CWE-200/AndroidWebViewSettingsFileAccess.ql
+ql/java/ql/src/Security/CWE/CWE-200/SpringBootActuators.ql
+ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql
+ql/java/ql/src/Security/CWE/CWE-209/SensitiveDataExposureThroughErrorMessage.ql
+ql/java/ql/src/Security/CWE/CWE-209/StackTraceExposure.ql
+ql/java/ql/src/Security/CWE/CWE-266/IntentUriPermissionManipulation.ql
+ql/java/ql/src/Security/CWE/CWE-273/UnsafeCertTrust.ql
+ql/java/ql/src/Security/CWE/CWE-287/AndroidInsecureKeys.ql
+ql/java/ql/src/Security/CWE/CWE-287/AndroidInsecureLocalAuthentication.ql
+ql/java/ql/src/Security/CWE/CWE-295/AndroidMissingCertificatePinning.ql
+ql/java/ql/src/Security/CWE/CWE-295/ImproperWebViewCertificateValidation.ql
+ql/java/ql/src/Security/CWE/CWE-295/InsecureTrustManager.ql
+ql/java/ql/src/Security/CWE/CWE-297/InsecureJavaMail.ql
+ql/java/ql/src/Security/CWE/CWE-297/UnsafeHostnameVerification.ql
+ql/java/ql/src/Security/CWE/CWE-312/AllowBackupAttributeEnabled.ql
+ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageAndroidDatabase.ql
+ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageAndroidFilesystem.ql
+ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageCookie.ql
+ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageProperties.ql
+ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageSharedPrefs.ql
+ql/java/ql/src/Security/CWE/CWE-326/InsufficientKeySize.ql
+ql/java/ql/src/Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
+ql/java/ql/src/Security/CWE/CWE-327/MaybeBrokenCryptoAlgorithm.ql
+ql/java/ql/src/Security/CWE/CWE-330/InsecureRandomness.ql
+ql/java/ql/src/Security/CWE/CWE-335/PredictableSeed.ql
+ql/java/ql/src/Security/CWE/CWE-338/JHipsterGeneratedPRNG.ql
+ql/java/ql/src/Security/CWE/CWE-347/MissingJWTSignatureCheck.ql
+ql/java/ql/src/Security/CWE/CWE-352/CsrfUnprotectedRequestType.ql
+ql/java/ql/src/Security/CWE/CWE-352/SpringCSRFProtection.ql
+ql/java/ql/src/Security/CWE/CWE-367/TOCTOURace.ql
+ql/java/ql/src/Security/CWE/CWE-421/SocketAuthRace.ql
+ql/java/ql/src/Security/CWE/CWE-441/UnsafeContentUriResolution.ql
+ql/java/ql/src/Security/CWE/CWE-470/FragmentInjection.ql
+ql/java/ql/src/Security/CWE/CWE-470/FragmentInjectionInPreferenceActivity.ql
+ql/java/ql/src/Security/CWE/CWE-489/DebuggableAttributeEnabled.ql
+ql/java/ql/src/Security/CWE/CWE-489/WebviewDebuggingEnabled.ql
+ql/java/ql/src/Security/CWE/CWE-501/TrustBoundaryViolation.ql
+ql/java/ql/src/Security/CWE/CWE-502/UnsafeDeserialization.ql
+ql/java/ql/src/Security/CWE/CWE-522/InsecureBasicAuth.ql
+ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql
+ql/java/ql/src/Security/CWE/CWE-524/SensitiveKeyboardCache.ql
+ql/java/ql/src/Security/CWE/CWE-532/SensitiveInfoLog.ql
+ql/java/ql/src/Security/CWE/CWE-552/UrlForward.ql
+ql/java/ql/src/Security/CWE/CWE-601/UrlRedirect.ql
+ql/java/ql/src/Security/CWE/CWE-611/XXE.ql
+ql/java/ql/src/Security/CWE/CWE-614/InsecureCookie.ql
+ql/java/ql/src/Security/CWE/CWE-643/XPathInjection.ql
+ql/java/ql/src/Security/CWE/CWE-676/PotentiallyDangerousFunction.ql
+ql/java/ql/src/Security/CWE/CWE-681/NumericCastTainted.ql
+ql/java/ql/src/Security/CWE/CWE-730/PolynomialReDoS.ql
+ql/java/ql/src/Security/CWE/CWE-730/ReDoS.ql
+ql/java/ql/src/Security/CWE/CWE-730/RegexInjection.ql
+ql/java/ql/src/Security/CWE/CWE-732/ReadingFromWorldWritableFile.ql
+ql/java/ql/src/Security/CWE/CWE-749/UnsafeAndroidAccess.ql
+ql/java/ql/src/Security/CWE/CWE-780/RsaWithoutOaep.ql
+ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsApiCall.ql
+ql/java/ql/src/Security/CWE/CWE-807/ConditionalBypass.ql
+ql/java/ql/src/Security/CWE/CWE-807/TaintedPermissionsCheck.ql
+ql/java/ql/src/Security/CWE/CWE-829/InsecureDependencyResolution.ql
+ql/java/ql/src/Security/CWE/CWE-835/InfiniteLoop.ql
+ql/java/ql/src/Security/CWE/CWE-917/OgnlInjection.ql
+ql/java/ql/src/Security/CWE/CWE-918/RequestForgery.ql
+ql/java/ql/src/Security/CWE/CWE-925/ImproperIntentVerification.ql
+ql/java/ql/src/Security/CWE/CWE-926/ContentProviderIncompletePermissions.ql
+ql/java/ql/src/Security/CWE/CWE-926/ImplicitlyExportedAndroidComponent.ql
+ql/java/ql/src/Security/CWE/CWE-927/ImplicitPendingIntents.ql
+ql/java/ql/src/Security/CWE/CWE-927/SensitiveCommunication.ql
+ql/java/ql/src/Security/CWE/CWE-927/SensitiveResultReceiver.ql
+ql/java/ql/src/Security/CWE/CWE-940/AndroidIntentRedirection.ql
+ql/java/ql/src/Telemetry/DatabaseQualityDiagnostics.ql
+ql/java/ql/src/Telemetry/ExternalLibraryUsage.ql
+ql/java/ql/src/Telemetry/ExtractorInformation.ql
+ql/java/ql/src/Telemetry/SupportedExternalApis.ql
+ql/java/ql/src/Telemetry/SupportedExternalSinks.ql
+ql/java/ql/src/Telemetry/SupportedExternalSources.ql
+ql/java/ql/src/Telemetry/SupportedExternalTaint.ql
+ql/java/ql/src/Telemetry/UnsupportedExternalAPIs.ql
+ql/java/ql/src/Violations of Best Practice/Boxed Types/BoxedVariable.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/CreatesEmptyZip.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/DeadRefTypes.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/InterfaceCannotBeImplemented.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/UnreadLocal.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/UnusedLabel.ql
+ql/java/ql/src/Violations of Best Practice/Declarations/NoConstantsOnly.ql
+ql/java/ql/src/Violations of Best Practice/Exception Handling/IgnoreExceptionalReturn.ql
+ql/java/ql/src/Violations of Best Practice/Exception Handling/NumberFormatException.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/AbstractToConcreteCollection.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/ExposeRepresentation.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/GetClassGetResource.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/AmbiguousOuterSuper.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingMethodNames.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverloading.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/FieldMasksSuperField.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsFieldConfusing.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/SameNameAsSuper.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToRunFinalizersOnExit.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToStringToString.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DefaultToString.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/NextFromIterator.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/PrintLnArray.ql

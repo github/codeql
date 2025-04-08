@@ -1,0 +1,11 @@
+ql/java/ql/src/Language Abuse/TypeVariableHidesType.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
+ql/java/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
+ql/java/ql/src/Likely Bugs/Comparison/IncomparableEquals.ql
+ql/java/ql/src/Likely Bugs/Comparison/InconsistentEqualsHashCode.ql
+ql/java/ql/src/Likely Bugs/Comparison/MissingInstanceofInEquals.ql
+ql/java/ql/src/Likely Bugs/Comparison/RefEqBoxed.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/ContradictoryTypeChecks.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/SuspiciousDateFormat.ql
+ql/java/ql/src/Likely Bugs/Resource Leaks/CloseReader.ql
+ql/java/ql/src/Likely Bugs/Resource Leaks/CloseWriter.ql
