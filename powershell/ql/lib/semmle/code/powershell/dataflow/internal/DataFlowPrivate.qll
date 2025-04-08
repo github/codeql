@@ -140,6 +140,8 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ArrayExprCfgNode)
     or
+    nodeTo.asExpr().(CfgNodes::ExprNodes::PipelineCfgNode).getLastComponent() = nodeFrom.asExpr()
+    or
     exists(CfgNodes::ExprCfgNode e |
       e = nodeFrom.(AstNode).getCfgNode() and
       isReturned(e) and

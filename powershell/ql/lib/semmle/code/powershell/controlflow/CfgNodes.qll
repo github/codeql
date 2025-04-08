@@ -859,6 +859,8 @@ module ExprNodes {
     ExprCfgNode getComponent(int i) { e.hasCfgChild(e.getComponent(i), this, result) }
 
     ExprCfgNode getAComponent() { result = this.getComponent(_) }
+
+    ExprCfgNode getLastComponent() { e.hasCfgChild(e.getLastComponent(), this, result) }
   }
 
   private class PipelineChainChildMapping extends ExprChildMapping, PipelineChain {
