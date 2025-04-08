@@ -91,6 +91,11 @@ module PathResolution {
   private predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
 
   /**
+   * Holds if `expr` should be resolved, because it is used in an import.
+   */
+  private predicate isRelevantPathExpr(PathExpr expr) { expr = any(Import imprt).getImportedPath() }
+
+  /**
    * Gets an access to `__dirname`.
    */
   private VarAccess dirname() { result.getName() = "__dirname" }
@@ -222,7 +227,7 @@ module PathResolution {
   pragma[nomagic]
   private TSConfig getTSConfigFromPathExpr(PathExpr expr) {
     result.getAnAffectedFile() = expr.getFile() and
-    expr = any(Import imprt).getImportedPath()
+    isRelevantPathExpr(expr)
   }
 
   //
@@ -362,7 +367,7 @@ module PathResolution {
 
   private module ResolvePathExprConfig implements ResolvePathsSig {
     additional predicate shouldResolve(PathExpr expr, Container base, string path) {
-      expr = any(Import imprt).getImportedPath() and
+      isRelevantPathExpr(expr) and
       (
         replacedPath(expr, base, path)
         or
