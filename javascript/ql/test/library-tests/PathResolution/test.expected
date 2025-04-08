@@ -77,3 +77,4 @@
 | import-packages.ts:26:1:26:46 | import  ... oo.js'; | TSConfigOutDir/src/foo.ts |
 | import-packages.ts:28:1:28:24 | import  ... older'; | MainIsFolder/src/index.ts |
 | import-packages.ts:29:1:29:33 | import  ... older'; | MainIsFolder/src/index.ts |
+| import-packages.ts:31:1:31:27 | import  ... nsSrc'; | DistContainsSrc/src/foo.ts |
