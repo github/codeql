@@ -48,7 +48,7 @@ jobs:
           echo "::endgroup::"
       - name: Push sync branch and ensure visibility
         run: |
-          git push origin sync-main-pr --force
+          git push origin sync-main-pr
 
           BRANCH_NAME="sync-main-pr"
           COMMIT_SHA=$(git rev-parse HEAD)
