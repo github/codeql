@@ -46,21 +46,48 @@ jobs:
           git merge codeql-cli/latest
           set +x
           echo "::endgroup::"
+      # - name: Push sync branch
+      #   run: |
+      #     git push origin sync-main-pr --force
+      #     # Ensure branch is visible to GitHub
+      #     gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
+      #       echo "Branch not yet visible to GitHub — waiting a bit more"
+      #       sleep 10
+      #     }
+      #     git branch
+      #     gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
+      #       echo "Branch not yet visible to GitHub — waiting a bit more"
+      #       sleep 10
+      #     }
+      #     gh api repos/:owner/:repo/branches/sync-main-pr --jq .
+      #     git ls-remote origin
+      #   env:
+      #     GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Push sync branch
         run: |
+          # Push the branch
           git push origin sync-main-pr --force
-          # Ensure branch is visible to GitHub
-          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
-            echo "Branch not yet visible to GitHub — waiting a bit more"
-            sleep 10
-          }
-          git branch
-          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
-            echo "Branch not yet visible to GitHub — waiting a bit more"
-            sleep 10
-          }
-          gh api repos/:owner/:repo/branches/sync-main-pr --jq .
-          git ls-remote origin
+          
+          # Wait for the commit SHA to be indexed
+          COMMIT_SHA=$(git rev-parse HEAD)
+          MAX_RETRIES=12
+          SLEEP_SECONDS=5
+          for (( i=1; i<=MAX_RETRIES; i++ )); do
+            echo "Checking if commit $COMMIT_SHA is visible on GitHub (attempt $i)..."
+            if gh api repos/:owner/:repo/commits/$COMMIT_SHA > /dev/null 2>&1; then
+              echo "✅ Commit is now visible on GitHub."
+              break
+            else
+              echo "❌ Commit not yet visible — sleeping ${SLEEP_SECONDS}s"
+              sleep $SLEEP_SECONDS
+            fi
+          done
+          
+          if (( i > MAX_RETRIES )); then
+            echo "❌ Commit $COMMIT_SHA never became visible after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
