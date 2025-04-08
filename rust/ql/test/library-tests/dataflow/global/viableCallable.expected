@@ -60,8 +60,10 @@
 | main.rs:238:17:238:25 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:239:9:239:15 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:242:5:242:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:246:13:246:55 | ...::block_on(...) | file://:0:0:0:0 | repo:https://github.com/rust-lang/futures-rs:futures-executor::_::crate::local_pool::block_on |
 | main.rs:246:41:246:54 | async_source(...) | main.rs:227:1:231:1 | fn async_source |
 | main.rs:247:5:247:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:249:5:249:62 | ...::block_on(...) | file://:0:0:0:0 | repo:https://github.com/rust-lang/futures-rs:futures-executor::_::crate::local_pool::block_on |
 | main.rs:249:33:249:61 | test_async_await_async_part(...) | main.rs:233:1:243:1 | fn test_async_await_async_part |
 | main.rs:253:5:253:22 | data_out_of_call(...) | main.rs:16:1:19:1 | fn data_out_of_call |
 | main.rs:254:5:254:35 | data_out_of_call_side_effect1(...) | main.rs:35:1:40:1 | fn data_out_of_call_side_effect1 |

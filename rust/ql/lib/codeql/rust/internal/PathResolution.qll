@@ -194,21 +194,11 @@ abstract class ItemNode extends Locatable {
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
     or
     name = "crate" and
-    result =
-      any(CrateItemNode crate |
-        this = crate.getASourceFile()
-        or
-        this = crate.getModuleNode()
-      )
+    this = result.(CrateItemNode).getARootModuleNode()
     or
     // todo: implement properly
     name = "$crate" and
-    result =
-      any(CrateItemNode crate |
-        this = crate.getASourceFile()
-        or
-        this = crate.getModuleNode()
-      ).(Crate).getADependency*() and
+    result = any(CrateItemNode crate | this = crate.getARootModuleNode()).(Crate).getADependency*() and
     result.(CrateItemNode).isPotentialDollarCrateTarget()
   }
 
@@ -237,7 +227,7 @@ abstract private class ModuleLikeNode extends ItemNode {
   predicate isRoot() {
     this instanceof SourceFileItemNode
     or
-    this = any(CrateItemNode c).getModuleNode()
+    this = any(Crate c).getModule()
   }
 }
 
@@ -292,6 +282,15 @@ class CrateItemNode extends ItemNode instanceof Crate {
       fileImport(mod, result) and
       not result = any(Crate other).getSourceFile()
     )
+  }
+
+  /**
+   * Gets a root module node belonging to this crate.
+   */
+  ModuleLikeNode getARootModuleNode() {
+    result = this.getASourceFile()
+    or
+    result = super.getModule()
   }
 
   pragma[nomagic]
@@ -373,6 +372,8 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   /** Gets an item that may refer to this node using `Self`. */
   pragma[nomagic]
   ItemNode getAnItemInSelfScope() {
+    result = this
+    or
     result.getImmediateParent() = this
     or
     exists(ItemNode mid |
