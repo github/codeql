@@ -48,14 +48,15 @@ jobs:
           echo "::endgroup::"
       - name: Push sync branch
         run: |
+          echo "$GITHUB_TOKEN" | gh auth login --with-token
           git push origin sync-main-pr --force
           # Ensure branch is visible to GitHub
-          gh api repos/:owner/:repo/branches/sync-main-pr || {
+          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
             echo "Branch not yet visible to GitHub — waiting a bit more"
             sleep 10
           }
           git branch
-          gh api repos/:owner/:repo/branches/sync-main-pr || {
+          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
             echo "Branch not yet visible to GitHub — waiting a bit more"
             sleep 10
           }
@@ -65,12 +66,12 @@ jobs:
       - name: Create or update PR
         run: |
           git branch
-          gh api repos/:owner/:repo/branches/sync-main-pr || {
+          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
             echo "Branch not yet visible to GitHub — waiting a bit more"
             sleep 10
           }
           git branch
-          gh api repos/:owner/:repo/branches/sync-main-pr
+          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD)
           PR_URL=$(gh pr list --head sync-main-pr --json url --jq '.[0].url')
           if [ -z "$PR_URL" ]; then
             gh pr create \
