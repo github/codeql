@@ -1,4 +1,160 @@
 - description: Security-and-quality queries for Java
 - queries: .
-- apply: security-and-quality-selectors.yml
-  from: codeql/suite-helpers
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision:
+    - high
+    - very-high
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision: medium
+    problem.severity:
+      - error
+      - warning
+- include:
+    kind:
+    - diagnostic
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
+- exclude:
+    deprecated: //
+- exclude:
+    query path:
+      - /^experimental\/.*/
+      - Metrics/Summaries/FrameworkCoverage.ql
+      - /Diagnostics/Internal/.*/
+- exclude:
+    tags contain:
+      - modeleditor
+      - modelgenerator
+
+
+java/abs-of-random
+java/abstract-to-concrete-cast
+java/call-to-object-tostring
+java/call-to-thread-run
+java/chained-type-tests
+java/class-name-matches-super-class
+java/comparison-of-identical-expressions
+java/comparison-with-nan
+java/confusing-method-name
+java/confusing-method-signature
+java/constant-comparison
+java/constant-loop-condition
+java/constants-only-interface
+java/continue-in-false-loop
+java/contradictory-type-checks
+java/database-resource-leak
+java/deprecated-call
+java/dereferenced-expr-may-be-null
+java/dereferenced-value-is-always-null
+java/dereferenced-value-may-be-null
+java/empty-container
+java/empty-zip-file-entry
+java/equals-on-arrays
+java/equals-on-unrelated-types
+java/equals-typo
+java/evaluation-to-constant
+java/field-masks-super-field
+java/hashcode-typo
+java/hashing-without-hashcode
+java/ignored-error-status-of-call
+java/implicit-cast-in-compound-assignment
+java/inconsistent-compareto-and-equals
+java/inconsistent-equals-and-hashcode
+java/inconsistent-javadoc-throws
+java/inconsistent-sync-writeobject
+java/incorrect-serial-version-uid
+java/index-out-of-bounds
+java/ineffective-annotation-present-check
+java/inefficient-boxed-constructor
+java/inefficient-empty-string-test
+java/inefficient-key-set-iterator
+java/inefficient-output-stream
+java/inefficient-string-constructor
+java/input-resource-leak
+java/integer-multiplication-cast-to-long
+java/internal-representation-exposure
+java/iterable-wraps-iterator
+java/iterator-hasnext-calls-next
+java/iterator-implements-iterable
+java/iterator-remove-failure
+java/jdk-internal-api-access
+java/local-shadows-field
+java/local-variable-is-never-read
+java/lshift-larger-than-type-width
+java/misleading-indentation
+java/missing-call-to-super-clone
+java/missing-case-in-switch
+java/missing-clone-method
+java/missing-format-argument
+java/missing-no-arg-constructor-on-externalizable
+java/missing-no-arg-constructor-on-serializable
+java/missing-override-annotation
+java/missing-space-in-concatenation
+java/missing-super-finalize
+java/multiplication-of-remainder
+java/non-final-call-in-constructor
+java/non-null-boxed-variable
+java/non-overriding-package-private
+java/non-serializable-inner-class
+java/non-short-circuit-evaluation
+java/non-static-nested-class
+java/non-sync-override
+java/notify-instead-of-notify-all
+java/output-resource-leak
+java/print-array
+java/random-used-once
+java/redundant-assignment
+java/reference-equality-of-boxed-types
+java/reference-equality-on-strings
+java/run-finalizers-on-exit
+java/sleep-with-lock-held
+java/spin-on-field
+java/string-buffer-char-init
+java/subtle-inherited-call
+java/suspicious-date-format
+java/sync-on-boxed-types
+java/test-for-negative-container-size
+java/thread-start-in-constructor
+java/thread-unsafe-dateformat
+java/tostring-typo
+java/type-bound-extends-final
+java/type-mismatch-access
+java/type-mismatch-modification
+java/type-variable-hides-type
+java/uncaught-number-format-exception
+java/unchecked-cast-in-equals
+java/underscore-identifier
+java/unimplementable-interface
+java/unknown-javadoc-parameter
+java/unreachable-catch-clause
+java/unreleased-lock
+java/unsafe-double-checked-locking
+java/unsafe-double-checked-locking-init-order
+java/unsafe-get-resource
+java/unsafe-sync-on-field
+java/unsynchronized-getter
+java/unused-container
+java/unused-format-argument
+java/unused-label
+java/unused-parameter
+java/unused-reference-type
+java/useless-null-check
+java/useless-tostring-call
+java/useless-type-test
+java/wait-on-condition-interface
+java/whitespace-contradicts-precedence
+java/wrong-compareto-signature
+java/wrong-equals-signature
+java/wrong-junit-suite-signature
+java/wrong-object-serialization-signature
+java/wrong-readresolve-signature
+java/wrong-swing-event-adapter-signature
