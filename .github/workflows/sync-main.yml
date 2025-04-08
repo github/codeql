@@ -13,7 +13,6 @@ on:
 jobs:
 
   sync-main:
-  
     name: Sync-main
     runs-on: ubuntu-latest
     if: github.repository == 'microsoft/codeql'
@@ -113,3 +112,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+
