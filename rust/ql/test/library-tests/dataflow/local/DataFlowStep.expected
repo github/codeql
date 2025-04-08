@@ -90,8 +90,8 @@ localStep
 | main.rs:66:9:66:9 | a | main.rs:66:9:66:9 | [SSA] a |
 | main.rs:66:9:66:9 | a | main.rs:66:9:66:9 | a |
 | main.rs:66:13:71:5 | 'block: { ... } | main.rs:66:9:66:9 | a |
-| main.rs:68:13:68:26 | break ''block 1 | main.rs:66:13:71:5 | 'block: { ... } |
-| main.rs:68:26:68:26 | 1 | main.rs:68:13:68:26 | break ''block 1 |
+| main.rs:68:13:68:26 | break 'block 1 | main.rs:66:13:71:5 | 'block: { ... } |
+| main.rs:68:26:68:26 | 1 | main.rs:68:13:68:26 | break 'block 1 |
 | main.rs:70:9:70:9 | 2 | main.rs:66:13:71:5 | 'block: { ... } |
 | main.rs:72:5:72:5 | a | main.rs:65:38:73:1 | { ... } |
 | main.rs:75:22:75:22 | [SSA] b | main.rs:77:12:77:12 | b |
@@ -102,10 +102,10 @@ localStep
 | main.rs:76:9:76:9 | a | main.rs:76:9:76:9 | [SSA] a |
 | main.rs:76:9:76:9 | a | main.rs:76:9:76:9 | a |
 | main.rs:76:13:81:5 | 'block: { ... } | main.rs:76:9:76:9 | a |
-| main.rs:78:13:78:26 | break ''block 1 | main.rs:76:13:81:5 | 'block: { ... } |
-| main.rs:78:26:78:26 | 1 | main.rs:78:13:78:26 | break ''block 1 |
-| main.rs:80:9:80:22 | break ''block 2 | main.rs:76:13:81:5 | 'block: { ... } |
-| main.rs:80:22:80:22 | 2 | main.rs:80:9:80:22 | break ''block 2 |
+| main.rs:78:13:78:26 | break 'block 1 | main.rs:76:13:81:5 | 'block: { ... } |
+| main.rs:78:26:78:26 | 1 | main.rs:78:13:78:26 | break 'block 1 |
+| main.rs:80:9:80:22 | break 'block 2 | main.rs:76:13:81:5 | 'block: { ... } |
+| main.rs:80:22:80:22 | 2 | main.rs:80:9:80:22 | break 'block 2 |
 | main.rs:82:5:82:5 | a | main.rs:75:38:83:1 | { ... } |
 | main.rs:89:9:89:9 | [SSA] i | main.rs:90:11:90:11 | i |
 | main.rs:89:9:89:9 | i | main.rs:89:9:89:9 | [SSA] i |
