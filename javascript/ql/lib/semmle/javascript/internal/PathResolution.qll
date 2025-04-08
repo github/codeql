@@ -74,6 +74,16 @@ private module AutomaticFileExtensions {
 
 module PathResolution {
   /**
+   * Provides an extension point for mapping build directories to corresonding source directories.
+   */
+  class AdditionalBuildPathMapping extends Unit {
+    /**
+     * Gets a source directory whose contents are compiled to `base/buildDir`.
+     */
+    Container getSourceFromBuildTarget(Container base, string buildDir) { none() }
+  }
+
+  /**
    * Holds if `path` is a relative path, in the sense that it must be resolved relative to
    * its enclosing directory.
    */
@@ -352,7 +362,12 @@ module PathResolution {
 
     predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
 
-    predicate getAnAdditionalChild = AutomaticFileExtensions::getAnAdditionalChild/2;
+    // predicate getAnAdditionalChild = AutomaticFileExtensions::getAnAdditionalChild/2;
+    Container getAnAdditionalChild(Container base, string name) {
+      result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
+      or
+      result = ReverseBuildDir::getAnAdditionalChild(base, name)
+    }
   }
 
   private module ResolvePathExpr = ResolvePaths<ResolvePathExprConfig>;
@@ -382,13 +397,7 @@ module PathResolution {
     Container getAnAdditionalChild(Container base, string name) {
       result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
       or
-      // When resolving an output-like folder that doesn't exist, try resolving from 'src'
-      exists(Folder folder | base = folder |
-        folder = any(PackageJson pkg).getJsonFile().getParentContainer() and
-        name = getABuildOutputFolderName() and
-        not exists(folder.getChildContainer(name)) and
-        result = folder.getChildContainer(getASrcFolderName())
-      )
+      result = ReverseBuildDir::getAnAdditionalChild(base, name)
     }
   }
 
@@ -399,6 +408,33 @@ module PathResolution {
       ResolvePackageJsonPaths::shouldResolve(pkg, base, path, ["main", "module"]) and
       result = ResolvePackageMain::resolve(base, path)
     )
+  }
+
+  /**
+   * Provides a `getAnAdditionalChild` predicate for mapping files inside a build directory
+   * back to their corresponding source files.
+   */
+  private module ReverseBuildDir {
+    Container getAnAdditionalChild(Container base, string name) {
+      // Redirect './bar' to 'foo' given a tsconfig like:
+      //   { include: ["foo"], compilerOptions: { outDir: "./bar" }}
+      exists(TSConfig tsconfig |
+        name =
+          tsconfig.getCompilerOptions().getPropStringValue("outDir").regexpReplaceAll("^\\./", "") and
+        base = tsconfig.getFolder() and
+        result = tsconfig.getAnIncludedBaseContainer()
+      )
+      or
+      // Heuristic version of the above based on commonly used source and build folder names
+      exists(Folder folder | base = folder |
+        folder = any(PackageJson pkg).getJsonFile().getParentContainer() and
+        name = getABuildOutputFolderName() and
+        not exists(folder.getChildContainer(name)) and
+        result = folder.getChildContainer(getASrcFolderName())
+      )
+      or
+      result = any(AdditionalBuildPathMapping b).getSourceFromBuildTarget(base, name)
+    }
   }
 
   /**
@@ -465,7 +501,7 @@ module PathResolution {
     final private class FinalPathExpr = PathExpr;
 
     class PathExprToDebug extends FinalPathExpr {
-      PathExprToDebug() { this.getValue() = "~/core/handlers/RequestHandler" }
+      PathExprToDebug() { this.getValue() = "ai" }
     }
 
     query PathExprToDebug pathExprs() { any() }

@@ -22,3 +22,5 @@ import '@example/package-guess2'; // $ importTarget=PackageGuess2/blah/stuff.ts
 
 import './PackageWithMainExt'; // $ importTarget=PackageWithMainExt/lib/main.ts
 import '@example/package-with-main-ext'; // $ importTarget=PackageWithMainExt/lib/main.ts
+
+import './TSConfigOutDir/customOutDir/foo.js'; // $ importTarget=TSConfigOutDir/src/foo.ts
