@@ -58,10 +58,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create or update PR
         run: |
-          if ! gh pr view -R microsoft/codeql -t 'Sync Main' > /dev/null 2>&1; then
-            gh pr create --repo microsoft/codeql --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
+          if gh pr list --repo microsoft/codeql --head sync-main-pr --base main --json number --jq '.[0].number' > /dev/null; then
+            echo "PR from sync-main-pr to main already exists. Exiting gracefully."
           else
-            echo "PR 'Sync Main' already exists."
+            gh pr create --repo microsoft/codeql --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
           fi
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
