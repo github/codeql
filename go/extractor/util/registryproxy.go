@@ -91,6 +91,9 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 
 	checkEnvVars()
 
+	// Preserve environment variables
+	cmd.Env = os.Environ()
+
 	if proxy_address != "" {
 		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTP_PROXY=%s", proxy_address))
 		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTPS_PROXY=%s", proxy_address))
