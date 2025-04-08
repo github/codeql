@@ -457,7 +457,11 @@ module PathResolution {
         folder = any(PackageJson pkg).getJsonFile().getParentContainer() and
         name = getABuildOutputFolderName() and
         not exists(folder.getChildContainer(name)) and
-        result = folder.getChildContainer(getASrcFolderName())
+        (
+          result = folder.getChildContainer(getASrcFolderName())
+          or
+          result = folder
+        )
       )
       or
       result = any(AdditionalBuildPathMapping b).getSourceFromBuildTarget(base, name)
