@@ -7,7 +7,8 @@ def test(codeql, java, cwd):
     # This serves the "repo" directory on https://locahost:4443
     command = ["python3", "../server.py"]
     if runs_on.github_actions and runs_on.posix:
-        # On GitHub Actions, we try to run the server with higher priority
+        # On GitHub Actions, we saw the server timing out while running in parallel with other tests
+        # we work around that by running it with higher permissions
         command = ["sudo"] + command
     repo_server_process = subprocess.Popen(command, cwd="repo")
     certspath = cwd / "jdk8_shipped_cacerts_plus_cert_pem"
