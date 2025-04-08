@@ -48,7 +48,6 @@ jobs:
           echo "::endgroup::"
       - name: Push sync branch
         run: |
-          echo "$GITHUB_TOKEN" | gh auth login --with-token
           git push origin sync-main-pr --force
           # Ensure branch is visible to GitHub
           gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
@@ -60,11 +59,13 @@ jobs:
             echo "Branch not yet visible to GitHub — waiting a bit more"
             sleep 10
           }
+          gh api repos/:owner/:repo/branches/sync-main-pr --jq .
+          git ls-remote origin
         env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create or update PR
         run: |
-          echo "$GITHUB_TOKEN" | gh auth login --with-token
           git branch
           gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
             echo "Branch not yet visible to GitHub — waiting a bit more"
@@ -84,5 +85,6 @@ jobs:
           fi
           exit 0
         env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
 
