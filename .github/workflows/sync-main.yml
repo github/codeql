@@ -51,48 +51,22 @@ jobs:
           echo "::endgroup::"
       - name: Push sync branch and ensure visibility
         run: |
-          git status
-          echo "yo1"
           git push origin sync-main-pr
-          echo "yo2"
-
-          BRANCH_NAME="sync-main-pr"
-          COMMIT_SHA=$(git rev-parse HEAD)
-          MAX_RETRIES=12
-          SLEEP_SECONDS=5
-
-          echo "🔄 Waiting for commit $COMMIT_SHA to be visible on GitHub..."
-          for (( i=1; i<=MAX_RETRIES; i++ )); do
-            if gh api "repos/:owner/:repo/commits/$COMMIT_SHA" > /dev/null 2>&1; then
-              echo "✅ Commit is now visible on GitHub."
-              break
-            else
-              echo "⏳ Attempt $i: Commit not visible yet — sleeping ${SLEEP_SECONDS}s"
-              sleep $SLEEP_SECONDS
-            fi
-          done
-          if (( i > MAX_RETRIES )); then
-            echo "❌ Commit $COMMIT_SHA never became visible after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
-            exit 1
-          fi
-      
-          echo "🔄 Waiting for branch '$BRANCH_NAME' to be visible on GitHub..."
-          for (( i=1; i<=MAX_RETRIES; i++ )); do
-            if git ls-remote --exit-code origin "refs/heads/$BRANCH_NAME" > /dev/null 2>&1; then
-              echo "✅ Branch is now visible on GitHub."
-              break
-            else
-              echo "⏳ Attempt $i: Branch not visible yet — sleeping ${SLEEP_SECONDS}s"
-              sleep $SLEEP_SECONDS
-            fi
-          done
-          if (( i > MAX_RETRIES )); then
-            echo "❌ Branch '$BRANCH_NAME' never became visible after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
-            exit 1
-          fi
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+      - name: Debug sync-main-pr state
+        run: |
+          echo "🔍 Checking sync-main-pr branch and its commit history"
+          git status
+          echo "Commits on sync-main-pr:"
+          git log --oneline sync-main-pr
+          echo "Commits on main:"
+          git log --oneline main
+          echo "Diff between sync-main-pr and main:"
+          git diff main..sync-main-pr
+          echo "Current SHA for main: $(git rev-parse main)"
+          echo "Current SHA for sync-main-pr: $(git rev-parse sync-main-pr)"
       - name: Create or update PR
         run: |
           gh pr create --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
