@@ -34,7 +34,7 @@ jobs:
 
           echo "::group::Fetch"
           git pull origin sync-main-pr; exitCode=$?; if [ $exitCode -ne 0 ]; then exitCode=0; fi
-          git config pull.rebase true
+          # git config pull.rebase true
           git pull origin main
           git push --force origin sync-main-pr
           echo "::endgroup::"
