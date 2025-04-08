@@ -390,7 +390,6 @@ module PathResolution {
 
     predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
 
-    // predicate getAnAdditionalChild = AutomaticFileExtensions::getAnAdditionalChild/2;
     Container getAnAdditionalChild(Container base, string name) {
       result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
       or
