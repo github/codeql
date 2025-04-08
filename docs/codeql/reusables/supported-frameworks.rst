@@ -54,8 +54,8 @@ and the CodeQL library pack ``codeql/actions-all`` (`changelog <https://github.c
    :align: left
 
    Name, Category
-   `GitHub Actions workflow YAML files <https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions>`, Workflows
-   `GitHub Actions action metadata YAML files <https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions>`, Actions
+   `GitHub Actions workflow YAML files <https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions>`__, Workflows
+   `GitHub Actions action metadata YAML files <https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions>`__, Actions
 
 Go built-in support
 ================================

@@ -95,7 +95,7 @@ to all AST classes:
    * - ``getAChildNode()``
      - Gets a child node of this node.
    * - ``getParentNode()``
-     - Gets the parent of this `AstNode`, if this node is not a root node.
+     - Gets the parent of this ``AstNode``, if this node is not a root node.
    * - ``getATriggerEvent()``
      - Gets an Actions trigger event that can start the enclosing Actions workflow, if any.
      
@@ -104,9 +104,9 @@ Workflows
 ~~~~~~~~~
 
 A workflow is a configurable automated process made up of one or more jobs,
-defined in a workflow YAML file in the `.github/workflows` directory of a GitHub repository.
+defined in a workflow YAML file in the ``.github/workflows`` directory of a GitHub repository.
 
-In the CodeQL AST library, a `Workflow` is an `AstNode` representing the mapping at the top level of an Actions YAML workflow file.
+In the CodeQL AST library, a ``Workflow`` is an ``AstNode`` representing the mapping at the top level of an Actions YAML workflow file.
 
 See the GitHub Actions documentation on `workflows <https://docs.github.com/en/actions/writing-workflows/about-workflows>`__ and `workflow syntax <https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions>`__ for more information.
 
@@ -116,16 +116,17 @@ See the GitHub Actions documentation on `workflows <https://docs.github.com/en/a
    * - CodeQL class
      - Description and selected predicates
    * - ``Workflow``
-     -  An Actions workflow, defined as a mapping at the top level of a workflow YAML file in `.github/workflows`. See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
-        - `getAJob()` - Gets a job within the `jobs` mapping of this workflow.
-        - `getEnv()` - Gets an `env` mapping within this workflow declaring workflow-level environment variables, if any.
-        - `getJob(string jobId)` - Gets a job within the `jobs` mapping of this workflow with the given job ID.
-        - `getOn()` - Gets the `on` mapping defining the events that trigger this workflow.
-        - `getPermissions()` - Gets a `permissions` mapping within this workflow declaring workflow-level token permissions, if any.
-        - `getStrategy()` - Gets a `strategy` mapping for the jobs in this workflow, if any.
-        - `getName()` - Gets the name of this workflow, if defined within the workflow.
+     -  An Actions workflow, defined as a mapping at the top level of a workflow YAML file in ``.github/workflows``. See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
 
-The following example lists all jobs in a workflow with the name declaration `name: test`:
+        - ``getAJob()`` - Gets a job within the ``jobs`` mapping of this workflow.
+        - ``getEnv()`` - Gets an ``env`` mapping within this workflow declaring workflow-level environment variables, if any.
+        - ``getJob(string jobId)`` - Gets a job within the ``jobs`` mapping of this workflow with the given job ID.
+        - ``getOn()``` - Gets the ``on`` mapping defining the events that trigger this workflow.
+        - ``getPermissions()`` - Gets a ``permissions`` mapping within this workflow declaring workflow-level token permissions, if any.
+        - ``getStrategy()``` - Gets a ``strategy`` mapping for the jobs in this workflow, if any.
+        - ``getName()`` - Gets the name of this workflow, if defined within the workflow.
+
+The following example lists all jobs in a workflow with the name declaration ``name: test``:
 
 .. code-block:: ql
 
