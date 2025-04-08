@@ -33,8 +33,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Add and fetch upstream
         run: |
-          echo "::group::Fetch and set up remotes"
+          echo "::group::Fetch"
           git fetch
+          git checkout main
+          git pull origin main
+          echo "::endgroup::"
+          
+          echo "::group::Set up remote"
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
           echo "::endgroup::"
