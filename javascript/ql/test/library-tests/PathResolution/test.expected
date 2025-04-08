@@ -75,3 +75,5 @@
 | import-packages.ts:23:1:23:30 | import  ... inExt'; | PackageWithMainExt/lib/main.ts |
 | import-packages.ts:24:1:24:40 | import  ... n-ext'; | PackageWithMainExt/lib/main.ts |
 | import-packages.ts:26:1:26:46 | import  ... oo.js'; | TSConfigOutDir/src/foo.ts |
+| import-packages.ts:28:1:28:24 | import  ... older'; | MainIsFolder/src/index.ts |
+| import-packages.ts:29:1:29:33 | import  ... older'; | MainIsFolder/src/index.ts |

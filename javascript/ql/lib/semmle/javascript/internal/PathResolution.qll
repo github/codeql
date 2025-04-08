@@ -485,6 +485,8 @@ module PathResolution {
     exists(PackageJson pkg | pkg.getJsonFile().getParentContainer() = folder |
       result = resolvePackageMain(pkg)
       or
+      result = resolvePackageMain(pkg).(Folder).getJavaScriptFile("index")
+      or
       result = guessPackageJsonMain1(pkg)
       or
       result = guessPackageJsonMain2(pkg)

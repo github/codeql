@@ -24,3 +24,6 @@ import './PackageWithMainExt'; // $ importTarget=PackageWithMainExt/lib/main.ts
 import '@example/package-with-main-ext'; // $ importTarget=PackageWithMainExt/lib/main.ts
 
 import './TSConfigOutDir/customOutDir/foo.js'; // $ importTarget=TSConfigOutDir/src/foo.ts
+
+import './MainIsFolder'; // $ importTarget=MainIsFolder/src/index.ts
+import '@example/main-is-folder'; // $ importTarget=MainIsFolder/src/index.ts
