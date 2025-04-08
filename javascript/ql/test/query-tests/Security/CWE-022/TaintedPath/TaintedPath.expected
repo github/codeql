@@ -140,6 +140,8 @@
 | normalizedPaths.js:408:19:408:60 | pathMod ... t('/')) | normalizedPaths.js:408:38:408:48 | req.query.x | normalizedPaths.js:408:19:408:60 | pathMod ... t('/')) | This path depends on a $@. | normalizedPaths.js:408:38:408:48 | req.query.x | user-provided value |
 | normalizedPaths.js:415:19:415:22 | path | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:415:19:415:22 | path | This path depends on a $@. | normalizedPaths.js:412:35:412:45 | req.query.x | user-provided value |
 | normalizedPaths.js:426:21:426:24 | path | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:426:21:426:24 | path | This path depends on a $@. | normalizedPaths.js:412:35:412:45 | req.query.x | user-provided value |
+| open.js:9:10:9:13 | file | open.js:7:18:7:31 | req.query.file | open.js:9:10:9:13 | file | This path depends on a $@. | open.js:7:18:7:31 | req.query.file | user-provided value |
+| open.js:10:13:10:16 | file | open.js:7:18:7:31 | req.query.file | open.js:10:13:10:16 | file | This path depends on a $@. | open.js:7:18:7:31 | req.query.file | user-provided value |
 | other-fs-libraries.js:11:19:11:22 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:11:19:11:22 | path | This path depends on a $@. | other-fs-libraries.js:9:24:9:30 | req.url | user-provided value |
 | other-fs-libraries.js:12:27:12:30 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:12:27:12:30 | path | This path depends on a $@. | other-fs-libraries.js:9:24:9:30 | req.url | user-provided value |
 | other-fs-libraries.js:13:24:13:27 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:13:24:13:27 | path | This path depends on a $@. | other-fs-libraries.js:9:24:9:30 | req.url | user-provided value |
@@ -561,6 +563,9 @@ edges
 | normalizedPaths.js:412:7:412:46 | path | normalizedPaths.js:426:21:426:24 | path | provenance |  |
 | normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | normalizedPaths.js:412:7:412:46 | path | provenance |  |
 | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | provenance | Config |
+| open.js:7:11:7:31 | file | open.js:9:10:9:13 | file | provenance |  |
+| open.js:7:11:7:31 | file | open.js:10:13:10:16 | file | provenance |  |
+| open.js:7:18:7:31 | req.query.file | open.js:7:11:7:31 | file | provenance |  |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path | provenance |  |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path | provenance |  |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path | provenance |  |
@@ -1116,6 +1121,10 @@ nodes
 | normalizedPaths.js:412:35:412:45 | req.query.x | semmle.label | req.query.x |
 | normalizedPaths.js:415:19:415:22 | path | semmle.label | path |
 | normalizedPaths.js:426:21:426:24 | path | semmle.label | path |
+| open.js:7:11:7:31 | file | semmle.label | file |
+| open.js:7:18:7:31 | req.query.file | semmle.label | req.query.file |
+| open.js:9:10:9:13 | file | semmle.label | file |
+| open.js:10:13:10:16 | file | semmle.label | file |
 | other-fs-libraries.js:9:7:9:48 | path | semmle.label | path |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:9:14:9:43 | url.par ... ).query | semmle.label | url.par ... ).query |

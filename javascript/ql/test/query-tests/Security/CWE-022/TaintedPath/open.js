@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 
 app.get('/open', (req, res) => {
-    const file = req.query.file; // $ MISSING: Source
+    const file = req.query.file; // $ Source
 
-    open(file); // $ MISSING: Alert
-    openApp(file); // $ MISSING: Alert
+    open(file); // $ Alert
+    openApp(file); // $ Alert
 });
