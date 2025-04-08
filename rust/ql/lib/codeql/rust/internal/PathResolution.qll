@@ -981,6 +981,11 @@ private ItemNode resolvePathPrivate(
   )
 }
 
+pragma[nomagic]
+private predicate isItemParent(ModuleLikeNode itemParent) {
+  exists(resolvePathPrivate(_, itemParent, _))
+}
+
 /**
  * Gets a module that has access to private items defined inside `itemParent`.
  *
@@ -991,7 +996,7 @@ private ItemNode resolvePathPrivate(
  */
 pragma[nomagic]
 private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
-  exists(resolvePathPrivate(_, itemParent, _)) and
+  isItemParent(itemParent) and
   result.getImmediateParentModule*() = itemParent
 }
 
