@@ -72,4 +72,6 @@ extensions:
       - ["microsoft.powershell.utility!", "Method[format-table]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
       - ["microsoft.powershell.utility!", "Method[format-wide]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
       - ["microsoft.powershell.utility!", "Method[get-unique]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[get-unique]", "Argument[-inputobject,pipeline].Element[?]", "ReturnValue.Element[?]", "value"]
       - ["microsoft.powershell.utility!", "Method[join-string]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[join-string]", "Argument[-inputobject,pipeline].Element[?]", "ReturnValue", "taint"]
