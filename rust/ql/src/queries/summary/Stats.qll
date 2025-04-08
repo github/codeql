@@ -10,7 +10,7 @@ private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
-private import codeql.rust.dataflow.internal.SsaImpl as SsaImpl
+private import codeql.rust.dataflow.internal.SsaImpl::Consistency as SsaConsistency
 private import codeql.rust.Concepts
 private import codeql.rust.Diagnostics
 private import codeql.rust.security.SensitiveData
@@ -62,7 +62,7 @@ int getTotalCfgInconsistencies() {
  * Gets a count of the total number of SSA inconsistencies in the database.
  */
 int getTotalSsaInconsistencies() {
-  result = sum(string type | | SsaImpl::Consistency::getInconsistencyCounts(type))
+  result = sum(string type | | SsaConsistency::getInconsistencyCounts(type))
 }
 
 /**

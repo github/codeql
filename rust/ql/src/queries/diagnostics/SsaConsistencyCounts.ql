@@ -5,10 +5,10 @@
  * @id rust/diagnostics/ssa-consistency-counts
  */
 
-private import codeql.rust.dataflow.internal.SsaImpl as SsaImpl
+private import codeql.rust.dataflow.internal.SsaImpl::Consistency as SsaConsistency
 
 // see also `rust/diagnostics/ssa-consistency`, which lists the
 // individual inconsistency results.
 from string type, int num
-where num = SsaImpl::Consistency::getInconsistencyCounts(type)
+where num = SsaConsistency::getInconsistencyCounts(type)
 select type, num
