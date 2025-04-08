@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dilan/sync-main-bugs-6
     paths:
       - .github/workflows/sync-main.yml
   schedule:
@@ -53,8 +54,19 @@ jobs:
             echo "Branch not yet visible to GitHub — waiting a bit more"
             sleep 10
           }
+          git branch
+          gh api repos/:owner/:repo/branches/sync-main-pr || {
+            echo "Branch not yet visible to GitHub — waiting a bit more"
+            sleep 10
+          }
       - name: Create or update PR
         run: |
+          git branch
+          gh api repos/:owner/:repo/branches/sync-main-pr || {
+            echo "Branch not yet visible to GitHub — waiting a bit more"
+            sleep 10
+          }
+          git branch
           gh api repos/:owner/:repo/branches/sync-main-pr
           PR_URL=$(gh pr list --head sync-main-pr --json url --jq '.[0].url')
           if [ -z "$PR_URL" ]; then
