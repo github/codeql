@@ -1,4 +1,3 @@
-| file://:0:0:0:0 | [summary param] pos(0, {}) in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in System.Management.Automation.Language.CodeGeneration!;Method[escapesinglequotedstringcontent] |
 | test.ps1:1:1:1:3 | a1 | test.ps1:2:6:2:8 | a1 |
 | test.ps1:1:1:24:22 | implicit unwrapping of {...} | test.ps1:1:1:24:22 | return value for {...} |
 | test.ps1:1:1:24:22 | pre-return value for {...} | test.ps1:1:1:24:22 | implicit unwrapping of {...} |
