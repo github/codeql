@@ -17,9 +17,8 @@ const Document = Mongoose.model('Document', {
 
 app.get('/documents/find', (req, res) => {
     const query = {};
-    query.title = JSON.parse(req.query.data).title;
+    query.title = JSON.parse(req.query.data).title; // $ Source
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.find(query);
+    Document.find(query); // $ Alert - query is tainted by user-provided object value
 });
 

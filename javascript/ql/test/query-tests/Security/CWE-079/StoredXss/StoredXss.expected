@@ -1,3 +1,9 @@
+#select
+| xss-through-filenames.js:8:18:8:23 | files1 | xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:7:43:7:48 | files1 | stored value |
+| xss-through-filenames.js:26:19:26:24 | files1 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |
+| xss-through-filenames.js:33:19:33:24 | files2 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:33:19:33:24 | files2 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |
+| xss-through-filenames.js:37:19:37:24 | files3 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:37:19:37:24 | files3 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |
+| xss-through-torrent.js:7:11:7:14 | name | xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:7:11:7:14 | name | Stored cross-site scripting vulnerability due to $@. | xss-through-torrent.js:6:13:6:24 | torrent.name | stored value |
 edges
 | xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 | provenance |  |
 | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | xss-through-filenames.js:19:9:19:14 | files2 [ArrayElement] | provenance |  |
@@ -54,9 +60,3 @@ subpaths
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 |
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] |
 | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | xss-through-filenames.js:22:16:22:30 | files3.join('') | xss-through-filenames.js:35:22:35:35 | format(files2) |
-#select
-| xss-through-filenames.js:8:18:8:23 | files1 | xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:7:43:7:48 | files1 | stored value |
-| xss-through-filenames.js:26:19:26:24 | files1 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |
-| xss-through-filenames.js:33:19:33:24 | files2 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:33:19:33:24 | files2 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |
-| xss-through-filenames.js:37:19:37:24 | files3 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:37:19:37:24 | files3 | Stored cross-site scripting vulnerability due to $@. | xss-through-filenames.js:25:43:25:48 | files1 | stored value |
-| xss-through-torrent.js:7:11:7:14 | name | xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:7:11:7:14 | name | Stored cross-site scripting vulnerability due to $@. | xss-through-torrent.js:6:13:6:24 | torrent.name | stored value |

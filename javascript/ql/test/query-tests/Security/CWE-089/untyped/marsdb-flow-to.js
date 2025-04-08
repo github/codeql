@@ -8,8 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/documents/find", (req, res) => {
   const query = {};
-  query.title = req.body.title;
+  query.title = req.body.title; // $ Source
 
-  // NOT OK: query is tainted by user-provided object value
-  db.myDoc.find(query, (err, data) => {});
+  db.myDoc.find(query, (err, data) => {}); // $ Alert - query is tainted by user-provided object value
 });

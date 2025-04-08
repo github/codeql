@@ -9,28 +9,28 @@ import { NgForm } from "@angular/forms";
     `
 })
 export class Foo {
-    field: string = "";
+    field: string = ""; // $ Source
     safeField: string = "";
 
     setInput1(event) {
-        document.write(event.target.value); // NOT OK
+        document.write(event.target.value); // $ Alert
     }
 
     setInput2(target) {
-        document.write(target.value); // NOT OK
+        document.write(target.value); // $ Alert
     }
 
     setOtherInput(e) {
-        document.write(e.target.value); // OK
-        document.write(e.value); // OK
+        document.write(e.target.value);
+        document.write(e.value);
     }
 
     blah(form: NgForm) {
-        document.write(form.value.foo); // NOT OK
+        document.write(form.value.foo); // $ Alert
     }
 
     useField() {
-        document.write(this.field); // NOT OK
-        document.write(this.safeField); // OK
+        document.write(this.field); // $ Alert
+        document.write(this.safeField);
     }
 }

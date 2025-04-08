@@ -139,8 +139,8 @@ import semmle.javascript.frameworks.Webix
 import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
-import semmle.javascript.frameworks.Tanstack
 import semmle.javascript.linters.ESLint
 import semmle.javascript.linters.JSLint
 import semmle.javascript.linters.Linting
 import semmle.javascript.security.dataflow.RemoteFlowSources
+import semmle.javascript.frameworks.UnderscoreDotString

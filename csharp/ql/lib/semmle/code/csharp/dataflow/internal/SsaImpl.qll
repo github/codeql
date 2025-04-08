@@ -60,12 +60,6 @@ class PhiNode = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
-module ExposedForTestingOnly {
-  predicate ssaDefReachesReadExt = Impl::ssaDefReachesReadExt/4;
-
-  predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
-}
-
 /**
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
@@ -967,13 +961,13 @@ private module Cached {
     import DataFlowIntegrationImpl
 
     cached
-    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    predicate localFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
     }
 
     cached
-    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
-      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    predicate localMustFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
     signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::AbstractValue v);
@@ -1000,9 +994,9 @@ private module Cached {
 
 import Cached
 
-private string getSplitString(DefinitionExt def) {
+private string getSplitString(Definition def) {
   exists(ControlFlow::BasicBlock bb, int i, ControlFlow::Node cfn |
-    def.definesAt(_, bb, i, _) and
+    def.definesAt(_, bb, i) and
     result = cfn.(ControlFlow::Nodes::ElementNode).getSplitsString()
   |
     cfn = bb.getNode(i)
@@ -1012,46 +1006,11 @@ private string getSplitString(DefinitionExt def) {
   )
 }
 
-string getToStringPrefix(DefinitionExt def) {
+string getToStringPrefix(Definition def) {
   result = "[" + getSplitString(def) + "] "
   or
   not exists(getSplitString(def)) and
   result = ""
-}
-
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-class DefinitionExt extends Impl::DefinitionExt {
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  /** Gets the location of this definition. */
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-
-  /** Gets the enclosing callable of this definition. */
-  Callable getEnclosingCallable() { result = this.(Ssa::Definition).getEnclosingCallable() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() {
-    result = getToStringPrefix(this) + "SSA phi read(" + this.getSourceVariable() + ")"
-  }
-
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
-
-  override Callable getEnclosingCallable() {
-    result = this.getSourceVariable().getEnclosingCallable()
-  }
 }
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
@@ -1064,15 +1023,11 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+  predicate ssaDefHasSource(WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
-    // go from RHS to matching assingnable definition, and from there to SSA definition
-    none()
+    // go from RHS to matching assignable definition, and from there to SSA definition
+    def instanceof Ssa::ImplicitParameterDefinition
   }
-
-  class Parameter = Ssa::ImplicitParameterDefinition;
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { def = p }
 
   /**
    * Allows for flow into uncertain defintions that are not call definitions,
@@ -1088,27 +1043,26 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   class Guard extends Guards::Guard {
-    predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) {
-      this.getAControlFlowNode() = bb.getNode(i)
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+      exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+        this.getAControlFlowNode() = bb1.getLastNode() and
+        bb2 = bb1.getASuccessorByType(s) and
+        s.getValue() = branch
+      )
     }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, ControlFlow::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, ControlFlow::BasicBlock bb, boolean branch) {
     exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.edgeDominates(bb, s)
-    )
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  ControlFlow::BasicBlock getAConditionalBasicBlockSuccessor(
-    ControlFlow::BasicBlock bb, boolean branch
-  ) {
-    exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
-      result = bb.getASuccessorByType(s) and
-      s.getValue() = branch
     )
   }
 }

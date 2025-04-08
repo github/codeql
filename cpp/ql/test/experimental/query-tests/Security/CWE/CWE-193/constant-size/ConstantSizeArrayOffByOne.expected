@@ -44,6 +44,7 @@ edges
 | test.cpp:143:18:143:21 | asdf | test.cpp:134:25:134:27 | arr | provenance |  |
 | test.cpp:143:18:143:21 | asdf | test.cpp:143:18:143:21 | asdf | provenance |  |
 | test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... | provenance |  |
+| test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... | provenance |  |
 | test.cpp:154:7:154:9 | definition of buf | test.cpp:156:12:156:18 | ... + ... | provenance | Config |
 | test.cpp:156:12:156:14 | buf | test.cpp:156:12:156:18 | ... + ... | provenance | Config |
 | test.cpp:156:12:156:18 | ... + ... | test.cpp:156:12:156:18 | ... + ... | provenance |  |
@@ -154,6 +155,7 @@ nodes
 | test.cpp:143:18:143:21 | asdf | semmle.label | asdf |
 | test.cpp:146:26:146:26 | *p | semmle.label | *p |
 | test.cpp:147:4:147:9 | -- ... | semmle.label | -- ... |
+| test.cpp:147:4:147:9 | -- ... | semmle.label | -- ... |
 | test.cpp:154:7:154:9 | definition of buf | semmle.label | definition of buf |
 | test.cpp:156:12:156:14 | buf | semmle.label | buf |
 | test.cpp:156:12:156:18 | ... + ... | semmle.label | ... + ... |
@@ -224,6 +226,8 @@ subpaths
 | test.cpp:136:9:136:16 | PointerAdd: ... += ... | test.cpp:142:10:142:13 | definition of asdf | test.cpp:138:13:138:15 | arr | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:142:10:142:13 | asdf | asdf | test.cpp:138:12:138:15 | Load: * ... | read |
 | test.cpp:136:9:136:16 | PointerAdd: ... += ... | test.cpp:143:18:143:21 | asdf | test.cpp:138:13:138:15 | arr | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:142:10:142:13 | asdf | asdf | test.cpp:138:12:138:15 | Load: * ... | read |
 | test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:154:7:154:9 | definition of buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
+| test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:154:7:154:9 | definition of buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
+| test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:156:12:156:14 | buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
 | test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:156:12:156:14 | buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
 | test.cpp:221:5:221:11 | PointerAdd: access to array | test.cpp:217:19:217:24 | definition of buffer | test.cpp:221:5:221:11 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:217:19:217:24 | buffer | buffer | test.cpp:221:5:221:15 | Store: ... = ... | write |
 | test.cpp:221:5:221:11 | PointerAdd: access to array | test.cpp:218:23:218:28 | buffer | test.cpp:221:5:221:11 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:217:19:217:24 | buffer | buffer | test.cpp:221:5:221:15 | Store: ... = ... | write |

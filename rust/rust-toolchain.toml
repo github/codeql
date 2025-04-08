@@ -3,6 +3,6 @@
 # IMPORTANT: this can also have an impact on QL test results
 
 [toolchain]
-channel = "1.84"
+channel = "1.85"
 profile = "minimal"
 components = [ "clippy", "rustfmt", "rust-src" ]

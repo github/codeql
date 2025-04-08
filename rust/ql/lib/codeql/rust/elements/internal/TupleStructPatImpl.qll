@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.TupleStructPat
  */
 module Impl {
   private import rust
-  private import PathResolution as PathResolution
+  private import codeql.rust.internal.PathResolution as PathResolution
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -26,7 +26,7 @@ module Impl {
    * ```
    */
   class TupleStructPat extends Generated::TupleStructPat {
-    override string toString() { result = this.getPath().toAbbreviatedString() + "(...)" }
+    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + "(...)" }
 
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedPath(int pos) {

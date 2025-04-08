@@ -11,5 +11,7 @@ import ql
 import codeql_ql.ast.Yaml
 
 from QlRefDocument f
-where not f.usesInlineExpectations()
+where
+  not f.usesInlineExpectations() and
+  not f.isPrintAst()
 select f, "Query test does not use inline test expectations."

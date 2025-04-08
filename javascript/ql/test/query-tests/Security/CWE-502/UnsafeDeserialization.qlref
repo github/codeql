@@ -1,1 +1,2 @@
-Security/CWE-502/UnsafeDeserialization.ql
+query: Security/CWE-502/UnsafeDeserialization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

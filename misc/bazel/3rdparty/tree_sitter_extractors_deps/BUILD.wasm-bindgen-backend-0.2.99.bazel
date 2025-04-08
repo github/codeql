@@ -85,11 +85,11 @@ rust_library(
     }),
     version = "0.2.99",
     deps = [
-        "@vendor__bumpalo-3.16.0//:bumpalo",
-        "@vendor__log-0.4.22//:log",
-        "@vendor__proc-macro2-1.0.93//:proc_macro2",
-        "@vendor__quote-1.0.38//:quote",
-        "@vendor__syn-2.0.96//:syn",
-        "@vendor__wasm-bindgen-shared-0.2.99//:wasm_bindgen_shared",
+        "@vendor_ts__bumpalo-3.16.0//:bumpalo",
+        "@vendor_ts__log-0.4.25//:log",
+        "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__syn-2.0.100//:syn",
+        "@vendor_ts__wasm-bindgen-shared-0.2.99//:wasm_bindgen_shared",
     ],
 )

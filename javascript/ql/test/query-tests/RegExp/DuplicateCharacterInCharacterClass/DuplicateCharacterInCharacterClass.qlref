@@ -1,1 +1,2 @@
-RegExp/DuplicateCharacterInCharacterClass.ql
+query: RegExp/DuplicateCharacterInCharacterClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -19,7 +19,7 @@ module Impl {
    * ```
    */
   class NeverTypeRepr extends Generated::NeverTypeRepr {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = "!" }
   }

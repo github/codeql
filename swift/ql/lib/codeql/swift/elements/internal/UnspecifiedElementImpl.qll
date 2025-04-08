@@ -4,7 +4,7 @@ import codeql.swift.elements.Locatable
 
 module Impl {
   class UnspecifiedElement extends Generated::UnspecifiedElement {
-    override string toString() {
+    override string toStringImpl() {
       exists(string source, string index |
         (
           source = " from " + this.getParent().getPrimaryQlClasses()

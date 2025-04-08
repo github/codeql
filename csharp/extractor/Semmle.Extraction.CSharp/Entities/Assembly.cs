@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (assemblyPath is not null)
             {
-                var isBuildlessOutputAssembly = isOutputAssembly && Context.ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone);
+                var isBuildlessOutputAssembly = isOutputAssembly && Context.ExtractionContext.IsStandalone;
                 var identifier = isBuildlessOutputAssembly
                     ? ""
                     : assembly.ToString() ?? "";
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (isOutputAssembly && Context.ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone))
+            if (isOutputAssembly && Context.ExtractionContext.IsStandalone)
             {
                 trapFile.Write("buildlessOutputAssembly");
             }

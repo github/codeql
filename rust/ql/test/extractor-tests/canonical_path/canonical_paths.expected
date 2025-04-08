@@ -1,20 +1,20 @@
 canonicalPaths
-| anonymous.rs:1:1:1:26 | Use | None | None |
+| anonymous.rs:1:1:1:26 | use ...::Trait | None | None |
 | anonymous.rs:3:1:32:1 | fn canonicals | repo::test | crate::anonymous::canonicals |
-| anonymous.rs:4:5:4:23 | struct OtherStruct | repo::test | {0}::OtherStruct |
-| anonymous.rs:6:5:8:5 | trait OtherTrait | repo::test | {0}::OtherTrait |
-| anonymous.rs:7:9:7:20 | fn g | repo::test | {0}::OtherTrait::g |
+| anonymous.rs:4:5:4:23 | struct OtherStruct | None | None |
+| anonymous.rs:6:5:8:5 | trait OtherTrait | None | None |
+| anonymous.rs:7:9:7:20 | fn g | None | None |
 | anonymous.rs:10:5:12:5 | impl OtherTrait for OtherStruct { ... } | None | None |
-| anonymous.rs:11:9:11:22 | fn g | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
+| anonymous.rs:11:9:11:22 | fn g | None | None |
 | anonymous.rs:14:5:16:5 | impl OtherTrait for ...::Struct { ... } | None | None |
-| anonymous.rs:15:9:15:22 | fn g | repo::test | <crate::regular::Struct as {0}::OtherTrait>::g |
+| anonymous.rs:15:9:15:22 | fn g | None | None |
 | anonymous.rs:18:5:20:5 | impl ...::Trait for OtherStruct { ... } | None | None |
-| anonymous.rs:19:9:19:22 | fn f | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
-| anonymous.rs:22:5:24:5 | fn nested | repo::test | {0}::nested |
-| anonymous.rs:23:9:23:27 | struct OtherStruct | repo::test | {1}::OtherStruct |
-| anonymous.rs:26:5:31:5 | fn usage | repo::test | {0}::usage |
+| anonymous.rs:19:9:19:22 | fn f | None | None |
+| anonymous.rs:22:5:24:5 | fn nested | None | None |
+| anonymous.rs:23:9:23:27 | struct OtherStruct | None | None |
+| anonymous.rs:26:5:31:5 | fn usage | None | None |
 | anonymous.rs:34:1:36:1 | fn other | repo::test | crate::anonymous::other |
-| anonymous.rs:35:5:35:23 | struct OtherStruct | repo::test | {36}::OtherStruct |
+| anonymous.rs:35:5:35:23 | struct OtherStruct | None | None |
 | lib.rs:1:1:1:14 | mod anonymous | repo::test | crate::anonymous |
 | lib.rs:2:1:2:12 | mod regular | repo::test | crate::regular |
 | regular.rs:1:1:2:18 | struct Struct | repo::test | crate::regular::Struct |
@@ -33,15 +33,15 @@ canonicalPaths
 | regular.rs:34:1:38:1 | enum MyEnum | repo::test | crate::regular::MyEnum |
 | regular.rs:40:1:46:1 | fn enum_qualified_usage | repo::test | crate::regular::enum_qualified_usage |
 | regular.rs:48:1:55:1 | fn enum_unqualified_usage | repo::test | crate::regular::enum_unqualified_usage |
-| regular.rs:51:5:51:18 | Use | None | None |
+| regular.rs:51:5:51:18 | use MyEnum::* | None | None |
 | regular.rs:57:1:63:1 | fn enum_match | repo::test | crate::regular::enum_match |
 resolvedPaths
-| anonymous.rs:27:17:27:30 | OtherStruct {...} | repo::test | {0}::OtherStruct |
+| anonymous.rs:27:17:27:30 | OtherStruct {...} | None | None |
 | anonymous.rs:28:9:28:9 | s | None | None |
-| anonymous.rs:28:9:28:13 | s.f(...) | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
+| anonymous.rs:28:9:28:13 | s.f(...) | None | None |
 | anonymous.rs:29:9:29:9 | s | None | None |
-| anonymous.rs:29:9:29:13 | s.g(...) | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
-| anonymous.rs:30:9:30:14 | nested | repo::test | {0}::nested |
+| anonymous.rs:29:9:29:13 | s.g(...) | None | None |
+| anonymous.rs:30:9:30:14 | nested | None | None |
 | regular.rs:27:13:27:21 | Struct {...} | repo::test | crate::regular::Struct |
 | regular.rs:28:5:28:5 | s | None | None |
 | regular.rs:28:5:28:9 | s.f(...) | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |

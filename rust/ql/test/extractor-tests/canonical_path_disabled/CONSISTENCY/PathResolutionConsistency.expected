@@ -1,0 +1,3 @@
+multipleStaticCallTargets
+| regular.rs:32:5:32:9 | s.g(...) | anonymous.rs:18:9:18:22 | fn g |
+| regular.rs:32:5:32:9 | s.g(...) | regular.rs:16:5:16:18 | fn g |

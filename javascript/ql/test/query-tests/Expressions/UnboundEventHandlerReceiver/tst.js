@@ -5,7 +5,7 @@ class Component0 extends React.Component {
 
     render() {
         return <div>
-            <div onClick={this.bound_throughAutoBind}/> // OK
+            <div onClick={this.bound_throughAutoBind}/>
             </div>
     }
 
@@ -24,20 +24,20 @@ class Component1 extends React.Component {
     render() {
         var unbound3 = this.unbound3;
         return <div>
-            <div onClick={this.unbound1}/> // NOT OK
-            <div onClick={this.unbound2}/> // NOT OK
-            <div onClick={unbound3}/> // NOT OK
-            <div onClick={this.bound_throughBindInConstructor}/> // OK
-            <div onClick={this.bound_throughDeclaration}/> // OK
-            <div onClick={this.unbound_butNoThis}/> // OK
-            <div onClick={this.unbound_butNoThis2}/> // OK
-            <div onClick={(e) => this.unbound_butInvokedSafely(e)}/> // OK
-            <div onClick={this.bound_throughBindInMethod}/> // OK
-            <div onClick={this.bound_throughNonSyntacticBindInConstructor}/> // OK
-            <div onClick={this.bound_throughBindAllInConstructor1}/> // OK
-            <div onClick={this.bound_throughBindAllInConstructor2}/> // OK
-            <div onClick={this.bound_throughDecorator_autobind}/> // OK
-            <div onClick={this.bound_throughDecorator_actionBound}/> // OK
+            <div onClick={this.unbound1}/> { /* $ Alert */ }
+            <div onClick={this.unbound2}/> { /* $ Alert */ }
+            <div onClick={unbound3}/> { /* $ Alert */ }
+            <div onClick={this.bound_throughBindInConstructor}/>
+            <div onClick={this.bound_throughDeclaration}/>
+            <div onClick={this.unbound_butNoThis}/>
+            <div onClick={this.unbound_butNoThis2}/>
+            <div onClick={(e) => this.unbound_butInvokedSafely(e)}/>
+            <div onClick={this.bound_throughBindInMethod}/>
+            <div onClick={this.bound_throughNonSyntacticBindInConstructor}/>
+            <div onClick={this.bound_throughBindAllInConstructor1}/>
+            <div onClick={this.bound_throughBindAllInConstructor2}/>
+            <div onClick={this.bound_throughDecorator_autobind}/>
+            <div onClick={this.bound_throughDecorator_actionBound}/>
             </div>
     }
 
@@ -125,7 +125,7 @@ class Component2 extends React.Component {
 
     render() {
         return <div>
-            <div onClick={this.bound_throughClassDecorator_autobind}/> // OK
+            <div onClick={this.bound_throughClassDecorator_autobind}/>
             </div>;
     }
 
@@ -139,7 +139,7 @@ class Component3 extends React.Component {
 
     render() {
         return <div>
-            <div onClick={this.bound_throughIterator}/> // OK
+            <div onClick={this.bound_throughIterator}/>
             </div>
     }
 
@@ -159,7 +159,7 @@ class Component4 extends React.Component {
 
     render() {
         return <div>
-            <div onClick={this.bound_throughReactAutobind}/> // OK
+            <div onClick={this.bound_throughReactAutobind}/>
             </div>
     }
 
@@ -177,7 +177,7 @@ class Component5 extends React.Component {
 
     render() {
         return <div>
-            <div onClick={this.bound_throughSomeBinder}/> // OK
+            <div onClick={this.bound_throughSomeBinder}/>
             </div>
     }
 

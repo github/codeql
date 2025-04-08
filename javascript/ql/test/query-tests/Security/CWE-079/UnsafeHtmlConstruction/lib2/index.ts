@@ -1,10 +1,10 @@
-export function trivialXss(s: string) {
-  const html = "<span>" + s + "</span>"; // NOT OK - this file is recognized as a main file.
+export function trivialXss(s: string) { // $ Source
+  const html = "<span>" + s + "</span>"; // $ Alert - this file is recognized as a main file.
   document.querySelector("#html").innerHTML = html;
 }
 
-export function objectStuff(settings: any, i: number) {
-  document.querySelector("#html").innerHTML = "<span>" + settings + "</span>"; // NOT OK
+export function objectStuff(settings: any, i: number) { // $ Source
+  document.querySelector("#html").innerHTML = "<span>" + settings + "</span>"; // $ Alert
   var name;
 
   if (settings.mySetting && settings.mySetting.length !== 0) {
@@ -15,7 +15,7 @@ export function objectStuff(settings: any, i: number) {
         name = "";
       }
 
-      document.querySelector("#html").innerHTML = "<span>" + name + "</span>"; // NOT OK
+      document.querySelector("#html").innerHTML = "<span>" + name + "</span>"; // $ Alert
     }
   }
 }

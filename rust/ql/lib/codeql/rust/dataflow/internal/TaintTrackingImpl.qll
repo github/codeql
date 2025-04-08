@@ -4,6 +4,8 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSummary
 private import DataFlowImpl
+private import Node as Node
+private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.rust.internal.CachedStages
 
@@ -51,6 +53,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       exists(FormatArgsExprCfgNode format | succ.asExpr() = format |
         pred.asExpr() = [format.getArgumentExpr(_), format.getFormatTemplateVariableAccess(_)]
       )
+      or
+      succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =
+        getPostUpdateReverseStep(pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), false)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),
@@ -67,7 +72,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       c instanceof ElementContent or
       c instanceof ReferenceContent
-    )
+    ) and
+    // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
+    not optionalStep(node, _, _)
   }
 
   /**
