@@ -1,4 +1,4 @@
-name: Sync Main
+ name: Sync Main
 
 on:
   push:
@@ -47,7 +47,8 @@ jobs:
           echo "::group::Checkout and merge"
           set -x
           git fetch origin sync-main-pr || true
-          git checkout -B sync-main-pr origin/main
+          git checkout -B sync-main-pr origin/sync-main-pr
+          git pull origin main
           git merge codeql-cli/latest
           set +x
           echo "::endgroup::"
