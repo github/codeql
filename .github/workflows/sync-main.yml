@@ -30,14 +30,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Add and fetch upstream
-        run: |
+          git checkout -b sync-main-pr
+
           echo "::group::Fetch"
-          git fetch
-          git checkout main
-          git pull origin main
+          git pull origin sync-main-pr; exitCode=$?; if [ $exitCode -ne 0 ]; then exitCode=0; fi
+          git pull --rebase origin main
+          git push --force origin sync-main-pr
           echo "::endgroup::"
-          
+
           echo "::group::Set up remote"
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
@@ -45,9 +45,6 @@ jobs:
 
           echo "::group::Checkout and merge"
           set -x
-          git fetch origin sync-main-pr || true
-          git checkout -B sync-main-pr origin/sync-main-pr
-          git pull origin main
           git merge codeql-cli/latest
           set +x
           echo "::endgroup::"
@@ -92,23 +89,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-      - name: Debug sync-main-pr state
-        run: |
-          git log origin/sync-main-pr..origin/main
       - name: Create or update PR
         run: |
-          BRANCH_NAME="sync-main-pr"
-          PR_URL=$(gh pr list --head "$BRANCH_NAME" --json url --jq '.[0].url')
-          if [ -z "$PR_URL" ]; then
-            echo "📦 Creating pull request..."
-            gh pr create \
-              --title "Automated sync from upstream" \
-              --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`." \
-              --head "$BRANCH_NAME" \
-              --base main
-          else
-            echo "✅ PR already exists: $PR_URL"
-          fi
+          gh pr create --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
+          exit 0
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
