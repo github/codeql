@@ -46,46 +46,42 @@ jobs:
           git merge codeql-cli/latest
           set +x
           echo "::endgroup::"
-      # - name: Push sync branch
-      #   run: |
-      #     git push origin sync-main-pr --force
-      #     # Ensure branch is visible to GitHub
-      #     gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
-      #       echo "Branch not yet visible to GitHub — waiting a bit more"
-      #       sleep 10
-      #     }
-      #     git branch
-      #     gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
-      #       echo "Branch not yet visible to GitHub — waiting a bit more"
-      #       sleep 10
-      #     }
-      #     gh api repos/:owner/:repo/branches/sync-main-pr --jq .
-      #     git ls-remote origin
-      #   env:
-      #     GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-      #     GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-      - name: Push sync branch
+      - name: Push sync branch and ensure visibility
         run: |
-          # Push the branch
           git push origin sync-main-pr --force
-          
-          # Wait for the commit SHA to be indexed
+
+          BRANCH_NAME="sync-main-pr"
           COMMIT_SHA=$(git rev-parse HEAD)
           MAX_RETRIES=12
           SLEEP_SECONDS=5
+
+          echo "🔄 Waiting for commit $COMMIT_SHA to be visible on GitHub..."
           for (( i=1; i<=MAX_RETRIES; i++ )); do
-            echo "Checking if commit $COMMIT_SHA is visible on GitHub (attempt $i)..."
-            if gh api repos/:owner/:repo/commits/$COMMIT_SHA > /dev/null 2>&1; then
+            if gh api "repos/:owner/:repo/commits/$COMMIT_SHA" > /dev/null 2>&1; then
               echo "✅ Commit is now visible on GitHub."
               break
             else
-              echo "❌ Commit not yet visible — sleeping ${SLEEP_SECONDS}s"
+              echo "⏳ Attempt $i: Commit not visible yet — sleeping ${SLEEP_SECONDS}s"
               sleep $SLEEP_SECONDS
             fi
           done
-          
           if (( i > MAX_RETRIES )); then
             echo "❌ Commit $COMMIT_SHA never became visible after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
+            exit 1
+          fi
+      
+          echo "🔄 Waiting for branch '$BRANCH_NAME' to be visible on GitHub..."
+          for (( i=1; i<=MAX_RETRIES; i++ )); do
+            if gh api "repos/:owner/:repo/branches/$BRANCH_NAME" > /dev/null 2>&1; then
+              echo "✅ Branch is now visible on GitHub."
+              break
+            else
+              echo "⏳ Attempt $i: Branch not visible yet — sleeping ${SLEEP_SECONDS}s"
+              sleep $SLEEP_SECONDS
+            fi
+          done
+          if (( i > MAX_RETRIES )); then
+            echo "❌ Branch '$BRANCH_NAME' never became visible after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
             exit 1
           fi
         env:
@@ -93,25 +89,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create or update PR
         run: |
-          git branch
-          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
-            echo "Branch not yet visible to GitHub — waiting a bit more"
-            sleep 10
-          }
-          git branch
-          gh api repos/:owner/:repo/commits/$(git rev-parse HEAD)
-          PR_URL=$(gh pr list --head sync-main-pr --json url --jq '.[0].url')
+          BRANCH_NAME="sync-main-pr"
+          PR_URL=$(gh pr list --head "$BRANCH_NAME" --json url --jq '.[0].url')
           if [ -z "$PR_URL" ]; then
+            echo "📦 Creating pull request..."
             gh pr create \
               --title "Automated sync from upstream" \
               --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`." \
-              --head sync-main-pr \
+              --head "$BRANCH_NAME" \
               --base main
           else
-            echo "PR already exists: $PR_URL"
+            echo "✅ PR already exists: $PR_URL"
           fi
-          exit 0
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-
