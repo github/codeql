@@ -11,7 +11,6 @@ on:
     - cron: '55 * * * *'
   
 jobs:
-
   sync-main:
     name: Sync-main
     runs-on: ubuntu-latest
@@ -31,25 +30,28 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -B sync-main-pr origin/sync-main-pr
-
-          echo "::group::Fetch"
+      - name: Sync origin/main
+        shell: bash
+        run: |
+          echo "::group::Sync with main branch"
           git pull origin sync-main-pr; exitCode=$?; if [ $exitCode -ne 0 ]; then exitCode=0; fi
-          # git config pull.rebase true
           git pull origin main
           git push --force origin sync-main-pr
           echo "::endgroup::"
-
+      - name: Sync upstream/codeql-cli/latest
+        shell: bash
+        run: |
           echo "::group::Set up remote"
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
           echo "::endgroup::"
 
-          echo "::group::Checkout and merge"
+          echo "::group::Merge codeql-cli/latest"
           set -x
           git merge codeql-cli/latest
           set +x
           echo "::endgroup::"
-      - name: Push sync branch and ensure visibility
+      - name: Push sync branch
         run: |
           git push origin sync-main-pr
         env:
