@@ -61,10 +61,10 @@ jobs:
             sleep 10
           }
         env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create or update PR
         run: |
+          echo "$GITHUB_TOKEN" | gh auth login --with-token
           git branch
           gh api repos/:owner/:repo/commits/$(git rev-parse HEAD) || {
             echo "Branch not yet visible to GitHub — waiting a bit more"
@@ -84,6 +84,5 @@ jobs:
           fi
           exit 0
         env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
 
