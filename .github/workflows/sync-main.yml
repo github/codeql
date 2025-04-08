@@ -59,12 +59,11 @@ jobs:
         run: |
           echo "🔍 Checking sync-main-pr branch and its commit history"
           git status
-          echo "Commits on sync-main-pr:"
-          git log --oneline sync-main-pr
-          echo "Commits on main:"
-          git log --oneline main
-          echo "Diff between sync-main-pr and main:"
+          
+          echo "::group::Diff between sync-main-pr and main"
           git diff main..sync-main-pr
+          echo "::endgroup::"
+          
           echo "Current SHA for main: $(git rev-parse main)"
           echo "Current SHA for sync-main-pr: $(git rev-parse sync-main-pr)"
       - name: Create or update PR
