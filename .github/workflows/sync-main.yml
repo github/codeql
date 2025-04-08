@@ -93,6 +93,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+      - name: Debug sync-main-pr state
+        run: |
+          git log origin/sync-main-pr..sync-main-pr
+          git diff origin/sync-main-pr
+          git status # Verify if any changes are staged
       - name: Create or update PR
         run: |
           BRANCH_NAME="sync-main-pr"
