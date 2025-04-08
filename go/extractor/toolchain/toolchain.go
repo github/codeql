@@ -139,7 +139,9 @@ func SupportsWorkspaces() bool {
 
 // Constructs a `*exec.Cmd` for `go` with the specified arguments.
 func GoCommand(arg ...string) *exec.Cmd {
-	return exec.Command("go", arg...)
+	cmd := exec.Command("go", arg...)
+	util.ApplyProxyEnvVars(cmd)
+	return cmd
 }
 
 // Run `go mod tidy -e` in the directory given by `path`.
