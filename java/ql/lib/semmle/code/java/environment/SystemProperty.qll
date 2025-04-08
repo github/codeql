@@ -269,18 +269,24 @@ private MethodCall getSystemPropertyFromSpringProperties(string propertyName) {
  * for final variables.
  */
 private predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
+  e1 = e2 or
   localFlowPlusInitializers(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
 }
 
+private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) =
+  fastTC(localFlowStepPlusInitializers/2)(pred, succ)
+
 /**
- * Holds if data can flow from `pred` to `succ` in zero or more
- * local (intra-procedural) steps or via instance or static variable intializers
+ * Holds if data can flow from `pred` to `succ` in a
+ * local (intra-procedural) step or via instance or static variable intializers
  * for final variables.
  */
-private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Variable v | v.isFinal() and pred.asExpr() = v.getInitializer() |
-    DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()), succ)
+private predicate localFlowStepPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Variable v |
+    v.isFinal() and
+    pred.asExpr() = v.getInitializer() and
+    succ.asExpr() = v.getAnAccess()
   )
   or
-  DataFlow::localFlow(pred, succ)
+  DataFlow::localFlowStep(pred, succ)
 }

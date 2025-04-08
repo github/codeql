@@ -1,5 +1,3 @@
-| Elements extracted | 67 |
-| Elements unextracted | 0 |
 | Extraction errors | 0 |
 | Extraction warnings | 1 |
 | Files extracted - total | 5 |
@@ -9,17 +7,10 @@
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - Path resolution | 0 |
+| Inconsistencies - SSA | 0 |
 | Inconsistencies - data flow | 0 |
 | Lines of code extracted | 6 |
 | Lines of user code extracted | 6 |
 | Macro calls - resolved | 2 |
 | Macro calls - total | 2 |
 | Macro calls - unresolved | 0 |
-| Taint edges - number of edges | 1671 |
-| Taint reach - nodes tainted | 0 |
-| Taint reach - per million nodes | 0 |
-| Taint sinks - cryptographic operations | 0 |
-| Taint sinks - query sinks | 1 |
-| Taint sources - active | 0 |
-| Taint sources - disabled | 0 |
-| Taint sources - sensitive data | 0 |

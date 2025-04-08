@@ -727,7 +727,8 @@ CSharp7.cs:
 #  235|                 0: [TypeMention] Console
 #  235|               0: [InterpolatedStringExpr] $"..."
 #  235|                 0: [StringLiteralUtf16] "int "
-#  235|                 1: [LocalVariableAccess] access to local variable i1
+#  235|                 1: [InterpolatedStringInsertExpr] {...}
+#  235|                   0: [LocalVariableAccess] access to local variable i1
 #  237|         2: [IfStmt] if (...) ...
 #  237|           0: [IsExpr] ... is ...
 #  237|             0: [LocalVariableAccess] access to local variable o
@@ -740,7 +741,8 @@ CSharp7.cs:
 #  239|                   0: [TypeMention] Console
 #  239|                 0: [InterpolatedStringExpr] $"..."
 #  239|                   0: [StringLiteralUtf16] "string "
-#  239|                   1: [LocalVariableAccess] access to local variable s1
+#  239|                   1: [InterpolatedStringInsertExpr] {...}
+#  239|                     0: [LocalVariableAccess] access to local variable s1
 #  241|           2: [IfStmt] if (...) ...
 #  241|             0: [IsExpr] ... is ...
 #  241|               0: [LocalVariableAccess] access to local variable o
@@ -775,7 +777,8 @@ CSharp7.cs:
 #  255|               0: [TypeMention] Console
 #  255|             0: [InterpolatedStringExpr] $"..."
 #  255|               0: [StringLiteralUtf16] "x "
-#  255|               1: [LocalVariableAccess] access to local variable s4
+#  255|               1: [InterpolatedStringInsertExpr] {...}
+#  255|                 0: [LocalVariableAccess] access to local variable s4
 #  256|         6: [BreakStmt] break;
 #  257|         7: [CaseStmt] case ...:
 #  257|           0: [VariablePatternExpr] Int32 i2
@@ -789,7 +792,8 @@ CSharp7.cs:
 #  258|               0: [TypeMention] Console
 #  258|             0: [InterpolatedStringExpr] $"..."
 #  258|               0: [StringLiteralUtf16] "positive "
-#  258|               1: [LocalVariableAccess] access to local variable i2
+#  258|               1: [InterpolatedStringInsertExpr] {...}
+#  258|                 0: [LocalVariableAccess] access to local variable i2
 #  259|         9: [BreakStmt] break;
 #  260|         10: [CaseStmt] case ...:
 #  260|           0: [VariablePatternExpr] Int32 i3
@@ -800,7 +804,8 @@ CSharp7.cs:
 #  261|               0: [TypeMention] Console
 #  261|             0: [InterpolatedStringExpr] $"..."
 #  261|               0: [StringLiteralUtf16] "int "
-#  261|               1: [LocalVariableAccess] access to local variable i3
+#  261|               1: [InterpolatedStringInsertExpr] {...}
+#  261|                 0: [LocalVariableAccess] access to local variable i3
 #  262|         12: [BreakStmt] break;
 #  263|         13: [CaseStmt] case ...:
 #  263|           0: [VariablePatternExpr] String s2
@@ -811,7 +816,8 @@ CSharp7.cs:
 #  264|               0: [TypeMention] Console
 #  264|             0: [InterpolatedStringExpr] $"..."
 #  264|               0: [StringLiteralUtf16] "string "
-#  264|               1: [LocalVariableAccess] access to local variable s2
+#  264|               1: [InterpolatedStringInsertExpr] {...}
+#  264|                 0: [LocalVariableAccess] access to local variable s2
 #  265|         15: [BreakStmt] break;
 #  266|         16: [CaseStmt] case ...:
 #  266|           0: [TypeAccessPatternExpr] access to type Double

@@ -1,0 +1,7 @@
+- queries: .
+- include:
+    id:
+      - py/not-named-self
+      - py/not-named-cls
+      - py/file-not-closed
+      - py/special-method-wrong-signature

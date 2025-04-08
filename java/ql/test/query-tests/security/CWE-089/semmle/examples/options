@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/mongodbClient:${testdir}/../../../../../stubs/springframework-5.8.x:${testdir}/../../../../../stubs/apache-hive --release 21
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/mongodbClient:${testdir}/../../../../../stubs/springframework-5.8.x:${testdir}/../../../../../stubs/apache-hive:${testdir}/../../../../../stubs/jakarta-persistence-api-3.2.0 --release 21

@@ -90,10 +90,10 @@ final class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * The position of a parameter or an argument in a function or call.
+ * The position of a parameter in a function.
  *
- * As there is a 1-to-1 correspondence between parameter positions and
- * arguments positions in Rust we use the same type for both.
+ * In Rust there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions, so we use the same underlying type for both.
  */
 final class ParameterPosition extends TParameterPosition {
   /** Gets the underlying integer position, if any. */
@@ -123,6 +123,22 @@ final class ParameterPosition extends TParameterPosition {
     result = ps.getParam(this.getPosition())
     or
     result = ps.getSelfParam() and this.isSelf()
+  }
+}
+
+/**
+ * The position of an argument in a call.
+ *
+ * In Rust there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions, so we use the same underlying type for both.
+ */
+final class ArgumentPosition extends ParameterPosition {
+  /** Gets the argument of `call` at this position, if any. */
+  Expr getArgument(CallExprBase call) {
+    result = call.getArgList().getArg(this.getPosition())
+    or
+    this.isSelf() and
+    result = call.(MethodCallExpr).getReceiver()
   }
 }
 
@@ -156,10 +172,6 @@ predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, Parameter
 module SsaFlow {
   private module SsaFlow = SsaImpl::DataFlowIntegration;
 
-  private ParameterNode toParameterNode(ParamCfgNode p) {
-    result.(SourceParameterNode).getParameter() = p
-  }
-
   /** Converts a control flow node into an SSA control flow node. */
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
@@ -167,8 +179,6 @@ module SsaFlow {
     result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
     or
     result.(SsaFlow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
-    or
-    n = toParameterNode(result.(SsaFlow::ParameterNode).getParameter())
   }
 
   predicate localFlowStep(
@@ -195,6 +205,28 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result = e.(MatchExprCfgNode).getArmExpr(_) or
   result = e.(MacroExprCfgNode).getMacroCall().(MacroCallCfgNode).getExpandedNode() or
   result.(BreakExprCfgNode).getTarget() = e
+}
+
+/**
+ * Holds if a reverse local flow step should be added from the post-update node
+ * for `e` to the post-update node for the result.
+ *
+ * This is needed to allow for side-effects on compound expressions to propagate
+ * to sub components. For example, in
+ *
+ * ```rust
+ * ({ foo(); &mut a}).set_data(taint);
+ * ```
+ *
+ * we add a reverse flow step from `[post] { foo(); &mut a}` to `[post] &mut a`,
+ * in order for the side-effect of `set_data` to reach `&mut a`.
+ */
+ExprCfgNode getPostUpdateReverseStep(ExprCfgNode e, boolean preservesValue) {
+  result = getALastEvalNode(e) and
+  preservesValue = true
+  or
+  result = e.(CastExprCfgNode).getExpr() and
+  preservesValue = false
 }
 
 module LocalFlow {
@@ -258,127 +290,11 @@ module LocalFlow {
     // The dual step of the above, for the post-update nodes.
     nodeFrom.(PostUpdateNode).getPreUpdateNode().(ReceiverNode).getReceiver() =
       nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), true)
   }
 }
-
-/**
- * Provides temporary modeling of built-in variants, for which no source code
- * `Item`s are available.
- *
- * TODO: Remove once library code is extracted.
- */
-module VariantInLib {
-  private import codeql.util.Option
-
-  private class CrateOrigin extends string {
-    CrateOrigin() { this = any(Resolvable r).getResolvedCrateOrigin() }
-  }
-
-  private class CrateOriginOption = Option<CrateOrigin>::Option;
-
-  private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
-
-  private newtype TVariantInLib =
-    MkVariantInLib(CrateOriginOption crate, string path, string name) {
-      crate = langCoreCrate() and
-      (
-        path = "crate::option::Option" and
-        name = "Some"
-        or
-        path = "crate::result::Result" and
-        name = ["Ok", "Err"]
-      )
-    }
-
-  /** An enum variant from library code, represented by the enum's canonical path and the variant's name. */
-  class VariantInLib extends MkVariantInLib {
-    CrateOriginOption crate;
-    string path;
-    string name;
-
-    VariantInLib() { this = MkVariantInLib(crate, path, name) }
-
-    int getAPosition() {
-      this = MkVariantInLib(langCoreCrate(), "crate::option::Option", "Some") and
-      result = 0
-      or
-      this = MkVariantInLib(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
-      result = 0
-    }
-
-    string getExtendedCanonicalPath() { result = path + "::" + name }
-
-    string toString() { result = name }
-  }
-
-  /** A tuple variant from library code. */
-  class VariantInLibTupleFieldContent extends Content, TVariantInLibTupleFieldContent {
-    private VariantInLib::VariantInLib v;
-    private int pos_;
-
-    VariantInLibTupleFieldContent() { this = TVariantInLibTupleFieldContent(v, pos_) }
-
-    VariantInLib::VariantInLib getVariantInLib(int pos) { result = v and pos = pos_ }
-
-    string getExtendedCanonicalPath() { result = v.getExtendedCanonicalPath() }
-
-    int getPosition() { result = pos_ }
-
-    final override string toString() {
-      // only print indices when the arity is > 1
-      if exists(TVariantInLibTupleFieldContent(v, 1))
-      then result = v.toString() + "(" + pos_ + ")"
-      else result = v.toString()
-    }
-
-    final override Location getLocation() { result instanceof EmptyLocation }
-  }
-
-  pragma[nomagic]
-  private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption crate, string path) {
-    path = r.getResolvedPath() and
-    (
-      crate.asSome() = r.getResolvedCrateOrigin()
-      or
-      crate.isNone() and
-      not r.hasResolvedCrateOrigin()
-    )
-  }
-
-  /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariantInLib(PathAstNode p, VariantInLib v) {
-    exists(CrateOriginOption crate, string path, string name |
-      resolveExtendedCanonicalPath(p, pragma[only_bind_into](crate), path + "::" + name) and
-      v = MkVariantInLib(pragma[only_bind_into](crate), path, name)
-    )
-  }
-
-  /** Holds if `p` destructs an enum variant `v`. */
-  pragma[nomagic]
-  private predicate tupleVariantCanonicalDestruction(TupleStructPat p, VariantInLib v) {
-    pathResolveToVariantInLib(p, v)
-  }
-
-  bindingset[pos]
-  predicate tupleVariantCanonicalDestruction(
-    TupleStructPat pat, VariantInLibTupleFieldContent c, int pos
-  ) {
-    tupleVariantCanonicalDestruction(pat, c.getVariantInLib(pos))
-  }
-
-  /** Holds if `ce` constructs an enum value of type `v`. */
-  pragma[nomagic]
-  private predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantInLib v) {
-    pathResolveToVariantInLib(ce.getFunction().(PathExpr), v)
-  }
-
-  bindingset[pos]
-  predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantInLibTupleFieldContent c, int pos) {
-    tupleVariantCanonicalConstruction(ce, c.getVariantInLib(pos))
-  }
-}
-
-class VariantInLibTupleFieldContent = VariantInLib::VariantInLibTupleFieldContent;
 
 class LambdaCallKind = Unit;
 
@@ -432,6 +348,8 @@ private module Aliases {
 
   class ParameterPositionAlias = ParameterPosition;
 
+  class ArgumentPositionAlias = ArgumentPosition;
+
   class ContentAlias = Content;
 
   class ContentSetAlias = ContentSet;
@@ -443,6 +361,7 @@ module RustDataFlow implements InputSig<Location> {
   private import Aliases
   private import codeql.rust.dataflow.DataFlow
   private import Node as Node
+  private import codeql.rust.frameworks.stdlib.Stdlib
 
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
@@ -550,7 +469,7 @@ module RustDataFlow implements InputSig<Location> {
 
   class ParameterPosition = ParameterPositionAlias;
 
-  class ArgumentPosition = ParameterPosition;
+  class ArgumentPosition = ArgumentPositionAlias;
 
   /**
    * Holds if the parameter position `ppos` matches the argument position
@@ -581,6 +500,12 @@ module RustDataFlow implements InputSig<Location> {
     model = ""
     or
     LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, model)
+    or
+    // Add flow through optional barriers. This step is then blocked by the barrier for queries that choose to use the barrier.
+    FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom
+          .(Node::FlowSummaryNode)
+          .getSummaryNode(), TOptionalBarrier(_), nodeTo.(Node::FlowSummaryNode).getSummaryNode()) and
+    model = ""
   }
 
   /**
@@ -622,11 +547,8 @@ module RustDataFlow implements InputSig<Location> {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       exists(TupleStructPatCfgNode pat, int pos |
         pat = node1.asPat() and
-        node2.asPat() = pat.getField(pos)
-      |
+        node2.asPat() = pat.getField(pos) and
         c = TTupleFieldContent(pat.getTupleStructPat().getTupleField(pos))
-        or
-        VariantInLib::tupleVariantCanonicalDestruction(pat.getPat(), c, pos)
       )
       or
       exists(TuplePatCfgNode pat, int pos |
@@ -645,7 +567,7 @@ module RustDataFlow implements InputSig<Location> {
       node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
       or
       exists(FieldExprCfgNode access |
-        node1.asExpr() = access.getExpr() and
+        node1.asExpr() = access.getContainer() and
         node2.asExpr() = access and
         access = c.(FieldContent).getAnAccess()
       )
@@ -671,8 +593,8 @@ module RustDataFlow implements InputSig<Location> {
       exists(TryExprCfgNode try |
         node1.asExpr() = try.getExpr() and
         node2.asExpr() = try and
-        c.(VariantInLibTupleFieldContent).getVariantInLib(0).getExtendedCanonicalPath() =
-          ["crate::option::Option::Some", "crate::result::Result::Ok"]
+        c.(TupleFieldContent)
+            .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
       )
       or
       exists(PrefixExprCfgNode deref |
@@ -710,7 +632,17 @@ module RustDataFlow implements InputSig<Location> {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
+  }
+
+  /**
+   * Holds if `cs` is used to encode a special operation as a content component, but should not
+   * be treated as an ordinary content component.
+   */
+  private predicate isSpecialContentSet(ContentSet cs) {
+    cs instanceof TOptionalStep or
+    cs instanceof TOptionalBarrier
   }
 
   pragma[nomagic]
@@ -718,7 +650,7 @@ module RustDataFlow implements InputSig<Location> {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
       assignment.getLhs() = access and
       node1.asExpr() = assignment.getRhs() and
-      node2.asExpr() = access.getExpr() and
+      node2.asExpr() = access.getContainer() and
       access = c.getAnAccess()
     )
   }
@@ -738,11 +670,8 @@ module RustDataFlow implements InputSig<Location> {
   private predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExprCfgNode call, int pos |
       node1.asExpr() = call.getArgument(pragma[only_bind_into](pos)) and
-      node2.asExpr() = call
-    |
+      node2.asExpr() = call and
       c = TTupleFieldContent(call.getCallExpr().getTupleField(pragma[only_bind_into](pos)))
-      or
-      VariantInLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
     )
     or
     exists(StructExprCfgNode re, string field |
@@ -807,7 +736,8 @@ module RustDataFlow implements InputSig<Location> {
     storeContentStep(node1, cs.(SingletonContentSet).getContent(), node2)
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    not isSpecialContentSet(cs)
   }
 
   /**
@@ -1093,7 +1023,14 @@ private module Cached {
   newtype TReturnKind = TNormalReturnKind()
 
   cached
-  newtype TContentSet = TSingletonContentSet(Content c)
+  newtype TContentSet =
+    TSingletonContentSet(Content c) or
+    TOptionalStep(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalStep")
+    } or
+    TOptionalBarrier(string name) {
+      name = any(FlowSummaryImpl::Private::AccessPathToken tok).getAnArgument("OptionalBarrier")
+    }
 
   /** Holds if `n` is a flow source of kind `kind`. */
   cached
@@ -1102,6 +1039,27 @@ private module Cached {
   /** Holds if `n` is a flow sink of kind `kind`. */
   cached
   predicate sinkNode(Node n, string kind) { n.(FlowSummaryNode).isSink(kind, _) }
+
+  /**
+   * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
+   * that by default the step is not present in the flow summary and needs to be explicitly enabled by defining
+   * an additional flow step.
+   */
+  cached
+  predicate optionalStep(Node node1, string name, Node node2) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+      TOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode())
+  }
+
+  /**
+   * A step in a flow summary defined using `OptionalBarrier[name]`. An `OptionalBarrier` is "opt-out", by default
+   * data can flow freely through the step. Flow through the step can be explicity blocked by defining its node as a barrier.
+   */
+  cached
+  predicate optionalBarrier(Node node, string name) {
+    FlowSummaryImpl::Private::Steps::summaryReadStep(_, TOptionalBarrier(name),
+      node.(FlowSummaryNode).getSummaryNode())
+  }
 }
 
 import Cached

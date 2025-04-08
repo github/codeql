@@ -205,8 +205,8 @@ edges
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:24:99:24 | x | match |
 | test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | x |  |
 | test.rs:99:24:99:24 | x | test.rs:100:17:100:17 | x | match |
-| test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next(...) |  |
-| test.rs:99:29:99:39 | iter.next(...) | test.rs:99:19:99:25 | Some(...) |  |
+| test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next() |  |
+| test.rs:99:29:99:39 | iter.next() | test.rs:99:19:99:25 | Some(...) |  |
 | test.rs:99:41:103:9 | { ... } | test.rs:99:15:99:39 | let ... = ... |  |
 | test.rs:100:13:102:13 | if ... {...} | test.rs:99:41:103:9 | { ... } |  |
 | test.rs:100:17:100:17 | x | test.rs:100:22:100:22 | 5 |  |
@@ -760,8 +760,8 @@ edges
 | test.rs:311:87:313:5 | { ... } | test.rs:311:5:313:5 | exit fn test_question_mark_operator_1 (normal) |  |
 | test.rs:312:9:312:10 | Ok | test.rs:312:12:312:12 | s |  |
 | test.rs:312:9:312:33 | Ok(...) | test.rs:311:87:313:5 | { ... } |  |
-| test.rs:312:12:312:12 | s | test.rs:312:12:312:27 | s.parse(...) |  |
-| test.rs:312:12:312:27 | s.parse(...) | test.rs:312:12:312:28 | TryExpr |  |
+| test.rs:312:12:312:12 | s | test.rs:312:12:312:27 | s.parse() |  |
+| test.rs:312:12:312:27 | s.parse() | test.rs:312:12:312:28 | TryExpr |  |
 | test.rs:312:12:312:28 | TryExpr | test.rs:311:5:313:5 | exit fn test_question_mark_operator_1 (normal) | return |
 | test.rs:312:12:312:28 | TryExpr | test.rs:312:32:312:32 | 4 | match |
 | test.rs:312:12:312:32 | ... + ... | test.rs:312:9:312:33 | Ok(...) |  |

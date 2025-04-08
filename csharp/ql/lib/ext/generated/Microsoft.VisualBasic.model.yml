@@ -4,12 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.VisualBasic", "FileSystem", False, "FileGet", "(System.Int32,System.Array,System.Int64,System.Boolean,System.Boolean)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
-      - ["Microsoft.VisualBasic", "FileSystem", False, "FileGet", "(System.Int32,System.String,System.Int64,System.Boolean)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
-      - ["Microsoft.VisualBasic", "FileSystem", False, "FileGet", "(System.Int32,System.ValueType,System.Int64)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
-      - ["Microsoft.VisualBasic", "FileSystem", False, "FileGetObject", "(System.Int32,System.Object,System.Int64)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
-      - ["Microsoft.VisualBasic", "FileSystem", False, "Input", "(System.Int32,System.Object)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
-      - ["Microsoft.VisualBasic", "FileSystem", False, "Input", "(System.Int32,System.String)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.VisualBasic", "VBCodeProvider", False, "VBCodeProvider", "(System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -111,6 +105,7 @@ extensions:
       - ["Microsoft.VisualBasic", "FileSystem", "FileClose", "(System.Int32[])", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileCopy", "(System.String,System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileDateTime", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Array,System.Int64,System.Boolean,System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Boolean,System.Int64)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Byte,System.Int64)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Char,System.Int64)", "summary", "df-generated"]
@@ -121,6 +116,9 @@ extensions:
       - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Int32,System.Int64)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Int64,System.Int64)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.Single,System.Int64)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.String,System.Int64,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "FileSystem", "FileGet", "(System.Int32,System.ValueType,System.Int64)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "FileSystem", "FileGetObject", "(System.Int32,System.Object,System.Int64)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileLen", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FileOpen", "(System.Int32,System.String,Microsoft.VisualBasic.OpenMode,Microsoft.VisualBasic.OpenAccess,Microsoft.VisualBasic.OpenShare,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "FilePut", "(System.Int32,System.Array,System.Int64,System.Boolean,System.Boolean)", "summary", "df-generated"]
@@ -150,7 +148,9 @@ extensions:
       - ["Microsoft.VisualBasic", "FileSystem", "Input", "(System.Int32,System.Int16)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "Input", "(System.Int32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "Input", "(System.Int32,System.Int64)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "FileSystem", "Input", "(System.Int32,System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "Input", "(System.Int32,System.Single)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "FileSystem", "Input", "(System.Int32,System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "InputString", "(System.Int32,System.Int32)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "Kill", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "FileSystem", "LOF", "(System.Int32)", "summary", "df-generated"]

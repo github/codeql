@@ -87,7 +87,7 @@ rust_library(
     version = "0.22.24",
     deps = [
         "@vendor_ts__indexmap-2.7.0//:indexmap",
-        "@vendor_ts__serde-1.0.218//:serde",
+        "@vendor_ts__serde-1.0.219//:serde",
         "@vendor_ts__serde_spanned-0.6.8//:serde_spanned",
         "@vendor_ts__toml_datetime-0.6.8//:toml_datetime",
         "@vendor_ts__winnow-0.7.3//:winnow",

@@ -24,6 +24,6 @@ module Impl {
    * ```
    */
   class Module extends Generated::Module {
-    override string toStringImpl() { result = "mod " + this.getName() }
+    override string toStringImpl() { result = "mod " + this.getName().getText() }
   }
 }

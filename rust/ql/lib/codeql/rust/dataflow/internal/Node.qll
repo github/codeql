@@ -29,7 +29,7 @@ abstract class NodePublic extends TNode {
   /**
    * Gets the expression that corresponds to this node, if any.
    */
-  ExprCfgNode asExpr() { none() }
+  final ExprCfgNode asExpr() { this = TExprNode(result) }
 
   /**
    * Gets the parameter that corresponds to this node, if any.
@@ -39,7 +39,7 @@ abstract class NodePublic extends TNode {
   /**
    * Gets the pattern that corresponds to this node, if any.
    */
-  PatCfgNode asPat() { none() }
+  final PatCfgNode asPat() { this = TPatNode(result) }
 }
 
 abstract class Node extends NodePublic {
@@ -144,16 +144,12 @@ class ExprNode extends AstCfgFlowNode, TExprNode {
   override ExprCfgNode n;
 
   ExprNode() { this = TExprNode(n) }
-
-  override ExprCfgNode asExpr() { result = n }
 }
 
 final class PatNode extends AstCfgFlowNode, TPatNode {
   override PatCfgNode n;
 
   PatNode() { this = TPatNode(n) }
-
-  override PatCfgNode asPat() { result = n }
 }
 
 /** A data flow node that corresponds to a name node in the CFG. */
@@ -467,10 +463,12 @@ newtype TNode =
     or
     e =
       [
-        any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
-        any(TryExprCfgNode try).getExpr(),
-        any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(),
-        any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver()
+        any(IndexExprCfgNode i).getBase(), //
+        any(FieldExprCfgNode access).getContainer(), //
+        any(TryExprCfgNode try).getExpr(), //
+        any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(), //
+        any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver(), //
+        getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
       ]
   } or
   TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or

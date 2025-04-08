@@ -1,0 +1,70 @@
+StringInterpolation.cs:
+#    3| [Class] MyStringInterpolationClass
+#    6|   5: [Method] M
+#    6|     -1: [TypeMention] Void
+#    7|     4: [BlockStmt] {...}
+#    8|       0: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] Single i = ...
+#    8|           -1: [TypeMention] float
+#    8|           0: [LocalVariableAccess] access to local variable i
+#    8|           1: [FloatLiteral] 3.14159
+#    9|       1: [LocalConstantDeclStmt] const ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] Int32 align = ...
+#    9|           -1: [TypeMention] int
+#    9|           0: [LocalVariableAccess] access to local variable align
+#    9|           1: [IntLiteral] 5
+#   10|       2: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] String x1 = ...
+#   10|           -1: [TypeMention] string
+#   10|           0: [LocalVariableAccess] access to local variable x1
+#   10|           1: [InterpolatedStringExpr] $"..."
+#   10|             0: [StringLiteralUtf16] "Hello, Pi "
+#   10|             1: [InterpolatedStringInsertExpr] {...}
+#   10|               0: [LocalVariableAccess] access to local variable i
+#   11|       3: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] String x2 = ...
+#   11|           -1: [TypeMention] string
+#   11|           0: [LocalVariableAccess] access to local variable x2
+#   11|           1: [InterpolatedStringExpr] $"..."
+#   11|             0: [StringLiteralUtf16] "Hello, Pi "
+#   11|             1: [InterpolatedStringInsertExpr] {...}
+#   11|               0: [LocalVariableAccess] access to local variable i
+#   11|               2: [StringLiteralUtf16] "F1"
+#   12|       4: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] String x3 = ...
+#   12|           -1: [TypeMention] string
+#   12|           0: [LocalVariableAccess] access to local variable x3
+#   12|           1: [InterpolatedStringExpr] $"..."
+#   12|             0: [StringLiteralUtf16] "Hello, Pi "
+#   12|             1: [InterpolatedStringInsertExpr] {...}
+#   12|               0: [LocalVariableAccess] access to local variable i
+#   12|               1: [IntLiteral] 6
+#   13|       5: [LocalVariableDeclStmt] ... ...;
+#   13|         0: [LocalVariableDeclAndInitExpr] String x4 = ...
+#   13|           -1: [TypeMention] string
+#   13|           0: [LocalVariableAccess] access to local variable x4
+#   13|           1: [InterpolatedStringExpr] $"..."
+#   13|             0: [StringLiteralUtf16] "Hello, Pi "
+#   13|             1: [InterpolatedStringInsertExpr] {...}
+#   13|               0: [LocalVariableAccess] access to local variable i
+#   13|               1: [IntLiteral] 6
+#   13|               2: [StringLiteralUtf16] "F3"
+#   14|       6: [LocalVariableDeclStmt] ... ...;
+#   14|         0: [LocalVariableDeclAndInitExpr] String x5 = ...
+#   14|           -1: [TypeMention] string
+#   14|           0: [LocalVariableAccess] access to local variable x5
+#   14|           1: [InterpolatedStringExpr] $"..."
+#   14|             0: [StringLiteralUtf16] "Hello, Pi "
+#   14|             1: [InterpolatedStringInsertExpr] {...}
+#   14|               0: [LocalVariableAccess] access to local variable i
+#   14|               1: [LocalVariableAccess] access to local variable align
+#   15|       7: [LocalVariableDeclStmt] ... ...;
+#   15|         0: [LocalVariableDeclAndInitExpr] String x6 = ...
+#   15|           -1: [TypeMention] string
+#   15|           0: [LocalVariableAccess] access to local variable x6
+#   15|           1: [InterpolatedStringExpr] $"..."
+#   15|             0: [StringLiteralUtf16] "Hello, Pi "
+#   15|             1: [InterpolatedStringInsertExpr] {...}
+#   15|               0: [LocalVariableAccess] access to local variable i
+#   15|               1: [LocalVariableAccess] access to local variable align
+#   15|               2: [StringLiteralUtf16] "F2"

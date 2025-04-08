@@ -222,7 +222,10 @@ module ClientRequest {
       method = "request"
       or
       this = axios().getMember(method).getACall() and
-      method = [httpMethodName(), "request"]
+      method = [httpMethodName(), "request", "postForm", "putForm", "patchForm", "getUri"]
+      or
+      this = axios().getMember("create").getReturn().getACall() and
+      method = "request"
     }
 
     private int getOptionsArgIndex() {
@@ -253,6 +256,8 @@ module ClientRequest {
       or
       method = ["post", "put"] and
       result = [this.getArgument(1), this.getOptionArgument(2, "data")]
+      or
+      method = ["postForm", "putForm", "patchForm"] and result = this.getArgument(1)
       or
       result = this.getOptionArgument([0 .. 2], ["headers", "params"])
     }
@@ -415,19 +420,73 @@ module ClientRequest {
   }
 
   /**
+   * Represents an instance of the `got` HTTP client library.
+   */
+  abstract private class GotInstance extends API::Node {
+    /**
+     * Gets the options object associated with this instance of `got`.
+     */
+    API::Node getOptions() { none() }
+  }
+
+  /**
+   * Represents the root `got` module import.
+   * For example: `const got = require('got')`.
+   */
+  private class RootGotInstance extends GotInstance {
+    RootGotInstance() { this = API::moduleImport("got") }
+  }
+
+  /**
+   * Represents an instance of `got` created by calling the `extend()` method.
+   * It may also be chained with multiple calls to `extend()`.
+   *
+   * For example: `const client = got.extend({ prefixUrl: 'https://example.com' })`.
+   */
+  private class ExtendGotInstance extends GotInstance {
+    private GotInstance base;
+    private API::CallNode extendCall;
+
+    ExtendGotInstance() {
+      extendCall = base.getMember("extend").getACall() and
+      this = extendCall.getReturn()
+    }
+
+    override API::Node getOptions() {
+      result = extendCall.getParameter(0) or result = base.getOptions()
+    }
+  }
+
+  /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {
+    GotInstance got;
+
     GotUrlRequest() {
-      exists(API::Node callee, API::Node got | this = callee.getACall() |
-        got = [API::moduleImport("got"), API::moduleImport("got").getMember("extend").getReturn()] and
-        callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
+      exists(API::Node callee | this = callee.getACall() |
+        callee =
+          [
+            got,
+            got.getMember(["stream", "get", "post", "put", "patch", "head", "delete", "paginate"])
+          ]
       )
     }
 
     override DataFlow::Node getUrl() {
       result = this.getArgument(0) and
       not exists(this.getOptionArgument(1, "baseUrl"))
+      or
+      // Handle URL from options passed to extend()
+      result = got.getOptions().getMember("url").asSink() and
+      not exists(this.getArgument(0))
+      or
+      // Handle URL from options passed as third argument when first arg is undefined/missing
+      exists(API::InvokeNode optionsCall |
+        optionsCall = API::moduleImport("got").getMember("Options").getAnInvocation() and
+        optionsCall.getReturn().getAValueReachableFromSource() = this.getAnArgument() and
+        result = optionsCall.getParameter(0).getMember("url").asSink()
+      )
     }
 
     override DataFlow::Node getHost() {

@@ -1,0 +1,5 @@
+- queries: .
+- include:
+    id:
+      - rb/database-query-in-loop
+      - rb/useless-assignment-to-local
