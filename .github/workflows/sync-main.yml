@@ -45,7 +45,6 @@ jobs:
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
           echo "::endgroup::"
-
           echo "::group::Merge codeql-cli/latest"
           set -x
           git merge codeql-cli/latest
@@ -59,8 +58,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create or update PR
         run: |
-          gh pr create --repo microsoft/codeql --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
-          exit 0
+          if ! gh pr view -R microsoft/codeql -t 'Sync Main' > /dev/null 2>&1; then
+            gh pr create --repo microsoft/codeql --fill -B main -H sync-main-pr --title 'Sync Main' --body "This PR syncs the latest changes from \`codeql-cli/latest\` into \`main\`."
+          else
+            echo "PR 'Sync Main' already exists."
+          fi
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
