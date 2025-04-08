@@ -25,6 +25,7 @@ use ra_ap_hir_def::{
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
 use ra_ap_hir_ty::GenericArg;
+use ra_ap_hir_ty::ProjectionTyExt;
 use ra_ap_hir_ty::TraitRefExt;
 use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
@@ -279,7 +280,7 @@ fn emit_module_items(
     module: &ModuleData,
     trap: &mut TrapFile,
 ) -> Vec<trap::Label<generated::Item>> {
-    let mut items = Vec::new();
+    let mut items: Vec<trap::Label<generated::Item>> = Vec::new();
     let mut uses = HashMap::new();
     let item_scope = &module.scope;
     for (name, item) in item_scope.entries() {
@@ -303,7 +304,10 @@ fn emit_module_items(
                     items.push(emit_function(db, trap, None, function, name).into());
                 }
                 ModuleDefId::ConstId(konst) => {
-                    items.extend(emit_const(db, name.as_str(), trap, None, konst, vis));
+                    items.extend(
+                        emit_const(db, trap, None, name.as_str(), konst, vis)
+                            .map(Into::<trap::Label<_>>::into),
+                    );
                 }
                 ModuleDefId::StaticId(statik) => {
                     items.extend(emit_static(db, name.as_str(), trap, statik, vis));
@@ -344,8 +348,12 @@ fn emit_module_items(
                 ModuleDefId::TraitId(trait_id) => {
                     items.extend(emit_trait(db, name.as_str(), trap, trait_id, vis));
                 }
-                ModuleDefId::TraitAliasId(_) | ModuleDefId::TypeAliasId(_) => (), // TODO
-                ModuleDefId::BuiltinType(_) => (),                                // TODO?
+                ModuleDefId::TypeAliasId(type_alias_id_) => items.extend(
+                    emit_type_alias(db, trap, None, name.as_str(), type_alias_id_, vis)
+                        .map(Into::<trap::Label<_>>::into),
+                ),
+                ModuleDefId::TraitAliasId(_) => (),
+                ModuleDefId::BuiltinType(_) => (),
                 // modules are handled separatedly
                 ModuleDefId::ModuleId(_) => (),
                 // Enum variants cannot be declarted, only imported
@@ -464,12 +472,12 @@ fn collect_generic_parameters(
 
 fn emit_const(
     db: &dyn HirDatabase,
-    name: &str,
     trap: &mut TrapFile,
     container: Option<GenericDefId>,
+    name: &str,
     konst: ra_ap_hir_def::ConstId,
     visibility: Visibility,
-) -> Option<trap::Label<generated::Item>> {
+) -> Option<trap::Label<generated::Const>> {
     let type_ = db.value_ty(konst.into());
     let parameters = collect_generic_parameters(db, konst.into(), container);
     assert_eq!(
@@ -486,19 +494,16 @@ fn emit_const(
     }));
     let konst = db.const_data(konst);
     let visibility = emit_visibility(db, trap, visibility);
-    Some(
-        trap.emit(generated::Const {
-            id: trap::TrapId::Star,
-            name,
-            attrs: vec![],
-            body: None,
-            is_const: true,
-            is_default: konst.has_body(),
-            type_repr,
-            visibility,
-        })
-        .into(),
-    )
+    Some(trap.emit(generated::Const {
+        id: trap::TrapId::Star,
+        name,
+        attrs: vec![],
+        body: None,
+        is_const: true,
+        is_default: konst.has_body(),
+        type_repr,
+        visibility,
+    }))
 }
 
 fn emit_static(
@@ -538,6 +543,39 @@ fn emit_static(
         })
         .into(),
     )
+}
+
+fn emit_type_alias(
+    db: &dyn HirDatabase,
+    trap: &mut TrapFile,
+    container: Option<GenericDefId>,
+    name: &str,
+    alias_id: ra_ap_hir_def::TypeAliasId,
+    visibility: Visibility,
+) -> Option<trap::Label<generated::TypeAlias>> {
+    let (type_, _) = db.type_for_type_alias_with_diagnostics(alias_id);
+    let parameters = collect_generic_parameters(db, alias_id.into(), container);
+    assert_eq!(type_.binders.len(Interner), parameters.len());
+    let ty_vars = &[parameters];
+    let type_repr = emit_hir_ty(trap, db, ty_vars, type_.skip_binders());
+    let name = Some(trap.emit(generated::Name {
+        id: trap::TrapId::Star,
+        text: Some(name.to_owned()),
+    }));
+    let visibility = emit_visibility(db, trap, visibility);
+    let alias = db.type_alias_data(alias_id);
+    let generic_param_list = emit_generic_param_list(trap, db, ty_vars, alias_id.into());
+    Some(trap.emit(generated::TypeAlias {
+        id: trap::TrapId::Star,
+        name,
+        attrs: vec![],
+        is_default: container.is_some() && alias.type_ref.is_some(),
+        type_repr,
+        visibility,
+        generic_param_list,
+        type_bound_list: None,
+        where_clause: None,
+    }))
 }
 
 fn emit_generic_param_list(
@@ -747,12 +785,29 @@ fn emit_trait(
     let assoc_items: Vec<trap::Label<generated::AssocItem>> = trait_items
         .items
         .iter()
-        .flat_map(|(name, item)| {
-            if let AssocItemId::FunctionId(function) = item {
-                Some(emit_function(db, trap, Some(trait_id.into()), *function, name).into())
-            } else {
-                None
+        .flat_map(|(name, item)| match item {
+            AssocItemId::FunctionId(function_id) => {
+                Some(emit_function(db, trap, Some(trait_id.into()), *function_id, name).into())
             }
+
+            AssocItemId::ConstId(const_id) => emit_const(
+                db,
+                trap,
+                Some(trait_id.into()),
+                name.as_str(),
+                *const_id,
+                visibility,
+            )
+            .map(Into::into),
+            AssocItemId::TypeAliasId(type_alias_id) => emit_type_alias(
+                db,
+                trap,
+                Some(trait_id.into()),
+                name.as_str(),
+                *type_alias_id,
+                visibility,
+            )
+            .map(Into::into),
         })
         .collect();
     let assoc_item_list = Some(trap.emit(generated::AssocItemList {
@@ -1258,36 +1313,71 @@ fn emit_hir_ty(
 
         chalk_ir::TyKind::Alias(chalk_ir::AliasTy::Projection(ProjectionTy {
             associated_ty_id,
-            substitution: _,
+            substitution,
         }))
-        | chalk_ir::TyKind::AssociatedType(associated_ty_id, _) => {
-            let assoc_ty_data = db.associated_ty_data(from_assoc_type_id(*associated_ty_id));
-
-            let _name = db
-                .type_alias_data(assoc_ty_data.name)
-                .name
-                .as_str()
-                .to_owned();
-
-            let trait_ref = ra_ap_hir_ty::TraitRef {
-                trait_id: assoc_ty_data.trait_id,
-                substitution: assoc_ty_data.binders.identity_substitution(Interner),
+        | chalk_ir::TyKind::AssociatedType(associated_ty_id, substitution) => {
+            let pt = ProjectionTy {
+                associated_ty_id: *associated_ty_id,
+                substitution: substitution.clone(),
             };
-            let mut trait_path = make_path(db, trait_ref.hir_trait_id());
-            trait_path.push(
-                db.trait_data(trait_ref.hir_trait_id())
-                    .name
-                    .as_str()
-                    .to_owned(),
-            );
-            //TODO
-            // trap.emit(generated::AssociatedType {
-            //     id: trap::TrapId::Star,
-            //     trait_path,
-            //     name,
-            // })
-            // .into()
-            None
+
+            // <Self as Trait<...>>::Name<...>
+
+            let qualifier = trap.emit(generated::PathSegment {
+                id: trap::TrapId::Star,
+                generic_arg_list: None,
+                identifier: None,
+                parenthesized_arg_list: None,
+                ret_type: None,
+                return_type_syntax: None,
+            });
+            let self_ty = pt.self_type_parameter(db);
+            let self_ty = emit_hir_ty(trap, db, ty_vars, &self_ty);
+            if let Some(self_ty) = self_ty {
+                generated::PathSegment::emit_type_repr(qualifier, self_ty, &mut trap.writer)
+            }
+            let trait_ref = pt.trait_ref(db);
+            let trait_ref = trait_path(db, trap, ty_vars, &trait_ref);
+            let trait_ref = trait_ref.map(|path| {
+                trap.emit(generated::PathTypeRepr {
+                    id: trap::TrapId::Star,
+                    path: Some(path),
+                })
+            });
+            if let Some(trait_ref) = trait_ref {
+                generated::PathSegment::emit_trait_type_repr(qualifier, trait_ref, &mut trap.writer)
+            }
+            let data = db.type_alias_data(from_assoc_type_id(*associated_ty_id));
+
+            let identifier = Some(trap.emit(generated::NameRef {
+                id: trap::TrapId::Star,
+                text: Some(data.name.as_str().to_owned()),
+            }));
+            let segment = trap.emit(generated::PathSegment {
+                id: trap::TrapId::Star,
+                generic_arg_list: None,
+                identifier,
+                parenthesized_arg_list: None,
+                ret_type: None,
+                return_type_syntax: None,
+            });
+            let qualifier = trap.emit(generated::Path {
+                id: trap::TrapId::Star,
+                qualifier: None,
+                segment: Some(qualifier),
+            });
+            let path = trap.emit(generated::Path {
+                id: trap::TrapId::Star,
+                qualifier: Some(qualifier),
+                segment: Some(segment),
+            });
+            Some(
+                trap.emit(generated::PathTypeRepr {
+                    id: trap::TrapId::Star,
+                    path: Some(path),
+                })
+                .into(),
+            )
         }
         chalk_ir::TyKind::BoundVar(var) => {
             let var_ = ty_vars
