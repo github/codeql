@@ -29,7 +29,18 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -B auto/sync-main-pr origin/auto/sync-main-pr
+      - name: Git checkout auto/sync-main-pr
+        shell: bash
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code --heads origin auto/sync-main-pr > /dev/null; then
+            echo "Branch exists remotely. Checking it out."
+            git checkout -B auto/sync-main-pr origin/auto/sync-main-pr
+          else
+            echo "Branch does not exist remotely. Creating from main."
+            git checkout -B auto/sync-main-pr origin/main
+            git push -u origin auto/sync-main-pr
+          fi
       - name: Sync origin/main
         shell: bash
         run: |
