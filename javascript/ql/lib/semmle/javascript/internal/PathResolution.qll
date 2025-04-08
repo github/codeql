@@ -265,6 +265,12 @@ module PathResolution {
     }
 
     predicate shouldResolve(Container base, string path) { shouldResolve(_, _, base, path) }
+
+    Container getAnAdditionalChild(Container base, string name) {
+      result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
+      or
+      result = ReverseBuildDir::getAnAdditionalChild(base, name)
+    }
   }
 
   private module ResolvePackageExports = ResolvePaths<ResolvePackageExportsConfig>;
