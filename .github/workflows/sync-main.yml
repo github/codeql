@@ -1,4 +1,4 @@
- name: Sync Main
+name: Sync Main
 
 on:
   push:
@@ -110,4 +110,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-          
