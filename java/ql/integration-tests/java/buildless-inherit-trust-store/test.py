@@ -8,7 +8,7 @@ def test(codeql, java, cwd):
     command = ["python3", "../server.py"]
     if runs_on.github_actions and runs_on.posix:
         # On GitHub Actions, we try to run the server with higher priority
-        command = ["sudo", "nice", "-n", "10"] + command
+        command = ["sudo"] + command
     repo_server_process = subprocess.Popen(command, cwd="repo")
     certspath = cwd / "jdk8_shipped_cacerts_plus_cert_pem"
     # If we override MAVEN_OPTS, we'll break cross-test maven isolation, so we need to append to it instead
