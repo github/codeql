@@ -27,3 +27,5 @@ import './TSConfigOutDir/customOutDir/foo.js'; // $ importTarget=TSConfigOutDir/
 
 import './MainIsFolder'; // $ importTarget=MainIsFolder/src/index.ts
 import '@example/main-is-folder'; // $ importTarget=MainIsFolder/src/index.ts
+
+import './DistContainsSrc'; // $ MISSING: importTarget=DistContainsSrc/src/foo.ts
