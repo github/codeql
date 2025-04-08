@@ -35,10 +35,15 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
     or
     pos.isThis() and
     result = "this"
+    or
+    pos.isPipeline() and
+    result = "pipeline"
   }
 
   string encodeArgumentPosition(ArgumentPosition pos) {
     pos.isThis() and result = "this"
+    or
+    pos.isPipeline() and result = "pipeline"
     or
     exists(int i |
       pos.isPositional(i, emptyNamedSet()) and
