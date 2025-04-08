@@ -105,6 +105,8 @@ module PathResolution {
     expr = dirname()
     or
     prefixedByDirname(expr.(AddExpr).getLeftOperand())
+    or
+    prefixedByDirname(expr.(CallExpr).getArgument(0))
   }
 
   //

@@ -24,6 +24,12 @@
 | Basic/Subdir/sub.ts:3:1:3:14 | import './..'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:4:1:4:15 | import './../'; | Basic/index.ts |
 | Basic/index.ts:1:1:1:22 | import  ... r/sub'; | Basic/Subdir/sub.ts |
+| DirnameImports/main.js:5:16:5:48 | require ... et.js') | DirnameImports/target.js |
+| DirnameImports/main.js:8:22:8:63 | require ... t.js')) | DirnameImports/target.js |
+| DirnameImports/main.js:11:16:11:55 | require ... et.js') | DirnameImports/nested/target.js |
+| DirnameImports/main.js:14:16:14:60 | require ... es.ts') | import-packages.ts |
+| DirnameImports/main.js:18:17:18:64 | require ... et.js') | DirnameImports/nested/target.js |
+| DirnameImports/main.js:21:20:21:57 | require ... et.js') | DirnameImports/target.js |
 | Extended/src/main.ts:2:1:2:21 | import  ... /file"; | Extended/lib/file.ts |
 | Extended/src/main.ts:3:1:3:24 | import  ... le.ts"; | Extended/lib/file.ts |
 | Extended/src/main.ts:4:1:4:24 | import  ... le.js"; | Extended/lib/file.ts |
