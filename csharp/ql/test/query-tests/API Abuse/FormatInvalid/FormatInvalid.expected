@@ -51,8 +51,6 @@
 | FormatMissingArgument.cs:15:9:15:38 | call to method Format | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | this | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | this |
 | FormatMissingArgument.cs:15:9:15:38 | call to method Format | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | The $@ ignores $@. | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | format string | FormatMissingArgument.cs:15:34:15:34 | (...) ... | this supplied value |
 | FormatMissingArgument.cs:15:9:15:38 | call to method Format | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | The $@ ignores $@. | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | format string | FormatMissingArgument.cs:15:37:15:37 | (...) ... | this supplied value |
-| FormatMissingArgument.cs:21:9:21:47 | call to method Format | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this |
-| FormatMissingArgument.cs:21:9:21:47 | call to method Format | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this |
 | FormatMissingArgument.cs:32:9:32:32 | call to method Format | FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | FormatMissingArgument.cs:32:23:32:28 | access to parameter format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:26:16:26:20 | "{1}" | this | FormatMissingArgument.cs:26:16:26:20 | "{1}" | this |
 | FormatMissingArgument.cs:32:9:32:32 | call to method Format | FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | FormatMissingArgument.cs:32:23:32:28 | access to parameter format | The $@ ignores $@. | FormatMissingArgument.cs:26:16:26:20 | "{1}" | format string | FormatMissingArgument.cs:32:31:32:31 | (...) ... | this supplied value |
 | FormatMissingArgument.cs:46:9:46:48 | call to method Format<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:46:37:46:43 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this |
@@ -401,7 +399,3 @@ nodes
 | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
 | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
 subpaths
-testFailures
-| FormatMissingArgument.cs:21:9:21:47 | FormatMissingArgument.cs:21:23:21:35 | Unexpected result: Alert |
-| FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Unexpected result: Alert |
-| FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Unexpected result: Sink |
