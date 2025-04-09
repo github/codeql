@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "::group::Sync with main branch"
           git pull origin auto/sync-main-pr; exitCode=$?; if [ $exitCode -ne 0 ]; then exitCode=0; fi
-          git pull origin main
+          git pull origin main --rebase
           git push --force origin auto/sync-main-pr
           echo "::endgroup::"
       - name: Sync upstream/codeql-cli/latest
