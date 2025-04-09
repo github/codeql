@@ -17,6 +17,9 @@ class Class1
         // GOOD: An array has been supplied.
         String.Format("{0} {1} {2}", args);
 
+        // GOOD: A collection has been supplied.
+        String.Format("{0} {1} {2}", [0, 1, 2]);
+
         // GOOD: All arguments supplied to params
         String.Format("{0} {1} {2} {3}", 0, 1, 2, 3);
 
