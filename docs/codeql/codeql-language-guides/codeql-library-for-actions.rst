@@ -121,9 +121,9 @@ See the GitHub Actions documentation on `workflows <https://docs.github.com/en/a
         - ``getAJob()`` - Gets a job within the ``jobs`` mapping of this workflow.
         - ``getEnv()`` - Gets an ``env`` mapping within this workflow declaring workflow-level environment variables, if any.
         - ``getJob(string jobId)`` - Gets a job within the ``jobs`` mapping of this workflow with the given job ID.
-        - ``getOn()``` - Gets the ``on`` mapping defining the events that trigger this workflow.
+        - ``getOn()`` - Gets the ``on`` mapping defining the events that trigger this workflow.
         - ``getPermissions()`` - Gets a ``permissions`` mapping within this workflow declaring workflow-level token permissions, if any.
-        - ``getStrategy()``` - Gets a ``strategy`` mapping for the jobs in this workflow, if any.
+        - ``getStrategy()`` - Gets a ``strategy`` mapping for the jobs in this workflow, if any.
         - ``getName()`` - Gets the name of this workflow, if defined within the workflow.
 
 The following example lists all jobs in a workflow with the name declaration ``name: test``:
