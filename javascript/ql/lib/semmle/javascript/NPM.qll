@@ -12,6 +12,9 @@ class PackageJson extends JsonObject {
     this.isTopLevel()
   }
 
+  /** Gets the folder containing this `package.json` file. */
+  Folder getFolder() { result = this.getJsonFile().getParentContainer() }
+
   /**
    * Gets the name of this package as it appears in the `name` field.
    */

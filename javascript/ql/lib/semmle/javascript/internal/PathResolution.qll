@@ -1,9 +1,10 @@
 private import javascript
 private import semmle.javascript.internal.paths.PathResolver
 private import semmle.javascript.internal.paths.TSConfig
+private import semmle.javascript.internal.paths.PackageJsonEx
 
 /** Provides a `getAnAdditionalChild` predicate for resolving files automatic file extensions. */
-private module AutomaticFileExtensions {
+module AutomaticFileExtensions {
   Container getAnAdditionalChild(Container base, string name) {
     result = base.(Folder).getJavaScriptFile(name)
     or
@@ -15,14 +16,49 @@ private module AutomaticFileExtensions {
   }
 }
 
-module PathResolution {
-  /**
-   * Holds if `path` is a relative path, in the sense that it must be resolved relative to
-   * its enclosing directory.
-   */
-  bindingset[path]
-  private predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
+/**
+ * Gets a folder name that is a common source folder name.
+ */
+private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
 
+/**
+ * Gets a folder name that is a common build output folder name.
+ */
+private string getABuildOutputFolderName() { result = ["dist", "build", "out", "lib"] }
+
+/**
+ * Provides a `getAnAdditionalChild` predicate for mapping files inside a build directory
+ * back to their corresponding source files.
+ */
+module ReverseBuildDir {
+  Container getAnAdditionalChild(Container base, string name) {
+    // Redirect './bar' to 'foo' given a tsconfig like:
+    //   { include: ["foo"], compilerOptions: { outDir: "./bar" }}
+    exists(TSConfig tsconfig |
+      name =
+        tsconfig.getCompilerOptions().getPropStringValue("outDir").regexpReplaceAll("^\\./", "") and
+      base = tsconfig.getFolder() and
+      result = tsconfig.getAnIncludedBaseContainer()
+    )
+    or
+    // Heuristic version of the above based on commonly used source and build folder names
+    exists(Folder folder | base = folder |
+      folder = any(PackageJson pkg).getJsonFile().getParentContainer() and
+      name = getABuildOutputFolderName() and
+      not exists(folder.getChildContainer(name)) and
+      (
+        result = folder.getChildContainer(getASrcFolderName())
+        or
+        result = folder
+      )
+    )
+  }
+}
+
+bindingset[path]
+predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
+
+module PathResolution {
   /**
    * Holds if `expr` should be resolved, because it is used in an import.
    */
@@ -42,92 +78,10 @@ module PathResolution {
     prefixedByDirname(expr.(CallExpr).getArgument(0))
   }
 
-  //
-  //  TSCONFIG.JSON
-  //
-  private module ResolvePathMappingConfig implements PathResolverSig {
-    additional predicate shouldResolve(TSConfig cfg, Container base, string path) {
-      (cfg.hasExactPathMapping(_, path) or cfg.hasPrefixPathMapping(_, path)) and
-      if isRelativePath(path)
-      then base = cfg.getFolder() // relative paths are resolved relative to tsconfig.json
-      else base = cfg.getBaseUrlFolder() // non-relative paths are resolved relative to the baseUrl
-    }
-
-    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
-  }
-
-  private module ResolvePathMapping = PathResolver<ResolvePathMappingConfig>;
-
-  private Container resolvePathMapping(TSConfig cfg, string path) {
-    exists(Container base |
-      ResolvePathMappingConfig::shouldResolve(cfg, base, path) and
-      result = ResolvePathMapping::resolve(base, path)
-    )
-  }
-
   pragma[nomagic]
   private TSConfig getTSConfigFromPathExpr(PathExpr expr) {
     result.getAnAffectedFile() = expr.getFile() and
     isRelevantPathExpr(expr)
-  }
-
-  //
-  //  PACKAGE.JSON "exports" property
-  //
-  private JsonValue getAPartOfExportsSection(PackageJson pkg, string matchedPath) {
-    result = pkg.getPropValue("exports") and
-    matchedPath = ""
-    or
-    exists(string prop, string prevPath |
-      result = getAPartOfExportsSection(pkg, prevPath).getPropValue(prop) and
-      if prop.matches("./%") then matchedPath = prop.suffix(2) else matchedPath = prevPath
-    )
-  }
-
-  private predicate packageHasExactExport(PackageJson pkg, string matchedPath, string path) {
-    getAPartOfExportsSection(pkg, matchedPath).getStringValue() = path and
-    not matchedPath.matches("%*%")
-  }
-
-  private predicate packageHasPrefixExport(PackageJson pkg, string matchedPath, string path) {
-    getAPartOfExportsSection(pkg, matchedPath + "*").getStringValue() = path + "*"
-  }
-
-  private module PackageExportsResolverConfig implements PathResolverSig {
-    additional predicate shouldResolve(
-      PackageJson pkg, string matchedPath, Container base, string path
-    ) {
-      (
-        packageHasExactExport(pkg, matchedPath, path)
-        or
-        packageHasPrefixExport(pkg, matchedPath, path)
-      ) and
-      base = pkg.getJsonFile().getParentContainer()
-    }
-
-    predicate shouldResolve(Container base, string path) { shouldResolve(_, _, base, path) }
-
-    Container getAnAdditionalChild(Container base, string name) {
-      result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
-      or
-      result = ReverseBuildDir::getAnAdditionalChild(base, name)
-    }
-  }
-
-  private module PackageExportsResolver = PathResolver<PackageExportsResolverConfig>;
-
-  private Container resolvePackageExactExport(PackageJson pkg, string matchedPath) {
-    exists(string path |
-      packageHasExactExport(pkg, matchedPath, path) and
-      result = PackageExportsResolver::resolve(pkg.getJsonFile().getParentContainer(), path)
-    )
-  }
-
-  private Container resolvePackagePrefixExport(PackageJson pkg, string matchedPath) {
-    exists(string path |
-      packageHasPrefixExport(pkg, matchedPath, path) and
-      result = PackageExportsResolver::resolve(pkg.getJsonFile().getParentContainer(), path)
-    )
   }
 
   /**
@@ -142,18 +96,16 @@ module PathResolution {
   pragma[nomagic]
   private predicate replacedPath1(PathExpr expr, Container base, string newPath) {
     // Handle tsconfig mappings such as `{ "paths": { "@/*": "./src/*" }}`
-    exists(TSConfig config, string value, string mappedPath |
+    exists(TSConfig config, string value |
       config = getTSConfigFromPathExpr(expr).getExtendedTSConfig*() and
       value = expr.getValue()
     |
-      config.hasExactPathMapping(value, mappedPath) and
-      base = resolvePathMapping(config, mappedPath) and
+      config.hasExactPathMappingTo(value, base) and
       newPath = ""
       or
       exists(string pattern |
-        config.hasPrefixPathMapping(pattern, mappedPath) and
-        value = pattern + newPath and
-        base = resolvePathMapping(config, mappedPath)
+        config.hasPrefixPathMappingTo(pattern, base) and
+        value = pattern + newPath
       )
     )
     or
@@ -162,19 +114,19 @@ module PathResolution {
     //
     // This part only handles the "exports" property of package.json. "main" and "modules" are
     // handled further down because their semantics are easier to handle there.
-    exists(PackageJson pkg, string packageName, string remainder |
+    exists(PackageJsonEx pkg, string packageName, string remainder |
       packageName = getPackagePrefixFromPathExpr(expr) and
       pkg.getDeclaredPackageName() = packageName and
       remainder = expr.getValue().suffix(packageName.length()).regexpReplaceAll("^[/\\\\]", "")
     |
       // "exports": { ".": "./foo.js" }
       // "exports": { "./foo.js": "./foo/impl.js" }
-      base = resolvePackageExactExport(pkg, remainder) and
+      pkg.hasExactPathMappingTo(remainder, base) and
       newPath = ""
       or
       // "exports": { "./*": "./foo/*" }
       exists(string prefix |
-        base = resolvePackagePrefixExport(pkg, prefix) and
+        pkg.hasPrefixPathMappingTo(prefix, base) and
         remainder = prefix + newPath
       )
       or
@@ -184,8 +136,8 @@ module PathResolution {
       // to try and locate the source files corresponding to the build files mentioned in the "exports" property.
       // If there is a "main" or "module" property, this is later remapped to that file in `getFileFromFolderImport`
       // not exists(pkg.getPropValue("exports")) and
-      not exists(resolvePackageExactExport(pkg, _)) and
-      not exists(resolvePackagePrefixExport(pkg, _)) and
+      not pkg.hasExactPathMappingTo(_, _) and
+      not pkg.hasPrefixPathMappingTo(_, _) and
       base = pkg.getJsonFile().getParentContainer() and
       newPath = remainder
     )
@@ -247,78 +199,8 @@ module PathResolution {
     )
   }
 
-  /** Resolves `main` and `module` paths in a package.json file */
-  private module ResolvePackageJsonPaths implements PathResolverSig {
-    additional predicate shouldResolve(PackageJson pkg, Container base, string path, string kind) {
-      base = pkg.getJsonFile().getParentContainer() and
-      (
-        kind = ["main", "module"] and
-        path = pkg.getPropStringValue(kind)
-        or
-        kind = "files" and
-        path = pkg.getPropValue("files").(JsonArray).getElementStringValue(_)
-      )
-    }
-
-    predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path, _) }
-
-    Container getAnAdditionalChild(Container base, string name) {
-      result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
-      or
-      result = ReverseBuildDir::getAnAdditionalChild(base, name)
-    }
-  }
-
-  private module ResolvePackageMain = PathResolver<ResolvePackageJsonPaths>;
-
-  private Container resolvePackageMain(PackageJson pkg) {
-    exists(Container base, string path |
-      ResolvePackageJsonPaths::shouldResolve(pkg, base, path, ["main", "module"]) and
-      result = ResolvePackageMain::resolve(base, path)
-    )
-  }
-
-  /**
-   * Provides a `getAnAdditionalChild` predicate for mapping files inside a build directory
-   * back to their corresponding source files.
-   */
-  private module ReverseBuildDir {
-    Container getAnAdditionalChild(Container base, string name) {
-      // Redirect './bar' to 'foo' given a tsconfig like:
-      //   { include: ["foo"], compilerOptions: { outDir: "./bar" }}
-      exists(TSConfig tsconfig |
-        name =
-          tsconfig.getCompilerOptions().getPropStringValue("outDir").regexpReplaceAll("^\\./", "") and
-        base = tsconfig.getFolder() and
-        result = tsconfig.getAnIncludedBaseContainer()
-      )
-      or
-      // Heuristic version of the above based on commonly used source and build folder names
-      exists(Folder folder | base = folder |
-        folder = any(PackageJson pkg).getJsonFile().getParentContainer() and
-        name = getABuildOutputFolderName() and
-        not exists(folder.getChildContainer(name)) and
-        (
-          result = folder.getChildContainer(getASrcFolderName())
-          or
-          result = folder
-        )
-      )
-    }
-  }
-
-  /**
-   * Gets a folder name that is a common source folder name.
-   */
-  private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
-
-  /**
-   * Gets a folder name that is a common build output folder name.
-   */
-  private string getABuildOutputFolderName() { result = ["dist", "build", "out", "lib"] }
-
-  private File guessPackageJsonMain1(PackageJson pkg) {
-    not exists(resolvePackageMain(pkg)) and
+  private File guessPackageJsonMain1(PackageJsonEx pkg) {
+    not exists(pkg.getMainFile()) and
     exists(Folder folder, Folder subfolder |
       folder = pkg.getJsonFile().getParentContainer() and
       (
@@ -334,17 +216,10 @@ module PathResolution {
     )
   }
 
-  private Container resolveAPackageFile(PackageJson pkg) {
-    exists(Container base, string path |
-      ResolvePackageJsonPaths::shouldResolve(pkg, base, path, "files") and
-      result = ResolvePackageMain::resolve(base, path)
-    )
-  }
-
-  private File guessPackageJsonMain2(PackageJson pkg) {
-    not exists(resolvePackageMain(pkg)) and
+  private File guessPackageJsonMain2(PackageJsonEx pkg) {
+    not exists(pkg.getMainFile()) and
     not exists(guessPackageJsonMain1(pkg)) and
-    result = resolveAPackageFile(pkg)
+    result = pkg.getAFileInFilesArray()
   }
 
   private File getFileFromFolderImport(Folder folder) {
@@ -352,10 +227,10 @@ module PathResolution {
     or
     // Note that unlike "exports" paths, "main" and "module" also take effect when the package
     // is imported via a relative path, e.g. `require("..")` targeting a folder with a package.json file.
-    exists(PackageJson pkg | pkg.getJsonFile().getParentContainer() = folder |
-      result = resolvePackageMain(pkg)
+    exists(PackageJsonEx pkg | pkg.getFolder() = folder |
+      result = pkg.getMainFile()
       or
-      result = resolvePackageMain(pkg).(Folder).getJavaScriptFile("index")
+      result = pkg.getMainFile().(Folder).getJavaScriptFile("index")
       or
       result = guessPackageJsonMain1(pkg)
       or
@@ -399,8 +274,6 @@ module PathResolution {
     query File resolvePathExpr_(PathExprToDebug expr) { result = resolvePathExpr(expr) }
 
     // Some predicates that are usually small enough that they don't need restriction
-    query predicate resolvePackageMain_ = resolvePackageMain/1;
-
     query predicate guessPackageJsonMain1_ = guessPackageJsonMain1/1;
 
     query predicate guessPackageJsonMain2_ = guessPackageJsonMain2/1;

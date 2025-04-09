@@ -1,16 +1,6 @@
 private import javascript
+private import semmle.javascript.internal.PathResolution
 private import semmle.javascript.internal.paths.PathResolver
-
-private module ResolverConfig implements PathResolverSig {
-  predicate shouldResolve(Container base, string path) {
-    exists(TSConfig cfg |
-      base = cfg.getFolder() and
-      path = [cfg.getExtendsPath(), cfg.getBaseUrlPath(), cfg.getAnIncludePath()]
-    )
-  }
-}
-
-private module Resolver = PathResolver<ResolverConfig>;
 
 class TSConfig extends JsonObject {
   TSConfig() {
@@ -91,4 +81,51 @@ class TSConfig extends JsonObject {
   predicate hasPrefixPathMapping(string pattern, string newPath) {
     this.hasPathMapping(pattern + "*", newPath + "*")
   }
+
+  predicate hasExactPathMappingTo(string pattern, Container target) {
+    exists(string newPath |
+      this.hasExactPathMapping(pattern, newPath) and
+      target = resolvePathMapping(this, newPath)
+    )
+  }
+
+  predicate hasPrefixPathMappingTo(string pattern, Container target) {
+    exists(string newPath |
+      this.hasPrefixPathMapping(pattern, newPath) and
+      target = resolvePathMapping(this, newPath)
+    )
+  }
+}
+
+/** For resolving paths in a tsconfig file, except `paths` mappings. */
+private module ResolverConfig implements PathResolverSig {
+  predicate shouldResolve(Container base, string path) {
+    exists(TSConfig cfg |
+      base = cfg.getFolder() and
+      path = [cfg.getExtendsPath(), cfg.getBaseUrlPath(), cfg.getAnIncludePath()]
+    )
+  }
+}
+
+private module Resolver = PathResolver<ResolverConfig>;
+
+/** For resolving `paths` mappings, since these require the baseURL to be resolved first. */
+private module PathMappingResolverConfig implements PathResolverSig {
+  additional predicate shouldResolve(TSConfig cfg, Container base, string path) {
+    (cfg.hasExactPathMapping(_, path) or cfg.hasPrefixPathMapping(_, path)) and
+    if isRelativePath(path)
+    then base = cfg.getFolder() // relative paths are resolved relative to tsconfig.json
+    else base = cfg.getBaseUrlFolder() // non-relative paths are resolved relative to the baseUrl
+  }
+
+  predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
+}
+
+private module PathMappingResolver = PathResolver<PathMappingResolverConfig>;
+
+private Container resolvePathMapping(TSConfig cfg, string path) {
+  exists(Container base |
+    PathMappingResolverConfig::shouldResolve(cfg, base, path) and
+    result = PathMappingResolver::resolve(base, path)
+  )
 }
