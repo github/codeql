@@ -1,5 +1,5 @@
 ---
 category: minorAnalysis
 ---
-* Improved `WebSocket` analysis by refactoring the model to use API graphs.
+* Improved detection of `WebSocket` and `SockJS` usage.
 * Added data received from `WebSocket` clients as a remote flow source.
