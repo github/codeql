@@ -112,7 +112,7 @@ module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
 
 module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
 
-abstract class CipherOutputArtifact extends Crypto::CipherOutputArtifactInstance {
+abstract class CipherOutputArtifact extends Crypto::KeyOperationOutputArtifactInstance {
   override predicate flowsTo(Crypto::FlowAwareElement other) {
     ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
   }

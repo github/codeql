@@ -7,18 +7,17 @@
 import experimental.Quantum.Language
 
 from
-  Crypto::NonceArtifactNode n, Crypto::CipherOperationNode op, Crypto::FlowAwareElement src,
-  string msg
+  Crypto::NonceArtifactNode n, Crypto::KeyOperationNode op, Crypto::FlowAwareElement src, string msg
 where
   op.getANonce() = n and
   // Only encryption mode is relevant for insecure nonces, consder any 'unknown' subtype
   // as possibly encryption.
   (
-    op.getCipherOperationSubtype() instanceof Crypto::EncryptionSubtype
+    op.getKeyOperationSubtype() instanceof Crypto::EncryptionSubtype
     or
-    op.getCipherOperationSubtype() instanceof Crypto::WrapSubtype
+    op.getKeyOperationSubtype() instanceof Crypto::WrapSubtype
     or
-    op.getCipherOperationSubtype() instanceof Crypto::UnwrapSubtype
+    op.getKeyOperationSubtype() instanceof Crypto::UnwrapSubtype
   ) and
   (
     // Known sources cases that are not secure

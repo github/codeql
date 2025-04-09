@@ -8,9 +8,8 @@ import experimental.Quantum.Language
 import semmle.code.java.dataflow.DataFlow
 
 from
-  Crypto::CipherOperationNode op1, Crypto::CipherOperationNode op2,
-  Crypto::NonceArtifactNode nonce1, Crypto::NonceArtifactNode nonce2, Crypto::FlowAwareElement src1,
-  Crypto::FlowAwareElement src2
+  Crypto::KeyOperationNode op1, Crypto::KeyOperationNode op2, Crypto::NonceArtifactNode nonce1,
+  Crypto::NonceArtifactNode nonce2, Crypto::FlowAwareElement src1, Crypto::FlowAwareElement src2
 where
   // NOTE: not looking at value of the nonce, if we knew value, it would be insecure (hard coded)
   // Instead trying to find nonce sources that trace to multiple operations.
@@ -18,14 +17,14 @@ where
   // (the encryption happened else where) or we are able to see the encryption and decryption operation and
   // reuse for encryption is the concern)
   (
-    op1.getCipherOperationSubtype() instanceof Crypto::EncryptionSubtype or
-    op1.getCipherOperationSubtype() instanceof Crypto::WrapSubtype or
-    op1.getCipherOperationSubtype() instanceof Crypto::UnknownCipherOperationSubtype
+    op1.getKeyOperationSubtype() instanceof Crypto::EncryptionSubtype or
+    op1.getKeyOperationSubtype() instanceof Crypto::WrapSubtype or
+    op1.getKeyOperationSubtype() instanceof Crypto::UnknownCipherOperationSubtype
   ) and
   (
-    op2.getCipherOperationSubtype() instanceof Crypto::EncryptionSubtype or
-    op2.getCipherOperationSubtype() instanceof Crypto::WrapSubtype or
-    op2.getCipherOperationSubtype() instanceof Crypto::UnknownCipherOperationSubtype
+    op2.getKeyOperationSubtype() instanceof Crypto::EncryptionSubtype or
+    op2.getKeyOperationSubtype() instanceof Crypto::WrapSubtype or
+    op2.getKeyOperationSubtype() instanceof Crypto::UnknownCipherOperationSubtype
   ) and
   nonce1 = op1.getANonce() and
   nonce2 = op2.getANonce() and

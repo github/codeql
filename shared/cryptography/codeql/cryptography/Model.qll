@@ -334,7 +334,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class ArtifactConsumer extends ConsumerElement {
     /**
-     * DO NOT USE:
      * Use `getAKnownArtifactSource() instead. The behaviour of these two predicates is equivalent.
      */
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
@@ -348,26 +347,22 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * For example:
    * A `NonceArtifactConsumer` is always the `NonceArtifactInstance` itself, since data only becomes (i.e., is determined to be)
    * a `NonceArtifactInstance` when it is consumed in a context that expects a nonce (e.g., an argument expecting nonce data).
-   * In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
+   *
+   *  In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
    * that identity without the need for additional differentiation. Without the context a consumer provides, that data could
    * otherwise be any other type of artifact or even simply random data.
    *
-   * TODO: what if a Nonce from hypothetical func `generateNonce()` flows to this instance which is also a Nonce?
-   * TODO: potential solution is creating another artifact type called NonceData or treating it as a generic source.
-   *
-   * TODO: An alternative is simply having a predicate DataFlowNode getNonceInputNode() on (for example) operations.
-   *       Under the hood, in Model.qll, we would create the instance for the modeller, thus avoiding the need for the modeller
-   *       to create a separate consumer class / instance themselves using this class.
+   * This class is used to create synthetic nodes for the artifact at any place where it is consumed.
    */
   abstract private class ArtifactConsumerAndInstance extends ArtifactConsumer, ArtifactInstance {
-    override predicate isConsumerArtifact() { any() }
+    final override predicate isConsumerArtifact() { any() }
   }
 
   final private class NonceArtifactConsumer extends ArtifactConsumerAndInstance {
     ConsumerInputDataFlowNode inputNode;
 
     NonceArtifactConsumer() {
-      exists(CipherOperationInstance op | inputNode = op.getNonceConsumer()) and
+      exists(KeyOperationInstance op | inputNode = op.getNonceConsumer()) and
       this = Input::dfn_to_element(inputNode)
     }
 
@@ -379,7 +374,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     MessageArtifactConsumer() {
       (
-        exists(CipherOperationInstance op | inputNode = op.getInputConsumer())
+        exists(KeyOperationInstance op | inputNode = op.getInputConsumer())
         or
         exists(KeyDerivationOperationInstance op | inputNode = op.getInputConsumer())
         or
@@ -402,7 +397,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
-  // Output artifacts are determined solely by the element that produces them.
+  /**
+   * An artifact that is produced by an operation, representing a concrete artifact instance rather than a synthetic consumer artifact.
+   */
   abstract class OutputArtifactInstance extends ArtifactInstance {
     override predicate isConsumerArtifact() { none() }
 
@@ -413,13 +410,33 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  /**
+   * An artifact representing a hash function's digest output.
+   */
   abstract class DigestArtifactInstance extends OutputArtifactInstance { }
 
+  /**
+   * An artifact representing a random number generator's output.
+   */
   abstract class RandomNumberGenerationInstance extends OutputArtifactInstance {
     // TODO: input seed?
   }
 
-  abstract class CipherOutputArtifactInstance extends OutputArtifactInstance { }
+  /**
+   * An artifact representing a key operation's output, e.g.:
+   * 1. Encryption/decryption output (ciphertext or plaintext)
+   * 1. Signing output (signature)
+   * 1. Key encapsulation output (wrapped or unwrapped key)
+   */
+  final class KeyOperationOutputArtifactInstance extends OutputArtifactInstance {
+    KeyOperationInstance creator;
+
+    KeyOperationOutputArtifactInstance() {
+      Input::dfn_to_element(creator.getOutputArtifact()) = this
+    }
+
+    override DataFlowNode getOutputNode() { result = creator.getOutputArtifact() }
+  }
 
   // Artifacts that may be outputs or inputs
   newtype TKeyArtifactType =
@@ -459,7 +476,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     // TODO: key type hint? e.g. hint: private || public
     KeyArtifactConsumer() {
       (
-        exists(CipherOperationInstance op | inputNode = op.getKeyConsumer()) or
+        exists(KeyOperationInstance op | inputNode = op.getKeyConsumer()) or
         exists(MACOperationInstance op | inputNode = op.getKeyConsumer())
       ) and
       this = Input::dfn_to_element(inputNode)
@@ -471,67 +488,290 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * A cipher operation instance, such as encryption or decryption.
+   * The `KeyOpAlg` module defines key operation algorithms types (e.g., symmetric ciphers, signatures, etc.)
+   * and provides mapping of those types to string names and structural properties.
    */
-  abstract class CipherOperationInstance extends OperationInstance {
+  module KeyOpAlg {
     /**
-     * Gets the subtype of this cipher operation, distinguishing encryption, decryption, key wrapping, and key unwrapping.
+     * An algorithm used in key operations.
      */
-    abstract CipherOperationSubtype getCipherOperationSubtype();
+    newtype TAlgorithm =
+      TSymmetricCipher(TSymmetricCipherType t) or
+      TAsymmetricCipher(TAsymmetricCipherType t) or
+      TSignature(TSignatureAlgorithmType t) or
+      TKeyEncapsulation(TKEMAlgorithmType t) or
+      TUnknownKeyOperationAlgorithmType()
+
+    // Parameterized algorithm types
+    newtype TSymmetricCipherType =
+      AES() or
+      ARIA() or
+      BLOWFISH() or
+      CAMELLIA() or
+      CAST5() or
+      CHACHA20() or
+      DES() or
+      DESX() or
+      GOST() or
+      IDEA() or
+      KUZNYECHIK() or
+      MAGMA() or
+      TripleDES() or
+      DoubleDES() or
+      RC2() or
+      RC4() or
+      RC5() or
+      SEED() or
+      SM4() or
+      OtherSymmetricCipherType()
+
+    newtype TAsymmetricCipherType =
+      RSA() or
+      OtherAsymmetricCipherType()
+
+    newtype TSignatureAlgorithmType =
+      DSA() or
+      ECDSA() or
+      Ed25519() or
+      Ed448() or
+      OtherSignatureAlgorithmType()
+
+    newtype TKEMAlgorithmType =
+      Kyber() or
+      FrodoKEM() or
+      OtherKEMAlgorithmType()
+
+    newtype TCipherStructureType =
+      Block() or
+      Stream() or
+      UnknownCipherStructureType()
+
+    class CipherStructureType extends TCipherStructureType {
+      string toString() {
+        result = "Block" and this = Block()
+        or
+        result = "Stream" and this = Stream()
+        or
+        result = "Unknown" and this = UnknownCipherStructureType()
+      }
+    }
+
+    bindingset[type]
+    predicate symmetric_cipher_to_name_and_structure(
+      TSymmetricCipherType type, string name, CipherStructureType s
+    ) {
+      type = AES() and name = "AES" and s = Block()
+      or
+      type = ARIA() and name = "ARIA" and s = Block()
+      or
+      type = BLOWFISH() and name = "Blowfish" and s = Block()
+      or
+      type = CAMELLIA() and name = "Camellia" and s = Block()
+      or
+      type = CAST5() and name = "CAST5" and s = Block()
+      or
+      type = CHACHA20() and name = "ChaCha20" and s = Stream()
+      or
+      type = DES() and name = "DES" and s = Block()
+      or
+      type = DESX() and name = "DESX" and s = Block()
+      or
+      type = GOST() and name = "GOST" and s = Block()
+      or
+      type = IDEA() and name = "IDEA" and s = Block()
+      or
+      type = KUZNYECHIK() and name = "Kuznyechik" and s = Block()
+      or
+      type = MAGMA() and name = "Magma" and s = Block()
+      or
+      type = TripleDES() and name = "TripleDES" and s = Block()
+      or
+      type = DoubleDES() and name = "DoubleDES" and s = Block()
+      or
+      type = RC2() and name = "RC2" and s = Block()
+      or
+      type = RC4() and name = "RC4" and s = Stream()
+      or
+      type = RC5() and name = "RC5" and s = Block()
+      or
+      type = SEED() and name = "SEED" and s = Block()
+      or
+      type = SM4() and name = "SM4" and s = Block()
+      or
+      type = OtherSymmetricCipherType() and
+      name = "UnknownSymmetricCipher" and
+      s = UnknownCipherStructureType()
+    }
+
+    bindingset[type]
+    predicate type_to_name(Algorithm type, string name) {
+      // Symmetric cipher algorithm
+      symmetric_cipher_to_name_and_structure(type.(SymmetricCipherAlgorithm).getType(), name, _)
+      or
+      // Asymmetric cipher algorithms
+      type = TAsymmetricCipher(RSA()) and name = "RSA"
+      or
+      type = TAsymmetricCipher(OtherAsymmetricCipherType()) and name = "UnknownAsymmetricCipher"
+      or
+      // Signature algorithms
+      type = TSignature(DSA()) and name = "DSA"
+      or
+      type = TSignature(ECDSA()) and name = "ECDSA"
+      or
+      type = TSignature(Ed25519()) and name = "Ed25519"
+      or
+      type = TSignature(Ed448()) and name = "Ed448"
+      or
+      type = TSignature(OtherSignatureAlgorithmType()) and name = "UnknownSignature"
+      or
+      // Key Encapsulation Mechanisms
+      type = TKeyEncapsulation(Kyber()) and name = "Kyber"
+      or
+      type = TKeyEncapsulation(FrodoKEM()) and name = "FrodoKEM"
+      or
+      type = TKeyEncapsulation(OtherKEMAlgorithmType()) and name = "UnknownKEM"
+      or
+      // Unknown
+      type = TUnknownKeyOperationAlgorithmType() and name = "Unknown"
+    }
+
+    class Algorithm extends TAlgorithm {
+      string toString() { type_to_name(this, result) }
+    }
+
+    class SymmetricCipherAlgorithm extends Algorithm, TSymmetricCipher {
+      TSymmetricCipherType type;
+
+      SymmetricCipherAlgorithm() { this = TSymmetricCipher(type) }
+
+      TSymmetricCipherType getType() { result = type }
+    }
+  }
+
+  /**
+   * A key-based cryptographic operation instance, encompassing:
+   * 1. **Ciphers**: Encryption and decryption, both symmetric and asymmetric
+   * 1. **Signing**: Signing and verifying, **NOT** including MACs (see `MACOperationInstance`)
+   * 1. **Key encapsulation**: Key wrapping and unwrapping
+   *
+   * This class represents a generic key operation that transforms input data
+   * using a cryptographic key, producing an output artifact such as ciphertext,
+   * plaintext, a signature, or an (un-)wrapped key.
+   */
+  abstract class KeyOperationInstance extends OperationInstance {
+    final KeyOperationOutputArtifactInstance getOutputArtifactInstance() {
+      result.getOutputNode() = this.getOutputArtifact()
+    }
 
     /**
-     * Gets the consumer of nonces/IVs associated with this cipher operation.
+     * Gets the subtype of this key operation, distinguishing operations such as
+     * encryption, decryption, signing, verification, key wrapping, and key unwrapping.
      */
-    abstract ConsumerInputDataFlowNode getNonceConsumer();
+    abstract KeyOperationSubtype getKeyOperationSubtype();
 
     /**
-     * Gets the consumer of plaintext or ciphertext input associated with this cipher operation.
-     */
-    abstract ConsumerInputDataFlowNode getInputConsumer();
-
-    /**
-     * Gets the consumer of a key.
+     * Gets the consumer of the cryptographic key used in this key operation.
+     * The key may be symmetric or asymmetric, depending on the operation subtype.
      */
     abstract ConsumerInputDataFlowNode getKeyConsumer();
 
     /**
-     * Gets the output artifact of this cipher operation.
+     * Gets the consumer of nonces or initialization vectors (IVs) associated with this key operation.
+     * These are typically required for encryption, AEAD, or wrap modes.
+     *
+     * If the operation does not require a nonce, this predicate should be implemented as `none()`.
+     */
+    abstract ConsumerInputDataFlowNode getNonceConsumer();
+
+    /**
+     * Gets the consumer of the primary message input for this key operation.
+     * For example: plaintext (for encryption), ciphertext (for decryption),
+     * message to be signed, or wrapped key to be unwrapped.
+     */
+    abstract ConsumerInputDataFlowNode getInputConsumer();
+
+    /**
+     * Gets the output artifact produced by this key operation.
+     * This may represent ciphertext, a digital signature, a wrapped key, or any
+     * other data resulting from the operation.
      *
      * Implementation guidelines:
-     * 1. Each unique output target should have an artifact.
-     * 1. Discarded outputs from intermittent calls should not be artifacts.
+     * 1. Each semantically meaningful output should result in an artifact.
+     * 2. Discarded or transient intermediate values should not be artifacts.
      */
-    abstract CipherOutputArtifactInstance getOutputArtifact();
+    abstract ArtifactOutputDataFlowNode getOutputArtifact();
   }
 
-  abstract class CipherAlgorithmInstance extends AlgorithmInstance {
+  /**
+   * A key-based algorithm instance used in cryptographic operations such as encryption, decryption,
+   * signing, verification, and key wrapping.
+   */
+  abstract class KeyOperationAlgorithmInstance extends AlgorithmInstance {
     /**
-     * Gets the raw name as it appears in source, e.g., "AES/CBC/PKCS7Padding".
-     * This name is not parsed or formatted.
+     * Gets the raw algorithm name as provided in source, e.g., "AES/CBC/PKCS7Padding".
+     * This name is not parsed or normalized.
      */
-    abstract string getRawCipherAlgorithmName();
+    abstract string getRawAlgorithmName();
 
     /**
-     * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
-     */
-    abstract TCipherType getCipherFamily();
-
-    /**
-     * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
+     * Gets the key operation algorithm type, e.g., `TSignature(Ed25519())` or `TSymmetricCipher(AES())`.
      *
-     * IMPLEMENTATION NOTE: as a tradeoff, this is not a consumer but always either an instance or unknown.
-     * A mode of operation is therefore assumed to always be part of the cipher algorithm itself.
+     * If the category of algorithm is known, but the precise algorithm is not, the following type hints should be used:
+     * - `TSymmetricCipher(OtherSymmetricCipherType())`
+     * - `TAsymmetricCipher(OtherAsymmetricCipherType())`
+     * - `TSignature(OtherSignatureAlgorithmType())`
+     * - `TKeyEncapsulation(OtherKEMAlgorithmType())`
+     *
+     * If the category of algorithm is not known, the following type should be used:
+     * - `TUnknownKeyOperationAlgorithmType()`
+     *
+     * This predicate should always hold.
+     */
+    abstract KeyOpAlg::Algorithm getAlgorithmType();
+
+    /**
+     * Gets the mode of operation, such as "CBC", "GCM", or "ECB".
+     *
+     * Edge-cases and modeling guidance:
+     * - Mode of operation not identifiable: result is `none()`.
+     * - No mode possible (e.g., RSA, DSA, or ChaCha20): result is `none()`.
+     * - Mode of operation explicitly specified as none: result is `ModeOfOperationAlgorithmInstance`.
+     *
+     * IMPLEMENTATION NOTE: This is treated as part of the algorithm identity and
+     * not modeled as a separate algorithm value consumer.
      */
     abstract ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm();
 
     /**
-     * Gets the padding scheme of this cipher, e.g., "PKCS7" or "NoPadding".
+     * Gets the padding scheme, such as "PKCS7", "OAEP", or "NoPadding".
      *
-     * IMPLEMENTATION NOTE: as a tradeoff, this is not a consumer but always either an instance or unknown.
-     * A padding algorithm is therefore assumed to always be defined as part of the cipher algorithm itself.
+     * See the modeling guidance for `getModeOfOperationAlgorithm` for modeling guidance.
      */
     abstract PaddingAlgorithmInstance getPaddingAlgorithm();
+
+    /**
+     * Gets the key size in bits specified for this algorithm variant, for example, "128" for "AES-128". This predicate is only
+     * necessary to specify if there are multiple variants of the algorithm defined by key size and a specific key size is known.
+     *
+     * If a specific key size is unknown, this predicate should be implemented as `none()`.
+     *
+     * If the algorithm accepts a range of key sizes without a particular one specified, this predicate should be implemented as `none()`.
+     */
+    abstract string getKeySize();
   }
+
+  newtype TBlockCipherModeOfOperationType =
+    ECB() or // Not secure, widely used
+    CBC() or // Vulnerable to padding oracle attacks
+    CFB() or
+    GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
+    CTR() or // Fast stream-like encryption (SSH, disk encryption)
+    XTS() or // Standard for full-disk encryption (BitLocker, LUKS, FileVault)
+    CCM() or // Used in lightweight cryptography (IoT, WPA2)
+    SIV() or // Misuse-resistant encryption, used in secure storage
+    OCB() or // Efficient AEAD mode
+    OFB() or
+    OtherMode()
 
   abstract class ModeOfOperationAlgorithmInstance extends AlgorithmInstance {
     /**
@@ -541,7 +781,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * If a type cannot be determined, the result is `OtherMode`.
      */
-    abstract TBlockCipherModeOperationType getModeType();
+    abstract TBlockCipherModeOfOperationType getModeType();
 
     /**
      * Gets the isolated name as it appears in source, e.g., "CBC" in "AES/CBC/PKCS7Padding".
@@ -570,7 +810,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class OAEPPaddingAlgorithmInstance extends PaddingAlgorithmInstance {
-    OAEPPaddingAlgorithmInstance() { this.getPaddingType() = OAEP() }
+    OAEPPaddingAlgorithmInstance() { this.getPaddingType() instanceof OAEP }
 
     /**
      * Gets the hash algorithm used in this padding scheme.
@@ -585,6 +825,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   newtype TMACType =
     THMAC() or
+    TCMAC() or
     TOtherMACType()
 
   abstract class MACAlgorithmInstance extends AlgorithmInstance {
@@ -622,33 +863,31 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
   }
 
-  abstract class KeyEncapsulationOperationInstance extends OperationInstance { }
-
-  abstract class KeyEncapsulationAlgorithmInstance extends AlgorithmInstance { }
-
-  abstract class EllipticCurveAlgorithmInstance extends AlgorithmInstance {
+  abstract class EllipticCurveInstance extends AlgorithmInstance {
     /**
      * Gets the isolated name as it appears in source
      *
      * This name should not be parsed or formatted beyond isolating the raw name if necessary.
      */
-    abstract string getRawEllipticCurveAlgorithmName();
-
-    /**
-     * The 'standard' curve name, e.g., "P-256" or "secp256r1".
-     * meaning the full name of the curve, including the family, key size, and other
-     * typical parameters found on the name. In many cases this will
-     * be equivalent to `getRawEllipticCurveAlgorithmName()`, but not always
-     * (e.g., if the curve is specified through a raw NID).
-     * In cases like an NID, we want the standardized name so users can quickly
-     * understand what the curve is, while also parsing out the family and key size
-     * separately.
-     */
-    abstract string getStandardCurveName();
+    abstract string getRawEllipticCurveName();
 
     abstract TEllipticCurveType getEllipticCurveFamily();
 
     abstract string getKeySize();
+
+    /**
+     * The 'parsed' curve name, e.g., "P-256" or "secp256r1"
+     * The parsed name is full name of the curve, including the family, key size, and other
+     * typical parameters found on the name.
+     *
+     * In many cases this will be equivalent to `getRawEllipticCurveAlgorithmName()`,
+     * but not always (e.g., if the curve is specified through a raw NID).
+     *
+     * In cases like an NID, we want the standardized name so users can quickly
+     * understand what the curve is, while also parsing out the family and key size
+     * separately.
+     */
+    string getParsedEllipticCurveName() { result = this.getRawEllipticCurveName() }
   }
 
   abstract class HashOperationInstance extends OperationInstance {
@@ -686,7 +925,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract KeyArtifactType getOutputKeyType();
 
     // Defaults or fixed values
-    abstract string getKeySizeFixed();
+    string getKeySizeFixed() { none() }
 
     // Consumer input nodes
     abstract ConsumerInputDataFlowNode getKeySizeConsumer();
@@ -702,9 +941,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override string getKeyCreationTypeDescription() { result = "KeyDerivation" }
 
     // Defaults or fixed values
-    abstract string getIterationCountFixed();
+    string getIterationCountFixed() { none() }
 
-    abstract string getOutputKeySizeFixed();
+    string getOutputKeySizeFixed() { none() }
 
     // Generic consumer input nodes
     abstract ConsumerInputDataFlowNode getIterationCountConsumer();
@@ -722,6 +961,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     PBES() or
     HKDF() or
     ARGON2() or
+    SCRYPT() or
     OtherKeyDerivationType()
 
   abstract class KeyDerivationAlgorithmInstance extends AlgorithmInstance {
@@ -748,6 +988,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract AlgorithmValueConsumer getHMACAlgorithmValueConsumer();
   }
 
+  abstract class ScryptAlgorithmInstance extends KeyDerivationAlgorithmInstance {
+    ScryptAlgorithmInstance() { this.getKDFType() instanceof SCRYPT }
+
+    /**
+     * Gets the HMAC algorithm used by this PBKDF2 algorithm.
+     *
+     * Note: Other PRFs are not supported, as most cryptographic libraries
+     * only support HMAC for PBKDF2's PRF input.
+     */
+    abstract AlgorithmValueConsumer getHMACAlgorithmValueConsumer();
+  }
+
   abstract class KeyGenerationOperationInstance extends KeyCreationOperationInstance {
     final override string getKeyCreationTypeDescription() { result = "KeyGeneration" }
   }
@@ -756,10 +1008,55 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override string getKeyCreationTypeDescription() { result = "KeyLoad" }
   }
 
+  // Key agreement algorithms
+  newtype TKeyAgreementType =
+    DH() or // Diffie-Hellman
+    EDH() or // Ephemeral Diffie-Hellman
+    ECDH() or // Elliptic Curve Diffie-Hellman
+    // Note: x25519 and x448 are applications of ECDH
+    UnknownKeyAgreementType()
+
+  abstract class KeyAgreementAlgorithmInstance extends AlgorithmInstance {
+    abstract TKeyAgreementType getKeyAgreementType();
+
+    abstract string getRawKeyAgreementAlgorithmName();
+  }
+
+  abstract class ECDHKeyAgreementAlgorithmInstance extends KeyAgreementAlgorithmInstance {
+    ECDHKeyAgreementAlgorithmInstance() { this.getKeyAgreementType() instanceof ECDH }
+
+    /**
+     * Gets the consumer for the elliptic curve used in the key agreement operation.
+     */
+    abstract AlgorithmValueConsumer getEllipticCurveAlgorithmValueConsumer();
+  }
+
+  abstract class KeyAgreementSecretGenerationOperationInstance extends OperationInstance {
+    /**
+     * The private key used in the key agreement operation.
+     * This key represents the local party in the key agreement.
+     */
+    abstract ConsumerInputDataFlowNode getServerKeyConsumer();
+
+    /**
+     * The public key used in the key agreement operation, coming
+     * from the peer (the other party in the key agreement).
+     */
+    abstract ConsumerInputDataFlowNode getPeerKeyConsumer();
+  }
+
   private signature class AlgorithmInstanceType instanceof AlgorithmInstance;
 
   private signature predicate isCandidateAVCSig(AlgorithmValueConsumer avc);
 
+  /**
+   * An element that is either an `AlgorithmInstance` or an `AlgorithmValueConsumer` with no known sources.
+   *
+   * This concept is used to model consumers that have no known source as an algorithm node.
+   *
+   * The `isCandidateAVCSig` predicate is used to restrict the set of consumers that expect inputs of `AlgorithmInstanceType`.
+   * These "total unknown" algorithm nodes would otherwise not exist if not modelled as a consumer node.
+   */
   module AlgorithmInstanceOrValueConsumer<
     AlgorithmInstanceType Alg, isCandidateAVCSig/1 isCandidateAVC>
   {
@@ -785,8 +1082,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     exists(HMACAlgorithmInstance alg | avc = alg.getAConsumer())
   }
 
-  private predicate isCipherAVC(AlgorithmValueConsumer avc) {
-    exists(CipherOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
+  private predicate isKeyOperationAlgorithmAVC(AlgorithmValueConsumer avc) {
+    exists(KeyOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
   private predicate isMACAVC(AlgorithmValueConsumer avc) {
@@ -798,8 +1095,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     exists(KeyDerivationOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
-  final private class CipherAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<CipherAlgorithmInstance, isCipherAVC/1>::Union;
+  private predicate isEllipticCurveAVC(AlgorithmValueConsumer avc) {
+    exists(ECDHKeyAgreementAlgorithmInstance alg |
+      avc = alg.getEllipticCurveAlgorithmValueConsumer()
+    )
+  }
+
+  final private class KeyOperationAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<KeyOperationAlgorithmInstance, isKeyOperationAlgorithmAVC/1>::Union;
 
   final private class HashAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance, isHashAVC/1>::Union;
@@ -810,51 +1113,47 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final private class KeyDerivationAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAVC/1>::Union;
 
-  final private class EllipticCurveAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<EllipticCurveAlgorithmInstance, isCipherAVC/1>::Union;
+  final private class EllipticCurveInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<EllipticCurveInstance, isEllipticCurveAVC/1>::Union;
 
   private newtype TNode =
-    // Artifacts (data that is not an operation or algorithm, e.g., a key)
+    // Output artifacts (data that is not an operation or algorithm, e.g., a key)
     TDigest(DigestArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
-    TCipherOutput(CipherOutputArtifactInstance e) or
-    // Input artifact nodes (synthetic, used to differentiate input as entities)
+    // Input artifacts (synthetic nodes, used to differentiate input as entities)
     TNonceInput(NonceArtifactConsumer e) or
     TMessageInput(MessageArtifactConsumer e) or
     TSaltInput(SaltArtifactConsumer e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
-    // Operations (e.g., hashing, encryption)
-    THashOperation(HashOperationInstance e) or
-    TCipherOperation(CipherOperationInstance e) or
-    TKeyEncapsulationOperation(KeyEncapsulationOperationInstance e) or
-    TMACOperation(MACOperationInstance e) or
-    // Key Creation Operations
+    // Key Creation Operation union type (e.g., key generation, key load)
     TKeyCreationOperation(KeyCreationOperationInstance e) or
-    // Algorithms (e.g., SHA-256, AES)
-    TCipherAlgorithm(CipherAlgorithmInstanceOrValueConsumer e) or
-    TEllipticCurveAlgorithm(EllipticCurveAlgorithmInstanceOrValueConsumer e) or
-    THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
-    TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
-    TKeyEncapsulationAlgorithm(KeyEncapsulationAlgorithmInstance e) or
-    TMACAlgorithm(MACAlgorithmInstanceOrValueConsumer e) or
-    TKeyAgreementAlgorithm(KeyAgreementAlgorithmInstance e) or
-    // Non-standalone Algorithms (e.g., Mode, Padding)
-    // TODO: need to rename this, as "mode" is getting reused in different contexts, be precise
+    // Key operations, algorithms, and artifacts
+    // These types are union types of encryption, signing, encapsulation and their algorithms/artifacts.
+    // The artifacts are the outputs, e.g., ciphertext, signature, wrapped key.
+    TKeyOperation(KeyOperationInstance e) or
+    TKeyOperationAlgorithm(KeyOperationAlgorithmInstanceOrValueConsumer e) or
+    TKeyOperationOutput(KeyOperationOutputArtifactInstance e) or
+    // Non-Standalone Algorithms (e.g., Mode, Padding)
+    // These algorithms are always tied to a key operation algorithm
     TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
-    // Composite and hybrid cryptosystems (e.g., RSA-OAEP used with AES, post-quantum hybrid cryptosystems)
-    // These nodes are always parent nodes and are not modeled but rather defined via library-agnostic patterns.
-    TKemDemHybridCryptosystem(CipherAlgorithmNode dem) or // TODO, change this relation and the below ones
-    TKeyAgreementHybridCryptosystem(CipherAlgorithmInstance ka) or
-    TAsymmetricEncryptionMacHybridCryptosystem(CipherAlgorithmInstance enc) or
-    TPostQuantumHybridCryptosystem(CipherAlgorithmInstance enc) or
-    // Generic source nodes
+    // All other operations
+    THashOperation(HashOperationInstance e) or
+    TMACOperation(MACOperationInstance e) or
+    // All other algorithms
+    TEllipticCurve(EllipticCurveInstanceOrValueConsumer e) or
+    THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
+    TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
+    TMACAlgorithm(MACAlgorithmInstanceOrValueConsumer e) or
+    TKeyAgreementAlgorithm(KeyAgreementAlgorithmInstance e) or
+    // Generic source nodes, i.e., sources of data that are not resolvable to a specific known asset.
     TGenericSourceNode(GenericSourceInstance e) {
       // An element modelled as a `GenericSourceInstance` can also be modelled as a `KnownElement`
       // For example, a string literal "AES" could be a generic constant but also an algorithm instance.
-      // Only create generic nodes tied to instances which are not also a `KnownElement`.
+      //
+      // Therefore, only create generic nodes tied to instances which are not also a `KnownElement`...
       not e instanceof KnownElement and
-      // Only create nodes for generic sources which flow to other elements
+      // ... and that flow to other elements
       e.flowsTo(_)
     }
 
@@ -863,25 +1162,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *
    * Each `NodeBase` is a node in a graph of cryptographic operations, where the edges are the relationships between the nodes.
    *
-   * A node, as opposed to a property, is a construct that can reference or be referenced by more than one node.
-   * For example: a key size is a single value configuring a cipher algorithm, but a single mode of operation algorithm
-   * can be referenced by multiple disjoint cipher algorithms. For example, even if the same key size value is reused
-   * for multiple cipher algorithms, the key size holds no information when devolved to that simple value, and it is
-   * therefore not a "construct" or "element" being reused by multiple nodes.
-   *
-   * As a rule of thumb, a node is an algorithm or the use of an algorithm (an operation), as well as structured data
-   * consumed by or produced by an operation or algorithm (an artifact) that represents a construct beyond its data.
-   *
-   * _Example 1_: A seed of a random number generation algorithm has meaning beyond its value, as its reuse in multiple
-   * random number generation algorithms is more relevant than its underlying value. In contrast, a key size is only
-   * relevant to analysis in terms of its underlying value. Therefore, an RNG seed is a node; a key size is not. However,
-   * the key size might have a `GenericSourceNode` source, even if it itself is not a node.
-   *
-   * _Example 2_: A salt for a key derivation function *is* an `ArtifactNode`.
-   *
-   * _Example 3_: The iteration count of a key derivation function is *not* a node, but it may link to a generic node.
-   *
-   * _Example 4_: A nonce for a cipher operation *is* an `ArtifactNode`.
+   * As a rule of thumb, a node is an algorithm or the use of an algorithm (an operation), as well as structured data (an artifact)
+   * consumed by or produced by an operation or algorithm.
    */
   abstract class NodeBase extends TNode {
     /**
@@ -1057,7 +1339,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * A nonce or initialization vector input
+   * A nonce or initialization vector input.
    */
   final class NonceArtifactNode extends ArtifactNode, TNonceInput {
     NonceArtifactConsumer instance;
@@ -1070,7 +1352,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * A message or plaintext/ciphertext input
+   * A message or plaintext/ciphertext input.
    */
   final class MessageArtifactNode extends ArtifactNode, TMessageInput {
     MessageArtifactConsumer instance;
@@ -1083,7 +1365,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * A salt input
+   * A salt input.
    */
   final class SaltArtifactNode extends ArtifactNode, TSaltInput {
     SaltArtifactConsumer instance;
@@ -1096,14 +1378,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * Output text from a cipher operation
+   * The base class for output nodes from key operations.
+   *
+   * This class represents the output of key generation, key derivation, encryption, decryption, signing, and verification.
    */
-  final class CipherOutputNode extends ArtifactNode, TCipherOutput {
-    CipherOutputArtifactInstance instance;
+  class KeyOperationOutputNode extends ArtifactNode, TKeyOperationOutput {
+    KeyOperationOutputArtifactInstance instance;
 
-    CipherOutputNode() { this = TCipherOutput(instance) }
+    KeyOperationOutputNode() { this = TKeyOperationOutput(instance) }
 
-    final override string getInternalType() { result = "CipherOutput" }
+    final override string getInternalType() { result = "KeyOperationOutput" }
 
     override LocatableElement asElement() { result = instance }
 
@@ -1111,7 +1395,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * A source of random number generation
+   * A source of random number generation.
    */
   final class RandomNumberGenerationNode extends ArtifactNode, TRandomNumberGeneration {
     RandomNumberGenerationInstance instance;
@@ -1123,6 +1407,22 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     override string getSourceNodeRelationship() { none() } // TODO: seed?
+  }
+
+  /**
+   * A union type of all algorithm types that can be used in key creation operations.
+   */
+  class TKeyCreationCandidateAlgorithm =
+    TKeyOperationAlgorithm or TEllipticCurve or TKeyAgreementAlgorithm or TKeyDerivationAlgorithm;
+
+  /**
+   * A candidate algorithm node for key creation.
+   *
+   * Note: This is not an independent node type, but a subset of `AlgorithmNode` that is of type `TKeyCreationCandidateAlgorithm`.
+   */
+  private class KeyCreationCandidateAlgorithmNode extends TKeyCreationCandidateAlgorithm instanceof AlgorithmNode
+  {
+    string toString() { result = super.getAlgorithmName() }
   }
 
   /**
@@ -1146,7 +1446,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
             .getAGenericSourceNode()
     }
 
-    CipherAlgorithmNode getAKnownAlgorithm() {
+    KeyCreationCandidateAlgorithmNode getAKnownAlgorithm() {
       result =
         instance.(KeyCreationOperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
     }
@@ -1180,7 +1480,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * A digest produced by a hash operation.
+   * A digest artifact produced by a hash operation.
    */
   final class DigestArtifactNode extends ArtifactNode, TDigest {
     DigestArtifactInstance instance;
@@ -1305,7 +1605,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     KeyGenerationOperationNode() { keyGenInstance = instance }
 
     override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
-      node instanceof CipherAlgorithmNode
+      node instanceof KeyCreationCandidateAlgorithmNode
     }
 
     override NodeBase getChild(string key) {
@@ -1390,7 +1690,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = instance.asAlg().getRawKDFAlgorithmName()
     }
 
-    final override string getAlgorithmName() { result = this.getRawAlgorithmName() }
+    override string getAlgorithmName() { result = this.getRawAlgorithmName() } // TODO: standardize?
   }
 
   /**
@@ -1414,195 +1714,97 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  // /**
-  //  * PKCS12KDF key derivation function
-  //  */
-  // abstract class PKCS12KDF extends KeyDerivationWithDigestParameterNode {
-  //   override string getAlgorithmName() { result = "PKCS12KDF" }
-  //   /**
-  //    * Gets the iteration count of this key derivation algorithm.
-  //    */
-  //   abstract string getIterationCount(Location location);
-  //   /**
-  //    * Gets the raw ID argument specifying the intended use of the derived key.
-  //    *
-  //    * The intended use is defined in RFC 7292, appendix B.3, as follows:
-  //    *
-  //    * This standard specifies 3 different values for the ID byte mentioned above:
-  //    *
-  //    *   1.  If ID=1, then the pseudorandom bits being produced are to be used
-  //    *       as key material for performing encryption or decryption.
-  //    *
-  //    *   2.  If ID=2, then the pseudorandom bits being produced are to be used
-  //    *       as an IV (Initial Value) for encryption or decryption.
-  //    *
-  //    *   3.  If ID=3, then the pseudorandom bits being produced are to be used
-  //    *       as an integrity key for MACing.
-  //    */
-  //   abstract string getIDByte(Location location);
-  //   override predicate properties(string key, string value, Location location) {
-  //     super.properties(key, value, location)
-  //     or
-  //     (
-  //       // [KNOWN_OR_UNKNOWN]
-  //       key = "Iterations" and
-  //       if exists(this.getIterationCount(location))
-  //       then value = this.getIterationCount(location)
-  //       else (
-  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-  //       )
-  //     )
-  //     or
-  //     (
-  //       // [KNOWN_OR_UNKNOWN]
-  //       key = "IdByte" and
-  //       if exists(this.getIDByte(location))
-  //       then value = this.getIDByte(location)
-  //       else (
-  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-  //       )
-  //     )
-  //   }
-  // }
-  // /**
-  //  * scrypt key derivation function
-  //  */
-  // abstract class SCRYPT extends KeyDerivationAlgorithmNode {
-  //   final override string getAlgorithmName() { result = "scrypt" }
-  //   /**
-  //    * Gets the iteration count (`N`) argument
-  //    */
-  //   abstract string get_N(Location location);
-  //   /**
-  //    * Gets the block size (`r`) argument
-  //    */
-  //   abstract string get_r(Location location);
-  //   /**
-  //    * Gets the parallelization factor (`p`) argument
-  //    */
-  //   abstract string get_p(Location location);
-  //   /**
-  //    * Gets the derived key length argument
-  //    */
-  //   abstract string getDerivedKeyLength(Location location);
-  //   override predicate properties(string key, string value, Location location) {
-  //     super.properties(key, value, location)
-  //     or
-  //     (
-  //       // [KNOWN_OR_UNKNOWN]
-  //       key = "N" and
-  //       if exists(this.get_N(location))
-  //       then value = this.get_N(location)
-  //       else (
-  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-  //       )
-  //     )
-  //     or
-  //     (
-  //       // [KNOWN_OR_UNKNOWN]
-  //       key = "r" and
-  //       if exists(this.get_r(location))
-  //       then value = this.get_r(location)
-  //       else (
-  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-  //       )
-  //     )
-  //     or
-  //     (
-  //       // [KNOWN_OR_UNKNOWN]
-  //       key = "p" and
-  //       if exists(this.get_p(location))
-  //       then value = this.get_p(location)
-  //       else (
-  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-  //       )
-  //     )
-  //     or
-  //     (
-  //       // [KNOWN_OR_UNKNOWN]
-  //       key = "KeyLength" and
-  //       if exists(this.getDerivedKeyLength(location))
-  //       then value = this.getDerivedKeyLength(location)
-  //       else (
-  //         value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-  //       )
-  //     )
-  //   }
-  // }
-  /*
-   * TODO:
-   *
-   * Rule: No newtype representing a type of algorithm should be modelled with multiple interfaces
-   *
-   * Example 1: HKDF and PKCS12KDF are both key derivation algorithms.
-   *            However, PKCS12KDF also has a property: the iteration count.
-   *
-   *            If we have HKDF and PKCS12KDF under TKeyDerivationType,
-   *            someone modelling a library might try to make a generic identification of both of those algorithms.
-   *
-   *            They will therefore not use the specialized type for PKCS12KDF,
-   *            meaning "from PKCS12KDF algo select algo" will have no results.
-   *
-   * Example 2: Each type below represents a common family of elliptic curves, with a shared interface, i.e.,
-   *            predicates for library modellers to implement as well as the properties and edges reported.
+  /**
+   * scrypt key derivation function
    */
+  class ScryptAlgorithmNode extends KeyDerivationAlgorithmNode {
+    ScryptAlgorithmInstance scryptInstance;
 
-  newtype TCipherOperationSubtype =
-    TEncryptionMode() or
-    TDecryptionMode() or
-    TWrapMode() or
-    TUnwrapMode() or
-    TSignatureMode() or
-    TUnknownCipherOperationMode()
+    ScryptAlgorithmNode() { scryptInstance = instance.asAlg() }
 
-  abstract class CipherOperationSubtype extends TCipherOperationSubtype {
-    abstract string toString();
-  }
+    /**
+     * Gets the iteration count (`N`) argument
+     */
+    GenericSourceNode get_N() { none() } // TODO
 
-  class EncryptionSubtype extends CipherOperationSubtype, TEncryptionMode {
-    override string toString() { result = "Encrypt" }
-  }
+    /**
+     * Gets the block size (`r`) argument
+     */
+    GenericSourceNode get_r() { none() } // TODO
 
-  class DecryptionSubtype extends CipherOperationSubtype, TDecryptionMode {
-    override string toString() { result = "Decrypt" }
-  }
-
-  class WrapSubtype extends CipherOperationSubtype, TWrapMode {
-    override string toString() { result = "Wrap" }
-  }
-
-  class UnwrapSubtype extends CipherOperationSubtype, TUnwrapMode {
-    override string toString() { result = "Unwrap" }
-  }
-
-  class SignatureSubtype extends CipherOperationSubtype, TSignatureMode {
-    override string toString() { result = "Sign" }
-  }
-
-  class UnknownCipherOperationSubtype extends CipherOperationSubtype, TUnknownCipherOperationMode {
-    override string toString() { result = "Unknown" }
+    /**
+     * Gets the parallelization factor (`p`) argument
+     */
+    GenericSourceNode get_p() { none() } // TODO
   }
 
   /**
-   * An encryption operation that processes plaintext to generate a ciphertext.
-   * This operation takes an input message (plaintext) of arbitrary content and length
-   * and produces a ciphertext as the output using a specified encryption algorithm (with a mode and padding).
+   * A type defining the subtype type of a key operation.
    */
-  final class CipherOperationNode extends OperationNode, TCipherOperation {
-    CipherOperationInstance instance;
+  newtype TKeyOperationSubtype =
+    TEncryptMode() or
+    TDecryptMode() or
+    TWrapMode() or
+    TUnwrapMode() or
+    TSignMode() or
+    TVerifyMode() or
+    TUnknownKeyOperationMode()
 
-    CipherOperationNode() { this = TCipherOperation(instance) }
+  /**
+   * A class defining the subtype of a key operation.
+   */
+  class KeyOperationSubtype extends TKeyOperationSubtype {
+    string toString() {
+      result = "Encrypt" and this = TEncryptMode()
+      or
+      result = "Decrypt" and this = TDecryptMode()
+      or
+      result = "Wrap" and this = TWrapMode()
+      or
+      result = "Unwrap" and this = TUnwrapMode()
+      or
+      result = "Sign" and this = TSignMode()
+      or
+      result = "Verify" and this = TVerifyMode()
+      or
+      result = "Unknown" and this = TUnknownKeyOperationMode()
+    }
+  }
+
+  /**
+   * A key-based cryptographic transformation that operates on data using either a symmetric or asymmetric cryptographic key.
+   *
+   * This operation class covers operations based on symmetric ciphers or broader asymmetric algorithms, including:
+   *
+   * - **Encryption / Decryption**:
+   *   Symmetric (e.g., AES-GCM) or asymmetric (e.g., RSA-OAEP, ECIES) encryption of plaintext to ciphertext or vice-versa.
+   *
+   * - **Key Wrapping / Unwrapping**:
+   *   Encapsulation of symmetric keys using algorithms such as Kyber, AES-KW, RSA-KEM, RSA-OAEP, etc.
+   *
+   * - **Signing / Verifying**:
+   *   Digital signatures using private/public keypairs (e.g., Ed25519, RSA-PSS, ECDSA)
+   *
+   * Each sub-operation is represented by a `CipherOperationSubtype`, such as `Encrypt`, `Sign`, `Wrap`, etc.
+   *
+   * Note: This class does _not_ include symmetric message authentication operations (MACs) like HMAC or CMAC.
+   * These are handled separately in the `MacOperationNode` class.
+   */
+  class KeyOperationNode extends OperationNode, TKeyOperation {
+    KeyOperationInstance instance;
+
+    KeyOperationNode() { this = TKeyOperation(instance) }
+
+    final KeyOperationSubtype getKeyOperationSubtype() {
+      result = instance.getKeyOperationSubtype()
+    }
 
     override LocatableElement asElement() { result = instance }
 
-    override string getInternalType() { result = "CipherOperation" }
+    override string getInternalType() { result = "KeyOperation" }
 
     override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
-      node instanceof CipherAlgorithmNode
-    }
-
-    CipherOperationSubtype getCipherOperationSubtype() {
-      result = instance.getCipherOperationSubtype()
+      node instanceof KeyOperationAlgorithmNode
     }
 
     NonceArtifactNode getANonce() { result.asElement() = instance.getNonceConsumer().getConsumer() }
@@ -1611,25 +1813,29 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = instance.getInputConsumer().getConsumer()
     }
 
-    CipherOutputNode getAnOutputArtifact() { result.asElement() = instance.getOutputArtifact() }
+    KeyOperationOutputNode getAnOutputArtifact() {
+      result.asElement() = instance.getOutputArtifactInstance()
+    }
 
     KeyArtifactNode getAKey() { result.asElement() = instance.getKeyConsumer().getConsumer() }
 
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [KNOWN_OR_UNKNOWN] - but only if not sign/verify
+      not this instanceof SignatureOperationNode and
       key = "Nonce" and
       if exists(this.getANonce()) then result = this.getANonce() else result = this
       or
       // [KNOWN_OR_UNKNOWN]
-      key = "InputText" and
+      key = "Input" and
       if exists(this.getAnInputArtifact())
       then result = this.getAnInputArtifact()
       else result = this
       or
-      // [KNOWN_OR_UNKNOWN]
-      key = "OutputText" and
+      // [KNOWN_OR_UNKNOWN] - but only if not verify
+      not this.getKeyOperationSubtype() instanceof TVerifyMode and
+      key = "Output" and
       if exists(this.getAnOutputArtifact())
       then result = this.getAnOutputArtifact()
       else result = this
@@ -1638,33 +1844,47 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       key = "Key" and
       if exists(this.getAKey()) then result = this.getAKey() else result = this
     }
+  }
 
-    override predicate properties(string key, string value, Location location) {
-      super.properties(key, value, location)
+  class CipherOperationNode extends KeyOperationNode {
+    string nodeName;
+
+    CipherOperationNode() {
+      this.getKeyOperationSubtype() = TEncryptMode() and nodeName = "EncryptOperation"
       or
-      // [ALWAYS_KNOWN] - Unknown is handled in getCipherOperationMode()
-      key = "Operation" and
-      value = this.getCipherOperationSubtype().toString() and
-      location = this.getLocation()
+      this.getKeyOperationSubtype() = TDecryptMode() and nodeName = "DecryptOperation"
     }
+
+    override string getInternalType() { result = nodeName }
+  }
+
+  class KeyEncapsulationOperationNode extends KeyOperationNode {
+    string nodeName;
+
+    KeyEncapsulationOperationNode() {
+      this.getKeyOperationSubtype() = TWrapMode() and nodeName = "WrapOperation"
+      or
+      this.getKeyOperationSubtype() = TUnwrapMode() and nodeName = "UnwrapOperation"
+    }
+
+    override string getInternalType() { result = nodeName }
+  }
+
+  class SignatureOperationNode extends KeyOperationNode {
+    string nodeName;
+
+    SignatureOperationNode() {
+      this.getKeyOperationSubtype() = TSignMode() and nodeName = "SignOperation"
+      or
+      this.getKeyOperationSubtype() = TVerifyMode() and nodeName = "VerifyOperation"
+    }
+
+    override string getInternalType() { result = nodeName }
   }
 
   /**
    * Block cipher modes of operation algorithms
    */
-  newtype TBlockCipherModeOperationType =
-    ECB() or // Not secure, widely used
-    CBC() or // Vulnerable to padding oracle attacks
-    CFB() or
-    GCM() or // Widely used AEAD mode (TLS 1.3, SSH, IPsec)
-    CTR() or // Fast stream-like encryption (SSH, disk encryption)
-    XTS() or // Standard for full-disk encryption (BitLocker, LUKS, FileVault)
-    CCM() or // Used in lightweight cryptography (IoT, WPA2)
-    SIV() or // Misuse-resistant encryption, used in secure storage
-    OCB() or // Efficient AEAD mode
-    OFB() or
-    OtherMode()
-
   class ModeOfOperationAlgorithmNode extends AlgorithmNode, TModeOfOperationAlgorithm {
     ModeOfOperationAlgorithmInstance instance;
 
@@ -1683,29 +1903,29 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * If a type cannot be determined, the result is `OtherMode`.
      */
-    TBlockCipherModeOperationType getModeType() { result = instance.getModeType() }
+    TBlockCipherModeOfOperationType getModeType() { result = instance.getModeType() }
 
     bindingset[type]
-    final private predicate modeToNameMapping(TBlockCipherModeOperationType type, string name) {
-      type instanceof ECB and name = "ECB"
+    final private predicate modeToNameMapping(TBlockCipherModeOfOperationType type, string name) {
+      type = ECB() and name = "ECB"
       or
-      type instanceof CBC and name = "CBC"
+      type = CBC() and name = "CBC"
       or
-      type instanceof GCM and name = "GCM"
+      type = GCM() and name = "GCM"
       or
-      type instanceof CTR and name = "CTR"
+      type = CTR() and name = "CTR"
       or
-      type instanceof XTS and name = "XTS"
+      type = XTS() and name = "XTS"
       or
-      type instanceof CCM and name = "CCM"
+      type = CCM() and name = "CCM"
       or
-      type instanceof SIV and name = "SIV"
+      type = SIV() and name = "SIV"
       or
-      type instanceof OCB and name = "OCB"
+      type = OCB() and name = "OCB"
       or
-      type instanceof CFB and name = "CFB"
+      type = CFB() and name = "CFB"
       or
-      type instanceof OFB and name = "OFB"
+      type = OFB() and name = "OFB"
     }
 
     override string getAlgorithmName() { this.modeToNameMapping(this.getModeType(), result) }
@@ -1733,17 +1953,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     bindingset[type]
     final private predicate paddingToNameMapping(TPaddingType type, string name) {
-      type instanceof PKCS1_v1_5 and name = "PKCS1_v1_5"
+      type = ANSI_X9_23() and name = "ANSI_X9_23"
       or
-      type instanceof PSS and name = "PSS"
+      type = NoPadding() and name = "NoPadding"
       or
-      type instanceof PKCS7 and name = "PKCS7"
+      type = OAEP() and name = "OAEP"
       or
-      type instanceof ANSI_X9_23 and name = "ANSI_X9_23"
+      type = PKCS1_v1_5() and name = "PKCS1_v1_5"
       or
-      type instanceof NoPadding and name = "NoPadding"
+      type = PKCS7() and name = "PKCS7"
       or
-      type instanceof OAEP and name = "OAEP"
+      type = PSS() and name = "PSS"
     }
 
     override string getAlgorithmName() { this.paddingToNameMapping(this.getPaddingType(), result) }
@@ -1781,81 +2001,36 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  /**
-   * A helper type for distinguishing between block and stream ciphers.
-   */
-  newtype TCipherStructureType =
-    Block() or
-    Stream() or
-    Asymmetric() or
-    UnknownCipherStructureType()
+  class KeyOperationAlgorithmNode extends AlgorithmNode, TKeyOperationAlgorithm {
+    KeyOperationAlgorithmInstanceOrValueConsumer instance;
 
-  private string getCipherStructureTypeString(TCipherStructureType type) {
-    type instanceof Block and result = "Block"
-    or
-    type instanceof Stream and result = "Stream"
-    or
-    type instanceof Asymmetric and result = "Asymmetric"
-    or
-    type instanceof UnknownCipherStructureType and result instanceof UnknownPropertyValue
-  }
-
-  /**
-   * Symmetric algorithms
-   */
-  newtype TCipherType =
-    AES() or
-    ARIA() or
-    BLOWFISH() or
-    CAMELLIA() or
-    CAST5() or
-    CHACHA20() or
-    DES() or
-    DESX() or
-    GOST() or
-    IDEA() or
-    KUZNYECHIK() or
-    MAGMA() or
-    TripleDES() or
-    DoubleDES() or
-    RC2() or
-    RC4() or
-    RC5() or
-    RSA() or
-    SEED() or
-    SM4() or
-    OtherCipherType()
-
-  final class CipherAlgorithmNode extends AlgorithmNode, TCipherAlgorithm {
-    CipherAlgorithmInstanceOrValueConsumer instance;
-
-    CipherAlgorithmNode() { this = TCipherAlgorithm(instance) }
+    KeyOperationAlgorithmNode() { this = TKeyOperationAlgorithm(instance) }
 
     override LocatableElement asElement() { result = instance }
 
-    override string getInternalType() { result = "CipherAlgorithm" }
+    override string getInternalType() { result = "KeyOperationAlgorithm" }
 
-    final TCipherStructureType getCipherStructure() {
-      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), _, result)
+    final KeyOpAlg::CipherStructureType getSymmetricCipherStructure() {
+      KeyOpAlg::symmetric_cipher_to_name_and_structure(this.getAlgorithmType()
+            .(KeyOpAlg::SymmetricCipherAlgorithm)
+            .getType(), _, result)
     }
 
     final override string getAlgorithmName() {
-      this.cipherFamilyToNameAndStructure(this.getCipherFamily(), result, _)
+      KeyOpAlg::type_to_name(this.getAlgorithmType(), result)
     }
 
-    final override string getRawAlgorithmName() {
-      result = instance.asAlg().getRawCipherAlgorithmName()
-    }
+    final override string getRawAlgorithmName() { result = instance.asAlg().getRawAlgorithmName() }
 
     /**
-     * Gets the key size of this cipher, e.g., "128" or "256".
+     * Gets the key size variant of this algorithm in bits, e.g., 128 for "AES-128".
      */
-    string getKeySize(Location location) { none() } // TODO
+    string getKeySize() { result = instance.asAlg().getKeySize() } // TODO: key sizes for known algorithms
 
     /**
-     * Gets the type of this cipher, e.g., "AES" or "ChaCha20".
+     * Gets the type of this key operation algorithm, e.g., "SymmetricEncryption(_)" or ""
      */
-    TCipherType getCipherFamily() { result = instance.asAlg().getCipherFamily() }
+    KeyOpAlg::Algorithm getAlgorithmType() { result = instance.asAlg().getAlgorithmType() }
 
     /**
      * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
@@ -1869,55 +2044,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     PaddingAlgorithmNode getPaddingAlgorithm() {
       result.asElement() = instance.asAlg().getPaddingAlgorithm()
-    }
-
-    bindingset[type]
-    final private predicate cipherFamilyToNameAndStructure(
-      TCipherType type, string name, TCipherStructureType s
-    ) {
-      type instanceof AES and name = "AES" and s = Block()
-      or
-      type instanceof ARIA and name = "ARIA" and s = Block()
-      or
-      type instanceof BLOWFISH and name = "Blowfish" and s = Block()
-      or
-      type instanceof CAMELLIA and name = "Camellia" and s = Block()
-      or
-      type instanceof CAST5 and name = "CAST5" and s = Block()
-      or
-      type instanceof CHACHA20 and name = "ChaCha20" and s = Stream()
-      or
-      type instanceof DES and name = "DES" and s = Block()
-      or
-      type instanceof DESX and name = "DESX" and s = Block()
-      or
-      type instanceof GOST and name = "GOST" and s = Block()
-      or
-      type instanceof IDEA and name = "IDEA" and s = Block()
-      or
-      type instanceof KUZNYECHIK and name = "Kuznyechik" and s = Block()
-      or
-      type instanceof MAGMA and name = "Magma" and s = Block()
-      or
-      type instanceof TripleDES and name = "TripleDES" and s = Block()
-      or
-      type instanceof DoubleDES and name = "DoubleDES" and s = Block()
-      or
-      type instanceof RC2 and name = "RC2" and s = Block()
-      or
-      type instanceof RC4 and name = "RC4" and s = Stream()
-      or
-      type instanceof RC5 and name = "RC5" and s = Block()
-      or
-      type instanceof RSA and name = "RSA" and s = Asymmetric()
-      or
-      type instanceof SEED and name = "SEED" and s = Block()
-      or
-      type instanceof SM4 and name = "SM4" and s = Block()
-      or
-      type instanceof OtherCipherType and
-      name instanceof UnknownPropertyValue and // TODO: get rid of this hack to bind structure and type
-      s = UnknownCipherStructureType()
     }
 
     override NodeBase getChild(string edgeName) {
@@ -1939,16 +2065,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
       or
-      // [ALWAYS_KNOWN] - unknown case is handled in `getCipherStructureTypeString`
+      // [ONLY_KNOWN] - only if symmetric, unknown case is handled in `toString`
       key = "Structure" and
-      getCipherStructureTypeString(this.getCipherStructure()) = value and
-      location instanceof UnknownLocation
+      this.getSymmetricCipherStructure().toString() = value and
+      location = this.getLocation()
       or
       (
         // [KNOWN_OR_UNKNOWN]
         key = "KeySize" and
-        if exists(this.getKeySize(location))
-        then value = this.getKeySize(location)
+        if exists(this.getKeySize())
+        then value = this.getKeySize()
         else (
           value instanceof UnknownPropertyValue and location instanceof UnknownLocation
         )
@@ -2021,32 +2147,32 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getRawAlgorithmName() { result = instance.asAlg().getRawHashAlgorithmName() }
 
-    final predicate hashTypeToNameMapping(THashType type, string name) {
-      type instanceof BLAKE2B and name = "BLAKE2B"
+    final private predicate hashTypeToNameMapping(THashType type, string name) {
+      type = BLAKE2B() and name = "BLAKE2B"
       or
-      type instanceof BLAKE2S and name = "BLAKE2S"
+      type = BLAKE2S() and name = "BLAKE2S"
       or
-      type instanceof RIPEMD160 and name = "RIPEMD160"
+      type = RIPEMD160() and name = "RIPEMD160"
       or
-      type instanceof MD2 and name = "MD2"
+      type = MD2() and name = "MD2"
       or
-      type instanceof MD4 and name = "MD4"
+      type = MD4() and name = "MD4"
       or
-      type instanceof MD5 and name = "MD5"
+      type = MD5() and name = "MD5"
       or
-      type instanceof POLY1305 and name = "POLY1305"
+      type = POLY1305() and name = "POLY1305"
       or
-      type instanceof SHA1 and name = "SHA1"
+      type = SHA1() and name = "SHA1"
       or
-      type instanceof SHA2 and name = "SHA2"
+      type = SHA2() and name = "SHA2"
       or
-      type instanceof SHA3 and name = "SHA3"
+      type = SHA3() and name = "SHA3"
       or
-      type instanceof SHAKE and name = "SHAKE"
+      type = SHAKE() and name = "SHAKE"
       or
-      type instanceof SM3 and name = "SM3"
+      type = SM3() and name = "SM3"
       or
-      type instanceof WHIRLPOOL and name = "WHIRLPOOL"
+      type = WHIRLPOOL() and name = "WHIRLPOOL"
     }
 
     /**
@@ -2129,19 +2255,32 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   private predicate isNumsCurve(string curveName, int keySize) {
     // ALL NUMS CURVES
     keySize in [256, 384, 512] and
-    exists(string suff | suff in ["T1"] | curveName = "NUMSP" + keySize.toString() + suff)
-  }
-
-  bindingset[curveName]
-  predicate isEllipticCurveAlgorithmName(string curveName) {
-    isEllipticCurveAlgorithm(curveName, _, _)
+    exists(string suff | suff = "T1" | curveName = "NUMSP" + keySize.toString() + suff)
   }
 
   /**
    * Holds if `name` corresponds to a known elliptic curve.
+   *
+   * Note: As an exception, this predicate may be used for library modelling, as curve names are largely standardized.
+   *
+   * When modelling, verify that this predicate offers sufficient coverage for the library and handle edge-cases.
+   */
+  bindingset[curveName]
+  predicate isEllipticCurveAlgorithmName(string curveName) {
+    ellipticCurveNameToKeySizeAndFamilyMapping(curveName, _, _)
+  }
+
+  /**
+   * Relates elliptic curve names to their key size and family.
+   *
+   * Note: As an exception, this predicate may be used for library modelling, as curve names are largely standardized.
+   *
+   * When modelling, verify that this predicate offers sufficient coverage for the library and handle edge-cases.
    */
   bindingset[rawName]
-  predicate isEllipticCurveAlgorithm(string rawName, int keySize, TEllipticCurveType curveFamily) {
+  predicate ellipticCurveNameToKeySizeAndFamilyMapping(
+    string rawName, int keySize, TEllipticCurveType curveFamily
+  ) {
     exists(string curveName | curveName = rawName.toUpperCase() |
       isSecCurve(curveName, keySize) and curveFamily = SEC()
       or
@@ -2171,19 +2310,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     )
   }
 
-  final class EllipticCurveNode extends AlgorithmNode, TEllipticCurveAlgorithm {
-    EllipticCurveAlgorithmInstanceOrValueConsumer instance;
+  final class EllipticCurveNode extends AlgorithmNode, TEllipticCurve {
+    EllipticCurveInstanceOrValueConsumer instance;
 
-    EllipticCurveNode() { this = TEllipticCurveAlgorithm(instance) }
+    EllipticCurveNode() { this = TEllipticCurve(instance) }
 
-    override string getInternalType() { result = "EllipticCurveAlgorithm" }
+    override string getInternalType() { result = "EllipticCurve" }
+
+    override LocatableElement asElement() { result = instance }
 
     final override string getRawAlgorithmName() {
-      result = instance.asAlg().getRawEllipticCurveAlgorithmName()
+      result = instance.asAlg().getRawEllipticCurveName()
     }
 
-    // NICK QUESTION: do I repeat the key size and curve family predicates here as wrappers of the instance?
-    override LocatableElement asElement() { result = instance }
+    /*
+     * Mandating that for Elliptic Curves specifically, users are *only* responsible
+     * for providing as the 'raw' name within source code.
+     *
+     * Rationale: elliptic curve names can have a lot of variation in their components
+     * (e.g., "secp256r1" vs "P-256"), trying to produce generalized set of properties
+     * is possible to capture all cases, but such modeling is likely not necessary.
+     * if all properties need to be captured, we can reassess how names are generated.
+     */
+
+    override string getAlgorithmName() { result = this.getRawAlgorithmName() }
 
     TEllipticCurveType getEllipticCurveFamily() {
       result = instance.asAlg().getEllipticCurveFamily()
@@ -2197,80 +2347,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       value = instance.asAlg().getKeySize() and
       location = this.getLocation()
       or
-      key = "StdCurveName" and
-      value = instance.asAlg().getStandardCurveName().toUpperCase() and
+      // [ONLY_KNOWN]
+      key = "ParsedName" and
+      value = instance.asAlg().getParsedEllipticCurveName() and
       location = this.getLocation()
     }
-
-    override string getAlgorithmName() { result = this.getRawAlgorithmName().toUpperCase() }
-    // /**
-    //  * Mandating that for Elliptic Curves specifically, users are responsible
-    //  * for providing as the 'raw' name, the official name of the algorithm.
-    //  *
-    //  * Casing doesn't matter, we will enforce further naming restrictions on
-    //  * `getAlgorithmName` by default.
-    //  *
-    //  * Rationale: elliptic curve names can have a lot of variation in their components
-    //  * (e.g., "secp256r1" vs "P-256"), trying to produce generalized set of properties
-    //  * is possible to capture all cases, but such modeling is likely not necessary.
-    //  * if all properties need to be captured, we can reassess how names are generated.
-    //  */
-    // abstract override string getRawAlgorithmName();
-  }
-
-  abstract class KEMAlgorithm extends TKeyEncapsulationAlgorithm, AlgorithmNode {
-    final override string getInternalType() { result = "KeyEncapsulationAlgorithm" }
-  }
-
-  /**
-   * Key agreement algorithms
-   */
-  newtype TKeyAgreementType =
-    DH() or // Diffie-Hellman
-    EDH() or // Ephemeral Diffie-Hellman
-    ECDH() or // Elliptic Curve Diffie-Hellman
-    // Note: x25519 and x448 are applications of ECDH
-    OtherKeyAgreementType()
-
-  bindingset[name]
-  predicate isKeyAgreementAlgorithmName(string name) { isKeyAgreementAlgorithm(name, _) }
-
-  bindingset[name]
-  predicate isKeyAgreementAlgorithm(string name, TKeyAgreementType type) {
-    exists(string name2 | name2 = name.toUpperCase() |
-      name2 = "DH" and type = DH()
-      or
-      name2 = "EDH" and type = EDH()
-      or
-      name2 = "ECDH" and type = ECDH()
-      or
-      name2 = "X25519" and type = ECDH()
-      or
-      name2 = "X448" and type = ECDH()
-    )
-  }
-
-  abstract class KeyAgreementAlgorithmInstance extends AlgorithmInstance {
-    // /**
-    //  * If the key agreement uses a curve, (e.g., ECDH) point to the curve instance.
-    //  * none() if the agreement is not curve based (e.g., plain DH).
-    //  * Note that if the curve is inherent to the algorithm (e.g., x25519), this will be
-    //  * the key agreement algorithm instance itself (this).
-    //  */
-    // abstract EllipticCurveAlgorithmInstance getEllipticCurveAlgorithm();
-  }
-
-  abstract class KeyAgreementSecretGenerationOperationInstance extends OperationInstance {
-    /**
-     * The private key used in the key agreement operation.
-     * This key represents the local party in the key agreement.
-     */
-    abstract ConsumerInputDataFlowNode getServerKeyConsumer();
-
-    /**
-     * The public key used in the key agreement operation, coming
-     * from the peer (the other party in the key agreement).
-     */
-    abstract ConsumerInputDataFlowNode getPeerKeyConsumer();
   }
 }
