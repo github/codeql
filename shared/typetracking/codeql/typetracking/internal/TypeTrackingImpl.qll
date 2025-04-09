@@ -512,6 +512,7 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
      * }
      * ```
      */
+    overlay[caller]
     pragma[inline]
     TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
       result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
@@ -656,6 +657,7 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
      * }
      * ```
      */
+    overlay[caller]
     pragma[inline]
     TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
       result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)

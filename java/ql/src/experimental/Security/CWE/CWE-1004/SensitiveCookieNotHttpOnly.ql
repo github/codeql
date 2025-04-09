@@ -83,6 +83,7 @@ class CookieClass extends RefType {
 
 /** Holds if `expr` is any boolean-typed expression other than literal `false`. */
 // Inlined because this could be a very large result set if computed out of context
+overlay[caller]
 pragma[inline]
 predicate mayBeBooleanTrue(Expr expr) {
   expr.getType() instanceof BooleanType and
