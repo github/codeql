@@ -8,7 +8,7 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
 
 /** A method that formats a string, for example `string.Format()`. */
-abstract class FormatMethod extends Method {
+abstract private class FormatMethodImpl extends Method {
   /**
    * Gets the argument containing the format string. For example, the argument of
    * `string.Format(IFormatProvider, String, Object)` is `1`.
@@ -21,6 +21,8 @@ abstract class FormatMethod extends Method {
   int getFirstArgument() { result = this.getFormatArgument() + 1 }
 }
 
+final class FormatMethod = FormatMethodImpl;
+
 /** A class of types used for formatting. */
 private class FormatType extends Type {
   FormatType() {
@@ -29,7 +31,7 @@ private class FormatType extends Type {
   }
 }
 
-private class StringAndStringBuilderFormatMethods extends FormatMethod {
+private class StringAndStringBuilderFormatMethods extends FormatMethodImpl {
   StringAndStringBuilderFormatMethods() {
     (
       this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
@@ -51,7 +53,7 @@ private class StringAndStringBuilderFormatMethods extends FormatMethod {
   }
 }
 
-private class SystemMemoryExtensionsFormatMethods extends FormatMethod {
+private class SystemMemoryExtensionsFormatMethods extends FormatMethodImpl {
   SystemMemoryExtensionsFormatMethods() {
     this = any(SystemMemoryExtensionsClass c).getTryWriteMethod() and
     this.getParameter(1).getType() instanceof SystemIFormatProviderInterface and
@@ -63,7 +65,7 @@ private class SystemMemoryExtensionsFormatMethods extends FormatMethod {
   override int getFirstArgument() { result = this.getFormatArgument() + 2 }
 }
 
-private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMethod {
+private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMethodImpl {
   SystemConsoleAndSystemIoTextWriterFormatMethods() {
     this.getParameter(0).getType() instanceof StringType and
     this.getNumberOfParameters() > 1 and
@@ -80,7 +82,7 @@ private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMeth
   override int getFormatArgument() { result = 0 }
 }
 
-private class SystemDiagnosticsDebugAssert extends FormatMethod {
+private class SystemDiagnosticsDebugAssert extends FormatMethodImpl {
   SystemDiagnosticsDebugAssert() {
     this.hasName("Assert") and
     this.getDeclaringType().hasFullyQualifiedName("System.Diagnostics", "Debug") and
@@ -90,7 +92,7 @@ private class SystemDiagnosticsDebugAssert extends FormatMethod {
   override int getFormatArgument() { result = 2 }
 }
 
-private class SystemDiagnosticsFormatMethods extends FormatMethod {
+private class SystemDiagnosticsFormatMethods extends FormatMethodImpl {
   SystemDiagnosticsFormatMethods() {
     this.getParameter(0).getType() instanceof StringType and
     this.getNumberOfParameters() > 1 and
