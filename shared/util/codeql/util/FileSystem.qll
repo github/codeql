@@ -222,20 +222,27 @@ module Make<InputSig Input> {
   /** Provides logic related to `Folder`s. */
   module Folder {
     /** Holds if `relativePath` needs to be appended to `f`. */
-    signature predicate appendSig(Folder f, string relativePath);
+    signature predicate shouldAppendSig(Folder f, string relativePath);
 
     /** Provides the `append` predicate for appending a relative path onto a folder. */
-    module Append<appendSig/2 app> {
+    module Append<shouldAppendSig/2 shouldAppend> {
       pragma[nomagic]
       private string getComponent(string relativePath, int i) {
-        app(_, relativePath) and
+        shouldAppend(_, relativePath) and
         result = relativePath.replaceAll("\\", "/").regexpFind("[^/]+", i, _)
+      }
+
+      private int getNumberOfComponents(string relativePath) {
+        result = strictcount(int i | exists(getComponent(relativePath, i)) | i)
+        or
+        relativePath = "" and
+        result = 0
       }
 
       pragma[nomagic]
       private Container appendStep(Folder f, string relativePath, int i) {
         i = -1 and
-        app(f, relativePath) and
+        shouldAppend(f, relativePath) and
         result = f
         or
         exists(Container mid, string comp |
@@ -258,9 +265,9 @@ module Make<InputSig Input> {
        */
       pragma[nomagic]
       Container append(Folder f, string relativePath) {
-        exists(int components |
-          components = (-1).maximum(max(int comp | exists(getComponent(relativePath, comp)) | comp)) and
-          result = appendStep(f, relativePath, components)
+        exists(int last |
+          last = getNumberOfComponents(relativePath) - 1 and
+          result = appendStep(f, relativePath, last)
         )
       }
     }

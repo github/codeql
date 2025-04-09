@@ -655,6 +655,11 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
   )
 }
 
+/**
+ * Gets the `Meta` of the module `m`'s [path attribute][1].
+ *
+ * [1]: https://doc.rust-lang.org/reference/items/modules.html#r-items.mod.outlined.path
+ */
 private Meta getPathAttrMeta(Module m) {
   result = m.getAnAttr().getMeta() and
   result.getPath().getText() = "path"
@@ -725,7 +730,7 @@ private predicate pathAttrImport(Folder f, Module m, string relativePath) {
   )
 }
 
-private predicate append(Folder f, string relativePath) { pathAttrImport(f, _, relativePath) }
+private predicate shouldAppend(Folder f, string relativePath) { pathAttrImport(f, _, relativePath) }
 
 /** Holds if `m` is a `mod name;` item importing file `f`. */
 private predicate fileImport(Module m, SourceFile f) {
@@ -743,7 +748,7 @@ private predicate fileImport(Module m, SourceFile f) {
   or
   exists(Folder folder, string relativePath |
     pathAttrImport(folder, m, relativePath) and
-    f.getFile() = Folder::Append<append/2>::append(folder, relativePath)
+    f.getFile() = Folder::Append<shouldAppend/2>::append(folder, relativePath)
   )
 }
 
