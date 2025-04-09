@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 class C
 {
@@ -42,5 +43,46 @@ class C
         String.Format("", 1);
     }
 
+    void CompositeFormatTests()
+    {
+        var format = CompositeFormat.Parse("X"); // $ Source
+        var format00 = CompositeFormat.Parse("{0}{0}"); // $ Source
+        var format11 = CompositeFormat.Parse("{1}{1}"); // $ Source
+
+        // BAD: Unused arg {0}
+        String.Format<string>(null, format, ""); // $ Alert Sink
+
+        // BAD: Unused arg {1}
+        String.Format<string, string>(null, format00, "", ""); // $ Alert Sink
+
+        // BAD: Unused arg {0}
+        String.Format<string, string>(null, format11, "", ""); // $ Alert Sink
+
+        // BAD: Unused arg {0}
+        sb.AppendFormat(null, format, ""); // $ Alert Sink
+        sb.AppendFormat<string>(null, format, ""); // $ Alert Sink
+
+        // BAD: Unused arg {1}
+        sb.AppendFormat<string, string>(null, format00, "", ""); // $ Alert Sink
+
+        // BAD: Unused arg {0}
+        sb.AppendFormat<string, string>(null, format11, "", ""); // $ Alert Sink
+
+        var span = new Span<char>();
+
+        // BAD: Unused arg {0}
+        span.TryWrite(null, format, out _, ""); // $ Alert Sink
+        span.TryWrite<string>(null, format, out _, ""); // $ Alert Sink
+
+        // BAD: Unused arg {1}
+        span.TryWrite<string, string>(null, format00, out _, "", ""); // $ Alert Sink
+
+        // BAD: Unused arg {0}
+        span.TryWrite<string, string>(null, format11, out _, "", ""); // $ Alert Sink
+
+    }
+
     object[] ps;
+
+    StringBuilder sb;
 }
